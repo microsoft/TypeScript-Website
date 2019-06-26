@@ -1,3 +1,84 @@
+# Custom Rules
+
+src/_docs/**/*.md
+src/_docs/release-notes/**/*.md
+!src/_docs/index.html
+!src/_docs/handbook/typings-for-npm-packages.html
+!src/_docs/handbook/writing-declaration-files.html
+!src/_docs/handbook/writing-definition-files.html
+!src/_docs/tutorial.md
+
+# .gitignore for jekyllized projects
+.jekyll-metadata
+
+.jekyll-metadata
+
+# Ignore hidden folders
+# This takes care of .tmp, .sass-cache, and many others
+.*/
+
+# OSX
+._*
+.AppleDouble
+.DS_Store
+.localized
+.LSOverride
+.Spotlight-V100
+.Trashes
+Icon
+
+# Windows
+Desktop.ini
+ehthumbs.db
+Thumbs.db
+
+# Linux
+*~
+
+# Tags
+# Ignore tags created by etags and ctags
+TAGS
+tags
+
+# Always-ignore files and folders #
+*.diff
+*.err
+*.log
+*.orig
+*.rej
+*.swn
+*.swo
+*.swp
+._*
+*~
+
+# Ignore packages #
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Packages
+node_modules/*
+.tmp
+test/
+
+# Sublime
+*.sublime-project
+*.sublime-workspace
+*.sublime-projectcompletions
+
+app/_bower_components
+
+# Output folders
+serve
+site
+src/assets/stylesheets/style.css
+
 # Logs
 logs
 *.log

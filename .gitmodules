@@ -1,0 +1,9 @@
+[submodule "TypeScript-Handbook"]
+	path = TypeScript-Handbook
+	url = https://github.com/microsoft/TypeScript-Handbook.git
+[submodule "src/_plugins/JekyllMarkdownLinkConverter"]
+	path = src/_plugins/JekyllMarkdownLinkConverter
+	url = https://github.com/DanielRosenwasser/JekyllMarkdownLinkConverter
+[submodule "src/play"]
+	path = src/play
+	url = https://github.com/orta/typescript-play.git

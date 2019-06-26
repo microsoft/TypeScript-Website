@@ -1,0 +1,26 @@
+vs2017_download: https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-341-vs2017
+vs2019_download: https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-341-vs2017
+vscode_download: https://code.visualstudio.com
+sublime_ts_download: https://github.com/Microsoft/TypeScript-Sublime-Plugin
+atom_ts_download: https://atom.io/packages/atom-typescript
+eclipse_ts_download: https://github.com/palantir/eclipse-typescript
+webstorm_download: https://www.jetbrains.com/webstorm/
+vim_ts_download: https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support#vim
+emacs_ts_download: https://github.com/ananthakumaran/tide
+
+ts_github: https://github.com/Microsoft/TypeScript
+ts_github_issues: https://github.com/Microsoft/TypeScript/issues
+ts_spec_markdown: https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md
+ts_spec_docx: https://github.com/Microsoft/TypeScript/blob/master/doc/TypeScript%20Language%20Specification.docx?raw=true
+ts_spec_pdf: https://github.com/Microsoft/TypeScript/blob/master/doc/TypeScript%20Language%20Specification.pdf?raw=true
+
+definitelytyped_github: https://github.com/DefinitelyTyped/DefinitelyTyped
+
+ts_blog: http://blogs.msdn.com/b/typescript/
+
+ts_stackoverflow_tagged: https://stackoverflow.com/questions/tagged/typescript
+
+ts_twitter: https://twitter.com/typescript/
+ts_twitter_search: https://twitter.com/search?q=%23typescript
+
+landing_page_video: http://video.ch9.ms/ch9/4ae3/062c336d-9cf0-498f-ae9a-582b87954ae3/B881_mid.mp4

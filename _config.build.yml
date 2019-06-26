@@ -1,0 +1,16 @@
+# Run during the 'gulp build' command
+# Overrides these options in _config.yml
+
+# Overrides the default URL, needed for your atom feed and sitemap
+url: typecriptlang.com
+
+# Hides your drafts and future posts
+future: false
+show_drafts: false
+# Gives you more accurate related posts
+lsi: true
+# Removes the upper limit for posts generated
+limit_posts: 0
+
+source: 'src'
+destination: 'serve'

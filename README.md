@@ -1,3 +1,74 @@
+# TypeScript portal
+
+This is the current website for TypeScript. It uses Jekyll for the majority of the work, and uses git submodules for 
+the playground and the handbook.
+
+### Meta
+
+* __URLs:__ [production](https://www.typescriptlang.org), [staging](http://testsite-typescript-41eeb979-7eaa-4c74-9d47-9d182c7b61ab.azurewebsites.net/)
+
+## Staging
+
+A live version with the daily build can be found [here](http://typescript:3000)
+
+## Configure your build environment:
+
+1. Install the latest Ruby and add it to your environment's PATH during setup. Allow the installer to install MSYS2 via `ridk install`.
+    * Download Ruby [from here](http://rubyinstaller.org/downloads/).
+1. Install the latest Node.js.
+    * Download Node.js [from here](https://nodejs.org/en/)
+1. Establish your new environment by opening up a new PowerShell/Command Prompt.
+1. Fork https://github.com/Microsoft/TypeScript-Docs to your own GitHub account
+1. Clone https://github.com/[YOUR_ACCOUNT]/TypeScript-Docs
+1. Run the following from the cloned repository:
+
+    ```shell
+    gem install bundler
+    bundler install
+
+    npm install
+    npm install -g gulp-cli
+
+    git submodule init
+    git submodule update
+
+    cd src/play
+    npm install
+    npm run setup
+    cd ../..
+    ```
+
+## Build the site:
+
+Ensure that you have configured your build environment as explained above.
+In a shell, navigate to your clone of this repository and run:
+
+```shell
+gulp 
+```
+
+Your default web browser should start up and show the built site.
+
+## Deployment
+
+Deployment is a 2 step process, first use these commands to push [to staging](http://testsite-typescript-41eeb979-7eaa-4c74-9d47-9d182c7b61ab.azurewebsites.net/):
+
+```sh
+# Creates a ./site folder
+gulp publish
+# Pushes to a special branch
+gulp deploy
+```
+
+Then run the script `sync-staging-to-prod.ps1`.
+
+## Direct Links to Downloads for Windows:
+
+* Ruby: http://dl.bintray.com/oneclick/rubyinstaller/rubyinstaller-2.2.3-x64.exe
+* RubyDevKit: http://dl.bintray.com/oneclick/rubyinstaller/DevKit-mingw64-64-4.7.2-20130224-1432-sfx.exe
+* Python Installer: https://www.python.org/ftp/python/2.7.10/python-2.7.10.amd64.msi
+* Node.js Installer: https://nodejs.org/dist/v5.0.0/node-v5.0.0-x64.msi
+
 
 # Contributing
 

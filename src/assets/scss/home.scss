@@ -1,0 +1,580 @@
+
+/* TODO: Simlify this with SCSS Syntax (Sass code) */
+
+.home {
+
+  .skyline-container {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .value-props {
+    background-color: $brand-background-color;
+    padding-bottom: 3em;
+  }
+
+  .row-download-typescript {
+    padding: 3em 0;
+    ul {
+      padding-left:0;
+      >li {
+        font-size:1.6em;
+        list-style: none;
+        margin-left:-1em;
+        padding:1.5em;
+        padding-left:5.5em;
+        background-position: 1em 50%;
+        background-size: 3em 3em;
+        background-repeat: no-repeat;
+        // &:hover {
+        //   background-color:darken(white,10%);
+        // }
+      }
+      .sublime { background-image:url(../images/ideicons/sublime-text.svg) }
+      .atom { background-image:url(../images/ideicons/atom.svg) }
+      .eclipse { background-image:url(../images/ideicons/eclipse.svg) }
+      .vscode { background-image:url(../images/ideicons/vscode.svg) }
+      .webstorm { background-image:url(../images/ideicons/webstorm.svg) }
+      .visualstudio-2019 { background-image:url(../images/ideicons/visualstudio-2019.svg) }
+      .visualstudio-2017 { background-image:url(../images/ideicons/visualstudio-2017.svg) }
+      .vim { background-image:url(../images/ideicons/vim.svg) }
+      .emacs { background-image:url(../images/ideicons/emacs.svg) }
+    }
+    .node-samples {
+        margin-right:2em;
+        @media (max-width:$screen-sm-max) {
+            margin-right:0;
+        }
+    }
+
+    .node-samples dd {
+        width: 100%;
+        height: 2.5em;
+        line-height: 2.5em;
+        padding-left:.625em;
+        white-space: nowrap;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 1.6em;
+        float: left;
+        display: block;
+        background-color: $brand-background-color;
+        color:white;
+    }
+    .node-samples dt {
+        width: 100px;
+        text-transform: uppercase;
+        padding-top: 17px;
+        font-size: 12pt;
+        font-weight: bold;
+        float: left;
+        display: block;
+        color:$brand-background-color;
+    }
+
+    .dl-link {
+        top: 270px;
+        height: 34px;
+        padding: 0 0 0 60px;
+        font-size: 16pt;
+        margin: 0;
+        display: block;
+        background: url('../images/icon_sprite_download_dark.png') no-repeat 8px 0;
+        color:$brand-background-color;
+    }
+
+      .others{
+        h3{
+          padding-left: .6em;
+        }
+      }
+  }
+
+
+.twitter-name {
+  font-size: 1.2em;
+}
+
+.twitter-handle {
+  font-size: 1em;
+  color: grey;
+  font-weight: 400;
+}
+
+.carousel-control {
+  width: 8%;
+
+  &:focus {
+    outline: $brand-general-focus-color solid 1px;
+  }
+}
+
+.next-steps-container { margin-top:0; } //fixes gap when there is gray swimlane above it
+
+.swimlane-alternate {
+  background-color: rgba(0,0,0,.03);
+}
+
+
+  .middle-row{
+    padding: 2.5em 0 6em 0;
+
+    h1{
+      padding-bottom: .6em;
+    }
+    p{
+      color:black;
+    }
+
+    h2{
+      padding-top: .5em;
+    }
+
+    .opensource-list {
+        text-decoration: none;
+        list-style-type: square;
+        padding-top: .6em;
+        padding-bottom: 1em;
+        color:black;
+
+        li{
+          font-size: .9em;
+        }
+
+      }
+
+  }
+
+  .bottom-row{
+    background-color: white;
+    padding: 5em 0;
+    p{
+      color:black;
+    }
+    h1{
+      padding-bottom: .6em;
+    }
+  }
+
+.swimlane-carousel {
+    .container {
+      padding: 0;
+    }
+    .col-sm-12 {
+      padding: 0;
+    }
+
+      padding:20px;
+
+      .friend-container {
+          margin: 0;
+          list-style: none;
+          display: -webkit-box;
+          display: -moz-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+          justify-content: space-around;
+          flex-wrap: wrap;
+          height:200px;
+          padding-bottom: 40px;
+      }
+
+
+
+      .friendbar-content {
+          position: relative;
+          z-index: 5;
+          width: 100%;
+          max-width: 1200px;
+          margin: 0 auto;
+          left: 30px;
+      }
+      .friend-info {
+          color: #666666;
+      }
+
+       .friend-contentcontainer {
+          width: 100%;
+      }
+
+      .quote-container {
+          padding-top: 30px;
+          p {
+            padding: 0px;
+          }
+      }
+
+      .author-container {
+          padding-right: 30px;
+          float: right;
+      }
+
+      .image-container {
+          width: 130px;
+          margin-left: 10px;
+          margin-right: 20px;
+          float: left;
+      }
+
+      .friend-item {
+          padding: 10px 40px;
+          height: 100%;
+          color: black;
+          margin: 10px 10px;
+          line-height: 140px;
+          background-color: white;
+      }
+
+      .carousel-control, {
+        &.left,&.right{
+          background-image: none;
+      }
+      span {
+        color:lightgray;
+        text-shadow: none;
+      }
+      &.left {
+        margin-left:-55px;
+      }
+      &.right {
+        margin-right:-55px;
+      }
+    }
+
+    #friend-carousel {
+        border-radius: 8px;
+    }
+
+    @media (max-width: 550px) {
+        .friend-container {
+            height: 390px;
+        }
+
+        .image-container {
+            float: none;
+            margin: 0 auto;
+        }
+
+        .author-container {
+            float: none;
+        }
+
+        .friend-item {
+            padding: 10px 10px;
+        }
+
+        .quote-container {
+            padding-top: 10px;
+        }
+    }
+
+    .carousel-inner > .item{
+      padding:10px 5px;
+    }
+
+    .carousel-indicators {
+        bottom: -4px;
+        opacity: 0.4;
+        font-size: 30%;
+
+        .active {
+        width: 12px;
+        height: 12px;
+        margin: 0;
+        background-color:$brand-background-color;
+        }
+
+        li {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin: 1px;
+        text-indent: -999px;
+        cursor: pointer;
+        background-color: #000 \9;
+        background-color: rgba(0, 0, 0, 0);
+        border: 1px solid;
+        border-color:$brand-background-color;
+        border-radius: 10px;
+        }
+    }
+
+    h1{
+      padding: 20px 0 26px 0;
+      text-align: center;
+    }
+
+    .more-friends{
+      p{
+        padding: 40px 0 20px 0;
+      }
+    }
+
+  }
+
+}
+
+.top_section {
+    padding-bottom:2em;
+    background: linear-gradient(to bottom, #3CA7F2 0%, #152740 50%);
+    //@include bground-gradient(linear-gradient, to bottom, rgba(203,223,243,1) 0%, rgba(63,169,244,1) 57%, rgba(0,117,189,1) 87%, rgba(0,90,150,1) 100%);  //Vendor prefixes this gradient effect
+    //@include bground-gradient(linear-gradient, to bottom, #3CA7F2 0%,  #152740 50%);  //Vendor prefixes this gradient effect
+    // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cbdff3', endColorstr='#005a96', GradientType=0 );
+}
+
+.skyline-img {
+  position:absolute;
+  top:0;
+  bottom:0;
+  margin:auto;
+  width:100%;
+  height:100%;
+  margin-top:0em;
+  background-size: 150em 32.589em;
+  background-repeat: no-repeat;
+  background-position: 50% 0;
+}
+
+.skyline-img-background {
+    @extend .skyline-img;
+    background-image: url('../images/bg_blueprint_2.svg');
+    background-repeat: repeat-x;
+}
+
+.skyline-img-foreground {
+    @extend .skyline-img;
+    background-image: url('../images/foreground_bluprint.svg');
+}
+
+.bannerContainer{
+  text-align: center;
+  color:white;
+  padding:0;
+}
+
+.banner {
+  padding-top:35em;
+}
+
+.bannerLogo {
+    padding-top: 5em;
+    max-width:34em;
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+    text-align: center
+}
+
+.bannerText{
+  font-family: wf_segoe-ui_normal;
+  font-size: 1em;
+  padding: 1em 0;
+}
+
+.bannerText > p{
+  font-weight: 500;
+  padding: 0 3em 0 3em;
+}
+
+.bannerTextHeadline{
+  color:$brand-accent-color;
+  font-size: 2.5em;
+  font-weight:lighter;
+  padding: 0 1.4em;
+  padding-bottom:.5em;
+  font-weight: 500;
+}
+
+.bannerButtons > .col-sm-4 {
+  border-radius: 0;
+  padding: 4px;
+}
+
+.value-props p {
+  color: white;
+}
+
+.twitter-profile-image {
+    width: 7.2rem;
+    height: 7.2rem;
+    background-size: 100%;
+    background-position: 50% 25%;
+    border-radius: 50%;
+    box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.2);
+    background-image: url(".");
+    float: left;
+    margin: 20px 10px 75px 0;
+}
+
+#social-proof-carousel .col-md-4 {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+blockquote.twitter-tweet {
+  display: inline-block;
+  font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 16px;
+  border-radius: 0px;
+  border-width: 0px;
+  margin: 10px 5px;
+  padding: 5px 10px 10px 10px;
+  max-width: 640px;
+  height: 140px;
+}
+
+blockquote.twitter-tweet p {
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 20px;
+}
+
+blockquote.twitter-tweet a:hover,
+blockquote.twitter-tweet a:focus {
+  text-decoration: underline;
+}
+
+.btn {
+  border-radius: 0;
+  background-color: $brand-accent-color;
+  color: black;
+  padding: 10px 16px;
+  font-size: 1.6em;
+}
+
+.bannerButtons{
+    .btn {
+        width: 12em;
+        margin-bottom:1em;
+    }
+}
+
+.box-headline-img {
+    margin-top: 5em;
+}
+
+.js-icon {
+    width: 80px;
+}
+
+.soa-icon {
+    width: 69px;
+}
+
+.crane-icon {
+    width: 69px;
+}
+
+.line {
+  display:inline-block;
+}
+
+.box-text {
+    text-align: left;
+    padding: 0 7px;
+}
+
+.middle-box {
+    padding: 0 0px;
+}
+
+.centered {
+  text-align: center;
+}
+
+.hashtag {
+  color: rgb(21,39,64);
+}
+
+.box-text > h3{
+  text-align: center;
+  font-size: 1.5em;
+  padding-bottom: .5em;
+  span{font-size: 1.4em;}
+}
+
+@media (min-width: 767px) {
+    #navigation{
+        position: fixed;
+    }
+    .video {
+      width: 720px;
+      height: 405px;
+    }
+}
+
+.container-fluid > .container-fluid {
+  padding-left:0;
+  padding-right:0;
+}
+
+.girder-background {
+  background-image:url('../images/girder_repeat-x.svg');
+  background-size: 63.1px 18px;
+  background-repeat: repeat-x;
+  background-position: 50% 50%;
+  margin-top:6em;
+  margin-bottom:2em;
+  .btn {
+    width: 14em;
+  }
+}
+
+.video {
+    display: block;
+    margin: 20px auto;
+}
+
+.next-steps-container {
+  background-color: $brand-light-gray;
+  padding:5em 0;
+  color: #0c3645;
+  width: 100%;
+
+  .row > div {
+
+    .content{
+      padding: .7em;
+      font-size: 1.6em;
+      line-height: 1.6em;
+      padding-right: 2em;
+    }
+
+    .next-step-link{
+      font-size:2.2em;
+      color: #0c3645;
+      span{
+        font-size: 1em;
+      }
+    }
+
+    .next-step-header{
+      font-size:2.25em;
+      color: #0c3645;
+      padding-left: .4em;
+    }
+
+  }
+
+  .row > div:nth-child(1){
+    .spacer{
+      padding:0 6em;
+    }
+  }
+
+  .row > div:nth-child(2){
+    .spacer{
+      padding:0 6em;
+    }
+    .separator{
+      padding:0 3em;
+      border-left: 1px solid #bbb;
+      width: 2px;
+      height: 14em;
+      float: left;
+    }
+  }
+
+}

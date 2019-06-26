@@ -1,0 +1,71 @@
+/**
+* BRAND COLORS
+*/
+
+$brand-background-color: white;
+$brand-lightest-color: #3FA8F4;
+$brand-light-gray:darken(white,10%);
+$brand-20-gray:darken(white,20%);
+$brand-40-gray:darken(white, 40%);
+$brand-50-gray:darken(white,50%);
+$brand-nav-color: rgb(12,54,69);
+$brand-accent-color:rgb(231,129,0);
+$brand-nav-color-focus:#355462;
+$brand-yellow:#F9D974;
+$brand-light-yellow:rgb(251,244,184);
+$brand-red:#E84E21;
+$brand-light-blue:#5C7B89;
+
+$docs-code-box-background-color: $brand-background-color;
+$docs-accent-textcolor: $brand-accent-color;
+$docs-toc-background-color: #445E6B;
+$docs-toc-parent-border-color: #242424;
+$docs-toc-expanded-background-color: $brand-nav-color;
+$docs-toc-expanded-background-hover-color: #294e80;
+$docs-toc-expanded-border-color: #343434;
+$docs-toc-text-color: #fff;
+
+
+/**
+* GRID
+*/
+
+$screen-xs:                  480px;
+
+// Small screen / tablet
+$screen-sm:                  768px;
+$screen-sm-min:              $screen-sm;
+
+// Medium screen / desktop
+$screen-md:                  992px;
+$screen-md-min:              $screen-md;
+
+// Large screen / wide desktop
+$screen-lg:                  1200px;
+$screen-lg-min:              $screen-lg;
+
+// So media queries don't overlap when required, provide a maximum
+$screen-xs-max:              ($screen-sm-min - 1);
+$screen-sm-max:              ($screen-md-min - 1);
+$screen-md-max:              ($screen-lg-min - 1);
+
+
+/**
+* UTILLITY CLASSES AND MIXINS
+*/
+
+/* Mixin that prefixes any CSS rule */
+@mixin vendor-prefix($property, $argument...) {
+  -webkit-#{$property}: #{$argument};
+  -ms-#{$property}: #{$argument};
+  -moz-#{$property}: #{$argument};
+  -o-#{$property}: #{$argument};
+  #{$property}: #{$argument};
+}
+
+.vertically-centered {
+    position: relative;
+    top: 50%;
+    @include vendor-prefix(transform,translateY(-50%));
+    display: inline-block;
+}

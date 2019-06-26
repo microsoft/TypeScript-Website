@@ -1,0 +1,105 @@
+
+.community{
+
+  padding: 1em 15px 6em 15px;
+
+  .next-steps-container {
+    background-color: white;
+  }
+
+  .banner-text {
+    font-size: 1.6em;
+    margin-top: 20px;
+    color:black;
+  }
+
+  .callouts {
+    margin: 20px 0;
+    color: black;
+
+    .callout {
+      margin-top:20px;
+      a > h2 {
+        font-size:1.6em;
+        margin-top:0;
+      }
+    }
+
+    .text {
+      height: 100px;
+      font-size: 1.6em
+    }
+
+
+    .icon {
+        height: 10em;
+        width: 10em;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: auto 6.4em;
+        display: block;
+        -webkit-transition: background-color .2s ease-out;
+        transition: background-color .2s ease-out;
+        float: left;
+        margin: 20px;
+        margin-top: 0;
+
+        @media screen and (-ms-high-contrast: active) {
+            -ms-high-contrast-adjust: none;
+        }
+
+        &.high-contrast-only {
+          font-size: 1.8rem;
+        }
+
+        &.friends-of-typescript {
+          background-image: url("../images/community/connect-group-icon.svg");
+          background-color: $brand-nav-color-focus;
+        }
+
+        &.stackoverflow {
+          background-image: url("../images/community/connect-stackoverflow-icon.svg");
+          background-color: $brand-accent-color;
+        }
+
+        &.blog {
+          background-image: url("../images/community/connect-blog-icon.svg");
+          background-color: $brand-red;
+        }
+
+        &.uservoice {
+          background-image: url("../images/community/connect-uservoice-icon.svg");
+          background-color: #1a2833;
+        }
+
+        &.twitter {
+          background-image: url("../images/community/connect-twitter-icon.svg");
+          background-color: #00a0d1;
+          background-size: 5.5em;
+        }
+
+        &.definitelytyped {
+          background-image: url("../images/community/definitely_typed_logo.png");
+          background-color: #0077D2;
+          background-size: 10em;
+        }
+
+        &.bug {
+          background-image: url("../images/community/connect-github-icon.png");
+          background-color: lighten(black,30%);
+          background-size:5.5em;
+        }
+
+    }
+
+  }
+
+}
+
+@media (max-width: $screen-xs-max) {
+  .footer-spacer{
+    background-color: green;
+    padding-bottom: 40px;
+    height: 40px;
+  }
+}

@@ -1,0 +1,55 @@
+---
+layout: default
+title: Quick Start
+permalink: /samples/index.html
+---
+
+<div class="examples">
+    <div id="content" class="container-fluid fill">
+        <div class="container examplesBg">
+            <div class="row row-centered">
+                {% assign samples = site.data.samples %}
+                {% for sample in samples %}
+                <div class="col-xs-6 col-md-4 col-centered exampleBox">
+                    <div class="flip-container">
+                        <a href="{{sample.href}}">
+                            <div class="front-face">
+                                <div class="exampleImg">
+                                    <img src="{{sample.img}}" />
+                                </div>
+                                <h3 class="exampleHeadline">{{sample.title}}</h3>
+                                <div class="exampleSummary">{{sample.summary}}</div>
+                                <div class="exampleTags">
+                                    {% for tag in sample.tags %}
+                                    <span>{{tag}}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="row row-centered survey-box">
+                <p>Didn't find the guide you were looking for? <a href="https://www.surveymonkey.com/r/SN9V7R7" target="_blank"> Tell us </a> how we can help you better.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    body{background-color: #f2f2f2;}
+</style>
+
+<!-- JS -->
+<script>
+    $(document).ready(function() {
+        $(".tagFilters").click(function() {
+            if ($('.examples').height() <= ($(window).height() - $("footer").height())){
+                $('footer').css('position','absolute').css("bottom",0).css("width","100%");
+            }
+            else {
+                $('footer').css('position','static');
+            }
+        });
+    });
+</script>

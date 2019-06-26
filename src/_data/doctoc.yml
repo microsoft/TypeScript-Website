@@ -1,0 +1,83 @@
+- title: Tutorials
+  id: tutorials
+  directory: handbook
+  items:
+  - typescript-in-5-minutes
+  - asp-net-core
+  - gulp
+  - migrating-from-javascript
+  - react-&-webpack
+- title: What's New
+  id: whats-new
+  directory: handbook/release-notes
+  items:
+  - typescript-3-4
+  - typescript-3-3
+  - typescript-3-2
+  - typescript-3-1
+  - typescript-3-0
+  - typescript-2-9
+  - typescript-2-8
+  - typescript-2-7
+  - typescript-2-6
+  - typescript-2-5
+  - typescript-2-4
+  - typescript-2-3
+  - typescript-2-2
+  - typescript-2-1
+  - typescript-2-0
+  - typescript-1-8
+  - typescript-1-7
+  - typescript-1-6
+  - typescript-1-5
+  - typescript-1-4
+  - typescript-1-3
+  - typescript-1-1
+- title: Handbook
+  id: handbook
+  directory: handbook
+  items:
+  - basic-types
+  - variable-declarations
+  - interfaces
+  - classes
+  - functions
+  - generics
+  - enums
+  - type-inference
+  - type-compatibility
+  - advanced-types
+  - symbols
+  - iterators-and-generators
+  - modules
+  - namespaces
+  - namespaces-and-modules
+  - module-resolution
+  - declaration-merging
+  - jsx
+  - decorators
+  - mixins
+  - triple-slash-directives
+  - type-checking-javascript-files
+- title: Declaration Files
+  id: declaration-files
+  directory: handbook/declaration-files
+  items:
+  - introduction
+  - library-structures
+  - by-example
+  - do-s-and-don-ts
+  - deep-dive
+  - templates
+  - publishing
+  - consumption
+- title: Project Configuration
+  id: project-config
+  directory: handbook
+  items:
+  - tsconfig-json
+  - compiler-options
+  - project-references
+  - compiler-options-in-msbuild
+  - integrating-with-build-tools
+  - nightly-builds

@@ -1,0 +1,58 @@
+
+.friends {
+    
+    padding: 80px 0;
+    
+    h1{
+        padding-bottom: 60px;
+    }
+
+    .friend-container {
+        padding-bottom: 40px;
+        margin: 0;
+        list-style: none;
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-flow: row wrap;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+    
+    
+    .friendbar-content {
+        position: relative;
+        z-index: 5;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        left: 30px;
+    }
+    .friend-info {
+        color: #666666;
+    }
+    
+    .friend-contentcontainer {
+        width: 100%;
+    }
+    
+    .friend-item {
+        padding: 10px;
+        width: 200px;
+        height: 100%;
+        margin-top: 10px;
+        text-align: center;
+        color: black;
+        margin: 10px;
+        line-height: 140px;
+    }
+    
+    .friend-logo {
+        width: auto;
+        height: auto;
+        max-width: 150px;
+        max-height: 90px;
+    }
+}

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us" ng-app="examplesApp">
+{% include head.html %}
+<body>
+	{% include skip-link.html %}
+    {% include header.html %}
+	{% include update-banner.html %}
+	<main id="main-content" class="content">
+		{% include anchor_headings.html html=content anchorBody="#" anchorClass="anchor-hash"%}
+	</main>
+	{% include footer.html %}
+</body>
+<!-- JS -->
+<!-- build:js /assets/js/cc.min.js -->
+<script src="/assets/javascript/cookies.js"></script>
+<!-- endbuild -->
+</html>

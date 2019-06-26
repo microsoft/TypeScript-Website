@@ -1,0 +1,43 @@
+# Title, description, tagline and URL for your site
+# Can be used in your theme by calling 'site.title' and so on
+title: TypeScript
+description: 
+tagline: 
+url: http://localhost:3000
+projecturl: "https://github.com/Microsoft/TypeScript-Docs/tree/gh-pages/"
+permalink: none
+
+# Used so Jekyll outputs the site correctly so Gulp can do what it wants
+source: src
+destination: serve
+
+# Same as the title etc for your site but can instead be
+# called by using 'site.author.name' and so on
+author:
+  name: 
+  email: 
+  bio: 
+  twitter: 
+
+# general setting for Jekyll
+analytics_id: UA-64034028-2
+
+# Markdown library
+kramdown:
+  input: GFM
+  hard_wrap: false
+  auto_ids: true
+
+highlighter: pygments
+
+markdown: JekyllMarkdownLinkConverter
+
+#Collection configuration
+collections:
+  docs:
+    output: true 
+
+
+exclude:
+    - node_modules
+    - serve

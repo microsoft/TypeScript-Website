@@ -1,0 +1,115 @@
+
+/*
+********* Footer ***********
+*/
+
+.footer-container {
+
+  background-color: $brand-nav-color;
+  z-index: 1000;
+
+  #footer {
+    color:$brand-40-gray;
+    font-size: 12px;
+    padding-bottom: 20px;
+
+    strong { color:inherit; }
+    h1 { font-size:2.5em; }
+    h2 {
+      text-transform: uppercase;
+      color:$brand-40-gray;
+      font-size: 1.25em;
+      font-weight: bold;
+      }
+      p{
+        font-size: 1.2em;
+      }
+      .nav > li > a {
+        padding-left:0;
+        font-size:1.25em;
+      }
+        .nav > li > a:hover {
+        padding-left:0;
+        font-size:1.25em;
+        color:lighten($brand-lightest-color,50%);
+      }
+        .nav > li > a:focus {
+        padding-left:0;
+        font-size:1.25em;
+        color:lighten($brand-lightest-color,0%);
+      }
+
+      .early-adopters{
+        p{
+          padding-top: 14px;
+        }
+      }
+  }
+}
+
+.signature-container{
+
+     background-color: rgba(11, 47, 61, 1);
+
+     a {
+       color: #5798C6;
+     }
+
+    .signature{
+      margin: 0;
+      .ms-logo-footer {
+        width: 12em;
+        height: 6em;
+        margin-left: -6px;
+      }
+      .copyright{
+        margin-left: 6px;
+      }
+      p {
+        font-size:1.2em;
+        line-height: 5.6em;
+        vertical-align: middle;
+        color: #a4b3cd;
+        span {
+          margin-top: 10px;
+          font-size:1em;
+          padding: 0 2px;
+        }
+      }
+      .pull-left,pull-right{
+        margin-bottom: 0px;
+      }
+    }
+}
+
+@media (max-width: $screen-sm-max) {
+  #footer {
+    font-size: 10px;
+  }
+  .ms-logo-footer{
+   padding-top: 4px;
+  }
+
+
+}
+@media (min-width: $screen-md) {
+  .ms-logo-footer{
+   padding-top: 6px;
+  }
+}
+.twitter-buttons {
+    display: inline-block;
+    font-size: 1.2em;
+    line-height: 5.6em;
+    vertical-align: middle;
+    margin-left:1em;
+}
+
+.github-buttons {
+    display: inline-block;
+    font-size: 1.2em;
+    line-height: 5.6em;
+    vertical-align: middle;
+    margin-left:1em;
+    margin-top:6px;
+}

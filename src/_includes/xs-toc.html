@@ -1,0 +1,31 @@
+<nav class='xs-toc'>
+  <div class="toc-dropdown">
+    <a class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
+      Documentation
+      <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="/docs/home.html">Documentation</a>
+      </li>
+      {% for section in site.data.doctoc %}
+      <li>
+          <ul>
+              <h2>{{ section.title }}</h2>
+              {% assign url_prefix = "/docs/" | append: section.directory | append: "/" %}
+              {% for item in section.items %}
+                {% for doc in site.docs %}
+                  {% assign item_url = item | prepend: url_prefix | append:".html" %}
+                  {% if doc.url == item_url %}
+                  <li class="toc-item">
+                    <a href={{item_url}}{% if page.url == item_url %} class="active"{% endif %}>{{ doc.title }}</a>
+                  </li>
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+          </ul>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>    
+</nav>

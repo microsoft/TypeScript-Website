@@ -1,0 +1,225 @@
+/*
+Playground
+*/
+#playground-host {
+
+	padding: 4em 0 6em 0;
+
+  	span, p {
+		font-size: 14px;
+	}
+
+	#playground-options-menu {
+		color: black;
+		font-family: SegoeUISemibold, 'Segoe UI Semibold', SegoeUI, 'Segoe UI', Arial, sans-serif;
+		font-size: 14px;
+		display: none;
+
+		position: absolute;
+		font-size: 14px;
+
+		background-color: white;
+		z-index: 1000;
+		border: 1px solid gray;
+		padding: 10px;
+		margin-left: 346px;
+		size: 1000px;
+
+		> span {
+			margin-left: 12px;
+		}
+
+		label {
+			margin-left: 4px;
+
+			.ts-opt-description {
+				font-size: 12px;
+				color: gray;
+			}
+		}
+
+		hr {
+			margin-top: 2px;
+			margin-bottom: 2px;
+		}
+	}
+
+	#share-message {
+		color: black;
+		display: none;
+	}
+
+	.frame-title {
+		background-color: gray;
+		color: white;
+		padding: 10px;
+		position: relative;
+		font: 14px SegoeUISemibold, 'Segoe UI Semibold', SegoeUI, 'Segoe UI', Arial, sans-serif;
+	}
+
+	.playground-button {
+    	background-color: #0074c1;
+    	color: white;
+    	font: 14px SegoeUISemibold, 'Segoe UI Semibold', SegoeUI, 'Segoe UI', Arial, sans-serif;
+    	border: none;
+		padding: 10px;
+		position: relative;
+	}
+
+	#examples {
+		margin-right:20px;
+	}
+
+	select {
+		font: 14px SegoeUI, 'Segoe UI', Arial, sans-serif;
+		color: black;
+	}
+
+}
+
+article.tabs
+{
+	position: relative;
+	display: block;
+	width: 40em;
+	height: 15em;
+	margin: 2em auto;
+}
+
+article.tabs section
+{
+	position: absolute;
+	display: block;
+	top: 1.8em;
+	left: 0;
+	height: 12em;
+	padding: 10px 20px;
+	background-color: #ddd;
+	border-radius: 5px;
+	box-shadow: 0 3px 3px rgba(0,0,0,0.1);
+	z-index: 0;
+}
+
+article.tabs section:first-child
+{
+	z-index: 1;
+}
+
+article.tabs section h2
+{
+	position: absolute;
+	font-size: 1em;
+	font-weight: normal;
+	width: 120px;
+	height: 1.8em;
+	top: -1.8em;
+	left: 10px;
+	padding: 0;
+	margin: 0;
+	color: #999;
+	background-color: #ddd;
+	border-radius: 5px 5px 0 0;
+}
+
+article.tabs section:nth-child(2) h2
+{
+	left: 132px;
+}
+
+article.tabs section:nth-child(3) h2
+{
+	left: 254px;
+}
+
+article.tabs section h2 a
+{
+	display: block;
+	width: 100%;
+	line-height: 1.8em;
+	text-align: center;
+	text-decoration: none;
+	color: inherit;
+	outline: 0 none;
+}article.tabs section h2
+{
+	position: absolute;
+	font-size: 1em;
+	font-weight: normal;
+	width: 120px;
+	height: 1.8em;
+	top: -1.8em;
+	left: 10px;
+	padding: 0;
+	margin: 0;
+	color: #999;
+	background-color: #ddd;
+	border-radius: 5px 5px 0 0;
+}
+
+article.tabs section:nth-child(2) h2
+{
+	left: 132px;
+}
+
+article.tabs section:nth-child(3) h2
+{
+	left: 254px;
+}
+
+article.tabs section h2 a
+{
+	display: block;
+	width: 100%;
+	line-height: 1.8em;
+	text-align: center;
+	text-decoration: none;
+	color: inherit;
+	outline: 0 none;
+}
+
+article.tabs section:target,
+article.tabs section:target h2
+{
+	color: #333;
+	background-color: #fff;
+	z-index: 2;
+}
+
+article.tabs section,
+article.tabs section h2
+{
+	-webkit-transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
+	-ms-transition: all 500ms ease;
+	-o-transition: all 500ms ease;
+	transition: all 500ms ease;
+}
+
+.monaco-editor{
+	div, span {
+		box-sizing: content-box;
+	}
+	.suggest-widget{
+		span{
+			font-size: 1.01em !important;
+		}
+	}
+	.main{
+		margin-top: -2px;
+	}
+	.docs-label{
+		margin-top: -2px;
+	}
+}
+
+/* Rules to ensure high-contrast for accessibility requirements */
+/* Second rule is for background color when focused. See https://stackoverflow.com/a/22875844/1674945 */
+select > option:checked, select:focus::-ms-value {
+    background: rgb(0, 116, 193);
+    color: white;
+}
+
+select > option:hover {
+    background: rgb(220, 220, 220);
+    color: black;
+}

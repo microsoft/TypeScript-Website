@@ -1,0 +1,53 @@
+# Section 1
+- - twitter_name: Dave Herman
+    twitter_handle: littlecalculist
+    tweet_content: I ported my first nontrivial JS lib to <a href="https://twitter.com/typescriptlang">@typescriptlang</a> and it was a pure joy. What a lovely piece of technology.
+    tweet_url: https://twitter.com/littlecalculist/status/857464401569357824
+  - twitter_name: Gabriela Mendes
+    twitter_handle: Kappyh
+    tweet_content: <a href="https://twitter.com/typescriptlang">@typescriptlang</a> is really awesome O-O&#39;
+    tweet_url: https://twitter.com/Kappyh/status/822247462232530945
+  - twitter_name: Thiago Script 🌴😎🏖
+    twitter_handle: thiagoviski
+    tweet_content: <a href="https://twitter.com/hashtag/TypeScript?src=hash">#TypeScript</a> is really awesome! I&#39;m glad to see people are using it in some of <a href="https://twitter.com/hashtag/Preact?src=hash">#Preact</a> projects. <a href="https://twitter.com/hashtag/FrontEnd?src=hash">#FrontEnd</a> <a href="https://twitter.com/hashtag/Webpack?src=hash">#Webpack</a> <a href="https://twitter.com/hashtag/Programming?src=hash">#Programming</a>
+    tweet_url: https://twitter.com/thiagoviski/status/857024764992475142
+# Section 2
+- - twitter_name: Michel Weststrate
+    twitter_handle: mweststrate
+    tweet_content: I&#39;m highly impressed with <a href="https://twitter.com/typescriptlang">@typescriptlang</a> 2.3; powerful enough for meta programming; mobx-state-tree has its type-system 90% expressed in TS <a href="https://t.co/618W3JVTbV">pic.twitter.com/618W3JVTbV</a>
+    tweet_url: https://twitter.com/mweststrate/status/861743269255839744
+  - twitter_name: Tatu Tamminen
+    twitter_handle: _Tx3
+    tweet_content: Microsoft has really done great things with <a href="https://twitter.com/typescriptlang">@typescriptlang</a> and <a href="https://twitter.com/code">@code</a>. TypeScript gets really nice features and VS Code is stable and fast
+    tweet_url: https://twitter.com/_Tx3/status/858029580585754624
+  - twitter_name: Carly Ho
+    twitter_handle: carlymho
+    tweet_content: typescript has some really great, useful error messages that give you feedback on allowed types, etc.
+    tweet_url: https://twitter.com/carlymho/status/858360973786312704
+# Section 3
+- - twitter_name: Micah Godbolt
+    twitter_handle: micahgodbolt
+    tweet_content: Typescript + Intellisense is a game changer. I don&#39;t want to work without them ever again. Projects are easier to pick up, have less errors <a href="https://t.co/YqUGdSgUiY">https://t.co/YqUGdSgUiY</a>
+    tweet_url: https://twitter.com/micahgodbolt/status/857301600351600640
+  - twitter_name: Tung Nguyen
+    twitter_handle: v2r_red
+    tweet_content: <a href="https://twitter.com/hashtag/TypeScript?src=hash">#TypeScript</a> + <a href="https://twitter.com/hashtag/vscode?src=hash">#vscode</a> =&gt; a great combination 😍 Awesome works 👍<br>Why TypeScript Is Growing More Popular <a href="https://t.co/WqYMzzXjDP">https://t.co/WqYMzzXjDP</a>
+    tweet_url: https://twitter.com/v2r_red/status/859327297765036032
+  - twitter_name: Tom Dale
+    twitter_handle: tomdale
+    tweet_content: But seriously, in every project I&#39;ve converted, TypeScript has found bugs. And rationalizing the types leads to much clearer code.
+    tweet_url: https://twitter.com/tomdale/status/842882958855831557
+    avatar_extension: png
+# Section 4
+- - twitter_name: Tim Ruffles
+    twitter_handle: timruffles
+    tweet_content: <a href="https://twitter.com/typescriptlang">@typescriptlang</a> is like having a extra colleague noticing dumb mistakes and doing grunt work. If you’ve not tried it yet, get in there!
+    tweet_url: https://twitter.com/timruffles/status/859711691856195584
+  - twitter_name: Remo H. Jansen
+    twitter_handle: OweR_ReLoaDeD
+    tweet_content: I just completed a huge refactoring in a <a href="https://twitter.com/hashtag/node?src=hash">#node</a> app. It took me two hours thanks to <a href="https://twitter.com/hashtag/TypeScript?src=hash">#TypeScript</a>. It would have taken me days without it...😊
+    tweet_url: https://twitter.com/OweR_ReLoaDeD/status/844124971270131714
+  - twitter_name: James Henry
+    twitter_handle: MrJamesHenry
+    tweet_content: It’s truly incredible how far <a href="https://twitter.com/typescriptlang">@typescriptlang</a> has come in the last 9-12 months! Unhappy with 1.8? Take another look - 2.x is another level 🚀
+    tweet_url: https://twitter.com/MrJamesHenry/status/855523875261689856

@@ -1,0 +1,37 @@
+---
+layout: default
+sectionid: docs
+---
+
+    <div id="doc-content" class="container-fluid fill docs-container">
+
+        <div class="container">
+
+        <div class="col-md-2 toc-container hidden-xs hidden-sm">
+          {% include toc.html %}
+        </div>
+        <div class="col-md-10 col-xs-12 col-sm-12  doc-content-container">
+          <div class="xs-toc-container visible-xs visible-sm">
+            {% include xs-toc.html %}
+          </div>
+          <header class="post-header">
+            <h1 class="post-title">{{ page.title }}</h1>
+            <!--<a class="edit-page-link" href="{{ site.projecturl }}{{ page.relative_path }}" target="_blank">Edit on GitHub</a>-->
+          </header>
+          <article class="post-content">
+              <p>{{ page.description }}</p>
+              {{ content }}
+          </article>
+        </div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+
+      $(function() {
+        //$(".tocAccordion").accordion();
+        setDocTOC();
+        hljs.initHighlightingOnLoad();
+      });
+
+</script>

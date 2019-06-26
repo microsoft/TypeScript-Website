@@ -1,0 +1,142 @@
+[
+    {
+        "title": "React",
+        "summary": "If create-react-app had an option to include TypeScript, this is what you'd get: the perfect starting point for React + TypeScript.",
+        "img": "/assets/images/examples/react.png",
+        "tags": [
+            "React",
+            "Redux",
+            "Webpack",
+            "Enzyme",
+            "Jest"
+        ],
+        "href": "https://github.com/Microsoft/TypeScript-React-Starter#typescript-react-starter"
+    },
+    {
+        "title": "Angular",
+        "summary": "The Angular team recommends using TypeScript with all your Angular apps. Check out their great tutorial on getting started with both.",
+        "img": "/assets/images/examples/angular.png",
+        "tags": [
+            "Angular",
+            "Protractor",
+            "Jasmine",
+            "Karma",
+            "Rollup",
+            "Uglify",
+            "TSLint"
+        ],
+        "href": "https://angular.io/docs/ts/latest/quickstart.html"
+    },
+    {
+        "title": "Express",
+        "summary": "Check out this starter project using Express + MongoDB + TypeScript and see why TypeScript and Node.js are a perfect combination.",
+        "img": "/assets/images/examples/node.png",
+        "tags": [
+            "Node.js",
+            "Express",
+            "Pug",
+            "Jest",
+            "TSLint",
+            "MongoDB",
+            "Travis CI"
+        ],
+        "href": "https://github.com/Microsoft/TypeScript-Node-Starter#typescript-node-starter"
+    },
+    {
+        "title": "Babel",
+        "summary": "Leverage type-checking with TypeScript in your existing Babel projects using Babel 7 and later.",
+        "img": "/assets/images/examples/babel.png",
+        "tags": [
+            "Babel",
+        ],
+        "href": "https://github.com/Microsoft/TypeScript-Babel-Starter#readme"
+    },
+    {
+        "title": "React Native",
+        "summary": "Take your JavaScript to mobile devices with React Native while keeping your productivity intact with TypeScript.",
+        "img": "/assets/images/examples/react-native.png",
+        "tags": [
+            "React Native",
+            "Enzyme",
+            "Jest"
+        ],
+        "href": "https://github.com/Microsoft/TypeScript-React-Native-Starter#typescript-react-native-starter"
+    },
+    {
+        "title": "Vue.js",
+        "summary": "Check out this TodoMVC app using Vue.js and TypeScript.",
+        "img": "/assets/images/examples/vue.png",
+        "tags": [
+            "Vue.js",
+            "Webpack"
+        ],
+        "href": "https://github.com/Microsoft/TypeScript-Vue-Starter#typescript-vue-starter"
+    },
+    {
+        "title": "ASP.NET Core",
+        "summary": "This quick start will get you going fast with ASP.NET Core and TypeScript in Visual Studio.",
+        "img": "/assets/images/examples/aspnet.png",
+        "tags": [
+            "ASP.NET",
+            "Gulp",
+            "Angular"
+        ],
+        "href": "/docs/handbook/asp-net-core.html"
+    },
+    {
+        "title": "Glimmer",
+        "summary": "Glimmer is a lightweight component library from the Ember ecosystem with out-of-the-box TypeScript support.",
+        "img": "/assets/images/examples/glimmer.png",
+        "tags": [
+            "Glimmer"
+        ],
+        "href": "https://glimmerjs.com/guides/installing"
+    },
+    {
+        "title": "WeChat",
+        "summary": "Use this quick start guide to start building WeChat apps in TypeScript. 立刻尝试！",
+        "img": "/assets/images/examples/wechat.png",
+        "tags": [
+            "WeChat",
+            "Node.js",
+            "Express",
+            "EJS"
+        ],
+        "href": "https://github.com/Microsoft/TypeScript-WeChat-Starter#开始之前"
+    },
+    {
+        "title": "Dojo 2",
+        "summary": "Dojo 2 is the evolution of the Dojo toolkit and entirely written in TypeScript. Get started here.",
+        "img": "/assets/images/examples/dojo.png",
+        "tags": [
+            "Dojo 2",
+            "Intern"
+        ],
+        "href": "https://dojo.io/tutorials/002_creating_an_application/"
+    },
+    {
+        "title": "Knockout",
+        "summary": "Knockout is an MVVM JavaScript framework that works wonderfully with TypeScript. Checkout this quick start guide.",
+        "img": "/assets/images/examples/knockout.png",
+        "tags": [
+            "Knockout"
+        ],
+        "href": "https://github.com/Microsoft/TypeScript-Knockout-Starter#typescript-knockout-starter"
+    },
+    {
+        "title": "Migration Guide",
+        "summary": "Have an existing code base? Check out this guide for a step-by-step walkthrough of converting to TypeScript.",
+        "img": "/assets/images/examples/conversion.png",
+        "tags": [
+        ],
+        "href": "https://github.com/Microsoft/TypeScript-React-Conversion-Guide#typescript-react-conversion-guide"
+    },
+    {
+        "title": "Community Samples",
+        "summary": "A battleship clone browser game, a ray tracer, and many more community contributed samples can be found here.",
+        "img": "/assets/images/examples/todomvc_400x300.png",
+        "tags": [
+        ],
+        "href": "https://github.com/Microsoft/TypeScriptSamples/"
+    }
+]

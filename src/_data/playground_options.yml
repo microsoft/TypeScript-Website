@@ -1,0 +1,13 @@
+booleans:
+  - name: noImplicitAny
+    description: "Trigger an error if TypeScript uses 'any' whenever it can't infer a type."
+  - name: strictNullChecks
+    description: "Makes types non-nullable by default, catching a broad class of errors."
+  - name: strictFunctionTypes
+    description: "Disable bivariant parameter checking for function types."
+  - name: strictPropertyInitialization
+    description: "Ensure non-undefined class properties are initialized in the constructor."
+  - name: noImplicitThis
+    description: "Flag locations where the type of a 'this' expression implicitly has the type 'any'."
+  - name: noImplicitReturns
+    description: "Error on functions which do not return from every branch."

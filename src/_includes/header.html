@@ -1,0 +1,32 @@
+<header role="banner">
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
+         <div class="container-fluid">
+            <!-- Contains the logo and a toggle button for smaller screen sizes. -->
+            <div class="navbar-header">
+              <!-- Toggles the visibility of the nav area on smaller screen sizes. -->
+              <button type="button" class="navbar-toggle pull-left collapsed" data-toggle="collapse" data-target="#navbar-collapse-div">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <!-- Top-left logo. -->
+              <a class="navbar-brand" href="/index.html" aria-label="TypeScript Home Page">
+                <img class="navbar-logo" src="/assets/images/logo_nocircle.svg"/>
+              </a>
+            </div>
+
+            <!-- The navigation items. -->
+            <div class="collapse navbar-collapse centered-navbar" id="navbar-collapse-div">
+              <ul class="nav navbar-nav">
+                <li class="{% if page.url contains '/samples/' %}active{% endif %}"><a href="/samples/index.html">Quick Start</a></li>
+                <li class="{% if page.url contains '/docs/' %}active{% endif %}"><a href="/docs/index.html">Documentation </a></li>
+                <li><a href="/index.html#download-links">Download</a></li>
+                <li class="{% if page.url contains '/community/' %}active{% endif %}"><a href="/community/index.html">Connect</a></li>
+                <li class="{% if page.url contains '/play/' %}active{% endif %}"><a href="/play/index.html">Playground</a></li>
+              </ul>
+            </div>
+        </div>
+    </nav>
+</header>

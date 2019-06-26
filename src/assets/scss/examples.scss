@@ -1,0 +1,180 @@
+/*
+Examples
+*/
+
+.examples {
+
+  background-color: darken(white,5%);
+  padding: 2em 0  6em 0;
+  color:black;
+
+  .survey-box {
+    margin-top: 20px;  
+  }
+
+  .container{
+    padding-left:0px;    
+  }
+  .container-fluid{
+    padding-left:0px;
+  }
+  
+  .filterInputs{
+    fieldset{
+      float:left;
+    }
+  }
+  
+}
+
+
+@media (min-width: $screen-lg) {
+  .examplesHeader h1{
+    margin-left:2.5em;
+  }
+  .filterDiv {
+    margin-top:30px; 
+  }
+}
+
+.examplesHeader{
+  
+  .filter_column {
+    margin-top:32px;
+  }
+ 
+  .filterLabel {
+    position: relative;
+    top:-5px;
+    padding:10px;
+    display: inline-block;
+    font-size: 1.6em;
+    color: gray; 
+  }  
+  
+  .filterInputs{
+    display: inline-block;
+    input{
+      height: 1.6em;
+      width: 1.6em;
+    }       
+    span{
+      font-size: 1.6em;
+      padding:  10px 10px 10px 4px;
+    }
+  }    
+
+}
+
+.exampleBox{
+  width: 320px;
+  padding: 0;
+  
+  ul {
+    font-size:1.4em;
+    li { font-size: 1em; }
+  }
+  
+  .exampleImg {
+    position: relative;
+    top:10px;
+  }
+  .exampleHeadline h3 {
+    position: relative;
+    font-size:1.6em;
+  }
+  .exampleDescription{
+    font-size:1.6em;
+    padding:18px;
+    word-wrap: break-word;
+  }
+  .exampleSummary{
+    font-size:1.4em;
+    word-wrap: break-word;
+    width: 290px;
+  }
+  
+  .exampleInfo {
+    height: 25px;
+    width: 25px;
+    background-image: url("../images/examples/info.svg");
+    background-size: 100% 100%;
+    position: absolute;
+    right:8px;
+    bottom:8px;
+    opacity:.4; 
+  }
+  .exampleInfo:hover {
+    cursor:pointer;
+    opacity:.8;
+  }   
+  
+  .exampleTags{
+    padding-top:1.4em;
+    position: fixed;
+    bottom: 0;
+    padding: 15px;
+    left: 0;
+    
+    span{
+      background-color: darken(white,10%);
+      border-radius: .75em;
+      padding: .15em .8em;
+      margin: 4px 4px 0 0;
+      color: black;
+      font-size:1.4em;
+      display: inline-block;
+    }
+        
+  }
+         
+}
+  
+  .exampleBox {
+  	perspective: 1000;
+    margin: 1em;
+  	height: 440px;
+    
+    &.hover .flip-container {
+  	transform: rotateY(180deg);
+    }
+           
+    .flip-container {
+      transition: 0.5s;
+      transform-style: preserve-3d;  
+      position: relative;
+    }
+    
+    .front-face, .back-face {
+      backface-visibility: hidden;  
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: white;
+      color: black;
+      box-shadow: 3px 3px 3px darken(white, 20%); 
+      padding: 0 15px;
+      width: 320px;
+      height: 440px;        
+    }
+    
+    .front-face {
+      z-index: 2;
+      transform: rotateY(0deg);
+    }
+  
+    .back-face {
+      transform: rotateY(180deg);
+      left: -30px;            
+      & > div{
+        padding-top:10px;
+        font-size: .9em;
+        
+        li{
+          margin-left: -10px;
+          font-size: 1em;
+        }
+                
+      }
+    }        
+  }
