@@ -11,6 +11,7 @@
   id: whats-new
   directory: handbook/release-notes
   items:
+  - typescript-3-5
   - typescript-3-4
   - typescript-3-3
   - typescript-3-2
