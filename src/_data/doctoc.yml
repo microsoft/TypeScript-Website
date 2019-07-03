@@ -59,6 +59,7 @@
   - mixins
   - triple-slash-directives
   - type-checking-javascript-files
+  - utility-types
 - title: Declaration Files
   id: declaration-files
   directory: handbook/declaration-files
