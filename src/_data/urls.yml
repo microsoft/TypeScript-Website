@@ -3,7 +3,7 @@ vs2019_download: https://marketplace.visualstudio.com/items?itemName=TypeScriptT
 vscode_download: https://code.visualstudio.com
 sublime_ts_download: https://github.com/Microsoft/TypeScript-Sublime-Plugin
 atom_ts_download: https://atom.io/packages/atom-typescript
-eclipse_ts_download: https://github.com/palantir/eclipse-typescript
+eclipse_ts_download: https://marketplace.eclipse.org/content/codemix-3
 webstorm_download: https://www.jetbrains.com/webstorm/
 vim_ts_download: https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support#vim
 emacs_ts_download: https://github.com/ananthakumaran/tide
