@@ -125,7 +125,7 @@ body {
   min-height: 100%;
 
   .content {
-    flex: 1;
+    flex: 1 1 0;
   }
 }
 @media (max-width: $screen-xs-max) {
