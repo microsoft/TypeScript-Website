@@ -18,8 +18,8 @@ A live version with the daily build can be found [here](http://typescript:3000)
 1. Install the latest Node.js.
     * Download Node.js [from here](https://nodejs.org/en/)
 1. Establish your new environment by opening up a new PowerShell/Command Prompt.
-1. Fork https://github.com/Microsoft/TypeScript-Docs to your own GitHub account
-1. Clone https://github.com/[YOUR_ACCOUNT]/TypeScript-Docs
+1. Fork https://github.com/Microsoft/TypeScript-Website to your own GitHub account
+1. Clone https://github.com/[YOUR_ACCOUNT]/TypeScript-Website
 1. Run the following from the cloned repository:
 
     ```shell
