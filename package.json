@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "description": "Yeoman workflow for Build",
   "dependencies": {
-    "axios": "^0.19.0"
   },
   "devDependencies": {
     "@types/jquery": "^2.0.34",
+    "axios": "^0.19.0",
     "browser-sync": "^2.0.0",
     "del": "^1.1.1",
     "gh-pages": "^2.0.0",
