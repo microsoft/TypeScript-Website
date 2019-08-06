@@ -3,7 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "description": "Yeoman workflow for Build",
-  "dependencies": {},
+  "dependencies": {
+    "axios": "^0.19.0"
+  },
   "devDependencies": {
     "@types/jquery": "^2.0.34",
     "browser-sync": "^2.0.0",
