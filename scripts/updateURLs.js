@@ -1,4 +1,4 @@
-// @ts-enable
+// @ts-check
 
 /**
  * A script to automatically update the Visual Studio links
@@ -7,9 +7,13 @@
  */
 
 
-const axios = require('axios');
+const axios = require('axios').default;
 const {writeFileSync} = require("fs")
 
+/**
+ * Gets the NPM package JSON for a module
+ * @param {string} name 
+ */
 const getLatestNPMPackage = async (name) => {
   const packageJSON = await axios({
     url: `https://registry.npmjs.org/${name}`
@@ -17,6 +21,11 @@ const getLatestNPMPackage = async (name) => {
   
   return packageJSON.data
 }
+
+/**
+ * Queries the VS markplace for typescript extensions, returns
+ * only official extensions
+ */
 const getLatestVSExtensions = async () => {
   var headers = {
       'Content-Type': 'application/json',
@@ -62,6 +71,7 @@ const go = async () => {
   const extensions = await getLatestVSExtensions()
   const currentExtension = extensions.find(e => e.versions[0].version === latest)
   
+  // @ts-ignore
   const currentURLs = require("../src/_data/urls")
   
   if (currentExtension) {
