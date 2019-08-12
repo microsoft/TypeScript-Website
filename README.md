@@ -26,15 +26,15 @@ A live version with the daily build can be found [here](http://typescript:3000)
     gem install bundler
     bundler install
 
-    npm install
+    yarn install
     npm install -g gulp-cli
 
     git submodule init
     git submodule update
 
     cd src/play
-    npm install
-    npm run setup
+    yarn install
+    yarn setup
     cd ../..
     ```
 
