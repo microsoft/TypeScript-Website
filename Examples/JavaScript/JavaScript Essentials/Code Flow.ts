@@ -9,8 +9,12 @@ const users = [{ name: "Ahmed" }, { name: "Gemma" }, { name: "Jon" }]
 // We're going to look to see if we can find a user
 const jon = users.find(u => u.name === "jon")
 
-// If you hover over the three different jon's below, you'll see how the
-// type definitions change depending on where the word is located:
+// In the above case find could fail, and in that case you don't have
+// an object. This creates a type that is written like:
+// { name:string } | undefined
+// If you hover over the three different jon's below,
+// you'll see how the types change depending on where the
+// word is located:
 
 if (jon) {
   jon
@@ -18,16 +22,14 @@ if (jon) {
   jon
 }
 
-// This uses a TypeScript feature called union types. A union type is a
-// way to declare that an object could be one of many things. JavaScript's
-// dynamic nature means a lot of function receive and return objects of
-// different types and you need to be able to figure out which one you have.
+// The type { name: string } | undefined uses a TypeScript feature
+// called union types. A union type is a way to declare that an object
+// could be one of many things. The pipe acts as the separator between
+// different types. JavaScript's dynamic nature means a lot of
+// functions receive and return objects of different types and you need
+// to be able to figure out which one you have.
 
-// In the above case find could fail, and in that case you don't have an
-// object. This is written like: { name:string } | undefined 
-// The pipe acts as the separator between different types.
-
-// You can use this in a few ways, lets start by looking at an array
+// You can use this in a few ways; let's start by looking at an array
 // where the variables are not all the same.
 
 const identifiers = ["Hello", "World", 24, 19]

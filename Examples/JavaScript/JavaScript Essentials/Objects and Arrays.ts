@@ -48,7 +48,7 @@ const firstOrder = allOrders[0]
 console.log(firstOrder.item.type)
 
 // An alternative was to get an object is via pop-ing the array to remove objects.
-// Doing this removes the object from the array, and returns the object, this is
+// Doing this removes the object from the array, and returns the object. This is
 // called mutating the array, because it changes the underlying data inside it.
 
 const poppedFirstOrder = allOrders.pop()

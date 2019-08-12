@@ -1,12 +1,11 @@
 //// { order: 0, compiler: { target: "es5" } }
 
-// Welcome to the TypeScript playground, this site is a lot like
-// running a TypeScript project inside your editor but inside a
-// web browser.
+// Welcome to the TypeScript playground. This site is a lot like
+// running a TypeScript project inside a web browser.
 
-// The playground makes it easy for you to safely experiment with 
-// ideas in TypeScript by making it trivial to share these projects
-// because the URL for this page is everything required to load 
+// The playground makes it easy for you to safely experiment with
+// ideas in TypeScript by making it trivial to share these projects.
+// The URL for this page is everything required to load
 // the project for someone else.
 
 const hello = "Hello"

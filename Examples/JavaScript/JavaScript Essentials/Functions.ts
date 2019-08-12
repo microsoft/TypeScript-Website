@@ -1,7 +1,7 @@
 //// { order: 2 }
 
-// There are quite a few ways to declare a function in JavaScript, let's look at
-// a function which adds two numbers together:
+// There are quite a few ways to declare a function in JavaScript.
+// Let's look at a function which adds two numbers together:
 
 // @ts-ignore
 // Creates a function in global scope called addOldSchool
