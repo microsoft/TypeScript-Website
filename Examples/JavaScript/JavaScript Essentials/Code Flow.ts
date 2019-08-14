@@ -1,21 +1,20 @@
 //// { order: 3, compiler: { strictNullChecks: true } }
 
-// How code flows inside your JavaScript file can affect 
-// what the types for your JavaScript looks like. If 
-// statements are great place to start here, because they 
-// provide a way to confirm a particular shape of an object.
+// How code flows inside our JavaScript files can affect 
+// the types throughout our programs.
 
 const users = [{ name: "Ahmed" }, { name: "Gemma" }, { name: "Jon" }]
 
-// We're going to look to see if we can find a user
+// We're going to look to see if we can find a user named "jon".
 const jon = users.find(u => u.name === "jon")
 
-// In the above case find could fail, and in that case you 
-// don't have an object. This creates a type that is written 
-// like: { name: string } | undefined
-// If you hover over the three different jon's below,
-// you'll see how the types change depending on where the
-// word is located:
+// In the above case, 'find' could fail. In that case we
+// don't have an object. This creates the type 
+// 
+//    { name: string } | undefined
+//
+// If you hover your mouse over the three following uses of 'jon' below,
+// you'll see how the types change depending on where the word is located:
 
 if (jon) {
   jon
@@ -23,37 +22,35 @@ if (jon) {
   jon
 }
 
-// The type { name: string } | undefined uses a TypeScript 
-// feature called union types. A union type is a way to 
-// declare that an object could be one of many things. 
+// The type '{ name: string } | undefined' uses a TypeScript
+// feature called union types. A union type is a way to
+// declare that an object could be one of many things.
 //
-// The pipe acts as the separator between different types. 
-// JavaScript's dynamic nature means a lot of functions 
-// receive and return objects of different types and you need
-// to be able to figure out which one you have.
+// The pipe acts as the separator between different types.
+// JavaScript's dynamic nature means that lots of functions
+// receive and return objects of unrelated types and we need
+// to be able to express which ones we might be dealing with.
 
-// You can use this in a few ways; let's start by looking at
-// an array  where the variables are not all the same.
+// We can use this in a few ways. Let's start by looking at
+// an array where the values have different types.
 
 const identifiers = ["Hello", "World", 24, 19]
 
-const randomIdentifier = identifiers[0]
-
-// We can use the JavaScript "typeof x === y" syntax to 
-// check for the type of the object. You can hover on 
-// randomIdentifier below to see how it changes between 
+// We can use the JavaScript 'typeof x === y' syntax to
+// check for the type of the first element. You can hover on
+// 'randomIdentifier' below to see how it changes between
 // different locations
 
+const randomIdentifier = identifiers[0]
 if (typeof randomIdentifier === "number") {
   randomIdentifier
 } else {
   randomIdentifier
 }
 
-// This code flow analysis means that you can write vanilla 
-// JavaScript and TypeScript will try to understand how the 
-// code you write would affect the types available at 
-// different locations. 
+// This control flow analysis means that we can write vanilla
+// JavaScript and TypeScript will try to understand how the
+// code types will change in different locations.
 
 // To learn more about code flow analysis
 //  - [handbook]
