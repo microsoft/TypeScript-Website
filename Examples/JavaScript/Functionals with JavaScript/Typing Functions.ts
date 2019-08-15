@@ -76,9 +76,14 @@ printFormattedName({name: "joey", age: 23})
 // [handbook]
 // https://basarat.gitbooks.io/typescript/docs/types/index-signatures.html
 
-// Some functions accept different sets of params. There are
-// two common patterns for describing these: union types for 
-// parameters, and function overloads.
+// You can also allow this kind of behavior everywhere
+// via the tsconfig flag suppressExcessPropertyErrors -
+// however, you can't know if others using your API have 
+// this set to off.
+
+// Functions in JavaScript can accept different sets of params. 
+// There are two common patterns for describing these: union 
+// types for parameters/return, and function overloads.
 
 // Using union types in your parameters makes sense if there
 // is only one or two changes and documentation does not need
