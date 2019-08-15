@@ -9,6 +9,7 @@
     "@types/node": "^12.7.0",
     "axios": "^0.19.0",
     "browser-sync": "^2.0.0",
+    "danger": "^9.1.5",
     "del": "^1.1.1",
     "gh-pages": "^2.0.0",
     "gulp": "^3.8.8",
