@@ -1,4 +1,10 @@
 
+// () => () => ""
+
+// arr.map(myCustomFunc)
+
+
+
 // Allowing weaker typing via index signatures
 
 type AnyObjectButMustHaveName = { 
@@ -11,3 +17,7 @@ const printFormattedName = (input: AnyObjectButMustHaveName) => { }
 printFormattedName({name: "joey"})
 printFormattedName({name: "joey", age: 23})
 
+
+// function overloads
+
+// move to generics

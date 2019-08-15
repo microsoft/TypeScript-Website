@@ -75,3 +75,5 @@ class AddNumbers {
 const numberGenerator =
   new AddNumbers(2).add(3)
                    .add(3)
+
+// funcs with inference
