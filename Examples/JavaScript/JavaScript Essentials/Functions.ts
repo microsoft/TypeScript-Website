@@ -17,12 +17,13 @@ const addFunction = (x, y) => { return x + y }
 // We're going to focus on the last one, but everything 
 // applies to all three formats.
 
-// TypeScript provides additional syntax which wraps 
-// functions to provide hints on what the types are expected
-//  by this function. This is the most open version of the 
-// function,  it says that add takes two inputs of any 
-// type: this could be strings, numbers or objects which 
-// you've made.
+// TypeScript provides additional syntax which adds to a 
+// function and offers hints on what the types are expected
+// by this function. 
+// 
+// Up next is the most open version of the add function, it 
+// says that add takes two inputs of any type: this could 
+// be strings, numbers or objects which you've made.
 
 const add1 = (x: any, y: any) => { return x + y }
 add1("Hello", 23)
