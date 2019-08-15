@@ -7,4 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: danger/danger-js@9.1.6
+    - name: Danger JS
+      uses: danger/danger-js@9.1.6
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
