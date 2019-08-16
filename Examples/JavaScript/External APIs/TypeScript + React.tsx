@@ -69,9 +69,45 @@ const ShowUser: React.FC<Props> = (props) => {
 
 // TypeScript supports providing intellisense inside
 // the {} in an attribute
+
 let username = "Cersei"
 const ShowStoredUser: React.FC<Props> = (props) => {
     return <PrintName name={username} priority />
 }
 
+// TypeScript works with modern React code too, here you can
+// see that count and setCount have correctly been inferred
+// to use numbers based on the initial value passed into
+// useState.
+
+import { useState, useEffect } from 'react';
+
+const CounterExample = () => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    document.title = `You clicked ${count} times`;
+  });
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+
+// React and TypeScript is a really, really big topic
+// but the fundamentals are pretty small: TypeScript
+// supports JSX, and the rest is handled by the React
+// typings from definitely typed.
+
+// You can learn more about using React with TypeScript
+// from these sites:
+
+// https://github.com/typescript-cheatsheets/react-typescript-cheatsheet
+// https://egghead.io/courses/use-typescript-to-develop-react-applications
+// https://levelup.gitconnected.com/ultimate-react-component-patterns-with-typescript-2-8-82990c516935
 
