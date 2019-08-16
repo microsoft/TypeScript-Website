@@ -1,7 +1,7 @@
 // Create a HTML canvas which uses WebGL to render spinning
 // confetti, let's walk through the code to understand how it works
 
-// This example builds off:  example:working-with-the-dom
+// This example builds off: example:working-with-the-dom
 
 // First up, we need to create a HTML canvas element, which
 // we do via the DOM API and set some inline style attributes

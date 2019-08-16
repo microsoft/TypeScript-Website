@@ -70,10 +70,10 @@ const printFormattedName = (input: AnyObjectButMustHaveName) => { }
 printFormattedName({name: "joey"})
 printFormattedName({name: "joey", age: 23})
 
-// If you'd like to learn more about indexed-signatures
+// If you'd like to learn more about index-signatures
 // we recommend:
 //
-// [handbook]
+// https://www.typescriptlang.org/docs/handbook/interfaces.html#excess-property-checks
 // https://basarat.gitbooks.io/typescript/docs/types/index-signatures.html
 
 // You can also allow this kind of behavior everywhere

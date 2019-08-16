@@ -1,6 +1,3 @@
-/// <reference path="lib.dom.d.ts" />
-// This error message is OK ^
-
 // The DOM is the underlaying API for working with a webpage,
 // and TypeScript has great support for that API.
 
