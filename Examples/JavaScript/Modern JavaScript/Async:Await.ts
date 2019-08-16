@@ -1,6 +1,2 @@
-//// { order: 1, isJavaScript: true }
+//// { order: 1, target: "es5" }
 
-// JavaScript added import/export to the language back in 2016
-// and TypeScript has complete support for this style of 
-// linking between files. 
-//
