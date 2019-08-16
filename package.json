@@ -4,6 +4,8 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "yarn workspace typescriptlang-org start"
+    "start": "yarn workspace typescriptlang-org start",
+    "build": "yarn workspace typescriptlang-org build",
+    "deploy:dev": "yarn build && az storage blob upload-batch -s 'packages/typescriptlang-org/public' -d \\$web --account-name playgroundstatichosting --subscription 'TypeScript – Internal Services'"
   }
 }
