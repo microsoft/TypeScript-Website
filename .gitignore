@@ -59,3 +59,9 @@ typings/
 
 # next.js build output
 .next
+
+# cra
+.cache
+
+# tdsx
+dist

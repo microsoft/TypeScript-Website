@@ -1,10 +1,36 @@
 ### Getting Started
 
-This repo uses [yarn workspaces][y-wrk]
+This repo uses [yarn workspaces][y-wrk], to get started clone this repo and run `yarn install`.
 
 ```sh
+git clone https://github.com/microsoft/TypeScript-website
+cd TypeScript-website
+yarn install
+code .
 ```
 
+# Packages
+
+## TypeScriptLang-Org
+
+The main website for TypeScript, a Gatsby website which is statically deployed.
+
+## Playground
+
+A React component for the TypeScript playground base component. Not the one available on
+the site, but one you can use in other websites for showing off your APIs.
+
+You can work on the playground by running:
+
+```sh
+yarn playground
+```
+
+Then opening: http://localhost:1234 - which is the below package.
+
+## Playground Sandbox
+
+A create-react-app for working on the playground.
 
 # Contributing
 

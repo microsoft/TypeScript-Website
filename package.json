@@ -3,9 +3,13 @@
   "workspaces": [
     "packages/*"
   ],
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  },
   "scripts": {
     "start": "yarn workspace typescriptlang-org start",
     "build": "yarn workspace typescriptlang-org build",
+    "playground": "concurrently -p \"[{name}]\" -n \"TS,WEB\" -c \"bgBlue.bold,bgMagenta.bold\" \"yarn workspace playground start\" \"yarn workspace playground-sandbox start\"",
     "deploy:dev": "yarn build && az storage blob upload-batch -s 'packages/typescriptlang-org/public' -d \\$web --account-name playgroundstatichosting --subscription 'TypeScript – Internal Services'"
   }
 }
