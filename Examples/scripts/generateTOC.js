@@ -2,6 +2,19 @@
 
 const {join} = require("path")
 const { writeFileSync } = require("fs")
+const fs = require('fs');
+const path = require('path');
+
+/** Retrieve file paths from a given folder and its subfolders. */
+// https://gist.github.com/kethinov/6658166#gistcomment-2936675
+const getFilePaths = (folderPath) => {
+  const entryPaths = fs.readdirSync(folderPath).map(entry => path.join(folderPath, entry));
+  const filePaths = entryPaths.filter(entryPath => fs.statSync(entryPath).isFile());
+  const dirPaths = entryPaths.filter(entryPath => !filePaths.includes(entryPath));
+  const dirFiles = dirPaths.reduce((prev, curr) => prev.concat(getFilePaths(curr)), []);
+  return [...filePaths, ...dirFiles];
+};
+
 
 /**
  * @typedef {Object} Item - an item in the TOC
@@ -31,6 +44,48 @@ const example2 = {
   compilerSettings: { isJavaScript: true }
 }
 
+const root = join(__dirname, "..")
+const allJS = getFilePaths(join(root, "JavaScript"))
+const allTS = getFilePaths(join(root, "JavaScript"))
+
+/** @type {string[]} */
+const all = [...allJS, ...allTS].filter(p => p.endsWith(".ts") || p.endsWith(".tsx")) 
+
+const toc = all.map(m => {
+  let contents = fs.readFileSync(m, "utf8")
+  const relative = path.relative(root, m)
+  const title = path.basename(m).split('.').slice(0, -1).join('.')
+  let compiler = {}
+  let index = 1
+
+  if (contents.startsWith("//// {")) {
+    const preJSON = contents.split("//// {")[1].split("}\n")[0]
+    contents = contents.split("\n").slice(1).join("\n")
+    const code ="({" + preJSON + "})"
+
+    try {
+      const obj = eval(code)
+      if (obj.order) {
+        index = obj.order
+        delete obj.order
+      }
+      compiler = obj
+
+    } catch(err) {
+      console.error(">>>> " + m)
+      console.error("Issue with: ", code)
+      throw err
+    }
+  }
+  return {
+    path: relative.split("/"),
+    title: title,
+    id: title.toLowerCase().replace(/[^\x00-\x7F]/g, "-").replace(/ /g, "-").replace(/\//g, "-").replace(/\+/g, "-"),
+    body: contents,
+    sortIndex: index,
+    compilerSettings: compiler
+  }  
+}) 
 
 const tableOfContentsFile = join("site/examplesTableOfContents.json")
-writeFileSync(tableOfContentsFile, JSON.stringify([example1, example2]))
+writeFileSync(tableOfContentsFile, JSON.stringify(toc))
