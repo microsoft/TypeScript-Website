@@ -62,14 +62,13 @@ const user = {}
 /** @type {{ owner: User, name: string }} */
 const resource;
 
-
 /** @typedef {{owner: User, name: string} Resource */
 
 /** @type {Resource} */
 const otherResource;
 
 
-// Declaring a function
+// Declaring a typed function
 
 /**
  * Adds two numbers together
@@ -82,5 +81,13 @@ function addTwoNumbers(a, b) { return a + b }
 // You can use most of TypeScript's type tools, like unions
 
 /** @type {(string | boolean)} */
-const stringOrBoolean
+let stringOrBoolean = ""
+stringOrBoolean = false
 
+// Extending globals in JSDoc is a more involved process
+// which you can see in the VS Code docs
+// https://code.visualstudio.com/docs/nodejs/working-with-javascript#_global-variables-and-type-checking
+
+// Adding JSDoc comments to your functions is a win-win
+// situation, you get better tooling and so do all your
+// API consumers.
