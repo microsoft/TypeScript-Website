@@ -1,9 +1,0 @@
-{
-  "name": "Examples",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "devDependencies": {
-    "prettier": "^1.18.2"
-  }
-}
