@@ -4,6 +4,7 @@ const {join} = require("path")
 const { writeFileSync } = require("fs")
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 /** Retrieve file paths from a given folder and its subfolders. */
 // https://gist.github.com/kethinov/6658166#gistcomment-2936675
@@ -19,30 +20,13 @@ const getFilePaths = (folderPath) => {
 /**
  * @typedef {Object} Item - an item in the TOC
  * @property {string[]} path - the path to get to this file
+ * @property {string} id - an id for the slug
  * @property {string} title - name
  * @property {string} body - the text for the example
  * @property {number} sortIndex - when listing the objects
+ * @property {string} hash - the md5 of the content
  * @property {any} compilerSettings - name
  */
-
-
- /** @type Item */
-const example1 = {
-  path: ["JavaScript", "Functions with JavaScript", "Function Chaining.ts"],
-  title: "Function Chaining",
-  body: "",
-  sortIndex: 0,
-  compilerSettings: {}
-}
-
- /** @type Item */
-const example2 = {
-  path: ["JavaScript", "Modern JavaScript", "JSDoc Support.ts"],
-  title: "JSDoc support",
-  body: "",
-  sortIndex: 3,
-  compilerSettings: { isJavaScript: true }
-}
 
 const root = join(__dirname, "..")
 const allJS = getFilePaths(join(root, "JavaScript"))
@@ -77,14 +61,18 @@ const toc = all.map(m => {
       throw err
     }
   }
-  return {
+   /** @type Item */
+  const item = {
     path: relative.split("/"),
     title: title,
     id: title.toLowerCase().replace(/[^\x00-\x7F]/g, "-").replace(/ /g, "-").replace(/\//g, "-").replace(/\+/g, "-"),
     body: contents,
     sortIndex: index,
+    hash: crypto.createHash('md5').update(contents).digest("hex"),
     compilerSettings: compiler
-  }  
+  }
+
+  return item
 }) 
 
 const tableOfContentsFile = join("site/examplesTableOfContents.json")

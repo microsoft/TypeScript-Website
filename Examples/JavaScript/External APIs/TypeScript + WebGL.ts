@@ -1,3 +1,5 @@
+//// { order: 5 }
+
 // Create a HTML canvas which uses WebGL to render spinning
 // confetti, let's walk through the code to understand how it works
 

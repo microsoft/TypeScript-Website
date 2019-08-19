@@ -1,5 +1,8 @@
-// The DOM is the underlaying API for working with a webpage,
-// and TypeScript has great support for that API.
+//// { order: 0 }
+
+// The DOM (Document Object Model) is the underlying API for
+//  working with a webpage, and TypeScript has great support
+// for that API.
 
 // Let's create a popover to show when you press run in
 // the toolbar above.
@@ -61,8 +64,6 @@ closebutton.onclick = () => { removePopover() }
 popover.appendChild(message)
 popover.appendChild(closebutton)
 document.body.appendChild(popover)
-
-
 
 // If you hit "Run" above, then a popup should appear
 // in the bottom left, which you can close by clicking

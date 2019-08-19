@@ -1,4 +1,4 @@
-//// { order: 0, compiler: { jsx: "react" } }
+//// { order: 2, compiler: { jsx: "react" } }
 
 // React is a popular library for creating user interfaces.
 // It provides a JavaScript abstraction for creating view 

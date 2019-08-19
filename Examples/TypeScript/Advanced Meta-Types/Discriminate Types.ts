@@ -1,4 +1,3 @@
-//
 // A discriminated type union is where you use code flow
 // analysis to reduce a set of potential objects down to one
 // specific object.
