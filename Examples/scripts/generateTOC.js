@@ -28,7 +28,7 @@ const getFilePaths = (folderPath) => {
  * @property {any} compilerSettings - name
  */
 
-const root = join(__dirname, "..")
+const root = join(__dirname, "..", "en")
 const allJS = getFilePaths(join(root, "JavaScript"))
 const allTS = getFilePaths(join(root, "JavaScript"))
 

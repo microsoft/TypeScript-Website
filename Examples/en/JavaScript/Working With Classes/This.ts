@@ -15,8 +15,8 @@ class Safe {
   }
 }
 
-const a = new Safe("Crown Jewels")
-a.printContents()
+const safe = new Safe("Crown Jewels")
+safe.printContents()
 
 // If you come form an objected oriented language where the 
 // this/self variable is easily predictable, then you may 
@@ -32,7 +32,7 @@ a.printContents()
 // object, and then call it through that - the this variable
 // has moved refer to the hosting object:
 
-const customObjectCapturingThis = { contents: "http://gph.is/VxeHsW", print: a.printContents }
+const customObjectCapturingThis = { contents: "http://gph.is/VxeHsW", print: safe.printContents }
 customObjectCapturingThis.print() // Prints "http://gph.is/VxeHsW" - not "Crown Jewels"
 
 // This is tricky, because when dealing with callback APIs -
@@ -40,14 +40,14 @@ customObjectCapturingThis.print() // Prints "http://gph.is/VxeHsW" - not "Crown 
 // directly. This can be worked around by creating a new 
 // function at the call site.
 
-const objectNotCapturingThis = { contents: "N/A", print: () => a.printContents() }
+const objectNotCapturingThis = { contents: "N/A", print: () => safe.printContents() }
 objectNotCapturingThis.print()
 
 // There are a few are ways to work around this problem. One
 // route is to force the binding of this, to be the object 
 // you originally intended via bind.
 
-const customObjectCapturingThisAgain = { contents: "N/A", print: a.printContents.bind(a) }
+const customObjectCapturingThisAgain = { contents: "N/A", print: safe.printContents.bind(a) }
 customObjectCapturingThisAgain.print()
 
 // To work around an unexpected this context, you can also 
@@ -72,12 +72,19 @@ class SafelyBoundSafe {
 // Now passing the function to another object
 // to run does not accidentally change this
 
-const safeSafe = new SafelyBoundSafe("Golden Skull")
-safeSafe.printContents()
+const saferSafe = new SafelyBoundSafe("Golden Skull")
+saferSafe.printContents()
 
 const customObjectTryingToChangeThis = { 
   contents: "http://gph.is/XLof62", 
-  print: safeSafe.printContents
+  print: saferSafe.printContents
 }
 
 customObjectTryingToChangeThis.print() 
+
+// If you have a TypeScript project, you can use the compiler
+// flag noImplicitThis to highlight cases where TypeScript
+// cannot determine what type "this" is for a function.
+//
+// You can learn more about that in the handbook
+// https://www.typescriptlang.org/docs/handbook/utility-types.html#thistypet

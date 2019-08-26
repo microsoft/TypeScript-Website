@@ -49,7 +49,6 @@ myUserAccount.name
 const neverReturns = () => {
   // If it throws on the first line
   throw new Error("Always throws, never returns")
-
 }
 
 // If you hover on the type, you see it is a () => never
@@ -68,7 +67,9 @@ const validateUser = (user: User) => {
   }
 
   // According to the type system, this
-  // codepath can never happen.
+  // codepath can never happen. This is because
+  // the two nevers match
+
   return neverReturns()
 }
 
@@ -107,3 +108,17 @@ const flowerLatinName = (flower: Flower) => {
 
 // You will get a compiler error saying that your new
 // flower type cannot be converted into never.
+
+
+// Never in Unions
+
+// A never is something which is automatically removed from 
+// a type union. 
+
+type NeverIsRemoved = string | never | number
+
+// If you look at the type for NeverIsRemoved, you see that
+// it is string | number. This is because it should never 
+// happen at runtime because you cannot assign to it.
+
+// This feature is used a lot in example:conditional-types
