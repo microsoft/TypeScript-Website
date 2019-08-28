@@ -47,22 +47,22 @@ chicken = owl
 // This means you can extend an interface by declaring it
 // a second time.
 
-interface Cat {
+interface Kitten {
   purrs: boolean
 }
 
-interface Cat {
+interface Kitten {
   colour: string
 }
 
 // In the other case a type cannot be changed outside of
 // it's declaration.
 
-type Dog = {
+type Puppy = {
   color: string
 }
 
-type Dog = {
+type Puppy = {
   toys: number
 }
 

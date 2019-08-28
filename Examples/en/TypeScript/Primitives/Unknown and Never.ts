@@ -67,7 +67,7 @@ const validateUser = (user: User) => {
   }
 
   // According to the type system, this
-  // codepath can never happen. This is because
+  // code path can never happen. This is because
   // the two nevers match
 
   return neverReturns()

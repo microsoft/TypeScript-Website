@@ -59,5 +59,6 @@ if (typeof randomIdentifier === "number") {
 // places now.
 //
 // - Modern JavaScript: example:immutability
+// - Type Guards: example:type-guards
 // - Functional Programming with JavaScript example:function-chaining
 // 

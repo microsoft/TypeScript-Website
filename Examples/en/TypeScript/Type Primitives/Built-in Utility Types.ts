@@ -53,7 +53,7 @@ const navigationInfo: Record<NavigationPages, PageInfo> = {
 // Pick<Type, Keys>
 
 // Creates a type by picking the set of properties Keys 
-// from Type. Essentially an allowlist for extracting type
+// from Type. Essentially an allowl-ist for extracting type
 // information from a type.
 
 type StickerSortPreview = Pick<Sticker, "name" | "updatedAt">

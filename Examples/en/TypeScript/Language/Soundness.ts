@@ -19,5 +19,4 @@
 // world usage of JavaScript
 
 
-
 // https://github.com/Microsoft/TypeScript/issues/9825
