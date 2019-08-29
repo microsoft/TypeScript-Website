@@ -51,16 +51,24 @@ Your default web browser should start up and show the built site.
 
 ## Deployment
 
-Deployment is a 2 step process, first use these commands to push [to staging](http://testsite-typescript-41eeb979-7eaa-4c74-9d47-9d182c7b61ab.azurewebsites.net/):
+Deployment is automatic:
+
+- Merges to the branch `master` deploy to staging.
+- Pushes to the branch `release` deploy to production.
+
+To deploy manually, first use these commands to push [to staging](http://testsite-typescript-41eeb979-7eaa-4c74-9d47-9d182c7b61ab.azurewebsites.net/):
 
 ```sh
 # Creates a ./site folder
 gulp publish
-# Pushes to a special branch
+
+# Pushes to a staging
 gulp deploy
+
+# Syncs production with staging
+sh sync-staging-to-prod.ps1
 ```
 
-Then run the script `sync-staging-to-prod.ps1`.
 
 ## Direct Links to Downloads for Windows:
 
