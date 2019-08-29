@@ -3,7 +3,7 @@ name: Deploy Staging on Push
 on:
   push:
     branches:
-    - master
+    - archived
 
 jobs:
   build:
