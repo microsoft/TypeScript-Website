@@ -32,9 +32,13 @@ if (existingCanvas && existingCanvas.parentElement) {
 
 const gl = canvas.getContext("webgl")
 
-// Next we need to create vertext shaders - these roughly are
+// Next we need to create vertex shaders - these roughly are
 // small programs that apply maths to a set of incoming
 // array of vertices (numbers)
+
+// You can see the large set of attributes at the top of the shader,
+// these are passed in from 
+// 
 
 // There's a great overview on how they work here:
 // https://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html
@@ -194,11 +198,13 @@ const NUM_VERTICES = 4
 // it represents how many points should exist on
 // each confetti and having an odd number sends
 // it way out of whack
+
 const NUM_INDICES = 6
 
 // Create the arrays of inputs for the vertex shaders 
 const vertices = new Float32Array(NUM_PARTICLES * STRIDE * NUM_VERTICES)
 const indices = new Uint16Array(NUM_PARTICLES * NUM_INDICES)
+
 for (let i = 0; i < NUM_PARTICLES; i++) {
   const axisAngle = Math.random() * Math.PI * 2
   const startAngle = Math.random() * Math.PI * 2
@@ -211,12 +217,12 @@ for (let i = 0; i < NUM_PARTICLES; i++) {
 
   for (let j = 0; j < 4; j++) {
     const vertexPtr = groupPtr + j * STRIDE
-    vertices[vertexPtr + 2] = startAngle // Start angle
-    vertices[vertexPtr + 3] = angularVelocity // Angular velocity
-    vertices[vertexPtr + 4] = axisAngle // Angle diff
+    vertices[vertexPtr + 2] = startAngle       // Start angle
+    vertices[vertexPtr + 3] = angularVelocity  // Angular velocity
+    vertices[vertexPtr + 4] = axisAngle        // Angle diff
     vertices[vertexPtr + 5] = particleDistance // Distance of the particle from the (0,0,0)
-    vertices[vertexPtr + 6] = particleAngle // Angle around Y axis
-    vertices[vertexPtr + 7] = particleY // Angle around Y axis
+    vertices[vertexPtr + 6] = particleAngle    // Angle around Y axis
+    vertices[vertexPtr + 7] = particleY        // Angle around Y axis
   }
 
   // Coordinates

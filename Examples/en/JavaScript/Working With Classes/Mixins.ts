@@ -2,13 +2,13 @@
 
 // Mixins are a faux-multiple inheritance pattern for classed
 // in JavaScript which TypeScript has support for. The pattern
-// allows you to create a class which creates class which are 
+// allows you to create a class which creates class which are
 // a merge of many classes.
 
 // To get started, we need a type which is the which we'll use
 // to extend other classes from (it's main responsibility is
 // to declare that the type being passed in is a class) (Maybe?!)
-// 
+//
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 // Then we can create a series of classes which exist to extend
@@ -23,13 +23,13 @@ function Scale<TBase extends Constructor>(Base: TBase) {
     private _scale = 1;
 
     setScale(scale: number) {
-        this._scale = scale
+      this._scale = scale;
     }
 
     get scale(): number {
-       return  this._scale
+      return this._scale;
     }
-  }
+  };
 }
 
 // This mixin adds extra methods around alpha composition
@@ -50,18 +50,18 @@ function Alpha<TBase extends Constructor>(Base: TBase) {
     setAlpha(alpha: number) {
       this.alpha = alpha;
     }
-  }
+  };
 }
 
 // A simple sprite base class which will then be extended:
 
 class Sprite {
-  name = '';
-  x = 0
-  y = 0
+  name = "";
+  x = 0;
+  y = 0;
 
   constructor(name: string) {
-      this.name = name
+    this.name = name;
   }
 }
 
@@ -69,18 +69,18 @@ class Sprite {
 // which have different capabilities:
 
 const ModernDisplaySprite = Alpha(Scale(Sprite));
-const EightBitSprite = Scale(Sprite)
+const EightBitSprite = Scale(Sprite);
 
 // Creating an instance with these classes
 // shows that the objects have different sets of
 // functions due to their mixins:
 
-const gameBoySprite = new EightBitSprite("L block")
-gameBoySprite.setScale(0.3)
-gameBoySprite.setAlpha(0.5)
+const gameBoySprite = new EightBitSprite("L block");
+gameBoySprite.setScale(0.3);
+gameBoySprite.setAlpha(0.5);
 
-const flappySprite = new ModernDisplaySprite("Bird")
-flappySprite.setVisible()
-flappySprite.setScale(0.8)
-flappySprite.x = 10
-flappySprite.y = 20
+const flappySprite = new ModernDisplaySprite("Bird");
+flappySprite.setVisible();
+flappySprite.setScale(0.8);
+flappySprite.x = 10;
+flappySprite.y = 20;

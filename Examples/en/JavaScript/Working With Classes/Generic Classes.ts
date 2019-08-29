@@ -9,14 +9,14 @@
 // which can hold any sort of object, but only one type:
 
 class Drawer<ClothingType> {
-  contents: ClothingType[] = []
+  contents: ClothingType[] = [];
 
   add(object: ClothingType) {
-    this.contents.push(object)
+    this.contents.push(object);
   }
-  
+
   remove() {
-    return this.contents.pop()
+    return this.contents.pop();
   }
 }
 
@@ -24,29 +24,29 @@ class Drawer<ClothingType> {
 // type to work with:
 
 interface Sock {
-  color: string
+  color: string;
 }
 
 interface TShirt {
-  size: "s" | "m" | "l"
+  size: "s" | "m" | "l";
 }
 
-// We can create a Drawer just for socks by passing in the 
+// We can create a Drawer just for socks by passing in the
 // type Sock when we create a new Drawer:
-const sockDrawer = new Drawer<Sock>()
+const sockDrawer = new Drawer<Sock>();
 
 // Now we can add or remove socks to the drawer:
-sockDrawer.add({ color: "white"})
-const mySock = sockDrawer.remove()
+sockDrawer.add({ color: "white" });
+const mySock = sockDrawer.remove();
 
 // As well as creating a drawer for Tshirts
-const tshirtDrawer = new Drawer<TShirt>()
-tshirtDrawer.add({ size: "m" })
+const tshirtDrawer = new Drawer<TShirt>();
+tshirtDrawer.add({ size: "m" });
 
 // If you're a bit eccentric, you could even create a drawer
 // which mixes Socks and TShirts by using a union:
 
-const mixedDrawer = new Drawer<Sock | TShirt>()
+const mixedDrawer = new Drawer<Sock | TShirt>();
 
 // Creating a class like Drawer without the extra TypeScript
 // syntax requires using the template tag in JSDoc. In this
@@ -54,25 +54,25 @@ const mixedDrawer = new Drawer<Sock | TShirt>()
 // the properties on the class:
 
 // To have this work in the playground, you'll need to change
-// the settings to be a JavaScript file, and delete the 
+// the settings to be a JavaScript file, and delete the
 // TypeScript code above
 
 /**
- * 
- * @template {{}} ClothingType 
+ *
+ * @template {{}} ClothingType
  * @param {ClothingType[]} contents
  */
 class Dresser {
-  contents = []
+  contents = [];
 
   /** @param {ClothingType} object */
   add(object) {
-    this.contents.push(object)
+    this.contents.push(object);
   }
 
   /** @return {ClothingType} */
   remove() {
-    return this.contents.pop()
+    return this.contents.pop();
   }
 }
 
@@ -88,7 +88,7 @@ class Dresser {
 // which handles Coats.
 
 /** @type {Dresser<Coat>} */
-const coatDresser = new Dresser()
+const coatDresser = new Dresser();
 
-coatDresser.add({ color: "green" })
-const sock = coatDresser.remove()
+coatDresser.add({ color: "green" });
+const sock = coatDresser.remove();

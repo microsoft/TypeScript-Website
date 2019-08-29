@@ -4,7 +4,7 @@
 // you can even skip making your files .ts and just use JSDoc
 // annotations to create a rich development environment.
 //
-// A JSDoc comment is a multi-line comment which starts with 
+// A JSDoc comment is a multi-line comment which starts with
 // two stars instead of one.
 
 /* This is a normal comment */
@@ -13,7 +13,7 @@
 // JSDoc comments become attached to the closest JavaScript
 // code below it.
 
-const myVariable = "Hi"
+const myVariable = "Hi";
 
 // If you hover over myVariable, you can see that it has the
 // text from inside the JSDoc comment attached.
@@ -27,7 +27,7 @@ const myVariable = "Hi"
 // auto-complete options.
 
 /** @type {number} */
-var myNumber
+var myNumber;
 
 // You can see all of the supported tags inside the handbook
 // https://www.typescriptlang.org/docs/handbook/type-checking-javascript-files.html#supported-jsdoc
@@ -39,8 +39,7 @@ var myNumber
 // Importing the types for JavaScript configuration files:
 
 /** @type { import("webpack").Config } */
-const config = {}
-
+const config = {};
 
 // Creating a complex type to re-use in many places:
 
@@ -53,8 +52,7 @@ const config = {}
 // Then use it by referencing the typedef's name:
 
 /** @type { User } */
-const user = {}
-
+const user = {};
 
 // There's TypeScript compatible inline type shorthand, which
 // you can use for both type and typedef
@@ -67,7 +65,6 @@ const resource;
 /** @type {Resource} */
 const otherResource;
 
-
 // Declaring a typed function
 
 /**
@@ -76,13 +73,15 @@ const otherResource;
  * @param b {number} The second number
  * @returns {number}
  */
-function addTwoNumbers(a, b) { return a + b }
+function addTwoNumbers(a, b) {
+  return a + b;
+}
 
 // You can use most of TypeScript's type tools, like unions
 
 /** @type {(string | boolean)} */
-let stringOrBoolean = ""
-stringOrBoolean = false
+let stringOrBoolean = "";
+stringOrBoolean = false;
 
 // Extending globals in JSDoc is a more involved process
 // which you can see in the VS Code docs

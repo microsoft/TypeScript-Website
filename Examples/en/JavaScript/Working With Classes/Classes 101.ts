@@ -11,30 +11,30 @@ class Vendor {
   name: string;
 
   constructor(name: string) {
-      this.name = name;
+    this.name = name;
   }
 
   greet() {
-      return "Hello, welcome to " + this.name;
+    return "Hello, welcome to " + this.name;
   }
 }
 
-// An instance can be created via the new keyword, and 
+// An instance can be created via the new keyword, and
 // you can call functions and access properties from the
 // object.
 
 const shop = new Vendor("Ye Olde Shop");
-console.log(shop.greet())
+console.log(shop.greet());
 
 // You can subclass an object, here's a food cart which
 // has a variety as well as a name:
 
 class FoodTruck extends Vendor {
-  cuisine: string
+  cuisine: string;
 
   constructor(name: string, cuisine: string) {
     super(name);
-    this.cuisine = cuisine
+    this.cuisine = cuisine;
   }
 
   greet() {
@@ -52,5 +52,4 @@ const nameOnlyTruck = new FoodTruck("Salome's Adobo");
 // new instance of the FoodTruck:
 
 const truck = new FoodTruck("Dave's Doritos", "junk");
-console.log(truck.greet())
-
+console.log(truck.greet());

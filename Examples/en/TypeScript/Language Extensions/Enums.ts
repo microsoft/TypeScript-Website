@@ -1,18 +1,18 @@
-// Enums are a feature added to JavaScript in TypeScript 
+// Enums are a feature added to JavaScript in TypeScript
 // which makes it easier to handle named sets of constants.
 
-// By default an enum is number based and starts at zero, 
-// and adding a new option will increment by one. This is 
+// By default an enum is number based and starts at zero,
+// and adding a new option will increment by one. This is
 // useful when the value is not important.
 
 enum CompassDirection {
   North,
   East,
   South,
-  West,
+  West
 }
 
-// By annotating an enum option, you set the value 
+// By annotating an enum option, you set the value
 // the increments will continue from that value:
 
 enum StatusCodes {
@@ -26,15 +26,15 @@ enum StatusCodes {
 
 // You reference an enum by using EnumName.Value
 
-const startingDirection = CompassDirection.East
-const currentStatus = StatusCodes.OK
+const startingDirection = CompassDirection.East;
+const currentStatus = StatusCodes.OK;
 
 // Enums support accessing data in both directions from key
 // to value, and value to key.
 
-const okNumber = StatusCodes.OK
-const okNumberIndex = StatusCodes["OK"]
-const stringBadRequest = StatusCodes[400] 
+const okNumber = StatusCodes.OK;
+const okNumberIndex = StatusCodes["OK"];
+const stringBadRequest = StatusCodes[400];
 
 // Enums can be different types, a string type is common.
 // Using a string can make it easier to debug, because the
@@ -44,11 +44,10 @@ enum GamePadInput {
   Up = "UP",
   Down = "DOWN",
   Left = "LEFT",
-  Right = "RIGHT",
+  Right = "RIGHT"
 }
 
-
-// If you want to reduce the number of objects in your 
+// If you want to reduce the number of objects in your
 // JavaScript runtime, you can create a const enum.
 
 // A const enum's value is replaced by TypeScript during
@@ -64,14 +63,14 @@ const enum MouseAction {
 const handleMouseAction = (action: MouseAction) => {
   switch (action) {
     case MouseAction.MouseDown:
-      console.log("Mouse Down")
+      console.log("Mouse Down");
       break;
   }
-}
+};
 
 // If you look at the transpiled JavaScript, you can see
 // how the other enums exist as objects and functions,
-// however MouseAction is not there. 
+// however MouseAction is not there.
 
 // This is also true for the check against MouseAction.MouseDown
 // inside the switch statement inside handleMouseAction.

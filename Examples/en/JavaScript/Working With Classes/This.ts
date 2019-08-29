@@ -1,25 +1,25 @@
 //// { order: 2 }
 
-///When calling a function inside a class. this generally 
+///When calling a function inside a class. this generally
 // refers to the current instance of a your class.
 
 class Safe {
-  contents: string
+  contents: string;
 
   constructor(contents: string) {
-    this.contents = contents
+    this.contents = contents;
   }
 
   printContents() {
-    console.log(this.contents)
+    console.log(this.contents);
   }
 }
 
-const safe = new Safe("Crown Jewels")
-safe.printContents()
+const safe = new Safe("Crown Jewels");
+safe.printContents();
 
-// If you come form an objected oriented language where the 
-// this/self variable is easily predictable, then you may 
+// If you come form an objected oriented language where the
+// this/self variable is easily predictable, then you may
 // find you need to read up on how confusing 'this' can be:
 
 // https://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/
@@ -32,55 +32,55 @@ safe.printContents()
 // object, and then call it through that - the this variable
 // has moved refer to the hosting object:
 
-const customObjectCapturingThis = { contents: "http://gph.is/VxeHsW", print: safe.printContents }
-customObjectCapturingThis.print() // Prints "http://gph.is/VxeHsW" - not "Crown Jewels"
+const customObjectCapturingThis = { contents: "http://gph.is/VxeHsW", print: safe.printContents };
+customObjectCapturingThis.print(); // Prints "http://gph.is/VxeHsW" - not "Crown Jewels"
 
 // This is tricky, because when dealing with callback APIs -
-// it can be very tempting to pass the function reference 
-// directly. This can be worked around by creating a new 
+// it can be very tempting to pass the function reference
+// directly. This can be worked around by creating a new
 // function at the call site.
 
-const objectNotCapturingThis = { contents: "N/A", print: () => safe.printContents() }
-objectNotCapturingThis.print()
+const objectNotCapturingThis = { contents: "N/A", print: () => safe.printContents() };
+objectNotCapturingThis.print();
 
 // There are a few are ways to work around this problem. One
-// route is to force the binding of this, to be the object 
+// route is to force the binding of this, to be the object
 // you originally intended via bind.
 
-const customObjectCapturingThisAgain = { contents: "N/A", print: safe.printContents.bind(a) }
-customObjectCapturingThisAgain.print()
+const customObjectCapturingThisAgain = { contents: "N/A", print: safe.printContents.bind(a) };
+customObjectCapturingThisAgain.print();
 
-// To work around an unexpected this context, you can also 
-// change how you create functions in your class. By 
-// creating a property which uses a fat arrow function, the 
-// binding of this is done at a different time. Which makes 
+// To work around an unexpected this context, you can also
+// change how you create functions in your class. By
+// creating a property which uses a fat arrow function, the
+// binding of this is done at a different time. Which makes
 // it more predictable for those less experienced with the
-// JavaScript runtime. 
+// JavaScript runtime.
 
 class SafelyBoundSafe {
-  contents: string
+  contents: string;
 
   constructor(contents: string) {
-    this.contents = contents
+    this.contents = contents;
   }
 
   printContents = () => {
-    console.log(this.contents)
-  }
+    console.log(this.contents);
+  };
 }
 
 // Now passing the function to another object
 // to run does not accidentally change this
 
-const saferSafe = new SafelyBoundSafe("Golden Skull")
-saferSafe.printContents()
+const saferSafe = new SafelyBoundSafe("Golden Skull");
+saferSafe.printContents();
 
-const customObjectTryingToChangeThis = { 
-  contents: "http://gph.is/XLof62", 
+const customObjectTryingToChangeThis = {
+  contents: "http://gph.is/XLof62",
   print: saferSafe.printContents
-}
+};
 
-customObjectTryingToChangeThis.print() 
+customObjectTryingToChangeThis.print();
 
 // If you have a TypeScript project, you can use the compiler
 // flag noImplicitThis to highlight cases where TypeScript
