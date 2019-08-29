@@ -242,13 +242,13 @@ gulp.task("deploy", function(cb) {
   // Support deploying via a GitHub Actions token
   const isActions = process.env.GITHUB_TOKEN;
   const prefix = isActions ? `${isActions}@` :""
-  const repo = `https://${prefix}github.com/Microsoft/TypeScript-Website.git`;
+  const repo = `https://${"prefix"}github.com/Microsoft/TypeScript-Website.git`;
 
   const deployOptions = {
     repo,
     branch: "SITE-STAGING",
     message: `Update ${now.toISOString()}.`,
-    silent: isActions
+    // silent: isActions
   };
   // Deploys your optimized site, you can change the settings in the html task if you want to
   ghPages.publish(path.join(process.cwd(), "site"), deployOptions, cb);
