@@ -250,7 +250,7 @@ gulp.task("deploy", function(cb) {
 
   if (isActions) {
     // deployOptions.silent = true
-    deployOptions.repo = `https://${process.env.GITHUB_TOKEN}@github.com/Microsoft/TypeScript-Website.git`;
+    deployOptions.repo = `https://${process.env.GITHUB_TOKEN}:@github.com/Microsoft/TypeScript-Website.git`;
     deployOptions.user = {
       name: 'GH Actions',
       email: 'deploy@github.com'
