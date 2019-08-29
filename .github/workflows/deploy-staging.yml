@@ -24,6 +24,7 @@ jobs:
     - run: cd src/play; yarn install; yarn setup; cd ../..
 
     # Build & deploy
+    - run: bundle install
     - run: gulp publish
     - run: gulp deploy
       env:
