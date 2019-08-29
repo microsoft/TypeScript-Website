@@ -17,6 +17,7 @@ src/_docs/release-notes/**/*.md
 # Ignore hidden folders
 # This takes care of .tmp, .sass-cache, and many others
 .*/
+!.github
 
 # OSX
 ._*
