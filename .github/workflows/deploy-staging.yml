@@ -22,10 +22,15 @@ jobs:
     # Get all the local deps
     - run: yarn install
     - run: cd src/play; yarn install; yarn setup; cd ../..
-
-    # Build & deploy
     - run: bundle install
+
+    # Build
     - run: gulp publish
-    - run: gulp deploy
+
+    # Deploy to the staging branch
+    - name: deploy
+      uses: peaceiris/actions-gh-pages@v1.1.0
       env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PUBLISH_BRANCH: SITE-STAGING
+        PUBLISH_DIR: ./site
