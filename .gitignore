@@ -7,6 +7,7 @@ src/_docs/release-notes/**/*.md
 !src/_docs/handbook/writing-declaration-files.html
 !src/_docs/handbook/writing-definition-files.html
 !src/_docs/tutorial.md
+!src/_docs/home.md
 
 # .gitignore for jekyllized projects
 .jekyll-metadata
@@ -16,6 +17,7 @@ src/_docs/release-notes/**/*.md
 # Ignore hidden folders
 # This takes care of .tmp, .sass-cache, and many others
 .*/
+!.github
 
 # OSX
 ._*
