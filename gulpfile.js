@@ -238,11 +238,24 @@ gulp.task("html", ["styles"], function () {
 
 gulp.task("deploy", function(cb) {
   const now = new Date();
+
+  // Support deploying via a GitHub Actions token
+  const isActions = process.env.GITHUB_TOKEN;
+
   const deployOptions = {
     repo: "https://github.com/Microsoft/TypeScript-Website.git",
     branch: "SITE-STAGING",
-    message: `Update ${now.toISOString()}.`
+    message: `Update ${now.toISOString()}.`,
   };
+
+  if (isActions) {
+    deployOptions.repo = `https://${process.env.GITHUB_TOKEN}@github.com/Microsoft/TypeScript-Website.git`;
+    deployOptions.user = {
+      name: process.env.GITHUB_ACTOR,
+      email: process.env.GITHUB_ACTOR + '@users.noreply.github.com'
+    }
+  }
+
   // Deploys your optimized site, you can change the settings in the html task if you want to
   ghPages.publish(path.join(process.cwd(), "site"), deployOptions, cb);
 });
