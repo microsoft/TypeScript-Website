@@ -27,6 +27,8 @@ const usersAge = ("23" as any) as number;
 // type assertions is a way of telling TypeScript you know
 // best, and TypeScript will try to let you get on with it.
 
+// TODO: Most type systems actually have some sort of runtiem checks
+
 // Function Parameter Bi-variance
 
 // Params for a function support redefining the parameter
@@ -67,6 +69,8 @@ listenForEvent("mouse", (event: string) => {});
 // You could work around this particular case with function
 // overloads, see: example:typing-functions
 
+// Void special casing 
+
 // Parameter Discarding
 
 // To learn about special cases with function parameters
@@ -83,8 +87,23 @@ function getRandomNumbers(count: number, callback: (...args: number[]) => void) 
 getRandomNumbers(2, (first, second) => console.log([first, second]));
 getRandomNumbers(400, first => console.log(first));
 
-//
+// Void Functions Can Match to a Function With a Return Value
 
-// type compatibility link
+// A function which returns a void function, can accept a
+// function which takes any other type. 
 
+const getPI = () => 3.14
+
+function runFunction = (func: () => void) {
+  func()
+}
+
+runFunction(getPI)
+
+// For more information on the places where soundness of the 
+// type system is compromised, see:
+
+// https://github.com/Microsoft/TypeScript/wiki/FAQ#type-system-behavior
 // https://github.com/Microsoft/TypeScript/issues/9825
+// https://www.typescriptlang.org/docs/handbook/type-compatibility.html
+
