@@ -272,6 +272,12 @@ gulp.task("jslint", function () {
 // and will check for URL errors a well
 gulp.task("doctor", shell.task("jekyll doctor"));
 
+// Runs the script to generate the TOC for the playground examples
+gulp.task("examples", function() {
+    gulp.src(["examples/**/*"]).pipe(gulp.dest("site/ex"))
+    shell.task("node Examples/scripts/generateTOC.js")
+});
+
 // BrowserSync will serve our site on a local server for us and other devices to use
 // It will also autoreload across all devices as well as keep the viewport synchronized
 // between them.
@@ -314,7 +320,7 @@ gulp.task("check", ["jslint", "doctor"], function () {
 });
 
 // Builds the site but doesn't serve it to you
-gulp.task("build", ["jekyll:prod", "styles"], function () {});
+gulp.task("build", ["jekyll:prod", "styles", "examples"], function () {});
 
 // Builds your site with the "build" command and then runs all the optimizations on
 // it and outputs it to "./site"
