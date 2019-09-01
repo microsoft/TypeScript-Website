@@ -1,5 +1,3 @@
-// https://www.typescriptlang.org/docs/handbook/generics.html
-
 // Generics provide a way to use Types as variables in other
 // types. Meta.
 
@@ -95,3 +93,5 @@ function addTypedObjectToCache<Type, Cache extends CacheHostGeneric<Type>>(obj: 
 //
 // example:advanced-classes
 // example:typescript---react
+// https://www.typescriptlang.org/docs/handbook/generics.html
+

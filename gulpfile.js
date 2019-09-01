@@ -156,11 +156,11 @@ gulp.task("scripts", ["sample-script", "playground", "examples"], function () {
 });
 
 // Copy over the sample scripts to the "site" directory
-gulp.task("examples", function () {
-  return gulp.src("src/examples/*.ts")
-     .pipe(gulp.dest("site/examples/"))
-     .pipe(size({ title: "examples" }));
-});
+// gulp.task("examples", function () {
+//   return gulp.src("src/examples/*.ts")
+//      .pipe(gulp.dest("site/examples/"))
+//      .pipe(size({ title: "examples" }));
+// });
 
 // Copy over the sample scripts to the "site" directory
 gulp.task("sample-script", function () {
@@ -171,13 +171,13 @@ gulp.task("sample-script", function () {
 
 // Copy over the playground scripts to the "site" directory
 gulp.task("playground", function () {
-  gulp.src("src/play/public/**/*")
+  return gulp.src("src/play/public/**/*")
      .pipe(gulp.dest("site/play"))
      .pipe(size({ title: "playground" }));
 });
 
 gulp.task("playground:dev", function () {
-  gulp.src("src/play/public/**/*")
+  return gulp.src("src/play/public/**/*")
      .pipe(gulp.dest("serve/play"))
      .pipe(size({ title: "playground" }));
 });
@@ -273,15 +273,17 @@ gulp.task("jslint", function () {
 gulp.task("doctor", shell.task("jekyll doctor"));
 
 // Runs the script to generate the TOC for the playground examples
-gulp.task("examples", function() {
-    gulp.src(["examples/**/*"]).pipe(gulp.dest("site/ex"))
-    shell.task("node Examples/scripts/generateTOC.js")
+gulp.task("examples", ["examples:toc"], function() {
+    gulp.src(["Examples/**/*"]).pipe(gulp.dest("site/ex"))
+    gulp.src(["Examples/**/*"]).pipe(gulp.dest("serve/ex"))
 });
 
+gulp.task("examples:toc", shell.task("node Examples/scripts/generateTOC.js"))
+
 // BrowserSync will serve our site on a local server for us and other devices to use
-// It will also autoreload across all devices as well as keep the viewport synchronized
+// It will also auto-reload across all devices as well as keep the viewport synchronized
 // between them.
-gulp.task("serve:dev", ["docs", "styles", "jekyll:dev", "playground:dev"], function () {
+gulp.task("serve:dev", ["docs", "styles", "jekyll:dev", "playground:dev", "examples"], function () {
   browserSync({
     notify: true,
     // tunnel: "",
@@ -298,6 +300,7 @@ gulp.task("watch", function () {
   gulp.watch(["serve/assets/stylesheets/*.css"], reload);
   gulp.watch(["src/assets/scss/**/*.scss"], ["styles"]);
   gulp.watch(["src/play/**/*"], ["playground:dev"]);
+  gulp.watch(["Examples/**/*"], ["examples"]);
 });
 
 // Serve the site after optimizations to see that everything looks fine

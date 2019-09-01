@@ -1,17 +1,18 @@
 // Without a background in type theory, you're unlikely
 // to be familiar with the idea of a type system being "sound"
 
-// Soundness is the idea that the compiler can make guarantees
-// about what types are available at runtime, and not just
+// Soundness is the idea that the compiler can make guarantees 
+// about the type a value has a runtime, and not just
 // during compilation. This is normal for most programming
 // languages are built with types from day one.
 
-// Building a type system after the language has existed for
-// a few decades however becomes about trade-offs with
-// three qualities: Simplicity, Usability and Soundness.
+// Building a type system which models a language which has 
+// existed for a few decades however becomes about making 
+// decisions with trade-offs on three qualities: Simplicity,
+// Usability and Soundness.
 
-// With the goal of being able to support all JavaScript
-// code, TypeScript tends towards simplicity and usability
+// With TypeScript's goal of being able to support all JavaScript
+// code, the language tends towards simplicity and usability
 // when presented with ways to add types to JavaScript.
 
 // Let's look at a few cases where TypeScript is provably

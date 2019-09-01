@@ -1,3 +1,5 @@
+//// { order: 3, isJavaScript: true }
+
 // Node is a very popular JavaScript runtime built on v8,
 // the JavaScript engine which powers Chrome. You can use it
 // to build servers, front-end clients and anything in-between.

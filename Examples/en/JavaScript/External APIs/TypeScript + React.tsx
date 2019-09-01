@@ -1,4 +1,4 @@
-//// { order: 2, compiler: { jsx: "react" } }
+//// { order: 2, compiler: { jsx: 2, esModuleInterop: true } }
 
 // React is a popular library for creating user interfaces.
 // It provides a JavaScript abstraction for creating view 
@@ -19,7 +19,7 @@
 
 
 type FauxactFunctionComponent<Props extends {}> =
-  (props: Props, context?: any) => FauxactFunctionComponent | null
+  (props: Props, context?: any) => FauxactFunctionComponent<any> | null |  JSX.Element
 
 
 // Roughly: 
