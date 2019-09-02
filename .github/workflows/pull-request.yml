@@ -1,10 +1,10 @@
-name: "Danger JS"
+name: "PR Checks"
 on: [pull_request]
 
 
 jobs:
   build:
-    name: "Validate it builds"
+    name: "Builds and Deploys"
     runs-on: ubuntu-latest
 
     steps:
