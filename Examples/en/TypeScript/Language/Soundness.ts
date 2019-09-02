@@ -67,8 +67,10 @@ listenForEvent("mouse", (event: string) => {});
 // This covers the real-world pattern of event listener
 // in JavaScript, at the expense of having being sound.
 
-// You could work around this particular case with function
-// overloads, see: example:typing-functions
+// TypeScript can raise an error when this happens via
+// `strictFunctionTypes`. Or, you could work around this
+// particular case with function overloads, 
+// see: example:typing-functions
 
 // Void special casing 
 
@@ -95,7 +97,7 @@ getRandomNumbers(400, first => console.log(first));
 
 const getPI = () => 3.14
 
-function runFunction = (func: () => void) {
+function runFunction (func: () => void) {
   func()
 }
 
