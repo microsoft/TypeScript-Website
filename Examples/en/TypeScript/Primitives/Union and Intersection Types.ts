@@ -7,7 +7,8 @@ type OddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
 type AMessyUnion = "hello" | 156 | { error: true };
 
 // If the use of "open" and "closed" vs string is
-// new to you, check out: example:literals
+// new to you, check out:  example:literals and
+// example:type-widening:narrowing
 
 // We can mix different types into a union, and
 // what we're saying is that the value is one of those types.
@@ -57,3 +58,27 @@ const handleArtistsResponse = (response: ArtistsResponse) => {
 
   console.log(response.artists);
 };
+
+// A mix of Intersection and Union types become really 
+// useful when you have cases where an object has to 
+// include one of two values:
+
+interface CreateArtistBioBase {
+  artistID: string
+  thirdParty?: boolean
+}
+
+type CreateArtistBioRequest 
+   = CreateArtistBioBase & { html: string } | { markdown: string }
+
+// Now you can only create a request when you include
+// artistID and either html or markdown
+
+const workingRequest: CreateArtistBioRequest = {
+  artistID: "banksy",
+  markdown: "Banksy is an anonymous England-based graffiti artist..."
+}
+
+const badRequest: CreateArtistBioRequest = {
+  artistID: "banksy",
+}
