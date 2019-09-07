@@ -1,16 +1,21 @@
-import {danger, message} from "danger"
+import { danger, message } from "danger";
 
 // dangerfile.js
-import spellcheck from 'danger-plugin-spellcheck'
+import spellcheck from "danger-plugin-spellcheck";
 
-const hasElevatedAccess = danger.github.pr.author_association === "COLLABORATOR" ||
-                          danger.github.pr.author_association === "OWNER" ||
-                          danger.github.pr.author_association === "MEMBER"
+const hasElevatedAccess =
+  danger.github.pr.author_association === "COLLABORATOR" ||
+  danger.github.pr.author_association === "OWNER" ||
+  danger.github.pr.author_association === "MEMBER";
 
-// Start with the spell-check as a bit less spammy
-
+// Run the spell check only on PRs from staff
+if (hasElevatedAccess) {
   spellcheck({
+    settings: "artsy/peril-settings@spellcheck.json",
     codeSpellCheck: ["Examples/**/*.ts", "Examples/**/*.js"]
-  })
+  });
 
-  message(`Deployed to: https://typescript-playbook-${danger.github.pr.number}.ortam.now.sh`) 
+  // This deploy only happens for staff also
+  const deployURL = `https://typescript-playbook-${danger.github.pr.number}.ortam.now.sh`;
+  message(`Deployed to [a PR branch](${deployURL})`);
+}
