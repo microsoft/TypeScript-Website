@@ -16,10 +16,6 @@ jobs:
     - uses: actions/setup-node@v1
     - uses: actions/setup-ruby@v1
 
-    # Grab the handbook / playground
-    - run: git submodule init
-    - run: git submodule update
-
     # Get all the local deps, then run danger
     - run: yarn install
     - run: yarn danger ci
