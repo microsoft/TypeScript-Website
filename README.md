@@ -1,6 +1,6 @@
-# TypeScript portal
+# TypeScript Website
 
-This is the current website for TypeScript. It uses Jekyll for the majority of the work, and uses git submodules for 
+This is the current website for TypeScript. It uses Jekyll for the majority of the work, and uses git-submodules for 
 the playground and the handbook.
 
 ### Meta
