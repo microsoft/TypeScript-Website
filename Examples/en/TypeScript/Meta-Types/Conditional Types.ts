@@ -43,7 +43,7 @@ type Animals = Cat | Dog | Cheetah | Wolf;
 type Dogish = ExtractDogish<Animals>;
 
 // = ExtractDogish<Cat> | ExtractDogish<Dog> |
-//   ExtractDogish<Ceetah> | ExtractDogish<Wolf>
+//   ExtractDogish<Cheetah> | ExtractDogish<Wolf>
 
 // = never | Dog | never | Wolf
 
