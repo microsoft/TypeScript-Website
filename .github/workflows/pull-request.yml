@@ -10,12 +10,11 @@ jobs:
     steps:
     # Check out, and set up the node/ruby infra
     - uses: actions/checkout@v1
+      with:
+        submodules: true
+
     - uses: actions/setup-node@v1
     - uses: actions/setup-ruby@v1
-
-    # Grab the handbook / playground
-    - run: git submodule init
-    - run: git submodule update
 
     # Get all the local deps, then run danger
     - run: yarn install
@@ -29,7 +28,7 @@ jobs:
     - run: gulp publish
 
     # Deploy if we can
-    - run: npx now site/ --token=$NOW_ACCESS_TOKEN --name=typescript-playbook-$PR_NUMBER
+    - run: npx now site/ --token=$NOW_ACCESS_TOKEN --name=typescript-site-$PR_NUMBER
       env:
         NOW_ACCESS_TOKEN: ${{ secrets.NOW_ACCESS_TOKEN }}
         PR_NUMBER: ${{ github.event.pull_request.number }}

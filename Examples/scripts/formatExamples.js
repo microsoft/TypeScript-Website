@@ -1,0 +1,2 @@
+const ts = require("typescript")
+
