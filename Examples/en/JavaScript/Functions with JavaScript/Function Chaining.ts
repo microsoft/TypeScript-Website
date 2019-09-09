@@ -4,7 +4,7 @@
 // Function chaining APIs are a common pattern in
 // JavaScript, which can make your code focused
 // with less intermediary values and easier to read
-// because of the spacing.
+// because of their nesting qualities.
 
 // A really common API which works via chaining
 // is jQuery. Here is an example of jQuery
@@ -12,7 +12,7 @@
 
 import $ from "jquery";
 
-// Here's an example use of the jQuery API
+// Here's an example use of the jQuery API:
 
 $("#navigation")
   .css("background", "red")
@@ -86,3 +86,4 @@ new AddNumbers(2).add(3).add(3);
 
 // For more examples on this:
 //
+//  - example:code-flow

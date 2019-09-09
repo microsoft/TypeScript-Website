@@ -53,7 +53,7 @@ if (typeof randomIdentifier === "number") {
 // code types will change in different locations.
 
 // To learn more about code flow analysis
-//  - [handbook]
+//  - example:type-guards
 
 // To continue reading through examples you could jump to a few different
 // places now.

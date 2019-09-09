@@ -4,7 +4,7 @@
 // like running a TypeScript project inside a web browser.
 
 // The playground makes it easy for you to safely experiment
-//  with ideas in TypeScript by making it trivial to share
+// with ideas in TypeScript by making it trivial to share
 // these projects. The URL for this page is everything 
 // required to load the project for someone else.
 
@@ -31,5 +31,5 @@ console.log(hello + " " + world)
 //
 // Click below to continue:
 //
-// example:arrays-and-objects
+// example:objects-and-arrays
 

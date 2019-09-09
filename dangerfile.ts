@@ -16,6 +16,6 @@ if (hasElevatedAccess) {
   });
 
   // This deploy only happens for staff also
-  const deployURL = `https://typescript-playbook-${danger.github.pr.number}.ortam.now.sh`;
+  const deployURL = `https://typescript-site-${danger.github.pr.number}.ortam.now.sh`;
   message(`Deployed to [a PR branch](${deployURL})`);
 }

@@ -28,7 +28,10 @@ const usersAge = ("23" as any) as number;
 // type assertions is a way of telling TypeScript you know
 // best, and TypeScript will try to let you get on with it.
 
-// TODO: Most type systems actually have some sort of runtiem checks
+// Languages which are sound would occasionally use runtime checks
+// to ensure that the data matches what your types say - but
+// TypeScript aims to have no type-aware runtime impact on 
+// your transpiled code.
 
 // Function Parameter Bi-variance
 

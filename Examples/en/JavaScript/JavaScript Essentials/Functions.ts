@@ -24,8 +24,8 @@ const addFunction = (x, y) => {
 // applies to all three formats.
 
 // TypeScript provides additional syntax which adds to a
-// function and offers hints on what the types are expected
-// by this function.
+// function definition and offers hints on what the 
+// types are expected by this function.
 //
 // Up next is the most open version of the add function, it
 // says that add takes two inputs of any type: this could

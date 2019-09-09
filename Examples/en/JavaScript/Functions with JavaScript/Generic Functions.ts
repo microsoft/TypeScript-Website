@@ -15,8 +15,9 @@ function wrapInArray<Type>(input: Type): Type[] {
 }
 
 // Note: it's common to see Type refereed to as T. This is
-// culturally like how people use i in a for loop to
-// represent index. We'll be using full names for clarity.
+// culturally similar to how people use i in a for loop to
+// represent index. T normally represents Types, so we'll 
+// be using the full name for clarity.
 
 // Our function will use inference to always keep the type
 // passed in the same as the type passed out (though
@@ -25,7 +26,9 @@ function wrapInArray<Type>(input: Type): Type[] {
 const stringArray = wrapInArray("hello generics");
 const numberArray = wrapInArray(123);
 
-// By providing types you can ensure code fails correctly
+// We can verify this works as expected by checking
+// if we can assign a string array to a function which
+// should be an object array
 const notStringArray: string[] = wrapInArray({});
 
 // You can also skip the generic inference by adding the

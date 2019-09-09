@@ -1,7 +1,9 @@
 //// { order: 5 }
 
-// Create a HTML canvas which uses WebGL to render spinning
-// confetti, let's walk through the code to understand how it works
+// This example create a HTML canvas which uses WebGL to 
+// render spinning confetti using JavaScript. We're going 
+// to walk through the code to understand how it works, and
+// see how TypeScript's tooling provides useful insight.
 
 // This example builds off: example:working-with-the-dom
 
@@ -37,8 +39,7 @@ const gl = canvas.getContext("webgl")
 // array of vertices (numbers)
 
 // You can see the large set of attributes at the top of the shader,
-// these are passed in from 
-// 
+// these are passed into the compiled shader further down the example.
 
 // There's a great overview on how they work here:
 // https://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html
@@ -117,9 +118,9 @@ gl.compileShader(vertexShader)
 // shader is another small program that runs through every
 // pixel in the canvas and set its color.
 
-// In this case, if you play around with the numers you can see how
+// In this case, if you play around with the numbers you can see how
 // this affects the lighting in the scene, as well as the border
-// radius on the confetti
+// radius on the confetti:
 
 const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER)
 gl.shaderSource(

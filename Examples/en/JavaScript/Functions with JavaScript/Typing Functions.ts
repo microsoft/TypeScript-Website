@@ -129,4 +129,4 @@ const boolValue2 = boolOrNumberOrStringFunction("string")
 // variables in type definitions.
 
 // example:generic-functions
-
+// example:function-chaining

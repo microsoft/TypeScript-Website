@@ -27,18 +27,18 @@ type ExtractDogish<A> = A extends { barks: true } ? A : never;
 
 // A cat doesn't bark, so it will return never
 type NeverCat = ExtractDogish<Cat>;
-// A wolf will bark, so it returns the wolf
+// A wolf will bark, so it returns the wolf shape
 type Wolfish = ExtractDogish<Wolf>;
 
 // This becomes useful when you want to work with a
 // union of many types and reduce the number of potential
-// options in a union,
+// options in a union:
 
 type Animals = Cat | Dog | Cheetah | Wolf;
 
 // When you apply ExtractDogish to a union type, it is the
 // same as running the conditional against each member of
-// the type
+// the type:
 
 type Dogish = ExtractDogish<Animals>;
 
@@ -55,19 +55,19 @@ type Dogish = ExtractDogish<Animals>;
 // Deferred Conditional Types
 
 // Conditional types can be used to tighten your APIs which
-// can return different types depending on the inputs.
+// can return different types depending on the inputs. 
 
 // For example this function which could return either a
 // string or number depending on the boolean passed in.
 
-declare function getUserID<T extends boolean>(user: {}, oldSystem: T): T extends true ? string : number;
+declare function getAdoptionID<T extends boolean>(user: {}, oldSystem: T): T extends true ? string : number;
 
 // Then depending on how much the type-system knows about
 // the boolean, you will get different return types:
 
-let stringReturnValue = getUserID({}, /* oldSystem */ true);
-let numberReturnValue = getUserID({}, /* oldSystem */ false);
-let stringOrID = getUserID({}, /* oldSystem */ Math.random() < 0.5);
+let stringReturnValue = getAdoptionID({}, /* oldSystem */ true);
+let numberReturnValue = getAdoptionID({}, /* oldSystem */ false);
+let stringOrID = getAdoptionID({}, /* oldSystem */ Math.random() < 0.5);
 
 // In this case above TypeScript can know the return value
 // instantly. However, you can use conditional types in functions
@@ -77,25 +77,31 @@ let stringOrID = getUserID({}, /* oldSystem */ Math.random() < 0.5);
 // Same as our Dogish above, but as a function instead
 declare function isCatish<T>(x: T): T extends { meows: true } ? T : undefined;
 
-// In this Generic function there are no constraints on the
-// generic parameter U, and so it could be any type.
+// There is an extra useful tool within conditional types, which
+// is being able to specifically tell TypeScript that it should
+// infer the type when deferring. That is the 'infer' keyword.
 
-// This means using Catish would need to wait to know what
-// the actual type of U is before it can be applied.
+// infer is typically used to create meta-types which inspect
+// the existing types in your code, think of it as creating 
+// a new variable inside the type
 
-function findOtherAnimalsOfType<U>(animal: U) {
-  let maybeCat = isCatish(animal);
+type GetReturnValue<Type> = Type extends (...args: any[]) => infer Return ? Return : Type
 
-  // You can use assignment to short-circuit the process
-  // if you' have a good idea about the types during
-  // implementation
-  let b: Cat | Cheetah | undefined = maybeCat;
-  return maybeCat;
-}
+// Roughly:
+//
+//  - this is a conditional generic type called GetReturnValue 
+//    which takes a type in it's first parameter
+//
+//  - the conditional checks if the type is a function, and 
+//    if so create a new type called Return based on the return
+//    value for that function
+//
+//  - If the pass checks, the type value is the inferred
+//    return value, otherwise it is the original Type
+//
 
-const a = findOtherAnimalsOfType<Animals>({ meow: true, fast: true });
-const b = findOtherAnimalsOfType<Cat>({ meows: true });
+type getAdoptionIDReturn = GetReturnValue<typeof getAdoptionID>
 
-// TODO: This example needs work!
-
-// typeof process("foo")
+// This fails the check for being a function, and would 
+// just return the type passed into it.
+type getCat = GetReturnValue<Cat>

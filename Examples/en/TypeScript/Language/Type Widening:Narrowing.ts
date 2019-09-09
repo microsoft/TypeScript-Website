@@ -57,5 +57,11 @@ if (quantumString) {
 // In strict mode the type quantumString has two representations.
 // Inside the if, the type was narrowed to just string.
 
+// You can see more examples of narrowing in 
+//
+// example:union-and-intersection-types
+// example:discriminate-types
+
+// And even more resources on the web:
 // https://mariusschulz.com/blog/literal-type-widening-in-typescript
 // https://sandersn.github.io/manual/Widening-and-Narrowing-in-Typescript.html

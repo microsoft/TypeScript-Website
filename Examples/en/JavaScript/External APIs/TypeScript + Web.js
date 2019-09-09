@@ -72,8 +72,8 @@ document.body.appendChild(popover);
 // on the x in the top right of the popup.
 
 // This example shows how you can work with the DOM API
-// in TypeScript - but it only shows a subset of working
-// with the browser's APIs which TypeScript supports
+// in JavaScript - but using TypeScript to provide great
+// tooling support.
 
-// There is an extended example for TypeScript with the
-// WebGL example available here: example:typescript---webgl
+// There is an extended example for TypeScript tooling with
+// WebGL available here: example:typescript---webgl

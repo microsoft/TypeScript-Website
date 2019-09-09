@@ -7,8 +7,7 @@ type OddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
 type AMessyUnion = "hello" | 156 | { error: true };
 
 // If the use of "open" and "closed" vs string is
-// new to you, check out:  example:literals and
-// example:type-widening:narrowing
+// new to you, check out: example:literals
 
 // We can mix different types into a union, and
 // what we're saying is that the value is one of those types.

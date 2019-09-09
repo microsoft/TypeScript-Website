@@ -17,7 +17,6 @@
 // First we'll look at how generic interfaces are used to map
 // React components. This is a faux-React functional component:
 
-
 type FauxactFunctionComponent<Props extends {}> =
   (props: Props, context?: any) => FauxactFunctionComponent<any> | null |  JSX.Element
 
