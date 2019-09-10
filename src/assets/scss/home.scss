@@ -576,5 +576,11 @@ blockquote.twitter-tweet a:focus {
       float: left;
     }
   }
+}
 
+.highlight-border {
+  display:block;
+}
+.highlight-border:focus, .highlight-border:active  {
+  border: 2px solid black;
 }
