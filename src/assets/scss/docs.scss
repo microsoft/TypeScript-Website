@@ -3,11 +3,15 @@
  * Docs
  */
 
-/* Ignores code blocks in markdown */
+@media screen and (-ms-high-contrast: active) {
+  .anchor-hash {
+    opacity: 1;
+  }
+}
 
 .anchor-hash {
   opacity: 0.2;
-  
+
   &:hover {
     opacity: 1;
   }
@@ -398,7 +402,7 @@ h1, h2, h3 {
 
     &.headline {
       width: 300px;
-      height: 200px;  
+      height: 200px;
     }
 
     &.links {
