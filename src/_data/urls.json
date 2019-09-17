@@ -1,6 +1,6 @@
 {
-  "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-353",
-  "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-353",
+  "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-363",
+  "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-363",
   "vscode_download": "https://code.visualstudio.com",
   "sublime_ts_download": "https://github.com/Microsoft/TypeScript-Sublime-Plugin",
   "atom_ts_download": "https://atom.io/packages/atom-typescript",
