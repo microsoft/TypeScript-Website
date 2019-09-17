@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us" ng-app="examplesApp">
+<!DOCTYPE html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us" lang="en">
 {% include head.html %}
 <body>
 	{% include skip-link.html %}
     {% include header.html %}
 	{% include update-banner.html %}
 	<main id="main-content" class="content">
-		{% include anchor_headings.html html=content anchorBody="#" anchorClass="anchor-hash"%}
+		{% include anchor_headings.html html=content anchorBody="#" anchorClass="anchor-hash" anchorTitle="Link to this header"%}
 	</main>
 	{% include footer.html %}
 </body>
