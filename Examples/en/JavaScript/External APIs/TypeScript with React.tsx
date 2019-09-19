@@ -1,15 +1,15 @@
 //// { order: 2, compiler: { jsx: 2, esModuleInterop: true } }
 
 // React is a popular library for creating user interfaces.
-// It provides a JavaScript abstraction for creating view 
+// It provides a JavaScript abstraction for creating view
 // components using a JavaScript language extension called
-// JSX. 
+// JSX.
 
-// TypeScript supports JSX, and provides a rich set of 
+// TypeScript supports JSX, and provides a rich set of
 // type tools to richly model how components connect.
 
 // To understand how TypeScript works with React components
-// you may want a primer on generics: 
+// you may want a primer on generics:
 
 // - example:generic-functions
 // - example:generic-classes
@@ -18,28 +18,28 @@
 // React components. This is a faux-React functional component:
 
 type FauxactFunctionComponent<Props extends {}> =
-  (props: Props, context?: any) => FauxactFunctionComponent<any> | null |  JSX.Element
+  (props: Props, context?: any) => FauxactFunctionComponent<any> | null | JSX.Element
 
 
-// Roughly: 
+// Roughly:
 //
-// FauxactFunctionComponent is a generic function which relies on 
+// FauxactFunctionComponent is a generic function which relies on
 // another type Props. Props has to be an object (to make sure
-// you don't pass a primitive) and the Props type will be 
+// you don't pass a primitive) and the Props type will be
 // re-used as the first argument in the function.
 
 // To use it, you need a props type:
 
-interface DateProps { iso8601Date: string }
+interface DateProps { iso8601Date: string, message: string }
 
 // We can then create a DateComponent which uses the
 // DateProp interface, and renders the date.
 
 const DateComponent: FauxactFunctionComponent<DateProps> =
-  (props) => <date>{props.iso8601Date}</date>
+  (props) => <time datetime={props.iso8601Date}>{props.message}</time>
 
-// This creates a function which is generic with a Props 
-// variable which has to be an object. The component function 
+// This creates a function which is generic with a Props
+// variable which has to be an object. The component function
 // returns either another component function or null.
 
 
@@ -65,7 +65,7 @@ interface FauxactClassComponent<Props extends {}, State = {}> {
 
 import React from 'react';
 
-// Your props are your public API, so it's worth taking the 
+// Your props are your public API, so it's worth taking the
 // time to use JSDoc to explain how it works:
 
 export interface Props {

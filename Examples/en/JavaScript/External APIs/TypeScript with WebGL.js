@@ -1,7 +1,7 @@
-//// { order: 5 }
+//// { order: 5, isJavaScript: true }
 
-// This example create a HTML canvas which uses WebGL to 
-// render spinning confetti using JavaScript. We're going 
+// This example create a HTML canvas which uses WebGL to
+// render spinning confetti using JavaScript. We're going
 // to walk through the code to understand how it works, and
 // see how TypeScript's tooling provides useful insight.
 
@@ -67,21 +67,21 @@ void main() {
   float angle = a_startAngle + a_angularVelocity * u_time;
   float vertPosition = 1.1 - mod(u_time * .25 + a_particleY, 2.2);
   float viewAngle = a_particleAngle + mod(u_time * .25, 6.28);
-  
+
   mat4 vMatrix = mat4(
     1.3, 0.0, 0.0, 0.0,
     0.0, 1.3, 0.0, 0.0,
     0.0, 0.0, 1.0, 1.0,
     0.0, 0.0, 0.0, 1.0
   );
-  
+
   mat4 shiftMatrix = mat4(
     1.0, 0.0, 0.0, 0.0,
     0.0, 1.0, 0.0, 0.0,
     0.0, 0.0, 1.0, 0.0,
     a_particleDistance * sin(viewAngle), vertPosition, a_particleDistance * cos(viewAngle), 1.0
   );
-  
+
   mat4 pMatrix = mat4(
     cos(a_rotationAxisAngle), sin(a_rotationAxisAngle), 0.0, 0.0,
     -sin(a_rotationAxisAngle), cos(a_rotationAxisAngle), 0.0, 0.0,
@@ -93,11 +93,11 @@ void main() {
     0.0, -sin(angle), cos(angle), 0.0,
     0.0, 0.0, 0.0, 1.0
   );
-  
+
   gl_Position = vMatrix * shiftMatrix * pMatrix * vec4(a_position * 0.03, 0.0, 1.0);
   vec4 normal = vec4(0.0, 0.0, 1.0, 0.0);
   vec4 transformedNormal = normalize(pMatrix * normal);
-  
+
   float dotNormal = abs(dot(normal.xyz, transformedNormal.xyz));
   float regularLighting = dotNormal / 2.0 + 0.5;
   float glanceLighting = smoothstep(0.92, 0.98, dotNormal);
@@ -106,7 +106,7 @@ void main() {
     mix(0.5 * regularLighting, 1.0, glanceLighting),
     mix((0.5 + transformedNormal.z / 2.0) * regularLighting, 1.0, glanceLighting)
   );
-  
+
   v_position = a_position;
   v_overlight = 0.9 + glanceLighting * 0.1;
 }
@@ -202,7 +202,7 @@ const NUM_VERTICES = 4
 
 const NUM_INDICES = 6
 
-// Create the arrays of inputs for the vertex shaders 
+// Create the arrays of inputs for the vertex shaders
 const vertices = new Float32Array(NUM_PARTICLES * STRIDE * NUM_VERTICES)
 const indices = new Uint16Array(NUM_PARTICLES * NUM_INDICES)
 
@@ -240,7 +240,7 @@ for (let i = 0; i < NUM_PARTICLES; i++) {
   indices[indicesPtr + 5] = vertexPtr + 3
 }
 
-// Pass in the data to the WebGL context 
+// Pass in the data to the WebGL context
 gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW)
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW)
 
@@ -272,7 +272,7 @@ gl.viewport(0, 0, canvas.width, canvas.height)
   requestAnimationFrame(frame)
 })()
 
-// Add the new canvas element into the bottom left 
+// Add the new canvas element into the bottom left
 // of the playground
 document.body.appendChild(canvas)
 
