@@ -1,5 +1,5 @@
 // import ts from 'monaco-typescript/src/lib/typescriptServices';
-import {SupportedTSVersions} from "./monacoTSVersions"
+import {SupportedTSVersions, monacoTSVersions} from "./monacoTSVersions"
 
 /**
  * These are settings for the playground which are the equivalent to props in React
@@ -96,7 +96,50 @@ function createFileUri(config: PlaygroundConfig, compilerOptions: import("monaco
   return monaco.Uri.file(filepath)
 }
 
+type SetupOptions = {
+  /** The module to grab for monaco-editor */
+  monacoModule?: string
+} &
+{ 
+  /** The version to grab of monaco-editor directly */ 
+  monacoVersion: string } 
+| { 
+  /** The TypeScript versions which you can used directly */  
+  tsVersion: import("./monacoTSVersions").SupportedTSVersions  
+}
 
+declare const monaco: typeof import("monaco-editor")
+
+/** Sets up monaco with your TypeScript version */
+export async function prepareMonaco(opts: SetupOptions, callback: (monaco: typeof import("monaco-editor")) => void) { 
+  let module = "monacoModule" in opts ? opts.monacoModule : "monaco-editor"
+  let versionViaTS = "monacoVersion" in opts ? opts.monacoVersion : undefined
+
+  if ("tsVersion" in opts) {
+    const meta = monacoTSVersions[opts.tsVersion]
+    if (!meta) throw new Error("You did not provide a known tsVersion, known versions are: " + Object.keys(monacoTSVersions))
+    module = meta.module
+    versionViaTS = meta.monaco
+  }
+
+  const versionViaEditor = "monacoVersion" in opts ? opts.monacoVersion : undefined
+  const monacoVersion = versionViaTS || versionViaEditor 
+
+  if (!monacoVersion) throw new Error("You did not provide a known tsVersion or monacoVersion to prepareMonaco")
+  console.log(require)
+  // if (!("config" in (require as any))) throw new Error("You you have not included require.js in the site")
+  
+  const r = require as any
+  r.config({ 
+    paths:{ 
+      vs: `https://unpkg.com/${module}@${monacoVersion}/min/vs` }, 
+      ignoreDuplicateModules: ["vs/editor/editor.main"] 
+  });
+
+  r(["vs/editor/editor.main"], () => {
+    callback(monaco)
+  });
+}
 
 export async function setupPlayground(config: PlaygroundConfig, monaco: typeof import("monaco-editor")) {
   // const defaults = monacoLanguageDefaults(config, monaco)
@@ -112,3 +155,7 @@ export async function setupPlayground(config: PlaygroundConfig, monaco: typeof i
   return editor
 }
 
+
+
+window.prepareMonaco = prepareMonaco
+window.setupPlayground = setupPlayground

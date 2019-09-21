@@ -1,10 +1,15 @@
 <html>
 <body>
-  <script src="https://unpkg.com/monaco-editor@0.15.6/min/vs/loader.js"></script>
-  <script src="./typescript-sandbox/index.ts"></script>
-  <script>require(["vs/editor/editor.main"], ()=> {
-    // Start up playground
-    console.log("OK")
-  });</script>
+    <script src="https://unpkg.com/monaco-editor@0.18.1/min/vs/loader.js"></script>
+    <script src="./typescript-sandbox/index.ts"></script>
+  
+  <script>
+    prepareMonaco({ tsVersion: "3.6.3"}, (monaco) => {
+      // Ready
+      console.log("READY")
+      console.log(monaco)
+    })
+ ;</script>
 </body>
 </html>
+
