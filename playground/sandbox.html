@@ -11,7 +11,12 @@
           const mainSandbox = sandbox.create({
             text: "1234",
             useJavaScript: false,
-            domID: "editor"
+            domID: "editor",
+            logger: {
+              error: console.error,
+              log: console.log
+            }
+
            }, monaco)
         });
 

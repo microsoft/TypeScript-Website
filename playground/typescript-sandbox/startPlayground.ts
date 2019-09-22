@@ -9,7 +9,7 @@ type Monaco = typeof import("monaco-editor")
  * These are settings for the playground which are the equivalent to props in React
  * any changes to it should require a new setup of the playground
  */
-type PlaygroundConfig = {
+export type PlaygroundConfig = {
   /** The default source code for the playground */
   text: string
   /** Should it run the ts or js IDE services */
@@ -165,7 +165,7 @@ export async function createTypeScriptSandbox(partialConfig: Partial<PlaygroundC
       }
 
       const code = editor.getModel().getValue()
-      detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime)
+      detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
     })
   }
 
