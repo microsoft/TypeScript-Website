@@ -1,5 +1,9 @@
 // import ts from 'monaco-typescript/src/lib/typescriptServices';
-import {SupportedTSVersions, monacoTSVersions} from "./monacoTSVersions"
+import { monacoTSVersions } from "./monacoTSVersions"
+import { detectNewImportsToAcquireTypeFor } from "./typeAcquisition"
+
+type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
+type Monaco = typeof import("monaco-editor")
 
 /**
  * These are settings for the playground which are the equivalent to props in React
@@ -10,25 +14,20 @@ type PlaygroundConfig = {
   text: string
   /** Should it run the ts or js IDE services */
   useJavaScript: boolean
-  /** The version of TS we should use */
-  typeScriptVersion: "bundled" | SupportedTSVersions | "nightly"
   /** Compiler options which are automatically just forwarded on */
-  compilerOptions: import("monaco-editor").languages.typescript.CompilerOptions
+  compilerOptions: CompilerOptions
   /** Optional monaco settings overrides */
   monacoSettings?: import("monaco-editor").editor.IEditorOptions
+  /** Acquire types via type acquisition */
+  acquireTypes: boolean
+  /** Logging system */
+  logger: { log: (...args) => void, error: (...args) => void }
 }
 &
   ({ /** theID of a dom node to add monaco to */ domID: string }
   |{/** theID of a dom node to add monaco to */  elementToAppend: HTMLElement })
 
 const languageType = (config: PlaygroundConfig) => config.useJavaScript ? "javascript" : "typescript"
-
-const monacoLanguageDefaults = (config: PlaygroundConfig, monaco: typeof import("monaco-editor")) =>
-  config.useJavaScript ? monaco.languages.typescript.javascriptDefaults : monaco.languages.typescript.typescriptDefaults
-
-const monacoLanguageWorker = (config: PlaygroundConfig, monaco: typeof import("monaco-editor")) =>
-   config.useJavaScript ? monaco.languages.typescript.getJavaScriptWorker : monaco.languages.typescript.getTypeScriptWorker
-
 
 /** Default Monaco settings for playground */
 const sharedEditorOptions = {
@@ -38,8 +37,9 @@ const sharedEditorOptions = {
   scrollBeyondLastColumn: 3
 };
 
-export function getDefaultCompilerOptions(config: PlaygroundConfig, monaco: typeof import("monaco-editor")) {
-  const settings: import("monaco-editor").languages.typescript.CompilerOptions = {
+/** Our defaults for the playground */
+export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monaco: Monaco) {
+  const settings: CompilerOptions = {
     noImplicitAny: true,
     strictNullChecks: true,
     strictFunctionTypes: true,
@@ -76,19 +76,24 @@ export function getDefaultCompilerOptions(config: PlaygroundConfig, monaco: type
   return settings;
 }
 
-export function defaultPlaygroundSettings(text: string, domID: string) {
+export function defaultPlaygroundSettings() {
   const config: PlaygroundConfig = {
-    text,
-    domID,
+    text:"",
+    domID: undefined,
+    elementToAppend: undefined,
     compilerOptions: {},
-    typeScriptVersion: "bundled",
-    useJavaScript: false
+    acquireTypes: true,
+    useJavaScript: false,
+    logger: {
+      error: () => {},
+      log: () => {}
+    }
   }
   return config
 }
 
 /** Creates a monaco file reference, basically a fancy path */
-function createFileUri(config: PlaygroundConfig, compilerOptions: import("monaco-editor").languages.typescript.CompilerOptions, monaco: typeof import("monaco-editor")) {
+function createFileUri(config: PlaygroundConfig, compilerOptions: CompilerOptions, monaco: Monaco) {
   const isJSX = compilerOptions.jsx !== monaco.languages.typescript.JsxEmit.None
   const fileExt = config.useJavaScript ? "js" : "ts"
   const ext = isJSX ? fileExt + "x" : fileExt
@@ -100,18 +105,17 @@ type SetupOptions = {
   /** The module to grab for monaco-editor */
   monacoModule?: string
 } &
-{ 
-  /** The version to grab of monaco-editor directly */ 
-  monacoVersion: string } 
-| { 
-  /** The TypeScript versions which you can used directly */  
-  tsVersion: import("./monacoTSVersions").SupportedTSVersions  
+{
+  /** The version to grab of monaco-editor directly */
+  monacoVersion: string }
+| {
+  /** The TypeScript versions which you can used directly */
+  tsVersion: import("./monacoTSVersions").SupportedTSVersions
 }
 
-declare const monaco: typeof import("monaco-editor")
 
 /** Sets up monaco with your TypeScript version */
-export async function prepareMonaco(opts: SetupOptions, callback: (monaco: typeof import("monaco-editor")) => void) { 
+export function requireConfig(opts: SetupOptions) {
   let module = "monacoModule" in opts ? opts.monacoModule : "monaco-editor"
   let versionViaTS = "monacoVersion" in opts ? opts.monacoVersion : undefined
 
@@ -123,39 +127,67 @@ export async function prepareMonaco(opts: SetupOptions, callback: (monaco: typeo
   }
 
   const versionViaEditor = "monacoVersion" in opts ? opts.monacoVersion : undefined
-  const monacoVersion = versionViaTS || versionViaEditor 
+  const monacoVersion = versionViaTS || versionViaEditor
 
   if (!monacoVersion) throw new Error("You did not provide a known tsVersion or monacoVersion to prepareMonaco")
-  console.log(require)
-  // if (!("config" in (require as any))) throw new Error("You you have not included require.js in the site")
-  
-  const r = require as any
-  r.config({ 
-    paths:{ 
-      vs: `https://unpkg.com/${module}@${monacoVersion}/min/vs` }, 
-      ignoreDuplicateModules: ["vs/editor/editor.main"] 
-  });
 
-  r(["vs/editor/editor.main"], () => {
-    callback(monaco)
-  });
+  return {
+    paths:{
+      vs: `https://unpkg.com/${module}@${monacoVersion}/min/vs` },
+      ignoreDuplicateModules: ["vs/editor/editor.main"]
+  }
 }
 
-export async function setupPlayground(config: PlaygroundConfig, monaco: typeof import("monaco-editor")) {
-  // const defaults = monacoLanguageDefaults(config, monaco)
+/** Creates a sandbox editor, and returns a set of useful functions and the editor */
+export async function createTypeScriptSandbox(partialConfig: Partial<PlaygroundConfig>, monaco: Monaco) {
+  const config = { ...defaultPlaygroundSettings(), ...partialConfig }
+  if (!("domID" in config) && !("elementToAppend" in config)) throw new Error("You did not provide a domID or elementToAppend")
 
+  const compilerDefaults = getDefaultSandboxCompilerOptions(config, monaco)
   const language = languageType(config)
-  const filePath = createFileUri(config, config.compilerOptions, monaco)
+  const filePath = createFileUri(config, compilerDefaults, monaco)
   const element = "domID" in config ? document.getElementById(config.domID) : config.elementToAppend
   const model = monaco.editor.createModel(config.text, language, filePath);
 
   const monacoSettings = Object.assign({ model }, sharedEditorOptions, config.monacoSettings || {})
   const editor = monaco.editor.create(element, monacoSettings);
 
-  return editor
+  const getWorker = config.useJavaScript ? monaco.languages.typescript.getJavaScriptWorker : monaco.languages.typescript.getTypeScriptWorker
+  const defaults = config.useJavaScript ? monaco.languages.typescript.javascriptDefaults : monaco.languages.typescript.typescriptDefaults
+
+  if (config.acquireTypes) {
+    editor.onDidChangeModelContent(() => {
+
+      // In the future it'd be good to add support for an 'add many files'
+      const addLibraryToRuntime = (code: string, path: string) => {
+         defaults.addExtraLib(code, path);
+         config.logger.log(`Adding ${path} to runtime`)
+      }
+
+      const code = editor.getModel().getValue()
+      detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime)
+    })
+  }
+
+  const getRunnableJS = async () => {
+    const model = editor.getModel()
+    if (config.useJavaScript) {
+      return model.getValue()
+    }
+
+    const worker = await getWorker()
+    const client = await worker(model.uri)
+    const jsResult = client.getEmitOutput(model.uri.toString())
+
+    console.log("JS results", jsResult)
+    return jsResult[0].text
+  }
+
+  return { config, editor, getWorker, getRunnableJS }
 }
 
 
-
-window.prepareMonaco = prepareMonaco
-window.setupPlayground = setupPlayground
+window.sandbox = {
+  requireConfig: requireConfig,
+  create: createTypeScriptSandbox,
+}

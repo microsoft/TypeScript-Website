@@ -1,15 +1,26 @@
 <html>
-<body>
+  <body>
     <script src="https://unpkg.com/monaco-editor@0.18.1/min/vs/loader.js"></script>
     <script src="./typescript-sandbox/index.ts"></script>
-  
-  <script>
-    prepareMonaco({ tsVersion: "3.6.3"}, (monaco) => {
-      // Ready
-      console.log("READY")
-      console.log(monaco)
-    })
- ;</script>
-</body>
-</html>
 
+    <script>
+        const requireConfig = sandbox.requireConfig({ tsVersion: "3.6.3" })
+        require.config(requireConfig)
+
+        require(["vs/editor/editor.main"], (monaco) => {
+          const mainSandbox = sandbox.create({
+            text: "1234",
+            useJavaScript: false,
+            domID: "editor"
+           }, monaco)
+        });
+
+        // One potential route for the playground
+        require(["vs/language/typescript/tsWorker"], (ts) => {
+          console.log("ts", ts)
+        })
+    </script>
+
+    <div id="editor" style="height:300px;"></div>
+  </body>
+</html>
