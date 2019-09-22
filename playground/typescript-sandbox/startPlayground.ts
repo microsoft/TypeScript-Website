@@ -139,7 +139,7 @@ export function requireConfig(opts: SetupOptions) {
 }
 
 /** Creates a sandbox editor, and returns a set of useful functions and the editor */
-export async function createTypeScriptSandbox(partialConfig: Partial<PlaygroundConfig>, monaco: Monaco) {
+export function createTypeScriptSandbox(partialConfig: Partial<PlaygroundConfig>, monaco: Monaco) {
   const config = { ...defaultPlaygroundSettings(), ...partialConfig }
   if (!("domID" in config) && !("elementToAppend" in config)) throw new Error("You did not provide a domID or elementToAppend")
 
@@ -161,7 +161,7 @@ export async function createTypeScriptSandbox(partialConfig: Partial<PlaygroundC
       // In the future it'd be good to add support for an 'add many files'
       const addLibraryToRuntime = (code: string, path: string) => {
          defaults.addExtraLib(code, path);
-         config.logger.log(`Adding ${path} to runtime`)
+         config.logger.log(`[ATA] Adding ${path} to runtime`)
       }
 
       const code = editor.getModel().getValue()
@@ -175,15 +175,17 @@ export async function createTypeScriptSandbox(partialConfig: Partial<PlaygroundC
       return model.getValue()
     }
 
-    const worker = await getWorker()
-    const client = await worker(model.uri)
-    const jsResult = client.getEmitOutput(model.uri.toString())
-
-    console.log("JS results", jsResult)
-    return jsResult[0].text
+    const client = await getWorkerProcess()
+    const jsResult = await client.getEmitOutput(model.uri.toString())
+    return jsResult.outputFiles[0].text
   }
 
-  return { config, editor, getWorker, getRunnableJS }
+  const getWorkerProcess =  async () => {
+    const worker = await getWorker()
+    return await worker(model.uri)
+  }
+
+  return { config, editor, getWorkerProcess, getRunnableJS }
 }
 
 

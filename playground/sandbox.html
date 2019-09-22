@@ -9,7 +9,7 @@
 
         require(["vs/editor/editor.main"], (monaco) => {
           const mainSandbox = sandbox.create({
-            text: "1234",
+            text: "import 'danger'",
             useJavaScript: false,
             domID: "editor",
             logger: {
@@ -18,6 +18,7 @@
             }
 
            }, monaco)
+           window.mainSandbox = mainSandbox
         });
 
         // One potential route for the playground

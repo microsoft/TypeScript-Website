@@ -7,7 +7,7 @@ globalishObj.typeDefinitions = {};
  * Type Defs we've already got, and nulls when something has failed.
  * This is to make sure that it doesn't infinite loop.
  */
-export const acquiredTypeDefs: { [name: string]: string | null } = {};
+export const acquiredTypeDefs: { [name: string]: string | null } = globalishObj;
 
 export type AddLibToRuntimeFunc = (code: string, path: string) => void;
 
@@ -182,7 +182,6 @@ const addModuleToRuntime = async (mod: string, path: string, config: ATAConfig) 
  * @returns {Promise<{ mod: string, path: string, packageJSON: any }>}
  */
 const getModuleAndRootDefTypePath = async (packageName: string, config: ATAConfig) => {
-  // For modules
   const url = moduleJSONURL(packageName);
 
   const response = await config.fetcher(url);
@@ -192,7 +191,7 @@ const getModuleAndRootDefTypePath = async (packageName: string, config: ATAConfi
 
   const responseJSON = await response.json();
   if (!responseJSON) {
-    return errorMsg(`Could not get Algolia JSON for the module '${packageName}'`, response, config);
+    return errorMsg(`Could the Algolia JSON was un-parsable for the module '${packageName}'`, response, config);
   }
 
   if (!responseJSON.types) {
@@ -216,6 +215,8 @@ const getModuleAndRootDefTypePath = async (packageName: string, config: ATAConfi
     if (!responseJSON) {
       return errorMsg(`Could not get Package JSON for the module '${packageName}'`, response, config);
     }
+
+    config.addLibraryToRuntime(JSON.stringify(responseJSON, null, "  "), `node_modules/${packageName}/package.json`)
 
     // Get the path of the root d.ts file
 
@@ -312,7 +313,6 @@ const getDependenciesForModule = (
   filteredModulesToLookAt.forEach(async name => {
     // Support grabbing the hard-coded node modules if needed
     const moduleToDownload = mapModuleNameToModule(name);
-    config.logger.log(`[ATA] Looking at ${moduleToDownload}`);
 
     if (!moduleName && moduleToDownload.startsWith(".")) {
       return config.logger.log("[ATA] Can't resolve relative dependencies from the playground root");
@@ -322,6 +322,8 @@ const getDependenciesForModule = (
     if (acquiredTypeDefs[moduleID] || acquiredTypeDefs[moduleID] === null) {
       return;
     }
+
+    config.logger.log(`[ATA] Looking at ${moduleToDownload}`);
 
     const modIsScopedPackageOnly = moduleToDownload.indexOf("@") === 0 && moduleToDownload.split("/").length === 2;
     const modIsPackageOnly = moduleToDownload.indexOf("@") === -1 && moduleToDownload.split("/").length === 1;
