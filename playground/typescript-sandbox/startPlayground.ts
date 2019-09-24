@@ -1,4 +1,3 @@
-// import ts from 'monaco-typescript/src/lib/typescriptServices';
 import { monacoTSVersions } from "./monacoTSVersions"
 import { detectNewImportsToAcquireTypeFor } from "./typeAcquisition"
 import { sandboxTheme } from "./theme"
@@ -35,6 +34,9 @@ const sharedEditorOptions: import("monaco-editor").editor.IEditorOptions = {
   automaticLayout: true,
   scrollBeyondLastLine: true,
   scrollBeyondLastColumn: 3,
+  minimap: {
+    enabled: false
+  }
 };
 
 /** Our defaults for the playground */
@@ -76,6 +78,7 @@ export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monac
   return settings;
 }
 
+/** The default settings which we apply a partial over */
 export function defaultPlaygroundSettings() {
   const config: PlaygroundConfig = {
     text:"",
@@ -192,7 +195,7 @@ export function createTypeScriptSandbox(partialConfig: Partial<PlaygroundConfig>
 }
 
 
-window.sandbox = {
+(window as any).sandbox = {
   requireConfig: requireConfig,
   create: createTypeScriptSandbox,
 }

@@ -1,0 +1,17 @@
+.playground-sidebar {
+  background-color: antiquewhite;
+  flex-basis: 320px;
+  padding: 10px;
+  width: 320px;
+  max-width: 320px;
+}
+
+.playground-sidebar pre {
+  height: 100%;
+  width: 300px;
+  overflow: scroll;
+}
+.playground-sidebar code {
+  height: 100%;
+  width: 300px;
+}
