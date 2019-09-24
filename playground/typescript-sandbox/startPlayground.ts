@@ -1,6 +1,7 @@
 // import ts from 'monaco-typescript/src/lib/typescriptServices';
 import { monacoTSVersions } from "./monacoTSVersions"
 import { detectNewImportsToAcquireTypeFor } from "./typeAcquisition"
+import { sandboxTheme } from "./theme"
 
 type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
 type Monaco = typeof import("monaco-editor")
@@ -30,11 +31,10 @@ export type PlaygroundConfig = {
 const languageType = (config: PlaygroundConfig) => config.useJavaScript ? "javascript" : "typescript"
 
 /** Default Monaco settings for playground */
-const sharedEditorOptions = {
-  minimap: { enabled: false },
+const sharedEditorOptions: import("monaco-editor").editor.IEditorOptions = {
   automaticLayout: true,
   scrollBeyondLastLine: true,
-  scrollBeyondLastColumn: 3
+  scrollBeyondLastColumn: 3,
 };
 
 /** Our defaults for the playground */
@@ -148,6 +148,9 @@ export function createTypeScriptSandbox(partialConfig: Partial<PlaygroundConfig>
   const filePath = createFileUri(config, compilerDefaults, monaco)
   const element = "domID" in config ? document.getElementById(config.domID) : config.elementToAppend
   const model = monaco.editor.createModel(config.text, language, filePath);
+  
+  monaco.editor.defineTheme("sandbox", sandboxTheme)
+  monaco.editor.setTheme("sandbox")
 
   const monacoSettings = Object.assign({ model }, sharedEditorOptions, config.monacoSettings || {})
   const editor = monaco.editor.create(element, monacoSettings);
