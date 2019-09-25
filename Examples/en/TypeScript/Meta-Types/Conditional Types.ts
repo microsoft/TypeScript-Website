@@ -8,10 +8,12 @@
 //   A extends B ? C : D
 //
 // Where the conditional is whether a type extends an
-// expression, and if so what type should be returned. A
-// type could also be deferred for
+// expression, and if so what type should be returned.
 
-// Let's go through some simple examples
+// Let's go through some examples, for brevity we're
+// going to use single letters for generics. This is optional
+// but restricting ourselves to 60 characters makes it
+// hard to fit on screen.
 
 type Cat = { meows: true };
 type Dog = { barks: true };
@@ -44,30 +46,31 @@ type Dogish = ExtractDogish<Animals>;
 
 // = ExtractDogish<Cat> | ExtractDogish<Dog> |
 //   ExtractDogish<Cheetah> | ExtractDogish<Wolf>
-
+//
 // = never | Dog | never | Wolf
-
+//
 // = Dog | Wolf (see example:unknown-and-never)
 
-// This is call a distributive conditional type because the
-// type distributes over each member of the union.
+// This is called a distributive conditional type because
+// the type distributes over each member of the union.
 
 // Deferred Conditional Types
 
 // Conditional types can be used to tighten your APIs which
-// can return different types depending on the inputs. 
+// can return different types depending on the inputs.
 
 // For example this function which could return either a
 // string or number depending on the boolean passed in.
 
-declare function getAdoptionID<T extends boolean>(user: {}, oldSystem: T): T extends true ? string : number;
+declare function getID<T extends boolean>(fancy: T):
+  T extends true ? string : number;
 
 // Then depending on how much the type-system knows about
 // the boolean, you will get different return types:
 
-let stringReturnValue = getAdoptionID({}, /* oldSystem */ true);
-let numberReturnValue = getAdoptionID({}, /* oldSystem */ false);
-let stringOrID = getAdoptionID({}, /* oldSystem */ Math.random() < 0.5);
+let stringReturnValue = getID(true);
+let numberReturnValue = getID(false);
+let stringOrID = getID(Math.random() < 0.5);
 
 // In this case above TypeScript can know the return value
 // instantly. However, you can use conditional types in functions
@@ -82,17 +85,18 @@ declare function isCatish<T>(x: T): T extends { meows: true } ? T : undefined;
 // infer the type when deferring. That is the 'infer' keyword.
 
 // infer is typically used to create meta-types which inspect
-// the existing types in your code, think of it as creating 
+// the existing types in your code, think of it as creating
 // a new variable inside the type
 
-type GetReturnValue<Type> = Type extends (...args: any[]) => infer Return ? Return : Type
+type GetReturnValue<T> =
+  T extends (...args: any[]) => infer R ? R : T;
 
 // Roughly:
 //
-//  - this is a conditional generic type called GetReturnValue 
-//    which takes a type in it's first parameter
+//  - this is a conditional generic type called GetReturnValue
+//    which takes a type in its first parameter
 //
-//  - the conditional checks if the type is a function, and 
+//  - the conditional checks if the type is a function, and
 //    if so create a new type called Return based on the return
 //    value for that function
 //
@@ -100,8 +104,8 @@ type GetReturnValue<Type> = Type extends (...args: any[]) => infer Return ? Retu
 //    return value, otherwise it is the original Type
 //
 
-type getAdoptionIDReturn = GetReturnValue<typeof getAdoptionID>
+type getIDReturn = GetReturnValue<typeof getID>
 
-// This fails the check for being a function, and would 
+// This fails the check for being a function, and would
 // just return the type passed into it.
 type getCat = GetReturnValue<Cat>
