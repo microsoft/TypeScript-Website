@@ -66,9 +66,8 @@ const validateUser = (user: User) => {
     return user.name !== "NaN";
   }
 
-  // According to the type system, this
-  // code path can never happen. This is because
-  // the two nevers match
+  // According to the type system, this code path can never
+  // happen, which matches thereturn type of neverReturns.
 
   return neverReturns();
 };
@@ -82,8 +81,8 @@ const validateUser = (user: User) => {
 // This is useful for presenting better error messages,
 // or closing resources like files or loops.
 
-// A very popular use for never, it to ensure that a
-// switch it exhaustive. E.g. that every path is covered.
+// A very popular use for never, is to ensure that a
+// switch is exhaustive. E.g., that every path is covered.
 
 // Here's an enum and an exhaustive switch, try adding
 // a new option to the enum (maybe Tulip?)
@@ -108,6 +107,7 @@ const flowerLatinName = (flower: Flower) => {
 
     default:
       const _exhaustiveCheck: never = flower;
+      return _exhaustiveCheck;
   }
 };
 
