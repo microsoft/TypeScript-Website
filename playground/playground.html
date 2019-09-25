@@ -9,7 +9,17 @@
         const requireConfig = sandbox.requireConfig({ tsVersion: "3.6.3" })
         require.config(requireConfig)
 
-        require(["vs/editor/editor.main"], (monaco) => {
+  // // The client has to grab these files for the worker thread, so they'd be in
+  // // cache already, the tsWorker has services embedded inside it, but it is
+  // // defined as an internal import in that file. So, after requiring the first
+  // // then the second is available inside require's cache.
+  // require([], (_, __) => {
+  //   require([], () => {
+  //     window.ts = ts
+  //   })
+  // })
+
+        require(["vs/editor/editor.main", "vs/language/typescript/tsWorker"], (monaco, worker, ts) => {
           const mainSandbox = sandbox.create({
             text: `
             // import ts from 'monaco-typescript/src/lib/typescriptServices';
@@ -164,7 +174,7 @@ export function createTypeScriptSandbox(partialConfig: Partial<PlaygroundConfig>
   const filePath = createFileUri(config, compilerDefaults, monaco)
   const element = "domID" in config ? document.getElementById(config.domID) : config.elementToAppend
   const model = monaco.editor.createModel(config.text, language, filePath);
-  
+
   monaco.editor.defineTheme("sandbox", sandboxTheme)
   monaco.editor.setTheme("sandbox")
 
@@ -221,7 +231,15 @@ window.sandbox = {
             }
            }, monaco)
            window.mainSandbox = mainSandbox
-           playground.setup(mainSandbox)
+
+          // The client has to grab these files for the worker thread, so they'd be in
+          // cache already, the tsWorker has services embedded inside it, but it is
+          // defined as an internal import in that file. So, after requiring the first
+          // then the second is available inside require's cache.
+          require(["vs/language/typescript/lib/typescriptServices"], () => {
+            window.ts = ts
+            playground.setup(mainSandbox, monaco, ts)
+          })
         });
     </script>
 

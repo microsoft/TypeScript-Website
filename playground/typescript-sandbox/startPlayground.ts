@@ -142,7 +142,7 @@ export function requireConfig(opts: SetupOptions) {
 }
 
 /** Creates a sandbox editor, and returns a set of useful functions and the editor */
-export function createTypeScriptSandbox(partialConfig: Partial<PlaygroundConfig>, monaco: Monaco) {
+export  const createTypeScriptSandbox = (partialConfig: Partial<PlaygroundConfig>, monaco: Monaco, ts: typeof import("typescript")) => {
   const config = { ...defaultPlaygroundSettings(), ...partialConfig }
   if (!("domID" in config) && !("elementToAppend" in config)) throw new Error("You did not provide a domID or elementToAppend")
 
@@ -151,7 +151,7 @@ export function createTypeScriptSandbox(partialConfig: Partial<PlaygroundConfig>
   const filePath = createFileUri(config, compilerDefaults, monaco)
   const element = "domID" in config ? document.getElementById(config.domID) : config.elementToAppend
   const model = monaco.editor.createModel(config.text, language, filePath);
-  
+
   monaco.editor.defineTheme("sandbox", sandboxTheme)
   monaco.editor.setTheme("sandbox")
 
