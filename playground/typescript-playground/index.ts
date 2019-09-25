@@ -5,7 +5,7 @@ type Sandbox = ReturnType<typeof import("../typescript-sandbox/startPlayground")
 
 import "../typescript-sandbox/index"
 import { compiledJSPlugin } from "./sidebar/compiledJS"
-import { createSidebar, createTabForPlugin } from "./createElements"
+import { createSidebar, createTabForPlugin, createTabBar, createPluginContainer, activatePlugin } from "./createElements"
 import { showDTSPlugin } from "./sidebar/dts"
 
 /** The interface of all sidebar plugins */
@@ -36,28 +36,38 @@ const setupPlayground = (sandbox: Sandbox) => {
   const sidebar = createSidebar()
   playgroundParent.appendChild(sidebar)
 
-  const tabBar = document.createElement("div")
-  tabBar.classList.add("tabview")
+  const tabBar = createTabBar()
   sidebar.appendChild(tabBar)
 
-  const container = document.createElement("div")
-  container.classList.add("container")
+  const container = createPluginContainer()
   sidebar.appendChild(container)
-  
+
   const plugins = defaultPluginFactories.map(f => f())
-
-  const tabs = plugins.map(p => createTabForPlugin(sandbox, p, container))
-  tabs.forEach(t => tabBar.appendChild(t))
-
-  // Choose which should be selected
-  const priorityPlugin = plugins.find(plugin => plugin.shouldBeSelected && plugin.shouldBeSelected())
-  const selectedPlugin = priorityPlugin || plugins[0]
-  tabs[plugins.indexOf(selectedPlugin)].onclick({} as any)
+  const tabs = plugins.map(p => createTabForPlugin(p))
 
   const currentPlugin = () => {
     const selectedTab = tabs.find(t => t.classList.contains("active"))
     return plugins[tabs.indexOf(selectedTab)]
   }
+
+  const tabClicked: HTMLElement["onclick"] = (e) => {
+    const previousPlugin = currentPlugin()
+    const newTab = e.target as HTMLElement
+    const newPlugin = plugins.find(p => p.displayName == newTab.textContent)
+    activatePlugin(newPlugin, previousPlugin, sandbox, tabBar, container)
+  }
+
+  tabs.forEach(t => {
+    tabBar.appendChild(t)
+    t.onclick = tabClicked
+  })
+
+  // Choose which should be selected
+  const priorityPlugin = plugins.find(plugin => plugin.shouldBeSelected && plugin.shouldBeSelected())
+  const selectedPlugin = priorityPlugin || plugins[0]
+  const selectedTab = tabs[plugins.indexOf(selectedPlugin)]
+  selectedTab.onclick({ target: selectedTab } as any)
+
 
   sandbox.editor.onDidChangeModelContent(_event => {
     const plugin = currentPlugin()

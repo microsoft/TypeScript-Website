@@ -6,7 +6,6 @@ export const compiledJSPlugin = () => {
   const plugin: PlaygroundPlugin =  {
     displayName: "JS",
     willMount: (sandbox, container) => {
-      // TODO: Monaco?
       const createCodePre = document.createElement("pre")
       codeElement = document.createElement("code")
 
@@ -14,7 +13,6 @@ export const compiledJSPlugin = () => {
       container.appendChild(createCodePre)
     },
     modelChanged: async (sandbox, model) => {
-      console.log("ok")
       codeElement.textContent = await sandbox.getRunnableJS()
     }
   }
