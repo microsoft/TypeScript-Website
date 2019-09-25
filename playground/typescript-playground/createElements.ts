@@ -8,6 +8,10 @@ export const createSidebar = () => {
   return sidebar
 }
 
+export const createTabView = () => {
+
+}
+
 export const createTabForPlugin = (sandbox: Sandbox,  plugin: PlaygroundPlugin, container: HTMLDivElement) => {
   const element = document.createElement("button")
   element.textContent = plugin.displayName

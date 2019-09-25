@@ -6,6 +6,7 @@ type Sandbox = ReturnType<typeof import("../typescript-sandbox/startPlayground")
 import "../typescript-sandbox/index"
 import { compiledJSPlugin } from "./sidebar/compiledJS"
 import { createSidebar, createTabForPlugin } from "./createElements"
+import { showDTSPlugin } from "./sidebar/dts"
 
 /** The interface of all sidebar plugins */
 export interface PlaygroundPlugin {
@@ -25,8 +26,9 @@ export interface PlaygroundPlugin {
   didUnmount?: (sandbox: Sandbox, container: HTMLDivElement) => void
 }
 
-const defaultPluginFactories: [() => PlaygroundPlugin] = [
-  compiledJSPlugin
+const defaultPluginFactories: (() => PlaygroundPlugin)[] = [
+  compiledJSPlugin,
+  showDTSPlugin
 ]
 
 const setupPlayground = (sandbox: Sandbox) => {
@@ -35,9 +37,11 @@ const setupPlayground = (sandbox: Sandbox) => {
   playgroundParent.appendChild(sidebar)
 
   const tabBar = document.createElement("div")
+  tabBar.classList.add("tabview")
   sidebar.appendChild(tabBar)
 
   const container = document.createElement("div")
+  container.classList.add("container")
   sidebar.appendChild(container)
   
   const plugins = defaultPluginFactories.map(f => f())
