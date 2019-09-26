@@ -54,7 +54,7 @@ Your default web browser should start up and show the built site.
 Deployment is automatic:
 
 - Merges to the branch `archived` deploy to staging.
-- Pushes to the branch `release` deploy to production. You can use: `git push origin origin/archived:release`.
+- Pushes to the branch `release` deploy to production. You can use: `git push origin origin/master:release`.
 
 To deploy manually, first use these commands to push [to staging](http://testsite-typescript-41eeb979-7eaa-4c74-9d47-9d182c7b61ab.azurewebsites.net/):
 
