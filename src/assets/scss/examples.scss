@@ -82,6 +82,7 @@ Examples
   .exampleHeadline h3 {
     position: relative;
     font-size:1.6em;
+    color: black;
   }
   .exampleDescription{
     font-size:1.6em;
@@ -117,7 +118,7 @@ Examples
     left: 0;
     
     span{
-      background-color: darken(white,10%);
+      background-color: darken(white, 5%);
       border-radius: .75em;
       padding: .15em .8em;
       margin: 4px 4px 0 0;
