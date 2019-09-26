@@ -1,0 +1,53 @@
+name: Build Website
+
+on:
+  push:
+    branches: [master,release]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Check out, and set up the node/ruby infra
+    - uses: actions/checkout@v1
+      with: {submodules: true}
+    - uses: actions/setup-node@v1
+    - uses: actions/setup-ruby@v1
+
+    # Get local dependencies
+    - run: yarn install
+    # danger for PR builds
+    - if: github.event_name == 'pull_request'
+      run: yarn danger ci
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: (cd src/play && yarn install && yarn setup)
+    - run: bundle install
+
+    # Build
+    - name: Build website
+      run: gulp publish
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # PR: Deploy if we can
+    - name: Deploy PR
+      if: github.event_name == 'pull_request'
+      run: 'if test -z "$NOW_ACCESS_TOKEN"; then echo "Skipping deploy";
+            else npx now site/ --token="$NOW_ACCESS_TOKEN"
+                               --name="typescript-site-$PR_NUMBER"; fi'
+      env:
+        NOW_ACCESS_TOKEN: ${{ secrets.NOW_ACCESS_TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+
+    # CI: Deploy to the right branch
+    - name: Deploy + Publish
+      if: github.event_name != 'pull_request'
+      uses: peaceiris/actions-gh-pages@v1.1.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PUBLISH_BRANCH: ${{github.ref == 'refs/heads/master'
+                           && 'SITE-STAGING' || 'SITE-PRODUCTION'}}
+        PUBLISH_DIR: ./site
