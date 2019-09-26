@@ -1,8 +1,8 @@
 // It might be easiest to start of the discussion of
 // widening and narrowing with an example:
 
-const welcomeString = "Hello There"
-let replyString = "Hey"
+const welcomeString = "Hello There";
+let replyString = "Hey";
 
 // Aside from the text differences of the strings, welcomeString
 // is a const (which  means the value will never change)
@@ -14,19 +14,18 @@ let replyString = "Hey"
 //   const welcomeString: "Hello There"
 //
 //   let replyString: string
-//
 
-// TypeScript has inferred the type of welcomeString to be 
-// the literal string "Hello There" whereas replyString
+// TypeScript has inferred the type of welcomeString to be
+// the literal string "Hello There", whereas replyString
 // is general string.
 
-// This is because a let needs to have a wider type, you 
+// This is because a let needs to have a wider type, you
 // could set replyString to be any other string - which means
 // it has a wider set of possibilities.
 
-replyString = "Hi :wave:"
+replyString = "Hi :wave:";
 
-// If replyString had the string literal type "Hey" - then 
+// If replyString had the string literal type "Hey" - then
 // you could never change the value because it could only
 // change to "Hey" again.
 
@@ -38,20 +37,20 @@ replyString = "Hi :wave:"
 // narrowing: example:code-flow
 
 // Type narrowing is what powers the strict mode of TypeScript
-// via the nullability checks. With strict mode turned off, 
+// via the nullability checks. With strict mode turned off,
 // markers for nullability like undefined and null are ignored
 // in a union.
 
-declare const quantumString: string | undefined
+declare const quantumString: string | undefined;
 // This will fail in strict mode only
-quantumString.length
+quantumString.length;
 
 // In strict mode the onus is on the code author to ensure
 // that the type has been narrowed to the non-null type.
 // Usually this is as simple as an if check
 
 if (quantumString) {
-  quantumString.length
+  quantumString.length;
 }
 
 // In strict mode the type quantumString has two representations.

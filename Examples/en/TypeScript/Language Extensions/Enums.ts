@@ -1,8 +1,8 @@
 // Enums are a feature added to JavaScript in TypeScript
 // which makes it easier to handle named sets of constants.
 
-// By default an enum is number based and starts at zero,
-// and adding a new option will increment by one. This is
+// By default an enum is number based, starting at zero,
+// and each option is assigned an increment by one. This is
 // useful when the value is not important.
 
 enum CompassDirection {
@@ -12,8 +12,8 @@ enum CompassDirection {
   West
 }
 
-// By annotating an enum option, you set the value
-// the increments will continue from that value:
+// By annotating an enum option, you set the value;
+// increments continue from that value:
 
 enum StatusCodes {
   OK = 200,
@@ -51,7 +51,7 @@ enum GamePadInput {
 // JavaScript runtime, you can create a const enum.
 
 // A const enum's value is replaced by TypeScript during
-// transpilation of your code ,instead of being looked up
+// transpilation of your code, instead of being looked up
 // via an object at runtime.
 
 const enum MouseAction {

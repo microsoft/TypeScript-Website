@@ -1,13 +1,13 @@
 // Without a background in type theory, you're unlikely
-// to be familiar with the idea of a type system being "sound"
+// to be familiar with the idea of a type system being "sound".
 
-// Soundness is the idea that the compiler can make guarantees 
+// Soundness is the idea that the compiler can make guarantees
 // about the type a value has a runtime, and not just
 // during compilation. This is normal for most programming
-// languages are built with types from day one.
+// languages that are built with types from day one.
 
-// Building a type system which models a language which has 
-// existed for a few decades however becomes about making 
+// Building a type system which models a language which has
+// existed for a few decades however becomes about making
 // decisions with trade-offs on three qualities: Simplicity,
 // Usability and Soundness.
 
@@ -30,7 +30,7 @@ const usersAge = ("23" as any) as number;
 
 // Languages which are sound would occasionally use runtime checks
 // to ensure that the data matches what your types say - but
-// TypeScript aims to have no type-aware runtime impact on 
+// TypeScript aims to have no type-aware runtime impact on
 // your transpiled code.
 
 // Function Parameter Bi-variance
@@ -49,7 +49,8 @@ interface KeyboardInputEvent extends InputEvent {
   keyCode: number;
 }
 
-function listenForEvent(eventType: "keyboard" | "mouse", handler: (event: InputEvent) => void) {}
+function listenForEvent(eventType: "keyboard" | "mouse",
+                        handler: (event: InputEvent) => void) {}
 
 // You can re-declare the parameter type to be a subtype of
 // the declaration. Above, handler expected a type InputEvent
@@ -72,10 +73,10 @@ listenForEvent("mouse", (event: string) => {});
 
 // TypeScript can raise an error when this happens via
 // `strictFunctionTypes`. Or, you could work around this
-// particular case with function overloads, 
+// particular case with function overloads,
 // see: example:typing-functions
 
-// Void special casing 
+// Void special casing
 
 // Parameter Discarding
 
@@ -88,7 +89,8 @@ listenForEvent("mouse", (event: string) => {});
 // TypeScript will not have a way to enforce the number of
 // parameters available to a callback.
 
-function getRandomNumbers(count: number, callback: (...args: number[]) => void) {}
+function getRandomNumbers(count: number,
+                          callback: (...args: number[]) => void) {}
 
 getRandomNumbers(2, (first, second) => console.log([first, second]));
 getRandomNumbers(400, first => console.log(first));
@@ -96,20 +98,19 @@ getRandomNumbers(400, first => console.log(first));
 // Void Functions Can Match to a Function With a Return Value
 
 // A function which returns a void function, can accept a
-// function which takes any other type. 
+// function which takes any other type.
 
-const getPI = () => 3.14
+const getPI = () => 3.14;
 
 function runFunction (func: () => void) {
-  func()
+  func();
 }
 
-runFunction(getPI)
+runFunction(getPI);
 
-// For more information on the places where soundness of the 
+// For more information on the places where soundness of the
 // type system is compromised, see:
 
 // https://github.com/Microsoft/TypeScript/wiki/FAQ#type-system-behavior
 // https://github.com/Microsoft/TypeScript/issues/9825
 // https://www.typescriptlang.org/docs/handbook/type-compatibility.html
-

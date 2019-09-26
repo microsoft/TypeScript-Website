@@ -7,8 +7,8 @@
 
 // Partial<Type>
 
-// Takes a type and converts all of the properties on it
-// to be a optional.
+// Takes a type and converts all of its properties
+// to optional ones.
 
 interface Sticker {
   id: number
@@ -23,14 +23,14 @@ type StickerUpdateParam = Partial<Sticker>
 
 // Readonly<Type>
 
-// Takes an object and makes the properties on it read-only
+// Takes an object and makes its properties read-only
 
 type StickerFromAPI = Readonly<Sticker>
 
 
-// Record<KeysFrom, Type>]
+// Record<KeysFrom, Type>
 
-// Creates a type which uses the list of properties from 
+// Creates a type which uses the list of properties from
 // KeysFrom and gives them the value of Type
 
 // List which keys come from:
@@ -52,8 +52,8 @@ const navigationInfo: Record<NavigationPages, PageInfo> = {
 
 // Pick<Type, Keys>
 
-// Creates a type by picking the set of properties Keys 
-// from Type. Essentially an allowl-ist for extracting type
+// Creates a type by picking the set of properties Keys
+// from Type. Essentially an allow-list for extracting type
 // information from a type.
 
 type StickerSortPreview = Pick<Sticker, "name" | "updatedAt">
@@ -61,8 +61,8 @@ type StickerSortPreview = Pick<Sticker, "name" | "updatedAt">
 
 // Omit<Type, Keys>
 
-// Creates a type by removing the set of properties Keys 
-// from Type. Essentially a blocklist for extracting type
+// Creates a type by removing the set of properties Keys
+// from Type. Essentially a block-list for extracting type
 // information from a type.
 
 type StickerTimeMetadata = Omit<Sticker, "name">
@@ -78,22 +78,22 @@ type HomeNavigationPages = Exclude<NavigationPages, "home">
 
 // Extract<Type, MatchUnion>
 
-// Creates a type where any property in Type's properties 
+// Creates a type where any property in Type's properties
 // are included if they overlap with MatchUnion.
 
 type DynamicPages = Extract<NavigationPages, "home" | "stickers">
 
 
-// `NonNullable<Type>`
+// NonNullable<Type>
 
-// Creates a type by excluding null and undefined from a set 
+// Creates a type by excluding null and undefined from a set
 // of properties. Useful when you have a validation check.
 
 type StickerLookupResult = Sticker | undefined | null
 type ValidatedResult = NonNullable<StickerLookupResult>
 
 
-// ReturnType<Type> 
+// ReturnType<Type>
 
 // Extracts the return value from a Type.
 
@@ -116,7 +116,7 @@ type CollectionItem = InstanceType<typeof StickerCollection>
 // Required<Type>
 
 // Creates a type which converts all optional properties
-// to be required. 
+// to required ones.
 
 type AccessiblePageInfo = Required<PageInfo>
 
@@ -128,4 +128,4 @@ type AccessiblePageInfo = Required<PageInfo>
 // inside a function. You can only use ThisType when you
 // have noImplicitThis turned on in your TSConfig
 
-// If you'd like to understand ThisType, you are 
+// https://www.typescriptlang.org/docs/handbook/utility-types.html

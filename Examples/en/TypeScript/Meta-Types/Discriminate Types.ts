@@ -2,12 +2,12 @@
 // analysis to reduce a set of potential objects down to one
 // specific object.
 //
-// This pattern works really well for  sets of similar
+// This pattern works really well for sets of similar
 // objects with a different string or number constant
 // for example: a list of named events, or versioned
 // sets of objects.
 
-type TimingEvent = { name: "start"; userStarted: boolean } 
+type TimingEvent = { name: "start"; userStarted: boolean }
                  | { name: "closed"; duration: number };
 
 // When event comes into this function, it could be any
@@ -38,7 +38,7 @@ const handleEvent = (event: TimingEvent) => {
 // In this example, we have a discriminate union and an
 // additional error state to handle.
 
-type APIResponses = { version: 0; msg: string } 
+type APIResponses = { version: 0; msg: string }
                   | { version: 1; message: string; status: number }
                   | { error: string };
 
