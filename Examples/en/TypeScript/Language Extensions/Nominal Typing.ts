@@ -17,7 +17,7 @@
 // -  User Identification Numbers
 // -  Access Tokens
 
-// We can we get most of the value from a nominal type
+// We can get most of the value from a nominal type
 // system with a little bit of extra code.
 
 // We're going to use an intersectional type, with a unique
@@ -50,7 +50,7 @@ const input = "\n<script>alert('bobby tables')</script>";
 const validatedInput = validateUserInput(input);
 printName(validatedInput);
 
-// On the other-hand passing the un-validated string to
+// On the other hand, passing the un-validated string to
 // printName will raise a compiler error:
 
 printName(input);
@@ -63,4 +63,3 @@ printName(input);
 //
 // and this post is a great summary
 // https://michalzalecki.com/nominal-typing-in-typescript/
-//

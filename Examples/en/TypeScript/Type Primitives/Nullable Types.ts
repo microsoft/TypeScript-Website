@@ -27,7 +27,7 @@ const searchResults = {
 // not there.
 
 // This might feel a bit superficial, but when converted into
-// a JSON string if text was an undefined it would not be
+// a JSON string, if text was an undefined, it would not be
 // included in the string equivalent.
 
 // Strict Null Types
