@@ -28,7 +28,7 @@ jobs:
     - run: gulp publish
 
     # Deploy if we can
-    - run: npx now site/ --token=$NOW_ACCESS_TOKEN --name=typescript-site-$PR_NUMBER
+    - run: '[ -z "$NOW_ACCESS_TOKEN" ] && echo "Skipping deploy" || npx now site/ --token=$NOW_ACCESS_TOKEN --name=typescript-site-$PR_NUMBER'
       env:
         NOW_ACCESS_TOKEN: ${{ secrets.NOW_ACCESS_TOKEN }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
