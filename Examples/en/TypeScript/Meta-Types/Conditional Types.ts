@@ -7,7 +7,7 @@
 //
 //   A extends B ? C : D
 //
-// Where the conditional is whether a type extends an
+// Where the condition is whether a type extends an
 // expression, and if so what type should be returned.
 
 // Let's go through some examples, for brevity we're

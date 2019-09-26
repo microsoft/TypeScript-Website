@@ -11,38 +11,38 @@ interface TelephoneOrder extends Order { callerNumber: string }
 interface InternetOrder extends Order { email: string }
 
 // Then a type which could be one of the two Order subtypes or undefined
-type PossibleOrders = TelephoneOrder | InternetOrder | undefined
+type PossibleOrders = TelephoneOrder | InternetOrder | undefined;
 
 // And a function which returns a Possible order
-declare function getOrder(): PossibleOrders
-const possibleOrder = getOrder()
+declare function getOrder(): PossibleOrders;
+const possibleOrder = getOrder();
 
 // We can use the "in" operator to check whether a particular
-// key is on the object to narrow the union. "in" is a JavaScript
-// operator for objects.
+// key is on the object to narrow the union. ("in" is a JavaScript
+// operator for testing object keys.)
 
 if ("email" in possibleOrder) {
-  const mustBeInternetOrder = possibleOrder
+  const mustBeInternetOrder = possibleOrder;
 }
 
-// You can use the JavaScript "instanceof" operator if you 
+// You can use the JavaScript "instanceof" operator if you
 // have a class which conforms to the interface:
 
 class TelephoneOrderClass {
-  address: string
-  callerNumber: string
+  address: string;
+  callerNumber: string;
 }
 
 if (possibleOrder instanceof TelephoneOrderClass) {
-  possibleOrder
+  possibleOrder;
 }
 
-// You can use the JavaScript "typeof" operator to 
+// You can use the JavaScript "typeof" operator to
 // narrow your union, this only works with primitives
 // inside JavaScript (like strings, objects, numbers)
 
 if (typeof possibleOrder === "undefined") {
-  const definitelyNotAnOder = possibleOrder
+  const definitelyNotAnOder = possibleOrder;
 }
 
 // You can see a full list of possible typeof values
@@ -53,7 +53,7 @@ if (typeof possibleOrder === "undefined") {
 // type predicate functions.
 
 // A type predicate function is a function where the return
-// type offers information to the code flow analysis when 
+// type offers information to the code flow analysis when
 // the function returns true
 
 // Using the possible order, we can use two type guards
@@ -67,11 +67,11 @@ function isATelephoneOrder(order: PossibleOrders): order is TelephoneOrder {
   return order && "calledNumber" in order
 }
 
-// Now we can use these functions in if statements to narrow down the 
-// type which possibleOrder is inside the if:
+// Now we can use these functions in if statements to narrow
+// down the type which possibleOrder is inside the if:
 
 if (isAnInternetOrder(possibleOrder)) {
-    console.log("Order received via email:", possibleOrder.email)
+  console.log("Order received via email:", possibleOrder.email)
 }
 
 if (isATelephoneOrder(possibleOrder)) {

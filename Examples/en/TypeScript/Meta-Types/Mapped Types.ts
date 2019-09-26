@@ -52,6 +52,6 @@ type CorrectMappedArtistForEdit = MyPartialTypeForEdit<Artist>;
 
 // This is a pretty simple example of how mapped type
 // work, but covers most of the basics. If you'd like to
-// dive in with more depth, check out the hand-book
+// dive in with more depth, check out the handbook
 //
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types
