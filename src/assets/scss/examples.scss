@@ -135,10 +135,10 @@ Examples
     margin: 1em;
   	height: 440px;
     
-    &.hover .flip-container {
-  	transform: rotateY(180deg);
+    a:active .front-face, a:focus .front-face {
+      border: 1px solid black;
     }
-           
+
     .flip-container {
       transition: 0.5s;
       transform-style: preserve-3d;  
