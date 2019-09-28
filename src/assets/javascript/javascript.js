@@ -403,7 +403,7 @@ $(document).ready(function () {
 			}
 		});
 		contentDocument = iframe.contentWindow.document;
-		contentDocument.open().write("<!DOCTYPE html lang='en'><html><head><meta charset=\"utf-8\"><title>" + UUID + "</title><base><!--[if lte IE 6]></base><![endif]--><link rel=\"stylesheet\" href=\"" + BASEURL + "assets/css/buttons.css\"><script>document.location.hash = \"" + hash + "\";</script></head><body><script src=\"" + BASEURL + "buttons.js\"></script></body></html>");
+		contentDocument.open().write("<!DOCTYPE html lang='en'><html lang='en'><head><meta charset=\"utf-8\"><title>" + UUID + "</title><base><!--[if lte IE 6]></base><![endif]--><link rel=\"stylesheet\" href=\"" + BASEURL + "assets/css/buttons.css\"><script>document.location.hash = \"" + hash + "\";</script></head><body><script src=\"" + BASEURL + "buttons.js\"></script></body></html>");
 		contentDocument.close();
 	};
 
