@@ -175,7 +175,7 @@
           display: flex;
           justify-content: space-around;
           flex-wrap: wrap;
-          height:200px;
+          height:240px;
           padding-bottom: 40px;
       }
 
@@ -214,6 +214,10 @@
           margin-left: 10px;
           margin-right: 20px;
           float: left;
+          height: 180px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
       }
 
       .friend-item {
@@ -225,7 +229,7 @@
           background-color: white;
       }
 
-      .carousel-control, {
+      .carousel-control {
         &.left,&.right{
           background-image: none;
       }
