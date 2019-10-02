@@ -1,4 +1,4 @@
-//// { ts: "3.7.0-Beta" }
+//// { compiler: { ts: "3.7-Beta" }, order: 1 }
 
 // Optional chaining reached TC39 Stage 3 consensus during
 // 3.7's development. Optional Chaining allows you to write

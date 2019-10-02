@@ -1,4 +1,4 @@
-//// { ts: "3.7.0-Beta" }
+//// { compiler: { ts: "3.7-Beta" }, order: 1 }
 
 // Given JavaScripts flexibility, it can be a good idea to add
 // runtime checks to your code to validate your assumptions.

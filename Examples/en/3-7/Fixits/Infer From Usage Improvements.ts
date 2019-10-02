@@ -1,4 +1,4 @@
-//// { ts: "3.7.0-Beta" }
+//// { compiler: { ts: "3.7-Beta", noImplicitAny: false }, order: 2 }
 
 // With 3.7 TypeScript's existing 'infer from usage'
 // code fix became smarter. It will now use a list of
