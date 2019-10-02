@@ -64,6 +64,6 @@ oneOfFirstFiveNumbers
 
 // This is a primer on some of the features of assertion functions
 // in TypeScript 3.7 - you can find out more by reading the
-// release notes:
+// beta release notes:
 
-// https://...
+// https://devblogs.microsoft.com/typescript/announcing-typescript-3-7-beta/

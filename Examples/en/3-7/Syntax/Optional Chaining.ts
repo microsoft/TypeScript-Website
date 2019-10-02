@@ -2,8 +2,8 @@
 
 // Optional chaining reached TC39 Stage 3 consensus during
 // 3.7's development. Optional Chaining allows you to write
-// code which can immediately stop continuing to run
-// expressions when you hit a null or undefined
+// code which can immediately stop running expressions when
+// it hits a null or undefined.
 
 // Property Access
 
@@ -66,4 +66,4 @@ const updateAlbumMetadata = async (metadata: any, callback?: () => void) => {
 };
 
 // You can read more about optional chaining in the 3.7 blog post:
-// https://...
+// https://devblogs.microsoft.com/typescript/announcing-typescript-3-7-beta/

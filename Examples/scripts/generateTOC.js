@@ -108,7 +108,7 @@ const toc = {
   },
   {
     name: "3.7",
-    subtitle: "link to blog post?.",
+    subtitle: "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-7-beta/'>Beta Release notes</a>.",
     whatisnew: true
   }],
   sortedSubSections: [
