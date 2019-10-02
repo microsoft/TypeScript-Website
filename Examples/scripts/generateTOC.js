@@ -126,7 +126,7 @@ const toc = {
     "Language",
     "Language Extensions",
     // Examples
-    "Syntax",
+    "Syntax and Messaging",
     "Types and Code Flow",
     "Fixits"
   ],
