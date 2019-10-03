@@ -15,3 +15,11 @@ JavaScript.
 These examples are not set in stone, and we're open to new 
 ideas. If you'd like to help out and speak more than one
 language, we'd love to see translations.
+
+## Adding a new example section
+
+Create a folder in this repo, then sub-folders per section. Next,
+edit `generateTOC.js` with at the set of folders it should grab
+at around line 30, then edit the `const toc` further down to 
+add a new section. If you need custom ordering then use the 
+`sortedSubSections` array to set your order. 

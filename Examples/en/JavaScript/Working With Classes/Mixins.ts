@@ -75,12 +75,15 @@ const EightBitSprite = Scale(Sprite);
 // shows that the objects have different sets of
 // functions due to their mixins:
 
-const gameBoySprite = new EightBitSprite("L block");
-gameBoySprite.setScale(0.3);
-gameBoySprite.setAlpha(0.5);
-
 const flappySprite = new ModernDisplaySprite("Bird");
 flappySprite.setVisible();
 flappySprite.setScale(0.8);
 flappySprite.x = 10;
 flappySprite.y = 20;
+
+
+const gameBoySprite = new EightBitSprite("L block");
+gameBoySprite.setScale(0.3);
+// Fails because an EightBitSprite does not have
+// the mixin for changing alphas
+gameBoySprite.setAlpha(0.5);
