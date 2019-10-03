@@ -57,7 +57,7 @@ const maybeFirstPreviousAlbum = album?.artist?.previousAlbums?.[0];
 // For example here's an optional call to the callback from
 // an API request:
 
-const callUpdateMetadata = (metadata) => Promise.resolve(metadata); // Fake API call
+const callUpdateMetadata = (metadata: any) => Promise.resolve(metadata); // Fake API call
 
 const updateAlbumMetadata = async (metadata: any, callback?: () => void) => {
   await callUpdateMetadata(metadata);

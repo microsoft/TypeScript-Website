@@ -1,7 +1,7 @@
 //// { compiler: { ts: "3.7-Beta", target: 99 }, order: 1 }
 
 // Did you know there is a limit to how big of a number you
-// can represent in JavaScript when writing ? 
+// can represent in JavaScript when writing ?
 
 const maxHighValue = 9007199254740991;
 const maxLowValue = -9007199254740991;
@@ -18,7 +18,7 @@ const oneBelowMin = -9007199254740992;
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
 
-// TypeScript will now offer a fixit for number 
+// TypeScript will now offer a fixit for number
 // literals which are above 2^52 (positive / negative)
 // which adds the suffix "n" which informs JavaScript
 // that the type should be BigNum
