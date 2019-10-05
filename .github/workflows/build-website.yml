@@ -35,6 +35,9 @@ jobs:
       run: |
         git clone -b v2 --single-branch https://github.com/microsoft/TypeScript-Website.git v2
         cd v2
+        yarn install
+        yarn build
+        cp packages/typescriptlang-org/public ../site/v2
 
     # PR: Deploy if we can
     - name: Deploy PR
