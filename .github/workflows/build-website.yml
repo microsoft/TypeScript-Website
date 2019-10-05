@@ -37,7 +37,8 @@ jobs:
         cd v2
         yarn install
         yarn build
-        cp packages/typescriptlang-org/public ../site/v2
+        cp -r packages/typescriptlang-org/public ../site/v2
+        cd ..
 
     # PR: Deploy if we can
     - name: Deploy PR
