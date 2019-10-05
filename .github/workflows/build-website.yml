@@ -26,11 +26,15 @@ jobs:
     - run: (cd src/play && yarn install && yarn setup)
     - run: bundle install
 
-    # Build
+    # Build v1
     - name: Build website
       run: gulp publish
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # Build v2
+    - name: Build website
+      run: |
+        git clone -b v2 --single-branch https://github.com/microsoft/TypeScript-Website.git v2
+        cd v2
 
     # PR: Deploy if we can
     - name: Deploy PR
