@@ -1,8 +1,8 @@
 {
   "name": "typescriptlang-org",
   "private": true,
-  "description": "A simplified bare-bones starter for Gatsby",
-  "version": "0.1.0",
+  "description": "The TypeScript Website",
+  "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
@@ -27,9 +27,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-hello-world"
+    "url": "https://github.com/microsoft/TypeScript-Website"
   },
   "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "url": "https://github.com//microsoft/TypeScript-Website/issues"
   }
 }
