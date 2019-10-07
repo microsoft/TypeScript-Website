@@ -10,6 +10,11 @@ import {Layout} from "../components/layout"
 class BlogPostTemplate extends React.Component<{ pageContext: any,  data: BlogPostBySlug}> {
   render() {
     const post = this.props.data.markdownRemark
+    console.log(this.props)
+    if (!post) {
+      console.log("Could not render:", JSON.stringify(this.props))
+      return <div></div>
+    }
 
     const { previous, next } = this.props.pageContext
     return (
@@ -38,7 +43,7 @@ export default BlogPostTemplate
 
 export const pageQuery = graphql`
   query BlogPostBySlug($slug: String!) {
-    markdownRemark(fields: { slug: { eq: $slug } }) {
+    markdownRemark(frontmatter: { permalink: {eq: $slug}}) {
       id
       excerpt(pruneLength: 160)
       html

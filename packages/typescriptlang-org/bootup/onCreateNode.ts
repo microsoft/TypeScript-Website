@@ -1,9 +1,11 @@
+import { GatsbyNode } from "gatsby"
 const { createFilePath } = require(`gatsby-source-filesystem`)
 
-const onCreateNode = ({ node, actions, getNode }) => {
+export const onCreateNode: GatsbyNode["onCreateNode"] = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
-
-  if (node.internal.type === `MarkdownRemark`) {
+  
+  if (node.context === `MarkdownRemark`) {
+    console.log("ADDING")
     const value = createFilePath({ node, getNode })
     createNodeField({
       name: `slug`,
@@ -11,8 +13,4 @@ const onCreateNode = ({ node, actions, getNode }) => {
       value,
     })
   }
-}
-
-module.exports = {
-  onCreateNode
 }

@@ -39,6 +39,7 @@ export const createOldHandbookPages = async (graphql: CreatePagesArgs["graphql"]
           slug: post.childMarkdownRemark.frontmatter.permalink,
           previous,
           next,
+          isOldHandbook: true
         },
       })
     } else {
