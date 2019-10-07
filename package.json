@@ -4,7 +4,9 @@
     "packages/*"
   ],
   "devDependencies": {
-    "concurrently": "^4.1.0"
+    "concurrently": "^4.1.0",
+    "git-branch-is": "^3.0.0",
+    "husky": "^3.0.8"
   },
   "scripts": {
     "start": "yarn workspace typescriptlang-org start",
@@ -18,5 +20,10 @@
     "semi": false,
     "singleQuote": true,
     "trailingComma": "es5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "git-branch-is v2 && yarn run build"
+    }
   }
 }

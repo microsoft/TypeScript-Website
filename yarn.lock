@@ -4781,6 +4781,11 @@ commander@^2.11.0, commander@^2.19.0, commander@^2.20.0, commander@~2.20.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.0.tgz#d58bb2b5c1ee8f87b0d340027e9e94e222c5a422"
   integrity sha512-7j2y+40w61zy6YC2iRNpUe/NwhNyoXrYpHMrSunaMG64nRnaf96zO/KMQR4OyN/UnE5KLyEBnKHd4aG3rskjpQ==
 
+commander@^3.0.0:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-3.0.2.tgz#6837c3fb677ad9933d1cfba42dd14d5117d6b39e"
+  integrity sha512-Gar0ASD4BDyKC4hl4DwHqDrmvjoxWKZigVnAbn5H1owvm4CxCPdb0HQDehwNYMJpla5+M2tPmPARzhtYuwpHow==
+
 commander@~2.8.1:
   version "2.8.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.8.1.tgz#06be367febfda0c330aa1e2a072d3dc9762425d4"
@@ -7866,6 +7871,13 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
+git-branch-is@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/git-branch-is/-/git-branch-is-3.0.0.tgz#bbc5b8495fcce77da60e0eb589e41af70fcd06f7"
+  integrity sha512-HvOU7/TBj25NeXVzmzEMVmsLFYQD8wP/orGkGaHl1unWDx7ZZAiaulPAydUCGd+DPO3IpUjyC4zBAn2oCgaZ7Q==
+  dependencies:
+    commander "^3.0.0"
+
 git-parse@1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/git-parse/-/git-parse-1.0.3.tgz#82f165201892688ec9286184b3eee5c4cf0655ac"
@@ -8701,6 +8713,23 @@ husky@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/husky/-/husky-3.0.4.tgz#10a48ac11ab50859b0939750fa0b4e07ad0bf669"
   integrity sha512-7Rnt8aJfy+MlV28snmYK7O7vWwtOfeVxV6KhLpUFXlmx5ukQ1nQmNUB7QsAwSgdySB5X+bm7q7JIRgazqBUzKA==
+  dependencies:
+    chalk "^2.4.2"
+    cosmiconfig "^5.2.1"
+    execa "^1.0.0"
+    get-stdin "^7.0.0"
+    is-ci "^2.0.0"
+    opencollective-postinstall "^2.0.2"
+    pkg-dir "^4.2.0"
+    please-upgrade-node "^3.2.0"
+    read-pkg "^5.1.1"
+    run-node "^1.0.0"
+    slash "^3.0.0"
+
+husky@^3.0.8:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/husky/-/husky-3.0.8.tgz#8de3fed26ce9b43034ef51013c4ad368b6b74ea8"
+  integrity sha512-HFOsgcyrX3qe/rBuqyTt+P4Gxn5P0seJmr215LAZ/vnwK3jWB3r0ck7swbzGRUbufCf9w/lgHPVbF/YXQALgfQ==
   dependencies:
     chalk "^2.4.2"
     cosmiconfig "^5.2.1"

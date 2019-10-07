@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Gatsby develop",
+      "type": "node",
+      "request": "launch",
+      "protocol": "inspector",
+      "program": "${workspaceRoot}/node_modules/gatsby/dist/bin/gatsby",
+      "args": ["develop"],
+      "cwd": "${workspaceFolder}/packages/typescriptlang-org",
+      "stopOnEntry": false,
+      "runtimeArgs": ["--nolazy"],
+      "sourceMaps": true
+    },
+    {
+      "name": "Gatsby build",
+      "type": "node",
+      "request": "launch",
+      "protocol": "inspector",
+      "program": "${workspaceRoot}/node_modules/gatsby/dist/bin/gatsby",
+      "args": ["build"],
+      "cwd": "${workspaceFolder}/packages/typescriptlang-org",
+      "stopOnEntry": false,
+      "runtimeArgs": ["--nolazy"],
+      "sourceMaps": true
+    }
+  ]
+}

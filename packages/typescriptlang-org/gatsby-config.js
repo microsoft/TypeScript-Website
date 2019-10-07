@@ -1,3 +1,6 @@
+// https://github.com/gatsbyjs/gatsby/issues/1457
+require('ts-node').register({ files: true })
+
 module.exports = {
   plugins: [
     "gatsby-plugin-codegen",
