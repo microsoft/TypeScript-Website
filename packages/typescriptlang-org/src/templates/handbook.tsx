@@ -10,7 +10,6 @@ import {Layout} from "../components/layout"
 class BlogPostTemplate extends React.Component<{ pageContext: any,  data: BlogPostBySlug}> {
   render() {
     const post = this.props.data.markdownRemark
-    console.log(this.props)
     if (!post) {
       console.log("Could not render:", JSON.stringify(this.props))
       return <div></div>
