@@ -1,11 +1,9 @@
 const { redirects } = require("./oldestRedirects")
 
+import {NodePluginArgs} from "gatsby"
 
-/**
- * Whoah yeah!
- * @param { import("gatsby").NodePluginArgs["actions"]["createRedirect"]} createRedirect 
- */
-const setupRedirects = (createRedirect) => {
+
+export const setupRedirects = (createRedirect: NodePluginArgs["actions"]["createRedirect"] ) => {
   const fromArray = Object.keys(redirects)
   fromArray.forEach(from => {
     const to = redirects[from]
@@ -15,8 +13,4 @@ const setupRedirects = (createRedirect) => {
       toPath: to
     })
   });
-}
-
-module.exports = {
-  setupRedirects
 }

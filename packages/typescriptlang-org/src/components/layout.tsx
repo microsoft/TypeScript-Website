@@ -33,6 +33,7 @@ export class Layout extends React.Component<any> {
     return (
       <div
         style={{
+          backgroundColor: "#E5E5E5",
           marginLeft: `auto`,
           marginRight: `auto`,
         }}
