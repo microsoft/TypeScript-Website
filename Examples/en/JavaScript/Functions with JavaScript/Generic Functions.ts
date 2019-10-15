@@ -14,9 +14,9 @@ function wrapInArray<Type>(input: Type): Type[] {
   return [input];
 }
 
-// Note: it's common to see Type refereed to as T. This is
+// Note: it's common to see Type referred to as T. This is
 // culturally similar to how people use i in a for loop to
-// represent index. T normally represents Types, so we'll 
+// represent index. T normally represents Types, so we'll
 // be using the full name for clarity.
 
 // Our function will use inference to always keep the type
@@ -95,6 +95,6 @@ function addTypedObjectToCache<Type, Cache extends CacheHostGeneric<Type>>(obj: 
 // For more examples of generics with classes and interfaces
 //
 // example:advanced-classes
-// example:typescript---react
+// example:typescript-with-react
 // https://www.typescriptlang.org/docs/handbook/generics.html
 
