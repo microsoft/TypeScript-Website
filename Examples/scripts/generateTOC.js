@@ -35,9 +35,11 @@ const allJS = getFilePaths(join(root, "JavaScript"));
 const allTS = getFilePaths(join(root, "TypeScript"));
 
 const all37Examples = getFilePaths(join(root, "3-7"));
+const allPlaygroundExamples = getFilePaths(join(root, "Playground"));
 
 /** @type {string[]} */
-const all = [...allJS, ...allTS, ...all37Examples].filter(p => p.endsWith(".ts") || p.endsWith(".tsx") || p.endsWith(".js"));
+const all = [...allJS, ...allTS, ...all37Examples, ...allPlaygroundExamples]
+              .filter(p => p.endsWith(".ts") || p.endsWith(".tsx") || p.endsWith(".js"));
 
 const examples = all.map(m => {
   let contents = fs.readFileSync(m, "utf8");
@@ -110,6 +112,11 @@ const toc = {
     name: "3.7",
     subtitle: "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-7-beta/'>Beta Release notes</a>.",
     whatisnew: true
+  },
+  {
+    name: "Playground",
+    subtitle: "Learn what has changed in this website.",
+    whatisnew: true
   }],
   sortedSubSections: [
     // JS
@@ -128,7 +135,10 @@ const toc = {
     // Examples
     "Syntax and Messaging",
     "Types and Code Flow",
-    "Fixits"
+    "Fixits",
+    // Playground
+    "Config",
+    "Tooling"
   ],
   examples
 }
