@@ -149,6 +149,10 @@ h1, h2, h3 {
     width: 22em;
     padding-left: 2em;
     padding-right: 0rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: scroll;
   }
   .toc-dropdown > a {
     font-size: 1em;
