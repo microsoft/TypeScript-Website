@@ -6,39 +6,68 @@ permalink: /community/
 
 <div class="container community main_content">
     <h1>Connect with us</h1>
+    <h2>Connect online</h2>
     <p class="banner-text">Tell us what’s working well, what you want to see added or improved, and find out about new updates.</p>
     <div class="callouts">
         <div class="row">
             <div class="callout col-md-4">
                 <a aria-labelledby="github-header" class="icon bug img-circle" href="{{ site.data.urls.ts_github_issues }}" target="_blank"></a>
-                <a href="{{ site.data.urls.ts_github_issues }}" id="github-header"> <h2>GitHub</h2></a>
+                <a href="{{ site.data.urls.ts_github_issues }}" id="github-header"> <h3 class="community-callout-headline">GitHub</h3></a>
                 <div class="text">Found a bug, or want to give us feedback? <a href="{{ site.data.urls.ts_github_issues }}">Tell us on GitHub</a>.</div>
-            </div> 
+            </div>
             <div class="callout col-md-4">
                 <a aria-labelledby="stack-header" class="icon stackoverflow img-circle" href="{{ site.data.urls.ts_stackoverflow_tagged }}" target="_blank"></a>
-                <a href="{{ site.data.urls.ts_stackoverflow_tagged }}" id="stack-header" target="_blank"><h2>Stack Overflow</h2></a>
+                <a href="{{ site.data.urls.ts_stackoverflow_tagged }}" id="stack-header" target="_blank"><h3 class="community-callout-headline">Stack Overflow</h3></a>
                 <div class="text">Engage with your peers and ask questions about Typescript on <a href="{{ site.data.urls.ts_stackoverflow_tagged }}" target="_blank">Stack Overflow</a> using the tag <b>typescript.</b></div>
             </div>
             <div class="callout col-md-4">
                 <a aria-labelledby="blog-header" class="icon blog img-circle" href="{{ site.data.urls.ts_blog }}"  target="_blank"></a>
-                <a href="{{ site.data.urls.ts_blog }}" id="blog-header"  target="_blank"><h2>Blog</h2></a>
+                <a href="{{ site.data.urls.ts_blog }}" id="blog-header"  target="_blank"><h3 class="community-callout-headline">Blog</h3></a>
                 <div class="text">Learn about the latest TypeScript developments via our <a href="{{ site.data.urls.ts_blog }}"  target="_blank">blog</a>!</div>
             </div>
             <div class="callout col-md-4">
                 <a aria-labelledby="twitter-header" class="icon twitter img-circle" href="{{ site.data.urls.ts_twitter }}"  target="_blank"></a>
-                <a href="{{ site.data.urls.ts_twitter }}" id="twitter-header"  target="_blank"><h2>Twitter</h2></a>
+                <a href="{{ site.data.urls.ts_twitter }}" id="twitter-header"  target="_blank"><h3 class="community-callout-headline">Twitter</h3></a>
                 <div class="text">Stay up to date.  Follow us on Twitter <a href="{{ site.data.urls.ts_twitter }}"  target="_blank">@typescriptlang</a>!</div>
             </div>
             <div class="callout col-md-4">
                 <a aria-labelledby="deftyped-header" class="icon definitelytyped img-circle" href="{{ site.data.urls.definitelytyped_github }}"  target="_blank"></a>
-                <a href="{{ site.data.urls.definitelytyped_github }}" id="deftyped-header"  target="_blank"><h2>Definitely Typed</h2></a>
+                <a href="{{ site.data.urls.definitelytyped_github }}" id="deftyped-header"  target="_blank"><h3 class="community-callout-headline">Definitely Typed</h3></a>
                 <div class="text">Browse the numerous <a href="{{ site.data.urls.definitelytyped_github }}"  target="_blank">TypeScript definition files</a> available for common libraries and frameworks.</div>
             </div>
             <div class="callout col-md-4">
                 <a aria-labelledby="gitter-header" class="icon gitter img-circle" href="https://gitter.im/Microsoft/TypeScript"></a>
-                <a href="https://gitter.im/Microsoft/TypeScript" id="gitter-header"><h2>Chat</h2></a>
+                <a href="https://gitter.im/Microsoft/TypeScript" id="gitter-header"><h3 class="community-callout-headline">Chat</h3></a>
                 <div class="text">Chat with other TypeScript users via Gitter.</div>
             </div>
+        </div>
+    </div>
+    <h2>Connect in person</h2>
+    <h3>Conferences</h3>
+    <div class="callouts">
+        <div class="row">
+        {% for conference in site.data.community/conferences %}
+            <div class="callout col-md-4">
+                <a href="{{conference.url}}" rel="noopener" target="blank"><img src="{{conference.image}}" class="icon img-square" alt="logo of {{conference.title}}"/></a>
+                <a href="{{conference.url}}"><h4 class="community-callout-headline">{{conference.title}}</h4></a>
+                <div class="text">
+                  {{conference.location}} {{conference.country}}<br>
+                  <time>{{conference.date}}</time>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    <h3>Meetups</h3>
+    <div class="callouts">
+        <div class="row">
+        {% for meetup in site.data.community/meetups %}
+            <div class="callout col-md-4">
+                <img src="{{meetup.image}}" class="icon img-square" alt="logo of {{meetup.title}}"/>
+                <h4 class="community-callout-headline">{{meetup.title}}</h4>
+                <div class="text">{{meetup.country}}<br><a rel="noopener" target="blank" href="{{meetup.url}}">Website</a>{% if meetup.twitter %} | <a rel="noopener" target="blank" href="{{meetup.twitter}}">Twitter</a>{% endif %}</div>
+            </div>
+        {% endfor %}
         </div>
     </div>
 </div>

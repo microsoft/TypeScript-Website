@@ -1,0 +1,24 @@
+- title: TSConf
+  location: Seattle, WA
+  url: https://tsconf.io
+  date: October 11th, 2019
+  country: "🇺🇸"
+  image: "/assets/images/community/conferences/tsconf-2019-logo.png"
+- title: TSConf IT
+  location: Desenzano del Garda
+  url: https://ts-conf.it/
+  date: October 25th, 2019
+  country: "🇮🇹"
+  image: "/assets/images/community/conferences/tsconf-it-2019-logo.png"
+- title: TSConf JP
+  location: Tokyo
+  url: https://tsconf.jp
+  date: February 22nd, 2020
+  country: "🇯🇵"
+  image: "/assets/images/community/conferences/tsconf-jp-logo.png"
+- title: TSConf.EU
+  location: Linz
+  url: https://tsconf.eu
+  date: Spring 2020
+  country: "🇦🇹"
+  image: "/assets/images/community/conferences/tsconf-eu-2020-logo.jpg"
