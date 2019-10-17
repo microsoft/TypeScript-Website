@@ -42,11 +42,12 @@ permalink: /community/
             </div>
         </div>
     </div>
+
     <h2>Connect in person</h2>
-    <h3>Conferences</h3>
+    <h3 style="color: black;">Conferences</h3>
     <div class="callouts">
         <div class="row">
-        {% for conference in site.data.community/conferences %}
+        {% for conference in site.data.community.conferences %}
             <div class="callout col-md-4">
                 <a href="{{conference.url}}" rel="noopener" target="blank"><img src="{{conference.image}}" class="icon img-square" alt="logo of {{conference.title}}"/></a>
                 <a href="{{conference.url}}"><h4 class="community-callout-headline">{{conference.title}}</h4></a>
@@ -58,10 +59,10 @@ permalink: /community/
         {% endfor %}
         </div>
     </div>
-    <h3>Meetups</h3>
+    <h3 style="color: black;">Meetups</h3>
     <div class="callouts">
         <div class="row">
-        {% for meetup in site.data.community/meetups %}
+        {% for meetup in site.data.community.meetups %}
             <div class="callout col-md-4">
                 <img src="{{meetup.image}}" class="icon img-square" alt="logo of {{meetup.title}}"/>
                 <h4 class="community-callout-headline">{{meetup.title}}</h4>
