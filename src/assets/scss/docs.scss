@@ -148,12 +148,14 @@ h1, h2, h3 {
     margin-right: 2em;
     width: 22em;
     padding-left: 2em;
-    padding-right: 0rem;
+    padding-right: 1rem;
     position: sticky;
-    top: 0;
-    height: 100vh;
+    top: 20px;
+    height: calc(100vh - 50px);
     overflow-y: scroll;
+    overscroll-behavior: contain;
   }
+
   .toc-dropdown > a {
     font-size: 1em;
     background-color:#ddd;
