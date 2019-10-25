@@ -15,10 +15,6 @@ waiting_coc:
     image: "/assets/images/community/meetup-logos/ktug.jpg"
     country: "🇵🇱"
 
-  - title: Phoenix TypeScript
-    url: https://www.meetup.com/Phoenix-TypeScript/
-    image: https://halfstackconf.com/assets/images/phxts.svg
-    country: "🇺🇸"
   - title: Warsaw TypeScript
     twitter: https://twitter.com/wwatypescript
     url: https://www.meetup.com/Warsaw-Typescript/
@@ -42,13 +38,17 @@ ready:
       url: https://www.meetup.com/MilanoTS/
       image: "/assets/images/community/meetup-logos/milano-ts.jpg"
       country: "🇮🇹"
-    - title: Sevilla TypeScript
+    - title: Seattle TypeScript
+      url: https://www.meetup.com/seattle-ts
+      image: "/assets/images/community/meetup-logos/seattle.png"
+      country: "🇺🇸"
+
+  - - title: Sevilla TypeScript
       twitter: https://twitter.com/SVQTypeScript
       url: https://www.meetup.com/Sevilla-TypeScript/
       image: "/assets/images/community/meetup-logos/sqvts.jpg"
       country: "🇪🇸"
-
-  - - title: San Francisco TypeScript Meetup
+    - title: San Francisco TypeScript Meetup
       url: https://www.meetup.com/San-Francisco-TypeScript-Meetup/
       image: "/assets/images/community/meetup-logos/san-fran-ts.jpg"
       country: "🇺🇸"
@@ -56,13 +56,13 @@ ready:
       url: https://www.meetup.com/TypeScriptNYC/
       image: "/assets/images/community/meetup-logos/typescript-nyc.png"
       country: "🇺🇸"
-    - title: Typescript Brazil Meetup
+
+  - - title: Typescript Brazil Meetup
       twitter: https://twitter.com/tsbrmeetup
       url: https://www.meetup.com/typescriptbr/
       image: "/assets/images/community/meetup-logos/brazil-ts.jpeg"
       country: "🇧🇷"
-
-  - - title: TypeScript JP
+    - title: TypeScript JP
       twitter: https://twitter.com/typescriptjp
       url: https://typescript-jp.dev
       image: "/assets/images/community/meetup-logos/typescript-jp.png"
@@ -72,6 +72,11 @@ ready:
       url: https://www.meetup.com/Paris-Typescript/
       image: "/assets/images/community/meetup-logos/paris-ts.jpg"
       country: "🇫🇷"
+
+  - - title: Phoenix TypeScript
+      url: https://www.meetup.com/Phoenix-TypeScript/
+      image: https://halfstackconf.com/assets/images/phxts.svg
+      country: "🇺🇸"
     - title: Wroclaw TypeScript
       twitter: https://twitter.com/WrocTypeScript
       url: https://www.meetup.com/WrocTypeScript/
