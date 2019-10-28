@@ -32,6 +32,10 @@ Then opening: http://localhost:1234 - which is the below package.
 
 A create-react-app for working on the playground.
 
+## TSConfig Reference
+
+A set of tools and scripts for generating a comprehensive API reference for the TSConfig JSON file.
+
 # Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a

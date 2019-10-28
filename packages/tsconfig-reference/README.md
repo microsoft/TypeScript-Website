@@ -1,0 +1,31 @@
+### Generating the TSConfig Reference
+
+This "package" hosts multi-lingual docs for the TSConfig. As much as possible is based
+off pulling data from `require("typescript")` then augmented with markdown from inside the
+[`./copy`](./copy) folder.
+
+## Contributing
+
+To improve a single compiler option's documentation; all you need to do is go into the [`./copy`](./copy) folder and
+edit the page option in markdown and send a PR. No need to leave GitHub. 
+
+Then, during a deploy, all of the markdown files are bundled together and any merged changes are uploaded.
+
+## Contributing a new language
+
+If you'd like to create a new language:
+
+- Do you plan on making an evening or two on it and go all out? then you can use the 
+  script [`./scripts/createLanguage.ts`](./scripts/createLanguage.ts) to set up a new language. 
+
+- Do you want to work on it incrementally? Create a new subfolder in `./copy` with your language code and
+  then make sure the files you work on have the same name as English and your changes will overwrite the English 
+  version.
+
+## Building
+
+The TSConfig reference is created by a two step process:
+
+- Creating the JSON dump of all the useful info via [`./scripts/generateJSON.ts`](scripts/generateJSON.ts) which you can find in [`./data`](./data).
+
+- A script which uses the JSON, and the copy to generate per-language markdown docs which are meant to be embedded inside webpages ``
