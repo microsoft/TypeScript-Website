@@ -19,10 +19,6 @@
 
     .callout {
       margin-top:20px;
-      a > h2 {
-        font-size:1.6em;
-        margin-top:0;
-      }
     }
 
     .text {
@@ -52,8 +48,8 @@
           font-size: 1.8rem;
         }
 
-        &.gitter {
-          background-image: url("../images/community/connect-gitter.svg");
+        &.discord {
+          background-image: url("../images/community/connect-discord.svg");
           background-color: #D9165C;
         }
 
@@ -93,7 +89,11 @@
     }
 
   }
+}
 
+.community-callout-headline {
+  font-size:1.6em;
+  margin-top:0;
 }
 
 @media (max-width: $screen-xs-max) {

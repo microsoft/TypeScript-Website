@@ -48,6 +48,11 @@ gulp
 
 Your default web browser should start up and show the built site.
 
+**Note:** If you want to make changes to the playground, you have a bit of a dance to do. Run ^ then
+press save on a file inside both the `examples/` subfolder, and the `src/play` subfolder. The playground
+is a submodule, so that'll need a PR to a different repo.
+
+
 ## Deployment
 
 Deployment is automatic:

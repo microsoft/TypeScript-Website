@@ -47,7 +47,7 @@ function multiply(x: any, y: any) {
 // For example, we can use assertion functions to narrow
 // an enum down over time:
 
-const oneOfFirstFiveNumbers = 1 | 2 | 3 | 4 | 5
+declare const oneOfFirstFiveNumbers: 1 | 2 | 3 | 4 | 5
 
 declare function isOdd(param: unknown): asserts param is 1 | 3 | 5
 declare function isBelowFour(param: unknown): asserts param is 1 | 2 | 3 | 4

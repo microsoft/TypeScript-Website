@@ -76,4 +76,4 @@ document.body.appendChild(popover);
 // tooling support.
 
 // There is an extended example for TypeScript tooling with
-// WebGL available here: example:typescript---webgl
+// WebGL available here: example:typescript-with-webgl

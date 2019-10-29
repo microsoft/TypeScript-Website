@@ -1,3 +1,5 @@
+//// {compiler: { strictFunctionTypes: false } }
+
 // Without a background in type theory, you're unlikely
 // to be familiar with the idea of a type system being "sound".
 
