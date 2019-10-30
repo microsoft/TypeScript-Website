@@ -201,16 +201,30 @@ h1, h2, h3 {
       font-weight: 500;
       color:lighten($docs-accent-textcolor, 40%);
     }
+
+    p {
+      a {
+        text-decoration: underline;
+        color: #187ABF;
+      }
+    }
   }
 
   p, li, td{
     code{
       background-color: transparent;
       color: #bf414a;
-      font-size: 1em;
+      font-size: 1em;      
     }
     pre {
         font-size: 1em;
+    }
+
+    a {
+      code {
+        color: #bf414a;
+        text-decoration: underline;
+      }
     }
   }
 
