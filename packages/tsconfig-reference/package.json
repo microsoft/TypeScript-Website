@@ -1,0 +1,9 @@
+{
+  "name": "tsconfig-reference",
+  "version": "0.0.1",
+  "scripts" : {
+    "generate-json": "yarn ts-node scripts/generateJSON.ts",
+    "generate-markdown": "yarn ts-node --project tsconfig.json scripts/generateMarkdown.ts ",
+    "build": "yarn generate-json; yarn generate-markdown"
+  }
+}
