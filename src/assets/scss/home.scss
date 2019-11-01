@@ -243,6 +243,16 @@
       &.right {
         margin-right:-55px;
       }
+
+      @media (max-width: 700px) {
+        &.left {
+          margin-left: -3rem !important;
+        }
+
+        &.right {
+          margin-right: -3rem !important;
+        }
+      }
     }
 
     #friend-carousel {
@@ -272,7 +282,8 @@
         }
     }
 
-    .carousel-inner > .item{
+
+    .carousel-inner > .item {
       padding:10px 5px;
     }
 
