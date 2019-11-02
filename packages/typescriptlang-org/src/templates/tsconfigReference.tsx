@@ -1,9 +1,9 @@
 import React from "react"
 import { graphql } from "gatsby"
-import {TSConfigReferenceTemplate} from "./__generated__/TSConfigReferenceTemplate"
-import {Layout} from "../components/layout"
+import { TSConfigReferenceTemplate } from "./__generated__/TSConfigReferenceTemplate"
+import { Layout } from "../components/layout"
 
-class TSConfigReferenceTemplateComponent extends React.Component<{ pageContext: any,  data: TSConfigReferenceTemplate}> {
+class TSConfigReferenceTemplateComponent extends React.Component<{ pageContext: any, data: TSConfigReferenceTemplate }> {
   render() {
     console.log(this.props)
     const post = this.props.data.markdownRemark
@@ -15,9 +15,12 @@ class TSConfigReferenceTemplateComponent extends React.Component<{ pageContext: 
     return (
       <Layout >
 
+        <div className="ms-depth-4" style={{ backgroundColor: "white", maxWidth: 960, margin: "1rem auto", padding: "2rem" }}>
+        <h1>TSConfig Reference</h1>  
         <div dangerouslySetInnerHTML={{ __html: post.html }} />
-        <hr/>
-        
+        </div>
+        <hr />
+
       </Layout>
     )
   }

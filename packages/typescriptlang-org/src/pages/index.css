@@ -1,30 +1,61 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
 html {
-  background-color: #E5E5E5;
+  background-color: #FAF9F8;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  color: #333;
+  font-family: "Segoe UI Web (West European)","Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+  font-size: 14px;
 }
 
 body,
 html,
 #___gatsby {
   height: 100%;
+}
+
+/*  
+There isn't a collapsible nav bar in the fabric components, and it is unwieldy to 
+set up something like that on a styles basis, so it's in the CSS.
+  */
+
+#top-menu {
+  background-color: #3178c6;
+  user-select: none;
+  clear: both;
+  display: flex;
+  justify-content: space-between;
+}
+
+#top-menu > .left {
+  display: flex;
+  flex-direction: row;
+}
+
+#top-menu > .right {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-self: flex-end;  
+}
+
+#top-menu .nav {
+  display: inline-block;
+  text-decoration: none;
+}
+
+#top-menu .nav-item {
+  border: 1px solid transparent;
+  color: #262626;
+  display: inline-block;
+  margin-top: 1px;
+  padding: 0.8rem 0.5em 0;
+  height: 45px;
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.clear-fix {
+  clear: both;
 }

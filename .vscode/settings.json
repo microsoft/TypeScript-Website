@@ -1,5 +1,13 @@
 {
   "files.exclude": {
     "**/.rts2_cache*": true
-  }
+  },
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#3178C6",
+    "activityBar.foreground": "#000000",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#ffffff",
+    "activityBarBadge.foreground": "#15202b"
+  },
+  "peacock.color": "#3178C6",
 }
