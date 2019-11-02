@@ -9,7 +9,7 @@
     "husky": "^3.0.8"
   },
   "scripts": {
-    "bootstrap": "build-tsconfig-reference-md",
+    "bootstrap": "yarn build-tsconfig-reference-md",
     "start": "yarn workspace typescriptlang-org start",
     "build-site": "yarn workspace typescriptlang-org build",
     "build-tsconfig-reference-md": "yarn workspace tsconfig-reference build",

@@ -5,7 +5,7 @@ export const createTSConfigReference = async (
   graphql: CreatePagesArgs["graphql"],
   createPage: NodePluginArgs["actions"]["createPage"]
 ) => {
-  const handbookPage = path.resolve(`./src/templates/handbook.tsx`)
+  const tsConfigRefPage = path.resolve(`./src/templates/tsconfigReference.tsx`)
   const result = await graphql(`
     query GetAllHandbookDocs {
       allFile(
@@ -16,7 +16,6 @@ export const createTSConfigReference = async (
       ) {
         nodes {
           name
-
           modifiedTime
           absolutePath
         }
@@ -30,18 +29,20 @@ export const createTSConfigReference = async (
 
   const anyData = result.data as any
   const docs = anyData.allFile.nodes
-  const english = docs.find(doc => doc.name === "en" && doc.childMarkdownRemark)
 
-  if (english) {
-    console.log("Eng", english)
-    createPage({
-      path: english.absolutePath,
-      component: handbookPage,
-      context: {
-        slug: "/tsconfig",
-        tsconfigMDPath: english.absolutePath,
-        isOldHandbook: false,
-      },
-    })
+  // start with just the english one
+  console.log(docs)
+  const english = docs.find(doc => doc.name === "en")
+
+  if (!english) {
+    throw new Error("Could not find the TSConfig Reference markdown file: you probably need to run `yarn bootstrap` in the project root")
   }
+
+  createPage({
+    path: "/tsconfig",
+    component: tsConfigRefPage,
+    context: {
+      tsconfigMDPath: english.absolutePath,
+    },
+  })
 }
