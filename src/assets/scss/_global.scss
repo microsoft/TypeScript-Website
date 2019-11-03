@@ -340,6 +340,12 @@ header input.site-search {
   }
 }
 
+@media (max-width: 480px) {
+  .algolia-autocomplete span.ds-dropdown-menu {
+    min-width: 315px;
+  }
+}
+
 
 header input#site-search:focus {
   border-color: white;
