@@ -329,6 +329,6 @@ gulp.task("build", ["jekyll:prod", "styles", "examples"], function () {});
 
 // Builds your site with the "build" command and then runs all the optimizations on
 // it and outputs it to "./site"
-gulp.task("publish", function () {
-  gulp.start("automate:download_urls", "automate:download_search_assets", "build", "html", "copy", "images", "handbook-images", "fonts", "scripts", "cname", "webconfig", "playground");
+gulp.task("publish", ["build"], function () {
+  gulp.start("automate:download_urls", "automate:download_search_assets", "html", "copy", "images", "handbook-images", "fonts", "scripts", "cname", "webconfig", "playground");
 });
