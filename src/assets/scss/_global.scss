@@ -329,8 +329,14 @@ header input.site-search {
   header input.site-search, header .algolia-autocomplete {
     width: 100%;
   }
+
   header .navbar-right {
     margin-right: 0px;
+    margin-left: 0px;
+  }
+
+  .algolia-autocomplete span.ds-dropdown-menu {
+    min-width: 444px;
   }
 }
 

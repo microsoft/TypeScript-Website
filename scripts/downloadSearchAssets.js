@@ -11,7 +11,7 @@ const getFileAndStoreLocally = async (url, path) => {
 
 const go = async () => {
   await getFileAndStoreLocally("https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js", "src/assets/javascript/docsearch.js")
-  await getFileAndStoreLocally("https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css", "src/assets/stylesheets/docsearch.css")
+  await getFileAndStoreLocally("https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css", "src/assets/scss/docsearch.scss")
 }
 
 go()
