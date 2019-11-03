@@ -314,6 +314,7 @@ img{width:100%;height: auto;}
 header .navbar-right {
   margin: 0;
   margin-right: -30px;
+  margin-left: -200px; // Pulls the center form back into the center
 }
 
 header input.site-search {
