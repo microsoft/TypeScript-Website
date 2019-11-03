@@ -11,7 +11,19 @@
 	{% include footer.html %}
 </body>
 <!-- JS -->
-<!-- build:js /assets/js/cc.min.js -->
+<!-- build:js /assets/js/libraries.js -->
 <script src="/assets/javascript/cookies.js"></script>
+<script type="text/javascript" src="/assets/javascript/docsearch.js"></script>
 <!-- endbuild -->
+<!-- at the end of the BODY -->
+
+<script type="text/javascript">
+docsearch({
+  apiKey: '3c2db2aef0c7ff26e8911267474a9b2c',
+  indexName: 'typescriptlang',
+  inputSelector: '.site-search',
+  debug: true // Set debug to true if you want to inspect the dropdown
+});
+</script>
+
 </html>
