@@ -286,7 +286,6 @@ img{width:100%;height: auto;}
 
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
     color: $brand-accent-color;
-
 }
 
 .navbar-nav {
@@ -309,6 +308,45 @@ img{width:100%;height: auto;}
   margin-left: 0.5em;
   margin-top: 0.4em;
 }
+
+// Changes for search
+
+header .navbar-right {
+  margin: 0;
+  margin-right: -30px;
+}
+
+header input.site-search {
+  height: 50px;
+  border-radius: 0;
+  background-color: #152740;
+  border-color: #152740;
+  color: white;
+}
+
+@media (max-width: $screen-xs-max) {
+  header input.site-search, header .algolia-autocomplete {
+    width: 100%;
+  }
+  header .navbar-right {
+    margin-right: 0px;
+  }
+}
+
+
+header input#site-search:focus {
+  border-color: white;
+}
+
+.glyphicon-search {
+  color: white;
+}
+
+.navbar-collapse.in {
+  overflow: visible;
+}
+
+// end of search
 
 #ellipses_btn {
     margin: -15px;

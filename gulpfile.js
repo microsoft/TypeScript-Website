@@ -116,6 +116,8 @@ gulp.task("styles", function () {
 // Updates the file: src/_data/urls.json
 gulp.task("automate:download_urls", shell.task("node scripts/updateURLs.js"));
 
+gulp.task("automate:download_search_assets", shell.task("node scripts/downloadSearchAssets.js"));
+
 gulp.task("handbook-images", function() {
   return gulp.src("./TypeScript-Handbook/assets/images/**")
     .pipe(changed("site/assets/images"))
@@ -328,5 +330,5 @@ gulp.task("build", ["jekyll:prod", "styles", "examples"], function () {});
 // Builds your site with the "build" command and then runs all the optimizations on
 // it and outputs it to "./site"
 gulp.task("publish", ["build"], function () {
-  gulp.start("automate:download_urls", "html", "copy", "images", "handbook-images", "fonts", "scripts", "cname", "webconfig", "playground");
+  gulp.start("automate:download_urls", "automate:download_search_assets", "html", "copy", "images", "handbook-images", "fonts", "scripts", "cname", "webconfig", "playground");
 });
