@@ -1,0 +1,30 @@
+name: Build Website
+
+on:
+  pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Check out, and set up the node/ruby infra
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+
+    # Get local dependencies
+    - run: yarn install
+    - run: yarn bootstrap
+    - run: yarn build
+
+    # PR: Deploy if we can
+    - name: Deploy PR Version
+      if: github.event_name == 'pull_request'
+      run: 'if test -z "$NOW_ACCESS_TOKEN"; then echo "Skipping deploy";
+            else npx now packages/typescriptlang-org/spublicite/ --token="$NOW_ACCESS_TOKEN"  --name="typescript-v2-$PR_NUMBER"; fi'
+      env:
+        NOW_ACCESS_TOKEN: ${{ secrets.NOW_ACCESS_TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+
+    # Run any tests
+    - run: yarn workspaces run test --ci

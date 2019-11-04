@@ -9,7 +9,8 @@
     "develop": "gatsby develop",
     "format": "prettier --write src/**/*.{js,jsx}",
     "start": "npm run develop",
-    "serve": "gatsby serve"
+    "serve": "gatsby serve",
+    "test": "echo 'no tests'"
   },
   "dependencies": {
     "@types/react-helmet": "^5.0.14",
