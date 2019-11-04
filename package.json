@@ -27,7 +27,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "git-branch-is v2 &&  yarn run clean && yarn run build || echo 'skipping'"
+      "pre-push": "git-branch-is v2 && yarn run clean && yarn run build || echo 'skipping'"
     }
   }
 }

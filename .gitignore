@@ -66,5 +66,3 @@ typings/
 # tdsx
 dist
 
-packages/typescriptlang-org/schema.json
-packages/typescriptlang-org/apollo.config.js
