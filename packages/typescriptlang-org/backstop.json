@@ -1,0 +1,62 @@
+{
+  "id": "backstop_default",
+  "viewports": [
+    {
+      "label": "phone",
+      "width": 320,
+      "height": 480
+    },
+    {
+      "label": "tablet",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "label": "computer",
+      "width": 1280,
+      "height": 900
+    }
+  ],
+  "onBeforeScript": "puppet/onBefore.js",
+  "onReadyScript": "puppet/onReady.js",
+  "scenarios": [
+    {
+      "label": "Index",
+      "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/index.html",
+      "misMatchThreshold" : 0.1
+    },
+    {
+      "label": "Old Handbook Example",
+      "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/docs/handbook/functions.html",
+      "misMatchThreshold" : 0.1,
+      "selectors": [
+        "viewport"
+      ]
+    },
+
+    {
+      "label": "TSConfig Example",
+      "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/tsconfig/index.html",
+      "misMatchThreshold" : 0.1,
+      "selectors": [
+        "viewport"
+      ]
+    }
+  ],
+  "paths": {
+    "bitmaps_reference": "_tests/backstop_data/bitmaps_reference",
+    "bitmaps_test": "_tests/backstop_data/bitmaps_test",
+    "engine_scripts": "_tests/backstop_data/engine_scripts",
+    "html_report": "_tests/backstop_data/html_report",
+    "ci_report": "_tests/backstop_data/ci_report"
+  },
+  "report": ["browser"],
+  "engine": "puppeteer",
+  "engineOptions": {
+    "args": ["--no-sandbox"]
+  },
+  "asyncCaptureLimit": 5,
+  "asyncCompareLimit": 50,
+  "debug": false,
+  "debugWindow": false
+}
