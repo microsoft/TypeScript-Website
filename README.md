@@ -6,6 +6,7 @@ This repo uses [yarn workspaces][y-wrk], to get started clone this repo and run 
 git clone https://github.com/microsoft/TypeScript-website
 cd TypeScript-website
 yarn install
+yarn bootstrap
 code .
 ```
 

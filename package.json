@@ -9,8 +9,11 @@
     "husky": "^3.0.8"
   },
   "scripts": {
+    "bootstrap": "yarn build-tsconfig-reference-md",
     "start": "yarn workspace typescriptlang-org start",
-    "build": "yarn workspace typescriptlang-org build",
+    "build-site": "yarn workspace typescriptlang-org build",
+    "build-tsconfig-reference-md": "yarn workspace tsconfig-reference build",
+    "build": "yarn build-tsconfig-reference-md && yarn build-site",
     "clean": "yarn workspace typescriptlang-org gatsby clean",
     "test": "yarn jest",
     "playground": "concurrently -p \"[{name}]\" -n \"TS,WEB\" -c \"bgBlue.bold,bgMagenta.bold\" \"yarn workspace playground start\" \"yarn workspace playground-sandbox start\"",
@@ -24,7 +27,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "git-branch-is v2 &&  yarn run clean && yarn run build"
+      "pre-push": "git-branch-is v2 && yarn run clean && yarn run build || echo 'skipping'"
     }
   }
 }

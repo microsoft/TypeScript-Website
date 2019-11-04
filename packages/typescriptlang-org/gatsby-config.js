@@ -1,10 +1,17 @@
 // https://github.com/gatsbyjs/gatsby/issues/1457
-require('ts-node').register({ files: true })
+require("ts-node").register({ files: true })
 
 module.exports = {
   plugins: [
+    // Creates TS types for queries during `gatsby dev`
     "gatsby-plugin-codegen",
-    `gatsby-plugin-typescript`,
+    // Support ts/tsx files in src
+    "gatsby-plugin-typescript",
+    
+    // Let's you edit the head from inside a react tree
+    "gatsby-plugin-react-helmet",
+
+    // Grabs the old handbook markdown files
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -12,6 +19,15 @@ module.exports = {
         name: `handbook-v1`,
       },
     },
+    // Grabs file from the tsconfig reference
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/../tsconfig-reference/output`,
+        name: `tsconfig-reference`,
+      },
+    },
+    // Markdown support
     {
       resolve: `gatsby-transformer-remark`,
       options: {
