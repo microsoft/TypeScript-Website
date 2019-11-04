@@ -5,6 +5,10 @@ set up something like that on a styles basis, so it's in the CSS.
 
 */
 
+body {
+  font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
 #top-menu {
   background-color: #3178c6;
   user-select: none;
