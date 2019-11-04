@@ -1,13 +1,9 @@
-// @ts-check
 import React from "react"
 import { Link, graphql } from "gatsby"
-import {BlogPostBySlug} from "./__generated__/BlogPostBySlug"
-// import Bio from "../components/bio"
-import {Layout} from "../components/layout"
-// import SEO from "../components/seo"
-// import { rhythm, scale } from "../utils/typography"
+import { BlogPostBySlug } from "./__generated__/BlogPostBySlug"
+import { Layout } from "../components/layout"
 
-class BlogPostTemplate extends React.Component<{ pageContext: any,  data: BlogPostBySlug}> {
+class BlogPostTemplate extends React.Component<{ pageContext: any, data: BlogPostBySlug }> {
   render() {
     const post = this.props.data.markdownRemark
     if (!post) {
@@ -18,9 +14,10 @@ class BlogPostTemplate extends React.Component<{ pageContext: any,  data: BlogPo
     const { previous, next } = this.props.pageContext
     return (
       <Layout >
-
-        <div dangerouslySetInnerHTML={{ __html: post.html }} />
-        <hr/>
+        <div className="ms-depth-4" style={{ backgroundColor: "white", maxWidth: 960, margin: "1rem auto", padding: "2rem" }}>
+          <div dangerouslySetInnerHTML={{ __html: post.html }} />
+        </div>
+        <hr />
         <ul>
           <li>
             {previous && (

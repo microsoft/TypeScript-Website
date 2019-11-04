@@ -6,6 +6,7 @@ This repo uses [yarn workspaces][y-wrk], to get started clone this repo and run 
 git clone https://github.com/microsoft/TypeScript-website
 cd TypeScript-website
 yarn install
+yarn bootstrap
 code .
 ```
 
@@ -31,6 +32,10 @@ Then opening: http://localhost:1234 - which is the below package.
 ## Playground Sandbox
 
 A create-react-app for working on the playground.
+
+## TSConfig Reference
+
+A set of tools and scripts for generating a comprehensive API reference for the TSConfig JSON file.
 
 # Contributing
 

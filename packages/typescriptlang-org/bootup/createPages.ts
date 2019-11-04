@@ -1,5 +1,6 @@
 import { setupRedirects } from "../src/redirects/setupRedirects"
 import { createOldHandbookPages } from "./ingestion/createPagesForOldHandbook"
+import { createTSConfigReference } from "./ingestion/createTSConfigReference"
 
 import { GatsbyNode } from "gatsby"
 
@@ -10,6 +11,7 @@ export const createPages: GatsbyNode["createPages"] = async args => {
 
   setupRedirects(args.actions.createRedirect)
   createOldHandbookPages(args.graphql, args.actions.createPage)
+  createTSConfigReference(args.graphql, args.actions.createPage)
 
   return null
 }

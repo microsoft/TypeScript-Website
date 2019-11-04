@@ -67,3 +67,12 @@ yarn-error.log
 .pnp.js
 # Yarn Integrity file
 .yarn-integrity
+
+# The TS auto-complete stuff
+schema.json
+apollo.config.js
+
+# backstop files
+_tests/backstop_data/bitmaps_test
+_tests/backstop_data/engine_scripts
+_tests/backstop_data/html_report

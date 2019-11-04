@@ -9,13 +9,16 @@
     "develop": "gatsby develop",
     "format": "prettier --write src/**/*.{js,jsx}",
     "start": "npm run develop",
-    "serve": "gatsby serve"
+    "serve": "gatsby serve",
+    "test": "echo 'no tests'"
   },
   "dependencies": {
-    "@uifabric/fluent-theme": "^0.16.7",
-    "@uifabric/react-cards": "^0.107.6",
-    "gatsby": "^2.4.0",
+    "@types/react-helmet": "^5.0.14",
+    "@uifabric/fluent-theme": "^7.1.4",
+    "@uifabric/react-cards": "^0.108.2",
+    "gatsby": "^2.15.29",
     "gatsby-plugin-codegen": "^1.0.4",
+    "gatsby-plugin-react-helmet": "^3.1.13",
     "gatsby-plugin-sharp": "^2.2.28",
     "gatsby-remark-copy-linked-files": "^2.1.24",
     "gatsby-remark-images": "^3.1.25",
@@ -24,16 +27,18 @@
     "gatsby-remark-smartypants": "^2.1.11",
     "gatsby-source-filesystem": "^2.1.29",
     "gatsby-transformer-remark": "^2.6.27",
-    "office-ui-fabric-react": "^6.176.0",
+    "office-ui-fabric-react": "^7.45.0",
     "prismjs": "^1.17.1",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-helmet": "^5.2.1",
     "ts-node": "^8.4.1"
   },
   "devDependencies": {
-    "@types/react": "^16.9.2",
-    "@types/react-dom": "^16.8.5",
-    "gatsby-plugin-typescript": "^2.0.13",
+    "@types/react": "^16.9.5",
+    "@types/react-dom": "^16.9.1",
+    "concurrently": "^5.0.0",
+    "gatsby-plugin-typescript": "^2.1.11",
     "prettier": "^1.17.0"
   },
   "repository": {

@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "build": "parcel build index.html",
+    "test": "echo 'no tests'"
   },
   "dependencies": {
     "react-app-polyfill": "^1.0.0"
@@ -13,7 +14,7 @@
   "devDependencies": {
     "@types/react": "^16.8.15",
     "@types/react-dom": "^16.8.4",
-    "parcel": "^1.12.3",
+    "parcel": "^1.12.4",
     "typescript": "^3.4.5"
   }
 }

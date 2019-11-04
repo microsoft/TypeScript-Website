@@ -10,7 +10,7 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
-    "test": "tsdx test --env=jsdom",
+    "test": "echo 'no tests'; #tsdx test --env=jsdom",
     "lint": "tsdx lint"
   },
   "peerDependencies": {
@@ -22,16 +22,16 @@
     }
   },
   "devDependencies": {
-    "@types/jest": "^24.0.17",
-    "@types/react": "^16.9.2",
-    "@types/react-dom": "^16.8.5",
-    "husky": "^3.0.4",
+    "@types/jest": "^24.0.18",
+    "@types/react": "^16.9.5",
+    "@types/react-dom": "^16.9.1",
+    "husky": "^3.0.8",
     "prettier": "^1.18.2",
     "pretty-quick": "^1.11.1",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "tsdx": "^0.8.0",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "tsdx": "^0.9.3",
     "tslib": "^1.10.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.6.3"
   }
 }
