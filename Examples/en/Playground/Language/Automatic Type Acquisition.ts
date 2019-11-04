@@ -17,32 +17,18 @@ import {danger} from "danger"
 
 danger.github
 
-// This handles sub-dependencies also, in this case
-// the danger's types depends on @octokit/rest also.
+// This handles transitive dependencies also, so in this case, 
+// danger depends on @octokit/rest also.
 
 danger.github.api.pulls.createComment()
 
-// the Type Acquisition will also take node's special case 
-// dependencies  into account and pull all of the node types 
+// Type acquisition will also take Node's built-in modules
+// into account and pull in Node's type declarations
 // when you use any of those dependencies. Note, these
-// tend to take a bit longer than the others (because there
-// is quite a lot of types to download.)
+// tend to take a bit longer than the others since there's
+// quite a lot of types to download!
 
 import {readFileSync} from "fs"
 
 const inputPath = "my/path/file.ts"
 readFileSync(inputPath, "utf8")
-
-// The type acquisition doesn't just support modern ES2015 
-// module imports, there is support for require too.
-
-const path = require("path")
-const outputPath = path.join("my", "path", "file.js")
-
-// This is still beta-y because we've not got dependencies
-// like lodash to work with it yet. On the other hand, it
-// also supports getting types using deno-style imports:
-
-import {Printer, Config, format} from "https://deno.land/std@v0.3.1/testing/format.ts"
-
-
