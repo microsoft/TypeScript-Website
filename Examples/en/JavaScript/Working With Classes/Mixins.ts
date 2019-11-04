@@ -5,13 +5,13 @@
 // allows you to create a class which creates class which are
 // a merge of many classes.
 
-// To get started, we need a type which is the which we'll use
-// to extend other classes from (it's main responsibility is
-// to declare that the type being passed in is a class) (Maybe?!)
-//
-type Constructor<T = {}> = new (...args: any[]) => T;
+// To get started, we need a type which we'll use to extend
+// other classes from. The main responsibility is to declare
+// that the type being passed in is a class.
 
-// Then we can create a series of classes which exist to extend
+type Constructor = new (...args: any[]) => {}
+
+// Then we can create a series of classes which extend
 // the final class by wrapping it. This pattern works well
 // when similar objects have different capabilities.
 
@@ -84,6 +84,34 @@ flappySprite.y = 20;
 
 const gameBoySprite = new EightBitSprite("L block");
 gameBoySprite.setScale(0.3);
+
 // Fails because an EightBitSprite does not have
 // the mixin for changing alphas
 gameBoySprite.setAlpha(0.5);
+
+
+// If you want to make more guarantees over the classes
+// which you wrap, you can use a constructor with generics
+
+type GConstructor<T = {}> = new (...args: any[]) => T;
+
+// Now you can declare that this mixin can only be
+// applied when the base class is a certain shape
+
+type Moveable = GConstructor<{ setXYAcceleration: (x: number, y: number) => void }>
+
+// We can then create a mixin which relies on the function
+// present in the parameter to the GConstructor above.
+
+function Jumpable<TBase extends Moveable>(Base: TBase) {
+  return class extends Base {
+      jump() {
+        // This mixin knows about setXYAcceleration now
+        this.setXYAcceleration(0, 20)
+      }
+  };
+}
+
+// We cannot create this sprite until there is a class
+// in the mixin hierarchy which adds setXYAcceleration
+const UserSprite = new Jumpable(ModernDisplaySprite);
