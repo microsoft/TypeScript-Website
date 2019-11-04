@@ -32,17 +32,3 @@ import {readFileSync} from "fs"
 
 const inputPath = "my/path/file.ts"
 readFileSync(inputPath, "utf8")
-
-// The type acquisition doesn't just support modern ES2015 
-// module imports, there is support for require too.
-
-const path = require("path")
-const outputPath = path.join("my", "path", "file.js")
-
-// This is still beta-y because we've not got dependencies
-// like lodash to work with it yet. On the other hand, it
-// also supports getting types using deno-style imports:
-
-import {Printer, Config, format} from "https://deno.land/std@v0.3.1/testing/format.ts"
-
-
