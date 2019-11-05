@@ -1,4 +1,4 @@
-//// { compiler: { ts: "3.7-Beta" }, order: 1 }
+//// { compiler: {  }, order: 1 }
 
 // TypeScript supports a lot of fixits, which are automated
 // helpers to refactor your code. For example if you select
@@ -9,10 +9,10 @@ function addOne(x: number) {
   return x + 1
 }
 
-// This feature is available as of TypeScript version 3.7, 
-// which will also include nightly builds. 
+// This feature is available as of TypeScript version 3.7,
+// which will also include nightly builds.
 
-// They might not be something you need to use inside the 
+// They might not be something you need to use inside the
 // playground when you're making code samples, or learning.
 
 // However, having fixits available means we can document

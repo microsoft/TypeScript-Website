@@ -1,13 +1,13 @@
-//// { compiler: { ts: "3.7-Beta" }, order: 2 }
+//// { compiler: {  }, order: 2 }
 
-// The nullish coalescing operator is an alternative to || 
-// which returns the right-side expression if the left-side 
+// The nullish coalescing operator is an alternative to ||
+// which returns the right-side expression if the left-side
 // is null or undefined.
 
 // In contrast, ||  uses falsy checks, meaning an empty
-// string or the number 0 would be considered false. 
+// string or the number 0 would be considered false.
 
-// A good example for this feature is dealing with partial 
+// A good example for this feature is dealing with partial
 // objects which have defaults a key isn't passed in.
 
 interface AppConfiguration {

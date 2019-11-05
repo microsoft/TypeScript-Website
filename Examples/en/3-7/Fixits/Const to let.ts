@@ -1,4 +1,4 @@
-//// { compiler: { ts: "3.7-Beta" }, order: 1 }
+//// { compiler: {  }, order: 1 }
 
 // New to 3.7 is the ability to quickly convert
 // a const variable to a let when the value
