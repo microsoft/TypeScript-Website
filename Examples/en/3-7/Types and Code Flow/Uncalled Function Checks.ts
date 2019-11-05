@@ -1,6 +1,6 @@
-//// { compiler: { ts: "3.7-Beta" }, order: 1 }
+//// { compiler: {  }, order: 1 }
 
-// New to 3.7 is a check inside if statements for 
+// New to 3.7 is a check inside if statements for
 // when you accidentally use a function instead
 // of the return value of a function.
 
@@ -27,5 +27,5 @@ if (plugin.pluginShouldLoad) {
 // In 3.6 and below, this was not an error
 
 if (plugin.pluginActivate) {
-  plugin.pluginActivate()  
+  plugin.pluginActivate()
 }

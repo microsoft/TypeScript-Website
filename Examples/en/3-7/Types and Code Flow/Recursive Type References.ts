@@ -1,6 +1,6 @@
-//// { compiler: { ts: "3.7-Beta" }, order: 2 }
+//// { compiler: {  }, order: 2 }
 
-// Choosing between using type vs interface is about the 
+// Choosing between using type vs interface is about the
 // constraints in the features for each. With 3.7, one of
 // the constrains on type but not in interface was removed.
 
@@ -19,7 +19,7 @@ type ValueOrArray<T> = T | Array<ValueOrArray<T>>;
 type ValueOrArray2<T> = T | ArrayOfValueOrArray<T>;
 interface ArrayOfValueOrArray<T> extends Array<ValueOrArray2<T>> {}
 
-// This allows for a comprehensive definition of JSON, 
+// This allows for a comprehensive definition of JSON,
 // which works by referring to itself.
 
 type Json = string | number | boolean | null | Json[] | { [key: string]: Json };

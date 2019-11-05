@@ -1,4 +1,4 @@
-//// { compiler: { ts: "3.7-Beta" }, order: 3 }
+//// { compiler: {  }, order: 3 }
 
 // TypeScript's error messages can sometimes be a tad verbose...
 // With 3.7, we've taken a few cases which could be particularly
@@ -11,7 +11,7 @@ let a = { b: { c: { d: { e: "string" } } } };
 let b = { b: { c: { d: { e: 12 } } } };
 
 a = b;
- 
+
 // Before, it was 2 lines of code per nested property, which
 // quickly meant people learned to read error messages by
 // reading the first and then last line of an error message.
@@ -31,7 +31,7 @@ a = b;
 //                 Type 'number' is not assignable to type 'string'
 
 
-// This can handle working through different types of objects, 
+// This can handle working through different types of objects,
 // to still give a useful and concise error message.
 
 class ExampleClass {
