@@ -78,4 +78,4 @@ createBall = createRedBall
 createRedBall = createBall
 
 // Where the first assignment works (they both have diameter)
-// but the second doesn't (the ball doesn't have a color.)
+// but the second doesn't (the ball doesn't have a color).

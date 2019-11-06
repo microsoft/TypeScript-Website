@@ -9,9 +9,9 @@ const users = [{ name: "Ahmed" }, { name: "Gemma" }, { name: "Jon" }];
 const jon = users.find(u => u.name === "jon");
 
 // In the above case, 'find' could fail. In that case we
-// don't have an object. This creates the type
+// don't have an object. This creates the type:
 //
-//    { name: string } | undefined
+//   { name: string } | undefined
 //
 // If you hover your mouse over the three following uses of 'jon' below,
 // you'll see how the types change depending on where the word is located:
@@ -52,13 +52,12 @@ if (typeof randomIdentifier === "number") {
 // JavaScript and TypeScript will try to understand how the
 // code types will change in different locations.
 
-// To learn more about code flow analysis
-//  - example:type-guards
+// To learn more about code flow analysis:
+// - example:type-guards
 
-// To continue reading through examples you could jump to a few different
-// places now.
+// To continue reading through examples you could jump to a
+// few different places now:
 //
 // - Modern JavaScript: example:immutability
 // - Type Guards: example:type-guards
 // - Functional Programming with JavaScript example:function-chaining
-//

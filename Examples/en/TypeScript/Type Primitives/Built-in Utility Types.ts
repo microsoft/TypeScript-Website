@@ -23,7 +23,7 @@ type StickerUpdateParam = Partial<Sticker>
 
 // Readonly<Type>
 
-// Takes an object and makes its properties read-only
+// Takes an object and makes its properties read-only.
 
 type StickerFromAPI = Readonly<Sticker>
 
@@ -31,7 +31,7 @@ type StickerFromAPI = Readonly<Sticker>
 // Record<KeysFrom, Type>
 
 // Creates a type which uses the list of properties from
-// KeysFrom and gives them the value of Type
+// KeysFrom and gives them the value of Type.
 
 // List which keys come from:
 type NavigationPages = 'home' | 'stickers' | 'about' | 'contact'
@@ -126,6 +126,6 @@ type AccessiblePageInfo = Required<PageInfo>
 // Unlike other types, ThisType does not return a new
 // type but instead manipulates the definition of this
 // inside a function. You can only use ThisType when you
-// have noImplicitThis turned on in your TSConfig
+// have noImplicitThis turned on in your TSConfig.
 
 // https://www.typescriptlang.org/docs/handbook/utility-types.html

@@ -1,9 +1,9 @@
-// Type Guarding is the term where you influence the code 
+// Type Guarding is the term where you influence the code
 // flow analysis via code. TypeScript uses existing JavaScript
 // behavior which validates your objects at runtime to influence
 // the code flow. This example assumes you've read example:code-flow
 
-// To run through these examples, we'll create some classes, 
+// To run through these examples, we'll create some classes,
 // here's a system for handling internet or telephone orders.
 
 interface Order { address: string }
@@ -13,7 +13,7 @@ interface InternetOrder extends Order { email: string }
 // Then a type which could be one of the two Order subtypes or undefined
 type PossibleOrders = TelephoneOrder | InternetOrder | undefined;
 
-// And a function which returns a Possible order
+// And a function which returns a PossibleOrder
 declare function getOrder(): PossibleOrders;
 const possibleOrder = getOrder();
 
@@ -34,12 +34,12 @@ class TelephoneOrderClass {
 }
 
 if (possibleOrder instanceof TelephoneOrderClass) {
-  possibleOrder;
+  const mustBeTelephoneOrder = possibleOrder;
 }
 
 // You can use the JavaScript "typeof" operator to
-// narrow your union, this only works with primitives
-// inside JavaScript (like strings, objects, numbers)
+// narrow your union. This only works with primitives
+// inside JavaScript (like strings, objects, numbers).
 
 if (typeof possibleOrder === "undefined") {
   const definitelyNotAnOder = possibleOrder;
@@ -48,13 +48,13 @@ if (typeof possibleOrder === "undefined") {
 // You can see a full list of possible typeof values
 // here: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
 
-// Using JavaScript operators can only get you so far, when
+// Using JavaScript operators can only get you so far. When
 // you want to check your own object types you can use
 // type predicate functions.
 
 // A type predicate function is a function where the return
 // type offers information to the code flow analysis when
-// the function returns true
+// the function returns true.
 
 // Using the possible order, we can use two type guards
 // to declare which type the possibleOrder is:
@@ -78,7 +78,7 @@ if (isATelephoneOrder(possibleOrder)) {
   console.log("Order received via phone:", possibleOrder.callerNumber)
 }
 
-// You can read more on how code flow analysis here:
+// You can read more on code flow analysis here:
 //
 //  - example:code-flow
 //  - example:type-guards

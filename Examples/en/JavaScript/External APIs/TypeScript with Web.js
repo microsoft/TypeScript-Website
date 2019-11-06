@@ -1,10 +1,10 @@
 //// { order: 0, isJavaScript: true }
 
 // The DOM (Document Object Model) is the underlying API for
-//  working with a webpage, and TypeScript has great support
+// working with a webpage, and TypeScript has great support
 // for that API.
 
-// Let's create a popover to show when you press run in
+// Let's create a popover to show when you press "Run" in
 // the toolbar above.
 
 const popover = document.createElement("div");
@@ -14,7 +14,7 @@ popover.id = "example-popover";
 // specifically because we passed in "div".
 
 // To make it possible to re-run this code, we'll first
-// add a function to remove the popover it it was already there.
+// add a function to remove the popover if it was already there.
 
 const removePopover = () => {
   const existingPopover = document.getElementById(popover.id);
@@ -23,12 +23,12 @@ const removePopover = () => {
   }
 };
 
-// Then call it right away
+// Then call it right away.
 
 removePopover();
 
 // We can set the inline styles on the element via the
-// .style property on a HTMLElement - this is fully typed
+// .style property on a HTMLElement - this is fully typed.
 
 popover.style.backgroundColor = "#0078D4";
 popover.style.color = "white";
@@ -40,16 +40,16 @@ popover.style.width = "200px";
 popover.style.height = "100px";
 popover.style.padding = "10px";
 
-// Including more obscure, or deprecated CSS attributes
+// Including more obscure, or deprecated CSS attributes.
 popover.style.webkitBorderRadius = "4px";
 
 // To add content to the popover, we'll need to add
-// a paragraph element and use it to add some text
+// a paragraph element and use it to add some text.
 
 const message = document.createElement("p");
 message.textContent = "Here is an example popover";
 
-// And we'll also add a close button
+// And we'll also add a close button.
 
 const closeButton = document.createElement("a");
 closeButton.textContent = "X";
@@ -62,7 +62,7 @@ closeButton.onclick = () => {
   removePopover();
 };
 
-// Then add all of these elements on to the page
+// Then add all of these elements on to the page.
 popover.appendChild(message);
 popover.appendChild(closeButton);
 document.body.appendChild(popover);

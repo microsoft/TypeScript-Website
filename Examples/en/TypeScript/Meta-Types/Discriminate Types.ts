@@ -33,7 +33,7 @@ const handleEvent = (event: TimingEvent) => {
 };
 
 // This pattern is the same with numbers which we can use
-// version as the discriminate for.
+// as the discriminator.
 
 // In this example, we have a discriminate union and an
 // additional error state to handle.
@@ -64,6 +64,6 @@ const handleResponse = (response: APIResponses) => {
 // You're better off using a switch statement instead of
 // if statements because you can make assurances that all
 // parts of the union are checked. There is a good pattern
-// for this using the never type in the handbook
+// for this using the never type in the handbook:
 
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#discriminated-unions

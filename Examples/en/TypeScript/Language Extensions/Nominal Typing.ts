@@ -27,7 +27,7 @@
 
 type ValidatedInputString = string & { __brand: "User Input Post Validation" };
 
-// We will will use a function to transform a string to
+// We will use a function to transform a string to
 // a ValidatedInputString - but the point worth noting
 // is that we're just _telling_ TypeScript that it's true.
 
@@ -44,7 +44,7 @@ const printName = (name: ValidatedInputString) => {
 };
 
 // For example, here's some unsafe input from a user, going
-// through the validator and then being able print:
+// through the validator and then being allowed to be printed:
 
 const input = "\n<script>alert('bobby tables')</script>";
 const validatedInput = validateUserInput(input);
@@ -57,9 +57,10 @@ printName(input);
 
 // You can read a comprehensive overview of the
 // different ways to create nominal types, and their
-// trade-offs in this 400 comment long GitHub issue
+// trade-offs in this 400 comment long GitHub issue:
 //
 // https://github.com/Microsoft/TypeScript/issues/202
 //
-// and this post is a great summary
+// and this post is a great summary:
+//
 // https://michalzalecki.com/nominal-typing-in-typescript/

@@ -4,7 +4,7 @@
 // to be familiar with the idea of a type system being "sound".
 
 // Soundness is the idea that the compiler can make guarantees
-// about the type a value has a runtime, and not just
+// about the type a value has at runtime, and not just
 // during compilation. This is normal for most programming
 // languages that are built with types from day one.
 
@@ -26,7 +26,7 @@
 const usersAge = ("23" as any) as number;
 
 // TypeScript will let you use type assertions to override
-// the inference to something which is is quite wrong. Using
+// the inference to something which is quite wrong. Using
 // type assertions is a way of telling TypeScript you know
 // best, and TypeScript will try to let you get on with it.
 

@@ -58,8 +58,8 @@ const handleArtistsResponse = (response: ArtistsResponse) => {
   console.log(response.artists);
 };
 
-// A mix of Intersection and Union types become really 
-// useful when you have cases where an object has to 
+// A mix of Intersection and Union types becomes really
+// useful when you have cases where an object has to
 // include one of two values:
 
 interface CreateArtistBioBase {
@@ -67,7 +67,7 @@ interface CreateArtistBioBase {
   thirdParty?: boolean
 }
 
-type CreateArtistBioRequest 
+type CreateArtistBioRequest
    = CreateArtistBioBase & { html: string } | { markdown: string }
 
 // Now you can only create a request when you include

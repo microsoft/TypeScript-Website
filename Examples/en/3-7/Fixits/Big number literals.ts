@@ -7,21 +7,21 @@ const maxHighValue = 9007199254740991;
 const maxLowValue = -9007199254740991;
 
 // If you go one over/below these numbers
-// then you start to get into dangerous territory
+// then you start to get into dangerous territory.
 
 const oneOverMax = 9007199254740992;
 const oneBelowMin = -9007199254740992;
 
 // The solution for handling numbers of this size
 // is to convert these numbers to BigInts instead
-// of a number
-
+// of a number:
+//
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
 
 // TypeScript will now offer a fixit for number
 // literals which are above 2^52 (positive / negative)
 // which adds the suffix "n" which informs JavaScript
-// that the type should be BigNum
+// that the type should be BigInt.
 
 // Number literals
 9007199254740993;

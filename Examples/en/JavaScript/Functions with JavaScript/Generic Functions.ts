@@ -16,19 +16,19 @@ function wrapInArray<Type>(input: Type): Type[] {
 
 // Note: it's common to see Type referred to as T. This is
 // culturally similar to how people use i in a for loop to
-// represent index. T normally represents Types, so we'll
+// represent index. T normally represents Type, so we'll
 // be using the full name for clarity.
 
 // Our function will use inference to always keep the type
 // passed in the same as the type passed out (though
-// it will be wrapped in an array.)
+// it will be wrapped in an array).
 
 const stringArray = wrapInArray("hello generics");
 const numberArray = wrapInArray(123);
 
 // We can verify this works as expected by checking
 // if we can assign a string array to a function which
-// should be an object array
+// should be an object array:
 const notStringArray: string[] = wrapInArray({});
 
 // You can also skip the generic inference by adding the
@@ -58,8 +58,9 @@ renderToScreen(objectsWithDraw);
 renderToScreen([{}, { draw: () => {} }]);
 
 // Generics can start to look complicated when you have
-// multiple variables. Here an example of a caching function
-// that lets you have different sets of input types and caches.
+// multiple variables. Here is an example of a caching
+// function that lets you have different sets of input types
+// and caches.
 
 interface CacheHost {
   save: (a: any) => void;
@@ -78,8 +79,8 @@ interface CacheHostGeneric<ContentType> {
   save: (a: ContentType) => void;
 }
 
-// Now when the CacheHostGeneric is ued, you need to tell it
-// what ContentType is.
+// Now when the CacheHostGeneric is used, you need to tell
+// it what ContentType is.
 
 function addTypedObjectToCache<Type, Cache extends CacheHostGeneric<Type>>(obj: Type, cache: Cache): Cache {
   cache.save(obj);
@@ -92,9 +93,8 @@ function addTypedObjectToCache<Type, Cache extends CacheHostGeneric<Type>>(obj: 
 // others, generics offer a flexible way to let others use
 // their own types with full code inference.
 
-// For more examples of generics with classes and interfaces
+// For more examples of generics with classes and interfaces:
 //
 // example:advanced-classes
 // example:typescript-with-react
 // https://www.typescriptlang.org/docs/handbook/generics.html
-

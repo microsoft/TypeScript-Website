@@ -14,9 +14,9 @@ const myObject = JSON.parse("{}");
 myObject.x.y.z;
 
 // Using an any gives you the ability to write code closer to
-// original JavaScript with the trade off of type safety.
+// original JavaScript with the trade-off of type safety.
 
-// any is much like a 'type wildcard' which you can replace 
+// any is much like a 'type wildcard' which you can replace
 // with any type (except never) to make one type assignable
 // to the other.
 
@@ -31,12 +31,12 @@ debug({ color: "blue" });
 
 // TypeScript will take into account the position of the
 // anys in different forms, for example with these tuples
-// for the function argument
+// for the function argument.
 
-declare function swap(x: [number, string]): [string, number]
+declare function swap(x: [number, string]): [string, number];
 
 declare const pair: [any, any];
-swap(pair)
+swap(pair);
 
 // The call to swap is allowed because the argument can be
 // matched by replacing the first any in pair with number

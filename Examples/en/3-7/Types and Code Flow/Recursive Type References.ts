@@ -35,5 +35,6 @@ const exampleStatusJSON: Json = {
 }
 
 // There's more to learn from the 3.7 beta release notes and its PR:
-// https://devblogs.microsoft.com/typescript/announcing-typescript-3-7-beta/
+//
+// https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/
 // https://github.com/microsoft/TypeScript/pull/33050

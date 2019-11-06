@@ -1,11 +1,11 @@
-// JavaScript is a language with a few ways to declare
+// JavaScript is a language with a few ways to declare that
 // some of your objects don't change. The most prominent is
 // const - which says that the value won't change.
 
 const helloWorld = "Hello World";
 
 // You cannot change helloWorld now, TypeScript will give
-// you an error about this because you would get one at
+// you an error about this, because you would get one at
 // runtime instead.
 
 helloWorld = "Hi world";
@@ -30,7 +30,7 @@ myConstantObject.msg = "Hi World";
 
 // const means the value at that point stays the same, but
 // that the object itself may change internally. This can
-// be changed using Object.freeze
+// be changed using Object.freeze.
 
 const myDefinitelyConstantObject = Object.freeze({
   msg: "Hello World"
@@ -51,7 +51,7 @@ myFrozenArray.push("World");
 
 // TypeScript has a few extra syntax hooks to improve working
 // with immutable data which you can find in the TypeScript
-// section of the examples
-
+// section of the examples:
+//
 // example:literals
 // example:type-widening-narrowing

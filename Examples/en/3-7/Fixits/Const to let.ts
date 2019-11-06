@@ -5,7 +5,7 @@
 // has been re-assigned.
 
 // You can try this by highlighting the below error
-//  and choosing to run the quick-fix.
+// and choosing to run the quick-fix.
 
 const displayName = "Andrew"
 

@@ -1,8 +1,8 @@
 //// { order: 1 }
 
 // Yes, we know, the defaults for TypeScript's tsconfig do
-// not have strict turned on. However, at every chance we 
-// can the team recommends that users try migrate towards 
+// not have strict turned on. However, at every chance we
+// can the team recommends that users try migrate towards
 // having strict mode enabled in their configs.
 
 // For the playground however, we can happily set the defaults

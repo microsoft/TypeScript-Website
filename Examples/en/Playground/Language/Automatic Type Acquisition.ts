@@ -2,22 +2,22 @@
 // grabs type definitions from @types on npm behind the scenes
 // to provide a better user experience for JavaScript users.
 
-// The playground now has a similar (but a bit more limited) 
+// The playground now has a similar (but a bit more limited)
 // version of the type acquisition process built into
 // TypeScript.
 
 // You can use it by creating imports in your code. It works
-// either through @types from Definitely Typed or via d.ts
+// either through @types from DefinitelyTyped or via d.ts
 // files inside the dependency itself.
 
 import {danger} from "danger"
 
-// Highlight these identifiers below to see the associated 
+// Highlight these identifiers below to see the associated
 // JSDocs from the built-in types:
 
 danger.github
 
-// This handles transitive dependencies also, so in this case, 
+// This handles transitive dependencies also, so in this case,
 // danger depends on @octokit/rest also.
 
 danger.github.api.pulls.createComment()

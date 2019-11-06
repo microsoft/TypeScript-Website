@@ -39,7 +39,7 @@ const sockDrawer = new Drawer<Sock>();
 sockDrawer.add({ color: "white" });
 const mySock = sockDrawer.remove();
 
-// As well as creating a drawer for Tshirts
+// As well as creating a drawer for TShirts:
 const tshirtDrawer = new Drawer<TShirt>();
 tshirtDrawer.add({ size: "m" });
 
@@ -58,12 +58,13 @@ const mixedDrawer = new Drawer<Sock | TShirt>();
 // TypeScript code above
 
 /**
- *
  * @template {{}} ClothingType
- * @param {ClothingType[]} contents
  */
 class Dresser {
-  contents = [];
+  constructor() {
+    /** @type {ClothingType[]} */
+    this.contents = [];
+  }
 
   /** @param {ClothingType} object */
   add(object) {
@@ -91,4 +92,4 @@ class Dresser {
 const coatDresser = new Dresser();
 
 coatDresser.add({ color: "green" });
-const sock = coatDresser.remove();
+const coat = coatDresser.remove();

@@ -20,7 +20,7 @@ const myVariable = "Hi";
 
 // JSDoc comments are a way to provide type information to
 // TypeScript and your editors. Let's start with an easy one
-// setting a variable's type to a built-in type
+// setting a variable's type to a built-in type.
 
 // For all of these examples, you can hover over the name,
 // and on the next line try write [example]. to see the
@@ -29,11 +29,12 @@ const myVariable = "Hi";
 /** @type {number} */
 var myNumber;
 
-// You can see all of the supported tags inside the handbook
-// https://www.typescriptlang.org/docs/handbook/type-checking-javascript-files.html#supported-jsdoc
+// You can see all of the supported tags in the handbook:
 //
+// https://www.typescriptlang.org/docs/handbook/type-checking-javascript-files.html#supported-jsdoc
+
 // However, we'll try go through some of the more common examples
-// in here, you can also copy & paste any examples from the handbook
+// here. You can also copy & paste any examples from the handbook
 // into here.
 
 // Importing the types for JavaScript configuration files:
@@ -54,8 +55,8 @@ const config = {};
 /** @type { User } */
 const user = {};
 
-// There's TypeScript compatible inline type shorthand, which
-// you can use for both type and typedef
+// There's the TypeScript compatible inline type shorthand,
+// which you can use for both type and typedef:
 
 /** @type {{ owner: User, name: string }} */
 const resource;
@@ -65,28 +66,29 @@ const resource;
 /** @type {Resource} */
 const otherResource;
 
-// Declaring a typed function
+// Declaring a typed function:
 
 /**
  * Adds two numbers together
- * @param a {number} The first number
- * @param b {number} The second number
+ * @param {number} a The first number
+ * @param {number} b The second number
  * @returns {number}
  */
 function addTwoNumbers(a, b) {
   return a + b;
 }
 
-// You can use most of TypeScript's type tools, like unions
+// You can use most of TypeScript's type tools, like unions:
 
 /** @type {(string | boolean)} */
 let stringOrBoolean = "";
 stringOrBoolean = false;
 
 // Extending globals in JSDoc is a more involved process
-// which you can see in the VS Code docs
+// which you can see in the VS Code docs:
+//
 // https://code.visualstudio.com/docs/nodejs/working-with-javascript#_global-variables-and-type-checking
 
 // Adding JSDoc comments to your functions is a win-win
-// situation, you get better tooling and so do all your
+// situation; you get better tooling and so do all your
 // API consumers.

@@ -5,8 +5,8 @@ const welcomeString = "Hello There";
 let replyString = "Hey";
 
 // Aside from the text differences of the strings, welcomeString
-// is a const (which  means the value will never change)
-// and replyString is a let (which means it can change)
+// is a const (which means the value will never change)
+// and replyString is a let (which means it can change).
 
 // If you hover over both variables, you get very different
 // type information from TypeScript:
@@ -47,7 +47,7 @@ quantumString.length;
 
 // In strict mode the onus is on the code author to ensure
 // that the type has been narrowed to the non-null type.
-// Usually this is as simple as an if check
+// Usually this is as simple as an if check:
 
 if (quantumString) {
   quantumString.length;
@@ -56,11 +56,12 @@ if (quantumString) {
 // In strict mode the type quantumString has two representations.
 // Inside the if, the type was narrowed to just string.
 
-// You can see more examples of narrowing in 
+// You can see more examples of narrowing in:
 //
 // example:union-and-intersection-types
 // example:discriminate-types
 
 // And even more resources on the web:
+//
 // https://mariusschulz.com/blog/literal-type-widening-in-typescript
 // https://sandersn.github.io/manual/Widening-and-Narrowing-in-Typescript.html

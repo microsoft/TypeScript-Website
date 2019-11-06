@@ -1,7 +1,7 @@
 //// { order: 3, compiler: { strictNullChecks: false } }
 
 // JavaScript has two ways to declare values which don't
-// exist, and TypeScript adds extra syntax which allow even
+// exist, and TypeScript adds extra syntax which allows even
 // more ways to declare something as optional or nullable.
 
 // First up, the difference between the two JavaScript
@@ -36,13 +36,13 @@ const searchResults = {
 // ignored in the type system. This let TypeScript provide a
 // coding environment closer to un-typed JavaScript.
 
-// Version 2.0 added a compiler flag called "strictNullTypes"
+// Version 2.0 added a compiler flag called "strictNullChecks"
 // and this flag required people to treat undefined and null
 // as types which needs to be handled via code-flow analysis
 // ( see more at example:code-flow )
 
 // For an example of the difference in turning on strict null
-// types to TypeScript, hover over "Potential String" below:
+// checks to TypeScript, hover over "Potential String" below:
 
 type PotentialString = string | undefined | null;
 

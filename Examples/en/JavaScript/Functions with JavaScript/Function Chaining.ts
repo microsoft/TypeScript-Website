@@ -1,6 +1,5 @@
 //// { order: 2, compiler: { esModuleInterop: true } }
 
-
 // Function chaining APIs are a common pattern in
 // JavaScript, which can make your code focused
 // with less intermediary values and easier to read
@@ -8,7 +7,7 @@
 
 // A really common API which works via chaining
 // is jQuery. Here is an example of jQuery
-// being used with the types from DefinitelyTyped
+// being used with the types from DefinitelyTyped:
 
 import $ from "jquery";
 
@@ -59,7 +58,7 @@ addTwoNumbers(1)
 // Here's a similar example which uses a class:
 
 class AddNumbers {
-  private n = 0;
+  private n: number;
 
   constructor(start = 0) {
     this.n = start;
@@ -78,9 +77,13 @@ class AddNumbers {
 
 // Here it is in action:
 
-new AddNumbers(2).add(3).add(3);
+new AddNumbers(2)
+  .add(3)
+  .add()
+  .print()
+  .add(1);
 
-// This example as used the TypeScript
+// This example used the TypeScript
 // type inference to provide a way to
 // provide tooling to JavaScript patterns.
 
