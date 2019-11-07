@@ -35,7 +35,6 @@ body {
   text-decoration: none;
 }
 
-
 #top-menu ul {
   padding: 0;
   margin: 0;
@@ -54,6 +53,7 @@ body {
 #top-menu #home-page-logo span {
   position: relative;
   top: -0.4rem;
+  text-decoration: none;
 }
 
 #top-menu .nav-item {
@@ -66,9 +66,12 @@ body {
 
 #top-menu .nav-item a {
   display: block;
-  color: white;
   padding: 0.7rem 0.5em 0.7em;
+}
+
+#top-menu a {
   text-decoration: none;
+  color: white;
 }
 
 #beta-notification-menu {
