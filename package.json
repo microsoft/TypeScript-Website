@@ -24,5 +24,9 @@
     "semi": false,
     "singleQuote": true,
     "trailingComma": "es5"
+  },
+  "dependencies": {
+    "danger": "^9.2.4",
+    "danger-plugin-spellcheck": "^1.5.0"
   }
 }
