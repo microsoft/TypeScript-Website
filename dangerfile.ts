@@ -15,7 +15,7 @@ spellcheck({
 
 // Print out the PR url
 const deployURL = `https://typescript-v2-${danger.github.pr.number}.ortam.now.sh`
-message(`Deployed to [a PR branch](${deployURL})`)
+message(`Deployed to [a PR branch](${deployURL}) - [tsconfig](${deployURL}/tsconfig) [old handbook](${deployURL}/tsc/docs/handbook/integrating-with-build-tools.html)`)
 
 // Look for new snapshots and show in a HTML table
 const snapshots = danger.git.fileMatch("packages/typescriptlang-org/_tests/backstop_data/bitmaps_reference/*.png")
