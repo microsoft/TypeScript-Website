@@ -6,7 +6,8 @@ set up something like that on a styles basis, so it's in the CSS.
 */
 
 body {
-  font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+  font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI",
+    -apple-system, BlinkMacSystemFont, "Roboto", "Helvetica Neue", sans-serif;
 }
 
 #top-menu {
@@ -34,12 +35,29 @@ body {
   text-decoration: none;
 }
 
-#top-menu .nav ul {
+
+#top-menu ul {
   padding: 0;
   margin: 0;
 }
 
+#top-menu #home-page-logo {
+  width: 200px;
+}
+
+#top-menu #home-page-logo svg {
+  margin-right: 0.6rem;
+  margin-left: 1rem;
+  margin-top: 0.68rem;
+}
+
+#top-menu #home-page-logo span {
+  position: relative;
+  top: -0.4rem;
+}
+
 #top-menu .nav-item {
+  font-weight: 600;
   font-size: 1rem;
   text-decoration: none;
   border: 1px solid transparent;
@@ -48,6 +66,46 @@ body {
 
 #top-menu .nav-item a {
   display: block;
-  color: #262626;
-  padding: 0.8rem 0.5em 0.7em;
+  color: white;
+  padding: 0.7rem 0.5em 0.7em;
+  text-decoration: none;
+}
+
+#beta-notification-menu {
+  background-color: #c63131;
+  text-align: center;
+  color: white;
+  padding: 0.4rem 0;
+}
+
+/* This juts out of the left a bit */
+form.search {
+  height: 3rem;
+  position: relative;
+  top: -1rem;
+  background-color: #2a85c4;
+  padding-left: 1rem;
+  display: inline-block;
+}
+
+form.search svg {
+  position: relative;
+  top: 1rem;
+}
+
+form.search input {
+  height: 3rem;
+  border-radius: 0;
+  border: none;
+  background-color: #2a85c4;
+  border-radius: 0;
+  border-color: #152740;
+  color: white;
+  -webkit-appearance: none;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+form.search input::placeholder {
+  color: white;
 }

@@ -13,6 +13,7 @@
     "test": "echo 'no tests'"
   },
   "dependencies": {
+    "@types/node-fetch": "^2.5.3",
     "@types/react-helmet": "^5.0.14",
     "@uifabric/fluent-theme": "^7.1.4",
     "@uifabric/react-cards": "^0.108.2",
