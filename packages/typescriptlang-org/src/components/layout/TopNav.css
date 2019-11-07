@@ -81,8 +81,6 @@ body {
 /* This juts out of the left a bit */
 form.search {
   height: 3rem;
-  position: relative;
-  top: -1rem;
   background-color: #2a85c4;
   padding-left: 1rem;
   display: inline-block;
@@ -90,20 +88,23 @@ form.search {
 
 form.search svg {
   position: relative;
-  top: 1rem;
+  top: 0.1rem;
+  margin-right: 0.3rem;
 }
 
 form.search input {
-  height: 3rem;
+  -webkit-appearance: none;
+  background-color: #2a85c4;
+  border-color: #152740;
   border-radius: 0;
   border: none;
-  background-color: #2a85c4;
-  border-radius: 0;
-  border-color: #152740;
   color: white;
-  -webkit-appearance: none;
-  font-weight: 600;
   font-size: 1rem;
+  font-weight: 600;
+  height: 3rem;
+
+  /*  Algolia sets this to "top" at runtime which breaks the layout */
+  vertical-align: initial !important;
 }
 
 form.search input::placeholder {
