@@ -1,9 +1,9 @@
 //// { order: 4 }
 
-// Mixins are a faux-multiple inheritance pattern for classed
+// Mixins are a faux-multiple inheritance pattern for classes
 // in JavaScript which TypeScript has support for. The pattern
-// allows you to create a class which creates class which are
-// a merge of many classes.
+// allows you to create a class which is a merge of many
+// classes.
 
 // To get started, we need a type which we'll use to extend
 // other classes from. The main responsibility is to declare
@@ -16,7 +16,7 @@ type Constructor = new (...args: any[]) => {}
 // when similar objects have different capabilities.
 
 // This mixin adds a scale property, with getters and setters
-// for changing it with an encapsulated private property
+// for changing it with an encapsulated private property:
 
 function Scale<TBase extends Constructor>(Base: TBase) {
   return class extends Base {
@@ -33,7 +33,7 @@ function Scale<TBase extends Constructor>(Base: TBase) {
 }
 
 // This mixin adds extra methods around alpha composition
-// something which modern computers use to create depth
+// something which modern computers use to create depth:
 
 function Alpha<TBase extends Constructor>(Base: TBase) {
   return class extends Base {
@@ -71,32 +71,33 @@ class Sprite {
 const ModernDisplaySprite = Alpha(Scale(Sprite));
 const EightBitSprite = Scale(Sprite);
 
-// Creating an instance with these classes
-// shows that the objects have different sets of
-// functions due to their mixins:
+// Creating instances of these classes shows that
+// the objects have different sets of properties
+// and methods due to their mixins:
 
 const flappySprite = new ModernDisplaySprite("Bird");
-flappySprite.setVisible();
-flappySprite.setScale(0.8);
 flappySprite.x = 10;
 flappySprite.y = 20;
+flappySprite.setVisible();
+flappySprite.setScale(0.8);
+console.log(flappySprite.scale);
 
 
 const gameBoySprite = new EightBitSprite("L block");
 gameBoySprite.setScale(0.3);
 
 // Fails because an EightBitSprite does not have
-// the mixin for changing alphas
+// the mixin for changing alphas:
 gameBoySprite.setAlpha(0.5);
 
 
 // If you want to make more guarantees over the classes
-// which you wrap, you can use a constructor with generics
+// which you wrap, you can use a constructor with generics.
 
 type GConstructor<T = {}> = new (...args: any[]) => T;
 
 // Now you can declare that this mixin can only be
-// applied when the base class is a certain shape
+// applied when the base class is a certain shape.
 
 type Moveable = GConstructor<{ setXYAcceleration: (x: number, y: number) => void }>
 
@@ -113,5 +114,5 @@ function Jumpable<TBase extends Moveable>(Base: TBase) {
 }
 
 // We cannot create this sprite until there is a class
-// in the mixin hierarchy which adds setXYAcceleration
+// in the mixin hierarchy which adds setXYAcceleration:
 const UserSprite = new Jumpable(ModernDisplaySprite);

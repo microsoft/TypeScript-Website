@@ -1,14 +1,14 @@
 //// { order: 1, target: "es5" }
 
-// Modern JavaScript added a way to handle callbacks in an 
+// Modern JavaScript added a way to handle callbacks in an
 // elegant way by adding a Promise based API which has special
-// syntax which lets you treat asynchronous code as though it 
-// acts synchronous.
+// syntax that lets you treat asynchronous code as though it
+// acts synchronously.
 
-// Like all language features, this is a  trade-off in
+// Like all language features, this is a trade-off in
 // complexity: making a function async means your return
 // values are wrapped in Promises. What used to return a
-// string, now returns a Promise<string>
+// string, now returns a Promise<string>.
 
 const func = () => ":wave:"
 const asyncFunc = async () => ":wave:"
@@ -44,7 +44,7 @@ const myThrowingFunction = async () => {
   throw new Error("Do not call this")
 }
 
-// We can wrap calling an async function in a try catch to 
+// We can wrap calling an async function in a try catch to
 // handle cases where the function acts unexpectedly.
 
 const asyncFunctionCatching = async () => {
@@ -58,10 +58,10 @@ const asyncFunctionCatching = async () => {
 }
 
 // Due to the ergonomics of this API being either returning
-// a single value, or throwing. You should consider offering
+// a single value, or throwing, you should consider offering
 // information about the result inside the returned value and
-// use throw only when something truly exceptional has 
-// occurred. 
+// use throw only when something truly exceptional has
+// occurred.
 
 const exampleSquareRootFunction = async (input: any) => {
   if (isNaN(input)) {
@@ -77,7 +77,7 @@ const exampleSquareRootFunction = async (input: any) => {
 
 // Then the function consumers can check in the response and
 // figure out what to do with your return value. While this
-// is a trivial example, once you have started working with 
+// is a trivial example, once you have started working with
 // networking code these APIs become worth the extra syntax.
 
 const checkSquareRoot = async (value: number) => {
@@ -92,7 +92,7 @@ const checkSquareRoot = async (value: number) => {
 // getResponse(url, (response) => {
 //   getResponse(response.url, (secondResponse) => {
 //     const responseData = secondResponse.data
-//     getResponse(responseData.url, (thirdRespones) => {
+//     getResponse(responseData.url, (thirdResponse) => {
 //       ...
 //     })
 //   })
@@ -100,10 +100,11 @@ const checkSquareRoot = async (value: number) => {
 
 // And let it become linear like:
 
-//  const response = await getResponse(url)
-//  const secondResponse = await getResponse(response.url)
-//  const responseData = secondResponse.data 
-//  const thirdResponse = await getResponse(responseData.url)
+// const response = await getResponse(url)
+// const secondResponse = await getResponse(response.url)
+// const responseData = secondResponse.data
+// const thirdResponse = await getResponse(responseData.url)
+// ...
 
 // Which can make the code sit closer to left edge, and
-// be read with a consistent rhythm. 
+// be read with a consistent rhythm.

@@ -4,9 +4,9 @@
 // and TypeScript has complete support for this style of
 // linking between files and to external modules. TypeScript
 // expands on this syntax by also allowing types to be passed
-//  with code.
+// with code.
 
-// Let's look at importing code from a module
+// Let's look at importing code from a module.
 
 import { danger, message, warn, DangerDSLType } from "danger";
 
@@ -24,7 +24,7 @@ import { danger, message, warn, DangerDSLType } from "danger";
 
 // TypeScript lets engineers document their code using
 // JSDoc, and docs are imported also. For example if
-// you hover on the different parts below, you see 
+// you hover on the different parts below, you see
 // explanations of what they are.
 
 danger.git.modified_files;
@@ -45,7 +45,7 @@ log("Started running code");
 // tools like the refactoring support in TypeScript but they
 // have their uses.
 
-// Because there is a long history in import/exporting code
+// Because there is a long history in importing/exporting code
 // in JavaScript, there is a confusing part of default exports:
 // Some exports have documentation that implies you can write
 // an import like this:
@@ -55,7 +55,7 @@ import req from "request";
 // However that fails, and then you find a stack overflow
 // which recommends the import as:
 
-import * as request from "request";
+import * as req from "request";
 
 // And this works. Why? We'll get back to that at the end of
 // our section on exporting.
@@ -71,7 +71,7 @@ export const numberOfStickers = 11;
 // import { numberOfStickers } from "./path/to/file"
 
 // You can have as many of those in a file as you like. Then
-// a default export add is close to the same thing.
+// a default export is close to the same thing.
 
 /** Generates a sticker for you */
 const stickerGenerator = () => {};
@@ -81,11 +81,11 @@ export default stickerGenerator;
 //
 // import getStickers from "./path/to/file"
 //
-// the naming is up to the module consumer.
+// The naming is up to the module consumer.
 
 // These aren't the only types of imports, just the most common
 // in modern code. Covering all of the ways code can cross
-// module boundaries is a very long topic in the handbook.
+// module boundaries is a very long topic in the handbook:
 //
 // https://www.typescriptlang.org/docs/handbook/modules.html
 

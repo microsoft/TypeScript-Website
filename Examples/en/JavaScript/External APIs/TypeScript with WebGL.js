@@ -1,14 +1,14 @@
 //// { order: 5, isJavaScript: true }
 
-// This example create a HTML canvas which uses WebGL to
+// This example creates an HTML canvas which uses WebGL to
 // render spinning confetti using JavaScript. We're going
 // to walk through the code to understand how it works, and
 // see how TypeScript's tooling provides useful insight.
 
 // This example builds off: example:working-with-the-dom
 
-// First up, we need to create a HTML canvas element, which
-// we do via the DOM API and set some inline style attributes
+// First up, we need to create an HTML canvas element, which
+// we do via the DOM API and set some inline style attributes:
 
 const canvas = document.createElement("canvas")
 canvas.id = "spinning-canvas"
@@ -19,24 +19,24 @@ canvas.style.right = "20px"
 canvas.style.width = "500px"
 canvas.style.height = "400px"
 
-// Next to make it easy to make changes, we remove any older
-// versions of the canvas when hitting run - now you can make
-// changes and see them reflected when you press run or
-// (cmd + enter)
+// Next, to make it easy to make changes, we remove any older
+// versions of the canvas when hitting "Run" - now you can
+// make changes and see them reflected when you press "Run"
+// or (cmd + enter):
 
 const existingCanvas = document.getElementById(canvas.id)
 if (existingCanvas && existingCanvas.parentElement) {
   existingCanvas.parentElement.removeChild(existingCanvas)
 }
 
-// Tell the canvas element that we will use webgl to draw
-// inside the element (and not the default raster engine)
+// Tell the canvas element that we will use WebGL to draw
+// inside the element (and not the default raster engine):
 
 const gl = canvas.getContext("webgl")
 
 // Next we need to create vertex shaders - these roughly are
 // small programs that apply maths to a set of incoming
-// array of vertices (numbers)
+// array of vertices (numbers).
 
 // You can see the large set of attributes at the top of the shader,
 // these are passed into the compiled shader further down the example.
@@ -116,7 +116,7 @@ gl.compileShader(vertexShader)
 
 // This example also uses fragment shaders - a fragment
 // shader is another small program that runs through every
-// pixel in the canvas and set its color.
+// pixel in the canvas and sets its color.
 
 // In this case, if you play around with the numbers you can see how
 // this affects the lighting in the scene, as well as the border
@@ -138,8 +138,8 @@ void main() {
 )
 gl.compileShader(fragmentShader)
 
-// Takes the compiled shaders and adds them to the canvas's
-// WebGL context so that can be used.
+// Takes the compiled shaders and adds them to the canvas'
+// WebGL context so that can be used:
 
 const shaderProgram = gl.createProgram()
 gl.attachShader(shaderProgram, vertexShader)
@@ -174,8 +174,8 @@ const STRIDE = Object.keys(attrs).length + 1
 
 // So, the intended usage is often not passing objects to every WebGL
 // API call, but instead passing one thing to one function, then passing
-// another to the next. So, here we prime webGL to create an array of
-// vertex pointers
+// another to the next. So, here we prime WebGL to create an array of
+// vertex pointers:
 
 for (var i = 0; i < attrs.length; i++) {
   const name = attrs[i].name
@@ -186,19 +186,19 @@ for (var i = 0; i < attrs.length; i++) {
   gl.enableVertexAttribArray(attribLocation)
 }
 
-// Then on this line they are bound to an array in memory.
+// Then on this line they are bound to an array in memory:
 
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer())
 
-// Set up some constants for rendering
+// Set up some constants for rendering:
 
 const NUM_PARTICLES = 200
 const NUM_VERTICES = 4
 
-// Try reducing this one and hitting run again,
+// Try reducing this one and hitting "Run" again,
 // it represents how many points should exist on
 // each confetti and having an odd number sends
-// it way out of whack
+// it way out of whack.
 
 const NUM_INDICES = 6
 
@@ -278,4 +278,3 @@ document.body.appendChild(canvas)
 
 // Credit: based on this JSFiddle by Subzey
 // https://jsfiddle.net/subzey/52sowezj/
-

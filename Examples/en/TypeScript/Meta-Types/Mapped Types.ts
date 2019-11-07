@@ -1,4 +1,4 @@
-// Mapped types are a way to creates new types based
+// Mapped types are a way to create new types based
 // on another type. Effectively a transformational type.
 
 // Common cases for using a mapped type is dealing with
@@ -50,8 +50,8 @@ type MyPartialTypeForEdit<Type> = {
 
 type CorrectMappedArtistForEdit = MyPartialTypeForEdit<Artist>;
 
-// This is a pretty simple example of how mapped type
+// This is a pretty simple example of how mapped types
 // work, but covers most of the basics. If you'd like to
-// dive in with more depth, check out the handbook
+// dive in with more depth, check out the handbook:
 //
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types

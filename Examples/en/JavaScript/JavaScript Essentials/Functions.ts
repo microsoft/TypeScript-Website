@@ -24,8 +24,8 @@ const addFunction = (x, y) => {
 // applies to all three formats.
 
 // TypeScript provides additional syntax which adds to a
-// function definition and offers hints on what the 
-// types are expected by this function.
+// function definition and offers hints on what types
+// are expected by this function.
 //
 // Up next is the most open version of the add function, it
 // says that add takes two inputs of any type: this could
@@ -39,7 +39,7 @@ add1("Hello", 23);
 // This is legitimate JavaScript (strings can be added
 // like this for example) but isn't optimal for our function
 // which we know is for numbers, so we'll convert the x and
-// y to only be numbers
+// y to only be numbers.
 
 const add2 = (x: number, y: number) => {
   return x + y;
@@ -56,7 +56,7 @@ add2("Hello", 23);
 // Where it has inferred that when the two inputs are
 // numbers the only possible return type is a number.
 // This is great, you don't have to write extra syntax.
-// Let's look at what it takes  to do that
+// Let's look at what it takes to do that:
 
 const add3 = (x: number, y: number): string => {
   return x + y;
@@ -78,13 +78,12 @@ const add4 = (x: number, y: number): number => {
 // it's with a failing shape of a function instead.
 
 // This example is only a primer, you can learn a lot more
-// about functions work in TypeScript in the handbook and
-// inside the Functional JavaScript section of the examples
+// about how functions work in TypeScript in the handbook and
+// inside the Functional JavaScript section of the examples:
 //
 // https://www.typescriptlang.org/docs/handbook/functions.html
 // example:function-chaining
 
 // And to continue our tour of JavaScript essentials,
-// we'll look at how code flow affects the TypeScript types
-
+// we'll look at how code flow affects the TypeScript types:
 // example:code-flow

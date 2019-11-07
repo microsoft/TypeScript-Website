@@ -10,7 +10,7 @@
 
 // To understand how TypeScript works with React components
 // you may want a primer on generics:
-
+//
 // - example:generic-functions
 // - example:generic-classes
 
@@ -24,7 +24,7 @@ type FauxactFunctionComponent<Props extends {}> =
 // Roughly:
 //
 // FauxactFunctionComponent is a generic function which relies on
-// another type Props. Props has to be an object (to make sure
+// another type, Props. Props has to be an object (to make sure
 // you don't pass a primitive) and the Props type will be
 // re-used as the first argument in the function.
 
@@ -33,7 +33,7 @@ type FauxactFunctionComponent<Props extends {}> =
 interface DateProps { iso8601Date: string, message: string }
 
 // We can then create a DateComponent which uses the
-// DateProp interface, and renders the date.
+// DateProps interface, and renders the date.
 
 const DateComponent: FauxactFunctionComponent<DateProps> =
   (props) => <time datetime={props.iso8601Date}>{props.message}</time>
@@ -43,7 +43,7 @@ const DateComponent: FauxactFunctionComponent<DateProps> =
 // returns either another component function or null.
 
 
-// The other component API is a class-based one, here's a
+// The other component API is a class-based one.Here's a
 // simplified version of that API:
 
 interface FauxactClassComponent<Props extends {}, State = {}> {
@@ -53,7 +53,6 @@ interface FauxactClassComponent<Props extends {}, State = {}> {
   setState: (prevState: State, props: Props) => Props
   callback?: () => void
   render(): FauxactClassComponent<any> | null
-
 }
 
 // Because this class can have both Props and State - it has
@@ -124,12 +123,11 @@ const CounterExample = () => {
 // React and TypeScript is a really, really big topic
 // but the fundamentals are pretty small: TypeScript
 // supports JSX, and the rest is handled by the React
-// typings from definitely typed.
+// typings from DefinitelyTyped.
 
 // You can learn more about using React with TypeScript
 // from these sites:
-
+//
 // https://github.com/typescript-cheatsheets/react-typescript-cheatsheet
 // https://egghead.io/courses/use-typescript-to-develop-react-applications
 // https://levelup.gitconnected.com/ultimate-react-component-patterns-with-typescript-2-8-82990c516935
-

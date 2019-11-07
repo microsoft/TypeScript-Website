@@ -1,4 +1,4 @@
-// Conditionals Types provide a way to do simple logic in the
+// Conditional Types provide a way to do simple logic in the
 // TypeScript type system. This is definitely an advanced
 // feature, and it's quite feasible that you won't need to
 // use this in your normal day to day code.
@@ -17,10 +17,10 @@
 
 type Cat = { meows: true };
 type Dog = { barks: true };
-type Cheetah = { meow: true; fast: true };
+type Cheetah = { meows: true; fast: true };
 type Wolf = { barks: true; howls: true };
 
-// We can create a conditional type which lets use extract
+// We can create a conditional type which lets extract
 // types which only conform to something which barks.
 
 type ExtractDogish<A> = A extends { barks: true } ? A : never;
@@ -70,7 +70,7 @@ declare function getID<T extends boolean>(fancy: T):
 
 let stringReturnValue = getID(true);
 let numberReturnValue = getID(false);
-let stringOrID = getID(Math.random() < 0.5);
+let stringOrNumber = getID(Math.random() < 0.5);
 
 // In this case above TypeScript can know the return value
 // instantly. However, you can use conditional types in functions
@@ -86,7 +86,7 @@ declare function isCatish<T>(x: T): T extends { meows: true } ? T : undefined;
 
 // infer is typically used to create meta-types which inspect
 // the existing types in your code, think of it as creating
-// a new variable inside the type
+// a new variable inside the type.
 
 type GetReturnValue<T> =
   T extends (...args: any[]) => infer R ? R : T;
@@ -97,11 +97,11 @@ type GetReturnValue<T> =
 //    which takes a type in its first parameter
 //
 //  - the conditional checks if the type is a function, and
-//    if so create a new type called Return based on the return
+//    if so create a new type called R based on the return
 //    value for that function
 //
-//  - If the pass checks, the type value is the inferred
-//    return value, otherwise it is the original Type
+//  - If the check passes, the type value is the inferred
+//    return value, otherwise it is the original type
 //
 
 type getIDReturn = GetReturnValue<typeof getID>

@@ -1,16 +1,16 @@
 //// { compiler: {  }, order: 1 }
 
-// Given JavaScripts flexibility, it can be a good idea to add
+// Given JavaScript's flexibility, it can be a good idea to add
 // runtime checks to your code to validate your assumptions.
 
 // These are typically called assertions (or invariants) and
 // they are small functions which raise errors early when
-// your variables doesn't match up to what you expect.
+// your variables don't match up to what you expect.
 
 // Node comes with a function for doing this out of the box,
 // it's called assert and it's available without an import.
 
-// We're going to define our own though, this declares a
+// We're going to define our own though. This declares a
 // function which asserts that the expression called
 // value is true:
 declare function assert(value: unknown): asserts value;
@@ -31,7 +31,7 @@ maybeStringOrNumber
 // your types throughout your inferred code, for example
 // TypeScript knows that this function will return a
 // number without the need to add types to the parameter
-// via the above assert declaration
+// via the above assert declaration.
 
 function multiply(x: any, y: any) {
   assert(typeof x === "number");
@@ -52,7 +52,7 @@ declare const oneOfFirstFiveNumbers: 1 | 2 | 3 | 4 | 5
 declare function isOdd(param: unknown): asserts param is 1 | 3 | 5
 declare function isBelowFour(param: unknown): asserts param is 1 | 2 | 3 | 4
 
-// This should cut down the enum to 1 | 3 | 5
+// This should cut down the enum to: 1 | 3 | 5
 
 isOdd(oneOfFirstFiveNumbers)
 oneOfFirstFiveNumbers
@@ -64,6 +64,6 @@ oneOfFirstFiveNumbers
 
 // This is a primer on some of the features of assertion functions
 // in TypeScript 3.7 - you can find out more by reading the
-// beta release notes:
-
-// https://devblogs.microsoft.com/typescript/announcing-typescript-3-7-beta/
+// release notes:
+//
+// https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/

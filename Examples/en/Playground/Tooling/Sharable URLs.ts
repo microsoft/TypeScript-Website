@@ -1,8 +1,8 @@
 //// { order: 1 }
 
-// With the new Playground, URLs contain a lot more 
+// With the new Playground, URLs contain a lot more
 // information about your settings. This makes reproductions
-// accurate, and you don't have to tell someone to hit a 
+// accurate, and you don't have to tell someone to hit a
 // particular compiler flag to replicate your setup.
 
 // The URL contains:
@@ -16,8 +16,8 @@
 // - Your text selection if you have some code highlighted
 //
 // The URL is updated live when any of the above changes
-// using HTML5's replaceState, so your back button is 
-// will still work as expected. 
+// using HTML5's replaceState, so your back button will
+// still work as expected.
 
 // When loading an example, you'll see an occasional e=[number]
 // which is used to ensure the browser correctly reloads when

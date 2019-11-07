@@ -3,7 +3,7 @@
 // TypeScript supports a lot of fixits, which are automated
 // helpers to refactor your code. For example if you select
 // the text in line 7, and click on the light bulb which
-// pops up, you'll get offered some fixits
+// pops up, you'll get offered some fixits.
 
 function addOne(x: number) {
   return x + 1
@@ -21,4 +21,3 @@ function addOne(x: number) {
 // example:big-number-literals
 // example:const-to-let
 // example:infer-from-usage-changes
-

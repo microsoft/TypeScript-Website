@@ -78,6 +78,6 @@ type Puppy = {
 
 // One of the best resources for seeing all of the edge
 // cases around types vs interfaces, this stack overflow
-// thread is a good place to start
+// thread is a good place to start:
 
 // https://stackoverflow.com/questions/37233735/typescript-interfaces-vs-types/52682220#52682220

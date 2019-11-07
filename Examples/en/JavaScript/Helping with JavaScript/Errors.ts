@@ -1,7 +1,7 @@
 //// { order: 3, isJavaScript: true }
 
 // By default TypeScript doesn't provide error messaging
-// inside JavaScript, instead the tooling is focused on
+// inside JavaScript. Instead the tooling is focused on
 // providing rich support for editors.
 
 // Turning on errors however, is pretty easy. In a

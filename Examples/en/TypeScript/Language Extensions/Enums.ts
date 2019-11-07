@@ -76,6 +76,6 @@ const handleMouseAction = (action: MouseAction) => {
 // inside the switch statement inside handleMouseAction.
 
 // Enums can do more than this, you can read more in the
-// TypeScript handbook
-
+// TypeScript handbook:
+//
 // https://www.typescriptlang.org/docs/handbook/enums.html

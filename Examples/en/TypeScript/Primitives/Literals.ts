@@ -7,7 +7,7 @@
 
 // A literal is a more concrete subtype of a collective type.
 // What this means is that "Hello World" is a string, but a
-// string is not "Hello World" inside the type system
+// string is not "Hello World" inside the type system.
 
 const helloWorld = "Hello World";
 let hiWorld = "Hi World"; // this is a string because it is let
@@ -32,13 +32,13 @@ allowsFirstFiveNumbers(10);
 let potentiallyAnyNumber = 3;
 allowsFirstFiveNumbers(potentiallyAnyNumber);
 
-// At first glance, this rule isn't applied to complex objects
+// At first glance, this rule isn't applied to complex objects.
 
 const myUser = {
   name: "Sabrina"
 };
 
-// See how it transforms name: "Sabrina" to name: string?
+// See how it transforms `name: "Sabrina"` to `name: string`
 // even though it is defined as a constant. This is because
 // the name can still change any time:
 
@@ -59,7 +59,7 @@ const myUnchangingUser = {
 myUnchangingUser.name = "Raîssa";
 
 // "as const" is a great tool for fixtured data, and places
-// where you treat code as literals inline. As const also
-// works with arrays
+// where you treat code as literals inline. "as const" also
+// works with arrays:
 
 const exampleUsers = [{ name: "Brian" }, { name: "Fahrooq" }] as const;

@@ -7,7 +7,7 @@
 
 // Property Access
 
-// Lets imagine we have an album where the artist, and the
+// Let's imagine we have an album where the artist, and the
 // artists bio might not be present in the data. For example
 // a compilation may not have a single artist.
 
@@ -32,10 +32,10 @@ const artistBio = album?.artist?.bio;
 const maybeArtistBio = album.artist && album.artist.bio;
 
 // In this case ?. acts differently than the &&s since &&
-// will act different on "falsy" values (e.g. ab empty string,
+// will act differently on "falsy" values (e.g. an empty string,
 // 0, NaN, and, well, false).
 
-// Optional chaining will only take use null or undefined as
+// Optional chaining will only take null or undefined as
 // a signal to stop and return an undefined.
 
 // Optional Element Access
@@ -66,4 +66,5 @@ const updateAlbumMetadata = async (metadata: any, callback?: () => void) => {
 };
 
 // You can read more about optional chaining in the 3.7 blog post:
-// https://devblogs.microsoft.com/typescript/announcing-typescript-3-7-beta/
+//
+// https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/

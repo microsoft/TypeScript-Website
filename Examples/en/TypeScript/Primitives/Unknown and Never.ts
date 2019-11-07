@@ -5,14 +5,14 @@
 // to the any type. Where any allows for ambiguity - unknown
 // requires specifics.
 
-// A good example would be in wrapping a JSON parser, JSON
+// A good example would be in wrapping a JSON parser. JSON
 // data can come in many different forms and the creator
 // of the json parsing function won't know the shape of the
 // data - the person calling that function should.
 
 const jsonParser = (jsonString: string) => JSON.parse(jsonString);
 
-const myAccount = jsonParser(`{ name: "Dorothea" }`);
+const myAccount = jsonParser(`{ "name": "Dorothea" }`);
 
 myAccount.name;
 myAccount.email;
@@ -24,7 +24,7 @@ myAccount.email;
 
 const jsonParserUnknown = (jsonString: string): unknown => JSON.parse(jsonString);
 
-const myOtherAccount = jsonParserUnknown(`{ name: "Samuel" }`);
+const myOtherAccount = jsonParserUnknown(`{ "name": "Samuel" }`);
 
 myOtherAccount.name;
 
@@ -33,7 +33,7 @@ myOtherAccount.name;
 // that API consumers think about their typing up-front:
 
 type User = { name: string };
-const myUserAccount = jsonParserUnknown(`{ name: "Samuel" }`) as User;
+const myUserAccount = jsonParserUnknown(`{ "name": "Samuel" }`) as User;
 myUserAccount.name;
 
 // Unknown is a great tool, to understand it more read these:
@@ -67,7 +67,7 @@ const validateUser = (user: User) => {
   }
 
   // According to the type system, this code path can never
-  // happen, which matches thereturn type of neverReturns.
+  // happen, which matches the return type of neverReturns.
 
   return neverReturns();
 };
