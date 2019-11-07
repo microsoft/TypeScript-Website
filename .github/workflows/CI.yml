@@ -26,12 +26,12 @@ jobs:
         NOW_ACCESS_TOKEN: ${{ secrets.NOW_ACCESS_TOKEN }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
 
-  # danger for PR builds
-      - if: github.event_name == 'pull_request'
-        run: 'if test -z "$GITHUB_TOKEN"; then echo "Skipping danger"; else yarn danger ci; fi'
+    # danger for PR builds
+    - if: github.event_name == 'pull_request'
+      run: 'if test -z "$GITHUB_TOKEN"; then echo "Skipping danger"; else yarn danger ci; fi'
 
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     # Run any tests
     - run: yarn workspaces run test --ci
