@@ -25,9 +25,8 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "husky": {
-    "hooks": {
-      "pre-push": "git-branch-is v2 && yarn run clean && yarn run build || echo 'skipping'"
-    }
+  "dependencies": {
+    "danger": "^9.2.4",
+    "danger-plugin-spellcheck": "^1.5.0"
   }
 }

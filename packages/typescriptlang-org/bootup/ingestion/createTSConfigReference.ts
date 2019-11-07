@@ -31,7 +31,6 @@ export const createTSConfigReference = async (
   const docs = anyData.allFile.nodes
 
   // start with just the english one
-  console.log(docs)
   const english = docs.find(doc => doc.name === "en")
 
   if (!english) {
