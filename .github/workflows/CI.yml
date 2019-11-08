@@ -26,13 +26,6 @@ jobs:
         NOW_ACCESS_TOKEN: ${{ secrets.NOW_ACCESS_TOKEN }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
 
-    # danger for PR builds
-    - if: github.event_name == 'pull_request'
-      run: 'if test -z "$GITHUB_TOKEN"; then echo "Skipping danger"; else yarn danger ci; fi'
-
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     # Run any tests
     - run: yarn workspaces run test --ci
 
@@ -42,7 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Run Lighthouse and test budgets
-        uses: treosh/lighthouse-ci-action@v1
+        uses: orta/lighthouse-ci-action@interpolate_urls
         with:
           urls: |
             https://typescript-v2-$PR_NUMBER.ortam.now.sh
@@ -56,3 +49,15 @@ jobs:
         with:
           name: lighthouse-results
           path: './results'
+
+
+  danger:
+    needs: lighthouse
+    runs-on: ubuntu-latest
+    steps:
+      # danger for PR builds
+      - if: github.event_name == 'pull_request'
+        run: 'if test -z "$GITHUB_TOKEN"; then echo "Skipping danger"; else yarn danger ci; fi'
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
