@@ -48,6 +48,8 @@ jobs:
             https://typescript-v2-$PR_NUMBER.ortam.now.sh
             https://typescript-v2-$PR_NUMBER.ortam.now.sh/tsconfig
             https://typescript-v2-$PR_NUMBER.ortam.now.sh/docs/handbook/integrating-with-build-tools.html
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@master
