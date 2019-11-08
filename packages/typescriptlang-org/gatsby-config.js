@@ -2,6 +2,9 @@
 require("ts-node").register({ files: true })
 
 module.exports = {
+  // This should only be used in a CI deploy while we're working in a v2 sub-folder
+  pathPrefix: `/v2`,
+
   plugins: [
     // Creates TS types for queries during `gatsby dev`
     "gatsby-plugin-codegen",
