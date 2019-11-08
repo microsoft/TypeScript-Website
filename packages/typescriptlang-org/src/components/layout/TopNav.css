@@ -5,9 +5,23 @@ set up something like that on a styles basis, so it's in the CSS.
 
 */
 
+html {
+  background-color: #faf9f8;
+}
+
 body {
-  font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI",
-    -apple-system, BlinkMacSystemFont, "Roboto", "Helvetica Neue", sans-serif;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  color: #333;
+  font-family: "Segoe UI Web (West European)", "Segoe UI", -apple-system,
+    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+}
+
+body,
+html,
+#___gatsby {
+  height: 100%;
 }
 
 #top-menu {

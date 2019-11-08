@@ -5676,6 +5676,11 @@ damerau-levenshtein@^1.0.4:
   resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.5.tgz#780cf7144eb2e8dbd1c3bb83ae31100ccc31a414"
   integrity sha512-CBCRqFnpu715iPmw1KrdOrzRqbdFwQTwAWyyyYS42+iAgHCuXZ+/TdMgQkUENPomxEz9z1BEzuQU2Xw0kUuAgA==
 
+danger-plugin-lighthouse@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/danger-plugin-lighthouse/-/danger-plugin-lighthouse-0.0.1.tgz#dbdd1099296f3a301c547a30e77f8d0d9e6d78fe"
+  integrity sha512-FFqHuJRQcAWeqRsBb0nOXpbSKmpKKdend/HBXSxvebSi1ALu7SIYupaxvX2J3eKqiYq09fRSj4WR6g7ls3HZrQ==
+
 danger-plugin-spellcheck@^1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/danger-plugin-spellcheck/-/danger-plugin-spellcheck-1.5.0.tgz#e999965e1c74a99614c70737966b57e94f450df4"
