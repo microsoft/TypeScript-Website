@@ -50,14 +50,12 @@ jobs:
           name: lighthouse-results
           path: './results'
 
+      # For danger stuff
+      - run: yarn install
 
-  danger:
-    needs: lighthouse
-    runs-on: ubuntu-latest
-    steps:
       # danger for PR builds
       - if: github.event_name == 'pull_request'
         run: 'if test -z "$GITHUB_TOKEN"; then echo "Skipping danger"; else yarn danger ci; fi'
-
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with: 
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

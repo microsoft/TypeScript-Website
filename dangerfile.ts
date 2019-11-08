@@ -6,6 +6,7 @@
 import { danger, message, markdown } from 'danger'
 import {basename} from "path"
 import spellcheck from 'danger-plugin-spellcheck'
+import lighthouse from 'danger-plugin-lighthouse'
 
 // Spell check all the things
 spellcheck({
@@ -38,3 +39,5 @@ Before             |  After
 
   markdown(`## Snapshots updated\n\n ${tables.join("\n\n")}`)
 }
+
+lighthouse()

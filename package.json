@@ -5,6 +5,9 @@
   ],
   "devDependencies": {
     "concurrently": "^4.1.0",
+    "danger": "^9.2.4",
+    "danger-plugin-lighthouse": "^0.0.1",
+    "danger-plugin-spellcheck": "^1.5.0",
     "git-branch-is": "^3.0.0",
     "husky": "^3.0.8"
   },
@@ -24,9 +27,5 @@
     "semi": false,
     "singleQuote": true,
     "trailingComma": "es5"
-  },
-  "dependencies": {
-    "danger": "^9.2.4",
-    "danger-plugin-spellcheck": "^1.5.0"
   }
 }
