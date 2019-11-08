@@ -35,3 +35,23 @@ jobs:
 
     # Run any tests
     - run: yarn workspaces run test --ci
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Lighthouse and test budgets
+        uses: treosh/lighthouse-ci-action@v1
+        with:
+          urls: |
+            https://typescript-v2-$PR_NUMBER.ortam.now.sh
+            https://typescript-v2-$PR_NUMBER.ortam.now.sh/tsconfig
+            https://typescript-v2-$PR_NUMBER.ortam.now.sh/docs/handbook/integrating-with-build-tools.html
+          budgetPath: ./budget.json
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@master
+        with:
+          name: lighthouse-results
+          path: './results'
