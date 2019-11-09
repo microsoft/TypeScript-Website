@@ -2,4 +2,5 @@
 display: "No Lib"
 ---
 
-Do not include the default library file (lib.d.ts).
+Disables the automatic inclusion of any library files.
+If this option is set, `lib` is ignored.

@@ -2,4 +2,7 @@
 display: "Keyof Strings Only"
 ---
 
-Resolve 'keyof' to string valued property names only (no numbers or symbols).
+> ❌ **Discouraged:** This flag was provided for backward compatibility reasons and should not be enabled in new or maintained codebases.
+
+This flag changes the `keyof` type operator to return `string` instead of `string | number` when applied to a type with a string index signature.
+

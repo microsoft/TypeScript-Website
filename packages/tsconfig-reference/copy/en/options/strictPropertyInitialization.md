@@ -2,4 +2,4 @@
 display: "Strict Property Initialization"
 ---
 
-Enable strict checking of property initialization in classes.
+When set, it becomes an error to declare a class property without directly initializing it before the end of the constructor.
