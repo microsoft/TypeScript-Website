@@ -9,6 +9,9 @@ export const deprecated: CompilerOptionName[] = ['out']
 /** Things which people really shouldn't use, but need to document  */
 export const internal: CompilerOptionName[] = ['preserveWatchOutput']
 
+/** You should use this! They are off by default */
+export const recommended: CompilerOptionName[] = ['strict']
+
 /** Allows linking between options */
 export const relatedTo: [CompilerOptionName, CompilerOptionName[]][] = [
   ['strict', ['strictBindCallApply', 'strictFunctionTypes', 'strictPropertyInitialization']],
@@ -66,9 +69,9 @@ export const defaultsForOptions = {
   noEmitOnError: 'false',
   noErrorTruncation: 'false',
   noFallthroughCasesInSwitch: 'false',
-  noImplicitAny: 'false',
-  noImplicitReturns: 'false',
-  noImplicitThis: 'false',
+  noImplicitAny: '`false`, unless `strict` is set',
+  noImplicitReturns: '`false`, unless `strict` is set',
+  noImplicitThis: '`false`, unless `strict` is set',
   noImplicitUseStrict: 'false',
   noLib: 'false',
   noResolve: 'false',
@@ -100,3 +103,4 @@ export const defaultsForOptions = {
   traceResolution: 'false',
   tsBuildInfoFile: ' .tsbuildin',
 }
+

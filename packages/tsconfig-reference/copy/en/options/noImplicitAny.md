@@ -4,7 +4,7 @@ display: "No Implicit Any"
 
 > ✅ We strongly recommend enabling this in all codebases
 
-**Default**: `false`, unless `strict` is set
+**Default**: 
 
 In some cases where no type annotations are present, TypeScript will fall back to a type of `any` for a variable.
 This can cause some errors to be missed:

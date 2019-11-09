@@ -130,7 +130,15 @@ const topLevelTSConfigOptions = [
     },
     "defaultValue": "false"
   },
-
+  {
+    "name": "importHelpers",
+    "type": "string",
+    "category": 6178,
+    "description": {
+      "message": "Print names of files part of the compilation."
+    },
+    "defaultValue": "false"
+  },
 
 ]
 
