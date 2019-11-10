@@ -6,6 +6,23 @@ module.exports = {
   pathPrefix: `/v2`,
 
   plugins: [
+    // PWA metadata
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `TypeScript Documentation`,
+        short_name: `TS Docs`,
+        start_url: `/`,
+        background_color: `white`,
+        theme_color: `#3178C6`,
+        display: `standalone`,
+        icon: `static/icons/ts-logo-512.png`
+      },
+    },
+
+    // Support for downloading or pre-caching pages, needed for PWAs
+    "gatsby-plugin-offline",
+
     // Creates TS types for queries during `gatsby dev`
     "gatsby-plugin-codegen",
     // Support ts/tsx files in src
