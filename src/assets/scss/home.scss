@@ -341,7 +341,7 @@
     // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cbdff3', endColorstr='#005a96', GradientType=0 );
 }
 
-.skyline-img {
+%skyline-img {
   position:absolute;
   top:0;
   bottom:0;
@@ -356,13 +356,13 @@
 }
 
 .skyline-img-background {
-    @extend .skyline-img;
+    @extend %skyline-img;
     background-image: url('../images/bg_blueprint_2.svg');
     background-repeat: repeat-x;
 }
 
 .skyline-img-foreground {
-    @extend .skyline-img;
+    @extend %skyline-img;
     background-image: url('../images/foreground_bluprint.svg');
 }
 
