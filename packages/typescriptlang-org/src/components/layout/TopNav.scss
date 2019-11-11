@@ -177,6 +177,7 @@ form.search {
       width: auto;
     }
 
+    /* Simplify the nav to a few buttons and home */
     .below-small nav {
       flex-grow: 1;
 
@@ -201,7 +202,14 @@ form.search {
     /* Make search input reach the end */
     form.search {
       width: calc(100% - 1rem);
-      
+      display: flex;
+
+      svg {
+        // width: 2.5rem;
+        position: relative;
+        top: 1rem;
+      }
+
       input {
         width: calc(200% - 2rem);
       }
@@ -216,7 +224,7 @@ form.search {
     right: -180px !important;
     bottom: 140%;
     min-width: 0;
-    margin-left: -32px;
+    margin-left: -34px;
     
     /* Make the triangle point to the right place */
     &:before {
