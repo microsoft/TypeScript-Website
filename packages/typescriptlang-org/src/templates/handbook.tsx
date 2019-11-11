@@ -2,7 +2,7 @@ import React from "react"
 import { Link, graphql } from "gatsby"
 import { BlogPostBySlug } from "./__generated__/BlogPostBySlug"
 import { Layout } from "../components/layout"
-import { Sidebar } from "../components/layout/sidebar"
+import { Sidebar } from "../components/layout/Sidebar"
 import { oldHandbookNavigation } from "../lib/oldNavigation"
 
 import "./handbook.css"

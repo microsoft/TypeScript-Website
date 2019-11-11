@@ -1,4 +1,4 @@
-import { NavItem } from "../components/layout/sidebar"
+import { NavItem } from "../components/layout/Sidebar"
 
 export const oldHandbookNavigation: NavItem[] = [
   {

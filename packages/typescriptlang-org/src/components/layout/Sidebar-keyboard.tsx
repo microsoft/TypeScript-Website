@@ -1,5 +1,5 @@
 import { KeyboardEventHandler } from "react"
-import { getTagFromParents } from "./sidebar"
+import { getTagFromParents } from "./Sidebar"
 
 const childOfType = (tag: string, element: Element) => {
   let found: Element = null
