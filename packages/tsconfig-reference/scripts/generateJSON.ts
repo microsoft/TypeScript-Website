@@ -75,7 +75,67 @@ filteredOptions.forEach(option => {
   delete option.showInSimplifiedHelpView
 })
 
-writeJSON('tsconfigOpts.json', filteredOptions)
+const topLevelTSConfigOptions = [
+  {
+    "name": "files",
+    "type": "An array of strings",
+    "category": 0,
+    "description": {
+      "message": "Print names of files part of the compilation."
+    },
+    "defaultValue": "false"
+  },
+  {
+    "name": "include",
+    "type": "An array of strings",
+    "category": 0,
+    "description": {
+      "message": "Print names of files part of the compilation."
+    },
+    "defaultValue": "false"
+  },
+  {
+    "name": "exclude",
+    "type": "An array of strings",
+    "category": 0,
+    "description": {
+      "message": "Print names of files part of the compilation."
+    },
+    "defaultValue": "false"
+  },
+  {
+    "name": "extends",
+    "type": "string",
+    "category": 0,
+    "description": {
+      "message": "Print names of files part of the compilation."
+    },
+    "defaultValue": "false"
+  },
+  {
+    "name": "typeAcquisition",
+    "type": "string",
+    "category": 0,
+    "description": {
+      "message": "Print names of files part of the compilation."
+    },
+    "defaultValue": "false"
+  },
+  {
+    "name": "references",
+    "type": "string",
+    "category": 0,
+    "description": {
+      "message": "Print names of files part of the compilation."
+    },
+    "defaultValue": "false"
+  },
+
+
+]
+
+
+writeJSON('tsconfigOpts.json', [...topLevelTSConfigOptions, ...filteredOptions])
 
 // Improve the typing for the rules
 writeString(
@@ -85,6 +145,16 @@ writeString(
 
 const categoryMap = {}
 categories.forEach(c => (categoryMap[c.code] = c))
+
+// Add custom categories, for custom compiler flags
+
+categoryMap["0"] = {
+  code: 0,
+  category: 3,
+  key: "Project_Files_0",
+  message: "Project File Management"
+}
+
 writeJSON('tsconfigCategories.json', categoryMap)
 
 // @ts-ignore - Print the defaults for a TS Config file

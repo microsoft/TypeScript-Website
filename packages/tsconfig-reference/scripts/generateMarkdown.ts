@@ -16,6 +16,7 @@ const options = require('../data/tsconfigOpts.json') as typeof import('../data/t
 const categories = require('../data/tsconfigCategories.json') as typeof import('../data/tsconfigCategories.json')
 
 const orderedCategories = [
+  'Project_Files_0',
   'Basic_Options_6172',
   'Strict_Type_Checking_Options_6173',
   'Module_Resolution_Options_6174',
@@ -29,7 +30,7 @@ const orderedCategories = [
 // Makes sure all categories are accounted for in ^
 assert.deepEqual(Object.keys(categories).sort(), orderedCategories.map(c => c.split('_').pop()).sort())
 
-const languages = readdirSync(join(__dirname, '..', 'copy'))
+const languages = readdirSync(join(__dirname, '..', 'copy')).filter(f => !f.startsWith("."))
 
 languages.forEach(lang => {
   const locale = join(__dirname, '..', 'copy', lang)
@@ -40,7 +41,9 @@ languages.forEach(lang => {
   const getPathInLocale = (path: string) => {
     if (existsSync(join(locale, path))) return join(locale, path)
     if (existsSync(join(fallbackLocale, path))) return join(fallbackLocale, path)
-    throw new Error('Could not find a path for ' + path)
+
+    const localeDesc = lang === "en" ? lang : `either ${lang} or English`
+    throw new Error('Could not find a path for ' + path + " in " + localeDesc)
   }
 
   // Make a JSON dump of the category anchors someone wrapping the markdown
@@ -48,15 +51,15 @@ languages.forEach(lang => {
 
   orderedCategories.forEach(categoryID => {
     const category = Object.values(categories).find((c: any) => c.key === categoryID)
-    assert.ok(category)
+    assert.ok(category, "Could not find category for ID: " + categoryID)
 
     const categoryPath = getPathInLocale(join('categories', categoryID + '.md'))
     const categoryFile = readMarkdownFile(categoryPath)
 
-    assert.ok(categoryFile.data.display) // Must have a display title in the front-matter
+    assert.ok(categoryFile.data.display, "No display data for category: " + categoryID) // Must have a display title in the front-matter
 
     // Let the title change it's display but keep the same ID
-    const title = `<a href='#${categoryID}'>#</a><h2 id='${categoryID}'>${categoryFile.data.display}</h2>`
+    const title = `<h2 id='${categoryID}'><a href='#${categoryID}'>#</a> ${categoryFile.data.display}</h2>`
     markdownChunks.push(title)
     allCategories.push({ display: categoryFile.data.display, anchor: categoryID })
 
@@ -73,15 +76,16 @@ languages.forEach(lang => {
       assert.ok(optionFile.data.display, 'Could not get a display for option: ' + option.name + ' in ' + lang)
 
       // Let the title change it's display but keep the same ID
-      const title = `<a href='#${option.name}'>#</a><h2 id='${option.name}'>${optionFile.data.display}</h2>`
-
+      const titleLink = `<a aria-label="Link to the compiler option:${option.name}" title="Link to the compiler option:${option.name}" href='#${option.name}'>#</a>`
+      const title = `<h3 id='${option.name}'>${titleLink} ${optionFile.data.display} - <code>${option.name}</code></h3>`
+      
       markdownChunks.push(title)
       markdownChunks.push(optionFile.content)
 
       // Make a markdown table of the important metadata
       const mdTableRows = [] as [string, string][]
 
-      mdTableRows.push(['Value', '`' + option.name + '`'])
+      // mdTableRows.push(['Value', '`' + option.name + '`'])
       if (option.deprecated) mdTableRows.push(['Status', 'Deprecated'])
 
       if (option.defaultValue) {
@@ -96,8 +100,6 @@ languages.forEach(lang => {
 
       const table = ` |   |   |\n | ---- | --- | \n` + mdTableRows.map(r => `${r[0]} | ${r[1]}`).join('\n')
       markdownChunks.push(table)
-
-      markdownChunks.push('---')
     })
   })
 

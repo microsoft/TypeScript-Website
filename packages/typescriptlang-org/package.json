@@ -7,7 +7,7 @@
   "scripts": {
     "build": "gatsby build",
     "develop": "gatsby develop",
-    "update-snapshots": "yarn build; backstop test; backstop approve",
+    "update-snapshots": "backstop test; backstop approve",
     "start": "npm run develop",
     "serve": "gatsby serve",
     "test": "echo 'no tests'"
