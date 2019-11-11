@@ -1,0 +1,226 @@
+/*  
+
+There isn't a collapsible nav bar in the fabric components, and it is unwieldy to 
+set up something like that on a styles basis, so it's in the CSS.
+
+*/
+
+html {
+  background-color: #faf9f8;
+  color: #333;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Segoe UI Web (West European)", "Segoe UI", -apple-system,
+    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+}
+
+body,
+html,
+#___gatsby {
+  height: 100%;
+}
+
+#site-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+#top-menu {
+  background-color: #3178c6;
+  user-select: none;
+  clear: both;
+  display: flex;
+  justify-content: space-between;
+  height: 3rem;
+}
+
+#top-menu > .left {
+  display: flex;
+  flex-direction: row;
+}
+
+#top-menu > .right {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-self: flex-end;
+}
+
+#top-menu .nav {
+  display: inline-block;
+  text-decoration: none;
+}
+
+#top-menu ul {
+  padding: 0;
+  margin: 0;
+}
+
+#top-menu #home-page-logo {
+  width: 200px;
+}
+
+#top-menu #home-page-logo svg {
+  margin-right: 0.6rem;
+  margin-left: 1rem;
+  margin-top: 0.68rem;
+}
+
+#top-menu #home-page-logo span {
+  position: relative;
+  top: -0.4rem;
+  text-decoration: none;
+}
+
+#top-menu .nav-item {
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  border: 1px solid transparent;
+  display: inline-block;
+}
+
+#top-menu .nav-item a {
+  display: block;
+  padding: 0.7rem 0.5em 0.7em;
+}
+
+#top-menu a {
+  text-decoration: none;
+  color: white;
+}
+
+#beta-notification-menu {
+  background-color: #c63131;
+  text-align: center;
+  color: white;
+  padding: 0.4rem 0;
+  user-select: none;
+}
+
+/* This juts out of the left a bit */
+form.search {
+  height: 3rem;
+  background-color: #2a85c4;
+  padding-left: 1rem;
+  display: inline-block;
+}
+
+form.search svg {
+  position: relative;
+  top: 0.1rem;
+  margin-right: 0.3rem;
+}
+
+form.search input {
+  -webkit-appearance: none;
+  background-color: #2a85c4;
+  border-color: #152740;
+  border-radius: 0;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  height: 3rem;
+
+  /*  Algolia sets this to "top" at runtime which breaks the layout */
+  vertical-align: initial !important;
+}
+
+form.search input::placeholder {
+  color: white;
+}
+
+/*  Mobile support  */
+
+@media (max-width: 767px) {
+  /* Move the nav to the bottom */
+  #site-wrapper {
+    margin-bottom: -1px;
+  }
+
+  /* Support hiding elements from small */
+  .hide-small {
+    display: none !important;
+  }
+
+  /* Switch from left/right to above and below */
+  #top-menu {
+    display: flex;
+    flex-direction: column-reverse;
+    height: auto;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  /* The position of the menu when not hidden (and default) */
+  #top-menu.up {
+    /* How long to get back up */
+    transition-timing-function: ease;
+    transition: transform 0.3s;
+    transform: translate(0, 0);
+  }
+
+  #top-menu.down {
+    /* How long to scroll down */
+    transition-timing-function: ease;
+    transition: transform 0.6s;
+    transform: translate(0, 6rem);
+  }
+
+  /* Because 'TypeScript' is removed, let the width be auto */
+  #top-menu #home-page-logo {
+    width: auto;
+  }
+
+  #top-menu .below-small nav {
+    flex-grow: 1;
+  }
+
+  #top-menu .below-small nav ul {
+    display: flex;
+  }
+
+  #top-menu .below-small nav ul li {
+    flex: 1;
+    text-align: center;;
+  }
+
+  /* Make search full length */
+  .above-small nav {
+    width: 100%;
+  }
+
+  /* Make search input reach the end */
+  .above-small form.search {
+    width: calc(100% - 1rem);
+  }
+
+  /* Make search input reach the end */
+  .above-small form.search input {
+    width: calc(200% - 2rem);
+  }
+
+  /* Override search */
+  #top-menu .ds-dropdown-menu {
+    top: initial !important;
+    left: 0px !important;
+    right: -180px !important;
+    bottom: 140%;
+    min-width: 0;
+    margin-left: -32px;
+  }
+
+  /* Make the triangle point to the right place */
+  #top-menu .ds-dropdown-menu:before {
+    top: auto;
+    left: 40px;
+    bottom: -7px;
+    transform: rotate(135deg);
+  }
+}
