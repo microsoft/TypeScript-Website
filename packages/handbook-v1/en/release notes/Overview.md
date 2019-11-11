@@ -3,7 +3,7 @@ title: Overview
 layout: docs
 permalink: /docs/handbook/release-notes/overview.html
 ---
-{% raw %}This page is a shorter overview of features added per version.
+This page is a shorter overview of features added per version.
 
 ## TypeScript 3.6
 
@@ -7164,5 +7164,3 @@ module MyControllers {
 }
 ```
 
-
-{% endraw %}

@@ -3,7 +3,7 @@ title: TypeScript 1.8
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-1-8.html
 ---
-{% raw %}## Type parameters as constraints
+## Type parameters as constraints
 
 With TypeScript 1.8 it becomes possible for a type parameter constraint to reference type parameters from the same type parameter list.
 Previously this was an error.
@@ -585,5 +585,3 @@ This means that all configuration changes have to be made in the `tsconfig.json`
 * Apache Cordova Apps still have the existing limitation of a single `tsconfig.json` file, which must be in either the root or the `scripts` folder.
 * There is no template for `tsconfig.json` in most project types.
 
-
-{% endraw %}

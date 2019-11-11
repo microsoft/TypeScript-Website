@@ -3,7 +3,7 @@ title: TypeScript 1.3
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-1-3.html
 ---
-{% raw %}## Protected
+## Protected
 
 The new `protected` modifier in classes works like it does in familiar languages like C++, C#, and Java. A `protected` member of a class is visible only inside subclasses of the class in which it is declared:
 
@@ -50,5 +50,3 @@ console.log(x[5].toString()); // OK, 'string' and 'number' both have toString
 x[6] = true; // Error, boolean isn't number or string
 ```
 
-
-{% endraw %}

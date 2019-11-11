@@ -3,7 +3,7 @@ title: Project References
 layout: docs
 permalink: /docs/handbook/project-references.html
 ---
-{% raw %}Project references are a new feature in TypeScript 3.0 that allow you to structure your TypeScript programs into smaller pieces.
+Project references are a new feature in TypeScript 3.0 that allow you to structure your TypeScript programs into smaller pieces.
 
 By doing this, you can greatly improve build times, enforce logical separation between components, and organize your code in new and better ways.
 
@@ -213,5 +213,3 @@ The TypeScript repo itself is a good reference here - we have some "library" pro
 TODO: Experiment more and figure this out. Rush and Lerna seem to have different models that imply different things on our end
 -->
 
-
-{% endraw %}

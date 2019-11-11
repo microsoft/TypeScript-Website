@@ -9,6 +9,7 @@
 export interface BlogPostBySlug_markdownRemark_frontmatter {
   __typename: "MarkdownRemarkFrontmatter";
   permalink: string | null;
+  title: string | null;
 }
 
 export interface BlogPostBySlug_markdownRemark {

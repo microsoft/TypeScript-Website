@@ -2,8 +2,14 @@ import React from "react"
 import { Link, graphql } from "gatsby"
 import { BlogPostBySlug } from "./__generated__/BlogPostBySlug"
 import { Layout } from "../components/layout"
+import { Sidebar } from "../components/layout/sidebar"
+import { oldHandbookNavigation } from "../lib/oldNavigation"
 
-class BlogPostTemplate extends React.Component<{ pageContext: any, data: BlogPostBySlug }> {
+import "./handbook.css"
+import "../templates/markdown.css"
+
+
+class BlogPostTemplate extends React.Component<{ pageContext: any, data: BlogPostBySlug, path: string }> {
   render() {
     const post = this.props.data.markdownRemark
     if (!post) {
@@ -12,11 +18,19 @@ class BlogPostTemplate extends React.Component<{ pageContext: any, data: BlogPos
     }
 
     const { previous, next } = this.props.pageContext
+    const selectedID = this.props.path.split("/").pop().replace(".html", "")
+
     return (
       <Layout >
-        <div className="ms-depth-4" style={{ backgroundColor: "white", maxWidth: 960, margin: "1rem auto", padding: "2rem" }}>
-          <div dangerouslySetInnerHTML={{ __html: post.html }} />
-        </div>
+        <section id="doc-layout">
+          <Sidebar navItems={oldHandbookNavigation} selectedID={selectedID}/>
+          <div id="handbook-content">
+            <h2>{post.frontmatter.title}</h2>
+            <div className="ms-depth-4" style={{ backgroundColor: "white", margin: "1rem auto", padding: "2rem" }}>
+              <div className="markdown" dangerouslySetInnerHTML={{ __html: post.html }} />
+            </div>
+          </div>
+        </section>
         <hr />
         <ul>
           <li>
@@ -45,6 +59,7 @@ export const pageQuery = graphql`
       html
       frontmatter {
         permalink
+        title
       }
     }
   }

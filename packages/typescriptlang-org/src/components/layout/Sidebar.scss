@@ -1,0 +1,114 @@
+nav#sidebar {
+  min-width: 16rem;
+  background-color: #eeeeee;
+
+  /* "Basically a section of documentation */
+  > ul {
+    margin: 0;
+    padding: 0;
+
+    > li {
+      // Mostly stuff for all of the links
+      list-style: none;
+      padding: 0;
+      min-height: 2.5rem;
+      border-bottom: 1px solid #dfdfdf;
+      font-weight: 400;
+      font-size: 1rem;
+
+      // The top level navigation items
+      button {
+        display: block;
+        position: relative;
+        height: 2.5rem;
+        font-size: 1rem;
+        padding-left: 1rem;
+        width: 100%;
+        text-align: left;
+        -webkit-appearance: none;
+        background-color: transparent;
+        border: none;
+        font-weight: 500;
+
+        &:active, &:focus {
+          color: black;
+          background-color: #dfdfdf;
+        }
+
+        span {
+          position: absolute;
+          right: 20px;
+        }
+      }
+    }
+  }
+
+  // Still looking at the highest level of navigation
+  > ul > li {
+    &.highlighted {
+      background-color: #e3e8ec;
+
+      svg path {
+        stroke: #187abf;
+      }
+    }
+
+    // When the dropdown for a section is showing
+    &.open {
+      // Hide the sideways SVG
+      span.closed {
+        display: none;
+      }
+    }
+
+    &.closed {
+      // Hide the down SVG
+      span.open {
+        display: none;
+      }
+
+      ul {
+        display: none;
+      }
+    }
+  }
+
+  // Individual pages
+  > ul > li > ul {
+    margin: 0;
+    padding: 0;
+
+
+    a {
+      display: block;
+      flex-grow: 1;
+      text-decoration: none;
+      color: black;
+      padding-top: 0.5rem;
+      padding-left: 1rem;
+      padding-bottom: 0.5rem;
+    }
+
+    > li {
+      list-style: none;
+
+      a {
+        transition: margin-left 0.1s ease-out;
+        font-weight: 300;
+      }
+
+      a:focus, a:hover {
+        border-left: 2px solid black;
+        margin-left: 0.5rem;
+        margin-right: -0.5rem;
+      }
+
+      &.highlight a {
+        color: #187abf;
+        border-left: 2px solid #187abf;
+        margin-left: 0.5rem;
+        margin-right: -0.5rem;
+      }
+    }
+  }
+}

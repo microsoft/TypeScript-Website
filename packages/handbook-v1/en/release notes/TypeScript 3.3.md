@@ -3,7 +3,7 @@ title: TypeScript 3.3
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-3-3.html
 ---
-{% raw %}## Improved behavior for calling union types
+## Improved behavior for calling union types
 
 In prior versions of TypeScript, unions of callable types could *only* be invoked if they had identical parameter lists.
 
@@ -116,5 +116,3 @@ That can mean signficantly faster builds under `--build --watch`.
 In our testing, this functionality has resulted in **a reduction of 50% to 75% in build times** of the original `--build --watch` times.
 [You can read more on the original pull request for the change](https://github.com/Microsoft/TypeScript/pull/29161) to see specific numbers, but we believe most composite project users will see significant wins here.
 
-
-{% endraw %}

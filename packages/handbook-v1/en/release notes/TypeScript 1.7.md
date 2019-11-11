@@ -3,7 +3,7 @@ title: TypeScript 1.7
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-1-7.html
 ---
-{% raw %}## `async`/`await` support in ES6 targets (Node v4+)
+## `async`/`await` support in ES6 targets (Node v4+)
 
 TypeScript now supports asynchronous functions for engines that have native support for ES6 generators, e.g. Node v4 and above.
 Asynchronous functions are prefixed with the `async` keyword;
@@ -214,5 +214,3 @@ Decorators are now allowed when targeting ES3.
 TypeScript 1.7 removes the ES5-specific use of `reduceRight` from the `__decorate` helper.
 The changes also inline calls `Object.getOwnPropertyDescriptor` and `Object.defineProperty` in a backwards-compatible fashion that allows for a to clean up the emit for ES5 and later by removing various repetitive calls to the aforementioned `Object` methods.
 
-
-{% endraw %}

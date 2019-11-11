@@ -3,7 +3,7 @@ title: Basic Types
 layout: docs
 permalink: /docs/handbook/basic-types.html
 ---
-{% raw %}# Introduction
+# Introduction
 
 For programs to be useful, we need to be able to work with some of the simplest units of data: numbers, strings, structures, boolean values, and the like.
 In TypeScript, we support much the same types as you would expect in JavaScript, with a convenient enumeration type thrown in to help things along.
@@ -296,5 +296,3 @@ You may've noticed that so far, we've been using the `let` keyword instead of Ja
 The `let` keyword is actually a newer JavaScript construct that TypeScript makes available.
 We'll discuss the details later, but many common problems in JavaScript are alleviated by using `let`, so you should use it instead of `var` whenever possible.
 
-
-{% endraw %}

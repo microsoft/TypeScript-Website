@@ -3,7 +3,7 @@ title: Migrating from JavaScript
 layout: docs
 permalink: /docs/handbook/migrating-from-javascript.html
 ---
-{% raw %}TypeScript doesn't exist in a vacuum.
+TypeScript doesn't exist in a vacuum.
 It was built with the JavaScript ecosystem in mind, and a lot of JavaScript exists today.
 Converting a JavaScript codebase over to TypeScript is, while somewhat tedious, usually not challenging.
 In this tutorial, we're going to look at how you might start out.
@@ -427,5 +427,3 @@ Point.prototype.distanceFromOrigin = function(this: Point, point: Point) {
 }
 ```
 
-
-{% endraw %}

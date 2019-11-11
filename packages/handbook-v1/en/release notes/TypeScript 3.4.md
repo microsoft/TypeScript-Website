@@ -3,7 +3,7 @@ title: TypeScript 3.4
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-3-4.html
 ---
-{% raw %}## Faster subsequent builds with the `--incremental` flag
+## Faster subsequent builds with the `--incremental` flag
 
 TypeScript 3.4 introduces a new flag called `--incremental` which tells TypeScript to save information about the project graph from the last compilation.
 The next time TypeScript is invoked with `--incremental`, it will use that information to detect the least costly way to type-check and emit changes to your project.
@@ -441,5 +441,3 @@ It's also important to note that TypeScript doesn't transform references to `glo
 As such, unless you're targeting evergreen browsers (which already support `globalThis`), you may want to [use an appropriate polyfill](https://github.com/ljharb/globalThis) instead.
 
 For more details on the implementation, see [the feature's pull request](https://github.com/Microsoft/TypeScript/pull/29332).
-
-{% endraw %}

@@ -3,7 +3,7 @@ title: Nightly Builds
 layout: docs
 permalink: /docs/handbook/nightly-builds.html
 ---
-{% raw %}A nightly build from the [TypeScript's `master`](https://github.com/Microsoft/TypeScript/tree/master) branch is published by midnight PST to NPM and NuGet.
+A nightly build from the [TypeScript's `master`](https://github.com/Microsoft/TypeScript/tree/master) branch is published by midnight PST to NPM and NuGet.
 Here is how you can get it and use it with your tools.
 
 ## Using npm
@@ -86,5 +86,3 @@ Go to `Preferences` > `Languages & Frameworks` > `TypeScript`:
 Go to `File` > `Settings` > `Languages & Frameworks` > `TypeScript`:
  > TypeScript Version: If you installed with npm: `C:\Users\USERNAME\AppData\Roaming\npm\node_modules\typescript\lib`
 
-
-{% endraw %}

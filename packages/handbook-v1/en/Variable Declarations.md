@@ -3,7 +3,7 @@ title: Variable Declarations
 layout: docs
 permalink: /docs/handbook/variable-declarations.html
 ---
-{% raw %}# Variable Declarations
+# Variable Declarations
 
 `let` and `const` are two relatively new types of variable declarations in JavaScript.
 [As we mentioned earlier](./Basic%20Types.md#a-note-about-let), `let` is similar to `var` in some respects, but allows users to avoid some of the common "gotchas" that users run into in JavaScript.
@@ -700,5 +700,3 @@ clone.m(); // error!
 Second, the Typescript compiler doesn't allow spreads of type parameters from generic functions.
 That feature is expected in future versions of the language.
 
-
-{% endraw %}

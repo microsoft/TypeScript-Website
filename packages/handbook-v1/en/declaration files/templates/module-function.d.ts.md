@@ -3,7 +3,7 @@ title: module-function.d.ts
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/module-function-d-ts.html
 ---
-{% raw %}```ts
+```ts
 // Type definitions for [~THE LIBRARY NAME~] [~OPTIONAL VERSION NUMBER~]
 // Project: [~THE PROJECT NAME~]
 // Definitions by: [~YOUR NAME~] <[~A URL FOR YOU~]>
@@ -72,5 +72,3 @@ declare namespace MyFunction {
 }
 ```
 
-
-{% endraw %}

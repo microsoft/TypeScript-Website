@@ -3,7 +3,7 @@ title: TypeScript 2.7
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-2-7.html
 ---
-{% raw %}## Constant-named properties
+## Constant-named properties
 
 TypeScript 2.7 adds support for declaring const-named properties on types including ECMAScript symbols.
 
@@ -380,5 +380,3 @@ TypeScript's `--pretty` flag can make error messages easier to read and manage.
 `--pretty` now uses colors for file names, diagnostic codes, and line numbers.
 File names and positions are now also formatted to allow navigation in common terminals (e.g. Visual Studio Code terminal).
 
-
-{% endraw %}

@@ -3,7 +3,7 @@ title: TypeScript 3.2
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-3-2.html
 ---
-{% raw %}## `strictBindCallApply`
+## `strictBindCallApply`
 
 TypeScript 3.2 introduces a new `--strictBindCallApply` compiler option (in the `--strict` family of options) with which the `bind`, `call`, and `apply` methods on function objects are strongly typed and strictly checked.
 
@@ -224,5 +224,3 @@ obj.x = "world";
 //   Cannot assign to 'x' because it is a read-only property.
 ```
 
-
-{% endraw %}

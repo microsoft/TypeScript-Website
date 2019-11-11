@@ -3,7 +3,7 @@ title: React
 layout: docs
 permalink: /docs/handbook/react.html
 ---
-{% raw %}This quick start guide will teach you how to wire up TypeScript with [React](https://reactjs.org/).
+This quick start guide will teach you how to wire up TypeScript with [React](https://reactjs.org/).
 By the end, you'll have
 
 * a project with React and TypeScript
@@ -648,5 +648,3 @@ You can check out our [React & Webpack walkthrough here](./React%20&%20Webpack.m
 At some point you might need routing.
 There are several solutions, but [react-router](https://github.com/ReactTraining/react-router) is probably the most popular for Redux projects, and is often used in conjunction with [react-router-redux](https://github.com/reactjs/react-router-redux).
 
-
-{% endraw %}

@@ -3,7 +3,7 @@ title: tsconfig.json
 layout: docs
 permalink: /docs/handbook/tsconfig-json.html
 ---
-{% raw %}## Overview
+## Overview
 
 The presence of a `tsconfig.json` file in a directory indicates that the directory is the root of a TypeScript project.
 The `tsconfig.json` file specifies the root files and the compiler options required to compile the project.
@@ -212,5 +212,3 @@ This feature is currently supported in Visual Studio 2015 with TypeScript 1.8.4 
 
 Schema can be found at: [http://json.schemastore.org/tsconfig](http://json.schemastore.org/tsconfig)
 
-
-{% endraw %}

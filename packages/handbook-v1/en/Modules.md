@@ -3,7 +3,7 @@ title: Modules
 layout: docs
 permalink: /docs/handbook/modules.html
 ---
-{% raw %}> **A note about terminology:**
+> **A note about terminology:**
 It's important to note that in TypeScript 1.5, the nomenclature has changed.
 "Internal modules" are now "namespaces".
 "External modules" are now simply "modules", as to align with [ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/)'s terminology, (namely that `module X {` is equivalent to the now-preferred `namespace X {`).
@@ -839,5 +839,3 @@ All of the following are red flags for module structuring. Double-check that you
 * A file whose only top-level declaration is `export namespace Foo { ... }` (remove `Foo` and move everything 'up' a level)
 * Multiple files that have the same `export namespace Foo {` at top-level (don't think that these are going to combine into one `Foo`!)
 
-
-{% endraw %}

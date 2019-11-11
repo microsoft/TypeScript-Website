@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import { Link } from "gatsby"
 import { IComponentStyles } from "office-ui-fabric-react/lib/Foundation";
 
-import "./TopNav.css"
+import "./TopNav.scss"
 
 export type Props = {
   centeredLayout?: boolean
