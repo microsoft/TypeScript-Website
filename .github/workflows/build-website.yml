@@ -27,11 +27,11 @@ jobs:
     - run: bundle install
 
     # Build v1
-    - name: Build website
+    - name: Build website v1
       run: gulp publish
 
     # Build v2
-    - name: Build website
+    - name: Build website v2
       run: |
         git clone -b v2 --single-branch https://github.com/microsoft/TypeScript-Website.git v2
         cd v2
