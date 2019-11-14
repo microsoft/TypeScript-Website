@@ -16,6 +16,10 @@ code .
 
 The main website for TypeScript, a Gatsby website which is statically deployed.
 
+```sh
+yarn start
+```
+
 ## Playground
 
 A React component for the TypeScript playground base component. Not the one available on

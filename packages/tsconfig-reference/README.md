@@ -27,5 +27,12 @@ If you'd like to create a new language:
 The TSConfig reference is created by a two step process:
 
 - Creating the JSON dump of all the useful info via [`./scripts/generateJSON.ts`](scripts/generateJSON.ts) which you can find in [`./data`](./data).
+- A script which uses the JSON, and the copy to generate per-language markdown docs which are picked up by the typescriptlang-org Gatsby site at `http://localhost:8000/tsconfig`
 
-- A script which uses the JSON, and the copy to generate per-language markdown docs which are meant to be embedded inside webpages ``
+You can run these commands from the root of the repo:
+
+```sh
+yarn workspace tsconfig-reference run generate-json
+
+yarn workspace tsconfig-reference run generate-markdown
+```
