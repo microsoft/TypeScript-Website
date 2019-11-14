@@ -3,7 +3,7 @@ title: Triple-Slash Directives
 layout: docs
 permalink: /docs/handbook/triple-slash-directives.html
 ---
-{% raw %}Triple-slash directives are single-line comments containing a single XML tag.
+Triple-slash directives are single-line comments containing a single XML tag.
 The contents of the comment are used as compiler directives.
 
 Triple-slash directives are **only** valid at the top of their containing file.
@@ -138,5 +138,3 @@ define(["require", "exports", "legacy/moduleA"], function (require, exports, mod
 });
 ```
 
-
-{% endraw %}

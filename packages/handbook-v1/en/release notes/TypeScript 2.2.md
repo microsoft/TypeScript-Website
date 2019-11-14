@@ -3,7 +3,7 @@ title: TypeScript 2.2
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-2-2.html
 ---
-{% raw %}## Support for Mix-in classes
+## Support for Mix-in classes
 
 TypeScript 2.2 adds support for the ECMAScript 2015 mixin class pattern (see [MDN Mixin description](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Mix-ins) and ["Real" Mixins with JavaScript Classes](http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/) for more details) as well as rules for combining mixin construct signatures with regular construct signatures in intersection types.
 
@@ -206,5 +206,3 @@ let x: TodoListProps;
 React-native build pipeline expects all files to have a `.js` extensions even if the file contains JSX syntax.
 The new `--jsx` value `react-native` will persevere the JSX syntax in the output file, but give it a `.js` extension.
 
-
-{% endraw %}

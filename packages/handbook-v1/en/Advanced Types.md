@@ -3,7 +3,7 @@ title: Advanced Types
 layout: docs
 permalink: /docs/handbook/advanced-types.html
 ---
-{% raw %}# Table of contents
+# Table of contents
 
 [Intersection Types](#intersection-types)
 
@@ -1313,5 +1313,3 @@ type T24 = InstanceType<Function>;  // Error
 
 > Note: The `Exclude` type is a proper implementation of the `Diff` type suggested [here](https://github.com/Microsoft/TypeScript/issues/12215#issuecomment-307871458). We've used the name `Exclude` to avoid breaking existing code that defines a `Diff`, plus we feel that name better conveys the semantics of the type.
 
-
-{% endraw %}

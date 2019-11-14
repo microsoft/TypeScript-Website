@@ -3,7 +3,7 @@ title: TypeScript 2.8
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-2-8.html
 ---
-{% raw %}## Conditional Types
+## Conditional Types
 
 TypeScript 2.8 introduces *conditional types* which add the ability to express non-uniform type mappings.
 A conditional type selects one of two possible types based on a condition expressed as a type relationship test:
@@ -412,5 +412,3 @@ Combined with the per-file `@jsx` pragma, each file can have a different JSX fac
 
 `--emitDeclarationOnly` allows for *only* generating declaration files; `.js`/`.jsx` output generation will be skipped with this flag. The flag is useful when the `.js` output generation is handled by a different transpiler like Babel.
 
-
-{% endraw %}

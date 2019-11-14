@@ -3,7 +3,7 @@ title: Classes
 layout: docs
 permalink: /docs/handbook/classes.html
 ---
-{% raw %}# Introduction
+# Introduction
 
 Traditional JavaScript uses functions and prototype-based inheritance to build up reusable components, but this may feel a bit awkward to programmers more comfortable with an object-oriented approach, where classes inherit functionality and objects are built from these classes.
 Starting with ECMAScript 2015, also known as ECMAScript 6, JavaScript programmers will be able to build their applications using this object-oriented class-based approach.
@@ -539,5 +539,3 @@ interface Point3d extends Point {
 let point3d: Point3d = {x: 1, y: 2, z: 3};
 ```
 
-
-{% endraw %}

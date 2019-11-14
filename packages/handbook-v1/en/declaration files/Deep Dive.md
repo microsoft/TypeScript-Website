@@ -3,7 +3,7 @@ title: Deep Dive
 layout: docs
 permalink: /docs/handbook/declaration-files/deep-dive.html
 ---
-{% raw %}# Definition File Theory: A Deep Dive
+# Definition File Theory: A Deep Dive
 
 Structuring modules to give the exact API shape you want can be tricky.
 For example, we might want a module that can be invoked with or without `new` to produce different types,
@@ -235,5 +235,3 @@ An important rule is that `export` and `import` declarations export or import *a
 
 <!-- TODO: Write more on that. -->
 
-
-{% endraw %}

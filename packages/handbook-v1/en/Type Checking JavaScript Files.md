@@ -3,7 +3,7 @@ title: Type Checking JavaScript Files
 layout: docs
 permalink: /docs/handbook/type-checking-javascript-files.html
 ---
-{% raw %}TypeScript 2.3 and later support type-checking and reporting errors in `.js` files with `--checkJs`.
+TypeScript 2.3 and later support type-checking and reporting errors in `.js` files with `--checkJs`.
 
 You can skip checking some files by adding a `// @ts-nocheck` comment to them; conversely, you can choose to check only a few `.js` files by adding a `// @ts-check` comment to them without setting `--checkJs`.
 You can also ignore errors on specific lines by adding `// @ts-ignore` on the preceding line.
@@ -825,5 +825,3 @@ Unlike JSDoc's type system, Typescript only allows you to mark types as containi
 There is no explicit non-nullability -- if strictNullChecks is on, then `number` is not nullable.
 If it is off, then `number` is nullable.
 
-
-{% endraw %}

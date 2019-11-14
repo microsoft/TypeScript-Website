@@ -3,7 +3,7 @@ title: Introduction
 layout: docs
 permalink: /docs/handbook/declaration-files/introduction.html
 ---
-{% raw %}This guide is designed to teach you how to write a high-quality TypeScript Declaration File.
+This guide is designed to teach you how to write a high-quality TypeScript Declaration File.
 
 In this guide, we'll assume basic familiarity with the TypeScript language.
 If you haven't already, you should read the [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/basic-types.html)
@@ -53,5 +53,3 @@ The [Publishing](./Publishing.md) section explains how to publish your declarati
 
 For JavaScript library users, the [Consumption](./Consumption.md) section offers a few simple steps to locate and install corresponding declaration files.
 
-
-{% endraw %}

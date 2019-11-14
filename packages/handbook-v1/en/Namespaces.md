@@ -3,7 +3,7 @@ title: Namespaces
 layout: docs
 permalink: /docs/handbook/namespaces.html
 ---
-{% raw %}# Table of contents
+# Table of contents
 
 [Introduction](#introduction)
 
@@ -299,5 +299,3 @@ declare namespace D3 {
 declare var d3: D3.Base;
 ```
 
-
-{% endraw %}

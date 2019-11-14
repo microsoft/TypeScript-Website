@@ -3,7 +3,7 @@ title: Mixins
 layout: docs
 permalink: /docs/handbook/mixins.html
 ---
-{% raw %}# Table of contents
+# Table of contents
 
 [Introduction](#introduction)
 
@@ -138,5 +138,3 @@ function applyMixins(derivedCtor: any, baseCtors: any[]) {
 
 ```
 
-
-{% endraw %}

@@ -3,7 +3,7 @@ title: TypeScript in 5 minutes
 layout: docs
 permalink: /docs/handbook/typescript-in-5-minutes.html
 ---
-{% raw %}Let's get started by building a simple web application with TypeScript.
+Let's get started by building a simple web application with TypeScript.
 
 ## Installing TypeScript
 
@@ -175,5 +175,3 @@ For more examples of what's possible in TypeScript, see the Samples section of t
 
 ![Visual Studio picture](/assets/images/docs/greet_person.png)
 
-
-{% endraw %}

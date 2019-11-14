@@ -3,7 +3,7 @@ title: TypeScript 2.0
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-2-0.html
 ---
-{% raw %}## Null- and undefined-aware types
+## Null- and undefined-aware types
 
 TypeScript has two special types, Null and Undefined, that have the values `null` and `undefined` respectively.
 Previously it was not possible to explicitly name these types, but `null` and `undefined` may now be used as type names regardless of type checking mode.
@@ -947,5 +947,3 @@ interface Error {
 
 `--declarationDir` allows for generating declaration files in a different location than JavaScript files.
 
-
-{% endraw %}

@@ -38,12 +38,12 @@ languages.forEach(lang => {
 
   const markdownChunks: string[] = []
 
-  const getPathInLocale = (path: string) => {
+  const getPathInLocale = (path: string, optionalExampleContent?: string) => {
     if (existsSync(join(locale, path))) return join(locale, path)
     if (existsSync(join(fallbackLocale, path))) return join(fallbackLocale, path)
 
     const localeDesc = lang === "en" ? lang : `either ${lang} or English`
-    throw new Error('Could not find a path for ' + path + " in " + localeDesc)
+    throw new Error('Could not find a path for ' + path + " in " + localeDesc + optionalExampleContent)
   }
 
   // Make a JSON dump of the category anchors someone wrapping the markdown
@@ -69,7 +69,12 @@ languages.forEach(lang => {
     // Loop through their options
     const optionsForCategory = options.filter(o => o.category === category.code)
     optionsForCategory.forEach(option => {
-      const optionPath = getPathInLocale(join('options', option.name + '.md'))
+      const mdPath = join('options', option.name + '.md')
+      const fullPath = join(__dirname, '..', 'copy', lang, mdPath)
+      const tsVersion = JSON.parse(readFileSync("../../node_modules/typescript/package.json", "utf8")).version
+      const exampleOptionContent = `\n\n\n Run:\n    echo '---\\ndisplay: "${option.name}"\\nintroduced: "${tsVersion}"\\n---\\n${option.description.message}\\n' > ${fullPath}\n\nThen add some docs.\n `
+
+      const optionPath = getPathInLocale(mdPath, exampleOptionContent)
       const optionFile = readMarkdownFile(optionPath)
 
       // Must have a display title in the front-matter

@@ -9,7 +9,7 @@
     "danger-plugin-lighthouse": "^0.0.1",
     "danger-plugin-spellcheck": "^1.5.0",
     "git-branch-is": "^3.0.0",
-    "husky": "^3.0.8"
+    "husky": "^3.0.9"
   },
   "scripts": {
     "bootstrap": "yarn build-tsconfig-reference-md",
@@ -17,6 +17,7 @@
     "build-site": "yarn workspace typescriptlang-org build",
     "build-tsconfig-reference-md": "yarn workspace tsconfig-reference build",
     "build": "yarn build-tsconfig-reference-md && yarn build-site",
+    "update-snapshots": "yarn workspace typescriptlang-org update-snapshots",
     "clean": "yarn workspace typescriptlang-org gatsby clean",
     "test": "yarn jest",
     "playground": "concurrently -p \"[{name}]\" -n \"TS,WEB\" -c \"bgBlue.bold,bgMagenta.bold\" \"yarn workspace playground start\" \"yarn workspace playground-sandbox start\"",

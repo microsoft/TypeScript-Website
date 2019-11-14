@@ -3,7 +3,7 @@ title: Module Resolution
 layout: docs
 permalink: /docs/handbook/module-resolution.html
 ---
-{% raw %}> This section assumes some basic knowledge about modules.
+> This section assumes some basic knowledge about modules.
 Please see the [Modules](./Modules.md) documentation for more information.
 
 *Module resolution* is the process the compiler uses to figure out what an import refers to.
@@ -463,5 +463,3 @@ If the compiler identified a file as a target of a module import, it will be inc
 
 So to exclude a file from the compilation, you need to exclude it and **all** files that have an `import` or `/// <reference path="..." />` directive to it.
 
-
-{% endraw %}

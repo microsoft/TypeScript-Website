@@ -3,7 +3,7 @@ title: Declaration Merging
 layout: docs
 permalink: /docs/handbook/declaration-merging.html
 ---
-{% raw %}# Introduction
+# Introduction
 
 Some of the unique concepts in TypeScript describe the shape of JavaScript objects at the type level.
 One example that is especially unique to TypeScript is the concept of 'declaration merging'.
@@ -327,5 +327,3 @@ Array.prototype.toObservable = function () {
 
 Global augmentations have the same behavior and limits as module augmentations.
 
-
-{% endraw %}

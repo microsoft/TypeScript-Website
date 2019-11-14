@@ -3,7 +3,7 @@ title: Library Structures
 layout: docs
 permalink: /docs/handbook/declaration-files/library-structures.html
 ---
-{% raw %}# Overview
+# Overview
 
 Broadly speaking, the way you *structure* your declaration file depends on how the library is consumed.
 There are many ways of offering a library for consumption in JavaScript, and you'll need to write your declaration file to match it.
@@ -404,5 +404,3 @@ Your declaration files should thus be
          +---- baz.d.ts
 ```
 
-
-{% endraw %}

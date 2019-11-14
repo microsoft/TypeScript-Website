@@ -3,7 +3,7 @@ title: Symbols
 layout: docs
 permalink: /docs/handbook/symbols.html
 ---
-{% raw %}# Introduction
+# Introduction
 
 Starting with ECMAScript 2015, `symbol` is a primitive data type, just like `number` and `string`.
 
@@ -105,5 +105,3 @@ Called by the built-in method `Object.prototype.toString`.
 
 An Object whose own property names are property names that are excluded from the 'with' environment bindings of the associated objects.
 
-
-{% endraw %}

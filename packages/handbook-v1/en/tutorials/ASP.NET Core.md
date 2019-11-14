@@ -3,7 +3,7 @@ title: ASP.NET Core
 layout: docs
 permalink: /docs/handbook/asp-net-core.html
 ---
-{% raw %}# Setup
+# Setup
 
 ## Install ASP.NET Core and TypeScript
 
@@ -412,5 +412,3 @@ Finally, change the code in `index.html` to the following:
 This loads the app.
 When you run the ASP.NET application you should see a div that says "Loading..." and then updates to say "Hello from TypeScript".
 
-
-{% endraw %}

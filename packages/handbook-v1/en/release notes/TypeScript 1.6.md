@@ -3,7 +3,7 @@ title: TypeScript 1.6
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-1-6.html
 ---
-{% raw %}## JSX support
+## JSX support
 
 JSX is an embeddable XML-like syntax.
 It is meant to be transformed into valid JavaScript, but the semantics of that transformation are implementation-specific.
@@ -446,5 +446,3 @@ The `exclude` list does not support wilcards. It must simply be a list of files 
 Run `tsc --init` in a directory to create an initial `tsconfig.json` in this directory with preset defaults.
 Optionally pass command line arguments along with `--init` to be stored in your initial tsconfig.json on creation.
 
-
-{% endraw %}

@@ -3,7 +3,7 @@ title: Interfaces
 layout: docs
 permalink: /docs/handbook/interfaces.html
 ---
-{% raw %}# Introduction
+# Introduction
 
 One of TypeScript's core principles is that type checking focuses on the *shape* that values have.
 This is sometimes called "duck typing" or "structural subtyping".
@@ -571,5 +571,3 @@ Within the `Control` class it is possible to access the `state` private member t
 Effectively, a `SelectableControl` acts like a `Control` that is known to have a `select` method.
 The `Button` and `TextBox` classes are subtypes of `SelectableControl` (because they both inherit from `Control` and have a `select` method), but the `Image` and `Location` classes are not.
 
-
-{% endraw %}

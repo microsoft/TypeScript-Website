@@ -3,7 +3,7 @@ title: TypeScript 2.9
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-2-9.html
 ---
-{% raw %}## Support `number` and `symbol` named properties with `keyof` and mapped types
+## Support `number` and `symbol` named properties with `keyof` and mapped types
 
 TypeScript 2.9 adds support for `number` and `symbol` named properties in index types and mapped types.
 Previously, the `keyof` operator and mapped types only supported `string` named properties.
@@ -320,5 +320,3 @@ Language Services can also now understand these map files, and uses them to map 
 
 In other words, hitting go-to-definition on a declaration from a `.d.ts` file generated with `--declarationMap` will take you to the source file (`.ts`) location where that declaration was defined, and not to the `.d.ts`.
 
-
-{% endraw %}

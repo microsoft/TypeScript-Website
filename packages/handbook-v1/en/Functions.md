@@ -3,7 +3,7 @@ title: Functions
 layout: docs
 permalink: /docs/handbook/functions.html
 ---
-{% raw %}# Introduction
+# Introduction
 
 Functions are the fundamental building block of any application in JavaScript.
 They're how you build up layers of abstraction, mimicking classes, information hiding, and modules.
@@ -478,5 +478,3 @@ For this reason, it's customary to order overloads from most specific to least s
 Note that the `function pickCard(x): any` piece is not part of the overload list, so it only has two overloads: one that takes an object and one that takes a number.
 Calling `pickCard` with any other parameter types would cause an error.
 
-
-{% endraw %}

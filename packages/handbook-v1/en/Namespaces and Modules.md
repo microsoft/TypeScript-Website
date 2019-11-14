@@ -3,7 +3,7 @@ title: Namespaces and Modules
 layout: docs
 permalink: /docs/handbook/namespaces-and-modules.html
 ---
-{% raw %}> **A note about terminology:**
+> **A note about terminology:**
 It's important to note that in TypeScript 1.5, the nomenclature has changed.
 "Internal modules" are now "namespaces".
 "External modules" are now simply "modules", as to align with [ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/)'s terminology, (namely that `module X {` is equivalent to the now-preferred `namespace X {`).
@@ -122,5 +122,3 @@ Just as there is a one-to-one correspondence between JS files and modules, TypeS
 One effect of this is that it's not possible to concatenate multiple module source files depending on the module system you target.
 For instance, you can't use the `outFile` option while targeting `commonjs` or `umd`, but with TypeScript 1.8 and later, [it's possible](./release%20notes/TypeScript%201.8.md#concatenate-amd-and-system-modules-with---outfile) to use `outFile` when targeting `amd` or `system`.
 
-
-{% endraw %}

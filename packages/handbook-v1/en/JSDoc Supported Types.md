@@ -3,7 +3,7 @@ title: JSDoc Supported Types
 layout: docs
 permalink: /docs/handbook/jsdoc-supported-types.html
 ---
-{% raw %}The list below outlines which constructs are currently supported
+The list below outlines which constructs are currently supported
 when using JSDoc annotations to provide type information in JavaScript files.
 
 Note any tags which are not explicitly listed below (such as `@async`) are not yet supported.
@@ -587,5 +587,3 @@ The following tags have open issues to support them:
 - `@yields` ([issue #23857](https://github.com/Microsoft/TypeScript/issues/23857))
 - `{@link …}` ([issue #16498](https://github.com/Microsoft/TypeScript/issues/16498))
 
-
-{% endraw %}

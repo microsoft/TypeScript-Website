@@ -3,7 +3,7 @@ title: Iterators and Generators
 layout: docs
 permalink: /docs/handbook/iterators-and-generators.html
 ---
-{% raw %}# Iterables
+# Iterables
 
 An object is deemed iterable if it has an implementation for the [`Symbol.iterator`](Symbols.md#symboliterator) property.
 Some built-in types like `Array`, `Map`, `Set`, `String`, `Int32Array`, `Uint32Array`, etc. have their `Symbol.iterator` property already implemented.
@@ -86,5 +86,3 @@ for (var _i = 0; _i < numbers.length; _i++) {
 
 When targeting an ECMAScipt 2015-compliant engine, the compiler will generate `for..of` loops to target the built-in iterator implementation in the engine.
 
-
-{% endraw %}
