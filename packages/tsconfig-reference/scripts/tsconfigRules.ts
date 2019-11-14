@@ -4,7 +4,7 @@ import { CompilerOptionName } from '../data/_types'
 export const denyList: CompilerOptionName[] = ['help', 'init', 'all', 'watch', 'version', 'build', 'project']
 
 /** Things we should document, but really want to help move people away from */
-export const deprecated: CompilerOptionName[] = ['out']
+export const deprecated: CompilerOptionName[] = ['out', 'charset']
 
 /** Things which people really shouldn't use, but need to document  */
 export const internal: CompilerOptionName[] = ['preserveWatchOutput']
@@ -15,6 +15,8 @@ export const recommended: CompilerOptionName[] = ['strict']
 /** Allows linking between options */
 export const relatedTo: [CompilerOptionName, CompilerOptionName[]][] = [
   ['strict', ['strictBindCallApply', 'strictFunctionTypes', 'strictPropertyInitialization']],
+  ['allowSyntheticDefaultImports', ['esModuleInterop']],
+  ['esModuleInterop', ['allowSyntheticDefaultImports']],
 
   ['out', ['outDir', 'outFile']],
   ['outDir', ['out', 'outFile']],
@@ -32,7 +34,7 @@ export const defaultsForOptions = {
   allowUmdGlobalAccess: 'false',
   allowUnreachableCode: 'false',
   allowUnusedLabels: 'false',
-  alwaysStrict: 'false',
+  alwaysStrict: '`false`, unless `strict` is set',
   baseUrl: 'n/a',
   charset: 'utf8',
   checkJs: 'false',

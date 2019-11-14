@@ -2,16 +2,17 @@
 display: "Allow Unused Labels"
 ---
 
-Disables warnings about unused labels.
+Set to false to disable warnings about unused labels.
+
 Labels are very rare in JavaScript and typically indicate an attempt to write an object literal:
 
 ```ts
 // @allowUnusedLabels: false
-function f(a: number) {
+function verifyAge(age: number) {
    // Forgot 'return' statement!
-   if (a > 10)
+   if (age > 18)
    {
-       m: 0
+       verified: true
    }
 }
 ```
