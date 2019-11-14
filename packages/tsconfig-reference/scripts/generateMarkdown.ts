@@ -29,7 +29,7 @@ const orderedCategories = [
 // Makes sure all categories are accounted for in ^
 assert.deepEqual(Object.keys(categories).sort(), orderedCategories.map(c => c.split('_').pop()).sort())
 
-const languages = readdirSync(join(__dirname, '..', 'copy'))
+const languages = readdirSync(join(__dirname, '..', 'copy')).filter(f => !f.startsWith("."))
 
 languages.forEach(lang => {
   const locale = join(__dirname, '..', 'copy', lang)
@@ -37,10 +37,11 @@ languages.forEach(lang => {
 
   const markdownChunks: string[] = []
 
-  const getPathInLocale = (path: string) => {
+  const getPathInLocale = (path: string, optionalExampleContent?: string) => {
     if (existsSync(join(locale, path))) return join(locale, path)
     if (existsSync(join(fallbackLocale, path))) return join(fallbackLocale, path)
-    throw new Error('Could not find a path for ' + path)
+    
+    throw new Error('Could not find a path for ' + path + optionalExampleContent)
   }
 
   // Make a JSON dump of the category anchors someone wrapping the markdown
@@ -66,7 +67,11 @@ languages.forEach(lang => {
     // Loop through their options
     const optionsForCategory = options.filter(o => o.category === category.code)
     optionsForCategory.forEach(option => {
-      const optionPath = getPathInLocale(join('options', option.name + '.md'))
+      const mdPath = join('options', option.name + '.md')
+      const fullPath = join(__dirname, '..', 'copy', lang, mdPath)
+      const exampleOptionContent = `\n\n\n Run: echo '---\\ndisplay: "${option.name}"\\n---\\n${option.description.message}\\n' > ${fullPath}\n\n\n`
+
+      const optionPath = getPathInLocale(mdPath, exampleOptionContent)
       const optionFile = readMarkdownFile(optionPath)
 
       // Must have a display title in the front-matter
