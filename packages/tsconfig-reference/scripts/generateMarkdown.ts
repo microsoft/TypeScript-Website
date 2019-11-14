@@ -69,7 +69,8 @@ languages.forEach(lang => {
     optionsForCategory.forEach(option => {
       const mdPath = join('options', option.name + '.md')
       const fullPath = join(__dirname, '..', 'copy', lang, mdPath)
-      const exampleOptionContent = `\n\n\n Run: echo '---\\ndisplay: "${option.name}"\\n---\\n${option.description.message}\\n' > ${fullPath}\n\n\n`
+      const tsVersion = JSON.parse(readFileSync("../../node_modules/typescript/package.json", "utf8")).version
+      const exampleOptionContent = `\n\n\n Run:\n    echo '---\\ndisplay: "${option.name}"\\nintroduced: "${tsVersion}"\\n---\\n${option.description.message}\\n' > ${fullPath}\n\nThen add some docs.\n `
 
       const optionPath = getPathInLocale(mdPath, exampleOptionContent)
       const optionFile = readMarkdownFile(optionPath)

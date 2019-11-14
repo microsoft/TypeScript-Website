@@ -1,5 +1,6 @@
 ---
-display: "generateCpuProfile"
+display: "Generate CPU Profile"
+introduced: "3.7"
 ---
 
 This option gives you the chance to have TypeScript emit a v8 CPU profile during the compiler run. The CPU profile  can provide insight into why your builds may be slow.
