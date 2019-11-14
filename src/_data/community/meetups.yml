@@ -24,6 +24,10 @@ waiting_coc:
 
 ready:
 
+    - title: Hamburg TypeScript
+      url: https://www.meetup.com/Hamburg-TypeScript-Meetup-Group/
+      image: "/assets/images/community/meetup-logos/hamburg-ts.png"
+      country: "🇩🇪"
   - - title: Krakow TypeScript User Group
       url: https://www.meetup.com/typescript-krakow/
       image: "/assets/images/community/meetup-logos/ktug.jpg"
