@@ -9,7 +9,7 @@
     "danger-plugin-lighthouse": "^0.0.1",
     "danger-plugin-spellcheck": "^1.5.0",
     "git-branch-is": "^3.0.0",
-    "husky": "^3.0.8"
+    "husky": "^3.0.9"
   },
   "scripts": {
     "bootstrap": "yarn build-tsconfig-reference-md",

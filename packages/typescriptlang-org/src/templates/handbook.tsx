@@ -16,6 +16,7 @@ class BlogPostTemplate extends React.Component<{ pageContext: any, data: BlogPos
       console.log("Could not render:", JSON.stringify(this.props))
       return <div></div>
     }
+    console.log(this.props)
 
     const { previous, next } = this.props.pageContext
     const selectedID = this.props.path.split("/").pop().replace(".html", "")

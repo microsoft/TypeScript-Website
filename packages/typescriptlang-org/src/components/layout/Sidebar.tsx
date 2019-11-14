@@ -1,4 +1,4 @@
-import React, { useEffect, MouseEventHandler } from "react"
+import React, { MouseEventHandler } from "react"
 import { Link } from "gatsby"
 
 export interface NavItem {

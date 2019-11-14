@@ -25,7 +25,13 @@ module.exports = {
     // Support for downloading or pre-caching pages, needed for PWAs
     "gatsby-plugin-offline",
     // Creates TS types for queries during `gatsby dev`
-    "gatsby-plugin-codegen",
+    {
+      resolve: "gatsby-plugin-codegen",
+      options: {
+        // Ensure it works in a monorepo
+        localSchemaFile: __dirname + "/schema.json"
+      }
+    },
     // Support ts/tsx files in src
     "gatsby-plugin-typescript",
     // Let's you edit the head from inside a react tree

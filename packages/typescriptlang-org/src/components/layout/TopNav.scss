@@ -34,6 +34,7 @@ html, #___gatsby {
   display: flex;
   justify-content: space-between;
   height: 3rem;
+  z-index: 101;
 
   > {
     .left {
@@ -153,9 +154,9 @@ form.search {
     flex-direction: column-reverse;
     height: auto;
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
 
     /* The position of the menu when not hidden (and default) */
     &.up {

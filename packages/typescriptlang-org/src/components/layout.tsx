@@ -1,15 +1,13 @@
-import React from "react"
+import React, { ReactPropTypes } from "react"
 import { SiteNav } from "./layout/TopNav"
 
 
-export class Layout extends React.Component<any> {
-  render() {
-    const { children } = this.props
-    return (
-      <div className="ms-Fabric">
-        <SiteNav />
-        <main>{children}</main>
-      </div>
-    )
-  }
+export const Layout = (props: any) => {
+  const { children } = props
+  return (
+    <div className="ms-Fabric">
+      <SiteNav />
+      <main>{children}</main>
+    </div>
+  )
 }
