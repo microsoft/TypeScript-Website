@@ -3,7 +3,7 @@ title: By Example
 layout: docs
 permalink: /docs/handbook/declaration-files/by-example.html
 ---
-{% raw %}# Introduction
+# Introduction
 
 The purpose of this guide is to teach you how to write a high-quality definition file.
 This guide is structured by showing documentation for some API, along with sample usage of that API,
@@ -281,5 +281,3 @@ declare class Greeter {
 
 -->
 
-
-{% endraw %}

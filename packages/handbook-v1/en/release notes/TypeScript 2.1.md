@@ -3,7 +3,7 @@ title: TypeScript 2.1
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-2-1.html
 ---
-{% raw %}## `keyof` and Lookup Types
+## `keyof` and Lookup Types
 
 In JavaScript it is fairly common to have APIs that expect property names as parameters, but so far it hasn't been possible to express the type relationships that occur in those APIs.
 
@@ -519,5 +519,3 @@ Invoking the compiler with `--alwaysStrict` causes:
 Modules are parsed automatically in strict mode.
 The new flag is recommended for non-module code.
 
-
-{% endraw %}

@@ -3,7 +3,7 @@ title: TypeScript 2.3
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-2-3.html
 ---
-{% raw %}## Generators and Iteration for ES5/ES3
+## Generators and Iteration for ES5/ES3
 
 *First some ES2016 terminology:*
 
@@ -186,5 +186,3 @@ JSDoc comments can be used to add some type information to your JavaScript code,
 
 See [Type checking JavaScript Files documentation](https://github.com/Microsoft/TypeScript/wiki/Type-Checking-JavaScript-Files) for more details.
 
-
-{% endraw %}

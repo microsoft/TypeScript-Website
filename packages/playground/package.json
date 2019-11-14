@@ -12,9 +12,9 @@
     "react-app-polyfill": "^1.0.0"
   },
   "devDependencies": {
-    "@types/react": "^16.8.15",
-    "@types/react-dom": "^16.8.4",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.4",
     "parcel": "^1.12.4",
-    "typescript": "^3.4.5"
+    "typescript": "^3.7.2"
   }
 }

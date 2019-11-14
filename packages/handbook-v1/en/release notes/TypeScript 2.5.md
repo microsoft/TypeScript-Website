@@ -3,7 +3,7 @@ title: TypeScript 2.5
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-2-5.html
 ---
-{% raw %}## Optional `catch` clause variables
+## Optional `catch` clause variables
 
 Thanks to work done by [@tinganho](https://github.com/tinganho), TypeScript 2.5 implements a new ECMAScript feature that allows users to omit the variable in `catch` clauses.
 For example, when using `JSON.parse` you may need to wrap calls to the function with a `try`/`catch`, but you may not end up using the `SyntaxError` that gets thrown when input is erroneous.
@@ -45,5 +45,3 @@ This flag also exhibits the opposite behavior to Webpack's `resolve.symlinks` op
 In this mode, references to modules and packages (e.g. `import`s and `/// <reference type="..." />` directives) are all resolved relative to the location of the symbolic link file, rather than relative to the path that the symbolic link resolves to.
 For a more concrete example, we'll defer to [the documentation on the Node.js website](https://nodejs.org/api/cli.html#cli_preserve_symlinks).
 
-
-{% endraw %}

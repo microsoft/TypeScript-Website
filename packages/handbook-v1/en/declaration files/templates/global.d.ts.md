@@ -3,7 +3,7 @@ title: global.d.ts
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/global-d-ts.html
 ---
-{% raw %}```ts
+```ts
 // Type definitions for [~THE LIBRARY NAME~] [~OPTIONAL VERSION NUMBER~]
 // Project: [~THE PROJECT NAME~]
 // Definitions by: [~YOUR NAME~] <[~A URL FOR YOU~]>
@@ -67,5 +67,3 @@ declare namespace myLib {
     function checkCat(c: Cat, s?: VetID);
 }
 ```
-
-{% endraw %}

@@ -3,7 +3,7 @@ title: React & Webpack
 layout: docs
 permalink: /docs/handbook/react-&-webpack.html
 ---
-{% raw %}This guide will teach you how to wire up TypeScript with [React](https://reactjs.org/) and [webpack](https://webpack.js.org/).
+This guide will teach you how to wire up TypeScript with [React](https://reactjs.org/) and [webpack](https://webpack.js.org/).
 
 If you're starting a brand new project, take a look at the [React Quick Start guide](/samples/index.html) first.
 
@@ -258,5 +258,3 @@ npx webpack
 Now open up `index.html` in your favorite browser and everything should be ready to use!
 You should see a page that says "Hello from TypeScript and React!"
 
-
-{% endraw %}

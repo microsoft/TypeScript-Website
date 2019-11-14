@@ -3,7 +3,7 @@ title: Publishing
 layout: docs
 permalink: /docs/handbook/declaration-files/publishing.html
 ---
-{% raw %}Now that you have authored a declaration file following the steps of this guide, it is time to publish it to npm.
+Now that you have authored a declaration file following the steps of this guide, it is time to publish it to npm.
 There are two main ways you can publish your declaration files to npm:
 
 1. bundling with your npm package, or
@@ -98,5 +98,3 @@ Packages under the [@types](https://www.npmjs.com/~types) organization are publi
 To get your declarations published as an @types package, please submit a pull request to [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped).
 You can find more details in the [contribution guidelines page](http://definitelytyped.org/guides/contributing.html).
 
-
-{% endraw %}

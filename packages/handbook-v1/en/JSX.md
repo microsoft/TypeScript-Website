@@ -3,7 +3,7 @@ title: JSX
 layout: docs
 permalink: /docs/handbook/jsx.html
 ---
-{% raw %}# Table of contents
+# Table of contents
 
 [Introduction](#introduction)
 
@@ -473,5 +473,3 @@ const x = preact.h("div", null);
 
 The factory chosen will also affect where the `JSX` namespace is looked up (for type checking information) before falling back to the global one. If the factory is defined as `React.createElement` (the default), the compiler will check for `React.JSX` before checking for a global `JSX`. If the factory is defined as `h`, it will check for `h.JSX` before a global `JSX`.
 
-
-{% endraw %}

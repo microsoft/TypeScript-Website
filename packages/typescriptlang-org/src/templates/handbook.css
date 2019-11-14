@@ -1,0 +1,15 @@
+#doc-layout {
+  display: flex;
+  flex-direction: row;
+}
+
+#handbook-content {
+  margin-left: 2em;
+  margin-right: 2em;
+}
+
+#handbook-content > h2 {
+  font-size: 3rem;
+  font-weight: 400;
+  letter-spacing: -0.0.6rem;
+}

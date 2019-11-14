@@ -3,7 +3,7 @@ title: TypeScript 1.5
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-1-5.html
 ---
-{% raw %}## ES6 Modules
+## ES6 Modules
 
 TypeScript 1.5 supports ECMAScript 6 (ES6) modules.
 ES6 modules are effectively TypeScript external modules with a new syntax: ES6 modules are separately loaded source files that possibly import other modules and provide a number of externally accessible exports.
@@ -383,5 +383,3 @@ By default the output new line character is `\r\n` on Windows based systems and 
 `--inlineSourceMap` causes source map files to be written inline in the generated `.js` files instead of in a independent `.js.map` file.
 `--inlineSources` allows for additionally inlining the source `.ts` file into the `.js` file.
 
-
-{% endraw %}

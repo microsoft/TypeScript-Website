@@ -3,7 +3,7 @@ title: Enums
 layout: docs
 permalink: /docs/handbook/enums.html
 ---
-{% raw %}# Enums
+# Enums
 
 Enums allow us to define a set of named constants.
 Using enums can make it easier to document intent, or create a set of distinct cases.
@@ -334,5 +334,3 @@ declare enum Enum {
 One important difference between ambient and non-ambient enums is that, in regular enums, members that don't have an initializer will be considered constant if its preceding enum member is considered constant.
 In contrast, an ambient (and non-const) enum member that does not have initializer is *always* considered computed.
 
-
-{% endraw %}

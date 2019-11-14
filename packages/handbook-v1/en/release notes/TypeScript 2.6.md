@@ -3,7 +3,7 @@ title: TypeScript 2.6
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-2-6.html
 ---
-{% raw %}## Strict function types
+## Strict function types
 
 TypeScript 2.6 introduces a new strict checking flag, `--strictFunctionTypes`.
 The `--strictFunctionTypes` switch is part of the `--strict` family of switches, meaning that it defaults to on in `--strict` mode.
@@ -262,5 +262,3 @@ function f() {
 }
 ```
 
-
-{% endraw %}

@@ -3,7 +3,7 @@ title: TypeScript 2.4
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-2-4.html
 ---
-{% raw %}## Dynamic Import Expressions
+## Dynamic Import Expressions
 
 Dynamic `import` expressions are a new feature and part of ECMAScript that allows users to asynchronously request a module at any arbitrary point in your program.
 
@@ -167,5 +167,3 @@ Since this is a breaking change, you may need to know about the workarounds whic
 2. Add an index signature to the weak type (i.e. `[propName: string]: {}`).
 3. Use a type assertion (i.e. `opts as Options`).
 
-
-{% endraw %}

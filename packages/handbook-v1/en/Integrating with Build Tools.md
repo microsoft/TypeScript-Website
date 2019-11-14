@@ -3,7 +3,7 @@ title: Integrating with Build Tools
 layout: docs
 permalink: /docs/handbook/integrating-with-build-tools.html
 ---
-{% raw %}Build tools
+Build tools
 
 * [Babel](#babel)
 * [Browserify](#browserify)
@@ -277,5 +277,3 @@ More details about defining MSBuild compiler options: [Setting Compiler Options 
 
 More details can be found at [Package Manager Dialog](http://docs.nuget.org/Consume/Package-Manager-Dialog) and [using nightly builds with NuGet](https://github.com/Microsoft/TypeScript/wiki/Nightly-drops#using-nuget-with-msbuild)
 
-
-{% endraw %}

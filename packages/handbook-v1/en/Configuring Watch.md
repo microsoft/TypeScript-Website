@@ -3,7 +3,7 @@ title: Configuring Watch
 layout: docs
 permalink: /docs/handbook/configuring-watch.html
 ---
-{% raw %}Compiler supports configuring how to watch files and directories using the environment variables.
+Compiler supports configuring how to watch files and directories using the environment variables.
 
 ## Configuring file watching using environment variable `TSC_WATCHFILE`
 
@@ -34,5 +34,3 @@ default (no value specified)                   | Use `fs.watch` to watch directo
 
 `fs.watchFile` uses polling and thus involves CPU cycles. But this is the most reliable mechanism to get the update on the status of file/directory. Compiler typically uses `fs.watchFile` to watch source files, config files and missing files (missing file references) that means the CPU usage depends on number of files in the program.
 
-
-{% endraw %}

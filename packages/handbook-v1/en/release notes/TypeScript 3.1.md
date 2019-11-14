@@ -3,7 +3,7 @@ title: TypeScript 3.1
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-3-1.html
 ---
-{% raw %}## Mapped types on tuples and arrays
+## Mapped types on tuples and arrays
 
 In TypeScript 3.1, mapped object types<sup>[[1]](#ts-3-1-only-homomorphic)</sup> over tuples and arrays now produce new tuples/arrays, rather than creating a new type where members like `push()`, `pop()`, and `length` are converted.
 For example:
@@ -133,5 +133,3 @@ That means in the above example, even though both the `>=3.2` and the `>=3.1` ma
 }
 ```
 
-
-{% endraw %}

@@ -3,7 +3,7 @@ title: Type Inference
 layout: docs
 permalink: /docs/handbook/type-inference.html
 ---
-{% raw %}# Introduction
+# Introduction
 
 In this section, we will cover type inference in TypeScript. Namely, we'll discuss where and how types are inferred.
 
@@ -104,5 +104,3 @@ function createZoo(): Animal[] {
 In this example, best common type has a set of four candidates: `Animal`, `Rhino`, `Elephant`, and `Snake`.
 Of these, `Animal` can be chosen by the best common type algorithm.
 
-
-{% endraw %}

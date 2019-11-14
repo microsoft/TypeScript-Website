@@ -1,6 +1,6 @@
 
-const { createPages } = require("./bootup/createPages")
-const { onCreateNode } = require("./bootup/onCreateNode")
+const { createPages } = require("./lib/bootup/createPages")
+const { onCreateNode } = require("./lib/bootup/onCreateNode")
 
 /** @type { import("gatsby").GatsbyNode } */
 const config = {};

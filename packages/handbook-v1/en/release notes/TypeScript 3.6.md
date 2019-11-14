@@ -3,7 +3,7 @@ title: TypeScript 3.6
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-3-6.html
 ---
-{% raw %}## Stricter Generators
+## Stricter Generators
 
 TypeScript 3.6 introduces stricter checking for iterators and generator functions.
 In earlier versions, users of generators had no way to differentiate whether a value was yielded or returned from a generator.
@@ -342,5 +342,3 @@ In the near future, we're going to be refreshing the playground samples, adding 
 
 As we improve the playground and the website, [we welcome feedback and pull requests on GitHub](https://github.com/microsoft/TypeScript-Website/)!
 
-
-{% endraw %}

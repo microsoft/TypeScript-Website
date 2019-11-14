@@ -3,7 +3,7 @@ title: Type Compatibility
 layout: docs
 permalink: /docs/handbook/type-compatibility.html
 ---
-{% raw %}# Introduction
+# Introduction
 
 Type compatibility in TypeScript is based on structural subtyping.
 Structural typing is a way of relating types based solely on their members.
@@ -271,5 +271,3 @@ For practical purposes, type compatibility is dictated by assignment compatibili
 
 For more information, see the [TypeScript spec](https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md).
 
-
-{% endraw %}

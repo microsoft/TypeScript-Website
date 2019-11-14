@@ -1,4 +1,4 @@
-import { setupRedirects } from "../src/redirects/setupRedirects"
+import { setupRedirects } from "../../src/redirects/setupRedirects"
 import { createOldHandbookPages } from "./ingestion/createPagesForOldHandbook"
 import { createTSConfigReference } from "./ingestion/createTSConfigReference"
 

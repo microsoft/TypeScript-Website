@@ -6,14 +6,36 @@ module.exports = {
   pathPrefix: `/v2`,
 
   plugins: [
+    // SCSS provides inheritance for CSS and which pays the price for the dep
+    "gatsby-plugin-sass",
+    // PWA metadata
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `TypeScript Documentation`,
+        short_name: `TS Docs`,
+        start_url: `/`,
+        background_color: `white`,
+        theme_color: `#3178C6`,
+        display: `standalone`,
+        icon: `static/icons/ts-logo-512.png`
+      },
+    },
+
+    // Support for downloading or pre-caching pages, needed for PWAs
+    "gatsby-plugin-offline",
     // Creates TS types for queries during `gatsby dev`
-    "gatsby-plugin-codegen",
+    {
+      resolve: "gatsby-plugin-codegen",
+      options: {
+        // Ensure it works in a monorepo
+        localSchemaFile: __dirname + "/schema.json"
+      }
+    },
     // Support ts/tsx files in src
     "gatsby-plugin-typescript",
-    
     // Let's you edit the head from inside a react tree
     "gatsby-plugin-react-helmet",
-
     // Grabs the old handbook markdown files
     {
       resolve: `gatsby-source-filesystem`,
@@ -47,11 +69,16 @@ module.exports = {
               wrapperStyle: `margin-bottom: 1.0725rem`,
             },
           },
-          `gatsby-remark-prismjs`,
-          `gatsby-remark-copy-linked-files`,
-          `gatsby-remark-smartypants`,
+          "gatsby-remark-autolink-headers",
+          "gatsby-remark-prismjs",
+          "gatsby-remark-copy-linked-files",
+          "gatsby-remark-smartypants",
         ],
       },
     },
+    // Finds auto-generated <a>s and converts them
+    // into Gatsby Links at build time, speeding up
+    // linking between pages.
+    "gatsby-plugin-catch-links",
   ],
 }

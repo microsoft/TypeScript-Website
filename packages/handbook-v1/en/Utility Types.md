@@ -3,7 +3,7 @@ title: Utility Types
 layout: docs
 permalink: /docs/handbook/utility-types.html
 ---
-{% raw %}# Introduction
+# Introduction
 
 TypeScript provides several utility types to facilitate common type transformations. These utilities are available globally.
 
@@ -263,5 +263,3 @@ In the example above, the `methods` object in the argument to `makeObject` has a
 
 The `ThisType<T>` marker interface is simply an empty interface declared in `lib.d.ts`. Beyond being recognized in the contextual type of an object literal, the interface acts like any empty interface.
 
-
-{% endraw %}

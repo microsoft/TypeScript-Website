@@ -3,7 +3,7 @@ title: TypeScript 3.0
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-3-0.html
 ---
-{% raw %}## Project References
+## Project References
 
 TypeScript 3.0 introduces a new concept of project references. Project references allow TypeScript projects to depend on other TypeScript projects - specifically, allowing `tsconfig.json` files to reference other `tsconfig.json` files. Specifying these dependencies makes it easier to split your code into smaller projects, since it gives TypeScript (and tools around it) a way to understand build ordering and output structure.
 
@@ -351,5 +351,3 @@ Using `/// <reference lib="es2017.string" />` to one of the files in a compilati
 "foo".padStart(4);
 ```
 
-
-{% endraw %}

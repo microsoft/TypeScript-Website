@@ -3,7 +3,7 @@ title: TypeScript 3.5
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-3-5.html
 ---
-{% raw %}## Speed improvements
+## Speed improvements
 
 TypeScript 3.5 introduces several optimizations around type-checking and incremental builds.
 
@@ -232,5 +232,3 @@ const GenericComponent2 = myHoc(GenericComponent);
 
 To learn more, [check out the original pull request on GitHub](https://github.com/microsoft/TypeScript/pull/31116).
 
-
-{% endraw %}

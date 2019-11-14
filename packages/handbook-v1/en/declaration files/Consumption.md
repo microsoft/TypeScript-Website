@@ -3,7 +3,7 @@ title: Consumption
 layout: docs
 permalink: /docs/handbook/declaration-files/consumption.html
 ---
-{% raw %}In TypeScript 2.0, it has become significantly easier to consume declaration files, in acquiring, using, and finding them.
+In TypeScript 2.0, it has become significantly easier to consume declaration files, in acquiring, using, and finding them.
 This page details exactly how to do all three.
 
 # Downloading
@@ -44,5 +44,3 @@ For the most part, type declaration packages should always have the same name as
 > Note: if the declaration file you are searching for is not present, you can always contribute one back and help out the next developer looking for it.
 > Please see the DefinitelyTyped [contribution guidelines page](http://definitelytyped.org/guides/contributing.html) for details.
 
-
-{% endraw %}
