@@ -341,7 +341,7 @@
     // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cbdff3', endColorstr='#005a96', GradientType=0 );
 }
 
-.skyline-img {
+%skyline-img {
   position:absolute;
   top:0;
   bottom:0;
@@ -352,16 +352,17 @@
   background-size: 150em 32.589em;
   background-repeat: no-repeat;
   background-position: 50% 0;
+  pointer-events: none;
 }
 
 .skyline-img-background {
-    @extend .skyline-img;
+    @extend %skyline-img;
     background-image: url('../images/bg_blueprint_2.svg');
     background-repeat: repeat-x;
 }
 
 .skyline-img-foreground {
-    @extend .skyline-img;
+    @extend %skyline-img;
     background-image: url('../images/foreground_bluprint.svg');
 }
 
