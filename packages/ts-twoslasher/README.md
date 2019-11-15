@@ -1,16 +1,23 @@
 # TypeScript TwoSlasher
 
 A twisted flavour of TypeScript code for writing code samples and letting TypeScript do more of the work inspired
-by the fourslash test system in the TypeScript Compiler. Used as a pre-parser before showing code samples inside
-the TypeScript website.
-
+by the [fourslash test system](https://github.com/orta/typescript-notes/blob/master/systems/testing/fourslash.md) in 
+the TypeScript Compiler. Used as a pre-parser before showing code samples inside the TypeScript website and to create 
+a standard way for us to create single file references.
 
 ### Features 
 
 - Pulling out accurate errors from a TypeScript code sample
 - Declaratively symbols you want to show
-- Handling transpilation
+- Handling transpilation and replacing the sample content
 - Splitting a code sample to only show a subset
+
+### TODO
+
+- Creating a playground link for the code
+- Support creating multiple files to correctly show import samples
+
+Note: This is not shipped to npm yet.
 
 <!-- AUTO-GENERATED-CONTENT:START (FIXTURES) -->
 ### API
