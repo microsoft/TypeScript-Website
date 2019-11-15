@@ -176,30 +176,6 @@ Turns to:
 }
 ```
 
-#### `example.ts`
-
-```.ts
-// @noImplicitAny: false
-function fn(s) {
-  // No error?
-  console.log(s.subtr(3))
-}
-fn(42);
-```
-
-Turns to:
-
-```json
-{
-  "code": "function fn(s) {\n  // No error?\n  console.log(s.subtr(3))\n}\nfn(42);\n",
-  "extension": "ts",
-  "highlights": [],
-  "queries": [],
-  "errors": [],
-  "playgroundURL": ""
-}
-```
-
 #### `highlighting.ts`
 
 ```.ts
