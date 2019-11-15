@@ -135,7 +135,7 @@ const topLevelTSConfigOptions = [
 ]
 
 
-writeJSON('tsconfigOpts.json', [...topLevelTSConfigOptions, ...filteredOptions])
+writeJSON('tsconfigOpts.json', { options: [...topLevelTSConfigOptions, ...filteredOptions]})
 
 // Improve the typing for the rules
 writeString(
