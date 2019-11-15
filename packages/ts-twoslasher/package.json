@@ -1,0 +1,46 @@
+{
+  "name": "ts-fourslasher",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "TypeScript team",
+  "main": "dist/index.js",
+  "module": "dist/ts-fourslasher.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build; yarn readme",
+    "readme": "yarn md-magic README.md --config ./scripts/inline-results.js",
+    "test": "tsdx test",
+    "lint": "tsdx lint"
+  },
+  "peerDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.23",
+    "@types/prettier": "^1.18.3",
+    "husky": "^3.0.9",
+    "jest-file-snapshot": "^0.3.8",
+    "markdown-magic": "^1.0.0",
+    "tsdx": "^0.11.0",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.2"
+  },
+  "jest": {
+    "watchPathIgnorePatterns": [
+      "test/results"
+    ]
+  }
+}

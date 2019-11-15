@@ -1,0 +1,2 @@
+let foo = "hello there!";
+    ^?

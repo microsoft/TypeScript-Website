@@ -1,0 +1,7 @@
+{
+  "code": "let foo = \"hello there!\";\n",
+  "extension": ".ts",
+  "highlights": [],
+  "queries": [{ "kind": "query", "offset": 4, "position": 4 }],
+  "errors": []
+}
