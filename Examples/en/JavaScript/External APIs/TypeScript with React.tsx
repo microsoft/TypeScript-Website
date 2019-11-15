@@ -36,7 +36,7 @@ interface DateProps { iso8601Date: string, message: string }
 // DateProps interface, and renders the date.
 
 const DateComponent: FauxactFunctionComponent<DateProps> =
-  (props) => <time datetime={props.iso8601Date}>{props.message}</time>
+  (props) => <time dateTime={props.iso8601Date}>{props.message}</time>
 
 // This creates a function which is generic with a Props
 // variable which has to be an object. The component function
@@ -77,7 +77,7 @@ export interface Props {
 const PrintName: React.FC<Props> = (props) => {
   return (
     <div>
-      <p style={{ fontWeight: props.priority ? "bold" : "normal" }}>OK</p>
+      <p style={{ fontWeight: props.priority ? "bold" : "normal" }}>{props.name}</p>
     </div>
   )
 }
