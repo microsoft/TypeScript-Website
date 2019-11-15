@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from 'fs';
 import { join, extname, parse } from 'path';
 import { toMatchFile } from 'jest-file-snapshot';
-import { fourslasher } from '../src/index';
+import { twoslasher } from '../src/index';
 import { format } from 'prettier';
 
 expect.extend({ toMatchFile });
@@ -22,7 +22,7 @@ describe('with fixtures', () => {
 
       const file = readFileSync(fixture, 'utf8');
 
-      const fourslashed = fourslasher(file, extname(fixtureName));
+      const fourslashed = twoslasher(file, extname(fixtureName).substr(1));
       const jsonString = format(JSON.stringify(fourslashed), {
         parser: 'json',
       });

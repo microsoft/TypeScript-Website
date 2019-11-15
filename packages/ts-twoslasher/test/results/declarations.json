@@ -1,7 +1,8 @@
 {
-  "code": "",
-  "extension": ".ts",
+  "code": "/**\r\n * Gets the length of a string\r\n * @param value a string\r\n */\r\nexport declare function getStringLength(value: string): number;\r\n",
+  "extension": "ts",
   "highlights": [],
   "queries": [],
-  "errors": []
+  "errors": [],
+  "playgroundURL": ""
 }

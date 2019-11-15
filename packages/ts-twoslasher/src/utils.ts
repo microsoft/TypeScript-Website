@@ -17,3 +17,16 @@ export function textToAnchorName(text: string) {
 export function fileNameToUrlName(s: string) {
   return s.replace(/ /g, "-").replace(/#/g, "sharp").toLowerCase();
 }
+
+
+export function parsePrimitive(value: string, type: string): any {
+  switch (type) {
+    case 'number':
+      return +value;
+    case 'string':
+      return value;
+    case 'boolean':
+      return value.toLowerCase() === 'true' || value.length === 0;
+  }
+  throw new Error(`Unknown primitive type ${type}`);
+}

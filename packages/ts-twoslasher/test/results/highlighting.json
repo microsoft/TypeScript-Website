@@ -1,9 +1,10 @@
 {
   "code": "function greet(person: string, date: Date) {\n  console.log(`Hello ${person}, today is ${date.toDateString()}!`);\n}\n\ngreet(\"Maddison\", new Date());\n",
-  "extension": ".ts",
+  "extension": "ts",
   "highlights": [
-    { "kind": "highlight", "position": 132, "length": 10, "description": "" }
+    { "kind": "highlight", "position": 134, "length": 10, "description": "" }
   ],
   "queries": [],
-  "errors": []
+  "errors": [],
+  "playgroundURL": ""
 }

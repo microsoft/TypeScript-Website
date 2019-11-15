@@ -1,6 +1,10 @@
 import fs from 'fs';
-import ts from 'typescript';
+import ts  from 'typescript';
 import * as utils from './utils';
+import debug from "debug"
+import { parsePrimitive } from './utils';
+
+const log = debug("twoslasher")
 
 // Hacking in some internal stuff
 declare module 'typescript' {
@@ -13,7 +17,7 @@ declare module 'typescript' {
   const optionDeclarations: Array<Option>;
 }
 
-const {  escapeHtml } = utils;
+const { escapeHtml } = utils;
 
 function cleanMarkdownEscaped(code: string) {
   code = code.replace(/¨D/g, '$');
@@ -29,6 +33,7 @@ function createLanguageServiceHost(
     skipLibCheck: true,
     strict: true,
   };
+
   const servicesHost: ReturnType<typeof createLanguageServiceHost> = {
     getScriptFileNames: () => [ref.fileName!],
     getScriptVersion: fileName =>
@@ -84,15 +89,16 @@ function filterHighlightLines(
       const start = line.indexOf('^');
       const position = contentOffset + start;
       queries.push({ kind: 'query', offset: start, position });
+      log(`Removing line ${i} for having a query`)
       codeLines.splice(i, 1);
       i--;
-
     } else if (highlightMatch !== null) {
       const start = line.indexOf('^');
       const length = line.lastIndexOf('^') - start + 1;
       const position = contentOffset + start;
       const description = highlightMatch[1] ? highlightMatch[1].trim() : '';
       highlights.push({ kind: 'highlight', position, length, description });
+      log(`Removing line ${i} for having a highlight`)
       codeLines.splice(i, 1);
       i--;
     } else {
@@ -103,19 +109,9 @@ function filterHighlightLines(
   return { highlights, queries };
 }
 
-// function filterOut<T>(arr: T[], predicate: (el: T) => boolean) {
-//   const result: T[] = [];
-//   for (let i = 0; i < arr.length; i++) {
-//     if (predicate(arr[i])) {
-//       result.push(arr.splice(i, 1)[0]);
-//       i--;
-//     }
-//   }
-//   return result;
-// }
-
 function setOption(name: string, value: string, opts: ts.CompilerOptions) {
-  console.log(`Setting ${name} to ${value}`);
+  log(`Setting ${name} to ${value}`);
+
   for (const opt of ts.optionDeclarations) {
     if (opt.name.toLowerCase() === name.toLowerCase()) {
       switch (opt.type) {
@@ -133,25 +129,25 @@ function setOption(name: string, value: string, opts: ts.CompilerOptions) {
 
         default:
           opts[opt.name] = opt.type.get(value.toLowerCase());
-          console.log(`Set ${opt.name} to ${opts[opt.name]}`);
+          log(`Set ${opt.name} to ${opts[opt.name]}`);
           if (opts[opt.name] === undefined) {
             const keys = Array.from(opt.type.keys() as any);
-            console.error(
-              `Invalid value ${value} for ${
-                opt.name
-              }. Allowed values: ${keys.join(',')}`
-            );
+            throw new Error(  `Invalid value ${value} for ${opt.name}. Allowed values: ${keys.join(',')}`)
           }
           break;
       }
       return;
     }
   }
-  console.error(`No compiler setting named ${name} exists!`);
+
+  throw new Error(`No compiler setting named ${name} exists!`)
 }
 
 const booleanConfigRegexp = /^\/\/\s?@(\w+)$/;
-const valuedConfigRegexp = /^\/\/\s?@(\w+):\s?(\w+)$/;
+// https://regex101.com/r/bSjhaM/1
+
+const valuedConfigRegexp = /^\/\/\s?@(\w+):\s?([a-zA-Z0-9.]+)/;
+
 function filterCompilerOptions(
   codeLines: string[],
   defaultCompilerOptions: ts.CompilerOptions
@@ -173,14 +169,20 @@ function filterCompilerOptions(
   return options;
 }
 
+/** Available inline flags which are not compiler flags */
 interface ExampleOptions {
+  /** Let's the sample suppress all error diagnostics */
   noErrors: false;
+  /** Shows the JS equivalent of the TypeScript code instead */
   showEmit: false;
+  /** When mixed with showEmit, lets you choose the file to present instead of the JS */
+  showEmittedFile: string
 }
 
 const defaultHandbookOptions: ExampleOptions = {
   noErrors: false,
   showEmit: false,
+  showEmittedFile: "index.js"
 };
 
 function filterHandbookOptions(
@@ -206,13 +208,53 @@ function filterHandbookOptions(
   return options;
 }
 
+
+interface TwoSlashReturn {
+  /** The output code, could be TypeScript, but could also be a JS/JSON/d.ts */
+  code: string;
+
+  /** The new extension type for the code, potentially changed if they've requested emitted results */
+  extension: string;
+
+  /** Sample requests to highlight a particular part of the code */
+  highlights: {
+    kind: 'highlight';
+    position: number;
+    length: number;
+    description: string;
+  }[];
+
+  /** Requests to use the LSP to get info for a particular symbol in the source */
+  queries: {
+    kind: 'query'; 
+    position: number; 
+    offset: number
+  }[]
+
+  /** Diagnostic error messages which came up when creating the program */
+  errors: { 
+    renderedMessage: string; 
+    id: string; 
+    category: 0 | 1 | 2 | 3;
+    code: number;
+    start: number | undefined
+    length: number | undefined
+  }[];
+
+  /** The URL for this sample in the playground */
+  playgroundURL: string
+}
+
 /**
- * Converts code into 
+ * Runs the checker against a TypeScript/JavaScript code sample returning potentially
+ * difference code, and a set of annotations around how it works.
  *
  * @param code The fourslash code
  * @param extension For example: ts, tsx, typescript, javascript, js
  */
-export function fourslasher(code: string, extension: string) {
+export function twoslasher(code: string, extension: string): TwoSlashReturn {
+  log(`Looking at ${code}`)
+
   const sampleFileRef: SampleRef = {
     fileName: undefined,
     content: '',
@@ -234,6 +276,7 @@ export function fourslasher(code: string, extension: string) {
 
   code = cleanMarkdownEscaped(code);
 
+  // This is mutated as the below functions pull out info
   const codeLines = code.split(/\r\n?|\n/g);
 
   const handbookOptions = filterHandbookOptions(codeLines);
@@ -246,7 +289,7 @@ export function fourslasher(code: string, extension: string) {
   const { highlights, queries } = filterHighlightLines(codeLines);
   code = codeLines.join('\n');
 
-  sampleFileRef.fileName = 'input.' + extension;
+  sampleFileRef.fileName = 'index.' + extension;
   sampleFileRef.content = code;
   sampleFileRef.versionNumber++;
 
@@ -266,27 +309,36 @@ export function fourslasher(code: string, extension: string) {
     errs.push(...ls.getSyntacticDiagnostics(sampleFileRef.fileName));
   }
 
-  const errors: Array<ts.Diagnostic & {
-    renderedMessage: string;
-    id: string;
-  }> = [];
+  const errors: TwoSlashReturn["errors"] = [];
 
-  for (const err of errs.filter(
-    d => d.file && d.file.fileName === sampleFileRef.fileName
-  )) {
-    const renderedMessage = escapeHtml(
-      ts.flattenDiagnosticMessageText(err.messageText, '\n')
-    );
+  const relevantErrors = errs.filter(d => d.file && d.file.fileName === sampleFileRef.fileName)
+  for (const err of relevantErrors) {
+    const renderedMessage = escapeHtml(ts.flattenDiagnosticMessageText(err.messageText, '\n'));
     const id = `err-${err.code}-${err.start}-${err.length}`;
     errors.push({
-      ...err,
+      category: err.category,
+      code: err.code,
+      length: err.length,
+      start: err.start,
       renderedMessage,
       id,
     });
   }
 
   if (handbookOptions.showEmit) {
-    code = ls.getEmitOutput(sampleFileRef.fileName).outputFiles[0].text;
+    const output = ls.getEmitOutput(sampleFileRef.fileName)
+    const file = output.outputFiles.find(o => o.name === handbookOptions.showEmittedFile)
+    if (!file) {
+      const allFiles = output.outputFiles.map(o => o.name).join(", ")
+      throw new Error(`Cannot find the file ${handbookOptions.showEmittedFile} - in ${allFiles}`)
+    }
+
+    code = file.text
+    
+    // Remove highlights and queries, because it won't work across transpiles,
+    // though I guess source-mapping could handle the transition
+    highlights.length = 0
+    queries.length = 0
   }
 
   // const url = `https://www.typescriptlang.org/play/#src=${encodeURIComponent(code)}`;
@@ -294,23 +346,14 @@ export function fourslasher(code: string, extension: string) {
   //     parts.push(`<a class="playground-link" href="${url}">Try</a>`)
   // }
 
+  const splitCode = code.split("//cut").pop()!
+
   return {
-    code: code,
+    code: splitCode,
     extension: extension,
     highlights,
     queries,
-    errors
+    errors,
+    playgroundURL: ""
   };
-}
-
-function parsePrimitive(value: string, type: string): any {
-  switch (type) {
-    case 'number':
-      return +value;
-    case 'string':
-      return value;
-    case 'boolean':
-      return value.toLowerCase() === 'true' || value.length === 0;
-  }
-  throw new Error(`Unknown primitive type ${type}`);
 }

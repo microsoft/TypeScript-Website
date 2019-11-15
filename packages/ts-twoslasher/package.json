@@ -1,10 +1,10 @@
 {
-  "name": "ts-fourslasher",
+  "name": "ts-twoslasher",
   "version": "0.1.0",
   "license": "MIT",
   "author": "TypeScript team",
   "main": "dist/index.js",
-  "module": "dist/ts-fourslasher.esm.js",
+  "module": "dist/ts-twoslasher.esm.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist"
@@ -42,5 +42,8 @@
     "watchPathIgnorePatterns": [
       "test/results"
     ]
+  },
+  "dependencies": {
+    "debug": "^4.1.1"
   }
 }

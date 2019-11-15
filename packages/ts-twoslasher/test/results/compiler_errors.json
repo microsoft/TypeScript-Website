@@ -1,0 +1,17 @@
+{
+  "code": "\nfunction fn(s) {\n  console.log(s.subtr(3))\n}\n\nfn(42);\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [],
+  "errors": [
+    {
+      "category": 1,
+      "code": 7006,
+      "length": 1,
+      "start": 13,
+      "renderedMessage": "Parameter 's' implicitly has an 'any' type.",
+      "id": "err-7006-13-1"
+    }
+  ],
+  "playgroundURL": ""
+}

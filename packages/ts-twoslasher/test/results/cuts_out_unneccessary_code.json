@@ -1,0 +1,12 @@
+{
+  "code": "\nfunction createLabel<T extends number | string>(idOrName: T): NameOrId<T> {\n    throw \"unimplemented\"\n}\n\nlet a = createLabel(\"typescript\");\n\nlet b = createLabel(2.8);\n\nlet c = createLabel(Math.random() ? \"hello\" : 42);\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [
+    { "kind": "query", "offset": 4, "position": 347 },
+    { "kind": "query", "offset": 4, "position": 383 },
+    { "kind": "query", "offset": 4, "position": 410 }
+  ],
+  "errors": [],
+  "playgroundURL": ""
+}

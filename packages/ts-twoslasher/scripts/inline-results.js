@@ -1,19 +1,51 @@
-const { readdirSync, readFileSync }  = require('fs')
-const { join, parse } = require('path')
+const { readdirSync, readFileSync } = require('fs');
+const { join, parse } = require('path');
+const ts = require('typescript');
 
-const fixturesFolder = join(__dirname, "../", 'test', 'fixtures');
-const resultsFolder = join(__dirname, "../", 'test', 'results');
+const fixturesFolder = join(__dirname, '../', 'test', 'fixtures');
+const resultsFolder = join(__dirname, '../', 'test', 'results');
 
-const wrapCode = (code, ext) => "```" + ext + "\n" + code  + "```" 
+const wrapCode = (code, ext) => '```' + ext + '\n' + code + '```';
 
 module.exports = {
   transforms: {
     /* Match <!-- AUTO-GENERATED-CONTENT:START (FIXTURES) --> */
     FIXTURES(content, options) {
-      const header = "### Examples"
+      const mds = []
+
+      const fileToParse = join(__dirname, '../', 'src', 'index.ts')
+      let program = ts.createProgram([fileToParse], {});
+      program.getTypeChecker({});
+
+      const sourceFile = program.getSourceFile(fileToParse)
+      let optionsInterface, mainExport
+
+      ts.forEachChild(sourceFile, node => {
+        if (node.kind === ts.SyntaxKind.InterfaceDeclaration && node.symbol.escapedName === "ExampleOptions") {
+            optionsInterface = node
+        }
+
+        if (node.kind === ts.SyntaxKind.FunctionDeclaration && node.symbol.escapedName === "twoslasher") {
+          mainExport = node
+          mainExport.body = null
+        }
+      });
+
+      const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
+      const twoslasher = printer.printNode(ts.EmitHint.Unspecified, mainExport, sourceFile) + "\n";
+      const optionsObj = printer.printNode(ts.EmitHint.Unspecified, optionsInterface, sourceFile) + "\n";
       
-      const examples = []
-      
+      mds.push('### API');
+      mds.push("The API is one main exported function:")
+      mds.push(wrapCode(twoslasher, "ts"))
+
+      mds.push("The majority of the API lives inline inside the code, where you can do special commands. These are the config variables available")
+      mds.push(wrapCode(optionsObj, "ts"))
+
+      mds.push("As well as all compiler API options are available, which you can see in the examples below.")
+
+      mds.push('### Examples');
+
       readdirSync(fixturesFolder).forEach(fixtureName => {
         const fixture = join(fixturesFolder, fixtureName);
         const resultName = parse(fixtureName).name + '.json';
@@ -22,16 +54,16 @@ module.exports = {
         const input = readFileSync(fixture, 'utf8');
         const output = readFileSync(result, 'utf8');
 
-        examples.push(`#### \`${fixtureName}\``)
-        examples.push(wrapCode(input, parse(fixtureName).ext))
-        examples.push("Turns to:")
-        examples.push(wrapCode(output, "json"))
-      })
-      
-      return `${header}\n\n${examples.join("\n\n")}`
-    }
+        mds.push(`#### \`${fixtureName}\``);
+        mds.push(wrapCode(input, parse(fixtureName).ext));
+        mds.push('Turns to:');
+        mds.push(wrapCode(output, 'json'));
+      });
+
+      return mds.join('\n\n');
+    },
   },
-  callback: function () {
-    console.log('done')
-  }
-}
+  callback: function() {
+    console.log('done');
+  },
+};
