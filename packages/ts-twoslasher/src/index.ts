@@ -3,6 +3,9 @@ import ts  from 'typescript';
 import * as utils from './utils';
 import debug from "debug"
 import { parsePrimitive } from './utils';
+import {compressToEncodedURIComponent} from "lz-string"
+import { extname } from 'path';
+
 
 const log = debug("twoslasher")
 
@@ -343,6 +346,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     });
   }
 
+  // Handle emitting files
   if (handbookOptions.showEmit) {
     const output = ls.getEmitOutput(sampleFileRef.fileName)
     const file = output.outputFiles.find(o => o.name === handbookOptions.showEmittedFile)
@@ -352,6 +356,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     }
 
     code = file.text
+    extension = extname(file.name)
     
     // Remove highlights and queries, because it won't work across transpiles,
     // though I guess source-mapping could handle the transition
@@ -359,10 +364,8 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     queries.length = 0
   }
 
-  // const url = `https://www.typescriptlang.org/play/#src=${encodeURIComponent(code)}`;
-  // if (codeLines.length >= 4 + codeLines.indexOf("//cut")) {
-  //     parts.push(`<a class="playground-link" href="${url}">Try</a>`)
-  // }
+  // TODO: compiler options
+  const playgroundURL = `https://www.typescriptlang.org/play/#code/${compressToEncodedURIComponent(code)}`;
 
   // Doing it this late allows for it to 
   const splitCode = code.split("//cut").pop()!
@@ -373,6 +376,6 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     highlights,
     queries,
     errors,
-    playgroundURL: ""
+    playgroundURL
   };
 }

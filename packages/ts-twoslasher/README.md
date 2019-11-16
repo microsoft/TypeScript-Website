@@ -55,9 +55,20 @@ fn(42);
 
 Turns to:
 
+```ts
+
+function fn(s) {
+  console.log(s.subtr(3))
+}
+
+fn(42);
+```
+
+With:
+
 ```json
 {
-  "code": "\nfunction fn(s) {\n  console.log(s.subtr(3))\n}\n\nfn(42);\n",
+  "code": "See above",
   "extension": "ts",
   "highlights": [],
   "queries": [],
@@ -71,7 +82,7 @@ Turns to:
       "id": "err-7006-13-1"
     }
   ],
-  "playgroundURL": ""
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/FAMwrgdgxgLglgewgAhBAFAZwJTIN7DLJRKYIA2ApgHTkIDmW1mYARjAE7oDM22wAX2CgMAFgBM2ANzAgA"
 }
 ```
 
@@ -91,14 +102,26 @@ fn(42);
 
 Turns to:
 
+```ts
+
+// This will not throw because of the noImplicitAny
+function fn(s) {
+  console.log(s.subtr(3))
+}
+
+fn(42);
+```
+
+With:
+
 ```json
 {
-  "code": "\n// This will not throw because of the noImplicitAny\nfunction fn(s) {\n  console.log(s.subtr(3))\n}\n\nfn(42);\n",
+  "code": "See above",
   "extension": "ts",
   "highlights": [],
   "queries": [],
   "errors": [],
-  "playgroundURL": ""
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/FAehAIBUAsEsGdwHdYBtXgHYHsAu5doAnbJcAIwFMBjAQwFd5LxsAzA6ZnASQFsAHVLGqxcAQUwBPYK3qZquWNkzhWmABTwAlOADewcOGrL42VJQB0qbAHNNF+PXK4i6gMxatwAL7AZGgBYAJi0AbmAgA"
 }
 ```
 
@@ -127,18 +150,45 @@ let c = createLabel(Math.random() ? "hello" : 42);
 
 Turns to:
 
+```ts
+
+function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {
+    throw "unimplemented"
+}
+
+let a = createLabel("typescript");
+
+let b = createLabel(2.8);
+
+let c = createLabel(Math.random() ? "hello" : 42);
+```
+
+With:
+
 ```json
 {
-  "code": "\nfunction createLabel<T extends number | string>(idOrName: T): NameOrId<T> {\n    throw \"unimplemented\"\n}\n\nlet a = createLabel(\"typescript\");\n\nlet b = createLabel(2.8);\n\nlet c = createLabel(Math.random() ? \"hello\" : 42);\n",
+  "code": "See above",
   "extension": "ts",
   "highlights": [],
   "queries": [
-    { "kind": "query", "offset": 4, "position": 347 },
-    { "kind": "query", "offset": 4, "position": 383 },
-    { "kind": "query", "offset": 4, "position": 410 }
+    {
+      "kind": "query",
+      "offset": 4,
+      "position": 347
+    },
+    {
+      "kind": "query",
+      "offset": 4,
+      "position": 383
+    },
+    {
+      "kind": "query",
+      "offset": 4,
+      "position": 410
+    }
   ],
   "errors": [],
-  "playgroundURL": ""
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/JYOwLgpgTgZghgYwgAgJIBMAycBGEA2yA3ssOgFzIgCuAtnlADTID0AVMgM4D2tKMwAuk7I2LZAF8AUKEixEKAHJw+2PIRIgVESpzBRQAc2btk3MAAtoyAUJFjJUsAE8ADku0B5KBgA8AFWQIAA9IEGEqOgZkAB8ufSMAPmQAXmRAkLCImnprAH40LFwCZEplVWL8AG4pFnF-C2ARBF4+cC4Lbmp8dCpzZDxSEAR8anQIdClalgRqMCkYamGwYG4QZAQoCDhINQIAoNCIcJEc6Li9AxBDRIAKMm9ynXSASjKvH3QA5KIpZH-kJYoNwAO7IABES2AtFc+AgbUg6HBUmkUjhYGQcFSGy2Owge3wt3BLncnE2wFcYHBLxqaIgGJw2M2212lVuACYAHQADhpU3RGyZuNZ6luAFkdhZOVA4OFeLcXsgCuCrPh8NxwaVkAAWdl8oA"
 }
 ```
 
@@ -160,14 +210,24 @@ export function getStringLength(value: string) {
 
 Turns to:
 
+```ts
+/**
+ * Gets the length of a string
+ * @param value a string
+ */
+export declare function getStringLength(value: string): number;
+```
+
+With:
+
 ```json
 {
-  "code": "/**\r\n * Gets the length of a string\r\n * @param value a string\r\n */\r\nexport declare function getStringLength(value: string): number;\r\n",
+  "code": "See above",
   "extension": "ts",
   "highlights": [],
   "queries": [],
   "errors": [],
-  "playgroundURL": ""
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PQKhFgCgAIWhxApgFwM7WQC0dANogOwHMtoB7AM2gENpVkAnAS2KlmgAEAHah6gW2gA3argCuOWvWasYIYFEQAPLmQbJoAE0QBjXLxwUxBHciZkC0IigDKjFkQAyhEpgAUI8YgBcde8QBKXwIxfgAjRAYAbiggA"
 }
 ```
 
@@ -184,16 +244,31 @@ greet("Maddison", new Date());
 
 Turns to:
 
+```ts
+function greet(person: string, date: Date) {
+  console.log(`Hello ${person}, today is ${date.toDateString()}!`);
+}
+
+greet("Maddison", new Date());
+```
+
+With:
+
 ```json
 {
-  "code": "function greet(person: string, date: Date) {\n  console.log(`Hello ${person}, today is ${date.toDateString()}!`);\n}\n\ngreet(\"Maddison\", new Date());\n",
+  "code": "See above",
   "extension": "ts",
   "highlights": [
-    { "kind": "highlight", "position": 134, "length": 10, "description": "" }
+    {
+      "kind": "highlight",
+      "position": 134,
+      "length": 10,
+      "description": ""
+    }
   ],
   "queries": [],
   "errors": [],
-  "playgroundURL": ""
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/GYVwdgxgLglg9mABAcwE4FN1QBQAd2oDOCAXIoVKjGMgDSIAmAhlOmQCIvoCUiA3gChEiCAmIAbdADpxcZNgAGACXTjZiACR98RBAF96UOMwCeiGIU19mrKUc6sAypWrzuegIQLuAbgF6BATRMHAAiAFkmBgYLBFD6MHQAd0QHdGxuXwEgA"
 }
 ```
 
@@ -206,14 +281,26 @@ let foo = "hello there!";
 
 Turns to:
 
+```ts
+let foo = "hello there!";
+```
+
+With:
+
 ```json
 {
-  "code": "let foo = \"hello there!\";\n",
+  "code": "See above",
   "extension": "ts",
   "highlights": [],
-  "queries": [{ "kind": "query", "offset": 4, "position": 4 }],
+  "queries": [
+    {
+      "kind": "query",
+      "offset": 4,
+      "position": 4
+    }
+  ],
   "errors": [],
-  "playgroundURL": ""
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/DYUwLgBAZg9jEF4ICIAWJjHmdAnEAhMgNwBQQA"
 }
 ```
 
@@ -234,14 +321,27 @@ export function fn(arr: number[]) {
 
 Turns to:
 
+```ts
+"use strict";
+// --importHelpers on: Spread helper will be imported from 'tslib'
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+function fn(arr) {
+    var arr2 = tslib_1.__spread([1], arr);
+}
+exports.fn = fn;
+```
+
+With:
+
 ```json
 {
-  "code": "\"use strict\";\r\n// --importHelpers on: Spread helper will be imported from 'tslib'\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar tslib_1 = require(\"tslib\");\r\nfunction fn(arr) {\r\n    var arr2 = tslib_1.__spread([1], arr);\r\n}\r\nexports.fn = fn;\r\n",
+  "code": "See above",
   "extension": "ts",
   "highlights": [],
   "queries": [],
   "errors": [],
-  "playgroundURL": ""
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/EQVwzgpgBGAuBOBLAxrYBuAsAKAPS6gFpDEBbABwHt5YAJCAG3InjCkoDsAuKAZXPgQAhgBMoAC0bN4UAO6IGDKACNoZKjQhiAZvEqkoAclhgGiZYZwB5ZQCsIqAHQiI2xBwgAFPdNgBPAAoIAA8NEwAaKGAAfWiIMABZShEQBghgSIBvKAA3IQYQCB4EQqgAXwBKLGw8mRMzZWiARigAXihBAEcQREEA4HrzYCqcbRAOVEROKG0OAKF4eAqoTJwoddyFqAX4ACY2qEHGpsdYsAFhEQCAbSaAXUidkewynBCwsEdZg9nqoA"
 }
 ```
 

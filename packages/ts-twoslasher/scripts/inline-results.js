@@ -50,12 +50,18 @@ module.exports = {
         const result = join(resultsFolder, resultName);
 
         const input = readFileSync(fixture, 'utf8');
-        const output = readFileSync(result, 'utf8');
+        const output = JSON.parse(readFileSync(result, 'utf8'));
 
         mds.push(`#### \`${fixtureName}\``);
         mds.push(wrapCode(input, parse(fixtureName).ext));
         mds.push('Turns to:');
-        mds.push(wrapCode(output, 'json'));
+
+        mds.push(wrapCode(output.code, output.extension));
+        
+        mds.push('With:');
+
+        const codeless = { ...output, code: "See above" }
+        mds.push(wrapCode(JSON.stringify(codeless, null, "  ") + "\n", "json"));
       });
 
       mds.push('### API');
