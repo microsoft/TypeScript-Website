@@ -20,28 +20,15 @@ a standard way for us to create single file references.
 Note: This is not shipped to npm yet.
 
 <!-- AUTO-GENERATED-CONTENT:START (FIXTURES) -->
-### API
-
-The API is one main exported function:
-
-```ts
-/**
- * Runs the checker against a TypeScript/JavaScript code sample returning potentially
- * difference code, and a set of annotations around how it works.
- *
- * @param code The fourslash code
- * @param extension For example: ts, tsx, typescript, javascript, js
- */
-export function twoslasher(code: string, extension: string): TwoSlashReturn;
-```
-
-The majority of the API lives inline inside the code, where you can do special commands. These are the config variables available
+The markup API lives inline inside the code, where you can do special commands. These are the config variables available
 
 ```ts
 /** Available inline flags which are not compiler flags */
 interface ExampleOptions {
     /** Let's the sample suppress all error diagnostics */
     noErrors: false;
+    /** An array of TS error codes, which you write as space separated - this is so the tool can know about unexpected errors */
+    errors: number[];
     /** Shows the JS equivalent of the TypeScript code instead */
     showEmit: false;
     /** When mixed with showEmit, lets you choose the file to present instead of the JS */
@@ -57,6 +44,7 @@ As well as all compiler API options are available, which you can see in the exam
 
 ```.ts
 // @target: ES2015
+// @errors: 7006
 
 function fn(s) {
   console.log(s.subtr(3))
@@ -93,8 +81,8 @@ Turns to:
 // @noImplicitAny: false
 // @target: ES2015
 
+// This will not throw because of the noImplicitAny
 function fn(s) {
-  // No error?
   console.log(s.subtr(3))
 }
 
@@ -105,7 +93,7 @@ Turns to:
 
 ```json
 {
-  "code": "\nfunction fn(s) {\n  // No error?\n  console.log(s.subtr(3))\n}\n\nfn(42);\n",
+  "code": "\n// This will not throw because of the noImplicitAny\nfunction fn(s) {\n  console.log(s.subtr(3))\n}\n\nfn(42);\n",
   "extension": "ts",
   "highlights": [],
   "queries": [],
@@ -236,7 +224,9 @@ Turns to:
 // @target: ES5
 // @downleveliteration
 // @importhelpers
-// --importHelpers on: Spread helper is inserted imported from 'tslib'
+
+// --importHelpers on: Spread helper will be imported from 'tslib'
+
 export function fn(arr: number[]) {
   const arr2 = [1, ...arr];
 }
@@ -246,7 +236,7 @@ Turns to:
 
 ```json
 {
-  "code": "\"use strict\";\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar tslib_1 = require(\"tslib\");\r\n// --importHelpers on: Spread helper is inserted imported from 'tslib'\r\nfunction fn(arr) {\r\n    var arr2 = tslib_1.__spread([1], arr);\r\n}\r\nexports.fn = fn;\r\n",
+  "code": "\"use strict\";\r\n// --importHelpers on: Spread helper will be imported from 'tslib'\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar tslib_1 = require(\"tslib\");\r\nfunction fn(arr) {\r\n    var arr2 = tslib_1.__spread([1], arr);\r\n}\r\nexports.fn = fn;\r\n",
   "extension": "ts",
   "highlights": [],
   "queries": [],
@@ -254,11 +244,26 @@ Turns to:
   "playgroundURL": ""
 }
 ```
+
+### API
+
+The API is one main exported function:
+
+```ts
+/**
+ * Runs the checker against a TypeScript/JavaScript code sample returning potentially
+ * difference code, and a set of annotations around how it works.
+ *
+ * @param code The twoslash markup'd code
+ * @param extension For example: ts, tsx, typescript, javascript, js
+ */
+export function twoslasher(code: string, extension: string): TwoSlashReturn;
+```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
 ## Local Development
 
-Below is a list of commands you will probably find useful.
+Below is a list of commands you will probably find useful. You can get debug logs by running with the env var of `DEBUG="*"`.
 
 ### `npm start` or `yarn start`
 
@@ -268,7 +273,6 @@ Runs the project in development/watch mode. Your project will be rebuilt upon ch
 
 Bundles the package to the `dist` folder. The package is optimized and bundled with Rollup into multiple formats (CommonJS, UMD, and ES Module).
 
-
 ### `npm test` or `yarn test`
 
-Runs the test watcher (Jest) in an interactive mode. By default, runs tests related to files changed since the last commit.
+Runs the test watcher (Jest) in an interactive mode. By default, runs tests related to files changed since the last commit. 

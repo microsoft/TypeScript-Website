@@ -1,4 +1,4 @@
-const { readdirSync, readFileSync } = require('fs');
+const { readdirSync, readFileSync, lstatSync } = require('fs');
 const { join, parse } = require('path');
 const ts = require('typescript');
 
@@ -34,12 +34,8 @@ module.exports = {
       const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
       const twoslasher = printer.printNode(ts.EmitHint.Unspecified, mainExport, sourceFile) + "\n";
       const optionsObj = printer.printNode(ts.EmitHint.Unspecified, optionsInterface, sourceFile) + "\n";
-      
-      mds.push('### API');
-      mds.push("The API is one main exported function:")
-      mds.push(wrapCode(twoslasher, "ts"))
 
-      mds.push("The majority of the API lives inline inside the code, where you can do special commands. These are the config variables available")
+      mds.push("The markup API lives inline inside the code, where you can do special commands. These are the config variables available")
       mds.push(wrapCode(optionsObj, "ts"))
 
       mds.push("As well as all compiler API options are available, which you can see in the examples below.")
@@ -48,6 +44,8 @@ module.exports = {
 
       readdirSync(fixturesFolder).forEach(fixtureName => {
         const fixture = join(fixturesFolder, fixtureName);
+        if (lstatSync(fixture).isDirectory()) {  return; }
+
         const resultName = parse(fixtureName).name + '.json';
         const result = join(resultsFolder, resultName);
 
@@ -59,6 +57,10 @@ module.exports = {
         mds.push('Turns to:');
         mds.push(wrapCode(output, 'json'));
       });
+
+      mds.push('### API');
+      mds.push("The API is one main exported function:")
+      mds.push(wrapCode(twoslasher, "ts"))
 
       return mds.join('\n\n');
     },

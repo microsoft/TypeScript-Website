@@ -1,5 +1,5 @@
 {
-  "code": "\"use strict\";\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar tslib_1 = require(\"tslib\");\r\n// --importHelpers on: Spread helper is inserted imported from 'tslib'\r\nfunction fn(arr) {\r\n    var arr2 = tslib_1.__spread([1], arr);\r\n}\r\nexports.fn = fn;\r\n",
+  "code": "\"use strict\";\r\n// --importHelpers on: Spread helper will be imported from 'tslib'\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar tslib_1 = require(\"tslib\");\r\nfunction fn(arr) {\r\n    var arr2 = tslib_1.__spread([1], arr);\r\n}\r\nexports.fn = fn;\r\n",
   "extension": "ts",
   "highlights": [],
   "queries": [],

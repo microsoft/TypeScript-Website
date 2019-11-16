@@ -74,11 +74,11 @@ type HighlightPosition = {
   length: number;
   description: string;
 };
-function filterHighlightLines(
-  codeLines: string[]
-): { highlights: HighlightPosition[]; queries: QueryPosition[] } {
+
+function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosition[]; queries: QueryPosition[] } {
   const highlights: HighlightPosition[] = [];
   const queries: QueryPosition[] = [];
+
   let nextContentOffset = 0;
   let contentOffset = 0;
   for (let i = 0; i < codeLines.length; i++) {
@@ -140,18 +140,15 @@ function setOption(name: string, value: string, opts: ts.CompilerOptions) {
     }
   }
 
-  throw new Error(`No compiler setting named ${name} exists!`)
+  throw new Error(`No compiler setting named '${name}' exists!`)
 }
 
 const booleanConfigRegexp = /^\/\/\s?@(\w+)$/;
-// https://regex101.com/r/bSjhaM/1
 
-const valuedConfigRegexp = /^\/\/\s?@(\w+):\s?([a-zA-Z0-9.]+)/;
+// https://regex101.com/r/8B2Wwh/1
+const valuedConfigRegexp = /^\/\/\s?@(\w+):\s?(.+)$/;
 
-function filterCompilerOptions(
-  codeLines: string[],
-  defaultCompilerOptions: ts.CompilerOptions
-) {
+function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: ts.CompilerOptions) {
   const options = { ...defaultCompilerOptions };
   for (let i = 0; i < codeLines.length; ) {
     let match;
@@ -173,6 +170,8 @@ function filterCompilerOptions(
 interface ExampleOptions {
   /** Let's the sample suppress all error diagnostics */
   noErrors: false;
+  /** An array of TS error codes, which you write as space separated - this is so the tool can know about unexpected errors */
+  errors: number[]
   /** Shows the JS equivalent of the TypeScript code instead */
   showEmit: false;
   /** When mixed with showEmit, lets you choose the file to present instead of the JS */
@@ -180,31 +179,39 @@ interface ExampleOptions {
 }
 
 const defaultHandbookOptions: ExampleOptions = {
+  errors: [],
   noErrors: false,
   showEmit: false,
   showEmittedFile: "index.js"
 };
 
-function filterHandbookOptions(
-  codeLines: string[]
-): typeof defaultHandbookOptions {
+function filterHandbookOptions(codeLines: string[]): ExampleOptions {
   const options: any = { ...defaultHandbookOptions };
   for (let i = 0; i < codeLines.length; i++) {
     let match;
     if ((match = booleanConfigRegexp.exec(codeLines[i]))) {
       if (match[1] in options) {
         options[match[1]] = true;
+        log(`Setting options.${match[1]} to true`)
         codeLines.splice(i, 1);
         i--;
       }
     } else if ((match = valuedConfigRegexp.exec(codeLines[i]))) {
       if (match[1] in options) {
         options[match[1]] = match[2];
+        log(`Setting options.${match[1]} to ${match[2]}`)
         codeLines.splice(i, 1);
         i--;
       }
     }
   }
+
+  // Edge case the errors object to turn it into a string array
+  if ("errors" in options && typeof options.errors === "string") {
+    options.errors = options.errors.split(" ").map(Number)
+    log("Setting options.error to ", options.errors)
+  }
+
   return options;
 }
 
@@ -249,25 +256,24 @@ interface TwoSlashReturn {
  * Runs the checker against a TypeScript/JavaScript code sample returning potentially
  * difference code, and a set of annotations around how it works.
  *
- * @param code The fourslash code
+ * @param code The twoslash markup'd code
  * @param extension For example: ts, tsx, typescript, javascript, js
  */
 export function twoslasher(code: string, extension: string): TwoSlashReturn {
-  log(`Looking at ${code}`)
+  log(`\n\nLooking at code: \n\`\`\`\n${code}\n\`\`\`\n`)
 
   const sampleFileRef: SampleRef = {
     fileName: undefined,
     content: '',
     versionNumber: 0,
   };
+
   const lsHost = createLanguageServiceHost(sampleFileRef);
-  const caseSensitiveFilenames =
-    lsHost.useCaseSensitiveFileNames && lsHost.useCaseSensitiveFileNames();
-  const docRegistry = ts.createDocumentRegistry(
-    caseSensitiveFilenames,
-    lsHost.getCurrentDirectory()
-  );
+  const caseSensitiveFilenames = lsHost.useCaseSensitiveFileNames && lsHost.useCaseSensitiveFileNames();
+
+  const docRegistry = ts.createDocumentRegistry(caseSensitiveFilenames, lsHost.getCurrentDirectory());
   const ls = ts.createLanguageService(lsHost, docRegistry);
+  
   const defaultCompilerOptions: ts.CompilerOptions = {
     strict: true,
     target: ts.ScriptTarget.ESNext,
@@ -283,6 +289,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
   const compilerOptions = filterCompilerOptions(codeLines, {
     ...defaultCompilerOptions,
   });
+
   lsHost.setOptions(compilerOptions);
 
   // Remove ^^^^^^ lines from example and store
@@ -295,12 +302,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
 
   const scriptSnapshot = lsHost.getScriptSnapshot(sampleFileRef.fileName);
   const scriptVersion = '' + sampleFileRef.versionNumber;
-  docRegistry.updateDocument(
-    sampleFileRef.fileName,
-    compilerOptions,
-    scriptSnapshot!,
-    scriptVersion
-  );
+  docRegistry.updateDocument(sampleFileRef.fileName, compilerOptions, scriptSnapshot!, scriptVersion);
 
   const errs: ts.Diagnostic[] = [];
 
@@ -309,9 +311,25 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     errs.push(...ls.getSyntacticDiagnostics(sampleFileRef.fileName));
   }
 
+  const relevantErrors = errs.filter(d => d.file && d.file.fileName === sampleFileRef.fileName)
+
+  if (relevantErrors.length) {
+
+    // TS error code are not stable, and I can see the value in keeping the old one around
+    // if you have it running
+    //
+    // const inTheHeaderButNotFoundInErrs = []
+    // handbookOptions.errors.forEach(code => {
+      //   if (!errsAsCode.includes(Number(code))) inTheHeaderButNotFoundInErrs.push(code)
+      // })
+
+    const inErrsButNotFoundInTheHeader = relevantErrors.filter(e => !handbookOptions.errors.includes(e.code))
+    const errorsFound = inErrsButNotFoundInTheHeader.map(e=> e.code).join(" ")
+    if (inErrsButNotFoundInTheHeader.length) throw new Error(`Errors were thrown in the sample, but not included in an errors tag: ${errorsFound} - the annotation specified ${handbookOptions.errors}`)
+  }
+
   const errors: TwoSlashReturn["errors"] = [];
 
-  const relevantErrors = errs.filter(d => d.file && d.file.fileName === sampleFileRef.fileName)
   for (const err of relevantErrors) {
     const renderedMessage = escapeHtml(ts.flattenDiagnosticMessageText(err.messageText, '\n'));
     const id = `err-${err.code}-${err.start}-${err.length}`;
@@ -346,6 +364,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
   //     parts.push(`<a class="playground-link" href="${url}">Try</a>`)
   // }
 
+  // Doing it this late allows for it to 
   const splitCode = code.split("//cut").pop()!
 
   return {
