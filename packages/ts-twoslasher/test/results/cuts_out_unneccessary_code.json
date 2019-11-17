@@ -3,10 +3,10 @@
   "extension": "ts",
   "highlights": [],
   "queries": [
-    { "kind": "query", "offset": 4, "position": 347 },
-    { "kind": "query", "offset": 4, "position": 383 },
-    { "kind": "query", "offset": 4, "position": 410 }
+    { "kind": "query", "offset": 4, "position": 354 },
+    { "kind": "query", "offset": 4, "position": 390 },
+    { "kind": "query", "offset": 4, "position": 417 }
   ],
   "errors": [],
-  "playgroundURL": "https://www.typescriptlang.org/play/#code/JYOwLgpgTgZghgYwgAgJIBMAycBGEA2yA3ssOgFzIgCuAtnlADTID0AVMgM4D2tKMwAuk7I2LZAF8AUKEixEKAHJw+2PIRIgVESpzBRQAc2btk3MAAtoyAUJFjJUsAE8ADku0B5KBgA8AFWQIAA9IEGEqOgZkAB8ufSMAPmQAXmRAkLCImnprAH40LFwCZEplVWL8AG4pFnF-C2ARBF4+cC4Lbmp8dCpzZDxSEAR8anQIdClalgRqMCkYamGwYG4QZAQoCDhINQIAoNCIcJEc6Li9AxBDRIAKMm9ynXSASjKvH3QA5KIpZH-kJYoNwAO7IABES2AtFc+AgbUg6HBUmkUjhYGQcFSGy2Owge3wt3BLncnE2wFcYHBLxqaIgGJw2M2212lVuACYAHQADhpU3RGyZuNZ6luAFkdhZOVA4OFeLcXsgCuCrPh8NxwaVkAAWdl8oA"
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/JYOwLgpgTgZghgYwgAgJIBMAycBGEA2yA3ssOgFzIgCuAtnlADTID0AVMgM4D2tKMwAuk7I2LZAF8AUKEixEKAHJw+2PIRIgVESpzBRQAc2btk3MAAtoyAUJFjJUsAE8ADku0B5KBgA8AFWQIAA9IEGEqOgZkAB8ufSMAPmQAXmRAkLCImnprAH40LFwCZEplVWL8AG4pFnF-C2ARBF4+cC4Lbmp8dCpzZDxSEAR8anQIdCla8QBaOYRqMDmZqRhqYbBgbhBkBCgIOEg1AgCg0IhwkRzouL0DEENEgAoyb3KddIBKMq8fdADkkQpMgQchLFBuAB3ZAAInWwFornwEDakHQMKk0ikyLAyDgqV2+0OEGO+CeMJc7k4e2ArjAMM+NWxEFxOAJewOR0qTwATAA6AAcjKmON27KJXPUTwAsocLHyoHBwrwnp9kAUYVZ8PhuDDSsgACw84VAA"
 }
