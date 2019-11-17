@@ -1,10 +1,9 @@
-import fs from 'fs';
 import ts  from 'typescript';
 import * as utils from './utils';
+
 import debug from "debug"
 import { parsePrimitive } from './utils';
 import {compressToEncodedURIComponent} from "lz-string"
-import { extname } from 'path';
 
 
 const log = debug("twoslasher")
@@ -45,11 +44,16 @@ function createLanguageServiceHost(
       if (fileName === ref.fileName) {
         return ts.ScriptSnapshot.fromString(ref.content);
       }
-      if (!fs.existsSync(fileName)) {
-        return undefined;
-      }
+      return undefined
+      
+      // This could be doable, but we can run in a web browser
+      // without the fs module
 
-      return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
+      // if (!fs.existsSync(fileName)) {
+      //   return undefined;
+      // }
+
+      // return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
     },
     getCurrentDirectory: () => process.cwd(),
     getCompilationSettings: () => options,
@@ -356,7 +360,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     }
 
     code = file.text
-    extension = extname(file.name)
+    extension = file.name.split('.').pop()!
     
     // Remove highlights and queries, because it won't work across transpiles,
     // though I guess source-mapping could handle the transition

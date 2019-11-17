@@ -18,12 +18,16 @@ module.exports = {
       program.getTypeChecker({});
 
       const sourceFile = program.getSourceFile(fileToParse)
-      let optionsInterface, mainExport
+      let optionsInterface, mainExport, returnInterface
 
       ts.forEachChild(sourceFile, node => {
         if (node.kind === ts.SyntaxKind.InterfaceDeclaration && node.symbol.escapedName === "ExampleOptions") {
             optionsInterface = node
         }
+
+        if (node.kind === ts.SyntaxKind.InterfaceDeclaration && node.symbol.escapedName === "TwoSlashReturn") {
+          returnInterface = node
+         }
 
         if (node.kind === ts.SyntaxKind.FunctionDeclaration && node.symbol.escapedName === "twoslasher") {
           mainExport = node
@@ -33,6 +37,7 @@ module.exports = {
 
       const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
       const twoslasher = printer.printNode(ts.EmitHint.Unspecified, mainExport, sourceFile) + "\n";
+      const returnObj = printer.printNode(ts.EmitHint.Unspecified, returnInterface, sourceFile) + "\n";
       const optionsObj = printer.printNode(ts.EmitHint.Unspecified, optionsInterface, sourceFile) + "\n";
 
       mds.push("The markup API lives inline inside the code, where you can do special commands. These are the config variables available")
@@ -67,6 +72,8 @@ module.exports = {
       mds.push('### API');
       mds.push("The API is one main exported function:")
       mds.push(wrapCode(twoslasher, "ts"))
+      mds.push("Which returns")
+      mds.push(wrapCode(returnObj, "ts"))
 
       return mds.join('\n\n');
     },

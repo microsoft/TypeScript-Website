@@ -359,6 +359,41 @@ The API is one main exported function:
  */
 export function twoslasher(code: string, extension: string): TwoSlashReturn;
 ```
+
+Which returns
+
+```ts
+interface TwoSlashReturn {
+    /** The output code, could be TypeScript, but could also be a JS/JSON/d.ts */
+    code: string;
+    /** The new extension type for the code, potentially changed if they've requested emitted results */
+    extension: string;
+    /** Sample requests to highlight a particular part of the code */
+    highlights: {
+        kind: 'highlight';
+        position: number;
+        length: number;
+        description: string;
+    }[];
+    /** Requests to use the LSP to get info for a particular symbol in the source */
+    queries: {
+        kind: 'query';
+        position: number;
+        offset: number;
+    }[];
+    /** Diagnostic error messages which came up when creating the program */
+    errors: {
+        renderedMessage: string;
+        id: string;
+        category: 0 | 1 | 2 | 3;
+        code: number;
+        start: number | undefined;
+        length: number | undefined;
+    }[];
+    /** The URL for this sample in the playground */
+    playgroundURL: string;
+}
+```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
 ## Local Development
