@@ -1,1 +1,2 @@
-Errors were thrown in the sample, but not included in an errors tag: 2588 - the annotation specified 
+Errors were thrown in the sample, but not included in an errors tag: 2588.
+  [2588] - Cannot assign to 'myVariable' because it is a constant.

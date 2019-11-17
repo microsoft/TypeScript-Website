@@ -1,2 +1,2 @@
 let foo = "hello there!";
-    ^?
+//  ^?

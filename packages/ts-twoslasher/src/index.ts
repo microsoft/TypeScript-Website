@@ -1,10 +1,11 @@
 import ts  from 'typescript';
-import * as utils from './utils';
-
 import debug from "debug"
-import { parsePrimitive } from './utils';
 import {compressToEncodedURIComponent} from "lz-string"
 
+// TODO: remove this somehow?
+import * as fs from "fs"
+
+import { parsePrimitive, escapeHtml, cleanMarkdownEscaped, typesToExtension } from './utils';
 
 const log = debug("twoslasher")
 
@@ -19,17 +20,8 @@ declare module 'typescript' {
   const optionDeclarations: Array<Option>;
 }
 
-const { escapeHtml } = utils;
 
-function cleanMarkdownEscaped(code: string) {
-  code = code.replace(/¨D/g, '$');
-  code = code.replace(/¨T/g, '~');
-  return code;
-}
-
-function createLanguageServiceHost(
-  ref: SampleRef
-): ts.LanguageServiceHost & { setOptions(opts: ts.CompilerOptions): void } {
+function createLanguageServiceHost(fileMap: {  [key: string]: SampleRef }): ts.LanguageServiceHost & { setOptions(opts: ts.CompilerOptions): void } {
   let options: ts.CompilerOptions = {
     allowJs: true,
     skipLibCheck: true,
@@ -37,23 +29,24 @@ function createLanguageServiceHost(
   };
 
   const servicesHost: ReturnType<typeof createLanguageServiceHost> = {
-    getScriptFileNames: () => [ref.fileName!],
-    getScriptVersion: fileName =>
-      ref.fileName === fileName ? '' + ref.versionNumber : '0',
+    getScriptFileNames: () => Object.keys(fileMap),
+    getScriptVersion: fileName =>  fileMap[fileName] ? "" + fileMap[fileName].versionNumber : '0',
     getScriptSnapshot: fileName => {
-      if (fileName === ref.fileName) {
-        return ts.ScriptSnapshot.fromString(ref.content);
+      if (fileMap[fileName]) {
+         return ts.ScriptSnapshot.fromString(fileMap[fileName].content)
       }
-      return undefined
+
+      // throw new Error("Could not find " + fileName + " in " + Object.keys(fileMap))
+      // return undefined
       
       // This could be doable, but we can run in a web browser
       // without the fs module
 
-      // if (!fs.existsSync(fileName)) {
-      //   return undefined;
-      // }
+      if (!fs.existsSync(fileName)) {
+        return undefined;
+      }
 
-      // return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
+      return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
     },
     getCurrentDirectory: () => process.cwd(),
     getCompilationSettings: () => options,
@@ -69,7 +62,7 @@ function createLanguageServiceHost(
 }
 
 interface SampleRef {
-  fileName: string | undefined;
+  fileName: string ;
   versionNumber: number;
   content: string;
 }
@@ -90,8 +83,8 @@ function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosit
   let contentOffset = 0;
   for (let i = 0; i < codeLines.length; i++) {
     const line = codeLines[i];
-    const highlightMatch = /^\s*\^+( .+)?$/.exec(line);
-    const queryMatch = /^\s*\^\?\s*$/.exec(line);
+    const highlightMatch = /^\/\/\s*\^+( .+)?$/.exec(line);
+    const queryMatch = /^\/\/\s*\^\?\s*$/.exec(line);
     if (queryMatch !== null) {
       const start = line.indexOf('^');
       const position = contentOffset + start;
@@ -163,6 +156,10 @@ function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: ts.C
       options[match[1]] = true;
       setOption(match[1], 'true', options);
     } else if ((match = valuedConfigRegexp.exec(codeLines[i]))) {
+      // Skip a filename tag, which should propagate through this stage
+      if (match[1] === "filename") {
+        i++; continue
+      }
       setOption(match[1], match[2], options);
     } else {
       i++;
@@ -181,7 +178,10 @@ interface ExampleOptions {
   errors: number[]
   /** Shows the JS equivalent of the TypeScript code instead */
   showEmit: false;
-  /** When mixed with showEmit, lets you choose the file to present instead of the JS */
+  /** 
+   * When mixed with showEmit, lets you choose the file to present instead of the source - defaults to index.js which
+   * means when you just use `showEmit` above it shows the transpiled JS.
+   */
   showEmittedFile: string
 }
 
@@ -267,15 +267,20 @@ interface TwoSlashReturn {
  * @param extension For example: ts, tsx, typescript, javascript, js
  */
 export function twoslasher(code: string, extension: string): TwoSlashReturn {
-  log(`\n\nLooking at code: \n\`\`\`\n${code}\n\`\`\`\n`)
+  const safeExtension = typesToExtension(extension)
+  log(`\n\nLooking at code: \n\`\`\`${safeExtension}\n${code}\n\`\`\`\n`)
 
-  const sampleFileRef: SampleRef = {
-    fileName: undefined,
+  const fileMap: { [key: string]: SampleRef } = {}
+  const defaultFileName = "index." + safeExtension 
+  const defaultFileRef: SampleRef = {
+    fileName: defaultFileName,
     content: '',
-    versionNumber: 0,
+    versionNumber: 1,
   };
 
-  const lsHost = createLanguageServiceHost(sampleFileRef);
+  fileMap[defaultFileName] = defaultFileRef
+
+  const lsHost = createLanguageServiceHost(fileMap);
   const caseSensitiveFilenames = lsHost.useCaseSensitiveFileNames && lsHost.useCaseSensitiveFileNames();
 
   const docRegistry = ts.createDocumentRegistry(caseSensitiveFilenames, lsHost.getCurrentDirectory());
@@ -297,28 +302,54 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     ...defaultCompilerOptions,
   });
 
+  // Update all the compiler options
   lsHost.setOptions(compilerOptions);
 
   // Remove ^^^^^^ lines from example and store
   const { highlights, queries } = filterHighlightLines(codeLines);
   code = codeLines.join('\n');
 
-  sampleFileRef.fileName = 'index.' + extension;
-  sampleFileRef.content = code;
-  sampleFileRef.versionNumber++;
+  const updateFile = (filename: string, code: string) => {
+    let existingFile = fileMap[filename]
+    if (!existingFile) {
+      fileMap[filename] = {
+        fileName: filename,
+        content: code,
+        versionNumber: 1
+      }
+      existingFile = fileMap[filename]
+    }
+  
+    existingFile.content = code;
+    existingFile.versionNumber++;
+  
+    const scriptSnapshot = lsHost.getScriptSnapshot(filename);
+    const scriptVersion = lsHost.getScriptVersion(filename);
+    docRegistry.updateDocument(filename, compilerOptions, scriptSnapshot!, scriptVersion);
+  }
 
-  const scriptSnapshot = lsHost.getScriptSnapshot(sampleFileRef.fileName);
-  const scriptVersion = '' + sampleFileRef.versionNumber;
-  docRegistry.updateDocument(sampleFileRef.fileName, compilerOptions, scriptSnapshot!, scriptVersion);
+
+  const files = code.split("// @filename: ")
+  if(files.length === 1) {
+    updateFile(defaultFileRef.fileName, code)
+  } else {
+    files.forEach(file => {
+      const [filename, ...content] = file.split('\n');
+      const code = content.join("\n")
+      updateFile(filename, code)
+    })
+  }
+ 
+  // Code should now be safe to compile, so we're going to split it into different files 
 
   const errs: ts.Diagnostic[] = [];
 
   if (!handbookOptions.noErrors) {
-    errs.push(...ls.getSemanticDiagnostics(sampleFileRef.fileName));
-    errs.push(...ls.getSyntacticDiagnostics(sampleFileRef.fileName));
+    errs.push(...ls.getSemanticDiagnostics(defaultFileRef.fileName));
+    errs.push(...ls.getSyntacticDiagnostics(defaultFileRef.fileName));
   }
 
-  const relevantErrors = errs.filter(d => d.file && d.file.fileName === sampleFileRef.fileName)
+  const relevantErrors = errs.filter(d => d.file && d.file.fileName === defaultFileRef.fileName)
 
   if (relevantErrors.length) {
 
@@ -332,11 +363,16 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
 
     const inErrsButNotFoundInTheHeader = relevantErrors.filter(e => !handbookOptions.errors.includes(e.code))
     const errorsFound = inErrsButNotFoundInTheHeader.map(e=> e.code).join(" ")
-    if (inErrsButNotFoundInTheHeader.length) throw new Error(`Errors were thrown in the sample, but not included in an errors tag: ${errorsFound} - the annotation specified ${handbookOptions.errors}`)
+    if (inErrsButNotFoundInTheHeader.length) {
+      const postfix = handbookOptions.errors.length ? ` - the annotation specified ${handbookOptions.errors}` : ""
+      const afterMessage  = inErrsButNotFoundInTheHeader.map(e => `[${e.code}] - ${e.messageText}`).join("  ")
+      throw new Error(`Errors were thrown in the sample, but not included in an errors tag: ${errorsFound}${postfix}.\n  ${afterMessage}`)
+    }
   }
 
   const errors: TwoSlashReturn["errors"] = [];
 
+  // We can't pass the ts.DiagnosticResult out directly (it can't be JSON.stringified)
   for (const err of relevantErrors) {
     const renderedMessage = escapeHtml(ts.flattenDiagnosticMessageText(err.messageText, '\n'));
     const id = `err-${err.code}-${err.start}-${err.length}`;
@@ -352,7 +388,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
 
   // Handle emitting files
   if (handbookOptions.showEmit) {
-    const output = ls.getEmitOutput(sampleFileRef.fileName)
+    const output = ls.getEmitOutput(defaultFileRef.fileName)
     const file = output.outputFiles.find(o => o.name === handbookOptions.showEmittedFile)
     if (!file) {
       const allFiles = output.outputFiles.map(o => o.name).join(", ")

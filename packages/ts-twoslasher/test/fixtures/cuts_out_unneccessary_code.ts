@@ -9,10 +9,10 @@ function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {
 }
 
 let a = createLabel("typescript");
-    ^?
+//  ^?
 
 let b = createLabel(2.8);
-    ^?
+//  ^?
 
 let c = createLabel(Math.random() ? "hello" : 42);
-    ^?
+//  ^?

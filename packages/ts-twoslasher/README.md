@@ -1,6 +1,6 @@
 # TypeScript TwoSlasher
 
-A twisted flavour of TypeScript code for writing code samples and letting TypeScript do more of the work inspired
+A twisted markup for TypeScript code for writing code samples and letting TypeScript do more of the work inspired
 by the [fourslash test system](https://github.com/orta/typescript-notes/blob/master/systems/testing/fourslash.md) in 
 the TypeScript Compiler. Used as a pre-parser before showing code samples inside the TypeScript website and to create 
 a standard way for us to create single file references.
@@ -11,11 +11,10 @@ a standard way for us to create single file references.
 - Declaratively symbols you want to show
 - Handling transpilation and replacing the sample content
 - Splitting a code sample to only show a subset
-
-### TODO
-
 - Creating a playground link for the code
 - Support creating multiple files to correctly show import samples
+
+\
 
 Note: This is not shipped to npm yet.
 
@@ -31,7 +30,10 @@ interface ExampleOptions {
     errors: number[];
     /** Shows the JS equivalent of the TypeScript code instead */
     showEmit: false;
-    /** When mixed with showEmit, lets you choose the file to present instead of the JS */
+    /**
+     * When mixed with showEmit, lets you choose the file to present instead of the source - defaults to index.js which
+     * means when you just use `showEmit` above it shows the transpiled JS.
+     */
     showEmittedFile: string;
 }
 ```
@@ -272,6 +274,41 @@ With:
 }
 ```
 
+#### `import_files.ts`
+
+```.ts
+// @filename: file-with-export.ts
+export const helloWorld = "Example string";
+
+// @filename: index.ts
+import {helloWorld} from "./file-with-export"
+console.log(helloWorld)
+```
+
+Turns to:
+
+```ts
+// @filename: file-with-export.ts
+export const helloWorld = "Example string";
+
+// @filename: index.ts
+import {helloWorld} from "./file-with-export"
+console.log(helloWorld)
+```
+
+With:
+
+```json
+{
+  "code": "See above",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKGCC0B3aAFwAtd4APABwHsAnIgOiIGcAoS2h0AYxsRZFQJeLFg0A6vVgATUAF5QAIgCiFNFQShBdaIgDmSgNxs2ICDiRpMoPTMrN20VFyEBvEWMnSZAX2x0NKjKjMCWBMRknPRESmx8AjQIjOL6ABSe4lJ0sgCUbEA"
+}
+```
+
 #### `query.ts`
 
 ```.ts
@@ -321,7 +358,7 @@ export function fn(arr: number[]) {
 
 Turns to:
 
-```ts
+```js
 "use strict";
 // --importHelpers on: Spread helper will be imported from 'tslib'
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -337,7 +374,7 @@ With:
 ```json
 {
   "code": "See above",
-  "extension": "ts",
+  "extension": "js",
   "highlights": [],
   "queries": [],
   "errors": [],
