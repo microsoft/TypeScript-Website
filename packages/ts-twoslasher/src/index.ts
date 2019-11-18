@@ -3,7 +3,7 @@ import debug from "debug"
 import {compressToEncodedURIComponent} from "lz-string"
 
 // TODO: remove this somehow?
-import * as fs from "fs"
+import * as fs from "fs";
 
 import { parsePrimitive, escapeHtml, cleanMarkdownEscaped, typesToExtension } from './utils';
 
@@ -19,7 +19,6 @@ declare module 'typescript' {
 
   const optionDeclarations: Array<Option>;
 }
-
 
 function createLanguageServiceHost(fileMap: {  [key: string]: SampleRef }): ts.LanguageServiceHost & { setOptions(opts: ts.CompilerOptions): void } {
   let options: ts.CompilerOptions = {
@@ -408,7 +407,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
   const playgroundURL = `https://www.typescriptlang.org/play/#code/${compressToEncodedURIComponent(code)}`;
 
   // Doing it this late allows for it to 
-  const splitCode = code.split("//cut").pop()!
+  const splitCode = code.split("// ---cut---").pop()!
 
   return {
     code: splitCode,
