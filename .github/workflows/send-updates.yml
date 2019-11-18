@@ -12,13 +12,14 @@ jobs:
           TEAMS_INCOMING_WEBHOOK_URL: ${{secrets.TEAMS_INCOMING_WEBHOOK_URL}}
 
           script: |
+
             const teamsURL = process.env.TEAMS_INCOMING_WEBHOOK_URL
             if (!teamsURL) return console.log("Skipping sending the message because it's not the update repo")
 
-            console.log("context: " + JSON.stringify(context))
+            const issue = context.payload.issue
+            const issue_comment = context.payload.issue_comment
 
-            const issue = context.issue
-            if (issue.id !== 130) return console.log("Skipping sending the message because it's not the update repo")
+            if (issue.id !== 130) return console.log(`Skipping sending the message because ${issue.id} is not the update post`)
 
             const message = {
               "@type": "MessageCard",
@@ -28,10 +29,10 @@ jobs:
               title: 'Website update',
               sections: [
                 {
-                  activityTitle: "Azure Pipelines",
-                  activitySubtitle: context.comment.created_at,
-                  activityImage: context.comment.user/avatar_url,
-                  "text": context.comment.body
+                  activityTitle: "Comment",
+                  activitySubtitle: issue_comment.created_at,
+                  activityImage: issue_comment.user.avatar_url,
+                  "text": issue_comment.body
                 }
               ],
               potentialAction: [
@@ -41,7 +42,7 @@ jobs:
                   targets: [
                     {
                       os: "default",
-                      uri: context.comment.html_url
+                      uri: issue_comment.html_url
                     }
                   ]
                 }
