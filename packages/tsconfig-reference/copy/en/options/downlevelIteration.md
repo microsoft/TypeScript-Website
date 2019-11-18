@@ -1,8 +1,7 @@
 ---
 display: "Downlevel Iteration"
+introduced: "3.7"
 ---
-
-**Default**: `false`. Has no effect if `target` is ES6 or newer.
 
 ECMAScript 6 added several new iteration primitives: the `for / of` loop (`for (el of arr)`), Array spread (`[a, ...b]`), argument spread (`fn(...args)`), and `Symbol.iterator`.
 `--downlevelIteration` allows for these iteration primitives to be used more accurately in ES5 environments if a `Symbol.iterator` implementation is present.

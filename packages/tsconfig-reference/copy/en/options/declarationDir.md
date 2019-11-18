@@ -2,4 +2,4 @@
 display: "Declaration Dir"
 ---
 
-Output directory for generated declaration files.
+Let's you change the root directory for declaration files to be written to.
