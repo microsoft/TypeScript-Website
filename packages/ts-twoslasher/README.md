@@ -64,7 +64,7 @@ Turns to:
 > }
 > 
 > fn(42);
-> > ```
+> ```
 
 > With:
 
@@ -86,7 +86,7 @@ Turns to:
 >   ],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/FAMwrgdgxgLglgewgAhBAFAZwJTIN7DLJRKYIA2ApgHTkIDmW1mYARjAE7oDM22wAX2CgMAFgBM2ANzAgA"
 > }
-> > ```
+> ```
 
 #### `compiler_flags.ts`
 
@@ -112,7 +112,7 @@ Turns to:
 > }
 > 
 > fn(42);
-> > ```
+> ```
 
 > With:
 
@@ -125,7 +125,7 @@ Turns to:
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/FAehAIBUAsEsGdwHdYBtXgHYHsAu5doAnbJcAIwFMBjAQwFd5LxsAzA6ZnASQFsAHVLGqxcAQUwBPYK3qZquWNkzhWmABTwAlOADewcOGrL42VJQB0qbAHNNF+PXK4i6gMxatwAL7AZGgBYAJi0AbmAgA"
 > }
-> > ```
+> ```
 
 #### `cuts_out_unneccessary_code.ts`
 
@@ -163,7 +163,7 @@ Turns to:
 > let b = createLabel(2.8);
 > 
 > let c = createLabel(Math.random() ? "hello" : 42);
-> > ```
+> ```
 
 > With:
 
@@ -192,7 +192,7 @@ Turns to:
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/JYOwLgpgTgZghgYwgAgJIBMAycBGEA2yA3ssOgFzIgCuAtnlADTID0AVMgM4D2tKMwAuk7I2LZAF8AUKEixEKAHJw+2PIRIgVESpzBRQAc2btk3MAAtoyAUJFjJUsAE8ADku0B5KBgA8AFWQIAA9IEGEqOgZkAB8ufSMAPmQAXmRAkLCImnprAH40LFwCZEplVWL8AG4pFnF-C2ARBF4+cC4Lbmp8dCpzZDxSEAR8anQIdCla8QBaOYRqMDmZqRhqYbBgbhBkBCgIOEg1AgCg0IhwkRzouL0DEENEgAoyb3KddIBKMq8fdADkkQpMgQchLFBuAB3ZAAInWwFornwEDakHQMKk0ikyLAyDgqV2+0OEGO+CeMJc7k4e2ArjAMM+NWxEFxOAJewOR0qTwATAA6AAcjKmON27KJXPUTwAsocLHyoHBwrwnp9kAUYVZ8PhuDDSsgACw84VAA"
 > }
-> > ```
+> ```
 
 #### `declarations.ts`
 
@@ -218,7 +218,7 @@ Turns to:
 >  * @param value a string
 >  */
 > export declare function getStringLength(value: string): number;
-> > ```
+> ```
 
 > With:
 
@@ -231,7 +231,7 @@ Turns to:
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/PQKhFgCgAIWhxApgFwM7WQC0dANogOwHMtoB7AM2gENpVkAnAS2KlmgAEAHah6gW2gA3argCuOWvWasYIYFEQAPLmQbJoAE0QBjXLxwUxBHciZkC0IigDKjFkQAyhEpgAUI8YgBcde8QBKXwIxfgAjRAYAbiggA"
 > }
-> > ```
+> ```
 
 #### `highlighting.ts`
 
@@ -252,7 +252,7 @@ Turns to:
 > }
 > 
 > greet("Maddison", new Date());
-> > ```
+> ```
 
 > With:
 
@@ -272,7 +272,7 @@ Turns to:
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/GYVwdgxgLglg9mABAcwE4FN1QBQAd2oDOCAXIoVKjGMgDSIAmAhlOmQCIvoCUiA3gChEiCAmIAbdADpxcZNgAGACXTjZiACR98RBAF96UOMwCeiGIU19mrKUc6sAypWrzuegIQLuAbgF6BATRMHAAiAFkmBgYLBFD6MHQAd0QHdGxuXwEgA"
 > }
-> > ```
+> ```
 
 #### `import_files.ts`
 
@@ -294,7 +294,7 @@ Turns to:
 > // @filename: index.ts
 > import {helloWorld} from "./file-with-export"
 > console.log(helloWorld)
-> > ```
+> ```
 
 > With:
 
@@ -307,7 +307,7 @@ Turns to:
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKGCC0B3aAFwAtd4APABwHsAnIgOiIGcAoS2h0AYxsRZFQJeLFg0A6vVgATUAF5QAIgCiFNFQShBdaIgDmSgNxs2ICDiRpMoPTMrN20VFyEBvEWMnSZAX2x0NKjKjMCWBMRknPRESmx8AjQIjOL6ABSe4lJ0sgCUbEA"
 > }
-> > ```
+> ```
 
 #### `query.ts`
 
@@ -320,7 +320,7 @@ Turns to:
 
 > ```ts
 > let foo = "hello there!";
-> > ```
+> ```
 
 > With:
 
@@ -339,7 +339,7 @@ Turns to:
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/DYUwLgBAZg9jEF4ICIAWJjHmdAnEAhMgNwBQQA"
 > }
-> > ```
+> ```
 
 #### `showEmit.ts`
 
@@ -367,7 +367,7 @@ Turns to:
 >     var arr2 = tslib_1.__spread([1], arr);
 > }
 > exports.fn = fn;
-> > ```
+> ```
 
 > With:
 
@@ -380,7 +380,7 @@ Turns to:
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/EQVwzgpgBGAuBOBLAxrYBuAsAKAPS6gFpDEBbABwHt5YAJCAG3InjCkoDsAuKAZXPgQAhgBMoAC0bN4UAO6IGDKACNoZKjQhiAZvEqkoAclhgGiZYZwB5ZQCsIqAHQiI2xBwgAFPdNgBPAAoIAA8NEwAaKGAAfWiIMABZShEQBghgSIBvKAA3IQYQCB4EQqgAXwBKLGw8mRMzZWiARigAXihBAEcQREEA4HrzYCqcbRAOVEROKG0OAKF4eAqoTJwoddyFqAX4ACY2qEHGpsdYsAFhEQCAbSaAXUidkewynBCwsEdZg9nqoA"
 > }
-> > ```
+> ```
 
 ### API
 

@@ -6,7 +6,7 @@ const fixturesFolder = join(__dirname, '../', 'test', 'fixtures');
 const resultsFolder = join(__dirname, '../', 'test', 'results');
 
 const wrapCode = (code, ext) => '```' + ext + '\n' + code + '```';
-const wrapCodeAsQuote = (code, ext) => '> ```' + ext + '\n> ' + code.split("\n").join("\n> ") + '> ```';
+const wrapCodeAsQuote = (code, ext) => '> ```' + ext + '\n> ' + code.split("\n").join("\n> ") + '```';
 
 module.exports = {
   transforms: {
