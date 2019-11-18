@@ -12,9 +12,10 @@ jobs:
           TEAMS_INCOMING_WEBHOOK_URL: ${{secrets.TEAMS_INCOMING_WEBHOOK_URL}}
 
           script: |
-
             const teamsURL = process.env.TEAMS_INCOMING_WEBHOOK_URL
-            if (!teamsURL) return
+            if (!teamsURL) return console.log("Skipping sending the message because it's not the update repo")
+
+            console.log("context: " + JSON.stringify(context))
 
             const issue = context.issue
             if (issue.id !== 130) return console.log("Skipping sending the message because it's not the update repo")
