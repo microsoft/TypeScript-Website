@@ -1,20 +1,24 @@
 # TypeScript TwoSlasher
 
-A twisted markup for TypeScript code for writing code samples and letting TypeScript do more of the work inspired
-by the [fourslash test system](https://github.com/orta/typescript-notes/blob/master/systems/testing/fourslash.md) in 
-the TypeScript Compiler. Used as a pre-parser before showing code samples inside the TypeScript website and to create 
-a standard way for us to create single file references.
+A twisted markup for TypeScript code for writing code samples and letting the TypeScript compiler do more of the work inspired
+by the [fourslash test system](https://github.com/orta/typescript-notes/blob/master/systems/testing/fourslash.md). 
+
+Used as a pre-parser before showing code samples inside the TypeScript website and to create a standard way for us 
+to create examples for bugs on the compiler's issue tracker.
 
 ### Features 
 
-- Pulling out accurate errors from a TypeScript code sample
-- Declaratively symbols you want to show
-- Handling transpilation and replacing the sample content
-- Splitting a code sample to only show a subset
+- Enforcing accurate errors from a TypeScript code sample, and leaving the messagint  othe compiler
+- Declaratively highlight symbols you want to show
+- Handling showing the results of transpilation with certain flags
+- Splitting a code sample to hide distracting code
+- Support an example referencing multiple files
 - Creating a playground link for the code
-- Support creating multiple files to correctly show import samples
 
-Note: This is not shipped to npm yet.
+### TODO
+
+- I think I will need to add an option to extract symbols for hover on identifiers at this level
+- Think about how to ship to npm
 
 <!-- AUTO-GENERATED-CONTENT:START (FIXTURES) -->
 The twoslash markup API lives inside your code samples code as comments, which can do special commands. There are the following commands:
