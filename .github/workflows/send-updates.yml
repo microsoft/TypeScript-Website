@@ -18,9 +18,10 @@ jobs:
             const teamsURL = process.env.TEAMS_INCOMING_WEBHOOK_URL
             if (!teamsURL) return console.log("Skipping sending the message because it's not the update repo")
 
-            console.log(context.payload)
+            // console.log(context.payload)
+
             const issue = context.payload.issue
-            const issue_comment = context.payload.issue_comment
+            const issue_comment = context.payload.comment
 
             if (issue.id !== 524510895) return console.log(`Skipping sending the message because ${issue.id} is not the update post`)
 
