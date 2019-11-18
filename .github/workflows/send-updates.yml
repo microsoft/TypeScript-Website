@@ -20,7 +20,7 @@ jobs:
             const issue = context.payload.issue
             const issue_comment = context.payload.issue_comment
 
-            if (issue.id !== 130) return console.log(`Skipping sending the message because ${issue.id} is not the update post`)
+            if (issue.id !== 524510895) return console.log(`Skipping sending the message because ${issue.id} is not the update post`)
 
             const message = {
               "@type": "MessageCard",
