@@ -1,0 +1,54 @@
+name: Send comments from updates
+on:
+  issue_comment: {types: created}
+
+jobs:
+  apply-label:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@0.2.0
+        with:
+          github-token: ${{github.token}}
+          TEAMS_INCOMING_WEBHOOK_URL: ${{secrets.TEAMS_INCOMING_WEBHOOK_URL}}
+
+          script: |
+
+            const teamsURL = process.env.TEAMS_INCOMING_WEBHOOK_URL
+            if (!teamsURL) return
+
+            const issue = context.issue
+            if (issue.id !== 130) return console.log("Skipping sending the message because it's not the update repo")
+
+            const message = {
+              "@type": "MessageCard",
+              "@context": "https://schema.org/extensions",
+              summary: "Website update",
+              themeColor: "0078D7",
+              title: 'Website update',
+              sections: [
+                {
+                  activityTitle: "Azure Pipelines",
+                  activitySubtitle: context.comment.created_at,
+                  activityImage: context.comment.user/avatar_url,
+                  "text": context.comment.body
+                }
+              ],
+              potentialAction: [
+                {
+                  "@type": "OpenUri",
+                  name: "View in GitHub",
+                  targets: [
+                    {
+                      os: "default",
+                      uri: context.comment.html_url
+                    }
+                  ]
+                }
+              ]
+            };
+
+            fetch(teamsURL, {
+              method: "post",
+              body: JSON.stringify(message),
+              headers: { "Content-Type": "application/json" }
+            });
