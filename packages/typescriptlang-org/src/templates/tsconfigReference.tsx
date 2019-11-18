@@ -5,7 +5,6 @@ import { Layout } from "../components/layout"
 
 class TSConfigReferenceTemplateComponent extends React.Component<{ pageContext: any, data: TSConfigReferenceTemplate }> {
   render() {
-    console.log(this.props)
     const post = this.props.data.markdownRemark
     if (!post) {
       console.log("Could not render:", JSON.stringify(this.props))

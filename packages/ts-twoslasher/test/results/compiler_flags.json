@@ -1,0 +1,8 @@
+{
+  "code": "\n// This will not throw because of the noImplicitAny\nfunction fn(s) {\n  console.log(s.subtr(3))\n}\n\nfn(42);\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/FAehAIBUAsEsGdwHdYBtXgHYHsAu5doAnbJcAIwFMBjAQwFd5LxsAzA6ZnASQFsAHVLGqxcAQUwBPYK3qZquWNkzhWmABTwAlOADewcOGrL42VJQB0qbAHNNF+PXK4i6gMxatwAL7AZGgBYAJi0AbmAgA"
+}

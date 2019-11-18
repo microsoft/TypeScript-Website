@@ -12,7 +12,7 @@ import * as assert from 'assert'
 import { read as readMarkdownFile } from 'gray-matter'
 import * as prettier from 'prettier'
 
-const options = require('../data/tsconfigOpts.json') as typeof import('../data/tsconfigOpts.json')
+const options = require('../data/tsconfigOpts.json').options
 const categories = require('../data/tsconfigCategories.json') as typeof import('../data/tsconfigCategories.json')
 
 const orderedCategories = [

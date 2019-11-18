@@ -96,7 +96,6 @@ export const onButtonKeydown: KeyboardEventHandler = (event) => {
   } 
 
   // Right, close
-  console.log(event.keyCode)
   if (event.keyCode == 37) {
     li.classList.remove("open")
     li.classList.add("closed")

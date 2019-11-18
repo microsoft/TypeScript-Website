@@ -1,0 +1,8 @@
+{
+  "code": "// @filename: file-with-export.ts\nexport const helloWorld = \"Example string\";\n\n// @filename: index.ts\nimport {helloWorld} from \"./file-with-export\"\nconsole.log(helloWorld)\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKGCC0B3aAFwAtd4APABwHsAnIgOiIGcAoS2h0AYxsRZFQJeLFg0A6vVgATUAF5QAIgCiFNFQShBdaIgDmSgNxs2ICDiRpMoPTMrN20VFyEBvEWMnSZAX2x0NKjKjMCWBMRknPRESmx8AjQIjOL6ABSe4lJ0sgCUbEA"
+}
