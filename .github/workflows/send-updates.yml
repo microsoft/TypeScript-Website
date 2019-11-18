@@ -1,7 +1,6 @@
 name: Send comments from updates
 on:
-  # issue_comment: {types: created}
-  issue_comment
+  issue_comment: {types: created}
 
 jobs:
   apply-label:
