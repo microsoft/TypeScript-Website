@@ -6,6 +6,7 @@ const fixturesFolder = join(__dirname, '../', 'test', 'fixtures');
 const resultsFolder = join(__dirname, '../', 'test', 'results');
 
 const wrapCode = (code, ext) => '```' + ext + '\n' + code + '```';
+const wrapCodeAsQuote = (code, ext) => '> ```' + ext + '\n> ' + code.split("\n").join("\n> ") + '> ```';
 
 module.exports = {
   transforms: {
@@ -61,12 +62,12 @@ module.exports = {
         mds.push(wrapCode(input, parse(fixtureName).ext));
         mds.push('Turns to:');
 
-        mds.push(wrapCode(output.code, output.extension));
+        mds.push(wrapCodeAsQuote(output.code, output.extension));
         
-        mds.push('With:');
+        mds.push('> With:');
 
         const codeless = { ...output, code: "See above" }
-        mds.push(wrapCode(JSON.stringify(codeless, null, "  ") + "\n", "json"));
+        mds.push(wrapCodeAsQuote(JSON.stringify(codeless, null, "  ") + "\n", "json"));
       });
 
       mds.push('### API');
