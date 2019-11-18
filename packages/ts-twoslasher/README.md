@@ -14,12 +14,10 @@ a standard way for us to create single file references.
 - Creating a playground link for the code
 - Support creating multiple files to correctly show import samples
 
-\
-
 Note: This is not shipped to npm yet.
 
 <!-- AUTO-GENERATED-CONTENT:START (FIXTURES) -->
-The markup API lives inline inside the code, where you can do special commands. These are the config variables available
+The twoslash markup API lives inside your code samples code as comments, which can do special commands. There are the following commands:
 
 ```ts
 /** Available inline flags which are not compiler flags */
@@ -38,7 +36,9 @@ interface ExampleOptions {
 }
 ```
 
-As well as all compiler API options are available, which you can see in the examples below.
+In addition to this set, you can use `@filename` which allow for exporting between files.
+
+Finally you can set any tsconfig compiler flag using this syntax, which you can see in some of the examples below.
 
 ### Examples
 

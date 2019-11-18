@@ -41,10 +41,12 @@ module.exports = {
       const returnObj = printer.printNode(ts.EmitHint.Unspecified, returnInterface, sourceFile) + "\n";
       const optionsObj = printer.printNode(ts.EmitHint.Unspecified, optionsInterface, sourceFile) + "\n";
 
-      mds.push("The markup API lives inline inside the code, where you can do special commands. These are the config variables available")
+      mds.push("The twoslash markup API lives inside your code samples code as comments, which can do special commands. There are the following commands:")
       mds.push(wrapCode(optionsObj, "ts"))
 
-      mds.push("As well as all compiler API options are available, which you can see in the examples below.")
+      mds.push("In addition to this set, you can use `@filename` which allow for exporting between files.")
+
+      mds.push("Finally you can set any tsconfig compiler flag using this syntax, which you can see in some of the examples below.")
 
       mds.push('### Examples');
 
