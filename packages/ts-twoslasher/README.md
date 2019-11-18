@@ -8,7 +8,7 @@ to create examples for bugs on the compiler's issue tracker.
 
 ### Features 
 
-- Enforcing accurate errors from a TypeScript code sample, and leaving the messagint  othe compiler
+- Enforcing accurate errors from a TypeScript code sample, and leaving the messaging to the compiler
 - Declaratively highlight symbols you want to show
 - Handling showing the results of transpilation with certain flags
 - Splitting a code sample to hide distracting code
