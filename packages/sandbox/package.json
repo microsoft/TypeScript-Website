@@ -2,6 +2,7 @@
   "name": "typescript-playground",
   "version": "0.1.0",
   "main": "dist/index.js",
+  "license": "MIT",
   "module": "dist/playground.esm.js",
   "typings": "dist/index.d.ts",
   "files": [
