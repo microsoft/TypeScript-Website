@@ -8508,10 +8508,10 @@ gatsby-plugin-catch-links@^2.1.16:
     "@babel/runtime" "^7.7.2"
     escape-string-regexp "^1.0.5"
 
-gatsby-plugin-codegen@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-codegen/-/gatsby-plugin-codegen-1.0.7.tgz#eef7a3c311ef0e776a8eedf9a217fd9324e0cf06"
-  integrity sha512-gzPLybbbp6TY+5QhNb41cfpnWh3Hw4SzQ0eLbcwb1UrlwN28uyusdKdj5L2FjCFO7irwDGqgpofRu0BdFA5TZA==
+gatsby-plugin-codegen@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-codegen/-/gatsby-plugin-codegen-1.0.8.tgz#8f1e5a05c1d01797e15aa2a56dfc1ad2d8288dd0"
+  integrity sha512-B/5wKORMzS69xNTFTNs1hQHyDeYi+nONTuBJUp6CPZTjjiGl4L1IDCBCT1DxYJLGt6CnuRt5+DDfhCkqRXy0/Q==
   dependencies:
     apollo "^2.21.0"
     graphql "^14.5.8"

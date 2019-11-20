@@ -20,7 +20,7 @@
     "@uifabric/react-cards": "^0.108.2",
     "gatsby": "^2.17.11",
     "gatsby-plugin-catch-links": "^2.1.16",
-    "gatsby-plugin-codegen": "^1.0.7",
+    "gatsby-plugin-codegen": "^1.0.8",
     "gatsby-plugin-manifest": "^2.2.27",
     "gatsby-plugin-offline": "^3.0.19",
     "gatsby-plugin-react-helmet": "^3.1.14",
@@ -32,6 +32,7 @@
     "gatsby-remark-prismjs": "^3.3.22",
     "gatsby-remark-responsive-iframe": "^2.2.26",
     "gatsby-remark-smartypants": "^2.1.15",
+    "gatsby-remark-twoslasher-code-blocks": "*",
     "gatsby-source-filesystem": "^2.1.36",
     "gatsby-transformer-remark": "^2.6.33",
     "node-sass": "^4.13.0",
@@ -41,8 +42,8 @@
     "react-dom": "^16.11.0",
     "react-helmet": "^5.2.1",
     "ts-node": "^8.5.0",
-    "typescript": "^3.7.2",
-    "gatsby-remark-twoslasher-code-blocks": "*"
+    "ts-twoslasher": "*",
+    "typescript": "^3.7.2"
   },
   "devDependencies": {
     "@types/react": "^16.9.11",
