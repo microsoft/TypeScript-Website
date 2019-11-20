@@ -57,6 +57,7 @@ module.exports = {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
+          `${require.resolve("gatsby-remark-twoslasher-code-blocks")}`,
           {
             resolve: `gatsby-remark-images`,
             options: {

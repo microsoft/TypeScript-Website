@@ -13,6 +13,7 @@
     "test": "echo 'no tests'"
   },
   "dependencies": {
+    "@babel/core": "^7.7.2",
     "@types/node-fetch": "^2.5.3",
     "@types/react-helmet": "^5.0.14",
     "@uifabric/fluent-theme": "^7.1.4",
@@ -39,7 +40,10 @@
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-helmet": "^5.2.1",
-    "ts-node": "^8.5.0"
+    "ts-node": "^8.5.0",
+    "typescript": "^3.7.2",
+    "ts-twoslasher": "*",
+    "gatsby-remark-twoslasher-code-blocks": "*"
   },
   "devDependencies": {
     "@types/react": "^16.9.11",
