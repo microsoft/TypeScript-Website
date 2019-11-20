@@ -1,7 +1,7 @@
 // @ts-enable 
 
 const visit = require('unist-util-visit');
-const {twoslasher} = require("ts-twoslasher")
+const {twoslasher} = require(require.resolve("ts-twoslasher"))
 
 /**
  * The function doing the work of transforming any codeblock samples
