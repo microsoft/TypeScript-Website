@@ -2,6 +2,7 @@
   "name": "gatsby-remark-twoslasher-code-blocks",
   "version": "1.0.0",
   "dependencies": {
+    "ts-twoslasher": "*",
     "unist-util-visit": "^2.0.1"
   }
 }

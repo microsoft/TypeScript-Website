@@ -42,7 +42,6 @@
     "react-helmet": "^5.2.1",
     "ts-node": "^8.5.0",
     "typescript": "^3.7.2",
-    "ts-twoslasher": "*",
     "gatsby-remark-twoslasher-code-blocks": "*"
   },
   "devDependencies": {
