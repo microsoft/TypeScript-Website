@@ -5,5 +5,8 @@
   "dependencies": {
     "ts-twoslasher": "0.1.0",
     "unist-util-visit": "^2.0.1"
+  },
+  "scripts": {
+    "build": "echo 'NOOP'"
   }
 }

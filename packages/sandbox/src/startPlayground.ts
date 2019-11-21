@@ -82,7 +82,7 @@ export function defaultPlaygroundSettings(text: string, domID: string) {
 }
 
 /** Creates a monaco file reference, basically a fancy path */
-function createFileUri(config: PlaygroundConfig, compilerOptions: ts.CompilerOptions, monaco: import("monaco-editor")) {
+function createFileUri(config: PlaygroundConfig, compilerOptions: ts.CompilerOptions, monaco: typeof import("monaco-editor")) {
   const isJSX = compilerOptions.jsx !== monaco.languages.typescript.JsxEmit.None
   const fileExt = config.useJavaScript ? "js" : "ts"
   const ext = isJSX ? fileExt + "x" : fileExt
@@ -90,7 +90,7 @@ function createFileUri(config: PlaygroundConfig, compilerOptions: ts.CompilerOpt
   return monaco.Uri.file(filepath)
 }
 
-export async function setupPlayground(config: PlaygroundConfig, monaco: import("monaco-editor")) {
+export async function setupPlayground(config: PlaygroundConfig, monaco: typeof import("monaco-editor")) {
   const defaults = monacoLanguageDefaults(config)
 
   const language = languageType(config)
