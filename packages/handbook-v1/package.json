@@ -4,6 +4,7 @@
   "license": "MIT",
   "version": "1.0.0",
   "scripts": {
-    "build": "echo 'NOOP'"
+    "build": "echo 'NOOP'",
+    "test": "echo 'NOOP'"
   }
 }

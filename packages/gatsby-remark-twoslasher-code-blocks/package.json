@@ -7,6 +7,7 @@
     "unist-util-visit": "^2.0.1"
   },
   "scripts": {
-    "build": "echo 'NOOP'"
+    "build": "echo 'NOOP'",
+    "test": "echo 'NOOP'"
   }
 }
