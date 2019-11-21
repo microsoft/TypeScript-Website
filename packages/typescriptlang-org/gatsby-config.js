@@ -57,7 +57,7 @@ module.exports = {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
-          `${require.resolve("gatsby-remark-twoslasher-code-blocks")}`,
+          require.resolve("gatsby-remark-twoslasher-code-blocks"),
           {
             resolve: `gatsby-remark-images`,
             options: {
@@ -71,7 +71,7 @@ module.exports = {
             },
           },
           "gatsby-remark-autolink-headers",
-          "gatsby-remark-prismjs",
+          require.resolve("gatsby-remark-shiki"),
           "gatsby-remark-copy-linked-files",
           "gatsby-remark-smartypants",
         ],

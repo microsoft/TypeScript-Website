@@ -25,7 +25,7 @@ In this case, you might already have a folder structure like this set up.
 
 From this point on, we're going to assume that your directory is set up something like this:
 
-```text
+```
 projectRoot
 ├── src
 │   ├── file1.js

@@ -1,0 +1,12 @@
+{
+  "name": "gatsby-remark-shiki",
+  "version": "0.1.0",
+  "license": "MIT",
+  "dependencies": {
+    "shiki": "~0.1.6"
+  },
+  "scripts": {
+    "build": "echo 'NOOP'",
+    "test": "echo 'NOOP'"
+  }
+}

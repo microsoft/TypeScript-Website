@@ -37,7 +37,7 @@ create-react-app my-app --scripts-version=react-scripts-ts
 
 At this point, your project layout should look like the following:
 
-```text
+```
 my-app/
 ├─ .gitignore
 ├─ node_modules/

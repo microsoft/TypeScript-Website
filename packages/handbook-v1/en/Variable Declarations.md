@@ -130,7 +130,7 @@ For those unfamiliar, `setTimeout` will try to execute a function after a certai
 
 Ready? Take a look:
 
-```text
+```
 10
 10
 10
@@ -146,7 +146,7 @@ Ready? Take a look:
 Many JavaScript developers are intimately familiar with this behavior, but if you're surprised, you're certainly not alone.
 Most people expect the output to be
 
-```text
+```
 0
 1
 2
@@ -374,7 +374,7 @@ for (let i = 0; i < 10 ; i++) {
 
 and as expected, this will print out
 
-```text
+```
 0
 1
 2
