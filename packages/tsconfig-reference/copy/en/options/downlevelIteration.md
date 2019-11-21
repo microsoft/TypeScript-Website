@@ -11,7 +11,7 @@ ECMAScript 6 added several new iteration primitives: the `for / of` loop (`for (
 
 Without `downlevelIteration` on, a `for / of` loop on any object is downleveled to a traditional `for` loop:
 
-```ts
+```ts twoslash
 // @target: ES5
 // @showEmit
 const str = "Hello!";
@@ -27,7 +27,7 @@ See [this blog post by Jonathan New](https://blog.jonnew.com/posts/poo-dot-lengt
 When `downlevelIteration` is enabled, TypeScript will use a helper function that checks for a `Symbol.iterator` implementation (either native or polyfill).
 If this implementation is missing, you'll fall back to index-based iteration.
 
-```ts
+```ts twoslash
 // @target: ES5
 // @downlevelIteration
 // @showEmit
