@@ -1,6 +1,5 @@
 ---
 display: "Extends"
-introduced: "2.1"
 ---
 
 The value of `extends` is a string which contains a path to another configuration file to inherit from. 

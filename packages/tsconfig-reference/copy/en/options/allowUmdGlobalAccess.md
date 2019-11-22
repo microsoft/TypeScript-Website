@@ -1,6 +1,5 @@
 ---
 display: "Allow Umd Global Access"
-introduced: "3.5"
 ---
 
 When set to true, allowUmdGlobalAccess lets you access UMD exports as globals from inside module files. A module file is a file that has imports or exports. Without this flag, using an export from a UMD module requires an import declaration.

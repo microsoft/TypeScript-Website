@@ -1,6 +1,5 @@
 ---
 display: "Downlevel Iteration"
-introduced: "3.7"
 ---
 
 ECMAScript 6 added several new iteration primitives: the `for / of` loop (`for (el of arr)`), Array spread (`[a, ...b]`), argument spread (`fn(...args)`), and `Symbol.iterator`.

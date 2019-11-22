@@ -18,7 +18,7 @@ function fn(n: number) {
 
 With `"allowUnreachableCode": false`:
 
-```ts
+```ts twoslasher
 // @allowUnreachableCode: false
 function fn(n: number) {
    if (n > 5) {

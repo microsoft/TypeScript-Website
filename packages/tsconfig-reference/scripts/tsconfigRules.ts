@@ -106,3 +106,9 @@ export const defaultsForOptions = {
   tsBuildInfoFile: ' .tsbuildin',
 }
 
+export const configReleasedMap: { [key: string]: CompilerOptionName[] } = {
+  "3.7": ["disableSourceOfProjectReferenceRedirect", "downlevelIteration", "generateCpuProfile", "useDefineForClassFields"],
+  "3.5": ["allowUmdGlobalAccess"],
+  "2.1": ["extends" as any],
+  "1.8": ["allowJs", "allowSyntheticDefaultImports"]
+}
