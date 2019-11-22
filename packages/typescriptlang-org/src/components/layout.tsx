@@ -1,6 +1,5 @@
-import React, { ReactPropTypes } from "react"
+import React from "react"
 import { SiteNav } from "./layout/TopNav"
-
 
 export const Layout = (props: any) => {
   const { children } = props

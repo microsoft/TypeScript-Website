@@ -60,7 +60,7 @@ const visitor = node => {
 }
 
 /** The plugin API */
-module.exports = async ({ markdownAST }) => {
-  await getHighlighter()
+module.exports = async ({ markdownAST }, settings) => {
+  await getHighlighter(settings)
   visit(markdownAST, 'code', visitor)
 }
