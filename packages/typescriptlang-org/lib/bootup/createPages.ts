@@ -10,7 +10,7 @@ export const createPages: GatsbyNode["createPages"] = async args => {
   // creation of the pages
 
   setupRedirects(args.actions.createRedirect)
-  createOldHandbookPages(args.graphql, args.actions.createPage)
+  // createOldHandbookPages(args.graphql, args.actions.createPage)
   createTSConfigReference(args.graphql, args.actions.createPage)
 
   return null

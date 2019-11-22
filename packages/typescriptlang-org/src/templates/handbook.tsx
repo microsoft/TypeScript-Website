@@ -5,9 +5,9 @@ import { Layout } from "../components/layout"
 import { Sidebar } from "../components/layout/Sidebar"
 import { oldHandbookNavigation } from "../lib/oldNavigation"
 
-import "./handbook.css"
-import "../templates/markdown.css"
-
+import "./handbook.scss"
+import "./document.scss"
+import "./markdown.scss"
 
 class BlogPostTemplate extends React.Component<{ pageContext: any, data: BlogPostBySlug, path: string }> {
   render() {
@@ -16,7 +16,6 @@ class BlogPostTemplate extends React.Component<{ pageContext: any, data: BlogPos
       console.log("Could not render:", JSON.stringify(this.props))
       return <div></div>
     }
-    console.log(this.props)
 
     const { previous, next } = this.props.pageContext
     const selectedID = this.props.path.split("/").pop().replace(".html", "")

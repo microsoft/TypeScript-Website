@@ -13,13 +13,14 @@
     "test": "echo 'no tests'"
   },
   "dependencies": {
+    "@babel/core": "^7.7.2",
     "@types/node-fetch": "^2.5.3",
     "@types/react-helmet": "^5.0.14",
     "@uifabric/fluent-theme": "^7.1.4",
     "@uifabric/react-cards": "^0.108.2",
     "gatsby": "^2.17.11",
     "gatsby-plugin-catch-links": "^2.1.16",
-    "gatsby-plugin-codegen": "^1.0.7",
+    "gatsby-plugin-codegen": "^1.0.8",
     "gatsby-plugin-manifest": "^2.2.27",
     "gatsby-plugin-offline": "^3.0.19",
     "gatsby-plugin-react-helmet": "^3.1.14",
@@ -30,7 +31,9 @@
     "gatsby-remark-images": "^3.1.30",
     "gatsby-remark-prismjs": "^3.3.22",
     "gatsby-remark-responsive-iframe": "^2.2.26",
+    "gatsby-remark-shiki": "0.1.0",
     "gatsby-remark-smartypants": "^2.1.15",
+    "gatsby-remark-twoslasher-code-blocks": "0.1.0",
     "gatsby-source-filesystem": "^2.1.36",
     "gatsby-transformer-remark": "^2.6.33",
     "node-sass": "^4.13.0",
@@ -39,7 +42,10 @@
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-helmet": "^5.2.1",
-    "ts-node": "^8.5.0"
+    "rehype-shiki": "^0.0.5",
+    "ts-node": "^8.5.0",
+    "ts-twoslasher": "0.1.0",
+    "typescript": "^3.7.2"
   },
   "devDependencies": {
     "@types/react": "^16.9.11",

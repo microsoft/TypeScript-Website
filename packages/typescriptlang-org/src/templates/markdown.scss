@@ -1,0 +1,31 @@
+.markdown h1 {
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 12px;
+  font-size: 2.5rem;
+  margin-top: 0;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.markdown h2 {
+  font-weight: 600;
+  font-size: 1.75rem;
+  line-height: 1.3;
+  margin-bottom: 12px;
+  margin-top: 32px;
+}
+
+.markdown h3 {
+  font-weight: 400;
+  font-size: 1.1875rem;
+  margin-top: 30px;
+  margin-bottom: 18px;
+  line-height: 1.3
+}
+
+// Code blocks
+pre.shiki {
+  padding: 12px;
+  border-left: 1px solid #999;
+}

@@ -3,9 +3,10 @@ import { graphql } from "gatsby"
 import { TSConfigReferenceTemplate } from "./__generated__/TSConfigReferenceTemplate"
 import { Layout } from "../components/layout"
 
+import "./markdown.scss"
+
 class TSConfigReferenceTemplateComponent extends React.Component<{ pageContext: any, data: TSConfigReferenceTemplate }> {
   render() {
-    console.log(this.props)
     const post = this.props.data.markdownRemark
     if (!post) {
       console.log("Could not render:", JSON.stringify(this.props))
@@ -15,9 +16,9 @@ class TSConfigReferenceTemplateComponent extends React.Component<{ pageContext: 
     return (
       <Layout >
 
-        <div className="ms-depth-4" style={{ backgroundColor: "white", maxWidth: 960, margin: "1rem auto", padding: "2rem" }}>
+        <div className="ms-depth-4" style={{ backgroundColor: "white", maxWidth: 960, margin: "1rem auto", padding: "2rem", paddingTop: "0.5rem" }}>
         <h1>TSConfig Reference</h1>  
-        <div dangerouslySetInnerHTML={{ __html: post.html }} />
+        <div className="markdown" dangerouslySetInnerHTML={{ __html: post.html }} />
         </div>
         <hr />
 

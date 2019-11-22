@@ -22,8 +22,8 @@ type PlaygroundConfig = {
   |{/** theID of a dom node to add monaco to */  elementToAppend: Element })
 
 const languageType = (config: PlaygroundConfig) => config.useJavaScript ? "javascript" : "typescript"
-const monacoLanguageDefaults = (config: PlaygroundConfig) => config.useJavaScript ? monaco.languages.typescript.javascriptDefaults : monaco.languages.typescript.typescriptDefaults
-const monacoLanguageWorker = (config: PlaygroundConfig) => config.useJavaScript ? monaco.languages.typescript.getJavaScriptWorker : monaco.languages.typescript.getTypeScriptWorker
+// const monacoLanguageDefaults = (config: PlaygroundConfig) => config.useJavaScript ? monaco.languages.typescript.javascriptDefaults : monaco.languages.typescript.typescriptDefaults
+// const monacoLanguageWorker = (config: PlaygroundConfig) => config.useJavaScript ? monaco.languages.typescript.getJavaScriptWorker : monaco.languages.typescript.getTypeScriptWorker
 
 
 /** Default Monaco settings for the sandbox */
@@ -82,7 +82,7 @@ export function defaultPlaygroundSettings(text: string, domID: string) {
 }
 
 /** Creates a monaco file reference, basically a fancy path */
-function createFileUri(config: PlaygroundConfig, compilerOptions: ts.CompilerOptions, monaco: import("monaco-editor")) {
+function createFileUri(config: PlaygroundConfig, compilerOptions: ts.CompilerOptions, monaco: typeof import("monaco-editor")) {
   const isJSX = compilerOptions.jsx !== monaco.languages.typescript.JsxEmit.None
   const fileExt = config.useJavaScript ? "js" : "ts"
   const ext = isJSX ? fileExt + "x" : fileExt
@@ -90,8 +90,8 @@ function createFileUri(config: PlaygroundConfig, compilerOptions: ts.CompilerOpt
   return monaco.Uri.file(filepath)
 }
 
-export async function setupPlayground(config: PlaygroundConfig, monaco: import("monaco-editor")) {
-  const defaults = monacoLanguageDefaults(config)
+export async function setupPlayground(config: PlaygroundConfig, monaco: typeof  import("monaco-editor")) {
+  // const defaults = monacoLanguageDefaults(config)
 
   const language = languageType(config)
   const filePath = createFileUri(config, config.compilerOptions, monaco)
@@ -99,7 +99,7 @@ export async function setupPlayground(config: PlaygroundConfig, monaco: import("
   const model = monaco.editor.createModel(config.text, language, filePath);
 
   const monacoSettings = Object.assign({ model }, sharedEditorOptions, config.monacoSettings || {})
-  const editor = monaco.editor.create(element, monacoSettings);
+  const editor = monaco.editor.create(element as any, monacoSettings);
 
   return editor
 }
