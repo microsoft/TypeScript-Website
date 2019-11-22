@@ -20,7 +20,7 @@ cd proj
 
 To start, we're going to structure our project in the following way:
 
-```text
+```
 proj/
    ├─ src/
    └─ dist/

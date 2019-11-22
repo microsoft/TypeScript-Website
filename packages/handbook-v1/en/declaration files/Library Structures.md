@@ -375,7 +375,7 @@ The layout of your declaration files should mirror the layout of the library.
 
 A library can consist of multiple modules, such as
 
-```Text
+```
 myLib
   +---- index.js
   +---- foo.js
@@ -395,7 +395,7 @@ var d = require("myLib/bar/baz");
 
 Your declaration files should thus be
 
-```Text
+```
 @types/myLib
   +---- index.d.ts
   +---- foo.d.ts

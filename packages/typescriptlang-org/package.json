@@ -31,6 +31,7 @@
     "gatsby-remark-images": "^3.1.30",
     "gatsby-remark-prismjs": "^3.3.22",
     "gatsby-remark-responsive-iframe": "^2.2.26",
+    "gatsby-remark-shiki": "0.1.0",
     "gatsby-remark-smartypants": "^2.1.15",
     "gatsby-remark-twoslasher-code-blocks": "0.1.0",
     "gatsby-source-filesystem": "^2.1.36",
@@ -41,6 +42,7 @@
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-helmet": "^5.2.1",
+    "rehype-shiki": "^0.0.5",
     "ts-node": "^8.5.0",
     "ts-twoslasher": "0.1.0",
     "typescript": "^3.7.2"
