@@ -8,24 +8,23 @@ With `d.ts files, tools like TypeScript can provide intellisense and accurate ty
 
 When `declaration` is set to `true`, running the compiler with this TypeScript code:
 
-```ts
-// helloWorld.ts
+```ts twoslash
 export const helloWorld = "hi"
 ```
 
-Will generate a `helloWorld.js` file like this:
+Will generate a `index.js` file like this:
 
-```js
-// Example.js
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.helloWorld = "hi";
+```ts twoslash
+// @showEmit
+export const helloWorld = "hi"
 ```
 
 With a corresponding  this `helloWorld.d.ts`:
 
 ```js
-// Example.d.ts
+// @showEmittedFile: index.d.ts
+// @showEmit
+// @declaration
 export declare const helloWorld = "hi";
 ```
 

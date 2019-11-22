@@ -2,9 +2,6 @@
 display: "Include"
 ---
 
-**Default**: `[]` if `files` is specified, otherwise `["**/*"]`
-
-
 ```json
 {
    "include": ["src/**", "tests/**"]

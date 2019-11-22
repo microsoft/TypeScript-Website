@@ -4,16 +4,20 @@ import { CompilerOptionName } from '../data/_types'
 export const denyList: CompilerOptionName[] = ['help', 'init', 'all', 'watch', 'version', 'build', 'project']
 
 /** Things we should document, but really want to help move people away from */
-export const deprecated: CompilerOptionName[] = ['out', 'charset']
+export const deprecated: CompilerOptionName[] = ['out', 'charset', 'keyofStringsOnly']
 
 /** Things which people really shouldn't use, but need to document  */
 export const internal: CompilerOptionName[] = ['preserveWatchOutput']
 
 /** You should use this! They are off by default */
-export const recommended: CompilerOptionName[] = ['strict']
+export const recommended: CompilerOptionName[] = ['strict', 'forceConsistentCasingInFileNames']
+
+type RootProperties = "files" | "extends" | "include" | "exclude"
+
+type AnOption = RootProperties | CompilerOptionName
 
 /** Allows linking between options */
-export const relatedTo: [CompilerOptionName, CompilerOptionName[]][] = [
+export const relatedTo: [AnOption, AnOption[]][] = [
   ['strict', ['strictBindCallApply', 'strictFunctionTypes', 'strictPropertyInitialization']],
   ['allowSyntheticDefaultImports', ['esModuleInterop']],
   ['esModuleInterop', ['allowSyntheticDefaultImports']],
@@ -21,6 +25,16 @@ export const relatedTo: [CompilerOptionName, CompilerOptionName[]][] = [
   ['out', ['outDir', 'outFile']],
   ['outDir', ['out', 'outFile']],
   ['outFile', ['out', 'outDir']],
+
+  ['diagnostics', ['extendedDiagnostics']],
+  ['extendedDiagnostics', ['diagnostics']],
+
+  ["experimentalDecorators", ["emitDecoratorMetadata"]],
+  ["emitDecoratorMetadata", ["experimentalDecorators"]],
+
+  ["files", ["include", "exclude"]],
+  ["include", ["files", "exclude"]],
+  ["exclude", ["include", "files"]]
 ]
 
 /**
@@ -52,6 +66,7 @@ export const defaultsForOptions = {
   forceConsistentCasingInFileNames: 'false',
   generateCpuProfile: ' profile.cpuprofile',
   importHelpers: 'false',
+  includes: ' `[]` if `files` is specified, otherwise `["**/*"]`',
   incremental: 'true',
   inlineSourceMap: 'false',
   inlineSources: 'false',
@@ -106,9 +121,10 @@ export const defaultsForOptions = {
   tsBuildInfoFile: ' .tsbuildin',
 }
 
-export const configReleasedMap: { [key: string]: CompilerOptionName[] } = {
+export const configReleasedMap: { [key: string]: AnOption[] } = {
   "3.7": ["disableSourceOfProjectReferenceRedirect", "downlevelIteration", "generateCpuProfile", "useDefineForClassFields"],
   "3.5": ["allowUmdGlobalAccess"],
-  "2.1": ["extends" as any],
+  "2.1": ["extends"],
+  "2.0": ["declarationDir", "skipLibCheck", "noUnusedLocals", "noUnusedParameters", "lib", "strictNullChecks", "noImplicitThis", "rootDirs", "traceResolution", "include"],
   "1.8": ["allowJs", "allowSyntheticDefaultImports"]
 }

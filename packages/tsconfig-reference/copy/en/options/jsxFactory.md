@@ -1,5 +1,5 @@
 ---
-display: "JSx Factory"
+display: "JSX Factory"
 ---
 
 **Allowed Values**: Any identifier or dotted identifier; default `"React.createElement"`

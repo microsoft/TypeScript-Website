@@ -2,4 +2,4 @@
 display: "Diagnostics"
 ---
 
-Show diagnostic information.
+Used to output diagnostic information for debugging 

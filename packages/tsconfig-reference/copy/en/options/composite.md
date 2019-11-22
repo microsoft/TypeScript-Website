@@ -13,4 +13,4 @@ When this setting is on:
 
  * `declaration` defaults to `true`
 
-You can find documentation on composite projects 
+You can find documentation on TypeScript projects in [the handbook](https://www.typescriptlang.org/docs/handbook/project-references.html).
