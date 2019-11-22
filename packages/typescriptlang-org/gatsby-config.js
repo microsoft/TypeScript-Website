@@ -1,5 +1,6 @@
 // https://github.com/gatsbyjs/gatsby/issues/1457
 require("ts-node").register({ files: true })
+const {join} = require("path")
 
 module.exports = {
   // This should only be used in a CI deploy while we're working in a v2 sub-folder
@@ -71,7 +72,12 @@ module.exports = {
             },
           },
           "gatsby-remark-autolink-headers",
-          require.resolve("gatsby-remark-shiki"),
+          {
+            resolve: require.resolve("gatsby-remark-shiki"),
+            options: {
+              theme: join(__dirname, "lib", "themes", "typescript-beta-light.tmTheme")
+            },
+          },
           "gatsby-remark-copy-linked-files",
           "gatsby-remark-smartypants",
         ],
