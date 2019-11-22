@@ -19,6 +19,7 @@ function fn(n: number) {
 With `"allowUnreachableCode": false`:
 
 ```ts twoslasher
+// @errors: 7027
 // @allowUnreachableCode: false
 function fn(n: number) {
    if (n > 5) {

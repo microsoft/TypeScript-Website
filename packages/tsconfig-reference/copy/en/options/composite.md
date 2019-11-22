@@ -12,3 +12,5 @@ When this setting is on:
  * All implementation files must be matched by an `include` pattern or listed in the `files` array. If this constraint is violated, `tsc` will inform you which files weren't specified.
 
  * `declaration` defaults to `true`
+
+You can find documentation on composite projects 

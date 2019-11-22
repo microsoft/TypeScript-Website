@@ -221,6 +221,14 @@ function filterHandbookOptions(codeLines: string[]): ExampleOptions {
   return options;
 }
 
+function validateInput(code: string) {
+  if (code.includes("// @errors ")) {
+    throw new Error("You have '@errors ' - you're missing the colon after errors")
+  }
+  if (code.includes("// @filename ")) {
+    throw new Error("You have '@filename ' - you're missing the colon after filename")
+  }
+}
 
 interface TwoSlashReturn {
   /** The output code, could be TypeScript, but could also be a JS/JSON/d.ts */
@@ -266,6 +274,7 @@ interface TwoSlashReturn {
  * @param extension For example: ts, tsx, typescript, javascript, js
  */
 export function twoslasher(code: string, extension: string): TwoSlashReturn {
+  const originalCode = code
   const safeExtension = typesToExtension(extension)
   log(`\n\nLooking at code: \n\`\`\`${safeExtension}\n${code}\n\`\`\`\n`)
 
@@ -291,6 +300,8 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     allowJs: true,
   };
 
+  validateInput(code)
+
   code = cleanMarkdownEscaped(code);
 
   // This is mutated as the below functions pull out info
@@ -308,34 +319,35 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
   const { highlights, queries } = filterHighlightLines(codeLines);
   code = codeLines.join('\n');
 
-  const updateFile = (filename: string, code: string) => {
+  const updateFile = (filename: string, newFileCode: string) => {
     let existingFile = fileMap[filename]
     if (!existingFile) {
       fileMap[filename] = {
         fileName: filename,
-        content: code,
+        content: newFileCode,
         versionNumber: 1
       }
       existingFile = fileMap[filename]
     }
   
-    existingFile.content = code;
+    existingFile.content = newFileCode;
     existingFile.versionNumber++;
+
+    log(`\nUpdating file ${filename} to: \n${newFileCode}`)
   
     const scriptSnapshot = lsHost.getScriptSnapshot(filename);
     const scriptVersion = lsHost.getScriptVersion(filename);
     docRegistry.updateDocument(filename, compilerOptions, scriptSnapshot!, scriptVersion);
   }
 
-
   const files = code.split("// @filename: ")
-  if(files.length === 1) {
+  if (files.length === 1) {
     updateFile(defaultFileRef.fileName, code)
   } else {
     files.forEach(file => {
       const [filename, ...content] = file.split('\n');
-      const code = content.join("\n")
-      updateFile(filename, code)
+      const newFileCode = content.join("\n")
+      updateFile(filename, newFileCode)
     })
   }
  
@@ -364,8 +376,9 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     const errorsFound = inErrsButNotFoundInTheHeader.map(e=> e.code).join(" ")
     if (inErrsButNotFoundInTheHeader.length) {
       const postfix = handbookOptions.errors.length ? ` - the annotation specified ${handbookOptions.errors}` : ""
-      const afterMessage  = inErrsButNotFoundInTheHeader.map(e => `[${e.code}] - ${e.messageText}`).join("  ")
-      throw new Error(`Errors were thrown in the sample, but not included in an errors tag: ${errorsFound}${postfix}.\n  ${afterMessage}`)
+      const afterMessage  = inErrsButNotFoundInTheHeader.map(e => `[${e.code}] - ${e.messageText}`).join("\n  ")
+      const codeOutput = `\n\n## Code\n\n'''${extension}\n${originalCode}\n'''`
+      throw new Error(`Errors were thrown in the sample, but not included in an errors tag: ${errorsFound}${postfix}.\n  ${afterMessage}${codeOutput}`)
     }
   }
 

@@ -8,7 +8,7 @@ TODO: "non-absolute" - is this only relative imports or does it include named im
 
 You can define a root folder where you can do absolute file resolution. E.g.
 
-```sh
+```
 baseUrl/
 ├── ex.ts
 ├── hello
