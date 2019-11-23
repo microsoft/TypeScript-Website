@@ -7,6 +7,7 @@
   "scripts": {
     "build": "gatsby build",
     "develop": "gatsby develop",
+    "clean": "gatsby clean",
     "update-snapshots": "backstop test; backstop approve",
     "start": "npm run develop",
     "serve": "gatsby serve",

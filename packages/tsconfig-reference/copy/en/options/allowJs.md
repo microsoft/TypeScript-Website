@@ -17,7 +17,7 @@ When imported into a TypeScript file will raise an error:
 module.exports.defaultCardDeck = "Heart"
 
 // ---cut---
-// @filename index.ts
+// @filename: index.ts
 import { defaultCardDeck } from "./card"
 
 console.log(defaultCardDeck)
