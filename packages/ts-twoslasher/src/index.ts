@@ -221,6 +221,7 @@ function filterHandbookOptions(codeLines: string[]): ExampleOptions {
   return options;
 }
 
+/** Mainly to warn myself, I've lost a good few minutes to this before */
 function validateInput(code: string) {
   if (code.includes("// @errors ")) {
     throw new Error("You have '@errors ' - you're missing the colon after errors")
@@ -340,6 +341,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     docRegistry.updateDocument(filename, compilerOptions, scriptSnapshot!, scriptVersion);
   }
 
+  // TODO: This doesn't handle a single file with a name
   const files = code.split("// @filename: ")
   if (files.length === 1) {
     updateFile(defaultFileRef.fileName, code)
@@ -361,19 +363,10 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
   }
 
   const relevantErrors = errs.filter(d => d.file && d.file.fileName === defaultFileRef.fileName)
-
   if (relevantErrors.length) {
-
-    // TS error code are not stable, and I can see the value in keeping the old one around
-    // if you have it running
-    //
-    // const inTheHeaderButNotFoundInErrs = []
-    // handbookOptions.errors.forEach(code => {
-      //   if (!errsAsCode.includes(Number(code))) inTheHeaderButNotFoundInErrs.push(code)
-      // })
-
     const inErrsButNotFoundInTheHeader = relevantErrors.filter(e => !handbookOptions.errors.includes(e.code))
     const errorsFound = inErrsButNotFoundInTheHeader.map(e=> e.code).join(" ")
+
     if (inErrsButNotFoundInTheHeader.length) {
       const postfix = handbookOptions.errors.length ? ` - the annotation specified ${handbookOptions.errors}` : ""
       const afterMessage  = inErrsButNotFoundInTheHeader.map(e => `[${e.code}] - ${e.messageText}`).join("\n  ")

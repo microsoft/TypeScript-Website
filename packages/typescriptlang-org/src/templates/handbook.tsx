@@ -6,7 +6,6 @@ import { Sidebar } from "../components/layout/Sidebar"
 import { oldHandbookNavigation } from "../lib/oldNavigation"
 
 import "./handbook.scss"
-import "./document.scss"
 import "./markdown.scss"
 
 class BlogPostTemplate extends React.Component<{ pageContext: any, data: BlogPostBySlug, path: string }> {

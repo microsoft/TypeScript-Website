@@ -1,2 +1,15 @@
 Errors were thrown in the sample, but not included in an errors tag: 2588.
   [2588] - Cannot assign to 'myVariable' because it is a constant.
+
+## Code
+
+'''ts
+// @target: ES2015
+
+// Because this example doesn't have an errors
+// reference it will throw
+
+const myVariable = ""
+myVariable = 1
+
+'''

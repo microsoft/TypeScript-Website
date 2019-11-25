@@ -1,4 +1,4 @@
-// @ts-enable 
+// // @ts-check
 
 const visit = require('unist-util-visit');
 const {twoslasher} = require(require.resolve("ts-twoslasher"))

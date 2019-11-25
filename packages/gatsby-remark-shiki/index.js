@@ -64,3 +64,5 @@ module.exports = async ({ markdownAST }, settings) => {
   await getHighlighter(settings)
   visit(markdownAST, 'code', visitor)
 }
+
+
