@@ -404,7 +404,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn;
 Which returns
 
 ```ts
-interface TwoSlashReturn {
+export interface TwoSlashReturn {
     /** The output code, could be TypeScript, but could also be a JS/JSON/d.ts */
     code: string;
     /** The new extension type for the code, potentially changed if they've requested emitted results */
@@ -430,6 +430,8 @@ interface TwoSlashReturn {
         code: number;
         start: number | undefined;
         length: number | undefined;
+        line: number | undefined;
+        character: number | undefined;
     }[];
     /** The URL for this sample in the playground */
     playgroundURL: string;

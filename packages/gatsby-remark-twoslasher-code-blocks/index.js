@@ -15,11 +15,7 @@ const visitor = (node) => {
   const results = twoslasher(node.value, node.lang)
   node.value = results.code
   node.lang = results.extension
-  node.twoslash = {
-    highlights: results.highlights,
-    playgroundURL: results.playgroundURL,
-    queries: results.queries,
-  }
+  node.twoslash = results
 }
 
 /** The plugin API */

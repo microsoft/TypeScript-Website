@@ -221,8 +221,17 @@ function filterHandbookOptions(codeLines: string[]): ExampleOptions {
   return options;
 }
 
+/** Mainly to warn myself, I've lost a good few minutes to this before */
+function validateInput(code: string) {
+  if (code.includes("// @errors ")) {
+    throw new Error("You have '@errors ' - you're missing the colon after errors")
+  }
+  if (code.includes("// @filename ")) {
+    throw new Error("You have '@filename ' - you're missing the colon after filename")
+  }
+}
 
-interface TwoSlashReturn {
+export interface TwoSlashReturn {
   /** The output code, could be TypeScript, but could also be a JS/JSON/d.ts */
   code: string;
 
@@ -252,6 +261,8 @@ interface TwoSlashReturn {
     code: number;
     start: number | undefined
     length: number | undefined
+    line: number | undefined
+    character: number | undefined
   }[];
 
   /** The URL for this sample in the playground */
@@ -266,6 +277,7 @@ interface TwoSlashReturn {
  * @param extension For example: ts, tsx, typescript, javascript, js
  */
 export function twoslasher(code: string, extension: string): TwoSlashReturn {
+  const originalCode = code
   const safeExtension = typesToExtension(extension)
   log(`\n\nLooking at code: \n\`\`\`${safeExtension}\n${code}\n\`\`\`\n`)
 
@@ -291,6 +303,8 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     allowJs: true,
   };
 
+  validateInput(code)
+
   code = cleanMarkdownEscaped(code);
 
   // This is mutated as the below functions pull out info
@@ -308,34 +322,36 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
   const { highlights, queries } = filterHighlightLines(codeLines);
   code = codeLines.join('\n');
 
-  const updateFile = (filename: string, code: string) => {
+  const updateFile = (filename: string, newFileCode: string) => {
     let existingFile = fileMap[filename]
     if (!existingFile) {
       fileMap[filename] = {
         fileName: filename,
-        content: code,
+        content: newFileCode,
         versionNumber: 1
       }
       existingFile = fileMap[filename]
     }
   
-    existingFile.content = code;
+    existingFile.content = newFileCode;
     existingFile.versionNumber++;
+
+    log(`\nUpdating file ${filename} to: \n${newFileCode}`)
   
     const scriptSnapshot = lsHost.getScriptSnapshot(filename);
     const scriptVersion = lsHost.getScriptVersion(filename);
     docRegistry.updateDocument(filename, compilerOptions, scriptSnapshot!, scriptVersion);
   }
 
-
+  // TODO: This doesn't handle a single file with a name
   const files = code.split("// @filename: ")
-  if(files.length === 1) {
+  if (files.length === 1) {
     updateFile(defaultFileRef.fileName, code)
   } else {
     files.forEach(file => {
       const [filename, ...content] = file.split('\n');
-      const code = content.join("\n")
-      updateFile(filename, code)
+      const newFileCode = content.join("\n")
+      updateFile(filename, newFileCode)
     })
   }
  
@@ -349,23 +365,18 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
   }
 
   const relevantErrors = errs.filter(d => d.file && d.file.fileName === defaultFileRef.fileName)
-
   if (relevantErrors.length) {
-
-    // TS error code are not stable, and I can see the value in keeping the old one around
-    // if you have it running
-    //
-    // const inTheHeaderButNotFoundInErrs = []
-    // handbookOptions.errors.forEach(code => {
-      //   if (!errsAsCode.includes(Number(code))) inTheHeaderButNotFoundInErrs.push(code)
-      // })
-
     const inErrsButNotFoundInTheHeader = relevantErrors.filter(e => !handbookOptions.errors.includes(e.code))
     const errorsFound = inErrsButNotFoundInTheHeader.map(e=> e.code).join(" ")
+
     if (inErrsButNotFoundInTheHeader.length) {
       const postfix = handbookOptions.errors.length ? ` - the annotation specified ${handbookOptions.errors}` : ""
-      const afterMessage  = inErrsButNotFoundInTheHeader.map(e => `[${e.code}] - ${e.messageText}`).join("  ")
-      throw new Error(`Errors were thrown in the sample, but not included in an errors tag: ${errorsFound}${postfix}.\n  ${afterMessage}`)
+      const afterMessage  = inErrsButNotFoundInTheHeader.map(e => {
+        const msg = typeof e.messageText === "string" ? e.messageText : e.messageText.messageText
+        return `[${e.code}] - ${msg}`
+      }).join("\n  ")
+      const codeOutput = `\n\n## Code\n\n'''${extension}\n${originalCode}\n'''`
+      throw new Error(`Errors were thrown in the sample, but not included in an errors tag: ${errorsFound}${postfix}.\n  ${afterMessage}${codeOutput}`)
     }
   }
 
@@ -375,11 +386,14 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
   for (const err of relevantErrors) {
     const renderedMessage = escapeHtml(ts.flattenDiagnosticMessageText(err.messageText, '\n'));
     const id = `err-${err.code}-${err.start}-${err.length}`;
+    const {line, character } = ts.getLineAndCharacterOfPosition(err.file!, err.start!)
     errors.push({
       category: err.category,
       code: err.code,
       length: err.length,
       start: err.start,
+      line,
+      character,
       renderedMessage,
       id,
     });
