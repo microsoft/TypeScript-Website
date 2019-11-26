@@ -25,3 +25,8 @@ export function fn(arr: number[]) {
 ```
 
 Cool, a paragraph after
+
+```ts twoslash
+// @errors: 2304
+sfsdfsdfsd
+```

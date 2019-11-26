@@ -2,7 +2,7 @@
 
 const shiki = require('shiki')
 const visit = require('unist-util-visit')
-
+const {renderToHTML} = require('./renderer')
 const { commonLangIds, commonLangAliases, otherLangIds } = require('shiki-languages')
 const languages = [...commonLangIds, ...commonLangAliases, ...otherLangIds]
 
@@ -52,7 +52,8 @@ const visitor = node => {
   
   const shouldHighlight = lang && languages.includes(lang)
   if (shouldHighlight) {
-    const results = highlighter.codeToHtml(node.value, lang)
+    const tokens = highlighter.codeToThemedTokens(node.value, lang)
+    const results = renderToHTML(tokens, { langId: lang }, node.twoslash)
     node.type = "html"
     node.value = results
     node.children = []
