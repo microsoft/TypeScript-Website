@@ -231,7 +231,7 @@ function validateInput(code: string) {
   }
 }
 
-interface TwoSlashReturn {
+export interface TwoSlashReturn {
   /** The output code, could be TypeScript, but could also be a JS/JSON/d.ts */
   code: string;
 
@@ -261,6 +261,8 @@ interface TwoSlashReturn {
     code: number;
     start: number | undefined
     length: number | undefined
+    line: number | undefined
+    character: number | undefined
   }[];
 
   /** The URL for this sample in the playground */
@@ -384,11 +386,14 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
   for (const err of relevantErrors) {
     const renderedMessage = escapeHtml(ts.flattenDiagnosticMessageText(err.messageText, '\n'));
     const id = `err-${err.code}-${err.start}-${err.length}`;
+    const {line, character } = ts.getLineAndCharacterOfPosition(err.file!, err.start!)
     errors.push({
       category: err.category,
       code: err.code,
       length: err.length,
       start: err.start,
+      line,
+      character,
       renderedMessage,
       id,
     });

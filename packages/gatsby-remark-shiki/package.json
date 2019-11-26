@@ -7,6 +7,6 @@
   },
   "scripts": {
     "build": "echo 'NOOP'",
-    "test": "echo 'NOOP'"
+    "test": "node scripts/test.js"
   }
 }
