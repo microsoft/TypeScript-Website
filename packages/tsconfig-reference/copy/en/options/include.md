@@ -7,6 +7,29 @@ display: "Include"
    "include": ["src/**", "tests/**"]
 }
 ```
+<!-- TODO: #135
+Which would include:
+
+```diff
+  .
+- ├── scripts
+- │   ├── lint.ts
+- │   ├── update_deps.ts
+- │   └── utils.ts
++ ├── src
++ │   ├── client
++ │   │    ├── index.ts
++ │   │    └── utils.ts
++ │   ├── server
++ │   │    └── index.ts
++ ├── tests
++ │   ├── app.test.ts
++ │   ├── utils.ts
++ │   └── tests.d.ts
+- ├── package.json
+- ├── tsconfig.json
+- └── yarn.lock
+``` -->
 
 Specifies an array of filenames or patterns to include in the program.
 These filenames are resolved relative to the directory containing the `tsconfig.json` file.

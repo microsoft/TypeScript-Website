@@ -4,15 +4,23 @@ import { CompilerOptionName } from '../data/_types'
 export const denyList: CompilerOptionName[] = ['help', 'init', 'all', 'watch', 'version', 'build', 'project']
 
 /** Things we should document, but really want to help move people away from */
-export const deprecated: CompilerOptionName[] = ['out', 'charset', 'keyofStringsOnly']
+export const deprecated: CompilerOptionName[] = ['out', 'charset', 'keyofStringsOnly', 'moduleResolution']
 
 /** Things which people really shouldn't use, but need to document  */
 export const internal: CompilerOptionName[] = ['preserveWatchOutput']
 
 /** You should use this! They are off by default */
-export const recommended: CompilerOptionName[] = ['strict', 'forceConsistentCasingInFileNames']
+export const recommended: CompilerOptionName[] = [
+  'strict',
+  'forceConsistentCasingInFileNames',
+  'strictNullChecks',
+  'strictBindCallApply',
+  'strictFunctionTypes',
+  'noImplicitThis',
+  'noImplicitAny',
+]
 
-type RootProperties = "files" | "extends" | "include" | "exclude"
+type RootProperties = 'files' | 'extends' | 'include' | 'exclude'
 
 type AnOption = RootProperties | CompilerOptionName
 
@@ -29,17 +37,22 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ['diagnostics', ['extendedDiagnostics']],
   ['extendedDiagnostics', ['diagnostics']],
 
-  ["experimentalDecorators", ["emitDecoratorMetadata"]],
-  ["emitDecoratorMetadata", ["experimentalDecorators"]],
+  ['experimentalDecorators', ['emitDecoratorMetadata']],
+  ['emitDecoratorMetadata', ['experimentalDecorators']],
 
-  ["files", ["include", "exclude"]],
-  ["include", ["files", "exclude"]],
-  ["exclude", ["include", "files"]]
+  ['files', ['include', 'exclude']],
+  ['include', ['files', 'exclude']],
+  ['exclude', ['include', 'files']],
+
+  ['importHelpers', ['noEmitHelpers', 'downlevelIteration']],
+
+  ['incremental', ['composite', 'tsBuildInfoFile']],
+  ['composite', ['incremental', 'tsBuildInfoFile']],
 ]
 
 /**
  * Options are taken from the compiler flags markdown docs...
- * So err, they are like 90% reliable. 
+ * So err, they are like 90% reliable.
  */
 
 export const defaultsForOptions = {
@@ -49,7 +62,6 @@ export const defaultsForOptions = {
   allowUnreachableCode: 'false',
   allowUnusedLabels: 'false',
   alwaysStrict: '`false`, unless `strict` is set',
-  baseUrl: 'n/a',
   charset: 'utf8',
   checkJs: 'false',
   composite: 'true',
@@ -62,6 +74,7 @@ export const defaultsForOptions = {
   emitBOM: 'false',
   emitDeclarationOnly: 'false',
   esModuleInterop: 'false',
+  exclude: '`["node_modules", "bower_components", "jspm_packages"]`, plus the value of `outDir` if one is specified.',
   extendedDiagnostics: 'false',
   forceConsistentCasingInFileNames: 'false',
   generateCpuProfile: ' profile.cpuprofile',
@@ -74,11 +87,9 @@ export const defaultsForOptions = {
   jsx: '"preserve"',
   jsxFactory: 'React"',
   keyofStringsOnly: 'false',
-  lib: 'n/a',
   listEmittedFiles: 'false',
   listFiles: 'false',
   locale: 'Platform specific',
-  mapRoot: 'n/a',
   maxNodeModuleJsDepth: '0',
   newLine: 'Platform specific',
   noEmit: 'false',
@@ -118,13 +129,58 @@ export const defaultsForOptions = {
   suppressImplicitAnyIndexErrors: 'false',
   target: 'false',
   traceResolution: 'false',
-  tsBuildInfoFile: ' .tsbuildin',
+  tsBuildInfoFile: ' .tsbuildinfo',
+}
+
+export const allowedValues = {
+  jsx: ['`react` (default)', '`react-native`', '`preserve`'],
+  jsxFactory: ['**Allowed Values**: Any identifier or dotted identifier; default `"React.createElement"`'],
+  target: [
+    '`ES3` (default)',
+    '`ES5`',
+    '`ES6`/`ES2015` (synonomous)',
+    '`ES7`/`ES2016`',
+    '`ES2017`',
+    '`ES2018`',
+    '`ES2019`',
+    '`ESNext`',
+  ],
+  module: [
+    '`CommonJS` (default if `target` is `ES3` or `ES5`)',
+    '`ES6`/`ES2015` (synonymous, default for `target` `ES6` and higher)',
+    '`None`',
+    '`UMD`',
+    '`AMD`',
+    '`System`',
+    '`ESNext`',
+  ],
 }
 
 export const configReleasedMap: { [key: string]: AnOption[] } = {
-  "3.7": ["disableSourceOfProjectReferenceRedirect", "downlevelIteration", "generateCpuProfile", "useDefineForClassFields"],
-  "3.5": ["allowUmdGlobalAccess"],
-  "2.1": ["extends"],
-  "2.0": ["declarationDir", "skipLibCheck", "noUnusedLocals", "noUnusedParameters", "lib", "strictNullChecks", "noImplicitThis", "rootDirs", "traceResolution", "include"],
-  "1.8": ["allowJs", "allowSyntheticDefaultImports"]
+  '3.7': [
+    'disableSourceOfProjectReferenceRedirect',
+    'downlevelIteration',
+    'generateCpuProfile',
+    'useDefineForClassFields',
+  ],
+  '3.5': ['allowUmdGlobalAccess'],
+  '3.4': ['incremental', 'tsBuildInfoFile'],
+  '3.0': ['composite', 'build'],
+  '2.7': ['strictPropertyInitialization', 'esModuleInterop'],
+  '2.3': ['strict'],
+  '2.1': ['extends'],
+  '2.0': [
+    'declarationDir',
+    'skipLibCheck',
+    'noUnusedLocals',
+    'noUnusedParameters',
+    'lib',
+    'strictNullChecks',
+    'noImplicitThis',
+    'rootDirs',
+    'traceResolution',
+    'include',
+  ],
+  '1.8': ['allowJs', 'allowSyntheticDefaultImports'],
+  '1.5': ['inlineSourceMap', 'noEmitHelpers', 'newLine', 'inlineSources'],
 }

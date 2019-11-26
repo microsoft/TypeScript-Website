@@ -2,15 +2,11 @@
 display: "Strict Function Types"
 ---
 
-> ✅ We strongly recommend enabling this in all codebases
-
-**Default**: `false`, unless `strict` is set
-
 When enabled, this flag causes functions parameters to be checked more correctly.
 
-Here's a basic example with `strictFunctionTypes` *off*:
+Here's a basic example with `strictFunctionTypes` off:
 
-```ts
+```ts twoslash
 // @strictFunctionTypes: false
 function fn(x: string) {
    console.log("Hello, " + x.toLowerCase());
@@ -25,7 +21,9 @@ func(10);
 ```
 
 With `strictFunctionTypes` *on*, the error is correctly detected:
-```ts
+
+```ts twoslash
+// @errors: 2322
 function fn(x: string) {
    console.log("Hello, " + x.toLowerCase());
 }
@@ -38,10 +36,12 @@ let func: StringOrNumberFunc = fn;
 
 During development of this feature, we discovered a large number of inherently unsafe class hierarchies, including some in the DOM.
 Because of this, the setting only applies to functions written in *function* syntax, not to those in *method* syntax:
-```ts
+
+```ts twoslash
 type Methodish = {
    func(x: string | number): void;
 };
+
 function fn(x: string)  {
    console.log("Hello, " + x.toLowerCase());
 }

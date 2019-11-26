@@ -8,10 +8,10 @@ TypeScript adheres to the EcmaScript standard for modules, which means that a fi
 include a `default` export in order to support syntax like `import React from "react"`. This is not that common in 
 modules for commonjs. For example, without `esModuleInterop` as true:
 
-```ts
+```ts twoslash
 // @checkJs
 // @allowJs
-
+// @allowSyntheticDefaultImports
 // @filename: utilFunctions.js
 const getStringLength = (str) => str.length
 
@@ -28,7 +28,7 @@ const count = utils.getStringLength("Check JS")
 This won't work because there isn't a `default` object which you can import. Even though it feels like it should.
 For convenience, transpilers like Babel will automatically create a default if one isn't created. Making the module look a bit more like:
 
-```js
+```js 
 
 // @filename: utilFunctions.js
 const getStringLength = (str) => str.length
@@ -40,4 +40,4 @@ const allFunctions = {
 module.exports = allFunctions
 ```
 
- Implies 'allowSyntheticDefaultImports'.
+ Turning on this compiler flag will also enable [`allowSyntheticDefaultImports`](#allowSyntheticDefaultImports).

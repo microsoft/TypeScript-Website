@@ -369,7 +369,10 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
 
     if (inErrsButNotFoundInTheHeader.length) {
       const postfix = handbookOptions.errors.length ? ` - the annotation specified ${handbookOptions.errors}` : ""
-      const afterMessage  = inErrsButNotFoundInTheHeader.map(e => `[${e.code}] - ${e.messageText}`).join("\n  ")
+      const afterMessage  = inErrsButNotFoundInTheHeader.map(e => {
+        const msg = typeof e.messageText === "string" ? e.messageText : e.messageText.messageText
+        return `[${e.code}] - ${msg}`
+      }).join("\n  ")
       const codeOutput = `\n\n## Code\n\n'''${extension}\n${originalCode}\n'''`
       throw new Error(`Errors were thrown in the sample, but not included in an errors tag: ${errorsFound}${postfix}.\n  ${afterMessage}${codeOutput}`)
     }

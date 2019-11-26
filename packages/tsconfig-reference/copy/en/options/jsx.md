@@ -2,8 +2,6 @@
 display: "JSX"
 ---
 
-**Allowed Values**: `react` (default), `react-native`, `preserve`
-
 Controls how JSX constructs are emitted in JavaScript files.
 This only affects output of JS files that started in `.tsx` files.
 

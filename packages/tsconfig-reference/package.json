@@ -7,6 +7,6 @@
     "generate-json": "yarn ts-node scripts/generateJSON.ts",
     "generate-markdown": "yarn ts-node --project tsconfig.json scripts/generateMarkdown.ts ",
     "build": "yarn generate-json; yarn generate-markdown",
-    "test": "yarn ts-node scripts/lint.ts"
+    "test": "yarn build; yarn ts-node scripts/lint.ts"
   }
 }

@@ -2,14 +2,11 @@
 display: "No Implicit Any"
 ---
 
-> ✅ We strongly recommend enabling this in all codebases
+In some cases where no type annotations are present, TypeScript will fall back to a type of `any` for a variable when it can not infer the type.
 
-**Default**: 
+This can cause some errors to be missed, for example:
 
-In some cases where no type annotations are present, TypeScript will fall back to a type of `any` for a variable.
-This can cause some errors to be missed:
-
-```ts
+```ts twoslash
 // @noImplicitAny: false
 function fn(s) {
    // No error?
@@ -18,8 +15,10 @@ function fn(s) {
 fn(42);
 ```
 
-When `noImplicitAny` is set, TypeScript will issue an error whenever it would have inferred `any`:
-```ts
+Turning on `noImplicitAny` however TypeScript will issue an error whenever it would have inferred `any`:
+
+```ts twoslash
+// @errors: 7006
 function fn(s) {
    console.log(s.subtr(3))
 }

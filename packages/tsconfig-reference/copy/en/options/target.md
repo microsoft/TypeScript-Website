@@ -2,7 +2,6 @@
 display: "Target"
 ---
 
-**Allowed Values**: `ES3` (default), `ES5`, `ES6`/`ES2015` (synonomous), `ES7`/`ES2016`, `ES2017`, `ES2018`, `ES2019`, `ESNext`
 
 All modern browsers support all ES6 features, so `ES6` is a good choice.
 You might choose to set a lower target if your code is deployed to older environments, or a higher target if your code only runs on newer environments.
