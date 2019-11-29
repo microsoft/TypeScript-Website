@@ -11,8 +11,9 @@ import { join } from 'path'
 import * as assert from 'assert'
 import { read as readMarkdownFile } from 'gray-matter'
 import * as prettier from 'prettier'
+import { CompilerOptionJSON } from './generateJSON.js'
 
-const options = require('../data/tsconfigOpts.json').options
+const options = require('../data/tsconfigOpts.json').options as CompilerOptionJSON[]
 const categories = require('../data/tsconfigCategories.json') as typeof import('../data/tsconfigCategories.json')
 
 const orderedCategories = [
@@ -67,7 +68,7 @@ languages.forEach(lang => {
     markdownChunks.push(categoryFile.content)
 
     // Loop through their options
-    const optionsForCategory = options.filter(o => o.category === category.code)
+    const optionsForCategory = options.filter(o => o.categoryCode === category.code)
     optionsForCategory.forEach(option => {
       const mdPath = join('options', option.name + '.md')
       const fullPath = join(__dirname, '..', 'copy', lang, mdPath)
@@ -80,22 +81,39 @@ languages.forEach(lang => {
       // Must have a display title in the front-matter
       assert.ok(optionFile.data.display, 'Could not get a display for option: ' + option.name + ' in ' + lang)
 
+      markdownChunks.push("<section class='compiler-option'>")
+
       // Let the title change it's display but keep the same ID
       const titleLink = `<a aria-label="Link to the compiler option:${option.name}" title="Link to the compiler option:${option.name}" href='#${option.name}'>#</a>`
       const title = `<h3 id='${option.name}'>${titleLink} ${optionFile.data.display} - <code>${option.name}</code></h3>`
-      
       markdownChunks.push(title)
+
+      // Make a flexbox container for the table and content
+      markdownChunks.push("<div class='compiler-content'>")
+
+      markdownChunks.push("<div class='markdown'>")
+      // Push in the content of the file
       markdownChunks.push(optionFile.content)
+
+      markdownChunks.push("</div>")
 
       // Make a markdown table of the important metadata
       const mdTableRows = [] as [string, string][]
 
-      // mdTableRows.push(['Value', '`' + option.name + '`'])
+      if (option.deprecated) mdTableRows.push(['Name', option.name])
       if (option.deprecated) mdTableRows.push(['Status', 'Deprecated'])
+
+      if (option.recommended) mdTableRows.push(['Recommended', "True"])
+    
 
       if (option.defaultValue) {
         const value = option.defaultValue.includes(' ') ? option.defaultValue : '`' + option.defaultValue + '`'
         mdTableRows.push(['Default', value])
+      }
+
+      if (option.allowedValues) {
+        const optionValue = option.allowedValues.join(', ')
+        mdTableRows.push(['Allowed', optionValue])
       }
 
       if (option.related) {
@@ -103,8 +121,25 @@ languages.forEach(lang => {
         mdTableRows.push(['Related', optionValue])
       }
 
-      const table = ` |   |   |\n | ---- | --- | \n` + mdTableRows.map(r => `${r[0]} | ${r[1]}`).join('\n')
+      if (option.internal) {
+        mdTableRows.push(['Status', "internal"])
+      }
+
+      if (option.deprecated) {
+        mdTableRows.push(['Status', "Deprecated"])
+      }
+
+      if(option.releaseVersion) {
+        const underscores = option.releaseVersion.replace(".", "_")
+        const link = `/docs/handbook/release-notes/typescript-${underscores}.html`
+        mdTableRows.push(['Released', `<a href="${link}">${option.releaseVersion}</a>`])
+      }
+  
+      const table = "<table class='compiler-option-md'><tr><th /><th /></tr>" + mdTableRows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}<td/></tr>`).join('\n') + "</table>"
       markdownChunks.push(table)
+
+      
+      markdownChunks.push("</div></section>")
     })
   })
 
@@ -117,6 +152,6 @@ languages.forEach(lang => {
   writeFileSync(join(__dirname, '..', 'output', lang + '.json'), JSON.stringify({ categories: allCategories }))
 
   // Do a quick linter at the end
-  const unfound = options.filter(o => markdown.includes(o))
-  if (unfound.length) throw new Error(`Could not find these options in ${lang}: ${unfound.map(u => u.name).join(', ')}`)
+  // const unfound = options.filter(o => !markdown.includes(o.name))
+  // if (unfound.length) throw new Error(`Could not find these options in ${lang}: ${unfound.map(u => u.name).join(', ')}`)
 })
