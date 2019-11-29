@@ -13,19 +13,20 @@ export declare const helloWorld = "hi";
 
 Without setting `removeComments` or having it as `true`:
 
-```js
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.helloWorld = "hi";
+```ts twoslash
+// @showEmit
+// @removeComments: true
+/** Used to show the user a hello message */
+export declare const helloWorld = "hi";
 ```
 
 When `removeComments` is set to `false`:
 
-```js
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+```ts twoslash
+// @showEmit
+// @removeComments: false
 /** Used to show the user a hello message */
-exports.helloWorld = "hi";
+export declare const helloWorld = "hi";
 ```
 
 This means your comments will show up in the JavaScript code.

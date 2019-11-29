@@ -5,8 +5,9 @@ export const denyList: CompilerOptionName[] = ['help', 'init', 'all', 'watch', '
 
 /** Things we should document, but really want to help move people away from */
 export const deprecated: CompilerOptionName[] = ['out', 'charset', 'keyofStringsOnly', 'moduleResolution', 'noErrorTruncation']
+
 /** Things which people really shouldn't use, but need to document  */
-export const internal: CompilerOptionName[] = ['preserveWatchOutput']
+export const internal: CompilerOptionName[] = ['preserveWatchOutput', 'stripInternal']
 
 /** You should use this! They are off by default */
 export const recommended: CompilerOptionName[] = [
@@ -48,6 +49,9 @@ export const relatedTo: [AnOption, AnOption[]][] = [
 
   ['incremental', ['composite', 'tsBuildInfoFile']],
   ['composite', ['incremental', 'tsBuildInfoFile']],
+
+  ["types", ["typeRoots"]],
+  ["typeRoots", ["types"]]
 ]
 
 /**
