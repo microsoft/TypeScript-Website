@@ -8,26 +8,45 @@
 
 import * as ts from 'typescript'
 
-import { CommandLineOption } from './types'
+import { CommandLineOptionBase } from './types'
 import { writeFileSync } from 'fs'
 import { join } from 'path'
 import { format } from 'prettier'
-import { denyList, relatedTo, deprecated, internal, defaultsForOptions } from './tsconfigRules'
+import {
+  denyList,
+  relatedTo,
+  deprecated,
+  internal,
+  defaultsForOptions,
+  recommended,
+  allowedValues,
+  configToRelease,
+} from './tsconfigRules'
 import { CompilerOptionName } from '../data/_types'
 
 const toJSONString = obj => format(JSON.stringify(obj, null, '  '), { filepath: 'thing.json' })
 const writeJSON = (name, obj) => writeFileSync(join(__dirname, '..', 'data', name), toJSONString(obj))
 const writeString = (name, text) => writeFileSync(join(__dirname, '..', 'data', name), format(text, { filepath: name }))
 
+export interface CompilerOptionJSON extends CommandLineOptionBase {
+  releaseVersion?: string
+  allowedValues?: string[]
+  categoryCode?: number
+  related?: string[]
+  deprecated?: string
+  internal?: true
+  recommended?: true
+  defaultValue?: string
+}
+
 // @ts-ignore because this is private
-const options = ts.optionDeclarations as CommandLineOption[]
+const options = ts.optionDeclarations as CompilerOptionJSON[]
 const categories = new Set<ts.DiagnosticMessage>()
 
 // Cut down the list
 const filteredOptions = options
-      .filter(o => !denyList.includes(o.name as CompilerOptionName))
-      .filter(o => !o.isCommandLineOnly)
-
+  .filter(o => !denyList.includes(o.name as CompilerOptionName))
+  .filter(o => !o.isCommandLineOnly)
 
 filteredOptions.forEach(option => {
   const name = option.name as CompilerOptionName
@@ -44,29 +63,37 @@ filteredOptions.forEach(option => {
   // Convert categories to be something which can be looked up
   if ('category' in option) {
     categories.add(option.category)
-    // @ts-ignore
-    option.category = option.category.code
+    option.categoryCode = option.category.code
+    option.category = undefined
   }
 
   // If it's got related fields, set them
   const relatedMetadata = relatedTo.find(a => a[0] == name)
   if (relatedMetadata) {
-    // @ts-ignore
     option.related = relatedMetadata[1]
   }
 
   if (deprecated.includes(name)) {
-    // @ts-ignore - add custom messages later
     option.deprecated = 'Deprecated'
   }
 
   if (internal.includes(name)) {
-    // @ts-ignore 
     option.internal = true
   }
 
+  if (recommended.includes(name)) {
+    option.recommended = true
+  }
+
+  if (name in allowedValues) {
+    option.allowedValues = allowedValues[name]
+  }
+
+  if (name in configToRelease) {
+    option.releaseVersion = configToRelease[name]
+  }
+
   if (name in defaultsForOptions) {
-    // @ts-ignore
     option.defaultValue = defaultsForOptions[name]
   }
 
@@ -75,75 +102,80 @@ filteredOptions.forEach(option => {
   delete option.showInSimplifiedHelpView
 })
 
-const topLevelTSConfigOptions = [
+const topLevelTSConfigOptions: CompilerOptionJSON[] = [
   {
-    "name": "files",
-    "type": "An array of strings",
-    "category": 0,
-    "description": {
-      "message": "Print names of files part of the compilation."
+    name: 'files',
+    type: 'list',
+    categoryCode: 0,
+    // @ts-ignore
+    description: {
+      message: 'Print names of files part of the compilation.',
     },
-    "defaultValue": "false"
+    defaultValue: 'false',
   },
   {
-    "name": "include",
-    "type": "An array of strings",
-    "category": 0,
-    "description": {
-      "message": "Print names of files part of the compilation."
+    name: 'include',
+    type: 'list',
+    categoryCode: 0,
+    // @ts-ignore
+    description: {
+      message: 'Print names of files part of the compilation.',
     },
-    "defaultValue": "false"
+    defaultValue: 'false',
   },
   {
-    "name": "exclude",
-    "type": "An array of strings",
-    "category": 0,
-    "description": {
-      "message": "Print names of files part of the compilation."
+    name: 'exclude',
+    type: 'list',
+    categoryCode: 0,
+    // @ts-ignore
+    description: {
+      message: 'Print names of files part of the compilation.',
     },
-    "defaultValue": "false"
+    defaultValue: 'false',
   },
   {
-    "name": "extends",
-    "type": "string",
-    "category": 0,
-    "description": {
-      "message": "Print names of files part of the compilation."
+    name: 'extends',
+    type: 'string',
+    categoryCode: 0,
+    // @ts-ignore
+    description: {
+      message: 'Print names of files part of the compilation.',
     },
-    "defaultValue": "false"
+    defaultValue: 'false',
   },
   {
-    "name": "typeAcquisition",
-    "type": "string",
-    "category": 0,
-    "description": {
-      "message": "Print names of files part of the compilation."
+    name: 'typeAcquisition',
+    type: 'string',
+    categoryCode: 0,
+    // @ts-ignore
+    description: {
+      message: 'Print names of files part of the compilation.',
     },
-    "defaultValue": "false"
+    defaultValue: 'false',
   },
   {
-    "name": "references",
-    "type": "string",
-    "category": 0,
-    "description": {
-      "message": "Print names of files part of the compilation."
+    name: 'references',
+    type: 'string',
+    categoryCode: 0,
+    // @ts-ignore
+    description: {
+      message: 'Print names of files part of the compilation.',
     },
-    "defaultValue": "false"
+    defaultValue: 'false',
   },
   {
-    "name": "importHelpers",
-    "type": "string",
-    "category": 6178,
-    "description": {
-      "message": "Print names of files part of the compilation."
+    name: 'importHelpers',
+    type: 'string',
+    categoryCode: 6178,
+    // @ts-ignore
+    description: {
+      message: 'Print names of files part of the compilation.',
     },
-    "defaultValue": "false"
+    defaultValue: 'false',
   },
-
 ]
 
-
-writeJSON('tsconfigOpts.json', { options: [...topLevelTSConfigOptions, ...filteredOptions]})
+writeJSON('tsconfigOpts.json', { options: [...topLevelTSConfigOptions, ...filteredOptions] })
 
 // Improve the typing for the rules
 writeString(
@@ -156,11 +188,11 @@ categories.forEach(c => (categoryMap[c.code] = c))
 
 // Add custom categories, for custom compiler flags
 
-categoryMap["0"] = {
+categoryMap['0'] = {
   code: 0,
   category: 3,
-  key: "Project_Files_0",
-  message: "Project File Management"
+  key: 'Project_Files_0',
+  message: 'Project File Management',
 }
 
 writeJSON('tsconfigCategories.json', categoryMap)
@@ -168,5 +200,3 @@ writeJSON('tsconfigCategories.json', categoryMap)
 // @ts-ignore - Print the defaults for a TS Config file
 const defaults = ts.defaultInitCompilerOptions
 writeJSON('tsconfigDefaults.json', defaults)
-
-
