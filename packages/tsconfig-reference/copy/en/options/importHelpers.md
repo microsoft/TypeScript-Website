@@ -18,7 +18,7 @@ export function fn(arr: number[]) {
 }
 ```
 
-Turning on [`downlevelIteration`](#downlevelIteration) and `importHelpers` is not turned on:
+Turning on [`downlevelIteration`](#downlevelIteration) and `importHelpers` is still false:
 
 ```ts twoslash
 // @showEmit
@@ -41,16 +41,4 @@ export function fn(arr: number[]) {
 }
 ```
 
-### `noEmitHelpers`
-
-Instead of importing helpers with [`importHelpers`](#importHelpers), you can provide implementations in the global scope for the helpers you use and completely turn off emitting of helper functions:
-
-```ts twoslash
-// @showEmit
-// @target: ES5
-// @downleveliteration
-// @noemithelpers
-export function fn(arr: number[]) {
-   const arr2 = [1, ...arr];
-}
-```
+You can use [`noEmitHelpers`](#noEmitHelpers) when you provide your own implementations of these functions.

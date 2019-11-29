@@ -30,8 +30,6 @@ function renderToHTML(lines, options, twoslash) {
 
       l.forEach(token => {
         const isError = errors.find(e => {
-          console.log(`is ${e.character} <= ${pos} && ${e.character + e.length} >= ${pos + token.content.length}`)
-          console.log(`is ${e.character <= pos} && ${e.character + e.length  >= pos + token.content.length}`)
           return e.character <= pos && e.character + e.length >= pos + token.content.length
         })
         const className = isError ? "class = 'err'" : ""

@@ -4,8 +4,7 @@ import { CompilerOptionName } from '../data/_types'
 export const denyList: CompilerOptionName[] = ['help', 'init', 'all', 'watch', 'version', 'build', 'project']
 
 /** Things we should document, but really want to help move people away from */
-export const deprecated: CompilerOptionName[] = ['out', 'charset', 'keyofStringsOnly', 'moduleResolution']
-
+export const deprecated: CompilerOptionName[] = ['out', 'charset', 'keyofStringsOnly', 'moduleResolution', 'noErrorTruncation']
 /** Things which people really shouldn't use, but need to document  */
 export const internal: CompilerOptionName[] = ['preserveWatchOutput']
 
@@ -44,7 +43,8 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ['include', ['files', 'exclude']],
   ['exclude', ['include', 'files']],
 
-  ['importHelpers', ['noEmitHelpers', 'downlevelIteration']],
+  ['importHelpers', ['noEmitHelpers', 'downlevelIteration', 'importHelpers']],
+  ['noEmitHelpers', ['importHelpers']],
 
   ['incremental', ['composite', 'tsBuildInfoFile']],
   ['composite', ['incremental', 'tsBuildInfoFile']],
@@ -156,7 +156,7 @@ export const allowedValues = {
   ],
 }
 
-export const configReleasedMap: { [key: string]: AnOption[] } = {
+export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
   '3.7': [
     'disableSourceOfProjectReferenceRedirect',
     'downlevelIteration',
@@ -165,10 +165,15 @@ export const configReleasedMap: { [key: string]: AnOption[] } = {
   ],
   '3.5': ['allowUmdGlobalAccess'],
   '3.4': ['incremental', 'tsBuildInfoFile'],
+  '3.2': ['strictBindCallApply', 'showConfig'],
   '3.0': ['composite', 'build'],
+  '2.9': ['keyofStringsOnly', 'noUnusedLocals', 'noUnusedParameters', 'declarationMap'],
+  '2.8': ['emitDeclarationOnly'],
   '2.7': ['strictPropertyInitialization', 'esModuleInterop'],
-  '2.3': ['strict'],
-  '2.1': ['extends'],
+  '2.6': ['strictFunctionTypes'],
+  '2.3': ['strict', 'downlevelIteration', 'init'],
+  '2.2': ['jsx'],
+  '2.1': ['extends', 'alwaysStrict'],
   '2.0': [
     'declarationDir',
     'skipLibCheck',
@@ -181,6 +186,23 @@ export const configReleasedMap: { [key: string]: AnOption[] } = {
     'traceResolution',
     'include',
   ],
-  '1.8': ['allowJs', 'allowSyntheticDefaultImports'],
-  '1.5': ['inlineSourceMap', 'noEmitHelpers', 'newLine', 'inlineSources'],
+  '1.8': [
+    'allowJs',
+    'allowSyntheticDefaultImports',
+    'allowUnreachableCode',
+    'allowUnusedLabels',
+    'noImplicitReturns',
+    'noFallthroughCasesInSwitch',
+  ],
+  '1.5': ['inlineSourceMap', 'noEmitHelpers', 'newLine', 'inlineSources', 'rootDir'],
+  '1.4': ['noEmitOnError'],
+  '1.0': ['declaration', 'target', 'module', 'outFile'],
 }
+
+/** When a particular compiler flag (or CLI command...) was added  */
+export const configToRelease  = {}
+Object.keys(releaseToConfigsMap).forEach(v => {
+  releaseToConfigsMap[v].forEach(key => {
+    configToRelease[key] = v
+  })
+})

@@ -6,7 +6,6 @@ export function setupStickyNavigation() {
   document.addEventListener(
     "scroll",
     event => {
-      console.log("scroll", window.pageYOffset, previousY)
       // iOS scrolls to make sure the viewport fits, don't hide the input then
       const hasKeyboardFocus = document.activeElement.nodeName == "INPUT"
       if (hasKeyboardFocus) {
