@@ -29,11 +29,8 @@ function renderToHTML(lines, options, twoslash) {
       let pos = 0
 
       l.forEach(token => {
-        const isError = errors.find(e => {
-          console.log(`is ${e.character} <= ${pos} && ${e.character + e.length} >= ${pos + token.content.length}`)
-          console.log(`is ${e.character <= pos} && ${e.character + e.length  >= pos + token.content.length}`)
-          return e.character <= pos && e.character + e.length >= pos + token.content.length
-        })
+        // Underlining particular words
+        const isError = errors.find(e =>  e.character <= pos && e.character + e.length >= pos + token.content.length)
         const className = isError ? "class = 'err'" : ""
         html += `<span ${className} style="color: ${token.color}">${escapeHtml(token.content)}</span>`
         pos += token.content.length
@@ -42,11 +39,12 @@ function renderToHTML(lines, options, twoslash) {
       html += `\n`
     }
 
+    // Adding error messages to the line after
     if (errors.length) {
       const messages = errors.map(e => escapeHtml(e.renderedMessage)).join("</br>")
       const codes = errors.map(e => e.code).join("<br/>")
       html += `<span class="error"><span>${messages}</span><span class="code">${codes}</span></span>`
-      html += '\n'
+      html += `<span class="error-behind">${messages}</span>`
     }
 
   })
