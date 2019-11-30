@@ -1,0 +1,48 @@
+
+
+#site-footer {
+  background-color: #152740;
+  color: rgba(255, 255, 255, 0.7);
+
+  a {
+    color: white;
+  }
+
+  section {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  h3 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+
+    li {
+      width: 14rem;
+      font-weight: 600;
+      list-style: none;
+      
+      a {
+        font-size: 16px;
+      }
+      p {
+        width: 74%;
+        font-size: 12px;
+        margin-top: 2px;
+      }
+    }
+  }
+
+  svg.typescript-long {
+    margin-left: 8px;
+    position: relative;
+    top: 2px;
+  }
+}

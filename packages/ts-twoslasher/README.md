@@ -411,14 +411,14 @@ export interface TwoSlashReturn {
     extension: string;
     /** Sample requests to highlight a particular part of the code */
     highlights: {
-        kind: 'highlight';
+        kind: "highlight";
         position: number;
         length: number;
         description: string;
     }[];
     /** Requests to use the LSP to get info for a particular symbol in the source */
     queries: {
-        kind: 'query';
+        kind: "query";
         position: number;
         offset: number;
     }[];
