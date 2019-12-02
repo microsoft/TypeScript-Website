@@ -30,7 +30,7 @@ class HandbookTemplate extends React.Component<{ pageContext: any, data: BlogPos
             </div>
           </div>
         </section>
-        <hr />
+        {/* 
         <ul>
           <li>
             {previous && (
@@ -43,6 +43,7 @@ class HandbookTemplate extends React.Component<{ pageContext: any, data: BlogPos
             )}
           </li>
         </ul>
+        */}
       </Layout>
     )
   }

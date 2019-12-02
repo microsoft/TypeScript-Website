@@ -4,14 +4,19 @@
   padding-top: 1rem;
   padding-bottom: 3rem;
 
+  @media (max-width: 940px) {
+    padding-bottom: 9rem;
+  }
+
   a {
     color: white;
   }
 
   section {
-    max-width: 900px;
+    max-width: 920px;
+    padding-left: 2rem;
+    padding-right: 2rem;
     margin: 0 auto;
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
     padding-top: 1rem;
   }
 
@@ -19,7 +24,7 @@
     font-style: normal;
     font-weight: 600;
     font-size: 20px;
-    margin-top: 0.3rem;
+    margin-top:1px;
   }
 
   ul {
@@ -28,7 +33,7 @@
     padding: 0;
 
     li {
-      width: 14rem;
+      width: 13rem;
       font-weight: 600;
       list-style: none;
 
@@ -49,19 +54,41 @@
         text-align: right;
       }
     }
+
+    @media (max-width: 940px) {
+      li {
+        width: 10rem;
+        
+        p {
+          width: 100%;
+        }
+      }
+    }
   }
 
   section#community {
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding-top: 2rem;
     display: flex;
 
+    @media (max-width: 940px) {
+      flex-direction: column-reverse;
+
+      article#logos {
+        text-align: center;
+        margin: 0 auto;
+        margin-top: 3rem;
+      }
+    }
+
     article > ul {
-      width: 80%;
       display: flex;
       flex-wrap: wrap;
 
       > li {
         width: 50%;
         margin-bottom: 0.8rem;
+        word-break: break-all;
       }
     }
 
@@ -135,7 +162,7 @@
     margin: 0 auto;
     margin-bottom: 20px;
     position: relative;
-    right: 159px;
+    right: 179px;
   }
 
   .navbar-sub {
