@@ -19,7 +19,7 @@
     "build": "yarn build-tsconfig-reference-md && yarn build-site",
     "update-snapshots": "yarn workspace typescriptlang-org update-snapshots",
     "clean": "yarn workspace typescriptlang-org gatsby clean",
-    "test": "yarn jest",
+    "test": "yarn workspaces run test",
     "playground": "concurrently -p \"[{name}]\" -n \"TS,WEB\" -c \"bgBlue.bold,bgMagenta.bold\" \"yarn workspace playground start\" \"yarn workspace playground-sandbox start\"",
     "deploy:dev": "yarn build && az storage blob upload-batch -s 'packages/typescriptlang-org/public' -d \\$web --account-name playgroundstatichosting --subscription 'TypeScript – Internal Services'"
   },
