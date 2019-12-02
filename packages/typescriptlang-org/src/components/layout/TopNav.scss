@@ -95,7 +95,7 @@ html, #___gatsby {
   }
 }
 
-#beta-notification-menu {
+#beta-notification-menu, .gatsby-noscript {
   background-color: #c63131;
   text-align: center;
   color: white;
@@ -213,7 +213,7 @@ form.search {
       }
 
       input {
-        width: calc(200% - 2rem);
+        width: calc(200%);
       }
     }
   }
