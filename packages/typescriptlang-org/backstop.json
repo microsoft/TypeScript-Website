@@ -27,7 +27,7 @@
     },
     {
       "label": "Empty Page",
-      "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/empty.html",
+      "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/empty/index.html",
       "misMatchThreshold" : 0.1
     },
     {
