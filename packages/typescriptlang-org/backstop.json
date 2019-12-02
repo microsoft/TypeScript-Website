@@ -26,6 +26,11 @@
       "misMatchThreshold" : 0.1
     },
     {
+      "label": "Empty Page",
+      "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/empty.html",
+      "misMatchThreshold" : 0.1
+    },
+    {
       "label": "Old Handbook Example",
       "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/docs/handbook/functions.html",
       "misMatchThreshold" : 0.1,

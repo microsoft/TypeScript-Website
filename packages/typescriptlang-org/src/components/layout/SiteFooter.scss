@@ -1,10 +1,12 @@
+$width-for-small-footer: 800px;
+
 #site-footer {
   background-color: #152740;
   color: rgba(255, 255, 255, 0.7);
   padding-top: 1rem;
   padding-bottom: 3rem;
 
-  @media (max-width: 940px) {
+  @media (max-width: $width-for-small-footer) {
     padding-bottom: 9rem;
   }
 
@@ -55,7 +57,7 @@
       }
     }
 
-    @media (max-width: 940px) {
+    @media (max-width: $width-for-small-footer) {
       li {
         width: 10rem;
         
@@ -71,7 +73,7 @@
     padding-top: 2rem;
     display: flex;
 
-    @media (max-width: 940px) {
+    @media (max-width: $width-for-small-footer) {
       flex-direction: column-reverse;
 
       article#logos {
