@@ -26,7 +26,7 @@ $width-for-small-footer: 800px;
     font-style: normal;
     font-weight: 600;
     font-size: 20px;
-    margin-top:1px;
+    margin-top: 1px;
   }
 
   ul {
@@ -60,7 +60,7 @@ $width-for-small-footer: 800px;
     @media (max-width: $width-for-small-footer) {
       li {
         width: 10rem;
-        
+
         p {
           width: 100%;
         }
@@ -129,11 +129,19 @@ $width-for-small-footer: 800px;
   position: relative;
 
   // this class is added by JS at runtime if the window is over 900 px width
-  &.allow-hover:hover {
+  &.allow-hover {
     #playground-samples-popover {
-      display: block !important;
+      bottom: -5px;
+      opacity: 0;
     }
-    .footer-icon:after {
+
+    &:hover #playground-samples-popover {
+      visibility: visible;
+      bottom: 0px;
+      opacity: 1;
+    }
+    
+    &:hover .footer-icon:after {
       content: "⊙";
     }
   }
@@ -150,6 +158,9 @@ $width-for-small-footer: 800px;
   right: -400px;
   margin: 0 auto;
   color: black;
+  visibility: hidden;
+  transition: bottom 0.3s ease, opacity 0.2s linear, visibility 0s linear;
+  opacity: 1;
 
   .section-content {
     display: flex;

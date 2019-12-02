@@ -89,15 +89,14 @@ export const PlaygroundSamples = (props: Props) => {
     // This is used to handle tabbing
     const showPopover = () => {
       const popover = document.getElementById("playground-samples-popover")
-      popover.style.display = "block"  
-      // iconSpan.textContent = "⊙"
+      popover.style.visibility = "visible"  
+      popover.style.opacity = "1"
 
       // When the popover is up, allow tabbing through all of the items to hide the popover
       popover.addEventListener("blur", (e) => {
         const element = e.relatedTarget as HTMLElement
         if (!element || element.tagName === "A" && !element.classList.contains("example-link")) {
-          popover.style.display = "none"
-          // iconSpan.textContent = "▼"
+          popover.style.visibility = "hidden"
         }
       }, true);
     }
@@ -107,7 +106,7 @@ export const PlaygroundSamples = (props: Props) => {
   });
 
   return (
-    <div id="playground-samples-popover" style={{ display:"none" }}>
+    <div id="playground-samples-popover">
       <div className="examples">
         <ol>
           {locale.sections.map(section => {
