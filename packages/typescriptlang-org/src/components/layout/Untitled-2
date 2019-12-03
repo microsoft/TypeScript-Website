@@ -1,0 +1,108 @@
+## Navigation 
+
+I've focused my work with three main goals since the last update:
+
+- Documentation for the TSConfig
+- Tooling for how we want to show code blocks
+- Creating the navigation shell of the website so that we can preview pages
+
+I'm going to focus this update on the navigation aspects of the site. Let's look at a few different places we have
+navigation and talk about why it was designed this way
+
+### Site Navigation
+
+I tried to take a mix of modern native mobile app design, and website best practices to focus on three main audiences:
+
+- Desktop with mouse
+- Desktop via keyboard
+- Mobile Phones
+
+The first two tend to have similar needs in terms of what they want for site navigation, but mobile devices themselves 
+should be treated quite differently both from a user's intent and how we should present navigation.
+
+How does it look on desktop?
+
+[desktop empty]
+
+How does it look on mobile?
+
+[mobile empty]
+
+### Why the drastic change?
+
+Navigation on desktop tends to take a lot of design cues from headers in print design which aims to follow the path of reading:
+
+1. Have a strong visual distinction for a section of links
+1. Always have a brand mark link in the top corner where folks read from which takes you to the index
+1. Include a few links to the important places next to that
+1. Include a flexible whitespace gap then have secondary tiered navigation links at the end of your eye flow
+
+But mobile really disrupted that from two factors:
+
+1. The horizontal space is so constrained, good luck getting more than 4-5 words in there
+1. There are 'blessed' areas of the screen where it is physically easier to touch once mobile devices got big
+
+This moved the design frames of references from one loosely based on [fitt's law](https://blog.codinghorror.com/fitts-law-and-infinite-width/) to
+one based on thumb touch maps.
+
+<img src="https://www.scotthurff.com/content/images/2019/06/thumb-zones-lineup.png">
+
+[From scotthurff.com](https://www.scotthurff.com/posts/how-to-design-for-thumbs-in-the-era-of-huge-screens/)
+
+In designing for mobile, I had to really narrow the priorities for people to two things. I wanted people to easily get to search, and to go to the root of the documentation. In my experience building websites for developer documentation, most people are using mobile as a reference or to quickly show something to someone.
+
+You can see here that we barely get into the natural section in search
+
+[ios1]
+
+[ios2]
+
+With the navigation designed, I applied the same forms of navigation hiding which mobile browsers do. The navigation will only show when you start to move up. It also keeps track of display curves for phones like the iPhone X and my Samsung Note, you can see in this GIF when the browser includes a flat edge at the bottom then the navigation buttons lay flat.
+
+[gif of nav]
+
+I still have a few questions to answer though:
+
+- What will the language selector look like?
+- What will the theme selector look like?
+
+I expect to take some cues from [docs.microsoft.com](https://docs.microsoft.com/en-us/aspnet/core/getting-started/?view=aspnetcore-3.0&tabs=macos).
+
+#### Footers
+
+I believe in mega-footers. A footer is the end of the information you were actually looking for and generally represents three things:
+
+- A jump-off section for people to get to related links
+- Calls to action for something you want your users to do
+- A place for tertiary links (1st: site nav, 2nd: related internal links, 3rd links you need to have somewhere but don't need design weight)
+
+[footer img]
+
+With the TypeScript footer, to handle the I took a look at the most popular documentation pages on the website and included them to make sure 
+that people would have easy access to them. Their order is in popularity.
+
+To hit the second, I wanted to raise the visibility of the playground code samples. These provide a very focused explanation of many parts of 
+how TypeScript works and aren't easy to find as a sub-navigation element inside the playground. When viewport to the site is large enough, 
+and JavaScript is enabled then the Code Samples link switches to a popover which echos the design in the playground.
+
+[gif of footer]
+
+For mobile, I didn't need to do anything content-wise. I don't think there's any value in making it more focused. Design wise I only made a few tweaks but it felt fine in both.
+
+#### Internal Navigation
+
+The other place where we have navigation is between pages. When you link into a handbook, we want to show a navigation between related documents. 
+
+[gif of sidenav]
+
+This is a pretty solid design pattern to work within, and one that's common on documentation sites. I took care to make it obvious which navigation section you're in
+and Gatsby made it so fast that it doesn't feel like you're navigating between web pages.
+
+
+#### No dependencies
+
+A lot of what you're seeing in these screenshots looks like a lot of complicated JavaScript code, but it's not. Apart from search which comes from Algolia, the v2 site has zero JavaScript dependencies at runtime, and is a static HTML site to an azure blob storage account.
+
+The interaction patterns are built from first building the site with JavaScript disabled, and then JavaScript to handle some of the extra is added in at runtime. I use the `useEffect` pattern inside a React component to add client-side JS enhancements. For example [here is all the runtime JavaScript code](https://github.com/microsoft/TypeScript-Website/blob/6ed0a6021bd14e7f078ceb740c33c5d844f968f8/packages/typescriptlang-org/src/components/layout/SiteFooter-PlaygroundSamples.tsx#L75-L106) to handle allowing the popover in the footer. The rest is all CSS.
+
+This pattern works really well for a medium sized site with only 1-2 core contributors.

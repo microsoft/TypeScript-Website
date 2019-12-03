@@ -1,0 +1,10 @@
+{
+  "name": "playground-examples",
+  "private": true,
+  "license": "MIT",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "node scripts/generateTOC.js",
+    "test": "echo 'NOOP'"
+  }
+}

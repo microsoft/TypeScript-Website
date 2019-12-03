@@ -40,6 +40,7 @@ html, #___gatsby {
     .left {
       display: flex;
       flex-direction: row;
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
     .right {
@@ -94,7 +95,7 @@ html, #___gatsby {
   }
 }
 
-#beta-notification-menu {
+#beta-notification-menu, .gatsby-noscript {
   background-color: #c63131;
   text-align: center;
   color: white;
@@ -170,7 +171,7 @@ form.search {
       /* How long to scroll down */
       transition-timing-function: ease;
       transition: transform 0.6s;
-      transform: translate(0, 6rem);
+      transform: translate(0, 8.2rem);
     }
     
     /* Because 'TypeScript' is removed, let the width be auto */
@@ -212,7 +213,7 @@ form.search {
       }
 
       input {
-        width: calc(200% - 2rem);
+        width: calc(200%);
       }
     }
   }
