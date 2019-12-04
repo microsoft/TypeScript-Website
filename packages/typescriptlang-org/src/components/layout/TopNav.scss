@@ -62,6 +62,8 @@ html, #___gatsby {
 
   #home-page-logo {
     width: 200px;
+    font-size: 1.2rem;
+    font-weight: 600;
 
     svg {
       margin-right: 0.6rem;
@@ -107,7 +109,7 @@ html, #___gatsby {
 
 form.search {
   height: 3rem;
-  background-color: #2682C3;
+  background-color: #2A68AC;
   padding-left: 1rem;
   display: inline-block;
 
@@ -119,7 +121,7 @@ form.search {
 
   input {
     -webkit-appearance: none;
-    background-color: #2682C3;
+    background-color: #2A68AC;
     border-color: #152740;
     border-radius: 0;
     border: none;
