@@ -82,12 +82,12 @@ html, #___gatsby {
     font-weight: 600;
     font-size: 1rem;
     text-decoration: none;
-    border: 1px solid transparent;
+
     display: inline-block;
 
     a {
       display: block;
-      padding: 0.7rem 0.5em 0.7em;
+      padding: 0.75rem 0.5em 0.7em;
     }
   }
 
@@ -238,4 +238,30 @@ form.search {
       transform: rotate(135deg);
     }
   }
+}
+
+.skip-to-main {
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.skip-to-main:focus {
+  clip: auto;
+  height: auto;
+  overflow: auto;
+  position: absolute;
+  width: 100%;
+  background-color: #faf9f8;
+  color: black;
+  text-align: center;
+  padding: 20px;
+  z-index: 999999;
+}
+
+.skip-to-main:focus {
+  border: 1px dashed #000;
 }

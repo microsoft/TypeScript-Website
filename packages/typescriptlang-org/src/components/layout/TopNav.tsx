@@ -85,6 +85,8 @@ export const SiteNav = (props: Props) => {
         <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/10.0.0/css/fabric.min.css" />
       </Helmet>
 
+      <a className="skip-to-main" href="#site-content" tabIndex={0}>Skip to main content</a>
+
       <div id="top-menu" className="up">
         <div className="left below-small">
 
@@ -119,8 +121,9 @@ export const SiteNav = (props: Props) => {
           </nav>
         </div>
       </div>
-
       <div className="hide-small" id="beta-notification-menu">Note: this page is a beta page, the URL is not guaranteed to stick around.</div>
+      <div id="site-content" />
     </header >
+
   )
 }
