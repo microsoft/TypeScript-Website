@@ -139,8 +139,29 @@ form.search {
   }
 }
 
+// Avoid using this, but it's a useful bit for when you need to have text content that changes. This
+// can make it a bit tricky with localization though.
+
+.show-only-medium {
+  display: none;
+}
+
+.hide-only-medium {
+  display: inline;
+}
+
+@media (min-width:767px) and (max-width: 900px) {
+  .show-only-medium {
+    display: inline !important;
+  }
+  
+  .hide-only-medium {
+    display: none  !important;
+  }
+}
+
 /*  Mobile support  */
-@media (max-width: 767px) {
+@media (max-width: 790px) {
   /* Move the nav to the bottom */
   #site-wrapper {
     margin-bottom: -1px;

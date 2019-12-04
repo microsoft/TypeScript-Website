@@ -106,7 +106,7 @@ export const PlaygroundSamples = (props: Props) => {
   });
 
   return (
-    <div id="playground-samples-popover">
+    <div id="playground-samples-popover" aria-hidden="true" aria-label="Code Samples Submenu">
       <div className="examples">
         <ol>
           {locale.sections.map(section => {

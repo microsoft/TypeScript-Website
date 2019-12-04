@@ -28,7 +28,8 @@
 pre.shiki {
   padding: 12px;
   border-left: 1px solid #999;
-  background-color: #f5f5f5;
+  border-bottom: 1px solid #999;
+  background-color: #f9f9f9;
 
   // The code inside should scroll, but the overflow
   // can't be on the shiki because it would not allow the relative positioning
