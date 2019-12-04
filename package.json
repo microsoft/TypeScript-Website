@@ -6,7 +6,7 @@
   "devDependencies": {
     "concurrently": "^4.1.0",
     "danger": "^9.2.8",
-    "danger-plugin-lighthouse": "^0.5.0",
+    "danger-plugin-lighthouse": "^0.5.1",
     "danger-plugin-spellcheck": "^1.5.0",
     "git-branch-is": "^3.1.0",
     "husky": "^3.1.0"
