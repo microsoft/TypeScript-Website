@@ -16,23 +16,25 @@ module.exports = {
 
       const fileToParse = join(__dirname, '../', 'src', 'index.ts')
       let program = ts.createProgram([fileToParse], {});
-      program.getTypeChecker({});
 
       const sourceFile = program.getSourceFile(fileToParse)
       let optionsInterface, mainExport, returnInterface
 
       ts.forEachChild(sourceFile, node => {
-        if (node.kind === ts.SyntaxKind.InterfaceDeclaration && node.symbol.escapedName === "ExampleOptions") {
-            optionsInterface = node
-        }
-
-        if (node.kind === ts.SyntaxKind.InterfaceDeclaration && node.symbol.escapedName === "TwoSlashReturn") {
-          returnInterface = node
-         }
-
-        if (node.kind === ts.SyntaxKind.FunctionDeclaration && node.symbol.escapedName === "twoslasher") {
-          mainExport = node
-          mainExport.body = null
+        if (node.name && node.name.escapedText) {
+          const name = node.name.escapedText
+          if (name === "ExampleOptions") {
+              optionsInterface = node
+          }
+  
+          if (name === "TwoSlashReturn") {
+            returnInterface = node
+          }
+  
+          if (name === "twoslasher") {
+            mainExport = node
+            mainExport.body = null
+          }
         }
       });
 

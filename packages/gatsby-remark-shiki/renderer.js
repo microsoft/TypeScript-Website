@@ -40,11 +40,12 @@ function renderToHTML(lines, options, twoslash) {
       html += `\n`
     }
 
+    // Adding error messages to the line after
     if (errors.length) {
       const messages = errors.map(e => escapeHtml(e.renderedMessage)).join("</br>")
       const codes = errors.map(e => e.code).join("<br/>")
       html += `<span class="error"><span>${messages}</span><span class="code">${codes}</span></span>`
-      html += '\n'
+      html += `<span class="error-behind">${messages}</span>`
     }
 
   })

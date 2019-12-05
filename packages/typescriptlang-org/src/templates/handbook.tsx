@@ -8,7 +8,7 @@ import { oldHandbookNavigation } from "../lib/oldNavigation"
 import "./handbook.scss"
 import "./markdown.scss"
 
-class BlogPostTemplate extends React.Component<{ pageContext: any, data: BlogPostBySlug, path: string }> {
+class HandbookTemplate extends React.Component<{ pageContext: any, data: BlogPostBySlug, path: string }> {
   render() {
     const post = this.props.data.markdownRemark
     if (!post) {
@@ -30,7 +30,7 @@ class BlogPostTemplate extends React.Component<{ pageContext: any, data: BlogPos
             </div>
           </div>
         </section>
-        <hr />
+        {/* 
         <ul>
           <li>
             {previous && (
@@ -43,12 +43,13 @@ class BlogPostTemplate extends React.Component<{ pageContext: any, data: BlogPos
             )}
           </li>
         </ul>
+        */}
       </Layout>
     )
   }
 }
 
-export default BlogPostTemplate
+export default HandbookTemplate
 
 export const pageQuery = graphql`
   query BlogPostBySlug($slug: String!) {

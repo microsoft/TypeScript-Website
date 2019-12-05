@@ -75,7 +75,7 @@ module.exports = {
           {
             resolve: require.resolve("gatsby-remark-shiki"),
             options: {
-              theme: join(__dirname, "lib", "themes", "typescript-beta-light.tmTheme")
+              theme: join(__dirname, "lib", "themes", "typescript-beta-light.json")
             },
           },
           "gatsby-remark-copy-linked-files",

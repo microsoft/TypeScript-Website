@@ -28,7 +28,8 @@
 pre.shiki {
   padding: 12px;
   border-left: 1px solid #999;
-  background-color: #f5f5f5;
+  border-bottom: 1px solid #999;
+  background-color: #f9f9f9;
 
   // The code inside should scroll, but the overflow
   // can't be on the shiki because it would not allow the relative positioning
@@ -45,25 +46,40 @@ pre.shiki {
     padding-bottom: 3px;
   }
 
-  .error {
-    position: absolute;
-
-    background-color: #ffeeee;
-    border-left: 2px solid #bf1818;
+  // In order to have the 'popped out' style design and to not break the layout
+  // we need to place a fake and un-selectable copy of the error which _isn't_ broken out
+  // behind the actual error message. 
+  
+  // This section keeps both of those in sync
+  .error, .error-behind {
     margin-left: -20px;
     margin-right: -12px;
     margin-top: 4px;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     padding: 6px;
     padding-left: 14px;
+
+    white-space: pre-wrap;
     display: block;
+
+  }
+
+  .error {
+    position: absolute;
+    background-color: #ffeeee;
+    border-left: 2px solid #bf1818;
     width: 100%;
-    white-space: normal;
     
     // Give the space to the error code
     display: flex;
     align-items: center;
     color: black;
+  }
+
+  .error-behind {
+    user-select: none;
+    color: #ffeeee;
+    // background-color: blue;
   }
 
   .code {

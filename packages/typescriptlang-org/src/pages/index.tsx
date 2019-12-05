@@ -15,7 +15,6 @@ const Index = (props: any) =>
 
       <div />
     </div>
-    <hr />
 
   </Layout>
 
