@@ -107,8 +107,8 @@ const toc = {
     subtitle: "Explore how TypeScript extends JavaScript to add more safety and tooling."
   },
   {
-    name: "3.7",
-    subtitle: "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-7-beta/'>Beta Release notes</a>.",
+    name: "New in 3.7",
+    subtitle: "See the <a href='http://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html'>Release notes</a> for more information on our late-2019 release.",
     whatisnew: true
   }],
   sortedSubSections: [

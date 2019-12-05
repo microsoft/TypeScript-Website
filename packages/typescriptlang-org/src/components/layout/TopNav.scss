@@ -62,6 +62,8 @@ html, #___gatsby {
 
   #home-page-logo {
     width: 200px;
+    font-size: 1.2rem;
+    font-weight: 600;
 
     svg {
       margin-right: 0.6rem;
@@ -80,12 +82,12 @@ html, #___gatsby {
     font-weight: 600;
     font-size: 1rem;
     text-decoration: none;
-    border: 1px solid transparent;
+
     display: inline-block;
 
     a {
       display: block;
-      padding: 0.7rem 0.5em 0.7em;
+      padding: 0.75rem 0.5em 0.7em;
     }
   }
 
@@ -107,7 +109,7 @@ html, #___gatsby {
 
 form.search {
   height: 3rem;
-  background-color: #2a85c4;
+  background-color: #2A68AC;
   padding-left: 1rem;
   display: inline-block;
 
@@ -119,7 +121,7 @@ form.search {
 
   input {
     -webkit-appearance: none;
-    background-color: #2a85c4;
+    background-color: #2A68AC;
     border-color: #152740;
     border-radius: 0;
     border: none;
@@ -137,8 +139,29 @@ form.search {
   }
 }
 
+// Avoid using this, but it's a useful bit for when you need to have text content that changes. This
+// can make it a bit tricky with localization though.
+
+.show-only-medium {
+  display: none;
+}
+
+.hide-only-medium {
+  display: inline;
+}
+
+@media (min-width:767px) and (max-width: 900px) {
+  .show-only-medium {
+    display: inline !important;
+  }
+  
+  .hide-only-medium {
+    display: none  !important;
+  }
+}
+
 /*  Mobile support  */
-@media (max-width: 767px) {
+@media (max-width: 790px) {
   /* Move the nav to the bottom */
   #site-wrapper {
     margin-bottom: -1px;
@@ -236,4 +259,30 @@ form.search {
       transform: rotate(135deg);
     }
   }
+}
+
+.skip-to-main {
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.skip-to-main:focus {
+  clip: auto;
+  height: auto;
+  overflow: auto;
+  position: absolute;
+  width: 100%;
+  background-color: #faf9f8;
+  color: black;
+  text-align: center;
+  padding: 20px;
+  z-index: 999999;
+}
+
+.skip-to-main:focus {
+  border: 1px dashed #000;
 }
