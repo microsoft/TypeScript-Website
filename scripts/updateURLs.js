@@ -12,13 +12,13 @@ const {writeFileSync} = require("fs")
 
 /**
  * Gets the NPM package JSON for a module
- * @param {string} name 
+ * @param {string} name
  */
 const getLatestNPMPackage = async (name) => {
   const packageJSON = await axios({
     url: `https://registry.npmjs.org/${name}`
   })
-  
+
   return packageJSON.data
 }
 
@@ -40,10 +40,10 @@ const getLatestVSExtensions = async () => {
       'X-Requested-With': 'XMLHttpRequest',
       'X-VSS-ReauthenticationAction': 'Suppress',
   };
-  
+
   const query = (name) =>
   `{"assetTypes":["Microsoft.VisualStudio.Services.Icons.Default","Microsoft.VisualStudio.Services.Icons.Branding","Microsoft.VisualStudio.Services.Icons.Small"],"filters":[{"criteria":[{"filterType":8,"value":"Microsoft.VisualStudio.Ide"},{"filterType":10,"value":"${name}"},{"filterType":12,"value":"37888"}],"direction":2,"pageSize":54,"pageNumber":1,"sortBy":0,"sortOrder":0,"pagingToken":null}],"flags":870}`
-  
+
 
   const extensionSearchResults = await axios({
     url: 'https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery',
@@ -51,7 +51,7 @@ const getLatestVSExtensions = async () => {
     headers: headers,
     data: query("typescript")
   })
-  
+
   if (!extensionSearchResults.data || !extensionSearchResults.data.results) {
     throw new Error("Got a bad response from VS marketplace")
   }
@@ -69,13 +69,16 @@ const go = async () => {
 
   console.log(`Grabbing the VS TypeScript extension for ${latest} from the marketplace`)
   const extensions = await getLatestVSExtensions()
-  const currentExtension = extensions.find(e => e.versions[0].version === latest)
-  
+  console.log(`Found ${extensions.length} extensions`)
+
+  const sortedByVersion = extensions.sort((l, r) => r.versions[0].version.localeCompare(l.versions[0].version))
+  console.log(`Looking at ${sortedByVersion.map(e => e.versions[0].version).join(", ")}`)
+
   // @ts-ignore
   const currentURLs = require("../src/_data/urls")
-  
-  if (currentExtension) {
-    const extensionURL = `https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.${currentExtension.extensionName}`
+
+  if (sortedByVersion[0]) {
+    const extensionURL = `https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.${sortedByVersion[0].extensionName}`
      currentURLs.vs2017_download  = extensionURL
      currentURLs.vs2019_download  = extensionURL
   }
