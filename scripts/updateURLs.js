@@ -71,7 +71,7 @@ const go = async () => {
   const extensions = await getLatestVSExtensions()
   console.log(`Found ${extensions.length} extensions`)
 
-  const sortedByVersion = extensions.sort((l, r) => r.versions[0].version.localeCompare(l.versions[0].version))
+  const sortedByVersion = extensions.sort((l, r) => r.versions[0].version.localeCompare(l.versions[0].version)).filter(e => !e.extensionName.toLowerCase().includes("beta"))
   console.log(`Looking at ${sortedByVersion.map(e => e.versions[0].version).join(", ")}`)
 
   // @ts-ignore
