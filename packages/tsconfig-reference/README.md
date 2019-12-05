@@ -38,3 +38,13 @@ yarn workspace tsconfig-reference run generate-markdown
 ```
 
 You can validate any codeblocks which use twoslasher via the script:
+
+```sh
+yarn workspace tsconfig-reference run test
+
+# or to just run the linter without a build
+yarn workspace tsconfig-reference run lint
+
+# or to just one one linter
+yarn workspace tsconfig-reference run lint resolveJson
+```

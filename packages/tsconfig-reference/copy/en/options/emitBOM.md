@@ -1,5 +1,5 @@
 ---
-display: "Emit B O M"
+display: "Emit BOM"
 ---
 
 Controls whether TypeScript will emit a [byte order mark (BOM)](https://en.wikipedia.org/wiki/Byte_order_mark) when writing output files.

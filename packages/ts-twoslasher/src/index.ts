@@ -351,7 +351,9 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     files.forEach(file => {
       const [filename, ...content] = file.split('\n');
       const newFileCode = content.join("\n")
-      updateFile(filename, newFileCode)
+      if (filename.length) {
+        updateFile(filename, newFileCode)
+      }
     })
   }
  
@@ -360,8 +362,11 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
   const errs: ts.Diagnostic[] = [];
 
   if (!handbookOptions.noErrors) {
-    errs.push(...ls.getSemanticDiagnostics(defaultFileRef.fileName));
-    errs.push(...ls.getSyntacticDiagnostics(defaultFileRef.fileName));
+    Object.keys(fileMap).forEach(file => {
+      if (file.endsWith("json")) return
+      errs.push(...ls.getSemanticDiagnostics(file));
+      errs.push(...ls.getSyntacticDiagnostics(file));
+    })
   }
 
   const relevantErrors = errs.filter(d => d.file && d.file.fileName === defaultFileRef.fileName)

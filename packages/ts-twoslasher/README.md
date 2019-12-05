@@ -84,6 +84,8 @@ Turns to:
 >       "code": 7006,
 >       "length": 1,
 >       "start": 13,
+>       "line": 1,
+>       "character": 12,
 >       "renderedMessage": "Parameter 's' implicitly has an 'any' type.",
 >       "id": "err-7006-13-1"
 >     }
