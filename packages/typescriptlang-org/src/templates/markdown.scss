@@ -41,13 +41,11 @@ pre {
   border-bottom: 1px solid #999;
   background-color: #f9f9f9;
   width: calc(100% - 40px);
-  overflow: hidden;
-  display: inline-grid;
 
   // The code inside should scroll, but the overflow
   // can't be on the shiki because it would not allow the relative positioning
   .code-container {
-    overflow-x: scroll;
+    overflow: auto;
   }
 
   code {
