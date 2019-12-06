@@ -4,7 +4,19 @@ sectionid: docs
 ---
 
     <div id="doc-content" class="container-fluid fill docs-container">
+        <a id='try-beta'>Try v2 Beta Page</a>
+        <script>
+          const tryBeta = document.getElementById("try-beta")
+          const mobile = window.outerWidth < 800
+          const isHome = document.location.pathname === "/docs/home.html"
+          if (!mobile && !isHome) {
+            tryBeta.style.display = "block";
 
+            tryBeta.onclick = () => {
+              document.location.pathname = "v2" + document.location.pathname
+            }
+          }
+        </script>
         <div class="container">
 
         <div class="col-md-2 toc-container hidden-xs hidden-sm">
@@ -24,7 +36,7 @@ sectionid: docs
           </article>
         </div>
         </div>
-    </div>
+    </a>
 
 <script type="text/javascript">
 
@@ -34,4 +46,4 @@ sectionid: docs
         hljs.initHighlightingOnLoad();
       });
 
-</script>
+</script>>

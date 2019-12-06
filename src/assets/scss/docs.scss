@@ -214,7 +214,7 @@ h1, h2, h3 {
     code{
       background-color: transparent;
       color: #bf414a;
-      font-size: 1em;      
+      font-size: 1em;
     }
     pre {
         font-size: 1em;
@@ -447,5 +447,26 @@ h1, h2, h3 {
       top: 10px;
       right: 10px;
     }
+  }
+}
+
+#doc-content {
+  position: relative;
+}
+
+#try-beta {
+  display: none;
+  color: #0078D4;
+  border: 1px solid #0078D4;
+  padding: 10px;
+  border-radius: 4px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+
+  &:hover, &:active {
+    color: white;
+    background-color: #0078D4;
   }
 }
