@@ -66,9 +66,11 @@
         overflow: hidden;
         display: block;
       
+        &:hover, &:active {
+          border-left: 2px solid rgba(0, 120, 212, 0.30);
+        }
         &.current {
           border-left: 2px solid #0078D4;
-          
         }
       }
 
