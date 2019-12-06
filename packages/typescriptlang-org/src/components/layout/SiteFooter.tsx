@@ -69,7 +69,7 @@ const useTypeScriptLinks = [
     url: "/play",
   },
   {
-    title: "TSConfig",
+    title: "TSConfig Ref",
     url: "/tsconfig",
   },
   {
@@ -81,7 +81,7 @@ const useTypeScriptLinks = [
 const communityLinks = [
   {
     title: "Get Help",
-    url: "/docs/handbook/1.html",
+    url: "/community/index.html",
   },
   {
     title: "Blog",
@@ -162,7 +162,6 @@ export const SiteFooter = (props: Props) => {
           <ul>
             {communityLinks.map(page => {
               const favicon = faviconForURL(page.url)
-              console.log(favicon)
               const favSpan = favicon ? <span className='link-prefix'>{favicon}</span> : null
               return <li key={page.url}><a style={{ position: "relative" }} href={page.url}>{favSpan}{page.title}</a></li>
             })}

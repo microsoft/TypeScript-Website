@@ -6,10 +6,75 @@
 #handbook-content {
   margin-left: 2em;
   margin-right: 2em;
-}
 
-#handbook-content > h2 {
-  font-size: 3rem;
-  font-weight: 400;
-  letter-spacing: -0.0.6rem;
+  // Page title
+  & > h2 {
+    font-size: 3.5rem;
+    font-weight: 400;
+    letter-spacing: 0rem;
+  }
+
+  article {
+    display: flex;
+    width: 100%;
+  }
+
+  .whitespace {
+    background-color: white;
+    margin: 1rem auto;
+    margin-top: 0;
+    padding: 2rem;
+  }
+
+  aside {
+    display: none;
+    @media (min-width: 1000px) {
+      display: block;
+    }
+
+    width: 13rem;
+    flex-shrink: 0;
+    margin-left: 20px;
+
+    nav {
+      position: sticky;
+      top: 30px;
+    }
+
+    h5 {
+      font-weight: 600;
+      font-size: 16px;
+      margin: 0;
+    }
+
+    ul {
+      padding: 0;
+
+      li {
+        list-style: none;
+      }
+
+      a {
+        font-weight: normal;
+        font-size: 14px;
+        color: black;
+        text-decoration: none;
+        border-left: 2px solid transparent;
+        padding-left:8px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        display: block;
+      
+        &:hover, &:active {
+          border-left: 2px solid rgba(0, 120, 212, 0.30);
+        }
+        &.current {
+          border-left: 2px solid #0078D4;
+        }
+      }
+
+
+    }
+  }
 }

@@ -115,13 +115,15 @@ export const SiteNav = (props: Props) => {
                   <input type="submit" style={{ display: "none" }} />
                 </form>
               </li>
-              <li className="nav-item hide-small"><a href="#" title="Popover for app settings"><svg fill="none" height="12" viewBox="0 0 12 12" width="12" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" fill="#fff" r="6" /></svg></a></li>
-              <li className="nav-item hide-small"><a href="/play">en</a></li>
+              {/* 
+                <li className="nav-item hide-small"><a href="#" title="Popover for app settings"><svg fill="none" height="12" viewBox="0 0 12 12" width="12" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" fill="#fff" r="6" /></svg></a></li>
+                <li className="nav-item hide-small"><a href="/play">en</a></li>
+              */}
             </ul>
           </nav>
         </div>
       </div>
-      <div className="hide-small" id="beta-notification-menu">Note: this page is a beta page, the URL is not guaranteed to stick around.</div>
+      <div className="hide-small" id="beta-notification-menu">Note: this page is a beta page, don't rely on the URL and <a href='https://github.com/microsoft/TypeScript-Website/issues'>file issues on microsoft/TypeScript-Website</a>.</div>
       <div id="site-content" />
     </header >
 

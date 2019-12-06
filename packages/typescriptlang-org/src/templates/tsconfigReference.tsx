@@ -16,7 +16,7 @@ class TSConfigReferenceTemplateComponent extends React.Component<{ pageContext: 
 
     return (
       <Layout >
-        <div className="ms-depth-4" style={{ backgroundColor: "white", maxWidth: 960, margin: "1rem auto", padding: "2rem", paddingTop: "0.5rem" }}>
+        <div className="tsconfig ms-depth-4" style={{ backgroundColor: "white", maxWidth: 960, margin: "1rem auto", padding: "2rem", paddingTop: "0.5rem" }}>
           <h1>TSConfig Reference</h1>  
           <div dangerouslySetInnerHTML={{ __html: post.html }} />
         </div>
