@@ -1,13 +1,4 @@
-.compiler-content {
-  display: flex;
-  justify-content: space-between
-}
-
-.markdown {
+.tsconfig .markdown {
   flex-shrink: 1;
   width: calc(100% - 250px);
-}
-
-.compiler-content > table {
-  width: 230px;
 }
