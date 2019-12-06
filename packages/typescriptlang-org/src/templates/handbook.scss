@@ -6,6 +6,7 @@
 #handbook-content {
   margin-left: 2em;
   margin-right: 2em;
+  overflow: hidden;
 
   // Page title
   & > h2 {
@@ -24,6 +25,7 @@
     margin: 1rem auto;
     margin-top: 0;
     padding: 2rem;
+    overflow: hidden;
   }
 
   aside {
