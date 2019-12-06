@@ -2,8 +2,6 @@
 display: "No Resolve"
 ---
 
-> 🧙 This option is rarely used.
-
 By default, TypeScript will examine the initial set of files for `import` and `<reference` directives and add these resolved files to your program.
 
 If `noResolve` isn't set, this process doesn't happen.
