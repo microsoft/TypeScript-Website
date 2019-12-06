@@ -35,6 +35,8 @@ jobs:
       run: |
         git clone -b v2 --single-branch https://github.com/microsoft/TypeScript-Website.git v2
         cd v2
+        git fetch origin pull/121/head:tsconfig-docs
+        git merge tsconfig-docs
         yarn install
         yarn bootstrap
         yarn build --prefix-paths # ensure the gatsby site knows it isn't root
