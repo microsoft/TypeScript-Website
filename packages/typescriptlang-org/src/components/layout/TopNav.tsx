@@ -4,47 +4,13 @@ import { withPrefix } from "gatsby"
 
 import "./TopNav.scss"
 import { setupStickyNavigation } from "./stickyNavigation";
+import { InlineScript } from "../../../lib/InlineScript";
 
 export type Props = {
   centeredLayout?: boolean
 }
 
 export const SiteNav = (props: Props) => {
-  // This extra bit of mis-direction ensures that non-essential code runs after 
-  // the page is loaded
-
-  useEffect(() => {
-    const searchScript = document.createElement('script');
-    const searchCSS = document.createElement('link');
-
-    searchScript.src = withPrefix("/js/docsearch.js");
-    searchScript.async = true;
-    searchScript.onload = () => {
-      // @ts-ignore - this comes from the script above
-      docsearch({
-        apiKey: '3c2db2aef0c7ff26e8911267474a9b2c',
-        indexName: 'typescriptlang',
-        inputSelector: '.search input',
-        // debug: true // Set debug to true if you want to inspect the dropdown
-      });
-
-      searchCSS.rel = 'stylesheet';
-      searchCSS.href = withPrefix('/css/docsearch.css');
-      searchCSS.type = 'text/css';
-      document.body.appendChild(searchCSS);
-    }
-
-    document.body.appendChild(searchScript);
-
-    setupStickyNavigation()
-
-    return () => {
-      document.body.removeChild(searchScript);
-      document.body.appendChild(searchCSS);
-    }
-  }, []);
-
-
   return (
     <header dir="ltr">
       <Helmet htmlAttributes={{ lang: "en" }} meta={[
@@ -125,6 +91,57 @@ export const SiteNav = (props: Props) => {
       </div>
       <div className="hide-small" id="beta-notification-menu">Note: this page is a beta page, don't rely on the URL and <a href='https://github.com/microsoft/TypeScript-Website/issues'>file issues on microsoft/TypeScript-Website</a>.</div>
       <div id="site-content" />
+      <InlineScript>
+       {`
+          const searchScript = document.createElement('script');
+          const searchCSS = document.createElement('link');
+      
+          searchScript.src = '${withPrefix("/js/docsearch.js")}';
+          searchScript.async = true;
+          searchScript.onload = () => {
+            // @ts-ignore - this comes from the script above
+            docsearch({
+              apiKey: '3c2db2aef0c7ff26e8911267474a9b2c',
+              indexName: 'typescriptlang',
+              inputSelector: '.search input',
+              // debug: true // Set debug to true if you want to inspect the dropdown
+            });
+      
+            searchCSS.rel = 'stylesheet';
+            searchCSS.href = '${withPrefix('/css/docsearch.css')}';
+            searchCSS.type = 'text/css';
+            document.body.appendChild(searchCSS);
+          }
+      
+          document.body.appendChild(searchScript);
+      
+          const nav = document.getElementById("top-menu")
+          let previousY = 9999
+        
+          const updateNav = () => {
+            // iOS scrolls to make sure the viewport fits, don't hide the input then
+            const hasKeyboardFocus = document.activeElement.nodeName == "INPUT"
+            if (hasKeyboardFocus) {
+              return
+            }
+        
+            const goingUp = window.pageYOffset > 1 && window.pageYOffset > previousY
+            previousY = window.pageYOffset
+        
+            if (goingUp) {
+              nav.classList.add("down")
+              nav.classList.remove("up")
+            } else {
+              nav.classList.add("up")
+              nav.classList.remove("down")
+            }
+          }
+        
+          // Non-blocking nav change
+          document.removeEventListener("scroll", updateNav, { capture: true, passive: true })
+          document.addEventListener("scroll", updateNav, { capture: true, passive: true })
+      `}
+      </InlineScript>
     </header >
 
   )

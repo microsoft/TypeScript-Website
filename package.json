@@ -16,7 +16,7 @@
     "start": "yarn workspace typescriptlang-org start",
     "build-site": "yarn workspace typescriptlang-org build",
     "build-tsconfig-reference-md": "yarn workspace tsconfig-reference build",
-    "build": "yarn build-tsconfig-reference-md && yarn build-site",
+    "build": "yarn bootstrap",
     "update-snapshots": "yarn workspace typescriptlang-org update-snapshots",
     "clean": "yarn workspace typescriptlang-org gatsby clean",
     "test": "yarn workspaces run test",
