@@ -2,16 +2,13 @@
 display: "No Implicit Returns"
 ---
 
-Report error when all code paths in function do not return a value.
+Report an error when all code paths in a function do not return a value.
 
-```ts
+```ts twoslash
+// @errors: 2366 2322
 function foo(isError: boolean): string {
   if (isError === true) {
       return undefined;
   }
 }
-```
-
-```ts
-ex.ts(1,41): error TS7030: Not all code paths return a value.
 ```

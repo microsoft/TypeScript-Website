@@ -48,3 +48,5 @@ yarn workspace tsconfig-reference run lint
 # or to just one one linter
 yarn workspace tsconfig-reference run lint resolveJson
 ```
+
+You can debug twoslash by setting the environment var `DEBUG="*"` in all of these too.

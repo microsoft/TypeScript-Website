@@ -102,7 +102,11 @@ html, #___gatsby {
   text-align: center;
   color: white;
   padding: 0.4rem 0;
-  user-select: none;
+  user-select: none; 
+
+  a {
+    color: white
+  }
 }
 
 /* This juts out of the left a bit */

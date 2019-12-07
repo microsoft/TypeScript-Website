@@ -1,10 +1,10 @@
 import { CompilerOptionName } from '../data/_types'
 
 /** Options which should never show on the references, basically anything that's for the CLI not the TSConfig */
-export const denyList: CompilerOptionName[] = ['help', 'init', 'all', 'watch', 'version', 'build', 'project']
+export const denyList: CompilerOptionName[] = ['help', 'init', 'all', 'watch', 'version', 'build', 'project', 'locale']
 
 /** Things we should document, but really want to help move people away from */
-export const deprecated: CompilerOptionName[] = ['out', 'charset', 'keyofStringsOnly', 'moduleResolution', 'noErrorTruncation']
+export const deprecated: CompilerOptionName[] = ['out', 'charset', 'keyofStringsOnly', 'moduleResolution', 'noErrorTruncation', 'diagnostics']
 
 /** Things which people really shouldn't use, but need to document  */
 export const internal: CompilerOptionName[] = ['preserveWatchOutput', 'stripInternal']

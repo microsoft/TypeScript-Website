@@ -2,8 +2,8 @@
 display: "Locale"
 ---
 
-The locale used when displaying messages to the user (e.g. 'en-us')
-
+TypeScript supports a number of languages, however this cannot be set via the `tsconfig.json`, only 
+via the host environment or the CLI flag `--locale`. E.g. `tsc --locale ru`.
 
 ### Locales supported as of TypeScript 3.7
 
@@ -23,3 +23,4 @@ The locale used when displaying messages to the user (e.g. 'en-us')
 | Russian                 | `ru-RU` |
 | Spanish                 | `es-ES` |
 | Turkish                 | `tr-TR` |
+
