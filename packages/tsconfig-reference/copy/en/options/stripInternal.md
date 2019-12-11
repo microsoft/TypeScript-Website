@@ -2,9 +2,9 @@
 display: "Strip Internal"
 ---
 
-Do not emit declarations for code that has an '@internal' annotation. This is an internal compiler option, which is 
-used at your own risk because the compiler does not check that the result is valid. If you are searching for a tool to
-handle additional levels of visibility within your d.ts files, look at [api-extractor](https://api-extractor.com).
+Do not emit declarations for code that has an `@internal` annotation in it's JSDoc comment. 
+This is an internal compiler option; use at your own risk, because the compiler does not check that the result is valid. 
+If you are searching for a tool to handle additional levels of visibility within your `d.ts` files, look at [api-extractor](https://api-extractor.com).
 
 ```ts twoslash
 /**
@@ -19,7 +19,7 @@ export function weeklySalary(dayRate: number) {
 }
 ```
 
-With the flag disabled as default:
+With the flag set to `false` (default):
 
 ```ts twoslash
 // @showEmittedFile: index.d.ts
@@ -31,13 +31,13 @@ With the flag disabled as default:
  */
 export const daysInAWeek = 7;
 
-/** Gets the  */
+/** Calculate how much someone earns in a week */
 export function weeklySalary(dayRate: number) {
   return daysInAWeek * dayRate
 }
 ```
 
-Turning on `stripInternal` will emit a redacted `d.ts`. 
+With `stripInternal` set to `true` the `d.ts` emitted will be redacted. 
 
 ```ts twoslash
 // @stripinternal
@@ -50,10 +50,10 @@ Turning on `stripInternal` will emit a redacted `d.ts`.
  */
 export const daysInAWeek = 7;
 
-/** Gets the  */
+/** Calculate how much someone earns in a week */
 export function weeklySalary(dayRate: number) {
   return daysInAWeek * dayRate
 }
 ```
 
-The JavaScript is still the same.
+The JavaScript output is still the same.

@@ -2,8 +2,8 @@
 display: "Source Root"
 ---
 
-Specify the location where a debugger should locate TypeScript files instead of via source locations. 
-This string is treated verbatim inside the source-map, you can use a path or URL:
+Specify the location where a debugger should locate TypeScript files instead of relative source locations. 
+This string is treated verbatim inside the source-map where you can use a path or a URL:
 
 ```json
 { 

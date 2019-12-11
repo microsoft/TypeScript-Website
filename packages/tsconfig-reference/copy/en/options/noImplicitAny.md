@@ -2,7 +2,7 @@
 display: "No Implicit Any"
 ---
 
-In some cases where no type annotations are present, TypeScript will fall back to a type of `any` for a variable when it can not infer the type.
+In some cases where no type annotations are present, TypeScript will fall back to a type of `any` for a variable when it cannot infer the type.
 
 This can cause some errors to be missed, for example:
 

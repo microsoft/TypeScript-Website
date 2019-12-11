@@ -2,7 +2,7 @@
 display: "Declaration Dir"
 ---
 
-Let's you change the root directory for where declaration files to be written.
+Offers a way to configure the root directory for where declaration files are emitted.
 
 ```
 example
@@ -22,7 +22,7 @@ with this `tsconfig.json`:
 }
 ```
 
-Would place the d.ts for the `index.ts` in a folder `types`:
+Would place the d.ts for the `index.ts` in a `types` folder:
 
 ```
 example

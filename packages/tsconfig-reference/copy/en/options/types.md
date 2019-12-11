@@ -16,5 +16,7 @@ If `types` is specified, only packages listed will be included. For instance:
 }
 ```
 
-This `tsconfig.json` file will *only* include  `./node_modules/@types/node`, `./node_modules/@types/lodash` and `./node_modules/@types/express`.
+This `tsconfig.json` file will *only* include `./node_modules/@types/node`, `./node_modules/@types/lodash` and `./node_modules/@types/express`.
 Other packages under `node_modules/@types/*` will not be included.
+
+This feature differs from [`typeRoots`](#typeRoots) in that it is about specifying only the exact types you want included, whereas [`typeRoots`](#typeRoots) supports saying you want particular folders.

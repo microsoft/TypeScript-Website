@@ -11,9 +11,10 @@ If `typeRoots` is specified, *only* packages under `typeRoots` will be included.
 ```json
 {
    "compilerOptions": {
-       "typeRoots" : ["./typings"]
+       "typeRoots" : ["./typings", "./vendor/types"]
    }
 }
 ```
 
-This config file will include *all* packages under `./typings`, and no packages from `./node_modules/@types`.
+This config file will include *all* packages under `./typings` and `./vendor/types`, and no packages from `./node_modules/@types`.
+All paths are relative to the `tsconfig.json`.

@@ -2,14 +2,13 @@
 display: "No Unused Parameters"
 ---
 
-Report errors on unused parameters.
+Report errors on unused parameters in functions.
 
-```ts
-const myFunc = value => "Hi"
-```
-
-Raises with
-
-```sh
-ex.ts(1,16): error TS6133: 'value' is declared but its value is never read.
+```ts twoslash
+// @noUnusedLocals
+// @errors: 6133
+const createDefaultKeyboard = (modelID: number) => {
+  const defaultModelID = 23
+  return { type: "keyboard", modelID: defaultModelID }
+}
 ```

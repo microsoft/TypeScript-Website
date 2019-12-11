@@ -9,19 +9,33 @@ the equivalent of including `// @ts-check` at the top of all JavaScript files wh
 For example, this is incorrect JavaScript according to the `parseFloat` type definition which comes with TypeScript:
 
 ```js
-export const pi = parseFloat(3.124) // parseFloat only takes a string
+// parseFloat only takes a string
+module.exports.pi = parseFloat(3.124)
 ```
 
-When imported into a TypeScript module
+When imported into a TypeScript module:
 
-```ts
-import { pi } from "./def"
+```ts twoslash
+// @allowJs
+// @filename: constants.js
+/// <reference types="node" />
+module.exports.pi = parseFloat(3.124)
 
+// @filename: index.ts
+import { pi } from "./constants"
 console.log(pi)
 ```
 
 You will not get any errors. However, if you turn on `checkJs` then you will get error messages from the JavaScript file.
 
-```js
-def.js(1,30): error TS2345: Argument of type '3.124' is not assignable to parameter of type 'string'.
+```ts twoslash
+// @allowjs: true
+// @checkjs: true
+// @filename: constants.js
+/// <reference types="node" />
+module.exports.pi = parseFloat(3.124)
+
+// @filename: index.ts
+import { pi } from "./constants"
+console.log(pi)
 ```

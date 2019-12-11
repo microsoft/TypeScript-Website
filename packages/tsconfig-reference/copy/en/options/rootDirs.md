@@ -2,21 +2,21 @@
 display: "Root Dirs"
 ---
 
-Using ‘rootDirs’, you can inform the compiler that there are many "virtual" directories acting as a single root. 
-This allows the compiler to resolve relative modules imports within these "virtual" directories as if were merged together in one directory.
+Using `rootDirs`, you can inform the compiler that there are many "virtual" directories acting as a single root. 
+This allows the compiler to resolve relative module imports within these "virtual" directories, as if they were merged in to one directory.
 
-For example :
+For example:
 
 ```
  src
  └── views
-     └── view1.ts (can import './template1', './view2`)
-     └── view2.ts (can import './template1', './view1`)
+     └── view1.ts (can import "./template1", "./view2`)
+     └── view2.ts (can import "./template1", "./view1`)
 
  generated
  └── templates
          └── views
-             └── template1.ts (can import './view1', './view2')
+             └── template1.ts (can import "./view1", "./view2")
 ```
 
 ```json
@@ -30,5 +30,5 @@ For example :
 }
 ```
 
-This does not affect how TypeScript emits the JavaScript, it only emulates the assumption that they will be able to
+This does not affect how TypeScript emits JavaScript, it only emulates the assumption that they will be able to
 work via those relative paths at runtime.

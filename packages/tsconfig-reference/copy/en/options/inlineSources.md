@@ -15,7 +15,7 @@ const helloWorld = "hi";
 console.log(helloWorld)
 ```
 
-Converts to this JavaScript:
+By default converts to this JavaScript:
 
 ```ts twoslasher
 // @showEmit

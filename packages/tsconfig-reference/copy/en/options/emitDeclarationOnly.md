@@ -7,4 +7,4 @@ display: "Emit Declaration Only"
 This setting is useful in two cases:
 
 - You are using a transpiler other than TypeScript to generate your JavaScript.
-- You are using TypeScript to only generate d.ts files for your consumers.
+- You are using TypeScript to only generate `d.ts` files for your consumers.

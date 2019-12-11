@@ -38,7 +38,7 @@ for (const s of str) {
 }
 ```
 
->> **Note:** enabling `downlevelIteration` does not improve compliance if `Symbol.iterator` is not present in the runtime
+>> **Note:** enabling `downlevelIteration` does not improve compliance if `Symbol.iterator` is not present in the runtime.
 
 #### Example: Effects on Array Spreads
 

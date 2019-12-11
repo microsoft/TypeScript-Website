@@ -39,4 +39,4 @@ import { defaultCardDeck } from "./card"
 console.log(defaultCardDeck)
 ```
 
-This flag can be used as a way to incrementally add TypeScript files into JS projects.
+This flag can be used as a way to incrementally add TypeScript files into JS projects by allowing the `.ts` and `.tsx` files to live along-side existing JavaScript files.

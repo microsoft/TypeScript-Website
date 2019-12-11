@@ -2,10 +2,12 @@
 display: "List Emitted Files"
 ---
 
-Print names of generated files part of the compilation. 
-This is useful when you want to use TypeScript as a part of a shell build chain.
-This is useful when you are not sure that TypeScript has 
-included a file you expected. 
+Print names of generated files part of the compilation to the terminal.
+
+This flag is useful in two cases:
+
+ - You want to transpile TypeScript as a part of a build chain in the terminal where the filenames are processed in the next command.
+ - You are not sure that TypeScript has included a file you expected, as a part of debugging the [file inclusion settings](#Project_Files_0).
 
 For example:
 
@@ -35,3 +37,5 @@ $ npm run tsc
 path/to/example/index.js
 path/to/example/index.d.ts
 ```
+
+Normally, TypeScript would return silently on success.

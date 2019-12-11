@@ -3,11 +3,9 @@ display: "Resolve JSON Module"
 ---
 
 Allows importing modules with a '.json' extension, which is a common practice in node projects. This includes
-generating a type for the import based on the static JSON shape.
+generating a type for the `import` based on the static JSON shape.
 
-> TODO: This isn't working right in twoslash
-
-By default TypeScript does not support resolving JSON files:
+TypeScript does not support resolving JSON files by default:
 
 ```ts twoslash
 // @errors: 2307

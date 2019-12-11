@@ -24,7 +24,7 @@ class Demo {
 const demo = new Demo();
 ```
 
-With `emitDecoratorMetadata`  not set to true (default)"
+With `emitDecoratorMetadata` not set to true (default):
 
 ```ts twoslash
 // @experimentalDecorators

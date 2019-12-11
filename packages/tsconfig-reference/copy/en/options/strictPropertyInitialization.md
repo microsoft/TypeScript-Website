@@ -2,7 +2,7 @@
 display: "Strict Property Initialization"
 ---
 
-When set to true, TypeScript will raise an error when a class property was declared but not set during the constructor.
+When set to true, TypeScript will raise an error when a class property was declared but not set in the constructor.
 
 ```ts twoslash
 // @errors: 2564
@@ -25,4 +25,4 @@ In the above case:
 - `this.name` is set specifically.
 - `this.accountType` is set by default.
 - `this.email` is not set and raises an error.
-- `this.address` is declared as also being `undefined` which means it does not have to be set.
+- `this.address` is declared as potentially `undefined` which means it does not have to be set.

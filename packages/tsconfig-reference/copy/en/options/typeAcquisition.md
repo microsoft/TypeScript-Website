@@ -2,10 +2,10 @@
 display: "Type Acquisition"
 ---
 
-When you have a JavaScript project in your editor, TypeScript will provide types for your node modules automatically using the DefinitelyTyped set of `@types` definitions. 
+When you have a JavaScript project in your editor, TypeScript will provide types for your `node_modules` automatically using the DefinitelyTyped set of `@types` definitions. 
 This is called automatic type acquisition, and you can customize it using the `typeAcquisition` object in your configuration.
 
-If you would like to disable this for your project, create a `jsconfig.json` in the root of your project:
+If you would like to disable or customize this feature, create a `jsconfig.json` in the root of your project:
 
 ```json
 {
@@ -15,7 +15,7 @@ If you would like to disable this for your project, create a `jsconfig.json` in 
 }
 ```
 
-If you have a specific module which should be included (but isn't in node modules):
+If you have a specific module which should be included (but isn't in `node_modules`):
 
 ```json
 {
@@ -25,7 +25,7 @@ If you have a specific module which should be included (but isn't in node module
 }
 ```
 
-If a module should not be automatically acquired, for example the library is available in your node modules but your team has agreed to not use it:
+If a module should not be automatically acquired, for example if the library is available in your `node_modules` but your team has agreed to not use it:
 
 ```json
 {

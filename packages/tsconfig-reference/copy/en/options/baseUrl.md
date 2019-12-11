@@ -7,7 +7,7 @@ Lets you set a base directory to resolve non-absolute module names.
 You can define a root folder where you can do absolute file resolution. E.g.
 
 ```
-baseUrl/
+baseUrl
 ├── ex.ts
 ├── hello
 │   └── world.ts

@@ -2,22 +2,22 @@
 display: 'Paths'
 ---
 
-A series of entries which re-map imports to lookup locations relative to the 'baseUrl', there is a larger coverage of `paths` in [the handbook](/docs/handbook/module-resolution.html#path-mapping).
+A series of entries which re-map imports to lookup locations relative to the `baseUrl`, there is a larger coverage of `paths` in [the handbook](/docs/handbook/module-resolution.html#path-mapping).
 
 `paths` lets you declare how TypeScript should resolve an import in your `require`/`import`s.
 
 ```json
 {
   "compilerOptions": {
-    "baseUrl": ".", // This must be specified if "paths" is.
+    "baseUrl": ".", // this must be specified if "paths" is specified.
     "paths": {
-      "jquery": ["node_modules/jquery/dist/jquery"] // This mapping is relative to "baseUrl"
+      "jquery": ["node_modules/jquery/dist/jquery"] // this mapping is relative to "baseUrl"
     }
   }
 }
 ```
 
-This would allow you to be able to write `import 'jquery'`, and get all of the correct typing locally.
+This would allow you to be able to write `import "jquery"`, and get all of the correct typing locally.
 
 ```json
 {
