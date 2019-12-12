@@ -69,10 +69,10 @@ interface SampleRef {
   content: string
 }
 
-type QueryPosition = { 
-  kind: 'query'; 
-  position: number; 
-  offset: number 
+type QueryPosition = {
+  kind: 'query'
+  position: number
+  offset: number
   text: string | undefined
   docs: string | undefined
 }
@@ -262,7 +262,7 @@ export interface TwoSlashReturn {
     kind: 'query'
     position: number
     offset: number
-    // TODO: Add these so we can present somethinig
+    // TODO: Add these so we can present something
     // text: string
     // docs: string | undefined
   }[]
@@ -325,14 +325,13 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
   const codeLines = code.split(/\r\n?|\n/g)
 
   const handbookOptions = filterHandbookOptions(codeLines)
-  const compilerOptions = filterCompilerOptions(codeLines, {
-    ...defaultCompilerOptions,
-  })
+  const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions)
 
   // Update all the compiler options
   lsHost.setOptions(compilerOptions)
 
   // Remove ^^^^^^ lines from example and store
+  // TODO: Move this into the multi file region and it should work correctly in a multi-file twoslash
   let { highlights, queries } = filterHighlightLines(codeLines)
   code = codeLines.join('\n')
 
@@ -363,7 +362,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     updateFile(defaultFileRef.fileName, code)
   } else {
     files.forEach(file => {
-      const [filename, ...content] = file.split('\n')
+      const [filename, ...content] = file.split(/\r\n?|\n/g)
       const newFileCode = content.join('\n')
       if (newFileCode.length) {
         updateFile(filename, newFileCode)
@@ -389,12 +388,8 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     if (!handbookOptions.noStaticSemanticInfo) {
       const fileRep = fileMap[file]
       const fileContentStartIndexInModifiedFile = code.indexOf(fileRep.content)
-      const sourceFile = docRegistry.acquireDocument(
-        file,
-        compilerOptions,
-        ts.ScriptSnapshot.fromString(fileRep.content),
-        'noop'
-      )
+      const snapshot = ts.ScriptSnapshot.fromString(fileRep.content)
+      const sourceFile = docRegistry.acquireDocument(file, compilerOptions, snapshot, 'noop')
       const spans = getIdentifierTextSpans(sourceFile)
 
       for (const span of spans) {
@@ -454,6 +449,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     // though I guess source-mapping could handle the transition
     highlights.length = 0
     queries.length = 0
+    staticQuickInfos.length = 0
   }
 
   // TODO: compiler options
@@ -484,7 +480,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
 
   return {
     code,
-    extension: extension,
+    extension,
     highlights,
     queries,
     staticQuickInfos,
@@ -492,4 +488,3 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     playgroundURL,
   }
 }
-
