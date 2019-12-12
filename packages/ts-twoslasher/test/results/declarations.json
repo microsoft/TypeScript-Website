@@ -3,6 +3,32 @@
   "extension": "ts",
   "highlights": [],
   "queries": [],
+  "staticQuickInfos": [
+    {
+      "text": "function getStringLength(value: string): number",
+      "docs": "Gets the length of a string",
+      "position": 81,
+      "length": 15
+    },
+    {
+      "text": "(parameter) value: string",
+      "docs": "a string",
+      "position": 97,
+      "length": 5
+    },
+    {
+      "text": "(parameter) value: string",
+      "docs": "a string",
+      "position": 123,
+      "length": 5
+    },
+    {
+      "text": "(property) String.length: number",
+      "docs": "Returns the length of a String object.",
+      "position": 129,
+      "length": 6
+    }
+  ],
   "errors": [],
   "playgroundURL": "https://www.typescriptlang.org/play/#code/PQKhFgCgAIWhxApgFwM7WQC0dANogOwHMtoB7AM2gENpVkAnAS2KlmgAEAHah6gW2gA3argCuOWvWasYIYFEQAPLmQbJoAE0QBjXLxwUxBHciZkC0IigDKjFkQAyhEpgAUI8YgBcde8QBKXwIxfgAjRAYAbiggA"
 }

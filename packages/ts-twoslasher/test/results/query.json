@@ -3,6 +3,9 @@
   "extension": "ts",
   "highlights": [],
   "queries": [{ "kind": "query", "offset": 4, "position": 4 }],
+  "staticQuickInfos": [
+    { "text": "let foo: string", "docs": "", "position": 4, "length": 3 }
+  ],
   "errors": [],
   "playgroundURL": "https://www.typescriptlang.org/play/#code/DYUwLgBAZg9jEF4ICIAWJjHmdAnEAhMgNwBQQA"
 }

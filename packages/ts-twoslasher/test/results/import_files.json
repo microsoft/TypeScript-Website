@@ -3,6 +3,38 @@
   "extension": "ts",
   "highlights": [],
   "queries": [],
+  "staticQuickInfos": [
+    {
+      "text": "(alias) const helloWorld: \"Example string\"\nimport helloWorld",
+      "docs": "",
+      "position": 110,
+      "length": 10
+    },
+    {
+      "text": "var console: Console",
+      "docs": "",
+      "position": 148,
+      "length": 7
+    },
+    {
+      "text": "(method) Console.log(message?: any, ...optionalParams: any[]): void",
+      "docs": "",
+      "position": 156,
+      "length": 3
+    },
+    {
+      "text": "(alias) const helloWorld: \"Example string\"\nimport helloWorld",
+      "docs": "",
+      "position": 160,
+      "length": 10
+    },
+    {
+      "text": "const helloWorld: \"Example string\"",
+      "docs": "",
+      "position": 47,
+      "length": 10
+    }
+  ],
   "errors": [],
   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKGCC0B3aAFwAtd4APABwHsAnIgOiIGcAoS2h0AYxsRZFQJeLFg0A6vVgATUAF5QAIgCiFNFQShBdaIgDmSgNxs2ICDiRpMoPTMrN20VFyEBvEWMnSZAX2x0NKjKjMCWBMRknPRESmx8AjQIjOL6ABSe4lJ0sgCUbEA"
 }

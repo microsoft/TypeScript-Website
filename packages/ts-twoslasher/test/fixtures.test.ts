@@ -18,6 +18,7 @@ describe('with fixtures', () => {
     const fixture = join(fixturesFolder, fixtureName);
     if (lstatSync(fixture).isDirectory()) {  return; }
 
+    // if(!fixtureName.includes("compiler_fl")) return
     it('Fixture: ' + fixtureName, () => {
       const resultName = parse(fixtureName).name + '.json';
       const result = join(resultsFolder, resultName);
@@ -33,10 +34,10 @@ describe('with fixtures', () => {
   });
 
 
-  const throwaFixturesFolder = join(__dirname, 'fixtures', 'throws');
+  const throwingFixturesFolder = join(__dirname, 'fixtures', 'throws');
 
-  readdirSync(throwaFixturesFolder).forEach(fixtureName => {
-    const fixture = join(throwaFixturesFolder, fixtureName);
+  readdirSync(throwingFixturesFolder).forEach(fixtureName => {
+    const fixture = join(throwingFixturesFolder, fixtureName);
     if (lstatSync(fixture).isDirectory()) {  return; }
     
     it('Throwing Fixture: ' + fixtureName, () => {

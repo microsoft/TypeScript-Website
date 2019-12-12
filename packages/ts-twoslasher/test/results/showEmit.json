@@ -3,6 +3,32 @@
   "extension": "js",
   "highlights": [],
   "queries": [],
+  "staticQuickInfos": [
+    {
+      "text": "function fn(arr: number[]): void",
+      "docs": "",
+      "position": 85,
+      "length": 2
+    },
+    {
+      "text": "(parameter) arr: number[]",
+      "docs": "",
+      "position": 88,
+      "length": 3
+    },
+    {
+      "text": "const arr2: number[]",
+      "docs": "",
+      "position": 113,
+      "length": 4
+    },
+    {
+      "text": "(parameter) arr: number[]",
+      "docs": "",
+      "position": 127,
+      "length": 3
+    }
+  ],
   "errors": [],
   "playgroundURL": "https://www.typescriptlang.org/play/#code/EQVwzgpgBGAuBOBLAxrYBuAsAKAPS6gFpDEBbABwHt5YAJCAG3InjCkoDsAuKAZXPgQAhgBMoAC0bN4UAO6IGDKACNoZKjQhiAZvEqkoAclhgGiZYZwB5ZQCsIqAHQiI2xBwgAFPdNgBPAAoIAA8NEwAaKGAAfWiIMABZShEQBghgSIBvKAA3IQYQCB4EQqgAXwBKLGw8mRMzZWiARigAXihBAEcQREEA4HrzYCqcbRAOVEROKG0OAKF4eAqoTJwoddyFqAX4ACY2qEHGpsdYsAFhEQCAbSaAXUidkewynBCwsEdZg9nqoA"
 }
