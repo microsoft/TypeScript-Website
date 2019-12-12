@@ -351,20 +351,24 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     files.forEach(file => {
       const [filename, ...content] = file.split('\n');
       const newFileCode = content.join("\n")
-      updateFile(filename, newFileCode)
+      if (newFileCode.length) {
+        updateFile(filename, newFileCode)
+      }
     })
   }
  
   // Code should now be safe to compile, so we're going to split it into different files 
+  const errs: ts.Diagnostic[] = []
 
-  const errs: ts.Diagnostic[] = [];
+  const declaredFiles = Object.keys(fileMap)
+  declaredFiles.forEach(file => {
+    if (!handbookOptions.noErrors) {
+      errs.push(...ls.getSemanticDiagnostics(file));
+      errs.push(...ls.getSyntacticDiagnostics(file));
+    }
+  });
 
-  if (!handbookOptions.noErrors) {
-    errs.push(...ls.getSemanticDiagnostics(defaultFileRef.fileName));
-    errs.push(...ls.getSyntacticDiagnostics(defaultFileRef.fileName));
-  }
-
-  const relevantErrors = errs.filter(d => d.file && d.file.fileName === defaultFileRef.fileName)
+  const relevantErrors = errs.filter(d => d.file && declaredFiles.includes(d.file.fileName))
   if (relevantErrors.length) {
     const inErrsButNotFoundInTheHeader = relevantErrors.filter(e => !handbookOptions.errors.includes(e.code))
     const errorsFound = inErrsButNotFoundInTheHeader.map(e=> e.code).join(" ")
@@ -399,6 +403,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     });
   }
 
+
   // Handle emitting files
   if (handbookOptions.showEmit) {
     const output = ls.getEmitOutput(defaultFileRef.fileName)
@@ -420,7 +425,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
   // TODO: compiler options
   const playgroundURL = `https://www.typescriptlang.org/play/#code/${compressToEncodedURIComponent(code)}`;
 
-  // Doing it this late allows for it to 
+  // Doing it this late allows for it to do it anywhere in grown 
   const splitCode = code.split("// ---cut---").pop()!
 
   return {
