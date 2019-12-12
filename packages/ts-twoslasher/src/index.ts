@@ -263,8 +263,8 @@ export interface TwoSlashReturn {
     position: number
     offset: number
     // TODO: Add these so we can present something
-    // text: string
-    // docs: string | undefined
+    text: string
+    docs: string | undefined
   }[]
 
   /** Diagnostic error messages which came up when creating the program */
@@ -329,10 +329,6 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
 
   // Update all the compiler options
   lsHost.setOptions(compilerOptions)
-
-  // Remove ^^^^^^ lines from example and store
-  // TODO: Move this into the multi file region and it should work correctly in a multi-file twoslash
-  let { highlights, queries } = filterHighlightLines(codeLines)
   code = codeLines.join('\n')
 
   const updateFile = (filename: string, newFileCode: string) => {
@@ -356,19 +352,69 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     docRegistry.updateDocument(filename, compilerOptions, scriptSnapshot!, scriptVersion)
   }
 
+  let queries = [] as TwoSlashReturn["queries"]
+  let highlights = [] as TwoSlashReturn["highlights"]
+
   // TODO: This doesn't handle a single file with a name
   const files = code.split('// @filename: ')
-  if (files.length === 1) {
-    updateFile(defaultFileRef.fileName, code)
-  } else {
-    files.forEach(file => {
-      const [filename, ...content] = file.split(/\r\n?|\n/g)
-      const newFileCode = content.join('\n')
-      if (newFileCode.length) {
-        updateFile(filename, newFileCode)
-      }
-    })
+  const noFilepaths = files.length === 1
+
+  const makeDefault: [string, string[]] = [defaultFileName, code.split(/\r\n?|\n/g)]
+  const makeMultiFile = (filenameSplit: string): [string, string[]] => {
+    const [filename, ...content] = filenameSplit.split(/\r\n?|\n/g)
+    return [filename, content]
   }
+
+  /** 
+   * Oof, some hard to grok code in this section. To ensure _one_ code path for both 
+   * default and multi-file code samples it's all coerced into an array of 
+   * [name, lines_of_code] basically for each set.
+   */
+  const nameContent: Array<[string, string[]]> = noFilepaths ? [makeDefault] : files.map(makeMultiFile)
+  
+  for (const file of nameContent) {
+    const [filename, codeLines] = file
+    // When you do a filename on the file line, it splits off a zero content file
+    if (filename === "") continue
+
+    // You may think this is redundant, but it's needed for the LSP queries which
+    // are coming up after this
+    const newFileCode = codeLines.join('\n')
+    updateFile(filename, newFileCode)
+
+    // This will edit codeLines to remove queries and highlights
+    const fileContentStartIndexInModifiedFile = code.indexOf(codeLines.join("\n"))
+    const updates = filterHighlightLines(codeLines)
+
+    highlights.push(...updates.highlights)
+
+    // Do the LSP lookup for the queries
+    
+    // TODO: this is not perfect, it seems to have issues when there are multiple queries
+    // in the same sourcefile
+    const lspedQueries = updates.queries.map(q => {
+      
+      const quickInfo = ls.getQuickInfoAtPosition(filename, q.position)
+      let text = "Could not get LSP result"
+      let docs
+      if (quickInfo && quickInfo.displayParts) {
+        text = quickInfo.displayParts.map(dp => dp.text).join('')
+        docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join('\n') : undefined
+      }
+      return { ...q, text, docs, position: q.position + fileContentStartIndexInModifiedFile }
+    })  
+    queries.push(...lspedQueries)
+
+    // Sets the file in the compiler as being without the comments
+    const newEditedFileCode = codeLines.join('\n')
+    updateFile(filename, newEditedFileCode)
+
+  }
+
+  // We need to also strip the highlights + queries from the main file which is shown to people
+  const allCodeLines = code.split(/\r\n?|\n/g)
+  filterHighlightLines(allCodeLines)
+  code = allCodeLines.join("\n")
 
   // Code should now be safe to compile, so we're going to split it into different files
   const errs: ts.Diagnostic[] = []
@@ -455,14 +501,15 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
   // TODO: compiler options
   const playgroundURL = `https://www.typescriptlang.org/play/#code/${compressToEncodedURIComponent(code)}`
 
-  if (code.includes('// ---cut---')) {
-    const cutIndex = code.indexOf('// ---cut---')
+  const cutString = '// ---cut---'
+  if (code.includes(cutString)) {
+    // Get the place it is, then find the end and the start of the next line
+    const cutIndex = code.indexOf(cutString) + cutString.length + 1
     // Kills the code shown
-    code = code.split('// ---cut---').pop()!
+    code = code.split(cutString).pop()!
 
     // For any type of metadata shipped, it will need to be shifted to
     // fit in with the new positions after the cut
-
     staticQuickInfos.forEach(info => (info.position -= cutIndex))
     staticQuickInfos = staticQuickInfos.filter(s => s.position > -1)
 
