@@ -75,6 +75,7 @@ type QueryPosition = {
   offset: number
   text: string | undefined
   docs: string | undefined
+  line: number
 }
 
 type HighlightPosition = {
@@ -82,6 +83,7 @@ type HighlightPosition = {
   position: number
   length: number
   description: string
+  line: number
 }
 
 function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosition[]; queries: QueryPosition[] } {
@@ -97,7 +99,7 @@ function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosit
     if (queryMatch !== null) {
       const start = line.indexOf('^')
       const position = contentOffset + start
-      queries.push({ kind: 'query', offset: start, position, text: undefined, docs: undefined })
+      queries.push({ kind: 'query', offset: start, position, text: undefined, docs: undefined, line: i })
       log(`Removing line ${i} for having a query`)
       codeLines.splice(i, 1)
       i--
@@ -106,7 +108,7 @@ function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosit
       const length = line.lastIndexOf('^') - start + 1
       const position = contentOffset + start
       const description = highlightMatch[1] ? highlightMatch[1].trim() : ''
-      highlights.push({ kind: 'highlight', position, length, description })
+      highlights.push({ kind: 'highlight', position, length, description, line: i })
       log(`Removing line ${i} for having a highlight`)
       codeLines.splice(i, 1)
       i--
@@ -247,20 +249,23 @@ export interface TwoSlashReturn {
     position: number
     length: number
     description: string
+    line: number
   }[]
 
-  /** An array of interesting identifiers */
+  /** An array of LSP responses identifiers in the sample  */
   staticQuickInfos: {
     text: string
     docs: string | undefined
-    position: number
+    start: number
     length: number
+    line: number
+    character: number
   }[]
 
   /** Requests to use the LSP to get info for a particular symbol in the source */
   queries: {
     kind: 'query'
-    position: number
+    start: number
     offset: number
     // TODO: Add these so we can present something
     text: string
@@ -352,8 +357,8 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     docRegistry.updateDocument(filename, compilerOptions, scriptSnapshot!, scriptVersion)
   }
 
-  let queries = [] as TwoSlashReturn["queries"]
-  let highlights = [] as TwoSlashReturn["highlights"]
+  let queries = [] as TwoSlashReturn['queries']
+  let highlights = [] as TwoSlashReturn['highlights']
 
   // TODO: This doesn't handle a single file with a name
   const files = code.split('// @filename: ')
@@ -365,17 +370,17 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     return [filename, content]
   }
 
-  /** 
-   * Oof, some hard to grok code in this section. To ensure _one_ code path for both 
-   * default and multi-file code samples it's all coerced into an array of 
+  /**
+   * Oof, some hard to grok code in this section. To ensure _one_ code path for both
+   * default and multi-file code samples it's all coerced into an array of
    * [name, lines_of_code] basically for each set.
    */
   const nameContent: Array<[string, string[]]> = noFilepaths ? [makeDefault] : files.map(makeMultiFile)
-  
+
   for (const file of nameContent) {
     const [filename, codeLines] = file
     // When you do a filename on the file line, it splits off a zero content file
-    if (filename === "") continue
+    if (filename === '') continue
 
     // You may think this is redundant, but it's needed for the LSP queries which
     // are coming up after this
@@ -383,38 +388,38 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     updateFile(filename, newFileCode)
 
     // This will edit codeLines to remove queries and highlights
-    const fileContentStartIndexInModifiedFile = code.indexOf(codeLines.join("\n"))
+    const fileContentStartIndexInModifiedFile = code.indexOf(codeLines.join('\n'))
     const updates = filterHighlightLines(codeLines)
 
     highlights.push(...updates.highlights)
 
     // Do the LSP lookup for the queries
-    
+
     // TODO: this is not perfect, it seems to have issues when there are multiple queries
     // in the same sourcefile
     const lspedQueries = updates.queries.map(q => {
-      
       const quickInfo = ls.getQuickInfoAtPosition(filename, q.position)
-      let text = "Could not get LSP result"
+      let text = `Could not get LSP result: ${fileMap[filename].content[q.position - 1]} >${
+        fileMap[filename].content[q.position]
+      }< ${fileMap[filename].content[q.position + 1]}`
       let docs
       if (quickInfo && quickInfo.displayParts) {
         text = quickInfo.displayParts.map(dp => dp.text).join('')
         docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join('\n') : undefined
       }
-      return { ...q, text, docs, position: q.position + fileContentStartIndexInModifiedFile }
-    })  
+      return { ...q, text, docs, start: q.position + fileContentStartIndexInModifiedFile }
+    })
     queries.push(...lspedQueries)
 
     // Sets the file in the compiler as being without the comments
     const newEditedFileCode = codeLines.join('\n')
     updateFile(filename, newEditedFileCode)
-
   }
 
   // We need to also strip the highlights + queries from the main file which is shown to people
   const allCodeLines = code.split(/\r\n?|\n/g)
   filterHighlightLines(allCodeLines)
-  code = allCodeLines.join("\n")
+  code = allCodeLines.join('\n')
 
   // Code should now be safe to compile, so we're going to split it into different files
   const errs: ts.Diagnostic[] = []
@@ -444,8 +449,8 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
           const text = quickInfo.displayParts.map(dp => dp.text).join('')
           const docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join('\n') : undefined
           const position = span.start + fileContentStartIndexInModifiedFile
-
-          staticQuickInfos.push({ text, docs, position, length: span.length })
+          const { line, character } = ts.getLineAndCharacterOfPosition(sourceFile, position)
+          staticQuickInfos.push({ text, docs, start: position, length: span.length, line, character })
         }
       }
     }
@@ -510,8 +515,8 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
 
     // For any type of metadata shipped, it will need to be shifted to
     // fit in with the new positions after the cut
-    staticQuickInfos.forEach(info => (info.position -= cutIndex))
-    staticQuickInfos = staticQuickInfos.filter(s => s.position > -1)
+    staticQuickInfos.forEach(info => (info.start -= cutIndex))
+    staticQuickInfos = staticQuickInfos.filter(s => s.start > -1)
 
     errors.forEach(err => {
       if (err.start) err.start -= cutIndex
@@ -521,8 +526,8 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     highlights.forEach(highlight => (highlight.position -= cutIndex))
     highlights = highlights.filter(e => e.position > -1)
 
-    queries.forEach(q => (q.position -= cutIndex))
-    queries = queries.filter(q => q.position > -1)
+    queries.forEach(q => (q.start -= cutIndex))
+    queries = queries.filter(q => q.start > -1)
   }
 
   return {

@@ -8,23 +8,44 @@
       "text": "function fn(s: any): void",
       "docs": "",
       "position": 62,
-      "length": 2
+      "length": 2,
+      "line": 2
     },
-    { "text": "(parameter) s: any", "docs": "", "position": 65, "length": 1 },
-    { "text": "var console: Console", "docs": "", "position": 72, "length": 7 },
+    {
+      "text": "(parameter) s: any",
+      "docs": "",
+      "position": 65,
+      "length": 1,
+      "line": 2
+    },
+    {
+      "text": "var console: Console",
+      "docs": "",
+      "position": 72,
+      "length": 7,
+      "line": 3
+    },
     {
       "text": "(method) Console.log(message?: any, ...optionalParams: any[]): void",
       "docs": "",
       "position": 80,
-      "length": 3
+      "length": 3,
+      "line": 3
     },
-    { "text": "(parameter) s: any", "docs": "", "position": 84, "length": 1 },
-    { "text": "any", "position": 86, "length": 5 },
+    {
+      "text": "(parameter) s: any",
+      "docs": "",
+      "position": 84,
+      "length": 1,
+      "line": 3
+    },
+    { "text": "any", "position": 86, "length": 5, "line": 3 },
     {
       "text": "function fn(s: any): void",
       "docs": "",
       "position": 99,
-      "length": 2
+      "length": 2,
+      "line": 6
     }
   ],
   "errors": [],

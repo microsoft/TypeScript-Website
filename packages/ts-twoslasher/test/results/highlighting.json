@@ -2,7 +2,13 @@
   "code": "function greet(person: string, date: Date) {\n  console.log(`Hello ${person}, today is ${date.toDateString()}!`);\n}\n\ngreet(\"Maddison\", new Date());\n",
   "extension": "ts",
   "highlights": [
-    { "kind": "highlight", "position": 134, "length": 10, "description": "" }
+    {
+      "kind": "highlight",
+      "position": 134,
+      "length": 10,
+      "description": "",
+      "line": 5
+    }
   ],
   "queries": [],
   "staticQuickInfos": [
@@ -10,62 +16,78 @@
       "text": "function greet(person: string, date: Date): void",
       "docs": "",
       "position": 9,
-      "length": 5
+      "length": 5,
+      "line": 0
     },
     {
       "text": "(parameter) person: string",
       "docs": "",
       "position": 15,
-      "length": 6
+      "length": 6,
+      "line": 0
     },
     {
       "text": "(parameter) date: Date",
       "docs": "",
       "position": 31,
-      "length": 4
+      "length": 4,
+      "line": 0
     },
     {
       "text": "interface Date",
       "docs": "Enables basic storage and retrieval of dates and times.",
       "position": 37,
-      "length": 4
+      "length": 4,
+      "line": 0
     },
-    { "text": "var console: Console", "docs": "", "position": 47, "length": 7 },
+    {
+      "text": "var console: Console",
+      "docs": "",
+      "position": 47,
+      "length": 7,
+      "line": 1
+    },
     {
       "text": "(method) Console.log(message?: any, ...optionalParams: any[]): void",
       "docs": "",
       "position": 55,
-      "length": 3
+      "length": 3,
+      "line": 1
     },
     {
       "text": "(parameter) person: string",
       "docs": "",
       "position": 68,
-      "length": 6
+      "length": 6,
+      "line": 1
     },
     {
       "text": "(parameter) date: Date",
       "docs": "",
       "position": 88,
-      "length": 4
+      "length": 4,
+      "line": 1
     },
     {
       "text": "(method) Date.toDateString(): string",
       "docs": "Returns a date as a string value.",
       "position": 93,
-      "length": 12
+      "length": 12,
+      "line": 1
     },
     {
       "text": "function greet(person: string, date: Date): void",
       "docs": "",
       "position": 116,
-      "length": 5
+      "length": 5,
+      "line": 4
     },
     {
       "text": "var Date: DateConstructor\nnew () => Date (+4 overloads)",
       "docs": "Enables basic storage and retrieval of dates and times.",
       "position": 138,
-      "length": 4
+      "length": 4,
+      "line": 4
     }
   ],
   "errors": [],

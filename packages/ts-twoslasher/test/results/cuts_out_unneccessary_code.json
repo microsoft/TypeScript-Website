@@ -3,84 +3,127 @@
   "extension": "ts",
   "highlights": [],
   "queries": [
-    { "kind": "query", "offset": 4, "position": 109, "text": "" },
-    { "kind": "query", "offset": 4, "position": 145, "text": "" },
-    { "kind": "query", "offset": 4, "position": 172, "text": "" }
+    {
+      "kind": "query",
+      "offset": 4,
+      "position": 109,
+      "text": "let a: NameLabel",
+      "docs": "",
+      "line": 11
+    },
+    {
+      "kind": "query",
+      "offset": 4,
+      "position": 145,
+      "text": "Could not get LSP result: ^ >?< \n",
+      "line": 13
+    },
+    {
+      "kind": "query",
+      "offset": 4,
+      "position": 172,
+      "text": "Could not get LSP result: ) >;< \n",
+      "line": 15
+    }
   ],
   "staticQuickInfos": [
     {
       "text": "function createLabel<T extends string | number>(idOrName: T): NameOrId<T>",
       "docs": "",
       "position": 9,
-      "length": 11
+      "length": 11,
+      "line": 6
     },
     {
       "text": "(type parameter) T in createLabel<T extends string | number>(idOrName: T): NameOrId<T>",
       "docs": "",
       "position": 21,
-      "length": 1
+      "length": 1,
+      "line": 6
     },
     {
       "text": "(parameter) idOrName: T extends string | number",
       "docs": "",
       "position": 48,
-      "length": 8
+      "length": 8,
+      "line": 6
     },
     {
       "text": "(type parameter) T in createLabel<T extends string | number>(idOrName: T): NameOrId<T>",
       "docs": "",
       "position": 58,
-      "length": 1
+      "length": 1,
+      "line": 6
     },
     {
       "text": "type NameOrId<T extends string | number> = T extends number ? IdLabel : NameLabel",
       "docs": "",
       "position": 62,
-      "length": 8
+      "length": 8,
+      "line": 6
     },
     {
       "text": "(type parameter) T in createLabel<T extends string | number>(idOrName: T): NameOrId<T>",
       "docs": "",
       "position": 71,
-      "length": 1
+      "length": 1,
+      "line": 6
     },
-    { "text": "let a: NameLabel", "docs": "", "position": 109, "length": 1 },
+    {
+      "text": "let a: NameLabel",
+      "docs": "",
+      "position": 109,
+      "length": 1,
+      "line": 10
+    },
     {
       "text": "function createLabel<\"typescript\">(idOrName: \"typescript\"): NameLabel",
       "docs": "",
       "position": 113,
-      "length": 11
+      "length": 11,
+      "line": 10
     },
-    { "text": "let b: IdLabel", "docs": "", "position": 145, "length": 1 },
+    {
+      "text": "let b: IdLabel",
+      "docs": "",
+      "position": 145,
+      "length": 1,
+      "line": 12
+    },
     {
       "text": "function createLabel<2.8>(idOrName: 2.8): IdLabel",
       "docs": "",
       "position": 149,
-      "length": 11
+      "length": 11,
+      "line": 12
     },
     {
       "text": "let c: IdLabel | NameLabel",
       "docs": "",
       "position": 172,
-      "length": 1
+      "length": 1,
+      "line": 14
     },
     {
       "text": "function createLabel<\"hello\" | 42>(idOrName: \"hello\" | 42): IdLabel | NameLabel",
       "docs": "",
       "position": 176,
-      "length": 11
+      "length": 11,
+      "line": 14
     },
     {
       "text": "var Math: Math",
       "docs": "An intrinsic object that provides basic mathematics functionality and constants.",
       "position": 188,
-      "length": 4
+      "length": 4,
+      "line": 14
     },
     {
       "text": "(method) Math.random(): number",
       "docs": "Returns a pseudorandom number between 0 and 1.",
       "position": 193,
-      "length": 6
+      "length": 6,
+      "line": 14
     }
   ],
   "errors": [],

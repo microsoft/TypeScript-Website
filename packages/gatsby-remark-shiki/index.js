@@ -2,12 +2,12 @@
 
 const shiki = require('shiki')
 const visit = require('unist-util-visit')
-const {renderToHTML} = require('./renderer')
+const { renderToHTML } = require('./renderer')
 const { commonLangIds, commonLangAliases, otherLangIds } = require('shiki-languages')
 const languages = [...commonLangIds, ...commonLangAliases, ...otherLangIds]
 
-/** 
- * This gets filled in by the promise below, then should 
+/**
+ * This gets filled in by the promise below, then should
  * hopefully be more or less synchronous access by each parse
  * of the highlighter
  */
@@ -45,16 +45,16 @@ const getHighlighter = options => {
 const visitor = node => {
   let lang = node.lang
   const replacer = {
-    "json5": "json"
+    json5: 'json',
   }
-  
+
   if (replacer[lang]) lang = replacer[lang]
-  
+
   const shouldHighlight = lang && languages.includes(lang)
   if (shouldHighlight) {
     const tokens = highlighter.codeToThemedTokens(node.value, lang)
     const results = renderToHTML(tokens, { langId: lang }, node.twoslash)
-    node.type = "html"
+    node.type = 'html'
     node.value = results
     node.children = []
   }

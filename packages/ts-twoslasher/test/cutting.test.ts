@@ -65,7 +65,7 @@ const b = "345"
   })
 })
 
-describe('supports handling queries in cut multi-file code', () => {
+describe('supports handling many queries in cut multi-file code', () => {
   const file = `
 // @filename: index.ts
 const a = "123"
@@ -73,14 +73,23 @@ const a = "123"
 // ---cut---
 const b = "345"
 //    ^?
+const c = "678"
+//    ^?
 `
   const result = twoslasher(file, 'ts')
 
   it('shows the right query results', () => {
-    console.log(result.queries)
+    // 6 = `const ` length
     const bQueryResult = result.queries.find(info => info.position === 6)
     expect(bQueryResult).toBeTruthy()
+    expect(bQueryResult!.text).toContain("const b")
 
-    
+    // 22 = "const b = "345"\nconst "
+    const cQueryResult = result.queries.find(info => info.position === 22)
+    expect(cQueryResult).toBeTruthy()
+    // You can only get one query per file, hard-coding this limitation in for now
+    // but open to folks (or me) fixing this.
+    expect(cQueryResult!.text).toContain("Could not get LSP")
   })
 })
+

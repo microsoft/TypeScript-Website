@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "license": "MIT",
   "dependencies": {
-    "shiki": "~0.1.6"
+    "jest": "^24.9.0",
+    "shiki": "~0.1.6",
+    "ts-jest": "^24.2.0"
   },
   "scripts": {
     "build": "echo 'NOOP'",
-    "test": "node scripts/test.js"
+    "test": "jest"
   }
 }

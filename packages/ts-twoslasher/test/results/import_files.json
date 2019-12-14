@@ -8,31 +8,36 @@
       "text": "(alias) const helloWorld: \"Example string\"\nimport helloWorld",
       "docs": "",
       "position": 110,
-      "length": 10
+      "length": 10,
+      "line": 2
     },
     {
       "text": "var console: Console",
       "docs": "",
       "position": 148,
-      "length": 7
+      "length": 7,
+      "line": 2
     },
     {
       "text": "(method) Console.log(message?: any, ...optionalParams: any[]): void",
       "docs": "",
       "position": 156,
-      "length": 3
+      "length": 3,
+      "line": 2
     },
     {
       "text": "(alias) const helloWorld: \"Example string\"\nimport helloWorld",
       "docs": "",
       "position": 160,
-      "length": 10
+      "length": 10,
+      "line": 2
     },
     {
       "text": "const helloWorld: \"Example string\"",
       "docs": "",
       "position": 47,
-      "length": 10
+      "length": 10,
+      "line": 2
     }
   ],
   "errors": [],
