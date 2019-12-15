@@ -6,5 +6,8 @@
   "scripts": {
     "build": "echo 'NOOP'",
     "test": "echo 'NOOP'"
+  },
+  "prettier": {
+    "semi": true
   }
 }
