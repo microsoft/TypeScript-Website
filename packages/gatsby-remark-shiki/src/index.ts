@@ -1,9 +1,10 @@
-// @ts-enable
+import { loadTheme, getHighlighter, getTheme } from 'shiki'
+import { Highlighter } from 'shiki/dist/highlighter'
+import { commonLangIds, commonLangAliases, otherLangIds, TLang } from 'shiki-languages'
 
-const shiki = require('shiki')
-const visit = require('unist-util-visit')
-const { renderToHTML } = require('./renderer')
-const { commonLangIds, commonLangAliases, otherLangIds } = require('shiki-languages')
+import visit from 'unist-util-visit'
+
+import { renderToHTML } from './renderer'
 const languages = [...commonLangIds, ...commonLangAliases, ...otherLangIds]
 
 /**
@@ -11,9 +12,9 @@ const languages = [...commonLangIds, ...commonLangAliases, ...otherLangIds]
  * hopefully be more or less synchronous access by each parse
  * of the highlighter
  */
-let highlighter = null
+let highlighter: Highlighter = null as any
 
-const getHighlighter = options => {
+const getHighlighterObj = (options: any) => {
   if (highlighter) return highlighter
 
   var settings = options || {}
@@ -21,33 +22,41 @@ const getHighlighter = options => {
   var shikiTheme
 
   try {
-    shikiTheme = shiki.getTheme(theme)
+    shikiTheme = getTheme(theme)
   } catch (error) {
     try {
-      shikiTheme = shiki.loadTheme(theme)
+      shikiTheme = loadTheme(theme)
     } catch (error) {
-      throw new Error('Unable to load theme: ' + theme)
+      throw new Error('Unable to load theme: ' + theme + ' - ' + error.message)
     }
   }
 
-  return shiki.getHighlighter({ theme: shikiTheme, langs: languages }).then(newHighlighter => {
+  return getHighlighter({ theme: shikiTheme, langs: languages }).then(newHighlighter => {
     highlighter = newHighlighter
     return highlighter
   })
 }
 
+type RichNode = Node & {
+  lang: TLang
+  type: string
+  restults: string
+  children: Node[]
+  value: string
+  twoslash?: import('ts-twoslasher').TwoSlashReturn
+}
+
 /**
  * The function doing the work of transforming any codeblock samples
  * which have opted-in to the twoslash pattern.
- *
- * @param {Node} node
  */
-const visitor = node => {
+const visitor = (node: RichNode) => {
   let lang = node.lang
   const replacer = {
     json5: 'json',
   }
 
+  // @ts-ignore
   if (replacer[lang]) lang = replacer[lang]
 
   const shouldHighlight = lang && languages.includes(lang)
@@ -61,7 +70,7 @@ const visitor = node => {
 }
 
 /** The plugin API */
-module.exports = async ({ markdownAST }, settings) => {
-  await getHighlighter(settings)
+export default async function({ markdownAST }: any, settings: any) {
+  await getHighlighterObj(settings)
   visit(markdownAST, 'code', visitor)
 }

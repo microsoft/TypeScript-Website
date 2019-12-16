@@ -66,7 +66,7 @@ const HandbookTemplate = (props: { pageContext: any, data: GetHandbookBySlug, pa
 
   const { previous, next } = props.pageContext
   const selectedID = post.frontmatter.permalink.split("/").pop().replace(".html", "")
-  console.log(selectedID, post.frontmatter.permalink)
+
 
   return (
     <Layout>

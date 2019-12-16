@@ -11551,7 +11551,7 @@ jest-worker@^24.6.0, jest-worker@^24.9.0:
     merge-stream "^2.0.0"
     supports-color "^6.1.0"
 
-jest@^24.8.0, jest@^24.9.0:
+jest@^24.8.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/jest/-/jest-24.9.0.tgz#987d290c05a08b52c56188c1002e368edb007171"
   integrity sha512-YvkBL1Zm7d2B1+h5fHEOdyjCG+sGMz4f8D86/0HiqJ6MB4MnDc8FgP5vdWsGnemOQro7lnYo8UakZ3+5A0jxGw==
@@ -12221,7 +12221,7 @@ lodash.maxby@^4.6.0:
   resolved "https://registry.yarnpkg.com/lodash.maxby/-/lodash.maxby-4.6.0.tgz#082240068f3c7a227aa00a8380e4f38cf0786e3d"
   integrity sha1-CCJABo88eiJ6oAqDgOTzjPB4bj0=
 
-lodash.memoize@4.x, lodash.memoize@^4.1.2:
+lodash.memoize@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
@@ -16702,7 +16702,7 @@ shiki-themes@^0.1.5:
     json5 "^2.1.0"
     vscode-textmate "https://github.com/octref/vscode-textmate"
 
-shiki@^0.1.6, shiki@~0.1.6:
+shiki@^0.1.6:
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/shiki/-/shiki-0.1.6.tgz#1db16acbb840cd275b196ff2829781b483aef54e"
   integrity sha512-qG/T0bqNxcLM6nvoX0MZKjAzU14P6j5KutFhjCvnNHGfDmH1Z0VL/KQ/kMmtcGRlXfnlaMBXxniMnGGE7DhJRg==
@@ -18031,22 +18031,6 @@ ts-jest@^24.0.2:
     buffer-from "1.x"
     fast-json-stable-stringify "2.x"
     json5 "2.x"
-    make-error "1.x"
-    mkdirp "0.x"
-    resolve "1.x"
-    semver "^5.5"
-    yargs-parser "10.x"
-
-ts-jest@^24.2.0:
-  version "24.2.0"
-  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-24.2.0.tgz#7abca28c2b4b0a1fdd715cd667d65d047ea4e768"
-  integrity sha512-Yc+HLyldlIC9iIK8xEN7tV960Or56N49MDP7hubCZUeI7EbIOTsas6rXCMB4kQjLACJ7eDOF4xWEO5qumpKsag==
-  dependencies:
-    bs-logger "0.x"
-    buffer-from "1.x"
-    fast-json-stable-stringify "2.x"
-    json5 "2.x"
-    lodash.memoize "4.x"
     make-error "1.x"
     mkdirp "0.x"
     resolve "1.x"

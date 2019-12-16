@@ -1,8 +1,8 @@
 const remark = require('remark')
-const gatsbyRemarkShiki = require('./index')
+import gatsbyRemarkShiki from '../src/index'
 const gatsbyTwoSlash = require('gatsby-remark-twoslasher-code-blocks')
 
-const getMarkdownASTForCode = async (code, settings) => {
+const getMarkdownASTForCode = async (code: string, settings?: any) => {
   const markdownAST = remark().parse(code)
   gatsbyTwoSlash({ markdownAST })
   await gatsbyRemarkShiki({ markdownAST }, settings)

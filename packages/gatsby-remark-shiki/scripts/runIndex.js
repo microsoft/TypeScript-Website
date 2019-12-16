@@ -1,5 +1,5 @@
 const remark = require('remark')
-const gatsbyRemarkShiki = require('..')
+const gatsbyRemarkShiki = require('../../gatsby-remark-shikii/dist')
 const gatsbyTwoSlash = require('gatsby-remark-twoslasher-code-blocks')
 const { readFileSync } = require('fs')
 

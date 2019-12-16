@@ -1,14 +1,10 @@
-// @ts-check
 // This started as a JS port of https://github.com/octref/shiki/blob/master/packages/shiki/src/renderer.ts
 
-/**
- *
- * @param {{ content: string, color?: string, explanation?: any[] }[][]} lines
- * @param {{ langId: string }} options
- * @param { import("ts-twoslasher").TwoSlashReturn } twoslash
- */
-function renderToHTML(lines, options, twoslash) {
-  const bg = options.bg || '#f8f8f8'
+export function renderToHTML(
+  lines: import('shiki').IThemedToken[][],
+  options: import('shiki/dist/renderer').HtmlRendererOptions,
+  twoslash?: import('ts-twoslasher').TwoSlashReturn
+) {
   if (!twoslash) {
     return plainOleShikiRenderer(lines, options)
   }
@@ -19,10 +15,10 @@ function renderToHTML(lines, options, twoslash) {
     html += `<div class="language-id">${options.langId}</div>`
   }
   html += `<div class='code-container'><code>`
-
+  console.log('-----------------------------------------------------------------\n\n\n')
   const errorsGroupedByLine = (twoslash && groupBy(twoslash.errors, e => e.line)) || new Map()
   const staticQuickInfosGroupedByLine = (twoslash && groupBy(twoslash.staticQuickInfos, q => q.line)) || new Map()
-  const queriesGroupedByLine = (twoslash && groupBy(twoslash.queries, q => q.line)) || new Map()
+  // const queriesGroupedByLine = (twoslash && groupBy(twoslash.queries, q => q.line)) || new Map()
 
   lines.forEach((l, i) => {
     const errors = errorsGroupedByLine.get(i) || []
@@ -37,27 +33,39 @@ function renderToHTML(lines, options, twoslash) {
 
       l.forEach(token => {
         // Underlining particular words
-        const findTokenFunc = start => e =>
+        const findTokenFunc = (start: number) => (e: any) =>
           start <= e.character && start + token.content.length <= e.character + e.length
 
-        const isTokenFunc = start => e =>
+        const isTokenFunc = (start: number) => (e: any) =>
           start === e.character && start + token.content.length === e.character + e.length
 
-        const isInsideTokenDebug = start => e => {
+        const findTokenDebug = (start: number) => (e: any) => {
           const result = start <= e.character && start + token.content.length <= e.character + e.length
           // prettier-ignore
           console.log(result, start, '<=', e.character, '&&', start + token.content.length, '<=', e.character + e.length)
           return result
         }
 
+        const isTokenDebug = (start: number) => (e: any) => {
+          const result = start === e.character && start + token.content.length === e.character + e.length
+          // prettier-ignore
+          console.log(result, start + 1, '===', e.character, '&&', start + token.content.length, '===', e.character + e.length, ` for '${token.content}' vs '${e.targetString}'`)
+          return result
+        }
+
         const errorsInToken = errors.filter(findTokenFunc(pos))
         const lspResponsesInToken = lspValues.filter(findTokenFunc(pos))
+
+        if (lspResponsesInToken.length) {
+          // prettier-ignore
+          console.log(`LSP Found in token: '${token.content}':`,lspResponsesInToken.map(l => l.text))
+        }
 
         // The explanation is all of the token which make up this "meta token"
         // these meta tokens are just the consolidation of many tokens which share the same color
 
         const subtokens = token.explanation || [{ content: token.content }]
-        let subpos = pos
+        let subpos = pos + token.content.length
         subtokens.forEach(subtoken => {
           // If there are errors or LSP results (or TODO: highlights) then wrap the token with a
           // span which has the right classes and LSP results
@@ -69,7 +77,11 @@ function renderToHTML(lines, options, twoslash) {
             classes.push('err')
           }
 
-          const lspResponsesInSubToken = lspResponsesInToken.find(isTokenFunc(subpos))
+          const find = lspResponsesInToken.length ? isTokenDebug : isTokenFunc
+          const lspResponsesInSubToken = lspResponsesInToken.find(find(subpos))
+          if (lspResponsesInToken.length) {
+            console.log(subtoken.content, lspResponsesInSubToken)
+          }
           if (lspResponsesInSubToken) {
             classes.push('lsp')
             extras.push(`data-lsp='${encodeURIComponent(lspResponsesInSubToken.text)}'`)
@@ -87,7 +99,8 @@ function renderToHTML(lines, options, twoslash) {
           }
         })
 
-        const content = subtokens.map(t => t.content).join('')
+        // @ts-ignore TODO:
+        const content = subtokens.map((t: any) => t.content).join('')
         html += `<span style="color: ${token.color}">${content}</span>`
 
         pos += token.content.length
@@ -110,13 +123,13 @@ function renderToHTML(lines, options, twoslash) {
   return html
 }
 
-function escapeHtml(html) {
+function escapeHtml(html: string) {
   return html.replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }
 
 /** Returns a map where all the keys are the value in keyGetter  */
-function groupBy(list, keyGetter) {
-  const map = new Map()
+function groupBy<T>(list: T[], keyGetter: (obj: any) => number) {
+  const map = new Map<number, T[]>()
   list.forEach(item => {
     const key = keyGetter(item)
     const collection = map.get(key)
@@ -134,7 +147,10 @@ function groupBy(list, keyGetter) {
  * @param {{ content: string, color?: string, explanation?: any[]  }[][]} lines
  * @param {{ langId: string }} options
  */
-function plainOleShikiRenderer(lines, options) {
+export function plainOleShikiRenderer(
+  lines: import('shiki').IThemedToken[][],
+  options: import('shiki/dist/renderer').HtmlRendererOptions
+) {
   let html = ''
 
   html += `<pre class="shiki">`
@@ -151,14 +167,11 @@ function plainOleShikiRenderer(lines, options) {
       l.forEach(token => {
         html += `<span style="color: ${token.color}">${escapeHtml(token.content)}</span>`
       })
+      html += `\n`
     }
   })
 
+  html = html.replace(/\n*$/, '') // Get rid of final new lines
   html += `</code></div></pre>`
   return html
-}
-
-module.exports = {
-  renderToHTML,
-  plainOleShikiRenderer,
 }

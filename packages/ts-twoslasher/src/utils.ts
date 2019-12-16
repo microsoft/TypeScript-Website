@@ -6,7 +6,9 @@ export function escapeHtml(text: string) {
 
 export function strrep(text: string, count: number) {
   let s = ''
-  for (let i = 0; i < count; i++) { s += text }
+  for (let i = 0; i < count; i++) {
+    s += text
+  }
   return s
 }
 
@@ -61,7 +63,7 @@ export function typesToExtension(types: string) {
 }
 
 export function getIdentifierTextSpans(sourceFile: ts.SourceFile) {
-  const textSpans: ts.TextSpan[] = []
+  const textSpans: { span: ts.TextSpan; text: string }[] = []
   checkChildren(sourceFile)
   return textSpans
 
@@ -69,9 +71,24 @@ export function getIdentifierTextSpans(sourceFile: ts.SourceFile) {
     ts.forEachChild(node, child => {
       if (ts.isIdentifier(child)) {
         const start = child.getStart(sourceFile, false)
-        textSpans.push(ts.createTextSpan(start, child.end - start))
+        textSpans.push({ span: ts.createTextSpan(start, child.end - start), text: child.getText(sourceFile) })
       }
       checkChildren(child)
     })
   }
+}
+
+export function stringAroundIndex(string: string, index: number) {
+  const arr = [
+    string[index - 3],
+    string[index - 2],
+    string[index - 1],
+    '>',
+    string[index],
+    '<',
+    string[index + 1],
+    string[index + 2],
+    string[index + 3],
+  ]
+  return arr.filter(Boolean).join('')
 }

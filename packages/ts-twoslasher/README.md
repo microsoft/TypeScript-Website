@@ -442,11 +442,19 @@ export interface TwoSlashReturn {
     }[];
     /** An array of LSP responses identifiers in the sample  */
     staticQuickInfos: {
+        /** The string content of the node this represents (mainly for debugging) */
+        targetString: string;
+        /** The base LSP response (the type) */
         text: string;
+        /** Attached JSDoc info */
         docs: string | undefined;
+        /** The index of the text in the file */
         start: number;
+        /** how long the identifier */
         length: number;
+        /** line number where this is found */
         line: number;
+        /** The character on the line */
         character: number;
     }[];
     /** Requests to use the LSP to get info for a particular symbol in the source */

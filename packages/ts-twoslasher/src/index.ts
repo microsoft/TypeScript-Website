@@ -5,7 +5,14 @@ import { compressToEncodedURIComponent } from 'lz-string'
 // TODO: remove this somehow?
 import * as fs from 'fs'
 
-import { parsePrimitive, escapeHtml, cleanMarkdownEscaped, typesToExtension, getIdentifierTextSpans } from './utils'
+import {
+  parsePrimitive,
+  escapeHtml,
+  cleanMarkdownEscaped,
+  typesToExtension,
+  getIdentifierTextSpans,
+  stringAroundIndex,
+} from './utils'
 import { validateInput, validateCodeForErrors } from './validation'
 
 const log = debug('twoslasher')
@@ -254,11 +261,19 @@ export interface TwoSlashReturn {
 
   /** An array of LSP responses identifiers in the sample  */
   staticQuickInfos: {
+    /** The string content of the node this represents (mainly for debugging) */
+    targetString: string
+    /** The base LSP response (the type) */
     text: string
+    /** Attached JSDoc info */
     docs: string | undefined
+    /** The index of the text in the file */
     start: number
+    /** how long the identifier */
     length: number
+    /** line number where this is found */
     line: number
+    /** The character on the line */
     character: number
   }[]
 
@@ -399,9 +414,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     // in the same sourcefile
     const lspedQueries = updates.queries.map(q => {
       const quickInfo = ls.getQuickInfoAtPosition(filename, q.position)
-      let text = `Could not get LSP result: ${fileMap[filename].content[q.position - 1]} >${
-        fileMap[filename].content[q.position]
-      }< ${fileMap[filename].content[q.position + 1]}`
+      let text = `Could not get LSP result: ${stringAroundIndex(fileMap[filename].content, q.position)}`
       let docs
       if (quickInfo && quickInfo.displayParts) {
         text = quickInfo.displayParts.map(dp => dp.text).join('')
@@ -441,16 +454,18 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
       const fileContentStartIndexInModifiedFile = code.indexOf(fileRep.content)
       const snapshot = ts.ScriptSnapshot.fromString(fileRep.content)
       const sourceFile = docRegistry.acquireDocument(file, compilerOptions, snapshot, 'noop')
-      const spans = getIdentifierTextSpans(sourceFile)
+      const idenfiers = getIdentifierTextSpans(sourceFile)
 
-      for (const span of spans) {
+      for (const idenfier of idenfiers) {
+        const span = idenfier.span
         const quickInfo = ls.getQuickInfoAtPosition(file, span.start)
         if (quickInfo && quickInfo.displayParts) {
           const text = quickInfo.displayParts.map(dp => dp.text).join('')
           const docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join('\n') : undefined
           const position = span.start + fileContentStartIndexInModifiedFile
           const { line, character } = ts.getLineAndCharacterOfPosition(sourceFile, position)
-          staticQuickInfos.push({ text, docs, start: position, length: span.length, line, character })
+          const targetString = idenfier.text
+          staticQuickInfos.push({ text, docs, start: position, length: span.length, line, character, targetString })
         }
       }
     }
@@ -472,6 +487,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     const renderedMessage = escapeHtml(ts.flattenDiagnosticMessageText(err.messageText, '\n'))
     const id = `err-${err.code}-${err.start}-${err.length}`
     const { line, character } = ts.getLineAndCharacterOfPosition(err.file!, err.start!)
+
     errors.push({
       category: err.category,
       code: err.code,
