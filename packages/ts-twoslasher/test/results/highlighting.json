@@ -15,79 +15,101 @@
     {
       "text": "function greet(person: string, date: Date): void",
       "docs": "",
-      "position": 9,
+      "start": 9,
       "length": 5,
-      "line": 0
+      "line": 0,
+      "character": 9,
+      "targetString": "greet"
     },
     {
       "text": "(parameter) person: string",
       "docs": "",
-      "position": 15,
+      "start": 15,
       "length": 6,
-      "line": 0
+      "line": 0,
+      "character": 15,
+      "targetString": "person"
     },
     {
       "text": "(parameter) date: Date",
       "docs": "",
-      "position": 31,
+      "start": 31,
       "length": 4,
-      "line": 0
+      "line": 0,
+      "character": 31,
+      "targetString": "date"
     },
     {
       "text": "interface Date",
       "docs": "Enables basic storage and retrieval of dates and times.",
-      "position": 37,
+      "start": 37,
       "length": 4,
-      "line": 0
+      "line": 0,
+      "character": 37,
+      "targetString": "Date"
     },
     {
       "text": "var console: Console",
       "docs": "",
-      "position": 47,
+      "start": 47,
       "length": 7,
-      "line": 1
+      "line": 1,
+      "character": 2,
+      "targetString": "console"
     },
     {
       "text": "(method) Console.log(message?: any, ...optionalParams: any[]): void",
       "docs": "",
-      "position": 55,
+      "start": 55,
       "length": 3,
-      "line": 1
+      "line": 1,
+      "character": 10,
+      "targetString": "log"
     },
     {
       "text": "(parameter) person: string",
       "docs": "",
-      "position": 68,
+      "start": 68,
       "length": 6,
-      "line": 1
+      "line": 1,
+      "character": 23,
+      "targetString": "person"
     },
     {
       "text": "(parameter) date: Date",
       "docs": "",
-      "position": 88,
+      "start": 88,
       "length": 4,
-      "line": 1
+      "line": 1,
+      "character": 43,
+      "targetString": "date"
     },
     {
       "text": "(method) Date.toDateString(): string",
       "docs": "Returns a date as a string value.",
-      "position": 93,
+      "start": 93,
       "length": 12,
-      "line": 1
+      "line": 1,
+      "character": 48,
+      "targetString": "toDateString"
     },
     {
       "text": "function greet(person: string, date: Date): void",
       "docs": "",
-      "position": 116,
+      "start": 116,
       "length": 5,
-      "line": 4
+      "line": 4,
+      "character": 0,
+      "targetString": "greet"
     },
     {
       "text": "var Date: DateConstructor\nnew () => Date (+4 overloads)",
       "docs": "Enables basic storage and retrieval of dates and times.",
-      "position": 138,
+      "start": 138,
       "length": 4,
-      "line": 4
+      "line": 4,
+      "character": 22,
+      "targetString": "Date"
     }
   ],
   "errors": [],

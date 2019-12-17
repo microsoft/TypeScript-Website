@@ -7,37 +7,47 @@
     {
       "text": "(alias) const helloWorld: \"Example string\"\nimport helloWorld",
       "docs": "",
-      "position": 110,
+      "start": 110,
       "length": 10,
-      "line": 2
+      "line": 2,
+      "character": 40,
+      "targetString": "helloWorld"
     },
     {
       "text": "var console: Console",
       "docs": "",
-      "position": 148,
+      "start": 148,
       "length": 7,
-      "line": 2
+      "line": 2,
+      "character": 78,
+      "targetString": "console"
     },
     {
       "text": "(method) Console.log(message?: any, ...optionalParams: any[]): void",
       "docs": "",
-      "position": 156,
+      "start": 156,
       "length": 3,
-      "line": 2
+      "line": 2,
+      "character": 86,
+      "targetString": "log"
     },
     {
       "text": "(alias) const helloWorld: \"Example string\"\nimport helloWorld",
       "docs": "",
-      "position": 160,
+      "start": 160,
       "length": 10,
-      "line": 2
+      "line": 2,
+      "character": 90,
+      "targetString": "helloWorld"
     },
     {
       "text": "const helloWorld: \"Example string\"",
       "docs": "",
-      "position": 47,
+      "start": 47,
       "length": 10,
-      "line": 2
+      "line": 2,
+      "character": 2,
+      "targetString": "helloWorld"
     }
   ],
   "errors": [],

@@ -7,45 +7,64 @@
     {
       "text": "function fn(s: any): void",
       "docs": "",
-      "position": 10,
+      "start": 10,
       "length": 2,
-      "line": 1
+      "line": 1,
+      "character": 9,
+      "targetString": "fn"
     },
     {
       "text": "(parameter) s: any",
       "docs": "",
-      "position": 13,
+      "start": 13,
       "length": 1,
-      "line": 1
+      "line": 1,
+      "character": 12,
+      "targetString": "s"
     },
     {
       "text": "var console: Console",
       "docs": "",
-      "position": 20,
+      "start": 20,
       "length": 7,
-      "line": 2
+      "line": 2,
+      "character": 2,
+      "targetString": "console"
     },
     {
       "text": "(method) Console.log(message?: any, ...optionalParams: any[]): void",
       "docs": "",
-      "position": 28,
+      "start": 28,
       "length": 3,
-      "line": 2
+      "line": 2,
+      "character": 10,
+      "targetString": "log"
     },
     {
       "text": "(parameter) s: any",
       "docs": "",
-      "position": 32,
+      "start": 32,
       "length": 1,
-      "line": 2
+      "line": 2,
+      "character": 14,
+      "targetString": "s"
     },
-    { "text": "any", "position": 34, "length": 5, "line": 2 },
+    {
+      "text": "any",
+      "start": 34,
+      "length": 5,
+      "line": 2,
+      "character": 16,
+      "targetString": "subtr"
+    },
     {
       "text": "function fn(s: any): void",
       "docs": "",
-      "position": 47,
+      "start": 47,
       "length": 2,
-      "line": 5
+      "line": 5,
+      "character": 0,
+      "targetString": "fn"
     }
   ],
   "errors": [

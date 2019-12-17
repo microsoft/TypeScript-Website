@@ -9,16 +9,20 @@
       "position": 4,
       "text": "let foo: string",
       "docs": "",
-      "line": 1
+      "line": 1,
+      "start": 3,
+      "length": 4
     }
   ],
   "staticQuickInfos": [
     {
       "text": "let foo: string",
       "docs": "",
-      "position": 4,
+      "start": 4,
       "length": 3,
-      "line": 0
+      "line": 0,
+      "character": 4,
+      "targetString": "foo"
     }
   ],
   "errors": [],

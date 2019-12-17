@@ -415,19 +415,21 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     // in the same sourcefile
     const lspedQueries = updates.queries.map(q => {
       const quickInfo = ls.getQuickInfoAtPosition(filename, q.position)
+      const token = ls.getDefinitionAtPosition(filename, q.position)
+
       let text = `Could not get LSP result: ${stringAroundIndex(fileMap[filename].content, q.position)}`
       let docs,
         start = 0,
         length = 0
-
-      if (quickInfo && quickInfo.displayParts) {
+      if (quickInfo && token && quickInfo.displayParts) {
         text = quickInfo.displayParts.map(dp => dp.text).join('')
         docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join('\n') : undefined
-        length = quickInfo.textSpan.length
-        start = quickInfo.textSpan.start
+        length = token[0].textSpan.start
+        start = token[0].textSpan.length
       }
 
-      return { ...q, text, docs, start, length }
+      const queryResult = { ...q, text, docs, start, length }
+      return queryResult
     })
     queries.push(...lspedQueries)
 
