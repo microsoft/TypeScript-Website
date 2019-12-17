@@ -460,7 +460,10 @@ export interface TwoSlashReturn {
     /** Requests to use the LSP to get info for a particular symbol in the source */
     queries: {
         kind: "query";
+        /** The index of the text in the file */
         start: number;
+        /** how long the identifier */
+        length: number;
         offset: number;
         // TODO: Add these so we can present something
         text: string;

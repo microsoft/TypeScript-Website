@@ -280,7 +280,10 @@ export interface TwoSlashReturn {
   /** Requests to use the LSP to get info for a particular symbol in the source */
   queries: {
     kind: 'query'
+    /** The index of the text in the file */
     start: number
+    /** how long the identifier */
+    length: number
     offset: number
     // TODO: Add these so we can present something
     text: string
@@ -402,8 +405,6 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     const newFileCode = codeLines.join('\n')
     updateFile(filename, newFileCode)
 
-    // This will edit codeLines to remove queries and highlights
-    const fileContentStartIndexInModifiedFile = code.indexOf(codeLines.join('\n'))
     const updates = filterHighlightLines(codeLines)
 
     highlights.push(...updates.highlights)
@@ -415,12 +416,18 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
     const lspedQueries = updates.queries.map(q => {
       const quickInfo = ls.getQuickInfoAtPosition(filename, q.position)
       let text = `Could not get LSP result: ${stringAroundIndex(fileMap[filename].content, q.position)}`
-      let docs
+      let docs,
+        start = 0,
+        length = 0
+
       if (quickInfo && quickInfo.displayParts) {
         text = quickInfo.displayParts.map(dp => dp.text).join('')
         docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join('\n') : undefined
+        length = quickInfo.textSpan.length
+        start = quickInfo.textSpan.start
       }
-      return { ...q, text, docs, start: q.position + fileContentStartIndexInModifiedFile }
+
+      return { ...q, text, docs, start, length }
     })
     queries.push(...lspedQueries)
 

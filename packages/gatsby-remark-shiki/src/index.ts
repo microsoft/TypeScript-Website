@@ -14,11 +14,11 @@ const languages = [...commonLangIds, ...commonLangAliases, ...otherLangIds]
  */
 let highlighter: Highlighter = null as any
 
-const getHighlighterObj = (options: any) => {
+const getHighlighterObj = (options: import('shiki/dist/highlighter').HighlighterOptions) => {
   if (highlighter) return highlighter
 
   var settings = options || {}
-  var theme = settings.theme || 'nord'
+  var theme: any = settings.theme || 'nord'
   var shikiTheme
 
   try {
