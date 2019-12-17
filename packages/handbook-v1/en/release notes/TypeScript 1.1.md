@@ -10,25 +10,24 @@ This is a test example, knowingly shipped to prod while v2 is in beta - it's got
 // @errors: 2345
 function longest<T extends { length: number }>(a: T, b: T) {
   if (a.length >= b.length) {
-    return a;
+    return a
   } else {
-    return b;
+    return b
   }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // longerArray is of type 'number[]'
-const longerArray = longest([1, 2], [1, 2, 3]);
+const longerArray = longest([1, 2], [1, 2, 3])
 // longerString is of type 'string'
-const longerString = longest("alice", "bob");
+const longerString = longest('alice', 'bob')
 // Error! Numbers don't have a 'length' property
-const notOK = longest(10, 100);
+const notOK = longest(10, 100)
 
-const hello = longest("alice", "bob");
+const hello = longest('alice', 'bob')
 console.log(hello)
 ```
-
 
 ## Performance Improvements
 
@@ -41,14 +40,13 @@ TypeScript now only strictly enforces the visibility of types in modules if the 
 ```ts
 module MyControllers {
   interface ZooScope extends ng.IScope {
-    animals: Animal[];
+    animals: Animal[]
   }
   export class ZooController {
     // Used to be an error (cannot expose ZooScope), but now is only
     // an error when trying to generate .d.ts files
-    constructor(public $scope: ZooScope) { }
+    constructor(public $scope: ZooScope) {}
     /* more code */
   }
 }
 ```
-

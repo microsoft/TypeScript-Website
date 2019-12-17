@@ -25,7 +25,7 @@ The twoslash markup API lives inside your code samples code as comments, which c
 
 ```ts
 /** Available inline flags which are not compiler flags */
-interface ExampleOptions {
+export interface ExampleOptions {
     /** Let's the sample suppress all error diagnostics */
     noErrors: false;
     /** An array of TS error codes, which you write as space separated - this is so the tool can know about unexpected errors */
@@ -37,6 +37,8 @@ interface ExampleOptions {
      * means when you just use `showEmit` above it shows the transpiled JS.
      */
     showEmittedFile: string;
+    /** Whether to disable the pre-cache of LSP calls for interesting identifiers */
+    noStaticSemanticInfo: false;
 }
 ```
 
@@ -48,7 +50,7 @@ Finally you can set any tsconfig compiler flag using this syntax, which you can 
 
 #### `compiler_errors.ts`
 
-```.ts
+```ts
 // @target: ES2015
 // @errors: 7006
 
@@ -78,12 +80,15 @@ Turns to:
 >   "extension": "ts",
 >   "highlights": [],
 >   "queries": [],
+>   "staticQuickInfos": "[...]",
 >   "errors": [
 >     {
 >       "category": 1,
 >       "code": 7006,
 >       "length": 1,
 >       "start": 13,
+>       "line": 1,
+>       "character": 12,
 >       "renderedMessage": "Parameter 's' implicitly has an 'any' type.",
 >       "id": "err-7006-13-1"
 >     }
@@ -94,7 +99,7 @@ Turns to:
 
 #### `compiler_flags.ts`
 
-```.ts
+```ts
 // @noImplicitAny: false
 // @target: ES2015
 
@@ -126,6 +131,7 @@ Turns to:
 >   "extension": "ts",
 >   "highlights": [],
 >   "queries": [],
+>   "staticQuickInfos": "[...]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/FAehAIBUAsEsGdwHdYBtXgHYHsAu5doAnbJcAIwFMBjAQwFd5LxsAzA6ZnASQFsAHVLGqxcAQUwBPYK3qZquWNkzhWmABTwAlOADewcOGrL42VJQB0qbAHNNF+PXK4i6gMxatwAL7AZGgBYAJi0AbmAgA"
 > }
@@ -133,7 +139,7 @@ Turns to:
 
 #### `cuts_out_unneccessary_code.ts`
 
-```.ts
+```ts
 interface IdLabel { id: number, /* some fields */ }
 interface NameLabel { name: string, /* other fields */ }
 type NameOrId<T extends number | string> = T extends number ? IdLabel : NameLabel;
@@ -180,19 +186,27 @@ Turns to:
 >     {
 >       "kind": "query",
 >       "offset": 4,
->       "position": 354
+>       "position": 109,
+>       "text": "let a: NameLabel",
+>       "docs": "",
+>       "line": 11
 >     },
 >     {
 >       "kind": "query",
 >       "offset": 4,
->       "position": 390
+>       "position": 145,
+>       "text": "Could not get LSP result: ^ >?< \n",
+>       "line": 13
 >     },
 >     {
 >       "kind": "query",
 >       "offset": 4,
->       "position": 417
+>       "position": 172,
+>       "text": "Could not get LSP result: ) >;< \n",
+>       "line": 15
 >     }
 >   ],
+>   "staticQuickInfos": "[...]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/JYOwLgpgTgZghgYwgAgJIBMAycBGEA2yA3ssOgFzIgCuAtnlADTID0AVMgM4D2tKMwAuk7I2LZAF8AUKEixEKAHJw+2PIRIgVESpzBRQAc2btk3MAAtoyAUJFjJUsAE8ADku0B5KBgA8AFWQIAA9IEGEqOgZkAB8ufSMAPmQAXmRAkLCImnprAH40LFwCZEplVWL8AG4pFnF-C2ARBF4+cC4Lbmp8dCpzZDxSEAR8anQIdCla8QBaOYRqMDmZqRhqYbBgbhBkBCgIOEg1AgCg0IhwkRzouL0DEENEgAoyb3KddIBKMq8fdADkkQpMgQchLFBuAB3ZAAInWwFornwEDakHQMKk0ikyLAyDgqV2+0OEGO+CeMJc7k4e2ArjAMM+NWxEFxOAJewOR0qTwATAA6AAcjKmON27KJXPUTwAsocLHyoHBwrwnp9kAUYVZ8PhuDDSsgACw84VAA"
 > }
@@ -200,7 +214,7 @@ Turns to:
 
 #### `declarations.ts`
 
-```.ts
+```ts
 // @declaration: true
 // @showEmit
 // @showEmittedFile: index.d.ts
@@ -232,6 +246,7 @@ Turns to:
 >   "extension": "ts",
 >   "highlights": [],
 >   "queries": [],
+>   "staticQuickInfos": "[...]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/PQKhFgCgAIWhxApgFwM7WQC0dANogOwHMtoB7AM2gENpVkAnAS2KlmgAEAHah6gW2gA3argCuOWvWasYIYFEQAPLmQbJoAE0QBjXLxwUxBHciZkC0IigDKjFkQAyhEpgAUI8YgBcde8QBKXwIxfgAjRAYAbiggA"
 > }
@@ -239,7 +254,7 @@ Turns to:
 
 #### `highlighting.ts`
 
-```.ts
+```ts
 function greet(person: string, date: Date) {
   console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
@@ -269,10 +284,12 @@ Turns to:
 >       "kind": "highlight",
 >       "position": 134,
 >       "length": 10,
->       "description": ""
+>       "description": "",
+>       "line": 5
 >     }
 >   ],
 >   "queries": [],
+>   "staticQuickInfos": "[...]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/GYVwdgxgLglg9mABAcwE4FN1QBQAd2oDOCAXIoVKjGMgDSIAmAhlOmQCIvoCUiA3gChEiCAmIAbdADpxcZNgAGACXTjZiACR98RBAF96UOMwCeiGIU19mrKUc6sAypWrzuegIQLuAbgF6BATRMHAAiAFkmBgYLBFD6MHQAd0QHdGxuXwEgA"
 > }
@@ -280,7 +297,7 @@ Turns to:
 
 #### `import_files.ts`
 
-```.ts
+```ts
 // @filename: file-with-export.ts
 export const helloWorld = "Example string";
 
@@ -308,6 +325,7 @@ Turns to:
 >   "extension": "ts",
 >   "highlights": [],
 >   "queries": [],
+>   "staticQuickInfos": "[...]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKGCC0B3aAFwAtd4APABwHsAnIgOiIGcAoS2h0AYxsRZFQJeLFg0A6vVgATUAF5QAIgCiFNFQShBdaIgDmSgNxs2ICDiRpMoPTMrN20VFyEBvEWMnSZAX2x0NKjKjMCWBMRknPRESmx8AjQIjOL6ABSe4lJ0sgCUbEA"
 > }
@@ -315,7 +333,7 @@ Turns to:
 
 #### `query.ts`
 
-```.ts
+```ts
 let foo = "hello there!";
 //  ^?
 ```
@@ -337,9 +355,13 @@ Turns to:
 >     {
 >       "kind": "query",
 >       "offset": 4,
->       "position": 4
+>       "position": 4,
+>       "text": "let foo: string",
+>       "docs": "",
+>       "line": 1
 >     }
 >   ],
+>   "staticQuickInfos": "[...]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/DYUwLgBAZg9jEF4ICIAWJjHmdAnEAhMgNwBQQA"
 > }
@@ -347,7 +369,7 @@ Turns to:
 
 #### `showEmit.ts`
 
-```.ts
+```ts
 // @showEmit
 // @target: ES5
 // @downleveliteration
@@ -381,6 +403,7 @@ Turns to:
 >   "extension": "js",
 >   "highlights": [],
 >   "queries": [],
+>   "staticQuickInfos": "[...]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/EQVwzgpgBGAuBOBLAxrYBuAsAKAPS6gFpDEBbABwHt5YAJCAG3InjCkoDsAuKAZXPgQAhgBMoAC0bN4UAO6IGDKACNoZKjQhiAZvEqkoAclhgGiZYZwB5ZQCsIqAHQiI2xBwgAFPdNgBPAAoIAA8NEwAaKGAAfWiIMABZShEQBghgSIBvKAA3IQYQCB4EQqgAXwBKLGw8mRMzZWiARigAXihBAEcQREEA4HrzYCqcbRAOVEROKG0OAKF4eAqoTJwoddyFqAX4ACY2qEHGpsdYsAFhEQCAbSaAXUidkewynBCwsEdZg9nqoA"
 > }
@@ -415,12 +438,36 @@ export interface TwoSlashReturn {
         position: number;
         length: number;
         description: string;
+        line: number;
+    }[];
+    /** An array of LSP responses identifiers in the sample  */
+    staticQuickInfos: {
+        /** The string content of the node this represents (mainly for debugging) */
+        targetString: string;
+        /** The base LSP response (the type) */
+        text: string;
+        /** Attached JSDoc info */
+        docs: string | undefined;
+        /** The index of the text in the file */
+        start: number;
+        /** how long the identifier */
+        length: number;
+        /** line number where this is found */
+        line: number;
+        /** The character on the line */
+        character: number;
     }[];
     /** Requests to use the LSP to get info for a particular symbol in the source */
     queries: {
         kind: "query";
-        position: number;
+        /** The index of the text in the file */
+        start: number;
+        /** how long the identifier */
+        length: number;
         offset: number;
+        // TODO: Add these so we can present something
+        text: string;
+        docs: string | undefined;
     }[];
     /** Diagnostic error messages which came up when creating the program */
     errors: {

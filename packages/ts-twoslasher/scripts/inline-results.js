@@ -54,7 +54,7 @@ module.exports = {
 
       readdirSync(fixturesFolder).forEach(fixtureName => {
         const fixture = join(fixturesFolder, fixtureName);
-        if (lstatSync(fixture).isDirectory()) {  return; }
+        if (lstatSync(fixture).isDirectory()) { return; }
 
         const resultName = parse(fixtureName).name + '.json';
         const result = join(resultsFolder, resultName);
@@ -63,14 +63,14 @@ module.exports = {
         const output = JSON.parse(readFileSync(result, 'utf8'));
 
         mds.push(`#### \`${fixtureName}\``);
-        mds.push(wrapCode(input, parse(fixtureName).ext));
+        mds.push(wrapCode(input, parse(fixtureName).ext.replace(".", "")));
         mds.push('Turns to:');
 
         mds.push(wrapCodeAsQuote(output.code, output.extension));
         
         mds.push('> With:');
 
-        const codeless = { ...output, code: "See above" }
+        const codeless = { ...output, code: "See above", staticQuickInfos: "[...]" }
         mds.push(wrapCodeAsQuote(JSON.stringify(codeless, null, "  ") + "\n", "json"));
       });
 

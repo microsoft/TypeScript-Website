@@ -12,7 +12,7 @@
     "husky": "^3.1.0"
   },
   "scripts": {
-    "bootstrap": "yarn workspaces run build",
+    "bootstrap": "yarn workspace ts-twoslasher run build; yarn workspaces run build",
     "start": "yarn workspace typescriptlang-org start",
     "build-site": "yarn workspace typescriptlang-org build",
     "build-tsconfig-reference-md": "yarn workspace tsconfig-reference build",

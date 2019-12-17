@@ -2,11 +2,23 @@
   "name": "gatsby-remark-shiki",
   "version": "0.1.0",
   "license": "MIT",
-  "dependencies": {
-    "shiki": "~0.1.6"
-  },
+  "author": "Orta Therox",
+  "main": "./dist/index.js",
+  "module": "./dist/gatsby-remark-shiki.esm.js",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "echo 'NOOP'",
-    "test": "node scripts/test.js"
+    "start": "tsdx watch",
+    "build": "tsdx build; echo 'module.exports = remarkShiki' >> dist/gatsby-remark-shiki.cjs.development.js",
+    "test": "tsdx test",
+    "lint": "tsdx lint"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.23",
+    "tsdx": "^0.11.0",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.3"
   }
 }

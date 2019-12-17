@@ -1,6 +1,14 @@
 // https://github.com/gatsbyjs/gatsby/issues/1457
 require("ts-node").register({ files: true })
-const {join} = require("path")
+const { join } = require("path")
+
+const shiki = join(
+  require.resolve(`gatsby-remark-shiki`),
+  "..",
+  "..",
+  "package.json"
+)
+console.log(shiki)
 
 module.exports = {
   // This should only be used in a CI deploy while we're working in a v2 sub-folder
@@ -19,7 +27,7 @@ module.exports = {
         background_color: `white`,
         theme_color: `#3178C6`,
         display: `standalone`,
-        icon: `static/icons/ts-logo-512.png`
+        icon: `static/icons/ts-logo-512.png`,
       },
     },
 
@@ -30,8 +38,8 @@ module.exports = {
       resolve: "gatsby-plugin-codegen",
       options: {
         // Ensure it works in a monorepo
-        localSchemaFile: __dirname + "/schema.json"
-      }
+        localSchemaFile: __dirname + "/schema.json",
+      },
     },
     // Support ts/tsx files in src
     "gatsby-plugin-typescript",
@@ -73,9 +81,16 @@ module.exports = {
           },
           "gatsby-remark-autolink-headers",
           {
-            resolve: require.resolve("gatsby-remark-shiki"),
+            // resolve: require.resolve(`${__dirname}/../gatsby-remark-shiki`),
+            // resolve: `gatsby-remark-shiki`,
+            resolve: shiki,
             options: {
-              theme: join(__dirname, "lib", "themes", "typescript-beta-light.json")
+              theme: join(
+                __dirname,
+                "lib",
+                "themes",
+                "typescript-beta-light.json"
+              ),
             },
           },
           "gatsby-remark-copy-linked-files",
