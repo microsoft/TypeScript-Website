@@ -70,7 +70,9 @@ const visitor = (node: RichNode) => {
 }
 
 /** The plugin API */
-export default async function({ markdownAST }: any, settings: any) {
+const shiki = async function({ markdownAST }: any, settings: any) {
   await getHighlighterObj(settings)
   visit(markdownAST, 'code', visitor)
 }
+
+export default shiki

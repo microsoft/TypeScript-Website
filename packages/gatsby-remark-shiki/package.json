@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "license": "MIT",
   "author": "Orta Therox",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "module": "dist/gatsby-remark-shiki.esm.js",
-  "typings": "dist/index.d.ts",
+  "typings": "dist/src/index.d.ts",
   "files": [
     "dist"
   ],

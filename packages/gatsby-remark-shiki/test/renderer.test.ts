@@ -1,5 +1,6 @@
 const remark = require('remark')
 import gatsbyRemarkShiki from '../src/index'
+import { stripHTML } from '../src/utils'
 const gatsbyTwoSlash = require('gatsby-remark-twoslasher-code-blocks')
 
 const getMarkdownASTForCode = async (code: string, settings?: any) => {
@@ -14,6 +15,7 @@ describe('with a simple example', () => {
 hello world
 
 \`\`\`ts twoslash
+// Hello
 const a = "123"
 const b = "345"
 \`\`\`
@@ -38,9 +40,9 @@ OK world
     const markdownAST = await getMarkdownASTForCode(file)
     const code = markdownAST.children[1]
 
-    expect(code.value).toContain(`data-lsp`)
-    expect(code.value).toContain(encodeURIComponent(`const a: "123"`))
-    expect(code.value).toContain(encodeURIComponent(`const b: "345"`))
+    expect(code.value).toContain(`lsp-result`)
+    expect(code.value).toContain(stripHTML(`const a: "123"`))
+    expect(code.value).toContain(stripHTML(`const b: "345"`))
   })
 })
 
@@ -80,8 +82,8 @@ OK world
     expect(code.twoslash.extension).toEqual('ts')
     expect(code.twoslash.staticQuickInfos.length).toBeGreaterThan(1)
 
-    expect(code.value).toContain(`data-lsp`)
-    expect(code.value).toContain(encodeURIComponent(`function longest<T extends {`))
+    expect(code.value).toContain(`lsp-result`)
+    expect(code.value).toContain(stripHTML(`function longest<T extends {`))
 
     // Error message
     expect(code.value).toContain(`span class="error"`)
@@ -94,8 +96,8 @@ OK world
     const markdownAST = await getMarkdownASTForCode(file, { theme: 'light_vs' })
     const code = markdownAST.children[1]
 
-    expect(code.value).toContain(`data-lsp`)
-    expect(code.value).toContain(encodeURIComponent(`function longest<T extends`))
+    expect(code.value).toContain(`lsp-result`)
+    expect(code.value).toContain(stripHTML(`function longest<T extends`))
 
     // Error message
     expect(code.value).toContain(`span class="error"`)
@@ -120,10 +122,10 @@ OK world
     const markdownAST = await getMarkdownASTForCode(file, { theme: 'light_vs' })
     const code = markdownAST.children[1]
 
-    expect(code.value).toContain(`data-lsp`)
-    expect(code.value).toContain(encodeURIComponent(`function longest()`))
+    expect(code.value).toContain(`lsp-result`)
+    expect(code.value).toContain(stripHTML(`function longest()`))
 
-    expect(code.value.split('data-lsp').length).toEqual(code.twoslash.staticQuickInfos.length + 1)
+    expect(code.value.split('lsp-result').length).toEqual(code.twoslash.staticQuickInfos.length + 1)
   })
 })
 
@@ -146,6 +148,7 @@ OK world
     expect(code.value).toContain('\n')
     expect(code.value).toMatchInlineSnapshot(`
       "<pre class=\\"shiki\\"><div class=\\"language-id\\">js</div><div class='code-container'><code><span style=\\"color: #81A1C1\\">function</span><span style=\\"color: #D8DEE9FF\\"> </span><span style=\\"color: #88C0D0\\">longest</span><span style=\\"color: #ECEFF4\\">()</span><span style=\\"color: #D8DEE9FF\\"> </span><span style=\\"color: #ECEFF4\\">{</span>
+
       <span style=\\"color: #ECEFF4\\">}</span></code></div></pre>"
     `)
   })

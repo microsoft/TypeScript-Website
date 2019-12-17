@@ -4,7 +4,7 @@ type Lines = import('shiki').IThemedToken[][]
 type Options = import('shiki/dist/renderer').HtmlRendererOptions
 type TwoSlash = import('ts-twoslasher').TwoSlashReturn
 
-import { createHighlightedString } from './utils'
+import { createHighlightedString, stripHTML } from './utils'
 
 export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash) {
   if (!twoslash) {
@@ -37,25 +37,16 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
       let tokenPos = 0
 
       l.forEach(token => {
-        console.log(tokenPos, token.content.length, filePos)
+        let tokenContent = ''
+        // console.log(tokenPos, token.content.length, filePos)
         // Underlining particular words
         const findTokenFunc = (start: number) => (e: any) =>
           start <= e.character && start + token.content.length <= e.character + e.length
-
-        const isTokenFunc = (start: number) => (e: any) =>
-          start === e.character && start + token.content.length === e.character + e.length
 
         const findTokenDebug = (start: number) => (e: any) => {
           const result = start <= e.character && start + token.content.length <= e.character + e.length
           // prettier-ignore
           console.log(result, start, '<=', e.character, '&&', start + token.content.length, '<=', e.character + e.length)
-          return result
-        }
-
-        const isTokenDebug = (start: number) => (e: any) => {
-          const result = start === e.character && start + token.content.length === e.character + e.length
-          // prettier-ignore
-          console.log(result, start + 1, '===', e.character, '&&', start + token.content.length, '===', e.character + e.length, ` for '${token.content}' vs '${e.targetString}'`)
           return result
         }
 
@@ -66,80 +57,33 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
         const allTokensByStart = [...errorsInToken, ...lspResponsesInToken, ...queriesInToken]
         if (allTokensByStart.length) {
           const ranges = allTokensByStart.map(token => {
-            let type = ''
-            if ('renderedMessage' in token) type = 'error'
-            if ('targetString' in token) type = 'lsp'
-            if ('kind' in token) type = token.kind
-            return {
+            const range: any = {
               begin: token.start! - filePos,
               end: token.start! + token.length! - filePos,
-              tokenIndex: allTokensByStart.indexOf(token),
-              toolTip: type,
             }
-          })
-          // prettier-ignore
-          const content = createHighlightedString(ranges, token.content)
 
-          console.log('before', `'${token.content}'`, ranges)
-          console.log('after', `'${content}'`)
-          // console.log(`LSP Found in token: '${token.content}':`, lspResponsesInToken.map(l => l.text))
-          // debugger
+            if ('renderedMessage' in token) range.classes = 'error'
+            if ('kind' in token) range.classes = token.kind
+            if ('targetString' in token) {
+              range.classes = 'lsp'
+              range['lsp'] = stripHTML(token.text)
+            }
+
+            return range
+          })
+
+          tokenContent += createHighlightedString(ranges, token.content)
+        } else {
+          tokenContent += token.content
         }
 
-        const currentlyOpenTokens: string[] = []
-        // allTokensByStart.forEach(element => {
-        //   currentlyOpenTokens
-        // })
-
-        // The explanation is all of the token which make up this "meta token"
-        // these meta tokens are just the consolidation of many tokens which share the same color
-
-        // const subtokens = token.explanation || [{ content: token.content }]
-        // let subpos = pos + token.content.length
-        // subtokens.forEach(subtoken => {
-        //   // If there are errors or LSP results (or TODO: highlights) then wrap the token with a
-        //   // span which has the right classes and LSP results
-        //   const classes = []
-        //   const extras = []
-
-        //   const errorsInSubToken = errorsInToken.find(isTokenFunc(subpos))
-        //   if (errorsInSubToken) {
-        //     classes.push('err')
-        //   }
-
-        //   const find = lspResponsesInToken.length ? isTokenDebug : isTokenFunc
-        //   const lspResponsesInSubToken = lspResponsesInToken.find(find(subpos))
-
-        //   if (lspResponsesInToken.length) {
-        //     console.log(subtoken.content, lspResponsesInSubToken)
-        //   }
-
-        //   if (lspResponsesInSubToken) {
-        //     classes.push('lsp')
-        //     extras.push(`data-lsp='${encodeURIComponent(lspResponsesInSubToken.text)}'`)
-        //   }
-
-        //   // We want to move the subpos along by the real content because we're about to manipulate that
-        //   // this needs to happen after the finds above
-        //   subpos += subtoken.content.length
-
-        //   const content = escapeHtml(subtoken.content)
-        //   if (classes.length === 0) {
-        //     subtoken.content = content
-        //   } else {
-        //     subtoken.content = `<span a class='${classes.join(' ')}' ${extras.join(' ')}>${content}</span>`
-        //   }
-        // })
-
-        // const content = subtokens.map((t: { content: string }) => t.content).join('')
-
-        html += `<span style="color: ${token.color}"></span>`
-
+        html += `<span style="color: ${token.color}">${tokenContent}</span>`
         tokenPos += token.content.length
         filePos += token.content.length
       })
 
       html += `\n`
+      filePos += 1
     }
 
     // Adding error messages to the line after
