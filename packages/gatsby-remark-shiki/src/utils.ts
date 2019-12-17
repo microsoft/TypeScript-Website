@@ -1,4 +1,5 @@
 // A TypeScript port of https://stackoverflow.com/questions/40117156/creating-overlapping-text-spans-in-javascript
+
 type Range = {
   begin: number
   end: number
@@ -66,6 +67,8 @@ function flattenRanges(ranges: Range[]) {
 
         for (let prop in includedRange) {
           if (prop != 'begin' && prop != 'end') {
+            // Adds any 'unknown' props together into the flattened result
+
             // @ts-ignore
             if (!flattenedRange[prop]) flattenedRange[prop] = []
             // @ts-ignore
