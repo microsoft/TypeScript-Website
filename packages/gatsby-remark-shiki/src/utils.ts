@@ -10,19 +10,21 @@ type Range = {
 }
 
 export function createHighlightedString(ranges: Range[], text: string) {
-  var flatRanges = flattenRanges(ranges)
-  var inflatedRanges = inflateRanges(flatRanges, text.length)
-  var filledRanges = fillRanges(inflatedRanges, text)
+  const flatRanges = flattenRanges(ranges)
+  const inflatedRanges = inflateRanges(flatRanges, text.length)
+  const filledRanges = fillRanges(inflatedRanges, text)
+
   var str = ''
   for (var i in filledRanges) {
     var range = filledRanges[i]
     if (range.count && range.count > 0) {
       if (range.text && range.text.length) {
-        var lspResponse = range.lsp ? "<span class='lsp-result'>" + range.lsp + '</span>' : ''
-        str += "<span class='" + (range.classes || []).join(' ') + "'>" + range.text + lspResponse + '</span>'
+        const lspResponse = range.lsp ? "<span class='lsp-result'>" + stripHTML(range.lsp[0]) + '</span>' : ''
+        str +=
+          "<span class='" + (range.classes || []).join(' ') + "'>" + stripHTML(range.text) + lspResponse + '</span>'
       }
     } else {
-      str += range.text
+      str += stripHTML(range.text || '')
     }
   }
   return str

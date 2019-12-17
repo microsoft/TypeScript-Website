@@ -3,15 +3,15 @@
   "version": "0.1.0",
   "license": "MIT",
   "author": "Orta Therox",
-  "main": "dist/src/index.js",
-  "module": "dist/gatsby-remark-shiki.esm.js",
-  "typings": "dist/src/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/gatsby-remark-shiki.esm.js",
+  "typings": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
     "start": "tsdx watch",
-    "build": "tsdx build",
+    "build": "tsdx build; echo 'module.exports = remarkShiki' >> dist/gatsby-remark-shiki.cjs.development.js",
     "test": "tsdx test",
     "lint": "tsdx lint"
   },
