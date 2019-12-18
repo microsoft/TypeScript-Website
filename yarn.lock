@@ -16702,7 +16702,7 @@ shiki-themes@^0.1.5:
     json5 "^2.1.0"
     vscode-textmate "https://github.com/octref/vscode-textmate"
 
-shiki@^0.1.6, shiki@~0.1.6:
+shiki@^0.1.6:
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/shiki/-/shiki-0.1.6.tgz#1db16acbb840cd275b196ff2829781b483aef54e"
   integrity sha512-qG/T0bqNxcLM6nvoX0MZKjAzU14P6j5KutFhjCvnNHGfDmH1Z0VL/KQ/kMmtcGRlXfnlaMBXxniMnGGE7DhJRg==

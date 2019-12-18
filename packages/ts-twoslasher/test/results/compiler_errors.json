@@ -3,6 +3,70 @@
   "extension": "ts",
   "highlights": [],
   "queries": [],
+  "staticQuickInfos": [
+    {
+      "text": "function fn(s: any): void",
+      "docs": "",
+      "start": 10,
+      "length": 2,
+      "line": 1,
+      "character": 9,
+      "targetString": "fn"
+    },
+    {
+      "text": "(parameter) s: any",
+      "docs": "",
+      "start": 13,
+      "length": 1,
+      "line": 1,
+      "character": 12,
+      "targetString": "s"
+    },
+    {
+      "text": "var console: Console",
+      "docs": "",
+      "start": 20,
+      "length": 7,
+      "line": 2,
+      "character": 2,
+      "targetString": "console"
+    },
+    {
+      "text": "(method) Console.log(message?: any, ...optionalParams: any[]): void",
+      "docs": "",
+      "start": 28,
+      "length": 3,
+      "line": 2,
+      "character": 10,
+      "targetString": "log"
+    },
+    {
+      "text": "(parameter) s: any",
+      "docs": "",
+      "start": 32,
+      "length": 1,
+      "line": 2,
+      "character": 14,
+      "targetString": "s"
+    },
+    {
+      "text": "any",
+      "start": 34,
+      "length": 5,
+      "line": 2,
+      "character": 16,
+      "targetString": "subtr"
+    },
+    {
+      "text": "function fn(s: any): void",
+      "docs": "",
+      "start": 47,
+      "length": 2,
+      "line": 5,
+      "character": 0,
+      "targetString": "fn"
+    }
+  ],
   "errors": [
     {
       "category": 1,

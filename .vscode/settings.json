@@ -14,5 +14,6 @@
   },
   "peacock.color": "#3178C6",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "debug.node.autoAttach": "off",
+  "debug.node.autoAttach": "on",
+  "editor.formatOnSave": true
 }

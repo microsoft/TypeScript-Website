@@ -48,7 +48,7 @@ const HandbookTemplate = (props: { pageContext: any, data: GetHandbookBySlug, pa
 
       // Then set the active tag
       subnavLinks.forEach(link => {
-        if (link === currentPossibleAnchor){
+        if (link === currentPossibleAnchor) {
           link.classList.add("current");
         } else {
           link.classList.remove("current");
@@ -57,15 +57,16 @@ const HandbookTemplate = (props: { pageContext: any, data: GetHandbookBySlug, pa
     }
 
     // Handles setting the scroll 
-    window.addEventListener("scroll", updateSidebar, { passive: true, capture: true});
+    window.addEventListener("scroll", updateSidebar, { passive: true, capture: true });
     updateSidebar()
     return () => {
       window.removeEventListener("scroll", updateSidebar)
-     }
+    }
   })
 
   const { previous, next } = props.pageContext
-  const selectedID = props.path.split("/").pop().replace(".html", "")
+  const selectedID = post.frontmatter.permalink.split("/").pop().replace(".html", "")
+
 
   return (
     <Layout>
