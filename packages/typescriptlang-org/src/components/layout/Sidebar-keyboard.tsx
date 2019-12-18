@@ -1,12 +1,12 @@
 import { KeyboardEventHandler } from "react"
 import { getTagFromParents } from "./Sidebar"
 
-const childOfType = (tag: string, element: Element) => {
-  let found: Element = null
-  for(const e of element.children) {
-    if(e.nodeName === tag.toUpperCase()) found = e
+const childOfType = (tag: string, element: any) => {
+  let found: HTMLElement | undefined
+  for (const e of element.children) {
+    if (e.nodeName === tag.toUpperCase()) found = e
   }
-  if(!found) throw new Error(`Could not find a ${tag} in the children of ${element.tagName}`)
+  if (!found) throw new Error(`Could not find a ${tag} in the children of ${element.tagName}`)
   return found
 }
 
@@ -15,7 +15,7 @@ const childOfType = (tag: string, element: Element) => {
  * selecting leaf nodes and jumping up into section categories
  */
 export const onAnchorKeyDown: KeyboardEventHandler = (event) => {
-  const li = getTagFromParents("li", event.target);
+  const li = getTagFromParents("li", event.target as any);
   // Up, and jump into section headers
   if (event.keyCode == 38) {
     const aboveLI = li.previousElementSibling;
@@ -49,7 +49,7 @@ export const onAnchorKeyDown: KeyboardEventHandler = (event) => {
  * from the a's above
  */
 export const onButtonKeydown: KeyboardEventHandler = (event) => {
-  const li = getTagFromParents("li", event.target);
+  const li = getTagFromParents("li", event.target as any);
   // Up, either go to the bottom of the a's in the section above 
   // if it's open or jump to the previous sibling button
   if (event.keyCode == 38) {
@@ -79,7 +79,7 @@ export const onButtonKeydown: KeyboardEventHandler = (event) => {
       const listOfLinks = childOfType("ul", li)
       const lastLI = listOfLinks.firstElementChild
       childOfType("a", lastLI).focus();
-      
+
     } else {
       const belowLI = li.nextElementSibling;
       if (belowLI) childOfType("button", belowLI).focus();
@@ -93,14 +93,14 @@ export const onButtonKeydown: KeyboardEventHandler = (event) => {
     li.classList.add("open")
 
     event.preventDefault();
-  } 
+  }
 
   // Right, close
   if (event.keyCode == 37) {
     li.classList.remove("open")
     li.classList.add("closed")
-    
+
     event.preventDefault();
-  } 
+  }
 
 }

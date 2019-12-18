@@ -1,12 +1,12 @@
 # TypeScript TwoSlasher
 
 A twisted markup for TypeScript code for writing code samples and letting the TypeScript compiler do more of the work inspired
-by the [fourslash test system](https://github.com/orta/typescript-notes/blob/master/systems/testing/fourslash.md). 
+by the [fourslash test system](https://github.com/orta/typescript-notes/blob/master/systems/testing/fourslash.md).
 
-Used as a pre-parser before showing code samples inside the TypeScript website and to create a standard way for us 
+Used as a pre-parser before showing code samples inside the TypeScript website and to create a standard way for us
 to create examples for bugs on the compiler's issue tracker.
 
-### Features 
+### Features
 
 - Enforcing accurate errors from a TypeScript code sample, and leaving the messaging to the compiler
 - Declaratively highlight symbols you want to show
@@ -17,7 +17,6 @@ to create examples for bugs on the compiler's issue tracker.
 
 ### TODO
 
-- I think I will need to add an option to extract symbols for hover on identifiers at this level
 - Think about how to ship to npm
 
 <!-- AUTO-GENERATED-CONTENT:START (FIXTURES) -->
@@ -182,30 +181,7 @@ Turns to:
 >   "code": "See above",
 >   "extension": "ts",
 >   "highlights": [],
->   "queries": [
->     {
->       "kind": "query",
->       "offset": 4,
->       "position": 109,
->       "text": "let a: NameLabel",
->       "docs": "",
->       "line": 11
->     },
->     {
->       "kind": "query",
->       "offset": 4,
->       "position": 145,
->       "text": "Could not get LSP result: ^ >?< \n",
->       "line": 13
->     },
->     {
->       "kind": "query",
->       "offset": 4,
->       "position": 172,
->       "text": "Could not get LSP result: ) >;< \n",
->       "line": 15
->     }
->   ],
+>   "queries": [],
 >   "staticQuickInfos": "[...]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/JYOwLgpgTgZghgYwgAgJIBMAycBGEA2yA3ssOgFzIgCuAtnlADTID0AVMgM4D2tKMwAuk7I2LZAF8AUKEixEKAHJw+2PIRIgVESpzBRQAc2btk3MAAtoyAUJFjJUsAE8ADku0B5KBgA8AFWQIAA9IEGEqOgZkAB8ufSMAPmQAXmRAkLCImnprAH40LFwCZEplVWL8AG4pFnF-C2ARBF4+cC4Lbmp8dCpzZDxSEAR8anQIdCla8QBaOYRqMDmZqRhqYbBgbhBkBCgIOEg1AgCg0IhwkRzouL0DEENEgAoyb3KddIBKMq8fdADkkQpMgQchLFBuAB3ZAAInWwFornwEDakHQMKk0ikyLAyDgqV2+0OEGO+CeMJc7k4e2ArjAMM+NWxEFxOAJewOR0qTwATAA6AAcjKmON27KJXPUTwAsocLHyoHBwrwnp9kAUYVZ8PhuDDSsgACw84VAA"
@@ -358,7 +334,9 @@ Turns to:
 >       "position": 4,
 >       "text": "let foo: string",
 >       "docs": "",
->       "line": 1
+>       "line": 1,
+>       "start": 3,
+>       "length": 4
 >     }
 >   ],
 >   "staticQuickInfos": "[...]",
@@ -500,4 +478,4 @@ Bundles the package to the `dist` folder. The package is optimized and bundled w
 
 ### `npm test` or `yarn test`
 
-Runs the test watcher (Jest) in an interactive mode. By default, runs tests related to files changed since the last commit. 
+Runs the test watcher (Jest) in an interactive mode. By default, runs tests related to files changed since the last commit.

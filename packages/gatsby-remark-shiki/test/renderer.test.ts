@@ -1,6 +1,7 @@
 const remark = require('remark')
 import gatsbyRemarkShiki from '../src/index'
-import { stripHTML } from '../src/utils'
+import { join } from 'path'
+import { createNoSubstitutionTemplateLiteral } from 'typescript'
 const gatsbyTwoSlash = require('gatsby-remark-twoslasher-code-blocks')
 
 const getMarkdownASTForCode = async (code: string, settings?: any) => {
@@ -144,6 +145,17 @@ OK world
     expect(code.value).toContain(`lsp-result`)
     expect(code.value).toContain(`<span class='lsp-result'>function longest&amp;lt;T extends`)
 
+    expect(code.value.split('lsp-result').length).toEqual(code.twoslash.staticQuickInfos.length + 1)
+  })
+
+  it('shows the right LSP results with the typescript site theme', async () => {
+    const markdownAST = await getMarkdownASTForCode(file, {
+      theme: join(__dirname, '..', '..', 'typescriptlang-org', ' lib', ' themes', ' typescript-beta-light.json'),
+    })
+    const code = markdownAST.children[1]
+
+    expect(code.value).toContain(`lsp-result`)
+    expect(code.value).toContain(`<span class='lsp-result'>function longest&amp;lt;T extends`)
     expect(code.value.split('lsp-result').length).toEqual(code.twoslash.staticQuickInfos.length + 1)
   })
 })
