@@ -60,7 +60,8 @@ const visitor = (node: RichNode) => {
   if (replacer[lang]) lang = replacer[lang]
 
   const shouldHighlight = lang && languages.includes(lang)
-  if (shouldHighlight && node.twoslash) {
+
+  if (shouldHighlight) {
     const originalCode = node.value
     const tokens = highlighter.codeToThemedTokens(node.value, lang)
     const results = renderToHTML(tokens, { langId: lang }, node.twoslash)
@@ -68,7 +69,7 @@ const visitor = (node: RichNode) => {
     node.value = results
     node.children = []
 
-    if (process.env.NODE_ENV !== 'production') {
+    if (node.twoslash && process.env.NODE_ENV !== 'production') {
       const expected = node.twoslash.staticQuickInfos.length
       const foundLSP = node.value.split('lsp-result').length - 1
       const lspResults = node.value.split('lsp-result').map(r => r.split('<')[0])
