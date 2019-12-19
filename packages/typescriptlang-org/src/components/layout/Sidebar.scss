@@ -1,3 +1,11 @@
+$width-for-small-devices: 800px;
+$z-index-for-site-nav: 101;
+$z-index-for-handbook-nav: 100;
+
+#small-device-button-sidebar {
+  display: none;
+}
+
 nav#sidebar {
   min-width: 16rem;
   background-color: #eeeeee;
@@ -30,7 +38,8 @@ nav#sidebar {
         border: none;
         font-weight: 500;
 
-        &:active, &:focus {
+        &:active,
+        &:focus {
           color: black;
           background-color: #dfdfdf;
         }
@@ -78,7 +87,6 @@ nav#sidebar {
     margin: 0;
     padding: 0;
 
-
     a {
       display: block;
       flex-grow: 1;
@@ -97,7 +105,8 @@ nav#sidebar {
         font-weight: 300;
       }
 
-      a:focus, a:hover {
+      a:focus,
+      a:hover {
         border-left: 2px solid black;
         margin-left: 0.5rem;
         margin-right: -0.5rem;
@@ -109,6 +118,51 @@ nav#sidebar {
         margin-left: 0.5rem;
         margin-right: -0.5rem;
       }
+    }
+  }
+}
+
+@media (max-width: $width-for-small-devices) {
+  button#small-device-button-sidebar {
+    display: block;
+    position: fixed;
+
+    transition-timing-function: ease;
+    transition: left 0.3s;
+
+    &.hidden {
+      left: -80px;
+    }
+
+    left: 20px;
+    width: 44px;
+    height: 44px;
+    bottom: 120px;
+    background-color: #c4c4c4;
+    border-radius: 6px;
+    padding-top: 5px;
+    padding-left: 5px;
+
+    // Reset the button
+    -webkit-appearance: none;
+    border: none;
+
+    &:active {
+      background-color: #575757;
+    }
+  }
+
+  // Pulls it out of the layout system
+  nav#sidebar {
+    position: fixed;
+    z-index: $z-index-for-handbook-nav;
+    margin-left: -16rem;
+
+    transition-timing-function: ease;
+    transition: margin-left 0.3s;
+
+    &.show {
+      margin-left: 0px;
     }
   }
 }

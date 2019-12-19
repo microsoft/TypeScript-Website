@@ -1,6 +1,8 @@
 export function setupStickyNavigation() {
   const nav = document.getElementById("top-menu")
   if (!nav) throw new Error("Didn't find a nav")
+
+  const sideButton = document.getElementById("small-device-button-sidebar")
   let previousY = 9999
 
   const updateNav = () => {
@@ -17,9 +19,11 @@ export function setupStickyNavigation() {
     if (goingUp) {
       nav.classList.add("down")
       nav.classList.remove("up")
+      sideButton?.classList.add("hidden")
     } else {
       nav.classList.add("up")
       nav.classList.remove("down")
+      sideButton?.classList.remove("hidden")
     }
   }
 
