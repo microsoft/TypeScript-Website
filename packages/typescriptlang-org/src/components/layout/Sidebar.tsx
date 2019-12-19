@@ -30,7 +30,7 @@ export const getTagFromParents = (tag: string, root: { nodeName: string, parentE
 }
 
 const toggleNavigationSection: MouseEventHandler = (event) => {
-  const li = getTagFromParents("li", event.target)
+  const li = getTagFromParents("li", event.target as any)
   const isOpen = li.classList.contains("open")
   if (isOpen) {
     li.classList.remove("open")
@@ -48,7 +48,7 @@ export const Sidebar = (props: Props) => {
       <ul>
         {props.navItems.map(navRoot => {
           const hostsSelected = navRoot.items.find(i => i.id === props.selectedID)
-          const classes = []
+          const classes = [] as string[]
 
           if (hostsSelected) {
             classes.push("open")

@@ -82,15 +82,10 @@ module.exports = {
           "gatsby-remark-autolink-headers",
           {
             // resolve: require.resolve(`${__dirname}/../gatsby-remark-shiki`),
-            // resolve: `gatsby-remark-shiki`,
+            // resolve: require.resolve(`gatsby-remark-shiki`),
             resolve: shiki,
             options: {
-              theme: join(
-                __dirname,
-                "lib",
-                "themes",
-                "typescript-beta-light.json"
-              ),
+              theme: "nord",
             },
           },
           "gatsby-remark-copy-linked-files",

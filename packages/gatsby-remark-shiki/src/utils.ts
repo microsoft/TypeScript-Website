@@ -20,7 +20,7 @@ export function createHighlightedString(ranges: Range[], text: string) {
     var range = filledRanges[i]
     if (range.count && range.count > 0) {
       if (range.text && range.text.length) {
-        const lspResponse = range.lsp ? "<span class='lsp-result'>" + stripHTML(range.lsp[0]) + '</span>' : ''
+        const lspResponse = range.lsp ? "<span class='lsp-result'>" + range.lsp[0] + '</span>' : ''
         str +=
           "<span class='" + (range.classes || []).join(' ') + "'>" + stripHTML(range.text) + lspResponse + '</span>'
       }

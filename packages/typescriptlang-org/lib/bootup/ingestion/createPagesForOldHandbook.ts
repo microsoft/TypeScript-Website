@@ -1,7 +1,10 @@
 const path = require(`path`)
-import {  NodePluginArgs, CreatePagesArgs } from "gatsby"
+import { NodePluginArgs, CreatePagesArgs } from "gatsby"
 
-export const createOldHandbookPages = async (graphql: CreatePagesArgs["graphql"], createPage: NodePluginArgs["actions"]["createPage"]) => {
+export const createOldHandbookPages = async (
+  graphql: CreatePagesArgs["graphql"],
+  createPage: NodePluginArgs["actions"]["createPage"]
+) => {
   const handbookPage = path.resolve(`./src/templates/handbook.tsx`)
   const result = await graphql(`
     query GetAllHandbookDocs {
@@ -9,7 +12,7 @@ export const createOldHandbookPages = async (graphql: CreatePagesArgs["graphql"]
         nodes {
           name
           modifiedTime
-  
+
           childMarkdownRemark {
             frontmatter {
               permalink
@@ -19,15 +22,15 @@ export const createOldHandbookPages = async (graphql: CreatePagesArgs["graphql"]
       }
     }
   `)
-  
+
   if (result.errors) {
     throw result.errors
   }
-  
+
   const anyData = result.data as any
   const docs = anyData.allFile.nodes
 
-  docs.forEach((post, index) => {
+  docs.forEach((post: any, index: number) => {
     const previous = index === docs.length - 1 ? null : docs[index + 1].node
     const next = index === 0 ? null : docs[index - 1].node
 
@@ -39,7 +42,7 @@ export const createOldHandbookPages = async (graphql: CreatePagesArgs["graphql"]
           slug: post.childMarkdownRemark.frontmatter.permalink,
           previous,
           next,
-          isOldHandbook: true
+          isOldHandbook: true,
         },
       })
     } else {

@@ -523,9 +523,9 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
 
     // Remove highlights and queries, because it won't work across transpiles,
     // though I guess source-mapping could handle the transition
-    highlights.length = 0
-    queries.length = 0
-    staticQuickInfos.length = 0
+    highlights = []
+    queries = []
+    staticQuickInfos = []
   }
 
   // TODO: compiler options

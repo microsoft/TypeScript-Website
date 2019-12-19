@@ -1,12 +1,12 @@
 # TypeScript TwoSlasher
 
 A twisted markup for TypeScript code for writing code samples and letting the TypeScript compiler do more of the work inspired
-by the [fourslash test system](https://github.com/orta/typescript-notes/blob/master/systems/testing/fourslash.md). 
+by the [fourslash test system](https://github.com/orta/typescript-notes/blob/master/systems/testing/fourslash.md).
 
-Used as a pre-parser before showing code samples inside the TypeScript website and to create a standard way for us 
+Used as a pre-parser before showing code samples inside the TypeScript website and to create a standard way for us
 to create examples for bugs on the compiler's issue tracker.
 
-### Features 
+### Features
 
 - Enforcing accurate errors from a TypeScript code sample, and leaving the messaging to the compiler
 - Declaratively highlight symbols you want to show
@@ -17,7 +17,6 @@ to create examples for bugs on the compiler's issue tracker.
 
 ### TODO
 
-- I think I will need to add an option to extract symbols for hover on identifiers at this level
 - Think about how to ship to npm
 
 <!-- AUTO-GENERATED-CONTENT:START (FIXTURES) -->
@@ -479,4 +478,4 @@ Bundles the package to the `dist` folder. The package is optimized and bundled w
 
 ### `npm test` or `yarn test`
 
-Runs the test watcher (Jest) in an interactive mode. By default, runs tests related to files changed since the last commit. 
+Runs the test watcher (Jest) in an interactive mode. By default, runs tests related to files changed since the last commit.
