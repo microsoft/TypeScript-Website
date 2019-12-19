@@ -28,7 +28,7 @@ const HandbookTemplate = (props: { pageContext: any, data: GetHandbookBySlug, pa
       link.addEventListener("click", event => {
         event.preventDefault();
 
-        let target = document.querySelector(event.target["hash"]);
+        let target = document.querySelector(event.target!["hash"]);
         target.scrollIntoView({ behavior: "smooth", block: "start" });
       })
     })
@@ -36,7 +36,7 @@ const HandbookTemplate = (props: { pageContext: any, data: GetHandbookBySlug, pa
     // Sets the current selection
     const updateSidebar = () => {
       const fromTop = window.scrollY;
-      let currentPossibleAnchor: HTMLAnchorElement = null
+      let currentPossibleAnchor: HTMLAnchorElement | undefined
 
       // Scroll down to find the highest anchor on the screen
       subnavLinks.forEach(link => {
@@ -65,8 +65,11 @@ const HandbookTemplate = (props: { pageContext: any, data: GetHandbookBySlug, pa
   })
 
   const { previous, next } = props.pageContext
-  const selectedID = post.frontmatter.permalink.split("/").pop().replace(".html", "")
+  if (!post.frontmatter) throw new Error(`No front-matter found for the file with props: ${props}`)
+  if (!post.html) throw new Error(`No html found for the file with props: ${props}`)
 
+  const selectedID = post.frontmatter.permalink!.split("/").pop()!.replace(".html", "")
+  const showSidebar = post.headings && post.headings.length <= 25
 
   return (
     <Layout>
@@ -77,20 +80,22 @@ const HandbookTemplate = (props: { pageContext: any, data: GetHandbookBySlug, pa
           <article>
 
             <div className="whitespace ms-depth-4">
-              <div className="markdown" dangerouslySetInnerHTML={{ __html: post.html }} />
+              <div className="markdown" dangerouslySetInnerHTML={{ __html: post.html! }} />
             </div>
 
             <aside className="handbook-toc">
-              <nav>
-                <h5>On this page</h5>
-                <ul>
-                  {post.headings.map(heading => {
-                    if (heading.depth > 2) return null
-                    const id = slugger().slug(heading.value, false)
-                    return <li key={id}><a href={'#' + id}>{heading.value}</a></li>
-                  })}
-                </ul>
-              </nav>
+              {showSidebar &&
+                <nav>
+                  <h5>On this page</h5>
+                  <ul>
+                    {post.headings!.map(heading => {
+                      if (heading!.depth! > 2) return null
+                      const id = slugger().slug(heading!.value, false)
+                      return <li key={id}><a href={'#' + id}>{heading!.value}</a></li>
+                    })}
+                  </ul>
+                </nav>
+              }
             </aside>
           </article>
         </div>

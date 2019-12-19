@@ -14,11 +14,13 @@ class TSConfigReferenceTemplateComponent extends React.Component<{ pageContext: 
       return <div></div>
     }
 
+    // if (!post.html) throw new Error("No HTML found for TSConfig page")
+
     return (
       <Layout >
         <div className="tsconfig ms-depth-4" style={{ backgroundColor: "white", maxWidth: 960, margin: "1rem auto", padding: "2rem", paddingTop: "0.5rem" }}>
-          <h1>TSConfig Reference</h1>  
-          <div dangerouslySetInnerHTML={{ __html: post.html }} />
+          <h1>TSConfig Reference</h1>
+          <div dangerouslySetInnerHTML={{ __html: post.html! }} />
         </div>
       </Layout>
     )

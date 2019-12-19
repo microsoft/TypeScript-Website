@@ -41,22 +41,26 @@ const hrefForExample = (example: Example) => {
 }
 
 const buttonOnClick = (e) => {
-  const tappedButton = e.target 
+  const tappedButton = e.target
   const contentID = tappedButton.textContent.toLowerCase()
 
   const allSectionTitles = document.querySelectorAll(".section-name")
+  // @ts-ignore
   for (const title of allSectionTitles) { title.classList.remove("selected") }
   tappedButton.classList.add("selected")
 
   const allSections = document.querySelectorAll<HTMLElement>(".section-content")
+  // @ts-ignore
   for (const section of allSections) {
     section.style.display = "none"
     section.classList.remove("selected")
   }
 
   const sectionForButton = document.getElementById(contentID)
-  sectionForButton.style.display = "flex"
-  sectionForButton.classList.add("selected")
+  if (sectionForButton) {
+    sectionForButton.style.display = "flex"
+    sectionForButton.classList.add("selected")
+  }
 
   if (e && e.stopPropagation) {
     e.stopPropagation()
@@ -82,14 +86,16 @@ export const PlaygroundSamples = (props: Props) => {
     iconSpan.style.display = "inline-block"
 
     // This is all that is needed for the mouse hover
-    for (const element of document.getElementsByClassName("popover-container")){
+    // @ts-ignore
+    for (const element of document.getElementsByClassName("popover-container")) {
       element.classList.add("allow-hover")
     }
 
     // This is used to handle tabbing
     const showPopover = () => {
       const popover = document.getElementById("playground-samples-popover")
-      popover.style.visibility = "visible"  
+      if (!popover) throw new Error("No popover found")
+      popover.style.visibility = "visible"
       popover.style.opacity = "1"
 
       // When the popover is up, allow tabbing through all of the items to hide the popover
@@ -102,6 +108,7 @@ export const PlaygroundSamples = (props: Props) => {
     }
 
     const triggerAnchor = document.getElementById("popover-trigger-anchor")
+    if (!triggerAnchor) throw new Error("No trigger anchor found")
     triggerAnchor.onfocus = showPopover
   });
 
@@ -124,7 +131,7 @@ export const PlaygroundSamples = (props: Props) => {
           const style = startOpen ? {} : { display: "none" }
 
           return <div key={section.name} id={section.name.toLowerCase()} className="section-content" style={style}>
-            <p style={{ width: "100%" }} dangerouslySetInnerHTML={{ __html: section.subtitle}}/>
+            <p style={{ width: "100%" }} dangerouslySetInnerHTML={{ __html: section.subtitle }} />
 
             {subsectionNames.map(sectionName => {
               const sectionExamples = sectionDict[sectionName].sort((lhs, rhs) => lhs.sortIndex - rhs.sortIndex) as Example[]

@@ -4,8 +4,8 @@
     "packages/*"
   ],
   "devDependencies": {
-    "concurrently": "^4.1.0",
-    "danger": "^9.2.8",
+    "concurrently": "^5.0.2",
+    "danger": "^9.2.9",
     "danger-plugin-lighthouse": "^0.5.2",
     "danger-plugin-spellcheck": "^1.5.0",
     "git-branch-is": "^3.1.0",

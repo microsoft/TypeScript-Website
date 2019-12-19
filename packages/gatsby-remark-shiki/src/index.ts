@@ -60,17 +60,38 @@ const visitor = (node: RichNode) => {
   if (replacer[lang]) lang = replacer[lang]
 
   const shouldHighlight = lang && languages.includes(lang)
-  if (shouldHighlight) {
+  if (shouldHighlight && node.twoslash) {
+    const originalCode = node.value
     const tokens = highlighter.codeToThemedTokens(node.value, lang)
     const results = renderToHTML(tokens, { langId: lang }, node.twoslash)
     node.type = 'html'
     node.value = results
     node.children = []
+
+    if (process.env.NODE_ENV !== 'production') {
+      const expected = node.twoslash.staticQuickInfos.length
+      const foundLSP = node.value.split('lsp-result').length - 1
+      const lspResults = node.value.split('lsp-result').map(r => r.split('<')[0])
+      if (expected !== foundLSP) {
+        console.error(`The amount of LSP results in the rendered code does not equal the amount of LSP results passed.
+
+Expected: ${expected} but got ${foundLSP}. 
+
+Code:
+\`\`\`ts
+${originalCode}
+\`\`\`
+
+Got results: 
+  - "${lspResults.join('"\n - "')}
+Expected results for: ${node.twoslash.staticQuickInfos.map((qi: any) => qi.targetString).join(', ')}`)
+      }
+    }
   }
 }
 
 /** The plugin API */
-export const remarkShiki = async function({ markdownAST }: any, settings: any) {
+const remarkShiki = async function({ markdownAST }: any, settings: any) {
   await getHighlighterObj(settings)
   visit(markdownAST, 'code', visitor)
 }
