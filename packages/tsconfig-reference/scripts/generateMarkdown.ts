@@ -104,7 +104,7 @@ languages.forEach(lang => {
       markdownChunks.push("<section class='compiler-option'>");
 
       // Let the title change it's display but keep the same ID
-      const titleLink = `<a aria-label="Link to the compiler option:${option.name}" title="Link to the compiler option:${option.name}" href='#${option.name} name='${option.name}'>#</a>`;
+      const titleLink = `<a aria-label="Link to the compiler option:${option.name}" title="Link to the compiler option:${option.name}" href='#${option.name}' name='${option.name}'>#</a>`;
       const title = `<h3 id='${option.name}'>${titleLink} ${optionFile.data.display} - <code>${option.name}</code></h3>`;
       markdownChunks.push(title);
 
