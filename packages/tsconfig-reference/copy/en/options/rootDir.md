@@ -62,4 +62,4 @@ MyProj
 ├── helpers.ts
 ```
 
-It would be an error to specify `rootDir` as `core` *and* `include` as `*` because it creates a file (`helpers.ts`) that would need to be emitted *outside* the `outDir` (i.e. `../helpers.js`).
+It would be an error to specify `rootDir` as `core` _and_ `include` as `*` because it creates a file (`helpers.ts`) that would need to be emitted _outside_ the `outDir` (i.e. `../helpers.js`).

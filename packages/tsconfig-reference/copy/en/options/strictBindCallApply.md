@@ -6,7 +6,7 @@ display: "Strict Bind Call Apply"
 
 When set, TypeScript will check that the built-in methods of functions `call`, `bind`, and `apply` are invoked with correct argument for the underlying function:
 
-```ts 
+```ts
 // With strictBindCallApply on
 function fn(x: string) {
    return parseInt(x);

@@ -9,16 +9,16 @@ For example, here is the JavaScript
 ```ts twoslash
 // @experimentalDecorators
 function LogMethod(target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
-    console.log(target);
-    console.log(propertyKey);
-    console.log(descriptor);
+  console.log(target);
+  console.log(propertyKey);
+  console.log(descriptor);
 }
 
 class Demo {
-    @LogMethod
-    public foo(bar: number) {
-        // do nothing
-    }
+  @LogMethod
+  public foo(bar: number) {
+    // do nothing
+  }
 }
 
 const demo = new Demo();
@@ -30,16 +30,16 @@ With `emitDecoratorMetadata` not set to true (default):
 // @experimentalDecorators
 // @showEmit
 function LogMethod(target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
-    console.log(target);
-    console.log(propertyKey);
-    console.log(descriptor);
+  console.log(target);
+  console.log(propertyKey);
+  console.log(descriptor);
 }
 
 class Demo {
-    @LogMethod
-    public foo(bar: number) {
-        // do nothing
-    }
+  @LogMethod
+  public foo(bar: number) {
+    // do nothing
+  }
 }
 
 const demo = new Demo();
@@ -52,18 +52,17 @@ With `emitDecoratorMetadata` set to true:
 // @showEmit
 // @emitDecoratorMetadata
 function LogMethod(target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
-    console.log(target);
-    console.log(propertyKey);
-    console.log(descriptor);
+  console.log(target);
+  console.log(propertyKey);
+  console.log(descriptor);
 }
 
 class Demo {
-    @LogMethod
-    public foo(bar: number) {
-        // do nothing
-    }
+  @LogMethod
+  public foo(bar: number) {
+    // do nothing
+  }
 }
 
 const demo = new Demo();
 ```
-

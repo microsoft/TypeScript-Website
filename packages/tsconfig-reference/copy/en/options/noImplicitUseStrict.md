@@ -10,12 +10,12 @@ This setting disables the prologue.
 // @target: ES3
 // @module: AMD
 // @noImplicitUseStrict
-export function fn() { }
+export function fn() {}
 ```
 
 ```ts twoslash
 // @showEmit
 // @target: ES3
 // @module: AMD
-export function fn() { }
+export function fn() {}
 ```

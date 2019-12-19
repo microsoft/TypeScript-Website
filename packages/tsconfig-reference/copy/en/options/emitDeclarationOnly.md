@@ -2,7 +2,7 @@
 display: "Emit Declaration Only"
 ---
 
-*Only* emit `.d.ts` files; do not emit `.js` files.
+_Only_ emit `.d.ts` files; do not emit `.js` files.
 
 This setting is useful in two cases:
 

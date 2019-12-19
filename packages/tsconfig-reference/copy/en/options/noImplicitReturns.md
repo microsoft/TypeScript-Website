@@ -7,10 +7,10 @@ When enabled, TypeScript will check all code paths in a function to ensure they 
 ```ts twoslash
 // @errors: 2366 2322
 function lookupHeadphonesManufacturer(color: "blue" | "black"): string {
-  if ( color === "blue") {
-    return "beats" 
+  if (color === "blue") {
+    return "beats";
   } else {
-    "bose"
+    "bose";
   }
 }
 ```

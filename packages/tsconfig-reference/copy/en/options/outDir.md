@@ -10,4 +10,3 @@ The directory structure of the original source files is preserved; see [rootDir]
 ```
 
 If not specified, `.js` files will be emitted in the same directory as the `.ts` files they were generated from.
-

@@ -1,4 +1,74 @@
-.tsconfig .markdown {
-  flex-shrink: 1;
-  width: calc(100% - 250px);
+.tsconfig {
+  // Handles hash links with a sticky header
+  a[name]:before {
+    display: block;
+    content: "";
+    margin-top: -121px;
+    height: 121px;
+    visibility: hidden;
+  }
+
+  nav {
+    position: sticky;
+    top: 0px;
+    z-index: 99999;
+    background-color: white;
+
+    border-bottom: 1px solid lightgray;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 4px;
+    padding-bottom: 10px;
+
+    a {
+      text-decoration: none;
+      color: black;
+
+      &.current {
+        border-bottom: 1px solid #187abf;
+      }
+    }
+
+    li {
+      display: block;
+      margin: 8px;
+    }
+  }
+
+  .category {
+    margin-top: 80px;
+    margin-bottom: 40px;
+  }
+
+  .compiler-option {
+    margin-bottom: 80px;
+
+    > h3 {
+      margin-bottom: 0;
+    }
+
+    .compiler-content {
+      display: flex;
+
+      .markdown {
+        flex-shrink: 1;
+        width: calc(100% - 250px);
+        border-right: 1px solid gray;
+        padding-right: 20px;
+      }
+      table.compiler-option-md {
+        width: calc(220px);
+        margin-left: 20px;
+        float: right;
+
+        tr {
+          padding: 10px 0;
+        }
+        td > p {
+          margin: 0;
+        }
+      }
+    }
+  }
 }

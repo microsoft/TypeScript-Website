@@ -30,18 +30,13 @@ export const createTSConfigReference = async (
   const anyData = result.data as any
   const docs = anyData.allFile.nodes
 
-  // start with just the english one
-  const english = docs.find(doc => doc.name === "en")
-
-  if (!english) {
-    throw new Error("Could not find the TSConfig Reference markdown file: you probably need to run `yarn bootstrap` in the project root")
-  }
-
-  createPage({
-    path: "/tsconfig",
-    component: tsConfigRefPage,
-    context: {
-      tsconfigMDPath: english.absolutePath,
-    },
+  docs.forEach(element => {
+    createPage({
+      path: element.name + "/tsconfig",
+      component: tsConfigRefPage,
+      context: {
+        tsconfigMDPath: element.absolutePath,
+      },
+    })
   })
 }

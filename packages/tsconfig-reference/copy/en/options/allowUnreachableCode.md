@@ -7,12 +7,12 @@ These warnings are only about code which is provably unreachable due to the use 
 
 ```ts
 function fn(n: number) {
-   if (n > 5) {
-      return true;
-   } else {
-      return false;
-   }
-   return true;
+  if (n > 5) {
+    return true;
+  } else {
+    return false;
+  }
+  return true;
 }
 ```
 
@@ -22,13 +22,13 @@ With `"allowUnreachableCode": false`:
 // @errors: 7027
 // @allowUnreachableCode: false
 function fn(n: number) {
-   if (n > 5) {
-      return true;
-   } else {
-      return false;
-   }
-   return true;
+  if (n > 5) {
+    return true;
+  } else {
+    return false;
+  }
+  return true;
 }
 ```
 
-This does not affect errors on the basis of code which *appears* to be unreachable due to type analysis.
+This does not affect errors on the basis of code which _appears_ to be unreachable due to type analysis.

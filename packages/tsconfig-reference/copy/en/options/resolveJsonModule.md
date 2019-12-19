@@ -1,5 +1,5 @@
 ---
-display: 'Resolve JSON Module'
+display: "Resolve JSON Module"
 ---
 
 Allows importing modules with a '.json' extension, which is a common practice in node projects. This includes

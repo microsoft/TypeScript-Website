@@ -3,7 +3,7 @@ display: "Preserve Const Enums"
 ---
 
 Do not erase `const enum` declarations in generated code. `const enum`s provide a way to reduce the overall memory footprint
-of your application at runtime by emitting the enum value instead of a reference. 
+of your application at runtime by emitting the enum value instead of a reference.
 
 For example with this TypeScript:
 
@@ -14,9 +14,9 @@ const enum Album {
   DogFashionDiscoAdultery = 3
 }
 
-const selectedAlbum = Album.JimmyEatWorldFutures
+const selectedAlbum = Album.JimmyEatWorldFutures;
 if (selectedAlbum === Album.JimmyEatWorldFutures) {
-  console.log("That is a great choice.")
+  console.log("That is a great choice.");
 }
 ```
 
@@ -31,13 +31,13 @@ const enum Album {
   DogFashionDiscoAdultery = 3
 }
 
-const selectedAlbum = Album.JimmyEatWorldFutures
+const selectedAlbum = Album.JimmyEatWorldFutures;
 if (selectedAlbum === Album.JimmyEatWorldFutures) {
-  console.log("That is a great choice.")
+  console.log("That is a great choice.");
 }
 ```
 
-With `preserveConstEnums` set to `true`, the `enum` exists at runtime and the numbers are still emitted. 
+With `preserveConstEnums` set to `true`, the `enum` exists at runtime and the numbers are still emitted.
 
 ```ts twoslash
 // @preserveConstEnums: true
@@ -48,9 +48,9 @@ const enum Album {
   DogFashionDiscoAdultery = 3
 }
 
-const selectedAlbum = Album.JimmyEatWorldFutures
+const selectedAlbum = Album.JimmyEatWorldFutures;
 if (selectedAlbum === Album.JimmyEatWorldFutures) {
-  console.log("That is a great choice.")
+  console.log("That is a great choice.");
 }
 ```
 
