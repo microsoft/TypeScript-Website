@@ -1,3 +1,5 @@
+$width-for-small-device: 800px;
+
 .tsconfig {
   // Handles hash links with a sticky header
   a[name]:before {
@@ -13,6 +15,15 @@
     top: 0px;
     z-index: 99999;
     background-color: white;
+
+    @media (max-width: $width-for-small-device) {
+      position: static;
+      flex-wrap: wrap;
+
+      li {
+        min-width: 120px;
+      }
+    }
 
     border-bottom: 1px solid lightgray;
     display: flex;
@@ -57,6 +68,7 @@
         border-right: 1px solid gray;
         padding-right: 20px;
       }
+
       table.compiler-option-md {
         width: calc(220px);
         margin-left: 20px;
@@ -67,6 +79,19 @@
         }
         td > p {
           margin: 0;
+        }
+      }
+
+      @media (max-width: $width-for-small-device) {
+        flex-direction: column;
+
+        .markdown {
+          width: 100%;
+        }
+
+        table.compiler-option-md {
+          width: 100%;
+          margin-left: 0;
         }
       }
     }
