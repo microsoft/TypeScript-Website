@@ -11,14 +11,17 @@
   ],
   "scripts": {
     "start": "tsdx watch",
-    "build": "tsdx build; echo 'module.exports = remarkShiki' >> dist/gatsby-remark-shiki.cjs.development.js",
+    "build": "tsdx build",
     "test": "tsdx test",
-    "lint": "tsdx lint"
+    "lint": "tsdx lint",
+    "fixture": "node scripts/runIndex.js"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.23",
+    "@types/jest": "^24.0.24",
+    "rehype-stringify": "^6.0.1",
     "tsdx": "^0.11.0",
     "tslib": "^1.10.0",
-    "typescript": "^3.7.3"
+    "typescript": "^3.7.3",
+    "unified": "^8.4.2"
   }
 }

@@ -36,10 +36,12 @@
 
 // Code blocks
 pre {
+  background-color: #141414;
+  color: #d8dee9;
+
   padding: 12px;
   border-left: 1px solid #999;
   border-bottom: 1px solid #999;
-  background-color: #f9f9f9;
   width: calc(100% - 40px);
 
   // The code inside should scroll, but the overflow
@@ -113,8 +115,7 @@ pre {
 // Shiki Twoslash - temporary for now
 
 pre:hover .lsp {
-  background-color: white;
-  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .lsp {

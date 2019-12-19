@@ -84,7 +84,7 @@ OK world
     expect(code.twoslash.staticQuickInfos.length).toBeGreaterThan(1)
 
     expect(code.value).toContain(`lsp-result`)
-    expect(code.value).toContain(`<span class='lsp-result'>function longest&amp;lt;T`)
+    expect(code.value).toContain(`<span class='lsp-result'>function longest&lt;T extends`)
 
     expect(code.twoslash.staticQuickInfos.length).toEqual(code.value.split('lsp-result').length - 1)
 
@@ -100,7 +100,7 @@ OK world
     const code = markdownAST.children[1]
 
     expect(code.value).toContain(`lsp-result`)
-    expect(code.value).toContain(`<span class='lsp-result'>function longest&amp;lt;T`)
+    expect(code.value).toContain(`<span class='lsp-result'>function longest&lt;T extends`)
 
     // Error message
     expect(code.value).toContain(`span class="error"`)
@@ -143,7 +143,7 @@ OK world
     const code = markdownAST.children[1]
 
     expect(code.value).toContain(`lsp-result`)
-    expect(code.value).toContain(`<span class='lsp-result'>function longest&amp;lt;T extends`)
+    expect(code.value).toContain(`<span class='lsp-result'>function longest&lt;T extends`)
 
     expect(code.value.split('lsp-result').length).toEqual(code.twoslash.staticQuickInfos.length + 1)
   })
@@ -155,7 +155,7 @@ OK world
     const code = markdownAST.children[1]
 
     expect(code.value).toContain(`lsp-result`)
-    expect(code.value).toContain(`<span class='lsp-result'>function longest&amp;lt;T extends`)
+    expect(code.value).toContain(`<span class='lsp-result'>function longest&lt;T extends`)
     expect(code.value.split('lsp-result').length).toEqual(code.twoslash.staticQuickInfos.length + 1)
   })
 })
@@ -178,9 +178,9 @@ OK world
     const code = markdownAST.children[1]
     expect(code.value).toContain('\n')
     expect(code.value).toMatchInlineSnapshot(`
-      "<pre class=\\"shiki\\"><div class=\\"language-id\\">js</div><div class='code-container'><code><span style=\\"color: #81A1C1\\">function</span><span style=\\"color: #D8DEE9FF\\"> </span><span style=\\"color: #88C0D0\\">longest</span><span style=\\"color: #ECEFF4\\">()</span><span style=\\"color: #D8DEE9FF\\"> </span><span style=\\"color: #ECEFF4\\">{</span>
+      "function longest() {
 
-      <span style=\\"color: #ECEFF4\\">}</span></code></div></pre>"
+      }"
     `)
   })
 })

@@ -14,6 +14,25 @@ describe('with fixtures', () => {
   const fixturesFolder = join(__dirname, 'fixtures')
   const resultsFolder = join(__dirname, 'results')
 
+  readdirSync(join(fixturesFolder, 'tests')).forEach(fixtureName => {
+    const fixture = join(fixturesFolder, 'tests', fixtureName)
+    if (lstatSync(fixture).isDirectory()) {
+      return
+    }
+
+    // if(!fixtureName.includes("compiler_fl")) return
+    it('Hidden Fixtures: ' + fixtureName, () => {
+      const resultName = parse(fixtureName).name + '.json'
+      const result = join(resultsFolder, 'tests', resultName)
+
+      const file = readFileSync(fixture, 'utf8')
+
+      const fourslashed = twoslasher(file, extname(fixtureName).substr(1))
+      const jsonString = format(JSON.stringify(fourslashed), { parser: 'json' })
+      expect(jsonString).toMatchFile(result)
+    })
+  })
+
   readdirSync(fixturesFolder).forEach(fixtureName => {
     const fixture = join(fixturesFolder, fixtureName)
     if (lstatSync(fixture).isDirectory()) {
@@ -21,7 +40,7 @@ describe('with fixtures', () => {
     }
 
     // if(!fixtureName.includes("compiler_fl")) return
-    it('Fixture: ' + fixtureName, () => {
+    it('README Fixtures: ' + fixtureName, () => {
       const resultName = parse(fixtureName).name + '.json'
       const result = join(resultsFolder, resultName)
 

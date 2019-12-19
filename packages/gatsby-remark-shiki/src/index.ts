@@ -70,9 +70,10 @@ const visitor = (node: RichNode) => {
 
     if (process.env.NODE_ENV !== 'production') {
       const expected = node.twoslash.staticQuickInfos.length
-      const foundLSP = node.value.split('lsp-result').length + 1
+      const foundLSP = node.value.split('lsp-result').length - 1
+      const lspResults = node.value.split('lsp-result').map(r => r.split('<')[0])
       if (expected !== foundLSP) {
-        throw new Error(`The amount of LSP results in the rendered code does not equal the amount of LSP results passed.
+        console.error(`The amount of LSP results in the rendered code does not equal the amount of LSP results passed.
 
 Expected: ${expected} but got ${foundLSP}. 
 
@@ -81,6 +82,8 @@ Code:
 ${originalCode}
 \`\`\`
 
+Got results: 
+  - "${lspResults.join('"\n - "')}
 Expected results for: ${node.twoslash.staticQuickInfos.map((qi: any) => qi.targetString).join(', ')}`)
       }
     }
