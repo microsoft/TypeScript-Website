@@ -1,8 +1,9 @@
 ---
 display: "Use Define For Class Fields"
-introduced: "3.7"
 ---
 
-This flag is used as a part of migrating to the upcoming standard version of how class fields works. TypeScript introduced class fields many years before it was ratified in TC39, where it had a different runtime behavior but the same syntax. This flag switches to the ECMA runtime behavior.
+This flag is used as part of migrating to the upcoming standard version of class fields. TypeScript introduced class fields many years before it was ratified in TC39. The latest version of the upcoming specification has a different runtime behavior to TypeScript's implementation but the same syntax. 
 
-You can read more about the transition in [the 3.7 release notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#the-usedefineforclassfields-flag-and-the-declare-property-modifier).
+This flag switches to the upcoming ECMA runtime behavior.
+
+You can read more about the transition in [the 3.7 release notes](/docs/handbook/release-notes/typescript-3-7.html#the-usedefineforclassfields-flag-and-the-declare-property-modifier).

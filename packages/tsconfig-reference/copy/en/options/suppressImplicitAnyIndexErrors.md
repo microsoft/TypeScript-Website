@@ -2,11 +2,22 @@
 display: "Suppress Implicit Any Index Errors"
 ---
 
-> ❌ **Discouraged:** This flag is provided for backward compatibility. Consider using `@ts-ignore` instead.
+Turning `noImplicitAny` on suppresses implicit any warning reports when indexing into objects, as shown in the following example:
 
-This disables reporting of implicit `any` warnings when indexing into objects, such as shown in the following example
-
-```ts
+```ts twoslash
+// @noImplicitAny: true
+// @strict: true
+// @errors: 7053
 const obj = { x: 10 };
+console.log(obj["foo"]);
+```
+
+Using `suppressImplicitAnyIndexErrors` is quite a drastic approach. It is recommended to use a `@ts-ignore` comment instead:
+
+```ts twoslash
+// @noImplicitAny: true
+// @strict: true
+const obj = { x: 10 };
+// @ts-ignore
 console.log(obj["foo"]);
 ```

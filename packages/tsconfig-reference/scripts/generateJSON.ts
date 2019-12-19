@@ -12,7 +12,16 @@ import { CommandLineOptionBase } from './types'
 import { writeFileSync } from 'fs'
 import { join } from 'path'
 import { format } from 'prettier'
-import { denyList, relatedTo, deprecated, internal, defaultsForOptions, recommended, allowedValues, configToRelease } from './tsconfigRules'
+import {
+  denyList,
+  relatedTo,
+  deprecated,
+  internal,
+  defaultsForOptions,
+  recommended,
+  allowedValues,
+  configToRelease,
+} from './tsconfigRules'
 import { CompilerOptionName } from '../data/_types'
 
 const toJSONString = obj => format(JSON.stringify(obj, null, '  '), { filepath: 'thing.json' })
@@ -148,6 +157,16 @@ const topLevelTSConfigOptions: CompilerOptionJSON[] = [
     name: 'references',
     type: 'string',
     categoryCode: 0,
+    // @ts-ignore
+    description: {
+      message: 'Print names of files part of the compilation.',
+    },
+    defaultValue: 'false',
+  },
+  {
+    name: 'importHelpers',
+    type: 'string',
+    categoryCode: 6178,
     // @ts-ignore
     description: {
       message: 'Print names of files part of the compilation.',

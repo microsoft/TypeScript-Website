@@ -13,7 +13,8 @@ It does not change the behavior of your code, or otherwise change the behavior o
 #### Exports of Non-Value Identifiers
 
 In TypeScript, you can import a *type* and then subsequently export it:
-```ts
+
+```ts twoslash
 // @noErrors
 import { someType, someFunction } from "someModule";
 
@@ -35,7 +36,8 @@ Single-file transpilers don't know whether `someType` produces a value or not, s
 If `isolatedModules` is set, all implementation files must be *modules*.
 An error occurs if any file isn't a module:
 
-```ts
+```ts twoslash
+// @errors: 1208
 // @isolatedModules
 function fn() { }
 ```
@@ -47,6 +49,16 @@ This restriction doesn't apply to `.d.ts` files
 In TypeScript, when you reference a `const enum` member, the reference is replaced by its actual value in the emitted JavaScript:
 
 ```ts
+declare const enum Numbers {
+   Zero = 0,
+   One = 1
+}
+console.log(Numbers.Zero + Numbers.One);
+```
+
+To:
+
+```ts twoslash
 // @showEmit
 // @removeComments
 declare const enum Numbers {

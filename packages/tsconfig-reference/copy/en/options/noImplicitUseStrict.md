@@ -2,12 +2,10 @@
 display: "No Implicit Use Strict"
 ---
 
-> 🧙‍ You shouldn't need this
+You shouldn't need this. By default, when emitting a module file to a non-ES6 target, TypeScript emits a `"use strict";` prologue at the top of the file.
+This setting disables the prologue.
 
-By default, when emitting a module file to a non-ES6 target, TypeScript emits a `"use strict";` prologue at the top of the file.
-This setting disables that.
-
-```ts
+```ts twoslash
 // @showEmit
 // @target: ES3
 // @module: AMD
@@ -15,7 +13,7 @@ This setting disables that.
 export function fn() { }
 ```
 
-```ts
+```ts twoslash
 // @showEmit
 // @target: ES3
 // @module: AMD

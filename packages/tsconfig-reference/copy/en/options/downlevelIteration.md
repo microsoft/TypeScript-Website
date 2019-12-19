@@ -2,7 +2,8 @@
 display: "Downlevel Iteration"
 ---
 
-**Default**: `false`. Has no effect if `target` is ES6 or newer.
+Downleveling is TypeScript's term for transpiling to an older version of JavaScript. 
+This flag is to enable support for a more accurate implementation of how modern JavaScript iterates through new concepts in older JavaScript runtimes.
 
 ECMAScript 6 added several new iteration primitives: the `for / of` loop (`for (el of arr)`), Array spread (`[a, ...b]`), argument spread (`fn(...args)`), and `Symbol.iterator`.
 `--downlevelIteration` allows for these iteration primitives to be used more accurately in ES5 environments if a `Symbol.iterator` implementation is present.
@@ -37,7 +38,7 @@ for (const s of str) {
 }
 ```
 
->> **Note:** Remember, `downlevelIteration` does not improve compliance if `Symbol.iterator` is not present!
+>> **Note:** enabling `downlevelIteration` does not improve compliance if `Symbol.iterator` is not present in the runtime.
 
 #### Example: Effects on Array Spreads
 

@@ -52,6 +52,25 @@ describe('with fixtures', () => {
     })
   })
 
+  readdirSync(join(fixturesFolder, 'tests')).forEach(fixtureName => {
+    const fixture = join(fixturesFolder, 'tests', fixtureName)
+    if (lstatSync(fixture).isDirectory()) {
+      return
+    }
+
+    // if(!fixtureName.includes("compiler_fl")) return
+    it('Hidden Fixtures: ' + fixtureName, () => {
+      const resultName = parse(fixtureName).name + '.json'
+      const result = join(resultsFolder, 'tests', resultName)
+
+      const file = readFileSync(fixture, 'utf8')
+
+      const fourslashed = twoslasher(file, extname(fixtureName).substr(1))
+      const jsonString = format(JSON.stringify(fourslashed), { parser: 'json' })
+      expect(jsonString).toMatchFile(result)
+    })
+  })
+
   const throwingFixturesFolder = join(__dirname, 'fixtures', 'throws')
 
   readdirSync(throwingFixturesFolder).forEach(fixtureName => {

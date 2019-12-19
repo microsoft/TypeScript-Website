@@ -7,5 +7,3 @@ This can be problematic if some developers are working in a case-sensitive file 
 If a file attempts to import `fileManager.ts` by specifying `./FileManager.ts` the file will be found in a case-insensitive file system, but not on a case-sensitive file system.
 
 When this option is set, TypeScript will issue an error if a program tries to include a file by a casing different from the casing on disk.
-
-We recommend enabling this option in all projects.

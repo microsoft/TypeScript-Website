@@ -1,10 +1,10 @@
 import { CompilerOptionName } from '../data/_types'
 
 /** Options which should never show on the references, basically anything that's for the CLI not the TSConfig */
-export const denyList: CompilerOptionName[] = ['help', 'init', 'all', 'watch', 'version', 'build', 'project']
+export const denyList: CompilerOptionName[] = ['help', 'init', 'all', 'watch', 'version', 'build', 'project', 'locale']
 
 /** Things we should document, but really want to help move people away from */
-export const deprecated: CompilerOptionName[] = ['out', 'charset', 'keyofStringsOnly', 'moduleResolution', 'noErrorTruncation']
+export const deprecated: CompilerOptionName[] = ['out', 'charset', 'keyofStringsOnly', 'moduleResolution', 'noErrorTruncation', 'diagnostics']
 
 /** Things which people really shouldn't use, but need to document  */
 export const internal: CompilerOptionName[] = ['preserveWatchOutput', 'stripInternal']
@@ -171,7 +171,7 @@ export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
   '3.4': ['incremental', 'tsBuildInfoFile'],
   '3.2': ['strictBindCallApply', 'showConfig'],
   '3.0': ['composite', 'build'],
-  '2.9': ['keyofStringsOnly', 'noUnusedLocals', 'noUnusedParameters', 'declarationMap'],
+  '2.9': ['keyofStringsOnly', 'declarationMap'],
   '2.8': ['emitDeclarationOnly'],
   '2.7': ['strictPropertyInitialization', 'esModuleInterop'],
   '2.6': ['strictFunctionTypes'],

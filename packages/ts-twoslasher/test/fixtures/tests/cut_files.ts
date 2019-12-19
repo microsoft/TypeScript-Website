@@ -1,4 +1,4 @@
 // Hello should not appear in the staticQuickInfos
-const hello = "world"
+const hello = 'world'
 // ---cut---
-const bye = "globe"
+const bye = 'globe'

@@ -1,7 +1,7 @@
 var remark = require("remark")
 var visit = require("unist-util-visit")
 
-const { readFileSync }= require("fs")
+const { readFileSync } = require("fs")
 
 var remark = require("remark")
 var visit = require("unist-util-visit")

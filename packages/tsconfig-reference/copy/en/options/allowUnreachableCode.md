@@ -2,10 +2,24 @@
 display: "Allow Unreachable Code"
 ---
 
-Disables warnings about unreachable code.
-These warnings are only about code which is provably unreachable due to syntactic construction, like the example below.
+Set to false to disable warnings about unreachable code.
+These warnings are only about code which is provably unreachable due to the use of JavaScript syntax, for example:
 
 ```ts
+function fn(n: number) {
+   if (n > 5) {
+      return true;
+   } else {
+      return false;
+   }
+   return true;
+}
+```
+
+With `"allowUnreachableCode": false`:
+
+```ts twoslasher
+// @errors: 7027
 // @allowUnreachableCode: false
 function fn(n: number) {
    if (n > 5) {
@@ -17,4 +31,4 @@ function fn(n: number) {
 }
 ```
 
-TypeScript doesn't error on the basis of code which *appears* to be unreachable due to type analysis.
+This does not affect errors on the basis of code which *appears* to be unreachable due to type analysis.
