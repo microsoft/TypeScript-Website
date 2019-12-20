@@ -42,7 +42,7 @@ const toggleNavigationSection: MouseEventHandler = (event) => {
   }
 }
 
-export const Sidebar = (props: Props) => {
+export const SidebarToggleButton = () => {
   const toggleClick = () => {
     const navSidebar = document.getElementById("sidebar")
     const isOpen = navSidebar?.classList.contains("show")
@@ -52,12 +52,19 @@ export const Sidebar = (props: Props) => {
       navSidebar?.classList.add("show")
     }
   }
+
+
+  return (
+    <button id="small-device-button-sidebar" onClick={toggleClick}>
+      <svg fill="none" height="26" viewBox="0 0 26 26" width="26" xmlns="http://www.w3.org/2000/svg"><g fill="#fff"><path d="m0 1c0-.552285.447715-1 1-1h24c.5523 0 1 .447715 1 1v3h-26z" /><path d="m0 11h13 13v4h-26z" /><path d="m0 22h26v3c0 .5523-.4477 1-1 1h-24c-.552284 0-1-.4477-1-1z" /></g></svg>
+    </button>
+  )
+
+}
+
+export const Sidebar = (props: Props) => {
   return (
     <nav id="sidebar">
-      <button id="small-device-button-sidebar" onClick={toggleClick}>
-        <svg fill="none" height="26" viewBox="0 0 26 26" width="26" xmlns="http://www.w3.org/2000/svg"><g fill="#fff"><path d="m0 1c0-.552285.447715-1 1-1h24c.5523 0 1 .447715 1 1v3h-26z" /><path d="m0 11h13 13v4h-26z" /><path d="m0 22h26v3c0 .5523-.4477 1-1 1h-24c-.552284 0-1-.4477-1-1z" /></g></svg>
-      </button>
-
       <ul>
         {props.navItems.map(navRoot => {
           const hostsSelected = navRoot.items.find(i => i.id === props.selectedID)

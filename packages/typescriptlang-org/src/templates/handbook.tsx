@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { graphql } from "gatsby"
 import { GetHandbookBySlug } from "./__generated__/GetHandbookBySlug"
 import { Layout } from "../components/layout"
-import { Sidebar } from "../components/layout/Sidebar"
+import { Sidebar, SidebarToggleButton } from "../components/layout/Sidebar"
 import { oldHandbookNavigation } from "../lib/oldNavigation"
 
 // This dependency is used in gatsby-remark-autolink-headers to generate the slugs
@@ -74,6 +74,7 @@ const HandbookTemplate = (props: { pageContext: any, data: GetHandbookBySlug, pa
   return (
     <Layout>
       <section id="doc-layout">
+        <SidebarToggleButton />
         <Sidebar navItems={oldHandbookNavigation} selectedID={selectedID} />
         <div id="handbook-content">
           <h2>{post.frontmatter.title}</h2>

@@ -123,6 +123,7 @@ nav#sidebar {
 }
 
 @media (max-width: $width-for-small-devices) {
+  // This is a button which will scroll off and on with the na
   button#small-device-button-sidebar {
     display: block;
     position: fixed;
@@ -138,10 +139,13 @@ nav#sidebar {
     width: 44px;
     height: 44px;
     bottom: 120px;
+    margin-bottom: env(safe-area-inset-bottom);
     background-color: #c4c4c4;
     border-radius: 6px;
-    padding-top: 5px;
-    padding-left: 5px;
+    padding-top: 2px;
+    padding-left: 9px;
+
+    z-index: $z-index-for-site-nav;
 
     // Reset the button
     -webkit-appearance: none;
@@ -155,14 +159,31 @@ nav#sidebar {
   // Pulls it out of the layout system
   nav#sidebar {
     position: fixed;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    -webkit-overflow-scrolling: touch;
+
     z-index: $z-index-for-handbook-nav;
-    margin-left: -16rem;
+    margin-left: -800px;
+    width: 90%;
+
+    ul {
+      padding-bottom: 200px;
+    }
 
     transition-timing-function: ease;
     transition: margin-left 0.3s;
 
     &.show {
       margin-left: 0px;
+    }
+
+    & > ul > li,
+    & > ul > li > button {
+      font-size: 1.3rem;
+      height: auto;
     }
   }
 }
