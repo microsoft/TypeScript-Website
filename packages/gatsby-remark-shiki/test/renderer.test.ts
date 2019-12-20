@@ -178,9 +178,9 @@ OK world
     const code = markdownAST.children[1]
     expect(code.value).toContain('\n')
     expect(code.value).toMatchInlineSnapshot(`
-      "function longest() {
+      "<pre class=\\"shiki\\"><div class=\\"language-id\\">js</div><div class='code-container'><code><span style=\\"color: #81A1C1\\">function</span><span style=\\"color: #D8DEE9FF\\"> </span><span style=\\"color: #88C0D0\\">longest</span><span style=\\"color: #ECEFF4\\">()</span><span style=\\"color: #D8DEE9FF\\"> </span><span style=\\"color: #ECEFF4\\">{</span>
 
-      }"
+      <span style=\\"color: #ECEFF4\\">}</span></code></div></pre>"
     `)
   })
 })
