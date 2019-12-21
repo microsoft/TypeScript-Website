@@ -15,18 +15,18 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
 }) => {
   const { createNodeField } = actions
 
-  // if (isTSConfigNode(node)) {
-  //   const categoryPath = node.context.categoriesPath
-  //   const categoriesJSON = JSON.parse(readFileSync(categoryPath, "utf8"))
+  if (isTSConfigNode(node)) {
+    const categoryPath = node.context.categoriesPath
+    const categoriesJSON = JSON.parse(readFileSync(categoryPath, "utf8"))
 
-  //   createNodeField({
-  //     node,
-  //     name: `categories`,
-  //     value: categoriesJSON,
-  //   })
-  // }
+    createNodeField({
+      node,
+      name: `categories`,
+      value: categoriesJSON,
+    })
+  }
 }
 
-// function isTSConfigNode(node: any): node is TSConfigNode {
-//   return node.path && node.path.endsWith("/tsconfig")
-// }
+function isTSConfigNode(node: any): node is TSConfigNode {
+  return node.path && node.path.endsWith("/tsconfig")
+}
