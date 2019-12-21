@@ -61,7 +61,11 @@ languages.forEach(lang => {
   };
 
   // Make a JSON dump of the category anchors someone wrapping the markdown
-  const allCategories = [] as { display: string; anchor: string }[];
+  const allCategories = [] as {
+    display: string;
+    anchor: string;
+    options: { name: string; anchor: string }[];
+  }[];
 
   orderedCategories.forEach(categoryID => {
     const category = Object.values(categories).find((c: any) => c.key === categoryID);
@@ -77,7 +81,6 @@ languages.forEach(lang => {
     // Let the title change it's display but keep the same ID
     const title = `<h2 id='${categoryID}'><a href='#${categoryID}' name='${categoryID}'>#</a> ${categoryFile.data.display}</h2>`;
     markdownChunks.push(title);
-    allCategories.push({ display: categoryFile.data.display, anchor: categoryID });
 
     // Push the category copy
     markdownChunks.push(categoryFile.content);
@@ -85,6 +88,8 @@ languages.forEach(lang => {
 
     // Loop through their options
     const optionsForCategory = options.filter(o => o.categoryCode === category.code);
+
+    const localisedOptions = [] as { name: string; anchor: string }[];
     optionsForCategory.forEach(option => {
       const mdPath = join("options", option.name + ".md");
       const fullPath = join(__dirname, "..", "copy", lang, mdPath);
@@ -165,6 +170,14 @@ languages.forEach(lang => {
       markdownChunks.push(table);
 
       markdownChunks.push("</div></section>");
+
+      localisedOptions.push({ anchor: option.name, name: optionFile.data.display });
+    });
+
+    allCategories.push({
+      display: categoryFile.data.display,
+      anchor: categoryID,
+      options: localisedOptions
     });
   });
 

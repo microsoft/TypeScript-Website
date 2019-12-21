@@ -67,7 +67,7 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["composite", ["incremental", "tsBuildInfoFile"]],
 
   ["types", ["typeRoots"]],
-  ["typeRoots", ["types"]]
+  ["typeRoots", ["types"]][("declaration", [""])]
 ];
 
 /**

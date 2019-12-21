@@ -9,14 +9,14 @@ With `d.ts` files, tools like TypeScript can provide intellisense and accurate t
 When `declaration` is set to `true`, running the compiler with this TypeScript code:
 
 ```ts twoslash
-export const helloWorld = "hi";
+export let helloWorld = "hi";
 ```
 
 Will generate an `index.js` file like this:
 
 ```ts twoslash
 // @showEmit
-export const helloWorld = "hi";
+export let helloWorld = "hi";
 ```
 
 With a corresponding `helloWorld.d.ts`:
@@ -25,5 +25,5 @@ With a corresponding `helloWorld.d.ts`:
 // @showEmittedFile: index.d.ts
 // @showEmit
 // @declaration
-export declare const helloWorld = "hi";
+export let helloWorld = "hi";
 ```

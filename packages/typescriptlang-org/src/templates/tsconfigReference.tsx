@@ -3,12 +3,11 @@ import { graphql } from "gatsby"
 import { TSConfigReferenceTemplate } from "./__generated__/TSConfigReferenceTemplate"
 import { Layout } from "../components/layout"
 
-import categories from "../../../tsconfig-reference/output/en.json"
-
 import "./markdown.scss"
 import "./tsconfig.scss"
 
 const TSConfigReferenceTemplateComponent = (props: { pageContext: any, data: TSConfigReferenceTemplate, path: string }) => {
+  // console.log(props)
 
   const post = props.data.markdownRemark
   if (!post) {
@@ -16,7 +15,7 @@ const TSConfigReferenceTemplateComponent = (props: { pageContext: any, data: TSC
     return <div></div>
   }
 
-
+  const categories = props.data.sitePage!.fields!.categories
 
   useEffect(() => {
     // Overrides the anchor behavior to smooth scroll instead
@@ -67,11 +66,24 @@ const TSConfigReferenceTemplateComponent = (props: { pageContext: any, data: TSC
   return (
     <Layout >
       <div className="tsconfig ms-depth-4" style={{ backgroundColor: "white", maxWidth: 960, margin: "1rem auto", paddingTop: "0.5rem" }}>
-        <nav>
-          {categories.categories.map(c => <li key={c.anchor}><a href={"#" + c.anchor}>{c.display}</a></li>)}
+        <div id="full-option-list" className="indent">
+          {categories!.categories!.map(c => {
+            if (!c) return null
+            return <div className="tsconfig-nav-top">
+              <h5><a href={"#" + c.anchor}>{c.display}</a></h5>
+              <ul key={c.anchor!}>
+                {c.options!.map(element => <li key={element!.anchor!}><a href={"#" + element!.anchor!}>{element!.anchor}</a></li>)}
+              </ul>
+            </div>
+          }
+          )}
+        </div>
+
+        <nav id="sticky">
+          {categories!.categories!.map(c => <li key={c!.anchor!}><a href={"#" + c!.anchor}>{c!.display}</a></li>)}
         </nav>
-        <div style={{ padding: "2rem" }}>
-          <h1>TSConfig Reference</h1>
+
+        <div className="indent">
           <div dangerouslySetInnerHTML={{ __html: post.html! }} />
         </div>
       </div>
@@ -83,7 +95,22 @@ const TSConfigReferenceTemplateComponent = (props: { pageContext: any, data: TSC
 export default TSConfigReferenceTemplateComponent
 
 export const pageQuery = graphql`
-  query TSConfigReferenceTemplate($tsconfigMDPath: String!) {
+  query TSConfigReferenceTemplate($path: String, $tsconfigMDPath: String!) {
+    sitePage(path: { eq: $path }) {
+      id
+      fields {
+        categories {
+          categories {
+            display
+            anchor
+            options {
+              anchor
+            }
+          }
+        }
+      }
+    }
+
     markdownRemark(fileAbsolutePath: {eq: $tsconfigMDPath} ) {
       id
       html

@@ -39,10 +39,10 @@ By setting `rootDir: "."` in `tsconfig.json`, TypeScript would write this tree:
 MyProj
 ├── dist
 |   ├── core
-│   │   ├── a.ts
-│   │   ├── b.ts
+│   │   ├── a.js
+│   │   ├── b.js
 │   │   ├── sub
-│   │   │   ├── c.ts
+│   │   │   ├── c.js
 ```
 
 Importantly, `rootDir` **does not affect which files become part of the compilation**.

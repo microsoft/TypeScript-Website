@@ -1,4 +1,6 @@
 const path = require(`path`)
+const fs = require(`fs`)
+
 import { NodePluginArgs, CreatePagesArgs } from "gatsby"
 
 export const createTSConfigReference = async (
@@ -31,11 +33,23 @@ export const createTSConfigReference = async (
   const docs = anyData.allFile.nodes
 
   docs.forEach(element => {
+    const categoriesForLang = path.join(
+      __dirname,
+      "..",
+      "..",
+      "..",
+      "..",
+      "tsconfig-reference",
+      "output",
+      element.name + ".json"
+    )
+
     createPage({
       path: element.name + "/tsconfig",
       component: tsConfigRefPage,
       context: {
         tsconfigMDPath: element.absolutePath,
+        categoriesPath: categoriesForLang,
       },
     })
   })

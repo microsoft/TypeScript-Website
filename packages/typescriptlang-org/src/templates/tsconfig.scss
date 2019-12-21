@@ -10,6 +10,48 @@ $width-for-small-device: 800px;
     visibility: hidden;
   }
 
+  .indent {
+    padding: 2rem;
+  }
+
+  > div#full-option-list {
+    display: flex;
+    flex-flow: row wrap;
+    padding: 20px;
+
+    div.tsconfig-nav-top {
+      flex: auto;
+      margin: 0 8px 8px 0; /* Some gutter */
+      width: 30%;
+
+      @media (max-width: $width-for-small-device) {
+        width: 46%;
+      }
+
+      h5 a {
+        font-size: 2rem;
+        font-weight: 400;
+        text-decoration: none;
+        color: black;
+      }
+
+      ul {
+        margin: 0;
+        padding: 0;
+      }
+      li {
+        font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        a {
+          color: rgb(20, 20, 20);
+        }
+      }
+    }
+  }
+
   nav {
     position: sticky;
     top: 0px;
