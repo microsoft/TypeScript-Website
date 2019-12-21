@@ -22,30 +22,26 @@
   "scenarios": [
     {
       "label": "Index",
-      "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/index.html",
-      "misMatchThreshold" : 0.1
+      "url": "file:///Users/orta/dev/typescript/new-typescript-website/packages/typescriptlang-org/public/index.html",
+      "misMatchThreshold": 0.1
     },
     {
       "label": "Empty Page",
-      "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/empty/index.html",
-      "misMatchThreshold" : 0.1
+      "url": "file:///Users/orta/dev/typescript/new-typescript-website/packages/typescriptlang-org/public/empty/index.html",
+      "misMatchThreshold": 0.1
     },
     {
       "label": "Old Handbook Example",
-      "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/docs/handbook/functions.html",
-      "misMatchThreshold" : 0.1,
-      "selectors": [
-        "viewport"
-      ]
+      "url": "file:///Users/orta/dev/typescript/new-typescript-website/packages/typescriptlang-org/public/docs/handbook/functions.html",
+      "misMatchThreshold": 0.1,
+      "selectors": ["viewport"]
     },
 
     {
       "label": "TSConfig Example",
-      "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/tsconfig/index.html",
-      "misMatchThreshold" : 0.1,
-      "selectors": [
-        "viewport"
-      ]
+      "url": "file:///Users/orta/dev/typescript/new-typescript-website/packages/typescriptlang-org/public/en/tsconfig/index.html",
+      "misMatchThreshold": 0.1,
+      "selectors": ["viewport"]
     }
   ],
   "paths": {

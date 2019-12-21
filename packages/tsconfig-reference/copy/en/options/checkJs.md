@@ -1,5 +1,5 @@
 ---
-display: 'Check JS'
+display: "Check JS"
 ---
 
 Works in tandem with `allowJs`. When `checkJs` is enabled then errors are reported in JavaScript files. This is
@@ -9,7 +9,7 @@ For example, this is incorrect JavaScript according to the `parseFloat` type def
 
 ```js
 // parseFloat only takes a string
-module.exports.pi = parseFloat(3.124)
+module.exports.pi = parseFloat(3.124);
 ```
 
 When imported into a TypeScript module:
@@ -18,11 +18,11 @@ When imported into a TypeScript module:
 // @allowJs
 // @filename: constants.js
 /// <reference types="node" />
-module.exports.pi = parseFloat(3.124)
+module.exports.pi = parseFloat(3.124);
 
 // @filename: index.ts
-import { pi } from './constants'
-console.log(pi)
+import { pi } from "./constants";
+console.log(pi);
 ```
 
 You will not get any errors. However, if you turn on `checkJs` then you will get error messages from the JavaScript file.
@@ -33,9 +33,9 @@ You will not get any errors. However, if you turn on `checkJs` then you will get
 // @checkjs: true
 // @filename: constants.js
 /// <reference types="node" />
-module.exports.pi = parseFloat(3.124)
+module.exports.pi = parseFloat(3.124);
 
 // @filename: index.ts
-import { pi } from './constants'
-console.log(pi)
+import { pi } from "./constants";
+console.log(pi);
 ```

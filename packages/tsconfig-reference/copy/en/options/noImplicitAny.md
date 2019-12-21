@@ -9,8 +9,8 @@ This can cause some errors to be missed, for example:
 ```ts twoslash
 // @noImplicitAny: false
 function fn(s) {
-   // No error?
-   console.log(s.subtr(3))
+  // No error?
+  console.log(s.subtr(3));
 }
 fn(42);
 ```
@@ -20,6 +20,6 @@ Turning on `noImplicitAny` however TypeScript will issue an error whenever it wo
 ```ts twoslash
 // @errors: 7006
 function fn(s) {
-   console.log(s.subtr(3))
+  console.log(s.subtr(3));
 }
 ```

@@ -10,7 +10,7 @@ yarn bootstrap
 code .
 ```
 
-# Packages
+# Website Packages
 
 ## TypeScriptLang-Org
 
@@ -33,17 +33,76 @@ yarn playground
 
 Then opening: http://localhost:1234 - which is the below package.
 
-## Playground Sandbox
-
-A create-react-app for working on the playground.
+# Doc Packages
 
 ## TSConfig Reference
 
 A set of tools and scripts for generating a comprehensive API reference for the TSConfig JSON file.
 
+```sh
+# Generate JSON from the typescript cli
+yarn workspace tsconfig-reference run generate-json
+# Jams them all into a single file
+yarn workspace tsconfig-reference run generate-markdown
+```
+
+Validate the docs
+
+```sh
+yarn workspace tsconfig-reference run test
+
+# or to just run the linter without a build
+yarn workspace tsconfig-reference run lint
+
+# or to just one one linter
+yarn workspace tsconfig-reference run lint resolveJson
+```
+
+## Handbook V1
+
+The existing docs for TypeScript
+
+## Handbook V2
+
+The upcoming docs for TypeScript
+
+## Playground Examples
+
+The code samples used in the Playground
+
+# Infra Packages
+
+## TS Twoslasher
+
+A code sample markup extension for TypeScript.
+
+```sh
+# Tests
+yarn workspace ts-twoslasher test
+
+# Build
+yarn workspace ts-twoslasher build
+```
+
+## Gatsby Remark Twoslasher Code Blocks
+
+A Gasby Remark plugin which runs twoslash for any code blocks with twoslash in their metadata
+
+## Gatsby Remark Shiki
+
+A Gasby Remark plugin which highlights code (using vscode's parsers) then annotates the code with twoslash information
+
+```sh
+# Tests
+yarn workspace gatsby-remark-shiki test
+
+# Build
+yarn workspace gatsby-remark-shiki build
+```
+
 # Contributing
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.microsoft.com.
 

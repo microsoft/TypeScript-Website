@@ -15,10 +15,10 @@ with this `tsconfig.json`:
 
 ```json
 {
-      "compilerOptions": {
-        "declaration": true,
-        "declarationDir": "./types"
-    }
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "./types"
+  }
 }
 ```
 

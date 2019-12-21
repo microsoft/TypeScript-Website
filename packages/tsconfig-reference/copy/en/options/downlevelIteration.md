@@ -2,7 +2,7 @@
 display: "Downlevel Iteration"
 ---
 
-Downleveling is TypeScript's term for transpiling to an older version of JavaScript. 
+Downleveling is TypeScript's term for transpiling to an older version of JavaScript.
 This flag is to enable support for a more accurate implementation of how modern JavaScript iterates through new concepts in older JavaScript runtimes.
 
 ECMAScript 6 added several new iteration primitives: the `for / of` loop (`for (el of arr)`), Array spread (`[a, ...b]`), argument spread (`fn(...args)`), and `Symbol.iterator`.
@@ -17,7 +17,7 @@ Without `downlevelIteration` on, a `for / of` loop on any object is downleveled 
 // @showEmit
 const str = "Hello!";
 for (const s of str) {
-    console.log(s);
+  console.log(s);
 }
 ```
 
@@ -34,11 +34,11 @@ If this implementation is missing, you'll fall back to index-based iteration.
 // @showEmit
 const str = "Hello!";
 for (const s of str) {
-    console.log(s);
+  console.log(s);
 }
 ```
 
->> **Note:** enabling `downlevelIteration` does not improve compliance if `Symbol.iterator` is not present in the runtime.
+> > **Note:** enabling `downlevelIteration` does not improve compliance if `Symbol.iterator` is not present in the runtime.
 
 #### Example: Effects on Array Spreads
 
@@ -57,7 +57,7 @@ const arr = [1].concat(arr2);
 ```
 
 However, this is observably different in certain rare cases.
-For example, if an array has a "hole" in it, the missing index will create an *own* property if spreaded, but will not if built using `concat`:
+For example, if an array has a "hole" in it, the missing index will create an _own_ property if spreaded, but will not if built using `concat`:
 
 ```js
 // Make an array where the '1' element is missing
@@ -66,9 +66,9 @@ let spreaded = [...missing];
 let concated = [].concat(missing);
 
 // true
-"1" in spreaded
+"1" in spreaded;
 // false
-"1" in concated
+"1" in concated;
 ```
 
 Just as with `for / of`, `downlevelIteration` will use `Symbol.iterator` (if present) to more accurately emulate ES 6 behavior.

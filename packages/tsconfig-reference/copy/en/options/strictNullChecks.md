@@ -12,12 +12,15 @@ write code as though it will:
 
 ```ts twoslash
 // @strictNullChecks: false
-declare const loggedInUsername: string
+declare const loggedInUsername: string;
 
-const users = [{ name: "Oby", age: 12 }, { name: "Heera", age: 32 }]
-const loggedInUser = users.find(u => u.name === loggedInUsername)
+const users = [
+  { name: "Oby", age: 12 },
+  { name: "Heera", age: 32 }
+];
+const loggedInUser = users.find(u => u.name === loggedInUsername);
 
-console.log(loggedInUser.age)
+console.log(loggedInUser.age);
 ```
 
 Setting `strictNullChecks` to `true` will raise an error that you have not made a guarantee that the `loggedInUser` exists before trying to use it.
@@ -25,25 +28,28 @@ Setting `strictNullChecks` to `true` will raise an error that you have not made 
 ```ts twoslash
 // @errors: 2339 2532
 // @strictNullChecks
-declare const loggedInUsername: string
+declare const loggedInUsername: string;
 
-const users = [{ name: "Oby", age: 12 }, { name: "Heera", age: 32 }]
-const loggedInUser = users.find(u => u.name === loggedInUsername)
+const users = [
+  { name: "Oby", age: 12 },
+  { name: "Heera", age: 32 }
+];
+const loggedInUser = users.find(u => u.name === loggedInUsername);
 
-console.log(loggedInUser.age)
+console.log(loggedInUser.age);
 ```
 
-The second example failed because the array's `find` function looks a bit like this simplification: 
+The second example failed because the array's `find` function looks a bit like this simplification:
 
 ```ts
 // When strictNullChecks: true
 type Array = {
-    find(predicate: (value: any, index: number) => boolean): S | undefined;
-}
+  find(predicate: (value: any, index: number) => boolean): S | undefined;
+};
 
-// When strictNullChecks: false the undefined is removed from the type system, 
+// When strictNullChecks: false the undefined is removed from the type system,
 // allowing you to write code which assumes it always found a result
 type Array = {
-    find(predicate: (value: any, index: number) => boolean): S;
-}
+  find(predicate: (value: any, index: number) => boolean): S;
+};
 ```

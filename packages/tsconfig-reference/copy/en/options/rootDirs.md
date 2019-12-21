@@ -2,7 +2,7 @@
 display: "Root Dirs"
 ---
 
-Using `rootDirs`, you can inform the compiler that there are many "virtual" directories acting as a single root. 
+Using `rootDirs`, you can inform the compiler that there are many "virtual" directories acting as a single root.
 This allows the compiler to resolve relative module imports within these "virtual" directories, as if they were merged in to one directory.
 
 For example:
@@ -22,10 +22,7 @@ For example:
 ```json
 {
   "compilerOptions": {
-    "rootDirs": [
-      "src/views",
-      "generated/templates/views"
-    ]
+    "rootDirs": ["src/views", "generated/templates/views"]
   }
 }
 ```

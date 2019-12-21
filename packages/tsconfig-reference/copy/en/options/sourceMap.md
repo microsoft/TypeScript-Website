@@ -24,7 +24,15 @@ exports.helloWorld = "hi";
 ```
 
 And this also generates this json map:
+
 ```json
 // helloWorld.js.map
-{"version":3,"file":"ex.js","sourceRoot":"","sources":["../ex.ts"],"names":[],"mappings":";;AAAa,QAAA,UAAU,GAAG,IAAI,CAAA"}
+{
+  "version": 3,
+  "file": "ex.js",
+  "sourceRoot": "",
+  "sources": ["../ex.ts"],
+  "names": [],
+  "mappings": ";;AAAa,QAAA,UAAU,GAAG,IAAI,CAAA"
+}
 ```

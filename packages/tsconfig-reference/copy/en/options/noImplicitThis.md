@@ -10,18 +10,18 @@ for `this` inside the function inside `getAreaFunction` is not the instance of t
 ```ts twoslash
 // @errors: 2683
 class Rectangle {
-    width: number
-    height: number
+  width: number;
+  height: number;
 
-    constructor(width: number, height: number) {
-        this.width = width;
-        this.height = height;
-    }
+  constructor(width: number, height: number) {
+    this.width = width;
+    this.height = height;
+  }
 
-    getAreaFunction() {
-        return function() {
-            return this.width * this.height;
-        };
-    }
+  getAreaFunction() {
+    return function() {
+      return this.width * this.height;
+    };
+  }
 }
 ```

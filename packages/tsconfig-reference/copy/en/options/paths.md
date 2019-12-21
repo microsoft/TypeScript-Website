@@ -1,5 +1,5 @@
 ---
-display: 'Paths'
+display: "Paths"
 ---
 
 A series of entries which re-map imports to lookup locations relative to the `baseUrl`, there is a larger coverage of `paths` in [the handbook](/docs/handbook/module-resolution.html#path-mapping).
@@ -22,7 +22,7 @@ This would allow you to be able to write `import "jquery"`, and get all of the c
 ```json
 {
   "compilerOptions": {
-    "baseUrl": "src", 
+    "baseUrl": "src",
     "paths": {
         "app/*": ["app/*"],
         "config/*": ["app/_config/*"],
@@ -34,5 +34,5 @@ This would allow you to be able to write `import "jquery"`, and get all of the c
 }
 ```
 
-In this case, you can tell the TypeScript file resolver to support a number of custom prefixes to find code. 
+In this case, you can tell the TypeScript file resolver to support a number of custom prefixes to find code.
 This pattern can be used to avoid long relative paths within your codebase.

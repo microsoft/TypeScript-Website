@@ -12,7 +12,7 @@ It does not change the behavior of your code, or otherwise change the behavior o
 
 #### Exports of Non-Value Identifiers
 
-In TypeScript, you can import a *type* and then subsequently export it:
+In TypeScript, you can import a _type_ and then subsequently export it:
 
 ```ts twoslash
 // @noErrors
@@ -33,13 +33,13 @@ Single-file transpilers don't know whether `someType` produces a value or not, s
 
 #### Non-Module Files
 
-If `isolatedModules` is set, all implementation files must be *modules*.
+If `isolatedModules` is set, all implementation files must be _modules_.
 An error occurs if any file isn't a module:
 
 ```ts twoslash
 // @errors: 1208
 // @isolatedModules
-function fn() { }
+function fn() {}
 ```
 
 This restriction doesn't apply to `.d.ts` files
@@ -50,8 +50,8 @@ In TypeScript, when you reference a `const enum` member, the reference is replac
 
 ```ts
 declare const enum Numbers {
-   Zero = 0,
-   One = 1
+  Zero = 0,
+  One = 1
 }
 console.log(Numbers.Zero + Numbers.One);
 ```
@@ -62,12 +62,11 @@ To:
 // @showEmit
 // @removeComments
 declare const enum Numbers {
-   Zero = 0,
-   One = 1
+  Zero = 0,
+  One = 1
 }
 console.log(Numbers.Zero + Numbers.One);
 ```
 
 Without knowledge of the values of these members, other transpilers can't replace the references to `Number`, which would be a runtime error if left alone (since there is no `Numbers` object at runtime).
 Because of this, when `isolatedModules` is set, it is an error to reference an ambient `const enum` member.
-

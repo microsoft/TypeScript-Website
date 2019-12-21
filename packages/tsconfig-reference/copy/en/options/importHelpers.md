@@ -12,9 +12,9 @@ This only affects modules; global script files will not attempt to import module
 
 For example, with this TypeScript:
 
-```ts 
+```ts
 export function fn(arr: number[]) {
-   const arr2 = [1, ...arr];
+  const arr2 = [1, ...arr];
 }
 ```
 
@@ -25,7 +25,7 @@ Turning on [`downlevelIteration`](#downlevelIteration) and `importHelpers` is st
 // @target: ES5
 // @downleveliteration
 export function fn(arr: number[]) {
-   const arr2 = [1, ...arr];
+  const arr2 = [1, ...arr];
 }
 ```
 
@@ -37,7 +37,7 @@ Then turning on both [`downlevelIteration`](#downlevelIteration) and `importHelp
 // @downleveliteration
 // @importhelpers
 export function fn(arr: number[]) {
-   const arr2 = [1, ...arr];
+  const arr2 = [1, ...arr];
 }
 ```
 

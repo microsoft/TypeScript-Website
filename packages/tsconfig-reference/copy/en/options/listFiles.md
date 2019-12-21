@@ -2,8 +2,8 @@
 display: "List Files"
 ---
 
-Print names of files part of the compilation. This is useful when you are not sure that TypeScript has 
-included a file you expected. 
+Print names of files part of the compilation. This is useful when you are not sure that TypeScript has
+included a file you expected.
 
 For example:
 
@@ -35,4 +35,3 @@ path/to/example/node_modules/typescript/lib/lib.webworker.importscripts.d.ts
 path/to/example/node_modules/typescript/lib/lib.scripthost.d.ts
 path/to/example/index.ts
 ```
-

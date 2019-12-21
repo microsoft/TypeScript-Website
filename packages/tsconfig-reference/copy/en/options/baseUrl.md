@@ -2,7 +2,7 @@
 display: "Base Url"
 ---
 
-Lets you set a base directory to resolve non-absolute module names. 
+Lets you set a base directory to resolve non-absolute module names.
 
 You can define a root folder where you can do absolute file resolution. E.g.
 
@@ -17,9 +17,9 @@ baseUrl
 With `"baseUrl": "./"` inside this project TypeScript will look for files starting at the same folder as the `tsconfig.json`.
 
 ```ts
-import { helloWorld } from "hello/world"
+import { helloWorld } from "hello/world";
 
-console.log(helloWorld)
+console.log(helloWorld);
 ```
 
 If you get tired of imports always looking like `"../"` or `"./"`. Or needing

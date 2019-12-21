@@ -14,12 +14,12 @@ You may "mix and match" `target` and `lib` settings as desired, but you could ju
 If your are only working with Node.js, here are recommended `target` based off of the Node version:
 
 | Name    | Supported Target |
-| ------- | -------- |
-| Node 8  | `ES2017` |
-| Node 10 | `ES2018` |
-| Node 12 | `ES2019` |
+| ------- | ---------------- |
+| Node 8  | `ES2017`         |
+| Node 10 | `ES2018`         |
+| Node 12 | `ES2019`         |
 
 These are based on [node.green](https://node.green)'s database of support.
 
-The special `ESNext` value refers to the highest version your TypeScript supports. 
+The special `ESNext` value refers to the highest version your TypeScript supports.
 This setting should be used with caution, since it doesn't mean the same thing between different TypeScript versions and can make upgrades less predictable.

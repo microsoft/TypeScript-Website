@@ -2,15 +2,15 @@
 display: "No Emit Helpers"
 ---
 
-Instead of importing helpers with [`importHelpers`](#importHelpers), you can provide implementations in the global scope for the helpers you use and completely turn off emitting of helper functions. 
+Instead of importing helpers with [`importHelpers`](#importHelpers), you can provide implementations in the global scope for the helpers you use and completely turn off emitting of helper functions.
 
 For example, using this `async` function in ES5 requires a `await`-like function and `generator`-like function to run:
 
 ```ts twoslash
 const getAPI = async (url: string) => {
   // Get API
-  return {}
-}
+  return {};
+};
 ```
 
 Which creates quite a lot of JavaScript:
@@ -20,8 +20,8 @@ Which creates quite a lot of JavaScript:
 // @target: ES5
 const getAPI = async (url: string) => {
   // Get API
-  return {}
-}
+  return {};
+};
 ```
 
 Which can be switched out with your own globals via this flag:
@@ -32,6 +32,6 @@ Which can be switched out with your own globals via this flag:
 // @noEmitHelpers
 const getAPI = async (url: string) => {
   // Get API
-  return {}
-}
+  return {};
+};
 ```

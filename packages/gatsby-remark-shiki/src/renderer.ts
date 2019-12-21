@@ -62,7 +62,7 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
               end: token.start! + token.length! - filePos,
             }
 
-            if ('renderedMessage' in token) range.classes = 'error'
+            if ('renderedMessage' in token) range.classes = 'err'
             if ('kind' in token) range.classes = token.kind
             if ('targetString' in token) {
               range.classes = 'lsp'

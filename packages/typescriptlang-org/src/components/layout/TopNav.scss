@@ -13,12 +13,14 @@ html {
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
-  font-family: "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  font-family: "Segoe UI Web (West European)", "Segoe UI", -apple-system,
+    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
   font-size: 14px;
   height: 100%;
 }
 
-html, #___gatsby {
+html,
+#___gatsby {
   height: 100%;
 }
 
@@ -97,15 +99,16 @@ html, #___gatsby {
   }
 }
 
-#beta-notification-menu, .gatsby-noscript {
+#beta-notification-menu,
+.gatsby-noscript {
   background-color: #c63131;
   text-align: center;
   color: white;
   padding: 0.4rem 0;
-  user-select: none; 
+  user-select: none;
 
   a {
-    color: white
+    color: white;
   }
 }
 
@@ -113,7 +116,7 @@ html, #___gatsby {
 
 form.search {
   height: 3rem;
-  background-color: #2A68AC;
+  background-color: #2a68ac;
   padding-left: 1rem;
   display: inline-block;
 
@@ -125,7 +128,7 @@ form.search {
 
   input {
     -webkit-appearance: none;
-    background-color: #2A68AC;
+    background-color: #2a68ac;
     border-color: #152740;
     border-radius: 0;
     border: none;
@@ -154,13 +157,13 @@ form.search {
   display: inline;
 }
 
-@media (min-width:767px) and (max-width: 900px) {
+@media (min-width: 767px) and (max-width: 900px) {
   .show-only-medium {
     display: inline !important;
   }
-  
+
   .hide-only-medium {
-    display: none  !important;
+    display: none !important;
   }
 }
 
@@ -186,6 +189,11 @@ form.search {
     left: 0px;
     right: 0px;
 
+    /* Makes search elements full width */
+    li.nav-item {
+      display: block;
+    }
+
     /* The position of the menu when not hidden (and default) */
     &.up {
       /* How long to get back up */
@@ -200,7 +208,7 @@ form.search {
       transition: transform 0.6s;
       transform: translate(0, 8.2rem);
     }
-    
+
     /* Because 'TypeScript' is removed, let the width be auto */
     #home-page-logo {
       width: auto;
@@ -221,13 +229,12 @@ form.search {
     }
   }
 
-  
   .above-small {
     /* Make search full length */
     nav {
       width: 100%;
     }
-    
+
     /* Make search input reach the end */
     form.search {
       width: calc(100% - 1rem);
@@ -254,7 +261,7 @@ form.search {
     bottom: 140%;
     min-width: 0;
     margin-left: -34px;
-    
+
     /* Make the triangle point to the right place */
     &:before {
       top: auto;

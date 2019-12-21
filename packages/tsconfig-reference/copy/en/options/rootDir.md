@@ -39,10 +39,10 @@ By setting `rootDir: "."` in `tsconfig.json`, TypeScript would write this tree:
 MyProj
 ├── dist
 |   ├── core
-│   │   ├── a.ts
-│   │   ├── b.ts
+│   │   ├── a.js
+│   │   ├── b.js
 │   │   ├── sub
-│   │   │   ├── c.ts
+│   │   │   ├── c.js
 ```
 
 Importantly, `rootDir` **does not affect which files become part of the compilation**.
@@ -62,4 +62,4 @@ MyProj
 ├── helpers.ts
 ```
 
-It would be an error to specify `rootDir` as `core` *and* `include` as `*` because it creates a file (`helpers.ts`) that would need to be emitted *outside* the `outDir` (i.e. `../helpers.js`).
+It would be an error to specify `rootDir` as `core` _and_ `include` as `*` because it creates a file (`helpers.ts`) that would need to be emitted _outside_ the `outDir` (i.e. `../helpers.js`).

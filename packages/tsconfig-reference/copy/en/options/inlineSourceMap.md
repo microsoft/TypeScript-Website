@@ -12,7 +12,7 @@ For example, with this TypeScript:
 
 ```ts
 const helloWorld = "hi";
-console.log(helloWorld)
+console.log(helloWorld);
 ```
 
 Converts to this JavaScript:
@@ -20,7 +20,7 @@ Converts to this JavaScript:
 ```ts twoslasher
 // @showEmit
 const helloWorld = "hi";
-console.log(helloWorld)
+console.log(helloWorld);
 ```
 
 Then enable building it with `inlineSourceMap` enabled there is a comment at the bottom of the file which includes
@@ -30,5 +30,5 @@ a source-map for the file.
 // @inlineSourceMap
 // @showEmit
 const helloWorld = "hi";
-console.log(helloWorld)
+console.log(helloWorld);
 ```

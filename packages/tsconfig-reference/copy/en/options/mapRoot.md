@@ -6,7 +6,7 @@ Specify the location where debugger should locate map files instead of generated
 This string is treated verbatim inside the source-map, for example:
 
 ```json
-{ 
+{
   "compilerOptions": {
     "sourceMap": true,
     "mapRoot": "https://my-website.com/debug/sourcemaps/"

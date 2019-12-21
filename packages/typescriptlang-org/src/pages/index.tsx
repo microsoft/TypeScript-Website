@@ -8,7 +8,7 @@ const Index = (props: any) =>
     <div className="ms-depth-4" style={{ backgroundColor: "white", maxWidth: 960, margin: "1rem auto", padding: "2rem" }}>
       <h1>:wave:</h1>
       <ul>
-        <li><Link to="/tsconfig">TSConfig Reference</Link></li>
+        <li><Link to="/en/tsconfig">TSConfig Reference</Link></li>
         <li><Link to="/docs/handbook/generics.html">Old Handbook Example</Link></li>
         <li><Link to="/asdasda">404 Page</Link></li>
       </ul>

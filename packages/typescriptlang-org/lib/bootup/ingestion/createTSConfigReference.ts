@@ -1,4 +1,6 @@
 const path = require(`path`)
+const fs = require(`fs`)
+
 import { NodePluginArgs, CreatePagesArgs } from "gatsby"
 
 export const createTSConfigReference = async (
@@ -30,18 +32,25 @@ export const createTSConfigReference = async (
   const anyData = result.data as any
   const docs = anyData.allFile.nodes
 
-  // start with just the english one
-  const english = docs.find(doc => doc.name === "en")
+  docs.forEach(element => {
+    const categoriesForLang = path.join(
+      __dirname,
+      "..",
+      "..",
+      "..",
+      "..",
+      "tsconfig-reference",
+      "output",
+      element.name + ".json"
+    )
 
-  if (!english) {
-    throw new Error("Could not find the TSConfig Reference markdown file: you probably need to run `yarn bootstrap` in the project root")
-  }
-
-  createPage({
-    path: "/tsconfig",
-    component: tsConfigRefPage,
-    context: {
-      tsconfigMDPath: english.absolutePath,
-    },
+    createPage({
+      path: element.name + "/tsconfig",
+      component: tsConfigRefPage,
+      context: {
+        tsconfigMDPath: element.absolutePath,
+        categoriesPath: categoriesForLang,
+      },
+    })
   })
 }
