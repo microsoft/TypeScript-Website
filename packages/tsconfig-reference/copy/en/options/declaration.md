@@ -27,3 +27,5 @@ With a corresponding `helloWorld.d.ts`:
 // @declaration
 export let helloWorld = "hi";
 ```
+
+When working with `d.ts` files for JavaScript files you may want to use [`emitDeclarationOnly`](#emitDeclarationOnly) or use [`outDir`](#outDir) to ensure that the JavaScript files are not overwritten.
