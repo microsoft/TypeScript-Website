@@ -48,7 +48,7 @@ export const twoPi = valueOfPi * 2;
 
 ```ts twoslash
 // @showEmit
-// @module: umd
+// @module: amd
 // @filename: constants.ts
 export const valueOfPi = 3.142;
 // ---cut---

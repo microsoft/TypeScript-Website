@@ -33,7 +33,10 @@ const sharedEditorOptions = {
   scrollBeyondLastColumn: 3,
 }
 
-export function getDefaultCompilerOptions(config: PlaygroundConfig): ts.CompilerOptions {
+export function getDefaultCompilerOptions(
+  config: PlaygroundConfig,
+  monaco: typeof import('monaco-editor')
+): ts.CompilerOptions {
   return {
     noImplicitAny: true,
     strictNullChecks: true,
@@ -64,7 +67,7 @@ export function getDefaultCompilerOptions(config: PlaygroundConfig): ts.Compiler
     experimentalDecorators: false,
     emitDecoratorMetadata: false,
 
-    target: ts.ScriptTarget.ES2017,
+    target: 4, // ts.ScriptTarget.ES2017,
     jsx: monaco.languages.typescript.JsxEmit.None,
   }
 }
