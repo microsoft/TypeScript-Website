@@ -9,6 +9,7 @@
     "develop": "gatsby develop",
     "clean": "gatsby clean",
     "update-snapshots": "backstop test; backstop approve",
+    "update-static-assets": "node scripts/downloadPlaygroundAssets.js && node scripts/downloadSearchAssets.js",
     "start": "npm run develop",
     "serve": "gatsby serve",
     "test": "echo 'no tests'"

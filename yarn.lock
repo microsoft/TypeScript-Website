@@ -11914,6 +11914,11 @@ monaco-editor@~0.18.1:
   resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.18.1.tgz#ced7c305a23109875feeaf395a504b91f6358cfc"
   integrity sha512-fmL+RFZ2Hrezy+X/5ZczQW51LUmvzfcqOurnkCIRFTyjdVjzR7JvENzI6+VKBJzJdPh6EYL4RoWl92b2Hrk9fw==
 
+monaco-typescript@^3.6.1:
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/monaco-typescript/-/monaco-typescript-3.6.1.tgz#69a545a45e2a6d036a50d78508792b856f9968d7"
+  integrity sha512-VXzS/s/YoQlolf7zRsM7PGVhY+HUTTHcLzFCx1QxuyOpoY1uFlUaMeTIV/AMYzMjSqHIiJ58kNiWjoP1YNsaAQ==
+
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/move-concurrently/-/move-concurrently-1.0.1.tgz#be2c005fda32e0b29af1f05d7c4b33214c701f92"

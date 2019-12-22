@@ -21,17 +21,20 @@ export const SiteNav = (props: Props) => {
     searchScript.async = true;
     searchScript.onload = () => {
       // @ts-ignore - this comes from the script above
-      docsearch({
-        apiKey: '3c2db2aef0c7ff26e8911267474a9b2c',
-        indexName: 'typescriptlang',
-        inputSelector: '.search input',
-        // debug: true // Set debug to true if you want to inspect the dropdown
-      });
+      if (typeof docsearch !== 'undefined') {
+        // @ts-ignore - this comes from the script above
+        docsearch({
+          apiKey: '3c2db2aef0c7ff26e8911267474a9b2c',
+          indexName: 'typescriptlang',
+          inputSelector: '.search input',
+          // debug: true // Set debug to true if you want to inspect the dropdown
+        });
 
-      searchCSS.rel = 'stylesheet';
-      searchCSS.href = withPrefix('/css/docsearch.css');
-      searchCSS.type = 'text/css';
-      document.body.appendChild(searchCSS);
+        searchCSS.rel = 'stylesheet';
+        searchCSS.href = withPrefix('/css/docsearch.css');
+        searchCSS.type = 'text/css';
+        document.body.appendChild(searchCSS);
+      }
     }
 
     document.body.appendChild(searchScript);
