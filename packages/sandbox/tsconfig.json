@@ -1,30 +1,15 @@
 {
-  "include": ["src", "types"],
+  "include": ["src"],
   "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
+    "outDir": "../typescriptlang-org/static/js/sandbox",
+    "target": "ES2015",
+    "module": "AMD",
     "lib": ["dom", "esnext"],
-    "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
-    "rootDir": "./",
+    "rootDir": "./src",
     "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
-    "baseUrl": "./",
-    "paths": {
-      "*": ["src/*", "node_modules/*"]
-    },
-    "jsx": "react",
     "esModuleInterop": true
   }
 }

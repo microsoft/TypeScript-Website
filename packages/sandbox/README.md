@@ -9,7 +9,7 @@ This project is useful to you if:
 - You want to present users of your library with a JS editor which has a typed API (in JS or TS)
 
 ## Goals
-
+q
 - Support multiple versions of TypeScript (via supporting older builds of monaco-typescript)
 - Easy to use when trying to replace code inline on a website
 - Support extension points required to build Playground

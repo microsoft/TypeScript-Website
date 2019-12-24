@@ -19,9 +19,9 @@
   "devDependencies": {
     "@types/jest": "^24.0.24",
     "rehype-stringify": "^6.0.1",
-    "tsdx": "^0.11.0",
+    "tsdx": "^0.12.0",
     "tslib": "^1.10.0",
-    "typescript": "^3.7.3",
+    "typescript": "^3.7.4",
     "unified": "^8.4.2"
   }
 }

@@ -8,20 +8,21 @@
     "danger": "^9.2.9",
     "danger-plugin-lighthouse": "^0.5.2",
     "danger-plugin-spellcheck": "^1.5.0",
+    "fb-watchman": "^2.0.1",
     "git-branch-is": "^3.1.0",
     "husky": "^3.1.0"
   },
+  "resolutions": {
+    "@types/react": "16.9.17"
+  },
   "scripts": {
     "bootstrap": "yarn workspace ts-twoslasher run build; yarn workspaces run build",
-    "start": "yarn workspace typescriptlang-org start",
+    "start": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"yarn workspace typescriptlang-org start\"",
+    "build": "yarn workspaces run build",
     "build-site": "yarn workspace typescriptlang-org build",
-    "build-tsconfig-reference-md": "yarn workspace tsconfig-reference build",
-    "build": "yarn build-tsconfig-reference-md && yarn build-site",
     "update-snapshots": "yarn workspace typescriptlang-org update-snapshots",
     "clean": "yarn workspace typescriptlang-org gatsby clean",
-    "test": "yarn workspaces run test",
-    "playground": "concurrently -p \"[{name}]\" -n \"TS,WEB\" -c \"bgBlue.bold,bgMagenta.bold\" \"yarn workspace playground start\" \"yarn workspace playground-sandbox start\"",
-    "deploy:dev": "yarn build && az storage blob upload-batch -s 'packages/typescriptlang-org/public' -d \\$web --account-name playgroundstatichosting --subscription 'TypeScript – Internal Services'"
+    "test": "CI=true yarn workspaces run test"
   },
   "prettier": {
     "printWidth": 120,
