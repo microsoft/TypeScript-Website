@@ -97,8 +97,6 @@ function createFileUri(
 }
 
 export async function setupPlayground(config: PlaygroundConfig, monaco: typeof import('monaco-editor')) {
-  // const defaults = monacoLanguageDefaults(config)
-
   const language = languageType(config)
   const filePath = createFileUri(config, config.compilerOptions, monaco)
   const element = 'domID' in config ? document.getElementById(config.domID) : config.elementToAppend

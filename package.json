@@ -22,7 +22,7 @@
     "build-site": "yarn workspace typescriptlang-org build",
     "update-snapshots": "yarn workspace typescriptlang-org update-snapshots",
     "clean": "yarn workspace typescriptlang-org gatsby clean",
-    "test": "yarn workspaces run test"
+    "test": "CI=true yarn workspaces run test"
   },
   "prettier": {
     "printWidth": 120,

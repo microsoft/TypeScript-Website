@@ -26,6 +26,8 @@ jobs:
 
       # Run any tests
       - run: yarn workspaces run test --ci
+        env:
+          CI: true
 
   lighthouse_danger:
     runs-on: ubuntu-latest
