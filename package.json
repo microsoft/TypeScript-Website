@@ -12,6 +12,9 @@
     "git-branch-is": "^3.1.0",
     "husky": "^3.1.0"
   },
+  "resolutions": {
+    "@types/react": "16.9.17"
+  },
   "scripts": {
     "bootstrap": "yarn workspace ts-twoslasher run build; yarn workspaces run build",
     "start": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"yarn workspace typescriptlang-org start\"",
