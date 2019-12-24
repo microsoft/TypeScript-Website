@@ -57,7 +57,7 @@ function fn(s) {
   console.log(s.subtr(3))
 }
 
-fn(42);
+fn(42)
 ```
 
 Turns to:
@@ -68,7 +68,7 @@ Turns to:
 >   console.log(s.subtr(3))
 > }
 > 
-> fn(42);
+> fn(42)
 > ```
 
 > With:
@@ -92,7 +92,7 @@ Turns to:
 >       "id": "err-7006-13-1"
 >     }
 >   ],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/FAMwrgdgxgLglgewgAhBAFAZwJTIN7DLJRKYIA2ApgHTkIDmW1mYARjAE7oDM22wAX2CgMAFgBM2ANzAgA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/FAMwrgdgxgLglgewgAhBAFAZwJTIN7DLJRKYIA2ApgHTkIDmW1mYARjAE7oDM22wAX2CgMAFgBM-IA"
 > }
 > ```
 

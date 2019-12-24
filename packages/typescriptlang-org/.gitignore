@@ -77,3 +77,7 @@ _tests/backstop_data/bitmaps_test
 _tests/backstop_data/engine_scripts
 _tests/backstop_data/html_report
 
+# Build artifacts
+static/js/sandbox/*.js
+static/js/sandbox/*.map
+static/js/sandbox/*.d.ts

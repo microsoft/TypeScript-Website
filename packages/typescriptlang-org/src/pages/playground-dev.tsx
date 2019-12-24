@@ -20,14 +20,11 @@ const Index = (props: any) => {
         ignoreDuplicateModules: ["vs/editor/editor.main"],
       });
 
-      re(["vs/editor/editor.main", "sandbox/index"], async (main: any, sandboxModule: any) => {
-        const editor = main.editor as typeof import("monaco-editor").editor
-        const lang = main.languages as typeof import("monaco-editor").languages
-        const sandbox = sandboxModule as typeof import("../../static/js/sandbox")
-
+      re(["vs/editor/editor.main", "sandbox/index"], async (main: typeof import("monaco-editor"), sandbox: typeof import("../../static/js/sandbox")) => {
 
         const playground = await sandbox.setupPlayground({ text: "OK", compilerOptions: {}, typeScriptVersion: "3.5.1", domID: "monaco-editor-embed", useJavaScript: false }, main)
         playground.focus()
+
       });
     }
 
