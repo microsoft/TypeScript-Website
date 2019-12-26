@@ -20,7 +20,4 @@ const Index = (props: any) =>
 
   </Layout>
 
-
-
-
 export default Index

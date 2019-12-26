@@ -14,7 +14,7 @@ export const showDTSPlugin = () => {
       container.appendChild(createCodePre)
     },
     modelChanged: async (sandbox, model) => {
-      codeElement.textContent = model.getValue()
+      codeElement.textContent = await sandbox.getDTSForCode()
     },
   }
 

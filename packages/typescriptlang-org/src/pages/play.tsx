@@ -2,6 +2,8 @@ import React, { useEffect } from "react"
 import { Layout } from "../components/layout"
 import { withPrefix } from "gatsby"
 
+import "./play.scss"
+
 const Index = (props: any) => {
   useEffect(() => {
     const getLoaderScript = document.createElement('script');
@@ -32,10 +34,19 @@ markdown("OK")`
           console.error("main", !!main, "ts", !!ts, "sandbox", !!sandbox, "playground", !!playground)
         }
 
-        console.log(playground)
+        const sandboxEnv = await sandbox.createTypeScriptSandbox({
+          text: initialCode,
+          compilerOptions: {},
+          domID: "monaco-editor-embed",
+          useJavaScript: false,
+          logger: {
+            error: console.error,
+            log: console.log
+          }
+        }, main, ts)
 
-        const playgroundEnv = await sandbox.createTypeScriptSandbox({ text: initialCode, compilerOptions: {}, domID: "monaco-editor-embed", useJavaScript: false }, main, ts)
-        playgroundEnv.editor.focus()
+        playground.setupPlayground(sandboxEnv)
+        sandboxEnv.editor.focus()
       });
     }
 
@@ -47,7 +58,9 @@ markdown("OK")`
       <Layout>
         <div className="ms-depth-4" style={{ backgroundColor: "white", marginLeft: "-60px", marginRight: "-60px", margin: "1rem auto", padding: "2rem" }}>
           <h1 id="loader" style={{ textAlign: "center" }}>Loading</h1>
-          <div style={{ height: "800px" }} id="monaco-editor-embed" />
+          <div id="playground-container">
+            <div id="monaco-editor-embed" />
+          </div>
         </div>
       </Layout>
     </>

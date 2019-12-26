@@ -29,6 +29,7 @@ markdown("OK")`
         }
 
         const playground = await sandbox.createTypeScriptSandbox({ text: initialCode, compilerOptions: {}, domID: "monaco-editor-embed", useJavaScript: false }, main, ts)
+
         playground.editor.focus()
       });
     }

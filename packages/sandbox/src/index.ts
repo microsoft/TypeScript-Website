@@ -43,11 +43,15 @@ const sharedEditorOptions: import('monaco-editor').editor.IEditorOptions = {
 export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monaco: Monaco) {
   const settings: CompilerOptions = {
     noImplicitAny: true,
-    strictNullChecks: true,
+    strictNullChecks: !config.useJavaScript,
     strictFunctionTypes: true,
     strictPropertyInitialization: true,
+    strictBindCallApply: true,
     noImplicitThis: true,
     noImplicitReturns: true,
+
+    // 3.7 off, 3.8 on I think
+    useDefineForClassFields: false,
 
     alwaysStrict: true,
     allowUnreachableCode: false,
@@ -60,19 +64,21 @@ export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monac
     noUnusedLocals: false,
     noUnusedParameters: false,
 
-    esModuleInterop: false,
+    esModuleInterop: true,
     preserveConstEnums: false,
     removeComments: false,
     skipLibCheck: false,
 
     checkJs: config.useJavaScript,
     allowJs: config.useJavaScript,
+    declaration: true,
 
     experimentalDecorators: false,
     emitDecoratorMetadata: false,
 
     target: monaco.languages.typescript.ScriptTarget.ES2017,
     jsx: monaco.languages.typescript.JsxEmit.None,
+    module: monaco.languages.typescript.ModuleKind.ESNext,
   }
 
   return settings
@@ -128,6 +134,7 @@ export const createTypeScriptSandbox = (
   const getWorker = config.useJavaScript
     ? monaco.languages.typescript.getJavaScriptWorker
     : monaco.languages.typescript.getTypeScriptWorker
+
   const defaults = config.useJavaScript
     ? monaco.languages.typescript.javascriptDefaults
     : monaco.languages.typescript.typescriptDefaults
@@ -145,15 +152,31 @@ export const createTypeScriptSandbox = (
     })
   }
 
-  const getRunnableJS = async () => {
+  defaults.setCompilerOptions(compilerDefaults)
+  const updateCompilerSettings = (opts: CompilerOptions) => {
+    defaults.setCompilerOptions(opts)
+  }
+
+  const getEmitResult = async () => {
     const model = editor.getModel()!
     if (config.useJavaScript) {
       return model.getValue()
     }
 
     const client = await getWorkerProcess()
-    const jsResult = await client.getEmitOutput(model.uri.toString())
-    return jsResult.outputFiles[0].text
+    return await client.getEmitOutput(model.uri.toString())
+  }
+
+  const getRunnableJS = async () => {
+    const result = await getEmitResult()
+    console.log(result)
+    return result.outputFiles.find((o: any) => o.name.endsWith('.js')).text
+  }
+
+  const getDTSForCode = async () => {
+    const result = await getEmitResult()
+    console.log(result)
+    return result.outputFiles.find((o: any) => o.name.endsWith('.d.ts')).text
   }
 
   const getWorkerProcess = async () => {
@@ -164,5 +187,15 @@ export const createTypeScriptSandbox = (
   const getDomNode = () => editor.getDomNode()!
   const getModel = () => editor.getModel()!
 
-  return { config, editor, getWorkerProcess, getRunnableJS, getDomNode, getModel }
+  return {
+    config,
+    editor,
+    getWorkerProcess,
+    getEmitResult,
+    getRunnableJS,
+    getDTSForCode,
+    getDomNode,
+    getModel,
+    updateCompilerSettings,
+  }
 }
