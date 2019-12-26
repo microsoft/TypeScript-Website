@@ -103,46 +103,6 @@ function createFileUri(config: PlaygroundConfig, compilerOptions: CompilerOption
   return monaco.Uri.file(filepath)
 }
 
-type SetupOptions =
-  | ({
-      /** The module to grab for monaco-editor */
-      monacoModule?: string
-    } & {
-      /** The version to grab of monaco-editor directly */
-      monacoVersion: string
-    })
-  | {
-      /** The TypeScript versions which you can used directly */
-      tsVersion: import('./monacoTSVersions').SupportedTSVersions
-    }
-
-/** Sets up monaco with your TypeScript version */
-export function requireConfig(opts: SetupOptions) {
-  let module = 'monacoModule' in opts ? opts.monacoModule : 'monaco-editor'
-  let versionViaTS = 'monacoVersion' in opts ? opts.monacoVersion : undefined
-
-  if ('tsVersion' in opts) {
-    // @ts-ignore
-    const meta: typeof monacoTSVersions['Nightly'] = monacoTSVersions[opts.tsVersion]
-    if (!meta)
-      throw new Error('You did not provide a known tsVersion, known versions are: ' + Object.keys(monacoTSVersions))
-    module = meta.module
-    versionViaTS = meta.monaco
-  }
-
-  const versionViaEditor = 'monacoVersion' in opts ? opts.monacoVersion : undefined
-  const monacoVersion = versionViaTS || versionViaEditor
-
-  if (!monacoVersion) throw new Error('You did not provide a known tsVersion or monacoVersion to prepareMonaco')
-
-  return {
-    paths: {
-      vs: `https://unpkg.com/${module}@${monacoVersion}/min/vs`,
-    },
-    ignoreDuplicateModules: ['vs/editor/editor.main'],
-  }
-}
-
 /** Creates a sandbox editor, and returns a set of useful functions and the editor */
 export const createTypeScriptSandbox = (
   partialConfig: Partial<PlaygroundConfig>,
@@ -205,8 +165,4 @@ export const createTypeScriptSandbox = (
   const getModel = () => editor.getModel()!
 
   return { config, editor, getWorkerProcess, getRunnableJS, getDomNode, getModel }
-}
-;(window as any).sandbox = {
-  requireConfig: requireConfig,
-  create: createTypeScriptSandbox,
 }

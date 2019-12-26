@@ -47,7 +47,9 @@
     "rehype-shiki": "^0.0.5",
     "ts-node": "^8.5.4",
     "ts-twoslasher": "0.1.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.4",
+    "typescript-playground": "*",
+    "typescript-sandbox": "*"
   },
   "devDependencies": {
     "@babel/plugin-syntax-optional-chaining": "^7.7.4",

@@ -34,7 +34,7 @@ export interface PlaygroundPlugin {
 
 const defaultPluginFactories: (() => PlaygroundPlugin)[] = [compiledJSPlugin, showDTSPlugin]
 
-const setupPlayground = (sandbox: Sandbox) => {
+export const setupPlayground = (sandbox: Sandbox) => {
   const playgroundParent = sandbox.getDomNode().parentElement!.parentElement!
   const sidebar = createSidebar()
   playgroundParent.appendChild(sidebar)
@@ -75,7 +75,4 @@ const setupPlayground = (sandbox: Sandbox) => {
     const plugin = currentPlugin()
     plugin.modelChanged(sandbox, sandbox.getModel())
   })
-}
-;(window as any).playground = {
-  setup: setupPlayground,
 }
