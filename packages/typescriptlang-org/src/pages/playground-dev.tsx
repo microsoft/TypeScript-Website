@@ -14,17 +14,15 @@ const Index = (props: any) => {
 
       re.config({
         paths: {
-          vs: `https://tswebinfra.blob.core.windows.net/monaco-editor/0-19-0/min/vs`,
+          vs: "https://tswebinfra.blob.core.windows.net/cdn/3.7.3/monaco/min/vs",
           sandbox: '/js/sandbox'
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],
       });
 
       re(["vs/editor/editor.main", "sandbox/index"], async (main: typeof import("monaco-editor"), sandbox: typeof import("../../static/js/sandbox")) => {
-
         const playground = await sandbox.setupPlayground({ text: "OK", compilerOptions: {}, typeScriptVersion: "3.5.1", domID: "monaco-editor-embed", useJavaScript: false }, main)
         playground.focus()
-
       });
     }
 

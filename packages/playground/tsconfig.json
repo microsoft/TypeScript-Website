@@ -1,7 +1,7 @@
 {
   "include": ["src"],
   "compilerOptions": {
-    "outDir": "../typescriptlang-org/static/js/sandbox",
+    "outDir": "../typescriptlang-org/static/js/playground",
     "target": "ES2016",
     "module": "AMD",
     "lib": ["dom", "esnext"],

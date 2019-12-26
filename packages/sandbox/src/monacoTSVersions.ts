@@ -18,4 +18,10 @@ export const monacoTSVersions = {
   '2.4.1': { monaco: '0.10.0', module: 'monaco-editor' },
 } as const
 
+/** Returns the latest TypeScript version supported by the sandbox */
+export const latestSupportedTypeScriptVersion: string = Object.keys(monacoTSVersions)
+  .filter(key => key !== 'Nightly' && !key.includes('-'))
+  .sort()
+  .pop()!
+
 export type SupportedTSVersions = 'Latest' | keyof typeof monacoTSVersions

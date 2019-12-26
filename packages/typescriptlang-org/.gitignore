@@ -78,6 +78,7 @@ _tests/backstop_data/engine_scripts
 _tests/backstop_data/html_report
 
 # Build artifacts
-static/js/sandbox/*.js
-static/js/sandbox/*.map
-static/js/sandbox/*.d.ts
+static/js/sandbox/
+!static/js/sandbox/.gitkeep
+static/js/playground/
+!static/js/playground/.gitkeep
