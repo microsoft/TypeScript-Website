@@ -1,10 +1,10 @@
 // This Dangerfile only runs on same-repo PRs
 
-// You can test it by running 
-// yarn danger pr https://github.com/microsoft/TypeScript-Website/pull/115  
+// You can test it by running
+// yarn danger pr https://github.com/microsoft/TypeScript-Website/pull/115
 
 import { danger, message, markdown } from 'danger'
-import {basename} from "path"
+import { basename } from 'path'
 import spellcheck from 'danger-plugin-spellcheck'
 import lighthouse from 'danger-plugin-lighthouse'
 
@@ -16,10 +16,12 @@ spellcheck({
 
 // Print out the PR url
 const deployURL = `https://typescript-v2-${danger.github.pr.number}.ortam.now.sh`
-message(`Deployed to [a PR branch](${deployURL}) - [tsconfig](${deployURL}/tsconfig) [old handbook](${deployURL}/docs/handbook/integrating-with-build-tools.html)`)
+message(
+  `Deployed to [a PR branch](${deployURL}) - [tsconfig](${deployURL}/play) [tsconfig](${deployURL}/en/tsconfig) [old handbook](${deployURL}/docs/handbook/integrating-with-build-tools.html)`
+)
 
 // Look for new snapshots and show in a HTML table
-const snapshots = danger.git.fileMatch("packages/typescriptlang-org/_tests/backstop_data/bitmaps_reference/*.png")
+const snapshots = danger.git.fileMatch('packages/typescriptlang-org/_tests/backstop_data/bitmaps_reference/*.png')
 if (snapshots.modified) {
   const oldSha = danger.github.pr.base.sha
   const newSha = danger.github.pr.head.sha
@@ -37,7 +39,7 @@ Before             |  After
 `
   })
 
-  markdown(`## Snapshots updated\n\n ${tables.join("\n\n")}`)
+  markdown(`## Snapshots updated\n\n ${tables.join('\n\n')}`)
 }
 
 lighthouse()
