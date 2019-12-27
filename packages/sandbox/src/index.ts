@@ -1,11 +1,10 @@
-import { monacoTSVersions } from './monacoTSVersions'
 import { createCompilerHost } from './createCompilerHost'
 import { detectNewImportsToAcquireTypeFor } from './typeAcquisition'
 import { sandboxTheme } from './theme'
-
+import { TypeScriptWorker } from './tsWorker'
+TypeScriptWorker
 type CompilerOptions = import('monaco-editor').languages.typescript.CompilerOptions
 type Monaco = typeof import('monaco-editor')
-type TypeScriptWorker = import('monaco-editor/dev/vs/language/typescript/tsWorker').TypeScriptWorker
 /**
  * These are settings for the playground which are the equivalent to props in React
  * any changes to it should require a new setup of the playground
@@ -164,9 +163,6 @@ export const createTypeScriptSandbox = (
   /** Gets the results of compiling your editor's code */
   const getEmitResult = async () => {
     const model = editor.getModel()!
-    if (config.useJavaScript) {
-      return model.getValue()
-    }
 
     const client = await getWorkerProcess()
     return await client.getEmitOutput(model.uri.toString())
@@ -174,14 +170,18 @@ export const createTypeScriptSandbox = (
 
   /** Gets the JS  of compiling your editor's code */
   const getRunnableJS = async () => {
+    if (config.useJavaScript) {
+      return getText()
+    }
+
     const result = await getEmitResult()
-    return result.outputFiles.find((o: any) => o.name.endsWith('.js')).text
+    return result.outputFiles.find((o: any) => o.name.endsWith('.js'))!.text
   }
 
   /** Gets the DTS for the JS/TS  of compiling your editor's code */
   const getDTSForCode = async () => {
     const result = await getEmitResult()
-    return result.outputFiles.find((o: any) => o.name.endsWith('.d.ts')).text
+    return result.outputFiles.find((o: any) => o.name.endsWith('.d.ts'))!.text
   }
 
   const getWorkerProcess = async (): Promise<TypeScriptWorker> => {
