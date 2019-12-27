@@ -27,7 +27,7 @@ const getLatestNPMPackage = async (name) => {
  * only official extensions
  */
 const getLatestVSExtensions = async () => {
-  var headers = {
+  const headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json;api-version=5.2-preview.1;excludeUrls=true',
       'Host': 'marketplace.visualstudio.com',
