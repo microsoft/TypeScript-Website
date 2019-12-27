@@ -1,10 +1,11 @@
 import { monacoTSVersions } from './monacoTSVersions'
+import { createCompilerHost } from './createCompilerHost'
 import { detectNewImportsToAcquireTypeFor } from './typeAcquisition'
 import { sandboxTheme } from './theme'
 
 type CompilerOptions = import('monaco-editor').languages.typescript.CompilerOptions
 type Monaco = typeof import('monaco-editor')
-
+type TypeScriptWorker = import('monaco-editor/dev/vs/language/typescript/tsWorker').TypeScriptWorker
 /**
  * These are settings for the playground which are the equivalent to props in React
  * any changes to it should require a new setup of the playground
@@ -100,13 +101,16 @@ export function defaultPlaygroundSettings() {
   return config
 }
 
-/** Creates a monaco file reference, basically a fancy path */
-function createFileUri(config: PlaygroundConfig, compilerOptions: CompilerOptions, monaco: Monaco) {
+function defaultFilePath(config: PlaygroundConfig, compilerOptions: CompilerOptions, monaco: Monaco) {
   const isJSX = compilerOptions.jsx !== monaco.languages.typescript.JsxEmit.None
   const fileExt = config.useJavaScript ? 'js' : 'ts'
   const ext = isJSX ? fileExt + 'x' : fileExt
-  const filepath = 'input.' + ext
-  return monaco.Uri.file(filepath)
+  return 'input.' + ext
+}
+
+/** Creates a monaco file reference, basically a fancy path */
+function createFileUri(config: PlaygroundConfig, compilerOptions: CompilerOptions, monaco: Monaco) {
+  return monaco.Uri.file(defaultFilePath(config, compilerOptions, monaco))
 }
 
 /** Creates a sandbox editor, and returns a set of useful functions and the editor */
@@ -157,6 +161,7 @@ export const createTypeScriptSandbox = (
     defaults.setCompilerOptions(opts)
   }
 
+  /** Gets the results of compiling your editor's code */
   const getEmitResult = async () => {
     const model = editor.getModel()!
     if (config.useJavaScript) {
@@ -167,25 +172,42 @@ export const createTypeScriptSandbox = (
     return await client.getEmitOutput(model.uri.toString())
   }
 
+  /** Gets the JS  of compiling your editor's code */
   const getRunnableJS = async () => {
     const result = await getEmitResult()
-    console.log(result)
     return result.outputFiles.find((o: any) => o.name.endsWith('.js')).text
   }
 
+  /** Gets the DTS for the JS/TS  of compiling your editor's code */
   const getDTSForCode = async () => {
     const result = await getEmitResult()
-    console.log(result)
     return result.outputFiles.find((o: any) => o.name.endsWith('.d.ts')).text
   }
 
-  const getWorkerProcess = async () => {
+  const getWorkerProcess = async (): Promise<TypeScriptWorker> => {
     const worker = await getWorker()
     return await worker(model.uri)
   }
 
   const getDomNode = () => editor.getDomNode()!
   const getModel = () => editor.getModel()!
+  const getText = () => getModel().getValue()
+
+  /**
+   * Warning: Runs on the main thread
+   */
+  const createTSProgram = () => {
+    const langServ = createCompilerHost(getText(), filePath.path)
+    return ts.createProgram([filePath.path], compilerDefaults, langServ)
+  }
+
+  /**
+   * Warning: Runs on the main thread
+   */
+  const getAST = () => {
+    const program = createTSProgram()
+    return program.getSourceFile(filePath.path)
+  }
 
   return {
     config,
@@ -196,6 +218,9 @@ export const createTypeScriptSandbox = (
     getDTSForCode,
     getDomNode,
     getModel,
+    getText,
+    getAST,
+    createTSProgram,
     updateCompilerSettings,
   }
 }
