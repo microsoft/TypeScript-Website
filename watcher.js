@@ -71,7 +71,7 @@ client.command(['watch-project', process.cwd()], function(error, resp) {
       root,
       'mysubscription',
       {
-        expression: ['anyof', ['match', '*.ts'], ['match', '*.md'], ['match', '*.tsx']],
+        expression: ['anyof', ['match', '*.ts'], ['match', '*.md'], ['match', '*.tsx'], ['match', '*.json']],
         relative_root: path_prefix,
         fields: ['name', 'exists', 'type'],
       },
