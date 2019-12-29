@@ -7,6 +7,13 @@
     flex-grow: 1;
   }
 
+  .playground-dragbar {
+    padding: 3px;
+    cursor: col-resize;
+    background-color: silver;
+    margin-left: 10px;
+  }
+
   .playground-sidebar {
     flex-basis: 320px;
     padding: 0 1em;

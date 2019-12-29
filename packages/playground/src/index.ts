@@ -1,6 +1,3 @@
-type CompilerOptions = import('monaco-editor').languages.typescript.CompilerOptions
-type MonacoEditor = import('monaco-editor').editor.ICodeEditor
-type Monaco = typeof import('monaco-editor')
 type Sandbox = ReturnType<typeof import('typescript-sandbox').createTypeScriptSandbox>
 
 import '../typescript-sandbox/index'
@@ -11,6 +8,7 @@ import {
   createTabBar,
   createPluginContainer,
   activatePlugin,
+  createDragBar,
 } from './createElements'
 import { showDTSPlugin } from './sidebar/showDTS'
 
@@ -25,7 +23,9 @@ export interface PlaygroundPlugin {
   /** After we show the tab */
   didMount?: (sandbox: Sandbox, container: HTMLDivElement) => void
   /** Model changes while this plugin is front-most  */
-  modelChanged: (sandbox: Sandbox, model: import('monaco-editor').editor.ITextModel) => void
+  modelChanged?: (sandbox: Sandbox, model: import('monaco-editor').editor.ITextModel) => void
+  /** Delayed model changes while this plugin is front-most, useful when you are working with the TS API because it won't run on every keypress */
+  modelChangedDebounce?: (sandbox: Sandbox, model: import('monaco-editor').editor.ITextModel) => void
   /** Before we remove the tab */
   willUnmount?: (sandbox: Sandbox, container: HTMLDivElement) => void
   /** Before we remove the tab */
@@ -36,6 +36,9 @@ const defaultPluginFactories: (() => PlaygroundPlugin)[] = [compiledJSPlugin, sh
 
 export const setupPlayground = (sandbox: Sandbox) => {
   const playgroundParent = sandbox.getDomNode().parentElement!.parentElement!
+  const dragBar = createDragBar()
+  playgroundParent.appendChild(dragBar)
+
   const sidebar = createSidebar()
   playgroundParent.appendChild(sidebar)
 
@@ -71,8 +74,21 @@ export const setupPlayground = (sandbox: Sandbox) => {
   const selectedTab = tabs[plugins.indexOf(selectedPlugin)]!
   selectedTab.onclick!({ target: selectedTab } as any)
 
+  let debouncingTimer = false
   sandbox.editor.onDidChangeModelContent(_event => {
     const plugin = currentPlugin()
-    plugin.modelChanged(sandbox, sandbox.getModel())
+    if (plugin.modelChanged) plugin.modelChanged(sandbox, sandbox.getModel())
+
+    // Only call this fuhnction once every 0.3s
+    if (plugin.modelChangedDebounce) {
+      if (debouncingTimer) return
+      debouncingTimer = true
+      setTimeout(() => {
+        debouncingTimer = false
+        if (plugin.modelChangedDebounce && plugin.displayName === currentPlugin().displayName) {
+          plugin.modelChangedDebounce(sandbox, sandbox.getModel())
+        }
+      }, 300)
+    }
   })
 }

@@ -1,5 +1,5 @@
 {
-  "include": ["src"],
+  "include": ["src", "src/lzstring.min.js"],
   "compilerOptions": {
     "outDir": "../typescriptlang-org/static/js/sandbox",
     "target": "ES2016",
@@ -9,6 +9,7 @@
     "sourceMap": true,
     "rootDir": "./src",
     "strict": true,
+    "allowJs": true,
     "moduleResolution": "node",
     "esModuleInterop": true
   }

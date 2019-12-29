@@ -2,6 +2,7 @@ import { createCompilerHost } from './createCompilerHost'
 import { detectNewImportsToAcquireTypeFor } from './typeAcquisition'
 import { sandboxTheme } from './theme'
 import { TypeScriptWorker } from './tsWorker'
+import { getDefaultSandboxCompilerOptions } from './compilerOptions'
 TypeScriptWorker
 type CompilerOptions = import('monaco-editor').languages.typescript.CompilerOptions
 type Monaco = typeof import('monaco-editor')
@@ -37,51 +38,6 @@ const sharedEditorOptions: import('monaco-editor').editor.IEditorOptions = {
   minimap: {
     enabled: false,
   },
-}
-
-/** Our defaults for the playground */
-export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monaco: Monaco) {
-  const settings: CompilerOptions = {
-    noImplicitAny: true,
-    strictNullChecks: !config.useJavaScript,
-    strictFunctionTypes: true,
-    strictPropertyInitialization: true,
-    strictBindCallApply: true,
-    noImplicitThis: true,
-    noImplicitReturns: true,
-
-    // 3.7 off, 3.8 on I think
-    useDefineForClassFields: false,
-
-    alwaysStrict: true,
-    allowUnreachableCode: false,
-    allowUnusedLabels: false,
-
-    downlevelIteration: false,
-    noEmitHelpers: false,
-    noLib: false,
-    noStrictGenericChecks: false,
-    noUnusedLocals: false,
-    noUnusedParameters: false,
-
-    esModuleInterop: true,
-    preserveConstEnums: false,
-    removeComments: false,
-    skipLibCheck: false,
-
-    checkJs: config.useJavaScript,
-    allowJs: config.useJavaScript,
-    declaration: true,
-
-    experimentalDecorators: false,
-    emitDecoratorMetadata: false,
-
-    target: monaco.languages.typescript.ScriptTarget.ES2017,
-    jsx: monaco.languages.typescript.JsxEmit.None,
-    module: monaco.languages.typescript.ModuleKind.ESNext,
-  }
-
-  return settings
 }
 
 /** The default settings which we apply a partial over */
@@ -206,7 +162,7 @@ export const createTypeScriptSandbox = (
    */
   const getAST = () => {
     const program = createTSProgram()
-    return program.getSourceFile(filePath.path)
+    return program.getSourceFile(filePath.path)!
   }
 
   return {
@@ -220,6 +176,7 @@ export const createTypeScriptSandbox = (
     getModel,
     getText,
     getAST,
+    ts,
     createTSProgram,
     updateCompilerSettings,
   }
