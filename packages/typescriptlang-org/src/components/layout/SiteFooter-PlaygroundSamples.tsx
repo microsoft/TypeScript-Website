@@ -8,25 +8,26 @@ interface Props {
 }
 
 interface SamplesJSON {
-  sections: { name: string, subtitle: string }[]
+  sections: { name: string, subtitle: string, id?: string }[]
   sortedSubSections: string[]
   examples: { path: string, title: string, name: string, id: string, sortIndex: number, hash: string, compilerSettings: any }[]
 }
 
 type Example = SamplesJSON["examples"][0]
 
-const sortedSectionsDictionary = (locale: SamplesJSON, sectionName: string) => {
+const sortedSectionsDictionary = (locale: SamplesJSON, section: SamplesJSON["sections"][0]) => {
   const sectionDict = {}
   locale.examples.forEach(e => {
     // Allow switching a "-" to "." so that titles can have
     // a dot for version numbers, this own works once.
-    if (e.path[0] !== sectionName.replace(".", "-")) return;
-
-    if (sectionDict[e.path[1]]) {
-      sectionDict[e.path[1]].push(e)
-    } else {
-      sectionDict[e.path[1]] = [e]
+    if (e.path[0] === section.name.replace(".", "-") || e.path[0] === section.id) {
+      if (sectionDict[e.path[1]]) {
+        sectionDict[e.path[1]].push(e)
+      } else {
+        sectionDict[e.path[1]] = [e]
+      }
     }
+
   })
   return sectionDict
 }
@@ -68,8 +69,6 @@ const buttonOnClick = (e) => {
 }
 
 
-
-
 export const PlaygroundSamples = (props: Props) => {
   const locale = english as SamplesJSON
   const defaultSection = "TypeScript"
@@ -77,7 +76,7 @@ export const PlaygroundSamples = (props: Props) => {
   // This ensures that the popover only becomes available when JS is enabled
 
   useEffect(() => {
-    // Only allow hoving on wider windows 
+    // Only allow hovering on wider windows 
     const allowHover = window.innerWidth > 900
     if (!allowHover) return
 
@@ -125,7 +124,7 @@ export const PlaygroundSamples = (props: Props) => {
         </ol>
 
         {locale.sections.map(section => {
-          const sectionDict = sortedSectionsDictionary(locale, section.name)
+          const sectionDict = sortedSectionsDictionary(locale, section)
           const subsectionNames = Object.keys(sectionDict).sort((lhs, rhs) => locale.sortedSubSections.indexOf(lhs) - locale.sortedSubSections.indexOf(rhs))
           const startOpen = section.name === defaultSection
           const style = startOpen ? {} : { display: "none" }

@@ -1,21 +1,21 @@
 // @ts-check
 
-const { existsSync } = require("fs");
-const { join, dirname, basename} = require("path");
-const { writeFileSync } = require("fs");
-const fs = require("fs");
-const path = require("path");
-const crypto = require("crypto");
+const { existsSync } = require('fs')
+const { join, dirname, basename } = require('path')
+const { writeFileSync } = require('fs')
+const fs = require('fs')
+const path = require('path')
+const crypto = require('crypto')
 
 /** Retrieve file paths from a given folder and its subfolders. */
 // https://gist.github.com/kethinov/6658166#gistcomment-2936675
 const getFilePaths = folderPath => {
-  const entryPaths = fs.readdirSync(folderPath).map(entry => path.join(folderPath, entry));
-  const filePaths = entryPaths.filter(entryPath => fs.statSync(entryPath).isFile());
-  const dirPaths = entryPaths.filter(entryPath => !filePaths.includes(entryPath));
-  const dirFiles = dirPaths.reduce((prev, curr) => prev.concat(getFilePaths(curr)), []);
-  return [...filePaths, ...dirFiles];
-};
+  const entryPaths = fs.readdirSync(folderPath).map(entry => path.join(folderPath, entry))
+  const filePaths = entryPaths.filter(entryPath => fs.statSync(entryPath).isFile())
+  const dirPaths = entryPaths.filter(entryPath => !filePaths.includes(entryPath))
+  const dirFiles = dirPaths.reduce((prev, curr) => prev.concat(getFilePaths(curr)), [])
+  return [...filePaths, ...dirFiles]
+}
 
 /**
  * @typedef {Object} Item - an item in the TOC
@@ -30,123 +30,133 @@ const getFilePaths = folderPath => {
 
 //  * @property {string} body - the text for the example
 
-const root = join(__dirname, "..", "en");
-const allJS = getFilePaths(join(root, "JavaScript"));
-const allTS = getFilePaths(join(root, "TypeScript"));
+const root = join(__dirname, '..', 'en')
+const allJS = getFilePaths(join(root, 'JavaScript'))
+const allTS = getFilePaths(join(root, 'TypeScript'))
 
-const all37Examples = getFilePaths(join(root, "3-7"));
+const all37Examples = getFilePaths(join(root, '3-7'))
 
 /** @type {string[]} */
-const all = [...allJS, ...allTS, ...all37Examples].filter(p => p.endsWith(".ts") || p.endsWith(".tsx") || p.endsWith(".js"));
+const all = [...allJS, ...allTS, ...all37Examples].filter(
+  p => p.endsWith('.ts') || p.endsWith('.tsx') || p.endsWith('.js')
+)
 
 const examples = all.map(m => {
-  let contents = fs.readFileSync(m, "utf8");
-  const relative = path.relative(root, m);
+  let contents = fs.readFileSync(m, 'utf8')
+  const relative = path.relative(root, m)
   const title = path
     .basename(m)
-    .split(".")
+    .split('.')
     .slice(0, -1)
-    .join(".");
-  let compiler = {};
-  let index = 1;
+    .join('.')
+  let compiler = {}
+  let index = 1
 
-  if (contents.startsWith("//// {")) {
-    const preJSON = contents.split("//// {")[1].split("}\n")[0];
+  if (contents.startsWith('//// {')) {
+    const preJSON = contents.split('//// {')[1].split('}\n')[0]
     contents = contents
-      .split("\n")
+      .split('\n')
       .slice(1)
-      .join("\n");
-    const code = "({" + preJSON + "})";
+      .join('\n')
+    const code = '({' + preJSON + '})'
 
     try {
-      const obj = eval(code);
+      const obj = eval(code)
       if (obj.order) {
-        index = obj.order;
-        delete obj.order;
+        index = obj.order
+        delete obj.order
       }
-      compiler = obj.compiler;
+      compiler = obj.compiler
     } catch (err) {
-      console.error(">>>> " + m);
-      console.error("Issue with: ", code);
-      throw err;
+      console.error('>>>> ' + m)
+      console.error('Issue with: ', code)
+      throw err
     }
   }
 
   /** @type Item */
   const item = {
-    path: dirname(relative).split("/"),
+    path: dirname(relative).split('/'),
     title: title,
     name: basename(relative),
     id: title
       .toLowerCase()
-      .replace(/[^\x00-\x7F]/g, "-")
-      .replace(/ /g, "-")
-      .replace(/\//g, "-")
-      .replace(/\+/g, "-"),
+      .replace(/[^\x00-\x7F]/g, '-')
+      .replace(/ /g, '-')
+      .replace(/\//g, '-')
+      .replace(/\+/g, '-'),
 
     // body: contents,
     sortIndex: index,
     hash: crypto
-      .createHash("md5")
+      .createHash('md5')
       .update(contents)
-      .digest("hex"),
+      .digest('hex'),
 
-    compilerSettings: compiler
-  };
+    compilerSettings: compiler,
+  }
 
-  return item;
-});
+  return item
+})
 
 const toc = {
-  sections: [{
-    name: "JavaScript",
-    subtitle: "See how TypeScript improves day to day working with JavaScript with minimal additional syntax."
-  },
-  {
-    name: "TypeScript",
-    subtitle: "Explore how TypeScript extends JavaScript to add more safety and tooling."
-  },
-  {
-    name: "New in 3.7",
-    subtitle: "See the <a href='http://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html'>Release notes</a> for more information on our late-2019 release.",
-    whatisnew: true
-  }],
+  sections: [
+    {
+      name: 'JavaScript',
+      subtitle: 'See how TypeScript improves day to day working with JavaScript with minimal additional syntax.',
+    },
+    {
+      name: 'TypeScript',
+      subtitle: 'Explore how TypeScript extends JavaScript to add more safety and tooling.',
+    },
+    {
+      name: 'New in 3.7',
+      id: '3-7',
+      subtitle:
+        "See the <a href='http://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html'>Release notes</a> for more information on our late-2019 release.",
+      whatisnew: true,
+    },
+  ],
   sortedSubSections: [
     // JS
-    "JavaScript Essentials",
-    "Functions with JavaScript",
-    "Working With Classes",
-    "Modern JavaScript",
-    "External APIs",
-    "Helping with JavaScript",
+    'JavaScript Essentials',
+    'Functions with JavaScript',
+    'Working With Classes',
+    'Modern JavaScript',
+    'External APIs',
+    'Helping with JavaScript',
     // TS
-    "Primitives",
-    "Type Primitives",
-    "Meta-Types",
-    "Language",
-    "Language Extensions",
+    'Primitives',
+    'Type Primitives',
+    'Meta-Types',
+    'Language',
+    'Language Extensions',
     // Examples
-    "Syntax and Messaging",
-    "Types and Code Flow",
-    "Fixits"
+    'Syntax and Messaging',
+    'Types and Code Flow',
+    'Fixits',
   ],
-  examples
+  examples,
 }
 
 validateTOC(toc)
 
-const prodTableOfContentsFile = join(__dirname, "..", "generated", "en.json");
-writeFileSync(prodTableOfContentsFile, JSON.stringify(toc));
+const prodTableOfContentsFile = join(__dirname, '..', 'generated', 'en.json')
+writeFileSync(prodTableOfContentsFile, JSON.stringify(toc))
 
 function validateTOC(toc) {
   // Ensure all subfolders are in the sorted section
   const allSubFolders = []
   all.forEach(path => {
-    const subPath = dirname(path).split("/").pop()
-    if (!allSubFolders.includes(subPath)){ allSubFolders.push(subPath) }
-  });
+    const subPath = dirname(path)
+      .split('/')
+      .pop()
+    if (!allSubFolders.includes(subPath)) {
+      allSubFolders.push(subPath)
+    }
+  })
   allSubFolders.forEach(s => {
-    if(!toc.sortedSubSections.includes(s)) {
+    if (!toc.sortedSubSections.includes(s)) {
       throw new Error("Expected '" + s + "' in " + toc.sortedSubSections)
     }
   })

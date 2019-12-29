@@ -3,9 +3,11 @@ import { detectNewImportsToAcquireTypeFor } from './typeAcquisition'
 import { sandboxTheme } from './theme'
 import { TypeScriptWorker } from './tsWorker'
 import { getDefaultSandboxCompilerOptions } from './compilerOptions'
-TypeScriptWorker
+import lzstring from './vendor/lzstring.min'
+
 type CompilerOptions = import('monaco-editor').languages.typescript.CompilerOptions
 type Monaco = typeof import('monaco-editor')
+
 /**
  * These are settings for the playground which are the equivalent to props in React
  * any changes to it should require a new setup of the playground
@@ -111,9 +113,16 @@ export const createTypeScriptSandbox = (
     })
   }
 
+  let compilerOptions = compilerDefaults
   defaults.setCompilerOptions(compilerDefaults)
+
   const updateCompilerSettings = (opts: CompilerOptions) => {
+    compilerOptions = { ...opts, ...compilerOptions }
     defaults.setCompilerOptions(opts)
+  }
+
+  const getCompilerOptions = () => {
+    return compilerOptions
   }
 
   /** Gets the results of compiling your editor's code */
@@ -179,5 +188,7 @@ export const createTypeScriptSandbox = (
     ts,
     createTSProgram,
     updateCompilerSettings,
+    getCompilerOptions,
+    lzstring,
   }
 }

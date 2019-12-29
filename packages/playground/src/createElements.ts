@@ -34,7 +34,7 @@ export const createDragBar = () => {
   }
 
   sidebar.addEventListener('mousedown', e => {
-    left = document.getElementById('monaco-editor-embed')!
+    left = document.getElementById('editor-container')!
     right = sidebar.parentElement?.getElementsByClassName('playground-sidebar').item(0)! as any
     // Handle dragging all over the screen
     document.addEventListener('mousemove', drag)
@@ -67,7 +67,7 @@ export const createSidebar = () => {
       sidebar.style.flexBasis = `${width}px`
       sidebar.style.maxWidth = `${width}px`
 
-      const left = document.getElementById('monaco-editor-embed')!
+      const left = document.getElementById('editor-container')!
       left.style.width = `calc(100% - ${width}px)`
     }
   }

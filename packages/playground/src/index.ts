@@ -1,6 +1,5 @@
 type Sandbox = ReturnType<typeof import('typescript-sandbox').createTypeScriptSandbox>
 
-import '../typescript-sandbox/index'
 import { compiledJSPlugin } from './sidebar/showJS'
 import {
   createSidebar,
@@ -35,7 +34,8 @@ export interface PlaygroundPlugin {
 const defaultPluginFactories: (() => PlaygroundPlugin)[] = [compiledJSPlugin, showDTSPlugin]
 
 export const setupPlayground = (sandbox: Sandbox) => {
-  const playgroundParent = sandbox.getDomNode().parentElement!.parentElement!
+  const playgroundParent = sandbox.getDomNode().parentElement!.parentElement!.parentElement!
+  console.log(playgroundParent)
   const dragBar = createDragBar()
   playgroundParent.appendChild(dragBar)
 

@@ -1,16 +1,71 @@
+.navbar-sub {
+  clear: both;
+  display: flex;
+  justify-content: space-between;
+  height: 3rem;
+
+  > ul {
+    display: flex;
+    padding: 0;
+  }
+
+  li.name {
+    width: 200px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    span {
+      padding-left: 1rem;
+    }
+  }
+
+  li {
+    list-style: none;
+    display: flex;
+
+    font-weight: 600;
+    font-size: 1rem;
+
+    a {
+      display: block;
+      padding: 0 0.75rem 0.5em 0.7em;
+      text-decoration: none;
+      color: black;
+    }
+  }
+
+  li.dropdown ul {
+    display: none;
+  }
+}
+
 #playground-container {
   display: flex;
   height: 800px;
 
-  #monaco-editor-embed {
+  #editor-container {
     width: calc(100% - 360px);
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+
+    #monaco-editor-embed {
+      height: 800px;
+    }
+
+    #editor-toolbar {
+      height: 40px;
+      border-bottom: 1px #c4c4c4 solid;
+      margin-right: -12px;
+      margin-left: -2rem;
+      margin-bottom: 10px;
+    }
   }
 
   .playground-dragbar {
     padding: 3px;
     cursor: col-resize;
-    background-color: silver;
+    background-color: white;
+    border-left: 1px #c4c4c4 solid;
     margin-left: 10px;
   }
 
