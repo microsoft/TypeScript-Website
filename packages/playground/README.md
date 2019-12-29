@@ -1,20 +1,19 @@
-# TypeScript Sandbox
+# TypeScript Playground
 
-The TypeScript Sandbox is the editor part of the TypeScript Playground. It's effectively an opinionated fork of 
-monaco-typescript with extra extension points so that projects like the TypeScript Playground can exist.
+This is the JS tooling which powers the https://www.typescriptlang.org/play/
 
-This project is useful to you if:
+It is more or less vanilla DOM-oriented JavaScript with as few dependencies as possible. Originally based on the
+work by [Artem Tyurin](https://github.com/agentcooper/typescript-play) but now it's pretty far from that fork.
 
-- You want to improve the TypeScript Playground
-- You want to present users of your library with a JS editor which has a typed API (in JS or TS)
+## Architecture
 
-## Goals
-q
-- Support multiple versions of TypeScript (via supporting older builds of monaco-typescript)
-- Easy to use when trying to replace code inline on a website
-- Support extension points required to build Playground
-- High level APIs for things like Automatic Type Acquisition or DTS additions
+The playground library sits above the [TypeScript sandbox](../Sandbox), and provides features like:
 
-## Builds
+- The code samples support
+- The navigation bars, and compiler flags UI
+- The sidebar plugin infrastructure for showing JS/DTS/etc
+- The export to Code Sandbox/TS AST Viewer/etc features
 
-CJS, ESModules, and UMD module formats are supported.
+When deciding where to add a feature to the TypeScript playground, consider if it would be useful to anyone showing
+TypeScript in a REPL. If yes, add it to the playground and expose a function for this library to use. For example
+Automatic Type Acquisition is a feature which lives in the sandbox and not the playground.
