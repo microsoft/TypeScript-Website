@@ -7,13 +7,16 @@
   > ul {
     display: flex;
     padding: 0;
+    margin: 0;
   }
 
   li.name {
     width: 200px;
     font-size: 1.2rem;
     font-weight: 600;
+
     span {
+      padding-top: 0.6rem;
       padding-left: 1rem;
     }
   }
@@ -24,18 +27,88 @@
 
     font-weight: 600;
     font-size: 1rem;
+    position: relative;
+
+    &.divider {
+      height: 1px;
+      margin: 9px 0;
+      overflow: hidden;
+      background-color: #e5e5e5;
+    }
 
     a {
       display: block;
-      padding: 0 0.75rem 0.5em 0.7em;
+      padding: 0.75rem 0.75rem 0.5em 0.7em;
       text-decoration: none;
       color: black;
     }
-  }
 
-  li.dropdown ul {
-    display: none;
+    &.dropdown.open ul {
+      display: block;
+    }
+
+    &.dropdown ul {
+      display: none;
+
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1000;
+      float: left;
+      min-width: 200px;
+      padding: 5px 0;
+      margin: 2px 0 0;
+      font-size: 14px;
+      text-align: left;
+      list-style: none;
+      background-color: #fff;
+      -webkit-background-clip: padding-box;
+      background-clip: padding-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+      overflow-y: auto;
+      max-height: calc(100vh - 150px);
+      z-index: 99;
+
+      a {
+        display: block;
+      }
+
+      li:hover {
+        color: #262626;
+        text-decoration: none;
+        background-color: #f5f5f5;
+      }
+    }
   }
+}
+
+// The subnav which starts with "TypeScript"
+main > nav > ul > li:hover {
+  background-color: green;
+}
+
+// The toolbar for the editor
+main #editor-toolbar li:hover {
+  background-color: indianred;
+}
+
+.caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 4px dashed;
+  border-top: 4px solid;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+}
+
+#editor-toolbar ul li a:first-child {
+  padding-left: 1rem;
 }
 
 #playground-container {
@@ -49,7 +122,7 @@
     flex-direction: column;
 
     #monaco-editor-embed {
-      height: 800px;
+      height: 700px;
     }
 
     #editor-toolbar {

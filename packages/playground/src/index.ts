@@ -91,4 +91,17 @@ export const setupPlayground = (sandbox: Sandbox) => {
       }, 300)
     }
   })
+
+  // Setup working with the existing UI, once it's loaded
+  const versionsLi = document.getElementById('versions')!
+  // console.log(versionsLi)
+  // const versionUL = versionsLi.getElementsByTagName('ul')[0]
+
+  document.querySelectorAll('.navbar-sub li.dropdown a').forEach(link => {
+    const li = link as HTMLLIElement
+    li.onclick = _e => {
+      document.querySelectorAll('.navbar-sub li.open').forEach(i => i.classList.remove('open'))
+      li.parentElement!.classList.toggle('open')
+    }
+  })
 }

@@ -5,7 +5,7 @@
  */
 export const monacoTSVersions = {
   Nightly: { monaco: 'next', module: '@typescript-deploys/monaco-editor' },
-  '3.7.3': { monaco: '3.7.2', module: '@typescript-deploys/monaco-editor' },
+  '3.7.3': { monaco: '3.7.3', module: '@typescript-deploys/monaco-editor' },
   // Don't break old links, but re-direct them to prod, but don't show this in the menus
   '3.7-Beta': { monaco: '3.7.2', module: '@typescript-deploys/monaco-editor', hide: true },
   '3.6.3': { monaco: '0.18.1', module: 'monaco-editor' },

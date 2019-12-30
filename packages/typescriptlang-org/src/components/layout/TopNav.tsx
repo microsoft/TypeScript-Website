@@ -7,6 +7,7 @@ import { setupStickyNavigation } from "./stickyNavigation";
 
 export type Props = {
   centeredLayout?: boolean
+  disableBetaNotification?: boolean
 }
 
 export const SiteNav = (props: Props) => {
@@ -126,7 +127,9 @@ export const SiteNav = (props: Props) => {
           </nav>
         </div>
       </div>
-      <div className="hide-small" id="beta-notification-menu">Note: this page is a beta page, don't rely on the URL and <a href='https://github.com/microsoft/TypeScript-Website/issues'>file issues on microsoft/TypeScript-Website</a>.</div>
+      {props.disableBetaNotification ? null :
+        <div className="hide-small" id="beta-notification-menu">Note: this page is a beta page, don't rely on the URL and <a href='https://github.com/microsoft/TypeScript-Website/issues'>file issues on microsoft/TypeScript-Website</a>.</div>
+      }
       { /** Used for skip past navigation button */}
       <div id="site-content" />
     </header >

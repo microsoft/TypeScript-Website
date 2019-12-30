@@ -47,6 +47,7 @@ markdown("OK")`
 
         playground.setupPlayground(sandboxEnv)
         sandboxEnv.editor.focus()
+        document.getElementById("playground-container")!.style.display = "flex"
       });
     }
 
@@ -55,7 +56,7 @@ markdown("OK")`
 
   return (
     <>
-      <Layout>
+      <Layout disableBetaNotification>
         {/** This is the top nav, which is outside of the editor  */}
         <nav className="navbar-sub">
           <ul className="nav">
@@ -70,7 +71,7 @@ markdown("OK")`
 
             <li className="dropdown">
               <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Config <span className="caret"></span></a>
-              <ul className="dropdown-menu" >
+              <ul className="dropdown-menu">
                 <div className="info" id="config"></div>
               </ul>
             </li>
@@ -101,15 +102,20 @@ markdown("OK")`
           </ul>
         </nav>
 
-        <div className="ms-depth-4" style={{ backgroundColor: "white", marginLeft: "-60px", marginRight: "-60px", margin: "1rem auto", padding: "2rem", paddingTop: "0" }}>
+        <div className="ms-depth-4" style={{ backgroundColor: "white", margin: "1rem auto", padding: "2rem", paddingTop: "0", marginTop: "0" }}>
           <h1 id="loader" style={{ textAlign: "center" }}>Loading</h1>
-          <div id="playground-container">
+          <div id="playground-container" style={{ display: "none" }}>
             <div id="editor-container">
-              <div id="editor-toolbar" className="navbar-sub">
-                <ul >
-                  <li className="dropdown"><a>Version...</a></li>
-                  <li><a>Run</a></li>
-                  <li><a>Format</a></li>
+              <div id="editor-toolbar" className="navbar-sub" >
+                <ul>
+                  <li id="versions" className="dropdown">
+                    <a href="#">Version... <span className="caret" /></a>
+                    <ul className="dropdown-menu">
+                      <li><a href="#" >...</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#">Run</a></li>
+                  <li><a href="#">Format</a></li>
                   <li className="dropdown">
                     <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Export <span className="caret"></span></a>
                     <ul className="dropdown-menu">

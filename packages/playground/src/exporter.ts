@@ -81,7 +81,7 @@ export const exporter = (sandbox: Sandbox, monaco: typeof import('monaco-editor'
 
   const typescriptVersion = sandbox.ts.version
   // prettier-ignore
-  const stringifiedCompilerOptions = JSON.stringify({ compilerOptions: getValidCompilerOptions(sandbox.getCompileOptions()) }, null, '  ')
+  const stringifiedCompilerOptions = JSON.stringify({ compilerOptions: getValidCompilerOptions(sandbox.getCompilerOptions()) }, null, '  ')
 
   // TODO: pull deps
   function openProjectInStackBlitz() {
