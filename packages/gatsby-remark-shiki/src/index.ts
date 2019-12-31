@@ -3,6 +3,8 @@ import { Highlighter } from 'shiki/dist/highlighter'
 import { commonLangIds, commonLangAliases, otherLangIds, TLang } from 'shiki-languages'
 
 import visit from 'unist-util-visit'
+import remark from 'remark'
+import { Node } from 'unist'
 
 import { renderToHTML } from './renderer'
 const languages = [...commonLangIds, ...commonLangAliases, ...otherLangIds]

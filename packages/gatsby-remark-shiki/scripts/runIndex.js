@@ -1,13 +1,15 @@
-const remark = require('remark')
-const gatsbyRemarkShiki = require('../../gatsby-remark-shiki/dist')
-const gatsbyTwoSlash = require('gatsby-remark-twoslasher-code-blocks')
-const { readFileSync } = require('fs')
+// const remark = require('remark')
 
-const markdownAST = remark().parse(readFileSync(__dirname + '/index.md', 'utf8'))
+// const gatsbyTwoSlash = require('gatsby-remark-twoslasher-code-blocks')
+// const { readFileSync } = require('fs')
+// var html = require('remark-html')
 
-// Pre-run twoslash
-gatsbyTwoSlash({ markdownAST })
+// const go = async () => {
+//   const markdownAST = remark().parse(readFileSync(__dirname + '/index.md', 'utf8'))
+//   gatsbyTwoSlash({ markdownAST })
+//   await gatsbyRemarkShiki({ markdownAST })
+//   console.log(html({ markdownAST }))
+// }
 
-gatsbyRemarkShiki({ markdownAST }).then(() => {
-  console.log(markdownAST)
-})
+// // Pre-run twoslash
+// go()

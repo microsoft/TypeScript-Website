@@ -22,6 +22,7 @@
     "tsdx": "^0.12.0",
     "tslib": "^1.10.0",
     "typescript": "^3.7.4",
-    "unified": "^8.4.2"
+    "unified": "^8.4.2",
+    "to-vfile": "^8.4.2"
   }
 }
