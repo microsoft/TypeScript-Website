@@ -7,15 +7,21 @@ import { format } from 'prettier'
 import gatsbyRemarkShiki from '../src/index'
 const remark = require('remark')
 const gatsbyTwoSlash = require('gatsby-remark-twoslasher-code-blocks')
-
+import { Node } from 'unist'
 expect.extend({ toMatchFile })
 
 const getHTML = async (code: string, settings?: any) => {
-  const markdownAST = remark().parse(code)
+  const markdownAST: Node = remark().parse(code)
   gatsbyTwoSlash({ markdownAST })
   await gatsbyRemarkShiki({ markdownAST }, settings)
+
+  // @ts-ignore
+  const twoslashes = markdownAST.children.filter(c => c.meta && c.meta.includes('twoslash')).map(c => c.twoslash)
   const hAST = toHAST(markdownAST, { allowDangerousHTML: true })
-  return hastToHTML(hAST, { allowDangerousHTML: true })
+  return {
+    html: hastToHTML(hAST, { allowDangerousHTML: true }),
+    twoslashes,
+  }
 }
 
 // To add a test, create a file in the fixtures folder and it will will run through
@@ -31,14 +37,22 @@ describe('with fixtures', () => {
     if (lstatSync(fixture).isDirectory()) {
       return
     }
-    // if(!fixtureName.includes("compiler_fl")) return
+
     it('Fixture: ' + fixtureName, async () => {
-      const resultName = parse(fixtureName).name + '.html'
-      const result = join(resultsFolder, resultName)
+      const resultHTMLName = parse(fixtureName).name + '.html'
+      const resultTwoSlashName = parse(fixtureName).name + '.json'
+
+      const resultHTMLPath = join(resultsFolder, resultHTMLName)
+      const resultTwoSlashPath = join(resultsFolder, resultTwoSlashName)
+
       const code = readFileSync(fixture, 'utf8')
-      const html = await getHTML(code, {})
-      const htmlString = format(html, { parser: 'html' })
-      expect(htmlString).toMatchFile(result)
+      const results = await getHTML(code, {})
+
+      const htmlString = format(results.html, { parser: 'html' })
+      expect(htmlString).toMatchFile(resultHTMLPath)
+
+      const twoString = format(JSON.stringify(results.twoslashes), { parser: 'json' })
+      expect(twoString).toMatchFile(resultTwoSlashPath)
     })
   })
 })
