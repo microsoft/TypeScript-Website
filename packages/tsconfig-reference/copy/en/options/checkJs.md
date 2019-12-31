@@ -1,5 +1,6 @@
 ---
 display: "Check JS"
+oneline: "Run the type checker on .js files in your project"
 ---
 
 Works in tandem with `allowJs`. When `checkJs` is enabled then errors are reported in JavaScript files. This is

@@ -1,5 +1,6 @@
 ---
 display: "Out File"
+oneline: "Output a single file of all JS files concatenated"
 ---
 
 If specified, all _global_ (non-module) files will be concatenated into the single output file specified.

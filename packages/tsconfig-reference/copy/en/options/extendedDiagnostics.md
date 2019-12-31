@@ -1,5 +1,6 @@
 ---
 display: "Extended Diagnostics"
+oneline: "Include a lot of diagnostic information after a compile"
 ---
 
 You can use this flag to discover where TypeScript is spending it's time when compiling.

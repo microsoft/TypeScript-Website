@@ -1,5 +1,6 @@
 ---
 display: "Map Root"
+oneline: "Set an external root for sourcemaps"
 ---
 
 Specify the location where debugger should locate map files instead of generated locations.

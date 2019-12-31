@@ -1,5 +1,6 @@
 ---
 display: "Resolve JSON Module"
+oneline: "Allow importing .json files"
 ---
 
 Allows importing modules with a '.json' extension, which is a common practice in node projects. This includes

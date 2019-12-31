@@ -1,5 +1,6 @@
 ---
 display: "Files"
+oneline: "Include a set list of files, does not support globs"
 ---
 
 Specifies an allowlist of files to include in the program. An error occurs if any of the files can't be found.

@@ -1,5 +1,6 @@
 ---
 display: "Force Consistent Casing In File Names"
+oneline: "Ensure that casing is correct in imports"
 ---
 
 TypeScript follows the case sensitivity rules of the file system it's running on.

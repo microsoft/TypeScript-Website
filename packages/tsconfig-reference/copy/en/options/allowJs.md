@@ -1,5 +1,6 @@
 ---
 display: "Allow JS"
+oneline: "Let TS include .JS files in imports"
 ---
 
 Allow JavaScript files to be imported inside your project, instead of just `.ts` and `.tsx` files. For example, this JS file:

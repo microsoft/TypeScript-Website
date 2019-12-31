@@ -1,5 +1,6 @@
 ---
 display: "No Emit On Error"
+oneline: "Only emit files on a successful compile"
 ---
 
 Do not emit compiler output files like JavaScript source code, source-maps or declarations if any errors were reported.

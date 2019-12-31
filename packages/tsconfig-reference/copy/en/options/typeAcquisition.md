@@ -1,5 +1,6 @@
 ---
 display: "Type Acquisition"
+oneline: "Sets of options for Automatic Type Acquisition in JavaScript"
 ---
 
 When you have a JavaScript project in your editor, TypeScript will provide types for your `node_modules` automatically using the DefinitelyTyped set of `@types` definitions.

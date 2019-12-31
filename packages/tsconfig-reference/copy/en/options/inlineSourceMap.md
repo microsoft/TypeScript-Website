@@ -1,5 +1,6 @@
 ---
 display: "Inline Source Map"
+oneline: "Include sourcemap files inside the emitted JavaScript"
 ---
 
 When set, instead of writing out a `.js.map` file to provide source maps, TypeScript will embed the source map content in the `.js` files.

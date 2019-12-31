@@ -1,5 +1,6 @@
 ---
 display: "Root Dirs"
+oneline: "Set multiple root directories"
 ---
 
 Using `rootDirs`, you can inform the compiler that there are many "virtual" directories acting as a single root.

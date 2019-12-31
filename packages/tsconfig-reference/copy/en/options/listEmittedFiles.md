@@ -1,5 +1,6 @@
 ---
 display: "List Emitted Files"
+oneline: "Print the names of emitted files after a compile"
 ---
 
 Print names of generated files part of the compilation to the terminal.

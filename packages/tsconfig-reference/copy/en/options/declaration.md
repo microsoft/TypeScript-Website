@@ -1,5 +1,6 @@
 ---
 display: "Declaration"
+oneline: "Emit d.ts files for referenced files in the project"
 ---
 
 Generate `d.ts` files for every TypeScript or JavaScript file inside your project.

@@ -1,5 +1,6 @@
 ---
 display: "Isolated Modules"
+oneline: "Ensure that each file can be safely transpiled without relying on other imports"
 ---
 
 While you can use TypeScript to produce JavaScript code from TypeScript code, it's also common to use other transpilers such as [Babel](https://babeljs.io) to do this.

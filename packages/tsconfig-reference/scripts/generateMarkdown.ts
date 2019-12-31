@@ -101,10 +101,10 @@ languages.forEach(lang => {
       const optionFile = readMarkdownFile(optionPath);
 
       // Must have a display title in the front-matter
-      assert.ok(
-        optionFile.data.display,
-        "Could not get a display for option: " + option.name + " in " + lang
-      );
+      // prettier-ignore
+      assert.ok(optionFile.data.display, "Could not find a 'display' for option: " + option.name + " in " + lang);
+      // prettier-ignore
+      assert.ok(optionFile.data.oneline, "Could not find a 'oneline' for option: " + option.name + " in " + lang);
 
       markdownChunks.push("<section class='compiler-option'>");
 

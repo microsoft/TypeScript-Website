@@ -1,5 +1,6 @@
 ---
 display: "Out"
+oneline: "Do not use this"
 ---
 
 Use [outFile](#outfile) instead.

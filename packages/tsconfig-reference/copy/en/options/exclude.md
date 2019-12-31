@@ -1,5 +1,6 @@
 ---
 display: "Exclude"
+oneline: "Files or patterns to be skipped from the include option"
 ---
 
 Specifies an array of filenames or patterns that should be skipped when resolving `include`.

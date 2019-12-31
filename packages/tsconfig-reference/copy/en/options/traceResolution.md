@@ -1,5 +1,6 @@
 ---
 display: "Trace Resolution"
+oneline: "Log out paths when resolving all modules"
 ---
 
 When you are trying to debug why a module isn't being included.

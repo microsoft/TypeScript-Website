@@ -1,5 +1,6 @@
 ---
 display: "Preserve Const Enums"
+oneline: "Do not erase `const enum` declarations in generated code"
 ---
 
 Do not erase `const enum` declarations in generated code. `const enum`s provide a way to reduce the overall memory footprint

@@ -1,5 +1,6 @@
 ---
 display: "Types"
+oneline: "Used to create an allowlist of types to be included in the compile"
 ---
 
 By default all _visible_ "`@types`" packages are included in your compilation.

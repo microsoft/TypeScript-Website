@@ -1,8 +1,9 @@
 ---
 display: "No Fallthrough Cases In Switch"
+oneline: "Report errors for fallthrough cases in switch statements."
 ---
 
-Report errors for fallthrough cases in switch statement.
+Report errors for fallthrough cases in switch statements.
 Ensures that any non-empty case inside a switch statement includes either `break` or `return`.
 This means you won't accidentally ship a case fallthrough bug.
 
