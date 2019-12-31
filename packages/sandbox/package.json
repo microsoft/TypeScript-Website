@@ -8,7 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "bootstrap": "node script/downloadReleases.js",
+    "bootstrap": "node script/downloadReleases.js; yarn build",
     "build": "tsc",
     "test": "jest"
   },
