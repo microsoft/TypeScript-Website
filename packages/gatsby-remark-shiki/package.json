@@ -13,8 +13,7 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test",
-    "lint": "tsdx lint",
-    "fixture": "node scripts/runIndex.js"
+    "lint": "tsdx lint"
   },
   "devDependencies": {
     "@types/jest": "^24.0.24",
@@ -22,7 +21,6 @@
     "tsdx": "^0.12.0",
     "tslib": "^1.10.0",
     "typescript": "^3.7.4",
-    "unified": "^8.4.2",
-    "to-vfile": "^8.4.2"
+    "unified": "^8.4.2"
   }
 }
