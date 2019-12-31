@@ -5,6 +5,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "node scripts/generateTOC.js",
-    "test": "echo 'NOOP'"
+    "test": "echo 'NOOP'",
+    "bootstrap": "echo 'NOOP'"
   }
 }

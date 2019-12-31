@@ -12,6 +12,7 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
+    "bootstrap": "echo 'NOOP'",
     "test": "tsdx test",
     "lint": "tsdx lint",
     "fixture": "node scripts/runIndex.js"

@@ -12,6 +12,7 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build; yarn readme",
+    "bootstrap": "yarn build",
     "readme": "yarn md-magic README.md --config ./scripts/inline-results.js",
     "test": "tsdx test",
     "lint": "tsdx lint"

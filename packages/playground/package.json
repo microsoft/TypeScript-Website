@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "bootstrap": "echo 'NOOP'"
   },
   "devDependencies": {
     "typescript-playground": "*",

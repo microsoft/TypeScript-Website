@@ -8,6 +8,7 @@
     "build": "gatsby build",
     "develop": "gatsby develop",
     "clean": "gatsby clean",
+    "bootstrap": "echo 'NOOP'",
     "update-snapshots": "backstop test; backstop approve",
     "update-static-assets": "node scripts/downloadPlaygroundAssets.js && node scripts/downloadSearchAssets.js",
     "start": "npm run develop",

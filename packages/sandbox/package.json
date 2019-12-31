@@ -8,6 +8,7 @@
     "dist"
   ],
   "scripts": {
+    "bootstrap": "node script/downloadReleases.js",
     "build": "tsc",
     "test": "jest"
   },
