@@ -10,19 +10,24 @@ const Index = (props: any) => {
     getLoaderScript.src = withPrefix("/js/vs.loader.js");
     getLoaderScript.async = true;
     getLoaderScript.onload = () => {
+      const params = new URLSearchParams(location.search)
+      const tsVersion = params.get("ts") || "3.7.3"
+
       // @ts-ignore
       const re = global.require
 
       re.config({
         paths: {
-          vs: "https://tswebinfra.blob.core.windows.net/cdn/3.7.3/monaco/min/vs",
+          vs: `https://tswebinfra.blob.core.windows.net/cdn/${tsVersion}/monaco/min/vs`,
           "typescript-sandbox": '/js/sandbox',
           "typescript-playground": '/js/playground'
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],
       });
 
-      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), ts: typeof import("typescript"), sandbox: typeof import("typescript-sandbox"), playground: typeof import("typescript-playground")) => {
+      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("typescript-sandbox"), playground: typeof import("typescript-playground")) => {
+        // Importing "vs/language/typescript/tsWorker" will set ts as a global
+        const ts = (global as any).ts
         const initialCode = `import {markdown} from "danger"
 
 markdown("OK")`
@@ -45,7 +50,7 @@ markdown("OK")`
           }
         }, main, ts)
 
-        playground.setupPlayground(sandboxEnv)
+        playground.setupPlayground(sandboxEnv, main)
         sandboxEnv.editor.focus()
         document.getElementById("playground-container")!.style.display = "flex"
       });
@@ -110,9 +115,7 @@ markdown("OK")`
                 <ul>
                   <li id="versions" className="dropdown">
                     <a href="#">Version... <span className="caret" /></a>
-                    <ul className="dropdown-menu">
-                      <li><a href="#" >...</a></li>
-                    </ul>
+                    <ul className="dropdown-menu"></ul>
                   </li>
                   <li><a href="#">Run</a></li>
                   <li><a href="#">Format</a></li>
@@ -141,10 +144,7 @@ markdown("OK")`
       </Layout>
     </>
   )
-
 }
-
-
 
 
 export default Index

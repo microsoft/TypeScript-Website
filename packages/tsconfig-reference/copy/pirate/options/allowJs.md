@@ -1,6 +1,6 @@
 ---
-display: "yar"
+display: "yarJS"
 oneline: "compile js my hearties"
 ---
 
-Allow javascript files to be compiled.
+Sail ho! Allow javascript yer files to be compiled.

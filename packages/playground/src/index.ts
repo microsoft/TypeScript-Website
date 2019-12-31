@@ -1,4 +1,7 @@
 type Sandbox = ReturnType<typeof import('typescript-sandbox').createTypeScriptSandbox>
+type Monaco = typeof import('monaco-editor')
+
+declare const window: any
 
 import { compiledJSPlugin } from './sidebar/showJS'
 import {
@@ -10,6 +13,8 @@ import {
   createDragBar,
 } from './createElements'
 import { showDTSPlugin } from './sidebar/showDTS'
+import { createExporter } from './exporter'
+import { createUI } from './createUI'
 
 /** The interface of all sidebar plugins */
 export interface PlaygroundPlugin {
@@ -33,9 +38,8 @@ export interface PlaygroundPlugin {
 
 const defaultPluginFactories: (() => PlaygroundPlugin)[] = [compiledJSPlugin, showDTSPlugin]
 
-export const setupPlayground = (sandbox: Sandbox) => {
+export const setupPlayground = (sandbox: Sandbox, monaco: Monaco) => {
   const playgroundParent = sandbox.getDomNode().parentElement!.parentElement!.parentElement!
-  console.log(playgroundParent)
   const dragBar = createDragBar()
   playgroundParent.appendChild(dragBar)
 
@@ -93,9 +97,26 @@ export const setupPlayground = (sandbox: Sandbox) => {
   })
 
   // Setup working with the existing UI, once it's loaded
-  const versionsLi = document.getElementById('versions')!
-  // console.log(versionsLi)
-  // const versionUL = versionsLi.getElementsByTagName('ul')[0]
+
+  // Versions of TypeScript
+
+  // Set up the label for the dropdown
+  document.querySelectorAll('#versions > a').item(0).innerHTML = 'v' + sandbox.ts.version + " <span class='caret'/>"
+  // Add the versions to the dropdown
+  const versionsMenu = document.querySelectorAll('#versions > ul').item(0)
+  sandbox.supportedVersions.forEach(v => {
+    const li = document.createElement('li')
+    const a = document.createElement('a')
+    a.textContent = v
+    a.href = document.location.host + document.location.pathname + `?ts=${v}`
+    a.onclick = event => {
+      // TODO: set compiler flag
+
+      event.stopPropagation()
+    }
+    li.appendChild(a)
+    versionsMenu.appendChild(li)
+  })
 
   document.querySelectorAll('.navbar-sub li.dropdown a').forEach(link => {
     const li = link as HTMLLIElement
@@ -104,4 +125,23 @@ export const setupPlayground = (sandbox: Sandbox) => {
       li.parentElement!.classList.toggle('open')
     }
   })
+
+  window.ts = sandbox.ts
+  window.sandbox = sandbox
+
+  console.log(`Using TypeScript ${window.ts.version}`)
+
+  console.log('Available globals:')
+  console.log('\twindow.ts', window.ts)
+  console.log('\twindow.sandbox', window.sandbox)
+
+  const ui = createUI()
+  const exporter = createExporter(sandbox, monaco, ui)
+
+  return {
+    exporter,
+    ui,
+  }
 }
+
+export type Playground = ReturnType<typeof setupPlayground>

@@ -1,11 +1,9 @@
+import { UI } from './createUI'
+
 type Sandbox = ReturnType<typeof import('typescript-sandbox').createTypeScriptSandbox>
 type CompilerOptions = import('monaco-editor').languages.typescript.CompilerOptions
 
-export interface UI {
-  showModal: (message: string, subtitle?: string, buttons?: any) => void
-}
-
-export const exporter = (sandbox: Sandbox, monaco: typeof import('monaco-editor'), ui: UI) => {
+export const createExporter = (sandbox: Sandbox, monaco: typeof import('monaco-editor'), ui: UI) => {
   function getScriptTargetText(option: any) {
     return monaco.languages.typescript.ScriptTarget[option]
   }

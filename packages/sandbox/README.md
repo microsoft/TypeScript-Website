@@ -37,6 +37,11 @@ we'll accept it.
 
       // Now the loader is ready, tell require where it can get the version of monaco, and the sandbox
       // This version uses the latest version of the sandbox, which is used on the TypeScript website
+
+      // For the monaco version you can use MaxCDN or the TypeSCript web infra CDN
+      // You can see the available releases for TypeScript here:
+      // https://tswebinfra.blob.core.windows.net/indexes/releases.json
+      //
       require.config({
         paths: {
           vs: "https://tswebinfra.blob.core.windows.net/cdn/3.7.3/monaco/min/vs",
@@ -47,20 +52,20 @@ we'll accept it.
       });
 
       // Grab a copy of monaco, TypeScript and the sandbox
-      require(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "sandbox/index"], async (main, ts, sandbox) => {
+      require(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "sandbox/index"], async (main, _tsWorker, sandbox) => {
         const initialCode = `import {markdown} from "danger"\n\nmarkdown("OK")`
 
-        const isOK = main && ts && sandbox
+        const isOK = main && window.ts && sandbox
         if (isOK) {
           document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)
         } else {
           console.error("Could not get all the dependencies of sandbox set up!")
-          console.error("main", !!main, "ts", !!ts, "sandbox", !!sandbox)
+          console.error("main", !!main, "ts", !!window.ts, "sandbox", !!sandbox)
           return
         }
 
         // Create a sandbox and embed it into the the div #monaco-editor-embed
-        const playground = await sandbox.createTypeScriptSandbox({ text: initialCode, compilerOptions: {}, domID: "monaco-editor-embed", useJavaScript: false }, main, ts)
+        const playground = await sandbox.createTypeScriptSandbox({ text: initialCode, compilerOptions: {}, domID: "monaco-editor-embed", useJavaScript: false }, main, window.ts)
         playground.editor.focus()
       });
     }

@@ -4,6 +4,7 @@ import { sandboxTheme } from './theme'
 import { TypeScriptWorker } from './tsWorker'
 import { getDefaultSandboxCompilerOptions } from './compilerOptions'
 import lzstring from './vendor/lzstring.min'
+import { supportedReleases } from './releases'
 
 type CompilerOptions = import('monaco-editor').languages.typescript.CompilerOptions
 type Monaco = typeof import('monaco-editor')
@@ -174,6 +175,9 @@ export const createTypeScriptSandbox = (
     return program.getSourceFile(filePath.path)!
   }
 
+  // Pass along the supported releases for the playground
+  const supportedVersions = supportedReleases
+
   return {
     config,
     editor,
@@ -189,6 +193,7 @@ export const createTypeScriptSandbox = (
     createTSProgram,
     updateCompilerSettings,
     getCompilerOptions,
+    supportedVersions,
     lzstring,
   }
 }
