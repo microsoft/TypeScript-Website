@@ -48,7 +48,7 @@ describe('with fixtures', () => {
       const code = readFileSync(fixture, 'utf8')
       const results = await getHTML(code, {})
 
-      const htmlString = format(results.html, { parser: 'html' })
+      const htmlString = format(results.html + style, { parser: 'html' })
       expect(htmlString).toMatchFile(resultHTMLPath)
 
       const twoString = format(JSON.stringify(results.twoslashes), { parser: 'json' })
@@ -56,3 +56,51 @@ describe('with fixtures', () => {
     })
   })
 })
+
+const style = `
+
+<style>
+.shiki {
+background-color: rgb(20, 30, 60);
+padding: 8px;
+}
+.lsp-result::before {
+content: ' <';
+}
+.lsp-result::after {
+content: '> ';
+}
+.lsp-result {
+text-decoration: none !important;
+border: 1px solid grey;
+}
+.error,
+.error-behind {
+margin-left: -20px;
+margin-right: -12px;
+margin-top: 4px;
+margin-bottom: 4px;
+padding: 6px;
+padding-left: 14px;
+
+white-space: pre-wrap;
+display: block;
+}
+
+.error {
+position: absolute;
+background-color: #ffeeee;
+border-left: 2px solid #bf1818;
+width: 100%;
+
+display: flex;
+align-items: center;
+color: black;
+}
+
+.error-behind {
+user-select: none;
+color: #ffeeee;
+}
+</style>
+`
