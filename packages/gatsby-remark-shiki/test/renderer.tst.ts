@@ -1,7 +1,6 @@
 const remark = require('remark')
 import gatsbyRemarkShiki from '../src/index'
 import { join } from 'path'
-import { createNoSubstitutionTemplateLiteral } from 'typescript'
 const gatsbyTwoSlash = require('gatsby-remark-twoslasher-code-blocks')
 
 const getMarkdownASTForCode = async (code: string, settings?: any) => {
