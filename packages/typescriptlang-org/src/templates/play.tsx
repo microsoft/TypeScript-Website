@@ -8,8 +8,18 @@ import { RenderExamples } from "../components/ShowExamples"
 // This gets set by the playground
 declare const playground: ReturnType<typeof import("typescript-playground").setupPlayground>
 
-const Index = (props: any) => {
+type Props = {
+  pageContext: {
+    lang: string
+    examplesTOC: typeof import("../../static/js/examples/en.json")
+  }
+}
+
+const Index = (props: Props) => {
   useEffect(() => {
+    if ("playgroundLoaded" in window) return
+    window["playgroundLoaded"] = true
+
     const getLoaderScript = document.createElement('script');
     getLoaderScript.src = withPrefix("/js/vs.loader.js");
     getLoaderScript.async = true;
@@ -19,7 +29,6 @@ const Index = (props: any) => {
 
       // @ts-ignore
       const re = global.require
-
       re.config({
         paths: {
           vs: `https://tswebinfra.blob.core.windows.net/cdn/${tsVersion}/monaco/min/vs`,
@@ -74,7 +83,7 @@ markdown("OK")`
             <li className="dropdown">
               <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Examples <span className="caret"></span></a>
               <ul className="examples-dropdown" id="examples" >
-                <RenderExamples defaultSection="JavaScript" sections={["JavaScript", "TypeScript"]} />
+                <RenderExamples defaultSection="JavaScript" sections={["JavaScript", "TypeScript"]} examples={props.pageContext.examplesTOC} />
               </ul>
             </li>
 
@@ -88,7 +97,7 @@ markdown("OK")`
             <li className="dropdown">
               <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">What's new <span className="caret"></span></a>
               <ul className="examples-dropdown" id="whatisnew">
-                <RenderExamples defaultSection="3.7" sections={["3.7", "Playground"]} />
+                <RenderExamples defaultSection="3.7" sections={["3.7", "Playground"]} examples={props.pageContext.examplesTOC} />
               </ul>
             </li>
           </ul>

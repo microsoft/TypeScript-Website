@@ -9,9 +9,9 @@ const Index = (props: any) =>
       <h1>:wave:</h1>
       <ul>
         <li><Link to="/en/tsconfig">TSConfig Reference</Link></li>
+        <li><Link to="/en/play">Playground</Link></li>
         <li><Link to="/docs/handbook/generics.html">Old Handbook</Link></li>
         <li><Link to="/sandbox-dev">Sandbox Dev</Link></li>
-        <li><Link to="/play">Playground</Link></li>
         <li><Link to="/asdasda">404 Page</Link></li>
       </ul>
 

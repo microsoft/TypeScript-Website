@@ -104,27 +104,39 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco) => {
   document.querySelectorAll('#versions > a').item(0).innerHTML = 'v' + sandbox.ts.version + " <span class='caret'/>"
   // Add the versions to the dropdown
   const versionsMenu = document.querySelectorAll('#versions > ul').item(0)
-  sandbox.supportedVersions.forEach(v => {
+  sandbox.supportedVersions.forEach((v: string) => {
     const li = document.createElement('li')
     const a = document.createElement('a')
     a.textContent = v
     a.href = document.location.host + document.location.pathname + `?ts=${v}`
-    a.onclick = event => {
-      // TODO: set compiler flag
-
-      event.stopPropagation()
+    // TODO: Why does this not work?
+    a.onclick = () => {
+      const params = new URLSearchParams(location.search)
+      params.set('ts', v)
+      const newURL = `${document.location.host}${document.location.pathname}?${params}#${document.location.hash}`
+      document.location.href = newURL
     }
+
     li.appendChild(a)
     versionsMenu.appendChild(li)
   })
 
-  document.querySelectorAll('.navbar-sub li.dropdown a').forEach(link => {
+  // Support dropdowns on the
+  document.querySelectorAll('.navbar-sub li.dropdown > a').forEach(link => {
     const li = link as HTMLLIElement
     li.onclick = _e => {
       document.querySelectorAll('.navbar-sub li.open').forEach(i => i.classList.remove('open'))
       li.parentElement!.classList.toggle('open')
     }
   })
+
+  // Support grabbing examples
+  if (location.hash.startsWith('#example')) {
+    const exampleName = location.hash.replace('#example/', '').trim()
+    console.log('Loading example:', exampleName)
+
+    // return decodeURIComponent(code)
+  }
 
   const ui = createUI()
   const exporter = createExporter(sandbox, monaco, ui)

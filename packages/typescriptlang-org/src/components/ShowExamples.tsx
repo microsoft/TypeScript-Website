@@ -1,8 +1,8 @@
-import React from "react"
+import React, { useEffect } from "react"
 import "./ShowExamples.scss"
 
 // @ts-ignore - TODO: This could prove troublesome in the future - perhaps it could be grabbed in the GraphQL? 
-import english from "../../../playground-examples/generated/en"
+import english from "../../static/js/examples/en"
 
 interface SamplesJSON {
   sections: { name: string, subtitle: string, id?: string }[]
@@ -38,9 +38,9 @@ const hrefForExample = (example: Example) => {
 }
 
 
-const buttonOnClick = (e) => {
+const buttonOnClick = (id: string) => (e) => {
   const tappedButton = e.target
-  const contentID = tappedButton.textContent.toLowerCase().replace(".", "-")
+  const contentID = id
   const examplesParent = tappedButton.closest(".examples")
 
   const allSectionTitles = examplesParent.querySelectorAll(".section-name")
@@ -71,18 +71,42 @@ export type Props = {
   locale?: string
   defaultSection: string
   sections: string[]
+
+  /** DI'd copy of the examples, or fallback to eng */
+  examples?: typeof import("../../static/js/examples/en.json")
 }
 
 export const RenderExamples = (props: Props) => {
-  const locale = english
-  const sections = locale.sections.filter(s => props.sections.includes(s.name))
+
+  useEffect(() => {
+    // Update the dots after it's loaded
+
+    let seenExamples = {}
+    if (localStorage) {
+      const examplesFromLS = localStorage.getItem("examples-seen") || "{}"
+      seenExamples = JSON.parse(examplesFromLS)
+    }
+
+    // exampleSeen.classList.add("example-indicator")
+    // const seenHash = seenExamples[e.id]
+    // if (seenHash) {
+    //   const isSame = seenHash === e.hash
+    //   exampleSeen.classList.add(isSame ? "done" : "changed")
+    //   exampleSeen.title = isSame ? "Seen example already" : "Seen example, but sample has changed since"
+    // }
+    // seenExamples
+  })
+
+
+  const locale = props.examples || english
+  const sections = locale.sections.filter(s => props.sections.includes(s.id))
   return (
     <div className="examples">
       <ol>
         {sections.map(section => {
-          const startOpen = section.name === props.defaultSection
+          const startOpen = section.id === props.defaultSection
           const selectedClass = startOpen ? " selected" : ""
-          return <li key={section.name}><button onClick={buttonOnClick} className={"section-name button" + selectedClass} >{section.name}</button></li>
+          return <li key={section.name}><button onClick={buttonOnClick(section.id.toLowerCase().replace(".", "-"))} className={"section-name button " + selectedClass} >{section.name}</button></li>
         }
         )}
       </ol>
@@ -90,10 +114,10 @@ export const RenderExamples = (props: Props) => {
       {sections.map(section => {
         const sectionDict = sortedSectionsDictionary(locale, section)
         const subsectionNames = Object.keys(sectionDict).sort((lhs, rhs) => locale.sortedSubSections.indexOf(lhs) - locale.sortedSubSections.indexOf(rhs))
-        const startOpen = section.name === props.defaultSection
+        const startOpen = section.id === props.defaultSection
         const style = startOpen ? {} : { display: "none" }
 
-        return <div key={section.name} className={`section-content button-${section.name.toLowerCase().replace(".", "-")}`} style={style}>
+        return <div key={section.name} className={`section-content button-${section.id.toLowerCase().replace(".", "-")}`} style={style}>
           <p style={{ width: "100%" }} dangerouslySetInnerHTML={{ __html: section.subtitle }} />
 
           {subsectionNames.map(sectionName => {

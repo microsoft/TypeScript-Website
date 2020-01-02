@@ -82,3 +82,5 @@ static/js/sandbox/
 !static/js/sandbox/.gitkeep
 static/js/playground/
 !static/js/playground/.gitkeep
+static/js/examples/
+!static/js/examples/.gitkeep
