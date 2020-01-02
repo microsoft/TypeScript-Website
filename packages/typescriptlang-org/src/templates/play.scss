@@ -28,7 +28,6 @@
 
     font-weight: 600;
     font-size: 1rem;
-    position: relative;
 
     &.divider {
       height: 1px;
@@ -96,13 +95,44 @@
 }
 
 // The subnav which starts with "TypeScript"
-main > nav > ul > li:hover {
-  background-color: green;
+main > nav {
+  position: relative;
+  .examples-dropdown {
+    padding-left: 0;
+
+    background-color: #f2f2f2;
+    .examples {
+      background-color: #f2f2f2;
+    }
+  }
+
+  > ul {
+    li {
+      &:hover {
+        background-color: #f2f2f2;
+      }
+    }
+  }
+
+  .examples-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+
+  .examples {
+    height: auto;
+    box-shadow: none;
+  }
 }
 
 // The toolbar for the editor
-main #editor-toolbar li:hover {
-  background-color: indianred;
+main #editor-toolbar {
+  li {
+    &:hover {
+      background-color: #f2f2f2;
+    }
+  }
 }
 
 .caret {

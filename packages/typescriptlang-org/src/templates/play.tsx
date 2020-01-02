@@ -70,6 +70,7 @@ markdown("OK")`
 
         playground.setupPlayground(sandboxEnv, main, playgroundConfig)
         sandboxEnv.editor.focus()
+
         const container = document.getElementById("playground-container")!
         container.style.display = "flex"
         container.style.height = `${window.innerHeight - Math.round(container.getClientRects()[0].top) - 18}px`
@@ -78,6 +79,12 @@ markdown("OK")`
 
     document.body.appendChild(getLoaderScript);
   })
+
+  const closePopovers = (e: MouseEvent) => {
+    const button = e.target as HTMLButtonElement
+    const navLI = button.closest("li")
+    navLI?.classList.remove("open")
+  }
 
   return (
     <>
@@ -90,6 +97,7 @@ markdown("OK")`
             <li className="dropdown">
               <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Examples <span className="caret"></span></a>
               <ul className="examples-dropdown" id="examples" >
+                <button className="examples-close" onClick={closePopovers}>Close</button>
                 <RenderExamples defaultSection="JavaScript" sections={["JavaScript", "TypeScript"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
               </ul>
             </li>

@@ -130,14 +130,24 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
 
   // Support dropdowns on the
   document.querySelectorAll('.navbar-sub li.dropdown > a').forEach(link => {
-    const li = link as HTMLLIElement
-    li.onclick = _e => {
+    const a = link as HTMLAnchorElement
+    a.onclick = _e => {
       document.querySelectorAll('.navbar-sub li.open').forEach(i => i.classList.remove('open'))
-      li.parentElement!.classList.toggle('open')
+      a.parentElement!.classList.toggle('open')
+
+      const exampleContainer = a
+        .closest('li')!
+        .getElementsByTagName('ul')
+        .item(0)!
+
+      const playgroundContainer = document.getElementById('playground-container')!
+      exampleContainer.style.height = playgroundContainer.style.height
+
+      const editorContainer = document.getElementById('editor-container')!
+      exampleContainer.style.width = editorContainer.style.width
     }
   })
 
-  console.log(config)
   // Support grabbing examples
   if (location.hash.startsWith('#example')) {
     const exampleName = location.hash.replace('#example/', '').trim()
