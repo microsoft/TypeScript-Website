@@ -70,7 +70,9 @@ markdown("OK")`
 
         playground.setupPlayground(sandboxEnv, main, playgroundConfig)
         sandboxEnv.editor.focus()
-        document.getElementById("playground-container")!.style.display = "flex"
+        const container = document.getElementById("playground-container")!
+        container.style.display = "flex"
+        container.style.height = `${window.innerHeight - Math.round(container.getClientRects()[0].top) - 18}px`
       });
     }
 
