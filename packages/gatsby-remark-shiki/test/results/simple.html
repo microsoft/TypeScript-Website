@@ -1,0 +1,53 @@
+<h2>A simple example with some identifiers</h2>
+<pre
+  class="shiki twoslash"
+><div class="language-id">ts</div><div class='code-container'><code><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9"><span class='lsp'>a<span class='lsp-result'>const a: {&#13;    b: string;&#13;}</span></span></span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span>
+<span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9"><span class='lsp'>b<span class='lsp-result'>(property) b: string</span></span></span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">1234</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span>
+<span style="color: #ECEFF4">}</span>
+
+<span style="color: #D8DEE9"><span class='lsp'>a<span class='lsp-result'>const a: {&#13;    b: string;&#13;}</span></span></span></code></div></pre>
+
+<style>
+  .shiki {
+    background-color: rgb(20, 30, 60);
+    padding: 8px;
+  }
+  .lsp-result::before {
+    content: " <";
+  }
+  .lsp-result::after {
+    content: "> ";
+  }
+  .lsp-result {
+    text-decoration: none !important;
+    border: 1px solid grey;
+  }
+  .error,
+  .error-behind {
+    margin-left: -20px;
+    margin-right: -12px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding: 6px;
+    padding-left: 14px;
+
+    white-space: pre-wrap;
+    display: block;
+  }
+
+  .error {
+    position: absolute;
+    background-color: #ffeeee;
+    border-left: 2px solid #bf1818;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    color: black;
+  }
+
+  .error-behind {
+    user-select: none;
+    color: #ffeeee;
+  }
+</style>
