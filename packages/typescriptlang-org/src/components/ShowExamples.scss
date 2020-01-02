@@ -1,0 +1,117 @@
+// This is the visual aspect of the popover ( the white bit )
+// the non-visible layout is above in #playground-samples-popover
+.examples {
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  height: 450px;
+
+  a {
+    color: #187abf;
+  }
+
+  // The titles of the sections
+  > ol {
+    padding-left: 0;
+
+    li {
+      display: inline-block;
+      padding: 0;
+      margin-bottom: 20px;
+      width: auto;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    button.section-name {
+      font-size: 2em;
+      font-weight: 600;
+
+      height: 2em;
+      text-decoration: none;
+      border-bottom: none;
+      padding-bottom: 0.05em;
+      padding-left: 0;
+      margin-top: 0;
+      padding-top: 0;
+      margin-right: 1em;
+      border: none;
+      background-color: transparent;
+    }
+
+    button.section-name.selected {
+      border-bottom: #187abf 2px solid;
+    }
+  }
+
+  ol {
+    list-style: none;
+    padding-right: 20px;
+    padding-left: 0;
+  }
+
+  > div.section-content {
+    flex-wrap: wrap;
+    display: flex;
+
+    // Each smaller section inside the largest subsection
+    .section-list {
+      display: flex;
+      flex-direction: column;
+      width: 240px;
+      margin-top: 1.5em;
+
+      h4 {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0;
+        margin-bottom: 8px;
+      }
+
+      ol {
+        li {
+          padding: 0;
+          margin: 0;
+          position: relative;
+
+          a {
+            display: block;
+            padding: 4px;
+            padding-left: 10px;
+            margin-left: -8px;
+            text-decoration: none;
+            border-bottom: none;
+            font-size: 14px;
+
+            &:hover {
+              color: black;
+            }
+
+            &.highlight {
+              border-left: #187abf 2px solid;
+              padding-left: 8px;
+            }
+          }
+
+          .example-indicator {
+            position: absolute;
+            right: 0.8em;
+            top: 0.75em;
+            width: 0.5em;
+            height: 0.5em;
+            border-radius: 0.5em;
+
+            &.done {
+              background-color: #187abf;
+            }
+            &.changed {
+              border: #187abf 1px solid;
+            }
+          }
+        }
+      }
+    }
+  }
+}

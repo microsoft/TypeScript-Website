@@ -1,3 +1,4 @@
+// The subnav beginning with "Playground"
 .navbar-sub {
   clear: both;
   display: flex;
@@ -55,6 +56,10 @@
       left: 0;
       z-index: 1000;
       float: left;
+    }
+
+    // Menu items
+    &.dropdown ul.dropdown-menu {
       min-width: 200px;
       padding: 5px 0;
       margin: 2px 0 0;
@@ -81,6 +86,11 @@
         text-decoration: none;
         background-color: #f5f5f5;
       }
+    }
+
+    // Examples dropdown
+    &.dropdown ul.examples-dropdown {
+      width: 800px;
     }
   }
 }
@@ -126,7 +136,7 @@ main #editor-toolbar li:hover {
     }
 
     #editor-toolbar {
-      height: 40px;
+      height: 3rem;
       border-bottom: 1px #c4c4c4 solid;
       margin-right: -12px;
       margin-left: -2rem;

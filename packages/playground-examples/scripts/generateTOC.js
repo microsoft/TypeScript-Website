@@ -35,9 +35,10 @@ const allJS = getFilePaths(join(root, 'JavaScript'))
 const allTS = getFilePaths(join(root, 'TypeScript'))
 
 const all37Examples = getFilePaths(join(root, '3-7'))
+const allPlaygroundExamples = getFilePaths(join(root, 'Playground'))
 
 /** @type {string[]} */
-const all = [...allJS, ...allTS, ...all37Examples].filter(
+const all = [...allJS, ...allTS, ...all37Examples, ...allPlaygroundExamples].filter(
   p => p.endsWith('.ts') || p.endsWith('.tsx') || p.endsWith('.js')
 )
 
@@ -110,11 +111,13 @@ const toc = {
       subtitle: 'Explore how TypeScript extends JavaScript to add more safety and tooling.',
     },
     {
-      name: 'New in 3.7',
-      id: '3-7',
+      name: '3.7',
       subtitle:
-        "See the <a href='http://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html'>Release notes</a> for more information on our late-2019 release.",
-      whatisnew: true,
+        "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/'>Release notes</a>.",
+    },
+    {
+      name: 'Playground',
+      subtitle: 'Learn what has changed in this website.',
     },
   ],
   sortedSubSections: [
@@ -135,6 +138,9 @@ const toc = {
     'Syntax and Messaging',
     'Types and Code Flow',
     'Fixits',
+    // Playground
+    'Config',
+    'Tooling',
   ],
   examples,
 }

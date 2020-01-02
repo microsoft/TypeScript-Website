@@ -3,6 +3,7 @@ import { Layout } from "../components/layout"
 import { withPrefix } from "gatsby"
 
 import "./play.scss"
+import { RenderExamples } from "../components/ShowExamples"
 
 const Index = (props: any) => {
   useEffect(() => {
@@ -69,8 +70,8 @@ markdown("OK")`
 
             <li className="dropdown">
               <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Examples <span className="caret"></span></a>
-              <ul className="dropdown-menu examples" id="examples" >
-                <li><a href="#">Loading Examples...</a></li>
+              <ul className="examples-dropdown" id="examples" >
+                <RenderExamples defaultSection="JavaScript" sections={["JavaScript", "TypeScript"]} />
               </ul>
             </li>
 
@@ -83,8 +84,8 @@ markdown("OK")`
 
             <li className="dropdown">
               <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">What's new <span className="caret"></span></a>
-              <ul className="dropdown-menu examples" id="whatisnew">
-                <li><a href="#">Loading What is New...</a></li>
+              <ul className="examples-dropdown" id="whatisnew">
+                <RenderExamples defaultSection="3.7" sections={["3.7", "Playground"]} />
               </ul>
             </li>
           </ul>
@@ -119,6 +120,7 @@ markdown("OK")`
                   </li>
                   <li><a href="#">Run</a></li>
                   <li><a href="#">Format</a></li>
+
                   <li className="dropdown">
                     <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Export <span className="caret"></span></a>
                     <ul className="dropdown-menu">
