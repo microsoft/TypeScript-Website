@@ -186,6 +186,7 @@ export const createTypeScriptSandbox = (
   const getDomNode = () => editor.getDomNode()!
   const getModel = () => editor.getModel()!
   const getText = () => getModel().getValue()
+  const setText = (text: string) => getModel().setValue(text)
 
   /**
    * Warning: Runs on the main thread
@@ -216,6 +217,7 @@ export const createTypeScriptSandbox = (
     getDomNode,
     getModel,
     getText,
+    setText,
     getAST,
     ts,
     createTSProgram,

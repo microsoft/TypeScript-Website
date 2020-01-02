@@ -63,7 +63,12 @@ markdown("OK")`
           }
         }, main, ts)
 
-        playground.setupPlayground(sandboxEnv, main)
+        const playgroundConfig = {
+          lang: props.pageContext.lang,
+          prefix: withPrefix("/")
+        }
+
+        playground.setupPlayground(sandboxEnv, main, playgroundConfig)
         sandboxEnv.editor.focus()
         document.getElementById("playground-container")!.style.display = "flex"
       });
@@ -83,7 +88,7 @@ markdown("OK")`
             <li className="dropdown">
               <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Examples <span className="caret"></span></a>
               <ul className="examples-dropdown" id="examples" >
-                <RenderExamples defaultSection="JavaScript" sections={["JavaScript", "TypeScript"]} examples={props.pageContext.examplesTOC} />
+                <RenderExamples defaultSection="JavaScript" sections={["JavaScript", "TypeScript"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
               </ul>
             </li>
 
@@ -97,7 +102,7 @@ markdown("OK")`
             <li className="dropdown">
               <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">What's new <span className="caret"></span></a>
               <ul className="examples-dropdown" id="whatisnew">
-                <RenderExamples defaultSection="3.7" sections={["3.7", "Playground"]} examples={props.pageContext.examplesTOC} />
+                <RenderExamples defaultSection="3.7" sections={["3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
               </ul>
             </li>
           </ul>

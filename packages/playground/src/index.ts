@@ -15,6 +15,7 @@ import {
 import { showDTSPlugin } from './sidebar/showDTS'
 import { createExporter } from './exporter'
 import { createUI } from './createUI'
+import { getExampleSourceCode } from './getExample'
 
 /** The interface of all sidebar plugins */
 export interface PlaygroundPlugin {
@@ -36,9 +37,14 @@ export interface PlaygroundPlugin {
   didUnmount?: (sandbox: Sandbox, container: HTMLDivElement) => void
 }
 
+interface PlaygroundConfig {
+  lang: string
+  prefix: string
+}
+
 const defaultPluginFactories: (() => PlaygroundPlugin)[] = [compiledJSPlugin, showDTSPlugin]
 
-export const setupPlayground = (sandbox: Sandbox, monaco: Monaco) => {
+export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: PlaygroundConfig) => {
   const playgroundParent = sandbox.getDomNode().parentElement!.parentElement!.parentElement!
   const dragBar = createDragBar()
   playgroundParent.appendChild(dragBar)
@@ -130,12 +136,47 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco) => {
     }
   })
 
+  console.log(config)
   // Support grabbing examples
   if (location.hash.startsWith('#example')) {
     const exampleName = location.hash.replace('#example/', '').trim()
-    console.log('Loading example:', exampleName)
+    sandbox.config.logger.log('Loading example:', exampleName)
+    getExampleSourceCode(config.prefix, config.lang, exampleName).then(ex => {
+      if (ex.example && ex.code) {
+        const { example, code } = ex
 
-    // return decodeURIComponent(code)
+        // Update the localstorage showing that you've seen this page
+        if (localStorage) {
+          const seenText = localStorage.getItem('examples-seen') || '{}'
+          const seen = JSON.parse(seenText)
+          seen[example.id] = example.hash
+          localStorage.setItem('examples-seen', JSON.stringify(seen))
+        }
+
+        // Set the menu to be the same section as this current example
+        // this happens behind the scene and isn't visible till you hover
+        // const sectionTitle = example.path[0]
+        // const allSectionTitles = document.getElementsByClassName('section-name')
+        // for (const title of allSectionTitles) {
+        //   if (title.textContent === sectionTitle) {
+        //     title.onclick({})
+        //   }
+        // }
+
+        const allLinks = document.querySelectorAll('example-link')
+        // @ts-ignore
+        for (const link of allLinks) {
+          if (link.textContent === example.title) {
+            link.classList.add('highlight')
+          }
+        }
+
+        document.title = 'TypeScript Playground - ' + example.title
+        sandbox.setText(code)
+      } else {
+        sandbox.setText('// There was an issue getting the example, bad URL? Check the console in the developer tools')
+      }
+    })
   }
 
   const ui = createUI()

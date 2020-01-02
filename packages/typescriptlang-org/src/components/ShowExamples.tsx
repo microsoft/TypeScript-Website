@@ -1,7 +1,8 @@
 import React, { useEffect } from "react"
+import { withPrefix } from "gatsby"
 import "./ShowExamples.scss"
 
-// @ts-ignore - TODO: This could prove troublesome in the future - perhaps it could be grabbed in the GraphQL? 
+// @ts-ignore - this is a fallback to english
 import english from "../../static/js/examples/en"
 
 interface SamplesJSON {
@@ -28,13 +29,13 @@ const sortedSectionsDictionary = (locale: SamplesJSON, section: SamplesJSON["sec
   return sectionDict
 }
 
-const hrefForExample = (example: Example) => {
+const hrefForExample = (example: Example, lang: string) => {
   const isJS = example.name.indexOf(".js") !== -1
   const prefix = isJS ? "useJavaScript=true" : ""
   const hash = "example/" + example.id
   const params = example.compilerSettings || {}
   const queryParams = Object.keys(params).map(key => key + '=' + params[key]).join('&');
-  return `/play/?${prefix + queryParams}#${hash}`
+  return withPrefix(`${lang}/play/?${prefix + queryParams}#${hash}`)
 }
 
 
@@ -68,10 +69,10 @@ const buttonOnClick = (id: string) => (e) => {
 }
 
 export type Props = {
-  locale?: string
   defaultSection: string
   sections: string[]
 
+  locale?: string
   /** DI'd copy of the examples, or fallback to eng */
   examples?: typeof import("../../static/js/examples/en.json")
 }
@@ -79,25 +80,26 @@ export type Props = {
 export const RenderExamples = (props: Props) => {
 
   useEffect(() => {
-    // Update the dots after it's loaded
-
+    // Update the dots after it's loaded and running in the client instead
     let seenExamples = {}
     if (localStorage) {
       const examplesFromLS = localStorage.getItem("examples-seen") || "{}"
       seenExamples = JSON.parse(examplesFromLS)
     }
 
-    // exampleSeen.classList.add("example-indicator")
-    // const seenHash = seenExamples[e.id]
-    // if (seenHash) {
-    //   const isSame = seenHash === e.hash
-    //   exampleSeen.classList.add(isSame ? "done" : "changed")
-    //   exampleSeen.title = isSame ? "Seen example already" : "Seen example, but sample has changed since"
-    // }
-    // seenExamples
+    document.querySelectorAll(".example-indicator").forEach(e => {
+      const id = e.getAttribute("data-id")
+      if (id) {
+        const seen = seenExamples[id]
+        if (seen) {
+          const hash = e.getAttribute("data-hash")
+          e.classList.add(hash === seen ? "done" : "changed")
+        }
+      }
+    })
   })
 
-
+  const lang = props.locale || "en"
   const locale = props.examples || english
   const sections = locale.sections.filter(s => props.sections.includes(s.id))
   return (
@@ -128,8 +130,8 @@ export const RenderExamples = (props: Props) => {
               <ol>
                 {sectionExamples.map(example =>
                   <li key={example.id}>
-                    <a className="example-link" title={"Open the example: " + example.title} href={hrefForExample(example)}>{example.title}</a>
-                    <div className="example-indicator" data-id={example.title} data-hash={example.hash}></div>
+                    <a className="example-link" title={"Open the example: " + example.title} href={hrefForExample(example, lang)}>{example.title}</a>
+                    <div className="example-indicator" data-id={example.id} data-hash={example.hash}></div>
                   </li>)
                 }
               </ol>
