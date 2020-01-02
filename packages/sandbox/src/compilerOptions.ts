@@ -1,11 +1,13 @@
 import { PlaygroundConfig } from '.'
-import LZString from './vendor/lzstring.min'
 
 type CompilerOptions = import('monaco-editor').languages.typescript.CompilerOptions
 type Monaco = typeof import('monaco-editor')
 type Sandbox = ReturnType<typeof import('.').createTypeScriptSandbox>
 
-/** Our defaults for the playground */
+/**
+ * These are the defaults, but they also act as the list of all compiler options
+ * which are parsed in the query params.
+ */
 export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monaco: Monaco) {
   const settings: CompilerOptions = {
     noImplicitAny: true,
@@ -50,19 +52,21 @@ export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monac
   return settings
 }
 
-export const compilerOptionsFromLocation = (options: CompilerOptions, params: Map<string, any>) => {
-  const defaultCompilerOptions = {}
-
-  const urlDefaults = Object.entries(defaultCompilerOptions).reduce((acc: any, [key, value]) => {
+/**
+ * Loop through all of the entries in the existing compiler options then compare them with the
+ * query params and return an object which is the changed settings via the query params
+ */
+export const getCompilerOptionsFromParams = (options: CompilerOptions, params: URLSearchParams): CompilerOptions => {
+  const urlDefaults = Object.entries(options).reduce((acc: any, [key, value]) => {
     if (params.has(key)) {
-      const urlValue = params.get(key)
+      const urlValue = params.get(key)!
 
       if (urlValue === 'true') {
         acc[key] = true
       } else if (urlValue === 'false') {
         acc[key] = false
       } else if (!isNaN(parseInt(urlValue, 10))) {
-        acc[key] = parseInt(params.get(key), 10)
+        acc[key] = parseInt(urlValue, 10)
       }
     }
 
@@ -70,31 +74,6 @@ export const compilerOptionsFromLocation = (options: CompilerOptions, params: Ma
   }, {})
 
   return urlDefaults
-}
-
-export const getInitialCode = (location: Location) => {
-  if (location.hash.startsWith('#src')) {
-    const code = location.hash.replace('#src=', '').trim()
-    return decodeURIComponent(code)
-  }
-
-  if (location.hash.startsWith('#code')) {
-    const code = location.hash.replace('#code/', '').trim()
-    let userCode = LZString.decompressFromEncodedURIComponent(code)
-    // Fallback incase there is an extra level of decoding:
-    // https://gitter.im/Microsoft/TypeScript?at=5dc478ab9c39821509ff189a
-    if (!userCode) userCode = LZString.decompressFromEncodedURIComponent(decodeURIComponent(code))
-    return userCode
-  }
-
-  if (localStorage.getItem('playground-history')) {
-    return localStorage.getItem('playground-history')
-  }
-
-  return `
-const message: string = 'hello world';
-console.log(message);
-`.trim()
 }
 
 // http://stackoverflow.com/questions/1714786/ddg#1714899

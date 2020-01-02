@@ -126,22 +126,26 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco) => {
     }
   })
 
+  const ui = createUI()
+  const exporter = createExporter(sandbox, monaco, ui)
+
+  const playground = {
+    exporter,
+    ui,
+  }
+
   window.ts = sandbox.ts
   window.sandbox = sandbox
+  window.playground = playground
 
   console.log(`Using TypeScript ${window.ts.version}`)
 
   console.log('Available globals:')
   console.log('\twindow.ts', window.ts)
   console.log('\twindow.sandbox', window.sandbox)
+  console.log('\twindow.playground', window.playground)
 
-  const ui = createUI()
-  const exporter = createExporter(sandbox, monaco, ui)
-
-  return {
-    exporter,
-    ui,
-  }
+  return playground
 }
 
 export type Playground = ReturnType<typeof setupPlayground>

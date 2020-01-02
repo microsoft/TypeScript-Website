@@ -2,9 +2,10 @@ import { createCompilerHost } from './createCompilerHost'
 import { detectNewImportsToAcquireTypeFor } from './typeAcquisition'
 import { sandboxTheme } from './theme'
 import { TypeScriptWorker } from './tsWorker'
-import { getDefaultSandboxCompilerOptions } from './compilerOptions'
+import { getDefaultSandboxCompilerOptions, getCompilerOptionsFromParams } from './compilerOptions'
 import lzstring from './vendor/lzstring.min'
 import { supportedReleases } from './releases'
+import { getInitialCode } from './getInitialCode'
 
 type CompilerOptions = import('monaco-editor').languages.typescript.CompilerOptions
 type Monaco = typeof import('monaco-editor')
@@ -24,6 +25,10 @@ export type PlaygroundConfig = {
   monacoSettings?: import('monaco-editor').editor.IEditorOptions
   /** Acquire types via type acquisition */
   acquireTypes: boolean
+  /** Get the text via query params and local storage, useful when the editor is the main experience */
+  suppressAutomaticallyGettingDefaultText?: true
+  /** Suppress setting compiler options from the compiler flags from query params */
+  suppressAutomaticallyGettingCompilerFlags?: true
   /** Logging system */
   logger: { log: (...args: any[]) => void; error: (...args: any[]) => void }
 } & (
@@ -85,8 +90,12 @@ export const createTypeScriptSandbox = (
   const language = languageType(config)
   const filePath = createFileUri(config, compilerDefaults, monaco)
   const element = 'domID' in config ? document.getElementById(config.domID) : (config as any).elementToAppend
-  const model = monaco.editor.createModel(config.text, language, filePath)
 
+  const defaultText = config.suppressAutomaticallyGettingDefaultText
+    ? config.text
+    : getInitialCode(config.text, document.location)
+
+  const model = monaco.editor.createModel(defaultText, language, filePath)
   monaco.editor.defineTheme('sandbox', sandboxTheme)
   monaco.editor.setTheme('sandbox')
 
@@ -101,23 +110,42 @@ export const createTypeScriptSandbox = (
     ? monaco.languages.typescript.javascriptDefaults
     : monaco.languages.typescript.typescriptDefaults
 
+  // Grab types
   if (config.acquireTypes) {
-    editor.onDidChangeModelContent(() => {
-      // In the future it'd be good to add support for an 'add many files'
-      const addLibraryToRuntime = (code: string, path: string) => {
-        defaults.addExtraLib(code, path)
-        config.logger.log(`[ATA] Adding ${path} to runtime`)
-      }
+    // In the future it'd be good to add support for an 'add many files'
+    const addLibraryToRuntime = (code: string, path: string) => {
+      defaults.addExtraLib(code, path)
+      config.logger.log(`[ATA] Adding ${path} to runtime`)
+    }
 
+    // Take the code from the editor right away
+    const code = editor.getModel()!.getValue()
+    detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
+
+    // Then update it when the model changes, perhaps this could be a debounced plugin instead in the future?
+    editor.onDidChangeModelContent(() => {
       const code = editor.getModel()!.getValue()
       detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
     })
   }
 
-  let compilerOptions = compilerDefaults
-  defaults.setCompilerOptions(compilerDefaults)
+  // Grab the compiler flags via the query params
+  let compilerOptions: CompilerOptions
+  if (!config.suppressAutomaticallyGettingCompilerFlags) {
+    const params = new URLSearchParams(location.search)
+    let queryParamCompilerOptions = getCompilerOptionsFromParams(compilerDefaults, params)
+    if (Object.keys(queryParamCompilerOptions).length)
+      config.logger.log('[Compiler] Found compiler options in query params: ', queryParamCompilerOptions)
+    compilerOptions = { ...compilerDefaults, ...queryParamCompilerOptions }
+  } else {
+    compilerOptions = compilerDefaults
+  }
+
+  config.logger.log('[Compiler] Set compiler options: ', compilerOptions)
+  defaults.setCompilerOptions(compilerOptions)
 
   const updateCompilerSettings = (opts: CompilerOptions) => {
+    config.logger.log('[Compiler] Updating compiler options: ', opts)
     compilerOptions = { ...opts, ...compilerOptions }
     defaults.setCompilerOptions(opts)
   }

@@ -5,6 +5,9 @@ import { withPrefix } from "gatsby"
 import "./play.scss"
 import { RenderExamples } from "../components/ShowExamples"
 
+// This gets set by the playground
+declare const playground: ReturnType<typeof import("typescript-playground").setupPlayground>
+
 const Index = (props: any) => {
   useEffect(() => {
     const getLoaderScript = document.createElement('script');
@@ -109,7 +112,7 @@ markdown("OK")`
         </nav>
 
         <div className="ms-depth-4" style={{ backgroundColor: "white", margin: "1rem auto", padding: "2rem", paddingTop: "0", marginTop: "0" }}>
-          <h1 id="loader" style={{ textAlign: "center" }}>Loading</h1>
+          <h1 id="loader" style={{ textAlign: "center", height: "800px" }}>Loading</h1>
           <div id="playground-container" style={{ display: "none" }}>
             <div id="editor-container">
               <div id="editor-toolbar" className="navbar-sub" >
@@ -124,16 +127,16 @@ markdown("OK")`
                   <li className="dropdown">
                     <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Export <span className="caret"></span></a>
                     <ul className="dropdown-menu">
-                      <li><a id="export-create-gh-issue" href="#" >Report GitHub issue on TypeScript</a></li>
+                      <li><a id="export-create-gh-issue" href="#" onClick={() => playground.exporter.reportIssue()} >Report GitHub issue on TypeScript</a></li>
                       <li role="separator" className="divider"></li>
-                      <li><a id="export-copy-issue-markdown" href="#" >Copy as Markdown Issue</a></li>
-                      <li><a id="export-copy-markdown" href="#" >Copy as Markdown Link</a></li>
-                      <li><a id="export-copy-markdown" href="#" >Copy as Markdown Link with Preview</a></li>
+                      <li><a id="export-copy-issue-markdown" href="#" onClick={() => playground.exporter.copyAsMarkdownIssue()} >Copy as Markdown Issue</a></li>
+                      <li><a id="export-copy-markdown" href="#" onClick={() => playground.exporter.copyForChat()} >Copy as Markdown Link</a></li>
+                      <li><a id="export-copy-markdown" href="#" onClick={() => playground.exporter.copyForChatWithPreview()} >Copy as Markdown Link with Preview</a></li>
                       <li role="separator" className="divider"></li>
-                      <li><a id="export-copy-markdown" href="#" >Open in TypeScript AST Viewer</a></li>
+                      <li><a id="export-copy-markdown" href="#" onClick={() => playground.exporter.openInTSAST()} >Open in TypeScript AST Viewer</a></li>
                       <li role="separator" className="divider"></li>
-                      <li><a id="export-open-code-sandbox" href="#">Open in CodeSandbox</a></li>
-                      <li><a id="export-open-stackblitz" href="#" >Open in StackBlitz</a></li>
+                      <li><a id="export-open-code-sandbox" href="#" onClick={() => playground.exporter.openProjectInCodeSandbox()}>Open in CodeSandbox</a></li>
+                      <li><a id="export-open-stackblitz" href="#" onClick={() => playground.exporter.openProjectInStackBlitz()}>Open in StackBlitz</a></li>
                     </ul>
                   </li>
                 </ul>
