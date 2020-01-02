@@ -1,4 +1,5 @@
 import { PlaygroundConfig } from './'
+import lzstring from './vendor/lzstring.min'
 
 const globalishObj: any = typeof globalThis !== 'undefined' ? globalThis : window || {}
 globalishObj.typeDefinitions = {}
@@ -151,16 +152,10 @@ const addModuleToRuntime = async (mod: string, path: string, config: ATAConfig) 
   const isDeno = path && path.indexOf('https://') === 0
 
   const dtsFileURL = isDeno ? path : unpkgURL(mod, path)
-  const dtsResponse = await config.fetcher(dtsFileURL)
 
-  if (!dtsResponse.ok) {
-    return errorMsg(`Could not get root d.ts file for the module '${mod}' at ${path}`, dtsResponse, config)
-  }
-
-  // TODO: handle checking for a resolve to index.d.ts whens someone imports the folder
-  let content = await dtsResponse.text()
+  const content = await getCachedDTSString(config, dtsFileURL)
   if (!content) {
-    return errorMsg(`Could not get root d.ts file for the module '${mod}' at ${path}`, dtsResponse, config)
+    return errorMsg(`Could not get root d.ts file for the module '${mod}' at ${path}`, {}, config)
   }
 
   // Now look and grab dependent modules where you need the
@@ -243,6 +238,40 @@ const getModuleAndRootDefTypePath = async (packageName: string, config: ATAConfi
   }
 }
 
+const getCachedDTSString = async (config: ATAConfig, url: string) => {
+  const cached = localStorage.getItem(url)
+  if (cached) {
+    const [dateString, text] = cached.split('-=-^-=-')
+    const cachedDate = new Date(dateString)
+    const now = new Date()
+
+    const cacheTimeout = 604800000 // 1 week
+    // const cacheTimeout = 60000 // 1 min
+
+    if (now.getTime() - cachedDate.getTime() < cacheTimeout) {
+      return lzstring.decompressFromUTF16(text)
+    } else {
+      config.logger.log('Skipping cache for ', url)
+    }
+  }
+
+  const response = await config.fetcher(url)
+  if (!response.ok) {
+    return errorMsg(`Could not get DTS response for the module at ${url}`, response, config)
+  }
+
+  // TODO: handle checking for a resolve to index.d.ts whens someone imports the folder
+  let content = await response.text()
+  if (!content) {
+    return errorMsg(`Could not get text for DTS response at ${url}`, response, config)
+  }
+
+  const now = new Date()
+  const cacheContent = `${now.toISOString()}-=-^-=-${lzstring.compressToUTF16(content)}`
+  localStorage.setItem(url, cacheContent)
+  return content
+}
+
 const getReferenceDependencies = async (sourceCode: string, mod: string, path: string, config: ATAConfig) => {
   var match
   if (sourceCode.indexOf('reference path') > 0) {
@@ -254,22 +283,10 @@ const getReferenceDependencies = async (sourceCode: string, mod: string, path: s
         let newPath = mapRelativePath(relativePath, path)
         if (newPath) {
           const dtsRefURL = unpkgURL(mod, newPath)
-          const dtsReferenceResponse = await config.fetcher(dtsRefURL)
-          if (!dtsReferenceResponse.ok) {
-            return errorMsg(
-              `Could not get ${newPath} for a reference link in the module '${mod}' from ${path}`,
-              dtsReferenceResponse,
-              config
-            )
-          }
 
-          let dtsReferenceResponseText = await dtsReferenceResponse.text()
+          const dtsReferenceResponseText = await getCachedDTSString(config, dtsRefURL)
           if (!dtsReferenceResponseText) {
-            return errorMsg(
-              `Could not get ${newPath} for a reference link for the module '${mod}' from ${path}`,
-              dtsReferenceResponse,
-              config
-            )
+            return errorMsg(`Could not get root d.ts file for the module '${mod}' at ${path}`, {}, config)
           }
 
           await getDependenciesForModule(dtsReferenceResponseText, mod, newPath, config)
