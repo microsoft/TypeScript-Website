@@ -225,5 +225,6 @@ export const createTypeScriptSandbox = (
     getCompilerOptions,
     supportedVersions,
     lzstring,
+    language,
   }
 }

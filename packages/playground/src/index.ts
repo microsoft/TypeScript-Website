@@ -16,6 +16,7 @@ import { showDTSPlugin } from './sidebar/showDTS'
 import { createExporter } from './exporter'
 import { createUI } from './createUI'
 import { getExampleSourceCode } from './getExample'
+import { ExampleHighlighter } from './monaco/ExampleHighlight'
 
 /** The interface of all sidebar plugins */
 export interface PlaygroundPlugin {
@@ -178,6 +179,9 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
       }
     })
   }
+
+  // Sets up a way to click between examples
+  monaco.languages.registerLinkProvider(sandbox.language, new ExampleHighlighter())
 
   const ui = createUI()
   const exporter = createExporter(sandbox, monaco, ui)
