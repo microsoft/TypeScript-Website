@@ -17,6 +17,7 @@ import { createExporter } from './exporter'
 import { createUI } from './createUI'
 import { getExampleSourceCode } from './getExample'
 import { ExampleHighlighter } from './monaco/ExampleHighlight'
+import { createConfigDropdown } from './createConfigDropdown'
 
 /** The interface of all sidebar plugins */
 export interface PlaygroundPlugin {
@@ -128,7 +129,7 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
     versionsMenu.appendChild(li)
   })
 
-  // Support dropdowns on the
+  // Support dropdowns
   document.querySelectorAll('.navbar-sub li.dropdown > a').forEach(link => {
     const a = link as HTMLAnchorElement
     a.onclick = _e => {
@@ -144,9 +145,21 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
       exampleContainer.style.height = playgroundContainer.style.height
 
       const editorContainer = document.getElementById('editor-container')!
-      exampleContainer.style.width = editorContainer.style.width
+      const width = window.localStorage.getItem('dragbar-x')
+      exampleContainer.style.width = `calc(100% - ${width}px - 4rem)`
     }
   })
+
+  document.querySelectorAll('button.examples-close').forEach(b => {
+    const button = b as HTMLButtonElement
+    button.onclick = (e: any) => {
+      const button = e.target as HTMLButtonElement
+      const navLI = button.closest('li')
+      navLI?.classList.remove('open')
+    }
+  })
+
+  createConfigDropdown(sandbox)
 
   // Support grabbing examples
   if (location.hash.startsWith('#example')) {

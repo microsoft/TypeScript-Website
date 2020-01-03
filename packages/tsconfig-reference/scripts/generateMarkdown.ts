@@ -67,6 +67,8 @@ languages.forEach(lang => {
     options: { name: string; anchor: string }[];
   }[];
 
+  const optionsSummary = {} as { [id: string]: { display: string; oneliner: string } };
+
   orderedCategories.forEach(categoryID => {
     const category = Object.values(categories).find((c: any) => c.key === categoryID);
     assert.ok(category, "Could not find category for ID: " + categoryID);
@@ -105,6 +107,11 @@ languages.forEach(lang => {
       assert.ok(optionFile.data.display, "Could not find a 'display' for option: " + option.name + " in " + lang);
       // prettier-ignore
       assert.ok(optionFile.data.oneline, "Could not find a 'oneline' for option: " + option.name + " in " + lang);
+
+      optionsSummary[option.name] = {
+        display: optionFile.data.display,
+        oneliner: optionFile.data.oneline
+      };
 
       markdownChunks.push("<section class='compiler-option'>");
 
@@ -190,6 +197,11 @@ languages.forEach(lang => {
   writeFileSync(
     join(__dirname, "..", "output", lang + ".json"),
     JSON.stringify({ categories: allCategories })
+  );
+
+  writeFileSync(
+    join(__dirname, "..", "output", lang + "-summary.json"),
+    JSON.stringify({ options: optionsSummary })
   );
 
   // Do a quick linter at the end

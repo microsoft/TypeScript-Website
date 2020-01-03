@@ -12,6 +12,7 @@ type Props = {
   pageContext: {
     lang: string
     examplesTOC: typeof import("../../static/js/examples/en.json")
+    optionsSummary: { display: string; id: string; oneliner: string }[];
   }
 }
 
@@ -19,6 +20,9 @@ const Index = (props: Props) => {
   useEffect(() => {
     if ("playgroundLoaded" in window) return
     window["playgroundLoaded"] = true
+
+    // @ts-ignore
+    window.optionsSummary = props.pageContext.optionsSummary
 
     const getLoaderScript = document.createElement('script');
     getLoaderScript.src = withPrefix("/js/vs.loader.js");
@@ -80,11 +84,6 @@ markdown("OK")`
     document.body.appendChild(getLoaderScript);
   })
 
-  const closePopovers = (e: MouseEvent) => {
-    const button = e.target as HTMLButtonElement
-    const navLI = button.closest("li")
-    navLI?.classList.remove("open")
-  }
 
   return (
     <>
@@ -95,17 +94,18 @@ markdown("OK")`
             <li className="name"><span>Playground</span></li>
 
             <li className="dropdown">
-              <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Examples <span className="caret"></span></a>
-              <ul className="examples-dropdown" id="examples" >
-                <button className="examples-close" onClick={closePopovers}>Close</button>
-                <RenderExamples defaultSection="JavaScript" sections={["JavaScript", "TypeScript"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
+              <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Config <span className="caret"></span></a>
+              <ul className="examples-dropdown">
+                <div className="info" id="config-container">
+                </div>
               </ul>
             </li>
 
             <li className="dropdown">
-              <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Config <span className="caret"></span></a>
-              <ul className="dropdown-menu">
-                <div className="info" id="config"></div>
+              <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Examples <span className="caret"></span></a>
+              <ul className="examples-dropdown" id="examples" >
+                <button className="examples-close">Close</button>
+                <RenderExamples defaultSection="JavaScript" sections={["JavaScript", "TypeScript"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
               </ul>
             </li>
 

@@ -1,7 +1,3 @@
-export const setupExampleSourceCode = (lang: string, exampleID: string) => {
-  // getExampleSourceCode(lang, exampleID)
-}
-
 export const getExampleSourceCode = async (prefix: string, lang: string, exampleID: string) => {
   try {
     const site = `${document.location.protocol}//${document.location.host}${prefix}`
