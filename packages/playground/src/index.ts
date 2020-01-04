@@ -142,9 +142,8 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
         .item(0)!
 
       const playgroundContainer = document.getElementById('playground-container')!
-      exampleContainer.style.height = playgroundContainer.style.height
+      exampleContainer.style.height = `calc(${playgroundContainer.getBoundingClientRect().height + 26}px - 4rem)`
 
-      const editorContainer = document.getElementById('editor-container')!
       const width = window.localStorage.getItem('dragbar-x')
       exampleContainer.style.width = `calc(100% - ${width}px - 4rem)`
     }

@@ -1,26 +1,55 @@
 type Sandbox = ReturnType<typeof import('typescript-sandbox').createTypeScriptSandbox>
 
-declare const optionsSummary: { [id: string]: { display: string; oneliner: string } }
+type OptionsSummary = {
+  display: string
+  oneliner: string
+  id: string
+  categoryID: string
+  categoryDisplay: string
+}
+
+declare const optionsSummary: OptionsSummary[]
 
 export const createConfigDropdown = (sandbox: Sandbox) => {
   const container = document.getElementById('config-container')!
 
-  console.log('go')
   const compilerOpts = sandbox.getCompilerOptions()
   const boolOptions = Object.keys(sandbox.getCompilerOptions()).filter(k => typeof compilerOpts[k] === 'boolean')
-  console.log('opts', Object.keys(sandbox.getCompilerOptions()))
 
-  console.log(boolOptions)
-  boolOptions.forEach(option => {
-    const li = document.createElement('li')
-    const label = document.createElement('label')
-    label.textContent = optionsSummary[option].oneliner
-    const button = document.createElement('button')
-    button.textContent = option
+  // we want to make sections of categories
+  const categoryMap = {} as { [category: string]: { [optID: string]: OptionsSummary } }
+  boolOptions.forEach(optID => {
+    const summary = optionsSummary.find(sum => optID === sum.id)!
 
-    li.appendChild(label)
-    li.appendChild(button)
-    container.appendChild(li)
+    const existingCategory = categoryMap[summary.categoryID]
+    if (!existingCategory) categoryMap[summary.categoryID] = {}
+
+    categoryMap[summary.categoryID][optID] = summary
+  })
+
+  Object.keys(categoryMap).forEach(categoryID => {
+    const categoryDiv = document.createElement('div')
+    const header = document.createElement('h4')
+    const ol = document.createElement('ol')
+
+    Object.keys(categoryMap[categoryID]).forEach(optID => {
+      const optSummary = categoryMap[categoryID][optID]
+      header.textContent = optSummary.categoryDisplay
+
+      const li = document.createElement('li')
+      const label = document.createElement('label')
+      label.textContent = optSummary.oneliner
+      const button = document.createElement('button')
+      button.textContent = optSummary.display
+
+      li.appendChild(label)
+      li.appendChild(button)
+      ol.appendChild(li)
+    })
+
+    categoryDiv.appendChild(header)
+    categoryDiv.appendChild(ol)
+    container.appendChild(categoryDiv)
   })
 
   // .map(([key, value]) => {

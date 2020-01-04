@@ -67,7 +67,13 @@ languages.forEach(lang => {
     options: { name: string; anchor: string }[];
   }[];
 
-  const optionsSummary = {} as { [id: string]: { display: string; oneliner: string } };
+  const optionsSummary = [] as {
+    display: string;
+    oneliner: string;
+    id: string;
+    categoryID: string;
+    categoryDisplay: string;
+  }[];
 
   orderedCategories.forEach(categoryID => {
     const category = Object.values(categories).find((c: any) => c.key === categoryID);
@@ -92,6 +98,7 @@ languages.forEach(lang => {
     const optionsForCategory = options.filter(o => o.categoryCode === category.code);
 
     const localisedOptions = [] as { name: string; anchor: string }[];
+
     optionsForCategory.forEach(option => {
       const mdPath = join("options", option.name + ".md");
       const fullPath = join(__dirname, "..", "copy", lang, mdPath);
@@ -108,10 +115,13 @@ languages.forEach(lang => {
       // prettier-ignore
       assert.ok(optionFile.data.oneline, "Could not find a 'oneline' for option: " + option.name + " in " + lang);
 
-      optionsSummary[option.name] = {
+      optionsSummary.push({
+        id: option.name,
         display: optionFile.data.display,
-        oneliner: optionFile.data.oneline
-      };
+        oneliner: optionFile.data.oneline,
+        categoryID: categoryID,
+        categoryDisplay: categoryFile.data.display
+      });
 
       markdownChunks.push("<section class='compiler-option'>");
 

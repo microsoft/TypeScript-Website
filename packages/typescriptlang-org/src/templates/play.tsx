@@ -12,7 +12,7 @@ type Props = {
   pageContext: {
     lang: string
     examplesTOC: typeof import("../../static/js/examples/en.json")
-    optionsSummary: { display: string; id: string; oneliner: string }[];
+    optionsSummary: any // this is just passed through to the playground JS library at this point
   }
 }
 
@@ -96,7 +96,9 @@ markdown("OK")`
             <li className="dropdown">
               <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Config <span className="caret"></span></a>
               <ul className="examples-dropdown">
+                <h3>Config</h3>
                 <div className="info" id="config-container">
+                  <button className="examples-close">Close</button>
                 </div>
               </ul>
             </li>
@@ -112,6 +114,7 @@ markdown("OK")`
             <li className="dropdown">
               <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">What's new <span className="caret"></span></a>
               <ul className="examples-dropdown" id="whatisnew">
+                <button className="examples-close">Close</button>
                 <RenderExamples defaultSection="3.7" sections={["3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
               </ul>
             </li>

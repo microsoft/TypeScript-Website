@@ -90,6 +90,29 @@
     // Examples dropdown
     &.dropdown ul.examples-dropdown {
       width: 800px;
+      overflow-y: scroll;
+      padding: 2rem;
+
+      h3 {
+        font-size: 2em;
+        font-weight: 600;
+        height: 2em;
+        margin: 0;
+      }
+
+      #config-container {
+        display: flex;
+        flex-wrap: wrap;
+
+        > div {
+          width: 50%;
+
+          ol {
+            margin: 0;
+            padding: 0;
+          }
+        }
+      }
     }
   }
 }
