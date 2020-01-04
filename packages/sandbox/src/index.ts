@@ -150,6 +150,12 @@ export const createTypeScriptSandbox = (
     defaults.setCompilerOptions(opts)
   }
 
+  const setCompilerSettings = (opts: CompilerOptions) => {
+    config.logger.log('[Compiler] Setting compiler options: ', opts)
+    compilerOptions = opts
+    defaults.setCompilerOptions(opts)
+  }
+
   const getCompilerOptions = () => {
     return compilerOptions
   }
@@ -223,6 +229,7 @@ export const createTypeScriptSandbox = (
     createTSProgram,
     updateCompilerSettings,
     getCompilerOptions,
+    setCompilerSettings,
     supportedVersions,
     lzstring,
     language,

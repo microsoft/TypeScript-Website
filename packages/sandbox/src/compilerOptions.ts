@@ -41,8 +41,8 @@ export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monac
     allowJs: config.useJavaScript,
     declaration: true,
 
-    experimentalDecorators: false,
-    emitDecoratorMetadata: false,
+    experimentalDecorators: true,
+    emitDecoratorMetadata: true,
 
     target: monaco.languages.typescript.ScriptTarget.ES2017,
     jsx: monaco.languages.typescript.JsxEmit.None,

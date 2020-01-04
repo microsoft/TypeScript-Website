@@ -111,6 +111,12 @@
             margin: 0;
             padding: 0;
           }
+          li {
+            margin-bottom: 0.5rem;
+          }
+          label > span {
+            font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+          }
         }
       }
     }

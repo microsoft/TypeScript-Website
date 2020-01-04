@@ -32,18 +32,27 @@ export const createConfigDropdown = (sandbox: Sandbox) => {
     const header = document.createElement('h4')
     const ol = document.createElement('ol')
 
+    // <input type="checkbox" id="subscribeNews" name="subscribe" value="newsletter">
+    // <label for="subscribeNews">Subscribe to newsletter?</label>
+
     Object.keys(categoryMap[categoryID]).forEach(optID => {
       const optSummary = categoryMap[categoryID][optID]
       header.textContent = optSummary.categoryDisplay
 
       const li = document.createElement('li')
       const label = document.createElement('label')
-      label.textContent = optSummary.oneliner
-      const button = document.createElement('button')
-      button.textContent = optSummary.display
+      label.innerHTML = `<span>${optSummary.id}</span><br/>${optSummary.oneliner}`
 
+      const input = document.createElement('input')
+      input.value = optSummary.id
+      input.type = 'checkbox'
+      input.name = optSummary.id
+      input.id = 'option-' + optSummary.id
+
+      label.htmlFor = input.id
+
+      li.appendChild(input)
       li.appendChild(label)
-      li.appendChild(button)
       ol.appendChild(li)
     })
 
@@ -51,14 +60,15 @@ export const createConfigDropdown = (sandbox: Sandbox) => {
     categoryDiv.appendChild(ol)
     container.appendChild(categoryDiv)
   })
-
-  // .map(([key, value]) => {
-  //   return `<li style="margin: 0; padding: 0; ${isJS ? "opacity: 0.5" : ""}" title="${UI.tooltips[key] ||
-  //     ""}"><label class="button" style="user-select: none; display: block;"><input class="pointer" onchange="javascript:UI.updateCompileOptions(event.target.name, event.target.checked);event.stopPropagation();" name="${key}" type="checkbox" ${
-  //     value ? "checked" : ""
-  //   }></input>${key}</label></li>`;
-  // })
-  // .join("\n")}
 }
 
-export const updatecreateConfigDropdown = (sandbox: Sandbox) => {}
+export const updateConfigDropdownForCompilerOptions = (sandbox: Sandbox) => {
+  const compilerOpts = sandbox.getCompilerOptions()
+  const boolOptions = Object.keys(sandbox.getCompilerOptions()).filter(k => typeof compilerOpts[k] === 'boolean')
+
+  boolOptions.forEach(opt => {
+    const inputID = 'option-' + opt
+    const input = document.getElementById(inputID) as HTMLInputElement
+    input.checked = compilerOpts[opt]
+  })
+}

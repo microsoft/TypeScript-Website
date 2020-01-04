@@ -17,7 +17,7 @@ import { createExporter } from './exporter'
 import { createUI } from './createUI'
 import { getExampleSourceCode } from './getExample'
 import { ExampleHighlighter } from './monaco/ExampleHighlight'
-import { createConfigDropdown } from './createConfigDropdown'
+import { createConfigDropdown, updateConfigDropdownForCompilerOptions } from './createConfigDropdown'
 
 /** The interface of all sidebar plugins */
 export interface PlaygroundPlugin {
@@ -159,6 +159,7 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
   })
 
   createConfigDropdown(sandbox)
+  updateConfigDropdownForCompilerOptions(sandbox)
 
   // Support grabbing examples
   if (location.hash.startsWith('#example')) {
