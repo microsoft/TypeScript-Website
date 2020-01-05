@@ -11,7 +11,10 @@ type OptionsSummary = {
 declare const optionsSummary: OptionsSummary[]
 
 export const createConfigDropdown = (sandbox: Sandbox) => {
-  const container = document.getElementById('config-container')!
+  const configContainer = document.getElementById('config-container')!
+  const container = document.createElement('div')
+  container.id = 'boolean-options-container'
+  configContainer.appendChild(container)
 
   const compilerOpts = sandbox.getCompilerOptions()
   const boolOptions = Object.keys(sandbox.getCompilerOptions()).filter(k => typeof compilerOpts[k] === 'boolean')
@@ -32,9 +35,6 @@ export const createConfigDropdown = (sandbox: Sandbox) => {
     const header = document.createElement('h4')
     const ol = document.createElement('ol')
 
-    // <input type="checkbox" id="subscribeNews" name="subscribe" value="newsletter">
-    // <label for="subscribeNews">Subscribe to newsletter?</label>
-
     Object.keys(categoryMap[categoryID]).forEach(optID => {
       const optSummary = categoryMap[categoryID][optID]
       header.textContent = optSummary.categoryDisplay
@@ -48,6 +48,12 @@ export const createConfigDropdown = (sandbox: Sandbox) => {
       input.type = 'checkbox'
       input.name = optSummary.id
       input.id = 'option-' + optSummary.id
+
+      input.onchange = () => {
+        const newUpdate: any = {}
+        newUpdate[optSummary.id] = input.checked
+        sandbox.updateCompilerSettings(newUpdate)
+      }
 
       label.htmlFor = input.id
 
@@ -69,6 +75,8 @@ export const updateConfigDropdownForCompilerOptions = (sandbox: Sandbox) => {
   boolOptions.forEach(opt => {
     const inputID = 'option-' + opt
     const input = document.getElementById(inputID) as HTMLInputElement
-    input.checked = compilerOpts[opt]
+    input.checked = !!compilerOpts[opt]
   })
 }
+
+export const setupJSONToggleForConfig = (sandbox: Sandbox) => {}

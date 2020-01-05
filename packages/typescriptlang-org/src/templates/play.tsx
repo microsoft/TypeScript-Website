@@ -99,6 +99,54 @@ markdown("OK")`
                 <h3>Config</h3>
                 <div className="info" id="config-container">
                   <button className="examples-close">Close</button>
+
+                  <div className="compiler-dropdowns">
+                    <label className="select">
+                      <span className="select-label"><code>Target</code></span>
+                      <select>
+                        <option value="ES3">ES3</option>
+                        <option value="ES5">ES5</option>
+                        <option value="ES2015">ES2015</option>
+                        <option value="ES2016">ES2016</option>
+                        <option value="ES2017">ES2017</option>
+                        <option value="ES2018">ES2018</option>
+                        <option value="ES2019">ES2019</option>
+                        <option value="ES2020">ES2020</option>
+                        <option value="ESNext">ESNext</option>
+                      </select>
+                    </label>
+
+                    <label className="select">
+                      <span className="select-label">JSX</span>
+                      <select>
+                        <option value="None">None</option>
+                        <option value="Preserve">Preserve</option>
+                        <option value="React">React</option>
+                        <option value="ReactNative">ReactNative</option>
+                      </select>
+                    </label>
+
+                    <label className="select">
+                      <span className="select-label">Module</span>
+                      <select>
+                        <option value="None">None</option>
+                        <option value="CommonJS">CommonJS</option>
+                        <option value="AMD">AMD</option>
+                        <option value="UMD">UMD</option>
+                        <option value="System">System</option>
+                        <option value="ES2015">ES2015</option>
+                        <option value="ESNext">ESNext</option>
+                      </select>
+                    </label>
+
+                    <label className="select">
+                      <span className="select-label">Lang</span>
+                      <select>
+                        <option>TypeScript</option>
+                        <option>JavaScript</option>
+                      </select>
+                    </label>
+                  </div>
                 </div>
               </ul>
             </li>
