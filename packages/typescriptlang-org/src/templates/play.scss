@@ -119,6 +119,31 @@
           }
         }
       }
+      #compiler-dropdowns {
+        display: flex;
+        margin: 1.5rem 0;
+
+        label {
+          width: 33%;
+          font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+
+          select {
+            margin-left: 1rem;
+          }
+
+          span.compiler-flag-blurb {
+            display: block;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+          }
+        }
+      }
+    }
+    a.compiler_info_link {
+      &::before {
+        content: "i";
+      }
+      color: green;
+      border: 1px red solid;
     }
   }
 }

@@ -1,4 +1,5 @@
 type Sandbox = ReturnType<typeof import('typescript-sandbox').createTypeScriptSandbox>
+type Monaco = typeof import('monaco-editor')
 
 type OptionsSummary = {
   display: string
@@ -10,7 +11,7 @@ type OptionsSummary = {
 
 declare const optionsSummary: OptionsSummary[]
 
-export const createConfigDropdown = (sandbox: Sandbox) => {
+export const createConfigDropdown = (sandbox: Sandbox, monaco: Monaco) => {
   const configContainer = document.getElementById('config-container')!
   const container = document.createElement('div')
   container.id = 'boolean-options-container'
@@ -66,9 +67,23 @@ export const createConfigDropdown = (sandbox: Sandbox) => {
     categoryDiv.appendChild(ol)
     container.appendChild(categoryDiv)
   })
+
+  const dropdownContainer = document.getElementById('compiler-dropdowns')!
+
+  const target = optionsSummary.find(sum => sum.id === 'target')!
+  const targetSwitch = createSelect(target.display, 'target', target.oneliner, monaco.languages.typescript.ScriptTarget)
+  dropdownContainer.appendChild(targetSwitch)
+
+  const jsx = optionsSummary.find(sum => sum.id === 'jsx')!
+  const jsxSwitch = createSelect(jsx.display, 'jsx', jsx.oneliner, monaco.languages.typescript.JsxEmit)
+  dropdownContainer.appendChild(jsxSwitch)
+
+  const modSum = optionsSummary.find(sum => sum.id === 'module')!
+  const moduleSwitch = createSelect(modSum.display, 'module', modSum.oneliner, monaco.languages.typescript.ModuleKind)
+  dropdownContainer.appendChild(moduleSwitch)
 }
 
-export const updateConfigDropdownForCompilerOptions = (sandbox: Sandbox) => {
+export const updateConfigDropdownForCompilerOptions = (sandbox: Sandbox, monaco: Monaco) => {
   const compilerOpts = sandbox.getCompilerOptions()
   const boolOptions = Object.keys(sandbox.getCompilerOptions()).filter(k => typeof compilerOpts[k] === 'boolean')
 
@@ -77,6 +92,55 @@ export const updateConfigDropdownForCompilerOptions = (sandbox: Sandbox) => {
     const input = document.getElementById(inputID) as HTMLInputElement
     input.checked = !!compilerOpts[opt]
   })
+
+  const compilerIDToMaps: any = {
+    module: monaco.languages.typescript.ModuleKind,
+    jsx: monaco.languages.typescript.JsxEmit,
+    target: monaco.languages.typescript.ScriptTarget,
+  }
+
+  Object.keys(compilerIDToMaps).forEach(flagID => {
+    const input = document.getElementById('compiler-select-' + flagID) as HTMLInputElement
+    const currentValue = compilerOpts[flagID]
+    const map = compilerIDToMaps[flagID]
+    // @ts-ignore
+    const realValue = map[currentValue]
+    // @ts-ignore
+    for (const option of input.children) {
+      option.selected = option.value.toLowerCase() === realValue.toLowerCase()
+    }
+  })
+}
+
+const createSelect = (title: string, id: string, blurb: string, option: any) => {
+  const label = document.createElement('label')
+  const textToDescribe = document.createElement('span')
+  textToDescribe.textContent = title + ':'
+  label.appendChild(textToDescribe)
+
+  const select = document.createElement('select')
+  select.id = 'compiler-select-' + id
+  label.appendChild(select)
+
+  Object.keys(option)
+    .filter(key => isNaN(Number(key)))
+    .forEach(key => {
+      // hide Latest
+      if (key === 'Latest') return
+
+      const option = document.createElement('option')
+      option.value = key
+      option.text = key
+
+      select.appendChild(option)
+    })
+
+  const span = document.createElement('span')
+  span.textContent = blurb
+  span.classList.add('compiler-flag-blurb')
+  label.appendChild(span)
+
+  return label
 }
 
 export const setupJSONToggleForConfig = (sandbox: Sandbox) => {}

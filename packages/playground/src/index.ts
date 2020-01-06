@@ -158,8 +158,8 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
     }
   })
 
-  createConfigDropdown(sandbox)
-  updateConfigDropdownForCompilerOptions(sandbox)
+  createConfigDropdown(sandbox, monaco)
+  updateConfigDropdownForCompilerOptions(sandbox, monaco)
 
   // Support grabbing examples
   if (location.hash.startsWith('#example')) {
