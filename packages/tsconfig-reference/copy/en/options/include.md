@@ -1,5 +1,6 @@
 ---
 display: "Include"
+oneline: "Files or patterns to include in this project"
 ---
 
 Specifies an array of filenames or patterns to include in the program.

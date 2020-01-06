@@ -1,5 +1,6 @@
 ---
 display: "Allow Unreachable Code"
+oneline: "Error when code will never be called"
 ---
 
 Set to false to disable warnings about unreachable code.

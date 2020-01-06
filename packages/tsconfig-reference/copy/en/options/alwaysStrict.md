@@ -1,5 +1,6 @@
 ---
 display: "Always Strict"
+oneline: "Ensure 'use strict' is always emitted"
 ---
 
 Ensures that your files are parsed in the ECMAScript strict mode, and emit "use strict" for each source file.

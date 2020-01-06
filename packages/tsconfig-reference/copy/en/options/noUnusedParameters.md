@@ -1,5 +1,6 @@
 ---
 display: "No Unused Parameters"
+oneline: "Error when a parameter isn't used"
 ---
 
 Report errors on unused parameters in functions.

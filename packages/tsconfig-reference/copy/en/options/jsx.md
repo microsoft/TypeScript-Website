@@ -1,5 +1,6 @@
 ---
 display: "JSX"
+oneline: "Control how JSX is emitted"
 ---
 
 Controls how JSX constructs are emitted in JavaScript files.

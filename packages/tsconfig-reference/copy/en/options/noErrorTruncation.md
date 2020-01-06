@@ -1,12 +1,11 @@
 ---
 display: "No Error Truncation"
+oneline: "Do not truncate error messages"
 ---
-
-TODO: Declare deprecated?!
 
 Do not truncate error messages.
 
-With `false`
+With `false`, the default.
 
 ```ts twoslash
 // @errors: 2322 2454

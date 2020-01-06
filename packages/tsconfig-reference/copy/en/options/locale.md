@@ -1,5 +1,6 @@
 ---
 display: "Locale"
+oneline: "Set the language of the tsc output"
 ---
 
 TypeScript supports a number of languages, however this cannot be set via the `tsconfig.json`, only

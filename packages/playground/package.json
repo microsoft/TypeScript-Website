@@ -1,0 +1,22 @@
+{
+  "name": "typescript-playground",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "typings": "../typescriptlang-org/static/js/playground/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "bootstrap": "echo 'NOOP'"
+  },
+  "devDependencies": {
+    "typescript-playground": "*",
+    "@types/jest": "^24.0.24",
+    "monaco-editor": "~0.19.0",
+    "monaco-typescript": "^3.6.1",
+    "typescript": "^3.7.4"
+  }
+}

@@ -1,5 +1,6 @@
 ---
 display: "Charset"
+oneline: "Manually set the text encoding for reading files"
 ---
 
 In prior versions of TypeScript, this controlled what encoding was used when reading text files from disk.

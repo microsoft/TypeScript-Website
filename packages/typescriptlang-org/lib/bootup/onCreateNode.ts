@@ -15,6 +15,7 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
 }) => {
   const { createNodeField } = actions
 
+  // This could move to pageContext TBH in the createNode
   if (isTSConfigNode(node)) {
     const categoryPath = node.context.categoriesPath
     const categoriesJSON = JSON.parse(readFileSync(categoryPath, "utf8"))

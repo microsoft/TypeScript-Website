@@ -1,5 +1,6 @@
 ---
 display: "Skip Lib Check"
+oneline: "Skip type checking of declaration files"
 ---
 
 Skip type checking of declaration files.

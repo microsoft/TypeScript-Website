@@ -1,5 +1,6 @@
 ---
 display: "JSX Factory"
+oneline: "Control the function emitted by JSX"
 ---
 
 Changes the function called in `.js` files when compiling JSX Elements.

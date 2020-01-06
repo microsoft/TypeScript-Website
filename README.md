@@ -10,6 +10,9 @@ yarn bootstrap
 code .
 ```
 
+Working on this repo is done by running `yarn start` - this starts up the website on port `8000` and creates a
+builder worker for every package in the repo, so if you make a change outside of the site it will compile and lint etc.
+
 # Website Packages
 
 ## TypeScriptLang-Org
@@ -20,18 +23,14 @@ The main website for TypeScript, a Gatsby website which is statically deployed.
 yarn start
 ```
 
+## Sandbox
+
+The editor aspect of the TypeScript Playground REPL, useable for all sites which want to show a monaco editor
+with TypeScript or JavaScript code.
+
 ## Playground
 
-A React component for the TypeScript playground base component. Not the one available on
-the site, but one you can use in other websites for showing off your APIs.
-
-You can work on the playground by running:
-
-```sh
-yarn playground
-```
-
-Then opening: http://localhost:1234 - which is the below package.
+The JS code as an AMD module for the playground which is loaded at runtime in the Playground website.
 
 # Doc Packages
 
@@ -54,7 +53,7 @@ yarn workspace tsconfig-reference run test
 # or to just run the linter without a build
 yarn workspace tsconfig-reference run lint
 
-# or to just one one linter
+# or to just one one linter for a single doc
 yarn workspace tsconfig-reference run lint resolveJson
 ```
 

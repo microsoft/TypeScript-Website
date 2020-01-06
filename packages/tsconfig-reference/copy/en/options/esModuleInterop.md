@@ -1,5 +1,6 @@
 ---
-display: "Es Module Interop"
+display: "ES Module Interop"
+oneline: "Emit additional JS to ease support for importing commonjs modules"
 ---
 
 Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports.

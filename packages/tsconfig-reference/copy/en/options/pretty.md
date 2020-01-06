@@ -1,5 +1,6 @@
 ---
 display: "Pretty"
+oneline: "Use color and formatting to make compiler errors easier to read"
 ---
 
 Stylize errors and messages using color and context, this is on by default &mdash; offers you a chance to have less terse,

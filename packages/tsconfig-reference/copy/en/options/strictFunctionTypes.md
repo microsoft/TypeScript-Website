@@ -1,5 +1,6 @@
 ---
 display: "Strict Function Types"
+oneline: "Ensure that function parameters are consistent"
 ---
 
 When enabled, this flag causes functions parameters to be checked more correctly.

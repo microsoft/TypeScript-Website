@@ -1,5 +1,6 @@
 ---
 display: "Generate CPU Profile"
+oneline: "Emit a v8 CPU profile of the compiler run for debugging"
 ---
 
 This option gives you the chance to have TypeScript emit a v8 CPU profile during the compiler run. The CPU profile can provide insight into why your builds may be slow.

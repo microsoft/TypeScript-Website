@@ -1,5 +1,6 @@
 ---
 display: "Out Dir"
+oneline: "Set an output folder for all emitted files"
 ---
 
 If specified, `.js` (as well as `.d.ts`, `.js.map`, etc.) files will be emitted into this directory.

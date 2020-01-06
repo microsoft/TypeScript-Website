@@ -68,7 +68,13 @@ export const relatedTo: [AnOption, AnOption[]][] = [
 
   ["types", ["typeRoots"]],
   ["typeRoots", ["types"]],
-  ["declaration", ["emitDeclarationOnly"]]
+  ["declaration", ["emitDeclarationOnly"]],
+
+  ["noLib", ["lib"]],
+
+  ["allowJs", ["checkJs", "emitDeclarationOnly"]],
+  ["checkJs", ["allowJs", "emitDeclarationOnly"]],
+  ["declaration", ["declarationDir", "emitDeclarationOnly"]]
 ];
 
 /**
@@ -195,6 +201,7 @@ export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
   "2.8": ["emitDeclarationOnly"],
   "2.7": ["strictPropertyInitialization", "esModuleInterop"],
   "2.6": ["strictFunctionTypes"],
+  "2.4": ["noStrictGenericChecks"],
   "2.3": ["strict", "downlevelIteration", "init"],
   "2.2": ["jsx"],
   "2.1": ["extends", "alwaysStrict"],

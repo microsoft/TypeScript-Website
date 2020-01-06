@@ -1,5 +1,6 @@
 ---
 display: "Max Node Module JS Depth"
+oneline: "How deep should TypeScript run type checking in node_modules"
 ---
 
 The maximum dependency depth to search under `node_modules` and load JavaScript files.

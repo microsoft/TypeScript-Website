@@ -1,0 +1,292 @@
+// The subnav beginning with "Playground"
+.navbar-sub {
+  clear: both;
+  display: flex;
+  justify-content: space-between;
+  height: 3rem;
+
+  > ul {
+    display: flex;
+    padding: 0;
+    margin: 0;
+  }
+
+  li.name {
+    width: 200px;
+    font-size: 1.2rem;
+    font-weight: 600;
+
+    span {
+      padding-top: 0.6rem;
+      padding-left: 1rem;
+    }
+  }
+
+  li {
+    list-style: none;
+    display: flex;
+
+    font-weight: 600;
+    font-size: 1rem;
+
+    &.divider {
+      height: 1px;
+      margin: 9px 0;
+      overflow: hidden;
+      background-color: #e5e5e5;
+    }
+
+    a {
+      display: block;
+      padding: 0.75rem 0.75rem 0.5em 0.7em;
+      text-decoration: none;
+      color: black;
+    }
+
+    &.dropdown.open ul {
+      display: block;
+    }
+
+    &.dropdown ul {
+      display: none;
+
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1000;
+      float: left;
+    }
+
+    // Menu items
+    &.dropdown ul.dropdown-menu {
+      min-width: 200px;
+      padding: 5px 0;
+      margin: 2px 0 0;
+      font-size: 14px;
+      text-align: left;
+      list-style: none;
+      background-color: #fff;
+      -webkit-background-clip: padding-box;
+      background-clip: padding-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+      overflow-y: auto;
+      max-height: calc(100vh - 150px);
+      z-index: 99;
+
+      a {
+        display: block;
+      }
+
+      li:hover {
+        color: #262626;
+        text-decoration: none;
+        background-color: #f5f5f5;
+      }
+    }
+
+    // Examples dropdown
+    &.dropdown ul.examples-dropdown {
+      width: 800px;
+      overflow-y: scroll;
+      padding: 2rem;
+
+      h3 {
+        font-size: 2em;
+        font-weight: 600;
+        height: 2em;
+        margin: 0;
+      }
+
+      #config-container #boolean-options-container {
+        display: flex;
+        flex-wrap: wrap;
+
+        > div {
+          width: 50%;
+
+          ol {
+            margin: 0;
+            padding: 0;
+          }
+          li {
+            margin-bottom: 0.5rem;
+          }
+          label > span {
+            font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+          }
+        }
+      }
+      #compiler-dropdowns {
+        display: flex;
+        margin: 1.5rem 0;
+
+        label {
+          width: 33%;
+          font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+
+          select {
+            margin-left: 1rem;
+          }
+
+          span.compiler-flag-blurb {
+            display: block;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+          }
+        }
+      }
+    }
+    a.compiler_info_link {
+      &::before {
+        content: "i";
+      }
+      color: green;
+      border: 1px red solid;
+    }
+  }
+}
+
+// The subnav which starts with "TypeScript"
+main > nav {
+  position: relative;
+  .examples-dropdown {
+    padding-left: 0;
+
+    background-color: #f2f2f2;
+    .examples {
+      background-color: #f2f2f2;
+    }
+  }
+
+  > ul {
+    li {
+      &:hover {
+        background-color: #f2f2f2;
+      }
+    }
+  }
+
+  .examples-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+
+  .examples {
+    height: auto;
+    box-shadow: none;
+  }
+}
+
+// The toolbar for the editor
+main #editor-toolbar {
+  li {
+    &:hover {
+      background-color: #f2f2f2;
+    }
+  }
+}
+
+.caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 4px dashed;
+  border-top: 4px solid;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+}
+
+#editor-toolbar ul li a:first-child {
+  padding-left: 1rem;
+}
+
+#playground-container {
+  display: flex;
+  height: 800px;
+
+  #editor-container {
+    width: calc(100% - 360px);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+
+    #monaco-editor-embed {
+      height: 700px;
+    }
+
+    #editor-toolbar {
+      height: 3rem;
+      border-bottom: 1px #c4c4c4 solid;
+      margin-right: -12px;
+      margin-left: -2rem;
+      margin-bottom: 10px;
+    }
+  }
+
+  .playground-dragbar {
+    padding: 3px;
+    cursor: col-resize;
+    background-color: white;
+    border-left: 1px #c4c4c4 solid;
+    margin-left: 10px;
+  }
+
+  .playground-sidebar {
+    flex-basis: 320px;
+    padding: 0 1em;
+    width: 320px;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+
+    .playground-plugin-container {
+      flex: 1;
+      height: 100%;
+      width: 100%;
+      overflow: scroll;
+
+      pre {
+        background-color: rgb(241, 241, 241);
+        color: black;
+        border: none;
+        width: 100%;
+      }
+    }
+
+    .playground-plugin-tabview {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 2.5rem;
+      margin-bottom: 10px;
+
+      button {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        cursor: pointer;
+        margin: 5px 10px;
+        padding: 2px 10px;
+        padding-top: 0px;
+        color: black;
+        font-size: 16px;
+        background: none;
+        color: inherit;
+        border: none;
+        cursor: pointer;
+        outline: inherit;
+
+        &.active {
+          border-bottom: 1px solid #187abf;
+        }
+      }
+    }
+
+    pre {
+      margin: 0;
+    }
+  }
+}

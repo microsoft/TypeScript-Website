@@ -67,6 +67,14 @@ languages.forEach(lang => {
     options: { name: string; anchor: string }[];
   }[];
 
+  const optionsSummary = [] as {
+    display: string;
+    oneliner: string;
+    id: string;
+    categoryID: string;
+    categoryDisplay: string;
+  }[];
+
   orderedCategories.forEach(categoryID => {
     const category = Object.values(categories).find((c: any) => c.key === categoryID);
     assert.ok(category, "Could not find category for ID: " + categoryID);
@@ -90,6 +98,7 @@ languages.forEach(lang => {
     const optionsForCategory = options.filter(o => o.categoryCode === category.code);
 
     const localisedOptions = [] as { name: string; anchor: string }[];
+
     optionsForCategory.forEach(option => {
       const mdPath = join("options", option.name + ".md");
       const fullPath = join(__dirname, "..", "copy", lang, mdPath);
@@ -101,10 +110,18 @@ languages.forEach(lang => {
       const optionFile = readMarkdownFile(optionPath);
 
       // Must have a display title in the front-matter
-      assert.ok(
-        optionFile.data.display,
-        "Could not get a display for option: " + option.name + " in " + lang
-      );
+      // prettier-ignore
+      assert.ok(optionFile.data.display, "Could not find a 'display' for option: " + option.name + " in " + lang);
+      // prettier-ignore
+      assert.ok(optionFile.data.oneline, "Could not find a 'oneline' for option: " + option.name + " in " + lang);
+
+      optionsSummary.push({
+        id: option.name,
+        display: optionFile.data.display,
+        oneliner: optionFile.data.oneline,
+        categoryID: categoryID,
+        categoryDisplay: categoryFile.data.display
+      });
 
       markdownChunks.push("<section class='compiler-option'>");
 
@@ -190,6 +207,11 @@ languages.forEach(lang => {
   writeFileSync(
     join(__dirname, "..", "output", lang + ".json"),
     JSON.stringify({ categories: allCategories })
+  );
+
+  writeFileSync(
+    join(__dirname, "..", "output", lang + "-summary.json"),
+    JSON.stringify({ options: optionsSummary })
   );
 
   // Do a quick linter at the end

@@ -1,0 +1,15 @@
+{
+  "include": ["src"],
+  "compilerOptions": {
+    "outDir": "../typescriptlang-org/static/js/playground",
+    "target": "ES2016",
+    "module": "AMD",
+    "lib": ["dom", "esnext"],
+    "declaration": true,
+    "sourceMap": true,
+    "rootDir": "./src",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true
+  }
+}

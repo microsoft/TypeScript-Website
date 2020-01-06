@@ -1,8 +1,9 @@
 ---
 display: "Suppress Implicit Any Index Errors"
+oneline: "Remove the warning when using string indexes to access unknown properties"
 ---
 
-Turning `noImplicitAny` on suppresses implicit any warning reports when indexing into objects, as shown in the following example:
+Turning `noImplicitAny` on suppresses reporting the error about implicit anys when indexing into objects, as shown in the following example:
 
 ```ts twoslash
 // @noImplicitAny: true

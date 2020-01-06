@@ -1,5 +1,6 @@
 ---
 display: "Downlevel Iteration"
+oneline: "Emit more compliant, but verbose JavaScript for iterating objects"
 ---
 
 Downleveling is TypeScript's term for transpiling to an older version of JavaScript.

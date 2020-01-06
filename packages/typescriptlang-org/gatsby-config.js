@@ -62,6 +62,13 @@ module.exports = {
         name: `tsconfig-reference`,
       },
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/../playground-examples/generated`,
+        name: `playground-examples`,
+      },
+    },
     // Markdown support
     {
       resolve: `gatsby-transformer-remark`,
