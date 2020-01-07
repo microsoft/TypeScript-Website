@@ -36,8 +36,8 @@ const Index = (props: Props) => {
       re.config({
         paths: {
           vs: `https://tswebinfra.blob.core.windows.net/cdn/${tsVersion}/monaco/min/vs`,
-          "typescript-sandbox": '/js/sandbox',
-          "typescript-playground": '/js/playground'
+          "typescript-sandbox": withPrefix('/js/sandbox'),
+          "typescript-playground": withPrefix('/js/playground')
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],
       });
