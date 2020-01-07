@@ -125,7 +125,7 @@ pre:hover .lsp {
 }
 
 .lsp .lsp-result {
-  visibility: hidden;
+  display: none;
   position: absolute;
   background-color: #555;
   color: #fff;
@@ -136,9 +136,11 @@ pre:hover .lsp {
   opacity: 0;
   transition: opacity 0.15s;
   margin-left: 4px;
+  left: calc(100% + 2px);
+  top: -33%;
 }
 
 .lsp:hover .lsp-result {
-  visibility: visible;
+  display: block;
   opacity: 1;
 }

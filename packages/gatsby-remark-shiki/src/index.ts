@@ -61,7 +61,6 @@ const visitor = (node: RichNode) => {
   if (replacer[lang]) lang = replacer[lang]
 
   const shouldHighlight = lang && languages.includes(lang)
-
   if (shouldHighlight) {
     const originalCode = node.value
     const tokens = highlighter.codeToThemedTokens(node.value, lang)
