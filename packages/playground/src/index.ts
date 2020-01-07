@@ -123,7 +123,7 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
       window.history.replaceState({}, '', newURL)
     }
 
-    localStorage.setItem('playground-history', sandbox.getText())
+    localStorage.setItem('sandbox-history', sandbox.getText())
   }
 
   // Setup working with the existing UI, once it's loaded
