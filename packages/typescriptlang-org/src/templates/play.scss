@@ -4,6 +4,7 @@
   display: flex;
   justify-content: space-between;
   height: 3rem;
+  position: relative;
 
   > ul {
     display: flex;
@@ -53,7 +54,7 @@
       position: absolute;
       top: 100%;
       left: 0;
-      z-index: 1000;
+      z-index: 1;
       float: left;
     }
 
@@ -78,6 +79,7 @@
 
       a {
         display: block;
+        width: 100%;
       }
 
       li:hover {
@@ -151,12 +153,15 @@
 // The subnav which starts with "TypeScript"
 main > nav {
   position: relative;
+
   .examples-dropdown {
     padding-left: 0;
 
     background-color: #f2f2f2;
+
     .examples {
       background-color: #f2f2f2;
+      padding: 0;
     }
   }
 
@@ -182,6 +187,21 @@ main > nav {
 
 // The toolbar for the editor
 main #editor-toolbar {
+  // For the main buttons
+  > ul > li {
+    > a {
+      // Fix their vertical centering
+      padding-top: 0.5rem;
+    }
+    // Ensure menus use this button for
+    // their x
+    position: relative;
+
+    .dropdown-menu {
+      left: 4px;
+    }
+  }
+
   li {
     &:hover {
       background-color: #f2f2f2;
@@ -222,8 +242,7 @@ main #editor-toolbar {
     #editor-toolbar {
       height: 3rem;
       border-bottom: 1px #c4c4c4 solid;
-      margin-right: -12px;
-      margin-left: -2rem;
+      margin-right: -10px;
       margin-bottom: 10px;
     }
   }
@@ -248,13 +267,15 @@ main #editor-toolbar {
       flex: 1;
       height: 100%;
       width: 100%;
-      overflow: scroll;
+      overflow-y: scroll;
+      overflow-x: hidden;
 
       pre {
         background-color: rgb(241, 241, 241);
         color: black;
         border: none;
         width: 100%;
+        overflow-x: scroll;
       }
     }
 
@@ -268,11 +289,12 @@ main #editor-toolbar {
       button {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         cursor: pointer;
-        margin: 5px 10px;
-        padding: 2px 10px;
+        margin: 5px 2px;
+        // padding: 2px 10px;
         padding-top: 0px;
         color: black;
-        font-size: 16px;
+        font-size: 14px;
+        font-weight: 600;
         background: none;
         color: inherit;
         border: none;
@@ -288,5 +310,39 @@ main #editor-toolbar {
     pre {
       margin: 0;
     }
+  }
+}
+
+#log-container {
+  overflow: auto;
+  font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+  line-height: 1.5rem;
+
+  .log-warn {
+    color: orange;
+  }
+  .log-error {
+    color: red;
+  }
+  .log-info {
+    color: skyblue;
+  }
+  .log-log {
+    color: silver;
+  }
+
+  .log-warn,
+  .log-error {
+    font-weight: bold;
+  }
+
+  hr {
+    border: 0;
+    border-bottom: 1px dashed #ccc;
+    background: white;
+  }
+
+  .comma {
+    color: #777;
   }
 }

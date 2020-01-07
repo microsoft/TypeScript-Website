@@ -86,8 +86,10 @@ function objectToQueryParams(obj: any) {
   return str.join('&')
 }
 
+// Can't set sandbox to be the right type because the param would contain this function
+
 /** Gets a query string representation (hash + queries) */
-export const setURLQueryWithCompilerOptions = (sandbox: Sandbox) => {
+export const getURLQueryWithCompilerOptions = (sandbox: any): string => {
   const compilerOptions = sandbox.getCompilerOptions()
   const diff = Object.entries(compilerOptions).reduce((acc, [key, value]) => {
     if (value !== compilerOptions[key]) {
@@ -137,9 +139,7 @@ export const setURLQueryWithCompilerOptions = (sandbox: Sandbox) => {
       .join('&')
 
     return `?${queryString}#${hash}`
-    // window.history.replaceState({}, '', `${window.CONFIG.baseUrl}?${queryString}#${hash}`)
   } else {
     return `#${hash}`
-    // window.history.replaceState({}, '', `${window.CONFIG.baseUrl}#${hash}`)
   }
 }

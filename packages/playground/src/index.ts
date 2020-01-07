@@ -13,14 +13,19 @@ import {
   createDragBar,
 } from './createElements'
 import { showDTSPlugin } from './sidebar/showDTS'
+import { runWithCustomLogs, runPlugin } from './sidebar/runtime'
 import { createExporter } from './exporter'
 import { createUI } from './createUI'
 import { getExampleSourceCode } from './getExample'
 import { ExampleHighlighter } from './monaco/ExampleHighlight'
 import { createConfigDropdown, updateConfigDropdownForCompilerOptions } from './createConfigDropdown'
+import { showErrors } from './sidebar/showErrors'
+import { optionsPlugin } from './sidebar/options'
 
 /** The interface of all sidebar plugins */
 export interface PlaygroundPlugin {
+  /** Not public facing */
+  id: string
   /** To show in the tabs */
   displayName: string
   /** Should this plugin be selected on launch? */
@@ -44,7 +49,13 @@ interface PlaygroundConfig {
   prefix: string
 }
 
-const defaultPluginFactories: (() => PlaygroundPlugin)[] = [compiledJSPlugin, showDTSPlugin]
+const defaultPluginFactories: (() => PlaygroundPlugin)[] = [
+  compiledJSPlugin,
+  showDTSPlugin,
+  showErrors,
+  optionsPlugin,
+  runPlugin,
+]
 
 export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: PlaygroundConfig) => {
   const playgroundParent = sandbox.getDomNode().parentElement!.parentElement!.parentElement!
@@ -91,18 +102,29 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
     const plugin = currentPlugin()
     if (plugin.modelChanged) plugin.modelChanged(sandbox, sandbox.getModel())
 
-    // Only call this fuhnction once every 0.3s
-    if (plugin.modelChangedDebounce) {
-      if (debouncingTimer) return
-      debouncingTimer = true
-      setTimeout(() => {
-        debouncingTimer = false
-        if (plugin.modelChangedDebounce && plugin.displayName === currentPlugin().displayName) {
-          plugin.modelChangedDebounce(sandbox, sandbox.getModel())
-        }
-      }, 300)
-    }
+    // This needs to be last in the function
+    if (debouncingTimer) return
+    debouncingTimer = true
+    setTimeout(() => {
+      debouncingTimer = false
+      playgroundDebouncedMainFunction()
+
+      // Only call the plugin function once every 0.3s
+      if (plugin.modelChangedDebounce && plugin.displayName === currentPlugin().displayName) {
+        plugin.modelChangedDebounce(sandbox, sandbox.getModel())
+      }
+    }, 300)
   })
+
+  const playgroundDebouncedMainFunction = () => {
+    const alwaysUpdateURL = true
+    if (alwaysUpdateURL) {
+      const newURL = sandbox.getURLQueryWithCompilerOptions(sandbox)
+      window.history.replaceState({}, '', newURL)
+    }
+
+    localStorage.setItem('playground-history', sandbox.getText())
+  }
 
   // Setup working with the existing UI, once it's loaded
 
@@ -110,6 +132,7 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
 
   // Set up the label for the dropdown
   document.querySelectorAll('#versions > a').item(0).innerHTML = 'v' + sandbox.ts.version + " <span class='caret'/>"
+
   // Add the versions to the dropdown
   const versionsMenu = document.querySelectorAll('#versions > ul').item(0)
   sandbox.supportedVersions.forEach((v: string) => {
@@ -117,11 +140,15 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
     const a = document.createElement('a')
     a.textContent = v
     a.href = document.location.host + document.location.pathname + `?ts=${v}`
-    // TODO: Why does this not work?
-    a.onclick = () => {
-      const params = new URLSearchParams(location.search)
+
+    // TODO: Why is this not redirecting?
+    li.onclick = () => {
+      const currentURL = sandbox.getURLQueryWithCompilerOptions(sandbox)
+      const params = new URLSearchParams(currentURL)
       params.set('ts', v)
-      const newURL = `${document.location.host}${document.location.pathname}?${params}#${document.location.hash}`
+      const hash = document.location.hash.length ? document.location.hash : ''
+      const newURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}?${params}${hash}`
+      console.log(newURL)
       document.location.href = newURL
     }
 
@@ -133,21 +160,39 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
   document.querySelectorAll('.navbar-sub li.dropdown > a').forEach(link => {
     const a = link as HTMLAnchorElement
     a.onclick = _e => {
-      document.querySelectorAll('.navbar-sub li.open').forEach(i => i.classList.remove('open'))
-      a.parentElement!.classList.toggle('open')
+      if (a.parentElement!.classList.contains('open')) {
+        document.querySelectorAll('.navbar-sub li.open').forEach(i => i.classList.remove('open'))
+      } else {
+        document.querySelectorAll('.navbar-sub li.open').forEach(i => i.classList.remove('open'))
+        a.parentElement!.classList.toggle('open')
 
-      const exampleContainer = a
-        .closest('li')!
-        .getElementsByTagName('ul')
-        .item(0)!
+        const exampleContainer = a
+          .closest('li')!
+          .getElementsByTagName('ul')
+          .item(0)!
 
-      const playgroundContainer = document.getElementById('playground-container')!
-      exampleContainer.style.height = `calc(${playgroundContainer.getBoundingClientRect().height + 26}px - 4rem)`
+        // SEt exact height and widths for the popovers for the main playground navigation
+        const isPlaygroundSubmenu = !!a.closest('nav')
+        if (isPlaygroundSubmenu) {
+          const playgroundContainer = document.getElementById('playground-container')!
+          exampleContainer.style.height = `calc(${playgroundContainer.getBoundingClientRect().height + 26}px - 4rem)`
 
-      const width = window.localStorage.getItem('dragbar-x')
-      exampleContainer.style.width = `calc(100% - ${width}px - 4rem)`
+          const width = window.localStorage.getItem('dragbar-x')
+          exampleContainer.style.width = `calc(100% - ${width}px - 4rem)`
+        }
+      }
     }
   })
+
+  const runButton = document.getElementById('run-button')!
+  runButton.onclick = () => {
+    const run = () => {
+      eval(sandbox.getText())
+    }
+    const runPlugin = plugins.find(p => p.id === 'logs')!
+    activatePlugin(runPlugin, currentPlugin(), sandbox, tabBar, container)
+    runWithCustomLogs(run)
+  }
 
   document.querySelectorAll('button.examples-close').forEach(b => {
     const button = b as HTMLButtonElement

@@ -1,3 +1,5 @@
+import { Playground } from '.'
+
 type Sandbox = ReturnType<typeof import('typescript-sandbox').createTypeScriptSandbox>
 type Monaco = typeof import('monaco-editor')
 
@@ -51,9 +53,7 @@ export const createConfigDropdown = (sandbox: Sandbox, monaco: Monaco) => {
       input.id = 'option-' + optSummary.id
 
       input.onchange = () => {
-        const newUpdate: any = {}
-        newUpdate[optSummary.id] = input.checked
-        sandbox.updateCompilerSettings(newUpdate)
+        sandbox.updateCompilerSetting(optSummary.id, input.checked)
       }
 
       label.htmlFor = input.id
@@ -71,15 +71,27 @@ export const createConfigDropdown = (sandbox: Sandbox, monaco: Monaco) => {
   const dropdownContainer = document.getElementById('compiler-dropdowns')!
 
   const target = optionsSummary.find(sum => sum.id === 'target')!
-  const targetSwitch = createSelect(target.display, 'target', target.oneliner, monaco.languages.typescript.ScriptTarget)
+  const targetSwitch = createSelect(
+    target.display,
+    'target',
+    target.oneliner,
+    sandbox,
+    monaco.languages.typescript.ScriptTarget
+  )
   dropdownContainer.appendChild(targetSwitch)
 
   const jsx = optionsSummary.find(sum => sum.id === 'jsx')!
-  const jsxSwitch = createSelect(jsx.display, 'jsx', jsx.oneliner, monaco.languages.typescript.JsxEmit)
+  const jsxSwitch = createSelect(jsx.display, 'jsx', jsx.oneliner, sandbox, monaco.languages.typescript.JsxEmit)
   dropdownContainer.appendChild(jsxSwitch)
 
   const modSum = optionsSummary.find(sum => sum.id === 'module')!
-  const moduleSwitch = createSelect(modSum.display, 'module', modSum.oneliner, monaco.languages.typescript.ModuleKind)
+  const moduleSwitch = createSelect(
+    modSum.display,
+    'module',
+    modSum.oneliner,
+    sandbox,
+    monaco.languages.typescript.ModuleKind
+  )
   dropdownContainer.appendChild(moduleSwitch)
 }
 
@@ -112,7 +124,7 @@ export const updateConfigDropdownForCompilerOptions = (sandbox: Sandbox, monaco:
   })
 }
 
-const createSelect = (title: string, id: string, blurb: string, option: any) => {
+const createSelect = (title: string, id: string, blurb: string, sandbox: Sandbox, option: any) => {
   const label = document.createElement('label')
   const textToDescribe = document.createElement('span')
   textToDescribe.textContent = title + ':'
@@ -121,6 +133,12 @@ const createSelect = (title: string, id: string, blurb: string, option: any) => 
   const select = document.createElement('select')
   select.id = 'compiler-select-' + id
   label.appendChild(select)
+
+  select.onchange = () => {
+    const value = select.value // the human string
+    const compilerIndex = option[value]
+    sandbox.updateCompilerSetting(id, compilerIndex)
+  }
 
   Object.keys(option)
     .filter(key => isNaN(Number(key)))

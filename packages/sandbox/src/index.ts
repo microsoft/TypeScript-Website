@@ -2,7 +2,11 @@ import { createCompilerHost } from './createCompilerHost'
 import { detectNewImportsToAcquireTypeFor } from './typeAcquisition'
 import { sandboxTheme } from './theme'
 import { TypeScriptWorker } from './tsWorker'
-import { getDefaultSandboxCompilerOptions, getCompilerOptionsFromParams } from './compilerOptions'
+import {
+  getDefaultSandboxCompilerOptions,
+  getCompilerOptionsFromParams,
+  getURLQueryWithCompilerOptions,
+} from './compilerOptions'
 import lzstring from './vendor/lzstring.min'
 import { supportedReleases } from './releases'
 import { getInitialCode } from './getInitialCode'
@@ -147,7 +151,13 @@ export const createTypeScriptSandbox = (
   const updateCompilerSettings = (opts: CompilerOptions) => {
     config.logger.log('[Compiler] Updating compiler options: ', opts)
     compilerOptions = { ...opts, ...compilerOptions }
-    defaults.setCompilerOptions(opts)
+    defaults.setCompilerOptions(compilerOptions)
+  }
+
+  const updateCompilerSetting = (key: keyof CompilerOptions, value: any) => {
+    config.logger.log('[Compiler] Setting compiler options ', key, 'to', value)
+    compilerOptions[key] = value
+    defaults.setCompilerOptions(compilerOptions)
   }
 
   const setCompilerSettings = (opts: CompilerOptions) => {
@@ -227,11 +237,13 @@ export const createTypeScriptSandbox = (
     getAST,
     ts,
     createTSProgram,
-    updateCompilerSettings,
     getCompilerOptions,
     setCompilerSettings,
+    updateCompilerSetting,
+    updateCompilerSettings,
     supportedVersions,
     lzstring,
+    getURLQueryWithCompilerOptions,
     language,
   }
 }

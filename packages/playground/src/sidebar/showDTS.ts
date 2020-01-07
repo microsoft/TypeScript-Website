@@ -4,6 +4,7 @@ export const showDTSPlugin = () => {
   let codeElement: HTMLElement
 
   const plugin: PlaygroundPlugin = {
+    id: 'dts',
     displayName: 'DTS',
     willMount: (sandbox, container) => {
       // TODO: Monaco?
