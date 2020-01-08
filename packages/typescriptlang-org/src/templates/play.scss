@@ -4,6 +4,7 @@
   display: flex;
   justify-content: space-between;
   height: 3rem;
+  position: relative;
 
   > ul {
     display: flex;
@@ -53,7 +54,7 @@
       position: absolute;
       top: 100%;
       left: 0;
-      z-index: 1000;
+      z-index: 1;
       float: left;
     }
 
@@ -78,6 +79,7 @@
 
       a {
         display: block;
+        width: 100%;
       }
 
       li:hover {
@@ -124,6 +126,7 @@
         margin: 1.5rem 0;
 
         label {
+          margin-right: 0.5rem;
           width: 33%;
           font-family: Menlo, Monaco, Consolas, Courier New, monospace;
 
@@ -151,12 +154,15 @@
 // The subnav which starts with "TypeScript"
 main > nav {
   position: relative;
+
   .examples-dropdown {
     padding-left: 0;
 
     background-color: #f2f2f2;
+
     .examples {
       background-color: #f2f2f2;
+      padding: 0;
     }
   }
 
@@ -164,6 +170,9 @@ main > nav {
     li {
       &:hover {
         background-color: #f2f2f2;
+      }
+      &.name:hover {
+        background-color: transparent;
       }
     }
   }
@@ -182,6 +191,21 @@ main > nav {
 
 // The toolbar for the editor
 main #editor-toolbar {
+  // For the main buttons
+  > ul > li {
+    > a {
+      // Fix their vertical centering
+      padding-top: 0.5rem;
+    }
+    // Ensure menus use this button for
+    // their x
+    position: relative;
+
+    .dropdown-menu {
+      left: 4px;
+    }
+  }
+
   li {
     &:hover {
       background-color: #f2f2f2;
@@ -222,8 +246,7 @@ main #editor-toolbar {
     #editor-toolbar {
       height: 3rem;
       border-bottom: 1px #c4c4c4 solid;
-      margin-right: -12px;
-      margin-left: -2rem;
+      margin-right: -10px;
       margin-bottom: 10px;
     }
   }
@@ -248,13 +271,14 @@ main #editor-toolbar {
       flex: 1;
       height: 100%;
       width: 100%;
-      overflow: scroll;
+      overflow-y: scroll;
+      overflow-x: hidden;
 
       pre {
         background-color: rgb(241, 241, 241);
         color: black;
         border: none;
-        width: 100%;
+        overflow-x: scroll;
       }
     }
 
@@ -268,11 +292,12 @@ main #editor-toolbar {
       button {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         cursor: pointer;
-        margin: 5px 10px;
-        padding: 2px 10px;
+        margin: 5px 2px;
+        // padding: 2px 10px;
         padding-top: 0px;
         color: black;
-        font-size: 16px;
+        font-size: 14px;
+        font-weight: 600;
         background: none;
         color: inherit;
         border: none;
@@ -282,11 +307,215 @@ main #editor-toolbar {
         &.active {
           border-bottom: 1px solid #187abf;
         }
+
+        &:focus {
+          color: #187abf;
+        }
       }
     }
 
     pre {
       margin: 0;
     }
+  }
+}
+
+.playground-plugin-container {
+  #log-container {
+    overflow: auto;
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+    line-height: 1.5rem;
+
+    .log-warn {
+      color: orange;
+    }
+
+    .log-error {
+      color: red;
+    }
+
+    .log-info {
+      color: skyblue;
+    }
+
+    .log-log {
+      color: silver;
+    }
+
+    .log-warn,
+    .log-error {
+      font-weight: bold;
+    }
+
+    hr {
+      border: 0;
+      border-bottom: 1px dashed #ccc;
+      background: white;
+    }
+
+    .comma {
+      color: #777;
+    }
+  }
+
+  #compiler-errors {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+    margin: 0;
+    padding: 0;
+
+    li.diagnostic {
+      margin: 0;
+      list-style: none;
+      padding-left: 2rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+    }
+
+    .error {
+      border-left: 2px solid red;
+    }
+  }
+
+  #empty-message-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 80%;
+  }
+
+  #playground-options {
+    li {
+      list-style: none;
+      span {
+        font-weight: 600;
+      }
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+// These show in the editor!
+.error-highlight {
+  background-color: #fcb7b7;
+}
+
+#popover-background {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  top: 0;
+  left: 0;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+#popover-modal {
+  width: 80%;
+  height: 70%;
+  position: fixed;
+  padding: 20px;
+  background-color: white;
+  /* https://stackoverflow.com/questions/2005954/center-a-positionfixed-element */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  flex-direction: column;
+
+  .close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+
+  pre {
+    max-height: 90%;
+    overflow: scroll;
+  }
+}
+
+#loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 200px;
+  padding-bottom: 200px;
+
+  p {
+    text-align: center;
+  }
+
+  .lds-grid {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    div {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #187abf;
+      animation: lds-grid 1.2s linear infinite;
+
+      &:nth-child(1) {
+        top: 8px;
+        left: 8px;
+        animation-delay: 0s;
+      }
+      &:nth-child(2) {
+        top: 8px;
+        left: 32px;
+        animation-delay: -0.4s;
+      }
+      &:nth-child(3) {
+        top: 8px;
+        left: 56px;
+        animation-delay: -0.8s;
+      }
+      &:nth-child(4) {
+        top: 32px;
+        left: 8px;
+        animation-delay: -0.4s;
+      }
+      &:nth-child(5) {
+        top: 32px;
+        left: 32px;
+        animation-delay: -0.8s;
+      }
+      &:nth-child(6) {
+        top: 32px;
+        left: 56px;
+        animation-delay: -1.2s;
+      }
+      &:nth-child(7) {
+        top: 56px;
+        left: 8px;
+        animation-delay: -0.8s;
+      }
+      &:nth-child(8) {
+        top: 56px;
+        left: 32px;
+        animation-delay: -1.2s;
+      }
+      &:nth-child(9) {
+        top: 56px;
+        left: 56px;
+        animation-delay: -1.6s;
+      }
+    }
+  }
+}
+@keyframes lds-grid {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
   }
 }

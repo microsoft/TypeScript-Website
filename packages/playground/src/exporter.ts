@@ -22,6 +22,24 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import('monaco-e
     return monaco.languages.typescript.ModuleKind[option]
   }
 
+  // These are the compiler's defaults, and we want a diff from
+  // these before putting it in the issue
+  const defaultCompilerOptionsForTSC: CompilerOptions = {
+    esModuleInterop: false,
+    strictNullChecks: false,
+    strict: false,
+    strictFunctionTypes: false,
+    strictPropertyInitialization: false,
+    strictBindCallApply: false,
+    noImplicitAny: false,
+    noImplicitThis: false,
+    noImplicitReturns: false,
+    checkJs: false,
+    allowJs: false,
+    experimentalDecorators: false,
+    emitDecoratorMetadata: false,
+  }
+
   function getValidCompilerOptions(options: CompilerOptions) {
     const { target: targetOption, jsx: jsxOption, module: moduleOption, ...restOptions } = options
 
@@ -29,12 +47,23 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import('monaco-e
     const jsxText = getJsxEmitText(jsxOption)
     const moduleText = getModuleKindText(moduleOption)
 
-    return {
+    const opts = {
       ...restOptions,
       ...(targetText && { target: targetText }),
       ...(jsxText && { jsx: jsxText }),
       ...(moduleText && { module: moduleText }),
     }
+
+    const diffFromTSCDefaults = Object.entries(opts).reduce((acc, [key, value]) => {
+      if ((opts as any)[key] && value != defaultCompilerOptionsForTSC[key]) {
+        // @ts-ignore
+        acc[key] = opts[key]
+      }
+
+      return acc
+    }, {})
+
+    return diffFromTSCDefaults
   }
 
   // Based on https://github.com/stackblitz/core/blob/master/sdk/src/generate.ts
@@ -165,6 +194,8 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import('monaco-e
   }
 
   async function makeMarkdown() {
+    const query = sandbox.getURLQueryWithCompilerOptions(sandbox)
+    const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
     const jsSection = sandbox.config.useJavaScript
       ? ''
       : `
@@ -210,7 +241,7 @@ ${codify(stringifiedCompilerOptions, 'json')}
 
 </details>
 
-**Playground Link:** [Provided](${window.location})
+**Playground Link:** [Provided](${fullURL})
       `
   }
 
@@ -219,29 +250,38 @@ ${codify(stringifiedCompilerOptions, 'json')}
     if (body.length < 4000) {
       window.open('https://github.com/Microsoft/TypeScript/issues/new?body=' + encodeURIComponent(body))
     } else {
-      ui.showModal(body, 'Issue too long to post automatically, you can copy here then click below', {
-        'Create New Issue': 'https://github.com/Microsoft/TypeScript/issues/new',
-      })
+      ui.showModal(
+        body,
+        "Issue too long to post automatically. Copy this text, then click 'Create New Issue' to begin.",
+        {
+          'Create New Issue': 'https://github.com/Microsoft/TypeScript/issues/new',
+        }
+      )
     }
   }
 
   async function copyAsMarkdownIssue() {
     const markdown = await makeMarkdown()
-    ui.showModal(markdown)
+    ui.showModal(markdown, 'Markdown code')
   }
 
   function copyForChat() {
-    const chat = `[Playground Link](${window.location})`
-    ui.showModal(chat)
+    const query = sandbox.getURLQueryWithCompilerOptions(sandbox)
+    const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
+    const chat = `[Playground Link](${fullURL})`
+    ui.showModal(chat, 'Markdown for chat')
   }
 
   function copyForChatWithPreview() {
+    const query = sandbox.getURLQueryWithCompilerOptions(sandbox)
+    const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
+
     const ts = sandbox.getText()
     const preview = ts.length > 200 ? ts.substring(0, 200) + '...' : ts.substring(0, 200)
 
     const code = '```\n' + preview + '\n```\n'
-    const chat = `${code}\n[Playground Link](${window.location})`
-    ui.showModal(chat)
+    const chat = `${code}\n[Playground Link](${fullURL})`
+    ui.showModal(chat, 'Markdown code')
   }
 
   return {

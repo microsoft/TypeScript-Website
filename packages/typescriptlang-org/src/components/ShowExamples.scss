@@ -56,6 +56,12 @@
     flex-wrap: wrap;
     display: flex;
 
+    > p > a {
+      display: inline-block;
+      color: #187abf;
+      padding: 0;
+    }
+
     // Each smaller section inside the largest subsection
     .section-list {
       display: flex;
@@ -76,7 +82,7 @@
           margin: 0;
           position: relative;
 
-          a {
+          .section-list a {
             display: block;
             padding: 4px;
             padding-left: 10px;

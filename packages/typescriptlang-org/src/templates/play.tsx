@@ -16,6 +16,23 @@ type Props = {
   }
 }
 
+const defaultText =
+  `// Welcome to the TypeScript Playground, this is a website
+// which gives you a chance to write, share and learn TypeScript.
+
+// You could think of it in three ways:
+//
+//  - A place to learn TypeScript in a place where nothing can break
+//  - A place to experiment with TypeScript syntax, and share the URLs with others
+//  - A sandbox to experiment with different compiler features of TypeScript
+
+const anExampleVariable = "Hello World"
+console.log(anExampleVariable)
+
+// To learn more about the language, click above in "Examples" or "What's New".
+// Otherwise, get started by removing these comments and the world is your playground.
+`
+
 const Index = (props: Props) => {
   useEffect(() => {
     if ("playgroundLoaded" in window) return
@@ -45,9 +62,6 @@ const Index = (props: Props) => {
       re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("typescript-sandbox"), playground: typeof import("typescript-playground")) => {
         // Importing "vs/language/typescript/tsWorker" will set ts as a global
         const ts = (global as any).ts
-        const initialCode = `import {markdown} from "danger"
-
-markdown("OK")`
         const isOK = main && ts && sandbox && playground
         if (isOK) {
           document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)
@@ -57,10 +71,11 @@ markdown("OK")`
         }
 
         const sandboxEnv = await sandbox.createTypeScriptSandbox({
-          text: initialCode,
+          text: defaultText,
           compilerOptions: {},
           domID: "monaco-editor-embed",
-          useJavaScript: false,
+          useJavaScript: !!params.get("useJavaScript"),
+          acquireTypes: !localStorage.getItem("disable-ata"),
           logger: {
             error: console.error,
             log: console.log
@@ -99,15 +114,18 @@ markdown("OK")`
                 <h3>Config</h3>
                 <div className="info" id="config-container">
                   <button className="examples-close">Close</button>
-                  <div id="compiler-dropdowns" />
 
-                  {/*<label className="select">
-                  <span className="select-label">Lang</span>
-                  <select>
-                    <option>TypeScript</option>
-                    <option>JavaScript</option>
-                  </select>
-                    </label>*/}
+                  <div id="compiler-dropdowns">
+                    <label className="select">
+                      <span className="select-label">Lang</span>
+                      <select id="language-selector">
+                        <option>TypeScript</option>
+                        <option>JavaScript</option>
+                      </select>
+                      <span className="compiler-flag-blurb">Which language should be used in the editor</span>
+                    </label>
+                  </div>
+
                 </div>
               </ul>
             </li>
@@ -121,7 +139,7 @@ markdown("OK")`
             </li>
 
             <li className="dropdown">
-              <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">What's new <span className="caret"></span></a>
+              <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">What's New <span className="caret"></span></a>
               <ul className="examples-dropdown" id="whatisnew">
                 <button className="examples-close">Close</button>
                 <RenderExamples defaultSection="3.7" sections={["3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
@@ -130,10 +148,10 @@ markdown("OK")`
           </ul>
 
           <ul className="nav navbar-nav navbar-right hidden-xs">
-            <li><a href="#">About</a></li>
-            <li><a href="https://github.com/microsoft/typescript-website">GitHub</a></li>
 
             {/**
+            <li><a href="#">About</a></li>
+            <li><a href="https://github.com/microsoft/typescript-website">GitHub</a></li>
             <li className="dropdown">
               <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Theme <span className="caret"></span></a>
               <ul className="dropdown-menu">
@@ -147,8 +165,11 @@ markdown("OK")`
           </ul>
         </nav>
 
-        <div className="ms-depth-4" style={{ backgroundColor: "white", margin: "1rem auto", padding: "2rem", paddingTop: "0", marginTop: "0" }}>
-          <h1 id="loader" style={{ textAlign: "center", height: "800px" }}>Loading</h1>
+        <div className="ms-depth-4" style={{ backgroundColor: "white", paddingTop: "0", marginTop: "0", marginBottom: "3rem", paddingBottom: "1.5rem" }}>
+          <div id="loader">
+            <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            <p id="loading-message">Downloading TypeScript...</p>
+          </div>
           <div id="playground-container" style={{ display: "none" }}>
             <div id="editor-container">
               <div id="editor-toolbar" className="navbar-sub" >
@@ -157,22 +178,21 @@ markdown("OK")`
                     <a href="#">Version... <span className="caret" /></a>
                     <ul className="dropdown-menu"></ul>
                   </li>
-                  <li><a href="#">Run</a></li>
-                  <li><a href="#">Format</a></li>
+                  <li><a id="run-button" href="#">Run</a></li>
 
                   <li className="dropdown">
                     <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Export <span className="caret"></span></a>
                     <ul className="dropdown-menu">
-                      <li><a id="export-create-gh-issue" href="#" onClick={() => playground.exporter.reportIssue()} >Report GitHub issue on TypeScript</a></li>
+                      <li><a href="#" onClick={() => playground.exporter.reportIssue()} >Report GitHub issue on TypeScript</a></li>
                       <li role="separator" className="divider"></li>
-                      <li><a id="export-copy-issue-markdown" href="#" onClick={() => playground.exporter.copyAsMarkdownIssue()} >Copy as Markdown Issue</a></li>
-                      <li><a id="export-copy-markdown" href="#" onClick={() => playground.exporter.copyForChat()} >Copy as Markdown Link</a></li>
-                      <li><a id="export-copy-markdown" href="#" onClick={() => playground.exporter.copyForChatWithPreview()} >Copy as Markdown Link with Preview</a></li>
+                      <li><a href="#" onClick={() => playground.exporter.copyAsMarkdownIssue()} >Copy as Markdown Issue</a></li>
+                      <li><a href="#" onClick={() => playground.exporter.copyForChat()} >Copy as Markdown Link</a></li>
+                      <li><a href="#" onClick={() => playground.exporter.copyForChatWithPreview()} >Copy as Markdown Link with Preview</a></li>
                       <li role="separator" className="divider"></li>
-                      <li><a id="export-copy-markdown" href="#" onClick={() => playground.exporter.openInTSAST()} >Open in TypeScript AST Viewer</a></li>
+                      <li><a href="#" onClick={() => playground.exporter.openInTSAST()} >Open in TypeScript AST Viewer</a></li>
                       <li role="separator" className="divider"></li>
-                      <li><a id="export-open-code-sandbox" href="#" onClick={() => playground.exporter.openProjectInCodeSandbox()}>Open in CodeSandbox</a></li>
-                      <li><a id="export-open-stackblitz" href="#" onClick={() => playground.exporter.openProjectInStackBlitz()}>Open in StackBlitz</a></li>
+                      <li><a href="#" onClick={() => playground.exporter.openProjectInCodeSandbox()}>Open in CodeSandbox</a></li>
+                      <li><a href="#" onClick={() => playground.exporter.openProjectInStackBlitz()}>Open in StackBlitz</a></li>
                     </ul>
                   </li>
                 </ul>

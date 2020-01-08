@@ -2,7 +2,11 @@ import { createCompilerHost } from './createCompilerHost'
 import { detectNewImportsToAcquireTypeFor } from './typeAcquisition'
 import { sandboxTheme } from './theme'
 import { TypeScriptWorker } from './tsWorker'
-import { getDefaultSandboxCompilerOptions, getCompilerOptionsFromParams } from './compilerOptions'
+import {
+  getDefaultSandboxCompilerOptions,
+  getCompilerOptionsFromParams,
+  getURLQueryWithCompilerOptions,
+} from './compilerOptions'
 import lzstring from './vendor/lzstring.min'
 import { supportedReleases } from './releases'
 import { getInitialCode } from './getInitialCode'
@@ -144,20 +148,36 @@ export const createTypeScriptSandbox = (
   config.logger.log('[Compiler] Set compiler options: ', compilerOptions)
   defaults.setCompilerOptions(compilerOptions)
 
+  // To let clients plug into compiler settings changes
+  let didUpdateCompilerSettings = (opts: CompilerOptions) => {}
+
   const updateCompilerSettings = (opts: CompilerOptions) => {
     config.logger.log('[Compiler] Updating compiler options: ', opts)
     compilerOptions = { ...opts, ...compilerOptions }
-    defaults.setCompilerOptions(opts)
+    defaults.setCompilerOptions(compilerOptions)
+    didUpdateCompilerSettings(compilerOptions)
+  }
+
+  const updateCompilerSetting = (key: keyof CompilerOptions, value: any) => {
+    config.logger.log('[Compiler] Setting compiler options ', key, 'to', value)
+    compilerOptions[key] = value
+    defaults.setCompilerOptions(compilerOptions)
+    didUpdateCompilerSettings(compilerOptions)
   }
 
   const setCompilerSettings = (opts: CompilerOptions) => {
     config.logger.log('[Compiler] Setting compiler options: ', opts)
     compilerOptions = opts
-    defaults.setCompilerOptions(opts)
+    defaults.setCompilerOptions(compilerOptions)
+    didUpdateCompilerSettings(compilerOptions)
   }
 
   const getCompilerOptions = () => {
     return compilerOptions
+  }
+
+  const setDidUpdateCompilerSettings = (func: (opts: CompilerOptions) => void) => {
+    didUpdateCompilerSettings = func
   }
 
   /** Gets the results of compiling your editor's code */
@@ -175,7 +195,8 @@ export const createTypeScriptSandbox = (
     }
 
     const result = await getEmitResult()
-    return result.outputFiles.find((o: any) => o.name.endsWith('.js'))!.text
+    const firstJS = result.outputFiles.find((o: any) => o.name.endsWith('.js') || o.name.endsWith('.jsx'))
+    return (firstJS && firstJS.text) || ''
   }
 
   /** Gets the DTS for the JS/TS  of compiling your editor's code */
@@ -204,9 +225,13 @@ export const createTypeScriptSandbox = (
 
   /**
    * Warning: Runs on the main thread
+   * TODO: Does not work
    */
   const getAST = () => {
     const program = createTSProgram()
+    program.emit()
+    console.log(program)
+    console.log(program.getSourceFiles())
     return program.getSourceFile(filePath.path)!
   }
 
@@ -227,11 +252,16 @@ export const createTypeScriptSandbox = (
     getAST,
     ts,
     createTSProgram,
-    updateCompilerSettings,
+    compilerDefaults,
     getCompilerOptions,
     setCompilerSettings,
+    updateCompilerSetting,
+    updateCompilerSettings,
+    setDidUpdateCompilerSettings,
     supportedVersions,
     lzstring,
+    getURLQueryWithCompilerOptions,
     language,
+    monaco,
   }
 }

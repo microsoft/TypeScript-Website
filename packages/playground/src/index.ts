@@ -13,14 +13,19 @@ import {
   createDragBar,
 } from './createElements'
 import { showDTSPlugin } from './sidebar/showDTS'
+import { runWithCustomLogs, runPlugin } from './sidebar/runtime'
 import { createExporter } from './exporter'
 import { createUI } from './createUI'
 import { getExampleSourceCode } from './getExample'
 import { ExampleHighlighter } from './monaco/ExampleHighlight'
 import { createConfigDropdown, updateConfigDropdownForCompilerOptions } from './createConfigDropdown'
+import { showErrors } from './sidebar/showErrors'
+import { optionsPlugin } from './sidebar/options'
 
 /** The interface of all sidebar plugins */
 export interface PlaygroundPlugin {
+  /** Not public facing */
+  id: string
   /** To show in the tabs */
   displayName: string
   /** Should this plugin be selected on launch? */
@@ -44,7 +49,13 @@ interface PlaygroundConfig {
   prefix: string
 }
 
-const defaultPluginFactories: (() => PlaygroundPlugin)[] = [compiledJSPlugin, showDTSPlugin]
+const defaultPluginFactories: (() => PlaygroundPlugin)[] = [
+  compiledJSPlugin,
+  showDTSPlugin,
+  showErrors,
+  runPlugin,
+  optionsPlugin,
+]
 
 export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: PlaygroundConfig) => {
   const playgroundParent = sandbox.getDomNode().parentElement!.parentElement!.parentElement!
@@ -91,17 +102,39 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
     const plugin = currentPlugin()
     if (plugin.modelChanged) plugin.modelChanged(sandbox, sandbox.getModel())
 
-    // Only call this fuhnction once every 0.3s
-    if (plugin.modelChangedDebounce) {
-      if (debouncingTimer) return
-      debouncingTimer = true
-      setTimeout(() => {
-        debouncingTimer = false
-        if (plugin.modelChangedDebounce && plugin.displayName === currentPlugin().displayName) {
-          plugin.modelChangedDebounce(sandbox, sandbox.getModel())
-        }
-      }, 300)
+    // This needs to be last in the function
+    if (debouncingTimer) return
+    debouncingTimer = true
+    setTimeout(() => {
+      debouncingTimer = false
+      playgroundDebouncedMainFunction()
+
+      // Only call the plugin function once every 0.3s
+      if (plugin.modelChangedDebounce && plugin.displayName === currentPlugin().displayName) {
+        plugin.modelChangedDebounce(sandbox, sandbox.getModel())
+      }
+    }, 300)
+  })
+
+  // Sets the URL and storage of the sandbox string
+  const playgroundDebouncedMainFunction = () => {
+    const alwaysUpdateURL = !localStorage.getItem('disable-save-on-type')
+    if (alwaysUpdateURL) {
+      const newURL = sandbox.getURLQueryWithCompilerOptions(sandbox)
+      window.history.replaceState({}, '', newURL)
     }
+
+    localStorage.setItem('sandbox-history', sandbox.getText())
+  }
+
+  // When any compiler flags are changed, trigger a potential change to the URL
+  sandbox.setDidUpdateCompilerSettings(() => {
+    playgroundDebouncedMainFunction()
+
+    const model = sandbox.editor.getModel()
+    const plugin = currentPlugin()
+    if (model && plugin.modelChanged) plugin.modelChanged(sandbox, model)
+    if (model && plugin.modelChangedDebounce) plugin.modelChangedDebounce(sandbox, model)
   })
 
   // Setup working with the existing UI, once it's loaded
@@ -110,19 +143,24 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
 
   // Set up the label for the dropdown
   document.querySelectorAll('#versions > a').item(0).innerHTML = 'v' + sandbox.ts.version + " <span class='caret'/>"
+
   // Add the versions to the dropdown
   const versionsMenu = document.querySelectorAll('#versions > ul').item(0)
   sandbox.supportedVersions.forEach((v: string) => {
     const li = document.createElement('li')
     const a = document.createElement('a')
     a.textContent = v
-    a.href = document.location.host + document.location.pathname + `?ts=${v}`
-    // TODO: Why does this not work?
-    a.onclick = () => {
-      const params = new URLSearchParams(location.search)
+    a.href = '#'
+
+    li.onclick = () => {
+      const currentURL = sandbox.getURLQueryWithCompilerOptions(sandbox)
+      const params = new URLSearchParams(currentURL.split('#')[0])
       params.set('ts', v)
-      const newURL = `${document.location.host}${document.location.pathname}?${params}#${document.location.hash}`
-      document.location.href = newURL
+      const hash = document.location.hash.length ? document.location.hash : ''
+      const newURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}?${params}${hash}`
+
+      // @ts-ignore - it is allowed
+      document.location = newURL
     }
 
     li.appendChild(a)
@@ -133,22 +171,39 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
   document.querySelectorAll('.navbar-sub li.dropdown > a').forEach(link => {
     const a = link as HTMLAnchorElement
     a.onclick = _e => {
-      document.querySelectorAll('.navbar-sub li.open').forEach(i => i.classList.remove('open'))
-      a.parentElement!.classList.toggle('open')
+      if (a.parentElement!.classList.contains('open')) {
+        document.querySelectorAll('.navbar-sub li.open').forEach(i => i.classList.remove('open'))
+      } else {
+        document.querySelectorAll('.navbar-sub li.open').forEach(i => i.classList.remove('open'))
+        a.parentElement!.classList.toggle('open')
 
-      const exampleContainer = a
-        .closest('li')!
-        .getElementsByTagName('ul')
-        .item(0)!
+        const exampleContainer = a
+          .closest('li')!
+          .getElementsByTagName('ul')
+          .item(0)!
 
-      const playgroundContainer = document.getElementById('playground-container')!
-      exampleContainer.style.height = `calc(${playgroundContainer.getBoundingClientRect().height + 26}px - 4rem)`
+        // SEt exact height and widths for the popovers for the main playground navigation
+        const isPlaygroundSubmenu = !!a.closest('nav')
+        if (isPlaygroundSubmenu) {
+          const playgroundContainer = document.getElementById('playground-container')!
+          exampleContainer.style.height = `calc(${playgroundContainer.getBoundingClientRect().height + 26}px - 4rem)`
 
-      const width = window.localStorage.getItem('dragbar-x')
-      exampleContainer.style.width = `calc(100% - ${width}px - 4rem)`
+          const width = window.localStorage.getItem('dragbar-x')
+          exampleContainer.style.width = `calc(100% - ${width}px - 4rem)`
+        }
+      }
     }
   })
 
+  const runButton = document.getElementById('run-button')!
+  runButton.onclick = () => {
+    const run = sandbox.getRunnableJS()
+    const runPlugin = plugins.find(p => p.id === 'logs')!
+    activatePlugin(runPlugin, currentPlugin(), sandbox, tabBar, container)
+    runWithCustomLogs(run)
+  }
+
+  // Handle the close buttons on the examples
   document.querySelectorAll('button.examples-close').forEach(b => {
     const button = b as HTMLButtonElement
     button.onclick = (e: any) => {
@@ -161,7 +216,7 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
   createConfigDropdown(sandbox, monaco)
   updateConfigDropdownForCompilerOptions(sandbox, monaco)
 
-  // Support grabbing examples
+  // Support grabbing examples from the location hash
   if (location.hash.startsWith('#example')) {
     const exampleName = location.hash.replace('#example/', '').trim()
     sandbox.config.logger.log('Loading example:', exampleName)
@@ -205,6 +260,18 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
 
   // Sets up a way to click between examples
   monaco.languages.registerLinkProvider(sandbox.language, new ExampleHighlighter())
+
+  const languageSelector = document.getElementById('language-selector')! as HTMLSelectElement
+  const params = new URLSearchParams(location.search)
+  languageSelector.options.selectedIndex = params.get('useJavaScript') ? 1 : 0
+
+  languageSelector.onchange = () => {
+    const useJavaScript = languageSelector.value === 'JavaScript'
+    const query = sandbox.getURLQueryWithCompilerOptions(sandbox, { useJavaScript: useJavaScript ? true : undefined })
+    const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
+    // @ts-ignore
+    document.location = fullURL
+  }
 
   const ui = createUI()
   const exporter = createExporter(sandbox, monaco, ui)

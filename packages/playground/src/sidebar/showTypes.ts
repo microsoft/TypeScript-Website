@@ -4,6 +4,7 @@ export const compiledJSPlugin = () => {
   let codeElement: HTMLElement
 
   const plugin: PlaygroundPlugin = {
+    id: 'types',
     displayName: 'Types',
     willMount: async (sandbox, container) => {
       const createCodePre = document.createElement('pre')

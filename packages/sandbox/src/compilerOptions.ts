@@ -76,21 +76,14 @@ export const getCompilerOptionsFromParams = (options: CompilerOptions, params: U
   return urlDefaults
 }
 
-// http://stackoverflow.com/questions/1714786/ddg#1714899
-function objectToQueryParams(obj: any) {
-  const str = []
-  for (var p in obj)
-    if (obj.hasOwnProperty(p)) {
-      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]))
-    }
-  return str.join('&')
-}
+// Can't set sandbox to be the right type because the param would contain this function
 
 /** Gets a query string representation (hash + queries) */
-export const setURLQueryWithCompilerOptions = (sandbox: Sandbox) => {
+export const getURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?: any): string => {
   const compilerOptions = sandbox.getCompilerOptions()
+  const compilerDefaults = sandbox.compilerDefaults
   const diff = Object.entries(compilerOptions).reduce((acc, [key, value]) => {
-    if (value !== compilerOptions[key]) {
+    if (value !== compilerDefaults[key]) {
       // @ts-ignore
       acc[key] = compilerOptions[key]
     }
@@ -101,7 +94,7 @@ export const setURLQueryWithCompilerOptions = (sandbox: Sandbox) => {
   // The text of the TS/JS as the hash
   const hash = `code/${sandbox.lzstring.compressToEncodedURIComponent(sandbox.getText())}`
 
-  const urlParams: any = Object.assign({}, diff)
+  let urlParams: any = Object.assign({}, diff)
   for (const param of ['lib', 'ts']) {
     const params = new URLSearchParams(location.search)
     if (params.has(param)) {
@@ -129,17 +122,20 @@ export const setURLQueryWithCompilerOptions = (sandbox: Sandbox) => {
 
   if (sandbox.config.useJavaScript) urlParams['useJavaScript'] = true
 
+  if (paramOverrides) {
+    urlParams = { ...urlParams, ...paramOverrides }
+  }
+
   if (Object.keys(urlParams).length > 0) {
     const queryString = Object.entries(urlParams)
+      .filter(([_k, v]) => Boolean(v))
       .map(([key, value]) => {
         return `${key}=${encodeURIComponent(value as string)}`
       })
       .join('&')
 
     return `?${queryString}#${hash}`
-    // window.history.replaceState({}, '', `${window.CONFIG.baseUrl}?${queryString}#${hash}`)
   } else {
     return `#${hash}`
-    // window.history.replaceState({}, '', `${window.CONFIG.baseUrl}#${hash}`)
   }
 }
