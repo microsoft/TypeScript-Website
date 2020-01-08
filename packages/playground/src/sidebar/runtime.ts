@@ -32,7 +32,7 @@ export const runPlugin = () => {
   return plugin
 }
 
-export const runWithCustomLogs = (closure: Function) => {
+export const runWithCustomLogs = (closure: Promise<string>) => {
   const noLogs = document.getElementById('empty-message-container')
   if (noLogs) {
     noLogs.style.display = 'none'
@@ -51,7 +51,7 @@ export const runWithCustomLogs = (closure: Function) => {
 function rewireLoggingToElement(
   eleLocator: () => Element,
   eleOverflowLocator: () => Element,
-  closure: Function,
+  closure: Promise<string>,
   autoScroll: boolean
 ) {
   fixLoggingFunc('log', 'LOG')
@@ -60,14 +60,17 @@ function rewireLoggingToElement(
   fixLoggingFunc('error', 'ERR')
   fixLoggingFunc('info', 'INF')
 
-  closure()
-  allLogs = allLogs + '<hr />'
+  closure.then(js => {
+    eval(js)
 
-  undoLoggingFunc('log')
-  undoLoggingFunc('debug')
-  undoLoggingFunc('warn')
-  undoLoggingFunc('error')
-  undoLoggingFunc('info')
+    allLogs = allLogs + '<hr />'
+
+    undoLoggingFunc('log')
+    undoLoggingFunc('debug')
+    undoLoggingFunc('warn')
+    undoLoggingFunc('error')
+    undoLoggingFunc('info')
+  })
 
   function undoLoggingFunc(name: string) {
     // @ts-ignore

@@ -197,11 +197,7 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
 
   const runButton = document.getElementById('run-button')!
   runButton.onclick = () => {
-    const run = () => {
-      sandbox.getRunnableJS().then(js => {
-        eval(js)
-      })
-    }
+    const run = sandbox.getRunnableJS()
     const runPlugin = plugins.find(p => p.id === 'logs')!
     activatePlugin(runPlugin, currentPlugin(), sandbox, tabBar, container)
     runWithCustomLogs(run)
