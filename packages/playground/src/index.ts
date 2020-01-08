@@ -150,17 +150,17 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
     const li = document.createElement('li')
     const a = document.createElement('a')
     a.textContent = v
-    a.href = document.location.host + document.location.pathname + `?ts=${v}`
+    a.href = '#'
 
-    // TODO: Why is this not redirecting?
     li.onclick = () => {
       const currentURL = sandbox.getURLQueryWithCompilerOptions(sandbox)
-      const params = new URLSearchParams(currentURL)
+      const params = new URLSearchParams(currentURL.split('#')[0])
       params.set('ts', v)
       const hash = document.location.hash.length ? document.location.hash : ''
       const newURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}?${params}${hash}`
-      console.log(newURL)
-      document.location.href = newURL
+
+      // @ts-ignore - it is allowed
+      document.location = newURL
     }
 
     li.appendChild(a)

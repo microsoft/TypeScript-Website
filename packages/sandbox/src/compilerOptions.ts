@@ -76,16 +76,6 @@ export const getCompilerOptionsFromParams = (options: CompilerOptions, params: U
   return urlDefaults
 }
 
-// http://stackoverflow.com/questions/1714786/ddg#1714899
-function objectToQueryParams(obj: any) {
-  const str = []
-  for (var p in obj)
-    if (obj.hasOwnProperty(p)) {
-      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]))
-    }
-  return str.join('&')
-}
-
 // Can't set sandbox to be the right type because the param would contain this function
 
 /** Gets a query string representation (hash + queries) */
