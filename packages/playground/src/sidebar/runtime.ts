@@ -7,6 +7,17 @@ export const runPlugin = () => {
     id: 'logs',
     displayName: 'Logs',
     willMount: (sandbox, container) => {
+      if (allLogs.length === 0) {
+        const noErrorsMessage = document.createElement('div')
+        noErrorsMessage.id = 'empty-message-container'
+        container.appendChild(noErrorsMessage)
+
+        const message = document.createElement('div')
+        message.textContent = 'No logs'
+        message.classList.add('empty-plugin-message')
+        noErrorsMessage.appendChild(message)
+      }
+
       const errorUL = document.createElement('div')
       errorUL.id = 'log-container'
       container.appendChild(errorUL)
@@ -22,6 +33,11 @@ export const runPlugin = () => {
 }
 
 export const runWithCustomLogs = (closure: Function) => {
+  const noLogs = document.getElementById('empty-message-container')
+  if (noLogs) {
+    noLogs.style.display = 'none'
+  }
+
   rewireLoggingToElement(
     () => document.getElementById('log')!,
     () => document.getElementById('log-container')!,
@@ -65,21 +81,19 @@ function rewireLoggingToElement(
     console[name] = function(...objs: any[]) {
       const output = produceOutput(objs)
       const eleLog = eleLocator()
-
       const prefix = '[<span class="log-' + name + '">' + id + '</span>]: '
+      const eleContainerLog = eleOverflowLocator()
+      allLogs = allLogs + prefix + output + '<br>'
 
-      if (autoScroll) {
-        const eleContainerLog = eleOverflowLocator()
-        const isScrolledToBottom =
-          eleContainerLog.scrollHeight - eleContainerLog.clientHeight <= eleContainerLog.scrollTop + 1
-        allLogs = allLogs + prefix + output + '<br>'
-        eleLog.innerHTML = allLogs
-        if (isScrolledToBottom) {
-          eleContainerLog.scrollTop = eleContainerLog.scrollHeight - eleContainerLog.clientHeight
+      if (eleLog && eleContainerLog) {
+        if (autoScroll) {
+          const atBottom = eleContainerLog.scrollHeight - eleContainerLog.clientHeight <= eleContainerLog.scrollTop + 1
+          eleLog.innerHTML = allLogs
+
+          if (atBottom) eleContainerLog.scrollTop = eleContainerLog.scrollHeight - eleContainerLog.clientHeight
+        } else {
+          eleLog.innerHTML = allLogs
         }
-      } else {
-        allLogs = allLogs + prefix + output + '<br>'
-        eleLog.innerHTML = allLogs
       }
 
       // @ts-ignore

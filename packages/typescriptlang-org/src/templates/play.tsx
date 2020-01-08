@@ -75,6 +75,7 @@ const Index = (props: Props) => {
           compilerOptions: {},
           domID: "monaco-editor-embed",
           useJavaScript: false,
+          acquireTypes: !localStorage.getItem("disable-ata"),
           logger: {
             error: console.error,
             log: console.log
@@ -161,7 +162,7 @@ const Index = (props: Props) => {
           </ul>
         </nav>
 
-        <div className="ms-depth-4" style={{ backgroundColor: "white", paddingTop: "0", marginTop: "0" }}>
+        <div className="ms-depth-4" style={{ backgroundColor: "white", paddingTop: "0", marginTop: "0", marginBottom: "3rem", paddingBottom: "1.5rem" }}>
           <h1 id="loader" style={{ textAlign: "center", height: "800px" }}>Loading</h1>
           <div id="playground-container" style={{ display: "none" }}>
             <div id="editor-container">

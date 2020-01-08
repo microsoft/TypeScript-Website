@@ -6,15 +6,19 @@ export const compiledJSPlugin = () => {
   const plugin: PlaygroundPlugin = {
     id: 'js',
     displayName: 'JS',
-    willMount: async (sandbox, container) => {
+    willMount: (sandbox, container) => {
       const createCodePre = document.createElement('pre')
       codeElement = document.createElement('code')
 
       createCodePre.appendChild(codeElement)
       container.appendChild(createCodePre)
     },
-    modelChanged: async (sandbox, model) => {
-      codeElement.textContent = await sandbox.getRunnableJS()
+    modelChangedDebounce: (sandbox, model) => {
+      sandbox.getRunnableJS().then(js => {
+        sandbox.monaco.editor.colorize(js, 'javascript', {}).then(coloredJS => {
+          codeElement.innerHTML = coloredJS
+        })
+      })
     },
   }
 

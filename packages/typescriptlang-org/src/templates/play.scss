@@ -274,7 +274,6 @@ main #editor-toolbar {
         background-color: rgb(241, 241, 241);
         color: black;
         border: none;
-        width: 100%;
         overflow-x: scroll;
       }
     }
@@ -313,36 +312,82 @@ main #editor-toolbar {
   }
 }
 
-#log-container {
-  overflow: auto;
-  font-family: Menlo, Monaco, Consolas, Courier New, monospace;
-  line-height: 1.5rem;
+.playground-plugin-container {
+  #log-container {
+    overflow: auto;
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+    line-height: 1.5rem;
 
-  .log-warn {
-    color: orange;
-  }
-  .log-error {
-    color: red;
-  }
-  .log-info {
-    color: skyblue;
-  }
-  .log-log {
-    color: silver;
+    .log-warn {
+      color: orange;
+    }
+
+    .log-error {
+      color: red;
+    }
+
+    .log-info {
+      color: skyblue;
+    }
+
+    .log-log {
+      color: silver;
+    }
+
+    .log-warn,
+    .log-error {
+      font-weight: bold;
+    }
+
+    hr {
+      border: 0;
+      border-bottom: 1px dashed #ccc;
+      background: white;
+    }
+
+    .comma {
+      color: #777;
+    }
   }
 
-  .log-warn,
-  .log-error {
-    font-weight: bold;
+  #compiler-errors {
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+    margin: 0;
+    padding: 0;
+
+    li.diagnostic {
+      margin: 0;
+      list-style: none;
+      padding-left: 2rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+    }
+
+    .error {
+      border-left: 2px solid red;
+    }
   }
 
-  hr {
-    border: 0;
-    border-bottom: 1px dashed #ccc;
-    background: white;
+  #empty-message-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 80%;
   }
 
-  .comma {
-    color: #777;
+  #playground-options {
+    li {
+      list-style: none;
+      span {
+        font-weight: 600;
+      }
+      margin-bottom: 2rem;
+    }
   }
+}
+
+// These show in the editor!
+.error-highlight {
+  background-color: #fcb7b7;
 }

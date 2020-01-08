@@ -53,8 +53,8 @@ const defaultPluginFactories: (() => PlaygroundPlugin)[] = [
   compiledJSPlugin,
   showDTSPlugin,
   showErrors,
-  optionsPlugin,
   runPlugin,
+  optionsPlugin,
 ]
 
 export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: PlaygroundConfig) => {
@@ -116,8 +116,9 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
     }, 300)
   })
 
+  // Sets the URL and storage of the sandbox string
   const playgroundDebouncedMainFunction = () => {
-    const alwaysUpdateURL = true
+    const alwaysUpdateURL = !localStorage.getItem('disable-save-on-type')
     if (alwaysUpdateURL) {
       const newURL = sandbox.getURLQueryWithCompilerOptions(sandbox)
       window.history.replaceState({}, '', newURL)
@@ -125,6 +126,16 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
 
     localStorage.setItem('sandbox-history', sandbox.getText())
   }
+
+  // When any compiler flags are changed, trigger a potential change to the URL
+  sandbox.setDidUpdateCompilerSettings(() => {
+    playgroundDebouncedMainFunction()
+
+    const model = sandbox.editor.getModel()
+    const plugin = currentPlugin()
+    if (model && plugin.modelChanged) plugin.modelChanged(sandbox, model)
+    if (model && plugin.modelChangedDebounce) plugin.modelChangedDebounce(sandbox, model)
+  })
 
   // Setup working with the existing UI, once it's loaded
 
@@ -187,7 +198,9 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
   const runButton = document.getElementById('run-button')!
   runButton.onclick = () => {
     const run = () => {
-      eval(sandbox.getText())
+      sandbox.getRunnableJS().then(js => {
+        eval(js)
+      })
     }
     const runPlugin = plugins.find(p => p.id === 'logs')!
     activatePlugin(runPlugin, currentPlugin(), sandbox, tabBar, container)

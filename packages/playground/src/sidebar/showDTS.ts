@@ -14,8 +14,12 @@ export const showDTSPlugin = () => {
       createCodePre.appendChild(codeElement)
       container.appendChild(createCodePre)
     },
-    modelChanged: async (sandbox, model) => {
-      codeElement.textContent = await sandbox.getDTSForCode()
+    modelChanged: (sandbox, model) => {
+      sandbox.getDTSForCode().then(dts => {
+        sandbox.monaco.editor.colorize(dts, 'typescript', {}).then(coloredDTS => {
+          codeElement.innerHTML = coloredDTS
+        })
+      })
     },
   }
 

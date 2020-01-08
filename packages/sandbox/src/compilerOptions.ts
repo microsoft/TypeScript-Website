@@ -91,8 +91,9 @@ function objectToQueryParams(obj: any) {
 /** Gets a query string representation (hash + queries) */
 export const getURLQueryWithCompilerOptions = (sandbox: any): string => {
   const compilerOptions = sandbox.getCompilerOptions()
+  const compilerDefaults = sandbox.compilerDefaults
   const diff = Object.entries(compilerOptions).reduce((acc, [key, value]) => {
-    if (value !== compilerOptions[key]) {
+    if (value !== compilerDefaults[key]) {
       // @ts-ignore
       acc[key] = compilerOptions[key]
     }
