@@ -203,6 +203,7 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
     runWithCustomLogs(run)
   }
 
+  // Handle the close buttons on the examples
   document.querySelectorAll('button.examples-close').forEach(b => {
     const button = b as HTMLButtonElement
     button.onclick = (e: any) => {
@@ -215,7 +216,7 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
   createConfigDropdown(sandbox, monaco)
   updateConfigDropdownForCompilerOptions(sandbox, monaco)
 
-  // Support grabbing examples
+  // Support grabbing examples from the location hash
   if (location.hash.startsWith('#example')) {
     const exampleName = location.hash.replace('#example/', '').trim()
     sandbox.config.logger.log('Loading example:', exampleName)
@@ -259,6 +260,18 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
 
   // Sets up a way to click between examples
   monaco.languages.registerLinkProvider(sandbox.language, new ExampleHighlighter())
+
+  const languageSelector = document.getElementById('language-selector')! as HTMLSelectElement
+  const params = new URLSearchParams(location.search)
+  languageSelector.options.selectedIndex = params.get('useJavaScript') ? 1 : 0
+
+  languageSelector.onchange = () => {
+    const useJavaScript = languageSelector.value === 'JavaScript'
+    const query = sandbox.getURLQueryWithCompilerOptions(sandbox, { useJavaScript: useJavaScript ? true : undefined })
+    const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
+    // @ts-ignore
+    document.location = fullURL
+  }
 
   const ui = createUI()
   const exporter = createExporter(sandbox, monaco, ui)

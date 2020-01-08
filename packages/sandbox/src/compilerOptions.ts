@@ -79,7 +79,7 @@ export const getCompilerOptionsFromParams = (options: CompilerOptions, params: U
 // Can't set sandbox to be the right type because the param would contain this function
 
 /** Gets a query string representation (hash + queries) */
-export const getURLQueryWithCompilerOptions = (sandbox: any): string => {
+export const getURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?: any): string => {
   const compilerOptions = sandbox.getCompilerOptions()
   const compilerDefaults = sandbox.compilerDefaults
   const diff = Object.entries(compilerOptions).reduce((acc, [key, value]) => {
@@ -94,7 +94,7 @@ export const getURLQueryWithCompilerOptions = (sandbox: any): string => {
   // The text of the TS/JS as the hash
   const hash = `code/${sandbox.lzstring.compressToEncodedURIComponent(sandbox.getText())}`
 
-  const urlParams: any = Object.assign({}, diff)
+  let urlParams: any = Object.assign({}, diff)
   for (const param of ['lib', 'ts']) {
     const params = new URLSearchParams(location.search)
     if (params.has(param)) {
@@ -122,8 +122,13 @@ export const getURLQueryWithCompilerOptions = (sandbox: any): string => {
 
   if (sandbox.config.useJavaScript) urlParams['useJavaScript'] = true
 
+  if (paramOverrides) {
+    urlParams = { ...urlParams, ...paramOverrides }
+  }
+
   if (Object.keys(urlParams).length > 0) {
     const queryString = Object.entries(urlParams)
+      .filter(([_k, v]) => Boolean(v))
       .map(([key, value]) => {
         return `${key}=${encodeURIComponent(value as string)}`
       })

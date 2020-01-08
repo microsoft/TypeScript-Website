@@ -74,7 +74,7 @@ const Index = (props: Props) => {
           text: defaultText,
           compilerOptions: {},
           domID: "monaco-editor-embed",
-          useJavaScript: false,
+          useJavaScript: !!params.get("useJavaScript"),
           acquireTypes: !localStorage.getItem("disable-ata"),
           logger: {
             error: console.error,
@@ -114,15 +114,18 @@ const Index = (props: Props) => {
                 <h3>Config</h3>
                 <div className="info" id="config-container">
                   <button className="examples-close">Close</button>
-                  <div id="compiler-dropdowns" />
 
-                  {/*<label className="select">
-                  <span className="select-label">Lang</span>
-                  <select>
-                    <option>TypeScript</option>
-                    <option>JavaScript</option>
-                  </select>
-                    </label>*/}
+                  <div id="compiler-dropdowns">
+                    <label className="select">
+                      <span className="select-label">Lang</span>
+                      <select id="language-selector">
+                        <option>TypeScript</option>
+                        <option>JavaScript</option>
+                      </select>
+                      <span className="compiler-flag-blurb">Which language should be used in the editor</span>
+                    </label>
+                  </div>
+
                 </div>
               </ul>
             </li>
@@ -145,10 +148,10 @@ const Index = (props: Props) => {
           </ul>
 
           <ul className="nav navbar-nav navbar-right hidden-xs">
-            <li><a href="#">About</a></li>
-            <li><a href="https://github.com/microsoft/typescript-website">GitHub</a></li>
 
             {/**
+            <li><a href="#">About</a></li>
+            <li><a href="https://github.com/microsoft/typescript-website">GitHub</a></li>
             <li className="dropdown">
               <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Theme <span className="caret"></span></a>
               <ul className="dropdown-menu">
@@ -163,7 +166,10 @@ const Index = (props: Props) => {
         </nav>
 
         <div className="ms-depth-4" style={{ backgroundColor: "white", paddingTop: "0", marginTop: "0", marginBottom: "3rem", paddingBottom: "1.5rem" }}>
-          <h1 id="loader" style={{ textAlign: "center", height: "800px" }}>Loading</h1>
+          <div id="loader">
+            <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            <p id="loading-message">Downloading TypeScript...</p>
+          </div>
           <div id="playground-container" style={{ display: "none" }}>
             <div id="editor-container">
               <div id="editor-toolbar" className="navbar-sub" >
@@ -177,16 +183,16 @@ const Index = (props: Props) => {
                   <li className="dropdown">
                     <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Export <span className="caret"></span></a>
                     <ul className="dropdown-menu">
-                      <li><a id="export-create-gh-issue" href="#" onClick={() => playground.exporter.reportIssue()} >Report GitHub issue on TypeScript</a></li>
+                      <li><a href="#" onClick={() => playground.exporter.reportIssue()} >Report GitHub issue on TypeScript</a></li>
                       <li role="separator" className="divider"></li>
-                      <li><a id="export-copy-issue-markdown" href="#" onClick={() => playground.exporter.copyAsMarkdownIssue()} >Copy as Markdown Issue</a></li>
-                      <li><a id="export-copy-markdown" href="#" onClick={() => playground.exporter.copyForChat()} >Copy as Markdown Link</a></li>
-                      <li><a id="export-copy-markdown" href="#" onClick={() => playground.exporter.copyForChatWithPreview()} >Copy as Markdown Link with Preview</a></li>
+                      <li><a href="#" onClick={() => playground.exporter.copyAsMarkdownIssue()} >Copy as Markdown Issue</a></li>
+                      <li><a href="#" onClick={() => playground.exporter.copyForChat()} >Copy as Markdown Link</a></li>
+                      <li><a href="#" onClick={() => playground.exporter.copyForChatWithPreview()} >Copy as Markdown Link with Preview</a></li>
                       <li role="separator" className="divider"></li>
-                      <li><a id="export-copy-markdown" href="#" onClick={() => playground.exporter.openInTSAST()} >Open in TypeScript AST Viewer</a></li>
+                      <li><a href="#" onClick={() => playground.exporter.openInTSAST()} >Open in TypeScript AST Viewer</a></li>
                       <li role="separator" className="divider"></li>
-                      <li><a id="export-open-code-sandbox" href="#" onClick={() => playground.exporter.openProjectInCodeSandbox()}>Open in CodeSandbox</a></li>
-                      <li><a id="export-open-stackblitz" href="#" onClick={() => playground.exporter.openProjectInStackBlitz()}>Open in StackBlitz</a></li>
+                      <li><a href="#" onClick={() => playground.exporter.openProjectInCodeSandbox()}>Open in CodeSandbox</a></li>
+                      <li><a href="#" onClick={() => playground.exporter.openProjectInStackBlitz()}>Open in StackBlitz</a></li>
                     </ul>
                   </li>
                 </ul>

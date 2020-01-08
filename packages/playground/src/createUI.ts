@@ -67,11 +67,14 @@ export const createUI = (): UI => {
       }
       selectAll()
 
+      // Keep track
+      const oldOnkeyDown = document.onkeydown
+
       const close = () => {
         modalBG.parentNode!.removeChild(modalBG)
         modal.parentNode!.removeChild(modal)
         // @ts-ignore
-        document.onkeydown = undefined
+        document.onkeydown = oldOnkeyDown
       }
 
       const copy = () => {
