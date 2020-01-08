@@ -1,5 +1,3 @@
-import ts from 'typescript'
-
 export function escapeHtml(text: string) {
   return text.replace(/</g, '&lt;')
 }
@@ -62,12 +60,12 @@ export function typesToExtension(types: string) {
   throw new Error('Cannot handle the file extension:' + types)
 }
 
-export function getIdentifierTextSpans(sourceFile: ts.SourceFile) {
-  const textSpans: { span: ts.TextSpan; text: string }[] = []
+export function getIdentifierTextSpans(ts: typeof import('typescript'), sourceFile: import('typescript').SourceFile) {
+  const textSpans: { span: import('typescript').TextSpan; text: string }[] = []
   checkChildren(sourceFile)
   return textSpans
 
-  function checkChildren(node: ts.Node) {
+  function checkChildren(node: import('typescript').Node) {
     ts.forEachChild(node, child => {
       if (ts.isIdentifier(child)) {
         const start = child.getStart(sourceFile, false)

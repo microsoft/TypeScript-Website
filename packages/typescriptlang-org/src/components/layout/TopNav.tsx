@@ -101,10 +101,10 @@ export const SiteNav = (props: Props) => {
 
           <nav>
             <ul>
-              <li className="nav-item"><a href="/docs"><span className="hide-only-medium">Documentation</span><span className="show-only-medium">Docs</span></a></li>
-              <li className="nav-item hide-small"><a href="/index.html#download-links">Download</a></li>
-              <li className="nav-item"><a href="/community">Connect</a></li>
-              <li className="nav-item"><a href="/play">Playground</a></li>
+              <li className="nav-item"><a href={withPrefix("/")}><span className="hide-only-medium">Documentation</span><span className="show-only-medium">Docs</span></a></li>
+              <li className="nav-item hide-small"><a href={withPrefix("/")}>Download</a></li>
+              <li className="nav-item"><a href={withPrefix("/community")}>Connect</a></li>
+              <li className="nav-item"><a href={withPrefix("/en/play")}>Playground</a></li>
             </ul>
           </nav>
         </div>

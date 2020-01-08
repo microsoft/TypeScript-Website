@@ -39,6 +39,9 @@
       "test/results"
     ]
   },
+  "browser": {
+    "fs": false
+  },
   "dependencies": {
     "debug": "^4.1.1",
     "lz-string": "^1.4.4"

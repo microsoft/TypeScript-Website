@@ -398,8 +398,11 @@ The API is one main exported function:
  *
  * @param code The twoslash markup'd code
  * @param extension For example: ts, tsx, typescript, javascript, js
+ * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd
+ * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd
+ * @param hostModule An minimal copy of the fs node import, if missing it will be require'd
  */
-export function twoslasher(code: string, extension: string): TwoSlashReturn;
+export function twoslasher(code: string, extension: string, tsModule?: TS, lzstringModule?: LZ, hostModule?: ReadfileIsh): TwoSlashReturn;
 ```
 
 Which returns

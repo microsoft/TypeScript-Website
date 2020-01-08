@@ -1,15 +1,13 @@
-import ts from 'typescript'
-
 /** To ensure that errors are matched up right */
 export function validateCodeForErrors(
-  relevantErrors: ts.Diagnostic[],
+  relevantErrors: import('typescript').Diagnostic[],
   handbookOptions: { errors: number[] },
   extension: string,
   originalCode: string
 ) {
   const inErrsButNotFoundInTheHeader = relevantErrors.filter(e => !handbookOptions.errors.includes(e.code))
   const errorsFound = inErrsButNotFoundInTheHeader.map(e => e.code).join(' ')
-  
+
   if (inErrsButNotFoundInTheHeader.length) {
     const postfix = handbookOptions.errors.length ? ` - the annotation specified ${handbookOptions.errors}` : ''
     const afterMessage = inErrsButNotFoundInTheHeader

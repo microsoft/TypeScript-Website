@@ -1,9 +1,13 @@
-import ts from 'typescript'
 import debug from 'debug'
-import { compressToEncodedURIComponent } from 'lz-string'
 
-// TODO: remove this somehow?
-import * as fs from 'fs'
+type TS = typeof import('typescript')
+type LZ = typeof import('lz-string')
+type CompilerOptions = import('typescript').CompilerOptions
+type LanguageServiceHost = import('typescript').LanguageServiceHost
+type ReadfileIsh = {
+  readFileSync(path: string, options?: { encoding?: null; flag?: string } | null): Buffer
+  existsSync(path: string): boolean
+}
 
 import {
   parsePrimitive,
@@ -21,17 +25,21 @@ const log = debug('twoslasher')
 declare module 'typescript' {
   type Option = {
     name: string
-    type: 'list' | 'boolean' | 'number' | 'string' | ts.Map<number>
+    type: 'list' | 'boolean' | 'number' | 'string' | import('typescript').Map<number>
     element?: Option
   }
 
   const optionDeclarations: Array<Option>
 }
 
-function createLanguageServiceHost(fileMap: {
-  [key: string]: SampleRef
-}): ts.LanguageServiceHost & { setOptions(opts: ts.CompilerOptions): void } {
-  let options: ts.CompilerOptions = {
+function createLanguageServiceHost(
+  fileMap: {
+    [key: string]: SampleRef
+  },
+  ts: TS,
+  host: ReadfileIsh
+): LanguageServiceHost & { setOptions(opts: CompilerOptions): void } {
+  let options: CompilerOptions = {
     allowJs: true,
     skipLibCheck: true,
     strict: true,
@@ -50,17 +58,16 @@ function createLanguageServiceHost(fileMap: {
 
       // This could be doable, but we can run in a web browser
       // without the fs module
-
-      if (!fs.existsSync(fileName)) {
+      if (!host.existsSync(fileName)) {
         return undefined
       }
 
-      return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString())
+      return ts.ScriptSnapshot.fromString(host.readFileSync(fileName).toString())
     },
     getCurrentDirectory: () => process.cwd(),
     getCompilationSettings: () => options,
     getDefaultLibFileName: options => ts.getDefaultLibFilePath(options),
-    fileExists: ts.sys.fileExists,
+    fileExists: host.existsSync,
     readFile: ts.sys.readFile,
     readDirectory: ts.sys.readDirectory,
     setOptions(newOpts) {
@@ -127,7 +134,7 @@ function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosit
   return { highlights, queries }
 }
 
-function setOption(name: string, value: string, opts: ts.CompilerOptions) {
+function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
   log(`Setting ${name} to ${value}`)
 
   for (const opt of ts.optionDeclarations) {
@@ -164,20 +171,20 @@ const booleanConfigRegexp = /^\/\/\s?@(\w+)$/
 // https://regex101.com/r/8B2Wwh/1
 const valuedConfigRegexp = /^\/\/\s?@(\w+):\s?(.+)$/
 
-function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: ts.CompilerOptions) {
+function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: CompilerOptions, ts: TS) {
   const options = { ...defaultCompilerOptions }
   for (let i = 0; i < codeLines.length; ) {
     let match
     if ((match = booleanConfigRegexp.exec(codeLines[i]))) {
       options[match[1]] = true
-      setOption(match[1], 'true', options)
+      setOption(match[1], 'true', options, ts)
     } else if ((match = valuedConfigRegexp.exec(codeLines[i]))) {
       // Skip a filename tag, which should propagate through this stage
       if (match[1] === 'filename') {
         i++
         continue
       }
-      setOption(match[1], match[2], options)
+      setOption(match[1], match[2], options, ts)
     } else {
       i++
       continue
@@ -312,8 +319,21 @@ export interface TwoSlashReturn {
  *
  * @param code The twoslash markup'd code
  * @param extension For example: ts, tsx, typescript, javascript, js
+ * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd
+ * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd
+ * @param hostModule An minimal copy of the fs node import, if missing it will be require'd
  */
-export function twoslasher(code: string, extension: string): TwoSlashReturn {
+export function twoslasher(
+  code: string,
+  extension: string,
+  tsModule?: TS,
+  lzstringModule?: LZ,
+  hostModule?: ReadfileIsh
+): TwoSlashReturn {
+  const ts: TS = tsModule ?? require('typescript')
+  const lzstring: LZ = lzstringModule ?? require('lz-string')
+  const host: ReadfileIsh = hostModule ?? require('fs')
+
   const originalCode = code
   const safeExtension = typesToExtension(extension)
   log(`\n\nLooking at code: \n\`\`\`${safeExtension}\n${code}\n\`\`\`\n`)
@@ -328,13 +348,13 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
 
   fileMap[defaultFileName] = defaultFileRef
 
-  const lsHost = createLanguageServiceHost(fileMap)
+  const lsHost = createLanguageServiceHost(fileMap, ts, host)
   const caseSensitiveFilenames = lsHost.useCaseSensitiveFileNames && lsHost.useCaseSensitiveFileNames()
 
   const docRegistry = ts.createDocumentRegistry(caseSensitiveFilenames, lsHost.getCurrentDirectory())
   const ls = ts.createLanguageService(lsHost, docRegistry)
 
-  const defaultCompilerOptions: ts.CompilerOptions = {
+  const defaultCompilerOptions: CompilerOptions = {
     strict: true,
     target: ts.ScriptTarget.ESNext,
     allowJs: true,
@@ -348,7 +368,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
   const codeLines = code.split(/\r\n?|\n/g)
 
   const handbookOptions = filterHandbookOptions(codeLines)
-  const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions)
+  const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions, ts)
 
   // Update all the compiler options
   lsHost.setOptions(compilerOptions)
@@ -444,7 +464,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
   code = allCodeLines.join('\n')
 
   // Code should now be safe to compile, so we're going to split it into different files
-  const errs: ts.Diagnostic[] = []
+  const errs: import('typescript').Diagnostic[] = []
   // Let because of a filter when cutting
   let staticQuickInfos: TwoSlashReturn['staticQuickInfos'] = []
 
@@ -463,7 +483,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
       const fileContentStartIndexInModifiedFile = code.indexOf(fileRep.content)
       const snapshot = ts.ScriptSnapshot.fromString(fileRep.content)
       const sourceFile = docRegistry.acquireDocument(file, compilerOptions, snapshot, 'noop')
-      const idenfiers = getIdentifierTextSpans(sourceFile)
+      const idenfiers = getIdentifierTextSpans(ts, sourceFile)
 
       for (const idenfier of idenfiers) {
         const span = idenfier.span
@@ -529,7 +549,7 @@ export function twoslasher(code: string, extension: string): TwoSlashReturn {
   }
 
   // TODO: compiler options
-  const playgroundURL = `https://www.typescriptlang.org/play/#code/${compressToEncodedURIComponent(code)}`
+  const playgroundURL = `https://www.typescriptlang.org/play/#code/${lzstring.compressToEncodedURIComponent(code)}`
 
   const cutString = '// ---cut---'
   if (code.includes(cutString)) {
