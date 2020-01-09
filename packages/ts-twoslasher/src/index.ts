@@ -4,9 +4,11 @@ type TS = typeof import('typescript')
 type LZ = typeof import('lz-string')
 type CompilerOptions = import('typescript').CompilerOptions
 type LanguageServiceHost = import('typescript').LanguageServiceHost
-type ReadfileIsh = {
-  readFileSync(path: string, options?: { encoding?: null; flag?: string } | null): Buffer
-  existsSync(path: string): boolean
+type VirtualFS = {
+  // prettier-ignore
+  readDirectory(path: string, extensions?: readonly string[], exclude?: readonly string[], include?: readonly string[], depth?: number): string[];
+  readFile(path: string, encoding?: string): string | undefined
+  fileExists(path: string): boolean
 }
 
 import {
@@ -18,6 +20,13 @@ import {
   stringAroundIndex,
 } from './utils'
 import { validateInput, validateCodeForErrors } from './validation'
+
+import {
+  createSystem,
+  createVirtualTypeScriptEnvironment,
+  createDefaultMapFromCDN,
+  createDefaultMapFromNodeModules,
+} from 'typescript-vfs'
 
 const log = debug('twoslasher')
 
@@ -37,7 +46,7 @@ function createLanguageServiceHost(
     [key: string]: SampleRef
   },
   ts: TS,
-  host: ReadfileIsh
+  host: VirtualFS
 ): LanguageServiceHost & { setOptions(opts: CompilerOptions): void } {
   let options: CompilerOptions = {
     allowJs: true,
@@ -58,18 +67,19 @@ function createLanguageServiceHost(
 
       // This could be doable, but we can run in a web browser
       // without the fs module
-      if (!host.existsSync(fileName)) {
+      if (!host.fileExists(fileName)) {
         return undefined
       }
 
-      return ts.ScriptSnapshot.fromString(host.readFileSync(fileName).toString())
+      const content = host.readFile(fileName)
+      return (content && ts.ScriptSnapshot.fromString(content)) || undefined
     },
-    getCurrentDirectory: () => process.cwd(),
+    getCurrentDirectory: () => '/',
     getCompilationSettings: () => options,
     getDefaultLibFileName: options => ts.getDefaultLibFilePath(options),
-    fileExists: host.existsSync,
-    readFile: ts.sys.readFile,
-    readDirectory: ts.sys.readDirectory,
+    fileExists: host.fileExists,
+    readFile: host.readFile,
+    readDirectory: host.readDirectory,
     setOptions(newOpts) {
       options = newOpts
     },
@@ -328,11 +338,11 @@ export function twoslasher(
   extension: string,
   tsModule?: TS,
   lzstringModule?: LZ,
-  hostModule?: ReadfileIsh
+  hostModule?: import('typescript').System
 ): TwoSlashReturn {
   const ts: TS = tsModule ?? require('typescript')
   const lzstring: LZ = lzstringModule ?? require('lz-string')
-  const host: ReadfileIsh = hostModule ?? require('fs')
+  const host: VirtualFS = hostModule ?? nodeFS()
 
   const originalCode = code
   const safeExtension = typesToExtension(extension)
@@ -347,6 +357,9 @@ export function twoslasher(
   }
 
   fileMap[defaultFileName] = defaultFileRef
+
+  // Maybe this doesn't work in the future?
+  // TODO: figure a better way
 
   const lsHost = createLanguageServiceHost(fileMap, ts, host)
   const caseSensitiveFilenames = lsHost.useCaseSensitiveFileNames && lsHost.useCaseSensitiveFileNames()
@@ -583,5 +596,14 @@ export function twoslasher(
     staticQuickInfos,
     errors,
     playgroundURL,
+  }
+}
+
+const nodeFS = (): VirtualFS => {
+  const ts = require('typescript')
+  return {
+    fileExists: ts.sys.fileExists,
+    readFile: ts.sys.readFile,
+    readDirectory: ts.sys.readDirectory,
   }
 }

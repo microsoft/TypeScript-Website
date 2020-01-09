@@ -40,10 +40,13 @@
     ]
   },
   "browser": {
-    "fs": false
+    "fs": false,
+    "typescript": false,
+    "lz-string": false
   },
   "dependencies": {
     "debug": "^4.1.1",
-    "lz-string": "^1.4.4"
+    "lz-string": "^1.4.4",
+    "typescript-vfs": "latest"
   }
 }

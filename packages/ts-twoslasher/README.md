@@ -402,7 +402,7 @@ The API is one main exported function:
  * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd
  * @param hostModule An minimal copy of the fs node import, if missing it will be require'd
  */
-export function twoslasher(code: string, extension: string, tsModule?: TS, lzstringModule?: LZ, hostModule?: ReadfileIsh): TwoSlashReturn;
+export function twoslasher(code: string, extension: string, tsModule?: TS, lzstringModule?: LZ, hostModule?: VirtualFS): TwoSlashReturn;
 ```
 
 Which returns
