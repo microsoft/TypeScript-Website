@@ -3,13 +3,6 @@ import debug from 'debug'
 type TS = typeof import('typescript')
 type LZ = typeof import('lz-string')
 type CompilerOptions = import('typescript').CompilerOptions
-type LanguageServiceHost = import('typescript').LanguageServiceHost
-type VirtualFS = {
-  // prettier-ignore
-  readDirectory(path: string, extensions?: readonly string[], exclude?: readonly string[], include?: readonly string[], depth?: number): string[];
-  readFile(path: string, encoding?: string): string | undefined
-  fileExists(path: string): boolean
-}
 
 import {
   parsePrimitive,
@@ -21,12 +14,7 @@ import {
 } from './utils'
 import { validateInput, validateCodeForErrors } from './validation'
 
-import {
-  createSystem,
-  createVirtualTypeScriptEnvironment,
-  createDefaultMapFromCDN,
-  createDefaultMapFromNodeModules,
-} from 'typescript-vfs'
+import { createSystem, createVirtualTypeScriptEnvironment, createDefaultMapFromNodeModules } from 'typescript-vfs'
 
 const log = debug('twoslasher')
 
@@ -39,58 +27,6 @@ declare module 'typescript' {
   }
 
   const optionDeclarations: Array<Option>
-}
-
-function createLanguageServiceHost(
-  fileMap: {
-    [key: string]: SampleRef
-  },
-  ts: TS,
-  host: VirtualFS
-): LanguageServiceHost & { setOptions(opts: CompilerOptions): void } {
-  let options: CompilerOptions = {
-    allowJs: true,
-    skipLibCheck: true,
-    strict: true,
-  }
-
-  const servicesHost: ReturnType<typeof createLanguageServiceHost> = {
-    getScriptFileNames: () => Object.keys(fileMap),
-    getScriptVersion: fileName => (fileMap[fileName] ? '' + fileMap[fileName].versionNumber : '0'),
-    getScriptSnapshot: fileName => {
-      if (fileMap[fileName]) {
-        return ts.ScriptSnapshot.fromString(fileMap[fileName].content)
-      }
-
-      // throw new Error("Could not find " + fileName + " in " + Object.keys(fileMap))
-      // return undefined
-
-      // This could be doable, but we can run in a web browser
-      // without the fs module
-      if (!host.fileExists(fileName)) {
-        return undefined
-      }
-
-      const content = host.readFile(fileName)
-      return (content && ts.ScriptSnapshot.fromString(content)) || undefined
-    },
-    getCurrentDirectory: () => '/',
-    getCompilationSettings: () => options,
-    getDefaultLibFileName: options => ts.getDefaultLibFilePath(options),
-    fileExists: host.fileExists,
-    readFile: host.readFile,
-    readDirectory: host.readDirectory,
-    setOptions(newOpts) {
-      options = newOpts
-    },
-  }
-  return servicesHost
-}
-
-interface SampleRef {
-  fileName: string
-  versionNumber: number
-  content: string
 }
 
 type QueryPosition = {
@@ -331,45 +267,27 @@ export interface TwoSlashReturn {
  * @param extension For example: ts, tsx, typescript, javascript, js
  * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd
  * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd
- * @param hostModule An minimal copy of the fs node import, if missing it will be require'd
+ * @param sysModule TBD
  */
 export function twoslasher(
   code: string,
   extension: string,
   tsModule?: TS,
   lzstringModule?: LZ,
-  hostModule?: import('typescript').System
+  fsMap?: Map<string, string>
 ): TwoSlashReturn {
   const ts: TS = tsModule ?? require('typescript')
   const lzstring: LZ = lzstringModule ?? require('lz-string')
-  const host: VirtualFS = hostModule ?? nodeFS()
 
   const originalCode = code
   const safeExtension = typesToExtension(extension)
-  log(`\n\nLooking at code: \n\`\`\`${safeExtension}\n${code}\n\`\`\`\n`)
-
-  const fileMap: { [key: string]: SampleRef } = {}
   const defaultFileName = 'index.' + safeExtension
-  const defaultFileRef: SampleRef = {
-    fileName: defaultFileName,
-    content: '',
-    versionNumber: 1,
-  }
 
-  fileMap[defaultFileName] = defaultFileRef
-
-  // Maybe this doesn't work in the future?
-  // TODO: figure a better way
-
-  const lsHost = createLanguageServiceHost(fileMap, ts, host)
-  const caseSensitiveFilenames = lsHost.useCaseSensitiveFileNames && lsHost.useCaseSensitiveFileNames()
-
-  const docRegistry = ts.createDocumentRegistry(caseSensitiveFilenames, lsHost.getCurrentDirectory())
-  const ls = ts.createLanguageService(lsHost, docRegistry)
+  log(`\n\nLooking at code: \n\`\`\`${safeExtension}\n${code}\n\`\`\`\n`)
 
   const defaultCompilerOptions: CompilerOptions = {
     strict: true,
-    target: ts.ScriptTarget.ESNext,
+    target: ts.ScriptTarget.ES2016,
     allowJs: true,
   }
 
@@ -383,37 +301,22 @@ export function twoslasher(
   const handbookOptions = filterHandbookOptions(codeLines)
   const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions, ts)
 
-  // Update all the compiler options
-  lsHost.setOptions(compilerOptions)
+  const vfs = fsMap ?? createLocallyPoweredVFS(compilerOptions)
+
+  const system = createSystem(vfs)
+  const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions)
+  const ls = env.languageService
+
+  // Maybe this doesn't work in the future?
+  // TODO: figure a better way
   code = codeLines.join('\n')
-
-  const updateFile = (filename: string, newFileCode: string) => {
-    let existingFile = fileMap[filename]
-    if (!existingFile) {
-      fileMap[filename] = {
-        fileName: filename,
-        content: newFileCode,
-        versionNumber: 1,
-      }
-      existingFile = fileMap[filename]
-    }
-
-    existingFile.content = newFileCode
-    existingFile.versionNumber++
-
-    log(`\nUpdating file ${filename} to: \n${newFileCode}`)
-
-    const scriptSnapshot = lsHost.getScriptSnapshot(filename)
-    const scriptVersion = lsHost.getScriptVersion(filename)
-    docRegistry.updateDocument(filename, compilerOptions, scriptSnapshot!, scriptVersion)
-  }
 
   let queries = [] as TwoSlashReturn['queries']
   let highlights = [] as TwoSlashReturn['highlights']
 
   // TODO: This doesn't handle a single file with a name
-  const files = code.split('// @filename: ')
-  const noFilepaths = files.length === 1
+  const fileContent = code.split('// @filename: ')
+  const noFilepaths = fileContent.length === 1
 
   const makeDefault: [string, string[]] = [defaultFileName, code.split(/\r\n?|\n/g)]
   const makeMultiFile = (filenameSplit: string): [string, string[]] => {
@@ -426,23 +329,23 @@ export function twoslasher(
    * default and multi-file code samples it's all coerced into an array of
    * [name, lines_of_code] basically for each set.
    */
-  const nameContent: Array<[string, string[]]> = noFilepaths ? [makeDefault] : files.map(makeMultiFile)
+  const unfilteredNameContent: Array<[string, string[]]> = noFilepaths ? [makeDefault] : fileContent.map(makeMultiFile)
+  const nameContent = unfilteredNameContent.filter(n => n[0].length)
+
+  /** All of the referenced files in the markup */
+  const filenames = nameContent.map(nc => nc[0])
 
   for (const file of nameContent) {
     const [filename, codeLines] = file
-    // When you do a filename on the file line, it splits off a zero content file
-    if (filename === '') continue
 
-    // You may think this is redundant, but it's needed for the LSP queries which
-    // are coming up after this
+    // Create the file in the vfs
     const newFileCode = codeLines.join('\n')
-    updateFile(filename, newFileCode)
+    env.createFile(filename, newFileCode)
 
     const updates = filterHighlightLines(codeLines)
-
     highlights.push(...updates.highlights)
 
-    // Do the LSP lookup for the queries
+    // ------ Do the LSP lookup for the queries
 
     // TODO: this is not perfect, it seems to have issues when there are multiple queries
     // in the same sourcefile
@@ -450,7 +353,7 @@ export function twoslasher(
       const quickInfo = ls.getQuickInfoAtPosition(filename, q.position)
       const token = ls.getDefinitionAtPosition(filename, q.position)
 
-      let text = `Could not get LSP result: ${stringAroundIndex(fileMap[filename].content, q.position)}`
+      let text = `Could not get LSP result: ${stringAroundIndex(env.getSourceFile(filename)!.text, q.position)}`
       let docs,
         start = 0,
         length = 0
@@ -468,7 +371,7 @@ export function twoslasher(
 
     // Sets the file in the compiler as being without the comments
     const newEditedFileCode = codeLines.join('\n')
-    updateFile(filename, newEditedFileCode)
+    env.updateFile(filename, newEditedFileCode)
   }
 
   // We need to also strip the highlights + queries from the main file which is shown to people
@@ -482,9 +385,9 @@ export function twoslasher(
   let staticQuickInfos: TwoSlashReturn['staticQuickInfos'] = []
 
   // Iterate through the declared files and grab errors and LSP quickinfos
-  const declaredFiles = Object.keys(fileMap)
+  // const declaredFiles = Object.keys(fileMap)
 
-  declaredFiles.forEach(file => {
+  filenames.forEach(file => {
     if (!handbookOptions.noErrors) {
       errs.push(...ls.getSemanticDiagnostics(file))
       errs.push(...ls.getSyntacticDiagnostics(file))
@@ -492,28 +395,31 @@ export function twoslasher(
 
     // Get all of the interesting quick info popover
     if (!handbookOptions.noStaticSemanticInfo) {
-      const fileRep = fileMap[file]
-      const fileContentStartIndexInModifiedFile = code.indexOf(fileRep.content)
-      const snapshot = ts.ScriptSnapshot.fromString(fileRep.content)
-      const sourceFile = docRegistry.acquireDocument(file, compilerOptions, snapshot, 'noop')
-      const idenfiers = getIdentifierTextSpans(ts, sourceFile)
+      // const fileRep = fileMap[file]
+      const source = env.sys.readFile(file)!
+      const fileContentStartIndexInModifiedFile = code.indexOf(source)
 
-      for (const idenfier of idenfiers) {
-        const span = idenfier.span
-        const quickInfo = ls.getQuickInfoAtPosition(file, span.start)
-        if (quickInfo && quickInfo.displayParts) {
-          const text = quickInfo.displayParts.map(dp => dp.text).join('')
-          const docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join('\n') : undefined
-          const position = span.start + fileContentStartIndexInModifiedFile
-          const { line, character } = ts.getLineAndCharacterOfPosition(sourceFile, position)
-          const targetString = idenfier.text
-          staticQuickInfos.push({ text, docs, start: position, length: span.length, line, character, targetString })
+      const sourceFile = env.getSourceFile(file)
+      if (sourceFile) {
+        const idenfiers = getIdentifierTextSpans(ts, sourceFile)
+
+        for (const idenfier of idenfiers) {
+          const span = idenfier.span
+          const quickInfo = ls.getQuickInfoAtPosition(file, span.start)
+          if (quickInfo && quickInfo.displayParts) {
+            const text = quickInfo.displayParts.map(dp => dp.text).join('')
+            const docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join('\n') : undefined
+            const position = span.start + fileContentStartIndexInModifiedFile
+            const { line, character } = ts.getLineAndCharacterOfPosition(sourceFile, position)
+            const targetString = idenfier.text
+            staticQuickInfos.push({ text, docs, start: position, length: span.length, line, character, targetString })
+          }
         }
       }
     }
   })
 
-  const relevantErrors = errs.filter(e => e.file && declaredFiles.includes(e.file.fileName))
+  const relevantErrors = errs.filter(e => e.file && filenames.includes(e.file.fileName))
 
   // A validator that error codes are mentioned, so we can know if something has broken in the future
   if (relevantErrors.length) {
@@ -524,7 +430,7 @@ export function twoslasher(
 
   // We can't pass the ts.DiagnosticResult out directly (it can't be JSON.stringified)
   for (const err of relevantErrors) {
-    const codeWhereErrorLives = fileMap[err.file!.fileName].content
+    const codeWhereErrorLives = env.sys.readFile(err.file!.fileName)!
     const fileContentStartIndexInModifiedFile = code.indexOf(codeWhereErrorLives)
     const renderedMessage = escapeHtml(ts.flattenDiagnosticMessageText(err.messageText, '\n'))
     const id = `err-${err.code}-${err.start}-${err.length}`
@@ -544,7 +450,7 @@ export function twoslasher(
 
   // Handle emitting files
   if (handbookOptions.showEmit) {
-    const output = ls.getEmitOutput(defaultFileRef.fileName)
+    const output = ls.getEmitOutput(defaultFileName)
     const file = output.outputFiles.find(o => o.name === handbookOptions.showEmittedFile)
     if (!file) {
       const allFiles = output.outputFiles.map(o => o.name).join(', ')
@@ -561,8 +467,8 @@ export function twoslasher(
     staticQuickInfos = []
   }
 
-  // TODO: compiler options
-  const playgroundURL = `https://www.typescriptlang.org/play/#code/${lzstring.compressToEncodedURIComponent(code)}`
+  const zippedCode = lzstring.compressToEncodedURIComponent(originalCode)
+  const playgroundURL = `https://www.typescriptlang.org/play/#code/${zippedCode}`
 
   const cutString = '// ---cut---'
   if (code.includes(cutString)) {
@@ -599,11 +505,6 @@ export function twoslasher(
   }
 }
 
-const nodeFS = (): VirtualFS => {
-  const ts = require('typescript')
-  return {
-    fileExists: ts.sys.fileExists,
-    readFile: ts.sys.readFile,
-    readDirectory: ts.sys.readDirectory,
-  }
+const createLocallyPoweredVFS = (compilerOptions: CompilerOptions) => {
+  return createDefaultMapFromNodeModules(compilerOptions)
 }

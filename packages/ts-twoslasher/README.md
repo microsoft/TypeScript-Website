@@ -17,7 +17,7 @@ to create examples for bugs on the compiler's issue tracker.
 
 ### TODO
 
-- Think about how to ship to npm
+- Ship to npm
 
 <!-- AUTO-GENERATED-CONTENT:START (FIXTURES) -->
 The twoslash markup API lives inside your code samples code as comments, which can do special commands. There are the following commands:
@@ -224,7 +224,7 @@ Turns to:
 >   "queries": [],
 >   "staticQuickInfos": "[...]",
 >   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/PQKhFgCgAIWhxApgFwM7WQC0dANogOwHMtoB7AM2gENpVkAnAS2KlmgAEAHah6gW2gA3argCuOWvWasYIYFEQAPLmQbJoAE0QBjXLxwUxBHciZkC0IigDKjFkQAyhEpgAUI8YgBcde8QBKXwIxfgAjRAYAbiggA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PQKhCgAIUhxBTALgZ0ogFvSAbeA7Acw0gHsAzSAQ0mUQCcBLQqGAAQAdK7KBbSAN0rYArlmq1GzaMHDwAHuxJ1EkACbwAxti5YywvBsQMSeSASQBlekwIAZfEXQAKQSPgAuGtcIBKT3mEeACN4OgBucCA"
 > }
 > ```
 
@@ -351,26 +351,41 @@ Turns to:
 // @showEmit
 // @target: ES5
 // @downleveliteration
-// @importhelpers
 
 // --importHelpers on: Spread helper will be imported from 'tslib'
 
 export function fn(arr: number[]) {
-  const arr2 = [1, ...arr];
+  const arr2 = [1, ...arr]
 }
 ```
 
 Turns to:
 
 > ```js
-> "use strict";
 > // --importHelpers on: Spread helper will be imported from 'tslib'
-> Object.defineProperty(exports, "__esModule", { value: true });
-> var tslib_1 = require("tslib");
-> function fn(arr) {
->     var arr2 = tslib_1.__spread([1], arr);
+> var __read = (this && this.__read) || function (o, n) {
+>     var m = typeof Symbol === "function" && o[Symbol.iterator];
+>     if (!m) return o;
+>     var i = m.call(o), r, ar = [], e;
+>     try {
+>         while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+>     }
+>     catch (error) { e = { error: error }; }
+>     finally {
+>         try {
+>             if (r && !r.done && (m = i["return"])) m.call(i);
+>         }
+>         finally { if (e) throw e.error; }
+>     }
+>     return ar;
+> };
+> var __spread = (this && this.__spread) || function () {
+>     for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
+>     return ar;
+> };
+> export function fn(arr) {
+>     var arr2 = __spread([1], arr);
 > }
-> exports.fn = fn;
 > ```
 
 > With:
@@ -383,7 +398,7 @@ Turns to:
 >   "queries": [],
 >   "staticQuickInfos": "[...]",
 >   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/EQVwzgpgBGAuBOBLAxrYBuAsAKAPS6gFpDEBbABwHt5YAJCAG3InjCkoDsAuKAZXPgQAhgBMoAC0bN4UAO6IGDKACNoZKjQhiAZvEqkoAclhgGiZYZwB5ZQCsIqAHQiI2xBwgAFPdNgBPAAoIAA8NEwAaKGAAfWiIMABZShEQBghgSIBvKAA3IQYQCB4EQqgAXwBKLGw8mRMzZWiARigAXihBAEcQREEA4HrzYCqcbRAOVEROKG0OAKF4eAqoTJwoddyFqAX4ACY2qEHGpsdYsAFhEQCAbSaAXUidkewynBCwsEdZg9nqoA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEFpwSwWwBwPYCcAuAJApgGzhpBnUBAOwC5QBlOJDAQwBNQALbXJUAdyiy1ACMMoWIlQZGAMyQIYoAOQp8WKH1kAoAG612AfW00GoALygAFCiZRCAMiuhzlgHS799AJSgAPh9DiArsQBjFCgSUwQAGlBidwBvVVAE0E12GWMUAE9cBHFKdJg+BF5DYtAAIj9A4JJS0BsiAG0KPIKsBygUPFoUZABdAG54xKgckwBCGHcaFF8kYiIBxKStISNQGAcA2h4TBFdIpEjl43qeyIwFxJQkdNA4xcWOCyxBExM54uN1BChGAAZPbzESCgAB8oF+7jqoxM7GMUAcxAwAA8UCZXK4HPQSBh3FoHHBfPgmDCHJosL4cRcEgBfQYJTYoAJMUx4KRIWKgQTGGKcpBs8is5Cgal9YV0nxQYhbLA3O73BJXWXi+UJYamdhQpCY7G1WwmVJCeqlKYzYilHrotYbaUmKCuKn3WkqiVSniyoQjHF2JhSDichyCpCip2JEMJE2zUBaAYijTLXT4ah0RjGMwWay2ez4JzaRMudxeHz+IIhOZo27i8RCkzJKOw0AnSJQVa-UXNgA8dYA5r4YBhiAoHM9iF3zG2ANTj3H1vEBEgMkzOZMmLQ9vsD-D1KAW+3iiNzaOqWPIkQoIuVUs+YgrvmxcW1rRIABMqwTSYYJnqAEZTnX2THVCAA"
 > }
 > ```
 
@@ -400,9 +415,9 @@ The API is one main exported function:
  * @param extension For example: ts, tsx, typescript, javascript, js
  * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd
  * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd
- * @param hostModule An minimal copy of the fs node import, if missing it will be require'd
+ * @param sysModule TBD
  */
-export function twoslasher(code: string, extension: string, tsModule?: TS, lzstringModule?: LZ, hostModule?: VirtualFS): TwoSlashReturn;
+export function twoslasher(code: string, extension: string, tsModule?: TS, lzstringModule?: LZ, fsMap?: Map<string, string>): TwoSlashReturn;
 ```
 
 Which returns

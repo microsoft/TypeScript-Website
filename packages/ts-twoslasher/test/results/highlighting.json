@@ -103,7 +103,7 @@
       "targetString": "greet"
     },
     {
-      "text": "var Date: DateConstructor\nnew () => Date (+4 overloads)",
+      "text": "var Date: DateConstructor\nnew () => Date (+3 overloads)",
       "docs": "Enables basic storage and retrieval of dates and times.",
       "start": 138,
       "length": 4,

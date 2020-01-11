@@ -1,13 +1,11 @@
 ### TypeScript VFS
 
-A map based TypeScript Virtual File System.
+A Map based TypeScript Virtual File System.
 
 Useful when you need to:
 
 - Run TypeScript in the browser
 - Run virtual TypeScript environments where files on disk aren't the source of truth
-
-The current API is based on you knowing all of the files upfront.
 
 ### Usage
 
@@ -136,12 +134,13 @@ const createDefaultMap2015 = () => {
 This list is the default set of definitions (different options for `target` or `lib` will affect what this list looks like) and it grabs the lib content from the local dependency of TypeScript.
 
 It's safe to say, keeping on top of this list can be a bit tiring and so this library ships functions for generating a map with with these pre-filled. Note: it's possible for this list to get out of sync with TypeScript over time. It was last synced at TypeScript 3.7.4
+s
 
 ```ts
 import { createSystem, createVirtualTypeScriptEnvironment, createDefaultMapFromNodeModules } from 'typescript-vfs'
 import ts from 'typescript'
 
-const fsMap = createDefaultMapFromNodeModules(ts.ScriptTarget.ES2015)
+const fsMap = createDefaultMapFromNodeModules({ target: ts.ScriptTarget.ES2015 })
 fsMap.set('index.ts', "const hello = 'hi'")
 // ...
 ```
@@ -156,10 +155,10 @@ import lzstring from 'lz-string'
 const start = async () => {
   const shouldCache = true
   // This caches the lib files in the site's localStorage
-  const fsMap = await createDefaultMapFromCDN(ts.ScriptTarget.ES2015, '3.7.3', shouldCache, ts)
+  const fsMap = await createDefaultMapFromCDN({ target: ts.ScriptTarget.ES2015 }, '3.7.3', shouldCache, ts)
 
   // This stores the lib files as a zipped string to save space in the cache
-  const otherMap = await createDefaultMapFromCDN(ts.ScriptTarget.ES2015, '3.7.3', shouldCache, ts, lzstring)
+  const otherMap = await createDefaultMapFromCDN({ target: ts.ScriptTarget.ES2015 }, '3.7.3', shouldCache, ts, lzstring)
 
   fsMap.set('index.ts', "const hello = 'hi'")
   // ...

@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import { Layout } from "../../components/layout"
 import { withPrefix } from "gatsby"
 import { twoslasher } from "ts-twoslasher"
+import { createDefaultMapFromCDN } from "typescript-vfs"
 
 import "./sandbox.scss"
 import { DevNav } from "../../components/dev-nav"
@@ -25,48 +26,69 @@ const Index = (props: any) => {
       });
 
       re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "sandbox/index"], async (main: typeof import("monaco-editor"), ts: typeof import("typescript"), sandboxEnv: typeof import("typescript-sandbox")) => {
-        const initialCode = `import {markdown, danger} from "danger"
-
-export default async function () {
-    // Check for new @types in devDependencies
-    const packageJSONDiff = await danger.git.JSONDiffForFile("package.json")
-    const newDeps = packageJSONDiff.devDependencies.added
-    const newTypesDeps = newDeps?.filter(d => d.includes("@types")) ?? []
-    if (newTypesDeps.length){
-        markdown("Added new types packages " + newTypesDeps.join(", "))
-    }
-}`
-        const isOK = main && ts && sandboxEnv
-        if (isOK) {
-          document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)
-        }
-
-        const sandbox = await sandboxEnv.createTypeScriptSandbox({ text: initialCode, compilerOptions: {}, domID: "monaco-editor-embed", useJavaScript: false }, main, ts)
-        sandbox.editor.focus()
-        sandbox.editor.onDidChangeModelContent((e) => {
-          const newContent = sandbox.getText()
-          const host = {
-            fileExists: false,
-            readFileSync: () => ""
+        // This triggers making "ts" available in the global scope
+        re(["vs/language/typescript/lib/typescriptServices"], async (ts) => {
+          const initialCode = `// @noImplicitAny: false
+// @errors: 7006
+function fn(s) {
+  // No error when noImplicitAny: false
+  // try remove it in the editor
+  console.log(s.subtr(3));
+}
+fn(42);
+`
+          const isOK = main && ts && sandboxEnv
+          if (isOK) {
+            document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)
           }
-          const newResults = twoslasher(newContent, "tsx", sandbox.ts, sandbox.lzstring, host)
-          console.log(newResults)
-        })
 
-        setTimeout(() => {
-          document.querySelectorAll(".html-code").forEach(codeElement => {
-            sandbox.monaco.editor.colorize(codeElement.textContent || "", "html", { tabSize: 2 }).then(newHTML => {
-              codeElement.innerHTML = newHTML
-            })
-          })
+          const sandbox = await sandboxEnv.createTypeScriptSandbox({ text: initialCode, compilerOptions: {}, domID: "monaco-editor-embed", useJavaScript: false }, main, ts)
+          sandbox.editor.focus()
 
-          document.querySelectorAll(".ts-code").forEach(codeElement => {
-            sandbox.monaco.editor.colorize(codeElement.textContent || "", "typescript", { tabSize: 2 }).then(newHTML => {
-              codeElement.innerHTML = newHTML
-            })
+          const mapWithLibFiles = await createDefaultMapFromCDN({ target: ts.ScriptTarget.ES2015 }, '3.7.3', true, ts, sandbox.lzstring as any)
+
+          const runTwoslash = () => {
+            const newContent = sandbox.getText()
+            mapWithLibFiles.set("index.ts", newContent)
+
+            try {
+              const newResults = twoslasher(newContent, "tsx", ts, sandbox.lzstring as any, mapWithLibFiles)
+              document.getElementById("twoslash-results")!.textContent = JSON.stringify(newResults)
+
+            } catch (error) {
+              console.log(error)
+              document.getElementById("twoslash-results")!.textContent = error
+            }
+          }
+
+          let debouncingTimerLock = false
+          sandbox.editor.onDidChangeModelContent((e) => {
+            if (debouncingTimerLock) return
+            debouncingTimerLock = true
+
+            runTwoslash()
+            setTimeout(() => {
+              debouncingTimerLock = false
+
+            }, 300)
           })
-        }, 300)
-      });
+          runTwoslash()
+
+          setTimeout(() => {
+            document.querySelectorAll(".html-code").forEach(codeElement => {
+              sandbox.monaco.editor.colorize(codeElement.textContent || "", "html", { tabSize: 2 }).then(newHTML => {
+                codeElement.innerHTML = newHTML
+              })
+            })
+
+            document.querySelectorAll(".ts-code").forEach(codeElement => {
+              sandbox.monaco.editor.colorize(codeElement.textContent || "", "typescript", { tabSize: 2 }).then(newHTML => {
+                codeElement.innerHTML = newHTML
+              })
+            })
+          }, 300)
+        });
+      })
     }
 
     document.body.appendChild(getLoaderScript);
@@ -79,6 +101,8 @@ export default async function () {
         <div className="ms-depth-4 content" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
           <div style={{ width: "calc(100% - 600px)" }}>
             <h1 style={{ marginTop: "0" }}>TypeScript Twoslash</h1>
+            <pre><code id="twoslash-results" style={{ whiteSpace: "pre-wrap" }}></code>
+            </pre>
           </div>
           <div style={{ width: "600px", marginLeft: "20px", borderLeft: "1px solid gray" }}>
             <div id="loader">

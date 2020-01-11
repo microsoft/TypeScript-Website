@@ -1,9 +1,9 @@
 {
-  "code": "export const helloWorldPTBR = 'Olá Mundo';\r\n",
+  "code": "export const helloWorldPTBR = 'Olá Mundo';\n",
   "extension": "js",
   "highlights": [],
   "queries": [],
   "staticQuickInfos": [],
   "errors": [],
-  "playgroundURL": "https://www.typescriptlang.org/play/#code/KYDwDg9gTgLgBAYwgOwM7wBbADbYgdWmwBMAFAFQCEAlOAXjgHIB5bAQ7gFkBXZYiRgG4AsACggA"
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/KYDwDg9gTgLgBAYwgOwM7wBbADbYgdWmwBMAFAFQCEAlOAXjgHIB5bAQ7gFkBXZYiRgG4AUEA"
 }

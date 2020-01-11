@@ -16,20 +16,22 @@ function audit<ArgsT extends any[], ReturnT>(
   fn: (...args: ArgsT) => ReturnT
 ): (...args: ArgsT) => ReturnT {
   return (...args) => {
+    const res = fn(...args)
     if (AUDIT) {
       // tslint:disable-next-line:no-console
-      console.log(name, ...args)
+      const smallres = typeof res === 'string' ? res.slice(0, 80) : res
+      console.log('> ' + name, ...args)
+      console.log('< ' + smallres)
     }
-    return fn(...args)
+    return res
   }
 }
 
-const defaultCompilerOptions = (ts: typeof import('typescript')) => {
+const defaultCompilerOptions = (ts: typeof import('typescript')): CompilerOptions => {
   return {
     ...ts.getDefaultCompilerOptions(),
     jsx: ts.JsxEmit.React,
     strict: true,
-    target: ts.ScriptTarget.ES2015,
     esModuleInterop: true,
     module: ts.ModuleKind.ESNext,
     suppressOutputPathCheck: true,
@@ -38,6 +40,9 @@ const defaultCompilerOptions = (ts: typeof import('typescript')) => {
     moduleResolution: ts.ModuleResolutionKind.NodeJs,
   }
 }
+
+// "/DOM.d.ts" => "/lib.dom.d.ts"
+const libize = (path: string) => path.replace('/', '/lib.').toLowerCase()
 
 export function createSystem(files: Map<string, string>): System {
   files = new Map(files)
@@ -49,12 +54,12 @@ export function createSystem(files: Map<string, string>): System {
       return Array.from(files.keys()).some(path => path.startsWith(directory))
     }),
     exit: () => notImplemented('exit'),
-    fileExists: audit('fileExists', fileName => files.has(fileName)),
+    fileExists: audit('fileExists', fileName => files.has(fileName) || files.has(libize(fileName))),
     getCurrentDirectory: () => '/',
     getDirectories: () => [],
     getExecutingFilePath: () => notImplemented('getExecutingFilePath'),
     readDirectory: audit('readDirectory', directory => (directory === '/' ? Array.from(files.keys()) : [])),
-    readFile: audit('readFile', fileName => files.get(fileName)),
+    readFile: audit('readFile', fileName => files.get(fileName) || files.get(libize(fileName))),
     resolvePath: path => path,
     newLine: '\n',
     useCaseSensitiveFileNames: true,
@@ -80,8 +85,11 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
   const vHost: Return = {
     compilerHost: {
       ...sys,
-      getCanonicalFileName: fileName => fileName,
-      getDefaultLibFileName: () => '/lib.es2015.d.ts',
+      getCanonicalFileName: fileName => {
+        console.log('CANON', fileName)
+        return fileName
+      },
+      getDefaultLibFileName: () => '/lib.d.ts',
       getDirectories: () => [],
       getNewLine: () => sys.newLine,
       getSourceFile: fileName => {
@@ -91,7 +99,7 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
             ts.createSourceFile(
               fileName,
               sys.readFile(fileName)!,
-              compilerOptions.target || defaultCompilerOptions(ts).target,
+              compilerOptions.target || defaultCompilerOptions(ts).target!,
               false
             )
           )
@@ -159,8 +167,9 @@ export function createVirtualLanguageServiceHost(
 export interface VirtualTypeScriptEnvironment {
   sys: System
   languageService: import('typescript').LanguageService
+  getSourceFile: (fileName: string) => import('typescript').SourceFile | undefined
   createFile: (fileName: string, content: string) => void
-  updateFile: (fileName: string, content: string, replaceTextSpan: import('typescript').TextSpan) => void
+  updateFile: (fileName: string, content: string, replaceTextSpan?: import('typescript').TextSpan) => void
 }
 
 /**
@@ -179,30 +188,33 @@ export function createVirtualTypeScriptEnvironment(
   compilerOptions: CompilerOptions = {}
 ): VirtualTypeScriptEnvironment {
   const mergedCompilerOptions = { ...defaultCompilerOptions(ts), ...compilerOptions }
+  // console.log(mergedCompilerOptions)
   // prettier-ignore
   const { languageServiceHost, updateFile } = createVirtualLanguageServiceHost(sys, rootFiles, mergedCompilerOptions, ts)
 
   const languageService = ts.createLanguageService(languageServiceHost)
 
   const diagnostics = languageService.getCompilerOptionsDiagnostics()
+
   if (diagnostics.length) {
-    throw new Error(
-      ts.formatDiagnostics(diagnostics, {
-        getCurrentDirectory: sys.getCurrentDirectory,
-        getNewLine: () => sys.newLine,
-        getCanonicalFileName: fileName => fileName,
-      })
-    )
+    const compilerHost = createVirtualCompilerHost(sys, compilerOptions, ts)
+    throw new Error(ts.formatDiagnostics(diagnostics, compilerHost.compilerHost))
   }
+
   return {
     sys,
     languageService,
+    getSourceFile: fileName => languageService.getProgram()?.getSourceFile(fileName),
+
     createFile: (fileName, content) => {
-      updateFile(ts.createSourceFile(fileName, content, mergedCompilerOptions.target, false))
+      updateFile(ts.createSourceFile(fileName, content, mergedCompilerOptions.target!, false))
     },
-    updateFile: (fileName, content, prevTextSpan) => {
+    updateFile: (fileName, content, optPrevTextSpan) => {
       const prevSourceFile = languageService.getProgram()!.getSourceFile(fileName)!
       const prevFullContents = prevSourceFile.text
+
+      // TODO: Validate if the default text span has a fencepost error?
+      const prevTextSpan = optPrevTextSpan ?? ts.createTextSpan(0, prevFullContents.length)
       const newText =
         prevFullContents.slice(0, prevTextSpan.start) +
         content +
@@ -224,11 +236,17 @@ export function createVirtualTypeScriptEnvironment(
  * @param target The compiler settings target baseline
  * @param ts A copy of the TypeScript module
  */
-export const knownLibFilesForTarget = (target: import('typescript').ScriptTarget, ts: TS) => {
+export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions, ts: TS) => {
+  const target = compilerOptions.target || ts.ScriptTarget.ES5
+  const lib = compilerOptions.lib || []
+
   const files = [
     'lib.d.ts',
     'lib.dom.d.ts',
     'lib.dom.iterable.d.ts',
+    'lib.webworker.d.ts',
+    'lib.webworker.importscripts.d.ts',
+    'lib.scripthost.d.ts',
     'lib.es5.d.ts',
     'lib.es6.d.ts',
     'lib.es2015.collection.d.ts',
@@ -279,17 +297,31 @@ export const knownLibFilesForTarget = (target: import('typescript').ScriptTarget
 
   const targetToCut = ts.ScriptTarget[target]
   const matches = files.filter(f => f.startsWith(`lib.${targetToCut.toLowerCase()}`))
-  const cutIndex = files.indexOf(matches.pop()!)
-  return files.slice(0, cutIndex + 1)
+  const targetCutIndex = files.indexOf(matches.pop()!)
+
+  const getMax = (array: number[]) =>
+    array && array.length ? array.reduce((max, current) => (current > max ? current : max)) : undefined
+
+  // Find the index for everything in
+  const indexesForCutting = lib.map(lib => {
+    const matches = files.filter(f => f.startsWith(`lib.${lib.toLowerCase()}`))
+    if (matches.length === 0) return 0
+
+    const cutIndex = files.indexOf(matches.pop()!)
+    return cutIndex
+  })
+
+  const libCutIndex = getMax(indexesForCutting) || 0
+
+  const finalCutIndex = Math.max(targetCutIndex, libCutIndex)
+  return files.slice(0, finalCutIndex + 1)
 }
 
 /**
  * Sets up a Map with lib contents by grabbing the necessary files from
  * the local copy of typescript via the file system.
- *
- * @param target The compiler settings target baseline
  */
-export const createDefaultMapFromNodeModules = (target: import('typescript').ScriptTarget) => {
+export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions) => {
   const ts = require('typescript')
   const path = require('path')
   const fs = require('fs')
@@ -299,7 +331,7 @@ export const createDefaultMapFromNodeModules = (target: import('typescript').Scr
     return fs.readFileSync(path.join(lib, name), 'utf8')
   }
 
-  const libs = knownLibFilesForTarget(target, ts)
+  const libs = knownLibFilesForCompilerOptions(compilerOptions, ts)
   const fsMap = new Map<string, string>()
   libs.forEach(lib => {
     fsMap.set('/' + lib, getLib(lib))
@@ -311,7 +343,7 @@ export const createDefaultMapFromNodeModules = (target: import('typescript').Scr
  * Create a virtual FS Map with the lib files from a particular TypeScript
  * version based on the target, Always includes dom ATM.
  *
- * @param target The compiler target, which dictates the libs to set up
+ * @param options The compiler target, which dictates the libs to set up
  * @param version the versions of TypeScript which are supported
  * @param cache should the values be stored in local storage
  * @param ts a copy of the typescript import
@@ -320,7 +352,7 @@ export const createDefaultMapFromNodeModules = (target: import('typescript').Scr
  * @param storer an optional replacement for the localStorage global (tests mainly)
  */
 export const createDefaultMapFromCDN = (
-  target: import('typescript').ScriptTarget,
+  options: CompilerOptions,
   version: string,
   cache: boolean,
   ts: TS,
@@ -331,7 +363,7 @@ export const createDefaultMapFromCDN = (
   const fetchlike = fetcher || fetch
   const storelike = storer || localStorage
   const fsMap = new Map<string, string>()
-  const files = knownLibFilesForTarget(target, ts)
+  const files = knownLibFilesForCompilerOptions(options, ts)
   const prefix = `https://tswebinfra.blob.core.windows.net/cdn/${version}/typescript/lib/`
 
   function zip(str: string) {
@@ -345,10 +377,7 @@ export const createDefaultMapFromCDN = (
   // Map the known libs to a node fetch promise, then return the contents
   function uncached() {
     return Promise.all(files.map(lib => fetchlike(prefix + lib).then(resp => resp.text()))).then(contents => {
-      contents.forEach((text, index) => {
-        const name = '/' + files[index]
-        fsMap.set(name, text)
-      })
+      contents.forEach((text, index) => fsMap.set('/' + files[index], text))
     })
   }
 
@@ -372,7 +401,7 @@ export const createDefaultMapFromCDN = (
           return fetchlike(prefix + lib)
             .then(resp => resp.text())
             .then(t => {
-              storelike.setItem(name, zip(t))
+              storelike.setItem(cacheKey, zip(t))
               return t
             })
         } else {
