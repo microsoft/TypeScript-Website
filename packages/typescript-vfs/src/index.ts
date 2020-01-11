@@ -1,4 +1,4 @@
-const AUDIT = false
+import debug from 'debug'
 
 type System = import('typescript').System
 type CompilerOptions = import('typescript').CompilerOptions
@@ -11,18 +11,19 @@ function notImplemented(methodName: string): any {
   throw new Error(`Method '${methodName}' is not implemented.`)
 }
 
+const debugLog = debug('TS-VFS')
+
 function audit<ArgsT extends any[], ReturnT>(
   name: string,
   fn: (...args: ArgsT) => ReturnT
 ): (...args: ArgsT) => ReturnT {
   return (...args) => {
     const res = fn(...args)
-    if (AUDIT) {
-      // tslint:disable-next-line:no-console
-      const smallres = typeof res === 'string' ? res.slice(0, 80) : res
-      console.log('> ' + name, ...args)
-      console.log('< ' + smallres)
-    }
+
+    const smallres = typeof res === 'string' ? res.slice(0, 80) + '...' : res
+    debugLog('> ' + name, ...args)
+    debugLog('< ' + smallres)
+
     return res
   }
 }
@@ -85,11 +86,9 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
   const vHost: Return = {
     compilerHost: {
       ...sys,
-      getCanonicalFileName: fileName => {
-        console.log('CANON', fileName)
-        return fileName
-      },
-      getDefaultLibFileName: () => '/lib.d.ts',
+      getCanonicalFileName: fileName => fileName,
+      getDefaultLibFileName: () => '/' + ts.getDefaultLibFileName(compilerOptions), // '/lib.d.ts',
+      // getDefaultLibLocation: () => '/',
       getDirectories: () => [],
       getNewLine: () => sys.newLine,
       getSourceFile: fileName => {
@@ -187,13 +186,11 @@ export function createVirtualTypeScriptEnvironment(
   ts: TS,
   compilerOptions: CompilerOptions = {}
 ): VirtualTypeScriptEnvironment {
-  const mergedCompilerOptions = { ...defaultCompilerOptions(ts), ...compilerOptions }
-  // console.log(mergedCompilerOptions)
-  // prettier-ignore
-  const { languageServiceHost, updateFile } = createVirtualLanguageServiceHost(sys, rootFiles, mergedCompilerOptions, ts)
+  const mergedCompilerOpts = { ...defaultCompilerOptions(ts), ...compilerOptions }
+  debugLog('Running with:', mergedCompilerOpts)
 
+  const { languageServiceHost, updateFile } = createVirtualLanguageServiceHost(sys, rootFiles, mergedCompilerOpts, ts)
   const languageService = ts.createLanguageService(languageServiceHost)
-
   const diagnostics = languageService.getCompilerOptionsDiagnostics()
 
   if (diagnostics.length) {
@@ -207,7 +204,7 @@ export function createVirtualTypeScriptEnvironment(
     getSourceFile: fileName => languageService.getProgram()?.getSourceFile(fileName),
 
     createFile: (fileName, content) => {
-      updateFile(ts.createSourceFile(fileName, content, mergedCompilerOptions.target!, false))
+      updateFile(ts.createSourceFile(fileName, content, mergedCompilerOpts.target!, false))
     },
     updateFile: (fileName, content, optPrevTextSpan) => {
       const prevSourceFile = languageService.getProgram()!.getSourceFile(fileName)!

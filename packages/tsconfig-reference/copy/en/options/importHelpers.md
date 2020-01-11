@@ -37,6 +37,7 @@ Then turning on both [`downlevelIteration`](#downlevelIteration) and `importHelp
 // @target: ES5
 // @downleveliteration
 // @importhelpers
+// @noErrors
 export function fn(arr: number[]) {
   const arr2 = [1, ...arr];
 }

@@ -92,7 +92,7 @@ Turns to:
 >       "id": "err-7006-13-1"
 >     }
 >   ],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/FAMwrgdgxgLglgewgAhBAFAZwJTIN7DLJRKYIA2ApgHTkIDmW1mYARjAE7oDM22wAX2CgMAFgBM-IA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEBcEMCcHMCmkBcoCiBlATABgIwCsAUCBIrLAPawDOaA7LrgGzHEBmArgHYDGkAJZUeoDjwAUtAJSgA3sVCg+I2lQA2iAHTqq8KVtpcARpFgSAzNOnEAvu3ESALNhtA"
 > }
 > ```
 
@@ -132,7 +132,7 @@ Turns to:
 >   "queries": [],
 >   "staticQuickInfos": "[...]",
 >   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/FAehAIBUAsEsGdwHdYBtXgHYHsAu5doAnbJcAIwFMBjAQwFd5LxsAzA6ZnASQFsAHVLGqxcAQUwBPYK3qZquWNkzhWmABTwAlOADewcOGrL42VJQB0qbAHNNF+PXK4i6gMxatwAL7AZGgBYAJi0AbmAgA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDsHsEkFsAOAbAlgY1QFwIKQJ4BcoAZgIbIDOApgFAgRZkBOA5tVsQKIDKATAAYAjAFZa9MABUAFqkqgA7qmTJQMLKCzTm0BaABG1dGQCuNUNBKbp1NXCRpMuArRInI6LKmiRSkABSUAJSgAN60oKDoPpTQyNQAdMjQrIEJlCb6WMz+AMxBQbQAvuIkAQAsfEEA3LRAA"
 > }
 > ```
 
@@ -184,7 +184,7 @@ Turns to:
 >   "queries": [],
 >   "staticQuickInfos": "[...]",
 >   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/JYOwLgpgTgZghgYwgAgJIBMAycBGEA2yA3ssOgFzIgCuAtnlADTID0AVMgM4D2tKMwAuk7I2LZAF8AUKEixEKAHJw+2PIRIgVESpzBRQAc2btk3MAAtoyAUJFjJUsAE8ADku0B5KBgA8AFWQIAA9IEGEqOgZkAB8ufSMAPmQAXmRAkLCImnprAH40LFwCZEplVWL8AG4pFnF-C2ARBF4+cC4Lbmp8dCpzZDxSEAR8anQIdCla8QBaOYRqMDmZqRhqYbBgbhBkBCgIOEg1AgCg0IhwkRzouL0DEENEgAoyb3KddIBKMq8fdADkkQpMgQchLFBuAB3ZAAInWwFornwEDakHQMKk0ikyLAyDgqV2+0OEGO+CeMJc7k4e2ArjAMM+NWxEFxOAJewOR0qTwATAA6AAcjKmON27KJXPUTwAsocLHyoHBwrwnp9kAUYVZ8PhuDDSsgACw84VAA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/JYOwLgpgTgZghgYwgAgJIBMAycBGEA2yA3ssOgFzIgCuAtnlADTID0AVMgM4D2tKMwAuk7I2LZAF8AUKEixEKAHJw+2PIRIgVESpzBRQAc2btk3MAAtoyAUJFjJUsAE8ADku0B5KBgA8AFWQIAA9IEGEqOgZkAB8ufSMAPmQAXmRAkLCImnprAH40LFwCZEplVWL8AG4pFnF-C2ARBF4+cC4Lbmp8dCpzZDxSEAR8anQIdCla8QBaOYRqMDmZqRhqYbBgbhBkBCgIOEg1AgCg0IhwkRzouL0DEENEgAoyb3KddIBKMq8fdADkkQpMgQchLFBuAB3ZAAInWwFornwEDakHQMKk0ikyLAyDgqV2+0OEGO+CeMJc7k4e2ArjAMM+NTqIIAenkpjiBgS9gcjpUngAmAB0AA5GdNWezsRBcQhuUS+eongBZQ4WIVQODhXhPT7IAowqz4fDcGGlZAAFgF4uZyDZUiAA"
 > }
 > ```
 
@@ -224,7 +224,7 @@ Turns to:
 >   "queries": [],
 >   "staticQuickInfos": "[...]",
 >   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/PQKhCgAIUhxBTALgZ0ogFvSAbeA7Acw0gHsAzSAQ0mUQCcBLQqGAAQAdK7KBbSAN0rYArlmq1GzaMHDwAHuxJ1EkACbwAxti5YywvBsQMSeSASQBlekwIAZfEXQAKQSPgAuGtcIBKT3mEeACN4OgBucCA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEBMFMGMBsCGAnRAXAlgewHYC5Q1kBXaAKBAgGcALLAdwFEBbDNCscWhlttaSADEM8aAQw4YADwB0kGWipkKAKhVlQK0AHFoiwjWihROAOZoaoLADNQiUFSITTGreAAOKRM1AA3RPCkdg5OZq7AZNBS7ljIaKDWxDiwmLigpnoAyqGmADLQZhYAFP6BYiHIzgCUoADeGqDIesTIOH4BpDIm5jRkAL5kQA"
 > }
 > ```
 
@@ -267,7 +267,7 @@ Turns to:
 >   "queries": [],
 >   "staticQuickInfos": "[...]",
 >   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/GYVwdgxgLglg9mABAcwE4FN1QBQAd2oDOCAXIoVKjGMgDSIAmAhlOmQCIvoCUiA3gChEiCAmIAbdADpxcZNgAGACXTjZiACR98RBAF96UOMwCeiGIU19mrKUc6sAypWrzuegIQLuAbgF6BATRMHAAiAFkmBgYLBFD6MHQAd0QHdGxuXwEgA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/GYVwdgxgLglg9mABAcwE4FN1QBQAd2oDOCAXIoVKjGMgDSIAmAhlOmQCIvoCUiA3gChEiCAmIAbdADpxcZNgAGACXTjZiACR98RBAF96UOMwCeiGIU19mrKUc6sAypWrzuegIQLuAbgF6BATRMHAAiAFkmBgYLBFD6MHQAd0QHdGxuXwEAemzhfILC4QA9UrLygSA"
 > }
 > ```
 
@@ -341,7 +341,7 @@ Turns to:
 >   ],
 >   "staticQuickInfos": "[...]",
 >   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/DYUwLgBAZg9jEF4ICIAWJjHmdAnEAhMgNwBQQA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/DYUwLgBAZg9jEF4ICIAWJjHmdAnEAhMgNwBQA9ORBAHoD8pQA"
 > }
 > ```
 
@@ -398,7 +398,7 @@ Turns to:
 >   "queries": [],
 >   "staticQuickInfos": "[...]",
 >   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEFpwSwWwBwPYCcAuAJApgGzhpBnUBAOwC5QBlOJDAQwBNQALbXJUAdyiy1ACMMoWIlQZGAMyQIYoAOQp8WKH1kAoAG612AfW00GoALygAFCiZRCAMiuhzlgHS799AJSgAPh9DiArsQBjFCgSUwQAGlBidwBvVVAE0E12GWMUAE9cBHFKdJg+BF5DYtAAIj9A4JJS0BsiAG0KPIKsBygUPFoUZABdAG54xKgckwBCGHcaFF8kYiIBxKStISNQGAcA2h4TBFdIpEjl43qeyIwFxJQkdNA4xcWOCyxBExM54uN1BChGAAZPbzESCgAB8oF+7jqoxM7GMUAcxAwAA8UCZXK4HPQSBh3FoHHBfPgmDCHJosL4cRcEgBfQYJTYoAJMUx4KRIWKgQTGGKcpBs8is5Cgal9YV0nxQYhbLA3O73BJXWXi+UJYamdhQpCY7G1WwmVJCeqlKYzYilHrotYbaUmKCuKn3WkqiVSniyoQjHF2JhSDichyCpCip2JEMJE2zUBaAYijTLXT4ah0RjGMwWay2ez4JzaRMudxeHz+IIhOZo27i8RCkzJKOw0AnSJQVa-UXNgA8dYA5r4YBhiAoHM9iF3zG2ANTj3H1vEBEgMkzOZMmLQ9vsD-D1KAW+3iiNzaOqWPIkQoIuVUs+YgrvmxcW1rRIABMqwTSYYJnqAEZTnX2THVCAA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEGcAsHsHcCiBbAlgFwFAgughgE4DmApugFyiIDKArNmOACYIB2ANiQG4nsYkE86VLFaYGoALSTUyAA6wC6ABK85AyKFGVqcgiTxNQ0NQNDxU7dqABGJULIVKSRgGYFYyUAHJ0kPjbe4iQAHk7ooK4ArqwAxsKikawAFIQElKxRyHYEANoAugCUoADemKCgsaKQEWkATKAAvKC5AIwANKAAdD1p+ZgAvphAA"
 > }
 > ```
 

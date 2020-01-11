@@ -68,6 +68,20 @@ it("handles 'lib' in compiler options", () => {
   expect(definitions.length).toBeGreaterThan(0)
 })
 
+//
+it('compiles in the right DTS files', () => {
+  const opts = { target: ts.ScriptTarget.ES2015 }
+
+  const fsMap = createDefaultMapFromNodeModules(opts)
+  fsMap.set('index.ts', '[1,3,5,6].find(a => a === 2)')
+
+  const system = createSystem(fsMap)
+  const env = createVirtualTypeScriptEnvironment(system, ['index.ts'], ts, opts)
+
+  const semDiags = env.languageService.getSemanticDiagnostics('index.ts')
+  expect(semDiags.length).toBe(0)
+})
+
 it('creates a map from the CDN without cache', async () => {
   const fetcher = jest.fn()
   fetcher.mockResolvedValue({ text: () => Promise.resolve('// Contents of file') })
@@ -154,5 +168,10 @@ describe(knownLibFilesForCompilerOptions, () => {
     const baseline = knownLibFilesForCompilerOptions({ target: ts.ScriptTarget.ES2016 }, ts)
     const libs = knownLibFilesForCompilerOptions({ lib: ['ES2020'], target: ts.ScriptTarget.ES2016 }, ts)
     expect(libs.length).toBeGreaterThan(baseline.length)
+  })
+
+  it('actually includes the right things', () => {
+    const baseline = knownLibFilesForCompilerOptions({ target: ts.ScriptTarget.ES2016 }, ts)
+    expect(baseline).toContain('lib.es2016.d.ts')
   })
 })

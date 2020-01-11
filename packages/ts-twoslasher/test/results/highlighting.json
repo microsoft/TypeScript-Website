@@ -103,7 +103,7 @@
       "targetString": "greet"
     },
     {
-      "text": "var Date: DateConstructor\nnew () => Date (+3 overloads)",
+      "text": "var Date: DateConstructor\nnew () => Date (+4 overloads)",
       "docs": "Enables basic storage and retrieval of dates and times.",
       "start": 138,
       "length": 4,
@@ -113,5 +113,5 @@
     }
   ],
   "errors": [],
-  "playgroundURL": "https://www.typescriptlang.org/play/#code/GYVwdgxgLglg9mABAcwE4FN1QBQAd2oDOCAXIoVKjGMgDSIAmAhlOmQCIvoCUiA3gChEiCAmIAbdADpxcZNgAGACXTjZiACR98RBAF96UOMwCeiGIU19mrKUc6sAypWrzuegIQLuAbgF6BATRMHAAiAFkmBgYLBFD6MHQAd0QHdGxuXwEgA"
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/GYVwdgxgLglg9mABAcwE4FN1QBQAd2oDOCAXIoVKjGMgDSIAmAhlOmQCIvoCUiA3gChEiCAmIAbdADpxcZNgAGACXTjZiACR98RBAF96UOMwCeiGIU19mrKUc6sAypWrzuegIQLuAbgF6BATRMHAAiAFkmBgYLBFD6MHQAd0QHdGxuXwEAemzhfILC4QA9UrLygSA"
 }

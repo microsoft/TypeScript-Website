@@ -6,41 +6,6 @@
     "queries": [],
     "staticQuickInfos": [
       {
-        "text": "import utils",
-        "docs": "",
-        "start": 144,
-        "length": 5,
-        "line": 1,
-        "character": 108,
-        "targetString": "utils"
-      },
-      {
-        "text": "const count: any",
-        "docs": "",
-        "start": 179,
-        "length": 5,
-        "line": 1,
-        "character": 143,
-        "targetString": "count"
-      },
-      {
-        "text": "import utils",
-        "docs": "",
-        "start": 187,
-        "length": 5,
-        "line": 1,
-        "character": 151,
-        "targetString": "utils"
-      },
-      {
-        "text": "any",
-        "start": 193,
-        "length": 15,
-        "line": 1,
-        "character": 157,
-        "targetString": "getStringLength"
-      },
-      {
         "text": "const getStringLength: (str: any) => any",
         "docs": "",
         "start": 37,
@@ -101,20 +66,45 @@
         "line": 5,
         "character": 11,
         "targetString": "getStringLength"
-      }
-    ],
-    "errors": [
+      },
       {
-        "category": 1,
-        "code": 1259,
-        "length": 5,
+        "text": "import utils",
+        "docs": "",
         "start": 144,
-        "line": 0,
-        "character": 7,
-        "renderedMessage": "Module '\"utilFunctions\"' can only be default-imported using the 'allowSyntheticDefaultImports' flag",
-        "id": "err-1259-7-5"
+        "length": 5,
+        "line": 1,
+        "character": 108,
+        "targetString": "utils"
+      },
+      {
+        "text": "const count: any",
+        "docs": "",
+        "start": 179,
+        "length": 5,
+        "line": 1,
+        "character": 143,
+        "targetString": "count"
+      },
+      {
+        "text": "import utils",
+        "docs": "",
+        "start": 187,
+        "length": 5,
+        "line": 1,
+        "character": 151,
+        "targetString": "utils"
+      },
+      {
+        "text": "(property) getStringLength: (str: any) => any",
+        "docs": "",
+        "start": 193,
+        "length": 15,
+        "line": 1,
+        "character": 157,
+        "targetString": "getStringLength"
       }
     ],
-    "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKArgFzgGLaIDG+A9ogM4B0AVlQFAmVW6gDm8uAyrgE7REHADJIOuABagAvKDb9ZAPnkCaCYVMapyAE2wIa8AB4AHcv1xVZoAN6NQnbn0HCxmyQBpGAX0aMQCBgNNExQIV0TGitGaFRzSxx8WGtIfnJUUAByGmA8QmIyaFYs5lZ2FmJ2OXyUmi5eASFRcSkACiyAYUl4EgBrUAApHiyASiA"
+    "errors": [],
+    "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEFMCdoe2gZwFygIwCYCsBOAUCBAGYCWANpAHYCGAtpKgK4Au5AYo5QMatyWIA6AFaI8XPomagA5pGYBlZtBKVpAGSrTmAC1ABeUJOj6AfIaUCKqnXlpwAJowoDIADwAOCZon2gA3nigMnKKyqoa1toANHgAvngEYOCkVnQMoCr2bgLeeCS0ntBSLOQ+RPC0oADkAsAlZBzcvPxVYhJS4pxSBvWCsgpKKuqaOgAUVQDC2pBcANagAFLyVQCUQA"
   }
 ]

@@ -21,6 +21,9 @@
     "lz-string": false,
     "fs": false
   },
+  "dependencies": {
+    "debug": "^4.1.1"
+  },
   "devDependencies": {
     "@types/jest": "^24.0.24",
     "tsdx": "^0.12.0",
