@@ -377,7 +377,7 @@ export function twoslasher(
   // We need to also strip the highlights + queries from the main file which is shown to people
   const allCodeLines = code.split(/\r\n?|\n/g)
   filterHighlightLines(allCodeLines)
-  code = allCodeLines.join('\n')
+  code = allCodeLines.join('\n').trim()
 
   // Code should now be safe to compile, so we're going to split it into different files
   const errs: import('typescript').Diagnostic[] = []
@@ -470,10 +470,10 @@ export function twoslasher(
   const zippedCode = lzstring.compressToEncodedURIComponent(originalCode)
   const playgroundURL = `https://www.typescriptlang.org/play/#code/${zippedCode}`
 
-  const cutString = '// ---cut---'
+  const cutString = '// ---cut---\n'
   if (code.includes(cutString)) {
     // Get the place it is, then find the end and the start of the next line
-    const cutIndex = code.indexOf(cutString) + cutString.length + 1
+    const cutIndex = code.indexOf(cutString) + cutString.length
     // Kills the code shown
     code = code.split(cutString).pop()!
 

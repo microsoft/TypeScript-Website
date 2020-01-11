@@ -1,0 +1,46 @@
+#dev {
+  .content {
+    display: flex;
+  }
+
+  pre {
+    background-color: white;
+    color: black;
+
+    .mtk5 {
+      color: black;
+    }
+  }
+
+  .split-code {
+    display: flex;
+
+    > p {
+      width: 30%;
+      padding-right: 1rem;
+      flex: 1;
+    }
+
+    > pre {
+      // width: 70%;
+      flex: 3;
+      overflow-x: scroll;
+    }
+  }
+
+  #example-buttons {
+    div.button {
+      display: inline-block;
+      padding: 8px 12px;
+      background-color: #faf9f8;
+      margin: 10px;
+      text-decoration: none;
+      color: black;
+      cursor: pointer;
+      &:hover,
+      &:active {
+        background-color: #dfdfdf;
+      }
+    }
+  }
+}

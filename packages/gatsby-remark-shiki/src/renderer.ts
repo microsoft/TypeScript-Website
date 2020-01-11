@@ -41,10 +41,10 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
         // console.log(tokenPos, token.content.length, filePos)
         // Underlining particular words
         const findTokenFunc = (start: number) => (e: any) =>
-          start <= e.character && start + token.content.length <= e.character + e.length
+          start <= e.character && start + token.content.length >= e.character + e.length
 
         const findTokenDebug = (start: number) => (e: any) => {
-          const result = start <= e.character && start + token.content.length <= e.character + e.length
+          const result = start <= e.character && start + token.content.length >= e.character + e.length
           // prettier-ignore
           console.log(result, start, '<=', e.character, '&&', start + token.content.length, '<=', e.character + e.length)
           return result
@@ -55,6 +55,7 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
         const queriesInToken = queries.filter(findTokenFunc(tokenPos))
 
         const allTokensByStart = [...errorsInToken, ...lspResponsesInToken, ...queriesInToken]
+
         if (allTokensByStart.length) {
           const ranges = allTokensByStart.map(token => {
             const range: any = {
