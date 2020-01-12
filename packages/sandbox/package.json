@@ -10,7 +10,7 @@
   "scripts": {
     "bootstrap": "node script/downloadReleases.js; yarn build",
     "build": "tsc",
-    "test": "jest"
+    "test": "tsdx test"
   },
   "devDependencies": {
     "@types/jest": "^24.0.24",

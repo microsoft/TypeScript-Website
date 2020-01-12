@@ -1,7 +1,7 @@
 import debug from 'debug'
 
-type TS = typeof import('typescript')
 type LZ = typeof import('lz-string')
+type TS = typeof import('typescript')
 type CompilerOptions = import('typescript').CompilerOptions
 
 import {

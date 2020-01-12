@@ -1,5 +1,5 @@
 {
-  "code": "let foo = \"hello there!\";",
+  "code": "let foo = \"hello there!\";\n",
   "extension": "ts",
   "highlights": [],
   "queries": [
@@ -18,10 +18,10 @@
     {
       "text": "let foo: string",
       "docs": "",
-      "start": 3,
+      "start": 4,
       "length": 3,
       "line": 0,
-      "character": 3,
+      "character": 4,
       "targetString": "foo"
     }
   ],

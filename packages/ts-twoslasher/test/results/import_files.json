@@ -1,5 +1,5 @@
 {
-  "code": "// @filename: file-with-export.ts\nexport const helloWorld = \"Example string\";\n\n// @filename: index.ts\nimport {helloWorld} from \"./file-with-export\"\nconsole.log(helloWorld)",
+  "code": "// @filename: file-with-export.ts\nexport const helloWorld = \"Example string\";\n\n// @filename: index.ts\nimport {helloWorld} from \"./file-with-export\"\nconsole.log(helloWorld)\n",
   "extension": "ts",
   "highlights": [],
   "queries": [],
@@ -16,37 +16,37 @@
     {
       "text": "(alias) const helloWorld: \"Example string\"\nimport helloWorld",
       "docs": "",
-      "start": 7,
+      "start": 110,
       "length": 10,
-      "line": 0,
-      "character": 7,
+      "line": 2,
+      "character": 40,
       "targetString": "helloWorld"
     },
     {
       "text": "var console: Console",
       "docs": "",
-      "start": 45,
+      "start": 148,
       "length": 7,
-      "line": 0,
-      "character": 45,
+      "line": 2,
+      "character": 78,
       "targetString": "console"
     },
     {
       "text": "(method) Console.log(message?: any, ...optionalParams: any[]): void",
       "docs": "",
-      "start": 53,
+      "start": 156,
       "length": 3,
-      "line": 1,
-      "character": 7,
+      "line": 2,
+      "character": 86,
       "targetString": "log"
     },
     {
       "text": "(alias) const helloWorld: \"Example string\"\nimport helloWorld",
       "docs": "",
-      "start": 57,
+      "start": 160,
       "length": 10,
-      "line": 1,
-      "character": 11,
+      "line": 2,
+      "character": 90,
       "targetString": "helloWorld"
     }
   ],

@@ -67,13 +67,13 @@ fn(42)
 
 Turns to:
 
-> ````ts
+> ```ts
 > function fn(s) {
 >   console.log(s.subtr(3))
 > }
 >
-> fn(42)```
-> ````
+> fn(42)
+> ```
 
 > With:
 
@@ -89,7 +89,7 @@ Turns to:
 >       "category": 1,
 >       "code": 7006,
 >       "length": 1,
->       "start": 12,
+>       "start": 13,
 >       "line": 1,
 >       "character": 12,
 >       "renderedMessage": "Parameter 's' implicitly has an 'any' type.",
@@ -116,14 +116,14 @@ fn(42)
 
 Turns to:
 
-> ````ts
+> ```ts
 > // This will not throw because of the noImplicitAny
 > function fn(s) {
 >   console.log(s.subtr(3))
 > }
 >
-> fn(42);```
-> ````
+> fn(42)
+> ```
 
 > With:
 
@@ -168,17 +168,17 @@ let c = createLabel(Math.random() ? 'hello' : 42)
 
 Turns to:
 
-> ````ts
+> ```ts
 > function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {
->     throw "unimplemented"
+>   throw 'unimplemented'
 > }
 >
-> let a = createLabel("typescript");
+> let a = createLabel('typescript')
 >
-> let b = createLabel(2.8);
+> let b = createLabel(2.8)
 >
-> let c = createLabel(Math.random() ? "hello" : 42);```
-> ````
+> let c = createLabel(Math.random() ? 'hello' : 42)
+> ```
 
 > With:
 
@@ -247,13 +247,13 @@ greet('Maddison', new Date())
 
 Turns to:
 
-> ````ts
+> ```ts
 > function greet(person: string, date: Date) {
->   console.log(`Hello ${person}, today is ${date.toDateString()}!`);
+>   console.log(`Hello ${person}, today is ${date.toDateString()}!`)
 > }
 >
-> greet("Maddison", new Date());```
-> ````
+> greet('Maddison', new Date())
+> ```
 
 > With:
 
@@ -290,14 +290,14 @@ console.log(helloWorld)
 
 Turns to:
 
-> ````ts
+> ```ts
 > // @filename: file-with-export.ts
-> export const helloWorld = "Example string";
+> export const helloWorld = 'Example string'
 >
 > // @filename: index.ts
-> import {helloWorld} from "./file-with-export"
-> console.log(helloWorld)```
-> ````
+> import { helloWorld } from './file-with-export'
+> console.log(helloWorld)
+> ```
 
 > With:
 
@@ -322,9 +322,9 @@ let foo = 'hello there!'
 
 Turns to:
 
-> ````ts
-> let foo = "hello there!";```
-> ````
+> ```ts
+> let foo = 'hello there!'
+> ```
 
 > With:
 

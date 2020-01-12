@@ -78,7 +78,7 @@ The code samples used in the Playground
 
 All of these packages use [`tsdx`](https://github.com/jaredpalmer/tsdx).
 
-## TS Twoslasher
+## TS Twoslash
 
 A code sample markup extension for TypeScript.
 

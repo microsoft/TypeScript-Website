@@ -1,5 +1,5 @@
 {
-  "code": "// This will not throw because of the noImplicitAny\nfunction fn(s) {\n  console.log(s.subtr(3))\n}\n\nfn(42);",
+  "code": "\n// This will not throw because of the noImplicitAny\nfunction fn(s) {\n  console.log(s.subtr(3))\n}\n\nfn(42);\n",
   "extension": "ts",
   "highlights": [],
   "queries": [],
@@ -7,62 +7,62 @@
     {
       "text": "function fn(s: any): void",
       "docs": "",
-      "start": 61,
+      "start": 62,
       "length": 2,
       "line": 2,
-      "character": 8,
+      "character": 9,
       "targetString": "fn"
     },
     {
       "text": "(parameter) s: any",
       "docs": "",
-      "start": 64,
+      "start": 65,
       "length": 1,
       "line": 2,
-      "character": 11,
+      "character": 12,
       "targetString": "s"
     },
     {
       "text": "var console: Console",
       "docs": "",
-      "start": 71,
+      "start": 72,
       "length": 7,
       "line": 3,
-      "character": 1,
+      "character": 2,
       "targetString": "console"
     },
     {
       "text": "(method) Console.log(message?: any, ...optionalParams: any[]): void",
       "docs": "",
-      "start": 79,
+      "start": 80,
       "length": 3,
       "line": 3,
-      "character": 9,
+      "character": 10,
       "targetString": "log"
     },
     {
       "text": "(parameter) s: any",
       "docs": "",
-      "start": 83,
+      "start": 84,
       "length": 1,
       "line": 3,
-      "character": 13,
+      "character": 14,
       "targetString": "s"
     },
     {
       "text": "any",
-      "start": 85,
+      "start": 86,
       "length": 5,
       "line": 3,
-      "character": 15,
+      "character": 16,
       "targetString": "subtr"
     },
     {
       "text": "function fn(s: any): void",
       "docs": "",
-      "start": 98,
+      "start": 99,
       "length": 2,
-      "line": 5,
+      "line": 6,
       "character": 0,
       "targetString": "fn"
     }

@@ -45,7 +45,7 @@ const Index = (props: any) => {
             document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)
           }
 
-          const sandbox = await sandboxEnv.createTypeScriptSandbox({ text: codeSamples[0].code, compilerOptions: {}, domID: "monaco-editor-embed", useJavaScript: false }, main, ts)
+          const sandbox = await sandboxEnv.createTypeScriptSandbox({ text: codeSamples[0].code, compilerOptions: {}, domID: "monaco-editor-embed", supportTwoslashCompilerOptions: true }, main, ts)
           sandbox.editor.focus()
 
           // @ts-ignore
@@ -181,9 +181,9 @@ const Index = (props: any) => {
           </div>
 
           <div className="ms-depth-4 content" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
-            <SuppressWhenTouch>
 
-              <div style={{ width: "600px", }}>
+            <div className="sixhundred">
+              <SuppressWhenTouch>
                 <h3 style={{ marginTop: "0" }}>Markup</h3>
                 <p id="exampleBlurb">{codeSamples[0].blurb}</p>
                 <div id="loader">
@@ -204,15 +204,17 @@ const Index = (props: any) => {
                   }
                   )}
                 </div>
-              </div>
+              </SuppressWhenTouch>
+            </div>
 
-              <div style={{ width: "calc(100% - 600px)", paddingLeft: "20px", borderLeft: "1px solid gray", position: "relative" }}>
+            <div className="sixhundred" style={{ paddingLeft: "20px", borderLeft: "1px solid gray", position: "relative" }}>
+              <SuppressWhenTouch>
                 <h3 style={{ marginTop: "0" }}>Results</h3>
 
                 <div id="twoslash-results" />
                 <div id="twoslash-failure" />
-              </div>
-            </SuppressWhenTouch>
+              </SuppressWhenTouch>
+            </div>
           </div>
 
           <div className="ms-depth-4" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem" }}>
@@ -231,7 +233,7 @@ export default Index
 const codeSamples = [
   {
     name: "Highlights runtime types",
-    blurb: "See how Two Slash will grab the highlight information for identifiers in your code",
+    blurb: "See how TS Twoslash will grab the highlight information for identifiers in your code",
     code: `// @errors: 2532
 declare const quantumString: string | undefined;
 
