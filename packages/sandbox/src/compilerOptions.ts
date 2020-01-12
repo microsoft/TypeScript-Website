@@ -43,6 +43,7 @@ export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monac
 
     experimentalDecorators: true,
     emitDecoratorMetadata: true,
+    moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
 
     target: monaco.languages.typescript.ScriptTarget.ES2017,
     jsx: monaco.languages.typescript.JsxEmit.React,
