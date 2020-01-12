@@ -25,16 +25,19 @@ we'll accept it.
 ## Installation
 
 ```html
-<html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+  </head>
   <div id="loader">Loading...</div>
-  <div id="monaco-editor-embed" />
+  <div id="monaco-editor-embed" style="height: 800px;" />
   <script>
     // First set up the VSCode loader in a script tag
-    const getLoaderScript = document.createElement('script');
-    getLoaderScript.src = "https://typescriptlang.org/v2/js/vs.loader.js";
-    getLoaderScript.async = true;
+    const getLoaderScript = document.createElement('script')
+    getLoaderScript.src = 'https://www.typescriptlang.org/v2/js/vs.loader.js'
+    getLoaderScript.async = true
     getLoaderScript.onload = () => {
-
       // Now the loader is ready, tell require where it can get the version of monaco, and the sandbox
       // This version uses the latest version of the sandbox, which is used on the TypeScript website
 
@@ -44,33 +47,55 @@ we'll accept it.
       //
       require.config({
         paths: {
-          vs: "https://tswebinfra.blob.core.windows.net/cdn/3.7.3/monaco/min/vs",
-          sandbox: 'https://typescriptlang.org/v2/js/sandbox'
+          vs: 'https://tswebinfra.blob.core.windows.net/cdn/3.7.3/monaco/min/vs',
+          sandbox: 'https://www.typescriptlang.org/v2/js/sandbox',
         },
         // This is something you need for monaco to work
-        ignoreDuplicateModules: ["vs/editor/editor.main"],
-      });
+        ignoreDuplicateModules: ['vs/editor/editor.main'],
+      })
 
       // Grab a copy of monaco, TypeScript and the sandbox
-      require(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "sandbox/index"], async (main, _tsWorker, sandbox) => {
-        const initialCode = `import {markdown} from "danger"\n\nmarkdown("OK")`
+      require(['vs/editor/editor.main', 'vs/language/typescript/tsWorker', 'sandbox/index'], (
+        main,
+        _tsWorker,
+        tsSandbox
+      ) => {
+        const initialCode = `import {markdown, danger} from "danger"
+
+export default async function () {
+    // Check for new @types in devDependencies
+    const packageJSONDiff = await danger.git.JSONDiffForFile("package.json")
+    const newDeps = packageJSONDiff.devDependencies.added
+    const newTypesDeps = newDeps?.filter(d => d.includes("@types")) ?? []
+    if (newTypesDeps.length){
+        markdown("Added new types packages " + newTypesDeps.join(", "))
+    }
+}
+`
 
         const isOK = main && window.ts && sandbox
         if (isOK) {
-          document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)
+          document.getElementById('loader').parentNode.removeChild(document.getElementById('loader'))
         } else {
-          console.error("Could not get all the dependencies of sandbox set up!")
-          console.error("main", !!main, "ts", !!window.ts, "sandbox", !!sandbox)
+          console.error('Could not get all the dependencies of sandbox set up!')
+          console.error('main', !!main, 'ts', !!window.ts, 'sandbox', !!sandbox)
           return
         }
 
         // Create a sandbox and embed it into the the div #monaco-editor-embed
-        const playground = await sandbox.createTypeScriptSandbox({ text: initialCode, compilerOptions: {}, domID: "monaco-editor-embed", useJavaScript: false }, main, window.ts)
-        playground.editor.focus()
-      });
+        const sandboxConfig = {
+          text: initialCode,
+          compilerOptions: {},
+          domID: 'monaco-editor-embed',
+        }
+
+        tsSandbox.createTypeScriptSandbox(sandboxConfig, main, window.ts).then(sandbox => {
+          sandbox.editor.focus()
+        })
+      })
     }
 
-    document.body.appendChild(getLoaderScript);
+    document.body.appendChild(getLoaderScript)
   </script>
 </html>
 ```

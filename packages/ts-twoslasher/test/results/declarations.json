@@ -1,9 +1,9 @@
 {
-  "code": "/**\r\n * Gets the length of a string\r\n * @param value a string\r\n */\r\nexport declare function getStringLength(value: string): number;\r\n",
+  "code": "/**\n * Gets the length of a string\n * @param value a string\n */\nexport declare function getStringLength(value: string): number;\n",
   "extension": "ts",
   "highlights": [],
   "queries": [],
   "staticQuickInfos": [],
   "errors": [],
-  "playgroundURL": "https://www.typescriptlang.org/play/#code/PQKhFgCgAIWhxApgFwM7WQC0dANogOwHMtoB7AM2gENpVkAnAS2KlmgAEAHah6gW2gA3argCuOWvWasYIYFEQAPLmQbJoAE0QBjXLxwUxBHciZkC0IigDKjFkQAyhEpgAUI8YgBcde8QBKXwIxfgAjRAYAbiggA"
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEBMFMGMBsCGAnRAXAlgewHYC5Q1kBXaAKBAgGcALLAdwFEBbDNCscWhlttaSADEM8aAQw4YADwB0kGWipkKAKhVlQK0AHFoiwjWihROAOZoaoLADNQiUFSITTGreAAOKRM1AA3RPCkdg5OZq7AZNBS7ljIaKDWxDiwmLigpnoAyqGmADLQZhYAFP6BYiHIzgCUoADeGqDIesTIOH4BpDIm5jRkAL5kQA"
 }

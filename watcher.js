@@ -69,7 +69,7 @@ client.command(['watch-project', process.cwd()], function(error, resp) {
     [
       'subscribe',
       root,
-      'mysubscription',
+      'Monorepo Builder',
       {
         expression: ['anyof', ['match', '*.ts'], ['match', '*.md'], ['match', '*.tsx'], ['match', '*.json']],
         relative_root: path_prefix,

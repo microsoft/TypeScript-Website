@@ -18,7 +18,6 @@ When imported into a TypeScript module:
 ```ts twoslash
 // @allowJs
 // @filename: constants.js
-/// <reference types="node" />
 module.exports.pi = parseFloat(3.124);
 
 // @filename: index.ts
@@ -33,7 +32,6 @@ You will not get any errors. However, if you turn on `checkJs` then you will get
 // @allowjs: true
 // @checkjs: true
 // @filename: constants.js
-/// <reference types="node" />
 module.exports.pi = parseFloat(3.124);
 
 // @filename: index.ts

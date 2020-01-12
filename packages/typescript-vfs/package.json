@@ -1,0 +1,33 @@
+{
+  "name": "typescript-vfs",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "TypeScript team",
+  "main": "./dist/index.js",
+  "module": "./dist/typescript-vsf.esm.js",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "bootstrap": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint"
+  },
+  "browser": {
+    "typescript": false,
+    "lz-string": false,
+    "fs": false
+  },
+  "dependencies": {
+    "debug": "^4.1.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.24",
+    "tsdx": "^0.12.0",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.4"
+  }
+}

@@ -11,6 +11,7 @@ This setting disables the prologue.
 // @target: ES3
 // @module: AMD
 // @noImplicitUseStrict
+// @alwaysStrict: false
 export function fn() {}
 ```
 

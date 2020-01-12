@@ -28,9 +28,12 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
     const lspValues = staticQuickInfosGroupedByLine.get(i) || []
     const queries = queriesGroupedByLine.get(i) || []
 
-    if (l.length === 0) {
-      html += `\n`
+    if (l.length === 0 && i === 0) {
+      // Skip the first newline if it's blank
       filePos += 1
+    } else if (l.length === 0) {
+      filePos += 1
+      html += `\n`
     } else {
       // Keep track of the position of the current token in a line so we can match it up to the
       // errors and lang serv identifiers
@@ -41,10 +44,10 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
         // console.log(tokenPos, token.content.length, filePos)
         // Underlining particular words
         const findTokenFunc = (start: number) => (e: any) =>
-          start <= e.character && start + token.content.length <= e.character + e.length
+          start <= e.character && start + token.content.length >= e.character + e.length
 
         const findTokenDebug = (start: number) => (e: any) => {
-          const result = start <= e.character && start + token.content.length <= e.character + e.length
+          const result = start <= e.character && start + token.content.length >= e.character + e.length
           // prettier-ignore
           console.log(result, start, '<=', e.character, '&&', start + token.content.length, '<=', e.character + e.length)
           return result
@@ -55,6 +58,7 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
         const queriesInToken = queries.filter(findTokenFunc(tokenPos))
 
         const allTokensByStart = [...errorsInToken, ...lspResponsesInToken, ...queriesInToken]
+
         if (allTokensByStart.length) {
           const ranges = allTokensByStart.map(token => {
             const range: any = {

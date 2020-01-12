@@ -10,6 +10,7 @@ import {
 import lzstring from './vendor/lzstring.min'
 import { supportedReleases } from './releases'
 import { getInitialCode } from './getInitialCode'
+import { extractTwoSlashComplierOptions } from './twoslashSupport'
 
 type CompilerOptions = import('monaco-editor').languages.typescript.CompilerOptions
 type Monaco = typeof import('monaco-editor')
@@ -29,6 +30,8 @@ export type PlaygroundConfig = {
   monacoSettings?: import('monaco-editor').editor.IEditorOptions
   /** Acquire types via type acquisition */
   acquireTypes: boolean
+  /** Support twoslash compiler options */
+  supportTwoslashCompilerOptions: boolean
   /** Get the text via query params and local storage, useful when the editor is the main experience */
   suppressAutomaticallyGettingDefaultText?: true
   /** Suppress setting compiler options from the compiler flags from query params */
@@ -60,6 +63,7 @@ export function defaultPlaygroundSettings() {
     compilerOptions: {},
     acquireTypes: true,
     useJavaScript: false,
+    supportTwoslashCompilerOptions: false,
     logger: {
       error: () => {},
       log: () => {},
@@ -114,24 +118,33 @@ export const createTypeScriptSandbox = (
     ? monaco.languages.typescript.javascriptDefaults
     : monaco.languages.typescript.typescriptDefaults
 
+  // In the future it'd be good to add support for an 'add many files'
+  const addLibraryToRuntime = (code: string, path: string) => {
+    defaults.addExtraLib(code, path)
+    config.logger.log(`[ATA] Adding ${path} to runtime`)
+  }
+
   // Grab types
   if (config.acquireTypes) {
-    // In the future it'd be good to add support for an 'add many files'
-    const addLibraryToRuntime = (code: string, path: string) => {
-      defaults.addExtraLib(code, path)
-      config.logger.log(`[ATA] Adding ${path} to runtime`)
-    }
-
     // Take the code from the editor right away
     const code = editor.getModel()!.getValue()
     detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
-
-    // Then update it when the model changes, perhaps this could be a debounced plugin instead in the future?
-    editor.onDidChangeModelContent(() => {
-      const code = editor.getModel()!.getValue()
-      detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
-    })
   }
+
+  const getTwoSlashComplierOptions = extractTwoSlashComplierOptions(ts)
+
+  // Then update it when the model changes, perhaps this could be a debounced plugin instead in the future?
+  editor.onDidChangeModelContent(() => {
+    const code = editor.getModel()!.getValue()
+
+    if (config.supportTwoslashCompilerOptions) {
+      const configOpts = getTwoSlashComplierOptions(code)
+      updateCompilerSettings(configOpts)
+    }
+    if (config.acquireTypes) {
+      detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
+    }
+  })
 
   // Grab the compiler flags via the query params
   let compilerOptions: CompilerOptions
@@ -257,6 +270,7 @@ export const createTypeScriptSandbox = (
     setCompilerSettings,
     updateCompilerSetting,
     updateCompilerSettings,
+    getTwoSlashComplierOptions,
     setDidUpdateCompilerSettings,
     supportedVersions,
     lzstring,

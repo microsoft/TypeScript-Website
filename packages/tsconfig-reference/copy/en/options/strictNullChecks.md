@@ -13,14 +13,15 @@ write code as though it will:
 
 ```ts twoslash
 // @strictNullChecks: false
+// @target: ES2015
 declare const loggedInUsername: string;
 
 const users = [
   { name: "Oby", age: 12 },
   { name: "Heera", age: 32 }
 ];
-const loggedInUser = users.find(u => u.name === loggedInUsername);
 
+const loggedInUser = users.find(u => u.name === loggedInUsername);
 console.log(loggedInUser.age);
 ```
 
@@ -28,6 +29,7 @@ Setting `strictNullChecks` to `true` will raise an error that you have not made 
 
 ```ts twoslash
 // @errors: 2339 2532
+// @target: ES2020
 // @strictNullChecks
 declare const loggedInUsername: string;
 
@@ -35,8 +37,8 @@ const users = [
   { name: "Oby", age: 12 },
   { name: "Heera", age: 32 }
 ];
-const loggedInUser = users.find(u => u.name === loggedInUsername);
 
+const loggedInUser = users.find(u => u.name === loggedInUsername);
 console.log(loggedInUser.age);
 ```
 

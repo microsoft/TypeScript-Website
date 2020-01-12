@@ -27,7 +27,7 @@ const b = "345"
   })
 })
 
-describe('supports hiding the example code with multi-files', () => {
+describe.skip('supports hiding the example code with multi-files', () => {
   const file = `
 // @filename: main-file.ts
 const a = "123"
@@ -70,9 +70,8 @@ describe('supports handling many queries in cut multi-file code', () => {
 // @filename: index.ts
 const a = "123"
 // @filename: main-file-queries.ts
-// ---cut---
 const b = "345"
-//    ^?
+// ---cut---
 const c = "678"
 //    ^?
 `

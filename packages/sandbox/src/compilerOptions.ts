@@ -2,7 +2,6 @@ import { PlaygroundConfig } from '.'
 
 type CompilerOptions = import('monaco-editor').languages.typescript.CompilerOptions
 type Monaco = typeof import('monaco-editor')
-type Sandbox = ReturnType<typeof import('.').createTypeScriptSandbox>
 
 /**
  * These are the defaults, but they also act as the list of all compiler options
@@ -43,6 +42,7 @@ export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monac
 
     experimentalDecorators: true,
     emitDecoratorMetadata: true,
+    moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
 
     target: monaco.languages.typescript.ScriptTarget.ES2017,
     jsx: monaco.languages.typescript.JsxEmit.React,

@@ -13,6 +13,11 @@ code .
 Working on this repo is done by running `yarn start` - this starts up the website on port `8000` and creates a
 builder worker for every package in the repo, so if you make a change outside of the site it will compile and lint etc.
 
+Some useful knowledge:
+
+- All packages have: `yarn bootstrap`, `yarn build` and `yarn test`
+- All packages use [debug](https://www.npmjs.com/package/debug) - which means you can do `env DEBUG="*" yarn test` to get verbose logs
+
 # Website Packages
 
 ## TypeScriptLang-Org
@@ -71,33 +76,23 @@ The code samples used in the Playground
 
 # Infra Packages
 
-## TS Twoslasher
+All of these packages use [`tsdx`](https://github.com/jaredpalmer/tsdx).
+
+## TS Twoslash
 
 A code sample markup extension for TypeScript.
 
-```sh
-# Tests
-yarn workspace ts-twoslasher test
-
-# Build
-yarn workspace ts-twoslasher build
-```
-
 ## Gatsby Remark Twoslasher Code Blocks
 
-A Gasby Remark plugin which runs twoslash for any code blocks with twoslash in their metadata
+A Gatsby Remark plugin which runs twoslash for any code blocks with twoslash in their metadata
 
 ## Gatsby Remark Shiki
 
-A Gasby Remark plugin which highlights code (using vscode's parsers) then annotates the code with twoslash information
+A Gatsby Remark plugin which highlights code (using vscode's parsers) then annotates the code with twoslash information
 
-```sh
-# Tests
-yarn workspace gatsby-remark-shiki test
+## TypeScript VFS
 
-# Build
-yarn workspace gatsby-remark-shiki build
-```
+A comprehensive way to run TypeScript projects in-memory in a browser or node environment
 
 # Contributing
 

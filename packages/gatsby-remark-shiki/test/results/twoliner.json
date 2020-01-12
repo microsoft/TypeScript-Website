@@ -6,33 +6,6 @@
     "queries": [],
     "staticQuickInfos": [
       {
-        "text": "(alias) const getStringLength: (str: string) => number\nimport getStringLength",
-        "docs": "",
-        "start": 124,
-        "length": 15,
-        "line": 1,
-        "character": 72,
-        "targetString": "getStringLength"
-      },
-      {
-        "text": "const b: number",
-        "docs": "",
-        "start": 173,
-        "length": 1,
-        "line": 1,
-        "character": 121,
-        "targetString": "b"
-      },
-      {
-        "text": "(alias) getStringLength(str: string): number\nimport getStringLength",
-        "docs": "",
-        "start": 177,
-        "length": 15,
-        "line": 1,
-        "character": 125,
-        "targetString": "getStringLength"
-      },
-      {
         "text": "const getStringLength: (str: string) => number",
         "docs": "",
         "start": 46,
@@ -67,6 +40,33 @@
         "line": 1,
         "character": 26,
         "targetString": "length"
+      },
+      {
+        "text": "(alias) const getStringLength: (str: string) => number\nimport getStringLength",
+        "docs": "",
+        "start": 124,
+        "length": 15,
+        "line": 1,
+        "character": 72,
+        "targetString": "getStringLength"
+      },
+      {
+        "text": "const b: number",
+        "docs": "",
+        "start": 173,
+        "length": 1,
+        "line": 1,
+        "character": 121,
+        "targetString": "b"
+      },
+      {
+        "text": "(alias) getStringLength(str: string): number\nimport getStringLength",
+        "docs": "",
+        "start": 177,
+        "length": 15,
+        "line": 1,
+        "character": 125,
+        "targetString": "getStringLength"
       }
     ],
     "errors": [],

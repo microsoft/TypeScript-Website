@@ -12,16 +12,10 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build; yarn readme",
-    "bootstrap": "yarn build",
-    "readme": "yarn md-magic README.md --config ./scripts/inline-results.js",
+    "bootstrap": "yarn workspace typescript-vfs run bootstrap; yarn build",
+    "readme": "yarn md-magic README.md --config ./scripts/inline-results.js; yarn prettier README.md --write",
     "test": "tsdx test",
     "lint": "tsdx lint"
-  },
-  "peerDependencies": {},
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
   },
   "devDependencies": {
     "@types/jest": "^24.0.24",
@@ -39,8 +33,14 @@
       "test/results"
     ]
   },
+  "browser": {
+    "fs": false,
+    "typescript": false,
+    "lz-string": false
+  },
   "dependencies": {
     "debug": "^4.1.1",
-    "lz-string": "^1.4.4"
+    "lz-string": "^1.4.4",
+    "typescript-vfs": "0.1.0"
   }
 }

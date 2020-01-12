@@ -1,5 +1,5 @@
 {
-  "code": "\nconst bye = 'globe'\n",
+  "code": "const bye = 'globe'\n",
   "extension": "ts",
   "highlights": [],
   "queries": [],

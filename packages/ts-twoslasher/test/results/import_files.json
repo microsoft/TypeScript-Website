@@ -5,6 +5,15 @@
   "queries": [],
   "staticQuickInfos": [
     {
+      "text": "const helloWorld: \"Example string\"",
+      "docs": "",
+      "start": 47,
+      "length": 10,
+      "line": 2,
+      "character": 2,
+      "targetString": "helloWorld"
+    },
+    {
       "text": "(alias) const helloWorld: \"Example string\"\nimport helloWorld",
       "docs": "",
       "start": 110,
@@ -38,15 +47,6 @@
       "length": 10,
       "line": 2,
       "character": 90,
-      "targetString": "helloWorld"
-    },
-    {
-      "text": "const helloWorld: \"Example string\"",
-      "docs": "",
-      "start": 47,
-      "length": 10,
-      "line": 2,
-      "character": 2,
       "targetString": "helloWorld"
     }
   ],

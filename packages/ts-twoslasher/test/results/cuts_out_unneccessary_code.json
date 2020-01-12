@@ -1,5 +1,5 @@
 {
-  "code": "\nfunction createLabel<T extends number | string>(idOrName: T): NameOrId<T> {\n    throw \"unimplemented\"\n}\n\nlet a = createLabel(\"typescript\");\n\nlet b = createLabel(2.8);\n\nlet c = createLabel(Math.random() ? \"hello\" : 42);\n",
+  "code": "function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {\n    throw \"unimplemented\"\n}\n\nlet a = createLabel(\"typescript\");\n\nlet b = createLabel(2.8);\n\nlet c = createLabel(Math.random() ? \"hello\" : 42);\n",
   "extension": "ts",
   "highlights": [],
   "queries": [],
@@ -132,5 +132,5 @@
     }
   ],
   "errors": [],
-  "playgroundURL": "https://www.typescriptlang.org/play/#code/JYOwLgpgTgZghgYwgAgJIBMAycBGEA2yA3ssOgFzIgCuAtnlADTID0AVMgM4D2tKMwAuk7I2LZAF8AUKEixEKAHJw+2PIRIgVESpzBRQAc2btk3MAAtoyAUJFjJUsAE8ADku0B5KBgA8AFWQIAA9IEGEqOgZkAB8ufSMAPmQAXmRAkLCImnprAH40LFwCZEplVWL8AG4pFnF-C2ARBF4+cC4Lbmp8dCpzZDxSEAR8anQIdCla8QBaOYRqMDmZqRhqYbBgbhBkBCgIOEg1AgCg0IhwkRzouL0DEENEgAoyb3KddIBKMq8fdADkkQpMgQchLFBuAB3ZAAInWwFornwEDakHQMKk0ikyLAyDgqV2+0OEGO+CeMJc7k4e2ArjAMM+NWxEFxOAJewOR0qTwATAA6AAcjKmON27KJXPUTwAsocLHyoHBwrwnp9kAUYVZ8PhuDDSsgACw84VAA"
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/JYOwLgpgTgZghgYwgAgJIBMAycBGEA2yA3ssOgFzIgCuAtnlADTID0AVMgM4D2tKMwAuk7I2LZAF8AUKEixEKAHJw+2PIRIgVESpzBRQAc2btk3MAAtoyAUJFjJUsAE8ADku0B5KBgA8AFWQIAA9IEGEqOgZkAB8ufSMAPmQAXmRAkLCImnprAH40LFwCZEplVWL8AG4pFnF-C2ARBF4+cC4Lbmp8dCpzZDxSEAR8anQIdCla8QBaOYRqMDmZqRhqYbBgbhBkBCgIOEg1AgCg0IhwkRzouL0DEENEgAoyb3KddIBKMq8fdADkkQpMgQchLFBuAB3ZAAInWwFornwEDakHQMKk0ikyLAyDgqV2+0OEGO+CeMJc7k4e2ArjAMM+NTqIIAenkpjiBgS9gcjpUngAmAB0AA5GdNWezsRBcQhuUS+eongBZQ4WIVQODhXhPT7IAowqz4fDcGGlZAAFgF4uZyDZUiAA"
 }

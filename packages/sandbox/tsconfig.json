@@ -4,7 +4,7 @@
     "outDir": "../typescriptlang-org/static/js/sandbox",
     "target": "ES2016",
     "module": "AMD",
-    "lib": ["dom", "esnext"],
+    "lib": ["DOM", "esnext"],
     "declaration": true,
     "inlineSources": true,
     "inlineSourceMap": true,
