@@ -4,11 +4,14 @@ import { withPrefix } from "gatsby"
 
 import "./dev.scss"
 import { DevNav } from "../../components/dev-nav"
-
-
+import { isTouchDevice } from "../../../lib/utils/isTouchDevice"
+import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
 
 const Index = (props: any) => {
   useEffect(() => {
+    // Don't even bother getting monaco
+    if (isTouchDevice()) { return }
+
     const getLoaderScript = document.createElement('script');
     getLoaderScript.src = withPrefix("/js/vs.loader.js");
     getLoaderScript.async = true;
@@ -69,7 +72,7 @@ export default async function () {
         <div id="dev">
           <DevNav />
           <div className="ms-depth-4 content" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
-            <div style={{ width: "calc(100% - 600px)" }}>
+            <div className="split-sixhundred">
               <h1 style={{ marginTop: "0" }}>TypeScript Sandbox</h1>
               <p>A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the <a href={withPrefix("/en/play")}>TypeScript playground</a></p>
               <p>You can use the TypeScript sandbox for:</p>
@@ -82,13 +85,16 @@ export default async function () {
               <p>This library builds on top of the <a href="https://microsoft.github.io/monaco-editor/index.html">Monaco Editor</a>, providing a higher level API but offering access to all the lower-level APIs via a single <code>sandbox</code> object.</p>
               <p>You can find the code for the TypeScript Sandbox inside the <a href="https://github.com/microsoft/TypeScript-Website/tree/v2/packages/sandbox#typescript-sandbox">microsoft/TypeScript-Website</a> mono-repo.</p>
             </div>
-            <div style={{ width: "600px", marginLeft: "20px", borderLeft: "1px solid gray" }}>
-              <div id="loader">
-                <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-                <p id="loading-message">Downloading Sandbox...</p>
+
+            <SuppressWhenTouch hideOnTouch>
+              <div className="sixhundred" style={{ borderLeft: "1px solid gray" }}>
+                <div id="loader">
+                  <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                  <p id="loading-message">Downloading Sandbox...</p>
+                </div>
+                <div style={{ height: "400px" }} id="monaco-editor-embed" />
               </div>
-              <div style={{ height: "400px" }} id="monaco-editor-embed" />
-            </div>
+            </SuppressWhenTouch>
           </div>
 
           <div className="ms-depth-4" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem" }}>

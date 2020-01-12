@@ -1,3 +1,5 @@
+$width-for-single-column: 800px;
+
 #dev {
   .content {
     display: flex;
@@ -6,6 +8,8 @@
   pre {
     background-color: #f9f9f9;
     color: black;
+    margin-right: 0;
+    overflow-x: scroll;
 
     .mtk5 {
       color: black;
@@ -17,9 +21,31 @@
     flex-direction: row;
     width: 100%;
 
+    @media (max-width: $width-for-single-column) {
+      flex-direction: column;
+    }
+
     > p,
     > div {
       flex: 1;
+    }
+  }
+
+  .split-sixhundred {
+    width: calc(100% - 600px);
+    @media (max-width: $width-for-single-column) {
+      width: 100%;
+    }
+  }
+  .sixhundred {
+    width: 600px;
+    margin-left: 20px;
+
+    @media (max-width: $width-for-single-column) {
+      width: 100%;
+      margin-left: 0px;
+      padding-left: 20px;
+      text-align: center;
     }
   }
 

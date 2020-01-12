@@ -8,6 +8,8 @@ import { renderToHTML } from "gatsby-remark-shiki/src/renderer"
 
 import "./dev.scss"
 import { DevNav } from "../../components/dev-nav"
+import { isTouchDevice } from "../../../lib/utils/isTouchDevice"
+import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
 
 /** Note: to run all the web infra in debug, run:
   localStorage.debug = '*'
@@ -17,6 +19,9 @@ import { DevNav } from "../../components/dev-nav"
 
 const Index = (props: any) => {
   useEffect(() => {
+    // No monaco for touch
+    if (isTouchDevice()) { return }
+
     const getLoaderScript = document.createElement('script');
     getLoaderScript.src = withPrefix("/js/vs.loader.js");
     getLoaderScript.async = true;
@@ -176,37 +181,39 @@ const Index = (props: any) => {
           </div>
 
           <div className="ms-depth-4 content" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
-            <div style={{ width: "600px", }}>
-              <h3 style={{ marginTop: "0" }}>Markup</h3>
-              <p id="exampleBlurb">{codeSamples[0].blurb}</p>
-              <div id="loader">
-                <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-                <p id="loading-message">Downloading Sandbox...</p>
-              </div>
-              <div style={{ height: "300px" }} id="monaco-editor-embed" />
-              <div id="example-buttons">
-                {codeSamples.map(code => {
-                  const setExample = (e) => {
-                    if (e.target.classList.contains("disabled")) return
+            <SuppressWhenTouch>
 
-                    document.getElementById("exampleBlurb")!.innerText = code.blurb
-                    // @ts-ignore
-                    window.sandbox.setText(code.code)
+              <div style={{ width: "600px", }}>
+                <h3 style={{ marginTop: "0" }}>Markup</h3>
+                <p id="exampleBlurb">{codeSamples[0].blurb}</p>
+                <div id="loader">
+                  <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                  <p id="loading-message">Downloading Sandbox...</p>
+                </div>
+                <div style={{ height: "300px" }} id="monaco-editor-embed" />
+                <div id="example-buttons">
+                  {codeSamples.map(code => {
+                    const setExample = (e) => {
+                      if (e.target.classList.contains("disabled")) return
+
+                      document.getElementById("exampleBlurb")!.innerText = code.blurb
+                      // @ts-ignore
+                      window.sandbox.setText(code.code)
+                    }
+                    return <div className="button disabled" onClick={setExample}>{code.name}</div>
                   }
-                  return <div className="button disabled" onClick={setExample}>{code.name}</div>
-                }
-                )}
+                  )}
+                </div>
               </div>
-            </div>
 
-            <div style={{ width: "calc(100% - 600px)", paddingLeft: "20px", borderLeft: "1px solid gray", position: "relative" }}>
-              <h3 style={{ marginTop: "0" }}>Results</h3>
+              <div style={{ width: "calc(100% - 600px)", paddingLeft: "20px", borderLeft: "1px solid gray", position: "relative" }}>
+                <h3 style={{ marginTop: "0" }}>Results</h3>
 
-              <div id="twoslash-results" />
-              <div id="twoslash-failure" />
-            </div>
+                <div id="twoslash-results" />
+                <div id="twoslash-failure" />
+              </div>
+            </SuppressWhenTouch>
           </div>
-
 
           <div className="ms-depth-4" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem" }}>
             <h2>Usage</h2>
