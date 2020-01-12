@@ -64,7 +64,8 @@ fn(42);
               const results = document.getElementById("twoslash-results")!
 
               document.getElementById("twoslash-failure")!.style.display = "none"
-              document.getElementById("twoslash-results")!.innerHTML = html
+              document.getElementBy
+              Id("twoslash-results")!.innerHTML = html
 
               // Remove all the kids
               while (results.firstChild) {

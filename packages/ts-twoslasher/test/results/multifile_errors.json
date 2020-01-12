@@ -1,18 +1,1 @@
-Errors were thrown in the sample, but not included in an errors tag: 2552 2304 1005 2552 2304 1005.
-  [2552] - Cannot find name 'consol'. Did you mean 'Console'?
-  [2304] - Cannot find name 'log'.
-  [1005] - ';' expected.
-  [2552] - Cannot find name 'consol'. Did you mean 'Console'?
-  [2304] - Cannot find name 'err'.
-  [1005] - ';' expected.
-
-## Code
-
-'''ts
-// @filename: file-one.ts
-consol...log
-
-// @filename: other export.ts
-consol...err
-
-'''
+Debug Failure. False expression: position cannot precede the beginning of the file

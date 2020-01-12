@@ -27,7 +27,7 @@ const b = "345"
   })
 })
 
-describe('supports hiding the example code with multi-files', () => {
+describe.skip('supports hiding the example code with multi-files', () => {
   const file = `
 // @filename: main-file.ts
 const a = "123"

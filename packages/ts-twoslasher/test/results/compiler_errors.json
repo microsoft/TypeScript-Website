@@ -1,5 +1,5 @@
 {
-  "code": "\nfunction fn(s) {\n  console.log(s.subtr(3))\n}\n\nfn(42)\n",
+  "code": "function fn(s) {\n  console.log(s.subtr(3))\n}\n\nfn(42)",
   "extension": "ts",
   "highlights": [],
   "queries": [],
@@ -7,62 +7,62 @@
     {
       "text": "function fn(s: any): void",
       "docs": "",
-      "start": 10,
+      "start": 9,
       "length": 2,
       "line": 1,
-      "character": 9,
+      "character": 8,
       "targetString": "fn"
     },
     {
       "text": "(parameter) s: any",
       "docs": "",
-      "start": 13,
+      "start": 12,
       "length": 1,
       "line": 1,
-      "character": 12,
+      "character": 11,
       "targetString": "s"
     },
     {
       "text": "var console: Console",
       "docs": "",
-      "start": 20,
+      "start": 19,
       "length": 7,
       "line": 2,
-      "character": 2,
+      "character": 1,
       "targetString": "console"
     },
     {
       "text": "(method) Console.log(message?: any, ...optionalParams: any[]): void",
       "docs": "",
-      "start": 28,
+      "start": 27,
       "length": 3,
       "line": 2,
-      "character": 10,
+      "character": 9,
       "targetString": "log"
     },
     {
       "text": "(parameter) s: any",
       "docs": "",
-      "start": 32,
+      "start": 31,
       "length": 1,
       "line": 2,
-      "character": 14,
+      "character": 13,
       "targetString": "s"
     },
     {
       "text": "any",
-      "start": 34,
+      "start": 33,
       "length": 5,
       "line": 2,
-      "character": 16,
+      "character": 15,
       "targetString": "subtr"
     },
     {
       "text": "function fn(s: any): void",
       "docs": "",
-      "start": 47,
+      "start": 46,
       "length": 2,
-      "line": 5,
+      "line": 4,
       "character": 0,
       "targetString": "fn"
     }
@@ -72,7 +72,7 @@
       "category": 1,
       "code": 7006,
       "length": 1,
-      "start": 13,
+      "start": 12,
       "line": 1,
       "character": 12,
       "renderedMessage": "Parameter 's' implicitly has an 'any' type.",

@@ -1,5 +1,5 @@
 {
-  "code": "\nfunction createLabel<T extends number | string>(idOrName: T): NameOrId<T> {\n    throw \"unimplemented\"\n}\n\nlet a = createLabel(\"typescript\");\n\nlet b = createLabel(2.8);\n\nlet c = createLabel(Math.random() ? \"hello\" : 42);\n",
+  "code": "function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {\n    throw \"unimplemented\"\n}\n\nlet a = createLabel(\"typescript\");\n\nlet b = createLabel(2.8);\n\nlet c = createLabel(Math.random() ? \"hello\" : 42);",
   "extension": "ts",
   "highlights": [],
   "queries": [],
@@ -7,127 +7,127 @@
     {
       "text": "function createLabel<T extends string | number>(idOrName: T): NameOrId<T>",
       "docs": "",
-      "start": 9,
+      "start": 8,
       "length": 11,
       "line": 6,
-      "character": 9,
+      "character": 8,
       "targetString": "createLabel"
     },
     {
       "text": "(type parameter) T in createLabel<T extends string | number>(idOrName: T): NameOrId<T>",
       "docs": "",
-      "start": 21,
+      "start": 20,
       "length": 1,
       "line": 6,
-      "character": 21,
+      "character": 20,
       "targetString": "T"
     },
     {
       "text": "(parameter) idOrName: T extends string | number",
       "docs": "",
-      "start": 48,
+      "start": 47,
       "length": 8,
       "line": 6,
-      "character": 48,
+      "character": 47,
       "targetString": "idOrName"
     },
     {
       "text": "(type parameter) T in createLabel<T extends string | number>(idOrName: T): NameOrId<T>",
       "docs": "",
-      "start": 58,
+      "start": 57,
       "length": 1,
       "line": 6,
-      "character": 58,
+      "character": 57,
       "targetString": "T"
     },
     {
       "text": "type NameOrId<T extends string | number> = T extends number ? IdLabel : NameLabel",
       "docs": "",
-      "start": 62,
+      "start": 61,
       "length": 8,
       "line": 6,
-      "character": 62,
+      "character": 61,
       "targetString": "NameOrId"
     },
     {
       "text": "(type parameter) T in createLabel<T extends string | number>(idOrName: T): NameOrId<T>",
       "docs": "",
-      "start": 71,
+      "start": 70,
       "length": 1,
       "line": 6,
-      "character": 71,
+      "character": 70,
       "targetString": "T"
     },
     {
       "text": "let a: NameLabel",
       "docs": "",
-      "start": 109,
+      "start": 108,
       "length": 1,
       "line": 10,
-      "character": 4,
+      "character": 3,
       "targetString": "a"
     },
     {
       "text": "function createLabel<\"typescript\">(idOrName: \"typescript\"): NameLabel",
       "docs": "",
-      "start": 113,
+      "start": 112,
       "length": 11,
       "line": 10,
-      "character": 8,
+      "character": 7,
       "targetString": "createLabel"
     },
     {
       "text": "let b: IdLabel",
       "docs": "",
-      "start": 145,
+      "start": 144,
       "length": 1,
       "line": 12,
-      "character": 4,
+      "character": 3,
       "targetString": "b"
     },
     {
       "text": "function createLabel<2.8>(idOrName: 2.8): IdLabel",
       "docs": "",
-      "start": 149,
+      "start": 148,
       "length": 11,
       "line": 12,
-      "character": 8,
+      "character": 7,
       "targetString": "createLabel"
     },
     {
       "text": "let c: IdLabel | NameLabel",
       "docs": "",
-      "start": 172,
+      "start": 171,
       "length": 1,
       "line": 14,
-      "character": 4,
+      "character": 3,
       "targetString": "c"
     },
     {
       "text": "function createLabel<\"hello\" | 42>(idOrName: \"hello\" | 42): IdLabel | NameLabel",
       "docs": "",
-      "start": 176,
+      "start": 175,
       "length": 11,
       "line": 14,
-      "character": 8,
+      "character": 7,
       "targetString": "createLabel"
     },
     {
       "text": "var Math: Math",
       "docs": "An intrinsic object that provides basic mathematics functionality and constants.",
-      "start": 188,
+      "start": 187,
       "length": 4,
       "line": 14,
-      "character": 20,
+      "character": 19,
       "targetString": "Math"
     },
     {
       "text": "(method) Math.random(): number",
       "docs": "Returns a pseudorandom number between 0 and 1.",
-      "start": 193,
+      "start": 192,
       "length": 6,
       "line": 14,
-      "character": 25,
+      "character": 24,
       "targetString": "random"
     }
   ],
