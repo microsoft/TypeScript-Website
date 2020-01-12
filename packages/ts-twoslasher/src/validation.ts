@@ -9,7 +9,11 @@ export function validateCodeForErrors(
   const errorsFound = inErrsButNotFoundInTheHeader.map(e => e.code).join(' ')
 
   if (inErrsButNotFoundInTheHeader.length) {
-    const postfix = handbookOptions.errors.length ? ` - the annotation specified ${handbookOptions.errors}` : ''
+    const codeToAdd = `// @errors: ${relevantErrors.map(e => e.code).join(' ')}`
+    const postfix = handbookOptions.errors.length
+      ? ` - the annotation specified ${handbookOptions.errors}`
+      : '\n\nExpected:\n' + codeToAdd
+
     const afterMessage = inErrsButNotFoundInTheHeader
       .map(e => {
         const msg = typeof e.messageText === 'string' ? e.messageText : e.messageText.messageText
@@ -19,7 +23,7 @@ export function validateCodeForErrors(
 
     const codeOutput = `\n\n## Code\n\n'''${extension}\n${originalCode}\n'''`
     throw new Error(
-      `Errors were thrown in the sample, but not included in an errors tag: ${errorsFound}${postfix}.\n  ${afterMessage}${codeOutput}`
+      `Errors were thrown in the sample, but not included in an errors tag: ${errorsFound}${postfix}\n\n  ${afterMessage}${codeOutput}`
     )
   }
 }

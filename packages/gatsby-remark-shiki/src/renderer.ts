@@ -28,9 +28,12 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
     const lspValues = staticQuickInfosGroupedByLine.get(i) || []
     const queries = queriesGroupedByLine.get(i) || []
 
-    if (l.length === 0) {
-      html += `\n`
+    if (l.length === 0 && i === 0) {
+      // Skip the first newline if it's blank
       filePos += 1
+    } else if (l.length === 0) {
+      filePos += 1
+      html += `\n`
     } else {
       // Keep track of the position of the current token in a line so we can match it up to the
       // errors and lang serv identifiers

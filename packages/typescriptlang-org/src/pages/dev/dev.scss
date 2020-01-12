@@ -4,11 +4,22 @@
   }
 
   pre {
-    background-color: white;
+    background-color: #f9f9f9;
     color: black;
 
     .mtk5 {
       color: black;
+    }
+  }
+
+  .split-fifty {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    > p,
+    > div {
+      flex: 1;
     }
   }
 
@@ -40,6 +51,28 @@
       &:hover,
       &:active {
         background-color: #dfdfdf;
+      }
+    }
+  }
+
+  #twoslash-failure {
+    position: absolute;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    background-color: rgba(255, 255, 255, 0.5);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+
+    .err-content {
+      border: 2px #c63131 solid;
+      padding: 20px;
+
+      p {
+        font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+        white-space: pre-wrap;
       }
     }
   }

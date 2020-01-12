@@ -302,7 +302,6 @@ export function twoslasher(
   const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions, ts)
 
   const vfs = fsMap ?? createLocallyPoweredVFS(compilerOptions)
-
   const system = createSystem(vfs)
   const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions)
   const ls = env.languageService
@@ -377,7 +376,7 @@ export function twoslasher(
   // We need to also strip the highlights + queries from the main file which is shown to people
   const allCodeLines = code.split(/\r\n?|\n/g)
   filterHighlightLines(allCodeLines)
-  code = allCodeLines.join('\n').trim()
+  code = allCodeLines.join('\n')
 
   // Code should now be safe to compile, so we're going to split it into different files
   const errs: import('typescript').Diagnostic[] = []

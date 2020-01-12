@@ -1,6 +1,6 @@
 # TypeScript TwoSlasher
 
-A twisted markup for TypeScript code for writing code samples and letting the TypeScript compiler do more of the work inspired
+A markup format for TypeScript code, ideal for creating self-contained code samples which let the TypeScript compiler do the extra leg-work. Inspired
 by the [fourslash test system](https://github.com/orta/typescript-notes/blob/master/systems/testing/fourslash.md).
 
 Used as a pre-parser before showing code samples inside the TypeScript website and to create a standard way for us
@@ -8,16 +8,20 @@ to create examples for bugs on the compiler's issue tracker.
 
 ### Features
 
+The Twoslash markup language helps with:
+
 - Enforcing accurate errors from a TypeScript code sample, and leaving the messaging to the compiler
-- Declaratively highlight symbols you want to show
-- Handling showing the results of transpilation with certain flags
 - Splitting a code sample to hide distracting code
-- Support an example referencing multiple files
+- Declaratively highlighting symbols in your code sample
+- Replacing code with the results of transpilation to different files, or ancillary files like .d.ts or .map files
+- Handle multi-file imports in a single code sample
 - Creating a playground link for the code
 
 ### TODO
 
 - Ship to npm
+
+### API
 
 <!-- AUTO-GENERATED-CONTENT:START (FIXTURES) -->
 

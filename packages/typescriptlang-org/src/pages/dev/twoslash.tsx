@@ -9,6 +9,11 @@ import { renderToHTML } from "gatsby-remark-shiki/src/renderer"
 import "./dev.scss"
 import { DevNav } from "../../components/dev-nav"
 
+/** Note: to run all the web infra in debug, run:
+  localStorage.debug = '*'
+
+  to remove logging: localStorage.debug = undefined
+ */
 
 const Index = (props: any) => {
   useEffect(() => {
@@ -30,27 +35,18 @@ const Index = (props: any) => {
       re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "sandbox/index"], async (main: typeof import("monaco-editor"), ts: typeof import("typescript"), sandboxEnv: typeof import("typescript-sandbox")) => {
         // This triggers making "ts" available in the global scope
         re(["vs/language/typescript/lib/typescriptServices"], async (ts) => {
-          const initialCode = `// @noImplicitAny: false
-// @errors: 7006
-function fn(s) {
-  // No error when noImplicitAny: false
-  // try remove it in the editor
-  // console.log(s.subtr(3));
-}
-fn(42);
-`
           const isOK = main && ts && sandboxEnv
           if (isOK) {
             document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)
           }
 
-          const sandbox = await sandboxEnv.createTypeScriptSandbox({ text: initialCode, compilerOptions: {}, domID: "monaco-editor-embed", useJavaScript: false }, main, ts)
+          const sandbox = await sandboxEnv.createTypeScriptSandbox({ text: codeSamples[0].code, compilerOptions: {}, domID: "monaco-editor-embed", useJavaScript: false }, main, ts)
           sandbox.editor.focus()
 
           // @ts-ignore
           window.sandbox = sandbox
 
-          const mapWithLibFiles = await createDefaultMapFromCDN({ target: ts.ScriptTarget.ES2015 }, '3.7.3', true, ts, sandbox.lzstring as any)
+          const mapWithLibFiles = await createDefaultMapFromCDN({ target: ts.ScriptTarget.ES2016 }, '3.7.3', true, ts, sandbox.lzstring as any)
 
           const runTwoslash = () => {
             const newContent = sandbox.getText()
@@ -64,8 +60,7 @@ fn(42);
               const results = document.getElementById("twoslash-results")!
 
               document.getElementById("twoslash-failure")!.style.display = "none"
-              document.getElementBy
-              Id("twoslash-results")!.innerHTML = html
+              document.getElementById("twoslash-results")!.innerHTML = html
 
               // Remove all the kids
               while (results.firstChild) {
@@ -88,10 +83,29 @@ fn(42);
               results.appendChild(a)
 
             } catch (error) {
+              const err = error as Error
+              const failure = document.getElementById("twoslash-failure")!
+              failure.style.display = "block"
+
+              while (failure.firstChild) {
+                failure.removeChild(failure.firstChild)
+              }
+
+              const content = document.createElement("div")
+              content.className = "err-content"
+
+              const header = document.createElement("h3")
+              header.textContent = "Exception Raised"
+
+              const text = document.createElement("p")
+              const opener = err.name.startsWith("Error") ? err.name.split("Error")[1] : err.name
+              text.textContent = opener + err.message.split("## Code")[0]
+
+              content.appendChild(header)
+              content.appendChild(text)
+              failure.appendChild(content)
+
               console.log(error)
-              document.getElementById("twoslash-results")!.style.display = "block"
-              document.getElementById("twoslash-failure")!.style.display = "none"
-              document.getElementById("twoslash-results")!.textContent = error
             }
           }
 
@@ -103,7 +117,7 @@ fn(42);
             runTwoslash()
             setTimeout(() => {
               debouncingTimerLock = false
-
+              runTwoslash()
             }, 300)
           })
           runTwoslash()
@@ -139,16 +153,32 @@ fn(42);
         <div id="dev">
           <DevNav />
           <div className="ms-depth-4 content" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
-            <div style={{ width: "calc(100% - 600px)" }}>
-              <h1 style={{ marginTop: "0" }}>TypeScript Twoslash</h1>
-            </div>
-            <div style={{ width: "600px" }}>
+            <div className="split-fifty">
+              <div>
+                <h1 style={{ marginTop: "0" }}>TypeScript Twoslash</h1>
+                <p>A markup format for TypeScript code, ideal for creating self-contained code samples which let the TypeScript compiler do the extra leg-work.</p>
+                <p>If you know TypeScript, you basically know twoslash.</p>
+                <p>Twoslash adds the ability to declare tsconfig options inline, split a sample into multiple files and a few other useful commands. You can see the full API <a href="https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher">inside the README</a></p>
+              </div>
+              <div>
+                <h1 style={{ marginTop: "0" }}>&nbsp;</h1>
+                <p>The Twoslash markup language helps with:</p>
+                <ul>
+                  <li>Enforcing accurate errors from a TypeScript code sample, and leaving the messaging to the compiler</li>
+                  <li>Splitting a code sample to hide distracting code</li>
+                  <li>Declaratively highlighting symbols in your code sample</li>
+                  <li>Replacing code with the results of transpilation to different files, or ancillary files like .d.ts or .map files</li>
+                  <li>Handle multi-file imports in a single code sample</li>
+                  <li>Creating a playground link for the code</li>
+                </ul>
+              </div>
             </div>
           </div>
 
           <div className="ms-depth-4 content" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
             <div style={{ width: "600px", }}>
               <h3 style={{ marginTop: "0" }}>Markup</h3>
+              <p id="exampleBlurb">{codeSamples[0].blurb}</p>
               <div id="loader">
                 <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                 <p id="loading-message">Downloading Sandbox...</p>
@@ -157,10 +187,9 @@ fn(42);
               <div id="example-buttons">
                 {codeSamples.map(code => {
                   const setExample = (e) => {
-                    console.log("---", e.target)
                     if (e.target.classList.contains("disabled")) return
 
-                    // document.getElementById("exampleBlurb")!.innerText = code.blurb
+                    document.getElementById("exampleBlurb")!.innerText = code.blurb
                     // @ts-ignore
                     window.sandbox.setText(code.code)
                   }
@@ -170,22 +199,18 @@ fn(42);
               </div>
             </div>
 
-            <div style={{ width: "calc(100% - 600px)", paddingLeft: "20px", borderLeft: "1px solid gray" }}>
+            <div style={{ width: "calc(100% - 600px)", paddingLeft: "20px", borderLeft: "1px solid gray", position: "relative" }}>
               <h3 style={{ marginTop: "0" }}>Results</h3>
-              <div id="twoslash-results">
-              </div>
-              <div id="twoslash-failure"></div>
+
+              <div id="twoslash-results" />
+              <div id="twoslash-failure" />
             </div>
           </div>
 
 
           <div className="ms-depth-4" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem" }}>
             <h2>Usage</h2>
-            <p>A sandbox uses the same tools as monaco-editor, meaning this library is shipped as an AMD bundle which you can use the <a href="https://github.com/microsoft/vscode-loader/">VSCode Loader</a> to <code>require</code>.</p>
-            <p>Because we need it for the TypeScript website, you can use our hosted copy <a href="https://typescriptlang.org/v2/js/vs.loader.js">here.</a> (<em>note</em>, we will eventually deprecate the /v2/ in all routes)</p>
-
-            <h3>Get Started</h3>
-            <p>Create a new file: <code>index.html</code> and paste this code into that file.</p>
+            <p>Twoslash will be available on NPM soon, for now it's only being used in the TypeScript website.</p>
           </div>
         </div>
       </Layout>
@@ -195,13 +220,28 @@ fn(42);
 
 export default Index
 
+// prettier-ignore
 const codeSamples = [
   {
-    name: "Show Errors",
-    blurb: "Something",
-    code: `// @target: ES2015
-// @errors: 7006
+    name: "Highlights runtime types",
+    blurb: "See how Two Slash will grab the highlight information for identifiers in your code",
+    code: `// @errors: 2532
+declare const quantumString: string | undefined;
 
+// Right now this string is in two states, hover below to see
+quantumString
+  
+if (quantumString) {
+  // However, in here we now have a different type
+  // you can verify by hovering below
+  quantumString.length;
+}
+    `
+  },
+  {
+    name: "Show Errors",
+    blurb: "Twoslash will help highlight compiler error messages",
+    code: `// @errors: 7006
 function fn(s) {
   console.log(s.subtr(3))
 }
@@ -209,10 +249,8 @@ function fn(s) {
 fn(42)`
   }, {
     name: "Set Compiler Flags",
-    blurb: "Get the DTS for the user's editor",
+    blurb: "You can define compiler flags inline in a code sample which are removed from the output",
     code: `// @noImplicitAny: false
-// @target: ES2015
-
 // This will not throw because of the noImplicitAny
 function fn(s) {
   console.log(s.subtr(3))
@@ -221,26 +259,33 @@ function fn(s) {
 fn(42);`
   }, {
     name: "Trims code",
-    blurb: "Make a request for an LSP response",
-    code: `interface IdLabel { id: number, /* some fields */ }
-interface NameLabel { name: string, /* other fields */ }
+    blurb: "You can write code to help it compile in the sample which is hidden in the output",
+    code: `interface IdLabel {id: number, /* some fields */ }
+interface NameLabel {name: string, /* other fields */ }
 type NameOrId<T extends number | string> = T extends number ? IdLabel : NameLabel;
 // This comment should not be included
 
 // ---cut---
 function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {
-    throw "unimplemented"
+  throw "unimplemented"
 }
 
 let a = createLabel("typescript");`
   },
   {
+    name: "Show the JS",
+    blurb: "Use @showEmit to show the JS files",
+    code: `// @showEmit
+export function getStringLength(value: string) {
+  return value
+}
+`},
+  {
     name: "Show the DTS",
-    blurb: "Change compiler flags using a few different APIs",
+    blurb: "Use @showEmittedFile to set the d.ts file to be the result code",
     code: `// @declaration: true
 // @showEmit
 // @showEmittedFile: index.d.ts
-
 /**
  * Gets the length of a string
  * @param value a string
@@ -248,8 +293,7 @@ let a = createLabel("typescript");`
 export function getStringLength(value: string) {
   return value
 }
-`
-  },
+`},
   {
     name: "Highlights",
     blurb: "Highlight some code in the editor",
