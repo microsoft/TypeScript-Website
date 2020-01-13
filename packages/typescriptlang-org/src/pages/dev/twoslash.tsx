@@ -32,7 +32,7 @@ const Index = (props: any) => {
       re.config({
         paths: {
           vs: "https://tswebinfra.blob.core.windows.net/cdn/3.7.3/monaco/min/vs",
-          sandbox: '/js/sandbox'
+          sandbox: withPrefix('/js/sandbox')
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],
       });

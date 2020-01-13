@@ -22,7 +22,7 @@ const Index = (props: any) => {
       re.config({
         paths: {
           vs: "https://tswebinfra.blob.core.windows.net/cdn/3.7.3/monaco/min/vs",
-          sandbox: '/js/sandbox'
+          sandbox: withPrefix('/js/sandbox')
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],
       });
@@ -43,6 +43,8 @@ export default async function () {
         if (isOK) {
           document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)
         }
+
+        document.getElementById("monaco-editor-embed")!.style.display = "block";
 
         const sandbox = await sandboxEnv.createTypeScriptSandbox({ text: initialCode, compilerOptions: {}, domID: "monaco-editor-embed", useJavaScript: false }, main, ts)
         sandbox.editor.focus()
@@ -92,7 +94,7 @@ export default async function () {
                   <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                   <p id="loading-message">Downloading Sandbox...</p>
                 </div>
-                <div style={{ height: "400px" }} id="monaco-editor-embed" />
+                <div style={{ height: "400px", display: "none" }} id="monaco-editor-embed" />
               </div>
             </SuppressWhenTouch>
           </div>
