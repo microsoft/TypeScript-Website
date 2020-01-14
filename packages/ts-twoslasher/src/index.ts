@@ -358,7 +358,7 @@ export function twoslasher(
         length = 0
       if (quickInfo && token && quickInfo.displayParts) {
         text = quickInfo.displayParts.map(dp => dp.text).join('')
-        docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join('\n') : undefined
+        docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join('<br/>') : undefined
         length = token[0].textSpan.start
         start = token[0].textSpan.length
       }

@@ -8,7 +8,7 @@ import { renderToHTML } from "gatsby-remark-shiki/src/renderer"
 
 import "./dev.scss"
 import { DevNav } from "../../components/dev-nav"
-import { isTouchDevice } from "../../../lib/utils/isTouchDevice"
+import { isTouchDevice } from "../../lib/isTouchDevice"
 import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
 
 /** Note: to run all the web infra in debug, run:
@@ -44,7 +44,7 @@ const Index = (props: any) => {
           if (isOK) {
             document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)
           }
-
+          document.getElementById("monaco-editor-embed")!.style.display = "block"
           const sandbox = await sandboxEnv.createTypeScriptSandbox({ text: codeSamples[0].code, compilerOptions: {}, domID: "monaco-editor-embed", supportTwoslashCompilerOptions: true }, main, ts)
           sandbox.editor.focus()
 
@@ -190,7 +190,7 @@ const Index = (props: any) => {
                   <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                   <p id="loading-message">Downloading Sandbox...</p>
                 </div>
-                <div style={{ height: "300px" }} id="monaco-editor-embed" />
+                <div style={{ height: "300px", display: "none" }} id="monaco-editor-embed" />
                 <div id="example-buttons">
                   {codeSamples.map(code => {
                     const setExample = (e) => {

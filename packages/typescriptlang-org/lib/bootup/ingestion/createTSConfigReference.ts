@@ -48,6 +48,7 @@ export const createTSConfigReference = async (
       path: element.name + "/tsconfig",
       component: tsConfigRefPage,
       context: {
+        locale: element.name,
         tsconfigMDPath: element.absolutePath,
         categoriesPath: categoriesForLang,
       },

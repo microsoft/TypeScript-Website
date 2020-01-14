@@ -3,6 +3,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "engines": {
+    "node": "^13"
+  },
   "devDependencies": {
     "concurrently": "^5.0.2",
     "danger": "^9.2.9",
@@ -14,6 +17,11 @@
   },
   "resolutions": {
     "@types/react": "16.9.17"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "/node_modules/(?!intl-messageformat|intl-messageformat-parser).+\\.js$"
+    ]
   },
   "scripts": {
     "bootstrap": "yarn workspaces run bootstrap; yarn workspaces run build",

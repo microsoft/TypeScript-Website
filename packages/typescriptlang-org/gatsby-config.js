@@ -2,13 +2,8 @@
 require("ts-node").register({ files: true })
 const { join } = require("path")
 
-const shiki = join(
-  require.resolve(`gatsby-remark-shiki`),
-  "..",
-  "..",
-  "package.json"
-)
-console.log(shiki)
+// prettier-ignore
+const shiki = join(require.resolve(`gatsby-remark-shiki`), "..", "..", "package.json")
 
 module.exports = {
   // This should only be used in a CI deploy while we're working in a v2 sub-folder
@@ -69,6 +64,13 @@ module.exports = {
         name: `playground-examples`,
       },
     },
+    {
+      resolve: "gatsby-plugin-i18n",
+      options: {
+        langKeyDefault: "en",
+        useLangKeyLayout: true,
+      },
+    },
     // Markdown support
     {
       resolve: `gatsby-transformer-remark`,
@@ -89,11 +91,10 @@ module.exports = {
           },
           "gatsby-remark-autolink-headers",
           {
-            // resolve: require.resolve(`${__dirname}/../gatsby-remark-shiki`),
-            // resolve: require.resolve(`gatsby-remark-shiki`),
             resolve: shiki,
             options: {
-              theme: "nord",
+              // theme: "nord",
+              theme: require.resolve("./lib/themes/typescript-beta-light.json"),
             },
           },
           "gatsby-remark-copy-linked-files",

@@ -102,7 +102,7 @@ const Index = (props: Props) => {
 
   return (
     <>
-      <Layout disableBetaNotification>
+      <Layout disableBetaNotification locale={props.pageContext.lang}>
         {/** This is the top nav, which is outside of the editor  */}
         <nav className="navbar-sub">
           <ul className="nav">
