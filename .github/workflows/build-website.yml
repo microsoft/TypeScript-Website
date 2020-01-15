@@ -14,8 +14,6 @@ jobs:
     - uses: actions/checkout@v1
       with: {submodules: true}
     - uses: actions/setup-node@v1
-      with:
-        node-version: '13.x'
     - uses: actions/setup-ruby@v1
 
     # Get local dependencies
@@ -31,6 +29,11 @@ jobs:
     # Build v1
     - name: Build website v1
       run: gulp publish
+
+    # Switch to node 13
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '13.x'
 
     # Build v2
     - name: Build website v2
