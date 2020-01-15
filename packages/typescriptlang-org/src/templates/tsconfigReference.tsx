@@ -7,8 +7,6 @@ import "./markdown.scss"
 import "./tsconfig.scss"
 
 const TSConfigReferenceTemplateComponent = (props: { pageContext: any, data: TSConfigReferenceTemplate, path: string }) => {
-  // console.log(props)
-
   const post = props.data.markdownRemark
   if (!post) {
     console.log("Could not render:", JSON.stringify(props))
@@ -64,7 +62,7 @@ const TSConfigReferenceTemplateComponent = (props: { pageContext: any, data: TSC
 
 
   return (
-    <Layout >
+    <Layout locale={props.pageContext.locale}>
       <div className="tsconfig ms-depth-4" style={{ backgroundColor: "white", maxWidth: 960, margin: "1rem auto", paddingTop: "0.5rem" }}>
         <div id="full-option-list" className="indent">
           {categories!.categories!.map(c => {
@@ -75,8 +73,7 @@ const TSConfigReferenceTemplateComponent = (props: { pageContext: any, data: TSC
                 {c.options!.map(element => <li key={element!.anchor!}><a href={"#" + element!.anchor!}>{element!.anchor}</a></li>)}
               </ul>
             </div>
-          }
-          )}
+          })}
         </div>
 
         <nav id="sticky">

@@ -4,7 +4,7 @@ import { withPrefix } from "gatsby"
 
 import "./dev.scss"
 import { DevNav } from "../../components/dev-nav"
-import { isTouchDevice } from "../../../lib/utils/isTouchDevice"
+import { isTouchDevice } from "../../lib/isTouchDevice"
 import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
 
 const Index = (props: any) => {

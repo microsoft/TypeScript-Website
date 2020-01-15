@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { isTouchDevice } from "../../lib/utils/isTouchDevice"
+import { isTouchDevice } from "../lib/isTouchDevice"
 
 /**
  * A React component which will remove its children (at runtime!)

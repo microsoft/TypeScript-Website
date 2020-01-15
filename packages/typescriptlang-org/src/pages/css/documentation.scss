@@ -1,0 +1,56 @@
+.flow-links {
+  display: flex;
+  flex-wrap: wrap;
+
+  .clicky-grey-button {
+    width: 18rem;
+    height: 12rem;
+    background-color: #d8d8d8;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    color: black;
+    padding: 18px;
+
+    display: flex;
+    flex-direction: column-reverse;
+    // For the badge
+    position: relative;
+
+    &.headline {
+      width: 300px;
+      height: 200px;
+    }
+
+    &.links {
+      height: 26rem;
+    }
+
+    h4 {
+      color: black;
+      text-decoration: none;
+      font-size: 3rem;
+      font-style: normal;
+      margin-bottom: 0.2em;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    p {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .badge {
+      position: absolute;
+      background-color: #666;
+      top: 10px;
+      right: 10px;
+    }
+  }
+}
