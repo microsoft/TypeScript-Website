@@ -6,13 +6,14 @@
   },
   "workbench.colorCustomizations": {
     "activityBar.background": "#c4d3e4",
-    "activityBar.activeBorder": "#f2ccde",
+    "activityBar.activeBorder": "#c37c9d",
     "activityBar.foreground": "#15202b",
     "activityBar.inactiveForeground": "#15202b99",
-    "activityBarBadge.background": "#f2ccde",
+    "activityBarBadge.background": "#c37c9d",
     "activityBarBadge.foreground": "#15202b"
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "debug.node.autoAttach": "on",
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "peacock.color": "#a1b9d4"
 }

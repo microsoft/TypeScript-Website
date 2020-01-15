@@ -1,5 +1,5 @@
 import { defineMessages } from "react-intl"
-import { navCopy } from "./leet/nav"
+import { navCopy } from "./vo/nav"
 import { docCopy } from "./en/documentation"
 import { Copy } from "./en"
 
