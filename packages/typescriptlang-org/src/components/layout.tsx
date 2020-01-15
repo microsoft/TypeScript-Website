@@ -16,7 +16,6 @@ export const Layout = (props: LayoutProps) => {
   } catch (error) {
     // NOOP
   }
-  console.log(messages)
   return (
     <IntlProvider locale={locale || "en"} messages={messages} >
       <div className="ms-Fabric">
