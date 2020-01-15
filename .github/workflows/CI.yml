@@ -53,6 +53,10 @@ jobs:
           path: './results'
 
       # For danger stuff
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '13.x'
+
       - run: yarn install
 
       # danger for PR builds
