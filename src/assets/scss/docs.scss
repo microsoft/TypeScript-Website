@@ -464,6 +464,7 @@ h1, h2, h3 {
   right: 20px;
   top: 20px;
   cursor: pointer;
+  z-index: 1;
 
   &:hover, &:active {
     color: white;
