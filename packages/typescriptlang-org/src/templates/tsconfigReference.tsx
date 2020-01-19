@@ -60,14 +60,13 @@ const TSConfigReferenceTemplateComponent = (props: { pageContext: any, data: TSC
     }
   })
 
-
   return (
     <Layout locale={props.pageContext.locale}>
-      <div className="tsconfig ms-depth-4" style={{ backgroundColor: "white", maxWidth: 960, margin: "1rem auto", paddingTop: "0.5rem" }}>
+      <div className="tsconfig raised" style={{ maxWidth: 960, margin: "1rem auto", paddingTop: "0.5rem" }}>
         <div id="full-option-list" className="indent">
           {categories!.categories!.map(c => {
             if (!c) return null
-            return <div className="tsconfig-nav-top">
+            return <div className="tsconfig-nav-top" key={c.anchor!}>
               <h5><a href={"#" + c.anchor}>{c.display}</a></h5>
               <ul key={c.anchor!}>
                 {c.options!.map(element => <li key={element!.anchor!}><a href={"#" + element!.anchor!}>{element!.anchor}</a></li>)}

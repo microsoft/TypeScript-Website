@@ -21,7 +21,6 @@
   }
 
   .whitespace {
-    background-color: white;
     margin: 1rem auto;
     margin-top: 0;
     padding: 2rem;
@@ -60,23 +59,26 @@
         font-weight: normal;
         font-size: 14px;
         color: black;
+        @media (prefers-color-scheme: dark) {
+          color: white;
+        }
+
         text-decoration: none;
         border-left: 2px solid transparent;
-        padding-left:8px;
+        padding-left: 8px;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
         display: block;
-      
-        &:hover, &:active {
-          border-left: 2px solid rgba(0, 120, 212, 0.30);
+
+        &:hover,
+        &:active {
+          border-left: 2px solid rgba(0, 120, 212, 0.3);
         }
         &.current {
-          border-left: 2px solid #0078D4;
+          border-left: 2px solid #0078d4;
         }
       }
-
-
     }
   }
 }

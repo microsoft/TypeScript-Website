@@ -5,7 +5,7 @@ import { Link } from "gatsby"
 const Index = (props: any) =>
   <Layout >
 
-    <div className="ms-depth-4" style={{ backgroundColor: "white", maxWidth: 960, margin: "1rem auto", padding: "2rem" }}>
+    <div className="raised" style={{ maxWidth: 960, margin: "1rem auto", padding: "2rem" }}>
       <h1>:wave:</h1>
       <ul>
         <li><Link to="/en/tsconfig">TSConfig Reference</Link></li>

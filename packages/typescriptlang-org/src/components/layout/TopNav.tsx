@@ -91,7 +91,6 @@ export const SiteNav = (props: Props) => {
         },
       ]}>
         <title>TypeScript</title>
-        <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/10.0.0/css/fabric.min.css" />
       </Helmet>
 
       <a className="skip-to-main" href="#site-content" tabIndex={0}>{i("skip_to_content")}</a>

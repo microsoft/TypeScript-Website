@@ -222,7 +222,7 @@ const learn = [
 
 const Index = () =>
   <Layout >
-    <div id="documentation" className="ms-depth-4" style={{ backgroundColor: "white", maxWidth: 960, margin: "1rem auto", padding: "2rem" }}>
+    <div id="documentation" className="raised" style={{ backgroundColor: "white", maxWidth: 960, margin: "1rem auto", padding: "2rem" }}>
       <h1>Start Learning</h1>
 
       <ButtonGrid {...headlineGrid} />

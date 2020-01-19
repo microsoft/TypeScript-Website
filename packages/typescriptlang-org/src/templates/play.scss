@@ -37,6 +37,10 @@
       margin: 9px 0;
       overflow: hidden;
       background-color: $ts-light-bg-grey-highlight-color;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: $ts-bg-selection-grey;
+      }
     }
 
     a {
@@ -44,6 +48,10 @@
       padding: 0.75rem 0.75rem 0.5em 0.7em;
       text-decoration: none;
       color: black;
+
+      @media (prefers-color-scheme: dark) {
+        color: white;
+      }
     }
 
     &.dropdown.open ul {
@@ -62,7 +70,7 @@
 
     // Menu items
     &.dropdown ul.dropdown-menu {
-      min-width: 200px;
+      min-width: 300px;
       padding: 5px 0;
       margin: 2px 0 0;
       font-size: 14px;
@@ -78,6 +86,21 @@
       overflow-y: auto;
       max-height: calc(100vh - 150px);
       z-index: 99;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: $ts-dark-bg-for-foreground-color;
+        -webkit-box-shadow: 0 6px 12px rgba(148, 148, 148, 0.175);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+        border-color: black;
+      }
+
+      &.versions {
+        min-width: 5rem;
+        a {
+          text-align: center;
+          margin: 0;
+        }
+      }
 
       a {
         display: block;
@@ -161,9 +184,8 @@ main > nav {
     padding-left: 0;
     background-color: $ts-light-bg-grey-highlight-color;
 
-    .examples {
-      background-color: $ts-light-bg-grey-highlight-color;
-      padding: 0;
+    @media (prefers-color-scheme: dark) {
+      background-color: $ts-dark-bg-for-foreground-color;
     }
   }
 
@@ -171,7 +193,12 @@ main > nav {
     li {
       &:hover {
         background-color: $ts-light-bg-grey-highlight-color;
+
+        @media (prefers-color-scheme: dark) {
+          background-color: $ts-dark-bg-for-foreground-color;
+        }
       }
+
       &.name:hover {
         background-color: transparent;
       }
@@ -197,6 +224,11 @@ main #editor-toolbar {
     > a {
       // Fix their vertical centering
       padding-top: 0.5rem;
+      &:hover {
+        @media (prefers-color-scheme: dark) {
+          border-bottom: 1px solid white;
+        }
+      }
     }
     // Ensure menus use this button for
     // their x
@@ -210,6 +242,10 @@ main #editor-toolbar {
   li {
     &:hover {
       background-color: $ts-light-bg-grey-highlight-color;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: black;
+      }
     }
   }
 }
@@ -240,6 +276,10 @@ main #editor-toolbar {
     display: flex;
     flex-direction: column;
 
+    @media (prefers-color-scheme: dark) {
+      background-color: #1e1e1e;
+    }
+
     #monaco-editor-embed {
       height: 700px;
     }
@@ -247,7 +287,7 @@ main #editor-toolbar {
     #editor-toolbar {
       height: 3rem;
       border-bottom: 1px #c4c4c4 solid;
-      margin-right: -10px;
+      margin-right: -2px;
       margin-bottom: 10px;
     }
   }
@@ -257,7 +297,12 @@ main #editor-toolbar {
     cursor: col-resize;
     background-color: white;
     border-left: 1px #c4c4c4 solid;
-    margin-left: 10px;
+    margin-left: 2px;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: $ts-dark-barely-blue-highlight;
+      border-color: white;
+    }
   }
 
   .playground-sidebar {
@@ -272,6 +317,7 @@ main #editor-toolbar {
       flex: 1;
       height: 100%;
       width: 100%;
+      max-width: 100%;
       overflow-y: scroll;
       overflow-x: hidden;
 
@@ -280,6 +326,10 @@ main #editor-toolbar {
         color: black;
         border: none;
         overflow-x: scroll;
+        @media (prefers-color-scheme: dark) {
+          background-color: #1e1e1e;
+          color: white;
+        }
       }
     }
 
@@ -296,7 +346,7 @@ main #editor-toolbar {
         margin: 5px 2px;
         // padding: 2px 10px;
         padding-top: 0px;
-        color: black;
+
         font-size: 14px;
         font-weight: 600;
         background: none;

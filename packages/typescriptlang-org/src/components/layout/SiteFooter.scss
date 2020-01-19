@@ -165,17 +165,13 @@
   left: -247px;
   right: -400px;
   margin: 0 auto;
-  color: black;
   visibility: hidden;
   transition: bottom 0.3s ease, opacity 0.2s linear, visibility 0s linear;
   opacity: 1;
+  z-index: 123;
 
   .section-content {
     display: flex;
-  }
-
-  a.example-link {
-    color: black;
   }
 
   .arrow-down {

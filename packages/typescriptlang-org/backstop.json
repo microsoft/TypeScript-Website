@@ -22,24 +22,31 @@
   "scenarios": [
     {
       "label": "Index",
-      "url": "file:///Users/orta/dev/typescript/new-typescript-website/packages/typescriptlang-org/public/index.html",
+      "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/index.html",
       "misMatchThreshold": 0.1
     },
     {
       "label": "Empty Page",
-      "url": "file:///Users/orta/dev/typescript/new-typescript-website/packages/typescriptlang-org/public/empty/index.html",
+      "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/empty/index.html",
       "misMatchThreshold": 0.1
     },
     {
       "label": "Old Handbook Example",
-      "url": "file:///Users/orta/dev/typescript/new-typescript-website/packages/typescriptlang-org/public/docs/handbook/functions.html",
+      "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/docs/handbook/functions.html",
       "misMatchThreshold": 0.1,
       "selectors": ["viewport"]
+    },
+    {
+      "label": "Old Handbook Example Dark",
+      "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/docs/handbook/functions.html",
+      "misMatchThreshold": 0.1,
+      "selectors": ["viewport"],
+      "onReadyScript": "../../../scripts/backstop/makeDarkMode.js"
     },
 
     {
       "label": "TSConfig Example",
-      "url": "file:///Users/orta/dev/typescript/new-typescript-website/packages/typescriptlang-org/public/en/tsconfig/index.html",
+      "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/en/tsconfig/index.html",
       "misMatchThreshold": 0.1,
       "selectors": ["viewport"]
     }

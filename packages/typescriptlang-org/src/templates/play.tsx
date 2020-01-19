@@ -79,7 +79,7 @@ const Index = (props: Props) => {
           logger: {
             error: console.error,
             log: console.log
-          }
+          },
         }, main, ts)
 
         const playgroundConfig = {
@@ -89,6 +89,12 @@ const Index = (props: Props) => {
 
         playground.setupPlayground(sandboxEnv, main, playgroundConfig)
         sandboxEnv.editor.focus()
+
+        const darkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (darkModeEnabled) {
+          console.log("making dark")
+          sandboxEnv.monaco.editor.setTheme("sandbox-dark");
+        }
 
         const container = document.getElementById("playground-container")!
         container.style.display = "flex"
@@ -165,7 +171,7 @@ const Index = (props: Props) => {
           </ul>
         </nav>
 
-        <div className="ms-depth-4" style={{ backgroundColor: "white", paddingTop: "0", marginTop: "0", marginBottom: "3rem", paddingBottom: "1.5rem" }}>
+        <div className="raised" style={{ paddingTop: "0", marginTop: "0", marginBottom: "3rem", paddingBottom: "1.5rem" }}>
           <div id="loader">
             <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
             <p id="loading-message">Downloading TypeScript...</p>
@@ -176,7 +182,7 @@ const Index = (props: Props) => {
                 <ul>
                   <li id="versions" className="dropdown">
                     <a href="#">Version... <span className="caret" /></a>
-                    <ul className="dropdown-menu"></ul>
+                    <ul className="dropdown-menu versions"></ul>
                   </li>
                   <li><a id="run-button" href="#">Run</a></li>
 

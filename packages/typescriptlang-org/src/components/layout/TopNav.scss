@@ -1,24 +1,5 @@
 @import "../../style/globals.scss";
 
-html {
-  background-color: $ts-light-bg-sandy-color;
-  color: #333;
-}
-
-body {
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  font-family: "Segoe UI Web (West European)", "Segoe UI", -apple-system,
-    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
-  font-size: 14px;
-  height: 100%;
-}
-
-html,
-#___gatsby {
-  height: 100%;
-}
-
 #site-wrapper {
   display: flex;
   flex-direction: column;
@@ -26,6 +7,11 @@ html,
 
 #top-menu {
   background-color: $ts-main-blue-color;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $ts-main-blue-darker-color;
+  }
+
   user-select: none;
   clear: both;
   display: flex;
@@ -112,6 +98,10 @@ html,
 form.search {
   height: 3rem;
   background-color: $ts-main-blue-darker-color;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $ts-main-blue-darkest-color;
+  }
   padding-left: 1rem;
   display: inline-block;
 
@@ -123,7 +113,7 @@ form.search {
 
   input {
     -webkit-appearance: none;
-    background-color: $ts-main-blue-darker-color;
+    background-color: $ts-main-blue-darkest-color;
     border-color: #152740;
     border-radius: 0;
     border: none;
@@ -282,7 +272,7 @@ form.search {
   overflow: auto;
   position: absolute;
   width: 100%;
-  background-color: #faf9f8;
+  background-color: $ts-light-bg-sandy-color;
   color: black;
   text-align: center;
   padding: 20px;

@@ -1,13 +1,7 @@
 const blue = '3771EF'
 const darkerBlue = '1142AF'
-const darkestBlue = '09235D'
-
-const yellow = 'F3DF51'
-const darkYellow = 'AEA811'
-const darkerYellow = '65610A'
 
 const grey = '84864d'
-const green = '12CD0E'
 const greenDark = '10990D'
 const greenLight = '54F351'
 
@@ -67,5 +61,20 @@ export const sandboxTheme: import('monaco-editor').editor.IStandaloneThemeData =
     editorIndentGuides: '#D3D3D3',
     editorActiveIndentGuides: '#939393',
     editorSelectionHighlight: '#ADD6FF4D',
+  },
+}
+
+export const sandboxThemeDark: import('monaco-editor').editor.IStandaloneThemeData = {
+  base: 'vs-dark',
+  inherit: true,
+  rules: [
+    { token: 'constant', foreground: '44ee11' },
+    { token: 'comment', foreground: grey },
+    { token: 'number', foreground: greenDark },
+    { token: 'regexp', foreground: greenLight },
+    { token: 'type', foreground: darkerBlue },
+  ],
+  colors: {
+    // 'editor.background': '#313131',
   },
 }

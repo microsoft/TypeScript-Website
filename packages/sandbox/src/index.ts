@@ -1,6 +1,6 @@
 import { createCompilerHost } from './createCompilerHost'
 import { detectNewImportsToAcquireTypeFor } from './typeAcquisition'
-import { sandboxTheme } from './theme'
+import { sandboxTheme, sandboxThemeDark } from './theme'
 import { TypeScriptWorker } from './tsWorker'
 import {
   getDefaultSandboxCompilerOptions,
@@ -105,6 +105,7 @@ export const createTypeScriptSandbox = (
 
   const model = monaco.editor.createModel(defaultText, language, filePath)
   monaco.editor.defineTheme('sandbox', sandboxTheme)
+  monaco.editor.defineTheme('sandbox-dark', sandboxThemeDark)
   monaco.editor.setTheme('sandbox')
 
   const monacoSettings = Object.assign({ model }, sharedEditorOptions, config.monacoSettings || {})

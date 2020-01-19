@@ -3,7 +3,13 @@
 // This is the visual aspect of the popover ( the white bit )
 // the non-visible layout is above in #playground-samples-popover
 .examples {
-  background-color: white;
+  background-color: $ts-light-bg-grey-highlight-color;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $ts-dark-bg-for-foreground-color;
+    color: white;
+  }
+
   padding: 20px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   height: 450px;
@@ -41,6 +47,9 @@
       margin-right: 1em;
       border: none;
       background-color: transparent;
+      @media (prefers-color-scheme: dark) {
+        color: white;
+      }
     }
 
     button.section-name.selected {
@@ -68,7 +77,7 @@
     .section-list {
       display: flex;
       flex-direction: column;
-      width: 240px;
+      width: 260px;
       margin-top: 1.5em;
 
       h4 {
@@ -83,6 +92,7 @@
           padding: 0;
           margin: 0;
           position: relative;
+          width: auto !important;
 
           .section-list a {
             display: block;
