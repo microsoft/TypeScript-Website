@@ -1,3 +1,5 @@
+@import "../../style/globals.scss";
+
 $width-for-small-devices: 800px;
 $z-index-for-site-nav: 101;
 $z-index-for-handbook-nav: 100;
@@ -58,7 +60,7 @@ nav#sidebar {
       background-color: #e3e8ec;
 
       svg path {
-        stroke: #187abf;
+        stroke: $ts-main-blue-color;
       }
     }
 
@@ -113,8 +115,8 @@ nav#sidebar {
       }
 
       &.highlight a {
-        color: #187abf;
-        border-left: 2px solid #187abf;
+        color: $ts-main-blue-color;
+        border-left: 2px solid $ts-main-blue-color;
         margin-left: 0.5rem;
         margin-right: -0.5rem;
       }

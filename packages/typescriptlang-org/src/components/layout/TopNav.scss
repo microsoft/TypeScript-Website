@@ -1,12 +1,7 @@
-/*  
-
-There isn't a collapsible nav bar in the fabric components, and it is unwieldy to 
-set up something like that on a styles basis, so it's in the CSS.
-
-*/
+@import "../../style/globals.scss";
 
 html {
-  background-color: #faf9f8;
+  background-color: $ts-light-bg-sandy-color;
   color: #333;
 }
 
@@ -30,7 +25,7 @@ html,
 }
 
 #top-menu {
-  background-color: #3178c6;
+  background-color: $ts-main-blue-color;
   user-select: none;
   clear: both;
   display: flex;
@@ -101,7 +96,7 @@ html,
 
 #beta-notification-menu,
 .gatsby-noscript {
-  background-color: #c63131;
+  background-color: $ts-muted-red;
   text-align: center;
   color: white;
   padding: 0.4rem 0;
@@ -116,7 +111,7 @@ html,
 
 form.search {
   height: 3rem;
-  background-color: #2a68ac;
+  background-color: $ts-main-blue-darker-color;
   padding-left: 1rem;
   display: inline-block;
 
@@ -128,7 +123,7 @@ form.search {
 
   input {
     -webkit-appearance: none;
-    background-color: #2a68ac;
+    background-color: $ts-main-blue-darker-color;
     border-color: #152740;
     border-radius: 0;
     border: none;
@@ -295,5 +290,5 @@ form.search {
 }
 
 .skip-to-main:focus {
-  border: 1px dashed #000;
+  border: 1px dashed black;
 }

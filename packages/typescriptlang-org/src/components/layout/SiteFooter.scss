@@ -1,12 +1,12 @@
-$width-for-small-footer: 800px;
+@import "../../style/globals.scss";
 
 #site-footer {
-  background-color: #152740;
+  background-color: $ts-main-blue-darkest-color;
   color: rgba(255, 255, 255, 0.7);
   padding-top: 1rem;
   padding-bottom: 3rem;
 
-  @media (max-width: $width-for-small-footer) {
+  @media (max-width: $screen-sm) {
     padding-bottom: 9rem;
   }
 
@@ -57,7 +57,7 @@ $width-for-small-footer: 800px;
       }
     }
 
-    @media (max-width: $width-for-small-footer) {
+    @media (max-width: $screen-sm) {
       li {
         width: 9.5rem;
 
@@ -73,7 +73,7 @@ $width-for-small-footer: 800px;
     padding-top: 2rem;
     display: flex;
 
-    @media (max-width: $width-for-small-footer) {
+    @media (max-width: $screen-sm) {
       flex-direction: column-reverse;
 
       article#logos {
@@ -124,7 +124,7 @@ $width-for-small-footer: 800px;
   }
 }
 
-@media (max-width: $width-for-small-footer) {
+@media (max-width: $screen-sm) {
   // This was sneakily making site wider than
   // the viewport because it uses opacity which affects layout
   #playground-samples-popover {
@@ -196,7 +196,7 @@ $width-for-small-footer: 800px;
       padding: 20px;
       width: 320px;
     }
-    border-bottom: 1px solid #294e80;
+    border-bottom: 1px solid $ts-main-blue-darker-color;
     border-radius: 0;
   }
 }

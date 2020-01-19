@@ -1,4 +1,4 @@
-$width-for-small-device: 800px;
+@import "../style/globals.scss";
 
 .tsconfig {
   // Handles hash links with a sticky header
@@ -24,7 +24,7 @@ $width-for-small-device: 800px;
       margin: 0 8px 8px 0; /* Some gutter */
       width: 30%;
 
-      @media (max-width: $width-for-small-device) {
+      @media (max-width: $screen-xs) {
         width: 46%;
       }
 
@@ -79,7 +79,7 @@ $width-for-small-device: 800px;
       color: black;
 
       &.current {
-        border-bottom: 1px solid #187abf;
+        border-bottom: 1px solid $ts-main-blue-color;
       }
     }
 

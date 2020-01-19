@@ -1,3 +1,5 @@
+@import "../style/globals.scss";
+
 // This is the visual aspect of the popover ( the white bit )
 // the non-visible layout is above in #playground-samples-popover
 .examples {
@@ -7,7 +9,7 @@
   height: 450px;
 
   a {
-    color: #187abf;
+    color: $ts-main-blue-color;
   }
 
   // The titles of the sections
@@ -42,7 +44,7 @@
     }
 
     button.section-name.selected {
-      border-bottom: #187abf 2px solid;
+      border-bottom: $ts-main-blue-color 2px solid;
     }
   }
 
@@ -58,7 +60,7 @@
 
     > p > a {
       display: inline-block;
-      color: #187abf;
+      color: $ts-main-blue-color;
       padding: 0;
     }
 
@@ -96,7 +98,7 @@
             }
 
             &.highlight {
-              border-left: #187abf 2px solid;
+              border-left: $ts-main-blue-color 2px solid;
               padding-left: 8px;
             }
           }
@@ -110,10 +112,10 @@
             border-radius: 0.5em;
 
             &.done {
-              background-color: #187abf;
+              background-color: $ts-main-blue-color;
             }
             &.changed {
-              border: #187abf 1px solid;
+              border: $ts-main-blue-color 1px solid;
             }
           }
         }

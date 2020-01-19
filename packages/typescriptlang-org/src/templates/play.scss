@@ -1,3 +1,5 @@
+@import "../style/globals.scss";
+
 // The subnav beginning with "Playground"
 .navbar-sub {
   clear: both;
@@ -34,7 +36,7 @@
       height: 1px;
       margin: 9px 0;
       overflow: hidden;
-      background-color: #e5e5e5;
+      background-color: $ts-light-bg-grey-highlight-color;
     }
 
     a {
@@ -69,7 +71,7 @@
       background-color: #fff;
       -webkit-background-clip: padding-box;
       background-clip: padding-box;
-      border: 1px solid #ccc;
+      border: 1px solid $ts-light-bg-grey-highlight-color;
       border-radius: 4px;
       -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
@@ -157,11 +159,10 @@ main > nav {
 
   .examples-dropdown {
     padding-left: 0;
-
-    background-color: #f2f2f2;
+    background-color: $ts-light-bg-grey-highlight-color;
 
     .examples {
-      background-color: #f2f2f2;
+      background-color: $ts-light-bg-grey-highlight-color;
       padding: 0;
     }
   }
@@ -169,7 +170,7 @@ main > nav {
   > ul {
     li {
       &:hover {
-        background-color: #f2f2f2;
+        background-color: $ts-light-bg-grey-highlight-color;
       }
       &.name:hover {
         background-color: transparent;
@@ -208,7 +209,7 @@ main #editor-toolbar {
 
   li {
     &:hover {
-      background-color: #f2f2f2;
+      background-color: $ts-light-bg-grey-highlight-color;
     }
   }
 }
@@ -305,11 +306,11 @@ main #editor-toolbar {
         outline: inherit;
 
         &.active {
-          border-bottom: 1px solid #187abf;
+          border-bottom: 1px solid $ts-main-blue-color;
         }
 
         &:focus {
-          color: #187abf;
+          color: $ts-main-blue-color;
         }
       }
     }
@@ -459,7 +460,7 @@ main #editor-toolbar {
       width: 16px;
       height: 16px;
       border-radius: 50%;
-      background: #187abf;
+      background: $ts-main-blue-color;
       animation: lds-grid 1.2s linear infinite;
 
       &:nth-child(1) {
