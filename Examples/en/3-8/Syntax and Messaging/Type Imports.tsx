@@ -1,3 +1,4 @@
+//// { compiler: { ts: "3.8.0-beta" } }
 // In 3.8 we added new syntax for importing types, which
 // would be similar to users who have come from flow.
 

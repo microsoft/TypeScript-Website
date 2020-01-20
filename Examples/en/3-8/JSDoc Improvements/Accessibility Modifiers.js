@@ -1,4 +1,4 @@
-//// { order: 3, isJavaScript: true }
+//// { compiler: { ts: "3.8.0-beta" }, isJavaScript: true }
 // @ts-check
 
 // The JSDoc support for TypeScript was extended to support

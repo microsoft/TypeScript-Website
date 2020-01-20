@@ -1,3 +1,4 @@
+//// { compiler: { ts: "3.8.0-beta" } }
 // TypeScripts ability to re-export got closer to supporting
 // the additional cases available in ES2018
 //
