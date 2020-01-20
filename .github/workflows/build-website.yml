@@ -24,6 +24,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - run: (cd src/play && yarn install && yarn setup)
+    - run: gem install bundler -v 1.16.1
     - run: bundle install
 
     # Build v1

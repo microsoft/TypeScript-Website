@@ -31,14 +31,12 @@ const getFilePaths = folderPath => {
 //  * @property {string} body - the text for the example
 
 const root = join(__dirname, "..", "en");
-const allJS = getFilePaths(join(root, "JavaScript"));
-const allTS = getFilePaths(join(root, "TypeScript"));
 
-const all37Examples = getFilePaths(join(root, "3-7"));
-const allPlaygroundExamples = getFilePaths(join(root, "Playground"));
+const categories = fs.readdirSync(root).filter(path => !path.startsWith(".") && !path.includes("."))
+const allExampleFiles = categories.map(c => getFilePaths(join(root, c)))
 
 /** @type {string[]} */
-const all = [...allJS, ...allTS, ...all37Examples, ...allPlaygroundExamples]
+const all =  [].concat.apply([], allExampleFiles)
               .filter(p => p.endsWith(".ts") || p.endsWith(".tsx") || p.endsWith(".js"));
 
 const examples = all.map(m => {
@@ -109,6 +107,11 @@ const toc = {
     subtitle: "Explore how TypeScript extends JavaScript to add more safety and tooling."
   },
   {
+    name: "3.8",
+    subtitle: "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/'>Beta notes</a>.",
+    whatisnew: true
+  },
+  {
     name: "3.7",
     subtitle: "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/'>Release notes</a>.",
     whatisnew: true
@@ -138,7 +141,10 @@ const toc = {
     "Fixits",
     // Playground
     "Config",
-    "Tooling"
+    "Tooling",
+    // 3.8
+    "Breaking Changes",
+    "JSDoc Improvements"
   ],
   examples
 }
@@ -164,7 +170,7 @@ function validateTOC(toc) {
   });
   allSubFolders.forEach(s => {
     if(!toc.sortedSubSections.includes(s)) {
-      throw new Error("Expected '" + s + "' in " + toc.sortedSubSections)
+      throw new Error("Expected '" + s + "' in toc - " + toc.sortedSubSections.join(", "))
     }
   })
 }
