@@ -15,7 +15,7 @@ You start with creating a map which represents all the files in the virtual `ts.
 import { createSystem } from 'typescript-vfs'
 
 const fsMap = new Map<string, string>()
-fsMap.set("index.ts', 'const a = "Hello World"')
+fsMap.set("index.ts", 'const a = "Hello World"')
 
 const system = createSystem(fsMap)
 ```
