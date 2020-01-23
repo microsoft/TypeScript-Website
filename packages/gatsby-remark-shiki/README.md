@@ -1,6 +1,6 @@
 ### gatsby-remark-shiki
 
-Sets up code blocks to run through shiki:
+Sets up markdown code blocks to run through [shiki](https://shiki.matsu.io) which means it gets the VS Code level of syntax highlighting:
 
 ```js
 {
