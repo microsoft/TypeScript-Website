@@ -157,7 +157,7 @@ const Index = (props: any) => {
       <Layout>
         <div id="dev">
           <DevNav />
-          <div className="ms-depth-4 content" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
+          <div className="raised content" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
             <div className="split-fifty">
               <div>
                 <h1 style={{ marginTop: "0" }}>TypeScript Twoslash</h1>
@@ -180,7 +180,7 @@ const Index = (props: any) => {
             </div>
           </div>
 
-          <div className="ms-depth-4 content" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
+          <div className="raised content" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
 
             <div className="sixhundred">
               <SuppressWhenTouch>
@@ -217,7 +217,7 @@ const Index = (props: any) => {
             </div>
           </div>
 
-          <div className="ms-depth-4" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem" }}>
+          <div className="raised" style={{ padding: "2rem", margin: "2rem" }}>
             <h2>Usage</h2>
             <p>Twoslash will be available on NPM soon, for now it's only being used in the TypeScript website.</p>
           </div>

@@ -1,4 +1,4 @@
-$width-for-single-column: 800px;
+@import "../../style/globals.scss";
 
 #dev {
   .content {
@@ -21,7 +21,7 @@ $width-for-single-column: 800px;
     flex-direction: row;
     width: 100%;
 
-    @media (max-width: $width-for-single-column) {
+    @media (max-width: $screen-sm) {
       flex-direction: column;
     }
 
@@ -33,7 +33,7 @@ $width-for-single-column: 800px;
 
   .split-sixhundred {
     width: calc(100% - 600px);
-    @media (max-width: $width-for-single-column) {
+    @media (max-width: $screen-sm) {
       width: 100%;
     }
   }
@@ -41,7 +41,7 @@ $width-for-single-column: 800px;
     width: 600px;
     margin-left: 20px;
 
-    @media (max-width: $width-for-single-column) {
+    @media (max-width: $screen-sm) {
       width: 100%;
       margin-left: 0px;
       padding-left: 20px;
@@ -69,7 +69,7 @@ $width-for-single-column: 800px;
     div.button {
       display: inline-block;
       padding: 8px 12px;
-      background-color: #faf9f8;
+      background-color: $ts-light-bg-sandy-color;
       margin: 10px;
       text-decoration: none;
       color: black;

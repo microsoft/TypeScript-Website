@@ -1,4 +1,4 @@
-$width-for-small-device: 800px;
+@import "../style/globals.scss";
 
 .tsconfig {
   // Handles hash links with a sticky header
@@ -24,7 +24,7 @@ $width-for-small-device: 800px;
       margin: 0 8px 8px 0; /* Some gutter */
       width: 30%;
 
-      @media (max-width: $width-for-small-device) {
+      @media (max-width: $screen-xs) {
         width: 46%;
       }
 
@@ -33,6 +33,10 @@ $width-for-small-device: 800px;
         font-weight: 400;
         text-decoration: none;
         color: black;
+
+        @media (prefers-color-scheme: dark) {
+          color: white;
+        }
       }
 
       ul {
@@ -47,6 +51,10 @@ $width-for-small-device: 800px;
 
         a {
           color: rgb(20, 20, 20);
+
+          @media (prefers-color-scheme: dark) {
+            color: white;
+          }
         }
       }
     }
@@ -58,7 +66,12 @@ $width-for-small-device: 800px;
     z-index: 99999;
     background-color: white;
 
-    @media (max-width: $width-for-small-device) {
+    @media (prefers-color-scheme: dark) {
+      background-color: $ts-dark-bg-for-foreground-color;
+      border-color: black;
+    }
+
+    @media (max-width: $screen-sm) {
       position: static;
       flex-wrap: wrap;
 
@@ -76,10 +89,15 @@ $width-for-small-device: 800px;
 
     a {
       text-decoration: none;
-      color: black;
+      // color: black;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: $ts-dark-bg-for-foreground-color;
+        // border-color: black;
+      }
 
       &.current {
-        border-bottom: 1px solid #187abf;
+        border-bottom: 1px solid $ts-main-blue-color;
       }
     }
 
@@ -124,7 +142,7 @@ $width-for-small-device: 800px;
         }
       }
 
-      @media (max-width: $width-for-small-device) {
+      @media (max-width: $screen-sm) {
         flex-direction: column;
 
         .markdown {

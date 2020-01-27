@@ -73,7 +73,7 @@ export default async function () {
       <Layout>
         <div id="dev">
           <DevNav />
-          <div className="ms-depth-4 content" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
+          <div className="raised content" style={{ padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
             <div className="split-sixhundred">
               <h1 style={{ marginTop: "0" }}>TypeScript Sandbox</h1>
               <p>A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the <a href={withPrefix("/en/play")}>TypeScript playground</a></p>
@@ -99,7 +99,7 @@ export default async function () {
             </SuppressWhenTouch>
           </div>
 
-          <div className="ms-depth-4" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem" }}>
+          <div className="raised" style={{ padding: "2rem", margin: "2rem" }}>
             <h2>Usage</h2>
             <p>A sandbox uses the same tools as monaco-editor, meaning this library is shipped as an AMD bundle which you can use the <a href="https://github.com/microsoft/vscode-loader/">VSCode Loader</a> to <code>require</code>.</p>
             <p>Because we need it for the TypeScript website, you can use our hosted copy <a href="https://typescriptlang.org/v2/js/vs.loader.js">here.</a> (<em>note</em>, we will eventually deprecate the /v2/ in all routes)</p>

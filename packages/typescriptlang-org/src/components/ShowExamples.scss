@@ -1,13 +1,21 @@
+@import "../style/globals.scss";
+
 // This is the visual aspect of the popover ( the white bit )
 // the non-visible layout is above in #playground-samples-popover
 .examples {
-  background-color: white;
+  background-color: $ts-light-bg-grey-highlight-color;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $ts-dark-bg-for-foreground-color;
+    color: white;
+  }
+
   padding: 20px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   height: 450px;
 
   a {
-    color: #187abf;
+    color: $ts-main-blue-color;
   }
 
   // The titles of the sections
@@ -36,13 +44,16 @@
       padding-left: 0;
       margin-top: 0;
       padding-top: 0;
-      margin-right: 1em;
+      // margin-right: 1em;
       border: none;
       background-color: transparent;
+      @media (prefers-color-scheme: dark) {
+        color: white;
+      }
     }
 
     button.section-name.selected {
-      border-bottom: #187abf 2px solid;
+      border-bottom: $ts-main-blue-color 2px solid;
     }
   }
 
@@ -58,7 +69,7 @@
 
     > p > a {
       display: inline-block;
-      color: #187abf;
+      color: $ts-main-blue-color;
       padding: 0;
     }
 
@@ -66,7 +77,7 @@
     .section-list {
       display: flex;
       flex-direction: column;
-      width: 240px;
+      width: 260px;
       margin-top: 1.5em;
 
       h4 {
@@ -81,6 +92,7 @@
           padding: 0;
           margin: 0;
           position: relative;
+          width: auto !important;
 
           .section-list a {
             display: block;
@@ -96,7 +108,7 @@
             }
 
             &.highlight {
-              border-left: #187abf 2px solid;
+              border-left: $ts-main-blue-color 2px solid;
               padding-left: 8px;
             }
           }
@@ -110,10 +122,10 @@
             border-radius: 0.5em;
 
             &.done {
-              background-color: #187abf;
+              background-color: $ts-main-blue-color;
             }
             &.changed {
-              border: #187abf 1px solid;
+              border: $ts-main-blue-color 1px solid;
             }
           }
         }

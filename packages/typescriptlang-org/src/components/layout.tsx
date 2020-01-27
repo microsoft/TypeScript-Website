@@ -8,6 +8,8 @@ type LayoutProps = Props & {
   children: any
 }
 
+import "./layout/main.scss"
+
 export const Layout = (props: LayoutProps) => {
   const { children, locale } = props
   let messages = require("../copy/en").lang

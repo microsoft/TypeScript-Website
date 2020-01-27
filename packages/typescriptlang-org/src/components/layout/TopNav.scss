@@ -1,28 +1,4 @@
-/*  
-
-There isn't a collapsible nav bar in the fabric components, and it is unwieldy to 
-set up something like that on a styles basis, so it's in the CSS.
-
-*/
-
-html {
-  background-color: #faf9f8;
-  color: #333;
-}
-
-body {
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  font-family: "Segoe UI Web (West European)", "Segoe UI", -apple-system,
-    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
-  font-size: 14px;
-  height: 100%;
-}
-
-html,
-#___gatsby {
-  height: 100%;
-}
+@import "../../style/globals.scss";
 
 #site-wrapper {
   display: flex;
@@ -30,7 +6,12 @@ html,
 }
 
 #top-menu {
-  background-color: #3178c6;
+  background-color: $ts-main-blue-color;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $ts-main-blue-darker-color;
+  }
+
   user-select: none;
   clear: both;
   display: flex;
@@ -64,18 +45,19 @@ html,
 
   #home-page-logo {
     width: 200px;
-    font-size: 1.2rem;
     font-weight: 600;
+    font-size: 1.5rem;
 
     svg {
       margin-right: 0.6rem;
       margin-left: 1rem;
-      margin-top: 0.48rem;
+      margin-top: 0.55rem;
     }
 
     span {
       position: relative;
       top: -0.5rem;
+      margin-right: 0.2rem;
       text-decoration: none;
     }
   }
@@ -101,7 +83,7 @@ html,
 
 #beta-notification-menu,
 .gatsby-noscript {
-  background-color: #c63131;
+  background-color: $ts-muted-red;
   text-align: center;
   color: white;
   padding: 0.4rem 0;
@@ -116,7 +98,11 @@ html,
 
 form.search {
   height: 3rem;
-  background-color: #2a68ac;
+  background-color: $ts-main-blue-darker-color;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $ts-main-blue-darkest-color;
+  }
   padding-left: 1rem;
   display: inline-block;
 
@@ -128,7 +114,12 @@ form.search {
 
   input {
     -webkit-appearance: none;
-    background-color: #2a68ac;
+    background-color: $ts-main-blue-darker-color;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: $ts-main-blue-darkest-color;
+    }
+
     border-color: #152740;
     border-radius: 0;
     border: none;
@@ -287,7 +278,7 @@ form.search {
   overflow: auto;
   position: absolute;
   width: 100%;
-  background-color: #faf9f8;
+  background-color: $ts-light-bg-sandy-color;
   color: black;
   text-align: center;
   padding: 20px;
@@ -295,5 +286,5 @@ form.search {
 }
 
 .skip-to-main:focus {
-  border: 1px dashed #000;
+  border: 1px dashed black;
 }

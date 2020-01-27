@@ -14,5 +14,5 @@ export const replaceRenderer = ({
 
   replaceBodyHTMLString(html)
 
-  setHeadComponents([<style dangerouslySetInnerHTML={{ __html: css }} />])
+  // setHeadComponents([<style dangerouslySetInnerHTML={{ __html: css }} />])
 }

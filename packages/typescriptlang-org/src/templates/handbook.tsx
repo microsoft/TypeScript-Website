@@ -80,7 +80,7 @@ const HandbookTemplate = (props: { pageContext: any, data: GetHandbookBySlug, pa
           <h2>{post.frontmatter.title}</h2>
           <article>
 
-            <div className="whitespace ms-depth-4">
+            <div className="whitespace raised">
               <div className="markdown" dangerouslySetInnerHTML={{ __html: post.html! }} />
             </div>
 
