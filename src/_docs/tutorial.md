@@ -99,7 +99,6 @@ Let's develop our sample further. Here we use an interface that describes object
 In TypeScript, two types are compatible if their internal structure is compatible.
 This allows us to implement an interface just by having the shape the interface requires, without an explicit `implements` clause.
 
-
 ```ts
 interface Person {
     firstName: string;
