@@ -1,8 +1,5 @@
 @import "../../style/globals.scss";
 
-$z-index-for-site-nav: 101;
-$z-index-for-handbook-nav: 100;
-
 #small-device-button-sidebar {
   display: none;
 }
@@ -30,7 +27,7 @@ nav#sidebar {
       border-bottom: 1px solid #dfdfdf;
 
       @media (prefers-color-scheme: dark) {
-        border-color: black;
+        border-color: #3e3e3e;
       }
       font-weight: 400;
       font-size: 1rem;
@@ -52,6 +49,13 @@ nav#sidebar {
         color: black;
         @media (prefers-color-scheme: dark) {
           color: white;
+        }
+
+        @media (prefers-color-scheme: dark) {
+          .open path,
+          .closed path {
+            stroke: white;
+          }
         }
 
         &:active,
@@ -178,7 +182,7 @@ nav#sidebar {
     padding-top: 2px;
     padding-left: 9px;
 
-    z-index: $z-index-for-site-nav;
+    z-index: $z-index-for-handbook-nav;
 
     // Reset the button
     -webkit-appearance: none;

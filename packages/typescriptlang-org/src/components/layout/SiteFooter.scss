@@ -169,9 +169,14 @@
   transition: bottom 0.3s ease, opacity 0.2s linear, visibility 0s linear;
   opacity: 1;
   z-index: 123;
+  color: black;
 
   .section-content {
     display: flex;
+
+    .section-list li {
+      margin-top: 4px;
+    }
   }
 
   .arrow-down {
@@ -179,7 +184,12 @@
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-top: 14px solid white;
+    border-top: 14px solid $ts-light-bg-grey-highlight-color;
+
+    @media (prefers-color-scheme: dark) {
+      border-top: 14px solid $ts-dark-bg-for-foreground-color;
+    }
+
     margin: 0 auto;
     margin-bottom: 20px;
     position: relative;
@@ -194,5 +204,10 @@
     }
     border-bottom: 1px solid $ts-main-blue-darker-color;
     border-radius: 0;
+  }
+
+  a {
+    color: $ts-main-blue-color;
+    text-decoration: none;
   }
 }

@@ -45,18 +45,19 @@
 
   #home-page-logo {
     width: 200px;
-    font-size: 1.2rem;
     font-weight: 600;
+    font-size: 1.5rem;
 
     svg {
       margin-right: 0.6rem;
       margin-left: 1rem;
-      margin-top: 0.48rem;
+      margin-top: 0.55rem;
     }
 
     span {
       position: relative;
       top: -0.5rem;
+      margin-right: 0.2rem;
       text-decoration: none;
     }
   }
@@ -113,7 +114,12 @@ form.search {
 
   input {
     -webkit-appearance: none;
-    background-color: $ts-main-blue-darkest-color;
+    background-color: $ts-main-blue-darker-color;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: $ts-main-blue-darkest-color;
+    }
+
     border-color: #152740;
     border-radius: 0;
     border: none;

@@ -34,3 +34,7 @@ $screen-md-min: $screen-md;
 // So media queries don't overlap when required, provide a maximum
 $screen-xs-max: ($screen-sm-min - 1);
 $screen-sm-max: ($screen-md-min - 1);
+
+$z-index-for-search: 100;
+$z-index-for-site-nav: 101;
+$z-index-for-handbook-nav: 99;
