@@ -29,23 +29,22 @@ const getFilePaths = folderPath => {
  * @property {any} compilerSettings - name
  */
 
-const rootEN = join(__dirname, '..', 'copy', 'en')
-const allJS = getFilePaths(join(rootEN, 'JavaScript'))
-const allTS = getFilePaths(join(rootEN, 'TypeScript'))
-const all37Examples = getFilePaths(join(rootEN, '3-7'))
-const allPlaygroundExamples = getFilePaths(join(rootEN, 'Playground'))
-
+const root = join(__dirname, '..', 'copy', 'en')
+const categories = fs.readdirSync(root).filter(path => !path.startsWith('.') && !path.includes('.'))
 /** @type {string[]} */
-const allEn = [...allJS, ...allTS, ...all37Examples, ...allPlaygroundExamples].filter(
-  p => p.endsWith('.ts') || p.endsWith('.tsx') || p.endsWith('.js')
-)
+const allEnglishExampleFiles = categories.map(c => getFilePaths(join(root, c)))
+const all = [].concat
+  .apply([], allEnglishExampleFiles)
+  .filter(p => p.endsWith('.ts') || p.endsWith('.tsx') || p.endsWith('.js'))
+
+const englishSection = JSON5.parse(fs.readFileSync(join(root, 'sections.json'), 'utf8'))
 
 const langs = fs.readdirSync(join(__dirname, '..', 'copy')).filter(l => !l.startsWith('.'))
 langs.forEach(lang => {
   if (lang.startsWith('.')) return
   const root = join(__dirname, '..', 'copy', lang)
 
-  const examples = allEn.map(englishExamplePath => {
+  const examples = all.map(englishExamplePath => {
     const localExample = englishExamplePath.replace('copy/en', 'copy/' + lang)
     const fileExistsInLang = fs.existsSync(localExample)
     const filePath = fileExistsInLang ? localExample : englishExamplePath
@@ -116,7 +115,7 @@ langs.forEach(lang => {
 
   const toc = JSON5.parse(fs.readFileSync(join(root, 'sections.json'), 'utf8'))
   toc.examples = examples
-
+  toc.sortedSubSections = englishSection.sortedSubSections
   validateTOC(toc)
 
   const prodTableOfContentsFile = join(__dirname, '..', 'generated', lang + '.json')
@@ -125,7 +124,7 @@ langs.forEach(lang => {
   function validateTOC(toc) {
     // Ensure all subfolders are in the sorted section
     const allSubFolders = []
-    allEn.forEach(path => {
+    all.forEach(path => {
       const subPath = dirname(path)
         .split('/')
         .pop()

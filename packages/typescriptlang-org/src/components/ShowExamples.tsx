@@ -101,7 +101,7 @@ export const RenderExamples = (props: Props) => {
 
   const lang = props.locale || "en"
   const locale = props.examples || english
-  const sections = locale.sections.filter(s => props.sections.includes(s.id))
+  const sections = props.sections.map(sectionID => locale.sections.find(localeSection => sectionID === localeSection.id) || english.sections.find(localeSection => sectionID === localeSection.id))
   return (
     <div className="examples">
       <ol>

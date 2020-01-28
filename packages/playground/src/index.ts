@@ -146,7 +146,8 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
 
   // Add the versions to the dropdown
   const versionsMenu = document.querySelectorAll('#versions > ul').item(0)
-  sandbox.supportedVersions.forEach((v: string) => {
+  const allVersions = ["3.8.0-beta", ...sandbox.supportedVersions]
+  allVersions.forEach((v: string) => {
     const li = document.createElement('li')
     const a = document.createElement('a')
     a.textContent = v

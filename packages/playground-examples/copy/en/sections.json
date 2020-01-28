@@ -16,7 +16,12 @@
       "subtitle": "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/'>Release notes</a>."
     },
     {
-      "name": "Playground",
+      "name": "3.8",
+      "id": "3.8",
+      "subtitle": "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/'>Beta Release notes</a>."
+    },
+    {
+      "name": "Playground V3",
       "id": "Playground",
       "subtitle": "Learn what has changed in this website."
     }
@@ -42,6 +47,9 @@
     "Fixits",
     // Playground
     "Config",
-    "Tooling"
+    "Tooling",
+    // 3.8
+    "Breaking Changes",
+    "JSDoc Improvements"
   ]
 }
