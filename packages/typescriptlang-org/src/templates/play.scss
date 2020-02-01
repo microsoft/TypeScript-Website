@@ -270,6 +270,10 @@ main #editor-toolbar {
   display: flex;
   height: 800px;
 
+  ol {
+    padding: 0;
+  }
+
   #editor-container {
     width: calc(100% - 360px);
     flex-grow: 1;
@@ -312,12 +316,15 @@ main #editor-toolbar {
     max-width: 320px;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 
     .playground-plugin-container {
       flex: 1;
       height: 100%;
       width: 100%;
       max-width: 100%;
+      flex-shrink: 1;
+      flex-grow: 1;
       overflow-y: scroll;
       overflow-x: hidden;
 
@@ -326,6 +333,8 @@ main #editor-toolbar {
         color: black;
         border: none;
         overflow-x: scroll;
+        width: 100%;
+
         @media (prefers-color-scheme: dark) {
           background-color: #1e1e1e;
           color: white;
@@ -435,7 +444,7 @@ main #editor-toolbar {
     height: 80%;
   }
 
-  #playground-options {
+  .playground-options {
     li {
       list-style: none;
       span {
@@ -561,6 +570,7 @@ main #editor-toolbar {
     }
   }
 }
+
 @keyframes lds-grid {
   0%,
   100% {

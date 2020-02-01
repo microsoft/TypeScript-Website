@@ -4,7 +4,7 @@ import { withPrefix } from "gatsby"
 
 import "./TopNav.scss"
 import { setupStickyNavigation } from "./stickyNavigation";
-import { FormattedMessage, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 
 export type Props = {
   centeredLayout?: boolean

@@ -20,7 +20,7 @@ import { getExampleSourceCode } from './getExample'
 import { ExampleHighlighter } from './monaco/ExampleHighlight'
 import { createConfigDropdown, updateConfigDropdownForCompilerOptions } from './createConfigDropdown'
 import { showErrors } from './sidebar/showErrors'
-import { optionsPlugin } from './sidebar/options'
+import { optionsPlugin, allowConnectingToLocalhost } from './sidebar/options'
 
 /** The interface of all sidebar plugins */
 export interface PlaygroundPlugin {
@@ -71,25 +71,33 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
   const container = createPluginContainer()
   sidebar.appendChild(container)
 
-  const plugins = defaultPluginFactories.map(f => f())
-  const tabs = plugins.map(p => createTabForPlugin(p))
+  const plugins = [] as PlaygroundPlugin[]
+  const tabs = [] as HTMLButtonElement[]
+
+  const registerPlugin = (plugin: PlaygroundPlugin) => {
+    plugins.push(plugin)
+
+    const tab = createTabForPlugin(plugin)
+    tabs.push(tab)
+
+    const tabClicked: HTMLElement['onclick'] = e => {
+      const previousPlugin = currentPlugin()
+      const newTab = e.target as HTMLElement
+      const newPlugin = plugins.find(p => p.displayName == newTab.textContent)!
+      activatePlugin(newPlugin, previousPlugin, sandbox, tabBar, container)
+    }
+
+    tabBar.appendChild(tab)
+    tab.onclick = tabClicked
+  }
 
   const currentPlugin = () => {
     const selectedTab = tabs.find(t => t.classList.contains('active'))!
     return plugins[tabs.indexOf(selectedTab)]
   }
 
-  const tabClicked: HTMLElement['onclick'] = e => {
-    const previousPlugin = currentPlugin()
-    const newTab = e.target as HTMLElement
-    const newPlugin = plugins.find(p => p.displayName == newTab.textContent)!
-    activatePlugin(newPlugin, previousPlugin, sandbox, tabBar, container)
-  }
-
-  tabs.forEach(t => {
-    tabBar.appendChild(t)
-    t.onclick = tabClicked
-  })
+  const initialPlugins = defaultPluginFactories.map(f => f())
+  initialPlugins.forEach(p => registerPlugin(p))
 
   // Choose which should be selected
   const priorityPlugin = plugins.find(plugin => plugin.shouldBeSelected && plugin.shouldBeSelected())
@@ -279,6 +287,7 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
   const playground = {
     exporter,
     ui,
+    registerPlugin,
   }
 
   window.ts = sandbox.ts
@@ -291,6 +300,23 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
   console.log('\twindow.ts', window.ts)
   console.log('\twindow.sandbox', window.sandbox)
   console.log('\twindow.playground', window.playground)
+
+  if (allowConnectingToLocalhost()) {
+    window.exports = {}
+    console.log('Connecting to dev plugin')
+    try {
+      // @ts-ignore
+      const re = window.require
+      re(['local/index'], (devPlugin: any) => {
+        console.log('Set up dev plugin from localhost:5000')
+        console.log(devPlugin)
+        playground.registerPlugin(devPlugin)
+      })
+    } catch (error) {
+      console.error('Problem loading up the dev plugin')
+      console.error(error)
+    }
+  }
 
   return playground
 }

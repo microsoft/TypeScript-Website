@@ -1,0 +1,41 @@
+import React from "react"
+import { withPrefix } from "gatsby"
+import { Helmet } from "react-helmet";
+
+
+export type SeoProps = {
+  title: string
+  description: string
+  ogTags?: { [key: string]: string }
+}
+
+export const HeadSEO = (props: SeoProps) => {
+
+  const ogTags = {
+    ...props.ogTags,
+    "og:title": props.title,
+    "og:description": props.description,
+    "twitter:site": "typescriptlang",
+
+  }
+
+  // do we want localized pages to be the english version?
+  //{seo.url && <meta property="og:url" content={seo.url} />}
+
+  // TODO: a lot of pages should have this
+  // <meta property="og:type" content="article" />
+
+  // TODO: Maybe on prod we can generate an image for each file
+  // <meta name="image" content={seo.image} />
+
+  return (
+    <>
+      <Helmet title={props.title} titleTemplate={"%s · TypeScript"}>
+        <meta name="description" content={props.description} />
+        {
+          Object.keys(ogTags).map(k => <meta property={k} content={ogTags[k]} />)
+        }
+      </Helmet>
+    </>
+  )
+}

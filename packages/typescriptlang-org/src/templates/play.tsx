@@ -54,7 +54,8 @@ const Index = (props: Props) => {
         paths: {
           vs: `https://tswebinfra.blob.core.windows.net/cdn/${tsVersion}/monaco/min/vs`,
           "typescript-sandbox": withPrefix('/js/sandbox'),
-          "typescript-playground": withPrefix('/js/playground')
+          "typescript-playground": withPrefix('/js/playground'),
+          "local": "http://localhost:5000"
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],
       });

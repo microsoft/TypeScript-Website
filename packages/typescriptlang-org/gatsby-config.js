@@ -6,6 +6,10 @@ const { join } = require("path")
 const shiki = join(require.resolve(`gatsby-remark-shiki`), "..", "..", "package.json")
 
 module.exports = {
+  siteMetadata: {
+    siteUrl: `https://www.typescriptlang.org/v2/`,
+  },
+
   // This should only be used in a CI deploy while we're working in a v2 sub-folder
   pathPrefix: `/v2`,
 
@@ -39,6 +43,8 @@ module.exports = {
     },
     // Support ts/tsx files in src
     "gatsby-plugin-typescript",
+    // SEO
+    `gatsby-plugin-sitemap`,
     // Let's you edit the head from inside a react tree
     "gatsby-plugin-react-helmet",
     // Grabs the old handbook markdown files
@@ -71,7 +77,9 @@ module.exports = {
         useLangKeyLayout: true,
       },
     },
-    // Markdown support
+
+    // Markdown support, and markdown + react
+    // `gatsby-plugin-mdx`,
     {
       resolve: `gatsby-transformer-remark`,
       options: {
