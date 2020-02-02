@@ -56,7 +56,7 @@ const Index = (props: Props) => {
           "typescript-sandbox": withPrefix('/js/sandbox'),
           "typescript-playground": withPrefix('/js/playground'),
           "unpkg": "https://unpkg.com/",
-          "local": "http://localhost:5000"
+          "local": "http://192.168.1.156:5000"
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],
       });

@@ -6,7 +6,8 @@
 
 // Changes:
 //  - Less dependencies
-//  - Ability for me to define the branch
+//  - Ability for me to define the branch and the depth to extract from a zip
+//  - yarn not npm
 
 const path = require('path')
 const os = require('os')
