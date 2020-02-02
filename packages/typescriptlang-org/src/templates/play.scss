@@ -170,8 +170,8 @@
       &::before {
         content: "i";
       }
-      color: green;
-      border: 1px red solid;
+      color: $ts-muted-green;
+      border: 1px $ts-muted-red solid;
     }
   }
 }
@@ -461,6 +461,17 @@ span.right {
 
 .warning {
   font-size: 0.8;
+}
+
+input[type="text"],
+input[type="url"] {
+  width: 80%;
+  font-size: 1.1rem;
+  padding: 0.2rem;
+}
+
+input.good {
+  border-color: $ts-muted-green;
 }
 
 // These show in the editor!

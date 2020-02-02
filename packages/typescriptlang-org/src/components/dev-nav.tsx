@@ -14,6 +14,9 @@ export const DevNav = () => {
       <li>
         <a href={withPrefix("/dev/twoslash")}>Twoslash</a>
       </li>
+      <li>
+        <a href={withPrefix("/dev/playground-plugins")}>Playground Plugins</a>
+      </li>
     </ul>
   </nav >
 }
