@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// @ts-check
 
 // A fork of https://github.com/c8r/initit/blob/master/index.js
 // which is MIT licensed
@@ -9,12 +10,13 @@
 
 const path = require('path')
 const os = require('os')
+const fs = require('fs')
 const exec = require('child_process').execSync
 const spawn = require('cross-spawn')
 
 const install = () => {
   return new Promise((resolve, reject) => {
-    const child = spawn('npm', ['install'], {
+    const child = spawn('yarn', ['install'], {
       stdio: 'inherit',
     })
     child.on('close', code => {
@@ -39,7 +41,7 @@ const branch = 'play_plugins'
 
 const getTar = ({ user, repo, path = '', name }) => {
   const url = `https://codeload.github.com/${user}/${repo}/tar.gz/${branch}`
-  const cmd = `curl ${url} | tar -xz -C ${name} --strip=3 ${repo}-${branch}/${path}`
+  const cmd = `curl ${url} | tar -xz -C ${name} --strip=4 ${repo}-${branch}/${path}`
   exec(cmd, { stdio: 'inherit' })
 }
 
@@ -58,7 +60,9 @@ const create = async (opts = {}) => {
   const name = path.basename(dirname)
   const [user, repo, ...paths] = opts.template.split('/')
 
-  fs.ensureDirSync(name)
+  if (!fs.existsSync(name)) {
+    fs.mkdirSync(name)
+  }
 
   getTar(
     Object.assign({}, opts, {
@@ -73,20 +77,20 @@ const create = async (opts = {}) => {
 
   const pkg = Object.assign({}, templatePkg, {
     name,
-    version: '1.0.0',
+    version: '0.0.1',
   })
 
   fs.writeFileSync(path.join(dirname, 'package.json'), JSON.stringify(pkg, null, 2) + os.EOL)
 
   process.chdir(dirname)
 
-  const installed = await install()
-  const initialized = gitInit()
+  await install()
+  gitInit()
 
   return { name, dirname }
 }
 
 const [name] = process.argv.slice(2)
-const template = 'microsoft/TypeScript-Website/packages/create-playground-plugin/template'
+const template = 'microsoft/TypeScript-Website/packages/create-playground-plugin/template/'
 
 create({ name, template })

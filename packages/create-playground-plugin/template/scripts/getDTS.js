@@ -5,7 +5,7 @@
 // compile without _all_ of the dependencies
 
 const nodeFetch = require('node-fetch').default
-const { writeFileSync } = require('fs')
+const { writeFileSync, existsSync, mkdirSync } = require('fs')
 const { join } = require('path')
 
 const getFileAndStoreLocally = async (url, path, editFunc) => {
@@ -16,9 +16,14 @@ const getFileAndStoreLocally = async (url, path, editFunc) => {
 }
 
 const go = async () => {
+  const vendor = join('src', 'vendor')
+  if (!existsSync(vendor)) {
+    mkdirSync(vendor)
+  }
+
   await getFileAndStoreLocally(
     'https://www.typescriptlang.org/v2/js/sandbox/index.d.ts',
-    'src/vendor/sandbox.d.ts',
+    join(vendor, 'sandbox.d.ts'),
     text => {
       const removeImports = text.replace(/^import/g, '// import').replace(/\nimport/g, '// import')
       const removedLZ = removeImports.replace('lzstring: typeof lzstring', '// lzstring: typeof lzstring')
@@ -29,7 +34,7 @@ const go = async () => {
 
   await getFileAndStoreLocally(
     'https://www.typescriptlang.org/v2/js/playground/index.d.ts',
-    'src/vendor/playground.d.ts',
+    join(vendor, '/playground.d.ts'),
     text => {
       const replaceSandbox = text.replace(/typescript-sandbox/g, './sandbox')
       const removedLZ = replaceSandbox.replace('lzstring: typeof', '// lzstring: typeof')
