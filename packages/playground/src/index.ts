@@ -311,6 +311,9 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
         console.log('Set up dev plugin from localhost:5000')
         console.log(devPlugin)
         playground.registerPlugin(devPlugin)
+
+        // Auto-select the dev plugin
+        activatePlugin(devPlugin, currentPlugin(), sandbox, tabBar, container)
       })
     } catch (error) {
       console.error('Problem loading up the dev plugin')
