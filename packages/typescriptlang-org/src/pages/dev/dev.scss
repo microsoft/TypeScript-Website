@@ -1,6 +1,10 @@
 @import "../../style/globals.scss";
 
 #dev {
+  .navbar-sub .active {
+    text-decoration: underline;
+  }
+
   .content {
     display: flex;
   }

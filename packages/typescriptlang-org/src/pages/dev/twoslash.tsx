@@ -89,7 +89,8 @@ const Index = (props: any) => {
 
             } catch (error) {
               const err = error as Error
-              const failure = document.getElementById("twoslash-failure")!
+              const failure = document.getElementById("twoslash-failure")
+              if (!failure) return;
               failure.style.display = "block"
 
               while (failure.firstChild) {
@@ -156,7 +157,7 @@ const Index = (props: any) => {
     <>
       <Layout>
         <div id="dev">
-          <DevNav />
+          <DevNav active="twoslash" />
           <div className="raised content" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
             <div className="split-fifty">
               <div>

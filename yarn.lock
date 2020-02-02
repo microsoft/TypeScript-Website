@@ -2098,7 +2098,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@16.9.17", "@types/react@^16.9.17":
+"@types/react@*", "@types/react@^16.9.17":
   version "16.9.17"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.17.tgz#58f0cc0e9ec2425d1441dd7b623421a867aa253e"
   integrity sha512-UP27In4fp4sWF5JgyV6pwVPAQM83Fj76JOcg02X5BZcpSu5Wx+fP9RMqc2v0ssBoQIFvD5JdKY41gjJJKmw6Bg==
@@ -3082,11 +3082,6 @@ are-we-there-yet@~1.1.2:
   dependencies:
     delegates "^1.0.0"
     readable-stream "^2.0.6"
-
-arg@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/arg/-/arg-2.0.1.tgz#ded3abf645efd3b5f7e446035b75aad6fd68aa71"
-  integrity sha512-cvmPpB9OWbIP0pG3ov/11PMd/z+nBG+nY4eynzHxX/+pxJg7f5r02rFeJr8NwosJpxHIujA2jJpB+c3xR21vig==
 
 arg@^4.1.0:
   version "4.1.2"
@@ -5291,7 +5286,7 @@ cross-spawn@^6.0.0, cross-spawn@^6.0.5:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
-cross-spawn@^7.0.0:
+cross-spawn@^7.0.0, cross-spawn@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.1.tgz#0ab56286e0f7c24e153d04cc2aa027e43a9a5d14"
   integrity sha512-u7v4o84SwFpD32Z8IIcPZ6z1/ie24O6RU3RbtL5Y316l3KuHVPx9ItBgWQ6VlfAFnRnTtMUrsQ9MUUTuEZjogg==
@@ -9805,15 +9800,6 @@ ini@^1.3.4, ini@^1.3.5, ini@~1.3.0:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
   integrity sha512-RZY5huIKCMRWDUqZlEi72f/lmXKMvuszcMBduliQ3nnWbx9X/ZBQO7DijMEYS9EhHBb2qacRUMtC7svLwe0lcw==
-
-initit@^1.0.0-2:
-  version "1.0.0-2"
-  resolved "https://registry.yarnpkg.com/initit/-/initit-1.0.0-2.tgz#c257037dbfd6529b6ea3bb5a749d6cc8bf76b24b"
-  integrity sha512-g/DAVroo06lmf2qMYhwdh65vKlfy3PlX0vBPqadHQYHkzt0aoELHsbICH2fIvgUQ2uCfdGCfG/Z0qayokHWpxA==
-  dependencies:
-    arg "^2.0.0"
-    cross-spawn "^6.0.5"
-    fs-extra "^6.0.1"
 
 ink-spinner@^3.0.1:
   version "3.0.1"

@@ -39,7 +39,7 @@ For example, this is how you can handle getting the URL for a CSS file which is 
 
 ```ts
 const isDev = document.location.host.includes('localhost')
-const unpkgURL = 'https://unpkg.com/browse/typescript-playground-presentation-mode@latest/dist/slideshow.css'
+const unpkgURL = 'https://unpkg.com/typescript-playground-presentation-mode@latest/dist/slideshow.css'
 const cssHref = isDev ? 'http://localhost:5000/slideshow.css' : unpkgURL
 ```
 

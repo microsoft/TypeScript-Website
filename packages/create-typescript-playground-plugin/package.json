@@ -1,7 +1,7 @@
 {
-  "name": "create-playground-plugin",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "create-typescript-playground-plugin",
+  "version": "1.0.2",
+  "bin": "index.js",
   "author": "TypeScript team",
   "license": "MIT",
   "homepage": "https://github.com/microsoft/TypeScript-Website/",
@@ -11,6 +11,6 @@
     "test": "echo NOOP"
   },
   "dependencies": {
-    "initit": "^1.0.0-2"
+    "cross-spawn": "^7.0.1"
   }
 }

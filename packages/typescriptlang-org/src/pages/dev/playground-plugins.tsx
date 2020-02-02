@@ -1,139 +1,42 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { Layout } from "../../components/layout"
 import { withPrefix } from "gatsby"
 
 import "./dev.scss"
 import { DevNav } from "../../components/dev-nav"
-import { isTouchDevice } from "../../lib/isTouchDevice"
-import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
 
 const Index = (props: any) => {
   return (
     <>
       <Layout>
         <div id="dev">
-          <DevNav />
+          <DevNav active="playground plugins" />
           <div className="raised content" style={{ padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
             <div className="split-sixhundred">
               <h1 style={{ marginTop: "0" }}>Playground Plugins</h1>
-              <p>The TypeScript Playground is an extensible </p>
-              <p>You can use the TypeScript sandbox for:</p>
-              <ul>
-                <li>Building IDE-like experiences for people to explore your library's API</li>
-                <li>Building interactive web tools which use TypeScript, with a lot of the Playgrounds developer experience for free</li>
-              </ul>
-              <p>For example, the sandbox to the side has grabbed the Types for <a href="https://danger.systems/js/">DangerJS</a> with no modifications for this code sample. This is because the Playground's Automatic Type Acquisition is enabled by default. It will also look for the same parameters for code, and selection indexes inside the URL.</p>
-              <p>Try clicking <a href="?q=1#code/PTAEBUAsFMGdtAYwPYFtXQHYBdagO7QBOCiJAhttACagCWmo2MEAngA7QDKZd72oAAoAbcqwDmRZAFdM1AFAhQ5OUxiNmCAKoAlADKhI5WJALGkydnRqhkAN2JNkahJmj5QuvfMVgodPAwVPBVWUHYpACtoRAFpWAZxNk4eIj4BWBVqACNkAA84JBVfUGhjOmEw+FUUagRyKVlabGcyxFNkTSJQHxRMWAEYYWFnAF5QACIACWhh5wB1ZCJhagn5PthkYWgAOhHxAAohkYBKIA">this URL</a> to see that in action. </p>
-              <p>This library builds on top of the <a href="https://microsoft.github.io/monaco-editor/index.html">Monaco Editor</a>, providing a higher level API but offering access to all the lower-level APIs via a single <code>sandbox</code> object.</p>
-              <p>You can find the code for the TypeScript Sandbox inside the <a href="https://github.com/microsoft/TypeScript-Website/tree/v2/packages/sandbox#typescript-sandbox">microsoft/TypeScript-Website</a> mono-repo.</p>
+              <p>The new TypeScript Playground allows people to hook into the Playground and extend it in ways in which the TypeScript team don't expect.</p>
+              <p>The sidebar of the Playground uses the same plugin infrastructure as external plugins, so you have the same level of access as the playground to build interesting projects.</p>
+              <p>Playground plugins have no fancy frameworks, you're free to inject them at runtime and use them if you need to - but the current plugins are built with the DOM APIs and TypeScript.</p>
+              <p>&nbsp;</p>
+              <p>We have a template, and the Playground has a dev-mode for hooking directly to your local server, so you don't need to run a copy of the TypeScript website to have a working development environment.</p>
+              <p>There is a complex reference plugin called <a href="https://github.com/orta/playground-slides">Presentation Mode</a> which is available by default for you to investigate and understand.</p>
+              <p>If you have a polished plugin, let us know and we can add it to the default registry - making it visible to everyone easily.</p>
             </div>
 
-            <SuppressWhenTouch hideOnTouch>
-              <div className="sixhundred" style={{ borderLeft: "1px solid gray" }}>
-                <div id="loader">
-                  <div className="lds-grid">
-                    <p id="loading-message">Downloading Sandbox...</p>
-                  </div>
-                  <div style={{ height: "400px", display: "none" }} id="monaco-editor-embed" />
-                </div>
-              </div>
-            </SuppressWhenTouch>
+            <div className="sixhundred" style={{ borderLeft: "1px solid gray" }}>
+              <img src={require("../../assets/playground-plugin-preview.png")} width="100%" />
+            </div>
           </div>
 
           <div className="raised" style={{ padding: "2rem", margin: "2rem" }}>
-            <h2>Usage</h2>
-            <p>A sandbox uses the same tools as monaco-editor, meaning this library is shipped as an AMD bundle which you can use the <a href="https://github.com/microsoft/vscode-loader/">VSCode Loader</a> to <code>require</code>.</p>
-            <p>Because we need it for the TypeScript website, you can use our hosted copy <a href="https://typescriptlang.org/v2/js/vs.loader.js">here.</a> (<em>note</em>, we will eventually deprecate the /v2/ in all routes)</p>
-
-            <h3>Get Started</h3>
-            <p>Create a new file: <code>index.html</code> and paste this code into that file.</p>
-            <pre><code className="html-code">{`<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-  </head>
-  <div id="loader">Loading...</div>
-  <div id="monaco-editor-embed" style="height: 800px;" />
-  <script>
-    // First set up the VSCode loader in a script tag
-    const getLoaderScript = document.createElement('script')
-    getLoaderScript.src = 'https://www.typescriptlang.org/v2/js/vs.loader.js'
-    getLoaderScript.async = true
-    getLoaderScript.onload = () => {
-      // Now the loader is ready, tell require where it can get the version of monaco, and the sandbox
-      // This version uses the latest version of the sandbox, which is used on the TypeScript website
-
-      // For the monaco version you can use unpkg or the TypeSCript web infra CDN
-      // You can see the available releases for TypeScript here:
-      // https://tswebinfra.blob.core.windows.net/indexes/releases.json
-      //
-      require.config({
-        paths: {
-          vs: 'https://tswebinfra.blob.core.windows.net/cdn/3.7.3/monaco/min/vs',
-          // vs: 'https://unpkg.com/@typescript-deploys/monaco-editor@3.7.3/min/vs',
-          sandbox: 'https://www.typescriptlang.org/v2/js/sandbox',
-        },
-        // This is something you need for monaco to work
-        ignoreDuplicateModules: ['vs/editor/editor.main'],
-      })
-
-      // Grab a copy of monaco, TypeScript and the sandbox
-      require(['vs/editor/editor.main', 'vs/language/typescript/tsWorker', 'sandbox/index'], (
-        main,
-        _tsWorker,
-        tsSandbox
-      ) => {
-        const initialCode = \`import {markdown, danger} from "danger"
-
-export default async function () {
-    // Check for new @types in devDependencies
-    const packageJSONDiff = await danger.git.JSONDiffForFile("package.json")
-    const newDeps = packageJSONDiff.devDependencies.added
-    const newTypesDeps = newDeps?.filter(d => d.includes("@types")) ?? []
-    if (newTypesDeps.length){
-        markdown("Added new types packages " + newTypesDeps.join(", "))
-    }
-}
-\`
-
-        const isOK = main && window.ts && sandbox
-        if (isOK) {
-          document.getElementById('loader').parentNode.removeChild(document.getElementById('loader'))
-        } else {
-          console.error('Could not get all the dependencies of sandbox set up!')
-          console.error('main', !!main, 'ts', !!window.ts, 'sandbox', !!sandbox)
-          return
-        }
-
-        // Create a sandbox and embed it into the the div #monaco-editor-embed
-        const sandboxConfig = {
-          text: initialCode,
-          compilerOptions: {},
-          domID: 'monaco-editor-embed',
-        }
-
-        tsSandbox.createTypeScriptSandbox(sandboxConfig, main, window.ts).then(sandbox => {
-          sandbox.editor.focus()
-        })
-      })
-    }
-
-    document.body.appendChild(getLoaderScript)
-  </script>
-</html>
-          `}
-            </code></pre>
-            <p>Opening the file <code>index.html</code> in a web browser will load up the same sandbox up at the top of the page.</p>
-            <h3>Some examples of the API</h3>
-            {
-              codeSamples.map(code =>
-                <div className="split-code" key={code.blurb}>
-                  <p>{code.blurb}</p>
-                  <pre><code className="ts-code">{code.code.trim()}</code></pre>
-                </div>
-              )
-            }
-            <p>The API is mainly a light shim over the <a href="https://microsoft.github.io/monaco-editor/api/index.html">monaco-editor API</a> with the <a href="https://github.com/microsoft/monaco-typescript">monaco-typescript API</a>.</p>
+            <h2>Quick Tutorial</h2>
+            <p>You need about 5 minutes, Node.js, yarn and a Chromium based browser.</p>
+            <p><b>Step 1</b>: Use the template to bootstrap: <code>npm init typescript-playground-plugin MyPlugin</code></p>
+            <p><b>Step 2</b>: Run <code>yarn start</code> in the new repo, to start up the local dev server</p>
+            <p><b>Step 3</b>: Open the <a href={withPrefix("/en/play")}>playground</a> in your Chromium browser, click "Options" and enable <code>"Connect to localhost:5000/index.js"</code></p>
+            <p><b>Step 4</b>: Refresh, and see the new tab. That's your plugin up and running</p>
+            <p>&nbsp;</p>
+            <p>That's all the pieces working in tandem, now you can make changes to the template and build out your plugin. The plugin in dev mode will always become forefront when connected, so you can re-load without a lot off clicks. To understand the template's technology, read the <a href='https://github.com/microsoft/TypeScript-Website/blob/v2/packages/create-playground-plugin/template/CONTRIBUTING.md'>CONTRIBUTING.md</a></p>
           </div>
         </div>
       </Layout>

@@ -88,6 +88,8 @@ const create = async (opts = {}) => {
   await install()
   gitInit()
 
+  console.log("\nAlright, you're good to go!")
+
   return { name, dirname }
 }
 
