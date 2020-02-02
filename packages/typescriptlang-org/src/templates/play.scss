@@ -455,6 +455,14 @@ main #editor-toolbar {
   }
 }
 
+span.right {
+  float: right;
+}
+
+.warning {
+  font-size: 0.8;
+}
+
 // These show in the editor!
 .error-highlight {
   background-color: #fcb7b7;

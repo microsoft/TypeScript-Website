@@ -28,13 +28,17 @@ const pluginRegistry = [
     module: 'typescript-playground-presentation-mode',
     display: 'Presentation Mode',
     blurb: 'Create presentations inside the TypeScript playground, seamlessly jump between slides and live-code.',
-    homepage: 'https://github.com/orta/playground-slides/',
+    repo: 'https://github.com/orta/playground-slides/#README',
     author: {
       name: 'Orta',
-      twitter: '@orta',
+      href: 'https://orta.io',
     },
   },
 ]
+
+export const activePlugins = () => {
+  return pluginRegistry.filter(p => !!localStorage.getItem('plugin-' + p.module))
+}
 
 export const optionsPlugin = () => {
   const plugin: PlaygroundPlugin = {
@@ -43,12 +47,12 @@ export const optionsPlugin = () => {
     shouldBeSelected: () => true,
     willMount: (_sandbox, container) => {
       const categoryDiv = document.createElement('div')
+      container.appendChild(categoryDiv)
+
       const ol = document.createElement('ol')
       ol.className = 'playground-options'
 
-      const optionsTitle = document.createElement('h4')
-      optionsTitle.textContent = 'Options'
-      container.appendChild(optionsTitle)
+      createSection('Options', categoryDiv)
 
       settings.forEach(setting => {
         const settingButton = createButton(setting)
@@ -56,25 +60,26 @@ export const optionsPlugin = () => {
       })
 
       categoryDiv.appendChild(ol)
-      container.appendChild(categoryDiv)
 
-      const pluginsTitle = document.createElement('h4')
-      pluginsTitle.textContent = 'Plugins'
-      container.appendChild(pluginsTitle)
+      createSection('External Plugins', categoryDiv)
+
+      const warning = document.createElement('p')
+      warning.className = 'warning'
+      warning.textContent = 'Warning: Code from plugins comes from third-parties.'
+      categoryDiv.appendChild(warning)
 
       const pluginsOL = document.createElement('ol')
       pluginsOL.className = 'playground-options'
       pluginRegistry.forEach(plugin => {
         const settingButton = createPlugin(plugin)
-        ol.appendChild(settingButton)
+        pluginsOL.appendChild(settingButton)
       })
+      categoryDiv.appendChild(pluginsOL)
 
-      const pluginDevTitle = document.createElement('h4')
-      pluginDevTitle.textContent = 'Plugin Dev'
-      container.appendChild(pluginDevTitle)
+      createSection('Plugin Dev', categoryDiv)
 
       const pluginsDevOL = document.createElement('ol')
-      pluginsOL.className = 'playground-options'
+      pluginsDevOL.className = 'playground-options'
       const connectToDev = createButton({
         display: 'Connect to <code>localhost:5000/index.js</code>',
         blurb:
@@ -82,20 +87,26 @@ export const optionsPlugin = () => {
         flag: 'connect-dev-plugin',
       })
 
-      ol.appendChild(connectToDev)
-      container.appendChild(pluginsOL)
+      pluginsDevOL.appendChild(connectToDev)
+      categoryDiv.appendChild(pluginsDevOL)
     },
   }
 
   return plugin
 }
 
-const createPlugin = (setting: typeof pluginRegistry[0]) => {
+const createSection = (title: string, container: Element) => {
+  const pluginDevTitle = document.createElement('h4')
+  pluginDevTitle.textContent = title
+  container.appendChild(pluginDevTitle)
+}
+
+const createPlugin = (plugin: typeof pluginRegistry[0]) => {
   const li = document.createElement('li')
   const label = document.createElement('label')
-  label.innerHTML = `<span>${setting.display}</span><br/>${setting.blurb}`
+  label.innerHTML = `<span>${plugin.display}</span> by <a href='${plugin.author.href}'>${plugin.author.name}</a><br/>${plugin.blurb}`
 
-  const key = 'plugin-' + setting.module
+  const key = 'plugin-' + plugin.module
   const input = document.createElement('input')
   input.type = 'checkbox'
   input.id = key
@@ -111,8 +122,12 @@ const createPlugin = (setting: typeof pluginRegistry[0]) => {
 
   label.htmlFor = input.id
 
+  const info = document.createElement('p')
+  info.innerHTML = `<a href='https://www.npmjs.com/package${plugin.module}'>npm</a> | <a href="${plugin.repo}">repo</a>`
+
   li.appendChild(input)
   li.appendChild(label)
+  li.appendChild(info)
   return li
 }
 

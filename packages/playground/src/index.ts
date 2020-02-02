@@ -20,7 +20,7 @@ import { getExampleSourceCode } from './getExample'
 import { ExampleHighlighter } from './monaco/ExampleHighlight'
 import { createConfigDropdown, updateConfigDropdownForCompilerOptions } from './createConfigDropdown'
 import { showErrors } from './sidebar/showErrors'
-import { optionsPlugin, allowConnectingToLocalhost } from './sidebar/options'
+import { optionsPlugin, allowConnectingToLocalhost, activePlugins } from './sidebar/options'
 
 /** The interface of all sidebar plugins */
 export interface PlaygroundPlugin {
@@ -28,7 +28,7 @@ export interface PlaygroundPlugin {
   id: string
   /** To show in the tabs */
   displayName: string
-  /** Should this plugin be selected on launch? Only applies to internal plugins */
+  /** Should this plugin be selected when the plugin is first loaded? Let's you check for query vars etc to load a particular plugin */
   shouldBeSelected?: () => boolean
   /** Before we show the tab, use this to set up your HTML - it will all be removed by the playground when someone navigates off the tab */
   willMount?: (sandbox: Sandbox, container: HTMLDivElement) => void
@@ -301,6 +301,7 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
   console.log('\twindow.sandbox', window.sandbox)
   console.log('\twindow.playground', window.playground)
 
+  // Dev mode plugin
   if (allowConnectingToLocalhost()) {
     window.exports = {}
     console.log('Connecting to dev plugin')
@@ -320,6 +321,24 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
       console.error(error)
     }
   }
+
+  activePlugins().forEach(plugin => {
+    try {
+      // @ts-ignore
+      const re = window.require
+      re([`unpkg/${plugin.module}@latest/dist/index`], (devPlugin: PlaygroundPlugin) => {
+        playground.registerPlugin(devPlugin)
+
+        // Auto-select the dev plugin
+        if (devPlugin.shouldBeSelected && devPlugin.shouldBeSelected()) {
+          activatePlugin(devPlugin, currentPlugin(), sandbox, tabBar, container)
+        }
+      })
+    } catch (error) {
+      console.error('Problem loading up the plugin:', plugin)
+      console.error(error)
+    }
+  })
 
   return playground
 }
