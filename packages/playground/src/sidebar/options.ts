@@ -46,24 +46,21 @@ export const optionsPlugin = () => {
       container.appendChild(categoryDiv)
 
       // Hidden for now
-      const isDevMode = document.location.host.includes('localhost')
-      if (isDevMode) {
-        const pluginsTitle = document.createElement('h4')
-        pluginsTitle.textContent = 'Plugins'
-        container.appendChild(pluginsTitle)
+      const pluginsTitle = document.createElement('h4')
+      pluginsTitle.textContent = 'Plugins'
+      container.appendChild(pluginsTitle)
 
-        const ol = document.createElement('ol')
-        ol.className = 'playground-options'
-        const connectToDev = createButton({
-          display: 'Connect to <code>localhost:5000/index.js</code>',
-          blurb:
-            "Automatically try connect to a playground plugin in development. You can read more <a href='http://TBD'>here</a>.",
-          flag: 'connect-dev-plugin',
-        })
+      const pluginsOL = document.createElement('ol')
+      pluginsOL.className = 'playground-options'
+      const connectToDev = createButton({
+        display: 'Connect to <code>localhost:5000/index.js</code>',
+        blurb:
+          "Automatically try connect to a playground plugin in development mode. You can read more <a href='http://TBD'>here</a>.",
+        flag: 'connect-dev-plugin',
+      })
 
-        ol.appendChild(connectToDev)
-        container.appendChild(ol)
-      }
+      ol.appendChild(connectToDev)
+      container.appendChild(pluginsOL)
     },
   }
 

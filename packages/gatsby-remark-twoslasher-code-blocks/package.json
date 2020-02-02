@@ -2,6 +2,7 @@
   "name": "gatsby-remark-twoslasher-code-blocks",
   "version": "0.1.0",
   "license": "MIT",
+  "homepage": "https://github.com/microsoft/TypeScript-Website/",
   "dependencies": {
     "ts-twoslasher": "0.1.0",
     "unist-util-visit": "^2.0.1"

@@ -1,0 +1,15 @@
+{
+  "name": "create-playground-plugin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "TypeScript team",
+  "license": "MIT",
+  "homepage": "https://github.com/microsoft/TypeScript-Website/",
+  "scripts": {
+    "build": "echo NOOP",
+    "bootstrap": "echo NOOP"
+  },
+  "dependencies": {
+    "initit": "^1.0.0-2"
+  }
+}
