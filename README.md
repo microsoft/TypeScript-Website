@@ -76,7 +76,7 @@ The code samples used in the Playground
 
 # Infra Packages
 
-All of these packages use [`tsdx`](https://github.com/jaredpalmer/tsdx).
+Most of of these packages use [`tsdx`](https://github.com/jaredpalmer/tsdx).
 
 ## TS Twoslash
 
@@ -93,6 +93,10 @@ A Gatsby Remark plugin which highlights code (using vscode's parsers) then annot
 ## TypeScript VFS
 
 A comprehensive way to run TypeScript projects in-memory in a browser or node environment
+
+## Create Playground Plugin
+
+A template for generating a new playground plugin which you can use via `npm init playground-plugin [name]`
 
 # Contributing
 
