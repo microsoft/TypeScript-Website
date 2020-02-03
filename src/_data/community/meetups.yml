@@ -32,7 +32,6 @@ ready:
       image: "/assets/images/community/meetup-logos/ktug.jpg"
       country: "🇵🇱"
     - title: Melbourne TypeScript
-      twitter: https://twitter.com/WrocTypeScript
       url: https://www.meetup.com/Melbourne-TypeScript-Meetup/
       image: "/assets/images/community/meetup-logos/melbourne.jpg"
       country: "🇦🇺"
