@@ -14,7 +14,7 @@
   "ts_spec_docx": "https://github.com/Microsoft/TypeScript/blob/master/doc/TypeScript%20Language%20Specification.docx?raw=true",
   "ts_spec_pdf": "https://github.com/Microsoft/TypeScript/blob/master/doc/TypeScript%20Language%20Specification.pdf?raw=true",
   "definitelytyped_github": "https://github.com/DefinitelyTyped/DefinitelyTyped",
-  "ts_blog": "http://blogs.msdn.com/b/typescript/",
+  "ts_blog": "https://devblogs.microsoft.com/typescript/",
   "ts_stackoverflow_tagged": "https://stackoverflow.com/questions/tagged/typescript",
   "ts_twitter": "https://twitter.com/typescript/",
   "ts_twitter_search": "https://twitter.com/search?q=%23typescript",
