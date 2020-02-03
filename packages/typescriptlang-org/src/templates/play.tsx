@@ -54,7 +54,9 @@ const Index = (props: Props) => {
         paths: {
           vs: `https://tswebinfra.blob.core.windows.net/cdn/${tsVersion}/monaco/min/vs`,
           "typescript-sandbox": withPrefix('/js/sandbox'),
-          "typescript-playground": withPrefix('/js/playground')
+          "typescript-playground": withPrefix('/js/playground'),
+          "unpkg": "https://unpkg.com/",
+          "local": "http://localhost:5000"
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],
       });
@@ -90,11 +92,17 @@ const Index = (props: Props) => {
         playground.setupPlayground(sandboxEnv, main, playgroundConfig)
         sandboxEnv.editor.focus()
 
-        const darkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-        if (darkModeEnabled) {
-          console.log("making dark")
+        const darkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)')
+        if (darkModeEnabled.matches) {
           sandboxEnv.monaco.editor.setTheme("sandbox-dark");
         }
+
+        darkModeEnabled.addListener((e) => {
+          const darkModeOn = e.matches;
+          const newTheme = darkModeOn ? "sandbox-dark" : "sandbox-light"
+          sandboxEnv.monaco.editor.setTheme(newTheme);
+        });
+
 
         const container = document.getElementById("playground-container")!
         container.style.display = "flex"
@@ -179,6 +187,7 @@ const Index = (props: Props) => {
           <div id="playground-container" style={{ display: "none" }}>
             <div id="editor-container">
               <div id="editor-toolbar" className="navbar-sub" >
+
                 <ul>
                   <li id="versions" className="dropdown">
                     <a href="#">Version... <span className="caret" /></a>
@@ -201,6 +210,9 @@ const Index = (props: Props) => {
                       <li><a href="#" onClick={() => playground.exporter.openProjectInStackBlitz()}>Open in StackBlitz</a></li>
                     </ul>
                   </li>
+                </ul>
+                <ul className="right">
+                  <li><a id="sidebar-toggle" aria-label="Hide Sidebar" href="#">&#x21E5;</a></li>
                 </ul>
               </div>
               { /** This is the div which monaco is added into  **/}

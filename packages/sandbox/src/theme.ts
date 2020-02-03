@@ -72,7 +72,7 @@ export const sandboxThemeDark: import('monaco-editor').editor.IStandaloneThemeDa
     { token: 'comment', foreground: grey },
     { token: 'number', foreground: greenDark },
     { token: 'regexp', foreground: greenLight },
-    { token: 'type', foreground: darkerBlue },
+    { token: 'type', foreground: blue },
   ],
   colors: {
     // 'editor.background': '#313131',

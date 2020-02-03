@@ -53,11 +53,17 @@ export const createDragBar = () => {
   return sidebar
 }
 
+export const sidebarHidden = () => !!window.localStorage.getItem('sidebar-hidden')
+
 export const createSidebar = () => {
   const sidebar = document.createElement('div')
   sidebar.className = 'playground-sidebar'
 
-  // This is the last of the draggable divs
+  // This is independent of the sizing below so that you keep the same sized sidebar
+  if (sidebarHidden()) {
+    sidebar.style.display = 'none'
+  }
+
   if (window.localStorage && window.localStorage.getItem('dragbar-x')) {
     // Don't restore the x pos if the window isn't the same size
     if (window.innerWidth === Number(window.localStorage.getItem('dragbar-window-width'))) {
@@ -133,4 +139,32 @@ export const activatePlugin = (
 
   // Let the previous plugin do any slow work after it's all done
   if (previousPlugin && previousPlugin.didUnmount) previousPlugin.didUnmount(sandbox, container)
+}
+
+const toggleIconWhenOpen = '&#x21E5;'
+const toggleIconWhenClosed = '&#x21E4;'
+
+export const setupSidebarToggle = () => {
+  const toggle = document.getElementById('sidebar-toggle')!
+
+  const updateToggle = () => {
+    const sidebarShowing = !sidebarHidden()
+    toggle.innerHTML = sidebarShowing ? toggleIconWhenOpen : toggleIconWhenClosed
+    toggle.setAttribute('aria-label', sidebarShowing ? 'Hide Sidebar' : 'Show Sidebar')
+  }
+
+  toggle.onclick = () => {
+    const newState = !sidebarHidden()
+
+    const sidebar = window.document.querySelector('.playground-sidebar') as HTMLDivElement
+    if (newState) {
+      localStorage.setItem('sidebar-hidden', 'true')
+      sidebar.style.display = 'none'
+    } else {
+      localStorage.removeItem('sidebar-hidden')
+      sidebar.style.display = 'block'
+    }
+    updateToggle()
+    return false
+  }
 }

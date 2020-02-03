@@ -2,6 +2,7 @@
   "name": "gatsby-remark-shiki",
   "version": "0.1.0",
   "license": "MIT",
+  "homepage": "https://github.com/microsoft/TypeScript-Website/",
   "author": "Orta Therox",
   "main": "./dist/index.js",
   "module": "./dist/gatsby-remark-shiki.esm.js",

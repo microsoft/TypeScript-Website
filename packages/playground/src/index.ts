@@ -11,6 +11,7 @@ import {
   createPluginContainer,
   activatePlugin,
   createDragBar,
+  setupSidebarToggle,
 } from './createElements'
 import { showDTSPlugin } from './sidebar/showDTS'
 import { runWithCustomLogs, runPlugin } from './sidebar/runtime'
@@ -20,27 +21,27 @@ import { getExampleSourceCode } from './getExample'
 import { ExampleHighlighter } from './monaco/ExampleHighlight'
 import { createConfigDropdown, updateConfigDropdownForCompilerOptions } from './createConfigDropdown'
 import { showErrors } from './sidebar/showErrors'
-import { optionsPlugin } from './sidebar/options'
+import { optionsPlugin, allowConnectingToLocalhost, activePlugins } from './sidebar/options'
 
 /** The interface of all sidebar plugins */
 export interface PlaygroundPlugin {
-  /** Not public facing */
+  /** Not public facing, but used by the playground to uniquely identify plugins */
   id: string
   /** To show in the tabs */
   displayName: string
-  /** Should this plugin be selected on launch? */
+  /** Should this plugin be selected when the plugin is first loaded? Let's you check for query vars etc to load a particular plugin */
   shouldBeSelected?: () => boolean
-  /** Before we show the tab, use this to set up your HTML - it will all be removed whe*/
+  /** Before we show the tab, use this to set up your HTML - it will all be removed by the playground when someone navigates off the tab */
   willMount?: (sandbox: Sandbox, container: HTMLDivElement) => void
   /** After we show the tab */
   didMount?: (sandbox: Sandbox, container: HTMLDivElement) => void
-  /** Model changes while this plugin is front-most  */
+  /** Model changes while this plugin is actively selected  */
   modelChanged?: (sandbox: Sandbox, model: import('monaco-editor').editor.ITextModel) => void
-  /** Delayed model changes while this plugin is front-most, useful when you are working with the TS API because it won't run on every keypress */
+  /** Delayed model changes while this plugin is actively selected, useful when you are working with the TS API because it won't run on every keypress */
   modelChangedDebounce?: (sandbox: Sandbox, model: import('monaco-editor').editor.ITextModel) => void
   /** Before we remove the tab */
   willUnmount?: (sandbox: Sandbox, container: HTMLDivElement) => void
-  /** Before we remove the tab */
+  /** After we remove the tab */
   didUnmount?: (sandbox: Sandbox, container: HTMLDivElement) => void
 }
 
@@ -71,25 +72,33 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
   const container = createPluginContainer()
   sidebar.appendChild(container)
 
-  const plugins = defaultPluginFactories.map(f => f())
-  const tabs = plugins.map(p => createTabForPlugin(p))
+  const plugins = [] as PlaygroundPlugin[]
+  const tabs = [] as HTMLButtonElement[]
+
+  const registerPlugin = (plugin: PlaygroundPlugin) => {
+    plugins.push(plugin)
+
+    const tab = createTabForPlugin(plugin)
+    tabs.push(tab)
+
+    const tabClicked: HTMLElement['onclick'] = e => {
+      const previousPlugin = currentPlugin()
+      const newTab = e.target as HTMLElement
+      const newPlugin = plugins.find(p => p.displayName == newTab.textContent)!
+      activatePlugin(newPlugin, previousPlugin, sandbox, tabBar, container)
+    }
+
+    tabBar.appendChild(tab)
+    tab.onclick = tabClicked
+  }
 
   const currentPlugin = () => {
     const selectedTab = tabs.find(t => t.classList.contains('active'))!
     return plugins[tabs.indexOf(selectedTab)]
   }
 
-  const tabClicked: HTMLElement['onclick'] = e => {
-    const previousPlugin = currentPlugin()
-    const newTab = e.target as HTMLElement
-    const newPlugin = plugins.find(p => p.displayName == newTab.textContent)!
-    activatePlugin(newPlugin, previousPlugin, sandbox, tabBar, container)
-  }
-
-  tabs.forEach(t => {
-    tabBar.appendChild(t)
-    t.onclick = tabClicked
-  })
+  const initialPlugins = defaultPluginFactories.map(f => f())
+  initialPlugins.forEach(p => registerPlugin(p))
 
   // Choose which should be selected
   const priorityPlugin = plugins.find(plugin => plugin.shouldBeSelected && plugin.shouldBeSelected())
@@ -214,6 +223,8 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
     }
   })
 
+  setupSidebarToggle()
+
   createConfigDropdown(sandbox, monaco)
   updateConfigDropdownForCompilerOptions(sandbox, monaco)
 
@@ -280,6 +291,7 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
   const playground = {
     exporter,
     ui,
+    registerPlugin,
   }
 
   window.ts = sandbox.ts
@@ -292,6 +304,45 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
   console.log('\twindow.ts', window.ts)
   console.log('\twindow.sandbox', window.sandbox)
   console.log('\twindow.playground', window.playground)
+
+  // Dev mode plugin
+  if (allowConnectingToLocalhost()) {
+    window.exports = {}
+    console.log('Connecting to dev plugin')
+    try {
+      // @ts-ignore
+      const re = window.require
+      re(['local/index'], (devPlugin: any) => {
+        console.log('Set up dev plugin from localhost:5000')
+        console.log(devPlugin)
+        playground.registerPlugin(devPlugin)
+
+        // Auto-select the dev plugin
+        activatePlugin(devPlugin, currentPlugin(), sandbox, tabBar, container)
+      })
+    } catch (error) {
+      console.error('Problem loading up the dev plugin')
+      console.error(error)
+    }
+  }
+
+  activePlugins().forEach(plugin => {
+    try {
+      // @ts-ignore
+      const re = window.require
+      re([`unpkg/${plugin.module}@latest/dist/index`], (devPlugin: PlaygroundPlugin) => {
+        playground.registerPlugin(devPlugin)
+
+        // Auto-select the dev plugin
+        if (devPlugin.shouldBeSelected && devPlugin.shouldBeSelected()) {
+          activatePlugin(devPlugin, currentPlugin(), sandbox, tabBar, container)
+        }
+      })
+    } catch (error) {
+      console.error('Problem loading up the plugin:', plugin)
+      console.error(error)
+    }
+  })
 
   return playground
 }

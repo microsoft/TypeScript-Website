@@ -72,7 +72,7 @@ export default async function () {
     <>
       <Layout>
         <div id="dev">
-          <DevNav />
+          <DevNav active="sandbox" />
           <div className="raised content" style={{ padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
             <div className="split-sixhundred">
               <h1 style={{ marginTop: "0" }}>TypeScript Sandbox</h1>

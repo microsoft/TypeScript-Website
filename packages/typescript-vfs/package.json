@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "author": "TypeScript team",
+  "homepage": "https://github.com/microsoft/TypeScript-Website/",
   "main": "./dist/index.js",
   "module": "./dist/typescript-vsf.esm.js",
   "typings": "./dist/index.d.ts",

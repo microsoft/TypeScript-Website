@@ -3,7 +3,7 @@ import { SiteNav, Props } from "./layout/TopNav"
 import { SiteFooter } from "./layout/SiteFooter"
 import { IntlProvider, } from 'react-intl';
 
-type LayoutProps = Props & {
+type LayoutProps = SeoProps & Props & {
   locale?: string
   children: any
 }
