@@ -3,6 +3,7 @@ import { Layout } from "../components/layout"
 
 import "./css/documentation.scss"
 import { ButtonGrid, GridProps } from "../components/display/ButtonGrid"
+import { Intl } from "../components/Intl"
 
 const headlineGrid: GridProps = {
   buttons: [
@@ -256,4 +257,5 @@ const Index = () =>
 
   </Layout >
 
-export default Index
+
+export default (props: any) => <Intl><Index {...props} /></Intl>

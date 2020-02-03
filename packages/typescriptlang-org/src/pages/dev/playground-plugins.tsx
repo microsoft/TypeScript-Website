@@ -3,6 +3,7 @@ import { Layout } from "../../components/layout"
 import { withPrefix } from "gatsby"
 
 import "./dev.scss"
+import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/dev-nav"
 
 const Index = (_props: any) => {
@@ -42,7 +43,7 @@ const Index = (_props: any) => {
       </Layout>
     </>
   )
-
 }
 
-export default Index
+export default (props: any) => <Intl><Index {...props} /></Intl>
+

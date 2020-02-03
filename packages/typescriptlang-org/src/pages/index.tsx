@@ -1,5 +1,6 @@
 import React from "react"
 import { Layout } from "../components/layout"
+import { Intl } from "../components/Intl"
 import { Link } from "gatsby"
 
 const Index = (props: any) =>
@@ -20,4 +21,6 @@ const Index = (props: any) =>
 
   </Layout>
 
-export default Index
+
+export default (props: any) => <Intl><Index {...props} /></Intl>
+

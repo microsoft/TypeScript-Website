@@ -1,5 +1,6 @@
 import React from "react"
 import { Layout } from "../components/layout"
+import { Intl } from "../components/Intl"
 
 const Index = () =>
   <Layout title="How to set up TypeScript" description="" >
@@ -22,4 +23,4 @@ const Index = () =>
 
   </Layout>
 
-export default Index
+export default (props: any) => <Intl><Index {...props} /></Intl>

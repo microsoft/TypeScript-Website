@@ -3,6 +3,7 @@ import { Layout } from "../../components/layout"
 import { withPrefix } from "gatsby"
 
 import "./dev.scss"
+import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/dev-nav"
 import { isTouchDevice } from "../../lib/isTouchDevice"
 import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
@@ -201,7 +202,7 @@ export default async function () {
 
 }
 
-export default Index
+export default (props: any) => <Intl><Index {...props} /></Intl>
 
 const codeSamples = [
   {

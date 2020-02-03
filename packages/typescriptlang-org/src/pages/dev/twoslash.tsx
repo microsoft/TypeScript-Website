@@ -3,10 +3,10 @@ import { Layout } from "../../components/layout"
 import { withPrefix } from "gatsby"
 import { twoslasher } from "ts-twoslasher"
 import { createDefaultMapFromCDN } from "typescript-vfs"
-
 import { renderToHTML } from "gatsby-remark-shiki/src/renderer"
 
 import "./dev.scss"
+import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/dev-nav"
 import { isTouchDevice } from "../../lib/isTouchDevice"
 import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
@@ -229,7 +229,7 @@ const Index = (props: any) => {
   )
 }
 
-export default Index
+export default (props: any) => <Intl><Index {...props} /></Intl>
 
 // prettier-ignore
 const codeSamples = [
