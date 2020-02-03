@@ -181,6 +181,7 @@ const Index = (props: Props) => {
           <div id="playground-container" style={{ display: "none" }}>
             <div id="editor-container">
               <div id="editor-toolbar" className="navbar-sub" >
+
                 <ul>
                   <li id="versions" className="dropdown">
                     <a href="#">Version... <span className="caret" /></a>
@@ -203,6 +204,9 @@ const Index = (props: Props) => {
                       <li><a href="#" onClick={() => playground.exporter.openProjectInStackBlitz()}>Open in StackBlitz</a></li>
                     </ul>
                   </li>
+                </ul>
+                <ul className="right">
+                  <li><a id="sidebar-toggle" aria-label="Hide Sidebar" href="#">&#x21E5;</a></li>
                 </ul>
               </div>
               { /** This is the div which monaco is added into  **/}

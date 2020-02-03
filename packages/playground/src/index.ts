@@ -11,6 +11,7 @@ import {
   createPluginContainer,
   activatePlugin,
   createDragBar,
+  setupSidebarToggle,
 } from './createElements'
 import { showDTSPlugin } from './sidebar/showDTS'
 import { runWithCustomLogs, runPlugin } from './sidebar/runtime'
@@ -220,6 +221,8 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
       navLI?.classList.remove('open')
     }
   })
+
+  setupSidebarToggle()
 
   createConfigDropdown(sandbox, monaco)
   updateConfigDropdownForCompilerOptions(sandbox, monaco)

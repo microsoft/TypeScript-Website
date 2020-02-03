@@ -223,7 +223,7 @@ main #editor-toolbar {
   > ul > li {
     > a {
       // Fix their vertical centering
-      padding-top: 0.5rem;
+      padding-top: 0.8rem;
       &:hover {
         @media (prefers-color-scheme: dark) {
           border-bottom: 1px solid white;

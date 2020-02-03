@@ -64,7 +64,7 @@ export const optionsPlugin = () => {
   const plugin: PlaygroundPlugin = {
     id: 'options',
     displayName: 'Options',
-    shouldBeSelected: () => true,
+    // shouldBeSelected: () => true, // uncomment to make this the first tab on reloads
     willMount: (_sandbox, container) => {
       const categoryDiv = document.createElement('div')
       container.appendChild(categoryDiv)
