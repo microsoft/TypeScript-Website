@@ -92,11 +92,17 @@ const Index = (props: Props) => {
         playground.setupPlayground(sandboxEnv, main, playgroundConfig)
         sandboxEnv.editor.focus()
 
-        const darkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-        if (darkModeEnabled) {
-          console.log("making dark")
+        const darkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)')
+        if (darkModeEnabled.matches) {
           sandboxEnv.monaco.editor.setTheme("sandbox-dark");
         }
+
+        darkModeEnabled.addListener((e) => {
+          const darkModeOn = e.matches;
+          const newTheme = darkModeOn ? "sandbox-dark" : "sandbox-light"
+          sandboxEnv.monaco.editor.setTheme(newTheme);
+        });
+
 
         const container = document.getElementById("playground-container")!
         container.style.display = "flex"

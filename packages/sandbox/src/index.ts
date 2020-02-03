@@ -250,7 +250,7 @@ export const createTypeScriptSandbox = (
   }
 
   // Pass along the supported releases for the playground
-  const supportedVersions = [...supportedReleases, '3.8.0-beta']
+  const supportedVersions = supportedReleases
 
   return {
     config,
