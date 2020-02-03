@@ -5,16 +5,17 @@ import { Layout } from "../components/layout"
 
 import { useIntl } from "react-intl";
 import { createInternational } from "../lib/createInternational"
+import { Intl } from "../components/Intl"
 import { headCopy } from "../copy/en/head-seo"
 
 import "./markdown.scss"
 import "./tsconfig.scss"
-import { Intl } from "../components/Intl"
 
 type Props = { pageContext: any, data: TSConfigReferenceTemplate, path: string }
 
 const TSConfigReferenceTemplateComponent = (props: Props) => {
   const i = createInternational<typeof headCopy>(useIntl())
+
   const post = props.data.markdownRemark
   if (!post) {
     console.log("Could not render:", JSON.stringify(props))
@@ -69,7 +70,7 @@ const TSConfigReferenceTemplateComponent = (props: Props) => {
   })
 
   return (
-    <Layout locale={props.pageContext.locale} title={i("tsconfig_title")} description={i("tsconfig_description")}>
+    <Layout title={i("tsconfig_title")} description={i("tsconfig_description")}>
       <div className="tsconfig raised" style={{ maxWidth: 960, margin: "1rem auto", paddingTop: "0.5rem" }}>
         <div id="full-option-list" className="indent">
           {categories!.categories!.map(c => {
@@ -95,7 +96,6 @@ const TSConfigReferenceTemplateComponent = (props: Props) => {
   )
 }
 
-export default (props: Props) => <Intl><TSConfigReferenceTemplateComponent {...props} /></Intl>
 
 export const pageQuery = graphql`
   query TSConfigReferenceTemplate($path: String, $tsconfigMDPath: String!) {
@@ -124,3 +124,5 @@ export const pageQuery = graphql`
     }
   }
 `
+
+export default (props: Props) => <Intl locale={props.pageContext.locale}><TSConfigReferenceTemplateComponent {...props} /></Intl>

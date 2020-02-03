@@ -8,7 +8,7 @@ import { RenderExamples } from "../components/ShowExamples"
 import { useIntl } from "react-intl";
 import { createInternational } from "../lib/createInternational"
 import { headCopy } from "../copy/en/head-seo"
-import { withIntl, Intl } from "../components/Intl"
+import { Intl } from "../components/Intl"
 
 
 // This gets set by the playground
@@ -124,7 +124,7 @@ const Play = (props: Props) => {
 
 
   return (
-    <Layout disableBetaNotification locale={props.pageContext.lang} title={i("head_playground_title")} description={i("head_playground_description")}>
+    <Layout disableBetaNotification title={i("head_playground_title")} description={i("head_playground_description")}>
       {/** This is the top nav, which is outside of the editor  */}
       <nav className="navbar-sub">
         <ul className="nav">
@@ -233,4 +233,4 @@ const Play = (props: Props) => {
 }
 
 
-export default (props: Props) => <Intl><Play {...props} /></Intl>
+export default (props: Props) => <Intl locale={props.pageContext.lang}><Play {...props} /></Intl>

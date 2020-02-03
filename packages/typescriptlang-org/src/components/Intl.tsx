@@ -1,4 +1,4 @@
-import React, { ReactPropTypes } from "react"
+import React from "react"
 import { IntlProvider } from 'react-intl';
 
 type IntlProps = {
