@@ -150,7 +150,7 @@ const Index = (props: Props) => {
               <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">What's New <span className="caret"></span></a>
               <ul className="examples-dropdown" id="whatisnew">
                 <button className="examples-close">Close</button>
-                <RenderExamples defaultSection="3.7" sections={["3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
+                <RenderExamples defaultSection="3.8" sections={["3.8", "3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
               </ul>
             </li>
           </ul>

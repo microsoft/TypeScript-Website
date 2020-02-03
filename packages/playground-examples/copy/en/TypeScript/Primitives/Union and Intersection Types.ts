@@ -34,11 +34,11 @@ interface ErrorHandling {
 }
 
 interface ArtworksData {
-  artworks: [{ title: string }];
+  artworks: { title: string }[];
 }
 
 interface ArtistsData {
-  artists: [{ name: string }];
+  artists: { name: string }[];
 }
 
 // These interfaces can be composed in responses which have

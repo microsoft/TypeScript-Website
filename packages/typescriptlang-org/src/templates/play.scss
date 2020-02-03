@@ -127,6 +127,12 @@
         margin: 0;
       }
 
+      a {
+        color: $ts-main-blue-color;
+        padding-left: 0;
+        padding-bottom: 0.2rem;
+      }
+
       #config-container #boolean-options-container {
         display: flex;
         flex-wrap: wrap;
@@ -138,14 +144,25 @@
             margin: 0;
             padding: 0;
           }
+
           li {
             margin-bottom: 0.5rem;
           }
-          label > span {
-            font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+
+          input {
+            margin-top: 0.4rem;
+          }
+
+          label {
+            font-weight: 400;
+
+            > span {
+              font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+            }
           }
         }
       }
+
       #compiler-dropdowns {
         display: flex;
         margin: 1.5rem 0;
@@ -162,6 +179,7 @@
           span.compiler-flag-blurb {
             display: block;
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 400;
           }
         }
       }

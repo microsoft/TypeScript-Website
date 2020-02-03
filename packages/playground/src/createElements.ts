@@ -146,12 +146,15 @@ const toggleIconWhenClosed = '&#x21E4;'
 
 export const setupSidebarToggle = () => {
   const toggle = document.getElementById('sidebar-toggle')!
-  const sidebarShowing = !sidebarHidden()
-  toggle.innerHTML = sidebarShowing ? toggleIconWhenOpen : toggleIconWhenClosed
+
+  const updateToggle = () => {
+    const sidebarShowing = !sidebarHidden()
+    toggle.innerHTML = sidebarShowing ? toggleIconWhenOpen : toggleIconWhenClosed
+    toggle.setAttribute('aria-label', sidebarShowing ? 'Hide Sidebar' : 'Show Sidebar')
+  }
 
   toggle.onclick = () => {
     const newState = !sidebarHidden()
-    toggle.innerHTML = !newState ? toggleIconWhenOpen : toggleIconWhenClosed
 
     const sidebar = window.document.querySelector('.playground-sidebar') as HTMLDivElement
     if (newState) {
@@ -161,6 +164,7 @@ export const setupSidebarToggle = () => {
       localStorage.removeItem('sidebar-hidden')
       sidebar.style.display = 'block'
     }
+    updateToggle()
     return false
   }
 }
