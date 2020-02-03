@@ -5,7 +5,7 @@ import { withPrefix } from "gatsby"
 import "./dev.scss"
 import { DevNav } from "../../components/dev-nav"
 
-const Index = (props: any) => {
+const Index = (_props: any) => {
   return (
     <>
       <Layout>
@@ -46,68 +46,3 @@ const Index = (props: any) => {
 }
 
 export default Index
-
-const codeSamples = [
-  {
-    blurb: "Converting the user's TypeScript into JavaScript",
-    code: `const sandbox = await createTypeScriptSandbox(sandboxConfig, main, ts)
-    
-    // Async because it needs to go
-    const js = await sandbox.getRunnableJS()
-    console.log(js)`
-  }, {
-    blurb: "Get the DTS for the user's editor",
-    code: `const sandbox = await createTypeScriptSandbox(sandboxConfig, main, ts)
-    
-    const dts = await sandbox.getDTSForCode()
-    console.log(dts)`
-  }, {
-    blurb: "Make a request for an LSP response",
-    code: `const sandbox = await createTypeScriptSandbox(sandboxConfig, main, ts)
-    
-    // A worker here is a web-worker, set up by monaco-typescript
-    // which does the computation in the background
-    const worker = await sandbox.getWorkerProcess()
-    const definitions =  await client.getDefinitionAtPosition(model.uri.toString(), 6)
-      `
-  },
-  {
-    blurb: "Change compiler flags using a few different APIs",
-    code: `const sandbox = await createTypeScriptSandbox(sandboxConfig, main, ts)
-    
-    // Hook in to all changes to the compiler
-sandbox.setDidUpdateCompilerSettings((newOptions) => {
-          console.log("Compiler settings changed: ", newOptions)
-        })
-        
-        // Update via key value
-        sandbox.updateCompilerSetting("allowJs", true)
-        // Update via an object
-sandbox.updateCompilerSettings({jsx: 0 })
-        // Replace the compiler settings
-sandbox.setCompilerSettings({})
-        `
-  },
-  {
-    blurb: "Highlight some code in the editor",
-    code: `const sandbox = await createTypeScriptSandbox(sandboxConfig, main, ts)
-    
-const start = {
-          lineNumber: 0,
-        column: 0
-      }
-      
-const end = {
-          lineNumber: 0,
-        column: 4
-      }
-      
-      const decorations = sandbox.editor.deltaDecorations([], [
-  {
-          range: new sandbox.monaco.Range(start.lineNumber, start.column, end.lineNumber, end.column),
-    options: {inlineClassName: 'error-highlight' },
-      },
-    ])
-    `
-  }
-]
