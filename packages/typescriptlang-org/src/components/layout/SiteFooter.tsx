@@ -66,7 +66,7 @@ const useTypeScriptLinks = [
   },
   {
     title: "Playground",
-    url: "/play",
+    url: "/en/play",
   },
   {
     title: "TSConfig Ref",
@@ -85,7 +85,7 @@ const communityLinks = [
   },
   {
     title: "Blog",
-    url: "/play/#show-examples",
+    url: "https://devblogs.microsoft.com/typescript/",
   },
   {
     title: "GitHub Repo",

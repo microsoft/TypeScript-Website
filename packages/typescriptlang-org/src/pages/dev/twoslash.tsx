@@ -156,7 +156,7 @@ const Index = (props: any) => {
 
   return (
     <>
-      <Layout>
+      <Layout title="Developers - Twoslash Code Samples" description="Learn about the TypeScript code sample library twoslash. Used for transpiling, providing hover to identifiers and compiler-driven error states.">
         <div id="dev">
           <DevNav active="twoslash" />
           <div className="raised content" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem", marginTop: "1rem" }}>

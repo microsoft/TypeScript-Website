@@ -130,7 +130,10 @@
       }
 
       table.compiler-option-md {
-        width: calc(220px);
+        width: 220px;
+        max-width: 220px;
+        min-width: 200px;
+        overflow-x: hidden;
         margin-left: 20px;
         float: right;
 

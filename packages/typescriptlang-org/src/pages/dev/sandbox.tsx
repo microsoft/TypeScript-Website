@@ -70,7 +70,7 @@ export default async function () {
 
   return (
     <>
-      <Layout>
+      <Layout title="Developers - Sandbox" description="The TypeScript sandbox powers the TypeScript Playground. Learn how you can make your experiences like the playground using the sandbox.">
         <div id="dev">
           <DevNav active="sandbox" />
           <div className="raised content" style={{ padding: "2rem", margin: "2rem", marginTop: "1rem" }}>

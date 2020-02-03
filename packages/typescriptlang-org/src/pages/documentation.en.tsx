@@ -221,14 +221,14 @@ const learn = [
 ]
 
 const Index = () =>
-  <Layout >
+  <Layout title="The starting point for learning TypeScript" description="Find TypeScript starter projects: from Angular to React or Node.js and CLIs."  >
     <div id="documentation" className="raised" style={{ backgroundColor: "white", maxWidth: 960, margin: "1rem auto", padding: "2rem" }}>
       <h1>Start Learning</h1>
 
       <ButtonGrid {...headlineGrid} />
 
       <h1>Start a Project</h1>
-      <p>Because TypeScript is a superset of JavaScript, it doesn't have a default template -  there would be too many.
+      <p>Because TypeScript is a super-set of JavaScript, it doesn't have a default template -  there would be too many.
       Instead, other projects have their own TypeScript bootstrap templates with their own context. These projects provide
       templates which include TypeScript support.</p>
 

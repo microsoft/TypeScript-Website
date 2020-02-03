@@ -39,10 +39,11 @@ const gitInit = () => {
 }
 
 const branch = 'v2'
+const vLess = 2
 
 const getTar = ({ user, repo, path = '', name }) => {
   const url = `https://codeload.github.com/${user}/${repo}/tar.gz/${branch}`
-  const cmd = `curl ${url} | tar -xz -C ${name} --strip=4 ${repo}-${branch}/${path}`
+  const cmd = `curl ${url} | tar -xz -C ${name} --strip=4 ${repo}-${vLess}/${path}`
   exec(cmd, { stdio: 'inherit' })
 }
 
