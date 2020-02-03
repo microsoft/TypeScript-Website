@@ -30,10 +30,10 @@ export const HeadSEO = (props: SeoProps) => {
 
   return (
     <>
-      <Helmet title={props.title} titleTemplate={"%s · TypeScript"}>
-        <meta name="description" content={props.description} />
+      <Helmet title={props.title} titleTemplate={"TypeScript: %s"}>
+        <meta name="description" key="description" content={props.description} />
         {
-          Object.keys(ogTags).map(k => <meta property={k} content={ogTags[k]} />)
+          Object.keys(ogTags).map(k => <meta key={k} property={k} content={ogTags[k]} />)
         }
       </Helmet>
     </>

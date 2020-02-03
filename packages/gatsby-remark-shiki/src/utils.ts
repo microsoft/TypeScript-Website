@@ -33,7 +33,7 @@ export function createHighlightedString(ranges: Range[], text: string) {
 
 function flattenRanges(ranges: Range[]) {
   var points: number[] = []
-  var flattened = []
+  var flattened = [] as any[]
   for (let i in ranges) {
     if (ranges[i].end < ranges[i].begin) {
       //RE-ORDER THIS ITEM (BEGIN/END)
@@ -84,7 +84,7 @@ function flattenRanges(ranges: Range[]) {
 }
 
 function inflateRanges(ranges: Range[], length = 0) {
-  var inflated = []
+  var inflated = [] as any[]
   var lastIndex
   for (const indexString in ranges) {
     let i = Number(indexString)

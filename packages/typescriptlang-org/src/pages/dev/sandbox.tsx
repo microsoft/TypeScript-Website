@@ -3,6 +3,7 @@ import { Layout } from "../../components/layout"
 import { withPrefix } from "gatsby"
 
 import "./dev.scss"
+import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/dev-nav"
 import { isTouchDevice } from "../../lib/isTouchDevice"
 import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
@@ -70,7 +71,7 @@ export default async function () {
 
   return (
     <>
-      <Layout>
+      <Layout title="Developers - Sandbox" description="The TypeScript sandbox powers the TypeScript Playground. Learn how you can make your experiences like the playground using the sandbox.">
         <div id="dev">
           <DevNav active="sandbox" />
           <div className="raised content" style={{ padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
@@ -201,7 +202,7 @@ export default async function () {
 
 }
 
-export default Index
+export default (props: any) => <Intl><Index {...props} /></Intl>
 
 const codeSamples = [
   {

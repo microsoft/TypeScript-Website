@@ -4,6 +4,7 @@ import { GetHandbookBySlug } from "./__generated__/GetHandbookBySlug"
 import { Layout } from "../components/layout"
 import { Sidebar, SidebarToggleButton } from "../components/layout/Sidebar"
 import { oldHandbookNavigation } from "../lib/oldNavigation"
+import { Intl } from "../components/Intl"
 
 // This dependency is used in gatsby-remark-autolink-headers to generate the slugs
 import slugger from "github-slugger"
@@ -72,7 +73,7 @@ const HandbookTemplate = (props: { pageContext: any, data: GetHandbookBySlug, pa
   const showSidebar = post.headings && post.headings.length <= 25
 
   return (
-    <Layout locale="en">
+    <Layout title={"Handbook - " + post.frontmatter.title} description="" >
       <section id="doc-layout">
         <SidebarToggleButton />
         <Sidebar navItems={oldHandbookNavigation} selectedID={selectedID} />
@@ -117,11 +118,9 @@ const HandbookTemplate = (props: { pageContext: any, data: GetHandbookBySlug, pa
       */}
     </Layout>
   )
-
 }
 
-
-export default HandbookTemplate
+export default (props: any) => <Intl locale={props.pageContext.lang}><HandbookTemplate {...props} /></Intl>
 
 export const pageQuery = graphql`
   query GetHandbookBySlug($slug: String!) {

@@ -3,10 +3,10 @@ import { Layout } from "../../components/layout"
 import { withPrefix } from "gatsby"
 import { twoslasher } from "ts-twoslasher"
 import { createDefaultMapFromCDN } from "typescript-vfs"
-
 import { renderToHTML } from "gatsby-remark-shiki/src/renderer"
 
 import "./dev.scss"
+import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/dev-nav"
 import { isTouchDevice } from "../../lib/isTouchDevice"
 import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
@@ -156,7 +156,7 @@ const Index = (props: any) => {
 
   return (
     <>
-      <Layout>
+      <Layout title="Developers - Twoslash Code Samples" description="Learn about the TypeScript code sample library twoslash. Used for transpiling, providing hover to identifiers and compiler-driven error states.">
         <div id="dev">
           <DevNav active="twoslash" />
           <div className="raised content" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
@@ -229,7 +229,7 @@ const Index = (props: any) => {
   )
 }
 
-export default Index
+export default (props: any) => <Intl><Index {...props} /></Intl>
 
 // prettier-ignore
 const codeSamples = [

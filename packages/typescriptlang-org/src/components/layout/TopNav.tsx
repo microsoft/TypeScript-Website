@@ -56,43 +56,6 @@ export const SiteNav = (props: Props) => {
 
   return (
     <header dir="ltr">
-      <Helmet htmlAttributes={{ lang: "en" }} meta={[
-        {
-          name: `description`,
-          content: "metaDescription",
-        },
-        {
-          property: `og:title`,
-          content: "title",
-        },
-        {
-          property: `og:description`,
-          content: "metaDescription",
-        },
-        {
-          property: `og:type`,
-          content: `website`,
-        },
-        {
-          name: `twitter:card`,
-          content: `summary`,
-        },
-        {
-          name: `twitter:creator`,
-          content: "@typescript",
-        },
-        {
-          name: `twitter:title`,
-          content: "title",
-        },
-        {
-          name: `twitter:description`,
-          content: "metaDescription",
-        },
-      ]}>
-        <title>TypeScript</title>
-      </Helmet>
-
       <a className="skip-to-main" href="#site-content" tabIndex={0}>{i("skip_to_content")}</a>
 
       <div id="top-menu" className="up">

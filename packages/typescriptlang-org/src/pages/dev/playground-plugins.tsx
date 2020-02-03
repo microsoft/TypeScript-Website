@@ -3,12 +3,13 @@ import { Layout } from "../../components/layout"
 import { withPrefix } from "gatsby"
 
 import "./dev.scss"
+import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/dev-nav"
 
 const Index = (_props: any) => {
   return (
     <>
-      <Layout>
+      <Layout title="Developers - Playground Plugins" description="What is a TypeScript Playground Plugin, and how can you make one?">
         <div id="dev">
           <DevNav active="playground plugins" />
           <div className="raised content" style={{ padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
@@ -42,7 +43,7 @@ const Index = (_props: any) => {
       </Layout>
     </>
   )
-
 }
 
-export default Index
+export default (props: any) => <Intl><Index {...props} /></Intl>
+

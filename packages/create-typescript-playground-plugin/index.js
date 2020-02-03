@@ -38,11 +38,12 @@ const gitInit = () => {
   return true
 }
 
-const branch = 'play_plugins'
+const branch = 'v2'
+const vLess = 2
 
 const getTar = ({ user, repo, path = '', name }) => {
   const url = `https://codeload.github.com/${user}/${repo}/tar.gz/${branch}`
-  const cmd = `curl ${url} | tar -xz -C ${name} --strip=4 ${repo}-${branch}/${path}`
+  const cmd = `curl ${url} | tar -xz -C ${name} --strip=4 ${repo}-${vLess}/${path}`
   exec(cmd, { stdio: 'inherit' })
 }
 
@@ -94,6 +95,6 @@ const create = async (opts = {}) => {
 }
 
 const [name] = process.argv.slice(2)
-const template = 'microsoft/TypeScript-Website/packages/create-playground-plugin/template/'
+const template = 'microsoft/TypeScript-Website/packages/create-typescript-playground-plugin/template/'
 
 create({ name, template })

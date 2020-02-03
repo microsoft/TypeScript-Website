@@ -1,30 +1,23 @@
 import React from "react"
 import { SiteNav, Props } from "./layout/TopNav"
 import { SiteFooter } from "./layout/SiteFooter"
-import { IntlProvider, } from 'react-intl';
+import { SeoProps, HeadSEO } from "./HeadSEO";
+import "./layout/main.scss"
 
 type LayoutProps = SeoProps & Props & {
-  locale?: string
   children: any
 }
 
-import "./layout/main.scss"
-
 export const Layout = (props: LayoutProps) => {
-  const { children, locale } = props
-  let messages = require("../copy/en").lang
-  try {
-    messages = require("../copy/" + locale).lang
-  } catch (error) {
-    // NOOP
-  }
+
   return (
-    <IntlProvider locale={locale || "en"} messages={messages} >
+    <>
+      <HeadSEO {...props} />
       <div className="ms-Fabric">
         <SiteNav {...props} />
-        <main>{children}</main>
+        <main>{props.children}</main>
         <SiteFooter />
       </div>
-    </IntlProvider>
+    </>
   )
 }
