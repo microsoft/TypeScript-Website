@@ -90,6 +90,7 @@ const Index = (props: any) => {
             } catch (error) {
               const err = error as Error
               const failure = document.getElementById("twoslash-failure")
+
               if (!failure) return;
               failure.style.display = "block"
 

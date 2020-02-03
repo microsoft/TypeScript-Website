@@ -312,6 +312,7 @@ main #editor-toolbar {
   .playground-sidebar {
     flex-basis: 320px;
     padding: 0 1em;
+    padding-left: 0.5rem;
     width: 320px;
     max-width: 320px;
     display: flex;
@@ -327,6 +328,17 @@ main #editor-toolbar {
       flex-grow: 1;
       overflow-y: scroll;
       overflow-x: hidden;
+      position: relative;
+
+      #restart-required {
+        text-align: center;
+        border: 1px solid $ts-main-blue-color;
+        padding: 5px 10px;
+        position: absolute;
+        right: 0;
+        top: -2px;
+        display: none;
+      }
 
       pre {
         background-color: rgb(241, 241, 241);
@@ -472,6 +484,40 @@ input[type="url"] {
 
 input.good {
   border-color: $ts-muted-green;
+}
+
+#playground-container .playground-plugins {
+  margin: 1rem 0;
+  border: 1px solid lightgrey;
+
+  padding: 14px 0;
+
+  li div {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+  }
+
+  input {
+    margin: 0 8px;
+    display: block;
+    height: 100%;
+    position: absolute;
+  }
+
+  label {
+    padding-left: 30px;
+    span {
+      font-weight: 600;
+    }
+  }
+}
+
+.custom-modules li {
+  a {
+    display: inline-block;
+    float: right;
+  }
 }
 
 // These show in the editor!
