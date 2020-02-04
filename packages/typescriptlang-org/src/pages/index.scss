@@ -1,0 +1,54 @@
+@import "../style/globals.scss";
+
+#index {
+  .darkblue {
+    background-color: $ts-main-blue-darkest-color;
+    color: white;
+  }
+
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .editor {
+    border: 2px solid white;
+    border-radius: 8px;
+    width: 300px;
+
+    .titlebar {
+      height: 2rem;
+      border-bottom: 2px solid white;
+      display: flex;
+      flex-direction: row;
+
+      .lang {
+        margin-left: 5px;
+      }
+      .window-name {
+        margin-left: 10px;
+        padding-top: 2px;
+      }
+    }
+
+    .content {
+      height: 400px;
+      display: flex;
+      flex-direction: row;
+
+      .lines {
+        width: 22px;
+        border-right: 2px solid white;
+      }
+
+      .text {
+        padding: 1rem;
+        font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+        font-size: 0.8rem;
+        white-space: pre;
+      }
+    }
+  }
+}
