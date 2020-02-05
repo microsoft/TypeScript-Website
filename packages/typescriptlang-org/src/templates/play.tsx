@@ -61,7 +61,7 @@ const Play = (props: Props) => {
       const re = global.require
       re.config({
         paths: {
-          vs: `https://tswebinfra.blob.core.windows.net/cdn/${tsVersion}/monaco/min/vs`,
+          vs: `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/min/vs`,
           "typescript-sandbox": withPrefix('/js/sandbox'),
           "typescript-playground": withPrefix('/js/playground'),
           "unpkg": "https://unpkg.com/",
