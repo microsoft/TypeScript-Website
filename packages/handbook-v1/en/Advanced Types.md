@@ -1296,7 +1296,7 @@ class C {
 
 type T10 = ReturnType<() => string>;  // string
 type T11 = ReturnType<(s: string) => void>;  // void
-type T12 = ReturnType<(<T>() => T)>;  // {}
+type T12 = ReturnType<(<T>() => T)>;  // unkown
 type T13 = ReturnType<(<T extends U, U extends number[]>() => T)>;  // number[]
 type T14 = ReturnType<typeof f1>;  // { a: number, b: string }
 type T15 = ReturnType<any>;  // any
