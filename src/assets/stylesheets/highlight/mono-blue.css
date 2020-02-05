@@ -5,7 +5,7 @@
   display: block;
   overflow-x: auto;
   padding: 0.5em;
-  background: #eaeef3;
+  background: #f4f6f9;
   -webkit-text-size-adjust: none;
 }
 
@@ -25,7 +25,7 @@
 
 .hljs-comment,
 .hljs-chunk {
-  color: #738191;
+  color: #4f6c8e;
 }
 
 .hljs-string,
@@ -64,5 +64,5 @@
 .hljs-bullet,
 .hljs-sqbracket,
 .hljs-phony {
-  color: #4c81c9;
+  color: #3a68a7;
 }
