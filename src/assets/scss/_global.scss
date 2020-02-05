@@ -3,7 +3,7 @@ $brand-background-color: #152740;
 $brand-lightest-color: #3FA8F4;
 $brand-light-gray: darken(white,10%);
 $brand-nav-color: #294E80;
-$brand-accent-color: #8c6b2b;
+$brand-accent-color: #FFA700;
 $brand-nav-color-focus: #243A61;
 $brand-general-focus-color: $brand-lightest-color;
 $brand-40-gray: darken(white, 40%);
@@ -170,7 +170,7 @@ body {
 }
 
 h1, h2, h3, h4, h5 {
-  color: $brand-accent-color;
+  color: #8c6b2b;
   font-family: "wf_segoe-ui_semilight";
 }
 
