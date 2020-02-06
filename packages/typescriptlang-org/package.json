@@ -13,7 +13,7 @@
     "update-static-assets": "node scripts/downloadPlaygroundAssets.js && node scripts/downloadSearchAssets.js",
     "start": "npm run develop",
     "serve": "gatsby serve",
-    "test": "echo 'no tests'"
+    "test": "jest"
   },
   "dependencies": {
     "@babel/core": "^7.7.7",
@@ -65,6 +65,10 @@
     "concurrently": "^5.0.2",
     "gatsby-plugin-typescript": "^2.1.23",
     "prettier": "^1.19.1"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
   },
   "repository": {
     "type": "git",

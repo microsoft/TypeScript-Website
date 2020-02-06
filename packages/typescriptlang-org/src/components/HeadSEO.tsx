@@ -16,7 +16,6 @@ export const HeadSEO = (props: SeoProps) => {
     "og:title": props.title,
     "og:description": props.description,
     "twitter:site": "typescriptlang",
-
   }
 
   // do we want localized pages to be the english version?
