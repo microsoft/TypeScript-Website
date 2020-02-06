@@ -61,7 +61,7 @@ it("it to convert to markdown", () => {
      A good example for this feature is dealing with partial
      objects which have defaults when a key isn't passed in.
 
-    \`\`\`ts
+    <code><pre>
     interface AppConfiguration {
       // Default: \\"(no name)\\"; empty string IS valid
       name:  string;
@@ -90,8 +90,7 @@ it("it to convert to markdown", () => {
       config.active = config.active || true; // really bad, always true
     }
 
-    \`\`\`
-
+    </pre></code>
     // You can read more about nullish coalescing in the 3.7 blog post:
 
      https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/
