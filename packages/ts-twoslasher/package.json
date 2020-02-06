@@ -12,7 +12,7 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build; yarn readme",
-    "bootstrap": "yarn workspace typescript-vfs run bootstrap; yarn build",
+    "bootstrap": "yarn workspace typescript-vfs run build; yarn build",
     "readme": "yarn md-magic README.md --config ./scripts/inline-results.js; yarn prettier README.md --write",
     "test": "tsdx test",
     "lint": "tsdx lint"
