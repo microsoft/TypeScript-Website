@@ -1,13 +1,13 @@
-import { PlaygroundPlugin } from '..'
+import { PlaygroundPlugin, PluginFactory } from '..'
 import { localize } from '../localizeWithFallback'
 
-export const showErrors = () => {
+export const showErrors: PluginFactory = i => {
   let decorations: string[] = []
   let decorationLock = false
 
   const plugin: PlaygroundPlugin = {
     id: 'errors',
-    displayName: localize('play_sidebar_errors', 'Errors'),
+    displayName: i('play_sidebar_errors'),
     willMount: async (sandbox, container) => {
       const noErrorsMessage = document.createElement('div')
       noErrorsMessage.id = 'empty-message-container'

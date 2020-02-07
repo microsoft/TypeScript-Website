@@ -1,12 +1,11 @@
-import { PlaygroundPlugin } from '..'
-import { localize } from '../localizeWithFallback'
+import { PlaygroundPlugin, PluginFactory } from '..'
 
-export const compiledJSPlugin = () => {
+export const compiledJSPlugin: PluginFactory = i => {
   let codeElement: HTMLElement
 
   const plugin: PlaygroundPlugin = {
     id: 'js',
-    displayName: localize('play_sidebar_js', 'JS'),
+    displayName: i('play_sidebar_js'),
     willMount: (sandbox, container) => {
       const createCodePre = document.createElement('pre')
       codeElement = document.createElement('code')

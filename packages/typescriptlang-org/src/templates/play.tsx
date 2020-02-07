@@ -26,9 +26,6 @@ type Props = {
 
 const Play = (props: Props) => {
   const i = createInternational<typeof headCopy & typeof playCopy>(useIntl())
-  // @ts-ignore - this is so it is available to the playground at runtime
-  window.i = i
-
 
   useEffect(() => {
     if ("playgroundLoaded" in window) return
@@ -85,7 +82,7 @@ const Play = (props: Props) => {
           prefix: withPrefix("/")
         }
 
-        playground.setupPlayground(sandboxEnv, main, playgroundConfig)
+        playground.setupPlayground(sandboxEnv, main, playgroundConfig, i)
         sandboxEnv.editor.focus()
 
         const darkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)')

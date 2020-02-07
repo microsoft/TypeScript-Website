@@ -1,12 +1,12 @@
-import { PlaygroundPlugin } from '..'
+import { PlaygroundPlugin, PluginFactory } from '..'
 import { localize } from '../localizeWithFallback'
 
 let allLogs = ''
 
-export const runPlugin = () => {
+export const runPlugin: PluginFactory = i => {
   const plugin: PlaygroundPlugin = {
     id: 'logs',
-    displayName: localize('play_sidebar_logs', 'Logs'),
+    displayName: i('play_sidebar_logs'),
     willMount: (sandbox, container) => {
       if (allLogs.length === 0) {
         const noErrorsMessage = document.createElement('div')

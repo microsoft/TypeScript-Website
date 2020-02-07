@@ -16,6 +16,7 @@ export const playCopy = {
   play_sidebar_logs: "Logs",
   play_sidebar_logs_no_logs: "No logs",
   play_sidebar_options: "Options",
+  play_sidebar_options_restart_required: "Restart required",
   play_sidebar_options_disable_ata: "Disable ATA",
   play_sidebar_options_disable_ata_copy:
     "Disable the automatic acquisition of types for imports and requires.",
@@ -28,9 +29,10 @@ export const playCopy = {
   play_sidebar_options_modules: "Custom Modules",
   play_sidebar_options_modules_placeholder: "Module from npm.",
   play_sidebar_options_plugin_dev: "Plugin Dev",
-  play_sidebar_options_plugin_dev_option: "Connect to localhost:5000/index.js",
+  play_sidebar_options_plugin_dev_option:
+    "Connect to <code>localhost:5000/index.js</code>",
   play_sidebar_options_plugin_dev_copy:
-    "Automatically try connect to a playground plugin in development mode. You can read more <a>here</a>.",
+    "Automatically try connect to a playground plugin in development mode. You can read more <a href='https://www.typescriptlang.org/v2/dev/playground-plugins/'>here</a>.",
   play_export_report_issue: "Report GitHub issue on TypeScript",
   play_export_copy_md: "Copy as Markdown Issue",
   play_export_copy_link: "Copy as Markdown Link",

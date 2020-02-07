@@ -23,6 +23,10 @@ import { createConfigDropdown, updateConfigDropdownForCompilerOptions } from './
 import { showErrors } from './sidebar/showErrors'
 import { optionsPlugin, allowConnectingToLocalhost, activePlugins } from './sidebar/options'
 
+export type PluginFactory = {
+  (i: (key: string, components?: any) => string): PlaygroundPlugin
+}
+
 /** The interface of all sidebar plugins */
 export interface PlaygroundPlugin {
   /** Not public facing, but used by the playground to uniquely identify plugins */
@@ -50,15 +54,14 @@ interface PlaygroundConfig {
   prefix: string
 }
 
-const defaultPluginFactories: (() => PlaygroundPlugin)[] = [
-  compiledJSPlugin,
-  showDTSPlugin,
-  showErrors,
-  runPlugin,
-  optionsPlugin,
-]
+const defaultPluginFactories: PluginFactory[] = [compiledJSPlugin, showDTSPlugin, showErrors, runPlugin, optionsPlugin]
 
-export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: PlaygroundConfig) => {
+export const setupPlayground = (
+  sandbox: Sandbox,
+  monaco: Monaco,
+  config: PlaygroundConfig,
+  i: (key: string) => string
+) => {
   const playgroundParent = sandbox.getDomNode().parentElement!.parentElement!.parentElement!
   const dragBar = createDragBar()
   playgroundParent.appendChild(dragBar)
@@ -97,7 +100,8 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
     return plugins[tabs.indexOf(selectedTab)]
   }
 
-  const initialPlugins = defaultPluginFactories.map(f => f())
+  console.log(i)
+  const initialPlugins = defaultPluginFactories.map(f => f(i))
   initialPlugins.forEach(p => registerPlugin(p))
 
   // Choose which should be selected
@@ -155,7 +159,7 @@ export const setupPlayground = (sandbox: Sandbox, monaco: Monaco, config: Playgr
 
   // Add the versions to the dropdown
   const versionsMenu = document.querySelectorAll('#versions > ul').item(0)
-  const allVersions = ["3.8.0-beta", ...sandbox.supportedVersions]
+  const allVersions = ['3.8.0-beta', ...sandbox.supportedVersions]
   allVersions.forEach((v: string) => {
     const li = document.createElement('li')
     const a = document.createElement('a')
