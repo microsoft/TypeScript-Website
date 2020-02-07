@@ -22,3 +22,9 @@ You probably want these links open in the SAW:
 Related, but not directly:
 
 - [TypeScript build pipelines](https://typescript.visualstudio.com/TypeScript/_build?definitionId=4)
+
+
+## How to get Access
+
+- You will need access to the TM-TypeScript role in https://myaccess
+- You use [JIT-access](https://jitaccess.security.core.windows.net) to request sudo-like access to the Portal for the TypeScript subscription (99160d5b-9289-4b66-8074-ed268e739e8e)
