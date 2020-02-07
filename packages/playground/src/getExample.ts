@@ -29,6 +29,9 @@ export const getExampleSourceCode = async (prefix: string, lang: string, example
         .trim()
     }
 
+    // @ts-ignore
+    window.appInsights.trackEvent({ name: 'Read Playground Example', properties: { id: exampleID, lang } })
+
     return {
       example,
       code,

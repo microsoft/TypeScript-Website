@@ -100,7 +100,6 @@ export const setupPlayground = (
     return plugins[tabs.indexOf(selectedTab)]
   }
 
-  console.log(i)
   const initialPlugins = defaultPluginFactories.map(f => f(i))
   initialPlugins.forEach(p => registerPlugin(p))
 
@@ -143,6 +142,8 @@ export const setupPlayground = (
   // When any compiler flags are changed, trigger a potential change to the URL
   sandbox.setDidUpdateCompilerSettings(() => {
     playgroundDebouncedMainFunction()
+    // @ts-ignore
+    window.appInsights.trackEvent({ name: 'Compiler Settings changed' })
 
     const model = sandbox.editor.getModel()
     const plugin = currentPlugin()
@@ -159,7 +160,7 @@ export const setupPlayground = (
 
   // Add the versions to the dropdown
   const versionsMenu = document.querySelectorAll('#versions > ul').item(0)
-  const allVersions = ['3.8.0-beta', ...sandbox.supportedVersions]
+  const allVersions = ['3.8.0-beta', ...sandbox.supportedVersions, 'Nightly']
   allVersions.forEach((v: string) => {
     const li = document.createElement('li')
     const a = document.createElement('a')
@@ -169,7 +170,9 @@ export const setupPlayground = (
     li.onclick = () => {
       const currentURL = sandbox.getURLQueryWithCompilerOptions(sandbox)
       const params = new URLSearchParams(currentURL.split('#')[0])
-      params.set('ts', v)
+      const version = v === 'Nightly' ? 'next' : v
+      params.set('ts', version)
+
       const hash = document.location.hash.length ? document.location.hash : ''
       const newURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}?${params}${hash}`
 
@@ -196,7 +199,7 @@ export const setupPlayground = (
           .getElementsByTagName('ul')
           .item(0)!
 
-        // SEt exact height and widths for the popovers for the main playground navigation
+        // Set exact height and widths for the popovers for the main playground navigation
         const isPlaygroundSubmenu = !!a.closest('nav')
         if (isPlaygroundSubmenu) {
           const playgroundContainer = document.getElementById('playground-container')!
@@ -209,12 +212,43 @@ export const setupPlayground = (
     }
   })
 
+  window.addEventListener(
+    'keydown',
+    (event: KeyboardEvent) => {
+      const S_KEY = 83
+      if (event.keyCode == S_KEY && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault()
+
+        window.navigator.clipboard.writeText(location.href.toString()).then(
+          () => ui.flashInfo(i('play_export_clipboard')),
+          (e: any) => alert(e)
+        )
+      }
+
+      if (
+        event.keyCode === 13 &&
+        (event.metaKey || event.ctrlKey) &&
+        event.target instanceof Node &&
+        event.target === document.body
+      ) {
+        event.preventDefault()
+        const runButton = document.getElementById('run-button')!
+        runButton.onclick && runButton.onclick({} as any)
+      }
+    },
+    false
+  )
+
   const runButton = document.getElementById('run-button')!
   runButton.onclick = () => {
     const run = sandbox.getRunnableJS()
     const runPlugin = plugins.find(p => p.id === 'logs')!
     activatePlugin(runPlugin, currentPlugin(), sandbox, tabBar, container)
-    runWithCustomLogs(run)
+
+    runWithCustomLogs(run, i)
+
+    const isJS = sandbox.config.useJavaScript
+    ui.flashInfo(i(isJS ? 'play_run_js' : 'play_run_ts'))
   }
 
   // Handle the close buttons on the examples
@@ -347,6 +381,18 @@ export const setupPlayground = (
       console.error(error)
     }
   })
+
+  if (location.hash.startsWith('#show-examples')) {
+    setTimeout(() => {
+      document.getElementById('examples-button')?.click()
+    }, 100)
+  }
+
+  if (location.hash.startsWith('#show-whatisnew')) {
+    setTimeout(() => {
+      document.getElementById('whatisnew-button')?.click()
+    }, 100)
+  }
 
   return playground
 }

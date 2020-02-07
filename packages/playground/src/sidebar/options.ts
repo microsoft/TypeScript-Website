@@ -1,6 +1,3 @@
-// import React from "react"
-// import { withPrefix } from "gatsby"
-
 import { PlaygroundPlugin, PluginFactory } from '..'
 
 const pluginRegistry = [
@@ -35,6 +32,10 @@ const addCustomPlugin = (mod: string) => {
   const newPlugins = customPlugins()
   newPlugins.push(mod)
   localStorage.setItem('custom-plugins-playground', JSON.stringify(newPlugins))
+  // @ts-ignore
+  window.appInsights &&
+    // @ts-ignore
+    window.appInsights.trackEvent({ name: 'Added Custom Module', properties: { id: mod } })
 }
 
 const customPlugins = (): string[] => {
@@ -178,6 +179,10 @@ const createPlugin = (plugin: typeof pluginRegistry[0]) => {
   input.onchange = () => {
     announceWeNeedARestart()
     if (input.checked) {
+      // @ts-ignore
+      window.appInsights &&
+        // @ts-ignore
+        window.appInsights.trackEvent({ name: 'Added Registry Plugin', properties: { id: key } })
       localStorage.setItem(key, 'true')
     } else {
       localStorage.removeItem(key)

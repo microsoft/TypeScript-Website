@@ -110,6 +110,7 @@ export const getURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?: an
 
   // Support sending the selection
   const s = sandbox.editor.getSelection()
+  // TODO: when it's full
   if (
     (s && s.selectionStartLineNumber !== s.positionLineNumber) ||
     (s && s.selectionStartColumn !== s.positionColumn)
@@ -118,6 +119,11 @@ export const getURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?: an
     urlParams['ssc'] = s.selectionStartColumn
     urlParams['pln'] = s.positionLineNumber
     urlParams['pc'] = s.positionColumn
+  } else {
+    urlParams['ssl'] = undefined
+    urlParams['ssc'] = undefined
+    urlParams['pln'] = undefined
+    urlParams['pc'] = undefined
   }
 
   if (sandbox.config.useJavaScript) urlParams['useJavaScript'] = true
