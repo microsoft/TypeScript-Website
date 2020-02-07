@@ -667,3 +667,32 @@ input.good {
     opacity: 0.5;
   }
 }
+
+#flash-bg {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+  z-index: 42;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+
+  p {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    font-size: 1.5rem;
+
+    border-radius: 1em;
+    padding: 0.5em 1.5em;
+
+    color: white;
+    transition: opacity 0.1s ease-in-out;
+
+    /* help Safari with blurred text */
+    transform: translateZ(0);
+  }
+}

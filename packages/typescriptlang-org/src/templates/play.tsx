@@ -137,7 +137,7 @@ const Play = (props: Props) => {
           </li>
 
           <li className="dropdown">
-            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_examples")} <span className="caret"></span></a>
+            <a href="#" id="whatisnew-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_examples")} <span className="caret"></span></a>
             <ul className="examples-dropdown" id="examples" >
               <button className="examples-close">{i("play_subnav_examples_close")}</button>
               <RenderExamples defaultSection="JavaScript" sections={["JavaScript", "TypeScript"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
@@ -145,7 +145,7 @@ const Play = (props: Props) => {
           </li>
 
           <li className="dropdown">
-            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_whatsnew")} <span className="caret"></span></a>
+            <a href="#" id="examples-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_whatsnew")} <span className="caret"></span></a>
             <ul className="examples-dropdown" id="whatisnew">
               <button className="examples-close">{i("play_subnav_examples_close")}</button>
               <RenderExamples defaultSection="3.8" sections={["3.8", "3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />

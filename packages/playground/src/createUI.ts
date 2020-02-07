@@ -1,9 +1,29 @@
 export interface UI {
   showModal: (message: string, subtitle?: string, buttons?: any) => void
+  flashInfo: (message: string) => void
 }
 
 export const createUI = (): UI => {
   return {
+    flashInfo: (message: string) => {
+      let flashBG = document.getElementById('flash-bg')
+      if (flashBG) {
+        flashBG.parentElement?.removeChild(flashBG)
+      }
+
+      flashBG = document.createElement('div')
+      flashBG.id = 'flash-bg'
+
+      const p = document.createElement('p')
+      p.textContent = message
+      flashBG.appendChild(p)
+      document.body.appendChild(flashBG)
+
+      setTimeout(() => {
+        flashBG?.parentElement?.removeChild(flashBG)
+      }, 1000)
+    },
+
     showModal: (code: string, subtitle?: string, links?: any) => {
       document.querySelectorAll('.navbar-sub li.open').forEach(i => i.classList.remove('open'))
 

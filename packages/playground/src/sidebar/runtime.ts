@@ -33,7 +33,7 @@ export const runPlugin: PluginFactory = i => {
   return plugin
 }
 
-export const runWithCustomLogs = (closure: Promise<string>) => {
+export const runWithCustomLogs = (closure: Promise<string>, i: Function) => {
   const noLogs = document.getElementById('empty-message-container')
   if (noLogs) {
     noLogs.style.display = 'none'
@@ -43,7 +43,8 @@ export const runWithCustomLogs = (closure: Promise<string>) => {
     () => document.getElementById('log')!,
     () => document.getElementById('log-container')!,
     closure,
-    true
+    true,
+    i
   )
 }
 
@@ -53,7 +54,8 @@ function rewireLoggingToElement(
   eleLocator: () => Element,
   eleOverflowLocator: () => Element,
   closure: Promise<string>,
-  autoScroll: boolean
+  autoScroll: boolean,
+  i: Function
 ) {
   fixLoggingFunc('log', 'LOG')
   fixLoggingFunc('debug', 'DBG')
@@ -62,7 +64,12 @@ function rewireLoggingToElement(
   fixLoggingFunc('info', 'INF')
 
   closure.then(js => {
-    eval(js)
+    try {
+      eval(js)
+    } catch (error) {
+      console.error(i('play_run_js_fail'))
+      console.error(error)
+    }
 
     allLogs = allLogs + '<hr />'
 

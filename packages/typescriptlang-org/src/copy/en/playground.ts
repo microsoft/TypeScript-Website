@@ -40,6 +40,10 @@ export const playCopy = {
   play_export_tsast: "Open in TypeScript AST Viewer",
   play_export_sandbox: "Open in CodeSandbox",
   play_export_stackblitz: "Open in StackBlitz",
+  play_export_clipboard: "URL copied to clipboard",
+  play_run_js: "Executed JavaScript",
+  play_run_ts: "Executed transpiled TypeScript",
+  play_run_js_fail: "Executed JavaScript Failed:",
   play_default_code_sample: `// Welcome to the TypeScript Playground, this is a website
   // which gives you a chance to write, share and learn TypeScript.
   

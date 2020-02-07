@@ -3,6 +3,7 @@ import { SiteNav, Props } from "./layout/TopNav"
 import { SiteFooter } from "./layout/SiteFooter"
 import { SeoProps, HeadSEO } from "./HeadSEO";
 import "./layout/main.scss"
+import { AppInsights } from "./AppInsights";
 
 type LayoutProps = SeoProps & Props & {
   children: any
@@ -18,6 +19,7 @@ export const Layout = (props: LayoutProps) => {
         <main>{props.children}</main>
         <SiteFooter />
       </div>
+      <AppInsights />
     </>
   )
 }
