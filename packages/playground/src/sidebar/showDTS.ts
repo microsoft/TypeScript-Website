@@ -1,11 +1,12 @@
 import { PlaygroundPlugin } from '..'
+import { localize } from '../localizeWithFallback'
 
 export const showDTSPlugin = () => {
   let codeElement: HTMLElement
 
   const plugin: PlaygroundPlugin = {
     id: 'dts',
-    displayName: 'DTS',
+    displayName: localize('play_sidebar_dts', 'DTS'),
     willMount: (sandbox, container) => {
       // TODO: Monaco?
       const createCodePre = document.createElement('pre')

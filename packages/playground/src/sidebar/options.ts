@@ -1,4 +1,5 @@
 import { PlaygroundPlugin } from '..'
+import { localize } from '../localizeWithFallback'
 
 /** Whether the playground should actively reach out to an existing plugin */
 export const allowConnectingToLocalhost = () => {
@@ -63,7 +64,7 @@ const announceWeNeedARestart = () => {
 export const optionsPlugin = () => {
   const plugin: PlaygroundPlugin = {
     id: 'options',
-    displayName: 'Options',
+    displayName: localize('play_sidebar_options', 'Options'),
     // shouldBeSelected: () => true, // uncomment to make this the first tab on reloads
     willMount: (_sandbox, container) => {
       const categoryDiv = document.createElement('div')
