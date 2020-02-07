@@ -25,6 +25,7 @@ const Play = (props: Props) => {
     // Keep this page around so it is indexed on search engines
     const isBot = /bot|google|baidu|bing|msn|duckduckbot|teoma|slurp|yandex/i.test(navigator.userAgent)
     if (!isBot) {
+      // @ts-ignore - this is allowed in the DOM
       document.location = withPrefix(props.pageContext.redirectHref)
     }
   })
