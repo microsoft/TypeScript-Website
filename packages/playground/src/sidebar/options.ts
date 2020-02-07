@@ -1,27 +1,7 @@
-import { PlaygroundPlugin } from '..'
+// import React from "react"
+// import { withPrefix } from "gatsby"
 
-/** Whether the playground should actively reach out to an existing plugin */
-export const allowConnectingToLocalhost = () => {
-  return !!localStorage.getItem('compiler-setting-connect-dev-plugin')
-}
-
-const settings = [
-  {
-    display: 'Disable ATA',
-    blurb: 'Disable the automatic acquisition of types for imports and requires',
-    flag: 'disable-ata',
-  },
-  {
-    display: 'Disable Save-On-Type',
-    blurb: 'Disable changing the URL when you type',
-    flag: 'disable-save-on-type',
-  },
-  // {
-  //   display: 'Verbose Logging',
-  //   blurb: 'Turn on superfluous logging',
-  //   flag: 'enable-superfluous-logging',
-  // },
-]
+import { PlaygroundPlugin, PluginFactory } from '..'
 
 const pluginRegistry = [
   {
@@ -35,6 +15,16 @@ const pluginRegistry = [
     },
   },
 ]
+
+/** Whether the playground should actively reach out to an existing plugin */
+export const allowConnectingToLocalhost = () => {
+  return !!localStorage.getItem('compiler-setting-connect-dev-plugin')
+}
+
+export const activePlugins = () => {
+  const existing = customPlugins().map(module => ({ module }))
+  return existing.concat(pluginRegistry.filter(p => !!localStorage.getItem('plugin-' + p.module)))
+}
 
 const removeCustomPlugins = (mod: string) => {
   const newPlugins = customPlugins().filter(p => p !== mod)
@@ -51,19 +41,28 @@ const customPlugins = (): string[] => {
   return JSON.parse(localStorage.getItem('custom-plugins-playground') || '[]')
 }
 
-export const activePlugins = () => {
-  const existing = customPlugins().map(module => ({ module }))
-  return existing.concat(pluginRegistry.filter(p => !!localStorage.getItem('plugin-' + p.module)))
-}
+export const optionsPlugin: PluginFactory = i => {
+  const settings = [
+    {
+      display: i('play_sidebar_options_disable_ata'),
+      blurb: i('play_sidebar_options_disable_ata_copy'),
+      flag: 'disable-ata',
+    },
+    {
+      display: i('play_sidebar_options_disable_save'),
+      blurb: i('play_sidebar_options_disable_save_copy'),
+      flag: 'disable-save-on-type',
+    },
+    // {
+    //   display: 'Verbose Logging',
+    //   blurb: 'Turn on superfluous logging',
+    //   flag: 'enable-superfluous-logging',
+    // },
+  ]
 
-const announceWeNeedARestart = () => {
-  document.getElementById('restart-required')!.style.display = 'block'
-}
-
-export const optionsPlugin = () => {
   const plugin: PlaygroundPlugin = {
     id: 'options',
-    displayName: 'Options',
+    displayName: i('play_sidebar_options'),
     // shouldBeSelected: () => true, // uncomment to make this the first tab on reloads
     willMount: (_sandbox, container) => {
       const categoryDiv = document.createElement('div')
@@ -71,13 +70,13 @@ export const optionsPlugin = () => {
 
       const p = document.createElement('p')
       p.id = 'restart-required'
-      p.textContent = 'Restart required'
+      p.textContent = i('play_sidebar_options_restart_required')
       categoryDiv.appendChild(p)
 
       const ol = document.createElement('ol')
       ol.className = 'playground-options'
 
-      createSection('Options', categoryDiv)
+      createSection(i('play_sidebar_options'), categoryDiv)
 
       settings.forEach(setting => {
         const settingButton = createButton(setting)
@@ -86,7 +85,7 @@ export const optionsPlugin = () => {
 
       categoryDiv.appendChild(ol)
 
-      createSection('External Plugins', categoryDiv)
+      createSection(i('play_sidebar_options_external'), categoryDiv)
 
       const pluginsOL = document.createElement('ol')
       pluginsOL.className = 'playground-plugins'
@@ -98,10 +97,10 @@ export const optionsPlugin = () => {
 
       const warning = document.createElement('p')
       warning.className = 'warning'
-      warning.textContent = 'Warning: Code from plugins comes from third-parties.'
+      warning.textContent = i('play_sidebar_options_external_warning')
       categoryDiv.appendChild(warning)
 
-      createSection('Custom Modules', categoryDiv)
+      createSection(i('play_sidebar_options_modules'), categoryDiv)
       const customModulesOL = document.createElement('ol')
       customModulesOL.className = 'custom-modules'
 
@@ -129,7 +128,7 @@ export const optionsPlugin = () => {
       updateCustomModules()
 
       categoryDiv.appendChild(customModulesOL)
-      const inputForm = createNewModuleInputForm(updateCustomModules)
+      const inputForm = createNewModuleInputForm(updateCustomModules, i)
       categoryDiv.appendChild(inputForm)
 
       createSection('Plugin Dev', categoryDiv)
@@ -137,9 +136,8 @@ export const optionsPlugin = () => {
       const pluginsDevOL = document.createElement('ol')
       pluginsDevOL.className = 'playground-options'
       const connectToDev = createButton({
-        display: 'Connect to <code>localhost:5000/index.js</code>',
-        blurb:
-          "Automatically try connect to a playground plugin in development mode. You can read more <a href='http://TBD'>here</a>.",
+        display: i('play_sidebar_options_plugin_dev_option'),
+        blurb: i('play_sidebar_options_plugin_dev_copy'),
         flag: 'connect-dev-plugin',
       })
       pluginsDevOL.appendChild(connectToDev)
@@ -149,6 +147,10 @@ export const optionsPlugin = () => {
   }
 
   return plugin
+}
+
+const announceWeNeedARestart = () => {
+  document.getElementById('restart-required')!.style.display = 'block'
 }
 
 const createSection = (title: string, container: Element) => {
@@ -216,13 +218,13 @@ const createButton = (setting: { blurb: string; flag: string; display: string })
   return li
 }
 
-const createNewModuleInputForm = (updateOL: Function) => {
+const createNewModuleInputForm = (updateOL: Function, i: any) => {
   const form = document.createElement('form')
 
   const newModuleInput = document.createElement('input')
   newModuleInput.type = 'text'
   newModuleInput.id = 'gist-input'
-  newModuleInput.placeholder = 'Module from npm'
+  newModuleInput.placeholder = i('play_sidebar_options_modules_placeholder')
   form.appendChild(newModuleInput)
 
   form.onsubmit = e => {

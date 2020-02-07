@@ -8,6 +8,8 @@ import { RenderExamples } from "../components/ShowExamples"
 import { useIntl } from "react-intl";
 import { createInternational } from "../lib/createInternational"
 import { headCopy } from "../copy/en/head-seo"
+import { playCopy } from "../copy/en/playground"
+
 import { Intl } from "../components/Intl"
 
 
@@ -22,26 +24,8 @@ type Props = {
   }
 }
 
-const defaultText =
-  `// Welcome to the TypeScript Playground, this is a website
-// which gives you a chance to write, share and learn TypeScript.
-
-// You could think of it in three ways:
-//
-//  - A place to learn TypeScript in a place where nothing can break
-//  - A place to experiment with TypeScript syntax, and share the URLs with others
-//  - A sandbox to experiment with different compiler features of TypeScript
-
-const anExampleVariable = "Hello World"
-console.log(anExampleVariable)
-
-// To learn more about the language, click above in "Examples" or "What's New".
-// Otherwise, get started by removing these comments and the world is your playground.
-`
-
 const Play = (props: Props) => {
-  const i = createInternational<typeof headCopy>(useIntl())
-
+  const i = createInternational<typeof headCopy & typeof playCopy>(useIntl())
 
   useEffect(() => {
     if ("playgroundLoaded" in window) return
@@ -82,7 +66,7 @@ const Play = (props: Props) => {
         }
 
         const sandboxEnv = await sandbox.createTypeScriptSandbox({
-          text: defaultText,
+          text: i("play_default_code_sample"),
           compilerOptions: {},
           domID: "monaco-editor-embed",
           useJavaScript: !!params.get("useJavaScript"),
@@ -98,7 +82,7 @@ const Play = (props: Props) => {
           prefix: withPrefix("/")
         }
 
-        playground.setupPlayground(sandboxEnv, main, playgroundConfig)
+        playground.setupPlayground(sandboxEnv, main, playgroundConfig, i)
         sandboxEnv.editor.focus()
 
         const darkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)')
@@ -131,11 +115,11 @@ const Play = (props: Props) => {
           <li className="name"><span>Playground</span></li>
 
           <li className="dropdown">
-            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Config <span className="caret"></span></a>
+            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_config")} <span className="caret"></span></a>
             <ul className="examples-dropdown">
-              <h3>Config</h3>
+              <h3>{i("play_subnav_examples")}</h3>
               <div className="info" id="config-container">
-                <button className="examples-close">Close</button>
+                <button className="examples-close">{i("play_subnav_examples_close")}</button>
 
                 <div id="compiler-dropdowns">
                   <label className="select">
@@ -144,7 +128,7 @@ const Play = (props: Props) => {
                       <option>TypeScript</option>
                       <option>JavaScript</option>
                     </select>
-                    <span className="compiler-flag-blurb">Which language should be used in the editor</span>
+                    <span className="compiler-flag-blurb">{i("play_config_language_blurb")}</span>
                   </label>
                 </div>
 
@@ -153,17 +137,17 @@ const Play = (props: Props) => {
           </li>
 
           <li className="dropdown">
-            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Examples <span className="caret"></span></a>
+            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_examples")} <span className="caret"></span></a>
             <ul className="examples-dropdown" id="examples" >
-              <button className="examples-close">Close</button>
+              <button className="examples-close">{i("play_subnav_examples_close")}</button>
               <RenderExamples defaultSection="JavaScript" sections={["JavaScript", "TypeScript"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
             </ul>
           </li>
 
           <li className="dropdown">
-            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">What's New <span className="caret"></span></a>
+            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_whatsnew")} <span className="caret"></span></a>
             <ul className="examples-dropdown" id="whatisnew">
-              <button className="examples-close">Close</button>
+              <button className="examples-close">{i("play_subnav_examples_close")}</button>
               <RenderExamples defaultSection="3.8" sections={["3.8", "3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
             </ul>
           </li>
@@ -190,7 +174,7 @@ const Play = (props: Props) => {
       <div className="raised" style={{ paddingTop: "0", marginTop: "0", marginBottom: "3rem", paddingBottom: "1.5rem" }}>
         <div id="loader">
           <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-          <p id="loading-message">Downloading TypeScript...</p>
+          <p id="loading-message">{i("play_downloading_typescript")}</p>
         </div>
         <div id="playground-container" style={{ display: "none" }}>
           <div id="editor-container">
@@ -198,24 +182,24 @@ const Play = (props: Props) => {
 
               <ul>
                 <li id="versions" className="dropdown">
-                  <a href="#">Version... <span className="caret" /></a>
+                  <a href="#">{i("play_downloading_version")}... <span className="caret" /></a>
                   <ul className="dropdown-menu versions"></ul>
                 </li>
-                <li><a id="run-button" href="#">Run</a></li>
+                <li><a id="run-button" href="#">{i("play_toolbar_run")}</a></li>
 
                 <li className="dropdown">
-                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Export <span className="caret"></span></a>
+                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_toolbar_export")} <span className="caret"></span></a>
                   <ul className="dropdown-menu">
-                    <li><a href="#" onClick={() => playground.exporter.reportIssue()} >Report GitHub issue on TypeScript</a></li>
+                    <li><a href="#" onClick={() => playground.exporter.reportIssue()} >{i("play_export_report_issue")}</a></li>
                     <li role="separator" className="divider"></li>
-                    <li><a href="#" onClick={() => playground.exporter.copyAsMarkdownIssue()} >Copy as Markdown Issue</a></li>
-                    <li><a href="#" onClick={() => playground.exporter.copyForChat()} >Copy as Markdown Link</a></li>
-                    <li><a href="#" onClick={() => playground.exporter.copyForChatWithPreview()} >Copy as Markdown Link with Preview</a></li>
+                    <li><a href="#" onClick={() => playground.exporter.copyAsMarkdownIssue()} >{i("play_export_copy_md")}</a></li>
+                    <li><a href="#" onClick={() => playground.exporter.copyForChat()} >{i("play_export_copy_link")}</a></li>
+                    < li > <a href="#" onClick={() => playground.exporter.copyForChatWithPreview()} >{i("play_export_copy_link_preview")}</a></li>
+                    < li role="separator" className="divider" ></li>
+                    <li><a href="#" onClick={() => playground.exporter.openInTSAST()} >{i("play_export_tsast")}</a></li>
                     <li role="separator" className="divider"></li>
-                    <li><a href="#" onClick={() => playground.exporter.openInTSAST()} >Open in TypeScript AST Viewer</a></li>
-                    <li role="separator" className="divider"></li>
-                    <li><a href="#" onClick={() => playground.exporter.openProjectInCodeSandbox()}>Open in CodeSandbox</a></li>
-                    <li><a href="#" onClick={() => playground.exporter.openProjectInStackBlitz()}>Open in StackBlitz</a></li>
+                    <li><a href="#" onClick={() => playground.exporter.openProjectInCodeSandbox()}>{i("play_export_sandbox")}</a></li>
+                    <li><a href="#" onClick={() => playground.exporter.openProjectInStackBlitz()}>{i("play_export_stackblitz")}</a></li>
                   </ul>
                 </li>
               </ul>
