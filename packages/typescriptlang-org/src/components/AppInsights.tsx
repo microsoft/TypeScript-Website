@@ -10,7 +10,7 @@ export const AppInsights = () => {
     window[sdkInstance] = "appInsights";
     const config = {
       instrumentationKey: "78a8fb52-a225-4c66-ac08-92fad1c1ade1",
-      loggingLevelConsole: 1
+      // loggingLevelConsole: 1
     }
 
     // @ts-ignore
