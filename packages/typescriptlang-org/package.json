@@ -8,9 +8,10 @@
     "build": "gatsby build",
     "develop": "gatsby develop",
     "clean": "gatsby clean",
-    "bootstrap": "echo 'NOOP'",
+    "bootstrap": "yarn update-versions;",
     "update-snapshots": "node scripts/updateBackstopJSON.js && backstop test && backstop approve",
     "update-static-assets": "node scripts/downloadPlaygroundAssets.js && node scripts/downloadSearchAssets.js",
+    "update-versions": "node scripts/getTypeScriptNPMVersions.js",
     "start": "npm run develop",
     "serve": "gatsby serve",
     "test": "jest"

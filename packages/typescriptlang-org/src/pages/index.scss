@@ -1,5 +1,21 @@
 @import "../style/globals.scss";
 
+.version-bar {
+  background-color: $ts-dark-bg-color;
+  text-align: center;
+  color: white;
+  height: 3rem;
+  line-height: 3rem;
+  margin: 0;
+  font-size: 0.9rem;
+  p {
+    margin: 0;
+    a {
+      color: $ts-main-blue-lightest-color;
+    }
+  }
+}
+
 #index {
   .darkblue {
     background-color: $ts-main-blue-darkest-color;
