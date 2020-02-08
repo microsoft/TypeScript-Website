@@ -20,8 +20,8 @@ const ts = () =>
 const js = () =>
   <svg fill="none" height="10" viewBox="0 0 12 10" width="12" xmlns="http://www.w3.org/2000/svg"><path d="m2.83755.874988h1.85625v5.225002c0 2.3375-1.1 3.1625-2.95625 3.1625-.4125 0-1.031251-.06875-1.375001-.20625l.20625-1.5125c.275.1375.618751.20625.962501.20625.75625 0 1.30625-.34375 1.30625-1.65zm3.50625 6.325002c.48125.275 1.30625.55 2.0625.55.89375 0 1.30625-.34375 1.30625-.89375s-.4125-.825-1.375-1.16875c-1.375-.48125-2.26875-1.2375-2.26875-2.475 0-1.44375 1.16875-2.475002 3.1625-2.475002.9625 0 1.65.206249 2.1312.412502l-.4125 1.5125c-.3437-.1375-.8937-.4125-1.7187-.4125s-1.2375.34375-1.2375.825c0 .55.48125.75625 1.5125 1.16875 1.4437.55 2.1313 1.30625 2.1313 2.475 0 1.375-1.1001 2.54375-3.3688 2.54375-.9625 0-1.85625-.275-2.3375-.48125z" fill="#f1dd3f" /></svg>
 
-const Section = (props: { children: any, color: string }) =>
-  <div className={props.color}><div className="container">{props.children}</div></div>
+const Section = (props: { children: any, color: string, className?: string }) =>
+  <div key={props.color} className={props.color + " " + props.className}><div className="container">{props.children}</div></div>
 
 type EditorProps = {
   title: string
@@ -54,9 +54,9 @@ addPrices(3, 4, 6)`}
   )
 }
 
-const Row = (props: { children: any }) => <div style={{ display: "flex", flexDirection: "row" }}>{props.children}</div>
-const Col = (props: { children: any }) => <div style={{ flex: 1 }}>{props.children}</div>
-const Col2 = (props: { children: any }) => <div style={{ flex: 2 }}>{props.children}</div>
+const Row = (props: { children: any }) => <div className="row">{props.children}</div>
+const Col = (props: { children: any }) => <div className="col1">{props.children}</div>
+const Col2 = (props: { children: any }) => <div className="col2">{props.children}</div>
 
 const Index = (props: any) => {
 
@@ -67,16 +67,16 @@ const Index = (props: any) => {
       <VersionBar />
 
       <div id="index">
-        <Section color="darkblue">
+        <Section color="darkblue" className="headline">
           <Row>
             <Col>
-              <h2>{i("index_headline", { bold: (...chunk) => <strong>{chunk}</strong> })}</h2>
-              <p>{i("index_headline")}</p>
+              <h1>{i("index_headline", { bold: (...chunk) => <strong>{chunk}</strong> })}</h1>
+              <p>{i("index_byline")}</p>
               <p>{i("index_summary")}</p>
               <p>{i("index_locations")}</p>
             </Col>
             <Col2>
-              <div className='headline'>
+              <div className='headline-diagram'>
                 <Editor title="index.js" isJS />
                 <Editor title="index.js" isJS={false} front />
               </div>
@@ -106,29 +106,29 @@ const Index = (props: any) => {
 
         <Section color="blue">
           <Row>
-            <Col>
+            <Col key='dts description'>
               <h4>{i("index_dts")}</h4>
               <div>{i("index_dts_copy", {
                 p: (...chunk) => <p>{chunk}</p>,
                 dt: (...chunk) => <a href='https://github.com/DefinitelyTyped/DefinitelyTyped'>{chunk}</a>
               })}</div>
             </Col>
-            <Col>
+            <Col key='tools description'>
               <h4>{i("index_tools")}</h4>
               <div>{i("index_tools_copy", {
                 p: (...chunk) => <p>{chunk}</p>,
-                vs: (...chunk) => <a href='https://visualstudio.microsoft.com'>{chunk}</a>,
-                vsc: (...chunk) => <a href='https://code.visualstudio.com/'>{chunk}</a>,
-                atom: (...chunk) => <a href='https://atom.io/'>{chunk}</a>,
-                nova: (...chunk) => <a href='https://panic.com/nova/'>{chunk}</a>,
-                subl: (...chunk) => <a href='https://www.sublimetext.com//'>{chunk}</a>,
-                emacs: (...chunk) => <a href='https://github.com/ananthakumaran/tide/#readme'>{chunk}</a>,
-                vim: (...chunk) => <a href='https://www.vimfromscratch.com/articles/setting-up-vim-for-typescript/'>{chunk}</a>,
-                webs: (...chunk) => <a href='https://www.jetbrains.com/webstorm/'>{chunk}</a>,
-                eclipse: (...chunk) => <a href='https://github.com/eclipse/wildwebdeveloper/'>{chunk}</a>
+                vs: (...chunk) => <a key={1} href='https://visualstudio.microsoft.com'>{chunk}</a>,
+                vsc: (...chunk) => <a key={2} href='https://code.visualstudio.com/'>{chunk}</a>,
+                atom: (...chunk) => <a key={3} href='https://atom.io/'>{chunk}</a>,
+                nova: (...chunk) => <a key={4} href='https://panic.com/nova/'>{chunk}</a>,
+                subl: (...chunk) => <a key={5} href='https://www.sublimetext.com//'>{chunk}</a>,
+                emacs: (...chunk) => <a key={6} href='https://github.com/ananthakumaran/tide/#readme'>{chunk}</a>,
+                vim: (...chunk) => <a key={7} href='https://www.vimfromscratch.com/articles/setting-up-vim-for-typescript/'>{chunk}</a>,
+                webs: (...chunk) => <a key={8} href='https://www.jetbrains.com/webstorm/'>{chunk}</a>,
+                eclipse: (...chunk) => <a key={9} href='https://github.com/eclipse/wildwebdeveloper/'>{chunk}</a>
               })}</div>
             </Col>
-            <Col>
+            <Col key='why trust ts'>
               <h4>{i("index_trust")}</h4>
               <div>{i("index_trust_copy", { p: (...chunk) => <p>{chunk}</p> })}</div>
             </Col>
@@ -136,16 +136,16 @@ const Index = (props: any) => {
         </Section>
 
         <Section color="white">
-          <Row><h3>{i("index_what_is")}</h3></Row>
-          <Row>
+          <Row key='what is ts?'><h3>{i("index_what_is")}</h3></Row>
+          <Row key='call to actions'>
             <GreyButton href={withPrefix("/docs/handbook")} title={i("index_started_handbook")} blurb={i("index_started_handbook_blurb")} />
             <GreyButton href={withPrefix("/docs/handbook")} title={i("index_started_guides")} blurb={i("index_started_guides_blurb")} />
             <GreyButton href={withPrefix("/docs/handbook")} title={i("index_started_ref")} blurb={i("index_started_ref_blurb")} />
             <GreyButton href={withPrefix("/docs/handbook")} title={i("index_started_community")} blurb={i("index_started_community_blurb")} last />
           </Row>
 
-          <Row>
-            <Col>
+          <Row key="overall info">
+            <Col key="installation">
               <h4>{i("index_install")}</h4>
               <div className='grey-box'>
                 {i("index_install_ref", {
@@ -156,16 +156,23 @@ const Index = (props: any) => {
               </div>
             </Col>
 
-            <Col>
+            <Col key="releases">
               <h4>{i("index_releases")}</h4>
               <UpcomingReleaseMeta />
             </Col>
           </Row>
         </Section>
 
+        <Section color="purple">
+          <p>hi</p>
+        </Section>
+
+        <Section color="light-grey">
+          <p>hi</p>
+        </Section>
       </div>
 
-    </Layout>)
+    </Layout >)
 
 }
 

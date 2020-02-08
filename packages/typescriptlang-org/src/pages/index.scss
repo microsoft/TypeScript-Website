@@ -8,6 +8,7 @@
   line-height: 3rem;
   margin: 0;
   font-size: 0.9rem;
+
   p {
     margin: 0;
     a {
@@ -20,6 +21,7 @@
   background-color: #d8d8d8;
   padding: 18px;
   margin-right: 20px;
+  box-sizing: border-box;
 
   &.last {
     margin-right: 0;
@@ -27,6 +29,43 @@
 }
 
 #index {
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 200;
+    strong {
+      font-weight: 500;
+    }
+  }
+
+  h3 {
+    text-align: center;
+    font-weight: 500;
+    font-size: 2.5rem;
+    margin-top: 0;
+  }
+
+  h4 {
+    font-weight: 400;
+    font-size: 1.6rem;
+    margin-top: 0;
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .col1 {
+    min-width: 250px;
+    flex: 1;
+    padding: 1rem;
+  }
+
+  .col2 {
+    flex: 2;
+  }
+
   .darkblue {
     background-color: $ts-main-blue-darkest-color;
     color: white;
@@ -37,16 +76,38 @@
     color: white;
   }
 
+  .purple {
+    background-color: $ts-main-blue-color;
+  }
+
+  .white {
+    background-color: white;
+    color: black;
+  }
+
+  .light-grey {
+    background-color: $ts-light-bg-sandy-color;
+    color: black;
+  }
+
+  .headline .container {
+    padding-bottom: 0;
+    padding-top: 20px;
+    font-size: 1.3rem;
+  }
+
   .container {
     max-width: 1080px;
     margin: 0 auto;
+    padding-top: 64px;
+    padding-bottom: 40px;
     display: flex;
     flex-direction: column;
     position: relative;
     overflow-y: hidden;
   }
 
-  .headline {
+  .headline-diagram {
     height: 410px;
     overflow-y: hidden;
     position: relative;
@@ -109,4 +170,73 @@
       }
     }
   }
+
+  .release-info {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+
+    .needle,
+    .needle-head {
+      height: 68px;
+      width: 2px;
+      background-color: black;
+      margin-top: -8px;
+      position: absolute;
+    }
+
+    .needle-head {
+      height: 0;
+      margin-left: -4px;
+      margin-top: -14px;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 6px solid black;
+
+      background-color: transparent;
+    }
+
+    > div > div {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+
+  .bar {
+    width: 100%;
+    height: 50px;
+    margin-left: -1px;
+  }
+
+  .separator {
+    margin-top: 50px;
+    height: 12px;
+    width: 1px;
+    background-color: black;
+  }
+
+  .release {
+    width: 55%;
+    .bar {
+      background-color: #c4c4c4;
+    }
+  }
+  .beta {
+    width: 28%;
+    .bar {
+      background-color: $ts-main-blue-color;
+    }
+  }
+  .rc {
+    width: 17%;
+    .bar {
+      background-color: $ts-main-blue-darker-color;
+    }
+  }
+}
+
+.clicky-grey-button {
+  box-sizing: border-box;
+  width: calc(25% - 20px);
 }
