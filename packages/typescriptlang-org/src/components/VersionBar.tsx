@@ -7,12 +7,12 @@ import { createInternational } from "../lib/createInternational"
 import { useIntl } from "react-intl"
 
 /**
- * Shows the current versions
+ * Shows the current versions, and upcoming releases
  */
 export const VersionBar = () => {
   const i = createInternational<typeof navCopy>(useIntl())
-  const beta = <span><a href={releaseInfo.betaPostURL}>{releaseInfo.tags.betaMajMin}</a> {i("nav_version_beta_prefix")}</span>
-  const rc = <span><a href={releaseInfo.betaPostURL}>{releaseInfo.tags.rcMajMin}</a> {i("nav_version_rc_prefix")}</span>
+  const beta = <span>{i("nav_version_between")}<a href={releaseInfo.betaPostURL}>{releaseInfo.tags.betaMajMin}</a> {i("nav_version_beta_prefix")}</span>
+  const rc = <span>{i("nav_version_between")}<a href={releaseInfo.betaPostURL}>{releaseInfo.tags.rcMajMin}</a> {i("nav_version_rc_prefix")}</span>
   const prefix = releaseInfo.isRC ? rc : releaseInfo.isBeta ? beta : null
 
   return (

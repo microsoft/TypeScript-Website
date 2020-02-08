@@ -6,8 +6,13 @@ import { indexCopy } from "../copy/en/index"
 import { createInternational } from "../lib/createInternational"
 
 import "./index.scss"
+import "../pages/css/documentation.scss"
+
 import { useIntl } from "react-intl"
 import { VersionBar } from "../components/VersionBar"
+import { GreyButton } from "../components/display/GreyButton"
+import { withPrefix } from "gatsby"
+import { UpcomingReleaseMeta } from "../components/UpcomingReleaseMeta"
 
 const ts = () =>
   <svg fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg"><path d="m6.72499 1.47255h-2.3375v6.32987h-1.71875v-6.32987h-2.337502v-1.117035h6.325002v1.117035zm5.29371 4.40609c0-.31029-.1375-.49646-.3437-.68264-.2063-.18617-.6188-.31028-1.1688-.49646-.96246-.24823-1.71871-.55852-2.26871-.93086-.48125-.37235-.75625-.80675-.75625-1.42732 0-.62058.275-1.11704.89375-1.489385.55-.372345 1.30625-.558518 2.20001-.558518.8937 0 1.65.24823 2.2.682633.55.4344.825.99292.825 1.6135h-1.5813c0-.37235-.1375-.62058-.4125-.86881-.275-.18617-.6187-.31029-1.1-.31029-.4125 0-.75621.06206-1.03121.24823-.275.18618-.34375.43441-.34375.68264s.1375.4344.4125.62057.68746.31029 1.37496.49646c.8938.24823 1.5813.55852 2.0625.93087.4813.37234.6875.8688.6875 1.48938 0 .62057-.275 1.17909-.825 1.48938-.55.37234-1.3062.55852-2.2.55852-.89371 0-1.71871-.18618-2.33746-.62058s-1.03125-.99292-.9625-1.79967h1.65c0 .4344.1375.74469.48125.99292.275.18617.75621.31029 1.23751.31029.4812 0 .825-.06206 1.0312-.24823.1375-.18617.275-.4344.275-.68263z" fill="#529bba" /></svg>
@@ -21,11 +26,13 @@ const Section = (props: { children: any, color: string }) =>
 type EditorProps = {
   title: string
   isJS: boolean
+  front?: boolean
 }
 
 const Editor = (props: EditorProps) => {
+  const classes = props.front ? "front" : "back"
   return (
-    <div className="editor">
+    <div className={"editor " + classes}>
       <div className="titlebar">
         <div className="lang">{props.isJS ? js() : ts()}</div>
         <div className="window-name">index.ts</div>
@@ -47,6 +54,7 @@ addPrices(3, 4, 6)`}
   )
 }
 
+const Row = (props: { children: any }) => <div style={{ display: "flex", flexDirection: "row" }}>{props.children}</div>
 const Col = (props: { children: any }) => <div style={{ flex: 1 }}>{props.children}</div>
 const Col2 = (props: { children: any }) => <div style={{ flex: 2 }}>{props.children}</div>
 
@@ -60,16 +68,101 @@ const Index = (props: any) => {
 
       <div id="index">
         <Section color="darkblue">
-          <Col>
-            <h2>{i("index_headline", { span: (...chunk) => <strong>{chunk}</strong> })}</h2>
-          </Col>
-          <Col2>
-            <Editor title="index.js" isJS />
-            <Editor title="index.js" isJS={false} />
-
-          </Col2>
-
+          <Row>
+            <Col>
+              <h2>{i("index_headline", { bold: (...chunk) => <strong>{chunk}</strong> })}</h2>
+              <p>{i("index_headline")}</p>
+              <p>{i("index_summary")}</p>
+              <p>{i("index_locations")}</p>
+            </Col>
+            <Col2>
+              <div className='headline'>
+                <Editor title="index.js" isJS />
+                <Editor title="index.js" isJS={false} front />
+              </div>
+            </Col2>
+          </Row>
         </Section>
+        <Section color="white">
+          <h3>{i("index_what_is")}</h3>
+          <Row>
+            <Col key='what is js'>
+              <h4>{i("index_what_is_js")}</h4>
+              <div>{i("index_what_is_js_copy", { p: (...chunk) => <p>{chunk}</p> })}</div>
+            </Col>
+            <Col key='you can trust typescipt'>
+              <h4>{i("index_trust")}</h4>
+              <div>{i("index_trust_copy", {
+                p: (...chunk) => <p>{chunk}</p>,
+                babel: (...chunk) => <a href='https://babeljs.io/'>{chunk}</a>
+              })}</div>
+            </Col>
+            <Col key='TS improves JS'>
+              <h4>{i("index_standards")}</h4>
+              <div>{i("index_standards_copy", { p: (...chunk) => <p>{chunk}</p> })}</div>
+            </Col>
+          </Row>
+        </Section>
+
+        <Section color="blue">
+          <Row>
+            <Col>
+              <h4>{i("index_dts")}</h4>
+              <div>{i("index_dts_copy", {
+                p: (...chunk) => <p>{chunk}</p>,
+                dt: (...chunk) => <a href='https://github.com/DefinitelyTyped/DefinitelyTyped'>{chunk}</a>
+              })}</div>
+            </Col>
+            <Col>
+              <h4>{i("index_tools")}</h4>
+              <div>{i("index_tools_copy", {
+                p: (...chunk) => <p>{chunk}</p>,
+                vs: (...chunk) => <a href='https://visualstudio.microsoft.com'>{chunk}</a>,
+                vsc: (...chunk) => <a href='https://code.visualstudio.com/'>{chunk}</a>,
+                atom: (...chunk) => <a href='https://atom.io/'>{chunk}</a>,
+                nova: (...chunk) => <a href='https://panic.com/nova/'>{chunk}</a>,
+                subl: (...chunk) => <a href='https://www.sublimetext.com//'>{chunk}</a>,
+                emacs: (...chunk) => <a href='https://github.com/ananthakumaran/tide/#readme'>{chunk}</a>,
+                vim: (...chunk) => <a href='https://www.vimfromscratch.com/articles/setting-up-vim-for-typescript/'>{chunk}</a>,
+                webs: (...chunk) => <a href='https://www.jetbrains.com/webstorm/'>{chunk}</a>,
+                eclipse: (...chunk) => <a href='https://github.com/eclipse/wildwebdeveloper/'>{chunk}</a>
+              })}</div>
+            </Col>
+            <Col>
+              <h4>{i("index_trust")}</h4>
+              <div>{i("index_trust_copy", { p: (...chunk) => <p>{chunk}</p> })}</div>
+            </Col>
+          </Row>
+        </Section>
+
+        <Section color="white">
+          <Row><h3>{i("index_what_is")}</h3></Row>
+          <Row>
+            <GreyButton href={withPrefix("/docs/handbook")} title={i("index_started_handbook")} blurb={i("index_started_handbook_blurb")} />
+            <GreyButton href={withPrefix("/docs/handbook")} title={i("index_started_guides")} blurb={i("index_started_guides_blurb")} />
+            <GreyButton href={withPrefix("/docs/handbook")} title={i("index_started_ref")} blurb={i("index_started_ref_blurb")} />
+            <GreyButton href={withPrefix("/docs/handbook")} title={i("index_started_community")} blurb={i("index_started_community_blurb")} last />
+          </Row>
+
+          <Row>
+            <Col>
+              <h4>{i("index_install")}</h4>
+              <div className='grey-box'>
+                {i("index_install_ref", {
+                  p: (...chunk) => <p>{chunk}</p>,
+                  pre: (...chunk) => <pre>{chunk}</pre>,
+                  code: (...chunk) => <code>{chunk}</code>,
+                })}
+              </div>
+            </Col>
+
+            <Col>
+              <h4>{i("index_releases")}</h4>
+              <UpcomingReleaseMeta />
+            </Col>
+          </Row>
+        </Section>
+
       </div>
 
     </Layout>)

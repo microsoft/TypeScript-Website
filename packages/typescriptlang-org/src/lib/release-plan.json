@@ -1,0 +1,7 @@
+{
+  "_format": "dd/mm/yyyy - these get put into new Date()",
+  "last_release_date": "05/1/2019",
+  "upcoming_beta_date": "08/01/2020",
+  "upcoming_rc_date": "04/02/2020",
+  "upcoming_release_date": "18/02/2020"
+}

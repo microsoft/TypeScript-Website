@@ -16,9 +16,24 @@
   }
 }
 
+.grey-box {
+  background-color: #d8d8d8;
+  padding: 18px;
+  margin-right: 20px;
+
+  &.last {
+    margin-right: 0;
+  }
+}
+
 #index {
   .darkblue {
     background-color: $ts-main-blue-darkest-color;
+    color: white;
+  }
+
+  .blue {
+    background-color: $ts-main-blue-color;
     color: white;
   }
 
@@ -26,44 +41,71 @@
     max-width: 1080px;
     margin: 0 auto;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    position: relative;
+    overflow-y: hidden;
   }
 
-  .editor {
-    border: 2px solid white;
-    border-radius: 8px;
-    width: 300px;
+  .headline {
+    height: 410px;
+    overflow-y: hidden;
+    position: relative;
 
-    .titlebar {
-      height: 2rem;
-      border-bottom: 2px solid white;
-      display: flex;
-      flex-direction: row;
+    .editor {
+      border: 2px solid white;
+      background-color: $ts-main-blue-darkest-color;
 
-      .lang {
-        margin-left: 5px;
-      }
-      .window-name {
-        margin-left: 10px;
-        padding-top: 2px;
-      }
-    }
+      border-radius: 8px;
+      width: 360px;
 
-    .content {
-      height: 400px;
-      display: flex;
-      flex-direction: row;
+      position: absolute;
 
-      .lines {
-        width: 22px;
-        border-right: 2px solid white;
+      &.front {
+        right: 40px;
+        bottom: -80px;
+        background-color: #152740;
       }
 
-      .text {
-        padding: 1rem;
-        font-family: Menlo, Monaco, Consolas, Courier New, monospace;
-        font-size: 0.8rem;
-        white-space: pre;
+      &.back {
+        left: 40px;
+        bottom: -120px;
+      }
+
+      .titlebar {
+        height: 2rem;
+        border-bottom: 2px solid white;
+        display: flex;
+        flex-direction: row;
+
+        .lang {
+          margin-left: 5px;
+        }
+
+        .window-name {
+          margin-left: 10px;
+          padding-top: 2px;
+        }
+      }
+
+      .content {
+        height: 380px;
+        display: flex;
+        flex-direction: row;
+
+        .lines {
+          width: 22px;
+          border-right: 2px solid white;
+          flex-shrink: 0;
+        }
+
+        .text {
+          padding: 1rem;
+          font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+          font-size: 0.8rem;
+          white-space: pre;
+          flex-shrink: 1;
+          overflow-x: scroll;
+        }
       }
     }
   }
