@@ -70,7 +70,7 @@ const apis = [
 
 const webFrameworks = [
   {
-    href: "/docs/handbook/typescript-in-5-minutes.html",
+    href: "https://angular.io",
     blurb: "Makes writing beautiful apps be joyful and fun",
     title: "Angular"
   },
