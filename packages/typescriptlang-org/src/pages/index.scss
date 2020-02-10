@@ -74,10 +74,15 @@
   .blue {
     background-color: $ts-main-blue-color;
     color: white;
+
+    a {
+      color: white;
+    }
   }
 
   .purple {
-    background-color: $ts-main-blue-color;
+    background-color: $ts-muted-purple;
+    color: white;
   }
 
   .white {
@@ -108,7 +113,7 @@
   }
 
   .headline-diagram {
-    height: 410px;
+    height: 100%;
     overflow-y: hidden;
     position: relative;
 

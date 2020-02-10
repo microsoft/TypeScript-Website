@@ -106,8 +106,6 @@ const toMarkdown = files => {
     todo.forEach(f => {
       md.push(markdownLink(f))
     })
-
-    // console.log(todoFiles)
   })
 
   return md.join("\n")

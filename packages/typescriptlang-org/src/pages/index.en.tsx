@@ -4,7 +4,7 @@ import { Intl } from "../components/Intl"
 import { Link } from "gatsby"
 
 const Index = (props: any) =>
-  <Layout title="Index" description="Desc">
+  <Layout title="Index" description="Desc" lang="en">
 
     <div className="raised" style={{ maxWidth: 960, margin: "1rem auto", padding: "2rem" }}>
       <h1>:wave:</h1>

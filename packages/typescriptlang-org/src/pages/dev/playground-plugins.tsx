@@ -9,7 +9,7 @@ import { DevNav } from "../../components/dev-nav"
 const Index = (_props: any) => {
   return (
     <>
-      <Layout title="Developers - Playground Plugins" description="What is a TypeScript Playground Plugin, and how can you make one?">
+      <Layout title="Developers - Playground Plugins" description="What is a TypeScript Playground Plugin, and how can you make one?" lang="en">
         <div id="dev">
           <DevNav active="playground plugins" />
           <div className="raised content" style={{ padding: "2rem", margin: "2rem", marginTop: "1rem" }}>

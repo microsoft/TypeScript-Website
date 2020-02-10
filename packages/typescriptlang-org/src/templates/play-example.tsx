@@ -31,7 +31,7 @@ const Play = (props: Props) => {
   })
 
   return (
-    <Layout disableBetaNotification title={i("playground_example_prefix") + props.pageContext.title} description={i("head_playground_description")}>
+    <Layout disableBetaNotification title={i("playground_example_prefix") + props.pageContext.title} description={i("head_playground_description")} lang="en">
       <div className="raised" style={{ paddingTop: "0", marginTop: "20px", marginBottom: "3rem", paddingBottom: "1.5rem" }}>
         <div style={{ maxWidth: "800px", margin: "0 auto", padding: "80px" }}>
           <p dangerouslySetInnerHTML={{ __html: props.pageContext.html! }} />

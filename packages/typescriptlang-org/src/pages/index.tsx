@@ -63,7 +63,7 @@ const Index = (props: any) => {
   const i = createInternational<typeof indexCopy>(useIntl())
 
   return (
-    <Layout title="JavaScript For Any Scale." description="Desc">
+    <Layout title="JavaScript For Any Scale." description="Desc" lang="en">
       <VersionBar />
 
       <div id="index">

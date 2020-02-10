@@ -38,7 +38,7 @@ export const indexCopy = {
 
   index_dts: "Types On Every Desk",
   index_dts_copy: `
-<p>Most of the worlds JavaScript’s is un-typed, and inference can only go so far. To address this, the TypeScript team helps maintain <dt>Definitely Typed</dt> - a community project to provide types and inline documentation to existing JavaScript.</p>
+<p>Most of the worlds JavaScript’s is un-typed, and inference can only go so far. To address this, the TypeScript team helps maintain <dt>Definitely Typed</dt> - a community project to provide types and inline documentation to existing JavaScript.
 
 <p>This project allows the community to maintain type definitions for JavaScript libraries without putting extra pressure on their maintainers.</p>`,
 
