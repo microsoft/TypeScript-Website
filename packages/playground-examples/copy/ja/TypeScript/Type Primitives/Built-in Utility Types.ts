@@ -30,7 +30,7 @@ type StickerFromAPI = Readonly<Sticker>
 
 // Record<KeysFrom, Type>
 
-// KeysFrom からプロパティの一覧を受け取り、
+// KeysFromからプロパティの一覧を受け取り、
 // 各プロパティの値をType型にした型を作成します。
 
 // 型キーの一覧:
@@ -124,8 +124,8 @@ type AccessiblePageInfo = Required<PageInfo>
 // ThisType<Type>
 
 // 他の型とは違い、ThisTypeは新しい型を返しません。
-// 関数で使われる this の型を型引数に受け取った型に変換します。
-// ThisType は TSConfig の noImplicitThis が true
+// 関数で使われるthisの型を型引数に受け取った型に変換します。
+// ThisTypeはTSConfigのnoImplicitThisがtrue
 // の場合にしか使えません。
 
 // https://www.typescriptlang.org/docs/handbook/utility-types.html
