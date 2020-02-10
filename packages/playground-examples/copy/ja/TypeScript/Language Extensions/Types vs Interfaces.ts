@@ -1,5 +1,5 @@
 // オブジェクトの形を宣言するのに使う
-// 2つの主なツールがinterfacesとtype aliasです。
+// 2つの主なツールがinterfaceとtype aliasです。
 //
 // これらはとても似ており、ほとんどの場合、
 // 同じ振る舞いをします。
@@ -20,9 +20,9 @@ const bird2: BirdInterface = { wings: 2 }
 
 const bird3: BirdInterface = bird1
 
-// どちらも他のinterfacesやtypesからの拡張をサポートしています。
-// type aliasesは交差型を、
-// interfacesはextendsキーワードを使用します。
+// どちらも他のinterfaceやtypeからの拡張をサポートしています。
+// type aliasは交差型を、
+// interfaceはextendsキーワードを使用します。
 
 type Owl = { nocturnal: true } & BirdType
 type Robin = { nocturnal: false } & BirdInterface
@@ -39,17 +39,17 @@ interface Chicken extends BirdInterface {
 let owl: Owl = { wings: 2, nocturnal: true }
 let chicken: Chicken = { wings: 2, colourful: false, flies: false }
 
-// そうは言っても、type aliasesよりもinterfacesを使うことをおすすめします。
+// そうは言っても、type aliasよりもinterfaceを使うことをおすすめします。
 // 具体的には、より良いエラーメッセージが得られるからです。
 // 以下のエラーにマウスオーバーしてみると、
-// Chickenのようなinterfacesを使ったときの方が簡潔でより分かりやすいメッセージが
+// Chickenのようなinterfaceを使ったときの方が簡潔でより分かりやすいメッセージが
 // TypeScriptより示されているのが分かるでしょう。
 
 owl = chicken
 chicken = owl
 
-// type aliasesとinterfacesの最も大きな違いの1つは、
-// interfacesが開かれた型であるのに対して、type aliasesは閉じた型であることです。
+// type aliasとinterfaceの最も大きな違いの1つは、
+// interfaceが開かれた型であるのに対して、type aliasは閉じた型であることです。
 // これは、interfaceは2回目の宣言で拡張が可能であることを
 // 意味します。
 
@@ -61,7 +61,7 @@ interface Kitten {
   colour: string
 }
 
-// 一方で、type aliaseは一度宣言した後に、
+// 一方で、type aliasは一度宣言した後に、
 // 外からその型の内容を変更することはできません。
 
 type Puppy = {
@@ -76,8 +76,8 @@ type Puppy = {
 // しかし、公開される型については
 // interfaceを用いる方が良いでしょう。
 
-// type aliasesとinterfacesにおけるすべてのエッジケースを確認するのに
+// type aliasとinterfaceにおけるすべてのエッジケースを確認するのに
 // 最適な資料の1つである以下のstack overflowスレッドは
-// 初めて調べるのにちょうど良いでしょう:
+// 初めの一歩にちょうど良いでしょう:
 
 // https://stackoverflow.com/questions/37233735/typescript-interfaces-vs-types/52682220#52682220

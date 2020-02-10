@@ -29,7 +29,7 @@ type ValidatedInputString = string & { __brand: 'User Input Post Validation' }
 
 // 文字列をValidatedInputString型に変換するために関数を使います。
 // 注目に値するのは、validateUserInputを通過した文字列はValidatedInputStringだと
-// TypeScriptに__伝えて__いる点です。
+// TypeScriptに_伝えて_いる点です。
 
 const validateUserInput = (input: string) => {
   const simpleValidatedInput = input.replace(/\</g, '≤')
