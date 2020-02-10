@@ -7,7 +7,7 @@ const path = require('path')
 const crypto = require('crypto')
 const JSON5 = require('json5')
 
-/** Retrieve file paths from a given folder and its subfolders. */
+/** Recursively retrieve file paths from a given folder and its subfolders. */
 // https://gist.github.com/kethinov/6658166#gistcomment-2936675
 const getFilePaths = folderPath => {
   const entryPaths = fs.readdirSync(folderPath).map(entry => path.join(folderPath, entry))
