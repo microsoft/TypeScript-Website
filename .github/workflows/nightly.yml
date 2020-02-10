@@ -1,0 +1,28 @@
+name: Daily updates for v2
+
+# For testing
+# on: push
+
+on:
+  schedule:
+    - cron: "0 5 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+              # Setup Git
+      - run: git config user.name "typescript-bot"
+      - run: git config user.email "bot@typescriptlang.org"
+
+      - run:  git remote add upstream https://$GITHUB_BOT_TOKEN@github.com/microsoft/TypeScript-website.git > /dev/null 2>&1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TS_BOT_TOKEN }}
+
+      - run: git commit --no-edit --allow-empty
+      - run: git push upstream master:release -f
+
+
+
