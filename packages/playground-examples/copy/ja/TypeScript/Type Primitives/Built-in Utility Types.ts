@@ -70,7 +70,7 @@ type StickerTimeMetadata = Omit<Sticker, 'name'>
 
 // Exclude<Type, RemoveUnion>
 
-// 型の第一引数に受け取ったユニオン型から、第二引数に受け取ったユニオン型を
+// 型の第一引数に受け取った共用体型から、第二引数に受け取った共用体型を
 // 除外した型を作成します。
 
 type HomeNavigationPages = Exclude<NavigationPages, 'home'>
@@ -78,7 +78,7 @@ type HomeNavigationPages = Exclude<NavigationPages, 'home'>
 
 // Extract<Type, MatchUnion>
 
-// 型の第一引数に受け取ったユニオン型から、第二引数に受け取ったユニオン型に
+// 型の第一引数に受け取った共用体型から、第二引数に受け取った共用体型に
 // 当てはまる型を作成します。
 
 type DynamicPages = Extract<NavigationPages, 'home' | 'stickers'>
@@ -86,7 +86,7 @@ type DynamicPages = Extract<NavigationPages, 'home' | 'stickers'>
 
 // NonNullable<Type>
 
-// 型引数に受け取ったユニオン型から、nullとundefinedを除外した型を返します。
+// 型引数に受け取った共用体型から、nullとundefinedを除外した型を返します。
 // 値のバリデーションに使えるでしょう。
 
 type StickerLookupResult = Sticker | undefined | null
