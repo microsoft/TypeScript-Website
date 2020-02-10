@@ -22,7 +22,7 @@ const Index = (props: any) => {
 
       re.config({
         paths: {
-          vs: "https://tswebinfra.blob.core.windows.net/cdn/3.7.3/monaco/min/vs",
+          vs: "https://typescript.azureedge.net/cdn/3.7.3/monaco/min/vs",
           sandbox: withPrefix('/js/sandbox')
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],
@@ -125,11 +125,11 @@ export default async function () {
 
       // For the monaco version you can use unpkg or the TypeSCript web infra CDN
       // You can see the available releases for TypeScript here:
-      // https://tswebinfra.blob.core.windows.net/indexes/releases.json
+      // https://typescript.azureedge.net/indexes/releases.json
       //
       require.config({
         paths: {
-          vs: 'https://tswebinfra.blob.core.windows.net/cdn/3.7.3/monaco/min/vs',
+          vs: 'https://typescript.azureedge.net/cdn/3.7.3/monaco/min/vs',
           // vs: 'https://unpkg.com/@typescript-deploys/monaco-editor@3.7.3/min/vs',
           sandbox: 'https://www.typescriptlang.org/v2/js/sandbox',
         },

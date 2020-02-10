@@ -22,13 +22,18 @@ const go = async () => {
   }
 
   await getFileAndStoreLocally(
+    'https://www.typescriptlang.org/v2/js/sandbox/tsWorker.d.ts',
+    join(vendor, 'tsWorker.d.ts'),
+  )
+
+  await getFileAndStoreLocally(
     'https://www.typescriptlang.org/v2/js/sandbox/index.d.ts',
     join(vendor, 'sandbox.d.ts'),
     text => {
       const removeImports = text.replace(/^import/g, '// import').replace(/\nimport/g, '// import')
       const removedLZ = removeImports.replace('lzstring: typeof lzstring', '// lzstring: typeof lzstring')
-      const prefix = 'type TypeScriptWorker = any;\n'
-      return prefix + removedLZ
+      const addedTsWorkerImport = 'import { TypeScriptWorker } from "./tsWorker";' + removedLZ;
+      return addedTsWorkerImport;
     }
   )
 

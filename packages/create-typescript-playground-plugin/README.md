@@ -1,6 +1,6 @@
 ## create-typescript-playground-plugin
 
-A template for creating new plugins for the TypeSCript playground.
+A template for creating new plugins for the TypeScript playground.
 
 <h2>Quick Tutorial</h2>
 <p>You need about 5 minutes, Node.js, yarn and a Chromium based browser.</p>

@@ -70,7 +70,7 @@ const apis = [
 
 const webFrameworks = [
   {
-    href: "/docs/handbook/typescript-in-5-minutes.html",
+    href: "https://angular.io",
     blurb: "Makes writing beautiful apps be joyful and fun",
     title: "Angular"
   },
@@ -141,9 +141,9 @@ const react = [
     title: "Razzle"
   },
   {
-    href: "https://reactjs.org/community/starter-kits.html",
+    href: "https://reactjs.org/docs/create-a-new-react-app.html#recommended-toolchains",
     blurb: "Recommendations from the React Team",
-    title: "Starter Kits"
+    title: "Recommended Toolchains"
   }
 ]
 

@@ -43,11 +43,11 @@ we'll accept it.
 
       // For the monaco version you can use MaxCDN or the TypeSCript web infra CDN
       // You can see the available releases for TypeScript here:
-      // https://tswebinfra.blob.core.windows.net/indexes/releases.json
+      // https://typescript.azureedge.net/indexes/releases.json
       //
       require.config({
         paths: {
-          vs: 'https://tswebinfra.blob.core.windows.net/cdn/3.7.3/monaco/min/vs',
+          vs: 'https://typescript.azureedge.net/cdn/3.7.3/monaco/min/vs',
           sandbox: 'https://www.typescriptlang.org/v2/js/sandbox',
         },
         // This is something you need for monaco to work

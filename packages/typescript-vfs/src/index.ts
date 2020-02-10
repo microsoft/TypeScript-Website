@@ -361,7 +361,7 @@ export const createDefaultMapFromCDN = (
   const storelike = storer || localStorage
   const fsMap = new Map<string, string>()
   const files = knownLibFilesForCompilerOptions(options, ts)
-  const prefix = `https://tswebinfra.blob.core.windows.net/cdn/${version}/typescript/lib/`
+  const prefix = `https://typescript.azureedge.net/cdn/${version}/typescript/lib/`
 
   function zip(str: string) {
     return lzstring ? lzstring.compressToUTF16(str) : str
