@@ -108,7 +108,7 @@ const Play = (props: Props) => {
 
 
   return (
-    <Layout disableBetaNotification title={i("head_playground_title")} description={i("head_playground_description")}>
+    <Layout disableBetaNotification title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang}>
       {/** This is the top nav, which is outside of the editor  */}
       <nav className="navbar-sub">
         <ul className="nav">

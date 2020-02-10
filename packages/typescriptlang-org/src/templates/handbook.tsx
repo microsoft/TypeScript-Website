@@ -73,7 +73,7 @@ const HandbookTemplate = (props: { pageContext: any, data: GetHandbookBySlug, pa
   const showSidebar = post.headings && post.headings.length <= 25
 
   return (
-    <Layout title={"Handbook - " + post.frontmatter.title} description="" >
+    <Layout title={"Handbook - " + post.frontmatter.title} description="" lang="en">
       <section id="doc-layout">
         <SidebarToggleButton />
         <Sidebar navItems={oldHandbookNavigation} selectedID={selectedID} />
