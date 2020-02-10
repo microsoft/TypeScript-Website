@@ -46,7 +46,7 @@ export const indexCopy = {
   index_tools_copy: `
   <p>By handling a lot of the editor integration inside TypeScript, you can get a consistent experience working in many editors.</p>
 
-  <p>This lets you easily jump between editors like <vs>Visual Studio<vs/>, <vsc>Visual Studio Code<vsc>, <nova>Nova</nova>, <atom>Atom</atom>, <subl>Sublime Text</subl>, <emacs>Emacs</emacs>, <vim>Vim</vim>, <webs>WebStorm</webs> and <eclipse>Eclipse</eclipse>.</p>
+  <p>This lets you easily jump between editors like <vs>Visual Studio</vs>, <vsc>Visual Studio Code</vsc>, <nova>Nova</nova>, <atom>Atom</atom>, <subl>Sublime Text</subl>, <emacs>Emacs</emacs>, <vim>Vim</vim>, <webs>WebStorm</webs> and <eclipse>Eclipse</eclipse>.</p>
 `,
 
   index_started_title: "Get Started",
@@ -64,4 +64,9 @@ export const indexCopy = {
   <p>Then run the compiler via <code>tsc</code><pre>npm install -g typescript</pre>
   `,
   index_releases: "Quarterly Releases",
+  index_releases_pt1: "Our next release is ",
+  index_releases_pt2: ", which planned for ",
+  index_releases_released: "Released",
+  index_releases_beta: "Beta",
+  index_releases_rc: "RC",
 }
