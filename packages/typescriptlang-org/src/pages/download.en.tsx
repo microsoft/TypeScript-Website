@@ -3,7 +3,7 @@ import { Layout } from "../components/layout"
 import { Intl } from "../components/Intl"
 
 const Index = () =>
-  <Layout title="How to set up TypeScript" description="" >
+  <Layout title="How to set up TypeScript" description="" lang="en">
     <div className="raised" style={{ maxWidth: 960, margin: "1rem auto", padding: "2rem" }}>
       <h1>Download TypeScript</h1>
       <p>TypeScript is available in two ways depending on how you intend to use it: built as an npm module, and a nuget package.</p>

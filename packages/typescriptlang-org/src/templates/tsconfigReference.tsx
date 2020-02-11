@@ -70,7 +70,7 @@ const TSConfigReferenceTemplateComponent = (props: Props) => {
   })
 
   return (
-    <Layout title={i("tsconfig_title")} description={i("tsconfig_description")}>
+    <Layout title={i("tsconfig_title")} description={i("tsconfig_description")} lang={props.pageContext.locale}>
       <div className="tsconfig raised" style={{ maxWidth: 960, margin: "1rem auto", paddingTop: "0.5rem" }}>
         <div id="full-option-list" className="indent">
           {categories!.categories!.map(c => {

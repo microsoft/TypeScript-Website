@@ -3,7 +3,7 @@ display: "Remove Comments"
 oneline: "Remove comments in TypeScript from appearing in JavaScript"
 ---
 
-Strips all comments from TypeScript files when converting into JavaScript. Defaults to `true`.
+Strips all comments from TypeScript files when converting into JavaScript. Defaults to `false`.
 
 For example, this is a TypeScript file which has a JSDoc comment:
 

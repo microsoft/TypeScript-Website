@@ -1,0 +1,9 @@
+{
+  "_format": "mm/dd/yyyy - these get put into new Date()",
+  "upcoming_version": "3.8",
+  "iteration_plan_url": "https://github.com/microsoft/TypeScript/issues/34898",
+  "last_release_date": "11/05/2019",
+  "upcoming_beta_date": "01/08/2020",
+  "upcoming_rc_date": "02/04/2020",
+  "upcoming_release_date": "02/18/2020"
+}

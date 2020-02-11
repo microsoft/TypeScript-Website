@@ -222,7 +222,7 @@ const learn = [
 ]
 
 const Index = () =>
-  <Layout title="The starting point for learning TypeScript" description="Find TypeScript starter projects: from Angular to React or Node.js and CLIs."  >
+  <Layout title="The starting point for learning TypeScript" description="Find TypeScript starter projects: from Angular to React or Node.js and CLIs." lang="en" >
     <div id="documentation" className="raised" style={{ backgroundColor: "white", maxWidth: 960, margin: "1rem auto", padding: "2rem" }}>
       <h1>Start Learning</h1>
 

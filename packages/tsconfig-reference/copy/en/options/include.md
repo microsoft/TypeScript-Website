@@ -8,7 +8,7 @@ These filenames are resolved relative to the directory containing the `tsconfig.
 
 ```json
 {
-  "include": ["src/**", "tests/**"]
+  "include": ["src/**/*", "tests/**/*"]
 }
 ```
 
