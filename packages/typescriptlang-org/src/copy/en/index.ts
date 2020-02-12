@@ -71,4 +71,6 @@ export const indexCopy = {
   index_releases_rc: "RC",
 
   index_migration_title: "Migration Stories",
+  index_migration_oss: "Open Source with TypeScript",
+  index_videos_title: "Watch TypeScript in Action",
 }

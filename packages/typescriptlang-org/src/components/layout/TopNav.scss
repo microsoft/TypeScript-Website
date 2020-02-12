@@ -72,6 +72,9 @@
     a {
       display: block;
       padding: 0.75rem 0.5em 0.7em;
+      &:focus {
+        text-decoration: underline;
+      }
     }
   }
 
