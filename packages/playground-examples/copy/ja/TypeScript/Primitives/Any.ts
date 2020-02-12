@@ -1,24 +1,24 @@
-// Any is the TypeScript escape clause. You can use any to
-// either declare a section of your code to be dynamic and
-// JavaScript like, or to work around limitations in the
-// type system.
+// AnyはTypeScriptのエスケープ句です。 
+// any型を利用することで、一区切りのコードを
+// JavaScriptの様に動的に扱ったり、
+// 型システムの制限を回避することができます。
 
-// A good case for any is JSON parsing:
+// any型を利用する良いケースはJSON parsingです
 
 const myObject = JSON.parse("{}");
 
-// Any declares to TypeScript to trust your code as being
-// safe because you know more about it. Even if that is
-// not strictly true. For example, this code would crash:
+// TypeScriptにおけるAny宣言は、あなたがその値について
+// 安全であることを知っているから信じてください、という宣言です。
+// それが厳密に正しくない場合でも。例えば、次のコードはクラッシュします。
 
 myObject.x.y.z;
 
-// Using an any gives you the ability to write code closer to
-// original JavaScript with the trade-off of type safety.
+// any型を利用することで、型安全のトレードオフと引き換えに、
+// よりオリジナルに近いJavaScriptコードを書くことができます。
 
-// any is much like a 'type wildcard' which you can replace
-// with any type (except never) to make one type assignable
-// to the other.
+// any型は、どんな型でも（neverを除いた）割り当て可能であり、
+// 一方の型をもう一方に割り当て可能にする「型のワイルドカード」
+// によく似ています。
 
 declare function debug(value: any);
 
@@ -26,25 +26,26 @@ debug("a string");
 debug(23);
 debug({ color: "blue" });
 
-// Each call to debug is allowed because you could replace the
-// any with the type of the argument to match.
+// いずれのdebug関数実行も、引数の型を
+// anyに置き換えることができるため許可されます。
 
-// TypeScript will take into account the position of the
-// anys in different forms, for example with these tuples
-// for the function argument.
+// TypeScriptはany型の位置を考慮します。
+// たとえば、この様なタプル型を利用した関数引数であってもです。
 
 declare function swap(x: [number, string]): [string, number];
 
 declare const pair: [any, any];
 swap(pair);
 
-// The call to swap is allowed because the argument can be
-// matched by replacing the first any in pair with number
-// and the second `any` with string.
+// swap関数引数であるnumber型・string型のペアは、
+// any型のペアと置き換えることができるため、
+// この関数実行は許可されます。
 
-// If tuples are new to you, see: example:tuples
+// タプル型が初見の場合、example:tuples を参照してください。
 
-// Unknown is a sibling type to any, if any is about saying
-// "I know what's best", then unknown is a way to say "I'm
-// not sure what is best, so you need to tell TS the type"
-// example:unknown-and-never
+// unknown型はany型の兄弟とも言うことができますが、
+// any型は「最善策を知っています」という場合に利用する一方で、
+// unknown型は「最善策が分からないので、TSに型を伝える必要があります」
+// という場合に利用します。
+
+// 詳細は example:unknown-and-never を参照してください。
