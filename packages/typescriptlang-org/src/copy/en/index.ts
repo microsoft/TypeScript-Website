@@ -69,4 +69,6 @@ export const indexCopy = {
   index_releases_released: "Released",
   index_releases_beta: "Beta",
   index_releases_rc: "RC",
+
+  index_migration_title: "Migration Stories",
 }
