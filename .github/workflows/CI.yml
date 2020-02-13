@@ -36,8 +36,12 @@ jobs:
     needs: test
     steps:
       - uses: actions/checkout@master
+      - run: yarn workspace typescriptlang-org run create-lighthouse-json
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+
       - name: Run Lighthouse and test budgets
-        uses: treosh/lighthouse-ci-action@v1
+        uses: orta/lighthouse-ci-action@ort-fork-pr-29
         with:
           urls: |
             https://typescript-v2-$PR_NUMBER.ortam.now.sh
