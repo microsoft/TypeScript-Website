@@ -41,10 +41,15 @@ const HandbookTemplate = (props: { pageContext: any, data: GetHandbookBySlug, pa
 
       // Scroll down to find the highest anchor on the screen
       subnavLinks.forEach(link => {
-        const section = document.querySelector<HTMLDivElement>(link.hash);
-        if (!section) { return }
-        const isBelow = section.offsetTop <= fromTop
-        if (isBelow) currentPossibleAnchor = link
+        try {
+          const section = document.querySelector<HTMLDivElement>(link.hash);
+          if (!section) { return }
+          const isBelow = section.offsetTop <= fromTop
+          if (isBelow) currentPossibleAnchor = link
+
+        } catch (error) {
+          return
+        }
       });
 
       // Then set the active tag

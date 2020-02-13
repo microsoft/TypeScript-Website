@@ -5,7 +5,7 @@ import { Intl } from "../components/Intl"
 import { VersionBar } from "../components/VersionBar"
 import { GreyButton } from "../components/display/GreyButton"
 import { UpcomingReleaseMeta } from "../components/index/UpcomingReleaseMeta"
-import { MigrationStories, GitHubBar } from "../components/index/MigrationStories"
+import { MigrationStories, GitHubBar, OSS } from "../components/index/MigrationStories"
 
 import { indexCopy } from "../copy/en/index"
 import { createInternational } from "../lib/createInternational"
@@ -18,6 +18,7 @@ import { EditorExamples } from "../components/index/EditorExamples"
 const Section = (props: { children: any, color: string, className?: string }) =>
   <div key={props.color} className={props.color + " " + props.className}><div className="container">{props.children}</div></div>
 
+const QuarterOrHalfRow = (props: { children: any, className?: string }) => <div className={[props.className, "split-row"].join(" ")}>{props.children}</div>
 const Row = (props: { children: any, className?: string }) => <div className={[props.className, "row"].join(" ")}>{props.children}</div>
 const Col = (props: { children: any, className?: string }) => <div className={[props.className, "col1"].join(" ")}>{props.children}</div>
 const Col2 = (props: { children: any }) => <div className="col2">{props.children}</div>
@@ -62,14 +63,14 @@ const Index = (props: any) => {
                 <p>{i("index_trust_copy_a")}</p>
                 <p>{i("index_trust_copy_b", {
                   p: (...chunk) => <p>{chunk}</p>,
-                  babel: (...chunk) => <a key={1} href='https://babeljs.io/'>{chunk}</a>
+                  babel: (...chunk) => <a key={1} href='https://babeljs.io/' target="_blank">{chunk}</a>
                 })}
                 </p>
               </div>
             </Col>
             <Col key='TS improves JS'>
-              <h4>{i("index_standards")}</h4>
-              <div>{i("index_standards_copy", { p: (...chunk) => <p>{chunk}</p> })}</div>
+              <h4>{i("index_gradual")}</h4>
+              <div>{i("index_gradual_copy", { p: (...chunk) => <p>{chunk}</p> })}</div>
             </Col>
           </Row>
         </Section>
@@ -80,55 +81,27 @@ const Index = (props: any) => {
               <h4>{i("index_dts")}</h4>
               <div>{i("index_dts_copy", {
                 p: (...chunk) => <p>{chunk}</p>,
-                dt: (...chunk) => <a href='https://github.com/DefinitelyTyped/DefinitelyTyped'>{chunk}</a>
+                dt: (...chunk) => <a href='https://github.com/DefinitelyTyped/DefinitelyTyped' target="_blank">{chunk}</a>
               })}</div>
             </Col>
             <Col key='tools description'>
               <h4>{i("index_tools")}</h4>
               <div>{i("index_tools_copy", {
                 p: (...chunk) => <p>{chunk}</p>,
-                vs: (...chunk) => <a key={1} href='https://visualstudio.microsoft.com'>{chunk}</a>,
-                vsc: (...chunk) => <a key={2} href='https://code.visualstudio.com/'>{chunk}</a>,
-                atom: (...chunk) => <a key={3} href='https://atom.io/'>{chunk}</a>,
-                nova: (...chunk) => <a key={4} href='https://panic.com/nova/'>{chunk}</a>,
-                subl: (...chunk) => <a key={5} href='https://www.sublimetext.com//'>{chunk}</a>,
-                emacs: (...chunk) => <a key={6} href='https://github.com/ananthakumaran/tide/#readme'>{chunk}</a>,
-                vim: (...chunk) => <a key={7} href='https://www.vimfromscratch.com/articles/setting-up-vim-for-typescript/'>{chunk}</a>,
-                webs: (...chunk) => <a key={8} href='https://www.jetbrains.com/webstorm/'>{chunk}</a>,
-                eclipse: (...chunk) => <a key={9} href='https://github.com/eclipse/wildwebdeveloper/'>{chunk}</a>
+                vs: (...chunk) => <a key={1} href='https://visualstudio.microsoft.com' target="_blank">{chunk}</a>,
+                vsc: (...chunk) => <a key={2} href='https://code.visualstudio.com/' target="_blank">{chunk}</a>,
+                atom: (...chunk) => <a key={3} href='https://atom.io/' target="_blank">{chunk}</a>,
+                nova: (...chunk) => <a key={4} href='https://panic.com/nova/' target="_blank">{chunk}</a>,
+                subl: (...chunk) => <a key={5} href='https://www.sublimetext.com/' target="_blank">{chunk}</a>,
+                emacs: (...chunk) => <a key={6} href='https://github.com/ananthakumaran/tide/#readme' target="_blank">{chunk}</a>,
+                vim: (...chunk) => <a key={7} href='https://www.vimfromscratch.com/articles/setting-up-vim-for-typescript/' target="_blank">{chunk}</a>,
+                webs: (...chunk) => <a key={8} href='https://www.jetbrains.com/webstorm/' target="_blank">{chunk}</a>,
+                eclipse: (...chunk) => <a key={9} href='https://github.com/eclipse/wildwebdeveloper/' target="_blank">{chunk}</a>
               })}</div>
             </Col>
             <Col key='why trust ts'>
               <h4>{i("index_standards")}</h4>
               <div>{i("index_standards_copy", { p: (...chunk) => <p>{chunk}</p> })}</div>
-            </Col>
-          </Row>
-        </Section>
-
-        <Section color="white">
-          <h3>{i("index_started_title")}</h3>
-          <Row key='call to actions'>
-            <GreyButton href={withPrefix("/docs/handbook")} title={i("index_started_handbook")} blurb={i("index_started_handbook_blurb")} first />
-            <GreyButton href={withPrefix("/docs/handbook")} title={i("index_started_guides")} blurb={i("index_started_guides_blurb")} />
-            <GreyButton href={withPrefix("/docs/handbook")} title={i("index_started_ref")} blurb={i("index_started_ref_blurb")} />
-            <GreyButton href={withPrefix("/docs/handbook")} title={i("index_started_community")} blurb={i("index_started_community_blurb")} />
-          </Row>
-
-          <Row key="overall info">
-            <Col key="installation">
-              <h4>{i("index_install")}</h4>
-              <div className='grey-box'>
-                {i("index_install_ref", {
-                  p: (...chunk) => <p>{chunk}</p>,
-                  pre: (...chunk) => <pre>{chunk}</pre>,
-                  code: (...chunk) => <code key={1}>{chunk}</code>,
-                })}
-              </div>
-            </Col>
-
-            <Col key="releases" className="last">
-              <h4>{i("index_releases")}</h4>
-              <UpcomingReleaseMeta />
             </Col>
           </Row>
         </Section>
@@ -142,7 +115,11 @@ const Index = (props: any) => {
             <GitHubBar left={false} />
           </div>
           <MigrationStories />
+        </Section>
 
+        <Section color="dark-green" className="show-only-small">
+          <h3 id='migration_title'>{i("index_migration_oss")}</h3>
+          <OSS />
         </Section>
 
         <Section color="light-grey">
@@ -175,13 +152,43 @@ const Index = (props: any) => {
 
             </Col>
             <Col2>
-              <a id="videos-thumb-a" href="https://www.youtube.com/watch?v=jmPZztKIFf4">
+              <a id="videos-thumb-a" href="https://www.youtube.com/watch?v=jmPZztKIFf4" target="_blank">
                 <img width="100%" src={withPrefix("/images/index/ts-conf-keynote.jpg")} alt="Preview thumbnail for video" />
               </a>
             </Col2>
           </Row>
 
         </Section>
+
+
+        <Section color="white">
+          <h3>{i("index_started_title")}</h3>
+          <QuarterOrHalfRow key='call to actions'>
+            <GreyButton href={withPrefix("/docs/handbook")} title={i("index_started_handbook")} blurb={i("index_started_handbook_blurb")} first />
+            <GreyButton href={withPrefix("/docs/handbook")} title={i("index_started_guides")} blurb={i("index_started_guides_blurb")} />
+            <GreyButton href={withPrefix("/docs/handbook")} title={i("index_started_ref")} blurb={i("index_started_ref_blurb")} />
+            <GreyButton href={withPrefix("/docs/handbook")} title={i("index_started_community")} blurb={i("index_started_community_blurb")} />
+          </QuarterOrHalfRow>
+
+          <Row key="overall info">
+            <Col key="installation">
+              <h4>{i("index_install")}</h4>
+              <div className='grey-box'>
+                {i("index_install_ref", {
+                  p: (...chunk) => <p>{chunk}</p>,
+                  pre: (...chunk) => <pre>{chunk}</pre>,
+                  code: (...chunk) => <code key={1}>{chunk}</code>,
+                })}
+              </div>
+            </Col>
+
+            <Col key="releases" className="last">
+              <h4>{i("index_releases")}</h4>
+              <UpcomingReleaseMeta />
+            </Col>
+          </Row>
+        </Section>
+
       </div>
 
     </Layout >)
@@ -192,6 +199,7 @@ const setupVideosSection = () => {
   const videosUL = document.getElementById("videos")!
   for (let index = 0; index < videosUL.children.length; index++) {
     const element = videosUL.children[index] as HTMLLIElement;
+
     element.onmouseover = () => {
       document.querySelectorAll('#videos li.active').forEach(i => i.classList.remove('active'))
       element.classList.add("active")
@@ -200,6 +208,13 @@ const setupVideosSection = () => {
       a.href = element.getElementsByTagName("a").item(0)!.href
 
       a.getElementsByTagName("img").item(0)!.src = element.getAttribute("data-img")!
+
+      return false
+    }
+
+    const isSmall = window.innerWidth < 800
+    if (isSmall) {
+      element.onclick = element.onmouseover
     }
   }
 }

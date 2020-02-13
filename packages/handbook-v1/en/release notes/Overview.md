@@ -3,7 +3,853 @@ title: Overview
 layout: docs
 permalink: /docs/handbook/release-notes/overview.html
 ---
+
 This page is a shorter overview of features added per version.
+
+# TypeScript 3.7
+
+## Optional Chaining
+
+[Playground](/play/#example/optional-chaining)
+
+Optional chaining is [issue #16](https://github.com/microsoft/TypeScript/issues/16) on our issue tracker. For context, there have been over 23,000 issues on the TypeScript issue tracker since then.
+
+At its core, optional chaining lets us write code where TypeScript can immediately stop running some expressions if we run into a `null` or `undefined`.
+The star of the show in optional chaining is the new `?.` operator for _optional property accesses_.
+When we write code like
+
+```ts
+let x = foo?.bar.baz();
+```
+
+this is a way of saying that when `foo` is defined, `foo.bar.baz()` will be computed; but when `foo` is `null` or `undefined`, stop what we're doing and just return `undefined`."
+
+More plainly, that code snippet is the same as writing the following.
+
+```ts
+let x = foo === null || foo === undefined ? undefined : foo.bar.baz();
+```
+
+Note that if `bar` is `null` or `undefined`, our code will still hit an error accessing `baz`.
+Likewise, if `baz` is `null` or `undefined`, we'll hit an error at the call site.
+`?.` only checks for whether the value on the _left_ of it is `null` or `undefined` - not any of the subsequent properties.
+
+You might find yourself using `?.` to replace a lot of code that performs repetitive nullish checks using the `&&` operator.
+
+```ts
+// Before
+if (foo && foo.bar && foo.bar.baz) {
+  // ...
+}
+
+// After-ish
+if (foo?.bar?.baz) {
+  // ...
+}
+```
+
+Keep in mind that `?.` acts differently than those `&&` operations since `&&` will act specially on "falsy" values (e.g. the empty string, `0`, `NaN`, and, well, `false`), but this is an intentional feature of the construct.
+It doesn't short-circuit on valid data like `0` or empty strings.
+
+Optional chaining also includes two other operations.
+First there's the _optional element access_ which acts similarly to optional property accesses, but allows us to access non-identifier properties (e.g. arbitrary strings, numbers, and symbols):
+
+```ts
+/**
+ * Get the first element of the array if we have an array.
+ * Otherwise return undefined.
+ */
+function tryGetFirstElement<T>(arr?: T[]) {
+  return arr?.[0];
+  // equivalent to
+  //   return (arr === null || arr === undefined) ?
+  //       undefined :
+  //       arr[0];
+}
+```
+
+There's also _optional call_, which allows us to conditionally call expressions if they're not `null` or `undefined`.
+
+```ts
+async function makeRequest(url: string, log?: (msg: string) => void) {
+  log?.(`Request started at ${new Date().toISOString()}`);
+  // roughly equivalent to
+  //   if (log != null) {
+  //       log(`Request started at ${new Date().toISOString()}`);
+  //   }
+
+  const result = (await fetch(url)).json();
+
+  log?.(`Request finished at at ${new Date().toISOString()}`);
+
+  return result;
+}
+```
+
+The "short-circuiting" behavior that optional chains have is limited property accesses, calls, element accesses - it doesn't expand any further out from these expressions.
+In other words,
+
+```ts
+let result = foo?.bar / someComputation();
+```
+
+doesn't stop the division or `someComputation()` call from occurring.
+It's equivalent to
+
+```ts
+let temp = foo === null || foo === undefined ? undefined : foo.bar;
+
+let result = temp / someComputation();
+```
+
+That might result in dividing `undefined`, which is why in `strictNullChecks`, the following is an error.
+
+```ts
+function barPercentage(foo?: { bar: number }) {
+  return foo?.bar / 100;
+  //     ~~~~~~~~
+  // Error: Object is possibly undefined.
+}
+```
+
+More more details, you can [read up on the proposal](https://github.com/tc39/proposal-optional-chaining/) and [view the original pull request](https://github.com/microsoft/TypeScript/pull/33294).
+
+## Nullish Coalescing
+
+[Playground](/play/#example/nullish-coalescing)
+
+The _nullish coalescing operator_ is another upcoming ECMAScript feature that goes hand-in-hand with optional chaining, and which our team has been involved with championing in TC39.
+
+You can think of this feature - the `??` operator - as a way to "fall back" to a default value when dealing with `null` or `undefined`.
+When we write code like
+
+```ts
+let x = foo ?? bar();
+```
+
+this is a new way to say that the value `foo` will be used when it's "present";
+but when it's `null` or `undefined`, calculate `bar()` in its place.
+
+Again, the above code is equivalent to the following.
+
+```ts
+let x = foo !== null && foo !== undefined ? foo : bar();
+```
+
+The `??` operator can replace uses of `||` when trying to use a default value.
+For example, the following code snippet tries to fetch the volume that was last saved in [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) (if it ever was);
+however, it has a bug because it uses `||`.
+
+```ts
+function initializeAudio() {
+  let volume = localStorage.volume || 0.5;
+
+  // ...
+}
+```
+
+When `localStorage.volume` is set to `0`, the page will set the volume to `0.5` which is unintended.
+`??` avoids some unintended behavior from `0`, `NaN` and `""` being treated as falsy values.
+
+We owe a large thanks to community members [Wenlu Wang](https://github.com/Kingwl) and [Titian Cernicova Dragomir](https://github.com/dragomirtitian) for implementing this feature!
+For more details, [check out their pull request](https://github.com/microsoft/TypeScript/pull/32883) and [the nullish coalescing proposal repository](https://github.com/tc39/proposal-nullish-coalescing/).
+
+## Assertion Functions
+
+[Playground](/play/#example/assertion-functions)
+
+There's a specific set of functions that `throw` an error if something unexpected happened.
+They're called "assertion" functions.
+As an example, Node.js has a dedicated function for this called `assert`.
+
+```js
+assert(someValue === 42);
+```
+
+In this example if `someValue` isn't equal to `42`, then `assert` will throw an `AssertionError`.
+
+Assertions in JavaScript are often used to guard against improper types being passed in.
+For example,
+
+```js
+function multiply(x, y) {
+  assert(typeof x === "number");
+  assert(typeof y === "number");
+
+  return x * y;
+}
+```
+
+Unfortunately in TypeScript these checks could never be properly encoded.
+For loosely-typed code this meant TypeScript was checking less, and for slightly conservative code it often forced users to use type assertions.
+
+```ts
+function yell(str) {
+  assert(typeof str === "string");
+
+  return str.toUppercase();
+  // Oops! We misspelled 'toUpperCase'.
+  // Would be great if TypeScript still caught this!
+}
+```
+
+The alternative was to instead rewrite the code so that the language could analyze it, but this isn't convenient.
+
+```ts
+function yell(str) {
+  if (typeof str !== "string") {
+    throw new TypeError("str should have been a string.");
+  }
+  // Error caught!
+  return str.toUppercase();
+}
+```
+
+Ultimately the goal of TypeScript is to type existing JavaScript constructs in the least disruptive way.
+For that reason, TypeScript 3.7 introduces a new concept called "assertion signatures" which model these assertion functions.
+
+The first type of assertion signature models the way that Node's `assert` function works.
+It ensures that whatever condition is being checked must be true for the remainder of the containing scope.
+
+```ts
+function assert(condition: any, msg?: string): asserts condition {
+  if (!condition) {
+    throw new AssertionError(msg);
+  }
+}
+```
+
+`asserts condition` says that whatever gets passed into the `condition` parameter must be true if the `assert` returns (because otherwise it would throw an error).
+That means that for the rest of the scope, that condition must be truthy.
+As an example, using this assertion function means we _do_ catch our original `yell` example.
+
+```ts
+function yell(str) {
+  assert(typeof str === "string");
+
+  return str.toUppercase();
+  //         ~~~~~~~~~~~
+  // error: Property 'toUppercase' does not exist on type 'string'.
+  //        Did you mean 'toUpperCase'?
+}
+
+function assert(condition: any, msg?: string): asserts condition {
+  if (!condition) {
+    throw new AssertionError(msg);
+  }
+}
+```
+
+The other type of assertion signature doesn't check for a condition, but instead tells TypeScript that a specific variable or property has a different type.
+
+```ts
+function assertIsString(val: any): asserts val is string {
+  if (typeof val !== "string") {
+    throw new AssertionError("Not a string!");
+  }
+}
+```
+
+Here `asserts val is string` ensures that after any call to `assertIsString`, any variable passed in will be known to be a `string`.
+
+```ts
+function yell(str: any) {
+  assertIsString(str);
+
+  // Now TypeScript knows that 'str' is a 'string'.
+
+  return str.toUppercase();
+  //         ~~~~~~~~~~~
+  // error: Property 'toUppercase' does not exist on type 'string'.
+  //        Did you mean 'toUpperCase'?
+}
+```
+
+These assertion signatures are very similar to writing type predicate signatures:
+
+```ts
+function isString(val: any): val is string {
+  return typeof val === "string";
+}
+
+function yell(str: any) {
+  if (isString(str)) {
+    return str.toUppercase();
+  }
+  throw "Oops!";
+}
+```
+
+And just like type predicate signatures, these assertion signatures are incredibly expressive.
+We can express some fairly sophisticated ideas with these.
+
+```ts
+function assertIsDefined<T>(val: T): asserts val is NonNullable<T> {
+  if (val === undefined || val === null) {
+    throw new AssertionError(
+      `Expected 'val' to be defined, but received ${val}`
+    );
+  }
+}
+```
+
+To read up more about assertion signatures, [check out the original pull request](https://github.com/microsoft/TypeScript/pull/32695).
+
+## Better Support for `never`-Returning Functions
+
+As part of the work for assertion signatures, TypeScript needed to encode more about where and which functions were being called.
+This gave us the opportunity to expand support for another class of functions: functions that return `never`.
+
+The intent of any function that returns `never` is that it never returns.
+It indicates that an exception was thrown, a halting error condition occurred, or that the program exited.
+For example, [`process.exit(...)` in `@types/node`](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/5299d372a220584e75a031c13b3d555607af13f8/types/node/globals.d.ts#l874) is specified to return `never`.
+
+In order to ensure that a function never potentially returned `undefined` or effectively returned from all code paths, TypeScript needed some syntactic signal - either a `return` or `throw` at the end of a function.
+So users found themselves `return`-ing their failure functions.
+
+```ts
+function dispatch(x: string | number): SomeType {
+  if (typeof x === "string") {
+    return doThingWithString(x);
+  } else if (typeof x === "number") {
+    return doThingWithNumber(x);
+  }
+  return process.exit(1);
+}
+```
+
+Now when these `never`-returning functions are called, TypeScript recognizes that they affect the control flow graph and accounts for them.
+
+```ts
+function dispatch(x: string | number): SomeType {
+  if (typeof x === "string") {
+    return doThingWithString(x);
+  } else if (typeof x === "number") {
+    return doThingWithNumber(x);
+  }
+  process.exit(1);
+}
+```
+
+As with assertion functions, you can [read up more at the same pull request](https://github.com/microsoft/TypeScript/pull/32695).
+
+## (More) Recursive Type Aliases
+
+[Playground](/play/#example/recursive-type-references)
+
+Type aliases have always had a limitation in how they could be "recursively" referenced.
+The reason is that any use of a type alias needs to be able to substitute itself with whatever it aliases.
+In some cases, that's not possible, so the compiler rejects certain recursive aliases like the following:
+
+```ts
+type Foo = Foo;
+```
+
+This is a reasonable restriction because any use of `Foo` would need to be replaced with `Foo` which would need to be replaced with `Foo` which would need to be replaced with `Foo` which... well, hopefully you get the idea!
+In the end, there isn't a type that makes sense in place of `Foo`.
+
+This is fairly [consistent with how other languages treat type aliases](https://en.wikipedia.org/w/index.php?title=Recursive_data_type&oldid=913091335#in_type_synonyms), but it does give rise to some slightly surprising scenarios for how users leverage the feature.
+For example, in TypeScript 3.6 and prior, the following causes an error.
+
+```ts
+type ValueOrArray<T> = T | Array<ValueOrArray<T>>;
+//   ~~~~~~~~~~~~
+// error: Type alias 'ValueOrArray' circularly references itself.
+```
+
+This is strange because there is technically nothing wrong with any use users could always write what was effectively the same code by introducing an interface.
+
+```ts
+type ValueOrArray<T> = T | ArrayOfValueOrArray<T>;
+
+interface ArrayOfValueOrArray<T> extends Array<ValueOrArray<T>> {}
+```
+
+Because interfaces (and other object types) introduce a level of indirection and their full structure doesn't need to be eagerly built out, TypeScript has no problem working with this structure.
+
+But workaround of introducing the interface wasn't intuitive for users.
+And in principle there really wasn't anything wrong with the original version of `ValueOrArray` that used `Array` directly.
+If the compiler was a little bit "lazier" and only calculated the type arguments to `Array` when necessary, then TypeScript could express these correctly.
+
+That's exactly what TypeScript 3.7 introduces.
+At the "top level" of a type alias, TypeScript will defer resolving type arguments to permit these patterns.
+
+This means that code like the following that was trying to represent JSON...
+
+```ts
+type Json = string | number | boolean | null | JsonObject | JsonArray;
+
+interface JsonObject {
+  [property: string]: Json;
+}
+
+interface JsonArray extends Array<Json> {}
+```
+
+can finally be rewritten without helper interfaces.
+
+```ts
+type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [property: string]: Json }
+  | Json[];
+```
+
+This new relaxation also lets us recursively reference type aliases in tuples as well.
+The following code which used to error is now valid TypeScript code.
+
+```ts
+type VirtualNode = string | [string, { [key: string]: any }, ...VirtualNode[]];
+
+const myNode: VirtualNode = [
+  "div",
+  { id: "parent" },
+  ["div", { id: "first-child" }, "I'm the first child"],
+  ["div", { id: "second-child" }, "I'm the second child"]
+];
+```
+
+For more information, you can [read up on the original pull request](https://github.com/microsoft/TypeScript/pull/33050).
+
+## `--declaration` and `--allowJs`
+
+The `--declaration` flag in TypeScript allows us to generate `.d.ts` files (declaration files) from TypeScript source files (i.e. `.ts` and `.tsx` files).
+These `.d.ts` files are important for a couple of reasons.
+
+First of all, they're important because they allow TypeScript to type-check against other projects without re-checking the original source code.
+They're also important because they allow TypeScript to interoperate with existing JavaScript libraries that weren't built with TypeScript in mind.
+Finally, a benefit that is often underappreciated: both TypeScript _and_ JavaScript users can benefit from these files when using editors powered by TypeScript to get things like better auto-completion.
+
+Unfortunately, `--declaration` didn't work with the `--allowJs` flag which allows mixing TypeScript and JavaScript input files.
+This was a frustrating limitation because it meant users couldn't use the `--declaration` flag when migrating codebases, even if they were JSDoc-annotated.
+TypeScript 3.7 changes that, and allows the two options to be used together!
+
+The most impactful outcome of this feature might a bit subtle: with TypeScript 3.7, users can write libraries in JSDoc annotated JavaScript and support TypeScript users.
+
+The way that this works is that when using `allowJs`, TypeScript has some best-effort analyses to understand common JavaScript patterns; however, the way that some patterns are expressed in JavaScript don't necessarily look like their equivalents in TypeScript.
+When `declaration` emit is turned on, TypeScript figures out the best way to transform JSDoc comments and CommonJS exports into valid type declarations and the like in the output `.d.ts` files.
+
+As an example, the following code snippet
+
+```js
+const assert = require("assert");
+
+module.exports.blurImage = blurImage;
+
+/**
+ * Produces a blurred image from an input buffer.
+ *
+ * @param input {Uint8Array}
+ * @param width {number}
+ * @param height {number}
+ */
+function blurImage(input, width, height) {
+  const numPixels = width * height * 4;
+  assert(input.length === numPixels);
+  const result = new Uint8Array(numPixels);
+
+  // TODO
+
+  return result;
+}
+```
+
+Will produce a `.d.ts` file like
+
+```ts
+/**
+ * Produces a blurred image from an input buffer.
+ *
+ * @param input {Uint8Array}
+ * @param width {number}
+ * @param height {number}
+ */
+export function blurImage(
+  input: Uint8Array,
+  width: number,
+  height: number
+): Uint8Array;
+```
+
+This can go beyond basic functions with `@param` tags too, where the following example:
+
+```js
+/**
+ * @callback Job
+ * @returns {void}
+ */
+
+/** Queues work */
+export class Worker {
+  constructor(maxDepth = 10) {
+    this.started = false;
+    this.depthLimit = maxDepth;
+    /**
+     * NOTE: queued jobs may add more items to queue
+     * @type {Job[]}
+     */
+    this.queue = [];
+  }
+  /**
+   * Adds a work item to the queue
+   * @param {Job} work
+   */
+  push(work) {
+    if (this.queue.length + 1 > this.depthLimit) throw new Error("Queue full!");
+    this.queue.push(work);
+  }
+  /**
+   * Starts the queue if it has not yet started
+   */
+  start() {
+    if (this.started) return false;
+    this.started = true;
+    while (this.queue.length) {
+      /** @type {Job} */ (this.queue.shift())();
+    }
+    return true;
+  }
+}
+```
+
+will be transformed into the following `.d.ts` file:
+
+```ts
+/**
+ * @callback Job
+ * @returns {void}
+ */
+/** Queues work */
+export class Worker {
+  constructor(maxDepth?: number);
+  started: boolean;
+  depthLimit: number;
+  /**
+   * NOTE: queued jobs may add more items to queue
+   * @type {Job[]}
+   */
+  queue: Job[];
+  /**
+   * Adds a work item to the queue
+   * @param {Job} work
+   */
+  push(work: Job): void;
+  /**
+   * Starts the queue if it has not yet started
+   */
+  start(): boolean;
+}
+export type Job = () => void;
+```
+
+Note that when using these flags together, TypeScript doesn't necessarily have to downlevel `.js` files.
+If you simply want TypeScript to create `.d.ts` files, you can use the `--emitDeclarationOnly` compiler option.
+
+For more details, you can [check out the original pull request](https://github.com/microsoft/TypeScript/pull/32372).
+
+## The `useDefineForClassFields` Flag and The `declare` Property Modifier
+
+Back when TypeScript implemented public class fields, we assumed to the best of our abilities that the following code
+
+```ts
+class C {
+  foo = 100;
+  bar: string;
+}
+```
+
+would be equivalent to a similar assignment within a constructor body.
+
+```ts
+class C {
+  constructor() {
+    this.foo = 100;
+  }
+}
+```
+
+Unfortunately, while this seemed to be the direction that the proposal moved towards in its earlier days, there is an extremely strong chance that public class fields will be standardized differently.
+Instead, the original code sample might need to de-sugar to something closer to the following:
+
+```ts
+class C {
+  constructor() {
+    Object.defineProperty(this, "foo", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: 100
+    });
+    Object.defineProperty(this, "bar", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+  }
+}
+```
+
+While TypeScript 3.7 isn't changing any existing emit by default, we've been rolling out changes incrementally to help users mitigate potential future breakage.
+We've provided a new flag called `useDefineForClassFields` to enable this emit mode with some new checking logic.
+
+The two biggest changes are the following:
+
+- Declarations are initialized with `Object.defineProperty`.
+- Declarations are _always_ initialized to `undefined`, even if they have no initializer.
+
+This can cause quite a bit of fallout for existing code that use inheritance. First of all, `set` accessors from base classes won't get triggered - they'll be completely overwritten.
+
+```ts
+class Base {
+  set data(value: string) {
+    console.log("data changed to " + value);
+  }
+}
+
+class Derived extends Base {
+  // No longer triggers a 'console.log'
+  // when using 'useDefineForClassFields'.
+  data = 10;
+}
+```
+
+Secondly, using class fields to specialize properties from base classes also won't work.
+
+```ts
+interface Animal {
+  animalStuff: any;
+}
+interface Dog extends Animal {
+  dogStuff: any;
+}
+
+class AnimalHouse {
+  resident: Animal;
+  constructor(animal: Animal) {
+    this.resident = animal;
+  }
+}
+
+class DogHouse extends AnimalHouse {
+  // Initializes 'resident' to 'undefined'
+  // after the call to 'super()' when
+  // using 'useDefineForClassFields'!
+  resident: Dog;
+
+  constructor(dog: Dog) {
+    super(dog);
+  }
+}
+```
+
+What these two boil down to is that mixing properties with accessors is going to cause issues, and so will re-declaring properties with no initializers.
+
+To detect the issue around accessors, TypeScript 3.7 will now emit `get`/`set` accessors in `.d.ts` files so that in TypeScript can check for overridden accessors.
+
+Code that's impacted by the class fields change can get around the issue by converting field initializers to assignments in constructor bodies.
+
+```ts
+class Base {
+  set data(value: string) {
+    console.log("data changed to " + value);
+  }
+}
+
+class Derived extends Base {
+  constructor() {
+    data = 10;
+  }
+}
+```
+
+To help mitigate the second issue, you can either add an explicit initializer or add a `declare` modifier to indicate that a property should have no emit.
+
+```ts
+interface Animal {
+  animalStuff: any;
+}
+interface Dog extends Animal {
+  dogStuff: any;
+}
+
+class AnimalHouse {
+  resident: Animal;
+  constructor(animal: Animal) {
+    this.resident = animal;
+  }
+}
+
+class DogHouse extends AnimalHouse {
+  declare resident: Dog;
+  //  ^^^^^^^
+  // 'resident' now has a 'declare' modifier,
+  // and won't produce any output code.
+
+  constructor(dog: Dog) {
+    super(dog);
+  }
+}
+```
+
+Currently `useDefineForClassFields` is only available when targeting ES5 and upwards, since `Object.defineProperty` doesn't exist in ES3.
+To achieve similar checking for issues, you can create a seperate project that targets ES5 and uses `--noEmit` to avoid a full build.
+
+For more information, you can [take a look at the original pull request for these changes](https://github.com/microsoft/TypeScript/pull/33509).
+
+We strongly encourage users to try the `useDefineForClassFields` flag and report back on our issue tracker or in the comments below.
+This includes feedback on difficulty of adopting the flag so we can understand how we can make migration easier.
+
+## Build-Free Editing with Project References
+
+TypeScript's project references provide us with an easy way to break codebases up to give us faster compiles.
+Unfortunately, editing a project whose dependencies hadn't been built (or whose output was out of date) meant that the editing experience wouldn't work well.
+
+In TypeScript 3.7, when opening a project with dependencies, TypeScript will automatically use the source `.ts`/`.tsx` files instead.
+This means projects using project references will now see an improved editing experience where semantic operations are up-to-date and "just work".
+You can disable this behavior with the compiler option `disableSourceOfProjectReferenceRedirect` which may be appropriate when working in very large projects where this change may impact editing performance.
+
+You can [read up more about this change by reading up on its pull request](https://github.com/microsoft/TypeScript/pull/32028).
+
+## Uncalled Function Checks
+
+A common and dangerous error is to forget to invoke a function, especially if the function has zero arguments or is named in a way that implies it might be a property rather than a function.
+
+```ts
+interface User {
+  isAdministrator(): boolean;
+  notify(): void;
+  doNotDisturb?(): boolean;
+}
+
+// later...
+
+// Broken code, do not use!
+function doAdminThing(user: User) {
+  // oops!
+  if (user.isAdministrator) {
+    sudo();
+    editTheConfiguration();
+  } else {
+    throw new AccessDeniedError("User is not an admin");
+  }
+}
+```
+
+Here, we forgot to call `isAdministrator`, and the code incorrectly allows non-adminstrator users to edit the configuration!
+
+In TypeScript 3.7, this is identified as a likely error:
+
+```ts
+function doAdminThing(user: User) {
+    if (user.isAdministrator) {
+    //  ~~~~~~~~~~~~~~~~~~~~
+    // error! This condition will always return true since the function is always defined.
+    //        Did you mean to call it instead?
+```
+
+This check is a breaking change, but for that reason the checks are very conservative.
+This error is only issued in `if` conditions, and it is not issued on optional properties, if `strictNullChecks` is off, or if the function is later called within the body of the `if`:
+
+```ts
+interface User {
+  isAdministrator(): boolean;
+  notify(): void;
+  doNotDisturb?(): boolean;
+}
+
+function issueNotification(user: User) {
+  if (user.doNotDisturb) {
+    // OK, property is optional
+  }
+  if (user.notify) {
+    // OK, called the function
+    user.notify();
+  }
+}
+```
+
+If you intended to test the function without calling it, you can correct the definition of it to include `undefined`/`null`, or use `!!` to write something like `if (!!user.isAdministrator)` to indicate that the coercion is intentional.
+
+We owe a big thanks to GitHub user [@jwbay](https://github.com/jwbay) who took the initiative to create a [proof-of-concept](https://github.com/microsoft/TypeScript/pull/32802) and iterated to provide us with with [the current version](https://github.com/microsoft/TypeScript/pull/33178).
+
+## `// @ts-nocheck` in TypeScript Files
+
+TypeScript 3.7 allows us to add `// @ts-nocheck` comments to the top of TypeScript files to disable semantic checks.
+Historically this comment was only respected in JavaScript source files in the presence of `checkJs`, but we've expanded support to TypeScript files to make migrations easier for all users.
+
+## Semicolon Formatter Option
+
+TypeScript's built-in formatter now supports semicolon insertion and removal at locations where a trailing semicolon is optional due to JavaScript's automatic semicolon insertion (ASI) rules. The setting is available now in [Visual Studio Code Insiders](https://code.visualstudio.com/insiders/), and will be available in Visual Studio 16.4 Preview 2 in the Tools Options menu.
+
+<img width="833" alt="New semicolon formatter option in VS Code" src="https://user-images.githubusercontent.com/3277153/65913194-10066e80-e395-11e9-8a3a-4f7305c397d5.png">
+
+Choosing a value of "insert" or "remove" also affects the format of auto-imports, extracted types, and other generated code provided by TypeScript services. Leaving the setting on its default value of "ignore" makes generated code match the semicolon preference detected in the current file.
+
+## 3.7 Breaking Changes
+
+### DOM Changes
+
+[Types in `lib.dom.d.ts` have been updated](https://github.com/microsoft/TypeScript/pull/33627).
+These changes are largely correctness changes related to nullability, but impact will ultimately depend on your codebase.
+
+### Class Field Mitigations
+
+[As mentioned above](#the-usedefineforclassfields-flag-and-the-declare-property-modifier), TypeScript 3.7 emits `get`/`set` accessors in `.d.ts` files which can cause breaking changes for consumers on older versions of TypeScript like 3.5 and prior.
+TypeScript 3.6 users will not be impacted, since that version was future-proofed for this feature.
+
+While not a breakage per se, opting in to the `useDefineForClassFields` flag can cause breakage when:
+
+- overriding an accessor in a derived class with a property declaration
+- re-declaring a property declaration with no initializer
+
+To understand the full impact, read [the section above on the `useDefineForClassFields` flag](#the-usedefineforclassfields-flag-and-the-declare-property-modifier).
+
+### Function Truthy Checks
+
+As mentioned above, TypeScript now errors when functions appear to be uncalled within `if` statement conditions.
+An error is issued when a function type is checked in `if` conditions unless any of the following apply:
+
+- the checked value comes from an optional property
+- `strictNullChecks` is disabled
+- the function is later called within the body of the `if`
+
+### Local and Imported Type Declarations Now Conflict
+
+Due to a bug, the following construct was previously allowed in TypeScript:
+
+```ts
+// ./someOtherModule.ts
+interface SomeType {
+  y: string;
+}
+
+// ./myModule.ts
+import { SomeType } from "./someOtherModule";
+export interface SomeType {
+  x: number;
+}
+
+function fn(arg: SomeType) {
+  console.log(arg.x); // Error! 'x' doesn't exist on 'SomeType'
+}
+```
+
+Here, `SomeType` appears to originate in both the `import` declaration and the local `interface` declaration.
+Perhaps surprisingly, inside the module, `SomeType` refers exclusively to the `import`ed definition, and the local declaration `SomeType` is only usable when imported from another file.
+This is very confusing and our review of the very small number of cases of code like this in the wild showed that developers usually thought something different was happening.
+
+In TypeScript 3.7, [this is now correctly identified as a duplicate identifier error](https://github.com/microsoft/TypeScript/pull/31231).
+The correct fix depends on the original intent of the author and should be addressed on a case-by-case basis.
+Usually, the naming conflict is unintentional and the best fix is to rename the imported type.
+If the intent was to augment the imported type, a proper module augmentation should be written instead.
+
+### 3.7 API Changes
+
+To enable the recursive type alias patterns described above, the `typeArguments` property has been removed from the `TypeReference` interface. Users should instead use the `getTypeArguments` function on `TypeChecker` instances.
 
 ## TypeScript 3.6
 
@@ -14,16 +860,16 @@ In earlier versions, users of generators had no way to differentiate whether a v
 
 ```ts
 function* foo() {
-    if (Math.random() < 0.5) yield 100;
-    return "Finished!"
+  if (Math.random() < 0.5) yield 100;
+  return "Finished!";
 }
 
 let iter = foo();
 let curr = iter.next();
 if (curr.done) {
-    // TypeScript 3.5 and prior thought this was a 'string | number'.
-    // It should know it's 'string' since 'done' was 'true'!
-    curr.value
+  // TypeScript 3.5 and prior thought this was a 'string | number'.
+  // It should know it's 'string' since 'done' was 'true'!
+  curr.value;
 }
 ```
 
@@ -31,8 +877,8 @@ Additionally, generators just assumed the type of `yield` was always `any`.
 
 ```ts
 function* bar() {
-    let x: { hello(): void } = yield;
-    x.hello();
+  let x: { hello(): void } = yield;
+  x.hello();
 }
 
 let iter = bar();
@@ -47,10 +893,10 @@ The `Iterator` type now allows users to specify the yielded type, the returned t
 
 ```ts
 interface Iterator<T, TReturn = any, TNext = undefined> {
-    // Takes either 0 or 1 arguments - doesn't accept 'undefined'
-    next(...args: [] | [TNext]): IteratorResult<T, TReturn>;
-    return?(value?: TReturn): IteratorResult<T, TReturn>;
-    throw?(e?: any): IteratorResult<T, TReturn>;
+  // Takes either 0 or 1 arguments - doesn't accept 'undefined'
+  next(...args: [] | [TNext]): IteratorResult<T, TReturn>;
+  return?(value?: TReturn): IteratorResult<T, TReturn>;
+  throw?(e?: any): IteratorResult<T, TReturn>;
 }
 ```
 
@@ -58,27 +904,29 @@ Building on that work, the new `Generator` type is an `Iterator` that always has
 
 ```ts
 interface Generator<T = unknown, TReturn = any, TNext = unknown>
-        extends Iterator<T, TReturn, TNext> {
-    next(...args: [] | [TNext]): IteratorResult<T, TReturn>;
-    return(value: TReturn): IteratorResult<T, TReturn>;
-    throw(e: any): IteratorResult<T, TReturn>;
-    [Symbol.iterator](): Generator<T, TReturn, TNext>;
+  extends Iterator<T, TReturn, TNext> {
+  next(...args: [] | [TNext]): IteratorResult<T, TReturn>;
+  return(value: TReturn): IteratorResult<T, TReturn>;
+  throw(e: any): IteratorResult<T, TReturn>;
+  [Symbol.iterator](): Generator<T, TReturn, TNext>;
 }
 ```
 
 To allow differentiation between returned values and yielded values, TypeScript 3.6 converts the `IteratorResult` type to a discriminated union type:
 
 ```ts
-type IteratorResult<T, TReturn = any> = IteratorYieldResult<T> | IteratorReturnResult<TReturn>;
+type IteratorResult<T, TReturn = any> =
+  | IteratorYieldResult<T>
+  | IteratorReturnResult<TReturn>;
 
 interface IteratorYieldResult<TYield> {
-    done?: false;
-    value: TYield;
+  done?: false;
+  value: TYield;
 }
 
 interface IteratorReturnResult<TReturn> {
-    done: true;
-    value: TReturn;
+  done: true;
+  value: TReturn;
 }
 ```
 
@@ -88,8 +936,8 @@ To correctly represent the types that can be passed in to a generator from calls
 
 ```ts
 function* foo() {
-    let x: string = yield;
-    console.log(x.toUpperCase());
+  let x: string = yield;
+  console.log(x.toUpperCase());
 }
 
 let x = foo();
@@ -107,20 +955,20 @@ Below, `next()` can only be called with `boolean`s, and depending on the value o
  * - can be passed in booleans
  */
 function* counter(): Generator<number, string, boolean> {
-    let i = 0;
-    while (true) {
-        if (yield i++) {
-            break;
-        }
+  let i = 0;
+  while (true) {
+    if (yield i++) {
+      break;
     }
-    return "done!";
+  }
+  return "done!";
 }
 
 var iter = counter();
-var curr = iter.next()
+var curr = iter.next();
 while (!curr.done) {
-    console.log(curr.value);
-    curr = iter.next(curr.value === 5)
+  console.log(curr.value);
+  curr = iter.next(curr.value === 5);
 }
 console.log(curr.value.toUpperCase());
 
@@ -145,13 +993,13 @@ The looser default without `--downlevelIteration` works fairly well; however, th
 For example, the following array containing a spread
 
 ```ts
-[...Array(5)]
+[...Array(5)];
 ```
 
 can be rewritten as the following array literal
 
 ```js
-[undefined, undefined, undefined, undefined, undefined]
+[undefined, undefined, undefined, undefined, undefined];
 ```
 
 However, TypeScript would instead transform the original code into this code:
@@ -177,20 +1025,20 @@ TypeScript's error messages are now specialized, and inform the user that perhap
 
 ```ts
 interface User {
-    name: string;
-    age: number;
-    location: string;
+  name: string;
+  age: number;
+  location: string;
 }
 
 declare function getUserData(): Promise<User>;
 declare function displayUser(user: User): void;
 
 async function f() {
-    displayUser(getUserData());
-//              ~~~~~~~~~~~~~
-// Argument of type 'Promise<User>' is not assignable to parameter of type 'User'.
-//   ...
-// Did you forget to use 'await'?
+  displayUser(getUserData());
+  //              ~~~~~~~~~~~~~
+  // Argument of type 'Promise<User>' is not assignable to parameter of type 'User'.
+  //   ...
+  // Did you forget to use 'await'?
 }
 ```
 
@@ -199,12 +1047,11 @@ This is another example, among many others, where we're able to do better.
 
 ```ts
 async function getCuteAnimals() {
-    fetch("https://reddit.com/r/aww.json")
-        .json()
-    //   ~~~~
-    // Property 'json' does not exist on type 'Promise<Response>'.
-    //
-    // Did you forget to use 'await'?
+  fetch("https://reddit.com/r/aww.json").json();
+  //   ~~~~
+  // Property 'json' does not exist on type 'Promise<Response>'.
+  //
+  // Did you forget to use 'await'?
 }
 ```
 
@@ -225,14 +1072,14 @@ TypeScript 3.6 supports transforming `import.meta` to `context.meta` when your `
 ```ts
 // This module:
 
-console.log(import.meta.url)
+console.log(import.meta.url);
 
 // gets turned into the following:
 
-System.register([], function (exports, context) {
+System.register([], function(exports, context) {
   return {
     setters: [],
-    execute: function () {
+    execute: function() {
       console.log(context.meta.url);
     }
   };
@@ -249,9 +1096,9 @@ As a result, users can write getters and setters in ambient contexts in TypeScri
 
 ```ts
 declare class Foo {
-    // Allowed in 3.6+.
-    get x(): number;
-    set x(val: number): void;
+  // Allowed in 3.6+.
+  get x(): number;
+  set x(val: number): void;
 }
 ```
 
@@ -266,23 +1113,23 @@ This means that now you can write the following:
 ```ts
 export declare function Point2D(x: number, y: number): Point2D;
 export declare class Point2D {
-    x: number;
-    y: number;
-    constructor(x: number, y: number);
+  x: number;
+  y: number;
+  constructor(x: number, y: number);
 }
 ```
 
-instead of needing to use 
+instead of needing to use
 
 ```ts
 export interface Point2D {
-    x: number;
-    y: number;
+  x: number;
+  y: number;
 }
 export declare var Point2D: {
-    (x: number, y: number): Point2D;
-    new (x: number, y: number): Point2D;
-}
+  (x: number, y: number): Point2D;
+  new (x: number, y: number): Point2D;
+};
 ```
 
 One advantage of this is that the callable constructor pattern can be easily expressed while also allowing namespaces to merge with these declarations (since `var` declarations can't merge with `namespace`s).
@@ -334,9 +1181,9 @@ We owe Artem a big thanks for helping out here!
 
 The new playground now supports many new options including:
 
-* The `target` option (allowing users to switch out of `es5` to `es3`, `es2015`, `esnext`, etc.)
-* All the strictness flags (including just `strict`)
-* Support for plain JavaScript files (using `allowJS` and optionally `checkJs`)
+- The `target` option (allowing users to switch out of `es5` to `es3`, `es2015`, `esnext`, etc.)
+- All the strictness flags (including just `strict`)
+- Support for plain JavaScript files (using `allowJS` and optionally `checkJs`)
 
 These options also persist when sharing links to playground samples, allowing users to more reliably share examples without having to tell the recipient "oh, don't forget to turn on the `noImplicitAny` option!".
 
@@ -362,8 +1209,8 @@ In scenarios involving hundreds of projects using TypeScript's project reference
 
 For more details, you can see the pull requests to
 
-* [cache module resolution](https://github.com/Microsoft/TypeScript/pull/31100)
-* [cache settings calculated from `tsconfig.json`](https://github.com/Microsoft/TypeScript/pull/31101)
+- [cache module resolution](https://github.com/Microsoft/TypeScript/pull/31100)
+- [cache settings calculated from `tsconfig.json`](https://github.com/Microsoft/TypeScript/pull/31101)
 
 ## The `Omit` helper type
 
@@ -371,17 +1218,17 @@ TypeScript 3.5 introduces the new `Omit` helper type, which creates a new type w
 
 ```ts
 type Person = {
-    name: string;
-    age: number;
-    location: string;
+  name: string;
+  age: number;
+  location: string;
 };
 
 type QuantumPerson = Omit<Person, "location">;
 
 // equivalent to
 type QuantumPerson = {
-    name: string;
-    age: number;
+  name: string;
+  age: number;
 };
 ```
 
@@ -396,32 +1243,32 @@ For instance, TypeScript 3.4 permitted the incorrect `name` property in the obje
 
 ```ts
 type Point = {
-    x: number;
-    y: number;
+  x: number;
+  y: number;
 };
 
 type Label = {
-    name: string;
+  name: string;
 };
 
 const thing: Point | Label = {
-    x: 0,
-    y: 0,
-    name: true // uh-oh!
+  x: 0,
+  y: 0,
+  name: true // uh-oh!
 };
 ```
 
-Previously, a non-disciminated union wouldn't have *any* excess property checking done on its members, and as a result, the incorrectly typed `name` property slipped by.
+Previously, a non-disciminated union wouldn't have _any_ excess property checking done on its members, and as a result, the incorrectly typed `name` property slipped by.
 
-In TypeScript 3.5, the type-checker at least verifies that all the provided properties belong to *some* union member and have the appropriate type, meaning that the sample above correctly issues an error.
+In TypeScript 3.5, the type-checker at least verifies that all the provided properties belong to _some_ union member and have the appropriate type, meaning that the sample above correctly issues an error.
 
 Note that partial overlap is still permitted as long as the property types are valid.
 
 ```ts
 const pl: Point | Label = {
-    x: 0,
-    y: 0,
-    name: "origin" // okay
+  x: 0,
+  y: 0,
+  name: "origin" // okay
 };
 ```
 
@@ -444,10 +1291,8 @@ For more details, [see the pull request on GitHub](https://github.com/Microsoft/
 In TypeScript 3.4 and prior, the following example would fail:
 
 ```ts
-type S = { done: boolean, value: number }
-type T =
-    | { done: false, value: number }
-    | { done: true, value: number };
+type S = { done: boolean; value: number };
+type T = { done: false; value: number } | { done: true; value: number };
 
 declare let source: S;
 declare let target: T;
@@ -463,32 +1308,32 @@ If it did, some bad code could get through like the following:
 
 ```ts
 interface Foo {
-    kind: "foo";
-    value: string;
+  kind: "foo";
+  value: string;
 }
 
 interface Bar {
-    kind: "bar";
-    value: number;
+  kind: "bar";
+  value: number;
 }
 
 function doSomething(x: Foo | Bar) {
-    if (x.kind === "foo") {
-        x.value.toLowerCase();
-    }
+  if (x.kind === "foo") {
+    x.value.toLowerCase();
+  }
 }
 
 // uh-oh - luckily TypeScript errors here!
 doSomething({
-    kind: "foo",
-    value: 123,
+  kind: "foo",
+  value: 123
 });
 ```
 
 However, this was a bit overly strict for the original example.
 If you figure out the precise type of any possible value of `S`, you can actually see that it matches the types in `T` exactly.
 
-In TypeScript 3.5, when assigning to types with discriminant properties like in `T`, the language actually *will* go further and decompose types like `S` into a union of every possible inhabitant type.
+In TypeScript 3.5, when assigning to types with discriminant properties like in `T`, the language actually _will_ go further and decompose types like `S` into a union of every possible inhabitant type.
 In this case, since `boolean` is a union of `true` and `false`, `S` will be viewed as a union of `{ done: false, value: number }` and `{ done: true, value: number }`.
 
 For more details, you can [see the original pull request on GitHub](https://github.com/microsoft/TypeScript/pull/30779).
@@ -498,10 +1343,8 @@ For more details, you can [see the original pull request on GitHub](https://gith
 In TypeScript 3.4, we improved inference for when generic functions that return functions like so:
 
 ```ts
-function compose<T, U, V>(
-    f: (x: T) => U, g: (y: U) => V): (x: T) => V {
-    
-    return x => g(f(x))
+function compose<T, U, V>(f: (x: T) => U, g: (y: U) => V): (x: T) => V {
+  return x => g(f(x));
 }
 ```
 
@@ -509,12 +1352,12 @@ took other generic functions as arguments, like so:
 
 ```ts
 function arrayify<T>(x: T): T[] {
-    return [x];
+  return [x];
 }
 
-type Box<U> = { value: U }
+type Box<U> = { value: U };
 function boxify<U>(y: U): Box<U> {
-    return { value: y };
+  return { value: y };
 }
 
 let newFn = compose(arrayify, boxify);
@@ -527,26 +1370,26 @@ TypeScript 3.5 generalizes this behavior to work on constructor functions as wel
 
 ```ts
 class Box<T> {
-    kind: "box";
-    value: T;
-    constructor(value: T) {
-        this.value = value;
-    }
+  kind: "box";
+  value: T;
+  constructor(value: T) {
+    this.value = value;
+  }
 }
 
 class Bag<U> {
-    kind: "bag";
-    value: U;
-    constructor(value: U) {
-        this.value = value;
-    }
+  kind: "bag";
+  value: U;
+  constructor(value: U) {
+    this.value = value;
+  }
 }
 
-
 function composeCtor<T, U, V>(
-    F: new (x: T) => U, G: new (y: U) => V): (x: T) => V {
-    
-    return x => new G(new F(x))
+  F: new (x: T) => U,
+  G: new (y: U) => V
+): (x: T) => V {
+  return x => new G(new F(x));
 }
 
 let f = composeCtor(Box, Bag); // has type '<T>(x: T) => Bag<Box<T>>'
@@ -558,16 +1401,15 @@ In addition to compositional patterns like the above, this new inference on gene
 ```ts
 type ComponentClass<P> = new (props: P) => Component<P>;
 declare class Component<P> {
-    props: P;
-    constructor(props: P);
+  props: P;
+  constructor(props: P);
 }
 
 declare function myHoc<P>(C: ComponentClass<P>): ComponentClass<P>;
 
-type NestedProps<T> = { foo: number, stuff: T };
+type NestedProps<T> = { foo: number; stuff: T };
 
-declare class GenericComponent<T> extends Component<NestedProps<T>> {
-}
+declare class GenericComponent<T> extends Component<NestedProps<T>> {}
 
 // type is 'new <T>(props: NestedProps<T>) => Component<NestedProps<T>>'
 const GenericComponent2 = myHoc(GenericComponent);
@@ -585,11 +1427,11 @@ The next time TypeScript is invoked with `--incremental`, it will use that infor
 ```json5
 // tsconfig.json
 {
-    "compilerOptions": { 
-        "incremental": true,
-        "outDir": "./lib"
-    },
-    "include": ["./src"]
+  compilerOptions: {
+    incremental: true,
+    outDir: "./lib"
+  },
+  include: ["./src"]
 }
 ```
 
@@ -603,12 +1445,12 @@ We can also name them anything that we want, and place them anywhere we want usi
 ```json5
 // front-end.tsconfig.json
 {
-    "compilerOptions": {
-        "incremental": true,
-        "tsBuildInfoFile": "./buildcache/front-end",
-        "outDir": "./lib"
-    },
-    "include": ["./src"]
+  compilerOptions: {
+    incremental: true,
+    tsBuildInfoFile: "./buildcache/front-end",
+    outDir: "./lib"
+  },
+  include: ["./src"]
 }
 ```
 
@@ -632,7 +1474,7 @@ To get more specific, let's build up some motivation and consider the following 
 
 ```ts
 function compose<A, B, C>(f: (arg: A) => B, g: (arg: B) => C): (arg: A) => C {
-    return x => g(f(x));
+  return x => g(f(x));
 }
 ```
 
@@ -643,28 +1485,25 @@ function compose<A, B, C>(f: (arg: A) => B, g: (arg: B) => C): (arg: A) => C {
 
 `compose` then returns a function which feeds its argument through `f` and then `g`.
 
-When calling this function, TypeScript will try to figure out the types of `A`, `B`, and `C` through a process called *type argument inference*.
+When calling this function, TypeScript will try to figure out the types of `A`, `B`, and `C` through a process called _type argument inference_.
 This inference process usually works pretty well:
 
 ```ts
 interface Person {
-    name: string;
-    age: number;
+  name: string;
+  age: number;
 }
 
 function getDisplayName(p: Person) {
-    return p.name.toLowerCase();
+  return p.name.toLowerCase();
 }
 
 function getLength(s: string) {
-    return s.length;
+  return s.length;
 }
 
 // has type '(p: Person) => number'
-const getDisplayNameLength = compose(
-    getDisplayName,
-    getLength,
-);
+const getDisplayNameLength = compose(getDisplayName, getLength);
 
 // works and returns the type 'number'
 getDisplayNameLength({ name: "Person McPersonface", age: 42 });
@@ -675,22 +1514,19 @@ However, in TypeScript 3.3 and earlier, generic functions like `compose` didn't 
 
 ```ts
 interface Box<T> {
-    value: T;
+  value: T;
 }
 
 function makeArray<T>(x: T): T[] {
-    return [x];
+  return [x];
 }
 
 function makeBox<U>(value: U): Box<U> {
-    return { value };
+  return { value };
 }
 
 // has type '(arg: {}) => Box<{}[]>'
-const makeBoxedArray = compose(
-    makeArray,
-    makeBox,
-)
+const makeBoxedArray = compose(makeArray, makeBox);
 
 makeBoxedArray("hello!").value[0].toUpperCase();
 //                                ~~~~~~~~~~~
@@ -699,7 +1535,7 @@ makeBoxedArray("hello!").value[0].toUpperCase();
 
 In older versions, TypeScript would infer the empty object type (`{}`) when inferring from other type variables like `T` and `U`.
 
-During type argument inference in TypeScript 3.4, for a call to a generic function that returns a function type, TypeScript *will*, as appropriate, propagate type parameters from generic function arguments onto the resulting function type.
+During type argument inference in TypeScript 3.4, for a call to a generic function that returns a function type, TypeScript _will_, as appropriate, propagate type parameters from generic function arguments onto the resulting function type.
 
 In other words, instead of producing the type
 
@@ -718,22 +1554,19 @@ This means that genericity from `compose`'s arguments has been preserved and our
 
 ```ts
 interface Box<T> {
-    value: T;
+  value: T;
 }
 
 function makeArray<T>(x: T): T[] {
-    return [x];
+  return [x];
 }
 
 function makeBox<U>(value: U): Box<U> {
-    return { value };
+  return { value };
 }
 
 // has type '<T>(arg: T) => Box<T[]>'
-const makeBoxedArray = compose(
-    makeArray,
-    makeBox,
-)
+const makeBoxedArray = compose(makeArray, makeBox);
 
 // works with no problem!
 makeBoxedArray("hello!").value[0].toUpperCase();
@@ -752,8 +1585,8 @@ Any variable with a reference to a `ReadonlyArray` can't add, remove, or replace
 
 ```ts
 function foo(arr: ReadonlyArray<string>) {
-    arr.slice();        // okay
-    arr.push("hello!"); // error!
+  arr.slice(); // okay
+  arr.push("hello!"); // error!
 }
 ```
 
@@ -764,8 +1597,8 @@ TypeScript 3.4 introduces a new syntax for `ReadonlyArray` using a new `readonly
 
 ```ts
 function foo(arr: readonly string[]) {
-    arr.slice();        // okay
-    arr.push("hello!"); // error!
+  arr.slice(); // okay
+  arr.push("hello!"); // error!
 }
 ```
 
@@ -777,8 +1610,8 @@ As you might expect, unlike ordinary tuples whose slots could be written to, `re
 
 ```ts
 function foo(pair: readonly [string, string]) {
-    console.log(pair[0]);   // okay
-    pair[1] = "hello!";     // error
+  console.log(pair[0]); // okay
+  pair[1] = "hello!"; // error
 }
 ```
 
@@ -790,14 +1623,16 @@ In earlier versions of TypeScript, we generalized mapped types to operate differ
 This meant that a mapped type like `Boxify` could work on arrays and tuples alike.
 
 ```ts
-interface Box<T> { value: T }
-
-type Boxify<T> = {
-    [K in keyof T]: Box<T[K]>
+interface Box<T> {
+  value: T;
 }
 
+type Boxify<T> = {
+  [K in keyof T]: Box<T[K]>;
+};
+
 // { a: Box<string>, b: Box<number> }
-type A = Boxify<{ a: string, b: number }>;
+type A = Boxify<{ a: string; b: number }>;
 
 // Array<Box<number>>
 type B = Boxify<number[]>;
@@ -811,13 +1646,13 @@ Unfortunately, mapped types like the `Readonly` utility type were effectively no
 ```ts
 // lib.d.ts
 type Readonly<T> = {
-    readonly [K in keyof T]: T[K]
-}
+  readonly [K in keyof T]: T[K];
+};
 
 // How code acted *before* TypeScript 3.4
 
 // { readonly a: string, readonly b: number }
-type A = Readonly<{ a: string, b: number }>;
+type A = Readonly<{ a: string; b: number }>;
 
 // number[]
 type B = Readonly<number[]>;
@@ -832,7 +1667,7 @@ In TypeScript 3.4, the `readonly` modifier in a mapped type will automatically c
 // How code acts now *with* TypeScript 3.4
 
 // { readonly a: string, readonly b: number }
-type A = Readonly<{ a: string, b: number }>;
+type A = Readonly<{ a: string; b: number }>;
 
 // readonly number[]
 type B = Readonly<number[]>;
@@ -845,13 +1680,13 @@ Similarly, you could write a utility type like `Writable` mapped type that strip
 
 ```ts
 type Writable<T> = {
-    -readonly [K in keyof T]: T[K]
-}
+  -readonly [K in keyof T]: T[K];
+};
 
 // { a: string, b: number }
 type A = Writable<{
-    readonly a: string;
-    readonly b: number
+  readonly a: string;
+  readonly b: number;
 }>;
 
 // number[]
@@ -877,7 +1712,7 @@ You can [see more details in the pull request](https://github.com/Microsoft/Type
 
 ## `const` assertions
 
-TypeScript 3.4 introduces a new construct for literal values called *`const`* assertions.
+TypeScript 3.4 introduces a new construct for literal values called _`const`_ assertions.
 Its syntax is a type assertion with `const` in place of the type name (e.g. `123 as const`).
 When we construct new literal expressions with `const` assertions, we can signal to the language that
 
@@ -915,22 +1750,21 @@ This feature means that types that would otherwise be used just to hint immutabi
 // Works with no types referenced or declared.
 // We only needed a single const assertion.
 function getShapes() {
-    let result = [
-        { kind: "circle", radius: 100, },
-        { kind: "square", sideLength: 50, },
-    ] as const;
-    
-    return result;
+  let result = [
+    { kind: "circle", radius: 100 },
+    { kind: "square", sideLength: 50 }
+  ] as const;
+
+  return result;
 }
 
 for (const shape of getShapes()) {
-    // Narrows perfectly!
-    if (shape.kind === "circle") {
-        console.log("Circle radius", shape.radius);
-    }
-    else {
-        console.log("Square side length", shape.sideLength);
-    }
+  // Narrows perfectly!
+  if (shape.kind === "circle") {
+    console.log("Circle radius", shape.radius);
+  } else {
+    console.log("Square side length", shape.sideLength);
+  }
 }
 ```
 
@@ -941,17 +1775,17 @@ This can even be used to enable `enum`-like patterns in plain JavaScript code if
 
 ```ts
 export const Colors = {
-    red: "RED",
-    blue: "BLUE",
-    green: "GREEN",
+  red: "RED",
+  blue: "BLUE",
+  green: "GREEN"
 } as const;
 
 // or use an 'export default'
 
 export default {
-    red: "RED",
-    blue: "BLUE",
-    green: "GREEN",
+  red: "RED",
+  blue: "BLUE",
+  green: "GREEN"
 } as const;
 ```
 
@@ -965,9 +1799,7 @@ One thing to note is that `const` assertions can only be applied immediately on 
 let a = (Math.random() < 0.5 ? 0 : 1) as const;
 
 // Works!
-let b = Math.random() < 0.5 ?
-    0 as const :
-    1 as const;
+let b = Math.random() < 0.5 ? (0 as const) : (1 as const);
 ```
 
 Another thing to keep in mind is that `const` contexts don't immediately convert an expression to be fully immutable.
@@ -976,12 +1808,12 @@ Another thing to keep in mind is that `const` contexts don't immediately convert
 let arr = [1, 2, 3, 4];
 
 let foo = {
-    name: "foo",
-    contents: arr,
+  name: "foo",
+  contents: arr
 } as const;
 
-foo.name = "bar";   // error!
-foo.contents = [];  // error!
+foo.name = "bar"; // error!
+foo.contents = []; // error!
 
 foo.contents.push(5); // ...works!
 ```
@@ -1020,14 +1852,14 @@ For more details on the implementation, see [the feature's pull request](https:/
 
 ## Improved behavior for calling union types
 
-In prior versions of TypeScript, unions of callable types could *only* be invoked if they had identical parameter lists.
+In prior versions of TypeScript, unions of callable types could _only_ be invoked if they had identical parameter lists.
 
 ```ts
 type Fruit = "apple" | "orange";
 type Color = "red" | "orange";
 
-type FruitEater = (fruit: Fruit) => number;     // eats and ranks the fruit
-type ColorConsumer = (color: Color) => string;  // consumes and describes the colors
+type FruitEater = (fruit: Fruit) => number; // eats and ranks the fruit
+type ColorConsumer = (color: Color) => string; // consumes and describes the colors
 
 declare let f: FruitEater | ColorConsumer;
 
@@ -1044,19 +1876,19 @@ In TypeScript 3.3, this is no longer an error.
 type Fruit = "apple" | "orange";
 type Color = "red" | "orange";
 
-type FruitEater = (fruit: Fruit) => number;     // eats and ranks the fruit
-type ColorConsumer = (color: Color) => string;  // consumes and describes the colors
+type FruitEater = (fruit: Fruit) => number; // eats and ranks the fruit
+type ColorConsumer = (color: Color) => string; // consumes and describes the colors
 
 declare let f: FruitEater | ColorConsumer;
 
 f("orange"); // It works! Returns a 'number | string'.
 
-f("apple");  // error - Argument of type '"red"' is not assignable to parameter of type '"orange"'.
+f("apple"); // error - Argument of type '"red"' is not assignable to parameter of type '"orange"'.
 
-f("red");    // error - Argument of type '"red"' is not assignable to parameter of type '"orange"'.
+f("red"); // error - Argument of type '"red"' is not assignable to parameter of type '"orange"'.
 ```
 
-In TypeScript 3.3, the parameters of these signatures are *intersected* together to create a new signature.
+In TypeScript 3.3, the parameters of these signatures are _intersected_ together to create a new signature.
 
 In the example above, the parameters `fruit` and `color` are intersected together to a new parameter of type `Fruit & Color`.
 `Fruit & Color` is really the same as `("apple" | "orange") & ("red" | "orange")` which is equivalent to `("apple" & "red") | ("apple" & "orange") | ("orange" & "red") | ("orange" & "orange")`.
@@ -1071,19 +1903,19 @@ On the other hand, methods like `forEach` will now be callable, but under `noImp
 
 ```ts
 interface Dog {
-    kind: "dog"
-    dogProp: any;
+  kind: "dog";
+  dogProp: any;
 }
 interface Cat {
-    kind: "cat"
-    catProp: any;
+  kind: "cat";
+  catProp: any;
 }
 
 const catOrDogArray: Dog[] | Cat[] = [];
 
 catOrDogArray.forEach(animal => {
-    //                ~~~~~~ error!
-    // Parameter 'animal' implicitly has an 'any' type.
+  //                ~~~~~~ error!
+  // Parameter 'animal' implicitly has an 'any' type.
 });
 ```
 
@@ -1091,24 +1923,23 @@ This is still strictly more capable in TypeScript 3.3, and adding an explicit ty
 
 ```ts
 interface Dog {
-    kind: "dog"
-    dogProp: any;
+  kind: "dog";
+  dogProp: any;
 }
 interface Cat {
-    kind: "cat"
-    catProp: any;
+  kind: "cat";
+  catProp: any;
 }
 
 const catOrDogArray: Dog[] | Cat[] = [];
 catOrDogArray.forEach((animal: Dog | Cat) => {
-    if (animal.kind === "dog") {
-        animal.dogProp;
-        // ...
-    }
-    else if (animal.kind === "cat") {
-        animal.catProp;
-        // ...
-    }
+  if (animal.kind === "dog") {
+    animal.dogProp;
+    // ...
+  } else if (animal.kind === "cat") {
+    animal.catProp;
+    // ...
+  }
 });
 ```
 
@@ -1117,16 +1948,16 @@ catOrDogArray.forEach((animal: Dog | Cat) => {
 TypeScript 3.0 introduced a new feature for structuring builds called "composite projects".
 Part of the goal here was to ensure users could break up large projects into smaller parts that build quickly and preserve project structure, without compromising the existing TypeScript experience.
 Thanks to composite projects, TypeScript can use `--build` mode to recompile only the set of projects and dependencies.
-You can think of this as optimizing *inter*-project builds.
+You can think of this as optimizing _inter_-project builds.
 
 TypeScript 2.7 also introduced `--watch` mode builds via a new incremental "builder" API.
 In a similar vein, the entire idea is that this mode only re-checks and re-emits changed files or files whose dependencies might impact type-checking.
-You can think of this as optimizing *intra*-project builds.
+You can think of this as optimizing _intra_-project builds.
 
 Prior to 3.3, building composite projects using `--build --watch` actually didn't use this incremental file watching infrastructure.
 An update in one project under `--build --watch` mode would force a full build of that project, rather than determining which files within that project were affected.
 
-In TypeScript 3.3, `--build` mode's `--watch` flag *does* leverage incremental file watching as well.
+In TypeScript 3.3, `--build` mode's `--watch` flag _does_ leverage incremental file watching as well.
 That can mean signficantly faster builds under `--build --watch`.
 In our testing, this functionality has resulted in **a reduction of 50% to 75% in build times** of the original `--build --watch` times.
 [You can read more on the original pull request for the change](https://github.com/Microsoft/TypeScript/pull/29161) to see specific numbers, but we believe most composite project users will see significant wins here.
@@ -1139,13 +1970,13 @@ TypeScript 3.2 introduces a new `--strictBindCallApply` compiler option (in the 
 
 ```ts
 function foo(a: number, b: string): string {
-    return a + b;
+  return a + b;
 }
 
-let a = foo.apply(undefined, [10]);              // error: too few argumnts
-let b = foo.apply(undefined, [10, 20]);          // error: 2nd argument is a number
+let a = foo.apply(undefined, [10]); // error: too few argumnts
+let b = foo.apply(undefined, [10, 20]); // error: 2nd argument is a number
 let c = foo.apply(undefined, [10, "hello", 30]); // error: too many arguments
-let d = foo.apply(undefined, [10, "hello"]);     // okay! returns a string
+let d = foo.apply(undefined, [10, "hello"]); // okay! returns a string
 ```
 
 This is achieved by introducing two new types, `CallableFunction` and `NewableFunction`, in `lib.d.ts`. These types contain specialized generic method declarations for `bind`, `call`, and `apply` for regular functions and constructor functions, respectively. The declarations use generic rest parameters (see #24897) to capture and reflect parameter lists in a strongly typed manner. In `--strictBindCallApply` mode these declarations are used in place of the (very permissive) declarations provided by type `Function`.
@@ -1163,17 +1994,17 @@ In TypeScript 3.2, object literals now allow generic spread expressions which no
 
 ```ts
 function taggedObject<T, U extends string>(obj: T, tag: U) {
-    return { ...obj, tag };  // T & { tag: U }
+  return { ...obj, tag }; // T & { tag: U }
 }
 
-let x = taggedObject({ x: 10, y: 20 }, "point");  // { x: number, y: number } & { tag: "point" }
+let x = taggedObject({ x: 10, y: 20 }, "point"); // { x: number, y: number } & { tag: "point" }
 ```
 
 Property assignments and non-generic spread expressions are merged to the greatest extent possible on either side of a generic spread expression. For example:
 
 ```ts
 function foo1<T>(t: T, obj1: { a: string }, obj2: { b: string }) {
-    return { ...obj1, x: 1, ...t, ...obj2, y: 2 };  // { a: string, x: number } & T & { b: string, y: number }
+  return { ...obj1, x: 1, ...t, ...obj2, y: 2 }; // { a: string, x: number } & T & { b: string, y: number }
 }
 ```
 
@@ -1181,16 +2012,16 @@ Non-generic spread expressions continue to be processed as before: Call and cons
 
 ```ts
 function spread<T, U>(t: T, u: U) {
-    return { ...t, ...u };  // T & U
+  return { ...t, ...u }; // T & U
 }
 
-declare let x: { a: string, b: number };
-declare let y: { b: string, c: boolean };
+declare let x: { a: string; b: number };
+declare let y: { b: string; c: boolean };
 
-let s1 = { ...x, ...y };  // { a: string, b: string, c: boolean }
-let s2 = spread(x, y);    // { a: string, b: number } & { b: string, c: boolean }
-let b1 = s1.b;  // string
-let b2 = s2.b;  // number & string
+let s1 = { ...x, ...y }; // { a: string, b: string, c: boolean }
+let s2 = spread(x, y); // { a: string, b: number } & { b: string, c: boolean }
+let b1 = s1.b; // string
+let b2 = s2.b; // number & string
 ```
 
 ## Generic object rest variables and parameters
@@ -1199,12 +2030,12 @@ TypeScript 3.2 also allows destructuring a rest binding from a generic variable.
 
 ```ts
 function excludeTag<T extends { tag: string }>(obj: T) {
-    let { tag, ...rest } = obj;
-    return rest;  // Pick<T, Exclude<keyof T, "tag">>
+  let { tag, ...rest } = obj;
+  return rest; // Pick<T, Exclude<keyof T, "tag">>
 }
 
 const taggedPoint = { x: 10, y: 20, tag: "point" };
-const point = excludeTag(taggedPoint);  // { x: number, y: number }
+const point = excludeTag(taggedPoint); // { x: number, y: number }
 ```
 
 ## BigInt
@@ -1217,21 +2048,21 @@ You can get a `bigint` by calling the `BigInt()` function or by writing out a Bi
 
 ```ts
 let foo: bigint = BigInt(100); // the BigInt function
-let bar: bigint = 100n;        // a BigInt literal
+let bar: bigint = 100n; // a BigInt literal
 
 // *Slaps roof of fibonacci function*
 // This bad boy returns ints that can get *so* big!
 function fibonacci(n: bigint) {
-    let result = 1n;
-    for (let last = 0n, i = 0n; i < n; i++) {
-        const current = result;
-        result += last;
-        last = current;
-    }
-    return result;
+  let result = 1n;
+  for (let last = 0n, i = 0n; i < n; i++) {
+    const current = result;
+    result += last;
+    last = current;
+  }
+  return result;
 }
 
-fibonacci(10000n)
+fibonacci(10000n);
 ```
 
 While you might imagine close interaction between `number` and `bigint`, the two are separate domains.
@@ -1248,9 +2079,9 @@ As specified in ECMAScript, mixing `number`s and `bigint`s in arithmetic operati
 You'll have to explicitly convert values to `BigInt`s.
 
 ```ts
-console.log(3.141592 * 10000n);     // error
-console.log(3145 * 10n);            // error
-console.log(BigInt(3145) * 10n);    // okay!
+console.log(3.141592 * 10000n); // error
+console.log(3145 * 10n); // error
+console.log(BigInt(3145) * 10n); // okay!
 ```
 
 Also important to note is that `bigint`s produce a new string when using the `typeof` operator: the string `"bigint"`.
@@ -1258,12 +2089,11 @@ Thus, TypeScript correctly narrows using `typeof` as you'd expect.
 
 ```ts
 function whatKindOfNumberIsIt(x: number | bigint) {
-    if (typeof x === "bigint") {
-        console.log("'x' is a bigint!");
-    }
-    else {
-        console.log("'x' is a floating-point number");
-    }
+  if (typeof x === "bigint") {
+    console.log("'x' is a bigint!");
+  } else {
+    console.log("'x' is a floating-point number");
+  }
 }
 ```
 
@@ -1285,24 +2115,22 @@ For those purposes you may want to add `esnext.bigint` to the `lib` setting in y
 ## Non-unit types as union discriminants
 
 TypeScript 3.2 makes narrowing easier by relaxing rules for what it considers a discriminant property.
-Common properties of unions are now considered discriminants as long as they contain *some* singleton type (e.g. a string literal, `null`, or `undefined`), and they contain no generics.
+Common properties of unions are now considered discriminants as long as they contain _some_ singleton type (e.g. a string literal, `null`, or `undefined`), and they contain no generics.
 
 As a result, TypeScript 3.2 considers the `error` property in the following example to be a discriminant, whereas before it wouldn't since `Error` isn't a singleton type.
 Thanks to this, narrowing works correctly in the body of the `unwrap` function.
 
 ```ts
-type Result<T> =
-    | { error: Error; data: null }
-    | { error: null; data: T };
+type Result<T> = { error: Error; data: null } | { error: null; data: T };
 
 function unwrap<T>(result: Result<T>) {
-    if (result.error) {
-        // Here 'error' is non-null
-        throw result.error;
-    }
+  if (result.error) {
+    // Here 'error' is non-null
+    throw result.error;
+  }
 
-    // Now 'data' is non-null
-    return result.data;
+  // Now 'data' is non-null
+  return result.data;
 }
 ```
 
@@ -1364,7 +2192,7 @@ For example:
 ```ts
 type MapToPromise<T> = { [K in keyof T]: Promise<T[K]> };
 
-type Coordinate = [number, number]
+type Coordinate = [number, number];
 
 type PromiseCoordinate = MapToPromise<Coordinate>; // [Promise<number>, Promise<number>]
 ```
@@ -1382,13 +2210,13 @@ For example:
 
 ```ts
 function readImage(path: string, callback: (err: any, image: Image) => void) {
-    // ...
+  // ...
 }
 
 readImage.sync = (path: string) => {
-    const contents = fs.readFileSync(path);
-    return decodeImageSync(contents);
-}
+  const contents = fs.readFileSync(path);
+  return decodeImageSync(contents);
+};
 ```
 
 Here, we have a function `readImage` which reads an image in a non-blocking asynchronous way.
@@ -1398,12 +2226,10 @@ While ECMAScript exports are often a better way of providing this functionality,
 Additionaly, this approach for property declarations allows us to express common patterns like `defaultProps` and `propTypes` on React stateless function components (SFCs).
 
 ```ts
-export const FooComponent = ({ name }) => (
-    <div>Hello! I am {name}</div>
-);
+export const FooComponent = ({ name }) => <div>Hello! I am {name}</div>;
 
 FooComponent.defaultProps = {
-    name: "(anonymous)",
+  name: "(anonymous)"
 };
 ```
 
@@ -1417,7 +2243,7 @@ fs.readFile(path, (err, data) => {
     });
 -->
 
-------
+---
 
 <sup id="ts-3-1-only-homomorphic">[1]</sup> More specifically, homomorphic mapped types like in the above form.
 
@@ -1475,10 +2301,10 @@ That means in the above example, even though both the `>=3.2` and the `>=3.1` ma
 
 ```json5
 {
-  "name": "package-name",
-  "version": "1.0",
-  "types": "./index.d.ts",
-  "typesVersions": {
+  name: "package-name",
+  version: "1.0",
+  types: "./index.d.ts",
+  typesVersions: {
     // NOTE: this doesn't work!
     ">=3.1": { "*": ["ts3.1/*"] },
     ">=3.2": { "*": ["ts3.2/*"] }
@@ -1493,11 +2319,11 @@ That means in the above example, even though both the `>=3.2` and the `>=3.1` ma
 TypeScript 3.0 adds support to multiple new capabilities to interact with function parameter lists as tuple types.
 TypeScript 3.0 adds support for:
 
-* [Expansion of rest parameters with tuple types into discrete parameters.](#rest-parameters-with-tuple-types)
-* [Expansion of spread expressions with tuple types into discrete arguments.](#spread-expressions-with-tuple-types)
-* [Generic rest parameters and corresponding inference of tuple types.](#generic-rest-parameters)
-* [Optional elements in tuple types.](#optional-elements-in-tuple-types)
-* [Rest elements in tuple types.](#rest-elements-in-tuple-types)
+- [Expansion of rest parameters with tuple types into discrete parameters.](#rest-parameters-with-tuple-types)
+- [Expansion of spread expressions with tuple types into discrete arguments.](#spread-expressions-with-tuple-types)
+- [Generic rest parameters and corresponding inference of tuple types.](#generic-rest-parameters)
+- [Optional elements in tuple types.](#optional-elements-in-tuple-types)
+- [Rest elements in tuple types.](#rest-elements-in-tuple-types)
 
 With these features it becomes possible to strongly type a number of higher-order functions that transform functions and their parameter lists.
 
@@ -1534,13 +2360,16 @@ A rest parameter is permitted to have a generic type that is constrained to an a
 ##### Example
 
 ```ts
-declare function bind<T, U extends any[], V>(f: (x: T, ...args: U) => V, x: T): (...args: U) => V;
+declare function bind<T, U extends any[], V>(
+  f: (x: T, ...args: U) => V,
+  x: T
+): (...args: U) => V;
 
 declare function f3(x: number, y: string, z: boolean): void;
 
-const f2 = bind(f3, 42);  // (y: string, z: boolean) => void
-const f1 = bind(f2, "hello");  // (z: boolean) => void
-const f0 = bind(f1, true);  // () => void
+const f2 = bind(f3, 42); // (y: string, z: boolean) => void
+const f1 = bind(f2, "hello"); // (z: boolean) => void
+const f0 = bind(f1, true); // () => void
 
 f3(42, "hello", true);
 f2("hello", true);
@@ -1584,12 +2413,12 @@ For example, `[number, ...string[]]` means tuples with a `number` element follow
 
 ```ts
 function tuple<T extends any[]>(...args: T): T {
-    return args;
+  return args;
 }
 
 const numbers: number[] = getArrayOfNumbers();
-const t1 = tuple("foo", 1, true);  // [string, number, boolean]
-const t2 = tuple("bar", ...numbers);  // [string, ...number[]]
+const t1 = tuple("foo", 1, true); // [string, number, boolean]
+const t2 = tuple("bar", ...numbers); // [string, ...number[]]
 ```
 
 The type of the `length` property of a tuple type with a rest element is `number`.
@@ -1606,62 +2435,62 @@ Likewise, no operations are permitted on an `unknown` without first asserting or
 ```ts
 // In an intersection everything absorbs unknown
 
-type T00 = unknown & null;  // null
-type T01 = unknown & undefined;  // undefined
-type T02 = unknown & null & undefined;  // null & undefined (which becomes never)
-type T03 = unknown & string;  // string
-type T04 = unknown & string[];  // string[]
-type T05 = unknown & unknown;  // unknown
-type T06 = unknown & any;  // any
+type T00 = unknown & null; // null
+type T01 = unknown & undefined; // undefined
+type T02 = unknown & null & undefined; // null & undefined (which becomes never)
+type T03 = unknown & string; // string
+type T04 = unknown & string[]; // string[]
+type T05 = unknown & unknown; // unknown
+type T06 = unknown & any; // any
 
 // In a union an unknown absorbs everything
 
-type T10 = unknown | null;  // unknown
-type T11 = unknown | undefined;  // unknown
-type T12 = unknown | null | undefined;  // unknown
-type T13 = unknown | string;  // unknown
-type T14 = unknown | string[];  // unknown
-type T15 = unknown | unknown;  // unknown
-type T16 = unknown | any;  // any
+type T10 = unknown | null; // unknown
+type T11 = unknown | undefined; // unknown
+type T12 = unknown | null | undefined; // unknown
+type T13 = unknown | string; // unknown
+type T14 = unknown | string[]; // unknown
+type T15 = unknown | unknown; // unknown
+type T16 = unknown | any; // any
 
 // Type variable and unknown in union and intersection
 
-type T20<T> = T & {};  // T & {}
-type T21<T> = T | {};  // T | {}
-type T22<T> = T & unknown;  // T
-type T23<T> = T | unknown;  // unknown
+type T20<T> = T & {}; // T & {}
+type T21<T> = T | {}; // T | {}
+type T22<T> = T & unknown; // T
+type T23<T> = T | unknown; // unknown
 
 // unknown in conditional types
 
-type T30<T> = unknown extends T ? true : false;  // Deferred
-type T31<T> = T extends unknown ? true : false;  // Deferred (so it distributes)
-type T32<T> = never extends T ? true : false;  // true
-type T33<T> = T extends never ? true : false;  // Deferred
+type T30<T> = unknown extends T ? true : false; // Deferred
+type T31<T> = T extends unknown ? true : false; // Deferred (so it distributes)
+type T32<T> = never extends T ? true : false; // true
+type T33<T> = T extends never ? true : false; // Deferred
 
 // keyof unknown
 
-type T40 = keyof any;  // string | number | symbol
-type T41 = keyof unknown;  // never
+type T40 = keyof any; // string | number | symbol
+type T41 = keyof unknown; // never
 
 // Only equality operators are allowed with unknown
 
 function f10(x: unknown) {
-    x == 5;
-    x !== 10;
-    x >= 0;  // Error
-    x + 1;  // Error
-    x * 2;  // Error
-    -x;  // Error
-    +x;  // Error
+  x == 5;
+  x !== 10;
+  x >= 0; // Error
+  x + 1; // Error
+  x * 2; // Error
+  -x; // Error
+  +x; // Error
 }
 
 // No property accesses, element accesses, or function calls
 
 function f11(x: unknown) {
-    x.foo;  // Error
-    x[5];  // Error
-    x();  // Error
-    new x();  // Error
+  x.foo; // Error
+  x[5]; // Error
+  x(); // Error
+  new x(); // Error
 }
 
 // typeof, instanceof, and user defined type predicates
@@ -1669,100 +2498,97 @@ function f11(x: unknown) {
 declare function isFunction(x: unknown): x is Function;
 
 function f20(x: unknown) {
-    if (typeof x === "string" || typeof x === "number") {
-        x;  // string | number
-    }
-    if (x instanceof Error) {
-        x;  // Error
-    }
-    if (isFunction(x)) {
-        x;  // Function
-    }
+  if (typeof x === "string" || typeof x === "number") {
+    x; // string | number
+  }
+  if (x instanceof Error) {
+    x; // Error
+  }
+  if (isFunction(x)) {
+    x; // Function
+  }
 }
 
 // Homomorphic mapped type over unknown
 
 type T50<T> = { [P in keyof T]: number };
-type T51 = T50<any>;  // { [x: string]: number }
-type T52 = T50<unknown>;  // {}
+type T51 = T50<any>; // { [x: string]: number }
+type T52 = T50<unknown>; // {}
 
 // Anything is assignable to unknown
 
 function f21<T>(pAny: any, pNever: never, pT: T) {
-    let x: unknown;
-    x = 123;
-    x = "hello";
-    x = [1, 2, 3];
-    x = new Error();
-    x = x;
-    x = pAny;
-    x = pNever;
-    x = pT;
+  let x: unknown;
+  x = 123;
+  x = "hello";
+  x = [1, 2, 3];
+  x = new Error();
+  x = x;
+  x = pAny;
+  x = pNever;
+  x = pT;
 }
 
 // unknown assignable only to itself and any
 
 function f22(x: unknown) {
-    let v1: any = x;
-    let v2: unknown = x;
-    let v3: object = x;  // Error
-    let v4: string = x;  // Error
-    let v5: string[] = x;  // Error
-    let v6: {} = x;  // Error
-    let v7: {} | null | undefined = x;  // Error
+  let v1: any = x;
+  let v2: unknown = x;
+  let v3: object = x; // Error
+  let v4: string = x; // Error
+  let v5: string[] = x; // Error
+  let v6: {} = x; // Error
+  let v7: {} | null | undefined = x; // Error
 }
 
 // Type parameter 'T extends unknown' not related to object
 
 function f23<T extends unknown>(x: T) {
-    let y: object = x;  // Error
+  let y: object = x; // Error
 }
 
 // Anything but primitive assignable to { [x: string]: unknown }
 
 function f24(x: { [x: string]: unknown }) {
-    x = {};
-    x = { a: 5 };
-    x = [1, 2, 3];
-    x = 123;  // Error
+  x = {};
+  x = { a: 5 };
+  x = [1, 2, 3];
+  x = 123; // Error
 }
 
 // Locals of type unknown always considered initialized
 
 function f25() {
-    let x: unknown;
-    let y = x;
+  let x: unknown;
+  let y = x;
 }
 
 // Spread of unknown causes result to be unknown
 
 function f26(x: {}, y: unknown, z: any) {
-    let o1 = { a: 42, ...x };  // { a: number }
-    let o2 = { a: 42, ...x, ...y };  // unknown
-    let o3 = { a: 42, ...x, ...y, ...z };  // any
+  let o1 = { a: 42, ...x }; // { a: number }
+  let o2 = { a: 42, ...x, ...y }; // unknown
+  let o3 = { a: 42, ...x, ...y, ...z }; // any
 }
 
 // Functions with unknown return type don't need return expressions
 
-function f27(): unknown {
-}
+function f27(): unknown {}
 
 // Rest type cannot be created from unknown
 
 function f28(x: unknown) {
-    let { ...a } = x;  // Error
+  let { ...a } = x; // Error
 }
 
 // Class properties of type unknown don't need definite assignment
 
 class C1 {
-    a: string;  // Error
-    b: unknown;
-    c: any;
+  a: string; // Error
+  b: unknown;
+  c: any;
 }
 ```
-
-
 
 ## Support for `defaultProps` in JSX
 
@@ -1776,19 +2602,19 @@ In short using this general type, we can model React's specific behavior for thi
 
 ```tsx
 export interface Props {
-    name: string;
+  name: string;
 }
 
 export class Greet extends React.Component<Props> {
-    render() {
-        const { name } = this.props;
-        return <div>Hello ${name.toUpperCase()}!</div>;
-    }
-    static defaultProps = { name: "world"};
+  render() {
+    const { name } = this.props;
+    return <div>Hello ${name.toUpperCase()}!</div>;
+  }
+  static defaultProps = { name: "world" };
 }
 
 // Type-checks! No type assertions needed!
-let el = <Greet />
+let el = <Greet />;
 ```
 
 ### Caveats
@@ -1803,7 +2629,7 @@ For stateless function components (SFCs) use ES2015 default initializers for SFC
 
 ```tsx
 function Greet({ name = "world" }: Props) {
-    return <div>Hello ${name.toUpperCase()}!</div>;
+  return <div>Hello ${name.toUpperCase()}!</div>;
 }
 ```
 
@@ -1839,21 +2665,21 @@ Previously, the `keyof` operator and mapped types only supported `string` named 
 
 Changes include:
 
-* An index type `keyof T` for some type `T` is a subtype of `string | number | symbol`.
-* A mapped type `{ [P in K]: XXX }` permits any `K` assignable to `string | number | symbol`.
-* In a `for...in` statement for an object of a generic type `T`, the inferred type of the iteration variable was previously `keyof T` but is now `Extract<keyof T, string>`. (In other words, the subset of `keyof T` that includes only string-like values.)
+- An index type `keyof T` for some type `T` is a subtype of `string | number | symbol`.
+- A mapped type `{ [P in K]: XXX }` permits any `K` assignable to `string | number | symbol`.
+- In a `for...in` statement for an object of a generic type `T`, the inferred type of the iteration variable was previously `keyof T` but is now `Extract<keyof T, string>`. (In other words, the subset of `keyof T` that includes only string-like values.)
 
 Given an object type `X`, `keyof X` is resolved as follows:
 
-* If `X` contains a string index signature, `keyof X` is a union of `string`, `number`, and the literal types representing symbol-like properties, otherwise
-* If `X` contains a numeric index signature, `keyof X` is a union of `number` and the literal types representing string-like and symbol-like properties, otherwise
-* `keyof X` is a union of the literal types representing string-like, number-like, and symbol-like properties.
+- If `X` contains a string index signature, `keyof X` is a union of `string`, `number`, and the literal types representing symbol-like properties, otherwise
+- If `X` contains a numeric index signature, `keyof X` is a union of `number` and the literal types representing string-like and symbol-like properties, otherwise
+- `keyof X` is a union of the literal types representing string-like, number-like, and symbol-like properties.
 
 Where:
 
-* String-like properties of an object type are those declared using an identifier, a string literal, or a computed property name of a string literal type.
-* Number-like properties of an object type are those declared using a numeric literal or computed property name of a numeric literal type.
-* Symbol-like properties of an object type are those declared using a computed property name of a unique symbol type.
+- String-like properties of an object type are those declared using an identifier, a string literal, or a computed property name of a string literal type.
+- Number-like properties of an object type are those declared using a numeric literal or computed property name of a numeric literal type.
+- Symbol-like properties of an object type are those declared using a computed property name of a unique symbol type.
 
 In a mapped type `{ [P in K]: XXX }`, each string literal type in `K` introduces a property with a string name, each numeric literal type in `K` introduces a property with a numeric name, and each unique symbol type in `K` introduces a property with a unique symbol name.
 Furthermore, if `K` includes type `string`, a string index signature is introduced, and if `K` includes type `number`, a numeric index signature is introduced.
@@ -1865,70 +2691,82 @@ const c = "c";
 const d = 10;
 const e = Symbol();
 
-const enum E1 { A, B, C }
-const enum E2 { A = "A", B = "B", C = "C" }
-
-type Foo = {
-    a: string;       // String-like name
-    5: string;       // Number-like name
-    [c]: string;     // String-like name
-    [d]: string;     // Number-like name
-    [e]: string;     // Symbol-like name
-    [E1.A]: string;  // Number-like name
-    [E2.A]: string;  // String-like name
+const enum E1 {
+  A,
+  B,
+  C
+}
+const enum E2 {
+  A = "A",
+  B = "B",
+  C = "C"
 }
 
-type K1 = keyof Foo;  // "a" | 5 | "c" | 10 | typeof e | E1.A | E2.A
-type K2 = Extract<keyof Foo, string>;  // "a" | "c" | E2.A
-type K3 = Extract<keyof Foo, number>;  // 5 | 10 | E1.A
-type K4 = Extract<keyof Foo, symbol>;  // typeof e
+type Foo = {
+  a: string; // String-like name
+  5: string; // Number-like name
+  [c]: string; // String-like name
+  [d]: string; // Number-like name
+  [e]: string; // Symbol-like name
+  [E1.A]: string; // Number-like name
+  [E2.A]: string; // String-like name
+};
+
+type K1 = keyof Foo; // "a" | 5 | "c" | 10 | typeof e | E1.A | E2.A
+type K2 = Extract<keyof Foo, string>; // "a" | "c" | E2.A
+type K3 = Extract<keyof Foo, number>; // 5 | 10 | E1.A
+type K4 = Extract<keyof Foo, symbol>; // typeof e
 ```
 
 Since `keyof` now reflects the presence of a numeric index signature by including type `number` in the key type, mapped types such as `Partial<T>` and `Readonly<T>` work correctly when applied to object types with numeric index signatures:
 
 ```ts
 type Arrayish<T> = {
-    length: number;
-    [x: number]: T;
-}
+  length: number;
+  [x: number]: T;
+};
 
 type ReadonlyArrayish<T> = Readonly<Arrayish<T>>;
 
 declare const map: ReadonlyArrayish<string>;
 let n = map.length;
-let x = map[123];  // Previously of type any (or an error with --noImplicitAny)
+let x = map[123]; // Previously of type any (or an error with --noImplicitAny)
 ```
 
 Furthermore, with the `keyof` operator's support for `number` and `symbol` named keys, it is now possible to abstract over access to properties of objects that are indexed by numeric literals (such as numeric enum types) and unique symbols.
 
 ```ts
-const enum Enum { A, B, C }
+const enum Enum {
+  A,
+  B,
+  C
+}
 
 const enumToStringMap = {
-    [Enum.A]: "Name A",
-    [Enum.B]: "Name B",
-    [Enum.C]: "Name C"
-}
+  [Enum.A]: "Name A",
+  [Enum.B]: "Name B",
+  [Enum.C]: "Name C"
+};
 
 const sym1 = Symbol();
 const sym2 = Symbol();
 const sym3 = Symbol();
 
 const symbolToNumberMap = {
-    [sym1]: 1,
-    [sym2]: 2,
-    [sym3]: 3
+  [sym1]: 1,
+  [sym2]: 2,
+  [sym3]: 3
 };
 
-type KE = keyof typeof enumToStringMap;   // Enum (i.e. Enum.A | Enum.B | Enum.C)
+type KE = keyof typeof enumToStringMap; // Enum (i.e. Enum.A | Enum.B | Enum.C)
 type KS = keyof typeof symbolToNumberMap; // typeof sym1 | typeof sym2 | typeof sym3
 
 function getValue<T, K extends keyof T>(obj: T, key: K): T[K] {
-    return obj[key];
+  return obj[key];
 }
 
-let x1 = getValue(enumToStringMap, Enum.C);  // Returns "Name C"
-let x2 = getValue(symbolToNumberMap, sym3);  // Returns 3
+let x1 = getValue(enumToStringMap, Enum.C); // Returns "Name C"
+let x2 = getValue(symbolToNumberMap, sym3); // Returns 3
 ```
 
 This is a breaking change; previously, the `keyof` operator and mapped types only supported `string` named properties.
@@ -1938,20 +2776,21 @@ Code that assumed values typed with `keyof T` were always `string`s, will now be
 
 ```ts
 function useKey<T, K extends keyof T>(o: T, k: K) {
-    var name: string = k;  // Error: keyof T is not assignable to string
+  var name: string = k; // Error: keyof T is not assignable to string
 }
 ```
 
 #### Recommendations
-* If your functions are only able to handle string named property keys, use `Extract<keyof T, string>` in the declaration:
+
+- If your functions are only able to handle string named property keys, use `Extract<keyof T, string>` in the declaration:
 
   ```ts
   function useKey<T, K extends Extract<keyof T, string>>(o: T, k: K) {
-    var name: string = k;  // OK
+    var name: string = k; // OK
   }
   ```
 
-* If your functions are open to handling all property keys, then the changes should be done down-stream:
+- If your functions are open to handling all property keys, then the changes should be done down-stream:
 
   ```ts
   function useKey<T, K extends keyof T>(o: T, k: K) {
@@ -1959,7 +2798,7 @@ function useKey<T, K extends keyof T>(o: T, k: K) {
   }
   ```
 
-* Otherwise use `--keyofStringsOnly` compiler option to disable the new behavior.
+- Otherwise use `--keyofStringsOnly` compiler option to disable the new behavior.
 
 ## Generic type arguments in JSX elements
 
@@ -1969,12 +2808,12 @@ JSX elements now allow passing type arguments to generic components.
 
 ```ts
 class GenericComponent<P> extends React.Component<P> {
-    internalProp: P;
+  internalProp: P;
 }
 
-type Props = { a: number; b: string; };
+type Props = { a: number; b: string };
 
-const x = <GenericComponent<Props> a={10} b="hi"/>; // OK
+const x = <GenericComponent<Props> a={10} b="hi" />; // OK
 
 const y = <GenericComponent<Props> a={10} b={20} />; // Error
 ```
@@ -1984,19 +2823,21 @@ const y = <GenericComponent<Props> a={10} b={20} />; // Error
 Tagged templates are a form of invocation introduced in ECMAScript 2015.
 Like call expressions, generic functions may be used in a tagged template and TypeScript will infer the type arguments utilized.
 
-TypeScript 2.9  allows passing generic type arguments to tagged template strings.
+TypeScript 2.9 allows passing generic type arguments to tagged template strings.
 
 #### Example
 
 ```ts
-declare function styledComponent<Props>(strs: TemplateStringsArray): Component<Props>;
+declare function styledComponent<Props>(
+  strs: TemplateStringsArray
+): Component<Props>;
 
 interface MyProps {
   name: string;
   age: number;
 }
 
-styledComponent<MyProps> `
+styledComponent<MyProps>`
   font-size: 1.5em;
   text-align: center;
   color: palevioletred;
@@ -2005,7 +2846,7 @@ styledComponent<MyProps> `
 declare function tag<T>(strs: TemplateStringsArray, ...args: T[]): T;
 
 // inference fails because 'number' and 'string' are both candidates that conflict
-let a = tag<string | number> `${100} ${"hello"}`;
+let a = tag<string | number>`${100} ${"hello"}`;
 ```
 
 ## `import` types
@@ -2022,7 +2863,7 @@ Given a declaration of a class `Pet` in a module file:
 // module.d.ts
 
 export declare class Pet {
-   name: string;
+  name: string;
 }
 ```
 
@@ -2032,7 +2873,7 @@ Can be used in a non-module file `global-script.ts`:
 // global-script.ts
 
 function adopt(p: import("./module").Pet) {
-    console.log(`Adopting ${p.name}...`);
+  console.log(`Adopting ${p.name}...`);
 }
 ```
 
@@ -2045,7 +2886,7 @@ This also works in JSDoc comments to refer to types from other modules in `.js`:
  * @param p { import("./module").Pet }
  */
 function walk(p) {
-    console.log(`Walking ${p.name}...`);
+  console.log(`Walking ${p.name}...`);
 }
 ```
 
@@ -2084,14 +2925,14 @@ Assuming that `__dirname` is always available on `import.meta`, the declaration 
 ```ts
 // node.d.ts
 interface ImportMeta {
-    __dirname: string;
+  __dirname: string;
 }
 ```
 
 And usage would be:
 
 ```ts
-import.meta.__dirname // Has type 'string'
+import.meta.__dirname; // Has type 'string'
 ```
 
 `import.meta` is only allowed when targeting `ESNext` modules and ECMAScript targets.
@@ -2117,9 +2958,8 @@ Often in Node.js applications a `.json` is needed. With TypeScript 2.9, `--resol
 
 import settings from "./settings.json";
 
-settings.debug === true;  // OK
-settings.dry === 2;  // Error: Operator '===' cannot be applied boolean and number
-
+settings.debug === true; // OK
+settings.dry === 2; // Error: Operator '===' cannot be applied boolean and number
 ```
 
 ```ts
@@ -2152,7 +2992,7 @@ In other words, hitting go-to-definition on a declaration from a `.d.ts` file ge
 
 ## Conditional Types
 
-TypeScript 2.8 introduces *conditional types* which add the ability to express non-uniform type mappings.
+TypeScript 2.8 introduces _conditional types_ which add the ability to express non-uniform type mappings.
 A conditional type selects one of two possible types based on a condition expressed as a type relationship test:
 
 ```ts
@@ -2161,47 +3001,51 @@ T extends U ? X : Y
 
 The type above means when `T` is assignable to `U` the type is `X`, otherwise the type is `Y`.
 
-A conditional type `T extends U ? X : Y` is either *resolved* to `X` or `Y`, or *deferred* because the condition depends on one or more type variables.
+A conditional type `T extends U ? X : Y` is either _resolved_ to `X` or `Y`, or _deferred_ because the condition depends on one or more type variables.
 Whether to resolve or defer is determined as follows:
 
-* First, given types `T'` and `U'` that are instantiations of `T` and `U` where all occurrences of type parameters are replaced with `any`, if `T'` is not assignable to `U'`, the conditional type is resolved to `Y`. Intuitively, if the most permissive instantiation of `T` is not assignable to the most permissive instantiation of `U`, we know that no instantiation will be and we can just resolve to `Y`.
-* Next, for each type variable introduced by an `infer` (more later) declaration within `U` collect a set of candidate types by inferring from `T` to `U` (using the same inference algorithm as type inference for generic functions). For a given `infer` type variable `V`, if any candidates were inferred from co-variant positions, the type inferred for `V` is a union of those candidates. Otherwise, if any candidates were inferred from contra-variant positions, the type inferred for `V` is an intersection of those candidates. Otherwise, the type inferred for `V` is `never`.
-* Then, given a type `T''` that is an instantiation of `T` where all `infer` type variables are replaced with the types inferred in the previous step, if `T''` is *definitely assignable* to `U`, the conditional type is resolved to `X`. The definitely assignable relation is the same as the regular assignable relation, except that type variable constraints are not considered. Intuitively, when a type is definitely assignable to another type, we know that it will be assignable for *all instantiations* of those types.
-* Otherwise, the condition depends on one or more type variables and the conditional type is deferred.
+- First, given types `T'` and `U'` that are instantiations of `T` and `U` where all occurrences of type parameters are replaced with `any`, if `T'` is not assignable to `U'`, the conditional type is resolved to `Y`. Intuitively, if the most permissive instantiation of `T` is not assignable to the most permissive instantiation of `U`, we know that no instantiation will be and we can just resolve to `Y`.
+- Next, for each type variable introduced by an `infer` (more later) declaration within `U` collect a set of candidate types by inferring from `T` to `U` (using the same inference algorithm as type inference for generic functions). For a given `infer` type variable `V`, if any candidates were inferred from co-variant positions, the type inferred for `V` is a union of those candidates. Otherwise, if any candidates were inferred from contra-variant positions, the type inferred for `V` is an intersection of those candidates. Otherwise, the type inferred for `V` is `never`.
+- Then, given a type `T''` that is an instantiation of `T` where all `infer` type variables are replaced with the types inferred in the previous step, if `T''` is _definitely assignable_ to `U`, the conditional type is resolved to `X`. The definitely assignable relation is the same as the regular assignable relation, except that type variable constraints are not considered. Intuitively, when a type is definitely assignable to another type, we know that it will be assignable for _all instantiations_ of those types.
+- Otherwise, the condition depends on one or more type variables and the conditional type is deferred.
 
 #### Example
 
 ```ts
-type TypeName<T> =
-    T extends string ? "string" :
-    T extends number ? "number" :
-    T extends boolean ? "boolean" :
-    T extends undefined ? "undefined" :
-    T extends Function ? "function" :
-    "object";
+type TypeName<T> = T extends string
+  ? "string"
+  : T extends number
+  ? "number"
+  : T extends boolean
+  ? "boolean"
+  : T extends undefined
+  ? "undefined"
+  : T extends Function
+  ? "function"
+  : "object";
 
-type T0 = TypeName<string>;  // "string"
-type T1 = TypeName<"a">;  // "string"
-type T2 = TypeName<true>;  // "boolean"
-type T3 = TypeName<() => void>;  // "function"
-type T4 = TypeName<string[]>;  // "object"
+type T0 = TypeName<string>; // "string"
+type T1 = TypeName<"a">; // "string"
+type T2 = TypeName<true>; // "boolean"
+type T3 = TypeName<() => void>; // "function"
+type T4 = TypeName<string[]>; // "object"
 ```
 
 ### Distributive conditional types
 
-Conditional types in which the checked type is a naked type parameter are called *distributive conditional types*.
+Conditional types in which the checked type is a naked type parameter are called _distributive conditional types_.
 Distributive conditional types are automatically distributed over union types during instantiation.
 For example, an instantiation of `T extends U ? X : Y` with the type argument `A | B | C` for `T` is resolved as `(A extends U ? X : Y) | (B extends U ? X : Y) | (C extends U ? X : Y)`.
 
 #### Example
 
 ```ts
-type T10 = TypeName<string | (() => void)>;  // "string" | "function"
-type T12 = TypeName<string | string[] | undefined>;  // "string" | "object" | "undefined"
-type T11 = TypeName<string[] | number[]>;  // "object"
+type T10 = TypeName<string | (() => void)>; // "string" | "function"
+type T12 = TypeName<string | string[] | undefined>; // "string" | "object" | "undefined"
+type T11 = TypeName<string[] | number[]>; // "object"
 ```
 
-In instantiations of a distributive conditional type `T extends U ? X : Y`, references to `T` within the conditional type are resolved to individual constituents of the union type (i.e. `T` refers to the individual constituents *after* the conditional type is distributed over the union type).
+In instantiations of a distributive conditional type `T extends U ? X : Y`, references to `T` within the conditional type are resolved to individual constituents of the union type (i.e. `T` refers to the individual constituents _after_ the conditional type is distributed over the union type).
 Furthermore, references to `T` within `X` have an additional type parameter constraint `U` (i.e. `T` is considered assignable to `U` within `X`).
 
 #### Example
@@ -2211,62 +3055,66 @@ type BoxedValue<T> = { value: T };
 type BoxedArray<T> = { array: T[] };
 type Boxed<T> = T extends any[] ? BoxedArray<T[number]> : BoxedValue<T>;
 
-type T20 = Boxed<string>;  // BoxedValue<string>;
-type T21 = Boxed<number[]>;  // BoxedArray<number>;
-type T22 = Boxed<string | number[]>;  // BoxedValue<string> | BoxedArray<number>;
+type T20 = Boxed<string>; // BoxedValue<string>;
+type T21 = Boxed<number[]>; // BoxedArray<number>;
+type T22 = Boxed<string | number[]>; // BoxedValue<string> | BoxedArray<number>;
 ```
 
 Notice that `T` has the additional constraint `any[]` within the true branch of `Boxed<T>` and it is therefore possible to refer to the element type of the array as `T[number]`. Also, notice how the conditional type is distributed over the union type in the last example.
 
-The distributive property of conditional types can conveniently be used to *filter* union types:
+The distributive property of conditional types can conveniently be used to _filter_ union types:
 
 ```ts
-type Diff<T, U> = T extends U ? never : T;  // Remove types from T that are assignable to U
-type Filter<T, U> = T extends U ? T : never;  // Remove types from T that are not assignable to U
+type Diff<T, U> = T extends U ? never : T; // Remove types from T that are assignable to U
+type Filter<T, U> = T extends U ? T : never; // Remove types from T that are not assignable to U
 
-type T30 = Diff<"a" | "b" | "c" | "d", "a" | "c" | "f">;  // "b" | "d"
-type T31 = Filter<"a" | "b" | "c" | "d", "a" | "c" | "f">;  // "a" | "c"
-type T32 = Diff<string | number | (() => void), Function>;  // string | number
-type T33 = Filter<string | number | (() => void), Function>;  // () => void
+type T30 = Diff<"a" | "b" | "c" | "d", "a" | "c" | "f">; // "b" | "d"
+type T31 = Filter<"a" | "b" | "c" | "d", "a" | "c" | "f">; // "a" | "c"
+type T32 = Diff<string | number | (() => void), Function>; // string | number
+type T33 = Filter<string | number | (() => void), Function>; // () => void
 
-type NonNullable<T> = Diff<T, null | undefined>;  // Remove null and undefined from T
+type NonNullable<T> = Diff<T, null | undefined>; // Remove null and undefined from T
 
-type T34 = NonNullable<string | number | undefined>;  // string | number
-type T35 = NonNullable<string | string[] | null | undefined>;  // string | string[]
+type T34 = NonNullable<string | number | undefined>; // string | number
+type T35 = NonNullable<string | string[] | null | undefined>; // string | string[]
 
 function f1<T>(x: T, y: NonNullable<T>) {
-    x = y;  // Ok
-    y = x;  // Error
+  x = y; // Ok
+  y = x; // Error
 }
 
 function f2<T extends string | undefined>(x: T, y: NonNullable<T>) {
-    x = y;  // Ok
-    y = x;  // Error
-    let s1: string = x;  // Error
-    let s2: string = y;  // Ok
+  x = y; // Ok
+  y = x; // Error
+  let s1: string = x; // Error
+  let s2: string = y; // Ok
 }
 ```
 
 Conditional types are particularly useful when combined with mapped types:
 
 ```ts
-type FunctionPropertyNames<T> = { [K in keyof T]: T[K] extends Function ? K : never }[keyof T];
+type FunctionPropertyNames<T> = {
+  [K in keyof T]: T[K] extends Function ? K : never;
+}[keyof T];
 type FunctionProperties<T> = Pick<T, FunctionPropertyNames<T>>;
 
-type NonFunctionPropertyNames<T> = { [K in keyof T]: T[K] extends Function ? never : K }[keyof T];
+type NonFunctionPropertyNames<T> = {
+  [K in keyof T]: T[K] extends Function ? never : K;
+}[keyof T];
 type NonFunctionProperties<T> = Pick<T, NonFunctionPropertyNames<T>>;
 
 interface Part {
-    id: number;
-    name: string;
-    subparts: Part[];
-    updatePart(newName: string): void;
+  id: number;
+  name: string;
+  subparts: Part[];
+  updatePart(newName: string): void;
 }
 
-type T40 = FunctionPropertyNames<Part>;  // "updatePart"
-type T41 = NonFunctionPropertyNames<Part>;  // "id" | "name" | "subparts"
-type T42 = FunctionProperties<Part>;  // { updatePart(newName: string): void }
-type T43 = NonFunctionProperties<Part>;  // { id: number, name: string, subparts: Part[] }
+type T40 = FunctionPropertyNames<Part>; // "updatePart"
+type T41 = NonFunctionPropertyNames<Part>; // "id" | "name" | "subparts"
+type T42 = FunctionProperties<Part>; // { updatePart(newName: string): void }
+type T43 = NonFunctionProperties<Part>; // { id: number, name: string, subparts: Part[] }
 ```
 
 Similar to union and intersection types, conditional types are not permitted to reference themselves recursively. For example the following is an error.
@@ -2274,7 +3122,7 @@ Similar to union and intersection types, conditional types are not permitted to 
 #### Example
 
 ```ts
-type ElementType<T> = T extends any[] ? ElementType<T[number]> : T;  // Error
+type ElementType<T> = T extends any[] ? ElementType<T[number]> : T; // Error
 ```
 
 ### Type inference in conditional types
@@ -2292,114 +3140,119 @@ type ReturnType<T> = T extends (...args: any[]) => infer R ? R : any;
 Conditional types can be nested to form a sequence of pattern matches that are evaluated in order:
 
 ```ts
-type Unpacked<T> =
-    T extends (infer U)[] ? U :
-    T extends (...args: any[]) => infer U ? U :
-    T extends Promise<infer U> ? U :
-    T;
+type Unpacked<T> = T extends (infer U)[]
+  ? U
+  : T extends (...args: any[]) => infer U
+  ? U
+  : T extends Promise<infer U>
+  ? U
+  : T;
 
-type T0 = Unpacked<string>;  // string
-type T1 = Unpacked<string[]>;  // string
-type T2 = Unpacked<() => string>;  // string
-type T3 = Unpacked<Promise<string>>;  // string
-type T4 = Unpacked<Promise<string>[]>;  // Promise<string>
-type T5 = Unpacked<Unpacked<Promise<string>[]>>;  // string
+type T0 = Unpacked<string>; // string
+type T1 = Unpacked<string[]>; // string
+type T2 = Unpacked<() => string>; // string
+type T3 = Unpacked<Promise<string>>; // string
+type T4 = Unpacked<Promise<string>[]>; // Promise<string>
+type T5 = Unpacked<Unpacked<Promise<string>[]>>; // string
 ```
 
 The following example demonstrates how multiple candidates for the same type variable in co-variant positions causes a union type to be inferred:
 
 ```ts
-type Foo<T> = T extends { a: infer U, b: infer U } ? U : never;
-type T10 = Foo<{ a: string, b: string }>;  // string
-type T11 = Foo<{ a: string, b: number }>;  // string | number
+type Foo<T> = T extends { a: infer U; b: infer U } ? U : never;
+type T10 = Foo<{ a: string; b: string }>; // string
+type T11 = Foo<{ a: string; b: number }>; // string | number
 ```
 
 Likewise, multiple candidates for the same type variable in contra-variant positions causes an intersection type to be inferred:
 
 ```ts
-type Bar<T> = T extends { a: (x: infer U) => void, b: (x: infer U) => void } ? U : never;
-type T20 = Bar<{ a: (x: string) => void, b: (x: string) => void }>;  // string
-type T21 = Bar<{ a: (x: string) => void, b: (x: number) => void }>;  // string & number
+type Bar<T> = T extends { a: (x: infer U) => void; b: (x: infer U) => void }
+  ? U
+  : never;
+type T20 = Bar<{ a: (x: string) => void; b: (x: string) => void }>; // string
+type T21 = Bar<{ a: (x: string) => void; b: (x: number) => void }>; // string & number
 ```
 
-When inferring from a type with multiple call signatures (such as the type of an overloaded function), inferences are made from the *last* signature (which, presumably, is the most permissive catch-all case).
+When inferring from a type with multiple call signatures (such as the type of an overloaded function), inferences are made from the _last_ signature (which, presumably, is the most permissive catch-all case).
 It is not possible to perform overload resolution based on a list of argument types.
 
 ```ts
 declare function foo(x: string): number;
 declare function foo(x: number): string;
 declare function foo(x: string | number): string | number;
-type T30 = ReturnType<typeof foo>;  // string | number
+type T30 = ReturnType<typeof foo>; // string | number
 ```
 
 It is not possible to use `infer` declarations in constraint clauses for regular type parameters:
 
 ```ts
-type ReturnType<T extends (...args: any[]) => infer R> = R;  // Error, not supported
+type ReturnType<T extends (...args: any[]) => infer R> = R; // Error, not supported
 ```
 
 However, much the same effect can be obtained by erasing the type variables in the constraint and instead specifying a conditional type:
 
 ```ts
 type AnyFunction = (...args: any[]) => any;
-type ReturnType<T extends AnyFunction> = T extends (...args: any[]) => infer R ? R : any;
+type ReturnType<T extends AnyFunction> = T extends (...args: any[]) => infer R
+  ? R
+  : any;
 ```
-
 
 ### Predefined conditional types
 
 TypeScript 2.8 adds several predefined conditional types to `lib.d.ts`:
 
-* `Exclude<T, U>` -- Exclude from `T` those types that are assignable to `U`.
-* `Extract<T, U>` -- Extract from `T` those types that are assignable to `U`.
-* `NonNullable<T>` -- Exclude `null` and `undefined` from `T`.
-* `ReturnType<T>` -- Obtain the return type of a function type.
-* `InstanceType<T>` -- Obtain the instance type of a constructor function type.
+- `Exclude<T, U>` -- Exclude from `T` those types that are assignable to `U`.
+- `Extract<T, U>` -- Extract from `T` those types that are assignable to `U`.
+- `NonNullable<T>` -- Exclude `null` and `undefined` from `T`.
+- `ReturnType<T>` -- Obtain the return type of a function type.
+- `InstanceType<T>` -- Obtain the instance type of a constructor function type.
 
 #### Example
 
 ```ts
-type T00 = Exclude<"a" | "b" | "c" | "d", "a" | "c" | "f">;  // "b" | "d"
-type T01 = Extract<"a" | "b" | "c" | "d", "a" | "c" | "f">;  // "a" | "c"
+type T00 = Exclude<"a" | "b" | "c" | "d", "a" | "c" | "f">; // "b" | "d"
+type T01 = Extract<"a" | "b" | "c" | "d", "a" | "c" | "f">; // "a" | "c"
 
-type T02 = Exclude<string | number | (() => void), Function>;  // string | number
-type T03 = Extract<string | number | (() => void), Function>;  // () => void
+type T02 = Exclude<string | number | (() => void), Function>; // string | number
+type T03 = Extract<string | number | (() => void), Function>; // () => void
 
-type T04 = NonNullable<string | number | undefined>;  // string | number
-type T05 = NonNullable<(() => string) | string[] | null | undefined>;  // (() => string) | string[]
+type T04 = NonNullable<string | number | undefined>; // string | number
+type T05 = NonNullable<(() => string) | string[] | null | undefined>; // (() => string) | string[]
 
 function f1(s: string) {
-    return { a: 1, b: s };
+  return { a: 1, b: s };
 }
 
 class C {
-    x = 0;
-    y = 0;
+  x = 0;
+  y = 0;
 }
 
-type T10 = ReturnType<() => string>;  // string
-type T11 = ReturnType<(s: string) => void>;  // void
-type T12 = ReturnType<(<T>() => T)>;  // {}
-type T13 = ReturnType<(<T extends U, U extends number[]>() => T)>;  // number[]
-type T14 = ReturnType<typeof f1>;  // { a: number, b: string }
-type T15 = ReturnType<any>;  // any
-type T16 = ReturnType<never>;  // any
-type T17 = ReturnType<string>;  // Error
-type T18 = ReturnType<Function>;  // Error
+type T10 = ReturnType<() => string>; // string
+type T11 = ReturnType<(s: string) => void>; // void
+type T12 = ReturnType<<T>() => T>; // {}
+type T13 = ReturnType<<T extends U, U extends number[]>() => T>; // number[]
+type T14 = ReturnType<typeof f1>; // { a: number, b: string }
+type T15 = ReturnType<any>; // any
+type T16 = ReturnType<never>; // any
+type T17 = ReturnType<string>; // Error
+type T18 = ReturnType<Function>; // Error
 
-type T20 = InstanceType<typeof C>;  // C
-type T21 = InstanceType<any>;  // any
-type T22 = InstanceType<never>;  // any
-type T23 = InstanceType<string>;  // Error
-type T24 = InstanceType<Function>;  // Error
+type T20 = InstanceType<typeof C>; // C
+type T21 = InstanceType<any>; // any
+type T22 = InstanceType<never>; // any
+type T23 = InstanceType<string>; // Error
+type T24 = InstanceType<Function>; // Error
 ```
 
 > Note: The `Exclude` type is a proper implementation of the `Diff` type suggested [here](https://github.com/Microsoft/TypeScript/issues/12215#issuecomment-307871458). We've used the name `Exclude` to avoid breaking existing code that defines a `Diff`, plus we feel that name better conveys the semantics of the type. We did not include the `Omit<T, K>` type because it is trivially written as `Pick<T, Exclude<keyof T, K>>`.
 
 ## Improved control over mapped type modifiers
 
-Mapped types support adding a `readonly` or `?` modifier to a mapped property, but they did not provide support the ability to *remove* modifiers.
-This matters in [*homomorphic mapped types*](https://github.com/Microsoft/TypeScript/pull/12563) which by default preserve the modifiers of the underlying type.
+Mapped types support adding a `readonly` or `?` modifier to a mapped property, but they did not provide support the ability to _remove_ modifiers.
+This matters in [_homomorphic mapped types_](https://github.com/Microsoft/TypeScript/pull/12563) which by default preserve the modifiers of the underlying type.
 
 TypeScript 2.8 adds the ability for a mapped type to either add or remove a particular modifier.
 Specifically, a `readonly` or `?` property modifier in a mapped type can now be prefixed with either `+` or `-` to indicate that the modifier should be added or removed.
@@ -2407,17 +3260,17 @@ Specifically, a `readonly` or `?` property modifier in a mapped type can now be 
 #### Example
 
 ```ts
-type MutableRequired<T> = { -readonly [P in keyof T]-?: T[P] };  // Remove readonly and ?
-type ReadonlyPartial<T> = { +readonly [P in keyof T]+?: T[P] };  // Add readonly and ?
+type MutableRequired<T> = { -readonly [P in keyof T]-?: T[P] }; // Remove readonly and ?
+type ReadonlyPartial<T> = { +readonly [P in keyof T]+?: T[P] }; // Add readonly and ?
 ```
 
 A modifier with no `+` or `-` prefix is the same as a modifier with a `+` prefix. So, the `ReadonlyPartial<T>` type above corresponds to
 
 ```ts
-type ReadonlyPartial<T> = { readonly [P in keyof T]?: T[P] };  // Add readonly and ?
+type ReadonlyPartial<T> = { readonly [P in keyof T]?: T[P] }; // Add readonly and ?
 ```
 
-Using this ability, `lib.d.ts` now has a new  `Required<T>` type.
+Using this ability, `lib.d.ts` now has a new `Required<T>` type.
 This type strips `?` modifiers from all properties of `T`, thus making all properties required.
 
 #### Example
@@ -2431,8 +3284,8 @@ Note that in `--strictNullChecks` mode, when a homomorphic mapped type removes a
 #### Example
 
 ```ts
-type Foo = { a?: string };  // Same as { a?: string | undefined }
-type Bar = Required<Foo>;  // Same as { a: string }
+type Foo = { a?: string }; // Same as { a?: string | undefined }
+type Bar = Required<Foo>; // Same as { a: string }
 ```
 
 ## Improved `keyof` with intersection types
@@ -2447,13 +3300,13 @@ This change should address inconsistencies with inference from `keyof` expressio
 type A = { a: string };
 type B = { b: string };
 
-type T1 = keyof (A & B);  // "a" | "b"
-type T2<T> = keyof (T & B);  // keyof T | "b"
-type T3<U> = keyof (A & U);  // "a" | keyof U
-type T4<T, U> = keyof (T & U);  // keyof T | keyof U
-type T5 = T2<A>;  // "a" | "b"
-type T6 = T3<B>;  // "a" | "b"
-type T7 = T4<A, B>;  // "a" | "b"
+type T1 = keyof (A & B); // "a" | "b"
+type T2<T> = keyof (T & B); // keyof T | "b"
+type T3<U> = keyof (A & U); // "a" | keyof U
+type T4<T, U> = keyof (T & U); // keyof T | keyof U
+type T5 = T2<A>; // "a" | "b"
+type T6 = T3<B>; // "a" | "b"
+type T7 = T4<A, B>; // "a" | "b"
 ```
 
 ## Better handling for namespace patterns in `.js` files
@@ -2462,7 +3315,7 @@ TypeScript 2.8 adds support for understanding more namespace patterns in `.js` f
 Empty object literals declarations on top level, just like functions and classes, are now recognized as as namespace declarations in JavaScript.
 
 ```js
-var ns = {};     // recognized as a declaration for a namespace `ns`
+var ns = {}; // recognized as a declaration for a namespace `ns`
 ns.constant = 1; // recognized as a declaration for var `constant`
 ```
 
@@ -2470,10 +3323,8 @@ Assignments at the top-level should behave the same way; in other words, a `var`
 
 ```js
 app = {}; // does NOT need to be `var app = {}`
-app.C = class {
-};
-app.f = function() {
-};
+app.C = class {};
+app.f = function() {};
 app.prop = 1;
 ```
 
@@ -2482,7 +3333,7 @@ app.prop = 1;
 An IIFE returning a function, class or empty object literal, is also recognized as a namespace:
 
 ```js
-var C = (function () {
+var C = (function() {
   function C(n) {
     this.p = n;
   }
@@ -2505,7 +3356,7 @@ my.app = my.app || {};
 You can assign an object literal directly to the prototype property. Individual prototype assignments still work too:
 
 ```ts
-var C = function (p) {
+var C = function(p) {
   this.p = p;
 };
 C.prototype = {
@@ -2524,7 +3375,7 @@ Nesting works to any level now, and merges correctly across files. Previously ne
 
 ```js
 var app = window.app || {};
-app.C = class { };
+app.C = class {};
 ```
 
 ## Per-file JSX factories
@@ -2536,8 +3387,8 @@ JSX factory can be configured for a compilation using `--jsxFactory` (default is
 
 ```ts
 /** @jsx dom */
-import { dom } from "./renderer"
-<h></h>
+import { dom } from "./renderer";
+<h></h>;
 ```
 
 Generates:
@@ -2557,7 +3408,7 @@ Combined with the per-file `@jsx` pragma, each file can have a different JSX fac
 
 ## New `--emitDeclarationsOnly`
 
-`--emitDeclarationsOnly` allows for *only* generating declaration files; `.js`/`.jsx` output generation will be skipped with this flag. The flag is useful when the `.js` output generation is handled by a different transpiler like Babel.
+`--emitDeclarationsOnly` allows for _only_ generating declaration files; `.js`/`.jsx` output generation will be skipped with this flag. The flag is useful when the `.js` output generation is handled by a different transpiler like Babel.
 
 ## TypeScript 2.7
 
@@ -2572,7 +3423,7 @@ TypeScript 2.7 adds support for declaring const-named properties on types includ
 export const SERIALIZE = Symbol("serialize-method-key");
 
 export interface Serializable {
-    [SERIALIZE](obj: {}): string;
+  [SERIALIZE](obj: {}): string;
 }
 ```
 
@@ -2582,9 +3433,9 @@ export interface Serializable {
 import { SERIALIZE, Serializable } from "lib";
 
 class JSONSerializableItem implements Serializable {
-    [SERIALIZE](obj: {}) {
-        return JSON.stringify(obj);
-    }
+  [SERIALIZE](obj: {}) {
+    return JSON.stringify(obj);
+  }
 }
 ```
 
@@ -2597,8 +3448,8 @@ const Foo = "Foo";
 const Bar = "Bar";
 
 let x = {
-    [Foo]: 100,
-    [Bar]: "hello",
+  [Foo]: 100,
+  [Bar]: "hello"
 };
 
 let a = x[Foo]; // has type 'number'
@@ -2607,7 +3458,7 @@ let b = x[Bar]; // has type 'string'
 
 ### `unique symbol`
 
-To enable treating symbols as unique literals  a new type `unique symbol` is available.
+To enable treating symbols as unique literals a new type `unique symbol` is available.
 `unique symbol` is are subtype of `symbol`, and are produced only from calling `Symbol()` or `Symbol.for()`, or from explicit type annotations.
 The new type is only allowed on `const` declarations and `readonly static` properties, and in order to reference a specific unique symbol, you'll have to use the `typeof` operator.
 Each reference to a `unique symbol` implies a completely unique identity that's tied to a given declaration.
@@ -2626,7 +3477,7 @@ let Baz: typeof Foo = Foo;
 
 // Also works.
 class C {
-    static readonly StaticSymbol: unique symbol = Symbol();
+  static readonly StaticSymbol: unique symbol = Symbol();
 }
 ```
 
@@ -2640,7 +3491,7 @@ const Bar = Symbol();
 
 // Error: can't compare two unique symbols.
 if (Foo === Bar) {
-    // ...
+  // ...
 }
 ```
 
@@ -2652,37 +3503,37 @@ For example
 
 ```ts
 class C {
-    foo: number;
-    bar = "hello";
-    baz: boolean;
-//  ~~~
-//  Error! Property 'baz' has no initializer and is not definitely assigned in the
-//         constructor.
+  foo: number;
+  bar = "hello";
+  baz: boolean;
+  //  ~~~
+  //  Error! Property 'baz' has no initializer and is not definitely assigned in the
+  //         constructor.
 
-    constructor() {
-        this.foo = 42;
-    }
+  constructor() {
+    this.foo = 42;
+  }
 }
 ```
 
 In the above, if we truly meant for `baz` to potentially be `undefined`, we should have declared it with the type `boolean | undefined`.
 
-There are certain scenarios where properties can be initialized indirectly (perhaps by a helper method or dependency injection library), in which case you can use the new *definite assignment assertion modifiers* for your properties (discussed below).
+There are certain scenarios where properties can be initialized indirectly (perhaps by a helper method or dependency injection library), in which case you can use the new _definite assignment assertion modifiers_ for your properties (discussed below).
 
 ```ts
 class C {
-    foo!: number;
-    // ^
-    // Notice this '!' modifier.
-    // This is the "definite assignment assertion"
+  foo!: number;
+  // ^
+  // Notice this '!' modifier.
+  // This is the "definite assignment assertion"
 
-    constructor() {
-        this.initialize();
-    }
+  constructor() {
+    this.initialize();
+  }
 
-    initialize() {
-        this.foo = 0;
-    }
+  initialize() {
+    this.foo = 0;
+  }
 }
 ```
 
@@ -2703,7 +3554,7 @@ console.log(x + x);
 // Error! Variable 'x' is used before being assigned.
 
 function initialize() {
-    x = 10;
+  x = 10;
 }
 ```
 
@@ -2718,11 +3569,11 @@ initialize();
 console.log(x + x);
 
 function initialize() {
-    x = 10;
+  x = 10;
 }
 ```
 
-In a sense, the definite assignment assertion operator is the dual of the non-null assertion operator (in which *expressions* are post-fixed with a `!`), which we could also have used in the example.
+In a sense, the definite assignment assertion operator is the dual of the non-null assertion operator (in which _expressions_ are post-fixed with a `!`), which we could also have used in the example.
 
 ```ts
 let x: number;
@@ -2752,9 +3603,9 @@ Conceptually, you might consider the type `[number, string]` to be equivalent to
 
 ```ts
 interface NumStrTuple extends Array<number | string> {
-    0: number;
-    1: string;
-    length: 2; // using the numeric literal type '2'
+  0: number;
+  1: string;
+  length: 2; // using the numeric literal type '2'
 }
 ```
 
@@ -2763,8 +3614,8 @@ If you need to resort to the original behavior in which tuples only enforce a mi
 
 ```ts
 interface MinimumNumStrTuple extends Array<number | string> {
-    0: number;
-    1: string;
+  0: number;
+  1: string;
 }
 ```
 
@@ -2773,13 +3624,13 @@ Note that this does not imply tuples represent immutable arrays, but it is an im
 ## Improved type inference for object literals
 
 TypeScript 2.7 improves type inference for multiple object literals occurring in the same context.
-When multiple object literal types contribute to a union type, we now *normalize* the object literal types such that all properties are present in each constituent of the union type.
+When multiple object literal types contribute to a union type, we now _normalize_ the object literal types such that all properties are present in each constituent of the union type.
 
 Consider:
 
 ```ts
-const obj = test ? { text: "hello" } : {};  // { text: string } | { text?: undefined }
-const s = obj.text;  // string | undefined
+const obj = test ? { text: "hello" } : {}; // { text: string } | { text?: undefined }
+const s = obj.text; // string | undefined
 ```
 
 Previously type `{}` was inferred for `obj` and the second line subsequently caused an error because `obj` would appear to have no properties.
@@ -2792,8 +3643,8 @@ That obviously wasn't ideal.
 //     { a: string, b?: undefined } |
 //     { a?: undefined, b?: undefined }
 let obj = [{ a: 1, b: 2 }, { a: "abc" }, {}][0];
-obj.a;  // string | number | undefined
-obj.b;  // number | undefined
+obj.a; // string | number | undefined
+obj.b; // number | undefined
 ```
 
 Multiple object literal type inferences for the same type parameter are similarly collapsed into a single normalized union type:
@@ -2804,17 +3655,17 @@ declare function f<T>(...items: T[]): T;
 //     { a: string, b?: undefined } |
 //     { a?: undefined, b?: undefined }
 let obj = f({ a: 1, b: 2 }, { a: "abc" }, {});
-obj.a;  // string | number | undefined
-obj.b;  // number | undefined
+obj.a; // string | number | undefined
+obj.b; // number | undefined
 ```
 
 ## Improved handling of structurally identical classes and `instanceof` expressions
 
 TypeScript 2.7 improves the handling of structurally identical classes in union types and `instanceof` expressions:
 
-* Structurally identical, but distinct, class types are now preserved in union types (instead of eliminating all but one).
-* Union type subtype reduction only removes a class type if it is a subclass of *and* derives from another class type in the union.
-* Type checking of the `instanceof` operator is now based on whether the type of the left operand *derives from* the type indicated by the right operand (as opposed to a structural subtype check).
+- Structurally identical, but distinct, class types are now preserved in union types (instead of eliminating all but one).
+- Union type subtype reduction only removes a class type if it is a subclass of _and_ derives from another class type in the union.
+- Type checking of the `instanceof` operator is now based on whether the type of the left operand _derives from_ the type indicated by the right operand (as opposed to a structural subtype check).
 
 This means that union types and `instanceof` properly distinguish between structurally identical classes.
 
@@ -2824,30 +3675,30 @@ This means that union types and `instanceof` properly distinguish between struct
 class A {}
 class B extends A {}
 class C extends A {}
-class D extends A { c: string }
+class D extends A {
+  c: string;
+}
 class E extends D {}
 
-let x1 = !true ? new A() : new B();  // A
-let x2 = !true ? new B() : new C();  // B | C (previously B)
-let x3 = !true ? new C() : new D();  // C | D (previously C)
+let x1 = !true ? new A() : new B(); // A
+let x2 = !true ? new B() : new C(); // B | C (previously B)
+let x3 = !true ? new C() : new D(); // C | D (previously C)
 
-let a1 = [new A(), new B(), new C(), new D(), new E()];  // A[]
-let a2 = [new B(), new C(), new D(), new E()];  // (B | C | D)[] (previously B[])
+let a1 = [new A(), new B(), new C(), new D(), new E()]; // A[]
+let a2 = [new B(), new C(), new D(), new E()]; // (B | C | D)[] (previously B[])
 
 function f1(x: B | C | D) {
-    if (x instanceof B) {
-        x;  // B (previously B | D)
-    }
-    else if (x instanceof C) {
-        x;  // C
-    }
-    else {
-        x;  // D (previously never)
-    }
+  if (x instanceof B) {
+    x; // B (previously B | D)
+  } else if (x instanceof C) {
+    x; // C
+  } else {
+    x; // D (previously never)
+  }
 }
 ```
 
-## Type guards inferred from  `in` operator
+## Type guards inferred from `in` operator
 
 The `in` operator now acts as a narrowing expression for types.
 
@@ -2856,14 +3707,18 @@ For a `n in x` expression, where `n` is a string literal or string literal type 
 #### Example
 
 ```ts
-interface A { a: number };
-interface B { b: string };
+interface A {
+  a: number;
+}
+interface B {
+  b: string;
+}
 
 function foo(x: A | B) {
-    if ("a" in x) {
-        return x.a;
-    }
-    return x.b;
+  if ("a" in x) {
+    return x.a;
+  }
+  return x.b;
 }
 ```
 
@@ -2874,16 +3729,17 @@ The change brings the generated output from TypeScript closer to that generated 
 
 Previously CommonJS/AMD/UMD modules were treated in the same way as ES6 modules, resulting in a couple of problems. Namely:
 
-* TypeScript treats a namespace import (i.e. `import * as foo from "foo"`) for a CommonJS/AMD/UMD module as equivalent to `const foo = require("foo")`.
-Things are simple here, but they don't work out if the primary object being imported is a primitive or a class or a function.
-ECMAScript spec stipulates that a namespace record is a plain object, and that a namespace import (`foo` in the example above) is not callable, though allowed by TypeScript
+- TypeScript treats a namespace import (i.e. `import * as foo from "foo"`) for a CommonJS/AMD/UMD module as equivalent to `const foo = require("foo")`.
+  Things are simple here, but they don't work out if the primary object being imported is a primitive or a class or a function.
+  ECMAScript spec stipulates that a namespace record is a plain object, and that a namespace import (`foo` in the example above) is not callable, though allowed by TypeScript
 
-* Similarly a default import (i.e. `import d from "foo"`) for a CommonJS/AMD/UMD module as equivalent to `const d = require("foo").default`.
-Most of the CommonJS/AMD/UMD modules available today do not have a `default` export, making this import pattern practically unusable to import non-ES modules (i.e. CommonJS/AMD/UMD). For instance `import fs from "fs"` or `import express from "express"` are not allowed.
+- Similarly a default import (i.e. `import d from "foo"`) for a CommonJS/AMD/UMD module as equivalent to `const d = require("foo").default`.
+  Most of the CommonJS/AMD/UMD modules available today do not have a `default` export, making this import pattern practically unusable to import non-ES modules (i.e. CommonJS/AMD/UMD). For instance `import fs from "fs"` or `import express from "express"` are not allowed.
 
 Under the new `--esModuleInterop` these two issues should be addressed:
-* A namespace import (i.e. `import * as foo from "foo"`) is now correctly flagged as uncallabale. Calling it will result in an error.
-* Default imports to CommonJS/AMD/UMD are now allowed (e.g. `import fs from "fs"`), and should work as expected.
+
+- A namespace import (i.e. `import * as foo from "foo"`) is now correctly flagged as uncallabale. Calling it will result in an error.
+- Default imports to CommonJS/AMD/UMD are now allowed (e.g. `import fs from "fs"`), and should work as expected.
 
 > Note: The new behavior is added under a flag to avoid unwarranted breaks to existing code bases. We highly recommend applying it both to new and existing projects.
 > For existing projects, namespace imports (`import * as express from "express"; express();`) will need to be converted to default imports (`import express from "express"; express();`).
@@ -2902,16 +3758,22 @@ Will generate:
 
 ```js
 "use strict";
-var __importStar = (this && this.__importStar) || function (mod) {
+var __importStar =
+  (this && this.__importStar) ||
+  function(mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    if (mod != null)
+      for (var k in mod)
+        if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
     result["default"] = mod;
     return result;
-}
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-}
+  };
+var __importDefault =
+  (this && this.__importDefault) ||
+  function(mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
 exports.__esModule = true;
 var foo = __importStar(require("foo"));
 var bar_1 = __importDefault(require("bar"));
@@ -2927,7 +3789,7 @@ Numeric literals can now be separated into segments using `_`.
 ```ts
 const milion = 1_000_000;
 const phone = 555_734_2231;
-const bytes = 0xFF_0C_00_FF;
+const bytes = 0xff_0c_00_ff;
 const word = 0b1100_0011_1101_0001;
 ```
 
@@ -2941,7 +3803,6 @@ TypeScript's `--pretty` flag can make error messages easier to read and manage.
 `--pretty` now uses colors for file names, diagnostic codes, and line numbers.
 File names and positions are now also formatted to allow navigation in common terminals (e.g. Visual Studio Code terminal).
 
-
 ## TypeScript 2.6
 
 ## Strict function types
@@ -2953,7 +3814,7 @@ You can opt-out by setting `--strictFunctionTypes false` on your command line or
 Under `--strictFunctionTypes` function type parameter positions are checked _contravariantly_ instead of _bivariantly_.
 For some background on what variance means for function types check out [What are covariance and contravariance?](https://www.stephanboyer.com/post/132/what-are-covariance-and-contravariance).
 
-The stricter checking applies to all function types, *except* those originating in method or constructor declarations.
+The stricter checking applies to all function types, _except_ those originating in method or constructor declarations.
 Methods are excluded specifically to ensure generic classes and interfaces (such as `Array<T>`) continue to mostly relate covariantly.
 
 Consider the following example in which `Animal` is the supertype of `Dog` and `Cat`:
@@ -2962,9 +3823,9 @@ Consider the following example in which `Animal` is the supertype of `Dog` and `
 declare let f1: (x: Animal) => void;
 declare let f2: (x: Dog) => void;
 declare let f3: (x: Cat) => void;
-f1 = f2;  // Error with --strictFunctionTypes
-f2 = f1;  // Ok
-f2 = f3;  // Error
+f1 = f2; // Error with --strictFunctionTypes
+f2 = f1; // Ok
+f2 = f3; // Error
 ```
 
 The first assignment is permitted in default type checking mode, but flagged as an error in strict function types mode.
@@ -2977,14 +3838,14 @@ Another way to describe the example is that the type `(x: T) => void` is _bivari
 
 ```ts
 interface Comparer<T> {
-    compare: (a: T, b: T) => number;
+  compare: (a: T, b: T) => number;
 }
 
 declare let animalComparer: Comparer<Animal>;
 declare let dogComparer: Comparer<Dog>;
 
-animalComparer = dogComparer;  // Error
-dogComparer = animalComparer;  // Ok
+animalComparer = dogComparer; // Error
+dogComparer = animalComparer; // Ok
 ```
 
 The first assignment is now an error. Effectively, `T` is contravariant in `Comparer<T>` because it is used only in function type parameter positions.
@@ -2998,33 +3859,33 @@ Effectively, `T` is bivariant in `Comparer<T>` because it is used only in method
 
 ```ts
 interface Comparer<T> {
-    compare(a: T, b: T): number;
+  compare(a: T, b: T): number;
 }
 
 declare let animalComparer: Comparer<Animal>;
 declare let dogComparer: Comparer<Dog>;
 
-animalComparer = dogComparer;  // Ok because of bivariance
-dogComparer = animalComparer;  // Ok
+animalComparer = dogComparer; // Ok because of bivariance
+dogComparer = animalComparer; // Ok
 ```
 
 TypeScript 2.6 also improves type inference involving contravariant positions:
 
 ```ts
 function combine<T>(...funcs: ((x: T) => void)[]): (x: T) => void {
-    return x => {
-        for (const f of funcs) f(x);
-    }
+  return x => {
+    for (const f of funcs) f(x);
+  };
 }
 
 function animalFunc(x: Animal) {}
 function dogFunc(x: Dog) {}
 
-let combined = combine(animalFunc, dogFunc);  // (x: Dog) => void
+let combined = combine(animalFunc, dogFunc); // (x: Dog) => void
 ```
 
-Above, all inferences for `T` originate in contravariant positions, and we therefore infer the *best common subtype* for `T`.
-This contrasts with inferences from covariant positions, where we infer the *best common supertype*.
+Above, all inferences for `T` originate in contravariant positions, and we therefore infer the _best common subtype_ for `T`.
+This contrasts with inferences from covariant positions, where we infer the _best common supertype_.
 
 ## Support for JSX Fragment Syntax
 
@@ -3046,6 +3907,7 @@ render() {
 
 To address this pattern, React introduced the `React.Fragment` component, which provides a dedicated way to wrap such elements without adding an element to the DOM.
 Correspondingly, the `<>...</>` syntax was added to JSX to facilitate this new construct. Therefore, the above scenario becomes:
+
 ```tsx
 render() {
     return (
@@ -3074,11 +3936,11 @@ Though the string contents are the same, this emit affects libraries that use th
 
 ```ts
 export function id(x: TemplateStringsArray) {
-    return x;
+  return x;
 }
 
 export function templateObjectFactory() {
-    return id`hello world`;
+  return id`hello world`;
 }
 
 let result = templateObjectFactory() === templateObjectFactory(); // true in TS 2.6
@@ -3088,25 +3950,33 @@ Results in the following generated code:
 
 ```js
 "use strict";
-var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
-    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+var __makeTemplateObject =
+  (this && this.__makeTemplateObject) ||
+  function(cooked, raw) {
+    if (Object.defineProperty) {
+      Object.defineProperty(cooked, "raw", { value: raw });
+    } else {
+      cooked.raw = raw;
+    }
     return cooked;
-};
+  };
 
 function id(x) {
-    return x;
+  return x;
 }
 
 var _a;
 function templateObjectFactory() {
-    return id(_a || (_a = __makeTemplateObject(["hello world"], ["hello world"])));
+  return id(
+    _a || (_a = __makeTemplateObject(["hello world"], ["hello world"]))
+  );
 }
 
 var result = templateObjectFactory() === templateObjectFactory();
 ```
 
 > Note: This change brings a new emit helper, `__makeTemplateObject`;
-if you are using `--importHelpers` with [`tslib`](https://github.com/Microsoft/tslib), an updated to version 1.8 or later.
+> if you are using `--importHelpers` with [`tslib`](https://github.com/Microsoft/tslib), an updated to version 1.8 or later.
 
 ## Localized diagnostics on the command line
 
@@ -3188,8 +4058,8 @@ TypeScript 2.6 support suppressing errors in .js files using `// @ts-ignore` com
 
 ```ts
 if (false) {
-    // @ts-ignore: Unreachable code error
-    console.log("hello");
+  // @ts-ignore: Unreachable code error
+  console.log("hello");
 }
 ```
 
@@ -3210,23 +4080,23 @@ The watcher logic has been completely rewritten to respond faster to change even
 
 ## Write-only references now flagged as unused
 
-TypeScript 2.6 adds revised implementation  the `--noUnusedLocals` and `--noUnusedParameters` [compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
+TypeScript 2.6 adds revised implementation the `--noUnusedLocals` and `--noUnusedParameters` [compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
 Declarations are only written to but never read from are now flagged as unused.
 
 #### Example
 
-Bellow both `n` and `m` will be marked as unused, because their values are never *read*. Previously TypeScript would only check whether their values were *referenced*.
+Bellow both `n` and `m` will be marked as unused, because their values are never _read_. Previously TypeScript would only check whether their values were _referenced_.
 
 ```ts
 function f(n: number) {
-    n = 0;
+  n = 0;
 }
 
 class C {
-    private m: number;
-    constructor() {
-        this.m = 0;
-    }
+  private m: number;
+  constructor() {
+    this.m = 0;
+  }
 }
 ```
 
@@ -3236,7 +4106,7 @@ Also functions that are only called within their own bodies are considered unuse
 
 ```ts
 function f() {
-    f(); // Error: 'f' is declared but its value is never read
+  f(); // Error: 'f' is declared but its value is never read
 }
 ```
 
@@ -3250,11 +4120,10 @@ For example, when using `JSON.parse` you may need to wrap calls to the function 
 ```ts
 let input = "...";
 try {
-    JSON.parse(input);
-}
-catch {
-    // ^ Notice that our `catch` clause doesn't declare a variable.
-    console.log("Invalid JSON given\n\n" + input)
+  JSON.parse(input);
+} catch {
+  // ^ Notice that our `catch` clause doesn't declare a variable.
+  console.log("Invalid JSON given\n\n" + input);
 }
 ```
 
@@ -3265,7 +4134,7 @@ The syntax is an `/** @type {...} */` annotation comment followed by a parenthes
 For example:
 
 ```ts
-var x = /** @type {SomeType} */ (AnyParenthesizedExpression);
+var x = /** @type {SomeType} */ AnyParenthesizedExpression;
 ```
 
 ## Deduplicated and redirected packages
@@ -3295,9 +4164,9 @@ For example, here's an `async` function that only imports a utility library when
 
 ```ts
 async function getZipFile(name: string, files: File[]): Promise<File> {
-    const zipUtil = await import('./utils/create-zip-file');
-    const zipContents = await zipUtil.getContentAsBlob(files);
-    return new File(zipContents, name);
+  const zipUtil = await import("./utils/create-zip-file");
+  const zipContents = await zipUtil.getContentAsBlob(files);
+  return new File(zipContents, name);
 }
 ```
 
@@ -3309,9 +4178,9 @@ TypeScript 2.4 now allows enum members to contain string initializers.
 
 ```ts
 enum Colors {
-    Red = "RED",
-    Green = "GREEN",
-    Blue = "BLUE",
+  Red = "RED",
+  Green = "GREEN",
+  Blue = "BLUE"
 }
 ```
 
@@ -3330,19 +4199,18 @@ Something that now works:
 
 ```ts
 function arrayMap<T, U>(f: (x: T) => U): (a: T[]) => U[] {
-    return a => a.map(f);
+  return a => a.map(f);
 }
 
 const lengths: (a: string[]) => number[] = arrayMap(s => s.length);
 ```
 
-
 As an example of new errors you might spot as a result:
 
 ```ts
 let x: Promise<string> = new Promise(resolve => {
-    resolve(10);
-    //      ~~ Error!
+  resolve(10);
+  //      ~~ Error!
 });
 ```
 
@@ -3363,7 +4231,7 @@ let f: <T>(x: T) => T = y => y() + y.foo.bar;
 
 That last example isn't actually type-safe.
 
-In TypeScript 2.4, the function on the right side implicitly *gains* type parameters, and `y` is inferred to have the type of that type-parameter.
+In TypeScript 2.4, the function on the right side implicitly _gains_ type parameters, and `y` is inferred to have the type of that type-parameter.
 
 If you use `y` in a way that the type parameter's constraint doesn't support, you'll correctly get an error.
 In this case, the constraint of `T` was (implicitly) `{}`, so the last example will appropriately fail.
@@ -3378,8 +4246,8 @@ type A = <T, U>(x: T, y: U) => [T, U];
 type B = <S>(x: S, y: S) => [S, S];
 
 function f(a: A, b: B) {
-    a = b;  // Error
-    b = a;  // Ok
+  a = b; // Error
+  b = a; // Ok
 }
 ```
 
@@ -3392,7 +4260,7 @@ TypeScript 2.4 introduces tightens this up when relating two callback types. For
 
 ```ts
 interface Mappable<T> {
-    map<U>(f: (x: T) => U): Mappable<U>;
+  map<U>(f: (x: T) => U): Mappable<U>;
 }
 
 declare let a: Mappable<number>;
@@ -3404,7 +4272,7 @@ b = a;
 
 Prior to TypeScript 2.4, this example would succeed.
 When relating the types of `map`, TypeScript would bidirectionally relate their parameters (i.e. the type of `f`).
-When relating each `f`, TypeScript would also bidirectionally relate the type of *those* parameters.
+When relating each `f`, TypeScript would also bidirectionally relate the type of _those_ parameters.
 
 When relating the type of `map` in TS 2.4, the language will check whether each parameter is a callback type, and if so, it will ensure that those parameters are checked in a contravariant manner with respect to the current relation.
 
@@ -3413,14 +4281,14 @@ In other words, TypeScript now catches the above bug, which may be a breaking ch
 ## Weak Type Detection
 
 TypeScript 2.4 introduces the concept of "weak types".
-Any type that contains nothing but a set of all-optional properties is considered to be *weak*.
+Any type that contains nothing but a set of all-optional properties is considered to be _weak_.
 For example, this `Options` type is a weak type:
 
 ```ts
 interface Options {
-    data?: string;
-    timeout?: number;
-    maxRetries?: number;
+  data?: string;
+  timeout?: number;
+  maxRetries?: number;
 }
 ```
 
@@ -3429,13 +4297,13 @@ For example:
 
 ```ts
 function sendMessage(options: Options) {
-    // ...
+  // ...
 }
 
 const opts = {
-    payload: "hello world!",
-    retryOnFail: true,
-}
+  payload: "hello world!",
+  retryOnFail: true
+};
 
 // Error!
 sendMessage(opts);
@@ -3455,11 +4323,12 @@ Since this is a breaking change, you may need to know about the workarounds whic
 
 ## Generators and Iteration for ES5/ES3
 
-*First some ES2016 terminology:*
+_First some ES2016 terminology:_
 
 #### Iterators
 
 [ES2015 introduced `Iterator`](http://www.ecma-international.org/ecma-262/6.0/#sec-iteration), which is an object that exposes three methods, `next`, `return`, and `throw`, as per the following interface:
+
 ```ts
 interface Iterator<T> {
   next(value?: any): IteratorResult<T>;
@@ -3496,13 +4365,11 @@ With `--downlevelIteration`, the compiler uses new type check and emit behavior 
 
 > Please note that this requires a native `Symbol.iterator` or `Symbol.iterator` shim at runtime for any non-array values.
 
-`for..of` statements,  Array Destructuring, and Spread elements in Array, Call, and New expressions support `Symbol.iterator` in ES5/E3 if available when using `--downlevelIteration`, but can be used on an Array even if it does not define `Symbol.iterator` at run time or design time.
-
+`for..of` statements, Array Destructuring, and Spread elements in Array, Call, and New expressions support `Symbol.iterator` in ES5/E3 if available when using `--downlevelIteration`, but can be used on an Array even if it does not define `Symbol.iterator` at run time or design time.
 
 ## Async Iteration
 
 TypeScript 2.3 adds support for the async iterators and generators as described by the current [TC39 proposal](https://github.com/tc39/proposal-async-iteration).
-
 
 #### Async iterators
 
@@ -3520,7 +4387,6 @@ interface AsyncIterator<T> {
 
 An object that supports async iteration is said to be "iterable" if it has a `Symbol.asyncIterator` method that returns an `AsyncIterator` object.
 
-
 #### Async Generators
 
 The [Async Iteration proposal](https://github.com/tc39/proposal-async-iteration) introduces "Async Generators", which are async functions that also can be used to yield partial computation results. Async Generators can also delegate calls via `yield*` to either an iterable or async iterable:
@@ -3530,7 +4396,7 @@ async function* g() {
   yield 1;
   await sleep(100);
   yield* [2, 3];
-  yield* (async function *() {
+  yield* (async function*() {
     await sleep(100);
     yield 4;
   })();
@@ -3547,7 +4413,7 @@ Similarly, the Async Iteration proposal introduces the `for..await..of` statemen
 ```ts
 async function f() {
   for await (const x of g()) {
-     console.log(x);
+    console.log(x);
   }
 }
 ```
@@ -3556,10 +4422,10 @@ The `for..await..of` statement is only legal within an Async Function or Async G
 
 #### Caveats
 
-* Keep in mind that our support for async iterators relies on support for `Symbol.asyncIterator` to exist at runtime.
-You may need to polyfill `Symbol.asyncIterator`, which for simple purposes can be as simple as: `(Symbol as any).asyncIterator = Symbol.asyncIterator || Symbol.from("Symbol.asyncIterator");`
-* You also need to include `esnext` in your `--lib` option, to get the `AsyncIterator` declaration if you do not already have it.
-* Finally, if your target is ES5 or ES3, you'll also need to set the `--downlevelIterators` flag.
+- Keep in mind that our support for async iterators relies on support for `Symbol.asyncIterator` to exist at runtime.
+  You may need to polyfill `Symbol.asyncIterator`, which for simple purposes can be as simple as: `(Symbol as any).asyncIterator = Symbol.asyncIterator || Symbol.from("Symbol.asyncIterator");`
+- You also need to include `esnext` in your `--lib` option, to get the `AsyncIterator` declaration if you do not already have it.
+- Finally, if your target is ES5 or ES3, you'll also need to set the `--downlevelIterators` flag.
 
 ## Generic parameter defaults
 
@@ -3572,23 +4438,30 @@ Consider a function that creates a new `HTMLElement`, calling it with no argumen
 ```ts
 declare function create(): Container<HTMLDivElement, HTMLDivElement[]>;
 declare function create<T extends HTMLElement>(element: T): Container<T, T[]>;
-declare function create<T extends HTMLElement, U extends HTMLElement>(element: T, children: U[]): Container<T, U[]>;
+declare function create<T extends HTMLElement, U extends HTMLElement>(
+  element: T,
+  children: U[]
+): Container<T, U[]>;
 ```
 
 With generic parameter defaults we can reduce it to:
 
 ```ts
-declare function create<T extends HTMLElement = HTMLDivElement, U = T[]>(element?: T, children?: U): Container<T, U>;
+declare function create<T extends HTMLElement = HTMLDivElement, U = T[]>(
+  element?: T,
+  children?: U
+): Container<T, U>;
 ```
 
 A generic parameter default follows the following rules:
-* A type parameter is deemed optional if it has a default.
-* Required type parameters must not follow optional type parameters.
-* Default types for a type parameter must satisfy the constraint for the type parameter, if it exists.
-* When specifying type arguments, you are only required to specify type arguments for the required type parameters. Unspecified type parameters will resolve to their default types.
-* If a default type is specified and inference cannot chose a candidate, the default type is inferred.
-* A class or interface declaration that merges with an existing class or interface declaration may introduce a default for an existing type parameter.
-* A class or interface declaration that merges with an existing class or interface declaration may introduce a new type parameter as long as it specifies a default.
+
+- A type parameter is deemed optional if it has a default.
+- Required type parameters must not follow optional type parameters.
+- Default types for a type parameter must satisfy the constraint for the type parameter, if it exists.
+- When specifying type arguments, you are only required to specify type arguments for the required type parameters. Unspecified type parameters will resolve to their default types.
+- If a default type is specified and inference cannot chose a candidate, the default type is inferred.
+- A class or interface declaration that merges with an existing class or interface declaration may introduce a default for an existing type parameter.
+- A class or interface declaration that merges with an existing class or interface declaration may introduce a new type parameter as long as it specifies a default.
 
 ## New `--strict` master option
 
@@ -3596,19 +4469,18 @@ New checks added to TypeScript are often off by default to avoid breaking existi
 
 The new `--strict` compiler option represents the recommended setting of a number of type checking options. Specifically, specifying `--strict` corresponds to specifying all of the following options (and may in the future include more options):
 
-* `--strictNullChecks`
-* `--noImplicitAny`
-* `--noImplicitThis`
-* `--alwaysStrict`
+- `--strictNullChecks`
+- `--noImplicitAny`
+- `--noImplicitThis`
+- `--alwaysStrict`
 
-
-In exact terms, the `--strict` option sets the *default* value for the compiler options listed above. This means it is still possible to individually control the options. For example,
+In exact terms, the `--strict` option sets the _default_ value for the compiler options listed above. This means it is still possible to individually control the options. For example,
 
 ```
 --strict --noImplicitThis false
 ```
 
-has the effect of turning on all strict options *except* the `--noImplicitThis` option. Using this scheme it is possible to express configurations consisting of *all* strict options except some explicitly listed options. In other words, it is now possible to default to the highest level of type safety but opt out of certain checks.
+has the effect of turning on all strict options _except_ the `--noImplicitThis` option. Using this scheme it is possible to express configurations consisting of _all_ strict options except some explicitly listed options. In other words, it is now possible to default to the highest level of type safety but opt out of certain checks.
 
 Starting with TypeScript 2.3, the default `tsconfig.json` generated by `tsc --init` includes a `"strict": true` setting in the `"compilerOptions"` section. Thus, new projects started with `tsc --init` will by default have the highest level of type safety enabled.
 
@@ -3638,8 +4510,8 @@ TypeScript 2.2 adds support for the ECMAScript 2015 mixin class pattern (see [MD
 
 - A **mixin class** is a class declaration or expression that `extends` an expression of a type parameter type. The following rules apply to mixin class declarations:
 
- * The type parameter type of the `extends` expression must be constrained to a mixin constructor type.
- * The constructor of a mixin class (if any) must have a single rest parameter of type `any[]` and must use the spread operator to pass those parameters as arguments in a `super(...args)` call.
+* The type parameter type of the `extends` expression must be constrained to a mixin constructor type.
+* The constructor of a mixin class (if any) must have a single rest parameter of type `any[]` and must use the spread operator to pass those parameters as arguments in a `super(...args)` call.
 
 Given an expression `Base` of a parametric type `T` with a constraint `X`, a mixin class `class C extends Base {...}` is processed as if `Base` had type `X` and the resulting type is the intersection `typeof C & T`. In other words, a mixin class is represented as an intersection between the mixin class constructor type and the parametric base class constructor type.
 
@@ -3649,23 +4521,23 @@ When obtaining the construct signatures of an intersection type that contains mi
 
 ```ts
 class Point {
-    constructor(public x: number, public y: number) {}
+  constructor(public x: number, public y: number) {}
 }
 
 class Person {
-    constructor(public name: string) {}
+  constructor(public name: string) {}
 }
 
-type Constructor<T> = new(...args: any[]) => T;
+type Constructor<T> = new (...args: any[]) => T;
 
 function Tagged<T extends Constructor<{}>>(Base: T) {
-    return class extends Base {
-        _tag: string;
-        constructor(...args: any[]) {
-            super(...args);
-            this._tag = "";
-        }
+  return class extends Base {
+    _tag: string;
+    constructor(...args: any[]) {
+      super(...args);
+      this._tag = "";
     }
+  };
 }
 
 const TaggedPoint = Tagged(Point);
@@ -3674,7 +4546,7 @@ let point = new TaggedPoint(10, 20);
 point._tag = "hello";
 
 class Customer extends Tagged(Person) {
-    accountBalance: number;
+  accountBalance: number;
 }
 
 let customer = new Customer("Joe");
@@ -3686,16 +4558,16 @@ Mixin classes can constrain the types of classes they can mix into by specifying
 
 ```ts
 interface Point {
-    x: number;
-    y: number;
+  x: number;
+  y: number;
 }
 
 const WithLocation = <T extends Constructor<Point>>(Base: T) =>
-    class extends Base {
-        getLocation(): [number, number] {
-            return [this.x, this.y];
-        }
+  class extends Base {
+    getLocation(): [number, number] {
+      return [this.x, this.y];
     }
+  };
 ```
 
 ## `object` type
@@ -3703,6 +4575,7 @@ const WithLocation = <T extends Constructor<Point>>(Base: T) =>
 TypeScript did not have a type that represents the non-primitive type, i.e. any thing that is not `number` | `string` | `boolean` | `symbol` | `null` | `undefined`. Enter the new `object` type.
 
 With `object` type, APIs like `Object.create` can be better represented. For example:
+
 ```ts
 declare function create(o: object | null): void;
 
@@ -3725,20 +4598,21 @@ The `new.target` meta-property is new syntax introduced in ES2015. When an insta
 
 ```ts
 class CustomError extends Error {
-    constructor(message?: string) {
-        super(message); // 'Error' breaks prototype chain here
-        Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
-    }
+  constructor(message?: string) {
+    super(message); // 'Error' breaks prototype chain here
+    Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
+  }
 }
 ```
+
 This results in the generated JS
 
 ```js
-var CustomError = (function (_super) {
+var CustomError = (function(_super) {
   __extends(CustomError, _super);
   function CustomError() {
     var _newTarget = this.constructor;
-    var _this = _super.apply(this, arguments);  // 'Error' breaks prototype chain here
+    var _this = _super.apply(this, arguments); // 'Error' breaks prototype chain here
     _this.__proto__ = _newTarget.prototype; // restore prototype chain
     return _this;
   }
@@ -3750,7 +4624,9 @@ var CustomError = (function (_super) {
 
 ```ts
 function f() {
-  if (new.target) { /* called via 'new' */ }
+  if (new.target) {
+    /* called via 'new' */
+  }
 }
 ```
 
@@ -3759,7 +4635,9 @@ Which translates to:
 ```js
 function f() {
   var _newTarget = this && this instanceof f ? this.constructor : void 0;
-  if (_newTarget) { /* called via 'new' */ }
+  if (_newTarget) {
+    /* called via 'new' */
+  }
 }
 ```
 
@@ -3767,14 +4645,13 @@ function f() {
 
 TypeScript 2.2 improves checking of nullable operands in expressions. Specifically, these are now flagged as errors:
 
-* If either operand of a `+` operator is nullable, and neither operand is of type `any` or `string`.
-* If either operand of a `-`, `*`, `**`, `/`, `%`, `<<`, `>>`, `>>>`, `&`, `|`, or `^` operator is nullable.
-* If either operand of a `<`, `>`, `<=`, `>=`, or `in` operator is nullable.
-* If the right operand of an `instanceof` operator is nullable.
-* If the operand of a `+`, `-`, `~`, `++`, or `--` unary operator is nullable.
+- If either operand of a `+` operator is nullable, and neither operand is of type `any` or `string`.
+- If either operand of a `-`, `*`, `**`, `/`, `%`, `<<`, `>>`, `>>>`, `&`, `|`, or `^` operator is nullable.
+- If either operand of a `<`, `>`, `<=`, `>=`, or `in` operator is nullable.
+- If the right operand of an `instanceof` operator is nullable.
+- If the operand of a `+`, `-`, `~`, `++`, or `--` unary operator is nullable.
 
 An operand is considered nullable if the type of the operand is `null` or `undefined` or a union type that includes `null` or `undefined`. Note that the union type case only only occurs in `--strictNullChecks` mode because `null` and `undefined` disappear from unions in classic type checking mode.
-
 
 ## Dotted property for types with string index signatures
 
@@ -3782,17 +4659,16 @@ Types with a string index signature can be indexed using the `[]` notation, but 
 
 ```ts
 interface StringMap<T> {
-    [x: string]: T;
+  [x: string]: T;
 }
 
 const map: StringMap<number>;
 
 map["prop1"] = 1;
 map.prop2 = 2;
-
 ```
 
-This only apply to types with an *explicit* string index signature. It is still an error to access unknown properties on a type using `.` notation.
+This only apply to types with an _explicit_ string index signature. It is still an error to access unknown properties on a type using `.` notation.
 
 ## Support for spread operator on JSX element children
 
@@ -3801,19 +4677,19 @@ TypeScript 2.2 adds support for using spread on a JSX element children. Please s
 #### Example
 
 ```ts
-function Todo(prop: { key: number, todo: string }) {
-    return <div>{prop.key.toString() + prop.todo}</div>;
+function Todo(prop: { key: number; todo: string }) {
+  return <div>{prop.key.toString() + prop.todo}</div>;
 }
 
 function TodoList({ todos }: TodoListProps) {
-    return <div>
-        {...todos.map(todo => <Todo key={todo.id} todo={todo.todo} />)}
-    </div>;
+  return (
+    <div>{...todos.map(todo => <Todo key={todo.id} todo={todo.todo} />)}</div>
+  );
 }
 
 let x: TodoListProps;
 
-<TodoList {...x} />
+<TodoList {...x} />;
 ```
 
 ## New `jsx: react-native`
@@ -3834,38 +4710,38 @@ A `keyof T` type is considered a subtype of `string`.
 
 ```ts
 interface Person {
-    name: string;
-    age: number;
-    location: string;
+  name: string;
+  age: number;
+  location: string;
 }
 
 type K1 = keyof Person; // "name" | "age" | "location"
-type K2 = keyof Person[];  // "length" | "push" | "pop" | "concat" | ...
-type K3 = keyof { [x: string]: Person };  // string
+type K2 = keyof Person[]; // "length" | "push" | "pop" | "concat" | ...
+type K3 = keyof { [x: string]: Person }; // string
 ```
 
-The dual of this is *indexed access types*, also called *lookup types*.
+The dual of this is _indexed access types_, also called _lookup types_.
 Syntactically, they look exactly like an element access, but are written as types:
 
 ##### Example
 
 ```ts
-type P1 = Person["name"];  // string
-type P2 = Person["name" | "age"];  // string | number
-type P3 = string["charAt"];  // (pos: number) => string
-type P4 = string[]["push"];  // (...items: string[]) => number
-type P5 = string[][0];  // string
+type P1 = Person["name"]; // string
+type P2 = Person["name" | "age"]; // string | number
+type P3 = string["charAt"]; // (pos: number) => string
+type P4 = string[]["push"]; // (...items: string[]) => number
+type P5 = string[][0]; // string
 ```
 
 You can use this pattern with other parts of the type system to get type-safe lookups.
 
 ```ts
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
-    return obj[key];  // Inferred type is T[K]
+  return obj[key]; // Inferred type is T[K]
 }
 
 function setProperty<T, K extends keyof T>(obj: T, key: K, value: T[K]) {
-    obj[key] = value;
+  obj[key] = value;
 }
 
 let x = { foo: 10, bar: "hello!" };
@@ -3885,9 +4761,9 @@ Let's say we have a `Person:
 
 ```ts
 interface Person {
-    name: string;
-    age: number;
-    location: string;
+  name: string;
+  age: number;
+  location: string;
 }
 ```
 
@@ -3895,9 +4771,9 @@ A partial version of it would be:
 
 ```ts
 interface PartialPerson {
-    name?: string;
-    age?: number;
-    location?: string;
+  name?: string;
+  age?: number;
+  location?: string;
 }
 ```
 
@@ -3905,7 +4781,7 @@ with Mapped types, `PartialPerson` can be written as a generalized transformatio
 
 ```ts
 type Partial<T> = {
-    [P in keyof T]?: T[P];
+  [P in keyof T]?: T[P];
 };
 
 type PartialPerson = Partial<Person>;
@@ -3919,17 +4795,17 @@ In addition to `Partial`, Mapped Types can express many useful transformations o
 ```ts
 // Keep types the same, but make each property to be read-only.
 type Readonly<T> = {
-    readonly [P in keyof T]: T[P];
+  readonly [P in keyof T]: T[P];
 };
 
 // Same property names, but make the value a promise instead of a concrete one
 type Deferred<T> = {
-    [P in keyof T]: Promise<T[P]>;
+  [P in keyof T]: Promise<T[P]>;
 };
 
 // Wrap proxies around properties of T
 type Proxify<T> = {
-    [P in keyof T]: { get(): T[P]; set(v: T[P]): void }
+  [P in keyof T]: { get(): T[P]; set(v: T[P]): void };
 };
 ```
 
@@ -3951,15 +4827,18 @@ We're also including two other utility types as well: `Record` and `Pick`.
 // From T pick a set of properties K
 declare function pick<T, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K>;
 
-const nameAndAgeOnly = pick(person, "name", "age");  // { name: string, age: number }
+const nameAndAgeOnly = pick(person, "name", "age"); // { name: string, age: number }
 ```
 
 ```ts
 // For every properties K of type T, transform it to U
-function mapObject<K extends string, T, U>(obj: Record<K, T>, f: (x: T) => U): Record<K, U>
+function mapObject<K extends string, T, U>(
+  obj: Record<K, T>,
+  f: (x: T) => U
+): Record<K, U>;
 
 const names = { foo: "hello", bar: "world", baz: "bye" };
-const lengths = mapObject(names, s => s.length);  // { foo: number, bar: number, baz: number }
+const lengths = mapObject(names, s => s.length); // { foo: number, bar: number, baz: number }
 ```
 
 ## Object Spread and Rest
@@ -3983,7 +4862,7 @@ You can also override existing properties and add new ones:
 
 ```ts
 let obj = { x: 1, y: "string" };
-var newObj = {...obj, z: 3, y: 4}; // { x: number, y: number, z: number }
+var newObj = { ...obj, z: 3, y: 4 }; // { x: number, y: number, z: number }
 ```
 
 The order of specifying spread operations determines what properties end up in the resulting object;
@@ -4012,9 +4891,9 @@ TypeScript 2.1 brings the capability to ES3 and ES5 run-times, meaning you'll be
 
 ```json
 {
-    "compilerOptions": {
-        "lib": ["dom", "es2015.promise", "es5"]
-    }
+  "compilerOptions": {
+    "lib": ["dom", "es2015.promise", "es5"]
+  }
 }
 ```
 
@@ -4022,20 +4901,20 @@ TypeScript 2.1 brings the capability to ES3 and ES5 run-times, meaning you'll be
 
 ```ts
 function delay(milliseconds: number) {
-    return new Promise<void>(resolve => {
-        setTimeout(resolve, milliseconds);
-    });
+  return new Promise<void>(resolve => {
+    setTimeout(resolve, milliseconds);
+  });
 }
 
 async function dramaticWelcome() {
-    console.log("Hello");
+  console.log("Hello");
 
-    for (let i = 0; i < 3; i++) {
-        await delay(500);
-        console.log(".");
-    }
+  for (let i = 0; i < 3; i++) {
+    await delay(500);
+    console.log(".");
+  }
 
-    console.log("World!");
+  console.log("World!");
 }
 
 dramaticWelcome();
@@ -4049,8 +4928,8 @@ TypeScript injects a handful of helper functions such as `__extends` for inherit
 
 Previously there were two options:
 
- 1. inject helpers in *every* file that needs them, or
- 2. no helpers at all with `--noEmitHelpers`.
+1.  inject helpers in _every_ file that needs them, or
+2.  no helpers at all with `--noEmitHelpers`.
 
 The two options left more to be desired;
 bundling the helpers in every file was a pain point for customers trying to keep their package size small.
@@ -4120,7 +4999,7 @@ Similarly, `--target ES2017` will instruct the compiler not to transform ES2017-
 Previously, if TypeScript couldn't figure out the type of a variable, it would choose the `any` type.
 
 ```ts
-let x;      // implicitly 'any'
+let x; // implicitly 'any'
 let y = []; // implicitly 'any[]'
 
 let z: any; // explicitly 'any'.
@@ -4156,50 +5035,50 @@ x.toLowerCase();
 The same sort of tracking is now also done for empty arrays.
 
 A variable declared with no type annotation and an initial value of `[]` is considered an implicit `any[]` variable.
-However, each subsequent `x.push(value)`, `x.unshift(value)` or `x[n] = value` operation *evolves* the type of the variable in accordance with what elements are added to it.
+However, each subsequent `x.push(value)`, `x.unshift(value)` or `x[n] = value` operation _evolves_ the type of the variable in accordance with what elements are added to it.
 
-``` ts
+```ts
 function f1() {
-    let x = [];
-    x.push(5);
-    x[1] = "hello";
-    x.unshift(true);
-    return x;  // (string | number | boolean)[]
+  let x = [];
+  x.push(5);
+  x[1] = "hello";
+  x.unshift(true);
+  return x; // (string | number | boolean)[]
 }
 
 function f2() {
-    let x = null;
-    if (cond()) {
-        x = [];
-        while (cond()) {
-            x.push("hello");
-        }
+  let x = null;
+  if (cond()) {
+    x = [];
+    while (cond()) {
+      x.push("hello");
     }
-    return x;  // string[] | null
+  }
+  return x; // string[] | null
 }
 ```
 
 ## Implicit any errors
 
-One great benefit of this is that you'll see *way fewer* implicit `any` errors when running with `--noImplicitAny`.
+One great benefit of this is that you'll see _way fewer_ implicit `any` errors when running with `--noImplicitAny`.
 Implicit `any` errors are only reported when the compiler is unable to know the type of a variable without a type annotation.
 
 ##### Example
 
-``` ts
+```ts
 function f3() {
-    let x = [];  // Error: Variable 'x' implicitly has type 'any[]' in some locations where its type cannot be determined.
-    x.push(5);
-    function g() {
-        x;    // Error: Variable 'x' implicitly has an 'any[]' type.
-    }
+  let x = []; // Error: Variable 'x' implicitly has type 'any[]' in some locations where its type cannot be determined.
+  x.push(5);
+  function g() {
+    x; // Error: Variable 'x' implicitly has an 'any[]' type.
+  }
 }
 ```
 
 ## Better inference for literal types
 
 String, numeric and boolean literal types (e.g. `"abc"`, `1`, and `true`) were previously inferred only in the presence of an explicit type annotation.
-Starting with TypeScript 2.1, literal types are *always* inferred for `const` variables and `readonly` properties.
+Starting with TypeScript 2.1, literal types are _always_ inferred for `const` variables and `readonly` properties.
 
 The type inferred for a `const` variable or `readonly` property without a type annotation is the type of the literal initializer.
 The type inferred for a `let` variable, `var` variable, parameter, or non-`readonly` property with an initializer and no type annotation is the widened literal type of the initializer.
@@ -4208,17 +5087,17 @@ Where the widened type for a string literal type is `string`, `number` for numer
 ##### Example
 
 ```ts
-const c1 = 1;  // Type 1
-const c2 = c1;  // Type 1
-const c3 = "abc";  // Type "abc"
-const c4 = true;  // Type true
-const c5 = cond ? 1 : "abc";  // Type 1 | "abc"
+const c1 = 1; // Type 1
+const c2 = c1; // Type 1
+const c3 = "abc"; // Type "abc"
+const c4 = true; // Type true
+const c5 = cond ? 1 : "abc"; // Type 1 | "abc"
 
-let v1 = 1;  // Type number
-let v2 = c2;  // Type number
-let v3 = c3;  // Type string
-let v4 = c4;  // Type boolean
-let v5 = c5;  // Type number | string
+let v1 = 1; // Type number
+let v2 = c2; // Type number
+let v3 = c3; // Type string
+let v4 = c4; // Type boolean
+let v5 = c5; // Type number | string
 ```
 
 Literal type widening can be controlled through explicit type annotations.
@@ -4228,11 +5107,11 @@ But when a `const` location has an explicit literal type annotation, the `const`
 ##### Example
 
 ```ts
-const c1 = "hello";  // Widening type "hello"
-let v1 = c1;  // Type string
+const c1 = "hello"; // Widening type "hello"
+let v1 = c1; // Type string
 
-const c2: "hello" = "hello";  // Type "hello"
-let v2 = c2;  // Type "hello"
+const c2: "hello" = "hello"; // Type "hello"
+let v2 = c2; // Type "hello"
 ```
 
 ## Use returned values from super calls as 'this'
@@ -4245,35 +5124,35 @@ This change enables working with [Custom Elements](https://w3c.github.io/webcomp
 
 ```ts
 class Base {
-    x: number;
-    constructor() {
-        // return a new object other than `this`
-        return {
-            x: 1,
-        };
-    }
+  x: number;
+  constructor() {
+    // return a new object other than `this`
+    return {
+      x: 1
+    };
+  }
 }
 
 class Derived extends Base {
-    constructor() {
-        super();
-        this.x = 2;
-    }
+  constructor() {
+    super();
+    this.x = 2;
+  }
 }
 ```
 
 Generates:
 
 ```js
-var Derived = (function (_super) {
-    __extends(Derived, _super);
-    function Derived() {
-        var _this = _super.call(this) || this;
-        _this.x = 2;
-        return _this;
-    }
-    return Derived;
-}(Base));
+var Derived = (function(_super) {
+  __extends(Derived, _super);
+  function Derived() {
+    var _this = _super.call(this) || this;
+    _this.x = 2;
+    return _this;
+  }
+  return Derived;
+})(Base);
 ```
 
 > This change entails a break in the behavior of extending built-in classes like `Error`, `Array`, `Map`, etc.. Please see the [extending built-ins breaking change documentation](https://github.com/Microsoft/TypeScript-wiki/blob/master/Breaking-Changes.md#extending-built-ins-like-error-array-and-map-may-no-longer-work) for more details.
@@ -4285,12 +5164,12 @@ Just a few configuration options change between these two targets, and maintaini
 
 TypeScript 2.1 supports inheriting configuration using `extends`, where:
 
-* `extends` is a new top-level property in `tsconfig.json` (alongside `compilerOptions`, `files`, `include`, and `exclude`).
-* The value of `extends` must be a string containing a path to another configuration file to inherit from.
-* The configuration from the base file are loaded first, then overridden by those in the inheriting config file.
-* Circularity between configuration files is not allowed.
-* `files`, `include` and `exclude` from the inheriting config file *overwrite* those from the base config file.
-* All relative paths found in the configuration file will be resolved relative to the configuration file they originated in.
+- `extends` is a new top-level property in `tsconfig.json` (alongside `compilerOptions`, `files`, `include`, and `exclude`).
+- The value of `extends` must be a string containing a path to another configuration file to inherit from.
+- The configuration from the base file are loaded first, then overridden by those in the inheriting config file.
+- Circularity between configuration files is not allowed.
+- `files`, `include` and `exclude` from the inheriting config file _overwrite_ those from the base config file.
+- All relative paths found in the configuration file will be resolved relative to the configuration file they originated in.
 
 ##### Example
 
@@ -4310,10 +5189,7 @@ TypeScript 2.1 supports inheriting configuration using `extends`, where:
 ```json
 {
   "extends": "./configs/base",
-  "files": [
-    "main.ts",
-    "supplemental.ts"
-  ]
+  "files": ["main.ts", "supplemental.ts"]
 }
 ```
 
@@ -4346,13 +5222,13 @@ TypeScript has two special types, Null and Undefined, that have the values `null
 Previously it was not possible to explicitly name these types, but `null` and `undefined` may now be used as type names regardless of type checking mode.
 
 The type checker previously considered `null` and `undefined` assignable to anything.
-Effectively, `null` and `undefined` were valid values of *every* type and it wasn't possible to specifically exclude them (and therefore not possible to detect erroneous use of them).
+Effectively, `null` and `undefined` were valid values of _every_ type and it wasn't possible to specifically exclude them (and therefore not possible to detect erroneous use of them).
 
 ### `--strictNullChecks`
 
 `--strictNullChecks` switches to a new strict null checking mode.
 
-In strict null checking mode, the `null` and `undefined` values are *not* in the domain of every type and are only assignable to themselves and `any` (the one exception being that `undefined` is also assignable to `void`).
+In strict null checking mode, the `null` and `undefined` values are _not_ in the domain of every type and are only assignable to themselves and `any` (the one exception being that `undefined` is also assignable to `void`).
 So, whereas `T` and `T | undefined` are considered synonymous in regular type checking mode (because `undefined` is considered a subtype of any `T`), they are different types in strict type checking mode, and only `T | undefined` permits `undefined` values. The same is true for the relationship of `T` to `T | null`.
 
 #### Example
@@ -4362,21 +5238,21 @@ So, whereas `T` and `T | undefined` are considered synonymous in regular type ch
 let x: number;
 let y: number | undefined;
 let z: number | null | undefined;
-x = 1;  // Ok
-y = 1;  // Ok
-z = 1;  // Ok
-x = undefined;  // Error
-y = undefined;  // Ok
-z = undefined;  // Ok
-x = null;  // Error
-y = null;  // Error
-z = null;  // Ok
-x = y;  // Error
-x = z;  // Error
-y = x;  // Ok
-y = z;  // Error
-z = x;  // Ok
-z = y;  // Ok
+x = 1; // Ok
+y = 1; // Ok
+z = 1; // Ok
+x = undefined; // Error
+y = undefined; // Ok
+z = undefined; // Ok
+x = null; // Error
+y = null; // Error
+z = null; // Ok
+x = y; // Error
+x = z; // Error
+y = x; // Ok
+y = z; // Error
+z = x; // Ok
+z = y; // Ok
 ```
 
 ### Assigned-before-use checking
@@ -4390,16 +5266,16 @@ In strict null checking mode the compiler requires every reference to a local va
 let x: number;
 let y: number | null;
 let z: number | undefined;
-x;  // Error, reference not preceded by assignment
-y;  // Error, reference not preceded by assignment
-z;  // Ok
+x; // Error, reference not preceded by assignment
+y; // Error, reference not preceded by assignment
+z; // Ok
 x = 1;
 y = null;
-x;  // Ok
-y;  // Ok
+x; // Ok
+y; // Ok
 ```
 
-The compiler checks that variables are definitely assigned by performing *control flow based type analysis*. See later for further details on this topic.
+The compiler checks that variables are definitely assigned by performing _control flow based type analysis_. See later for further details on this topic.
 
 ### Optional parameters and properties
 
@@ -4408,8 +5284,8 @@ For example, the following two types are identical:
 
 ```ts
 // Compiled with --strictNullChecks
-type T1 = (x?: number) => string;              // x has type number | undefined
-type T2 = (x?: number | undefined) => string;  // x has type number | undefined
+type T1 = (x?: number) => string; // x has type number | undefined
+type T2 = (x?: number | undefined) => string; // x has type number | undefined
 ```
 
 ### Non-null and non-undefined type guards
@@ -4424,13 +5300,12 @@ However, type guards are extended to support non-null and non-undefined checks.
 declare function f(x: number): string;
 let x: number | null | undefined;
 if (x) {
-    f(x);  // Ok, type of x is number here
+  f(x); // Ok, type of x is number here
+} else {
+  f(x); // Error, type of x is number? here
 }
-else {
-    f(x);  // Error, type of x is number? here
-}
-let a = x != null ? f(x) : "";  // Type of a is string
-let b = x && f(x);  // Type of b is string | 0 | null | undefined
+let a = x != null ? f(x) : ""; // Type of a is string
+let b = x && f(x); // Type of b is string | 0 | null | undefined
 ```
 
 Non-null and non-undefined type guards may use the `==`, `!=`, `===`, or `!==` operator to compare to `null` or `undefined`, as in `x != null` or `x === undefined`.
@@ -4445,16 +5320,16 @@ Type guards now support checking "dotted names" consisting of a variable or para
 
 ```ts
 interface Options {
-    location?: {
-        x?: number;
-        y?: number;
-    };
+  location?: {
+    x?: number;
+    y?: number;
+  };
 }
 
 function foo(options?: Options) {
-    if (options && options.location && options.location.x) {
-        const x = options.location.x;  // Type of x is number
-    }
+  if (options && options.location && options.location.x) {
+    const x = options.location.x; // Type of x is number
+  }
 }
 ```
 
@@ -4470,7 +5345,7 @@ Expression operators permit operand types to include `null` and/or `undefined` b
 ```ts
 // Compiled with --strictNullChecks
 function sum(a: number | null, b: number | null) {
-    return a + b;  // Produces value of type number
+  return a + b; // Produces value of type number
 }
 ```
 
@@ -4479,19 +5354,19 @@ The `&&` operator adds `null` and/or `undefined` to the type of the right operan
 ```ts
 // Compiled with --strictNullChecks
 interface Entity {
-    name: string;
+  name: string;
 }
 let x: Entity | null;
-let s = x && x.name;  // s is of type string | null
-let y = x || { name: "test" };  // y is of type Entity
+let s = x && x.name; // s is of type string | null
+let y = x || { name: "test" }; // y is of type Entity
 ```
 
 ### Type widening
 
-The `null` and `undefined` types are *not* widened to `any` in strict null checking mode.
+The `null` and `undefined` types are _not_ widened to `any` in strict null checking mode.
 
 ```ts
-let z = null;  // Type of z is null
+let z = null; // Type of z is null
 ```
 
 In regular type checking mode the inferred type of `z` is `any` because of widening, but in strict null checking mode the inferred type of `z` is `null` (and therefore, absent a type annotation, `null` is the only possible value for `z`).
@@ -4505,12 +5380,12 @@ Similar to type assertions of the forms `<T>x` and `x as T`, the `!` non-null as
 ```ts
 // Compiled with --strictNullChecks
 function validateEntity(e?: Entity) {
-    // Throw exception if e is null or invalid entity
+  // Throw exception if e is null or invalid entity
 }
 
 function processEntity(e?: Entity) {
-    validateEntity(e);
-    let s = e!.name;  // Assert that e is non-null and access name
+  validateEntity(e);
+  let s = e!.name; // Assert that e is non-null and access name
 }
 ```
 
@@ -4525,25 +5400,25 @@ In practical terms, strict null checking mode requires that all files in a compi
 
 TypeScript 2.0 implements a control flow-based type analysis for local variables and parameters.
 Previously, the type analysis performed for type guards was limited to `if` statements and `?:` conditional expressions and didn't include effects of assignments and control flow constructs such as `return` and `break` statements.
-With TypeScript 2.0, the type checker analyses all possible flows of control in statements and expressions to produce the most specific type possible (the *narrowed type*) at any given location for a local variable or parameter that is declared to have a union type.
+With TypeScript 2.0, the type checker analyses all possible flows of control in statements and expressions to produce the most specific type possible (the _narrowed type_) at any given location for a local variable or parameter that is declared to have a union type.
 
 #### Example
 
 ```ts
 function foo(x: string | number | boolean) {
-    if (typeof x === "string") {
-        x; // type of x is string here
-        x = 1;
-        x; // type of x is number here
-    }
-    x; // type of x is number | boolean here
+  if (typeof x === "string") {
+    x; // type of x is string here
+    x = 1;
+    x; // type of x is number here
+  }
+  x; // type of x is number | boolean here
 }
 
 function bar(x: string | number) {
-    if (typeof x === "number") {
-        return;
-    }
-    x; // type of x is string here
+  if (typeof x === "number") {
+    return;
+  }
+  x; // type of x is string here
 }
 ```
 
@@ -4551,26 +5426,26 @@ Control flow based type analysis is particuarly relevant in `--strictNullChecks`
 
 ```ts
 function test(x: string | null) {
-    if (x === null) {
-        return;
-    }
-    x; // type of x is string in remainder of function
+  if (x === null) {
+    return;
+  }
+  x; // type of x is string in remainder of function
 }
 ```
 
-Furthermore, in `--strictNullChecks` mode, control flow based type analysis includes *definite assignment analysis* for local variables of types that don't permit the value `undefined`.
+Furthermore, in `--strictNullChecks` mode, control flow based type analysis includes _definite assignment analysis_ for local variables of types that don't permit the value `undefined`.
 
 ```ts
 function mumble(check: boolean) {
-    let x: number; // Type doesn't permit undefined
-    x; // Error, x is undefined
-    if (check) {
-        x = 1;
-        x; // Ok
-    }
-    x; // Error, x is possibly undefined
-    x = 2;
+  let x: number; // Type doesn't permit undefined
+  x; // Error, x is undefined
+  if (check) {
+    x = 1;
     x; // Ok
+  }
+  x; // Error, x is possibly undefined
+  x = 2;
+  x; // Ok
 }
 ```
 
@@ -4583,52 +5458,54 @@ Specifically, the TS compiler now support type guards that narrow union types ba
 
 ```ts
 interface Square {
-    kind: "square";
-    size: number;
+  kind: "square";
+  size: number;
 }
 
 interface Rectangle {
-    kind: "rectangle";
-    width: number;
-    height: number;
+  kind: "rectangle";
+  width: number;
+  height: number;
 }
 
 interface Circle {
-    kind: "circle";
-    radius: number;
+  kind: "circle";
+  radius: number;
 }
 
 type Shape = Square | Rectangle | Circle;
 
 function area(s: Shape) {
-    // In the following switch statement, the type of s is narrowed in each case clause
-    // according to the value of the discriminant property, thus allowing the other properties
-    // of that variant to be accessed without a type assertion.
-    switch (s.kind) {
-        case "square": return s.size * s.size;
-        case "rectangle": return s.width * s.height;
-        case "circle": return Math.PI * s.radius * s.radius;
-    }
+  // In the following switch statement, the type of s is narrowed in each case clause
+  // according to the value of the discriminant property, thus allowing the other properties
+  // of that variant to be accessed without a type assertion.
+  switch (s.kind) {
+    case "square":
+      return s.size * s.size;
+    case "rectangle":
+      return s.width * s.height;
+    case "circle":
+      return Math.PI * s.radius * s.radius;
+  }
 }
 
 function test1(s: Shape) {
-    if (s.kind === "square") {
-        s;  // Square
-    }
-    else {
-        s;  // Rectangle | Circle
-    }
+  if (s.kind === "square") {
+    s; // Square
+  } else {
+    s; // Rectangle | Circle
+  }
 }
 
 function test2(s: Shape) {
-    if (s.kind === "square" || s.kind === "rectangle") {
-        return;
-    }
-    s;  // Circle
+  if (s.kind === "square" || s.kind === "rectangle") {
+    return;
+  }
+  s; // Circle
 }
 ```
 
-A *discriminant property type guard* is an expression of the form `x.p == v`, `x.p === v`, `x.p != v`, or `x.p !== v`, where `p` and `v` are a property and an expression of a string literal type or a union of string literal types.
+A _discriminant property type guard_ is an expression of the form `x.p == v`, `x.p === v`, `x.p != v`, or `x.p !== v`, where `p` and `v` are a property and an expression of a string literal type or a union of string literal types.
 The discriminant property type guard narrows the type of `x` to those constituent types of `x` that have a discriminant property `p` with one of the possible values of `v`.
 
 Note that we currently only support discriminant properties of string literal types.
@@ -4642,10 +5519,10 @@ Specifically, `never` is the return type for functions that never return and `ne
 
 The `never` type has the following characteristics:
 
-* `never` is a subtype of and assignable to every type.
-* No type is a subtype of or assignable to `never` (except `never` itself).
-* In a function expression or arrow function with no return type annotation, if the function has no `return` statements, or only `return` statements with expressions of type `never`, and if the end point of the function is not reachable (as determined by control flow analysis), the inferred return type for the function is `never`.
-* In a function with an explicit `never` return type annotation, all `return` statements (if any) must have expressions of type `never` and the end point of the function must not be reachable.
+- `never` is a subtype of and assignable to every type.
+- No type is a subtype of or assignable to `never` (except `never` itself).
+- In a function expression or arrow function with no return type annotation, if the function has no `return` statements, or only `return` statements with expressions of type `never`, and if the end point of the function is not reachable (as determined by control flow analysis), the inferred return type for the function is `never`.
+- In a function with an explicit `never` return type annotation, all `return` statements (if any) must have expressions of type `never` and the end point of the function must not be reachable.
 
 Because `never` is a subtype of every type, it is always omitted from union types and it is ignored in function return type inference as long as there are other types being returned.
 
@@ -4654,18 +5531,17 @@ Some examples of functions returning `never`:
 ```ts
 // Function returning never must have unreachable end point
 function error(message: string): never {
-    throw new Error(message);
+  throw new Error(message);
 }
 
 // Inferred return type is never
 function fail() {
-    return error("Something failed");
+  return error("Something failed");
 }
 
 // Function returning never must have unreachable end point
 function infiniteLoop(): never {
-    while (true) {
-    }
+  while (true) {}
 }
 ```
 
@@ -4674,25 +5550,27 @@ Some examples of use of functions returning `never`:
 ```ts
 // Inferred return type is number
 function move1(direction: "up" | "down") {
-    switch (direction) {
-        case "up":
-            return 1;
-        case "down":
-            return -1;
-    }
-    return error("Should never get here");
+  switch (direction) {
+    case "up":
+      return 1;
+    case "down":
+      return -1;
+  }
+  return error("Should never get here");
 }
 
 // Inferred return type is number
 function move2(direction: "up" | "down") {
-    return direction === "up" ? 1 :
-        direction === "down" ? -1 :
-        error("Should never get here");
+  return direction === "up"
+    ? 1
+    : direction === "down"
+    ? -1
+    : error("Should never get here");
 }
 
 // Inferred return type is T
 function check<T>(x: T | undefined) {
-    return x || error("Undefined value");
+  return x || error("Undefined value");
 }
 ```
 
@@ -4700,13 +5578,15 @@ Because `never` is assignable to every type, a function returning `never` can be
 
 ```ts
 function test(cb: () => string) {
-    let s = cb();
-    return s;
+  let s = cb();
+  return s;
 }
 
 test(() => "hello");
 test(() => fail());
-test(() => { throw new Error(); })
+test(() => {
+  throw new Error();
+});
 ```
 
 ## Read-only properties and index signatures
@@ -4715,48 +5595,48 @@ A property or index signature can now be declared with the `readonly` modifier i
 
 Read-only properties may have initializers and may be assigned to in constructors within the same class declaration, but otherwise assignments to read-only properties are disallowed.
 
-In addition, entities are *implicitly* read-only in several situations:
+In addition, entities are _implicitly_ read-only in several situations:
 
-* A property declared with a `get` accessor and no `set` accessor is considered read-only.
-* In the type of an enum object, enum members are considered read-only properties.
-* In the type of a module object, exported `const` variables are considered read-only properties.
-* An entity declared in an `import` statement is considered read-only.
-* An entity accessed through an ES2015 namespace import is considered read-only (e.g. `foo.x` is read-only when `foo` is declared as `import * as foo from "foo"`).
+- A property declared with a `get` accessor and no `set` accessor is considered read-only.
+- In the type of an enum object, enum members are considered read-only properties.
+- In the type of a module object, exported `const` variables are considered read-only properties.
+- An entity declared in an `import` statement is considered read-only.
+- An entity accessed through an ES2015 namespace import is considered read-only (e.g. `foo.x` is read-only when `foo` is declared as `import * as foo from "foo"`).
 
 #### Example
 
 ```ts
 interface Point {
-    readonly x: number;
-    readonly y: number;
+  readonly x: number;
+  readonly y: number;
 }
 
 var p1: Point = { x: 10, y: 20 };
-p1.x = 5;  // Error, p1.x is read-only
+p1.x = 5; // Error, p1.x is read-only
 
 var p2 = { x: 1, y: 1 };
-var p3: Point = p2;  // Ok, read-only alias for p2
-p3.x = 5;  // Error, p3.x is read-only
-p2.x = 5;  // Ok, but also changes p3.x because of aliasing
+var p3: Point = p2; // Ok, read-only alias for p2
+p3.x = 5; // Error, p3.x is read-only
+p2.x = 5; // Ok, but also changes p3.x because of aliasing
 ```
 
 ```ts
 class Foo {
-    readonly a = 1;
-    readonly b: string;
-    constructor() {
-        this.b = "hello";  // Assignment permitted in constructor
-    }
+  readonly a = 1;
+  readonly b: string;
+  constructor() {
+    this.b = "hello"; // Assignment permitted in constructor
+  }
 }
 ```
 
 ```ts
 let a: Array<number> = [0, 1, 2, 3, 4];
 let b: ReadonlyArray<number> = a;
-b[5] = 5;      // Error, elements are read-only
-b.push(5);     // Error, no push method (because it mutates array)
-b.length = 3;  // Error, length is read-only
-a = b;         // Error, mutating methods are missing
+b[5] = 5; // Error, elements are read-only
+b.push(5); // Error, no push method (because it mutates array)
+b.length = 3; // Error, length is read-only
+a = b; // Error, mutating methods are missing
 ```
 
 ## Specifying the type of `this` for functions
@@ -4769,7 +5649,7 @@ Starting with TypeScript 2.0, you can provide an explicit `this` parameter.
 
 ```ts
 function f(this: void) {
-    // make sure `this` is unusable in this standalone function
+  // make sure `this` is unusable in this standalone function
 }
 ```
 
@@ -4781,7 +5661,7 @@ Libraries can also use `this` parameters to declare how callbacks will be invoke
 
 ```ts
 interface UIElement {
-    addClickListener(onclick: (this: void, e: Event) => void): void;
+  addClickListener(onclick: (this: void, e: Event) => void): void;
 }
 ```
 
@@ -4791,11 +5671,11 @@ Now if you annotate calling code with `this`:
 
 ```ts
 class Handler {
-    info: string;
-    onClickBad(this: Handler, e: Event) {
-        // oops, used this here. using this callback would crash at runtime
-        this.info = e.message;
-    };
+  info: string;
+  onClickBad(this: Handler, e: Event) {
+    // oops, used this here. using this callback would crash at runtime
+    this.info = e.message;
+  }
 }
 let h = new Handler();
 uiElement.addClickListener(h.onClickBad); // error!
@@ -4815,29 +5695,24 @@ Glob-like file patterns are supported two properties `"include"` and `"exclude"`
 
 ```json
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "noImplicitAny": true,
-        "removeComments": true,
-        "preserveConstEnums": true,
-        "outFile": "../../built/local/tsc.js",
-        "sourceMap": true
-    },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "node_modules",
-        "**/*.spec.ts"
-    ]
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "outFile": "../../built/local/tsc.js",
+    "sourceMap": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }
 ```
 
 The supported glob wildcards are:
 
-* `*` matches zero or more characters (excluding directory separators)
-* `?` matches any one character (excluding directory separators)
-* `**/` recursively matches any subdirectory
+- `*` matches zero or more characters (excluding directory separators)
+- `?` matches any one character (excluding directory separators)
+- `**/` recursively matches any subdirectory
 
 If a segment of a glob pattern includes only `*` or `.*`, then only files with supported extensions are included (e.g. `.ts`, `.tsx`, and `.d.ts` by default with `.js` and `.jsx` if `allowJs` is set to true).
 
@@ -4852,7 +5727,7 @@ The `"exclude"` property defaults to excluding the `node_modules`, `bower_compon
 
 ## Module resolution enhancements: BaseUrl, Path mapping, rootDirs and tracing
 
-TypeScript 2.0 provides a set of additional module resolution knops to *inform* the compiler where to find declarations for a given module.
+TypeScript 2.0 provides a set of additional module resolution knops to _inform_ the compiler where to find declarations for a given module.
 
 See [Module Resolution](http://www.typescriptlang.org/docs/handbook/module-resolution.html) documentation for more details.
 
@@ -4879,7 +5754,7 @@ import A from "moduleA";
 
 ### Path mapping
 
-Sometimes modules are not directly located under *baseUrl*.
+Sometimes modules are not directly located under _baseUrl_.
 Loaders use a mapping configuration to map module names to files at run-time, see [RequireJs documentation](http://requirejs.org/docs/api.html#config-paths) and [SystemJS documentation](https://github.com/systemjs/systemjs/blob/master/docs/overview.md#map-config).
 
 The TypeScript compiler supports the declaration of such mappings using `"paths"` property in `tsconfig.json` files.
@@ -4903,8 +5778,8 @@ Consider a project configuration where only some modules are available in one lo
 
 ### Virtual Directories with `rootDirs`
 
-Using 'rootDirs', you can inform the compiler of the *roots* making up this "virtual" directory;
-and thus the compiler can resolve relative modules imports within these "virtual" directories *as if* were merged together in one directory.
+Using 'rootDirs', you can inform the compiler of the _roots_ making up this "virtual" directory;
+and thus the compiler can resolve relative modules imports within these "virtual" directories _as if_ were merged together in one directory.
 
 #### Example
 
@@ -4925,16 +5800,13 @@ Given this project structure:
 A build step will copy the files in `/src/views` and `/generated/templates/views` to the same directory in the output.
 At run-time, a view can expect its template to exist next to it, and thus should import it using a relative name as `"./template"`.
 
-`"rootDirs"` specify a list of *roots* whose contents are expected to merge at run-time.
+`"rootDirs"` specify a list of _roots_ whose contents are expected to merge at run-time.
 So following our example, the `tsconfig.json` file should look like:
 
 ```json
 {
   "compilerOptions": {
-    "rootDirs": [
-      "src/views",
-      "generated/templates/views"
-    ]
+    "rootDirs": ["src/views", "generated/templates/views"]
   }
 }
 ```
@@ -4952,6 +5824,7 @@ tsc --traceResolution
 If you don't want to take the time to write out declarations before using a new module, you can now just use a shorthand declaration to get started quickly.
 
 #### declarations.d.ts
+
 ```ts
 declare module "hot-new-module";
 ```
@@ -4959,7 +5832,7 @@ declare module "hot-new-module";
 All imports from a shorthand module will have the any type.
 
 ```ts
-import x, {y} from "hot-new-module";
+import x, { y } from "hot-new-module";
 x(y);
 ```
 
@@ -4975,13 +5848,13 @@ this way, a declaration is only required once for an extension, and not for ever
 
 ```ts
 declare module "*!text" {
-    const content: string;
-    export default content;
+  const content: string;
+  export default content;
 }
 // Some do it the other way around.
 declare module "json!*" {
-    const value: any;
-    export default value;
+  const value: any;
+  export default value;
 }
 ```
 
@@ -5049,15 +5922,15 @@ Optional properties and methods can now be declared in classes, similar to what 
 
 ```ts
 class Bar {
-    a: number;
-    b?: number;
-    f() {
-        return 1;
-    }
-    g?(): number;  // Body of optional method can be omitted
-    h?() {
-        return 2;
-    }
+  a: number;
+  b?: number;
+  f() {
+    return 1;
+  }
+  g?(): number; // Body of optional method can be omitted
+  h?() {
+    return 2;
+  }
 }
 ```
 
@@ -5066,13 +5939,13 @@ Type guards can be used to strip away the `undefined` part of the type:
 
 ```ts
 function test(x: Bar) {
-    x.a;  // number
-    x.b;  // number | undefined
-    x.f;  // () => number
-    x.g;  // (() => number) | undefined
-    let f1 = x.f();            // number
-    let g1 = x.g && x.g();     // number | undefined
-    let g2 = x.g ? x.g() : 0;  // number
+  x.a; // number
+  x.b; // number | undefined
+  x.f; // () => number
+  x.g; // (() => number) | undefined
+  let f1 = x.f(); // number
+  let g1 = x.g && x.g(); // number | undefined
+  let g2 = x.g ? x.g() : 0; // number
 }
 ```
 
@@ -5086,16 +5959,16 @@ A class with protected constructor cannot be instantiated outside the class body
 
 ```ts
 class Singleton {
-    private static instance: Singleton;
+  private static instance: Singleton;
 
-    private constructor() { }
+  private constructor() {}
 
-    static getInstance() {
-        if (!Singleton.instance) {
-            Singleton.instance = new Singleton();
-        }
-        return Singleton.instance;
+  static getInstance() {
+    if (!Singleton.instance) {
+      Singleton.instance = new Singleton();
     }
+    return Singleton.instance;
+  }
 }
 
 let e = new Singleton(); // Error: constructor of 'Singleton' is private.
@@ -5113,15 +5986,15 @@ Abstract accessors cannot have bodies.
 
 ```ts
 abstract class Base {
-    abstract name: string;
-    abstract get value();
-    abstract set value(v: number);
+  abstract name: string;
+  abstract get value();
+  abstract set value(v: number);
 }
 
 class Derived extends Base {
-    name = "derived";
+  name = "derived";
 
-    value = 1;
+  value = 1;
 }
 ```
 
@@ -5130,14 +6003,14 @@ class Derived extends Base {
 An object literal type is now assignable to a type with an index signature if all known properties in the object literal are assignable to that index signature. This makes it possible to pass a variable that was initialized with an object literal as parameter to a function that expects a map or dictionary:
 
 ```ts
-function httpService(path: string, headers: { [x: string]: string }) { }
+function httpService(path: string, headers: { [x: string]: string }) {}
 
 const headers = {
-    "Content-Type": "application/x-www-form-urlencoded"
+  "Content-Type": "application/x-www-form-urlencoded"
 };
 
-httpService("", { "Content-Type": "application/x-www-form-urlencoded" });  // Ok
-httpService("", headers);  // Now ok, previously wasn't
+httpService("", { "Content-Type": "application/x-www-form-urlencoded" }); // Ok
+httpService("", headers); // Now ok, previously wasn't
 ```
 
 ## Including built-in type declarations with `--lib`
@@ -5149,26 +6022,25 @@ Similarly you can exclude declarations you do not want to include in your projec
 
 Here is a list of available API groups:
 
-* dom
-* webworker
-* es5
-* es6 / es2015
-* es2015.core
-* es2015.collection
-* es2015.iterable
-* es2015.promise
-* es2015.proxy
-* es2015.reflect
-* es2015.generator
-* es2015.symbol
-* es2015.symbol.wellknown
-* es2016
-* es2016.array.include
-* es2017
-* es2017.object
-* es2017.sharedmemory
-* scripthost
-
+- dom
+- webworker
+- es5
+- es6 / es2015
+- es2015.core
+- es2015.collection
+- es2015.iterable
+- es2015.promise
+- es2015.proxy
+- es2015.reflect
+- es2015.generator
+- es2015.symbol
+- es2015.symbol.wellknown
+- es2016
+- es2016.array.include
+- es2017
+- es2017.object
+- es2017.sharedmemory
+- scripthost
 
 #### Example
 
@@ -5189,17 +6061,16 @@ TypeScript 2.0 has two new flags to help you maintain a clean code base.
 `--noUnusedLocals` flags any unused local (un-exported) declaration like variables, functions, classes, imports, etc...
 Also, unused private members of a class would be flagged as errors under `--noUnusedLocals`.
 
-
 #### Example
+
 ```ts
 import B, { readFile } from "./b";
 //     ^ Error: `B` declared but never used
 readFile();
 
-
 export function write(message: string, args: string[]) {
-    //                                 ^^^^  Error: 'arg' declared but never used.
-    console.log(message);
+  //                                 ^^^^  Error: 'arg' declared but never used.
+  console.log(message);
 }
 ```
 
@@ -5207,8 +6078,9 @@ Parameters declaration with names starting with `_` are exempt from the unused p
 e.g.:
 
 ```ts
-function returnNull(_a) { // OK
-    return null;
+function returnNull(_a) {
+  // OK
+  return null;
 }
 ```
 
@@ -5218,7 +6090,7 @@ Before TypeScript 2.0, a module identifier was always assumed to be extension-le
 for instance, given an import as `import d from "./moduleA.js"`, the compiler looked up the definition of `"moduleA.js"` in `./moduleA.js.ts` or `./moduleA.js.d.ts`.
 This made it hard to use bundling/loading tools like [SystemJS](https://github.com/systemjs/systemjs) that expect URI's in their module identifier.
 
-With TypeScript 2.0, the compiler will look up definition of `"moduleA.js"` in  `./moduleA.ts` or `./moduleA.d.ts`.
+With TypeScript 2.0, the compiler will look up definition of `"moduleA.js"` in `./moduleA.ts` or `./moduleA.d.ts`.
 
 ## Support 'target : es5' with 'module: es6'
 
@@ -5231,17 +6103,18 @@ Trailing comma in function parameter and argument lists are now allowed.
 This is an implementation for a [Stage-3 ECMAScript proposal](https://jeffmo.github.io/es-trailing-function-commas/) that emits down to valid ES3/ES5/ES6.
 
 #### Example
+
 ```ts
 function foo(
   bar: Bar,
-  baz: Baz, // trailing commas are OK in parameter lists
+  baz: Baz // trailing commas are OK in parameter lists
 ) {
   // Implementation...
 }
 
 foo(
   bar,
-  baz, // and in argument lists
+  baz // and in argument lists
 );
 ```
 
@@ -5259,7 +6132,7 @@ However, in practice such situations are rare.
 This has been one common source of duplicate definition errors.
 Multiple declaration files defining the same members on interfaces.
 
-TypeScript 2.0 relaxes this constraint and allows duplicate identifiers across blocks, as long as they have *identical* types.
+TypeScript 2.0 relaxes this constraint and allows duplicate identifiers across blocks, as long as they have _identical_ types.
 
 Within the same block duplicate definitions are still disallowed.
 
@@ -5267,22 +6140,19 @@ Within the same block duplicate definitions are still disallowed.
 
 ```ts
 interface Error {
-    stack?: string;
+  stack?: string;
 }
-
 
 interface Error {
-    code?: string;
-    path?: string;
-    stack?: string;  // OK
+  code?: string;
+  path?: string;
+  stack?: string; // OK
 }
-
 ```
 
 ## New `--declarationDir`
 
 `--declarationDir` allows for generating declaration files in a different location than JavaScript files.
-
 
 ## TypeScript 1.8
 
@@ -5294,15 +6164,15 @@ With TypeScript 1.8 it becomes possible for a type parameter constraint to refer
 
 ```ts
 function assign<T extends U, U>(target: T, source: U): T {
-    for (let id in source) {
-        target[id] = source[id];
-    }
-    return target;
+  for (let id in source) {
+    target[id] = source[id];
+  }
+  return target;
 }
 
 let x = { a: 1, b: 2, c: 3, d: 4 };
 assign(x, { b: 10, d: 20 });
-assign(x, { e: 0 });  // Error
+assign(x, { e: 0 }); // Error
 ```
 
 ## Control flow analysis errors
@@ -5322,14 +6192,13 @@ Here's a simple example of an unreachable code error:
 
 ```ts
 function f(x) {
-    if (x) {
-       return true;
-    }
-    else {
-       return false;
-    }
+  if (x) {
+    return true;
+  } else {
+    return false;
+  }
 
-    x = 0; // Error: Unreachable code detected.
+  x = 0; // Error: Unreachable code detected.
 }
 ```
 
@@ -5337,15 +6206,14 @@ A more common error that this feature catches is adding a newline after a `retur
 
 ```ts
 function f() {
-    return            // Automatic Semicolon Insertion triggered at newline
-    {
-        x: "string"   // Error: Unreachable code detected.
-    }
+  return; // Automatic Semicolon Insertion triggered at newline
+  {
+    x: "string"; // Error: Unreachable code detected.
+  }
 }
 ```
 
 Since JavaScript automatically terminates the `return` statement at the end of the line, the object literal becomes a block.
-
 
 ### Unused labels
 
@@ -5354,31 +6222,33 @@ Unused labels are also flagged. Just like unreachable code checks, these are tur
 ##### Example
 
 ```ts
-loop: while (x > 0) {  // Error: Unused label.
-    x++;
+loop: while (x > 0) {
+  // Error: Unused label.
+  x++;
 }
 ```
 
 ### Implicit returns
 
-Functions with code paths that do not return a value in JS implicitly return `undefined`. These can now be flagged by the compiler as implicit returns. The check is turned *off* by default; use `--noImplicitReturns` to turn it on.
+Functions with code paths that do not return a value in JS implicitly return `undefined`. These can now be flagged by the compiler as implicit returns. The check is turned _off_ by default; use `--noImplicitReturns` to turn it on.
 
 ##### Example
 
 ```ts
-function f(x) { // Error: Not all code paths return a value.
-    if (x) {
-        return false;
-    }
+function f(x) {
+  // Error: Not all code paths return a value.
+  if (x) {
+    return false;
+  }
 
-    // implicitly returns `undefined`
+  // implicitly returns `undefined`
 }
 ```
 
 ### Case clause fall-throughs
 
 TypeScript can reports errors for fall-through cases in switch statement where the case clause is non-empty.
-This check is turned *off* by default, and can be enabled using `--noFallthroughCasesInSwitch`.
+This check is turned _off_ by default, and can be enabled using `--noFallthroughCasesInSwitch`.
 
 ##### Example
 
@@ -5386,12 +6256,12 @@ With `--noFallthroughCasesInSwitch`, this example will trigger an error:
 
 ```ts
 switch (x % 2) {
-    case 0: // Error: Fallthrough case in switch.
-        console.log("even");
+  case 0: // Error: Fallthrough case in switch.
+    console.log("even");
 
-    case 1:
-        console.log("odd");
-        break;
+  case 1:
+    console.log("odd");
+    break;
 }
 ```
 
@@ -5399,17 +6269,16 @@ However, in the following example, no error will be reported because the fall-th
 
 ```ts
 switch (x % 3) {
-    case 0:
-    case 1:
-        console.log("Acceptable");
-        break;
+  case 0:
+  case 1:
+    console.log("Acceptable");
+    break;
 
-    case 2:
-        console.log("This is *two much*!");
-        break;
+  case 2:
+    console.log("This is *two much*!");
+    break;
 }
 ```
-
 
 ## Stateless Function Components in React
 
@@ -5418,10 +6287,10 @@ These are lightweight components that easily compose other components:
 
 ```ts
 // Use parameter destructuring and defaults for easy definition of 'props' type
-const Greeter = ({name = 'world'}) => <div>Hello, {name}!</div>;
+const Greeter = ({ name = "world" }) => <div>Hello, {name}!</div>;
 
 // Properties get validated
-let example = <Greeter name='TypeScript 1.8' />;
+let example = <Greeter name="TypeScript 1.8" />;
 ```
 
 For this feature and simplified props, be sure to be use the [latest version of react.d.ts](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/react).
@@ -5431,16 +6300,17 @@ For this feature and simplified props, be sure to be use the [latest version of 
 In TypeScript 1.8 with the latest version of react.d.ts (see above), we've also greatly simplified the declaration of `props` types.
 
 Specifically:
- * You no longer need to either explicitly declare `ref` and `key` or `extend React.Props`
- * The `ref` and `key` properties will appear with correct types on all components
- * The `ref` property is correctly disallowed on instances of Stateless Function components
+
+- You no longer need to either explicitly declare `ref` and `key` or `extend React.Props`
+- The `ref` and `key` properties will appear with correct types on all components
+- The `ref` property is correctly disallowed on instances of Stateless Function components
 
 ## Augmenting global/module scope from modules
 
 Users can now declare any augmentations that they want to make, or that any other consumers already have made, to an existing module.
 Module augmentations look like plain old ambient module declarations (i.e. the `declare module "foo" { }` syntax), and are directly nested either your own modules, or in another top level ambient external module.
 
-Furthermore, TypeScript also has the notion of *global* augmentations of the form `declare global { }`.
+Furthermore, TypeScript also has the notion of _global_ augmentations of the form `declare global { }`.
 This allows modules to augment global types such as `Array` if necessary.
 
 The name of a module augmentation is resolved using the same set of rules as module specifiers in `import` and `export` declarations.
@@ -5455,7 +6325,7 @@ Here `map.ts` can declare that it will internally patch the `Observable` type fr
 ```ts
 // observable.ts
 export class Observable<T> {
-    // ...
+  // ...
 }
 ```
 
@@ -5494,12 +6364,14 @@ Similarly, the global scope can be augmented from modules using a `declare globa
 export {};
 
 declare global {
-    interface Array<T> {
-        mapToNumbers(): number[];
-    }
+  interface Array<T> {
+    mapToNumbers(): number[];
+  }
 }
 
-Array.prototype.mapToNumbers = function () { /* ... */ }
+Array.prototype.mapToNumbers = function() {
+  /* ... */
+};
 ```
 
 ## String literal types
@@ -5509,13 +6381,13 @@ For instance, consider a UI library that can move elements across the screen whi
 
 ```ts
 declare class UIElement {
-    animate(options: AnimationOptions): void;
+  animate(options: AnimationOptions): void;
 }
 
 interface AnimationOptions {
-    deltaX: number;
-    deltaY: number;
-    easing: string; // Can be "ease-in", "ease-out", "ease-in-out"
+  deltaX: number;
+  deltaY: number;
+  easing: string; // Can be "ease-in", "ease-out", "ease-in-out"
 }
 ```
 
@@ -5534,9 +6406,9 @@ Here's our new `AnimationOptions` using string literal types:
 
 ```ts
 interface AnimationOptions {
-    deltaX: number;
-    deltaY: number;
-    easing: "ease-in" | "ease-out" | "ease-in-out";
+  deltaX: number;
+  deltaY: number;
+  easing: "ease-in" | "ease-out" | "ease-in-out";
 }
 
 // Error: Type '"ease-inout"' is not assignable to type '"ease-in" | "ease-out" | "ease-in-out"'
@@ -5554,27 +6426,27 @@ For example, when inferring from `string | string[]` to `string | T`, we reduce 
 type Maybe<T> = T | void;
 
 function isDefined<T>(x: Maybe<T>): x is T {
-    return x !== undefined && x !== null;
+  return x !== undefined && x !== null;
 }
 
 function isUndefined<T>(x: Maybe<T>): x is void {
-    return x === undefined || x === null;
+  return x === undefined || x === null;
 }
 
 function getOrElse<T>(x: Maybe<T>, defaultValue: T): T {
-    return isDefined(x) ? x : defaultValue;
+  return isDefined(x) ? x : defaultValue;
 }
 
 function test1(x: Maybe<string>) {
-    let x1 = getOrElse(x, "Undefined");         // string
-    let x2 = isDefined(x) ? x : "Undefined";    // string
-    let x3 = isUndefined(x) ? "Undefined" : x;  // string
+  let x1 = getOrElse(x, "Undefined"); // string
+  let x2 = isDefined(x) ? x : "Undefined"; // string
+  let x3 = isUndefined(x) ? "Undefined" : x; // string
 }
 
 function test2(x: Maybe<number>) {
-    let x1 = getOrElse(x, -1);         // number
-    let x2 = isDefined(x) ? x : -1;    // number
-    let x3 = isUndefined(x) ? -1 : x;  // number
+  let x1 = getOrElse(x, -1); // number
+  let x2 = isDefined(x) ? x : -1; // number
+  let x3 = isUndefined(x) ? -1 : x; // number
 }
 ```
 
@@ -5585,37 +6457,38 @@ Specifying `--outFile` in conjunction with `--module amd` or `--module system` w
 A module name will be computed for each module based on its relative location to `rootDir`.
 
 ##### Example
+
 ```ts
 // file src/a.ts
 import * as B from "./lib/b";
 export function createA() {
-    return B.createB();
+  return B.createB();
 }
 ```
 
 ```ts
 // file src/lib/b.ts
 export function createB() {
-    return { };
+  return {};
 }
 ```
 
 Results in:
 
 ```js
-define("lib/b", ["require", "exports"], function (require, exports) {
-    "use strict";
-    function createB() {
-        return {};
-    }
-    exports.createB = createB;
+define("lib/b", ["require", "exports"], function(require, exports) {
+  "use strict";
+  function createB() {
+    return {};
+  }
+  exports.createB = createB;
 });
-define("a", ["require", "exports", "lib/b"], function (require, exports, B) {
-    "use strict";
-    function createA() {
-        return B.createB();
-    }
-    exports.createA = createA;
+define("a", ["require", "exports", "lib/b"], function(require, exports, B) {
+  "use strict";
+  function createA() {
+    return B.createB();
+  }
+  exports.createA = createA;
 });
 ```
 
@@ -5637,7 +6510,7 @@ Previously an error, now supported in TypeScript 1.8.
 ```ts
 let list = [];
 for (let i = 0; i < 5; i++) {
-    list.push(() => i);
+  list.push(() => i);
 }
 
 list.forEach(f => console.log(f()));
@@ -5648,12 +6521,16 @@ is compiled to:
 ```js
 var list = [];
 var _loop_1 = function(i) {
-    list.push(function () { return i; });
+  list.push(function() {
+    return i;
+  });
 };
 for (var i = 0; i < 5; i++) {
-    _loop_1(i);
+  _loop_1(i);
 }
-list.forEach(function (f) { return console.log(f()); });
+list.forEach(function(f) {
+  return console.log(f());
+});
 ```
 
 And results in
@@ -5671,15 +6548,17 @@ And results in
 Previously the type of a `for..in` variable is inferred to `any`; that allowed the compiler to ignore invalid uses within the `for..in` body.
 
 Starting with TypeScript 1.8,:
-* The type of a variable declared in a `for..in` statement is implicitly `string`.
-* When an object with a numeric index signature of type `T` (such as an array) is indexed by a `for..in` variable of a containing `for..in` statement for an object *with* a numeric index signature and *without* a string index signature (again such as an array), the value produced is of type `T`.
+
+- The type of a variable declared in a `for..in` statement is implicitly `string`.
+- When an object with a numeric index signature of type `T` (such as an array) is indexed by a `for..in` variable of a containing `for..in` statement for an object _with_ a numeric index signature and _without_ a string index signature (again such as an array), the value produced is of type `T`.
 
 ##### Example
 
 ```ts
 var a: MyObject[];
-for (var x in a) {   // Type of x is implicitly string
-    var obj = a[x];  // Type of obj is MyObject
+for (var x in a) {
+  // Type of x is implicitly string
+  var obj = a[x]; // Type of obj is MyObject
 }
 ```
 
@@ -5706,9 +6585,9 @@ The new factory name will be used to call `createElement` and `__spread` functio
 ##### Example
 
 ```ts
-import {jsxFactory} from "jsxFactory";
+import { jsxFactory } from "jsxFactory";
 
-var div = <div>Hello JSX!</div>
+var div = <div>Hello JSX!</div>;
 ```
 
 Compiled with:
@@ -5735,33 +6614,38 @@ When used in a type narrowing position (e.g. `if` statement), the type of the ca
 ##### Example
 
 ```ts
-
 class FileSystemObject {
-    isFile(): this is File { return this instanceof File; }
-    isDirectory(): this is Directory { return this instanceof Directory;}
-    isNetworked(): this is (Networked & this) { return this.networked; }
-    constructor(public path: string, private networked: boolean) {}
+  isFile(): this is File {
+    return this instanceof File;
+  }
+  isDirectory(): this is Directory {
+    return this instanceof Directory;
+  }
+  isNetworked(): this is Networked & this {
+    return this.networked;
+  }
+  constructor(public path: string, private networked: boolean) {}
 }
 
 class File extends FileSystemObject {
-    constructor(path: string, public content: string) { super(path, false); }
+  constructor(path: string, public content: string) {
+    super(path, false);
+  }
 }
 class Directory extends FileSystemObject {
-    children: FileSystemObject[];
+  children: FileSystemObject[];
 }
 interface Networked {
-    host: string;
+  host: string;
 }
 
 let fso: FileSystemObject = new File("foo/bar.txt", "foo");
 if (fso.isFile()) {
-    fso.content; // fso is File
-}
-else if (fso.isDirectory()) {
-    fso.children; // fso is Directory
-}
-else if (fso.isNetworked()) {
-    fso.host; // fso is networked
+  fso.content; // fso is File
+} else if (fso.isDirectory()) {
+  fso.children; // fso is Directory
+} else if (fso.isNetworked()) {
+  fso.host; // fso is networked
 }
 ```
 
@@ -5770,12 +6654,13 @@ else if (fso.isNetworked()) {
 Starting with TypeScript 1.8, official NuGet packages are available for the Typescript Compiler (`tsc.exe`) as well as the MSBuild integration (`Microsoft.TypeScript.targets` and `Microsoft.TypeScript.Tasks.dll`).
 
 Stable packages are available here:
-* [Microsoft.TypeScript.Compiler](https://www.nuget.org/packages/Microsoft.TypeScript.Compiler/)
-* [Microsoft.TypeScript.MSBuild](https://www.nuget.org/packages/Microsoft.TypeScript.MSBuild/)
+
+- [Microsoft.TypeScript.Compiler](https://www.nuget.org/packages/Microsoft.TypeScript.Compiler/)
+- [Microsoft.TypeScript.MSBuild](https://www.nuget.org/packages/Microsoft.TypeScript.MSBuild/)
 
 Also, a nightly NuGet package to match the [nightly npm package](http://blogs.msdn.com/b/typescript/archive/2015/07/27/introducing-typescript-nightlies.aspx) is available on https://myget.org:
 
-* [TypeScript-Preview](https://www.myget.org/gallery/typescript-preview)
+- [TypeScript-Preview](https://www.myget.org/gallery/typescript-preview)
 
 ## Prettier error messages from `tsc`
 
@@ -5844,7 +6729,7 @@ tsc foo.ts --outFile /dev/stdout | pretty-js
 ## Improved support for `tsconfig.json` in Visual Studio 2015
 
 TypeScript 1.8 allows `tsconfig.json` files in all project types.
-This includes ASP.NET v4 projects, *Console Application*, and the *Html Application with TypeScript* project types.
+This includes ASP.NET v4 projects, _Console Application_, and the _Html Application with TypeScript_ project types.
 Further, you are no longer limited to a single `tsconfig.json` file but can add multiple, and each will be built as part of the project.
 This allows you to separate the configuration for different parts of your application without having to use multiple different projects.
 
@@ -5855,9 +6740,9 @@ This means that all configuration changes have to be made in the `tsconfig.json`
 
 ### A couple of limitations:
 
-* If you add a `tsconfig.json` file, TypeScript files that are not considered part of that context are not compiled.
-* Apache Cordova Apps still have the existing limitation of a single `tsconfig.json` file, which must be in either the root or the `scripts` folder.
-* There is no template for `tsconfig.json` in most project types.
+- If you add a `tsconfig.json` file, TypeScript files that are not considered part of that context are not compiled.
+- Apache Cordova Apps still have the existing limitation of a single `tsconfig.json` file, which must be in either the root or the `scripts` folder.
+- There is no template for `tsconfig.json` in most project types.
 
 ## TypeScript 1.7
 
@@ -5875,21 +6760,21 @@ In the following example, each input element will be printed out one at a time w
 
 // printDelayed is a 'Promise<void>'
 async function printDelayed(elements: string[]) {
-    for (const element of elements) {
-        await delay(200);
-        console.log(element);
-    }
+  for (const element of elements) {
+    await delay(200);
+    console.log(element);
+  }
 }
 
 async function delay(milliseconds: number) {
-    return new Promise<void>(resolve => {
-        setTimeout(resolve, milliseconds);
-    });
+  return new Promise<void>(resolve => {
+    setTimeout(resolve, milliseconds);
+  });
 }
 
 printDelayed(["Hello", "beautiful", "asynchronous", "world"]).then(() => {
-    console.log();
-    console.log("Printed every element!");
+  console.log();
+  console.log("Printed every element!");
 });
 ```
 
@@ -5903,10 +6788,10 @@ TypeScript 1.7 adds `ES6` to the list of options available for the `--module` fl
 
 ```json
 {
-    "compilerOptions": {
-        "module": "amd",
-        "target": "es6"
-    }
+  "compilerOptions": {
+    "module": "amd",
+    "target": "es6"
+  }
 }
 ```
 
@@ -5917,31 +6802,31 @@ For instance, consider the following `BasicCalculator` module:
 
 ```ts
 export default class BasicCalculator {
-    public constructor(protected value: number = 0) { }
+  public constructor(protected value: number = 0) {}
 
-    public currentValue(): number {
-        return this.value;
-    }
+  public currentValue(): number {
+    return this.value;
+  }
 
-    public add(operand: number) {
-        this.value += operand;
-        return this;
-    }
+  public add(operand: number) {
+    this.value += operand;
+    return this;
+  }
 
-    public subtract(operand: number) {
-        this.value -= operand;
-        return this;
-    }
+  public subtract(operand: number) {
+    this.value -= operand;
+    return this;
+  }
 
-    public multiply(operand: number) {
-        this.value *= operand;
-        return this;
-    }
+  public multiply(operand: number) {
+    this.value *= operand;
+    return this;
+  }
 
-    public divide(operand: number) {
-        this.value /= operand;
-        return this;
-    }
+  public divide(operand: number) {
+    this.value /= operand;
+    return this;
+  }
 }
 ```
 
@@ -5951,9 +6836,9 @@ A user could express `2 * 5 + 1` as
 import calc from "./BasicCalculator";
 
 let v = new calc(2)
-    .multiply(5)
-    .add(1)
-    .currentValue();
+  .multiply(5)
+  .add(1)
+  .currentValue();
 ```
 
 This often opens up very elegant ways of writing code; however, there was a problem for classes that wanted to extend from `BasicCalculator`.
@@ -5963,19 +6848,19 @@ Imagine a user wanted to start writing a `ScientificCalculator`:
 import BasicCalculator from "./BasicCalculator";
 
 export default class ScientificCalculator extends BasicCalculator {
-    public constructor(value = 0) {
-        super(value);
-    }
+  public constructor(value = 0) {
+    super(value);
+  }
 
-    public square() {
-        this.value = this.value ** 2;
-        return this;
-    }
+  public square() {
+    this.value = this.value ** 2;
+    return this;
+  }
 
-    public sin() {
-        this.value = Math.sin(this.value);
-        return this;
-    }
+  public sin() {
+    this.value = Math.sin(this.value);
+    return this;
+  }
 }
 ```
 
@@ -5987,10 +6872,10 @@ For instance:
 import calc from "./ScientificCalculator";
 
 let v = new calc(0.5)
-    .square()
-    .divide(2)
-    .sin()    // Error: 'BasicCalculator' has no 'sin' method.
-    .currentValue();
+  .square()
+  .divide(2)
+  .sin() // Error: 'BasicCalculator' has no 'sin' method.
+  .currentValue();
 ```
 
 This is no longer the case - TypeScript now infers `this` to have a special type called `this` whenever inside an instance method of a class.
@@ -6000,7 +6885,7 @@ The `this` type is also useful with intersection types in describing libraries (
 
 ```ts
 interface MyType {
-    extend<T>(other: T): this & T;
+  extend<T>(other: T): this & T;
 }
 ```
 
@@ -6014,7 +6899,7 @@ TypeScript 1.7 supports upcoming [ES7/ES2016 exponentiation operators](https://g
 var x = 2 ** 3;
 var y = 10;
 y **= 2;
-var z =  -(4 ** 3);
+var z = -(4 ** 3);
 ```
 
 Will generate the following JavaScript output:
@@ -6023,7 +6908,7 @@ Will generate the following JavaScript output:
 var x = Math.pow(2, 3);
 var y = 10;
 y = Math.pow(y, 2);
-var z = -(Math.pow(4, 3));
+var z = -Math.pow(4, 3);
 ```
 
 ## Improved checking for destructuring object literal
@@ -6031,19 +6916,20 @@ var z = -(Math.pow(4, 3));
 TypeScript 1.7 makes checking of destructuring patterns with an object literal or array literal initializers less rigid and more intuitive.
 
 When an object literal is contextually typed by the implied type of an object binding pattern:
-* Properties with default values in the object binding pattern become optional in the object literal.
-* Properties in the object binding pattern that have no match in the object literal are required to have a default value in the object binding pattern and are automatically added to the object literal type.
-* Properties in the object literal that have no match in the object binding pattern are an error.
+
+- Properties with default values in the object binding pattern become optional in the object literal.
+- Properties in the object binding pattern that have no match in the object literal are required to have a default value in the object binding pattern and are automatically added to the object literal type.
+- Properties in the object literal that have no match in the object binding pattern are an error.
 
 When an array literal is contextually typed by the implied type of an array binding pattern:
 
-* Elements in the array binding pattern that have no match in the array literal are required to have a default value in the array binding pattern and are automatically added to the array literal type.
+- Elements in the array binding pattern that have no match in the array literal are required to have a default value in the array binding pattern and are automatically added to the array literal type.
 
 ##### Example
 
 ```ts
 // Type of f1 is (arg?: { x?: number, y?: number }) => void
-function f1({ x = 0, y = 0 } = {}) { }
+function f1({ x = 0, y = 0 } = {}) {}
 
 // And can be called as:
 f1();
@@ -6053,19 +6939,18 @@ f1({ y: 1 });
 f1({ x: 1, y: 1 });
 
 // Type of f2 is (arg?: (x: number, y?: number) => void
-function f2({ x, y = 0 } = { x: 0 }) { }
+function f2({ x, y = 0 } = { x: 0 }) {}
 
 f2();
-f2({});        // Error, x not optional
+f2({}); // Error, x not optional
 f2({ x: 1 });
-f2({ y: 1 });  // Error, x not optional
+f2({ y: 1 }); // Error, x not optional
 f2({ x: 1, y: 1 });
 ```
 
 ## Support for decorators when targeting ES3
 
 Decorators are now allowed when targeting ES3. TypeScript 1.7 removes the ES5-specific use of `reduceRight` from the `__decorate` helper. The changes also inline calls to `Object.getOwnPropertyDescriptor` and `Object.defineProperty` in a backwards-compatible fashion that allows for clean up of the emit for ES5 and later by removing various repetitive calls to the aforementioned `Object` methods.
-
 
 ## TypeScript 1.6
 
@@ -6075,10 +6960,10 @@ JSX is an embeddable XML-like syntax. It is meant to be transformed into valid J
 
 #### New `.tsx` file extension and `as` operator
 
-TypeScript 1.6 introduces a new `.tsx` file extension.  This extension does two things: it enables JSX inside of TypeScript files, and it makes the new `as` operator the default way to cast (removing any ambiguity between JSX expressions and the TypeScript prefix cast operator). For example:
+TypeScript 1.6 introduces a new `.tsx` file extension. This extension does two things: it enables JSX inside of TypeScript files, and it makes the new `as` operator the default way to cast (removing any ambiguity between JSX expressions and the TypeScript prefix cast operator). For example:
 
 ```ts
-var x = <any> foo;
+var x = <any>foo;
 // is equivalent to:
 var x = foo as any;
 ```
@@ -6096,7 +6981,7 @@ interface Props {
 
 class MyComponent extends React.Component<Props, {}> {
   render() {
-    return <span>{this.props.foo}</span>
+    return <span>{this.props.foo}</span>;
   }
 }
 
@@ -6111,29 +6996,30 @@ JSX element names and properties are validated against the `JSX` namespace. Plea
 #### Output generation
 
 TypeScript ships with two JSX modes: `preserve` and `react`.
-- The `preserve` mode will keep JSX expressions as part of the output to be further consumed by another transform step. *Additionally the output will have a `.jsx` file extension.*
+
+- The `preserve` mode will keep JSX expressions as part of the output to be further consumed by another transform step. _Additionally the output will have a `.jsx` file extension._
 - The `react` mode will emit `React.createElement`, does not need to go through a JSX transformation before use, and the output will have a `.js` file extension.
 
 See the [[JSX]] wiki page for more information on using JSX in TypeScript.
 
 ## Intersection types
 
-TypeScript 1.6 introduces intersection types, the logical complement of union types. A union type `A | B` represents an entity that is either of type `A` or type `B`, whereas an intersection type `A & B` represents an entity that is both of type `A` *and* type `B`.
+TypeScript 1.6 introduces intersection types, the logical complement of union types. A union type `A | B` represents an entity that is either of type `A` or type `B`, whereas an intersection type `A & B` represents an entity that is both of type `A` _and_ type `B`.
 
 ##### Example
 
 ```ts
 function extend<T, U>(first: T, second: U): T & U {
-    let result = <T & U> {};
-    for (let id in first) {
-        result[id] = first[id];
+  let result = <T & U>{};
+  for (let id in first) {
+    result[id] = first[id];
+  }
+  for (let id in second) {
+    if (!result.hasOwnProperty(id)) {
+      result[id] = second[id];
     }
-    for (let id in second) {
-        if (!result.hasOwnProperty(id)) {
-            result[id] = second[id];
-        }
-    }
-    return result;
+  }
+  return result;
 }
 
 var x = extend({ a: "hello" }, { b: 42 });
@@ -6145,7 +7031,7 @@ var n = x.b;
 type LinkedList<T> = T & { next: LinkedList<T> };
 
 interface Person {
-    name: string;
+  name: string;
 }
 
 var people: LinkedList<Person>;
@@ -6156,9 +7042,15 @@ var s = people.next.next.next.name;
 ```
 
 ```ts
-interface A { a: string }
-interface B { b: string }
-interface C { c: string }
+interface A {
+  a: string;
+}
+interface B {
+  b: string;
+}
+interface C {
+  c: string;
+}
 
 var abc: A & B & C;
 abc.a = "hello";
@@ -6174,16 +7066,19 @@ Local class, interface, enum, and type alias declarations can now appear inside 
 
 ```ts
 function f() {
-    if (true) {
-        interface T { x: number }
-        let v: T;
-        v.x = 5;
+  if (true) {
+    interface T {
+      x: number;
     }
-    else {
-        interface T { x: string }
-        let v: T;
-        v.x = "hello";
+    let v: T;
+    v.x = 5;
+  } else {
+    interface T {
+      x: string;
     }
+    let v: T;
+    v.x = "hello";
+  }
 }
 ```
 
@@ -6191,16 +7086,16 @@ The inferred return type of a function may be a type declared locally within the
 
 ```ts
 interface Point {
-    x: number;
-    y: number;
+  x: number;
+  y: number;
 }
 
 function getPointFactory(x: number, y: number) {
-    class P {
-        x = x;
-        y = y;
-    }
-    return P;
+  class P {
+    x = x;
+    y = y;
+  }
+  return P;
 }
 
 var PointZero = getPointFactory(0, 0);
@@ -6214,17 +7109,17 @@ Local types may reference enclosing type parameters and local class and interfac
 
 ```ts
 function f3() {
-    function f<X, Y>(x: X, y: Y) {
-        class C {
-            public x = x;
-            public y = y;
-        }
-        return C;
+  function f<X, Y>(x: X, y: Y) {
+    class C {
+      public x = x;
+      public y = y;
     }
-    let C = f(10, "hello");
-    let v = new C();
-    let x = v.x;  // number
-    let y = v.y;  // string
+    return C;
+  }
+  let C = f(10, "hello");
+  let v = new C();
+  let x = v.x; // number
+  let y = v.y; // string
 }
 ```
 
@@ -6234,12 +7129,12 @@ TypeScript 1.6 adds support for ES6 class expressions. In a class expression, th
 
 ```ts
 let Point = class {
-    constructor(public x: number, public y: number) { }
-    public length() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
-    }
+  constructor(public x: number, public y: number) {}
+  public length() {
+    return Math.sqrt(this.x * this.x + this.y * this.y);
+  }
 };
-var p = new Point(3, 4);  // p has anonymous class type
+var p = new Point(3, 4); // p has anonymous class type
 console.log(p.length());
 ```
 
@@ -6254,35 +7149,39 @@ Some examples:
 ```ts
 // Extend built-in types
 
-class MyArray extends Array<number> { }
-class MyError extends Error { }
+class MyArray extends Array<number> {}
+class MyError extends Error {}
 
 // Extend computed base class
 
 class ThingA {
-    getGreeting() { return "Hello from A"; }
+  getGreeting() {
+    return "Hello from A";
+  }
 }
 
 class ThingB {
-    getGreeting() { return "Hello from B"; }
+  getGreeting() {
+    return "Hello from B";
+  }
 }
 
 interface Greeter {
-    getGreeting(): string;
+  getGreeting(): string;
 }
 
 interface GreeterConstructor {
-    new (): Greeter;
+  new (): Greeter;
 }
 
 function getGreeterBase(): GreeterConstructor {
-    return Math.random() >= 0.5 ? ThingA : ThingB;
+  return Math.random() >= 0.5 ? ThingA : ThingB;
 }
 
 class Test extends getGreeterBase() {
-    sayHello() {
-        console.log(this.getGreeting());
-    }
+  sayHello() {
+    console.log(this.getGreeting());
+  }
 }
 ```
 
@@ -6294,20 +7193,24 @@ TypeScript 1.6 adds support for `abstract` keyword for classes and their methods
 
 ```ts
 abstract class Base {
-    abstract getThing(): string;
-    getOtherThing() { return 'hello'; }
+  abstract getThing(): string;
+  getOtherThing() {
+    return "hello";
+  }
 }
 
 let x = new Base(); // Error, 'Base' is abstract
 
 // Error, must either be 'abstract' or implement concrete 'getThing'
-class Derived1 extends Base { }
+class Derived1 extends Base {}
 
 class Derived2 extends Base {
-    getThing() { return 'hello'; }
-    foo() {
-        super.getThing(); // Error: cannot invoke abstract members through 'super'
-    }
+  getThing() {
+    return "hello";
+  }
+  foo() {
+    super.getThing(); // Error: cannot invoke abstract members through 'super'
+  }
 }
 
 var x = new Derived2(); // OK
@@ -6328,8 +7231,8 @@ s = "eager";
 s = () => "lazy";
 
 interface Tuple<A, B> {
-    a: A;
-    b: B;
+  a: A;
+  b: B;
 }
 
 type Pair<T> = Tuple<T, T>;
@@ -6343,17 +7246,17 @@ TypeScript 1.6 enforces stricter object literal assignment checks for the purpos
 
 ```ts
 var x: { foo: number };
-x = { foo: 1, baz: 2 };  // Error, excess property `baz`
+x = { foo: 1, baz: 2 }; // Error, excess property `baz`
 
-var y: { foo: number, bar?: number };
-y = { foo: 1, baz: 2 };  // Error, excess or misspelled property `baz`
+var y: { foo: number; bar?: number };
+y = { foo: 1, baz: 2 }; // Error, excess or misspelled property `baz`
 ```
 
 A type can include an index signature to explicitly indicate that excess properties are permitted:
 
 ```ts
-var x: { foo: number, [x: string]: any };
-x = { foo: 1, baz: 2 };  // Ok, `baz` matched by index signature
+var x: { foo: number; [x: string]: any };
+x = { foo: 1, baz: 2 }; // Ok, `baz` matched by index signature
 ```
 
 ## ES6 generators
@@ -6363,22 +7266,22 @@ TypeScript 1.6 adds support for generators when targeting ES6.
 A generator function can have a return type annotation, just like a function. The annotation represents the type of the generator returned by the function. Here is an example:
 
 ```ts
-function *g(): Iterable<string> {
-    for (var i = 0; i < 100; i++) {
-        yield ""; // string is assignable to string
-    }
-    yield * otherStringGenerator(); // otherStringGenerator must be iterable and element type assignable to string
+function* g(): Iterable<string> {
+  for (var i = 0; i < 100; i++) {
+    yield ""; // string is assignable to string
+  }
+  yield* otherStringGenerator(); // otherStringGenerator must be iterable and element type assignable to string
 }
 ```
 
 A generator function with no type annotation can have the type annotation inferred. So in the following case, the type will be inferred from the yield statements:
 
 ```ts
-function *g() {
-    for (var i = 0; i < 100; i++) {
-        yield ""; // infer string
-    }
-    yield * otherStringGenerator(); // infer element type of otherStringGenerator
+function* g() {
+  for (var i = 0; i < 100; i++) {
+    yield ""; // infer string
+  }
+  yield* otherStringGenerator(); // infer element type of otherStringGenerator
 }
 ```
 
@@ -6386,8 +7289,7 @@ function *g() {
 
 TypeScript 1.6 introduces experimental support of `async` functions when targeting ES6. Async functions are expected to invoke an asynchronous operation and await its result without blocking normal execution of the program. This accomplished through the use of an ES6-compatible `Promise` implementation, and transposition of the function body into a compatible form to resume execution when the awaited asynchronous operation completes.
 
-
-An *async function* is a function or method that has been prefixed with the `async` modifier. This modifier informs the compiler that function body transposition is required, and that the keyword `await` should be treated as a unary expression instead of an identifier. An *Async Function* must provide a return type annotation that points to a compatible `Promise` type. Return type inference can only be used if there is a globally defined, compatible `Promise` type.
+An _async function_ is a function or method that has been prefixed with the `async` modifier. This modifier informs the compiler that function body transposition is required, and that the keyword `await` should be treated as a unary expression instead of an identifier. An _Async Function_ must provide a return type annotation that points to a compatible `Promise` type. Return type inference can only be used if there is a globally defined, compatible `Promise` type.
 
 ##### Example
 
@@ -6429,6 +7331,7 @@ npm install -g typescript@next
 ## Adjustments in module resolution logic
 
 Starting from release 1.6 TypeScript compiler will use different set of rules to resolve module names when targeting 'commonjs'. These [rules](https://github.com/Microsoft/TypeScript/issues/2338) attempted to model module lookup procedure used by Node. This effectively mean that node modules can include information about its typings and TypeScript compiler will be able to find it. User however can override module resolution rules picked by the compiler by using `--moduleResolution` command line option. Possible values are:
+
 - 'classic' - module resolution rules used by pre 1.6 TypeScript compiler
 - 'node' - node-like module resolution
 
@@ -6438,16 +7341,16 @@ The instance side of an ambient class declaration can be extended using an inter
 
 ```ts
 declare class Foo {
-    public x : number;
+  public x: number;
 }
 
 interface Foo {
-    y : string;
+  y: string;
 }
 
-function bar(foo : Foo)  {
-    foo.x = 1; // OK, declared in the class Foo
-    foo.y = "1"; // OK, declared in the interface Foo
+function bar(foo: Foo) {
+  foo.x = 1; // OK, declared in the class Foo
+  foo.y = "1"; // OK, declared in the interface Foo
 }
 ```
 
@@ -6459,30 +7362,28 @@ TypeScript 1.6 adds a new way to narrow a variable type inside an `if` block, in
 
 ```ts
 function isCat(a: any): a is Cat {
-  return a.name === 'kitty';
+  return a.name === "kitty";
 }
 
 var x: Cat | Dog;
-if(isCat(x)) {
+if (isCat(x)) {
   x.meow(); // OK, x is Cat in this block
 }
 ```
 
 ## `exclude` property support in tsconfig.json
 
-A tsconfig.json file that doesn't specify a files property (and therefore implicitly references all *.ts files in all subdirectories) can now contain an exclude property that specifies a list of files and/or directories to exclude from the compilation. The exclude property must be an array of strings that each specify a file or folder name relative to the location of the tsconfig.json file. For example:
+A tsconfig.json file that doesn't specify a files property (and therefore implicitly references all \*.ts files in all subdirectories) can now contain an exclude property that specifies a list of files and/or directories to exclude from the compilation. The exclude property must be an array of strings that each specify a file or folder name relative to the location of the tsconfig.json file. For example:
+
 ```json
 {
-    "compilerOptions": {
-        "out": "test.js"
-    },
-    "exclude": [
-        "node_modules",
-        "test.ts",
-        "utils/t2.ts"
-    ]
+  "compilerOptions": {
+    "out": "test.js"
+  },
+  "exclude": ["node_modules", "test.ts", "utils/t2.ts"]
 }
 ```
+
 The `exclude` list does not support wilcards. It must simply be a list of files and/or directories.
 
 ## `--init` command line option
@@ -6491,7 +7392,7 @@ Run `tsc --init` in a directory to create an initial `tsconfig.json` in this dir
 
 ## TypeScript 1.5
 
-## ES6 Modules ##
+## ES6 Modules
 
 TypeScript 1.5 supports ECMAScript 6 (ES6) modules. ES6 modules are effectively TypeScript external modules with a new syntax: ES6 modules are separately loaded source files that possibly import other modules and provide a number of externally accessible exports. ES6 modules feature several new export and import declarations. It is recommended that TypeScript libraries and applications be updated to use the new syntax, but this is not a requirement. The new ES6 module syntax coexists with TypeScript's original internal and external module constructs and the constructs can be mixed and matched at will.
 
@@ -6543,9 +7444,9 @@ An export default declaration specifies an expression that becomes the default e
 
 ```ts
 export default class Greeter {
-    sayHello() {
-        console.log("Greetings!");
-    }
+  sayHello() {
+    console.log("Greetings!");
+  }
 }
 ```
 
@@ -6556,7 +7457,6 @@ import Greeter from "./greeter";
 var g = new Greeter();
 g.sayHello();
 ```
-
 
 #### Bare Import
 
@@ -6579,7 +7479,7 @@ A destructuring declaration introduces one or more named variables and initializ
 For example, the following sample declares variables `x`, `y`, and `z`, and initializes them to `getSomeObject().x`, `getSomeObject().y` and `getSomeObject().z` respectively:
 
 ```ts
-var { x, y, z} = getSomeObject();
+var { x, y, z } = getSomeObject();
 ```
 
 Destructuring declarations also works for extracting values from arrays:
@@ -6588,15 +7488,15 @@ Destructuring declarations also works for extracting values from arrays:
 var [x, y, z = 10] = getSomeArray();
 ```
 
-Similarly, destructuring  can be used in function parameter declarations:
+Similarly, destructuring can be used in function parameter declarations:
 
 ```ts
 function drawText({ text = "", location: [x, y] = [0, 0], bold = false }) {
-    // Draw text
+  // Draw text
 }
 
 // Call drawText with an object literal
-var item = { text: "someText", location: [1,2,3], style: "italics" };
+var item = { text: "someText", location: [1, 2, 3], style: "italics" };
 drawText(item);
 ```
 
@@ -6617,6 +7517,7 @@ TypeScript used the `module` keyword to define both "internal modules" and "exte
 > Note: Previous syntax defining internal modules are still supported.
 
 **Before**:
+
 ```ts
 module Math {
     export function add(x, y) { ... }
@@ -6624,6 +7525,7 @@ module Math {
 ```
 
 **After**:
+
 ```ts
 namespace Math {
     export function add(x, y) { ... }
@@ -6631,6 +7533,7 @@ namespace Math {
 ```
 
 ## `let` and `const` support
+
 ES6 `let` and `const` declarations are now supported when targeting ES3 and ES5.
 
 #### Const
@@ -6639,7 +7542,7 @@ ES6 `let` and `const` declarations are now supported when targeting ES3 and ES5.
 const MAX = 100;
 
 ++MAX; // Error: The operand of an increment or decrement
-       //        operator cannot be a constant.
+//        operator cannot be a constant.
 ```
 
 #### Block scoped
@@ -6648,8 +7551,7 @@ const MAX = 100;
 if (true) {
   let a = 4;
   // use a
-}
-else {
+} else {
   let a = "string";
   // use a
 }
@@ -6666,21 +7568,24 @@ TypeScript 1.5 adds support to ES6 for..of loops on arrays for ES3/ES5 as well a
 The TypeScript compiler will transpile for..of arrays to idiomatic ES3/ES5 JavaScript when targeting those versions:
 
 ```ts
-for (var v of expr) { }
+for (var v of expr) {
+}
 ```
 
 will be emitted as:
 
 ```js
 for (var _i = 0, _a = expr; _i < _a.length; _i++) {
-    var v = _a[_i];
+  var v = _a[_i];
 }
 ```
 
 ## Decorators
+
 > TypeScript decorators are based on the [ES7 decorator proposal](https://github.com/wycats/javascript-decorators).
 
 A decorator is:
+
 - an expression
 - that evaluates to a function
 - that takes the target, name, and property descriptor as arguments
@@ -6696,31 +7601,32 @@ Decorators `readonly` and `enumerable(false)` will be applied to the property `m
 class C {
   @readonly
   @enumerable(false)
-  method() { }
+  method() {}
 }
 
 function readonly(target, key, descriptor) {
-    descriptor.writable = false;
+  descriptor.writable = false;
 }
 
 function enumerable(value) {
-  return function (target, key, descriptor) {
-     descriptor.enumerable = value;
-  }
+  return function(target, key, descriptor) {
+    descriptor.enumerable = value;
+  };
 }
 ```
 
 ## Computed properties
+
 Initializing an object with dynamic properties can be a bit of a burden. Take the following example:
 
 ```ts
 type NeighborMap = { [name: string]: Node };
-type Node = { name: string; neighbors: NeighborMap;}
+type Node = { name: string; neighbors: NeighborMap };
 
 function makeNode(name: string, initialNeighbor: Node): Node {
-    var neighbors: NeighborMap = {};
-    neighbors[initialNeighbor.name] = initialNeighbor;
-    return { name: name, neighbors: neighbors };
+  var neighbors: NeighborMap = {};
+  neighbors[initialNeighbor.name] = initialNeighbor;
+  return { name: name, neighbors: neighbors };
 }
 ```
 
@@ -6728,12 +7634,12 @@ Here we need to create a variable to hold on to the neighbor-map so that we can 
 
 ```ts
 function makeNode(name: string, initialNeighbor: Node): Node {
-    return {
-        name: name,
-        neighbors: {
-            [initialNeighbor.name]: initialNeighbor
-        }
+  return {
+    name: name,
+    neighbors: {
+      [initialNeighbor.name]: initialNeighbor
     }
+  };
 }
 ```
 
@@ -6742,18 +7648,18 @@ function makeNode(name: string, initialNeighbor: Node): Node {
 In addition to `AMD` and `CommonJS` module loaders, TypeScript now supports emitting modules `UMD` ([Universal Module Definition](https://github.com/umdjs/umd)) and [`System`](https://github.com/systemjs/systemjs) module formats.
 
 **Usage**:
+
 > tsc --module umd
 
 and
 
 > tsc --module system
 
-
 ## Unicode codepoint escapes in strings
 
 ES6 introduces escapes that allow users to represent a Unicode codepoint using just a single escape.
 
-As an example, consider the need to escape a string that contains the character '𠮷'.  In UTF-16/UCS2, '𠮷' is represented as a surrogate pair, meaning that it's encoded using a pair of 16-bit code units of values, specifically `0xD842` and `0xDFB7`. Previously this meant that you'd have to escape the codepoint as `"\uD842\uDFB7"`. This has the major downside that it’s difficult to discern two independent characters from a surrogate pair.
+As an example, consider the need to escape a string that contains the character '𠮷'. In UTF-16/UCS2, '𠮷' is represented as a surrogate pair, meaning that it's encoded using a pair of 16-bit code units of values, specifically `0xD842` and `0xDFB7`. Previously this meant that you'd have to escape the codepoint as `"\uD842\uDFB7"`. This has the major downside that it’s difficult to discern two independent characters from a surrogate pair.
 
 With ES6’s codepoint escapes, you can cleanly represent that exact character in strings and template strings with a single escape: `"\u{20bb7}"`. TypeScript will emit the string in ES3/ES5 as `"\uD842\uDFB7"`.
 
@@ -6765,21 +7671,23 @@ When targeting ES3/ES5, the following code
 
 ```ts
 function oddRawStrings(strs: TemplateStringsArray, n1, n2) {
-    return strs.raw.filter((raw, index) => index % 2 === 1);
+  return strs.raw.filter((raw, index) => index % 2 === 1);
 }
 
-oddRawStrings `Hello \n${123} \t ${456}\n world`
+oddRawStrings`Hello \n${123} \t ${456}\n world`;
 ```
 
 will be emitted as
 
 ```js
 function oddRawStrings(strs, n1, n2) {
-    return strs.raw.filter(function (raw, index) {
-        return index % 2 === 1;
-    });
+  return strs.raw.filter(function(raw, index) {
+    return index % 2 === 1;
+  });
 }
-(_a = ["Hello \n", " \t ", "\n world"], _a.raw = ["Hello \\n", " \\t ", "\\n world"], oddRawStrings(_a, 123, 456));
+(_a = ["Hello \n", " \t ", "\n world"]),
+  (_a.raw = ["Hello \\n", " \\t ", "\\n world"]),
+  oddRawStrings(_a, 123, 456);
 var _a;
 ```
 
@@ -6791,15 +7699,19 @@ The new `amd-dependency name` property allows passing an optional name for an am
 
 ```ts
 /// <amd-dependency path="legacy/moduleA" name="moduleA"/>
-declare var moduleA:MyType
-moduleA.callStuff()
+declare var moduleA: MyType;
+moduleA.callStuff();
 ```
 
 Generated JS code:
 
 ```js
-define(["require", "exports", "legacy/moduleA"], function (require, exports, moduleA) {
-    moduleA.callStuff()
+define(["require", "exports", "legacy/moduleA"], function(
+  require,
+  exports,
+  moduleA
+) {
+  moduleA.callStuff();
 });
 ```
 
@@ -6814,11 +7726,11 @@ Adding a `tsconfig.json` file in a directory indicates that the directory is the
 
 ```json
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "noImplicitAny": true,
-        "sourceMap": true,
-    }
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "sourceMap": true
+  }
 }
 ```
 
@@ -6836,14 +7748,13 @@ Sometimes this is not desirable, for instance inputs `FolderA/FolderB/1.ts` and 
 
 The TypeScript compiler emits a few helpers like `__extends` when needed. The helpers are emitted in every file they are referenced in. If you want to consolidate all helpers in one place, or override the default behavior, use `--noEmitHelpers` to instructs the compiler not to emit them.
 
-
 ## `--newLine` command line option
 
-By default the output new line character is `\r\n` on Windows based systems and `\n` on *nix based systems. `--newLine` command line flag allows overriding this behavior and specifying the new line character to be used in generated output files.
+By default the output new line character is `\r\n` on Windows based systems and `\n` on \*nix based systems. `--newLine` command line flag allows overriding this behavior and specifying the new line character to be used in generated output files.
 
 ## `--inlineSourceMap` and `inlineSources` command line options
 
-`--inlineSourceMap` causes source map files to be written inline in the generated `.js` files instead of in a independent `.js.map` file.  `--inlineSources` allows for additionally inlining the source `.ts` file into the
+`--inlineSourceMap` causes source map files to be written inline in the generated `.js` files instead of in a independent `.js.map` file. `--inlineSources` allows for additionally inlining the source `.ts` file into the
 
 ## TypeScript 1.4
 
@@ -6855,8 +7766,8 @@ Union types are a powerful way to express a value that can be one of several typ
 
 ```ts
 interface RunOptions {
-   program: string;
-   commandline: string[]|string|(() => string);
+  program: string;
+  commandline: string[] | string | (() => string);
 }
 ```
 
@@ -6872,7 +7783,8 @@ opts.commandline = [42]; // Error, number is not string or string[]
 When reading from a union type, you can see any properties that are shared by them:
 
 ```ts
-if (opts.length === 0) { // OK, string and string[] both have 'length' property
+if (opts.length === 0) {
+  // OK, string and string[] both have 'length' property
   console.log("it's empty");
 }
 ```
@@ -6880,13 +7792,12 @@ if (opts.length === 0) { // OK, string and string[] both have 'length' property
 Using Type Guards, you can easily work with a variable of a union type:
 
 ```ts
-function formatCommandline(c: string|string[]) {
-    if (typeof c === 'string') {
-        return c.trim();
-    }
-    else {
-        return c.join(' ');
-    }
+function formatCommandline(c: string | string[]) {
+  if (typeof c === "string") {
+    return c.trim();
+  } else {
+    return c.join(" ");
+  }
 }
 ```
 
@@ -6901,20 +7812,25 @@ function equal<T>(lhs: T, rhs: T): boolean {
 
 // Previously: No error
 // New behavior: Error, no best common type between 'string' and 'number'
-var e = equal(42, 'hello');
+var e = equal(42, "hello");
 ```
+
 With union types, you can now specify the desired behavior at both the function declaration site and the call site:
 
 ```ts
 // 'choose' function where types must match
-function choose1<T>(a: T, b: T): T { return Math.random() > 0.5 ? a : b }
-var a = choose1('hello', 42); // Error
-var b = choose1<string|number>('hello', 42); // OK
+function choose1<T>(a: T, b: T): T {
+  return Math.random() > 0.5 ? a : b;
+}
+var a = choose1("hello", 42); // Error
+var b = choose1<string | number>("hello", 42); // OK
 
 // 'choose' function where types need not match
-function choose2<T, U>(a: T, b: U): T|U { return Math.random() > 0.5 ? a : b }
-var c = choose2('bar', 'foo'); // OK, c: string
-var d = choose2('hello', 42); // OK, d: string|number
+function choose2<T, U>(a: T, b: U): T | U {
+  return Math.random() > 0.5 ? a : b;
+}
+var c = choose2("bar", "foo"); // OK, c: string
+var d = choose2("hello", 42); // OK, d: string|number
 ```
 
 ### Better Type Inference
@@ -6922,8 +7838,8 @@ var d = choose2('hello', 42); // OK, d: string|number
 Union types also allow for better type inference in arrays and other places where you might have multiple kinds of values in a collection:
 
 ```ts
-var x = [1, 'hello']; // x: Array<string|number>
-x[0] = 'world'; // OK
+var x = [1, "hello"]; // x: Array<string|number>
+x[0] = "world"; // OK
 x[0] = false; // Error, boolean is not string or number
 ```
 
@@ -6934,24 +7850,24 @@ In JavaScript, `var` declarations are "hoisted" to the top of their enclosing sc
 ```ts
 console.log(x); // meant to write 'y' here
 /* later in the same block */
-var x = 'hello';
+var x = "hello";
 ```
 
 The new ES6 keyword `let`, now supported in TypeScript, declares a variable with more intuitive "block" semantics. A `let` variable can only be referred to after its declaration, and is scoped to the syntactic block where it is defined:
 
 ```ts
 if (foo) {
-    console.log(x); // Error, cannot refer to x before its declaration
-    let x = 'hello';
-}
-else {
-    console.log(x); // Error, x is not declared in this block
+  console.log(x); // Error, cannot refer to x before its declaration
+  let x = "hello";
+} else {
+  console.log(x); // Error, x is not declared in this block
 }
 ```
 
 `let` is only available when targeting ECMAScript 6 (`--target ES6`).
 
 ## `const` declarations
+
 The other new ES6 declaration type supported in TypeScript is `const`. A `const` variable may not be assigned to, and must be initialized where it is declared. This is useful for declarations where you don't want to change the value after its initialization:
 
 ```ts
@@ -6967,14 +7883,15 @@ TypeScript now supports ES6 template strings. These are an easy way to embed arb
 
 ```ts
 var name = "TypeScript";
-var greeting  = `Hello, ${name}! Your name has ${name.length} characters`;
+var greeting = `Hello, ${name}! Your name has ${name.length} characters`;
 ```
 
 When compiling to pre-ES6 targets, the string is decomposed:
 
 ```js
 var name = "TypeScript!";
-var greeting = "Hello, " + name + "! Your name has " + name.length + " characters";
+var greeting =
+  "Hello, " + name + "! Your name has " + name.length + " characters";
 ```
 
 ## Type Guards
@@ -7021,10 +7938,10 @@ else {
 
 ## Type Aliases
 
-You can now define an *alias* for a type using the `type` keyword:
+You can now define an _alias_ for a type using the `type` keyword:
 
 ```ts
-type PrimitiveArray = Array<string|number|boolean>;
+type PrimitiveArray = Array<string | number | boolean>;
 type MyNumber = number;
 type NgScope = ng.IScope;
 type Callback = () => void;
@@ -7033,10 +7950,16 @@ type Callback = () => void;
 Type aliases are exactly the same as their original types; they are simply alternative names.
 
 ## `const enum` (completely inlined enums)
+
 Enums are very useful, but some programs don't actually need the generated code and would benefit from simply inlining all instances of enum members with their numeric equivalents. The new `const enum` declaration works just like a regular `enum` for type safety, but erases completely at compile time.
 
 ```ts
-const enum Suit { Clubs, Diamonds, Hearts, Spades }
+const enum Suit {
+  Clubs,
+  Diamonds,
+  Hearts,
+  Spades
+}
 var d = Suit.Diamonds;
 ```
 
@@ -7074,20 +7997,19 @@ The new `amd-module name` tag allows passing an optional module name to the comp
 ```ts
 //// [amdModule.ts]
 ///<amd-module name='NamedModule'/>
-export class C {
-}
+export class C {}
 ```
+
 Will result in assigning the name `NamedModule` to the module as part of calling the AMD `define`:
 
 ```js
 //// [amdModule.js]
-define("NamedModule", ["require", "exports"], function (require, exports) {
-    var C = (function () {
-        function C() {
-        }
-        return C;
-    })();
-    exports.C = C;
+define("NamedModule", ["require", "exports"], function(require, exports) {
+  var C = (function() {
+    function C() {}
+    return C;
+  })();
+  exports.C = C;
 });
 ```
 
@@ -7099,7 +8021,9 @@ The new `protected` modifier in classes works like it does in familiar languages
 
 ```ts
 class Thing {
-  protected doSomething() { /* ... */ }
+  protected doSomething() {
+    /* ... */
+  }
 }
 
 class MyThing extends Thing {
@@ -7120,9 +8044,9 @@ Tuple types express an array where the type of certain elements is known, but ne
 // Declare a tuple type
 var x: [string, number];
 // Initialize it
-x = ['hello', 10]; // OK
+x = ["hello", 10]; // OK
 // Initialize it incorrectly
-x = [10, 'hello']; // Error
+x = [10, "hello"]; // Error
 ```
 
 When accessing an element with a known index, the correct type is retrieved:
@@ -7135,7 +8059,7 @@ console.log(x[1].substr(1)); // Error, 'number' does not have 'substr'
 Note that in TypeScript 1.4, when accessing an element outside the set of known indices, a union type is used instead:
 
 ```ts
-x[3] = 'world'; // OK
+x[3] = "world"; // OK
 console.log(x[5].toString()); // OK, 'string' and 'number' both have toString
 x[6] = true; // Error, boolean isn't number or string
 ```
@@ -7158,9 +8082,8 @@ module MyControllers {
   export class ZooController {
     // Used to be an error (cannot expose ZooScope), but now is only
     // an error when trying to generate .d.ts files
-    constructor(public $scope: ZooScope) { }
+    constructor(public $scope: ZooScope) {}
     /* more code */
   }
 }
 ```
-

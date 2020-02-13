@@ -4,8 +4,7 @@
   background-color: $ts-dark-bg-color;
   text-align: center;
   color: white;
-  height: 3rem;
-  line-height: 3rem;
+  padding: 0.7rem 2rem;
   margin: 0;
   font-size: 0.9rem;
 
@@ -37,6 +36,43 @@
 }
 
 #index {
+  // Mobile specific css changes
+  @media (max-width: $screen-sm) {
+    // from left to right -> top to down
+    .container > .row {
+      flex-direction: column;
+    }
+
+    // Doesn't show because it doens't have a way to generate
+    // a height, so hard-code it
+    div.headline-diagram {
+      height: 400px;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    // Make it 2s instead of 4s
+    .split-row > a {
+      width: 40%;
+    }
+
+    // Can't fit that much info into one component, just drop the quotes
+    .illustration {
+      display: none;
+    }
+
+    .line-error,
+    .underline-error,
+    .error-message,
+    ul.dropdown {
+      margin-top: 12px;
+    }
+
+    .headline-diagram div.editor.front {
+      bottom: -40px;
+    }
+  }
+
   h1 {
     font-size: 2.5rem;
     font-weight: 200;
@@ -60,14 +96,20 @@
     margin-top: 0;
   }
 
-  .row {
+  .row,
+  .split-row {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
   }
 
-  .reverse {
-    // flex-direction: row-reverse;
+  .split-row {
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+
+    .first {
+      margin-left: 0;
+    }
   }
 
   .col1 {
@@ -96,6 +138,11 @@
 
   .purple {
     background-color: $ts-muted-purple;
+    color: white;
+  }
+
+  .dark-green {
+    background-color: #086e12;
     color: white;
   }
 
@@ -292,9 +339,14 @@
       background-color: #eee;
     }
 
+    &:active {
+      background-color: #ddd;
+    }
+
     .message {
       margin: 10px;
       font-size: 0.9rem;
+      min-width: 200px;
     }
 
     .next {
@@ -470,40 +522,6 @@
     }
   }
 
-  .oss {
-    width: 100%;
-
-    .icons {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      max-width: 800px;
-      margin: 0 auto;
-
-      svg {
-        margin: 0 auto;
-      }
-
-      a {
-        flex: 1;
-        margin: 20px;
-        color: white;
-        text-align: center;
-        height: 145px;
-        width: 140px;
-        max-width: 140px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-
-        p {
-          padding-bottom: 0;
-        }
-      }
-    }
-  }
-
   .copy {
     position: absolute;
     padding-left: 20px;
@@ -549,6 +567,40 @@
       width: 370px;
       position: absolute;
       right: 70px;
+    }
+  }
+}
+
+.oss {
+  width: 100%;
+
+  .icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 800px;
+    margin: 0 auto;
+
+    svg {
+      margin: 0 auto;
+    }
+
+    a {
+      flex: 1;
+      margin: 20px;
+      color: white;
+      text-align: center;
+      height: 145px;
+      width: 140px;
+      max-width: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      p {
+        padding-bottom: 0;
+      }
     }
   }
 }

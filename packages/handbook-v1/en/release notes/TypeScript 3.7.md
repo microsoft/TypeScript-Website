@@ -4,32 +4,14 @@ layout: docs
 permalink: /docs/handbook/release-notes/typescript-3-7.html
 ---
 
-* [Optional Chaining](#optional-chaining)
-* [Nullish Coalescing](#nullish-coalescing)
-* [Assertion Functions](#assertion-functions)
-* [Better Support for `never`-Returning Functions](#better-support-for-never-returning-functions)
-* [(More) Recursive Type Aliases](#more-recursive-type-aliases)
-* [`--declaration` and `--allowJs`](#--declaration-and---allowjs)
-* [The `useDefineForClassFields` Flag and The `declare` Property Modifier](#the-usedefineforclassfields-flag-and-the-declare-property-modifier)
-* [Build-Free Editing with Project References](#build-free-editing-with-project-references)
-* [Uncalled Function Checks](#uncalled-function-checks)
-* [`// @ts-nocheck` in TypeScript Files](#-ts-nocheck-in-typescript-files)
-* [Semicolon Formatter Option](#semicolon-formatter-option)
-* [Breaking Changes](#37-breaking-changes)
-	* [DOM Changes](#dom-changes)
-	* [Function Truthy Checks](#function-truthy-checks)
-	* [Local and Imported Type Declarations Now Conflict](#local-and-imported-type-declarations-now-conflict)
-    * [API Changes](#37-api-changes)
-
-
 ## Optional Chaining
 
 [Playground](/play/#example/optional-chaining)
 
-Optional chaining is [issue #16](https://github.com/microsoft/TypeScript/issues/16) on our issue tracker. For context, there have been over 23,000 issues on the TypeScript issue tracker since then. 
+Optional chaining is [issue #16](https://github.com/microsoft/TypeScript/issues/16) on our issue tracker. For context, there have been over 23,000 issues on the TypeScript issue tracker since then.
 
 At its core, optional chaining lets us write code where TypeScript can immediately stop running some expressions if we run into a `null` or `undefined`.
-The star of the show in optional chaining is the new `?.` operator for *optional property accesses*.
+The star of the show in optional chaining is the new `?.` operator for _optional property accesses_.
 When we write code like
 
 ```ts
@@ -41,26 +23,24 @@ this is a way of saying that when `foo` is defined, `foo.bar.baz()` will be comp
 More plainly, that code snippet is the same as writing the following.
 
 ```ts
-let x = (foo === null || foo === undefined) ?
-    undefined :
-    foo.bar.baz();
+let x = foo === null || foo === undefined ? undefined : foo.bar.baz();
 ```
 
 Note that if `bar` is `null` or `undefined`, our code will still hit an error accessing `baz`.
 Likewise, if `baz` is `null` or `undefined`, we'll hit an error at the call site.
-`?.` only checks for whether the value on the *left* of it is `null` or `undefined` - not any of the subsequent properties.
+`?.` only checks for whether the value on the _left_ of it is `null` or `undefined` - not any of the subsequent properties.
 
 You might find yourself using `?.` to replace a lot of code that performs repetitive nullish checks using the `&&` operator.
 
 ```ts
 // Before
 if (foo && foo.bar && foo.bar.baz) {
-    // ...
+  // ...
 }
 
 // After-ish
 if (foo?.bar?.baz) {
-    // ...
+  // ...
 }
 ```
 
@@ -68,7 +48,7 @@ Keep in mind that `?.` acts differently than those `&&` operations since `&&` wi
 It doesn't short-circuit on valid data like `0` or empty strings.
 
 Optional chaining also includes two other operations.
-First there's the *optional element access* which acts similarly to optional property accesses, but allows us to access non-identifier properties (e.g. arbitrary strings, numbers, and symbols):
+First there's the _optional element access_ which acts similarly to optional property accesses, but allows us to access non-identifier properties (e.g. arbitrary strings, numbers, and symbols):
 
 ```ts
 /**
@@ -76,29 +56,29 @@ First there's the *optional element access* which acts similarly to optional pro
  * Otherwise return undefined.
  */
 function tryGetFirstElement<T>(arr?: T[]) {
-    return arr?.[0];
-    // equivalent to
-    //   return (arr === null || arr === undefined) ?
-    //       undefined :
-    //       arr[0];
+  return arr?.[0];
+  // equivalent to
+  //   return (arr === null || arr === undefined) ?
+  //       undefined :
+  //       arr[0];
 }
 ```
 
-There's also *optional call*, which allows us to conditionally call expressions if they're not `null` or `undefined`.
+There's also _optional call_, which allows us to conditionally call expressions if they're not `null` or `undefined`.
 
 ```ts
 async function makeRequest(url: string, log?: (msg: string) => void) {
-    log?.(`Request started at ${new Date().toISOString()}`);
-    // roughly equivalent to
-    //   if (log != null) {
-    //       log(`Request started at ${new Date().toISOString()}`);
-    //   }
+  log?.(`Request started at ${new Date().toISOString()}`);
+  // roughly equivalent to
+  //   if (log != null) {
+  //       log(`Request started at ${new Date().toISOString()}`);
+  //   }
 
-    const result = (await fetch(url)).json();
+  const result = (await fetch(url)).json();
 
-    log?.(`Request finished at at ${new Date().toISOString()}`);
+  log?.(`Request finished at at ${new Date().toISOString()}`);
 
-    return result;
+  return result;
 }
 ```
 
@@ -106,16 +86,14 @@ The "short-circuiting" behavior that optional chains have is limited property ac
 In other words,
 
 ```ts
-let result = foo?.bar / someComputation()
+let result = foo?.bar / someComputation();
 ```
 
 doesn't stop the division or `someComputation()` call from occurring.
 It's equivalent to
 
 ```ts
-let temp = (foo === null || foo === undefined) ?
-    undefined :
-    foo.bar;
+let temp = foo === null || foo === undefined ? undefined : foo.bar;
 
 let result = temp / someComputation();
 ```
@@ -124,9 +102,9 @@ That might result in dividing `undefined`, which is why in `strictNullChecks`, t
 
 ```ts
 function barPercentage(foo?: { bar: number }) {
-    return foo?.bar / 100;
-    //     ~~~~~~~~
-    // Error: Object is possibly undefined.
+  return foo?.bar / 100;
+  //     ~~~~~~~~
+  // Error: Object is possibly undefined.
 }
 ```
 
@@ -136,7 +114,7 @@ More more details, you can [read up on the proposal](https://github.com/tc39/pro
 
 [Playground](/play/#example/nullish-coalescing)
 
-The *nullish coalescing operator* is another upcoming ECMAScript feature that goes hand-in-hand with optional chaining, and which our team has been involved with championing in TC39.
+The _nullish coalescing operator_ is another upcoming ECMAScript feature that goes hand-in-hand with optional chaining, and which our team has been involved with championing in TC39.
 
 You can think of this feature - the `??` operator - as a way to "fall back" to a default value when dealing with `null` or `undefined`.
 When we write code like
@@ -151,9 +129,7 @@ but when it's `null` or `undefined`, calculate `bar()` in its place.
 Again, the above code is equivalent to the following.
 
 ```ts
-let x = (foo !== null && foo !== undefined) ?
-    foo :
-    bar();
+let x = foo !== null && foo !== undefined ? foo : bar();
 ```
 
 The `??` operator can replace uses of `||` when trying to use a default value.
@@ -162,9 +138,9 @@ however, it has a bug because it uses `||`.
 
 ```ts
 function initializeAudio() {
-    let volume = localStorage.volume || 0.5
+  let volume = localStorage.volume || 0.5;
 
-    // ...
+  // ...
 }
 ```
 
@@ -193,10 +169,10 @@ For example,
 
 ```js
 function multiply(x, y) {
-    assert(typeof x === "number");
-    assert(typeof y === "number");
+  assert(typeof x === "number");
+  assert(typeof y === "number");
 
-    return x * y;
+  return x * y;
 }
 ```
 
@@ -205,11 +181,11 @@ For loosely-typed code this meant TypeScript was checking less, and for slightly
 
 ```ts
 function yell(str) {
-    assert(typeof str === "string");
+  assert(typeof str === "string");
 
-    return str.toUppercase();
-    // Oops! We misspelled 'toUpperCase'.
-    // Would be great if TypeScript still caught this!
+  return str.toUppercase();
+  // Oops! We misspelled 'toUpperCase'.
+  // Would be great if TypeScript still caught this!
 }
 ```
 
@@ -217,11 +193,11 @@ The alternative was to instead rewrite the code so that the language could analy
 
 ```ts
 function yell(str) {
-    if (typeof str !== "string") {
-        throw new TypeError("str should have been a string.")
-    }
-    // Error caught!
-    return str.toUppercase();
+  if (typeof str !== "string") {
+    throw new TypeError("str should have been a string.");
+  }
+  // Error caught!
+  return str.toUppercase();
 }
 ```
 
@@ -233,30 +209,30 @@ It ensures that whatever condition is being checked must be true for the remaind
 
 ```ts
 function assert(condition: any, msg?: string): asserts condition {
-    if (!condition) {
-        throw new AssertionError(msg)
-    }
+  if (!condition) {
+    throw new AssertionError(msg);
+  }
 }
 ```
 
 `asserts condition` says that whatever gets passed into the `condition` parameter must be true if the `assert` returns (because otherwise it would throw an error).
 That means that for the rest of the scope, that condition must be truthy.
-As an example, using this assertion function means we *do* catch our original `yell` example.
+As an example, using this assertion function means we _do_ catch our original `yell` example.
 
 ```ts
 function yell(str) {
-    assert(typeof str === "string");
+  assert(typeof str === "string");
 
-    return str.toUppercase();
-    //         ~~~~~~~~~~~
-    // error: Property 'toUppercase' does not exist on type 'string'.
-    //        Did you mean 'toUpperCase'?
+  return str.toUppercase();
+  //         ~~~~~~~~~~~
+  // error: Property 'toUppercase' does not exist on type 'string'.
+  //        Did you mean 'toUpperCase'?
 }
 
 function assert(condition: any, msg?: string): asserts condition {
-    if (!condition) {
-        throw new AssertionError(msg)
-    }
+  if (!condition) {
+    throw new AssertionError(msg);
+  }
 }
 ```
 
@@ -264,9 +240,9 @@ The other type of assertion signature doesn't check for a condition, but instead
 
 ```ts
 function assertIsString(val: any): asserts val is string {
-    if (typeof val !== "string") {
-        throw new AssertionError("Not a string!");
-    }
+  if (typeof val !== "string") {
+    throw new AssertionError("Not a string!");
+  }
 }
 ```
 
@@ -274,14 +250,14 @@ Here `asserts val is string` ensures that after any call to `assertIsString`, an
 
 ```ts
 function yell(str: any) {
-    assertIsString(str);
+  assertIsString(str);
 
-    // Now TypeScript knows that 'str' is a 'string'.
+  // Now TypeScript knows that 'str' is a 'string'.
 
-    return str.toUppercase();
-    //         ~~~~~~~~~~~
-    // error: Property 'toUppercase' does not exist on type 'string'.
-    //        Did you mean 'toUpperCase'?
+  return str.toUppercase();
+  //         ~~~~~~~~~~~
+  // error: Property 'toUppercase' does not exist on type 'string'.
+  //        Did you mean 'toUpperCase'?
 }
 ```
 
@@ -289,14 +265,14 @@ These assertion signatures are very similar to writing type predicate signatures
 
 ```ts
 function isString(val: any): val is string {
-    return typeof val === "string";
+  return typeof val === "string";
 }
 
 function yell(str: any) {
-    if (isString(str)) {
-        return str.toUppercase();
-    }
-    throw "Oops!";
+  if (isString(str)) {
+    return str.toUppercase();
+  }
+  throw "Oops!";
 }
 ```
 
@@ -305,11 +281,11 @@ We can express some fairly sophisticated ideas with these.
 
 ```ts
 function assertIsDefined<T>(val: T): asserts val is NonNullable<T> {
-    if (val === undefined || val === null) {
-        throw new AssertionError(
-            `Expected 'val' to be defined, but received ${val}`
-        );
-    }
+  if (val === undefined || val === null) {
+    throw new AssertionError(
+      `Expected 'val' to be defined, but received ${val}`
+    );
+  }
 }
 ```
 
@@ -329,13 +305,12 @@ So users found themselves `return`-ing their failure functions.
 
 ```ts
 function dispatch(x: string | number): SomeType {
-    if (typeof x === "string") {
-        return doThingWithString(x);
-    }
-    else if (typeof x === "number") {
-        return doThingWithNumber(x);
-    }
-    return process.exit(1);
+  if (typeof x === "string") {
+    return doThingWithString(x);
+  } else if (typeof x === "number") {
+    return doThingWithNumber(x);
+  }
+  return process.exit(1);
 }
 ```
 
@@ -343,13 +318,12 @@ Now when these `never`-returning functions are called, TypeScript recognizes tha
 
 ```ts
 function dispatch(x: string | number): SomeType {
-    if (typeof x === "string") {
-        return doThingWithString(x);
-    }
-    else if (typeof x === "number") {
-        return doThingWithNumber(x);
-    }
-    process.exit(1);
+  if (typeof x === "string") {
+    return doThingWithString(x);
+  } else if (typeof x === "number") {
+    return doThingWithNumber(x);
+  }
+  process.exit(1);
 }
 ```
 
@@ -379,7 +353,7 @@ type ValueOrArray<T> = T | Array<ValueOrArray<T>>;
 // error: Type alias 'ValueOrArray' circularly references itself.
 ```
 
-This is strange because there is technically nothing wrong with any use  users could always write what was effectively the same code by introducing an interface.
+This is strange because there is technically nothing wrong with any use users could always write what was effectively the same code by introducing an interface.
 
 ```ts
 type ValueOrArray<T> = T | ArrayOfValueOrArray<T>;
@@ -399,16 +373,10 @@ At the "top level" of a type alias, TypeScript will defer resolving type argumen
 This means that code like the following that was trying to represent JSON...
 
 ```ts
-type Json =
-    | string
-    | number
-    | boolean
-    | null
-    | JsonObject
-    | JsonArray;
+type Json = string | number | boolean | null | JsonObject | JsonArray;
 
 interface JsonObject {
-    [property: string]: Json;
+  [property: string]: Json;
 }
 
 interface JsonArray extends Array<Json> {}
@@ -418,27 +386,26 @@ can finally be rewritten without helper interfaces.
 
 ```ts
 type Json =
-    | string
-    | number
-    | boolean
-    | null
-    | { [property: string]: Json }
-    | Json[];
+  | string
+  | number
+  | boolean
+  | null
+  | { [property: string]: Json }
+  | Json[];
 ```
 
 This new relaxation also lets us recursively reference type aliases in tuples as well.
 The following code which used to error is now valid TypeScript code.
 
 ```ts
-type VirtualNode =
-    | string
-    | [string, { [key: string]: any }, ...VirtualNode[]];
+type VirtualNode = string | [string, { [key: string]: any }, ...VirtualNode[]];
 
-const myNode: VirtualNode =
-    ["div", { id: "parent" },
-        ["div", { id: "first-child" }, "I'm the first child"],
-        ["div", { id: "second-child" }, "I'm the second child"]
-    ];
+const myNode: VirtualNode = [
+  "div",
+  { id: "parent" },
+  ["div", { id: "first-child" }, "I'm the first child"],
+  ["div", { id: "second-child" }, "I'm the second child"]
+];
 ```
 
 For more information, you can [read up on the original pull request](https://github.com/microsoft/TypeScript/pull/33050).
@@ -450,7 +417,7 @@ These `.d.ts` files are important for a couple of reasons.
 
 First of all, they're important because they allow TypeScript to type-check against other projects without re-checking the original source code.
 They're also important because they allow TypeScript to interoperate with existing JavaScript libraries that weren't built with TypeScript in mind.
-Finally, a benefit that is often underappreciated: both TypeScript *and* JavaScript users can benefit from these files when using editors powered by TypeScript to get things like better auto-completion.
+Finally, a benefit that is often underappreciated: both TypeScript _and_ JavaScript users can benefit from these files when using editors powered by TypeScript to get things like better auto-completion.
 
 Unfortunately, `--declaration` didn't work with the `--allowJs` flag which allows mixing TypeScript and JavaScript input files.
 This was a frustrating limitation because it meant users couldn't use the `--declaration` flag when migrating codebases, even if they were JSDoc-annotated.
@@ -464,25 +431,25 @@ When `declaration` emit is turned on, TypeScript figures out the best way to tra
 As an example, the following code snippet
 
 ```js
-const assert = require("assert")
+const assert = require("assert");
 
 module.exports.blurImage = blurImage;
 
 /**
  * Produces a blurred image from an input buffer.
- * 
+ *
  * @param input {Uint8Array}
  * @param width {number}
  * @param height {number}
  */
 function blurImage(input, width, height) {
-    const numPixels = width * height * 4;
-    assert(input.length === numPixels);
-    const result = new Uint8Array(numPixels);
+  const numPixels = width * height * 4;
+  assert(input.length === numPixels);
+  const result = new Uint8Array(numPixels);
 
-    // TODO
+  // TODO
 
-    return result;
+  return result;
 }
 ```
 
@@ -496,7 +463,11 @@ Will produce a `.d.ts` file like
  * @param width {number}
  * @param height {number}
  */
-export function blurImage(input: Uint8Array, width: number, height: number): Uint8Array;
+export function blurImage(
+  input: Uint8Array,
+  width: number,
+  height: number
+): Uint8Array;
 ```
 
 This can go beyond basic functions with `@param` tags too, where the following example:
@@ -509,34 +480,34 @@ This can go beyond basic functions with `@param` tags too, where the following e
 
 /** Queues work */
 export class Worker {
-    constructor(maxDepth = 10) {
-        this.started = false;
-        this.depthLimit = maxDepth;
-        /**
-         * NOTE: queued jobs may add more items to queue
-         * @type {Job[]}
-         */
-        this.queue = [];
-    }
+  constructor(maxDepth = 10) {
+    this.started = false;
+    this.depthLimit = maxDepth;
     /**
-     * Adds a work item to the queue
-     * @param {Job} work 
+     * NOTE: queued jobs may add more items to queue
+     * @type {Job[]}
      */
-    push(work) {
-        if (this.queue.length + 1 > this.depthLimit) throw new Error("Queue full!");
-        this.queue.push(work);
+    this.queue = [];
+  }
+  /**
+   * Adds a work item to the queue
+   * @param {Job} work
+   */
+  push(work) {
+    if (this.queue.length + 1 > this.depthLimit) throw new Error("Queue full!");
+    this.queue.push(work);
+  }
+  /**
+   * Starts the queue if it has not yet started
+   */
+  start() {
+    if (this.started) return false;
+    this.started = true;
+    while (this.queue.length) {
+      /** @type {Job} */ (this.queue.shift())();
     }
-    /**
-     * Starts the queue if it has not yet started
-     */
-    start() {
-        if (this.started) return false;
-        this.started = true;
-        while (this.queue.length) {
-            /** @type {Job} */(this.queue.shift())();
-        }
-        return true;
-    }
+    return true;
+  }
 }
 ```
 
@@ -549,23 +520,23 @@ will be transformed into the following `.d.ts` file:
  */
 /** Queues work */
 export class Worker {
-    constructor(maxDepth?: number);
-    started: boolean;
-    depthLimit: number;
-    /**
-     * NOTE: queued jobs may add more items to queue
-     * @type {Job[]}
-     */
-    queue: Job[];
-    /**
-     * Adds a work item to the queue
-     * @param {Job} work
-     */
-    push(work: Job): void;
-    /**
-     * Starts the queue if it has not yet started
-     */
-    start(): boolean;
+  constructor(maxDepth?: number);
+  started: boolean;
+  depthLimit: number;
+  /**
+   * NOTE: queued jobs may add more items to queue
+   * @type {Job[]}
+   */
+  queue: Job[];
+  /**
+   * Adds a work item to the queue
+   * @param {Job} work
+   */
+  push(work: Job): void;
+  /**
+   * Starts the queue if it has not yet started
+   */
+  start(): boolean;
 }
 export type Job = () => void;
 ```
@@ -581,8 +552,8 @@ Back when TypeScript implemented public class fields, we assumed to the best of 
 
 ```ts
 class C {
-    foo = 100;
-    bar: string;
+  foo = 100;
+  bar: string;
 }
 ```
 
@@ -590,9 +561,9 @@ would be equivalent to a similar assignment within a constructor body.
 
 ```ts
 class C {
-    constructor() {
-        this.foo = 100;
-    }
+  constructor() {
+    this.foo = 100;
+  }
 }
 ```
 
@@ -601,20 +572,20 @@ Instead, the original code sample might need to de-sugar to something closer to 
 
 ```ts
 class C {
-    constructor() {
-        Object.defineProperty(this, "foo", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: 100
-        });
-        Object.defineProperty(this, "bar", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-    }
+  constructor() {
+    Object.defineProperty(this, "foo", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: 100
+    });
+    Object.defineProperty(this, "bar", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+  }
 }
 ```
 
@@ -623,47 +594,51 @@ We've provided a new flag called `useDefineForClassFields` to enable this emit m
 
 The two biggest changes are the following:
 
-* Declarations are initialized with `Object.defineProperty`.
-* Declarations are *always* initialized to `undefined`, even if they have no initializer.
+- Declarations are initialized with `Object.defineProperty`.
+- Declarations are _always_ initialized to `undefined`, even if they have no initializer.
 
 This can cause quite a bit of fallout for existing code that use inheritance. First of all, `set` accessors from base classes won't get triggered - they'll be completely overwritten.
 
 ```ts
 class Base {
-    set data(value: string) {
-        console.log("data changed to " + value);
-    }
+  set data(value: string) {
+    console.log("data changed to " + value);
+  }
 }
 
 class Derived extends Base {
-    // No longer triggers a 'console.log' 
-    // when using 'useDefineForClassFields'.
-    data = 10;
+  // No longer triggers a 'console.log'
+  // when using 'useDefineForClassFields'.
+  data = 10;
 }
 ```
 
 Secondly, using class fields to specialize properties from base classes also won't work.
 
 ```ts
-interface Animal { animalStuff: any }
-interface Dog extends Animal { dogStuff: any }
+interface Animal {
+  animalStuff: any;
+}
+interface Dog extends Animal {
+  dogStuff: any;
+}
 
 class AnimalHouse {
-    resident: Animal;
-    constructor(animal: Animal) {
-        this.resident = animal;
-    }
+  resident: Animal;
+  constructor(animal: Animal) {
+    this.resident = animal;
+  }
 }
 
 class DogHouse extends AnimalHouse {
-    // Initializes 'resident' to 'undefined'
-    // after the call to 'super()' when
-    // using 'useDefineForClassFields'!
-    resident: Dog;
+  // Initializes 'resident' to 'undefined'
+  // after the call to 'super()' when
+  // using 'useDefineForClassFields'!
+  resident: Dog;
 
-    constructor(dog: Dog) {
-        super(dog);
-    }
+  constructor(dog: Dog) {
+    super(dog);
+  }
 }
 ```
 
@@ -675,40 +650,44 @@ Code that's impacted by the class fields change can get around the issue by conv
 
 ```ts
 class Base {
-    set data(value: string) {
-        console.log("data changed to " + value);
-    }
+  set data(value: string) {
+    console.log("data changed to " + value);
+  }
 }
 
 class Derived extends Base {
-    constructor() {
-        data = 10;
-    }
+  constructor() {
+    data = 10;
+  }
 }
 ```
 
 To help mitigate the second issue, you can either add an explicit initializer or add a `declare` modifier to indicate that a property should have no emit.
 
 ```ts
-interface Animal { animalStuff: any }
-interface Dog extends Animal { dogStuff: any }
+interface Animal {
+  animalStuff: any;
+}
+interface Dog extends Animal {
+  dogStuff: any;
+}
 
 class AnimalHouse {
-    resident: Animal;
-    constructor(animal: Animal) {
-        this.resident = animal;
-    }
+  resident: Animal;
+  constructor(animal: Animal) {
+    this.resident = animal;
+  }
 }
 
 class DogHouse extends AnimalHouse {
-    declare resident: Dog;
-//  ^^^^^^^
-// 'resident' now has a 'declare' modifier,
-// and won't produce any output code.
+  declare resident: Dog;
+  //  ^^^^^^^
+  // 'resident' now has a 'declare' modifier,
+  // and won't produce any output code.
 
-    constructor(dog: Dog) {
-        super(dog);
-    }
+  constructor(dog: Dog) {
+    super(dog);
+  }
 }
 ```
 
@@ -737,23 +716,22 @@ A common and dangerous error is to forget to invoke a function, especially if th
 
 ```ts
 interface User {
-    isAdministrator(): boolean;
-    notify(): void;
-    doNotDisturb?(): boolean;
+  isAdministrator(): boolean;
+  notify(): void;
+  doNotDisturb?(): boolean;
 }
 
 // later...
 
 // Broken code, do not use!
 function doAdminThing(user: User) {
-    // oops!
-    if (user.isAdministrator) {
-        sudo();
-        editTheConfiguration();
-    }
-    else {
-        throw new AccessDeniedError("User is not an admin");
-    }
+  // oops!
+  if (user.isAdministrator) {
+    sudo();
+    editTheConfiguration();
+  } else {
+    throw new AccessDeniedError("User is not an admin");
+  }
 }
 ```
 
@@ -774,19 +752,19 @@ This error is only issued in `if` conditions, and it is not issued on optional p
 
 ```ts
 interface User {
-    isAdministrator(): boolean;
-    notify(): void;
-    doNotDisturb?(): boolean;
+  isAdministrator(): boolean;
+  notify(): void;
+  doNotDisturb?(): boolean;
 }
 
 function issueNotification(user: User) {
-    if (user.doNotDisturb) {
-        // OK, property is optional
-    }
-    if (user.notify) {
-        // OK, called the function
-        user.notify();
-    }
+  if (user.doNotDisturb) {
+    // OK, property is optional
+  }
+  if (user.notify) {
+    // OK, called the function
+    user.notify();
+  }
 }
 ```
 
@@ -821,8 +799,8 @@ TypeScript 3.6 users will not be impacted, since that version was future-proofed
 
 While not a breakage per se, opting in to the `useDefineForClassFields` flag can cause breakage when:
 
-* overriding an accessor in a derived class with a property declaration
-* re-declaring a property declaration with no initializer
+- overriding an accessor in a derived class with a property declaration
+- re-declaring a property declaration with no initializer
 
 To understand the full impact, read [the section above on the `useDefineForClassFields` flag](#the-usedefineforclassfields-flag-and-the-declare-property-modifier).
 
@@ -831,9 +809,9 @@ To understand the full impact, read [the section above on the `useDefineForClass
 As mentioned above, TypeScript now errors when functions appear to be uncalled within `if` statement conditions.
 An error is issued when a function type is checked in `if` conditions unless any of the following apply:
 
-* the checked value comes from an optional property
-* `strictNullChecks` is disabled
-* the function is later called within the body of the `if`
+- the checked value comes from an optional property
+- `strictNullChecks` is disabled
+- the function is later called within the body of the `if`
 
 ### Local and Imported Type Declarations Now Conflict
 
@@ -842,17 +820,17 @@ Due to a bug, the following construct was previously allowed in TypeScript:
 ```ts
 // ./someOtherModule.ts
 interface SomeType {
-    y: string;
+  y: string;
 }
 
 // ./myModule.ts
 import { SomeType } from "./someOtherModule";
 export interface SomeType {
-    x: number;
+  x: number;
 }
 
 function fn(arg: SomeType) {
-    console.log(arg.x); // Error! 'x' doesn't exist on 'SomeType'
+  console.log(arg.x); // Error! 'x' doesn't exist on 'SomeType'
 }
 ```
 

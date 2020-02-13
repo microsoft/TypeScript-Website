@@ -15,7 +15,7 @@ export const indexCopy = {
 
 <p>Types provide a way to describe the shape of an object, providing better documentation, and allowing TypeScript to validate that your code is working correctly.</p>
 
-<p>Types are optional in TypeScript, and type inference allows you to get a lot of power without writing additional code.</p>`,
+<p>Writing types can be optional in TypeScript, because type inference allows you to get a lot of power without writing additional code.</p>`,
 
   index_trust: "A Result You Can Trust",
   index_trust_copy_a: `All valid JavaScript code is also TypeScript code. You might get type-checking errors, but that won't stop you from running the resulting JavaScript. While you can go for stricter behavior, that means you're still in control.`,
@@ -45,7 +45,9 @@ export const indexCopy = {
   <p>By handling a lot of the editor integration inside TypeScript, you can get a consistent experience working in many editors.</p>
 
   <p>This lets you easily jump between editors like <vs>Visual Studio</vs>, <vsc>Visual Studio Code</vsc>, <nova>Nova</nova>, <atom>Atom</atom>, <subl>Sublime Text</subl>, <emacs>Emacs</emacs>, <vim>Vim</vim>, <webs>WebStorm</webs> and <eclipse>Eclipse</eclipse>.</p>
-`,
+
+  <p>TypeScript's editor integration supports JavaScript, so it's quite likely you're already using TypeScript under the hood.
+  `,
 
   index_started_title: "Get Started",
   index_started_handbook: "Handbook",

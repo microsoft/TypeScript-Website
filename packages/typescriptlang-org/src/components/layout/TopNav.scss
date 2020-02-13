@@ -151,6 +151,16 @@ form.search {
   display: inline;
 }
 
+.show-only-small {
+  display: none;
+}
+
+@media (max-width: $screen-sm) {
+  .show-only-small {
+    display: block !important;
+  }
+}
+
 @media (min-width: 767px) and (max-width: 900px) {
   .show-only-medium {
     display: inline !important;
