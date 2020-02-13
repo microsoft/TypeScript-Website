@@ -1,6 +1,7 @@
 export const indexCopy = {
   index_headline: "TypeScript is <bold>JavaScript For Any Scale.</bold>",
-  index_byline: "TypeScript extends JavaScript by adding types.",
+  index_byline:
+    "TypeScript extends JavaScript by adding types to the language.",
   index_summary:
     "TypeScript speeds up your development experience by catching errors and providing fixes before you even run your code.",
   index_locations:
@@ -14,14 +15,11 @@ export const indexCopy = {
 
 <p>Types provide a way to describe the shape of an object, providing better documentation, and allowing TypeScript to validate that your code is working correctly.</p>
 
-<p>Types are optional in TypeScript, and type inference allows you to get a lot of power without writing additional code.</p>`,
+<p>Writing types can be optional in TypeScript, because type inference allows you to get a lot of power without writing additional code.</p>`,
 
   index_trust: "A Result You Can Trust",
-  index_trust_copy: `
-<p>All valid JavaScript code is also TypeScript code. You might get type-checking errors, but that won't stop you from running the resulting JavaScript. While you can go for stricter behavior, that means you're still in control.</p>
-
-<p>TypeScript code is transformed into JavaScript code via the TypeScript compiler or <babel>Babel</babel>. This JavaScript is clean, simple code which runs anywhere JavaScript runs: In a browser, on Node.JS or in your apps.</p>`,
-
+  index_trust_copy_a: `All valid JavaScript code is also TypeScript code. You might get type-checking errors, but that won't stop you from running the resulting JavaScript. While you can go for stricter behavior, that means you're still in control.`,
+  index_trust_copy_b: `TypeScript code is transformed into JavaScript code via the TypeScript compiler or <babel>Babel</babel>. This JavaScript is clean, simple code which runs anywhere JavaScript runs: In a browser, on Node.JS or in your apps.`,
   index_standards: "Evolving with Standards",
   index_standards_copy: `
   <p>The TypeScript team contributes to the TC39 committees which help guide the evolution of the JavaScript language.</p>
@@ -47,7 +45,9 @@ export const indexCopy = {
   <p>By handling a lot of the editor integration inside TypeScript, you can get a consistent experience working in many editors.</p>
 
   <p>This lets you easily jump between editors like <vs>Visual Studio</vs>, <vsc>Visual Studio Code</vsc>, <nova>Nova</nova>, <atom>Atom</atom>, <subl>Sublime Text</subl>, <emacs>Emacs</emacs>, <vim>Vim</vim>, <webs>WebStorm</webs> and <eclipse>Eclipse</eclipse>.</p>
-`,
+
+  <p>TypeScript's editor integration supports JavaScript, so it's quite likely you're already using TypeScript under the hood.
+  `,
 
   index_started_title: "Get Started",
   index_started_handbook: "Handbook",
@@ -69,4 +69,8 @@ export const indexCopy = {
   index_releases_released: "Released",
   index_releases_beta: "Beta",
   index_releases_rc: "RC",
+
+  index_migration_title: "Migration Stories",
+  index_migration_oss: "Open Source with TypeScript",
+  index_videos_title: "Watch TypeScript in Action",
 }

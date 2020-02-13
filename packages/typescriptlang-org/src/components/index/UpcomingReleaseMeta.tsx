@@ -2,13 +2,13 @@ import React from "react"
 import { withPrefix } from "gatsby"
 
 // Automatic metadata from NPM and VS Marketplace
-import releaseInfo from "../lib/release-info.json"
+import releaseInfo from "../../lib/release-info.json"
 // Manual input of dates
-import releasePlan from "../lib/release-plan.json"
+import releasePlan from "../../lib/release-plan.json"
 
-import { createInternational } from "../lib/createInternational"
+import { createInternational } from "../../lib/createInternational"
 import { useIntl } from "react-intl"
-import { indexCopy } from "../copy/en/index.js"
+import { indexCopy } from "../../copy/en/index.js"
 
 /**
  * Shows the current versions, and upcoming releases
@@ -17,7 +17,6 @@ export const UpcomingReleaseMeta = () => {
   const intl = useIntl()
 
   const i = createInternational<typeof indexCopy>(intl)
-  i
 
   const startDate = new Date(releasePlan.last_release_date)
   const betaDate = new Date(releasePlan.upcoming_beta_date)

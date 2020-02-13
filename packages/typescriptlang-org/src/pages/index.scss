@@ -4,8 +4,7 @@
   background-color: $ts-dark-bg-color;
   text-align: center;
   color: white;
-  height: 3rem;
-  line-height: 3rem;
+  padding: 0.7rem 2rem;
   margin: 0;
   font-size: 0.9rem;
 
@@ -22,6 +21,14 @@
   padding: 18px;
   margin-right: 20px;
   box-sizing: border-box;
+}
+
+.clicky-grey-button,
+.grey-box,
+.col1 {
+  &.first {
+    margin-left: 20px;
+  }
 
   &.last {
     margin-right: 0;
@@ -29,9 +36,48 @@
 }
 
 #index {
+  // Mobile specific css changes
+  @media (max-width: $screen-sm) {
+    // from left to right -> top to down
+    .container > .row {
+      flex-direction: column;
+    }
+
+    // Doesn't show because it doens't have a way to generate
+    // a height, so hard-code it
+    div.headline-diagram {
+      height: 400px;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    // Make it 2s instead of 4s
+    .split-row > a {
+      width: 40%;
+    }
+
+    // Can't fit that much info into one component, just drop the quotes
+    .illustration {
+      display: none;
+    }
+
+    .line-error,
+    .underline-error,
+    .error-message,
+    ul.dropdown {
+      margin-top: 12px;
+    }
+
+    .headline-diagram div.editor.front {
+      bottom: -40px;
+    }
+  }
+
   h1 {
     font-size: 2.5rem;
     font-weight: 200;
+    margin-top: 0;
+
     strong {
       font-weight: 500;
     }
@@ -50,10 +96,20 @@
     margin-top: 0;
   }
 
-  .row {
+  .row,
+  .split-row {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+  }
+
+  .split-row {
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+
+    .first {
+      margin-left: 0;
+    }
   }
 
   .col1 {
@@ -85,6 +141,11 @@
     color: white;
   }
 
+  .dark-green {
+    background-color: #086e12;
+    color: white;
+  }
+
   .white {
     background-color: white;
     color: black;
@@ -98,7 +159,7 @@
   .headline .container {
     padding-bottom: 0;
     padding-top: 20px;
-    font-size: 1.3rem;
+    font-size: 1rem;
   }
 
   .container {
@@ -109,7 +170,6 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    overflow-y: hidden;
   }
 
   .headline-diagram {
@@ -118,7 +178,7 @@
     position: relative;
 
     .editor {
-      border: 2px solid white;
+      border: 2px solid #c4c4c4;
       background-color: $ts-main-blue-darkest-color;
 
       border-radius: 8px;
@@ -129,7 +189,15 @@
       &.front {
         right: 40px;
         bottom: -80px;
-        background-color: #152740;
+        background-color: #223146;
+        border-color: white;
+
+        .titlebar {
+          border-color: white;
+        }
+        div.lines {
+          border-color: white;
+        }
       }
 
       &.back {
@@ -137,20 +205,87 @@
         bottom: -120px;
       }
 
+      .editor-inner {
+        position: relative;
+      }
+
       .titlebar {
         height: 2rem;
-        border-bottom: 2px solid white;
+        border-bottom: 2px solid #c4c4c4;
         display: flex;
         flex-direction: row;
 
         .lang {
-          margin-left: 5px;
+          margin-left: 6px;
+          margin-top: 3px;
         }
 
         .window-name {
           margin-left: 10px;
-          padding-top: 2px;
+          padding-top: 5px;
         }
+      }
+
+      .line-error {
+        position: absolute;
+        left: 0;
+        height: 20px;
+        width: 22px;
+        background-color: $ts-muted-red;
+      }
+
+      .underline-error {
+        position: absolute;
+        left: 0;
+        height: 16px;
+        background: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%206%203'%20enable-background%3D'new%200%200%206%203'%20height%3D'3'%20width%3D'6'%3E%3Cg%20fill%3D'%23c94824'%3E%3Cpolygon%20points%3D'5.5%2C0%202.5%2C3%201.1%2C3%204.1%2C0'%2F%3E%3Cpolygon%20points%3D'4%2C0%206%2C2%206%2C0.6%205.4%2C0'%2F%3E%3Cpolygon%20points%3D'0%2C2%201%2C3%202.4%2C3%200%2C0.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")
+          repeat-x bottom left;
+        padding-bottom: 3px;
+      }
+
+      .error-message {
+        color: #ff6666;
+        font-size: 0.8rem;
+        font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+        position: absolute;
+        width: 200px;
+      }
+
+      ul.dropdown {
+        position: absolute;
+        width: 240px;
+        background-color: white;
+        color: grey;
+
+        font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+        font-size: 0.8rem;
+        margin: 0;
+        padding: 0;
+
+        border-left: 4px solid #4b9edd;
+
+        li {
+          border-bottom: 1px solid black;
+          height: 1rem;
+          overflow-x: hidden;
+          padding-left: 4px;
+
+          span.result-found {
+            color: #4b9edd;
+          }
+          span.result {
+            width: 100px;
+            color: black;
+            display: inline-block;
+          }
+        }
+      }
+
+      .did-you-mean-icon {
+        position: absolute;
+      }
+      .did-you-mean {
+        position: absolute;
       }
 
       .content {
@@ -160,7 +295,7 @@
 
         .lines {
           width: 22px;
-          border-right: 2px solid white;
+          border-right: 2px solid #c4c4c4;
           flex-shrink: 0;
         }
 
@@ -171,7 +306,64 @@
           white-space: pre;
           flex-shrink: 1;
           overflow-x: scroll;
+          position: relative;
         }
+      }
+
+      .highlight {
+        color: #9ed5ff;
+      }
+    }
+    .back .content .text > div {
+      padding-right: 200px;
+    }
+  }
+
+  .next-headline-button {
+    background-color: white;
+    color: black;
+    padding: 3px;
+    max-width: 300px;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    bottom: 20px;
+    margin: auto 0;
+    align-items: center;
+    position: relative;
+    left: -50%;
+
+    &:hover,
+    &.focus {
+      background-color: #eee;
+    }
+
+    &:active {
+      background-color: #ddd;
+    }
+
+    .message {
+      margin: 10px;
+      font-size: 0.9rem;
+      min-width: 200px;
+    }
+
+    .next {
+      border-left: 2px solid black;
+
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+
+      p {
+        margin-left: 20px;
+      }
+
+      svg {
+        height: 100%;
+        margin-left: 20px;
+        margin-right: 10px;
       }
     }
   }
@@ -241,7 +433,220 @@
   }
 }
 
-.clicky-grey-button {
+#index .clicky-grey-button {
   box-sizing: border-box;
-  width: calc(25% - 20px);
+  width: calc(25% - 25px);
+}
+
+#index .migrations {
+  -webkit-transition: background 300ms ease-out;
+  -moz-transition: background 300ms ease-out;
+  -o-transition: background 300ms ease-out;
+  -ms-transition: background 300ms ease-out;
+  transition: background 300ms ease-out;
+}
+
+#index .migrations {
+  overflow-x: hidden;
+  .container {
+    padding-bottom: 0;
+  }
+}
+
+#m-stories {
+  position: relative;
+  min-height: 370px;
+
+  .controls a {
+    background-color: white;
+    width: 2rem;
+    height: 2rem;
+    color: black;
+    position: absolute;
+    top: 70%;
+    text-align: center;
+    line-height: 2.5rem;
+    z-index: 2;
+
+    &:hover {
+      background-color: #eee;
+    }
+
+    &.left {
+      left: 0;
+    }
+
+    &.right {
+      right: 0;
+    }
+  }
+
+  .slack {
+    .copy {
+      background: #4e086f;
+      background: linear-gradient(
+        90deg,
+        #4e086f 48%,
+        rgba(78, 8, 111, 0.28) 100%
+      );
+    }
+  }
+
+  .airbnb {
+    .copy {
+      background: #6f0808;
+      background: linear-gradient(
+        90deg,
+        #6f0808 48%,
+        rgba(111, 8, 8, 0.28) 100%
+      );
+    }
+
+    .fg {
+      padding-top: 40px;
+    }
+  }
+
+  .goog {
+    .copy {
+      background: #086f56;
+      background: linear-gradient(
+        90deg,
+        #086f56 48%,
+        rgba(8, 111, 86, 0.28) 100%
+      );
+    }
+
+    .illustration .fg {
+      padding-top: 80px;
+    }
+  }
+
+  .copy {
+    position: absolute;
+    padding-left: 20px;
+    padding-right: 30px;
+    width: 260px;
+
+    -webkit-transition: opacity 200ms ease-out;
+    -moz-transition: opacity 200ms ease-out;
+    -o-transition: opacity 200ms ease-out;
+    -ms-transition: opacity 200ms ease-out;
+    transition: opacity 200ms ease-out;
+
+    p {
+      padding: 1rem 0;
+    }
+
+    a.migration-button {
+      border: 1px solid white;
+      color: white;
+      text-decoration: none;
+      text-align: center;
+      width: 60%;
+      display: block;
+      padding: 8px 0;
+
+      &:hover,
+      &:focus {
+        background-color: white;
+        color: black;
+      }
+    }
+  }
+
+  .illustration {
+    .fg {
+      font-size: 1.4rem;
+    }
+
+    position: absolute;
+    right: 20px;
+
+    .fg {
+      width: 370px;
+      position: absolute;
+      right: 70px;
+    }
+  }
+}
+
+.oss {
+  width: 100%;
+
+  .icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 800px;
+    margin: 0 auto;
+
+    svg {
+      margin: 0 auto;
+    }
+
+    a {
+      flex: 1;
+      margin: 20px;
+      color: white;
+      text-align: center;
+      height: 145px;
+      width: 140px;
+      max-width: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      p {
+        padding-bottom: 0;
+      }
+    }
+  }
+}
+
+.github-bar {
+  position: absolute;
+  opacity: 0;
+  -webkit-transition: opacity 300ms ease-out;
+  -moz-transition: opacity 300ms ease-out;
+  -o-transition: opacity 300ms ease-out;
+  -ms-transition: opacity 300ms ease-out;
+  transition: opacity 300ms ease-out;
+
+  &.left {
+    left: -200px;
+  }
+  &.right {
+    right: -200px;
+  }
+}
+
+ul#videos {
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-left: 2px solid transparent;
+
+    &.active {
+      border-color: black;
+    }
+
+    a {
+      text-decoration: none;
+      color: black;
+      font-size: 1rem;
+      display: block;
+      margin-left: 6px;
+    }
+
+    span {
+      font-style: italic;
+      font-size: 0.8rem;
+    }
+  }
 }

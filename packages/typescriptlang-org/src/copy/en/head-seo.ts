@@ -7,4 +7,7 @@ export const headCopy = {
   tsconfig_description:
     "From allowJs to useDefineForClassFields the TSConfig reference includes information about all of the active compiler flags setting up a TypeScript project.",
   playground_example_prefix: "Playground Example - ",
+
+  head_index_title: "JavaScript For Any Scale",
+  head_index_description: "JavaScript For Any Scale",
 }
