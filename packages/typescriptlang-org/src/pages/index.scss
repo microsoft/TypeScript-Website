@@ -259,11 +259,16 @@
           white-space: pre;
           flex-shrink: 1;
           overflow-x: scroll;
+          position: relative;
         }
       }
+
       .highlight {
         color: #9ed5ff;
       }
+    }
+    .back .content .text > div {
+      padding-right: 200px;
     }
   }
 

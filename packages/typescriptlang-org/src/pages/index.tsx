@@ -121,7 +121,7 @@ const Index = (props: any) => {
                 {i("index_install_ref", {
                   p: (...chunk) => <p>{chunk}</p>,
                   pre: (...chunk) => <pre>{chunk}</pre>,
-                  code: (...chunk) => <code key={chunk}>{chunk}</code>,
+                  code: (...chunk) => <code key={1}>{chunk}</code>,
                 })}
               </div>
             </Col>
@@ -206,4 +206,3 @@ const setupVideosSection = () => {
 
 
 export default (props: any) => <Intl><Index {...props} /></Intl>
-

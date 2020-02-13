@@ -23,7 +23,9 @@ export const EditorExamples = () => {
     "Get completions for un-typed JavaScript code",
     "Catch typoes in your editor ahead of runtime",
     "Offer instant fixes for common bugs",
-    "Opt-in to strict nullability checking"
+    "Opt-in to strict nullability checking",
+    "Use exact strings and numbers for type-checking",
+    "Declare code to be read-only to avoid changes"
   ]
 
   const loadIndex = (index: number) => {
@@ -60,6 +62,12 @@ export const EditorExamples = () => {
           ),
           5: (
             <Strict />
+          ),
+          6: (
+            <Literals />
+          ),
+          7: (
+            <Mutation />
           )
         }[index]}
       </div>
@@ -103,17 +111,19 @@ addPrices(3, 4, 6);
 `
 
   return (
-    <div className="wrong-arguments">
+    <div>
       <Editor title="Example.js" isJS code={js} />
-      <Editor title="Example.ts" front code={ts} inline={() =>
-        (<>
-          <div className="line-error" style={{ top: "170px" }} />
-          <div className="underline-error" style={{ top: "170px", left: "120px", width: "68px" }} />
-          <div className="error-message" style={{ top: "200px", left: "120px", width: "200px" }}>
-            Expected 1 argument,<br />but got 3.
+      <Editor title="Example.ts" front code={ts}
+        line={() => <div className="line-error" style={{ top: "166px" }} />}
+
+        inline={() =>
+          (<>
+            <div className="underline-error" style={{ top: "140px", left: "96px", width: "68px" }} />
+            <div className="error-message" style={{ top: "170px", left: "96px", width: "200px" }}>
+              Expected 1 argument,<br />but got 3.
           </div>
-        </>)
-      } />
+          </>)
+        } />
     </div>
   )
 }
@@ -149,7 +159,7 @@ export const UserThumbnail =
 `
 
   return (
-    <div className="wrong-arguments">
+    <div>
       <Editor title="Example.jsx" isJS code={js} />
       <Editor title="Example.tsx" front code={ts} />
     </div>
@@ -169,7 +179,7 @@ app.listen(3000)
   `
 
   const ts = `
-const express = require('express')
+const express = require('express')    
 const app = express()
   
 app.get('/', function (req, res) {
@@ -177,11 +187,11 @@ app.get('/', function (req, res) {
 `
 
   return (
-    <div className="wrong-arguments">
+    <div>
       <Editor title="Example.js" isJS code={js} />
       <Editor title="Example.ts" front code={ts} inline={() =>
         (<>
-          <ul className="dropdown" style={{ top: "130px", left: "105px" }}>
+          <ul className="dropdown" style={{ top: "96px", left: "78px" }}>
             <li><span className='result'><span className='result-found'>se</span>nd</span>Send a response.</li>
             <li><span className='result'><span className='result-found'>se</span>ndData</span>Boolean which declares to send data.</li>
             <li><span className='result'><span className='result-found'>se</span>ndFile</span>Transfers a file at the given path.</li>
@@ -217,15 +227,17 @@ console.log(jon.naem)
 `
 
   return (
-    <div className="wrong-arguments">
+    <div>
       <Editor title="Example.js" isJS code={js} />
-      <Editor title="Example.ts" front code={ts} inline={() =>
-        (<>
-          <div className="line-error" style={{ top: "154px" }} />
-          <div className="underline-error" style={{ top: "154px", left: "160px", width: "40px" }} />
-          <div className="error-message" style={{ top: "180px", left: "120px", width: "240px" }}>{`Property 'naem' does not exist on type'{ name: string; }'.`}</div>
-        </>)
-      } />
+      <Editor title="Example.ts" front code={ts}
+        line={() => <div className="line-error" style={{ top: "152px" }} />}
+
+        inline={() =>
+          (<>
+            <div className="underline-error" style={{ top: "122px", left: "138px", width: "40px" }} />
+            <div className="error-message" style={{ top: "150px", left: "18px", width: "240px" }}>Property 'naem' does not exist<br />on type '&#123; name: string; }'.</div>
+          </>)
+        } />
     </div>
   )
 }
@@ -246,17 +258,19 @@ const getUserAccountID = async () => {
 `
 
   return (
-    <div className="wrong-arguments">
+    <div>
       <Editor title="Example.js" isJS code={js} />
-      <Editor title="Example.ts" front code={ts} inline={() =>
-        (<>
-          <div className="line-error" style={{ top: "80px" }} />
-          <div className="underline-error" style={{ top: "80px", left: "130px", width: "40px" }} />
-          <div className="error-message" style={{ top: "110px", left: "120px", width: "240px" }}>{`Property 'json' does not exist on type 'Promise<Response>'`}</div>
-          <div className="did-you-mean-icon" style={{ top: "152px", left: "100px", width: "200px" }}><svg width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.6708 7.65806C7.3319 7.9916 7.0716 8.36278 6.8886 8.77172C6.7105 9.1792 6.621 9.6219 6.621 10.1009V11.7012C6.621 11.8807 6.5872 12.0503 6.5189 12.2091C6.4513 12.3661 6.3586 12.5038 6.2407 12.6213C6.1228 12.7388 5.98464 12.8311 5.82723 12.8984C5.66806 12.9663 5.49806 13 5.31823 13H3.71205C3.53223 13 3.36223 12.9663 3.20306 12.8984C3.04564 12.8311 2.90753 12.7388 2.78961 12.6213C2.67168 12.5038 2.57895 12.3661 2.51141 12.2091C2.44311 12.0503 2.40927 11.8807 2.40927 11.7012V10.1009C2.40927 9.622 2.31772 9.1795 2.13553 8.77209C1.95683 8.36336 1.69832 7.99156 1.35953 7.65806C0.92468 7.22903 0.58896 6.75003 0.35361 6.22134C0.11756 5.69107 0 5.11672 0 4.49953C0 4.08664 0.05342 3.68802 0.16048 3.30397C0.26728 2.92089 0.41907 2.56286 0.61595 2.23018C0.81257 1.89377 1.04777 1.58911 1.32146 1.31641C1.59503 1.04383 1.89858 0.80953 2.23195 0.61364C2.56979 0.41764 2.93146 0.2662 3.31578 0.15983C3.70106 0.0532 4.10094 0 4.51514 0C4.92934 0 5.32923 0.0532 5.71451 0.15983C6.0988 0.2662 6.458 0.41739 6.7918 0.61351C7.1294 0.80938 7.4351 1.0437 7.7088 1.31641C7.9825 1.5891 8.2177 1.89376 8.4143 2.23016C8.6112 2.56285 8.763 2.92088 8.8698 3.30397C8.9769 3.68802 9.0303 4.08664 9.0303 4.49953C9.0303 5.11672 8.9127 5.69107 8.6767 6.22134C8.4413 6.75003 8.1056 7.22903 7.6708 7.65806ZM5.62162 9.5H3.40867V11.7012C3.40867 11.7823 3.4372 11.8512 3.49888 11.9127C3.56058 11.9741 3.63007 12.0028 3.71205 12.0028H5.31823C5.40022 12.0028 5.46971 11.9741 5.5314 11.9127C5.59309 11.8512 5.62162 11.7823 5.62162 11.7012V9.5Z" fill="white" /></svg></div>
-          <div className="did-you-mean" style={{ top: "150px", left: "120px", width: "200px" }}>{`add 'await'?`}</div>
-        </>)
-      } />
+      <Editor title="Example.ts" front code={ts}
+        line={() => <div className="line-error" style={{ top: "80px" }} />}
+
+        inline={() =>
+          (<>
+            <div className="underline-error" style={{ top: "46px", left: "110px", width: "42px" }} />
+            <div className="error-message" style={{ top: "70px", left: "70px", width: "240px" }}>Property 'json' does not exist<br />on type 'Promise&lt;Response>'</div>
+            <div className="did-you-mean-icon" style={{ top: "122px", left: "50px", width: "200px" }}><svg width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.6708 7.65806C7.3319 7.9916 7.0716 8.36278 6.8886 8.77172C6.7105 9.1792 6.621 9.6219 6.621 10.1009V11.7012C6.621 11.8807 6.5872 12.0503 6.5189 12.2091C6.4513 12.3661 6.3586 12.5038 6.2407 12.6213C6.1228 12.7388 5.98464 12.8311 5.82723 12.8984C5.66806 12.9663 5.49806 13 5.31823 13H3.71205C3.53223 13 3.36223 12.9663 3.20306 12.8984C3.04564 12.8311 2.90753 12.7388 2.78961 12.6213C2.67168 12.5038 2.57895 12.3661 2.51141 12.2091C2.44311 12.0503 2.40927 11.8807 2.40927 11.7012V10.1009C2.40927 9.622 2.31772 9.1795 2.13553 8.77209C1.95683 8.36336 1.69832 7.99156 1.35953 7.65806C0.92468 7.22903 0.58896 6.75003 0.35361 6.22134C0.11756 5.69107 0 5.11672 0 4.49953C0 4.08664 0.05342 3.68802 0.16048 3.30397C0.26728 2.92089 0.41907 2.56286 0.61595 2.23018C0.81257 1.89377 1.04777 1.58911 1.32146 1.31641C1.59503 1.04383 1.89858 0.80953 2.23195 0.61364C2.56979 0.41764 2.93146 0.2662 3.31578 0.15983C3.70106 0.0532 4.10094 0 4.51514 0C4.92934 0 5.32923 0.0532 5.71451 0.15983C6.0988 0.2662 6.458 0.41739 6.7918 0.61351C7.1294 0.80938 7.4351 1.0437 7.7088 1.31641C7.9825 1.5891 8.2177 1.89376 8.4143 2.23016C8.6112 2.56285 8.763 2.92088 8.8698 3.30397C8.9769 3.68802 9.0303 4.08664 9.0303 4.49953C9.0303 5.11672 8.9127 5.69107 8.6767 6.22134C8.4413 6.75003 8.1056 7.22903 7.6708 7.65806ZM5.62162 9.5H3.40867V11.7012C3.40867 11.7823 3.4372 11.8512 3.49888 11.9127C3.56058 11.9741 3.63007 12.0028 3.71205 12.0028H5.31823C5.40022 12.0028 5.46971 11.9741 5.5314 11.9127C5.59309 11.8512 5.62162 11.7823 5.62162 11.7012V9.5Z" fill="white" /></svg></div>
+            <div className="did-you-mean" style={{ top: "120px", left: "70px", width: "200px" }}>{`add 'await'?`}</div>
+          </>)
+        } />
     </div>
   )
 }
@@ -290,15 +304,105 @@ console.log(jon.naem)
 `
 
   return (
-    <div className="wrong-arguments">
+    <div>
       <Editor title="Example.js" isJS code={js} />
-      <Editor title="Example.ts" front code={ts} inline={() =>
-        (<>
-          <div className="line-error" style={{ top: "184px" }} />
-          <div className="underline-error" style={{ top: "186px", left: "130px", width: "30px" }} />
-          <div className="error-message" style={{ top: "210px", left: "120px", width: "240px" }}>{`Object is possibly 'undefined'.`}</div>
-        </>)
-      } />
+      <Editor title="Example.ts" front code={ts}
+        line={() => <div className="line-error" style={{ top: "184px" }} />}
+        inline={() =>
+          (<>
+            <div className="underline-error" style={{ top: "152px", left: "108px", width: "30px" }} />
+            <div className="error-message" style={{ top: "180px", left: "60px" }}>{`Object is possibly 'undefined'.`}</div>
+          </>)
+        } />
+    </div>
+  )
+}
+
+
+const Literals = () => {
+  const js = `
+function getLength(value, from, to) {
+  if (from === "cm" && to === "in") {
+    // ...
+  }
+  // ...
+}
+
+const dist = getLength(3, "cm", "inches");
+  `
+
+  const ts = `
+  <span class='highlight'>type Unit = "mm" | "cm" | "in"</span> 
+
+function getLength(
+  value<span class='highlight'>: number</span>, from<span class='highlight'>: Unit</span>, to<span class='highlight'>: Unit</span>) {
+ // ...
+}
+
+const dist = getLength(3, "cm", "inches");
+`
+
+  return (
+    <div>
+      <Editor title="Example.js" isJS code={js} />
+      <Editor title="Example.ts" front code={ts}
+        line={() => <div className="line-error" style={{ top: "152px" }} />}
+        inline={() =>
+          (<>
+            <div className="underline-error" style={{ top: "124px", left: "266px", width: "55px" }} />
+            <div className="error-message" style={{ top: "153px", left: "16px", width: "320px" }}>
+              Argument of type '"inches"' is not<br />assignable to parameter of type 'Unit'.
+          </div>
+          </>)
+        } />
+    </div>
+  )
+}
+
+
+
+const Mutation = () => {
+  const js = `
+const adminUserIDs 
+  = [1, 23, 88]
+
+function isAdmin(userID) {
+  for (let index = 0; index < adminUserIDs.length; index++) {
+    if (adminUserIDs[index] = userID) {
+      return true
+    };
+    return false
+  }
+}
+  `
+
+  const ts = `
+const adminUserIDs
+   <span class='highlight'>: readonly number[]</span> = [1, 23, 88]
+
+function isAdmin(userID<span class='highlight'>: number</span>) {
+  for (let index = 0; index < adminUserIDs.length; index++) {
+    if (adminUserIDs[index] = userID) {
+      return true
+    };
+    return false
+  }
+}  
+`
+
+  return (
+    <div>
+      <Editor title="Example.js" isJS code={js} />
+      <Editor title="Example.ts" front code={ts}
+        line={() => <div className="line-error" style={{ top: "124px" }} />}
+        inline={() =>
+          (<>
+            <div className="underline-error" style={{ top: "90px", left: "76px", width: "144px" }} />
+            <div className="error-message" style={{ top: "174px", left: "40px", width: "200px" }}>
+              Index signature in type 'readonly<br />number[]'only permits reading.
+          </div>
+          </>)
+        } />
     </div>
   )
 }
@@ -310,12 +414,14 @@ type EditorProps = {
   front?: boolean
   code: string
   inline?: () => JSX.Element
+  line?: () => JSX.Element
 }
 
 
 const Editor = (props: EditorProps) => {
   const classes = ["editor"]
   classes.push(props.front ? "front" : "back")
+  classes.push(props.isJS ? "js" : "ts")
   return (
     <div className={classes.join(" ")}>
       <div className="editor-inner">
@@ -325,9 +431,12 @@ const Editor = (props: EditorProps) => {
         </div>
         <div className="content">
           <div className="lines"></div>
-          <div className="text" dangerouslySetInnerHTML={{ __html: props.code.trim() }} />
+          <div className="text">
+            <div dangerouslySetInnerHTML={{ __html: props.code.trim() }} />
+            {props.inline && props.inline() || null}
+          </div>
         </div>
-        {props.inline && props.inline() || null}
+        {props.line && props.line() || null}
       </div>
     </div>
   )
