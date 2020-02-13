@@ -13,35 +13,42 @@ const go = async () => {
   const sitemap =
     "https://typescript-v2-" + prNumber + ".ortam.now.sh/sitemap.xml"
 
-  const packageJSON = await nodeFetch(sitemap)
-  const contents = await packageJSON.text()
+  try {
+    const packageJSON = await nodeFetch(sitemap)
 
-  const sitemapJSON = JSON.parse(parser.toJson(contents))
-  const urls = sitemapJSON.urlset.url
-    .map(u => u.loc)
-    .map(url => {
-      // from "https://www.typescriptlang.org/v2/docs/handbook/advanced-types.html",
-      // to   "https://typescript-v2-" + prNumber + ".ortam.now.sh/docs/handbook/advanced-types.html",
-      return url.replace(
-        "https://www.typescriptlang.org/v2/",
-        "https://typescript-v2-" + prNumber + ".ortam.now.sh/"
-      )
-    })
-    .filter(url => !url.endsWith(".ts"))
-    .reverse()
+    const contents = await packageJSON.text()
 
-  const repoRoot = join(__dirname, "..", "..", "..")
-  const lighthouseFiles = join(repoRoot, ".lighthouserc.json")
-  const json = {
-    ci: {
-      collect: {
-        url: [...urls],
+    const sitemapJSON = JSON.parse(parser.toJson(contents))
+    const urls = sitemapJSON.urlset.url
+      .map(u => u.loc)
+      .map(url => {
+        // from "https://www.typescriptlang.org/v2/docs/handbook/advanced-types.html",
+        // to   "https://typescript-v2-" + prNumber + ".ortam.now.sh/docs/handbook/advanced-types.html",
+        return url.replace(
+          "https://www.typescriptlang.org/v2/",
+          "https://typescript-v2-" + prNumber + ".ortam.now.sh/"
+        )
+      })
+      .filter(url => !url.endsWith(".ts"))
+      .reverse()
+
+    const repoRoot = join(__dirname, "..", "..", "..")
+    const lighthouseFiles = join(repoRoot, ".lighthouserc.json")
+    const json = {
+      ci: {
+        collect: {
+          url: [...urls],
+        },
       },
-    },
-  }
+    }
 
-  console.log(`Looking at ${urls.length} urls`)
-  writeFileSync(lighthouseFiles, JSON.stringify(json))
+    console.log(`Looking at ${urls.length} urls`)
+    writeFileSync(lighthouseFiles, JSON.stringify(json))
+  } catch (error) {
+    console.log(
+      "Failed to generate lighthouse JSON, this is fine if you are not an orta"
+    )
+  }
 }
 
 go()
