@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 
-import { indexCopy } from "../copy/en/index"
-import { createInternational } from "../lib/createInternational"
+import { indexCopy } from "../../copy/en/index"
+import { createInternational } from "../../lib/createInternational"
 import { useIntl } from "react-intl"
 
 const ReverseRow = (props: { children: any }) => <div className="row reverse">{props.children}</div>
@@ -112,10 +112,10 @@ const Google = () => (
         </div>
         <div className="bg">
           <svg width="780" height="380" viewBox="0 0 780 380" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="414.5" y="244.5" width="79" height="20" stroke="white" stroke-opacity="0.3" />
-            <rect x="284.5" y="244.5" width="79" height="20" stroke="white" stroke-opacity="0.3" />
+            <rect x="414.5" y="244.5" width="79" height="20" stroke="white" strokeOpacity="0.3" />
+            <rect x="284.5" y="244.5" width="79" height="20" stroke="white" strokeOpacity="0.3" />
             <path opacity="0.6" d="M0.5 11C0.5 5.201 5.20101 0.5 11 0.5H769C774.799 0.5 779.5 5.20101 779.5 11V379.5H0.5V11Z" stroke="white" />
-            <rect opacity="0.6" x="214.5" y="181.5" width="351" height="45" rx="22.5" stroke="white" stroke-opacity="0.3" />
+            <rect opacity="0.6" x="214.5" y="181.5" width="351" height="45" rx="22.5" stroke="white" strokeOpacity="0.3" />
             <path opacity="0.6" d="M0 33H780" stroke="white" />
             <path d="M317.355 65.9277L312.478 85.5273H306.018L312.214 65.9277H317.355ZM303.996 65.9277L299.25 85.5273H292.658L298.811 65.9277H303.996Z" fill="white" />
             <path d="M733.355 327.928L728.478 347.527H722.018L728.214 327.928H733.355ZM719.996 327.928L715.25 347.527H708.658L714.811 327.928H719.996Z" fill="white" />
@@ -161,7 +161,7 @@ const OSS = () => (
 
         <a href='https://angular.io/'>
           <svg width="127" height="110" viewBox="0 0 127 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M101.287 0H126.609L63.3043 109.2L0 0H25.0052H48.4278L63.3043 25.3217L77.8643 0H101.287Z" fill="white" fill-opacity="0.24" />
+            <path d="M101.287 0H126.609L63.3043 109.2L0 0H25.0052H48.4278L63.3043 25.3217L77.8643 0H101.287Z" fill="white" fillOpacity="0.24" />
             <path d="M0 0L63.3043 109.2L126.609 0H101.287L63.3043 65.52L25.0052 0H0Z" fill="white" />
           </svg>
           <p>Vue</p>
@@ -347,10 +347,12 @@ export const MigrationStories = () => {
   return (
     <div id="m-stories">
       <div className="controls">
-        <a href="" className="button left" onClick={prev}>
-          <svg width="11" height="15" viewBox="0 0 11 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 0.5L10.5 14.5L5.68248e-07 8L10.5 0.5Z" fill="#08446E" /></svg></a>
-        <a href="" className="button right" onClick={next}>
-          <svg width="11" height="15" viewBox="0 0 11 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 14.5V0.5L10.5 7L0 14.5Z" fill="#08446E" /></svg></a>
+        <a href="#m-stories" className="button left" onClick={prev} aria-label="prev" aria-controls="carousel">
+          <svg width="11" height="15" viewBox="0 0 11 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 0.5L10.5 14.5L5.68248e-07 8L10.5 0.5Z" fill="#08446E" /></svg>
+        </a>
+        <a href="#m-stories" className="button right" onClick={next} aria-label="next" aria-controls="carousel">
+          <svg width="11" height="15" viewBox="0 0 11 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 14.5V0.5L10.5 7L0 14.5Z" fill="#08446E" /></svg>
+        </a>
       </div>
 
       <div className="slides">
@@ -370,7 +372,7 @@ export const MigrationStories = () => {
         }[index]}
         {firstRun = false}
       </div>
-    </div>
+    </div >
   )
 }
 
@@ -394,12 +396,12 @@ export const GitHubBar = ({ left }) =>
     <rect x="91" width="10" height="10" fill="white" />
     <rect opacity="0.8" x="403" width="10" height="10" fill="white" />
     <rect opacity="0.8" x="221" y="13" width="10" height="10" fill="white" />
-    <rect opacity="0.8" x="117" y="13" width="10" height="10" fill="white" fill-opacity="0.4" />
+    <rect opacity="0.8" x="117" y="13" width="10" height="10" fill="white" fillOpacity="0.4" />
     <rect opacity="0.8" x="13" y="13" width="10" height="10" fill="white" />
     <rect x="325" y="13" width="10" height="10" fill="white" />
     <rect opacity="0.9" x="247" y="13" width="10" height="10" fill="white" />
     <rect opacity="0.9" x="143" y="13" width="10" height="10" fill="white" />
-    <rect opacity="0.9" x="39" y="13" width="10" height="10" fill="white" fill-opacity="0.4" />
+    <rect opacity="0.9" x="39" y="13" width="10" height="10" fill="white" fillOpacity="0.4" />
     <rect opacity="0.8" x="351" y="13" width="10" height="10" fill="white" />
     <rect x="273" y="13" width="10" height="10" fill="white" />
     <rect x="169" y="13" width="10" height="10" fill="white" />
@@ -423,7 +425,7 @@ export const GitHubBar = ({ left }) =>
     <rect x="377" y="26" width="10" height="10" fill="white" />
     <rect x="299" y="26" width="10" height="10" fill="white" />
     <rect x="195" y="26" width="10" height="10" fill="white" />
-    <rect x="91" y="26" width="10" height="10" fill="white" fill-opacity="0.4" />
+    <rect x="91" y="26" width="10" height="10" fill="white" fillOpacity="0.4" />
     <rect x="403" y="26" width="10" height="10" fill="white" />
     <rect x="221" y="39" width="10" height="10" fill="white" />
     <rect x="117" y="39" width="10" height="10" fill="white" />
@@ -443,14 +445,14 @@ export const GitHubBar = ({ left }) =>
     <rect x="403" y="39" width="10" height="10" fill="white" />
     <rect opacity="0.5" x="234" y="39" width="10" height="10" fill="white" />
     <rect opacity="0.5" x="130" y="39" width="10" height="10" fill="white" />
-    <rect opacity="0.5" x="26" y="39" width="10" height="10" fill="white" fill-opacity="0.4" />
+    <rect opacity="0.5" x="26" y="39" width="10" height="10" fill="white" fillOpacity="0.4" />
     <rect opacity="0.5" x="338" y="39" width="10" height="10" fill="white" />
     <rect x="260" y="39" width="10" height="10" fill="white" />
-    <rect x="156" y="39" width="10" height="10" fill="white" fill-opacity="0.4" />
+    <rect x="156" y="39" width="10" height="10" fill="white" fillOpacity="0.4" />
     <rect x="52" y="39" width="10" height="10" fill="white" />
     <rect x="208" y="39" width="10" height="10" fill="white" />
     <rect opacity="0.3" x="104" y="39" width="10" height="10" fill="white" />
-    {left && <rect y="39" width="10" height="10" fill="white" fill-opacity="0.99" />}
+    {left && <rect y="39" width="10" height="10" fill="white" fillOpacity="0.99" />}
     <rect x="364" y="39" width="10" height="10" fill="white" />
     <rect x="286" y="39" width="10" height="10" fill="white" />
     <rect x="182" y="39" width="10" height="10" fill="white" />
@@ -482,7 +484,7 @@ export const GitHubBar = ({ left }) =>
     <rect x="338" y="13" width="10" height="10" fill="white" />
     <rect x="260" y="13" width="10" height="10" fill="white" />
     <rect x="156" y="13" width="10" height="10" fill="white" />
-    <rect x="52" y="13" width="10" height="10" fill="white" fill-opacity="0.4" />
+    <rect x="52" y="13" width="10" height="10" fill="white" fillOpacity="0.4" />
     <rect x="208" y="13" width="10" height="10" fill="white" />
     <rect x="104" y="13" width="10" height="10" fill="white" />
     <rect y="13" width="10" height="10" fill="white" />
@@ -503,16 +505,16 @@ export const GitHubBar = ({ left }) =>
     <rect x="52" width="10" height="10" fill="white" />
     <rect x="208" width="10" height="10" fill="white" />
     <rect x="104" width="10" height="10" fill="white" />
-    {left && <rect width="10" height="10" fill="white" fill-opacity="0.99" />}
+    {left && <rect width="10" height="10" fill="white" fillOpacity="0.99" />}
     <rect opacity="0.5" x="364" width="10" height="10" fill="white" />
     <rect opacity="0.6" x="286" width="10" height="10" fill="white" />
-    <rect opacity="0.6" x="182" width="10" height="10" fill="white" fill-opacity="0.4" />
+    <rect opacity="0.6" x="182" width="10" height="10" fill="white" fillOpacity="0.4" />
     <rect opacity="0.6" x="78" width="10" height="10" fill="white" />
     <rect x="390" width="10" height="10" fill="white" />
     <rect opacity="0.5" x="312" width="10" height="10" fill="white" />
     <rect x="416" width="10" height="10" fill="white" />
-    {!left && <rect x="428" width="10" height="10" fill="white" fill-opacity="0.99" />}
-    {!left && <rect x="428" y="39" width="10" height="10" fill="white" fill-opacity="0.99" />}
+    {!left && <rect x="428" width="10" height="10" fill="white" fillOpacity="0.99" />}
+    {!left && <rect x="428" y="39" width="10" height="10" fill="white" fillOpacity="0.99" />}
   </svg>
 
 

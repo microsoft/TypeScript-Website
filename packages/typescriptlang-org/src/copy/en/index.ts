@@ -17,11 +17,8 @@ export const indexCopy = {
 <p>Types are optional in TypeScript, and type inference allows you to get a lot of power without writing additional code.</p>`,
 
   index_trust: "A Result You Can Trust",
-  index_trust_copy: `
-<p>All valid JavaScript code is also TypeScript code. You might get type-checking errors, but that won't stop you from running the resulting JavaScript. While you can go for stricter behavior, that means you're still in control.</p>
-
-<p>TypeScript code is transformed into JavaScript code via the TypeScript compiler or <babel>Babel</babel>. This JavaScript is clean, simple code which runs anywhere JavaScript runs: In a browser, on Node.JS or in your apps.</p>`,
-
+  index_trust_copy_a: `All valid JavaScript code is also TypeScript code. You might get type-checking errors, but that won't stop you from running the resulting JavaScript. While you can go for stricter behavior, that means you're still in control.`,
+  index_trust_copy_b: `TypeScript code is transformed into JavaScript code via the TypeScript compiler or <babel>Babel</babel>. This JavaScript is clean, simple code which runs anywhere JavaScript runs: In a browser, on Node.JS or in your apps.`,
   index_standards: "Evolving with Standards",
   index_standards_copy: `
   <p>The TypeScript team contributes to the TC39 committees which help guide the evolution of the JavaScript language.</p>
