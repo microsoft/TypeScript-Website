@@ -195,11 +195,11 @@ h1, h2, h3 {
     }
     h4, h5, h6 {
       font-weight: 600;
-      color:lighten($docs-accent-textcolor, 20%);
+      color:$docs-accent-textcolor;
     }
     h5, h6 {
       font-weight: 500;
-      color:lighten($docs-accent-textcolor, 40%);
+      color:$docs-accent-textcolor;
     }
 
     p {
