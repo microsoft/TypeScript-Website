@@ -1,29 +1,29 @@
-// TypeScript has some fun special cases for literals in
-// source code.
+// TypeScriptには、ソースコードにリテラルを用いた
+// 特別な面白いケースがあります。
 
-// In part, a lot of the support is covered in type widening
-// and narrowing ( example:type-widening-narrowing ) and it's
-// worth covering that first.
+// これは、型の拡張・型の絞り込みにおいて、多くのサポートをもたらします。
+// （例：type-widening-narrowing）
+// そして、はじめにそれを網羅する価値があります。
 
-// A literal is a more concrete subtype of a collective type.
-// What this means is that "Hello World" is a string, but a
-// string is not "Hello World" inside the type system.
+// リテラルは集合型よりも具体的なサブタイプです。
+// どういうことかと言うと、型システム内部では
+// 「Hello World」は文字列ですが、文字列は「Hello World」ではありません。
 
 const helloWorld = "Hello World";
-let hiWorld = "Hi World"; // this is a string because it is let
+let hiWorld = "Hi World"; // これはletなのでstring型です
 
-// This function takes all strings
+// この関数は、すべての文字列を受け入れます
 declare function allowsAnyString(arg: string);
 allowsAnyString(helloWorld);
 allowsAnyString(hiWorld);
 
-// This function only accepts the string literal "Hello World"
+// この関数は、文字列リテラル「Hello World」のみを受け入れます
 declare function allowsOnlyHello(arg: "Hello World");
 allowsOnlyHello(helloWorld);
 allowsOnlyHello(hiWorld);
 
-// This lets you declare APIs which use unions to say it
-// only accepts a particular literal:
+// これにより、共用体型を使用して特定のリテラルのみを受け入れる
+// APIを宣言することができます
 
 declare function allowsFirstFiveNumbers(arg: 1 | 2 | 3 | 4 | 5);
 allowsFirstFiveNumbers(1);
@@ -32,34 +32,34 @@ allowsFirstFiveNumbers(10);
 let potentiallyAnyNumber = 3;
 allowsFirstFiveNumbers(potentiallyAnyNumber);
 
-// At first glance, this rule isn't applied to complex objects.
+// しかし、このルールは混み入ったオブジェクトには適用されません。
 
 const myUser = {
   name: "Sabrina"
 };
 
-// See how it transforms `name: "Sabrina"` to `name: string`
-// even though it is defined as a constant. This is because
-// the name can still change any time:
+// 定数として定義された `name："Sabrina"` であっても
+// `name：string` に変換されてしまう様子を見てください。
+// この理由は、名前はいつでも変更できるからです。
 
 myUser.name = "Cynthia";
 
-// Because myUser's name property can change, TypeScript
-// cannot use the literal version in the type system. There
-// is a feature which will allow you to do this however.
+// なぜならmyUserのnameプロパティは変更できるため、
+// TypeScriptは型システムにおいてリテラルバージョンを使用できません。
+// しかしながら、次の機能でこれを許容することができます。
 
 const myUnchangingUser = {
   name: "Fatma"
 } as const;
 
-// When "as const" is applied to the object, then it becomes
-// a object literal which doesn't change instead of a
-// mutable object which can.
+// 「as const」がオブジェクトに適用されると、
+// 変更できるオブジェクトの代わりに、
+// 変更できないオブジェクトになります。
 
 myUnchangingUser.name = "Raîssa";
 
-// "as const" is a great tool for fixtured data, and places
-// where you treat code as literals inline. "as const" also
-// works with arrays:
+// 「as const」は固定データのための素晴らしいツールであり、
+// コード中であっても、インラインリテラルとして処理されます。
+// 「as const」は配列でも動作します。
 
 const exampleUsers = [{ name: "Brian" }, { name: "Fahrooq" }] as const;
