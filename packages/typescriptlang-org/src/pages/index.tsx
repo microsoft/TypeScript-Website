@@ -118,7 +118,7 @@ const Index = (props: any) => {
         </Section>
 
         <Section color="dark-green" className="show-only-small">
-          <h3 id='migration_title'>{i("index_migration_oss")}</h3>
+          <h3>{i("index_migration_oss")}</h3>
           <OSS />
         </Section>
 

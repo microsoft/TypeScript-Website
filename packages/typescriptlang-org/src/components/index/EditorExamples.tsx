@@ -73,7 +73,7 @@ export const EditorExamples = () => {
       </div>
 
       <div style={{ position: "absolute", left: "50%", bottom: "-8px" }}>
-        <a className="next-headline-button" href="#" onClick={next} role="presentation" aria-controls="carousel">
+        <a className="next-headline-button" href="#" onClick={next} role="presentation">
           <div className="message">{explanations[index]}</div>
           <div className="next">
             <p>Next</p>
