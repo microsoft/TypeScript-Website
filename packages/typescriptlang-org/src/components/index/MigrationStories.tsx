@@ -290,10 +290,10 @@ export const MigrationStories = () => {
   // Controls which story we should show
   const [index, setIndex] = useState(0);
 
-  const shouldShowOSS = window.innerWidth > 800
+  const hasWindow = (typeof window !== `undefined`)
+  const shouldShowOSS = hasWindow && window.innerWidth > 800 || true
 
   // slack airbnb google oss 
-
   const bgColors = shouldShowOSS ? ["#4E086F", "#6F0808", "#086F56", "#086E12"] : ["#4E086F", "#6F0808", "#086F56"]
 
   const loadIndex = (index: number) => {
