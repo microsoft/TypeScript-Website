@@ -36,6 +36,11 @@ jobs:
     needs: test
     steps:
       - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '13.x'
+      - run: yarn install
+
       - run: yarn workspace typescriptlang-org run create-lighthouse-json
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
@@ -50,13 +55,6 @@ jobs:
         with:
           name: lighthouse-results
           path: './results'
-
-      # For danger stuff
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '13.x'
-
-      - run: yarn install
 
       # danger for PR builds
       - if: github.event_name == 'pull_request'
