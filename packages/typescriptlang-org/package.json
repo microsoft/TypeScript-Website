@@ -12,6 +12,7 @@
     "update-snapshots": "node scripts/updateBackstopJSON.js; backstop test; backstop approve",
     "update-static-assets": "node scripts/downloadPlaygroundAssets.js && node scripts/downloadSearchAssets.js",
     "update-versions": "node scripts/getTypeScriptNPMVersions.js",
+    "create-lighthouse-json": "node scripts/createLighthouseJSON.js",
     "start": "npm run develop",
     "serve": "gatsby serve",
     "test": "jest"
@@ -59,7 +60,8 @@
     "ts-twoslasher": "0.1.0",
     "typescript": "^3.7.4",
     "typescript-playground": "*",
-    "typescript-sandbox": "*"
+    "typescript-sandbox": "*",
+    "xml2json": "^0.12.0"
   },
   "devDependencies": {
     "@babel/plugin-syntax-optional-chaining": "^7.7.4",

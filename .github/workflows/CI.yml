@@ -36,28 +36,19 @@ jobs:
     needs: test
     steps:
       - uses: actions/checkout@master
-      - name: Run Lighthouse and test budgets
-        uses: treosh/lighthouse-ci-action@v1
-        with:
-          urls: |
-            https://typescript-v2-$PR_NUMBER.ortam.now.sh
-            https://typescript-v2-$PR_NUMBER.ortam.now.sh/en/tsconfig
-            https://typescript-v2-$PR_NUMBER.ortam.now.sh/docs/handbook/integrating-with-build-tools.html
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@master
-        with:
-          name: lighthouse-results
-          path: './results'
-
-      # For danger stuff
       - uses: actions/setup-node@v1
         with:
           node-version: '13.x'
-
       - run: yarn install
+
+      - run: yarn workspace typescriptlang-org run create-lighthouse-json
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+
+      - name: Run Lighthouse and test budgets
+        uses: orta/lighthouse-ci-action@ort-fork-pr-29
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
 
       # danger for PR builds
       - if: github.event_name == 'pull_request'
