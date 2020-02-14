@@ -15,6 +15,7 @@
   flex-direction: column-reverse;
   // For the badge
   position: relative;
+  text-decoration: none;
 
   &.headline {
     width: 300px;
@@ -23,6 +24,10 @@
 
   &.links {
     height: 26rem;
+  }
+
+  p {
+    color: black;
   }
 
   h4 {

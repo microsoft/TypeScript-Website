@@ -70,7 +70,7 @@ const TSConfigReferenceTemplateComponent = (props: Props) => {
   })
 
   return (
-    <Layout title={i("tsconfig_title")} description={i("tsconfig_description")} lang={props.pageContext.locale}>
+    <Layout title={i("tsconfig_title")} description={i("tsconfig_description")} lang={props.pageContext.locale} allSitePage={props.data.allSitePage}>
       <div className="tsconfig raised" style={{ maxWidth: 960, margin: "1rem auto", paddingTop: "0.5rem" }}>
         <div id="full-option-list" className="indent">
           {categories!.categories!.map(c => {
@@ -99,6 +99,8 @@ const TSConfigReferenceTemplateComponent = (props: Props) => {
 
 export const pageQuery = graphql`
   query TSConfigReferenceTemplate($path: String, $tsconfigMDPath: String!) {
+    ...AllSitePage
+
     sitePage(path: { eq: $path }) {
       id
       fields {
@@ -124,5 +126,6 @@ export const pageQuery = graphql`
     }
   }
 `
+
 
 export default (props: Props) => <Intl locale={props.pageContext.locale}><TSConfigReferenceTemplateComponent {...props} /></Intl>

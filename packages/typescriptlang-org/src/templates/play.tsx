@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { Layout } from "../components/layout"
-import { withPrefix } from "gatsby"
+import { withPrefix, graphql } from "gatsby"
 
 import "./play.scss"
 import { RenderExamples } from "../components/ShowExamples"
@@ -11,12 +11,15 @@ import { headCopy } from "../copy/en/head-seo"
 import { playCopy } from "../copy/en/playground"
 
 import { Intl } from "../components/Intl"
-
+import { AllSitePage } from "../components/IntlLink"
 
 // This gets set by the playground
 declare const playground: ReturnType<typeof import("typescript-playground").setupPlayground>
 
 type Props = {
+  data: {
+    allSitePage: AllSitePage
+  }
   pageContext: {
     lang: string
     examplesTOC: typeof import("../../static/js/examples/en.json")
@@ -26,6 +29,7 @@ type Props = {
 
 const Play = (props: Props) => {
   const i = createInternational<typeof headCopy & typeof playCopy>(useIntl())
+  console.log(props)
 
   useEffect(() => {
     if ("playgroundLoaded" in window) return
@@ -108,7 +112,7 @@ const Play = (props: Props) => {
 
 
   return (
-    <Layout disableBetaNotification title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang}>
+    <Layout disableBetaNotification title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
       {/** This is the top nav, which is outside of the editor  */}
       <nav className="navbar-sub">
         <ul className="nav">
@@ -218,3 +222,9 @@ const Play = (props: Props) => {
 
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Play {...props} /></Intl>
+
+export const query = graphql`
+  query {
+    ...AllSitePage
+  }
+`
