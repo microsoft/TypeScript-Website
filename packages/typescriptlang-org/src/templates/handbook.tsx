@@ -78,7 +78,7 @@ const HandbookTemplate = (props: { pageContext: any, data: GetHandbookBySlug, pa
   const showSidebar = post.headings && post.headings.length <= 25
 
   return (
-    <Layout title={"Handbook - " + post.frontmatter.title} description="" lang="en">
+    <Layout title={"Handbook - " + post.frontmatter.title} description="" lang="en" allSitePage={props.data.allSitePage}>
       <section id="doc-layout">
         <SidebarToggleButton />
         <Sidebar navItems={oldHandbookNavigation} selectedID={selectedID} />
@@ -129,6 +129,8 @@ export default (props: any) => <Intl locale={props.pageContext.lang}><HandbookTe
 
 export const pageQuery = graphql`
   query GetHandbookBySlug($slug: String!) {
+    ...AllSitePage
+    
     markdownRemark(frontmatter: { permalink: {eq: $slug}}) {
       id
       excerpt(pruneLength: 160)

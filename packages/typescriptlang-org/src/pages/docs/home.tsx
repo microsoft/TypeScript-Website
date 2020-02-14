@@ -9,13 +9,14 @@ import { docCopy } from "../../copy/en/documentation"
 import { createInternational } from "../../lib/createInternational"
 import { useIntl } from "react-intl"
 
-const Index = () => {
+const Index = (props: any) => {
   const i = createInternational<typeof docCopy>(useIntl())
   return (
     <Layout
       title={i("doc_layout_title")}
       description="Find TypeScript starter projects: from Angular to React or Node.js and CLIs."
       lang="en"
+      allSitePage={props.data.allSitePage}
     >
       <div
         id="documentation"
@@ -271,6 +272,13 @@ const Index = () => {
     </Layout>
   )
 }
+
+
+export const query = graphql`
+  query {
+    ...AllSitePage
+  }
+`
 
 export default (props: any) => (
   <Intl>

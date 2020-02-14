@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { withPrefix } from "gatsby"
+import { withPrefix, graphql } from "gatsby"
 import { Layout } from "../components/layout"
 import { Intl } from "../components/Intl"
 import { VersionBar } from "../components/VersionBar"
@@ -33,7 +33,7 @@ const Index = (props: any) => {
   }, [])
 
   return (
-    <Layout title="JavaScript For Any Scale." description="Desc" lang="en">
+    <Layout title="JavaScript For Any Scale." description="Desc" lang="en" allSitePage={props.data.allSitePage}>
       <VersionBar />
 
       <div id="index">
@@ -221,3 +221,10 @@ const setupVideosSection = () => {
 
 
 export default (props: any) => <Intl><Index {...props} /></Intl>
+
+
+export const query = graphql`
+  query {
+    ...AllSitePage
+  }
+`

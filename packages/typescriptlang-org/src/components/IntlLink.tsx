@@ -17,10 +17,22 @@ export const createIntlLink = (currentLocale: string, allSitePage: AllSitePage) 
 
   return (linkProps: GatsbyLinkProps<{}>) => {
     let to = linkProps.to
-    const localeVersion = to.replace("/en/", "/" + currentLocale + "/")
+    const pathIncludesEn = to.startsWith("/en/")
 
-    if (paths.includes(localeVersion)) {
-      to = localeVersion
+    if (pathIncludesEn) {
+      // /en/play -> /ja/play
+      const localeVersion = to.replace("/en/", "/" + currentLocale + "/")
+      if (paths.includes(localeVersion)) {
+        to = localeVersion
+      }
+    } else {
+      // /thing -> /ja/thing
+      // This occurs when we want URL compat with old site
+
+      const localeVersion = "/" + currentLocale + "/" + to
+      if (paths.includes(localeVersion)) {
+        to = localeVersion
+      }
     }
 
     // @ts-ignore

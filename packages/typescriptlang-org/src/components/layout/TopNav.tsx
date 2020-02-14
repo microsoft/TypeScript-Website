@@ -6,8 +6,8 @@ import { setupStickyNavigation } from "./stickyNavigation";
 import { useIntl } from "react-intl";
 
 export type Props = {
-  centeredLayout?: boolean
   disableBetaNotification?: boolean
+  lang: string
   allSitePage: AllSitePage
 }
 
@@ -17,7 +17,7 @@ import { AllSitePage, createIntlLink } from "../IntlLink";
 
 export const SiteNav = (props: Props) => {
   const i = createInternational<typeof navCopy>(useIntl())
-  const Link = createIntlLink("ja", props.allSitePage)
+  const Link = createIntlLink(props.lang, props.allSitePage)
 
   // This extra bit of mis-direction ensures that non-essential code runs after 
   // the page is loaded
@@ -70,9 +70,9 @@ export const SiteNav = (props: Props) => {
 
           <nav>
             <ul>
-              <li className="nav-item"><Link to={withPrefix("/en/docs/handbook")}><span className="hide-only-medium">{i("nav_documentation")}</span><span className="show-only-medium">{i("nav_documentation_short")}</span></Link></li>
-              <li className="nav-item hide-small"><Link to={withPrefix("/")}>{i("nav_download")}</Link></li>
-              <li className="nav-item"><Link to={withPrefix("/en/community")}>{i("nav_connect")}</Link></li>
+              <li className="nav-item"><Link to={withPrefix("/docs/home")}><span className="hide-only-medium">{i("nav_documentation")}</span><span className="show-only-medium">{i("nav_documentation_short")}</span></Link></li>
+              <li className="nav-item hide-small"><Link to={withPrefix("/en/download")}>{i("nav_download")}</Link></li>
+              <li className="nav-item"><Link to={withPrefix("/community")}>{i("nav_connect")}</Link></li>
               <li className="nav-item"><Link to={withPrefix("/en/play")}>{i("nav_playground")}</Link></li>
             </ul>
           </nav>

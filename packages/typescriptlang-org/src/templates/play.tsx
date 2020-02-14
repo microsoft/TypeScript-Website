@@ -29,7 +29,6 @@ type Props = {
 
 const Play = (props: Props) => {
   const i = createInternational<typeof headCopy & typeof playCopy>(useIntl())
-  console.log(props)
 
   useEffect(() => {
     if ("playgroundLoaded" in window) return
@@ -121,7 +120,7 @@ const Play = (props: Props) => {
           <li className="dropdown">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_config")} <span className="caret"></span></a>
             <ul className="examples-dropdown">
-              <h3>{i("play_subnav_examples")}</h3>
+              <h3>{i("play_subnav_config")}</h3>
               <div className="info" id="config-container">
                 <button className="examples-close">{i("play_subnav_examples_close")}</button>
 

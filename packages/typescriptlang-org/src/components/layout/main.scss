@@ -32,6 +32,13 @@ html {
   }
 }
 
+.main-content-block {
+  max-width: 960px;
+  margin: 1rem auto;
+  padding: 2rem;
+  padding-top: 0.4rem;
+}
+
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
