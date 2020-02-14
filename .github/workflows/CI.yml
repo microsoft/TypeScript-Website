@@ -50,12 +50,6 @@ jobs:
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@master
-        with:
-          name: lighthouse-results
-          path: './results'
-
       # danger for PR builds
       - if: github.event_name == 'pull_request'
         run: 'if test -z "$GITHUB_TOKEN"; then echo "Skipping danger"; else yarn danger ci; fi'
