@@ -2,15 +2,7 @@ const { join } = require("path")
 const fs = require("fs")
 const path = require("path")
 
-const lang = process.argv.slice(2)[0]
-if (!lang) {
-  console.log("You need to run this script with a language arg")
-  console.log(
-    "> node packages/typescriptlang-org/scripts/makeMarkdownOfTranslations.js jp"
-  )
-}
-
-const getAllTODOFiles = () => {
+const getAllTODOFiles = lang => {
   const diffFolders = (root, lang) => {
     const en = join(root, "en")
     const thisLang = join(root, lang)
@@ -111,5 +103,17 @@ const toMarkdown = files => {
   return md.join("\n")
 }
 
-const files = getAllTODOFiles()
-console.log(toMarkdown(files))
+if (!module.parent) {
+  const lang = process.argv.slice(2)[0]
+  if (!lang) {
+    console.log("You need to run this script with a language arg")
+    console.log(
+      "> node packages/typescriptlang-org/scripts/makeMarkdownOfTranslations.js jp"
+    )
+  }
+
+  const files = getAllTODOFiles(lang)
+  console.log(toMarkdown(files))
+}
+
+module.exports = { toMarkdown, getAllTODOFiles }

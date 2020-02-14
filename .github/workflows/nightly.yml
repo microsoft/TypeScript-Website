@@ -13,6 +13,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+      - run: yarn install
+
+      # Update all the translation issues on a nightly basis
+      - run: node packages/typescriptlang-org/scripts/updateGitHubTranslationIssues.ts
+        env:
+          GITHUB_TOKEN: ${{ secrets.TS_BOT_TOKEN }}
+
       # Setup Git
       - run: git config user.name "typescript-bot"
       - run: git config user.email "bot@typescriptlang.org"
