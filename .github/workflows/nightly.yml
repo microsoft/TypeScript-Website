@@ -28,5 +28,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TS_BOT_TOKEN }}
 
-      - run: git commit --no-edit --allow-empty
+      - run: git commit --allow-empty -m "Nightly Deploy"
       - run: git push upstream master:release -f
