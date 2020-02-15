@@ -32,7 +32,7 @@ const Index = (props: any) =>
 
         <div style={{ padding: "1rem", flex: 1 }}>
           <h2>via Nuget</h2>
-          <p>You can get TypeScript as a package in Nuget for your MSBuild projects, for example an ASP.NET Core app. You can install</p>
+          <p>You can get TypeScript as a package in Nuget for your MSBuild projects, for example an ASP.NET Core app. You can <a href="https://docs.microsoft.com/en-us/visualstudio/javascript/tutorial-aspnet-with-typescript">install</a> your TypeScript through Visual Studios using via Manage NuGet Packages (which you can get to by right-clicking on a project node) or via the Nuget Package Manager Console (found in Tools > NuGet Package Manager > Package Manager Console) using <code>Install-Package Microsoft.TypeScript.MSBuild</code></p>
         </div>
       </section>
     </div >
