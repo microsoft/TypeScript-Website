@@ -15,9 +15,9 @@ export const compiledJSPlugin = () => {
     },
 
     modelChangedDebounce: async (sandbox, model) => {
-      const program = sandbox.createTSProgram()
+      const program = await sandbox.createTSProgram()
       const checker = program.getTypeChecker()
-      // const smychecker.getSymbolAtLocation
+
       const sourceFile = program.getSourceFile(model.uri.path)!
       const ts = sandbox.ts
       sandbox.ts.forEachChild(sourceFile, node => {
