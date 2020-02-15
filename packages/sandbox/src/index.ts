@@ -11,7 +11,7 @@ import lzstring from './vendor/lzstring.min'
 import { supportedReleases } from './releases'
 import { getInitialCode } from './getInitialCode'
 import { extractTwoSlashComplierOptions } from './twoslashSupport'
-import { createSystem } from 'typescript-vfs'
+import * as tsvfs from './vendor/typescript-vfs'
 
 type CompilerOptions = import('monaco-editor').languages.typescript.CompilerOptions
 type Monaco = typeof import('monaco-editor')
@@ -233,19 +233,25 @@ export const createTypeScriptSandbox = (
   /**
    * Warning: Runs on the main thread
    */
-  const createTSProgram = () => {
-    const langServ = createCompilerHost(getText(), filePath.path)
-    return ts.createProgram([filePath.path], compilerDefaults, langServ)
+  const createTSProgram = async () => {
+    const fsMap = await tsvfs.createDefaultMapFromCDN(compilerOptions, ts.version, true, ts, lzstring)
+    fsMap.set(filePath.path, getText())
+
+    const system = tsvfs.createSystem(fsMap)
+    const host = tsvfs.createVirtualCompilerHost(system, compilerOptions, ts)
+
+    const program = ts.createProgram({
+      rootNames: [...fsMap.keys()],
+      options: compilerOptions,
+      host: host.compilerHost,
+    })
+
+    return program
   }
 
-  /**
-   * Warning: Runs on the main thread
-   * TODO: Does not work
-   */
-  const getAST = () => {
-    const program = createTSProgram()
+  const getAST = async () => {
+    const program = await createTSProgram()
     program.emit()
-
     return program.getSourceFile(filePath.path)!
   }
 
@@ -263,8 +269,10 @@ export const createTypeScriptSandbox = (
     language,
     /** The outer monaco module, the result of require("monaco-editor")  */
     monaco,
-    /** Gets a monaco-typescript worker, this will give you access to a language server. Note: heavy work with this language server can block the user interface. */
+    /** Gets a monaco-typescript worker, this will give you access to a language server. Note: prefer this for language server work because it happens on a webworker . */
     getWorkerProcess,
+    /** A copy of require("typescript-vfs") this can be used to quickly set up an in-memory compiler runs for ASTs, or to get complex language server results (anything above has to be serialized when passed)*/
+    tsvfs,
     /** Get all the different emitted files after TypeScript is run */
     getEmitResult,
     /** Gets just the JavaScript for your sandbox, will transpile if in TS only */
@@ -283,7 +291,13 @@ export const createTypeScriptSandbox = (
     getAST,
     /** The module you get from  require("typescript") */
     ts,
-    /** Create a new Program, a TypeScript data model which represents the entire project */
+    /** Create a new Program, a TypeScript data model which represents the entire project.
+     *
+     * The first time this is called it has to download all the DTS files which is needed for an exact compiler run. Which
+     * at max is about 1.5MB - after that subsequent downloads of dts lib files come from localStorage.
+     *
+     * You probably want
+     */
     createTSProgram,
     /** The Sandbox's default compiler options  */
     compilerDefaults,
