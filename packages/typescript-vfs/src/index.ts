@@ -45,6 +45,10 @@ const defaultCompilerOptions = (ts: typeof import('typescript')): CompilerOption
 // "/DOM.d.ts" => "/lib.dom.d.ts"
 const libize = (path: string) => path.replace('/', '/lib.').toLowerCase()
 
+/**
+ * Creates an in-memory System object which can be used in a TypeScript program, this
+ * is what provides read/write aspects of the virtual fs
+ */
 export function createSystem(files: Map<string, string>): System {
   files = new Map(files)
   return {
@@ -71,6 +75,7 @@ export function createSystem(files: Map<string, string>): System {
   }
 }
 
+/** Creates an in-memory CompilerHost  */
 export function createVirtualCompilerHost(sys: System, compilerOptions: CompilerOptions, ts: TS) {
   const sourceFiles = new Map<string, SourceFile>()
   const save = (sourceFile: SourceFile) => {

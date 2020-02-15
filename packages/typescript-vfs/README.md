@@ -15,7 +15,7 @@ You start with creating a map which represents all the files in the virtual `ts.
 import { createSystem } from 'typescript-vfs'
 
 const fsMap = new Map<string, string>()
-fsMap.set("index.ts", 'const a = "Hello World"')
+fsMap.set('index.ts', 'const a = "Hello World"')
 
 const system = createSystem(fsMap)
 ```
@@ -137,7 +137,7 @@ It's safe to say, keeping on top of this list can be a bit tiring and so this li
 s
 
 ```ts
-import { createSystem, createVirtualTypeScriptEnvironment, createDefaultMapFromNodeModules } from 'typescript-vfs'
+import { createDefaultMapFromNodeModules } from 'typescript-vfs'
 import ts from 'typescript'
 
 const fsMap = createDefaultMapFromNodeModules({ target: ts.ScriptTarget.ES2015 })
@@ -148,7 +148,7 @@ fsMap.set('index.ts', "const hello = 'hi'")
 If you don't have access to `node_modules`, then you can use the TypeScript CDN or unpkg to fetch the lib files. This could be is up to about 1.5MB, and you should probably store the values in `localStorage`. If the above is tiring, then this is polish most won't add.
 
 ```ts
-import { createSystem, createVirtualTypeScriptEnvironment, createDefaultMapFromCDN } from 'typescript-vfs'
+import { createDefaultMapFromCDN } from 'typescript-vfs'
 import ts from 'typescript'
 import lzstring from 'lz-string'
 

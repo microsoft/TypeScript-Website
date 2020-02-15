@@ -11,6 +11,7 @@ import lzstring from './vendor/lzstring.min'
 import { supportedReleases } from './releases'
 import { getInitialCode } from './getInitialCode'
 import { extractTwoSlashComplierOptions } from './twoslashSupport'
+import { createSystem } from 'typescript-vfs'
 
 type CompilerOptions = import('monaco-editor').languages.typescript.CompilerOptions
 type Monaco = typeof import('monaco-editor')
@@ -244,8 +245,7 @@ export const createTypeScriptSandbox = (
   const getAST = () => {
     const program = createTSProgram()
     program.emit()
-    console.log(program)
-    console.log(program.getSourceFiles())
+
     return program.getSourceFile(filePath.path)!
   }
 
@@ -253,30 +253,57 @@ export const createTypeScriptSandbox = (
   const supportedVersions = supportedReleases
 
   return {
+    /** The same config you passed in */
     config,
-    editor,
-    getWorkerProcess,
-    getEmitResult,
-    getRunnableJS,
-    getDTSForCode,
-    getDomNode,
-    getModel,
-    getText,
-    setText,
-    getAST,
-    ts,
-    createTSProgram,
-    compilerDefaults,
-    getCompilerOptions,
-    setCompilerSettings,
-    updateCompilerSetting,
-    updateCompilerSettings,
-    getTwoSlashComplierOptions,
-    setDidUpdateCompilerSettings,
+    /** A list of TypeScript versions you can use with the TypeScript sandbox */
     supportedVersions,
-    lzstring,
-    getURLQueryWithCompilerOptions,
+    /** The monaco editor instance */
+    editor,
+    /** Either "typescript" or "javascript" depending on your config */
     language,
+    /** The outer monaco module, the result of require("monaco-editor")  */
     monaco,
+    /** Gets a monaco-typescript worker, this will give you access to a language server. Note: heavy work with this language server can block the user interface. */
+    getWorkerProcess,
+    /** Get all the different emitted files after TypeScript is run */
+    getEmitResult,
+    /** Gets just the JavaScript for your sandbox, will transpile if in TS only */
+    getRunnableJS,
+    /** Gets the DTS output of the main code in the editor */
+    getDTSForCode,
+    /** The monaco-editor dom node, used for showing/hiding the editor */
+    getDomNode,
+    /** The model is an object which monaco uses to keep track of text in the editor. Use this to directly modify the text in the editor */
+    getModel,
+    /** Gets the text of the main model, which is the text in the editor */
+    getText,
+    /** Shortcut for setting the model's text content which would update the editor */
+    setText,
+    /** WIP: Gets the AST of the current text */
+    getAST,
+    /** The module you get from  require("typescript") */
+    ts,
+    /** Create a new Program, a TypeScript data model which represents the entire project */
+    createTSProgram,
+    /** The Sandbox's default compiler options  */
+    compilerDefaults,
+    /** The Sandbox's current compiler options */
+    getCompilerOptions,
+    /** Replace the Sandbox's compiler options */
+    setCompilerSettings,
+    /** Overwrite the Sandbox's compiler options */
+    updateCompilerSetting,
+    /** Update a single compiler option in the SAndbox */
+    updateCompilerSettings,
+    /** A way to get callbacks when compiler settings have changed */
+    setDidUpdateCompilerSettings,
+    /** A copy of lzstring, which is used to archive/unarchive code */
+    lzstring,
+    /** Returns compiler options found in the params of the current page */
+    getURLQueryWithCompilerOptions,
+    /** Returns compiler options in the source code using twoslash notation */
+    getTwoSlashComplierOptions,
+    /** Gets to the current monaco-language, this is how you talk to the background webworkers */
+    languageServiceDefaults: defaults,
   }
 }

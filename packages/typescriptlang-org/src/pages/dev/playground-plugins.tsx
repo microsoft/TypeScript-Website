@@ -32,7 +32,7 @@ const Index = (_props: any) => {
           <div className="raised main-content-block">
             <h2>Quick Tutorial</h2>
             <p>You need about 5 minutes, Node.js, yarn and a Chromium based browser.</p>
-            <p><b>Step 1</b>: Use the template to bootstrap: <code>npm init typescript-playground-plugin MyPlugin</code></p>
+            <p><b>Step 1</b>: Use the template to bootstrap: <code>npm init typescript-playground-plugin playground-my-plugin</code></p>
             <p><b>Step 2</b>: Run <code>yarn start</code> in the new repo, to start up the local dev server</p>
             <p><b>Step 3</b>: Open the <a href={withPrefix("/en/play")}>playground</a> in your Chromium browser, click "Options" and enable <code>"Connect to localhost:5000/index.js"</code></p>
             <p><b>Step 4</b>: Refresh, and see the new tab. That's your plugin up and running</p>
