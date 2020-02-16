@@ -10,7 +10,7 @@
 // 「Hello World」は文字列ですが、文字列は「Hello World」ではありません。
 
 const helloWorld = "Hello World";
-let hiWorld = "Hi World"; // これはletなのでstring型です
+let hiWorld = "Hi World"; // これはletなので文字列型です
 
 // この関数は、すべての文字列を受け入れます
 declare function allowsAnyString(arg: string);
@@ -39,20 +39,20 @@ const myUser = {
 };
 
 // 定数として定義された `name："Sabrina"` であっても
-// `name：string` に変換されてしまう様子を見てください。
-// この理由は、名前はいつでも変更できるからです。
+// `name：string` に変換されてしまいます。
+// こうなるのは、nameプロパティがいつでも変更できるからです。
 
 myUser.name = "Cynthia";
 
 // なぜならmyUserのnameプロパティは変更できるため、
-// TypeScriptは型システムにおいてリテラルバージョンを使用できません。
+// TypeScriptは型システムにおいてリテラル型を使用できません。
 // しかしながら、次の機能でこれを許容することができます。
 
 const myUnchangingUser = {
   name: "Fatma"
 } as const;
 
-// 「as const」がオブジェクトに適用されると、
+// 「as const」をオブジェクトに適用すると、
 // 変更できるオブジェクトの代わりに、
 // 変更できないオブジェクトになります。
 
