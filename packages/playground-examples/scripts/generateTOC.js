@@ -130,7 +130,6 @@ langs.forEach(lang => {
       const subPath = dirname(filepath)
         .split(path.sep)
         .pop()
-      console.log(`Subpath: ${subPath}`)
       if (!allSubFolders.includes(subPath)) {
         allSubFolders.push(subPath)
       }
