@@ -6,6 +6,7 @@ const fs = require('fs')
 const path = require('path')
 const crypto = require('crypto')
 const JSON5 = require('json5')
+const os = require('os')
 
 /** Recursively retrieve file paths from a given folder and its subfolders. */
 // https://gist.github.com/kethinov/6658166#gistcomment-2936675
@@ -55,11 +56,12 @@ langs.forEach(lang => {
     let index = 1
     let inlineTitle = undefined
     if (contents.startsWith('//// {')) {
-      const preJSON = contents.split('//// {')[1].split('}\n')[0]
+      const preJSON = contents.split('//// {')[1].split('}' + os.EOL)[0]
       contents = contents
         .split('\n')
         .slice(1)
         .join('\n')
+
       const code = '({' + preJSON + '})'
 
       try {
@@ -89,7 +91,7 @@ langs.forEach(lang => {
     /** @type Item */
     const item = {
       path: dirname(filePath)
-        .split('/')
+        .split(path.sep)
         .slice(-2),
       title: inlineTitle || title,
       name: basename(filePath),
@@ -124,10 +126,11 @@ langs.forEach(lang => {
   function validateTOC(toc) {
     // Ensure all subfolders are in the sorted section
     const allSubFolders = []
-    all.forEach(path => {
-      const subPath = dirname(path)
-        .split('/')
+    all.forEach(filepath => {
+      const subPath = dirname(filepath)
+        .split(path.sep)
         .pop()
+      console.log(`Subpath: ${subPath}`)
       if (!allSubFolders.includes(subPath)) {
         allSubFolders.push(subPath)
       }
