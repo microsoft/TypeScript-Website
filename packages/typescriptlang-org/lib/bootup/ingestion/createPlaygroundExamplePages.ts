@@ -1,5 +1,6 @@
-const path = require(`path`)
-const fs = require(`fs`)
+import path from "path"
+import fs from "fs"
+import os from "os"
 
 import { NodePluginArgs, CreatePagesArgs, withPrefix } from "gatsby"
 import { invertCodeToHTML } from "../../utils/invertCodeToHTML"
@@ -101,7 +102,7 @@ const getCompilerDetailsFromCode = (contents: string) => {
   let inlineTitle = undefined
 
   if (contents.startsWith("//// {")) {
-    const preJSON = contents.split("//// {")[1].split("}\n")[0]
+    const preJSON = contents.split("//// {")[1].split("}" + os.EOL)[0]
     contents = contents
       .split("\n")
       .slice(1)
