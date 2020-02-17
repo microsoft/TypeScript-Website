@@ -133,8 +133,9 @@ const createDefaultMap2015 = () => {
 
 This list is the default set of definitions (different options for `target` or `lib` will affect what this list looks like) and it grabs the lib content from the local dependency of TypeScript.
 
-It's safe to say, keeping on top of this list can be a bit tiring and so this library ships functions for generating a map with with these pre-filled. Note: it's possible for this list to get out of sync with TypeScript over time. It was last synced at TypeScript 3.7.4
-s
+It's safe to say, keeping on top of this list is quite a lot of work and so this library ships functions for generating a map with with these pre-filled.
+
+Note: it's possible for this list to get out of sync with TypeScript over time. It was last synced at TypeScript 3.7.4
 
 ```ts
 import { createDefaultMapFromNodeModules } from 'typescript-vfs'
@@ -145,7 +146,7 @@ fsMap.set('index.ts', "const hello = 'hi'")
 // ...
 ```
 
-If you don't have access to `node_modules`, then you can use the TypeScript CDN or unpkg to fetch the lib files. This could be is up to about 1.5MB, and you should probably store the values in `localStorage`. If the above is tiring, then this is polish most won't add.
+If you don't have access to `node_modules`, then you can use the TypeScript CDN or unpkg to fetch the lib files. This could be is up to about 1.5MB, and you should probably store the values in `localStorage` so that users only have to grab it once. This is handled for you via `createDefaultMapFromCDN`.
 
 ```ts
 import { createDefaultMapFromCDN } from 'typescript-vfs'
@@ -167,7 +168,7 @@ const start = async () => {
 start()
 ```
 
-The cache:
+The CDNcache:
 
 - Automatically purges items which use a different version of TypeScript to save space
 - Can use a copy of the lz-string module for compressing/decompressing the lib files
