@@ -1,5 +1,5 @@
 // TypeScriptには、ソースコードにリテラルを用いた
-// 特別な面白いケースがあります。
+// とても面白い利用例があります。
 
 // これは、型の拡張・型の絞り込みにおいて、多くのサポートをもたらします。
 // ( example:type-widening-narrowing )
@@ -58,8 +58,8 @@ const myUnchangingUser = {
 
 myUnchangingUser.name = "Raîssa";
 
-// 「as const」は固定データのための素晴らしいツールであり、
-// コード中であっても、インラインリテラルとして処理されます。
+// 「as const」はコード中でインラインリテラルを扱ったり、
+// 固定データを扱うための素晴らしいツールです。
 // 「as const」は配列でも動作します。
 
 const exampleUsers = [{ name: "Brian" }, { name: "Fahrooq" }] as const;
