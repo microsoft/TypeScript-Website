@@ -1,12 +1,12 @@
 import React from "react"
 import { Layout } from "../../components/layout"
-import { withPrefix } from "gatsby"
+import { withPrefix, graphql } from "gatsby"
 
 import "./dev.scss"
 import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/dev-nav"
 
-const Index = (_props: any) => {
+const Index = (props: any) => {
   return (
     <>
       <Layout title="Developers - Playground Plugins" description="What is a TypeScript Playground Plugin, and how can you make one?" lang="en" allSitePage={props.data.allSitePage}>

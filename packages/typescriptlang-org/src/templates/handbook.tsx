@@ -12,7 +12,7 @@ import slugger from "github-slugger"
 import "./handbook.scss"
 import "./markdown.scss"
 
-const HandbookTemplate = (props: { pageContext: any, data: GetHandbookBySlug, path: string }) => {
+const HandbookTemplate = (props: { pageContext: any, data: any, path: string }) => {
 
   const post = props.data.markdownRemark
   if (!post) {

@@ -85,7 +85,7 @@ const Play = (props: Props) => {
           prefix: withPrefix("/")
         }
 
-        playground.setupPlayground(sandboxEnv, main, playgroundConfig, i)
+        playground.setupPlayground(sandboxEnv, main, playgroundConfig, i as any)
         sandboxEnv.editor.focus()
 
         const darkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)')

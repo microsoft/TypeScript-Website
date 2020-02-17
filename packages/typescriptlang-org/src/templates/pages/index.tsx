@@ -1,19 +1,19 @@
 import React, { useEffect } from "react"
 import { withPrefix, graphql } from "gatsby"
-import { Layout } from "../components/layout"
-import { Intl } from "../components/Intl"
-import { VersionBar } from "../components/VersionBar"
-import { GreyButton } from "../components/display/GreyButton"
-import { UpcomingReleaseMeta } from "../components/index/UpcomingReleaseMeta"
-import { MigrationStories, GitHubBar, OSS } from "../components/index/MigrationStories"
+import { Layout } from "../../components/layout"
+import { Intl } from "../../components/Intl"
+import { VersionBar } from "../../components/VersionBar"
+import { GreyButton } from "../../components/display/GreyButton"
+import { UpcomingReleaseMeta } from "../../components/index/UpcomingReleaseMeta"
+import { MigrationStories, GitHubBar, OSS } from "../../components/index/MigrationStories"
 
-import { indexCopy } from "../copy/en/index"
-import { createInternational } from "../lib/createInternational"
+import { indexCopy } from "../../copy/en/index"
+import { createInternational } from "../../lib/createInternational"
 import { useIntl } from "react-intl"
 
 import "./index.scss"
 import "../pages/css/documentation.scss"
-import { EditorExamples } from "../components/index/EditorExamples"
+import { EditorExamples } from "../../components/index/EditorExamples"
 
 const Section = (props: { children: any, color: string, className?: string }) =>
   <div key={props.color} className={props.color + " " + props.className}><div className="container">{props.children}</div></div>
@@ -24,6 +24,7 @@ const Col = (props: { children: any, className?: string }) => <div className={[p
 const Col2 = (props: { children: any }) => <div className="col2">{props.children}</div>
 
 const Index = (props: any) => {
+  console.log(props)
 
   const i = createInternational<typeof indexCopy>(useIntl())
 

@@ -1,9 +1,7 @@
 import React from "react"
-import { Layout } from "../components/layout"
-import { Intl } from "../components/Intl"
+import { Layout } from "../../components/layout"
+import { Intl } from "../../components/Intl"
 import { graphql } from "gatsby"
-
-import releaseInfo from "../lib/release-info.json"
 
 const changeExample = (code: string) => document.getElementById("code-example")!.textContent = code
 

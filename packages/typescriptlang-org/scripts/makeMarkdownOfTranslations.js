@@ -1,14 +1,13 @@
-const { join } = require("path")
-const fs = require("fs")
-const path = require("path")
+const { join, basename } = require("path")
+const { recursiveReadDirSync } = require("../lib/utils/recursiveReadDirSync")
 
 const getAllTODOFiles = lang => {
   const diffFolders = (root, lang) => {
     const en = join(root, "en")
     const thisLang = join(root, lang)
 
-    const englishFiles = getFilePaths(en)
-    const thisLangFiles = getFilePaths(thisLang)
+    const englishFiles = recursiveReadDirSync(en)
+    const thisLangFiles = recursiveReadDirSync(thisLang)
 
     const todo = []
     const done = []
@@ -47,39 +46,11 @@ const getAllTODOFiles = lang => {
   return all
 }
 
-/** Recursively retrieve file paths from a given folder and its subfolders. */
-// https://gist.github.com/kethinov/6658166#gistcomment-2936675
-/** @returns {string[]} */
-const getFilePaths = folderPath => {
-  if (!fs.existsSync(folderPath)) return []
-
-  const entryPaths = fs
-    .readdirSync(folderPath)
-    .map(entry => path.join(folderPath, entry))
-  const filePaths = entryPaths.filter(entryPath =>
-    fs.statSync(entryPath).isFile()
-  )
-  const dirPaths = entryPaths.filter(
-    entryPath => !filePaths.includes(entryPath)
-  )
-  const dirFiles = dirPaths.reduce(
-    (prev, curr) => prev.concat(getFilePaths(curr)),
-    []
-  )
-
-  return [...filePaths, ...dirFiles]
-    .filter(f => !f.endsWith(".DS_Store") && !f.endsWith("README.md"))
-    .map(f => {
-      const root = join(__dirname, "..", "..", "..")
-      return f.replace(root, "")
-    })
-}
-
 const toMarkdown = files => {
   const md = []
 
   const markdownLink = (f, done) => {
-    const name = path.basename(f)
+    const name = basename(f)
     const url = "https://github.com/microsoft/TypeScript-Website/blob/v2"
     const check = done ? "x" : " "
     return `- [${check}] [\`${name}\`](${url}${encodeURIComponent(f)})`
