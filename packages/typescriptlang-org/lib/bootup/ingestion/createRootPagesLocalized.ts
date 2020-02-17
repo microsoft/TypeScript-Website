@@ -59,7 +59,6 @@ export const createRootPagesLocalized = async (
         },
       }
 
-      console.log(pageOpts)
       createPage(pageOpts)
     })
   })
