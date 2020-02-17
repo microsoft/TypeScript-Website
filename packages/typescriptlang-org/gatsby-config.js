@@ -34,13 +34,13 @@ module.exports = {
     // "gatsby-plugin-offline",
 
     // Creates TS types for queries during `gatsby dev`
-    {
-      resolve: "gatsby-plugin-codegen",
-      options: {
-        // Ensure it works in a monorepo
-        localSchemaFile: __dirname + "/schema.json",
-      },
-    },
+    // {
+    //   resolve: "gatsby-plugin-codegen",
+    //   options: {
+    //     // Ensure it works in a monorepo
+    //     localSchemaFile: __dirname + "/schema.json",
+    //   },
+    // },
     // Support ts/tsx files in src
     "gatsby-plugin-typescript",
     // SEO

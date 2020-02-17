@@ -3,10 +3,6 @@ const { writeFileSync } = require("fs")
 const { join } = require("path")
 const parser = require("xml2json")
 
-const getFileAndStoreLocally = async (url, path) => {
-  writeFileSync(join(__dirname, "..", path), contents, "utf8")
-}
-
 const prNumber = process.env.PR_NUMBER || "245"
 
 const go = async () => {

@@ -1,18 +1,18 @@
 import React from "react"
 import { Layout } from "../../components/layout"
-import { withPrefix } from "gatsby"
+import { withPrefix, graphql } from "gatsby"
 
 import "./dev.scss"
 import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/dev-nav"
 
-const Index = (_props: any) => {
+const Index = (props: any) => {
   return (
     <>
-      <Layout title="Developers - Playground Plugins" description="What is a TypeScript Playground Plugin, and how can you make one?" lang="en">
+      <Layout title="Developers - Playground Plugins" description="What is a TypeScript Playground Plugin, and how can you make one?" lang="en" allSitePage={props.data.allSitePage}>
         <div id="dev">
           <DevNav active="playground plugins" />
-          <div className="raised content" style={{ padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
+          <div className="raised content main-content-block">
             <div className="split-sixhundred">
               <h1 style={{ marginTop: "0" }}>Playground Plugins</h1>
               <p>The new TypeScript Playground allows people to hook into the Playground and extend it in ways in which the TypeScript team don't expect.</p>
@@ -29,10 +29,10 @@ const Index = (_props: any) => {
             </div>
           </div>
 
-          <div className="raised" style={{ padding: "2rem", margin: "2rem" }}>
+          <div className="raised main-content-block">
             <h2>Quick Tutorial</h2>
             <p>You need about 5 minutes, Node.js, yarn and a Chromium based browser.</p>
-            <p><b>Step 1</b>: Use the template to bootstrap: <code>npm init typescript-playground-plugin MyPlugin</code></p>
+            <p><b>Step 1</b>: Use the template to bootstrap: <code>npm init typescript-playground-plugin playground-my-plugin</code></p>
             <p><b>Step 2</b>: Run <code>yarn start</code> in the new repo, to start up the local dev server</p>
             <p><b>Step 3</b>: Open the <a href={withPrefix("/en/play")}>playground</a> in your Chromium browser, click "Options" and enable <code>"Connect to localhost:5000/index.js"</code></p>
             <p><b>Step 4</b>: Refresh, and see the new tab. That's your plugin up and running</p>
@@ -47,3 +47,9 @@ const Index = (_props: any) => {
 
 export default (props: any) => <Intl><Index {...props} /></Intl>
 
+
+export const query = graphql`
+  query {
+    ...AllSitePage
+  }
+`

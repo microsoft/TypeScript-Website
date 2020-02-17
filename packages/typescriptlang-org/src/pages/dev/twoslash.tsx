@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { Layout } from "../../components/layout"
-import { withPrefix } from "gatsby"
+import { withPrefix, graphql } from "gatsby"
 import { twoslasher } from "ts-twoslasher"
 import { createDefaultMapFromCDN } from "typescript-vfs"
 import { renderToHTML } from "gatsby-remark-shiki/src/renderer"
@@ -156,10 +156,10 @@ const Index = (props: any) => {
 
   return (
     <>
-      <Layout title="Developers - Twoslash Code Samples" description="Learn about the TypeScript code sample library twoslash. Used for transpiling, providing hover to identifiers and compiler-driven error states." lang="en">
+      <Layout title="Developers - Twoslash Code Samples" description="Learn about the TypeScript code sample library twoslash. Used for transpiling, providing hover to identifiers and compiler-driven error states." lang="en" allSitePage={props.data.allSitePage}>
         <div id="dev">
           <DevNav active="twoslash" />
-          <div className="raised content" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
+          <div className="raised content main-content-block">
             <div className="split-fifty">
               <div>
                 <h1 style={{ marginTop: "0" }}>TypeScript Twoslash</h1>
@@ -182,7 +182,7 @@ const Index = (props: any) => {
             </div>
           </div>
 
-          <div className="raised content" style={{ backgroundColor: "white", padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
+          <div className="raised content main-content-block">
 
             <div className="sixhundred">
               <SuppressWhenTouch>
@@ -219,7 +219,7 @@ const Index = (props: any) => {
             </div>
           </div>
 
-          <div className="raised" style={{ padding: "2rem", margin: "2rem" }}>
+          <div className="raised main-content-block">
             <h2>Usage</h2>
             <p>Twoslash will be available on NPM soon, for now it's only being used in the TypeScript website.</p>
           </div>
@@ -317,3 +317,9 @@ greet("Maddison", new Date());
 `
   }
 ]
+
+export const query = graphql`
+  query {
+    ...AllSitePage
+  }
+`

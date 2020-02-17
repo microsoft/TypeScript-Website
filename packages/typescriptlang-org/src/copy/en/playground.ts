@@ -1,6 +1,6 @@
 export const playCopy = {
   play_subnav_title: "Playground",
-  play_subnav_config: "Playground",
+  play_subnav_config: "Config",
   play_config_language_blurb: "Which language should be used in the editor",
   play_subnav_examples: "Examples",
   play_subnav_examples_close: "Close",

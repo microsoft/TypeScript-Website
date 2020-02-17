@@ -23,7 +23,7 @@ export const Layout = (props: LayoutProps) => {
       <div className="ms-Fabric">
         <SiteNav {...props} />
         <main>{props.children}</main>
-        <SiteFooter />
+        <SiteFooter {...props} />
       </div>
       <AppInsights />
     </>

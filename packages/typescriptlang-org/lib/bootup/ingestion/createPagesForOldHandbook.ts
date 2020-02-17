@@ -8,7 +8,12 @@ export const createOldHandbookPages = async (
   const handbookPage = path.resolve(`./src/templates/handbook.tsx`)
   const result = await graphql(`
     query GetAllHandbookDocs {
-      allFile(filter: { sourceInstanceName: { eq: "handbook-v1" } }) {
+      allFile(
+        filter: {
+          sourceInstanceName: { eq: "handbook-v1" }
+          extension: { eq: "md" }
+        }
+      ) {
         nodes {
           name
           modifiedTime
