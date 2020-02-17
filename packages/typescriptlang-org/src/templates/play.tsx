@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { Layout } from "../components/layout"
-import { withPrefix } from "gatsby"
+import { withPrefix, graphql } from "gatsby"
 
 import "./play.scss"
 import { RenderExamples } from "../components/ShowExamples"
@@ -11,12 +11,15 @@ import { headCopy } from "../copy/en/head-seo"
 import { playCopy } from "../copy/en/playground"
 
 import { Intl } from "../components/Intl"
-
+import { AllSitePage } from "../components/IntlLink"
 
 // This gets set by the playground
 declare const playground: ReturnType<typeof import("typescript-playground").setupPlayground>
 
 type Props = {
+  data: {
+    allSitePage: AllSitePage
+  }
   pageContext: {
     lang: string
     examplesTOC: typeof import("../../static/js/examples/en.json")
@@ -82,7 +85,7 @@ const Play = (props: Props) => {
           prefix: withPrefix("/")
         }
 
-        playground.setupPlayground(sandboxEnv, main, playgroundConfig, i)
+        playground.setupPlayground(sandboxEnv, main, playgroundConfig, i as any)
         sandboxEnv.editor.focus()
 
         const darkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)')
@@ -108,7 +111,7 @@ const Play = (props: Props) => {
 
 
   return (
-    <Layout disableBetaNotification title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang}>
+    <Layout disableBetaNotification title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
       {/** This is the top nav, which is outside of the editor  */}
       <nav className="navbar-sub">
         <ul className="nav">
@@ -117,7 +120,7 @@ const Play = (props: Props) => {
           <li className="dropdown">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_config")} <span className="caret"></span></a>
             <ul className="examples-dropdown">
-              <h3>{i("play_subnav_examples")}</h3>
+              <h3>{i("play_subnav_config")}</h3>
               <div className="info" id="config-container">
                 <button className="examples-close">{i("play_subnav_examples_close")}</button>
 
@@ -218,3 +221,9 @@ const Play = (props: Props) => {
 
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Play {...props} /></Intl>
+
+export const query = graphql`
+  query {
+    ...AllSitePage
+  }
+`

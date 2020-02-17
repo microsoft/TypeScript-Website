@@ -1,11 +1,12 @@
 import React from "react"
-import { Link } from "gatsby"
 
 import "./SiteFooter.scss"
 import { PlaygroundSamples } from "./SiteFooter-PlaygroundSamples";
+import { AllSitePage, createIntlLink } from "../IntlLink";
 
 export type Props = {
-  centeredLayout?: boolean
+  lang: string
+  allSitePage: AllSitePage
 }
 
 const popularPages = [
@@ -54,11 +55,11 @@ const popularPages = [
 const useTypeScriptLinks = [
   {
     title: "Get Started",
-    url: "/docs/handbook/1.html",
+    url: "/docs/home.html",
   },
   {
     title: "Download",
-    url: "/docs/handbook/2.html",
+    url: "/en/download",
   },
   {
     title: "Connect",
@@ -74,7 +75,7 @@ const useTypeScriptLinks = [
   },
   {
     title: "Code Samples",
-    url: "/play/#show-examples",
+    url: "/en/play/#show-examples",
   },
 ]
 
@@ -120,6 +121,7 @@ const faviconForURL = (url: string) => {
 
 export const SiteFooter = (props: Props) => {
   const lastCommunity = useTypeScriptLinks[useTypeScriptLinks.length - 1]
+  const Link = createIntlLink(props.lang, props.allSitePage)
 
   return (
     <footer id="site-footer">

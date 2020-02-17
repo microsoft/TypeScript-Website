@@ -34,6 +34,7 @@ const hrefForExample = (example: Example, lang: string) => {
   const prefix = isJS ? "useJavaScript=true" : ""
   const hash = "example/" + example.id
   const params = example.compilerSettings || {}
+  params.q = Math.floor(Math.random() * 512)
   const queryParams = Object.keys(params).map(key => key + '=' + params[key]).join('&');
   return withPrefix(`${lang}/play/?${prefix + queryParams}#${hash}`)
 }

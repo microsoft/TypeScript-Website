@@ -10,8 +10,9 @@ import { headCopy } from "../copy/en/head-seo"
 
 import "./markdown.scss"
 import "./tsconfig.scss"
+import { AllSitePage } from "../components/IntlLink";
 
-type Props = { pageContext: any, data: TSConfigReferenceTemplate, path: string }
+type Props = { pageContext: any, data: TSConfigReferenceTemplate & { allSitePage: AllSitePage }, path: string }
 
 const TSConfigReferenceTemplateComponent = (props: Props) => {
   const i = createInternational<typeof headCopy>(useIntl())
@@ -70,8 +71,8 @@ const TSConfigReferenceTemplateComponent = (props: Props) => {
   })
 
   return (
-    <Layout title={i("tsconfig_title")} description={i("tsconfig_description")} lang={props.pageContext.locale}>
-      <div className="tsconfig raised" style={{ maxWidth: 960, margin: "1rem auto", paddingTop: "0.5rem" }}>
+    <Layout title={i("tsconfig_title")} description={i("tsconfig_description")} lang={props.pageContext.locale} allSitePage={props.data.allSitePage}>
+      <div className="tsconfig raised main-content-block">
         <div id="full-option-list" className="indent">
           {categories!.categories!.map(c => {
             if (!c) return null
@@ -99,6 +100,8 @@ const TSConfigReferenceTemplateComponent = (props: Props) => {
 
 export const pageQuery = graphql`
   query TSConfigReferenceTemplate($path: String, $tsconfigMDPath: String!) {
+    ...AllSitePage
+
     sitePage(path: { eq: $path }) {
       id
       fields {
@@ -124,5 +127,6 @@ export const pageQuery = graphql`
     }
   }
 `
+
 
 export default (props: Props) => <Intl locale={props.pageContext.locale}><TSConfigReferenceTemplateComponent {...props} /></Intl>
