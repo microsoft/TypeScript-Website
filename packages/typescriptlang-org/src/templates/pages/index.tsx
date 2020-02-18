@@ -34,7 +34,7 @@ const Index = (props: any) => {
   }, [])
 
   return (
-    <Layout title="JavaScript For Any Scale." description="Desc" lang="en" allSitePage={props.data.allSitePage}>
+    <Layout title="JavaScript For Any Scale." description="Desc" lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
       <VersionBar />
 
       <div id="index">

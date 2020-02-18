@@ -9,7 +9,7 @@ import releaseInfo from "../../lib/release-info.json"
 const changeExample = (code: string) => document.getElementById("code-example")!.textContent = code
 
 const Index = (props: any) =>
-  <Layout title="How to set up TypeScript" description="" lang="en" allSitePage={props.data.allSitePage}>
+  <Layout title="How to set up TypeScript" description="" lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
     <div className="raised main-content-block">
       <h1>Download TypeScript</h1>
       <p>TypeScript is available in two main ways depending on how you intend to use it: built as an npm module, and a nuget package.</p>
