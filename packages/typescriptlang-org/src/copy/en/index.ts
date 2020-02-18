@@ -62,6 +62,7 @@ export const indexCopy = {
   index_install_ref: `
   <p>You can install TypeScript via npm<pre>npm install -g typescript</pre>
   <p>Then run the compiler via <code>tsc</code><pre>npm install -g typescript</pre>
+  <p>Learn more <download>here</download>
   `,
   index_releases: "Quarterly Releases",
   index_releases_pt1: "Our next release is ",

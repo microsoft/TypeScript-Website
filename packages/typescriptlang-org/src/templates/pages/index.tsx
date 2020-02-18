@@ -14,6 +14,7 @@ import { useIntl } from "react-intl"
 import "./index.scss"
 import "../pages/css/documentation.scss"
 import { EditorExamples } from "../../components/index/EditorExamples"
+import { createIntlLink } from "../../components/IntlLink"
 
 const Section = (props: { children: any, color: string, className?: string }) =>
   <div key={props.color} className={props.color + " " + props.className}><div className="container">{props.children}</div></div>
@@ -27,6 +28,8 @@ const Index = (props: any) => {
   console.log(props)
 
   const i = createInternational<typeof indexCopy>(useIntl())
+  const Link = createIntlLink(props.pageContext.lang, props.data.allSitePage)
+
 
   useEffect(() => {
     setupVideosSection()
@@ -179,6 +182,7 @@ const Index = (props: any) => {
                   p: (...chunk) => <p>{chunk}</p>,
                   pre: (...chunk) => <pre>{chunk}</pre>,
                   code: (...chunk) => <code key={1}>{chunk}</code>,
+                  download: (...chunk) => <Link to="/download">{chunk}</Link>,
                 })}
               </div>
             </Col>
