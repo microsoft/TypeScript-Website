@@ -40,9 +40,9 @@ const Index = (props: any) => {
         </div>
 
         <div style={{ padding: "1rem", flex: 1 }}>
-          <h2>via Nuget</h2>
-          <p>You can get TypeScript as a package in Nuget for your MSBuild projects, for example an ASP.NET Core app.</p>
-          <p>You can <a href="https://docs.microsoft.com/en-us/visualstudio/javascript/tutorial-aspnet-with-typescript">install</a> TypeScript through Visual Studio using:</p>
+          <h2>with Visual Studio</h2>
+          <p>For most project types, you can get TypeScript as a package in Nuget for your MSBuild projects, for example an ASP.NET Core app.</p>
+          <p>When using Nuget, you can <a href="https://docs.microsoft.com/en-us/visualstudio/javascript/tutorial-aspnet-with-typescript">install</a> TypeScript through Visual Studio using:</p>
           <ul>
             <li>
               The Manage NuGet Packages window (which you can get to by right-clicking on a project node)
@@ -51,6 +51,7 @@ const Index = (props: any) => {
               The Nuget Package Manager Console (found in Tools > NuGet Package Manager > Package Manager Console) using <code>Install-Package Microsoft.TypeScript.MSBuild</code>
             </li>
           </ul>
+          <p>For project types which don't support Nuget. You can use the <a href={releaseInfo.vs.stable.vs2019_download}> TypeScript Visual Studio extension</a>. You can <a href="https://docs.microsoft.com/en-us/visualstudio/ide/finding-and-using-visual-studio-extensions?view=vs-2019">install</a> the extension using <code>Extensions > Manage Extensions</code> in Visual Studio.</p>
         </div>
       </section>
     </div >
@@ -73,7 +74,7 @@ const Index = (props: any) => {
 
         <div style={{ padding: "1rem", flex: 1 }}>
           <h3>via Visual Studio Marketplace</h3>
-          <p>You can install TypeScript as a Visual Studio extension which will allow you to use TypeScript across many MSBuild projects.</p>
+          <p>You can install TypeScript as a Visual Studio extension which will allow you to use TypeScript across many MSBuild projects in Visual Studio.</p>
           <p>The latest version is available <a href={releaseInfo.vs.stable.vs2019_download}>here</a></p>
         </div>
       </section>
