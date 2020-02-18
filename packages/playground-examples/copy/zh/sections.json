@@ -1,0 +1,54 @@
+{
+  "sections": [
+    {
+      "name": "JavaScript",
+      "id": "JavaScript",
+      "subtitle": "了解 TypeScript 如何使用最少的附加语法改善 JavaScript 的日常使用。"
+    },
+    {
+      "name": "TypeScript",
+      "id": "TypeScript",
+      "subtitle": "探索 TypeScript 如何扩展 JavaScript，使其更安全，更便利。"
+    },
+    {
+      "name": "3.7",
+      "id": "3.7",
+      "subtitle": "查看 <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/'> 版本更新说明。</a>."
+    },
+    {
+      "name": "3.8",
+      "id": "3.8",
+      "subtitle": "查看 <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/'> 测试版本更新说明。</a>."
+    },
+    {
+      "name": "在线演示 V3",
+      "id": "在线演示",
+      "subtitle": "了解在线演示有哪些变化。"
+    }
+  ],
+  "sortedSubSections": [
+    // JS
+    "JavaScript 基础",
+    "JavaScript 中的函数",
+    "JavaScript 中的类",
+    "现代 JavaScript",
+    "外部的 API",
+    "Helping with JavaScript",
+    // TS
+    "Primitives",
+    "Type Primitives",
+    "Meta-Types",
+    "Language",
+    "Language Extensions",
+    // Examples
+    "Syntax and Messaging",
+    "Types and Code Flow",
+    "Fixits",
+    // Playground
+    "配置",
+    "工具",
+    // 3.8
+    "破坏性的变化",
+    "JSDoc 的改进"
+  ]
+}
