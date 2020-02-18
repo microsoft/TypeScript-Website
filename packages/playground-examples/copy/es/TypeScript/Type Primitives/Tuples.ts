@@ -5,7 +5,7 @@
 
 // Estos se llaman tuplas (en inglés **tuples**). Piense en
 // ellas como una forma de conectar algunos datos pero con
-// menos sintaxis que los objetos ordenados por llaves.
+// menos sintaxis que un objeto ordenado por llaves.
 
 // Puedes crear una tupla utilizando la sintaxis de arreglos
 // en JavaScript:
@@ -16,11 +16,11 @@ const failingResponse = ['Not Found', 404]
 
 const passingResponse: [string, number] = ['{}', 200]
 
-// Si pasa el cursor sobre los nombres de ambas variables,
-// puede ver la diferencia entre la variable de tipo arreglo
+// Al pasar el cursor sobre los nombres de ambas variables
+// puedes ver la diferencia entre la variable de tipo arreglo
 // ( (string | number)[] ) y la tupla ( [string, number] ).
 
-// Como arreglo, el orden no es importante por lo que un
+// En un arreglo, el orden no es importante por lo que un
 // elemento en cualquier indice puede ser una cadena de
 // texto o un número. En la tupla, el orden y la longitud
 // son garantizados.
@@ -30,7 +30,7 @@ if (passingResponse[1] === 200) {
   console.log(localInfo)
 }
 
-// Esto significa que TypeScript proporcionará el tipado
+// Esto significa que TypeScript proporcionará el tipo
 // correcto en el índice adecuado e incluso generará un
 // error si intenta acceder a un objeto en un índice no
 // declarado.

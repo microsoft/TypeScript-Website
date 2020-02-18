@@ -3,27 +3,27 @@
     {
       "name": "JavaScript",
       "id": "JavaScript",
-      "subtitle": "Vea cómo TypeScript mejora día a día trabajando con JavaScript con una sintaxis adicional mínima."
+      "subtitle": "Descubre  TypeScript mejora tu día a día con JavaScript con una sintaxis adicional mínima."
     },
     {
       "name": "TypeScript",
       "id": "TypeScript",
-      "subtitle": "Explore cómo TypeScript extiende JavaScript para agregar más seguridad y herramientas."
+      "subtitle": "Explora cómo TypeScript extiende JavaScript para agregar más seguridad y herramientas."
     },
     {
       "name": "3.7",
       "id": "3.7",
-      "subtitle": "Veasé <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/'> notas de lanzamiento</a>."
+      "subtitle": "Lee las <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/'> notas de lanzamiento</a>."
     },
     {
       "name": "3.8",
       "id": "3.8",
-      "subtitle": "Veasé <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/'>notas de lanzamiento de la Beta</a>."
+      "subtitle": "Lee las <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/'>notas de lanzamiento de la Beta</a>."
     },
     {
       "name": "Playground V3",
       "id": "Playground",
-      "subtitle": "Conozca lo que ha cambiado en este sitio web."
+      "subtitle": "Descubre lo que ha cambiado en este sitio web."
     }
   ],
   "sortedSubSections": [

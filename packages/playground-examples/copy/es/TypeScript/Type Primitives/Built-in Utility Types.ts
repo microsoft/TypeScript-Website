@@ -1,9 +1,9 @@
 //// { order: 3, compiler: { strictNullChecks: true } }
 
-// Cuando un tipo particular parece útil en la mayoría de
-// las bases de código, se agregan a TypeScript y están
-// disponibles para cualquier usuario, lo que significa que
-// puede confiar constantemente en su disponibilidad
+// Cuando un tipo en particular es utilizado en múltiples
+// bases de código, se agrega a TypeScript y pasa a estar
+// disponible para cualquier usuario, lo que significa que
+// puede confiar constantemente en su disponibilidad.
 
 // Partial<Type>
 
@@ -28,10 +28,10 @@ type StickerFromAPI = Readonly<Sticker>
 
 // Record<KeysFrom, Type>
 
-// Crea un tipo el cual usa la lista de propiedades del
+// Crea un tipo que usa la lista de propiedades del
 // parametro KeysFrom y les asigna el valor del tipo.
 
-// Listado de llaves originadas de objeto:
+// Lista con llaves para KeysFrom:
 type NavigationPages = 'home' | 'stickers' | 'about' | 'contact'
 
 // La forma de los datos requerida para cada una de las
@@ -99,7 +99,7 @@ type StickerResponse = ReturnType<typeof getStickerByID>
 
 // InstanceType<Type>
 
-// Crea un tipo el cual es una instancia de una clase, o un
+// Crea un tipo que es una instancia de una clase, o un
 // objeto con un constructor.
 
 class StickerCollection {
@@ -110,7 +110,7 @@ type CollectionItem = InstanceType<typeof StickerCollection>
 
 // Required<Type>
 
-// Crea un tipo el cual convierte todas las propiedades
+// Crea un tipo que convierte todas las propiedades
 // opcionales a requeridas.
 
 type AccessiblePageInfo = Required<PageInfo>

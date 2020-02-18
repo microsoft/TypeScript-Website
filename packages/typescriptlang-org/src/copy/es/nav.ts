@@ -12,5 +12,5 @@ export const navCopy = {
   nav_search_aria: "Búsqueda en el sitio de TypeScript",
   nav_beta: "Búsqueda en el sitio de TypeScript",
   nav_beta_notification:
-    "Nota: esta página se encuentra en la fase beta de desarrollo, no confie en la URL y <a>abra incidencias en microsoft/TypeScript-Website</a>",
+    "Nota: esta página se encuentra en la fase beta de desarrollo, no confíes en la URL y <a>reporta incidencias en microsoft/TypeScript-Website</a>",
 }

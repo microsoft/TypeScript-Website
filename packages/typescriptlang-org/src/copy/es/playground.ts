@@ -1,7 +1,7 @@
 export const playCopy = {
   play_subnav_title: "Playground",
   play_subnav_config: "Playground",
-  play_config_language_blurb: "Cuál idioma se debe usar en el editor",
+  play_config_language_blurb: "Que idioma se debe usar en el editor",
   play_subnav_examples: "Ejemplos",
   play_subnav_examples_close: "Cerrar",
   play_subnav_whatsnew: "¿Qué hay de nuevo?",
@@ -27,7 +27,7 @@ export const playCopy = {
   play_sidebar_options_external_warning:
     "Advertencia: Código proveniente de complementos son originarios por terceros.",
   play_sidebar_options_modules: "Módulos personalizados",
-  play_sidebar_options_modules_placeholder: "Módulor proveniente de npm.",
+  play_sidebar_options_modules_placeholder: "Módulo proveniente de npm.",
   play_sidebar_options_plugin_dev: "Desarrollo de complementos",
   play_sidebar_options_plugin_dev_option:
     "Conectar a <code>localhost:5000/index.js</code>",
@@ -38,7 +38,7 @@ export const playCopy = {
   play_export_copy_md: "Copiar como una incidencia en formato Markdown",
   play_export_copy_link: "Copiar como un enlace en formato Markdown",
   play_export_copy_link_preview:
-    "Copiar como un enlace en formato Markdowncon vista previa",
+    "Copiar como un enlace en formato Markdown con vista previa",
   play_export_tsast: "Abrir en el visor AST de TypeScript",
   play_export_sandbox: "Abrir en CodeSandbox",
   play_export_stackblitz: "Abrir en StackBlitz",
@@ -47,7 +47,7 @@ export const playCopy = {
   play_run_ts: "TypeScript transpilado ejecutado",
   play_run_js_fail: "Ejecución de JavaScript fallida:",
   play_default_code_sample: `// ¡Bienvenido al editor en linea de TypeScript!, este es un sitio web 
-    // que le brinda la oportunidad de escribir, compartir y aprender TypeScript.
+    // que te brinda la oportunidad de escribir, compartir y aprender TypeScript.
 
     // 
     
@@ -61,6 +61,7 @@ export const playCopy = {
     console.log(anExampleVariable)
     
     // Para aprender más acerca del lenguaje, haz click en la parte superior en "Ejemplos" o "¿Qué hay de nuevo?".
-    // De lo contrario, comience eliminando estos comentarios y el mundo es su área de juegos.
+    // De lo contrario, comienza eliminando estos comentarios, y el mundo es tu área de juegos!
+
     `,
 }

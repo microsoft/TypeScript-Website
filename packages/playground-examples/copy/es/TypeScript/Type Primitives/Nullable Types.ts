@@ -24,7 +24,7 @@ const searchResults = {
 }
 
 // ¿Por qué no usar undefined? Principalmente, porque ahora
-// puede verificar que la propiedad text se haya incluido
+// puedes verificar que la propiedad text se haya incluido
 // correctamente. Si la propiedad text se devuelve como
 // undefined, el resultado es el mismo que si no estuviera
 // allí.
@@ -42,29 +42,30 @@ const searchResults = {
 // cercano a JavaScript sin tipado.
 
 // La versión 2.0 agregó una opción de compilador llamada
-// "stricNullChecks" y esta opción requería que los usuarios
-// manejarán los tipos undefined y null como tipos que deben
-// manejarse a tráves del análisis del flujo del código
+// "strictNullChecks" y esta opción requería que los
+// usuarios tratasen undefined y null como tipos que deben
+// ser manejados por medio de análisis de flujo de código
 // ( Ver más en example:code-flow )
 
 // Para ver un ejemplo de la diferencia en activar la opción
 // de verificación estricta de tipos nulos en TypeScript,
-// desplace el cursor sobre "PotentialString" a
+// desplaza el cursor sobre "PotentialString" a
 // continuación:
 
 type PotentialString = string | undefined | null
 
 // La variable PotentialString descarta el valor undefined y
-// null. Si sube al panel de configuración y activa el modo
-// estricto y regresa, verá que al pasar por PotentialString
-// ahora se muestra la unión completa de tipos.
+// null. Si vas al panel de configuración, y activas el modo
+// estricto, al regresar al código, verás que al pasar por
+// PotentialString ahora se muestra la unión completa de
+// tipos.
 
 declare function getID(): PotentialString
 
 const userID = getID()
 console.log('User Logged in: ', userID.toUpperCase())
 
-// Solamente en el modo estricto, lo anterior fallará ^
+// Lo anterior fallará solamente en modo estricto ^
 
 // Existen maneras de decirle a TypeScript que sabes lo que
 // haces, como por ejemplo una aserción de tipo o mediante
