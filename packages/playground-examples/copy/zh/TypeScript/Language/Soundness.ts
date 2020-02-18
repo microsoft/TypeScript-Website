@@ -1,44 +1,34 @@
 //// {compiler: { strictFunctionTypes: false } }
 
-// Without a background in type theory, you're unlikely
-// to be familiar with the idea of a type system being "sound".
+// 如果您没有类型理论方面的背景知识，您可能不太了解
+// 类型系统是 “健全的” 这个概念。
 
-// Soundness is the idea that the compiler can make guarantees
-// about the type a value has at runtime, and not just
-// during compilation. This is normal for most programming
-// languages that are built with types from day one.
+// 健全性是指编译器可以使值不仅在编译时，还可以在运行时具有预期的类型。
+// 这对于大多数从一开始就具有类型的编程语言来说是很正常的。
 
-// Building a type system which models a language which has
-// existed for a few decades however becomes about making
-// decisions with trade-offs on three qualities: Simplicity,
-// Usability and Soundness.
+// 要对于一个已经存在了几十年的语言建立一个类型系统，就需要对三个质量维度进行
+// 权衡和取舍：简单性，可用性和健全性。
 
-// With TypeScript's goal of being able to support all JavaScript
-// code, the language tends towards simplicity and usability
-// when presented with ways to add types to JavaScript.
+// TypeScript 的目标是支持所有的 JavaScript 代码，
+// 且 为 JavaScript 添加类型支持时，语言趋向于简单易用。
 
-// Let's look at a few cases where TypeScript is provably
-// not sound, to understand what those trade-offs would look
-// like otherwise.
+// 让我们看一些让 TypeScript 看起来没那么健全的例子，
+// 并且去理解这些权衡和取舍是什么样子。
 
-// Type Assertions
+// 类型断言（Type Assertions）
 
 const usersAge = ("23" as any) as number;
 
-// TypeScript will let you use type assertions to override
-// the inference to something which is quite wrong. Using
-// type assertions is a way of telling TypeScript you know
-// best, and TypeScript will try to let you get on with it.
+// TypeScript 允许您使用类型断言来重写一些可能错误的类型推断。
+// 使用类型断言代表告诉 TypeScript 您知道最正确的信息，
+// 并且 TypeScript 将会尝试让您继续使用它。
 
-// Languages which are sound would occasionally use runtime checks
-// to ensure that the data matches what your types say - but
-// TypeScript aims to have no type-aware runtime impact on
-// your transpiled code.
+// 健全性比较好的语言有时会使用运行时检查来确保数据与您的类型匹配。
+// 但是 TypeScript 旨在不对编译后的代码产生类型感知的运行时的影响。
 
-// Function Parameter Bi-variance
+// 函数参数双变
 
-// Params for a function support redefining the parameter
-// to be a subtype of the original declaration.
+// 函数的参数支持将参数重新定义为原始类型声明的子类型。
 
 interface InputEvent {
   timestamp: number;
@@ -52,66 +42,59 @@ interface KeyboardInputEvent extends InputEvent {
 }
 
 function listenForEvent(eventType: "keyboard" | "mouse",
-                        handler: (event: InputEvent) => void) {}
+  handler: (event: InputEvent) => void) { }
 
-// You can re-declare the parameter type to be a subtype of
-// the declaration. Above, handler expected a type InputEvent
-// but in the below usage examples - TypeScript accepts
-// a type which has additional properties.
+// 我们可以将参数的类型重新声明为它定义的子类型。
+// 上例中 handler 预期为一个 'InputEvent' 类型，但是在后面
+// 使用的例子中，TypeScript 接受附加了新属性的类型。
 
-listenForEvent("keyboard", (event: KeyboardInputEvent) => {});
-listenForEvent("mouse", (event: MouseInputEvent) => {});
+listenForEvent("keyboard", (event: KeyboardInputEvent) => { });
+listenForEvent("mouse", (event: MouseInputEvent) => { });
 
-// This can go all the way back to the smallest common type:
+// 而这个可以一直回溯到最小的公共类型:
 
-listenForEvent("mouse", (event: {}) => {});
+listenForEvent("mouse", (event: {}) => { });
 
-// But no further:
+// 但没有更进一步。
 
-listenForEvent("mouse", (event: string) => {});
+listenForEvent("mouse", (event: string) => { });
 
-// This covers the real-world pattern of event listener
-// in JavaScript, at the expense of having being sound.
+// 这覆盖了实际环境中 JavaScript 事件监听器的模式，但是会牺牲一些健全性。
 
-// TypeScript can raise an error when this happens via
-// `strictFunctionTypes`. Or, you could work around this
-// particular case with function overloads,
-// see: example:typing-functions
+// 在 'strictFunctionTypes' 选项开启时，TypeScript 可以对此抛出一些异常，
+// 或者您可以通过函数重载来解决这个特殊情况。
+// 具体可以看 example:typing-functions
 
 // Void special casing
 
 // Parameter Discarding
 
-// To learn about special cases with function parameters
-// see example:structural-typing
+// 查看 example:structural-typing 以了解更多函数参数的特殊例子。
 
-// Rest Parameters
+// 剩余参数
 
-// Rest parameters are assumed to all be optional, this means
-// TypeScript will not have a way to enforce the number of
-// parameters available to a callback.
+// 剩余参数均被推断为可选参数，这意味着 TypeScript 将无法确保
+// 用于回调的参数的数量。
 
 function getRandomNumbers(count: number,
-                          callback: (...args: number[]) => void) {}
+  callback: (...args: number[]) => void) { }
 
 getRandomNumbers(2, (first, second) => console.log([first, second]));
 getRandomNumbers(400, first => console.log(first));
 
-// Void Functions Can Match to a Function With a Return Value
+// 空返回值函数可以匹配具有返回值的函数
 
-// A function which returns a void function, can accept a
-// function which takes any other type.
+// 一个返回空的函数，可以接受一个返回其他类型的函数。
 
 const getPI = () => 3.14;
 
-function runFunction (func: () => void) {
+function runFunction(func: () => void) {
   func();
 }
 
 runFunction(getPI);
 
-// For more information on the places where soundness of the
-// type system is compromised, see:
+// 要了解更多关于类型系统健全性取舍的内容，可以查看:
 
 // https://github.com/Microsoft/TypeScript/wiki/FAQ#type-system-behavior
 // https://github.com/Microsoft/TypeScript/issues/9825

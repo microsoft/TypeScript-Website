@@ -1,8 +1,6 @@
-// There are two main tools to declare the shape of an
-// object: interfaces and type aliases.
-//
-// They are very similar, and for the most common cases
-// act the same.
+// 声明一个对象的类型时，有两个主要的工具：接口（interface）和类型别名（type aliases）。
+// 
+// 他们非常相似，并且在大多数情况下是相同的。
 
 type BirdType = {
   wings: 2;
@@ -15,14 +13,13 @@ interface BirdInterface {
 const bird1: BirdType = { wings: 2 };
 const bird2: BirdInterface = { wings: 2 };
 
-// Because TypeScript is a structural type system,
-// it's possible to intermix their use too.
+// 因为 TypeScript 有着结构化类型系统。
+// 我们也可以混合使用他们。
 
 const bird3: BirdInterface = bird1;
 
-// They both support extending other interfaces and types.
-// Type aliases do this via intersection types, while
-// interfaces have a keyword.
+// 他们都支持扩展另一个些接口或类型。
+// 类型别名通过并集类型来实现，接口通过 extends 关键字。
 
 type Owl = { nocturnal: true } & BirdType;
 type Robin = { nocturnal: false } & BirdInterface;
@@ -39,19 +36,15 @@ interface Chicken extends BirdInterface {
 let owl: Owl = { wings: 2, nocturnal: true };
 let chicken: Chicken = { wings: 2, colourful: false, flies: false };
 
-// That said, we recommend you use interfaces over type
-// aliases. Specifically, because you will get better error
-// messages. If you hover over the following errors, you can
-// see how TypeScript can provide terser and more focused
-// messages when working with interfaces like Chicken.
+// 也就是说，我们建议您使用接口而不是类型别名，因为你可以在接口中获得更好的错误提示。
+// 如果你将鼠标悬停在下面的错误上，你会看到在使用接口（例如 Chicken）时，
+// TypeScript 会提供更简洁的提示信息。
 
 owl = chicken;
 chicken = owl;
 
-// One major difference between type aliases vs interfaces
-// are that interfaces are open and type aliases are closed.
-// This means you can extend an interface by declaring it
-// a second time.
+// 一个接口和类型别名的主要区别是，接口是开放的，类型别名是封闭的。
+// 这意味着你可以你可以通过多次声明同一个接口来扩展它。
 
 interface Kitten {
   purrs: boolean;
@@ -61,8 +54,7 @@ interface Kitten {
   colour: string;
 }
 
-// In the other case a type cannot be changed outside of
-// it's declaration.
+// 与此同时，类型别名不可以在外部变更它的声明。
 
 type Puppy = {
   color: string;
@@ -72,12 +64,9 @@ type Puppy = {
   toys: number;
 };
 
-// Depending on your goals, this difference could be a
-// positive or a negative. However for publicly exposed
-// types, it's a better call to make them an interface.
+// 基于你不同的目的，这个区别可以是证明的也可以是负面的。
+// 一般来说，对于公开的需要暴露的类型，将他们作为接口是更好的选择。
 
-// One of the best resources for seeing all of the edge
-// cases around types vs interfaces, this stack overflow
-// thread is a good place to start:
+// 要查看接口和类型定义之间所有边际条件，下面的 stackoverflow 讨论是最好的资源之一:
 
 // https://stackoverflow.com/questions/37233735/typescript-interfaces-vs-types/52682220#52682220
