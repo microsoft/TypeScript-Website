@@ -253,8 +253,8 @@ export const OSS = () => (
             <path fill-rule="evenodd" clip-rule="evenodd" d="M56.5 0L113 100H0L56.5 0Z" fill="url(#paint0_linear)" />
             <defs>
               <linearGradient id="paint0_linear" x1="222.127" y1="228.815" x2="80.0337" y2="32.929" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#43914B" />
-                <stop offset="1" stop-color="white" />
+                <stop stopColor="#43914B" />
+                <stop offset="1" stopColor="white" />
               </linearGradient>
             </defs>
           </svg>

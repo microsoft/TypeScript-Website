@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { Layout } from "../../components/layout"
-import { withPrefix } from "gatsby"
+import { withPrefix, graphql } from "gatsby"
 
 import "./dev.scss"
 import { Intl } from "../../components/Intl"
@@ -71,10 +71,10 @@ export default async function () {
 
   return (
     <>
-      <Layout title="Developers - Sandbox" description="The TypeScript sandbox powers the TypeScript Playground. Learn how you can make your experiences like the playground using the sandbox." lang="en">
+      <Layout title="Developers - Sandbox" description="The TypeScript sandbox powers the TypeScript Playground. Learn how you can make your experiences like the playground using the sandbox." lang="en" allSitePage={props.data.allSitePage}>
         <div id="dev">
           <DevNav active="sandbox" />
-          <div className="raised content" style={{ padding: "2rem", margin: "2rem", marginTop: "1rem" }}>
+          <div className="raised content main-content-block">
             <div className="split-sixhundred">
               <h1 style={{ marginTop: "0" }}>TypeScript Sandbox</h1>
               <p>A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the <a href={withPrefix("/en/play")}>TypeScript playground</a></p>
@@ -100,7 +100,7 @@ export default async function () {
             </SuppressWhenTouch>
           </div>
 
-          <div className="raised" style={{ padding: "2rem", margin: "2rem" }}>
+          <div className="raised main-content-block">
             <h2>Usage</h2>
             <p>A sandbox uses the same tools as monaco-editor, meaning this library is shipped as an AMD bundle which you can use the <a href="https://github.com/microsoft/vscode-loader/">VSCode Loader</a> to <code>require</code>.</p>
             <p>Because we need it for the TypeScript website, you can use our hosted copy <a href="https://typescriptlang.org/v2/js/vs.loader.js">here.</a> (<em>note</em>, we will eventually deprecate the /v2/ in all routes)</p>
@@ -268,3 +268,11 @@ const decorations = sandbox.editor.deltaDecorations([], [
 `
   }
 ]
+
+
+
+export const query = graphql`
+  query {
+    ...AllSitePage
+  }
+`

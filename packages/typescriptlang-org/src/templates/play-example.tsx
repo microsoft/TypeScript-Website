@@ -7,7 +7,7 @@ import { useIntl } from "react-intl";
 import { createInternational } from "../lib/createInternational"
 import { headCopy } from "../copy/en/head-seo"
 import { Intl } from "../components/Intl"
-import { withPrefix } from "gatsby";
+import { withPrefix, graphql } from "gatsby";
 
 type Props = {
   pageContext: {
@@ -17,6 +17,7 @@ type Props = {
     title: string
     redirectHref: string
   }
+  data: any
 }
 
 const Play = (props: Props) => {
@@ -31,8 +32,8 @@ const Play = (props: Props) => {
   })
 
   return (
-    <Layout disableBetaNotification title={i("playground_example_prefix") + props.pageContext.title} description={i("head_playground_description")} lang="en">
-      <div className="raised" style={{ paddingTop: "0", marginTop: "20px", marginBottom: "3rem", paddingBottom: "1.5rem" }}>
+    <Layout disableBetaNotification title={i("playground_example_prefix") + props.pageContext.title} description={i("head_playground_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+      <div className="raised main-content-block" >
         <div style={{ maxWidth: "800px", margin: "0 auto", padding: "80px" }}>
           <p dangerouslySetInnerHTML={{ __html: props.pageContext.html! }} />
         </div>
@@ -40,6 +41,12 @@ const Play = (props: Props) => {
     </Layout>
   )
 }
+
+export const query = graphql`
+  query {
+    ...AllSitePage
+  }
+`
 
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Play {...props} /></Intl>

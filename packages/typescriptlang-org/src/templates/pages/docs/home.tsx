@@ -1,21 +1,23 @@
 import React from "react"
-import { Layout } from "../components/layout"
+import { Layout } from "../../../components/layout"
 
-import "./css/documentation.scss"
-import { ButtonGrid } from "../components/display/ButtonGrid"
-import { Intl } from "../components/Intl"
+import "../css/documentation.scss"
+import { ButtonGrid } from "../../../components/display/ButtonGrid"
+import { Intl } from "../../../components/Intl"
 
-import { docCopy } from "../copy/en/documentation"
-import { createInternational } from "../lib/createInternational"
+import { docCopy } from "../../../copy/en/documentation"
+import { createInternational } from "../../../lib/createInternational"
 import { useIntl } from "react-intl"
+import { graphql } from "gatsby"
 
-const Index = () => {
+const Index = (props: any) => {
   const i = createInternational<typeof docCopy>(useIntl())
   return (
     <Layout
       title={i("doc_layout_title")}
       description="Find TypeScript starter projects: from Angular to React or Node.js and CLIs."
       lang="en"
+      allSitePage={props.data.allSitePage}
     >
       <div
         id="documentation"
@@ -271,6 +273,13 @@ const Index = () => {
     </Layout>
   )
 }
+
+
+export const query = graphql`
+  query {
+    ...AllSitePage
+  }
+`
 
 export default (props: any) => (
   <Intl>
