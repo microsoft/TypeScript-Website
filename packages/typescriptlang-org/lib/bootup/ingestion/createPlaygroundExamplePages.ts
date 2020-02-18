@@ -56,7 +56,8 @@ export const createPlaygroundExamplePages = async (
       .map(idize)
       .join("/")
 
-    const newPagePath = language + "/play/" + postLangPath
+    const langPrefix = language === "en" ? "" : language
+    const newPagePath = langPrefix + "/play/" + postLangPath
 
     const appRoot = path.join(__dirname, "..", "..", "..", "..")
     // prettier-ignore
@@ -94,7 +95,9 @@ const hrefForExample = (
   const queryParams = Object.keys(params)
     .map(key => key + "=" + params[key])
     .join("&")
-  return `${lang}/play/?${prefix + queryParams}#${hash}`
+
+  const langURL = lang === "en" ? "" : lang
+  return `${langURL}/play/?${prefix + queryParams}#${hash}`
 }
 
 const getCompilerDetailsFromCode = (contents: string) => {

@@ -44,6 +44,19 @@ export const createTSConfigReference = async (
       element.name + ".json"
     )
 
+    // Support urls being consistent with the current infra, e.g. en with no prefix
+    if (element.name === "en") {
+      createPage({
+        path: "/tsconfig",
+        component: tsConfigRefPage,
+        context: {
+          locale: element.name,
+          tsconfigMDPath: element.absolutePath,
+          categoriesPath: categoriesForLang,
+        },
+      })
+    }
+
     createPage({
       path: element.name + "/tsconfig",
       component: tsConfigRefPage,
