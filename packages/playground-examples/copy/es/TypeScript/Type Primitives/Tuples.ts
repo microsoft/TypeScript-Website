@@ -3,7 +3,7 @@
 // torno a los arreglos que contengan múltiples tipos, y
 // donde es importante el orden en que se indexan.
 
-// Estos se llaman tuplas (en inglés **tuples**). Piense en
+// Estos se llaman tuplas (en inglés **tuples**). Piensa en
 // ellas como una forma de conectar algunos datos pero con
 // menos sintaxis que un objeto ordenado por llaves.
 
