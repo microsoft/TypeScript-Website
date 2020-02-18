@@ -7,7 +7,7 @@ While you can use TypeScript to produce JavaScript code from TypeScript code, it
 However, other transpilers only operate on a single file at a time, which means they can't apply code transforms that depend on understanding the full type system.
 This restriction also applies to TypeScript's `ts.transpileModule` API which is used by some build tools.
 
-These limitations can cause runtime problems with some TypeScript features like `const enum`s and `namepace`s./
+These limitations can cause runtime problems with some TypeScript features like `const enum`s and `namepace`s.
 Setting the `isolatedModules` flag tells TypeScript to warn you if you write certain code that can't be correctly interpreted by a single-file transpilation process.
 
 It does not change the behavior of your code, or otherwise change the behavior of TypeScript's checking and emitting process.

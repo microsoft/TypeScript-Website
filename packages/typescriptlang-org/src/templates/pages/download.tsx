@@ -46,7 +46,7 @@ const Index = (props: any) => {
           <ul>
             <li>
               The Manage NuGet Packages window (which you can get to by right-clicking on a project node)
-  </li>
+            </li>
             <li style={{ marginTop: "20px" }}>
               The Nuget Package Manager Console (found in Tools > NuGet Package Manager > Package Manager Console) using <code>Install-Package Microsoft.TypeScript.MSBuild</code>
             </li>
@@ -73,7 +73,7 @@ const Index = (props: any) => {
 
         <div style={{ padding: "1rem", flex: 1 }}>
           <h3>via Visual Studio Marketplace</h3>
-          <p>You can install TypeScript as a Visual Studio extension which will allow you to use TypeScript across many projects.</p>
+          <p>You can install TypeScript as a Visual Studio extension which will allow you to use TypeScript across many MSBuild projects.</p>
           <p>The latest version is available <a href={releaseInfo.vs.stable.vs2019_download}>here</a></p>
         </div>
       </section>

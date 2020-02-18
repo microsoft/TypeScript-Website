@@ -140,8 +140,8 @@ console.log("Hello, " + danger)
 
         <p>This extra <code>: string</code> allow the reader to be certain that <code>name</code> will only be a string. Annotating your variables
 in this way also gives TypeScript the chance to verify that these match. This is <em>very</em> useful, because keeping track of changes
-                                                                                                                                            like the type of value in a variable seems easy when it's one or two, but once it starts hitting the hundreds,
-                                                                                                                                            that's a lot to keep track of. Writing types help programmers be more confident about their code because types catch
+                                                                                                                                                                          like the type of value in a variable seems easy when it's one or two, but once it starts hitting the hundreds,
+                                                                                                                                                                          that's a lot to keep track of. Writing types help programmers be more confident about their code because types catch
 mistakes.</p>
 
         <p>Simply speaking, we call these annotations "Types". Hence the name <i>Type</i>Script. One of the tag-lines for TypeScript
@@ -151,10 +151,9 @@ understand how every change affects the rest of the program.</p>
 
         <p>In the 90s, and maybe until a 5-10 years ago the trade-off for not having types in your JavaScript application was
         fine because the size and complexities of the programs being built were constrained to just the front-end of
-        websites. Today though, JavaScript is being used almost everywhere, to build almost anything which runs on a computer.</p>
+        websites. Today though, JavaScript is being used almost everywhere, to build almost anything which runs on a computer. A large amount of mobile and desktop apps use JavaScript and web technology under the hood.</p>
 
-        <p>These are all considerably more complicated to build and understand, adding types drastically reduces the
-complexity of making improvements to those programs.</p>
+        <p>These are all considerably more complicated to build and understand, adding types drastically reduces the complexity of making improvements to those programs.</p>
 
         <h3>What Problems Can TypeScript Solve?</h3>
 
