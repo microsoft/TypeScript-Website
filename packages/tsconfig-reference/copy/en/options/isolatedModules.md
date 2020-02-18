@@ -12,6 +12,8 @@ Setting the `isolatedModules` flag tells TypeScript to warn you if you write cer
 
 It does not change the behavior of your code, or otherwise change the behavior of TypeScript's checking and emitting process.
 
+Some examples of code which does not work when `isolatedModules` is enabled.
+
 #### Exports of Non-Value Identifiers
 
 In TypeScript, you can import a _type_ and then subsequently export it:
@@ -25,18 +27,17 @@ someFunction();
 export { someType, someFunction };
 ```
 
-Because there's no value for `someType`, the emitted `export` will not try to export it (this would be a runtime error):
+Because there's no value for `someType`, the emitted `export` will not try to export it (this would be a runtime error in JavaScript):
 
 ```js
 export { someFunction };
 ```
 
-Single-file transpilers don't know whether `someType` produces a value or not, so it's an error to export a name that only refers to a type if `isolatedModules` is set.
+Single-file transpilers don't know whether `someType` produces a value or not, so it's an error to export a name that only refers to a type.
 
 #### Non-Module Files
 
-If `isolatedModules` is set, all implementation files must be _modules_.
-An error occurs if any file isn't a module:
+If `isolatedModules` is set, all implementation files must be _modules_ (which means it has some form of `import`/`export`). An error occurs if any file isn't a module:
 
 ```ts twoslash
 // @errors: 1208
@@ -48,7 +49,7 @@ This restriction doesn't apply to `.d.ts` files
 
 #### References to `const enum` members
 
-In TypeScript, when you reference a `const enum` member, the reference is replaced by its actual value in the emitted JavaScript:
+In TypeScript, when you reference a `const enum` member, the reference is replaced by its actual value in the emitted JavaScript. Changing this TypeScript:
 
 ```ts twoslash
 declare const enum Numbers {
@@ -58,7 +59,7 @@ declare const enum Numbers {
 console.log(Numbers.Zero + Numbers.One);
 ```
 
-To:
+To this JavaScript:
 
 ```ts twoslash
 // @showEmit
@@ -70,5 +71,5 @@ declare const enum Numbers {
 console.log(Numbers.Zero + Numbers.One);
 ```
 
-Without knowledge of the values of these members, other transpilers can't replace the references to `Number`, which would be a runtime error if left alone (since there is no `Numbers` object at runtime).
+Without knowledge of the values of these members, other transpilers can't replace the references to `Number`, which would be a runtime error if left alone (since there are no `Numbers` object at runtime).
 Because of this, when `isolatedModules` is set, it is an error to reference an ambient `const enum` member.
