@@ -3,7 +3,7 @@
   flex-wrap: wrap;
 }
 .clicky-grey-button {
-  width: 18rem;
+  width: 16rem;
   height: 10rem;
   background-color: #d8d8d8;
   margin-right: 20px;
@@ -24,6 +24,15 @@
 
   &.links {
     height: 26rem;
+  }
+
+  &:hover,
+  &.focus {
+    background-color: #ccc;
+  }
+
+  &:active {
+    background-color: #ddd;
   }
 
   p {
