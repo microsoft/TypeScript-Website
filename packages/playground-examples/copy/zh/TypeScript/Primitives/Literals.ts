@@ -1,29 +1,27 @@
-// TypeScript has some fun special cases for literals in
-// source code.
+// TypeScript 对于代码中的字面量有一些有趣的特殊处理。
 
-// In part, a lot of the support is covered in type widening
-// and narrowing ( example:type-widening-narrowing ) and it's
-// worth covering that first.
+// 某种程度上，很大一部分支持在类型扩展和
+// 缩小（example:type-widening-narrowing）中被支持，
+// 建议首先了解一下他们。
 
-// A literal is a more concrete subtype of a collective type.
-// What this means is that "Hello World" is a string, but a
-// string is not "Hello World" inside the type system.
+// 字面量类型是一个类型中，更具体的一个子类型。
+// 这意味着在类型系统中 ”Hello World“ 是一个字符串，
+// 但是一个字符串并不一定是 ”Hello World“。
 
 const helloWorld = "Hello World";
-let hiWorld = "Hi World"; // this is a string because it is let
+let hiWorld = "Hi World"; // 这里的类型是字符串，因为它是由 let 定义的。
 
-// This function takes all strings
+// 这个函数接受所有的字符串。
 declare function allowsAnyString(arg: string);
 allowsAnyString(helloWorld);
 allowsAnyString(hiWorld);
 
-// This function only accepts the string literal "Hello World"
+// 这个函数仅接受字符串字面量 ”Hello World“。
 declare function allowsOnlyHello(arg: "Hello World");
 allowsOnlyHello(helloWorld);
 allowsOnlyHello(hiWorld);
 
-// This lets you declare APIs which use unions to say it
-// only accepts a particular literal:
+// 它可以让你使用联合类型，定义某个 API 仅接受一些特定的字面量值。
 
 declare function allowsFirstFiveNumbers(arg: 1 | 2 | 3 | 4 | 5);
 allowsFirstFiveNumbers(1);
@@ -32,34 +30,31 @@ allowsFirstFiveNumbers(10);
 let potentiallyAnyNumber = 3;
 allowsFirstFiveNumbers(potentiallyAnyNumber);
 
-// At first glance, this rule isn't applied to complex objects.
+// 看上去这个规则不适用于复杂的对象。
 
 const myUser = {
   name: "Sabrina"
 };
 
-// See how it transforms `name: "Sabrina"` to `name: string`
-// even though it is defined as a constant. This is because
-// the name can still change any time:
+// 可以看到虽然它被定义为不可变，但是它依旧
+// 将 `name: "Sabrina”` 转换为 "name: string"。
+// 这是因为 name 依旧可以被改变。
 
 myUser.name = "Cynthia";
 
-// Because myUser's name property can change, TypeScript
-// cannot use the literal version in the type system. There
-// is a feature which will allow you to do this however.
+// 因为 myUser 的 name 属性可以被改变，TypeScript 不能在类型系统
+// 中使用字面量版本的类型。但是有一个功能可以允许你做到这一点。
 
 const myUnchangingUser = {
   name: "Fatma"
 } as const;
 
-// When "as const" is applied to the object, then it becomes
-// a object literal which doesn't change instead of a
-// mutable object which can.
+// 当 "as const" 被应用到一个对象上，它将变为一个不可变的
+// 对象字面量，而不是一个可以被改变的对象。
 
 myUnchangingUser.name = "Raîssa";
 
-// "as const" is a great tool for fixtured data, and places
-// where you treat code as literals inline. "as const" also
-// works with arrays:
+// "as const" 是用于常量数据的好工具，并且可以使代码变为内联的字面量。
+// "as const" 同样可以用于数组。
 
 const exampleUsers = [{ name: "Brian" }, { name: "Fahrooq" }] as const;

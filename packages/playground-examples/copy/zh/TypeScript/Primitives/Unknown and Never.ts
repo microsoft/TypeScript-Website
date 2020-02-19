@@ -5,10 +5,8 @@
 // to the any type. Where any allows for ambiguity - unknown
 // requires specifics.
 
-// A good example would be in wrapping a JSON parser. JSON
-// data can come in many different forms and the creator
-// of the json parsing function won't know the shape of the
-// data - the person calling that function should.
+// 封装 JSON 解析器是一个不错的例子，JSON 数据可以以多种不同的形式出现，
+// 并且 JSON 解析器函数的作者并不知道数据的形状。而调用解析函数的人应该知道。
 
 const jsonParser = (jsonString: string) => JSON.parse(jsonString);
 
@@ -17,10 +15,8 @@ const myAccount = jsonParser(`{ "name": "Dorothea" }`);
 myAccount.name;
 myAccount.email;
 
-// If you hover on jsonParser, you can see that it has the
-// return type of any, so then does myAccount. It's possible
-// to fix this with Generics - but it's also possible to fix
-// this with unknown.
+// 如果你将鼠标悬停在 jsonParser 上，你可以看到它的返回值类型是 any,
+// myAccount 也是如此，虽然可以使用泛型来解决这个问题，但是我们也可以使用 unknown.
 
 const jsonParserUnknown = (jsonString: string): unknown => JSON.parse(jsonString);
 
@@ -28,64 +24,56 @@ const myOtherAccount = jsonParserUnknown(`{ "name": "Samuel" }`);
 
 myOtherAccount.name;
 
-// The object myOtherAccount cannot be used until the type has
-// been declared to TypeScript. This can be used to ensure
-// that API consumers think about their typing up-front:
+// myOtherAccount 对象在类型声明给 TypeScript 之前不可以被使用，
+// 这可以保证 API 的使用者预先考虑他们的类型。
 
 type User = { name: string };
 const myUserAccount = jsonParserUnknown(`{ "name": "Samuel" }`) as User;
 myUserAccount.name;
 
-// Unknown is a great tool, to understand it more read these:
+// unknown 是一个很好的工具，可以查看这些以了解更多：
 // https://mariusschulz.com/blog/the-unknown-type-in-typescript
 // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type
 
 // Never
 
-// Because TypeScript supports code flow analysis, the language
-// needs to be able to represent when code logically cannot
-// happen. For example, this function cannot return:
+// 由于 TypeScript 支持代码流分析，语言必须可以表示在逻辑上不会执行的代码。
+// 例如，这个函数将永远不会返回:
 
 const neverReturns = () => {
   // If it throws on the first line
   throw new Error("Always throws, never returns");
 };
 
-// If you hover on the type, you see it is a () => never
-// which means it should never happen. These can still be
-// passed around like other values:
+// 如果你将鼠标悬停在 neverReturns 上, 你可以看到它的类型是 () => never,
+// 这代表着它永远不会执行。这依然可以像其他值一样传递:
 
 const myValue = neverReturns();
 
-// Having a function never return can be useful when dealing
-// with the unpredictability of the JavaScript runtime and
-// API consumers that might not be using types:
+// 对于处理不可预测的 JavaScript 运行时行为以及当 API 的使用者不适用类型时，
+// 使函数永不返回（返回 never） 非常有用。
 
 const validateUser = (user: User) => {
   if (user) {
     return user.name !== "NaN";
   }
 
-  // According to the type system, this code path can never
-  // happen, which matches the return type of neverReturns.
+  // 在类型系统中，这条路径上的代码永远不会被执行，这与 neverReturns 的
+  // 返回值类型 never 相匹配。
 
   return neverReturns();
 };
 
-// The type definitions state that a user has to be passed in
-// but there are enough escape valves in JavaScript whereby
-// you can't guarantee that.
+// 虽然类型定义规定用户必须按类型传递参数，但是在 JavaScript 中有足够
+// 多的特殊情况，所以您不能保证这一点。
 
-// Using a function which returns never allows you to add
-// additional code in places which should not be possible.
-// This is useful for presenting better error messages,
-// or closing resources like files or loops.
+// 使用永不返回的函数可以允许您在一些不可能的地方上添加额外的代码。
+// 这对于提供更好的错误信息，或者释放一些诸如文件的资源或循环时非常有用。
 
-// A very popular use for never, is to ensure that a
-// switch is exhaustive. E.g., that every path is covered.
+// 一个非常常见的 never 的使用方法是确保 switch 是被穷尽的。
+// 也就是每个路径都有被覆盖到。
 
-// Here's an enum and an exhaustive switch, try adding
-// a new option to the enum (maybe Tulip?)
+// 有一个枚举和一个穷尽的 switch，你可以尝试为枚举添加一个新的选项（例如 Tulip?）。
 
 enum Flower {
   Rose,
@@ -111,18 +99,15 @@ const flowerLatinName = (flower: Flower) => {
   }
 };
 
-// You will get a compiler error saying that your new
-// flower type cannot be converted into never.
+// 你会收到一个编译期错误，表示 flower 的类型不可以被转换为 never。
 
-// Never in Unions
+// 联合类型中的 Never
 
-// A never is something which is automatically removed from
-// a type union.
+// never 会在联合类型中被自动移除。
 
 type NeverIsRemoved = string | never | number;
 
-// If you look at the type for NeverIsRemoved, you see that
-// it is string | number. This is because it should never
-// happen at runtime because you cannot assign to it.
+// 如果你查看 NeverIsRemoved 的类型，你会看到它是 string | number。
+// 这是因为在运行时你永远不能将 never 赋值给它，所以它永远不会发生。
 
-// This feature is used a lot in example:conditional-types
+// 这个特性经常被使用到：example:conditional-types
