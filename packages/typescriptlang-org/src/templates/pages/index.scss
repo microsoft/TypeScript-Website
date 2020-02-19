@@ -21,6 +21,9 @@
   padding: 18px;
   margin-right: 20px;
   box-sizing: border-box;
+  a {
+    color: black;
+  }
 }
 
 .clicky-grey-button,
@@ -75,6 +78,7 @@
 
   h1 {
     font-size: 2.5rem;
+    line-height: 2.8rem;
     font-weight: 200;
     margin-top: 0;
 
@@ -303,6 +307,7 @@
           padding: 1rem;
           font-family: Menlo, Monaco, Consolas, Courier New, monospace;
           font-size: 0.8rem;
+          line-height: 0.95rem;
           white-space: pre;
           flex-shrink: 1;
           overflow-x: scroll;
@@ -518,7 +523,7 @@
     }
 
     .illustration .fg {
-      padding-top: 80px;
+      padding-top: 40px;
     }
   }
 
@@ -558,6 +563,7 @@
   .illustration {
     .fg {
       font-size: 1.4rem;
+      line-height: 1.6rem;
     }
 
     position: absolute;

@@ -16,7 +16,7 @@ const Index = (props: any) => {
     <Layout
       title={i("doc_layout_title")}
       description="Find TypeScript starter projects: from Angular to React or Node.js and CLIs."
-      lang="en"
+      lang={props.pageContext.lang}
       allSitePage={props.data.allSitePage}
     >
       <div

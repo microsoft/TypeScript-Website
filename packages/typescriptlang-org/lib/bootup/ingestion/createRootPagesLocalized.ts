@@ -28,8 +28,6 @@ export const createRootPagesLocalized = async (
     .filter(f => !f.startsWith(".")) // only useful files
     .filter(f => !f.includes("dev") && !f.includes("css")) // skip these
 
-  console.log(files)
-
   files.forEach(f => {
     const fullpath = path.join(__dirname, "..", "..", "..", "..", f)
     let originalSitePath = path

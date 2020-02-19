@@ -163,7 +163,7 @@ const meetups =
 
 
 export const Comm = (props: any) => (
-  <Layout title="How to set up TypeScript" description="" lang="en" allSitePage={props.data.allSitePage}>
+  <Layout title="How to set up TypeScript" description="" lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
 
     <div className="container community main_content">
       <h1>Connect with us</h1>

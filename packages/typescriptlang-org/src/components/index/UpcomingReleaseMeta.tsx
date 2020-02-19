@@ -41,10 +41,10 @@ export const UpcomingReleaseMeta = () => {
 
   const releasePerc = 55
   const betaPerc = 28
-  // const rcPerc = 17
 
   let needlePerc = -1
-  if (diffToToday > 100 || diffToToday < 0) {
+  // is after release || somehow ended up negative
+  if (diffToToday > diffTotalDays || diffToToday < 0) {
     // uh oh, we need to update the release-plan.json
     // so NOOP to leave at -1
   } else if (diffToToday < releasePerc) {
@@ -72,7 +72,7 @@ export const UpcomingReleaseMeta = () => {
   const rcMsg = !releaseInfo.isBeta ? <span>{i("index_releases_rc")}</span> : <a href={releaseInfo.rcPostURL}>{i("index_releases_rc")}</a>
 
   return (
-    <div className="grey-box  last">
+    <div className="grey-box last">
       <p>{i("index_releases_pt1")} {shipMsg}{i("index_releases_pt2")} {shipParts.map(p => p.value).join('')}</p>
       <div className="release-info">
         <div className="needle" style={{ left: needlePerc + "%", display: needlePerc === -1 ? "none" : "block" }} />
