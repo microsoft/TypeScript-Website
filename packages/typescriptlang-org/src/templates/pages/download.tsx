@@ -5,12 +5,17 @@ import { graphql } from "gatsby"
 
 import releaseInfo from "../../lib/release-info.json"
 import { createIntlLink } from "../../components/IntlLink"
+import { DownloadPageQuery } from "../../__generated__/gatsby-types"
 
+type Props = {
+  pageContext: any
+  data: DownloadPageQuery
+}
 
 const changeExample = (code: string) => document.getElementById("code-example")!.textContent = code
 const changeExample2 = (code: string) => document.getElementById("code-run")!.textContent = code
 
-const Index = (props: any) => {
+const Index: React.FC<Props> = (props) => {
   const Link = createIntlLink(props.pageContext.lang, props.data.allSitePage)
 
   return <Layout title="How to set up TypeScript" description="" lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
@@ -107,11 +112,11 @@ const Index = (props: any) => {
   </Layout>
 }
 
-export default (props: any) => <Intl><Index {...props} /></Intl>
+export default (props: Props) => <Intl><Index {...props} /></Intl>
 
 
 export const query = graphql`
-  query {
-      ...AllSitePage
-    }
-    `
+  query DownloadPage {
+    ...AllSitePage
+  }
+`

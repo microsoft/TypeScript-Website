@@ -10,6 +10,7 @@ import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/dev-nav"
 import { isTouchDevice } from "../../lib/isTouchDevice"
 import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
+import { TwoSlashQuery} from "../../__generated__/gatsby-types"
 
 /** Note: to run all the web infra in debug, run:
   localStorage.debug = '*'
@@ -17,7 +18,11 @@ import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
   to remove logging: localStorage.debug = undefined
  */
 
-const Index = (props: any) => {
+type Props = {
+  data: TwoSlashQuery
+}
+
+const Index: React.FC<Props> = (props) => {
   useEffect(() => {
     // No monaco for touch
     if (isTouchDevice()) { return }
@@ -229,7 +234,7 @@ const Index = (props: any) => {
   )
 }
 
-export default (props: any) => <Intl><Index {...props} /></Intl>
+export default (props: Props) => <Intl><Index {...props} /></Intl>
 
 // prettier-ignore
 const codeSamples = [
@@ -319,7 +324,7 @@ greet("Maddison", new Date());
 ]
 
 export const query = graphql`
-  query {
+  query TwoSlash {
     ...AllSitePage
   }
 `

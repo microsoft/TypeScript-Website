@@ -2,8 +2,14 @@ import React from "react"
 import { Layout } from "../../components/layout"
 import { Intl } from "../../components/Intl"
 import { graphql } from "gatsby"
+import { EmptyPageQuery } from "../../__generated__/gatsby-types"
 
-const Index = (props: any) =>
+type Props = {
+  pageContext: any
+  data: EmptyPageQuery
+}
+
+const Index: React.FC<Props> = (props) =>
   <Layout title="NO-OP" description="This page is intentionally left empty" lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
     <div className="raised main-content-block">
       <p>This page is intentionally left blank</p>
@@ -12,10 +18,10 @@ const Index = (props: any) =>
 
 
 export const query = graphql`
-  query {
+  query EmptyPage {
     ...AllSitePage
   }
 `
 
 
-export default (props: any) => <Intl><Index {...props} /></Intl>
+export default (props: Props) => <Intl><Index {...props} /></Intl>

@@ -1,11 +1,7 @@
 import React from "react"
 import { GatsbyLinkProps, Link, graphql } from "gatsby"
-
-export type AllSitePage = {
-  nodes: {
-    path: string
-  }[]
-}
+import { SitePage } from "../__generated__/gatsby-types";
+export type AllSitePage = { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> };
 
 
 /** 

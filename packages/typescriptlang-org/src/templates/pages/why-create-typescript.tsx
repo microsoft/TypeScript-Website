@@ -4,9 +4,14 @@ import { Intl } from "../../components/Intl"
 import { graphql } from "gatsby"
 
 import { createIntlLink } from "../../components/IntlLink"
+import { WhyCreateTypeScriptPageQuery } from "../../__generated__/gatsby-types"
 
+type Props = {
+  data: WhyCreateTypeScriptPageQuery
+  pageContext: any
+}
 
-const Index = (props: any) => {
+const Index: React.FC<Props> = (props) => {
   const Link = createIntlLink(props.pageContext.lang, props.data.allSitePage)
 
   return <Layout title="Why does TypeScript exist?" description="" lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
@@ -172,11 +177,11 @@ and causing ripples to spread out to the bank.</p>
   </Layout>
 }
 
-export default (props: any) => <Intl><Index {...props} /></Intl>
+export default (props: Props) => <Intl><Index {...props} /></Intl>
 
 
 export const query = graphql`
-  query {
-      ...AllSitePage
-    }
-    `
+  query WhyCreateTypeScriptPage {
+    ...AllSitePage
+  }
+`

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react"
 import { Layout } from "../components/layout"
+import { PlayExampleQuery } from "../__generated__/gatsby-types"
 
 import "./play.scss"
 
@@ -17,7 +18,7 @@ type Props = {
     title: string
     redirectHref: string
   }
-  data: any
+  data: PlayExampleQuery
 }
 
 const Play = (props: Props) => {
@@ -43,7 +44,7 @@ const Play = (props: Props) => {
 }
 
 export const query = graphql`
-  query {
+  query PlayExample {
     ...AllSitePage
   }
 `

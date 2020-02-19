@@ -5,8 +5,10 @@ import { SeoProps, HeadSEO } from "./HeadSEO";
 import "./layout/main.scss"
 import { AppInsights } from "./AppInsights";
 import { Helmet } from "react-helmet";
+import {AllSitePageFragment} from "../__generated__/gatsby-types"
 
 type LayoutProps = SeoProps & Props & {
+  allSitePage: AllSitePageFragment,
   lang: string,
   children: any
 }

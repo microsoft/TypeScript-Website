@@ -7,8 +7,13 @@ import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/dev-nav"
 import { isTouchDevice } from "../../lib/isTouchDevice"
 import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
+import { SandboxQuery } from "../../__generated__/gatsby-types"
 
-const Index = (props: any) => {
+type Props = {
+  data: SandboxQuery
+}
+
+const Index: React.FC<Props> = (props) => {
   useEffect(() => {
     // Don't even bother getting monaco
     if (isTouchDevice()) { return }
@@ -202,7 +207,7 @@ export default async function () {
 
 }
 
-export default (props: any) => <Intl><Index {...props} /></Intl>
+export default (props: Props) => <Intl><Index {...props} /></Intl>
 
 const codeSamples = [
   {
@@ -272,7 +277,7 @@ const decorations = sandbox.editor.deltaDecorations([], [
 
 
 export const query = graphql`
-  query {
+  query Sandbox {
     ...AllSitePage
   }
 `

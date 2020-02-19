@@ -15,6 +15,7 @@ import "./index.scss"
 import "../pages/css/documentation.scss"
 import { EditorExamples } from "../../components/index/EditorExamples"
 import { createIntlLink } from "../../components/IntlLink"
+import { IndexPageQuery } from "../../__generated__/gatsby-types"
 
 const Section = (props: { children: any, color: string, className?: string }) =>
   <div key={props.color} className={props.color + " " + props.className}><div className="container">{props.children}</div></div>
@@ -24,7 +25,12 @@ const Row = (props: { children: any, className?: string }) => <div className={[p
 const Col = (props: { children: any, className?: string }) => <div className={[props.className, "col1"].join(" ")}>{props.children}</div>
 const Col2 = (props: { children: any }) => <div className="col2">{props.children}</div>
 
-const Index = (props: any) => {
+type Props = {
+  pageContext: any
+  data: IndexPageQuery
+}
+
+const Index: React.FC<Props> = (props) => {
   console.log(props)
 
   const i = createInternational<typeof indexCopy>(useIntl())
@@ -225,11 +231,11 @@ const setupVideosSection = () => {
 }
 
 
-export default (props: any) => <Intl><Index {...props} /></Intl>
+export default (props: Props) => <Intl><Index {...props} /></Intl>
 
 
 export const query = graphql`
-  query {
+  query IndexPage {
     ...AllSitePage
   }
 `

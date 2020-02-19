@@ -9,8 +9,13 @@ import { docCopy } from "../../../copy/en/documentation"
 import { createInternational } from "../../../lib/createInternational"
 import { useIntl } from "react-intl"
 import { graphql } from "gatsby"
+import {DocsHomeQuery} from "../../../__generated__/gatsby-types"
+type Props = {
+  data: DocsHomeQuery
+  pageContext: any
+}
 
-const Index = (props: any) => {
+const Index: React.FC<Props> = (props) => {
   const i = createInternational<typeof docCopy>(useIntl())
   return (
     <Layout
@@ -276,12 +281,12 @@ const Index = (props: any) => {
 
 
 export const query = graphql`
-  query {
+  query DocsHome {
     ...AllSitePage
   }
 `
 
-export default (props: any) => (
+export default (props: Props) => (
   <Intl>
     <Index {...props} />
   </Intl>

@@ -5,8 +5,13 @@ import { withPrefix, graphql } from "gatsby"
 import "./dev.scss"
 import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/dev-nav"
+import {PlaygroudPluginQuery} from "../../__generated__/gatsby-types"
 
-const Index = (props: any) => {
+type Props = {
+  data: PlaygroudPluginQuery
+}
+
+const Index: React.FC<Props> = (props) => {
   return (
     <>
       <Layout title="Developers - Playground Plugins" description="What is a TypeScript Playground Plugin, and how can you make one?" lang="en" allSitePage={props.data.allSitePage}>
@@ -45,11 +50,11 @@ const Index = (props: any) => {
   )
 }
 
-export default (props: any) => <Intl><Index {...props} /></Intl>
+export default (props: Props) => <Intl><Index {...props} /></Intl>
 
 
 export const query = graphql`
-  query {
+  query PlaygroudPlugin {
     ...AllSitePage
   }
 `

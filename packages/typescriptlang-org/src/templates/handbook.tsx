@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { graphql } from "gatsby"
-import { GetHandbookBySlug } from "./__generated__/GetHandbookBySlug"
+import { GetHandbookBySlugQuery } from "../__generated__/gatsby-types"
 import { Layout } from "../components/layout"
 import { Sidebar, SidebarToggleButton } from "../components/layout/Sidebar"
 import { oldHandbookNavigation } from "../lib/oldNavigation"
@@ -12,7 +12,13 @@ import slugger from "github-slugger"
 import "./handbook.scss"
 import "./markdown.scss"
 
-const HandbookTemplate = (props: { pageContext: any, data: any, path: string }) => {
+type Props = {
+  pageContext: any
+  data: GetHandbookBySlugQuery
+  path: string
+}
+
+const HandbookTemplate: React.FC<Props> = (props) => {
 
   const post = props.data.markdownRemark
   if (!post) {
@@ -125,7 +131,7 @@ const HandbookTemplate = (props: { pageContext: any, data: any, path: string }) 
   )
 }
 
-export default (props: any) => <Intl locale={props.pageContext.lang}><HandbookTemplate {...props} /></Intl>
+export default (props: Props) => <Intl locale={props.pageContext.lang}><HandbookTemplate {...props} /></Intl>
 
 export const pageQuery = graphql`
   query GetHandbookBySlug($slug: String!) {

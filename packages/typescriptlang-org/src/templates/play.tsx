@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import { Layout } from "../components/layout"
 import { withPrefix, graphql } from "gatsby"
+import { PlayQuery } from "../__generated__/gatsby-types"
 
 import "./play.scss"
 import { RenderExamples } from "../components/ShowExamples"
@@ -11,15 +12,12 @@ import { headCopy } from "../copy/en/head-seo"
 import { playCopy } from "../copy/en/playground"
 
 import { Intl } from "../components/Intl"
-import { AllSitePage } from "../components/IntlLink"
 
 // This gets set by the playground
 declare const playground: ReturnType<typeof import("typescript-playground").setupPlayground>
 
 type Props = {
-  data: {
-    allSitePage: AllSitePage
-  }
+  data: PlayQuery
   pageContext: {
     lang: string
     examplesTOC: typeof import("../../static/js/examples/en.json")
@@ -27,7 +25,7 @@ type Props = {
   }
 }
 
-const Play = (props: Props) => {
+const Play: React.FC<Props> = (props) => {
   const i = createInternational<typeof headCopy & typeof playCopy>(useIntl())
 
   useEffect(() => {
@@ -223,7 +221,7 @@ const Play = (props: Props) => {
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Play {...props} /></Intl>
 
 export const query = graphql`
-  query {
+  query Play {
     ...AllSitePage
   }
 `

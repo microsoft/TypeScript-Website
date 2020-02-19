@@ -2,6 +2,7 @@ import React from "react"
 import { Layout } from "../../components/layout"
 import { Intl } from "../../components/Intl"
 import { graphql } from "gatsby"
+import { CommunityPageQuery } from "../../__generated__/gatsby-types"
 
 const conferences =
   [
@@ -160,9 +161,12 @@ const meetups =
   ]
 }
 
+type Props = {
+  data: CommunityPageQuery
+  pageContext: any
+}
 
-
-export const Comm = (props: any) => (
+export const Comm: React.FC<Props> = (props) => (
   <Layout title="How to set up TypeScript" description="" lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
 
     <div className="container community main_content">
@@ -239,11 +243,11 @@ export const Comm = (props: any) => (
   </Layout >
 )
 
-export default (props: any) => <Intl><Comm {...props} /></Intl>
+export default (props: Props) => <Intl><Comm {...props} /></Intl>
 
 
 export const query = graphql`
-  query {
+    query CommunityPage {
       ...AllSitePage
     }
-    `
+`

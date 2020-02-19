@@ -4,16 +4,16 @@ import { withPrefix } from "gatsby"
 import "./TopNav.scss"
 import { setupStickyNavigation } from "./stickyNavigation";
 import { useIntl } from "react-intl";
-
+import { AllSitePage, createIntlLink } from "../IntlLink";
 export type Props = {
+  allSitePage: AllSitePage
   disableBetaNotification?: boolean
   lang: string
-  allSitePage: AllSitePage
 }
 
 import { navCopy } from "../../copy/en/nav"
 import { createInternational } from "../../lib/createInternational"
-import { AllSitePage, createIntlLink } from "../IntlLink";
+
 
 export const SiteNav = (props: Props) => {
   const i = createInternational<typeof navCopy>(useIntl())
