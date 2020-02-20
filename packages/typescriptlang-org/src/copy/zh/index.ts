@@ -1,76 +1,76 @@
 export const indexCopy = {
-  index_headline: "TypeScript is <bold>JavaScript For Any Scale.</bold>",
+  index_headline: "TypeScript 是 <bold>适用于任何规模的 JavaScript。</bold>",
   index_byline:
-    "TypeScript extends JavaScript by adding types to the language.",
+    "TypeScript 扩展了 JavaScript 以为语言添加类型支持。",
   index_summary:
-    "TypeScript speeds up your development experience by catching errors and providing fixes before you even run your code.",
+    "TypeScript 可以在您运行代码之前找到错误并提供修复，从而改善您的开发体验。",
   index_locations:
-    "Any browser, any OS, anywhere JavaScript runs. Entirely Open Source.",
+    "任何浏览器，任何操作系统，任何运行 JavaScript 的地方，完全开源。",
 
-  index_what_is: "What is TypeScript?",
+  index_what_is: "什么是 TypeScript？",
 
-  index_what_is_js: "JavaScript and More",
+  index_what_is_js: "JavaScript，以及更多。",
   index_what_is_js_copy: `
-<p>TypeScript is an open-source language which builds on JavaScript, one of the world’s most used tools, by adding static type definitions.</p>
+<p>TypeScript 是一个开源的编程语言，通过在 JavaScript（世界上最常用的工具之一） 的基础上添加静态类型定义构建而成。 </p>
 
-<p>Types provide a way to describe the shape of an object, providing better documentation, and allowing TypeScript to validate that your code is working correctly.</p>
+<p>类型提供了一种描述对象形状的方法。可以帮助提供更好的文档，还可以让 TypeScript 验证你的代码可以正常工作。</p>
 
-<p>Writing types can be optional in TypeScript, because type inference allows you to get a lot of power without writing additional code.</p>`,
+<p>在 TypeScript 中，不是每个地方都需要标注类型，因为类型推断允许您无需编写额外的代码即可获得大量功能。</p>`,
 
-  index_trust: "A Result You Can Trust",
-  index_trust_copy_a: `All valid JavaScript code is also TypeScript code. You might get type-checking errors, but that won't stop you from running the resulting JavaScript. While you can go for stricter behavior, that means you're still in control.`,
-  index_trust_copy_b: `TypeScript code is transformed into JavaScript code via the TypeScript compiler or <babel>Babel</babel>. This JavaScript is clean, simple code which runs anywhere JavaScript runs: In a browser, on Node.JS or in your apps.`,
-  index_standards: "Evolving with Standards",
+  index_trust: "您可以信任的结果",
+  index_trust_copy_a: `所有有效的 JavaScript 代码同时也是有效的 TypeScript 代码。你也许会有类型检查的错误，但是这不会阻止你运行生成的 JavaScript。尽管您可以选择更严格的行为，但是这意味着一切依然在您的控制中。`,
+  index_trust_copy_b: `TypeScript 代码通过 TypeScript 编译器或 <babel>Babel</babel> 转译为 JavaScript 代码，生成后的代码也是干净，简洁，运行在任何可以运行 JavaScript 的地方，无论是在浏览器，Node.JS 还是再您的应用中。`,
+  index_standards: "与标准同步发展",
   index_standards_copy: `
-  <p>The TypeScript team contributes to the TC39 committees which help guide the evolution of the JavaScript language.</p>
+  <p>TypeScript 团队为指导 JavaScript 语言发展的 TC39 委员会作出了贡献。</p>
 
-  <p>When new features have reached stage 3, then they are ready for inclusion in TypeScript.</p>
+  <p>当新的功能到达 stage 3 阶段后，他们将被包含进 TypeScript。</p>
   
-  <p>For example the TypeScript team championed proposals like Optional Chaining, Nullish coalescing Operator, Throw Expressions and RegExp Match Indices.</p>`,
+  <p>例如 TypeScript 团队推进了 “可选链”，“空合并操作符”，throw 表达式和 regex 匹配索引之类的提案。</p>`,
 
-  index_gradual: "Gradual Adoption",
+  index_gradual: "渐进式迁移",
   index_gradual_copy: `
-<p>Adopting TypeScript is not a binary choice, you can start by annotating existing JavaScript with JSDoc, then switch a few files to be checked by TypeScript and over time prepare your codebase to convert completely.</p>
+<p>使用 TypeScript 并不是一个二元选择，您可以首先使用 JSDoc 来注释现有的 JavaScript, 然后将一部分文件切换至由 TypeScript 检查，从而让您的代码可以随着时间的推移，逐渐完成迁移。</p>
 
-<p>TypeScript’s type inference means that you don’t have to annotate your code until you want more safety.</p>`,
+<p>TypeScript 的类型推导意味着只有您希望获得更佳的安全性时，才需要在您的代码中写更多的类型注释。</p>`,
 
-  index_dts: "Types On Every Desk",
+  index_dts: "每个人的类型",
   index_dts_copy: `
-<p>Most of the worlds JavaScript’s is un-typed, and inference can only go so far. To address this, the TypeScript team helps maintain <dt>Definitely Typed</dt> - a community project to provide types and inline documentation to existing JavaScript.
+<p>这个世界上大多数的 JavaScript 都是没有类型的，所以类型推断只能提供很有限的支持。为了处理这种情况，TypeScript 团队帮助维护了 <dt>Definitely Typed</dt> - 一个为已经存在的 JavaScript 提供类型定义和内联文档的社区项目。
 
-<p>This project allows the community to maintain type definitions for JavaScript libraries without putting extra pressure on their maintainers.</p>`,
+<p>这个项目使 JavaScript 库的类型定义可以由社区来维护，而不需要为他们的维护者带来额外的负担。</p>`,
 
-  index_tools: "Consistently Good Tooling",
+  index_tools: "始终如一的优质工具",
   index_tools_copy: `
-  <p>By handling a lot of the editor integration inside TypeScript, you can get a consistent experience working in many editors.</p>
+  <p>通过 TypeScript 中对编辑器集成的处理，你可以在很多不同的编辑器中获得一致的使用体验。</p>
 
-  <p>This lets you easily jump between editors like <vs>Visual Studio</vs>, <vsc>Visual Studio Code</vsc>, <nova>Nova</nova>, <atom>Atom</atom>, <subl>Sublime Text</subl>, <emacs>Emacs</emacs>, <vim>Vim</vim>, <webs>WebStorm</webs> and <eclipse>Eclipse</eclipse>.</p>
+  <p>这允许你可以在不同编辑器之间快速切换，例如 <vs>Visual Studio</vs>, <vsc>Visual Studio Code</vsc>, <nova>Nova</nova>, <atom>Atom</atom>, <subl>Sublime Text</subl>, <emacs>Emacs</emacs>, <vim>Vim</vim>, <webs>WebStorm</webs> and <eclipse>Eclipse</eclipse> 等。</p>
 
-  <p>TypeScript's editor integration supports JavaScript, so it's quite likely you're already using TypeScript under the hood.
+  <p>TypeScript 的编辑器集成中支持 JavaScript，所以您可能已经在不知不觉中使用到了 TypeScript。
   `,
 
-  index_started_title: "Get Started",
-  index_started_handbook: "Handbook",
-  index_started_handbook_blurb: "Learn the language",
-  index_started_guides: "Reference",
-  index_started_guides_blurb: "High level overviews",
-  index_started_ref: "Reference",
-  index_started_ref_blurb: "Understand the tooling",
-  index_started_community: "Community",
-  index_started_community_blurb: "Keep up to date",
-  index_install: "Install TypeScript",
+  index_started_title: "开始使用",
+  index_started_handbook: "手册",
+  index_started_handbook_blurb: "学习语言",
+  index_started_guides: "参考",
+  index_started_guides_blurb: "重点总览",
+  index_started_ref: "参考",
+  index_started_ref_blurb: "了解工具",
+  index_started_community: "社区",
+  index_started_community_blurb: "不断更新",
+  index_install: "安装 TypeScript",
   index_install_ref: `
-  <p>You can install TypeScript via npm<pre>npm install -g typescript</pre>
-  <p>Then run the compiler via <code>tsc</code><pre>npm install -g typescript</pre>
+  <p>你可以使用 npm 安装 TypeScript<pre>npm install -g typescript</pre>
+  <p>之后执行 <code>tsc</code> 来运行 TypeScript 编译器 <pre>npm install -g typescript</pre>
   `,
-  index_releases: "Quarterly Releases",
-  index_releases_pt1: "Our next release is ",
-  index_releases_pt2: ", which planned for ",
-  index_releases_released: "Released",
-  index_releases_beta: "Beta",
-  index_releases_rc: "RC",
+  index_releases: "季度发布",
+  index_releases_pt1: "我们的下一个版本发布是 ",
+  index_releases_pt2: ", 计划于 ",
+  index_releases_released: "发布",
+  index_releases_beta: "Beta 测试",
+  index_releases_rc: "预发布",
 
-  index_migration_title: "Migration Stories",
-  index_migration_oss: "Open Source with TypeScript",
-  index_videos_title: "Watch TypeScript in Action",
+  index_migration_title: "迁移故事",
+  index_migration_oss: "开源的 TypeScript",
+  index_videos_title: "查看 TypeScript 实践",
 }
