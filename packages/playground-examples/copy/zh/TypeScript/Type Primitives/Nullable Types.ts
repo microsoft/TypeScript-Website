@@ -1,19 +1,16 @@
 //// { order: 3, compiler: { strictNullChecks: false } }
 
-// JavaScript has two ways to declare values which don't
-// exist, and TypeScript adds extra syntax which allows even
-// more ways to declare something as optional or nullable.
+// JavaScript 有两种不同的方法声明不存在的值，TypeScript 添加了额外的
+// 语法，以提供更多方法来声明某些内容声明为可选或可空，
 
-// First up, the difference between the two JavaScript
-// primitives: undefined and null
+// 首先，两种 JavaScript 基本类型中的不同：undefined 和 null
 
-// Undefined is when something cannot be found or set
+// Undefined 是指找不到或无法设置某些内容
 
 const emptyObj = {};
 const anUndefinedProperty: undefined = emptyObj["anything"];
 
-// Null is meant to be used when there is a conscious lack
-// of a value.
+// Null 则在明确的没有值的情况下使用
 
 const searchResults = {
   video: { name: "LEGO Movie" },
@@ -21,65 +18,57 @@ const searchResults = {
   audio: { name: "LEGO Movie Soundtrack" }
 };
 
-// Why not use undefined? Mainly, because now you can verify
-// that text was correctly included. If text returned as
-// undefined then the result is the same as though it was
-// not there.
+// 为什么不使用 undefined ？主要是因为您现在可以正确的校验 text 是否正确的被包含。
+// 而如果 text 返回的是 undefined，那么这个值和没有被设置时相同。
 
-// This might feel a bit superficial, but when converted into
-// a JSON string, if text was an undefined, it would not be
-// included in the string equivalent.
+// 这可能感觉没有什么用处，但是当转换为一个 JSON 字符串时，如果 text 是 undefined，
+// 那么它将不会被包含在等效的字符串中，
 
-// Strict Null Types
+// 严格的空检查
 
-// Before TypeScript 2.0 undefined and null were effectively
-// ignored in the type system. This let TypeScript provide a
-// coding environment closer to un-typed JavaScript.
+// 在 TypeScript 2.0 之前，类型系统中实际上忽略了 null 和 undefined。
+// 这让 TypeScript 提供了一个更接近没有类型的 JavaScript 的开发环境。
 
-// Version 2.0 added a compiler flag called "strictNullChecks"
-// and this flag required people to treat undefined and null
-// as types which needs to be handled via code-flow analysis
-// ( see more at example:code-flow )
+// 2.0 版本添加了一个叫做 严格空检查（strictNullChecks）的编译选项，
+// 这个选项要求人们将 undefined 和 null 视为需要通过代码流分析来处理的类型。
+// （更多信息可以查看 example:code-flow）
 
-// For an example of the difference in turning on strict null
-// checks to TypeScript, hover over "Potential String" below:
+// 一个让 TypeScript 将严格空检查打开的示例，将鼠标悬停
+// 在下面的 "Potential String" 上。
 
 type PotentialString = string | undefined | null;
 
-// The PotentialString discards the undefined and null. If
-// you go up to the settings and turn on strict mode and come
-// back, you'll see that hovering on PotentialString now shows
-// the full union.
+// PotentialString 丢弃了 undefined 和 null。如果您
+// 在设置中开启严格空检查并返回这里，你可以看到悬停在 PotentialString 上时
+// 会显示完整的联合类型。
 
 declare function getID(): PotentialString;
 
 const userID = getID();
 console.log("User Logged in: ", userID.toUpperCase());
 
-// Only in strict mode the above will fail ^
+// 只有在严格模式下时，以上操作会出错 ^
 
-// There are ways to tell TypeScript you know more, such as
-// a type assertion or via a non-null assertion operator (!)
+// 同样有一些方式告诉 TypeScript 你知道更多信息
+// 例如使用类型断言或通过非空断言操作符（!）
 
 const definitelyString1 = getID() as string;
 const definitelyString2 = getID()!;
 
-// Or you safely can check for the existence via an if:
+// 或者你可以通过 if 安全地检查是否存在:
 
 if (userID) {
   console.log(userID);
 }
 
-// Optional Properties
+// 可选属性
 
 // Void
 
-// Void is the return type of a function which does not
-// return a value.
+// Void 是一个函数没有返回值时返回的类型。
 
-const voidFunction = () => {};
+const voidFunction = () => { };
 const resultOfVoidFunction = voidFunction();
 
-// This is usually an accident, and TypeScript keeps the void
-// type around to let you get compiler errors - even though at
-// runtime it would be an undefined.
+// 这通常是偶然的，TypeScript 会保留 void 类型以使您得到编译错误
+// - 即使在运行时值将会是 undefined。
