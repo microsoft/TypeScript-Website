@@ -5,10 +5,10 @@ import { withPrefix, graphql } from "gatsby"
 import "./dev.scss"
 import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/dev-nav"
-import {PlaygroudPluginQuery} from "../../__generated__/gatsby-types"
+import { PlaygroundPluginQuery } from "../../__generated__/gatsby-types"
 
 type Props = {
-  data: PlaygroudPluginQuery
+  data: PlaygroundPluginQuery
 }
 
 const Index: React.FC<Props> = (props) => {
@@ -54,7 +54,7 @@ export default (props: Props) => <Intl><Index {...props} /></Intl>
 
 
 export const query = graphql`
-  query PlaygroudPlugin {
+  query PlaygroundPlugin {
     ...AllSitePage
   }
 `

@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "gatsby build",
+    "build": "gatsby build && yarn tsc",
     "develop": "gatsby develop",
     "clean": "gatsby clean",
     "bootstrap": "yarn update-versions",

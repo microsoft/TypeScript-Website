@@ -1,14 +1,13 @@
 import React from "react"
 import { GatsbyLinkProps, Link, graphql } from "gatsby"
-import { SitePage } from "../__generated__/gatsby-types";
-export type AllSitePage = { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> };
-
+import { AllSitePageFragment } from "../__generated__/gatsby-types";
+export type AllSitePage = AllSitePageFragment["allSitePage"];
 
 /** 
  * Creates a <Link> which supports gradual migration, you provide a link to the english page and
  * if the page supports the same version but in your language, it opts for that.
  */
-export const createIntlLink = (currentLocale: string, allSitePage: AllSitePage) => {
+export const createIntlLink = (currentLocale: string, allSitePage: AllSitePageFragment["allSitePage"]) => {
   const paths = allSitePage.nodes.map(n => n.path)
 
   return (linkProps: GatsbyLinkProps<{}>) => {
