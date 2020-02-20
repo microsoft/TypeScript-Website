@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { graphql } from "gatsby"
-import { TSConfigReferenceTemplate } from "./__generated__/TSConfigReferenceTemplate"
+
 import { Layout } from "../components/layout"
 
 import { useIntl } from "react-intl";
@@ -10,11 +10,13 @@ import { headCopy } from "../copy/en/head-seo"
 
 import "./markdown.scss"
 import "./tsconfig.scss"
-import { AllSitePage } from "../components/IntlLink";
 
-type Props = { pageContext: any, data: TSConfigReferenceTemplate & { allSitePage: AllSitePage }, path: string }
+import { TSConfigReferenceTemplateQuery } from "../__generated__/gatsby-types"
 
-const TSConfigReferenceTemplateComponent = (props: Props) => {
+
+type Props = { pageContext: any, data: TSConfigReferenceTemplateQuery, path: string }
+
+const TSConfigReferenceTemplateComponent = (props) => {
   const i = createInternational<typeof headCopy>(useIntl())
 
   const post = props.data.markdownRemark

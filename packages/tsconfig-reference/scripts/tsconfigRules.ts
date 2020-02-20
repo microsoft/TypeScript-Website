@@ -183,10 +183,17 @@ export const allowedValues = {
     "`AMD`",
     "`System`",
     "`ESNext`"
-  ]
+  ],
+  importsNotUsedAsValues: ["remove", "preserve", "error"]
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
+  "3.8": [
+    "assumeChangesOnlyAffectDirectDependencies",
+    "importsNotUsedAsValues",
+    "disableSolutionSearching"
+  ],
+
   "3.7": [
     "disableSourceOfProjectReferenceRedirect",
     "downlevelIteration",

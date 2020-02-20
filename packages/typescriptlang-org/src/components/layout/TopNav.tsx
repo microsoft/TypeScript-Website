@@ -5,6 +5,7 @@ import "./TopNav.scss"
 import { setupStickyNavigation } from "./stickyNavigation";
 import { useIntl } from "react-intl";
 import { AllSitePage, createIntlLink } from "../IntlLink";
+
 export type Props = {
   allSitePage: AllSitePage
   disableBetaNotification?: boolean
