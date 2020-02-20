@@ -104,7 +104,7 @@
     },
     {
       "text": "var Date: DateConstructor\nnew () => Date (+4 overloads)",
-      "docs": "Enables basic storage and retrieval of dates and times.",
+      "docs": "",
       "start": 138,
       "length": 4,
       "line": 4,
