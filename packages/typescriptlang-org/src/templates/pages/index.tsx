@@ -31,8 +31,6 @@ type Props = {
 }
 
 const Index: React.FC<Props> = (props) => {
-  console.log(props)
-
   const i = createInternational<typeof indexCopy>(useIntl())
   const Link = createIntlLink(props.pageContext.lang, props.data.allSitePage)
 

@@ -7,17 +7,18 @@
     "node": "^13"
   },
   "devDependencies": {
-    "concurrently": "^5.0.2",
-    "danger": "^9.2.9",
+    "concurrently": "^5.1.0",
+    "danger": "^9.2.10",
     "danger-plugin-lighthouse": "^0.5.2",
     "danger-plugin-spellcheck": "^1.5.0",
     "fb-watchman": "^2.0.1",
     "git-branch-is": "^3.1.0",
-    "husky": "^3.1.0"
+    "husky": "^4.2.3"
   },
   "resolutions": {
     "@types/react": "16.9.17",
-    "node-gyp": "5.1.0"
+    "node-gyp": "5.1.0",
+    "typescript": "3.8.1-rc"
   },
   "jest": {
     "transformIgnorePatterns": [

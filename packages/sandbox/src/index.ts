@@ -1,4 +1,3 @@
-import { createCompilerHost } from './createCompilerHost'
 import { detectNewImportsToAcquireTypeFor } from './typeAcquisition'
 import { sandboxTheme, sandboxThemeDark } from './theme'
 import { TypeScriptWorker } from './tsWorker'
@@ -222,6 +221,7 @@ export const createTypeScriptSandbox = (
 
   const getWorkerProcess = async (): Promise<TypeScriptWorker> => {
     const worker = await getWorker()
+    // @ts-ignore
     return await worker(model.uri)
   }
 
@@ -321,3 +321,5 @@ export const createTypeScriptSandbox = (
     languageServiceDefaults: defaults,
   }
 }
+
+export type Sandbox = ReturnType<typeof createTypeScriptSandbox>

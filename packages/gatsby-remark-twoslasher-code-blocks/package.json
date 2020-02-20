@@ -5,7 +5,7 @@
   "homepage": "https://github.com/microsoft/TypeScript-Website/",
   "dependencies": {
     "ts-twoslasher": "0.1.0",
-    "unist-util-visit": "^2.0.1"
+    "unist-util-visit": "^2.0.2"
   },
   "scripts": {
     "build": "echo 'NOOP'",
