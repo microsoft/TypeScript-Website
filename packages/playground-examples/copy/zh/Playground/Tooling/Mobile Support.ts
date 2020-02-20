@@ -1,16 +1,12 @@
 //// { order: 99 }
 
-// Tiny devices may not be very good for writing code, but
-// they are good for reading our examples, or giving
-// someone's link a quick review and making some minor
-// edits.
+// 较小的设备可能对编写代码来说不太友好，但是对阅读我们的示例或
+// 快速检查某个人的链接或进行一些较小的修改非常有用。
 
-// With the new Playground, we've improved the small screen
-// experience by:
+// 在新的在线演示中，我们通过以下方式改善小屏幕的体验:
 
-//  - Removing menu items which aren't related to code.
-//  - Some minor style improvements.
-//  - Switch to a single pane editor. This means you
-//    can't see the transpiled JS.
+//  - 去掉与代码无关的菜单项。
+//  - 一些小的样式改进。
+//  - 切换为唯一的编辑器，这意味着你将看不到转译后的 JS。
 
-// This should make the experience less painful.
+// 这将会让体验没有那么痛苦。
