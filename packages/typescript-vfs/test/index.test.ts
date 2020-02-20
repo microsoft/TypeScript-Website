@@ -29,6 +29,7 @@ it('runs a virtual environment and gets the right results from the LSP', () => {
           "start": 0,
         },
         "fileName": "index.ts",
+        "isLocal": false,
         "kind": "const",
         "name": "hello",
         "textSpan": Object {

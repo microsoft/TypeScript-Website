@@ -102,7 +102,9 @@ interface LanguageService {
 
 ## Usage
 
-It's **very** likely that you will need to set up your lib `*.d.ts` files to use this. If you are running in an environment where you have access to node_modules, then you can can write some code like this:
+It's **very** likely that you will need to set up your lib `*.d.ts` files to use this.
+
+If you are running in an environment where you have access to the `node_modules` folder, then you can can write some code like this:
 
 ```ts
 const getLib = (name: string) => {
@@ -131,11 +133,11 @@ const createDefaultMap2015 = () => {
 }
 ```
 
-This list is the default set of definitions (different options for `target` or `lib` will affect what this list looks like) and it grabs the lib content from the local dependency of TypeScript.
+This list is the default set of definitions (it's important to note that different options for `target` or `lib` will affect what this list looks like) and you are grabbing the library's content from the local dependency of TypeScript.
 
-It's safe to say, keeping on top of this list is quite a lot of work and so this library ships functions for generating a map with with these pre-filled.
+Keeping on top of this list is quite a lot of work, so this library ships functions for generating a map with with these pre-filled from a version of TypeScript available on disk.
 
-Note: it's possible for this list to get out of sync with TypeScript over time. It was last synced at TypeScript 3.7.4
+Note: it's possible for this list to get out of sync with TypeScript over time. It was last synced with TypeScript 3.8.0-rc.
 
 ```ts
 import { createDefaultMapFromNodeModules } from 'typescript-vfs'
@@ -146,7 +148,9 @@ fsMap.set('index.ts', "const hello = 'hi'")
 // ...
 ```
 
-If you don't have access to `node_modules`, then you can use the TypeScript CDN or unpkg to fetch the lib files. This could be is up to about 1.5MB, and you should probably store the values in `localStorage` so that users only have to grab it once. This is handled for you via `createDefaultMapFromCDN`.
+If you don't have access to `node_modules`, then you can use the TypeScript CDN or unpkg to fetch the lib files. This could be up to about 1.5MB, and you should probably store the values in `localStorage` so that users only have to grab it once.
+
+This is handled for you via `createDefaultMapFromCDN`.
 
 ```ts
 import { createDefaultMapFromCDN } from 'typescript-vfs'
@@ -168,7 +172,36 @@ const start = async () => {
 start()
 ```
 
-The CDNcache:
+The CDN cache:
 
 - Automatically purges items which use a different version of TypeScript to save space
 - Can use a copy of the lz-string module for compressing/decompressing the lib files
+
+### A full example
+
+What does a full example look like? This comes basically verbatim from the TypeScript Sandbox codebase:
+
+```ts
+import ts from 'typescript'
+import tsvfs from 'typescript-vfs'
+import lzstring from 'lzstring'
+
+const fsMap = await tsvfs.createDefaultMapFromCDN(compilerOptions, ts.version, true, ts, lzstring)
+fsMap.set('index.ts', '// main TypeScript file content')
+
+const system = tsvfs.createSystem(fsMap)
+const host = tsvfs.createVirtualCompilerHost(system, compilerOptions, ts)
+
+const program = ts.createProgram({
+  rootNames: [...fsMap.keys()],
+  options: compilerOptions,
+  host: host.compilerHost,
+})
+
+// This will update the fsMap with new files
+// for the .d.ts and .js files
+program.emit()
+
+// Now I can look at the AST for the .ts file too
+const index = program.getSourceFile('index.ts)
+```
