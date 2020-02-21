@@ -31,7 +31,7 @@ export const playCopy = {
   play_sidebar_options_plugin_dev_option:
     "访问 <code>localhost:5000/index.js</code>",
   play_sidebar_options_plugin_dev_copy:
-    "在开发模式下自动尝试连接到在线演示的插件。你可以在这里查看更多 <a href='https://www.typescriptlang.org/v2/dev/playground-plugins/'>here</a>。",
+    "在开发模式下自动尝试连接到在线演示的插件。你可以在<a href='https://www.typescriptlang.org/v2/dev/playground-plugins/'>这里</a>查看更多。",
   play_export_report_issue: "为 TypeScript 提交 Github issue。",
   play_export_copy_md: "复制为 Markdown 格式的 issue 模板",
   play_export_copy_link: "复制为 Markdown 格式的链接",
@@ -55,7 +55,7 @@ export const playCopy = {
   const anExampleVariable = "Hello World"
   console.log(anExampleVariable)
   
-  // 可以点击上方的 "实例" 或 "新闻，以了解更多关于语言的信息。"
+  // 可以点击上方的 “示例” 或 “新闻”，以了解更多关于语言的信息。"
   // 或者删除这些注释并且开始使用，整个在线演示的世界都属于你。
   `,
 

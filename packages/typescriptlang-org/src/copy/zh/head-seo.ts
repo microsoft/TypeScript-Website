@@ -1,6 +1,6 @@
 export const headCopy = {
   head_playground_title:
-    "在线演示 - 一个用于浏览 TypeScript 和 JavaScript 的在线编辑器",
+    "在线演示 - 一个用于 TypeScript 和 JavaScript 的在线编辑器",
   head_playground_description:
     "可以通过在线演示以安全且可共享的方式在线编写 TypeScript 和 JavaScript。",
   tsconfig_title: "TSConfig 参考 - 所有 TSConfig 选项的文档",

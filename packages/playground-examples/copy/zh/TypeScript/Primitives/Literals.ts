@@ -5,8 +5,8 @@
 // 建议首先了解一下他们。
 
 // 字面量类型是一个类型中，更具体的一个子类型。
-// 这意味着在类型系统中 ”Hello World“ 是一个字符串，
-// 但是一个字符串并不一定是 ”Hello World“。
+// 这意味着在类型系统中 “Hello World” 是一个字符串，
+// 但是一个字符串并不一定是 “Hello World”。
 
 const helloWorld = "Hello World";
 let hiWorld = "Hi World"; // 这里的类型是字符串，因为它是由 let 定义的。
@@ -16,7 +16,7 @@ declare function allowsAnyString(arg: string);
 allowsAnyString(helloWorld);
 allowsAnyString(hiWorld);
 
-// 这个函数仅接受字符串字面量 ”Hello World“。
+// 这个函数仅接受字符串字面量 “Hello World”。
 declare function allowsOnlyHello(arg: "Hello World");
 allowsOnlyHello(helloWorld);
 allowsOnlyHello(hiWorld);
@@ -37,7 +37,7 @@ const myUser = {
 };
 
 // 可以看到虽然它被定义为不可变，但是它依旧
-// 将 `name: "Sabrina”` 转换为 "name: string"。
+// 将 `name: "Sabrina"` 转换为 "name: string"。
 // 这是因为 name 依旧可以被改变。
 
 myUser.name = "Cynthia";

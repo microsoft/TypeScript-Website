@@ -12,7 +12,7 @@ interface ArtworkSearchResponse {
   }[];
 }
 
-// 如果接口是手工实现的，那么很容易会想到将 artworks 提取到一个接口中，类似于:
+// 如果接口是手工实现的，那么很容易会想到将 artworks 提取到一个接口中，类似于：
 
 interface Artwork {
   name: string;

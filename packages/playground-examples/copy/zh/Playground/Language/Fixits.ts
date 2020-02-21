@@ -1,6 +1,6 @@
 //// { compiler: {  }, order: 1 }
 
-// TypeScript 支持许多自动修复程序，来帮您修正妮妮的代码。例如如果
+// TypeScript 支持许多自动修复程序，来帮您修正您的代码。例如如果
 // 你选中第 5 行，然后点击弹出的灯泡，您将获得一些修复建议。
 
 function addOne(x: number) {

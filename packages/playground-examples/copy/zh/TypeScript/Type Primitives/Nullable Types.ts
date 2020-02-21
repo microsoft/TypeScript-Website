@@ -18,7 +18,7 @@ const searchResults = {
   audio: { name: "LEGO Movie Soundtrack" }
 };
 
-// 为什么不使用 undefined ？主要是因为您现在可以正确的校验 text 是否正确的被包含。
+// 为什么不使用 undefined ？主要原因是让您可以正确的校验 text 是否被包含。
 // 而如果 text 返回的是 undefined，那么这个值和没有被设置时相同。
 
 // 这可能感觉没有什么用处，但是当转换为一个 JSON 字符串时，如果 text 是 undefined，
@@ -34,7 +34,7 @@ const searchResults = {
 // （更多信息可以查看 example:code-flow）
 
 // 一个让 TypeScript 将严格空检查打开的示例，将鼠标悬停
-// 在下面的 "Potential String" 上。
+// 在下面的 “Potential String” 上。
 
 type PotentialString = string | undefined | null;
 
@@ -55,7 +55,7 @@ console.log("User Logged in: ", userID.toUpperCase());
 const definitelyString1 = getID() as string;
 const definitelyString2 = getID()!;
 
-// 或者你可以通过 if 安全地检查是否存在:
+// 或者你可以通过 if 安全地检查是否存在：
 
 if (userID) {
   console.log(userID);

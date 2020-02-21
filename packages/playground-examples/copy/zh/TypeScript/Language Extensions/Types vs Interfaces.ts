@@ -67,6 +67,6 @@ type Puppy = {
 // 基于你不同的目的，这个区别可以是证明的也可以是负面的。
 // 一般来说，对于公开的需要暴露的类型，将他们作为接口是更好的选择。
 
-// 要查看接口和类型定义之间所有边际条件，下面的 stackoverflow 讨论是最好的资源之一:
+// 要查看接口和类型定义之间所有边际条件，下面的 StackOverflow 讨论是最好的资源之一:
 
 // https://stackoverflow.com/questions/37233735/typescript-interfaces-vs-types/52682220#52682220

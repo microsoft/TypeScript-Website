@@ -1,7 +1,7 @@
 //// { order: 3, compiler: { strictNullChecks: true } }
 
 // 当某种类型对于大多数代码来说都非常有用时，他们就会被添加到 TypeScript
-// 中并且被大家使用。这意味着您可以依赖他们的可用性。 
+// 中并且被大家使用。这意味着您可以在代码中直接使用他们，而无需担心它们的可用性。
 
 // Partial<Type>
 
@@ -29,9 +29,10 @@ type StickerFromAPI = Readonly<Sticker>
 
 // 创建一个具有 KeysFrom 列表中所有指定属性的类型，并且将他们值的类型设置为 Type
 
-// List which keys come from:
+// 列出需要哪些 key。
 type NavigationPages = 'home' | 'stickers' | 'about' | 'contact'
 
+// 每个数据（上面的key ^）都需要的数据的形状。
 // The shape of the data for which each of ^ is needed:
 interface PageInfo {
   title: string

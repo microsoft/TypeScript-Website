@@ -13,12 +13,12 @@
     {
       "name": "3.7",
       "id": "3.7",
-      "subtitle": "查看 <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/'> 版本更新说明。</a>."
+      "subtitle": "查看<a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/'>版本更新说明</a>。"
     },
     {
       "name": "3.8",
       "id": "3.8",
-      "subtitle": "查看 <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/'> 测试版本更新说明。</a>."
+      "subtitle": "查看<a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/'>beta 测试版本更新说明</a>。"
     },
     {
       "name": "在线演示 V3",

@@ -9,7 +9,7 @@ type AMessyUnion = "hello" | 156 | { error: true };
 // 查看 example:literals
 
 // 我们可以将多个不同的类型混合到一个联合类型中，
-// 我们把他称为 "这个值的类型是这些类型之一"。
+// 我们把他称为 “这个值的类型是这些类型之一”。
 
 // 然后 TypeScript 将会让您确认在运行时如何确定它是哪个类型的值。
 
@@ -63,7 +63,7 @@ interface CreateArtistBioBase {
 type CreateArtistBioRequest
   = CreateArtistBioBase & { html: string } | { markdown: string }
 
-// 现在您只有在包含 artistID 和 (html 或 markdown) 时
+// 现在您只有在包含 artistID 和（html 或 markdown）时
 // 您才能创建对应的请求。
 
 const workingRequest: CreateArtistBioRequest = {

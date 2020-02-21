@@ -1,7 +1,7 @@
 export const docCopy = {
   doc_layout_title: "学习 TypeScript 的起点",
   doc_layout_description:
-    "找到针对 TypeScript 的入门项目：Angular、React 或 Node.js 和 CLIs.",
+    "找到针对 TypeScript 的入门项目：Angular、React 或者 Node.js 与 CLI。",
   doc_headline: "开始学习",
   doc_headline_5m_title: "5 分钟入门 TS",
   doc_headline_5m_blurb: "5 分钟了解语言",
@@ -13,13 +13,13 @@ export const docCopy = {
   doc_headline_examples_blurb: "全面的在线演示实践教程",
   doc_start_a_project: "开始一个项目",
   doc_start_a_project_desc:
-    "由于 TypeScript 是 JavaScript 的超集，所以它没有默认的模板 - 这太多了。相反，其他项目在他们自己的环境中具有自己的 TypeScript 引导模板。这些项目提供了包含 TypeScript 支持的模板。 ",
+    "由于 TypeScript 是 JavaScript 的超集，所以它没有默认的模板——他们太多了。相反，其他项目在他们自己的环境中具有自己的 TypeScript 引导模板。这些项目提供了包含 TypeScript 支持的模板。",
   doc_node_npm: "Node 和 NPM",
   doc_node_npm_tsdx_blurb: "零配置构建 TypeScript 库。",
   doc_node_npm_oclif_blurb: "创建您用户喜爱的命令行工具",
   doc_node_npm_gluegun_blurb:
     "一个令人愉悦的工具，用于构建由 TypeScript 驱动的命令行应用程序。",
-  doc_frameworks: "Web Frameworks",
+  doc_frameworks: "Web 框架",
   doc_frameworks_angular_blurb:
     "让编写优雅的程序充满乐趣",
   doc_frameworks_react_blurb:
@@ -55,7 +55,7 @@ export const docCopy = {
   doc_apps_make_code_blurb:
     "通过有趣的项目将计算机科学带给所有学生",
   doc_tooling: "工具",
-  doc_tooling_babel_blurb: "在现在使用下一代 JavaScript",
+  doc_tooling_babel_blurb: "现在即可使用下一代 JavaScript",
   doc_tooling_parcel_blurb:
     "快速，零配置的 Web 应用打包工具",
   doc_tooling_webpack_blurb: "将您的资源，脚本，图片和样式打包",

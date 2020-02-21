@@ -42,7 +42,7 @@ type MyPartialTypeForEdit<Type> = {
 
 type CorrectMappedArtistForEdit = MyPartialTypeForEdit<Artist>;
 
-// 这是对映射类型如何工作的一个非常简单的例子，但是涵盖了大多数基础知识。
+// 这是演示映射类型工作方式的一个非常简单的例子，并且涵盖了大多数基础知识。
 // 如果你想更深入的了解更多信息，可以查看手册：
 //
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types

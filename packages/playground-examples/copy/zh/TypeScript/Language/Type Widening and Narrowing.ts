@@ -1,9 +1,9 @@
-// 通过例子来讨论类型扩展（Widening）和缩小（Narrowing）可能是最容易的:
+// 通过例子来研究类型扩展（Widening）和缩小（Narrowing）比较容易被接受：
 
 const welcomeString = "Hello There";
 let replyString = "Hey";
 
-// 除了字符文本的差异外，welcomeString 是由 const 定义的 (代表值不会变),
+// 除了字符文本的差异外，welcomeString 是由 const 定义的 (代表值不会变)，
 // replyString 是由 let 定义的（代表值可以被改变）。
 
 // 如果你将鼠标悬停在每个变量上，你会看到 TypeScript 提供的非常不同的类型信息。
@@ -36,7 +36,7 @@ declare const quantumString: string | undefined;
 quantumString.length;
 
 // 在严格模式下，代码作者需要确保使用的类型已经缩小为非空类型。
-// 通常来说，它就像添加一个 if 检查一样简单:
+// 通常来说，它就像添加一个 if 检查一样简单：
 
 if (quantumString) {
   quantumString.length;
