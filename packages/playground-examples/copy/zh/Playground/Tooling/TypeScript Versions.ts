@@ -1,28 +1,24 @@
-// With the new Playground, we have a lot more control over
-// the environment in which your code runs. The new Playground
-// is now loosely coupled to both monaco-editor and
-// monaco-typescript which provide the editing experience.
+// 在新的在线演示中，我们对您代码的运行环境有更强的控制。新的
+// 在线演示已经与提供编辑器体验的 monaco-editor 和
+// monaco-typescript 解耦。
 
 // https://github.com/microsoft/monaco-editor/
 // https://github.com/microsoft/monaco-typescript
 
-// Loosely coupling means the playground supports letting
-// users choose between many different versions of the
-// TypeScript build which monaco-typescript has integrated.
+// 解耦意味着在线演示支持用户在 monaco-typescript 集成的 TypeScript
+// 和已经构建的不同版本的 TypeScript 之间自由切换。
 
-// We have infrastructure to build a copy of both monaco-editor
-// and monaco-typescript for any version of TypeScript. This
-// means we can now support:
+// 我们有为任何版本的 TypeScript 构建 monaco-editor 和 monaco-typescript
+// 副本的基础设施。这意味着我们现在可以支持：
 
-// - Beta builds of TypeScript
-// - Nightly builds of TypeScript
-// - Pull Request builds of TypeScript
-// - Older builds of TypeScript
+// - TypeScript 的 Beta 测试构建
+// - TypeScript 的最新（Nightly）构建
+// - TypeScript 的某个 Pull Request 对应构建
+// - TypeScript 的历史构建
 
-// via https://github.com/orta/make-monaco-builds
+// 由：https://github.com/orta/make-monaco-builds
 
-// The foundational architecture for how the new playground
-// supports different versions of TypeScript came from the
-// project which this site is a fork of:
+// 新的在线演示如何支持不同版本的 TypeScript 的基础架构来自该站点
+// 的项目：
 
 // https://github.com/agentcooper/typescript-play
