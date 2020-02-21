@@ -29,7 +29,8 @@ jobs:
         yarn bootstrap
         yarn build
         yarn build-site
-        cp -r packages/typescriptlang-org/public ../site/v2
+        mkdir site
+        cp -r packages/typescriptlang-org/public ../site
         cd ..
 
     # CI: Deploy to the right branch
