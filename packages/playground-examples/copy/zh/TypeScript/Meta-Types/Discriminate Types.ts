@@ -1,28 +1,22 @@
-// A discriminated type union is where you use code flow
-// analysis to reduce a set of potential objects down to one
-// specific object.
+// 通过可辨识联合类型，您可以使用代码流分析将一组潜在的对象缩减为
+// 某个特定的对象。
 //
-// This pattern works really well for sets of similar
-// objects with a different string or number constant
-// for example: a list of named events, or versioned
-// sets of objects.
+// 此模式对于具有不同 string 或 number 常量的相似对象集非常有效。
+// 例如：具名事件列表或对象的版本集。
 
 type TimingEvent = { name: "start"; userStarted: boolean }
-                 | { name: "closed"; duration: number };
+  | { name: "closed"; duration: number };
 
-// When event comes into this function, it could be any
-// of the two potential types.
+// 当一个事件传入这个函数，它可能是潜在的两种类型之一。
 
 const handleEvent = (event: TimingEvent) => {
-  // By using a switch against event.name TypeScript's code
-  // flow analysis can determine that an object can only
-  // be represented by one type in the union.
+  // 通过 switch 语句针对事件名（event.name）进行检查，TypeScript 的
+  // 代码流分析可以确定对象只能由联合类型中的一种类型来表示。
 
   switch (event.name) {
     case "start":
-      // This means you can safely access userStarted
-      // because it's the only type inside TimingEvent
-      // where name is "start"
+      // 这代表您可以安全的访问 userStarted，因为 name 为 “start”
+      // 仅在类型 TimingEvent 中出现。
       const initiatedByUser = event.userStarted;
       break;
 
@@ -32,27 +26,24 @@ const handleEvent = (event: TimingEvent) => {
   }
 };
 
-// This pattern is the same with numbers which we can use
-// as the discriminator.
+// 此模式同样可以用在可辨识的数字上。
 
-// In this example, we have a discriminate union and an
-// additional error state to handle.
+// 在这个例子中，我们有一个可辨识联合和一个额外的需要处理的错误状态。
 
 type APIResponses = { version: 0; msg: string }
-                  | { version: 1; message: string; status: number }
-                  | { error: string };
+  | { version: 1; message: string; status: number }
+  | { error: string };
 
 const handleResponse = (response: APIResponses) => {
-  // Handle the error case, and then return
+  // 处理错误的状态并返回。
   if ("error" in response) {
     console.error(response.error);
     return;
   }
 
-  // TypeScript now knows that APIResponse cannot be
-  // the error type. If it were the error, the function
-  // would have returned. You can verify this by
-  // hovering over response below.
+  // TypeScript 现在已经清楚 APIResponse 不会是 error 类型。
+  // 当它是 error 类型时，函数会被返回。你可以将鼠标悬停在下面的
+  // response 上以验证这个结果。
 
   if (response.version === 0) {
     console.log(response.msg);
@@ -61,9 +52,7 @@ const handleResponse = (response: APIResponses) => {
   }
 };
 
-// You're better off using a switch statement instead of
-// if statements because you can make assurances that all
-// parts of the union are checked. There is a good pattern
-// for this using the never type in the handbook:
+// 您最好使用 switch 语句而不是使用 if 语句，因为您可以保证检查了
+// 联合类型的所有部分。使用手册中的 never 类型也是一个好的模式：
 
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#discriminated-unions

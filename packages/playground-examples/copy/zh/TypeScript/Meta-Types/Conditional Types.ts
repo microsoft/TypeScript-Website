@@ -1,46 +1,39 @@
-// Conditional Types provide a way to do simple logic in the
-// TypeScript type system. This is definitely an advanced
-// feature, and it's quite feasible that you won't need to
-// use this in your normal day to day code.
+// 条件类型（Conditional Types）允许在 TypeScript 类型系统中进行简单的运算。
+// 这绝对是一项高级功能，您在日常开发工作中完全可以不适用它。
 
-// A conditional type looks like:
+// 条件类型看起来是这样：
 //
 //   A extends B ? C : D
 //
-// Where the condition is whether a type extends an
-// expression, and if so what type should be returned.
+// 条件是某个类型是否继承某个表达式，如果是的话，返回什么类型。
 
-// Let's go through some examples, for brevity we're
-// going to use single letters for generics. This is optional
-// but restricting ourselves to 60 characters makes it
-// hard to fit on screen.
+// 让我们来看一些示例，为了简洁起见，我们将适用单个字母作为泛型的名称。
+// 这是可选的，但是我们每行的长度被限制在 60 个字母以内，
+// 这使我们很难将其显示在屏幕上。
 
 type Cat = { meows: true };
 type Dog = { barks: true };
 type Cheetah = { meows: true; fast: true };
 type Wolf = { barks: true; howls: true };
 
-// We can create a conditional type which lets extract
-// types which only conform to something which barks.
+// 我们可以创建一个条件类型，该条件类型仅允许提取符合 barks 判断的类型。
 
 type ExtractDogish<A> = A extends { barks: true } ? A : never;
 
-// Then we can create types which ExtractDogish wraps:
+// 然后我们可以创建 ExtractDogish 类型的包装：
 
-// A cat doesn't bark, so it will return never
+// 猫（cat）不能够吠（bark），因此它返回 never
 type NeverCat = ExtractDogish<Cat>;
-// A wolf will bark, so it returns the wolf shape
+// 狼（wolf）可以吠，因此它返回 wolf 。
 type Wolfish = ExtractDogish<Wolf>;
 
-// This becomes useful when you want to work with a
-// union of many types and reduce the number of potential
-// options in a union:
+// 这对您使用包含多种类型的联合类型，
+// 并希望减少联合类型中可能的类型成员时很有帮助：
 
 type Animals = Cat | Dog | Cheetah | Wolf;
 
-// When you apply ExtractDogish to a union type, it is the
-// same as running the conditional against each member of
-// the type:
+// 当您将 ExtractDogish 应用到一个联合类型上时，可以视为对联合
+// 类型中的每一个类型成员的应用：
 
 type Dogish = ExtractDogish<Animals>;
 
@@ -49,63 +42,51 @@ type Dogish = ExtractDogish<Animals>;
 //
 // = never | Dog | never | Wolf
 //
-// = Dog | Wolf (see example:unknown-and-never)
+// = Dog | Wolf (查看 example:unknown-and-never)
 
-// This is called a distributive conditional type because
-// the type distributes over each member of the union.
+// 由于类型被分派到每一个联合类型的成员，因此被叫做条件类型分派。
 
-// Deferred Conditional Types
+// 延迟条件类型
 
-// Conditional types can be used to tighten your APIs which
-// can return different types depending on the inputs.
+// 条件类型可以用于改进您的 API，这些 API 可以根据不同的输入返回不同的类型。
 
-// For example this function which could return either a
-// string or number depending on the boolean passed in.
+// 例如这个函数的返回值是 string 还是 number 取决于 传入的 boolean。
 
 declare function getID<T extends boolean>(fancy: T):
   T extends true ? string : number;
 
-// Then depending on how much the type-system knows about
-// the boolean, you will get different return types:
+// 根据类型系统对 boolean 的推断，你将获得不同的返回值类型：
 
 let stringReturnValue = getID(true);
 let numberReturnValue = getID(false);
 let stringOrNumber = getID(Math.random() < 0.5);
 
-// In this case above TypeScript can know the return value
-// instantly. However, you can use conditional types in functions
-// where the type isn't known yet. This is called a deferred
-// conditional type.
+// 虽然在这个例子中，TypeScript 可以立即知道返回值，但是您也可以将
+// 条件类型应用到您暂时不知道类型的函数中。这被称作延迟条件类型。
 
-// Same as our Dogish above, but as a function instead
+// 与上面的 Dogish 类似，但是是一个函数。
 declare function isCatish<T>(x: T): T extends { meows: true } ? T : undefined;
 
-// There is an extra useful tool within conditional types, which
-// is being able to specifically tell TypeScript that it should
-// infer the type when deferring. That is the 'infer' keyword.
+// 条件类型还有一个额外有用的工具，它可以告诉 TypeScript 推迟时应该推断类型。
+// 那就是 “infer” 关键字。
 
-// infer is typically used to create meta-types which inspect
-// the existing types in your code, think of it as creating
-// a new variable inside the type.
+// infer 通常被用来创建您现有代码中的某些元类型，
+// 可以将其视为在类型内部创建新的类型变量。
 
 type GetReturnValue<T> =
   T extends (...args: any[]) => infer R ? R : T;
 
-// Roughly:
+// 大意：
 //
-//  - this is a conditional generic type called GetReturnValue
-//    which takes a type in its first parameter
+//  - 这是一个被称作 GetReturnValue 的泛型条件类型，它接收一个类型参数。
 //
-//  - the conditional checks if the type is a function, and
-//    if so create a new type called R based on the return
-//    value for that function
+//  - 这个条件类型将检查如果传入的类型是一个函数，如果是，则根据函数的返回值类型
+//    创建一个名为 R 的新类型。
 //
-//  - If the check passes, the type value is the inferred
-//    return value, otherwise it is the original type
+//  - 如果检查通过，整个类型的值将被推断为返回值类型，否则是原有的类型。
 //
 
 type getIDReturn = GetReturnValue<typeof getID>
 
-// This fails the check for being a function, and would
-// just return the type passed into it.
+// 这将不能通过是否是一个函数的检查，并且将返回传入的类型本身。
 type getCat = GetReturnValue<Cat>
