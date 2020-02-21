@@ -1,36 +1,30 @@
 //// { order: 3, isJavaScript: true }
 
-// The playground can now handle JavaScript files.
+// 在线演示现在同样可以处理 JavaScript 文件。
 
-// It's quite reasonable to wonder why we would add support
-// for JavaScript in the playground, but it's likely that the
-// majority of TypeScript's users are using JavaScript.
+// 很像知道我们为什么会在在线演示上增加对 JavaScript 的支持。
+// 但是大多数 TypeScript 的用户可能正在使用 JavaScript。
 
-// TypeScript can use inferred types, type acquisition and
-// JSDoc support in a JavaScript file to provide a great
-// tooling environment:
+// TypeScript 可以在 JavaScript 文件中使用类型推断，类型自动获取
+// 和 JSDoc，以提供杰出的工具环境。
 //
 //  example:objects-and-arrays
 //  example:automatic-type-acquisition
 //  example:jsdoc-support
 
-// The playground supporting JavaScript means that you
-// can learn and walk people through complicated JSDoc
-// examples, or debug issues when there are expectation
-// mis-matches.
+// 在线演示支持 JavaScript 意味着您可以通过复杂的 JSDoc 示例来
+// 学习或引导其他人。或者在期望不匹配时调试问题。
 
-// For example, how come this JSDoc comment isn't typed
-// correctly?
-
+// 例如。为什么这个 JSDoc 标注的类型不正确？
 /**
- * Adds two numbers together
- * @param {number} The first number
- * @param {number} The second number
+ * 将两个 number 加起来
+ * @param {number} The 第一个 number
+ * @param {number} The 第二个 number
  * @returns {number}
  */
 function addTwoNumbers(a, b) {
   return a + b;
 }
 
-// It's much easier to figure that out in an environment
-// where you can instantly see what's going on by hovering.
+// 在这样的环境中，您可以通过鼠标悬停来立即查看发生了什么，这很容易
+// 找到问题。

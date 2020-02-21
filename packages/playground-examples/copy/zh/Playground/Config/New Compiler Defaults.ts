@@ -1,19 +1,15 @@
 //// { order: 1 }
 
-// Yes, we know, the defaults for TypeScript's tsconfig do
-// not have strict turned on. However, at every chance we
-// can the team recommends that users try migrate towards
-// having strict mode enabled in their configs.
+// 是的我们知道，TypeScript 的 tsconfig 默认没有打开严格模式。
+// 但是我们团队会尽可能建议用户将其配置迁移至启用严格模式。
 
-// For the playground however, we can happily set the defaults
-// to be strict. The playground will also keep track of the
-// compiler flags which have changed from the playground's
-// defaults and make them sharable in the URL.
+// 但是对于在线演示来说，我们可以很开心的将默认值设置为严格模式。
+// 在线演示还将追踪与默认值不同的编译选项，并使他们可以在 URL 中共享。
 
-// You can read more about the URLs in
+// 你可以了解更多关于 URL 的信息：
 // example:sharable-urls
 
-// Wonder what the new defaults are?
+// 想知道新的默认值是什么吗？
 
 declare const trueInTS: boolean
 declare const trueInJS: boolean
