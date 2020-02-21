@@ -40,7 +40,7 @@ export const createPlaygrounds = async (
     // prettier-ignore
     const compilerOptsForLang = path.join(appRoot,"tsconfig-reference","output",lang.name + "-summary.json")
     // prettier-ignore
-    const compilerOptsForLangFallback = path.join( appRoot, "tsconfig-reference","output", "en-summary.json")
+    const compilerOptsForLangFallback = path.join( appRoot, "tsconfig-reference", "output", "en-summary.json")
 
     const hasOptsForLang = fs.existsSync(compilerOptsForLang)
     const optionsPath = hasOptsForLang
