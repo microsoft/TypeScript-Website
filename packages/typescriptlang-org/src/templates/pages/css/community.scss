@@ -25,17 +25,18 @@
     }
 
     .icon {
-      height: 10em;
-      width: 10em;
+      height: 6em;
+      width: 6em;
       background-repeat: no-repeat;
       background-position: center center;
-      background-size: auto 6.4em;
+      background-size: auto 3.2em;
       display: block;
       -webkit-transition: background-color 0.2s ease-out;
       transition: background-color 0.2s ease-out;
       float: left;
       margin: 20px;
       margin-top: 0;
+      border-radius: 50%;
 
       @media screen and (-ms-high-contrast: active) {
         -ms-high-contrast-adjust: none;
@@ -46,39 +47,39 @@
       }
 
       &.discord {
-        background-image: url("../images/community/connect-discord.svg");
+        background-image: url("../../../assets/community/connect-discord.svg");
         background-color: #d9165c;
       }
 
       &.stackoverflow {
-        background-image: url("../images/community/connect-stackoverflow-icon.svg");
-        background-color: $brand-accent-color;
+        background-image: url("../../../assets/community/connect-stackoverflow-icon.svg");
+        background-color: #5016d9;
       }
 
       &.blog {
-        background-image: url("../images/community/connect-blog-icon.svg");
-        background-color: $brand-red;
+        background-image: url("../../../assets/community/connect-blog-icon.svg");
+        background-color: #d9a216;
       }
 
       &.uservoice {
-        background-image: url("../images/community/connect-uservoice-icon.svg");
+        background-image: url("../../../assets/community/connect-uservoice-icon.svg");
         background-color: #1a2833;
       }
 
       &.twitter {
-        background-image: url("../images/community/connect-twitter-icon.svg");
+        background-image: url("../../../assets/community/connect-twitter-icon.svg");
         background-color: #00a0d1;
         background-size: 5.5em;
       }
 
       &.definitelytyped {
-        background-image: url("../images/community/definitely_typed_logo.png");
+        background-image: url("../../../assets/community/definitely_typed_logo.png");
         background-color: #0077d2;
         background-size: 10em;
       }
 
       &.bug {
-        background-image: url("../images/community/connect-github-icon.png");
+        background-image: url("../../../assets/community/connect-github-icon.png");
         background-color: lighten(black, 30%);
         background-size: 5.5em;
       }
@@ -89,12 +90,4 @@
 .community-callout-headline {
   font-size: 1.6em;
   margin-top: 0;
-}
-
-@media (max-width: $screen-xs-max) {
-  .footer-spacer {
-    background-color: green;
-    padding-bottom: 40px;
-    height: 40px;
-  }
 }

@@ -112,8 +112,8 @@ addPrices(3, 4, 6);
 
   return (
     <div>
-      <Editor title="Example.js" isJS code={js} />
-      <Editor title="Example.ts" front code={ts}
+      <Editor title="Without TypeScript" isJS code={js} />
+      <Editor title="TypeScript" front code={ts}
         line={() => <div className="line-error" style={{ top: "166px" }} />}
 
         inline={() =>
@@ -160,8 +160,8 @@ export const UserThumbnail =
 
   return (
     <div>
-      <Editor title="Example.jsx" isJS code={js} />
-      <Editor title="Example.tsx" front code={ts} />
+      <Editor title="Without TypeScript" isJS code={js} />
+      <Editor title="TypeScript" front code={ts} />
     </div>
   )
 }
@@ -188,8 +188,8 @@ app.get('/', function (req, res) {
 
   return (
     <div>
-      <Editor title="Example.js" isJS code={js} />
-      <Editor title="Example.ts" front code={ts} inline={() =>
+      <Editor title="Without TypeScript" isJS code={js} />
+      <Editor title="TypeScript" front code={ts} inline={() =>
         (<>
           <ul className="dropdown" style={{ top: "96px", left: "78px" }}>
             <li><span className='result'><span className='result-found'>se</span>nd</span>Send a response.</li>
@@ -228,8 +228,8 @@ console.log(jon.naem)
 
   return (
     <div>
-      <Editor title="Example.js" isJS code={js} />
-      <Editor title="Example.ts" front code={ts}
+      <Editor title="Without TypeScript" isJS code={js} />
+      <Editor title="TypeScript" front code={ts}
         line={() => <div className="line-error" style={{ top: "152px" }} />}
 
         inline={() =>
@@ -259,8 +259,8 @@ const getUserAccountID = async () => {
 
   return (
     <div>
-      <Editor title="Example.js" isJS code={js} />
-      <Editor title="Example.ts" front code={ts}
+      <Editor title="Without TypeScript" isJS code={js} />
+      <Editor title="TypeScript" front code={ts}
         line={() => <div className="line-error" style={{ top: "80px" }} />}
 
         inline={() =>
@@ -305,8 +305,8 @@ console.log(jon.naem)
 
   return (
     <div>
-      <Editor title="Example.js" isJS code={js} />
-      <Editor title="Example.ts" front code={ts}
+      <Editor title="Without TypeScript" isJS code={js} />
+      <Editor title="TypeScript" front code={ts}
         line={() => <div className="line-error" style={{ top: "184px" }} />}
         inline={() =>
           (<>
@@ -344,8 +344,8 @@ const dist = getLength(3, "cm", "inches");
 
   return (
     <div>
-      <Editor title="Example.js" isJS code={js} />
-      <Editor title="Example.ts" front code={ts}
+      <Editor title="Without TypeScript" isJS code={js} />
+      <Editor title="TypeScript" front code={ts}
         line={() => <div className="line-error" style={{ top: "152px" }} />}
         inline={() =>
           (<>
@@ -392,8 +392,8 @@ function isAdmin(userID<span class='highlight'>: number</span>) {
 
   return (
     <div>
-      <Editor title="Example.js" isJS code={js} />
-      <Editor title="Example.ts" front code={ts}
+      <Editor title="Without TypeScript" isJS code={js} />
+      <Editor title="TypeScript" front code={ts}
         line={() => <div className="line-error" style={{ top: "124px" }} />}
         inline={() =>
           (<>

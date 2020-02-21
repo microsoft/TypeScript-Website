@@ -34,11 +34,7 @@ const Index: React.FC<Props> = (props) => {
   const i = createInternational<typeof indexCopy>(useIntl())
   const Link = createIntlLink(props.pageContext.lang, props.data.allSitePage)
 
-
-  useEffect(() => {
-    setupVideosSection()
-
-  }, [])
+  useEffect(() => { setupVideosSection() }, [])
 
   return (
     <Layout title="JavaScript For Any Scale." description="Desc" lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>

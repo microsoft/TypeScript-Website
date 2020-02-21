@@ -4,6 +4,8 @@ import { Intl } from "../../components/Intl"
 import { graphql } from "gatsby"
 import { CommunityPageQuery } from "../../__generated__/gatsby-types"
 
+import "./css/community.scss"
+
 const conferences =
   [
     {
@@ -168,47 +170,46 @@ type Props = {
 
 export const Comm: React.FC<Props> = (props) => (
   <Layout title="How to set up TypeScript" description="" lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
-
-    <div className="container community main_content">
+    <div className="raised main-content-block container community">
       <h1>Connect with us</h1>
       <h2>Connect online</h2>
       <p className="banner-text">Tell us what’s working well, what you want to see added or improved, and find out about new updates.</p>
-      <div className="callouts">
-        <div className="row">
-          <div className="callout col-md-4">
-            <a aria-labelledby="stack-header" className="icon stackoverflow img-circle" href="{{ site.data.urls.ts_stackoverflow_tagged }}" target="_blank"></a>
-            <a href="{{ site.data.urls.ts_stackoverflow_tagged }}" id="stack-header" target="_blank"><h3 className="community-callout-headline">Stack Overflow</h3></a>
-            <div className="text">Engage with your peers and ask questions about Typescript on <a href="{{ site.data.urls.ts_stackoverflow_tagged }}" target="_blank">Stack Overflow</a> using the tag <b>typescript.</b></div>
-          </div>
-          <div className="callout col-md-4">
-            <a aria-labelledby="discord-header" className="icon discord img-circle" href="https://discord.gg/typescript"></a>
-            <a href="https://discord.gg/typescript" id="discord-header"><h3 className="community-callout-headline">Chat</h3></a>
-            <div className="text">Chat with other TypeScript users in the TypeScript Community Chat.</div>
-          </div>
-          <div className="callout col-md-4">
-            <a aria-labelledby="github-header" className="icon bug img-circle" href="{{ site.data.urls.ts_github_issues }}" target="_blank"></a>
-            <a href="{{ site.data.urls.ts_github_issues }}" id="github-header"> <h3 className="community-callout-headline">GitHub</h3></a>
-            <div className="text">Found a bug, or want to give us feedback? <a href="{{ site.data.urls.ts_github_issues }}">Tell us on GitHub</a>.</div>
-          </div>
+
+      <div className="row callouts">
+        <div className="callout" style={{ flex: 1 }}>
+          <a aria-labelledby="stack-header" className="icon stackoverflow img-circle" href="{{ site.data.urls.ts_stackoverflow_tagged }}" target="_blank"></a>
+          <a href="{{ site.data.urls.ts_stackoverflow_tagged }}" id="stack-header" target="_blank"><h3 className="community-callout-headline">Stack Overflow</h3></a>
+          <div className="text">Engage with your peers and ask questions about Typescript on <a href="{{ site.data.urls.ts_stackoverflow_tagged }}" target="_blank">Stack Overflow</a> using the tag <b>typescript.</b></div>
         </div>
-        <div className="row">
-          <div className="callout col-md-4">
-            <a aria-labelledby="twitter-header" className="icon twitter img-circle" href="{{ site.data.urls.ts_twitter }}" target="_blank"></a>
-            <a href="{{ site.data.urls.ts_twitter }}" id="twitter-header" target="_blank"><h3 className="community-callout-headline">Twitter</h3></a>
-            <div className="text">Stay up to date.  Follow us on Twitter <a href="{{ site.data.urls.ts_twitter }}" target="_blank">@typescript</a>!</div>
-          </div>
-          <div className="callout col-md-4">
-            <a aria-labelledby="blog-header" className="icon blog img-circle" href="{{ site.data.urls.ts_blog }}" target="_blank"></a>
-            <a href="{{ site.data.urls.ts_blog }}" id="blog-header" target="_blank"><h3 className="community-callout-headline">Blog</h3></a>
-            <div className="text">Learn about the latest TypeScript developments via our <a href="{{ site.data.urls.ts_blog }}" target="_blank">blog</a>!</div>
-          </div>
-          <div className="callout col-md-4">
-            <a aria-labelledby="deftyped-header" className="icon definitelytyped img-circle" href="{{ site.data.urls.definitelytyped_github }}" target="_blank"></a>
-            <a href="{{ site.data.urls.definitelytyped_github }}" id="deftyped-header" target="_blank"><h3 className="community-callout-headline">Definitely Typed</h3></a>
-            <div className="text">Browse the thousands of <a href="{{ site.data.urls.definitelytyped_github }}" target="_blank">TypeScript definition files</a> available for common libraries and frameworks.</div>
-          </div>
+        <div className="callout col-md-4" style={{ flex: 1 }}>
+          <a aria-labelledby="discord-header" className="icon discord img-circle" href="https://discord.gg/typescript"></a>
+          <a href="https://discord.gg/typescript" id="discord-header"><h3 className="community-callout-headline">Chat</h3></a>
+          <div className="text">Chat with other TypeScript users in the TypeScript Community Chat.</div>
+        </div>
+        <div className="callout col-md-4" style={{ flex: 1 }}>
+          <a aria-labelledby="github-header" className="icon bug img-circle" href="{{ site.data.urls.ts_github_issues }}" target="_blank"></a>
+          <a href="{{ site.data.urls.ts_github_issues }}" id="github-header"> <h3 className="community-callout-headline">GitHub</h3></a>
+          <div className="text">Found a bug, or want to give us feedback? <a href="{{ site.data.urls.ts_github_issues }}">Tell us on GitHub</a>.</div>
         </div>
       </div>
+      <div className="row">
+        <div className="callout col-md-4">
+          <a aria-labelledby="twitter-header" className="icon twitter img-circle" href="{{ site.data.urls.ts_twitter }}" target="_blank"></a>
+          <a href="{{ site.data.urls.ts_twitter }}" id="twitter-header" target="_blank"><h3 className="community-callout-headline">Twitter</h3></a>
+          <div className="text">Stay up to date.  Follow us on Twitter <a href="{{ site.data.urls.ts_twitter }}" target="_blank">@typescript</a>!</div>
+        </div>
+        <div className="callout col-md-4">
+          <a aria-labelledby="blog-header" className="icon blog img-circle" href="{{ site.data.urls.ts_blog }}" target="_blank"></a>
+          <a href="{{ site.data.urls.ts_blog }}" id="blog-header" target="_blank"><h3 className="community-callout-headline">Blog</h3></a>
+          <div className="text">Learn about the latest TypeScript developments via our <a href="{{ site.data.urls.ts_blog }}" target="_blank">blog</a>!</div>
+        </div>
+        <div className="callout col-md-4">
+          <a aria-labelledby="deftyped-header" className="icon definitelytyped img-circle" href="{{ site.data.urls.definitelytyped_github }}" target="_blank"></a>
+          <a href="{{ site.data.urls.definitelytyped_github }}" id="deftyped-header" target="_blank"><h3 className="community-callout-headline">Definitely Typed</h3></a>
+          <div className="text">Browse the thousands of <a href="{{ site.data.urls.definitelytyped_github }}" target="_blank">TypeScript definition files</a> available for common libraries and frameworks.</div>
+        </div>
+      </div>
+
 
       <h2>Connect in person</h2>
 

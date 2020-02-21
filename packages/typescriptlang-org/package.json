@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "gatsby build && yarn tsc",
+    "build": "gatsby build",
     "develop": "gatsby develop",
     "clean": "gatsby clean",
     "bootstrap": "yarn update-versions",
@@ -15,7 +15,7 @@
     "create-lighthouse-json": "node scripts/createLighthouseJSON.js",
     "start": "npm run develop",
     "serve": "gatsby serve",
-    "test": "jest"
+    "test": "yarn tsc && jest"
   },
   "dependencies": {
     "@babel/core": "^7.8.4",
