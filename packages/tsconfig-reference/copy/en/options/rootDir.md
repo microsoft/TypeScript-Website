@@ -39,7 +39,7 @@ By setting `rootDir: "."` in `tsconfig.json`, TypeScript would write this tree:
 ```
 MyProj
 ├── dist
-|   ├── core
+│   ├── core
 │   │   ├── a.js
 │   │   ├── b.js
 │   │   ├── sub
