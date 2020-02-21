@@ -2,7 +2,7 @@ name: Build Website on Master and Release
 
 on:
   push:
-    branches: [master,release]
+    branches: [release]
 
 jobs:
   build:

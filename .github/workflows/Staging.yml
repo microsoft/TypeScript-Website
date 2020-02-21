@@ -1,0 +1,42 @@
+name: Build Website on Master and Release
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Check out, and set up the node/ruby infra
+    - uses: actions/checkout@v1
+      with: {submodules: true}
+
+    # Switch to node 13
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '13.x'
+
+    # Build v2
+    - name: Build website v2
+      run: |
+        git clone -b v2 --single-branch https://github.com/microsoft/TypeScript-Website.git v2
+        cd v2
+        git config --global user.email "you@example.com"
+        git config --global user.name "Your Name"
+        yarn install
+        yarn bootstrap
+        yarn build
+        yarn build-site
+        cp -r packages/typescriptlang-org/public ../site/v2
+        cd ..
+
+    # CI: Deploy to the right branch
+    - name: Deploy + Publish
+      if: github.event_name != 'pull_request'
+      uses: peaceiris/actions-gh-pages@v1.1.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PUBLISH_BRANCH: 'SITE-STAGING'
+        PUBLISH_DIR: ./site
