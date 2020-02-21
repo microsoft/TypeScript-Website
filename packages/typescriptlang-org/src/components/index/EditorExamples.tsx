@@ -21,7 +21,7 @@ export const EditorExamples = () => {
     "Validate your function arguments",
     "Document your React Props via types",
     "Get completions for un-typed JavaScript code",
-    "Catch typoes in your editor ahead of runtime",
+    "Catch typos in your editor ahead of runtime",
     "Offer instant fixes for common bugs",
     "Opt-in to strict nullability checking",
     "Use exact strings and numbers for type-checking",
@@ -55,7 +55,7 @@ export const EditorExamples = () => {
             <TypeDefinitions />
           ),
           3: (
-            <Typoes />
+            <Typos />
           ),
           4: (
             <DidYouMean />
@@ -203,7 +203,7 @@ app.get('/', function (req, res) {
   )
 }
 
-const Typoes = () => {
+const Typos = () => {
   const js = `
 const users = [
   { name: "Ahmed" },

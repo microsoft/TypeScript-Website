@@ -39,7 +39,7 @@ console.log(purchaseOrder.item.type)
 
 // TypeScript provides feedback to the playground
 // about what JavaScript objects are available in this
-// file and lets you avoid typoes and see additional
+// file and lets you avoid typos and see additional
 // information without having to look it up in another place.
 
 // TypeScript also offers these same features to arrays.
