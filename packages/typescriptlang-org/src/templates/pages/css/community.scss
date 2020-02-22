@@ -1,3 +1,5 @@
+@import "./grid.scss";
+
 .community {
   padding: 1em 15px 6em 15px;
 
@@ -90,4 +92,15 @@
 .community-callout-headline {
   font-size: 1.6em;
   margin-top: 0;
+}
+
+.upcoming-event {
+  min-width: 330px;
+  img {
+    width: 50px;
+  }
+  .meetup-text {
+    max-height: 300px;
+    overflow-y: hidden;
+  }
 }

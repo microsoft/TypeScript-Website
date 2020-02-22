@@ -1,0 +1,16 @@
+{
+  "name": "community-meta",
+  "private": true,
+  "license": "MIT",
+  "version": "1.0.0",
+  "dependencies": {
+    "ical-utils": "^1.0.15",
+    "moment": "2.24.0",
+    "moment-timezone": "0.5.28"
+  },
+  "scripts": {
+    "build": "node scripts/generateRichMeetupData.js",
+    "test": "echo 'NOOP'",
+    "bootstrap": "echo 'NOOP'"
+  }
+}
