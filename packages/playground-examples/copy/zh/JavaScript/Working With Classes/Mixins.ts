@@ -1,22 +1,17 @@
 //// { order: 4 }
 
-// Mixins are a faux-multiple inheritance pattern for classes
-// in JavaScript which TypeScript has support for. The pattern
-// allows you to create a class which is a merge of many
-// classes.
+// 混合（Mixins）是 TypeScript 支持的 JavaScript 类的伪多重继承
+// 模式。该模式允许您创建一个由许多类合并而成的类。
 
-// To get started, we need a type which we'll use to extend
-// other classes from. The main responsibility is to declare
-// that the type being passed in is a class.
+// 首先我们需要一种类型，用于扩展其他类。主要职责是声明传入的类型是一个类。
 
 type Constructor = new (...args: any[]) => {}
 
-// Then we can create a series of classes which extend
-// the final class by wrapping it. This pattern works well
-// when similar objects have different capabilities.
+// 然后我们可以创建一系列的类，这些类通过包装最终的类来进行扩展。
+// 此模式当相似的对象具有不同的功能时效果很好。
 
-// This mixin adds a scale property, with getters and setters
-// for changing it with an encapsulated private property:
+// 这个混合添加了 scale 属性，并带有用于使用封装的 private 属性对
+// 其进行更改的 getter 和 setter：
 
 function Scale<TBase extends Constructor>(Base: TBase) {
   return class extends Base {
@@ -32,8 +27,7 @@ function Scale<TBase extends Constructor>(Base: TBase) {
   };
 }
 
-// This mixin adds extra methods around alpha composition
-// something which modern computers use to create depth:
+// 该混合围绕 alpha 合成添加了额外的方法，现代计算机使用这些方法来创建深度：
 
 function Alpha<TBase extends Constructor>(Base: TBase) {
   return class extends Base {
@@ -53,7 +47,7 @@ function Alpha<TBase extends Constructor>(Base: TBase) {
   };
 }
 
-// A simple sprite base class which will then be extended:
+// 一个用于扩展的简单的 sprite 基类：
 
 class Sprite {
   name = "";
@@ -65,15 +59,12 @@ class Sprite {
   }
 }
 
-// Here we create two different types of sprites
-// which have different capabilities:
+// 我们将创建两种具有不同功能的 sprite：
 
 const ModernDisplaySprite = Alpha(Scale(Sprite));
 const EightBitSprite = Scale(Sprite);
 
-// Creating instances of these classes shows that
-// the objects have different sets of properties
-// and methods due to their mixins:
+// 创建这些类的实例表明，由于对象的混合，这些对象具有不同的属性和方法：
 
 const flappySprite = new ModernDisplaySprite("Bird");
 flappySprite.x = 10;
@@ -86,33 +77,29 @@ console.log(flappySprite.scale);
 const gameBoySprite = new EightBitSprite("L block");
 gameBoySprite.setScale(0.3);
 
-// Fails because an EightBitSprite does not have
-// the mixin for changing alphas:
+// 由于 EightBitSprite 没有用于更改 alpha 的混合而报错：
 gameBoySprite.setAlpha(0.5);
 
-
-// If you want to make more guarantees over the classes
-// which you wrap, you can use a constructor with generics.
+// 如果要对包装的类提供更多的保证，则可以将构造函数与泛型一起使用。
 
 type GConstructor<T = {}> = new (...args: any[]) => T;
 
-// Now you can declare that this mixin can only be
-// applied when the base class is a certain shape.
+// 您可以声明只能在基类为特殊形状时应用此混合。
 
 type Moveable = GConstructor<{ setXYAcceleration: (x: number, y: number) => void }>
 
-// We can then create a mixin which relies on the function
-// present in the parameter to the GConstructor above.
+// 然后我们可以创建一个混合，它依赖于上述 GConstructor 参数
+// 中存在的函数。
 
 function Jumpable<TBase extends Moveable>(Base: TBase) {
   return class extends Base {
-      jump() {
-        // This mixin knows about setXYAcceleration now
-        this.setXYAcceleration(0, 20)
-      }
+    jump() {
+      // 这个混合现在可以知道 setXYAcceleration
+      this.setXYAcceleration(0, 20)
+    }
   };
 }
 
-// We cannot create this sprite until there is a class
-// in the mixin hierarchy which adds setXYAcceleration:
+// 只有在混合的结构中有一个添加 setXYAcceleration 的类之后
+// 我们才能创建此 sprite：
 const UserSprite = new Jumpable(ModernDisplaySprite);

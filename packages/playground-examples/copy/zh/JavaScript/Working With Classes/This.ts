@@ -1,7 +1,6 @@
 //// { order: 2 }
 
-// When calling a method of a class, you generally expect it
-// to refer to the current instance of the class.
+// 当调用一个类的方法时，您通常希望它引用该类的当前实例。
 
 class Safe {
   contents: string;
@@ -18,44 +17,35 @@ class Safe {
 const safe = new Safe("Crown Jewels");
 safe.printContents();
 
-// If you come from an objected oriented language where the
-// this/self variable is easily predictable, then you may
-// find you need to read up on how confusing 'this' can be:
+// 如果您有其他易于理解 this、self 的面向对象语言的经验，那么您
+// 可能会发现 ‘this’ 令人困惑的地方：
 //
 // https://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/
 // https://aka.ms/AA5ugm2
 
-// TLDR: this can change. The reference to which this refers
-// to can be different depending on how you call the function.
+// 太长不看：this 可以改变。this 所引用的对象可能因调用函数的方式而不同。
 
-// For example, if you use a reference to the func in another
-// object, and then call it through that - the this variable
-// has moved to refer to the hosting object:
+// 例如，如果您将函数传递给另一个函数，并在在另一个对象的上下文中
+// 调用该函数的引用，那么 this 变量引用的对象已经变为调用时的宿主对象。
 
 const customObjectCapturingThis = { contents: "http://gph.is/VxeHsW", print: safe.printContents };
-customObjectCapturingThis.print(); // Prints "http://gph.is/VxeHsW" - not "Crown Jewels"
+customObjectCapturingThis.print(); // 输出 "http://gph.is/VxeHsW" - 而不是 "Crown Jewels"
 
-// This is tricky, because when dealing with callback APIs -
-// it can be very tempting to pass the function reference
-// directly. This can be worked around by creating a new
-// function at the call site.
+// 这很棘手，因为在处理 API 的回调时，直接传递函数的引用非常吸引人。
+// 可以通过在调用方创建一个新的函数来解决这个问题。
 
 const objectNotCapturingThis = { contents: "N/A", print: () => safe.printContents() };
 objectNotCapturingThis.print();
 
-// There are a few ways to work around this problem. One
-// route is to force the binding of this to be the object
-// you originally intended via bind.
+// 有几种方法可以解决这个问题，一种是通过 bind 强制将其绑定为您最初
+// 希望绑定的对象。
 
 const customObjectCapturingThisAgain = { contents: "N/A", print: safe.printContents.bind(safe) };
 customObjectCapturingThisAgain.print();
 
-// To work around an unexpected this context, you can also
-// change how you create functions in your class. By
-// creating a property which uses a fat arrow function, the
-// binding of this is done at a different time. Which makes
-// it more predictable for those less experienced with the
-// JavaScript runtime.
+// 要解决这种意外情况，您还可以通过在类中创建函数的方式。通过创建一个
+// 值为箭头函数的属性，可以让 this 在不同的时间完成绑定。这对于那些
+// 不太熟悉 JavaScript 运行时的人来说更具可预测性。
 
 class SafelyBoundSafe {
   contents: string;
@@ -69,8 +59,7 @@ class SafelyBoundSafe {
   };
 }
 
-// Now passing the function to another object
-// to run does not accidentally change this.
+// 将函数传递给另外一个对象将不会更改 this 的绑定。
 
 const saferSafe = new SafelyBoundSafe("Golden Skull");
 saferSafe.printContents();
@@ -82,10 +71,9 @@ const customObjectTryingToChangeThis = {
 
 customObjectTryingToChangeThis.print();
 
-// If you have a TypeScript project, you can use the compiler
-// flag noImplicitThis to highlight cases where TypeScript
-// cannot determine what type "this" is for a function.
+// 如果您有 TypeScript 项目，您可以使用 noImplicitThis 编译选项
+// 以高亮显示 TypeScript 不能确定某个函数 ‘this’ 的类型的情况。
 
-// You can learn more about that in the handbook:
+// 你可以在手册中了解更多相关信息：
 //
 // https://www.typescriptlang.org/docs/handbook/utility-types.html#thistypet

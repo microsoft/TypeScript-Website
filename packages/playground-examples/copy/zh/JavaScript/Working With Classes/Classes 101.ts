@@ -1,11 +1,9 @@
 //// { order: 0 }
 
-// A class is a special type of JavaScript object which
-// is always created via a constructor. These classes
-// act a lot like objects, and have an inheritance structure
-// similar to languages such as Java/C#/Swift.
+// 类（class）是一种始终用构造函数来创建的 JavaScript 对象。这些类的行为
+// 很像对象，并且具有与 Java、C#、Swift 类似的继承结构。
 
-// Here's an example class:
+// 下面是一个类的示例：
 
 class Vendor {
   name: string;
@@ -19,15 +17,13 @@ class Vendor {
   }
 }
 
-// An instance can be created via the new keyword, and
-// you can call methods and access properties from the
-// object.
+// 您可以通过 new 关键字创建一个实例，您可以通过该对象调用方法
+// 和访问属性。
 
 const shop = new Vendor("Ye Olde Shop");
 console.log(shop.greet());
 
-// You can subclass an object. Here's a food cart which
-// has a variety as well as a name:
+// 您可以继承一个对象。这是一个可以有多种名字的食品推车：
 
 class FoodTruck extends Vendor {
   cuisine: string;
@@ -42,14 +38,12 @@ class FoodTruck extends Vendor {
   }
 }
 
-// Because we indicated that there needs to be two arguments
-// to create a new FoodTruck, TypeScript will provide errors
-// when you only use one:
+// 由于我们标记创建新的 FoodTruck 需要两个参数，TypeScript 将
+// 在您只传递一个参数时报错：
 
 const nameOnlyTruck = new FoodTruck("Salome's Adobo");
 
-// Correctly passing in two arguments will let you create a
-// new instance of the FoodTruck:
+// 如果您正确的传递两个参数，将可以创建一个 FoodTruck 的新实例：
 
 const truck = new FoodTruck("Dave's Doritos", "junk");
 console.log(truck.greet());

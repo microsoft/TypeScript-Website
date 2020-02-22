@@ -1,12 +1,10 @@
 //// { order: 3 }
 
-// This example is mostly in TypeScript, because it is much
-// easier to understand this way first. At the end we'll
-// cover how to create the same class but using JSDoc instead.
+// 此示例主要在 TypeScript 中使用，因为这样会更容易理解这种方式。
+// 最后，我们将介绍如何使用 JSDoc 来创建相同的类。
 
-// Generic Classes are a way to say that a particular type
-// depends on another type. For example, here is a drawer
-// which can hold any sort of object, but only one type:
+// 泛型类是一种表示特定类型依赖另一种类型的方法。例如，这是
+// 一个可以容纳任何对象的抽屉（Drawer），但是只可以有一种类型：
 
 class Drawer<ClothingType> {
   contents: ClothingType[] = [];
@@ -20,8 +18,7 @@ class Drawer<ClothingType> {
   }
 }
 
-// In order to use a Drawer, you will need another
-// type to work with:
+// 要使用 Drawer，您需要另一种类型：
 
 interface Sock {
   color: string;
@@ -31,31 +28,29 @@ interface TShirt {
   size: "s" | "m" | "l";
 }
 
-// We can create a Drawer just for socks by passing in the
-// type Sock when we create a new Drawer:
+// 我们可以在创建 Drawer 时传入 Sock 类型，从而为
+// Socks 创建一个 drawer：
 const sockDrawer = new Drawer<Sock>();
 
-// Now we can add or remove socks to the drawer:
+// 现在我们可以添加或删除 drawer 中的 sock 了：
 sockDrawer.add({ color: "white" });
 const mySock = sockDrawer.remove();
 
-// As well as creating a drawer for TShirts:
+// 以及为 TShirt 创建 Drawer：
 const tshirtDrawer = new Drawer<TShirt>();
 tshirtDrawer.add({ size: "m" });
 
-// If you're a bit eccentric, you could even create a drawer
-// which mixes Socks and TShirts by using a union:
+// 如果您有点古怪，您甚至可以通过联合类型将 Sock 和 TShirt 混
+// 合用来创建一个 Drawer：
 
 const mixedDrawer = new Drawer<Sock | TShirt>();
 
-// Creating a class like Drawer without the extra TypeScript
-// syntax requires using the template tag in JSDoc. In this
-// example we define the template variable, then provide
-// the properties on the class:
+// 要不通过额外的 TypeScript 语法创建一个类似 Drawer 的类，则需要
+// 使用 JSDoc 中的模板（template）标记。在此示例中，我们定义了模板
+// 变量，然后定义类的属性：
 
-// To have this work in the playground, you'll need to change
-// the settings to be a JavaScript file, and delete the
-// TypeScript code above
+// 要在在线演示上实验这项功能，您需要将设置更改为 JavaScript 文件，
+// 然后删除上面的的 TypeScript 代码。
 
 /**
  * @template {{}} ClothingType
@@ -77,16 +72,15 @@ class Dresser {
   }
 }
 
-// Then we create a new type via JSDoc:
+// 然后我们通过 JSDoc 创建一个新的类型：
 
 /**
- * @typedef {Object} Coat An item of clothing
- * @property {string} color The colour for coat
+ * @typedef {Object} Coat 一个 Coat
+ * @property {string} color Coat 的颜色
  */
 
-// Then when we create a new instance of that class
-// we use @type to assign the variable as a Dresser
-// which handles Coats.
+// 然后当我们创建该类型的新实例时，我们使用 @type 将变量
+// 标记为处理 Coat 的 Dresser。
 
 /** @type {Dresser<Coat>} */
 const coatDresser = new Dresser();
