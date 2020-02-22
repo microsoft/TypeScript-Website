@@ -1,34 +1,28 @@
 //// { order: 0, compiler: { target: 1 } }
 
-// Welcome to the TypeScript playground. This site is a lot
-// like running a TypeScript project inside a web browser.
+// 欢迎来到 TypeScript 在线演示，本网站很像在浏览器中运行
+// 一个 TypeScript 项目。
 
-// The playground makes it easy for you to safely experiment
-// with ideas in TypeScript by making it trivial to share
-// these projects. The URL for this page is everything
-// required to load the project for someone else.
+// 通过分享这些项目，可以轻松并安全的通过在线演示在 TypeScript 中
+// 尝试想法。此页面的 URL 是其他人加载本项目所需的全部内容。
 
 const hello = "Hello"
 
-// You can see on the right the result of the TypeScript
-// compiler: this is vanilla JavaScript which can run on
-// browsers, servers or anywhere really.
+// 你可以在右侧看到 TypeScript 编译器的输出结果：这是可以在浏览器、
+// 服务器或任何实际位置上运行的原始 JavaScript。
 
 const world = "World"
 
-// You can see how it makes tiny changes to the code, by
-// converting a "const" to a "var". This is one of the many
-// things TypeScript does to make it possible to run
-// anywhere JavaScript runs.
+// 通过将 “const” 改为 “var”，您可以看到它如何对代码进行微小的更高。
+// 这是使 TypeScript 为了可以运行在任何运行 JavaScript 的地方所
+// 做的工作之一。
 
 console.log(hello + " " + world)
 
-// Now that you have an idea of how the playground works,
-// let's look at how TypeScript makes working with
-// JavaScript more fun. During this section we'll be trying
-// to keep as close to vanilla JavaScript as possible to
-// show how you can re-use existing knowledge.
+// 现在您已经了解了 TypeScript 的工作原理，让我们了解一下 TypeScript
+// 如何使使用 JavaScript 更有趣。在本节中，我们将尽可能接近原生 JavaScript，
+// 已显示如何复用现有知识。
 //
-// Click below to continue:
+// 点击下方继续：
 //
 // example:objects-and-arrays
