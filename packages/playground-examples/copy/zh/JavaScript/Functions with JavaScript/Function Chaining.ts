@@ -1,38 +1,32 @@
 //// { order: 2, compiler: { esModuleInterop: true } }
 
-// Function chaining APIs are a common pattern in
-// JavaScript, which can make your code focused
-// with less intermediary values and easier to read
-// because of their nesting qualities.
+// 在 JavaScript 中，链式函数是很常见的 API 模式。由于他们
+// 具有嵌套特性，所以可以让您的代码减少中间值，并且增加可读性。
 
-// A really common API which works via chaining
-// is jQuery. Here is an example of jQuery
-// being used with the types from DefinitelyTyped:
+// jQuery 是一个非常常见的可以通过链式使用的 API，这是
+// jQuery 与 DefinitelyTyped 中的类型一起使用的示例：
 
 import $ from "jquery";
 
-// Here's an example use of the jQuery API:
+// 这是使用 jQuery API 的示例：
 
 $("#navigation")
   .css("background", "red")
   .height(300)
   .fadeIn(200);
 
-// If you add a dot on the line above, you'll see
-// a long list of functions. This pattern is easy to
-// reproduce in JavaScript. The key is to make sure
-// you always return the same object.
+// 如果您在上面的行中增加了一个点（.），则会看到一长串函数。
+// 这种模式很容易在 JavaScript 中复现。关键是要确保
+// 返回相同的对象。
 
-// Here is an example API which creates a chaining
-// API. The key is to have an outer function which
-// keeps track of internal state, and an object which
-// exposes the API that is always returned.
+// 这是创建 链式 API 的一个示例。关键是要有一个跟踪内部状态的
+// 外部函数，以及一个最终返回的暴露 API 的对象。
 
 const addTwoNumbers = (start = 1) => {
   let n = start;
 
   const api = {
-    // Implement each function in your API
+    // 实现您 API 中的所有函数
     add(inc: number = 1) {
       n += inc;
       return api;
@@ -46,8 +40,7 @@ const addTwoNumbers = (start = 1) => {
   return api;
 };
 
-// Which allows the same style of API as we
-// saw in jQuery:
+// 允许我们使用与 jQuery 中相同的 API 风格：
 
 addTwoNumbers(1)
   .add(3)
@@ -55,7 +48,7 @@ addTwoNumbers(1)
   .print()
   .add(1);
 
-// Here's a similar example which uses a class:
+// 这是一个类似的使用类的示例：
 
 class AddNumbers {
   private n: number;
@@ -75,7 +68,7 @@ class AddNumbers {
   }
 }
 
-// Here it is in action:
+// 它在正常工作：
 
 new AddNumbers(2)
   .add(3)
@@ -83,10 +76,9 @@ new AddNumbers(2)
   .print()
   .add(1);
 
-// This example used the TypeScript
-// type inference to provide a way to
-// provide tooling to JavaScript patterns.
+// 例子是使用 TypeScript 的类型推导来为 JavaScript 的模式
+// 提供帮助的一种方法。
 
-// For more examples on this:
+// 更多的例子可以查看：
 //
 //  - example:code-flow
