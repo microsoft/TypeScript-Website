@@ -1,62 +1,53 @@
 //// { order: 3, isJavaScript: true }
 
-// TypeScript has very rich JSDoc support, for a lot of cases
-// you can even skip making your files .ts and just use JSDoc
-// annotations to create a rich development environment.
+// TypeScript 有着非常丰富的 JSDoc 支持，很多情况下您甚至可以不写 .ts 文件
+// 而仅仅使用 JSDoc 注解去创建丰富的开发环境。
 //
-// A JSDoc comment is a multi-line comment which starts with
-// two stars instead of one.
+// JSDoc 注释是由两个星号（*）开头的多行注释。
+/* 这是一个普通注释 */
+/** 这是一个 JSDoc 注释 */
 
-/* This is a normal comment */
-/** This is a JSDoc comment */
-
-// JSDoc comments become attached to the closest JavaScript
-// code below it.
+// JSDoc 注释会附加到下方最近的 JavaScript 代码中。
 
 const myVariable = "Hi";
 
-// If you hover over myVariable, you can see that it has the
-// text from inside the JSDoc comment attached.
+// 如果您将书本悬停到 myVariable，你可以看到这段在 JSDoc 注释
+// 中的文字及已经非附加了。
 
-// JSDoc comments are a way to provide type information to
-// TypeScript and your editors. Let's start with an easy one
-// setting a variable's type to a built-in type.
+// JSDoc 注释是一种为 TypeScript 和 您的编辑器提供类型信息的方式。
+// 让我们简单的从将变量的类型设置为内置类型开始。
 
-// For all of these examples, you can hover over the name,
-// and on the next line try write [example]. to see the
-// auto-complete options.
+// 对于所有这些示例，您可以将鼠标悬停在名称上，然后再下一行尝试
+// 输入【示例】以查看自动完成选项。
 
 /** @type {number} */
 var myNumber;
 
-// You can see all of the supported tags in the handbook:
+// 你可以在手册中查看所有已支持的标签：
 //
 // https://www.typescriptlang.org/docs/handbook/type-checking-javascript-files.html#supported-jsdoc
 
-// However, we'll try go through some of the more common examples
-// here. You can also copy & paste any examples from the handbook
-// into here.
+// 但是，我们将在这里尝试一些更常见的示例，您也可以将手册中的任何示例粘贴到此处。
 
-// Importing the types for JavaScript configuration files:
+// 由 JavaScript 配置文件中导入类型：
 
 /** @type { import("webpack").Config } */
 const config = {};
 
-// Creating a complex type to re-use in many places:
+// 创建一个复杂的类型以在其他多处地方复用：
 
 /**
- * @typedef {Object} User - a User account
- * @property {string} displayName - the name used to show the user
- * @property {number} id - a unique id
+ * @typedef {Object} User - 用户账户
+ * @property {string} displayName - 用来展示用户的名字
+ * @property {number} id - 唯一 ID
  */
 
-// Then use it by referencing the typedef's name:
+// 然后通过引用类型的名字来使用它：
 
 /** @type { User } */
 const user = {};
 
-// There's the TypeScript compatible inline type shorthand,
-// which you can use for both type and typedef:
+// type 和 typedef 有兼容 TypeScript 的内联类型快捷：
 
 /** @type {{ owner: User, name: string }} */
 const resource;
@@ -66,29 +57,28 @@ const resource;
 /** @type {Resource} */
 const otherResource;
 
-// Declaring a typed function:
+// 声明一个有类型的函数：
 
 /**
- * Adds two numbers together
- * @param {number} a The first number
- * @param {number} b The second number
+ * 将两个数值相加
+ * @param {number} a 第一个数字
+ * @param {number} b 第二个数字
  * @returns {number}
  */
 function addTwoNumbers(a, b) {
   return a + b;
 }
 
-// You can use most of TypeScript's type tools, like unions:
+// 你可以使用大多数 TypeScript 的类型工具，例如联合类型：
 
 /** @type {(string | boolean)} */
 let stringOrBoolean = "";
 stringOrBoolean = false;
 
-// Extending globals in JSDoc is a more involved process
-// which you can see in the VS Code docs:
+// 在 JSDoc 中扩展全局变量是一个涉及更多内容的过程，您可以
+// 在 VS Code 文档中找到：
 //
 // https://code.visualstudio.com/docs/nodejs/working-with-javascript#_global-variables-and-type-checking
 
-// Adding JSDoc comments to your functions is a win-win
-// situation; you get better tooling and so do all your
-// API consumers.
+// 在您的函数中添加 JSDoc 注释是一个双赢的情况，您将获得更好的工具，
+// 所有 API 的使用者也一样。

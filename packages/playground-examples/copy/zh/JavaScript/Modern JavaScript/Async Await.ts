@@ -69,16 +69,15 @@ const exampleSquareRootFunction = async (input: any) => {
   }
 
   if (input < 0) {
-    return { success: false, message: "Cannot square root negative number"}
+    return { success: false, message: "Cannot square root negative number" }
   } else {
     return { success: true, value: Math.sqrt(input) }
   }
 }
 
 // Then the function consumers can check in the response and
-// figure out what to do with your return value. While this
-// is a trivial example, once you have started working with
-// networking code these APIs become worth the extra syntax.
+// 确定如何使用您的返回值。尽管这是一个简单的例子，但是一旦您开始使用
+// 网络代码，这些 API 就需要使用额外的语法。
 
 const checkSquareRoot = async (value: number) => {
   const response = await exampleSquareRootFunction(value)
@@ -87,7 +86,7 @@ const checkSquareRoot = async (value: number) => {
   }
 }
 
-// Async/Await took code which looked like this:
+// Async、Await 使代码看起来是如下形式：
 
 // getResponse(url, (response) => {
 //   getResponse(response.url, (secondResponse) => {
@@ -98,7 +97,7 @@ const checkSquareRoot = async (value: number) => {
 //   })
 // })
 
-// And let it become linear like:
+// 然后使其变为线性：
 
 // const response = await getResponse(url)
 // const secondResponse = await getResponse(response.url)
@@ -106,5 +105,4 @@ const checkSquareRoot = async (value: number) => {
 // const thirdResponse = await getResponse(responseData.url)
 // ...
 
-// Which can make the code sit closer to left edge, and
-// be read with a consistent rhythm.
+// 可以使代码左对齐，并且以一致的节奏阅读。
