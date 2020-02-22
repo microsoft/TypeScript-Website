@@ -22,6 +22,9 @@ export const DevNav = (props: DevNavProps) => {
         <a className={isActive("twoslash")} href={withPrefix("/dev/twoslash")}>Twoslash</a>
       </li>
       <li>
+        <a className={isActive("typescript vfs")} href={withPrefix("/dev/typescript-vfs")}>TypeScript VFS</a>
+      </li>
+      <li>
         <a className={isActive("playground plugins")} href={withPrefix("/dev/playground-plugins")}>Playground Plugins</a>
       </li>
     </ul>

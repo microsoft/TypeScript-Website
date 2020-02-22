@@ -23,7 +23,17 @@ const go = async () => {
 
   await getFileAndStoreLocally(
     'https://www.typescriptlang.org/v2/js/sandbox/tsWorker.d.ts',
-    join(vendor, 'tsWorker.d.ts'),
+    join(vendor, 'tsWorker.d.ts')
+  )
+
+  await getFileAndStoreLocally(
+    'https://www.typescriptlang.org/v2/js/sandbox/vendor/typescript-vfs.d.ts',
+    join(vendor, 'typescript-vfs.d.ts'),
+    text => {
+      const removeImports = text.replace('/// <reference types="lz-string" />', '')
+      const removedLZ = removeImports.replace('import("lz-string").LZStringStatic', 'any')
+      return removedLZ
+    }
   )
 
   await getFileAndStoreLocally(
@@ -31,9 +41,13 @@ const go = async () => {
     join(vendor, 'sandbox.d.ts'),
     text => {
       const removeImports = text.replace(/^import/g, '// import').replace(/\nimport/g, '// import')
-      const removedLZ = removeImports.replace('lzstring: typeof lzstring', '// lzstring: typeof lzstring')
-      const addedTsWorkerImport = 'import { TypeScriptWorker } from "./tsWorker";' + removedLZ;
-      return addedTsWorkerImport;
+      const replaceTSVFS = removeImports.replace(
+        "// import * as tsvfs from './vendor/typescript-vfs'",
+        "import * as tsvfs from './typescript-vfs'"
+      )
+      const removedLZ = replaceTSVFS.replace('lzstring: typeof lzstring', '// lzstring: typeof lzstring')
+      const addedTsWorkerImport = 'import { TypeScriptWorker } from "./tsWorker";' + removedLZ
+      return addedTsWorkerImport
     }
   )
 
@@ -42,7 +56,11 @@ const go = async () => {
     join(vendor, '/playground.d.ts'),
     text => {
       const replaceSandbox = text.replace(/typescript-sandbox/g, './sandbox')
-      const removedLZ = replaceSandbox.replace('lzstring: typeof', '// lzstring: typeof')
+      const replaceTSVFS = replaceSandbox.replace(
+        /typescriptlang-org\/static\/js\/sandbox\/vendor\/typescript-vfs/g,
+        './typescript-vfs'
+      )
+      const removedLZ = replaceTSVFS.replace('lzstring: typeof', '// lzstring: typeof')
       const removedWorker = removedLZ.replace('getWorkerProcess', '// getWorkerProcess')
       const removedUI = removedWorker.replace('ui:', '// ui:')
       return removedUI
