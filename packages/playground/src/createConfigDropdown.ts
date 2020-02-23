@@ -1,6 +1,4 @@
-import { Playground } from '.'
-
-type Sandbox = ReturnType<typeof import('typescript-sandbox').createTypeScriptSandbox>
+type Sandbox = import('typescript-sandbox').Sandbox
 type Monaco = typeof import('monaco-editor')
 
 type OptionsSummary = {
