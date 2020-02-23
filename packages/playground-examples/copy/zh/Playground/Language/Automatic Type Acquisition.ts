@@ -1,7 +1,7 @@
 // 自动类型获取是指 TypeScript 是如何在后台从 npm 的 @types 下获取类型定义
 // 从而为 JavaScript 用户提供更好的用户体验。
 
-// 现在在线演示有与 TypeScript 中内置的类型获取类似（但是有更多限制）的版本。
+// 现在游乐场有与 TypeScript 中内置的类型获取类似（但是有更多限制）的版本。
 
 // 您可以在代码中添加 import 来使用它，它通过 DefinitelyTyped 中的
 // @types 或依赖项本身内部的 d.ts 文件来工作。

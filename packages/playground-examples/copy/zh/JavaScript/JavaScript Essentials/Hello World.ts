@@ -1,9 +1,9 @@
 //// { order: 0, compiler: { target: 1 } }
 
-// 欢迎来到 TypeScript 在线演示，本网站很像在浏览器中运行
+// 欢迎来到 TypeScript 游乐场，本网站很像在浏览器中运行
 // 一个 TypeScript 项目。
 
-// 通过分享这些项目，可以轻松并安全的通过在线演示在 TypeScript 中
+// 通过分享这些项目，可以轻松并安全的通过游乐场在 TypeScript 中
 // 尝试想法。此页面的 URL 是其他人加载本项目所需的全部内容。
 
 const hello = "Hello"

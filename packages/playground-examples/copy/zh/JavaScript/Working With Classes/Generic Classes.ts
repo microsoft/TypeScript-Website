@@ -40,7 +40,7 @@ const mySock = sockDrawer.remove();
 const tshirtDrawer = new Drawer<TShirt>();
 tshirtDrawer.add({ size: "m" });
 
-// 如果您有点古怪，您甚至可以通过联合类型将 Sock 和 TShirt 混
+// 如果您有点古怪，您甚至可以通过并集类型将 Sock 和 TShirt 混
 // 合用来创建一个 Drawer：
 
 const mixedDrawer = new Drawer<Sock | TShirt>();
@@ -49,7 +49,7 @@ const mixedDrawer = new Drawer<Sock | TShirt>();
 // 使用 JSDoc 中的模板（template）标记。在此示例中，我们定义了模板
 // 变量，然后定义类的属性：
 
-// 要在在线演示上实验这项功能，您需要将设置更改为 JavaScript 文件，
+// 要在游乐场上实验这项功能，您需要将设置更改为 JavaScript 文件，
 // 然后删除上面的的 TypeScript 代码。
 
 /**

@@ -101,9 +101,9 @@ const flowerLatinName = (flower: Flower) => {
 
 // 你会收到一个编译期错误，表示 flower 的类型不可以被转换为 never。
 
-// 联合类型中的 Never
+// 并集类型中的 Never
 
-// never 会在联合类型中被自动移除。
+// never 会在并集类型中被自动移除。
 
 type NeverIsRemoved = string | never | number;
 

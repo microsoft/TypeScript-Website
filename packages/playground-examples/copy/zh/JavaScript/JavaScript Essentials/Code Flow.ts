@@ -22,7 +22,7 @@ if (jon) {
 }
 
 // 类型 ‘{ name: string } | undefined’ 使用了叫做
-// 联合类型的 TypeScript 的功能，联合类型是声明对象可能是
+// 并集类型的 TypeScript 的功能，并集类型是声明对象可能是
 // 几种东西之一的方式。
 //
 // 管道充当不同类型间的分隔符，JavaScript 的动态特性意味着许多

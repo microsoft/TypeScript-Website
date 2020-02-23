@@ -1,4 +1,4 @@
-// 通过可辨识联合类型，您可以使用代码流分析将一组潜在的对象缩减为
+// 通过可辨识并集类型，您可以使用代码流分析将一组潜在的对象缩减为
 // 某个特定的对象。
 //
 // 此模式对于具有不同 string 或 number 常量的相似对象集非常有效。
@@ -11,7 +11,7 @@ type TimingEvent = { name: "start"; userStarted: boolean }
 
 const handleEvent = (event: TimingEvent) => {
   // 通过 switch 语句针对事件名（event.name）进行检查，TypeScript 的
-  // 代码流分析可以确定对象只能由联合类型中的一种类型来表示。
+  // 代码流分析可以确定对象只能由并集类型中的一种类型来表示。
 
   switch (event.name) {
     case "start":
@@ -53,6 +53,6 @@ const handleResponse = (response: APIResponses) => {
 };
 
 // 您最好使用 switch 语句而不是使用 if 语句，因为您可以保证检查了
-// 联合类型的所有部分。使用手册中的 never 类型也是一个好的模式：
+// 并集类型的所有部分。使用手册中的 never 类型也是一个好的模式：
 
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#discriminated-unions

@@ -21,7 +21,7 @@ declare function allowsOnlyHello(arg: "Hello World");
 allowsOnlyHello(helloWorld);
 allowsOnlyHello(hiWorld);
 
-// 它可以让你使用联合类型，定义某个 API 仅接受一些特定的字面量值。
+// 它可以让你使用并集类型，定义某个 API 仅接受一些特定的字面量值。
 
 declare function allowsFirstFiveNumbers(arg: 1 | 2 | 3 | 4 | 5);
 allowsFirstFiveNumbers(1);

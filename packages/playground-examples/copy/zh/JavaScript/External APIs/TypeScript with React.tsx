@@ -52,7 +52,7 @@ interface FauxactClassComponent<Props extends {}, State = {}> {
 
 // 由于这个类可以拥有 Props 和 State ——它有两个可以在类中使用的泛型参数。
 
-// React 库附带了他们更加全面的类型定义，让我们将其带入我们的在线演示
+// React 库附带了他们更加全面的类型定义，让我们将其带入我们的游乐场
 // 并探索一些组件。
 
 import React from 'react';

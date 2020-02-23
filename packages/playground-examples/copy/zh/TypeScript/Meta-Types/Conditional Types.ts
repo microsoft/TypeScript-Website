@@ -27,12 +27,12 @@ type NeverCat = ExtractDogish<Cat>;
 // 狼（wolf）可以吠，因此它返回 wolf 。
 type Wolfish = ExtractDogish<Wolf>;
 
-// 这对您使用包含多种类型的联合类型，
-// 并希望减少联合类型中可能的类型成员时很有帮助：
+// 这对您使用包含多种类型的并集类型，
+// 并希望减少并集类型中可能的类型成员时很有帮助：
 
 type Animals = Cat | Dog | Cheetah | Wolf;
 
-// 当您将 ExtractDogish 应用到一个联合类型上时，可以视为对联合
+// 当您将 ExtractDogish 应用到一个并集类型上时，可以视为对联合
 // 类型中的每一个类型成员的应用：
 
 type Dogish = ExtractDogish<Animals>;
@@ -44,7 +44,7 @@ type Dogish = ExtractDogish<Animals>;
 //
 // = Dog | Wolf (查看 example:unknown-and-never)
 
-// 由于类型被分派到每一个联合类型的成员，因此被叫做条件类型分派。
+// 由于类型被分派到每一个并集类型的成员，因此被叫做条件类型分派。
 
 // 延迟条件类型
 

@@ -69,7 +69,7 @@ function addTwoNumbers(a, b) {
   return a + b;
 }
 
-// 你可以使用大多数 TypeScript 的类型工具，例如联合类型：
+// 你可以使用大多数 TypeScript 的类型工具，例如并集类型：
 
 /** @type {(string | boolean)} */
 let stringOrBoolean = "";

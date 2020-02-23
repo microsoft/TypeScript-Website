@@ -40,7 +40,7 @@ type PotentialString = string | undefined | null;
 
 // PotentialString 丢弃了 undefined 和 null。如果您
 // 在设置中开启严格空检查并返回这里，你可以看到悬停在 PotentialString 上时
-// 会显示完整的联合类型。
+// 会显示完整的并集类型。
 
 declare function getID(): PotentialString;
 

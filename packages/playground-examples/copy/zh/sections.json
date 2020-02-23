@@ -21,9 +21,9 @@
       "subtitle": "查看<a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/'>beta 测试版本更新说明</a>。"
     },
     {
-      "name": "在线演示 V3",
-      "id": "在线演示",
-      "subtitle": "了解在线演示有哪些变化。"
+      "name": "游乐场 V3",
+      "id": "游乐场",
+      "subtitle": "了解游乐场有哪些变化。"
     }
   ],
   "sortedSubSections": [

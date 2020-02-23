@@ -1,8 +1,8 @@
 //// { order: 3, isJavaScript: true }
 
-// 在线演示现在同样可以处理 JavaScript 文件。
+// 游乐场现在同样可以处理 JavaScript 文件。
 
-// 很像知道我们为什么会在在线演示上增加对 JavaScript 的支持。
+// 很像知道我们为什么会在游乐场上增加对 JavaScript 的支持。
 // 但是大多数 TypeScript 的用户可能正在使用 JavaScript。
 
 // TypeScript 可以在 JavaScript 文件中使用类型推断，类型自动获取
@@ -12,7 +12,7 @@
 //  example:automatic-type-acquisition
 //  example:jsdoc-support
 
-// 在线演示支持 JavaScript 意味着您可以通过复杂的 JSDoc 示例来
+// 游乐场支持 JavaScript 意味着您可以通过复杂的 JSDoc 示例来
 // 学习或引导其他人。或者在期望不匹配时调试问题。
 
 // 例如。为什么这个 JSDoc 标注的类型不正确？

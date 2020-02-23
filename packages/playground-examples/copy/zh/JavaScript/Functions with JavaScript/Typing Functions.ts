@@ -71,10 +71,10 @@ printFormattedName({ name: "joey", age: 23 })
 // 是否关掉了这个选项。
 
 // JavaScript 中的函数可以接受不同的参数。有两种常见的模式来描述：用于
-// 参数、返回值的联合类型和函数重载。
+// 参数、返回值的并集类型和函数重载。
 
 // 只有在仅有一两处不同且不需要在不同函数中展示不同的文档时，才适合在
-// 参数中使用联合类型。
+// 参数中使用并集类型。
 
 const boolOrNumberFunction = (input: boolean | number) => { }
 

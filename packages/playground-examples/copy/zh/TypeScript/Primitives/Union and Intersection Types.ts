@@ -8,19 +8,19 @@ type AMessyUnion = "hello" | 156 | { error: true };
 // 如果你不了解 "open", "closed" 和字符串的用法，可以
 // 查看 example:literals
 
-// 我们可以将多个不同的类型混合到一个联合类型中，
+// 我们可以将多个不同的类型混合到一个并集类型中，
 // 我们把他称为 “这个值的类型是这些类型之一”。
 
 // 然后 TypeScript 将会让您确认在运行时如何确定它是哪个类型的值。
 
-// 联合类型有时可能被类型扩展而破坏，例如：
+// 并集类型有时可能被类型扩展而破坏，例如：
 
 type WindowStates = "open" | "closed" | "minimized" | string;
 
 // 如果你将鼠标悬停在上方，你可以看到 WindowStates 变为了
-// 一个字符串而不是一个联合类型。可以在这里查看：example:type-widening-narrowing
+// 一个字符串而不是一个并集类型。可以在这里查看：example:type-widening-narrowing
 
-// 如果说联合类型代表 “或”，那么交集类型代表 “且”。
+// 如果说并集类型代表 “或”，那么交集类型代表 “且”。
 // 交集类型代表两个类型相交以创建一个新类型，这将会允许类型的组合。
 
 interface ErrorHandling {
@@ -53,7 +53,7 @@ const handleArtistsResponse = (response: ArtistsResponse) => {
   console.log(response.artists);
 };
 
-// 当对象必须含有下面的一个或两个值时，交集和联合类型的混合将会非常有用。
+// 当对象必须含有下面的一个或两个值时，交集和并集类型的混合将会非常有用。
 
 interface CreateArtistBioBase {
   artistID: string
