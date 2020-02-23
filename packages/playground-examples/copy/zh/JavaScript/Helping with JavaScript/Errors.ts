@@ -23,7 +23,7 @@ myStringOrObject = {};
 
 // 您可以在这里了解更多：example:jsdoc-support
 
-// 您可以声明下一个错误是不重要的，以让 TypeScript 忽略下一个错误：
+// 您可以声明下一个错误是不重要的，以让 TypeScript 忽略下一行的错误：
 
 let myIgnoredError = "123";
 // @ts-ignore

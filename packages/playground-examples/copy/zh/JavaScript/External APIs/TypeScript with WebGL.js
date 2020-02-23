@@ -17,8 +17,8 @@ canvas.style.right = '20px'
 canvas.style.width = '500px'
 canvas.style.height = '400px'
 
-// 下一步，为了更方便地看到修改后的运行效果，我们先在点击 "RUN" 按钮之后
-// 把已存在的 canvas 移除掉 - 现在，你可以修改代码并点击 "RUN" 来看看效
+// 下一步，为了更方便地看到修改后的运行效果，我们先在点击 “运行” 按钮之后
+// 把已存在的 canvas 移除掉——现在，你可以修改代码并点击 “运行” 来看看效
 // 果了（或者按 Command + Enter）：
 
 const existingCanvas = document.getElementById(canvas.id)
@@ -45,14 +45,14 @@ gl.shaderSource(
   `
 precision lowp float;
 
-attribute vec2 a_position; // Flat square on XY plane
+attribute vec2 a_position; // XY 平面上的正方形
 attribute float a_startAngle;
 attribute float a_angularVelocity;
 attribute float a_rotationAxisAngle;
 attribute float a_particleDistance;
 attribute float a_particleAngle;
 attribute float a_particleY;
-uniform float u_time; // Global state
+uniform float u_time; // 全局状态
 
 varying vec2 v_position;
 varying vec3 v_color;
@@ -109,7 +109,7 @@ void main() {
 )
 gl.compileShader(vertexShader)
 
-// 下面的例子用了片段着色器 - 片段着色器是另外一种小的代码片段，它用于
+// 下面的例子用了片段着色器——片段着色器是另外一种小的代码片段，它用于
 // 计算 canvas 画布中每个像素的颜色。
 
 // 在这个例子里面，你可以通过尝试手动修改一下里面的一些数字的值，这样你就大概知道它们
@@ -166,7 +166,7 @@ const STRIDE = Object.keys(attrs).length + 1
 // 通过遍历我们上面定义的已知的属性，并在 JS 代码中为他们在内存中创建指针，通过这些指针我们可以把
 // 值填充到着色器中。
 
-// 为了更好理解这些 API，略作注解：WebGL 是一套基于 OpenGL 的状态机方式的 API.
+// 为了更好理解这些 API，略作注解：WebGL 是一套基于 OpenGL 的状态机方式的 API。
 // 你以特定的顺序输入命令，将内容呈现在屏幕上。
 
 // 因此，我们常见的做法并不是把渲染的数据和对象传递给每一次 WebGL 的 API 调用，而是
@@ -191,7 +191,7 @@ gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer())
 const NUM_PARTICLES = 200
 const NUM_VERTICES = 4
 
-// 你可以试着减少这个值，并反复点击 "Run" 按钮
+// 你可以试着减少这个值，并反复点击 运行” 按钮
 // 该值表示每个彩纸上应该有多少个点，如果你把它赋值为一个奇数，它看起来
 // 就会不太正常。
 

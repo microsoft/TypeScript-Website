@@ -33,7 +33,6 @@ type StickerFromAPI = Readonly<Sticker>
 type NavigationPages = 'home' | 'stickers' | 'about' | 'contact'
 
 // 每个数据（上面的key ^）都需要的数据的形状。
-// The shape of the data for which each of ^ is needed:
 interface PageInfo {
   title: string
   url: string

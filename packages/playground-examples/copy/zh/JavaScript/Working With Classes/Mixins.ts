@@ -10,8 +10,8 @@ type Constructor = new (...args: any[]) => {}
 // 然后我们可以创建一系列的类，这些类通过包装最终的类来进行扩展。
 // 此模式当相似的对象具有不同的功能时效果很好。
 
-// 这个混合添加了 scale 属性，并带有用于使用封装的 private 属性对
-// 其进行更改的 getter 和 setter：
+// 这个混合添加了 scale 属性，并带有用于使用封装的 private 属性
+// 以及对其进行更改的 getter 和 setter：
 
 function Scale<TBase extends Constructor>(Base: TBase) {
   return class extends Base {

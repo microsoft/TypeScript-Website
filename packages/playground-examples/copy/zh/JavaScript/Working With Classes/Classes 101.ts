@@ -43,7 +43,7 @@ class FoodTruck extends Vendor {
 
 const nameOnlyTruck = new FoodTruck("Salome's Adobo");
 
-// 如果您正确的传递两个参数，将可以创建一个 FoodTruck 的新实例：
+// 如果您正确地传递两个参数，将可以创建一个 FoodTruck 的新实例：
 
 const truck = new FoodTruck("Dave's Doritos", "junk");
 console.log(truck.greet());

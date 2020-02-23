@@ -17,8 +17,8 @@ class Safe {
 const safe = new Safe("Crown Jewels");
 safe.printContents();
 
-// 如果您有其他易于理解 this、self 的面向对象语言的经验，那么您
-// 可能会发现 ‘this’ 令人困惑的地方：
+// 如果您有其他拥有易于理解的 this 或 self 的面向对象语言的
+// 经验，那么您可能会发现 ‘this’ 令人困惑的地方：
 //
 // https://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/
 // https://aka.ms/AA5ugm2

@@ -3,7 +3,7 @@
 // 在 JavaScript 中，链式函数是很常见的 API 模式。由于他们
 // 具有嵌套特性，所以可以让您的代码减少中间值，并且增加可读性。
 
-// jQuery 是一个非常常见的可以通过链式使用的 API，这是
+// jQuery 拥有一个常见的、可以链式使用的 API，这是
 // jQuery 与 DefinitelyTyped 中的类型一起使用的示例：
 
 import $ from "jquery";
@@ -19,7 +19,7 @@ $("#navigation")
 // 这种模式很容易在 JavaScript 中复现。关键是要确保
 // 返回相同的对象。
 
-// 这是创建 链式 API 的一个示例。关键是要有一个跟踪内部状态的
+// 这是创建链式 API 的一个示例。关键是要有一个跟踪内部状态的
 // 外部函数，以及一个最终返回的暴露 API 的对象。
 
 const addTwoNumbers = (start = 1) => {
@@ -48,7 +48,7 @@ addTwoNumbers(1)
   .print()
   .add(1);
 
-// 这是一个类似的使用类的示例：
+// 这是一个使用类时的链式调用示例：
 
 class AddNumbers {
   private n: number;
@@ -68,7 +68,7 @@ class AddNumbers {
   }
 }
 
-// 它在正常工作：
+// 下面的代码可以按预期工作：
 
 new AddNumbers(2)
   .add(3)
@@ -76,7 +76,7 @@ new AddNumbers(2)
   .print()
   .add(1);
 
-// 例子是使用 TypeScript 的类型推导来为 JavaScript 的模式
+// 本例是使用 TypeScript 的类型推导来为 JavaScript 的模式
 // 提供帮助的一种方法。
 
 // 更多的例子可以查看：

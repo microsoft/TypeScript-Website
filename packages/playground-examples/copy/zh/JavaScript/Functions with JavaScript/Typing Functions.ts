@@ -20,7 +20,7 @@ const callbackWithIndex = (callback: (i: number) => void) => {
   callback(i)
 }
 
-// 嵌入函数接口可能很难阅读（可能有很多箭头）。使用类型别让您可以
+// 嵌入函数接口可能很难阅读（可能有很多箭头）。使用类型别名可以
 // 为函数参数命名
 
 type NumberCallback = (i: number) => void
@@ -40,11 +40,11 @@ callbackWithIndex((index) => { console.log(index) })
 
 const numberToString = (n: number) => { return n.toString() }
 
-// 它可以适用于数组的 map 之类的方法中，从而将所有数字转换为字符串。
+// 它可以适用于数组的 map 之类的方法中，比如将所有数字转换为字符串。
 // 如果您将鼠标悬停在下面的 stringedNumbers 上，则可以看到期望的类型。
 const stringedNumbers = [1, 4, 6, 10].map((i) => numberToString(i))
 
-// 我们可以使用快捷形式直接传递函数，并通过更集中的代码获得相同的结果：
+// 我们可以使用快捷形式直接传递函数，并通过更简洁的代码获得相同的结果：
 const stringedNumbersTerse = [1, 4, 6, 10].map(numberToString)
 
 // 您的函数可能可以接受许多类型，但是您可能只对其中一部分属性感兴趣。
@@ -61,7 +61,7 @@ const printFormattedName = (input: AnyObjectButMustHaveName) => { }
 printFormattedName({ name: "joey" })
 printFormattedName({ name: "joey", age: 23 })
 
-// 如果您希望了解更多关于索引签名的内容，我们建议访问：
+// 如果您希望了解更多关于索引签名的内容，我们建议访问以下链接：
 //
 // https://www.typescriptlang.org/docs/handbook/interfaces.html#excess-property-checks
 // https://basarat.gitbooks.io/typescript/docs/types/index-signatures.html
@@ -71,7 +71,7 @@ printFormattedName({ name: "joey", age: 23 })
 // 是否关掉了这个选项。
 
 // JavaScript 中的函数可以接受不同的参数。有两种常见的模式来描述：用于
-// 参数、返回值的并集类型和函数重载。
+// 参数和返回值的并集类型以及函数重载。
 
 // 只有在仅有一两处不同且不需要在不同函数中展示不同的文档时，才适合在
 // 参数中使用并集类型。
@@ -93,7 +93,7 @@ interface BoolOrNumberOrStringFunction {
 }
 
 // 如果这是您第一次看到 declare 关键字，它使您可以告诉 TypeScript
-// 文件中某些即使在运行时不存在的东西存在。对于映射有副作用的代码或
+// 文件中某些即使在运行时不存在的东西存在，对于映射有副作用的代码或
 // 实现某些东西需要很多代码的 demo 来说都非常有用。
 
 declare const boolOrNumberOrStringFunction: BoolOrNumberOrStringFunction

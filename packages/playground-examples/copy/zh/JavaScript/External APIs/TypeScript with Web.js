@@ -1,6 +1,6 @@
 //// { order: 0, isJavaScript: true }
 
-// DOM (Document Object Model, 文档对象模型) 是一种网页底层的标准
+// DOM (Document Object Model，文档对象模型) 是一种网页底层的标准
 // 接口规范，而 TypeScript 对这套接口有着相当不错的支持。
 
 // 在点击运行按钮之前，我们先来创建一个弹出窗口。
@@ -64,7 +64,7 @@ document.body.appendChild(popover);
 // 如果你点击上面的运行按钮，就会看到右下角出现一个弹出窗口
 // 同时你可以点击这个弹出窗口右上角的 X 来关闭这个窗口
 
-// 通过该例子你可以得知在 JavaScript 下如何使用 DOM API - 但是，
+// 通过该例子你可以得知在 JavaScript 下如何使用 DOM API——但是，
 // TypeScript 为此也提供了更强大的支持。
 
 // 这里同时提供一个使用 TypeScript 的 WebGL 应用的扩展例子：

@@ -45,7 +45,7 @@ export const docCopy = {
   doc_react_razzle_blurb:
     "无需配置，为应用添加通用的服务端渲染",
   doc_react_toolchains_title: "建议的工具链",
-  doc_react_toolchains_blurb: "来自React 团队的建议",
+  doc_react_toolchains_blurb: "来自 React 团队的建议",
   doc_apps: "构建应用",
   doc_apps_electron_blurb: "一个命令构建一个现代 web 应用",
   doc_apps_expo_blurb: "最快的构建应用的方案",

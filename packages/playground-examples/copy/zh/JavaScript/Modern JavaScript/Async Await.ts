@@ -86,7 +86,7 @@ const checkSquareRoot = async (value: number) => {
   }
 }
 
-// Async、Await 使代码看起来是如下形式：
+// Async、Await 使如下代码：
 
 // getResponse(url, (response) => {
 //   getResponse(response.url, (secondResponse) => {
@@ -97,7 +97,7 @@ const checkSquareRoot = async (value: number) => {
 //   })
 // })
 
-// 然后使其变为线性：
+// 变为线性：
 
 // const response = await getResponse(url)
 // const secondResponse = await getResponse(response.url)

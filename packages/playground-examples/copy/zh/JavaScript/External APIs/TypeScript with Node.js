@@ -6,12 +6,12 @@
 
 // https://nodejs.org/
 
-// Node.js 带有一组扩展 JavaScript 运行时的核心库，他们包括从路径处理：
+// Node.js 带有一组扩展 JavaScript 运行时的核心库，他们包括路径处理：
 
 import { join } from "path";
 const myPath = join("~", "downloads", "todo_list.json");
 
-// 到操作文件：
+// 操作文件：
 
 import { readFileSync } from "fs";
 const todoListText = readFileSync(myPath, "utf8");
@@ -32,7 +32,7 @@ const todoListText = readFileSync(myPath, "utf8");
 /** @type {TODO[]} TODO 的列表 */
 const todoList = JSON.parse(todoListText);
 
-// 以及处理流程：
+// 以及其它实用库：
 import { spawnSync } from "child_process";
 todoList
   .filter(todo => !todo.done)

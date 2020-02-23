@@ -51,7 +51,7 @@ function listenForEvent(eventType: "keyboard" | "mouse",
 listenForEvent("keyboard", (event: KeyboardInputEvent) => { });
 listenForEvent("mouse", (event: MouseInputEvent) => { });
 
-// 而这个可以一直回溯到最小的公共类型:
+// 而这个可以一直回溯到最小的公共类型：
 
 listenForEvent("mouse", (event: {}) => { });
 
@@ -94,7 +94,7 @@ function runFunction(func: () => void) {
 
 runFunction(getPI);
 
-// 要了解更多关于类型系统健全性取舍的内容，可以查看:
+// 要了解更多关于类型系统健全性取舍的内容，可以查看：
 
 // https://github.com/Microsoft/TypeScript/wiki/FAQ#type-system-behavior
 // https://github.com/Microsoft/TypeScript/issues/9825

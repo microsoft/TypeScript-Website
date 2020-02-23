@@ -18,7 +18,7 @@
 
 // 由：https://github.com/orta/make-monaco-builds
 
-// 新的游乐场如何支持不同版本的 TypeScript 的基础架构来自该站点
-// 的项目：
+// 让新的游乐场如何支持不同版本的 TypeScript 的基础架构来自
+// 该站点的项目：
 
 // https://github.com/agentcooper/typescript-play

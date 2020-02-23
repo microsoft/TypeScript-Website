@@ -87,8 +87,9 @@ const ShowStoredUser: React.FC<Props> = (props) => {
   return <PrintName name={username} priority />
 }
 
-// TypeScript 可以用于现代 React 代码一起使用，您可以看到 count
-// 和 setCount 已经根据传递给 useState 的初始值正确的推断为 number。
+// TypeScript 可以用于现代 React 代码一起使用，您可以看
+// 到 count 本身和 setCount 的参数，已经正确地根据传递
+// 给 useState 的初始值被推断为 number。
 
 import { useState, useEffect } from 'react';
 
@@ -110,8 +111,8 @@ const CounterExample = () => {
 }
 
 // React 和 TypeScript 是一个非常非常大的主题，但基本原理非
-// 常小：TypeScript 支持 JSX，其余的由 DefinitelyTyped 中的
-// React 类型定义处理。
+// 常简单：TypeScript 支持 JSX，其余的由 DefinitelyTyped
+// 中的 React 类型定义处理。
 
 // 在如下网站您可以了解更多关于共同使用 React 和 TypeScript 的信息：
 //

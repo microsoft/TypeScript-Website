@@ -1,7 +1,7 @@
 //// { order: 3, compiler: { strictNullChecks: false } }
 
 // JavaScript 有两种不同的方法声明不存在的值，TypeScript 添加了额外的
-// 语法，以提供更多方法来声明某些内容声明为可选或可空，
+// 语法，以提供更多方法来声明某些内容声明为可选或可空。
 
 // 首先，两种 JavaScript 基本类型中的不同：undefined 和 null
 
@@ -18,7 +18,7 @@ const searchResults = {
   audio: { name: "LEGO Movie Soundtrack" }
 };
 
-// 为什么不使用 undefined ？主要原因是让您可以正确的校验 text 是否被包含。
+// 为什么不使用 undefined？主要原因是让您可以正确的校验 text 是否被包含。
 // 而如果 text 返回的是 undefined，那么这个值和没有被设置时相同。
 
 // 这可能感觉没有什么用处，但是当转换为一个 JSON 字符串时，如果 text 是 undefined，
@@ -34,7 +34,7 @@ const searchResults = {
 // （更多信息可以查看 example:code-flow）
 
 // 一个让 TypeScript 将严格空检查打开的示例，将鼠标悬停
-// 在下面的 “Potential String” 上。
+// 在下面的“Potential String”上。
 
 type PotentialString = string | undefined | null;
 

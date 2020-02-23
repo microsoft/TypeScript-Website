@@ -21,7 +21,7 @@ export const playCopy = {
   play_sidebar_options_disable_ata_copy: "禁用 require 或 import 的自动类型获取。",
   play_sidebar_options_disable_save: "禁用即时保存",
   play_sidebar_options_disable_save_copy:
-    "禁用输入时改变 URL。",
+    "禁用输入时改变 URL",
   play_sidebar_options_external: "外部插件",
   play_sidebar_options_external_warning:
     "警告: 外部插件来自第三方",

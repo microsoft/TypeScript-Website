@@ -20,8 +20,8 @@ const world = "World"
 console.log(hello + " " + world)
 
 // 现在您已经了解了 TypeScript 的工作原理，让我们了解一下 TypeScript
-// 如何使使用 JavaScript 更有趣。在本节中，我们将尽可能接近原生 JavaScript，
-// 已显示如何复用现有知识。
+// 如何让使用 JavaScript 更有趣。在本节中，我们将尽可能接近原生 JavaScript，
+// 以展示如何复用现有知识。
 //
 // 点击下方继续：
 //

@@ -50,7 +50,7 @@ type Dogish = ExtractDogish<Animals>;
 
 // 条件类型可以用于改进您的 API，这些 API 可以根据不同的输入返回不同的类型。
 
-// 例如这个函数的返回值是 string 还是 number 取决于 传入的 boolean。
+// 例如这个函数的返回值是 string 还是 number 取决于传入的 boolean。
 
 declare function getID<T extends boolean>(fancy: T):
   T extends true ? string : number;

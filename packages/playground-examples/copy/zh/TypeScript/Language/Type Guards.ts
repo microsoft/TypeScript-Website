@@ -50,7 +50,7 @@ if (typeof possibleOrder === "undefined") {
 // 类型谓词函数是一个当返回 true 时，会给代码流分析提供一些额外信息的函数。
 
 // 要使用 PossibleOrders 类型，我们可以用两个类型守卫
-// 来声明 possibleOrder 究竟是哪个类型:
+// 来声明 possibleOrder 究竟是哪个类型：
 
 function isAnInternetOrder(order: PossibleOrders): order is InternetOrder {
   return order && "email" in order
@@ -60,7 +60,7 @@ function isATelephoneOrder(order: PossibleOrders): order is TelephoneOrder {
   return order && "calledNumber" in order
 }
 
-// 现在我们可以使用这些函数在 if 语句中缩小 possibleOrder 的可能的类型:
+// 现在我们可以使用这些函数在 if 语句中缩小 possibleOrder 的可能的类型：
 
 if (isAnInternetOrder(possibleOrder)) {
   console.log("Order received via email:", possibleOrder.email)

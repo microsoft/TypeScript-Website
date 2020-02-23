@@ -3,7 +3,7 @@
 const welcomeString = "Hello There";
 let replyString = "Hey";
 
-// 除了字符文本的差异外，welcomeString 是由 const 定义的 (代表值不会变)，
+// 除了字符文本的差异外，welcomeString 是由 const 定义的（代表值不会变），
 // replyString 是由 let 定义的（代表值可以被改变）。
 
 // 如果你将鼠标悬停在每个变量上，你会看到 TypeScript 提供的非常不同的类型信息。

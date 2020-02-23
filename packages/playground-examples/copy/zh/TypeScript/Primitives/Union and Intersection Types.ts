@@ -5,7 +5,7 @@ type ProcessStates = "open" | "closed";
 type OddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
 type AMessyUnion = "hello" | 156 | { error: true };
 
-// 如果你不了解 "open", "closed" 和字符串的用法，可以
+// 如果你不了解 "open"、"closed" 等字符串的用法，可以
 // 查看 example:literals
 
 // 我们可以将多个不同的类型混合到一个并集类型中，

@@ -1,5 +1,5 @@
 export const indexCopy = {
-  index_headline: "TypeScript 是 <bold>适用于任何规模的 JavaScript。</bold>",
+  index_headline: "TypeScript 是<bold>适用于任何规模的 JavaScript。</bold>",
   index_byline:
     "TypeScript 扩展了 JavaScript ，为它添加了类型支持。",
   index_summary:
@@ -11,7 +11,7 @@ export const indexCopy = {
 
   index_what_is_js: "JavaScript，以及更多。",
   index_what_is_js_copy: `
-<p>TypeScript 是一个开源的编程语言，通过在 JavaScript（世界上最常用的工具之一） 的基础上添加静态类型定义构建而成。</p>
+<p>TypeScript 是一个开源的编程语言，通过在 JavaScript（世界上最常用的语言之一） 的基础上添加静态类型定义构建而成。</p>
 
 <p>类型提供了一种描述对象形状的方法。可以帮助提供更好的文档，还可以让 TypeScript 验证你的代码可以正常工作。</p>
 

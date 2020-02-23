@@ -11,14 +11,14 @@
 
 const myVariable = "Hi";
 
-// 如果您将书本悬停到 myVariable，你可以看到这段在 JSDoc 注释
-// 中的文字及已经非附加了。
+// 如果您将鼠标悬停到 myVariable，你可以看到它已经
+// 被附加了这段在 JSDoc 注释中的文字。
 
 // JSDoc 注释是一种为 TypeScript 和 您的编辑器提供类型信息的方式。
 // 让我们简单的从将变量的类型设置为内置类型开始。
 
 // 对于所有这些示例，您可以将鼠标悬停在名称上，然后再下一行尝试
-// 输入【示例】以查看自动完成选项。
+// 输入【example】以查看自动完成选项。
 
 /** @type {number} */
 var myNumber;
@@ -29,7 +29,7 @@ var myNumber;
 
 // 但是，我们将在这里尝试一些更常见的示例，您也可以将手册中的任何示例粘贴到此处。
 
-// 由 JavaScript 配置文件中导入类型：
+// 从 JavaScript 配置文件中导入类型：
 
 /** @type { import("webpack").Config } */
 const config = {};
@@ -38,7 +38,7 @@ const config = {};
 
 /**
  * @typedef {Object} User - 用户账户
- * @property {string} displayName - 用来展示用户的名字
+ * @property {string} displayName - 用户用来展示的名字
  * @property {number} id - 唯一 ID
  */
 
@@ -47,7 +47,7 @@ const config = {};
 /** @type { User } */
 const user = {};
 
-// type 和 typedef 有兼容 TypeScript 的内联类型快捷：
+// type 和 typedef 有兼容 TypeScript 的内联类型快捷用法：
 
 /** @type {{ owner: User, name: string }} */
 const resource;
@@ -60,7 +60,7 @@ const otherResource;
 // 声明一个有类型的函数：
 
 /**
- * 将两个数值相加
+ * 将两个数字相加
  * @param {number} a 第一个数字
  * @param {number} b 第二个数字
  * @returns {number}

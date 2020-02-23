@@ -15,8 +15,8 @@ const myAccount = jsonParser(`{ "name": "Dorothea" }`);
 myAccount.name;
 myAccount.email;
 
-// 如果你将鼠标悬停在 jsonParser 上，你可以看到它的返回值类型是 any,
-// myAccount 也是如此，虽然可以使用泛型来解决这个问题，但是我们也可以使用 unknown.
+// 如果你将鼠标悬停在 jsonParser 上，你可以看到它的返回值类型是 any，
+// myAccount 也是如此，虽然可以使用泛型来解决这个问题，但是我们也可以使用 unknown。
 
 const jsonParserUnknown = (jsonString: string): unknown => JSON.parse(jsonString);
 
@@ -45,8 +45,8 @@ const neverReturns = () => {
   throw new Error("Always throws, never returns");
 };
 
-// 如果你将鼠标悬停在 neverReturns 上, 你可以看到它的类型是 () => never,
-// 这代表着它永远不会执行。这依然可以像其他值一样传递:
+// 如果你将鼠标悬停在 neverReturns 上，你可以看到它的类型是 () => never，
+// 这代表着它永远不会执行。这依然可以像其他值一样传递：
 
 const myValue = neverReturns();
 

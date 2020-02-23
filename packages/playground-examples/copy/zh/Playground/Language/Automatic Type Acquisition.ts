@@ -1,4 +1,4 @@
-// 自动类型获取是指 TypeScript 是如何在后台从 npm 的 @types 下获取类型定义
+// 自动类型获取是指 TypeScript 自动在后台从 npm 的 @types 下获取类型定义
 // 从而为 JavaScript 用户提供更好的用户体验。
 
 // 现在游乐场有与 TypeScript 中内置的类型获取类似（但是有更多限制）的版本。
