@@ -47,6 +47,8 @@ export interface PlaygroundPlugin {
   willUnmount?: (sandbox: Sandbox, container: HTMLDivElement) => void
   /** After we remove the tab */
   didUnmount?: (sandbox: Sandbox, container: HTMLDivElement) => void
+  /** An object you can use to keep data around in the scope of your plugin object */
+  data?: any
 }
 
 interface PlaygroundConfig {

@@ -43,6 +43,9 @@ jobs:
         env:
           CI: true
 
+      - name: 'Validates that TypeScript plugins work'
+        run: npm init typescript-playground-plugin playground-my-plugin
+
   lighthouse_danger:
     runs-on: ubuntu-latest
     needs: test
