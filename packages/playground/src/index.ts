@@ -361,6 +361,10 @@ export const setupPlayground = (
       readyPlugin = plugin
     }
 
+    if (autoActivate) {
+      console.log(readyPlugin)
+    }
+
     playground.registerPlugin(readyPlugin)
 
     // Auto-select the dev plugin
@@ -368,7 +372,6 @@ export const setupPlayground = (
 
     if (pluginWantsFront || autoActivate) {
       // Auto-select the dev plugin
-      console.log(readyPlugin)
       activatePlugin(readyPlugin, currentPlugin(), sandbox, tabBar, container)
     }
   }
@@ -385,6 +388,7 @@ export const setupPlayground = (
         try {
           activateExternalPlugin(devPlugin, true)
         } catch (error) {
+          console.error(error)
           setTimeout(() => {
             ui.flashInfo('Error: Could not load dev plugin from localhost:5000')
           }, 700)
