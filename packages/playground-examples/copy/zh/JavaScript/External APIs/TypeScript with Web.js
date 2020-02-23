@@ -41,7 +41,7 @@ popover.style.webkitBorderRadius = "4px";
 
 // 要在弹出窗口中显示内容，我们需要添加一个 p 标签并给它添加一些文本
 const message = document.createElement("p");
-  message.textContent = "Here is an example popover";
+message.textContent = "Here is an example popover";
 
 // 接着我们还需要增加一个关闭按钮
 
