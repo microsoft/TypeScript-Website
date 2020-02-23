@@ -1,64 +1,55 @@
-// TypeScript's inference can get you very far, but there
-// are lots of extra ways to provide a richer way to document
-// the shape of your functions.
+// TypeScript 的类型推断可以帮助您做很多事，但是还有很多其他方法可以
+// 提供更丰富的标记函数形状的方法。
 
-// A good first place is to look at optional params, which
-// is a way of letting others know you can skip params.
+// 可选函数是看起来很棒的一点，它可以让其他人知道你可以跳过这个参数。
 
 let i = 0
 const incrementIndex = (value?: number) => {
   i += (value === undefined ? 1 : value)
 }
 
-// This function can be called like:
+// 这个函数可以像这样调用：
 
 incrementIndex()
 incrementIndex(0)
 incrementIndex(3)
 
-// You can type parameters as functions, which provides
-// type inference when you write the functions.
+// 你可以将参数标记为函数，从而在编写函数时提供类型推导。
 
 const callbackWithIndex = (callback: (i: number) => void) => {
   callback(i)
 }
 
-// Embedding function interfaces can get a bit hard to read
-// with all the arrows. Using a type alias will let you name
-// the function param.
+// 嵌入函数接口可能很难阅读（可能有很多箭头）。使用类型别让您可以
+// 为函数参数命名
 
 type NumberCallback = (i: number) => void
 const callbackWithIndex2 = (callback: NumberCallback) => {
   callback(i)
 }
 
-// These can be called like:
+// 他们可以像这样调用：
 
 callbackWithIndex((index) => { console.log(index) })
 
-// By hovering on index above, you can see how TypeScript
-// has inferred the index to be a number correctly.
+// 将鼠标悬停在上面的 index 上，您可以看到 TypeScript 可以正确
+// 推断出 index 是一个 number 类型。
 
-// TypeScript inference can work when passing a function
-// as an instance reference too. To show this, we'll use
-// a function which changed a number into string:
+// 将函数作为实例的引用传递时，TypeScript 类型推导也可以正常工作。
+// 为了展示这一点，我们会使用一个将 number 转换为 string 的函数：
 
 const numberToString = (n: number) => { return n.toString() }
 
-// This can be used in a function like map on an array
-// to convert all numbers into a string, if you hover
-// on stringedNumbers below you can see the expected types.
-const stringedNumbers = [1,4,6,10].map((i) => numberToString(i))
+// 它可以适用于数组的 map 之类的方法中，从而将所有数字转换为字符串。
+// 如果您将鼠标悬停在下面的 stringedNumbers 上，则可以看到期望的类型。
+const stringedNumbers = [1, 4, 6, 10].map((i) => numberToString(i))
 
-// We can use shorthand to have the function passed directly
-// and get the same results with more focused code:
-const stringedNumbersTerse = [1,4,6,10].map(numberToString)
+// 我们可以使用快捷形式直接传递函数，并通过更集中的代码获得相同的结果：
+const stringedNumbersTerse = [1, 4, 6, 10].map(numberToString)
 
-// You may have functions which could accept a lot of types
-// but you are only interested in a few properties. This is
-// a useful case for indexed signatures in types. The
-// following type declares that this function is OK to use
-// any object so long as it includes the property name:
+// 您的函数可能可以接受许多类型，但是您可能只对其中一部分属性感兴趣。
+// 而类型签名中的索引签名（indexed signature）对这种情况很有用。
+// 以下类型声明此函数可以用于所有对象，只要它包含属性 name 即可：
 
 interface AnyObjectButMustHaveName {
   name: string
@@ -67,50 +58,43 @@ interface AnyObjectButMustHaveName {
 
 const printFormattedName = (input: AnyObjectButMustHaveName) => { }
 
-printFormattedName({name: "joey"})
-printFormattedName({name: "joey", age: 23})
+printFormattedName({ name: "joey" })
+printFormattedName({ name: "joey", age: 23 })
 
-// If you'd like to learn more about index-signatures
-// we recommend:
+// 如果您希望了解更多关于索引签名的内容，我们建议访问：
 //
 // https://www.typescriptlang.org/docs/handbook/interfaces.html#excess-property-checks
 // https://basarat.gitbooks.io/typescript/docs/types/index-signatures.html
 
-// You can also allow this kind of behavior everywhere
-// via the tsconfig flag suppressExcessPropertyErrors -
-// however, you can't know if others using your API have
-// this set to off.
+// 您还可以通过 tsconfig 配置中 suppressExcessPropertyErrors 
+// 的选项来在任何地方允许这种行为——但是您不知道其他使用您 API 的用户
+// 是否关掉了这个选项。
 
-// Functions in JavaScript can accept different sets of params.
-// There are two common patterns for describing these: union
-// types for parameters/return, and function overloads.
+// JavaScript 中的函数可以接受不同的参数。有两种常见的模式来描述：用于
+// 参数、返回值的联合类型和函数重载。
 
-// Using union types in your parameters makes sense if there
-// is only one or two changes and documentation does not need
-// to change between functions.
+// 只有在仅有一两处不同且不需要在不同函数中展示不同的文档时，才适合在
+// 参数中使用联合类型。
 
-const boolOrNumberFunction = (input: boolean | number) => {}
+const boolOrNumberFunction = (input: boolean | number) => { }
 
 boolOrNumberFunction(true)
 boolOrNumberFunction(23)
 
-// Function overloads on the other hand offer a much richer
-// syntax for the parameters and return types.
+// 另一方面，函数重载为参数和返回类型提供了丰富的语法。
 
 interface BoolOrNumberOrStringFunction {
-  /** Takes a bool, returns a bool */
+  /** 接受一个 bool，返回一个 bool */
   (input: boolean): boolean
-  /** Takes a number, returns a number */
+  /** 接受一个 number，返回一个 number */
   (input: number): number
-  /** Takes a string, returns a bool */
+  /** 接受一个 string，返回一个 bool */
   (input: string): boolean
 }
 
-// If this is your first time seeing declare, it allows you
-// to tell TypeScript something exists even if it doesn't
-// exist in the runtime in this file. Useful for mapping
-// code with side-effects but extremely useful for demos
-// where making the implementation would be a lot of code.
+// 如果这是您第一次看到 declare 关键字，它使您可以告诉 TypeScript
+// 文件中某些即使在运行时不存在的东西存在。对于映射有副作用的代码或
+// 实现某些东西需要很多代码的 demo 来说都非常有用。
 
 declare const boolOrNumberOrStringFunction: BoolOrNumberOrStringFunction
 
@@ -118,15 +102,12 @@ const boolValue = boolOrNumberOrStringFunction(true)
 const numberValue = boolOrNumberOrStringFunction(12)
 const boolValue2 = boolOrNumberOrStringFunction("string")
 
-// If you hover over the above values and functions you
-// can see the right documentation and return values.
+// 将鼠标悬停在上述值和函数上，您可以看到正确的文档和返回值。
 
-// Using function overloads can get you very far, however
-// there's another tool for dealing with different types of
-// inputs and return values and that is generics.
+// 函数重载对您很有帮助，但是还有一种可以处理不同类型的输入
+// 和返回值的工具，那就是泛型。
 
-// These provide a way for you to have types as placeholder
-// variables in type definitions.
+// 这为您提供了一种在类型定义中将类型作为占位符变量的方法。
 
 // example:generic-functions
 // example:function-chaining
