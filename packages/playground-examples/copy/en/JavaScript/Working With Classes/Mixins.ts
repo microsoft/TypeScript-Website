@@ -20,7 +20,8 @@ type Constructor = new (...args: any[]) => {}
 
 function Scale<TBase extends Constructor>(Base: TBase) {
   return class extends Base {
-    private _scale = 1;
+    // Mixins may not declare private/protected properties
+    _scale = 1;
 
     setScale(scale: number) {
       this._scale = scale;
@@ -37,7 +38,7 @@ function Scale<TBase extends Constructor>(Base: TBase) {
 
 function Alpha<TBase extends Constructor>(Base: TBase) {
   return class extends Base {
-    private alpha = 1;
+    alpha = 1;
 
     setHidden() {
       this.alpha = 0;
