@@ -1,47 +1,42 @@
 //// { order: 5, isJavaScript: true }
 
-// This example creates an HTML canvas which uses WebGL to
-// render spinning confetti using JavaScript. We're going
-// to walk through the code to understand how it works, and
-// see how TypeScript's tooling provides useful insight.
+// 该例子通过使用 JavaScript 创建一个基于 WebGL 的 HTML canvas 来渲染一些旋转的彩色纸屑。
+// 我们通过这些代码来了解它是如何工作的，看看 TypeScript 的工具所提供的便利。
 
-// This example builds off: example:working-with-the-dom
+// 该例子用于：example:working-with-the-dom
 
-// First up, we need to create an HTML canvas element, which
-// we do via the DOM API and set some inline style attributes:
+// 首先，我们需要创建一个 HTML canvas, 并通过 DOM API 来为该 canvas
+// 设置一些样式：
 
-const canvas = document.createElement("canvas")
-canvas.id = "spinning-canvas"
-canvas.style.backgroundColor = "#0078D4"
-canvas.style.position = "fixed"
-canvas.style.bottom = "10px"
-canvas.style.right = "20px"
-canvas.style.width = "500px"
-canvas.style.height = "400px"
+const canvas = document.createElement('canvas')
+canvas.id = 'spinning-canvas'
+canvas.style.backgroundColor = '#0078D4'
+canvas.style.position = 'fixed'
+canvas.style.bottom = '10px'
+canvas.style.right = '20px'
+canvas.style.width = '500px'
+canvas.style.height = '400px'
 
-// Next, to make it easy to make changes, we remove any older
-// versions of the canvas when hitting "Run" - now you can
-// make changes and see them reflected when you press "Run"
-// or (cmd + enter):
+// 下一步，为了更方便地看到修改后的运行效果，我们先在点击 "RUN" 按钮之后
+// 把已存在的 canvas 移除掉 - 现在，你可以修改代码并点击 "RUN" 来看看效
+// 果了（或者按 Command + Enter）：
 
 const existingCanvas = document.getElementById(canvas.id)
 if (existingCanvas && existingCanvas.parentElement) {
   existingCanvas.parentElement.removeChild(existingCanvas)
 }
 
-// Tell the canvas element that we will use WebGL to draw
-// inside the element (and not the default raster engine):
+// 告知 canvas 我们会使用 WebGL 方式来绘图（而不是默认的光栅渲染引擎）
 
-const gl = canvas.getContext("webgl")
+const gl = canvas.getContext('webgl')
 
-// Next we need to create vertex shaders - these roughly are
-// small programs that apply maths to a set of incoming
-// array of vertices (numbers).
+// 接着我们需要创建顶点着色器 - 简单来说，这些小的代码段会对输入的顶点
+// 数组（浮点数）进行一系列数学变换。
 
-// You can see the large set of attributes at the top of the shader,
-// these are passed into the compiled shader further down the example.
+// 你可以在着色器代码的最前面看到大量的属性，这些属性会在编译后被传递到
+// 下面示例的着色器中。
 
-// There's a great overview on how they work here:
+// 该文章很好地介绍了 WebGL 是如何工作的：
 // https://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html
 
 const vertexShader = gl.createShader(gl.VERTEX_SHADER)
@@ -114,13 +109,11 @@ void main() {
 )
 gl.compileShader(vertexShader)
 
-// This example also uses fragment shaders - a fragment
-// shader is another small program that runs through every
-// pixel in the canvas and sets its color.
+// 下面的例子用了片段着色器 - 片段着色器是另外一种小的代码片段，它用于
+// 计算 canvas 画布中每个像素的颜色。
 
-// In this case, if you play around with the numbers you can see how
-// this affects the lighting in the scene, as well as the border
-// radius on the confetti:
+// 在这个例子里面，你可以通过尝试手动修改一下里面的一些数字的值，这样你就大概知道它们
+// 都代表着什么样的变化了，它们会影响到场景中的光线、以及彩色纸屑的边框半径：
 
 const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER)
 gl.shaderSource(
@@ -138,8 +131,7 @@ void main() {
 )
 gl.compileShader(fragmentShader)
 
-// Takes the compiled shaders and adds them to the canvas'
-// WebGL context so that can be used:
+// 将编译后的着色器加入到 canvas 中的 WebGL 上下文中以供使用：
 
 const shaderProgram = gl.createProgram()
 gl.attachShader(shaderProgram, vertexShader)
@@ -149,12 +141,18 @@ gl.useProgram(shaderProgram)
 
 gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer())
 
-// We need to get/set the input variables into the shader in a
-// memory-safe way, so the order and the length of their
-// values needs to be stored.
+// 我们需要通过一种内存安全的方式来设置或者读取着色器变量，因此我们需要
+// 先定义这些变量的长度以及偏移量：
+
+// 译者注：
+//    这些属性的数据类型都是浮点数，因此实际上 1 个单位空间长度相当于 4 个字节
+//    这一点在后面的代码中有体现
+//
+//    例如：a_position 属性表示坐标位置，则包含 x 和 y. 在在内存中需要占 2 个单位长度的空间
+//          a_startAngle 表示角度，只需要一个浮点数，占 1 个单位长度的空间
 
 const attrs = [
-  { name: "a_position", length: 2, offset: 0 }, // e.g. x and y represent 2 spaces in memory
+  { name: "a_position", length: 2, offset: 0 }, 
   { name: "a_startAngle", length: 1, offset: 2 }, // but angle is just 1 value
   { name: "a_angularVelocity", length: 1, offset: 3 },
   { name: "a_rotationAxisAngle", length: 1, offset: 4 },
@@ -165,17 +163,15 @@ const attrs = [
 
 const STRIDE = Object.keys(attrs).length + 1
 
-// Loop through our known attributes and create pointers in memory for the JS side
-// to be able to fill into the shader.
+// 通过遍历我们上面定义的已知的属性，并在 JS 代码中为他们在内存中创建指针，通过这些指针我们可以把
+// 值填充到着色器中。
 
-// To understand this API a little bit: WebGL is based on OpenGL
-// which is a state-machine styled API. You pass in commands in a
-// particular order to render things to the screen.
+// 为了更好理解这些 API，略作注解：WebGL 是一套基于 OpenGL 的状态机方式的 API.
+// 你以特定的顺序输入命令，将内容呈现在屏幕上。
 
-// So, the intended usage is often not passing objects to every WebGL
-// API call, but instead passing one thing to one function, then passing
-// another to the next. So, here we prime WebGL to create an array of
-// vertex pointers:
+// 因此，我们常见的做法并不是把渲染的数据和对象传递给每一次 WebGL 的 API 调用，而是
+// 把内容传递给一个函数，并由这个函数再传递给它的下一个函数调用，以此类推。所以，我们
+// 在这里为 WebGL 创建一个顶点指针的数组：
 
 for (var i = 0; i < attrs.length; i++) {
   const name = attrs[i].name
@@ -186,23 +182,22 @@ for (var i = 0; i < attrs.length; i++) {
   gl.enableVertexAttribArray(attribLocation)
 }
 
-// Then on this line they are bound to an array in memory:
+// 我们在把这些属性绑定到一个内存中的一个数组里：
 
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer())
 
-// Set up some constants for rendering:
+// 并定义一些渲染常量：
 
 const NUM_PARTICLES = 200
 const NUM_VERTICES = 4
 
-// Try reducing this one and hitting "Run" again,
-// it represents how many points should exist on
-// each confetti and having an odd number sends
-// it way out of whack.
+// 你可以试着减少这个值，并反复点击 "Run" 按钮
+// 该值表示每个彩纸上应该有多少个点，如果你把它赋值为一个奇数，它看起来
+// 就会不太正常。
 
 const NUM_INDICES = 6
 
-// Create the arrays of inputs for the vertex shaders
+// 创建顶点着色器的输入数组
 const vertices = new Float32Array(NUM_PARTICLES * STRIDE * NUM_VERTICES)
 const indices = new Uint16Array(NUM_PARTICLES * NUM_INDICES)
 
@@ -218,15 +213,15 @@ for (let i = 0; i < NUM_PARTICLES; i++) {
 
   for (let j = 0; j < 4; j++) {
     const vertexPtr = groupPtr + j * STRIDE
-    vertices[vertexPtr + 2] = startAngle       // Start angle
-    vertices[vertexPtr + 3] = angularVelocity  // Angular velocity
-    vertices[vertexPtr + 4] = axisAngle        // Angle diff
-    vertices[vertexPtr + 5] = particleDistance // Distance of the particle from the (0,0,0)
-    vertices[vertexPtr + 6] = particleAngle    // Angle around Y axis
-    vertices[vertexPtr + 7] = particleY        // Angle around Y axis
+    vertices[vertexPtr + 2] = startAngle       // 初始角度
+    vertices[vertexPtr + 3] = angularVelocity  // 角速度
+    vertices[vertexPtr + 4] = axisAngle        // 角度差
+    vertices[vertexPtr + 5] = particleDistance // 粒子到 (0,0,0) 的距离
+    vertices[vertexPtr + 6] = particleAngle    // 粒子绕 Y 轴的旋转角度
+    vertices[vertexPtr + 7] = particleY        // 粒子的 Y 轴坐标
   }
 
-  // Coordinates
+  // 坐标
   vertices[groupPtr] = vertices[groupPtr + STRIDE * 2] = -1
   vertices[groupPtr + STRIDE] = vertices[groupPtr + STRIDE * 3] = +1
   vertices[groupPtr + 1] = vertices[groupPtr + STRIDE + 1] = -1
@@ -240,7 +235,7 @@ for (let i = 0; i < NUM_PARTICLES; i++) {
   indices[indicesPtr + 5] = vertexPtr + 3
 }
 
-// Pass in the data to the WebGL context
+// 把数据传递给 WebGL 上下文
 gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW)
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW)
 
@@ -248,17 +243,17 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW)
 const timeUniformLocation = gl.getUniformLocation(shaderProgram, "u_time")
 const startTime = (window.performance || Date).now()
 
-// Start the background colour as black
+// 用黑色作为画布的擦除填充颜色
 gl.clearColor(0, 0, 0, 1)
 
-// Allow alpha channels on in the vertex shader
+// 顶点着色器允许透明通道
 gl.enable(gl.BLEND)
 gl.blendFunc(gl.SRC_ALPHA, gl.ONE)
 
-// Set the WebGL context to be the full size of the canvas
+// 把 WebGL 上下文的尺寸设为和 canvas 的尺寸一致
 gl.viewport(0, 0, canvas.width, canvas.height)
 
-// Create a run-loop to draw all of the confetti
+// 创建一个帧循环用于绘制彩纸
 ;(function frame() {
   gl.uniform1f(timeUniformLocation, ((window.performance || Date).now() - startTime) / 1000)
 
@@ -272,9 +267,11 @@ gl.viewport(0, 0, canvas.width, canvas.height)
   requestAnimationFrame(frame)
 })()
 
-// Add the new canvas element into the bottom left
-// of the playground
+// 把 canvas 加入到当前页面的右下角
+//
+// 译者注：原注释中是 "bottom left"，其实是 "bottom right"
+// 如位置需要调整，可以修改该范例代码最前面的 CSS 样式
 document.body.appendChild(canvas)
 
-// Credit: based on this JSFiddle by Subzey
+// 鸣谢: 基于 Subzey 的这个 JSFiddle 范例:
 // https://jsfiddle.net/subzey/52sowezj/
