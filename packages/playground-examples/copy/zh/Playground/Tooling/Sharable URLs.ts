@@ -7,7 +7,7 @@
 // URL 包含：
 //
 // - 是否使用示例
-// - gzip 后的 TypeScript/JavaScript 代码
+// - gzip 后的 TypeScript/JavaScript 源代码
 // - 向后兼容的未压缩的 URL
 // - 您在使用什么语言
 // - 您与默认配置不同的编译器选项 example:new-compiler-defaults
