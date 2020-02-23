@@ -14,9 +14,9 @@ type Props = {
 const Index: React.FC<Props> = (props) => {
   return (
     <>
-      <Layout title="Developers - TypeScript VFS" description="A module for running TypeScript in-memory in a browser or Node.jks" lang="en" allSitePage={props.data.allSitePage}>
+      <Layout title="Developers - Playground Plugins" description="What is a TypeScript Playground Plugin, and how can you make one?" lang="en" allSitePage={props.data.allSitePage}>
         <div id="dev">
-          <DevNav active="typescript vfs" />
+          <DevNav active="playground plugins" />
           <div className="raised content main-content-block">
             <div className="split-sixhundred">
               <h1 style={{ marginTop: "0" }}>TypeScript VFS</h1>
@@ -43,6 +43,13 @@ const Index: React.FC<Props> = (props) => {
             <p><b>Step 4</b>: Refresh, and see the new tab. That's your plugin up and running</p>
             <p>&nbsp;</p>
             <p>That's all the pieces working in tandem, now you can make changes to the template and build out your plugin. The plugin in dev mode will always become forefront when connected, so you can re-load without a lot off clicks. To understand the template's technology, read the <a href='https://github.com/microsoft/TypeScript-Website/blob/v2/packages/create-playground-plugin/template/CONTRIBUTING.md'>CONTRIBUTING.md</a></p>
+
+            <h3>Bootstrap</h3>
+            <p>Alternatively, if you'd like to work with React or Svelte you can check out the following templates:</p>
+            <ul>
+              <li><a href="https://github.com/gojutin/typescript-playground-plugin-react#typescript-playground-plugin-react">https://github.com/gojutin/typescript-playground-plugin-react</a></li>
+              <li><a href="https://github.com/gojutin/typescript-playground-plugin-svelte#typescript-playground-plugin-svelte">https://github.com/gojutin/typescript-playground-plugin-svelte</a></li>
+            </ul>
           </div>
         </div>
       </Layout>

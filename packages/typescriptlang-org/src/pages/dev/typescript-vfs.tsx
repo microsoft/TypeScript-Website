@@ -14,12 +14,12 @@ type Props = {
 const Index: React.FC<Props> = (props) => {
   return (
     <>
-      <Layout title="Developers - Playground Plugins" description="What is a TypeScript Playground Plugin, and how can you make one?" lang="en" allSitePage={props.data.allSitePage}>
+      <Layout title="Developers - TypeScript VFS" description="What is a TypeScript Playground Plugin, and how can you make one?" lang="en" allSitePage={props.data.allSitePage}>
         <div id="dev">
           <DevNav active="playground plugins" />
           <div className="raised content main-content-block">
             <div className="split-sixhundred">
-              <h1 style={{ marginTop: "0" }}>Playground Plugins</h1>
+              <h1 style={{ marginTop: "0" }}>Run the Playground in the browser</h1>
               <p>The new TypeScript Playground allows people to hook into the Playground and extend it in ways in which the TypeScript team don't expect.</p>
               <p>The sidebar of the Playground uses the same plugin infrastructure as external plugins, so you have the same level of access as the playground to build interesting projects.</p>
               <p>Playground plugins have no fancy frameworks, you're free to inject them at runtime and use them if you need to - but the current plugins are built with the DOM APIs and TypeScript.</p>

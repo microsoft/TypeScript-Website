@@ -1,4 +1,4 @@
-type Sandbox = ReturnType<typeof import('typescript-sandbox').createTypeScriptSandbox>
+type Sandbox = import('typescript-sandbox').Sandbox
 type Monaco = typeof import('monaco-editor')
 
 declare const window: any
@@ -22,6 +22,8 @@ import { ExampleHighlighter } from './monaco/ExampleHighlight'
 import { createConfigDropdown, updateConfigDropdownForCompilerOptions } from './createConfigDropdown'
 import { showErrors } from './sidebar/showErrors'
 import { optionsPlugin, allowConnectingToLocalhost, activePlugins } from './sidebar/options'
+import { createUtils, PluginUtils } from './pluginUtils'
+export { PluginUtils } from './pluginUtils'
 
 export type PluginFactory = {
   (i: (key: string, components?: any) => string): PlaygroundPlugin
@@ -345,6 +347,35 @@ export const setupPlayground = (
   console.log('\twindow.sandbox', window.sandbox)
   console.log('\twindow.playground', window.playground)
 
+  /** A plugin */
+  const activateExternalPlugin = (
+    plugin: PlaygroundPlugin | ((utils: PluginUtils) => PlaygroundPlugin),
+    autoActivate: boolean
+  ) => {
+    let readyPlugin: PlaygroundPlugin
+    // Can either be a factory, or object
+    if (typeof plugin === 'function') {
+      const utils = createUtils(sandbox)
+      readyPlugin = plugin(utils)
+    } else {
+      readyPlugin = plugin
+    }
+
+    if (autoActivate) {
+      console.log(readyPlugin)
+    }
+
+    playground.registerPlugin(readyPlugin)
+
+    // Auto-select the dev plugin
+    const pluginWantsFront = readyPlugin.shouldBeSelected && readyPlugin.shouldBeSelected()
+
+    if (pluginWantsFront || autoActivate) {
+      // Auto-select the dev plugin
+      activatePlugin(readyPlugin, currentPlugin(), sandbox, tabBar, container)
+    }
+  }
+
   // Dev mode plugin
   if (allowConnectingToLocalhost()) {
     window.exports = {}
@@ -354,11 +385,14 @@ export const setupPlayground = (
       const re = window.require
       re(['local/index'], (devPlugin: any) => {
         console.log('Set up dev plugin from localhost:5000')
-        console.log(devPlugin)
-        playground.registerPlugin(devPlugin)
-
-        // Auto-select the dev plugin
-        activatePlugin(devPlugin, currentPlugin(), sandbox, tabBar, container)
+        try {
+          activateExternalPlugin(devPlugin, true)
+        } catch (error) {
+          console.error(error)
+          setTimeout(() => {
+            ui.flashInfo('Error: Could not load dev plugin from localhost:5000')
+          }, 700)
+        }
       })
     } catch (error) {
       console.error('Problem loading up the dev plugin')
@@ -371,12 +405,7 @@ export const setupPlayground = (
       // @ts-ignore
       const re = window.require
       re([`unpkg/${plugin.module}@latest/dist/index`], (devPlugin: PlaygroundPlugin) => {
-        playground.registerPlugin(devPlugin)
-
-        // Auto-select the dev plugin
-        if (devPlugin.shouldBeSelected && devPlugin.shouldBeSelected()) {
-          activatePlugin(devPlugin, currentPlugin(), sandbox, tabBar, container)
-        }
+        activateExternalPlugin(devPlugin, true)
       })
     } catch (error) {
       console.error('Problem loading up the plugin:', plugin)
