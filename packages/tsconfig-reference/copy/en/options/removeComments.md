@@ -12,7 +12,7 @@ For example, this is a TypeScript file which has a JSDoc comment:
 export const helloWorldPTBR = "Olá Mundo";
 ```
 
-Without setting `removeComments` or having it as `true`:
+When `removeComments` is set to `true`:
 
 ```ts twoslash
 // @showEmit
@@ -21,7 +21,7 @@ Without setting `removeComments` or having it as `true`:
 export const helloWorldPTBR = "Olá Mundo";
 ```
 
-When `removeComments` is set to `false`:
+Without setting `removeComments` or having it as `false`:
 
 ```ts twoslash
 // @showEmit
