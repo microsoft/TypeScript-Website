@@ -36,7 +36,7 @@ const hrefForExample = (example: Example, lang: string) => {
   const params = example.compilerSettings || {}
   params.q = Math.floor(Math.random() * 512)
   const queryParams = Object.keys(params).map(key => key + '=' + params[key]).join('&');
-  return withPrefix(`${lang}/play/?${prefix + queryParams}#${hash}`)
+  return withPrefix(`${lang}/play?${prefix + queryParams}#${hash}`)
 }
 
 
