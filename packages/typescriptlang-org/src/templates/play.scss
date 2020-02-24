@@ -455,6 +455,44 @@ main #editor-toolbar {
     .comma {
       color: #777;
     }
+
+    ul.ast-tree {
+      li {
+        list-style-type: none;
+        position: relative;
+      }
+
+      li ul {
+        display: none;
+      }
+
+      li.open > ul {
+        display: block;
+      }
+
+      li a {
+        color: black;
+        text-decoration: none;
+      }
+
+      li a:before {
+        height: 1em;
+        padding: 0 0.1em;
+        font-size: 0.8em;
+        display: block;
+        position: absolute;
+        left: -1.3em;
+        top: 0.2em;
+      }
+
+      li > a:not(:last-child):before {
+        content: "+";
+      }
+
+      li.open > a:not(:last-child):before {
+        content: "-";
+      }
+    }
   }
 
   #compiler-errors {
