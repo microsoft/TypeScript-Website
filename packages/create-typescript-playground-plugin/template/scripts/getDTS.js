@@ -39,7 +39,7 @@ const go = async () => {
   )
 
   await getFileAndStoreLocally(host + '/js/sandbox/index.d.ts', join(vendor, 'sandbox.d.ts'), text => {
-    const removeImports = text.replace(/^import/g, '// import').replace(/\nimport/g, ']\n// import')
+    const removeImports = text.replace(/^import/g, '// import').replace(/\nimport/g, '\n// import')
     const replaceTSVFS = removeImports.replace(
       "// import * as tsvfs from './vendor/typescript-vfs'",
       "\nimport * as tsvfs from './typescript-vfs'"
