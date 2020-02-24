@@ -1,4 +1,4 @@
-name: Build Website on Master and Release
+name: Build Staging Website
 
 on:
   push:
@@ -32,6 +32,7 @@ jobs:
         mkdir site
         cp -r packages/typescriptlang-org/public ../site
         cd ..
+        ls site
 
     # CI: Deploy to the right branch
     - name: Deploy + Publish

@@ -1,4 +1,4 @@
-name: Build Website on Master and Release
+name: Build Website For Production
 
 on:
   push:
@@ -42,8 +42,6 @@ jobs:
         cd v2
         git config --global user.email "you@example.com"
         git config --global user.name "Your Name"
-        git fetch origin pull/121/head:tsconfig-docs
-        git merge tsconfig-docs
         yarn install
         yarn bootstrap
         yarn build
