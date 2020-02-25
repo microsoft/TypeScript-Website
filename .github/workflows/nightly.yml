@@ -26,6 +26,7 @@ jobs:
       # Setup Git
       - run: git config user.name "typescript-bot"
       - run: git config user.email "bot@typescriptlang.org"
+      - run: git checkout master
 
       - run: git remote add upstream https://$GITHUB_BOT_TOKEN@github.com/microsoft/TypeScript-website.git > /dev/null 2>&1
         env:
