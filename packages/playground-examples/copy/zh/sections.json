@@ -1,0 +1,54 @@
+{
+  "sections": [
+    {
+      "name": "JavaScript",
+      "id": "JavaScript",
+      "subtitle": "了解 TypeScript 如何使用最少的附加语法改善 JavaScript 的日常使用。"
+    },
+    {
+      "name": "TypeScript",
+      "id": "TypeScript",
+      "subtitle": "探索 TypeScript 如何扩展 JavaScript，使其更安全，更便利。"
+    },
+    {
+      "name": "3.7",
+      "id": "3.7",
+      "subtitle": "查看<a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/'>版本更新说明</a>。"
+    },
+    {
+      "name": "3.8",
+      "id": "3.8",
+      "subtitle": "查看<a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/'>beta 测试版本更新说明</a>。"
+    },
+    {
+      "name": "游乐场 V3",
+      "id": "游乐场",
+      "subtitle": "了解游乐场有哪些变化。"
+    }
+  ],
+  "sortedSubSections": [
+    // JS
+    "JavaScript 基础",
+    "JavaScript 中的函数",
+    "JavaScript 中的类",
+    "现代 JavaScript",
+    "外部 API",
+    "改善 JavaScript",
+    // TS
+    "基础类型",
+    "类型基础",
+    "元类型",
+    "语言",
+    "语言扩展",
+    // Examples
+    "语法和信息",
+    "代码和代码流",
+    "修复",
+    // Playground
+    "配置",
+    "工具",
+    // 3.8
+    "破坏性的变化",
+    "JSDoc 的改进"
+  ]
+}
