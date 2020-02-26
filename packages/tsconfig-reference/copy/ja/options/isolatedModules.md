@@ -73,4 +73,4 @@ console.log(Numbers.Zero + Numbers.One);
 ```
 
 他のトランスパイラはメンバー値の知識無しに`Numbers`への参照を置換できません。これが取り残されると、実行時のエラーとなります（なぜなら`Numbers`オブジェクトは実行時に存在しないからです）。
-したがって、`isolatedModules`が設定されている場合、`const enum`メンバーへのAmbient参照はエラーとなります。
+したがって、`isolatedModules`が設定されている場合、`const enum`メンバーへのアンビエント参照はエラーとなります。
