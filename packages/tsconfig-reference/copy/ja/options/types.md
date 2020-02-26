@@ -20,4 +20,4 @@ oneline: "Used to create an allowlist of types to be included in the compile"
 この`tsconfig.json`ファイルは、`./node_modules/@types/node`と`./node_modules/@types/lodash`と`./node_modules/@types/express`_のみ_をインクルードするようになります。
 `node_modules/@types/*`配下にある他のパケージはインクルードされません。
 
-この機能は[`typeRoots`](#typeRoots)と違い、インクルードしたいtypesパッケージだけを厳密に指定できます。一方、[`typeRoots`](#typeRoots)は特定のフォルダを必要としているということがサポートされます。
+この機能は[`typeRoots`](#typeRoots)と違い、インクルードしたいtypesパッケージだけを厳密に指定できます。一方、[`typeRoots`](#typeRoots)は必要としている特定のフォルダを指定できます。
