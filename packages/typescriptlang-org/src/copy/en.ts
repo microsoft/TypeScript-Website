@@ -4,6 +4,7 @@ import { headCopy } from "./en/head-seo"
 import { docCopy } from "./en/documentation"
 import { indexCopy } from "./en/index"
 import { playCopy } from "./en/playground"
+import { comCopy } from "./en/community"
 
 export const messages = {
   ...navCopy,
@@ -11,6 +12,7 @@ export const messages = {
   ...headCopy,
   ...indexCopy,
   ...playCopy,
+  ...comCopy,
 }
 
 export const lang = defineMessages(messages)
