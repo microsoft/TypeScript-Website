@@ -7,7 +7,7 @@ const shiki = join(require.resolve(`gatsby-remark-shiki`), "..", "..", "package.
 
 module.exports = {
   siteMetadata: {
-    siteUrl: `https://www.typescriptlang.org/v2/`,
+    siteUrl: `https://www.typescriptlang.org/`,
   },
 
   // This should only be used in a CI deploy while we're working in a v2 sub-folder
