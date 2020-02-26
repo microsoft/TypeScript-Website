@@ -61,7 +61,7 @@ const arr = [1].concat(arr2);
 例えば、配列に「穴」がある場合、スプレッドでは欠落したインデックスが_独自の_プロパティとして作成されますが、`concat`を利用した場合は作成されません:
 
 ```js
-// Make an array where the '1' element is missing
+// 「1」の要素が欠落している配列を作成します
 let missing = [0, , 1];
 let spreaded = [...missing];
 let concated = [].concat(missing);
