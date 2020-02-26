@@ -45,7 +45,7 @@ jobs:
         yarn install
         yarn bootstrap
         yarn build
-        yarn build-site  --prefix-paths # ensure the gatsby site knows it isn't root
+        yarn build-site --prefix-paths # ensure the gatsby site knows it isn't root
         cp -r packages/typescriptlang-org/public ../site/v2
         cd ..
 

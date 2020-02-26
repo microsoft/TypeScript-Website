@@ -33,6 +33,7 @@ jobs:
         cp -r packages/typescriptlang-org/public ../site
         cd ..
         ls site
+        ls site/page-data
 
     # CI: Deploy to the right branch
     - name: Deploy + Publish
