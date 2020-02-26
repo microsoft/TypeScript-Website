@@ -16,7 +16,7 @@ class UserAccount {
 
   constructor(name: string) {
     this.name = name;
-    // Note that this.email is not set
+    // 注 this.emailがセットされていません
   }
 }
 ```
