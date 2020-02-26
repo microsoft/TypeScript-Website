@@ -53,7 +53,7 @@ const arr = [1, ...arr2];
 説明に沿って、次のようにES5へダウンレベル化できます:
 
 ```js
-// The same, right?
+// 同じですよね？
 const arr = [1].concat(arr2);
 ```
 
