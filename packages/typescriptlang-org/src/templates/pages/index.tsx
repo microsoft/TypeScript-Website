@@ -13,6 +13,7 @@ import { useIntl } from "react-intl"
 
 import "./index.scss"
 import "../pages/css/documentation.scss"
+
 import { EditorExamples } from "../../components/index/EditorExamples"
 import { createIntlLink } from "../../components/IntlLink"
 import { IndexPageQuery } from "../../__generated__/gatsby-types"
@@ -179,7 +180,7 @@ const Index: React.FC<Props> = (props) => {
               <h4>{i("index_install")}</h4>
               <div className='grey-box'>
                 {i("index_install_ref", {
-                  p: (...chunk) => <p>{chunk}</p>,
+                  p: (...chunk) => <p key={Math.random()}>{chunk}</p>,
                   pre: (...chunk) => <pre>{chunk}</pre>,
                   code: (...chunk) => <code key={1}>{chunk}</code>,
                   download: (...chunk) => <Link to="/download">{chunk}</Link>,

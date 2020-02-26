@@ -1,0 +1,27 @@
+import React from "react"
+import { Layout } from "../../components/layout"
+import { Intl } from "../../components/Intl"
+import { graphql } from "gatsby"
+import { EmptyPageQuery } from "../../__generated__/gatsby-types"
+
+type Props = {
+  pageContext: any
+  data: EmptyPageQuery
+}
+
+const Index: React.FC<Props> = (props) =>
+  <Layout title="Reference Tools" description="Online tooling to help you understand TypeScript" lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+    <div className="raised main-content-block">
+      <p>This page is intentionally left blank</p>
+    </div>
+  </Layout>
+
+
+export const query = graphql`
+  query ToolsPage {
+    ...AllSitePage
+  }
+`
+
+
+export default (props: Props) => <Intl><Index {...props} /></Intl>

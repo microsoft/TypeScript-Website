@@ -1,29 +1,36 @@
 @import "./grid.scss";
 
 .community {
-  padding: 1em 15px 6em 15px;
+  padding: 0;
+
+  .sidebar {
+    background-color: #f9f9f9;
+  }
 
   .next-steps-container {
     background-color: white;
   }
 
   .banner-text {
-    font-size: 1.6em;
     margin-top: 20px;
     color: black;
   }
 
   .callouts {
     margin: 20px 0;
-    color: black;
+    display: flex;
+    flex-wrap: wrap;
 
     .callout {
       margin-top: 20px;
+      width: 45%;
     }
-
+    h3 {
+      padding: 0;
+      margin: 0;
+    }
     .text {
       height: 100px;
-      font-size: 1.6em;
     }
 
     .icon {
@@ -90,7 +97,6 @@
 }
 
 .community-callout-headline {
-  font-size: 1.6em;
   margin-top: 0;
 }
 

@@ -209,8 +209,8 @@ export const setupPlayground = (
           const playgroundContainer = document.getElementById('playground-container')!
           exampleContainer.style.height = `calc(${playgroundContainer.getBoundingClientRect().height + 26}px - 4rem)`
 
-          const width = window.localStorage.getItem('dragbar-x')
-          exampleContainer.style.width = `calc(100% - ${width}px - 4rem)`
+          const sideBarWidth = (document.querySelector('.playground-sidebar') as any).offsetWidth
+          exampleContainer.style.width = `calc(100% - ${sideBarWidth}px - 71px)`
         }
       }
     }

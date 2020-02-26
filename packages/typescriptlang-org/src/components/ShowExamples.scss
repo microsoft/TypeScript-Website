@@ -34,17 +34,16 @@
     }
 
     button.section-name {
-      font-size: 2em;
+      font-size: 2rem;
       font-weight: 600;
 
-      height: 2em;
+      height: 2.5rem;
       text-decoration: none;
       border-bottom: none;
-      padding-bottom: 0.05em;
-      padding-left: 0;
+      padding-bottom: 0.05rem;
       margin-top: 0;
       padding-top: 0;
-      margin-right: 1em;
+      margin-right: 1rem;
       border: none;
       background-color: transparent;
       @media (prefers-color-scheme: dark) {
@@ -115,11 +114,11 @@
 
           .example-indicator {
             position: absolute;
-            right: 0.8em;
-            top: 0.75em;
-            width: 0.5em;
-            height: 0.5em;
-            border-radius: 0.5em;
+            right: 0.8rem;
+            top: 0.75rem;
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 0.5rem;
 
             &.done {
               background-color: $ts-main-blue-color;
