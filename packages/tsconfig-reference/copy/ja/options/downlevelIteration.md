@@ -46,7 +46,7 @@ for (const s of str) {
 次のスプレッドされた配列について:
 
 ```js
-// Make a new array who elements are 1 followed by the elements of arr2
+// 要素が1で、その後にarr2の要素が続く新しい配列を作成します
 const arr = [1, ...arr2];
 ```
 
