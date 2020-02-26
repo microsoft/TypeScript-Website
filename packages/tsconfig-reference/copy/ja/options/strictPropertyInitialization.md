@@ -26,4 +26,4 @@ class UserAccount {
 - `this.name`は具体的に設定されています。
 - `this.accountType`はデフォルト値が設定されています。
 - `this.email`は値が設定されていないため、エラーとなります。
-- `this.address`は潜在的に`undefined`として宣言されており、これは値の設定が必須でないことを意味しています。
+- `this.address`は`undefined`になりうる値として宣言されており、これは値の設定が必須でないことを意味しています。
