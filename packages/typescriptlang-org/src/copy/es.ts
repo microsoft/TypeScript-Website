@@ -5,6 +5,7 @@ import { headCopy } from "./es/head-seo"
 import { docCopy } from "./en/documentation"
 import { indexCopy } from "./en/index"
 import { playCopy } from "./es/playground"
+import { comCopy } from "./en/community"
 
 export const lang: Copy = defineMessages({
   ...englishMessages,
@@ -13,4 +14,5 @@ export const lang: Copy = defineMessages({
   ...headCopy,
   ...indexCopy,
   ...playCopy,
+  ...comCopy,
 })
