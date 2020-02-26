@@ -3,7 +3,7 @@ display: "Preserve Symlinks"
 oneline: "Do not resolve symlink paths"
 ---
 
-シンボリックリンクの実体パスへ解決しないというNode.jsの同名フラグを反映したオプションです。
+シンボリックリンクを実体パスへ解決しないというNode.jsの同名フラグを反映したオプションです。
 
 このフラグはWebpackの`resolve.symlinks`オプションと逆の動作をします（つまり、TypeScriptの`preserveSymlinks`をtrueに設定することは、Webpackの`resolve.symlinks`をfalseに設定することと同等です。逆も然りです）。
 
