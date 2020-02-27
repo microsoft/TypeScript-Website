@@ -3,6 +3,9 @@
 .community {
   padding: 0;
 
+  &.centered {
+    text-align: center;
+  }
   .sidebar {
     background-color: #f9f9f9;
   }
@@ -23,26 +26,27 @@
 
     .callout {
       margin-top: 20px;
-      width: 45%;
+      width: 48%;
+      display: flex;
     }
+
     h3 {
       padding: 0;
       margin: 0;
-    }
-    .text {
-      height: 100px;
+      font-size: 1rem;
+      margin-bottom: 10px;
     }
 
     .icon {
-      height: 6em;
-      width: 6em;
+      height: 5em;
+      width: 5em;
+      min-width: 5rem;
       background-repeat: no-repeat;
       background-position: center center;
       background-size: auto 3.2em;
       display: block;
       -webkit-transition: background-color 0.2s ease-out;
       transition: background-color 0.2s ease-out;
-      float: left;
       margin: 20px;
       margin-top: 0;
       border-radius: 50%;
@@ -78,35 +82,60 @@
       &.twitter {
         background-image: url("../../../assets/community/connect-twitter-icon.svg");
         background-color: #00a0d1;
-        background-size: 5.5em;
       }
 
       &.definitelytyped {
         background-image: url("../../../assets/community/definitely_typed_logo.png");
         background-color: #0077d2;
-        background-size: 10em;
       }
 
       &.bug {
         background-image: url("../../../assets/community/connect-github-icon.png");
         background-color: lighten(black, 30%);
-        background-size: 5.5em;
       }
     }
   }
-}
 
-.community-callout-headline {
-  margin-top: 0;
-}
-
-.upcoming-event {
-  min-width: 330px;
-  img {
-    width: 50px;
+  .community-callout-headline {
+    margin-top: 0;
   }
-  .meetup-text {
-    max-height: 300px;
-    overflow-y: hidden;
+
+  .upcoming-event {
+    min-width: 330px;
+    img {
+      width: 50px;
+    }
+
+    .event-info {
+      position: relative;
+    }
+    .meetup-text {
+      max-height: 300px;
+      overflow-y: auto;
+      padding-bottom: 20px;
+    }
+
+    .meetup-gradient {
+      height: 30px;
+      width: 100%;
+      position: absolute;
+      top: 290px;
+
+      background: rgb(255, 255, 255);
+      background: linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 0.2) 100%
+      );
+
+      @media (prefers-color-scheme: dark) {
+        background: rgb(0, 0, 0);
+        background: linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 1) 0%,
+          rgba(0, 0, 0, 0.2) 100%
+        );
+      }
+    }
   }
 }

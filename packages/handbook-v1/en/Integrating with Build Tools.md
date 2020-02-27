@@ -3,17 +3,6 @@ title: Integrating with Build Tools
 layout: docs
 permalink: /docs/handbook/integrating-with-build-tools.html
 ---
-Build tools
-
-* [Babel](#babel)
-* [Browserify](#browserify)
-* [Duo](#duo)
-* [Grunt](#grunt)
-* [Gulp](#gulp)
-* [Jspm](#jspm)
-* [Webpack](#webpack)
-* [MSBuild](#msbuild)
-* [NuGet](#nuget)
 
 # Babel
 
@@ -30,11 +19,12 @@ npm install @babel/cli @babel/core @babel/preset-typescript --save-dev
   "presets": ["@babel/preset-typescript"]
 }
 ```
+
 ### Using Command Line Interface
+
 ```sh
 ./node_modules/.bin/babel --out-file bundle.js src/index.ts
 ```
-
 
 ### package.json
 
@@ -47,10 +37,10 @@ npm install @babel/cli @babel/core @babel/preset-typescript --save-dev
 ```
 
 ### Execute Babel from the command line
+
 ```sh
 npm run build
 ```
-
 
 # Browserify
 
@@ -73,10 +63,10 @@ var browserify = require("browserify");
 var tsify = require("tsify");
 
 browserify()
-    .add("main.ts")
-    .plugin("tsify", { noImplicitAny: true })
-    .bundle()
-    .pipe(process.stdout);
+  .add("main.ts")
+  .plugin("tsify", { noImplicitAny: true })
+  .bundle()
+  .pipe(process.stdout);
 ```
 
 More details: [smrq/tsify](https://github.com/smrq/tsify)
@@ -99,20 +89,20 @@ duo --use duo-typescript entry.ts
 
 ```js
 var Duo = require("duo");
-var fs = require("fs")
-var path = require("path")
+var fs = require("fs");
+var path = require("path");
 var typescript = require("duo-typescript");
 
-var out = path.join(__dirname, "output.js")
+var out = path.join(__dirname, "output.js");
 
 Duo(__dirname)
-    .entry("entry.ts")
-    .use(typescript())
-    .run(function (err, results) {
-        if (err) throw err;
-        // Write compiled result to output file
-        fs.writeFileSync(out, results.code);
-    });
+  .entry("entry.ts")
+  .use(typescript())
+  .run(function(err, results) {
+    if (err) throw err;
+    // Write compiled result to output file
+    fs.writeFileSync(out, results.code);
+  });
 ```
 
 More details: [frankwallis/duo-typescript](https://github.com/frankwallis/duo-typescript)
@@ -127,19 +117,19 @@ npm install grunt-ts
 
 ### Basic Gruntfile.js
 
-````js
+```js
 module.exports = function(grunt) {
-    grunt.initConfig({
-        ts: {
-            default : {
-                src: ["**/*.ts", "!node_modules/**/*.ts"]
-            }
-        }
-    });
-    grunt.loadNpmTasks("grunt-ts");
-    grunt.registerTask("default", ["ts"]);
+  grunt.initConfig({
+    ts: {
+      default: {
+        src: ["**/*.ts", "!node_modules/**/*.ts"]
+      }
+    }
+  });
+  grunt.loadNpmTasks("grunt-ts");
+  grunt.registerTask("default", ["ts"]);
 };
-````
+```
 
 More details: [TypeStrong/grunt-ts](https://github.com/TypeStrong/grunt-ts)
 
@@ -157,13 +147,14 @@ npm install gulp-typescript
 var gulp = require("gulp");
 var ts = require("gulp-typescript");
 
-gulp.task("default", function () {
-    var tsResult = gulp.src("src/*.ts")
-        .pipe(ts({
-              noImplicitAny: true,
-              out: "output.js"
-        }));
-    return tsResult.js.pipe(gulp.dest("built/local"));
+gulp.task("default", function() {
+  var tsResult = gulp.src("src/*.ts").pipe(
+    ts({
+      noImplicitAny: true,
+      out: "output.js"
+    })
+  );
+  return tsResult.js.pipe(gulp.dest("built/local"));
 });
 ```
 
@@ -193,49 +184,49 @@ npm install ts-loader --save-dev
 
 ```js
 module.exports = {
-    entry: "./src/index.tsx",
-    output: {
-        path: '/',
-        filename: "bundle.js"
-    },
-    resolve: {
-        extensions: [".tsx", ".ts", ".js", ".json"]
-    },
-    module: {
-        rules: [
-            // all files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'
-            { test: /\.tsx?$/, use: ["ts-loader"], exclude: /node_modules/ }
-        ]
-    }
-}
+  entry: "./src/index.tsx",
+  output: {
+    path: "/",
+    filename: "bundle.js"
+  },
+  resolve: {
+    extensions: [".tsx", ".ts", ".js", ".json"]
+  },
+  module: {
+    rules: [
+      // all files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'
+      { test: /\.tsx?$/, use: ["ts-loader"], exclude: /node_modules/ }
+    ]
+  }
+};
 ```
 
 ### Basic webpack.config.js when using Webpack 1
 
 ```js
 module.exports = {
-    entry: "./src/index.tsx",
-    output: {
-        filename: "bundle.js"
-    },
-    resolve: {
-        // Add '.ts' and '.tsx' as a resolvable extension.
-        extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
-    },
-    module: {
-        rules: [
-            // all files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'
-            { test: /\.tsx?$/, loader: "ts-loader" }
-        ]
-    }
-}
+  entry: "./src/index.tsx",
+  output: {
+    filename: "bundle.js"
+  },
+  resolve: {
+    // Add '.ts' and '.tsx' as a resolvable extension.
+    extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
+  },
+  module: {
+    rules: [
+      // all files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'
+      { test: /\.tsx?$/, loader: "ts-loader" }
+    ]
+  }
+};
 ```
 
 See [more details on ts-loader here](https://www.npmjs.com/package/ts-loader).
 
 Alternatives:
 
-* [awesome-typescript-loader](https://www.npmjs.com/package/awesome-typescript-loader)
+- [awesome-typescript-loader](https://www.npmjs.com/package/awesome-typescript-loader)
 
 # MSBuild
 
@@ -270,10 +261,9 @@ More details about defining MSBuild compiler options: [Setting Compiler Options 
 
 # NuGet
 
-* Right-Click -> Manage NuGet Packages
-* Search for `Microsoft.TypeScript.MSBuild`
-* Hit `Install`
-* When install is complete, rebuild!
+- Right-Click -> Manage NuGet Packages
+- Search for `Microsoft.TypeScript.MSBuild`
+- Hit `Install`
+- When install is complete, rebuild!
 
 More details can be found at [Package Manager Dialog](http://docs.nuget.org/Consume/Package-Manager-Dialog) and [using nightly builds with NuGet](https://github.com/Microsoft/TypeScript/wiki/Nightly-drops#using-nuget-with-msbuild)
-

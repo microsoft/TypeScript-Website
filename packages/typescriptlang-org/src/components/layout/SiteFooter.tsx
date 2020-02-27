@@ -71,7 +71,7 @@ const useTypeScriptLinks = [
   },
   {
     title: "TSConfig Ref",
-    url: "/en/tsconfig",
+    url: "/tsconfig",
   },
   {
     title: "Code Samples",

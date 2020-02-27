@@ -89,7 +89,7 @@ const Index: React.FC<Props> = (props) => {
 
     <div className="raised main-content-block">
       <h2>Working with TypeScript-compatible transpilers</h2>
-      <p>There are other tools which convert TypeScript files to JavaScript files, this could be for speed or consistency with existing build tooling.</p>
+      <p>There are other tools which convert TypeScript files to JavaScript files. You might use these tools for speed or consistency with your existing build tooling.</p>
       <p>Each of these projects handle the file conversion, but do not handle the type-checking aspects of the TypeScript compiler. So, it's likely you'll still need to keep the TypeScript dependency from above around, and you'll want to enable <Link to="/tsconfig#isolatedModules"><code>isolatedModules</code></Link>.</p>
 
       <section style={{ display: "flex", flexWrap: "wrap" }}>

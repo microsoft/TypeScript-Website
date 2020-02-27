@@ -3,6 +3,7 @@ title: Symbols
 layout: docs
 permalink: /docs/handbook/symbols.html
 ---
+
 # Introduction
 
 Starting with ECMAScript 2015, `symbol` is a primitive data type, just like `number` and `string`.
@@ -30,7 +31,7 @@ Just like strings, symbols can be used as keys for object properties.
 const sym = Symbol();
 
 let obj = {
-    [sym]: "value"
+  [sym]: "value"
 };
 
 console.log(obj[sym]); // "value"
@@ -42,9 +43,9 @@ Symbols can also be combined with computed property declarations to declare obje
 const getClassNameSymbol = Symbol();
 
 class C {
-    [getClassNameSymbol](){
-       return "C";
-    }
+  [getClassNameSymbol]() {
+    return "C";
+  }
 }
 
 let c = new C();
@@ -104,4 +105,3 @@ Called by the built-in method `Object.prototype.toString`.
 ## `Symbol.unscopables`
 
 An Object whose own property names are property names that are excluded from the 'with' environment bindings of the associated objects.
-

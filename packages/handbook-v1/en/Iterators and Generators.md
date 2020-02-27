@@ -3,6 +3,7 @@ title: Iterators and Generators
 layout: docs
 permalink: /docs/handbook/iterators-and-generators.html
 ---
+
 # Iterables
 
 An object is deemed iterable if it has an implementation for the [`Symbol.iterator`](Symbols.md#symboliterator) property.
@@ -18,13 +19,13 @@ Here is a simple `for..of` loop on an array:
 let someArray = [1, "string", false];
 
 for (let entry of someArray) {
-    console.log(entry); // 1, "string", false
+  console.log(entry); // 1, "string", false
 }
 ```
 
 ### `for..of` vs. `for..in` statements
 
-Both `for..of` and `for..in` statements iterate over lists; the values iterated on are different though, `for..in` returns a list of *keys* on the object being iterated, whereas `for..of` returns a list of *values* of the numeric properties of the object being iterated.
+Both `for..of` and `for..in` statements iterate over lists; the values iterated on are different though, `for..in` returns a list of _keys_ on the object being iterated, whereas `for..of` returns a list of _values_ of the numeric properties of the object being iterated.
 
 Here is an example that demonstrates this distinction:
 
@@ -32,11 +33,11 @@ Here is an example that demonstrates this distinction:
 let list = [4, 5, 6];
 
 for (let i in list) {
-    console.log(i); // "0", "1", "2",
+  console.log(i); // "0", "1", "2",
 }
 
 for (let i of list) {
-    console.log(i); // "4", "5", "6"
+  console.log(i); // "4", "5", "6"
 }
 ```
 
@@ -48,11 +49,11 @@ let pets = new Set(["Cat", "Dog", "Hamster"]);
 pets["species"] = "mammals";
 
 for (let pet in pets) {
-    console.log(pet); // "species"
+  console.log(pet); // "species"
 }
 
 for (let pet of pets) {
-    console.log(pet); // "Cat", "Dog", "Hamster"
+  console.log(pet); // "Cat", "Dog", "Hamster"
 }
 ```
 
@@ -68,7 +69,7 @@ The compiler will generate a simple `for` loop for a `for..of` loop, for instanc
 ```ts
 let numbers = [1, 2, 3];
 for (let num of numbers) {
-    console.log(num);
+  console.log(num);
 }
 ```
 
@@ -77,12 +78,11 @@ will be generated as:
 ```js
 var numbers = [1, 2, 3];
 for (var _i = 0; _i < numbers.length; _i++) {
-    var num = numbers[_i];
-    console.log(num);
+  var num = numbers[_i];
+  console.log(num);
 }
 ```
 
 #### Targeting ECMAScript 2015 and higher
 
 When targeting an ECMAScipt 2015-compliant engine, the compiler will generate `for..of` loops to target the built-in iterator implementation in the engine.
-

@@ -3,8 +3,32 @@ title: Compiler Options
 layout: docs
 permalink: /docs/handbook/compiler-options.html
 ---
+
+## Using the CLI
+
+Running `tsc` locally will compile the closest project defined by a `tsconfig.json`, you can compile a set of TypeScript
+files by passing in a glob of files you want.
+
+```sh
+# Run a compile based on a backwards look through the fs for a tsconfig.json
+tsc
+
+# Transpile just the index.ts with the compiler defaults
+tsc index.ts
+
+# Transpile any .ts files in the folder src, with the default settings
+tsc src/*.ts
+
+# Transpile any .ts files in the folder src, with the compiler settings from tsconfig.json
+tsc --project tsconfig.json src/*.ts
+```
+
 ## Compiler Options
 
+If you're looking for more information about the compiler options in a tsconfig, check out the TSConfig Reference beta
+available in [the v2 site](https://www.typescriptlang.org/v2/tsconfig).
+
+<!-- prettier-ignore -->
 Option                                         | Type      | Default                        | Description
 -----------------------------------------------|-----------|--------------------------------|----------------------------------------------------------------------
 `--allowJs`                                    | `boolean` | `false`                        | Allow JavaScript files to be compiled.
@@ -13,6 +37,7 @@ Option                                         | Type      | Default            
 `--allowUnreachableCode`                       | `boolean` | `false`                        | Do not report errors on unreachable code.
 `--allowUnusedLabels`                          | `boolean` | `false`                        | Do not report errors on unused labels.
 `--alwaysStrict`                               | `boolean` | `false`                        | Parse in strict mode and emit `"use strict"` for each source file
+`--assumeChangesOnlyAffectDirectDependencies`  | `boolean` | `false`                        | Have recompiles in '--incremental' and '--watch' assume that changes within a file will only affect files directly depending on it
 `--baseUrl`                                    | `string`  |                                | Base directory to resolve non-relative module names. See [Module Resolution documentation](./Module%20Resolution.md#base-url) for more details.
 `--build`<br/>`-b`                             | `boolean` | `false`                        | Builds this project and all of its dependencies specified by [Project References](./Project%20References.md). Note that this flag is not compatible with others on this page. See more [here](./Project%20References.md)
 `--charset`                                    | `string`  | `"utf8"`                       | The character set of the input files.
@@ -31,6 +56,7 @@ Option                                         | Type      | Default            
 `--experimentalDecorators`<sup>[1]</sup>       | `boolean` | `false`                        | Enables experimental support for ES decorators.
 `--extendedDiagnostics`                        | `boolean` | `false`                        | Show verbose diagnostic information
 `--forceConsistentCasingInFileNames`           | `boolean` | `false`                        | Disallow inconsistently-cased references to the same file.
+`--generateCpuProfile`                         | `string`  | `profile.cpuprofile`           | Generates a cpu profile at the given path. Passing an existing directory name instead of a file path will cause a timestamp-named profile to be generated in that directory instead.
 `--help`<br/>`-h`                              |           |                                | Print help message.
 `--importHelpers`                              | `boolean` | `false`                        | Import emit helpers (e.g. `__extends`, `__rest`, etc..) from [`tslib`](https://www.npmjs.com/package/tslib)
 `--incremental`                                | `boolean` | `true` if `composite` is on, `false` otherwise | Enable incremental compilation by reading/writing information from prior compilations to a file on disk. This file is controlled by the `--tsBuildInfoFile` flag.
@@ -40,7 +66,8 @@ Option                                         | Type      | Default            
 `--isolatedModules`                            | `boolean` | `false`                        | Perform additional checks to ensure that separate compilation (such as with [`transpileModule`](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API#a-simple-transform-function) or [@babel/plugin-transform-typescript](https://babeljs.io/docs/en/babel-plugin-transform-typescript)) would be safe.
 `--jsx`                                        | `string`  | `"preserve"`                   | Support JSX in `.tsx` files: `"react"`, `"preserve"`, `"react-native"`. See [JSX](./JSX.md).
 `--jsxFactory`                                 | `string`  | `"React.createElement"`        | Specify the JSX factory function to use when targeting react JSX emit, e.g. `React.createElement` or `h`.
-`--keyofStringsOnly`                           | `boolean`  | `false`                       | Resolve `keyof` to string valued property names only (no numbers or symbols).
+`--keyofStringsOnly`                           | `boolean` | `false`                        | Resolve `keyof` to string valued property names only (no numbers or symbols).
+`--useDefineForClassFields`                    | `boolean` | `false`                        | Emit class fields with ECMAScript-standard semantics.
 `--lib`                                        | `string[]`|                                | List of library files to be included in the compilation.<br/>Possible values are:  <br/>► `ES5` <br/>► `ES6` <br/>► `ES2015` <br/>► `ES7` <br/>► `ES2016` <br/>► `ES2017`  <br/>► `ES2018` <br/>► `ESNext` <br/>► `DOM` <br/>► `DOM.Iterable` <br/>► `WebWorker` <br/>► `ScriptHost` <br/>► `ES2015.Core` <br/>► `ES2015.Collection` <br/>► `ES2015.Generator` <br/>► `ES2015.Iterable` <br/>► `ES2015.Promise` <br/>► `ES2015.Proxy` <br/>► `ES2015.Reflect` <br/>► `ES2015.Symbol` <br/>► `ES2015.Symbol.WellKnown` <br/>► `ES2016.Array.Include` <br/>► `ES2017.object` <br/>► `ES2017.Intl` <br/>► `ES2017.SharedMemory` <br/>► `ES2017.String` <br/>► `ES2017.TypedArrays` <br/>► `ES2018.Intl` <br/>► `ES2018.Promise` <br/>► `ES2018.RegExp` <br/>► `ESNext.AsyncIterable` <br/>► `ESNext.Array` <br/>► `ESNext.Intl` <br/>► `ESNext.Symbol` <br/><br/> Note: If `--lib` is not specified a default list of libraries are injected. The default libraries injected are:  <br/> ► For `--target ES5`: `DOM,ES5,ScriptHost`<br/>  ► For `--target ES6`: `DOM,ES6,DOM.Iterable,ScriptHost`
 `--listEmittedFiles`                           | `boolean` | `false`                        | Print names of generated files part of the compilation.
 `--listFiles`                                  | `boolean` | `false`                        | Print names of files part of the compilation.
@@ -98,11 +125,10 @@ Option                                         | Type      | Default            
 `--version`<br/>`-v`                           |           |                                | Print the compiler's version.
 `--watch`<br/>`-w`                             |           |                                | Run the compiler in watch mode. Watch input files and trigger recompilation on changes. The implementation of watching files and directories can be configured using environment variable. See [configuring watch](./Configuring%20Watch.md) for more details.
 
-* <sup>[1]</sup> These options are experimental.
-* <sup>[2]</sup> These options are only allowed in `tsconfig.json`, and not through command-line switches.
+- <sup>[1]</sup> These options are experimental.
+- <sup>[2]</sup> These options are only allowed in `tsconfig.json`, and not through command-line switches.
 
 ## Related
 
-* Setting compiler options in [`tsconfig.json`](./tsconfig.json.md) files.
-* Setting compiler options in [MSBuild projects](./Compiler%20Options%20in%20MSBuild.md).
-
+- Setting compiler options in [`tsconfig.json`](./tsconfig.json.md) files.
+- Setting compiler options in [MSBuild projects](./Compiler%20Options%20in%20MSBuild.md).

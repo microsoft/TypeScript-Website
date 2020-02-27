@@ -3,31 +3,13 @@ title: Namespaces
 layout: docs
 permalink: /docs/handbook/namespaces.html
 ---
-# Table of contents
-
-[Introduction](#introduction)
-
-[First steps](#first-steps)
-* [Validators in a single file](#validators-in-a-single-file)
-
-[Namespacing](#namespacing)
-* [Namespaced Validators](#namespaced-validators)
-
-[Splitting Across Files](#splitting-across-files)
-* [Multi-file namespaces](#multi-file-namespaces)
-
-[Aliases](#aliases)
-
-[Working with Other JavaScript Libraries](#working-with-other-javascript-libraries)
-* [Ambient Namespaces](#ambient-namespaces)
 
 > **A note about terminology:**
-It's important to note that in TypeScript 1.5, the nomenclature has changed.
-"Internal modules" are now "namespaces".
-"External modules" are now simply "modules", as to align with [ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/)'s terminology, (namely that `module X {` is equivalent to the now-preferred `namespace X {`).
+> It's important to note that in TypeScript 1.5, the nomenclature has changed.
+> "Internal modules" are now "namespaces".
+> "External modules" are now simply "modules", as to align with [ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/)'s terminology, (namely that `module X {` is equivalent to the now-preferred `namespace X {`).
 
 # Introduction
-<b><a href="#table-of-contents">↥ back to top</a></b>
 
 This post outlines the various ways to organize your code using namespaces (previously "internal modules") in TypeScript.
 As we alluded in our note about terminology, "internal modules" are now referred to as "namespaces".
@@ -35,53 +17,50 @@ Additionally, anywhere the `module` keyword was used when declaring an internal 
 This avoids confusing new users by overloading them with similarly named terms.
 
 # First steps
-<b><a href="#table-of-contents">↥ back to top</a></b>
 
 Let's start with the program we'll be using as our example throughout this page.
 We've written a small set of simplistic string validators, as you might write to check a user's input on a form in a webpage or check the format of an externally-provided data file.
 
 ## Validators in a single file
-<b><a href="#table-of-contents">↥ back to top</a></b>
 
 ```ts
 interface StringValidator {
-    isAcceptable(s: string): boolean;
+  isAcceptable(s: string): boolean;
 }
 
 let lettersRegexp = /^[A-Za-z]+$/;
 let numberRegexp = /^[0-9]+$/;
 
 class LettersOnlyValidator implements StringValidator {
-    isAcceptable(s: string) {
-        return lettersRegexp.test(s);
-    }
+  isAcceptable(s: string) {
+    return lettersRegexp.test(s);
+  }
 }
 
 class ZipCodeValidator implements StringValidator {
-    isAcceptable(s: string) {
-        return s.length === 5 && numberRegexp.test(s);
-    }
+  isAcceptable(s: string) {
+    return s.length === 5 && numberRegexp.test(s);
+  }
 }
 
 // Some samples to try
 let strings = ["Hello", "98052", "101"];
 
 // Validators to use
-let validators: { [s: string]: StringValidator; } = {};
+let validators: { [s: string]: StringValidator } = {};
 validators["ZIP code"] = new ZipCodeValidator();
 validators["Letters only"] = new LettersOnlyValidator();
 
 // Show whether each string passed each validator
 for (let s of strings) {
-    for (let name in validators) {
-        let isMatch = validators[name].isAcceptable(s);
-        console.log(`'${ s }' ${ isMatch ? "matches" : "does not match" } '${ name }'.`);
-    }
+  for (let name in validators) {
+    let isMatch = validators[name].isAcceptable(s);
+    console.log(`'${s}' ${isMatch ? "matches" : "does not match"} '${name}'.`);
+  }
 }
 ```
 
 # Namespacing
-<b><a href="#table-of-contents">↥ back to top</a></b>
 
 As we add more validators, we're going to want to have some kind of organization scheme so that we can keep track of our types and not worry about name collisions with other objects.
 Instead of putting lots of different names into the global namespace, let's wrap up our objects into a namespace.
@@ -92,53 +71,54 @@ Conversely, the variables `lettersRegexp` and `numberRegexp` are implementation 
 In the test code at the bottom of the file, we now need to qualify the names of the types when used outside the namespace, e.g. `Validation.LettersOnlyValidator`.
 
 ## Namespaced Validators
-<b><a href="#table-of-contents">↥ back to top</a></b>
 
 ```ts
 namespace Validation {
-    export interface StringValidator {
-        isAcceptable(s: string): boolean;
-    }
+  export interface StringValidator {
+    isAcceptable(s: string): boolean;
+  }
 
-    const lettersRegexp = /^[A-Za-z]+$/;
-    const numberRegexp = /^[0-9]+$/;
+  const lettersRegexp = /^[A-Za-z]+$/;
+  const numberRegexp = /^[0-9]+$/;
 
-    export class LettersOnlyValidator implements StringValidator {
-        isAcceptable(s: string) {
-            return lettersRegexp.test(s);
-        }
+  export class LettersOnlyValidator implements StringValidator {
+    isAcceptable(s: string) {
+      return lettersRegexp.test(s);
     }
+  }
 
-    export class ZipCodeValidator implements StringValidator {
-        isAcceptable(s: string) {
-            return s.length === 5 && numberRegexp.test(s);
-        }
+  export class ZipCodeValidator implements StringValidator {
+    isAcceptable(s: string) {
+      return s.length === 5 && numberRegexp.test(s);
     }
+  }
 }
 
 // Some samples to try
 let strings = ["Hello", "98052", "101"];
 
 // Validators to use
-let validators: { [s: string]: Validation.StringValidator; } = {};
+let validators: { [s: string]: Validation.StringValidator } = {};
 validators["ZIP code"] = new Validation.ZipCodeValidator();
 validators["Letters only"] = new Validation.LettersOnlyValidator();
 
 // Show whether each string passed each validator
 for (let s of strings) {
-    for (let name in validators) {
-        console.log(`"${ s }" - ${ validators[name].isAcceptable(s) ? "matches" : "does not match" } ${ name }`);
-    }
+  for (let name in validators) {
+    console.log(
+      `"${s}" - ${
+        validators[name].isAcceptable(s) ? "matches" : "does not match"
+      } ${name}`
+    );
+  }
 }
 ```
 
 # Splitting Across Files
-<b><a href="#table-of-contents">↥ back to top</a></b>
 
 As our application grows, we'll want to split the code across multiple files to make it easier to maintain.
 
 ## Multi-file namespaces
-<b><a href="#table-of-contents">↥ back to top</a></b>
 
 Here, we'll split our `Validation` namespace across many files.
 Even though the files are separate, they can each contribute to the same namespace and can be consumed as if they were all defined in one place.
@@ -149,9 +129,9 @@ Our test code is otherwise unchanged.
 
 ```ts
 namespace Validation {
-    export interface StringValidator {
-        isAcceptable(s: string): boolean;
-    }
+  export interface StringValidator {
+    isAcceptable(s: string): boolean;
+  }
 }
 ```
 
@@ -160,12 +140,12 @@ namespace Validation {
 ```ts
 /// <reference path="Validation.ts" />
 namespace Validation {
-    const lettersRegexp = /^[A-Za-z]+$/;
-    export class LettersOnlyValidator implements StringValidator {
-        isAcceptable(s: string) {
-            return lettersRegexp.test(s);
-        }
+  const lettersRegexp = /^[A-Za-z]+$/;
+  export class LettersOnlyValidator implements StringValidator {
+    isAcceptable(s: string) {
+      return lettersRegexp.test(s);
     }
+  }
 }
 ```
 
@@ -174,12 +154,12 @@ namespace Validation {
 ```ts
 /// <reference path="Validation.ts" />
 namespace Validation {
-    const numberRegexp = /^[0-9]+$/;
-    export class ZipCodeValidator implements StringValidator {
-        isAcceptable(s: string) {
-            return s.length === 5 && numberRegexp.test(s);
-        }
+  const numberRegexp = /^[0-9]+$/;
+  export class ZipCodeValidator implements StringValidator {
+    isAcceptable(s: string) {
+      return s.length === 5 && numberRegexp.test(s);
     }
+  }
 }
 ```
 
@@ -194,15 +174,19 @@ namespace Validation {
 let strings = ["Hello", "98052", "101"];
 
 // Validators to use
-let validators: { [s: string]: Validation.StringValidator; } = {};
+let validators: { [s: string]: Validation.StringValidator } = {};
 validators["ZIP code"] = new Validation.ZipCodeValidator();
 validators["Letters only"] = new Validation.LettersOnlyValidator();
 
 // Show whether each string passed each validator
 for (let s of strings) {
-    for (let name in validators) {
-        console.log(`"${ s }" - ${ validators[name].isAcceptable(s) ? "matches" : "does not match" } ${ name }`);
-    }
+  for (let name in validators) {
+    console.log(
+      `"${s}" - ${
+        validators[name].isAcceptable(s) ? "matches" : "does not match"
+      } ${name}`
+    );
+  }
 }
 ```
 
@@ -227,14 +211,13 @@ If multiple JS files get produced, we'll need to use `<script>` tags on our webp
 ##### MyTestPage.html (excerpt)
 
 ```html
-    <script src="Validation.js" type="text/javascript" />
-    <script src="LettersOnlyValidator.js" type="text/javascript" />
-    <script src="ZipCodeValidator.js" type="text/javascript" />
-    <script src="Test.js" type="text/javascript" />
+<script src="Validation.js" type="text/javascript" />
+<script src="LettersOnlyValidator.js" type="text/javascript" />
+<script src="ZipCodeValidator.js" type="text/javascript" />
+<script src="Test.js" type="text/javascript" />
 ```
 
 # Aliases
-<b><a href="#table-of-contents">↥ back to top</a></b>
 
 Another way that you can simplify working with namespaces is to use `import q = x.y.z` to create shorter names for commonly-used objects.
 Not to be confused with the `import x = require("name")` syntax used to load modules, this syntax simply creates an alias for the specified symbol.
@@ -242,10 +225,10 @@ You can use these sorts of imports (commonly referred to as aliases) for any kin
 
 ```ts
 namespace Shapes {
-    export namespace Polygons {
-        export class Triangle { }
-        export class Square { }
-    }
+  export namespace Polygons {
+    export class Triangle {}
+    export class Square {}
+  }
 }
 
 import polygons = Shapes.Polygons;
@@ -257,7 +240,6 @@ This is similar to using `var`, but also works on the type and namespace meaning
 Importantly, for values, `import` is a distinct reference from the original symbol, so changes to an aliased `var` will not be reflected in the original variable.
 
 # Working with Other JavaScript Libraries
-<b><a href="#table-of-contents">↥ back to top</a></b>
 
 To describe the shape of libraries not written in TypeScript, we need to declare the API that the library exposes.
 Because most JavaScript libraries expose only a few top-level objects, namespaces are a good way to represent them.
@@ -268,7 +250,6 @@ If you're familiar with C/C++, you can think of these as `.h` files.
 Let's look at a few examples.
 
 ## Ambient Namespaces
-<b><a href="#table-of-contents">↥ back to top</a></b>
 
 The popular library D3 defines its functionality in a global object called `d3`.
 Because this library is loaded through a `<script>` tag (instead of a module loader), its declaration uses namespaces to define its shape.
@@ -279,23 +260,22 @@ For example, we could begin writing it as follows:
 
 ```ts
 declare namespace D3 {
-    export interface Selectors {
-        select: {
-            (selector: string): Selection;
-            (element: EventTarget): Selection;
-        };
-    }
+  export interface Selectors {
+    select: {
+      (selector: string): Selection;
+      (element: EventTarget): Selection;
+    };
+  }
 
-    export interface Event {
-        x: number;
-        y: number;
-    }
+  export interface Event {
+    x: number;
+    y: number;
+  }
 
-    export interface Base extends Selectors {
-        event: Event;
-    }
+  export interface Base extends Selectors {
+    event: Event;
+  }
 }
 
 declare var d3: D3.Base;
 ```
-

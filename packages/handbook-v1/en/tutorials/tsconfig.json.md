@@ -69,7 +69,7 @@ Example `tsconfig.json` files:
 
 ## Details
 
-The `"compilerOptions"` property can be omitted, in which case the compiler's defaults are used. See our full list of supported [Compiler Options](/v2/en/tsconfig).
+The `"compilerOptions"` property can be omitted, in which case the compiler's defaults are used. See our full list of supported [Compiler Options](/v2/tsconfig).
 
 ## Schema
 

@@ -3,175 +3,186 @@ title: TypeScript in 5 minutes
 layout: docs
 permalink: /docs/handbook/typescript-in-5-minutes.html
 ---
-Let's get started by building a simple web application with TypeScript.
 
-## Installing TypeScript
+TypeScript's goal is to layer a type system on top of JavaScript.
+This means if you know JavaScript, you already know a lot of TypeScript.
 
-There are two main ways to get the TypeScript tools:
+What you will not know are the extensions to TypeScript in the type-system.
+This tutorial is a 5 minute overview of the type-system.
 
-* Via npm (the Node.js package manager)
-* By installing TypeScript's Visual Studio plugins
+## Defining Types
 
-Visual Studio 2017 and Visual Studio 2015 Update 3 include TypeScript by default.
-If you didn't install TypeScript with Visual Studio, you can still [download it](/#download-links).
+You can define a type either through inference, or by explicitly using a `type`.
 
-For NPM users:
+Here is an example of creating an object which has an inferred type which includes `name: string` and `id: number`:
 
-```shell
-> npm install -g typescript
+```ts twoslash
+const user = {
+  name: "Hayes",
+  id: 0
+};
 ```
 
-## Building your first TypeScript file
+An explicit way to describe this object's shape is via a `type` declaration:
 
-In your editor, type the following JavaScript code in `greeter.ts`:
+```ts twoslash
+type User = {
+  name: string;
+  id: number;
+};
+```
+
+You can then declare that a JavaScript object conforms to that shape of your new `type` by using syntax like `: TypeName` after a variable declaration:
+
+```ts twoslash
+type User = {
+  name: string;
+  id: number;
+};
+// ---cut---
+const user: User = {
+  name: "Hayes",
+  id: 0
+};
+```
+
+TypeScript will warn you if you provide an object which doesn't match the type you have provided:
+
+```ts twoslash
+// @errors: 2322
+type User = {
+  name: string;
+  id: number;
+};
+
+const user: User = {
+  username: "Hayes",
+  id: 0
+};
+```
+
+Because JavaScript supports classes and object-orient programming, so does TypeScript - a type declaration can also be used with classes:
+
+```ts twoslash
+type User = {
+  name: string;
+  id: number;
+};
+
+class UserAccount {
+  name: string;
+  id: number;
+
+  constructor(name: string, id: number) {
+    this.name = name;
+    this.id = id;
+  }
+}
+
+const user: User = new UserAccount("Murphy", 1);
+```
+
+A type can be used to annotate functions in a few ways:
+
+```ts twoslash
+// @noErrors
+type User = {
+  name: string;
+  id: number;
+};
+// ---cut---
+function getAdminUser(): User {
+  //...
+}
+
+function deleteUser(user: User) {
+  // ...
+}
+```
+
+There are already a small set of primitive types available in JavaScript: `boolean`, `bigint`, `null`, `number`, `string`, `symbol`, `object` and `undefined`, which you can use in an interface. TypeScript extends this list with a few more. for example: `any` (allow anything), [`unknown`](/en/play#example/unknown-and-never) (ensure someone using this type declares what the type is), [`never`](/en/play#example/unknown-and-never) (it's not possible that this type could happen) `void` (a function which returns `undefined` or has no return value).
+
+## Composing Types
+
+TypeScript has three ways in which you can build complex types by working with many smaller types.
+
+### Unions
+
+A union is a way to declare that a type could be one of many types. For example, you could describe a `boolean` type as being either `true` or `false`:
+
+```ts twoslash
+type MyBool = true | false;
+```
+
+_Note:_ If you hover over `MyBool` above, you'll see that it is classed as `boolean` - that's an property of the Structural Type System, which we'll get to later.
+
+One of the most popular use-cases for union types is to describe a set of `string`s or `number`s [literal](/handbook/literal-types.html) which a value is allowed to be:
+
+```ts twoslash
+type WindowStates = "open" | "closed" | "minimized";
+type LockStates = "locked" | "unlocked";
+type OddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
+```
+
+### Intersections
+
+If a union type is an or ( `x || y` ), then an intersection type is an and `( x && y )`.
+TypeScript has intersection types to merge types together:
+
+```ts twoslash
+type APIResponse = {
+  success: boolean;
+  error?: { message: string };
+};
+
+type ArtworksData = {
+  artworks: { title: string }[];
+};
+
+type ArtistsData = {
+  artists: { name: string }[];
+};
+
+type ArtistResponse = APIResponse & ArtistsData;
+type ArtworkResponse = APIResponse & ArtworksData;
+```
+
+### Generics
+
+You can get very deep into the TypeScript generic system, but at a 1 minute high-level explanation, generics are a way to provide variables to types.
+
+A common example is an array, an array without generics could contain anything. An array with generics can describe what it holds in the array.
 
 ```ts
-function greeter(person) {
-    return "Hello, " + person;
-}
-
-let user = "Jane User";
-
-document.body.textContent = greeter(user);
+type StringArray = Array<string>;
+type NumberArray = Array<number>;
+type ObjectWithNameArray = Array<{ name: string }>;
 ```
 
-## Compiling your code
+You can declare your own types which use generics:
 
-We used a `.ts` extension, but this code is just JavaScript.
-You could have copy/pasted this straight out of an existing JavaScript app.
+```ts twoslash
+// @errors: 2345
+type Backpack<Type> = {
+  add: (obj: Type) => void;
+  get: () => Type;
+};
 
-At the command line, run the TypeScript compiler:
+// This line is a shortcut to tell TypeScript there is a
+// constant called `backpack`, and to not worry about where it came from
+declare const backpack: Backpack<string>;
 
-```shell
-tsc greeter.ts
+// object is a string, because we declared it above as the variable part of Backpack
+const object = backpack.get();
+
+// Due to this variable, you cannot pass a number to add
+backpack.add(23);
 ```
 
-The result will be a file `greeter.js` which contains the same JavaScript that you fed in.
-We're up and running using TypeScript in our JavaScript app!
+## Structural Type System
 
-Now we can start taking advantage of some of the new tools TypeScript offers.
-Add a `: string` type annotation to the 'person' function argument as shown here:
+One of TypeScript's core principles is that type checking focuses on the _shape_ that values have.
+This is sometimes called "duck typing" or "structural typing".
+This means that if two
 
-```ts
-function greeter(person: string) {
-    return "Hello, " + person;
-}
-
-let user = "Jane User";
-
-document.body.textContent = greeter(user);
-```
-
-## Type annotations
-
-Type annotations in TypeScript are lightweight ways to record the intended contract of the function or variable.
-In this case, we intend the greeter function to be called with a single string parameter.
-We can try changing the call greeter to pass an array instead:
-
-```ts
-function greeter(person: string) {
-    return "Hello, " + person;
-}
-
-let user = [0, 1, 2];
-
-document.body.textContent = greeter(user);
-```
-
-Re-compiling, you'll now see an error:
-
-```shell
-error TS2345: Argument of type 'number[]' is not assignable to parameter of type 'string'.
-```
-
-Similarly, try removing all the arguments to the greeter call.
-TypeScript will let you know that you have called this function with an unexpected number of parameters.
-In both cases, TypeScript can offer static analysis based on both the structure of your code, and the type annotations you provide.
-
-Notice that although there were errors, the `greeter.js` file is still created.
-You can use TypeScript even if there are errors in your code. But in this case, TypeScript is warning that your code will likely not run as expected.
-
-## Interfaces
-
-Let's develop our sample further. Here we use an interface that describes objects that have a firstName and lastName field.
-In TypeScript, two types are compatible if their internal structure is compatible.
-This allows us to implement an interface just by having the shape the interface requires, without an explicit `implements` clause.
-
-```ts
-interface Person {
-    firstName: string;
-    lastName: string;
-}
-
-function greeter(person: Person) {
-    return "Hello, " + person.firstName + " " + person.lastName;
-}
-
-let user = { firstName: "Jane", lastName: "User" };
-
-document.body.textContent = greeter(user);
-```
-
-## Classes
-
-Finally, let's extend the example one last time with classes.
-TypeScript supports new features in JavaScript, like support for class-based object-oriented programming.
-
-Here we're going to create a `Student` class with a constructor and a few public fields.
-Notice that classes and interfaces play well together, letting the programmer decide on the right level of abstraction.
-
-Also of note, the use of `public` on arguments to the constructor is a shorthand that allows us to automatically create properties with that name.
-
-```ts
-class Student {
-    fullName: string;
-    constructor(public firstName: string, public middleInitial: string, public lastName: string) {
-        this.fullName = firstName + " " + middleInitial + " " + lastName;
-    }
-}
-
-interface Person {
-    firstName: string;
-    lastName: string;
-}
-
-function greeter(person: Person) {
-    return "Hello, " + person.firstName + " " + person.lastName;
-}
-
-let user = new Student("Jane", "M.", "User");
-
-document.body.textContent = greeter(user);
-```
-
-Re-run `tsc greeter.ts` and you'll see the generated JavaScript is the same as the earlier code.
-Classes in TypeScript are just a shorthand for the same prototype-based OO that is frequently used in JavaScript.
-
-## Running your TypeScript web app
-
-Now type the following in `greeter.html`:
-
-```html
-<!DOCTYPE html>
-<html>
-    <head><title>TypeScript Greeter</title></head>
-    <body>
-        <script src="greeter.js"></script>
-    </body>
-</html>
-```
-
-Open `greeter.html` in the browser to run your first simple TypeScript web application!
-
-Optional: Open `greeter.ts` in Visual Studio, or copy the code into the TypeScript playground.
-You can hover over identifiers to see their types.
-Notice that in some cases these types are inferred automatically for you.
-Re-type the last line, and see completion lists and parameter help based on the types of the DOM elements.
-Put your cursor on the reference to the greeter function, and hit F12 to go to its definition.
-Notice, too, that you can right-click on a symbol and use refactoring to rename it.
-
-The type information provided works together with the tools to work with JavaScript at application scale.
-For more examples of what's possible in TypeScript, see the Samples section of the website.
-
-![Visual Studio picture](/assets/images/docs/greet_person.png)
-
+---- To be continued ----

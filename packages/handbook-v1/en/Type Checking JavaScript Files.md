@@ -3,6 +3,7 @@ title: Type Checking JavaScript Files
 layout: docs
 permalink: /docs/handbook/type-checking-javascript-files.html
 ---
+
 TypeScript 2.3 and later support type-checking and reporting errors in `.js` files with `--checkJs`.
 
 You can skip checking some files by adding a `// @ts-nocheck` comment to them; conversely, you can choose to check only a few `.js` files by adding a `// @ts-check` comment to them without setting `--checkJs`.
@@ -25,8 +26,8 @@ JSDoc annotations adorning a declaration will be used to set the type of that de
 /** @type {number} */
 var x;
 
-x = 0;      // OK
-x = false;  // Error: boolean is not assignable to number
+x = 0; // OK
+x = false; // Error: boolean is not assignable to number
 ```
 
 You can find the full list of supported JSDoc patterns [below](#supported-jsdoc).
@@ -42,18 +43,18 @@ Properties defined in the constructor are always assumed to exist, whereas ones 
 
 ```js
 class C {
-    constructor() {
-        this.constructorOnly = 0
-        this.constructorUnknown = undefined
-    }
-    method() {
-        this.constructorOnly = false // error, constructorOnly is a number
-        this.constructorUnknown = "plunkbat" // ok, constructorUnknown is string | undefined
-        this.methodOnly = 'ok'  // ok, but methodOnly could also be undefined
-    }
-    method2() {
-        this.methodOnly = true  // also, ok, methodOnly's type is string | boolean | undefined
-    }
+  constructor() {
+    this.constructorOnly = 0;
+    this.constructorUnknown = undefined;
+  }
+  method() {
+    this.constructorOnly = false; // error, constructorOnly is a number
+    this.constructorUnknown = "plunkbat"; // ok, constructorUnknown is string | undefined
+    this.methodOnly = "ok"; // ok, but methodOnly could also be undefined
+  }
+  method2() {
+    this.methodOnly = true; // also, ok, methodOnly's type is string | boolean | undefined
+  }
 }
 ```
 
@@ -63,17 +64,17 @@ You don't even have to give a value if it will be initialised later:
 
 ```js
 class C {
-    constructor() {
-        /** @type {number | undefined} */
-        this.prop = undefined;
-        /** @type {number | undefined} */
-        this.count;
-    }
+  constructor() {
+    /** @type {number | undefined} */
+    this.prop = undefined;
+    /** @type {number | undefined} */
+    this.count;
+  }
 }
 
 let c = new C();
-c.prop = 0;          // OK
-c.count = "string";  // Error: string is not assignable to number|undefined
+c.prop = 0; // OK
+c.count = "string"; // Error: string is not assignable to number|undefined
 ```
 
 ## Constructor functions are equivalent to classes
@@ -84,13 +85,13 @@ The property inference rules described above work exactly the same way.
 
 ```js
 function C() {
-    this.constructorOnly = 0
-    this.constructorUnknown = undefined
+  this.constructorOnly = 0;
+  this.constructorUnknown = undefined;
 }
 C.prototype.method = function() {
-    this.constructorOnly = false // error
-    this.constructorUnknown = "plunkbat" // OK, the type is string | undefined
-}
+  this.constructorOnly = false; // error
+  this.constructorUnknown = "plunkbat"; // OK, the type is string | undefined
+};
 ```
 
 ## CommonJS modules are supported
@@ -105,8 +106,8 @@ const fs = require("fs");
 
 // same as `export function readFile`
 module.exports.readFile = function(f) {
-    return fs.readFileSync(f);
-}
+  return fs.readFileSync(f);
+};
 ```
 
 The module support in Javascript is much more syntactically forgiving than Typescript's module support.
@@ -118,47 +119,45 @@ Classes are namespaces in `.js` files.
 This can be used to nest classes, for example:
 
 ```js
-class C {
-}
-C.D = class {
-}
+class C {}
+C.D = class {};
 ```
 
 And, for pre-ES2015 code, it can be used to simulate static methods:
 
 ```js
 function Outer() {
-  this.y = 2
+  this.y = 2;
 }
 Outer.Inner = function() {
-  this.yy = 2
-}
+  this.yy = 2;
+};
 ```
 
 It can also be used to create simple namespaces:
 
 ```js
-var ns = {}
-ns.C = class {
-}
-ns.func = function() {
-}
+var ns = {};
+ns.C = class {};
+ns.func = function() {};
 ```
 
 Other variants are allowed as well:
 
 ```js
 // IIFE
-var ns = (function (n) {
+var ns = (function(n) {
   return n || {};
 })();
-ns.CONST = 1
+ns.CONST = 1;
 
 // defaulting to global
-var assign = assign || function() {
-  // code goes here
-}
-assign.extra = 1
+var assign =
+  assign ||
+  function() {
+    // code goes here
+  };
+assign.extra = 1;
 ```
 
 ## Object literals are open-ended
@@ -170,7 +169,7 @@ For instance:
 
 ```js
 var obj = { a: 1 };
-obj.b = 2;  // Allowed
+obj.b = 2; // Allowed
 ```
 
 Object literals behave as if they have an index signature `[x:string]: any` that allows them to be treated as open maps instead of closed objects.
@@ -180,7 +179,7 @@ Like other special JS checking behaviors, this behavior can be changed by specif
 ```js
 /** @type {{a: number}} */
 var obj = { a: 1 };
-obj.b = 2;  // Error, type {a: number} does not have property b
+obj.b = 2; // Error, type {a: number} does not have property b
 ```
 
 ## null, undefined, and empty array initializers are of type any or any[]
@@ -191,10 +190,10 @@ The only exception is for properties that have multiple initializers as describe
 
 ```js
 function Foo(i = null) {
-    if (!i) i = 1;
-    var j = undefined;
-    j = 2;
-    this.l = [];
+  if (!i) i = 1;
+  var j = undefined;
+  j = 2;
+  this.l = [];
 }
 var foo = new Foo();
 foo.l.push(foo.i);
@@ -212,10 +211,10 @@ For instance:
 
 ```js
 function bar(a, b) {
-    console.log(a + " " + b);
+  console.log(a + " " + b);
 }
 
-bar(1);       // OK, second argument considered optional
+bar(1); // OK, second argument considered optional
 bar(1, 2);
 bar(1, 2, 3); // Error, too many arguments
 ```
@@ -228,10 +227,10 @@ Use JSDoc optional parameter syntax to express optionality. e.g.:
  * @param {string} [somebody] - Somebody's name.
  */
 function sayHello(somebody) {
-    if (!somebody) {
-        somebody = 'John Doe';
-    }
-    console.log('Hello ' + somebody);
+  if (!somebody) {
+    somebody = "John Doe";
+  }
+  console.log("Hello " + somebody);
 }
 
 sayHello();
@@ -244,11 +243,11 @@ A function whose body has a reference to the `arguments` reference is implicitly
 ```js
 /** @param {...number} args */
 function sum(/* numbers */) {
-    var total = 0
-    for (var i = 0; i < arguments.length; i++) {
-      total += arguments[i]
-    }
-    return total
+  var total = 0;
+  for (var i = 0; i < arguments.length; i++) {
+    total += arguments[i];
+  }
+  return total;
 }
 ```
 
@@ -265,9 +264,9 @@ In a `.js` file, there is no legal way to specify these in the extends clause. B
 import { Component } from "react";
 
 class MyComponent extends Component {
-    render() {
-        this.props.b; // Allowed, since this.props is of type any
-    }
+  render() {
+    this.props.b; // Allowed, since this.props is of type any
+  }
 }
 ```
 
@@ -280,9 +279,9 @@ import { Component } from "react";
  * @augments {Component<{a: number}, State>}
  */
 class MyComponent extends Component {
-    render() {
-        this.props.b; // Error: b does not exist on {a:number}
-    }
+  render() {
+    this.props.b; // Error: b does not exist on {a:number}
+  }
 }
 ```
 
@@ -294,15 +293,14 @@ An unspecified type argument in JSDoc defaults to any:
 /** @type{Array} */
 var x = [];
 
-x.push(1);        // OK
+x.push(1); // OK
 x.push("string"); // OK, x is of type Array<any>
 
 /** @type{Array.<number>} */
 var y = [];
 
-y.push(1);        // OK
+y.push(1); // OK
 y.push("string"); // Error, string is not assignable to number
-
 ```
 
 ### In function calls
@@ -310,7 +308,9 @@ y.push("string"); // Error, string is not assignable to number
 A call to a generic function uses the arguments to infer the type parameters. Sometimes this process fails to infer any types, mainly because of lack of inference sources; in these cases, the type parameters will default to `any`. For example:
 
 ```js
-var p = new Promise((resolve, reject) => { reject() });
+var p = new Promise((resolve, reject) => {
+  reject();
+});
 
 p; // Promise<any>;
 ```
@@ -321,16 +321,16 @@ The list below outlines which constructs are currently supported when using JSDo
 
 Note any tags which are not explicitly listed below (such as `@async`) are not yet supported.
 
-* `@type`
-* `@param` (or `@arg` or `@argument`)
-* `@returns` (or `@return`)
-* `@typedef`
-* `@callback`
-* `@template`
-* `@class` (or `@constructor`)
-* `@this`
-* `@extends` (or `@augments`)
-* `@enum`
+- `@type`
+- `@param` (or `@arg` or `@argument`)
+- `@returns` (or `@return`)
+- `@typedef`
+- `@callback`
+- `@template`
+- `@class` (or `@constructor`)
+- `@this`
+- `@extends` (or `@augments`)
+- `@enum`
 
 The meaning is usually the same, or a superset, of the meaning of the tag given at usejsdoc.org.
 The code below describes the differences and gives some example usage of each tag.
@@ -355,8 +355,7 @@ var promisedString;
 // You can specify an HTML Element with DOM properties
 /** @type {HTMLElement} */
 var myElement = document.querySelector(selector);
-element.dataset.myData = '';
-
+element.dataset.myData = "";
 ```
 
 `@type` can specify a union type &mdash; for example, something can be either a string or a boolean.
@@ -453,7 +452,7 @@ This lets you cast types to other types by adding a `@type` tag before any paren
  * @type {number | string}
  */
 var numberOrString = Math.random() < 0.5 ? "hello" : 100;
-var typeAssertedNumber = /** @type {number} */ (numberOrString)
+var typeAssertedNumber = /** @type {number} */ (numberOrString);
 ```
 
 ### Import types
@@ -466,7 +465,7 @@ This syntax is Typescript-specific and differs from the JSDoc standard:
  * @param p { import("./a").Pet }
  */
 function walk(p) {
-    console.log(`Walking ${p.name}...`);
+  console.log(`Walking ${p.name}...`);
 }
 ```
 
@@ -507,7 +506,7 @@ The parameter may also be declared optional by surrounding the name with square 
  * @param {string} [p4="test"] - An optional param with a default value
  * @return {string} This is the result
  */
-function stringsStringStrings(p1, p2, p3, p4){
+function stringsStringStrings(p1, p2, p3, p4) {
   // TODO
 }
 ```
@@ -518,12 +517,12 @@ Likewise, for the return type of a function:
 /**
  * @return {PromiseLike<string>}
  */
-function ps(){}
+function ps() {}
 
 /**
  * @returns {{ a: string, b: number }} - May use '@returns' as well as '@return'
  */
-function ab(){}
+function ab() {}
 ```
 
 ## `@typedef`, `@callback`, and `@param`
@@ -604,7 +603,9 @@ You can declare generic types with the `@template` tag:
  * @param {T} x - A generic parameter that flows through to the return type
  * @return {T}
  */
-function id(x){ return x }
+function id(x) {
+  return x;
+}
 ```
 
 Use comma or multiple tags to declare multiple type parameters:
@@ -647,9 +648,9 @@ function C(data) {
 /**
  * @param {string} s
  */
-C.prototype.initialize = function (s) {
-  this.size = s.length
-}
+C.prototype.initialize = function(s) {
+  this.size = s.length;
+};
 
 var c = new C(0);
 var result = C(1); // C should only be called with new
@@ -669,7 +670,7 @@ The compiler can usually figure out the type of `this` when it has some context 
  * @param {*} e
  */
 function callbackForLater(e) {
-    this.clientHeight = parseInt(e) // should be fine!
+  this.clientHeight = parseInt(e); // should be fine!
 }
 ```
 
@@ -698,8 +699,8 @@ The `@enum` tag allows you to create an object literal whose members are all of 
 const JSDocState = {
   BeginningOfLine: 0,
   SawAsterisk: 1,
-  SavingComments: 2,
-}
+  SavingComments: 2
+};
 ```
 
 Note that `@enum` is quite different from, and much simpler than, Typescript's `enum`. However, unlike Typescript's enums, `@enum` can have any type:
@@ -709,8 +710,8 @@ Note that `@enum` is quite different from, and much simpler than, Typescript's `
 const Math = {
   add1: n => n + 1,
   id: n => -n,
-  sub1: n => n - 1,
-}
+  sub1: n => n - 1
+};
 ```
 
 ## More examples
@@ -720,20 +721,20 @@ var someObj = {
   /**
    * @param {string} param1 - Docs on property assignments work
    */
-  x: function(param1){}
+  x: function(param1) {}
 };
 
 /**
  * As do docs on variable assignments
  * @return {Window}
  */
-let someFunc = function(){};
+let someFunc = function() {};
 
 /**
  * And class methods
  * @param {string} greeting The greeting to use
  */
-Foo.prototype.sayHi = (greeting) => console.log("Hi!");
+Foo.prototype.sayHi = greeting => console.log("Hi!");
 
 /**
  * And arrow functions expressions
@@ -745,7 +746,7 @@ let myArrow = x => x * x;
  * Which means it works for stateless function components in JSX too
  * @param {{a: string, b: number}} test - Some param
  */
-var fc = (test) => <div>{test.a.charAt(0)}</div>;
+var fc = test => <div>{test.a.charAt(0)}</div>;
 
 /**
  * A parameter can be a class constructor, using Closure syntax.
@@ -757,7 +758,7 @@ function registerClass(C) {}
 /**
  * @param {...string} p1 - A 'rest' arg (array) of strings. (treated as 'any')
  */
-function fn10(p1){}
+function fn10(p1) {}
 
 /**
  * @param {...string} p1 - A 'rest' arg (array) of strings. (treated as 'any')
@@ -772,9 +773,7 @@ function fn9(p1) {
 Referring to objects in the value space as types doesn't work unless the object also creates a type, like a constructor function.
 
 ```js
-function aNormalFunction() {
-
-}
+function aNormalFunction() {}
 /**
  * @type {aNormalFunction}
  */
@@ -824,4 +823,3 @@ var normal;
 Unlike JSDoc's type system, Typescript only allows you to mark types as containing null or not.
 There is no explicit non-nullability -- if strictNullChecks is on, then `number` is not nullable.
 If it is off, then `number` is nullable.
-

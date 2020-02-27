@@ -3,7 +3,7 @@ import { graphql } from "gatsby"
 import { GetHandbookBySlugQuery } from "../__generated__/gatsby-types"
 import { Layout } from "../components/layout"
 import { Sidebar, SidebarToggleButton } from "../components/layout/Sidebar"
-import { oldHandbookNavigation } from "../lib/oldNavigation"
+import { oldHandbookNavigation } from "../lib/oldHandbookNavigation"
 import { Intl } from "../components/Intl"
 
 // This dependency is used in gatsby-remark-autolink-headers to generate the slugs

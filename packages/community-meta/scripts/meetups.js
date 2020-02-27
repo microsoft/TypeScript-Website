@@ -28,18 +28,21 @@ const meetups = [
     url: 'https://www.meetup.com/Hamburg-TypeScript-Meetup-Group',
     image: 'hamburg-ts.png',
     country: '🇩🇪',
+    continentish: 'Europe',
   },
   {
     title: 'Krakow TypeScript User Group',
     url: 'https://www.meetup.com/typescript-krakow',
     image: 'ktug.jpg',
     country: '🇵🇱',
+    continentish: 'Europe',
   },
   {
     title: 'Melbourne TypeScript',
     url: 'https://www.meetup.com/Melbourne-TypeScript-Meetup',
     image: 'melbourne.jpg',
     country: '🇦🇺',
+    continentish: 'Europe',
   },
   {
     title: 'Milano TS',
@@ -47,12 +50,14 @@ const meetups = [
     url: 'https://www.meetup.com/MilanoTS/',
     image: 'milano-ts.jpg',
     country: '🇮🇹',
+    continentish: 'Europe',
   },
   {
     title: 'Seattle TypeScript',
     url: 'https://www.meetup.com/seattle-ts',
     image: 'seattle.jpg',
     country: '🇺🇸',
+    continentish: 'North America',
   },
   {
     title: 'Sevilla TypeScript',
@@ -60,13 +65,14 @@ const meetups = [
     url: 'https://www.meetup.com/Sevilla-TypeScript',
     image: 'sqvts.jpg',
     country: '🇪🇸',
+    continentish: 'Europe',
   },
-
   {
     title: 'San Francisco TypeScript Meetup',
     url: 'https://www.meetup.com/San-Francisco-TypeScript-Meetup',
     image: 'san-fran-ts.jpg',
     country: '🇺🇸',
+    continentish: 'North America',
   },
   {
     title: 'Sydney TypeScript',
@@ -74,12 +80,14 @@ const meetups = [
     url: 'https://www.meetup.com/Sydney-TypeScript',
     image: 'sydney.jpg',
     country: '🇦🇺',
+    continentish: 'Australia',
   },
   {
     title: 'TypeScript NYC',
     url: 'https://www.meetup.com/TypeScriptNYC',
     image: 'typescript-nyc.jpg',
     country: '🇺🇸',
+    continentish: 'North America',
   },
   {
     title: 'Typescript Brazil Meetup',
@@ -87,6 +95,7 @@ const meetups = [
     url: 'https://www.meetup.com/typescriptbr',
     image: 'brazil-ts.jpg',
     country: '🇧🇷',
+    continentish: 'South America',
   },
   {
     title: 'TypeScript JP',
@@ -94,6 +103,7 @@ const meetups = [
     url: 'https://typescript-jp.dev',
     image: 'typescript-jp.jpg',
     country: '🇯🇵',
+    continentish: 'Asia',
   },
   {
     title: 'Paris TypeScript',
@@ -101,12 +111,14 @@ const meetups = [
     url: 'https://www.meetup.com/Paris-Typescript',
     image: 'paris-ts.jpg',
     country: '🇫🇷',
+    continentish: 'Europe',
   },
   {
     title: 'Phoenix TypeScript',
     url: 'https://www.meetup.com/Phoenix-TypeScript',
     image: 'phx-ts.jpg',
     country: '🇺🇸',
+    continentish: 'North America',
   },
   {
     title: 'Wroclaw TypeScript',
@@ -115,6 +127,7 @@ const meetups = [
     meetup: 'https://www.meetup.com/WrocTypeScript',
     image: 'wroclaw-ts.jpg',
     country: '🇵🇱',
+    continentish: 'Europe',
   },
 ]
 

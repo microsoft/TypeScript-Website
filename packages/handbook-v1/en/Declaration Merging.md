@@ -3,6 +3,7 @@ title: Declaration Merging
 layout: docs
 permalink: /docs/handbook/declaration-merging.html
 ---
+
 # Introduction
 
 Some of the unique concepts in TypeScript describe the shape of JavaScript objects at the type level.
@@ -22,12 +23,12 @@ Type-creating declarations do just that: they create a type that is visible with
 Lastly, value-creating declarations create values that are visible in the output JavaScript.
 
 | Declaration Type | Namespace | Type | Value |
-|------------------|:---------:|:----:|:-----:|
+| ---------------- | :-------: | :--: | :---: |
 | Namespace        |     X     |      |   X   |
-| Class            |           |   X  |   X   |
-| Enum             |           |   X  |   X   |
-| Interface        |           |   X  |       |
-| Type Alias       |           |   X  |       |
+| Class            |           |  X   |   X   |
+| Enum             |           |  X   |   X   |
+| Interface        |           |  X   |       |
+| Type Alias       |           |  X   |       |
 | Function         |           |      |   X   |
 | Variable         |           |      |   X   |
 
@@ -40,15 +41,15 @@ At the most basic level, the merge mechanically joins the members of both declar
 
 ```ts
 interface Box {
-    height: number;
-    width: number;
+  height: number;
+  width: number;
 }
 
 interface Box {
-    scale: number;
+  scale: number;
 }
 
-let box: Box = {height: 5, width: 6, scale: 10};
+let box: Box = { height: 5, width: 6, scale: 10 };
 ```
 
 Non-function members of the interfaces should be unique.
@@ -62,16 +63,16 @@ That is, in the example:
 
 ```ts
 interface Cloner {
-    clone(animal: Animal): Animal;
+  clone(animal: Animal): Animal;
 }
 
 interface Cloner {
-    clone(animal: Sheep): Sheep;
+  clone(animal: Sheep): Sheep;
 }
 
 interface Cloner {
-    clone(animal: Dog): Dog;
-    clone(animal: Cat): Cat;
+  clone(animal: Dog): Dog;
+  clone(animal: Cat): Cat;
 }
 ```
 
@@ -79,31 +80,31 @@ The three interfaces will merge to create a single declaration as so:
 
 ```ts
 interface Cloner {
-    clone(animal: Dog): Dog;
-    clone(animal: Cat): Cat;
-    clone(animal: Sheep): Sheep;
-    clone(animal: Animal): Animal;
+  clone(animal: Dog): Dog;
+  clone(animal: Cat): Cat;
+  clone(animal: Sheep): Sheep;
+  clone(animal: Animal): Animal;
 }
 ```
 
 Notice that the elements of each group maintains the same order, but the groups themselves are merged with later overload sets ordered first.
 
 One exception to this rule is specialized signatures.
-If a signature has a parameter whose type is a *single* string literal type (e.g. not a union of string literals), then it will be bubbled toward the top of its merged overload list.
+If a signature has a parameter whose type is a _single_ string literal type (e.g. not a union of string literals), then it will be bubbled toward the top of its merged overload list.
 
 For instance, the following interfaces will merge together:
 
 ```ts
 interface Document {
-    createElement(tagName: any): Element;
+  createElement(tagName: any): Element;
 }
 interface Document {
-    createElement(tagName: "div"): HTMLDivElement;
-    createElement(tagName: "span"): HTMLSpanElement;
+  createElement(tagName: "div"): HTMLDivElement;
+  createElement(tagName: "span"): HTMLSpanElement;
 }
 interface Document {
-    createElement(tagName: string): HTMLElement;
-    createElement(tagName: "canvas"): HTMLCanvasElement;
+  createElement(tagName: string): HTMLElement;
+  createElement(tagName: "canvas"): HTMLCanvasElement;
 }
 ```
 
@@ -111,11 +112,11 @@ The resulting merged declaration of `Document` will be the following:
 
 ```ts
 interface Document {
-    createElement(tagName: "canvas"): HTMLCanvasElement;
-    createElement(tagName: "div"): HTMLDivElement;
-    createElement(tagName: "span"): HTMLSpanElement;
-    createElement(tagName: string): HTMLElement;
-    createElement(tagName: any): Element;
+  createElement(tagName: "canvas"): HTMLCanvasElement;
+  createElement(tagName: "div"): HTMLDivElement;
+  createElement(tagName: "span"): HTMLSpanElement;
+  createElement(tagName: string): HTMLElement;
+  createElement(tagName: any): Element;
 }
 ```
 
@@ -132,12 +133,14 @@ The declaration merge of `Animals` in this example:
 
 ```ts
 namespace Animals {
-    export class Zebra { }
+  export class Zebra {}
 }
 
 namespace Animals {
-    export interface Legged { numberOfLegs: number; }
-    export class Dog { }
+  export interface Legged {
+    numberOfLegs: number;
+  }
+  export class Dog {}
 }
 ```
 
@@ -145,10 +148,12 @@ is equivalent to:
 
 ```ts
 namespace Animals {
-    export interface Legged { numberOfLegs: number; }
+  export interface Legged {
+    numberOfLegs: number;
+  }
 
-    export class Zebra { }
-    export class Dog { }
+  export class Zebra {}
+  export class Dog {}
 }
 ```
 
@@ -159,17 +164,17 @@ We can see this more clearly in this example:
 
 ```ts
 namespace Animal {
-    let haveMuscles = true;
+  let haveMuscles = true;
 
-    export function animalsHaveMuscles() {
-        return haveMuscles;
-    }
+  export function animalsHaveMuscles() {
+    return haveMuscles;
+  }
 }
 
 namespace Animal {
-    export function doAnimalsHaveMuscles() {
-        return haveMuscles;  // Error, because haveMuscles is not accessible here
-    }
+  export function doAnimalsHaveMuscles() {
+    return haveMuscles; // Error, because haveMuscles is not accessible here
+  }
 }
 ```
 
@@ -188,10 +193,10 @@ This gives the user a way of describing inner classes.
 
 ```ts
 class Album {
-    label: Album.AlbumLabel;
+  label: Album.AlbumLabel;
 }
 namespace Album {
-    export class AlbumLabel { }
+  export class AlbumLabel {}
 }
 ```
 
@@ -204,12 +209,12 @@ TypeScript uses declaration merging to build up definitions like this in a type-
 
 ```ts
 function buildLabel(name: string): string {
-    return buildLabel.prefix + name + buildLabel.suffix;
+  return buildLabel.prefix + name + buildLabel.suffix;
 }
 
 namespace buildLabel {
-    export let suffix = "";
-    export let prefix = "Hello, ";
+  export let suffix = "";
+  export let prefix = "Hello, ";
 }
 
 console.log(buildLabel("Sam Smith"));
@@ -219,26 +224,23 @@ Similarly, namespaces can be used to extend enums with static members:
 
 ```ts
 enum Color {
-    red = 1,
-    green = 2,
-    blue = 4
+  red = 1,
+  green = 2,
+  blue = 4
 }
 
 namespace Color {
-    export function mixColor(colorName: string) {
-        if (colorName == "yellow") {
-            return Color.red + Color.green;
-        }
-        else if (colorName == "white") {
-            return Color.red + Color.green + Color.blue;
-        }
-        else if (colorName == "magenta") {
-            return Color.red + Color.blue;
-        }
-        else if (colorName == "cyan") {
-            return Color.green + Color.blue;
-        }
+  export function mixColor(colorName: string) {
+    if (colorName == "yellow") {
+      return Color.red + Color.green;
+    } else if (colorName == "white") {
+      return Color.red + Color.green + Color.blue;
+    } else if (colorName == "magenta") {
+      return Color.red + Color.blue;
+    } else if (colorName == "cyan") {
+      return Color.green + Color.blue;
     }
+  }
 }
 ```
 
@@ -253,18 +255,17 @@ For information on mimicking class merging, see the [Mixins in TypeScript](./Mix
 Although JavaScript modules do not support merging, you can patch existing objects by importing and then updating them.
 Let's look at a toy Observable example:
 
-
 ```ts
 // observable.ts
 export class Observable<T> {
-    // ... implementation left as an exercise for the reader ...
+  // ... implementation left as an exercise for the reader ...
 }
 
 // map.ts
 import { Observable } from "./observable";
-Observable.prototype.map = function (f) {
-    // ... another exercise for the reader
-}
+Observable.prototype.map = function(f) {
+  // ... another exercise for the reader
+};
 ```
 
 This works fine in TypeScript too, but the compiler doesn't know about `Observable.prototype.map`.
@@ -273,20 +274,19 @@ You can use module augmentation to tell the compiler about it:
 ```ts
 // observable.ts
 export class Observable<T> {
-    // ... implementation left as an exercise for the reader ...
+  // ... implementation left as an exercise for the reader ...
 }
 
 // map.ts
 import { Observable } from "./observable";
 declare module "./observable" {
-    interface Observable<T> {
-        map<U>(f: (x: T) => U): Observable<U>;
-    }
+  interface Observable<T> {
+    map<U>(f: (x: T) => U): Observable<U>;
+  }
 }
-Observable.prototype.map = function (f) {
-    // ... another exercise for the reader
-}
-
+Observable.prototype.map = function(f) {
+  // ... another exercise for the reader
+};
 
 // consumer.ts
 import { Observable } from "./observable";
@@ -299,7 +299,7 @@ The module name is resolved the same way as module specifiers in `import`/`expor
 See [Modules](./Modules.md) for more information.
 Then the declarations in an augmentation are merged as if they were declared in the same file as the original.
 
-However, there are two limitations to keep in mind: 
+However, there are two limitations to keep in mind:
 
 1. You can't declare new top-level declarations in the augmentation -- just patches to existing declarations.
 2. Default exports also cannot be augmented, only named exports (since you need to augment an export by its exported name, and `default` is a reserved word - see [#14080](https://github.com/Microsoft/TypeScript/issues/14080) for details)
@@ -311,19 +311,18 @@ You can also add declarations to the global scope from inside a module:
 ```ts
 // observable.ts
 export class Observable<T> {
-    // ... still no implementation ...
+  // ... still no implementation ...
 }
 
 declare global {
-    interface Array<T> {
-        toObservable(): Observable<T>;
-    }
+  interface Array<T> {
+    toObservable(): Observable<T>;
+  }
 }
 
-Array.prototype.toObservable = function () {
-    // ...
-}
+Array.prototype.toObservable = function() {
+  // ...
+};
 ```
 
 Global augmentations have the same behavior and limits as module augmentations.
-
