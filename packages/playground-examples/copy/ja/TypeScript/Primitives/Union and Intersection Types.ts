@@ -1,32 +1,32 @@
-// Type unions are a way of declaring that an object
-// could be more than one type.
+// 型共用体は、いくつかの型である可能性がある
+// オブジェクトを宣言する一つの方法です。
 
 type StringOrNumber = string | number;
 type ProcessStates = "open" | "closed";
 type OddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
 type AMessyUnion = "hello" | 156 | { error: true };
 
-// If the use of "open" and "closed" vs string is
-// new to you, check out: example:literals
+// "open" | "closed"を利用すること、string型を利用すること、
+// これらの対比が初見なら、example: literals を参照してください。
 
-// We can mix different types into a union, and
-// what we're saying is that the value is one of those types.
+// 共用体の中に、異なる型を混ぜあわせることができます。
+// そしてある値は、それらの型のうちの1つであるということを表せます。
 
-// TypeScript will then leave you to figure out how to
-// determine which value it could be at runtime.
+// そしてTypeScriptは、値が実行時にどうなり得るのか、
+// 決定する余地を残してくれます。
 
-// Unions can sometimes be undermined by type widening,
-// for example:
+// 共用体は、型の拡張によって損なわれることがあります。
+// 例：
 
 type WindowStates = "open" | "closed" | "minimized" | string;
 
-// If you hover above, you can see that WindowStates
-// becomes a string - not the union. This is covered in
-// example:type-widening-narrowing
+// これにカーソルを合わせると、WindowStatesが
+// 共用体ではなくstring型になっている様子を確認できます。
+// これについて example:type-widening-narrowing で解説しています。
 
-// If a union is an OR, then an intersection is an AND.
-// Intersection types are when two types intersect to create
-// a new type. This allows for type composition.
+// 共用体がOR条件であるならば、交差はAND条件です。
+// 交差型は、2つ以上の型が交差することで作成される、新しい型です。
+// これにより型の合成が可能になります。
 
 interface ErrorHandling {
   success: boolean;
@@ -41,13 +41,13 @@ interface ArtistsData {
   artists: { name: string }[];
 }
 
-// These interfaces can be composed in responses which have
-// both consistent error handling, and their own data.
+// これらのインターフェースは、一貫したエラー処理とそれぞれのデータ、
+// 両方を持ち合わせた型合成をすることができます。
 
 type ArtworksResponse = ArtworksData & ErrorHandling;
 type ArtistsResponse = ArtistsData & ErrorHandling;
 
-// For example:
+// 例：
 
 const handleArtistsResponse = (response: ArtistsResponse) => {
   if (response.error) {
@@ -58,9 +58,9 @@ const handleArtistsResponse = (response: ArtistsResponse) => {
   console.log(response.artists);
 };
 
-// A mix of Intersection and Union types becomes really
-// useful when you have cases where an object has to
-// include one of two values:
+// 交差型と共用体型の組み合わせは、
+// オブジェクトに2つの値のうちいずれかを含める必要がある
+// といった場合に、とても役立ちます。
 
 interface CreateArtistBioBase {
   artistID: string
@@ -68,10 +68,10 @@ interface CreateArtistBioBase {
 }
 
 type CreateArtistBioRequest
-   = CreateArtistBioBase & { html: string } | { markdown: string }
+  = CreateArtistBioBase & { html: string } | { markdown: string }
 
-// Now you can only create a request when you include
-// artistID and either html or markdown
+// これにより、artistIDと、htmlまたはmarkdownを含んでいる
+// リクエストのみを作成することができます。
 
 const workingRequest: CreateArtistBioRequest = {
   artistID: "banksy",
