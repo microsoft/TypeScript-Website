@@ -4,7 +4,7 @@ oneline: "Used to create an allowlist of types to be included in the compile"
 ---
 
 デフォルトでは、すべての_表示されている_"`@types`"パッケージがコンパイル時にインクルードされます。
-囲まれている任意のフォルダの`node_modules/@types`内のパッケージが_表示されている_とみなされます。
+プロジェクトを囲んでいる任意のフォルダの`node_modules/@types`内のパッケージが_表示されている_とみなされます。
 例えば、`./node_modules/@types/`、`../node_modules/@types/`、`../../node_modules/@types/`に存在するパッケージが該当します。
 
 `types`を設定すると、リストに列挙したパッケージのみがインクルードされます。例えば:

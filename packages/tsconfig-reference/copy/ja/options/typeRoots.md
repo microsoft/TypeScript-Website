@@ -4,7 +4,7 @@ oneline: "locations where TypeScript should look for type definitions"
 ---
 
 デフォルトでは、_表示されている_すべての"`@types`"パッケージがコンパイル時にインクルードされます。
-囲まれている任意のフォルダの`node_modules/@types`内のパッケージが_表示されている_とみなされます。
+プロジェクトを囲んでいる任意のフォルダの`node_modules/@types`内のパッケージが_表示されている_とみなされます。
 例えば、`./node_modules/@types/`、`../node_modules/@types/`、`../../node_modules/@types/`に存在するパッケージが該当します。
 
 `typeRoots`を設定すると、`typeRoots`配下のパッケージ_のみ_がインクルードされます。例えば:
