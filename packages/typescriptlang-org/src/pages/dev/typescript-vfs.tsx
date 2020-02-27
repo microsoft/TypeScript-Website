@@ -1,6 +1,6 @@
 import React from "react"
 import { Layout } from "../../components/layout"
-import { withPrefix, graphql } from "gatsby"
+import { withPrefix, graphql, Link } from "gatsby"
 
 import "./dev.scss"
 import { Intl } from "../../components/Intl"
@@ -14,38 +14,60 @@ type Props = {
 const Index: React.FC<Props> = (props) => {
   return (
     <>
-      <Layout title="Developers - TypeScript VFS" description="What is a TypeScript Playground Plugin, and how can you make one?" lang="en" allSitePage={props.data.allSitePage}>
+      <Layout title="Developers - TypeScript VFS" description="Run TypeScript in the browser, or anywhere - using a virtual file-system" lang="en" allSitePage={props.data.allSitePage}>
         <div id="dev">
-          <DevNav active="playground plugins" />
+          <DevNav active="typescript vfs" />
           <div className="raised content main-content-block">
             <div className="split-sixhundred">
-              <h1 style={{ marginTop: "0" }}>Run the Playground in the browser</h1>
-              <p>The new TypeScript Playground allows people to hook into the Playground and extend it in ways in which the TypeScript team don't expect.</p>
-              <p>The sidebar of the Playground uses the same plugin infrastructure as external plugins, so you have the same level of access as the playground to build interesting projects.</p>
-              <p>Playground plugins have no fancy frameworks, you're free to inject them at runtime and use them if you need to - but the current plugins are built with the DOM APIs and TypeScript.</p>
-              <p>&nbsp;</p>
-              <p>We have a template, and the Playground has a dev-mode for hooking directly to your local server, so you don't need to run a copy of the TypeScript website to have a working development environment.</p>
-              <p>There is a complex reference plugin called <a href="https://github.com/orta/playground-slides">Presentation Mode</a> which is available by default for you to investigate and understand.</p>
-              <p>If you have a polished plugin, let us know and we can add it to the default registry - making it visible to everyone easily.</p>
+              <h1 style={{ marginTop: "20px" }}>Easy access to the compiler API</h1>
+              <p>TypeScript VFS lets you create a self-contained TypeScript environment entirely under your control. This library is used to power the Playground, and provides the underlying tooling for <Link to="/dev/twoslash">twoslash</Link> code samples.</p>
+              <p>There are 3 main uses for TypeScript VFS:</p>
+              <ul>
+                <li>Creating a TypeScript Program as an entry-point to the compiler API</li>
+                <li>Running TypeScript to emit files like <code>*.js</code>, <code>*.d.ts</code> or <code>*.map</code></li>
+                <li>Using TypeScript's language service to make the same calls an editor would make</li>
+              </ul>
+              <p>You can learn more in the <a href="https://github.com/microsoft/TypeScript-Website/blob/v2/packages/typescript-vfs/">TypeScript VFS README</a></p>
             </div>
 
-            <div className="sixhundred" style={{ borderLeft: "1px solid gray" }}>
-              <img src={require("../../assets/playground-plugin-preview.png")} width="100%" />
-            </div>
-          </div>
+            <div className="sixhundred" style={{ borderLeft: "1px solid gray", padding: "20px" }}>
+              <h3>Setup with TypeScript from node_modules</h3>
+              <pre><code className="html-code">{`import ts from 'typescript'
+import tsvfs from 'typescript-vfs'
 
-          <div className="raised main-content-block">
-            <h2>Quick Tutorial</h2>
-            <p>You need about 5 minutes, Node.js, yarn and a Chromium based browser.</p>
-            <p><b>Step 1</b>: Use the template to bootstrap: <code>npm init typescript-playground-plugin playground-my-plugin</code></p>
-            <p><b>Step 2</b>: Run <code>yarn start</code> in the new repo, to start up the local dev server</p>
-            <p><b>Step 3</b>: Open the <a href={withPrefix("/play")}>playground</a> in your Chromium browser, click "Options" and enable <code>"Connect to localhost:5000/index.js"</code></p>
-            <p><b>Step 4</b>: Refresh, and see the new tab. That's your plugin up and running</p>
-            <p>&nbsp;</p>
-            <p>That's all the pieces working in tandem, now you can make changes to the template and build out your plugin. The plugin in dev mode will always become forefront when connected, so you can re-load without a lot off clicks. To understand the template's technology, read the <a href='https://github.com/microsoft/TypeScript-Website/blob/v2/packages/create-playground-plugin/template/CONTRIBUTING.md'>CONTRIBUTING.md</a></p>
+const fsMap = tsvfs.createDefaultMapFromNodeModules({ target: ts.ScriptTarget.ES2015 })
+fsMap.set('index.ts', 'console.log("Hello World")')
+
+// ....
+              `}</code></pre>
+
+              <h3>Use the TypeScript CDN to get your lib.d.ts files</h3>
+              <pre><code className="html-code">{`import ts from 'typescript'
+import tsvfs from 'typescript-vfs'
+
+const fsMap = await tsvfs.createDefaultMapFromCDN(compilerOptions, ts.version, true, ts)
+fsMap.set('index.ts', 'console.log("Hello World")')
+
+const system = tsvfs.createSystem(fsMap)
+const host = tsvfs.createVirtualCompilerHost(system, compilerOptions, ts)
+
+const program = ts.createProgram({
+  rootNames: [...fsMap.keys()],
+  options: compilerOptions,
+  host: host.compilerHost,
+})
+
+// This will update the fsMap with new files
+// for the .d.ts and .js files
+program.emit()
+
+// Now I can look at the AST for the .ts file too
+const index = program.getSourceFile('index.ts')
+              `}</code></pre>
+            </div>
           </div>
         </div>
-      </Layout>
+      </Layout >
     </>
   )
 }

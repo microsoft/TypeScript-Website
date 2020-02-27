@@ -19,10 +19,10 @@ const Index: React.FC<Props> = (props) => {
           <DevNav active="playground plugins" />
           <div className="raised content main-content-block">
             <div className="split-sixhundred">
-              <h1 style={{ marginTop: "0" }}>TypeScript VFS</h1>
-              <p>Want to .</p>
+              <h1 style={{ marginTop: "20px" }}>Your code, our sandbox</h1>
+              <p>The new TypeScript Playground allows people to hook into the Playground and extend it in ways in which the TypeScript team don't expect.</p>
               <p>The sidebar of the Playground uses the same plugin infrastructure as external plugins, so you have the same level of access as the playground to build interesting projects.</p>
-              <p>Playground plugins have no fancy frameworks, you're free to inject them at runtime and use them if you need to - but the current plugins are built with the DOM APIs and TypeScript.</p>
+              <p>Playground plugins use frameworks, you're free to inject them at runtime and use them if you need to - but the current plugins are built with the vanilla DOM APIs and TypeScript.</p>
               <p>&nbsp;</p>
               <p>We have a template, and the Playground has a dev-mode for hooking directly to your local server, so you don't need to run a copy of the TypeScript website to have a working development environment.</p>
               <p>There is a complex reference plugin called <a href="https://github.com/orta/playground-slides">Presentation Mode</a> which is available by default for you to investigate and understand.</p>
@@ -44,12 +44,13 @@ const Index: React.FC<Props> = (props) => {
             <p>&nbsp;</p>
             <p>That's all the pieces working in tandem, now you can make changes to the template and build out your plugin. The plugin in dev mode will always become forefront when connected, so you can re-load without a lot off clicks. To understand the template's technology, read the <a href='https://github.com/microsoft/TypeScript-Website/blob/v2/packages/create-playground-plugin/template/CONTRIBUTING.md'>CONTRIBUTING.md</a></p>
 
-            <h3>Bootstrap</h3>
-            <p>Alternatively, if you'd like to work with React or Svelte you can check out the following templates:</p>
+            <h2>Alternatives</h2>
+            <p>There are community-run templates for Playground plugins which bootstrap your plugin with well-known view libraries:</p>
             <ul>
-              <li><a href="https://github.com/gojutin/typescript-playground-plugin-react#typescript-playground-plugin-react">https://github.com/gojutin/typescript-playground-plugin-react</a></li>
-              <li><a href="https://github.com/gojutin/typescript-playground-plugin-svelte#typescript-playground-plugin-svelte">https://github.com/gojutin/typescript-playground-plugin-svelte</a></li>
+              <li><a href="https://github.com/gojutin/typescript-playground-plugin-react#typescript-playground-plugin-react">gojutin/typescript-playground-plugin-react</a></li>
+              <li><a href="https://github.com/gojutin/typescript-playground-plugin-svelte#typescript-playground-plugin-svelte">gojutin/typescript-playground-plugin-svelte</a></li>
             </ul>
+            <p>They have their own up-to-date documentation in their READMEs.</p>
           </div>
         </div>
       </Layout>
