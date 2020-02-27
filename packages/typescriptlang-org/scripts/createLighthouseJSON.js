@@ -22,7 +22,7 @@ const go = async () => {
         // from "https://www.typescriptlang.org/v2/docs/handbook/advanced-types.html",
         // to   "https://typescript-v2-" + prNumber + ".ortam.now.sh/docs/handbook/advanced-types.html",
         return url.replace(
-          "https://www.typescriptlang.org/v2/",
+          "https://www.typescriptlang.org/",
           "https://typescript-v2-" + prNumber + ".ortam.now.sh/"
         )
       })
@@ -55,7 +55,7 @@ const go = async () => {
       ci: {
         collect: {
           url: [
-            "https://typescript-v2-245.ortam.now.sh/",
+            sitemap,
             ...randomHandbooks(
               removeTypeScriptExamples(removeNonEnglish(urls))
             ),
