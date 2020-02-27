@@ -52,5 +52,5 @@ Before getting started with [Basic Types](/docs/handbook/basic-types.html), we r
 
 - [TypeScript for New Programmers](/docs/handbook/typescript-from-scratch-in-5-minutes.html)
 - [TypeScript for JavaScript Programmers](/docs/handbook/typescript-in-5-minutes.html)
-- [TypeScript for OOP Programmers](/docs/handbook/typescript-in-5-minutes-func.html)
+- [TypeScript for OOP Programmers](/docs/handbook/typescript-in-5-minutes-oop.html)
 - [TypeScript for Functional Programmers](/docs/handbook/typescript-in-5-minutes-func.html)

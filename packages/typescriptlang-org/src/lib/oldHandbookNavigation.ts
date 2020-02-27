@@ -2,6 +2,31 @@ import { NavItem } from "../components/layout/Sidebar"
 
 export const oldHandbookNavigation: NavItem[] = [
   {
+    title: "Get Started",
+    id: "get-started",
+    directory: "handbook",
+    index: "typescript-from-scratch-in-5-minutes",
+    items: [
+      {
+        id: "typescript-from-scratch-in-5-minutes",
+        title: "TypeScript for the New Programmer",
+      },
+      {
+        id: "typescript-in-5-minutes",
+        title: "TypeScript for JS Programmers",
+      },
+      {
+        id: "typescript-in-5-minutes-oop",
+        title: "TypeScript for OOP Programmers ",
+      },
+      {
+        id: "typescript-in-5-minutes-func",
+        title: "TypeScript for Functional Programmers",
+      },
+      { id: "typescript-tooling-in-5-minutes", title: "Tooling in 5 minutes" },
+    ],
+  },
+  {
     title: "Handbook",
     id: "handbook",
     directory: "handbook",
@@ -52,23 +77,6 @@ export const oldHandbookNavigation: NavItem[] = [
     directory: "handbook",
     index: "typescript-in-5-minutes",
     items: [
-      {
-        id: "typescript-from-scratch-in-5-minutes",
-        title: "TypeScript for the New Programmer",
-      },
-      {
-        id: "typescript-in-5-minutes",
-        title: "TypeScript for JS Programmers",
-      },
-      {
-        id: "typescript-in-5-minutes-oop",
-        title: "TypeScript for OOP Programmers ",
-      },
-      {
-        id: "typescript-in-5-minutes-func",
-        title: "TypeScript for Functional Programmers",
-      },
-      { id: "typescript-tooling-in-5-minutes", title: "Tooling in 5 minutes" },
       { id: "asp-net-core", title: "ASP.NET Core" },
       { id: "gulp", title: "Gulp" },
       { id: "migrating-from-javascript", title: "Migrating from JavaScript" },
