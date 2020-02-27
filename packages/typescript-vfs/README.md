@@ -203,5 +203,5 @@ const program = ts.createProgram({
 program.emit()
 
 // Now I can look at the AST for the .ts file too
-const index = program.getSourceFile('index.ts)
+const index = program.getSourceFile('index.ts')
 ```

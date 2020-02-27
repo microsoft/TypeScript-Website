@@ -7,7 +7,6 @@ html {
     background-color: $ts-dark-bg-color;
     color: white;
   }
-
   color: #333;
 }
 
@@ -36,11 +35,25 @@ html {
   h3 {
     margin-top: 2rem;
     margin-bottom: 1.5rem;
+    line-height: normal;
   }
 
   p,
   li {
     line-height: 1.4rem;
+  }
+
+  ul {
+    padding-left: 10px;
+    li {
+      margin-left: 10px;
+      margin-bottom: 10px;
+    }
+  }
+
+  p > code,
+  li > code {
+    background-color: rgb(241, 241, 254);
   }
 }
 

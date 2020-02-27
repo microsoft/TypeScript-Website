@@ -10,7 +10,7 @@ import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/dev-nav"
 import { isTouchDevice } from "../../lib/isTouchDevice"
 import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
-import { TwoSlashQuery} from "../../__generated__/gatsby-types"
+import { TwoSlashQuery } from "../../__generated__/gatsby-types"
 
 /** Note: to run all the web infra in debug, run:
   localStorage.debug = '*'
@@ -167,7 +167,7 @@ const Index: React.FC<Props> = (props) => {
           <div className="raised content main-content-block">
             <div className="split-fifty">
               <div>
-                <h1 style={{ marginTop: "0" }}>TypeScript Twoslash</h1>
+                <h1 style={{ marginTop: "20px" }}>TypeScript Twoslash</h1>
                 <p>A markup format for TypeScript code, ideal for creating self-contained code samples which let the TypeScript compiler do the extra leg-work.</p>
                 <p>If you know TypeScript, you basically know twoslash.</p>
                 <p>Twoslash adds the ability to declare tsconfig options inline, split a sample into multiple files and a few other useful commands. You can see the full API <a href="https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher">inside the README</a></p>
