@@ -16,7 +16,7 @@ export const playCopy = {
   play_sidebar_logs: "Logs",
   play_sidebar_logs_no_logs: "No logs",
   play_sidebar_options: "Options",
-  play_sidebar_options_restart_required: "Restart required",
+  play_sidebar_options_restart_required: "Browser Refresh Required",
   play_sidebar_options_disable_ata: "Disable ATA",
   play_sidebar_options_disable_ata_copy:
     "Disable the automatic acquisition of types for imports and requires.",

@@ -10,6 +10,7 @@ const languages = {
   ja: 220,
   pt: 233,
   es: 232,
+  zh: 296,
 }
 
 const go = async () => {
@@ -27,6 +28,7 @@ const go = async () => {
     const files = getAllTODOFiles(lang)
     const body = toMarkdown(files)
 
+    console.log("Updating: ", issueNumber)
     await octokit.issues.update({
       owner: "Microsoft",
       repo: "TypeScript-Website",

@@ -1,11 +1,10 @@
 ---
-title: TypeScript in 5 minutes
+title: TypeScript for JavaScript Programmers
 layout: docs
 permalink: /docs/handbook/typescript-in-5-minutes.html
 ---
 
-TypeScript's goal is to layer a type system on top of JavaScript.
-This means if you know JavaScript, you already know a lot of TypeScript.
+The relationship between TypeScript and JavaScript is rather unique among modern programming languages, though of all programmers JavaScript Programmers are the most used to the idea of language layering.
 
 What you will not know are the extensions to TypeScript in the type-system.
 This tutorial is a 5 minute overview of the type-system.
@@ -181,8 +180,49 @@ backpack.add(23);
 
 ## Structural Type System
 
-One of TypeScript's core principles is that type checking focuses on the _shape_ that values have.
+One of TypeScript's core principles is that type checking focuses on the _shape_ which values have.
 This is sometimes called "duck typing" or "structural typing".
-This means that if two
 
----- To be continued ----
+In a structural type system if two objects have the same shape, they are considered the same.
+
+```ts twoslash
+interface Point {
+  x: number;
+  y: number;
+}
+
+function printPoint(p: Point) {
+  console.log(`${p.x}, ${p.y}`);
+}
+
+// prints "12, 26"
+const point = { x: 12, y: 26 };
+printPoint(point);
+```
+
+The `point` variable is never declared to be a `Point` type, but because TypeScript compares the shape of `point` to the shape of `Point` in the type-check.
+Because they both have the same shape, then it passes.
+
+The shape matching only requires a subset
+
+```ts twoslash
+// @errors: 2345
+interface Point {
+  x: number;
+  y: number;
+}
+
+function printPoint(p: Point) {
+  console.log(`${p.x}, ${p.y}`);
+}
+// ---cut---
+const point3 = { x: 12, y: 26, z: 89 };
+printPoint(point3); // prints "12, 26"
+
+const rect = { x: 33, y: 3, width: 30, height: 80 };
+printPoint(rect); // prints "33, 3"
+
+const color = { hex: "#187ABF" };
+// Errors: Argument of type '{ hex: string; }' is not assignable to parameter of type 'Point'.
+printPoint(color);
+```

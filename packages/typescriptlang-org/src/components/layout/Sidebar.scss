@@ -111,6 +111,13 @@ nav#sidebar {
     }
   }
 
+  > ul > li.open > ul {
+    background-color: #e4e4e4;
+  }
+  > ul > li.open.highlighted > ul {
+    background-color: $ts-barely-blue-highlight;
+  }
+
   // Individual pages
   > ul > li > ul {
     margin: 0;
