@@ -51,7 +51,7 @@ export const createPlaygrounds = async (
       .options
 
     // Support backwards compat with urls doing ts.org/play
-    if (lang === "en") {
+    if (lang.name === "en") {
       createPage({
         path: "/play",
         component: playPage,

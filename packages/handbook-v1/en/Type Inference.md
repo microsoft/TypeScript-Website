@@ -3,11 +3,10 @@ title: Type Inference
 layout: docs
 permalink: /docs/handbook/type-inference.html
 ---
+
 # Introduction
 
 In this section, we will cover type inference in TypeScript. Namely, we'll discuss where and how types are inferred.
-
-# Basics
 
 In TypeScript, there are several places where type inference is used to provide type information when there is no explicit type annotation. For example, in this code
 
@@ -55,37 +54,37 @@ This is known as "contextual typing". Contextual typing occurs when the type of 
 
 ```ts
 window.onmousedown = function(mouseEvent) {
-    console.log(mouseEvent.button);   //<- OK
-    console.log(mouseEvent.kangaroo); //<- Error!
+  console.log(mouseEvent.button); //<- OK
+  console.log(mouseEvent.kangaroo); //<- Error!
 };
 ```
 
-Here, the Typescript type checker used the type of the `Window.onmousedown` function to infer the type of the function expression on the right hand side of the assignment.
+Here, the TypeScript type checker used the type of the `Window.onmousedown` function to infer the type of the function expression on the right hand side of the assignment.
 When it did so, it was able to infer the [type](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) of the `mouseEvent` parameter, which does contain a `button` property, but not a `kangaroo` property.
 
-Typescript is smart enough to infer the type of things in other contexts as well:
+TypeScript is smart enough to infer types in other contexts as well:
 
 ```ts
 window.onscroll = function(uiEvent) {
-    console.log(uiEvent.button); //<- Error!
-}
+  console.log(uiEvent.button); //<- Error!
+};
 ```
 
-Based on the fact that the above function is being assigned to `Window.onscroll`, Typescript knows that `uiEvent` is a [UIEvent](https://developer.mozilla.org/en-US/docs/Web/API/UIEvent), and not a [MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) like the previous example. `UIEvent` objects contain no `button` property, and so Typescript will throw an error.
+Based on the fact that the above function is being assigned to `Window.onscroll`, TypeScript knows that `uiEvent` is a [UIEvent](https://developer.mozilla.org/en-US/docs/Web/API/UIEvent), and not a [MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) like the previous example. `UIEvent` objects contain no `button` property, and so TypeScript will throw an error.
 
 If this function were not in a contextually typed position, the function's argument would implicitly have type `any`, and no error would be issued (unless you are using the `--noImplicitAny` option):
 
 ```ts
 const handler = function(uiEvent) {
-    console.log(uiEvent.button); //<- OK
-}
+  console.log(uiEvent.button); //<- OK
+};
 ```
 
 We can also explicitly give type information to the function's argument to override any contextual type:
 
 ```ts
 window.onscroll = function(uiEvent: any) {
-    console.log(uiEvent.button);  //<- Now, no error is given
+  console.log(uiEvent.button); //<- Now, no error is given
 };
 ```
 
@@ -97,10 +96,9 @@ The contextual type also acts as a candidate type in best common type. For examp
 
 ```ts
 function createZoo(): Animal[] {
-    return [new Rhino(), new Elephant(), new Snake()];
+  return [new Rhino(), new Elephant(), new Snake()];
 }
 ```
 
 In this example, best common type has a set of four candidates: `Animal`, `Rhino`, `Elephant`, and `Snake`.
 Of these, `Animal` can be chosen by the best common type algorithm.
-

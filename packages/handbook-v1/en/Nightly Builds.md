@@ -3,6 +3,7 @@ title: Nightly Builds
 layout: docs
 permalink: /docs/handbook/nightly-builds.html
 ---
+
 A nightly build from the [TypeScript's `master`](https://github.com/Microsoft/TypeScript/tree/master) branch is published by midnight PST to NPM and NuGet.
 Here is how you can get it and use it with your tools.
 
@@ -15,14 +16,14 @@ npm install -g typescript@next
 ## Using NuGet with MSBuild
 
 > Note: You'll need to configure your project to use the NuGet packages.
-Please see [Configuring MSBuild projects to use NuGet](https://github.com/Microsoft/TypeScript/wiki/Configuring-MSBuild-projects-to-use-NuGet) for more information.
+> Please see [Configuring MSBuild projects to use NuGet](https://github.com/Microsoft/TypeScript/wiki/Configuring-MSBuild-projects-to-use-NuGet) for more information.
 
 The nightlies are available on [www.myget.org](https://www.myget.org/gallery/typescript-preview).
 
 There are two packages:
 
-* `Microsoft.TypeScript.Compiler`: Tools only (`tsc.exe`, `lib.d.ts`, etc.) .
-* `Microsoft.TypeScript.MSBuild`: Tools as above, as well as MSBuild tasks and targets (`Microsoft.TypeScript.targets`, `Microsoft.TypeScript.Default.props`, etc.)
+- `Microsoft.TypeScript.Compiler`: Tools only (`tsc.exe`, `lib.d.ts`, etc.) .
+- `Microsoft.TypeScript.MSBuild`: Tools as above, as well as MSBuild tasks and targets (`Microsoft.TypeScript.targets`, `Microsoft.TypeScript.Default.props`, etc.)
 
 ## Updating your IDE to use the nightly builds
 
@@ -64,25 +65,26 @@ The nightly build currently does not include the full plugin setup, but we are w
 
 2. From a PowerShell command window, run:
 
-  For VS 2015:
+For VS 2015:
 
-  ```posh
-  VSDevMode.ps1 14 -tsScript <path to your folder>/node_modules/typescript/lib
-  ```
+```posh
+VSDevMode.ps1 14 -tsScript <path to your folder>/node_modules/typescript/lib
+```
 
-  For VS 2013:
+For VS 2013:
 
-  ```posh
-  VSDevMode.ps1 12 -tsScript <path to your folder>/node_modules/typescript/lib
-  ```
+```posh
+VSDevMode.ps1 12 -tsScript <path to your folder>/node_modules/typescript/lib
+```
 
 ### IntelliJ IDEA (Mac)
 
 Go to `Preferences` > `Languages & Frameworks` > `TypeScript`:
- > TypeScript Version: If you installed with npm: `/usr/local/lib/node_modules/typescript/lib`
+
+> TypeScript Version: If you installed with npm: `/usr/local/lib/node_modules/typescript/lib`
 
 ### IntelliJ IDEA (Windows)
 
 Go to `File` > `Settings` > `Languages & Frameworks` > `TypeScript`:
- > TypeScript Version: If you installed with npm: `C:\Users\USERNAME\AppData\Roaming\npm\node_modules\typescript\lib`
 
+> TypeScript Version: If you installed with npm: `C:\Users\USERNAME\AppData\Roaming\npm\node_modules\typescript\lib`

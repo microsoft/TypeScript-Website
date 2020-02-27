@@ -9,7 +9,7 @@ import { docCopy } from "../../../copy/en/documentation"
 import { createInternational } from "../../../lib/createInternational"
 import { useIntl } from "react-intl"
 import { graphql } from "gatsby"
-import {DocsHomeQuery} from "../../../__generated__/gatsby-types"
+import { DocsHomeQuery } from "../../../__generated__/gatsby-types"
 type Props = {
   data: DocsHomeQuery
   pageContext: any
@@ -55,7 +55,7 @@ const Index: React.FC<Props> = (props) => {
             },
             {
               title: i("doc_headline_examples_title"),
-              href: "/play/index.html?#show-examples",
+              href: "/play?#show-examples",
               blurb: i("doc_headline_examples_blurb"),
             },
           ]}
@@ -253,8 +253,8 @@ const Index: React.FC<Props> = (props) => {
         <ButtonGrid
           buttons={[
             {
-              href: "/docs/handbook/release-notes/typescript-3-5.html",
-              blurb: i("doc_learn_3_5_release_notes_blurb"),
+              href: "/docs/handbook/release-notes/typescript-3-8.html",
+              blurb: i("doc_learn_3_5_release_notes_title"),
               title: i("doc_learn_3_5_release_notes_title"),
             },
             {
@@ -268,7 +268,7 @@ const Index: React.FC<Props> = (props) => {
               title: i("doc_learn_d_ts_title"),
             },
             {
-              href: "/play/index.html",
+              href: "/play",
               blurb: i("doc_learn_playground_blurb"),
               title: "Playground",
             },

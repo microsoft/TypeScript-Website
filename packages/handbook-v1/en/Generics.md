@@ -3,12 +3,13 @@ title: Generics
 layout: docs
 permalink: /docs/handbook/generics.html
 ---
+
 # Introduction
 
 A major part of software engineering is building components that not only have well-defined and consistent APIs, but are also reusable.
 Components that are capable of working on the data of today as well as the data of tomorrow will give you the most flexible capabilities for building up large software systems.
 
-In languages like C# and Java, one of the main tools in the toolbox for creating reusable components is *generics*, that is, being able to create a component that can work over a variety of types rather than a single one.
+In languages like C# and Java, one of the main tools in the toolbox for creating reusable components is _generics_, that is, being able to create a component that can work over a variety of types rather than a single one.
 This allows users to consume these components and use their own types.
 
 # Hello World of Generics
@@ -21,7 +22,7 @@ Without generics, we would either have to give the identity function a specific 
 
 ```ts
 function identity(arg: number): number {
-    return arg;
+  return arg;
 }
 ```
 
@@ -29,7 +30,7 @@ Or, we could describe the identity function using the `any` type:
 
 ```ts
 function identity(arg: any): any {
-    return arg;
+  return arg;
 }
 ```
 
@@ -37,11 +38,11 @@ While using `any` is certainly generic in that it will cause the function to acc
 If we passed in a number, the only information we have is that any type could be returned.
 
 Instead, we need a way of capturing the type of the argument in such a way that we can also use it to denote what is being returned.
-Here, we will use a *type variable*, a special kind of variable that works on types rather than values.
+Here, we will use a _type variable_, a special kind of variable that works on types rather than values.
 
 ```ts
 function identity<T>(arg: T): T {
-    return arg;
+  return arg;
 }
 ```
 
@@ -57,15 +58,15 @@ Once we've written the generic identity function, we can call it in one of two w
 The first way is to pass all of the arguments, including the type argument, to the function:
 
 ```ts
-let output = identity<string>("myString");  // type of output will be 'string'
+let output = identity<string>("myString"); // type of output will be 'string'
 ```
 
 Here we explicitly set `T` to be `string` as one of the arguments to the function call, denoted using the `<>` around the arguments rather than `()`.
 
-The second way is also perhaps the most common. Here we use *type argument inference* -- that is, we want the compiler to set the value of `T` for us automatically based on the type of the argument we pass in:
+The second way is also perhaps the most common. Here we use _type argument inference_ -- that is, we want the compiler to set the value of `T` for us automatically based on the type of the argument we pass in:
 
 ```ts
-let output = identity("myString");  // type of output will be 'string'
+let output = identity("myString"); // type of output will be 'string'
 ```
 
 Notice that we didn't have to explicitly pass the type in the angle brackets (`<>`); the compiler just looked at the value `"myString"`, and set `T` to its type.
@@ -80,7 +81,7 @@ Let's take our `identity` function from earlier:
 
 ```ts
 function identity<T>(arg: T): T {
-    return arg;
+  return arg;
 }
 ```
 
@@ -89,8 +90,8 @@ We might be tempted to write this:
 
 ```ts
 function loggingIdentity<T>(arg: T): T {
-    console.log(arg.length);  // Error: T doesn't have .length
-    return arg;
+  console.log(arg.length); // Error: T doesn't have .length
+  return arg;
 }
 ```
 
@@ -102,8 +103,8 @@ We can describe this just like we would create arrays of other types:
 
 ```ts
 function loggingIdentity<T>(arg: T[]): T[] {
-    console.log(arg.length);  // Array has a .length, so no more error
-    return arg;
+  console.log(arg.length); // Array has a .length, so no more error
+  return arg;
 }
 ```
 
@@ -115,8 +116,8 @@ We can alternatively write the sample example this way:
 
 ```ts
 function loggingIdentity<T>(arg: Array<T>): Array<T> {
-    console.log(arg.length);  // Array has a .length, so no more error
-    return arg;
+  console.log(arg.length); // Array has a .length, so no more error
+  return arg;
 }
 ```
 
@@ -132,7 +133,7 @@ The type of generic functions is just like those of non-generic functions, with 
 
 ```ts
 function identity<T>(arg: T): T {
-    return arg;
+  return arg;
 }
 
 let myIdentity: <T>(arg: T) => T = identity;
@@ -142,7 +143,7 @@ We could also have used a different name for the generic type parameter in the t
 
 ```ts
 function identity<T>(arg: T): T {
-    return arg;
+  return arg;
 }
 
 let myIdentity: <U>(arg: U) => U = identity;
@@ -152,10 +153,10 @@ We can also write the generic type as a call signature of an object literal type
 
 ```ts
 function identity<T>(arg: T): T {
-    return arg;
+  return arg;
 }
 
-let myIdentity: {<T>(arg: T): T} = identity;
+let myIdentity: { <T>(arg: T): T } = identity;
 ```
 
 Which leads us to writing our first generic interface.
@@ -163,11 +164,11 @@ Let's take the object literal from the previous example and move it to an interf
 
 ```ts
 interface GenericIdentityFn {
-    <T>(arg: T): T;
+  <T>(arg: T): T;
 }
 
 function identity<T>(arg: T): T {
-    return arg;
+  return arg;
 }
 
 let myIdentity: GenericIdentityFn = identity;
@@ -179,11 +180,11 @@ This makes the type parameter visible to all the other members of the interface.
 
 ```ts
 interface GenericIdentityFn<T> {
-    (arg: T): T;
+  (arg: T): T;
 }
 
 function identity<T>(arg: T): T {
-    return arg;
+  return arg;
 }
 
 let myIdentity: GenericIdentityFn<number> = identity;
@@ -204,13 +205,15 @@ Generic classes have a generic type parameter list in angle brackets (`<>`) foll
 
 ```ts
 class GenericNumber<T> {
-    zeroValue: T;
-    add: (x: T, y: T) => T;
+  zeroValue: T;
+  add: (x: T, y: T) => T;
 }
 
 let myGenericNumber = new GenericNumber<number>();
 myGenericNumber.zeroValue = 0;
-myGenericNumber.add = function(x, y) { return x + y; };
+myGenericNumber.add = function(x, y) {
+  return x + y;
+};
 ```
 
 This is a pretty literal use of the `GenericNumber` class, but you may have noticed that nothing is restricting it to only use the `number` type.
@@ -219,7 +222,9 @@ We could have instead used `string` or even more complex objects.
 ```ts
 let stringNumeric = new GenericNumber<string>();
 stringNumeric.zeroValue = "";
-stringNumeric.add = function(x, y) { return x + y; };
+stringNumeric.add = function(x, y) {
+  return x + y;
+};
 
 console.log(stringNumeric.add(stringNumeric.zeroValue, "test"));
 ```
@@ -236,8 +241,8 @@ In our `loggingIdentity` example, we wanted to be able to access the `.length` p
 
 ```ts
 function loggingIdentity<T>(arg: T): T {
-    console.log(arg.length);  // Error: T doesn't have .length
-    return arg;
+  console.log(arg.length); // Error: T doesn't have .length
+  return arg;
 }
 ```
 
@@ -250,25 +255,25 @@ Here, we'll create an interface that has a single `.length` property and then we
 
 ```ts
 interface Lengthwise {
-    length: number;
+  length: number;
 }
 
 function loggingIdentity<T extends Lengthwise>(arg: T): T {
-    console.log(arg.length);  // Now we know it has a .length property, so no more error
-    return arg;
+  console.log(arg.length); // Now we know it has a .length property, so no more error
+  return arg;
 }
 ```
 
 Because the generic function is now constrained, it will no longer work over any and all types:
 
 ```ts
-loggingIdentity(3);  // Error, number doesn't have a .length property
+loggingIdentity(3); // Error, number doesn't have a .length property
 ```
 
 Instead, we need to pass in values whose type has all the required properties:
 
 ```ts
-loggingIdentity({length: 10, value: 3});
+loggingIdentity({ length: 10, value: 3 });
 ```
 
 ## Using Type Parameters in Generic Constraints
@@ -279,7 +284,7 @@ We'd like to ensure that we're not accidentally grabbing a property that does no
 
 ```ts
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
-    return obj[key];
+  return obj[key];
 }
 
 let x = { a: 1, b: 2, c: 3, d: 4 };
@@ -293,8 +298,8 @@ getProperty(x, "m"); // error: Argument of type 'm' isn't assignable to 'a' | 'b
 When creating factories in TypeScript using generics, it is necessary to refer to class types by their constructor functions. For example,
 
 ```ts
-function create<T>(c: {new(): T; }): T {
-    return new c();
+function create<T>(c: { new (): T }): T {
+  return new c();
 }
 ```
 
@@ -302,30 +307,29 @@ A more advanced example uses the prototype property to infer and constrain relat
 
 ```ts
 class BeeKeeper {
-    hasMask: boolean;
+  hasMask: boolean;
 }
 
 class ZooKeeper {
-    nametag: string;
+  nametag: string;
 }
 
 class Animal {
-    numLegs: number;
+  numLegs: number;
 }
 
 class Bee extends Animal {
-    keeper: BeeKeeper;
+  keeper: BeeKeeper;
 }
 
 class Lion extends Animal {
-    keeper: ZooKeeper;
+  keeper: ZooKeeper;
 }
 
 function createInstance<A extends Animal>(c: new () => A): A {
-    return new c();
+  return new c();
 }
 
-createInstance(Lion).keeper.nametag;  // typechecks!
-createInstance(Bee).keeper.hasMask;   // typechecks!
+createInstance(Lion).keeper.nametag; // typechecks!
+createInstance(Bee).keeper.hasMask; // typechecks!
 ```
-

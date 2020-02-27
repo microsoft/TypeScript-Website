@@ -3,24 +3,27 @@ title: JSDoc Supported Types
 layout: docs
 permalink: /docs/handbook/jsdoc-supported-types.html
 ---
+
 The list below outlines which constructs are currently supported
 when using JSDoc annotations to provide type information in JavaScript files.
 
 Note any tags which are not explicitly listed below (such as `@async`) are not yet supported.
 
-* `@type`
-* `@param` (or `@arg` or `@argument`)
-* `@returns` (or `@return`)
-* `@typedef`
-* `@callback`
-* `@template`
-* `@class` (or `@constructor`)
-* `@this`
-* `@extends` (or `@augments`)
-* `@enum`
+- `@type`
+- `@param` (or `@arg` or `@argument`)
+- `@returns` (or `@return`)
+- `@typedef`
+- `@callback`
+- `@template`
+- `@class` (or `@constructor`)
+- `@this`
+- `@extends` (or `@augments`)
+- `@enum`
 
 The meaning is usually the same, or a superset, of the meaning of the tag given at [jsdoc.app](https://jsdoc.app).
 The code below describes the differences and gives some example usage of each tag.
+
+**Note:** You can use [the playground to explore JSDoc support](/play?useJavaScript=truee=4#example/jsdoc-support).
 
 ## `@type`
 
@@ -42,8 +45,7 @@ var promisedString;
 // You can specify an HTML Element with DOM properties
 /** @type {HTMLElement} */
 var myElement = document.querySelector(selector);
-element.dataset.myData = '';
-
+element.dataset.myData = "";
 ```
 
 `@type` can specify a union type &mdash; for example, something can be either a string or a boolean.
@@ -140,7 +142,7 @@ This lets you cast types to other types by adding a `@type` tag before any paren
  * @type {number | string}
  */
 var numberOrString = Math.random() < 0.5 ? "hello" : 100;
-var typeAssertedNumber = /** @type {number} */ (numberOrString)
+var typeAssertedNumber = /** @type {number} */ (numberOrString);
 ```
 
 ### Import types
@@ -153,7 +155,7 @@ This syntax is Typescript-specific and differs from the JSDoc standard:
  * @param p { import("./a").Pet }
  */
 function walk(p) {
-    console.log(`Walking ${p.name}...`);
+  console.log(`Walking ${p.name}...`);
 }
 ```
 
@@ -194,7 +196,7 @@ The parameter may also be declared optional by surrounding the name with square 
  * @param {string} [p4="test"] - An optional param with a default value
  * @return {string} This is the result
  */
-function stringsStringStrings(p1, p2, p3, p4){
+function stringsStringStrings(p1, p2, p3, p4) {
   // TODO
 }
 ```
@@ -205,19 +207,18 @@ Likewise, for the return type of a function:
 /**
  * @return {PromiseLike<string>}
  */
-function ps(){}
+function ps() {}
 
 /**
  * @returns {{ a: string, b: number }} - May use '@returns' as well as '@return'
  */
-function ab(){}
+function ab() {}
 ```
 
 ## `@typedef`, `@callback`, and `@param`
 
 `@typedef` may be used to define complex types.
 Similar syntax works with `@param`.
-
 
 ```js
 /**
@@ -247,7 +248,6 @@ var specialTypeObject1;
 
 `@param` allows a similar syntax for one-off type specifications.
 Note that the nested property names must be prefixed with the name of the parameter:
-
 
 ```js
 /**
@@ -293,7 +293,9 @@ You can declare generic functions with the `@template` tag:
  * @param {T} p1 - A generic parameter that flows through to the return type
  * @return {T}
  */
-function id(x){ return x }
+function id(x) {
+  return x;
+}
 ```
 
 Use comma or multiple tags to declare multiple type parameters:
@@ -346,11 +348,11 @@ class C {
     this.initialize(data); // Should error, initializer expects a string
   }
   /**
-  * @param {string} s
-  */
-  initialize = function (s) {
-    this.size = s.length
-  }
+   * @param {string} s
+   */
+  initialize = function(s) {
+    this.size = s.length;
+  };
 }
 
 var c = new C(0);
@@ -385,9 +387,9 @@ function C(data) {
 /**
  * @param {string} s
  */
-C.prototype.initialize = function (s) {
-  this.size = s.length
-}
+C.prototype.initialize = function(s) {
+  this.size = s.length;
+};
 
 var c = new C(0);
 var result = C(1); // C should only be called with new
@@ -407,7 +409,7 @@ The compiler can usually figure out the type of `this` when it has some context 
  * @param {*} e
  */
 function callbackForLater(e) {
-    this.clientHeight = parseInt(e) // should be fine!
+  this.clientHeight = parseInt(e); // should be fine!
 }
 ```
 
@@ -427,7 +429,6 @@ class SortableSet extends Set {
 
 Note that `@extends` only works with classes. Currently, there is no way for a constructor function extend a class.
 
-
 ## `@enum`
 
 The `@enum` tag allows you to create an object literal whose members are all of a specified type. Unlike most object literals in Javascript, it does not allow other members.
@@ -437,8 +438,8 @@ The `@enum` tag allows you to create an object literal whose members are all of 
 const JSDocState = {
   BeginningOfLine: 0,
   SawAsterisk: 1,
-  SavingComments: 2,
-}
+  SavingComments: 2
+};
 ```
 
 Note that `@enum` is quite different from, and much simpler than, Typescript's `enum`. However, unlike Typescript's enums, `@enum` can have any type:
@@ -448,8 +449,8 @@ Note that `@enum` is quite different from, and much simpler than, Typescript's `
 const Math = {
   add1: n => n + 1,
   id: n => -n,
-  sub1: n => n - 1,
-}
+  sub1: n => n - 1
+};
 ```
 
 ## More examples
@@ -459,20 +460,20 @@ var someObj = {
   /**
    * @param {string} param1 - Docs on property assignments work
    */
-  x: function(param1){}
+  x: function(param1) {}
 };
 
 /**
  * As do docs on variable assignments
  * @return {Window}
  */
-let someFunc = function(){};
+let someFunc = function() {};
 
 /**
  * And class methods
  * @param {string} greeting The greeting to use
  */
-Foo.prototype.sayHi = (greeting) => console.log("Hi!");
+Foo.prototype.sayHi = greeting => console.log("Hi!");
 
 /**
  * And arrow functions expressions
@@ -484,7 +485,7 @@ let myArrow = x => x * x;
  * Which means it works for stateless function components in JSX too
  * @param {{a: string, b: number}} test - Some param
  */
-var sfc = (test) => <div>{test.a.charAt(0)}</div>;
+var sfc = test => <div>{test.a.charAt(0)}</div>;
 
 /**
  * A parameter can be a class constructor, using Closure syntax.
@@ -496,7 +497,7 @@ function registerClass(C) {}
 /**
  * @param {...string} p1 - A 'rest' arg (array) of strings. (treated as 'any')
  */
-function fn10(p1){}
+function fn10(p1) {}
 
 /**
  * @param {...string} p1 - A 'rest' arg (array) of strings. (treated as 'any')
@@ -511,9 +512,7 @@ function fn9(p1) {
 Referring to objects in the value space as types doesn't work unless the object also creates a type, like a constructor function.
 
 ```js
-function aNormalFunction() {
-
-}
+function aNormalFunction() {}
 /**
  * @type {aNormalFunction}
  */
@@ -551,6 +550,7 @@ var nullable;
 ```
 
 You can also use a union type:
+
 ```js
 /**
  * @type {number | null}
@@ -586,4 +586,3 @@ The following tags have open issues to support them:
 - `@readonly` ([issue #17233](https://github.com/Microsoft/TypeScript/issues/17233))
 - `@yields` ([issue #23857](https://github.com/Microsoft/TypeScript/issues/23857))
 - `{@link …}` ([issue #16498](https://github.com/Microsoft/TypeScript/issues/16498))
-

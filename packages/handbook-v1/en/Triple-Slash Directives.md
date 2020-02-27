@@ -3,6 +3,7 @@ title: Triple-Slash Directives
 layout: docs
 permalink: /docs/handbook/triple-slash-directives.html
 ---
+
 Triple-slash directives are single-line comments containing a single XML tag.
 The contents of the comment are used as compiler directives.
 
@@ -13,7 +14,7 @@ If they are encountered following a statement or a declaration they are treated 
 ## `/// <reference path="..." />`
 
 The `/// <reference path="..." />` directive is the most common of this group.
-It serves as a declaration of *dependency* between files.
+It serves as a declaration of _dependency_ between files.
 
 Triple-slash references instruct the compiler to include additional files in the compilation process.
 
@@ -25,7 +26,7 @@ Files are emitted to the output file location in the same order as the input aft
 The compiler performs a preprocessing pass on input files to resolve all triple-slash reference directives.
 During this process, additional files are added to the compilation.
 
-The process starts with a set of *root files*;
+The process starts with a set of _root files_;
 these are the file names specified on the command-line or in the `"files"` list in the `tsconfig.json` file.
 These root files are preprocessed in the same order they are specified.
 Before a file is added to the list, all triple-slash references in it are processed, and their targets included.
@@ -44,7 +45,7 @@ If the compiler flag `--noResolve` is specified, triple-slash references are ign
 
 ## `/// <reference types="..." />`
 
-Similar to a `/// <reference path="..." />` directive, which serves as a declaration of *dependency*, a `/// <reference types="..." />` directive declares a dependency on a package.
+Similar to a `/// <reference path="..." />` directive, which serves as a declaration of _dependency_, a `/// <reference types="..." />` directive declares a dependency on a package.
 
 The process of resolving these package names is similar to the process of resolving module names in an `import` statement.
 An easy way to think of triple-slash-reference-types directives are as an `import` for declaration packages.
@@ -55,7 +56,7 @@ and thus, this package needs to be included in the compilation along with the de
 Use these directives only when you're authoring a `d.ts` file by hand.
 
 For declaration files generated during compilation, the compiler will automatically add `/// <reference types="..." />` for you;
-A `/// <reference types="..." />` in a generated declaration file is added *if and only if* the resulting file uses any declarations from the referenced package.
+A `/// <reference types="..." />` in a generated declaration file is added _if and only if_ the resulting file uses any declarations from the referenced package.
 
 For declaring a dependency on an `@types` package in a `.ts` file, use `--types` on the command line or in your `tsconfig.json` instead.
 See [using `@types`, `typeRoots` and `types` in `tsconfig.json` files](./tsconfig.json.md#types-typeroots-and-types) for more details.
@@ -78,10 +79,10 @@ For example, adding `/// <reference lib="es2017.string" />` to one of the files 
 
 ## `/// <reference no-default-lib="true"/>`
 
-This directive marks a file as a *default library*.
+This directive marks a file as a _default library_.
 You will see this comment at the top of `lib.d.ts` and its different variants.
 
-This directive instructs the compiler to *not* include the default library (i.e. `lib.d.ts`) in the compilation.
+This directive instructs the compiler to _not_ include the default library (i.e. `lib.d.ts`) in the compilation.
 The impact here is similar to passing `--noLib` on the command line.
 
 Also note that when passing `--skipDefaultLibCheck`, the compiler will only skip checking files with `/// <reference no-default-lib="true"/>`.
@@ -97,8 +98,7 @@ The `amd-module` directive allows passing an optional module name to the compile
 
 ```ts
 ///<amd-module name="NamedModule"/>
-export class C {
-}
+export class C {}
 ```
 
 Will result in assigning the name `NamedModule` to the module as part of calling the AMD `define`:
@@ -106,13 +106,12 @@ Will result in assigning the name `NamedModule` to the module as part of calling
 ##### amdModule.js
 
 ```js
-define("NamedModule", ["require", "exports"], function (require, exports) {
-    var C = (function () {
-        function C() {
-        }
-        return C;
-    })();
-    exports.C = C;
+define("NamedModule", ["require", "exports"], function(require, exports) {
+  var C = (function() {
+    function C() {}
+    return C;
+  })();
+  exports.C = C;
 });
 ```
 
@@ -126,15 +125,18 @@ The `amd-dependency` directive can also have an optional `name` property; this a
 
 ```ts
 /// <amd-dependency path="legacy/moduleA" name="moduleA"/>
-declare var moduleA:MyType
-moduleA.callStuff()
+declare var moduleA: MyType;
+moduleA.callStuff();
 ```
 
 Generated JS code:
 
 ```js
-define(["require", "exports", "legacy/moduleA"], function (require, exports, moduleA) {
-    moduleA.callStuff()
+define(["require", "exports", "legacy/moduleA"], function(
+  require,
+  exports,
+  moduleA
+) {
+  moduleA.callStuff();
 });
 ```
-

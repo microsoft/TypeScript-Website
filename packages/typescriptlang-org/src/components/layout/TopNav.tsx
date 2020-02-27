@@ -73,8 +73,8 @@ export const SiteNav = (props: Props) => {
             <ul>
               <li className="nav-item"><Link to={withPrefix("/docs/home")}><span className="hide-only-medium">{i("nav_documentation")}</span><span className="show-only-medium">{i("nav_documentation_short")}</span></Link></li>
               <li className="nav-item hide-small"><Link to={withPrefix("/download")}>{i("nav_download")}</Link></li>
-              <li className="nav-item"><Link to={withPrefix("/community")}>{i("nav_connect")}</Link></li>
-              <li className="nav-item"><Link to={withPrefix("/en/play")}>{i("nav_playground")}</Link></li>
+              <li className="nav-item"><Link to={withPrefix("/community")}>{i("nav_community")}</Link></li>
+              <li className="nav-item"><Link to={withPrefix("/tools")}>{i("nav_tools")}</Link></li>
             </ul>
           </nav>
 

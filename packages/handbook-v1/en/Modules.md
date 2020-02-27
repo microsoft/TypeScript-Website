@@ -3,10 +3,6 @@ title: Modules
 layout: docs
 permalink: /docs/handbook/modules.html
 ---
-> **A note about terminology:**
-It's important to note that in TypeScript 1.5, the nomenclature has changed.
-"Internal modules" are now "namespaces".
-"External modules" are now simply "modules", as to align with [ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/)'s terminology, (namely that `module X {` is equivalent to the now-preferred `namespace X {`).
 
 # Introduction
 
@@ -34,7 +30,7 @@ Any declaration (such as a variable, function, class, type alias, or interface) 
 
 ```ts
 export interface StringValidator {
-    isAcceptable(s: string): boolean;
+  isAcceptable(s: string): boolean;
 }
 ```
 
@@ -46,9 +42,9 @@ import { StringValidator } from "./StringValidator";
 export const numberRegexp = /^[0-9]+$/;
 
 export class ZipCodeValidator implements StringValidator {
-    isAcceptable(s: string) {
-        return s.length === 5 && numberRegexp.test(s);
-    }
+  isAcceptable(s: string) {
+    return s.length === 5 && numberRegexp.test(s);
+  }
 }
 ```
 
@@ -58,9 +54,9 @@ Export statements are handy when exports need to be renamed for consumers, so th
 
 ```ts
 class ZipCodeValidator implements StringValidator {
-    isAcceptable(s: string) {
-        return s.length === 5 && numberRegexp.test(s);
-    }
+  isAcceptable(s: string) {
+    return s.length === 5 && numberRegexp.test(s);
+  }
 }
 export { ZipCodeValidator };
 export { ZipCodeValidator as mainValidator };
@@ -75,13 +71,13 @@ A re-export does not import it locally, or introduce a local variable.
 
 ```ts
 export class ParseIntBasedZipCodeValidator {
-    isAcceptable(s: string) {
-        return s.length === 5 && parseInt(s).toString() === s;
-    }
+  isAcceptable(s: string) {
+    return s.length === 5 && parseInt(s).toString() === s;
+  }
 }
 
 // Export original validator but rename it
-export {ZipCodeValidator as RegExpBasedZipCodeValidator} from "./ZipCodeValidator";
+export { ZipCodeValidator as RegExpBasedZipCodeValidator } from "./ZipCodeValidator";
 ```
 
 Optionally, a module can wrap one or more modules and combine all their exports using `export * from "module"` syntax.
@@ -90,11 +86,11 @@ Optionally, a module can wrap one or more modules and combine all their exports 
 
 ```ts
 export * from "./StringValidator"; // exports 'StringValidator' interface
-export * from "./ZipCodeValidator";  // exports 'ZipCodeValidator' and const 'numberRegexp' class
+export * from "./ZipCodeValidator"; // exports 'ZipCodeValidator' and const 'numberRegexp' class
 export * from "./ParseIntBasedZipCodeValidator"; //  exports the 'ParseIntBasedZipCodeValidator' class
-                                                 // and re-exports 'RegExpBasedZipCodeValidator' as alias
-                                                 // of the 'ZipCodeValidator' class from 'ZipCodeValidator.ts'
-                                                 // module.
+// and re-exports 'RegExpBasedZipCodeValidator' as alias
+// of the 'ZipCodeValidator' class from 'ZipCodeValidator.ts'
+// module.
 ```
 
 # Import
@@ -134,6 +130,22 @@ To import these modules, use:
 import "./my-module.js";
 ```
 
+## Importing Types
+
+Prior to TypeScript 3.8, you can import a type using `import`.
+With TypeScript 3.8, you can import a type using the `import` statement, or using `import type`.
+
+```ts
+// Re-using the same import
+import {APIResponseType} from "./api";
+
+// Explicitly use import type
+import type {APIResponseType} from "./api";
+```
+
+`import type` is always guaranteed to be removed from your JavaScript, and tools like Babel can make better assumptions about your code via the `isolatedModules` compiler flag.
+You can read more in the [3.8 release notes](https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/#type-only-imports-exports).
+
 # Default exports
 
 Each module can optionally export a `default` export.
@@ -155,7 +167,7 @@ export default $;
 ```ts
 import $ from "jquery";
 
-$("button.continue").html( "Next Step..." );
+$("button.continue").html("Next Step...");
 ```
 
 Classes and function declarations can be authored directly as default exports.
@@ -165,10 +177,10 @@ Default export class and function declaration names are optional.
 
 ```ts
 export default class ZipCodeValidator {
-    static numberRegexp = /^[0-9]+$/;
-    isAcceptable(s: string) {
-        return s.length === 5 && ZipCodeValidator.numberRegexp.test(s);
-    }
+  static numberRegexp = /^[0-9]+$/;
+  isAcceptable(s: string) {
+    return s.length === 5 && ZipCodeValidator.numberRegexp.test(s);
+  }
 }
 ```
 
@@ -187,8 +199,8 @@ or
 ```ts
 const numberRegexp = /^[0-9]+$/;
 
-export default function (s: string) {
-    return s.length === 5 && numberRegexp.test(s);
+export default function(s: string) {
+  return s.length === 5 && numberRegexp.test(s);
 }
 ```
 
@@ -221,6 +233,20 @@ import num from "./OneTwoThree";
 console.log(num); // "123"
 ```
 
+## Export all as x
+
+With TypeScript 3.8, you can use `export * as ns` as a shorthand for re-exporting another module with a name:
+
+```ts
+export * as utilities from "./utilities";
+```
+
+This takes all of the dependencies from a module and makes it an exported field, you could import it like this:
+
+```ts
+import { utilities } from "./index";
+```
+
 # `export =` and `import = require()`
 
 Both CommonJS and AMD generally have the concept of an `exports` object which contains all exports from a module.
@@ -239,9 +265,9 @@ When exporting a module using `export =`, TypeScript-specific `import module = r
 ```ts
 let numberRegexp = /^[0-9]+$/;
 class ZipCodeValidator {
-    isAcceptable(s: string) {
-        return s.length === 5 && numberRegexp.test(s);
-    }
+  isAcceptable(s: string) {
+    return s.length === 5 && numberRegexp.test(s);
+  }
 }
 export = ZipCodeValidator;
 ```
@@ -259,7 +285,9 @@ let validator = new zip();
 
 // Show whether each string passed each validator
 strings.forEach(s => {
-  console.log(`"${ s }" - ${ validator.isAcceptable(s) ? "matches" : "does not match" }`);
+  console.log(
+    `"${s}" - ${validator.isAcceptable(s) ? "matches" : "does not match"}`
+  );
 });
 ```
 
@@ -280,8 +308,8 @@ export let t = m.something + 1;
 ##### AMD / RequireJS SimpleModule.js
 
 ```js
-define(["require", "exports", "./mod"], function (require, exports, mod_1) {
-    exports.t = mod_1.something + 1;
+define(["require", "exports", "./mod"], function(require, exports, mod_1) {
+  exports.t = mod_1.something + 1;
 });
 ```
 
@@ -295,16 +323,16 @@ exports.t = mod_1.something + 1;
 ##### UMD SimpleModule.js
 
 ```js
-(function (factory) {
-    if (typeof module === "object" && typeof module.exports === "object") {
-        var v = factory(require, exports); if (v !== undefined) module.exports = v;
-    }
-    else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./mod"], factory);
-    }
-})(function (require, exports) {
-    var mod_1 = require("./mod");
-    exports.t = mod_1.something + 1;
+(function(factory) {
+  if (typeof module === "object" && typeof module.exports === "object") {
+    var v = factory(require, exports);
+    if (v !== undefined) module.exports = v;
+  } else if (typeof define === "function" && define.amd) {
+    define(["require", "exports", "./mod"], factory);
+  }
+})(function(require, exports) {
+  var mod_1 = require("./mod");
+  exports.t = mod_1.something + 1;
 });
 ```
 
@@ -312,17 +340,18 @@ exports.t = mod_1.something + 1;
 
 ```js
 System.register(["./mod"], function(exports_1) {
-    var mod_1;
-    var t;
-    return {
-        setters:[
-            function (mod_1_1) {
-                mod_1 = mod_1_1;
-            }],
-        execute: function() {
-            exports_1("t", t = mod_1.something + 1);
-        }
+  var mod_1;
+  var t;
+  return {
+    setters: [
+      function(mod_1_1) {
+        mod_1 = mod_1_1;
+      }
+    ],
+    execute: function() {
+      exports_1("t", (t = mod_1.something + 1));
     }
+  };
 });
 ```
 
@@ -351,7 +380,7 @@ As with reference tags, the compiler will follow `import` statements to compile 
 
 ```ts
 export interface StringValidator {
-    isAcceptable(s: string): boolean;
+  isAcceptable(s: string): boolean;
 }
 ```
 
@@ -363,9 +392,9 @@ import { StringValidator } from "./Validation";
 const lettersRegexp = /^[A-Za-z]+$/;
 
 export class LettersOnlyValidator implements StringValidator {
-    isAcceptable(s: string) {
-        return lettersRegexp.test(s);
-    }
+  isAcceptable(s: string) {
+    return lettersRegexp.test(s);
+  }
 }
 ```
 
@@ -377,9 +406,9 @@ import { StringValidator } from "./Validation";
 const numberRegexp = /^[0-9]+$/;
 
 export class ZipCodeValidator implements StringValidator {
-    isAcceptable(s: string) {
-        return s.length === 5 && numberRegexp.test(s);
-    }
+  isAcceptable(s: string) {
+    return s.length === 5 && numberRegexp.test(s);
+  }
 }
 ```
 
@@ -394,15 +423,19 @@ import { LettersOnlyValidator } from "./LettersOnlyValidator";
 let strings = ["Hello", "98052", "101"];
 
 // Validators to use
-let validators: { [s: string]: StringValidator; } = {};
+let validators: { [s: string]: StringValidator } = {};
 validators["ZIP code"] = new ZipCodeValidator();
 validators["Letters only"] = new LettersOnlyValidator();
 
 // Show whether each string passed each validator
 strings.forEach(s => {
-    for (let name in validators) {
-        console.log(`"${ s }" - ${ validators[name].isAcceptable(s) ? "matches" : "does not match" } ${ name }`);
-    }
+  for (let name in validators) {
+    console.log(
+      `"${s}" - ${
+        validators[name].isAcceptable(s) ? "matches" : "does not match"
+      } ${name}`
+    );
+  }
 });
 ```
 
@@ -431,24 +464,31 @@ declare function require(moduleName: string): any;
 import { ZipCodeValidator as Zip } from "./ZipCodeValidator";
 
 if (needZipValidation) {
-    let ZipCodeValidator: typeof Zip = require("./ZipCodeValidator");
-    let validator = new ZipCodeValidator();
-    if (validator.isAcceptable("...")) { /* ... */ }
+  let ZipCodeValidator: typeof Zip = require("./ZipCodeValidator");
+  let validator = new ZipCodeValidator();
+  if (validator.isAcceptable("...")) {
+    /* ... */
+  }
 }
 ```
 
 ##### Sample: Dynamic Module Loading in require.js
 
 ```ts
-declare function require(moduleNames: string[], onLoad: (...args: any[]) => void): void;
+declare function require(
+  moduleNames: string[],
+  onLoad: (...args: any[]) => void
+): void;
 
 import * as Zip from "./ZipCodeValidator";
 
 if (needZipValidation) {
-    require(["./ZipCodeValidator"], (ZipCodeValidator: typeof Zip) => {
-        let validator = new ZipCodeValidator.ZipCodeValidator();
-        if (validator.isAcceptable("...")) { /* ... */ }
-    });
+  require(["./ZipCodeValidator"], (ZipCodeValidator: typeof Zip) => {
+    let validator = new ZipCodeValidator.ZipCodeValidator();
+    if (validator.isAcceptable("...")) {
+      /* ... */
+    }
+  });
 }
 ```
 
@@ -460,10 +500,12 @@ declare const System: any;
 import { ZipCodeValidator as Zip } from "./ZipCodeValidator";
 
 if (needZipValidation) {
-    System.import("./ZipCodeValidator").then((ZipCodeValidator: typeof Zip) => {
-        var x = new ZipCodeValidator();
-        if (x.isAcceptable("...")) { /* ... */ }
-    });
+  System.import("./ZipCodeValidator").then((ZipCodeValidator: typeof Zip) => {
+    var x = new ZipCodeValidator();
+    if (x.isAcceptable("...")) {
+      /* ... */
+    }
+  });
 }
 ```
 
@@ -487,19 +529,23 @@ For example:
 
 ```ts
 declare module "url" {
-    export interface Url {
-        protocol?: string;
-        hostname?: string;
-        pathname?: string;
-    }
+  export interface Url {
+    protocol?: string;
+    hostname?: string;
+    pathname?: string;
+  }
 
-    export function parse(urlStr: string, parseQueryString?, slashesDenoteHost?): Url;
+  export function parse(
+    urlStr: string,
+    parseQueryString?,
+    slashesDenoteHost?
+  ): Url;
 }
 
 declare module "path" {
-    export function normalize(p: string): string;
-    export function join(...paths: any[]): string;
-    export var sep: string;
+  export function normalize(p: string): string;
+  export function join(...paths: any[]): string;
+  export var sep: string;
 }
 ```
 
@@ -524,7 +570,7 @@ declare module "hot-new-module";
 All imports from a shorthand module will have the `any` type.
 
 ```ts
-import x, {y} from "hot-new-module";
+import x, { y } from "hot-new-module";
 x(y);
 ```
 
@@ -537,13 +583,13 @@ Wildcard module declarations can be used to cover these cases.
 
 ```ts
 declare module "*!text" {
-    const content: string;
-    export default content;
+  const content: string;
+  export default content;
 }
 // Some do it the other way around.
 declare module "json!*" {
-    const value: any;
-    export default value;
+  const value: any;
+  export default value;
 }
 ```
 
@@ -616,7 +662,9 @@ export default class SomeType {
 #### MyFunc.ts
 
 ```ts
-export default function getThing() { return "thing"; }
+export default function getThing() {
+  return "thing";
+}
 ```
 
 #### Consumer.ts
@@ -635,8 +683,12 @@ This is optimal for consumers. They can name your type whatever they want (`t` i
 #### MyThings.ts
 
 ```ts
-export class SomeType { /* ... */ }
-export function someFunc() { /* ... */ }
+export class SomeType {
+  /* ... */
+}
+export function someFunc() {
+  /* ... */
+}
 ```
 
 Conversely when importing:
@@ -672,9 +724,9 @@ let x = new myLargeModule.Dog();
 ## Re-export to extend
 
 Often you will need to extend functionality on a module.
-A common JS pattern is to augment the original object with *extensions*, similar to how JQuery extensions work.
-As we've mentioned before, modules do not *merge* like global namespace objects would.
-The recommended solution is to *not* mutate the original object, but rather export a new entity that provides the new functionality.
+A common JS pattern is to augment the original object with _extensions_, similar to how JQuery extensions work.
+As we've mentioned before, modules do not _merge_ like global namespace objects would.
+The recommended solution is to _not_ mutate the original object, but rather export a new entity that provides the new functionality.
 
 Consider a simple calculator implementation defined in module `Calculator.ts`.
 The module also exports a helper function to test the calculator functionality by passing a list of input strings and writing the result at the end.
@@ -683,75 +735,84 @@ The module also exports a helper function to test the calculator functionality b
 
 ```ts
 export class Calculator {
-    private current = 0;
-    private memory = 0;
-    private operator: string;
+  private current = 0;
+  private memory = 0;
+  private operator: string;
 
-    protected processDigit(digit: string, currentValue: number) {
-        if (digit >= "0" && digit <= "9") {
-            return currentValue * 10 + (digit.charCodeAt(0) - "0".charCodeAt(0));
-        }
+  protected processDigit(digit: string, currentValue: number) {
+    if (digit >= "0" && digit <= "9") {
+      return currentValue * 10 + (digit.charCodeAt(0) - "0".charCodeAt(0));
     }
+  }
 
-    protected processOperator(operator: string) {
-        if (["+", "-", "*", "/"].indexOf(operator) >= 0) {
-            return operator;
-        }
+  protected processOperator(operator: string) {
+    if (["+", "-", "*", "/"].indexOf(operator) >= 0) {
+      return operator;
     }
+  }
 
-    protected evaluateOperator(operator: string, left: number, right: number): number {
-        switch (this.operator) {
-            case "+": return left + right;
-            case "-": return left - right;
-            case "*": return left * right;
-            case "/": return left / right;
-        }
+  protected evaluateOperator(
+    operator: string,
+    left: number,
+    right: number
+  ): number {
+    switch (this.operator) {
+      case "+":
+        return left + right;
+      case "-":
+        return left - right;
+      case "*":
+        return left * right;
+      case "/":
+        return left / right;
     }
+  }
 
-    private evaluate() {
-        if (this.operator) {
-            this.memory = this.evaluateOperator(this.operator, this.memory, this.current);
-        }
-        else {
-            this.memory = this.current;
-        }
-        this.current = 0;
+  private evaluate() {
+    if (this.operator) {
+      this.memory = this.evaluateOperator(
+        this.operator,
+        this.memory,
+        this.current
+      );
+    } else {
+      this.memory = this.current;
     }
+    this.current = 0;
+  }
 
-    public handleChar(char: string) {
-        if (char === "=") {
-            this.evaluate();
-            return;
+  public handleChar(char: string) {
+    if (char === "=") {
+      this.evaluate();
+      return;
+    } else {
+      let value = this.processDigit(char, this.current);
+      if (value !== undefined) {
+        this.current = value;
+        return;
+      } else {
+        let value = this.processOperator(char);
+        if (value !== undefined) {
+          this.evaluate();
+          this.operator = value;
+          return;
         }
-        else {
-            let value = this.processDigit(char, this.current);
-            if (value !== undefined) {
-                this.current = value;
-                return;
-            }
-            else {
-                let value = this.processOperator(char);
-                if (value !== undefined) {
-                    this.evaluate();
-                    this.operator = value;
-                    return;
-                }
-            }
-        }
-        throw new Error(`Unsupported input: '${char}'`);
+      }
     }
+    throw new Error(`Unsupported input: '${char}'`);
+  }
 
-    public getResult() {
-        return this.memory;
-    }
+  public getResult() {
+    return this.memory;
+  }
 }
 
 export function test(c: Calculator, input: string) {
-    for (let i = 0; i < input.length; i++) {
-        c.handleChar(input[i]);
-    }
+  for (let i = 0; i < input.length; i++) {
+    c.handleChar(input[i]);
+  }
 
-    console.log(`result of '${input}' is '${c.getResult()}'`);
+  console.log(`result of '${input}' is '${c.getResult()}'`);
 }
 ```
 
@@ -761,7 +822,6 @@ Here is a simple test for the calculator using the exposed `test` function.
 
 ```ts
 import { Calculator, test } from "./Calculator";
-
 
 let c = new Calculator();
 test(c, "1+2*33/11="); // prints 9
@@ -775,21 +835,40 @@ Now to extend this to add support for input with numbers in bases other than 10,
 import { Calculator } from "./Calculator";
 
 class ProgrammerCalculator extends Calculator {
-    static digits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"];
+  static digits = [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+  ];
 
-    constructor(public base: number) {
-        super();
-        const maxBase = ProgrammerCalculator.digits.length;
-        if (base <= 0 || base > maxBase) {
-            throw new Error(`base has to be within 0 to ${maxBase} inclusive.`);
-        }
+  constructor(public base: number) {
+    super();
+    const maxBase = ProgrammerCalculator.digits.length;
+    if (base <= 0 || base > maxBase) {
+      throw new Error(`base has to be within 0 to ${maxBase} inclusive.`);
     }
+  }
 
-    protected processDigit(digit: string, currentValue: number) {
-        if (ProgrammerCalculator.digits.indexOf(digit) >= 0) {
-            return currentValue * this.base + ProgrammerCalculator.digits.indexOf(digit);
-        }
+  protected processDigit(digit: string, currentValue: number) {
+    if (ProgrammerCalculator.digits.indexOf(digit) >= 0) {
+      return (
+        currentValue * this.base + ProgrammerCalculator.digits.indexOf(digit)
+      );
     }
+  }
 }
 
 // Export the new extended calculator as Calculator
@@ -836,6 +915,5 @@ From the consumption side, the consumer of any given module gets to pick the nam
 
 All of the following are red flags for module structuring. Double-check that you're not trying to namespace your external modules if any of these apply to your files:
 
-* A file whose only top-level declaration is `export namespace Foo { ... }` (remove `Foo` and move everything 'up' a level)
-* Multiple files that have the same `export namespace Foo {` at top-level (don't think that these are going to combine into one `Foo`!)
-
+- A file whose only top-level declaration is `export namespace Foo { ... }` (remove `Foo` and move everything 'up' a level)
+- Multiple files that have the same `export namespace Foo {` at top-level (don't think that these are going to combine into one `Foo`!)

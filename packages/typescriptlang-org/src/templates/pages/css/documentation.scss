@@ -2,6 +2,7 @@
   display: flex;
   flex-wrap: wrap;
 }
+
 .clicky-grey-button {
   width: 16rem;
   height: 10rem;
@@ -44,7 +45,7 @@
     text-decoration: none;
     font-size: 2.5rem;
     font-weight: 300;
-    margin-bottom: 0.2em;
+    margin-bottom: 0.2rem;
 
     &:hover {
       text-decoration: none;

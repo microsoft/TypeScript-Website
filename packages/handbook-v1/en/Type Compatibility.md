@@ -3,6 +3,7 @@ title: Type Compatibility
 layout: docs
 permalink: /docs/handbook/type-compatibility.html
 ---
+
 # Introduction
 
 Type compatibility in TypeScript is based on structural subtyping.
@@ -12,11 +13,11 @@ Consider the following code:
 
 ```ts
 interface Named {
-    name: string;
+  name: string;
 }
 
 class Person {
-    name: string;
+  name: string;
 }
 
 let p: Named;
@@ -39,7 +40,7 @@ The basic rule for TypeScript's structural type system is that `x` is compatible
 
 ```ts
 interface Named {
-    name: string;
+  name: string;
 }
 
 let x: Named;
@@ -55,7 +56,7 @@ The same rule for assignment is used when checking function call arguments:
 
 ```ts
 function greet(n: Named) {
-    console.log("Hello, " + n.name);
+  console.log("Hello, " + n.name);
 }
 greet(y); // OK
 ```
@@ -103,8 +104,8 @@ items.forEach(item => console.log(item));
 Now let's look at how return types are treated, using two functions that differ only by their return type:
 
 ```ts
-let x = () => ({name: "Alice"});
-let y = () => ({name: "Alice", location: "Seattle"});
+let x = () => ({ name: "Alice" });
+let y = () => ({ name: "Alice", location: "Seattle" });
 
 x = y; // OK
 y = x; // Error, because x() lacks a location property
@@ -119,22 +120,35 @@ This is unsound because a caller might end up being given a function that takes 
 In practice, this sort of error is rare, and allowing this enables many common JavaScript patterns. A brief example:
 
 ```ts
-enum EventType { Mouse, Keyboard }
+enum EventType {
+  Mouse,
+  Keyboard
+}
 
-interface Event { timestamp: number; }
-interface MouseEvent extends Event { x: number; y: number }
-interface KeyEvent extends Event { keyCode: number }
+interface Event {
+  timestamp: number;
+}
+interface MouseEvent extends Event {
+  x: number;
+  y: number;
+}
+interface KeyEvent extends Event {
+  keyCode: number;
+}
 
 function listenEvent(eventType: EventType, handler: (n: Event) => void) {
-    /* ... */
+  /* ... */
 }
 
 // Unsound, but useful and common
 listenEvent(EventType.Mouse, (e: MouseEvent) => console.log(e.x + "," + e.y));
 
 // Undesirable alternatives in presence of soundness
-listenEvent(EventType.Mouse, (e: Event) => console.log((e as MouseEvent).x + "," + (e as MouseEvent).y));
-listenEvent(EventType.Mouse, ((e: MouseEvent) => console.log(e.x + "," + e.y)) as (e: Event) => void);
+listenEvent(EventType.Mouse, (e: Event) =>
+  console.log((e as MouseEvent).x + "," + (e as MouseEvent).y)
+);
+listenEvent(EventType.Mouse, ((e: MouseEvent) =>
+  console.log(e.x + "," + e.y)) as (e: Event) => void);
 
 // Still disallowed (clear error). Type safety enforced for wholly incompatible types
 listenEvent(EventType.Mouse, (e: number) => console.log(e));
@@ -155,7 +169,7 @@ The motivating example is the common pattern of a function that takes a callback
 
 ```ts
 function invokeLater(args: any[], callback: (...args: any[]) => void) {
-    /* ... Invoke callback with 'args' ... */
+  /* ... Invoke callback with 'args' ... */
 }
 
 // Unsound - invokeLater "might" provide any number of arguments
@@ -175,11 +189,18 @@ This ensures that the target function can be called in all the same situations a
 Enums are compatible with numbers, and numbers are compatible with enums. Enum values from different enum types are considered incompatible. For example,
 
 ```ts
-enum Status { Ready, Waiting };
-enum Color { Red, Blue, Green };
+enum Status {
+  Ready,
+  Waiting
+}
+enum Color {
+  Red,
+  Blue,
+  Green
+}
 
 let status = Status.Ready;
-status = Color.Green;  // Error
+status = Color.Green; // Error
 ```
 
 # Classes
@@ -190,20 +211,20 @@ Static members and constructors do not affect compatibility.
 
 ```ts
 class Animal {
-    feet: number;
-    constructor(name: string, numFeet: number) { }
+  feet: number;
+  constructor(name: string, numFeet: number) {}
 }
 
 class Size {
-    feet: number;
-    constructor(numFeet: number) { }
+  feet: number;
+  constructor(numFeet: number) {}
 }
 
 let a: Animal;
 let s: Size;
 
-a = s;  // OK
-s = a;  // OK
+a = s; // OK
+s = a; // OK
 ```
 
 ## Private and protected members in classes
@@ -211,19 +232,18 @@ s = a;  // OK
 Private and protected members in a class affect their compatibility.
 When an instance of a class is checked for compatibility, if the target type contains a private member, then the source type must also contain a private member that originated from the same class.
 Likewise, the same applies for an instance with a protected member.
-This allows a class to be assignment compatible with its super class, but *not* with classes from a different inheritance hierarchy which otherwise have the same shape.
+This allows a class to be assignment compatible with its super class, but _not_ with classes from a different inheritance hierarchy which otherwise have the same shape.
 
 # Generics
 
 Because TypeScript is a structural type system, type parameters only affect the resulting type when consumed as part of the type of a member. For example,
 
 ```ts
-interface Empty<T> {
-}
+interface Empty<T> {}
 let x: Empty<number>;
 let y: Empty<string>;
 
-x = y;  // OK, because y matches structure of x
+x = y; // OK, because y matches structure of x
 ```
 
 In the above, `x` and `y` are compatible because their structures do not use the type argument in a differentiating way.
@@ -231,12 +251,12 @@ Changing this example by adding a member to `Empty<T>` shows how this works:
 
 ```ts
 interface NotEmpty<T> {
-    data: T;
+  data: T;
 }
 let x: NotEmpty<number>;
 let y: NotEmpty<string>;
 
-x = y;  // Error, because x and y are not compatible
+x = y; // Error, because x and y are not compatible
 ```
 
 In this way, a generic type that has its type arguments specified acts just like a non-generic type.
@@ -248,14 +268,14 @@ For example,
 
 ```ts
 let identity = function<T>(x: T): T {
-    // ...
-}
+  // ...
+};
 
 let reverse = function<U>(y: U): U {
-    // ...
-}
+  // ...
+};
 
-identity = reverse;  // OK, because (x: any) => any matches (y: any) => any
+identity = reverse; // OK, because (x: any) => any matches (y: any) => any
 ```
 
 # Advanced Topics
@@ -270,4 +290,3 @@ Different places in the language use one of the two compatibility mechanisms, de
 For practical purposes, type compatibility is dictated by assignment compatibility, even in the cases of the `implements` and `extends` clauses.
 
 For more information, see the [TypeScript spec](https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md).
-
