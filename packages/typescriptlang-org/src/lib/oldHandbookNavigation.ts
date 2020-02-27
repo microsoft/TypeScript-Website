@@ -9,19 +9,19 @@ export const oldHandbookNavigation: NavItem[] = [
     items: [
       {
         id: "typescript-from-scratch-in-5-minutes",
-        title: "TypeScript for the New Programmer",
+        title: "TS for the New Programmer",
       },
       {
         id: "typescript-in-5-minutes",
-        title: "TypeScript for JS Programmers",
+        title: "TS for JS Programmers",
       },
       {
         id: "typescript-in-5-minutes-oop",
-        title: "TypeScript for OOP Programmers ",
+        title: "TS for OOP Programmers ",
       },
       {
         id: "typescript-in-5-minutes-func",
-        title: "TypeScript for Functional Programmers",
+        title: "TS for Functional Programmers",
       },
       { id: "typescript-tooling-in-5-minutes", title: "Tooling in 5 minutes" },
     ],
