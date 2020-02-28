@@ -54,6 +54,10 @@ html {
   p > code,
   li > code {
     background-color: rgb(241, 241, 254);
+
+    @media (prefers-color-scheme: dark) {
+      background-color: rgb(58, 58, 92);
+    }
   }
 
   td {
