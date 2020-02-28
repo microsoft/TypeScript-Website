@@ -341,6 +341,7 @@ main #editor-toolbar {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+    overflow-y: hidden;
 
     .playground-plugin-container {
       flex: 1;
@@ -349,7 +350,7 @@ main #editor-toolbar {
       max-width: 100%;
       flex-shrink: 1;
       flex-grow: 1;
-      overflow-y: scroll;
+      overflow-y: auto;
       overflow-x: hidden;
       position: relative;
 
@@ -367,7 +368,7 @@ main #editor-toolbar {
         background-color: rgb(241, 241, 241);
         color: black;
         border: none;
-        overflow-x: scroll;
+        overflow-x: auto;
         width: 100%;
 
         @media (prefers-color-scheme: dark) {
@@ -389,7 +390,7 @@ main #editor-toolbar {
       justify-content: center;
       height: 2.5rem;
       margin-bottom: 10px;
-      overflow-x: scroll;
+      overflow-x: auto;
 
       button {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -636,7 +637,7 @@ input.good {
 
   pre {
     max-height: 90%;
-    overflow: scroll;
+    overflow: auto;
   }
 }
 
