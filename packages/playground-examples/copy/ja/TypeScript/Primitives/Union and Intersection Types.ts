@@ -6,7 +6,7 @@ type ProcessStates = "open" | "closed";
 type OddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
 type AMessyUnion = "hello" | 156 | { error: true };
 
-// "open" | "closed"を利用すること、string型を利用すること、
+// string型ではなく、"open"や"closed"の利用が初めてであれば、
 // example:literals を参照してください。
 
 // 共用体の中に、異なる型を混ぜあわせることができます。
