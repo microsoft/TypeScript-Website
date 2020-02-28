@@ -32,7 +32,7 @@ export const oldHandbookNavigation: NavItem[] = [
     directory: "handbook",
     index: "/",
     items: [
-      { id: "/", title: "What is the Handbook?" },
+      { id: "index", title: "What is the Handbook?" },
       { id: "basic-types", title: "Basic Types" },
       { id: "interfaces", title: "Interfaces" },
       { id: "classes", title: "Classes" },
