@@ -97,10 +97,10 @@ const Play: React.FC<Props> = (props) => {
           sandboxEnv.monaco.editor.setTheme(newTheme);
         });
 
-
         const container = document.getElementById("playground-container")!
         container.style.display = "flex"
-        container.style.height = `${window.innerHeight - Math.round(container.getClientRects()[0].top) - 18}px`
+        const height = Math.max(window.innerHeight, 600)
+        container.style.height = `${height - Math.round(container.getClientRects()[0].top) - 18}px`
       });
     }
 
