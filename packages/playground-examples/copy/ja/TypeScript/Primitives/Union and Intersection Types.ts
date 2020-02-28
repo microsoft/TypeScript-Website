@@ -41,7 +41,7 @@ interface ArtistsData {
   artists: { name: string }[];
 }
 
-// これらのインターフェースは、一貫したエラー処理とそれぞれのデータ、
+// これらのインターフェースは、同じエラー処理結果とそれぞれのデータ、
 // 両方を持ち合わせた型合成をすることができます。
 
 type ArtworksResponse = ArtworksData & ErrorHandling;
