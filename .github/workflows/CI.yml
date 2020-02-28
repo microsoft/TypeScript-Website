@@ -33,7 +33,7 @@ jobs:
       - name: Deploy PR Version
         if: github.event_name == 'pull_request'
         run: 'if test -z "$NOW_ACCESS_TOKEN"; then echo "Skipping deploy";
-          else cp -r packages/typescriptlang-org/public packages/typescriptlang-org/typescript-v2-$PR_NUMBER ; npx now packages/typescriptlang-org/typescript-v2-$PR_NUMBER --token="$NOW_ACCESS_TOKEN"  --confirm; fi'
+          else cp -r packages/typescriptlang-org/public packages/typescriptlang-org/typescript-v2-$PR_NUMBER ; npx now packages/typescriptlang-org/typescript-v2-$PR_NUMBER --token="$NOW_ACCESS_TOKEN"  --confirm --prod; fi'
         env:
           NOW_ACCESS_TOKEN: ${{ secrets.NOW_ACCESS_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}

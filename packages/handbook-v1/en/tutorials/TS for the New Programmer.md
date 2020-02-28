@@ -1,7 +1,7 @@
 ---
 title: TypeScript for the New Programmer
 layout: docs
-permalink: /docs/handbook/typescript-from-scratch-in-5-minutes.html
+permalink: /docs/handbook/typescript-from-scratch.html
 ---
 
 Congratulations choosing TypeScript as one of your first languages - you're already making good decisions.

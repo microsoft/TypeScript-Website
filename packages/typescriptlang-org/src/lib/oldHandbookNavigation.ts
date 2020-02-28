@@ -5,10 +5,10 @@ export const oldHandbookNavigation: NavItem[] = [
     title: "Get Started",
     id: "get-started",
     directory: "handbook",
-    index: "typescript-from-scratch-in-5-minutes",
+    index: "typescript-from-scratch",
     items: [
       {
-        id: "typescript-from-scratch-in-5-minutes",
+        id: "typescript-from-scratch",
         title: "TS for the New Programmer",
       },
       {
@@ -30,9 +30,9 @@ export const oldHandbookNavigation: NavItem[] = [
     title: "Handbook",
     id: "handbook",
     directory: "handbook",
-    index: "the-handbook",
+    index: "/",
     items: [
-      { id: "the-handbook", title: "What is the Handbook?" },
+      { id: "/", title: "What is the Handbook?" },
       { id: "basic-types", title: "Basic Types" },
       { id: "interfaces", title: "Interfaces" },
       { id: "classes", title: "Classes" },
