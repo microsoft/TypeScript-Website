@@ -71,10 +71,10 @@ export const SiteNav = (props: Props) => {
 
           <nav>
             <ul>
-              <li className="nav-item"><Link to={withPrefix("/docs/home")}><span className="hide-only-medium">{i("nav_documentation")}</span><span className="show-only-medium">{i("nav_documentation_short")}</span></Link></li>
-              <li className="nav-item hide-small"><Link to={withPrefix("/download")}>{i("nav_download")}</Link></li>
-              <li className="nav-item"><Link to={withPrefix("/community")}>{i("nav_community")}</Link></li>
-              <li className="nav-item"><Link to={withPrefix("/tools")}>{i("nav_tools")}</Link></li>
+              <li className="nav-item"><Link to="/docs/home"><span className="hide-only-medium">{i("nav_documentation")}</span><span className="show-only-medium">{i("nav_documentation_short")}</span></Link></li>
+              <li className="nav-item hide-small"><Link to="/download">{i("nav_download")}</Link></li>
+              <li className="nav-item"><Link to="/community">{i("nav_community")}</Link></li>
+              <li className="nav-item"><Link to="/tools">{i("nav_tools")}</Link></li>
             </ul>
           </nav>
 
@@ -98,8 +98,9 @@ export const SiteNav = (props: Props) => {
           </nav>
         </div>
       </div>
-      {props.disableBetaNotification ? null :
-        <div className="hide-small" id="beta-notification-menu">{i("nav_beta_notification", { a: (...chunk) => <a href="https://github.com/microsoft/TypeScript-Website/issues">{chunk}</a> })}</div>
+      {
+        props.disableBetaNotification ? null :
+          <div className="hide-small" id="beta-notification-menu">{i("nav_beta_notification", { a: (...chunk) => <a href="https://github.com/microsoft/TypeScript-Website/issues">{chunk}</a> })}</div>
       }
       { /** Used for skip past navigation button */}
       <div id="site-content" />

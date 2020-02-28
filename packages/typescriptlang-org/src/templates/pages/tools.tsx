@@ -25,14 +25,14 @@ const Index: React.FC<Props> = (props) => {
     <div className="raised main-content-block">
       <Row>
         <Col>
-          <Link className="cropper" to={withPrefix("/play")}>
+          <Link className="cropper" to="/play">
             <img src={require("../../../static/images/tools/play.png")} alt="Preview of the TypeScript Playground screenshot" />
             <p>Playground</p>
           </Link>
           <p>A live environment for exploring, learning and sharing TypeScript code. Try different compiler flags, run through extensive code samples to learn specifics about how TypeScript works.</p>
         </Col>
         <Col>
-          <Link className="cropper" to={withPrefix("/tsconfig")}>
+          <Link className="cropper" to="/tsconfig">
             <img src={require("../../../static/images/tools/tsconfig-ref.png")} alt="Preview of the TypeScript TSConfig Reference screenshot" />
             <p>TSConfig Reference</p>
           </Link>

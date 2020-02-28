@@ -23,14 +23,14 @@ export const playCopy = {
   play_sidebar_options_disable_save: "Disable Save-On-Type",
   play_sidebar_options_disable_save_copy:
     "Disable changing the URL when you type.",
-  play_sidebar_options_external: "External Plugins",
+  play_sidebar_options_external: "3rd Party Plugins",
   play_sidebar_options_external_warning:
     "Warning: Code from plugins comes from third-parties.",
-  play_sidebar_options_modules: "Custom Modules",
-  play_sidebar_options_modules_placeholder: "Module from npm.",
+  play_sidebar_options_modules: "Custom NPM Modules",
+  play_sidebar_options_modules_placeholder: "Module name from npm.",
   play_sidebar_options_plugin_dev: "Plugin Dev",
   play_sidebar_options_plugin_dev_option:
-    "Connect to <code>localhost:5000/index.js</code>",
+    "Connect to <code>localhost:5000</code>",
   play_sidebar_options_plugin_dev_copy:
     "Automatically try connect to a playground plugin in development mode. You can read more <a href='https://www.typescriptlang.org/v2/dev/playground-plugins/'>here</a>.",
   play_export_report_issue: "Report GitHub issue on TypeScript",
