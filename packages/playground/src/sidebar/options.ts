@@ -77,15 +77,6 @@ export const optionsPlugin: PluginFactory = i => {
       const ol = document.createElement('ol')
       ol.className = 'playground-options'
 
-      createSection(i('play_sidebar_options'), categoryDiv)
-
-      settings.forEach(setting => {
-        const settingButton = createButton(setting)
-        ol.appendChild(settingButton)
-      })
-
-      categoryDiv.appendChild(ol)
-
       createSection(i('play_sidebar_options_external'), categoryDiv)
 
       const pluginsOL = document.createElement('ol')
@@ -142,8 +133,18 @@ export const optionsPlugin: PluginFactory = i => {
         flag: 'connect-dev-plugin',
       })
       pluginsDevOL.appendChild(connectToDev)
-
       categoryDiv.appendChild(pluginsDevOL)
+
+      categoryDiv.appendChild(document.createElement('hr'))
+
+      createSection(i('play_sidebar_options'), categoryDiv)
+
+      settings.forEach(setting => {
+        const settingButton = createButton(setting)
+        ol.appendChild(settingButton)
+      })
+
+      categoryDiv.appendChild(ol)
     },
   }
 

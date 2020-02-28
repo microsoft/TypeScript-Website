@@ -8,7 +8,7 @@ You can use `yarn start` to set up both a copy of Rollup to generate the JS, and
 yarn start
 ```
 
-Then set up the TypeScript playground to connect to a dev plugin at `http://localhost:5000/index.js`.
+Then set up the TypeScript playground to connect to a dev plugin at `http://localhost:5000/`.
 
 #### Plugin API
 
@@ -26,6 +26,18 @@ The plugins are passed copies of the TypeScript sandbox, which is a high level A
 #### Rollup
 
 [Rollup](https://rollupjs.org) is a JavaScript bundler, that will take all of the TypeScript + JavaScript code you reference and then create an AMD bundle for it all. AMD bundles are used in Monaco, TypeScript Sandbox and the Playground - so, this is used for consistency with the rest of the ecosystem.
+
+## Adding a dependency
+
+Because most node_modules expect to be running in node, you might have to do some work to get the dependency working on the web.
+
+The route to handle this is via rollup:
+
+- add a new dependency via `yarn add xyz`
+- import it into your `index.ts`
+- run `yarn build` - did it provide some error messages?
+  - If it did, you may need to edit your `rollup.config.js`.
+  - You could probably start by taking the [rollup config from `playground-plugin-tsquery`](https://github.com/orta/playground-plugin-tsquery/blob/master/rollup.config.js) and by adding any extra externals and globals.
 
 #### Serve
 

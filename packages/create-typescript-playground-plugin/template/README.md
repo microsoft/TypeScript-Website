@@ -2,6 +2,16 @@
 
 My new plugin for the TypeScript playground.
 
+## Running this plugin
+
+- Open up the TypeScript Playground
+- Go the "Options" in the sidebar
+- Look for "Plugins from NPM"
+- Add "playground-plugin-XYZ"
+- Reload the browser
+
+Then it will show up as a tab in the sidebar.
+
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full details, however, TLDR:

@@ -574,6 +574,7 @@ input.good {
 
   label {
     padding-left: 30px;
+    padding-right: 10px;
     span {
       font-weight: 600;
     }
@@ -584,6 +585,16 @@ input.good {
   a {
     display: inline-block;
     float: right;
+    border: black 1px solid;
+    height: 1rem;
+    width: 1rem;
+    text-align: center;
+    text-decoration: none;
+    line-height: 1rem;
+    &:hover {
+      background-color: #fcb7b7;
+      color: red;
+    }
   }
 }
 
