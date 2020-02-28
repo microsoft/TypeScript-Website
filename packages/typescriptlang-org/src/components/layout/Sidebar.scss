@@ -113,9 +113,17 @@ nav#sidebar {
 
   > ul > li.open > ul {
     background-color: #e4e4e4;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: rgb(53, 52, 52);
+    }
   }
   > ul > li.open.highlighted > ul {
     background-color: $ts-barely-blue-highlight;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: $ts-dark-barely-blue-highlight;
+    }
   }
 
   // Individual pages

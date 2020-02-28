@@ -24,16 +24,7 @@ const Index: React.FC<Props> = (props) => {
       lang={props.pageContext.lang}
       allSitePage={props.data.allSitePage}
     >
-      <div
-        id="documentation"
-        className="raised"
-        style={{
-          backgroundColor: "white",
-          maxWidth: 960,
-          margin: "1rem auto",
-          padding: "2rem",
-        }}
-      >
+      <div id="documentation" className="raised main-content-block">
         <h1>{i("doc_headline")}</h1>
 
         <ButtonGrid

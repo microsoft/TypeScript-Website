@@ -4,7 +4,7 @@ layout: docs
 permalink: /docs/handbook/typescript-in-5-minutes.html
 ---
 
-The relationship between TypeScript and JavaScript is rather unique among modern programming languages, though of all programmers JavaScript Programmers are the most used to the idea of language layering.
+The relationship between TypeScript and JavaScript is rather unique among modern programming languages, though of all programmers JavaScript Programmers are the most used to the idea of a language which expands .
 
 What you will not know are the extensions to TypeScript in the type-system.
 This tutorial is a 5 minute overview of the type-system.
