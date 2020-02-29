@@ -43,7 +43,7 @@ export const Comm: React.FC<Props> = props => {
 
   return (
     <Layout title={i("com_layout_title")} description={i("com_layout_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
-      <div className="raised main-content-block container community" style={{ marginTop: "80px;" }}>
+      <div className="raised main-content-block container community" style={{ marginTop: "80px" }}>
         <Row>
           <Col className="sidebar">
             <h2>{i("com_connect_online")}</h2>
