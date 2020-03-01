@@ -3,7 +3,7 @@ display: "No Implicit Returns"
 oneline: "Ensure that all codepaths return in a function"
 ---
 
-When enabled, TypeScript will check all code paths in a function to ensure they return a value.
+有効化すると、TypeScriptは関数内のすべてのコードパスについて、値を返却していることをチェックします。
 
 ```ts twoslash
 // @errors: 2366 2322

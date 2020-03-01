@@ -3,9 +3,9 @@ display: "No Fallthrough Cases In Switch"
 oneline: "Report errors for fallthrough cases in switch statements."
 ---
 
-Report errors for fallthrough cases in switch statements.
-Ensures that any non-empty case inside a switch statement includes either `break` or `return`.
-This means you won't accidentally ship a case fallthrough bug.
+switch文において、次のcaseへ処理を持ち越した場合にエラーを報告します。
+switch文内の空でないcase句が`break`または`return`を含むことを確約します。
+これは、意図しないcaseへの処理持ち越しによるバグを流出させない、ということ意味しています。
 
 ```ts twoslash
 // @noFallthroughCasesInSwitch

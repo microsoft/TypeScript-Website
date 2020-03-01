@@ -3,7 +3,7 @@ display: "No Unused Locals"
 oneline: "Error when a local variable isn't read"
 ---
 
-Report errors on unused local variables.
+利用されていないローカル変数について、エラーを報告します。
 
 ```ts twoslash
 // @noUnusedLocals
