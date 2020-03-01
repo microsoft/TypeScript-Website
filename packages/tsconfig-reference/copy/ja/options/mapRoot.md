@@ -3,8 +3,8 @@ display: "Map Root"
 oneline: "Set an external root for sourcemaps"
 ---
 
-Specify the location where debugger should locate map files instead of generated locations.
-This string is treated verbatim inside the source-map, for example:
+生成された場所情報を利用するのではなく、デバッガがマップファイルを探索すべき場所を明示します。
+この文字列はソースマップの中で、文字列そのままの値として処理されます。例えば:
 
 ```json
 {
@@ -15,4 +15,4 @@ This string is treated verbatim inside the source-map, for example:
 }
 ```
 
-Would declare that `index.js` will have sourcemaps at `https://my-website.com/debug/sourcemaps/index.js.map`.
+この設定は、`index.js`は`https://my-website.com/debug/sourcemaps/index.js.map`にソースマップがあることを宣言しています。

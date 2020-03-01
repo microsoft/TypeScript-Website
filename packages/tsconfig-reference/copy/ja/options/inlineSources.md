@@ -3,19 +3,19 @@ display: "Inline Sources"
 oneline: "Include sourcemap files inside the emitted JavaScript"
 ---
 
-When set, TypeScript will include the original content of the `.ts` file as an embedded string in the source map.
-This is often useful in the same cases as `inlineSourceMap`.
+設定すると、TypeScriptは元の`.ts`ファイルの内容を文字列としてソースマップに埋め込みます。
+このオプションは`inlineSourceMap`と同様のケースで有用です。
 
-Requires either `sourceMap` or `inlineSourceMap` to be set.
+`sourceMap`または`inlineSourceMap`のいずれかが設定されている必要があります。
 
-For example, with this TypeScript:
+例えば、次のTypeScriptについて:
 
 ```ts twoslash
 const helloWorld = "hi";
 console.log(helloWorld);
 ```
 
-By default converts to this JavaScript:
+デフォルトでは、次のJavaScriptに変換されます:
 
 ```ts twoslasher
 // @showEmit
@@ -23,9 +23,9 @@ const helloWorld = "hi";
 console.log(helloWorld);
 ```
 
-Then enable building it with `inlineSources` and `inlineSourceMap` enabled there is a comment at the bottom of the file which includes
-a source-map for the file.
-Note that the end is different from the example in [`inlineSourceMap`](#inlineSourceMap) because the source-map now contains the original source code also.
+`inlineSources`と`inlineSourceMap`を有効にしてビルドすると、
+ファイルの末尾にこのファイルのソースマップを含んだコメントが付きます。
+このソースマップは元となったソースコードも含んでいるため、[`inlineSourceMap`](#inlineSourceMap)の例とは異なる点に留意してください。
 
 ```ts twoslasher
 // @inlineSources

@@ -1,8 +1,8 @@
 ---
-display: "Source Maps"
+display: "ソースマップ"
 ---
 
-In order to provide rich debugging tools and crash reports which make sense to developers, TypeScript supports
-emitting additional files which conform to the JavaScript Source Map standards.
+開発者にとって有用であるリッチなデバッグツールやクラッシュレポートを提供するため、
+TypeScriptはJavaScriptのソースマップ標準に準拠したファイルを追加で出力します。
 
-These are emitted as `.map` files which live alongside the file they represent.
+ソースマップは、そのソースマップが指し示す実体ファイルの隣に`.map`ファイルとして出力されます。

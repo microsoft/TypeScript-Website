@@ -3,20 +3,20 @@ display: "Inline Source Map"
 oneline: "Include sourcemap files inside the emitted JavaScript"
 ---
 
-When set, instead of writing out a `.js.map` file to provide source maps, TypeScript will embed the source map content in the `.js` files.
-Although this results in larger JS files, it can be convenient in some scenarios.
-For example, you might want to debug JS files on a webserver that doesn't allow `.map` files to be served.
+設定すると、TypeScriptはソースマップを`.js.map`ファイルへ出力するのではなく、ソースマップの内容を`.js`ファイルに埋め込みます。
+この結果、JSファイルはより大きくなりますが、くつかのシナリオにおいては便利です。
+例えば、`.map`ファイルの提供が許可されていないwebサーバーでJSファイルをデバッグしたい、という場合です。
 
-Mutually exclusive with [`sourceMap`](#sourceMap).
+このオプションは、[`sourceMap`](#sourceMap)とは互いに排他的にです。
 
-For example, with this TypeScript:
+例えば、次のTypeScriptは:
 
 ```ts
 const helloWorld = "hi";
 console.log(helloWorld);
 ```
 
-Converts to this JavaScript:
+次のJavaScriptに変換されます:
 
 ```ts twoslasher
 // @showEmit
@@ -24,8 +24,8 @@ const helloWorld = "hi";
 console.log(helloWorld);
 ```
 
-Then enable building it with `inlineSourceMap` enabled there is a comment at the bottom of the file which includes
-a source-map for the file.
+`inlineSourceMap`を有効にしてビルドすると、
+ファイルの末尾にこのファイルのソースマップを含んだコメントが出力されます。
 
 ```ts twoslasher
 // @inlineSourceMap
