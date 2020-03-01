@@ -3,5 +3,5 @@ display: "Pretty"
 oneline: "Use color and formatting to make compiler errors easier to read"
 ---
 
-Stylize errors and messages using color and context, this is on by default &mdash; offers you a chance to have less terse,
-single colored messages from the compiler.
+エラーやメッセージを文脈や色を使ってスタイリングします。このオプションはデフォルトで有効です&mdash;
+コンパイラから簡潔で単色のメッセージを受け取れるようにすることもできます。
