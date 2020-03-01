@@ -3,9 +3,9 @@ display: "Emit Decorator Metadata"
 oneline: "Adds additional type metadata to decorators in emitted code"
 ---
 
-Enables experimental support for emitting type metadata for decorators which works with the module [`reflect-metadata`](https://www.npmjs.com/package/reflect-metadata).
+[`reflect-metadata`](https://www.npmjs.com/package/reflect-metadata)モジュールとともに動作するデコレータのメタ情報を出力するための実験的なサポートを有効化します。
 
-For example, here is the JavaScript
+例えば、次のJavaScriptについて、
 
 ```ts twoslash
 // @experimentalDecorators
@@ -25,7 +25,7 @@ class Demo {
 const demo = new Demo();
 ```
 
-With `emitDecoratorMetadata` not set to true (default):
+`emitDecoratorMetadata`がtrueに設定されていない場合（デフォルト）、次のようになります:
 
 ```ts twoslash
 // @experimentalDecorators
@@ -39,14 +39,14 @@ function LogMethod(target: any, propertyKey: string | symbol, descriptor: Proper
 class Demo {
   @LogMethod
   public foo(bar: number) {
-    // do nothing
+    // 何もしない
   }
 }
 
 const demo = new Demo();
 ```
 
-With `emitDecoratorMetadata` set to true:
+`emitDecoratorMetadata`がtrueに設定されている場合は、次のようになります:
 
 ```ts twoslash
 // @experimentalDecorators
@@ -61,7 +61,7 @@ function LogMethod(target: any, propertyKey: string | symbol, descriptor: Proper
 class Demo {
   @LogMethod
   public foo(bar: number) {
-    // do nothing
+    // 何もしない
   }
 }
 

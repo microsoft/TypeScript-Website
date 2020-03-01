@@ -1,8 +1,8 @@
 ---
-display: "Experimental"
+display: "実験的な機能"
 ---
 
-TypeScript strives to only include features which are confirmed to be added into the JavaScript language.
+TypeScriptは、JavaScript言語に追加が確認されている機能のみを含めるように努めています。
 
-There have been cases where a feature is compelling enough to be an exception to that rule, and these live as experimental compiler flags.
-It is possible that a version of these features may be different when/if they are added to the JavaScript language, and thus are considered risky.
+機能がそのルールの例外となるほど説得力がある場合、実験的なコンパイラのフラグとなります。
+JavaScript言語にこれらの機能が組み込まれるときに、今のバージョンとは異なる可能性があり、その意味においてリスクと見なされるかもしれません。

@@ -3,10 +3,9 @@ display: "Experimental Decorators"
 oneline: "Enable experimental support for TC39 stage 2 decorators"
 ---
 
-Enables [experimental support for decorators](https://github.com/tc39/proposal-decorators), which is in stage 2
-of the TC39 standardization process.
+[デコレータの実験的なサポート](https://github.com/tc39/proposal-decorators)を有効化します。
+これはTC39の標準化プロセスではstage 2の機能です。
 
-Decorators are a language feature which hasn't yet been fully ratified into the JavaScript specification.
-This means that the implementation version in TypeScript may differ from the implementation in JavaScript when it it decided by TC39.
+これはTypeScriptの実装バージョンが、TC39が決定するJavaScriptの実装と異なるかもしれないということを意味しています。
 
-You can find out more about decorator support in TypeScript in [the handbook](/docs/handbook/decorators.html).
+TypeScriptのデコレータのサポートについて、より詳しく知りたい場合は[ハンドブック](/docs/handbook/decorators.html)を参照してください。
