@@ -17,6 +17,9 @@ export type ReleaseVersions = "${json.versions.join('" | "')}"
 `
   const path = join(__dirname, '..', 'src', 'releases.ts')
   writeFileSync(path, format(code, { filepath: path }), 'utf8')
+
+  const jsonPath = join(__dirname, '..', 'src', 'releases.json')
+  writeFileSync(jsonPath, format(JSON.stringify(json), { filepath: jsonPath }), 'utf8')
   console.log('Updated the releases with the versions created by make-monaco-builds')
 }
 

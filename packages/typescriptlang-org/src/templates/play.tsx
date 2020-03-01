@@ -13,6 +13,8 @@ import { playCopy } from "../copy/en/playground"
 
 import { Intl } from "../components/Intl"
 
+import playgroundReleases from "../../../sandbox/src/releases.json"
+
 // This gets set by the playground
 declare const playground: ReturnType<typeof import("typescript-playground").setupPlayground>
 
@@ -40,7 +42,7 @@ const Play: React.FC<Props> = (props) => {
     getLoaderScript.async = true;
     getLoaderScript.onload = () => {
       const params = new URLSearchParams(location.search)
-      const tsVersion = params.get("ts") || "3.7.3"
+      const tsVersion = params.get("ts") || playgroundReleases.versions.pop()
 
       // @ts-ignore
       const re = global.require
