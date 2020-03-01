@@ -42,6 +42,9 @@ jobs:
         cd v2
         git config --global user.email "you@example.com"
         git config --global user.name "Your Name"
+        console.log("Manually merging 297")
+        git fetch origin pull/297/head:docs
+        git merge docs
         yarn install
         yarn bootstrap
         yarn build
