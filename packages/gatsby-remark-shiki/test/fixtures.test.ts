@@ -102,5 +102,8 @@ color: black;
 user-select: none;
 color: #ffeeee;
 }
+.query {
+  color: white;
+}
 </style>
 `

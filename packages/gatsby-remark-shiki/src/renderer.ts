@@ -20,7 +20,8 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
 
   const errorsGroupedByLine = (twoslash && groupBy(twoslash.errors, e => e.line)) || new Map()
   const staticQuickInfosGroupedByLine = (twoslash && groupBy(twoslash.staticQuickInfos, q => q.line)) || new Map()
-  const queriesGroupedByLine = (twoslash && groupBy(twoslash.queries, q => q.line)) || new Map()
+  // A query is always about the line above it!
+  const queriesGroupedByLine = (twoslash && groupBy(twoslash.queries, q => q.line - 1)) || new Map()
 
   let filePos = 0
   lines.forEach((l, i) => {
@@ -96,6 +97,14 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
       const codes = errors.map(e => e.code).join('<br/>')
       html += `<span class="error"><span>${messages}</span><span class="code">${codes}</span></span>`
       html += `<span class="error-behind">${messages}</span>`
+    }
+
+    // Add queries to the next line
+    if (queries.length) {
+      queries.forEach(query => {
+        html += `<span class='query'>${'//' + ''.padStart(query.offset - 2) + '^ = ' + query.text}</span>`
+      })
+      html += '\n'
     }
   })
   html = html.replace(/\n*$/, '') // Get rid of final new lines
