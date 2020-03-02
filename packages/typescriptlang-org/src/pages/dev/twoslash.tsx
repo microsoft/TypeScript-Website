@@ -226,7 +226,7 @@ const Index: React.FC<Props> = (props) => {
 
           <div className="raised main-content-block">
             <h2>Usage</h2>
-            <p>Twoslash will be available on NPM soon, for now it's only being used in the TypeScript website.</p>
+            <p>Twoslash will be available on npm soon, for now it's only being used in the TypeScript website.</p>
           </div>
         </div>
       </Layout>

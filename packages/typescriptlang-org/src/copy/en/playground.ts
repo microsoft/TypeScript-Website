@@ -26,7 +26,7 @@ export const playCopy = {
   play_sidebar_options_external: "3rd Party Plugins",
   play_sidebar_options_external_warning:
     "Warning: Code from plugins comes from third-parties.",
-  play_sidebar_options_modules: "Custom NPM Modules",
+  play_sidebar_options_modules: "Custom npm Modules",
   play_sidebar_options_modules_placeholder: "Module name from npm.",
   play_sidebar_options_plugin_dev: "Plugin Dev",
   play_sidebar_options_plugin_dev_option:

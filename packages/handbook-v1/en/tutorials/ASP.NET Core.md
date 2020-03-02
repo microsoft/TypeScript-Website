@@ -3,6 +3,7 @@ title: ASP.NET Core
 layout: docs
 permalink: /docs/handbook/asp-net-core.html
 ---
+
 # Setup
 
 ## Install ASP.NET Core and TypeScript
@@ -18,11 +19,11 @@ Next, if your version of Visual Studio does not already have the latest TypeScri
 3. Choose **Visual C#**
 4. For VS2015, choose **ASP.NET Web Application** > **ASP.NET 5 Empty**, and let's uncheck "Host in the cloud" since we're going to run this locally.
 
-    ![Use empty template](../../assets/images/tutorials/aspnet/new-asp-project-empty.png)
+   ![Use empty template](../../assets/images/tutorials/aspnet/new-asp-project-empty.png)
 
-    For VS2017, choose **ASP.NET Core Web Application (.NET Core)** > **ASP.NET Core 1.1 Empty** instead.
+   For VS2017, choose **ASP.NET Core Web Application (.NET Core)** > **ASP.NET Core 1.1 Empty** instead.
 
-    ![Use empty template VS2017](../../assets/images/tutorials/aspnet/new-asp-project-empty-17.PNG)
+   ![Use empty template VS2017](../../assets/images/tutorials/aspnet/new-asp-project-empty-17.PNG)
 
 Run the application and make sure that it works.
 
@@ -98,9 +99,11 @@ Type the following code into app.ts.
 
 ```ts
 function sayHello() {
-    const compiler = (document.getElementById("compiler") as HTMLInputElement).value;
-    const framework = (document.getElementById("framework") as HTMLInputElement).value;
-    return `Hello from ${compiler} and ${framework}!`;
+  const compiler = (document.getElementById("compiler") as HTMLInputElement)
+    .value;
+  const framework = (document.getElementById("framework") as HTMLInputElement)
+    .value;
+  return `Hello from ${compiler} and ${framework}!`;
 }
 ```
 
@@ -119,14 +122,12 @@ Replace the default `tsconfig.json` with the following:
 ```json
 {
   "compilerOptions": {
-      "noImplicitAny": true,
-      "noEmitOnError": true,
-      "sourceMap": true,
-      "target": "es5"
+    "noImplicitAny": true,
+    "noEmitOnError": true,
+    "sourceMap": true,
+    "target": "es5"
   },
-  "files": [
-      "./app.ts"
-  ],
+  "files": ["./app.ts"],
   "compileOnSave": true
 }
 ```
@@ -140,11 +141,11 @@ This is similar to the default, with the following differences:
 `"noImplicitAny"` is good idea whenever you're writing new code &mdash; you can make sure that you don't write any untyped code by mistake.
 `"compileOnSave"` makes it easy to update your code in a running web app.
 
-### Set up NPM
+### Set up npm
 
-Now we need to set up NPM so we can download JavaScript packages.
+Now we need to set up npm so we can download JavaScript packages.
 Right click on the project and click **New Item**.
-Then choose **NPM Configuration File** and use the default name `package.json`.
+Then choose **npm Configuration File** and use the default name `package.json`.
 Inside `"devDependencies"` add "gulp" and "del":
 
 ```json
@@ -169,19 +170,19 @@ This file is the main entry point for defining Gulp tasks and using Gulp plugins
 Click here to learn more. http://go.microsoft.com/fwlink/?LinkId=518007
 */
 
-var gulp = require('gulp');
-var del = require('del');
+var gulp = require("gulp");
+var del = require("del");
 
 var paths = {
-    scripts: ['scripts/**/*.js', 'scripts/**/*.ts', 'scripts/**/*.map'],
+  scripts: ["scripts/**/*.js", "scripts/**/*.ts", "scripts/**/*.map"]
 };
 
-gulp.task('clean', function () {
-    return del(['wwwroot/scripts/**/*']);
+gulp.task("clean", function() {
+  return del(["wwwroot/scripts/**/*"]);
 });
 
-gulp.task('default', function () {
-    gulp.src(paths.scripts).pipe(gulp.dest('wwwroot/scripts'))
+gulp.task("default", function() {
+  gulp.src(paths.scripts).pipe(gulp.dest("wwwroot/scripts"));
 });
 ```
 
@@ -201,18 +202,28 @@ Use the following code for `index.html`:
 ```html
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8" />
     <script src="scripts/app.js"></script>
     <title></title>
-</head>
-<body>
+  </head>
+  <body>
     <div id="message"></div>
     <div>
-        Compiler: <input id="compiler" value="TypeScript" onkeyup="document.getElementById('message').innerText = sayHello()" /><br />
-        Framework: <input id="framework" value="ASP.NET" onkeyup="document.getElementById('message').innerText = sayHello()" />
+      Compiler:
+      <input
+        id="compiler"
+        value="TypeScript"
+        onkeyup="document.getElementById('message').innerText = sayHello()"
+      /><br />
+      Framework:
+      <input
+        id="framework"
+        value="ASP.NET"
+        onkeyup="document.getElementById('message').innerText = sayHello()"
+      />
     </div>
-</body>
+  </body>
 </html>
 ```
 
@@ -237,7 +248,7 @@ Next we'll include Angular and write a simple Angular app.
 
 # Add Angular 2
 
-## Add NPM dependencies
+## Add npm dependencies
 
 Add Angular 2 and SystemJS to `dependencies` in `package.json`.
 
@@ -252,7 +263,7 @@ For VS2015, the new `dependencies` list:
   },
 ```
 
-For VS2017, due to the deprecation of peer dependencies in NPM3, we need to list Angular 2's peer dependencies directly as dependencies as well:
+For VS2017, due to the deprecation of peer dependencies in npm3, we need to list Angular 2's peer dependencies directly as dependencies as well:
 
 ```json
   "dependencies": {
@@ -279,23 +290,17 @@ Our tsconfig should now look like this:
 
 ```json
 {
-    "compilerOptions": {
-        "noImplicitAny": true,
-        "noEmitOnError": true,
-        "sourceMap": true,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "target": "es5",
-        "lib": [
-            "es2015", "es5", "dom"
-        ]
-    },
-    "files": [
-        "./app.ts",
-        "./model.ts",
-        "./main.ts"
-    ],
-    "compileOnSave": true
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "noEmitOnError": true,
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "target": "es5",
+    "lib": ["es2015", "es5", "dom"]
+  },
+  "files": ["./app.ts", "./model.ts", "./main.ts"],
+  "compileOnSave": true
 }
 ```
 
@@ -348,18 +353,20 @@ Again, make sure that Task Runner Explorer sees the new `lib` task after you sav
 First, change the code in `app.ts` to:
 
 ```ts
-import {Component} from "angular2/core"
-import {MyModel} from "./model"
+import { Component } from "angular2/core";
+import { MyModel } from "./model";
 
 @Component({
-    selector: `my-app`,
-    template: `<div>Hello from {{getCompiler()}}</div>`
+  selector: `my-app`,
+  template: `
+    <div>Hello from {{ getCompiler() }}</div>
+  `
 })
 export class MyApp {
-    model = new MyModel();
-    getCompiler() {
-        return this.model.compiler;
-    }
+  model = new MyModel();
+  getCompiler() {
+    return this.model.compiler;
+  }
 }
 ```
 
@@ -367,15 +374,15 @@ Then add another TypeScript file in `scripts` named `model.ts`:
 
 ```ts
 export class MyModel {
-    compiler = "TypeScript";
+  compiler = "TypeScript";
 }
 ```
 
 And then another TypeScript file in `scripts` named `main.ts`:
 
 ```ts
-import {bootstrap} from "angular2/platform/browser";
-import {MyApp} from "./app";
+import { bootstrap } from "angular2/platform/browser";
+import { MyApp } from "./app";
 bootstrap(MyApp);
 ```
 
@@ -384,31 +391,30 @@ Finally, change the code in `index.html` to the following:
 ```html
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8" />
     <script src="scripts/lib/angular2-polyfills.js"></script>
     <script src="scripts/lib/system.src.js"></script>
     <script src="scripts/lib/rx.js"></script>
     <script src="scripts/lib/angular2.js"></script>
     <script>
-    System.config({
+      System.config({
         packages: {
-            'scripts': {
-                format: 'cjs',
-                defaultExtension: 'js'
-            }
+          scripts: {
+            format: "cjs",
+            defaultExtension: "js"
+          }
         }
-    });
-    System.import('scripts/main').then(null, console.error.bind(console));
+      });
+      System.import("scripts/main").then(null, console.error.bind(console));
     </script>
     <title></title>
-</head>
-<body>
+  </head>
+  <body>
     <my-app>Loading...</my-app>
-</body>
+  </body>
 </html>
 ```
 
 This loads the app.
 When you run the ASP.NET application you should see a div that says "Loading..." and then updates to say "Hello from TypeScript".
-

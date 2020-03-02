@@ -10,7 +10,7 @@ or
 
 - Open up the TypeScript Playground
 - Go the "Options" in the sidebar
-- Look for "Plugins from NPM"
+- Look for "Plugins from npm"
 - Add "[name]"
 - Reload the browser
 

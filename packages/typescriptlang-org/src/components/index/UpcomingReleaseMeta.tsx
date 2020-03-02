@@ -1,7 +1,7 @@
 import React from "react"
 import { withPrefix } from "gatsby"
 
-// Automatic metadata from NPM and VS Marketplace
+// Automatic metadata from npm and VS Marketplace
 import releaseInfo from "../../lib/release-info.json"
 // Manual input of dates
 import releasePlan from "../../lib/release-plan.json"

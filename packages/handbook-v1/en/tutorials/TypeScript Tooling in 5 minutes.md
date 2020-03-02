@@ -16,7 +16,7 @@ There are two main ways to get the TypeScript tools:
 Visual Studio 2017 and Visual Studio 2015 Update 3 include TypeScript by default.
 If you didn't install TypeScript with Visual Studio, you can still [download it](/download).
 
-For NPM users:
+For npm users:
 
 ```shell
 > npm install -g typescript
