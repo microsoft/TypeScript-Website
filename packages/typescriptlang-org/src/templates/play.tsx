@@ -94,7 +94,7 @@ const Play: React.FC<Props> = (props) => {
           prefix: withPrefix("/")
         }
 
-        playground.setupPlayground(sandboxEnv, main, playgroundConfig, i as any)
+        playground.setupPlayground(sandboxEnv, main, playgroundConfig, i as any, React)
 
         // Dark mode faff
         const darkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)')
