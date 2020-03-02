@@ -5,7 +5,11 @@
 
   &.centered {
     text-align: center;
+    h2 {
+      margin-top: 120px;
+    }
   }
+
   .sidebar {
     background-color: rgba(204, 207, 233, 0.1);
   }
@@ -25,8 +29,10 @@
 
     .callout {
       margin-top: 20px;
+      margin-bottom: 10px;
       width: 48%;
       display: flex;
+      line-height: 1.4rem;
     }
 
     h3 {
@@ -48,7 +54,6 @@
       transition: background-color 0.2s ease-out;
       margin: 20px;
       margin-top: 0;
-      border-radius: 50%;
 
       @media screen and (-ms-high-contrast: active) {
         -ms-high-contrast-adjust: none;
@@ -56,6 +61,10 @@
 
       &.high-contrast-only {
         font-size: 1.8rem;
+      }
+
+      &.img-circle {
+        border-radius: 50%;
       }
 
       &.discord {
@@ -99,6 +108,11 @@
     margin-top: 0;
   }
 
+  h3.centered-highlight {
+    background-color: rgba(204, 207, 233, 0.1);
+    text-align: center;
+    padding: 20px 20px;
+  }
   .upcoming-event {
     min-width: 330px;
     img {
@@ -136,5 +150,9 @@
         );
       }
     }
+  }
+
+  .events > h4 {
+    padding-left: 20px;
   }
 }
