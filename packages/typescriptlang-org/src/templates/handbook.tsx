@@ -80,7 +80,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   if (!post.frontmatter) throw new Error(`No front-matter found for the file with props: ${props}`)
   if (!post.html) throw new Error(`No html found for the file with props: ${props}`)
 
-  const selectedID = post.frontmatter.permalink!.split("/").pop()!.replace(".html", "")
+  const selectedID = post.frontmatter.permalink!.split("/").pop()!.replace(".html", "") || "index"
   const showSidebar = post.headings && post.headings.length <= 25
 
   return (

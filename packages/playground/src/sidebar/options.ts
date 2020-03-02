@@ -28,7 +28,7 @@ const removeCustomPlugins = (mod: string) => {
   localStorage.setItem('custom-plugins-playground', JSON.stringify(newPlugins))
 }
 
-const addCustomPlugin = (mod: string) => {
+export const addCustomPlugin = (mod: string) => {
   const newPlugins = customPlugins()
   newPlugins.push(mod)
   localStorage.setItem('custom-plugins-playground', JSON.stringify(newPlugins))

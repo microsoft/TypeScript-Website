@@ -2,17 +2,17 @@ import React from "react"
 import { withPrefix } from "gatsby"
 
 interface DevNavProps {
-  active: string
+  active?: string
 }
 
 export const DevNav = (props: DevNavProps) => {
   const isActive = (str) =>
-    props.active.toLowerCase() === str ? "active" : ""
+    props.active && props.active.toLowerCase() === str ? "active" : ""
 
   return <nav className="navbar-sub">
     <ul className="nav">
       <li className="name"><span>Developer Tools</span></li>
-      <li>
+      <li style={{ display: "none" }}>
         <a className={isActive("compiler api")} href={withPrefix("/dev/compiler")}>Compiler API</a>
       </li>
       <li>

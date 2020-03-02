@@ -16,7 +16,7 @@ export const playCopy = {
   play_sidebar_logs: "Logs",
   play_sidebar_logs_no_logs: "No logs",
   play_sidebar_options: "Options",
-  play_sidebar_options_restart_required: "Refresh Needed",
+  play_sidebar_options_restart_required: "Browser Refresh Required",
   play_sidebar_options_disable_ata: "Disable ATA",
   play_sidebar_options_disable_ata_copy:
     "Disable the automatic acquisition of types for imports and requires.",
@@ -26,7 +26,7 @@ export const playCopy = {
   play_sidebar_options_external: "3rd Party Plugins",
   play_sidebar_options_external_warning:
     "Warning: Code from plugins comes from third-parties.",
-  play_sidebar_options_modules: "Custom NPM Modules",
+  play_sidebar_options_modules: "Custom npm Modules",
   play_sidebar_options_modules_placeholder: "Module name from npm.",
   play_sidebar_options_plugin_dev: "Plugin Dev",
   play_sidebar_options_plugin_dev_option:

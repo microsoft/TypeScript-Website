@@ -13,7 +13,7 @@ export const comCopy = {
     "Chat with other TypeScript users in the TypeScript Community Chat.",
   com_online_github_desc:
     "Found a bug, or want to give us constructive feedback?",
-  com_online_github_href: "Tell us on github",
+  com_online_github_href: "Tell us on GitHub",
   com_online_twitter_desc: "Stay up to date. Follow us on Twitter",
   com_online_blog_desc:
     "Learn about the latest TypeScript developments via our",

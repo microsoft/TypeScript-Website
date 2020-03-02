@@ -4,10 +4,14 @@ My new plugin for the TypeScript playground.
 
 ## Running this plugin
 
+- [Click this link](https://typescriptlang.org/play?install-plugin=[name]) to install
+
+or
+
 - Open up the TypeScript Playground
 - Go the "Options" in the sidebar
-- Look for "Plugins from NPM"
-- Add "playground-plugin-XYZ"
+- Look for "Plugins from npm"
+- Add "[name]"
 - Reload the browser
 
 Then it will show up as a tab in the sidebar.

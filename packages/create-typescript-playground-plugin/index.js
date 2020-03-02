@@ -50,12 +50,10 @@ const getTar = ({ user, repo, path = '', name }) => {
 const create = async (opts = {}) => {
   if (!opts.name) {
     throw new Error('name argument required')
-    return
   }
 
   if (!opts.template) {
     throw new Error('template argument required')
-    return
   }
 
   const dirname = path.resolve(opts.name)
@@ -89,7 +87,21 @@ const create = async (opts = {}) => {
   await install()
   gitInit()
 
-  console.log("\nAlright, you're good to go!")
+  const readmePath = path.join(dirname, 'README.md')
+  const README = fs.readFileSync(readmePath, 'utf8')
+  README.replace(/\[name\]/g, opts.name)
+  fs.writeFileSync(readmePath, README)
+
+  console.log("\nAlright, you're good to go!\n")
+
+  console.log('To get started:')
+  console.log(` - code ${name}`)
+  console.log(` - cd ${name}`)
+  console.log(` - yarn start`)
+
+  console.log(
+    '\nCome and ask questions to other plugin authors in the TypeScript Community Discord: https://discord.gg/typescript'
+  )
 
   return { name, dirname }
 }

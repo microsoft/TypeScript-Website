@@ -5,9 +5,13 @@
 
   &.centered {
     text-align: center;
+    h2 {
+      margin-top: 120px;
+    }
   }
+
   .sidebar {
-    background-color: #f9f9f9;
+    background-color: rgba(204, 207, 233, 0.1);
   }
 
   .next-steps-container {
@@ -16,7 +20,6 @@
 
   .banner-text {
     margin-top: 20px;
-    color: black;
   }
 
   .callouts {
@@ -26,8 +29,10 @@
 
     .callout {
       margin-top: 20px;
+      margin-bottom: 10px;
       width: 48%;
       display: flex;
+      line-height: 1.4rem;
     }
 
     h3 {
@@ -49,7 +54,6 @@
       transition: background-color 0.2s ease-out;
       margin: 20px;
       margin-top: 0;
-      border-radius: 50%;
 
       @media screen and (-ms-high-contrast: active) {
         -ms-high-contrast-adjust: none;
@@ -57,6 +61,10 @@
 
       &.high-contrast-only {
         font-size: 1.8rem;
+      }
+
+      &.img-circle {
+        border-radius: 50%;
       }
 
       &.discord {
@@ -100,6 +108,11 @@
     margin-top: 0;
   }
 
+  h3.centered-highlight {
+    background-color: rgba(204, 207, 233, 0.1);
+    text-align: center;
+    padding: 20px 20px;
+  }
   .upcoming-event {
     min-width: 330px;
     img {
@@ -132,10 +145,14 @@
         background: rgb(0, 0, 0);
         background: linear-gradient(
           0deg,
-          rgba(0, 0, 0, 1) 0%,
-          rgba(0, 0, 0, 0.2) 100%
+          rgba(49, 49, 49, 1) 0%,
+          rgba(49, 49, 49, 0.2) 100%
         );
       }
     }
+  }
+
+  .events > h4 {
+    padding-left: 20px;
   }
 }

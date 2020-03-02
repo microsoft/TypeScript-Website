@@ -4,7 +4,7 @@ layout: docs
 permalink: /docs/handbook/release-notes/overview.html
 ---
 
-This page is a shorter overview of features added per version.
+This overview page is a summary contains a shorter version of all the release notes for TypeScript.
 
 # TypeScript 3.8
 

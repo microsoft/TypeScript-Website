@@ -97,7 +97,9 @@ export const Sidebar = (props: Props) => {
                     aria["aria-current"] = "page"
                     aria.className = "highlight"
                   }
-                  const path = `/docs/${navRoot.directory}/${item.id}.html`
+
+                  const filename = item.id === "index" ? "" : `${item.id}.html`
+                  const path = `/docs/${navRoot.directory}/${filename}`
 
                   return <li key={item.id} {...aria}>
                     <Link to={path} onKeyDown={onAnchorKeyDown}>{item.title}</Link>

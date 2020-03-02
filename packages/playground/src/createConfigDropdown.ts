@@ -18,7 +18,7 @@ export const createConfigDropdown = (sandbox: Sandbox, monaco: Monaco) => {
   configContainer.appendChild(container)
 
   const compilerOpts = sandbox.getCompilerOptions()
-  const boolOptions = Object.keys(sandbox.getCompilerOptions()).filter(k => typeof compilerOpts[k] === 'boolean')
+  const boolOptions = Object.keys(compilerOpts).filter(k => typeof compilerOpts[k] === 'boolean')
 
   // we want to make sections of categories
   const categoryMap = {} as { [category: string]: { [optID: string]: OptionsSummary } }
@@ -95,7 +95,7 @@ export const createConfigDropdown = (sandbox: Sandbox, monaco: Monaco) => {
 
 export const updateConfigDropdownForCompilerOptions = (sandbox: Sandbox, monaco: Monaco) => {
   const compilerOpts = sandbox.getCompilerOptions()
-  const boolOptions = Object.keys(sandbox.getCompilerOptions()).filter(k => typeof compilerOpts[k] === 'boolean')
+  const boolOptions = Object.keys(compilerOpts).filter(k => typeof compilerOpts[k] === 'boolean')
 
   boolOptions.forEach(opt => {
     const inputID = 'option-' + opt

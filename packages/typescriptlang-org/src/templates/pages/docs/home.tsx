@@ -24,29 +24,20 @@ const Index: React.FC<Props> = (props) => {
       lang={props.pageContext.lang}
       allSitePage={props.data.allSitePage}
     >
-      <div
-        id="documentation"
-        className="raised"
-        style={{
-          backgroundColor: "white",
-          maxWidth: 960,
-          margin: "1rem auto",
-          padding: "2rem",
-        }}
-      >
+      <div id="documentation" className="raised main-content-block">
         <h1>{i("doc_headline")}</h1>
 
         <ButtonGrid
           buttons={[
             {
-              title: i("doc_headline_5m_title"),
+              title: i("doc_headline_ts_for_js_title"),
               href: "/docs/handbook/typescript-in-5-minutes.html",
-              blurb: i("doc_headline_5m_blurb"),
+              blurb: i("doc_headline_ts_for_js_blurb"),
             },
             {
-              title: i("doc_headline_tooling_title"),
-              href: "/docs/handbook/typescript-in-5-minutes.html",
-              blurb: i("doc_headline_tooling_blurb"),
+              title: i("doc_headline_ts_first_title"),
+              href: "/docs/handbook/typescript-from-scratch.html",
+              blurb: i("doc_headline_ts_first_blurb"),
             },
             {
               title: i("doc_headline_handbook_title"),

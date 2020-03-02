@@ -51,9 +51,10 @@ const toMarkdown = files => {
 
   const markdownLink = (f, done) => {
     const name = basename(f)
-    const url = "https://github.com/microsoft/TypeScript-Website/blob/v2"
+    const url =
+      "https://github.com/microsoft/TypeScript-Website/blob/v2/packages/"
     const check = done ? "x" : " "
-    return `- [${check}] [\`${name}\`](${url}${encodeURIComponent(f)})`
+    return `- [${check}] [\`${name}\`](${url}${f.replace(/ /g, "%20")})`
   }
 
   Object.keys(files).forEach(section => {

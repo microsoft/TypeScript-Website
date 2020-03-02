@@ -308,7 +308,6 @@ main #editor-toolbar {
 
     #monaco-editor-embed {
       height: 100%;
-      min-height: 700px;
     }
 
     #editor-toolbar {
@@ -618,6 +617,14 @@ input.good {
 #popover-modal {
   width: 80%;
   height: 70%;
+
+  &.smaller {
+    width: 40%;
+    min-width: 320px;
+    height: 40%;
+    padding: 0;
+  }
+
   position: fixed;
   padding: 20px;
   background-color: white;
@@ -638,6 +645,23 @@ input.good {
   pre {
     max-height: 90%;
     overflow: auto;
+  }
+
+  .window-title {
+    text-align: center;
+    background-color: $ts-light-bg-grey;
+    font-size: 32px;
+
+    &.warning {
+      color: white;
+      background: repeating-linear-gradient(
+        45deg,
+        #d63131,
+        #d63131 10px,
+        #c63131 10px,
+        #c63131 20px
+      );
+    }
   }
 }
 

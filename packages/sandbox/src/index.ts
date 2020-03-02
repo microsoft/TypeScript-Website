@@ -287,16 +287,19 @@ export const createTypeScriptSandbox = (
     getText,
     /** Shortcut for setting the model's text content which would update the editor */
     setText,
-    /** WIP: Gets the AST of the current text */
+    /** Gets the AST of the current text in monaco - uses `createTSProgram`, so the performance caveat applies there too */
     getAST,
-    /** The module you get from  require("typescript") */
+    /** The module you get from require("typescript") */
     ts,
     /** Create a new Program, a TypeScript data model which represents the entire project.
      *
      * The first time this is called it has to download all the DTS files which is needed for an exact compiler run. Which
      * at max is about 1.5MB - after that subsequent downloads of dts lib files come from localStorage.
      *
-     * You probably want
+     * Try to use this sparingly as it can be computationally expensive, at the minimum you should be using the debounced setup.
+     *
+     * TODO: It would be good to create an easy way to have a single program instance which is updated for you
+     * when the monaco model changes.
      */
     createTSProgram,
     /** The Sandbox's default compiler options  */

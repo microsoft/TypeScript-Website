@@ -25,8 +25,7 @@ export default rootFiles.map(name => {
 /** Note:
  * if you end up wanting to import a dependency which relies on typescript, you will need
  * settings which adds these extra options. It will re-use the window.ts for the typescript
- * dependency, and I've not figured a way to remove
- * 
+ * dependency, and I've not figured a way to remove fs and path.
  *
     const options = {
       external: ['typescript', 'fs', 'path'],

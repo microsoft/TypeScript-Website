@@ -21,8 +21,10 @@ import { getExampleSourceCode } from './getExample'
 import { ExampleHighlighter } from './monaco/ExampleHighlight'
 import { createConfigDropdown, updateConfigDropdownForCompilerOptions } from './createConfigDropdown'
 import { showErrors } from './sidebar/showErrors'
-import { optionsPlugin, allowConnectingToLocalhost, activePlugins } from './sidebar/options'
+import { optionsPlugin, allowConnectingToLocalhost, activePlugins, addCustomPlugin } from './sidebar/options'
 import { createUtils, PluginUtils } from './pluginUtils'
+import type React from 'react'
+
 export { PluginUtils } from './pluginUtils'
 
 export type PluginFactory = {
@@ -64,7 +66,8 @@ export const setupPlayground = (
   sandbox: Sandbox,
   monaco: Monaco,
   config: PlaygroundConfig,
-  i: (key: string) => string
+  i: (key: string) => string,
+  react: typeof React
 ) => {
   const playgroundParent = sandbox.getDomNode().parentElement!.parentElement!.parentElement!
   const dragBar = createDragBar()
@@ -355,7 +358,7 @@ export const setupPlayground = (
     let readyPlugin: PlaygroundPlugin
     // Can either be a factory, or object
     if (typeof plugin === 'function') {
-      const utils = createUtils(sandbox)
+      const utils = createUtils(sandbox, react)
       readyPlugin = plugin(utils)
     } else {
       readyPlugin = plugin
@@ -400,18 +403,20 @@ export const setupPlayground = (
     }
   }
 
-  activePlugins().forEach(plugin => {
+  const downloadPlugin = (plugin: string, autoEnable: boolean) => {
     try {
       // @ts-ignore
       const re = window.require
-      re([`unpkg/${plugin.module}@latest/dist/index`], (devPlugin: PlaygroundPlugin) => {
-        activateExternalPlugin(devPlugin, true)
+      re([`unpkg/${plugin}@latest/dist/index`], (devPlugin: PlaygroundPlugin) => {
+        activateExternalPlugin(devPlugin, autoEnable)
       })
     } catch (error) {
       console.error('Problem loading up the plugin:', plugin)
       console.error(error)
     }
-  })
+  }
+
+  activePlugins().forEach(p => downloadPlugin(p.module, false))
 
   if (location.hash.startsWith('#show-examples')) {
     setTimeout(() => {
@@ -423,6 +428,19 @@ export const setupPlayground = (
     setTimeout(() => {
       document.getElementById('whatisnew-button')?.click()
     }, 100)
+  }
+
+  const pluginToInstall = params.get('install-plugin')
+  if (pluginToInstall) {
+    const alreadyInstalled = activePlugins().find(p => p.module === pluginToInstall)
+    console.log(activePlugins(), alreadyInstalled)
+    if (!alreadyInstalled) {
+      const shouldDoIt = confirm('Would you like to install the third party plugin?\n\n' + pluginToInstall)
+      if (shouldDoIt) {
+        addCustomPlugin(pluginToInstall)
+        downloadPlugin(pluginToInstall, true)
+      }
+    }
   }
 
   return playground

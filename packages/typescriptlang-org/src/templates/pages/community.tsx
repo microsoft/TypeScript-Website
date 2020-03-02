@@ -41,14 +41,26 @@ export const Comm: React.FC<Props> = props => {
   const intl = useIntl()
   const i = createInternational<typeof comCopy>(intl)
 
+  // Make an array of all the meetups which share a rough location
+  const meetupByArea = {}
+  meetups.forEach(meetup => {
+    const area = meetup.meetup.continentish
+    if (meetupByArea[area]) {
+      meetupByArea[area].push(meetup.meetup)
+    } else {
+      meetupByArea[area] = [meetup.meetup]
+    }
+  });
+
   return (
     <Layout title={i("com_layout_title")} description={i("com_layout_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
-      <div className="raised main-content-block container community" style={{ marginTop: "80px;" }}>
+      <div className="raised main-content-block container community" style={{ marginTop: "80px" }}>
         <Row>
           <Col className="sidebar">
             <h2>{i("com_connect_online")}</h2>
             <p className="banner-text">{i("com_connect_online_description")}</p>
           </Col>
+
           <Col2 className="callouts">
             <div className="callout">
               <a aria-labelledby="stack-header" className="icon stackoverflow img-circle" href="{{ site.data.urls.ts_stackoverflow_tagged }}" target="_blank"></a>
@@ -61,6 +73,7 @@ export const Comm: React.FC<Props> = props => {
                 {i("com_online_stack_overflow_tag")} <b>typescript.</b>
               </div>
             </div>
+
             <div className="callout">
               <a aria-labelledby="discord-header" className="icon discord img-circle" href="https://discord.gg/typescript" />
 
@@ -118,14 +131,14 @@ export const Comm: React.FC<Props> = props => {
       <div className="container community centered">
         <h2>{i("com_person")}</h2>
 
-        <div className="sub-nav">
-          <button>Conferences</button>
+        <div className="sub-nav" style={{ display: "none" }}>
+          <button >Conferences</button>
           <button>Upcoming Events</button>
           <button>Meetups</button>
         </div>
       </div>
 
-      <div className="raised main-content-block container community">
+      <div className="raised main-content-block container community" style={{ display: "none" }}>
         <Row>
           <Col2>
             <h3>{i("com_conferences")}</h3>
@@ -156,7 +169,7 @@ export const Comm: React.FC<Props> = props => {
       </div>
 
       <div className="raised main-content-block container community">
-        <h3>Upcoming Events</h3>
+        <h3 className="centered-highlight">Upcoming Events</h3>
         <div className="events">
           <Row>
             {meetups
@@ -177,16 +190,34 @@ export const Comm: React.FC<Props> = props => {
           </Row>
         </div>
       </div>
+
+
+      <div className="raised main-content-block container community">
+        <h3 className="centered-highlight">Meetups</h3>
+        <div className="events">
+          {Object.keys(meetupByArea)
+            .map(area => (
+              <>
+                <h4>{area}</h4>
+                <div className="callouts">
+                  {meetupByArea[area].map(meetup => (
+                    <Col className="callout">
+                      <img src={require("../../assets/community/meetup-logos/" + meetup.image)} className="icon img-square" alt={"logo of " + meetup.title} />
+                      <div>
+                        <h4 className="community-callout-headline">{meetup.title}</h4>
+                        <div className="text">{meetup.country}<br /><a rel="noopener" target="blank" href={meetup.url}>Website</a>{meetup.twitter ? <a rel="noopener" target="blank" href={meetup.twitter}>Twitter</a> : null}</div>
+                      </div>
+                    </Col>
+                  ))}
+                </div>
+              </>
+            ))}
+        </div>
+      </div>
     </Layout >
   )
 }
-// {meetups.map(m => (
-//   <div className="callout">
-//     <img src={m.meetup.image} className="icon img-square" alt={"logo of " + m.meetup.title} />
-//     <h4 className="community-callout-headline">{m.meetup.title}</h4>
-//     <div className="text">{m.meetup.country}<br /><a rel="noopener" target="blank" href={m.meetup.url}>Website</a>{m.meetup.twitter ? <a rel="noopener" target="blank" href={meetup.twitter}>Twitter</a> : null}</div>
-//   </div>
-// ))}
+
 export default (props: Props) => (
   <Intl>
     <Comm {...props} />

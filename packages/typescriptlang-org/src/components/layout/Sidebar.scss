@@ -111,6 +111,21 @@ nav#sidebar {
     }
   }
 
+  > ul > li.open > ul {
+    background-color: #e4e4e4;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: rgb(53, 52, 52);
+    }
+  }
+  > ul > li.open.highlighted > ul {
+    background-color: $ts-barely-blue-highlight;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: $ts-dark-barely-blue-highlight;
+    }
+  }
+
   // Individual pages
   > ul > li > ul {
     margin: 0;
@@ -154,6 +169,7 @@ nav#sidebar {
         border-left: 2px solid $ts-main-blue-color;
         margin-left: 0.5rem;
         margin-right: -0.5rem;
+        font-weight: 500;
       }
     }
   }

@@ -347,15 +347,19 @@ export function twoslasher(
     // ------ Do the LSP lookup for the queries
 
     // TODO: this is not perfect, it seems to have issues when there are multiple queries
-    // in the same sourcefile
+    // in the same sourcefile. Looks like it's about removing the query comments before them.
+    let removedChars = 0
     const lspedQueries = updates.queries.map(q => {
-      const quickInfo = ls.getQuickInfoAtPosition(filename, q.position)
-      const token = ls.getDefinitionAtPosition(filename, q.position)
+      const quickInfo = ls.getQuickInfoAtPosition(filename, q.position - removedChars)
+      const token = ls.getDefinitionAtPosition(filename, q.position - removedChars)
+
+      removedChars += ('//' + q.offset + '?^\n').length
 
       let text = `Could not get LSP result: ${stringAroundIndex(env.getSourceFile(filename)!.text, q.position)}`
       let docs,
         start = 0,
         length = 0
+
       if (quickInfo && token && quickInfo.displayParts) {
         text = quickInfo.displayParts.map(dp => dp.text).join('')
         docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join('<br/>') : undefined
