@@ -30,8 +30,16 @@ export const createIntlLink = (currentLocale: string, allSitePage: AllSitePageFr
       }
     }
 
-    // @ts-ignore
-    return <Link {...linkProps} to={to} />
+    const blocklistIncludes = ["/play", "sandbox",]
+    const blocklisted = blocklistIncludes.find(blocked => to.includes(blocked))
+
+    if (blocklisted) {
+      // @ts-ignore
+      return <a {...linkProps} href={to} />
+    } else {
+      // @ts-ignore
+      return <Link {...linkProps} to={to} />
+    }
   }
 }
 

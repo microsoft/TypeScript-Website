@@ -1,7 +1,7 @@
 import React from "react"
 import { Layout } from "../../components/layout"
 import { Intl } from "../../components/Intl"
-import { graphql, withPrefix } from "gatsby"
+import { graphql, } from "gatsby"
 import { EmptyPageQuery } from "../../__generated__/gatsby-types"
 
 type Props = {
@@ -13,10 +13,8 @@ import "./css/tools.scss"
 import { createIntlLink } from "../../components/IntlLink"
 import { DevNav } from "../../components/dev-nav"
 
-const QuarterOrHalfRow = (props: { children: any, className?: string }) => <div className={[props.className, "split-row"].join(" ")}>{props.children}</div>
 const Row = (props: { children: any, className?: string }) => <div className={[props.className, "row"].join(" ")}>{props.children}</div>
 const Col = (props: { children: any, className?: string }) => <div className={[props.className, "col1"].join(" ")}>{props.children}</div>
-const Col2 = (props: { children: any, className?: string }) => <div className={[props.className, "col2"].join(" ")}>{props.children}</div>
 
 
 const Index: React.FC<Props> = (props) => {

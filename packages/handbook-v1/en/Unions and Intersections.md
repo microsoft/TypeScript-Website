@@ -37,7 +37,8 @@ The problem with `padLeft` is that its `padding` parameter is typed as `any`.
 That means that we can call it with an argument that's neither a `number` nor a `string`, but TypeScript will be okay with it.
 
 ```ts
-let indentedString = padLeft("Hello world", true); // passes at compile time, fails at runtime.
+// passes at compile time, fails at runtime.
+let indentedString = padLeft("Hello world", true);
 ```
 
 In traditional object-oriented code, we might abstract over the two types by creating a hierarchy of types.

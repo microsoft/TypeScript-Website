@@ -3,10 +3,12 @@ export const docCopy = {
   doc_layout_description:
     "Find TypeScript starter projects: from Angular to React or Node.js and CLIs.",
   doc_headline: "Start Learning",
-  doc_headline_5m_title: "TS in 5m",
-  doc_headline_5m_blurb: "5 minute overview of the language",
-  doc_headline_tooling_title: "TS Tooling",
-  doc_headline_tooling_blurb: "5 minute overview of the tooling",
+  doc_headline_ts_for_js_title: "TS for JS",
+  doc_headline_ts_for_js_blurb:
+    "An overview of TypeScript for engineers with a JavaScript background",
+  doc_headline_ts_first_title: "Start with TS",
+  doc_headline_ts_first_blurb:
+    "A beginners introduction to JavaScript and TypeScript",
   doc_headline_handbook_title: "Handbook",
   doc_headline_handbook_blurb: "The TypeScript language reference",
   doc_headline_examples_title: "Examples",

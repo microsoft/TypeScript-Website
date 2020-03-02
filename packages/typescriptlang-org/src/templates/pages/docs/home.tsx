@@ -30,14 +30,14 @@ const Index: React.FC<Props> = (props) => {
         <ButtonGrid
           buttons={[
             {
-              title: i("doc_headline_5m_title"),
+              title: i("doc_headline_ts_for_js_title"),
               href: "/docs/handbook/typescript-in-5-minutes.html",
-              blurb: i("doc_headline_5m_blurb"),
+              blurb: i("doc_headline_ts_for_js_blurb"),
             },
             {
-              title: i("doc_headline_tooling_title"),
-              href: "/docs/handbook/typescript-in-5-minutes.html",
-              blurb: i("doc_headline_tooling_blurb"),
+              title: i("doc_headline_ts_first_title"),
+              href: "/docs/handbook/typescript-from-scratch.html",
+              blurb: i("doc_headline_ts_first_blurb"),
             },
             {
               title: i("doc_headline_handbook_title"),
