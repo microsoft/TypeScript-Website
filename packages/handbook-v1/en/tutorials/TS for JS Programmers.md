@@ -4,14 +4,33 @@ layout: docs
 permalink: /docs/handbook/typescript-in-5-minutes.html
 ---
 
-The relationship between TypeScript and JavaScript is rather unique among modern programming languages, though of all programmers JavaScript Programmers are the most used to the idea of a language which expands .
+The relationship between TypeScript and JavaScript is rather unique among modern programming languages.
+TypeScript sits as a layer on-top of JavaScript, offering the features of JavaScript and then adds it's own layer on top of that. This layer is the TypeScript type system.
 
-What you will not know are the extensions to TypeScript in the type-system.
-This tutorial is a 5 minute overview of the type-system.
+JavaScript already has a set of language primitives like `string`, `number`, `object`, `undefined` etc, however there are no ahead-of-time checks that these are consistently assigned across your whole codebase. TypeScript acts as that layer.
+
+This means that your existing working JavaScript code is also TypeScript code, however TypeScript's type-checker might highlight discrepancies between what you thought was happening and what the JavaScript language does.
+
+This tutorial tries to give you a 5 minute overview of the type-system, with a focus on understanding the type-system langauge extensions which TypeScript adds.
+
+## Types by Inference
+
+TypeScript knows the JavaScript language and will generate types for you in many cases.
+For example in creating a variable and assigning it to a particular value, TypeScript will use the value as its type.
+
+```ts twoslash
+let helloWorld = "Hello World";
+//  ^?
+```
+
+By understanding how JavaScript works, TypeScript can build a type-system which accepts JavaScript code but has types. This offers a type-system without needed to add extra characters to make types explicit in your code. Which is how TypeScript knows that `helloWorld` is a `string` in the above example.
+
+It's quite possible that you have used VS Code with JavaScript, and had editor auto-completion as you worked.
+That is because the understanding of JavaScript baked into TypeScript has been used under-the-hood to improve working with JavaScript.
 
 ## Defining Types
 
-You can define a type either through inference, or by explicitly using a `type`.
+JavaScript is a dynamic language which allows for a lot of design patterns. Some design patterns can be hard to automatically provide types for automatically (because they might use dynamic programming) in those cases TypeScript supports an extension of the JavaScript language which offers places for you to tell TypeScript what the types should be.
 
 Here is an example of creating an object which has an inferred type which includes `name: string` and `id: number`:
 
@@ -22,22 +41,22 @@ const user = {
 };
 ```
 
-An explicit way to describe this object's shape is via a `type` declaration:
+An explicit way to describe this object's shape is via an `interface` declaration:
 
 ```ts twoslash
-type User = {
+interface User {
   name: string;
   id: number;
-};
+}
 ```
 
-You can then declare that a JavaScript object conforms to that shape of your new `type` by using syntax like `: TypeName` after a variable declaration:
+You can then declare that a JavaScript object conforms to that shape of your new `interface` by using syntax like `: TypeName` after a variable declaration:
 
 ```ts twoslash
-type User = {
+interface User {
   name: string;
   id: number;
-};
+}
 // ---cut---
 const user: User = {
   name: "Hayes",
@@ -45,14 +64,14 @@ const user: User = {
 };
 ```
 
-TypeScript will warn you if you provide an object which doesn't match the type you have provided:
+TypeScript will warn you if you provide an object which doesn't match the interface you have provided:
 
 ```ts twoslash
 // @errors: 2322
-type User = {
+interface User {
   name: string;
   id: number;
-};
+}
 
 const user: User = {
   username: "Hayes",
@@ -60,13 +79,13 @@ const user: User = {
 };
 ```
 
-Because JavaScript supports classes and object-orient programming, so does TypeScript - a type declaration can also be used with classes:
+Because JavaScript supports classes and object-orient programming, so does TypeScript - a interface declaration can also be used with classes:
 
 ```ts twoslash
-type User = {
+interface User {
   name: string;
   id: number;
-};
+}
 
 class UserAccount {
   name: string;
@@ -81,14 +100,14 @@ class UserAccount {
 const user: User = new UserAccount("Murphy", 1);
 ```
 
-A type can be used to annotate functions in a few ways:
+Interfaces can be used to annotate parameters and return values to functions:
 
 ```ts twoslash
 // @noErrors
-type User = {
+interface User {
   name: string;
   id: number;
-};
+}
 // ---cut---
 function getAdminUser(): User {
   //...
@@ -101,9 +120,12 @@ function deleteUser(user: User) {
 
 There are already a small set of primitive types available in JavaScript: `boolean`, `bigint`, `null`, `number`, `string`, `symbol`, `object` and `undefined`, which you can use in an interface. TypeScript extends this list with a few more. for example: `any` (allow anything), [`unknown`](/en/play#example/unknown-and-never) (ensure someone using this type declares what the type is), [`never`](/en/play#example/unknown-and-never) (it's not possible that this type could happen) `void` (a function which returns `undefined` or has no return value).
 
+You'll see quite quickly that there are two syntaxes for building types: [Interfaces and Types](/play/?e=83#example/types-vs-interfaces) - you should prefer `interface`, and use `type` when you need specific features.
+
 ## Composing Types
 
-TypeScript has three ways in which you can build complex types by working with many smaller types.
+Similar to how you would create larger complex objects by composing the, together TypeScript has tools for doing this with types.
+The two most popular techniques you would use in everyday code every to create new types by working with many smaller types are Unions and Generics.
 
 ### Unions
 
@@ -123,34 +145,44 @@ type LockStates = "locked" | "unlocked";
 type OddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
 ```
 
-### Intersections
-
-If a union type is an or ( `x || y` ), then an intersection type is an and `( x && y )`.
-TypeScript has intersection types to merge types together:
+Unions provide a way to handle different types too, for example you may have a function which accepts an `array` or a `string`.
 
 ```ts twoslash
-type APIResponse = {
-  success: boolean;
-  error?: { message: string };
-};
+function getLength(obj: string | string[]) {
+  return obj;
+}
+```
 
-type ArtworksData = {
-  artworks: { title: string }[];
-};
+TypeScript understands how code changes what the variable could be with time, you can use these checks to narrow the type down.
 
-type ArtistsData = {
-  artists: { name: string }[];
-};
+| Type      | Predicate                          |
+| --------- | ---------------------------------- |
+| string    | `typeof s === "string"`            |
+| number    | `typeof n === "number"`            |
+| boolean   | `typeof b === "boolean"`           |
+| undefined | `typeof undefined === "undefined"` |
+| function  | `typeof f === "function"`          |
+| array     | `Array.isArray(a)`                 |
 
-type ArtistResponse = APIResponse & ArtistsData;
-type ArtworkResponse = APIResponse & ArtworksData;
+For example, you could differentiate between a `string` and an `array`, using `typeof obj === "string"` and TypeScript will know what the object is down different code paths.
+
+<!-- prettier-ignore -->
+```ts twoslash
+function wrapInArray(obj: string | string[]) {
+  if (typeof obj === "string") {
+    return [obj];
+//          ^?
+  } else {
+    return obj;
+  }
+}
 ```
 
 ### Generics
 
 You can get very deep into the TypeScript generic system, but at a 1 minute high-level explanation, generics are a way to provide variables to types.
 
-A common example is an array, an array without generics could contain anything. An array with generics can describe what it holds in the array.
+A common example is an array, an array without generics could contain anything. An array with generics can describe what values are inside in the array.
 
 ```ts
 type StringArray = Array<string>;
@@ -162,10 +194,10 @@ You can declare your own types which use generics:
 
 ```ts twoslash
 // @errors: 2345
-type Backpack<Type> = {
+interface Backpack<Type> {
   add: (obj: Type) => void;
   get: () => Type;
-};
+}
 
 // This line is a shortcut to tell TypeScript there is a
 // constant called `backpack`, and to not worry about where it came from
@@ -174,7 +206,7 @@ declare const backpack: Backpack<string>;
 // object is a string, because we declared it above as the variable part of Backpack
 const object = backpack.get();
 
-// Due to this variable, you cannot pass a number to add
+// Due to backpack variable being a string, you cannot pass a number to the add function
 backpack.add(23);
 ```
 
@@ -203,7 +235,7 @@ printPoint(point);
 The `point` variable is never declared to be a `Point` type, but because TypeScript compares the shape of `point` to the shape of `Point` in the type-check.
 Because they both have the same shape, then it passes.
 
-The shape matching only requires a subset
+The shape matching only requires a subset of the object's fields to match.
 
 ```ts twoslash
 // @errors: 2345
@@ -226,3 +258,6 @@ const color = { hex: "#187ABF" };
 // Errors: Argument of type '{ hex: string; }' is not assignable to parameter of type 'Point'.
 printPoint(color);
 ```
+
+This is a high level 5 minute overview of the sort of syntax and tools you would use in everyday code.
+From here you should read [through the handbook](/docs/handbook/basic-types.html) or explore the [Playground examples](/play#show-examples).
