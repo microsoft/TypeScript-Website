@@ -1,8 +1,9 @@
 import type { Sandbox } from 'typescript-sandbox'
 import type { Node } from "typescript"
+import type React from 'react'
 
 /** Creates a set of util functions which is exposed to Plugins to make it easier to build consistent UIs */
-export const createUtils = (sb: any) => {
+export const createUtils = (sb: any, react: typeof React) => {
   const sandbox: Sandbox = sb 
   const ts = sandbox.ts
 
@@ -95,7 +96,9 @@ export const createUtils = (sb: any) => {
     /** Get a relative URL for something in your dist folder depending on if you're in dev mode or not */
     requireURL,
     /** Returns a div which has an interactive AST a TypeScript AST by passing in the root node */
-    createASTTree
+    createASTTree,
+    /** The Gatsby copy of React */
+    react
   }
 }
 

@@ -23,6 +23,8 @@ import { createConfigDropdown, updateConfigDropdownForCompilerOptions } from './
 import { showErrors } from './sidebar/showErrors'
 import { optionsPlugin, allowConnectingToLocalhost, activePlugins, addCustomPlugin } from './sidebar/options'
 import { createUtils, PluginUtils } from './pluginUtils'
+import type React from 'react'
+
 export { PluginUtils } from './pluginUtils'
 
 export type PluginFactory = {
@@ -64,7 +66,8 @@ export const setupPlayground = (
   sandbox: Sandbox,
   monaco: Monaco,
   config: PlaygroundConfig,
-  i: (key: string) => string
+  i: (key: string) => string,
+  react: typeof React
 ) => {
   const playgroundParent = sandbox.getDomNode().parentElement!.parentElement!.parentElement!
   const dragBar = createDragBar()
@@ -355,7 +358,7 @@ export const setupPlayground = (
     let readyPlugin: PlaygroundPlugin
     // Can either be a factory, or object
     if (typeof plugin === 'function') {
-      const utils = createUtils(sandbox)
+      const utils = createUtils(sandbox, react)
       readyPlugin = plugin(utils)
     } else {
       readyPlugin = plugin

@@ -16,6 +16,7 @@
     "@rollup/plugin-json": "^4.0.2",
     "@rollup/plugin-node-resolve": "^7.1.0",
     "@rollup/plugin-typescript": "^3.0.0",
+    "@types/react": "^16.9.23",
     "concurrently": "^5.1.0",
     "monaco-editor": "^0.19.3",
     "node-fetch": "^2.6.0",

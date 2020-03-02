@@ -263,7 +263,7 @@ For VS2015, the new `dependencies` list:
   },
 ```
 
-For VS2017, due to the deprecation of peer dependencies in npm3, we need to list Angular 2's peer dependencies directly as dependencies as well:
+For VS2017, due to the deprecation of peer dependencies in npm@3, we need to list Angular 2's peer dependencies directly as dependencies as well:
 
 ```json
   "dependencies": {

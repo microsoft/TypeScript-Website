@@ -34,8 +34,10 @@ const Play: React.FC<Props> = (props) => {
     if ("playgroundLoaded" in window) return
     window["playgroundLoaded"] = true
 
-    // @ts-ignore
+    // @ts-ignore - so the config options can use localized descriptions
     window.optionsSummary = props.pageContext.optionsSummary
+    // @ts-ignore - for React-based plugins
+    window.react = React
 
     const getLoaderScript = document.createElement('script');
     getLoaderScript.src = withPrefix("/js/vs.loader.js");
@@ -68,11 +70,13 @@ const Play: React.FC<Props> = (props) => {
           console.error("main", !!main, "ts", !!ts, "sandbox", !!sandbox, "playground", !!playground)
         }
 
+        // Set the height of monaco to be either your window height or 600px - whichever is smallest
         const container = document.getElementById("playground-container")!
         container.style.display = "flex"
         const height = Math.max(window.innerHeight, 600)
         container.style.height = `${height - Math.round(container.getClientRects()[0].top) - 18}px`
 
+        // Create the sandbox
         const sandboxEnv = await sandbox.createTypeScriptSandbox({
           text: i("play_default_code_sample"),
           compilerOptions: {},
@@ -91,18 +95,21 @@ const Play: React.FC<Props> = (props) => {
         }
 
         playground.setupPlayground(sandboxEnv, main, playgroundConfig, i as any)
-        sandboxEnv.editor.focus()
 
+        // Dark mode faff
         const darkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)')
         if (darkModeEnabled.matches) {
           sandboxEnv.monaco.editor.setTheme("sandbox-dark");
         }
 
+        // On the chance you change your dark mode settings 
         darkModeEnabled.addListener((e) => {
           const darkModeOn = e.matches;
           const newTheme = darkModeOn ? "sandbox-dark" : "sandbox-light"
           sandboxEnv.monaco.editor.setTheme(newTheme);
         });
+
+        sandboxEnv.editor.focus()
       });
     }
 
