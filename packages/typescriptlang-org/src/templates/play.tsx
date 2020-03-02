@@ -68,6 +68,11 @@ const Play: React.FC<Props> = (props) => {
           console.error("main", !!main, "ts", !!ts, "sandbox", !!sandbox, "playground", !!playground)
         }
 
+        const container = document.getElementById("playground-container")!
+        container.style.display = "flex"
+        const height = Math.max(window.innerHeight, 600)
+        container.style.height = `${height - Math.round(container.getClientRects()[0].top) - 18}px`
+
         const sandboxEnv = await sandbox.createTypeScriptSandbox({
           text: i("play_default_code_sample"),
           compilerOptions: {},
@@ -98,11 +103,6 @@ const Play: React.FC<Props> = (props) => {
           const newTheme = darkModeOn ? "sandbox-dark" : "sandbox-light"
           sandboxEnv.monaco.editor.setTheme(newTheme);
         });
-
-        const container = document.getElementById("playground-container")!
-        container.style.display = "flex"
-        const height = Math.max(window.innerHeight, 600)
-        container.style.height = `${height - Math.round(container.getClientRects()[0].top) - 18}px`
       });
     }
 
