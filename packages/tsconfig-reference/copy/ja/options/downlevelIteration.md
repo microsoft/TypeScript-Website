@@ -39,7 +39,7 @@ for (const s of str) {
 }
 ```
 
-> > **Note:** `Symbol.iterator`が実行時に存在しない場合、`downlevelIteration`はECMAScriptへの遵守を改善しません。
+> > **Note:** `Symbol.iterator`が実行時に存在しない場合、`downlevelIteration`はECMAScriptへの準拠を保証しません。
 
 #### 例: 配列のスプレッドに対する効果
 
