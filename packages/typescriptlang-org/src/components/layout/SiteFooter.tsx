@@ -55,15 +55,15 @@ const popularPages = [
 const useTypeScriptLinks = [
   {
     title: "Get Started",
-    url: "/docs/home.html",
+    url: "/docs/home",
   },
   {
     title: "Download",
     url: "/en/download",
   },
   {
-    title: "Connect",
-    url: "/docs/handbook/3.html",
+    title: "Community",
+    url: "/community",
   },
   {
     title: "Playground",
