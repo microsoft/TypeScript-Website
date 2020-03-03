@@ -19,8 +19,8 @@ tsc index.ts
 # Transpile any .ts files in the folder src, with the default settings
 tsc src/*.ts
 
-# Transpile any .ts files in the folder src, with the compiler settings from tsconfig.json
-tsc --project tsconfig.json src/*.ts
+# Transpile any files referenced in with the compiler settings from tsconfig.production.json
+tsc --project tsconfig.production.json
 ```
 
 ## Compiler Options
