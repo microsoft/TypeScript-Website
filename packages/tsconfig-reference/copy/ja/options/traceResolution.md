@@ -3,7 +3,7 @@ display: "Trace Resolution"
 oneline: "Log out paths when resolving all modules"
 ---
 
-When you are trying to debug why a module isn't being included.
-You can set `traceResolutions` to `true` to have TypeScript print information about its resolution process for each processed file.
+なぜあるモジュールがコンパイル対象に含まれていないかをデバッグするために用います。
+`traceResolutions`を`true`にするとTypeScriptが処理された各々のファイルについてモジュール解決過程の情報を出力するようになります。
 
-You can read more about this in [the handbook](/docs/handbook/module-resolution.html#tracing-module-resolution).
+この設定についてより詳細に知りたい場合、[ハンドブック](/docs/handbook/module-resolution.html#tracing-module-resolution)をご覧ください。

@@ -3,14 +3,14 @@ display: "List Emitted Files"
 oneline: "Print the names of emitted files after a compile"
 ---
 
-Print names of generated files part of the compilation to the terminal.
+コンパイルされ、生成されたファイル名をターミナルに出力します。
 
-This flag is useful in two cases:
+このフラグは2つのケースで有用です:
 
-- You want to transpile TypeScript as a part of a build chain in the terminal where the filenames are processed in the next command.
-- You are not sure that TypeScript has included a file you expected, as a part of debugging the [file inclusion settings](#Project_Files_0).
+- 後続のコマンドでファイル名が処理されるターミナルのビルドチェーンの一部としてTypeScriptをトランスパイルしたいとき
+- TypeScriptがコンパイルしてほしいファイルを対象に含めているか分からず、[対象ファイル設定](#Project_Files_0)の一部をデバッグしたいとき
 
-For example:
+例えば、以下のようなときに:
 
 ```
 example
@@ -19,7 +19,7 @@ example
 └── tsconfig.json
 ```
 
-With:
+以下の設定をすると:
 
 ```json
 {
@@ -30,7 +30,7 @@ With:
 }
 ```
 
-Would echo paths like:
+以下のようなpathを出力します:
 
 ```
 $ npm run tsc
@@ -39,4 +39,4 @@ path/to/example/index.js
 path/to/example/index.d.ts
 ```
 
-Normally, TypeScript would return silently on success.
+通常、成功するとTypeScriptは何も出力しない状態に戻ります。

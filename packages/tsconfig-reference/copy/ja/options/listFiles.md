@@ -3,10 +3,9 @@ display: "List Files"
 oneline: "Print all of the files read during the compilation"
 ---
 
-Print names of files part of the compilation. This is useful when you are not sure that TypeScript has
-included a file you expected.
+コンパイルされるファイル名を出力します。これは、コンパイルしてほしいファイルをTypeScriptが対象に含めてくれているかが分からないときに有用です。
 
-For example:
+例えば、以下のようなときに:
 
 ```
 example
@@ -15,7 +14,7 @@ example
 └── tsconfig.json
 ```
 
-With:
+以下の設定をすると:
 
 ```json
 {
@@ -25,7 +24,7 @@ With:
 }
 ```
 
-Would echo paths like:
+出力されるpathは以下のようになります:
 
 ```
 $ npm run tsc
