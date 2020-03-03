@@ -195,6 +195,7 @@
       &.back {
         left: 40px;
         bottom: -120px;
+        opacity: 0.75;
       }
 
       .editor-inner {
@@ -316,7 +317,7 @@
     background-color: white;
     color: black;
     padding: 3px;
-    max-width: 300px;
+    max-width: 320px;
     position: absolute;
     display: flex;
     flex-direction: row;

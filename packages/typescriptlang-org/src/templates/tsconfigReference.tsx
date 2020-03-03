@@ -78,6 +78,7 @@ const TSConfigReferenceTemplateComponent = (props) => {
         <div id="full-option-list" className="indent">
           {categories!.categories!.map(c => {
             if (!c) return null
+            console.log(c)
             return <div className="tsconfig-nav-top" key={c.anchor!}>
               <h5><a href={"#" + c.anchor}>{c.display}</a></h5>
               <ul key={c.anchor!}>

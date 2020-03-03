@@ -1,7 +1,14 @@
 @import "../../style/globals.scss";
+@import "./fonts.scss";
 
 html {
   background-color: $ts-light-bg-sandy-color;
+
+  -webkit-font-smoothing: antialiased;
+  font-family: "Segoe UI Web (West European)", "Segoe UI", -apple-system,
+    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  line-height: 18px;
 
   @media (prefers-color-scheme: dark) {
     background-color: $ts-dark-bg-color;
@@ -74,11 +81,6 @@ html {
 
 body {
   margin: 0;
-  -webkit-font-smoothing: antialiased;
-  font-family: "Segoe UI Web (West European)", "Segoe UI", -apple-system,
-    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
-  font-size: 16px;
-  line-height: 1.1rem;
   height: 100%;
 }
 
