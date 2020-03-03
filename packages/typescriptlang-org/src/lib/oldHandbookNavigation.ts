@@ -81,6 +81,7 @@ export const oldHandbookNavigation: NavItem[] = [
       { id: "gulp", title: "Gulp" },
       { id: "migrating-from-javascript", title: "Migrating from JavaScript" },
       { id: "react-&-webpack", title: "React & Webpack" },
+      { id: "dom-manipulation", title: "TypeScript & the DOM" },
     ],
   },
   {
