@@ -1,4 +1,5 @@
 import React, { useEffect } from "react"
+import ReactDOM from "react-dom"
 import { Layout } from "../components/layout"
 import { withPrefix, graphql } from "gatsby"
 import { PlayQuery } from "../__generated__/gatsby-types"
@@ -38,6 +39,8 @@ const Play: React.FC<Props> = (props) => {
     window.optionsSummary = props.pageContext.optionsSummary
     // @ts-ignore - for React-based plugins
     window.react = React
+    // @ts-ignore - for React-based plugins
+    window.reactDOM = ReactDOM
 
     const getLoaderScript = document.createElement('script');
     getLoaderScript.src = withPrefix("/js/vs.loader.js");

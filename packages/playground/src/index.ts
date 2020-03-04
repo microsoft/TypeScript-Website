@@ -349,6 +349,9 @@ export const setupPlayground = (
   console.log('\twindow.ts', window.ts)
   console.log('\twindow.sandbox', window.sandbox)
   console.log('\twindow.playground', window.playground)
+  console.log('\twindow.react', window.react)
+   console.log('\twindow.reactDOM', window.reactDOM)
+
 
   /** A plugin */
   const activateExternalPlugin = (

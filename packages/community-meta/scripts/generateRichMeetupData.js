@@ -31,7 +31,6 @@ const go = async () => {
         const icalResponse = await nodeFetch(`https://www.meetup.com/${meetupID}/events/ical/`)
         const icalText = await icalResponse.text()
         const ical = await icalToolkit.parseToJSON(icalText)
-        // console.log(ical)
 
         const upcomingEvent = ical.events[0]
         if (!upcomingEvent) {

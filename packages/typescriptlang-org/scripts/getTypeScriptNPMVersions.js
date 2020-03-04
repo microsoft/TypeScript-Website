@@ -106,7 +106,7 @@ const getTypeScriptNPMVersions = async () => {
   const rc = tags.rc
 
   const isRC = semver.gt(rc, stable)
-  const isBeta = semver.gt(rc, beta)
+  const isBeta = semver.gt(beta, stable)
 
   // prettier-ignore
   let releaseNotesURL = `/docs/handbook/release-notes/typescript-${semver.major(stable)}-${semver.minor(stable)}.html`
