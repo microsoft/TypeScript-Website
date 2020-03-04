@@ -207,7 +207,7 @@ export default async function () {
 
 }
 
-export default (props: Props) => <Intl><Index {...props} /></Intl>
+export default (props: Props) => <Intl locale="en"><Index {...props} /></Intl>
 
 const codeSamples = [
   {

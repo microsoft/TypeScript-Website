@@ -219,7 +219,7 @@ export const Comm: React.FC<Props> = props => {
 }
 
 export default (props: Props) => (
-  <Intl>
+  <Intl locale={props.pageContext.lang}>
     <Comm {...props} />
   </Intl>
 )

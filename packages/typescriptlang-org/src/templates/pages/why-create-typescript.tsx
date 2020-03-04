@@ -54,7 +54,7 @@ console.log("Hello, " + name)
 console (for example DOS, or the terminal) <code>"Hello, Danger"</code>.</p>
 
         <p>JavaScript is designed to work as a scripting language, which means the code starts at the top of the file and then goes through line by line downwards running that code. To provide some contrast,
-here is the same behavior in Java, which is built with different
+        here is the same behavior in Java, which is built with different
 language constraints:</p>
 
         <pre><code>{`
@@ -145,8 +145,8 @@ console.log("Hello, " + danger)
 
         <p>This extra <code>: string</code> allow the reader to be certain that <code>name</code> will only be a string. Annotating your variables
 in this way also gives TypeScript the chance to verify that these match. This is <em>very</em> useful, because keeping track of changes
-                                                                                                                                                                          like the type of value in a variable seems easy when it's one or two, but once it starts hitting the hundreds,
-                                                                                                                                                                          that's a lot to keep track of. Writing types help programmers be more confident about their code because types catch
+like the type of value in a variable seems easy when it's one or two, but once it starts hitting the hundreds,
+that's a lot to keep track of. Writing types help programmers be more confident about their code because types catch
 mistakes.</p>
 
         <p>Simply speaking, we call these annotations "Types". Hence the name <i>Type</i>Script. One of the tag-lines for TypeScript
@@ -177,7 +177,7 @@ and causing ripples to spread out to the bank.</p>
   </Layout>
 }
 
-export default (props: Props) => <Intl><Index {...props} /></Intl>
+export default (props: Props) => <Intl locale={props.pageContext.lang}><Index {...props} /></Intl>
 
 
 export const query = graphql`

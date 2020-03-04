@@ -53,4 +53,4 @@ export const query = graphql`
 `
 
 
-export default (props: Props) => <Intl><Index {...props} /></Intl>
+export default (props: Props) => <Intl locale={props.pageContext.lang}><Index {...props} /></Intl>

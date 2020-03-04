@@ -2,7 +2,7 @@ import React from "react"
 import { IntlProvider } from 'react-intl';
 
 type IntlProps = {
-  locale?: string
+  locale: string
   children: any
 }
 
@@ -14,7 +14,6 @@ export const Intl = (props: IntlProps) => {
   } catch (error) {
     // NOOP
   }
-
   return (
     <IntlProvider locale={locale || "en"} messages={messages} >
       {children}

@@ -58,7 +58,7 @@ const Index: React.FC<Props> = (props) => {
   )
 }
 
-export default (props: Props) => <Intl><Index {...props} /></Intl>
+export default (props: Props) => <Intl locale="en"><Index {...props} /></Intl>
 
 
 export const query = graphql`

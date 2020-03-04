@@ -30,6 +30,7 @@
     "start": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"yarn workspace typescriptlang-org start\"",
     "build": "yarn workspaces run build",
     "build-site": "yarn workspace typescriptlang-org build",
+    "compile": "yarn workspace typescriptlang-org tsc",
     "update-snapshots": "yarn workspace typescriptlang-org update-snapshots",
     "clean": "yarn workspace typescriptlang-org gatsby clean",
     "test": "CI=true yarn workspaces run test"

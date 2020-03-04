@@ -16,6 +16,7 @@ type Props = {
 }
 
 const Index: React.FC<Props> = (props) => {
+  console.log("p2", props)
   const i = createInternational<typeof docCopy>(useIntl())
   return (
     <Layout
@@ -278,7 +279,7 @@ export const query = graphql`
 `
 
 export default (props: Props) => (
-  <Intl>
+  <Intl locale={props.pageContext.lang}>
     <Index {...props} />
   </Intl>
 )

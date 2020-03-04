@@ -28,6 +28,7 @@ jobs:
       - run: yarn install
       - run: yarn bootstrap
       - run: yarn build
+      - run: yarn compile
 
       # PR: Deploy if we can
       - name: Deploy PR Version
