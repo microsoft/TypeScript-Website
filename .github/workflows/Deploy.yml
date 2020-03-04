@@ -67,6 +67,5 @@ jobs:
       uses: peaceiris/actions-gh-pages@v1.1.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        PUBLISH_BRANCH: ${{github.ref == 'refs/heads/master'
-                          && 'SITE-STAGING' || 'SITE-PRODUCTION'}}
+        PUBLISH_BRANCH: 'SITE-PRODUCTION'
         PUBLISH_DIR: ./site
