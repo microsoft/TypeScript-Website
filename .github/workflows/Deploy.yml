@@ -2,7 +2,7 @@ name: Build Website For Production
 
 on:
   push:
-    branches: [release]
+    branches: [master]
 
 jobs:
   build:
