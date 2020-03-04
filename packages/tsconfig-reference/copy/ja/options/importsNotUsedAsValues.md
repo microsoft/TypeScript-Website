@@ -3,12 +3,13 @@ display: "Imports Not Used As Values"
 oneline: "Does something"
 ---
 
+このフラグは`import`がどのように動作するかを制御します。3つの異なるオプションがあります:
 This flag controls how `import` works, there are 3 different options:
 
-- `remove`: The default behavior of dropping `import` statements which only reference types.
+- `remove`: 型のみを参照する`import`文を削除するデフォルトの挙動
 
-- `preserve`: Preserves all `import` statements whose values or types are never used. This can cause imports/side-effects to be preserved.
+- `preserve`: 使用されない値または型のすべての`import`文を保持します。これにより、インポート/副作用が保持されます。
 
-- `error`: This preserves all imports (the same as the preserve option), but will error when a value import is only used as a type. This might be useful if you want to ensure no values are being accidentally imported, but still make side-effect imports explicit.
+- `error`: すべてのimportを保持しますが(preserveオプションと同じ)、値のimportが型としてのみ使用されている場合にエラーを出力します。これは、誤って値がimportされないようにしつつ、副作用のあるimportを明示的にしたい場合に有用です。 
 
-This flag works because you can use `import type` to explicitly create an `import` statement which should never be emitted into JavaScript.
+このフラグが機能するのは`import type`を使用して、JavaScriptに出力されない`import`文を明示的に作成できるためです。

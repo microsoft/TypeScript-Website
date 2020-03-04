@@ -3,9 +3,9 @@ display: "Emit Declaration Only"
 oneline: "Only output d.ts files and not .js files"
 ---
 
-_Only_ emit `.d.ts` files; do not emit `.js` files.
+`.d.ts`ファイル_のみ_を出力します; `.js`ファイルは出力しません。
 
-This setting is useful in two cases:
+この設定は2つのケースで有用です:
 
-- You are using a transpiler other than TypeScript to generate your JavaScript.
-- You are using TypeScript to only generate `d.ts` files for your consumers.
+- JavaScriptを生成するために、TypeScript以外のトランスパイラを使っているとき
+- 利用者向けに`d.ts`ファイルを出力するためだけにTypeScriptを使っているとき

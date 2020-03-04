@@ -3,7 +3,7 @@ display: "Extended Diagnostics"
 oneline: "Include a lot of diagnostic information after a compile"
 ---
 
-You can use this flag to discover where TypeScript is spending it's time when compiling.
-This is a tool used for understanding the performance characteristics of your codebase overall.
+このフラグを使うと、TypeScriptがコンパイルの際に、どの程度の時間をどこに費やしているかを調査できます。
+このフラグは、コードベース全体のパフォーマンス特性を理解するために使われるツールです。
 
-You can learn more about how to measure and understand the output in the performance [section of the wiki](https://github.com/microsoft/TypeScript/wiki/Performance).
+測定の仕方および出力の解釈方法については、[wikiのパフォーマンスセクション](https://github.com/microsoft/TypeScript/wiki/Performance)をご覧ください。
