@@ -8,7 +8,7 @@ oneline: "Print the names of emitted files after a compile"
 このフラグは2つのケースで有用です:
 
 - 後続のコマンドでファイル名が処理されるターミナルのビルドチェーンの一部としてTypeScriptをトランスパイルしたいとき
-- TypeScriptがコンパイルしてほしいファイルを対象に含めているか分からず、[対象ファイル設定](#Project_Files_0)の一部をデバッグしたいとき
+- TypeScriptがコンパイルしてほしいファイルを対象に含めているか分からず、[対象ファイル設定](#Project_Files_0)を部分的にデバッグしたいとき
 
 例えば、以下のようなときに:
 
