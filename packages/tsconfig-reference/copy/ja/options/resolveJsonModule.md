@@ -3,10 +3,10 @@ display: "Resolve JSON Module"
 oneline: "Allow importing .json files"
 ---
 
-Allows importing modules with a '.json' extension, which is a common practice in node projects. This includes
-generating a type for the `import` based on the static JSON shape.
+'.json'拡張子のファイルをモジュールとしてインポートできるようにします。Nodeのプロジェクトで一般的に利用されている手法です。
+このオプションは、`import`時に静的なJSONの構造から型を生成します。
 
-TypeScript does not support resolving JSON files by default:
+デフォルトでは、TypeScriptはJSONファイルの解決をサポートしていません:
 
 ```ts
 // @filename: settings.json
@@ -22,7 +22,7 @@ settings.debug === true;
 settings.dry === 2;
 ```
 
-Enabling the option allows importing JSON, and validating the types in that JSON file.
+このオプションを有効にするとJSONのインポートが可能となり、JSONファイルの型を検査できるようになります。
 
 ```ts
 // @filename: settings.json

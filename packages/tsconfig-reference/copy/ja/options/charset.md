@@ -3,5 +3,5 @@ display: "Charset"
 oneline: "Manually set the text encoding for reading files"
 ---
 
-In prior versions of TypeScript, this controlled what encoding was used when reading text files from disk.
-Today, TypeScript assumes UTF-8 encoding, but will correctly detect UTF-16 (BE and LE) or UTF-8 BOMs.
+以前のTypeScriptのバージョンでは、このオプションでディスクからどのエンコードでファイルを読み込むかを制御していました。
+今のTypeScriptはUTF-8でエンコードされていることを前提としています。ただし、UTF-16（BEおよびLE）またはUTF-8のBOMを正しく検出します。

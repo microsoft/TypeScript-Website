@@ -3,7 +3,7 @@ display: "No Resolve"
 oneline: "Skip ahead-of-time checking for import and <reference files"
 ---
 
-By default, TypeScript will examine the initial set of files for `import` and `<reference` directives and add these resolved files to your program.
+デフォルトでは、TypeScriptは起動時に与えられたファイルについて`import`と`<reference`ディレクティブを確認し、解決されたファイルをプログラムに追加します。
 
-If `noResolve` isn't set, this process doesn't happen.
-However, `import` statements are still checked to see if they resolve to a valid module, so you'll need to make sure this is satisfied by some other means.
+`noResolve`が設定されているとき、このプロセスは発生しなくなります。
+しかし、`import`文は正しいモジュールを解決しているかどうかチェックされるため、これが満たされているかどうかを他の方法で確認する必要があります。

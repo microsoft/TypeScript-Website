@@ -3,9 +3,9 @@ display: "Strip Internal"
 oneline: "Remove declarations which have '@internal' in their JSDoc comments"
 ---
 
-Do not emit declarations for code that has an `@internal` annotation in it's JSDoc comment.
-This is an internal compiler option; use at your own risk, because the compiler does not check that the result is valid.
-If you are searching for a tool to handle additional levels of visibility within your `d.ts` files, look at [api-extractor](https://api-extractor.com).
+JSDocコメントとして`@internal`が付与されたコードについて、定義情報を出力しないようにします。
+このオプションはコンパイラが内部で利用するためのものです; コンパイラは結果の妥当性検証をしないため、自己責任で使ってください。
+`d.ts`ファイル内での可視性を細かく制御できるツールを探しているのであれば、[api-extractor](https://api-extractor.com)を参照してください。
 
 ```ts twoslash
 /**
@@ -20,25 +20,25 @@ export function weeklySalary(dayRate: number) {
 }
 ```
 
-With the flag set to `false` (default):
+このフラグが`false`であるとき（デフォルト）:
 
 ```ts twoslash
 // @showEmittedFile: index.d.ts
 // @showEmit
 // @declaration
 /**
- * Days available in a week
+ * 一週間の日数
  * @internal
  */
 export const daysInAWeek = 7;
 
-/** Calculate how much someone earns in a week */
+/** 一週間あたりの稼ぎを計算する */
 export function weeklySalary(dayRate: number) {
   return daysInAWeek * dayRate;
 }
 ```
 
-With `stripInternal` set to `true` the `d.ts` emitted will be redacted.
+`stripInternal`を`true`に設定すると、`d.ts`は次のように編集されて出力されます。
 
 ```ts twoslash
 // @stripinternal
@@ -46,15 +46,15 @@ With `stripInternal` set to `true` the `d.ts` emitted will be redacted.
 // @showEmit
 // @declaration
 /**
- * Days available in a week
+ * 一週間の日数
  * @internal
  */
 export const daysInAWeek = 7;
 
-/** Calculate how much someone earns in a week */
+/** 一週間あたりの稼ぎを計算する */
 export function weeklySalary(dayRate: number) {
   return daysInAWeek * dayRate;
 }
 ```
 
-The JavaScript output is still the same.
+JavaScriptとしての出力は一緒です。

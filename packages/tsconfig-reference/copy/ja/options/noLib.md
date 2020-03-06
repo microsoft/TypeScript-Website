@@ -3,5 +3,5 @@ display: "No Lib"
 oneline: "Ignore options from lib"
 ---
 
-Disables the automatic inclusion of any library files.
-If this option is set, `lib` is ignored.
+すべてのライブラリファイルについて、自動でのインクルードを無効化します。
+このオプションを設定した場合、`lib`は無視されます。

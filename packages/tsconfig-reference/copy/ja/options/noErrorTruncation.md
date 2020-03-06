@@ -3,9 +3,9 @@ display: "No Error Truncation"
 oneline: "Do not truncate error messages"
 ---
 
-Do not truncate error messages.
+エラーメッセージを打ち切らないようにします。
 
-With `false`, the default.
+デフォルト値の`false`の場合、次のようになります。
 
 ```ts twoslash
 // @errors: 2322 2454
@@ -18,11 +18,11 @@ var x: {
   propertyWithAnExceedinglyLongName5: string;
 };
 
-// String representation of type of 'x' should be truncated in error message
+// 型'x'の文字列表現はエラメッセージ中で省略されます
 var s: string = x;
 ```
 
-With `true`
+`true`にすると、次のようになります。
 
 ```ts twoslash
 // @errors: 2322 2454
@@ -35,6 +35,6 @@ var x: {
   propertyWithAnExceedinglyLongName5: string;
 };
 
-// String representation of type of 'x' should be truncated in error message
+// 型'x'の文字列表現はエラメッセージ中で省略されます
 var s: string = x;
 ```

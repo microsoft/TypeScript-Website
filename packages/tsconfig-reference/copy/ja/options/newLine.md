@@ -3,4 +3,5 @@ display: "New Line"
 oneline: "Set the newline character"
 ---
 
-Specify the end of line sequence to be used when emitting files: 'CRLF' (dos) or 'LF' (unix).
+ファイルを出力するときの改行コードを指定します: 'CRLF'（dos）または'LF'（unix）のいずれかを指定してください。
+

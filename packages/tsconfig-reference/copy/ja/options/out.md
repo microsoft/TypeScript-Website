@@ -3,7 +3,7 @@ display: "Out"
 oneline: "Do not use this"
 ---
 
-Use [outFile](#outfile) instead.
+代わりに[outFile](#outfile)を使ってください。
 
-The `out` option computes the final file location in a way that is not predictable or consistent.
-This option is retained for backward compatibility only and is deprecated.
+`out`オプションは、予測可能でない、または一貫性のない方法によってファイルの最終的な場所を計算してしまいます。
+このオプションは後方互換性の維持のためにのみ残されていますが、非推奨です。

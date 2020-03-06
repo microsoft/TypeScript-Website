@@ -3,7 +3,7 @@ display: "JSX Factory"
 oneline: "Control the function emitted by JSX"
 ---
 
-Changes the function called in `.js` files when compiling JSX Elements.
-The most common change is to use `"h"` or `"preact.h"` instead of the default `"React.createElement"` if using `preact`.
+JSX要素がコンパイルされるときの`.js`ファイルで呼び出される関数を変更します。
+`preact`を使う場合に、デフォルトの`"React.createElement"`の代わりに`"h"`や`"preact.h"`に変更するのが一般的な変更です。
 
-This is the same as [Babel's `/** @jsx h */` directive](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx#custom).
+このオプションは[Babelにおける`/** @jsx h */`ディレクティブ](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx#custom)と同じものです。

@@ -3,4 +3,4 @@ display: "React Namespace"
 oneline: "Specify the object which 'createElement' is called on in JSX"
 ---
 
-Use [`--jsxFactory`](#jsxFactory) instead. Specify the object invoked for `createElement` when targeting `react` for TSX files.
+代わりに[`--jsxFactory`](#jsxFactory)を利用してください。`react`のときにTSXファイルの`createElement`が実行されるオブジェクトを指定します。
