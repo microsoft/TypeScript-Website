@@ -3,4 +3,4 @@ display: "Disable Size Limit"
 oneline: "Remove the memory cap on the TypeScript language server"
 ---
 
-To avoid a possible memory bloat issue when working with very large JavaScript projects, there is an upper limit to the amount of memory TypeScript will allocate. Turning this flag on will remove the limit.
+非常に大規模なJavaScriptプロジェクトで作業するときに発生する可能性のある使用メモリの膨張を避けるために、TypeScriptが割り当てられるメモリの量には上限があります。このフラグを設定すると、この制限を取り除きます。

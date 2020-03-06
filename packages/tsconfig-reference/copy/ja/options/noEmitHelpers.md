@@ -3,9 +3,9 @@ display: "No Emit Helpers"
 oneline: "Assume helpers are available in the global runtime"
 ---
 
-Instead of importing helpers with [`importHelpers`](#importHelpers), you can provide implementations in the global scope for the helpers you use and completely turn off emitting of helper functions.
+[`importHelpers`](#importHelpers)を使って、ヘルパ関数をインポートする代わりに、グローバルスコープに使用するヘルパ関数のための実装を提供し、ヘルパ関数が出力されるのを完全に無効にできます。
 
-For example, using this `async` function in ES5 requires a `await`-like function and `generator`-like function to run:
+例えば、この`async`関数をES5で実行するためには、`await`のような関数と`generator`のような関数が必要です:
 
 ```ts twoslash
 const getAPI = async (url: string) => {
@@ -14,7 +14,7 @@ const getAPI = async (url: string) => {
 };
 ```
 
-Which creates quite a lot of JavaScript:
+これは、とても多くのJavaScriptを生成します:
 
 ```ts twoslash
 // @showEmit
@@ -25,7 +25,7 @@ const getAPI = async (url: string) => {
 };
 ```
 
-Which can be switched out with your own globals via this flag:
+このフラグを通じて、独自のグローバル実装に切り替えられます:
 
 ```ts twoslash
 // @showEmit

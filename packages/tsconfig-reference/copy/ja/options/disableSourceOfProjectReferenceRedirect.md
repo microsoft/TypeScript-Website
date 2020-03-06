@@ -3,5 +3,5 @@ display: "Disable Source Project Reference Redirect"
 oneline: "Use d.ts files as the source of truth for tooling between composite project boundries"
 ---
 
-When working with [composite TypeScript projects](/docs/handbook/project-references.html), this option provides a way to go [back to the pre-3.7](/docs/handbook/release-notes/typescript-3-7.html#build-free-editing-with-project-references) behavior where d.ts files were used to as the boundaries between modules.
-In 3.7 the source of truth is now your TypeScript files.
+[複合TypeScriptプロジェクト](/docs/handbook/project-references.html)で作業する場合、このオプションはモジュール間の境界としてd.tsファイルが使用されていた[3.7以前](/docs/handbook/release-notes/typescript-3-7.html#build-free-editing-with-project-references)の挙動に戻す方法を提供します。
+3.7にて、信頼できる情報源はTypeScriptのファイルになりました。
