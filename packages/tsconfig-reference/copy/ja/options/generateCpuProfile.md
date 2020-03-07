@@ -4,7 +4,6 @@ oneline: "Emit a v8 CPU profile of the compiler run for debugging"
 ---
 
 このオプションを用いると、TypeScriptにコンパイラが実行中のv8のCPUプロファイルを出力させられます。CPUプロファイルはなぜビルドが遅くなるのかについての示唆を与えてくれます。
-This option gives you the chance to have TypeScript emit a v8 CPU profile during the compiler run. The CPU profile can provide insight into why your builds may be slow.
 
 このオプションはCLIから`--generateCpuProfile tsc-output.cpuprofile`を介してのみ使用できます。
 
@@ -13,5 +12,4 @@ npm run tsc --generateCpuProfile tsc-output.cpuprofile
 ```
 
 このファイルはChromeやEdge Developerのようなchromiumをベースとしたブラウザの[CPU profiler](https://developers.google.com/web/tools/chrome-devtools/rendering-tools/js-execution)で開くことができます。
-
 [TypeScript Wikiのパフォーマンスセクション](https://github.com/microsoft/TypeScript/wiki/Performance)でコンパイラのパフォーマンスについて詳細を学ぶことができます。

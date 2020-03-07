@@ -4,7 +4,6 @@ oneline: "Does something"
 ---
 
 このフラグは`import`がどのように動作するかを制御します。3つの異なるオプションがあります:
-This flag controls how `import` works, there are 3 different options:
 
 - `remove`: 型のみを参照する`import`文を削除するデフォルトの挙動
 
@@ -12,4 +11,4 @@ This flag controls how `import` works, there are 3 different options:
 
 - `error`: すべてのimportを保持しますが(preserveオプションと同じ)、値のimportが型としてのみ使用されている場合にエラーを出力します。これは、誤って値がimportされないようにしつつ、副作用のあるimportを明示的にしたい場合に有用です。 
 
-このフラグが機能するのは`import type`を使用して、JavaScriptに出力されない`import`文を明示的に作成できるためです。
+このフラグが機能することで、`import type`を使用して、JavaScriptに出力されない`import`文を明示的に作成できます。
