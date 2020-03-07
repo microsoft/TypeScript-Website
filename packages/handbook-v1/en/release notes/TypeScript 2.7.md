@@ -2,7 +2,9 @@
 title: TypeScript 2.7
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-2-7.html
+oneline: TypeScript 2.7 Release Notes
 ---
+
 ## Constant-named properties
 
 TypeScript 2.7 adds support for declaring const-named properties on types including ECMAScript symbols.
@@ -14,7 +16,7 @@ TypeScript 2.7 adds support for declaring const-named properties on types includ
 export const SERIALIZE = Symbol("serialize-method-key");
 
 export interface Serializable {
-    [SERIALIZE](obj: {}): string;
+  [SERIALIZE](obj: {}): string;
 }
 ```
 
@@ -24,9 +26,9 @@ export interface Serializable {
 import { SERIALIZE, Serializable } from "lib";
 
 class JSONSerializableItem implements Serializable {
-    [SERIALIZE](obj: {}) {
-        return JSON.stringify(obj);
-    }
+  [SERIALIZE](obj: {}) {
+    return JSON.stringify(obj);
+  }
 }
 ```
 
@@ -39,8 +41,8 @@ const Foo = "Foo";
 const Bar = "Bar";
 
 let x = {
-    [Foo]: 100,
-    [Bar]: "hello",
+  [Foo]: 100,
+  [Bar]: "hello"
 };
 
 let a = x[Foo]; // has type 'number'
@@ -49,7 +51,7 @@ let b = x[Bar]; // has type 'string'
 
 ## `unique symbol`
 
-To enable treating symbols as unique literals  a new type `unique symbol` is available.
+To enable treating symbols as unique literals a new type `unique symbol` is available.
 `unique symbol` is a subtype of `symbol`, and are produced only from calling `Symbol()` or `Symbol.for()`, or from explicit type annotations.
 The new type is only allowed on `const` declarations and `readonly static` properties, and in order to reference a specific unique symbol, you'll have to use the `typeof` operator.
 Each reference to a `unique symbol` implies a completely unique identity that's tied to a given declaration.
@@ -68,7 +70,7 @@ let Baz: typeof Foo = Foo;
 
 // Also works.
 class C {
-    static readonly StaticSymbol: unique symbol = Symbol();
+  static readonly StaticSymbol: unique symbol = Symbol();
 }
 ```
 
@@ -82,7 +84,7 @@ const Bar = Symbol();
 
 // Error: can't compare two unique symbols.
 if (Foo === Bar) {
-    // ...
+  // ...
 }
 ```
 
@@ -94,37 +96,37 @@ For example
 
 ```ts
 class C {
-    foo: number;
-    bar = "hello";
-    baz: boolean;
-//  ~~~
-//  Error! Property 'baz' has no initializer and is not definitely assigned in the
-//         constructor.
+  foo: number;
+  bar = "hello";
+  baz: boolean;
+  //  ~~~
+  //  Error! Property 'baz' has no initializer and is not definitely assigned in the
+  //         constructor.
 
-    constructor() {
-        this.foo = 42;
-    }
+  constructor() {
+    this.foo = 42;
+  }
 }
 ```
 
 In the above, if we truly meant for `baz` to potentially be `undefined`, we should have declared it with the type `boolean | undefined`.
 
-There are certain scenarios where properties can be initialized indirectly (perhaps by a helper method or dependency injection library), in which case you can use the new *definite assignment assertion modifiers* for your properties (discussed below).
+There are certain scenarios where properties can be initialized indirectly (perhaps by a helper method or dependency injection library), in which case you can use the new _definite assignment assertion modifiers_ for your properties (discussed below).
 
 ```ts
 class C {
-    foo!: number;
-    // ^
-    // Notice this '!' modifier.
-    // This is the "definite assignment assertion"
+  foo!: number;
+  // ^
+  // Notice this '!' modifier.
+  // This is the "definite assignment assertion"
 
-    constructor() {
-        this.initialize();
-    }
+  constructor() {
+    this.initialize();
+  }
 
-    initialize() {
-        this.foo = 0;
-    }
+  initialize() {
+    this.foo = 0;
+  }
 }
 ```
 
@@ -145,7 +147,7 @@ console.log(x + x);
 // Error! Variable 'x' is used before being assigned.
 
 function initialize() {
-    x = 10;
+  x = 10;
 }
 ```
 
@@ -160,11 +162,11 @@ initialize();
 console.log(x + x);
 
 function initialize() {
-    x = 10;
+  x = 10;
 }
 ```
 
-In a sense, the definite assignment assertion operator is the dual of the non-null assertion operator (in which *expressions* are post-fixed with a `!`), which we could also have used in the example.
+In a sense, the definite assignment assertion operator is the dual of the non-null assertion operator (in which _expressions_ are post-fixed with a `!`), which we could also have used in the example.
 
 ```ts
 let x: number;
@@ -194,9 +196,9 @@ Conceptually, you might consider the type `[number, string]` to be equivalent to
 
 ```ts
 interface NumStrTuple extends Array<number | string> {
-    0: number;
-    1: string;
-    length: 2; // using the numeric literal type '2'
+  0: number;
+  1: string;
+  length: 2; // using the numeric literal type '2'
 }
 ```
 
@@ -205,8 +207,8 @@ If you need to resort to the original behavior in which tuples only enforce a mi
 
 ```ts
 interface MinimumNumStrTuple extends Array<number | string> {
-    0: number;
-    1: string;
+  0: number;
+  1: string;
 }
 ```
 
@@ -215,13 +217,13 @@ Note that this does not imply tuples represent immutable arrays, but it is an im
 ## Improved type inference for object literals
 
 TypeScript 2.7 improves type inference for multiple object literals occurring in the same context.
-When multiple object literal types contribute to a union type, we now *normalize* the object literal types such that all properties are present in each constituent of the union type.
+When multiple object literal types contribute to a union type, we now _normalize_ the object literal types such that all properties are present in each constituent of the union type.
 
 Consider:
 
 ```ts
-const obj = test ? { text: "hello" } : {};  // { text: string } | { text?: undefined }
-const s = obj.text;  // string | undefined
+const obj = test ? { text: "hello" } : {}; // { text: string } | { text?: undefined }
+const s = obj.text; // string | undefined
 ```
 
 Previously type `{}` was inferred for `obj` and the second line subsequently caused an error because `obj` would appear to have no properties.
@@ -234,8 +236,8 @@ That obviously wasn't ideal.
 //     { a: string, b?: undefined } |
 //     { a?: undefined, b?: undefined }
 let obj = [{ a: 1, b: 2 }, { a: "abc" }, {}][0];
-obj.a;  // string | number | undefined
-obj.b;  // number | undefined
+obj.a; // string | number | undefined
+obj.b; // number | undefined
 ```
 
 Multiple object literal type inferences for the same type parameter are similarly collapsed into a single normalized union type:
@@ -246,17 +248,17 @@ declare function f<T>(...items: T[]): T;
 //     { a: string, b?: undefined } |
 //     { a?: undefined, b?: undefined }
 let obj = f({ a: 1, b: 2 }, { a: "abc" }, {});
-obj.a;  // string | number | undefined
-obj.b;  // number | undefined
+obj.a; // string | number | undefined
+obj.b; // number | undefined
 ```
 
 ## Improved handling of structurally identical classes and `instanceof` expressions
 
 TypeScript 2.7 improves the handling of structurally identical classes in union types and `instanceof` expressions:
 
-* Structurally identical, but distinct, class types are now preserved in union types (instead of eliminating all but one).
-* Union type subtype reduction only removes a class type if it is a subclass of *and* derives from another class type in the union.
-* Type checking of the `instanceof` operator is now based on whether the type of the left operand *derives from* the type indicated by the right operand (as opposed to a structural subtype check).
+- Structurally identical, but distinct, class types are now preserved in union types (instead of eliminating all but one).
+- Union type subtype reduction only removes a class type if it is a subclass of _and_ derives from another class type in the union.
+- Type checking of the `instanceof` operator is now based on whether the type of the left operand _derives from_ the type indicated by the right operand (as opposed to a structural subtype check).
 
 This means that union types and `instanceof` properly distinguish between structurally identical classes.
 
@@ -266,30 +268,30 @@ This means that union types and `instanceof` properly distinguish between struct
 class A {}
 class B extends A {}
 class C extends A {}
-class D extends A { c: string }
+class D extends A {
+  c: string;
+}
 class E extends D {}
 
-let x1 = !true ? new A() : new B();  // A
-let x2 = !true ? new B() : new C();  // B | C (previously B)
-let x3 = !true ? new C() : new D();  // C | D (previously C)
+let x1 = !true ? new A() : new B(); // A
+let x2 = !true ? new B() : new C(); // B | C (previously B)
+let x3 = !true ? new C() : new D(); // C | D (previously C)
 
-let a1 = [new A(), new B(), new C(), new D(), new E()];  // A[]
-let a2 = [new B(), new C(), new D(), new E()];  // (B | C | D)[] (previously B[])
+let a1 = [new A(), new B(), new C(), new D(), new E()]; // A[]
+let a2 = [new B(), new C(), new D(), new E()]; // (B | C | D)[] (previously B[])
 
 function f1(x: B | C | D) {
-    if (x instanceof B) {
-        x;  // B (previously B | D)
-    }
-    else if (x instanceof C) {
-        x;  // C
-    }
-    else {
-        x;  // D (previously never)
-    }
+  if (x instanceof B) {
+    x; // B (previously B | D)
+  } else if (x instanceof C) {
+    x; // C
+  } else {
+    x; // D (previously never)
+  }
 }
 ```
 
-## Type guards inferred from  `in` operator
+## Type guards inferred from `in` operator
 
 The `in` operator now acts as a narrowing expression for types.
 
@@ -298,14 +300,18 @@ For a `n in x` expression, where `n` is a string literal or string literal type 
 ##### Example
 
 ```ts
-interface A { a: number };
-interface B { b: string };
+interface A {
+  a: number;
+}
+interface B {
+  b: string;
+}
 
 function foo(x: A | B) {
-    if ("a" in x) {
-        return x.a;
-    }
-    return x.b;
+  if ("a" in x) {
+    return x.a;
+  }
+  return x.b;
 }
 ```
 
@@ -316,13 +322,13 @@ The change brings the generated output from TypeScript closer to that generated 
 
 Previously CommonJS/AMD/UMD modules were treated in the same way as ES6 modules, resulting in a couple of problems. Namely:
 
-* TypeScript treats a namespace import (i.e. `import * as foo from "foo"`) for a CommonJS/AMD/UMD module as equivalent to `const foo = require("foo")`.Things are simple here, but they don't work out if the primary object being imported is a primitive or a class or a function. ECMAScript spec stipulates that a namespace record is a plain object, and that a namespace import (`foo` in the example above) is not callable, though allowed by TypeScript
-* Similarly a default import (i.e. `import d from "foo"`) for a CommonJS/AMD/UMD module as equivalent to `const d = require("foo").default`.Most of the CommonJS/AMD/UMD modules available today do not have a `default` export, making this import pattern practically unusable to import non-ES modules (i.e. CommonJS/AMD/UMD). For instance `import fs from "fs"` or `import express from "express"` are not allowed.
+- TypeScript treats a namespace import (i.e. `import * as foo from "foo"`) for a CommonJS/AMD/UMD module as equivalent to `const foo = require("foo")`.Things are simple here, but they don't work out if the primary object being imported is a primitive or a class or a function. ECMAScript spec stipulates that a namespace record is a plain object, and that a namespace import (`foo` in the example above) is not callable, though allowed by TypeScript
+- Similarly a default import (i.e. `import d from "foo"`) for a CommonJS/AMD/UMD module as equivalent to `const d = require("foo").default`.Most of the CommonJS/AMD/UMD modules available today do not have a `default` export, making this import pattern practically unusable to import non-ES modules (i.e. CommonJS/AMD/UMD). For instance `import fs from "fs"` or `import express from "express"` are not allowed.
 
 Under the new `--esModuleInterop` these two issues should be addressed:
 
-* A namespace import (i.e. `import * as foo from "foo"`) is now correctly flagged as uncallable. Calling it will result in an error.
-* Default imports to CommonJS/AMD/UMD are now allowed (e.g. `import fs from "fs"`), and should work as expected.
+- A namespace import (i.e. `import * as foo from "foo"`) is now correctly flagged as uncallable. Calling it will result in an error.
+- Default imports to CommonJS/AMD/UMD are now allowed (e.g. `import fs from "fs"`), and should work as expected.
 
 > Note: The new behavior is added under a flag to avoid unwarranted breaks to existing code bases. **We highly recommend applying it both to new and existing projects.**
 > For existing projects, namespace imports (`import * as express from "express"; express();`) will need to be converted to default imports (`import express from "express"; express();`).
@@ -341,16 +347,22 @@ Will generate:
 
 ```js
 "use strict";
-var __importStar = (this && this.__importStar) || function (mod) {
+var __importStar =
+  (this && this.__importStar) ||
+  function(mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    if (mod != null)
+      for (var k in mod)
+        if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
     result["default"] = mod;
     return result;
-}
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-}
+  };
+var __importDefault =
+  (this && this.__importDefault) ||
+  function(mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
 exports.__esModule = true;
 var foo = __importStar(require("foo"));
 var bar_1 = __importDefault(require("bar"));
@@ -366,7 +378,7 @@ Numeric literals can now be separated into segments using `_`.
 ```ts
 const million = 1_000_000;
 const phone = 555_734_2231;
-const bytes = 0xFF_0C_00_FF;
+const bytes = 0xff_0c_00_ff;
 const word = 0b1100_0011_1101_0001;
 ```
 
@@ -379,4 +391,3 @@ TypeScript's `--watch` mode now clears the screen after a re-compilation is requ
 TypeScript's `--pretty` flag can make error messages easier to read and manage.
 `--pretty` now uses colors for file names, diagnostic codes, and line numbers.
 File names and positions are now also formatted to allow navigation in common terminals (e.g. Visual Studio Code terminal).
-

@@ -2,6 +2,7 @@
 title: TypeScript for JavaScript Programmers
 layout: docs
 permalink: /docs/handbook/typescript-in-5-minutes.html
+oneline: Learn how TypeScript extends JavaScript
 ---
 
 The relationship between TypeScript and JavaScript is rather unique among modern programming languages.

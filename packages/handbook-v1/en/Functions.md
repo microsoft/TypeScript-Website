@@ -2,6 +2,7 @@
 title: Functions
 layout: docs
 permalink: /docs/handbook/functions.html
+oneline: How to add types to a function
 ---
 
 # Introduction

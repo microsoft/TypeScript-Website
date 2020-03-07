@@ -2,6 +2,7 @@
 title: TypeScript 3.7
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-3-7.html
+oneline: TypeScript 3.7 Release Notes
 ---
 
 ## Optional Chaining

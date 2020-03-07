@@ -24,7 +24,7 @@ const Index: React.FC<Props> = (props) => {
               <p>The sidebar of the Playground uses the same plugin infrastructure as external plugins, so you have the same level of access as the playground to build interesting projects.</p>
               <p>Playground plugins use frameworks, you're free to inject them at runtime and use them if you need to - but the current plugins are built with the vanilla DOM APIs and TypeScript.</p>
               <p>&nbsp;</p>
-              <p>Getting started it easy, we have a plugin template, and the Playground has a dev-mode for hooking directly to your local server, so you don't need to run a copy of the TypeScript website to have a working development environment.</p>
+              <p>Getting started is easy, we have a plugin template, and the Playground has a dev-mode for hooking directly to your local server, so you don't need to run a copy of the TypeScript website to have a working development environment.</p>
               <p>There is a complex reference plugin called <a href="https://github.com/orta/playground-slides">Presentation Mode</a> and a much simpler <a href="https://github.com/orta/playground-plugin-tsquery">plugin for TSQuery</a> which are available by default for you to investigate and understand.</p>
               <p>If you have questions as you are working on your plugin, ask in the <a href='https://discord.gg/typescript'>TypeScript Community Discord</a>. When it is polished let us know and we can add it to the default registry - making it visible to everyone easily.</p>
             </div>

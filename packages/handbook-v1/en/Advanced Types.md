@@ -2,6 +2,7 @@
 title: Advanced Types
 layout: docs
 permalink: /docs/handbook/advanced-types.html
+oneline: Advanced concepts around types in TypeScript
 ---
 
 # Type Guards and Differentiating Types

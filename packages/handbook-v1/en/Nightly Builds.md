@@ -2,6 +2,7 @@
 title: Nightly Builds
 layout: docs
 permalink: /docs/handbook/nightly-builds.html
+oneline: How to use a nightly build of TypeScript
 ---
 
 A nightly build from the [TypeScript's `master`](https://github.com/Microsoft/TypeScript/tree/master) branch is published by midnight PST to npm and NuGet.

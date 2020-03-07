@@ -2,6 +2,8 @@
 title: Overview
 layout: docs
 permalink: /docs/handbook/release-notes/overview.html
+oneline: "All TypeScript release notes"
+
 ---
 
 This overview page is a summary contains a shorter version of all the release notes for TypeScript.

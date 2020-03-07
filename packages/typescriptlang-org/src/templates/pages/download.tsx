@@ -18,7 +18,7 @@ const changeExample2 = (code: string) => document.getElementById("code-run")!.te
 const Index: React.FC<Props> = (props) => {
   const Link = createIntlLink(props.pageContext.lang, props.data.allSitePage)
 
-  return <Layout title="How to set up TypeScript" description="" lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+  return <Layout title="How to set up TypeScript" description="Add TypeScript to your project, or install TypeScript globally" lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
     <div className="raised main-content-block">
       <h1>Download TypeScript</h1>
       <p>TypeScript can installed through three installation routes depending on how you intend to use it: an npm module, a NuGet package or a Visual Studio Extension.</p>

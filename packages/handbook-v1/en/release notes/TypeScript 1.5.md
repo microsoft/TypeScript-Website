@@ -2,7 +2,9 @@
 title: TypeScript 1.5
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-1-5.html
+oneline: TypeScript 1.5 Release Notes
 ---
+
 ## ES6 Modules
 
 TypeScript 1.5 supports ECMAScript 6 (ES6) modules.
@@ -59,9 +61,9 @@ An export default declaration specifies an expression that becomes the default e
 
 ```ts
 export default class Greeter {
-    sayHello() {
-        console.log("Greetings!");
-    }
+  sayHello() {
+    console.log("Greetings!");
+  }
 }
 ```
 
@@ -103,15 +105,15 @@ Destructuring declarations also works for extracting values from arrays:
 var [x, y, z = 10] = getSomeArray();
 ```
 
-Similarly, destructuring  can be used in function parameter declarations:
+Similarly, destructuring can be used in function parameter declarations:
 
 ```ts
 function drawText({ text = "", location: [x, y] = [0, 0], bold = false }) {
-    // Draw text
+  // Draw text
 }
 
 // Call drawText with an object literal
-var item = { text: "someText", location: [1,2,3], style: "italics" };
+var item = { text: "someText", location: [1, 2, 3], style: "italics" };
 drawText(item);
 ```
 
@@ -160,7 +162,7 @@ ES6 `let` and `const` declarations are now supported when targeting ES3 and ES5.
 const MAX = 100;
 
 ++MAX; // Error: The operand of an increment or decrement
-       //        operator cannot be a constant.
+//        operator cannot be a constant.
 ```
 
 #### Block scoped
@@ -169,8 +171,7 @@ const MAX = 100;
 if (true) {
   let a = 4;
   // use a
-}
-else {
+} else {
   let a = "string";
   // use a
 }
@@ -187,14 +188,15 @@ TypeScript 1.5 adds support to ES6 for..of loops on arrays for ES3/ES5 as well a
 The TypeScript compiler will transpile for..of arrays to idiomatic ES3/ES5 JavaScript when targeting those versions:
 
 ```ts
-for (var v of expr) { }
+for (var v of expr) {
+}
 ```
 
 will be emitted as:
 
 ```js
 for (var _i = 0, _a = expr; _i < _a.length; _i++) {
-    var v = _a[_i];
+  var v = _a[_i];
 }
 ```
 
@@ -204,10 +206,10 @@ for (var _i = 0, _a = expr; _i < _a.length; _i++) {
 
 A decorator is:
 
-* an expression
-* that evaluates to a function
-* that takes the target, name, and property descriptor as arguments
-* and optionally returns a property descriptor to install on the target object
+- an expression
+- that evaluates to a function
+- that takes the target, name, and property descriptor as arguments
+- and optionally returns a property descriptor to install on the target object
 
 > For more information, please see the [Decorators](https://github.com/Microsoft/TypeScript/issues/2249) proposal.
 
@@ -240,12 +242,12 @@ Initializing an object with dynamic properties can be a bit of a burden. Take th
 
 ```ts
 type NeighborMap = { [name: string]: Node };
-type Node = { name: string; neighbors: NeighborMap; };
+type Node = { name: string; neighbors: NeighborMap };
 
 function makeNode(name: string, initialNeighbor: Node): Node {
-    var neighbors: NeighborMap = {};
-    neighbors[initialNeighbor.name] = initialNeighbor;
-    return { name: name, neighbors: neighbors };
+  var neighbors: NeighborMap = {};
+  neighbors[initialNeighbor.name] = initialNeighbor;
+  return { name: name, neighbors: neighbors };
 }
 ```
 
@@ -254,12 +256,12 @@ With TypeScript 1.5, we can let the compiler do the heavy lifting:
 
 ```ts
 function makeNode(name: string, initialNeighbor: Node): Node {
-    return {
-        name: name,
-        neighbors: {
-            [initialNeighbor.name]: initialNeighbor
-        }
-    };
+  return {
+    name: name,
+    neighbors: {
+      [initialNeighbor.name]: initialNeighbor
+    }
+  };
 }
 ```
 
@@ -268,6 +270,7 @@ function makeNode(name: string, initialNeighbor: Node): Node {
 In addition to `AMD` and `CommonJS` module loaders, TypeScript now supports emitting modules `UMD` ([Universal Module Definition](https://github.com/umdjs/umd)) and [`System`](https://github.com/systemjs/systemjs) module formats.
 
 **Usage**:
+
 > tsc --module umd
 
 and
@@ -295,21 +298,23 @@ When targeting ES3/ES5, the following code
 
 ```ts
 function oddRawStrings(strs: TemplateStringsArray, n1, n2) {
-    return strs.raw.filter((raw, index) => index % 2 === 1);
+  return strs.raw.filter((raw, index) => index % 2 === 1);
 }
 
-oddRawStrings `Hello \n${123} \t ${456}\n world`
+oddRawStrings`Hello \n${123} \t ${456}\n world`;
 ```
 
 will be emitted as
 
 ```js
 function oddRawStrings(strs, n1, n2) {
-    return strs.raw.filter(function (raw, index) {
-        return index % 2 === 1;
-    });
+  return strs.raw.filter(function(raw, index) {
+    return index % 2 === 1;
+  });
 }
-(_a = ["Hello \n", " \t ", "\n world"], _a.raw = ["Hello \\n", " \\t ", "\\n world"], oddRawStrings(_a, 123, 456));
+(_a = ["Hello \n", " \t ", "\n world"]),
+  (_a.raw = ["Hello \\n", " \\t ", "\\n world"]),
+  oddRawStrings(_a, 123, 456);
 var _a;
 ```
 
@@ -329,8 +334,12 @@ moduleA.callStuff();
 Generated JS code:
 
 ```js
-define(["require", "exports", "legacy/moduleA"], function (require, exports, moduleA) {
-    moduleA.callStuff();
+define(["require", "exports", "legacy/moduleA"], function(
+  require,
+  exports,
+  moduleA
+) {
+  moduleA.callStuff();
 });
 ```
 
@@ -339,18 +348,18 @@ define(["require", "exports", "legacy/moduleA"], function (require, exports, mod
 Adding a `tsconfig.json` file in a directory indicates that the directory is the root of a TypeScript project.
 The tsconfig.json file specifies the root files and the compiler options required to compile the project. A project is compiled in one of the following ways:
 
-* By invoking tsc with no input files, in which case the compiler searches for the tsconfig.json file starting in the current directory and continuing up the parent directory chain.
-* By invoking tsc with no input files and a -project (or just -p) command line option that specifies the path of a directory containing a tsconfig.json file.
+- By invoking tsc with no input files, in which case the compiler searches for the tsconfig.json file starting in the current directory and continuing up the parent directory chain.
+- By invoking tsc with no input files and a -project (or just -p) command line option that specifies the path of a directory containing a tsconfig.json file.
 
 ##### Example
 
 ```json
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "noImplicitAny": true,
-        "sourceMap": true
-    }
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "sourceMap": true
+  }
 }
 ```
 
@@ -375,11 +384,10 @@ If you want to consolidate all helpers in one place, or override the default beh
 
 ## `--newLine` command line option
 
-By default the output new line character is `\r\n` on Windows based systems and `\n` on *nix based systems.
+By default the output new line character is `\r\n` on Windows based systems and `\n` on \*nix based systems.
 `--newLine` command line flag allows overriding this behavior and specifying the new line character to be used in generated output files.
 
 ## `--inlineSourceMap` and `inlineSources` command line options
 
 `--inlineSourceMap` causes source map files to be written inline in the generated `.js` files instead of in a independent `.js.map` file.
 `--inlineSources` allows for additionally inlining the source `.ts` file into the `.js` file.
-

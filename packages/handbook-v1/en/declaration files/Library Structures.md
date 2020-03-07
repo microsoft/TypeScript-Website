@@ -2,10 +2,12 @@
 title: Library Structures
 layout: docs
 permalink: /docs/handbook/declaration-files/library-structures.html
+oneline: How to structure your d.ts files
 ---
+
 # Overview
 
-Broadly speaking, the way you *structure* your declaration file depends on how the library is consumed.
+Broadly speaking, the way you _structure_ your declaration file depends on how the library is consumed.
 There are many ways of offering a library for consumption in JavaScript, and you'll need to write your declaration file to match it.
 This guide covers how to identify common library patterns, and how to write declaration files which correspond to that pattern.
 
@@ -15,21 +17,23 @@ You can start with these templates to help you get going faster.
 # Identifying Kinds of Libraries
 
 First, we'll review the kinds of libraries TypeScript declaration files can represent.
-We'll briefly show how each kind of library is *used*, how it is *written*, and list some example libraries from the real world.
+We'll briefly show how each kind of library is _used_, how it is _written_, and list some example libraries from the real world.
 
 Identifying the structure of a library is the first step in writing its declaration file.
-We'll give hints on how to identify structure both based on its *usage* and its *code*.
+We'll give hints on how to identify structure both based on its _usage_ and its _code_.
 Depending on the library's documentation and organization, one might be easier than the other.
 We recommend using whichever is more comfortable to you.
 
 ## Global Libraries
 
-A *global* library is one that can be accessed from the global scope (i.e. without using any form of `import`).
+A _global_ library is one that can be accessed from the global scope (i.e. without using any form of `import`).
 Many libraries simply expose one or more global variables for use.
 For example, if you were using [jQuery](https://jquery.com/), the `$` variable can be used by simply referring to it:
 
 ```ts
-$(() => { console.log('hello!'); } );
+$(() => {
+  console.log("hello!");
+});
 ```
 
 You'll usually see guidance in the documentation of a global library of how to use the library in an HTML script tag:
@@ -49,7 +53,7 @@ A global "Hello, world" library might look like this:
 
 ```js
 function createGreeting(s) {
-    return "Hello, " + s;
+  return "Hello, " + s;
 }
 ```
 
@@ -57,27 +61,27 @@ or like this:
 
 ```js
 window.createGreeting = function(s) {
-    return "Hello, " + s;
-}
+  return "Hello, " + s;
+};
 ```
 
 When looking at the code of a global library, you'll usually see:
 
-* Top-level `var` statements or `function` declarations
-* One or more assignments to `window.someName`
-* Assumptions that DOM primitives like `document` or `window` exist
+- Top-level `var` statements or `function` declarations
+- One or more assignments to `window.someName`
+- Assumptions that DOM primitives like `document` or `window` exist
 
-You *won't* see:
+You _won't_ see:
 
-* Checks for, or usage of, module loaders like `require` or `define`
-* CommonJS/Node.js-style imports of the form `var fs = require("fs");`
-* Calls to `define(...)`
-* Documentation describing how to `require` or import the library
+- Checks for, or usage of, module loaders like `require` or `define`
+- CommonJS/Node.js-style imports of the form `var fs = require("fs");`
+- Calls to `define(...)`
+- Documentation describing how to `require` or import the library
 
 ### Examples of Global Libraries
 
 Because it's usually easy to turn a global library into a UMD library, very few popular libraries are still written in the global style.
-However, libraries that are small and require the DOM (or have *no* dependencies) may still be global.
+However, libraries that are small and require the DOM (or have _no_ dependencies) may still be global.
 
 ### Global Library Template
 
@@ -89,7 +93,7 @@ Be sure to read the ["Preventing Name Conflicts" footnote](#preventing-name-conf
 Some libraries only work in a module loader environment.
 For example, `express` only works in Node.js and must be loaded using the CommonJS `require` function.
 
-ECMAScript 2015 (also known as ES2015, ECMAScript 6, and ES6), CommonJS, and RequireJS have similar notions of *importing* a *module*.
+ECMAScript 2015 (also known as ES2015, ECMAScript 6, and ES6), CommonJS, and RequireJS have similar notions of _importing_ a _module_.
 In JavaScript CommonJS (Node.js), for example, you would write
 
 ```js
@@ -105,7 +109,7 @@ import fs = require("fs");
 You'll typically see modular libraries include one of these lines in their documentation:
 
 ```js
-var someLib = require('someLib');
+var someLib = require("someLib");
 ```
 
 or
@@ -122,21 +126,21 @@ As with global modules, you might see these examples in the documentation of a U
 
 Modular libraries will typically have at least some of the following:
 
-* Unconditional calls to `require` or `define`
-* Declarations like `import * as a from 'b';` or `export c;`
-* Assignments to `exports` or `module.exports`
+- Unconditional calls to `require` or `define`
+- Declarations like `import * as a from 'b';` or `export c;`
+- Assignments to `exports` or `module.exports`
 
 They will rarely have:
 
-* Assignments to properties of `window` or `global`
+- Assignments to properties of `window` or `global`
 
 ### Examples of Modular Libraries
 
 Many popular Node.js libraries are in the module family, such as [`express`](http://expressjs.com/), [`gulp`](http://gulpjs.com/), and [`request`](https://github.com/request/request).
 
-## *UMD*
+## _UMD_
 
-A *UMD* module is one that can *either* be used as module (through an import), or as a global (when run in an environment without a module loader).
+A _UMD_ module is one that can _either_ be used as module (through an import), or as a global (when run in an environment without a module loader).
 Many popular libraries, such as [Moment.js](http://momentjs.com/), are written this way.
 For example, in Node.js or using RequireJS, you would write:
 
@@ -171,7 +175,7 @@ This is an easy-to-spot pattern that looks something like this:
 If you see tests for `typeof define`, `typeof window`, or `typeof module` in the code of a library, especially at the top of the file, it's almost always a UMD library.
 
 Documentation for UMD libraries will also often demonstrate a "Using in Node.js" example showing `require`,
-  and a "Using in the browser" example showing using a `<script>` tag to load the script.
+and a "Using in the browser" example showing using a `<script>` tag to load the script.
 
 ### Examples of UMD libraries
 
@@ -181,9 +185,9 @@ Examples include [jQuery](https://jquery.com/), [Moment.js](http://momentjs.com/
 ### Template
 
 There are three templates available for modules,
-  [`module.d.ts`](./templates/module.d.ts.md), [`module-class.d.ts`](./templates/module-class.d.ts.md) and [`module-function.d.ts`](./templates/module-function.d.ts.md).
+[`module.d.ts`](./templates/module.d.ts.md), [`module-class.d.ts`](./templates/module-class.d.ts.md) and [`module-function.d.ts`](./templates/module-function.d.ts.md).
 
-Use [`module-function.d.ts`](./templates/module-function.d.ts.md) if your module can be *called* like a function:
+Use [`module-function.d.ts`](./templates/module-function.d.ts.md) if your module can be _called_ like a function:
 
 ```js
 var x = require("foo");
@@ -193,7 +197,7 @@ var y = x(42);
 
 Be sure to read the [footnote "The Impact of ES6 on Module Call Signatures"](#the-impact-of-es6-on-module-plugins)
 
-Use [`module-class.d.ts`](./templates/module-class.d.ts.md) if your module can be *constructed* using `new`:
+Use [`module-class.d.ts`](./templates/module-class.d.ts.md) if your module can be _constructed_ using `new`:
 
 ```js
 var x = require("bar");
@@ -205,9 +209,9 @@ The same [footnote](#the-impact-of-es6-on-module-plugins) applies to these modul
 
 If your module is not callable or constructable, use the [`module.d.ts`](./templates/module.d.ts.md) file.
 
-## *Module Plugin* or *UMD Plugin*
+## _Module Plugin_ or _UMD Plugin_
 
-A *module plugin* changes the shape of another module (either UMD or module).
+A _module plugin_ changes the shape of another module (either UMD or module).
 For example, in Moment.js, `moment-range` adds a new `range` method to the `moment` object.
 
 For the purposes of writing a declaration file, you'll write the same code whether the module being changed is a plain module or UMD module.
@@ -216,10 +220,10 @@ For the purposes of writing a declaration file, you'll write the same code wheth
 
 Use the [`module-plugin.d.ts`](./templates/module-plugin.d.ts.md) template.
 
-## *Global Plugin*
+## _Global Plugin_
 
-A *global plugin* is global code that changes the shape of some global.
-As with *global-modifying modules*, these raise the possibility of runtime conflict.
+A _global plugin_ is global code that changes the shape of some global.
+As with _global-modifying modules_, these raise the possibility of runtime conflict.
 
 For example, some libraries add new functions to `Array.prototype` or `String.prototype`.
 
@@ -243,12 +247,12 @@ console.log(y.reverseAndSort());
 
 Use the [`global-plugin.d.ts`](./templates/global-plugin.d.ts.md) template.
 
-## *Global-modifying Modules*
+## _Global-modifying Modules_
 
-A *global-modifying module* alters existing values in the global scope when they are imported.
+A _global-modifying module_ alters existing values in the global scope when they are imported.
 For example, there might exist a library which adds new members to `String.prototype` when imported.
 This pattern is somewhat dangerous due to the possibility of runtime conflicts,
-  but we can still write a declaration file for it.
+but we can still write a declaration file for it.
 
 ### Identifying global-modifying modules
 
@@ -318,10 +322,10 @@ function getThing(): moment;
 If your module or UMD library depends on a UMD library, use an `import` statement:
 
 ```ts
-import * as someLib from 'someLib';
+import * as someLib from "someLib";
 ```
 
-Do *not* use a `/// <reference` directive to declare a dependency to a UMD library!
+Do _not_ use a `/// <reference` directive to declare a dependency to a UMD library!
 
 # Footnotes
 
@@ -330,20 +334,20 @@ Do *not* use a `/// <reference` directive to declare a dependency to a UMD libra
 Note that it's possible to define many types in the global scope when writing a global declaration file.
 We strongly discourage this as it leads to possible unresolvable name conflicts when many declaration files are in a project.
 
-A simple rule to follow is to only declare types *namespaced* by whatever global variable the library defines.
+A simple rule to follow is to only declare types _namespaced_ by whatever global variable the library defines.
 For example, if the library defines the global value 'cats', you should write
 
 ```ts
 declare namespace cats {
-    interface KittySettings { }
+  interface KittySettings {}
 }
 ```
 
-But *not*
+But _not_
 
 ```ts
 // at top-level
-interface CatsKittySettings { }
+interface CatsKittySettings {}
 ```
 
 This guidance also ensures that the library can be transitioned to UMD without breaking declaration file users.
@@ -365,9 +369,9 @@ var app = exp();
 ```
 
 In ES6 module loaders, the top-level object (here imported as `exp`) can only have properties;
-  the top-level module object is *never* callable.
+the top-level module object is _never_ callable.
 The most common solution here is to define a `default` export for a callable/constructable object;
-  some module loader shims will automatically detect this situation and replace the top-level object with the `default` export.
+some module loader shims will automatically detect this situation and replace the top-level object with the `default` export.
 
 ## Library file layout
 
@@ -403,4 +407,3 @@ Your declaration files should thus be
          +---- index.d.ts
          +---- baz.d.ts
 ```
-

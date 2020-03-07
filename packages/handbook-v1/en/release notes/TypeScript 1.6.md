@@ -2,7 +2,9 @@
 title: TypeScript 1.6
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-1-6.html
+oneline: TypeScript 1.6 Release Notes
 ---
+
 ## JSX support
 
 JSX is an embeddable XML-like syntax.
@@ -17,7 +19,7 @@ This extension does two things: it enables JSX inside of TypeScript files, and i
 For example:
 
 ```ts
-var x = <any> foo;
+var x = <any>foo;
 // is equivalent to:
 var x = foo as any;
 ```
@@ -35,7 +37,7 @@ interface Props {
 
 class MyComponent extends React.Component<Props, {}> {
   render() {
-    return <span>{this.props.foo}</span>
+    return <span>{this.props.foo}</span>;
   }
 }
 
@@ -52,30 +54,30 @@ Please see the [[JSX]] wiki page for defining the `JSX` namespace for your frame
 
 TypeScript ships with two JSX modes: `preserve` and `react`.
 
-* The `preserve` mode will keep JSX expressions as part of the output to be further consumed by another transform step. *Additionally the output will have a `.jsx` file extension.*
-* The `react` mode will emit `React.createElement`, does not need to go through a JSX transformation before use, and the output will have a `.js` file extension.
+- The `preserve` mode will keep JSX expressions as part of the output to be further consumed by another transform step. _Additionally the output will have a `.jsx` file extension._
+- The `react` mode will emit `React.createElement`, does not need to go through a JSX transformation before use, and the output will have a `.js` file extension.
 
 See the [[JSX]] wiki page for more information on using JSX in TypeScript.
 
 ## Intersection types
 
 TypeScript 1.6 introduces intersection types, the logical complement of union types.
-A union type `A | B` represents an entity that is either of type `A` or type `B`, whereas an intersection type `A & B` represents an entity that is both of type `A` *and* type `B`.
+A union type `A | B` represents an entity that is either of type `A` or type `B`, whereas an intersection type `A & B` represents an entity that is both of type `A` _and_ type `B`.
 
 ##### Example
 
 ```ts
 function extend<T, U>(first: T, second: U): T & U {
-    let result = <T & U> {};
-    for (let id in first) {
-        result[id] = first[id];
+  let result = <T & U>{};
+  for (let id in first) {
+    result[id] = first[id];
+  }
+  for (let id in second) {
+    if (!result.hasOwnProperty(id)) {
+      result[id] = second[id];
     }
-    for (let id in second) {
-        if (!result.hasOwnProperty(id)) {
-            result[id] = second[id];
-        }
-    }
-    return result;
+  }
+  return result;
 }
 
 var x = extend({ a: "hello" }, { b: 42 });
@@ -87,7 +89,7 @@ var n = x.b;
 type LinkedList<T> = T & { next: LinkedList<T> };
 
 interface Person {
-    name: string;
+  name: string;
 }
 
 var people: LinkedList<Person>;
@@ -98,9 +100,15 @@ var s = people.next.next.next.name;
 ```
 
 ```ts
-interface A { a: string }
-interface B { b: string }
-interface C { c: string }
+interface A {
+  a: string;
+}
+interface B {
+  b: string;
+}
+interface C {
+  c: string;
+}
 
 var abc: A & B & C;
 abc.a = "hello";
@@ -116,16 +124,19 @@ Local class, interface, enum, and type alias declarations can now appear inside 
 
 ```ts
 function f() {
-    if (true) {
-        interface T { x: number }
-        let v: T;
-        v.x = 5;
+  if (true) {
+    interface T {
+      x: number;
     }
-    else {
-        interface T { x: string }
-        let v: T;
-        v.x = "hello";
+    let v: T;
+    v.x = 5;
+  } else {
+    interface T {
+      x: string;
     }
+    let v: T;
+    v.x = "hello";
+  }
 }
 ```
 
@@ -133,16 +144,16 @@ The inferred return type of a function may be a type declared locally within the
 
 ```ts
 interface Point {
-    x: number;
-    y: number;
+  x: number;
+  y: number;
 }
 
 function getPointFactory(x: number, y: number) {
-    class P {
-        x = x;
-        y = y;
-    }
-    return P;
+  class P {
+    x = x;
+    y = y;
+  }
+  return P;
 }
 
 var PointZero = getPointFactory(0, 0);
@@ -156,17 +167,17 @@ Local types may reference enclosing type parameters and local class and interfac
 
 ```ts
 function f3() {
-    function f<X, Y>(x: X, y: Y) {
-        class C {
-            public x = x;
-            public y = y;
-        }
-        return C;
+  function f<X, Y>(x: X, y: Y) {
+    class C {
+      public x = x;
+      public y = y;
     }
-    let C = f(10, "hello");
-    let v = new C();
-    let x = v.x;  // number
-    let y = v.y;  // string
+    return C;
+  }
+  let C = f(10, "hello");
+  let v = new C();
+  let x = v.x; // number
+  let y = v.y; // string
 }
 ```
 
@@ -176,12 +187,12 @@ TypeScript 1.6 adds support for ES6 class expressions. In a class expression, th
 
 ```ts
 let Point = class {
-    constructor(public x: number, public y: number) { }
-    public length() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
-    }
+  constructor(public x: number, public y: number) {}
+  public length() {
+    return Math.sqrt(this.x * this.x + this.y * this.y);
+  }
 };
-var p = new Point(3, 4);  // p has anonymous class type
+var p = new Point(3, 4); // p has anonymous class type
 console.log(p.length());
 ```
 
@@ -196,35 +207,39 @@ Some examples:
 ```ts
 // Extend built-in types
 
-class MyArray extends Array<number> { }
-class MyError extends Error { }
+class MyArray extends Array<number> {}
+class MyError extends Error {}
 
 // Extend computed base class
 
 class ThingA {
-    getGreeting() { return "Hello from A"; }
+  getGreeting() {
+    return "Hello from A";
+  }
 }
 
 class ThingB {
-    getGreeting() { return "Hello from B"; }
+  getGreeting() {
+    return "Hello from B";
+  }
 }
 
 interface Greeter {
-    getGreeting(): string;
+  getGreeting(): string;
 }
 
 interface GreeterConstructor {
-    new (): Greeter;
+  new (): Greeter;
 }
 
 function getGreeterBase(): GreeterConstructor {
-    return Math.random() >= 0.5 ? ThingA : ThingB;
+  return Math.random() >= 0.5 ? ThingA : ThingB;
 }
 
 class Test extends getGreeterBase() {
-    sayHello() {
-        console.log(this.getGreeting());
-    }
+  sayHello() {
+    console.log(this.getGreeting());
+  }
 }
 ```
 
@@ -236,20 +251,24 @@ TypeScript 1.6 adds support for `abstract` keyword for classes and their methods
 
 ```ts
 abstract class Base {
-    abstract getThing(): string;
-    getOtherThing() { return 'hello'; }
+  abstract getThing(): string;
+  getOtherThing() {
+    return "hello";
+  }
 }
 
 let x = new Base(); // Error, 'Base' is abstract
 
 // Error, must either be 'abstract' or implement concrete 'getThing'
-class Derived1 extends Base { }
+class Derived1 extends Base {}
 
 class Derived2 extends Base {
-    getThing() { return 'hello'; }
-    foo() {
-        super.getThing();// Error: cannot invoke abstract members through 'super'
-    }
+  getThing() {
+    return "hello";
+  }
+  foo() {
+    super.getThing(); // Error: cannot invoke abstract members through 'super'
+  }
 }
 
 var x = new Derived2(); // OK
@@ -270,8 +289,8 @@ s = "eager";
 s = () => "lazy";
 
 interface Tuple<A, B> {
-    a: A;
-    b: B;
+  a: A;
+  b: B;
 }
 
 type Pair<T> = Tuple<T, T>;
@@ -285,17 +304,17 @@ TypeScript 1.6 enforces stricter object literal assignment checks for the purpos
 
 ```ts
 var x: { foo: number };
-x = { foo: 1, baz: 2 };  // Error, excess property `baz`
+x = { foo: 1, baz: 2 }; // Error, excess property `baz`
 
-var y: { foo: number, bar?: number };
-y = { foo: 1, baz: 2 };  // Error, excess or misspelled property `baz`
+var y: { foo: number; bar?: number };
+y = { foo: 1, baz: 2 }; // Error, excess or misspelled property `baz`
 ```
 
 A type can include an index signature to explicitly indicate that excess properties are permitted:
 
 ```ts
-var x: { foo: number, [x: string]: any };
-x = { foo: 1, baz: 2 };  // Ok, `baz` matched by index signature
+var x: { foo: number; [x: string]: any };
+x = { foo: 1, baz: 2 }; // Ok, `baz` matched by index signature
 ```
 
 ## ES6 generators
@@ -305,11 +324,11 @@ TypeScript 1.6 adds support for generators when targeting ES6.
 A generator function can have a return type annotation, just like a function. The annotation represents the type of the generator returned by the function. Here is an example:
 
 ```ts
-function *g(): Iterable<string> {
-    for (var i = 0; i < 100; i++) {
-        yield ""; // string is assignable to string
-    }
-    yield * otherStringGenerator(); // otherStringGenerator must be iterable and element type assignable to string
+function* g(): Iterable<string> {
+  for (var i = 0; i < 100; i++) {
+    yield ""; // string is assignable to string
+  }
+  yield* otherStringGenerator(); // otherStringGenerator must be iterable and element type assignable to string
 }
 ```
 
@@ -317,11 +336,11 @@ A generator function with no type annotation can have the type annotation inferr
 So in the following case, the type will be inferred from the yield statements:
 
 ```ts
-function *g() {
-    for (var i = 0; i < 100; i++) {
-        yield ""; // infer string
-    }
-    yield * otherStringGenerator(); // infer element type of otherStringGenerator
+function* g() {
+  for (var i = 0; i < 100; i++) {
+    yield ""; // infer string
+  }
+  yield* otherStringGenerator(); // infer element type of otherStringGenerator
 }
 ```
 
@@ -331,8 +350,8 @@ TypeScript 1.6 introduces experimental support of `async` functions when targeti
 Async functions are expected to invoke an asynchronous operation and await its result without blocking normal execution of the program.
 This accomplished through the use of an ES6-compatible `Promise` implementation, and transposition of the function body into a compatible form to resume execution when the awaited asynchronous operation completes.
 
-An *async function* is a function or method that has been prefixed with the `async` modifier. This modifier informs the compiler that function body transposition is required, and that the keyword `await` should be treated as a unary expression instead of an identifier.
-An *Async Function* must provide a return type annotation that points to a compatible `Promise` type. Return type inference can only be used if there is a globally defined, compatible `Promise` type.
+An _async function_ is a function or method that has been prefixed with the `async` modifier. This modifier informs the compiler that function body transposition is required, and that the keyword `await` should be treated as a unary expression instead of an identifier.
+An _Async Function_ must provide a return type annotation that points to a compatible `Promise` type. Return type inference can only be used if there is a globally defined, compatible `Promise` type.
 
 ##### Example
 
@@ -378,8 +397,8 @@ These [rules](https://github.com/Microsoft/TypeScript/issues/2338) attempted to 
 This effectively mean that node modules can include information about its typings and TypeScript compiler will be able to find it.
 User however can override module resolution rules picked by the compiler by using `--moduleResolution` command line option. Possible values are:
 
-* 'classic' - module resolution rules used by pre 1.6 TypeScript compiler
-* 'node' - node-like module resolution
+- 'classic' - module resolution rules used by pre 1.6 TypeScript compiler
+- 'node' - node-like module resolution
 
 ## Merging ambient class and interface declaration
 
@@ -388,16 +407,16 @@ For example:
 
 ```ts
 declare class Foo {
-    public x : number;
+  public x: number;
 }
 
 interface Foo {
-    y : string;
+  y: string;
 }
 
-function bar(foo : Foo)  {
-    foo.x = 1; // OK, declared in the class Foo
-    foo.y = "1"; // OK, declared in the interface Foo
+function bar(foo: Foo) {
+  foo.x = 1; // OK, declared in the class Foo
+  foo.y = "1"; // OK, declared in the interface Foo
 }
 ```
 
@@ -411,31 +430,27 @@ When a user-defined type guard function is invoked on a variable in an `if` bloc
 
 ```ts
 function isCat(a: any): a is Cat {
-  return a.name === 'kitty';
+  return a.name === "kitty";
 }
 
 var x: Cat | Dog;
-if(isCat(x)) {
+if (isCat(x)) {
   x.meow(); // OK, x is Cat in this block
 }
 ```
 
 ## `exclude` property support in tsconfig.json
 
-A tsconfig.json file that doesn't specify a files property (and therefore implicitly references all *.ts files in all subdirectories) can now contain an exclude property that specifies a list of files and/or directories to exclude from the compilation.
+A tsconfig.json file that doesn't specify a files property (and therefore implicitly references all \*.ts files in all subdirectories) can now contain an exclude property that specifies a list of files and/or directories to exclude from the compilation.
 The exclude property must be an array of strings that each specify a file or folder name relative to the location of the tsconfig.json file.
 For example:
 
 ```json
 {
-    "compilerOptions": {
-        "out": "test.js"
-    },
-    "exclude": [
-        "node_modules",
-        "test.ts",
-        "utils/t2.ts"
-    ]
+  "compilerOptions": {
+    "out": "test.js"
+  },
+  "exclude": ["node_modules", "test.ts", "utils/t2.ts"]
 }
 ```
 
@@ -445,4 +460,3 @@ The `exclude` list does not support wilcards. It must simply be a list of files 
 
 Run `tsc --init` in a directory to create an initial `tsconfig.json` in this directory with preset defaults.
 Optionally pass command line arguments along with `--init` to be stored in your initial tsconfig.json on creation.
-

@@ -2,10 +2,12 @@
 title: TypeScript 2.3
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-2-3.html
+oneline: TypeScript 2.3 Release Notes
 ---
+
 ## Generators and Iteration for ES5/ES3
 
-*First some ES2016 terminology:*
+_First some ES2016 terminology:_
 
 ##### Iterators
 
@@ -47,7 +49,7 @@ With `--downlevelIteration`, the compiler uses new type check and emit behavior 
 
 > Please note that this requires a native `Symbol.iterator` or `Symbol.iterator` shim at runtime for any non-array values.
 
-`for..of` statements,  Array Destructuring, and Spread elements in Array, Call, and New expressions support `Symbol.iterator` in ES5/E3 if available when using `--downlevelIteration`, but can be used on an Array even if it does not define `Symbol.iterator` at run time or design time.
+`for..of` statements, Array Destructuring, and Spread elements in Array, Call, and New expressions support `Symbol.iterator` in ES5/E3 if available when using `--downlevelIteration`, but can be used on an Array even if it does not define `Symbol.iterator` at run time or design time.
 
 ## Async Iteration
 
@@ -80,7 +82,7 @@ async function* g() {
   yield 1;
   await sleep(100);
   yield* [2, 3];
-  yield* (async function *() {
+  yield* (async function*() {
     await sleep(100);
     yield 4;
   })();
@@ -98,7 +100,7 @@ Similarly, the Async Iteration proposal introduces the `for..await..of` statemen
 ```ts
 async function f() {
   for await (const x of g()) {
-     console.log(x);
+    console.log(x);
   }
 }
 ```
@@ -107,9 +109,9 @@ The `for..await..of` statement is only legal within an Async Function or Async G
 
 ##### Caveats
 
-* Keep in mind that our support for async iterators relies on support for `Symbol.asyncIterator` to exist at runtime. You may need to polyfill `Symbol.asyncIterator`, which for simple purposes can be as simple as: `(Symbol as any).asyncIterator = Symbol.asyncIterator || Symbol.for("Symbol.asyncIterator");`
-* You also need to include `esnext` in your `--lib` option, to get the `AsyncIterator` declaration if you do not already have it.
-* Finally, if your target is ES5 or ES3, you'll also need to set the `--downlevelIterators` flag.
+- Keep in mind that our support for async iterators relies on support for `Symbol.asyncIterator` to exist at runtime. You may need to polyfill `Symbol.asyncIterator`, which for simple purposes can be as simple as: `(Symbol as any).asyncIterator = Symbol.asyncIterator || Symbol.for("Symbol.asyncIterator");`
+- You also need to include `esnext` in your `--lib` option, to get the `AsyncIterator` declaration if you do not already have it.
+- Finally, if your target is ES5 or ES3, you'll also need to set the `--downlevelIterators` flag.
 
 ## Generic parameter defaults
 
@@ -122,24 +124,30 @@ Consider a function that creates a new `HTMLElement`, calling it with no argumen
 ```ts
 declare function create(): Container<HTMLDivElement, HTMLDivElement[]>;
 declare function create<T extends HTMLElement>(element: T): Container<T, T[]>;
-declare function create<T extends HTMLElement, U extends HTMLElement>(element: T, children: U[]): Container<T, U[]>;
+declare function create<T extends HTMLElement, U extends HTMLElement>(
+  element: T,
+  children: U[]
+): Container<T, U[]>;
 ```
 
 With generic parameter defaults we can reduce it to:
 
 ```ts
-declare function create<T extends HTMLElement = HTMLDivElement, U = T[]>(element?: T, children?: U): Container<T, U>;
+declare function create<T extends HTMLElement = HTMLDivElement, U = T[]>(
+  element?: T,
+  children?: U
+): Container<T, U>;
 ```
 
 A generic parameter default follows the following rules:
 
-* A type parameter is deemed optional if it has a default.
-* Required type parameters must not follow optional type parameters.
-* Default types for a type parameter must satisfy the constraint for the type parameter, if it exists.
-* When specifying type arguments, you are only required to specify type arguments for the required type parameters. Unspecified type parameters will resolve to their default types.
-* If a default type is specified and inference cannot choose a candidate, the default type is inferred.
-* A class or interface declaration that merges with an existing class or interface declaration may introduce a default for an existing type parameter.
-* A class or interface declaration that merges with an existing class or interface declaration may introduce a new type parameter as long as it specifies a default.
+- A type parameter is deemed optional if it has a default.
+- Required type parameters must not follow optional type parameters.
+- Default types for a type parameter must satisfy the constraint for the type parameter, if it exists.
+- When specifying type arguments, you are only required to specify type arguments for the required type parameters. Unspecified type parameters will resolve to their default types.
+- If a default type is specified and inference cannot choose a candidate, the default type is inferred.
+- A class or interface declaration that merges with an existing class or interface declaration may introduce a default for an existing type parameter.
+- A class or interface declaration that merges with an existing class or interface declaration may introduce a new type parameter as long as it specifies a default.
 
 ## New `--strict` master option
 
@@ -149,12 +157,12 @@ With the `--strict` option it becomes possible to choose maximum type safety wit
 
 The new `--strict` compiler option represents the recommended setting of a number of type checking options. Specifically, specifying `--strict` corresponds to specifying all of the following options (and may in the future include more options):
 
-* `--strictNullChecks`
-* `--noImplicitAny`
-* `--noImplicitThis`
-* `--alwaysStrict`
+- `--strictNullChecks`
+- `--noImplicitAny`
+- `--noImplicitThis`
+- `--alwaysStrict`
 
-In exact terms, the `--strict` option sets the *default* value for the compiler options listed above.
+In exact terms, the `--strict` option sets the _default_ value for the compiler options listed above.
 This means it is still possible to individually control the options.
 For example,
 
@@ -162,7 +170,7 @@ For example,
 --strict --noImplicitThis false
 ```
 
-has the effect of turning on all strict options *except* the `--noImplicitThis` option. Using this scheme it is possible to express configurations consisting of *all* strict options except some explicitly listed options.
+has the effect of turning on all strict options _except_ the `--noImplicitThis` option. Using this scheme it is possible to express configurations consisting of _all_ strict options except some explicitly listed options.
 In other words, it is now possible to default to the highest level of type safety but opt out of certain checks.
 
 Starting with TypeScript 2.3, the default `tsconfig.json` generated by `tsc --init` includes a `"strict": true` setting in the `"compilerOptions"` section.
@@ -185,4 +193,3 @@ You can also ignore errors on specific lines by adding `// @ts-ignore` on the pr
 JSDoc comments can be used to add some type information to your JavaScript code, see [JSDoc Support documentation](https://github.com/Microsoft/TypeScript/wiki/JSDoc-support-in-JavaScript) for more details about the supported JSDoc constructs.
 
 See [Type checking JavaScript Files documentation](https://github.com/Microsoft/TypeScript/wiki/Type-Checking-JavaScript-Files) for more details.
-

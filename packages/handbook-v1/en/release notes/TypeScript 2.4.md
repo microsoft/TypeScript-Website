@@ -2,7 +2,9 @@
 title: TypeScript 2.4
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-2-4.html
+oneline: TypeScript 2.4 Release Notes
 ---
+
 ## Dynamic Import Expressions
 
 Dynamic `import` expressions are a new feature and part of ECMAScript that allows users to asynchronously request a module at any arbitrary point in your program.
@@ -12,9 +14,9 @@ For example, here's an `async` function that only imports a utility library when
 
 ```ts
 async function getZipFile(name: string, files: File[]): Promise<File> {
-    const zipUtil = await import('./utils/create-zip-file');
-    const zipContents = await zipUtil.getContentAsBlob(files);
-    return new File(zipContents, name);
+  const zipUtil = await import("./utils/create-zip-file");
+  const zipContents = await zipUtil.getContentAsBlob(files);
+  return new File(zipContents, name);
 }
 ```
 
@@ -26,9 +28,9 @@ TypeScript 2.4 now allows enum members to contain string initializers.
 
 ```ts
 enum Colors {
-    Red = "RED",
-    Green = "GREEN",
-    Blue = "BLUE",
+  Red = "RED",
+  Green = "GREEN",
+  Blue = "BLUE"
 }
 ```
 
@@ -47,7 +49,7 @@ Something that now works:
 
 ```ts
 function arrayMap<T, U>(f: (x: T) => U): (a: T[]) => U[] {
-    return a => a.map(f);
+  return a => a.map(f);
 }
 
 const lengths: (a: string[]) => number[] = arrayMap(s => s.length);
@@ -57,8 +59,8 @@ As an example of new errors you might spot as a result:
 
 ```ts
 let x: Promise<string> = new Promise(resolve => {
-    resolve(10);
-    //      ~~ Error!
+  resolve(10);
+  //      ~~ Error!
 });
 ```
 
@@ -79,7 +81,7 @@ let f: <T>(x: T) => T = y => y() + y.foo.bar;
 
 That last example isn't actually type-safe.
 
-In TypeScript 2.4, the function on the right side implicitly *gains* type parameters, and `y` is inferred to have the type of that type-parameter.
+In TypeScript 2.4, the function on the right side implicitly _gains_ type parameters, and `y` is inferred to have the type of that type-parameter.
 
 If you use `y` in a way that the type parameter's constraint doesn't support, you'll correctly get an error.
 In this case, the constraint of `T` was (implicitly) `{}`, so the last example will appropriately fail.
@@ -94,8 +96,8 @@ type A = <T, U>(x: T, y: U) => [T, U];
 type B = <S>(x: S, y: S) => [S, S];
 
 function f(a: A, b: B) {
-    a = b;  // Error
-    b = a;  // Ok
+  a = b; // Error
+  b = a; // Ok
 }
 ```
 
@@ -108,7 +110,7 @@ TypeScript 2.4 introduces tightens this up when relating two callback types. For
 
 ```ts
 interface Mappable<T> {
-    map<U>(f: (x: T) => U): Mappable<U>;
+  map<U>(f: (x: T) => U): Mappable<U>;
 }
 
 declare let a: Mappable<number>;
@@ -120,7 +122,7 @@ b = a;
 
 Prior to TypeScript 2.4, this example would succeed.
 When relating the types of `map`, TypeScript would bidirectionally relate their parameters (i.e. the type of `f`).
-When relating each `f`, TypeScript would also bidirectionally relate the type of *those* parameters.
+When relating each `f`, TypeScript would also bidirectionally relate the type of _those_ parameters.
 
 When relating the type of `map` in TS 2.4, the language will check whether each parameter is a callback type, and if so, it will ensure that those parameters are checked in a contravariant manner with respect to the current relation.
 
@@ -129,14 +131,14 @@ In other words, TypeScript now catches the above bug, which may be a breaking ch
 ## Weak Type Detection
 
 TypeScript 2.4 introduces the concept of "weak types".
-Any type that contains nothing but a set of all-optional properties is considered to be *weak*.
+Any type that contains nothing but a set of all-optional properties is considered to be _weak_.
 For example, this `Options` type is a weak type:
 
 ```ts
 interface Options {
-    data?: string,
-    timeout?: number,
-    maxRetries?: number,
+  data?: string;
+  timeout?: number;
+  maxRetries?: number;
 }
 ```
 
@@ -145,13 +147,13 @@ For example:
 
 ```ts
 function sendMessage(options: Options) {
-    // ...
+  // ...
 }
 
 const opts = {
-    payload: "hello world!",
-    retryOnFail: true,
-}
+  payload: "hello world!",
+  retryOnFail: true
+};
 
 // Error!
 sendMessage(opts);
@@ -166,4 +168,3 @@ Since this is a breaking change, you may need to know about the workarounds whic
 1. Declare the properties if they really do exist.
 2. Add an index signature to the weak type (i.e. `[propName: string]: {}`).
 3. Use a type assertion (i.e. `opts as Options`).
-

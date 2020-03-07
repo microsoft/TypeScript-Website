@@ -2,7 +2,9 @@
 title: TypeScript 1.8
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-1-8.html
+oneline: TypeScript 1.8 Release Notes
 ---
+
 ## Type parameters as constraints
 
 With TypeScript 1.8 it becomes possible for a type parameter constraint to reference type parameters from the same type parameter list.
@@ -13,15 +15,15 @@ This capability is usually referred to as [F-Bounded Polymorphism](https://en.wi
 
 ```ts
 function assign<T extends U, U>(target: T, source: U): T {
-    for (let id in source) {
-        target[id] = source[id];
-    }
-    return target;
+  for (let id in source) {
+    target[id] = source[id];
+  }
+  return target;
 }
 
 let x = { a: 1, b: 2, c: 3, d: 4 };
 assign(x, { b: 10, d: 20 });
-assign(x, { e: 0 });  // Error
+assign(x, { e: 0 }); // Error
 ```
 
 ## Control flow analysis errors
@@ -43,14 +45,13 @@ Here's a simple example of an unreachable code error:
 
 ```ts
 function f(x) {
-    if (x) {
-       return true;
-    }
-    else {
-       return false;
-    }
+  if (x) {
+    return true;
+  } else {
+    return false;
+  }
 
-    x = 0; // Error: Unreachable code detected.
+  x = 0; // Error: Unreachable code detected.
 }
 ```
 
@@ -58,10 +59,10 @@ A more common error that this feature catches is adding a newline after a `retur
 
 ```ts
 function f() {
-    return            // Automatic Semicolon Insertion triggered at newline
-    {
-        x: "string"   // Error: Unreachable code detected.
-    }
+  return; // Automatic Semicolon Insertion triggered at newline
+  {
+    x: "string"; // Error: Unreachable code detected.
+  }
 }
 ```
 
@@ -76,8 +77,9 @@ use `--allowUnusedLabels` to stop reporting these errors.
 ##### Example
 
 ```ts
-loop: while (x > 0) {  // Error: Unused label.
-    x++;
+loop: while (x > 0) {
+  // Error: Unused label.
+  x++;
 }
 ```
 
@@ -85,24 +87,25 @@ loop: while (x > 0) {  // Error: Unused label.
 
 Functions with code paths that do not return a value in JS implicitly return `undefined`.
 These can now be flagged by the compiler as implicit returns.
-The check is turned *off* by default; use `--noImplicitReturns` to turn it on.
+The check is turned _off_ by default; use `--noImplicitReturns` to turn it on.
 
 ##### Example
 
 ```ts
-function f(x) { // Error: Not all code paths return a value.
-    if (x) {
-        return false;
-    }
+function f(x) {
+  // Error: Not all code paths return a value.
+  if (x) {
+    return false;
+  }
 
-    // implicitly returns `undefined`
+  // implicitly returns `undefined`
 }
 ```
 
 ### Case clause fall-throughs
 
 TypeScript can reports errors for fall-through cases in switch statement where the case clause is non-empty.
-This check is turned *off* by default, and can be enabled using `--noFallthroughCasesInSwitch`.
+This check is turned _off_ by default, and can be enabled using `--noFallthroughCasesInSwitch`.
 
 ##### Example
 
@@ -110,12 +113,12 @@ With `--noFallthroughCasesInSwitch`, this example will trigger an error:
 
 ```ts
 switch (x % 2) {
-    case 0: // Error: Fallthrough case in switch.
-        console.log("even");
+  case 0: // Error: Fallthrough case in switch.
+    console.log("even");
 
-    case 1:
-        console.log("odd");
-        break;
+  case 1:
+    console.log("odd");
+    break;
 }
 ```
 
@@ -123,14 +126,14 @@ However, in the following example, no error will be reported because the fall-th
 
 ```ts
 switch (x % 3) {
-    case 0:
-    case 1:
-        console.log("Acceptable");
-        break;
+  case 0:
+  case 1:
+    console.log("Acceptable");
+    break;
 
-    case 2:
-        console.log("This is *two much*!");
-        break;
+  case 2:
+    console.log("This is *two much*!");
+    break;
 }
 ```
 
@@ -141,10 +144,10 @@ These are lightweight components that easily compose other components:
 
 ```ts
 // Use parameter destructuring and defaults for easy definition of 'props' type
-const Greeter = ({name = 'world'}) => <div>Hello, {name}!</div>;
+const Greeter = ({ name = "world" }) => <div>Hello, {name}!</div>;
 
 // Properties get validated
-let example = <Greeter name='TypeScript 1.8' />;
+let example = <Greeter name="TypeScript 1.8" />;
 ```
 
 For this feature and simplified props, be sure to be use the [latest version of react.d.ts](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/react).
@@ -155,16 +158,16 @@ In TypeScript 1.8 with the latest version of react.d.ts (see above), we've also 
 
 Specifically:
 
-* You no longer need to either explicitly declare `ref` and `key` or `extend React.Props`
-* The `ref` and `key` properties will appear with correct types on all components
-* The `ref` property is correctly disallowed on instances of Stateless Function components
+- You no longer need to either explicitly declare `ref` and `key` or `extend React.Props`
+- The `ref` and `key` properties will appear with correct types on all components
+- The `ref` property is correctly disallowed on instances of Stateless Function components
 
 ## Augmenting global/module scope from modules
 
 Users can now declare any augmentations that they want to make, or that any other consumers already have made, to an existing module.
 Module augmentations look like plain old ambient module declarations (i.e. the `declare module "foo" { }` syntax), and are directly nested either your own modules, or in another top level ambient external module.
 
-Furthermore, TypeScript also has the notion of *global* augmentations of the form `declare global { }`.
+Furthermore, TypeScript also has the notion of _global_ augmentations of the form `declare global { }`.
 This allows modules to augment global types such as `Array` if necessary.
 
 The name of a module augmentation is resolved using the same set of rules as module specifiers in `import` and `export` declarations.
@@ -179,7 +182,7 @@ Here `map.ts` can declare that it will internally patch the `Observable` type fr
 ```ts
 // observable.ts
 export class Observable<T> {
-    // ...
+  // ...
 }
 ```
 
@@ -218,12 +221,14 @@ Similarly, the global scope can be augmented from modules using a `declare globa
 export {};
 
 declare global {
-    interface Array<T> {
-        mapToNumbers(): number[];
-    }
+  interface Array<T> {
+    mapToNumbers(): number[];
+  }
 }
 
-Array.prototype.mapToNumbers = function () { /* ... */ }
+Array.prototype.mapToNumbers = function() {
+  /* ... */
+};
 ```
 
 ## String literal types
@@ -233,13 +238,13 @@ For instance, consider a UI library that can move elements across the screen whi
 
 ```ts
 declare class UIElement {
-    animate(options: AnimationOptions): void;
+  animate(options: AnimationOptions): void;
 }
 
 interface AnimationOptions {
-    deltaX: number;
-    deltaY: number;
-    easing: string; // Can be "ease-in", "ease-out", "ease-in-out"
+  deltaX: number;
+  deltaY: number;
+  easing: string; // Can be "ease-in", "ease-out", "ease-in-out"
 }
 ```
 
@@ -258,9 +263,9 @@ Here's our new `AnimationOptions` using string literal types:
 
 ```ts
 interface AnimationOptions {
-    deltaX: number;
-    deltaY: number;
-    easing: "ease-in" | "ease-out" | "ease-in-out";
+  deltaX: number;
+  deltaY: number;
+  easing: "ease-in" | "ease-out" | "ease-in-out";
 }
 
 // Error: Type '"ease-inout"' is not assignable to type '"ease-in" | "ease-out" | "ease-in-out"'
@@ -278,27 +283,27 @@ For example, when inferring from `string | string[]` to `string | T`, we reduce 
 type Maybe<T> = T | void;
 
 function isDefined<T>(x: Maybe<T>): x is T {
-    return x !== undefined && x !== null;
+  return x !== undefined && x !== null;
 }
 
 function isUndefined<T>(x: Maybe<T>): x is void {
-    return x === undefined || x === null;
+  return x === undefined || x === null;
 }
 
 function getOrElse<T>(x: Maybe<T>, defaultValue: T): T {
-    return isDefined(x) ? x : defaultValue;
+  return isDefined(x) ? x : defaultValue;
 }
 
 function test1(x: Maybe<string>) {
-    let x1 = getOrElse(x, "Undefined");         // string
-    let x2 = isDefined(x) ? x : "Undefined";    // string
-    let x3 = isUndefined(x) ? "Undefined" : x;  // string
+  let x1 = getOrElse(x, "Undefined"); // string
+  let x2 = isDefined(x) ? x : "Undefined"; // string
+  let x3 = isUndefined(x) ? "Undefined" : x; // string
 }
 
 function test2(x: Maybe<number>) {
-    let x1 = getOrElse(x, -1);         // number
-    let x2 = isDefined(x) ? x : -1;    // number
-    let x3 = isUndefined(x) ? -1 : x;  // number
+  let x1 = getOrElse(x, -1); // number
+  let x2 = isDefined(x) ? x : -1; // number
+  let x3 = isUndefined(x) ? -1 : x; // number
 }
 ```
 
@@ -314,33 +319,33 @@ A module name will be computed for each module based on its relative location to
 // file src/a.ts
 import * as B from "./lib/b";
 export function createA() {
-    return B.createB();
+  return B.createB();
 }
 ```
 
 ```ts
 // file src/lib/b.ts
 export function createB() {
-    return { };
+  return {};
 }
 ```
 
 Results in:
 
 ```js
-define("lib/b", ["require", "exports"], function (require, exports) {
-    "use strict";
-    function createB() {
-        return {};
-    }
-    exports.createB = createB;
+define("lib/b", ["require", "exports"], function(require, exports) {
+  "use strict";
+  function createB() {
+    return {};
+  }
+  exports.createB = createB;
 });
-define("a", ["require", "exports", "lib/b"], function (require, exports, B) {
-    "use strict";
-    function createA() {
-        return B.createB();
-    }
-    exports.createA = createA;
+define("a", ["require", "exports", "lib/b"], function(require, exports, B) {
+  "use strict";
+  function createA() {
+    return B.createB();
+  }
+  exports.createA = createA;
 });
 ```
 
@@ -362,7 +367,7 @@ Previously an error, now supported in TypeScript 1.8.
 ```ts
 let list = [];
 for (let i = 0; i < 5; i++) {
-    list.push(() => i);
+  list.push(() => i);
 }
 
 list.forEach(f => console.log(f()));
@@ -373,12 +378,16 @@ is compiled to:
 ```js
 var list = [];
 var _loop_1 = function(i) {
-    list.push(function () { return i; });
+  list.push(function() {
+    return i;
+  });
 };
 for (var i = 0; i < 5; i++) {
-    _loop_1(i);
+  _loop_1(i);
 }
-list.forEach(function (f) { return console.log(f()); });
+list.forEach(function(f) {
+  return console.log(f());
+});
 ```
 
 And results in
@@ -397,15 +406,16 @@ Previously the type of a `for..in` variable is inferred to `any`; that allowed t
 
 Starting with TypeScript 1.8:
 
-* The type of a variable declared in a `for..in` statement is implicitly `string`.
-* When an object with a numeric index signature of type `T` (such as an array) is indexed by a `for..in` variable of a containing `for..in` statement for an object *with* a numeric index signature and *without* a string index signature (again such as an array), the value produced is of type `T`.
+- The type of a variable declared in a `for..in` statement is implicitly `string`.
+- When an object with a numeric index signature of type `T` (such as an array) is indexed by a `for..in` variable of a containing `for..in` statement for an object _with_ a numeric index signature and _without_ a string index signature (again such as an array), the value produced is of type `T`.
 
 ##### Example
 
 ```ts
 var a: MyObject[];
-for (var x in a) {   // Type of x is implicitly string
-    var obj = a[x];  // Type of obj is MyObject
+for (var x in a) {
+  // Type of x is implicitly string
+  var obj = a[x]; // Type of obj is MyObject
 }
 ```
 
@@ -432,9 +442,9 @@ The new factory name will be used to call `createElement` and `__spread` functio
 ##### Example
 
 ```ts
-import {jsxFactory} from "jsxFactory";
+import { jsxFactory } from "jsxFactory";
 
-var div = <div>Hello JSX!</div>
+var div = <div>Hello JSX!</div>;
 ```
 
 Compiled with:
@@ -462,31 +472,37 @@ When used in a type narowing position (e.g. `if` statement), the type of the cal
 
 ```ts
 class FileSystemObject {
-    isFile(): this is File { return this instanceof File; }
-    isDirectory(): this is Directory { return this instanceof Directory;}
-    isNetworked(): this is (Networked & this) { return this.networked; }
-    constructor(public path: string, private networked: boolean) {}
+  isFile(): this is File {
+    return this instanceof File;
+  }
+  isDirectory(): this is Directory {
+    return this instanceof Directory;
+  }
+  isNetworked(): this is Networked & this {
+    return this.networked;
+  }
+  constructor(public path: string, private networked: boolean) {}
 }
 
 class File extends FileSystemObject {
-    constructor(path: string, public content: string) { super(path, false); }
+  constructor(path: string, public content: string) {
+    super(path, false);
+  }
 }
 class Directory extends FileSystemObject {
-    children: FileSystemObject[];
+  children: FileSystemObject[];
 }
 interface Networked {
-    host: string;
+  host: string;
 }
 
 let fso: FileSystemObject = new File("foo/bar.txt", "foo");
 if (fso.isFile()) {
-    fso.content; // fso is File
-}
-else if (fso.isDirectory()) {
-    fso.children; // fso is Directory
-}
-else if (fso.isNetworked()) {
-    fso.host; // fso is networked
+  fso.content; // fso is File
+} else if (fso.isDirectory()) {
+  fso.children; // fso is Directory
+} else if (fso.isNetworked()) {
+  fso.host; // fso is networked
 }
 ```
 
@@ -496,12 +512,12 @@ Starting with TypeScript 1.8, official NuGet packages are available for the Type
 
 Stable packages are available here:
 
-* [Microsoft.TypeScript.Compiler](https://www.nuget.org/packages/Microsoft.TypeScript.Compiler/)
-* [Microsoft.TypeScript.MSBuild](https://www.nuget.org/packages/Microsoft.TypeScript.MSBuild/)
+- [Microsoft.TypeScript.Compiler](https://www.nuget.org/packages/Microsoft.TypeScript.Compiler/)
+- [Microsoft.TypeScript.MSBuild](https://www.nuget.org/packages/Microsoft.TypeScript.MSBuild/)
 
 Also, a nightly NuGet package to match the [nightly npm package](http://blogs.msdn.com/b/typescript/archive/2015/07/27/introducing-typescript-nightlies.aspx) is available on [myget](https://myget.org):
 
-* [TypeScript-Preview](https://www.myget.org/gallery/typescript-preview)
+- [TypeScript-Preview](https://www.myget.org/gallery/typescript-preview)
 
 ## Prettier error messages from `tsc`
 
@@ -570,7 +586,7 @@ tsc foo.ts --outFile /dev/stdout | pretty-js
 ## Improved support for `tsconfig.json` in Visual Studio 2015
 
 TypeScript 1.8 allows `tsconfig.json` files in all project types.
-This includes ASP.NET v4 projects, *Console Application*, and the *Html Application with TypeScript* project types.
+This includes ASP.NET v4 projects, _Console Application_, and the _Html Application with TypeScript_ project types.
 Further, you are no longer limited to a single `tsconfig.json` file but can add multiple, and each will be built as part of the project.
 This allows you to separate the configuration for different parts of your application without having to use multiple different projects.
 
@@ -581,7 +597,6 @@ This means that all configuration changes have to be made in the `tsconfig.json`
 
 ### A couple of limitations
 
-* If you add a `tsconfig.json` file, TypeScript files that are not considered part of that context are not compiled.
-* Apache Cordova Apps still have the existing limitation of a single `tsconfig.json` file, which must be in either the root or the `scripts` folder.
-* There is no template for `tsconfig.json` in most project types.
-
+- If you add a `tsconfig.json` file, TypeScript files that are not considered part of that context are not compiled.
+- Apache Cordova Apps still have the existing limitation of a single `tsconfig.json` file, which must be in either the root or the `scripts` folder.
+- There is no template for `tsconfig.json` in most project types.

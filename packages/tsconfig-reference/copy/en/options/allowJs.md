@@ -28,7 +28,7 @@ Imports fine with `allowJs` enabled:
 ```ts twoslasher
 // @filename: card.js
 module.exports.defaultCardDeck = "Heart";
-// ---cut---
+// ---cut---π
 // @allowJs
 // @filename: index.ts
 import { defaultCardDeck } from "./card";

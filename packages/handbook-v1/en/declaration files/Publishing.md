@@ -2,7 +2,9 @@
 title: Publishing
 layout: docs
 permalink: /docs/handbook/declaration-files/publishing.html
+oneline: How to get your d.ts files to users
 ---
+
 Now that you have authored a declaration file following the steps of this guide, it is time to publish it to npm.
 There are two main ways you can publish your declaration files to npm:
 
@@ -23,11 +25,11 @@ For example:
 
 ```json
 {
-    "name": "awesome",
-    "author": "Vandelay Industries",
-    "version": "1.0.0",
-    "main": "./lib/main.js",
-    "types": "./lib/main.d.ts"
+  "name": "awesome",
+  "author": "Vandelay Industries",
+  "version": "1.0.0",
+  "main": "./lib/main.js",
+  "types": "./lib/main.d.ts"
 }
 ```
 
@@ -43,16 +45,16 @@ For example, imagine we authored a package that used Browserify and TypeScript.
 
 ```json
 {
-    "name": "browserify-typescript-extension",
-    "author": "Vandelay Industries",
-    "version": "1.0.0",
-    "main": "./lib/main.js",
-    "types": "./lib/main.d.ts",
-    "dependencies": {
-        "browserify": "latest",
-        "@types/browserify": "latest",
-        "typescript": "next"
-    }
+  "name": "browserify-typescript-extension",
+  "author": "Vandelay Industries",
+  "version": "1.0.0",
+  "main": "./lib/main.js",
+  "types": "./lib/main.d.ts",
+  "dependencies": {
+    "browserify": "latest",
+    "@types/browserify": "latest",
+    "typescript": "next"
+  }
 }
 ```
 
@@ -68,14 +70,14 @@ If we had just written a command line application and not expected our package t
 
 ### `/// <reference path="..." />`
 
-*Don't* use `/// <reference path="..." />` in your declaration files.
+_Don't_ use `/// <reference path="..." />` in your declaration files.
 
 ```ts
 /// <reference path="../typescript/lib/typescriptServices.d.ts" />
 ....
 ```
 
-*Do* use `/// <reference types="..." />` instead.
+_Do_ use `/// <reference types="..." />` instead.
 
 ```ts
 /// <reference types="typescript" />
@@ -88,13 +90,12 @@ Make sure to revisit the [Consuming dependencies](./Library%20Structures.md#cons
 
 If your type definitions depend on another package:
 
-* *Don't* combine it with yours, keep each in their own file.
-* *Don't* copy the declarations in your package either.
-* *Do* depend on the npm type declaration package if it doesn't package its declaration files.
+- _Don't_ combine it with yours, keep each in their own file.
+- _Don't_ copy the declarations in your package either.
+- _Do_ depend on the npm type declaration package if it doesn't package its declaration files.
 
 # Publish to [@types](https://www.npmjs.com/~types)
 
 Packages under the [@types](https://www.npmjs.com/~types) organization are published automatically from [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped) using the [types-publisher tool](https://github.com/Microsoft/types-publisher).
 To get your declarations published as an @types package, please submit a pull request to [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped).
 You can find more details in the [contribution guidelines page](http://definitelytyped.org/guides/contributing.html).
-

@@ -2,6 +2,7 @@
 title: JSDoc Supported Types
 layout: docs
 permalink: /docs/handbook/jsdoc-supported-types.html
+oneline: Using JSDoc with TypeScript
 ---
 
 The list below outlines which constructs are currently supported

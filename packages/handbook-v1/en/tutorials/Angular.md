@@ -2,7 +2,10 @@
 title: Angular
 layout: docs
 permalink: /docs/handbook/angular.html
+oneline: Using Angular with TypeScript
+deprecated: true
 ---
+
 Angular is a modern framework built entirely in TypeScript, and as a result, using TypeScript with Angular provides a seamless experience.
 
 The Angular documentation not only supports TypeScript as a first-class citizen, but uses it as its primary language.

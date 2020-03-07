@@ -2,6 +2,7 @@
 title: TypeScript for the New Programmer
 layout: docs
 permalink: /docs/handbook/typescript-from-scratch.html
+oneline: Learn TypeScript from scratch
 ---
 
 Congratulations choosing TypeScript as one of your first languages - you're already making good decisions.

@@ -2,6 +2,7 @@
 title: JSX
 layout: docs
 permalink: /docs/handbook/jsx.html
+oneline: Using JSX with TypeScript
 ---
 
 # Introduction

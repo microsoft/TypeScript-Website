@@ -2,6 +2,7 @@
 title: Type Inference
 layout: docs
 permalink: /docs/handbook/type-inference.html
+oneline: How code flow analysis works in TypeScript
 ---
 
 # Introduction

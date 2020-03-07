@@ -2,12 +2,14 @@
 title: Variable Declaration
 layout: docs
 permalink: /docs/handbook/variable-declarations.html
+oneline: How TypeScript handles variable declaration
 ---
 
 # Variable Declarations
 
-`let` and `const` are two relatively new types of variable declarations in JavaScript.
+`let` and `const` are two relatively new concepts for variable declarations in JavaScript.
 [As we mentioned earlier](./Basic%20Types.md#a-note-about-let), `let` is similar to `var` in some respects, but allows users to avoid some of the common "gotchas" that users run into in JavaScript.
+
 `const` is an augmentation of `let` in that it prevents re-assignment to a variable.
 
 With TypeScript being an extension of JavaScript, the language naturally supports `let` and `const`.

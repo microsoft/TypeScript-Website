@@ -2,12 +2,14 @@
 title: tsconfig.json
 layout: docs
 permalink: /docs/handbook/tsconfig-json.html
+oneline: Learn about how a TSConfig works
 ---
 
 ## Overview
 
 The presence of a `tsconfig.json` file in a directory indicates that the directory is the root of a TypeScript project.
 The `tsconfig.json` file specifies the root files and the compiler options required to compile the project.
+
 A project is compiled in one of the following ways:
 
 ## Using tsconfig.json
@@ -70,6 +72,10 @@ Example `tsconfig.json` files:
 ## Details
 
 The `"compilerOptions"` property can be omitted, in which case the compiler's defaults are used. See our full list of supported [Compiler Options](/v2/tsconfig).
+
+## TSConfig Reference
+
+To learn more about the hundreds of configuration options in the [TSConfig Reference](/tsconfig).
 
 ## Schema
 

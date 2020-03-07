@@ -2,7 +2,9 @@
 title: TypeScript 1.4
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-1-4.html
+oneline: TypeScript 1.3 Release Notes
 ---
+
 ## Union types
 
 ### Overview
@@ -11,8 +13,8 @@ Union types are a powerful way to express a value that can be one of several typ
 
 ```ts
 interface RunOptions {
-   program: string;
-   commandline: string[]|string|(() => string);
+  program: string;
+  commandline: string[] | string | (() => string);
 }
 ```
 
@@ -28,7 +30,8 @@ opts.commandline = [42]; // Error, number is not string or string[]
 When reading from a union type, you can see any properties that are shared by them:
 
 ```ts
-if (opts.length === 0) { // OK, string and string[] both have 'length' property
+if (opts.length === 0) {
+  // OK, string and string[] both have 'length' property
   console.log("it's empty");
 }
 ```
@@ -36,13 +39,12 @@ if (opts.length === 0) { // OK, string and string[] both have 'length' property
 Using Type Guards, you can easily work with a variable of a union type:
 
 ```ts
-function formatCommandline(c: string|string[]) {
-    if (typeof c === 'string') {
-        return c.trim();
-    }
-    else {
-        return c.join(' ');
-    }
+function formatCommandline(c: string | string[]) {
+  if (typeof c === "string") {
+    return c.trim();
+  } else {
+    return c.join(" ");
+  }
 }
 ```
 
@@ -57,21 +59,25 @@ function equal<T>(lhs: T, rhs: T): boolean {
 
 // Previously: No error
 // New behavior: Error, no best common type between 'string' and 'number'
-var e = equal(42, 'hello');
+var e = equal(42, "hello");
 ```
 
 With union types, you can now specify the desired behavior at both the function declaration site and the call site:
 
 ```ts
 // 'choose' function where types must match
-function choose1<T>(a: T, b: T): T { return Math.random() > 0.5 ? a : b }
-var a = choose1('hello', 42); // Error
-var b = choose1<string|number>('hello', 42); // OK
+function choose1<T>(a: T, b: T): T {
+  return Math.random() > 0.5 ? a : b;
+}
+var a = choose1("hello", 42); // Error
+var b = choose1<string | number>("hello", 42); // OK
 
 // 'choose' function where types need not match
-function choose2<T, U>(a: T, b: U): T|U { return Math.random() > 0.5 ? a : b }
-var c = choose2('bar', 'foo'); // OK, c: string
-var d = choose2('hello', 42); // OK, d: string|number
+function choose2<T, U>(a: T, b: U): T | U {
+  return Math.random() > 0.5 ? a : b;
+}
+var c = choose2("bar", "foo"); // OK, c: string
+var d = choose2("hello", 42); // OK, d: string|number
 ```
 
 ### Better Type Inference
@@ -79,8 +85,8 @@ var d = choose2('hello', 42); // OK, d: string|number
 Union types also allow for better type inference in arrays and other places where you might have multiple kinds of values in a collection:
 
 ```ts
-var x = [1, 'hello']; // x: Array<string|number>
-x[0] = 'world'; // OK
+var x = [1, "hello"]; // x: Array<string|number>
+x[0] = "world"; // OK
 x[0] = false; // Error, boolean is not string or number
 ```
 
@@ -91,18 +97,17 @@ In JavaScript, `var` declarations are "hoisted" to the top of their enclosing sc
 ```ts
 console.log(x); // meant to write 'y' here
 /* later in the same block */
-var x = 'hello';
+var x = "hello";
 ```
 
 The new ES6 keyword `let`, now supported in TypeScript, declares a variable with more intuitive "block" semantics. A `let` variable can only be referred to after its declaration, and is scoped to the syntactic block where it is defined:
 
 ```ts
 if (foo) {
-    console.log(x); // Error, cannot refer to x before its declaration
-    let x = 'hello';
-}
-else {
-    console.log(x); // Error, x is not declared in this block
+  console.log(x); // Error, cannot refer to x before its declaration
+  let x = "hello";
+} else {
+  console.log(x); // Error, x is not declared in this block
 }
 ```
 
@@ -125,14 +130,15 @@ TypeScript now supports ES6 template strings. These are an easy way to embed arb
 
 ```ts
 var name = "TypeScript";
-var greeting  = `Hello, ${name}! Your name has ${name.length} characters`;
+var greeting = `Hello, ${name}! Your name has ${name.length} characters`;
 ```
 
 When compiling to pre-ES6 targets, the string is decomposed:
 
 ```js
 var name = "TypeScript!";
-var greeting = "Hello, " + name + "! Your name has " + name.length + " characters";
+var greeting =
+  "Hello, " + name + "! Your name has " + name.length + " characters";
 ```
 
 ## Type Guards
@@ -179,10 +185,10 @@ else {
 
 ## Type Aliases
 
-You can now define an *alias* for a type using the `type` keyword:
+You can now define an _alias_ for a type using the `type` keyword:
 
 ```ts
-type PrimitiveArray = Array<string|number|boolean>;
+type PrimitiveArray = Array<string | number | boolean>;
 type MyNumber = number;
 type NgScope = ng.IScope;
 type Callback = () => void;
@@ -195,7 +201,12 @@ Type aliases are exactly the same as their original types; they are simply alter
 Enums are very useful, but some programs don't actually need the generated code and would benefit from simply inlining all instances of enum members with their numeric equivalents. The new `const enum` declaration works just like a regular `enum` for type safety, but erases completely at compile time.
 
 ```ts
-const enum Suit { Clubs, Diamonds, Hearts, Spades }
+const enum Suit {
+  Clubs,
+  Diamonds,
+  Hearts,
+  Spades
+}
 var d = Suit.Diamonds;
 ```
 
@@ -233,21 +244,18 @@ The new `amd-module name` tag allows passing an optional module name to the comp
 ```ts
 //// [amdModule.ts]
 ///<amd-module name='NamedModule'/>
-export class C {
-}
+export class C {}
 ```
 
 Will result in assigning the name `NamedModule` to the module as part of calling the AMD `define`:
 
 ```js
 //// [amdModule.js]
-define("NamedModule", ["require", "exports"], function (require, exports) {
-    var C = (function () {
-        function C() {
-        }
-        return C;
-    })();
-    exports.C = C;
+define("NamedModule", ["require", "exports"], function(require, exports) {
+  var C = (function() {
+    function C() {}
+    return C;
+  })();
+  exports.C = C;
 });
 ```
-

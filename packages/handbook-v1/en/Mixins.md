@@ -2,6 +2,7 @@
 title: Mixins
 layout: docs
 permalink: /docs/handbook/mixins.html
+oneline: Using the mixin pattern with TypeScript
 ---
 
 # Introduction

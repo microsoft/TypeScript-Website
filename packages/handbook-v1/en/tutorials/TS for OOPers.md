@@ -2,6 +2,7 @@
 title: TypeScript for Java/C# Programmers
 layout: docs
 permalink: /docs/handbook/typescript-in-5-minutes-oop.html
+oneline: Learn TypeScript if you have a background in object-oriented languages
 ---
 
 TypeScript is a popular choice for programmers accustomed to other languages with static typing, such as C# and Java.

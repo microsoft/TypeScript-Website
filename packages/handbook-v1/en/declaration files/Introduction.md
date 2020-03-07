@@ -2,12 +2,14 @@
 title: Introduction
 layout: docs
 permalink: /docs/handbook/declaration-files/introduction.html
+oneline: "How to write a high-quality TypeScript Ddeclaration (d.ts) file"
 ---
+
 This guide is designed to teach you how to write a high-quality TypeScript Declaration File.
 
 In this guide, we'll assume basic familiarity with the TypeScript language.
 If you haven't already, you should read the [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/basic-types.html)
-  to familiarize yourself with basic concepts, especially types and namespaces.
+to familiarize yourself with basic concepts, especially types and namespaces.
 
 # Sections
 
@@ -29,20 +31,20 @@ This guide is aimed at the TypeScript novice who may not yet be familiar with ev
 
 Many common mistakes in declaration files can be easily avoided.
 The [Do's and Don'ts](./Do's%20and%20Don'ts.md) section identifies common errors,
-  describes how to detect them,
-  and how to fix them.
+describes how to detect them,
+and how to fix them.
 Everyone should read this section to help themselves avoid common mistakes.
 
 ## Deep Dive
 
 For seasoned authors interested in the underlying mechanics of how declaration files work,
-  the [Deep Dive](./Deep%20Dive.md) section explains many advanced concepts in declaration writing,
-  and shows how to leverage these concepts to create cleaner and more intuitive declaration files.
+the [Deep Dive](./Deep%20Dive.md) section explains many advanced concepts in declaration writing,
+and shows how to leverage these concepts to create cleaner and more intuitive declaration files.
 
 ## Templates
 
 In [Templates](./Templates.md) you'll find a number of declaration files that serve as a useful starting point
-  when writing a new file.
+when writing a new file.
 Refer to the documentation in [Library Structures](./Library%20Structures.md) to figure out which template file to use.
 
 ## Publish to npm
@@ -52,4 +54,3 @@ The [Publishing](./Publishing.md) section explains how to publish your declarati
 ## Find and Install Declaration Files
 
 For JavaScript library users, the [Consumption](./Consumption.md) section offers a few simple steps to locate and install corresponding declaration files.
-

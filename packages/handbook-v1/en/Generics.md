@@ -2,6 +2,7 @@
 title: Generics
 layout: docs
 permalink: /docs/handbook/generics.html
+oneline: Introduction to TypeScript and Generics
 ---
 
 # Introduction

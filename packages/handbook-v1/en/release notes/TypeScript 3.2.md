@@ -2,20 +2,22 @@
 title: TypeScript 3.2
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-3-2.html
+oneline: TypeScript 3.2 Release Notes
 ---
+
 ## `strictBindCallApply`
 
 TypeScript 3.2 introduces a new `--strictBindCallApply` compiler option (in the `--strict` family of options) with which the `bind`, `call`, and `apply` methods on function objects are strongly typed and strictly checked.
 
 ```ts
 function foo(a: number, b: string): string {
-    return a + b;
+  return a + b;
 }
 
-let a = foo.apply(undefined, [10]);              // error: too few argumnts
-let b = foo.apply(undefined, [10, 20]);          // error: 2nd argument is a number
+let a = foo.apply(undefined, [10]); // error: too few argumnts
+let b = foo.apply(undefined, [10, 20]); // error: 2nd argument is a number
 let c = foo.apply(undefined, [10, "hello", 30]); // error: too many arguments
-let d = foo.apply(undefined, [10, "hello"]);     // okay! returns a string
+let d = foo.apply(undefined, [10, "hello"]); // okay! returns a string
 ```
 
 This is achieved by introducing two new types, `CallableFunction` and `NewableFunction`, in `lib.d.ts`. These types contain specialized generic method declarations for `bind`, `call`, and `apply` for regular functions and constructor functions, respectively. The declarations use generic rest parameters (see #24897) to capture and reflect parameter lists in a strongly typed manner. In `--strictBindCallApply` mode these declarations are used in place of the (very permissive) declarations provided by type `Function`.
@@ -33,17 +35,17 @@ In TypeScript 3.2, object literals now allow generic spread expressions which no
 
 ```ts
 function taggedObject<T, U extends string>(obj: T, tag: U) {
-    return { ...obj, tag };  // T & { tag: U }
+  return { ...obj, tag }; // T & { tag: U }
 }
 
-let x = taggedObject({ x: 10, y: 20 }, "point");  // { x: number, y: number } & { tag: "point" }
+let x = taggedObject({ x: 10, y: 20 }, "point"); // { x: number, y: number } & { tag: "point" }
 ```
 
 Property assignments and non-generic spread expressions are merged to the greatest extent possible on either side of a generic spread expression. For example:
 
 ```ts
 function foo1<T>(t: T, obj1: { a: string }, obj2: { b: string }) {
-    return { ...obj1, x: 1, ...t, ...obj2, y: 2 };  // { a: string, x: number } & T & { b: string, y: number }
+  return { ...obj1, x: 1, ...t, ...obj2, y: 2 }; // { a: string, x: number } & T & { b: string, y: number }
 }
 ```
 
@@ -51,16 +53,16 @@ Non-generic spread expressions continue to be processed as before: Call and cons
 
 ```ts
 function spread<T, U>(t: T, u: U) {
-    return { ...t, ...u };  // T & U
+  return { ...t, ...u }; // T & U
 }
 
-declare let x: { a: string, b: number };
-declare let y: { b: string, c: boolean };
+declare let x: { a: string; b: number };
+declare let y: { b: string; c: boolean };
 
-let s1 = { ...x, ...y };  // { a: string, b: string, c: boolean }
-let s2 = spread(x, y);    // { a: string, b: number } & { b: string, c: boolean }
-let b1 = s1.b;  // string
-let b2 = s2.b;  // number & string
+let s1 = { ...x, ...y }; // { a: string, b: string, c: boolean }
+let s2 = spread(x, y); // { a: string, b: number } & { b: string, c: boolean }
+let b1 = s1.b; // string
+let b2 = s2.b; // number & string
 ```
 
 ## Generic object rest variables and parameters
@@ -69,12 +71,12 @@ TypeScript 3.2 also allows destructuring a rest binding from a generic variable.
 
 ```ts
 function excludeTag<T extends { tag: string }>(obj: T) {
-    let { tag, ...rest } = obj;
-    return rest;  // Pick<T, Exclude<keyof T, "tag">>
+  let { tag, ...rest } = obj;
+  return rest; // Pick<T, Exclude<keyof T, "tag">>
 }
 
 const taggedPoint = { x: 10, y: 20, tag: "point" };
-const point = excludeTag(taggedPoint);  // { x: number, y: number }
+const point = excludeTag(taggedPoint); // { x: number, y: number }
 ```
 
 ## BigInt
@@ -87,21 +89,21 @@ You can get a `bigint` by calling the `BigInt()` function or by writing out a Bi
 
 ```ts
 let foo: bigint = BigInt(100); // the BigInt function
-let bar: bigint = 100n;        // a BigInt literal
+let bar: bigint = 100n; // a BigInt literal
 
 // *Slaps roof of fibonacci function*
 // This bad boy returns ints that can get *so* big!
 function fibonacci(n: bigint) {
-    let result = 1n;
-    for (let last = 0n, i = 0n; i < n; i++) {
-        const current = result;
-        result += last;
-        last = current;
-    }
-    return result;
+  let result = 1n;
+  for (let last = 0n, i = 0n; i < n; i++) {
+    const current = result;
+    result += last;
+    last = current;
+  }
+  return result;
 }
 
-fibonacci(10000n)
+fibonacci(10000n);
 ```
 
 While you might imagine close interaction between `number` and `bigint`, the two are separate domains.
@@ -118,9 +120,9 @@ As specified in ECMAScript, mixing `number`s and `bigint`s in arithmetic operati
 You'll have to explicitly convert values to `BigInt`s.
 
 ```ts
-console.log(3.141592 * 10000n);     // error
-console.log(3145 * 10n);            // error
-console.log(BigInt(3145) * 10n);    // okay!
+console.log(3.141592 * 10000n); // error
+console.log(3145 * 10n); // error
+console.log(BigInt(3145) * 10n); // okay!
 ```
 
 Also important to note is that `bigint`s produce a new string when using the `typeof` operator: the string `"bigint"`.
@@ -128,12 +130,11 @@ Thus, TypeScript correctly narrows using `typeof` as you'd expect.
 
 ```ts
 function whatKindOfNumberIsIt(x: number | bigint) {
-    if (typeof x === "bigint") {
-        console.log("'x' is a bigint!");
-    }
-    else {
-        console.log("'x' is a floating-point number");
-    }
+  if (typeof x === "bigint") {
+    console.log("'x' is a bigint!");
+  } else {
+    console.log("'x' is a floating-point number");
+  }
 }
 ```
 
@@ -155,24 +156,22 @@ For those purposes you may want to add `esnext.bigint` to the `lib` setting in y
 ## Non-unit types as union discriminants
 
 TypeScript 3.2 makes narrowing easier by relaxing rules for what it considers a discriminant property.
-Common properties of unions are now considered discriminants as long as they contain *some* singleton type (e.g. a string literal, `null`, or `undefined`), and they contain no generics.
+Common properties of unions are now considered discriminants as long as they contain _some_ singleton type (e.g. a string literal, `null`, or `undefined`), and they contain no generics.
 
 As a result, TypeScript 3.2 considers the `error` property in the following example to be a discriminant, whereas before it wouldn't since `Error` isn't a singleton type.
 Thanks to this, narrowing works correctly in the body of the `unwrap` function.
 
 ```ts
-type Result<T> =
-    | { error: Error; data: null }
-    | { error: null; data: T };
+type Result<T> = { error: Error; data: null } | { error: null; data: T };
 
 function unwrap<T>(result: Result<T>) {
-    if (result.error) {
-        // Here 'error' is non-null
-        throw result.error;
-    }
+  if (result.error) {
+    // Here 'error' is non-null
+    throw result.error;
+  }
 
-    // Now 'data' is non-null
-    return result.data;
+  // Now 'data' is non-null
+  return result.data;
 }
 ```
 
@@ -223,4 +222,3 @@ obj.x = "world";
 //  error:
 //   Cannot assign to 'x' because it is a read-only property.
 ```
-

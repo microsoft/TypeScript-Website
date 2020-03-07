@@ -2,7 +2,9 @@
 title: TypeScript 2.5
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-2-5.html
+oneline: TypeScript 2.5 Release Notes
 ---
+
 ## Optional `catch` clause variables
 
 Thanks to work done by [@tinganho](https://github.com/tinganho), TypeScript 2.5 implements a new ECMAScript feature that allows users to omit the variable in `catch` clauses.
@@ -11,11 +13,10 @@ For example, when using `JSON.parse` you may need to wrap calls to the function 
 ```ts
 let input = "...";
 try {
-    JSON.parse(input);
-}
-catch {
-    // ^ Notice that our `catch` clause doesn't declare a variable.
-    console.log("Invalid JSON given\n\n" + input)
+  JSON.parse(input);
+} catch {
+  // ^ Notice that our `catch` clause doesn't declare a variable.
+  console.log("Invalid JSON given\n\n" + input);
 }
 ```
 
@@ -26,7 +27,7 @@ The syntax is an `/** @type {...} */` annotation comment followed by a parenthes
 For example:
 
 ```ts
-var x = /** @type {SomeType} */ (AnyParenthesizedExpression);
+var x = /** @type {SomeType} */ AnyParenthesizedExpression;
 ```
 
 ## Deduplicated and redirected packages
@@ -44,4 +45,3 @@ This flag also exhibits the opposite behavior to Webpack's `resolve.symlinks` op
 
 In this mode, references to modules and packages (e.g. `import`s and `/// <reference type="..." />` directives) are all resolved relative to the location of the symbolic link file, rather than relative to the path that the symbolic link resolves to.
 For a more concrete example, we'll defer to [the documentation on the Node.js website](https://nodejs.org/api/cli.html#cli_preserve_symlinks).
-

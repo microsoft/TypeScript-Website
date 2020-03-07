@@ -2,6 +2,7 @@
 title: TypeScript for Functional Programmers
 layout: docs
 permalink: /docs/handbook/typescript-in-5-minutes-func.html
+oneline: Learn TypeScript if you have a background in functional programming
 ---
 
 TypeScript began its life as an attempt to bring traditional object-oriented types

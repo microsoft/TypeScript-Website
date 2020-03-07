@@ -2,6 +2,7 @@
 title: Triple-Slash Directives
 layout: docs
 permalink: /docs/handbook/triple-slash-directives.html
+oneline: How to use triple slash directives in TypeScripit
 ---
 
 Triple-slash directives are single-line comments containing a single XML tag.

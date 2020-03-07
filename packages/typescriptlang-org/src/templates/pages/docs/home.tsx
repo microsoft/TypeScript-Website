@@ -16,7 +16,6 @@ type Props = {
 }
 
 const Index: React.FC<Props> = (props) => {
-  console.log("p2", props)
   const i = createInternational<typeof docCopy>(useIntl())
   return (
     <Layout

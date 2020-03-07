@@ -2,6 +2,7 @@
 title: The TypeScript Handbook
 layout: docs
 permalink: /docs/handbook/
+oneline: Your first step to learn TypeScript
 ---
 
 ## About this Handbook

@@ -2,6 +2,7 @@
 title: Enums
 layout: docs
 permalink: /docs/handbook/enums.html
+oneline: How TypeScript enums work
 ---
 
 Enums are one of the few features TypeScript has which is not a type-level extension of JavaScript.

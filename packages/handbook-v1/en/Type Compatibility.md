@@ -2,6 +2,7 @@
 title: Type Compatibility
 layout: docs
 permalink: /docs/handbook/type-compatibility.html
+oneline: How type-checking works in TypeScript
 ---
 
 # Introduction

@@ -2,6 +2,7 @@
 title: Configuring Watch
 layout: docs
 permalink: /docs/handbook/configuring-watch.html
+oneline: How to configure the watch mode of TypeScript
 ---
 
 Compiler supports configuring how to watch files and directories using the environment variables.

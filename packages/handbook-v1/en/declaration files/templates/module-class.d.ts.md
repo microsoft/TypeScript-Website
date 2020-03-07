@@ -3,6 +3,7 @@ title: module-class.d.ts
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/module-class-d-ts.html
 ---
+
 ```ts
 // Type definitions for [~THE LIBRARY NAME~] [~OPTIONAL VERSION NUMBER~]
 // Project: [~THE PROJECT NAME~]
@@ -40,11 +41,11 @@ export = MyClass;
 
 /*~ Write your module's methods and properties in this class */
 declare class MyClass {
-    constructor(someParam?: string);
+  constructor(someParam?: string);
 
-    someProperty: string[];
+  someProperty: string[];
 
-    myMethod(opts: MyClass.MyClassMethodOptions): number;
+  myMethod(opts: MyClass.MyClassMethodOptions): number;
 }
 
 /*~ If you want to expose types from your module as well, you can
@@ -56,10 +57,9 @@ declare class MyClass {
  *~   import * as x from '[~THE MODULE~]'; // WRONG! DO NOT DO THIS!
  */
 declare namespace MyClass {
-    export interface MyClassMethodOptions {
-        width?: number;
-        height?: number;
-    }
+  export interface MyClassMethodOptions {
+    width?: number;
+    height?: number;
+  }
 }
 ```
-

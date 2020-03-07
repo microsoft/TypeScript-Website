@@ -2,6 +2,7 @@
 title: Utility Types
 layout: docs
 permalink: /docs/handbook/utility-types.html
+oneline: Types which are globally included in TypeScript
 ---
 
 # Introduction

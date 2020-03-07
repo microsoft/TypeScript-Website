@@ -2,6 +2,7 @@
 title: Classes
 layout: docs
 permalink: /docs/handbook/classes.html
+oneline: How classes work in TypeScript
 ---
 
 # Introduction

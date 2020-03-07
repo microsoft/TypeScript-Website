@@ -2,11 +2,13 @@
 title: Module Resolution
 layout: docs
 permalink: /docs/handbook/module-resolution.html
+oneline: How TypeScript resolves modules in JavaScript
 ---
-> This section assumes some basic knowledge about modules.
-Please see the [Modules](./Modules.md) documentation for more information.
 
-*Module resolution* is the process the compiler uses to figure out what an import refers to.
+> This section assumes some basic knowledge about modules.
+> Please see the [Modules](./Modules.md) documentation for more information.
+
+_Module resolution_ is the process the compiler uses to figure out what an import refers to.
 Consider an import statement like `import { a } from "moduleA"`;
 in order to check any use of `a`, the compiler needs to know exactly what it represents, and will need to check its definition `moduleA`.
 
@@ -15,7 +17,7 @@ While this sounds straightforward, `moduleA` could be defined in one of your own
 
 First, the compiler will try to locate a file that represents the imported module.
 To do so the compiler follows one of two different strategies: [Classic](#classic) or [Node](#node).
-These strategies tell the compiler *where* to look for `moduleA`.
+These strategies tell the compiler _where_ to look for `moduleA`.
 
 If that didn't work and if the module name is non-relative (and in the case of `"moduleA"`, it is), then the compiler will attempt to locate an [ambient module declaration](./Modules.md#ambient-modules).
 We'll cover non-relative imports next.
@@ -27,20 +29,20 @@ In this case, the error would be something like `error TS2307: Cannot find modul
 
 Module imports are resolved differently based on whether the module reference is relative or non-relative.
 
-A *relative import* is one that starts with `/`, `./` or `../`.
+A _relative import_ is one that starts with `/`, `./` or `../`.
 Some examples include:
 
-* `import Entry from "./components/Entry";`
-* `import { DefaultHeaders } from "../constants/http";`
-* `import "/mod";`
+- `import Entry from "./components/Entry";`
+- `import { DefaultHeaders } from "../constants/http";`
+- `import "/mod";`
 
 Any other import is considered **non-relative**.
 Some examples include:
 
-* `import * as $ from "jquery";`
-* `import { Component } from "@angular/core";`
+- `import * as $ from "jquery";`
+- `import { Component } from "@angular/core";`
 
-A relative import is resolved relative to the importing file and *cannot* resolve to an ambient module declaration.
+A relative import is resolved relative to the importing file and _cannot_ resolve to an ambient module declaration.
 You should use relative imports for your own modules that are guaranteed to maintain their relative location at runtime.
 
 A non-relative import can be resolved relative to `baseUrl`, or through path mapping, which we'll cover below.
@@ -134,7 +136,7 @@ TypeScript will mimic the Node.js run-time resolution strategy in order to locat
 To accomplish this, TypeScript overlays the TypeScript source file extensions (`.ts`, `.tsx`, and `.d.ts`) over Node's resolution logic.
 TypeScript will also use a field in `package.json` named `"types"` to mirror the purpose of `"main"` - the compiler will use it to find the "main" definition file to consult.
 
-For example, an import statement like `import { b } from "./moduleB"` in  `/root/src/moduleA.ts` would result in attempting the following locations for locating `"./moduleB"`:
+For example, an import statement like `import { b } from "./moduleB"` in `/root/src/moduleA.ts` would result in attempting the following locations for locating `"./moduleB"`:
 
 1. `/root/src/moduleB.ts`
 2. `/root/src/moduleB.tsx`
@@ -187,9 +189,9 @@ These include compiling `.ts` files into `.js`, and copying dependencies from di
 The net result is that modules at runtime may have different names than the source files containing their definitions.
 Or module paths in the final output may not match their corresponding source file paths at compile time.
 
-The TypeScript compiler has a set of additional flags to *inform* the compiler of transformations that are expected to happen to the sources to generate the final output.
+The TypeScript compiler has a set of additional flags to _inform_ the compiler of transformations that are expected to happen to the sources to generate the final output.
 
-It is important to note that the compiler will *not* perform any of these transformations;
+It is important to note that the compiler will _not_ perform any of these transformations;
 it just uses these pieces of information to guide the process of resolving a module import to its definition file.
 
 ### Base URL
@@ -200,10 +202,10 @@ The sources of these modules can live in different directories, but a build scri
 Setting `baseUrl` informs the compiler where to find modules.
 All module imports with non-relative names are assumed to be relative to the `baseUrl`.
 
-Value of *baseUrl* is determined as either:
+Value of _baseUrl_ is determined as either:
 
-* value of *baseUrl* command line argument (if given path is relative, it is computed based on current directory)
-* value of *baseUrl* property in 'tsconfig.json' (if given path is relative, it is computed based on the location of 'tsconfig.json')
+- value of _baseUrl_ command line argument (if given path is relative, it is computed based on current directory)
+- value of _baseUrl_ property in 'tsconfig.json' (if given path is relative, it is computed based on the location of 'tsconfig.json')
 
 Note that relative module imports are not impacted by setting the baseUrl, as they are always resolved relative to their importing files.
 
@@ -211,7 +213,7 @@ You can find more documentation on baseUrl in [RequireJS](http://requirejs.org/d
 
 ### Path mapping
 
-Sometimes modules are not directly located under *baseUrl*.
+Sometimes modules are not directly located under _baseUrl_.
 For instance, an import to a module `"jquery"` would be translated at runtime to `"node_modules/jquery/dist/jquery.slim.min.js"`.
 Loaders use a mapping configuration to map module names to files at run-time, see [RequireJs documentation](http://requirejs.org/docs/api.html#config-paths) and [SystemJS documentation](https://github.com/systemjs/systemjs/blob/master/docs/config-api.md#paths).
 
@@ -257,10 +259,7 @@ The corresponding `tsconfig.json` would look like:
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "*": [
-        "*",
-        "generated/*"
-      ]
+      "*": ["*", "generated/*"]
     }
   }
 }
@@ -268,33 +267,35 @@ The corresponding `tsconfig.json` would look like:
 
 This tells the compiler for any module import that matches the pattern `"*"` (i.e. all values), to look in two locations:
 
- 1. `"*"`: meaning the same name unchanged, so map `<moduleName>` => `<baseUrl>/<moduleName>`
- 2. `"generated/*"` meaning the module name with an appended prefix "generated", so map `<moduleName>` => `<baseUrl>/generated/<moduleName>`
+1.  `"*"`: meaning the same name unchanged, so map `<moduleName>` => `<baseUrl>/<moduleName>`
+2.  `"generated/*"` meaning the module name with an appended prefix "generated", so map `<moduleName>` => `<baseUrl>/generated/<moduleName>`
 
 Following this logic, the compiler will attempt to resolve the two imports as such:
 
 import 'folder1/file2':
- 1. pattern '*' is matched and wildcard captures the whole module name
- 2. try first substitution in the list: '*' -> `folder1/file2`
- 3. result of substitution is non-relative name - combine it with *baseUrl* -> `projectRoot/folder1/file2.ts`.
- 4. File exists. Done.
+
+1.  pattern '\*' is matched and wildcard captures the whole module name
+2.  try first substitution in the list: '\*' -> `folder1/file2`
+3.  result of substitution is non-relative name - combine it with _baseUrl_ -> `projectRoot/folder1/file2.ts`.
+4.  File exists. Done.
 
 import 'folder2/file3':
- 1. pattern '*' is matched and wildcard captures the whole module name
- 2. try first substitution in the list: '*' -> `folder2/file3`
- 3. result of substitution is non-relative name - combine it with *baseUrl* -> `projectRoot/folder2/file3.ts`.
- 4. File does not exist, move to the second substitution
- 5. second substitution 'generated/*' -> `generated/folder2/file3`
- 6. result of substitution is non-relative name - combine it with *baseUrl* -> `projectRoot/generated/folder2/file3.ts`.
- 7. File exists. Done.
+
+1.  pattern '\*' is matched and wildcard captures the whole module name
+2.  try first substitution in the list: '\*' -> `folder2/file3`
+3.  result of substitution is non-relative name - combine it with _baseUrl_ -> `projectRoot/folder2/file3.ts`.
+4.  File does not exist, move to the second substitution
+5.  second substitution 'generated/\*' -> `generated/folder2/file3`
+6.  result of substitution is non-relative name - combine it with _baseUrl_ -> `projectRoot/generated/folder2/file3.ts`.
+7.  File exists. Done.
 
 ### Virtual Directories with `rootDirs`
 
 Sometimes the project sources from multiple directories at compile time are all combined to generate a single output directory.
 This can be viewed as a set of source directories create a "virtual" directory.
 
-Using 'rootDirs', you can inform the compiler of the *roots* making up this "virtual" directory;
-and thus the compiler can resolve relative modules imports within these "virtual" directories *as if* were merged together in one directory.
+Using 'rootDirs', you can inform the compiler of the _roots_ making up this "virtual" directory;
+and thus the compiler can resolve relative modules imports within these "virtual" directories _as if_ were merged together in one directory.
 
 For example consider this project structure:
 
@@ -316,16 +317,13 @@ A build step will copy the files in `/src/views` and `/generated/templates/views
 At run-time, a view can expect its template to exist next to it, and thus should import it using a relative name as `"./template"`.
 
 To specify this relationship to the compiler, use`"rootDirs"`.
-`"rootDirs"` specify a list of *roots* whose contents are expected to merge at run-time.
+`"rootDirs"` specify a list of _roots_ whose contents are expected to merge at run-time.
 So following our example, the `tsconfig.json` file should look like:
 
 ```json
 {
   "compilerOptions": {
-    "rootDirs": [
-      "src/views",
-      "generated/templates/views"
-    ]
+    "rootDirs": ["src/views", "generated/templates/views"]
   }
 }
 ```
@@ -339,10 +337,7 @@ Consider an internationalization scenario where a build tool automatically gener
 Assume that each of these modules exports an array of strings. For example `./zh/messages` might contain:
 
 ```ts
-export default [
-    "您好吗",
-    "很高兴认识你"
-];
+export default ["您好吗", "很高兴认识你"];
 ```
 
 By leveraging `rootDirs` we can inform the compiler of this mapping and thereby allow it to safely resolve `./#{locale}/messages`, even though the directory will never exist. For example, with the following `tsconfig.json`:
@@ -350,11 +345,7 @@ By leveraging `rootDirs` we can inform the compiler of this mapping and thereby 
 ```json
 {
   "compilerOptions": {
-    "rootDirs": [
-      "src/zh",
-      "src/de",
-      "src/#{locale}"
-    ]
+    "rootDirs": ["src/zh", "src/de", "src/#{locale}"]
   }
 }
 ```
@@ -407,21 +398,21 @@ File 'node_modules/typescript/lib/typescript.d.ts' exist - use it as a module re
 
 #### Things to look out for
 
-* Name and location of the import
+- Name and location of the import
 
- > ======== Resolving module **'typescript'** from **'src/app.ts'**. ========
+> ======== Resolving module **'typescript'** from **'src/app.ts'**. ========
 
-* The strategy the compiler is following
+- The strategy the compiler is following
 
- > Module resolution kind is not specified, using **'NodeJs'**.
+> Module resolution kind is not specified, using **'NodeJs'**.
 
-* Loading of types from npm packages
+- Loading of types from npm packages
 
- > 'package.json' has **'types'** field './lib/typescript.d.ts' that references 'node_modules/typescript/lib/typescript.d.ts'.
+> 'package.json' has **'types'** field './lib/typescript.d.ts' that references 'node_modules/typescript/lib/typescript.d.ts'.
 
-* Final result
+- Final result
 
- > ======== Module name 'typescript' was **successfully resolved** to 'node_modules/typescript/lib/typescript.d.ts'. ========
+> ======== Module name 'typescript' was **successfully resolved** to 'node_modules/typescript/lib/typescript.d.ts'. ========
 
 ## Using `--noResolve`
 
@@ -436,8 +427,8 @@ For instance:
 #### app.ts
 
 ```ts
-import * as A from "moduleA" // OK, 'moduleA' passed on the command-line
-import * as B from "moduleB" // Error TS2307: Cannot find module 'moduleB'.
+import * as A from "moduleA"; // OK, 'moduleA' passed on the command-line
+import * as B from "moduleB"; // Error TS2307: Cannot find module 'moduleB'.
 ```
 
 ```shell
@@ -446,8 +437,8 @@ tsc app.ts moduleA.ts --noResolve
 
 Compiling `app.ts` using `--noResolve` should result in:
 
-* Correctly finding `moduleA` as it was passed on the command-line.
-* Error for not finding `moduleB` as it was not passed.
+- Correctly finding `moduleA` as it was passed on the command-line.
+- Error for not finding `moduleB` as it was not passed.
 
 ## Common Questions
 
@@ -462,4 +453,3 @@ That does not embed module resolution as discussed above.
 If the compiler identified a file as a target of a module import, it will be included in the compilation regardless if it was excluded in the previous steps.
 
 So to exclude a file from the compilation, you need to exclude it and **all** files that have an `import` or `/// <reference path="..." />` directive to it.
-

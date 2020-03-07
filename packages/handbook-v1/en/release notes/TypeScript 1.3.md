@@ -2,14 +2,18 @@
 title: TypeScript 1.3
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-1-3.html
+oneline: TypeScript 1.3 Release Notes
 ---
+
 ## Protected
 
 The new `protected` modifier in classes works like it does in familiar languages like C++, C#, and Java. A `protected` member of a class is visible only inside subclasses of the class in which it is declared:
 
 ```ts
 class Thing {
-  protected doSomething() { /* ... */ }
+  protected doSomething() {
+    /* ... */
+  }
 }
 
 class MyThing extends Thing {
@@ -30,9 +34,9 @@ Tuple types express an array where the type of certain elements is known, but ne
 // Declare a tuple type
 var x: [string, number];
 // Initialize it
-x = ['hello', 10]; // OK
+x = ["hello", 10]; // OK
 // Initialize it incorrectly
-x = [10, 'hello']; // Error
+x = [10, "hello"]; // Error
 ```
 
 When accessing an element with a known index, the correct type is retrieved:
@@ -45,8 +49,7 @@ console.log(x[1].substr(1)); // Error, 'number' does not have 'substr'
 Note that in TypeScript 1.4, when accessing an element outside the set of known indices, a union type is used instead:
 
 ```ts
-x[3] = 'world'; // OK
+x[3] = "world"; // OK
 console.log(x[5].toString()); // OK, 'string' and 'number' both have toString
 x[6] = true; // Error, boolean isn't number or string
 ```
-

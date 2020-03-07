@@ -2,6 +2,7 @@
 title: ASP.NET Core
 layout: docs
 permalink: /docs/handbook/asp-net-core.html
+oneline: Using TypeScript in ASP.NET Core
 ---
 
 # Setup

@@ -2,7 +2,9 @@
 title: TypeScript 3.6
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-3-6.html
+oneline: TypeScript 3.6 Release Notes
 ---
+
 ## Stricter Generators
 
 TypeScript 3.6 introduces stricter checking for iterators and generator functions.
@@ -10,16 +12,16 @@ In earlier versions, users of generators had no way to differentiate whether a v
 
 ```ts
 function* foo() {
-    if (Math.random() < 0.5) yield 100;
-    return "Finished!"
+  if (Math.random() < 0.5) yield 100;
+  return "Finished!";
 }
 
 let iter = foo();
 let curr = iter.next();
 if (curr.done) {
-    // TypeScript 3.5 and prior thought this was a 'string | number'.
-    // It should know it's 'string' since 'done' was 'true'!
-    curr.value
+  // TypeScript 3.5 and prior thought this was a 'string | number'.
+  // It should know it's 'string' since 'done' was 'true'!
+  curr.value;
 }
 ```
 
@@ -27,8 +29,8 @@ Additionally, generators just assumed the type of `yield` was always `any`.
 
 ```ts
 function* bar() {
-    let x: { hello(): void } = yield;
-    x.hello();
+  let x: { hello(): void } = yield;
+  x.hello();
 }
 
 let iter = bar();
@@ -43,10 +45,10 @@ The `Iterator` type now allows users to specify the yielded type, the returned t
 
 ```ts
 interface Iterator<T, TReturn = any, TNext = undefined> {
-    // Takes either 0 or 1 arguments - doesn't accept 'undefined'
-    next(...args: [] | [TNext]): IteratorResult<T, TReturn>;
-    return?(value?: TReturn): IteratorResult<T, TReturn>;
-    throw?(e?: any): IteratorResult<T, TReturn>;
+  // Takes either 0 or 1 arguments - doesn't accept 'undefined'
+  next(...args: [] | [TNext]): IteratorResult<T, TReturn>;
+  return?(value?: TReturn): IteratorResult<T, TReturn>;
+  throw?(e?: any): IteratorResult<T, TReturn>;
 }
 ```
 
@@ -54,27 +56,29 @@ Building on that work, the new `Generator` type is an `Iterator` that always has
 
 ```ts
 interface Generator<T = unknown, TReturn = any, TNext = unknown>
-        extends Iterator<T, TReturn, TNext> {
-    next(...args: [] | [TNext]): IteratorResult<T, TReturn>;
-    return(value: TReturn): IteratorResult<T, TReturn>;
-    throw(e: any): IteratorResult<T, TReturn>;
-    [Symbol.iterator](): Generator<T, TReturn, TNext>;
+  extends Iterator<T, TReturn, TNext> {
+  next(...args: [] | [TNext]): IteratorResult<T, TReturn>;
+  return(value: TReturn): IteratorResult<T, TReturn>;
+  throw(e: any): IteratorResult<T, TReturn>;
+  [Symbol.iterator](): Generator<T, TReturn, TNext>;
 }
 ```
 
 To allow differentiation between returned values and yielded values, TypeScript 3.6 converts the `IteratorResult` type to a discriminated union type:
 
 ```ts
-type IteratorResult<T, TReturn = any> = IteratorYieldResult<T> | IteratorReturnResult<TReturn>;
+type IteratorResult<T, TReturn = any> =
+  | IteratorYieldResult<T>
+  | IteratorReturnResult<TReturn>;
 
 interface IteratorYieldResult<TYield> {
-    done?: false;
-    value: TYield;
+  done?: false;
+  value: TYield;
 }
 
 interface IteratorReturnResult<TReturn> {
-    done: true;
-    value: TReturn;
+  done: true;
+  value: TReturn;
 }
 ```
 
@@ -84,8 +88,8 @@ To correctly represent the types that can be passed in to a generator from calls
 
 ```ts
 function* foo() {
-    let x: string = yield;
-    console.log(x.toUpperCase());
+  let x: string = yield;
+  console.log(x.toUpperCase());
 }
 
 let x = foo();
@@ -103,20 +107,20 @@ Below, `next()` can only be called with `boolean`s, and depending on the value o
  * - can be passed in booleans
  */
 function* counter(): Generator<number, string, boolean> {
-    let i = 0;
-    while (true) {
-        if (yield i++) {
-            break;
-        }
+  let i = 0;
+  while (true) {
+    if (yield i++) {
+      break;
     }
-    return "done!";
+  }
+  return "done!";
 }
 
 var iter = counter();
-var curr = iter.next()
+var curr = iter.next();
 while (!curr.done) {
-    console.log(curr.value);
-    curr = iter.next(curr.value === 5)
+  console.log(curr.value);
+  curr = iter.next(curr.value === 5);
 }
 console.log(curr.value.toUpperCase());
 
@@ -141,13 +145,13 @@ The looser default without `--downlevelIteration` works fairly well; however, th
 For example, the following array containing a spread
 
 ```ts
-[...Array(5)]
+[...Array(5)];
 ```
 
 can be rewritten as the following array literal
 
 ```js
-[undefined, undefined, undefined, undefined, undefined]
+[undefined, undefined, undefined, undefined, undefined];
 ```
 
 However, TypeScript would instead transform the original code into this code:
@@ -173,20 +177,20 @@ TypeScript's error messages are now specialized, and inform the user that perhap
 
 ```ts
 interface User {
-    name: string;
-    age: number;
-    location: string;
+  name: string;
+  age: number;
+  location: string;
 }
 
 declare function getUserData(): Promise<User>;
 declare function displayUser(user: User): void;
 
 async function f() {
-    displayUser(getUserData());
-//              ~~~~~~~~~~~~~
-// Argument of type 'Promise<User>' is not assignable to parameter of type 'User'.
-//   ...
-// Did you forget to use 'await'?
+  displayUser(getUserData());
+  //              ~~~~~~~~~~~~~
+  // Argument of type 'Promise<User>' is not assignable to parameter of type 'User'.
+  //   ...
+  // Did you forget to use 'await'?
 }
 ```
 
@@ -195,12 +199,11 @@ This is another example, among many others, where we're able to do better.
 
 ```ts
 async function getCuteAnimals() {
-    fetch("https://reddit.com/r/aww.json")
-        .json()
-    //   ~~~~
-    // Property 'json' does not exist on type 'Promise<Response>'.
-    //
-    // Did you forget to use 'await'?
+  fetch("https://reddit.com/r/aww.json").json();
+  //   ~~~~
+  // Property 'json' does not exist on type 'Promise<Response>'.
+  //
+  // Did you forget to use 'await'?
 }
 ```
 
@@ -221,14 +224,14 @@ TypeScript 3.6 supports transforming `import.meta` to `context.meta` when your `
 ```ts
 // This module:
 
-console.log(import.meta.url)
+console.log(import.meta.url);
 
 // gets turned into the following:
 
-System.register([], function (exports, context) {
+System.register([], function(exports, context) {
   return {
     setters: [],
-    execute: function () {
+    execute: function() {
       console.log(context.meta.url);
     }
   };
@@ -245,9 +248,9 @@ As a result, users can write getters and setters in ambient contexts in TypeScri
 
 ```ts
 declare class Foo {
-    // Allowed in 3.6+.
-    get x(): number;
-    set x(val: number): void;
+  // Allowed in 3.6+.
+  get x(): number;
+  set x(val: number): void;
 }
 ```
 
@@ -262,23 +265,23 @@ This means that now you can write the following:
 ```ts
 export declare function Point2D(x: number, y: number): Point2D;
 export declare class Point2D {
-    x: number;
-    y: number;
-    constructor(x: number, y: number);
+  x: number;
+  y: number;
+  constructor(x: number, y: number);
 }
 ```
 
-instead of needing to use 
+instead of needing to use
 
 ```ts
 export interface Point2D {
-    x: number;
-    y: number;
+  x: number;
+  y: number;
 }
 export declare var Point2D: {
-    (x: number, y: number): Point2D;
-    new (x: number, y: number): Point2D;
-}
+  (x: number, y: number): Point2D;
+  new (x: number, y: number): Point2D;
+};
 ```
 
 One advantage of this is that the callable constructor pattern can be easily expressed while also allowing namespaces to merge with these declarations (since `var` declarations can't merge with `namespace`s).
@@ -322,7 +325,7 @@ You can [see more details in the original pull request here](https://github.com/
 
 ## `await` Completions on Promises
 
-In TypeScript 3.6, completions on an 
+In TypeScript 3.6, completions on an
 
 ## New TypeScript Playground
 
@@ -332,13 +335,12 @@ We owe Artem a big thanks for helping out here!
 
 The new playground now supports many new options including:
 
-* The `target` option (allowing users to switch out of `es5` to `es3`, `es2015`, `esnext`, etc.)
-* All the strictness flags (including just `strict`)
-* Support for plain JavaScript files (using `allowJS` and optionally `checkJs`)
+- The `target` option (allowing users to switch out of `es5` to `es3`, `es2015`, `esnext`, etc.)
+- All the strictness flags (including just `strict`)
+- Support for plain JavaScript files (using `allowJS` and optionally `checkJs`)
 
 These options also persist when sharing links to playground samples, allowing users to more reliably share examples without having to tell the recipient "oh, don't forget to turn on the `noImplicitAny` option!".
 
 In the near future, we're going to be refreshing the playground samples, adding JSX support, and polishing automatic type acquisition, meaning that you'll be able to see the same experience on the playground as you'd get in your personal editor.
 
 As we improve the playground and the website, [we welcome feedback and pull requests on GitHub](https://github.com/microsoft/TypeScript-Website/)!
-

@@ -2,6 +2,7 @@
 title: Type Checking JavaScript Files
 layout: docs
 permalink: /docs/handbook/type-checking-javascript-files.html
+oneline: How to add type checking to JavaScript files using TypeScript
 ---
 
 TypeScript 2.3 and later support type-checking and reporting errors in `.js` files with `--checkJs`.

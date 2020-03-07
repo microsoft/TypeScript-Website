@@ -2,7 +2,9 @@
 title: TypeScript 3.1
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-3-1.html
+oneline: TypeScript 3.1 Release Notes
 ---
+
 ## Mapped types on tuples and arrays
 
 In TypeScript 3.1, mapped object types<sup>[[1]](#ts-3-1-only-homomorphic)</sup> over tuples and arrays now produce new tuples/arrays, rather than creating a new type where members like `push()`, `pop()`, and `length` are converted.
@@ -11,7 +13,7 @@ For example:
 ```ts
 type MapToPromise<T> = { [K in keyof T]: Promise<T[K]> };
 
-type Coordinate = [number, number]
+type Coordinate = [number, number];
 
 type PromiseCoordinate = MapToPromise<Coordinate>; // [Promise<number>, Promise<number>]
 ```
@@ -29,13 +31,13 @@ For example:
 
 ```ts
 function readImage(path: string, callback: (err: any, image: Image) => void) {
-    // ...
+  // ...
 }
 
 readImage.sync = (path: string) => {
-    const contents = fs.readFileSync(path);
-    return decodeImageSync(contents);
-}
+  const contents = fs.readFileSync(path);
+  return decodeImageSync(contents);
+};
 ```
 
 Here, we have a function `readImage` which reads an image in a non-blocking asynchronous way.
@@ -45,12 +47,10 @@ While ECMAScript exports are often a better way of providing this functionality,
 Additionally, this approach for property declarations allows us to express common patterns like `defaultProps` and `propTypes` on React function components (formerly known as SFCs).
 
 ```ts
-export const FooComponent = ({ name }) => (
-    <div>Hello! I am {name}</div>
-);
+export const FooComponent = ({ name }) => <div>Hello! I am {name}</div>;
 
 FooComponent.defaultProps = {
-    name: "(anonymous)",
+  name: "(anonymous)"
 };
 ```
 
@@ -64,7 +64,7 @@ fs.readFile(path, (err, data) => {
     });
 -->
 
-------
+---
 
 <sup id="ts-3-1-only-homomorphic">[1]</sup> More specifically, homomorphic mapped types like in the above form.
 
@@ -122,14 +122,13 @@ That means in the above example, even though both the `>=3.2` and the `>=3.1` ma
 
 ```json5
 {
-  "name": "package-name",
-  "version": "1.0",
-  "types": "./index.d.ts",
-  "typesVersions": {
+  name: "package-name",
+  version: "1.0",
+  types: "./index.d.ts",
+  typesVersions: {
     // NOTE: this doesn't work!
     ">=3.1": { "*": ["ts3.1/*"] },
     ">=3.2": { "*": ["ts3.2/*"] }
   }
 }
 ```
-

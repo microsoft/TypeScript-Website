@@ -2,7 +2,9 @@
 title: TypeScript 2.6
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-2-6.html
+oneline: TypeScript 2.6 Release Notes
 ---
+
 ## Strict function types
 
 TypeScript 2.6 introduces a new strict checking flag, `--strictFunctionTypes`.
@@ -12,7 +14,7 @@ You can opt-out by setting `--strictFunctionTypes false` on your command line or
 Under `--strictFunctionTypes` function type parameter positions are checked _contravariantly_ instead of _bivariantly_.
 For some background on what variance means for function types check out [What are covariance and contravariance?](https://www.stephanboyer.com/post/132/what-are-covariance-and-contravariance).
 
-The stricter checking applies to all function types, *except* those originating in method or constructor declarations.
+The stricter checking applies to all function types, _except_ those originating in method or constructor declarations.
 Methods are excluded specifically to ensure generic classes and interfaces (such as `Array<T>`) continue to mostly relate covariantly.
 
 Consider the following example in which `Animal` is the supertype of `Dog` and `Cat`:
@@ -21,9 +23,9 @@ Consider the following example in which `Animal` is the supertype of `Dog` and `
 declare let f1: (x: Animal) => void;
 declare let f2: (x: Dog) => void;
 declare let f3: (x: Cat) => void;
-f1 = f2;  // Error with --strictFunctionTypes
-f2 = f1;  // Ok
-f2 = f3;  // Error
+f1 = f2; // Error with --strictFunctionTypes
+f2 = f1; // Ok
+f2 = f3; // Error
 ```
 
 The first assignment is permitted in default type checking mode, but flagged as an error in strict function types mode.
@@ -36,14 +38,14 @@ Another way to describe the example is that the type `(x: T) => void` is _bivari
 
 ```ts
 interface Comparer<T> {
-    compare: (a: T, b: T) => number;
+  compare: (a: T, b: T) => number;
 }
 
 declare let animalComparer: Comparer<Animal>;
 declare let dogComparer: Comparer<Dog>;
 
-animalComparer = dogComparer;  // Error
-dogComparer = animalComparer;  // Ok
+animalComparer = dogComparer; // Error
+dogComparer = animalComparer; // Ok
 ```
 
 The first assignment is now an error. Effectively, `T` is contravariant in `Comparer<T>` because it is used only in function type parameter positions.
@@ -57,33 +59,33 @@ Effectively, `T` is bivariant in `Comparer<T>` because it is used only in method
 
 ```ts
 interface Comparer<T> {
-    compare(a: T, b: T): number;
+  compare(a: T, b: T): number;
 }
 
 declare let animalComparer: Comparer<Animal>;
 declare let dogComparer: Comparer<Dog>;
 
-animalComparer = dogComparer;  // Ok because of bivariance
-dogComparer = animalComparer;  // Ok
+animalComparer = dogComparer; // Ok because of bivariance
+dogComparer = animalComparer; // Ok
 ```
 
 TypeScript 2.6 also improves type inference involving contravariant positions:
 
 ```ts
 function combine<T>(...funcs: ((x: T) => void)[]): (x: T) => void {
-    return x => {
-        for (const f of funcs) f(x);
-    }
+  return x => {
+    for (const f of funcs) f(x);
+  };
 }
 
 function animalFunc(x: Animal) {}
 function dogFunc(x: Dog) {}
 
-let combined = combine(animalFunc, dogFunc);  // (x: Dog) => void
+let combined = combine(animalFunc, dogFunc); // (x: Dog) => void
 ```
 
-Above, all inferences for `T` originate in contravariant positions, and we therefore infer the *best common subtype* for `T`.
-This contrasts with inferences from covariant positions, where we infer the *best common supertype*.
+Above, all inferences for `T` originate in contravariant positions, and we therefore infer the _best common subtype_ for `T`.
+This contrasts with inferences from covariant positions, where we infer the _best common supertype_.
 
 ## Cache tagged template objects in modules
 
@@ -96,11 +98,11 @@ Though the string contents are the same, this emit affects libraries that use th
 
 ```ts
 export function id(x: TemplateStringsArray) {
-    return x;
+  return x;
 }
 
 export function templateObjectFactory() {
-    return id`hello world`;
+  return id`hello world`;
 }
 
 let result = templateObjectFactory() === templateObjectFactory(); // true in TS 2.6
@@ -110,25 +112,33 @@ Results in the following generated code:
 
 ```js
 "use strict";
-var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
-    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+var __makeTemplateObject =
+  (this && this.__makeTemplateObject) ||
+  function(cooked, raw) {
+    if (Object.defineProperty) {
+      Object.defineProperty(cooked, "raw", { value: raw });
+    } else {
+      cooked.raw = raw;
+    }
     return cooked;
-};
+  };
 
 function id(x) {
-    return x;
+  return x;
 }
 
 var _a;
 function templateObjectFactory() {
-    return id(_a || (_a = __makeTemplateObject(["hello world"], ["hello world"])));
+  return id(
+    _a || (_a = __makeTemplateObject(["hello world"], ["hello world"]))
+  );
 }
 
 var result = templateObjectFactory() === templateObjectFactory();
 ```
 
 > Note: This change brings a new emit helper, `__makeTemplateObject`;
-if you are using `--importHelpers` with [`tslib`](https://github.com/Microsoft/tslib), an updated to version 1.8 or later.
+> if you are using `--importHelpers` with [`tslib`](https://github.com/Microsoft/tslib), an updated to version 1.8 or later.
 
 ## Localized diagnostics on the command line
 
@@ -210,8 +220,8 @@ TypeScript 2.6 support suppressing errors in .js files using `// @ts-ignore` com
 
 ```ts
 if (false) {
-    // @ts-ignore: Unreachable code error
-    console.log("hello");
+  // @ts-ignore: Unreachable code error
+  console.log("hello");
 }
 ```
 
@@ -232,23 +242,23 @@ The watcher logic has been completely rewritten to respond faster to change even
 
 ## Write-only references now flagged as unused
 
-TypeScript 2.6 adds revised implementation  the `--noUnusedLocals` and `--noUnusedParameters` [compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
+TypeScript 2.6 adds revised implementation the `--noUnusedLocals` and `--noUnusedParameters` [compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
 Declarations are only written to but never read from are now flagged as unused.
 
 ##### Example
 
-Bellow both `n` and `m` will be marked as unused, because their values are never *read*. Previously TypeScript would only check whether their values were *referenced*.
+Bellow both `n` and `m` will be marked as unused, because their values are never _read_. Previously TypeScript would only check whether their values were _referenced_.
 
 ```ts
 function f(n: number) {
-    n = 0;
+  n = 0;
 }
 
 class C {
-    private m: number;
-    constructor() {
-        this.m = 0;
-    }
+  private m: number;
+  constructor() {
+    this.m = 0;
+  }
 }
 ```
 
@@ -258,7 +268,6 @@ Also functions that are only called within their own bodies are considered unuse
 
 ```ts
 function f() {
-    f(); // Error: 'f' is declared but its value is never read
+  f(); // Error: 'f' is declared but its value is never read
 }
 ```
-

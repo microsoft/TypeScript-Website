@@ -2,6 +2,7 @@
 title: Compiler Options
 layout: docs
 permalink: /docs/handbook/compiler-options.html
+oneline: A very high-level overview of the compiler options in TypeScript
 ---
 
 ## Using the CLI
@@ -25,8 +26,7 @@ tsc --project tsconfig.production.json
 
 ## Compiler Options
 
-If you're looking for more information about the compiler options in a tsconfig, check out the TSConfig Reference beta
-available in [the v2 site](https://www.typescriptlang.org/v2/tsconfig).
+** If you're looking for more information about the compiler options in a tsconfig, check out the [TSConfig Reference](/tsconfig)**
 
 <!-- prettier-ignore -->
 Option                                         | Type      | Default                        | Description

@@ -2,7 +2,9 @@
 title: TypeScript 2.1
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-2-1.html
+oneline: TypeScript 2.1 Release Notes
 ---
+
 ## `keyof` and Lookup Types
 
 In JavaScript it is fairly common to have APIs that expect property names as parameters, but so far it hasn't been possible to express the type relationships that occur in those APIs.
@@ -15,38 +17,38 @@ A `keyof T` type is considered a subtype of `string`.
 
 ```ts
 interface Person {
-    name: string;
-    age: number;
-    location: string;
+  name: string;
+  age: number;
+  location: string;
 }
 
 type K1 = keyof Person; // "name" | "age" | "location"
-type K2 = keyof Person[];  // "length" | "push" | "pop" | "concat" | ...
-type K3 = keyof { [x: string]: Person };  // string
+type K2 = keyof Person[]; // "length" | "push" | "pop" | "concat" | ...
+type K3 = keyof { [x: string]: Person }; // string
 ```
 
-The dual of this is *indexed access types*, also called *lookup types*.
+The dual of this is _indexed access types_, also called _lookup types_.
 Syntactically, they look exactly like an element access, but are written as types:
 
 ##### Example
 
 ```ts
-type P1 = Person["name"];  // string
-type P2 = Person["name" | "age"];  // string | number
-type P3 = string["charAt"];  // (pos: number) => string
-type P4 = string[]["push"];  // (...items: string[]) => number
-type P5 = string[][0];  // string
+type P1 = Person["name"]; // string
+type P2 = Person["name" | "age"]; // string | number
+type P3 = string["charAt"]; // (pos: number) => string
+type P4 = string[]["push"]; // (...items: string[]) => number
+type P5 = string[][0]; // string
 ```
 
 You can use this pattern with other parts of the type system to get type-safe lookups.
 
 ```ts
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
-    return obj[key];  // Inferred type is T[K]
+  return obj[key]; // Inferred type is T[K]
 }
 
 function setProperty<T, K extends keyof T>(obj: T, key: K, value: T[K]) {
-    obj[key] = value;
+  obj[key] = value;
 }
 
 let x = { foo: 10, bar: "hello!" };
@@ -66,9 +68,9 @@ Let's say we have a `Person`:
 
 ```ts
 interface Person {
-    name: string;
-    age: number;
-    location: string;
+  name: string;
+  age: number;
+  location: string;
 }
 ```
 
@@ -76,9 +78,9 @@ A partial version of it would be:
 
 ```ts
 interface PartialPerson {
-    name?: string;
-    age?: number;
-    location?: string;
+  name?: string;
+  age?: number;
+  location?: string;
 }
 ```
 
@@ -86,7 +88,7 @@ with Mapped types, `PartialPerson` can be written as a generalized transformatio
 
 ```ts
 type Partial<T> = {
-    [P in keyof T]?: T[P];
+  [P in keyof T]?: T[P];
 };
 
 type PartialPerson = Partial<Person>;
@@ -100,17 +102,17 @@ In addition to `Partial`, Mapped Types can express many useful transformations o
 ```ts
 // Keep types the same, but make each property to be read-only.
 type Readonly<T> = {
-    readonly [P in keyof T]: T[P];
+  readonly [P in keyof T]: T[P];
 };
 
 // Same property names, but make the value a promise instead of a concrete one
 type Deferred<T> = {
-    [P in keyof T]: Promise<T[P]>;
+  [P in keyof T]: Promise<T[P]>;
 };
 
 // Wrap proxies around properties of T
 type Proxify<T> = {
-    [P in keyof T]: { get(): T[P]; set(v: T[P]): void }
+  [P in keyof T]: { get(): T[P]; set(v: T[P]): void };
 };
 ```
 
@@ -132,15 +134,18 @@ We're also including two other utility types as well: `Record` and `Pick`.
 // From T pick a set of properties K
 declare function pick<T, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K>;
 
-const nameAndAgeOnly = pick(person, "name", "age");  // { name: string, age: number }
+const nameAndAgeOnly = pick(person, "name", "age"); // { name: string, age: number }
 ```
 
 ```ts
 // For every properties K of type T, transform it to U
-function mapObject<K extends string, T, U>(obj: Record<K, T>, f: (x: T) => U): Record<K, U>
+function mapObject<K extends string, T, U>(
+  obj: Record<K, T>,
+  f: (x: T) => U
+): Record<K, U>;
 
 const names = { foo: "hello", bar: "world", baz: "bye" };
-const lengths = mapObject(names, s => s.length);  // { foo: number, bar: number, baz: number }
+const lengths = mapObject(names, s => s.length); // { foo: number, bar: number, baz: number }
 ```
 
 ## Object Spread and Rest
@@ -164,7 +169,7 @@ You can also override existing properties and add new ones:
 
 ```ts
 let obj = { x: 1, y: "string" };
-var newObj = {...obj, z: 3, y: 4}; // { x: number, y: number, z: number }
+var newObj = { ...obj, z: 3, y: 4 }; // { x: number, y: number, z: number }
 ```
 
 The order of specifying spread operations determines what properties end up in the resulting object;
@@ -193,9 +198,9 @@ TypeScript 2.1 brings the capability to ES3 and ES5 run-times, meaning you'll be
 
 ```json
 {
-    "compilerOptions": {
-        "lib": ["dom", "es2015.promise", "es5"]
-    }
+  "compilerOptions": {
+    "lib": ["dom", "es2015.promise", "es5"]
+  }
 }
 ```
 
@@ -203,20 +208,20 @@ TypeScript 2.1 brings the capability to ES3 and ES5 run-times, meaning you'll be
 
 ```ts
 function delay(milliseconds: number) {
-    return new Promise<void>(resolve => {
-        setTimeout(resolve, milliseconds);
-    });
+  return new Promise<void>(resolve => {
+    setTimeout(resolve, milliseconds);
+  });
 }
 
 async function dramaticWelcome() {
-    console.log("Hello");
+  console.log("Hello");
 
-    for (let i = 0; i < 3; i++) {
-        await delay(500);
-        console.log(".");
-    }
+  for (let i = 0; i < 3; i++) {
+    await delay(500);
+    console.log(".");
+  }
 
-    console.log("World!");
+  console.log("World!");
 }
 
 dramaticWelcome();
@@ -230,8 +235,8 @@ TypeScript injects a handful of helper functions such as `__extends` for inherit
 
 Previously there were two options:
 
- 1. inject helpers in *every* file that needs them, or
- 2. no helpers at all with `--noEmitHelpers`.
+1.  inject helpers in _every_ file that needs them, or
+2.  no helpers at all with `--noEmitHelpers`.
 
 The two options left more to be desired;
 bundling the helpers in every file was a pain point for customers trying to keep their package size small.
@@ -301,7 +306,7 @@ Similarly, `--target ES2017` will instruct the compiler not to transform ES2017-
 Previously, if TypeScript couldn't figure out the type of a variable, it would choose the `any` type.
 
 ```ts
-let x;      // implicitly 'any'
+let x; // implicitly 'any'
 let y = []; // implicitly 'any[]'
 
 let z: any; // explicitly 'any'.
@@ -337,50 +342,50 @@ x.toLowerCase();
 The same sort of tracking is now also done for empty arrays.
 
 A variable declared with no type annotation and an initial value of `[]` is considered an implicit `any[]` variable.
-However, each subsequent `x.push(value)`, `x.unshift(value)` or `x[n] = value` operation *evolves* the type of the variable in accordance with what elements are added to it.
+However, each subsequent `x.push(value)`, `x.unshift(value)` or `x[n] = value` operation _evolves_ the type of the variable in accordance with what elements are added to it.
 
-``` ts
+```ts
 function f1() {
-    let x = [];
-    x.push(5);
-    x[1] = "hello";
-    x.unshift(true);
-    return x;  // (string | number | boolean)[]
+  let x = [];
+  x.push(5);
+  x[1] = "hello";
+  x.unshift(true);
+  return x; // (string | number | boolean)[]
 }
 
 function f2() {
-    let x = null;
-    if (cond()) {
-        x = [];
-        while (cond()) {
-            x.push("hello");
-        }
+  let x = null;
+  if (cond()) {
+    x = [];
+    while (cond()) {
+      x.push("hello");
     }
-    return x;  // string[] | null
+  }
+  return x; // string[] | null
 }
 ```
 
 ## Implicit any errors
 
-One great benefit of this is that you'll see *way fewer* implicit `any` errors when running with `--noImplicitAny`.
+One great benefit of this is that you'll see _way fewer_ implicit `any` errors when running with `--noImplicitAny`.
 Implicit `any` errors are only reported when the compiler is unable to know the type of a variable without a type annotation.
 
 ##### Example
 
-``` ts
+```ts
 function f3() {
-    let x = [];  // Error: Variable 'x' implicitly has type 'any[]' in some locations where its type cannot be determined.
-    x.push(5);
-    function g() {
-        x;    // Error: Variable 'x' implicitly has an 'any[]' type.
-    }
+  let x = []; // Error: Variable 'x' implicitly has type 'any[]' in some locations where its type cannot be determined.
+  x.push(5);
+  function g() {
+    x; // Error: Variable 'x' implicitly has an 'any[]' type.
+  }
 }
 ```
 
 ## Better inference for literal types
 
 String, numeric and boolean literal types (e.g. `"abc"`, `1`, and `true`) were previously inferred only in the presence of an explicit type annotation.
-Starting with TypeScript 2.1, literal types are *always* inferred for `const` variables and `readonly` properties.
+Starting with TypeScript 2.1, literal types are _always_ inferred for `const` variables and `readonly` properties.
 
 The type inferred for a `const` variable or `readonly` property without a type annotation is the type of the literal initializer.
 The type inferred for a `let` variable, `var` variable, parameter, or non-`readonly` property with an initializer and no type annotation is the widened literal type of the initializer.
@@ -389,17 +394,17 @@ Where the widened type for a string literal type is `string`, `number` for numer
 ##### Example
 
 ```ts
-const c1 = 1;  // Type 1
-const c2 = c1;  // Type 1
-const c3 = "abc";  // Type "abc"
-const c4 = true;  // Type true
-const c5 = cond ? 1 : "abc";  // Type 1 | "abc"
+const c1 = 1; // Type 1
+const c2 = c1; // Type 1
+const c3 = "abc"; // Type "abc"
+const c4 = true; // Type true
+const c5 = cond ? 1 : "abc"; // Type 1 | "abc"
 
-let v1 = 1;  // Type number
-let v2 = c2;  // Type number
-let v3 = c3;  // Type string
-let v4 = c4;  // Type boolean
-let v5 = c5;  // Type number | string
+let v1 = 1; // Type number
+let v2 = c2; // Type number
+let v3 = c3; // Type string
+let v4 = c4; // Type boolean
+let v5 = c5; // Type number | string
 ```
 
 Literal type widening can be controlled through explicit type annotations.
@@ -409,11 +414,11 @@ But when a `const` location has an explicit literal type annotation, the `const`
 ##### Example
 
 ```ts
-const c1 = "hello";  // Widening type "hello"
-let v1 = c1;  // Type string
+const c1 = "hello"; // Widening type "hello"
+let v1 = c1; // Type string
 
-const c2: "hello" = "hello";  // Type "hello"
-let v2 = c2;  // Type "hello"
+const c2: "hello" = "hello"; // Type "hello"
+let v2 = c2; // Type "hello"
 ```
 
 ## Use returned values from super calls as 'this'
@@ -426,35 +431,35 @@ This change enables working with [Custom Elements](https://w3c.github.io/webcomp
 
 ```ts
 class Base {
-    x: number;
-    constructor() {
-        // return a new object other than `this`
-        return {
-            x: 1,
-        };
-    }
+  x: number;
+  constructor() {
+    // return a new object other than `this`
+    return {
+      x: 1
+    };
+  }
 }
 
 class Derived extends Base {
-    constructor() {
-        super();
-        this.x = 2;
-    }
+  constructor() {
+    super();
+    this.x = 2;
+  }
 }
 ```
 
 Generates:
 
 ```js
-var Derived = (function (_super) {
-    __extends(Derived, _super);
-    function Derived() {
-        var _this = _super.call(this) || this;
-        _this.x = 2;
-        return _this;
-    }
-    return Derived;
-}(Base));
+var Derived = (function(_super) {
+  __extends(Derived, _super);
+  function Derived() {
+    var _this = _super.call(this) || this;
+    _this.x = 2;
+    return _this;
+  }
+  return Derived;
+})(Base);
 ```
 
 > This change entails a break in the behavior of extending built-in classes like `Error`, `Array`, `Map`, etc.. Please see the [extending built-ins breaking change documentation](https://github.com/Microsoft/TypeScript-wiki/blob/master/Breaking-Changes.md#extending-built-ins-like-error-array-and-map-may-no-longer-work) for more details.
@@ -466,12 +471,12 @@ Just a few configuration options change between these two targets, and maintaini
 
 TypeScript 2.1 supports inheriting configuration using `extends`, where:
 
-* `extends` is a new top-level property in `tsconfig.json` (alongside `compilerOptions`, `files`, `include`, and `exclude`).
-* The value of `extends` must be a string containing a path to another configuration file to inherit from.
-* The configuration from the base file are loaded first, then overridden by those in the inheriting config file.
-* Circularity between configuration files is not allowed.
-* `files`, `include` and `exclude` from the inheriting config file *overwrite* those from the base config file.
-* All relative paths found in the configuration file will be resolved relative to the configuration file they originated in.
+- `extends` is a new top-level property in `tsconfig.json` (alongside `compilerOptions`, `files`, `include`, and `exclude`).
+- The value of `extends` must be a string containing a path to another configuration file to inherit from.
+- The configuration from the base file are loaded first, then overridden by those in the inheriting config file.
+- Circularity between configuration files is not allowed.
+- `files`, `include` and `exclude` from the inheriting config file _overwrite_ those from the base config file.
+- All relative paths found in the configuration file will be resolved relative to the configuration file they originated in.
 
 ##### Example
 
@@ -491,10 +496,7 @@ TypeScript 2.1 supports inheriting configuration using `extends`, where:
 ```json
 {
   "extends": "./configs/base",
-  "files": [
-    "main.ts",
-    "supplemental.ts"
-  ]
+  "files": ["main.ts", "supplemental.ts"]
 }
 ```
 
@@ -518,4 +520,3 @@ Invoking the compiler with `--alwaysStrict` causes:
 
 Modules are parsed automatically in strict mode.
 The new flag is recommended for non-module code.
-

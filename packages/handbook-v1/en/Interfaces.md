@@ -2,6 +2,7 @@
 title: Interfaces
 layout: docs
 permalink: /docs/handbook/interfaces.html
+oneline: How to write an interface with TypeScript
 ---
 
 # Introduction

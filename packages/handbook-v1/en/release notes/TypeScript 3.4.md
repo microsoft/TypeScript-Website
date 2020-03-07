@@ -2,7 +2,9 @@
 title: TypeScript 3.4
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-3-4.html
+oneline: TypeScript 3.4 Release Notes
 ---
+
 ## Faster subsequent builds with the `--incremental` flag
 
 TypeScript 3.4 introduces a new flag called `--incremental` which tells TypeScript to save information about the project graph from the last compilation.
@@ -11,11 +13,11 @@ The next time TypeScript is invoked with `--incremental`, it will use that infor
 ```json5
 // tsconfig.json
 {
-    "compilerOptions": {
-        "incremental": true,
-        "outDir": "./lib"
-    },
-    "include": ["./src"]
+  compilerOptions: {
+    incremental: true,
+    outDir: "./lib"
+  },
+  include: ["./src"]
 }
 ```
 
@@ -29,12 +31,12 @@ We can also name them anything that we want, and place them anywhere we want usi
 ```json5
 // front-end.tsconfig.json
 {
-    "compilerOptions": {
-        "incremental": true,
-        "tsBuildInfoFile": "./buildcache/front-end",
-        "outDir": "./lib"
-    },
-    "include": ["./src"]
+  compilerOptions: {
+    incremental: true,
+    tsBuildInfoFile: "./buildcache/front-end",
+    outDir: "./lib"
+  },
+  include: ["./src"]
 }
 ```
 
@@ -58,7 +60,7 @@ To get more specific, let's build up some motivation and consider the following 
 
 ```ts
 function compose<A, B, C>(f: (arg: A) => B, g: (arg: B) => C): (arg: A) => C {
-    return x => g(f(x));
+  return x => g(f(x));
 }
 ```
 
@@ -69,28 +71,25 @@ function compose<A, B, C>(f: (arg: A) => B, g: (arg: B) => C): (arg: A) => C {
 
 `compose` then returns a function which feeds its argument through `f` and then `g`.
 
-When calling this function, TypeScript will try to figure out the types of `A`, `B`, and `C` through a process called *type argument inference*.
+When calling this function, TypeScript will try to figure out the types of `A`, `B`, and `C` through a process called _type argument inference_.
 This inference process usually works pretty well:
 
 ```ts
 interface Person {
-    name: string;
-    age: number;
+  name: string;
+  age: number;
 }
 
 function getDisplayName(p: Person) {
-    return p.name.toLowerCase();
+  return p.name.toLowerCase();
 }
 
 function getLength(s: string) {
-    return s.length;
+  return s.length;
 }
 
 // has type '(p: Person) => number'
-const getDisplayNameLength = compose(
-    getDisplayName,
-    getLength,
-);
+const getDisplayNameLength = compose(getDisplayName, getLength);
 
 // works and returns the type 'number'
 getDisplayNameLength({ name: "Person McPersonface", age: 42 });
@@ -101,22 +100,19 @@ However, in TypeScript 3.3 and earlier, generic functions like `compose` didn't 
 
 ```ts
 interface Box<T> {
-    value: T;
+  value: T;
 }
 
 function makeArray<T>(x: T): T[] {
-    return [x];
+  return [x];
 }
 
 function makeBox<U>(value: U): Box<U> {
-    return { value };
+  return { value };
 }
 
 // has type '(arg: {}) => Box<{}[]>'
-const makeBoxedArray = compose(
-    makeArray,
-    makeBox,
-)
+const makeBoxedArray = compose(makeArray, makeBox);
 
 makeBoxedArray("hello!").value[0].toUpperCase();
 //                                ~~~~~~~~~~~
@@ -125,7 +121,7 @@ makeBoxedArray("hello!").value[0].toUpperCase();
 
 In older versions, TypeScript would infer the empty object type (`{}`) when inferring from other type variables like `T` and `U`.
 
-During type argument inference in TypeScript 3.4, for a call to a generic function that returns a function type, TypeScript *will*, as appropriate, propagate type parameters from generic function arguments onto the resulting function type.
+During type argument inference in TypeScript 3.4, for a call to a generic function that returns a function type, TypeScript _will_, as appropriate, propagate type parameters from generic function arguments onto the resulting function type.
 
 In other words, instead of producing the type
 
@@ -144,22 +140,19 @@ This means that genericity from `compose`'s arguments has been preserved and our
 
 ```ts
 interface Box<T> {
-    value: T;
+  value: T;
 }
 
 function makeArray<T>(x: T): T[] {
-    return [x];
+  return [x];
 }
 
 function makeBox<U>(value: U): Box<U> {
-    return { value };
+  return { value };
 }
 
 // has type '<T>(arg: T) => Box<T[]>'
-const makeBoxedArray = compose(
-    makeArray,
-    makeBox,
-)
+const makeBoxedArray = compose(makeArray, makeBox);
 
 // works with no problem!
 makeBoxedArray("hello!").value[0].toUpperCase();
@@ -178,8 +171,8 @@ Any variable with a reference to a `ReadonlyArray` can't add, remove, or replace
 
 ```ts
 function foo(arr: ReadonlyArray<string>) {
-    arr.slice();        // okay
-    arr.push("hello!"); // error!
+  arr.slice(); // okay
+  arr.push("hello!"); // error!
 }
 ```
 
@@ -190,8 +183,8 @@ TypeScript 3.4 introduces a new syntax for `ReadonlyArray` using a new `readonly
 
 ```ts
 function foo(arr: readonly string[]) {
-    arr.slice();        // okay
-    arr.push("hello!"); // error!
+  arr.slice(); // okay
+  arr.push("hello!"); // error!
 }
 ```
 
@@ -203,8 +196,8 @@ As you might expect, unlike ordinary tuples whose slots could be written to, `re
 
 ```ts
 function foo(pair: readonly [string, string]) {
-    console.log(pair[0]);   // okay
-    pair[1] = "hello!";     // error
+  console.log(pair[0]); // okay
+  pair[1] = "hello!"; // error
 }
 ```
 
@@ -216,14 +209,16 @@ In earlier versions of TypeScript, we generalized mapped types to operate differ
 This meant that a mapped type like `Boxify` could work on arrays and tuples alike.
 
 ```ts
-interface Box<T> { value: T }
-
-type Boxify<T> = {
-    [K in keyof T]: Box<T[K]>
+interface Box<T> {
+  value: T;
 }
 
+type Boxify<T> = {
+  [K in keyof T]: Box<T[K]>;
+};
+
 // { a: Box<string>, b: Box<number> }
-type A = Boxify<{ a: string, b: number }>;
+type A = Boxify<{ a: string; b: number }>;
 
 // Array<Box<number>>
 type B = Boxify<number[]>;
@@ -237,13 +232,13 @@ Unfortunately, mapped types like the `Readonly` utility type were effectively no
 ```ts
 // lib.d.ts
 type Readonly<T> = {
-    readonly [K in keyof T]: T[K]
-}
+  readonly [K in keyof T]: T[K];
+};
 
 // How code acted *before* TypeScript 3.4
 
 // { readonly a: string, readonly b: number }
-type A = Readonly<{ a: string, b: number }>;
+type A = Readonly<{ a: string; b: number }>;
 
 // number[]
 type B = Readonly<number[]>;
@@ -258,7 +253,7 @@ In TypeScript 3.4, the `readonly` modifier in a mapped type will automatically c
 // How code acts now *with* TypeScript 3.4
 
 // { readonly a: string, readonly b: number }
-type A = Readonly<{ a: string, b: number }>;
+type A = Readonly<{ a: string; b: number }>;
 
 // readonly number[]
 type B = Readonly<number[]>;
@@ -271,13 +266,13 @@ Similarly, you could write a utility type like `Writable` mapped type that strip
 
 ```ts
 type Writable<T> = {
-    -readonly [K in keyof T]: T[K]
-}
+  -readonly [K in keyof T]: T[K];
+};
 
 // { a: string, b: number }
 type A = Writable<{
-    readonly a: string;
-    readonly b: number
+  readonly a: string;
+  readonly b: number;
 }>;
 
 // number[]
@@ -303,7 +298,7 @@ You can [see more details in the pull request](https://github.com/Microsoft/Type
 
 ## `const` assertions
 
-TypeScript 3.4 introduces a new construct for literal values called *`const`* assertions.
+TypeScript 3.4 introduces a new construct for literal values called _`const`_ assertions.
 Its syntax is a type assertion with `const` in place of the type name (e.g. `123 as const`).
 When we construct new literal expressions with `const` assertions, we can signal to the language that
 
@@ -341,22 +336,21 @@ This feature means that types that would otherwise be used just to hint immutabi
 // Works with no types referenced or declared.
 // We only needed a single const assertion.
 function getShapes() {
-    let result = [
-        { kind: "circle", radius: 100, },
-        { kind: "square", sideLength: 50, },
-    ] as const;
+  let result = [
+    { kind: "circle", radius: 100 },
+    { kind: "square", sideLength: 50 }
+  ] as const;
 
-    return result;
+  return result;
 }
 
 for (const shape of getShapes()) {
-    // Narrows perfectly!
-    if (shape.kind === "circle") {
-        console.log("Circle radius", shape.radius);
-    }
-    else {
-        console.log("Square side length", shape.sideLength);
-    }
+  // Narrows perfectly!
+  if (shape.kind === "circle") {
+    console.log("Circle radius", shape.radius);
+  } else {
+    console.log("Square side length", shape.sideLength);
+  }
 }
 ```
 
@@ -367,17 +361,17 @@ This can even be used to enable `enum`-like patterns in plain JavaScript code if
 
 ```ts
 export const Colors = {
-    red: "RED",
-    blue: "BLUE",
-    green: "GREEN",
+  red: "RED",
+  blue: "BLUE",
+  green: "GREEN"
 } as const;
 
 // or use an 'export default'
 
 export default {
-    red: "RED",
-    blue: "BLUE",
-    green: "GREEN",
+  red: "RED",
+  blue: "BLUE",
+  green: "GREEN"
 } as const;
 ```
 
@@ -391,9 +385,7 @@ One thing to note is that `const` assertions can only be applied immediately on 
 let a = (Math.random() < 0.5 ? 0 : 1) as const;
 
 // Works!
-let b = Math.random() < 0.5 ?
-    0 as const :
-    1 as const;
+let b = Math.random() < 0.5 ? (0 as const) : (1 as const);
 ```
 
 Another thing to keep in mind is that `const` contexts don't immediately convert an expression to be fully immutable.
@@ -402,12 +394,12 @@ Another thing to keep in mind is that `const` contexts don't immediately convert
 let arr = [1, 2, 3, 4];
 
 let foo = {
-    name: "foo",
-    contents: arr,
+  name: "foo",
+  contents: arr
 } as const;
 
-foo.name = "bar";   // error!
-foo.contents = [];  // error!
+foo.name = "bar"; // error!
+foo.contents = []; // error!
 
 foo.contents.push(5); // ...works!
 ```
