@@ -2,7 +2,7 @@
 title: Basic Types
 layout: docs
 permalink: /docs/handbook/basic-types.html
-oneline: Step one in learning TypeScript: The basics types.
+oneline: "Step one in learning TypeScript: The basics types."
 ---
 
 # Introduction

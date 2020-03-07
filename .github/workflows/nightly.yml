@@ -28,9 +28,9 @@ jobs:
       - run: git config user.email "bot@typescriptlang.org"
       - run: git checkout master
 
-      - run: git remote add upstream https://$GITHUB_TOKEN@github.com/microsoft/TypeScript-website.git > /dev/null 2>&1
+      - run: git remote add authed-origin https://$GITHUB_TOKEN@github.com/microsoft/TypeScript-website.git > /dev/null 2>&1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_BOT_TOKEN }}
 
       - run: git commit --allow-empty -m "Nightly Deploy"
-      - run: git push upstream master:release -f
+      - run: git push authed-origin master:release -f
