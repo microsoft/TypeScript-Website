@@ -1,7 +1,6 @@
 import React from "react"
 import { GatsbyLinkProps, Link, graphql } from "gatsby"
 import { AllSitePageFragment } from "../__generated__/gatsby-types";
-import { TmpLink } from "./TmpLink";
 export type AllSitePage = AllSitePageFragment["allSitePage"];
 
 /** 
@@ -40,7 +39,7 @@ export const createIntlLink = (currentLocale: string, allSitePage: AllSitePageFr
       return <a {...linkProps} href={to} />
     } else {
       // @ts-ignore
-      return <TmpLink {...linkProps} to={to} />
+      return <Link {...linkProps} to={to} />
     }
   }
 }
