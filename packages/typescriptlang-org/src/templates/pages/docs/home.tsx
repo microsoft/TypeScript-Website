@@ -20,7 +20,7 @@ const Index: React.FC<Props> = (props) => {
   return (
     <Layout
       title={i("doc_layout_title")}
-      description="Find TypeScript starter projects: from Angular to React or Node.js and CLIs."
+      description={i("doc_layout_description")}
       lang={props.pageContext.lang}
       allSitePage={props.data.allSitePage}
     >
@@ -261,7 +261,7 @@ const Index: React.FC<Props> = (props) => {
             {
               href: "/play",
               blurb: i("doc_learn_playground_blurb"),
-              title: "Playground",
+              title: i("play_subnav_title" as any),
             },
           ]}
         />
