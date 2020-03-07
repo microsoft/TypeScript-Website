@@ -26,9 +26,7 @@ jobs:
         yarn install
         yarn bootstrap
         yarn build
-        yarn build-site --prefix-paths # ensure the gatsby site knows to prefix with v2
-
-    - run: "ls"
+        yarn build-site
 
     # CI: Deploy to the right branch
     - name: Deploy + Publish
@@ -37,4 +35,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         PUBLISH_BRANCH: 'SITE-PRODUCTION'
-        PUBLISH_DIR: ./packages/typescriptlang-org/public
+        PUBLISH_DIR: ./v2/packages/typescriptlang-org/public
