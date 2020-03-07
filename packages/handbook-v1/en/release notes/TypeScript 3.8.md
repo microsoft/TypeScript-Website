@@ -260,7 +260,7 @@ A final consideration might be speed: `private` properties are no different from
 In contrast, because `#` private fields are downleveled using `WeakMap`s, they may be slower to use.
 While some runtimes might optimize their actual implementations of `#` private fields, and even have speedy `WeakMap` implementations, that might not be the case in all runtimes.
 
-## <span id="export-star-as-namespace-syntax" /> `export * as ns` Syntax
+## `export * as ns` Syntax
 
 It's often common to have a single entry-point that exposes all the members of another module as a single member.
 
@@ -278,7 +278,7 @@ export * as utilities from "./utilities.js";
 This is a nice quality-of-life improvement to JavaScript, and TypeScript 3.8 implements this syntax.
 When your module target is earlier than `es2020`, TypeScript will output something along the lines of the first code snippet.
 
-## <span id="top-level-await" /> Top-Level `await`
+## Top-Level `await`
 
 TypeScript 3.8 provides support for a handy upcoming ECMAScript feature called "top-level `await`".
 

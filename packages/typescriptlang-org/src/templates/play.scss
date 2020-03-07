@@ -266,7 +266,7 @@ main #editor-toolbar {
       background-color: $ts-light-bg-grey-highlight-color;
 
       @media (prefers-color-scheme: dark) {
-        background-color: black;
+        background-color: $ts-dark-bg-color;
       }
     }
   }

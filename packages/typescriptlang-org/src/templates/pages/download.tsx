@@ -6,6 +6,7 @@ import { graphql } from "gatsby"
 import releaseInfo from "../../lib/release-info.json"
 import { createIntlLink } from "../../components/IntlLink"
 import { DownloadPageQuery } from "../../__generated__/gatsby-types"
+import { TmpLink } from "../../components/TmpLink"
 
 type Props = {
   pageContext: any
@@ -90,7 +91,7 @@ const Index: React.FC<Props> = (props) => {
     <div className="raised main-content-block">
       <h2>Working with TypeScript-compatible transpilers</h2>
       <p>There are other tools which convert TypeScript files to JavaScript files. You might use these tools for speed or consistency with your existing build tooling.</p>
-      <p>Each of these projects handle the file conversion, but do not handle the type-checking aspects of the TypeScript compiler. So, it's likely you'll still need to keep the TypeScript dependency from above around, and you'll want to enable <Link to="/tsconfig#isolatedModules"><code>isolatedModules</code></Link>.</p>
+      <p>Each of these projects handle the file conversion, but do not handle the type-checking aspects of the TypeScript compiler. So, it's likely you'll still need to keep the TypeScript dependency from above around, and you'll want to enable <TmpLink to="/tsconfig#isolatedModules"><code>isolatedModules</code></TmpLink>.</p>
 
       <section style={{ display: "flex", flexWrap: "wrap" }}>
         <div style={{ borderRight: "1px lightgrey solid", padding: "1rem", flex: 1, minWidth: "20px" }}>

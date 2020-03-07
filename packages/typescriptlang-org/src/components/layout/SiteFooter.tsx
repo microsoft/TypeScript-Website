@@ -3,6 +3,7 @@ import React from "react"
 import "./SiteFooter.scss"
 import { PlaygroundSamples } from "./SiteFooter-PlaygroundSamples";
 import { AllSitePage, createIntlLink } from "../IntlLink";
+import { TmpLink } from "../TmpLink";
 
 export type Props = {
   lang: string
@@ -130,7 +131,7 @@ export const SiteFooter = (props: Props) => {
         <ul>
           {popularPages.map(page =>
             (<li key={page.url}>
-              <Link to={page.url}>{page.title}</Link>
+              <TmpLink to={page.url}>{page.title}</TmpLink>
               <p>{page.description}</p>
             </li>)
           )}
@@ -150,7 +151,7 @@ export const SiteFooter = (props: Props) => {
         <article id="using-typescript">
           <h3>Using TypeScript</h3>
           <ul>
-            {useTypeScriptLinks.slice(0, -1).map(page => <li key={page.url}><Link to={page.url}>{page.title}</Link></li>)}
+            {useTypeScriptLinks.slice(0, -1).map(page => <li key={page.url}><TmpLink to={page.url}>{page.title}</TmpLink></li>)}
             <li key='last' id='popover-trigger' className='popover-container'>
               <a href={lastCommunity.url} aria-haspopup="true" id='popover-trigger-anchor'>
                 <span style={{ display: "none" }} className='link-prefix footer-icon'></span>{lastCommunity.title}</a>

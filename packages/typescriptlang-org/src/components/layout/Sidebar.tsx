@@ -16,6 +16,7 @@ export type Props = {
 
 import "./Sidebar.scss"
 import { onAnchorKeyDown, onButtonKeydown } from "./Sidebar-keyboard"
+import { TmpLink } from "../TmpLink"
 
 const closedChevron = <svg fill="none" height="14" viewBox="0 0 9 14" width="9" xmlns="http://www.w3.org/2000/svg"><path d="m1 13 6-6-6-6" stroke="#000" strokeWidth="2" /></svg>
 const openChevron = <svg fill="none" height="9" viewBox="0 0 14 9" width="14" xmlns="http://www.w3.org/2000/svg"><path d="m1 1 6 6 6-6" stroke="#000" strokeWidth="2" /></svg>
@@ -102,7 +103,7 @@ export const Sidebar = (props: Props) => {
                   const path = `/docs/${navRoot.directory}/${filename}`
 
                   return <li key={item.id} {...aria}>
-                    <Link to={path} onKeyDown={onAnchorKeyDown}>{item.title}</Link>
+                    <TmpLink to={path} onKeyDown={onAnchorKeyDown}>{item.title}</TmpLink>
                   </li>
                 })}
 

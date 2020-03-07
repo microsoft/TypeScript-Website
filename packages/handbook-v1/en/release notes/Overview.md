@@ -283,7 +283,7 @@ export * as utilities from "./utilities.js";
 This is a nice quality-of-life improvement to JavaScript, and TypeScript 3.8 implements this syntax.
 When your module target is earlier than `es2020`, TypeScript will output something along the lines of the first code snippet.
 
-## <span id="top-level-await" /> Top-Level `await`
+## Top-Level `await`
 
 TypeScript 3.8 provides support for a handy upcoming ECMAScript feature called "top-level `await`".
 
