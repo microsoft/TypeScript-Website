@@ -8,7 +8,7 @@ globalishObj.typeDefinitions = {}
  * Type Defs we've already got, and nulls when something has failed.
  * This is to make sure that it doesn't infinite loop.
  */
-export const acquiredTypeDefs: { [name: string]: string | null } = globalishObj
+export const acquiredTypeDefs: { [name: string]: string | null } = globalishObj.typeDefinitions
 
 export type AddLibToRuntimeFunc = (code: string, path: string) => void
 
@@ -322,7 +322,8 @@ export const detectNewImportsToAcquireTypeFor = async (
 
   // Basically start the recursion with an undefined module
   const config: ATAConfig = { sourceCode, addLibraryToRuntime, fetcher, logger: playgroundConfig.logger }
-  return getDependenciesForModule(sourceCode, undefined, 'playground.ts', config)
+  const results = getDependenciesForModule(sourceCode, undefined, 'playground.ts', config)
+  return results
 }
 
 /**

@@ -37,7 +37,12 @@ export type PlaygroundConfig = {
   /** Suppress setting compiler options from the compiler flags from query params */
   suppressAutomaticallyGettingCompilerFlags?: true
   /** Logging system */
-  logger: { log: (...args: any[]) => void; error: (...args: any[]) => void }
+  logger: {
+    log: (...args: any[]) => void
+    error: (...args: any[]) => void
+    groupCollapsed: (...args: any[]) => void
+    groupEnd: (...args: any[]) => void
+  }
 } & (
   | { /** theID of a dom node to add monaco to */ domID: string }
   | { /** theID of a dom node to add monaco to */ elementToAppend: HTMLElement }
@@ -64,10 +69,7 @@ export function defaultPlaygroundSettings() {
     acquireTypes: true,
     useJavaScript: false,
     supportTwoslashCompilerOptions: false,
-    logger: {
-      error: () => {},
-      log: () => {},
-    },
+    logger: console,
   }
   return config
 }
@@ -125,23 +127,16 @@ export const createTypeScriptSandbox = (
     config.logger.log(`[ATA] Adding ${path} to runtime`)
   }
 
-  // Grab types
-  if (config.acquireTypes) {
-    // Take the code from the editor right away
-    const code = editor.getModel()!.getValue()
-    detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
-  }
-
   const getTwoSlashComplierOptions = extractTwoSlashComplierOptions(ts)
 
   // Then update it when the model changes, perhaps this could be a debounced plugin instead in the future?
   editor.onDidChangeModelContent(() => {
     const code = editor.getModel()!.getValue()
-
     if (config.supportTwoslashCompilerOptions) {
       const configOpts = getTwoSlashComplierOptions(code)
       updateCompilerSettings(configOpts)
     }
+
     if (config.acquireTypes) {
       detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
     }
@@ -161,6 +156,13 @@ export const createTypeScriptSandbox = (
 
   config.logger.log('[Compiler] Set compiler options: ', compilerOptions)
   defaults.setCompilerOptions(compilerOptions)
+
+  // Grab types last so that it logs in a logical way
+  if (config.acquireTypes) {
+    // Take the code from the editor right away
+    const code = editor.getModel()!.getValue()
+    detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
+  }
 
   // To let clients plug into compiler settings changes
   let didUpdateCompilerSettings = (opts: CompilerOptions) => {}

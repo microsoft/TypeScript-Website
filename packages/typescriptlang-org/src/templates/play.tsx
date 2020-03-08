@@ -86,10 +86,6 @@ const Play: React.FC<Props> = (props) => {
           domID: "monaco-editor-embed",
           useJavaScript: !!params.get("useJavaScript"),
           acquireTypes: !localStorage.getItem("disable-ata"),
-          logger: {
-            error: console.error,
-            log: console.log
-          },
         }, main, ts)
 
         const playgroundConfig = {
