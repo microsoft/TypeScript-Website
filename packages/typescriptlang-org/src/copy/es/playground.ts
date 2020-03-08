@@ -32,7 +32,7 @@ export const playCopy = {
   play_sidebar_options_plugin_dev_option:
     "Conectar a <code>localhost:5000/index.js</code>",
   play_sidebar_options_plugin_dev_copy:
-    "Automaticamente intenta conectar a un complemento para sitio de pruebas en modo desarrollo. Puedes leer más <a href='https://www.typescriptlang.org/v2/dev/playground-plugins/'>aquí</a>.",
+    "Automaticamente intenta conectar a un complemento para sitio de pruebas en modo desarrollo. Puedes leer más <a href='https://www.typescriptlang.org/dev/playground-plugins/'>aquí</a>.",
   play_export_report_issue:
     "Reporta una incidencia en el repositorio GitHub de TypeScript",
   play_export_copy_md: "Copiar como una incidencia en formato Markdown",

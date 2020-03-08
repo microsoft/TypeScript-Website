@@ -32,7 +32,7 @@ export const playCopy = {
   play_sidebar_options_plugin_dev_option:
     "<code>localhost:5000/index.js</code>に接続する",
   play_sidebar_options_plugin_dev_copy:
-    "ローカルで開発中のプレイグラウンドプラグインに接続します。詳しくは<a href='https://www.typescriptlang.org/v2/dev/playground-plugins/'>こちら</a>。",
+    "ローカルで開発中のプレイグラウンドプラグインに接続します。詳しくは<a href='https://www.typescriptlang.org/dev/playground-plugins/'>こちら</a>。",
   play_export_report_issue: "TypeScriptのエラーをGitHub issueとして報告",
   play_export_copy_md: "Markdown Issueとしてコピー",
   play_export_copy_link: "Markdownリンクとしてコピー",
