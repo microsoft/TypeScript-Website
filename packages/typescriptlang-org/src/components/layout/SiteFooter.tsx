@@ -33,7 +33,7 @@ const popularPages = [
   {
     title: "Variable Declarations",
     url: "/docs/handbook/variable-declarations.html",
-    description: "How to create an type a JavaScript variable"
+    description: "How to create and type JavaScript variables"
   },
   {
     title: "TypeScript in 5 minutes",

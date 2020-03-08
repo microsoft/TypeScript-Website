@@ -67,15 +67,21 @@
       display: none;
     }
 
-    .line-error,
-    .underline-error,
-    .error-message,
     ul.dropdown {
       margin-top: 12px;
     }
 
-    .headline-diagram div.editor.front {
-      bottom: -40px;
+    .headline-diagram {
+      div.editor.front {
+        margin: 20px auto;
+        position: static;
+        width: auto;
+        max-width: 400px;
+      }
+
+      div.editor.back {
+        display: none;
+      }
     }
 
     #m-stories div.copy {
@@ -86,6 +92,19 @@
     .small_full_width {
       width: 100%;
     }
+
+    .github-bar {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: $screen-xs) {
+  #index div.headline-diagram div.editor.front {
+    max-width: 300px;
+  }
+  #index .next-headline-button {
+    max-width: 280px;
   }
 }
 
@@ -105,12 +124,14 @@
     text-align: center;
     font-weight: 500;
     font-size: 2.5rem;
+    line-height: 2.5rem;
     margin-top: 0;
   }
 
   h4 {
     font-weight: 400;
     font-size: 1.6rem;
+    line-height: 1.6rem;
     margin-top: 0;
   }
 
@@ -426,6 +447,9 @@
     }
   }
 
+  .migrations {
+    overflow-x: hidden;
+  }
   .migrations .container {
     padding-bottom: 0;
   }
