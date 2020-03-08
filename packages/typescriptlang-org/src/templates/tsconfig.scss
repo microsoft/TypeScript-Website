@@ -1,6 +1,22 @@
 @import "../style/globals.scss";
 
 .tsconfig {
+  // Drastically reduce the padding and margins to make it fit phones
+  &.raised {
+    @media (max-width: $screen-xs) {
+      margin: 0;
+      padding: 0.5rem;
+
+      #full-option-list {
+        padding: 10px;
+      }
+
+      .indent {
+        padding: 1rem;
+      }
+    }
+  }
+
   // Handles hash links with a sticky header
   a[name]:before {
     display: block;
@@ -26,6 +42,9 @@
 
       @media (max-width: $screen-xs) {
         width: 46%;
+        h5 {
+          overflow-x: hidden;
+        }
       }
 
       h5 a {
@@ -117,6 +136,8 @@
 
     > h3 {
       margin-bottom: 0;
+
+      overflow-x: hidden;
     }
 
     .compiler-content {
@@ -127,6 +148,11 @@
         width: calc(100% - 250px);
         border-right: 1px solid gray;
         padding-right: 20px;
+
+        @media (max-width: $screen-xs) {
+          border-right: none;
+          padding-right: 0;
+        }
       }
 
       table.compiler-option-md {

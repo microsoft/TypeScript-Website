@@ -50,6 +50,11 @@ pre {
   border-bottom: 1px solid #999;
   width: calc(100% - 40px);
 
+  overflow: auto;
+  &.shiki {
+    overflow: initial;
+  }
+
   // The code inside should scroll, but the overflow
   // can't be on the shiki because it would not allow the relative positioning
   .code-container {

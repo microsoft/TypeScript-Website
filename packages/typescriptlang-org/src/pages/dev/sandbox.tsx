@@ -4,7 +4,7 @@ import { withPrefix, graphql } from "gatsby"
 
 import "./dev.scss"
 import { Intl } from "../../components/Intl"
-import { DevNav } from "../../components/dev-nav"
+import { DevNav } from "../../components/devNav"
 import { isTouchDevice } from "../../lib/isTouchDevice"
 import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
 import { SandboxQuery } from "../../__generated__/gatsby-types"

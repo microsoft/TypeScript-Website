@@ -11,7 +11,7 @@ type Props = {
 
 import "./css/tools.scss"
 import { createIntlLink } from "../../components/IntlLink"
-import { DevNav } from "../../components/dev-nav"
+import { DevNav } from "../../components/devNav"
 
 const Row = (props: { children: any, className?: string }) => <div className={[props.className, "row"].join(" ")}>{props.children}</div>
 const Col = (props: { children: any, className?: string }) => <div className={[props.className, "col1"].join(" ")}>{props.children}</div>

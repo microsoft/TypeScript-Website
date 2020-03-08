@@ -4,7 +4,7 @@ import { withPrefix, graphql, Link } from "gatsby"
 
 import "./dev.scss"
 import { Intl } from "../../components/Intl"
-import { DevNav } from "../../components/dev-nav"
+import { DevNav } from "../../components/devNav"
 import { PlaygroundPluginQuery } from "../../__generated__/gatsby-types"
 
 type Props = {

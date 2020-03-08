@@ -9,7 +9,7 @@ export const DevNav = (props: DevNavProps) => {
   const isActive = (str) =>
     props.active && props.active.toLowerCase() === str ? "active" : ""
 
-  return <nav className="navbar-sub">
+  return <nav className="navbar-sub dev-tools">
     <ul className="nav">
       <li className="name"><span>Developer Tools</span></li>
       <li style={{ display: "none" }}>

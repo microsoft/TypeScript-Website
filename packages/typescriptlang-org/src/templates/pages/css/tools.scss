@@ -1,3 +1,5 @@
+@import "../../../style/globals.scss";
+
 .cropper {
   overflow: hidden;
   height: 500px;
@@ -11,10 +13,10 @@
 
   p {
     position: absolute;
-    bottom: 0;
+    bottom: 10px;
     left: 10px;
     font-size: 3rem;
-    height: 3rem;
+    line-height: 3rem;
     margin: 0;
 
     width: 100%;
@@ -24,5 +26,15 @@
       rgba(255, 255, 255, 1) 0%,
       rgba(255, 255, 255, 0.5) 100%
     );
+  }
+}
+
+@media (max-width: $screen-sm) {
+  .navbar-sub.dev-tools {
+    height: auto;
+
+    .nav {
+      flex-direction: column;
+    }
   }
 }

@@ -1,3 +1,5 @@
+@import "../style/globals.scss";
+
 #doc-layout {
   display: flex;
   flex-direction: row;
@@ -7,6 +9,11 @@
   margin-left: 2rem;
   margin-right: 2rem;
   overflow: hidden;
+
+  @media (max-width: $screen-xs) {
+    margin-left: 0;
+    margin-right: 0;
+  }
 
   // Page title
   & > h2 {
