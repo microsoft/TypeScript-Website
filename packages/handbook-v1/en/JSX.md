@@ -32,7 +32,7 @@ The `react-native` mode is the equivalent of `preserve` in that it keeps all JSX
 | `react`        | `<div />` | `React.createElement("div")` | `.js`                 |
 | `react-native` | `<div />` | `<div />`                    | `.js`                 |
 
-You can specify this mode using either the `--jsx` command line flag or the corresponding option in your [tsconfig.json](./tsconfig.json.md) file.
+You can specify this mode using either the `--jsx` command line flag or the corresponding option in your [tsconfig.json](/docs/handbook/tsconfig-json.html) file.
 
 > \*Note: You can specify the JSX factory function to use when targeting react JSX emit with `--jsxFactory` option (defaults to `React.createElement`)
 

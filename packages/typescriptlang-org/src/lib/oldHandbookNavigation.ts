@@ -153,6 +153,7 @@ export const oldHandbookNavigation: NavItem[] = [
         id: "integrating-with-build-tools",
         title: "Integrating with Build Tools",
       },
+      { id: "configuring-watch", title: "Configuring Watch Mode" },
       { id: "nightly-builds", title: "Nightly Builds" },
     ],
   },

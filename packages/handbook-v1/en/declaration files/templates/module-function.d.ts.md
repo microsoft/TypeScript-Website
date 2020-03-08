@@ -3,6 +3,7 @@ title: module-function.d.ts
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/module-function-d-ts.html
 ---
+
 ```ts
 // Type definitions for [~THE LIBRARY NAME~] [~OPTIONAL VERSION NUMBER~]
 // Project: [~THE PROJECT NAME~]
@@ -53,22 +54,21 @@ declare function MyFunction(length: number): MyFunction.LengthReturnType;
  *~   import * as x from '[~THE MODULE~]'; // WRONG! DO NOT DO THIS!
  */
 declare namespace MyFunction {
-    export interface LengthReturnType {
-        width: number;
-        height: number;
-    }
-    export interface NamedReturnType {
-        firstName: string;
-        lastName: string;
-    }
+  export interface LengthReturnType {
+    width: number;
+    height: number;
+  }
+  export interface NamedReturnType {
+    firstName: string;
+    lastName: string;
+  }
 
-    /*~ If the module also has properties, declare them here. For example,
-     *~ this declaration says that this code is legal:
-     *~   import f = require('myFuncLibrary');
-     *~   console.log(f.defaultName);
-     */
-    export const defaultName: string;
-    export let defaultLength: number;
+  /*~ If the module also has properties, declare them here. For example,
+   *~ this declaration says that this code is legal:
+   *~   import f = require('myFuncLibrary');
+   *~   console.log(f.defaultName);
+   */
+  export const defaultName: string;
+  export let defaultLength: number;
 }
 ```
-

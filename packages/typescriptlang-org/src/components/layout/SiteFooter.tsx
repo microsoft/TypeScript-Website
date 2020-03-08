@@ -59,7 +59,7 @@ const useTypeScriptLinks = [
   },
   {
     title: "Download",
-    url: "/en/download",
+    url: "/download",
   },
   {
     title: "Community",

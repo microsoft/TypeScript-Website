@@ -11,7 +11,7 @@ Broadly speaking, the way you _structure_ your declaration file depends on how t
 There are many ways of offering a library for consumption in JavaScript, and you'll need to write your declaration file to match it.
 This guide covers how to identify common library patterns, and how to write declaration files which correspond to that pattern.
 
-Each type of major library structuring pattern has a corresponding file in the [Templates](./Templates.md) section.
+Each type of major library structuring pattern has a corresponding file in the [Templates](/docs/handbook/declaration-files/templates.html) section.
 You can start with these templates to help you get going faster.
 
 # Identifying Kinds of Libraries
@@ -85,7 +85,7 @@ However, libraries that are small and require the DOM (or have _no_ dependencies
 
 ### Global Library Template
 
-The template file [`global.d.ts`](./templates/global.d.ts.md) defines an example library `myLib`.
+The template file [`global.d.ts`](/docs/handbook/declaration-files/templates/global-plugin-d-ts.html) defines an example library `myLib`.
 Be sure to read the ["Preventing Name Conflicts" footnote](#preventing-name-conflicts).
 
 ## Modular Libraries
@@ -185,9 +185,9 @@ Examples include [jQuery](https://jquery.com/), [Moment.js](http://momentjs.com/
 ### Template
 
 There are three templates available for modules,
-[`module.d.ts`](./templates/module.d.ts.md), [`module-class.d.ts`](./templates/module-class.d.ts.md) and [`module-function.d.ts`](./templates/module-function.d.ts.md).
+[`module.d.ts`](/docs/handbook/declaration-files/templates/module-d-ts.html), [`module-class.d.ts`](/docs/handbook/declaration-files/templates/module-class-d-ts.html) and [`module-function.d.ts`](/docs/handbook/declaration-files/templates/module-function-d-ts.html).
 
-Use [`module-function.d.ts`](./templates/module-function.d.ts.md) if your module can be _called_ like a function:
+Use [`module-function.d.ts`](/docs/handbook/declaration-files/templates/module-function-d-ts.html) if your module can be _called_ like a function:
 
 ```js
 var x = require("foo");
@@ -197,7 +197,7 @@ var y = x(42);
 
 Be sure to read the [footnote "The Impact of ES6 on Module Call Signatures"](#the-impact-of-es6-on-module-plugins)
 
-Use [`module-class.d.ts`](./templates/module-class.d.ts.md) if your module can be _constructed_ using `new`:
+Use [`module-class.d.ts`](/docs/handbook/declaration-files/templates/module-class-d-ts.html) if your module can be _constructed_ using `new`:
 
 ```js
 var x = require("bar");
@@ -207,7 +207,7 @@ var y = new x("hello");
 
 The same [footnote](#the-impact-of-es6-on-module-plugins) applies to these modules.
 
-If your module is not callable or constructable, use the [`module.d.ts`](./templates/module.d.ts.md) file.
+If your module is not callable or constructable, use the [`module.d.ts`](/docs/handbook/declaration-files/templates/module-d-ts.html) file.
 
 ## _Module Plugin_ or _UMD Plugin_
 
@@ -218,7 +218,7 @@ For the purposes of writing a declaration file, you'll write the same code wheth
 
 ### Template
 
-Use the [`module-plugin.d.ts`](./templates/module-plugin.d.ts.md) template.
+Use the [`module-plugin.d.ts`](/docs/handbook/declaration-files/templates/module-plugin-d-ts.html) template.
 
 ## _Global Plugin_
 
@@ -245,7 +245,7 @@ console.log(y.reverseAndSort());
 
 ### Template
 
-Use the [`global-plugin.d.ts`](./templates/global-plugin.d.ts.md) template.
+Use the [`global-plugin.d.ts`](/docs/handbook/declaration-files/templates/global-plugin-d-ts.html) template.
 
 ## _Global-modifying Modules_
 

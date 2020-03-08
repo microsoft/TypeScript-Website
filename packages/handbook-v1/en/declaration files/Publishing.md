@@ -84,7 +84,7 @@ _Do_ use `/// <reference types="..." />` instead.
 ....
 ```
 
-Make sure to revisit the [Consuming dependencies](./Library%20Structures.md#consuming-dependencies) section for more information.
+Make sure to revisit the [Consuming dependencies](/docs/handbook/declaration-files/library-structures.html#consuming-dependencies) section for more information.
 
 ### Packaging dependent declarations
 

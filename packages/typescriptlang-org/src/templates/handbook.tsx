@@ -81,7 +81,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   if (!post.html) throw new Error(`No html found for the file with props: ${props}`)
 
   const selectedID = post.frontmatter.permalink!.split("/").pop()!.replace(".html", "") || "index"
-  const showSidebar = post.headings && post.headings.length <= 25
+  const showSidebar = post.headings && post.headings.length && post.headings.length <= 25
 
   return (
     <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneliner || ""} lang="en" allSitePage={props.data.allSitePage}>
@@ -96,8 +96,8 @@ const HandbookTemplate: React.FC<Props> = (props) => {
               <div className="markdown" dangerouslySetInnerHTML={{ __html: post.html! }} />
             </div>
 
-            <aside className="handbook-toc">
-              {showSidebar &&
+            {showSidebar &&
+              <aside className="handbook-toc">
                 <nav>
                   <h5>On this page</h5>
                   <ul>
@@ -108,8 +108,8 @@ const HandbookTemplate: React.FC<Props> = (props) => {
                     })}
                   </ul>
                 </nav>
-              }
-            </aside>
+              </aside>
+            }
           </article>
         </div>
       </section>

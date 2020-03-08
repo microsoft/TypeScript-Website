@@ -115,7 +115,7 @@ Simply create a new file in your project root named `tsconfig.json` and fill it 
 }
 ```
 
-You can learn more about `tsconfig.json` files [here](./tsconfig.json.md).
+You can learn more about `tsconfig.json` files [here](/docs/handbook/tsconfig-json.html).
 
 # Write some code
 

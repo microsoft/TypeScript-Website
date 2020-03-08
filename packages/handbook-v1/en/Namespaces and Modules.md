@@ -10,8 +10,8 @@ oneline: How to organize code in TypeScript via modules or namespaces
 This post outlines the various ways to organize your code using modules and namespaces in TypeScript.
 We'll also go over some advanced topics of how to use namespaces and modules, and address some common pitfalls when using them in TypeScript.
 
-See the [Modules](./Modules.md) documentation for more information about ES Modules.
-See the [Namespaces](./Namespaces.md) documentation for more information about TypeScript namespaces.
+See the [Modules](/docs/handbook/modules.html) documentation for more information about ES Modules.
+See the [Namespaces](/docs/handbook/namespaces.html) documentation for more information about TypeScript namespaces.
 
 Note: In _very_ old versions of TypeScript namespaces were called 'Internal Modules', these pre-date JavaScript module systems.
 

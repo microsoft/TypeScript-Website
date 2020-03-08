@@ -6,7 +6,7 @@ oneline: How TypeScript resolves modules in JavaScript
 ---
 
 > This section assumes some basic knowledge about modules.
-> Please see the [Modules](./Modules.md) documentation for more information.
+> Please see the [Modules](/docs/handbook/modules.html) documentation for more information.
 
 _Module resolution_ is the process the compiler uses to figure out what an import refers to.
 Consider an import statement like `import { a } from "moduleA"`;
@@ -19,7 +19,7 @@ First, the compiler will try to locate a file that represents the imported modul
 To do so the compiler follows one of two different strategies: [Classic](#classic) or [Node](#node).
 These strategies tell the compiler _where_ to look for `moduleA`.
 
-If that didn't work and if the module name is non-relative (and in the case of `"moduleA"`, it is), then the compiler will attempt to locate an [ambient module declaration](./Modules.md#ambient-modules).
+If that didn't work and if the module name is non-relative (and in the case of `"moduleA"`, it is), then the compiler will attempt to locate an [ambient module declaration](/docs/handbook/modules.html#ambient-modules).
 We'll cover non-relative imports next.
 
 Finally, if the compiler could not resolve the module, it will log an error.
@@ -46,7 +46,7 @@ A relative import is resolved relative to the importing file and _cannot_ resolv
 You should use relative imports for your own modules that are guaranteed to maintain their relative location at runtime.
 
 A non-relative import can be resolved relative to `baseUrl`, or through path mapping, which we'll cover below.
-They can also resolve to [ambient module declarations](./Modules.md#ambient-modules).
+They can also resolve to [ambient module declarations](/docs/handbook/modules.html#ambient-modules).
 Use non-relative paths when importing any of your external dependencies.
 
 ## Module Resolution Strategies

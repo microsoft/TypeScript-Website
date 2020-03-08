@@ -14,6 +14,7 @@ export const handbookRedirects = {
   "/docs/handbook/writing-definition-files": "/docs/handbook/declaration-files/introduction.html",
   "/docs/handbook/typings-for-npm-packages": "/docs/handbook/declaration-files/publishing.html",
   "/docs/handbook/release-notes": "/docs/handbook/release-notes/overview",
+  "/docs/tutorial.html": "/docs/handbook/release-notes/overview"
 }
 
 import { NodePluginArgs } from "gatsby"

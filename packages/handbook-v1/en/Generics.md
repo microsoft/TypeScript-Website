@@ -232,7 +232,7 @@ console.log(stringNumeric.add(stringNumeric.zeroValue, "test"));
 
 Just as with interface, putting the type parameter on the class itself lets us make sure all of the properties of the class are working with the same type.
 
-As we covered in [our section on classes](./Classes.md), a class has two sides to its type: the static side and the instance side.
+As we covered in [our section on classes](/docs/handbook/classes.html), a class has two sides to its type: the static side and the instance side.
 Generic classes are only generic over their instance side rather than their static side, so when working with classes, static members can not use the class's type parameter.
 
 # Generic Constraints

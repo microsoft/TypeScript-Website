@@ -249,7 +249,7 @@ namespace Color {
 
 Not all merges are allowed in TypeScript.
 Currently, classes can not merge with other classes or with variables.
-For information on mimicking class merging, see the [Mixins in TypeScript](./Mixins.md) section.
+For information on mimicking class merging, see the [Mixins in TypeScript](/docs/handbook/mixins.html) section.
 
 # Module Augmentation
 
@@ -297,7 +297,7 @@ o.map(x => x.toFixed());
 ```
 
 The module name is resolved the same way as module specifiers in `import`/`export`.
-See [Modules](./Modules.md) for more information.
+See [Modules](/docs/handbook/modules.html) for more information.
 Then the declarations in an augmentation are merged as if they were declared in the same file as the original.
 
 However, there are two limitations to keep in mind:
