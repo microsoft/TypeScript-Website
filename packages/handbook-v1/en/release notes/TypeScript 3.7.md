@@ -771,7 +771,7 @@ function issueNotification(user: User) {
 
 If you intended to test the function without calling it, you can correct the definition of it to include `undefined`/`null`, or use `!!` to write something like `if (!!user.isAdministrator)` to indicate that the coercion is intentional.
 
-We owe a big thanks to GitHub user [@jwbay](https://github.com/jwbay) who took the initiative to create a [proof-of-concept](https://github.com/microsoft/TypeScript/pull/32802) and iterated to provide us with with [the current version](https://github.com/microsoft/TypeScript/pull/33178).
+We owe a big thanks to GitHub user [@jwbay](https://github.com/jwbay) who took the initiative to create a [proof-of-concept](https://github.com/microsoft/TypeScript/pull/32802) and iterated to provide us with [the current version](https://github.com/microsoft/TypeScript/pull/33178).
 
 ## `// @ts-nocheck` in TypeScript Files
 
