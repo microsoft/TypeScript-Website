@@ -81,7 +81,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   if (!post.html) throw new Error(`No html found for the file with props: ${props}`)
 
   const selectedID = post.frontmatter.permalink!.split("/").pop()!.replace(".html", "") || "index"
-  const showSidebar = post.headings && post.headings.length && post.headings.length <= 30
+  const showSidebar = !post.frontmatter.disable_toc && post.headings && post.headings.length && post.headings.length <= 30
 
   return (
     <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneliner || ""} lang="en" allSitePage={props.data.allSitePage}>
@@ -148,6 +148,8 @@ export const pageQuery = graphql`
       frontmatter {
         permalink
         title
+        disable_toc
+        oneline
       }
     }
   }
