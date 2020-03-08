@@ -3,7 +3,7 @@ display: "No Error Truncation"
 oneline: "Do not truncate error messages"
 ---
 
-エラーメッセージを打ち切らないようにします。
+エラーメッセージを切り捨てないようにします。
 
 デフォルト値の`false`の場合、次のようになります。
 
