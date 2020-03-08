@@ -126,7 +126,7 @@ You'll see quite quickly that there are two syntaxes for building types: [Interf
 ## Composing Types
 
 Similar to how you would create larger complex objects by composing them together TypeScript has tools for doing this with types.
-The two most popular techniques you would use in everyday code every to create new types by working with many smaller types are Unions and Generics.
+The two most popular techniques you would use in everyday code to create new types by working with many smaller types are Unions and Generics.
 
 ### Unions
 

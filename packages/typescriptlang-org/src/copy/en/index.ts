@@ -61,7 +61,7 @@ export const indexCopy = {
   index_install: "Install TypeScript",
   index_install_ref: `
   <p>You can install TypeScript via npm<pre>npm install -g typescript</pre>
-  <p>Then run the compiler via <code>tsc</code><pre>npm install -g typescript</pre>
+  <p>Then run the compiler via <code>tsc</code><pre>npx tsc</pre>
   <p>Learn more <download>here</download>
   `,
   index_releases: "Quarterly Releases",
