@@ -219,6 +219,13 @@ form.search {
       transform: translate(0, 8.2rem);
     }
 
+    @media (prefers-reduced-motion: reduce) {
+      &.up,
+      &.down {
+        transition: none;
+      }
+    }
+
     /* Because 'TypeScript' is removed, let the width be auto */
     #home-page-logo {
       width: auto;

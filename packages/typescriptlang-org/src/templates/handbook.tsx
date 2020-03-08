@@ -84,7 +84,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   const showSidebar = !post.frontmatter.disable_toc && post.headings && post.headings.length && post.headings.length <= 30
 
   return (
-    <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneliner || ""} lang="en" allSitePage={props.data.allSitePage}>
+    <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneline || ""} lang="en" allSitePage={props.data.allSitePage}>
       <section id="doc-layout">
         <SidebarToggleButton />
         <Sidebar navItems={oldHandbookNavigation} selectedID={selectedID} />

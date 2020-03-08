@@ -184,6 +184,10 @@ nav#sidebar {
     transition-timing-function: ease;
     transition: left 0.3s;
 
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+
     &.hidden {
       left: -80px;
     }
