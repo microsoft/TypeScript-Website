@@ -3,10 +3,11 @@ display: "Suppress Implicit Any Index Errors"
 oneline: "Remove the warning when using string indexes to access unknown properties"
 ---
 
-Turning `noImplicitAny` on suppresses reporting the error about implicit anys when indexing into objects, as shown in the following example:
+Turning `suppressImplicitAnyIndexErrors` on suppresses reporting the error about implicit anys when indexing into objects, as shown in the following example:
 
 ```ts twoslash
 // @noImplicitAny: true
+// @suppressImplicitAnyIndexErrors: false
 // @strict: true
 // @errors: 7053
 const obj = { x: 10 };
