@@ -3,24 +3,24 @@ display: "Locale"
 oneline: "Set the language of the tsc output"
 ---
 
-TypeScript supports a number of languages, however this cannot be set via the `tsconfig.json`, only
-via the host environment or the CLI flag `--locale`. E.g. `tsc --locale ru`.
+TypeScriptは多くの言語をサポートしていますが、`tsconfig.json`には設定できません。
+ホストの環境設定もしくは`--locale ru`のように`--locale`CLIフラグからのみ利用できます。
 
-### Locales supported as of TypeScript 3.7
+### TypeScript 3.7がサポートしているロケール
 
-| Name                  | Locale  |
-| --------------------- | ------- |
-| Brazilian Portuguese  | `pr-BR` |
-| Chinese (Simplified)  | `zh-TW` |
-| Chinese (Traditional) | `zh-CN` |
-| Czech                 | `cs-CZ` |
-| English (US)          | `en-US` |
-| French                | `fr-FR` |
-| German                | `de-DE` |
-| Italian               | `it-IT` |
-| Japanese              | `ja-JP` |
-| Korean                | `ko-KR` |
-| Polish                | `pl-PL` |
-| Russian               | `ru-RU` |
-| Spanish               | `es-ES` |
-| Turkish               | `tr-TR` |
+| 名前                  | ロケール |
+| --------------------- | -------- |
+| ブラジルポルトガル語  | `pr-BR`  |
+| 中国語（簡体字）      | `zh-TW`  |
+| 中国語（繁体字）      | `zh-CN`  |
+| チェコ語              | `cs-CZ`  |
+| 英語（US）            | `en-US`  |
+| フランス語            | `fr-FR`  |
+| ドイツ語              | `de-DE`  |
+| イタリア語            | `it-IT`  |
+| 日本語                | `ja-JP`  |
+| 韓国語                | `ko-KR`  |
+| ポーランド語          | `pl-PL`  |
+| ロシア語              | `ru-RU`  |
+| スペイン語            | `es-ES`  |
+| トルコ語              | `tr-TR`  |

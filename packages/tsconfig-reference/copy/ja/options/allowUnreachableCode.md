@@ -3,8 +3,8 @@ display: "Allow Unreachable Code"
 oneline: "Error when code will never be called"
 ---
 
-Set to false to disable warnings about unreachable code.
-These warnings are only about code which is provably unreachable due to the use of JavaScript syntax, for example:
+falseに設定すると、到達不可能なコードに対する警告を無効化します。
+この警告は、JavaScript構文の利用によって到達不可能になり得るコードにのみ関係します。例えば:
 
 ```ts
 function fn(n: number) {
@@ -17,7 +17,7 @@ function fn(n: number) {
 }
 ```
 
-With `"allowUnreachableCode": false`:
+`"allowUnreachableCode": false`にすると、次のようになります:
 
 ```ts twoslasher
 // @errors: 7027
@@ -32,4 +32,4 @@ function fn(n: number) {
 }
 ```
 
-This does not affect errors on the basis of code which _appears_ to be unreachable due to type analysis.
+このオプションは、型の分析によって到達不可能と判断されコードについてのエラーには影響しません。

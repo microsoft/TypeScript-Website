@@ -3,8 +3,8 @@ display: "Force Consistent Casing In File Names"
 oneline: "Ensure that casing is correct in imports"
 ---
 
-TypeScript follows the case sensitivity rules of the file system it's running on.
-This can be problematic if some developers are working in a case-sensitive file system and others aren't.
-If a file attempts to import `fileManager.ts` by specifying `./FileManager.ts` the file will be found in a case-insensitive file system, but not on a case-sensitive file system.
+TypeScriptが大文字小文字を区別するかどうかは、動作しているファイルシステムに従います。
+これが問題になるのは、ある開発者はケースセンシティブなファイルシステムで作業をしている一方で、別の開発者はそうではない場合です。
+あるファイルが`fileManager.ts`のImportを`./FileManager.ts`と指定したとき、ケースセンシティブでないファイルシステムではファイルが見つかりますが、ケースセンシティブなファイルシステムでは見つかりません。
 
-When this option is set, TypeScript will issue an error if a program tries to include a file by a casing different from the casing on disk.
+このオプションを有効化すると、TypeScriptはプログラムがディスク上の大文字小文字と異なるファイルをインクルードしようとした場合にエラーを発生させます。

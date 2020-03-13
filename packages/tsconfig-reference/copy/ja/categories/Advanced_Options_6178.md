@@ -2,4 +2,4 @@
 display: "Advanced"
 ---
 
-Flags which help with debugging
+デバッグに役立つフラグです。

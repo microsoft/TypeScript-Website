@@ -3,7 +3,7 @@ display: "Declaration Dir"
 oneline: "Set the root directory for d.ts files to go"
 ---
 
-Offers a way to configure the root directory for where declaration files are emitted.
+型定義ファイルが出力されるルートディレクトリを設定します。
 
 ```
 example
@@ -12,7 +12,7 @@ example
 └── tsconfig.json
 ```
 
-with this `tsconfig.json`:
+次の`tsconfig.json`は:
 
 ```json
 {
@@ -23,7 +23,7 @@ with this `tsconfig.json`:
 }
 ```
 
-Would place the d.ts for the `index.ts` in a `types` folder:
+`index.ts`に対応するd.tsファイルを`types`フォルダへ配置します:
 
 ```
 example

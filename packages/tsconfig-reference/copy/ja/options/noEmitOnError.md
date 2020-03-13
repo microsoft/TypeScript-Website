@@ -3,6 +3,6 @@ display: "No Emit On Error"
 oneline: "Only emit files on a successful compile"
 ---
 
-Do not emit compiler output files like JavaScript source code, source-maps or declarations if any errors were reported.
+エラーがあるときに、JavaScriptソースコードやソースマップファイル、型定義ファイルなどをコンパイラに出力させないようにします。
 
-This defaults to `false`, making it easier to work with TypeScript in a watch-like environment where you may want to see results of changes to your code in another environment before making sure all errors are resolved.
+デフォルト値は`false`であり、このため、すべてのエラーを解決するよりも前に別の環境でコードの変更結果を確認したいといったファイル監視環境において、TypeScriptが扱いやすくなっています。
