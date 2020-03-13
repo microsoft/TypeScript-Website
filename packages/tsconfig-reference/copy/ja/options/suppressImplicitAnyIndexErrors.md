@@ -14,7 +14,7 @@ const obj = { x: 10 };
 console.log(obj["foo"]);
 ```
 
-`suppressImplicitAnyIndexErrors`はかなりインパクトの大きい方法です。代わりに`@ts-ignore`コメントの利用を推奨します:
+`suppressImplicitAnyIndexErrors`はかなり影響の大きい方法です。代わりに`@ts-ignore`コメントの利用を推奨します:
 
 ```ts twoslash
 // @noImplicitAny: true
