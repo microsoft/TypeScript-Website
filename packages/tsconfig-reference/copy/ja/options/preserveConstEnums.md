@@ -4,7 +4,7 @@ oneline: "Do not erase `const enum` declarations in generated code"
 ---
 
 コード生成時に`const enum`の定義を取り除かないようにします。
-`const enum`は、参照ではなくEnum値を出力することによって、アプリケーション実行時の全体的なメモリのフットプリントを軽減します。
+`const enum`は、参照ではなくEnum値を出力することによって、アプリケーション実行時の全体的なメモリの使用量を軽減します。
 
 例えば次のTypeScriptでは:
 
