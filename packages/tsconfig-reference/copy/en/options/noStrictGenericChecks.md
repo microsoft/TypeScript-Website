@@ -3,7 +3,7 @@ display: "No Strict Generic Checks"
 oneline: "Disable strict checking of generic signatures in functions."
 ---
 
-TypeScript will unify type parameters when comparing two generic functions functions
+TypeScript will unify type parameters when comparing two generic functions.
 
 ```ts twoslash
 // @errors: 2322
