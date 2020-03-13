@@ -14,4 +14,4 @@ Language Serviceプラグインを用いることで、ユーザーはTypeScript
 - [typescript-eslint-language-service](https://github.com/Quramy/typescript-eslint-language-service) &mdash; eslintのエラーメッセージを出力や、出力されたエラーメッセージの修正機能を提供します。
 - [ts-graphql-plugin](https://github.com/Quramy/ts-graphql-plugin) &mdash; テンプレート文字列内部のGraphQLクエリについて、バリデーションと自動補完機能を提供します。
 
-VS Codeには、拡張のための[Lnguage Serviceプラグインの自動読込 ](https://code.visualstudio.com/api/references/contribution-points#contributes.typescriptServerPlugins)機能があるため、`tsconfig.json`にプラグインの定義を書かずとにエディタ上でプラグインを動作させることもできます。
+VS Codeには、拡張のための[Lnguage Serviceプラグインの自動読込 ](https://code.visualstudio.com/api/references/contribution-points#contributes.typescriptServerPlugins)機能があるため、`tsconfig.json`にプラグインの定義を書かずにエディタ上でプラグインを動作させることもできます。
