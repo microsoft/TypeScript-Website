@@ -432,7 +432,7 @@ In other words, `x` must be `1` when it gets compared to `2`, meaning that the a
 
 # Enum Member Types
 
-As mentioned in [our section on enums](./Enums.md#union-enums-and-enum-member-types), enum members have types when every member is literal-initialized.
+As mentioned in [our section on enums](./enums.html#union-enums-and-enum-member-types), enum members have types when every member is literal-initialized.
 
 Much of the time when we talk about "singleton types", we're referring to both enum member types as well as numeric/string literal types, though many users will use "singleton types" and "literal types" interchangeably.
 

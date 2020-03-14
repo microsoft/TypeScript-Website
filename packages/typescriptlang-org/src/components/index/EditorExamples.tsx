@@ -153,8 +153,8 @@ interface <span class='highlight'>UserThumbnailProps</span> {
 export const UserThumbnail = 
   (props<span class='highlight'>: UserThumbnailProps</span>) =>
 
-  &lt;a href={props.url} alt={props.alt}>
-    &lt;img src={props.img} />
+  &lt;a href={props.url}>
+    &lt;img src={props.img} alt={props.alt} />
   &lt;/a>
 `
 

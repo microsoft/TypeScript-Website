@@ -20,7 +20,8 @@ import {
   defaultsForOptions,
   recommended,
   allowedValues,
-  configToRelease
+  configToRelease,
+  additionalOptionDescriptors,
 } from "./tsconfigRules";
 import { CompilerOptionName } from "../data/_types";
 
@@ -67,6 +68,9 @@ filteredOptions.forEach(option => {
     categories.add(option.category);
     option.categoryCode = option.category.code;
     option.category = undefined;
+  } else if (option.name in additionalOptionDescriptors) {
+    // Set category code manually because some options have no category 
+    option.categoryCode = additionalOptionDescriptors[option.name].categoryCode;
   }
 
   // If it's got related fields, set them

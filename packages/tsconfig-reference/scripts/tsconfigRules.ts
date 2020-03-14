@@ -237,6 +237,12 @@ export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
   "1.0": ["declaration", "target", "module", "outFile"]
 };
 
+export const additionalOptionDescriptors: Record<string, { categoryCode: number }> = {
+  "plugins": {
+    categoryCode: 6172,
+  },
+};
+
 /** When a particular compiler flag (or CLI command...) was added  */
 export const configToRelease = {};
 Object.keys(releaseToConfigsMap).forEach(v => {

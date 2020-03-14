@@ -3,7 +3,7 @@ display: "Suppress Implicit Any Index Errors"
 oneline: "Remove the warning when using string indexes to access unknown properties"
 ---
 
-Turning `suppressImplicitAnyIndexErrors` on suppresses reporting the error about implicit anys when indexing into objects, as shown in the following example:
+`suppressImplicitAnyIndexErrors`を有効化すると、次の例に示すようなオブジェクトへインデックスアクセスしたときの暗黙的anyについてのエラーが抑止されます:
 
 ```ts twoslash
 // @noImplicitAny: true
@@ -14,7 +14,7 @@ const obj = { x: 10 };
 console.log(obj["foo"]);
 ```
 
-Using `suppressImplicitAnyIndexErrors` is quite a drastic approach. It is recommended to use a `@ts-ignore` comment instead:
+`suppressImplicitAnyIndexErrors`はかなり影響の大きい方法です。代わりに`@ts-ignore`コメントの利用を推奨します:
 
 ```ts twoslash
 // @noImplicitAny: true

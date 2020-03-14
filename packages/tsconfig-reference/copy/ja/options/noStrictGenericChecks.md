@@ -3,7 +3,7 @@ display: "No Strict Generic Checks"
 oneline: "Disable strict checking of generic signatures in functions."
 ---
 
-TypeScript will unify type parameters when comparing two generic functions.
+TypeScriptは、総称型を使った2つの関数について、型パラメータを統合して比較します。
 
 ```ts twoslash
 // @errors: 2322
@@ -17,4 +17,4 @@ function f(a: A, b: B) {
 }
 ```
 
-This flag can be used to remove that check.
+このフラグを利用することで、このチェックを無効化できます。
