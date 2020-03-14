@@ -17,6 +17,7 @@ export const handbookRedirects = {
   "/docs/tutorial.html": "/docs/handbook/release-notes/overview",
   "/docs/index.html": "/docs/home",
   "/docs/home.html": "/docs/home",
+  "/playground": "/play",
 }
 
 import { NodePluginArgs } from "gatsby"
