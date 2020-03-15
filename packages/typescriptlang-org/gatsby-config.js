@@ -121,5 +121,6 @@ module.exports = {
     // into Gatsby Links at build time, speeding up
     // linking between pages.
     "gatsby-plugin-catch-links",
+    "gatsby-plugin-client-side-redirect",
   ],
 }
