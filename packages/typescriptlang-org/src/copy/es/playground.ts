@@ -47,21 +47,20 @@ export const playCopy = {
   play_run_ts: "TypeScript transpilado ejecutado",
   play_run_js_fail: "Ejecución de JavaScript fallida:",
   play_default_code_sample: `// ¡Bienvenido al editor en linea de TypeScript!, este es un sitio web 
-    // que te brinda la oportunidad de escribir, compartir y aprender TypeScript.
+// que te brinda la oportunidad de escribir, compartir y aprender TypeScript.
 
-    // 
-    
-    // Puedes pensarlo de tres maneras:
-    //
-    //  - Un sitio para aprender TypeScript de manera segura
-    //  - Un sitio para experimentar con la sintaxis de TypeScript y compartir tu código con otros.
-    //  - Un sitio para experimentar con las diferentes caracteristicas del compilador de TypeScript
-    
-    const anExampleVariable = "Hello World"
-    console.log(anExampleVariable)
-    
-    // Para aprender más acerca del lenguaje, haz click en la parte superior en "Ejemplos" o "¿Qué hay de nuevo?".
-    // De lo contrario, comienza eliminando estos comentarios, y el mundo es tu área de juegos!
+// 
 
+// Puedes pensarlo de tres maneras:
+//
+//  - Un sitio para aprender TypeScript de manera segura
+//  - Un sitio para experimentar con la sintaxis de TypeScript y compartir tu código con otros.
+//  - Un sitio para experimentar con las diferentes caracteristicas del compilador de TypeScript
+
+const anExampleVariable = "Hello World"
+console.log(anExampleVariable)
+
+// Para aprender más acerca del lenguaje, haz click en la parte superior en "Ejemplos" o "¿Qué hay de nuevo?".
+// De lo contrario, comienza eliminando estos comentarios, y el mundo es tu área de juegos!
     `,
 }

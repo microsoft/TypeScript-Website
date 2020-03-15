@@ -18,13 +18,12 @@ export const playCopy = {
   play_sidebar_options: "选项",
   play_sidebar_options_restart_required: "需要重新加载",
   play_sidebar_options_disable_ata: "禁用 ATA",
-  play_sidebar_options_disable_ata_copy: "禁用 require 或 import 的自动类型获取。",
+  play_sidebar_options_disable_ata_copy:
+    "禁用 require 或 import 的自动类型获取。",
   play_sidebar_options_disable_save: "禁用即时保存",
-  play_sidebar_options_disable_save_copy:
-    "禁用输入时改变 URL",
+  play_sidebar_options_disable_save_copy: "禁用输入时改变 URL",
   play_sidebar_options_external: "外部插件",
-  play_sidebar_options_external_warning:
-    "警告: 外部插件来自第三方",
+  play_sidebar_options_external_warning: "警告: 外部插件来自第三方",
   play_sidebar_options_modules: "自定义模块",
   play_sidebar_options_modules_placeholder: "npm 上的模块。",
   play_sidebar_options_plugin_dev: "插件开发",
@@ -44,19 +43,19 @@ export const playCopy = {
   play_run_ts: "已执行编译后的 TypeScript",
   play_run_js_fail: "执行 JavaScript 失败:",
   play_default_code_sample: `// 欢迎来到 TypeScript 游乐场，
-  // 这是一个给你提供编写，分享和学习 TypeScript 的网站。
-  
-  // 您可以以如下三种方式使用它：
-  //
-  //  - 一个不会破坏任何东西的学习 TypeScript 的地方。
-  //  - 一个体验 TypeScript 语法并与被人分享的地方。
-  //  - 一个用于测试不同 TypeScript 编译期功能的沙箱。
-  
-  const anExampleVariable = "Hello World"
-  console.log(anExampleVariable)
-  
-  // 可以点击上方的 “示例” 或 “新闻”，以了解更多关于语言的信息。"
-  // 或者删除这些注释并且开始使用，整个游乐场的世界都属于你。
+// 这是一个给你提供编写，分享和学习 TypeScript 的网站。
+
+// 您可以以如下三种方式使用它：
+//
+//  - 一个不会破坏任何东西的学习 TypeScript 的地方。
+//  - 一个体验 TypeScript 语法并与被人分享的地方。
+//  - 一个用于测试不同 TypeScript 编译期功能的沙箱。
+
+const anExampleVariable = "Hello World"
+console.log(anExampleVariable)
+
+// 可以点击上方的 “示例” 或 “新闻”，以了解更多关于语言的信息。"
+// 或者删除这些注释并且开始使用，整个游乐场的世界都属于你。
   `,
 
   // Notes:
