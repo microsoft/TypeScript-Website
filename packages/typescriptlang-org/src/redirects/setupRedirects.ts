@@ -4,6 +4,10 @@ export const veryOldRedirects = {
   Tutorial: "docs/home",
   Handbook: "docs/home",
   samples: "docs/home",
+  "/docs/index.html": "/docs/home",
+  "/docs/home.html": "/docs/home",
+  "/playground": "/play",
+  "/docs": "/docs/home",
 }
 
 // These were .html files in the handbook with some redirection work
@@ -15,10 +19,6 @@ export const handbookRedirects = {
   "/docs/handbook/typings-for-npm-packages": "/docs/handbook/declaration-files/publishing.html",
   "/docs/handbook/release-notes": "/docs/handbook/release-notes/overview",
   "/docs/tutorial.html": "/docs/handbook/release-notes/overview",
-  "/docs/index.html": "/docs/home",
-  "/docs/home.html": "/docs/home",
-  "/playground": "/play",
-  "/docs": "/docs/home",
 }
 
 import { NodePluginArgs } from "gatsby"
@@ -30,13 +30,16 @@ export const setupRedirects = (
     const fromArray = Object.keys(obj)
     fromArray.forEach(from => {
       const to = obj[from]
+      console.log(`Making redirect from ${from} to ${to}`)
       createRedirect({
+        isPermanent: true,
+        redirectInBrowser: true,
         fromPath: from,
         toPath: to,
       })
     })
-
-    addRedirects(veryOldRedirects)
-    addRedirects(handbookRedirects)
   }
+
+  addRedirects(veryOldRedirects)
+  addRedirects(handbookRedirects)
 }
