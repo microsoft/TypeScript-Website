@@ -80,7 +80,7 @@ const user: User = {
 };
 ```
 
-Because JavaScript supports classes and object-orient programming, so does TypeScript - a interface declaration can also be used with classes:
+Because JavaScript supports classes and object-orient programming, so does TypeScript - an interface declaration can also be used with classes:
 
 ```ts twoslash
 interface User {
