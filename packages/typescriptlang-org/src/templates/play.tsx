@@ -81,7 +81,7 @@ const Play: React.FC<Props> = (props) => {
 
         // Create the sandbox
         const sandboxEnv = await sandbox.createTypeScriptSandbox({
-          text: i("play_default_code_sample"),
+          text: localStorage.getItem('sandbox-history') || i("play_default_code_sample"),
           compilerOptions: {},
           domID: "monaco-editor-embed",
           useJavaScript: !!params.get("useJavaScript"),
