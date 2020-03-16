@@ -4,10 +4,8 @@ export const veryOldRedirects = {
   Tutorial: "docs/home",
   Handbook: "docs/home",
   samples: "docs/home",
-  "/docs/index.html": "/docs/home",
   "/docs/home.html": "/docs/home",
   "/playground": "/play",
-  "/docs/": "/docs/home",
 }
 
 // These were .html files in the handbook with some redirection work
