@@ -54,10 +54,10 @@ const Index: React.FC<Props> = (props) => {
               The Manage NuGet Packages window (which you can get to by right-clicking on a project node)
             </li>
             <li style={{ marginTop: "20px" }}>
-              The Nuget Package Manager Console (found in Tools > NuGet Package Manager > Package Manager Console) and then running:<br /><code style={{ fontSize: "14px" }}>Install-Package Microsoft.TypeScript.MSBuild</code>
+              The Nuget Package Manager Console (found in Tools &gt; NuGet Package Manager &gt; Package Manager Console) and then running:<br /><code style={{ fontSize: "14px" }}>Install-Package Microsoft.TypeScript.MSBuild</code>
             </li>
           </ul>
-          <p>For project types which don't support Nuget. You can use the <a href={releaseInfo.vs.stable.vs2019_download}> TypeScript Visual Studio extension</a>. You can <a href="https://docs.microsoft.com/en-us/visualstudio/ide/finding-and-using-visual-studio-extensions?view=vs-2019">install</a> the extension using <code>Extensions > Manage Extensions</code> in Visual Studio.</p>
+          <p>For project types which don't support Nuget. You can use the <a href={releaseInfo.vs.stable.vs2019_download}> TypeScript Visual Studio extension</a>. You can <a href="https://docs.microsoft.com/en-us/visualstudio/ide/finding-and-using-visual-studio-extensions?view=vs-2019">install</a> the extension using <code>Extensions &gt; Manage Extensions</code> in Visual Studio.</p>
         </div>
       </section>
     </div >
@@ -68,7 +68,7 @@ const Index: React.FC<Props> = (props) => {
 
     <div className="raised main-content-block">
       <h2>Globally Installing TypeScript</h2>
-      <p>It can be handy to have TypeScript available across all projects, for example to test one-off ideas. Installing globally has the drawback of their only being a single version of TypeScript available.</p>
+      <p>It can be handy to have TypeScript available across all projects, often to test one-off ideas. Long-term, codebases should prefer a project-wide installation over a global install so that they can benefit from reproducible builds across different machines..</p>
 
       <section style={{ display: "flex", flexWrap: "wrap" }}>
         <div style={{ borderRight: "1px lightgrey solid", padding: "1rem", flex: 1, minWidth: "250px" }}>
@@ -105,7 +105,7 @@ const Index: React.FC<Props> = (props) => {
 
         <div style={{ padding: "1rem", flex: 1, minWidth: "200px" }}>
           <h3>Sucrase</h3>
-          <p><a href='https://github.com/alangpierce/sucrase#sucrase/'>Sucrase</a> is a Babel fork focused on speed for using in development mode. Sucrose supports TypeScript natively.</p>
+          <p><a href='https://github.com/alangpierce/sucrase#sucrase/'>Sucrase</a> is a Babel fork focused on speed for using in development mode. Sucrase supports TypeScript natively.</p>
         </div>
       </section>
     </div>
