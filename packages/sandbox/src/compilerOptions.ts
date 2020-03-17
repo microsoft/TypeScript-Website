@@ -79,7 +79,7 @@ export const getCompilerOptionsFromParams = (options: CompilerOptions, params: U
 // Can't set sandbox to be the right type because the param would contain this function
 
 /** Gets a query string representation (hash + queries) */
-export const getURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?: any): string => {
+export const createURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?: any): string => {
   const compilerOptions = sandbox.getCompilerOptions()
   const compilerDefaults = sandbox.compilerDefaults
   const diff = Object.entries(compilerOptions).reduce((acc, [key, value]) => {
@@ -134,7 +134,8 @@ export const getURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?: an
 
   if (Object.keys(urlParams).length > 0) {
     const queryString = Object.entries(urlParams)
-      .filter(([_k, v]) => Boolean(v))
+      .filter(([_k, v]) => v !== undefined)
+      .filter(([_k, v]) => v !== null)
       .map(([key, value]) => {
         return `${key}=${encodeURIComponent(value as string)}`
       })

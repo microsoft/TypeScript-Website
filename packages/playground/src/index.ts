@@ -139,7 +139,7 @@ export const setupPlayground = (
   const playgroundDebouncedMainFunction = () => {
     const alwaysUpdateURL = !localStorage.getItem('disable-save-on-type')
     if (alwaysUpdateURL) {
-      const newURL = sandbox.getURLQueryWithCompilerOptions(sandbox)
+      const newURL = sandbox.createURLQueryWithCompilerOptions(sandbox)
       window.history.replaceState({}, '', newURL)
     }
 
@@ -175,7 +175,7 @@ export const setupPlayground = (
     a.href = '#'
 
     li.onclick = () => {
-      const currentURL = sandbox.getURLQueryWithCompilerOptions(sandbox)
+      const currentURL = sandbox.createURLQueryWithCompilerOptions(sandbox)
       const params = new URLSearchParams(currentURL.split('#')[0])
       const version = v === 'Nightly' ? 'next' : v
       params.set('ts', version)
@@ -324,7 +324,7 @@ export const setupPlayground = (
 
   languageSelector.onchange = () => {
     const useJavaScript = languageSelector.value === 'JavaScript'
-    const query = sandbox.getURLQueryWithCompilerOptions(sandbox, { useJavaScript: useJavaScript ? true : undefined })
+    const query = sandbox.createURLQueryWithCompilerOptions(sandbox, { useJavaScript: useJavaScript ? true : undefined })
     const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
     // @ts-ignore
     document.location = fullURL

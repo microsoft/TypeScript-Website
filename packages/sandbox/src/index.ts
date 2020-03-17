@@ -4,7 +4,7 @@ import { TypeScriptWorker } from './tsWorker'
 import {
   getDefaultSandboxCompilerOptions,
   getCompilerOptionsFromParams,
-  getURLQueryWithCompilerOptions,
+  createURLQueryWithCompilerOptions,
 } from './compilerOptions'
 import lzstring from './vendor/lzstring.min'
 import { supportedReleases } from './releases'
@@ -319,7 +319,7 @@ export const createTypeScriptSandbox = (
     /** A copy of lzstring, which is used to archive/unarchive code */
     lzstring,
     /** Returns compiler options found in the params of the current page */
-    getURLQueryWithCompilerOptions,
+    createURLQueryWithCompilerOptions,
     /** Returns compiler options in the source code using twoslash notation */
     getTwoSlashComplierOptions,
     /** Gets to the current monaco-language, this is how you talk to the background webworkers */

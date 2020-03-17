@@ -194,7 +194,7 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import('monaco-e
   }
 
   async function makeMarkdown() {
-    const query = sandbox.getURLQueryWithCompilerOptions(sandbox)
+    const query = sandbox.createURLQueryWithCompilerOptions(sandbox)
     const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
     const jsSection = sandbox.config.useJavaScript
       ? ''
@@ -266,14 +266,14 @@ ${codify(stringifiedCompilerOptions, 'json')}
   }
 
   function copyForChat() {
-    const query = sandbox.getURLQueryWithCompilerOptions(sandbox)
+    const query = sandbox.createURLQueryWithCompilerOptions(sandbox)
     const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
     const chat = `[Playground Link](${fullURL})`
     ui.showModal(chat, 'Markdown for chat')
   }
 
   function copyForChatWithPreview() {
-    const query = sandbox.getURLQueryWithCompilerOptions(sandbox)
+    const query = sandbox.createURLQueryWithCompilerOptions(sandbox)
     const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
 
     const ts = sandbox.getText()
