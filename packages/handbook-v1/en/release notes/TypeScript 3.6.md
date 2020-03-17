@@ -250,7 +250,7 @@ As a result, users can write getters and setters in ambient contexts in TypeScri
 declare class Foo {
   // Allowed in 3.6+.
   get x(): number;
-  set x(val: number): void;
+  set x(val: number);
 }
 ```
 
