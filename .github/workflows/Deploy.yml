@@ -19,7 +19,7 @@ jobs:
       run: |
         git clone -b v2 --single-branch https://github.com/microsoft/TypeScript-Website.git v2
         cd v2
-        git checkout c3b67960b88a6c853945aef3ba71927f91fcf966
+        git checkout a474b050b273b5d897af77984db79e25176311e0
         git config --global user.email "you@example.com"
         git config --global user.name "Your Name"
         yarn install
