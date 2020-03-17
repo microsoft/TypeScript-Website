@@ -22,8 +22,9 @@ export const UpcomingReleaseMeta = () => {
   const betaDate = new Date(releasePlan.upcoming_beta_date)
   const rcDate = new Date(releasePlan.upcoming_rc_date)
   const endDate = new Date(releasePlan.upcoming_release_date)
-  // const today = new Date("02/06/2020")
-  const today = new Date()
+
+  const today = new Date("04/30/2020")
+  // const today = new Date()
 
 
   validateDates(startDate, betaDate, rcDate, endDate)
@@ -35,30 +36,23 @@ export const UpcomingReleaseMeta = () => {
   const diffToRCDays = Math.round(Math.abs(((+startDate) - (+rcDate)) / oneDay));
   const diffToToday = Math.round(Math.abs(((+startDate) - (+today)) / oneDay));
 
-  // These are how far the existing stage push the % along, so if you are
-  // half wah through beta it is 55% + 50% of the diff between beta and rc (28%) 
-  // meaning it should be 55% + 14%
-
-  const releasePerc = 55
-  const betaPerc = 28
-
   let needlePerc = -1
   // is after release || somehow ended up negative
   if (diffToToday > diffTotalDays || diffToToday < 0) {
     // uh oh, we need to update the release-plan.json
     // so NOOP to leave at -1
-  } else if (diffToToday < releasePerc) {
+  } else if (diffToToday < diffToBetaDays) {
     // It's in the first bit, so x% of 0 - 55%
     const onePerc = 55 / 100;
-    needlePerc = onePerc * (diffToBetaDays - diffToToday)
-  } else if (diffToToday < releasePerc + betaPerc) {
+    needlePerc = ((diffToToday / diffToBetaDays) * onePerc) * 100
+  } else if (diffToToday < diffToRCDays) {
     // It's in the second bit, so x% of 55 - 83%
     const onePerc = 83 / 100;
-    needlePerc = (onePerc * (diffToRCDays - diffToToday)) + 55
+    needlePerc = ((onePerc * (diffToToday / diffToRCDays)) * 100) + 55
   } else {
     // must be in the final section
     const onePerc = 17 / 100;
-    needlePerc = (onePerc * (diffTotalDays - diffToToday)) + 83
+    needlePerc = ((onePerc * (diffToToday / diffTotalDays)) * 100) + 83
   }
 
   const releaseParts = intl.formatDateToParts(startDate, { month: "short", day: "numeric" })
