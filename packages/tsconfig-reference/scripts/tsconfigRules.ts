@@ -173,11 +173,13 @@ export const allowedValues = {
     "`ES2017`",
     "`ES2018`",
     "`ES2019`",
+    "`ES2020`",
     "`ESNext`"
   ],
   module: [
     "`CommonJS` (default if `target` is `ES3` or `ES5`)",
     "`ES6`/`ES2015` (synonymous, default for `target` `ES6` and higher)",
+    "`ES2020`",
     "`None`",
     "`UMD`",
     "`AMD`",
@@ -238,9 +240,9 @@ export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
 };
 
 export const additionalOptionDescriptors: Record<string, { categoryCode: number }> = {
-  "plugins": {
-    categoryCode: 6172,
-  },
+  plugins: {
+    categoryCode: 6172
+  }
 };
 
 /** When a particular compiler flag (or CLI command...) was added  */
