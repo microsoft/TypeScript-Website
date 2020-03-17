@@ -23,8 +23,8 @@ export const UpcomingReleaseMeta = () => {
   const rcDate = new Date(releasePlan.upcoming_rc_date)
   const endDate = new Date(releasePlan.upcoming_release_date)
 
-  const today = new Date("04/30/2020")
-  // const today = new Date()
+  // const today = new Date("04/30/2020")
+  const today = new Date()
 
 
   validateDates(startDate, betaDate, rcDate, endDate)
