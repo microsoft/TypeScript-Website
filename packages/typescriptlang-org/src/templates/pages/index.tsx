@@ -149,7 +149,7 @@ const Index: React.FC<Props> = (props) => {
                   </a>
                 </li>
                 <li className="video" data-img={withPrefix("/images/index/wrong-ts.jpg")}>
-                  <a href="https://www.youtube.com/watch?v=P-J9Eg7hJwE" target="_blank">
+                  <a href="https://www.youtube.com/watch?v=AQOEZVG2WY0" target="_blank">
                     <p>Why I Was Wrong About TypeScript<br /><span>By TJ VanToll</span></p>
                   </a>
                 </li>
