@@ -96,14 +96,28 @@ export const createTypeScriptSandbox = (
   if (!('domID' in config) && !('elementToAppend' in config))
     throw new Error('You did not provide a domID or elementToAppend')
 
-  const compilerDefaults = getDefaultSandboxCompilerOptions(config, monaco)
-  const language = languageType(config)
-  const filePath = createFileUri(config, compilerDefaults, monaco)
-  const element = 'domID' in config ? document.getElementById(config.domID) : (config as any).elementToAppend
-
   const defaultText = config.suppressAutomaticallyGettingDefaultText
     ? config.text
     : getInitialCode(config.text, document.location)
+
+  // Defaults
+  const compilerDefaults = getDefaultSandboxCompilerOptions(config, monaco)
+
+  // Grab the compiler flags via the query params
+  let compilerOptions: CompilerOptions
+  if (!config.suppressAutomaticallyGettingCompilerFlags) {
+    const params = new URLSearchParams(location.search)
+    let queryParamCompilerOptions = getCompilerOptionsFromParams(compilerDefaults, params)
+    if (Object.keys(queryParamCompilerOptions).length)
+      config.logger.log('[Compiler] Found compiler options in query params: ', queryParamCompilerOptions)
+    compilerOptions = { ...compilerDefaults, ...queryParamCompilerOptions }
+  } else {
+    compilerOptions = compilerDefaults
+  }
+
+  const language = languageType(config)
+  const filePath = createFileUri(config, compilerOptions, monaco)
+  const element = 'domID' in config ? document.getElementById(config.domID) : (config as any).elementToAppend
 
   const model = monaco.editor.createModel(defaultText, language, filePath)
   monaco.editor.defineTheme('sandbox', sandboxTheme)
@@ -141,18 +155,6 @@ export const createTypeScriptSandbox = (
       detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
     }
   })
-
-  // Grab the compiler flags via the query params
-  let compilerOptions: CompilerOptions
-  if (!config.suppressAutomaticallyGettingCompilerFlags) {
-    const params = new URLSearchParams(location.search)
-    let queryParamCompilerOptions = getCompilerOptionsFromParams(compilerDefaults, params)
-    if (Object.keys(queryParamCompilerOptions).length)
-      config.logger.log('[Compiler] Found compiler options in query params: ', queryParamCompilerOptions)
-    compilerOptions = { ...compilerDefaults, ...queryParamCompilerOptions }
-  } else {
-    compilerOptions = compilerDefaults
-  }
 
   config.logger.log('[Compiler] Set compiler options: ', compilerOptions)
   defaults.setCompilerOptions(compilerOptions)
