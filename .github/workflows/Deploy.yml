@@ -15,8 +15,6 @@ jobs:
     - uses: actions/setup-node@v1
     - uses: actions/setup-ruby@v1
 
-    - run: git checkout 292337e1193b49ce1f701cd055e7b2182277a052
-
     # Get local dependencies
     - run: yarn install
     # danger for PR builds
@@ -37,37 +35,36 @@ jobs:
       with:
         node-version: '13.x'
 
-    # # Build v2
-    # - name: Build website v2
-    #   run: |
-    #     git clone -b v2 --single-branch https://github.com/microsoft/TypeScript-Website.git v2
-    #     cd v2
-    #     git config --global user.email "you@example.com"
-    #     git config --global user.name "Your Name"
-    #     git fetch origin pull/297/head:docs
-    #     git merge docs
-    #     yarn install
-    #     yarn bootstrap
-    #     yarn build
-    #     yarn build-site --prefix-paths # ensure the gatsby site knows to prefix with v2
-    #     cp -r packages/typescriptlang-org/public ../site/v2
-    #     cd ..
+    # Build v2
+    - name: Build website v2
+      run: |
+        git clone -b v2 --single-branch https://github.com/microsoft/TypeScript-Website.git v2
+        cd v2
+        git config --global user.email "you@example.com"
+        git config --global user.name "Your Name"
+        git fetch origin pull/297/head:docs
+        git merge docs
+        yarn install
+        yarn bootstrap
+        yarn build
+        yarn build-site --prefix-paths # ensure the gatsby site knows to prefix with v2
+        cp -r packages/typescriptlang-org/public ../site/v2
+        cd ..
 
     # PR: Deploy if we can
     - name: Deploy PR
-      if: github.event_name == 'pull_request'
       run: 'if test -z "$NOW_ACCESS_TOKEN"; then echo "Skipping deploy";
             else npx now site/ --token="$NOW_ACCESS_TOKEN"
-                              --name="typescript-site-$PR_NUMBER"; fi'
+                              --name="typescript-site"; fi'
       env:
         NOW_ACCESS_TOKEN: ${{ secrets.NOW_ACCESS_TOKEN }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
 
-    # CI: Deploy to the right branch
-    - name: Deploy + Publish
-      if: github.event_name != 'pull_request'
-      uses: peaceiris/actions-gh-pages@v1.1.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        PUBLISH_BRANCH: 'SITE-PRODUCTION'
-        PUBLISH_DIR: ./site
+    # # CI: Deploy to the right branch
+    # - name: Deploy + Publish
+    #   if: github.event_name != 'pull_request'
+    #   uses: peaceiris/actions-gh-pages@v1.1.0
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     PUBLISH_BRANCH: 'SITE-PRODUCTION'
+    #     PUBLISH_DIR: ./site
