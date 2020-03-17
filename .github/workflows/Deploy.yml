@@ -19,10 +19,9 @@ jobs:
       run: |
         git clone -b v2 --single-branch https://github.com/microsoft/TypeScript-Website.git v2
         cd v2
+        git checkout c3b67960b88a6c853945aef3ba71927f91fcf966
         git config --global user.email "you@example.com"
         git config --global user.name "Your Name"
-        git fetch origin pull/297/head:docs
-        git merge docs
         yarn install
         yarn bootstrap
         yarn build
