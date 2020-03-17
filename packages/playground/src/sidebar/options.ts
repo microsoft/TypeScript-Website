@@ -168,7 +168,7 @@ const createPlugin = (plugin: typeof pluginRegistry[0]) => {
   const label = document.createElement('label')
 
   const top = `<span>${plugin.display}</span> by <a href='${plugin.author.href}'>${plugin.author.name}</a><br/>${plugin.blurb}`
-  const bottom = `<a href='https://www.npmjs.com/package${plugin.module}'>npm</a> | <a href="${plugin.repo}">repo</a>`
+  const bottom = `<a href='https://www.npmjs.com/package/${plugin.module}'>npm</a> | <a href="${plugin.repo}">repo</a>`
   label.innerHTML = `${top}<br/>${bottom}`
 
   const key = 'plugin-' + plugin.module
