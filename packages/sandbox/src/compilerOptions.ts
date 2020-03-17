@@ -100,7 +100,7 @@ export const getURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?: an
     if (params.has(param)) {
       // Special case the nightly where it uses the TS version to hardcode
       // the nightly build
-      if (param === 'ts' && params.get(param) === 'Nightly') {
+      if (param === 'ts' && (params.get(param) === 'Nightly' || params.get(param) === 'next')) {
         urlParams['ts'] = sandbox.ts.version
       } else {
         urlParams['ts'] = params.get(param)

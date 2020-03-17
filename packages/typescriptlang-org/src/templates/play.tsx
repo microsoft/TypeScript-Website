@@ -47,7 +47,9 @@ const Play: React.FC<Props> = (props) => {
     getLoaderScript.async = true;
     getLoaderScript.onload = () => {
       const params = new URLSearchParams(location.search)
-      const tsVersion = params.get("ts") || playgroundReleases.versions.sort().pop()
+      // nothing || Nightly -> next || original ts param
+      const supportedVersion = !params.get("ts") ? undefined : params.get("ts") === "Nightly" ? "next" : params.get("ts")
+      const tsVersion = supportedVersion || playgroundReleases.versions.sort().pop()
 
       // @ts-ignore
       const re = global.require
