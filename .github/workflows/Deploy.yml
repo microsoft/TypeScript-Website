@@ -15,6 +15,8 @@ jobs:
     - uses: actions/setup-node@v1
     - uses: actions/setup-ruby@v1
 
+    - run: git checkout 292337e1193b49ce1f701cd055e7b2182277a052
+
     # Get local dependencies
     - run: yarn install
     # danger for PR builds
