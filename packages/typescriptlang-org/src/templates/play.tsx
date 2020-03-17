@@ -111,6 +111,7 @@ const Play: React.FC<Props> = (props) => {
         });
 
         sandboxEnv.editor.focus()
+        sandboxEnv.editor.layout()
       });
     }
 

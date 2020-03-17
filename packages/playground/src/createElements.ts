@@ -27,6 +27,9 @@ export const createDragBar = () => {
         window.localStorage.setItem('dragbar-window-width', '' + window.innerWidth)
       }
 
+      // @ts-ignore - I know what I'm doing
+      window.sandbox.editor.layout()
+
       // Don't allow selection
       e.stopPropagation()
       e.cancelBubble = true
@@ -165,6 +168,10 @@ export const setupSidebarToggle = () => {
       sidebar.style.display = 'block'
     }
     updateToggle()
+
+    // @ts-ignore - I know what I'm doing
+    window.sandbox.editor.layout()
+
     return false
   }
 }
