@@ -86,3 +86,17 @@ import { valueOfPi } from "./constants";
 
 export const twoPi = valueOfPi * 2;
 ```
+
+#### `ES2020`
+
+```ts twoslash
+// @showEmit
+// @module: es2020
+// @filename: constants.ts
+export const valueOfPi = 3.142;
+// ---cut---
+// @filename: index.ts
+import { valueOfPi } from "./constants";
+
+export const twoPi = valueOfPi * 2;
+```
