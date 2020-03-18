@@ -40,5 +40,8 @@
     "semi": false,
     "singleQuote": true,
     "trailingComma": "es5"
+  },
+  "dependencies": {
+    "serve-handler": "^6.1.2"
   }
 }
