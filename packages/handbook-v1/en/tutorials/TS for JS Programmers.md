@@ -260,5 +260,38 @@ const color = { hex: "#187ABF" };
 printPoint(color);
 ```
 
-This is a high level 5 minute overview of the sort of syntax and tools you would use in everyday code.
-From here you should read [through the handbook](/docs/handbook/basic-types.html) or explore the [Playground examples](/play#show-examples).
+Finally, to really nail this point down, structurally there is no difference between how classes and objects conform to shapes:
+
+```ts twoslash
+// @errors: 2345
+interface Point {
+  x: number;
+  y: number;
+}
+
+function printPoint(p: Point) {
+  console.log(`${p.x}, ${p.y}`);
+}
+// ---cut---
+class VirtualPoint {
+  x: number;
+  y: number;
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
+}
+
+const newVPoint = new VirtualPoint(13, 56);
+printPoint(newVPoint); // prints "13, 56"
+```
+
+If the object or class has all the required properties, then TypeScript will say they match regardless of the implementation details.
+
+## Next Steps
+
+This doc is a high level 5 minute overview of the sort of syntax and tools you would use in everyday code. From here you should:
+
+- Read the full Handbook [from start to finish](/docs/handbook/basic-types.html) (30m)
+- Explore the [Playground examples](/play#show-examples).
