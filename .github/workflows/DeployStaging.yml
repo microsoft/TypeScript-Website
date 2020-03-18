@@ -26,7 +26,7 @@ jobs:
       # Move the files to the new app
       - run: rm -rf serve/public
       - name: Move V2 public to serve dir
-        run: cp packages/typescriptlang-org/public serve
+        run: cp -r packages/typescriptlang-org/public serve
 
       - name: Build serve server
         run: |
