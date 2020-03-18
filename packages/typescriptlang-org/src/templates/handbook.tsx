@@ -150,6 +150,7 @@ export const pageQuery = graphql`
         title
         disable_toc
         oneline
+        wip
       }
     }
   }
