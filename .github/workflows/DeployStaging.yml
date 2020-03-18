@@ -1,0 +1,39 @@
+name: Build Website To Staging
+
+on:
+  push:
+    branches: [v2]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out, and set up the node/ruby infra
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '13.x'
+
+      # Build v2
+      - name: Build website v2
+        run: |
+          yarn install
+          yarn bootstrap
+          yarn build
+            yarn build-site
+
+      # Move the files to the new app
+      - run: rm -rf serve/public
+      - name: Move V2 public to serve dir
+        run: cp packages/typescriptlang-org/public serve
+
+      - name: Build serve server
+        run: |
+          cd serve
+          npm i
+
+      # Deploy _just_ the serve server
+      - uses: azure/webapps-deploy@v1
+        with:
+          creds: ${{ secrets.AZURE_STAGING_PUBLISHING_PROFILE }}
