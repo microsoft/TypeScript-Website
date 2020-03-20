@@ -87,6 +87,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
     <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneline || ""} lang="en" allSitePage={props.data.allSitePage}>
       <section id="doc-layout">
         <SidebarToggleButton />
+
         <Sidebar navItems={oldHandbookNavigation} selectedID={selectedID} />
         <div id="handbook-content">
           <h2>{post.frontmatter.title}</h2>
