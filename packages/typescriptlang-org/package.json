@@ -28,7 +28,7 @@
     "canvas": "^2.6.1",
     "gatsby": "^2.19.18",
     "gatsby-plugin-catch-links": "^2.1.25",
-    "gatsby-plugin-client-side-redirect": "^1.0.0",
+    "gatsby-plugin-client-side-redirect": "orta/gatsby-plugin-client-side-redirect#index",
     "gatsby-plugin-i18n": "^1.0.1",
     "gatsby-plugin-manifest": "^2.2.41",
     "gatsby-plugin-mdx": "^1.0.73",
