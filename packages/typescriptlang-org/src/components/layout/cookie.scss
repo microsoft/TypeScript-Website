@@ -1,0 +1,94 @@
+@charset "utf-8"; /*! mscc v0.4.2 - Copyright 2020 Microsoft Corporation */
+.cc-banner {
+  position: relative;
+  font-size: 12px;
+}
+.cc-banner .hide {
+  display: none;
+}
+.cc-banner a,
+.cc-banner div,
+.cc-banner span,
+.cc-banner svg {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+.cc-banner .cc-v-center {
+  display: inline;
+  vertical-align: middle;
+  line-height: 2em;
+}
+.cc-banner[dir="rtl"] .cc-float-left,
+.cc-float-right {
+  float: right;
+}
+.cc-banner[dir="rtl"] .cc-float-right,
+.cc-float-left {
+  float: left;
+}
+.cc-banner {
+  font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #231f20;
+  background: #f2f2f2;
+  display: none;
+  text-align: center;
+  padding: 0 1em;
+  margin: 0;
+}
+@media (min-width: 768px) {
+  .cc-banner {
+    font-size: 13px;
+    padding: 0 1.65em;
+  }
+}
+.cc-banner > .cc-container {
+  text-align: left;
+  padding: 0.75em 0;
+  display: inline-block;
+  width: 100%;
+}
+[dir="rtl"].cc-banner > .cc-container {
+  text-align: right;
+}
+@media (min-width: 1084px) {
+  .cc-banner {
+    padding: 0;
+  }
+  .cc-banner > .cc-container {
+    width: 90%;
+    max-width: 1600px;
+  }
+}
+.cc-banner.active {
+  display: block;
+}
+.cc-banner .cc-icon {
+  height: 1.846em;
+  width: 1.846em;
+}
+.cc-banner .cc-text {
+  margin-left: 0.5em;
+  margin-right: 1.5em;
+}
+[dir="rtl"].cc-banner .cc-text {
+  margin-left: 1.5em;
+  margin-right: 0.5em;
+}
+.cc-banner .cc-link {
+  text-decoration: none;
+  color: #0067b8;
+}
+.cc-banner .cc-link:focus,
+.cc-banner .cc-link:hover {
+  text-decoration: underline;
+}
+.cc-banner .cc-link:focus {
+  outline: 0;
+  background: content-box rgba(0, 120, 215, 0.1);
+}
+@media screen and (-ms-high-contrast: active) {
+  .cc-banner {
+    border-bottom: 1px solid;
+  }
+}

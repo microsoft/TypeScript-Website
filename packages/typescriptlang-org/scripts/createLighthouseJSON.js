@@ -54,12 +54,9 @@ const go = async () => {
     const json = {
       ci: {
         collect: {
-          url: [
-            sitemap,
-            ...randomHandbooks(
-              removeTypeScriptExamples(removeNonEnglish(urls))
-            ),
-          ],
+          url: randomHandbooks(
+            removeTypeScriptExamples(removeNonEnglish(urls))
+          ),
         },
       },
     }

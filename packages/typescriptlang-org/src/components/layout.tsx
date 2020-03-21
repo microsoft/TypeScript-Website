@@ -5,6 +5,7 @@ import { SeoProps, HeadSEO } from "./HeadSEO";
 import "./layout/main.scss"
 import { AppInsights } from "./AppInsights";
 import { Helmet } from "react-helmet";
+import { CookieBanner } from "./layout/CookieBanner"
 
 type LayoutProps = SeoProps & Props & {
   lang: string,
@@ -12,7 +13,6 @@ type LayoutProps = SeoProps & Props & {
 }
 
 export const Layout = (props: LayoutProps) => {
-
   return (
     <>
       <Helmet htmlAttributes={{ lang: props.lang }}>
@@ -22,6 +22,7 @@ export const Layout = (props: LayoutProps) => {
       <HeadSEO {...props} />
       <div className="ms-Fabric">
         <SiteNav {...props} />
+        <CookieBanner />
         <main>{props.children}</main>
         <SiteFooter {...props} />
       </div>
