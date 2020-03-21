@@ -9,27 +9,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Check out, and set up the node/ruby infra
-    - uses: actions/checkout@v1
-      with: {submodules: true}
-    - uses: actions/setup-node@v1
-    - uses: actions/setup-ruby@v1
-
-    # Get local dependencies
-    - run: yarn install
-    # danger for PR builds
-    - if: github.event_name == 'pull_request'
-      run: yarn danger ci
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - run: (cd src/play && yarn install && yarn setup)
-    - run: gem install bundler -v 1.16.1
-    - run: bundle install
-
-    # Build v1
-    - name: Build website v1
-      run: gulp publish
-
     # Switch to node 13
     - uses: actions/setup-node@v1
       with:
@@ -47,24 +26,13 @@ jobs:
         yarn install
         yarn bootstrap
         yarn build
-        yarn build-site --prefix-paths # ensure the gatsby site knows to prefix with v2
-        cp -r packages/typescriptlang-org/public ../site/v2
-        cd ..
+        yarn build-site
 
-    # PR: Deploy if we can
-    - name: Deploy PR
-      run: 'if test -z "$NOW_ACCESS_TOKEN"; then echo "Skipping deploy";
-            else npx now site/ --token="$NOW_ACCESS_TOKEN"
-                              --name="typescript-site"; fi'
+    # CI: Deploy to the right branch
+    - name: Deploy + Publish
+      if: github.event_name != 'pull_request'
+      uses: peaceiris/actions-gh-pages@v1.1.0
       env:
-        NOW_ACCESS_TOKEN: ${{ secrets.NOW_ACCESS_TOKEN }}
-        PR_NUMBER: ${{ github.event.pull_request.number }}
-
-    # # CI: Deploy to the right branch
-    # - name: Deploy + Publish
-    #   if: github.event_name != 'pull_request'
-    #   uses: peaceiris/actions-gh-pages@v1.1.0
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #     PUBLISH_BRANCH: 'SITE-PRODUCTION'
-    #     PUBLISH_DIR: ./site
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PUBLISH_BRANCH: 'SITE-PRODUCTION'
+        PUBLISH_DIR: ./v2/packages/typescriptlang-org/public
