@@ -6,6 +6,7 @@ export const veryOldRedirects = {
   samples: "docs/home",
   "/docs/home.html": "/docs/home",
   "/playground": "/play",
+  "/docs/index.html": "/docs/home",
 }
 
 // These were .html files in the handbook with some redirection work
