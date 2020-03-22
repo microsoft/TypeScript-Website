@@ -60,7 +60,7 @@ export const UpcomingReleaseMeta = () => {
   const rcParts = intl.formatDateToParts(rcDate, { month: "short", day: "numeric" })
   const shipParts = intl.formatDateToParts(endDate, { month: "short", day: "numeric" })
 
-  const shipMsg = <a href={releaseInfo.releaseNotesURL}>{releasePlan.upcoming_version}</a>
+  const shipMsg = <a href={releasePlan.iteration_plan_url}>{releasePlan.upcoming_version}</a>
   const releaseMsg = <a href={withPrefix(releaseInfo.releaseNotesURL)}>{i("index_releases_released")}</a>
   const betaMsg = !releaseInfo.isBeta ? <span>{i("index_releases_beta")}</span> : <a href={releaseInfo.betaPostURL}>{i("index_releases_beta")}</a>
   const rcMsg = !releaseInfo.isBeta ? <span>{i("index_releases_rc")}</span> : <a href={releaseInfo.rcPostURL}>{i("index_releases_rc")}</a>
