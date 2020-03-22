@@ -397,7 +397,7 @@ export function twoslasher(
     }
 
     // Get all of the interesting quick info popover
-    if (!handbookOptions.noStaticSemanticInfo) {
+    if (!handbookOptions.noStaticSemanticInfo && !handbookOptions.showEmit) {
       // const fileRep = fileMap[file]
       const source = env.sys.readFile(file)!
       const fileContentStartIndexInModifiedFile = code.indexOf(source)

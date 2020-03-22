@@ -4,7 +4,7 @@ type Lines = import('shiki').IThemedToken[][]
 type Options = import('shiki/dist/renderer').HtmlRendererOptions
 type TwoSlash = import('ts-twoslasher').TwoSlashReturn
 
-import { createHighlightedString, stripHTML } from './utils'
+import { stripHTML, createHighlightedString2 } from './utils'
 
 export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash) {
   if (!twoslash) {
@@ -77,7 +77,7 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
             return range
           })
 
-          tokenContent += createHighlightedString(ranges, token.content)
+          tokenContent += createHighlightedString2(ranges, token.content)
         } else {
           tokenContent += token.content
         }
