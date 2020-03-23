@@ -30,7 +30,7 @@ const Play = (props: Props) => {
       // @ts-ignore - this is allowed in the DOM
       document.location = withPrefix(props.pageContext.redirectHref)
     }
-  })
+  }, [])
 
   return (
     <Layout disableBetaNotification title={i("playground_example_prefix") + props.pageContext.title} description={i("head_playground_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>

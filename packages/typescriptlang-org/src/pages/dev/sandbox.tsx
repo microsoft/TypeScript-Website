@@ -72,7 +72,7 @@ export default async function () {
     }
 
     document.body.appendChild(getLoaderScript);
-  })
+  }, [])
 
   return (
     <>

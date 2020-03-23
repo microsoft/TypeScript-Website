@@ -157,7 +157,7 @@ const Index: React.FC<Props> = (props) => {
     }
 
     document.body.appendChild(getLoaderScript);
-  })
+  }, [])
 
   return (
     <>

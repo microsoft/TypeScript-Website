@@ -118,7 +118,7 @@ const Play: React.FC<Props> = (props) => {
     }
 
     document.body.appendChild(getLoaderScript);
-  })
+  }, [])
 
 
   return (

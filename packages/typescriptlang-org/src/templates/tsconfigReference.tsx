@@ -70,7 +70,7 @@ const TSConfigReferenceTemplateComponent = (props) => {
     return () => {
       window.removeEventListener("scroll", updateSidebar)
     }
-  })
+  }, [])
 
   return (
     <Layout title={i("tsconfig_title")} description={i("tsconfig_description")} lang={props.pageContext.locale} allSitePage={props.data.allSitePage}>

@@ -44,7 +44,7 @@ export const PlaygroundSamples = (props: Props) => {
     const triggerAnchor = document.getElementById("popover-trigger-anchor")
     if (!triggerAnchor) throw new Error("No trigger anchor found")
     triggerAnchor.onfocus = showPopover
-  });
+  }, []);
 
   return (
     <div id="playground-samples-popover" aria-hidden="true" aria-label="Code Samples Submenu">
