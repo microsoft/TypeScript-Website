@@ -41,6 +41,8 @@ const Play: React.FC<Props> = (props) => {
     window.react = React
     // @ts-ignore - for React-based plugins
     window.reactDOM = ReactDOM
+    // @ts-ignore - so that plugins etc can use local functions
+    window.i = i
 
     const getLoaderScript = document.createElement('script');
     getLoaderScript.src = withPrefix("/js/vs.loader.js");
