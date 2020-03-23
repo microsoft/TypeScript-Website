@@ -1,6 +1,6 @@
 ---
-name: Documentation Issue
-about: Report an issue with documentation
+name: Website Improvement
+about: Offer a suggestion for improvement
 title: 'Docs: []'
 labels: 'Idea'
 assignees: '@orta'
