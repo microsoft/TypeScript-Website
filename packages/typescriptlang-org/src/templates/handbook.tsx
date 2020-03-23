@@ -11,6 +11,7 @@ import slugger from "github-slugger"
 
 import "./handbook.scss"
 import "./markdown.scss"
+import { setupHandbookHovers } from "./handbook-lsp-hover"
 
 type Props = {
   pageContext: any
@@ -70,11 +71,15 @@ const HandbookTemplate: React.FC<Props> = (props) => {
 
     // Handles setting the scroll 
     window.addEventListener("scroll", updateSidebar, { passive: true, capture: true });
+    // Sets current selection
     updateSidebar()
+
+    setupHandbookHovers()
+
     return () => {
       window.removeEventListener("scroll", updateSidebar)
     }
-  })
+  }, [])
 
   const { previous, next } = props.pageContext
   if (!post.frontmatter) throw new Error(`No front-matter found for the file with props: ${props}`)
@@ -95,6 +100,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
 
             <div className="whitespace raised">
               <div className="markdown" dangerouslySetInnerHTML={{ __html: post.html! }} />
+              <div id="mouse-hover-info" className="hover-info" />
             </div>
 
             {showSidebar &&

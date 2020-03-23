@@ -142,7 +142,8 @@
         flex-wrap: wrap;
 
         > div {
-          width: 50%;
+          min-width: 200px;
+          max-width: 400px;
 
           ol {
             margin: 0;
@@ -160,8 +161,23 @@
           label {
             font-weight: 400;
 
+            &:hover a.compiler_info_link {
+              display: block;
+            }
+
+            a.compiler_info_link {
+              display: none;
+              padding: 0;
+              right: 10px;
+              top: 0;
+              text-align: center;
+              // display: inline-block;
+              position: absolute;
+            }
+
             > span {
               font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+              margin-left: 4px;
             }
           }
         }
@@ -187,13 +203,6 @@
           }
         }
       }
-    }
-    a.compiler_info_link {
-      &::before {
-        content: "i";
-      }
-      color: $ts-muted-green;
-      border: 1px $ts-muted-red solid;
     }
   }
 }
@@ -243,6 +252,9 @@ main > nav {
 main #editor-toolbar {
   // For the main buttons
   > ul > li {
+    margin-left: 0px;
+    margin-bottom: 0px;
+
     > a {
       // Fix their vertical centering
       padding-top: 0.8rem;
