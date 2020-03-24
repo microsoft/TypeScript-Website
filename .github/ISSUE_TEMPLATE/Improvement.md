@@ -12,8 +12,6 @@ assignees: '@orta'
 
 <!-- Issue Report -->
 
-<!-- What can be done? -->
-
 **Improvement Idea:**
 
 <!-- Why do it this way? -->
