@@ -1,7 +1,7 @@
 ---
 name: Documentation Issue
 about: Report an issue with documentation
-title: 'Docs: []'
+title: 'Docs: '
 labels: 'Docs'
 assignees: '@orta'
 ---
