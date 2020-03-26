@@ -32,8 +32,7 @@ jobs:
         run: |
           cd serve
           npm i
-
       # Deploy _just_ the serve server
-      - uses: azure/webapps-deploy@v1
-        with:
-          creds: ${{ secrets.AZURE_STAGING_PUBLISHING_PROFILE }}
+      # - uses: azure/webapps-deploy@v1
+      #   with:
+      #     creds: ${{ secrets.AZURE_STAGING_PUBLISHING_PROFILE }}
