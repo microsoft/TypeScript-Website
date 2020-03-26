@@ -1,7 +1,7 @@
 ---
 name: Website Improvement
 about: Offer a suggestion for improvement
-title: 'Docs: []'
+title: 'Idea: '
 labels: 'Idea'
 assignees: '@orta'
 ---
