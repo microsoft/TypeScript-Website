@@ -1,7 +1,7 @@
 ---
 name: Playground Issue
 about: Report a bug with the TypeScript Playground
-title: 'Playground: []'
+title: 'Playground: '
 labels: 'Playground'
 assignees: '@orta'
 ---
