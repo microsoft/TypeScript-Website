@@ -81,7 +81,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
     }
   }, [])
 
-  const { previous, next } = props.pageContext
+  const { previous, next, html } = props.pageContext
   if (!post.frontmatter) throw new Error(`No front-matter found for the file with props: ${props}`)
   if (!post.html) throw new Error(`No html found for the file with props: ${props}`)
 
@@ -99,7 +99,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
           <article>
 
             <div className="whitespace raised">
-              <div className="markdown" dangerouslySetInnerHTML={{ __html: post.html! }} />
+              <div className="markdown" dangerouslySetInnerHTML={{ __html: html }} />
               <div id="mouse-hover-info" className="hover-info" />
             </div>
 

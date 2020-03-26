@@ -1,4 +1,5 @@
 const path = require(`path`)
+const dom = require("jsdom")
 import { NodePluginArgs, CreatePagesArgs } from "gatsby"
 
 export const createOldHandbookPages = async (
@@ -22,6 +23,7 @@ export const createOldHandbookPages = async (
             frontmatter {
               permalink
             }
+            html
           }
         }
       }
@@ -35,11 +37,42 @@ export const createOldHandbookPages = async (
   const anyData = result.data as any
   const docs = anyData.allFile.nodes
 
+  // create a map(mdToSlug) to replace markdown links to slugs.
+  // E.g. mdToSlug: {foo.md: '/docs/bar/foo.html', ...}
+  const mdToSlug = docs.reduce((result: { ["mdName"]: string }, next: any) => {
+    return next.childMarkdownRemark ? {
+      ...result,
+      [encodeURI(next.name)+".md"]: // encodeURI in case name contains space. ' ' -> '%20'
+        next.childMarkdownRemark.frontmatter.permalink,
+    } : result
+  }, {})
+  // console.log("mdToSlug:", mdToSlug)
+
+  const parser = new (new dom.JSDOM()).window.DOMParser() as DOMParser
   docs.forEach((post: any, index: number) => {
     const previous = index === docs.length - 1 ? null : docs[index + 1].node
     const next = index === 0 ? null : docs[index - 1].node
 
     if (post.childMarkdownRemark) {
+
+      const html = (() => { // html string whose markdown links are replaced to slugs.
+        const document = parser.parseFromString(post.childMarkdownRemark.html, "text/html")
+        document.querySelectorAll("a").forEach(a => {
+          const link = a.getAttribute("href") || ""
+          const mdName = Object.keys(mdToSlug).find(mdName => {
+            const regexp = new RegExp(`/${mdName}|^${mdName}`)
+            return regexp.test(link)
+          })
+          if (mdName) {
+            const hashPos = link.lastIndexOf("#")
+            const hashLink = hashPos > 0 ? link.substr(hashPos) : ""
+            a.setAttribute("href", mdToSlug[mdName]+hashLink)
+            // console.log("converted a link in ", post.name , ":", link, "->", mdToSlug[mdName]+hashLink)
+          }
+        })
+        return document.documentElement.innerHTML
+      })()
+
       createPage({
         path: post.childMarkdownRemark.frontmatter.permalink,
         component: handbookPage,
@@ -48,6 +81,7 @@ export const createOldHandbookPages = async (
           previous,
           next,
           isOldHandbook: true,
+          html,
         },
       })
     } else {
