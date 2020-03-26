@@ -10,17 +10,17 @@
 // either through @types from DefinitelyTyped or via d.ts
 // files inside the dependency itself.
 
-import {danger} from "danger"
+import { danger } from "danger";
 
 // Highlight these identifiers below to see the associated
 // JSDocs from the built-in types:
 
-danger.github
+danger.github;
 
 // This handles transitive dependencies also, so in this case,
 // danger depends on @octokit/rest also.
 
-danger.github.api.pulls.createComment()
+danger.github.api.pulls.createComment();
 
 // Type acquisition will also take Node's built-in modules
 // into account and pull in Node's type declarations
@@ -28,7 +28,7 @@ danger.github.api.pulls.createComment()
 // tend to take a bit longer than the others since there's
 // quite a lot of types to download!
 
-import {readFileSync} from "fs"
+import { readFileSync } from "fs";
 
-const inputPath = "my/path/file.ts"
-readFileSync(inputPath, "utf8")
+const inputPath = "my/path/file.ts";
+readFileSync(inputPath, "utf8");

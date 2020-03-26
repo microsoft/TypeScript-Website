@@ -15,9 +15,9 @@
 
 // Wonder what the new defaults are?
 
-declare const trueInTS: boolean
-declare const trueInJS: boolean
-declare const monaco: any
+declare const trueInTS: boolean;
+declare const trueInJS: boolean;
+declare const monaco: any;
 
 const defaultCompilerOptions = {
   noImplicitAny: true,
@@ -52,4 +52,4 @@ const defaultCompilerOptions = {
 
   target: monaco.languages.typescript.ScriptTarget.ES2017,
   jsx: monaco.languages.typescript.JsxEmit.None,
-}
+};

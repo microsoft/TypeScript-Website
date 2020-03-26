@@ -5,13 +5,13 @@
 
 // any型が使用されている良い例はJSON.parseの結果です
 
-const myObject = JSON.parse('{}')
+const myObject = JSON.parse("{}");
 
 // TypeScriptにおけるany宣言は、あなたがその値について詳しく知っていて
 // それが厳密に正しくないとしても、安全なものなので信じてくださいという宣言です。
 // 例えば、次のコードはクラッシュします。
 
-myObject.x.y.z
+myObject.x.y.z;
 
 // any型を利用することで、型の安全性と引き換えに、
 // よりオリジナルに近いJavaScriptコードを書くことができます。
@@ -20,11 +20,11 @@ myObject.x.y.z
 // 一方の型をもう一方に割り当て可能にする「型のワイルドカード」
 // によく似ています。
 
-declare function debug(value: any): void
+declare function debug(value: any): void;
 
-debug('a string')
-debug(23)
-debug({ color: 'blue' })
+debug("a string");
+debug(23);
+debug({ color: "blue" });
 
 // いずれのdebug関数実行も、引数の型を
 // anyに置き換えることができるため許可されます。
@@ -32,10 +32,10 @@ debug({ color: 'blue' })
 // TypeScriptはany型の位置を考慮します。
 // たとえば、この様なタプル型を利用した関数引数であってもです。
 
-declare function swap(x: [number, string]): [string, number]
+declare function swap(x: [number, string]): [string, number];
 
-declare const pair: [any, any]
-swap(pair)
+declare const pair: [any, any];
+swap(pair);
 
 // swap関数引数であるnumber型・string型のペアは、
 // any型のペアと置き換えることができるため、

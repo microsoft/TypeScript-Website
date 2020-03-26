@@ -11,11 +11,11 @@
 // are optional and non-optional callbacks.
 
 interface PluginSettings {
-  pluginShouldLoad?: () => void
-  pluginIsActivated: () => void
+  pluginShouldLoad?: () => void;
+  pluginIsActivated: () => void;
 }
 
-declare const plugin: PluginSettings
+declare const plugin: PluginSettings;
 
 // Because pluginShouldLoad could not exist, then
 // the check is legitimate.
@@ -37,5 +37,5 @@ if (plugin.pluginIsActivated) {
 // inside the if block.
 
 if (plugin.pluginIsActivated) {
-  plugin.pluginIsActivated()
+  plugin.pluginIsActivated();
 }

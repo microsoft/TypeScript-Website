@@ -5,7 +5,7 @@
 
 // 首先我们需要一种类型，用于扩展其他类。主要职责是声明传入的类型是一个类。
 
-type Constructor = new (...args: any[]) => {}
+type Constructor = new (...args: any[]) => {};
 
 // 然后我们可以创建一系列的类，这些类通过包装最终的类来进行扩展。
 // 此模式当相似的对象具有不同的功能时效果很好。
@@ -73,7 +73,6 @@ flappySprite.setVisible();
 flappySprite.setScale(0.8);
 console.log(flappySprite.scale);
 
-
 const gameBoySprite = new EightBitSprite("L block");
 gameBoySprite.setScale(0.3);
 
@@ -86,7 +85,7 @@ type GConstructor<T = {}> = new (...args: any[]) => T;
 
 // 您可以声明只能在基类为特殊形状时应用此混合。
 
-type Moveable = GConstructor<{ setXYAcceleration: (x: number, y: number) => void }>
+type Moveable = GConstructor<{ setXYAcceleration: (x: number, y: number) => void }>;
 
 // 然后我们可以创建一个混合，它依赖于上述 GConstructor 参数
 // 中存在的函数。
@@ -95,7 +94,7 @@ function Jumpable<TBase extends Moveable>(Base: TBase) {
   return class extends Base {
     jump() {
       // 这个混合现在可以知道 setXYAcceleration
-      this.setXYAcceleration(0, 20)
+      this.setXYAcceleration(0, 20);
     }
   };
 }

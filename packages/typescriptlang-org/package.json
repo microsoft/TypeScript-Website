@@ -69,8 +69,7 @@
     "@types/react": "^16.9.20",
     "@types/react-dom": "^16.9.5",
     "concurrently": "^5.1.0",
-    "gatsby-plugin-typescript": "^2.1.27",
-    "prettier": "^1.19.1"
+    "gatsby-plugin-typescript": "^2.1.27"
   },
   "jest": {
     "preset": "ts-jest",

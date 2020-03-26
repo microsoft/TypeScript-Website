@@ -58,7 +58,7 @@ export const numberOfStickers = 11;
 // 您可以在一个文件中按需包含任意多个导出，默认导出几乎相与之同。
 
 /** 为您生成一个贴纸 */
-const stickerGenerator = () => { };
+const stickerGenerator = () => {};
 export default stickerGenerator;
 
 // 它可以以如下形式被导入至另一个文件：

@@ -15,7 +15,7 @@ const anUndefinedProperty: undefined = emptyObj["anything"];
 const searchResults = {
   video: { name: "LEGO Movie" },
   text: null,
-  audio: { name: "LEGO Movie Soundtrack" }
+  audio: { name: "LEGO Movie Soundtrack" },
 };
 
 // 为什么不使用 undefined？主要原因是让您可以正确的校验 text 是否被包含。
@@ -67,7 +67,7 @@ if (userID) {
 
 // Void 是一个函数没有返回值时返回的类型。
 
-const voidFunction = () => { };
+const voidFunction = () => {};
 const resultOfVoidFunction = voidFunction();
 
 // 这通常是偶然的，TypeScript 会保留 void 类型以使您得到编译错误

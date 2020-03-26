@@ -49,10 +49,10 @@ interface Drawable {
 // Esta función toma un conjunto de objetos que tiene una función
 // para dibujar en la pantalla
 function renderToScreen<Type extends Drawable>(input: Type[]) {
-  input.forEach(i => i.draw());
+  input.forEach((i) => i.draw());
 }
 
-const objectsWithDraw = [{ draw: () => { } }, { draw: () => { } }];
+const objectsWithDraw = [{ draw: () => {} }, { draw: () => {} }];
 renderToScreen(objectsWithDraw);
 
 // Fallará si falta draw:
@@ -90,10 +90,10 @@ function addTypedObjectToCache<Type, Cache extends CacheHostGeneric<Type>>(obj: 
 }
 
 // Eso escaló bastante rápido en términos de sintaxis. Sin
-// embargo provee más seguridad. Estas son decisiones que 
+// embargo provee más seguridad. Estas son decisiones que
 // ahora tienes más conocimiento para hacer. Al proporcionar
-// APIs para terceros, la genericidad ofrece una forma flexible 
-// de permitir a otros utilizar sus propios tipos con total capacidad 
+// APIs para terceros, la genericidad ofrece una forma flexible
+// de permitir a otros utilizar sus propios tipos con total capacidad
 // de inferencia de código.
 
 // Para más ejemplos de genericidad con clases e interfaces:

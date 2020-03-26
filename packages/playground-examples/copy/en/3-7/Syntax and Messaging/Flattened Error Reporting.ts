@@ -4,7 +4,6 @@
 // With 3.7, we've taken a few cases which could be particularly
 // egregious.
 
-
 // Nested Properties
 
 let a = { b: { c: { d: { e: "string" } } } };
@@ -30,12 +29,11 @@ a = b;
 //               Types of property 'e' are incompatible.
 //                 Type 'number' is not assignable to type 'string'
 
-
 // This can handle working through different types of objects,
 // to still give a useful and concise error message.
 
 class ExampleClass {
-  state = "ok"
+  state = "ok";
 }
 
 class OtherClass {

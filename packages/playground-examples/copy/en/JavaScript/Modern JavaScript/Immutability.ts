@@ -19,7 +19,7 @@ helloWorld = "Hi world";
 // down a bit when using objects.
 
 const myConstantObject = {
-  msg: "Hello World"
+  msg: "Hello World",
 };
 
 // myConstantObject is not quite a constant though, because
@@ -33,7 +33,7 @@ myConstantObject.msg = "Hi World";
 // be changed using Object.freeze.
 
 const myDefinitelyConstantObject = Object.freeze({
-  msg: "Hello World"
+  msg: "Hello World",
 });
 
 // When an object is frozen, then you cannot change the

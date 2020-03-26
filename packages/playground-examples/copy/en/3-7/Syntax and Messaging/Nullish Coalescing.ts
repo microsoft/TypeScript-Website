@@ -12,10 +12,10 @@
 
 interface AppConfiguration {
   // Default: "(no name)"; empty string IS valid
-  name:  string;
+  name: string;
 
   // Default: -1; 0 is valid
-  items:  number;
+  items: number;
 
   // Default: true
   active: boolean;

@@ -35,7 +35,7 @@ allowsFirstFiveNumbers(potentiallyAnyNumber);
 // しかし、このルールは混み入ったオブジェクトには適用されません。
 
 const myUser = {
-  name: "Sabrina"
+  name: "Sabrina",
 };
 
 // 定数として定義された `name："Sabrina"` であっても
@@ -49,7 +49,7 @@ myUser.name = "Cynthia";
 // しかしながら、次の機能でこれを許容することができます。
 
 const myUnchangingUser = {
-  name: "Fatma"
+  name: "Fatma",
 } as const;
 
 // 「as const」をオブジェクトに適用すると、

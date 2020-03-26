@@ -6,7 +6,7 @@
 
 // https://deno.land
 
-// Deno cuenta con un sistema de permisos con base en el aislamiento, 
+// Deno cuenta con un sistema de permisos con base en el aislamiento,
 // lo cual reduce el acceso que tiene JavaScript al sistema de
 // archivos o a la red y utiliza importaciones basadas en http, las
 // cuales son descargadas y almacenadas localmente.
@@ -16,17 +16,14 @@
 import compose from "https://deno.land/x/denofun/lib/compose.ts";
 
 function greet(name: string) {
-  return `¡Hola, ${name}!`
+  return `¡Hola, ${name}!`;
 }
 
 function makeLoud(x: string) {
   return x.toUpperCase();
 }
 
-const greetLoudly = compose(
-  makeLoud, 
-  greet
-);
+const greetLoudly = compose(makeLoud, greet);
 
 // Dice "¡HOLA, MUNDO!."
 greetLoudly("mundo");

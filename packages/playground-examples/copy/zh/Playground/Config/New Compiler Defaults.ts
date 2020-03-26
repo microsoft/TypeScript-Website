@@ -11,9 +11,9 @@
 
 // 想知道新的默认值是什么吗？
 
-declare const trueInTS: boolean
-declare const trueInJS: boolean
-declare const monaco: any
+declare const trueInTS: boolean;
+declare const trueInJS: boolean;
+declare const monaco: any;
 
 const defaultCompilerOptions = {
   noImplicitAny: true,
@@ -48,4 +48,4 @@ const defaultCompilerOptions = {
 
   target: monaco.languages.typescript.ScriptTarget.ES2017,
   jsx: monaco.languages.typescript.JsxEmit.None,
-}
+};

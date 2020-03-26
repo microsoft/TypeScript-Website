@@ -3,7 +3,7 @@
 
 // 例如，TypeScript 可以提供针对 typo 的快速修复：
 
-const eulersNumber = 2.7182818284
+const eulersNumber = 2.7182818284;
 eulersNumber.toStrang();
 //           ^______^ - 选中这里查看效果
 

@@ -21,14 +21,10 @@ function makeLoud(x: string) {
   return x.toUpperCase();
 }
 
-const greetLoudly = compose(
-  makeLoud,
-  greet
-);
+const greetLoudly = compose(makeLoud, greet);
 
 // Echos "HELLO, WORLD!."
 greetLoudly("world");
-
 
 import concat from "https://deno.land/x/denofun/lib/concat.ts";
 

@@ -3,7 +3,7 @@
 // How c0de fl0ws inside our JavaScript files can affect
 // the types throughout our programs.
 
-const users = [{ name: 'Ahmed' }, { name: 'Gemma' }, { name: 'Jon' }]
+const users = [{ name: "Ahmed" }, { name: "Gemma" }, { name: "Jon" }];
 
 // We're going to look to see if we can find a user named "jon".
-const jon = users.find(u => u.name === 'jon')
+const jon = users.find((u) => u.name === "jon");

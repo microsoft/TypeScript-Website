@@ -14,7 +14,7 @@ helloWorld = "Hi world";
 // 使用 const 是很好的第一步，但是使用 object 时这样会失效。
 
 const myConstantObject = {
-  msg: "Hello World"
+  msg: "Hello World",
 };
 
 // myConstantObject 并不是一个常量，因为我们仍然可以更改对象的某些
@@ -26,7 +26,7 @@ myConstantObject.msg = "Hi World";
 // 我们可以改用 Object.freeze 来实现。
 
 const myDefinitelyConstantObject = Object.freeze({
-  msg: "Hello World"
+  msg: "Hello World",
 });
 
 // 当一个对象被 “冻结”，之后您将不能改变其内部。TypeScript 将

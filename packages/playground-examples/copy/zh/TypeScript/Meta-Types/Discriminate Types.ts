@@ -4,8 +4,7 @@
 // 此模式对于具有不同 string 或 number 常量的相似对象集非常有效。
 // 例如：具名事件列表或对象的版本集。
 
-type TimingEvent = { name: "start"; userStarted: boolean }
-  | { name: "closed"; duration: number };
+type TimingEvent = { name: "start"; userStarted: boolean } | { name: "closed"; duration: number };
 
 // 当一个事件传入这个函数，它可能是潜在的两种类型之一。
 
@@ -30,9 +29,7 @@ const handleEvent = (event: TimingEvent) => {
 
 // 在这个例子中，我们有一个可辨识联合和一个额外的需要处理的错误状态。
 
-type APIResponses = { version: 0; msg: string }
-  | { version: 1; message: string; status: number }
-  | { error: string };
+type APIResponses = { version: 0; msg: string } | { version: 1; message: string; status: number } | { error: string };
 
 const handleResponse = (response: APIResponses) => {
   // 处理错误的状态并返回。

@@ -7,8 +7,7 @@
 // for example: a list of named events, or versioned
 // sets of objects.
 
-type TimingEvent = { name: "start"; userStarted: boolean }
-                 | { name: "closed"; duration: number };
+type TimingEvent = { name: "start"; userStarted: boolean } | { name: "closed"; duration: number };
 
 // When event comes into this function, it could be any
 // of the two potential types.
@@ -38,9 +37,7 @@ const handleEvent = (event: TimingEvent) => {
 // In this example, we have a discriminate union and an
 // additional error state to handle.
 
-type APIResponses = { version: 0; msg: string }
-                  | { version: 1; message: string; status: number }
-                  | { error: string };
+type APIResponses = { version: 0; msg: string } | { version: 1; message: string; status: number } | { error: string };
 
 const handleResponse = (response: APIResponses) => {
   // Handle the error case, and then return

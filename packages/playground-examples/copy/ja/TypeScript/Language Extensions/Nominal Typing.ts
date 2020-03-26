@@ -25,35 +25,35 @@
 // 通常の文字列が代入不可能な
 // ValidatedInputStringという型を作ってみましょう。
 
-type ValidatedInputString = string & { __brand: 'User Input Post Validation' }
+type ValidatedInputString = string & { __brand: "User Input Post Validation" };
 
 // 文字列をValidatedInputString型に変換するために関数を使います。
 // 注目に値するのは、validateUserInputを通過した文字列はValidatedInputStringだと
 // TypeScriptに_伝えて_いる点です。
 
 const validateUserInput = (input: string) => {
-  const simpleValidatedInput = input.replace(/\</g, '≤')
-  return simpleValidatedInput as ValidatedInputString
-}
+  const simpleValidatedInput = input.replace(/\</g, "≤");
+  return simpleValidatedInput as ValidatedInputString;
+};
 
 // 次に、普通の文字列型は受け取らず、
 // 作成した公称型であるValidatedInputStringだけを受け取る関数を作ってみます。
 
 const printName = (name: ValidatedInputString) => {
-  console.log(name)
-}
+  console.log(name);
+};
 
 // 例えば、ユーザーからの安全でない入力を受け取り、
 // バリデーターに通してから出力してみます。
 
-const input = "\n<script>alert('bobby tables')</script>"
-const validatedInput = validateUserInput(input)
-printName(validatedInput)
+const input = "\n<script>alert('bobby tables')</script>";
+const validatedInput = validateUserInput(input);
+printName(validatedInput);
 
 // 一方でバリデートしていない文字列をprintNameに渡すと、
 // コンパイルエラーが発生します。
 
-printName(input)
+printName(input);
 
 // 以下の400コメントがついたGitHubのissueに、
 // 公称型を作成する色々な方法のまとめと

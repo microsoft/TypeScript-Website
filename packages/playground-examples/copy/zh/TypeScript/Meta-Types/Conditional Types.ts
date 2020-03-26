@@ -52,8 +52,7 @@ type Dogish = ExtractDogish<Animals>;
 
 // 例如这个函数的返回值是 string 还是 number 取决于传入的 boolean。
 
-declare function getID<T extends boolean>(fancy: T):
-  T extends true ? string : number;
+declare function getID<T extends boolean>(fancy: T): T extends true ? string : number;
 
 // 根据类型系统对 boolean 的推断，你将获得不同的返回值类型：
 
@@ -73,8 +72,7 @@ declare function isCatish<T>(x: T): T extends { meows: true } ? T : undefined;
 // infer 通常被用来创建您现有代码中的某些元类型，
 // 可以将其视为在类型内部创建新的类型变量。
 
-type GetReturnValue<T> =
-  T extends (...args: any[]) => infer R ? R : T;
+type GetReturnValue<T> = T extends (...args: any[]) => infer R ? R : T;
 
 // 大意：
 //
@@ -86,7 +84,7 @@ type GetReturnValue<T> =
 //  - 如果检查通过，整个类型的值将被推断为返回值类型，否则是原有的类型。
 //
 
-type getIDReturn = GetReturnValue<typeof getID>
+type getIDReturn = GetReturnValue<typeof getID>;
 
 // 这将不能通过是否是一个函数的检查，并且将返回传入的类型本身。
-type getCat = GetReturnValue<Cat>
+type getCat = GetReturnValue<Cat>;

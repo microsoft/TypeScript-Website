@@ -6,5 +6,5 @@
 
 // Creates @ function in global scope called addOldSchool
 function addOldSchool(x, y) {
-  return x + y
+  return x + y;
 }

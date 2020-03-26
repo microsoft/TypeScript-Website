@@ -5,39 +5,39 @@
 // 同じ振る舞いをします。
 
 type BirdType = {
-  wings: 2
-}
+  wings: 2;
+};
 
 interface BirdInterface {
-  wings: 2
+  wings: 2;
 }
 
-const bird1: BirdType = { wings: 2 }
-const bird2: BirdInterface = { wings: 2 }
+const bird1: BirdType = { wings: 2 };
+const bird2: BirdInterface = { wings: 2 };
 
 // TypeScriptは構造的型システムを採用しているので、
 // どちらの使い方も混在させることができます。
 
-const bird3: BirdInterface = bird1
+const bird3: BirdInterface = bird1;
 
 // どちらも他のinterfaceやtypeからの拡張をサポートしています。
 // type aliasは交差型を、
 // interfaceはextendsキーワードを使用します。
 
-type Owl = { nocturnal: true } & BirdType
-type Robin = { nocturnal: false } & BirdInterface
+type Owl = { nocturnal: true } & BirdType;
+type Robin = { nocturnal: false } & BirdInterface;
 
 interface Peacock extends BirdType {
-  colourful: true
-  flies: false
+  colourful: true;
+  flies: false;
 }
 interface Chicken extends BirdInterface {
-  colourful: false
-  flies: false
+  colourful: false;
+  flies: false;
 }
 
-let owl: Owl = { wings: 2, nocturnal: true }
-let chicken: Chicken = { wings: 2, colourful: false, flies: false }
+let owl: Owl = { wings: 2, nocturnal: true };
+let chicken: Chicken = { wings: 2, colourful: false, flies: false };
 
 // そうは言っても、type aliasよりもinterfaceを使うことをおすすめします。
 // 具体的には、より良いエラーメッセージが得られるからです。
@@ -45,8 +45,8 @@ let chicken: Chicken = { wings: 2, colourful: false, flies: false }
 // Chickenのようなinterfaceを使ったときの方が簡潔でより分かりやすいメッセージが
 // TypeScriptより示されているのが分かるでしょう。
 
-owl = chicken
-chicken = owl
+owl = chicken;
+chicken = owl;
 
 // type aliasとinterfaceの最も大きな違いの1つは、
 // interfaceが開かれた型であるのに対して、type aliasは閉じた型であることです。
@@ -54,23 +54,23 @@ chicken = owl
 // 意味します。
 
 interface Kitten {
-  purrs: boolean
+  purrs: boolean;
 }
 
 interface Kitten {
-  colour: string
+  colour: string;
 }
 
 // 一方で、type aliasは一度宣言した後に、
 // 外からその型の内容を変更することはできません。
 
 type Puppy = {
-  color: string
-}
+  color: string;
+};
 
 type Puppy = {
-  toys: number
-}
+  toys: number;
+};
 
 // 達成したい目標に依って、この違いは利点にも欠点にもなり得ます。
 // しかし、公開される型については

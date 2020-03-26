@@ -3,13 +3,13 @@
 
 // 解析 JSON 是一个很好的例子：
 
-const myObject = JSON.parse('{}')
+const myObject = JSON.parse("{}");
 
 // Any 声明代表着 TypeScript 将认为你更了解你的代码，
 // 并且认为你的代码是安全的，即使它并不一定严格正确。
 // 这段代码将会崩溃：
 
-myObject.x.y.z
+myObject.x.y.z;
 
 // 使用 any 将会赋予你在舍弃一些类型安全性的前提下，
 // 编写更接近原生 JavaScript 的代码能力。
@@ -17,11 +17,11 @@ myObject.x.y.z
 // any 更像一个类型通配符，它可以允许你替换为任何类型（never 除外）
 // 以使一种类型可以分配给另一种类型。
 
-declare function debug(value: any): void
+declare function debug(value: any): void;
 
-debug('a string')
-debug(23)
-debug({ color: 'blue' })
+debug("a string");
+debug(23);
+debug({ color: "blue" });
 
 // 每个 debug 函数的调用都是合法的，因为你可以将参数中的 any
 // 替换为任何其他类型来进行匹配。
@@ -29,10 +29,10 @@ debug({ color: 'blue' })
 // TypeScript 将会以不同形式来匹配 any 的位置，
 // 例如将这些元组作为函数的参数：
 
-declare function swap(x: [number, string]): [string, number]
+declare function swap(x: [number, string]): [string, number];
 
-declare const pair: [any, any]
-swap(pair)
+declare const pair: [any, any];
+swap(pair);
 
 // 对 swap 的调用是合法的，因为在将第一个 any 替换为 number，
 // 第二个 any 替换为 string 后，参数可以正常被匹配到。

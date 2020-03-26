@@ -63,21 +63,20 @@ const handleArtistsResponse = (response: ArtistsResponse) => {
 // include one of two values:
 
 interface CreateArtistBioBase {
-  artistID: string
-  thirdParty?: boolean
+  artistID: string;
+  thirdParty?: boolean;
 }
 
-type CreateArtistBioRequest
-   = CreateArtistBioBase & { html: string } | { markdown: string }
+type CreateArtistBioRequest = (CreateArtistBioBase & { html: string }) | { markdown: string };
 
 // Now you can only create a request when you include
 // artistID and either html or markdown
 
 const workingRequest: CreateArtistBioRequest = {
   artistID: "banksy",
-  markdown: "Banksy is an anonymous England-based graffiti artist..."
-}
+  markdown: "Banksy is an anonymous England-based graffiti artist...",
+};
 
 const badRequest: CreateArtistBioRequest = {
   artistID: "banksy",
-}
+};

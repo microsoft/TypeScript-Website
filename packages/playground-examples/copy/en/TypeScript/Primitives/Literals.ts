@@ -35,7 +35,7 @@ allowsFirstFiveNumbers(potentiallyAnyNumber);
 // At first glance, this rule isn't applied to complex objects.
 
 const myUser = {
-  name: "Sabrina"
+  name: "Sabrina",
 };
 
 // See how it transforms `name: "Sabrina"` to `name: string`
@@ -49,7 +49,7 @@ myUser.name = "Cynthia";
 // is a feature which will allow you to do this however.
 
 const myUnchangingUser = {
-  name: "Fatma"
+  name: "Fatma",
 } as const;
 
 // When "as const" is applied to the object, then it becomes

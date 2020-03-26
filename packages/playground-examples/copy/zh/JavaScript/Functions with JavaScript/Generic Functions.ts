@@ -34,15 +34,15 @@ interface Drawable {
 
 // 这个函数接收一组对象，这些对象具有用于在屏幕上绘制的功能：
 function renderToScreen<Type extends Drawable>(input: Type[]) {
-  input.forEach(i => i.draw());
+  input.forEach((i) => i.draw());
 }
 
-const objectsWithDraw = [{ draw: () => { } }, { draw: () => { } }];
+const objectsWithDraw = [{ draw: () => {} }, { draw: () => {} }];
 renderToScreen(objectsWithDraw);
 
 // 如果没有 draw，它会报错：
 
-renderToScreen([{}, { draw: () => { } }]);
+renderToScreen([{}, { draw: () => {} }]);
 
 // 当您有多个变量时，泛型看起来可能会很复杂。这是一个缓存函数的示例，
 // 可以让您拥有不同的输入类型和缓存。

@@ -6,8 +6,12 @@
 
 // 例如，如下两个接口在结构化类型系统中，完全可以互相转移。
 
-interface Ball { diameter: number; }
-interface Sphere { diameter: number; }
+interface Ball {
+  diameter: number;
+}
+interface Sphere {
+  diameter: number;
+}
 
 let ball: Ball = { diameter: 10 };
 let sphere: Sphere = { diameter: 20 };
@@ -63,8 +67,8 @@ createBall = createSphere;
 
 let createRedBall = (diameter: number) => ({ diameter, color: "red" });
 
-createBall = createRedBall
-createRedBall = createBall
+createBall = createRedBall;
+createRedBall = createBall;
 
 // 第一个赋值是有效的（他们都有 diameter），
 // 第二个赋值不是有效的（ball 没有 color）。

@@ -56,21 +56,20 @@ const handleArtistsResponse = (response: ArtistsResponse) => {
 // 当对象必须含有下面的一个或两个值时，交集和并集类型的混合将会非常有用。
 
 interface CreateArtistBioBase {
-  artistID: string
-  thirdParty?: boolean
+  artistID: string;
+  thirdParty?: boolean;
 }
 
-type CreateArtistBioRequest
-  = CreateArtistBioBase & { html: string } | { markdown: string }
+type CreateArtistBioRequest = (CreateArtistBioBase & { html: string }) | { markdown: string };
 
 // 现在您只有在包含 artistID 和（html 或 markdown）时
 // 您才能创建对应的请求。
 
 const workingRequest: CreateArtistBioRequest = {
   artistID: "banksy",
-  markdown: "Banksy is an anonymous England-based graffiti artist..."
-}
+  markdown: "Banksy is an anonymous England-based graffiti artist...",
+};
 
 const badRequest: CreateArtistBioRequest = {
   artistID: "banksy",
-}
+};

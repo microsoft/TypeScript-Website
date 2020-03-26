@@ -16,8 +16,8 @@
 declare function assert(value: unknown): asserts value;
 
 // Now we're use it to validate the type of an enum
-declare const maybeStringOrNumber: string | number
-assert(typeof maybeStringOrNumber === "string")
+declare const maybeStringOrNumber: string | number;
+assert(typeof maybeStringOrNumber === "string");
 
 // With TypeScript 3.7, the code flow analysis can use these
 // types of functions to figure out what the code is. So,
@@ -25,7 +25,7 @@ assert(typeof maybeStringOrNumber === "string")
 // it has been narrowed from a string or number to
 // just a string.
 
-maybeStringOrNumber
+maybeStringOrNumber;
 
 // You can use assertion functions to make guarantees of
 // your types throughout your inferred code, for example
@@ -47,20 +47,20 @@ function multiply(x: any, y: any) {
 // For example, we can use assertion functions to narrow
 // an enum down over time:
 
-declare const oneOfFirstFiveNumbers: 1 | 2 | 3 | 4 | 5
+declare const oneOfFirstFiveNumbers: 1 | 2 | 3 | 4 | 5;
 
-declare function isOdd(param: unknown): asserts param is 1 | 3 | 5
-declare function isBelowFour(param: unknown): asserts param is 1 | 2 | 3 | 4
+declare function isOdd(param: unknown): asserts param is 1 | 3 | 5;
+declare function isBelowFour(param: unknown): asserts param is 1 | 2 | 3 | 4;
 
 // This should cut down the enum to: 1 | 3 | 5
 
-isOdd(oneOfFirstFiveNumbers)
-oneOfFirstFiveNumbers
+isOdd(oneOfFirstFiveNumbers);
+oneOfFirstFiveNumbers;
 
 // This will then cut the enum's possible states to: 1 | 3
 
-isBelowFour(oneOfFirstFiveNumbers)
-oneOfFirstFiveNumbers
+isBelowFour(oneOfFirstFiveNumbers);
+oneOfFirstFiveNumbers;
 
 // This is a primer on some of the features of assertion functions
 // in TypeScript 3.7 - you can find out more by reading the

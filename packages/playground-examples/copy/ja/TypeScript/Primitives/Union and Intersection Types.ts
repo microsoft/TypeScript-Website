@@ -63,21 +63,20 @@ const handleArtistsResponse = (response: ArtistsResponse) => {
 // といった場合に、とても役立ちます。
 
 interface CreateArtistBioBase {
-  artistID: string
-  thirdParty?: boolean
+  artistID: string;
+  thirdParty?: boolean;
 }
 
-type CreateArtistBioRequest
-  = CreateArtistBioBase & { html: string } | { markdown: string }
+type CreateArtistBioRequest = (CreateArtistBioBase & { html: string }) | { markdown: string };
 
 // これにより、artistIDと、htmlまたはmarkdownを含んでいる
 // リクエストのみを作成することができます。
 
 const workingRequest: CreateArtistBioRequest = {
   artistID: "banksy",
-  markdown: "Banksy is an anonymous England-based graffiti artist..."
-}
+  markdown: "Banksy is an anonymous England-based graffiti artist...",
+};
 
 const badRequest: CreateArtistBioRequest = {
   artistID: "banksy",
-}
+};

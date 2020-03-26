@@ -12,12 +12,12 @@
 // a compilation may not have a single artist.
 
 type AlbumAPIResponse = {
-  title: string
+  title: string;
   artist?: {
-    name: string
-    bio?: string
-    previousAlbums?: string[]
-  }
+    name: string;
+    bio?: string;
+    previousAlbums?: string[];
+  };
 };
 
 declare const album: AlbumAPIResponse;

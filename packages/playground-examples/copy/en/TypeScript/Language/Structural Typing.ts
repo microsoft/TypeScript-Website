@@ -9,8 +9,12 @@
 // For example, these two interfaces are completely
 // transferrable in a structural type system:
 
-interface Ball { diameter: number; }
-interface Sphere { diameter: number; }
+interface Ball {
+  diameter: number;
+}
+interface Sphere {
+  diameter: number;
+}
 
 let ball: Ball = { diameter: 10 };
 let sphere: Sphere = { diameter: 20 };
@@ -74,8 +78,8 @@ createBall = createSphere;
 
 let createRedBall = (diameter: number) => ({ diameter, color: "red" });
 
-createBall = createRedBall
-createRedBall = createBall
+createBall = createRedBall;
+createRedBall = createBall;
 
 // Where the first assignment works (they both have diameter)
 // but the second doesn't (the ball doesn't have a color).

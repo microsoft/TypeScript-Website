@@ -27,7 +27,6 @@ interface Artwork {
 // 解决此问题的方法是索引类型（indexed types），它与 JavaScript 可以
 // 通过字符串访问属性的方式相同。
 
-type InferredArtwork =
-  ArtworkSearchResponse["artists"][0]["artworks"][0];
+type InferredArtwork = ArtworkSearchResponse["artists"][0]["artworks"][0];
 
 // InferredArtwork 由查找属性并将新名称赋予被索引的类型的对应子集而得到。

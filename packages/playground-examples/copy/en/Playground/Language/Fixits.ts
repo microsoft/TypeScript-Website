@@ -6,7 +6,7 @@
 // pops up, you'll get offered some fixits.
 
 function addOne(x: number) {
-  return x + 1
+  return x + 1;
 }
 
 // This feature is available as of TypeScript version 3.7,
