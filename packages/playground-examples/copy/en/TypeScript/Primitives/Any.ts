@@ -5,13 +5,13 @@
 
 // A good case for any is JSON parsing:
 
-const myObject = JSON.parse("{}");
+const myObject = JSON.parse('{}')
 
 // Any declares to TypeScript to trust your code as being
 // safe because you know more about it. Even if that is
 // not strictly true. For example, this code would crash:
 
-myObject.x.y.z;
+myObject.x.y.z
 
 // Using an any gives you the ability to write code closer to
 // original JavaScript with the trade-off of type safety.
@@ -20,11 +20,11 @@ myObject.x.y.z;
 // with any type (except never) to make one type assignable
 // to the other.
 
-declare function debug(value: any);
+declare function debug(value: any): void
 
-debug("a string");
-debug(23);
-debug({ color: "blue" });
+debug('a string')
+debug(23)
+debug({ color: 'blue' })
 
 // Each call to debug is allowed because you could replace the
 // any with the type of the argument to match.
@@ -33,10 +33,10 @@ debug({ color: "blue" });
 // anys in different forms, for example with these tuples
 // for the function argument.
 
-declare function swap(x: [number, string]): [string, number];
+declare function swap(x: [number, string]): [string, number]
 
-declare const pair: [any, any];
-swap(pair);
+declare const pair: [any, any]
+swap(pair)
 
 // The call to swap is allowed because the argument can be
 // matched by replacing the first any in pair with number
