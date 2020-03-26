@@ -45,4 +45,4 @@ myFrozenArray.push("World");
 // 在这些例子中里看到他们：
 //
 // example:literals
-// example:type-widening-narrowing
+// example:type-widening-and-narrowing

@@ -2,7 +2,7 @@
 // とても面白い利用例があります。
 
 // これは、型の拡張・型の絞り込みにおいて、多くのサポートをもたらします。
-// ( example:type-widening-narrowing )
+// ( example:type-widening-and-narrowing )
 // そして、はじめにそれを網羅する価値があります。
 
 // リテラルは集合型よりも具体的なサブタイプです。

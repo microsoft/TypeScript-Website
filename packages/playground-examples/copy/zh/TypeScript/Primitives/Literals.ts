@@ -1,7 +1,7 @@
 // TypeScript 对于代码中的字面量有一些有趣的特殊处理。
 
 // 某种程度上，很大一部分支持在类型扩展和
-// 缩小（example:type-widening-narrowing）中被支持，
+// 缩小（example:type-widening-and-narrowing）中被支持，
 // 建议首先了解一下他们。
 
 // 字面量类型是一个类型中，更具体的一个子类型。

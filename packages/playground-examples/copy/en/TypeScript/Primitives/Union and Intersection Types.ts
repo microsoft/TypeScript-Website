@@ -22,7 +22,7 @@ type WindowStates = "open" | "closed" | "minimized" | string;
 
 // If you hover above, you can see that WindowStates
 // becomes a string - not the union. This is covered in
-// example:type-widening-narrowing
+// example:type-widening-and-narrowing
 
 // If a union is an OR, then an intersection is an AND.
 // Intersection types are when two types intersect to create
