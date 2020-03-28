@@ -37,9 +37,9 @@ export const createOldHandbookPages = async (
   const anyData = result.data as any
   const docs = anyData.allFile.nodes
 
-  // create a map(mdToSlug) to replace markdown links to slugs.
+  // create a map(mdToSlug) to replace markdown links to permalinks.
   // E.g. mdToSlug: {foo.md: '/docs/bar/foo.html', ...}
-  const mdToSlug = docs.reduce((result: { ["mdName"]: string }, next: any) => {
+  const mdToSlug: { [mdName: string]: string } = docs.reduce((result, next) => {
     return next.childMarkdownRemark ? {
       ...result,
       [encodeURI(next.name)+".md"]: // encodeURI in case name contains space. ' ' -> '%20'
@@ -55,7 +55,7 @@ export const createOldHandbookPages = async (
 
     if (post.childMarkdownRemark) {
 
-      const html = (() => { // html string whose markdown links are replaced to slugs.
+      const html = (() => { // html string whose markdown links are replaced to permalinks.
         const document = parser.parseFromString(post.childMarkdownRemark.html, "text/html")
         document.querySelectorAll("a").forEach(a => {
           const link = a.getAttribute("href") || ""
