@@ -1,9 +1,9 @@
 import React, { useEffect } from "react"
 import { Layout } from "../../components/layout"
 import { withPrefix, graphql } from "gatsby"
-import { twoslasher } from "ts-twoslasher"
-import { createDefaultMapFromCDN } from "typescript-vfs"
-import { renderToHTML } from "gatsby-remark-shiki/src/renderer"
+// import { twoslasher } from "ts-twoslasher"
+// import { createDefaultMapFromCDN } from "typescript-vfs"
+// import { renderToHTML } from "gatsby-remark-shiki/src/renderer"
 
 import "./dev.scss"
 import { Intl } from "../../components/Intl"
@@ -11,6 +11,8 @@ import { DevNav } from "../../components/devNav"
 import { isTouchDevice } from "../../lib/isTouchDevice"
 import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
 import { TwoSlashQuery } from "../../__generated__/gatsby-types"
+
+// import TwoslashWorker from "../../lib/twoslash.worker"
 
 /** Note: to run all the web infra in debug, run:
   localStorage.debug = '*'
@@ -26,6 +28,9 @@ const Index: React.FC<Props> = (props) => {
   useEffect(() => {
     // No monaco for touch
     if (isTouchDevice()) { return }
+
+    // const searchWorker = typeof window === 'object' && new TwoslashWorker()
+    // console.log(searchWorker)
 
     const getLoaderScript = document.createElement('script');
     getLoaderScript.src = withPrefix("/js/vs.loader.js");
@@ -53,19 +58,29 @@ const Index: React.FC<Props> = (props) => {
           const sandbox = await sandboxEnv.createTypeScriptSandbox({ text: codeSamples[0].code, compilerOptions: {}, domID: "monaco-editor-embed", supportTwoslashCompilerOptions: true }, main, ts)
           sandbox.editor.focus()
 
+          var myWorker = new Worker(withPrefix("/js/twoslash.worker.js"));
+          console.log(myWorker)
+          myWorker.postMessage([2, 9]);
+          console.log('Message posted to worker');
+
+          myWorker.addEventListener("message", function (e) {
+            console.log("Hello " + e.data);
+          });
+
+
           // @ts-ignore
           window.sandbox = sandbox
 
-          const mapWithLibFiles = await createDefaultMapFromCDN({ target: ts.ScriptTarget.ES2016 }, '3.7.3', true, ts, sandbox.lzstring as any)
+          // const mapWithLibFiles = await createDefaultMapFromCDN({ target: ts.ScriptTarget.ES2016 }, '3.7.3', true, ts, sandbox.lzstring as any)
 
           const runTwoslash = () => {
             const newContent = sandbox.getText()
-            mapWithLibFiles.set("index.ts", newContent)
+            // mapWithLibFiles.set("index.ts", newContent)
 
             try {
-              const newResults = twoslasher(newContent, "tsx", ts, sandbox.lzstring as any, mapWithLibFiles)
-              const codeAsFakeShikiTokens = newResults.code.split("\n").map(line => [{ content: line }])
-              const html = renderToHTML(codeAsFakeShikiTokens, {}, newResults)
+              // const newResults = twoslasher(newContent, "tsx", ts, sandbox.lzstring as any, mapWithLibFiles)
+              // const codeAsFakeShikiTokens = newResults.code.split("\n").map(line => [{ content: line }])
+              // const html = renderToHTML(codeAsFakeShikiTokens, {}, newResults)
 
               const results = document.getElementById("twoslash-results")!
 

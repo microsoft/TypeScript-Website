@@ -121,6 +121,8 @@ module.exports = {
     // into Gatsby Links at build time, speeding up
     // linking between pages.
     "gatsby-plugin-catch-links",
+    // Supports running twoslash in the bg
+    "gatsby-plugin-workerize-loader",
     "gatsby-plugin-client-side-redirect",
   ],
 }

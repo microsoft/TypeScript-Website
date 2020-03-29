@@ -1,0 +1,22 @@
+{
+  "name": "ts-twoslash-worker",
+  "private": true,
+  "license": "MIT",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "rollup -c rollup.config.js;",
+    "test": "echo 'NOOP'",
+    "bootstrap": "echo 'NOOP'"
+  },
+  "dependencies": {
+    "typescript-vfs": "*",
+    "rollup": "*",
+    "@rollup/plugin-commonjs": "*",
+    "@rollup/plugin-json": "*",
+    "@rollup/plugin-node-resolve": "*",
+    "@rollup/plugin-typescript": "*"
+  },
+  "prettier": {
+    "semi": true
+  }
+}

@@ -18,6 +18,10 @@ Some useful knowledge:
 - All packages have: `yarn bootstrap`, `yarn build` and `yarn test`
 - All packages use [debug](https://www.npmjs.com/package/debug) - which means you can do `env DEBUG="*" yarn test` to get verbose logs
 
+# Deployment
+
+All deployments go through GitHub Actions, right now you need to push to **master** to trigger a build, which will generate the v1 site with this in the v2 folder.
+
 # Website Packages
 
 ## TypeScriptLang-Org
