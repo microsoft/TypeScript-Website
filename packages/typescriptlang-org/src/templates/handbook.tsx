@@ -100,7 +100,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
 
             <div className="whitespace raised">
               <div className="markdown" dangerouslySetInnerHTML={{ __html: post.html! }} />
-              <div id="mouse-hover-info" className="hover-info" />
+              <div id="mouse-hover-info" className="hover-info" style={{ display: "none" }} />
             </div>
 
             {showSidebar &&

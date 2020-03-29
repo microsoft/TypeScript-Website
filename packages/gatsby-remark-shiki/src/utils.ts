@@ -18,6 +18,7 @@ export function createHighlightedString2(ranges: Range[], text: string) {
   const actions = [] as { text: string; index: number }[]
 
   ranges.forEach(r => {
+    console.log('r:', r)
     if (!r.lsp) return
     if (r.classes === 'lsp') {
       actions.push({ text: '</data-lsp>', index: r.end })
@@ -33,12 +34,15 @@ export function createHighlightedString2(ranges: Range[], text: string) {
 
   let html = (' ' + text).slice(1)
 
+  console.log('-')
   actions
     .sort((l, r) => r.index - l.index)
     .forEach(action => {
-      debugger
+      console.log(action.index)
       html = splice(html, action.index, 0, action.text)
     })
+
+  console.log(html)
 
   return html
 }

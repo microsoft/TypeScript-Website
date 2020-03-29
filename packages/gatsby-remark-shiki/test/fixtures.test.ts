@@ -38,6 +38,10 @@ describe('with fixtures', () => {
       return
     }
 
+    // if (!fixtureName.includes('twoliner')) {
+    //   return
+    // }
+
     it('Fixture: ' + fixtureName, async () => {
       const resultHTMLName = parse(fixtureName).name + '.html'
       const resultTwoSlashName = parse(fixtureName).name + '.json'

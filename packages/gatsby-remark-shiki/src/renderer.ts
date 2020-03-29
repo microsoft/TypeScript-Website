@@ -10,6 +10,7 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
   if (!twoslash) {
     return plainOleShikiRenderer(lines, options)
   }
+
   let html = ''
 
   html += `<pre class="shiki twoslash">`
@@ -18,10 +19,10 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
   }
   html += `<div class='code-container'><code>`
 
-  const errorsGroupedByLine = (twoslash && groupBy(twoslash.errors, e => e.line)) || new Map()
-  const staticQuickInfosGroupedByLine = (twoslash && groupBy(twoslash.staticQuickInfos, q => q.line)) || new Map()
+  const errorsGroupedByLine = groupBy(twoslash.errors, e => e.line) || new Map()
+  const staticQuickInfosGroupedByLine = groupBy(twoslash.staticQuickInfos, q => q.line) || new Map()
   // A query is always about the line above it!
-  const queriesGroupedByLine = (twoslash && groupBy(twoslash.queries, q => q.line - 1)) || new Map()
+  const queriesGroupedByLine = groupBy(twoslash.queries, q => q.line - 1) || new Map()
 
   let filePos = 0
   lines.forEach((l, i) => {
@@ -51,17 +52,25 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
           const result = start <= e.character && start + token.content.length >= e.character + e.length
           // prettier-ignore
           console.log(result, start, '<=', e.character, '&&', start + token.content.length, '<=', e.character + e.length)
+          if (result) {
+            console.log('Found:', e)
+            console.log('Inside:', token)
+          }
           return result
         }
 
+        console.log('filepos', filePos, 'tokenpos', tokenPos)
         const errorsInToken = errors.filter(findTokenFunc(tokenPos))
-        const lspResponsesInToken = lspValues.filter(findTokenFunc(tokenPos))
+        const lspResponsesInToken = lspValues.filter(findTokenDebug(tokenPos))
         const queriesInToken = queries.filter(findTokenFunc(tokenPos))
 
         const allTokensByStart = [...errorsInToken, ...lspResponsesInToken, ...queriesInToken]
 
+        // console.log('content:', tokenContent)
         if (allTokensByStart.length) {
           const ranges = allTokensByStart.map(token => {
+            console.log('before - token', token)
+
             const range: any = {
               begin: token.start! - filePos,
               end: token.start! + token.length! - filePos,
@@ -74,9 +83,11 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
               range['lsp'] = stripHTML(token.text)
             }
 
+            console.log('after - token', range)
+
             return range
           })
-
+          debugger
           tokenContent += createHighlightedString2(ranges, token.content)
         } else {
           tokenContent += token.content

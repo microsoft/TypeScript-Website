@@ -320,7 +320,8 @@ export function twoslasher(
   const makeDefault: [string, string[]] = [defaultFileName, code.split(/\r\n?|\n/g)]
   const makeMultiFile = (filenameSplit: string): [string, string[]] => {
     const [filename, ...content] = filenameSplit.split(/\r\n?|\n/g)
-    return [filename, content]
+    const firstLine = '// @filename: ' + filename + '\n'
+    return [filename, [firstLine, ...content]]
   }
 
   /**
@@ -405,7 +406,6 @@ export function twoslasher(
       const sourceFile = env.getSourceFile(file)
       if (sourceFile) {
         const idenfiers = getIdentifierTextSpans(ts, sourceFile)
-
         for (const idenfier of idenfiers) {
           const span = idenfier.span
           const quickInfo = ls.getQuickInfoAtPosition(file, span.start)

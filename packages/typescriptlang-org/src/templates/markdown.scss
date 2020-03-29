@@ -135,13 +135,9 @@ pre:hover .lsp {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.lsp {
+data-lsp {
   box-sizing: border-box;
   border-bottom: 1px dotted rgb(116, 116, 116); /* If you want dots under the hoverable text */
-}
-
-.lsp-result {
-  display: none;
 }
 
 .hover-info {
@@ -151,6 +147,7 @@ pre:hover .lsp {
   padding: 5px 2px;
   border-radius: 2px;
   font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+  white-space: pre-wrap;
 }
 
 #mouse-hover-info {

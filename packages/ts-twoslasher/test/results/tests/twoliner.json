@@ -1,0 +1,73 @@
+{
+  "code": "// @filename: getStringLength.ts\nexport const getStringLength = (str: string) => str.length\n// @filename: index.ts\nimport { getStringLength } from './getStringLength'\nconst b = getStringLength('string')\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [],
+  "staticQuickInfos": [
+    {
+      "text": "const getStringLength: (str: string) => number",
+      "docs": "",
+      "start": 46,
+      "length": 15,
+      "line": 0,
+      "character": 46,
+      "targetString": "getStringLength"
+    },
+    {
+      "text": "(parameter) str: string",
+      "docs": "",
+      "start": 65,
+      "length": 3,
+      "line": 1,
+      "character": 6,
+      "targetString": "str"
+    },
+    {
+      "text": "(parameter) str: string",
+      "docs": "",
+      "start": 81,
+      "length": 3,
+      "line": 1,
+      "character": 22,
+      "targetString": "str"
+    },
+    {
+      "text": "(property) String.length: number",
+      "docs": "Returns the length of a String object.",
+      "start": 85,
+      "length": 6,
+      "line": 1,
+      "character": 26,
+      "targetString": "length"
+    },
+    {
+      "text": "(alias) const getStringLength: (str: string) => number\nimport getStringLength",
+      "docs": "",
+      "start": 124,
+      "length": 15,
+      "line": 2,
+      "character": 36,
+      "targetString": "getStringLength"
+    },
+    {
+      "text": "const b: number",
+      "docs": "",
+      "start": 173,
+      "length": 1,
+      "line": 2,
+      "character": 85,
+      "targetString": "b"
+    },
+    {
+      "text": "(alias) getStringLength(str: string): number\nimport getStringLength",
+      "docs": "",
+      "start": 177,
+      "length": 15,
+      "line": 2,
+      "character": 89,
+      "targetString": "getStringLength"
+    }
+  ],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKA5vALgMp4BO0i2AMktngBYB0eAzgFDwAeADgPbF6gBjboib9chEmUrU6oALygAFKOJYVUgJTyAfKBX0E5OixAQYhtJlBkAJh0atoqHn1ABvHPiKlyVI7VAAX1BIYm5UUAByemBxbyk-GlpIliERfgAjeU8JH2l-RUj1ckiNFiA"
+}

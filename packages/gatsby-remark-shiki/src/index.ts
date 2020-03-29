@@ -68,29 +68,6 @@ const visitor = (node: RichNode) => {
     node.type = 'html'
     node.value = results
     node.children = []
-
-    //     if (node.twoslash && process.env.NODE_ENV !== 'production') {
-    //       const expected = node.twoslash.staticQuickInfos.length
-    //       const foundLSP = node.value.split('<data-lsp').length - 1
-
-    //       if (expected !== foundLSP) {
-    //         const lspResults = node.value.split("<data-lsp lsp='").map(r => r.split("'>")[0])
-    //         lspResults.shift()
-
-    //         console.error(`The amount of LSP results in the rendered code does not equal the amount of LSP results passed.
-
-    // Expected: ${expected} but got ${foundLSP}.
-
-    // Code:
-    // \`\`\`ts
-    // ${originalCode}
-    // \`\`\`
-
-    // Got results:
-    //   - "${lspResults.join('"\n - "')}
-    // Expected results for: ${node.twoslash.staticQuickInfos.map(qi => qi.targetString).join(', ')}`)
-    //       }
-    //     }
   }
 }
 
