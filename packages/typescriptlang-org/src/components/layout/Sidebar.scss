@@ -176,7 +176,7 @@ nav#sidebar {
 }
 
 @media (max-width: $screen-sm) {
-  // This is a button which will scroll off and on with the na
+  // This is a button which will scroll off and on with the nav
   button#small-device-button-sidebar {
     display: block;
     position: fixed;
@@ -232,6 +232,10 @@ nav#sidebar {
 
     transition-timing-function: ease;
     transition: margin-left 0.3s;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
 
     &.show {
       margin-left: 0px;
