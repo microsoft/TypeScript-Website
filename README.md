@@ -1,3 +1,8 @@
+### Meta
+
+- **URLs:** [production](https://www.typescriptlang.org), [staging](http://testsite-typescript-41eeb979-7eaa-4c74-9d47-9d182c7b61ab.azurewebsites.net/)
+- **Admin:** Prod: [Azure Portal](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/99160d5b-9289-4b66-8074-ed268e739e8e/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/TypeScript-1ebb3390-2634-4956-a955-eab987b7bb25/appServices), [Deploy logs](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/99160d5b-9289-4b66-8074-ed268e739e8e/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/TypeScript-1ebb3390-2634-4956-a955-eab987b7bb25/vstscd)
+
 ### Getting Started
 
 This repo uses [yarn workspaces][y-wrk], to get started clone this repo and run `yarn install`.
