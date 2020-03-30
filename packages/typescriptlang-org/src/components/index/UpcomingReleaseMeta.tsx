@@ -47,7 +47,7 @@ export const UpcomingReleaseMeta = () => {
     needlePerc = ((diffToToday / diffToBetaDays) * onePerc) * 100
   } else if (diffToToday < diffToRCDays) {
     // It's in the second bit, so x% of 55 - 83%
-    const onePerc = 83 / 100;
+    const onePerc = (83 - 55) / 100;
     needlePerc = ((onePerc * (diffToToday / diffToRCDays)) * 100) + 55
   } else {
     // must be in the final section
