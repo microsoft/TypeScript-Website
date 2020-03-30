@@ -38,9 +38,9 @@ describe('with fixtures', () => {
       return
     }
 
-    // if (!fixtureName.includes('twoliner')) {
-    //   return
-    // }
+    if (!fixtureName.includes('exporting')) {
+      return
+    }
 
     it('Fixture: ' + fixtureName, async () => {
       const resultHTMLName = parse(fixtureName).name + '.html'
@@ -50,7 +50,9 @@ describe('with fixtures', () => {
       const resultTwoSlashPath = join(resultsFolder, resultTwoSlashName)
 
       const code = readFileSync(fixture, 'utf8')
-      const results = await getHTML(code, {})
+      const results = await getHTML(code, {
+        theme: require.resolve('../../typescriptlang-org/lib/themes/typescript-beta-light.json'),
+      })
 
       const htmlString = format(results.html + style, { parser: 'html' })
       expect(htmlString).toMatchFile(resultHTMLPath)

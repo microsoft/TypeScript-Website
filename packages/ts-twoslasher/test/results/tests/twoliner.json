@@ -9,8 +9,8 @@
       "docs": "",
       "start": 46,
       "length": 15,
-      "line": 0,
-      "character": 46,
+      "line": 2,
+      "character": 12,
       "targetString": "getStringLength"
     },
     {
@@ -18,8 +18,8 @@
       "docs": "",
       "start": 65,
       "length": 3,
-      "line": 1,
-      "character": 6,
+      "line": 2,
+      "character": 31,
       "targetString": "str"
     },
     {
@@ -27,8 +27,8 @@
       "docs": "",
       "start": 81,
       "length": 3,
-      "line": 1,
-      "character": 22,
+      "line": 2,
+      "character": 47,
       "targetString": "str"
     },
     {
@@ -36,35 +36,35 @@
       "docs": "Returns the length of a String object.",
       "start": 85,
       "length": 6,
-      "line": 1,
-      "character": 26,
+      "line": 2,
+      "character": 51,
       "targetString": "length"
     },
     {
       "text": "(alias) const getStringLength: (str: string) => number\nimport getStringLength",
       "docs": "",
-      "start": 124,
+      "start": 32,
       "length": 15,
       "line": 2,
-      "character": 36,
+      "character": 8,
       "targetString": "getStringLength"
     },
     {
       "text": "const b: number",
       "docs": "",
-      "start": 173,
+      "start": 81,
       "length": 1,
-      "line": 2,
-      "character": 85,
+      "line": 3,
+      "character": 5,
       "targetString": "b"
     },
     {
       "text": "(alias) getStringLength(str: string): number\nimport getStringLength",
       "docs": "",
-      "start": 177,
+      "start": 85,
       "length": 15,
-      "line": 2,
-      "character": 89,
+      "line": 3,
+      "character": 9,
       "targetString": "getStringLength"
     }
   ],

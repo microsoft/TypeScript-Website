@@ -64,8 +64,11 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
         const lspResponsesInToken = lspValues.filter(findTokenDebug(tokenPos))
         const queriesInToken = queries.filter(findTokenFunc(tokenPos))
 
-        const allTokensByStart = [...errorsInToken, ...lspResponsesInToken, ...queriesInToken]
-
+        const allTokens = [...errorsInToken, ...lspResponsesInToken, ...queriesInToken]
+        const allTokensByStart = allTokens.sort((l, r) => {
+          return (l.start || 0) - (r.start || 0)
+        })
+        console.log(allTokensByStart)
         // console.log('content:', tokenContent)
         if (allTokensByStart.length) {
           const ranges = allTokensByStart.map(token => {
@@ -74,6 +77,11 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
             const range: any = {
               begin: token.start! - filePos,
               end: token.start! + token.length! - filePos,
+            }
+
+            if (range.begin < 0 || range.end < 0) {
+              // prettier-ignore
+              throw new Error(`The being range of a token is at a minus location, filePos:${filePos} current token: ${JSON.stringify(token, null, '  ')}\n result: ${JSON.stringify(range, null, '  ')}`)
             }
 
             if ('renderedMessage' in token) range.classes = 'err'
@@ -87,7 +95,7 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
 
             return range
           })
-          debugger
+
           tokenContent += createHighlightedString2(ranges, token.content)
         } else {
           tokenContent += token.content
