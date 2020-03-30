@@ -24,11 +24,11 @@ jobs:
           yarn build-site
           cp -r packages/typescriptlang-org/public site
 
-    # CI: Deploy to the right branch
-    - name: Deploy + Publish
-      if: github.event_name != 'pull_request'
-      uses: peaceiris/actions-gh-pages@v1.1.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        PUBLISH_BRANCH: 'SITE-STAGING'
-        PUBLISH_DIR: ./site
+      # CI: Deploy to the right branch
+      - name: Deploy + Publish
+        if: github.event_name != 'pull_request'
+        uses: peaceiris/actions-gh-pages@v1.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: 'SITE-STAGING'
+          PUBLISH_DIR: ./site
