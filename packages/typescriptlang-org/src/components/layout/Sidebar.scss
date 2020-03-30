@@ -154,9 +154,13 @@ nav#sidebar {
       }
 
       &:hover {
-        padding-left: 0.5rem;
-        margin-right: -0.5rem;
+        padding-left: 0.3rem;
+        margin-right: -0.3rem;
         transition: padding-left 0.1s ease-out;
+
+        @media (prefers-reduced-motion: reduce) {
+          transition: none;
+        }
       }
 
       a:focus,
