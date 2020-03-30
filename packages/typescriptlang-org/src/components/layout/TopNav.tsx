@@ -8,7 +8,6 @@ import { AllSitePage, createIntlLink } from "../IntlLink";
 
 export type Props = {
   allSitePage: AllSitePage
-  disableBetaNotification?: boolean
   lang: string
 }
 
@@ -98,10 +97,6 @@ export const SiteNav = (props: Props) => {
           </nav>
         </div>
       </div>
-      {
-        props.disableBetaNotification ? null :
-          <div className="hide-small" id="beta-notification-menu">{i("nav_beta_notification", { a: (...chunk) => <a href="https://github.com/microsoft/TypeScript-Website/issues/choose">{chunk}</a> })}</div>
-      }
       { /** Used for skip past navigation button */}
       <div id="site-content" />
     </header >
