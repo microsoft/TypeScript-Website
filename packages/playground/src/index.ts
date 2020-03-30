@@ -167,12 +167,28 @@ export const setupPlayground = (
 
   // Add the versions to the dropdown
   const versionsMenu = document.querySelectorAll('#versions > ul').item(0)
-  const allVersions = [...sandbox.supportedVersions, 'Nightly']
+
+  const notWorkingInPlayground = ['3.1.6', '3.0.1', '2.8.1', '2.7.2', '2.4.1']
+  
+  const allVersions = [
+    '3.9.0-beta',
+    ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)), 
+    'Nightly'
+  ]
+
   allVersions.forEach((v: string) => {
     const li = document.createElement('li')
     const a = document.createElement('a')
     a.textContent = v
     a.href = '#'
+
+    if (v === "Nightly") {
+      li.classList.add("nightly")
+    }
+
+    if (v.toLowerCase().includes("beta")) {
+      li.classList.add("beta")
+    }
 
     li.onclick = () => {
       const currentURL = sandbox.createURLQueryWithCompilerOptions(sandbox)

@@ -100,9 +100,25 @@
 
       &.versions {
         min-width: 5rem;
+
+        li {
+          margin-bottom: 0;
+          margin-left: 0;
+
+          &.beta {
+            color: $ts-main-blue-color;
+            border-bottom: 1px solid $ts-light-bg-grey-highlight-color;
+          }
+
+          &.nightly {
+            border-top: 1px solid $ts-light-bg-grey-highlight-color;
+          }
+        }
+
         a {
           text-align: center;
           margin: 0;
+          padding: 10px;
         }
       }
 
@@ -296,7 +312,7 @@ main #editor-toolbar {
   border-left: 4px solid transparent;
 }
 
-#editor-toolbar ul li a:first-child {
+#editor-toolbar > ul > li > a:first-child {
   padding-left: 1rem;
 }
 
