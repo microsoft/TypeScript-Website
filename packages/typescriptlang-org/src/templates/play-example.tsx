@@ -33,7 +33,7 @@ const Play = (props: Props) => {
   }, [])
 
   return (
-    <Layout disableBetaNotification title={i("playground_example_prefix") + props.pageContext.title} description={i("head_playground_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+    <Layout title={i("playground_example_prefix") + props.pageContext.title} description={i("head_playground_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
       <div className="raised main-content-block" >
         <div style={{ maxWidth: "800px", margin: "0 auto", padding: "80px" }}>
           <p dangerouslySetInnerHTML={{ __html: props.pageContext.html! }} />

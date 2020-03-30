@@ -4,14 +4,7 @@ type LZ = typeof import('lz-string')
 type TS = typeof import('typescript')
 type CompilerOptions = import('typescript').CompilerOptions
 
-import {
-  parsePrimitive,
-  escapeHtml,
-  cleanMarkdownEscaped,
-  typesToExtension,
-  getIdentifierTextSpans,
-  stringAroundIndex,
-} from './utils'
+import { parsePrimitive, escapeHtml, cleanMarkdownEscaped, typesToExtension, stringAroundIndex } from './utils'
 import { validateInput, validateCodeForErrors } from './validation'
 
 import { createSystem, createVirtualTypeScriptEnvironment, createDefaultMapFromNodeModules } from 'typescript-vfs'
@@ -404,17 +397,18 @@ export function twoslasher(
 
       const sourceFile = env.getSourceFile(file)
       if (sourceFile) {
-        const idenfiers = getIdentifierTextSpans(ts, sourceFile)
+        // TODO: bring back the identifiers
+        const identifiers = [] as any[] // getIdentifierTextSpans(ts, sourceFile)
 
-        for (const idenfier of idenfiers) {
-          const span = idenfier.span
+        for (const identifier of identifiers) {
+          const span = identifier.span
           const quickInfo = ls.getQuickInfoAtPosition(file, span.start)
           if (quickInfo && quickInfo.displayParts) {
             const text = quickInfo.displayParts.map(dp => dp.text).join('')
             const docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join('\n') : undefined
             const position = span.start + fileContentStartIndexInModifiedFile
             const { line, character } = ts.getLineAndCharacterOfPosition(sourceFile, position)
-            const targetString = idenfier.text
+            const targetString = identifier.text
             staticQuickInfos.push({ text, docs, start: position, length: span.length, line, character, targetString })
           }
         }
