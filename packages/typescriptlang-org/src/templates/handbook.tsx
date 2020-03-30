@@ -92,6 +92,14 @@ const HandbookTemplate: React.FC<Props> = (props) => {
     <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneline || ""} lang="en" allSitePage={props.data.allSitePage}>
       <section id="doc-layout">
         <SidebarToggleButton />
+        <noscript>
+          <style dangerouslySetInnerHTML={{
+            __html: `
+          nav#sidebar > ul > li.closed ul {
+            display: block !important;
+           }
+        ` }} />
+        </noscript>
 
         <Sidebar navItems={oldHandbookNavigation} selectedID={selectedID} />
         <div id="handbook-content">

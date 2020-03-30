@@ -84,8 +84,7 @@ export const Sidebar = (props: Props) => {
             classes.push("open")
             classes.push("highlighted")
           } else {
-            classes.push("open")
-            classes.push("closed-at-launch")
+            classes.push("closed")
           }
 
           const opened = { "aria-expanded": "true", "aria-label": navRoot.title + " close" }

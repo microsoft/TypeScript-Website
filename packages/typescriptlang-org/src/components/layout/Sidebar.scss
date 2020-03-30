@@ -149,8 +149,14 @@ nav#sidebar {
       list-style: none;
 
       a {
-        transition: margin-left 0.1s ease-out;
         font-weight: 300;
+        margin-right: -0.5rem;
+      }
+
+      &:hover {
+        padding-left: 0.5rem;
+        margin-right: -0.5rem;
+        transition: padding-left 0.1s ease-out;
       }
 
       a:focus,
@@ -160,8 +166,6 @@ nav#sidebar {
         @media (prefers-color-scheme: dark) {
           border-color: white;
         }
-        margin-left: 0.5rem;
-        margin-right: -0.5rem;
       }
 
       &.highlight a {
