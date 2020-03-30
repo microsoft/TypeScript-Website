@@ -21,18 +21,14 @@ jobs:
           yarn install
           yarn bootstrap
           yarn build
-            yarn build-site
+          yarn build-site
+          cp -r packages/typescriptlang-org/public site
 
-      # Move the files to the new app
-      - run: rm -rf serve/public
-      - name: Move V2 public to serve dir
-        run: cp -r packages/typescriptlang-org/public serve
-
-      - name: Build serve server
-        run: |
-          cd serve
-          npm i
-      # Deploy _just_ the serve server
-      # - uses: azure/webapps-deploy@v1
-      #   with:
-      #     creds: ${{ secrets.AZURE_STAGING_PUBLISHING_PROFILE }}
+    # CI: Deploy to the right branch
+    - name: Deploy + Publish
+      if: github.event_name != 'pull_request'
+      uses: peaceiris/actions-gh-pages@v1.1.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PUBLISH_BRANCH: 'SITE-PRODUCTION'
+        PUBLISH_DIR: ./site
