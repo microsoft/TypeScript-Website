@@ -32,7 +32,7 @@ const errorMsg = (msg: string, response: any, config: ATAConfig) => {
  */
 const parseFileForModuleReferences = (sourceCode: string) => {
   // https://regex101.com/r/Jxa3KX/4
-  const requirePattern = /(const|let|var)(.|\n)*? require\(('|")(.*)('|")\);?$/
+  const requirePattern = /(const|let|var)(.|\n)*? require\(('|")(.*)('|")\);?$/gm
   // this handle ths 'from' imports  https://regex101.com/r/hdEpzO/4
   const es6Pattern = /(import|export)((?!from)(?!require)(.|\n))*?(from|require\()\s?('|")(.*)('|")\)?;?$/gm
   // https://regex101.com/r/hdEpzO/6
