@@ -14,7 +14,7 @@ const b = "345"
     expect(result.code).toContain('const b')
   })
 
-  it('shows the right LSP results', () => {
+  it.skip('shows the right LSP results', () => {
     expect(result.staticQuickInfos.find(info => info.text.includes('const a'))).toBeUndefined()
 
     const bLSPResult = result.staticQuickInfos.find(info => info.text.includes('const b'))

@@ -14,17 +14,7 @@
       "length": 4
     }
   ],
-  "staticQuickInfos": [
-    {
-      "text": "let foo: string",
-      "docs": "",
-      "start": 4,
-      "length": 3,
-      "line": 0,
-      "character": 4,
-      "targetString": "foo"
-    }
-  ],
+  "staticQuickInfos": [],
   "errors": [],
   "playgroundURL": "https://www.typescriptlang.org/play/#code/DYUwLgBAZg9jEF4ICIAWJjHmdAnEAhMgNwBQA9ORBAHoD8pQA"
 }

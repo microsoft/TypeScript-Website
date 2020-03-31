@@ -90,6 +90,9 @@ const Play: React.FC<Props> = (props) => {
           domID: "monaco-editor-embed",
           useJavaScript: !!params.get("useJavaScript"),
           acquireTypes: !localStorage.getItem("disable-ata"),
+          monacoSettings: {
+            fontFamily: "JetBrains Mono, Menlo, Monaco, Consolas, Courier New, monospace"
+          }
         }, main, ts)
 
         const playgroundConfig = {
@@ -126,7 +129,7 @@ const Play: React.FC<Props> = (props) => {
       {/** This is the top nav, which is outside of the editor  */}
       <nav className="navbar-sub">
         <ul className="nav">
-          <li className="name"><span>Playground</span></li>
+          <li className="name hide-small"><span>Playground</span></li>
 
           <li className="dropdown">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_config")} <span className="caret"></span></a>

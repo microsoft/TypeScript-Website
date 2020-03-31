@@ -192,7 +192,7 @@
             }
 
             > span {
-              font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+              font-family: $font-code;
               margin-left: 4px;
             }
           }
@@ -206,7 +206,7 @@
         label {
           margin-right: 0.5rem;
           width: 33%;
-          font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+          font-family: $font-code;
 
           select {
             margin-left: 1rem;
@@ -266,6 +266,9 @@ main > nav {
 
 // The toolbar for the editor
 main #editor-toolbar {
+  // So that it doesn't overflow on mobile
+  overflow-x: hidden;
+
   // For the main buttons
   > ul > li {
     margin-left: 0px;
@@ -341,8 +344,19 @@ main #editor-toolbar {
     #editor-toolbar {
       height: 3rem;
       border-bottom: 1px #c4c4c4 solid;
+
       margin-right: -2px;
       margin-bottom: 10px;
+
+      position: relative;
+      ul.right {
+        background-color: white;
+        @media (prefers-color-scheme: dark) {
+          background-color: #1e1e1e;
+        }
+        position: absolute;
+        right: 0;
+      }
     }
   }
 
@@ -361,10 +375,17 @@ main #editor-toolbar {
 
   .playground-sidebar {
     flex-basis: 320px;
-    padding: 0 1em;
-    padding-left: 0.5rem;
     width: 320px;
     max-width: 320px;
+
+    @media (max-width: $screen-sm) {
+      flex-basis: 300px;
+      width: 300px;
+      max-width: 300px;
+    }
+
+    padding: 0 1em;
+    padding-left: 0.5rem;
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
@@ -404,7 +425,7 @@ main #editor-toolbar {
         }
 
         code {
-          font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+          font-family: $font-code;
           font-size: 0.7rem;
           line-height: 0.7rem;
         }
@@ -415,6 +436,11 @@ main #editor-toolbar {
       display: flex;
       align-items: center;
       justify-content: center;
+
+      @media (max-width: $screen-sm) {
+        justify-content: flex-start;
+      }
+
       height: 2.5rem;
       margin-bottom: 10px;
       overflow-x: auto;
@@ -452,7 +478,7 @@ main #editor-toolbar {
 .playground-plugin-container {
   #log-container {
     overflow: auto;
-    font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+    font-family: $font-code;
     line-height: 1.5rem;
 
     .log-warn {
@@ -526,7 +552,7 @@ main #editor-toolbar {
   }
 
   #compiler-errors {
-    font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+    font-family: $font-code;
     margin: 0;
     padding: 0;
 

@@ -3,17 +3,7 @@
   "extension": "ts",
   "highlights": [],
   "queries": [],
-  "staticQuickInfos": [
-    {
-      "text": "const bye: \"globe\"",
-      "docs": "",
-      "start": 6,
-      "length": 3,
-      "line": 3,
-      "character": 6,
-      "targetString": "bye"
-    }
-  ],
+  "staticQuickInfos": [],
   "errors": [],
   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAkFMBtoe1AZwBZwK7QCagHZwC6gCGADiZEQE6gCWOo+ykS+R+NAxgIpqcDWASRwAzOIgBQHODkSEmsBAF5QAcgDucSlhXiQoALSGOafIf2Tps0ACMAns2UqA5vGuQdQA"
 }
