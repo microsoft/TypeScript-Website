@@ -192,7 +192,7 @@
             }
 
             > span {
-              font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+              font-family: $font-code;
               margin-left: 4px;
             }
           }
@@ -206,7 +206,7 @@
         label {
           margin-right: 0.5rem;
           width: 33%;
-          font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+          font-family: $font-code;
 
           select {
             margin-left: 1rem;
@@ -425,7 +425,7 @@ main #editor-toolbar {
         }
 
         code {
-          font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+          font-family: $font-code;
           font-size: 0.7rem;
           line-height: 0.7rem;
         }
@@ -478,7 +478,7 @@ main #editor-toolbar {
 .playground-plugin-container {
   #log-container {
     overflow: auto;
-    font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+    font-family: $font-code;
     line-height: 1.5rem;
 
     .log-warn {
@@ -552,7 +552,7 @@ main #editor-toolbar {
   }
 
   #compiler-errors {
-    font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+    font-family: $font-code;
     margin: 0;
     padding: 0;
 

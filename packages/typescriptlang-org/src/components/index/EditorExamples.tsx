@@ -118,7 +118,7 @@ addPrices(3, 4, 6);
 
         inline={() =>
           (<>
-            <div className="underline-error" style={{ top: "140px", left: "96px", width: "68px" }} />
+            <div className="underline-error" style={{ top: "138px", left: "95px", width: "68px" }} />
             <div className="error-message" style={{ top: "170px", left: "96px", width: "200px" }}>
               Expected 1 argument,<br />but got 3.
           </div>
@@ -345,7 +345,7 @@ const dist = getLength(3, "cm", "inches");
         line={() => <div className="line-error" style={{ top: "152px" }} />}
         inline={() =>
           (<>
-            <div className="underline-error" style={{ top: "124px", left: "266px", width: "55px" }} />
+            <div className="underline-error" style={{ top: "121px", left: "266px", width: "60px" }} />
             <div className="error-message" style={{ top: "153px", left: "16px", width: "320px" }}>
               Argument of type '"inches"' is not<br />assignable to parameter of type 'Unit'.
           </div>

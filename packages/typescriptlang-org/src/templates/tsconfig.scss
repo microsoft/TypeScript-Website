@@ -63,7 +63,7 @@
         padding: 0;
       }
       li {
-        font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+        font-family: $font-code;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

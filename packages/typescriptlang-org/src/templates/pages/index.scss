@@ -260,7 +260,7 @@
       .error-message {
         color: #ff6666;
         font-size: 0.8rem;
-        font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+        font-family: $font-code;
         position: absolute;
         width: 200px;
       }
@@ -271,7 +271,7 @@
         background-color: white;
         color: grey;
 
-        font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+        font-family: $font-code;
         font-size: 0.8rem;
         margin: 0;
         padding: 0;
@@ -315,7 +315,7 @@
 
         .text {
           padding: 1rem;
-          font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+          font-family: $font-code;
           font-size: 0.8rem;
           line-height: 0.95rem;
           white-space: pre;
