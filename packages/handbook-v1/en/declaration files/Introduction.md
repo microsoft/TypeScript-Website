@@ -53,4 +53,4 @@ The [Publishing](/docs/handbook/declaration-files/publishing.html) section expla
 
 ## Find and Install Declaration Files
 
-For JavaScript library users, the [Consumption](./Consumption.md) section offers a few simple steps to locate and install corresponding declaration files.
+For JavaScript library users, the [Consumption](/docs/handbook/declaration-files/consumption.html) section offers a few simple steps to locate and install corresponding declaration files.
