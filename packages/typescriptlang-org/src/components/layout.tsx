@@ -24,6 +24,17 @@ if (!Array.prototype.forEach) {
       callback.call(thisArg, array[i], i, array);
     }
   };
+
+  if (window.NodeList && !NodeList.prototype.forEach) {
+    // @ts-ignore
+    NodeList.prototype.forEach = Array.prototype.forEach;
+  }
+
+  // @ts-ignore
+  if (window.HTMLCollection && !HTMLCollection.prototype.forEach) {
+    // @ts-ignore
+    HTMLCollection.prototype.forEach = Array.prototype.forEach;
+  }
 }
 
 export const Layout = (props: LayoutProps) => {
