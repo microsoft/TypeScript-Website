@@ -45,13 +45,14 @@ const HandbookTemplate: React.FC<Props> = (props) => {
     const updateSidebar = () => {
       const fromTop = window.scrollY;
       let currentPossibleAnchor: HTMLAnchorElement | undefined
+      const offset = 100
 
       // Scroll down to find the highest anchor on the screen
       subnavLinks.forEach(link => {
         try {
           const section = document.querySelector<HTMLDivElement>(link.hash);
           if (!section) { return }
-          const isBelow = section.offsetTop <= fromTop
+          const isBelow = section.offsetTop - offset <= fromTop
           if (isBelow) currentPossibleAnchor = link
 
         } catch (error) {
