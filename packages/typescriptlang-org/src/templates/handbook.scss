@@ -8,6 +8,7 @@
 #handbook-content {
   margin-left: 2rem;
   margin-right: 2rem;
+  min-width: 0;
 
   @media (max-width: $screen-xs) {
     margin-left: 0;
