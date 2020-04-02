@@ -29,7 +29,7 @@
   "scripts": {
     "bootstrap": "yarn workspaces run bootstrap && yarn workspaces run build",
     "start": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"yarn workspace typescriptlang-org start\"",
-    "build": "yarn workspaces run build",
+    "build": "yarn workspaces foreach run build",
     "build-site": "yarn workspace typescriptlang-org build",
     "compile": "yarn workspace typescriptlang-org tsc",
     "update-snapshots": "yarn workspace typescriptlang-org update-snapshots",
@@ -43,6 +43,7 @@
     "trailingComma": "es5"
   },
   "dependencies": {
+    "@yarnpkg/pnpify": "^2.0.0-rc.20",
     "serve-handler": "^6.1.2"
   }
 }
