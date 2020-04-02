@@ -26,13 +26,15 @@ if (!Array.prototype.forEach) {
   };
 }
 
-if (window && window.NodeList && !NodeList.prototype.forEach) {
+const hasWindow = (typeof window !== `undefined`)
+
+if (hasWindow && window.NodeList && !NodeList.prototype.forEach) {
   // @ts-ignore
   NodeList.prototype.forEach = Array.prototype.forEach;
 }
 
 // @ts-ignore
-if (window && window.HTMLCollection && !HTMLCollection.prototype.forEach) {
+if (hasWindow && window.HTMLCollection && !HTMLCollection.prototype.forEach) {
   // @ts-ignore
   HTMLCollection.prototype.forEach = Array.prototype.forEach;
 }
