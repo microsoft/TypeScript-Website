@@ -32,11 +32,15 @@ Deployment is automatic:
 
 You can find the build logs in [GitHub Actions](https://github.com/microsoft/TypeScript-Website/actions)
 
+## Overview
+
+If you want to know _in-depth_ how this website works, there is an [hour long video covering the codebase, deployment and tooling on YouTube.](https://www.youtube.com/watch?v=HOvivt6B7hE).
+
 # Website Packages
 
 ## TypeScriptLang-Org
 
-The main website for TypeScript, a Gatsby website which is statically deployed.
+The main website for TypeScript, a Gatsby website which is statically deployed. You can run it via:
 
 ```sh
 yarn start
@@ -78,15 +82,11 @@ yarn workspace tsconfig-reference run lint resolveJson
 
 ## Handbook V1
 
-The existing docs for TypeScript
-
-## Handbook V2
-
-The upcoming docs for TypeScript
+The existing docs for TypeScript as a direct import the repo of [microsoft/TypeScript-Handbook](https://github.com/microsoft/TypeScript-Handbook/)
 
 ## Playground Examples
 
-The code samples used in the Playground
+The code samples used in the Playground split across many languages
 
 # Infra Packages
 
