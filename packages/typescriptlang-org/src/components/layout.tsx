@@ -26,13 +26,13 @@ if (!Array.prototype.forEach) {
   };
 }
 
-if (window.NodeList && !NodeList.prototype.forEach) {
+if (window && window.NodeList && !NodeList.prototype.forEach) {
   // @ts-ignore
   NodeList.prototype.forEach = Array.prototype.forEach;
 }
 
 // @ts-ignore
-if (window.HTMLCollection && !HTMLCollection.prototype.forEach) {
+if (window && window.HTMLCollection && !HTMLCollection.prototype.forEach) {
   // @ts-ignore
   HTMLCollection.prototype.forEach = Array.prototype.forEach;
 }
