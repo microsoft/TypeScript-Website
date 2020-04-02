@@ -34,7 +34,7 @@ function padLeft(value: string, padding: any) {
 padLeft("Hello world", 4); // returns "    Hello world"
 ```
 
-The problem with `padLeft` is that its `padding` parameter is typed as `any`.
+The problem with `padLeft` in the above example is that its `padding` parameter is typed as `any`.
 That means that we can call it with an argument that's neither a `number` nor a `string`, but TypeScript will be okay with it.
 
 ```ts
@@ -66,7 +66,9 @@ let indentedString = padLeft("Hello world", true); // errors during compilation
 A union type describes a value that can be one of several types.
 We use the vertical bar (`|`) to separate each type, so `number | string | boolean` is the type of a value that can be a `number`, a `string`, or a `boolean`.
 
-If we have a value that has a union type, we can only access members that are common to all types in the union.
+### Unions with Common Fields
+
+If we have a value that is a union type, we can only access members that are common to all types in the union.
 
 ```ts
 interface Bird {
@@ -93,6 +95,16 @@ If a value has the type `A | B`, we only know for _certain_ that it has members 
 In this example, `Bird` has a member named `fly`.
 We can't be sure whether a variable typed as `Bird | Fish` has a `fly` method.
 If the variable is really a `Fish` at runtime, then calling `pet.fly()` will fail.
+
+### Discriminating Unions
+
+A common case for unions is to have a single field which uses literal types to let TypeScript know which object it should expect from the union.
+
+```ts
+interface SuccessfulResponse {}
+
+interface FailingResponse {}
+```
 
 # Intersection Types
 

@@ -26,7 +26,7 @@ const helloWorld = "Hello World";
 let hiWorld = "Hi World";
 ```
 
-The process of going from an infinite number of potential cases (there are an infinite number of possible string values) to a smaller, finate number of potential case (in `helloWorld`'s case: 1) is called narrowing.
+The process of going from an infinite number of potential cases (there are an infinite number of possible string values) to a smaller, finite number of potential case (in `helloWorld`'s case: 1) is called narrowing.
 
 # String Literal Types
 
@@ -35,6 +35,7 @@ You can use these features together to get enum-like behavior with strings.
 
 ```ts
 type Easing = "ease-in" | "ease-out" | "ease-in-out";
+
 class UIElement {
   animate(dx: number, dy: number, easing: Easing) {
     if (easing === "ease-in") {
@@ -79,15 +80,10 @@ function rollDice(): 1 | 2 | 3 | 4 | 5 | 6 {
 }
 ```
 
-These are seldom written explicitly, but they can be useful when narrowing issues and can catch bugs:
+Another common case might be when describing config values:
 
 ```ts
-function foo(x: number) {
-  if (x !== 1 || x !== 2) {
-    //         ~~~~~~~
-    // Operator '!==' cannot be applied to types '1' and '2'.
-  }
+interface GameConfig {
+  tileSize: 8 | 16 | 32;
 }
 ```
-
-In other words, `x` must be `1` when it gets compared to `2`, meaning that the above check is making an invalid comparison.
