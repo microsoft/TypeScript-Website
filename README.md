@@ -23,6 +23,15 @@ Some useful knowledge:
 - All packages have: `yarn bootstrap`, `yarn build` and `yarn test`
 - All packages use [debug](https://www.npmjs.com/package/debug) - which means you can do `env DEBUG="*" yarn test` to get verbose logs
 
+## Deployment
+
+Deployment is automatic:
+
+- Merges to the branch `master` trigger deploys to production of the v1 website, and the v2 of branch in a [`/v2` subfolder](https://www.typescriptlang.org/v2/).
+- Pushes to the branch `v2` deploy to [staging](http://testsite-typescript-41eeb979-7eaa-4c74-9d47-9d182c7b61ab.azurewebsites.net/).
+
+You can find the build logs in [GitHub Actions](https://github.com/microsoft/TypeScript-Website/actions)
+
 # Website Packages
 
 ## TypeScriptLang-Org
