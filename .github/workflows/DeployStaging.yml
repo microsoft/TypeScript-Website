@@ -25,7 +25,6 @@ jobs:
           yarn build
           yarn build-site
           cp -r packages/typescriptlang-org/public site
-          fail
 
       - name: Send a message to Microsoft Teams
         if: failure()
@@ -47,6 +46,6 @@ jobs:
         # You can find these keys here:
         # https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/57bfeeed-c34a-4ffd-a06b-ccff27ac91b8/resourcegroups/typescriptlang-org/providers/Microsoft.Storage/storageAccounts/typescriptorgstaging/keys
         env:
-          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_CDN_STAGING_STORAGE_ACCOUNT }}
-          AZURE_STORAGE_KEY: ${{ secrets.AZURE_CDN_STAGING_STORAGE_KEY }}
+          AZURE_STORAGE_ACCOUNT: 'typescriptorgstaging'
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_CDN_STAGING_CONNECTION_STRING }}
         run: az storage blob upload-batch -s ./site -d \$web
