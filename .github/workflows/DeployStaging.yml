@@ -14,6 +14,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '13.x'
+      # For Azure uploads
+      - run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
       # Build v2
       - name: Build website v2
@@ -24,11 +26,18 @@ jobs:
           yarn build-site
           cp -r packages/typescriptlang-org/public site
 
-      # CI: Deploy to the right branch
-      - name: Deploy + Publish
-        if: github.event_name != 'pull_request'
+      # CI: Deploy to the right branch to trigger the deploy to the AppService site
+      - name: Deploy + Publish to AppService
         uses: peaceiris/actions-gh-pages@v1.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PUBLISH_BRANCH: 'SITE-STAGING'
           PUBLISH_DIR: ./site
+
+      - name: Deploy + Publish to CDN
+        # You can find these keys here:
+        # https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/57bfeeed-c34a-4ffd-a06b-ccff27ac91b8/resourcegroups/typescriptlang-org/providers/Microsoft.Storage/storageAccounts/typescriptorgstaging/keys
+        env:
+          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_CDN_STAGING_STORAGE_ACCOUNT }}
+          AZURE_STORAGE_KEY: ${{ secrets.AZURE_CDN_STAGING_STORAGE_KEY }}
+        run: az storage blob upload-batch -s ./site -d $web
