@@ -96,14 +96,144 @@ In this example, `Bird` has a member named `fly`.
 We can't be sure whether a variable typed as `Bird | Fish` has a `fly` method.
 If the variable is really a `Fish` at runtime, then calling `pet.fly()` will fail.
 
-### Discriminating Unions
+## Discriminating Unions
 
 A common case for unions is to have a single field which uses literal types to let TypeScript know which object it should expect from the union.
 
 ```ts
-interface SuccessfulResponse {}
+type NetworkLoadingState = {
+  state: "loading";
+};
 
-interface FailingResponse {}
+type NetworkFailedState = {
+  state: "failed";
+  code: number;
+};
+
+type NetworkSuccessState = {
+  state: "success";
+  response: {
+    title: string;
+    duration: number;
+    summary: string;
+  };
+};
+
+// Create a type which represents only one of the above types
+// but you aren't sure which it is yet.
+type NetworkState =
+  | NetworkLoadingState
+  | NetworkFailedState
+  | NetworkSuccessState;
+```
+
+<style type="text/css">
+.markdown table.tg  {
+  border-collapse:collapse;
+  width: 100%;
+  text-align: center;
+  display: table;
+}
+
+.tg th {
+  border-bottom: 1px solid black;
+  padding: 8px;
+  padding-bottom: 0;
+}
+
+.tg tbody, .tg tr {
+  width: 100%;
+}
+
+.tg .highlight {
+  background-color: #F3F3F3;
+}
+</style>
+
+All of the above types have a field named `state`:
+
+<table class='tg' width="100%">
+  <tbody>
+    <tr>
+      <th><code>NetworkLoadingState</code></th>
+      <th><code>NetworkFailedState</code></th>
+      <th><code>NetworkSuccessState</code></th>
+    </tr>
+    <tr class='highlight'>
+      <td>state</td>
+      <td>state</td>
+      <td>state</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>code</td>
+      <td>response</td>
+    </tr>
+    </tbody>
+</table>
+
+The `state` field differs between each type because they are literal types:
+
+<table class='tg' width="100%">
+  <tbody>
+    <tr>
+      <th><code>NetworkLoadingState</code></th>
+      <th><code>NetworkFailedState</code></th>
+      <th><code>NetworkSuccessState</code></th>
+    </tr>
+    <tr>
+      <td><code>"loading"</code></td>
+      <td><code>"failed"</code></td>
+      <td><code>"success"</code></td>
+    </tr>
+    </tbody>
+</table>
+
+TypeScript will use code flow analysis to narrow down the available types in your code:
+
+```ts twoslash
+// @errors: 2339
+type NetworkLoadingState = {
+  state: "loading";
+};
+
+type NetworkFailedState = {
+  state: "failed";
+  code: number;
+};
+
+type NetworkSuccessState = {
+  state: "success";
+  response: {
+    title: string;
+    duration: number;
+    summary: string;
+  };
+};
+// ---cut---
+type NetworkState =
+  | NetworkLoadingState
+  | NetworkFailedState
+  | NetworkSuccessState;
+
+function networkStatus(state: NetworkState): string {
+  // Right now we don't know  which of the three potential
+  // types state could be.
+
+  // Trying to access a property which isn't shared
+  // across all types will raise an error
+  state.code;
+
+  // By switching on state, we can discriminate th
+  switch (state.state) {
+    case "loading":
+      return "Downloading...";
+    case "failed":
+      return `Error ${state.code} downloading`;
+    case "success":
+      return `Error ${state.response} downloading`;
+  }
+}
 ```
 
 # Intersection Types
