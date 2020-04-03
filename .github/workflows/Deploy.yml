@@ -29,7 +29,7 @@ jobs:
         yarn install
         yarn bootstrap
         yarn build
-        yarn build-site --prefix-paths # ensure the gatsby site knows to prefix with v2
+        yarn build-site
         cp -r packages/typescriptlang-org/public ../site
         cd ..
 
