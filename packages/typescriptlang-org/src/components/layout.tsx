@@ -26,16 +26,18 @@ if (!Array.prototype.forEach) {
   };
 }
 
-// if (window.NodeList && !NodeList.prototype.forEach) {
-//   // @ts-ignore
-//   NodeList.prototype.forEach = Array.prototype.forEach;
-// }
+const hasWindow = (typeof window !== `undefined`)
 
-// // @ts-ignore
-// if (window.HTMLCollection && !HTMLCollection.prototype.forEach) {
-//   // @ts-ignore
-//   HTMLCollection.prototype.forEach = Array.prototype.forEach;
-// }
+if (hasWindow && window.NodeList && !NodeList.prototype.forEach) {
+  // @ts-ignore
+  NodeList.prototype.forEach = Array.prototype.forEach;
+}
+
+// @ts-ignore
+if (hasWindow && window.HTMLCollection && !HTMLCollection.prototype.forEach) {
+  // @ts-ignore
+  HTMLCollection.prototype.forEach = Array.prototype.forEach;
+}
 
 export const Layout = (props: LayoutProps) => {
   return (
