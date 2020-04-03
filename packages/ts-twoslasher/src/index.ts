@@ -471,7 +471,7 @@ export function twoslasher(
   if (code.includes(cutString)) {
     // Get the place it is, then find the end and the start of the next line
     const cutIndex = code.indexOf(cutString) + cutString.length
-    const lineOffset = code.substr(0, cutIndex).split('\n').length
+    const lineOffset = code.substr(0, cutIndex).split('\n').length - 1
 
     // Kills the code shown
     code = code.split(cutString).pop()!

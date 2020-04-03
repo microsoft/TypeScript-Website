@@ -15,7 +15,7 @@ Intersection and Union types are one of the ways in which you can compose types.
 Occasionally, you'll run into a library that expects a parameter to be either a `number` or a `string`.
 For instance, take the following function:
 
-```ts
+```ts twoslash
 /**
  * Takes a string and adds "padding" to the left.
  * If 'padding' is a string, then 'padding' is appended to the left side.
@@ -37,7 +37,9 @@ padLeft("Hello world", 4); // returns "    Hello world"
 The problem with `padLeft` in the above example is that its `padding` parameter is typed as `any`.
 That means that we can call it with an argument that's neither a `number` nor a `string`, but TypeScript will be okay with it.
 
-```ts
+```ts twoslash
+declare function padLeft(value: string, padding: any): string;
+// ---cut---
 // passes at compile time, fails at runtime.
 let indentedString = padLeft("Hello world", true);
 ```
@@ -50,7 +52,8 @@ This new approach also wouldn't help if we were just trying to use a function th
 
 Instead of `any`, we can use a _union type_ for the `padding` parameter:
 
-```ts
+```ts twoslash
+// @errors: 2345
 /**
  * Takes a string and adds "padding" to the left.
  * If 'padding' is a string, then 'padding' is appended to the left side.
@@ -60,34 +63,36 @@ function padLeft(value: string, padding: string | number) {
   // ...
 }
 
-let indentedString = padLeft("Hello world", true); // errors during compilation
+let indentedString = padLeft("Hello world", true);
 ```
 
 A union type describes a value that can be one of several types.
 We use the vertical bar (`|`) to separate each type, so `number | string | boolean` is the type of a value that can be a `number`, a `string`, or a `boolean`.
 
-### Unions with Common Fields
+## Unions with Common Fields
 
 If we have a value that is a union type, we can only access members that are common to all types in the union.
 
-```ts
+```ts twoslash
+// @errors: 2339
+
 interface Bird {
-  fly();
-  layEggs();
+  fly(): void;
+  layEggs(): void;
 }
 
 interface Fish {
-  swim();
-  layEggs();
+  swim(): void;
+  layEggs(): void;
 }
 
-function getSmallPet(): Fish | Bird {
-  // ...
-}
+declare function getSmallPet(): Fish | Bird;
 
 let pet = getSmallPet();
-pet.layEggs(); // okay
-pet.swim(); // errors
+pet.layEggs();
+
+// Only available in one of the two possible types
+pet.swim();
 ```
 
 Union types can be a bit tricky here, but it just takes a bit of intuition to get used to.
@@ -98,7 +103,7 @@ If the variable is really a `Fish` at runtime, then calling `pet.fly()` will fai
 
 ## Discriminating Unions
 
-A common case for unions is to have a single field which uses literal types to let TypeScript know which object it should expect from the union.
+A common technique for working with unions is to have a single field which uses literal types which you can use to let TypeScript narrow down the possible current type. For example, we're going to create a union of three types which have a single shared field.
 
 ```ts
 type NetworkLoadingState = {
@@ -150,7 +155,7 @@ type NetworkState =
 }
 </style>
 
-All of the above types have a field named `state`:
+All of the above types have a field named `state`, and then they also have their own fields:
 
 <table class='tg' width="100%">
   <tbody>
@@ -172,7 +177,9 @@ All of the above types have a field named `state`:
     </tbody>
 </table>
 
-The `state` field differs between each type because they are literal types:
+Given the `state` field is common in every type inside `NetworkState` - it is safe for your code to access without an existence check.
+
+With `state` as a literal type, you can compare the value of `state` to the equivalent string and TypeScript will know which type is currently being used.
 
 <table class='tg' width="100%">
   <tbody>
@@ -189,7 +196,7 @@ The `state` field differs between each type because they are literal types:
     </tbody>
 </table>
 
-TypeScript will use code flow analysis to narrow down the available types in your code:
+In this case, you can use a `switch` statement to narrow down which type is represented at runtime:
 
 ```ts twoslash
 // @errors: 2339
@@ -217,21 +224,24 @@ type NetworkState =
   | NetworkSuccessState;
 
 function networkStatus(state: NetworkState): string {
-  // Right now we don't know  which of the three potential
-  // types state could be.
+  // Right now TypeScript does not know which of the three
+  // potential types state could be.
 
   // Trying to access a property which isn't shared
   // across all types will raise an error
   state.code;
 
-  // By switching on state, we can discriminate th
+  // By switching on state, TypeScript can narrow the union
+  // down in code flow analysis
   switch (state.state) {
     case "loading":
       return "Downloading...";
     case "failed":
+      // The type must be NetworkFailedState here,
+      // so accessing the `code` field is safe
       return `Error ${state.code} downloading`;
     case "success":
-      return `Error ${state.response} downloading`;
+      return `Downloaded ${state.response.title} - ${state.response.summary}`;
   }
 }
 ```
@@ -244,10 +254,62 @@ This allows you to add together existing types to get a single type that has all
 For example, `Person & Serializable & Loggable` is a type which is all of `Person` _and_ `Serializable` _and_ `Loggable`.
 That means an object of this type will have all members of all three types.
 
-Here's a simple example that shows how to create a mixin:
+For example, if you had networking requests with consistent error handling then you could separate out the error handling into it's own type which is merged with types which correspond to a single response type.
 
-```ts
-function extend<First, Second>(first: First, second: Second): First & Second {
+```ts twoslash
+interface ErrorHandling {
+  success: boolean;
+  error?: { message: string };
+}
+
+interface ArtworksData {
+  artworks: { title: string }[];
+}
+
+interface ArtistsData {
+  artists: { name: string }[];
+}
+
+// These interfaces are composed to have
+// consistent error handling, and their own data.
+
+type ArtworksResponse = ArtworksData & ErrorHandling;
+type ArtistsResponse = ArtistsData & ErrorHandling;
+
+const handleArtistsResponse = (response: ArtistsResponse) => {
+  if (response.error) {
+    console.error(response.error.message);
+    return;
+  }
+
+  console.log(response.artists);
+};
+```
+
+## Mixins via Intersections
+
+Intersections are used to implement the [mixin pattern](/docs/handbook/mixins.html):
+
+```ts twoslash
+class Person {
+  constructor(public name: string) {}
+}
+
+interface Loggable {
+  log(name: string): void;
+}
+
+class ConsoleLogger implements Loggable {
+  log(name: string) {
+    console.log(`Hello, I'm ${name}.`);
+  }
+}
+
+// Takes two objects and merges them together
+function extend<First extends {}, Second extends {}>(
+  first: First,
+  second: Second
+): First & Second {
   const result: Partial<First & Second> = {};
   for (const prop in first) {
     if (first.hasOwnProperty(prop)) {
@@ -260,20 +322,6 @@ function extend<First, Second>(first: First, second: Second): First & Second {
     }
   }
   return result as First & Second;
-}
-
-class Person {
-  constructor(public name: string) {}
-}
-
-interface Loggable {
-  log(name: string): void;
-}
-
-class ConsoleLogger implements Loggable {
-  log(name) {
-    console.log(`Hello, I'm ${name}.`);
-  }
 }
 
 const jim = extend(new Person("Jim"), ConsoleLogger.prototype);
