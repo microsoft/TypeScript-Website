@@ -11,24 +11,8 @@ jobs:
     steps:
     # Check out, and set up the node/ruby infra
     - uses: actions/checkout@v1
-      with: {submodules: true}
     - uses: actions/setup-node@v1
-    - uses: actions/setup-ruby@v1
 
-    # Get local dependencies
-    - run: yarn install
-    # danger for PR builds
-    - if: github.event_name == 'pull_request'
-      run: yarn danger ci
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - run: (cd src/play && yarn install && yarn setup)
-    - run: gem install bundler -v 1.16.1
-    - run: bundle install
-
-    # Build v1
-    - name: Build website v1
-      run: gulp publish
 
     # Switch to node 13
     - uses: actions/setup-node@v1
@@ -42,13 +26,11 @@ jobs:
         cd v2
         git config --global user.email "you@example.com"
         git config --global user.name "Your Name"
-        git fetch origin pull/297/head:docs
-        git merge docs
         yarn install
         yarn bootstrap
         yarn build
         yarn build-site --prefix-paths # ensure the gatsby site knows to prefix with v2
-        cp -r packages/typescriptlang-org/public ../site/v2
+        cp -r packages/typescriptlang-org/public ../site
         cd ..
 
     # CI: Deploy to the right branch
