@@ -10,7 +10,7 @@
       "code": 2339,
       "length": 4,
       "start": 327,
-      "line": 5,
+      "line": 8,
       "character": 8,
       "renderedMessage": "Property 'code' does not exist on type 'NetworkState'.\n  Property 'code' does not exist on type 'NetworkLoadingState'.",
       "id": "err-2339-582-4"
