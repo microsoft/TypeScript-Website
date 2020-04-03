@@ -471,6 +471,8 @@ export function twoslasher(
   if (code.includes(cutString)) {
     // Get the place it is, then find the end and the start of the next line
     const cutIndex = code.indexOf(cutString) + cutString.length
+    const lineOffset = code.substr(0, cutIndex).split('\n').length - 1
+
     // Kills the code shown
     code = code.split(cutString).pop()!
 
@@ -481,10 +483,15 @@ export function twoslasher(
 
     errors.forEach(err => {
       if (err.start) err.start -= cutIndex
+      if (err.line) err.line -= lineOffset
     })
     errors = errors.filter(e => e.start && e.start > -1)
 
-    highlights.forEach(highlight => (highlight.position -= cutIndex))
+    highlights.forEach(highlight => {
+      highlight.position -= cutIndex
+      highlight.line -= lineOffset
+    })
+
     highlights = highlights.filter(e => e.position > -1)
 
     queries.forEach(q => (q.start -= cutIndex))
