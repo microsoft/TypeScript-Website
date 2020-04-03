@@ -266,9 +266,6 @@ main > nav {
 
 // The toolbar for the editor
 main #editor-toolbar {
-  // So that it doesn't overflow on mobile
-  overflow-x: hidden;
-
   // For the main buttons
   > ul > li {
     margin-left: 0px;
@@ -332,6 +329,7 @@ main #editor-toolbar {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 
     @media (prefers-color-scheme: dark) {
       background-color: #1e1e1e;
