@@ -97,6 +97,9 @@ export const SiteNav = (props: Props) => {
           </nav>
         </div>
       </div>
+
+      <div className="hide-small" id="beta-notification-menu">{i("nav_beta_notification", { a: (...chunk) => <a href="https://github.com/microsoft/TypeScript-Website/issues">{chunk}</a> })}</div>
+
       { /** Used for skip past navigation button */}
       <div id="site-content" />
     </header >
