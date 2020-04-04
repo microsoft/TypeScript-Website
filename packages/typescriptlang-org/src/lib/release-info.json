@@ -3,15 +3,15 @@
   "tags": {
     "stableMajMin": "3.8",
     "stable": "3.8.3",
-    "betaMajMin": "3.8",
-    "beta": "3.8.0-beta",
+    "betaMajMin": "3.9",
+    "beta": "3.9.0-beta",
     "rc": "3.8.1-rc",
     "rcMajMin": "3.8"
   },
   "isRC": false,
-  "isBeta": false,
+  "isBeta": true,
   "releaseNotesURL": "/docs/handbook/release-notes/typescript-3-8.html",
-  "betaPostURL": "https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/",
+  "betaPostURL": "https://devblogs.microsoft.com/typescript/announcing-typescript-3-9-beta/",
   "rcPostURL": "https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-rc/",
   "vs": {
     "stable": {
@@ -19,8 +19,8 @@
       "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-38beta"
     },
     "beta": {
-      "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-38beta",
-      "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-38beta"
+      "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-373",
+      "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-373"
     },
     "rc": {
       "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-38beta",

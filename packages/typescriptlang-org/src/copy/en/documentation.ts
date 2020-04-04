@@ -24,6 +24,7 @@ export const docCopy = {
   doc_frameworks: "Web Frameworks",
   doc_frameworks_angular_blurb:
     "Makes writing beautiful apps be joyful and fun",
+  doc_frameworks_ember_blurb: "A framework for ambitious web developers",
   doc_frameworks_react_blurb:
     "A JavaScript library for building user interfaces",
   doc_frameworks_vue_blurb: "The Progressive JavaScript Framework",

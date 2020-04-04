@@ -86,6 +86,11 @@ const Index: React.FC<Props> = (props) => {
               title: "Angular",
             },
             {
+              href: "https://emberjs.com",
+              blurb: i("doc_frameworks_ember_blurb"),
+              title: "Ember",
+            },
+            {
               href: "https://reactjs.org",
               badge: "Examples below",
               blurb: i("doc_frameworks_react_blurb"),
