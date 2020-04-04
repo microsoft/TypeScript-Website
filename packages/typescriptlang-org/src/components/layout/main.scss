@@ -72,6 +72,13 @@ html {
   }
 }
 
+// Style the permalink icon in dark colour-scheme
+.raised svg path {
+  @media (prefers-color-scheme: dark) {
+    fill: white;
+  }
+}
+
 .main-content-block {
   max-width: 960px;
   margin: 1rem auto;
