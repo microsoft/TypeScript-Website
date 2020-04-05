@@ -12,7 +12,7 @@ JavaScript already has a set of language primitives like `string`, `number`, `ob
 
 This means that your existing working JavaScript code is also TypeScript code, however TypeScript's type-checker might highlight discrepancies between what you thought was happening and what the JavaScript language does.
 
-This tutorial tries to give you a 5 minute overview of the type-system, with a focus on understanding the type-system langauge extensions which TypeScript adds.
+This tutorial tries to give you a 5 minute overview of the type-system, with a focus on understanding the type-system language extensions which TypeScript adds.
 
 ## Types by Inference
 
