@@ -136,7 +136,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
             }
           </article>
 
-          <NextPrev next={props.data.next} prev={props.data.prev} i={i} IntlLink={IntlLink} />
+          <NextPrev next={props.data.next as any} prev={props.data.prev as any} i={i} IntlLink={IntlLink as any} />
 
         </div>
       </section>

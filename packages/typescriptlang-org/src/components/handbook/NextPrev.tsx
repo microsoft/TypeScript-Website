@@ -5,14 +5,13 @@ interface NextPrevProps {
   prev: { childMarkdownRemark: { frontmatter: { title: string, oneline: string, permalink: string } } } | undefined
   next: { childMarkdownRemark: { frontmatter: { title: string, oneline: string, permalink: string } } } | undefined,
   i: (string) => string,
-  InltLink: typeof Link
+  IntlLink: typeof Link
 }
 
 const Row = (props: { children: any, className?: string }) => <div className={[props.className, "row"].join(" ")}>{props.children}</div>
 
 
 export const NextPrev = (props: NextPrevProps) => {
-  console.log(props)
   if (!props.prev && !props.next) return null
   const prev = props.prev && props.prev.childMarkdownRemark.frontmatter
   const next = props.next && props.next.childMarkdownRemark.frontmatter
@@ -20,9 +19,9 @@ export const NextPrev = (props: NextPrevProps) => {
   return (
     <div className="whitespace-tight raised">
       <Row className="justify-between">
-        {!prev ? <EmptyLink /> : <LinkSection i={props.i} data={prev} InltLink={props.InltLink} type="prev" />}
+        {!prev ? <EmptyLink /> : <LinkSection i={props.i} data={prev} InltLink={props.IntlLink} type="prev" />}
         <div className="hide-small vertical-line" />
-        {!next ? <EmptyLink /> : <LinkSection i={props.i} data={next} InltLink={props.InltLink} type="next" />}
+        {!next ? <EmptyLink /> : <LinkSection i={props.i} data={next} InltLink={props.IntlLink} type="next" />}
       </Row>
     </div >
   )
