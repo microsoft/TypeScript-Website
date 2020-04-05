@@ -46,7 +46,7 @@ const LinkSection = (props: Section) =>
         </svg>
       </div>
 
-      <div>
+      <div style={{ flex: 1 }}>
         <header>{props.i("handb_" + props.type)}</header>
         <h3>{props.data.title}</h3>
         <p>{props.data.oneline}</p>
