@@ -9,7 +9,7 @@
       "docs": "",
       "start": 9,
       "length": 11,
-      "line": 6,
+      "line": 0,
       "character": 9,
       "targetString": "createLabel"
     },
@@ -18,7 +18,7 @@
       "docs": "",
       "start": 21,
       "length": 1,
-      "line": 6,
+      "line": 0,
       "character": 21,
       "targetString": "T"
     },
@@ -27,7 +27,7 @@
       "docs": "",
       "start": 48,
       "length": 8,
-      "line": 6,
+      "line": 0,
       "character": 48,
       "targetString": "idOrName"
     },
@@ -36,7 +36,7 @@
       "docs": "",
       "start": 58,
       "length": 1,
-      "line": 6,
+      "line": 0,
       "character": 58,
       "targetString": "T"
     },
@@ -45,7 +45,7 @@
       "docs": "",
       "start": 62,
       "length": 8,
-      "line": 6,
+      "line": 0,
       "character": 62,
       "targetString": "NameOrId"
     },
@@ -54,7 +54,7 @@
       "docs": "",
       "start": 71,
       "length": 1,
-      "line": 6,
+      "line": 0,
       "character": 71,
       "targetString": "T"
     },
@@ -63,7 +63,7 @@
       "docs": "",
       "start": 109,
       "length": 1,
-      "line": 10,
+      "line": 4,
       "character": 4,
       "targetString": "a"
     },
@@ -72,7 +72,7 @@
       "docs": "",
       "start": 113,
       "length": 11,
-      "line": 10,
+      "line": 4,
       "character": 8,
       "targetString": "createLabel"
     },
@@ -81,7 +81,7 @@
       "docs": "",
       "start": 145,
       "length": 1,
-      "line": 12,
+      "line": 6,
       "character": 4,
       "targetString": "b"
     },
@@ -90,7 +90,7 @@
       "docs": "",
       "start": 149,
       "length": 11,
-      "line": 12,
+      "line": 6,
       "character": 8,
       "targetString": "createLabel"
     },
@@ -99,7 +99,7 @@
       "docs": "",
       "start": 172,
       "length": 1,
-      "line": 14,
+      "line": 8,
       "character": 4,
       "targetString": "c"
     },
@@ -108,7 +108,7 @@
       "docs": "",
       "start": 176,
       "length": 11,
-      "line": 14,
+      "line": 8,
       "character": 8,
       "targetString": "createLabel"
     },
@@ -117,7 +117,7 @@
       "docs": "An intrinsic object that provides basic mathematics functionality and constants.",
       "start": 188,
       "length": 4,
-      "line": 14,
+      "line": 8,
       "character": 20,
       "targetString": "Math"
     },
@@ -126,7 +126,7 @@
       "docs": "Returns a pseudorandom number between 0 and 1.",
       "start": 193,
       "length": 6,
-      "line": 14,
+      "line": 8,
       "character": 25,
       "targetString": "random"
     }

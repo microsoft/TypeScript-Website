@@ -492,7 +492,10 @@ export function twoslasher(
 
     // For any type of metadata shipped, it will need to be shifted to
     // fit in with the new positions after the cut
-    staticQuickInfos.forEach((info) => (info.start -= cutIndex))
+    staticQuickInfos.forEach((info) => {
+      info.start -= cutIndex
+      info.line -= lineOffset
+    })
     staticQuickInfos = staticQuickInfos.filter((s) => s.start > -1)
 
     errors.forEach((err) => {
