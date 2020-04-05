@@ -9,44 +9,44 @@
       "docs": "",
       "start": 47,
       "length": 10,
-      "line": 2,
-      "character": 12,
+      "line": 1,
+      "character": 13,
       "targetString": "helloWorld"
     },
     {
       "text": "(alias) const helloWorld: \"Example string\"\nimport helloWorld",
       "docs": "",
-      "start": 31,
+      "start": 110,
       "length": 10,
-      "line": 2,
-      "character": 7,
+      "line": 4,
+      "character": 8,
       "targetString": "helloWorld"
     },
     {
       "text": "var console: Console",
       "docs": "",
-      "start": 69,
+      "start": 148,
       "length": 7,
-      "line": 2,
-      "character": 45,
+      "line": 5,
+      "character": 0,
       "targetString": "console"
     },
     {
       "text": "(method) Console.log(message?: any, ...optionalParams: any[]): void",
       "docs": "",
-      "start": 77,
+      "start": 156,
       "length": 3,
-      "line": 3,
-      "character": 7,
+      "line": 5,
+      "character": 8,
       "targetString": "log"
     },
     {
       "text": "(alias) const helloWorld: \"Example string\"\nimport helloWorld",
       "docs": "",
-      "start": 81,
+      "start": 160,
       "length": 10,
-      "line": 3,
-      "character": 11,
+      "line": 5,
+      "character": 12,
       "targetString": "helloWorld"
     }
   ],

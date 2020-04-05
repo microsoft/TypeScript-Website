@@ -11,20 +11,20 @@
 // propiedades en opcionales.
 
 interface Sticker {
-  id: number
-  name: string
-  createdAt: string
-  updatedAt: string
-  submitter: undefined | string
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  submitter: undefined | string;
 }
 
-type StickerUpdateParam = Partial<Sticker>
+type StickerUpdateParam = Partial<Sticker>;
 
 // Readonly<Type>
 
 // Toma un objeto y hace que sus propiedades sean de solo lectura.
 
-type StickerFromAPI = Readonly<Sticker>
+type StickerFromAPI = Readonly<Sticker>;
 
 // Record<KeysFrom, Type>
 
@@ -32,22 +32,22 @@ type StickerFromAPI = Readonly<Sticker>
 // parametro KeysFrom y les asigna el valor del tipo.
 
 // Lista con llaves para KeysFrom:
-type NavigationPages = 'home' | 'stickers' | 'about' | 'contact'
+type NavigationPages = "home" | "stickers" | "about" | "contact";
 
 // La forma de los datos requerida para cada una de las
 // llaves anteriores:
 interface PageInfo {
-  title: string
-  url: string
-  axTitle?: string
+  title: string;
+  url: string;
+  axTitle?: string;
 }
 
 const navigationInfo: Record<NavigationPages, PageInfo> = {
-  home: { title: 'Home', url: '/' },
-  about: { title: 'About', url: '/about' },
-  contact: { title: 'Contact', url: '/contact' },
-  stickers: { title: 'Stickers', url: '/stickers/all' },
-}
+  home: { title: "Home", url: "/" },
+  about: { title: "About", url: "/about" },
+  contact: { title: "Contact", url: "/contact" },
+  stickers: { title: "Stickers", url: "/stickers/all" },
+};
 
 // Pick<Type, Keys>
 
@@ -55,7 +55,7 @@ const navigationInfo: Record<NavigationPages, PageInfo> = {
 // Keys definidas en Type. Esencialmente, una lista de
 // permisos para extraer información de tipo de un tipo.
 
-type StickerSortPreview = Pick<Sticker, 'name' | 'updatedAt'>
+type StickerSortPreview = Pick<Sticker, "name" | "updatedAt">;
 
 // Omit<Type, Keys>
 
@@ -64,7 +64,7 @@ type StickerSortPreview = Pick<Sticker, 'name' | 'updatedAt'>
 // lista de prohibición para extraer información de tipo de
 // un tipo.
 
-type StickerTimeMetadata = Omit<Sticker, 'name'>
+type StickerTimeMetadata = Omit<Sticker, "name">;
 
 // Exclude<Type, RemoveUnion>
 
@@ -72,14 +72,14 @@ type StickerTimeMetadata = Omit<Sticker, 'name'>
 // Type que no se superponen con las definidas en
 // RemoveUnion.
 
-type HomeNavigationPages = Exclude<NavigationPages, 'home'>
+type HomeNavigationPages = Exclude<NavigationPages, "home">;
 
 // Extract<Type, MatchUnion>
 
 // Crea un tipo conformado por las propiedades definidas en
 // Type que se superponen con las definidas en MatchUnion.
 
-type DynamicPages = Extract<NavigationPages, 'home' | 'stickers'>
+type DynamicPages = Extract<NavigationPages, "home" | "stickers">;
 
 // NonNullable<Type>
 
@@ -87,15 +87,15 @@ type DynamicPages = Extract<NavigationPages, 'home' | 'stickers'>
 // undefined de un conjunto de propiedades. Muy útil cuando
 // tienes una condición de validación.
 
-type StickerLookupResult = Sticker | undefined | null
-type ValidatedResult = NonNullable<StickerLookupResult>
+type StickerLookupResult = Sticker | undefined | null;
+type ValidatedResult = NonNullable<StickerLookupResult>;
 
 // ReturnType<Type>
 
 // Extrae el valor de retorno de Type.
 
-declare function getStickerByID(id: number): Promise<StickerLookupResult>
-type StickerResponse = ReturnType<typeof getStickerByID>
+declare function getStickerByID(id: number): Promise<StickerLookupResult>;
+type StickerResponse = ReturnType<typeof getStickerByID>;
 
 // InstanceType<Type>
 
@@ -103,17 +103,17 @@ type StickerResponse = ReturnType<typeof getStickerByID>
 // objeto con un constructor.
 
 class StickerCollection {
-  stickers: Sticker[]
+  stickers: Sticker[];
 }
 
-type CollectionItem = InstanceType<typeof StickerCollection>
+type CollectionItem = InstanceType<typeof StickerCollection>;
 
 // Required<Type>
 
 // Crea un tipo que convierte todas las propiedades
 // opcionales a requeridas.
 
-type AccessiblePageInfo = Required<PageInfo>
+type AccessiblePageInfo = Required<PageInfo>;
 
 // ThisType<Type>
 

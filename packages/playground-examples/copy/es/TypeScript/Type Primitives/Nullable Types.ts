@@ -11,17 +11,17 @@
 // La primitiva indefinida `undefined` es cuando algo no
 // puede ser encontrado o modificado.
 
-const emptyObj = {}
-const anUndefinedProperty: undefined = emptyObj['anything']
+const emptyObj = {};
+const anUndefinedProperty: undefined = emptyObj["anything"];
 
 // La primitiva nula `null` está destinada a ser usada
 // cuando hay una falta consciente de un valor.
 
 const searchResults = {
-  video: { name: 'LEGO Movie' },
+  video: { name: "LEGO Movie" },
   text: null,
-  audio: { name: 'LEGO Movie Soundtrack' },
-}
+  audio: { name: "LEGO Movie Soundtrack" },
+};
 
 // ¿Por qué no usar undefined? Principalmente, porque ahora
 // puedes verificar que la propiedad text se haya incluido
@@ -52,7 +52,7 @@ const searchResults = {
 // desplaza el cursor sobre "PotentialString" a
 // continuación:
 
-type PotentialString = string | undefined | null
+type PotentialString = string | undefined | null;
 
 // La variable PotentialString descarta el valor undefined y
 // null. Si vas al panel de configuración, y activas el modo
@@ -60,10 +60,10 @@ type PotentialString = string | undefined | null
 // PotentialString ahora se muestra la unión completa de
 // tipos.
 
-declare function getID(): PotentialString
+declare function getID(): PotentialString;
 
-const userID = getID()
-console.log('User Logged in: ', userID.toUpperCase())
+const userID = getID();
+console.log("User Logged in: ", userID.toUpperCase());
 
 // Lo anterior fallará solamente en modo estricto ^
 
@@ -71,14 +71,14 @@ console.log('User Logged in: ', userID.toUpperCase())
 // haces, como por ejemplo una aserción de tipo o mediante
 // un operador de aserción no nulo (!)
 
-const definitelyString1 = getID() as string
-const definitelyString2 = getID()!
+const definitelyString1 = getID() as string;
+const definitelyString2 = getID()!;
 
 // O puedes verificar de manera segura por la existencia del
 // valor utilizando un condicional if:
 
 if (userID) {
-  console.log(userID)
+  console.log(userID);
 }
 
 // Propiedades Opcionales
@@ -88,8 +88,8 @@ if (userID) {
 // Void es el tipo que retorna una función que no devuelve
 // un valor.
 
-const voidFunction = () => {}
-const resultOfVoidFunction = voidFunction()
+const voidFunction = () => {};
+const resultOfVoidFunction = voidFunction();
 
 // Esto es usualmente un accidente, y TypeScript mantiene el
 // tipo vacío para permitirle obtener errores del compilador,

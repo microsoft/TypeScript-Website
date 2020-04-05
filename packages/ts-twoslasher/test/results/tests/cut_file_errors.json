@@ -1,0 +1,155 @@
+{
+  "code": "type NetworkState = NetworkLoadingState | NetworkFailedState | NetworkSuccessState\n\nfunction networkStatus(state: NetworkState): string {\n  // Right now we don't know  which of the three potential\n  // types state could be.\n\n  // Trying to access a property which isn't shared\n  // across all types will raise an error\n  state.code\n\n  // By switching on state, we can discriminate the\n  switch (state.state) {\n    case 'loading':\n      return 'Downloading...'\n    case 'failed':\n      return `Error ${state.code} downloading`\n    case 'success':\n      return `Error ${state.response} downloading`\n  }\n}\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [],
+  "staticQuickInfos": [
+    {
+      "text": "type NetworkState = NetworkLoadingState | NetworkFailedState | NetworkSuccessState",
+      "docs": "",
+      "start": 5,
+      "length": 12,
+      "line": 18,
+      "character": 5,
+      "targetString": "NetworkState"
+    },
+    {
+      "text": "type NetworkLoadingState = {\n    state: \"loading\";\n}",
+      "docs": "",
+      "start": 20,
+      "length": 19,
+      "line": 18,
+      "character": 20,
+      "targetString": "NetworkLoadingState"
+    },
+    {
+      "text": "type NetworkFailedState = {\n    state: \"failed\";\n    code: number;\n}",
+      "docs": "",
+      "start": 42,
+      "length": 18,
+      "line": 18,
+      "character": 42,
+      "targetString": "NetworkFailedState"
+    },
+    {
+      "text": "type NetworkSuccessState = {\n    state: \"success\";\n    response: {\n        title: string;\n        duration: number;\n        summary: string;\n    };\n}",
+      "docs": "",
+      "start": 63,
+      "length": 19,
+      "line": 18,
+      "character": 63,
+      "targetString": "NetworkSuccessState"
+    },
+    {
+      "text": "function networkStatus(state: NetworkState): string",
+      "docs": "",
+      "start": 93,
+      "length": 13,
+      "line": 20,
+      "character": 9,
+      "targetString": "networkStatus"
+    },
+    {
+      "text": "(parameter) state: NetworkState",
+      "docs": "",
+      "start": 107,
+      "length": 5,
+      "line": 20,
+      "character": 23,
+      "targetString": "state"
+    },
+    {
+      "text": "type NetworkState = NetworkLoadingState | NetworkFailedState | NetworkSuccessState",
+      "docs": "",
+      "start": 114,
+      "length": 12,
+      "line": 20,
+      "character": 30,
+      "targetString": "NetworkState"
+    },
+    {
+      "text": "(parameter) state: NetworkState",
+      "docs": "",
+      "start": 321,
+      "length": 5,
+      "line": 26,
+      "character": 2,
+      "targetString": "state"
+    },
+    {
+      "text": "any",
+      "start": 327,
+      "length": 4,
+      "line": 26,
+      "character": 8,
+      "targetString": "code"
+    },
+    {
+      "text": "(parameter) state: NetworkState",
+      "docs": "",
+      "start": 395,
+      "length": 5,
+      "line": 29,
+      "character": 10,
+      "targetString": "state"
+    },
+    {
+      "text": "(property) state: \"loading\" | \"failed\" | \"success\"",
+      "docs": "",
+      "start": 401,
+      "length": 5,
+      "line": 29,
+      "character": 16,
+      "targetString": "state"
+    },
+    {
+      "text": "(parameter) state: NetworkFailedState",
+      "docs": "",
+      "start": 501,
+      "length": 5,
+      "line": 33,
+      "character": 22,
+      "targetString": "state"
+    },
+    {
+      "text": "(property) code: number",
+      "docs": "",
+      "start": 507,
+      "length": 4,
+      "line": 33,
+      "character": 28,
+      "targetString": "code"
+    },
+    {
+      "text": "(parameter) state: NetworkSuccessState",
+      "docs": "",
+      "start": 568,
+      "length": 5,
+      "line": 35,
+      "character": 22,
+      "targetString": "state"
+    },
+    {
+      "text": "(property) response: {\n    title: string;\n    duration: number;\n    summary: string;\n}",
+      "docs": "",
+      "start": 574,
+      "length": 8,
+      "line": 35,
+      "character": 28,
+      "targetString": "response"
+    }
+  ],
+  "errors": [
+    {
+      "category": 1,
+      "code": 2339,
+      "length": 4,
+      "start": 327,
+      "line": 8,
+      "character": 8,
+      "renderedMessage": "Property 'code' does not exist on type 'NetworkState'.\n  Property 'code' does not exist on type 'NetworkLoadingState'.",
+      "id": "err-2339-582-4"
+    }
+  ],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEFMCdoe2gZwFygEwGYME4BQAXATwAdJQA5SfAdwQGsAZOAQwBMBLAOwHMBlfZvjIBeUAG9coUIgFDUAcgA2LDj3m4AvrgIkylGvQBizdosit+gkeMnTZkBQDMTZ1uqkBjOKwehOAVwBbACMYTW0iUgoqWmg6Xn8PD0hEREshUFEJKRkrBURE5NT3UGgU4jhORF9sqVB8dnwzVBloLm5bKVZ-aEF2StQAkLC66SDA5mhCFvw2nlstLRBQAFo1j398NZWdKP1Y+PtM6IM4pjZ29LIAHxOD41NzK9Bb-foEpJS0+21Hf04PA1Kn4Yu9ZP5EAAKXJyO5gqwAShmc24NikywASuxuAALfB+ODUUDUMisSryfF0TiEqTUHHsDw40BwRz1HFkfA4spkCpCTgNZiKWzLSIpOxWUBefyKVigUIAOm06LAABUpu16nBQMxPqltaBiPBSNAiMT6YzQOxEJwKdIcZNzMKwDr4HrBYp6rpEMTTB7elayMxOKAYPBoLYYZB5V4fErQMsAEKEaTURqMjXAyMAGmJZA8QdAHEQHjagS4Es5kAjqfwFuh9nlkYRaLq+eqoCUKna8mQnTqZXwPWD8gAIoTOMoLjx5TOSp5mO35M5Hm5e6MpAOh6AAAYAUVgCFAABIxJHo95IBpC+PJ6puNu+22yPICrrED2+xuqFu9wfoMfTwbMpEAqKpL2vagJy7HgHykRZcCAA"
+}

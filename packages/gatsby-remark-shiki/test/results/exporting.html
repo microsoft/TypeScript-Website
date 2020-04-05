@@ -1,32 +1,23 @@
 <h2>Relative imports</h2>
 <pre
   class="shiki twoslash"
-><div class="language-id">ts</div><div class='code-container'><code><span style="color: #4C566A">// @filename: utilFunctions.js</span>
-<span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">getStringLength</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">str</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">str</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">length</span>
-<span style="color: #8FBCBB">module</span><span style="color: #ECEFF4">.</span><span style="color: #8FBCBB">exports</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span>
-<span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">getStringLength</span><span style="color: #ECEFF4">,</span>
-<span style="color: #ECEFF4">}</span>
+><div class="language-id">ts</div><div class='code-container'><code><span style="color: #008000">// @filename: utilFunctions.js</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> <data-lsp lsp='const getStringLength: (str: any) =&amp;gt; any'>getStringLength</data-lsp> = <data-lsp lsp='(parameter) str: any'>str</data-lsp> </span><span style="color: #0000FF">=></span><span style="color: #000000"> <data-lsp lsp='(parameter) str: any'>str</data-lsp>.<data-lsp lsp='any'>length</data-lsp></span>
+<span style="color: #000000"><data-lsp lsp='module export=&amp;#13;(property) export=: {&amp;#13;    getStringLength: (str: any) =&amp;gt; any;&amp;#13;}'>module</data-lsp>.<data-lsp lsp='module export=&amp;#13;(property) export=: {&amp;#13;    getStringLength: (str: any) =&amp;gt; any;&amp;#13;}'>exports</data-lsp> = {</span>
+<span style="color: #000000">  <data-lsp lsp='(property) getStringLength: (str: any) =&amp;gt; any'>getStringLength</data-lsp>,</span>
+<span style="color: #000000">}</span>
 
-<span style="color: #4C566A">// @filename: index.ts</span>
-<span style="color: #81A1C1">import</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">utils</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">from</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">./utilFunctions</span><span style="color: #ECEFF4">'</span>
-<span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">count</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">utils</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">getStringLength</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">Check JS</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">)</span></code></div></pre>
+<span style="color: #008000">// @filename: index.ts</span>
+<span style="color: #0000FF">import</span><span style="color: #000000"> <data-lsp lsp='import utils'>utils</data-lsp> </span><span style="color: #0000FF">from</span><span style="color: #000000"> </span><span style="color: #A31515">'./utilFunctions'</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> <data-lsp lsp='const count: any'>count</data-lsp> = <data-lsp lsp='import utils'>utils</data-lsp>.<data-lsp lsp='(property) getStringLength: (str: any) =&amp;gt; any'>getStringLength</data-lsp>(</span><span style="color: #A31515">'Check JS'</span><span style="color: #000000">)</span></code></div></pre>
 <p>Hello</p>
 
 <style>
   .shiki {
-    background-color: rgb(20, 30, 60);
+    background-color: lightgrey;
     padding: 8px;
   }
-  .lsp-result::before {
-    content: " <";
-  }
-  .lsp-result::after {
-    content: "> ";
-  }
-  .lsp-result {
-    text-decoration: none !important;
-    border: 1px solid grey;
-  }
+
   .error,
   .error-behind {
     margin-left: -20px;

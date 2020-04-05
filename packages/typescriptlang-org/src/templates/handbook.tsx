@@ -12,6 +12,12 @@ import slugger from "github-slugger"
 import "./handbook.scss"
 import "./markdown.scss"
 import { setupHandbookHovers } from "./handbook-lsp-hover"
+import { NextPrev } from "../components/handbook/NextPrev"
+import { idFromURL } from "../../lib/bootup/ingestion/createPagesForOldHandbook"
+import { createInternational } from "../lib/createInternational"
+import { useIntl } from "react-intl"
+import { createIntlLink } from "../components/IntlLink"
+import { handbookCopy } from "../copy/en/handbook"
 
 type Props = {
   pageContext: any
@@ -20,12 +26,14 @@ type Props = {
 }
 
 const HandbookTemplate: React.FC<Props> = (props) => {
-
   const post = props.data.markdownRemark
   if (!post) {
     console.log("Could not render:", JSON.stringify(props))
     return <div></div>
   }
+
+  const i = createInternational<typeof handbookCopy>(useIntl())
+  const IntlLink = createIntlLink("en", props.data.allSitePage)
 
 
   useEffect(() => {
@@ -45,13 +53,14 @@ const HandbookTemplate: React.FC<Props> = (props) => {
     const updateSidebar = () => {
       const fromTop = window.scrollY;
       let currentPossibleAnchor: HTMLAnchorElement | undefined
+      const offset = 100
 
       // Scroll down to find the highest anchor on the screen
       subnavLinks.forEach(link => {
         try {
           const section = document.querySelector<HTMLDivElement>(link.hash);
           if (!section) { return }
-          const isBelow = section.offsetTop <= fromTop
+          const isBelow = section.offsetTop - offset <= fromTop
           if (isBelow) currentPossibleAnchor = link
 
         } catch (error) {
@@ -81,27 +90,35 @@ const HandbookTemplate: React.FC<Props> = (props) => {
     }
   }, [])
 
-  const { previous, next } = props.pageContext
+
   if (!post.frontmatter) throw new Error(`No front-matter found for the file with props: ${props}`)
   if (!post.html) throw new Error(`No html found for the file with props: ${props}`)
 
-  const selectedID = post.frontmatter.permalink!.split("/").pop()!.replace(".html", "") || "index"
+  const selectedID = idFromURL(post.frontmatter.permalink!)
   const showSidebar = !post.frontmatter.disable_toc && post.headings && !!post.headings.length && post.headings.length <= 30
 
   return (
     <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneline || ""} lang="en" allSitePage={props.data.allSitePage}>
       <section id="doc-layout">
         <SidebarToggleButton />
+        <noscript>
+          <style dangerouslySetInnerHTML={{
+            __html: `
+          nav#sidebar > ul > li.closed ul {
+            display: block !important;
+           }
+        ` }} />
+        </noscript>
 
         <Sidebar navItems={oldHandbookNavigation} selectedID={selectedID} />
         <div id="handbook-content">
           <h2>{post.frontmatter.title}</h2>
           <article>
-
             <div className="whitespace raised">
               <div className="markdown" dangerouslySetInnerHTML={{ __html: post.html! }} />
               <div id="mouse-hover-info" className="hover-info" style={{ display: "none" }} />
             </div>
+
 
             {showSidebar &&
               <aside className="handbook-toc">
@@ -118,22 +135,11 @@ const HandbookTemplate: React.FC<Props> = (props) => {
               </aside>
             }
           </article>
+
+          <NextPrev next={props.data.next as any} prev={props.data.prev as any} i={i} IntlLink={IntlLink as any} />
+
         </div>
       </section>
-      {/* 
-      <ul>
-        <li>
-          {previous && (
-            <Link to={previous.fields.slug} rel="prev"> ← {previous.frontmatter.title} </Link>
-          )}
-        </li>
-        <li>
-          {next && (
-            <Link to={next.fields.slug} rel="next">{next.frontmatter.title} →</Link>
-          )}
-        </li>
-      </ul>
-      */}
     </Layout>
   )
 }
@@ -141,7 +147,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
 export default (props: Props) => <Intl locale={props.pageContext.lang}><HandbookTemplate {...props} /></Intl>
 
 export const pageQuery = graphql`
-  query GetHandbookBySlug($slug: String!) {
+  query GetHandbookBySlug($slug: String!, $previousID: String, $nextID: String) {
     ...AllSitePage
     
     markdownRemark(frontmatter: { permalink: {eq: $slug}}) {
@@ -157,6 +163,26 @@ export const pageQuery = graphql`
         title
         disable_toc
         oneline
+      }
+    }
+
+    prev: file(id: { eq: $previousID } ) {
+      childMarkdownRemark  {
+        frontmatter {
+          title
+          oneline
+          permalink
+        }
+      }
+    }
+
+    next: file(id: { eq: $nextID } ) {
+      childMarkdownRemark  {
+        frontmatter {
+          title
+          oneline
+          permalink
+        }
       }
     }
   }

@@ -24,10 +24,10 @@ const Index: React.FC<Props> = (props) => {
     <div className="raised main-content-block">
       <Row>
         <Col>
-          <Link className="cropper" to="/play">
+          <a className="cropper" href="../play">
             <img src={require("../../../static/images/tools/play.png")} alt="Preview of the TypeScript Playground screenshot" />
             <p>Playground</p>
-          </Link>
+          </a>
           <p>A live environment for exploring, learning and sharing TypeScript code. Try different compiler flags, run through extensive code samples to learn specifics about how TypeScript works.</p>
         </Col>
         <Col>

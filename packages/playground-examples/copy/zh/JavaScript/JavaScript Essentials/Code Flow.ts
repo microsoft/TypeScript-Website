@@ -5,7 +5,7 @@
 const users = [{ name: "Ahmed" }, { name: "Gemma" }, { name: "Jon" }];
 
 // 我们尝试找到名为 “jon” 的用户。
-const jon = users.find(u => u.name === "jon");
+const jon = users.find((u) => u.name === "jon");
 
 // 在上面的情况中，“find” 可能失败，在这种情况下我们不能得到一个对象，
 // 它会创建如下类型：

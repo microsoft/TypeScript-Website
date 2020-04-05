@@ -9,7 +9,7 @@ enum CompassDirection {
   North,
   East,
   South,
-  West
+  West,
 }
 
 // By annotating an enum option, you set the value;
@@ -21,7 +21,7 @@ enum StatusCodes {
   Unauthorized,
   PaymentRequired,
   Forbidden,
-  NotFound
+  NotFound,
 }
 
 // You reference an enum by using EnumName.Value
@@ -44,7 +44,7 @@ enum GamePadInput {
   Up = "UP",
   Down = "DOWN",
   Left = "LEFT",
-  Right = "RIGHT"
+  Right = "RIGHT",
 }
 
 // If you want to reduce the number of objects in your
@@ -57,7 +57,7 @@ enum GamePadInput {
 const enum MouseAction {
   MouseDown,
   MouseUpOutside,
-  MouseUpInside
+  MouseUpInside,
 }
 
 const handleMouseAction = (action: MouseAction) => {

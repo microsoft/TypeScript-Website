@@ -1,6 +1,11 @@
+### Meta
+
+- **URLs:** [production](https://www.typescriptlang.org), [staging](http://testsite-typescript-41eeb979-7eaa-4c74-9d47-9d182c7b61ab.azurewebsites.net/)
+- **Admin:** Prod: [Azure Portal](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/99160d5b-9289-4b66-8074-ed268e739e8e/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/TypeScript-1ebb3390-2634-4956-a955-eab987b7bb25/appServices), [Deploy logs](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/99160d5b-9289-4b66-8074-ed268e739e8e/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/TypeScript-1ebb3390-2634-4956-a955-eab987b7bb25/vstscd)
+
 ### Getting Started
 
-This repo uses [yarn workspaces][y-wrk], to get started clone this repo and run `yarn install`.
+This repo uses [yarn workspaces][y-wrk] with node 13, to get started clone this repo and run `yarn install`.
 
 ```sh
 git clone https://github.com/microsoft/TypeScript-website
@@ -18,11 +23,24 @@ Some useful knowledge:
 - All packages have: `yarn bootstrap`, `yarn build` and `yarn test`
 - All packages use [debug](https://www.npmjs.com/package/debug) - which means you can do `env DEBUG="*" yarn test` to get verbose logs
 
+## Deployment
+
+Deployment is automatic:
+
+- Merges to the branch `master` trigger deploys to production of the v1 website, and the v2 of branch in a [`/v2` subfolder](https://www.typescriptlang.org/v2/).
+- Pushes to the branch `v2` deploy to [staging](http://testsite-typescript-41eeb979-7eaa-4c74-9d47-9d182c7b61ab.azurewebsites.net/).
+
+You can find the build logs in [GitHub Actions](https://github.com/microsoft/TypeScript-Website/actions)
+
+## Overview
+
+If you want to know _in-depth_ how this website works, there is an [hour long video covering the codebase, deployment and tooling on YouTube.](https://www.youtube.com/watch?v=HOvivt6B7hE).
+
 # Website Packages
 
 ## TypeScriptLang-Org
 
-The main website for TypeScript, a Gatsby website which is statically deployed.
+The main website for TypeScript, a Gatsby website which is statically deployed. You can run it via:
 
 ```sh
 yarn start
@@ -64,15 +82,11 @@ yarn workspace tsconfig-reference run lint resolveJson
 
 ## Handbook V1
 
-The existing docs for TypeScript
-
-## Handbook V2
-
-The upcoming docs for TypeScript
+The existing docs for TypeScript as a direct import the repo of [microsoft/TypeScript-Handbook](https://github.com/microsoft/TypeScript-Handbook/)
 
 ## Playground Examples
 
-The code samples used in the Playground
+The code samples used in the Playground split across many languages
 
 # Infra Packages
 

@@ -13,26 +13,25 @@
 // Infer a number array:
 
 function pushNumber(arr) {
-  arr.push(12)
+  arr.push(12);
 }
 
 // Infer a promise:
 
 function awaitPromise(promise) {
-  promise
-    .then(value => console.log(value))
+  promise.then((value) => console.log(value));
 }
 
 // Infer the function, and it's return type:
 
 function inferAny(app) {
-    const result = app.use('hi')
-    return result
+  const result = app.use("hi");
+  return result;
 }
 
 // Infer a string array because a string
 // was added to it:
 
 function insertString(names) {
-  names[1] = "hello"
+  names[1] = "hello";
 }

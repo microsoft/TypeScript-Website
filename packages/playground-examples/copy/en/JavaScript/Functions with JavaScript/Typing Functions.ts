@@ -5,36 +5,38 @@
 // A good first place is to look at optional params, which
 // is a way of letting others know you can skip params.
 
-let i = 0
+let i = 0;
 const incrementIndex = (value?: number) => {
-  i += (value === undefined ? 1 : value)
-}
+  i += value === undefined ? 1 : value;
+};
 
 // This function can be called like:
 
-incrementIndex()
-incrementIndex(0)
-incrementIndex(3)
+incrementIndex();
+incrementIndex(0);
+incrementIndex(3);
 
 // You can type parameters as functions, which provides
 // type inference when you write the functions.
 
 const callbackWithIndex = (callback: (i: number) => void) => {
-  callback(i)
-}
+  callback(i);
+};
 
 // Embedding function interfaces can get a bit hard to read
 // with all the arrows. Using a type alias will let you name
 // the function param.
 
-type NumberCallback = (i: number) => void
+type NumberCallback = (i: number) => void;
 const callbackWithIndex2 = (callback: NumberCallback) => {
-  callback(i)
-}
+  callback(i);
+};
 
 // These can be called like:
 
-callbackWithIndex((index) => { console.log(index) })
+callbackWithIndex((index) => {
+  console.log(index);
+});
 
 // By hovering on index above, you can see how TypeScript
 // has inferred the index to be a number correctly.
@@ -43,16 +45,18 @@ callbackWithIndex((index) => { console.log(index) })
 // as an instance reference too. To show this, we'll use
 // a function which changed a number into string:
 
-const numberToString = (n: number) => { return n.toString() }
+const numberToString = (n: number) => {
+  return n.toString();
+};
 
 // This can be used in a function like map on an array
 // to convert all numbers into a string, if you hover
 // on stringedNumbers below you can see the expected types.
-const stringedNumbers = [1,4,6,10].map((i) => numberToString(i))
+const stringedNumbers = [1, 4, 6, 10].map((i) => numberToString(i));
 
 // We can use shorthand to have the function passed directly
 // and get the same results with more focused code:
-const stringedNumbersTerse = [1,4,6,10].map(numberToString)
+const stringedNumbersTerse = [1, 4, 6, 10].map(numberToString);
 
 // You may have functions which could accept a lot of types
 // but you are only interested in a few properties. This is
@@ -61,14 +65,14 @@ const stringedNumbersTerse = [1,4,6,10].map(numberToString)
 // any object so long as it includes the property name:
 
 interface AnyObjectButMustHaveName {
-  name: string
-  [key: string]: any
+  name: string;
+  [key: string]: any;
 }
 
-const printFormattedName = (input: AnyObjectButMustHaveName) => { }
+const printFormattedName = (input: AnyObjectButMustHaveName) => {};
 
-printFormattedName({name: "joey"})
-printFormattedName({name: "joey", age: 23})
+printFormattedName({ name: "joey" });
+printFormattedName({ name: "joey", age: 23 });
 
 // If you'd like to learn more about index-signatures
 // we recommend:
@@ -89,21 +93,21 @@ printFormattedName({name: "joey", age: 23})
 // is only one or two changes and documentation does not need
 // to change between functions.
 
-const boolOrNumberFunction = (input: boolean | number) => {}
+const boolOrNumberFunction = (input: boolean | number) => {};
 
-boolOrNumberFunction(true)
-boolOrNumberFunction(23)
+boolOrNumberFunction(true);
+boolOrNumberFunction(23);
 
 // Function overloads on the other hand offer a much richer
 // syntax for the parameters and return types.
 
 interface BoolOrNumberOrStringFunction {
   /** Takes a bool, returns a bool */
-  (input: boolean): boolean
+  (input: boolean): boolean;
   /** Takes a number, returns a number */
-  (input: number): number
+  (input: number): number;
   /** Takes a string, returns a bool */
-  (input: string): boolean
+  (input: string): boolean;
 }
 
 // If this is your first time seeing declare, it allows you
@@ -112,11 +116,11 @@ interface BoolOrNumberOrStringFunction {
 // code with side-effects but extremely useful for demos
 // where making the implementation would be a lot of code.
 
-declare const boolOrNumberOrStringFunction: BoolOrNumberOrStringFunction
+declare const boolOrNumberOrStringFunction: BoolOrNumberOrStringFunction;
 
-const boolValue = boolOrNumberOrStringFunction(true)
-const numberValue = boolOrNumberOrStringFunction(12)
-const boolValue2 = boolOrNumberOrStringFunction("string")
+const boolValue = boolOrNumberOrStringFunction(true);
+const numberValue = boolOrNumberOrStringFunction(12);
+const boolValue2 = boolOrNumberOrStringFunction("string");
 
 // If you hover over the above values and functions you
 // can see the right documentation and return values.

@@ -292,7 +292,7 @@ Additionally, the `JSX.IntrinsicAttributes` interface can be used to specify ext
 
 The spread operator also works:
 
-```JSX
+```ts
 var props = { requiredProp: "bar" };
 <foo {...props} />; // ok
 
@@ -378,7 +378,7 @@ It is a black box.
 
 JSX allows you to embed expressions between tags by surrounding the expressions with curly braces (`{ }`).
 
-```JSX
+```ts
 var a = <div>
   {["foo", "bar"].map(i => <span>{i / 2}</span>)}
 </div>
@@ -387,7 +387,7 @@ var a = <div>
 The above code will result in an error since you cannot divide a string by a number.
 The output, when using the `preserve` option, looks like:
 
-```JSX
+```ts
 var a = <div>
   {["foo", "bar"].map(function (i) { return <span>{i / 2}</span>; })}
 </div>

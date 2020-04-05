@@ -79,7 +79,7 @@ enum Flower {
   Rose,
   Rhododendron,
   Violet,
-  Daisy
+  Daisy,
 }
 
 const flowerLatinName = (flower: Flower) => {

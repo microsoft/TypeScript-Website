@@ -20,7 +20,7 @@ myObject.x.y.z;
 // with any type (except never) to make one type assignable
 // to the other.
 
-declare function debug(value: any);
+declare function debug(value: any): void;
 
 debug("a string");
 debug(23);

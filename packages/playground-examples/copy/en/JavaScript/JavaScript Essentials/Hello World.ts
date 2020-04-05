@@ -8,20 +8,20 @@
 // these projects. The URL for this page is everything
 // required to load the project for someone else.
 
-const hello = "Hello"
+const hello = "Hello";
 
 // You can see on the right the result of the TypeScript
 // compiler: this is vanilla JavaScript which can run on
 // browsers, servers or anywhere really.
 
-const world = "World"
+const world = "World";
 
 // You can see how it makes tiny changes to the code, by
 // converting a "const" to a "var". This is one of the many
 // things TypeScript does to make it possible to run
 // anywhere JavaScript runs.
 
-console.log(hello + " " + world)
+console.log(hello + " " + world);
 
 // Now that you have an idea of how the playground works,
 // let's look at how TypeScript makes working with

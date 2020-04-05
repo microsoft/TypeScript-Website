@@ -5,9 +5,15 @@
 // 为了展示这些例子，我们会创建一些类。
 // 这是用来处理互联网或电话订单的系统。
 
-interface Order { address: string }
-interface TelephoneOrder extends Order { callerNumber: string }
-interface InternetOrder extends Order { email: string }
+interface Order {
+  address: string;
+}
+interface TelephoneOrder extends Order {
+  callerNumber: string;
+}
+interface InternetOrder extends Order {
+  email: string;
+}
 
 // 然后定义一个可能是两种订单子类型之一或 undefined 的类型。
 type PossibleOrders = TelephoneOrder | InternetOrder | undefined;
@@ -53,21 +59,21 @@ if (typeof possibleOrder === "undefined") {
 // 来声明 possibleOrder 究竟是哪个类型：
 
 function isAnInternetOrder(order: PossibleOrders): order is InternetOrder {
-  return order && "email" in order
+  return order && "email" in order;
 }
 
 function isATelephoneOrder(order: PossibleOrders): order is TelephoneOrder {
-  return order && "calledNumber" in order
+  return order && "calledNumber" in order;
 }
 
 // 现在我们可以使用这些函数在 if 语句中缩小 possibleOrder 的可能的类型：
 
 if (isAnInternetOrder(possibleOrder)) {
-  console.log("Order received via email:", possibleOrder.email)
+  console.log("Order received via email:", possibleOrder.email);
 }
 
 if (isATelephoneOrder(possibleOrder)) {
-  console.log("Order received via phone:", possibleOrder.callerNumber)
+  console.log("Order received via phone:", possibleOrder.callerNumber);
 }
 
 // 你可以在这里获得更多关于代码流分析的信息：

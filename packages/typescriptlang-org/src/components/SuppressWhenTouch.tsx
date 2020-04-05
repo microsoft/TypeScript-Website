@@ -28,7 +28,7 @@ export const SuppressWhenTouch = ({ children, hideOnTouch }: any) => {
       suppressible.appendChild(p)
     }
 
-  })
+  }, [])
   return (
     <div id="touch-suppressible">
       {children}

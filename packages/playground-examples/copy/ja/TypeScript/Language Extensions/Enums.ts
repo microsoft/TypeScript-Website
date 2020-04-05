@@ -26,25 +26,25 @@ enum StatusCodes {
 
 // EnumはEnum名.値名で参照できます。
 
-const startingDirection = CompassDirection.East
-const currentStatus = StatusCodes.OK
+const startingDirection = CompassDirection.East;
+const currentStatus = StatusCodes.OK;
 
 // Enumはキーから値と値からキーの双方による
 // アクセスをサポートしています。
 
-const okNumber = StatusCodes.OK
-const okNumberIndex = StatusCodes['OK']
-const stringBadRequest = StatusCodes[400]
+const okNumber = StatusCodes.OK;
+const okNumberIndex = StatusCodes["OK"];
+const stringBadRequest = StatusCodes[400];
 
 // Enumに異なる型を設定することもできます。文字列型が一般的です。
 // 文字列型を用いると、実行時に数字を探す必要がなくなるので、
 // デバッグが簡単になります。
 
 enum GamePadInput {
-  Up = 'UP',
-  Down = 'DOWN',
-  Left = 'LEFT',
-  Right = 'RIGHT',
+  Up = "UP",
+  Down = "DOWN",
+  Left = "LEFT",
+  Right = "RIGHT",
 }
 
 // もし、JavaScriptの実行時にobjectの数を減らしたいなら、
@@ -63,10 +63,10 @@ const enum MouseAction {
 const handleMouseAction = (action: MouseAction) => {
   switch (action) {
     case MouseAction.MouseDown:
-      console.log('Mouse Down')
-      break
+      console.log("Mouse Down");
+      break;
   }
-}
+};
 
 // トランスパイルされたJavaScriptのコードを見ると、
 // 他のEnumはobjectや関数として残っているのに、

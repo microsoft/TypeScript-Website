@@ -2,7 +2,7 @@
 
 // Las APIs con funciones encadenadas son un patrón común en
 // JavaScript, lo que permite que tu código sea más conciso,
-// con menos valores intermedios y más fácil de leer debido 
+// con menos valores intermedios y más fácil de leer debido
 // a sus habilidades de anidamiento.
 
 // Una API muy común que funciona con encadenamiento
@@ -13,10 +13,7 @@ import $ from "jquery";
 
 // Aquí hay un ejemplo de uso de la API de jQuery:
 
-$("#navigation")
-  .css("background", "red")
-  .height(300)
-  .fadeIn(200);
+$("#navigation").css("background", "red").height(300).fadeIn(200);
 
 // Si añades un punto en la línea de arriba, verás
 // una larga lista de funciones. Este patrón es fácil
@@ -42,7 +39,7 @@ const addTwoNumbers = (start = 1) => {
     print() {
       console.log(n);
       return api;
-    }
+    },
   };
   return api;
 };
@@ -50,11 +47,7 @@ const addTwoNumbers = (start = 1) => {
 // Lo que permite el mismo estilo de API que
 // vimos en jQuery:
 
-addTwoNumbers(1)
-  .add(3)
-  .add()
-  .print()
-  .add(1);
+addTwoNumbers(1).add(3).add().print().add(1);
 
 // Aquí hay un ejemplo similar que usa una clase:
 
@@ -78,11 +71,7 @@ class AddNumbers {
 
 // Y aquí la vemos en acción:
 
-new AddNumbers(2)
-  .add(3)
-  .add()
-  .print()
-  .add(1);
+new AddNumbers(2).add(3).add().print().add(1);
 
 // Este ejemplo hace uso de la inferencia
 // de tipos de TypeScript como una forma

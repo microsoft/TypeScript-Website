@@ -291,7 +291,7 @@ export const MigrationStories = () => {
   const [index, setIndex] = useState(0);
 
   const hasWindow = (typeof window !== `undefined`)
-  const shouldShowOSS = hasWindow && window.innerWidth > 800 || true
+  const shouldShowOSS = hasWindow && window.innerWidth > 800
 
   // slack airbnb google oss 
   const bgColors = shouldShowOSS ? ["#4E086F", "#6F0808", "#086F56", "#086E12"] : ["#4E086F", "#6F0808", "#086F56"]

@@ -62,8 +62,7 @@ type Dogish = ExtractDogish<Animals>;
 // For example this function which could return either a
 // string or number depending on the boolean passed in.
 
-declare function getID<T extends boolean>(fancy: T):
-  T extends true ? string : number;
+declare function getID<T extends boolean>(fancy: T): T extends true ? string : number;
 
 // Then depending on how much the type-system knows about
 // the boolean, you will get different return types:
@@ -88,8 +87,7 @@ declare function isCatish<T>(x: T): T extends { meows: true } ? T : undefined;
 // the existing types in your code, think of it as creating
 // a new variable inside the type.
 
-type GetReturnValue<T> =
-  T extends (...args: any[]) => infer R ? R : T;
+type GetReturnValue<T> = T extends (...args: any[]) => infer R ? R : T;
 
 // Roughly:
 //
@@ -104,8 +102,8 @@ type GetReturnValue<T> =
 //    return value, otherwise it is the original type
 //
 
-type getIDReturn = GetReturnValue<typeof getID>
+type getIDReturn = GetReturnValue<typeof getID>;
 
 // This fails the check for being a function, and would
 // just return the type passed into it.
-type getCat = GetReturnValue<Cat>
+type getCat = GetReturnValue<Cat>;

@@ -9,8 +9,8 @@ import {
   escapeHtml,
   cleanMarkdownEscaped,
   typesToExtension,
-  getIdentifierTextSpans,
   stringAroundIndex,
+  getIdentifierTextSpans,
 } from './utils'
 import { validateInput, validateCodeForErrors } from './validation'
 
@@ -93,7 +93,7 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
           break
 
         case 'list':
-          opts[opt.name] = value.split(',').map(v => parsePrimitive(v, opt.element!.type as string))
+          opts[opt.name] = value.split(',').map((v) => parsePrimitive(v, opt.element!.type as string))
           break
 
         default:
@@ -320,7 +320,7 @@ export function twoslasher(
   const makeDefault: [string, string[]] = [defaultFileName, code.split(/\r\n?|\n/g)]
   const makeMultiFile = (filenameSplit: string): [string, string[]] => {
     const [filename, ...content] = filenameSplit.split(/\r\n?|\n/g)
-    const firstLine = '// @filename: ' + filename + '\n'
+    const firstLine = '// @filename: ' + filename
     return [filename, [firstLine, ...content]]
   }
 
@@ -330,10 +330,10 @@ export function twoslasher(
    * [name, lines_of_code] basically for each set.
    */
   const unfilteredNameContent: Array<[string, string[]]> = noFilepaths ? [makeDefault] : fileContent.map(makeMultiFile)
-  const nameContent = unfilteredNameContent.filter(n => n[0].length)
+  const nameContent = unfilteredNameContent.filter((n) => n[0].length)
 
   /** All of the referenced files in the markup */
-  const filenames = nameContent.map(nc => nc[0])
+  const filenames = nameContent.map((nc) => nc[0])
 
   for (const file of nameContent) {
     const [filename, codeLines] = file
@@ -350,7 +350,7 @@ export function twoslasher(
     // TODO: this is not perfect, it seems to have issues when there are multiple queries
     // in the same sourcefile. Looks like it's about removing the query comments before them.
     let removedChars = 0
-    const lspedQueries = updates.queries.map(q => {
+    const lspedQueries = updates.queries.map((q) => {
       const quickInfo = ls.getQuickInfoAtPosition(filename, q.position - removedChars)
       const token = ls.getDefinitionAtPosition(filename, q.position - removedChars)
 
@@ -362,8 +362,8 @@ export function twoslasher(
         length = 0
 
       if (quickInfo && token && quickInfo.displayParts) {
-        text = quickInfo.displayParts.map(dp => dp.text).join('')
-        docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join('<br/>') : undefined
+        text = quickInfo.displayParts.map((dp) => dp.text).join('')
+        docs = quickInfo.documentation ? quickInfo.documentation.map((d) => d.text).join('<br/>') : undefined
         length = token[0].textSpan.start
         start = token[0].textSpan.length
       }
@@ -391,7 +391,7 @@ export function twoslasher(
   // Iterate through the declared files and grab errors and LSP quickinfos
   // const declaredFiles = Object.keys(fileMap)
 
-  filenames.forEach(file => {
+  filenames.forEach((file) => {
     if (!handbookOptions.noErrors) {
       errs.push(...ls.getSemanticDiagnostics(file))
       errs.push(...ls.getSyntacticDiagnostics(file))
@@ -401,20 +401,28 @@ export function twoslasher(
     if (!handbookOptions.noStaticSemanticInfo && !handbookOptions.showEmit) {
       // const fileRep = fileMap[file]
       const source = env.sys.readFile(file)!
-      const fileContentStartIndexInModifiedFile = code.indexOf(source)
+
+      const fileContentStartIndexInModifiedFile = code.indexOf(source) == -1 ? 0 : code.indexOf(source)
 
       const sourceFile = env.getSourceFile(file)
       if (sourceFile) {
-        const idenfiers = getIdentifierTextSpans(ts, sourceFile)
-        for (const idenfier of idenfiers) {
-          const span = idenfier.span
+        // Get all interesting identifiers in the file, so we can show hover info for it
+        const identifiers = getIdentifierTextSpans(ts, sourceFile)
+        for (const identifier of identifiers) {
+          const span = identifier.span
           const quickInfo = ls.getQuickInfoAtPosition(file, span.start)
+
           if (quickInfo && quickInfo.displayParts) {
-            const text = quickInfo.displayParts.map(dp => dp.text).join('')
-            const docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join('\n') : undefined
+            const text = quickInfo.displayParts.map((dp) => dp.text).join('')
+            const targetString = identifier.text
+            const docs = quickInfo.documentation ? quickInfo.documentation.map((d) => d.text).join('\n') : undefined
+
+            // Get the position of the
             const position = span.start + fileContentStartIndexInModifiedFile
-            const { line, character } = ts.getLineAndCharacterOfPosition(sourceFile, position)
-            const targetString = idenfier.text
+            // Use TypeScript to pull out line/char from the original code at the position + any previous offset
+            const burnerSourceFile = ts.createSourceFile('_.ts', code, ts.ScriptTarget.ES2015)
+            const { line, character } = ts.getLineAndCharacterOfPosition(burnerSourceFile, position)
+
             staticQuickInfos.push({ text, docs, start: position, length: span.length, line, character, targetString })
           }
         }
@@ -422,7 +430,7 @@ export function twoslasher(
     }
   })
 
-  const relevantErrors = errs.filter(e => e.file && filenames.includes(e.file.fileName))
+  const relevantErrors = errs.filter((e) => e.file && filenames.includes(e.file.fileName))
 
   // A validator that error codes are mentioned, so we can know if something has broken in the future
   if (relevantErrors.length) {
@@ -454,9 +462,9 @@ export function twoslasher(
   // Handle emitting files
   if (handbookOptions.showEmit) {
     const output = ls.getEmitOutput(defaultFileName)
-    const file = output.outputFiles.find(o => o.name === handbookOptions.showEmittedFile)
+    const file = output.outputFiles.find((o) => o.name === handbookOptions.showEmittedFile)
     if (!file) {
-      const allFiles = output.outputFiles.map(o => o.name).join(', ')
+      const allFiles = output.outputFiles.map((o) => o.name).join(', ')
       throw new Error(`Cannot find the file ${handbookOptions.showEmittedFile} - in ${allFiles}`)
     }
 
@@ -477,24 +485,31 @@ export function twoslasher(
   if (code.includes(cutString)) {
     // Get the place it is, then find the end and the start of the next line
     const cutIndex = code.indexOf(cutString) + cutString.length
+    const lineOffset = code.substr(0, cutIndex).split('\n').length - 1
+
     // Kills the code shown
     code = code.split(cutString).pop()!
 
     // For any type of metadata shipped, it will need to be shifted to
     // fit in with the new positions after the cut
-    staticQuickInfos.forEach(info => (info.start -= cutIndex))
-    staticQuickInfos = staticQuickInfos.filter(s => s.start > -1)
+    staticQuickInfos.forEach((info) => (info.start -= cutIndex))
+    staticQuickInfos = staticQuickInfos.filter((s) => s.start > -1)
 
-    errors.forEach(err => {
+    errors.forEach((err) => {
       if (err.start) err.start -= cutIndex
+      if (err.line) err.line -= lineOffset
     })
-    errors = errors.filter(e => e.start && e.start > -1)
+    errors = errors.filter((e) => e.start && e.start > -1)
 
-    highlights.forEach(highlight => (highlight.position -= cutIndex))
-    highlights = highlights.filter(e => e.position > -1)
+    highlights.forEach((highlight) => {
+      highlight.position -= cutIndex
+      highlight.line -= lineOffset
+    })
 
-    queries.forEach(q => (q.start -= cutIndex))
-    queries = queries.filter(q => q.start > -1)
+    highlights = highlights.filter((e) => e.position > -1)
+
+    queries.forEach((q) => (q.start -= cutIndex))
+    queries = queries.filter((q) => q.start > -1)
   }
 
   return {

@@ -18,7 +18,7 @@ const anUndefinedProperty: undefined = emptyObj["anything"];
 const searchResults = {
   video: { name: "LEGO Movie" },
   text: null,
-  audio: { name: "LEGO Movie Soundtrack" }
+  audio: { name: "LEGO Movie Soundtrack" },
 };
 
 // Why not use undefined? Mainly, because now you can verify

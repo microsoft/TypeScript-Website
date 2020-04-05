@@ -67,3 +67,4 @@ typings/
 dist
 
 .lighthouserc.json
+.yarn

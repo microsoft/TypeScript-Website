@@ -6,6 +6,23 @@ type TwoSlash = import('ts-twoslasher').TwoSlashReturn
 
 import { stripHTML, createHighlightedString2 } from './utils'
 
+// OK, so - this is just straight up complex code.
+
+// What we're trying to do is merge two sets of information into a single tree for HTML
+
+// 1: Syntax highlight info from shiki
+// 2: Twoslash metadata like errors, indentifiers etc
+
+// Because shiki gives use a set of lines to work from, then the first thing which happens
+// is converting twoslash data into the same format.
+
+// Things which make it hard:
+//
+// - Twoslash results can be split
+// - Twoslash results can be multi-file
+// - the DOM requires a flattened graph of html elemtns
+//
+
 export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash) {
   if (!twoslash) {
     return plainOleShikiRenderer(lines, options)
@@ -19,10 +36,10 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
   }
   html += `<div class='code-container'><code>`
 
-  const errorsGroupedByLine = groupBy(twoslash.errors, e => e.line) || new Map()
-  const staticQuickInfosGroupedByLine = groupBy(twoslash.staticQuickInfos, q => q.line) || new Map()
+  const errorsGroupedByLine = groupBy(twoslash.errors, (e) => e.line) || new Map()
+  const staticQuickInfosGroupedByLine = groupBy(twoslash.staticQuickInfos, (q) => q.line) || new Map()
   // A query is always about the line above it!
-  const queriesGroupedByLine = groupBy(twoslash.queries, q => q.line - 1) || new Map()
+  const queriesGroupedByLine = groupBy(twoslash.queries, (q) => q.line - 1) || new Map()
 
   let filePos = 0
   lines.forEach((l, i) => {
@@ -41,9 +58,8 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
       // errors and lang serv identifiers
       let tokenPos = 0
 
-      l.forEach(token => {
+      l.forEach((token) => {
         let tokenContent = ''
-        // console.log(tokenPos, token.content.length, filePos)
         // Underlining particular words
         const findTokenFunc = (start: number) => (e: any) =>
           start <= e.character && start + token.content.length >= e.character + e.length
@@ -59,21 +75,17 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
           return result
         }
 
-        console.log('filepos', filePos, 'tokenpos', tokenPos)
         const errorsInToken = errors.filter(findTokenFunc(tokenPos))
-        const lspResponsesInToken = lspValues.filter(findTokenDebug(tokenPos))
+        const lspResponsesInToken = lspValues.filter(findTokenFunc(tokenPos))
         const queriesInToken = queries.filter(findTokenFunc(tokenPos))
 
         const allTokens = [...errorsInToken, ...lspResponsesInToken, ...queriesInToken]
         const allTokensByStart = allTokens.sort((l, r) => {
           return (l.start || 0) - (r.start || 0)
         })
-        console.log(allTokensByStart)
-        // console.log('content:', tokenContent)
-        if (allTokensByStart.length) {
-          const ranges = allTokensByStart.map(token => {
-            console.log('before - token', token)
 
+        if (allTokensByStart.length) {
+          const ranges = allTokensByStart.map((token) => {
             const range: any = {
               begin: token.start! - filePos,
               end: token.start! + token.length! - filePos,
@@ -81,7 +93,7 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
 
             if (range.begin < 0 || range.end < 0) {
               // prettier-ignore
-              throw new Error(`The being range of a token is at a minus location, filePos:${filePos} current token: ${JSON.stringify(token, null, '  ')}\n result: ${JSON.stringify(range, null, '  ')}`)
+              throw new Error(`The begin range of a token is at a minus location, filePos:${filePos} current token: ${JSON.stringify(token, null, '  ')}\n result: ${JSON.stringify(range, null, '  ')}`)
             }
 
             if ('renderedMessage' in token) range.classes = 'err'
@@ -90,9 +102,6 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
               range.classes = 'lsp'
               range['lsp'] = stripHTML(token.text)
             }
-
-            console.log('after - token', range)
-
             return range
           })
 
@@ -112,15 +121,15 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
 
     // Adding error messages to the line after
     if (errors.length) {
-      const messages = errors.map(e => escapeHtml(e.renderedMessage)).join('</br>')
-      const codes = errors.map(e => e.code).join('<br/>')
+      const messages = errors.map((e) => escapeHtml(e.renderedMessage)).join('</br>')
+      const codes = errors.map((e) => e.code).join('<br/>')
       html += `<span class="error"><span>${messages}</span><span class="code">${codes}</span></span>`
       html += `<span class="error-behind">${messages}</span>`
     }
 
     // Add queries to the next line
     if (queries.length) {
-      queries.forEach(query => {
+      queries.forEach((query) => {
         html += `<span class='query'>${'//' + ''.padStart(query.offset - 2) + '^ = ' + query.text}</span>`
       })
       html += '\n'
@@ -139,7 +148,7 @@ function escapeHtml(html: string) {
 /** Returns a map where all the keys are the value in keyGetter  */
 function groupBy<T>(list: T[], keyGetter: (obj: any) => number) {
   const map = new Map<number, T[]>()
-  list.forEach(item => {
+  list.forEach((item) => {
     const key = keyGetter(item)
     const collection = map.get(key)
     if (!collection) {
@@ -161,11 +170,11 @@ export function plainOleShikiRenderer(lines: Lines, options: Options) {
 
   html += `<div class='code-container'><code>`
 
-  lines.forEach(l => {
+  lines.forEach((l) => {
     if (l.length === 0) {
       html += `\n`
     } else {
-      l.forEach(token => {
+      l.forEach((token) => {
         html += `<span style="color: ${token.color}">${escapeHtml(token.content)}</span>`
       })
       html += `\n`

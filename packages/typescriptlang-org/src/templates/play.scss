@@ -100,9 +100,25 @@
 
       &.versions {
         min-width: 5rem;
+
+        li {
+          margin-bottom: 0;
+          margin-left: 0;
+
+          &.beta {
+            color: $ts-main-blue-color;
+            border-bottom: 1px solid $ts-light-bg-grey-highlight-color;
+          }
+
+          &.nightly {
+            border-top: 1px solid $ts-light-bg-grey-highlight-color;
+          }
+        }
+
         a {
           text-align: center;
           margin: 0;
+          padding: 10px;
         }
       }
 
@@ -142,7 +158,8 @@
         flex-wrap: wrap;
 
         > div {
-          width: 50%;
+          min-width: 200px;
+          max-width: 400px;
 
           ol {
             margin: 0;
@@ -160,8 +177,23 @@
           label {
             font-weight: 400;
 
+            &:hover a.compiler_info_link {
+              display: block;
+            }
+
+            a.compiler_info_link {
+              display: none;
+              padding: 0;
+              right: 10px;
+              top: 0;
+              text-align: center;
+              // display: inline-block;
+              position: absolute;
+            }
+
             > span {
-              font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+              font-family: $font-code;
+              margin-left: 4px;
             }
           }
         }
@@ -174,7 +206,7 @@
         label {
           margin-right: 0.5rem;
           width: 33%;
-          font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+          font-family: $font-code;
 
           select {
             margin-left: 1rem;
@@ -187,13 +219,6 @@
           }
         }
       }
-    }
-    a.compiler_info_link {
-      &::before {
-        content: "i";
-      }
-      color: $ts-muted-green;
-      border: 1px $ts-muted-red solid;
     }
   }
 }
@@ -243,6 +268,9 @@ main > nav {
 main #editor-toolbar {
   // For the main buttons
   > ul > li {
+    margin-left: 0px;
+    margin-bottom: 0px;
+
     > a {
       // Fix their vertical centering
       padding-top: 0.8rem;
@@ -284,7 +312,7 @@ main #editor-toolbar {
   border-left: 4px solid transparent;
 }
 
-#editor-toolbar ul li a:first-child {
+#editor-toolbar > ul > li > a:first-child {
   padding-left: 1rem;
 }
 
@@ -301,6 +329,7 @@ main #editor-toolbar {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 
     @media (prefers-color-scheme: dark) {
       background-color: #1e1e1e;
@@ -313,8 +342,19 @@ main #editor-toolbar {
     #editor-toolbar {
       height: 3rem;
       border-bottom: 1px #c4c4c4 solid;
+
       margin-right: -2px;
       margin-bottom: 10px;
+
+      position: relative;
+      ul.right {
+        background-color: white;
+        @media (prefers-color-scheme: dark) {
+          background-color: #1e1e1e;
+        }
+        position: absolute;
+        right: 0;
+      }
     }
   }
 
@@ -333,10 +373,17 @@ main #editor-toolbar {
 
   .playground-sidebar {
     flex-basis: 320px;
-    padding: 0 1em;
-    padding-left: 0.5rem;
     width: 320px;
     max-width: 320px;
+
+    @media (max-width: $screen-sm) {
+      flex-basis: 300px;
+      width: 300px;
+      max-width: 300px;
+    }
+
+    padding: 0 1em;
+    padding-left: 0.5rem;
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
@@ -376,7 +423,7 @@ main #editor-toolbar {
         }
 
         code {
-          font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+          font-family: $font-code;
           font-size: 0.7rem;
           line-height: 0.7rem;
         }
@@ -387,6 +434,11 @@ main #editor-toolbar {
       display: flex;
       align-items: center;
       justify-content: center;
+
+      @media (max-width: $screen-sm) {
+        justify-content: flex-start;
+      }
+
       height: 2.5rem;
       margin-bottom: 10px;
       overflow-x: auto;
@@ -424,7 +476,7 @@ main #editor-toolbar {
 .playground-plugin-container {
   #log-container {
     overflow: auto;
-    font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+    font-family: $font-code;
     line-height: 1.5rem;
 
     .log-warn {
@@ -498,7 +550,7 @@ main #editor-toolbar {
   }
 
   #compiler-errors {
-    font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+    font-family: $font-code;
     margin: 0;
     padding: 0;
 

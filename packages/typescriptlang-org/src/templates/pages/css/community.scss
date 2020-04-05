@@ -28,6 +28,9 @@
     flex-wrap: wrap;
 
     .callout {
+      @media (max-width: $screen-sm) {
+        width: 90%;
+      }
       margin-top: 20px;
       margin-bottom: 10px;
       width: 48%;

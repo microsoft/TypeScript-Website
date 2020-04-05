@@ -63,13 +63,13 @@ export const Comm: React.FC<Props> = props => {
 
           <Col2 className="callouts">
             <div className="callout">
-              <a aria-labelledby="stack-header" className="icon stackoverflow img-circle" href="{{ site.data.urls.ts_stackoverflow_tagged }}" target="_blank"></a>
+              <a aria-labelledby="stack-header" className="icon stackoverflow img-circle" href="https://stackoverflow.com/questions/tagged/typescript" target="_blank"></a>
               <div className="text">
-                <a href="{{ site.data.urls.ts_stackoverflow_tagged }}" id="stack-header" target="_blank">
+                <a href="https://stackoverflow.com/questions/tagged/typescript" id="stack-header" target="_blank">
                   <h3 className="community-callout-headline">Stack Overflow</h3>
                 </a>
                 {i("com_online_stack_overflow_desc")}{" "}
-                <a href="{{ site.data.urls.ts_stackoverflow_tagged }}" target="_blank">Stack Overflow</a>{" "}
+                <a href="https://stackoverflow.com/questions/tagged/typescript" target="_blank">Stack Overflow</a>{" "}
                 {i("com_online_stack_overflow_tag")} <b>typescript.</b>
               </div>
             </div>
@@ -84,43 +84,43 @@ export const Comm: React.FC<Props> = props => {
                 {i("com_online_discord_desc")}</div>
             </div>
             <div className="callout">
-              <a aria-labelledby="github-header" className="icon bug img-circle" href="{{ site.data.urls.ts_github_issues }}" target="_blank" />
+              <a aria-labelledby="github-header" className="icon bug img-circle" href="https://github.com/microsoft/TypeScript/issues/new/choose" target="_blank" />
               <div className="text">
-                <a href="{{ site.data.urls.ts_github_issues }}" id="github-header">
+                <a href="https://github.com/microsoft/TypeScript/issues/new/choose" id="github-header">
                   <h3 className="community-callout-headline">GitHub</h3>
                 </a>
                 {i("com_online_github_desc")}{" "}
-                <a href="{{ site.data.urls.ts_github_issues }}">{i("com_online_github_href")}</a>
+                <a href="https://github.com/microsoft/TypeScript/issues/new/choose">{i("com_online_github_href")}</a>
               </div>
             </div>
             <div className="callout">
-              <a aria-labelledby="twitter-header" className="icon twitter img-circle" href="{{ site.data.urls.ts_twitter }}" target="_blank" />
+              <a aria-labelledby="twitter-header" className="icon twitter img-circle" href="https://twitter.com/typescript" target="_blank" />
               <div className="text">
-                <a href="{{ site.data.urls.ts_twitter }}" id="twitter-header" target="_blank">
+                <a href="https://twitter.com/typescript" id="twitter-header" target="_blank">
                   <h3 className="community-callout-headline">Twitter</h3>
                 </a>
                 {i("com_online_twitter_desc") + " "}
-                <a href="{{ site.data.urls.ts_twitter }}" target="_blank">@typescript</a>!
+                <a href="https://twitter.com/typescript" target="_blank">@typescript</a>!
             </div>
             </div>
             <div className="callout">
-              <a aria-labelledby="blog-header" className="icon blog img-circle" href="{{ site.data.urls.ts_blog }}" target="_blank" />
+              <a aria-labelledby="blog-header" className="icon blog img-circle" href="https://devblogs.microsoft.com/typescript/" target="_blank" />
               <div className="text">
-                <a href="{{ site.data.urls.ts_blog }}" id="blog-header" target="_blank">
+                <a href="https://devblogs.microsoft.com/typescript/" id="blog-header" target="_blank">
                   <h3 className="community-callout-headline">Blog</h3>
                 </a>
                 {i("com_online_blog_desc") + " "}
-                <a href="{{ site.data.urls.ts_blog }}" target="_blank">blog</a>!
+                <a href="https://devblogs.microsoft.com/typescript/" target="_blank">blog</a>!
             </div>
             </div>
             <div className="callout">
-              <a aria-labelledby="deftyped-header" className="icon definitelytyped img-circle" href="{{ site.data.urls.definitelytyped_github }}" target="_blank" />
+              <a aria-labelledby="deftyped-header" className="icon definitelytyped img-circle" href="https://github.com/definitelytyped/definitelytyped/#definitelytyped" target="_blank" />
               <div className="text">
-                <a href="{{ site.data.urls.definitelytyped_github }}" id="deftyped-header" target="_blank">
+                <a href="https://github.com/definitelytyped/definitelytyped/#definitelytyped" id="deftyped-header" target="_blank">
                   <h3 className="community-callout-headline">Definitely Typed</h3>
                 </a>
                 {i("com_online_typed_desc")}{" "}
-                <a href="{{ site.data.urls.definitelytyped_github }}" target="_blank">{i("com_online_typed_href")}</a>{" "}
+                <a href="https://github.com/definitelytyped/definitelytyped/#definitelytyped" target="_blank">{i("com_online_typed_href")}</a>{" "}
                 {i("com_online_typed_available_for")}
               </div>
             </div>
@@ -167,6 +167,7 @@ export const Comm: React.FC<Props> = props => {
           </Col>
         </Row>
       </div>
+
 
       <div className="raised main-content-block container community">
         <h3 className="centered-highlight">Upcoming Events</h3>

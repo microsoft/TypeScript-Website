@@ -12,6 +12,33 @@ type LayoutProps = SeoProps & Props & {
   children: any
 }
 
+// Test for IE11
+if (!Array.prototype.forEach) {
+  Array.prototype.forEach = function forEach(callback, thisArg) {
+    if (typeof callback !== 'function') {
+      throw new TypeError(callback + ' is not a function');
+    }
+    var array = this;
+    thisArg = thisArg || this;
+    for (var i = 0, l = array.length; i !== l; ++i) {
+      callback.call(thisArg, array[i], i, array);
+    }
+  };
+}
+
+const hasWindow = (typeof window !== `undefined`)
+
+if (hasWindow && window.NodeList && !NodeList.prototype.forEach) {
+  // @ts-ignore
+  NodeList.prototype.forEach = Array.prototype.forEach;
+}
+
+// @ts-ignore
+if (hasWindow && window.HTMLCollection && !HTMLCollection.prototype.forEach) {
+  // @ts-ignore
+  HTMLCollection.prototype.forEach = Array.prototype.forEach;
+}
+
 export const Layout = (props: LayoutProps) => {
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from "react"
+import React, { MouseEventHandler, useEffect } from "react"
 import { Link } from "gatsby"
 
 export interface NavItem {
@@ -7,6 +7,7 @@ export interface NavItem {
   directory: string
   index: string
   items: { id: string, title: string }[]
+  chronological?: true
 }
 
 export type Props = {
@@ -63,6 +64,16 @@ export const SidebarToggleButton = () => {
 }
 
 export const Sidebar = (props: Props) => {
+  useEffect(() => {
+    // Keep all of the sidebar open at launch, then use JS to close the ones after
+    // because otherwise you can't jump between sections
+    document.querySelectorAll(".closed-at-launch").forEach(f => {
+      f.classList.remove("closed-at-launch")
+      f.classList.remove("open")
+      f.classList.add("closed")
+    })
+  }, [])
+
   return (
     <nav id="sidebar">
       <ul>

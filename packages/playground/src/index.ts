@@ -167,12 +167,28 @@ export const setupPlayground = (
 
   // Add the versions to the dropdown
   const versionsMenu = document.querySelectorAll('#versions > ul').item(0)
-  const allVersions = ['3.8.0-beta', ...sandbox.supportedVersions, 'Nightly']
+
+  const notWorkingInPlayground = ['3.1.6', '3.0.1', '2.8.1', '2.7.2', '2.4.1']
+  
+  const allVersions = [
+    '3.9.0-beta',
+    ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)), 
+    'Nightly'
+  ]
+
   allVersions.forEach((v: string) => {
     const li = document.createElement('li')
     const a = document.createElement('a')
     a.textContent = v
     a.href = '#'
+
+    if (v === "Nightly") {
+      li.classList.add("nightly")
+    }
+
+    if (v.toLowerCase().includes("beta")) {
+      li.classList.add("beta")
+    }
 
     li.onclick = () => {
       const currentURL = sandbox.createURLQueryWithCompilerOptions(sandbox)
@@ -219,32 +235,38 @@ export const setupPlayground = (
     }
   })
 
-  window.addEventListener(
-    'keydown',
-    (event: KeyboardEvent) => {
-      const S_KEY = 83
-      if (event.keyCode == S_KEY && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault()
+  // Set up some key commands
+  sandbox.editor.addAction({ 
+    id: 'copy-clipboard',
+    label: 'Save to clipboard',
+    keybindings: [ monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S ],
+  
+    contextMenuGroupId: 'run',
+    contextMenuOrder: 1.5,
+  
+    run: function(ed) {
+      window.navigator.clipboard.writeText(location.href.toString()).then(
+        () => ui.flashInfo(i('play_export_clipboard')),
+        (e: any) => alert(e)
+      )
+    }
+  });
 
-        window.navigator.clipboard.writeText(location.href.toString()).then(
-          () => ui.flashInfo(i('play_export_clipboard')),
-          (e: any) => alert(e)
-        )
-      }
 
-      if (
-        event.keyCode === 13 &&
-        (event.metaKey || event.ctrlKey) &&
-        event.target instanceof Node &&
-        event.target === document.body
-      ) {
-        event.preventDefault()
-        const runButton = document.getElementById('run-button')!
-        runButton.onclick && runButton.onclick({} as any)
-      }
-    },
-    false
-  )
+  sandbox.editor.addAction({ 
+    id: 'run-js',
+    label: 'Run the evaluated JavaScript for your TypeScript file',
+    keybindings: [ monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter ],
+  
+    contextMenuGroupId: 'run',
+    contextMenuOrder: 1.5,
+  
+    run: function(ed) {
+      const runButton = document.getElementById('run-button')!
+      runButton.onclick && runButton.onclick({} as any)
+    }
+  });
+
 
   const runButton = document.getElementById('run-button')!
   runButton.onclick = () => {

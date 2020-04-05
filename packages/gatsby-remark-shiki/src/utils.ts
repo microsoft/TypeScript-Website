@@ -1,5 +1,3 @@
-// A TypeScript port of https://stackoverflow.com/questions/40117156/creating-overlapping-text-spans-in-javascript
-
 type Range = {
   begin: number
   end: number
@@ -10,16 +8,13 @@ type Range = {
   lsp?: string
 }
 
-const splice = function(str: string, idx: number, rem: number, newString: string) {
-  return str.slice(0, idx) + newString + str.slice(idx + Math.abs(rem))
-}
+const splice = (str: string, idx: number, rem: number, newString: string) =>
+  str.slice(0, idx) + newString + str.slice(idx + Math.abs(rem))
 
 export function createHighlightedString2(ranges: Range[], text: string) {
   const actions = [] as { text: string; index: number }[]
 
-  ranges.forEach(r => {
-    console.log('r:', r)
-    if (!r.lsp) return
+  ranges.forEach((r) => {
     if (r.classes === 'lsp') {
       actions.push({ text: '</data-lsp>', index: r.end })
       actions.push({ text: `<data-lsp lsp='${stripHTML(r.lsp || '')}'>`, index: r.begin })
@@ -34,15 +29,11 @@ export function createHighlightedString2(ranges: Range[], text: string) {
 
   let html = (' ' + text).slice(1)
 
-  console.log('-')
   actions
     .sort((l, r) => r.index - l.index)
-    .forEach(action => {
-      console.log(action.index)
+    .forEach((action) => {
       html = splice(html, action.index, 0, action.text)
     })
-
-  console.log(html)
 
   return html
 }
@@ -57,7 +48,7 @@ export function stripHTML(text: string) {
     '\r': '#10',
     '\n': '#13',
   }
-  return text.toString().replace(/[<>"'\r\n&]/g, function(chr) {
+  return text.toString().replace(/[<>"'\r\n&]/g, function (chr) {
     return '&' + table[chr] + ';'
   })
 }

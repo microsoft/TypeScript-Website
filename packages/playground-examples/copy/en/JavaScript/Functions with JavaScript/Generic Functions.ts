@@ -47,7 +47,7 @@ interface Drawable {
 // This function takes a set of objects which have a function
 // for drawing to the screen
 function renderToScreen<Type extends Drawable>(input: Type[]) {
-  input.forEach(i => i.draw());
+  input.forEach((i) => i.draw());
 }
 
 const objectsWithDraw = [{ draw: () => {} }, { draw: () => {} }];

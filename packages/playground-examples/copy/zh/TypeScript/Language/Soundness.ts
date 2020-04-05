@@ -41,23 +41,22 @@ interface KeyboardInputEvent extends InputEvent {
   keyCode: number;
 }
 
-function listenForEvent(eventType: "keyboard" | "mouse",
-  handler: (event: InputEvent) => void) { }
+function listenForEvent(eventType: "keyboard" | "mouse", handler: (event: InputEvent) => void) {}
 
 // 我们可以将参数的类型重新声明为它定义的子类型。
 // 上例中 handler 预期为一个 'InputEvent' 类型，但是在后面
 // 使用的例子中，TypeScript 接受附加了新属性的类型。
 
-listenForEvent("keyboard", (event: KeyboardInputEvent) => { });
-listenForEvent("mouse", (event: MouseInputEvent) => { });
+listenForEvent("keyboard", (event: KeyboardInputEvent) => {});
+listenForEvent("mouse", (event: MouseInputEvent) => {});
 
 // 而这个可以一直回溯到最小的公共类型：
 
-listenForEvent("mouse", (event: {}) => { });
+listenForEvent("mouse", (event: {}) => {});
 
 // 但没有更进一步。
 
-listenForEvent("mouse", (event: string) => { });
+listenForEvent("mouse", (event: string) => {});
 
 // 这覆盖了实际环境中 JavaScript 事件监听器的模式，但是会牺牲一些健全性。
 
@@ -76,11 +75,10 @@ listenForEvent("mouse", (event: string) => { });
 // 剩余参数均被推断为可选参数，这意味着 TypeScript 将无法确保
 // 用于回调的参数的数量。
 
-function getRandomNumbers(count: number,
-  callback: (...args: number[]) => void) { }
+function getRandomNumbers(count: number, callback: (...args: number[]) => void) {}
 
 getRandomNumbers(2, (first, second) => console.log([first, second]));
-getRandomNumbers(400, first => console.log(first));
+getRandomNumbers(400, (first) => console.log(first));
 
 // 空返回值函数可以匹配具有返回值的函数
 

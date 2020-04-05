@@ -41,6 +41,8 @@ const Play: React.FC<Props> = (props) => {
     window.react = React
     // @ts-ignore - for React-based plugins
     window.reactDOM = ReactDOM
+    // @ts-ignore - so that plugins etc can use local functions
+    window.i = i
 
     const getLoaderScript = document.createElement('script');
     getLoaderScript.src = withPrefix("/js/vs.loader.js");
@@ -87,7 +89,7 @@ const Play: React.FC<Props> = (props) => {
           compilerOptions: {},
           domID: "monaco-editor-embed",
           useJavaScript: !!params.get("useJavaScript"),
-          acquireTypes: !localStorage.getItem("disable-ata"),
+          acquireTypes: !localStorage.getItem("disable-ata")
         }, main, ts)
 
         const playgroundConfig = {
@@ -116,15 +118,15 @@ const Play: React.FC<Props> = (props) => {
     }
 
     document.body.appendChild(getLoaderScript);
-  })
+  }, [])
 
 
   return (
-    <Layout disableBetaNotification title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+    <Layout title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
       {/** This is the top nav, which is outside of the editor  */}
       <nav className="navbar-sub">
         <ul className="nav">
-          <li className="name"><span>Playground</span></li>
+          <li className="name hide-small"><span>Playground</span></li>
 
           <li className="dropdown">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_config")} <span className="caret"></span></a>
@@ -149,7 +151,7 @@ const Play: React.FC<Props> = (props) => {
           </li>
 
           <li className="dropdown">
-            <a href="#" id="whatisnew-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_examples")} <span className="caret"></span></a>
+            <a href="#" id="examples-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_examples")} <span className="caret"></span></a>
             <ul className="examples-dropdown" id="examples" >
               <button className="examples-close">{i("play_subnav_examples_close")}</button>
               <RenderExamples defaultSection="JavaScript" sections={["JavaScript", "TypeScript"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
@@ -157,7 +159,7 @@ const Play: React.FC<Props> = (props) => {
           </li>
 
           <li className="dropdown">
-            <a href="#" id="examples-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_whatsnew")} <span className="caret"></span></a>
+            <a href="#" id="whatisnew-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_whatsnew")} <span className="caret"></span></a>
             <ul className="examples-dropdown" id="whatisnew">
               <button className="examples-close">{i("play_subnav_examples_close")}</button>
               <RenderExamples defaultSection="3.8" sections={["3.8", "3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />

@@ -6,9 +6,15 @@
 // To run through these examples, we'll create some classes,
 // here's a system for handling internet or telephone orders.
 
-interface Order { address: string }
-interface TelephoneOrder extends Order { callerNumber: string }
-interface InternetOrder extends Order { email: string }
+interface Order {
+  address: string;
+}
+interface TelephoneOrder extends Order {
+  callerNumber: string;
+}
+interface InternetOrder extends Order {
+  email: string;
+}
 
 // Then a type which could be one of the two Order subtypes or undefined
 type PossibleOrders = TelephoneOrder | InternetOrder | undefined;
@@ -60,22 +66,22 @@ if (typeof possibleOrder === "undefined") {
 // to declare which type the possibleOrder is:
 
 function isAnInternetOrder(order: PossibleOrders): order is InternetOrder {
-  return order && "email" in order
+  return order && "email" in order;
 }
 
 function isATelephoneOrder(order: PossibleOrders): order is TelephoneOrder {
-  return order && "calledNumber" in order
+  return order && "calledNumber" in order;
 }
 
 // Now we can use these functions in if statements to narrow
 // down the type which possibleOrder is inside the if:
 
 if (isAnInternetOrder(possibleOrder)) {
-  console.log("Order received via email:", possibleOrder.email)
+  console.log("Order received via email:", possibleOrder.email);
 }
 
 if (isATelephoneOrder(possibleOrder)) {
-  console.log("Order received via phone:", possibleOrder.callerNumber)
+  console.log("Order received via phone:", possibleOrder.callerNumber);
 }
 
 // You can read more on code flow analysis here:

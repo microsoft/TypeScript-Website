@@ -19,8 +19,7 @@ export const CookieBanner = () => {
       banner.style.display = "block"
 
       const giveConsent = () => {
-        const newCookie = document.cookie + ` ;${cookieName}=1`
-        document.cookie = newCookie
+        document.cookie = "MSCC=1; path=/"
         banner.style.display = "none"
       }
 

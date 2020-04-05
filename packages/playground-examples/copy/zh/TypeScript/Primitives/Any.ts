@@ -17,7 +17,7 @@ myObject.x.y.z;
 // any 更像一个类型通配符，它可以允许你替换为任何类型（never 除外）
 // 以使一种类型可以分配给另一种类型。
 
-declare function debug(value: any);
+declare function debug(value: any): void;
 
 debug("a string");
 debug(23);
@@ -27,7 +27,7 @@ debug({ color: "blue" });
 // 替换为任何其他类型来进行匹配。
 
 // TypeScript 将会以不同形式来匹配 any 的位置，
-// 例如将这些元组作为函数的参数： 
+// 例如将这些元组作为函数的参数：
 
 declare function swap(x: [number, string]): [string, number];
 

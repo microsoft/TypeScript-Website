@@ -8,6 +8,7 @@ html {
   font-family: "Segoe UI Web (West European)", "Segoe UI", -apple-system,
     BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
   font-size: 16px;
+  line-height: 1.4;
 
   @media (prefers-color-scheme: dark) {
     background-color: $ts-dark-bg-color;
@@ -71,6 +72,14 @@ html {
   }
 }
 
+// Style the permalink icon in dark colour-scheme
+.raised .markdown h1 svg path,
+.raised .markdown h2 svg path,
+.raised .markdown h3 svg path {
+  @media (prefers-color-scheme: dark) {
+    fill: white;
+  }
+}
 .main-content-block {
   max-width: 960px;
   margin: 1rem auto;

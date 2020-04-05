@@ -11,7 +11,7 @@ function addOldSchool(x, y) {
 
 // You can move the name of the function to a variable
 // name also
-const anonymousOldSchoolFunction = function(x, y) {
+const anonymousOldSchoolFunction = function (x, y) {
   return x + y;
 };
 

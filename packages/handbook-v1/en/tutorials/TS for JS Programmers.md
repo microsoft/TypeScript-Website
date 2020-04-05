@@ -24,7 +24,7 @@ let helloWorld = "Hello World";
 //  ^?
 ```
 
-By understanding how JavaScript works, TypeScript can build a type-system which accepts JavaScript code but has types. This offers a type-system without needed to add extra characters to make types explicit in your code. Which is how TypeScript knows that `helloWorld` is a `string` in the above example.
+By understanding how JavaScript works, TypeScript can build a type-system which accepts JavaScript code but has types. This offers a type-system without needing to add extra characters to make types explicit in your code. Which is how TypeScript knows that `helloWorld` is a `string` in the above example.
 
 It's quite possible that you have used VS Code with JavaScript, and had editor auto-completion as you worked.
 That is because the understanding of JavaScript baked into TypeScript has been used under-the-hood to improve working with JavaScript.

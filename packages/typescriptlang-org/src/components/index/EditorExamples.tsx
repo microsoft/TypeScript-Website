@@ -107,7 +107,7 @@ addPrices(3, 4, 6);
     return sum;
  }
  
- addPrices(3, 4, 6);
+ addPrices(<span class='underline-error'>3, 4, 6</span>);
 `
 
   return (
@@ -118,7 +118,7 @@ addPrices(3, 4, 6);
 
         inline={() =>
           (<>
-            <div className="underline-error" style={{ top: "140px", left: "96px", width: "68px" }} />
+
             <div className="error-message" style={{ top: "170px", left: "96px", width: "200px" }}>
               Expected 1 argument,<br />but got 3.
           </div>
@@ -201,37 +201,42 @@ app.get('/', function (req, res) {
 
 const Typos = () => {
   const js = `
-const users = [
-  { name: "Ahmed" },
-  { name: "Gemma" },
-  { name: "Jon" }
-];
+const response ={
+  data: {
+    artworks: [
+      { title: "Salvator Mundi" },
+      { title: "The Starry Night" }
+    ]
+  }
+}
 
-const jon = users.find(u => u.name === "Jon")
-console.log(jon.naem)
+const artworks = response.data.artworks
+console.log(artworks[0].name)
   `
 
   const ts = `
-const users = [
-  { name: "Ahmed" },
-  { name: "Gemma" },
-  { name: "Jon" }
-];
+const response ={
+  data: {
+    artworks: [
+      { title: "Salvator Mundi" },
+      { title: "The Starry Night" }
+    ]
+  }
+}
 
-const jon = users.find(u => u.name === "Jon")
-console.log(jon.naem)
+const artworks = response.data.artworks
+console.log(artworks[0].<span class='underline-error'>name</span>)
 `
 
   return (
     <div>
       <Editor title="Without TypeScript" isJS code={js} />
       <Editor title="TypeScript" front code={ts}
-        line={() => <div className="line-error" style={{ top: "152px" }} />}
+        line={() => <div className="line-error" style={{ top: "196px" }} />}
 
         inline={() =>
           (<>
-            <div className="underline-error" style={{ top: "122px", left: "138px", width: "40px" }} />
-            <div className="error-message" style={{ top: "150px", left: "18px", width: "240px" }}>Property 'naem' does not exist<br />on type '&#123; name: string; }'.</div>
+            <div className="error-message" style={{ top: "186px", left: "18px", width: "240px" }}>Property 'name' does not exist<br />on type '&#123; title: string; }'.</div>
           </>)
         } />
     </div>
@@ -249,7 +254,7 @@ const getUserAccountID = async () => {
   const ts = `
 const getUserAccountID = async () => {
   const me = fetch("/api/me")
-  return me.json().id
+  return me.<span class='underline-error'>json</span>().id
 }
 `
 
@@ -261,8 +266,7 @@ const getUserAccountID = async () => {
 
         inline={() =>
           (<>
-            <div className="underline-error" style={{ top: "48px", left: "108px", width: "45px" }} />
-            <div className="error-message" style={{ top: "74px", left: "70px", width: "240px" }}>Property 'json' does not exist<br />on type 'Promise&lt;Response>'</div>
+            <div className="error-message" style={{ top: "74px", left: "70px", width: "240px" }}>Property 'json' does not exist<br />on type 'Promise&lt;Response>'.</div>
             <div className="did-you-mean-icon" style={{ top: "126px", left: "50px", width: "200px" }}><svg width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M7.6708 7.65806C7.3319 7.9916 7.0716 8.36278 6.8886 8.77172C6.7105 9.1792 6.621 9.6219 6.621 10.1009V11.7012C6.621 11.8807 6.5872 12.0503 6.5189 12.2091C6.4513 12.3661 6.3586 12.5038 6.2407 12.6213C6.1228 12.7388 5.98464 12.8311 5.82723 12.8984C5.66806 12.9663 5.49806 13 5.31823 13H3.71205C3.53223 13 3.36223 12.9663 3.20306 12.8984C3.04564 12.8311 2.90753 12.7388 2.78961 12.6213C2.67168 12.5038 2.57895 12.3661 2.51141 12.2091C2.44311 12.0503 2.40927 11.8807 2.40927 11.7012V10.1009C2.40927 9.622 2.31772 9.1795 2.13553 8.77209C1.95683 8.36336 1.69832 7.99156 1.35953 7.65806C0.92468 7.22903 0.58896 6.75003 0.35361 6.22134C0.11756 5.69107 0 5.11672 0 4.49953C0 4.08664 0.05342 3.68802 0.16048 3.30397C0.26728 2.92089 0.41907 2.56286 0.61595 2.23018C0.81257 1.89377 1.04777 1.58911 1.32146 1.31641C1.59503 1.04383 1.89858 0.80953 2.23195 0.61364C2.56979 0.41764 2.93146 0.2662 3.31578 0.15983C3.70106 0.0532 4.10094 0 4.51514 0C4.92934 0 5.32923 0.0532 5.71451 0.15983C6.0988 0.2662 6.458 0.41739 6.7918 0.61351C7.1294 0.80938 7.4351 1.0437 7.7088 1.31641C7.9825 1.5891 8.2177 1.89376 8.4143 2.23016C8.6112 2.56285 8.763 2.92088 8.8698 3.30397C8.9769 3.68802 9.0303 4.08664 9.0303 4.49953C9.0303 5.11672 8.9127 5.69107 8.6767 6.22134C8.4413 6.75003 8.1056 7.22903 7.6708 7.65806ZM5.62162 9.5H3.40867V11.7012C3.40867 11.7823 3.4372 11.8512 3.49888 11.9127C3.56058 11.9741 3.63007 12.0028 3.71205 12.0028H5.31823C5.40022 12.0028 5.46971 11.9741 5.5314 11.9127C5.59309 11.8512 5.62162 11.7823 5.62162 11.7012V9.5Z" fill="white" /></svg></div>
             <div className="did-you-mean" style={{ top: "126px", left: "70px", width: "200px" }}>{`add 'await'?`}</div>
           </>)
@@ -283,7 +287,7 @@ const users = [
 const jon = 
   users.find(u => u.name === "John")
 
-console.log(jon.naem)
+console.log(jon.name)
   `
 
   const ts = `
@@ -296,7 +300,7 @@ const users = [
 const jon = 
   users.find(u => u.name === "John")
   
-console.log(jon.naem)
+console.log(jon.<span class='underline-error'>name</span>)
 `
 
   return (
@@ -306,7 +310,6 @@ console.log(jon.naem)
         line={() => <div className="line-error" style={{ top: "184px" }} />}
         inline={() =>
           (<>
-            <div className="underline-error" style={{ top: "152px", left: "108px", width: "30px" }} />
             <div className="error-message" style={{ top: "180px", left: "60px" }}>{`Object is possibly 'undefined'.`}</div>
           </>)
         } />
@@ -335,7 +338,7 @@ function getLength(
  // ...
 }
 
-const dist = getLength(3, "cm", "inches");
+const dist = getLength(3, "cm", <span class='underline-error'>"inches"</span>);
 `
 
   return (
@@ -345,7 +348,6 @@ const dist = getLength(3, "cm", "inches");
         line={() => <div className="line-error" style={{ top: "152px" }} />}
         inline={() =>
           (<>
-            <div className="underline-error" style={{ top: "124px", left: "266px", width: "55px" }} />
             <div className="error-message" style={{ top: "153px", left: "16px", width: "320px" }}>
               Argument of type '"inches"' is not<br />assignable to parameter of type 'Unit'.
           </div>
@@ -367,8 +369,8 @@ function isAdmin(userID) {
     if (adminUserIDs[index] = userID) {
       return true
     };
-    return false
   }
+  return false
 }
   `
 
@@ -378,11 +380,11 @@ const adminUserIDs
 
 function isAdmin(userID<span class='highlight'>: number</span>) {
   for (let index = 0; index < adminUserIDs.length; index++) {
-    if (adminUserIDs[index] = userID) {
+    if (<span class='underline-error'>adminUserIDs[index]</span> = userID) {
       return true
     };
-    return false
   }
+  return false
 }  
 `
 
@@ -393,7 +395,6 @@ function isAdmin(userID<span class='highlight'>: number</span>) {
         line={() => <div className="line-error" style={{ top: "124px" }} />}
         inline={() =>
           (<>
-            <div className="underline-error" style={{ top: "90px", left: "76px", width: "144px" }} />
             <div className="error-message" style={{ top: "174px", left: "40px", width: "200px" }}>
               Index signature in type 'readonly<br />number[]'only permits reading.
           </div>

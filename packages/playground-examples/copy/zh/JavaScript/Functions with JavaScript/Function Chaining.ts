@@ -10,10 +10,7 @@ import $ from "jquery";
 
 // 这是使用 jQuery API 的示例：
 
-$("#navigation")
-  .css("background", "red")
-  .height(300)
-  .fadeIn(200);
+$("#navigation").css("background", "red").height(300).fadeIn(200);
 
 // 如果您在上面的行中增加了一个点（.），则会看到一长串函数。
 // 这种模式很容易在 JavaScript 中复现。关键是要确保
@@ -35,18 +32,14 @@ const addTwoNumbers = (start = 1) => {
     print() {
       console.log(n);
       return api;
-    }
+    },
   };
   return api;
 };
 
 // 允许我们使用与 jQuery 中相同的 API 风格：
 
-addTwoNumbers(1)
-  .add(3)
-  .add()
-  .print()
-  .add(1);
+addTwoNumbers(1).add(3).add().print().add(1);
 
 // 这是一个使用类时的链式调用示例：
 
@@ -70,11 +63,7 @@ class AddNumbers {
 
 // 下面的代码可以按预期工作：
 
-new AddNumbers(2)
-  .add(3)
-  .add()
-  .print()
-  .add(1);
+new AddNumbers(2).add(3).add().print().add(1);
 
 // 本例是使用 TypeScript 的类型推导来为 JavaScript 的模式
 // 提供帮助的一种方法。

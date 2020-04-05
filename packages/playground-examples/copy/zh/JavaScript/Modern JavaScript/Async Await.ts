@@ -10,52 +10,51 @@
 // values are wrapped in Promises. What used to return a
 // string, now returns a Promise<string>.
 
-const func = () => ":wave:"
-const asyncFunc = async () => ":wave:"
+const func = () => ":wave:";
+const asyncFunc = async () => ":wave:";
 
-const myString = func()
-const myPromiseString = asyncFunc()
+const myString = func();
+const myPromiseString = asyncFunc();
 
-myString.length
+myString.length;
 
 // myPromiseString is a Promise, not the string:
 
-myPromiseString.length
-
+myPromiseString.length;
 
 // You can use the await keyword to convert a promise
 // into its value. Today, these only work inside an async
 // function.
 
 const myWrapperFunction = async () => {
-  const myString = func()
-  const myResolvedPromiseString = await asyncFunc()
+  const myString = func();
+  const myResolvedPromiseString = await asyncFunc();
 
   // Via the await keyword, now myResolvedPromiseString
   // is a string
-  myString.length
-  myResolvedPromiseString.length
-}
+  myString.length;
+  myResolvedPromiseString.length;
+};
 
 // Code which is running via an await can throw errors,
 // and it's important to catch those errors somewhere.
 
 const myThrowingFunction = async () => {
-  throw new Error("Do not call this")
-}
+  throw new Error("Do not call this");
+};
 
 // We can wrap calling an async function in a try catch to
 // handle cases where the function acts unexpectedly.
 
 const asyncFunctionCatching = async () => {
-  const myReturnValue = "Hello world"
+  const myReturnValue = "Hello world";
   try {
-    await myThrowingFunction()
+    await myThrowingFunction();
   } catch (error) {
-    console.error("myThrowingFunction failed", error)
+    console.error("myThrowingFunction failed", error);
   }
-  return myReturnValue
-}
+  return myReturnValue;
+};
 
 // Due to the ergonomics of this API being either returning
 // a single value, or throwing, you should consider offering
@@ -65,26 +64,26 @@ const asyncFunctionCatching = async () => {
 
 const exampleSquareRootFunction = async (input: any) => {
   if (isNaN(input)) {
-    throw new Error("Only numbers are accepted")
+    throw new Error("Only numbers are accepted");
   }
 
   if (input < 0) {
-    return { success: false, message: "Cannot square root negative number" }
+    return { success: false, message: "Cannot square root negative number" };
   } else {
-    return { success: true, value: Math.sqrt(input) }
+    return { success: true, value: Math.sqrt(input) };
   }
-}
+};
 
 // Then the function consumers can check in the response and
 // 确定如何使用您的返回值。尽管这是一个简单的例子，但是一旦您开始使用
 // 网络代码，这些 API 就需要使用额外的语法。
 
 const checkSquareRoot = async (value: number) => {
-  const response = await exampleSquareRootFunction(value)
+  const response = await exampleSquareRootFunction(value);
   if (response.success) {
-    response.value
+    response.value;
   }
-}
+};
 
 // Async、Await 使如下代码：
 

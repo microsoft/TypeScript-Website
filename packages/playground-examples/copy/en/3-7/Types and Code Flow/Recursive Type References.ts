@@ -31,8 +31,8 @@ const exampleStatusJSON: Json = {
     name: "Highcrest",
     // Cannot add functions into the Json type
     // update: () => {}
-  }
-}
+  },
+};
 
 // There's more to learn from the 3.7 beta release notes and its PR:
 //

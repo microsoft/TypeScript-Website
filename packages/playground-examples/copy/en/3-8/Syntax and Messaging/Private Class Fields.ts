@@ -1,4 +1,4 @@
-//// { compiler: { ts: "3.8.0-beta" } }
+//// { compiler: { ts: "3.8.3" } }
 // 3.8 adds private fields, which are a way of declaring a class field to
 // be unavailable outside of the containing class, including to subclasses.
 
@@ -6,24 +6,24 @@
 // instance of the class to read  the firstName, lastName or prefix
 
 class Person {
-  #firstName: string
-  #lastName: string
-  #prefix: string
+  #firstName: string;
+  #lastName: string;
+  #prefix: string;
 
   constructor(firstName: string, lastName: string, prefix: string) {
-      this.#firstName = firstName;
-      this.#lastName = lastName;
-      this.#prefix = prefix;
+    this.#firstName = firstName;
+    this.#lastName = lastName;
+    this.#prefix = prefix;
   }
 
   greet() {
-      // In iceland it is preferable to use a full name instead of [prefix] [lastname]
-      // https://www.w3.org/International/questions/qa-personal-names#patronymic
-      if (navigator.languages[0] === "is") {
-          console.log(`Góðan dag, ${this.#firstName} ${this.#lastName}`);
-      } else {
-          console.log(`Hello, ${this.#prefix} ${this.#lastName}`);
-      }
+    // In iceland it is preferable to use a full name instead of [prefix] [lastname]
+    // https://www.w3.org/International/questions/qa-personal-names#patronymic
+    if (navigator.languages[0] === "is") {
+      console.log(`Góðan dag, ${this.#firstName} ${this.#lastName}`);
+    } else {
+      console.log(`Hello, ${this.#prefix} ${this.#lastName}`);
+    }
   }
 }
 
@@ -42,17 +42,17 @@ console.log("Person's last name:", jeremy["#lastName"]);
 // how it worked in TypeScript before 3.8:
 
 class Dog {
-  private _name: string
+  private _name: string;
   constructor(name: string) {
-      this._name = name;
+    this._name = name;
   }
 }
 
 let oby = new Dog("Oby");
 // Won't let you access via dot notation
-oby._name = "Spot"
+oby._name = "Spot";
 // But TypeScript allows bracket notation as an escape clause
-oby["_name"] = "Cherny"
+oby["_name"] = "Cherny";
 
 // The TypeScript reference of private only exists at type-level
 // which means that you can only trust it so far. With private fields

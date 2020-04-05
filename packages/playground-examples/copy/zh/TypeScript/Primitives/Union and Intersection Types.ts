@@ -18,7 +18,7 @@ type AMessyUnion = "hello" | 156 | { error: true };
 type WindowStates = "open" | "closed" | "minimized" | string;
 
 // 如果你将鼠标悬停在上方，你可以看到 WindowStates 变为了
-// 一个字符串而不是一个并集类型。可以在这里查看：example:type-widening-narrowing
+// 一个字符串而不是一个并集类型。可以在这里查看：example:type-widening-and-narrowing
 
 // 如果说并集类型代表 “或”，那么交集类型代表 “且”。
 // 交集类型代表两个类型相交以创建一个新类型，这将会允许类型的组合。
@@ -56,21 +56,20 @@ const handleArtistsResponse = (response: ArtistsResponse) => {
 // 当对象必须含有下面的一个或两个值时，交集和并集类型的混合将会非常有用。
 
 interface CreateArtistBioBase {
-  artistID: string
-  thirdParty?: boolean
+  artistID: string;
+  thirdParty?: boolean;
 }
 
-type CreateArtistBioRequest
-  = CreateArtistBioBase & { html: string } | { markdown: string }
+type CreateArtistBioRequest = (CreateArtistBioBase & { html: string }) | { markdown: string };
 
 // 现在您只有在包含 artistID 和（html 或 markdown）时
 // 您才能创建对应的请求。
 
 const workingRequest: CreateArtistBioRequest = {
   artistID: "banksy",
-  markdown: "Banksy is an anonymous England-based graffiti artist..."
-}
+  markdown: "Banksy is an anonymous England-based graffiti artist...",
+};
 
 const badRequest: CreateArtistBioRequest = {
   artistID: "banksy",
-}
+};

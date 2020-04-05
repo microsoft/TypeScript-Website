@@ -13,10 +13,7 @@ import $ from "jquery";
 
 // Here's an example use of the jQuery API:
 
-$("#navigation")
-  .css("background", "red")
-  .height(300)
-  .fadeIn(200);
+$("#navigation").css("background", "red").height(300).fadeIn(200);
 
 // If you add a dot on the line above, you'll see
 // a long list of functions. This pattern is easy to
@@ -41,7 +38,7 @@ const addTwoNumbers = (start = 1) => {
     print() {
       console.log(n);
       return api;
-    }
+    },
   };
   return api;
 };
@@ -49,11 +46,7 @@ const addTwoNumbers = (start = 1) => {
 // Which allows the same style of API as we
 // saw in jQuery:
 
-addTwoNumbers(1)
-  .add(3)
-  .add()
-  .print()
-  .add(1);
+addTwoNumbers(1).add(3).add().print().add(1);
 
 // Here's a similar example which uses a class:
 
@@ -77,11 +70,7 @@ class AddNumbers {
 
 // Here it is in action:
 
-new AddNumbers(2)
-  .add(3)
-  .add()
-  .print()
-  .add(1);
+new AddNumbers(2).add(3).add().print().add(1);
 
 // This example used the TypeScript
 // type inference to provide a way to

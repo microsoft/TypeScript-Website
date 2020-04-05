@@ -149,8 +149,18 @@ nav#sidebar {
       list-style: none;
 
       a {
-        transition: margin-left 0.1s ease-out;
         font-weight: 300;
+        margin-right: -0.5rem;
+      }
+
+      &:hover {
+        padding-left: 0.3rem;
+        margin-right: -0.3rem;
+        transition: padding-left 0.1s ease-out;
+
+        @media (prefers-reduced-motion: reduce) {
+          transition: none;
+        }
       }
 
       a:focus,
@@ -160,8 +170,6 @@ nav#sidebar {
         @media (prefers-color-scheme: dark) {
           border-color: white;
         }
-        margin-left: 0.5rem;
-        margin-right: -0.5rem;
       }
 
       &.highlight a {
@@ -176,7 +184,7 @@ nav#sidebar {
 }
 
 @media (max-width: $screen-sm) {
-  // This is a button which will scroll off and on with the na
+  // This is a button which will scroll off and on with the nav
   button#small-device-button-sidebar {
     display: block;
     position: fixed;
@@ -202,7 +210,7 @@ nav#sidebar {
     padding-top: 2px;
     padding-left: 9px;
 
-    z-index: $z-index-for-handbook-nav;
+    z-index: $z-index-for-handbook-nav-button;
 
     // Reset the button
     -webkit-appearance: none;
@@ -232,6 +240,10 @@ nav#sidebar {
 
     transition-timing-function: ease;
     transition: margin-left 0.3s;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
 
     &.show {
       margin-left: 0px;

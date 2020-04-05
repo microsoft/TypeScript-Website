@@ -8,7 +8,7 @@ enum CompassDirection {
   North,
   East,
   South,
-  West
+  West,
 }
 
 // 可以通过添加注解来为枚举指定值，并且其他值将继续自增。
@@ -19,7 +19,7 @@ enum StatusCodes {
   Unauthorized,
   PaymentRequired,
   Forbidden,
-  NotFound
+  NotFound,
 }
 
 // 枚举可以通过 枚举名.值名 来引用。
@@ -40,7 +40,7 @@ enum GamePadInput {
   Up = "UP",
   Down = "DOWN",
   Left = "LEFT",
-  Right = "RIGHT"
+  Right = "RIGHT",
 }
 
 // 如果你想减少在运行时的数字对象的数量，你可以使用常量枚举。
@@ -50,7 +50,7 @@ enum GamePadInput {
 const enum MouseAction {
   MouseDown,
   MouseUpOutside,
-  MouseUpInside
+  MouseUpInside,
 }
 
 const handleMouseAction = (action: MouseAction) => {

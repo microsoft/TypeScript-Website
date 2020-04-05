@@ -77,7 +77,7 @@ saferSafe.printContents();
 
 const customObjectTryingToChangeThis = {
   contents: "http://gph.is/XLof62",
-  print: saferSafe.printContents
+  print: saferSafe.printContents,
 };
 
 customObjectTryingToChangeThis.print();

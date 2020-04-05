@@ -1,5 +1,9 @@
 const path = require(`path`)
 import { NodePluginArgs, CreatePagesArgs } from "gatsby"
+import {
+  getNextPageID,
+  getPreviousPageID,
+} from "../../../src/lib/oldHandbookNavigation"
 
 export const createOldHandbookPages = async (
   graphql: CreatePagesArgs["graphql"],
@@ -15,6 +19,7 @@ export const createOldHandbookPages = async (
         }
       ) {
         nodes {
+          id
           name
           modifiedTime
 
@@ -35,9 +40,27 @@ export const createOldHandbookPages = async (
   const anyData = result.data as any
   const docs = anyData.allFile.nodes
 
-  docs.forEach((post: any, index: number) => {
-    const previous = index === docs.length - 1 ? null : docs[index + 1].node
-    const next = index === 0 ? null : docs[index - 1].node
+  docs.forEach((post: any) => {
+    const id = idFromURL(post.childMarkdownRemark.frontmatter.permalink)
+
+    let previousID = undefined
+    const previousPath = getPreviousPageID(id)
+    if (previousPath) {
+      const path = getPreviousPageID(id)!.path
+      // prettier-ignore
+      const previousDoc = docs.find((d) => d.childMarkdownRemark.frontmatter.permalink === path)
+      if (previousDoc) previousID = previousDoc.id
+    }
+
+    let nextID = undefined
+    const nextPath = getNextPageID(id)
+    if (nextPath) {
+      const path = getNextPageID(id)!.path
+      // prettier-ignore
+      const nextDoc = docs.find((d) => d.childMarkdownRemark.frontmatter.permalink === path)
+      if (nextDoc) nextID = nextDoc.id
+    }
+    // const nextPath = getNextPageID(id) && getNextPageID(id)!.path
 
     if (post.childMarkdownRemark) {
       createPage({
@@ -45,8 +68,8 @@ export const createOldHandbookPages = async (
         component: handbookPage,
         context: {
           slug: post.childMarkdownRemark.frontmatter.permalink,
-          previous,
-          next,
+          previousID,
+          nextID,
           isOldHandbook: true,
         },
       })
@@ -55,3 +78,6 @@ export const createOldHandbookPages = async (
     }
   })
 }
+
+export const idFromURL = (url: string) =>
+  url.split("/").pop()!.replace(".html", "") || "index"

@@ -51,8 +51,7 @@ interface KeyboardInputEvent extends InputEvent {
   keyCode: number;
 }
 
-function listenForEvent(eventType: "keyboard" | "mouse",
-                        handler: (event: InputEvent) => void) {}
+function listenForEvent(eventType: "keyboard" | "mouse", handler: (event: InputEvent) => void) {}
 
 // You can re-declare the parameter type to be a subtype of
 // the declaration. Above, handler expected a type InputEvent
@@ -91,11 +90,10 @@ listenForEvent("mouse", (event: string) => {});
 // TypeScript will not have a way to enforce the number of
 // parameters available to a callback.
 
-function getRandomNumbers(count: number,
-                          callback: (...args: number[]) => void) {}
+function getRandomNumbers(count: number, callback: (...args: number[]) => void) {}
 
 getRandomNumbers(2, (first, second) => console.log([first, second]));
-getRandomNumbers(400, first => console.log(first));
+getRandomNumbers(400, (first) => console.log(first));
 
 // Void Functions Can Match to a Function With a Return Value
 
@@ -104,7 +102,7 @@ getRandomNumbers(400, first => console.log(first));
 
 const getPI = () => 3.14;
 
-function runFunction (func: () => void) {
+function runFunction(func: () => void) {
   func();
 }
 

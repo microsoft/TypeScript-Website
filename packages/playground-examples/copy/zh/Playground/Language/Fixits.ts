@@ -4,7 +4,7 @@
 // 你选中第 5 行，然后点击弹出的灯泡，您将获得一些修复建议。
 
 function addOne(x: number) {
-  return x + 1
+  return x + 1;
 }
 
 // 这个功能自 TypeScript 3.7 版本后以及最新构建的版本中可用。

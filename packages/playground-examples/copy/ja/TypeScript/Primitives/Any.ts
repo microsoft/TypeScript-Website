@@ -1,4 +1,4 @@
-// anyはTypeScriptのエスケープ句です。 
+// anyはTypeScriptのエスケープ句です。
 // any型を利用することで、一区切りのコードを
 // JavaScriptの様に動的に扱ったり、
 // 型システムの制限を回避することができます。
@@ -20,7 +20,7 @@ myObject.x.y.z;
 // 一方の型をもう一方に割り当て可能にする「型のワイルドカード」
 // によく似ています。
 
-declare function debug(value: any);
+declare function debug(value: any): void;
 
 debug("a string");
 debug(23);

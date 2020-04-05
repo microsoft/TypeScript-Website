@@ -6,7 +6,7 @@
 const users = [{ name: "Ahmed" }, { name: "Gemma" }, { name: "Jon" }];
 
 // We're going to look to see if we can find a user named "jon".
-const jon = users.find(u => u.name === "jon");
+const jon = users.find((u) => u.name === "jon");
 
 // In the above case, 'find' could fail. In that case we
 // don't have an object. This creates the type:

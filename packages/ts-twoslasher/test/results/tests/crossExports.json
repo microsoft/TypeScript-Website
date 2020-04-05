@@ -9,8 +9,8 @@
       "docs": "",
       "start": 37,
       "length": 15,
-      "line": 2,
-      "character": 5,
+      "line": 1,
+      "character": 6,
       "targetString": "getStringLength"
     },
     {
@@ -18,8 +18,8 @@
       "docs": "",
       "start": 55,
       "length": 3,
-      "line": 2,
-      "character": 23,
+      "line": 1,
+      "character": 24,
       "targetString": "str"
     },
     {
@@ -27,16 +27,16 @@
       "docs": "",
       "start": 62,
       "length": 3,
-      "line": 2,
-      "character": 30,
+      "line": 1,
+      "character": 31,
       "targetString": "str"
     },
     {
       "text": "any",
       "start": 66,
       "length": 6,
-      "line": 2,
-      "character": 34,
+      "line": 1,
+      "character": 35,
       "targetString": "length"
     },
     {
@@ -45,7 +45,7 @@
       "start": 73,
       "length": 6,
       "line": 2,
-      "character": 41,
+      "character": 0,
       "targetString": "module"
     },
     {
@@ -53,8 +53,8 @@
       "docs": "",
       "start": 80,
       "length": 7,
-      "line": 3,
-      "character": 6,
+      "line": 2,
+      "character": 7,
       "targetString": "exports"
     },
     {
@@ -62,47 +62,47 @@
       "docs": "",
       "start": 94,
       "length": 15,
-      "line": 4,
-      "character": 1,
+      "line": 3,
+      "character": 2,
       "targetString": "getStringLength"
     },
     {
       "text": "import utils",
       "docs": "",
-      "start": 30,
+      "start": 144,
       "length": 5,
-      "line": 2,
-      "character": 6,
+      "line": 7,
+      "character": 7,
       "targetString": "utils"
     },
     {
       "text": "const count: any",
       "docs": "",
-      "start": 65,
+      "start": 179,
       "length": 5,
-      "line": 3,
-      "character": 5,
+      "line": 8,
+      "character": 6,
       "targetString": "count"
     },
     {
       "text": "import utils",
       "docs": "",
-      "start": 73,
+      "start": 187,
       "length": 5,
-      "line": 3,
-      "character": 13,
+      "line": 8,
+      "character": 14,
       "targetString": "utils"
     },
     {
       "text": "(property) getStringLength: (str: any) => any",
       "docs": "",
-      "start": 79,
+      "start": 193,
       "length": 15,
-      "line": 3,
-      "character": 19,
+      "line": 8,
+      "character": 20,
       "targetString": "getStringLength"
     }
   ],
   "errors": [],
-  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEFMCdoe2gZwFygIwCYCsBOAUCBAGYCWANpAHYCGAtpKgK4Au5AYo5QMatyWIA6AFaI8XPomagA5pGYBlZtBKVpAGSrTmAC1ABeUJOj6AfIaUCKqnXlpwAJowoDIADwAOCZon2gA3nigMnKKyqoa1toANHgAvngEYOCkVnQMoCr2bgLeeCS0ntBSLOQ+RPC0oADkAsAlZBzcvPxVYhJS4pxSBvWCsgpKKuqaOgAUVQDC2pBcANagAFLyVQCUeEA"
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKArgFzgGLaIDG+A9ogM4B0AVlQFAmVW6gDm8uAyrgE7REHADJIOuABagAvKDb9ZAPnkCaCYVMapyAE2wIa8AB4AHcv1xVZoAN6NQnbn0HCxmyQBpGAX0aMQCBgNNExQIV0TGitGaFRzSxx8WGtIfnJUUAByGmA8QmIyaFYs5lZ2FmJ2OXyUmi5eASFRcSkACiyAYUl4EgBrUAApHiyASkYgA"
 }

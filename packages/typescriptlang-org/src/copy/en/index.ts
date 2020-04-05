@@ -1,5 +1,5 @@
 export const indexCopy = {
-  index_headline: "TypeScript is <bold>JavaScript For Any Scale.</bold>",
+  index_headline: "TypeScript is <bold>Typed JavaScript at Any Scale.</bold>",
   index_byline:
     "TypeScript extends JavaScript by adding types to the language.",
   index_summary:

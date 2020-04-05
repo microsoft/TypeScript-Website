@@ -1,4 +1,4 @@
-//// { compiler: { ts: "3.8.0-beta" } }
+//// { compiler: { ts: "3.8.3" } }
 // In 3.8 we added new syntax for importing types, which
 // would be similar to users who have come from flow.
 
@@ -22,9 +22,9 @@ import * as React from 'react';
 export class Welcome extends React.Component {
   render() {
     return (
-     <div style={style}>
-      <h1>Hello, world</h1>
-     </div>
+      <div style={style}>
+        <h1>Hello, world</h1>
+      </div>
     )
   }
 }

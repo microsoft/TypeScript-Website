@@ -35,7 +35,7 @@ type StaffAccount = [number, string, string, string?];
 const staff: StaffAccount[] = [
   [0, "Adankwo", "adankwo.e@"],
   [1, "Kanokwan", "kanokwan.s@"],
-  [2, "Aneurin", "aneurin.s@", "Supervisor"]
+  [2, "Aneurin", "aneurin.s@", "Supervisor"],
 ];
 
 // 如果元组的开头有一组已知的类型，然后跟着未知长度，可以使用 spread 运算符
@@ -43,7 +43,11 @@ const staff: StaffAccount[] = [
 
 type PayStubs = [StaffAccount, ...number[]];
 
-const payStubs: PayStubs[] = [[staff[0], 250], [staff[1], 250, 260], [staff[0], 300, 300, 300]];
+const payStubs: PayStubs[] = [
+  [staff[0], 250],
+  [staff[1], 250, 260],
+  [staff[0], 300, 300, 300],
+];
 
 const monthOnePayments = payStubs[0][1] + payStubs[1][1] + payStubs[2][1];
 const monthTwoPayments = payStubs[1][2] + payStubs[2][2];

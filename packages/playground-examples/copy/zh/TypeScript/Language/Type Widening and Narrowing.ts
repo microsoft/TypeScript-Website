@@ -50,7 +50,7 @@ if (quantumString) {
 // example:union-and-intersection-types
 // example:discriminate-types
 
-// 
+//
 // 以及网络上有更多的资源：
 //
 // https://mariusschulz.com/blog/literal-type-widening-in-typescript

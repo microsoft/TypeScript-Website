@@ -4,25 +4,25 @@
 
 const userAccount = {
   name: "Kieron",
-  id: 0
-}
+  id: 0,
+};
 
 // 您可以将他们合并已获得一个更大更复杂的数据模型。
 
 const pie = {
-  type: "Apple"
-}
+  type: "Apple",
+};
 
 const purchaseOrder = {
   owner: userAccount,
-  item: pie
-}
+  item: pie,
+};
 
 // 如果您将鼠标悬停在这些单词上（尝试上面的 purchaseOrder），您可以
 // 看到 TypeScript 是如何将您的 JavaScript 解释为被标记的类型。
 
 // 值可以通过“.”（点）访问，可以获取一个采购订单的用户名：
-console.log(purchaseOrder.item.type)
+console.log(purchaseOrder.item.type);
 
 // 如果您用鼠标悬停在括号之间的代码的每个部分上，您可以看到 TypeScript
 // 为每个部分都提供了更多的信息。尝试重写下面的内容：
@@ -38,27 +38,27 @@ console.log(purchaseOrder.item.type)
 // TypeScript 对于数组同样提供了相同的功能。这里有一个数组，其中
 // 只有一个我们的采购订单。
 
-const allOrders = [purchaseOrder]
+const allOrders = [purchaseOrder];
 
 // 如果您将鼠标悬停在 allOrders 上，你可以判断它是一个数组，因为悬停
 // 信息以 [] 结尾。您可以使用方括号和索引（从 0 开始）来进行一阶访问。
 
-const firstOrder = allOrders[0]
-console.log(firstOrder.item.type)
+const firstOrder = allOrders[0];
+console.log(firstOrder.item.type);
 
 // 获取对象的另一种方式是 pop 数组以删除对象。这样做会从数组中删除对象，
 // 并返回被删除的对象。这被称为修改数组，因为它会更改其中的基础数据。
 
-const poppedFirstOrder = allOrders.pop()
+const poppedFirstOrder = allOrders.pop();
 
 // 现在 allOrders 是空的。修改数据对很多东西都很有用，但是减少修改数据是
 // 降低代码复杂度的一种方式。TypeScript 提供了一种声明只读数组的方式：
 
 // 创建一个基于采购订单的形状创建另一个类型：
-type PurchaseOrder = typeof purchaseOrder
+type PurchaseOrder = typeof purchaseOrder;
 
 // 创建一个采购订单的只读数组：
-const readonlyOrders: readonly PurchaseOrder[] = [purchaseOrder]
+const readonlyOrders: readonly PurchaseOrder[] = [purchaseOrder];
 
 // 是的！当然还有更多代码，这里有 4 个新事物：
 //
@@ -73,7 +73,7 @@ const readonlyOrders: readonly PurchaseOrder[] = [purchaseOrder]
 //
 // 现在如果您尝试 pop readonlyOrders，TypeScript 将会抛出一个错误。
 
-readonlyOrders.pop()
+readonlyOrders.pop();
 
 // 您可以在各种地方使用 readonly，虽然这有一些额外的语法，但是
 // 同样会提供很多额外的安全性。

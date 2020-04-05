@@ -4,21 +4,21 @@
 // with named keys.
 
 const userAccount = {
-  name: 'Kieron',
+  name: "Kieron",
   id: 0,
-}
+};
 
 // You can combine these to make larger, more complex
 // data-models.
 
 const pie = {
-  type: 'Apple',
-}
+  type: "Apple",
+};
 
 const purchaseOrder = {
   owner: userAccount,
   item: pie,
-}
+};
 
 // If you use your mouse to hover over some of these words
 // (try purchaseOrder above) you can see how TypeScript is
@@ -26,7 +26,7 @@ const purchaseOrder = {
 
 // Values can be accessed via the ".", so to get a
 // username for a purchase order:
-console.log(purchaseOrder.item.type)
+console.log(purchaseOrder.item.type);
 
 // If you hover your mouse over each part of the code
 // between the ()s, you can see TypeScript offering more
@@ -44,15 +44,15 @@ console.log(purchaseOrder.item.type)
 // TypeScript also offers these same features to arrays.
 // Here's an array with just our purchase order above in it.
 
-const allOrders = [purchaseOrder]
+const allOrders = [purchaseOrder];
 
 // If you hover on allOrders, you can tell it's an array
 // because the hover info ends with []. You can access the
 // first order by using square brackets with an index
 // (starting from zero).
 
-const firstOrder = allOrders[0]
-console.log(firstOrder.item.type)
+const firstOrder = allOrders[0];
+console.log(firstOrder.item.type);
 
 // An alternative way to get an object is via pop-ing the
 // array to remove objects. Doing this removes the object
@@ -60,7 +60,7 @@ console.log(firstOrder.item.type)
 // mutating the array, because it changes the underlying
 // data inside it.
 
-const poppedFirstOrder = allOrders.pop()
+const poppedFirstOrder = allOrders.pop();
 
 // Now allOrders is empty. Mutating data can be useful for
 // many things, but one way to reduce the complexity in your
@@ -68,10 +68,10 @@ const poppedFirstOrder = allOrders.pop()
 // to declare an array readonly instead:
 
 // Creates a type based on the shape of a purchase order:
-type PurchaseOrder = typeof purchaseOrder
+type PurchaseOrder = typeof purchaseOrder;
 
 // Creates a readonly array of purchase orders
-const readonlyOrders: readonly PurchaseOrder[] = [purchaseOrder]
+const readonlyOrders: readonly PurchaseOrder[] = [purchaseOrder];
 
 // Yep! That's a bit more code for sure. There's four
 // new things here:
@@ -92,7 +92,7 @@ const readonlyOrders: readonly PurchaseOrder[] = [purchaseOrder]
 // Now if you try to pop from the readonlyOrders, TypeScript
 // will raise an error.
 
-readonlyOrders.pop()
+readonlyOrders.pop();
 
 // You can use readonly in all sorts of places, it's a
 // little bit of extra syntax here and there, but it

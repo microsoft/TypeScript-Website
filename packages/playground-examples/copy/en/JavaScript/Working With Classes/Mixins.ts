@@ -9,7 +9,7 @@
 // other classes from. The main responsibility is to declare
 // that the type being passed in is a class.
 
-type Constructor = new (...args: any[]) => {}
+type Constructor = new (...args: any[]) => {};
 
 // Then we can create a series of classes which extend
 // the final class by wrapping it. This pattern works well
@@ -83,14 +83,12 @@ flappySprite.setVisible();
 flappySprite.setScale(0.8);
 console.log(flappySprite.scale);
 
-
 const gameBoySprite = new EightBitSprite("L block");
 gameBoySprite.setScale(0.3);
 
 // Fails because an EightBitSprite does not have
 // the mixin for changing alphas:
 gameBoySprite.setAlpha(0.5);
-
 
 // If you want to make more guarantees over the classes
 // which you wrap, you can use a constructor with generics.
@@ -100,17 +98,17 @@ type GConstructor<T = {}> = new (...args: any[]) => T;
 // Now you can declare that this mixin can only be
 // applied when the base class is a certain shape.
 
-type Moveable = GConstructor<{ setXYAcceleration: (x: number, y: number) => void }>
+type Moveable = GConstructor<{ setXYAcceleration: (x: number, y: number) => void }>;
 
 // We can then create a mixin which relies on the function
 // present in the parameter to the GConstructor above.
 
 function Jumpable<TBase extends Moveable>(Base: TBase) {
   return class extends Base {
-      jump() {
-        // This mixin knows about setXYAcceleration now
-        this.setXYAcceleration(0, 20)
-      }
+    jump() {
+      // This mixin knows about setXYAcceleration now
+      this.setXYAcceleration(0, 20);
+    }
   };
 }
 

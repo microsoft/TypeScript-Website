@@ -5,7 +5,7 @@
 // For example TypeScript can provide quick-fixes
 // for typos in your types:
 
-const eulersNumber = 2.7182818284
+const eulersNumber = 2.7182818284;
 eulersNumber.toStrang();
 //           ^______^ - select this to see the light build
 

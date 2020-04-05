@@ -62,8 +62,11 @@ export const createSidebar = () => {
   const sidebar = document.createElement('div')
   sidebar.className = 'playground-sidebar'
 
+  // Start with the sidebar hidden on small screens
+  const isTinyScreen = window.innerWidth < 800
+
   // This is independent of the sizing below so that you keep the same sized sidebar
-  if (sidebarHidden()) {
+  if (isTinyScreen || sidebarHidden()) {
     sidebar.style.display = 'none'
   }
 
@@ -71,7 +74,12 @@ export const createSidebar = () => {
     // Don't restore the x pos if the window isn't the same size
     if (window.innerWidth === Number(window.localStorage.getItem('dragbar-window-width'))) {
       // Set the dragger to the previous x pos
-      const width = window.localStorage.getItem('dragbar-x')
+      let width = window.localStorage.getItem('dragbar-x')
+
+      if (isTinyScreen) {
+        width = String(Math.min(Number(width), 280))
+      }
+
       sidebar.style.width = `${width}px`
       sidebar.style.flexBasis = `${width}px`
       sidebar.style.maxWidth = `${width}px`
@@ -82,6 +90,44 @@ export const createSidebar = () => {
   }
 
   return sidebar
+}
+
+const toggleIconWhenOpen = '&#x21E5;'
+const toggleIconWhenClosed = '&#x21E4;'
+
+export const setupSidebarToggle = () => {
+  const toggle = document.getElementById('sidebar-toggle')!
+
+  const updateToggle = () => {
+    const sidebar = window.document.querySelector('.playground-sidebar') as HTMLDivElement
+    const sidebarShowing = sidebar.style.display !== 'none'
+
+    toggle.innerHTML = sidebarShowing ? toggleIconWhenOpen : toggleIconWhenClosed
+    toggle.setAttribute('aria-label', sidebarShowing ? 'Hide Sidebar' : 'Show Sidebar')
+  }
+
+  toggle.onclick = () => {
+    const sidebar = window.document.querySelector('.playground-sidebar') as HTMLDivElement
+    const newState = sidebar.style.display !== 'none'
+
+    if (newState) {
+      localStorage.setItem('sidebar-hidden', 'true')
+      sidebar.style.display = 'none'
+    } else {
+      localStorage.removeItem('sidebar-hidden')
+      sidebar.style.display = 'block'
+    }
+
+    updateToggle()
+
+    // @ts-ignore - I know what I'm doing
+    window.sandbox.editor.layout()
+
+    return false
+  }
+
+  // Ensure its set up at the start
+  updateToggle()
 }
 
 export const createTabBar = () => {
@@ -142,36 +188,4 @@ export const activatePlugin = (
 
   // Let the previous plugin do any slow work after it's all done
   if (previousPlugin && previousPlugin.didUnmount) previousPlugin.didUnmount(sandbox, container)
-}
-
-const toggleIconWhenOpen = '&#x21E5;'
-const toggleIconWhenClosed = '&#x21E4;'
-
-export const setupSidebarToggle = () => {
-  const toggle = document.getElementById('sidebar-toggle')!
-
-  const updateToggle = () => {
-    const sidebarShowing = !sidebarHidden()
-    toggle.innerHTML = sidebarShowing ? toggleIconWhenOpen : toggleIconWhenClosed
-    toggle.setAttribute('aria-label', sidebarShowing ? 'Hide Sidebar' : 'Show Sidebar')
-  }
-
-  toggle.onclick = () => {
-    const newState = !sidebarHidden()
-
-    const sidebar = window.document.querySelector('.playground-sidebar') as HTMLDivElement
-    if (newState) {
-      localStorage.setItem('sidebar-hidden', 'true')
-      sidebar.style.display = 'none'
-    } else {
-      localStorage.removeItem('sidebar-hidden')
-      sidebar.style.display = 'block'
-    }
-    updateToggle()
-
-    // @ts-ignore - I know what I'm doing
-    window.sandbox.editor.layout()
-
-    return false
-  }
 }

@@ -14,6 +14,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '13.x'
+      # For Azure uploads
+      - run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
       # Build v2
       - name: Build website v2
@@ -21,19 +23,29 @@ jobs:
           yarn install
           yarn bootstrap
           yarn build
-            yarn build-site
+          yarn build-site
+          cp -r packages/typescriptlang-org/public site
 
-      # Move the files to the new app
-      - run: rm -rf serve/public
-      - name: Move V2 public to serve dir
-        run: cp -r packages/typescriptlang-org/public serve
-
-      - name: Build serve server
-        run: |
-          cd serve
-          npm i
-
-      # Deploy _just_ the serve server
-      - uses: azure/webapps-deploy@v1
+      - name: Send a message to Microsoft Teams
+        if: failure()
+        uses: aliencube/microsoft-teams-actions@v0.8.0
         with:
-          creds: ${{ secrets.AZURE_STAGING_PUBLISHING_PROFILE }}
+          webhook-uri: ${{ secrets.TEAMS_WEB_BOT_INCOMING_URL }}
+          title: Staging build failed
+          summary: Could not build the site for staging
+
+      # CI: Deploy to the right branch to trigger the deploy to the AppService site
+      - name: Deploy + Publish to AppService
+        uses: peaceiris/actions-gh-pages@v1.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: 'SITE-STAGING'
+          PUBLISH_DIR: ./site
+
+      - name: Deploy + Publish to CDN
+        # You can find these keys here:
+        # https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/57bfeeed-c34a-4ffd-a06b-ccff27ac91b8/resourcegroups/typescriptlang-org/providers/Microsoft.Storage/storageAccounts/typescriptorgstaging/keys
+        env:
+          AZURE_STORAGE_ACCOUNT: 'typescriptorgstaging'
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_CDN_STAGING_CONNECTION_STRING }}
+        run: az storage blob upload-batch -s ./site -d \$web

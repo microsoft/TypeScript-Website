@@ -22,7 +22,7 @@ type WindowStates = "open" | "closed" | "minimized" | string;
 
 // If you hover above, you can see that WindowStates
 // becomes a string - not the union. This is covered in
-// example:type-widening-narrowing
+// example:type-widening-and-narrowing
 
 // If a union is an OR, then an intersection is an AND.
 // Intersection types are when two types intersect to create
@@ -63,21 +63,20 @@ const handleArtistsResponse = (response: ArtistsResponse) => {
 // include one of two values:
 
 interface CreateArtistBioBase {
-  artistID: string
-  thirdParty?: boolean
+  artistID: string;
+  thirdParty?: boolean;
 }
 
-type CreateArtistBioRequest
-   = CreateArtistBioBase & { html: string } | { markdown: string }
+type CreateArtistBioRequest = (CreateArtistBioBase & { html: string }) | { markdown: string };
 
 // Now you can only create a request when you include
 // artistID and either html or markdown
 
 const workingRequest: CreateArtistBioRequest = {
   artistID: "banksy",
-  markdown: "Banksy is an anonymous England-based graffiti artist..."
-}
+  markdown: "Banksy is an anonymous England-based graffiti artist...",
+};
 
 const badRequest: CreateArtistBioRequest = {
   artistID: "banksy",
-}
+};
