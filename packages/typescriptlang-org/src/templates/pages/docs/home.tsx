@@ -86,6 +86,11 @@ const Index: React.FC<Props> = (props) => {
               title: "Angular",
             },
             {
+              href: "https://ember-cli-typescript.com",
+              blurb: i("doc_frameworks_ember_blurb"),
+              title: "Ember",
+            },
+            {
               href: "https://reactjs.org",
               badge: "Examples below",
               blurb: i("doc_frameworks_react_blurb"),
@@ -269,7 +274,6 @@ const Index: React.FC<Props> = (props) => {
     </Layout>
   )
 }
-
 
 export const query = graphql`
   query DocsHome {

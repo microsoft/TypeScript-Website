@@ -11,7 +11,7 @@ export const supportedReleases = [
   "3.0.1",
   "2.8.1",
   "2.7.2",
-  "2.4.1"
+  "2.4.1",
 ] as const;
 
 export type ReleaseVersions =
