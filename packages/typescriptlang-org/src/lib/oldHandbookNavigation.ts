@@ -30,6 +30,7 @@ export const oldHandbookNavigation: NavItem[] = [
     title: "Handbook",
     id: "handbook",
     directory: "handbook",
+    chronological: true,
     index: "/",
     items: [
       { id: "index", title: "What is the Handbook?" },
@@ -52,6 +53,7 @@ export const oldHandbookNavigation: NavItem[] = [
       { id: "advanced-types", title: "Advanced Types" },
       { id: "declaration-merging", title: "Declaration Merging" },
       { id: "decorators", title: "Decorators" },
+      { id: "utility-types", title: "Global Utility Types" },
       { id: "iterators-and-generators", title: "Iterators and Generators" },
       { id: "jsx", title: "JSX" },
       { id: "mixins", title: "Mixins" },
@@ -67,7 +69,6 @@ export const oldHandbookNavigation: NavItem[] = [
         title: "Type Checking JavaScript Files",
         id: "type-checking-javascript-files",
       },
-      { id: "utility-types", title: "Global Utility Types" },
       { id: "variable-declarations", title: "Variable Declarations" },
     ],
   },
@@ -125,6 +126,7 @@ export const oldHandbookNavigation: NavItem[] = [
     id: "declaration-files",
     directory: "handbook/declaration-files",
     index: "introduction",
+    chronological: true,
     items: [
       { id: "introduction", title: "Introduction" },
       { id: "library-structures", title: "Library Structures" },
@@ -158,3 +160,37 @@ export const oldHandbookNavigation: NavItem[] = [
     ],
   },
 ]
+
+export function getNextPageID(currentID: string) {
+  // prettier-ignore
+  const section = oldHandbookNavigation.find((nav) => nav.items.find((i) => i.id === currentID))
+  if (!section) return undefined
+  if (!section.chronological) return undefined
+
+  const currentIndex = section.items.findIndex((i) => i.id === currentID)
+  if (section.items[currentIndex + 1]) {
+    return {
+      // prettier-ignore
+      path: `/docs/${section.directory}/${section.items[currentIndex + 1].id}.html`,
+      ...section.items[currentIndex + 1],
+    }
+  }
+}
+
+export function getPreviousPageID(currentID: string) {
+  const section = oldHandbookNavigation.find((nav) =>
+    nav.items.find((i) => i.id === currentID)
+  )
+
+  if (!section) return undefined
+  if (!section.chronological) return undefined
+
+  const currentIndex = section.items.findIndex((i) => i.id === currentID)
+  if (section.items[currentIndex - 1]) {
+    return {
+      // prettier-ignore
+      path: `/docs/${section.directory}/${section.items[currentIndex - 1].id}.html`,
+      ...section.items[currentIndex - 1],
+    }
+  }
+}

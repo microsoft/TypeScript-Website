@@ -48,11 +48,6 @@ export const SiteNav = (props: Props) => {
     document.body.appendChild(searchScript);
 
     setupStickyNavigation()
-
-    return () => {
-      document.body.removeChild(searchScript);
-      document.body.appendChild(searchCSS);
-    }
   }, []);
 
 

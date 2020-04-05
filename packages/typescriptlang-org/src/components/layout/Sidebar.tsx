@@ -7,6 +7,7 @@ export interface NavItem {
   directory: string
   index: string
   items: { id: string, title: string }[]
+  chronological?: true
 }
 
 export type Props = {
