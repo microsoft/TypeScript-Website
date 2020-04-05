@@ -34,11 +34,16 @@
     width: 100%;
   }
 
-  .whitespace {
+  .whitespace,
+  .whitespace-tight {
     margin: 1rem auto;
     margin-top: 0;
     padding: 2rem;
     overflow: hidden;
+  }
+
+  .whitespace-tight {
+    padding: 1.2rem 2rem;
   }
 
   aside {
@@ -54,6 +59,7 @@
     nav {
       position: sticky;
       top: 30px;
+      margin-bottom: 1rem;
     }
 
     h5 {
@@ -95,5 +101,83 @@
         }
       }
     }
+  }
+
+  .justify-between {
+    justify-content: space-between;
+  }
+
+  a.navigation-link {
+    text-decoration: none;
+    flex: 1;
+  }
+
+  .prev-next {
+    flex: 1;
+
+    .arrow {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      margin-right: 20px;
+    }
+
+    header,
+    h3,
+    p {
+      padding: 0;
+      margin: 0;
+    }
+
+    header {
+      margin-bottom: 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    p {
+      margin-bottom: 0.4rem;
+    }
+
+    p,
+    header {
+      color: black;
+
+      @media (prefers-color-scheme: dark) {
+        color: white;
+      }
+    }
+
+    &:hover svg path,
+    &:hover h3 {
+      fill: black;
+      color: black;
+
+      @media (prefers-color-scheme: dark) {
+        color: white;
+        color: white;
+      }
+    }
+
+    &.next {
+      flex-direction: row-reverse;
+      text-align: right;
+      .arrow {
+        margin-right: 0px;
+        margin-left: 20px;
+      }
+      svg {
+        transform: scaleX(-1);
+      }
+    }
+  }
+
+  .vertical-line {
+    height: 80px;
+    background-color: #e3e3e3;
+    min-width: 2px;
+    flex-basis: 2px;
+    flex-grow: 0;
+    flex-shrink: 0;
   }
 }
