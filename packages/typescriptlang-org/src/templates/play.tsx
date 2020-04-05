@@ -89,10 +89,7 @@ const Play: React.FC<Props> = (props) => {
           compilerOptions: {},
           domID: "monaco-editor-embed",
           useJavaScript: !!params.get("useJavaScript"),
-          acquireTypes: !localStorage.getItem("disable-ata"),
-          monacoSettings: {
-            fontFamily: "JetBrains Mono, Menlo, Monaco, Consolas, Courier New, monospace"
-          }
+          acquireTypes: !localStorage.getItem("disable-ata")
         }, main, ts)
 
         const playgroundConfig = {
