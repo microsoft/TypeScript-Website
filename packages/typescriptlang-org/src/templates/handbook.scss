@@ -159,9 +159,18 @@
       }
     }
 
+    .nav-content {
+      flex: 1;
+      padding-right: 1rem;
+    }
+
     &.next {
       flex-direction: row-reverse;
       text-align: right;
+
+      padding-right: 0;
+      padding-left: 1rem;
+
       .arrow {
         margin-right: 0px;
         margin-left: 20px;

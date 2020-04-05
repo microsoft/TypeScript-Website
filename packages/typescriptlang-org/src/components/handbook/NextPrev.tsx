@@ -45,7 +45,7 @@ const LinkSection = (props: Section) =>
         </svg>
       </div>
 
-      <div style={{ flex: 1 }}>
+      <div className="nav-content">
         <header>{props.i("handb_" + props.type)}</header>
         <h3>{props.data.title}</h3>
         <p>{props.data.oneline}</p>
