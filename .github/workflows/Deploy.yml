@@ -48,7 +48,6 @@ jobs:
         yarn build-site --prefix-paths # ensure the gatsby site knows to prefix with v2
         cp -r packages/typescriptlang-org/public ../site/v2
         cd ..
-
     # CI: Deploy to the right branch
     - name: Deploy + Publish
       if: github.event_name != 'pull_request'
