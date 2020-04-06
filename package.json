@@ -44,5 +44,13 @@
   },
   "dependencies": {
     "serve-handler": "^6.1.2"
+  },
+  "repository": "microsoft/TypeScript-Website",
+  "author": "Deploy Bot <ortam@microsoft.com>",
+  "auto": {
+    "plugins": [
+      "npm"
+    ],
+    "onlyPublishWithReleaseLabel": true
   }
 }

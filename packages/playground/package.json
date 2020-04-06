@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "main": "dist/index.js",
   "license": "MIT",
+  "private": true,
   "typings": "../typescriptlang-org/static/js/playground/index.d.ts",
   "files": [
     "dist"
