@@ -130,12 +130,11 @@ const Index: React.FC<Props> = (props) => {
             setTimeout(() => {
               debouncingTimerLock = false
               runTwoslash()
-            }, 300)
+            }, 500)
           })
           runTwoslash()
 
           setTimeout(() => {
-
             document.querySelectorAll("#example-buttons .disabled").forEach(button => {
               button.classList.remove("disabled")
             })
@@ -189,7 +188,7 @@ const Index: React.FC<Props> = (props) => {
 
           <div className="raised content main-content-block">
 
-            <div className="sixhundred">
+            <div className="sixhundred" style={{ flex: 1 }}>
               <SuppressWhenTouch>
                 <h3 style={{ marginTop: "0" }}>Markup</h3>
                 <p id="exampleBlurb">{codeSamples[0].blurb}</p>
@@ -214,7 +213,7 @@ const Index: React.FC<Props> = (props) => {
               </SuppressWhenTouch>
             </div>
 
-            <div className="sixhundred" style={{ paddingLeft: "20px", borderLeft: "1px solid gray", position: "relative" }}>
+            <div style={{ paddingLeft: "20px", borderLeft: "1px solid gray", position: "relative", flex: 1, overflow: "auto" }}>
               <SuppressWhenTouch>
                 <h3 style={{ marginTop: "0" }}>Results</h3>
 

@@ -1,27 +1,18 @@
 <h2>A simple example with some identifiers</h2>
 <pre
   class="shiki twoslash"
-><div class="language-id">ts</div><div class='code-container'><code><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">a</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span>
-<span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">b</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">1234</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span>
-<span style="color: #ECEFF4">}</span>
+><div class="language-id">ts</div><div class='code-container'><code><span style="color: #0000FF">const</span><span style="color: #000000"> <data-lsp lsp='const a: {&amp;#13;    b: string;&amp;#13;}'>a</data-lsp> = {</span>
+<span style="color: #000000">  <data-lsp lsp='(property) b: string'>b</data-lsp>: </span><span style="color: #A31515">'1234'</span><span style="color: #000000">,</span>
+<span style="color: #000000">}</span>
 
-<span style="color: #D8DEE9">a</span></code></div></pre>
+<span style="color: #000000"><data-lsp lsp='const a: {&amp;#13;    b: string;&amp;#13;}'>a</data-lsp></span></code></div></pre>
 
 <style>
   .shiki {
-    background-color: rgb(20, 30, 60);
+    background-color: lightgrey;
     padding: 8px;
   }
-  .lsp-result::before {
-    content: " <";
-  }
-  .lsp-result::after {
-    content: "> ";
-  }
-  .lsp-result {
-    text-decoration: none !important;
-    border: 1px solid grey;
-  }
+
   .error,
   .error-behind {
     margin-left: -20px;

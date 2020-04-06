@@ -10,6 +10,8 @@ const getMarkdownASTForCode = async (code: string, settings?: any) => {
   return markdownAST
 }
 
+it('', () => {})
+
 describe('with a simple example', () => {
   const file = `
 hello world
@@ -40,9 +42,9 @@ OK world
     const markdownAST = await getMarkdownASTForCode(file)
     const code = markdownAST.children[1]
 
-    expect(code.value).toContain(`lsp-result`)
-    expect(code.value).toContain(`<span class='lsp-result'>const a:`)
-    expect(code.value).toContain(`<span class='lsp-result'>const b:`)
+    expect(code.value).toContain(`data-lsp`)
+    expect(code.value).toContain(`<data-lsp lsp='const a:`)
+    expect(code.value).toContain(`<data-lsp lsp='const b:`)
   })
 })
 
@@ -82,10 +84,10 @@ OK world
     expect(code.twoslash.extension).toEqual('ts')
     expect(code.twoslash.staticQuickInfos.length).toBeGreaterThan(1)
 
-    expect(code.value).toContain(`lsp-result`)
-    expect(code.value).toContain(`<span class='lsp-result'>function longest&lt;T extends`)
+    expect(code.value).toContain(`data-lsp`)
+    expect(code.value).toContain(`<data-lsp lsp='function longest`)
 
-    expect(code.twoslash.staticQuickInfos.length).toEqual(code.value.split('lsp-result').length - 1)
+    expect(code.twoslash.staticQuickInfos.length).toEqual(code.value.split('<data-lsp').length - 1)
 
     // Error message
     expect(code.value).toContain(`span class="error"`)
@@ -98,8 +100,7 @@ OK world
     const markdownAST = await getMarkdownASTForCode(file, { theme: 'light_vs' })
     const code = markdownAST.children[1]
 
-    expect(code.value).toContain(`lsp-result`)
-    expect(code.value).toContain(`<span class='lsp-result'>function longest&lt;T extends`)
+    expect(code.value).toContain(`<data-lsp lsp='function longest`)
 
     // Error message
     expect(code.value).toContain(`span class="error"`)
@@ -141,10 +142,10 @@ OK world
     const markdownAST = await getMarkdownASTForCode(file, { theme: 'light_vs' })
     const code = markdownAST.children[1]
 
-    expect(code.value).toContain(`lsp-result`)
-    expect(code.value).toContain(`<span class='lsp-result'>function longest&lt;T extends`)
+    expect(code.value).toContain(`data-lsp`)
+    expect(code.value).toContain(`<data-lsp lsp='function longest`)
 
-    expect(code.value.split('lsp-result').length).toEqual(code.twoslash.staticQuickInfos.length + 1)
+    expect(code.value.split('<data-lsp').length).toEqual(code.twoslash.staticQuickInfos.length + 1)
   })
 
   it('shows the right LSP results with the typescript site theme', async () => {
@@ -153,9 +154,9 @@ OK world
     })
     const code = markdownAST.children[1]
 
-    expect(code.value).toContain(`lsp-result`)
-    expect(code.value).toContain(`<span class='lsp-result'>function longest&lt;T extends`)
-    expect(code.value.split('lsp-result').length).toEqual(code.twoslash.staticQuickInfos.length + 1)
+    expect(code.value).toContain(`data-lsp`)
+    expect(code.value).toContain(`<data-lsp lsp='function longest`)
+    expect(code.value.split('<data-lsp').length).toEqual(code.twoslash.staticQuickInfos.length + 1)
   })
 })
 
@@ -175,11 +176,6 @@ OK world
   it('looks about right', async () => {
     const markdownAST = await getMarkdownASTForCode(file, { theme: 'light_vs' })
     const code = markdownAST.children[1]
-    expect(code.value).toContain('\n')
-    expect(code.value).toMatchInlineSnapshot(`
-      "<pre class=\\"shiki\\"><div class=\\"language-id\\">js</div><div class='code-container'><code><span style=\\"color: #81A1C1\\">function</span><span style=\\"color: #D8DEE9FF\\"> </span><span style=\\"color: #88C0D0\\">longest</span><span style=\\"color: #ECEFF4\\">()</span><span style=\\"color: #D8DEE9FF\\"> </span><span style=\\"color: #ECEFF4\\">{</span>
-
-      <span style=\\"color: #ECEFF4\\">}</span></code></div></pre>"
-    `)
+    expect(code.value).not.toContain('twoslash')
   })
 })

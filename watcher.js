@@ -10,6 +10,8 @@ const { spawn } = require('child_process')
 const { join } = require('path')
 const { existsSync, readFileSync } = require('fs')
 
+const { log } = console
+
 /**
  * @typedef {Object} WatchmanFile - a User account
  * @property {string} name - the full path
@@ -21,7 +23,7 @@ const { existsSync, readFileSync } = require('fs')
  *
  * @param {WatchmanFile} file
  */
-const projectForFile = file => {
+const projectForFile = (file) => {
   // Any output
   if (file.name.includes('/dist/') || file.name.includes('/out/')) return
   if (file.name.includes('/typescriptlang-org/')) return
@@ -37,14 +39,14 @@ let currentProcess = null
 // for the project which looks only at .ts and .md files in the repo.
 
 // Startup watchman
-client.command(['watch-project', process.cwd()], function(error, resp) {
+client.command(['watch-project', process.cwd()], function (error, resp) {
   if (error) {
     console.error('Error initiating watch:', error)
     return
   }
 
   if ('warning' in resp) {
-    console.log('warning: ', resp.warning)
+    log('warning: ', resp.warning)
   }
 
   // // The default subscribe behavior is to deliver a list of all current files
@@ -60,7 +62,7 @@ client.command(['watch-project', process.cwd()], function(error, resp) {
   var root = resp.watch
   if ('relative_path' in resp) {
     path_prefix = resp.relative_path
-    console.log('(re)using project watch at ', root, ', our dir is relative: ', path_prefix)
+    log('(re)using project watch at ', root, ', our dir is relative: ', path_prefix)
   }
 
   // Subscribe to notifications about .js files
@@ -76,17 +78,17 @@ client.command(['watch-project', process.cwd()], function(error, resp) {
         fields: ['name', 'exists', 'type'],
       },
     ],
-    function(error, resp) {
+    function (error, resp) {
       if (error) {
         console.error('failed to subscribe: ', error)
         return
       }
-      console.log('subscription ' + resp.subscribe + ' established')
+      log('subscription ' + resp.subscribe + ' established')
     }
   )
 
   // @ts-ignore
-  client.on('subscription', function(resp) {
+  client.on('subscription', function (resp) {
     // NOOP for large amounts of files
     if (resp.files.length > 10) return
 
@@ -94,7 +96,7 @@ client.command(['watch-project', process.cwd()], function(error, resp) {
     const uniqueProjects = Array.from(new Set(projectsToBuild))
 
     // I don't wanna handle multiple processes
-    const commandToRun = uniqueProjects.map(project => {
+    const commandToRun = uniqueProjects.map((project) => {
       const packageJSONPath = join('packages', project, 'package.json')
       if (!existsSync(packageJSONPath)) return
 
@@ -116,41 +118,41 @@ client.command(['watch-project', process.cwd()], function(error, resp) {
 })
 
 // @ts-ignore
-client.on('end', function() {
+client.on('end', function () {
   // Called when the connection to watchman is terminated
-  console.log('watch over')
+  log('watch over')
 })
 
 // @ts-ignore
-client.on('error', function(error) {
+client.on('error', function (error) {
   console.error('Error while talking to watchman: ', error)
 })
 
-client.capabilityCheck({ required: ['relative_root'] }, function(error, resp) {
+client.capabilityCheck({ required: ['relative_root'] }, function (error, resp) {
   if (error) {
     console.error('Error checking capabilities:', error)
     return
   }
-  console.log('Talking to watchman version', resp.version)
+  log('Talking to watchman version', resp.version)
 })
 
-const runCommand = argString => {
+const runCommand = (argString) => {
   if (currentProcess) return
 
   const prefix = chalk.gray('> ')
   const cmd = chalk.bold('yarn ' + argString)
-  console.log(prefix + cmd)
+  log(prefix + cmd)
 
   const build = spawn('yarn', argString.split(' '))
-  build.stdout.on('data', l => {
+  build.stdout.on('data', (l) => {
     if (l.toString().includes('Done in')) return
-    console.log('  ' + l.toString().trim())
+    log('  ' + l.toString().trim())
   })
-  build.stderr.on('data', l => console.error('  ' + l.toString().trim()))
+  build.stderr.on('data', (l) => console.error('  ' + l.toString().trim()))
 
-  build.on('close', code => {
+  build.on('close', (code) => {
     const codeString = code === 0 ? chalk.green('' + code) : chalk.bold.red('' + code)
-    console.log(`[${codeString}] --------- `)
+    log(`[${codeString}] --------- `)
     currentProcess = null
     if (upcomingCommand === argString || !upcomingCommand) {
       // NOOP if you've tried running the same thing a few times

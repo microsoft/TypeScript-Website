@@ -1,134 +1,45 @@
-// A TypeScript port of https://stackoverflow.com/questions/40117156/creating-overlapping-text-spans-in-javascript
-
 type Range = {
   begin: number
   end: number
   text?: string
   count?: number
   tooltip?: string[]
-  classes?: string[]
-  lsp?: string[]
+  classes?: string
+  lsp?: string
 }
 
-export function createHighlightedString(ranges: Range[], text: string) {
-  const flatRanges = flattenRanges(ranges)
-  const inflatedRanges = inflateRanges(flatRanges, text.length)
-  const filledRanges = fillRanges(inflatedRanges, text)
+const splice = (str: string, idx: number, rem: number, newString: string) =>
+  str.slice(0, idx) + newString + str.slice(idx + Math.abs(rem))
 
-  var str = ''
-  for (var i in filledRanges) {
-    var range = filledRanges[i]
-    if (range.count && range.count > 0) {
-      if (range.text && range.text.length) {
-        const lspResponse = range.lsp ? "<span class='lsp-result'>" + range.lsp[0] + '</span>' : ''
-        str +=
-          "<span class='" + (range.classes || []).join(' ') + "'>" + stripHTML(range.text) + lspResponse + '</span>'
-      }
-    } else {
-      str += stripHTML(range.text || '')
-    }
-  }
-  return str
-}
+export function createHighlightedString2(ranges: Range[], text: string) {
+  const actions = [] as { text: string; index: number }[]
+  let hasErrors = false
 
-function flattenRanges(ranges: Range[]) {
-  var points: number[] = []
-  var flattened = [] as any[]
-  for (let i in ranges) {
-    if (ranges[i].end < ranges[i].begin) {
-      //RE-ORDER THIS ITEM (BEGIN/END)
-      var tmp = ranges[i].end + 1 //RE-ORDER BY SWAPPING
-      ranges[i].end = ranges[i].begin
-      ranges[i].begin = tmp
+  ranges.forEach((r) => {
+    if (r.classes === 'lsp') {
+      actions.push({ text: '</data-lsp>', index: r.end })
+      actions.push({ text: `<data-lsp lsp='${stripHTML(r.lsp || '')}'>`, index: r.begin })
+    } else if (r.classes === 'err') {
+      hasErrors = true
+      // actions.push({ text: '</data-err>', index: r.end })
+      // actions.push({ text: `<data-err'>`, index: r.begin })
+    } else if (r.classes === 'query') {
+      actions.push({ text: '</data-highlight>', index: r.end })
+      actions.push({ text: `<data-highlight'>`, index: r.begin })
     }
-    points.push(ranges[i].begin)
-    points.push(ranges[i].end)
-  }
-  //MAKE SURE OUR LIST OF POINTS IS IN ORDER
-  points.sort(function(a, b) {
-    return a - b
   })
-  //FIND THE INTERSECTING SPANS FOR EACH PAIR OF POINTS (IF ANY)
-  //ALSO MERGE THE ATTRIBUTES OF EACH INTERSECTING SPAN, AND INCREASE THE COUNT FOR EACH INTERSECTION
-  for (const indexString in points) {
-    let i = Number(indexString)
-    if (i === 0 || points[i] == points[i - 1]) continue
-    let includedRanges = ranges.filter(function(x) {
-      return Math.max(x.begin, points[i - 1]) < Math.min(x.end, points[i])
+
+  let html = (' ' + text).slice(1)
+
+  actions
+    .sort((l, r) => r.index - l.index)
+    .forEach((action) => {
+      html = splice(html, action.index, 0, action.text)
     })
-    if (includedRanges.length > 0) {
-      var flattenedRange = {
-        begin: points[i - 1],
-        end: points[i],
-        count: 0,
-      }
-      for (let j in includedRanges) {
-        let includedRange = includedRanges[j]
 
-        for (let prop in includedRange) {
-          if (prop != 'begin' && prop != 'end') {
-            // Adds any 'unknown' props together into the flattened result
+  if (hasErrors) html = `<data-err>${html}</data-err>`
 
-            // @ts-ignore
-            if (!flattenedRange[prop]) flattenedRange[prop] = []
-            // @ts-ignore
-            flattenedRange[prop].push(includedRange[prop])
-          }
-        }
-        flattenedRange.count++
-      }
-      flattened.push(flattenedRange)
-    }
-  }
-  return flattened
-}
-
-function inflateRanges(ranges: Range[], length = 0) {
-  var inflated = [] as any[]
-  var lastIndex
-  for (const indexString in ranges) {
-    let i = Number(indexString)
-    if (i === 0) {
-      //IF THERE IS EMPTY TEXT IN THE BEGINNING, CREATE AN EMPTY RANGE
-      if (ranges[i].begin > 0) {
-        inflated.push({
-          begin: 0,
-          end: ranges[i].begin - 1,
-          count: 0,
-        })
-      }
-      inflated.push(ranges[i])
-    } else {
-      if (ranges[i].begin == ranges[i - 1].end) {
-        ranges[i - 1].end--
-      }
-      if (ranges[i].begin - ranges[i - 1].end > 1) {
-        inflated.push({
-          begin: ranges[i - 1].end + 1,
-          end: ranges[i].begin - 1,
-          count: 0,
-        })
-      }
-      inflated.push(ranges[i])
-    }
-    lastIndex = ranges[i].end
-  }
-  //FOR SIMPLICITY, ADD ANY REMAINING TEXT AS AN EMPTY RANGE
-  if (lastIndex && lastIndex + 1 < length - 1) {
-    inflated.push({
-      begin: lastIndex + 1,
-      end: length - 1,
-      count: 0,
-    })
-  }
-  return inflated
-}
-
-function fillRanges(ranges: Range[], text: string) {
-  for (let i in ranges) {
-    ranges[i].text = text.slice(ranges[i].begin, ranges[i].end + 1)
-  }
-  return ranges
+  return html
 }
 
 export function stripHTML(text: string) {
@@ -141,7 +52,7 @@ export function stripHTML(text: string) {
     '\r': '#10',
     '\n': '#13',
   }
-  return text.toString().replace(/[<>"'\r\n&]/g, function(chr) {
+  return text.toString().replace(/[<>"'\r\n&]/g, function (chr) {
     return '&' + table[chr] + ';'
   })
 }

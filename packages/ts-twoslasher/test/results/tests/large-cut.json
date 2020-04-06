@@ -1,5 +1,5 @@
 {
-  "code": "type NetworkState = NetworkLoadingState | NetworkFailedState | NetworkSuccessState\n\nfunction networkStatus(state: NetworkState): string {\n  // Right now we don't know  which of the three potential\n  // types state could be.\n\n  // Trying to access a property which isn't shared\n  // across all types will raise an error\n  state.code\n\n  // By switching on state, we can discriminate the\n  switch (state.state) {\n    case 'loading':\n      return 'Downloading...'\n    case 'failed':\n      return `Error ${state.code} downloading`\n    case 'success':\n      return `Error ${state.response} downloading`\n  }\n}\n",
+  "code": "type NetworkState = NetworkLoadingState | NetworkFailedState | NetworkSuccessState\n\nfunction networkStatus(state: NetworkState): string {\n  // Right now TypeScript does not know which of the three\n  // potential types state could be.\n\n  // Trying to access a property which isn't shared\n  // across all types will raise an error\n  state.code\n\n  // By switching on state, TypeScript can narrow the union\n  // down in code flow analysis\n  switch (state.state) {\n    case 'loading':\n      return 'Downloading...'\n    case 'failed':\n      // The type must be NetworkFailedState here,\n      // so accessing the `code` field is safe\n      return `Error ${state.code} downloading`\n    case 'success':\n      return `Downloaded ${state.response.title} - ${state.response.summary}`\n  }\n}\n",
   "extension": "ts",
   "highlights": [],
   "queries": [],
@@ -70,7 +70,7 @@
     {
       "text": "(parameter) state: NetworkState",
       "docs": "",
-      "start": 321,
+      "start": 331,
       "length": 5,
       "line": 8,
       "character": 2,
@@ -78,7 +78,7 @@
     },
     {
       "text": "any",
-      "start": 327,
+      "start": 337,
       "length": 4,
       "line": 8,
       "character": 8,
@@ -87,56 +87,92 @@
     {
       "text": "(parameter) state: NetworkState",
       "docs": "",
-      "start": 395,
+      "start": 445,
       "length": 5,
-      "line": 11,
+      "line": 12,
       "character": 10,
       "targetString": "state"
     },
     {
       "text": "(property) state: \"loading\" | \"failed\" | \"success\"",
       "docs": "",
-      "start": 401,
+      "start": 451,
       "length": 5,
-      "line": 11,
+      "line": 12,
       "character": 16,
       "targetString": "state"
     },
     {
       "text": "(parameter) state: NetworkFailedState",
       "docs": "",
-      "start": 501,
+      "start": 649,
       "length": 5,
-      "line": 15,
+      "line": 18,
       "character": 22,
       "targetString": "state"
     },
     {
       "text": "(property) code: number",
       "docs": "",
-      "start": 507,
+      "start": 655,
       "length": 4,
-      "line": 15,
+      "line": 18,
       "character": 28,
       "targetString": "code"
     },
     {
       "text": "(parameter) state: NetworkSuccessState",
       "docs": "",
-      "start": 568,
+      "start": 721,
       "length": 5,
-      "line": 17,
-      "character": 22,
+      "line": 20,
+      "character": 27,
       "targetString": "state"
     },
     {
       "text": "(property) response: {\n    title: string;\n    duration: number;\n    summary: string;\n}",
       "docs": "",
-      "start": 574,
+      "start": 727,
       "length": 8,
-      "line": 17,
-      "character": 28,
+      "line": 20,
+      "character": 33,
       "targetString": "response"
+    },
+    {
+      "text": "(property) title: string",
+      "docs": "",
+      "start": 736,
+      "length": 5,
+      "line": 20,
+      "character": 42,
+      "targetString": "title"
+    },
+    {
+      "text": "(parameter) state: NetworkSuccessState",
+      "docs": "",
+      "start": 747,
+      "length": 5,
+      "line": 20,
+      "character": 53,
+      "targetString": "state"
+    },
+    {
+      "text": "(property) response: {\n    title: string;\n    duration: number;\n    summary: string;\n}",
+      "docs": "",
+      "start": 753,
+      "length": 8,
+      "line": 20,
+      "character": 59,
+      "targetString": "response"
+    },
+    {
+      "text": "(property) summary: string",
+      "docs": "",
+      "start": 762,
+      "length": 7,
+      "line": 20,
+      "character": 68,
+      "targetString": "summary"
     }
   ],
   "errors": [
@@ -144,12 +180,12 @@
       "category": 1,
       "code": 2339,
       "length": 4,
-      "start": 327,
+      "start": 337,
       "line": 8,
       "character": 8,
       "renderedMessage": "Property 'code' does not exist on type 'NetworkState'.\n  Property 'code' does not exist on type 'NetworkLoadingState'.",
-      "id": "err-2339-582-4"
+      "id": "err-2339-592-4"
     }
   ],
-  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEFMCdoe2gZwFygEwGYME4BQAXATwAdJQA5SfAdwQGsAZOAQwBMBLAOwHMBlfZvjIBeUAG9coUIgFDUAcgA2LDj3m4AvrgIkylGvQBizdosit+gkeMnTZkBQDMTZ1uqkBjOKwehOAVwBbACMYTW0iUgoqWmg6Xn8PD0hEREshUFEJKRkrBURE5NT3UGgU4jhORF9sqVB8dnwzVBloLm5bKVZ-aEF2StQAkLC66SDA5mhCFvw2nlstLRBQAFo1j398NZWdKP1Y+PtM6IM4pjZ29LIAHxOD41NzK9Bb-foEpJS0+21Hf04PA1Kn4Yu9ZP5EAAKXJyO5gqwAShmc24NikywASuxuAALfB+ODUUDUMisSryfF0TiEqTUHHsDw40BwRz1HFkfA4spkCpCTgNZiKWzLSIpOxWUBefyKVigUIAOm06LAABUpu16nBQMxPqltaBiPBSNAiMT6YzQOxEJwKdIcZNzMKwDr4HrBYp6rpEMTTB7elayMxOKAYPBoLYYZB5V4fErQMsAEKEaTURqMjXAyMAGmJZA8QdAHEQHjagS4Es5kAjqfwFuh9nlkYRaLq+eqoCUKna8mQnTqZXwPWD8gAIoTOMoLjx5TOSp5mO35M5Hm5e6MpAOh6AAAYAUVgCFAABIxJHo95IBpC+PJ6puNu+22yPICrrED2+xuqFu9wfoMfTwbMpEAqKpL2vagJy7HgHykRZcCAA"
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEFMCdoe2gZwFygEwGYME4BQAXATwAdJQA5SfAdwQGsAZOAQwBMBLAOwHMBlfZvjIBeUAG9coUIgFDUAcgA2LDj3m4AvrgIkylGvQBizdosit+gkeMnTZkBQDMTZ1uqkBjOKwehOAVwBbACMYTW0iUgoqWmg6Xn8PD0hEREshUFEJKRkrBURE5NT3UGgU4jhORF9sqVB8dnwzVBloLm5bKVZ-aEF2StQAkLC66SDA5mhCFvw2nlstLRBQAFo1j398NZWdKP1Y+PtM6IM4pjZ29LIAHxOD41NzK9Bb-foEpJS0+21Hf04PA1Kn4Yu9ZP5EAAKXJyO5gqwAShmc24NikywASuxuAALfB+ODUUAAFV0vA8bWI+NYcBSBPxdE4hNA1Bx7A8ONAcEc9RxZHwOLKkFsywqQk4DWYinqukQdisoC8-kUrFAoQAdNp0WBiVN2vU4KBmJ9UkbQMR4KRoEQWWyOaB2IhOPJ8YgcZNzCKwMb4KapdLInTqKZpb1HWRmJxQDB4NBbDDIOqvD4taBlgAhQjSYP4Dn64EJgA0JLJFPYVMVkb8k3gRIFZH+-U4XtANOoUa4iu8ZEcyiJkalhEQjvjOft0Ps6oTCLRdQ8zGqoCUKna8mQnTqZXwPSj8gAIoTOMoLjx1WeSp4F2R5M5Hm516NtSS+TKooEIfjQnC4g9XM8+WUhYbk+iCGsaRTDjwvJkAABsmkAwaAjjsJAKoOnKiDMI4wqPqUVA7qAMEAKKwAgoAACRiAmSbdhoraHseqjcDBG7zou8gFCaiBrsBeHbtAUYwQe7aMeYFFUZOZSIBUVSJg0TSQHRKzidRUkydUU7jJMhAaCxUiLLgQA"
 }

@@ -21,6 +21,7 @@ export const docCopy = {
     "一个令人愉悦的工具，用于构建由 TypeScript 驱动的命令行应用程序。",
   doc_frameworks: "Web 框架",
   doc_frameworks_angular_blurb: "让编写优雅的程序充满乐趣",
+  doc_frameworks_ember_blurb: "雄心勃勃的Web开发人员的框架",
   doc_frameworks_react_blurb: "一个用于构建用户界面的 JavaScript 库",
   doc_frameworks_vue_blurb: "渐进式 JavaScript 框架",
   doc_frameworks_ror_blurb: "约定优于配置的 Web 框架",

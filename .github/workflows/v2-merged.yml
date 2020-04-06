@@ -49,3 +49,12 @@ jobs:
           AZURE_STORAGE_ACCOUNT: 'typescriptorgstaging'
           AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_CDN_STAGING_CONNECTION_STRING }}
         run: az storage blob upload-batch -s ./site -d \$web
+
+      # Deploy
+      - name: Deploy npm Packages
+        run: |
+          yarn add --dev auto
+          yarn auto shipit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
