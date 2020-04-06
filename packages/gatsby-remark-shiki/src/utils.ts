@@ -13,12 +13,14 @@ const splice = (str: string, idx: number, rem: number, newString: string) =>
 
 export function createHighlightedString2(ranges: Range[], text: string) {
   const actions = [] as { text: string; index: number }[]
+  let hasErrors = false
 
   ranges.forEach((r) => {
     if (r.classes === 'lsp') {
       actions.push({ text: '</data-lsp>', index: r.end })
       actions.push({ text: `<data-lsp lsp='${stripHTML(r.lsp || '')}'>`, index: r.begin })
     } else if (r.classes === 'err') {
+      hasErrors = true
       // actions.push({ text: '</data-err>', index: r.end })
       // actions.push({ text: `<data-err'>`, index: r.begin })
     } else if (r.classes === 'query') {
@@ -34,6 +36,8 @@ export function createHighlightedString2(ranges: Range[], text: string) {
     .forEach((action) => {
       html = splice(html, action.index, 0, action.text)
     })
+
+  if (hasErrors) html = `<data-err>${html}</data-err>`
 
   return html
 }
