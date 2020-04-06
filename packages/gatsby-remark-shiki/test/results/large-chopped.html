@@ -1,0 +1,75 @@
+<p>
+  In this case, you can use a <code>switch</code> statement to narrow down which
+  type is represented at runtime:
+</p>
+<pre
+  class="shiki twoslash"
+><div class="language-id">ts</div><div class='code-container'><code><span style="color: #0000FF">type</span><span style="color: #000000"> <data-lsp lsp='type NetworkState = NetworkLoadingState | NetworkFailedState | NetworkSuccessState'>NetworkState</data-lsp> = <data-lsp lsp='type NetworkLoadingState = {&amp;#13;    state: &amp;quot;loading&amp;quot;;&amp;#13;}'>NetworkLoadingState</data-lsp> | <data-lsp lsp='type NetworkFailedState = {&amp;#13;    state: &amp;quot;failed&amp;quot;;&amp;#13;    code: number;&amp;#13;}'>NetworkFailedState</data-lsp> | <data-lsp lsp='type NetworkSuccessState = {&amp;#13;    state: &amp;quot;success&amp;quot;;&amp;#13;    response: {&amp;#13;        title: string;&amp;#13;        duration: number;&amp;#13;        summary: string;&amp;#13;    };&amp;#13;}'>NetworkSuccessState</data-lsp></span>
+
+<span style="color: #0000FF">function</span><span style="color: #000000"> <data-lsp lsp='function networkStatus(state: NetworkState): string'>networkStatus</data-lsp>(<data-lsp lsp='(parameter) state: NetworkState'>state</data-lsp>: <data-lsp lsp='type NetworkState = NetworkLoadingState | NetworkFailedState | NetworkSuccessState'>NetworkState</data-lsp>): string {</span>
+<span style="color: #000000">  </span><span style="color: #008000">// Right now TypeScript does not know which of the three</span>
+<span style="color: #000000">  </span><span style="color: #008000">// potential types state could be.</span>
+
+<span style="color: #000000">  </span><span style="color: #008000">// Trying to access a property which isn't shared</span>
+<span style="color: #000000">  </span><span style="color: #008000">// across all types will raise an error</span>
+<span style="color: #000000">  <data-lsp lsp='(parameter) state: NetworkState'>state</data-lsp>.<data-lsp lsp='any'>code</data-lsp></span>
+<span class="error"><span>Property 'code' does not exist on type 'NetworkState'.
+  Property 'code' does not exist on type 'NetworkLoadingState'.</span><span class="code">2339</span></span><span class="error-behind">Property 'code' does not exist on type 'NetworkState'.
+  Property 'code' does not exist on type 'NetworkLoadingState'.</span>
+<span style="color: #000000">  </span><span style="color: #008000">// By switching on state, TypeScript can narrow the union</span>
+<span style="color: #000000">  </span><span style="color: #008000">// down in code flow analysis</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">switch</span><span style="color: #000000"> (<data-lsp lsp='(parameter) state: NetworkState'>state</data-lsp>.<data-lsp lsp='(property) state: &amp;quot;loading&amp;quot; | &amp;quot;failed&amp;quot; | &amp;quot;success&amp;quot;'>state</data-lsp>) {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">case</span><span style="color: #000000"> </span><span style="color: #A31515">'loading'</span><span style="color: #000000">:</span>
+<span style="color: #000000">      </span><span style="color: #0000FF">return</span><span style="color: #000000"> </span><span style="color: #A31515">'Downloading...'</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">case</span><span style="color: #000000"> </span><span style="color: #A31515">'failed'</span><span style="color: #000000">:</span>
+<span style="color: #000000">      </span><span style="color: #008000">// The type must be NetworkFailedState here,</span>
+<span style="color: #000000">      </span><span style="color: #008000">// so accessing the `code` field is safe</span>
+<span style="color: #000000">      </span><span style="color: #0000FF">return</span><span style="color: #000000"> </span><span style="color: #A31515">`Error </span><span style="color: #0000FF">${</span><span style="color: #A31515"><data-lsp lsp='(parameter) state: NetworkFailedState'>state</data-lsp>.<data-lsp lsp='(property) code: number'>code</data-lsp></span><span style="color: #0000FF">}</span><span style="color: #A31515"> downloading`</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">case</span><span style="color: #000000"> </span><span style="color: #A31515">'success'</span><span style="color: #000000">:</span>
+<span style="color: #000000">      </span><span style="color: #0000FF">return</span><span style="color: #000000"> </span><span style="color: #A31515">`Downloaded </span><span style="color: #0000FF">${</span><span style="color: #A31515"><data-lsp lsp='(parameter) state: NetworkSuccessState'>state</data-lsp>.<data-lsp lsp='(property) response: {&amp;#13;    title: string;&amp;#13;    duration: number;&amp;#13;    summary: string;&amp;#13;}'>response</data-lsp>.<data-lsp lsp='(property) title: string'>title</data-lsp></span><span style="color: #0000FF">}</span><span style="color: #A31515"> - </span><span style="color: #0000FF">${</span><span style="color: #A31515"><data-lsp lsp='(parameter) state: NetworkSuccessState'>state</data-lsp>.<data-lsp lsp='(property) response: {&amp;#13;    title: string;&amp;#13;    duration: number;&amp;#13;    summary: string;&amp;#13;}'>response</data-lsp>.<data-lsp lsp='(property) summary: string'>summary</data-lsp></span><span style="color: #0000FF">}</span><span style="color: #A31515">`</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">}</span></code></div></pre>
+<h1>Intersection Types</h1>
+<p>
+  Intersection types are closely related to union types, but they are used very
+  differently. An intersection type combines multiple types into one.
+</p>
+
+<style>
+  .shiki {
+    background-color: lightgrey;
+    padding: 8px;
+  }
+
+  .error,
+  .error-behind {
+    margin-left: -20px;
+    margin-right: -12px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding: 6px;
+    padding-left: 14px;
+
+    white-space: pre-wrap;
+    display: block;
+  }
+
+  .error {
+    position: absolute;
+    background-color: #ffeeee;
+    border-left: 2px solid #bf1818;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    color: black;
+  }
+
+  .error-behind {
+    user-select: none;
+    color: #ffeeee;
+  }
+  .query {
+    color: white;
+  }
+</style>

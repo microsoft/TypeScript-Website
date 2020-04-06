@@ -19,8 +19,8 @@ export function createHighlightedString2(ranges: Range[], text: string) {
       actions.push({ text: '</data-lsp>', index: r.end })
       actions.push({ text: `<data-lsp lsp='${stripHTML(r.lsp || '')}'>`, index: r.begin })
     } else if (r.classes === 'err') {
-      actions.push({ text: '</data-err>', index: r.end })
-      actions.push({ text: `<data-err'>`, index: r.begin })
+      // actions.push({ text: '</data-err>', index: r.end })
+      // actions.push({ text: `<data-err'>`, index: r.begin })
     } else if (r.classes === 'query') {
       actions.push({ text: '</data-highlight>', index: r.end })
       actions.push({ text: `<data-highlight'>`, index: r.begin })
