@@ -46,7 +46,7 @@
     "serve-handler": "^6.1.2"
   },
   "repository": "microsoft/TypeScript-Website",
-  "author": "Orta Therox <bot@orta.io>",
+  "author": "Deploy Bot <ortam@microsoft.com>",
   "auto": {
     "plugins": [
       "npm"
