@@ -15,7 +15,17 @@
         "length": 4
       }
     ],
-    "staticQuickInfos": [],
+    "staticQuickInfos": [
+      {
+        "text": "let helloWorld: string",
+        "docs": "",
+        "start": 4,
+        "length": 10,
+        "line": 0,
+        "character": 4,
+        "targetString": "helloWorld"
+      }
+    ],
     "errors": [],
     "playgroundURL": "https://www.typescriptlang.org/play/#code/DYUwLgBAFizA9gdXgJ2AEwgXggcgBKwITJrq4BQA9FRBAHoD8QA"
   }

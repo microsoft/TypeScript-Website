@@ -16,7 +16,7 @@ const getHTML = async (code: string, settings?: any) => {
   await gatsbyRemarkShiki({ markdownAST }, settings)
 
   // @ts-ignore
-  const twoslashes = markdownAST.children.filter(c => c.meta && c.meta.includes('twoslash')).map(c => c.twoslash)
+  const twoslashes = markdownAST.children.filter((c) => c.meta && c.meta.includes('twoslash')).map((c) => c.twoslash)
   const hAST = toHAST(markdownAST, { allowDangerousHTML: true })
   return {
     html: hastToHTML(hAST, { allowDangerousHTML: true }),
@@ -32,11 +32,15 @@ describe('with fixtures', () => {
   const fixturesFolder = join(__dirname, 'fixtures')
   const resultsFolder = join(__dirname, 'results')
 
-  readdirSync(fixturesFolder).forEach(fixtureName => {
+  readdirSync(fixturesFolder).forEach((fixtureName) => {
     const fixture = join(fixturesFolder, fixtureName)
     if (lstatSync(fixture).isDirectory()) {
       return
     }
+
+    // if (!fixtureName.includes('exporting')) {
+    //   return
+    // }
 
     it('Fixture: ' + fixtureName, async () => {
       const resultHTMLName = parse(fixtureName).name + '.html'
@@ -46,7 +50,9 @@ describe('with fixtures', () => {
       const resultTwoSlashPath = join(resultsFolder, resultTwoSlashName)
 
       const code = readFileSync(fixture, 'utf8')
-      const results = await getHTML(code, {})
+      const results = await getHTML(code, {
+        theme: require.resolve('../../typescriptlang-org/lib/themes/typescript-beta-light.json'),
+      })
 
       const htmlString = format(results.html + style, { parser: 'html' })
       expect(htmlString).toMatchFile(resultHTMLPath)
@@ -61,19 +67,10 @@ const style = `
 
 <style>
 .shiki {
-background-color: rgb(20, 30, 60);
+background-color: lightgrey;
 padding: 8px;
 }
-.lsp-result::before {
-content: ' <';
-}
-.lsp-result::after {
-content: '> ';
-}
-.lsp-result {
-text-decoration: none !important;
-border: 1px solid grey;
-}
+
 .error,
 .error-behind {
 margin-left: -20px;

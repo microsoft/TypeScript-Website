@@ -1,24 +1,15 @@
 <h2>Hello</h2>
 <pre
   class="shiki twoslash"
-><div class="language-id">ts</div><div class='code-container'><code><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">helloWorld</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">Hello World</span><span style="color: #ECEFF4">'</span>
+><div class="language-id">ts</div><div class='code-container'><code><span style="color: #0000FF">let</span><span style="color: #000000"> <data-lsp lsp='let helloWorld: string'>helloWorld</data-lsp> = </span><span style="color: #A31515">'Hello World'</span>
 <span class='query'>//  ^ = let helloWorld: string</span></code></div></pre>
 
 <style>
   .shiki {
-    background-color: rgb(20, 30, 60);
+    background-color: lightgrey;
     padding: 8px;
   }
-  .lsp-result::before {
-    content: " <";
-  }
-  .lsp-result::after {
-    content: "> ";
-  }
-  .lsp-result {
-    text-decoration: none !important;
-    border: 1px solid grey;
-  }
+
   .error,
   .error-behind {
     margin-left: -20px;

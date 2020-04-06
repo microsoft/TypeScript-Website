@@ -26,7 +26,7 @@ export const lang: Copy = defineMessages({
 
 Drop the new file into your defineMessages function:
 
-```
+```diff
 import { defineMessages } from "react-intl"
 import { Copy, messages as englishMessages } from "./en"
 

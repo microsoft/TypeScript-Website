@@ -24,14 +24,18 @@ export const setupHandbookHovers = () => {
   // Gets triggered on the spans inside the codeblocks
   const hover = event => {
     const hovered = event.target as HTMLElement
-    if (!hovered.className.includes("lsp")) return resetHover()
-    if (!hovered.firstElementChild) return resetHover()
+    if (hovered.nodeName !== "DATA-LSP") return resetHover()
 
-    const message = hovered.firstElementChild.textContent
+    const message = hovered.getAttribute("lsp")!
     const position = getAbsoluteElementPos(hovered)
 
     const globalPopover = document.getElementById("mouse-hover-info")!
-    globalPopover.textContent = message
+
+    // Use a textarea to un-htmlencode
+    var txt = document.createElement("textarea")
+    txt.innerHTML = message
+
+    globalPopover.textContent = txt.value
 
     const yOffset = 20
 

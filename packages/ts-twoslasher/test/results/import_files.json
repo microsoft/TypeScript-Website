@@ -3,7 +3,53 @@
   "extension": "ts",
   "highlights": [],
   "queries": [],
-  "staticQuickInfos": [],
+  "staticQuickInfos": [
+    {
+      "text": "const helloWorld: \"Example string\"",
+      "docs": "",
+      "start": 47,
+      "length": 10,
+      "line": 1,
+      "character": 13,
+      "targetString": "helloWorld"
+    },
+    {
+      "text": "(alias) const helloWorld: \"Example string\"\nimport helloWorld",
+      "docs": "",
+      "start": 110,
+      "length": 10,
+      "line": 4,
+      "character": 8,
+      "targetString": "helloWorld"
+    },
+    {
+      "text": "var console: Console",
+      "docs": "",
+      "start": 148,
+      "length": 7,
+      "line": 5,
+      "character": 0,
+      "targetString": "console"
+    },
+    {
+      "text": "(method) Console.log(message?: any, ...optionalParams: any[]): void",
+      "docs": "",
+      "start": 156,
+      "length": 3,
+      "line": 5,
+      "character": 8,
+      "targetString": "log"
+    },
+    {
+      "text": "(alias) const helloWorld: \"Example string\"\nimport helloWorld",
+      "docs": "",
+      "start": 160,
+      "length": 10,
+      "line": 5,
+      "character": 12,
+      "targetString": "helloWorld"
+    }
+  ],
   "errors": [],
   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKGCC0B3aAFwAtd4APABwHsAnIgOiIGcAoS2h0AYxsRZFQJeLFg0A6vVgATUAF5QAIgCiFNFQShBdaIgDmSgNxs2ICDiRpMoPTMrN20VFyEBvEWMnSZAX2x0NKjKjMCWBMRknPRESmx8AjQIjOL6ABSe4lJ0sgCUbEA"
 }
