@@ -153,6 +153,13 @@ type NetworkState =
 .tg .highlight {
   background-color: #F3F3F3;
 }
+
+@media (prefers-color-scheme: dark) {
+  .tg .highlight {
+    background-color: #424242;
+  }
+}
+
 </style>
 
 All of the above types have a field named `state`, and then they also have their own fields:
