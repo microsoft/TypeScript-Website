@@ -2,6 +2,7 @@
   "name": "typescript-sandbox",
   "version": "0.1.0",
   "main": "dist/index.js",
+  "private": true,
   "license": "MIT",
   "typings": "../typescriptlang-org/static/js/sandbox/index.d.ts",
   "files": [

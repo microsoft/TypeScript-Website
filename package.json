@@ -44,5 +44,13 @@
   },
   "dependencies": {
     "serve-handler": "^6.1.2"
+  },
+  "repository": "microsoft/TypeScript-Website",
+  "author": "Orta Therox <bot@orta.io>",
+  "auto": {
+    "plugins": [
+      "npm"
+    ],
+    "onlyPublishWithReleaseLabel": true
   }
 }
