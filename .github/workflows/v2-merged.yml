@@ -53,7 +53,7 @@ jobs:
       # Deploy
       - name: Deploy npm Packages
         run: |
-          yarn add --dev auto
+          yarn add --dev auto -W
           yarn auto shipit
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
