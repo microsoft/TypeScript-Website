@@ -12,7 +12,7 @@ The relationship between TypeScript and JavaScript is rather unique among modern
 
 ## What is JavaScript? A Brief History
 
-JavaScript started as a simple scripting language available in browers.
+JavaScript started as a simple scripting language available in browsers.
 When the language was first invented, writing more than a few dozen lines of JavaScript (JS) in a webpage would have been somewhat unusual.
 Over time, though, JS became more common and web developers used more and more JS in their webpages to create interactive experiences.
 Early web browsers executed JS very slowly and this sometimes led to laggy, unresponsive pages.
@@ -31,7 +31,7 @@ The net result is that a very simple language designed to provide basic webpage 
 JavaScript's humble beginnings are still visible in its many _quirks_ - oddities or surprises that are not typical for other programming languages.
 For example, JavaScript's equality operator `==` _coerces_ its arguments, leading to unexpected behavior:
 
-```js
+```js twoslash
 if ("" == 0) {
   // It is! But why??
 }
@@ -58,7 +58,7 @@ Because TypeScript checks a program for errors before it's run, and does so base
 For example, the snippet from earlier has an error because of the _type_ of `obj`.
 Here's the error TypeScript found:
 
-```ts
+```ts twoslash
 const obj = { width: 10, height: 15 };
 const area = obj.width * obj.heigth;
 ```
