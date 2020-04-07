@@ -27,17 +27,17 @@ export function createHighlightedString2(ranges: Range[], text: string) {
 
   ranges.forEach((r) => {
     if (r.classes === 'lsp') {
-      actions.push({ text: '⇶/data-lsp>', index: r.end })
-      actions.push({ text: `⇶data-lsp lsp='${stripHTML(r.lsp || '')}'>`, index: r.begin })
+      actions.push({ text: '⇍/data-lsp⇏', index: r.end })
+      actions.push({ text: `⇍data-lsp lsp=⇯${r.lsp || ''}⇯⇏`, index: r.begin })
     } else if (r.classes === 'err') {
       hasErrors = true
     } else if (r.classes === 'query') {
-      actions.push({ text: '⇶/data-highlight>', index: r.end })
-      actions.push({ text: `⇶data-highlight'>`, index: r.begin })
+      actions.push({ text: '⇍/data-highlight⇏', index: r.end })
+      actions.push({ text: `⇍data-highlight'⇏`, index: r.begin })
     }
   })
 
-  let html = stripHTML((' ' + text).slice(1))
+  let html = (' ' + text).slice(1)
 
   // Apply all the edits
   actions
@@ -46,12 +46,12 @@ export function createHighlightedString2(ranges: Range[], text: string) {
       html = splice(html, action.index, 0, action.text)
     })
 
-  if (hasErrors) html = `<data-err>${html}</data-err>`
+  if (hasErrors) html = `⇍data-err⇏${html}⇍/data-err⇏`
 
-  return replaceTripleArrow(html)
+  return replaceTripleArrow(stripHTML(html))
 }
 
-const replaceTripleArrow = (str: string) => str.replace(/⇶/g, '<')
+const replaceTripleArrow = (str: string) => str.replace(/⇍/g, '<').replace(/⇏/g, '>').replace(/⇯/g, "'")
 
 export function stripHTML(text: string) {
   var table: any = {

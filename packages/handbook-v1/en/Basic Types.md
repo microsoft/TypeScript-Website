@@ -130,7 +130,7 @@ As in languages like C#, an enum is a way of giving more friendly names to sets 
 enum Color {
   Red,
   Green,
-  Blue
+  Blue,
 }
 let c: Color = Color.Green;
 ```
@@ -143,7 +143,7 @@ For example, we can start the previous example at `1` instead of `0`:
 enum Color {
   Red = 1,
   Green,
-  Blue
+  Blue,
 }
 let c: Color = Color.Green;
 ```
@@ -154,7 +154,7 @@ Or, even manually set all the values in the enum:
 enum Color {
   Red = 1,
   Green = 2,
-  Blue = 4
+  Blue = 4,
 }
 let c: Color = Color.Green;
 ```
@@ -166,7 +166,7 @@ For example, if we had the value `2` but weren't sure what that mapped to in the
 enum Color {
   Red = 1,
   Green,
-  Blue
+  Blue,
 }
 let colorName: string = Color[2];
 
@@ -329,6 +329,6 @@ Using one over the other is mostly a choice of preference; however, when using T
 
 # A note about `let`
 
-You may've noticed that so far, we've been using the `let` keyword instead of JavaScript's `var` keyword which you might be more familiar with.
+You may have noticed that so far, we've been using the `let` keyword instead of JavaScript's `var` keyword which you might be more familiar with.
 The `let` keyword is actually a newer JavaScript construct that TypeScript makes available.
 We'll discuss the details later, but many common problems in JavaScript are alleviated by using `let`, so you should use it instead of `var` whenever possible.
