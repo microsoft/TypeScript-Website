@@ -167,8 +167,8 @@ just makes it a subtype of `{ x: string }`.
 
 Named types just give a name to a type; for assignability purposes
 there's no difference between the type alias `One` and the interface
-type `Two` below. They both have a property `p: string`. (Type alises
-behave differently than interfaces with respect to recursive
+type `Two` below. They both have a property `p: string`. (Type aliases
+behave differently from interfaces with respect to recursive
 definitions and type parameters, however.)
 
 ```ts twoslash
@@ -409,11 +409,11 @@ function area(s: Shape) {
 }
 ```
 
-Note that the return type is `area` is inferred to be `number` because
+Note that the return type of `area` is inferred to be `number` because
 TypeScript knows the function is total. If some variant is not
 covered, the return type of `area` will be `number | undefined` instead.
 
-Also unlike Haskell, common properties show up in any union, so you
+Also, unlike Haskell, common properties show up in any union, so you
 can usefully discriminate multiple members of the union:
 
 ```ts twoslash
