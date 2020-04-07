@@ -31,7 +31,7 @@ The net result is that a very simple language designed to provide basic webpage 
 JavaScript's humble beginnings are still visible in its many _quirks_ - oddities or surprises that are not typical for other programming languages.
 For example, JavaScript's equality operator `==` _coerces_ its arguments, leading to unexpected behavior:
 
-```js twoslash
+```js
 if ("" == 0) {
   // It is! But why??
 }
