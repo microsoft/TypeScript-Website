@@ -76,7 +76,7 @@ It simply belongs to the _union_ of those sets: `string | number`.
 
 TypeScript provides a number of mechanisms to work with types in a set-theoretic way, and you'll find them more intuitive if you think of types as sets.
 
-### Erased Structrual Types
+### Erased Structural Types
 
 In TypeScript, objects are _not_ of a single exact type.
 For example, if we construct an object that satisfies an interface, we can use that object where that interface is expected even though there was no declarative relationship between the two.
@@ -140,7 +140,7 @@ It does so by examining the _structure_ of `{ k: 10 }` and `class Empty { }`.
 We can see that `{ k: 10 }` has _all_ of the properties that `Empty` does, because `Empty` has no properties.
 Therefore, this is a valid call!
 
-This may seem surprising, but it's ultimately a very similar to relationship to one enforced in nominal OOP languages.
+This may seem surprising, but it's ultimately a very similar relationship to one enforced in nominal OOP languages.
 A subclass cannot _remove_ a property of its base class, because doing so would destroy the natural subtype relationship between the derived class and its base.
 Structural type systems simply identify this relationship implicitly by describing subtypes in terms of having properties of compatible types.
 
