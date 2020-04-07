@@ -233,7 +233,7 @@ const point = { x: 12, y: 26 };
 printPoint(point);
 ```
 
-The `point` variable is never declared to be a `Point` type, but because TypeScript compares the shape of `point` to the shape of `Point` in the type-check.
+The `point` variable is never declared to be a `Point` type, but TypeScript compares the shape of `point` to the shape of `Point` in the type-check.
 Because they both have the same shape, then it passes.
 
 The shape matching only requires a subset of the object's fields to match.
