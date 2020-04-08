@@ -27,7 +27,7 @@ const Index: React.FC<Props> = (props) => {
           <h2 className="subnav">Logos and design assets for TypeScript</h2>
 
           <div className="raised content main-content-block headline">
-            <a href={withPrefix("/branding/design-assets.zip")}>
+            <a href={withPrefix("/branding/typescript-design-assets.zip")}>
               <img src={withPrefix("images/branding/logo-grouping.svg")} style={{ maxWidth: "100%" }} />
               <p style={{ textAlign: "center" }}>Click to download the asset pack</p>
             </a>
@@ -47,14 +47,14 @@ const Index: React.FC<Props> = (props) => {
           <div className="main-content-block">
             <Row>
               <div className="raised content main-content-block subheadline">
-                <a href={withPrefix("/branding/design-assets.zip")}>
+                <a href={withPrefix("/branding/typescript-design-assets.zip")}>
                   <img src={withPrefix("images/branding/two-colors.svg")} style={{ maxWidth: "100%", margin: "2rem 0" }} />
                 </a>
                 <p className="attached-bottom">Single color variant which has the “TS” cut out, useful for when you need a single color designs</p>
               </div>
 
               <div className="raised content main-content-block subheadline">
-                <a href={withPrefix("/branding/design-assets.zip")}>
+                <a href={withPrefix("/branding/typescript-design-assets.zip")}>
                   <img src={withPrefix("images/branding/two-longform.svg")} style={{ maxWidth: "100%", margin: "2rem 0" }} />
                 </a>
                 <p className="attached-bottom">Full lettermark version of the TypeScript logo. </p>
@@ -66,13 +66,13 @@ const Index: React.FC<Props> = (props) => {
           <h2>Palette</h2>
 
           <div className="raised content main-content-block headline">
-            <a href={withPrefix("/branding/design-assets.zip")}>
+            <a href={withPrefix("/branding/typescript-design-assets.zip")}>
               <img src={withPrefix("images/branding/palette.svg")} style={{ maxWidth: "100%" }} />
             </a>
           </div>
 
           <div className="raised content main-content-block headline">
-            <a href={withPrefix("/branding/design-assets.zip")}>
+            <a href={withPrefix("/branding/typescript-design-assets.zip")}>
               <img src={withPrefix("images/branding/palette-bg.svg")} style={{ maxWidth: "100%" }} />
             </a>
 
