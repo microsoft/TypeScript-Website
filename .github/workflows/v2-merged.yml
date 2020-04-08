@@ -42,6 +42,10 @@ jobs:
           PUBLISH_BRANCH: "SITE-STAGING"
           PUBLISH_DIR: ./site
 
+      # Probably caused by the above action as a side-effect
+      - name: "Remove .git from site sub-folder"
+        run: "rm -rf site/.git"
+
       - name: Deploy + Publish to CDN
         # You can find these keys here:
         # https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/57bfeeed-c34a-4ffd-a06b-ccff27ac91b8/resourcegroups/typescriptlang-org/providers/Microsoft.Storage/storageAccounts/typescriptorgstaging/keys

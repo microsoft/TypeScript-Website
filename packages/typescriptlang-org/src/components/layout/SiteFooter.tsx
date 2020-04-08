@@ -77,6 +77,14 @@ const useTypeScriptLinks = [
     title: "Code Samples",
     url: "/play/#show-examples",
   },
+  {
+    title: "Why TypeScript",
+    url: "/why-create-typescript",
+  },
+  {
+    title: "Design",
+    url: "/branding",
+  },
 ]
 
 const communityLinks = [
@@ -120,7 +128,9 @@ const faviconForURL = (url: string) => {
 }
 
 export const SiteFooter = (props: Props) => {
-  const lastCommunity = useTypeScriptLinks[useTypeScriptLinks.length - 1]
+  const normalLinks = useTypeScriptLinks.filter(l => !l.url.includes("#show-examples"))
+  const playgroundExamples = useTypeScriptLinks.find(l => l.url.includes("#show-examples"))!
+
   const Link = createIntlLink(props.lang, props.allSitePage)
 
   return (
@@ -150,10 +160,10 @@ export const SiteFooter = (props: Props) => {
         <article id="using-typescript">
           <h3>Using TypeScript</h3>
           <ul>
-            {useTypeScriptLinks.slice(0, -1).map(page => <li key={page.url}><Link to={page.url}>{page.title}</Link></li>)}
+            {normalLinks.map(page => <li key={page.url}><Link to={page.url}>{page.title}</Link></li>)}
             <li key='last' id='popover-trigger' className='popover-container'>
-              <a href={lastCommunity.url} aria-haspopup="true" id='popover-trigger-anchor'>
-                <span style={{ display: "none" }} className='link-prefix footer-icon'></span>{lastCommunity.title}</a>
+              <a href={playgroundExamples.url} aria-haspopup="true" id='popover-trigger-anchor'>
+                <span style={{ display: "none" }} className='link-prefix footer-icon'></span>{playgroundExamples.title}</a>
               <PlaygroundSamples lang="en" />
             </li>
           </ul>
