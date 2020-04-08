@@ -3,14 +3,16 @@ import { Layout } from "../components/layout"
 import { withPrefix, graphql, Link } from "gatsby"
 
 import { Intl } from "../components/Intl"
-import { UpcomingQuery } from "../__generated__/gatsby-types"
+import { UpcomingQuery, BrandingQuery } from "../__generated__/gatsby-types"
 import { UpcomingReleaseMeta } from "../components/index/UpcomingReleaseMeta"
 import { useIntl } from "react-intl"
 
 
 import "./branding.scss"
 
-type Props = {}
+type Props = {
+  data: BrandingQuery
+}
 
 const Row = (props: { children: any, className?: string }) => <div className={[props.className, "row"].join(" ")}>{props.children}</div>
 
@@ -37,7 +39,7 @@ const Index: React.FC<Props> = (props) => {
             <p style={{ flex: 1 }}>Please use the blue TypeScript mark above as the primary logo for TypeScript</p>
             <p style={{ flex: 1 }}>The “TS” is the logo is white, not transparent by default.</p>
             <p style={{ flex: 1 }}>There is a capital “S” in TypeScript, just like in JavaScript.</p>
-            <p style={{ flex: 1 }}>Please don’t use this as the logo for your application</p>
+            <p style={{ flex: 1 }}>Please don’t use this as the logo for your applications</p>
           </Row>
 
           <h2>Alternatives</h2>
