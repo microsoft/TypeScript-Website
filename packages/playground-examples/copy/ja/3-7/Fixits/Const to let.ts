@@ -1,11 +1,8 @@
 //// { compiler: {  }, order: 1 }
 
-// New to 3.7 is the ability to quickly convert
-// a const variable to a let when the value
-// has been re-assigned.
+// 3.7では、const変数の値が再代入されたときに、素早くletに変換する機能が追加されました。
 
-// You can try this by highlighting the below error
-// and choosing to run the quick-fix.
+// 以下のエラーをハイライトして、クイックフィックスを実行することで試すことができます。
 
 const displayName = 'Andrew'
 
