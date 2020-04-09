@@ -64,6 +64,8 @@ console.log(x[0].substring(1));
 console.log(x[1].substring(1));
 ```</pre>
 
+[See it in action on the site](https://www.typescriptlang.org/docs/handbook/basic-types.html#tuple).
+
 ##### What Changed?
 
 Switching this code sample to use twoslash has a few upsides:
