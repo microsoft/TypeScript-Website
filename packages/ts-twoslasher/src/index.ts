@@ -264,10 +264,11 @@ export interface TwoSlashReturn {
  * difference code, and a set of annotations around how it works.
  *
  * @param code The twoslash markup'd code
- * @param extension For example: ts, tsx, typescript, javascript, js
- * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd
- * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd
- * @param sysModule TBD
+ * @param extension For example: "ts", "tsx", "typescript", "javascript" or "js".
+ * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd.
+ * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd.
+ * @param fsMap An optional Map object which is passed into typescript-vfs - if you are using twoslash on the
+ *              web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
  */
 export function twoslasher(
   code: string,
@@ -306,8 +307,6 @@ export function twoslasher(
   const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions)
   const ls = env.languageService
 
-  // Maybe this doesn't work in the future?
-  // TODO: figure a better way
   code = codeLines.join('\n')
 
   let queries = [] as TwoSlashReturn['queries']
@@ -480,6 +479,9 @@ export function twoslasher(
 
   const zippedCode = lzstring.compressToEncodedURIComponent(originalCode)
   const playgroundURL = `https://www.typescriptlang.org/play/#code/${zippedCode}`
+
+  // Cutting happens last, and it means editing the lines and character index of all
+  // the type annotations which are attached to a location
 
   const cutString = '// ---cut---\n'
   if (code.includes(cutString)) {

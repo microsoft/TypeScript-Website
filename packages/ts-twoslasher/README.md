@@ -6,6 +6,74 @@ by the [fourslash test system](https://github.com/orta/typescript-notes/blob/mas
 Used as a pre-parser before showing code samples inside the TypeScript website and to create a standard way for us
 to create examples for bugs on the compiler's issue tracker.
 
+You can preview twoslash on the TypeScript website here: https://typescriptlang.org/dev/twoslash
+
+### TODO
+
+- Ship to npm
+
+### What is Twoslash?
+
+It might be easier to show instead of telling, here is an example of code from the TypeScript handbook. We'll use
+twoslash to let the compiler handle error messaging and provide rich highlight info.
+
+##### Before
+
+> Tuple types allow you to express an array with a fixed number of elements whose types are known, but need not be the same. For example, you may want to represent a value as a pair of a `string` and a `number`:
+
+<pre>```ts 
+// Declare a tuple type
+let x: [string, number];
+
+// Initialize it
+x = ["hello", 10]; // OK
+// Initialize it incorrectly
+x = [10, "hello"]; // Error
+```</pre>
+
+> When accessing an element with a known index, the correct type is retrieved:
+
+<pre>```ts
+console.log(x[0].substring(1)) // OK
+console.log(x[1].substring(1)) // Error, 'number' does not have 'substring'
+```</pre>
+
+##### After
+
+> Tuple types allow you to express an array with a fixed number of elements whose types are known, but need not be the same. For example, you may want to represent a value as a pair of a `string` and a `number`:
+
+<pre>```ts twoslash
+// @errors: 2322
+// Declare a tuple type
+let x: [string, number];
+
+// Initialize it
+x = ["hello", 10];
+// Initialize it incorrectly
+x = [10, "hello"];
+```</pre>
+
+> When accessing an element with a known index, the correct type is retrieved:
+
+<pre>```ts
+// @errors: 2339
+let x: [string, number];
+x = ["hello", 10]; // OK
+/// ---cut---
+console.log(x[0].substring(1));
+console.log(x[1].substring(1));
+```</pre>
+
+##### What Changed?
+
+Switching this code sample to use twoslash has a few upsides:
+
+- The error messages in both are provided by the TypeScript compiler, and so we don't need to write either "OK" or "Error"
+- We explicitly mark what errors are expected in the code sample, if it doesn't occur twoslash throws
+- The second example is a complete example to the compiler. This makes it available to do identifier lookups and real compiler errors, but the user only sees the last two lines.
+
+On the flip side, it's a bit more verbose because every twoslash example is a unique compiler environment - so you need to include all the dependent code in each example.
+
 ### Features
 
 The Twoslash markup language helps with:
@@ -16,10 +84,6 @@ The Twoslash markup language helps with:
 - Replacing code with the results of transpilation to different files, or ancillary files like .d.ts or .map files
 - Handle multi-file imports in a single code sample
 - Creating a playground link for the code
-
-### TODO
-
-- Ship to npm
 
 ### API
 
@@ -83,7 +147,7 @@ Turns to:
 >   "extension": "ts",
 >   "highlights": [],
 >   "queries": [],
->   "staticQuickInfos": "[...]",
+>   "staticQuickInfos": "[ 7 items ]",
 >   "errors": [
 >     {
 >       "category": 1,
@@ -133,7 +197,7 @@ Turns to:
 >   "extension": "ts",
 >   "highlights": [],
 >   "queries": [],
->   "staticQuickInfos": "[...]",
+>   "staticQuickInfos": "[ 7 items ]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDsHsEkFsAOAbAlgY1QFwIKQJ4BcoAZgIbIDOApgFAgRZkBOA5tVsQKIDKATAAYAjAFZa9MABUAFqkqgA7qmTJQMLKCzTm0BaABG1dGQCuNUNBKbp1NXCRpMuArRInI6LKmiRSkABSUAJSgAN60oKDoPpTQyNQAdMjQrIEJlCb6WMz+AMxBQbQAvuIkAQAsfEEA3LRAA"
 > }
@@ -188,7 +252,7 @@ Turns to:
 >   "extension": "ts",
 >   "highlights": [],
 >   "queries": [],
->   "staticQuickInfos": "[...]",
+>   "staticQuickInfos": "[ 14 items ]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/JYOwLgpgTgZghgYwgAgJIBMAycBGEA2yA3ssOgFzIgCuAtnlADTID0AVMgM4D2tKMwAuk7I2LZAF8AUKEixEKAHJw+2PIRIgVESpzBRQAc2btk3MAAtoyAUJFjJUsAE8ADku0B5KBgA8AFWQIAA9IEGEqOgZkAB8ufSMAPmQAXmRAkLCImnprAH40LFwCZEplVWL8AG4pFnF-C2ARBF4+cC4Lbmp8dCpzZDxSEAR8anQIdCla8QBaOYRqMDmZqRhqYbBgbhBkBCgIOEg1AgCg0IhwkRzouL0DEENEgAoyb3KddIBKMq8fdADkkQpMgQchLFBuAB3ZAAInWwFornwEDakHQMKk0ikyLAyDgqV2+0OEGO+CeMJc7k4e2ArjAMM+NTqIIAenkpjiBgS9gcjpUngAmAB0AA5GdNWezsRBcQhuUS+eongBZQ4WIVQODhXhPT7IAowqz4fDcGGlZAAFgF4uZyDZUiAA"
 > }
@@ -228,7 +292,7 @@ Turns to:
 >   "extension": "ts",
 >   "highlights": [],
 >   "queries": [],
->   "staticQuickInfos": "[...]",
+>   "staticQuickInfos": "[ 0 items ]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEBMFMGMBsCGAnRAXAlgewHYC5Q1kBXaAKBAgGcALLAdwFEBbDNCscWhlttaSADEM8aAQw4YADwB0kGWipkKAKhVlQK0AHFoiwjWihROAOZoaoLADNQiUFSITTGreAAOKRM1AA3RPCkdg5OZq7AZNBS7ljIaKDWxDiwmLigpnoAyqGmADLQZhYAFP6BYiHIzgCUoADeGqDIesTIOH4BpDIm5jRkAL5kQA"
 > }
@@ -271,7 +335,7 @@ Turns to:
 >     }
 >   ],
 >   "queries": [],
->   "staticQuickInfos": "[...]",
+>   "staticQuickInfos": "[ 11 items ]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/GYVwdgxgLglg9mABAcwE4FN1QBQAd2oDOCAXIoVKjGMgDSIAmAhlOmQCIvoCUiA3gChEiCAmIAbdADpxcZNgAGACXTjZiACR98RBAF96UOMwCeiGIU19mrKUc6sAypWrzuegIQLuAbgF6BATRMHAAiAFkmBgYLBFD6MHQAd0QHdGxuXwEAemzhfILC4QA9UrLygSA"
 > }
@@ -307,7 +371,7 @@ Turns to:
 >   "extension": "ts",
 >   "highlights": [],
 >   "queries": [],
->   "staticQuickInfos": "[...]",
+>   "staticQuickInfos": "[ 5 items ]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKGCC0B3aAFwAtd4APABwHsAnIgOiIGcAoS2h0AYxsRZFQJeLFg0A6vVgATUAF5QAIgCiFNFQShBdaIgDmSgNxs2ICDiRpMoPTMrN20VFyEBvEWMnSZAX2x0NKjKjMCWBMRknPRESmx8AjQIjOL6ABSe4lJ0sgCUbEA"
 > }
@@ -345,7 +409,7 @@ Turns to:
 >       "length": 4
 >     }
 >   ],
->   "staticQuickInfos": "[...]",
+>   "staticQuickInfos": "[ 1 items ]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/DYUwLgBAZg9jEF4ICIAWJjHmdAnEAhMgNwBQA9ORBAHoD8pQA"
 > }
@@ -410,7 +474,7 @@ Turns to:
 >   "extension": "js",
 >   "highlights": [],
 >   "queries": [],
->   "staticQuickInfos": "[...]",
+>   "staticQuickInfos": "[ 0 items ]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEGcAsHsHcCiBbAlgFwFAgughgE4DmApugFyiIDKArNmOACYIB2ANiQG4nsYkE86VLFaYGoALSTUyAA6wC6ABK85AyKFGVqcgiTxNQ0NQNDxU7dqABGJULIVKSRgGYFYyUAHJ0kPjbe4iQAHk7ooK4ArqwAxsKikawAFIQElKxRyHYEANoAugCUoADemKCgsaKQEWkATKAAvKC5AIwANKAAdD1p+ZgAvphAA"
 > }
@@ -426,10 +490,11 @@ The API is one main exported function:
  * difference code, and a set of annotations around how it works.
  *
  * @param code The twoslash markup'd code
- * @param extension For example: ts, tsx, typescript, javascript, js
- * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd
- * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd
- * @param sysModule TBD
+ * @param extension For example: "ts", "tsx", "typescript", "javascript" or "js".
+ * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd.
+ * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd.
+ * @param fsMap An optional Map object which is passed into typescript-vfs - if you are using twoslash on the
+ *              web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
  */
 export function twoslasher(
   code: string,
