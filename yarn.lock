@@ -2619,6 +2619,11 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
+"@typescript/vfs@0.1.0":
+  version "1.0.0"
+  dependencies:
+    debug "^4.1.1"
+
 "@uifabric/azure-themes@^7.0.28":
   version "7.0.28"
   resolved "https://registry.yarnpkg.com/@uifabric/azure-themes/-/azure-themes-7.0.28.tgz#075770107ceb4b5c771b03941475b894f2267daf"
@@ -8374,6 +8379,14 @@ gatsby-remark-responsive-iframe@^2.2.32:
     common-tags "^1.8.0"
     lodash "^4.17.15"
     unist-util-visit "^1.4.1"
+
+gatsby-remark-shiki@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/gatsby-remark-shiki/-/gatsby-remark-shiki-0.1.0.tgz#186852a508880285ff0d5f3b6e653688f7d51df5"
+  integrity sha512-4NFIiOReb9Klu+F1/zGdwF8tfleFirxqUskNWP+Ri/HUZwBZbDH7jXSRzN3BPnTPltJ3WH5EHz2qRmeILSEAfw==
+  dependencies:
+    shiki "^0.1.6"
+    unist-util-visit "^2.0.1"
 
 gatsby-remark-smartypants@^2.1.21:
   version "2.1.21"
@@ -18235,15 +18248,6 @@ unist-util-visit@^1.0.0, unist-util-visit@^1.1.0, unist-util-visit@^1.4.1:
   integrity sha512-AvGNk7Bb//EmJZyhtRUnNMEpId/AZ5Ph/KUpTI09WHQuDZHKovQ1oEv3mfmKpWKtoMzyMC4GLBm1Zy5k12fjIw==
   dependencies:
     unist-util-visit-parents "^2.0.0"
-
-unist-util-visit@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/unist-util-visit/-/unist-util-visit-2.0.2.tgz#3843782a517de3d2357b4c193b24af2d9366afb7"
-  integrity sha512-HoHNhGnKj6y+Sq+7ASo2zpVdfdRifhTgX2KTU3B/sO/TTlZchp7E3S4vjRzDJ7L60KmrCPsQkVK3lEF3cz36XQ==
-  dependencies:
-    "@types/unist" "^2.0.0"
-    unist-util-is "^4.0.0"
-    unist-util-visit-parents "^3.0.0"
 
 universal-url@^2.0.0:
   version "2.0.0"

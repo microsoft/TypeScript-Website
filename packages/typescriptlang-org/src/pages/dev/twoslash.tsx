@@ -3,7 +3,7 @@ import { Layout } from "../../components/layout"
 import { withPrefix, graphql } from "gatsby"
 import { twoslasher } from "@typescript/twoslash"
 import { createDefaultMapFromCDN } from "@typescript/vfs"
-import { renderToHTML } from "gatsby-remark-shiki/src/renderer"
+import { renderToHTML } from "gatsby-remark-shiki-twoslash/src/renderer"
 
 import "./dev.scss"
 import { Intl } from "../../components/Intl"

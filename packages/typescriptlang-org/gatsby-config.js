@@ -3,7 +3,7 @@ require("ts-node").register({ files: true })
 const { join } = require("path")
 
 // prettier-ignore
-const shiki = join(require.resolve(`gatsby-remark-shiki`), "..", "..", "package.json")
+const shiki = join(require.resolve(`gatsby-remark-shiki-twoslash`), "..", "..", "package.json")
 
 module.exports = {
   siteMetadata: {
@@ -91,7 +91,6 @@ module.exports = {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
-          require.resolve("gatsby-remark-twoslasher-code-blocks"),
           {
             resolve: `gatsby-remark-images`,
             options: {

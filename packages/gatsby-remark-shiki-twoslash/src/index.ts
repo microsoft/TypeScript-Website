@@ -1,6 +1,7 @@
 import { loadTheme, getHighlighter, getTheme } from 'shiki'
 import { Highlighter } from 'shiki/dist/highlighter'
 import { commonLangIds, commonLangAliases, otherLangIds, TLang } from 'shiki-languages'
+import { twoslasher } from '@typescript/twoslash'
 
 import visit from 'unist-util-visit'
 import { Node } from 'unist'
@@ -44,6 +45,7 @@ type RichNode = Node & {
   restults: string
   children: Node[]
   value: string
+  meta?: string[]
   twoslash?: import('@typescript/twoslash').TwoSlashReturn
 }
 
@@ -53,6 +55,18 @@ type RichNode = Node & {
  */
 const visitor = (node: RichNode) => {
   let lang = node.lang
+
+  // Run twoslash and replace the main contents if
+  // the ``` has 'twoslash' after it
+  if (node.meta && node.meta.includes('twoslash')) {
+    const results = twoslasher(node.value, node.lang)
+    node.value = results.code
+    node.lang = results.extension as TLang
+    node.twoslash = results
+  }
+
+  // Shiki doesn't respect json5 as an input, so switch it
+  // to json, which can handle comments in the syntax highlight
   const replacer = {
     json5: 'json',
   }
@@ -60,9 +74,10 @@ const visitor = (node: RichNode) => {
   // @ts-ignore
   if (replacer[lang]) lang = replacer[lang]
 
+  // Check we can highlight and render
   const shouldHighlight = lang && languages.includes(lang)
+
   if (shouldHighlight) {
-    // const originalCode = node.value
     const tokens = highlighter.codeToThemedTokens(node.value, lang)
     const results = renderToHTML(tokens, { langId: lang }, node.twoslash)
     node.type = 'html'

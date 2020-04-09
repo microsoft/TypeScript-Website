@@ -37,7 +37,7 @@ yarn workspace tsconfig-reference run generate-json
 yarn workspace tsconfig-reference run generate-markdown
 ```
 
-You can validate any codeblocks which use twoslasher via the script:
+You can validate any codeblocks which use twoslash via the script:
 
 ```sh
 yarn workspace tsconfig-reference run test

@@ -44,7 +44,6 @@
     "gatsby-remark-responsive-iframe": "^2.2.32",
     "gatsby-remark-shiki": "0.1.0",
     "gatsby-remark-smartypants": "^2.1.21",
-    "gatsby-remark-twoslasher-code-blocks": "0.1.0",
     "gatsby-source-filesystem": "^2.1.48",
     "gatsby-transformer-remark": "^2.6.52",
     "jsdom": "^16.2.0",

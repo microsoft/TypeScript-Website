@@ -17,12 +17,11 @@ const resetHover = () => {
 
 /** Creates the main mouse over popup for LSP info */
 export const setupHandbookHovers = () => {
-  const twoslashes = document.querySelectorAll(
-    ".shiki.twoslash .code-container code"
-  )
+  // prettier-ignore
+  const twoslashes = document.querySelectorAll(".shiki.twoslash .code-container code")
 
   // Gets triggered on the spans inside the codeblocks
-  const hover = event => {
+  const hover = (event) => {
     const hovered = event.target as HTMLElement
     if (hovered.nodeName !== "DATA-LSP") return resetHover()
 
@@ -31,7 +30,7 @@ export const setupHandbookHovers = () => {
 
     const globalPopover = document.getElementById("mouse-hover-info")!
 
-    // Use a textarea to un-htmlencode
+    // Use a textarea to un-htmlencode for presenting to the user
     var txt = document.createElement("textarea")
     txt.innerHTML = message
 
@@ -44,7 +43,7 @@ export const setupHandbookHovers = () => {
     globalPopover.style.left = `${position.left}px`
   }
 
-  twoslashes.forEach(codeblock => {
+  twoslashes.forEach((codeblock) => {
     codeblock.addEventListener("mouseover", hover)
     codeblock.addEventListener("mouseout", resetHover)
   })
