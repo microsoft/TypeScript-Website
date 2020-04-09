@@ -5,17 +5,15 @@ permalink: /docs/handbook/interfaces.html
 oneline: How to write an interface with TypeScript
 ---
 
-# Introduction
-
 One of TypeScript's core principles is that type checking focuses on the _shape_ that values have.
 This is sometimes called "duck typing" or "structural subtyping".
 In TypeScript, interfaces fill the role of naming these types, and are a powerful way of defining contracts within your code as well as contracts with code outside of your project.
 
-# Our First Interface
+## Our First Interface
 
 The easiest way to see how interfaces work is to start with a simple example:
 
-```ts
+```ts twoslash
 function printLabel(labeledObj: { label: string }) {
   console.log(labeledObj.label);
 }
@@ -31,7 +29,7 @@ There are some cases where TypeScript isn't as lenient, which we'll cover in a b
 
 We can write the same example again, this time using an interface to describe the requirement of having the `label` property that is a string:
 
-```ts
+```ts twoslash
 interface LabeledValue {
   label: string;
 }
@@ -51,7 +49,7 @@ Here, it's only the shape that matters. If the object we pass to the function me
 
 It's worth pointing out that the type checker does not require that these properties come in any sort of order, only that the properties the interface requires are present and have the required type.
 
-# Optional Properties
+## Optional Properties
 
 Not all properties of an interface may be required.
 Some exist under certain conditions or may not be there at all.
@@ -59,7 +57,7 @@ These optional properties are popular when creating patterns like "option bags" 
 
 Here's an example of this pattern:
 
-```ts
+```ts twoslash
 interface SquareConfig {
   color?: string;
   width?: number;
@@ -84,7 +82,8 @@ Interfaces with optional properties are written similar to other interfaces, wit
 The advantage of optional properties is that you can describe these possibly available properties while still also preventing use of properties that are not part of the interface.
 For example, had we mistyped the name of the `color` property in `createSquare`, we would get an error message letting us know:
 
-```ts
+```ts twoslash
+// @errors: 2551
 interface SquareConfig {
   color?: string;
   width?: number;
@@ -105,12 +104,12 @@ function createSquare(config: SquareConfig): { color: string; area: number } {
 let mySquare = createSquare({ color: "black" });
 ```
 
-# Readonly properties
+## Readonly properties
 
 Some properties should only be modifiable when an object is first created.
 You can specify this by putting `readonly` before the name of the property:
 
-```ts
+```ts twoslash
 interface Point {
   readonly x: number;
   readonly y: number;
@@ -120,16 +119,24 @@ interface Point {
 You can construct a `Point` by assigning an object literal.
 After the assignment, `x` and `y` can't be changed.
 
-```ts
+```ts twoslash
+// @errors: 2540
+interface Point {
+  readonly x: number;
+  readonly y: number;
+}
+// ---cut---
 let p1: Point = { x: 10, y: 20 };
 p1.x = 5; // error!
 ```
 
 TypeScript comes with a `ReadonlyArray<T>` type that is the same as `Array<T>` with all mutating methods removed, so you can make sure you don't change your arrays after creation:
 
-```ts
+```ts twoslash
+// @errors: 2542 2339 2540 4104
 let a: number[] = [1, 2, 3, 4];
 let ro: ReadonlyArray<number> = a;
+
 ro[0] = 12; // error!
 ro.push(5); // error!
 ro.length = 100; // error!
@@ -139,30 +146,34 @@ a = ro; // error!
 On the last line of the snippet you can see that even assigning the entire `ReadonlyArray` back to a normal array is illegal.
 You can still override it with a type assertion, though:
 
-```ts
+```ts twoslash
+let a: number[] = [1, 2, 3, 4];
+let ro: ReadonlyArray<number> = a;
+
 a = ro as number[];
 ```
 
-## `readonly` vs `const`
+### `readonly` vs `const`
 
 The easiest way to remember whether to use `readonly` or `const` is to ask whether you're using it on a variable or a property.
 Variables use `const` whereas properties use `readonly`.
 
-# Excess Property Checks
+## Excess Property Checks
 
 In our first example using interfaces, TypeScript lets us pass `{ size: number; label: string; }` to something that only expected a `{ label: string; }`.
 We also just learned about optional properties, and how they're useful when describing so-called "option bags".
 
 However, combining the two naively would allow an error to sneak in. For example, taking our last example using `createSquare`:
 
-```ts
+```ts twoslash
+// @errors: 2345 2739
 interface SquareConfig {
   color?: string;
   width?: number;
 }
 
 function createSquare(config: SquareConfig): { color: string; area: number } {
-  // ...
+  return { color: config.color || "red", area: config.width || 20 };
 }
 
 let mySquare = createSquare({ colour: "red", width: 100 });
@@ -177,22 +188,41 @@ However, TypeScript takes the stance that there's probably a bug in this code.
 Object literals get special treatment and undergo _excess property checking_ when assigning them to other variables, or passing them as arguments.
 If an object literal has any properties that the "target type" doesn't have, you'll get an error:
 
-```ts
-// error: Object literal may only specify known properties, but 'colour' does not exist in type 'SquareConfig'. Did you mean to write 'color'?
+```ts twoslash
+// @errors: 2345 2739
+interface SquareConfig {
+  color?: string;
+  width?: number;
+}
+
+function createSquare(config: SquareConfig): { color: string; area: number } {
+  return { color: config.color || "red", area: config.width || 20 };
+}
+// ---cut---
 let mySquare = createSquare({ colour: "red", width: 100 });
 ```
 
 Getting around these checks is actually really simple.
 The easiest method is to just use a type assertion:
 
-```ts
+```ts twoslash
+// @errors: 2345 2739
+interface SquareConfig {
+  color?: string;
+  width?: number;
+}
+
+function createSquare(config: SquareConfig): { color: string; area: number } {
+  return { color: config.color || "red", area: config.width || 20 };
+}
+// ---cut---
 let mySquare = createSquare({ width: 100, opacity: 0.5 } as SquareConfig);
 ```
 
 However, a better approach might be to add a string index signature if you're sure that the object can have some extra properties that are used in some special way.
 If `SquareConfig` can have `color` and `width` properties with the above types, but could _also_ have any number of other properties, then we could define it like so:
 
-```ts
+```ts twoslash
 interface SquareConfig {
   color?: string;
   width?: number;
@@ -205,7 +235,17 @@ We'll discuss index signatures in a bit, but here we're saying a `SquareConfig` 
 One final way to get around these checks, which might be a bit surprising, is to assign the object to another variable:
 Since `squareOptions` won't undergo excess property checks, the compiler won't give you an error.
 
-```ts
+```ts twoslash
+interface SquareConfig {
+  color?: string;
+  width?: number;
+  [propName: string]: any;
+}
+
+function createSquare(config: SquareConfig): { color: string; area: number } {
+  return { color: config.color || "red", area: config.width || 20 };
+}
+// ---cut---
 let squareOptions = { colour: "red", width: 100 };
 let mySquare = createSquare(squareOptions);
 ```
@@ -213,7 +253,17 @@ let mySquare = createSquare(squareOptions);
 The above workaround will work as long as you have a common property between `squareOptions` and `SquareConfig`.
 In this example, it was the property `width`. It will however, fail if the variable does not have any common object property. For example:
 
-```ts
+```ts twoslash
+interface SquareConfig {
+  color?: string;
+  width?: number;
+  [propName: string]: any;
+}
+
+function createSquare(config: SquareConfig): { color: string; area: number } {
+  return { color: config.color || "red", area: config.width || 20 };
+}
+// ---cut---
 let squareOptions = { colour: "red" };
 let mySquare = createSquare(squareOptions);
 ```
@@ -223,7 +273,7 @@ For more complex object literals that have methods and hold state, you might nee
 That means if you're running into excess property checking problems for something like option bags, you might need to revise some of your type declarations.
 In this instance, if it's okay to pass an object with both a `color` or `colour` property to `createSquare`, you should fix up the definition of `SquareConfig` to reflect that.
 
-# Function Types
+## Function Types
 
 Interfaces are capable of describing the wide range of shapes that JavaScript objects can take.
 In addition to describing an object with properties, interfaces are also capable of describing function types.
@@ -231,7 +281,7 @@ In addition to describing an object with properties, interfaces are also capable
 To describe a function type with an interface, we give the interface a call signature.
 This is like a function declaration with only the parameter list and return type given. Each parameter in the parameter list requires both name and type.
 
-```ts
+```ts twoslash
 interface SearchFunc {
   (source: string, subString: string): boolean;
 }
@@ -240,9 +290,14 @@ interface SearchFunc {
 Once defined, we can use this function type interface like we would other interfaces.
 Here, we show how you can create a variable of a function type and assign it a function value of the same type.
 
-```ts
+```ts twoslash
+interface SearchFunc {
+  (source: string, subString: string): boolean;
+}
+// ---cut---
 let mySearch: SearchFunc;
-mySearch = function(source: string, subString: string) {
+
+mySearch = function (source: string, subString: string) {
   let result = source.search(subString);
   return result > -1;
 };
@@ -251,9 +306,14 @@ mySearch = function(source: string, subString: string) {
 For function types to correctly type check, the names of the parameters do not need to match.
 We could have, for example, written the above example like this:
 
-```ts
+```ts twoslash
+interface SearchFunc {
+  (source: string, subString: string): boolean;
+}
+// ---cut---
 let mySearch: SearchFunc;
-mySearch = function(src: string, sub: string): boolean {
+
+mySearch = function (src: string, sub: string): boolean {
   let result = src.search(sub);
   return result > -1;
 };
@@ -263,9 +323,14 @@ Function parameters are checked one at a time, with the type in each correspondi
 If you do not want to specify types at all, TypeScript's contextual typing can infer the argument types since the function value is assigned directly to a variable of type `SearchFunc`.
 Here, also, the return type of our function expression is implied by the values it returns (here `false` and `true`).
 
-```ts
+```ts twoslash
+interface SearchFunc {
+  (source: string, subString: string): boolean;
+}
+// ---cut---
 let mySearch: SearchFunc;
-mySearch = function(src, sub) {
+
+mySearch = function (src, sub) {
   let result = src.search(sub);
   return result > -1;
 };
@@ -273,24 +338,27 @@ mySearch = function(src, sub) {
 
 Had the function expression returned numbers or strings, the type checker would have made an error that indicates return type doesn't match the return type described in the `SearchFunc` interface.
 
-```ts
+```ts twoslash
+// @errors: 2322
+interface SearchFunc {
+  (source: string, subString: string): boolean;
+}
+// ---cut---
 let mySearch: SearchFunc;
 
-// error: Type '(src: string, sub: string) => string' is not assignable to type 'SearchFunc'.
-// Type 'string' is not assignable to type 'boolean'.
-mySearch = function(src, sub) {
+mySearch = function (src, sub) {
   let result = src.search(sub);
   return "string";
 };
 ```
 
-# Indexable Types
+## Indexable Types
 
 Similarly to how we can use interfaces to describe function types, we can also describe types that we can "index into" like `a[10]`, or `ageMap["daniel"]`.
 Indexable types have an _index signature_ that describes the types we can use to index into the object, along with the corresponding return types when indexing.
 Let's take an example:
 
-```ts
+```ts twoslash
 interface StringArray {
   [index: number]: string;
 }
@@ -309,10 +377,13 @@ It is possible to support both types of indexers, but the type returned from a n
 This is because when indexing with a `number`, JavaScript will actually convert that to a `string` before indexing into an object.
 That means that indexing with `100` (a `number`) is the same thing as indexing with `"100"` (a `string`), so the two need to be consistent.
 
-```ts
+```ts twoslash
+// @errors: 2413
+// @strictPropertyInitialization: false
 class Animal {
   name: string;
 }
+
 class Dog extends Animal {
   breed: string;
 }
@@ -328,7 +399,8 @@ While string index signatures are a powerful way to describe the "dictionary" pa
 This is because a string index declares that `obj.property` is also available as `obj["property"]`.
 In the following example, `name`'s type does not match the string index's type, and the type checker gives an error:
 
-```ts
+```ts twoslash
+// @errors: 2411
 interface NumberDictionary {
   [index: string]: number;
   length: number; // ok, length is a number
@@ -338,7 +410,7 @@ interface NumberDictionary {
 
 However, properties of different types are acceptable if the index signature is a union of the property types:
 
-```ts
+```ts twoslash
 interface NumberOrStringDictionary {
   [index: string]: number | string;
   length: number; // ok, length is a number
@@ -348,23 +420,25 @@ interface NumberOrStringDictionary {
 
 Finally, you can make index signatures `readonly` in order to prevent assignment to their indices:
 
-```ts
+```ts twoslash
+// @errors: 2542
 interface ReadonlyStringArray {
   readonly [index: number]: string;
 }
+
 let myArray: ReadonlyStringArray = ["Alice", "Bob"];
 myArray[2] = "Mallory"; // error!
 ```
 
 You can't set `myArray[2]` because the index signature is readonly.
 
-# Class Types
+## Class Types
 
-## Implementing an interface
+### Implementing an interface
 
 One of the most common uses of interfaces in languages like C# and Java, that of explicitly enforcing that a class meets a particular contract, is also possible in TypeScript.
 
-```ts
+```ts twoslash
 interface ClockInterface {
   currentTime: Date;
 }
@@ -377,7 +451,8 @@ class Clock implements ClockInterface {
 
 You can also describe methods in an interface that are implemented in the class, as we do with `setTime` in the below example:
 
-```ts
+```ts twoslash
+// @strictPropertyInitialization: false
 interface ClockInterface {
   currentTime: Date;
   setTime(d: Date): void;
@@ -395,12 +470,15 @@ class Clock implements ClockInterface {
 Interfaces describe the public side of the class, rather than both the public and private side.
 This prohibits you from using them to check that a class also has particular types for the private side of the class instance.
 
-## Difference between the static and instance sides of classes
+### Difference between the static and instance sides of classes
 
 When working with classes and interfaces, it helps to keep in mind that a class has _two_ types: the type of the static side and the type of the instance side.
 You may notice that if you create an interface with a construct signature and try to create a class that implements this interface you get an error:
 
-```ts
+```ts twoslash
+// @errors: 7013 2420 2564
+// @strictPropertyInitialization: false
+// @noImplicitAny: false
 interface ClockConstructor {
   new (hour: number, minute: number);
 }
@@ -418,10 +496,11 @@ Instead, you would need to work with the static side of the class directly.
 In this example, we define two interfaces, `ClockConstructor` for the constructor and `ClockInterface` for the instance methods.
 Then, for convenience, we define a constructor function `createClock` that creates instances of the type that is passed to it:
 
-```ts
+```ts twoslash
 interface ClockConstructor {
   new (hour: number, minute: number): ClockInterface;
 }
+
 interface ClockInterface {
   tick(): void;
 }
@@ -440,6 +519,7 @@ class DigitalClock implements ClockInterface {
     console.log("beep beep");
   }
 }
+
 class AnalogClock implements ClockInterface {
   constructor(h: number, m: number) {}
   tick() {
@@ -455,7 +535,9 @@ Because `createClock`'s first parameter is of type `ClockConstructor`, in `creat
 
 Another simple way is to use class expressions:
 
-```ts
+```ts twoslash
+// @strictPropertyInitialization: false
+// @noImplicitAny: fals
 interface ClockConstructor {
   new (hour: number, minute: number);
 }
@@ -472,12 +554,12 @@ const Clock: ClockConstructor = class Clock implements ClockInterface {
 };
 ```
 
-# Extending Interfaces
+## Extending Interfaces
 
 Like classes, interfaces can extend each other.
 This allows you to copy the members of one interface into another, which gives you more flexibility in how you separate your interfaces into reusable components.
 
-```ts
+```ts twoslash
 interface Shape {
   color: string;
 }
@@ -493,7 +575,7 @@ square.sideLength = 10;
 
 An interface can extend multiple interfaces, creating a combination of all of the interfaces.
 
-```ts
+```ts twoslash
 interface Shape {
   color: string;
 }
@@ -512,14 +594,14 @@ square.sideLength = 10;
 square.penWidth = 5.0;
 ```
 
-# Hybrid Types
+## Hybrid Types
 
 As we mentioned earlier, interfaces can describe the rich types present in real world JavaScript.
 Because of JavaScript's dynamic and flexible nature, you may occasionally encounter an object that works as a combination of some of the types described above.
 
 One such example is an object that acts as both a function and an object, with additional properties:
 
-```ts
+```ts twoslash
 interface Counter {
   (start: number): string;
   interval: number;
@@ -527,9 +609,9 @@ interface Counter {
 }
 
 function getCounter(): Counter {
-  let counter = function(start: number) {} as Counter;
+  let counter = function (start: number) {} as Counter;
   counter.interval = 123;
-  counter.reset = function() {};
+  counter.reset = function () {};
   return counter;
 }
 
@@ -541,7 +623,7 @@ c.interval = 5.0;
 
 When interacting with 3rd-party JavaScript, you may need to use patterns like the above to fully describe the shape of the type.
 
-# Interfaces Extending Classes
+## Interfaces Extending Classes
 
 When an interface type extends a class type it inherits the members of the class but not their implementations.
 It is as if the interface had declared all of the members of the class without providing an implementation.
@@ -552,7 +634,8 @@ This is useful when you have a large inheritance hierarchy, but want to specify 
 The subclasses don't have to be related besides inheriting from the base class.
 For example:
 
-```ts
+```ts twoslash
+// @errors: 2300 2420 2300
 class Control {
   private state: any;
 }
@@ -570,7 +653,7 @@ class TextBox extends Control {
 }
 
 // Error: Property 'state' is missing in type 'Image'.
-class Image implements SelectableControl {
+class ImageControl implements SelectableControl {
   private state: any;
   select() {}
 }
