@@ -19,7 +19,7 @@ export const EditorExamples = () => {
 
   const explanations = [
     "Validate your function arguments",
-    "Document your React Props via types",
+    "Document your React Props via types",respo
     "Get completions for un-typed JavaScript code",
     "Catch typos in your editor ahead of runtime",
     "Offer instant fixes for common bugs",
@@ -201,28 +201,28 @@ app.get('/', function (req, res) {
 
 const Typos = () => {
   const js = `
-const response ={
+const response = {
   data: {
     artworks: [
       { title: "Salvator Mundi" },
-      { title: "The Starry Night" }
+      { title: "The Starry Night" },
     ]
   }
-}
+};
 
 const artworks = response.data.artworks
 console.log(artworks[0].name)
   `
 
   const ts = `
-const response ={
+const response = {
   data: {
     artworks: [
       { title: "Salvator Mundi" },
-      { title: "The Starry Night" }
+      { title: "The Starry Night" },
     ]
   }
-}
+};
 
 const artworks = response.data.artworks
 console.log(artworks[0].<span class='underline-error'>name</span>)
