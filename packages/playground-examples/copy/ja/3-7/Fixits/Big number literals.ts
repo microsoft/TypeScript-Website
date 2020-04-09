@@ -1,35 +1,31 @@
 //// { compiler: {  target: 99 }, order: 1 }
 
-// Did you know there is a limit to how big of a number you
-// can represent in JavaScript when writing ?
+// JavaScript を書く際に、JavaScript で表現できる数字の大きさに
+// 制限があることをあることをご存知でしたか？
 
 const maxHighValue = 9007199254740991
 const maxLowValue = -9007199254740991
 
-// If you go one over/below these numbers
-// then you start to get into dangerous territory.
+// これらの数字を上回る/下回ることは、大変危険です。
 
 const oneOverMax = 9007199254740992
 const oneBelowMin = -9007199254740992
 
-// The solution for handling numbers of this size
-// is to convert these numbers to BigInts instead
-// of a number:
+// このサイズの数値を扱うための解決策は、
+// これらの数値を、number の代わりに BigInts に変換することです: 
 //
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
 
-// TypeScript will now offer a fixit for number
-// literals which are above 2^52 (positive / negative)
-// which adds the suffix "n" which informs JavaScript
-// that the type should be BigInt.
+// TypeScriptは、2の52乗以上の数値リテラル(正/負)の修正機能を提供するようになり、
+// 接尾辞 "n"を追加してJavaScriptにBigInt型であることを知らせるようになりました。
 
-// Number literals
+// 数値リテラル
 9007199254740993;
 -9007199254740993
 9007199254740994;
 -9007199254740994
 
-// Hex numbers
+// 六進数
 0x19999999999999;
 -0x19999999999999
 0x20000000000000;
