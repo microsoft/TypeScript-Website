@@ -1,8 +1,8 @@
 import React, { useEffect } from "react"
 import { Layout } from "../../components/layout"
 import { withPrefix, graphql } from "gatsby"
-import { twoslasher } from "ts-twoslasher"
-import { createDefaultMapFromCDN } from "typescript-vfs"
+import { twoslasher } from "@typescript/twoslash"
+import { createDefaultMapFromCDN } from "@typescript/vfs"
 import { renderToHTML } from "gatsby-remark-shiki/src/renderer"
 
 import "./dev.scss"
@@ -169,7 +169,7 @@ const Index: React.FC<Props> = (props) => {
                 <h1 style={{ marginTop: "20px" }}>TypeScript Twoslash</h1>
                 <p>A markup format for TypeScript code, ideal for creating self-contained code samples which let the TypeScript compiler do the extra leg-work.</p>
                 <p>If you know TypeScript, you basically know twoslash.</p>
-                <p>Twoslash adds the ability to declare tsconfig options inline, split a sample into multiple files and a few other useful commands. You can see the full API <a href="https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher">inside the README</a></p>
+                <p>Twoslash adds the ability to declare tsconfig options inline, split a sample into multiple files and a few other useful commands. You can see the full API <a href="https://github.com/microsoft/TypeScript-Website/tree/v2/packages/@typescript/twoslash">inside the README</a></p>
               </div>
               <div>
                 <h1 style={{ marginTop: "0" }}>&nbsp;</h1>

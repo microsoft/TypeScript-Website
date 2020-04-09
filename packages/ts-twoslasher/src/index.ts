@@ -14,7 +14,7 @@ import {
 } from './utils'
 import { validateInput, validateCodeForErrors } from './validation'
 
-import { createSystem, createVirtualTypeScriptEnvironment, createDefaultMapFromNodeModules } from 'typescript-vfs'
+import { createSystem, createVirtualTypeScriptEnvironment, createDefaultMapFromNodeModules } from '@typescript/vfs'
 
 const log = debug('twoslasher')
 
@@ -267,7 +267,7 @@ export interface TwoSlashReturn {
  * @param extension For example: "ts", "tsx", "typescript", "javascript" or "js".
  * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd.
  * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd.
- * @param fsMap An optional Map object which is passed into typescript-vfs - if you are using twoslash on the
+ * @param fsMap An optional Map object which is passed into @typescript/vfs - if you are using twoslash on the
  *              web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
  */
 export function twoslasher(

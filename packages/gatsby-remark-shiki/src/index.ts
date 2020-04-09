@@ -32,7 +32,7 @@ const getHighlighterObj = (options: import('shiki/dist/highlighter').Highlighter
     }
   }
 
-  return getHighlighter({ theme: shikiTheme, langs: languages }).then(newHighlighter => {
+  return getHighlighter({ theme: shikiTheme, langs: languages }).then((newHighlighter) => {
     highlighter = newHighlighter
     return highlighter
   })
@@ -44,7 +44,7 @@ type RichNode = Node & {
   restults: string
   children: Node[]
   value: string
-  twoslash?: import('ts-twoslasher').TwoSlashReturn
+  twoslash?: import('@typescript/twoslash').TwoSlashReturn
 }
 
 /**
@@ -72,7 +72,7 @@ const visitor = (node: RichNode) => {
 }
 
 /** The plugin API */
-const remarkShiki = async function({ markdownAST }: any, settings: any) {
+const remarkShiki = async function ({ markdownAST }: any, settings: any) {
   await getHighlighterObj(settings)
   visit(markdownAST, 'code', visitor)
 }

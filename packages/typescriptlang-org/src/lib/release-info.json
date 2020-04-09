@@ -15,16 +15,16 @@
   "rcPostURL": "https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-rc/",
   "vs": {
     "stable": {
-      "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-38beta",
-      "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-38beta"
+      "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-39beta",
+      "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-39beta"
     },
     "beta": {
-      "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-373",
-      "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-373"
+      "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-39beta",
+      "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-39beta"
     },
     "rc": {
-      "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-38beta",
-      "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-38beta"
+      "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-383",
+      "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-383"
     }
   }
 }

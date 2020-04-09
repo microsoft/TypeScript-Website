@@ -20,7 +20,7 @@ export interface VirtualTypeScriptEnvironment {
 
 /**
  * Makes a virtual copy of the TypeScript environment. This is the main API you want to be using with
- * typescript-vfs. A lot of the other exposed functions are used by this function to get set up.
+ * @typescript/vfs. A lot of the other exposed functions are used by this function to get set up.
  *
  * @param sys an object which conforms to the TS Sys (a shim over read/write access to the fs)
  * @param rootFiles a list of files which are considered inside the project
@@ -48,7 +48,7 @@ export function createVirtualTypeScriptEnvironment(
   return {
     sys,
     languageService,
-    getSourceFile: fileName => languageService.getProgram()?.getSourceFile(fileName),
+    getSourceFile: (fileName) => languageService.getProgram()?.getSourceFile(fileName),
 
     createFile: (fileName, content) => {
       updateFile(ts.createSourceFile(fileName, content, mergedCompilerOpts.target!, false))
@@ -140,15 +140,15 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
   ]
 
   const targetToCut = ts.ScriptTarget[target]
-  const matches = files.filter(f => f.startsWith(`lib.${targetToCut.toLowerCase()}`))
+  const matches = files.filter((f) => f.startsWith(`lib.${targetToCut.toLowerCase()}`))
   const targetCutIndex = files.indexOf(matches.pop()!)
 
   const getMax = (array: number[]) =>
     array && array.length ? array.reduce((max, current) => (current > max ? current : max)) : undefined
 
   // Find the index for everything in
-  const indexesForCutting = lib.map(lib => {
-    const matches = files.filter(f => f.startsWith(`lib.${lib.toLowerCase()}`))
+  const indexesForCutting = lib.map((lib) => {
+    const matches = files.filter((f) => f.startsWith(`lib.${lib.toLowerCase()}`))
     if (matches.length === 0) return 0
 
     const cutIndex = files.indexOf(matches.pop()!)
@@ -177,7 +177,7 @@ export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions
 
   const libs = knownLibFilesForCompilerOptions(compilerOptions, ts)
   const fsMap = new Map<string, string>()
-  libs.forEach(lib => {
+  libs.forEach((lib) => {
     fsMap.set('/' + lib, getLib(lib))
   })
   return fsMap
@@ -220,7 +220,7 @@ export const createDefaultMapFromCDN = (
 
   // Map the known libs to a node fetch promise, then return the contents
   function uncached() {
-    return Promise.all(files.map(lib => fetchlike(prefix + lib).then(resp => resp.text()))).then(contents => {
+    return Promise.all(files.map((lib) => fetchlike(prefix + lib).then((resp) => resp.text()))).then((contents) => {
       contents.forEach((text, index) => fsMap.set('/' + files[index], text))
     })
   }
@@ -228,7 +228,7 @@ export const createDefaultMapFromCDN = (
   // A localstorage and lzzip aware version of the lib files
   function cached() {
     const keys = Object.keys(localStorage)
-    keys.forEach(key => {
+    keys.forEach((key) => {
       // Remove anything which isn't from this version
       if (key.startsWith('ts-lib-') && !key.startsWith('ts-lib-' + version)) {
         storelike.removeItem(key)
@@ -236,15 +236,15 @@ export const createDefaultMapFromCDN = (
     })
 
     return Promise.all(
-      files.map(lib => {
+      files.map((lib) => {
         const cacheKey = `ts-lib-${version}-${lib}`
         const content = storelike.getItem(cacheKey)
 
         if (!content) {
           // Make the API call and store the text concent in the cache
           return fetchlike(prefix + lib)
-            .then(resp => resp.text())
-            .then(t => {
+            .then((resp) => resp.text())
+            .then((t) => {
               storelike.setItem(cacheKey, zip(t))
               return t
             })
@@ -252,7 +252,7 @@ export const createDefaultMapFromCDN = (
           return Promise.resolve(unzip(content))
         }
       })
-    ).then(contents => {
+    ).then((contents) => {
       contents.forEach((text, index) => {
         const name = '/' + files[index]
         fsMap.set(name, text)
@@ -313,17 +313,17 @@ export function createSystem(files: Map<string, string>): System {
     args: [],
     createDirectory: () => notImplemented('createDirectory'),
     // TODO: could make a real file tree
-    directoryExists: audit('directoryExists', directory => {
-      return Array.from(files.keys()).some(path => path.startsWith(directory))
+    directoryExists: audit('directoryExists', (directory) => {
+      return Array.from(files.keys()).some((path) => path.startsWith(directory))
     }),
     exit: () => notImplemented('exit'),
-    fileExists: audit('fileExists', fileName => files.has(fileName) || files.has(libize(fileName))),
+    fileExists: audit('fileExists', (fileName) => files.has(fileName) || files.has(libize(fileName))),
     getCurrentDirectory: () => '/',
     getDirectories: () => [],
     getExecutingFilePath: () => notImplemented('getExecutingFilePath'),
-    readDirectory: audit('readDirectory', directory => (directory === '/' ? Array.from(files.keys()) : [])),
-    readFile: audit('readFile', fileName => files.get(fileName) || files.get(libize(fileName))),
-    resolvePath: path => path,
+    readDirectory: audit('readDirectory', (directory) => (directory === '/' ? Array.from(files.keys()) : [])),
+    readFile: audit('readFile', (fileName) => files.get(fileName) || files.get(libize(fileName))),
+    resolvePath: (path) => path,
     newLine: '\n',
     useCaseSensitiveFileNames: true,
     write: () => notImplemented('write'),
@@ -353,12 +353,12 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
   const vHost: Return = {
     compilerHost: {
       ...sys,
-      getCanonicalFileName: fileName => fileName,
+      getCanonicalFileName: (fileName) => fileName,
       getDefaultLibFileName: () => '/' + ts.getDefaultLibFileName(compilerOptions), // '/lib.d.ts',
       // getDefaultLibLocation: () => '/',
       getDirectories: () => [],
       getNewLine: () => sys.newLine,
-      getSourceFile: fileName => {
+      getSourceFile: (fileName) => {
         return (
           sourceFiles.get(fileName) ||
           save(
@@ -373,7 +373,7 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
       },
       useCaseSensitiveFileNames: () => sys.useCaseSensitiveFileNames,
     },
-    updateFile: sourceFile => {
+    updateFile: (sourceFile) => {
       const alreadyExists = sourceFiles.has(sourceFile.fileName)
       sys.writeFile(sourceFile.fileName, sourceFile.text)
       sourceFiles.set(sourceFile.fileName, sourceFile)
@@ -401,14 +401,14 @@ export function createVirtualLanguageServiceHost(
     getProjectVersion: () => projectVersion.toString(),
     getCompilationSettings: () => compilerOptions,
     getScriptFileNames: () => fileNames,
-    getScriptSnapshot: fileName => {
+    getScriptSnapshot: (fileName) => {
       const contents = sys.readFile(fileName)
       if (contents) {
         return ts.ScriptSnapshot.fromString(contents)
       }
       return
     },
-    getScriptVersion: fileName => {
+    getScriptVersion: (fileName) => {
       return fileVersions.get(fileName) || '0'
     },
     writeFile: sys.writeFile,
@@ -421,7 +421,7 @@ export function createVirtualLanguageServiceHost(
 
   const lsHost: Return = {
     languageServiceHost,
-    updateFile: sourceFile => {
+    updateFile: (sourceFile) => {
       projectVersion++
       fileVersions.set(sourceFile.fileName, projectVersion.toString())
       if (!fileNames.includes(sourceFile.fileName)) {

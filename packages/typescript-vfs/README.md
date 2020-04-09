@@ -12,7 +12,7 @@ Useful when you need to:
 You start with creating a map which represents all the files in the virtual `ts.System`:
 
 ```ts
-import { createSystem } from 'typescript-vfs'
+import { createSystem } from '@typescript/vfs'
 
 const fsMap = new Map<string, string>()
 fsMap.set('index.ts', 'const a = "Hello World"')
@@ -23,7 +23,7 @@ const system = createSystem(fsMap)
 Then you can create a virtual TypeScript Environment:
 
 ```ts
-import { createSystem, createVirtualTypeScriptEnvironment } from 'typescript-vfs'
+import { createSystem, createVirtualTypeScriptEnvironment } from '@typescript/vfs'
 import ts from 'typescript'
 
 const fsMap = new Map<string, string>()
@@ -140,7 +140,7 @@ Keeping on top of this list is quite a lot of work, so this library ships functi
 Note: it's possible for this list to get out of sync with TypeScript over time. It was last synced with TypeScript 3.8.0-rc.
 
 ```ts
-import { createDefaultMapFromNodeModules } from 'typescript-vfs'
+import { createDefaultMapFromNodeModules } from '@typescript/vfs'
 import ts from 'typescript'
 
 const fsMap = createDefaultMapFromNodeModules({ target: ts.ScriptTarget.ES2015 })
@@ -153,7 +153,7 @@ If you don't have access to `node_modules`, then you can use the TypeScript CDN 
 This is handled for you via `createDefaultMapFromCDN`.
 
 ```ts
-import { createDefaultMapFromCDN } from 'typescript-vfs'
+import { createDefaultMapFromCDN } from '@typescript/vfs'
 import ts from 'typescript'
 import lzstring from 'lz-string'
 
@@ -183,7 +183,7 @@ What does a full example look like? This comes basically verbatim from the TypeS
 
 ```ts
 import ts from 'typescript'
-import tsvfs from 'typescript-vfs'
+import tsvfs from '@typescript/vfs'
 import lzstring from 'lzstring'
 
 const fsMap = await tsvfs.createDefaultMapFromCDN(compilerOptions, ts.version, true, ts, lzstring)

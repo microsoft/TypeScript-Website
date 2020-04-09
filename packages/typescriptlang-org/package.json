@@ -55,7 +55,7 @@
     "react-intl": "^3.12.0",
     "rehype-shiki": "^0.0.7",
     "ts-node": "^8.6.2",
-    "ts-twoslasher": "*",
+    "@typescript/twoslash": "*",
     "typescript": "*",
     "typescript-playground": "*",
     "typescript-sandbox": "*",

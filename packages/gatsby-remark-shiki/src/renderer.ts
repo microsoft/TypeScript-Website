@@ -2,7 +2,7 @@
 
 type Lines = import('shiki').IThemedToken[][]
 type Options = import('shiki/dist/renderer').HtmlRendererOptions
-type TwoSlash = import('ts-twoslasher').TwoSlashReturn
+type TwoSlash = import('@typescript/twoslash').TwoSlashReturn
 
 import { stripHTML, createHighlightedString2 } from './utils'
 

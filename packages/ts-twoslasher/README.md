@@ -8,10 +8,6 @@ to create examples for bugs on the compiler's issue tracker.
 
 You can preview twoslash on the TypeScript website here: https://typescriptlang.org/dev/twoslash
 
-### TODO
-
-- Ship to npm
-
 ### What is Twoslash?
 
 It might be easier to show instead of telling, here is an example of code from the TypeScript handbook. We'll use
@@ -495,7 +491,7 @@ The API is one main exported function:
  * @param extension For example: "ts", "tsx", "typescript", "javascript" or "js".
  * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd.
  * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd.
- * @param fsMap An optional Map object which is passed into typescript-vfs - if you are using twoslash on the
+ * @param fsMap An optional Map object which is passed into @typescript/vfs - if you are using twoslash on the
  *              web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
  */
 export function twoslasher(
@@ -507,7 +503,7 @@ export function twoslasher(
 ): TwoSlashReturn
 ```
 
-Which returns
+Which returns:
 
 ```ts
 export interface TwoSlashReturn {

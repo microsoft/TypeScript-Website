@@ -275,7 +275,7 @@ export const createTypeScriptSandbox = (
     monaco,
     /** Gets a monaco-typescript worker, this will give you access to a language server. Note: prefer this for language server work because it happens on a webworker . */
     getWorkerProcess,
-    /** A copy of require("typescript-vfs") this can be used to quickly set up an in-memory compiler runs for ASTs, or to get complex language server results (anything above has to be serialized when passed)*/
+    /** A copy of require("@typescript/vfs") this can be used to quickly set up an in-memory compiler runs for ASTs, or to get complex language server results (anything above has to be serialized when passed)*/
     tsvfs,
     /** Get all the different emitted files after TypeScript is run */
     getEmitResult,
