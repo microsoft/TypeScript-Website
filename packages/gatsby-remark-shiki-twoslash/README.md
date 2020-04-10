@@ -5,10 +5,9 @@ syntax highlighting. This part is basically the same as [gatsby-remark-shiki](ht
 
 Why Shiki? Shiki uses the same syntax highlighter engine as VS Code, which means no matter how complex your code is - it will syntax highlight correctly.
 
-This module adds opt-in [@typescript/twoslash](https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher)
-rendering for TypeScript code blocks.
+In addition to all the languages shiki handles ([it's a lot](https://github.com/octref/shiki/blob/master/packages/languages/README.md#literal-values)), this module adds opt-in [@typescript/twoslash](https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher) rendering for TypeScript code blocks.
 
-This powers the code samples on the TypeScript website.
+This module powers the code samples on the TypeScript website.
 
 ![](https://user-images.githubusercontent.com/49038/78996047-ca7be880-7b11-11ea-9e6e-fa7ea8854993.png)
 
