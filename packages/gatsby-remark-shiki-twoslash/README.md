@@ -8,9 +8,9 @@ Why Shiki? Shiki uses the same syntax highlighter engine as VS Code, which means
 This module adds opt-in [@typescript/twoslash](https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher)
 rendering for TypeScript code blocks.
 
-It's what powers the code samples on the TypeScript website.
+This powers the code samples on the TypeScript website.
 
-![](./screenshots/twoslash-site.png)
+![](https://user-images.githubusercontent.com/49038/78996047-ca7be880-7b11-11ea-9e6e-fa7ea8854993.png)
 
 With a bit of work you can explain complicated code in a way that lets people introspect at their own pace.
 
@@ -18,7 +18,7 @@ With a bit of work you can explain complicated code in a way that lets people in
 
 #### Express Setup
 
-[Read this PR](https://github.com/orta/gatsby-twoslash-shiki-blog/pull/1) and apply the same to your project
+[Read this PR](https://github.com/orta/gatsby-twoslash-shiki-blog/pull/1) and apply the same to your project.
 
 #### Setup
 
