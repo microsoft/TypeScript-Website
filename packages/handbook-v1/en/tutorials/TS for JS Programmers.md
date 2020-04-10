@@ -38,7 +38,7 @@ Here is an example of creating an object which has an inferred type which includ
 ```ts twoslash
 const user = {
   name: "Hayes",
-  id: 0
+  id: 0,
 };
 ```
 
@@ -61,7 +61,7 @@ interface User {
 // ---cut---
 const user: User = {
   name: "Hayes",
-  id: 0
+  id: 0,
 };
 ```
 
@@ -76,7 +76,7 @@ interface User {
 
 const user: User = {
   username: "Hayes",
-  id: 0
+  id: 0,
 };
 ```
 
@@ -256,7 +256,7 @@ const rect = { x: 33, y: 3, width: 30, height: 80 };
 printPoint(rect); // prints "33, 3"
 
 const color = { hex: "#187ABF" };
-// Errors: Argument of type '{ hex: string; }' is not assignable to parameter of type 'Point'.
+
 printPoint(color);
 ```
 
