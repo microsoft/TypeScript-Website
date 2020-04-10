@@ -12,7 +12,7 @@ const oneOverMax = 9007199254740992
 const oneBelowMin = -9007199254740992
 
 // このサイズの数値を扱うための解決策は、
-// これらの数値を、number の代わりに BigInts に変換することです: 
+// これらの数値を、number の代わりに BigInts に変換することです:
 //
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
 

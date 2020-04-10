@@ -1,36 +1,31 @@
 //// { compiler: {  noImplicitAny: false }, order: 2 }
 
-// With 3.7 TypeScript's existing 'infer from usage'
-// code fix became smarter. It will now use a list of
-// known important types (string, number, array, Promise)
-// and infer whether the usage of a type matches the API
-// of these objects.
+// 3.7 で TypeScript 既存の「使用状況からの推論」によるコード修正はよりスマートになりました。
+// 既知の重要な型 (string, number, array, Promise) のリストを用いて、
+// 型の使用方法がこれらのオブジェクトのAPIと一致するかどうかを推論する様になりました。
 
-// For the next few examples, select the parameters of
-// the functions, click the light bulb and choose
-// "Infer Parameter types..."
+// 次のいくつかの例では、関数のパラメータを選択し、電球をクリックして "Infer Parameter types..." を選択してください。
 
-// Infer a number array:
+// 数値配列の推論:
 
 function pushNumber(arr) {
   arr.push(12)
 }
 
-// Infer a promise:
+// promiseの推論:
 
 function awaitPromise(promise) {
   promise.then(value => console.log(value))
 }
 
-// Infer the function, and it's return type:
+// 関数とその戻り値の型の推論:
 
 function inferAny(app) {
   const result = app.use('hi')
   return result
 }
 
-// Infer a string array because a string
-// was added to it:
+// 文字列配列に文字列が追加された為、文字列配列を推論します:
 
 function insertString(names) {
   names[1] = 'hello'
