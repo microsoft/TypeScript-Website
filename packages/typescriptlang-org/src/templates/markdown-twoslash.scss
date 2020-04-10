@@ -59,8 +59,7 @@ pre {
   .error,
   .error-behind {
     margin-left: -20px;
-    margin-right: -12px;
-    margin-top: 4px;
+    margin-top: 8px;
     margin-bottom: 4px;
     padding: 6px;
     padding-left: 14px;
@@ -73,12 +72,16 @@ pre {
     position: absolute;
     background-color: #ffeeee;
     border-left: 2px solid #bf1818;
-    width: 100%;
+    width: calc(100% - 14px);
 
     // Give the space to the error code
     display: flex;
     align-items: center;
     color: black;
+
+    .code {
+      display: none;
+    }
   }
 
   .error-behind {
@@ -114,17 +117,13 @@ pre:hover data-lsp {
 }
 
 /** The tooltip-like which provides the LSP response */
-.hover-info {
-  background-color: #555;
+#twoslash-mouse-hover-info {
+  background-color: rgb(63, 63, 63);
   color: #fff;
   text-align: left;
-  padding: 5px 2px;
+  padding: 5px 8px;
   border-radius: 2px;
   font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+  font-size: 14px;
   white-space: pre-wrap;
-}
-
-#mouse-hover-info {
-  position: absolute;
-  z-index: 1;
 }

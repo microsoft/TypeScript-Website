@@ -6,13 +6,13 @@ import { toMatchFile } from 'jest-file-snapshot'
 import { format } from 'prettier'
 import gatsbyRemarkShiki from '../src/index'
 const remark = require('remark')
-const gatsbyTwoSlash = require('gatsby-remark-twoslasher-code-blocks')
+// const gatsbyTwoSlash = require('gatsby-remark-shiki-twoslasher')
 import { Node } from 'unist'
 expect.extend({ toMatchFile })
 
 const getHTML = async (code: string, settings?: any) => {
   const markdownAST: Node = remark().parse(code)
-  gatsbyTwoSlash({ markdownAST })
+  // gatsbyTwoSlash({ markdownAST })
   await gatsbyRemarkShiki({ markdownAST }, settings)
 
   // @ts-ignore

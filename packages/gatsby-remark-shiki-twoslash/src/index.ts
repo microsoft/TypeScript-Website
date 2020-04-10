@@ -56,14 +56,7 @@ type RichNode = Node & {
 const visitor = (node: RichNode) => {
   let lang = node.lang
 
-  // Run twoslash and replace the main contents if
-  // the ``` has 'twoslash' after it
-  if (node.meta && node.meta.includes('twoslash')) {
-    const results = twoslasher(node.value, node.lang)
-    node.value = results.code
-    node.lang = results.extension as TLang
-    node.twoslash = results
-  }
+  runTwoSlashOnNode(node)
 
   // Shiki doesn't respect json5 as an input, so switch it
   // to json, which can handle comments in the syntax highlight
@@ -91,5 +84,19 @@ const remarkShiki = async function ({ markdownAST }: any, settings: any) {
   await getHighlighterObj(settings)
   visit(markdownAST, 'code', visitor)
 }
+
+export const runTwoSlashOnNode = (node: RichNode) => {
+  // Run twoslash and replace the main contents if
+  // the ``` has 'twoslash' after it
+  if (node.meta && node.meta.includes('twoslash')) {
+    const results = twoslasher(node.value, node.lang)
+    node.value = results.code
+    node.lang = results.extension as TLang
+    node.twoslash = results
+  }
+}
+
+/** Does a twoslash  */
+export const runTwoSlashAcrossDocument = ({ markdownAST }: any) => visit(markdownAST, 'code', runTwoSlashOnNode)
 
 export default remarkShiki
