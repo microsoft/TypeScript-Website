@@ -380,11 +380,11 @@ That means that indexing with `100` (a `number`) is the same thing as indexing w
 ```ts twoslash
 // @errors: 2413
 // @strictPropertyInitialization: false
-class Animal {
+interface Animal {
   name: string;
 }
 
-class Dog extends Animal {
+interface Dog extends Animal {
   breed: string;
 }
 
