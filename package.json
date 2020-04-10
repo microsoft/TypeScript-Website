@@ -36,12 +36,6 @@
     "clean": "yarn workspace typescriptlang-org gatsby clean",
     "test": "CI=true yarn workspaces run test"
   },
-  "prettier": {
-    "printWidth": 120,
-    "semi": false,
-    "singleQuote": true,
-    "trailingComma": "es5"
-  },
   "dependencies": {
     "serve-handler": "^6.1.2"
   },

@@ -16,7 +16,7 @@ export const extractTwoSlashComplierOptions = (ts: TS) => (code: string) => {
   const codeLines = code.split('\n')
   const options = {} as any
 
-  codeLines.forEach(line => {
+  codeLines.forEach((line) => {
     let match
     if ((match = booleanConfigRegexp.exec(line))) {
       options[match[1]] = true
@@ -40,7 +40,7 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
           break
 
         case 'list':
-          opts[opt.name] = value.split(',').map(v => parsePrimitive(v, opt.element!.type as string))
+          opts[opt.name] = value.split(',').map((v) => parsePrimitive(v, opt.element!.type as string))
           break
 
         default:
@@ -56,7 +56,10 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
     }
   }
 
-  throw new Error(`No compiler setting named '${name}' exists!`)
+  // Skip the note of errors
+  if (name !== 'errors') {
+    throw new Error(`No compiler setting named '${name}' exists!`)
+  }
 }
 
 export function parsePrimitive(value: string, type: string): any {

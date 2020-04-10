@@ -1,31 +1,30 @@
 import React, { useEffect } from "react"
 import ReactDOM from "react-dom"
-import { Layout } from "../components/layout"
+import { Layout } from "../../components/layout"
 import { withPrefix, graphql } from "gatsby"
-import { PlayQuery } from "../__generated__/gatsby-types"
+import { BugWorkbenchQuery } from "../../__generated__/gatsby-types"
 
-import "./play.scss"
-import { RenderExamples } from "../components/ShowExamples"
+import "../../templates/play.scss"
+import { RenderExamples } from "../../components/ShowExamples"
 
 import { useIntl } from "react-intl";
-import { createInternational } from "../lib/createInternational"
-import { headCopy } from "../copy/en/head-seo"
-import { playCopy } from "../copy/en/playground"
+import { createInternational } from "../../lib/createInternational"
+import { headCopy } from "../../copy/en/head-seo"
+import { playCopy } from "../../copy/en/playground"
 
-import { Intl } from "../components/Intl"
+import { Intl } from "../../components/Intl"
 
-import playgroundReleases from "../../../sandbox/src/releases.json"
+import playgroundReleases from "../../../../sandbox/src/releases.json"
+import { workbenchHelpPlugin } from "../../components/workbench/plugins/help"
+import { workbenchResultsPlugin } from "../../components/workbench/plugins/results"
+import { workbenchEmitPlugin } from "../../components/workbench/plugins/emits"
+import { workbenchAssertionsPlugin } from "../../components/workbench/plugins/assertions"
 
 // This gets set by the playground
 declare const playground: ReturnType<typeof import("typescript-playground").setupPlayground>
 
 type Props = {
-  data: PlayQuery
-  pageContext: {
-    lang: string
-    examplesTOC: typeof import("../../static/js/examples/en.json")
-    optionsSummary: any // this is just passed through to the playground JS library at this point
-  }
+  data: BugWorkbenchQuery
 }
 
 const Play: React.FC<Props> = (props) => {
@@ -51,7 +50,7 @@ const Play: React.FC<Props> = (props) => {
       const params = new URLSearchParams(location.search)
       // nothing || Nightly -> next || original ts param
       const supportedVersion = !params.get("ts") ? undefined : params.get("ts") === "Nightly" ? "next" : params.get("ts")
-      const tsVersion = supportedVersion || playgroundReleases.versions.sort().pop()
+      const tsVersion = supportedVersion || "next"
 
       // @ts-ignore
       const re = global.require
@@ -93,9 +92,16 @@ const Play: React.FC<Props> = (props) => {
         }, main, ts)
 
         const playgroundConfig = {
-          lang: props.pageContext.lang,
+          lang: "en",
           prefix: withPrefix("/"),
-          supportCustomPlugins: true
+          supportCustomPlugins: false,
+          plugins: [
+            workbenchAssertionsPlugin,
+            workbenchResultsPlugin,
+            workbenchEmitPlugin,
+            workbenchHelpPlugin,
+
+          ]
         }
 
         playground.setupPlayground(sandboxEnv, main, playgroundConfig, i as any, React)
@@ -123,49 +129,12 @@ const Play: React.FC<Props> = (props) => {
 
 
   return (
-    <Layout title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+    <Layout title={i("head_playground_title")} description={i("head_playground_description")} lang="en" allSitePage={props.data.allSitePage}>
       {/** This is the top nav, which is outside of the editor  */}
       <nav className="navbar-sub">
         <ul className="nav">
-          <li className="name hide-small"><span>Playground</span></li>
+          <li className="name hide-small"><span>Bug Workbench</span></li>
 
-          <li className="dropdown">
-            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_config")} <span className="caret"></span></a>
-            <ul className="examples-dropdown">
-              <h3>{i("play_subnav_config")}</h3>
-              <div className="info" id="config-container">
-                <button className="examples-close">{i("play_subnav_examples_close")}</button>
-
-                <div id="compiler-dropdowns">
-                  <label className="select">
-                    <span className="select-label">Lang</span>
-                    <select id="language-selector">
-                      <option>TypeScript</option>
-                      <option>JavaScript</option>
-                    </select>
-                    <span className="compiler-flag-blurb">{i("play_config_language_blurb")}</span>
-                  </label>
-                </div>
-
-              </div>
-            </ul>
-          </li>
-
-          <li className="dropdown">
-            <a href="#" id="examples-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_examples")} <span className="caret"></span></a>
-            <ul className="examples-dropdown" id="examples" >
-              <button className="examples-close">{i("play_subnav_examples_close")}</button>
-              <RenderExamples defaultSection="JavaScript" sections={["JavaScript", "TypeScript"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
-            </ul>
-          </li>
-
-          <li className="dropdown">
-            <a href="#" id="whatisnew-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_whatsnew")} <span className="caret"></span></a>
-            <ul className="examples-dropdown" id="whatisnew">
-              <button className="examples-close">{i("play_subnav_examples_close")}</button>
-              <RenderExamples defaultSection="3.8" sections={["3.8", "3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
-            </ul>
-          </li>
         </ul>
 
         <ul className="nav navbar-nav navbar-right hidden-xs">
@@ -200,23 +169,8 @@ const Play: React.FC<Props> = (props) => {
                   <a href="#">{i("play_downloading_version")}... <span className="caret" /></a>
                   <ul className="dropdown-menu versions"></ul>
                 </li>
-                <li><a id="run-button" href="#">{i("play_toolbar_run")}</a></li>
+                { /* <li><a id="run-button" href="#">{i("play_toolbar_run")}</a></li> */}
 
-                <li className="dropdown">
-                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_toolbar_export")} <span className="caret"></span></a>
-                  <ul className="dropdown-menu">
-                    <li><a href="#" onClick={() => playground.exporter.reportIssue()} >{i("play_export_report_issue")}</a></li>
-                    <li role="separator" className="divider"></li>
-                    <li><a href="#" onClick={() => playground.exporter.copyAsMarkdownIssue()} >{i("play_export_copy_md")}</a></li>
-                    <li><a href="#" onClick={() => playground.exporter.copyForChat()} >{i("play_export_copy_link")}</a></li>
-                    < li > <a href="#" onClick={() => playground.exporter.copyForChatWithPreview()} >{i("play_export_copy_link_preview")}</a></li>
-                    < li role="separator" className="divider" ></li>
-                    <li><a href="#" onClick={() => playground.exporter.openInTSAST()} >{i("play_export_tsast")}</a></li>
-                    <li role="separator" className="divider"></li>
-                    <li><a href="#" onClick={() => playground.exporter.openProjectInCodeSandbox()}>{i("play_export_sandbox")}</a></li>
-                    <li><a href="#" onClick={() => playground.exporter.openProjectInStackBlitz()}>{i("play_export_stackblitz")}</a></li>
-                  </ul>
-                </li>
               </ul>
               <ul className="right">
                 <li><a id="sidebar-toggle" aria-label="Hide Sidebar" href="#">&#x21E5;</a></li>
@@ -232,10 +186,10 @@ const Play: React.FC<Props> = (props) => {
 }
 
 
-export default (props: Props) => <Intl locale={props.pageContext.lang}><Play {...props} /></Intl>
+export default (props: Props) => <Intl locale="en"><Play {...props} /></Intl>
 
 export const query = graphql`
-  query Play {
+  query BugWorkbench {
     ...AllSitePage
   }
 `
