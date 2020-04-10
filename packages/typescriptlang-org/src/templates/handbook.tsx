@@ -18,6 +18,7 @@ import { createInternational } from "../lib/createInternational"
 import { useIntl } from "react-intl"
 import { createIntlLink } from "../components/IntlLink"
 import { handbookCopy } from "../copy/en/handbook"
+import { PageAttribution } from "../components/handbook/PageAttribution"
 
 type Props = {
   pageContext: any
@@ -137,6 +138,8 @@ const HandbookTemplate: React.FC<Props> = (props) => {
           </article>
 
           <NextPrev next={props.data.next as any} prev={props.data.prev as any} i={i} IntlLink={IntlLink as any} />
+
+          <PageAttribution i={i} IntlLink={IntlLink as any} />
 
         </div>
       </section>
