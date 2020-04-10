@@ -201,28 +201,28 @@ app.get('/', function (req, res) {
 
 const Typos = () => {
   const js = `
-const response ={
+const response = {
   data: {
     artworks: [
       { title: "Salvator Mundi" },
-      { title: "The Starry Night" }
+      { title: "The Starry Night" },
     ]
   }
-}
+};
 
 const artworks = response.data.artworks
 console.log(artworks[0].name)
   `
 
   const ts = `
-const response ={
+const response = {
   data: {
     artworks: [
       { title: "Salvator Mundi" },
-      { title: "The Starry Night" }
+      { title: "The Starry Night" },
     ]
   }
-}
+};
 
 const artworks = response.data.artworks
 console.log(artworks[0].<span class='underline-error'>name</span>)

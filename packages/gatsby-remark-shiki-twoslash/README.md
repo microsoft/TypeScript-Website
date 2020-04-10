@@ -40,7 +40,9 @@ With a bit of work you can explain complicated code in a way that lets people in
 
 1. **Add the CSS**
 
-   This CSS comes from the [TypeScript website's scss](https://github.com/microsoft/TypeScript-website/blob/e527c2a3fec107244d7b30a2f162cf3958a3cba3/packages/typescriptlang-org/src/templates/markdown-twoslash.scss)
+   This CSS comes from the [TypeScript website's scss](https://github.com/microsoft/TypeScript-website/blob/v2/packages/typescriptlang-org/src/templates/markdown-twoslash.scss)
+
+   You should consider it a base to work from, rather than a perfect for every project reference.
 
    ```css
    pre {
@@ -126,8 +128,53 @@ With a bit of work you can explain complicated code in a way that lets people in
    }
    ```
 
-1. **Add the HTML + JS** for hover info
+1. **Add the JS** for hover info to your component:
 
-```html
+   ```jsx
+   import React, { useEffect } from "react"
+   import { setupTwoslashHovers } from "gatsby-remark-shiki-twoslash/dom";
 
+   export default () => {
+     // Add a the hovers
+     useEffect(setupTwoslashHovers, [])
+
+       // Normal JSX
+     return </>
+   }
+   ```
+
+### Verify
+
+With that set up, start up your server and add a codeblock to a markdown file to see if it renders with highlights:
+
+<pre>```json
+{ "json": true }
+```</pre>
+
+If that works, then add a twoslash example:
+
+<pre>```ts twoslash
+interface IdLabel {id: number, /* some fields */ }
+interface NameLabel {name: string, /* other fields */ }
+type NameOrId<T extends number | string> = T extends number ? IdLabel : NameLabel;
+// This comment should not be included
+
+// ---cut---
+function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {
+  throw "unimplemented"
+}
+
+let a = createLabel("typescript");`
+```</pre>
+
+If the code sample shows as
+
+```ts
+function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {
+  throw 'unimplemented'
+}
+
+let a = createLabel('typescript')
 ```
+
+Then it worked, and you should be able to hover over `createLabel` to see it's types.

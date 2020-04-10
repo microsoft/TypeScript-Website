@@ -1,3 +1,4 @@
+// Gets the position of an element relative to the whole page
 const getAbsoluteElementPos = (element: HTMLElement) => {
   const bodyRect = document.body.getBoundingClientRect()
   const elemRect = element.getBoundingClientRect()
