@@ -13,7 +13,7 @@
   "scripts": {
     "start": "tsdx watch",
     "prepublishOnly": "yarn build",
-    "build": "tsdx build; yarn tsc src/dom.ts --outDir dist",
+    "build": "tsdx build && yarn tsc src/dom.ts --outDir dist",
     "bootstrap": "echo 'NOOP'",
     "test": "tsdx test",
     "lint": "tsdx lint"

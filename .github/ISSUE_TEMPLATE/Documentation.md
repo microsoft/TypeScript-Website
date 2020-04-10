@@ -3,7 +3,6 @@ name: Documentation Issue
 about: Report an issue with documentation
 title: 'Docs: '
 labels: 'Docs'
-assignees: '@orta'
 ---
 
 <!--

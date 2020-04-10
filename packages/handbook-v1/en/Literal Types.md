@@ -33,7 +33,8 @@ The process of going from an infinite number of potential cases (there are an in
 In practice string literal types combine nicely with union types, type guards, and type aliases.
 You can use these features together to get enum-like behavior with strings.
 
-```ts
+```ts twoslash
+// @errors: 2345
 type Easing = "ease-in" | "ease-out" | "ease-in-out";
 
 class UIElement {
@@ -43,14 +44,15 @@ class UIElement {
     } else if (easing === "ease-out") {
     } else if (easing === "ease-in-out") {
     } else {
-      // error! should not pass null or undefined.
+      // It's possible that someone could reach this
+      // by ignoring your types though.
     }
   }
 }
 
 let button = new UIElement();
 button.animate(0, 0, "ease-in");
-button.animate(0, 0, "uneasy"); // error: "uneasy" is not allowed here
+button.animate(0, 0, "uneasy");
 ```
 
 You can pass any of the three allowed strings, but any other string will give the error
@@ -72,18 +74,27 @@ function createElement(tagName: string): Element {
 
 # Numeric Literal Types
 
-TypeScript also has numeric literal types.
+TypeScript also has numeric literal types, which act the same as the string literals above.
 
-```ts
+```ts twoslash
 function rollDice(): 1 | 2 | 3 | 4 | 5 | 6 {
-  // ...
+  return (Math.floor(Math.random() * 5) + 1) as 1 | 2 | 3 | 4 | 5 | 6;
 }
+
+const result = rollDice();
 ```
 
-Another common case might be when describing config values:
+A common case for their use is for describing config values:
 
-```ts
-interface GameConfig {
+```ts twoslash
+/** Creates a map centered at loc/lat */
+declare function setupMap(config: MapConfig): void;
+// ---cut---
+interface MapConfig {
+  lng: number;
+  lat: number;
   tileSize: 8 | 16 | 32;
 }
+
+setupMap({ lng: -73.935242, lat: 40.73061, tileSize: 16 });
 ```
