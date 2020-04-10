@@ -1,4 +1,4 @@
-# TypeScript TwoSlasher
+# TypeScript TwoSlash
 
 A markup format for TypeScript code, ideal for creating self-contained code samples which let the TypeScript compiler do the extra leg-work. Inspired
 by the [fourslash test system](https://github.com/orta/typescript-notes/blob/master/systems/testing/fourslash.md).

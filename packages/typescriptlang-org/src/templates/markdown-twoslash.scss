@@ -13,13 +13,6 @@ pre {
   background-color: white;
   color: black;
 
-  // These are somewhat redundant in this codebase, but relevant for everyone else
-  /** Style setup */
-  font-size: 16px;
-  line-height: 20px;
-  font-family: "Jet Brains Mono", Menlo, Monaco, Consolas, Courier New,
-    monospace;
-
   /* Give it some space to breathe */
   padding: 12px;
 
@@ -48,6 +41,13 @@ pre {
 
   /* Handle scrolling, and showing code correctly */
   code {
+    // These are somewhat redundant in this codebase, but relevant for everyone else
+    /** Style setup */
+    font-size: 16px;
+    line-height: 20px;
+    font-family: "Jet Brains Mono", Menlo, Monaco, Consolas, Courier New,
+      monospace;
+
     white-space: pre;
     -webkit-overflow-scrolling: touch;
   }
