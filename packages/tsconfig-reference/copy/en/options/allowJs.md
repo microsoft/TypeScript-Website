@@ -5,14 +5,14 @@ oneline: "Let TS include .JS files in imports"
 
 Allow JavaScript files to be imported inside your project, instead of just `.ts` and `.tsx` files. For example, this JS file:
 
-```js twoslasher
+```js twoslash
 // @filename: card.js
 export const defaultCardDeck = "Heart";
 ```
 
 When imported into a TypeScript file will raise an error:
 
-```ts twoslasher
+```ts twoslash
 // @errors: 2307
 // @filename: card.js
 module.exports.defaultCardDeck = "Heart";
@@ -25,7 +25,7 @@ console.log(defaultCardDeck);
 
 Imports fine with `allowJs` enabled:
 
-```ts twoslasher
+```ts twoslash
 // @filename: card.js
 module.exports.defaultCardDeck = "Heart";
 // ---cut---

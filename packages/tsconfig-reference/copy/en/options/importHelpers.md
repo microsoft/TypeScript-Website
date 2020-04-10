@@ -32,7 +32,7 @@ export function fn(arr: number[]) {
 
 Then turning on both [`downlevelIteration`](#downlevelIteration) and `importHelpers`:
 
-```ts twoslasher
+```ts twoslash
 // @showEmit
 // @target: ES5
 // @downleveliteration

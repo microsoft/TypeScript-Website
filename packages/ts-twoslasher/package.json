@@ -1,10 +1,10 @@
 {
-  "name": "ts-twoslasher",
-  "version": "0.1.0",
+  "name": "@typescript/twoslash",
+  "version": "0.2.0",
   "license": "MIT",
   "author": "TypeScript team",
   "main": "dist/index.js",
-  "module": "dist/ts-twoslasher.esm.js",
+  "module": "dist/twoslash.esm.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist"
@@ -12,7 +12,7 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build && yarn readme",
-    "bootstrap": "yarn workspace typescript-vfs run build && yarn build",
+    "bootstrap": "yarn workspace @typescript/vfs run build && yarn build",
     "readme": "yarn md-magic README.md --config ./scripts/inline-results.js && yarn prettier README.md --write",
     "test": "tsdx test",
     "lint": "tsdx lint"
@@ -41,6 +41,6 @@
   "dependencies": {
     "debug": "^4.1.1",
     "lz-string": "^1.4.4",
-    "typescript-vfs": "0.1.0"
+    "@typescript/vfs": "^1.0.0"
   }
 }

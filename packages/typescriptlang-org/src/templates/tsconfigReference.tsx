@@ -12,7 +12,7 @@ import "./markdown.scss"
 import "./tsconfig.scss"
 
 import { TSConfigReferenceTemplateQuery } from "../__generated__/gatsby-types"
-import { setupHandbookHovers } from "./handbook-lsp-hover";
+import { setupTwoslashHovers } from "gatsby-remark-shiki-twoslash/dist/dom"
 
 
 type Props = { pageContext: any, data: TSConfigReferenceTemplateQuery, path: string }
@@ -68,7 +68,7 @@ const TSConfigReferenceTemplateComponent = (props) => {
     // Handles setting the scroll 
     window.addEventListener("scroll", updateSidebar, { passive: true, capture: true });
     updateSidebar()
-    setupHandbookHovers()
+    setupTwoslashHovers()
 
     return () => {
       window.removeEventListener("scroll", updateSidebar)
@@ -96,7 +96,6 @@ const TSConfigReferenceTemplateComponent = (props) => {
 
         <div className="indent">
           <div dangerouslySetInnerHTML={{ __html: post.html! }} />
-          <div id="mouse-hover-info" className="hover-info" style={{ display: "none" }} />
         </div>
       </div>
     </Layout>

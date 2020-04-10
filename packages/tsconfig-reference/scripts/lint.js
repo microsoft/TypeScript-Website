@@ -9,10 +9,11 @@ const { readdirSync, readFileSync } = require("fs");
 const { join } = require("path");
 
 const remark = require("remark");
-const remarkTwoSlash = require("gatsby-remark-twoslasher-code-blocks");
+const remarkTwoSlash = require("gatsby-remark-shiki-twoslash");
+
 const { read } = require("gray-matter");
 
-const languages = readdirSync(join(__dirname, "..", "copy")).filter(f => !f.startsWith("."));
+const languages = readdirSync(join(__dirname, "..", "copy")).filter((f) => !f.startsWith("."));
 
 console.log("Linting the sample code which uses twoslasher in ts-config");
 
@@ -21,12 +22,12 @@ const filterString = process.argv[2] ? process.argv[2] : "";
 
 const errorReports = [];
 
-languages.forEach(lang => {
+languages.forEach((lang) => {
   const locale = join(__dirname, "..", "copy", lang);
-  const options = readdirSync(join(locale, "options")).filter(f => !f.startsWith("."));
+  const options = readdirSync(join(locale, "options")).filter((f) => !f.startsWith("."));
   console.log("\n\nLanguage: " + chalk.bold(lang) + "\n");
 
-  options.forEach(option => {
+  options.forEach((option) => {
     if (filterString.length && !option.includes(filterString)) return;
 
     const optionPath = join(locale, "options", option);
@@ -36,7 +37,7 @@ languages.forEach(lang => {
     let hasError = false;
 
     try {
-      remarkTwoSlash({ markdownAST });
+      remarkTwoSlash.runTwoSlashAcrossDocument({ markdownAST });
     } catch (error) {
       hasError = true;
       errorReports.push({ path: optionPath, error });
@@ -65,7 +66,7 @@ languages.forEach(lang => {
 if (errorReports.length) {
   process.exitCode = 1;
 
-  errorReports.forEach(err => {
+  errorReports.forEach((err) => {
     console.log(`\n> ${chalk.bold.red(err.path)}\n`);
     err.error.stack = undefined;
     console.log(err.error);

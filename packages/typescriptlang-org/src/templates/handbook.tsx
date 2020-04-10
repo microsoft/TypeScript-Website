@@ -11,13 +11,14 @@ import slugger from "github-slugger"
 
 import "./handbook.scss"
 import "./markdown.scss"
-import { setupHandbookHovers } from "./handbook-lsp-hover"
+
 import { NextPrev } from "../components/handbook/NextPrev"
 import { idFromURL } from "../../lib/bootup/ingestion/createPagesForOldHandbook"
 import { createInternational } from "../lib/createInternational"
 import { useIntl } from "react-intl"
 import { createIntlLink } from "../components/IntlLink"
 import { handbookCopy } from "../copy/en/handbook"
+import { setupTwoslashHovers } from "gatsby-remark-shiki-twoslash/dist/dom"
 
 type Props = {
   pageContext: any
@@ -83,7 +84,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
     // Sets current selection
     updateSidebar()
 
-    setupHandbookHovers()
+    setupTwoslashHovers()
 
     return () => {
       window.removeEventListener("scroll", updateSidebar)
@@ -116,7 +117,6 @@ const HandbookTemplate: React.FC<Props> = (props) => {
           <article>
             <div className="whitespace raised">
               <div className="markdown" dangerouslySetInnerHTML={{ __html: post.html! }} />
-              <div id="mouse-hover-info" className="hover-info" style={{ display: "none" }} />
             </div>
 
 

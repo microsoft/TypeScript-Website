@@ -185,7 +185,7 @@ app.get('/', function (req, res) {
   return (
     <div>
       <Editor title="Without TypeScript" isJS code={js} />
-      <Editor title="TypeScript" front code={ts} inline={() =>
+      <Editor title="TypeScript Powered Editor" front code={ts} inline={() =>
         (<>
           <ul className="dropdown" style={{ top: "96px", left: "78px" }}>
             <li><span className='result'><span className='result-found'>se</span>nd</span>Send a response.</li>

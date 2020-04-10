@@ -3,7 +3,6 @@ name: Website Improvement
 about: Offer a suggestion for improvement
 title: 'Idea: '
 labels: 'Idea'
-assignees: '@orta'
 ---
 
 <!--

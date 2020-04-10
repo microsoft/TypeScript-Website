@@ -1,16 +1,14 @@
 const remark = require('remark')
 import gatsbyRemarkShiki from '../src/index'
 import { join } from 'path'
-const gatsbyTwoSlash = require('gatsby-remark-twoslasher-code-blocks')
+// const gatsbyTwoSlash = require('gatsby-remark-shiki-twoslasher')
 
 const getMarkdownASTForCode = async (code: string, settings?: any) => {
   const markdownAST = remark().parse(code)
-  gatsbyTwoSlash({ markdownAST })
+  // gatsbyTwoSlash({ markdownAST })
   await gatsbyRemarkShiki({ markdownAST }, settings)
   return markdownAST
 }
-
-it('', () => {})
 
 describe('with a simple example', () => {
   const file = `

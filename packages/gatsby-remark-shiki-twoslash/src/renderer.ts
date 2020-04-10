@@ -2,7 +2,7 @@
 
 type Lines = import('shiki').IThemedToken[][]
 type Options = import('shiki/dist/renderer').HtmlRendererOptions
-type TwoSlash = import('ts-twoslasher').TwoSlashReturn
+type TwoSlash = import('@typescript/twoslash').TwoSlashReturn
 
 import { stripHTML, createHighlightedString2 } from './utils'
 
@@ -18,12 +18,14 @@ import { stripHTML, createHighlightedString2 } from './utils'
 
 // Things which make it hard:
 //
-// - Twoslash results can be split
+// - Twoslash results can be cut, so sometimes there is edge cases between twoslash results
 // - Twoslash results can be multi-file
-// - the DOM requires a flattened graph of html elemtns
+// - the DOM requires a flattened graph of html elements
 //
 
 export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash) {
+  // It's a NOOP for us with twoslash, this is basically all
+  // the other languages
   if (!twoslash) {
     return plainOleShikiRenderer(lines, options)
   }

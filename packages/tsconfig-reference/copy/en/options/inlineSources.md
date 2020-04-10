@@ -17,7 +17,7 @@ console.log(helloWorld);
 
 By default converts to this JavaScript:
 
-```ts twoslasher
+```ts twoslash
 // @showEmit
 const helloWorld = "hi";
 console.log(helloWorld);
@@ -27,7 +27,7 @@ Then enable building it with `inlineSources` and `inlineSourceMap` enabled there
 a source-map for the file.
 Note that the end is different from the example in [`inlineSourceMap`](#inlineSourceMap) because the source-map now contains the original source code also.
 
-```ts twoslasher
+```ts twoslash
 // @inlineSources
 // @inlineSourceMap
 // @showEmit
