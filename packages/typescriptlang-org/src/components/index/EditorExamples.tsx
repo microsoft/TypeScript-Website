@@ -19,7 +19,7 @@ export const EditorExamples = () => {
 
   const explanations = [
     "Validate your function arguments",
-    "Document your React Props via types",respo
+    "Document your React Props via types",
     "Get completions for un-typed JavaScript code",
     "Catch typos in your editor ahead of runtime",
     "Offer instant fixes for common bugs",
