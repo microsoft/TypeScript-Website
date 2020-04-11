@@ -223,7 +223,7 @@
   }
 }
 
-// The subnav which starts with "TypeScript"
+// The subnav which starts with "Playground"
 main > nav {
   position: relative;
 
@@ -238,7 +238,8 @@ main > nav {
 
   > ul {
     li {
-      &:hover {
+      &:hover,
+      &.open {
         background-color: $ts-light-bg-grey-highlight-color;
 
         @media (prefers-color-scheme: dark) {
@@ -465,6 +466,10 @@ main #editor-toolbar {
           color: $ts-main-blue-color;
         }
       }
+    }
+
+    .playground-settings-container {
+      margin: 0;
     }
 
     pre {

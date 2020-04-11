@@ -5,6 +5,7 @@ export const playCopy = {
   play_subnav_examples: "Examples",
   play_subnav_examples_close: "Close",
   play_subnav_whatsnew: "What's New",
+  play_subnav_settings: "Settings",
   play_downloading_typescript: "Downloading TypeScript...", // when loading
   play_downloading_version: "Version...", // when loading
   play_toolbar_run: "Run",

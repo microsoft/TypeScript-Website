@@ -169,9 +169,9 @@ const Play: React.FC<Props> = (props) => {
         </ul>
 
         <ul className="nav navbar-nav navbar-right hidden-xs">
+          <li><a href="#" id="playground-settings">Settings</a></li>
 
           {/**
-            <li><a href="#">About</a></li>
             <li><a href="https://github.com/microsoft/typescript-website">GitHub</a></li>
             <li className="dropdown">
               <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Theme <span className="caret"></span></a>

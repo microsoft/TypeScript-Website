@@ -21,9 +21,10 @@ import { getExampleSourceCode } from "./getExample"
 import { ExampleHighlighter } from "./monaco/ExampleHighlight"
 import { createConfigDropdown, updateConfigDropdownForCompilerOptions } from "./createConfigDropdown"
 import { showErrors } from "./sidebar/showErrors"
-import { optionsPlugin, allowConnectingToLocalhost, activePlugins, addCustomPlugin } from "./sidebar/options"
+import { optionsPlugin, allowConnectingToLocalhost, activePlugins, addCustomPlugin } from "./sidebar/plugins"
 import { createUtils, PluginUtils } from "./pluginUtils"
 import type React from "react"
+import { settingsPlugin } from "./sidebar/settings"
 
 export { PluginUtils } from "./pluginUtils"
 
@@ -305,6 +306,35 @@ export const setupPlayground = (
   if (document.getElementById("config-container")) {
     createConfigDropdown(sandbox, monaco)
     updateConfigDropdownForCompilerOptions(sandbox, monaco)
+  }
+
+  if (document.getElementById("playground-settings")) {
+    const settingsToggle = document.getElementById("playground-settings")!
+
+    settingsToggle.onclick = () => {
+      const open = settingsToggle.parentElement!.classList.contains("open")
+      const sidebarTabs = document.querySelector(".playground-plugin-tabview") as HTMLDivElement
+      const sidebarContent = document.querySelector(".playground-plugin-container") as HTMLDivElement
+      let settingsContent = document.querySelector(".playground-settings-container") as HTMLDivElement
+      if (!settingsContent) {
+        settingsContent = document.createElement("div")
+        settingsContent.className = "playground-settings-container playground-plugin-container"
+        const settings = settingsPlugin(i, utils)
+        settings.didMount && settings.didMount(sandbox, settingsContent)
+        document.querySelector(".playground-sidebar")!.appendChild(settingsContent)
+      }
+
+      if (open) {
+        sidebarTabs.style.display = "flex"
+        sidebarContent.style.display = "block"
+        settingsContent.style.display = "none"
+      } else {
+        sidebarTabs.style.display = "none"
+        sidebarContent.style.display = "none"
+        settingsContent.style.display = "block"
+      }
+      settingsToggle.parentElement!.classList.toggle("open")
+    }
   }
 
   // Support grabbing examples from the location hash

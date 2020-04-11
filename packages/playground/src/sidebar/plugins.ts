@@ -43,24 +43,6 @@ const customPlugins = (): string[] => {
 }
 
 export const optionsPlugin: PluginFactory = (i, utils) => {
-  const settings = [
-    {
-      display: i("play_sidebar_options_disable_ata"),
-      blurb: i("play_sidebar_options_disable_ata_copy"),
-      flag: "disable-ata",
-    },
-    {
-      display: i("play_sidebar_options_disable_save"),
-      blurb: i("play_sidebar_options_disable_save_copy"),
-      flag: "disable-save-on-type",
-    },
-    // {
-    //   display: 'Verbose Logging',
-    //   blurb: 'Turn on superfluous logging',
-    //   flag: 'enable-superfluous-logging',
-    // },
-  ]
-
   const plugin: PlaygroundPlugin = {
     id: "plugins",
     displayName: i("play_sidebar_plugins"),
@@ -70,9 +52,6 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
 
       const restartReq = ds.p(i("play_sidebar_options_restart_required"))
       restartReq.id = "restart-required"
-
-      const ol = document.createElement("ol")
-      ol.className = "playground-options"
 
       ds.subtitle(i("play_sidebar_plugins_options_external"))
 
