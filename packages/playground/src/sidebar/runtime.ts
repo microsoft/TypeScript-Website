@@ -1,30 +1,30 @@
-import { PlaygroundPlugin, PluginFactory } from '..'
-import { localize } from '../localizeWithFallback'
+import { PlaygroundPlugin, PluginFactory } from ".."
+import { localize } from "../localizeWithFallback"
 
-let allLogs = ''
+let allLogs = ""
 
-export const runPlugin: PluginFactory = i => {
+export const runPlugin: PluginFactory = (i, utils) => {
   const plugin: PlaygroundPlugin = {
-    id: 'logs',
-    displayName: i('play_sidebar_logs'),
+    id: "logs",
+    displayName: i("play_sidebar_logs"),
     willMount: (sandbox, container) => {
       if (allLogs.length === 0) {
-        const noErrorsMessage = document.createElement('div')
-        noErrorsMessage.id = 'empty-message-container'
+        const noErrorsMessage = document.createElement("div")
+        noErrorsMessage.id = "empty-message-container"
         container.appendChild(noErrorsMessage)
 
-        const message = document.createElement('div')
-        message.textContent = localize('play_sidebar_logs_no_logs', 'No logs')
-        message.classList.add('empty-plugin-message')
+        const message = document.createElement("div")
+        message.textContent = localize("play_sidebar_logs_no_logs", "No logs")
+        message.classList.add("empty-plugin-message")
         noErrorsMessage.appendChild(message)
       }
 
-      const errorUL = document.createElement('div')
-      errorUL.id = 'log-container'
+      const errorUL = document.createElement("div")
+      errorUL.id = "log-container"
       container.appendChild(errorUL)
 
-      const logs = document.createElement('div')
-      logs.id = 'log'
+      const logs = document.createElement("div")
+      logs.id = "log"
       logs.innerHTML = allLogs
       errorUL.appendChild(logs)
     },
@@ -34,14 +34,14 @@ export const runPlugin: PluginFactory = i => {
 }
 
 export const runWithCustomLogs = (closure: Promise<string>, i: Function) => {
-  const noLogs = document.getElementById('empty-message-container')
+  const noLogs = document.getElementById("empty-message-container")
   if (noLogs) {
-    noLogs.style.display = 'none'
+    noLogs.style.display = "none"
   }
 
   rewireLoggingToElement(
-    () => document.getElementById('log')!,
-    () => document.getElementById('log-container')!,
+    () => document.getElementById("log")!,
+    () => document.getElementById("log-container")!,
     closure,
     true,
     i
@@ -57,44 +57,44 @@ function rewireLoggingToElement(
   autoScroll: boolean,
   i: Function
 ) {
-  fixLoggingFunc('log', 'LOG')
-  fixLoggingFunc('debug', 'DBG')
-  fixLoggingFunc('warn', 'WRN')
-  fixLoggingFunc('error', 'ERR')
-  fixLoggingFunc('info', 'INF')
+  fixLoggingFunc("log", "LOG")
+  fixLoggingFunc("debug", "DBG")
+  fixLoggingFunc("warn", "WRN")
+  fixLoggingFunc("error", "ERR")
+  fixLoggingFunc("info", "INF")
 
   closure.then(js => {
     try {
       eval(js)
     } catch (error) {
-      console.error(i('play_run_js_fail'))
+      console.error(i("play_run_js_fail"))
       console.error(error)
     }
 
-    allLogs = allLogs + '<hr />'
+    allLogs = allLogs + "<hr />"
 
-    undoLoggingFunc('log')
-    undoLoggingFunc('debug')
-    undoLoggingFunc('warn')
-    undoLoggingFunc('error')
-    undoLoggingFunc('info')
+    undoLoggingFunc("log")
+    undoLoggingFunc("debug")
+    undoLoggingFunc("warn")
+    undoLoggingFunc("error")
+    undoLoggingFunc("info")
   })
 
   function undoLoggingFunc(name: string) {
     // @ts-ignore
-    console[name] = console['old' + name]
+    console[name] = console["old" + name]
   }
 
   function fixLoggingFunc(name: string, id: string) {
     // @ts-ignore
-    console['old' + name] = console[name]
+    console["old" + name] = console[name]
     // @ts-ignore
-    console[name] = function(...objs: any[]) {
+    console[name] = function (...objs: any[]) {
       const output = produceOutput(objs)
       const eleLog = eleLocator()
-      const prefix = '[<span class="log-' + name + '">' + id + '</span>]: '
+      const prefix = '[<span class="log-' + name + '">' + id + "</span>]: "
       const eleContainerLog = eleOverflowLocator()
-      allLogs = allLogs + prefix + output + '<br>'
+      allLogs = allLogs + prefix + output + "<br>"
 
       if (eleLog && eleContainerLog) {
         if (autoScroll) {
@@ -108,14 +108,14 @@ function rewireLoggingToElement(
       }
 
       // @ts-ignore
-      console['old' + name].apply(undefined, objs)
+      console["old" + name].apply(undefined, objs)
     }
   }
 
   function produceOutput(args: any[]) {
     return args.reduce((output: any, arg: any, index) => {
-      const isObj = typeof arg === 'object'
-      let textRep = ''
+      const isObj = typeof arg === "object"
+      let textRep = ""
       if (arg && arg.stack && arg.message) {
         // special case for err
         textRep = arg.message
@@ -126,8 +126,8 @@ function rewireLoggingToElement(
       }
 
       const showComma = index !== args.length - 1
-      const comma = showComma ? "<span class='comma'>, </span>" : ''
-      return output + textRep + comma + '&nbsp;'
-    }, '')
+      const comma = showComma ? "<span class='comma'>, </span>" : ""
+      return output + textRep + comma + "&nbsp;"
+    }, "")
   }
 }

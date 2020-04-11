@@ -549,7 +549,7 @@ main #editor-toolbar {
     }
   }
 
-  #compiler-errors {
+  ul.compiler-diagnostics {
     font-family: $font-code;
     margin: 0;
     padding: 0;

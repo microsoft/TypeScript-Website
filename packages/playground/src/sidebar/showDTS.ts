@@ -1,23 +1,18 @@
-import { PlaygroundPlugin, PluginFactory } from '..'
-import { localize } from '../localizeWithFallback'
+import { PlaygroundPlugin, PluginFactory } from ".."
 
-export const showDTSPlugin: PluginFactory = i => {
+export const showDTSPlugin: PluginFactory = (i, utils) => {
   let codeElement: HTMLElement
 
   const plugin: PlaygroundPlugin = {
-    id: 'dts',
-    displayName: i('play_sidebar_dts'),
-    willMount: (sandbox, container) => {
-      // TODO: Monaco?
-      const createCodePre = document.createElement('pre')
-      codeElement = document.createElement('code')
-
-      createCodePre.appendChild(codeElement)
-      container.appendChild(createCodePre)
+    id: "dts",
+    displayName: i("play_sidebar_dts"),
+    willMount: (_, container) => {
+      const { code } = utils.createDesignSystem(container)
+      codeElement = code("")
     },
     modelChanged: (sandbox, model) => {
       sandbox.getDTSForCode().then(dts => {
-        sandbox.monaco.editor.colorize(dts, 'typescript', {}).then(coloredDTS => {
+        sandbox.monaco.editor.colorize(dts, "typescript", {}).then(coloredDTS => {
           codeElement.innerHTML = coloredDTS
         })
       })

@@ -1,10 +1,10 @@
-import { PlaygroundPlugin } from '.'
+import { PlaygroundPlugin } from "."
 
-type Sandbox = import('typescript-sandbox').Sandbox
+type Sandbox = import("typescript-sandbox").Sandbox
 
 export const createDragBar = () => {
-  const sidebar = document.createElement('div')
-  sidebar.className = 'playground-dragbar'
+  const sidebar = document.createElement("div")
+  sidebar.className = "playground-dragbar"
 
   let left: HTMLElement, right: HTMLElement
   const drag = (e: MouseEvent) => {
@@ -23,8 +23,8 @@ export const createDragBar = () => {
 
       // Save the x coordinate of the
       if (window.localStorage) {
-        window.localStorage.setItem('dragbar-x', '' + clampedOffset)
-        window.localStorage.setItem('dragbar-window-width', '' + window.innerWidth)
+        window.localStorage.setItem("dragbar-x", "" + clampedOffset)
+        window.localStorage.setItem("dragbar-window-width", "" + window.innerWidth)
       }
 
       // @ts-ignore - I know what I'm doing
@@ -36,19 +36,19 @@ export const createDragBar = () => {
     }
   }
 
-  sidebar.addEventListener('mousedown', e => {
-    left = document.getElementById('editor-container')!
-    right = sidebar.parentElement?.getElementsByClassName('playground-sidebar').item(0)! as any
+  sidebar.addEventListener("mousedown", e => {
+    left = document.getElementById("editor-container")!
+    right = sidebar.parentElement?.getElementsByClassName("playground-sidebar").item(0)! as any
     // Handle dragging all over the screen
-    document.addEventListener('mousemove', drag)
+    document.addEventListener("mousemove", drag)
     // Remove it when you lt go anywhere
-    document.addEventListener('mouseup', () => {
-      document.removeEventListener('mousemove', drag)
-      document.body.style.userSelect = 'auto'
+    document.addEventListener("mouseup", () => {
+      document.removeEventListener("mousemove", drag)
+      document.body.style.userSelect = "auto"
     })
 
     // Don't allow the drag to select text accidentally
-    document.body.style.userSelect = 'none'
+    document.body.style.userSelect = "none"
     e.stopPropagation()
     e.cancelBubble = true
   })
@@ -56,25 +56,25 @@ export const createDragBar = () => {
   return sidebar
 }
 
-export const sidebarHidden = () => !!window.localStorage.getItem('sidebar-hidden')
+export const sidebarHidden = () => !!window.localStorage.getItem("sidebar-hidden")
 
 export const createSidebar = () => {
-  const sidebar = document.createElement('div')
-  sidebar.className = 'playground-sidebar'
+  const sidebar = document.createElement("div")
+  sidebar.className = "playground-sidebar"
 
   // Start with the sidebar hidden on small screens
   const isTinyScreen = window.innerWidth < 800
 
   // This is independent of the sizing below so that you keep the same sized sidebar
   if (isTinyScreen || sidebarHidden()) {
-    sidebar.style.display = 'none'
+    sidebar.style.display = "none"
   }
 
-  if (window.localStorage && window.localStorage.getItem('dragbar-x')) {
+  if (window.localStorage && window.localStorage.getItem("dragbar-x")) {
     // Don't restore the x pos if the window isn't the same size
-    if (window.innerWidth === Number(window.localStorage.getItem('dragbar-window-width'))) {
+    if (window.innerWidth === Number(window.localStorage.getItem("dragbar-window-width"))) {
       // Set the dragger to the previous x pos
-      let width = window.localStorage.getItem('dragbar-x')
+      let width = window.localStorage.getItem("dragbar-x")
 
       if (isTinyScreen) {
         width = String(Math.min(Number(width), 280))
@@ -84,7 +84,7 @@ export const createSidebar = () => {
       sidebar.style.flexBasis = `${width}px`
       sidebar.style.maxWidth = `${width}px`
 
-      const left = document.getElementById('editor-container')!
+      const left = document.getElementById("editor-container")!
       left.style.width = `calc(100% - ${width}px)`
     }
   }
@@ -92,30 +92,30 @@ export const createSidebar = () => {
   return sidebar
 }
 
-const toggleIconWhenOpen = '&#x21E5;'
-const toggleIconWhenClosed = '&#x21E4;'
+const toggleIconWhenOpen = "&#x21E5;"
+const toggleIconWhenClosed = "&#x21E4;"
 
 export const setupSidebarToggle = () => {
-  const toggle = document.getElementById('sidebar-toggle')!
+  const toggle = document.getElementById("sidebar-toggle")!
 
   const updateToggle = () => {
-    const sidebar = window.document.querySelector('.playground-sidebar') as HTMLDivElement
-    const sidebarShowing = sidebar.style.display !== 'none'
+    const sidebar = window.document.querySelector(".playground-sidebar") as HTMLDivElement
+    const sidebarShowing = sidebar.style.display !== "none"
 
     toggle.innerHTML = sidebarShowing ? toggleIconWhenOpen : toggleIconWhenClosed
-    toggle.setAttribute('aria-label', sidebarShowing ? 'Hide Sidebar' : 'Show Sidebar')
+    toggle.setAttribute("aria-label", sidebarShowing ? "Hide Sidebar" : "Show Sidebar")
   }
 
   toggle.onclick = () => {
-    const sidebar = window.document.querySelector('.playground-sidebar') as HTMLDivElement
-    const newState = sidebar.style.display !== 'none'
+    const sidebar = window.document.querySelector(".playground-sidebar") as HTMLDivElement
+    const newState = sidebar.style.display !== "none"
 
     if (newState) {
-      localStorage.setItem('sidebar-hidden', 'true')
-      sidebar.style.display = 'none'
+      localStorage.setItem("sidebar-hidden", "true")
+      sidebar.style.display = "none"
     } else {
-      localStorage.removeItem('sidebar-hidden')
-      sidebar.style.display = 'block'
+      localStorage.removeItem("sidebar-hidden")
+      sidebar.style.display = "block"
     }
 
     updateToggle()
@@ -131,19 +131,19 @@ export const setupSidebarToggle = () => {
 }
 
 export const createTabBar = () => {
-  const tabBar = document.createElement('div')
-  tabBar.classList.add('playground-plugin-tabview')
+  const tabBar = document.createElement("div")
+  tabBar.classList.add("playground-plugin-tabview")
   return tabBar
 }
 
 export const createPluginContainer = () => {
-  const container = document.createElement('div')
-  container.classList.add('playground-plugin-container')
+  const container = document.createElement("div")
+  container.classList.add("playground-plugin-container")
   return container
 }
 
 export const createTabForPlugin = (plugin: PlaygroundPlugin) => {
-  const element = document.createElement('button')
+  const element = document.createElement("button")
   element.textContent = plugin.displayName
   return element
 }
@@ -163,13 +163,13 @@ export const activatePlugin = (
   }
 
   // @ts-ignore
-  if (!newPluginTab) throw new Error('Could not get a tab for the plugin: ' + plugin.displayName)
+  if (!newPluginTab) throw new Error("Could not get a tab for the plugin: " + plugin.displayName)
 
   // Tell the old plugin it's getting the boot
   // @ts-ignore
   if (previousPlugin && oldPluginTab) {
     if (previousPlugin.willUnmount) previousPlugin.willUnmount(sandbox, container)
-    oldPluginTab.classList.remove('active')
+    oldPluginTab.classList.remove("active")
   }
 
   // Wipe the sidebar
@@ -178,12 +178,12 @@ export const activatePlugin = (
   }
 
   // Start booting up the new plugin
-  newPluginTab.classList.add('active')
+  newPluginTab.classList.add("active")
 
   // Tell the new plugin to start doing some work
   if (plugin.willMount) plugin.willMount(sandbox, container)
-  if (plugin.modelChanged) plugin.modelChanged(sandbox, sandbox.getModel())
-  if (plugin.modelChangedDebounce) plugin.modelChangedDebounce(sandbox, sandbox.getModel())
+  if (plugin.modelChanged) plugin.modelChanged(sandbox, sandbox.getModel(), container)
+  if (plugin.modelChangedDebounce) plugin.modelChangedDebounce(sandbox, sandbox.getModel(), container)
   if (plugin.didMount) plugin.didMount(sandbox, container)
 
   // Let the previous plugin do any slow work after it's all done

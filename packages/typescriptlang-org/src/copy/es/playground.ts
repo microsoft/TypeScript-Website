@@ -23,15 +23,16 @@ export const playCopy = {
   play_sidebar_options_disable_save: "Deshabilita el guardado automático",
   play_sidebar_options_disable_save_copy:
     "Deshabilita cambiar la URL cuando escribes.",
-  play_sidebar_options_external: "Complementos externos",
-  play_sidebar_options_external_warning:
+  play_sidebar_plugins_options_external: "Complementos externos",
+  play_sidebar_plugins_options_external_warning:
     "Advertencia: Código proveniente de complementos son originarios por terceros.",
-  play_sidebar_options_modules: "Módulos personalizados",
-  play_sidebar_options_modules_placeholder: "Módulo proveniente de npm.",
-  play_sidebar_options_plugin_dev: "Desarrollo de complementos",
-  play_sidebar_options_plugin_dev_option:
+  play_sidebar_plugins_options_modules: "Módulos personalizados",
+  play_sidebar_plugins_options_modules_placeholder:
+    "Módulo proveniente de npm.",
+  play_sidebar_plugins_plugin_dev: "Desarrollo de complementos",
+  play_sidebar_plugins_plugin_dev_option:
     "Conectar a <code>localhost:5000/index.js</code>",
-  play_sidebar_options_plugin_dev_copy:
+  play_sidebar_plugins_plugin_dev_copy:
     "Automaticamente intenta conectar a un complemento para sitio de pruebas en modo desarrollo. Puedes leer más <a href='https://www.typescriptlang.org/dev/playground-plugins/'>aquí</a>.",
   play_export_report_issue:
     "Reporta una incidencia en el repositorio GitHub de TypeScript",

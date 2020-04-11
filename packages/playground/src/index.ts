@@ -28,7 +28,7 @@ import type React from "react"
 export { PluginUtils } from "./pluginUtils"
 
 export type PluginFactory = {
-  (i: (key: string, components?: any) => string): PlaygroundPlugin
+  (i: (key: string, components?: any) => string, utils: PluginUtils): PlaygroundPlugin
 }
 
 /** The interface of all sidebar plugins */
@@ -44,9 +44,13 @@ export interface PlaygroundPlugin {
   /** After we show the tab */
   didMount?: (sandbox: Sandbox, container: HTMLDivElement) => void
   /** Model changes while this plugin is actively selected  */
-  modelChanged?: (sandbox: Sandbox, model: import("monaco-editor").editor.ITextModel) => void
+  modelChanged?: (sandbox: Sandbox, model: import("monaco-editor").editor.ITextModel, container: HTMLDivElement) => void
   /** Delayed model changes while this plugin is actively selected, useful when you are working with the TS API because it won't run on every keypress */
-  modelChangedDebounce?: (sandbox: Sandbox, model: import("monaco-editor").editor.ITextModel) => void
+  modelChangedDebounce?: (
+    sandbox: Sandbox,
+    model: import("monaco-editor").editor.ITextModel,
+    container: HTMLDivElement
+  ) => void
   /** Before we remove the tab */
   willUnmount?: (sandbox: Sandbox, container: HTMLDivElement) => void
   /** After we remove the tab */
@@ -114,7 +118,8 @@ export const setupPlayground = (
   }
 
   const defaultPlugins = config.plugins || defaultPluginFactories
-  const initialPlugins = defaultPlugins.map(f => f(i))
+  const utils = createUtils(sandbox, react)
+  const initialPlugins = defaultPlugins.map(f => f(i, utils))
   initialPlugins.forEach(p => registerPlugin(p))
 
   // Choose which should be selected
@@ -126,7 +131,7 @@ export const setupPlayground = (
   let debouncingTimer = false
   sandbox.editor.onDidChangeModelContent(_event => {
     const plugin = currentPlugin()
-    if (plugin.modelChanged) plugin.modelChanged(sandbox, sandbox.getModel())
+    if (plugin.modelChanged) plugin.modelChanged(sandbox, sandbox.getModel(), container)
 
     // This needs to be last in the function
     if (debouncingTimer) return
@@ -137,7 +142,8 @@ export const setupPlayground = (
 
       // Only call the plugin function once every 0.3s
       if (plugin.modelChangedDebounce && plugin.displayName === currentPlugin().displayName) {
-        plugin.modelChangedDebounce(sandbox, sandbox.getModel())
+        console.log("Debounced", container)
+        plugin.modelChangedDebounce(sandbox, sandbox.getModel(), container)
       }
     }, 300)
   })
@@ -161,8 +167,8 @@ export const setupPlayground = (
 
     const model = sandbox.editor.getModel()
     const plugin = currentPlugin()
-    if (model && plugin.modelChanged) plugin.modelChanged(sandbox, model)
-    if (model && plugin.modelChangedDebounce) plugin.modelChangedDebounce(sandbox, model)
+    if (model && plugin.modelChanged) plugin.modelChanged(sandbox, model, container)
+    if (model && plugin.modelChangedDebounce) plugin.modelChangedDebounce(sandbox, model, container)
   })
 
   // Setup working with the existing UI, once it's loaded

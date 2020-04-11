@@ -2,5 +2,6 @@ export const workbenchAssertionsPlugin: import("../../../../static/js/playground
   return {
     id: "assertions",
     displayName: "Assertions",
+    didMount: (sandbox, container) => {},
   }
 }
