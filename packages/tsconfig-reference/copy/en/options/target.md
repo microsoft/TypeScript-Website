@@ -12,7 +12,7 @@ For example, an arrow function `() => this` will be turned into an equivalent `f
 Changing `target` also changes the default value of [`lib`](#lib).
 You may "mix and match" `target` and `lib` settings as desired, but you could just set `target` for convenience.
 
-If your are only working with Node.js, here are recommended `target` based off of the Node version:
+If you are only working with Node.js, here are recommended `target`s based on the Node version:
 
 | Name    | Supported Target |
 | ------- | ---------------- |
@@ -22,5 +22,5 @@ If your are only working with Node.js, here are recommended `target` based off o
 
 These are based on [node.green](https://node.green)'s database of support.
 
-The special `ESNext` value refers to the highest version your TypeScript supports.
+The special `ESNext` value refers to the highest version your version of TypeScript supports.
 This setting should be used with caution, since it doesn't mean the same thing between different TypeScript versions and can make upgrades less predictable.
