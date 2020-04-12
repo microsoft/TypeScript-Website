@@ -1,8 +1,8 @@
-import debug from 'debug'
+import debug from "debug"
 
-type LZ = typeof import('lz-string')
-type TS = typeof import('typescript')
-type CompilerOptions = import('typescript').CompilerOptions
+type LZ = typeof import("lz-string")
+type TS = typeof import("typescript")
+type CompilerOptions = import("typescript").CompilerOptions
 
 import {
   parsePrimitive,
@@ -11,18 +11,18 @@ import {
   typesToExtension,
   stringAroundIndex,
   getIdentifierTextSpans,
-} from './utils'
-import { validateInput, validateCodeForErrors } from './validation'
+} from "./utils"
+import { validateInput, validateCodeForErrors } from "./validation"
 
-import { createSystem, createVirtualTypeScriptEnvironment, createDefaultMapFromNodeModules } from '@typescript/vfs'
+import { createSystem, createVirtualTypeScriptEnvironment, createDefaultMapFromNodeModules } from "@typescript/vfs"
 
-const log = debug('twoslasher')
+const log = debug("twoslasher")
 
 // Hacking in some internal stuff
-declare module 'typescript' {
+declare module "typescript" {
   type Option = {
     name: string
-    type: 'list' | 'boolean' | 'number' | 'string' | import('typescript').Map<number>
+    type: "list" | "boolean" | "number" | "string" | import("typescript").Map<number>
     element?: Option
   }
 
@@ -30,8 +30,7 @@ declare module 'typescript' {
 }
 
 type QueryPosition = {
-  kind: 'query'
-  position: number
+  kind: "query"
   offset: number
   text: string | undefined
   docs: string | undefined
@@ -39,7 +38,7 @@ type QueryPosition = {
 }
 
 type HighlightPosition = {
-  kind: 'highlight'
+  kind: "highlight"
   position: number
   length: number
   description: string
@@ -52,25 +51,29 @@ function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosit
 
   let nextContentOffset = 0
   let contentOffset = 0
+  let removedLines = 0
+
   for (let i = 0; i < codeLines.length; i++) {
     const line = codeLines[i]
     const highlightMatch = /^\/\/\s*\^+( .+)?$/.exec(line)
     const queryMatch = /^\/\/\s*\^\?\s*$/.exec(line)
     if (queryMatch !== null) {
-      const start = line.indexOf('^')
-      const position = contentOffset + start
-      queries.push({ kind: 'query', offset: start, position, text: undefined, docs: undefined, line: i })
+      const start = line.indexOf("^")
+      queries.push({ kind: "query", offset: start, text: undefined, docs: undefined, line: i + removedLines - 1 })
       log(`Removing line ${i} for having a query`)
+
+      removedLines++
       codeLines.splice(i, 1)
       i--
     } else if (highlightMatch !== null) {
-      const start = line.indexOf('^')
-      const length = line.lastIndexOf('^') - start + 1
+      const start = line.indexOf("^")
+      const length = line.lastIndexOf("^") - start + 1
       const position = contentOffset + start
-      const description = highlightMatch[1] ? highlightMatch[1].trim() : ''
-      highlights.push({ kind: 'highlight', position, length, description, line: i })
+      const description = highlightMatch[1] ? highlightMatch[1].trim() : ""
+      highlights.push({ kind: "highlight", position, length, description, line: i })
       log(`Removing line ${i} for having a highlight`)
       codeLines.splice(i, 1)
+      removedLines++
       i--
     } else {
       contentOffset = nextContentOffset
@@ -86,14 +89,14 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
   for (const opt of ts.optionDeclarations) {
     if (opt.name.toLowerCase() === name.toLowerCase()) {
       switch (opt.type) {
-        case 'number':
-        case 'string':
-        case 'boolean':
+        case "number":
+        case "string":
+        case "boolean":
           opts[opt.name] = parsePrimitive(value, opt.type)
           break
 
-        case 'list':
-          opts[opt.name] = value.split(',').map((v) => parsePrimitive(v, opt.element!.type as string))
+        case "list":
+          opts[opt.name] = value.split(",").map(v => parsePrimitive(v, opt.element!.type as string))
           break
 
         default:
@@ -101,7 +104,7 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
           log(`Set ${opt.name} to ${opts[opt.name]}`)
           if (opts[opt.name] === undefined) {
             const keys = Array.from(opt.type.keys() as any)
-            throw new Error(`Invalid value ${value} for ${opt.name}. Allowed values: ${keys.join(',')}`)
+            throw new Error(`Invalid value ${value} for ${opt.name}. Allowed values: ${keys.join(",")}`)
           }
           break
       }
@@ -123,10 +126,10 @@ function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: Comp
     let match
     if ((match = booleanConfigRegexp.exec(codeLines[i]))) {
       options[match[1]] = true
-      setOption(match[1], 'true', options, ts)
+      setOption(match[1], "true", options, ts)
     } else if ((match = valuedConfigRegexp.exec(codeLines[i]))) {
       // Skip a filename tag, which should propagate through this stage
-      if (match[1] === 'filename') {
+      if (match[1] === "filename") {
         i++
         continue
       }
@@ -162,7 +165,7 @@ const defaultHandbookOptions: ExampleOptions = {
   errors: [],
   noErrors: false,
   showEmit: false,
-  showEmittedFile: 'index.js',
+  showEmittedFile: "index.js",
   noStaticSemanticInfo: false,
 }
 
@@ -188,9 +191,9 @@ function filterHandbookOptions(codeLines: string[]): ExampleOptions {
   }
 
   // Edge case the errors object to turn it into a string array
-  if ('errors' in options && typeof options.errors === 'string') {
-    options.errors = options.errors.split(' ').map(Number)
-    log('Setting options.error to ', options.errors)
+  if ("errors" in options && typeof options.errors === "string") {
+    options.errors = options.errors.split(" ").map(Number)
+    log("Setting options.error to ", options.errors)
   }
 
   return options
@@ -205,7 +208,7 @@ export interface TwoSlashReturn {
 
   /** Sample requests to highlight a particular part of the code */
   highlights: {
-    kind: 'highlight'
+    kind: "highlight"
     position: number
     length: number
     description: string
@@ -232,14 +235,14 @@ export interface TwoSlashReturn {
 
   /** Requests to use the LSP to get info for a particular symbol in the source */
   queries: {
-    kind: 'query'
-    /** The index of the text in the file */
-    start: number
-    /** how long the identifier */
-    length: number
+    kind: "query"
+    /** What line is the highlighted identifier on? */
+    line: number
+    /** At what index in the line does the caret represent  */
     offset: number
-    // TODO: Add these so we can present something
+    /** The text of the token which is highlighted */
     text: string
+    /** Any attached JSDocs */
     docs: string | undefined
   }[]
 
@@ -277,12 +280,12 @@ export function twoslasher(
   lzstringModule?: LZ,
   fsMap?: Map<string, string>
 ): TwoSlashReturn {
-  const ts: TS = tsModule ?? require('typescript')
-  const lzstring: LZ = lzstringModule ?? require('lz-string')
+  const ts: TS = tsModule ?? require("typescript")
+  const lzstring: LZ = lzstringModule ?? require("lz-string")
 
   const originalCode = code
   const safeExtension = typesToExtension(extension)
-  const defaultFileName = 'index.' + safeExtension
+  const defaultFileName = "index." + safeExtension
 
   log(`\n\nLooking at code: \n\`\`\`${safeExtension}\n${code}\n\`\`\`\n`)
 
@@ -307,19 +310,19 @@ export function twoslasher(
   const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions)
   const ls = env.languageService
 
-  code = codeLines.join('\n')
+  code = codeLines.join("\n")
 
-  let queries = [] as TwoSlashReturn['queries']
-  let highlights = [] as TwoSlashReturn['highlights']
+  let queries = [] as TwoSlashReturn["queries"]
+  let highlights = [] as TwoSlashReturn["highlights"]
 
   // TODO: This doesn't handle a single file with a name
-  const fileContent = code.split('// @filename: ')
+  const fileContent = code.split("// @filename: ")
   const noFilepaths = fileContent.length === 1
 
   const makeDefault: [string, string[]] = [defaultFileName, code.split(/\r\n?|\n/g)]
   const makeMultiFile = (filenameSplit: string): [string, string[]] => {
     const [filename, ...content] = filenameSplit.split(/\r\n?|\n/g)
-    const firstLine = '// @filename: ' + filename
+    const firstLine = "// @filename: " + filename
     return [filename, [firstLine, ...content]]
   }
 
@@ -329,16 +332,16 @@ export function twoslasher(
    * [name, lines_of_code] basically for each set.
    */
   const unfilteredNameContent: Array<[string, string[]]> = noFilepaths ? [makeDefault] : fileContent.map(makeMultiFile)
-  const nameContent = unfilteredNameContent.filter((n) => n[0].length)
+  const nameContent = unfilteredNameContent.filter(n => n[0].length)
 
   /** All of the referenced files in the markup */
-  const filenames = nameContent.map((nc) => nc[0])
+  const filenames = nameContent.map(nc => nc[0])
 
   for (const file of nameContent) {
     const [filename, codeLines] = file
 
     // Create the file in the vfs
-    const newFileCode = codeLines.join('\n')
+    const newFileCode = codeLines.join("\n")
     env.createFile(filename, newFileCode)
 
     const updates = filterHighlightLines(codeLines)
@@ -346,51 +349,57 @@ export function twoslasher(
 
     // ------ Do the LSP lookup for the queries
 
-    // TODO: this is not perfect, it seems to have issues when there are multiple queries
-    // in the same sourcefile. Looks like it's about removing the query comments before them.
-    let removedChars = 0
-    const lspedQueries = updates.queries.map((q) => {
-      const quickInfo = ls.getQuickInfoAtPosition(filename, q.position - removedChars)
-      const token = ls.getDefinitionAtPosition(filename, q.position - removedChars)
+    const lspedQueries = updates.queries.map((q, i) => {
+      const sourceFile = env.getSourceFile(filename)!
+      const position = ts.getPositionOfLineAndCharacter(sourceFile, q.line, q.offset)
+      const quickInfo = ls.getQuickInfoAtPosition(filename, position)
+      const token = ls.getDefinitionAtPosition(filename, position)
 
-      removedChars += ('//' + q.offset + '?^\n').length
+      // console.log(!.text)
+      // console.log(q.position, q.position - removedChars)
 
-      let text = `Could not get LSP result: ${stringAroundIndex(env.getSourceFile(filename)!.text, q.position)}`
-      let docs,
-        start = 0,
-        length = 0
+      // prettier-ignore
+      let text = `Could not get LSP result: ${stringAroundIndex(env.getSourceFile(filename)!.text, position)}`
+
+      let docs
 
       if (quickInfo && token && quickInfo.displayParts) {
-        text = quickInfo.displayParts.map((dp) => dp.text).join('')
-        docs = quickInfo.documentation ? quickInfo.documentation.map((d) => d.text).join('<br/>') : undefined
-        length = token[0].textSpan.start
-        start = token[0].textSpan.length
+        text = quickInfo.displayParts.map(dp => dp.text).join("")
+        docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join("<br/>") : undefined
       }
 
-      const queryResult = { ...q, text, docs, start, length }
+      const queryResult: TwoSlashReturn["queries"][0] = {
+        kind: "query",
+        text,
+        docs,
+        line: q.line - i,
+        offset: q.offset,
+        // @ts-ignore - this one is a private implementation detail and gets dropped later
+        file: filename,
+      }
       return queryResult
     })
     queries.push(...lspedQueries)
 
     // Sets the file in the compiler as being without the comments
-    const newEditedFileCode = codeLines.join('\n')
+    const newEditedFileCode = codeLines.join("\n")
     env.updateFile(filename, newEditedFileCode)
   }
 
   // We need to also strip the highlights + queries from the main file which is shown to people
   const allCodeLines = code.split(/\r\n?|\n/g)
   filterHighlightLines(allCodeLines)
-  code = allCodeLines.join('\n')
+  code = allCodeLines.join("\n")
 
   // Code should now be safe to compile, so we're going to split it into different files
-  const errs: import('typescript').Diagnostic[] = []
+  const errs: import("typescript").Diagnostic[] = []
   // Let because of a filter when cutting
-  let staticQuickInfos: TwoSlashReturn['staticQuickInfos'] = []
+  let staticQuickInfos: TwoSlashReturn["staticQuickInfos"] = []
 
   // Iterate through the declared files and grab errors and LSP quickinfos
   // const declaredFiles = Object.keys(fileMap)
 
-  filenames.forEach((file) => {
+  filenames.forEach(file => {
     if (!handbookOptions.noErrors) {
       errs.push(...ls.getSemanticDiagnostics(file))
       errs.push(...ls.getSyntacticDiagnostics(file))
@@ -402,47 +411,59 @@ export function twoslasher(
       const source = env.sys.readFile(file)!
 
       const fileContentStartIndexInModifiedFile = code.indexOf(source) == -1 ? 0 : code.indexOf(source)
+      const linesAbove = code.slice(0, fileContentStartIndexInModifiedFile).split("\n").length - 1
 
       const sourceFile = env.getSourceFile(file)
-      if (sourceFile) {
-        // Get all interesting identifiers in the file, so we can show hover info for it
-        const identifiers = getIdentifierTextSpans(ts, sourceFile)
-        for (const identifier of identifiers) {
-          const span = identifier.span
-          const quickInfo = ls.getQuickInfoAtPosition(file, span.start)
+      if (!sourceFile) throw new Error(`No sourcefile found for ${file} in twoslash`)
 
-          if (quickInfo && quickInfo.displayParts) {
-            const text = quickInfo.displayParts.map((dp) => dp.text).join('')
-            const targetString = identifier.text
-            const docs = quickInfo.documentation ? quickInfo.documentation.map((d) => d.text).join('\n') : undefined
+      // Get all interesting identifiers in the file, so we can show hover info for it
+      const identifiers = getIdentifierTextSpans(ts, sourceFile)
+      for (const identifier of identifiers) {
+        const span = identifier.span
+        const quickInfo = ls.getQuickInfoAtPosition(file, span.start)
 
-            // Get the position of the
-            const position = span.start + fileContentStartIndexInModifiedFile
-            // Use TypeScript to pull out line/char from the original code at the position + any previous offset
-            const burnerSourceFile = ts.createSourceFile('_.ts', code, ts.ScriptTarget.ES2015)
-            const { line, character } = ts.getLineAndCharacterOfPosition(burnerSourceFile, position)
+        if (quickInfo && quickInfo.displayParts) {
+          const text = quickInfo.displayParts.map(dp => dp.text).join("")
+          const targetString = identifier.text
+          const docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join("\n") : undefined
 
-            staticQuickInfos.push({ text, docs, start: position, length: span.length, line, character, targetString })
-          }
+          // Get the position of the
+          const position = span.start + fileContentStartIndexInModifiedFile
+          // Use TypeScript to pull out line/char from the original code at the position + any previous offset
+          const burnerSourceFile = ts.createSourceFile("_.ts", code, ts.ScriptTarget.ES2015)
+          const { line, character } = ts.getLineAndCharacterOfPosition(burnerSourceFile, position)
+
+          staticQuickInfos.push({ text, docs, start: position, length: span.length, line, character, targetString })
         }
       }
+
+      // Offset the queries for this file because they are based on the line for that one
+      // specific file, and not the global twoslash document. This has to be done here because
+      // in the above loops, the code for queries/highlights hasn't been stripped yet.
+      queries
+        .filter((q: any) => q.file === file)
+        .forEach(q => {
+          q.line += linesAbove
+          // @ts-ignore
+          delete q.file
+        })
     }
   })
 
-  const relevantErrors = errs.filter((e) => e.file && filenames.includes(e.file.fileName))
+  const relevantErrors = errs.filter(e => e.file && filenames.includes(e.file.fileName))
 
   // A validator that error codes are mentioned, so we can know if something has broken in the future
   if (relevantErrors.length) {
     validateCodeForErrors(relevantErrors, handbookOptions, extension, originalCode)
   }
 
-  let errors: TwoSlashReturn['errors'] = []
+  let errors: TwoSlashReturn["errors"] = []
 
   // We can't pass the ts.DiagnosticResult out directly (it can't be JSON.stringified)
   for (const err of relevantErrors) {
     const codeWhereErrorLives = env.sys.readFile(err.file!.fileName)!
     const fileContentStartIndexInModifiedFile = code.indexOf(codeWhereErrorLives)
-    const renderedMessage = escapeHtml(ts.flattenDiagnosticMessageText(err.messageText, '\n'))
+    const renderedMessage = escapeHtml(ts.flattenDiagnosticMessageText(err.messageText, "\n"))
     const id = `err-${err.code}-${err.start}-${err.length}`
     const { line, character } = ts.getLineAndCharacterOfPosition(err.file!, err.start!)
 
@@ -461,14 +482,14 @@ export function twoslasher(
   // Handle emitting files
   if (handbookOptions.showEmit) {
     const output = ls.getEmitOutput(defaultFileName)
-    const file = output.outputFiles.find((o) => o.name === handbookOptions.showEmittedFile)
+    const file = output.outputFiles.find(o => o.name === handbookOptions.showEmittedFile)
     if (!file) {
-      const allFiles = output.outputFiles.map((o) => o.name).join(', ')
+      const allFiles = output.outputFiles.map(o => o.name).join(", ")
       throw new Error(`Cannot find the file ${handbookOptions.showEmittedFile} - in ${allFiles}`)
     }
 
     code = file.text
-    extension = file.name.split('.').pop()!
+    extension = file.name.split(".").pop()!
 
     // Remove highlights and queries, because it won't work across transpiles,
     // though I guess source-mapping could handle the transition
@@ -483,38 +504,38 @@ export function twoslasher(
   // Cutting happens last, and it means editing the lines and character index of all
   // the type annotations which are attached to a location
 
-  const cutString = '// ---cut---\n'
+  const cutString = "// ---cut---\n"
   if (code.includes(cutString)) {
     // Get the place it is, then find the end and the start of the next line
     const cutIndex = code.indexOf(cutString) + cutString.length
-    const lineOffset = code.substr(0, cutIndex).split('\n').length - 1
+    const lineOffset = code.substr(0, cutIndex).split("\n").length - 1
 
     // Kills the code shown
     code = code.split(cutString).pop()!
 
     // For any type of metadata shipped, it will need to be shifted to
     // fit in with the new positions after the cut
-    staticQuickInfos.forEach((info) => {
+    staticQuickInfos.forEach(info => {
       info.start -= cutIndex
       info.line -= lineOffset
     })
-    staticQuickInfos = staticQuickInfos.filter((s) => s.start > -1)
+    staticQuickInfos = staticQuickInfos.filter(s => s.start > -1)
 
-    errors.forEach((err) => {
+    errors.forEach(err => {
       if (err.start) err.start -= cutIndex
       if (err.line) err.line -= lineOffset
     })
-    errors = errors.filter((e) => e.start && e.start > -1)
+    errors = errors.filter(e => e.start && e.start > -1)
 
-    highlights.forEach((highlight) => {
+    highlights.forEach(highlight => {
       highlight.position -= cutIndex
       highlight.line -= lineOffset
     })
 
-    highlights = highlights.filter((e) => e.position > -1)
+    highlights = highlights.filter(e => e.position > -1)
 
-    queries.forEach((q) => (q.start -= cutIndex))
-    queries = queries.filter((q) => q.start > -1)
+    queries.forEach(q => (q.line -= lineOffset))
+    queries = queries.filter(q => q.line > -1)
   }
 
   return {

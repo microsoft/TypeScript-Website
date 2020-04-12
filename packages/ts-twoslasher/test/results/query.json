@@ -5,13 +5,10 @@
   "queries": [
     {
       "kind": "query",
-      "offset": 4,
-      "position": 4,
       "text": "let foo: string",
       "docs": "",
-      "line": 1,
-      "start": 3,
-      "length": 4
+      "line": 0,
+      "offset": 4
     }
   ],
   "staticQuickInfos": [

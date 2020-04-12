@@ -2,7 +2,29 @@
   "code": "function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {\n    throw \"unimplemented\"\n}\n\nlet a = createLabel(\"typescript\");\n\nlet b = createLabel(2.8);\n\nlet c = createLabel(Math.random() ? \"hello\" : 42);\n",
   "extension": "ts",
   "highlights": [],
-  "queries": [],
+  "queries": [
+    {
+      "kind": "query",
+      "text": "let a: NameLabel",
+      "docs": "",
+      "line": 4,
+      "offset": 4
+    },
+    {
+      "kind": "query",
+      "text": "let b: IdLabel",
+      "docs": "",
+      "line": 6,
+      "offset": 4
+    },
+    {
+      "kind": "query",
+      "text": "let c: IdLabel | NameLabel",
+      "docs": "",
+      "line": 8,
+      "offset": 4
+    }
+  ],
   "staticQuickInfos": [
     {
       "text": "function createLabel<T extends string | number>(idOrName: T): NameOrId<T>",
