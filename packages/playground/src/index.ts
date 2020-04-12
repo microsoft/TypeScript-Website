@@ -405,6 +405,8 @@ export const setupPlayground = (
     exporter,
     ui,
     registerPlugin,
+    plugins,
+    tabs,
   }
 
   window.ts = sandbox.ts

@@ -14,21 +14,21 @@ import { playCopy } from "../../copy/en/playground"
 
 import { Intl } from "../../components/Intl"
 
-import playgroundReleases from "../../../../sandbox/src/releases.json"
 import { workbenchHelpPlugin } from "../../components/workbench/plugins/help"
 import { workbenchResultsPlugin } from "../../components/workbench/plugins/results"
 import { workbenchEmitPlugin } from "../../components/workbench/plugins/emits"
 import { workbenchAssertionsPlugin } from "../../components/workbench/plugins/assertions"
-
-// This gets set by the playground
-declare const playground: ReturnType<typeof import("typescript-playground").setupPlayground>
+import { createDefaultMapFromCDN } from "@typescript/vfs"
+import { twoslasher } from "@typescript/twoslash"
 
 type Props = {
   data: BugWorkbenchQuery
 }
 
+
 const Play: React.FC<Props> = (props) => {
   const i = createInternational<typeof headCopy & typeof playCopy>(useIntl())
+  let dtsMap: Map<string, string> = new Map()
 
   useEffect(() => {
     if ("playgroundLoaded" in window) return
@@ -100,11 +100,51 @@ const Play: React.FC<Props> = (props) => {
             workbenchResultsPlugin,
             workbenchEmitPlugin,
             workbenchHelpPlugin,
-
           ]
         }
 
-        playground.setupPlayground(sandboxEnv, main, playgroundConfig, i as any, React)
+        const playgroundEnv = playground.setupPlayground(sandboxEnv, main, playgroundConfig, i as any, React)
+
+        const updateDTSEnv = (opts) => {
+          createDefaultMapFromCDN(opts, tsVersion, true, ts, sandboxEnv.lzstring as any).then((defaultMap) => {
+            dtsMap = defaultMap
+            runTwoslash()
+          })
+        }
+
+        // When the compiler notices a twoslash compiler flag change, this will get triggered and reset the DTS map 
+        sandboxEnv.setDidUpdateCompilerSettings(updateDTSEnv)
+        updateDTSEnv(sandboxEnv.getCompilerOptions())
+
+        let debouncingTimer = false
+        sandboxEnv.editor.onDidChangeModelContent(_event => {
+          // This needs to be last in the function
+          if (debouncingTimer) return
+          debouncingTimer = true
+          setTimeout(() => {
+            debouncingTimer = false
+            if (dtsMap) runTwoslash()
+          }, 500)
+        })
+
+        const runTwoslash = () => {
+          const code = sandboxEnv.getText()
+
+          try {
+            const twoslash = twoslasher(code, sandboxEnv.filepath.split(".")[1], ts, sandboxEnv.lzstring as any, dtsMap)
+            // playgroundEnv.plugins.forEach()
+            console.log("twoslash:")
+            console.log(twoslash)
+            playgroundEnv.plugins.forEach(p => {
+              if ("getResults" in p) {
+                p.getResults(sandboxEnv, twoslash)
+              }
+            })
+          } catch (error) {
+            const err = error as Error
+            console.log(err)
+          }
+        }
 
         // Dark mode faff
         const darkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)')
@@ -134,25 +174,9 @@ const Play: React.FC<Props> = (props) => {
       <nav className="navbar-sub">
         <ul className="nav">
           <li className="name hide-small"><span>Bug Workbench</span></li>
-
         </ul>
 
-        <ul className="nav navbar-nav navbar-right hidden-xs">
-
-          {/**
-            <li><a href="#">About</a></li>
-            <li><a href="https://github.com/microsoft/typescript-website">GitHub</a></li>
-            <li className="dropdown">
-              <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Theme <span className="caret"></span></a>
-              <ul className="dropdown-menu">
-                <li><a id="theme-light" href="#" >Light</a></li>
-                <li><a id="theme-dark" href="#" >Dark</a></li>
-                <li><a id="theme-dark-hc" href="#" >Dark (High Contrast)</a></li>
-              </ul>
-            </li>
-             */}
-
-        </ul>
+        <ul className="nav navbar-nav navbar-right hidden-xs"></ul>
       </nav>
 
       <div className="raised" style={{ paddingTop: "0", marginTop: "0", marginBottom: "3rem", paddingBottom: "1.5rem" }}>

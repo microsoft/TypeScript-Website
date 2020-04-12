@@ -215,16 +215,16 @@ type NameOrId<T extends number | string> = T extends number ? IdLabel : NameLabe
 
 // ---cut---
 function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {
-  throw 'unimplemented'
+  throw "unimplemented"
 }
 
-let a = createLabel('typescript')
+let a = createLabel("typescript")
 //  ^?
 
 let b = createLabel(2.8)
 //  ^?
 
-let c = createLabel(Math.random() ? 'hello' : 42)
+let c = createLabel(Math.random() ? "hello" : 42)
 //  ^?
 ```
 
@@ -232,14 +232,14 @@ Turns to:
 
 > ```ts
 > function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {
->   throw 'unimplemented'
+>   throw "unimplemented"
 > }
 >
-> let a = createLabel('typescript')
+> let a = createLabel("typescript")
 >
 > let b = createLabel(2.8)
 >
-> let c = createLabel(Math.random() ? 'hello' : 42)
+> let c = createLabel(Math.random() ? "hello" : 42)
 > ```
 
 > With:
@@ -303,7 +303,7 @@ function greet(person: string, date: Date) {
   console.log(`Hello ${person}, today is ${date.toDateString()}!`)
 }
 
-greet('Maddison', new Date())
+greet("Maddison", new Date())
 //                ^^^^^^^^^^
 ```
 
@@ -314,7 +314,7 @@ Turns to:
 >   console.log(`Hello ${person}, today is ${date.toDateString()}!`)
 > }
 >
-> greet('Maddison', new Date())
+> greet("Maddison", new Date())
 > ```
 
 > With:
@@ -343,10 +343,10 @@ Turns to:
 
 ```ts
 // @filename: file-with-export.ts
-export const helloWorld = 'Example string'
+export const helloWorld = "Example string"
 
 // @filename: index.ts
-import { helloWorld } from './file-with-export'
+import { helloWorld } from "./file-with-export"
 console.log(helloWorld)
 ```
 
@@ -354,10 +354,10 @@ Turns to:
 
 > ```ts
 > // @filename: file-with-export.ts
-> export const helloWorld = 'Example string'
+> export const helloWorld = "Example string"
 >
 > // @filename: index.ts
-> import { helloWorld } from './file-with-export'
+> import { helloWorld } from "./file-with-export"
 > console.log(helloWorld)
 > ```
 
@@ -378,14 +378,14 @@ Turns to:
 #### `query.ts`
 
 ```ts
-let foo = 'hello there!'
+let foo = "hello there!"
 //  ^?
 ```
 
 Turns to:
 
 > ```ts
-> let foo = 'hello there!'
+> let foo = "hello there!"
 > ```
 
 > With:
@@ -434,7 +434,7 @@ Turns to:
 > var __read =
 >   (this && this.__read) ||
 >   function (o, n) {
->     var m = typeof Symbol === 'function' && o[Symbol.iterator]
+>     var m = typeof Symbol === "function" && o[Symbol.iterator]
 >     if (!m) return o
 >     var i = m.call(o),
 >       r,
@@ -446,7 +446,7 @@ Turns to:
 >       e = { error: error }
 >     } finally {
 >       try {
->         if (r && !r.done && (m = i['return'])) m.call(i)
+>         if (r && !r.done && (m = i["return"])) m.call(i)
 >       } finally {
 >         if (e) throw e.error
 >       }
@@ -513,7 +513,7 @@ export interface TwoSlashReturn {
   extension: string
   /** Sample requests to highlight a particular part of the code */
   highlights: {
-    kind: 'highlight'
+    kind: "highlight"
     position: number
     length: number
     description: string
@@ -538,7 +538,7 @@ export interface TwoSlashReturn {
   }[]
   /** Requests to use the LSP to get info for a particular symbol in the source */
   queries: {
-    kind: 'query'
+    kind: "query"
     /** The index of the text in the file */
     start: number
     /** how long the identifier */
