@@ -300,7 +300,7 @@ const users = [
 const jon = 
   users.find(u => u.name === "John")
   
-console.log(jon.<span class='underline-error'>name</span>)
+console.log(<span class='underline-error'>jon</span>.name)
 `
 
   return (
