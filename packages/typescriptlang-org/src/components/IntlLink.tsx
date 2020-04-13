@@ -26,7 +26,7 @@ export const createIntlLink = (currentLocale: string, allSitePage: AllSitePageFr
       // This occurs when we want URL compat with old site
 
       const localeVersion = "/" + currentLocale + to
-      if (paths.includes(localeVersion)) {
+      if (currentLocale !== "en" && paths.includes(localeVersion)) {
         to = localeVersion
       }
     }

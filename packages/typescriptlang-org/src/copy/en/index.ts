@@ -7,6 +7,9 @@ export const indexCopy = {
   index_locations:
     "Any browser, any OS, anywhere JavaScript runs. Entirely Open Source.",
 
+  index_cta_play: "Try in your browser",
+  index_cta_install: "Install locally",
+
   index_what_is: "What is TypeScript?",
 
   index_what_is_js: "JavaScript and More",
@@ -62,7 +65,7 @@ export const indexCopy = {
   index_install_ref: `
   <p>You can install TypeScript via npm<pre>npm install -g typescript</pre>
   <p>Then run the compiler via <code>tsc</code><pre>npx tsc</pre>
-  <p>Learn more <download>here</download>
+  <p>Learn more about how to add TypeScript to your apps in the <download>installation page</download>
   `,
   index_releases: "Quarterly Releases",
   index_releases_pt1: "Our next release is ",
