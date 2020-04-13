@@ -18,7 +18,7 @@ import { workbenchResultsPlugin } from "../../components/workbench/plugins/resul
 import { workbenchEmitPlugin } from "../../components/workbench/plugins/emits"
 import { workbenchAssertionsPlugin } from "../../components/workbench/plugins/assertions"
 import { createDefaultMapFromCDN } from "@typescript/vfs"
-import { twoslasher } from "@typescript/twoslash"
+import { twoslasher, TwoSlashReturn } from "@typescript/twoslash"
 
 type Props = {
   data: BugWorkbenchQuery
@@ -126,16 +126,18 @@ const Play: React.FC<Props> = (props) => {
           }, 500)
         })
 
-        let currentTwoslashResults = undefined
+        let currentTwoslashResults: Error | TwoSlashReturn | undefined = undefined
         let currentDTSMap: Map<string, string> | undefined = undefined
 
+        let isError = (e: any) => e && e.stack && e.message;
+
         playgroundEnv.setDidUpdateTab((newPlugin) => {
-          if (currentTwoslashResults !== Error && "getResults" in newPlugin) {
+          if (!isError(currentTwoslashResults) && "getResults" in newPlugin) {
             // @ts-ignore
-            newPlugin.getResults(sandboxEnv, currentTwoslashResults)
+            newPlugin.getResults(sandboxEnv, currentTwoslashResults, currentDTSMap)
           } else if ("noResults" in newPlugin) {
             // @ts-ignore
-            newPlugin.noResults()
+            newPlugin.noResults(currentTwoslashResults)
           }
         })
 
@@ -144,7 +146,9 @@ const Play: React.FC<Props> = (props) => {
 
           try {
             currentDTSMap = new Map(dtsMap)
-            const twoslash = twoslasher(code, sandboxEnv.filepath.split(".")[1], { noStaticSemanticInfo: false, emit: true }, ts, sandboxEnv.lzstring as any, currentDTSMap)
+            const twoslashConfig = { noStaticSemanticInfo: false, emit: true, noErrorValidation: true } as const
+            const ext = sandboxEnv.filepath.split(".")[1]
+            const twoslash = twoslasher(code, ext, twoslashConfig, ts, sandboxEnv.lzstring as any, currentDTSMap)
             currentTwoslashResults = twoslash
 
             const currentPlugin = playgroundEnv.getCurrentPlugin()
@@ -156,8 +160,8 @@ const Play: React.FC<Props> = (props) => {
 
           } catch (error) {
             const err = error as Error
-            currentTwoslashResults = null
             console.log(err)
+            currentTwoslashResults = err
             const currentPlugin = playgroundEnv.getCurrentPlugin()
             if ("noResults" in currentPlugin) {
               // @ts-ignore

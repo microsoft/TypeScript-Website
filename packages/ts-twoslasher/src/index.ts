@@ -166,10 +166,12 @@ export interface ExampleOptions {
    */
   showEmittedFile: string
 
-  /** Whether to disable the pre-cache of LSP calls for interesting identifiers */
-  noStaticSemanticInfo: false
-  /** Declare that the TypeScript program should edit the fsMap which is passed in, this is only useful for tool-makers. Default: false */
+  /** Whether to disable the pre-cache of LSP calls for interesting identifiers, defaults to false */
+  noStaticSemanticInfo: boolean
+  /** Declare that the TypeScript program should edit the fsMap which is passed in, this is only useful for tool-makers, defaults to false */
   emit: boolean
+  /** Declare that you don't need to validate that errors have corresponding annotations, defaults to false */
+  noErrorValidation: boolean
 }
 
 const defaultHandbookOptions: ExampleOptions = {
@@ -179,6 +181,7 @@ const defaultHandbookOptions: ExampleOptions = {
   showEmittedFile: "index.js",
   noStaticSemanticInfo: false,
   emit: false,
+  noErrorValidation: false,
 }
 
 function filterHandbookOptions(codeLines: string[]): ExampleOptions {
@@ -479,7 +482,7 @@ export function twoslasher(
   const relevantErrors = errs.filter(e => e.file && filenames.includes(e.file.fileName))
 
   // A validator that error codes are mentioned, so we can know if something has broken in the future
-  if (relevantErrors.length) {
+  if (!handbookOptions.noErrorValidation && relevantErrors.length) {
     validateCodeForErrors(relevantErrors, handbookOptions, extension, originalCode)
   }
 

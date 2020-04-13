@@ -17,6 +17,7 @@ export const workbenchAssertionsPlugin: import("../../../../static/js/playground
       ds.clear()
 
       ds.subtitle("Assertions Found")
+
       const queriesAsDiags = results.queries.map(t => {
         const diag: import("typescript").DiagnosticRelatedInformation = {
           category: 3, // ts.DiagnosticCategory.Message,
@@ -28,8 +29,21 @@ export const workbenchAssertionsPlugin: import("../../../../static/js/playground
         }
         return diag
       })
-
       ds.listDiags(sandbox, sandbox.getModel(), queriesAsDiags)
+
+      const errorsAsDiags = results.errors.map(t => {
+        const diag: import("typescript").DiagnosticRelatedInformation = {
+          category: 1, // ts.DiagnosticCategory.Message,
+          code: t.code,
+          file: undefined,
+          length: t.length,
+          messageText: t.renderedMessage,
+          start: t.start,
+        }
+        return diag
+      })
+
+      ds.listDiags(sandbox, sandbox.getModel(), errorsAsDiags)
 
       ds.subtitle("TLDR")
       ds.p(

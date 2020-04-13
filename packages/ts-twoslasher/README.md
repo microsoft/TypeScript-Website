@@ -107,6 +107,8 @@ export interface ExampleOptions {
   noStaticSemanticInfo: false
   /** Declare that the TypeScript program should edit the fsMap which is passed in, this is only useful for tool-makers. Default: false */
   emit: boolean
+  /** Declare that you don't need to validate that errors have corresponding annotations */
+  noErrorValidation: boolean
 }
 ```
 
