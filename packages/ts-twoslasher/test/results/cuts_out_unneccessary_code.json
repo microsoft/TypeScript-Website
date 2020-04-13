@@ -4,25 +4,31 @@
   "highlights": [],
   "queries": [
     {
+      "docs": "",
       "kind": "query",
+      "start": 354,
+      "length": 16,
       "text": "let a: NameLabel",
-      "docs": "",
-      "line": 4,
-      "offset": 4
+      "offset": 4,
+      "line": 4
     },
     {
+      "docs": "",
       "kind": "query",
+      "start": 390,
+      "length": 14,
       "text": "let b: IdLabel",
-      "docs": "",
-      "line": 6,
-      "offset": 4
+      "offset": 4,
+      "line": 6
     },
     {
-      "kind": "query",
-      "text": "let c: IdLabel | NameLabel",
       "docs": "",
-      "line": 8,
-      "offset": 4
+      "kind": "query",
+      "start": 417,
+      "length": 26,
+      "text": "let c: IdLabel | NameLabel",
+      "offset": 4,
+      "line": 8
     }
   ],
   "staticQuickInfos": [

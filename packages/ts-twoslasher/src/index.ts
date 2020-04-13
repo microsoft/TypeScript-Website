@@ -37,6 +37,15 @@ type QueryPosition = {
   line: number
 }
 
+type PartialQueryResults = {
+  kind: string
+  text: string
+  docs: string | undefined
+  line: number
+  offset: number
+  file: string
+}
+
 type HighlightPosition = {
   kind: "highlight"
   position: number
@@ -244,6 +253,10 @@ export interface TwoSlashReturn {
     text: string
     /** Any attached JSDocs */
     docs: string | undefined
+    /** The token start which the query indicates  */
+    start: number
+    /** The length of the token */
+    length: number
   }[]
 
   /** Diagnostic error messages which came up when creating the program */
@@ -312,6 +325,7 @@ export function twoslasher(
 
   code = codeLines.join("\n")
 
+  let partialQueries = [] as PartialQueryResults[]
   let queries = [] as TwoSlashReturn["queries"]
   let highlights = [] as TwoSlashReturn["highlights"]
 
@@ -355,31 +369,26 @@ export function twoslasher(
       const quickInfo = ls.getQuickInfoAtPosition(filename, position)
       const token = ls.getDefinitionAtPosition(filename, position)
 
-      // console.log(!.text)
-      // console.log(q.position, q.position - removedChars)
-
       // prettier-ignore
       let text = `Could not get LSP result: ${stringAroundIndex(env.getSourceFile(filename)!.text, position)}`
-
-      let docs
+      let docs = undefined
 
       if (quickInfo && token && quickInfo.displayParts) {
         text = quickInfo.displayParts.map(dp => dp.text).join("")
         docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join("<br/>") : undefined
       }
 
-      const queryResult: TwoSlashReturn["queries"][0] = {
+      const queryResult = {
         kind: "query",
         text,
         docs,
         line: q.line - i,
         offset: q.offset,
-        // @ts-ignore - this one is a private implementation detail and gets dropped later
         file: filename,
       }
       return queryResult
     })
-    queries.push(...lspedQueries)
+    partialQueries.push(...lspedQueries)
 
     // Sets the file in the compiler as being without the comments
     const newEditedFileCode = codeLines.join("\n")
@@ -405,16 +414,14 @@ export function twoslasher(
       errs.push(...ls.getSyntacticDiagnostics(file))
     }
 
+    const source = env.sys.readFile(file)!
+    const sourceFile = env.getSourceFile(file)
+    if (!sourceFile) throw new Error(`No sourcefile found for ${file} in twoslash`)
+
     // Get all of the interesting quick info popover
     if (!handbookOptions.noStaticSemanticInfo && !handbookOptions.showEmit) {
-      // const fileRep = fileMap[file]
-      const source = env.sys.readFile(file)!
-
       const fileContentStartIndexInModifiedFile = code.indexOf(source) == -1 ? 0 : code.indexOf(source)
       const linesAbove = code.slice(0, fileContentStartIndexInModifiedFile).split("\n").length - 1
-
-      const sourceFile = env.getSourceFile(file)
-      if (!sourceFile) throw new Error(`No sourcefile found for ${file} in twoslash`)
 
       // Get all interesting identifiers in the file, so we can show hover info for it
       const identifiers = getIdentifierTextSpans(ts, sourceFile)
@@ -440,12 +447,21 @@ export function twoslasher(
       // Offset the queries for this file because they are based on the line for that one
       // specific file, and not the global twoslash document. This has to be done here because
       // in the above loops, the code for queries/highlights hasn't been stripped yet.
-      queries
+      partialQueries
         .filter((q: any) => q.file === file)
         .forEach(q => {
-          q.line += linesAbove
-          // @ts-ignore
-          delete q.file
+          const pos =
+            ts.getPositionOfLineAndCharacter(sourceFile, q.line, q.offset) + fileContentStartIndexInModifiedFile
+
+          queries.push({
+            docs: q.docs,
+            kind: "query",
+            start: pos,
+            length: q.text.length,
+            text: q.text,
+            offset: q.offset,
+            line: q.line + linesAbove,
+          })
         })
     }
   })
@@ -494,7 +510,7 @@ export function twoslasher(
     // Remove highlights and queries, because it won't work across transpiles,
     // though I guess source-mapping could handle the transition
     highlights = []
-    queries = []
+    partialQueries = []
     staticQuickInfos = []
   }
 

@@ -249,7 +249,29 @@ Turns to:
 >   "code": "See above",
 >   "extension": "ts",
 >   "highlights": [],
->   "queries": [],
+>   "queries": [
+>     {
+>       "kind": "query",
+>       "text": "let a: NameLabel",
+>       "docs": "",
+>       "line": 4,
+>       "offset": 4
+>     },
+>     {
+>       "kind": "query",
+>       "text": "let b: IdLabel",
+>       "docs": "",
+>       "line": 6,
+>       "offset": 4
+>     },
+>     {
+>       "kind": "query",
+>       "text": "let c: IdLabel | NameLabel",
+>       "docs": "",
+>       "line": 8,
+>       "offset": 4
+>     }
+>   ],
 >   "staticQuickInfos": "[ 14 items ]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/JYOwLgpgTgZghgYwgAgJIBMAycBGEA2yA3ssOgFzIgCuAtnlADTID0AVMgM4D2tKMwAuk7I2LZAF8AUKEixEKAHJw+2PIRIgVESpzBRQAc2btk3MAAtoyAUJFjJUsAE8ADku0B5KBgA8AFWQIAA9IEGEqOgZkAB8ufSMAPmQAXmRAkLCImnprAH40LFwCZEplVWL8AG4pFnF-C2ARBF4+cC4Lbmp8dCpzZDxSEAR8anQIdCla8QBaOYRqMDmZqRhqYbBgbhBkBCgIOEg1AgCg0IhwkRzouL0DEENEgAoyb3KddIBKMq8fdADkkQpMgQchLFBuAB3ZAAInWwFornwEDakHQMKk0ikyLAyDgqV2+0OEGO+CeMJc7k4e2ArjAMM+NTqIIAenkpjiBgS9gcjpUngAmAB0AA5GdNWezsRBcQhuUS+eongBZQ4WIVQODhXhPT7IAowqz4fDcGGlZAAFgF4uZyDZUiAA"
@@ -398,13 +420,10 @@ Turns to:
 >   "queries": [
 >     {
 >       "kind": "query",
->       "offset": 4,
->       "position": 4,
 >       "text": "let foo: string",
 >       "docs": "",
->       "line": 1,
->       "start": 3,
->       "length": 4
+>       "line": 0,
+>       "offset": 4
 >     }
 >   ],
 >   "staticQuickInfos": "[ 1 items ]",
@@ -539,13 +558,13 @@ export interface TwoSlashReturn {
   /** Requests to use the LSP to get info for a particular symbol in the source */
   queries: {
     kind: "query"
-    /** The index of the text in the file */
-    start: number
-    /** how long the identifier */
-    length: number
+    /** What line is the highlighted identifier on? */
+    line: number
+    /** At what index in the line does the caret represent  */
     offset: number
-    // TODO: Add these so we can present something
+    /** The text of the token which is highlighted */
     text: string
+    /** Any attached JSDocs */
     docs: string | undefined
   }[]
   /** Diagnostic error messages which came up when creating the program */
