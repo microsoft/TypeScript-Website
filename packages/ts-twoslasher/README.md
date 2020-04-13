@@ -103,11 +103,11 @@ export interface ExampleOptions {
    * means when you just use `showEmit` above it shows the transpiled JS.
    */
   showEmittedFile: string
-  /** Whether to disable the pre-cache of LSP calls for interesting identifiers */
-  noStaticSemanticInfo: false
-  /** Declare that the TypeScript program should edit the fsMap which is passed in, this is only useful for tool-makers. Default: false */
+  /** Whether to disable the pre-cache of LSP calls for interesting identifiers, defaults to false */
+  noStaticSemanticInfo: boolean
+  /** Declare that the TypeScript program should edit the fsMap which is passed in, this is only useful for tool-makers, defaults to false */
   emit: boolean
-  /** Declare that you don't need to validate that errors have corresponding annotations */
+  /** Declare that you don't need to validate that errors have corresponding annotations, defaults to false */
   noErrorValidation: boolean
 }
 ```

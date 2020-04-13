@@ -61,7 +61,6 @@ const b = "345"
 
   it("shows the right query results", () => {
     const bLSPResult = result.queries.find(info => info.line === 0)
-    console.log(result)
     expect(bLSPResult).toBeTruthy()
     expect(bLSPResult!.text).toContain("const b:")
   })
