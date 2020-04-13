@@ -68,7 +68,7 @@ pre {
   /* This section keeps both of those in sync  */
   .error,
   .error-behind {
-    margin-left: -20px;
+    margin-left: -14px;
     margin-top: 8px;
     margin-bottom: 4px;
     padding: 6px;
@@ -82,7 +82,6 @@ pre {
     position: absolute;
     background-color: #ffeeee;
     border-left: 2px solid #bf1818;
-    width: calc(100% - 14px);
 
     /* Give the space to the error code  */
     display: flex;
