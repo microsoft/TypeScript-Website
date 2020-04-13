@@ -57,7 +57,7 @@ const Index: React.FC<Props> = (props) => {
         </Section>
         <Section color="grey" className="hide-small">
           <div className="call-to-action">
-            <Link target="_blank" className='flat-button' to="/play">{i("index_cta_play")}</Link>
+            <Link target="_blank" className='flat-button' to="/play/">{i("index_cta_play")}</Link>
             <a className='flat-button' href="#installation">{i("index_cta_install")}</a>
           </div>
         </Section>

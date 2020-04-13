@@ -30,7 +30,7 @@ export const createPlaygrounds = async (
   const anyData = result.data as any
   const docs = anyData.allFile.nodes
 
-  docs.forEach(lang => {
+  docs.forEach((lang) => {
     const appRoot = path.join(__dirname, "..", "..", "..", "..")
     // prettier-ignore
     const examplesForLang = path.join(appRoot, "playground-examples", "generated", lang.name + ".json")

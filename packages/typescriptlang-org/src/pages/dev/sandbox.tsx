@@ -82,7 +82,7 @@ export default async function () {
           <div className="raised content main-content-block">
             <div className="split-sixhundred">
               <h1 style={{ marginTop: "20px" }}>TypeScript Sandbox</h1>
-              <p>A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the <a href={withPrefix("/play")}>TypeScript playground</a></p>
+              <p>A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the <a href={withPrefix("/play/")}>TypeScript playground</a></p>
               <p>You can use the TypeScript sandbox for:</p>
               <ul>
                 <li>Building IDE-like experiences for people to explore your library's API</li>

@@ -24,7 +24,7 @@ const Index: React.FC<Props> = (props) => {
     <div className="raised main-content-block">
       <Row>
         <Col>
-          <a className="cropper" href="../play">
+          <a className="cropper" href="../play/">
             <img src={require("../../../static/images/tools/play.png")} alt="Preview of the TypeScript Playground screenshot" />
             <p>Playground</p>
           </a>

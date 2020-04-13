@@ -67,7 +67,7 @@ const useTypeScriptLinks = [
   },
   {
     title: "Playground",
-    url: "/play",
+    url: "/play/",
   },
   {
     title: "TSConfig Ref",
