@@ -13,7 +13,9 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: '13.x'
+          node-version: "13.x"
+          registry-url: "https://registry.npmjs.org/"
+
       # For Azure uploads
       - run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
@@ -38,7 +40,7 @@ jobs:
         # You can find these keys here:
         # https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/57bfeeed-c34a-4ffd-a06b-ccff27ac91b8/resourcegroups/typescriptlang-org/providers/Microsoft.Storage/storageAccounts/typescriptorgstaging/keys
         env:
-          AZURE_STORAGE_ACCOUNT: 'typescriptorgstaging'
+          AZURE_STORAGE_ACCOUNT: "typescriptorgstaging"
           AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_CDN_STAGING_CONNECTION_STRING }}
         run: az storage blob upload-batch -s ./site -d \$web
 
@@ -47,13 +49,12 @@ jobs:
         uses: peaceiris/actions-gh-pages@v1.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: 'SITE-STAGING'
+          PUBLISH_BRANCH: "SITE-STAGING"
           PUBLISH_DIR: ./site
+
       # Deploy
-      # - name: Deploy npm Packages
-      #   run: |
-      #     yarn add --dev auto -W
-      #     yarn auto shipit
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+      - name: Deploy npm Packages
+        run: |
+          yarn pleb publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
