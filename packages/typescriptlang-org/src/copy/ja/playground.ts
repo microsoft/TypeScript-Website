@@ -23,15 +23,15 @@ export const playCopy = {
   play_sidebar_options_disable_save: "Save-On-Typeを無効にする",
   play_sidebar_options_disable_save_copy:
     "入力時にURLが変更される機能を無効にします。",
-  play_sidebar_options_external: "外部プラグイン",
-  play_sidebar_options_external_warning:
+  play_sidebar_plugins_options_external: "外部プラグイン",
+  play_sidebar_plugins_options_external_warning:
     "注意: プラグインのコードはサードパーティのものです。",
-  play_sidebar_options_modules: "カスタムモジュール",
-  play_sidebar_options_modules_placeholder: "npmモジュール名",
-  play_sidebar_options_plugin_dev: "Plugin Dev",
-  play_sidebar_options_plugin_dev_option:
+  play_sidebar_plugins_options_modules: "カスタムモジュール",
+  play_sidebar_plugins_options_modules_placeholder: "npmモジュール名",
+  play_sidebar_plugins_plugin_dev: "Plugin Dev",
+  play_sidebar_plugins_plugin_dev_option:
     "<code>localhost:5000/index.js</code>に接続する",
-  play_sidebar_options_plugin_dev_copy:
+  play_sidebar_plugins_plugin_dev_copy:
     "ローカルで開発中のプレイグラウンドプラグインに接続します。詳しくは<a href='https://www.typescriptlang.org/dev/playground-plugins/'>こちら</a>。",
   play_export_report_issue: "TypeScriptのエラーをGitHub issueとして報告",
   play_export_copy_md: "Markdown Issueとしてコピー",

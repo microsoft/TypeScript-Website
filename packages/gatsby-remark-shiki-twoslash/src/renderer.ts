@@ -1,10 +1,10 @@
 // This started as a JS port of https://github.com/octref/shiki/blob/master/packages/shiki/src/renderer.ts
 
-type Lines = import('shiki').IThemedToken[][]
-type Options = import('shiki/dist/renderer').HtmlRendererOptions
-type TwoSlash = import('@typescript/twoslash').TwoSlashReturn
+type Lines = import("shiki").IThemedToken[][]
+type Options = import("shiki/dist/renderer").HtmlRendererOptions
+type TwoSlash = import("@typescript/twoslash").TwoSlashReturn
 
-import { stripHTML, createHighlightedString2 } from './utils'
+import { stripHTML, createHighlightedString2 } from "./utils"
 
 // OK, so - this is just straight up complex code.
 
@@ -30,7 +30,7 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
     return plainOleShikiRenderer(lines, options)
   }
 
-  let html = ''
+  let html = ""
 
   html += `<pre class="shiki twoslash">`
   if (options.langId) {
@@ -38,10 +38,10 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
   }
   html += `<div class='code-container'><code>`
 
-  const errorsGroupedByLine = groupBy(twoslash.errors, (e) => e.line) || new Map()
-  const staticQuickInfosGroupedByLine = groupBy(twoslash.staticQuickInfos, (q) => q.line) || new Map()
+  const errorsGroupedByLine = groupBy(twoslash.errors, e => e.line) || new Map()
+  const staticQuickInfosGroupedByLine = groupBy(twoslash.staticQuickInfos, q => q.line) || new Map()
   // A query is always about the line above it!
-  const queriesGroupedByLine = groupBy(twoslash.queries, (q) => q.line - 1) || new Map()
+  const queriesGroupedByLine = groupBy(twoslash.queries, q => q.line - 1) || new Map()
 
   let filePos = 0
   lines.forEach((l, i) => {
@@ -60,8 +60,8 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
       // errors and lang serv identifiers
       let tokenPos = 0
 
-      l.forEach((token) => {
-        let tokenContent = ''
+      l.forEach(token => {
+        let tokenContent = ""
         // Underlining particular words
         const findTokenFunc = (start: number) => (e: any) =>
           start <= e.character && start + token.content.length >= e.character + e.length
@@ -71,8 +71,8 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
           // prettier-ignore
           console.log(result, start, '<=', e.character, '&&', start + token.content.length, '<=', e.character + e.length)
           if (result) {
-            console.log('Found:', e)
-            console.log('Inside:', token)
+            console.log("Found:", e)
+            console.log("Inside:", token)
           }
           return result
         }
@@ -87,7 +87,7 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
         })
 
         if (allTokensByStart.length) {
-          const ranges = allTokensByStart.map((token) => {
+          const ranges = allTokensByStart.map(token => {
             const range: any = {
               begin: token.start! - filePos,
               end: token.start! + token.length! - filePos,
@@ -101,11 +101,11 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
               // throw new Error(`The begin range of a token is at a minus location, filePos:${filePos} current token: ${JSON.stringify(token, null, '  ')}\n result: ${JSON.stringify(range, null, '  ')}`)
             }
 
-            if ('renderedMessage' in token) range.classes = 'err'
-            if ('kind' in token) range.classes = token.kind
-            if ('targetString' in token) {
-              range.classes = 'lsp'
-              range['lsp'] = stripHTML(token.text)
+            if ("renderedMessage" in token) range.classes = "err"
+            if ("kind" in token) range.classes = token.kind
+            if ("targetString" in token) {
+              range.classes = "lsp"
+              range["lsp"] = stripHTML(token.text)
             }
             return range
           })
@@ -126,34 +126,34 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
 
     // Adding error messages to the line after
     if (errors.length) {
-      const messages = errors.map((e) => escapeHtml(e.renderedMessage)).join('</br>')
-      const codes = errors.map((e) => e.code).join('<br/>')
+      const messages = errors.map(e => escapeHtml(e.renderedMessage)).join("</br>")
+      const codes = errors.map(e => e.code).join("<br/>")
       html += `<span class="error"><span>${messages}</span><span class="code">${codes}</span></span>`
       html += `<span class="error-behind">${messages}</span>`
     }
 
     // Add queries to the next line
     if (queries.length) {
-      queries.forEach((query) => {
-        html += `<span class='query'>${'//' + ''.padStart(query.offset - 2) + '^ = ' + query.text}</span>`
+      queries.forEach(query => {
+        html += `<span class='query'>${"//" + "".padStart(query.offset - 2) + "^ = " + query.text}</span>`
       })
-      html += '\n'
+      html += "\n"
     }
   })
-  html = html.replace(/\n*$/, '') // Get rid of final new lines
+  html = html.replace(/\n*$/, "") // Get rid of final new lines
   html += `</code></div></pre>`
 
   return html
 }
 
 function escapeHtml(html: string) {
-  return html.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  return html.replace(/</g, "&lt;").replace(/>/g, "&gt;")
 }
 
 /** Returns a map where all the keys are the value in keyGetter  */
 function groupBy<T>(list: T[], keyGetter: (obj: any) => number) {
   const map = new Map<number, T[]>()
-  list.forEach((item) => {
+  list.forEach(item => {
     const key = keyGetter(item)
     const collection = map.get(key)
     if (!collection) {
@@ -166,7 +166,7 @@ function groupBy<T>(list: T[], keyGetter: (obj: any) => number) {
 }
 
 export function plainOleShikiRenderer(lines: Lines, options: Options) {
-  let html = ''
+  let html = ""
 
   html += `<pre class="shiki">`
   if (options.langId) {
@@ -175,18 +175,18 @@ export function plainOleShikiRenderer(lines: Lines, options: Options) {
 
   html += `<div class='code-container'><code>`
 
-  lines.forEach((l) => {
+  lines.forEach(l => {
     if (l.length === 0) {
       html += `\n`
     } else {
-      l.forEach((token) => {
+      l.forEach(token => {
         html += `<span style="color: ${token.color}">${escapeHtml(token.content)}</span>`
       })
       html += `\n`
     }
   })
 
-  html = html.replace(/\n*$/, '') // Get rid of final new lines
+  html = html.replace(/\n*$/, "") // Get rid of final new lines
   html += `</code></div></pre>`
   return html
 }

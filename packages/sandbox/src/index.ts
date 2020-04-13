@@ -1,19 +1,19 @@
-import { detectNewImportsToAcquireTypeFor } from './typeAcquisition'
-import { sandboxTheme, sandboxThemeDark } from './theme'
-import { TypeScriptWorker } from './tsWorker'
+import { detectNewImportsToAcquireTypeFor } from "./typeAcquisition"
+import { sandboxTheme, sandboxThemeDark } from "./theme"
+import { TypeScriptWorker } from "./tsWorker"
 import {
   getDefaultSandboxCompilerOptions,
   getCompilerOptionsFromParams,
   createURLQueryWithCompilerOptions,
-} from './compilerOptions'
-import lzstring from './vendor/lzstring.min'
-import { supportedReleases } from './releases'
-import { getInitialCode } from './getInitialCode'
-import { extractTwoSlashComplierOptions } from './twoslashSupport'
-import * as tsvfs from './vendor/typescript-vfs'
+} from "./compilerOptions"
+import lzstring from "./vendor/lzstring.min"
+import { supportedReleases } from "./releases"
+import { getInitialCode } from "./getInitialCode"
+import { extractTwoSlashComplierOptions } from "./twoslashSupport"
+import * as tsvfs from "./vendor/typescript-vfs"
 
-type CompilerOptions = import('monaco-editor').languages.typescript.CompilerOptions
-type Monaco = typeof import('monaco-editor')
+type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
+type Monaco = typeof import("monaco-editor")
 
 /**
  * These are settings for the playground which are the equivalent to props in React
@@ -27,7 +27,7 @@ export type PlaygroundConfig = {
   /** Compiler options which are automatically just forwarded on */
   compilerOptions: CompilerOptions
   /** Optional monaco settings overrides */
-  monacoSettings?: import('monaco-editor').editor.IEditorOptions
+  monacoSettings?: import("monaco-editor").editor.IEditorOptions
   /** Acquire types via type acquisition */
   acquireTypes: boolean
   /** Support twoslash compiler options */
@@ -48,10 +48,10 @@ export type PlaygroundConfig = {
   | { /** theID of a dom node to add monaco to */ elementToAppend: HTMLElement }
 )
 
-const languageType = (config: PlaygroundConfig) => (config.useJavaScript ? 'javascript' : 'typescript')
+const languageType = (config: PlaygroundConfig) => (config.useJavaScript ? "javascript" : "typescript")
 
 /** Default Monaco settings for playground */
-const sharedEditorOptions: import('monaco-editor').editor.IEditorOptions = {
+const sharedEditorOptions: import("monaco-editor").editor.IEditorOptions = {
   automaticLayout: true,
   scrollBeyondLastLine: true,
   scrollBeyondLastColumn: 3,
@@ -63,8 +63,8 @@ const sharedEditorOptions: import('monaco-editor').editor.IEditorOptions = {
 /** The default settings which we apply a partial over */
 export function defaultPlaygroundSettings() {
   const config: PlaygroundConfig = {
-    text: '',
-    domID: '',
+    text: "",
+    domID: "",
     compilerOptions: {},
     acquireTypes: true,
     useJavaScript: false,
@@ -76,9 +76,9 @@ export function defaultPlaygroundSettings() {
 
 function defaultFilePath(config: PlaygroundConfig, compilerOptions: CompilerOptions, monaco: Monaco) {
   const isJSX = compilerOptions.jsx !== monaco.languages.typescript.JsxEmit.None
-  const fileExt = config.useJavaScript ? 'js' : 'ts'
-  const ext = isJSX ? fileExt + 'x' : fileExt
-  return 'input.' + ext
+  const fileExt = config.useJavaScript ? "js" : "ts"
+  const ext = isJSX ? fileExt + "x" : fileExt
+  return "input." + ext
 }
 
 /** Creates a monaco file reference, basically a fancy path */
@@ -90,11 +90,11 @@ function createFileUri(config: PlaygroundConfig, compilerOptions: CompilerOption
 export const createTypeScriptSandbox = (
   partialConfig: Partial<PlaygroundConfig>,
   monaco: Monaco,
-  ts: typeof import('typescript')
+  ts: typeof import("typescript")
 ) => {
   const config = { ...defaultPlaygroundSettings(), ...partialConfig }
-  if (!('domID' in config) && !('elementToAppend' in config))
-    throw new Error('You did not provide a domID or elementToAppend')
+  if (!("domID" in config) && !("elementToAppend" in config))
+    throw new Error("You did not provide a domID or elementToAppend")
 
   const defaultText = config.suppressAutomaticallyGettingDefaultText
     ? config.text
@@ -109,7 +109,7 @@ export const createTypeScriptSandbox = (
     const params = new URLSearchParams(location.search)
     let queryParamCompilerOptions = getCompilerOptionsFromParams(compilerDefaults, params)
     if (Object.keys(queryParamCompilerOptions).length)
-      config.logger.log('[Compiler] Found compiler options in query params: ', queryParamCompilerOptions)
+      config.logger.log("[Compiler] Found compiler options in query params: ", queryParamCompilerOptions)
     compilerOptions = { ...compilerDefaults, ...queryParamCompilerOptions }
   } else {
     compilerOptions = compilerDefaults
@@ -117,12 +117,12 @@ export const createTypeScriptSandbox = (
 
   const language = languageType(config)
   const filePath = createFileUri(config, compilerOptions, monaco)
-  const element = 'domID' in config ? document.getElementById(config.domID) : (config as any).elementToAppend
+  const element = "domID" in config ? document.getElementById(config.domID) : (config as any).elementToAppend
 
   const model = monaco.editor.createModel(defaultText, language, filePath)
-  monaco.editor.defineTheme('sandbox', sandboxTheme)
-  monaco.editor.defineTheme('sandbox-dark', sandboxThemeDark)
-  monaco.editor.setTheme('sandbox')
+  monaco.editor.defineTheme("sandbox", sandboxTheme)
+  monaco.editor.defineTheme("sandbox-dark", sandboxThemeDark)
+  monaco.editor.setTheme("sandbox")
 
   const monacoSettings = Object.assign({ model }, sharedEditorOptions, config.monacoSettings || {})
   const editor = monaco.editor.create(element, monacoSettings)
@@ -156,7 +156,7 @@ export const createTypeScriptSandbox = (
     }
   })
 
-  config.logger.log('[Compiler] Set compiler options: ', compilerOptions)
+  config.logger.log("[Compiler] Set compiler options: ", compilerOptions)
   defaults.setCompilerOptions(compilerOptions)
 
   // Grab types last so that it logs in a logical way
@@ -170,21 +170,21 @@ export const createTypeScriptSandbox = (
   let didUpdateCompilerSettings = (opts: CompilerOptions) => {}
 
   const updateCompilerSettings = (opts: CompilerOptions) => {
-    config.logger.log('[Compiler] Updating compiler options: ', opts)
+    config.logger.log("[Compiler] Updating compiler options: ", opts)
     compilerOptions = { ...opts, ...compilerOptions }
     defaults.setCompilerOptions(compilerOptions)
     didUpdateCompilerSettings(compilerOptions)
   }
 
   const updateCompilerSetting = (key: keyof CompilerOptions, value: any) => {
-    config.logger.log('[Compiler] Setting compiler options ', key, 'to', value)
+    config.logger.log("[Compiler] Setting compiler options ", key, "to", value)
     compilerOptions[key] = value
     defaults.setCompilerOptions(compilerOptions)
     didUpdateCompilerSettings(compilerOptions)
   }
 
   const setCompilerSettings = (opts: CompilerOptions) => {
-    config.logger.log('[Compiler] Setting compiler options: ', opts)
+    config.logger.log("[Compiler] Setting compiler options: ", opts)
     compilerOptions = opts
     defaults.setCompilerOptions(compilerOptions)
     didUpdateCompilerSettings(compilerOptions)
@@ -213,14 +213,14 @@ export const createTypeScriptSandbox = (
     }
 
     const result = await getEmitResult()
-    const firstJS = result.outputFiles.find((o: any) => o.name.endsWith('.js') || o.name.endsWith('.jsx'))
-    return (firstJS && firstJS.text) || ''
+    const firstJS = result.outputFiles.find((o: any) => o.name.endsWith(".js") || o.name.endsWith(".jsx"))
+    return (firstJS && firstJS.text) || ""
   }
 
   /** Gets the DTS for the JS/TS  of compiling your editor's code */
   const getDTSForCode = async () => {
     const result = await getEmitResult()
-    return result.outputFiles.find((o: any) => o.name.endsWith('.d.ts'))!.text
+    return result.outputFiles.find((o: any) => o.name.endsWith(".d.ts"))!.text
   }
 
   const getWorkerProcess = async (): Promise<TypeScriptWorker> => {
@@ -326,6 +326,8 @@ export const createTypeScriptSandbox = (
     getTwoSlashComplierOptions,
     /** Gets to the current monaco-language, this is how you talk to the background webworkers */
     languageServiceDefaults: defaults,
+    /** The path which represents the current file using the current compiler options */
+    filepath: filePath.path,
   }
 }
 

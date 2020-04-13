@@ -1,9 +1,9 @@
-type Sandbox = import('typescript-sandbox').Sandbox
-type Monaco = typeof import('monaco-editor')
+type Sandbox = import("typescript-sandbox").Sandbox
+type Monaco = typeof import("monaco-editor")
 
 declare const window: any
 
-import { compiledJSPlugin } from './sidebar/showJS'
+import { compiledJSPlugin } from "./sidebar/showJS"
 import {
   createSidebar,
   createTabForPlugin,
@@ -12,23 +12,24 @@ import {
   activatePlugin,
   createDragBar,
   setupSidebarToggle,
-} from './createElements'
-import { showDTSPlugin } from './sidebar/showDTS'
-import { runWithCustomLogs, runPlugin } from './sidebar/runtime'
-import { createExporter } from './exporter'
-import { createUI } from './createUI'
-import { getExampleSourceCode } from './getExample'
-import { ExampleHighlighter } from './monaco/ExampleHighlight'
-import { createConfigDropdown, updateConfigDropdownForCompilerOptions } from './createConfigDropdown'
-import { showErrors } from './sidebar/showErrors'
-import { optionsPlugin, allowConnectingToLocalhost, activePlugins, addCustomPlugin } from './sidebar/options'
-import { createUtils, PluginUtils } from './pluginUtils'
-import type React from 'react'
+} from "./createElements"
+import { showDTSPlugin } from "./sidebar/showDTS"
+import { runWithCustomLogs, runPlugin } from "./sidebar/runtime"
+import { createExporter } from "./exporter"
+import { createUI } from "./createUI"
+import { getExampleSourceCode } from "./getExample"
+import { ExampleHighlighter } from "./monaco/ExampleHighlight"
+import { createConfigDropdown, updateConfigDropdownForCompilerOptions } from "./createConfigDropdown"
+import { showErrors } from "./sidebar/showErrors"
+import { optionsPlugin, allowConnectingToLocalhost, activePlugins, addCustomPlugin } from "./sidebar/plugins"
+import { createUtils, PluginUtils } from "./pluginUtils"
+import type React from "react"
+import { settingsPlugin } from "./sidebar/settings"
 
-export { PluginUtils } from './pluginUtils'
+export { PluginUtils } from "./pluginUtils"
 
 export type PluginFactory = {
-  (i: (key: string, components?: any) => string): PlaygroundPlugin
+  (i: (key: string, components?: any) => string, utils: PluginUtils): PlaygroundPlugin
 }
 
 /** The interface of all sidebar plugins */
@@ -44,9 +45,13 @@ export interface PlaygroundPlugin {
   /** After we show the tab */
   didMount?: (sandbox: Sandbox, container: HTMLDivElement) => void
   /** Model changes while this plugin is actively selected  */
-  modelChanged?: (sandbox: Sandbox, model: import('monaco-editor').editor.ITextModel) => void
+  modelChanged?: (sandbox: Sandbox, model: import("monaco-editor").editor.ITextModel, container: HTMLDivElement) => void
   /** Delayed model changes while this plugin is actively selected, useful when you are working with the TS API because it won't run on every keypress */
-  modelChangedDebounce?: (sandbox: Sandbox, model: import('monaco-editor').editor.ITextModel) => void
+  modelChangedDebounce?: (
+    sandbox: Sandbox,
+    model: import("monaco-editor").editor.ITextModel,
+    container: HTMLDivElement
+  ) => void
   /** Before we remove the tab */
   willUnmount?: (sandbox: Sandbox, container: HTMLDivElement) => void
   /** After we remove the tab */
@@ -56,8 +61,14 @@ export interface PlaygroundPlugin {
 }
 
 interface PlaygroundConfig {
+  /** Language like "en" / "ja" etc */
   lang: string
+  /** Site prefix, like "v2" during the pre-release */
   prefix: string
+  /** Optional plugins so that we can re-use the playground with different sidebars */
+  plugins?: PluginFactory[]
+  /** Should this playground load up custom plugins from localStorage? */
+  supportCustomPlugins: boolean
 }
 
 const defaultPluginFactories: PluginFactory[] = [compiledJSPlugin, showDTSPlugin, showErrors, runPlugin, optionsPlugin]
@@ -85,29 +96,39 @@ export const setupPlayground = (
   const plugins = [] as PlaygroundPlugin[]
   const tabs = [] as HTMLButtonElement[]
 
+  // Let's things like the workbench hook into tab changes
+  let didUpdateTab: (newPlugin: PlaygroundPlugin, previousPlugin: PlaygroundPlugin) => void | undefined
+
   const registerPlugin = (plugin: PlaygroundPlugin) => {
     plugins.push(plugin)
 
     const tab = createTabForPlugin(plugin)
     tabs.push(tab)
 
-    const tabClicked: HTMLElement['onclick'] = e => {
-      const previousPlugin = currentPlugin()
+    const tabClicked: HTMLElement["onclick"] = e => {
+      const previousPlugin = getCurrentPlugin()
       const newTab = e.target as HTMLElement
       const newPlugin = plugins.find(p => p.displayName == newTab.textContent)!
       activatePlugin(newPlugin, previousPlugin, sandbox, tabBar, container)
+      didUpdateTab && didUpdateTab(newPlugin, previousPlugin)
     }
 
     tabBar.appendChild(tab)
     tab.onclick = tabClicked
   }
 
-  const currentPlugin = () => {
-    const selectedTab = tabs.find(t => t.classList.contains('active'))!
+  const setDidUpdateTab = (func: (newPlugin: PlaygroundPlugin, previousPlugin: PlaygroundPlugin) => void) => {
+    didUpdateTab = func
+  }
+
+  const getCurrentPlugin = () => {
+    const selectedTab = tabs.find(t => t.classList.contains("active"))!
     return plugins[tabs.indexOf(selectedTab)]
   }
 
-  const initialPlugins = defaultPluginFactories.map(f => f(i))
+  const defaultPlugins = config.plugins || defaultPluginFactories
+  const utils = createUtils(sandbox, react)
+  const initialPlugins = defaultPlugins.map(f => f(i, utils))
   initialPlugins.forEach(p => registerPlugin(p))
 
   // Choose which should be selected
@@ -118,8 +139,8 @@ export const setupPlayground = (
 
   let debouncingTimer = false
   sandbox.editor.onDidChangeModelContent(_event => {
-    const plugin = currentPlugin()
-    if (plugin.modelChanged) plugin.modelChanged(sandbox, sandbox.getModel())
+    const plugin = getCurrentPlugin()
+    if (plugin.modelChanged) plugin.modelChanged(sandbox, sandbox.getModel(), container)
 
     // This needs to be last in the function
     if (debouncingTimer) return
@@ -129,33 +150,34 @@ export const setupPlayground = (
       playgroundDebouncedMainFunction()
 
       // Only call the plugin function once every 0.3s
-      if (plugin.modelChangedDebounce && plugin.displayName === currentPlugin().displayName) {
-        plugin.modelChangedDebounce(sandbox, sandbox.getModel())
+      if (plugin.modelChangedDebounce && plugin.displayName === getCurrentPlugin().displayName) {
+        console.log("Debounced", container)
+        plugin.modelChangedDebounce(sandbox, sandbox.getModel(), container)
       }
     }, 300)
   })
 
   // Sets the URL and storage of the sandbox string
   const playgroundDebouncedMainFunction = () => {
-    const alwaysUpdateURL = !localStorage.getItem('disable-save-on-type')
+    const alwaysUpdateURL = !localStorage.getItem("disable-save-on-type")
     if (alwaysUpdateURL) {
       const newURL = sandbox.createURLQueryWithCompilerOptions(sandbox)
-      window.history.replaceState({}, '', newURL)
+      window.history.replaceState({}, "", newURL)
     }
 
-    localStorage.setItem('sandbox-history', sandbox.getText())
+    localStorage.setItem("sandbox-history", sandbox.getText())
   }
 
   // When any compiler flags are changed, trigger a potential change to the URL
   sandbox.setDidUpdateCompilerSettings(() => {
     playgroundDebouncedMainFunction()
     // @ts-ignore
-    window.appInsights.trackEvent({ name: 'Compiler Settings changed' })
+    window.appInsights.trackEvent({ name: "Compiler Settings changed" })
 
     const model = sandbox.editor.getModel()
-    const plugin = currentPlugin()
-    if (model && plugin.modelChanged) plugin.modelChanged(sandbox, model)
-    if (model && plugin.modelChangedDebounce) plugin.modelChangedDebounce(sandbox, model)
+    const plugin = getCurrentPlugin()
+    if (model && plugin.modelChanged) plugin.modelChanged(sandbox, model, container)
+    if (model && plugin.modelChangedDebounce) plugin.modelChangedDebounce(sandbox, model, container)
   })
 
   // Setup working with the existing UI, once it's loaded
@@ -163,24 +185,24 @@ export const setupPlayground = (
   // Versions of TypeScript
 
   // Set up the label for the dropdown
-  document.querySelectorAll('#versions > a').item(0).innerHTML = 'v' + sandbox.ts.version + " <span class='caret'/>"
+  document.querySelectorAll("#versions > a").item(0).innerHTML = "v" + sandbox.ts.version + " <span class='caret'/>"
 
   // Add the versions to the dropdown
-  const versionsMenu = document.querySelectorAll('#versions > ul').item(0)
+  const versionsMenu = document.querySelectorAll("#versions > ul").item(0)
 
-  const notWorkingInPlayground = ['3.1.6', '3.0.1', '2.8.1', '2.7.2', '2.4.1']
-  
+  const notWorkingInPlayground = ["3.1.6", "3.0.1", "2.8.1", "2.7.2", "2.4.1"]
+
   const allVersions = [
-    '3.9.0-beta',
-    ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)), 
-    'Nightly'
+    "3.9.0-beta",
+    ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)),
+    "Nightly",
   ]
 
   allVersions.forEach((v: string) => {
-    const li = document.createElement('li')
-    const a = document.createElement('a')
+    const li = document.createElement("li")
+    const a = document.createElement("a")
     a.textContent = v
-    a.href = '#'
+    a.href = "#"
 
     if (v === "Nightly") {
       li.classList.add("nightly")
@@ -192,11 +214,11 @@ export const setupPlayground = (
 
     li.onclick = () => {
       const currentURL = sandbox.createURLQueryWithCompilerOptions(sandbox)
-      const params = new URLSearchParams(currentURL.split('#')[0])
-      const version = v === 'Nightly' ? 'next' : v
-      params.set('ts', version)
+      const params = new URLSearchParams(currentURL.split("#")[0])
+      const version = v === "Nightly" ? "next" : v
+      params.set("ts", version)
 
-      const hash = document.location.hash.length ? document.location.hash : ''
+      const hash = document.location.hash.length ? document.location.hash : ""
       const newURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}?${params}${hash}`
 
       // @ts-ignore - it is allowed
@@ -208,27 +230,24 @@ export const setupPlayground = (
   })
 
   // Support dropdowns
-  document.querySelectorAll('.navbar-sub li.dropdown > a').forEach(link => {
+  document.querySelectorAll(".navbar-sub li.dropdown > a").forEach(link => {
     const a = link as HTMLAnchorElement
     a.onclick = _e => {
-      if (a.parentElement!.classList.contains('open')) {
-        document.querySelectorAll('.navbar-sub li.open').forEach(i => i.classList.remove('open'))
+      if (a.parentElement!.classList.contains("open")) {
+        document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
       } else {
-        document.querySelectorAll('.navbar-sub li.open').forEach(i => i.classList.remove('open'))
-        a.parentElement!.classList.toggle('open')
+        document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
+        a.parentElement!.classList.toggle("open")
 
-        const exampleContainer = a
-          .closest('li')!
-          .getElementsByTagName('ul')
-          .item(0)!
+        const exampleContainer = a.closest("li")!.getElementsByTagName("ul").item(0)!
 
         // Set exact height and widths for the popovers for the main playground navigation
-        const isPlaygroundSubmenu = !!a.closest('nav')
+        const isPlaygroundSubmenu = !!a.closest("nav")
         if (isPlaygroundSubmenu) {
-          const playgroundContainer = document.getElementById('playground-container')!
+          const playgroundContainer = document.getElementById("playground-container")!
           exampleContainer.style.height = `calc(${playgroundContainer.getBoundingClientRect().height + 26}px - 4rem)`
 
-          const sideBarWidth = (document.querySelector('.playground-sidebar') as any).offsetWidth
+          const sideBarWidth = (document.querySelector(".playground-sidebar") as any).offsetWidth
           exampleContainer.style.width = `calc(100% - ${sideBarWidth}px - 71px)`
         }
       }
@@ -236,79 +255,110 @@ export const setupPlayground = (
   })
 
   // Set up some key commands
-  sandbox.editor.addAction({ 
-    id: 'copy-clipboard',
-    label: 'Save to clipboard',
-    keybindings: [ monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S ],
-  
-    contextMenuGroupId: 'run',
+  sandbox.editor.addAction({
+    id: "copy-clipboard",
+    label: "Save to clipboard",
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S],
+
+    contextMenuGroupId: "run",
     contextMenuOrder: 1.5,
-  
-    run: function(ed) {
+
+    run: function (ed) {
       window.navigator.clipboard.writeText(location.href.toString()).then(
-        () => ui.flashInfo(i('play_export_clipboard')),
+        () => ui.flashInfo(i("play_export_clipboard")),
         (e: any) => alert(e)
       )
-    }
-  });
+    },
+  })
 
+  sandbox.editor.addAction({
+    id: "run-js",
+    label: "Run the evaluated JavaScript for your TypeScript file",
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
 
-  sandbox.editor.addAction({ 
-    id: 'run-js',
-    label: 'Run the evaluated JavaScript for your TypeScript file',
-    keybindings: [ monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter ],
-  
-    contextMenuGroupId: 'run',
+    contextMenuGroupId: "run",
     contextMenuOrder: 1.5,
-  
-    run: function(ed) {
-      const runButton = document.getElementById('run-button')!
-      runButton.onclick && runButton.onclick({} as any)
+
+    run: function (ed) {
+      const runButton = document.getElementById("run-button")
+      runButton && runButton.onclick && runButton.onclick({} as any)
+    },
+  })
+
+  const runButton = document.getElementById("run-button")
+  if (runButton) {
+    runButton.onclick = () => {
+      const run = sandbox.getRunnableJS()
+      const runPlugin = plugins.find(p => p.id === "logs")!
+      activatePlugin(runPlugin, getCurrentPlugin(), sandbox, tabBar, container)
+
+      runWithCustomLogs(run, i)
+
+      const isJS = sandbox.config.useJavaScript
+      ui.flashInfo(i(isJS ? "play_run_js" : "play_run_ts"))
     }
-  });
-
-
-  const runButton = document.getElementById('run-button')!
-  runButton.onclick = () => {
-    const run = sandbox.getRunnableJS()
-    const runPlugin = plugins.find(p => p.id === 'logs')!
-    activatePlugin(runPlugin, currentPlugin(), sandbox, tabBar, container)
-
-    runWithCustomLogs(run, i)
-
-    const isJS = sandbox.config.useJavaScript
-    ui.flashInfo(i(isJS ? 'play_run_js' : 'play_run_ts'))
   }
 
   // Handle the close buttons on the examples
-  document.querySelectorAll('button.examples-close').forEach(b => {
+  document.querySelectorAll("button.examples-close").forEach(b => {
     const button = b as HTMLButtonElement
     button.onclick = (e: any) => {
       const button = e.target as HTMLButtonElement
-      const navLI = button.closest('li')
-      navLI?.classList.remove('open')
+      const navLI = button.closest("li")
+      navLI?.classList.remove("open")
     }
   })
 
   setupSidebarToggle()
 
-  createConfigDropdown(sandbox, monaco)
-  updateConfigDropdownForCompilerOptions(sandbox, monaco)
+  if (document.getElementById("config-container")) {
+    createConfigDropdown(sandbox, monaco)
+    updateConfigDropdownForCompilerOptions(sandbox, monaco)
+  }
+
+  if (document.getElementById("playground-settings")) {
+    const settingsToggle = document.getElementById("playground-settings")!
+
+    settingsToggle.onclick = () => {
+      const open = settingsToggle.parentElement!.classList.contains("open")
+      const sidebarTabs = document.querySelector(".playground-plugin-tabview") as HTMLDivElement
+      const sidebarContent = document.querySelector(".playground-plugin-container") as HTMLDivElement
+      let settingsContent = document.querySelector(".playground-settings-container") as HTMLDivElement
+      if (!settingsContent) {
+        settingsContent = document.createElement("div")
+        settingsContent.className = "playground-settings-container playground-plugin-container"
+        const settings = settingsPlugin(i, utils)
+        settings.didMount && settings.didMount(sandbox, settingsContent)
+        document.querySelector(".playground-sidebar")!.appendChild(settingsContent)
+      }
+
+      if (open) {
+        sidebarTabs.style.display = "flex"
+        sidebarContent.style.display = "block"
+        settingsContent.style.display = "none"
+      } else {
+        sidebarTabs.style.display = "none"
+        sidebarContent.style.display = "none"
+        settingsContent.style.display = "block"
+      }
+      settingsToggle.parentElement!.classList.toggle("open")
+    }
+  }
 
   // Support grabbing examples from the location hash
-  if (location.hash.startsWith('#example')) {
-    const exampleName = location.hash.replace('#example/', '').trim()
-    sandbox.config.logger.log('Loading example:', exampleName)
+  if (location.hash.startsWith("#example")) {
+    const exampleName = location.hash.replace("#example/", "").trim()
+    sandbox.config.logger.log("Loading example:", exampleName)
     getExampleSourceCode(config.prefix, config.lang, exampleName).then(ex => {
       if (ex.example && ex.code) {
         const { example, code } = ex
 
         // Update the localstorage showing that you've seen this page
         if (localStorage) {
-          const seenText = localStorage.getItem('examples-seen') || '{}'
+          const seenText = localStorage.getItem("examples-seen") || "{}"
           const seen = JSON.parse(seenText)
           seen[example.id] = example.hash
-          localStorage.setItem('examples-seen', JSON.stringify(seen))
+          localStorage.setItem("examples-seen", JSON.stringify(seen))
         }
 
         // Set the menu to be the same section as this current example
@@ -321,18 +371,18 @@ export const setupPlayground = (
         //   }
         // }
 
-        const allLinks = document.querySelectorAll('example-link')
+        const allLinks = document.querySelectorAll("example-link")
         // @ts-ignore
         for (const link of allLinks) {
           if (link.textContent === example.title) {
-            link.classList.add('highlight')
+            link.classList.add("highlight")
           }
         }
 
-        document.title = 'TypeScript Playground - ' + example.title
+        document.title = "TypeScript Playground - " + example.title
         sandbox.setText(code)
       } else {
-        sandbox.setText('// There was an issue getting the example, bad URL? Check the console in the developer tools')
+        sandbox.setText("// There was an issue getting the example, bad URL? Check the console in the developer tools")
       }
     })
   }
@@ -340,16 +390,20 @@ export const setupPlayground = (
   // Sets up a way to click between examples
   monaco.languages.registerLinkProvider(sandbox.language, new ExampleHighlighter())
 
-  const languageSelector = document.getElementById('language-selector')! as HTMLSelectElement
-  const params = new URLSearchParams(location.search)
-  languageSelector.options.selectedIndex = params.get('useJavaScript') ? 1 : 0
+  const languageSelector = document.getElementById("language-selector") as HTMLSelectElement
+  if (languageSelector) {
+    const params = new URLSearchParams(location.search)
+    languageSelector.options.selectedIndex = params.get("useJavaScript") ? 1 : 0
 
-  languageSelector.onchange = () => {
-    const useJavaScript = languageSelector.value === 'JavaScript'
-    const query = sandbox.createURLQueryWithCompilerOptions(sandbox, { useJavaScript: useJavaScript ? true : undefined })
-    const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
-    // @ts-ignore
-    document.location = fullURL
+    languageSelector.onchange = () => {
+      const useJavaScript = languageSelector.value === "JavaScript"
+      const query = sandbox.createURLQueryWithCompilerOptions(sandbox, {
+        useJavaScript: useJavaScript ? true : undefined,
+      })
+      const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
+      // @ts-ignore
+      document.location = fullURL
+    }
   }
 
   const ui = createUI()
@@ -359,6 +413,10 @@ export const setupPlayground = (
     exporter,
     ui,
     registerPlugin,
+    plugins,
+    getCurrentPlugin,
+    tabs,
+    setDidUpdateTab,
   }
 
   window.ts = sandbox.ts
@@ -367,13 +425,12 @@ export const setupPlayground = (
 
   console.log(`Using TypeScript ${window.ts.version}`)
 
-  console.log('Available globals:')
-  console.log('\twindow.ts', window.ts)
-  console.log('\twindow.sandbox', window.sandbox)
-  console.log('\twindow.playground', window.playground)
-  console.log('\twindow.react', window.react)
-  console.log('\twindow.reactDOM', window.reactDOM)
-
+  console.log("Available globals:")
+  console.log("\twindow.ts", window.ts)
+  console.log("\twindow.sandbox", window.sandbox)
+  console.log("\twindow.playground", window.playground)
+  console.log("\twindow.react", window.react)
+  console.log("\twindow.reactDOM", window.reactDOM)
 
   /** A plugin */
   const activateExternalPlugin = (
@@ -382,7 +439,7 @@ export const setupPlayground = (
   ) => {
     let readyPlugin: PlaygroundPlugin
     // Can either be a factory, or object
-    if (typeof plugin === 'function') {
+    if (typeof plugin === "function") {
       const utils = createUtils(sandbox, react)
       readyPlugin = plugin(utils)
     } else {
@@ -400,30 +457,30 @@ export const setupPlayground = (
 
     if (pluginWantsFront || autoActivate) {
       // Auto-select the dev plugin
-      activatePlugin(readyPlugin, currentPlugin(), sandbox, tabBar, container)
+      activatePlugin(readyPlugin, getCurrentPlugin(), sandbox, tabBar, container)
     }
   }
 
   // Dev mode plugin
-  if (allowConnectingToLocalhost()) {
+  if (config.supportCustomPlugins && allowConnectingToLocalhost()) {
     window.exports = {}
-    console.log('Connecting to dev plugin')
+    console.log("Connecting to dev plugin")
     try {
       // @ts-ignore
       const re = window.require
-      re(['local/index'], (devPlugin: any) => {
-        console.log('Set up dev plugin from localhost:5000')
+      re(["local/index"], (devPlugin: any) => {
+        console.log("Set up dev plugin from localhost:5000")
         try {
           activateExternalPlugin(devPlugin, true)
         } catch (error) {
           console.error(error)
           setTimeout(() => {
-            ui.flashInfo('Error: Could not load dev plugin from localhost:5000')
+            ui.flashInfo("Error: Could not load dev plugin from localhost:5000")
           }, 700)
         }
       })
     } catch (error) {
-      console.error('Problem loading up the dev plugin')
+      console.error("Problem loading up the dev plugin")
       console.error(error)
     }
   }
@@ -436,36 +493,40 @@ export const setupPlayground = (
         activateExternalPlugin(devPlugin, autoEnable)
       })
     } catch (error) {
-      console.error('Problem loading up the plugin:', plugin)
+      console.error("Problem loading up the plugin:", plugin)
       console.error(error)
     }
   }
 
-  activePlugins().forEach(p => downloadPlugin(p.module, false))
+  if (config.supportCustomPlugins) {
+    // Grab ones from localstorage
+    activePlugins().forEach(p => downloadPlugin(p.module, false))
 
-  if (location.hash.startsWith('#show-examples')) {
-    setTimeout(() => {
-      document.getElementById('examples-button')?.click()
-    }, 100)
-  }
-
-  if (location.hash.startsWith('#show-whatisnew')) {
-    setTimeout(() => {
-      document.getElementById('whatisnew-button')?.click()
-    }, 100)
-  }
-
-  const pluginToInstall = params.get('install-plugin')
-  if (pluginToInstall) {
-    const alreadyInstalled = activePlugins().find(p => p.module === pluginToInstall)
-    console.log(activePlugins(), alreadyInstalled)
-    if (!alreadyInstalled) {
-      const shouldDoIt = confirm('Would you like to install the third party plugin?\n\n' + pluginToInstall)
-      if (shouldDoIt) {
-        addCustomPlugin(pluginToInstall)
-        downloadPlugin(pluginToInstall, true)
+    // Offer to install one if 'install-plugin' is a query param
+    const params = new URLSearchParams(location.search)
+    const pluginToInstall = params.get("install-plugin")
+    if (pluginToInstall) {
+      const alreadyInstalled = activePlugins().find(p => p.module === pluginToInstall)
+      if (!alreadyInstalled) {
+        const shouldDoIt = confirm("Would you like to install the third party plugin?\n\n" + pluginToInstall)
+        if (shouldDoIt) {
+          addCustomPlugin(pluginToInstall)
+          downloadPlugin(pluginToInstall, true)
+        }
       }
     }
+  }
+
+  if (location.hash.startsWith("#show-examples")) {
+    setTimeout(() => {
+      document.getElementById("examples-button")?.click()
+    }, 100)
+  }
+
+  if (location.hash.startsWith("#show-whatisnew")) {
+    setTimeout(() => {
+      document.getElementById("whatisnew-button")?.click()
+    }, 100)
   }
 
   return playground

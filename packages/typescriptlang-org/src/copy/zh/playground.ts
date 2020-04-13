@@ -22,14 +22,14 @@ export const playCopy = {
     "禁用 require 或 import 的自动类型获取。",
   play_sidebar_options_disable_save: "禁用即时保存",
   play_sidebar_options_disable_save_copy: "禁用输入时改变 URL",
-  play_sidebar_options_external: "外部插件",
-  play_sidebar_options_external_warning: "警告: 外部插件来自第三方",
-  play_sidebar_options_modules: "自定义模块",
-  play_sidebar_options_modules_placeholder: "npm 上的模块。",
-  play_sidebar_options_plugin_dev: "插件开发",
-  play_sidebar_options_plugin_dev_option:
+  play_sidebar_plugins_options_external: "外部插件",
+  play_sidebar_plugins_options_external_warning: "警告: 外部插件来自第三方",
+  play_sidebar_plugins_options_modules: "自定义模块",
+  play_sidebar_plugins_options_modules_placeholder: "npm 上的模块。",
+  play_sidebar_plugins_plugin_dev: "插件开发",
+  play_sidebar_plugins_plugin_dev_option:
     "访问 <code>localhost:5000/index.js</code>",
-  play_sidebar_options_plugin_dev_copy:
+  play_sidebar_plugins_plugin_dev_copy:
     "在开发模式下自动尝试连接到游乐场的插件。你可以在<a href='https://www.typescriptlang.org/v2/dev/playground-plugins/'>这里</a>查看更多。",
   play_export_report_issue: "为 TypeScript 提交 Github issue。",
   play_export_copy_md: "复制为 Markdown 格式的 issue 模板",

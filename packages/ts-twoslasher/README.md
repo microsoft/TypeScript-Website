@@ -103,8 +103,12 @@ export interface ExampleOptions {
    * means when you just use `showEmit` above it shows the transpiled JS.
    */
   showEmittedFile: string
-  /** Whether to disable the pre-cache of LSP calls for interesting identifiers */
-  noStaticSemanticInfo: false
+  /** Whether to disable the pre-cache of LSP calls for interesting identifiers, defaults to false */
+  noStaticSemanticInfo: boolean
+  /** Declare that the TypeScript program should edit the fsMap which is passed in, this is only useful for tool-makers, defaults to false */
+  emit: boolean
+  /** Declare that you don't need to validate that errors have corresponding annotations, defaults to false */
+  noErrorValidation: boolean
 }
 ```
 
@@ -215,16 +219,16 @@ type NameOrId<T extends number | string> = T extends number ? IdLabel : NameLabe
 
 // ---cut---
 function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {
-  throw 'unimplemented'
+  throw "unimplemented"
 }
 
-let a = createLabel('typescript')
+let a = createLabel("typescript")
 //  ^?
 
 let b = createLabel(2.8)
 //  ^?
 
-let c = createLabel(Math.random() ? 'hello' : 42)
+let c = createLabel(Math.random() ? "hello" : 42)
 //  ^?
 ```
 
@@ -232,14 +236,14 @@ Turns to:
 
 > ```ts
 > function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {
->   throw 'unimplemented'
+>   throw "unimplemented"
 > }
 >
-> let a = createLabel('typescript')
+> let a = createLabel("typescript")
 >
 > let b = createLabel(2.8)
 >
-> let c = createLabel(Math.random() ? 'hello' : 42)
+> let c = createLabel(Math.random() ? "hello" : 42)
 > ```
 
 > With:
@@ -249,7 +253,35 @@ Turns to:
 >   "code": "See above",
 >   "extension": "ts",
 >   "highlights": [],
->   "queries": [],
+>   "queries": [
+>     {
+>       "docs": "",
+>       "kind": "query",
+>       "start": 354,
+>       "length": 16,
+>       "text": "let a: NameLabel",
+>       "offset": 4,
+>       "line": 4
+>     },
+>     {
+>       "docs": "",
+>       "kind": "query",
+>       "start": 390,
+>       "length": 14,
+>       "text": "let b: IdLabel",
+>       "offset": 4,
+>       "line": 6
+>     },
+>     {
+>       "docs": "",
+>       "kind": "query",
+>       "start": 417,
+>       "length": 26,
+>       "text": "let c: IdLabel | NameLabel",
+>       "offset": 4,
+>       "line": 8
+>     }
+>   ],
 >   "staticQuickInfos": "[ 14 items ]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/JYOwLgpgTgZghgYwgAgJIBMAycBGEA2yA3ssOgFzIgCuAtnlADTID0AVMgM4D2tKMwAuk7I2LZAF8AUKEixEKAHJw+2PIRIgVESpzBRQAc2btk3MAAtoyAUJFjJUsAE8ADku0B5KBgA8AFWQIAA9IEGEqOgZkAB8ufSMAPmQAXmRAkLCImnprAH40LFwCZEplVWL8AG4pFnF-C2ARBF4+cC4Lbmp8dCpzZDxSEAR8anQIdCla8QBaOYRqMDmZqRhqYbBgbhBkBCgIOEg1AgCg0IhwkRzouL0DEENEgAoyb3KddIBKMq8fdADkkQpMgQchLFBuAB3ZAAInWwFornwEDakHQMKk0ikyLAyDgqV2+0OEGO+CeMJc7k4e2ArjAMM+NTqIIAenkpjiBgS9gcjpUngAmAB0AA5GdNWezsRBcQhuUS+eongBZQ4WIVQODhXhPT7IAowqz4fDcGGlZAAFgF4uZyDZUiAA"
@@ -303,7 +335,7 @@ function greet(person: string, date: Date) {
   console.log(`Hello ${person}, today is ${date.toDateString()}!`)
 }
 
-greet('Maddison', new Date())
+greet("Maddison", new Date())
 //                ^^^^^^^^^^
 ```
 
@@ -314,7 +346,7 @@ Turns to:
 >   console.log(`Hello ${person}, today is ${date.toDateString()}!`)
 > }
 >
-> greet('Maddison', new Date())
+> greet("Maddison", new Date())
 > ```
 
 > With:
@@ -343,10 +375,10 @@ Turns to:
 
 ```ts
 // @filename: file-with-export.ts
-export const helloWorld = 'Example string'
+export const helloWorld = "Example string"
 
 // @filename: index.ts
-import { helloWorld } from './file-with-export'
+import { helloWorld } from "./file-with-export"
 console.log(helloWorld)
 ```
 
@@ -354,10 +386,10 @@ Turns to:
 
 > ```ts
 > // @filename: file-with-export.ts
-> export const helloWorld = 'Example string'
+> export const helloWorld = "Example string"
 >
 > // @filename: index.ts
-> import { helloWorld } from './file-with-export'
+> import { helloWorld } from "./file-with-export"
 > console.log(helloWorld)
 > ```
 
@@ -378,14 +410,14 @@ Turns to:
 #### `query.ts`
 
 ```ts
-let foo = 'hello there!'
+let foo = "hello there!"
 //  ^?
 ```
 
 Turns to:
 
 > ```ts
-> let foo = 'hello there!'
+> let foo = "hello there!"
 > ```
 
 > With:
@@ -397,14 +429,13 @@ Turns to:
 >   "highlights": [],
 >   "queries": [
 >     {
->       "kind": "query",
->       "offset": 4,
->       "position": 4,
->       "text": "let foo: string",
 >       "docs": "",
->       "line": 1,
->       "start": 3,
->       "length": 4
+>       "kind": "query",
+>       "start": 4,
+>       "length": 15,
+>       "text": "let foo: string",
+>       "offset": 4,
+>       "line": 0
 >     }
 >   ],
 >   "staticQuickInfos": "[ 1 items ]",
@@ -434,7 +465,7 @@ Turns to:
 > var __read =
 >   (this && this.__read) ||
 >   function (o, n) {
->     var m = typeof Symbol === 'function' && o[Symbol.iterator]
+>     var m = typeof Symbol === "function" && o[Symbol.iterator]
 >     if (!m) return o
 >     var i = m.call(o),
 >       r,
@@ -446,7 +477,7 @@ Turns to:
 >       e = { error: error }
 >     } finally {
 >       try {
->         if (r && !r.done && (m = i['return'])) m.call(i)
+>         if (r && !r.done && (m = i["return"])) m.call(i)
 >       } finally {
 >         if (e) throw e.error
 >       }
@@ -489,6 +520,7 @@ The API is one main exported function:
  *
  * @param code The twoslash markup'd code
  * @param extension For example: "ts", "tsx", "typescript", "javascript" or "js".
+ * @param defaultOptions Allows setting any of the handbook options from outside the function, useful if you don't want LSP identifiers
  * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd.
  * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd.
  * @param fsMap An optional Map object which is passed into @typescript/vfs - if you are using twoslash on the
@@ -497,6 +529,7 @@ The API is one main exported function:
 export function twoslasher(
   code: string,
   extension: string,
+  defaultOptions?: Partial<ExampleOptions>,
   tsModule?: TS,
   lzstringModule?: LZ,
   fsMap?: Map<string, string>
@@ -513,7 +546,7 @@ export interface TwoSlashReturn {
   extension: string
   /** Sample requests to highlight a particular part of the code */
   highlights: {
-    kind: 'highlight'
+    kind: "highlight"
     position: number
     length: number
     description: string
@@ -538,15 +571,19 @@ export interface TwoSlashReturn {
   }[]
   /** Requests to use the LSP to get info for a particular symbol in the source */
   queries: {
-    kind: 'query'
-    /** The index of the text in the file */
-    start: number
-    /** how long the identifier */
-    length: number
+    kind: "query"
+    /** What line is the highlighted identifier on? */
+    line: number
+    /** At what index in the line does the caret represent  */
     offset: number
-    // TODO: Add these so we can present something
+    /** The text of the token which is highlighted */
     text: string
+    /** Any attached JSDocs */
     docs: string | undefined
+    /** The token start which the query indicates  */
+    start: number
+    /** The length of the token */
+    length: number
   }[]
   /** Diagnostic error messages which came up when creating the program */
   errors: {
