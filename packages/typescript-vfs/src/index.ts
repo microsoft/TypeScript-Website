@@ -1,21 +1,21 @@
-type System = import('typescript').System
-type CompilerOptions = import('typescript').CompilerOptions
-type LanguageServiceHost = import('typescript').LanguageServiceHost
-type CompilerHost = import('typescript').CompilerHost
-type SourceFile = import('typescript').SourceFile
-type TS = typeof import('typescript')
+type System = import("typescript").System
+type CompilerOptions = import("typescript").CompilerOptions
+type LanguageServiceHost = import("typescript").LanguageServiceHost
+type CompilerHost = import("typescript").CompilerHost
+type SourceFile = import("typescript").SourceFile
+type TS = typeof import("typescript")
 
 const hasLocalStorage = typeof localStorage !== `undefined`
 const hasProcess = typeof process !== `undefined`
-const shouldDebug = (hasLocalStorage && localStorage.getItem('DEBUG')) || (hasProcess && process.env.DEBUG)
-const debugLog = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ''
+const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
+const debugLog = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
 
 export interface VirtualTypeScriptEnvironment {
   sys: System
-  languageService: import('typescript').LanguageService
-  getSourceFile: (fileName: string) => import('typescript').SourceFile | undefined
+  languageService: import("typescript").LanguageService
+  getSourceFile: (fileName: string) => import("typescript").SourceFile | undefined
   createFile: (fileName: string, content: string) => void
-  updateFile: (fileName: string, content: string, replaceTextSpan?: import('typescript').TextSpan) => void
+  updateFile: (fileName: string, content: string, replaceTextSpan?: import("typescript").TextSpan) => void
 }
 
 /**
@@ -48,7 +48,7 @@ export function createVirtualTypeScriptEnvironment(
   return {
     sys,
     languageService,
-    getSourceFile: (fileName) => languageService.getProgram()?.getSourceFile(fileName),
+    getSourceFile: fileName => languageService.getProgram()?.getSourceFile(fileName),
 
     createFile: (fileName, content) => {
       updateFile(ts.createSourceFile(fileName, content, mergedCompilerOpts.target!, false))
@@ -85,72 +85,72 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
   const lib = compilerOptions.lib || []
 
   const files = [
-    'lib.d.ts',
-    'lib.dom.d.ts',
-    'lib.dom.iterable.d.ts',
-    'lib.webworker.d.ts',
-    'lib.webworker.importscripts.d.ts',
-    'lib.scripthost.d.ts',
-    'lib.es5.d.ts',
-    'lib.es6.d.ts',
-    'lib.es2015.collection.d.ts',
-    'lib.es2015.core.d.ts',
-    'lib.es2015.d.ts',
-    'lib.es2015.generator.d.ts',
-    'lib.es2015.iterable.d.ts',
-    'lib.es2015.promise.d.ts',
-    'lib.es2015.proxy.d.ts',
-    'lib.es2015.reflect.d.ts',
-    'lib.es2015.symbol.d.ts',
-    'lib.es2015.symbol.wellknown.d.ts',
-    'lib.es2016.array.include.d.ts',
-    'lib.es2016.d.ts',
-    'lib.es2016.full.d.ts',
-    'lib.es2017.d.ts',
-    'lib.es2017.full.d.ts',
-    'lib.es2017.intl.d.ts',
-    'lib.es2017.object.d.ts',
-    'lib.es2017.sharedmemory.d.ts',
-    'lib.es2017.string.d.ts',
-    'lib.es2017.typedarrays.d.ts',
-    'lib.es2018.asyncgenerator.d.ts',
-    'lib.es2018.asynciterable.d.ts',
-    'lib.es2018.d.ts',
-    'lib.es2018.full.d.ts',
-    'lib.es2018.intl.d.ts',
-    'lib.es2018.promise.d.ts',
-    'lib.es2018.regexp.d.ts',
-    'lib.es2019.array.d.ts',
-    'lib.es2019.d.ts',
-    'lib.es2019.full.d.ts',
-    'lib.es2019.object.d.ts',
-    'lib.es2019.string.d.ts',
-    'lib.es2019.symbol.d.ts',
-    'lib.es2020.d.ts',
-    'lib.es2020.full.d.ts',
-    'lib.es2020.string.d.ts',
-    'lib.es2020.symbol.wellknown.d.ts',
-    'lib.es2020.bigint.d.ts',
-    'lib.es2020.promise.d.ts',
-    'lib.esnext.array.d.ts',
-    'lib.esnext.asynciterable.d.ts',
-    'lib.esnext.bigint.d.ts',
-    'lib.esnext.d.ts',
-    'lib.esnext.full.d.ts',
-    'lib.esnext.intl.d.ts',
-    'lib.esnext.symbol.d.ts',
+    "lib.d.ts",
+    "lib.dom.d.ts",
+    "lib.dom.iterable.d.ts",
+    "lib.webworker.d.ts",
+    "lib.webworker.importscripts.d.ts",
+    "lib.scripthost.d.ts",
+    "lib.es5.d.ts",
+    "lib.es6.d.ts",
+    "lib.es2015.collection.d.ts",
+    "lib.es2015.core.d.ts",
+    "lib.es2015.d.ts",
+    "lib.es2015.generator.d.ts",
+    "lib.es2015.iterable.d.ts",
+    "lib.es2015.promise.d.ts",
+    "lib.es2015.proxy.d.ts",
+    "lib.es2015.reflect.d.ts",
+    "lib.es2015.symbol.d.ts",
+    "lib.es2015.symbol.wellknown.d.ts",
+    "lib.es2016.array.include.d.ts",
+    "lib.es2016.d.ts",
+    "lib.es2016.full.d.ts",
+    "lib.es2017.d.ts",
+    "lib.es2017.full.d.ts",
+    "lib.es2017.intl.d.ts",
+    "lib.es2017.object.d.ts",
+    "lib.es2017.sharedmemory.d.ts",
+    "lib.es2017.string.d.ts",
+    "lib.es2017.typedarrays.d.ts",
+    "lib.es2018.asyncgenerator.d.ts",
+    "lib.es2018.asynciterable.d.ts",
+    "lib.es2018.d.ts",
+    "lib.es2018.full.d.ts",
+    "lib.es2018.intl.d.ts",
+    "lib.es2018.promise.d.ts",
+    "lib.es2018.regexp.d.ts",
+    "lib.es2019.array.d.ts",
+    "lib.es2019.d.ts",
+    "lib.es2019.full.d.ts",
+    "lib.es2019.object.d.ts",
+    "lib.es2019.string.d.ts",
+    "lib.es2019.symbol.d.ts",
+    "lib.es2020.d.ts",
+    "lib.es2020.full.d.ts",
+    "lib.es2020.string.d.ts",
+    "lib.es2020.symbol.wellknown.d.ts",
+    "lib.es2020.bigint.d.ts",
+    "lib.es2020.promise.d.ts",
+    "lib.esnext.array.d.ts",
+    "lib.esnext.asynciterable.d.ts",
+    "lib.esnext.bigint.d.ts",
+    "lib.esnext.d.ts",
+    "lib.esnext.full.d.ts",
+    "lib.esnext.intl.d.ts",
+    "lib.esnext.symbol.d.ts",
   ]
 
   const targetToCut = ts.ScriptTarget[target]
-  const matches = files.filter((f) => f.startsWith(`lib.${targetToCut.toLowerCase()}`))
+  const matches = files.filter(f => f.startsWith(`lib.${targetToCut.toLowerCase()}`))
   const targetCutIndex = files.indexOf(matches.pop()!)
 
   const getMax = (array: number[]) =>
     array && array.length ? array.reduce((max, current) => (current > max ? current : max)) : undefined
 
   // Find the index for everything in
-  const indexesForCutting = lib.map((lib) => {
-    const matches = files.filter((f) => f.startsWith(`lib.${lib.toLowerCase()}`))
+  const indexesForCutting = lib.map(lib => {
+    const matches = files.filter(f => f.startsWith(`lib.${lib.toLowerCase()}`))
     if (matches.length === 0) return 0
 
     const cutIndex = files.indexOf(matches.pop()!)
@@ -168,19 +168,19 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
  * the local copy of typescript via the file system.
  */
 export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions) => {
-  const ts = require('typescript')
-  const path = require('path')
-  const fs = require('fs')
+  const ts = require("typescript")
+  const path = require("path")
+  const fs = require("fs")
 
   const getLib = (name: string) => {
-    const lib = path.dirname(require.resolve('typescript'))
-    return fs.readFileSync(path.join(lib, name), 'utf8')
+    const lib = path.dirname(require.resolve("typescript"))
+    return fs.readFileSync(path.join(lib, name), "utf8")
   }
 
   const libs = knownLibFilesForCompilerOptions(compilerOptions, ts)
   const fsMap = new Map<string, string>()
-  libs.forEach((lib) => {
-    fsMap.set('/' + lib, getLib(lib))
+  libs.forEach(lib => {
+    fsMap.set("/" + lib, getLib(lib))
   })
   return fsMap
 }
@@ -202,7 +202,7 @@ export const createDefaultMapFromCDN = (
   version: string,
   cache: boolean,
   ts: TS,
-  lzstring?: typeof import('lz-string'),
+  lzstring?: typeof import("lz-string"),
   fetcher?: typeof fetch,
   storer?: typeof localStorage
 ) => {
@@ -222,31 +222,31 @@ export const createDefaultMapFromCDN = (
 
   // Map the known libs to a node fetch promise, then return the contents
   function uncached() {
-    return Promise.all(files.map((lib) => fetchlike(prefix + lib).then((resp) => resp.text()))).then((contents) => {
-      contents.forEach((text, index) => fsMap.set('/' + files[index], text))
+    return Promise.all(files.map(lib => fetchlike(prefix + lib).then(resp => resp.text()))).then(contents => {
+      contents.forEach((text, index) => fsMap.set("/" + files[index], text))
     })
   }
 
   // A localstorage and lzzip aware version of the lib files
   function cached() {
     const keys = Object.keys(localStorage)
-    keys.forEach((key) => {
+    keys.forEach(key => {
       // Remove anything which isn't from this version
-      if (key.startsWith('ts-lib-') && !key.startsWith('ts-lib-' + version)) {
+      if (key.startsWith("ts-lib-") && !key.startsWith("ts-lib-" + version)) {
         storelike.removeItem(key)
       }
     })
 
     return Promise.all(
-      files.map((lib) => {
+      files.map(lib => {
         const cacheKey = `ts-lib-${version}-${lib}`
         const content = storelike.getItem(cacheKey)
 
         if (!content) {
           // Make the API call and store the text concent in the cache
           return fetchlike(prefix + lib)
-            .then((resp) => resp.text())
-            .then((t) => {
+            .then(resp => resp.text())
+            .then(t => {
               storelike.setItem(cacheKey, zip(t))
               return t
             })
@@ -254,9 +254,9 @@ export const createDefaultMapFromCDN = (
           return Promise.resolve(unzip(content))
         }
       })
-    ).then((contents) => {
+    ).then(contents => {
       contents.forEach((text, index) => {
-        const name = '/' + files[index]
+        const name = "/" + files[index]
         fsMap.set(name, text)
       })
     })
@@ -279,16 +279,16 @@ function audit<ArgsT extends any[], ReturnT>(
   return (...args) => {
     const res = fn(...args)
 
-    const smallres = typeof res === 'string' ? res.slice(0, 80) + '...' : res
-    debugLog('> ' + name, ...args)
-    debugLog('< ' + smallres)
+    const smallres = typeof res === "string" ? res.slice(0, 80) + "..." : res
+    debugLog("> " + name, ...args)
+    debugLog("< " + smallres)
 
     return res
   }
 }
 
 /** The default compiler options if TypeScript could ever change the compiler options */
-const defaultCompilerOptions = (ts: typeof import('typescript')): CompilerOptions => {
+const defaultCompilerOptions = (ts: typeof import("typescript")): CompilerOptions => {
   return {
     ...ts.getDefaultCompilerOptions(),
     jsx: ts.JsxEmit.React,
@@ -303,32 +303,31 @@ const defaultCompilerOptions = (ts: typeof import('typescript')): CompilerOption
 }
 
 // "/DOM.d.ts" => "/lib.dom.d.ts"
-const libize = (path: string) => path.replace('/', '/lib.').toLowerCase()
+const libize = (path: string) => path.replace("/", "/lib.").toLowerCase()
 
 /**
  * Creates an in-memory System object which can be used in a TypeScript program, this
  * is what provides read/write aspects of the virtual fs
  */
 export function createSystem(files: Map<string, string>): System {
-  files = new Map(files)
   return {
     args: [],
-    createDirectory: () => notImplemented('createDirectory'),
+    createDirectory: () => notImplemented("createDirectory"),
     // TODO: could make a real file tree
-    directoryExists: audit('directoryExists', (directory) => {
-      return Array.from(files.keys()).some((path) => path.startsWith(directory))
+    directoryExists: audit("directoryExists", directory => {
+      return Array.from(files.keys()).some(path => path.startsWith(directory))
     }),
-    exit: () => notImplemented('exit'),
-    fileExists: audit('fileExists', (fileName) => files.has(fileName) || files.has(libize(fileName))),
-    getCurrentDirectory: () => '/',
+    exit: () => notImplemented("exit"),
+    fileExists: audit("fileExists", fileName => files.has(fileName) || files.has(libize(fileName))),
+    getCurrentDirectory: () => "/",
     getDirectories: () => [],
-    getExecutingFilePath: () => notImplemented('getExecutingFilePath'),
-    readDirectory: audit('readDirectory', (directory) => (directory === '/' ? Array.from(files.keys()) : [])),
-    readFile: audit('readFile', (fileName) => files.get(fileName) || files.get(libize(fileName))),
-    resolvePath: (path) => path,
-    newLine: '\n',
+    getExecutingFilePath: () => notImplemented("getExecutingFilePath"),
+    readDirectory: audit("readDirectory", directory => (directory === "/" ? Array.from(files.keys()) : [])),
+    readFile: audit("readFile", fileName => files.get(fileName) || files.get(libize(fileName))),
+    resolvePath: path => path,
+    newLine: "\n",
     useCaseSensitiveFileNames: true,
-    write: () => notImplemented('write'),
+    write: () => notImplemented("write"),
     writeFile: (fileName, contents) => {
       files.set(fileName, contents)
     },
@@ -355,12 +354,12 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
   const vHost: Return = {
     compilerHost: {
       ...sys,
-      getCanonicalFileName: (fileName) => fileName,
-      getDefaultLibFileName: () => '/' + ts.getDefaultLibFileName(compilerOptions), // '/lib.d.ts',
+      getCanonicalFileName: fileName => fileName,
+      getDefaultLibFileName: () => "/" + ts.getDefaultLibFileName(compilerOptions), // '/lib.d.ts',
       // getDefaultLibLocation: () => '/',
       getDirectories: () => [],
       getNewLine: () => sys.newLine,
-      getSourceFile: (fileName) => {
+      getSourceFile: fileName => {
         return (
           sourceFiles.get(fileName) ||
           save(
@@ -375,7 +374,7 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
       },
       useCaseSensitiveFileNames: () => sys.useCaseSensitiveFileNames,
     },
-    updateFile: (sourceFile) => {
+    updateFile: sourceFile => {
       const alreadyExists = sourceFiles.has(sourceFile.fileName)
       sys.writeFile(sourceFile.fileName, sourceFile.text)
       sourceFiles.set(sourceFile.fileName, sourceFile)
@@ -403,27 +402,27 @@ export function createVirtualLanguageServiceHost(
     getProjectVersion: () => projectVersion.toString(),
     getCompilationSettings: () => compilerOptions,
     getScriptFileNames: () => fileNames,
-    getScriptSnapshot: (fileName) => {
+    getScriptSnapshot: fileName => {
       const contents = sys.readFile(fileName)
       if (contents) {
         return ts.ScriptSnapshot.fromString(contents)
       }
       return
     },
-    getScriptVersion: (fileName) => {
-      return fileVersions.get(fileName) || '0'
+    getScriptVersion: fileName => {
+      return fileVersions.get(fileName) || "0"
     },
     writeFile: sys.writeFile,
   }
 
   type Return = {
     languageServiceHost: LanguageServiceHost
-    updateFile: (sourceFile: import('typescript').SourceFile) => void
+    updateFile: (sourceFile: import("typescript").SourceFile) => void
   }
 
   const lsHost: Return = {
     languageServiceHost,
-    updateFile: (sourceFile) => {
+    updateFile: sourceFile => {
       projectVersion++
       fileVersions.set(sourceFile.fileName, projectVersion.toString())
       if (!fileNames.includes(sourceFile.fileName)) {

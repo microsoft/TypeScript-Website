@@ -5,7 +5,6 @@ import { withPrefix, graphql } from "gatsby"
 import { BugWorkbenchQuery } from "../../__generated__/gatsby-types"
 
 import "../../templates/play.scss"
-import { RenderExamples } from "../../components/ShowExamples"
 
 import { useIntl } from "react-intl";
 import { createInternational } from "../../lib/createInternational"
@@ -127,22 +126,43 @@ const Play: React.FC<Props> = (props) => {
           }, 500)
         })
 
+        let currentTwoslashResults = undefined
+        let currentDTSMap: Map<string, string> | undefined = undefined
+
+        playgroundEnv.setDidUpdateTab((newPlugin) => {
+          if (currentTwoslashResults !== Error && "getResults" in newPlugin) {
+            // @ts-ignore
+            newPlugin.getResults(sandboxEnv, currentTwoslashResults)
+          } else if ("noResults" in newPlugin) {
+            // @ts-ignore
+            newPlugin.noResults()
+          }
+        })
+
         const runTwoslash = () => {
           const code = sandboxEnv.getText()
 
           try {
-            const twoslash = twoslasher(code, sandboxEnv.filepath.split(".")[1], ts, sandboxEnv.lzstring as any, dtsMap)
-            // playgroundEnv.plugins.forEach()
-            console.log("twoslash:")
-            console.log(twoslash)
-            playgroundEnv.plugins.forEach(p => {
-              if ("getResults" in p) {
-                p.getResults(sandboxEnv, twoslash)
-              }
-            })
+            currentDTSMap = new Map(dtsMap)
+            const twoslash = twoslasher(code, sandboxEnv.filepath.split(".")[1], { noStaticSemanticInfo: false, emit: true }, ts, sandboxEnv.lzstring as any, currentDTSMap)
+            currentTwoslashResults = twoslash
+
+            const currentPlugin = playgroundEnv.getCurrentPlugin()
+            if ("getResults" in currentPlugin) {
+              // @ts-ignore
+
+              currentPlugin.getResults(sandboxEnv, twoslash, currentDTSMap)
+            }
+
           } catch (error) {
             const err = error as Error
+            currentTwoslashResults = null
             console.log(err)
+            const currentPlugin = playgroundEnv.getCurrentPlugin()
+            if ("noResults" in currentPlugin) {
+              // @ts-ignore
+              currentPlugin.noResults(sandboxEnv, err)
+            }
           }
         }
 

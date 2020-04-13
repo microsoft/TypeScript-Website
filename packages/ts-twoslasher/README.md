@@ -105,6 +105,8 @@ export interface ExampleOptions {
   showEmittedFile: string
   /** Whether to disable the pre-cache of LSP calls for interesting identifiers */
   noStaticSemanticInfo: false
+  /** Declare that the TypeScript program should edit the fsMap which is passed in, this is only useful for tool-makers. Default: false */
+  emit: boolean
 }
 ```
 
@@ -251,25 +253,31 @@ Turns to:
 >   "highlights": [],
 >   "queries": [
 >     {
+>       "docs": "",
 >       "kind": "query",
+>       "start": 354,
+>       "length": 16,
 >       "text": "let a: NameLabel",
->       "docs": "",
->       "line": 4,
->       "offset": 4
+>       "offset": 4,
+>       "line": 4
 >     },
 >     {
+>       "docs": "",
 >       "kind": "query",
+>       "start": 390,
+>       "length": 14,
 >       "text": "let b: IdLabel",
->       "docs": "",
->       "line": 6,
->       "offset": 4
+>       "offset": 4,
+>       "line": 6
 >     },
 >     {
->       "kind": "query",
->       "text": "let c: IdLabel | NameLabel",
 >       "docs": "",
->       "line": 8,
->       "offset": 4
+>       "kind": "query",
+>       "start": 417,
+>       "length": 26,
+>       "text": "let c: IdLabel | NameLabel",
+>       "offset": 4,
+>       "line": 8
 >     }
 >   ],
 >   "staticQuickInfos": "[ 14 items ]",
@@ -419,11 +427,13 @@ Turns to:
 >   "highlights": [],
 >   "queries": [
 >     {
->       "kind": "query",
->       "text": "let foo: string",
 >       "docs": "",
->       "line": 0,
->       "offset": 4
+>       "kind": "query",
+>       "start": 4,
+>       "length": 15,
+>       "text": "let foo: string",
+>       "offset": 4,
+>       "line": 0
 >     }
 >   ],
 >   "staticQuickInfos": "[ 1 items ]",
@@ -508,6 +518,7 @@ The API is one main exported function:
  *
  * @param code The twoslash markup'd code
  * @param extension For example: "ts", "tsx", "typescript", "javascript" or "js".
+ * @param defaultOptions Allows setting any of the handbook options from outside the function, useful if you don't want LSP identifiers
  * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd.
  * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd.
  * @param fsMap An optional Map object which is passed into @typescript/vfs - if you are using twoslash on the
@@ -516,6 +527,7 @@ The API is one main exported function:
 export function twoslasher(
   code: string,
   extension: string,
+  defaultOptions?: Partial<ExampleOptions>,
   tsModule?: TS,
   lzstringModule?: LZ,
   fsMap?: Map<string, string>
@@ -566,6 +578,10 @@ export interface TwoSlashReturn {
     text: string
     /** Any attached JSDocs */
     docs: string | undefined
+    /** The token start which the query indicates  */
+    start: number
+    /** The length of the token */
+    length: number
   }[]
   /** Diagnostic error messages which came up when creating the program */
   errors: {

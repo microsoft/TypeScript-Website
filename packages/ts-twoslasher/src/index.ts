@@ -168,6 +168,8 @@ export interface ExampleOptions {
 
   /** Whether to disable the pre-cache of LSP calls for interesting identifiers */
   noStaticSemanticInfo: false
+  /** Declare that the TypeScript program should edit the fsMap which is passed in, this is only useful for tool-makers. Default: false */
+  emit: boolean
 }
 
 const defaultHandbookOptions: ExampleOptions = {
@@ -176,6 +178,7 @@ const defaultHandbookOptions: ExampleOptions = {
   showEmit: false,
   showEmittedFile: "index.js",
   noStaticSemanticInfo: false,
+  emit: false,
 }
 
 function filterHandbookOptions(codeLines: string[]): ExampleOptions {
@@ -281,6 +284,7 @@ export interface TwoSlashReturn {
  *
  * @param code The twoslash markup'd code
  * @param extension For example: "ts", "tsx", "typescript", "javascript" or "js".
+ * @param defaultOptions Allows setting any of the handbook options from outside the function, useful if you don't want LSP identifiers
  * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd.
  * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd.
  * @param fsMap An optional Map object which is passed into @typescript/vfs - if you are using twoslash on the
@@ -289,6 +293,7 @@ export interface TwoSlashReturn {
 export function twoslasher(
   code: string,
   extension: string,
+  defaultOptions?: Partial<ExampleOptions>,
   tsModule?: TS,
   lzstringModule?: LZ,
   fsMap?: Map<string, string>
@@ -315,7 +320,7 @@ export function twoslasher(
   // This is mutated as the below functions pull out info
   const codeLines = code.split(/\r\n?|\n/g)
 
-  const handbookOptions = filterHandbookOptions(codeLines)
+  const handbookOptions = { ...filterHandbookOptions(codeLines), ...defaultOptions }
   const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions, ts)
 
   const vfs = fsMap ?? createLocallyPoweredVFS(compilerOptions)
@@ -399,6 +404,11 @@ export function twoslasher(
   const allCodeLines = code.split(/\r\n?|\n/g)
   filterHighlightLines(allCodeLines)
   code = allCodeLines.join("\n")
+
+  // Lets fs changes propagate back up to the fsMap
+  if (handbookOptions.emit) {
+    env.languageService.getProgram()?.emit()
+  }
 
   // Code should now be safe to compile, so we're going to split it into different files
   const errs: import("typescript").Diagnostic[] = []

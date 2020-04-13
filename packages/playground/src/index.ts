@@ -96,6 +96,9 @@ export const setupPlayground = (
   const plugins = [] as PlaygroundPlugin[]
   const tabs = [] as HTMLButtonElement[]
 
+  // Let's things like the workbench hook into tab changes
+  let didUpdateTab: (newPlugin: PlaygroundPlugin, previousPlugin: PlaygroundPlugin) => void | undefined
+
   const registerPlugin = (plugin: PlaygroundPlugin) => {
     plugins.push(plugin)
 
@@ -103,17 +106,22 @@ export const setupPlayground = (
     tabs.push(tab)
 
     const tabClicked: HTMLElement["onclick"] = e => {
-      const previousPlugin = currentPlugin()
+      const previousPlugin = getCurrentPlugin()
       const newTab = e.target as HTMLElement
       const newPlugin = plugins.find(p => p.displayName == newTab.textContent)!
       activatePlugin(newPlugin, previousPlugin, sandbox, tabBar, container)
+      didUpdateTab && didUpdateTab(newPlugin, previousPlugin)
     }
 
     tabBar.appendChild(tab)
     tab.onclick = tabClicked
   }
 
-  const currentPlugin = () => {
+  const setDidUpdateTab = (func: (newPlugin: PlaygroundPlugin, previousPlugin: PlaygroundPlugin) => void) => {
+    didUpdateTab = func
+  }
+
+  const getCurrentPlugin = () => {
     const selectedTab = tabs.find(t => t.classList.contains("active"))!
     return plugins[tabs.indexOf(selectedTab)]
   }
@@ -131,7 +139,7 @@ export const setupPlayground = (
 
   let debouncingTimer = false
   sandbox.editor.onDidChangeModelContent(_event => {
-    const plugin = currentPlugin()
+    const plugin = getCurrentPlugin()
     if (plugin.modelChanged) plugin.modelChanged(sandbox, sandbox.getModel(), container)
 
     // This needs to be last in the function
@@ -142,7 +150,7 @@ export const setupPlayground = (
       playgroundDebouncedMainFunction()
 
       // Only call the plugin function once every 0.3s
-      if (plugin.modelChangedDebounce && plugin.displayName === currentPlugin().displayName) {
+      if (plugin.modelChangedDebounce && plugin.displayName === getCurrentPlugin().displayName) {
         console.log("Debounced", container)
         plugin.modelChangedDebounce(sandbox, sandbox.getModel(), container)
       }
@@ -167,7 +175,7 @@ export const setupPlayground = (
     window.appInsights.trackEvent({ name: "Compiler Settings changed" })
 
     const model = sandbox.editor.getModel()
-    const plugin = currentPlugin()
+    const plugin = getCurrentPlugin()
     if (model && plugin.modelChanged) plugin.modelChanged(sandbox, model, container)
     if (model && plugin.modelChangedDebounce) plugin.modelChangedDebounce(sandbox, model, container)
   })
@@ -282,7 +290,7 @@ export const setupPlayground = (
     runButton.onclick = () => {
       const run = sandbox.getRunnableJS()
       const runPlugin = plugins.find(p => p.id === "logs")!
-      activatePlugin(runPlugin, currentPlugin(), sandbox, tabBar, container)
+      activatePlugin(runPlugin, getCurrentPlugin(), sandbox, tabBar, container)
 
       runWithCustomLogs(run, i)
 
@@ -406,7 +414,9 @@ export const setupPlayground = (
     ui,
     registerPlugin,
     plugins,
+    getCurrentPlugin,
     tabs,
+    setDidUpdateTab,
   }
 
   window.ts = sandbox.ts
@@ -447,7 +457,7 @@ export const setupPlayground = (
 
     if (pluginWantsFront || autoActivate) {
       // Auto-select the dev plugin
-      activatePlugin(readyPlugin, currentPlugin(), sandbox, tabBar, container)
+      activatePlugin(readyPlugin, getCurrentPlugin(), sandbox, tabBar, container)
     }
   }
 
@@ -497,7 +507,6 @@ export const setupPlayground = (
     const pluginToInstall = params.get("install-plugin")
     if (pluginToInstall) {
       const alreadyInstalled = activePlugins().find(p => p.module === pluginToInstall)
-      console.log(activePlugins(), alreadyInstalled)
       if (!alreadyInstalled) {
         const shouldDoIt = confirm("Would you like to install the third party plugin?\n\n" + pluginToInstall)
         if (shouldDoIt) {

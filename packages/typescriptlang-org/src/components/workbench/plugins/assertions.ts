@@ -16,6 +16,7 @@ export const workbenchAssertionsPlugin: import("../../../../static/js/playground
       const ds = utils.createDesignSystem(pluginContainer)
       ds.clear()
 
+      ds.subtitle("Assertions Found")
       const queriesAsDiags = results.queries.map(t => {
         const diag: import("typescript").DiagnosticRelatedInformation = {
           category: 3, // ts.DiagnosticCategory.Message,
@@ -29,6 +30,11 @@ export const workbenchAssertionsPlugin: import("../../../../static/js/playground
       })
 
       ds.listDiags(sandbox, sandbox.getModel(), queriesAsDiags)
+
+      ds.subtitle("TLDR")
+      ds.p(
+        "You can highlight code which doesn't work as you expect by starting a comment and then adding ^? under the code which is wrong."
+      )
     },
   }
 }

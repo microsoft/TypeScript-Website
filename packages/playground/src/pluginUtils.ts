@@ -153,7 +153,7 @@ export const createUtils = (sb: any, react: typeof React) => {
         const label = document.createElement("label")
         label.innerHTML = `<span>${setting.display}</span><br/>${setting.blurb}`
 
-        const key = "compiler-setting-" + setting.flag
+        const key = setting.flag
         const input = document.createElement("input")
         input.type = "checkbox"
         input.id = key

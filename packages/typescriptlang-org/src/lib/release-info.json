@@ -23,8 +23,8 @@
       "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-39beta"
     },
     "rc": {
-      "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-383",
-      "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-383"
+      "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-39beta",
+      "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-39beta"
     }
   }
 }
