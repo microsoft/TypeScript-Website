@@ -264,7 +264,7 @@ const Index: React.FC<Props> = (props) => {
               title: i("doc_learn_d_ts_title"),
             },
             {
-              href: "/play",
+              href: "/play/",
               blurb: i("doc_learn_playground_blurb"),
               title: i("play_subnav_title" as any),
             },
