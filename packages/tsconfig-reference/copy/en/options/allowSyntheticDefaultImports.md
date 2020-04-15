@@ -3,7 +3,7 @@ display: "Allow Synthetic Default Imports"
 oneline: "Allow 'import x from y' when a module doesn't have a default export"
 ---
 
-When set to true, `allowSyntheticDefaultImports` let's you write an import like:
+When set to true, `allowSyntheticDefaultImports` allows you to write an import like:
 
 ```ts
 import React from "react";
