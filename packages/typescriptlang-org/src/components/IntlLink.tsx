@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 import { GatsbyLinkProps, Link, graphql } from "gatsby"
 import { AllSitePageFragment } from "../__generated__/gatsby-types";
 export type AllSitePage = AllSitePageFragment["allSitePage"];

@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 import { GreyButton } from "./GreyButton"
 
 type ButtonProps = Omit<import("./GreyButton").Props, "headline">
