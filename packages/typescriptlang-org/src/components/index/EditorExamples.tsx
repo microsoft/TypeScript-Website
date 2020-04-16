@@ -132,7 +132,7 @@ addPrices(3, 4, 6);
 
 const ReactExample = () => {
   const js = `
-import React from "react";
+import * as React from "react";
 
 export const UserThumbnail = (props) =>
 
@@ -142,7 +142,7 @@ export const UserThumbnail = (props) =>
 `
 
   const ts = `
-import React from "react"
+import * as React from "react"
 
 interface <span class='highlight'>UserThumbnailProps</span> {
   img: string

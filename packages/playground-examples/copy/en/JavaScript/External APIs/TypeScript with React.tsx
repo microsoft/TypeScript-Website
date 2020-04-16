@@ -62,7 +62,7 @@ interface FauxactClassComponent<Props extends {}, State = {}> {
 // like these but are much more comprehensive. Let's bring
 // those into our playground and explore a few components.
 
-import React from 'react';
+import * as React from 'react';
 
 // Your props are your public API, so it's worth taking the
 // time to use JSDoc to explain how it works:
