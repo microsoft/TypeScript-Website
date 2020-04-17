@@ -2,6 +2,7 @@
 title: global-plugin.d.ts
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/global-plugin-d-ts.html
+oneline: "123"
 ---
 
 ```ts

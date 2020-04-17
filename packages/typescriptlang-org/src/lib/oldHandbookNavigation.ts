@@ -130,8 +130,33 @@ export const oldHandbookNavigation: NavItem[] = [
     items: [
       { id: "introduction", title: "Introduction" },
       { id: "library-structures", title: "Library Structures" },
+      {
+        id: "templates/global-plugin-d-ts",
+        title: "Template: Global Module",
+      },
+      {
+        id: "templates/global-modifying-module-d-ts",
+        title: "Template: Global Extends",
+      },
+      {
+        id: "templates/module-plugin-d-ts",
+        title: "Template: Plugin",
+      },
+      {
+        id: "templates/module-plugin-d-ts",
+        title: "Template: Module",
+      },
+      {
+        id: "templates/module-class-d-ts",
+        title: "Template: Class",
+      },
+      {
+        id: "templates/module-function-d-ts",
+        title: "Template: Function",
+      },
       { id: "by-example", title: "By Example" },
       { id: "do-s-and-don-ts", title: "Do's and Don'ts" },
+      { id: "dts-from-js", title: "DTS files from JS files" },
       { id: "deep-dive", title: "Deep Dive" },
       { id: "templates", title: "Templates" },
       { id: "publishing", title: "Publishing" },
@@ -167,7 +192,7 @@ export function getNextPageID(currentID: string) {
   if (!section) return undefined
   if (!section.chronological) return undefined
 
-  const currentIndex = section.items.findIndex((i) => i.id === currentID)
+  const currentIndex = section.items.findIndex(i => i.id === currentID)
   if (section.items[currentIndex + 1]) {
     return {
       // prettier-ignore
@@ -178,14 +203,14 @@ export function getNextPageID(currentID: string) {
 }
 
 export function getPreviousPageID(currentID: string) {
-  const section = oldHandbookNavigation.find((nav) =>
-    nav.items.find((i) => i.id === currentID)
+  const section = oldHandbookNavigation.find(nav =>
+    nav.items.find(i => i.id === currentID)
   )
 
   if (!section) return undefined
   if (!section.chronological) return undefined
 
-  const currentIndex = section.items.findIndex((i) => i.id === currentID)
+  const currentIndex = section.items.findIndex(i => i.id === currentID)
   if (section.items[currentIndex - 1]) {
     return {
       // prettier-ignore

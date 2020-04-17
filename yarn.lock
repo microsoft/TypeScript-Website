@@ -2619,14 +2619,21 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@typescript/twoslash@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@typescript/twoslash/-/twoslash-0.2.0.tgz#b09a138ca7c92ce38f6f5437195d52abba269ad6"
-  integrity sha512-UoXJEAZvujwb315y5xFTys7FSnKwMpsXkQzy9oyoOL/IONfk3y5DSWoZnaLSciPeypgOwckOoDX0O4m7eM/N6w==
+"@typescript/twoslash@latest":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@typescript/twoslash/-/twoslash-0.3.0.tgz#b3971be51aad06bc5ceb8df62cf4b0f342851e70"
+  integrity sha512-ovTxJmnpy3PKj/4WNFFs7JHM2J/fYD8OwtBa5wGDBpaX+SrlkHguSIf1+mtYYLed3JdwvLW6Yt+39e309TqX7Q==
   dependencies:
     "@typescript/vfs" "^1.0.0"
     debug "^4.1.1"
     lz-string "^1.4.4"
+
+"@typescript/vfs@latest":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@typescript/vfs/-/vfs-1.0.0.tgz#542cea6b11ceed2afb4fa7c9b8800eadd13da0db"
+  integrity sha512-Yyv2Ah7egLxs7TI2YPadkOQEJsREj8AOcXNdHRMAcRKGpD55iiLc7TsOd2WpqEuFF6oZO3U8xEJ9z+0N54sXhQ==
+  dependencies:
+    debug "^4.1.1"
 
 "@uifabric/azure-themes@^7.0.28":
   version "7.0.28"
