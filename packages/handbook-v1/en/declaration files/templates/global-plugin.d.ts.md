@@ -2,7 +2,6 @@
 title: global-plugin.d.ts
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/global-plugin-d-ts.html
-oneline: "123"
 ---
 
 ```ts
@@ -18,6 +17,7 @@ oneline: "123"
  */
 interface Number {
   toBinaryString(opts?: MyLibrary.BinaryFormatOptions): string;
+
   toBinaryString(
     callback: MyLibrary.BinaryFormatCallback,
     opts?: MyLibrary.BinaryFormatOptions

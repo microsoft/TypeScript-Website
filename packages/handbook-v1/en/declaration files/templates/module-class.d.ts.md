@@ -2,7 +2,6 @@
 title: module-class.d.ts
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/module-class-d-ts.html
-oneline: "432"
 ---
 
 ```ts

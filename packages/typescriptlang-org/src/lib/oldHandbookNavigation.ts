@@ -201,10 +201,11 @@ export function getNextPageID(currentID: string) {
   if (!section.chronological) return undefined
 
   const currentIndex = section.items.findIndex(i => i.id === currentID)
-  if (section.items[currentIndex + 1]) {
+  const next = section.items[currentIndex + 1]
+  if (next) {
     return {
       // prettier-ignore
-      path: `/docs/${section.directory}/${section.items[currentIndex + 1].id}.html`,
+      path: `/docs/${section.directory}/${next.href || next.id}.html`,
       ...section.items[currentIndex + 1],
     }
   }
@@ -219,10 +220,12 @@ export function getPreviousPageID(currentID: string) {
   if (!section.chronological) return undefined
 
   const currentIndex = section.items.findIndex(i => i.id === currentID)
-  if (section.items[currentIndex - 1]) {
+  const prev = section.items[currentIndex - 1]
+
+  if (prev) {
     return {
       // prettier-ignore
-      path: `/docs/${section.directory}/${section.items[currentIndex - 1].id}.html`,
+      path: `/docs/${section.directory}/${prev.href || prev.id}.html`,
       ...section.items[currentIndex - 1],
     }
   }
