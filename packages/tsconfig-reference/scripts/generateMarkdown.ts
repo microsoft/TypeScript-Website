@@ -89,7 +89,8 @@ languages.forEach((lang) => {
 
   sections.forEach((section) => {
     const sectionCategories = section.categories;
-    markdownChunks.push(`<section id='${section.name}'>`);
+    // Heh, the section uses an article and the categories use a section
+    markdownChunks.push(`<article id='${section.name}'>`);
 
     // Intro to the section
     const sectionsPath = getPathInLocale(join("sections", section.name + ".md"));
@@ -231,10 +232,9 @@ languages.forEach((lang) => {
         anchor: categoryID,
         options: localisedOptions,
       });
+      markdownChunks.push("</div>"); // Closes div class='indent'
+      markdownChunks.push(`</article>`);
     });
-
-    markdownChunks.push("</div>"); // Closes div class='indent'
-    markdownChunks.push(`</section'>`);
   });
   // Write the Markdown and JSON
   const markdown = prettier.format(markdownChunks.join("\n"), { filepath: "index.md" });
