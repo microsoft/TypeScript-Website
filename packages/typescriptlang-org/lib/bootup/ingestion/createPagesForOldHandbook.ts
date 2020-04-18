@@ -79,5 +79,7 @@ export const createOldHandbookPages = async (
   })
 }
 
-export const idFromURL = (url: string) =>
-  url.split("/").pop()!.replace(".html", "") || "index"
+export const idFromURL = (url: string) => {
+  // TODO: this needs to support ID's like:         id: "templates/global-plugin-d-ts",
+  return url.split("/").pop()!.replace(".html", "") || "index"
+}
