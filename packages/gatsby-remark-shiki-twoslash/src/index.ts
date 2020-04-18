@@ -89,9 +89,11 @@ export const runTwoSlashOnNode = (node: RichNode) => {
   // Run twoslash and replace the main contents if
   // the ``` has 'twoslash' after it
   if (node.meta && node.meta.includes("twoslash")) {
-    const fsMap = createDefaultMapFromNodeModules({})
+    // Look into owning grabbing @types
+    // const fsMap = createDefaultMapFromNodeModules({})
+    // const results = twoslasher(node.value, node.lang, undefined, undefined, undefined, fsMap)
 
-    const results = twoslasher(node.value, node.lang, undefined, undefined, undefined, fsMap)
+    const results = twoslasher(node.value, node.lang)
     node.value = results.code
     node.lang = results.extension as TLang
     node.twoslash = results

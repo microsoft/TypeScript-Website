@@ -1,5 +1,7 @@
 import { NavItem } from "../components/layout/Sidebar"
 
+// IDs come from the filename
+
 export const oldHandbookNavigation: NavItem[] = [
   {
     title: "Get Started",
@@ -131,27 +133,33 @@ export const oldHandbookNavigation: NavItem[] = [
       { id: "introduction", title: "Introduction" },
       { id: "library-structures", title: "Library Structures" },
       {
-        id: "templates/global-plugin-d-ts",
+        id: "global-plugin-d-ts",
+        href: "templates/global-plugin-d-ts",
         title: "Template: Global Module",
       },
       {
-        id: "templates/global-modifying-module-d-ts",
+        id: "global-modifying-module-d-ts",
+        href: "templates/global-modifying-module-d-ts",
         title: "Template: Global Extends",
       },
       {
-        id: "templates/module-plugin-d-ts",
-        title: "Template: Plugin",
-      },
-      {
-        id: "templates/module-plugin-d-ts",
+        id: "module-d-ts",
+        href: "templates/module-d-ts",
         title: "Template: Module",
       },
       {
-        id: "templates/module-class-d-ts",
+        id: "module-plugin-d-ts",
+        href: "templates/module-plugin-d-ts",
+        title: "Template: Plugin",
+      },
+      {
+        id: "module-class-d-ts",
+        href: "templates/module-class-d-ts",
         title: "Template: Class",
       },
       {
-        id: "templates/module-function-d-ts",
+        id: "module-function-d-ts",
+        href: "templates/module-function-d-ts",
         title: "Template: Function",
       },
       { id: "by-example", title: "By Example" },
