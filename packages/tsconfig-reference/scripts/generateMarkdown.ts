@@ -108,6 +108,16 @@ languages.forEach((lang) => {
       markdownChunks.push("</nav>");
     }
 
+    // {categories!.categories!.map(c => {
+    //   if (!c) return null
+    //   return <div className="tsconfig-nav-top" key={c.anchor!}>
+    //     <h5><a href={"#" + c.anchor}>{c.display}</a></h5>
+    //     <ul key={c.anchor!}>
+    //       {c.options!.map(element => <li key={element!.anchor!}><a href={"#" + element!.anchor!}>{element!.anchor}</a></li>)}
+    //     </ul>
+    //   </div>
+    // })}
+
     markdownChunks.push("<div class='indent'>");
 
     sectionCategories.forEach((categoryID) => {
@@ -232,10 +242,12 @@ languages.forEach((lang) => {
         anchor: categoryID,
         options: localisedOptions,
       });
-      markdownChunks.push("</div>"); // Closes div class='indent'
-      markdownChunks.push(`</article>`);
     });
+
+    markdownChunks.push("</div>"); // Closes div class='indent'
+    markdownChunks.push(`</article>`);
   });
+
   // Write the Markdown and JSON
   const markdown = prettier.format(markdownChunks.join("\n"), { filepath: "index.md" });
   const mdPath = join(__dirname, "..", "output", lang + ".md");

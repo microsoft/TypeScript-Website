@@ -49,7 +49,7 @@ const TSConfigReferenceTemplateComponent = (props) => {
       subnavLinks.forEach(link => {
         const section = document.querySelector<HTMLDivElement>(link.hash);
         if (!section) { return }
-        const isBelow = section.offsetTop <= fromTop
+        const isBelow = section.offsetTop - 100 <= fromTop
         if (isBelow) currentPossibleAnchor = link
       });
 
