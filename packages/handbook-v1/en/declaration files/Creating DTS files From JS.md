@@ -22,7 +22,7 @@ To add creation of .d.ts files in your project, you will need to do up-to four s
 
 ### Adding TypeScript
 
-You can learn how to do this in our [installation page](http://www.staging-typescript.org/download).
+You can learn how to do this in our [installation page](/download).
 
 ### TSConfig
 
@@ -55,7 +55,7 @@ You can learn more about the options in the [tsconfig reference](/reference).
 
 ## Run the compiler
 
-You can learn how to do this in our [installation page](http://www.staging-typescript.org/download).
+You can learn how to do this in our [installation page](/download).
 You want to make sure these files are included in your package if you have the files in your project's `.gitignore`.
 
 ## Editing the package.json

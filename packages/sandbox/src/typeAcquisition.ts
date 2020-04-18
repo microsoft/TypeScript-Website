@@ -12,10 +12,6 @@ export const acquiredTypeDefs: { [name: string]: string | null } = globalishObj.
 
 export type AddLibToRuntimeFunc = (code: string, path: string) => void
 
-interface MyThing {
-  a: string
-}
-
 const moduleJSONURL = (name: string) =>
   // prettier-ignore
   `https://ofcncog2cu-dsn.algolia.net/1/indexes/npm-search/${encodeURIComponent(name)}?attributes=types&x-algolia-agent=Algolia%20for%20vanilla%20JavaScript%20(lite)%203.27.1&x-algolia-application-id=OFCNCOG2CU&x-algolia-api-key=f54e21fa3a2a0160595bb058179bfb1e`
