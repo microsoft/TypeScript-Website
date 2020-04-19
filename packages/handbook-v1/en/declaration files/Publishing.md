@@ -115,7 +115,7 @@ This `package.json` tells TypeScript to check whether the current version of Typ
 If it's 3.1 or later, it figures out the path you've imported relative to the package, and reads from the package's `ts3.1` folder.
 That's what that `{ "*": ["ts3.1/*"] }` means - if you're familiar with path mapping today, it works exactly like that.
 
-So in the above example, if we're importing from `"package-name"`, TypeScruot will try to resolve from `[...]/node_modules/package-name/ts3.1/index.d.ts` (and other relevant paths) when running in TypeScript 3.1.
+In the above example, if we're importing from `"package-name"`, TypeScript will try to resolve from `[...]/node_modules/package-name/ts3.1/index.d.ts` (and other relevant paths) when running in TypeScript 3.1.
 If we import from `package-name/foo`, we'll try to look for `[...]/node_modules/package-name/ts3.1/foo.d.ts` and `[...]/node_modules/package-name/ts3.1/foo/index.d.ts`.
 
 What if we're not running in TypeScript 3.1 in this example?
@@ -152,13 +152,17 @@ That means in the above example, even though both the `>=3.2` and the `>=3.1` ma
   typesVersions: {
     // NOTE: this doesn't work!
     ">=3.1": { "*": ["ts3.1/*"] },
-    ">=3.2": { "*": ["ts3.2/*"] }
-  }
+    ">=3.2": { "*": ["ts3.2/*"] },
+  },
 }
+```
 
 # Publish to [@types](https://www.npmjs.com/~types)
 
 Packages under the [@types](https://www.npmjs.com/~types) organization are published automatically from [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped) using the [types-publisher tool](https://github.com/Microsoft/types-publisher).
 To get your declarations published as an @types package, please submit a pull request to [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped).
 You can find more details in the [contribution guidelines page](http://definitelytyped.org/guides/contributing.html).
+
+```
+
 ```
