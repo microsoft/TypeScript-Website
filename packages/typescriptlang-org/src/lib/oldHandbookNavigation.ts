@@ -1,5 +1,7 @@
 import { NavItem } from "../components/layout/Sidebar"
 
+// IDs come from the filename
+
 export const oldHandbookNavigation: NavItem[] = [
   {
     title: "Get Started",
@@ -130,8 +132,39 @@ export const oldHandbookNavigation: NavItem[] = [
     items: [
       { id: "introduction", title: "Introduction" },
       { id: "library-structures", title: "Library Structures" },
+      {
+        id: "global-plugin-d-ts",
+        href: "templates/global-plugin-d-ts",
+        title: "Template: Global Module",
+      },
+      {
+        id: "global-modifying-module-d-ts",
+        href: "templates/global-modifying-module-d-ts",
+        title: "Template: Global Extends",
+      },
+      {
+        id: "module-d-ts",
+        href: "templates/module-d-ts",
+        title: "Template: Module",
+      },
+      {
+        id: "module-plugin-d-ts",
+        href: "templates/module-plugin-d-ts",
+        title: "Template: Plugin",
+      },
+      {
+        id: "module-class-d-ts",
+        href: "templates/module-class-d-ts",
+        title: "Template: Class",
+      },
+      {
+        id: "module-function-d-ts",
+        href: "templates/module-function-d-ts",
+        title: "Template: Function",
+      },
       { id: "by-example", title: "By Example" },
       { id: "do-s-and-don-ts", title: "Do's and Don'ts" },
+      { id: "dts-from-js", title: "DTS files from JS files" },
       { id: "deep-dive", title: "Deep Dive" },
       { id: "templates", title: "Templates" },
       { id: "publishing", title: "Publishing" },
@@ -167,29 +200,32 @@ export function getNextPageID(currentID: string) {
   if (!section) return undefined
   if (!section.chronological) return undefined
 
-  const currentIndex = section.items.findIndex((i) => i.id === currentID)
-  if (section.items[currentIndex + 1]) {
+  const currentIndex = section.items.findIndex(i => i.id === currentID)
+  const next = section.items[currentIndex + 1]
+  if (next) {
     return {
       // prettier-ignore
-      path: `/docs/${section.directory}/${section.items[currentIndex + 1].id}.html`,
+      path: `/docs/${section.directory}/${next.href || next.id}.html`,
       ...section.items[currentIndex + 1],
     }
   }
 }
 
 export function getPreviousPageID(currentID: string) {
-  const section = oldHandbookNavigation.find((nav) =>
-    nav.items.find((i) => i.id === currentID)
+  const section = oldHandbookNavigation.find(nav =>
+    nav.items.find(i => i.id === currentID)
   )
 
   if (!section) return undefined
   if (!section.chronological) return undefined
 
-  const currentIndex = section.items.findIndex((i) => i.id === currentID)
-  if (section.items[currentIndex - 1]) {
+  const currentIndex = section.items.findIndex(i => i.id === currentID)
+  const prev = section.items[currentIndex - 1]
+
+  if (prev) {
     return {
       // prettier-ignore
-      path: `/docs/${section.directory}/${section.items[currentIndex - 1].id}.html`,
+      path: `/docs/${section.directory}/${prev.href || prev.id}.html`,
       ...section.items[currentIndex - 1],
     }
   }

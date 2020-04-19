@@ -193,8 +193,8 @@ const Play: React.FC<Props> = (props) => {
 
 
   return (
-    <Layout title={i("head_playground_title")} description={i("head_playground_description")} lang="en" allSitePage={props.data.allSitePage}>
-      {/** This is the top nav, which is outside of the editor  */}
+    <Layout title="Bug Workbench" description="Create reproductions of issues with TypeScript" lang="en" allSitePage={props.data.allSitePage}>
+    {/** This is the top nav, which is outside of the editor  */}
       <nav className="navbar-sub">
         <ul className="nav">
           <li className="name hide-small"><span>Bug Workbench</span></li>
