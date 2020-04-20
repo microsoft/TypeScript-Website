@@ -140,40 +140,61 @@ form.search {
   }
 }
 
-// Avoid using this, but it's a useful bit for when you need to have text content that changes. This
-// can make it a bit tricky with localization though.
-
-.show-only-medium {
-  display: none;
-}
-
-.hide-only-medium {
-  display: inline;
-}
-
-.show-only-small {
-  display: none;
-}
-
-@media (max-width: $screen-sm) {
-  .show-only-small {
-    display: block !important;
-  }
-  .show-small {
-    display: inline !important;
-  }
-  .hide-only-medium {
+// Avoid using these for other things, but it's a useful bit for when you need to have text content that changes. This
+// can make it a bit tricky with localization for something like german in the future though!
+//
+#top-menu nav ul {
+  .show-only-medium {
     display: none;
   }
-}
-
-@media (min-width: 767px) and (max-width: 900px) {
-  .show-only-medium {
-    display: inline !important;
-  }
 
   .hide-only-medium {
-    display: none !important;
+    display: inline;
+  }
+
+  .show-only-small {
+    display: none;
+  }
+
+  .show-only-largest {
+    display: none;
+  }
+
+  @media (max-width: $screen-sm) {
+    .show-only-small {
+      display: block !important;
+    }
+    .show-small {
+      display: inline !important;
+    }
+    .hide-only-medium {
+      display: none;
+    }
+    .show-only-large {
+      display: none !important;
+    }
+  }
+
+  @media (min-width: 767px) and (max-width: $screen-md) {
+    .show-only-medium {
+      display: inline !important;
+    }
+
+    .hide-only-medium {
+      display: none !important;
+    }
+  }
+
+  @media (min-width: $screen-md) {
+    .show-only-large {
+      display: inline-block !important;
+    }
+  }
+
+  @media (min-width: 1050px) {
+    .show-only-largest {
+      display: inline-block !important;
+    }
   }
 }
 
