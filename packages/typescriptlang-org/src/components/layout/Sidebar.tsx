@@ -6,7 +6,7 @@ export interface NavItem {
   id: string
   directory: string
   index: string
-  items: { id: string, title: string }[]
+  items: { id: string, title: string, href?: string }[]
   chronological?: true
 }
 
@@ -109,7 +109,7 @@ export const Sidebar = (props: Props) => {
                     aria.className = "highlight"
                   }
 
-                  const filename = item.id === "index" ? "" : `${item.id}.html`
+                  const filename = item.id === "index" ? "" : `${item.href || item.id}.html`
                   const path = `/docs/${navRoot.directory}/${filename}`
 
                   return <li key={item.id} {...aria}>

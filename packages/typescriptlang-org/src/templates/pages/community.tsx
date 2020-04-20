@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 import { Layout } from "../../components/layout"
 import { graphql } from "gatsby"
 import { CommunityPageQuery } from "../../__generated__/gatsby-types"

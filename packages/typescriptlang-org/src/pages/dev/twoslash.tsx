@@ -169,7 +169,7 @@ const Index: React.FC<Props> = (props) => {
                 <h1 style={{ marginTop: "20px" }}>TypeScript Twoslash</h1>
                 <p>A markup format for TypeScript code, ideal for creating self-contained code samples which let the TypeScript compiler do the extra leg-work.</p>
                 <p>If you know TypeScript, you basically know twoslash.</p>
-                <p>Twoslash adds the ability to declare tsconfig options inline, split a sample into multiple files and a few other useful commands. You can see the full API <a href="https://github.com/microsoft/TypeScript-Website/tree/v2/packages/@typescript/twoslash">inside the README</a></p>
+                <p>Twoslash adds the ability to declare tsconfig options inline, split a sample into multiple files and a few other useful commands. You can see the full API <a href="https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher">inside the README</a></p>
               </div>
               <div>
                 <h1 style={{ marginTop: "0" }}>&nbsp;</h1>
@@ -225,7 +225,7 @@ const Index: React.FC<Props> = (props) => {
 
           <div className="raised main-content-block">
             <h2>Usage</h2>
-            <p>Twoslash will be available on npm soon, for now it's only being used in the TypeScript website.</p>
+            <p>Twoslash's usage guide is available on the npm README at <a href='https://www.npmjs.com/package/@typescript/twoslash'><code>@typescript/twoslash</code></a>.</p>
           </div>
         </div>
       </Layout>

@@ -13,7 +13,8 @@
     "danger-plugin-spellcheck": "^1.5.0",
     "fb-watchman": "^2.0.1",
     "git-branch-is": "^3.1.0",
-    "husky": "^4.2.3"
+    "husky": "^4.2.3",
+    "pleb": "^2.5.6"
   },
   "resolutions": {
     "@types/react": "16.9.17",

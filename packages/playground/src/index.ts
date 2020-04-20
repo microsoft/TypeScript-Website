@@ -38,7 +38,7 @@ export interface PlaygroundPlugin {
   id: string
   /** To show in the tabs */
   displayName: string
-  /** Should this plugin be selected when the plugin is first loaded? Let's you check for query vars etc to load a particular plugin */
+  /** Should this plugin be selected when the plugin is first loaded? Lets you check for query vars etc to load a particular plugin */
   shouldBeSelected?: () => boolean
   /** Before we show the tab, use this to set up your HTML - it will all be removed by the playground when someone navigates off the tab */
   willMount?: (sandbox: Sandbox, container: HTMLDivElement) => void

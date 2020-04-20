@@ -45,7 +45,7 @@ module.exports = {
     "gatsby-plugin-typescript",
     // SEO
     `gatsby-plugin-sitemap`,
-    // Let's you edit the head from inside a react tree
+    // Lets you edit the head from inside a react tree
     "gatsby-plugin-react-helmet",
     // Grabs the old handbook markdown files
     {

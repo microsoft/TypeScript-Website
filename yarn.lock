@@ -2619,15 +2619,6 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@typescript/twoslash@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@typescript/twoslash/-/twoslash-0.2.0.tgz#b09a138ca7c92ce38f6f5437195d52abba269ad6"
-  integrity sha512-UoXJEAZvujwb315y5xFTys7FSnKwMpsXkQzy9oyoOL/IONfk3y5DSWoZnaLSciPeypgOwckOoDX0O4m7eM/N6w==
-  dependencies:
-    "@typescript/vfs" "^1.0.0"
-    debug "^4.1.1"
-    lz-string "^1.4.4"
-
 "@uifabric/azure-themes@^7.0.28":
   version "7.0.28"
   resolved "https://registry.yarnpkg.com/@uifabric/azure-themes/-/azure-themes-7.0.28.tgz#075770107ceb4b5c771b03941475b894f2267daf"
@@ -4526,6 +4517,14 @@ chalk@^3.0.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
+chalk@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.0.0.tgz#6e98081ed2d17faab615eb52ac66ec1fe6209e72"
+  integrity sha512-N9oWFcegS0sFr9oh1oz2d7Npos6vNoWW9HvtCg5N1KRFpUhaAhvTv5Y58g880fZaEYSNm3qDz8SU1UrGvp+n7A==
+  dependencies:
+    ansi-styles "^4.1.0"
+    supports-color "^7.1.0"
+
 change-case@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/change-case/-/change-case-3.1.0.tgz#0e611b7edc9952df2e8513b27b42de72647dd17e"
@@ -4985,6 +4984,11 @@ commander@^4.0.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-4.1.1.tgz#9fd602bd936294e9e9ef46a3f4d6964044b18068"
   integrity sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==
+
+commander@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-5.0.0.tgz#dbf1909b49e5044f8fdaf0adc809f0c0722bdfd0"
+  integrity sha512-JrDGPAKjMGSP1G0DUoaceEJ3DZgAfr/q6X7FVk4+U5KxUSKviYGM2k6zWkfyyBHy5rAtzgYJFa1ro2O9PtoxwQ==
 
 commander@~2.8.1:
   version "2.8.1"
@@ -7821,7 +7825,7 @@ find-up@^3.0.0:
   dependencies:
     locate-path "^3.0.0"
 
-find-up@^4.0.0:
+find-up@^4.0.0, find-up@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/find-up/-/find-up-4.1.0.tgz#97afe7d6cdc0bc5928584b7c8d7b16e8a9aa5d19"
   integrity sha512-PpOwAdQ/YlXQ2vj8a3h8IipDuYRi3wceVQQGYWxNINccq40Anw7BlsEXCMbt1Zt+OLA6Fq9suIpIWD0OsnISlw==
@@ -13697,6 +13701,14 @@ p-queue@^5.0.0:
   dependencies:
     eventemitter3 "^3.1.0"
 
+p-queue@^6.3.0:
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-6.3.0.tgz#19bfa4485db7e6a0c135049ff6716375880d9c3a"
+  integrity sha512-fg5dJlFpd5+3CgG3/0ogpVZUeJbjiyXFg0nu53hrOYsybqSiDyxyOpad0Rm6tAiGjgztAwkyvhlYHC53OiAJOA==
+  dependencies:
+    eventemitter3 "^4.0.0"
+    p-timeout "^3.1.0"
+
 p-reduce@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/p-reduce/-/p-reduce-1.0.0.tgz#18c2b0dd936a4690a529f8231f58a0fdb6a47dfa"
@@ -13720,6 +13732,13 @@ p-timeout@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/p-timeout/-/p-timeout-2.0.1.tgz#d8dd1979595d2dc0139e1fe46b8b646cb3cdf038"
   integrity sha512-88em58dDVB/KzPEx1X0N3LwFfYZPyDc4B6eF38M1rk9VTZMbxXXgjugz8mmwpS9Ox4BDZ+t6t3QP5+/gazweIA==
+  dependencies:
+    p-finally "^1.0.0"
+
+p-timeout@^3.1.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/p-timeout/-/p-timeout-3.2.0.tgz#c7e17abc971d2a7962ef83626b35d635acf23dfe"
+  integrity sha512-rhIwUycgwwKcP9yTOOFK/AKsAopjjCakVqLHePO3CC6Mir1Z99xT+R63jZxAT5lFZLa2inS5h+ZS2GvR99/FBg==
   dependencies:
     p-finally "^1.0.0"
 
@@ -14194,6 +14213,19 @@ please-upgrade-node@^3.2.0:
   integrity sha512-gQR3WpIgNIKwBMVLkpMUeR3e1/E1y42bqDQZfql+kDeXd8COYfM8PQA4X6y7a8u9Ua9FHmsrrmirW2vHs45hWg==
   dependencies:
     semver-compare "^1.0.0"
+
+pleb@^2.5.6:
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/pleb/-/pleb-2.5.6.tgz#04e0311c155ef9e49ffdae879779aa52e813636f"
+  integrity sha512-uRRoy205T0fKO9NVTZfHz6uloTLu2ivINMgiiB4HEVAqpmNgrAO7rN0rC/cn14R7UyXoOPIXGdEAH+lcImk1FQ==
+  dependencies:
+    chalk "^4.0.0"
+    commander "^5.0.0"
+    find-up "^4.1.0"
+    glob "^7.1.6"
+    p-queue "^6.3.0"
+    promise-assist "^1.3.0"
+    type-fest "^0.13.0"
 
 pn@^1.1.0:
   version "1.1.0"
@@ -14728,6 +14760,11 @@ progress@^2.0.0, progress@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
+
+promise-assist@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/promise-assist/-/promise-assist-1.3.0.tgz#a96dec4595b73f5a5a34adc3fedab64dc0bcff3e"
+  integrity sha512-JdJWzcDyFLonrucIhnvM8V5sEPXcVpBVJg0WcjVuI14PCe6+lkbRewRpdsBnFIqVBwu9B4chMLOnFeSTpQCilA==
 
 promise-inflight@^1.0.1:
   version "1.0.1"
@@ -17925,6 +17962,11 @@ type-check@~0.3.2:
   integrity sha1-WITKtRLPHTVeP7eE8wgEsrUg23I=
   dependencies:
     prelude-ls "~1.1.2"
+
+type-fest@^0.13.0:
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.13.1.tgz#0172cb5bce80b0bd542ea348db50c7e21834d934"
+  integrity sha512-34R7HTnG0XIJcBSn5XhDd7nNFPRcXYRZrBB2O2jdKqYODldSzBAqzsWoZYYvduky73toYS/ESqxPvkDf/F0XMg==
 
 type-fest@^0.3.0:
   version "0.3.1"

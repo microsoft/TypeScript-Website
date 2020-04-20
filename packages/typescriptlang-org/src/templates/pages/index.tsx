@@ -19,7 +19,7 @@ import { createIntlLink } from "../../components/IntlLink"
 import { IndexPageQuery } from "../../__generated__/gatsby-types"
 
 const Section = (props: { children: any, color: string, className?: string }) =>
-  <div key={props.color} className={props.color + " " + props.className}><div className="container">{props.children}</div></div>
+  <div key={props.color} className={props.color + " " + props.className ?? ""}><div className="container">{props.children}</div></div>
 
 const QuarterOrHalfRow = (props: { children: any, className?: string }) => <div className={[props.className, "split-row"].join(" ")}>{props.children}</div>
 const Row = (props: { children: any, className?: string }) => <div className={[props.className, "row"].join(" ")}>{props.children}</div>
@@ -54,6 +54,12 @@ const Index: React.FC<Props> = (props) => {
               <EditorExamples />
             </Col2>
           </Row>
+        </Section>
+        <Section color="grey" className="hide-small">
+          <div className="call-to-action">
+            <Link target="_blank" className='flat-button' to="/play/">{i("index_cta_play")}</Link>
+            <a className='flat-button' href="#installation">{i("index_cta_install")}</a>
+          </div>
         </Section>
         <Section color="white">
           <h3>{i("index_what_is")}</h3>
@@ -175,6 +181,7 @@ const Index: React.FC<Props> = (props) => {
             <GreyButton href="/tools" title={i("index_started_tooling")} blurb={i("index_started_tooling_blurb")} />
           </QuarterOrHalfRow>
 
+          <div id="installation" />
           <Row key="overall info">
             <Col key="installation">
               <h4>{i("index_install")}</h4>

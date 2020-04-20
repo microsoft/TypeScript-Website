@@ -17,6 +17,7 @@ permalink: /docs/handbook/declaration-files/templates/global-plugin-d-ts.html
  */
 interface Number {
   toBinaryString(opts?: MyLibrary.BinaryFormatOptions): string;
+
   toBinaryString(
     callback: MyLibrary.BinaryFormatCallback,
     opts?: MyLibrary.BinaryFormatOptions

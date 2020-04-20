@@ -345,7 +345,6 @@ main #editor-toolbar {
 
       margin-right: -2px;
       margin-bottom: 10px;
-      overflow-x: hidden;
 
       position: relative;
       ul.right {
@@ -376,6 +375,13 @@ main #editor-toolbar {
     flex-basis: 320px;
     width: 320px;
     max-width: 320px;
+
+    z-index: 1;
+    background-color: white;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: black;
+    }
 
     @media (max-width: $screen-sm) {
       flex-basis: 300px;
@@ -658,6 +664,10 @@ input.good {
 // These show in the editor!
 .error-highlight {
   background-color: #fcb7b7;
+}
+
+.neutral-highlight {
+  border-bottom: 1px solid green;
 }
 
 #popover-background {
