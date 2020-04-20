@@ -102,7 +102,7 @@ const Index: React.FC<Props> = (props) => {
               title: "Vue",
             },
             {
-              href: "https://github.com/typescript-ruby/typescript-rails",
+              href: "https://github.com/rails/webpacker/blob/master/docs/typescript.md",
               badge: "Plugin",
               blurb: i("doc_frameworks_ror_blurb"),
               title: "Ruby on Rails",
