@@ -9,7 +9,7 @@ export const denyList: CompilerOptionName[] = [
   "version",
   "build",
   "project",
-  "locale"
+  "locale",
 ];
 
 /** Things we should document, but really want to help move people away from */
@@ -19,7 +19,7 @@ export const deprecated: CompilerOptionName[] = [
   "keyofStringsOnly",
   "moduleResolution",
   "noErrorTruncation",
-  "diagnostics"
+  "diagnostics",
 ];
 
 /** Things which people really shouldn't use, but need to document  */
@@ -33,7 +33,7 @@ export const recommended: CompilerOptionName[] = [
   "strictBindCallApply",
   "strictFunctionTypes",
   "noImplicitThis",
-  "noImplicitAny"
+  "noImplicitAny",
 ];
 
 type RootProperties = "files" | "extends" | "include" | "exclude";
@@ -74,7 +74,9 @@ export const relatedTo: [AnOption, AnOption[]][] = [
 
   ["allowJs", ["checkJs", "emitDeclarationOnly"]],
   ["checkJs", ["allowJs", "emitDeclarationOnly"]],
-  ["declaration", ["declarationDir", "emitDeclarationOnly"]]
+  ["declaration", ["declarationDir", "emitDeclarationOnly"]],
+
+  ["moduleResolution", ["module"]],
 ];
 
 /**
@@ -119,6 +121,7 @@ export const defaultsForOptions = {
   listFiles: "false",
   locale: "Platform specific",
   maxNodeModuleJsDepth: "0",
+  moduleResolution: "module === `AMD` or `System` or `ES6` ? `Classic` : `Node`",
   newLine: "Platform specific",
   noEmit: "false",
   noEmitHelpers: "false",
@@ -157,13 +160,13 @@ export const defaultsForOptions = {
   suppressImplicitAnyIndexErrors: "false",
   target: "false",
   traceResolution: "false",
-  tsBuildInfoFile: " .tsbuildinfo"
+  tsBuildInfoFile: " .tsbuildinfo",
 };
 
 export const allowedValues = {
   jsx: ["`react` (default)", "`react-native`", "`preserve`"],
   jsxFactory: [
-    '**Allowed Values**: Any identifier or dotted identifier; default `"React.createElement"`'
+    '**Allowed Values**: Any identifier or dotted identifier; default `"React.createElement"`',
   ],
   target: [
     "`ES3` (default)",
@@ -174,7 +177,7 @@ export const allowedValues = {
     "`ES2018`",
     "`ES2019`",
     "`ES2020`",
-    "`ESNext`"
+    "`ESNext`",
   ],
   module: [
     "`CommonJS` (default if `target` is `ES3` or `ES5`)",
@@ -184,23 +187,23 @@ export const allowedValues = {
     "`UMD`",
     "`AMD`",
     "`System`",
-    "`ESNext`"
+    "`ESNext`",
   ],
-  importsNotUsedAsValues: ["remove", "preserve", "error"]
+  importsNotUsedAsValues: ["remove", "preserve", "error"],
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
   "3.8": [
     "assumeChangesOnlyAffectDirectDependencies",
     "importsNotUsedAsValues",
-    "disableSolutionSearching"
+    "disableSolutionSearching",
   ],
 
   "3.7": [
     "disableSourceOfProjectReferenceRedirect",
     "downlevelIteration",
     "generateCpuProfile",
-    "useDefineForClassFields"
+    "useDefineForClassFields",
   ],
   "3.5": ["allowUmdGlobalAccess"],
   "3.4": ["incremental", "tsBuildInfoFile"],
@@ -224,7 +227,7 @@ export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
     "noImplicitThis",
     "rootDirs",
     "traceResolution",
-    "include"
+    "include",
   ],
   "1.8": [
     "allowJs",
@@ -232,23 +235,23 @@ export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
     "allowUnreachableCode",
     "allowUnusedLabels",
     "noImplicitReturns",
-    "noFallthroughCasesInSwitch"
+    "noFallthroughCasesInSwitch",
   ],
   "1.5": ["inlineSourceMap", "noEmitHelpers", "newLine", "inlineSources", "rootDir"],
   "1.4": ["noEmitOnError"],
-  "1.0": ["declaration", "target", "module", "outFile"]
+  "1.0": ["declaration", "target", "module", "outFile"],
 };
 
 export const additionalOptionDescriptors: Record<string, { categoryCode: number }> = {
   plugins: {
-    categoryCode: 6172
-  }
+    categoryCode: 6172,
+  },
 };
 
 /** When a particular compiler flag (or CLI command...) was added  */
 export const configToRelease = {};
-Object.keys(releaseToConfigsMap).forEach(v => {
-  releaseToConfigsMap[v].forEach(key => {
+Object.keys(releaseToConfigsMap).forEach((v) => {
+  releaseToConfigsMap[v].forEach((key) => {
     configToRelease[key] = v;
   });
 });
