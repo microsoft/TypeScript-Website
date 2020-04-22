@@ -1,15 +1,15 @@
 //// { compiler: {  }, order: 1 }
 
-// Optional chaining reached TC39 Stage 3 consensus during
-// 3.7's development. Optional Chaining allows you to write
-// code which can immediately stop running expressions when
-// it hits a null or undefined.
+// オプショナルチェイニングは3.7の開発中にTC39のStage 3合意に達しました。
+// オプショナルチェイニングによって
+// nullまたはundefinedだったときに
+// 式の実行を即座に止めるコードが書けるようになります。
 
-// Property Access
+// プロパティへのアクセス
 
-// Let's imagine we have an album where the artist, and the
-// artists bio might not be present in the data. For example
-// a compilation may not have a single artist.
+// データの中にアーティストそのものの情報やアーティストのプロフィールがない可能性がある
+// アルバム情報を想像してみましょう。例えば、コンピレーションアルバムは
+// 単一のアーティストについての情報を持っていないでしょう。
 
 type AlbumAPIResponse = {
   title: string;
@@ -22,42 +22,42 @@ type AlbumAPIResponse = {
 
 declare const album: AlbumAPIResponse;
 
-// With optional chaining, you can write
-// code like this:
+// オプショナルチェイニングを用いると、
+// コードは以下のように書けます。
 
 const artistBio = album?.artist?.bio;
 
-// Instead of:
+// 以下のように書く代わりに:
 
 const maybeArtistBio = album.artist && album.artist.bio;
 
-// In this case ?. acts differently than the &&s since &&
-// will act differently on "falsy" values (e.g. an empty string,
-// 0, NaN, and, well, false).
+// 演算子は"falsy"な値(例えば、空文字列や0、NaN、もちろんfalse)に
+// 対して異なる振る舞いをするため、
+// この場合、?.演算子は&&演算子とは異なる振る舞いをします。
 
-// Optional chaining will only take null or undefined as
-// a signal to stop and return an undefined.
+// オプショナルチェイニングはnullまたはundefinedのみを
+// 処理を止め、undefinedを返す合図と捉えます。
 
-// Optional Element Access
+// オプショナルな要素へのアクセス
 
-// Property access is via the . operator, the optional chaining
-// also works with the [] operators when accessing elements.
+// プロパティへのアクセスは .演算子を用いて行われます。
+// オプショナルチェイニングは要素にアクセス際の[]演算子でも同様に機能します。
 
 const maybeArtistBioElement = album?.["artist"]?.["bio"];
 
 const maybeFirstPreviousAlbum = album?.artist?.previousAlbums?.[0];
 
-// Optional Calls
+// オプショナルな呼び出し
 
-// When dealing with functions which may or may not exist at
-// runtime, optional chaining supports only calling a function
-// if it exists. This can replace code where you would traditionally
-// write something like: if (func) func()
+// オプショナルチェイニングは、実行時に存在するか分からない関数を扱うときに、
+// 関数が存在するときにだけ呼び出す機能をサポートしています。
+// これによって、伝統的に書いていた次のような
+// コードを置き換えられます: if (func) func()
 
-// For example here's an optional call to the callback from
-// an API request:
+// 以下はAPI requestからのcallbackに対する
+// オプショナルな呼び出しの例です。
 
-const callUpdateMetadata = (metadata: any) => Promise.resolve(metadata); // Fake API call
+const callUpdateMetadata = (metadata: any) => Promise.resolve(metadata); // API呼び出しのダミー
 
 const updateAlbumMetadata = async (metadata: any, callback?: () => void) => {
   await callUpdateMetadata(metadata);
@@ -65,6 +65,6 @@ const updateAlbumMetadata = async (metadata: any, callback?: () => void) => {
   callback?.();
 };
 
-// You can read more about optional chaining in the 3.7 blog post:
+// 3.7のリリース記事にて、オプショナルチェイニングについてより詳細に知ることができます:
 //
 // https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/

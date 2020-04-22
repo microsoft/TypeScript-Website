@@ -1,43 +1,43 @@
 //// { compiler: {  }, order: 2 }
 
-// The nullish coalescing operator is an alternative to ||
-// which returns the right-side expression if the left-side
-// is null or undefined.
+// Null合体演算子は左辺が
+// nullまたはundefinedのときに
+// 右辺の式を返す||演算子の代わりです。
 
-// In contrast, || uses falsy checks, meaning an empty
-// string or the number 0 would be considered false.
+// Null合体演算子とは対照的に、||演算子は空文字列や数字の0がfalseと判断される
+// falsyチェックを用います。
 
-// A good example for this feature is dealing with partial
-// objects which have defaults when a key isn't passed in.
+// この機能の良い例は、
+// キーが渡されなかったときに部分オブジェクトがデフォルト値を持つように処理する操作です。
 
 interface AppConfiguration {
-  // Default: "(no name)"; empty string IS valid
+  // デフォルト: "(no name)"; 空文字列は有効
   name: string;
 
-  // Default: -1; 0 is valid
+  // デフォルト: -1; 0は有効
   items: number;
 
-  // Default: true
+  // デフォルト: true
   active: boolean;
 }
 
 function updateApp(config: Partial<AppConfiguration>) {
-  // With null-coalescing operator
+  // Null合体演算子を使ったとき
   config.name = config.name ?? "(no name)";
   config.items = config.items ?? -1;
   config.active = config.active ?? true;
 
-  // Current solution
+  // Null合体演算子を使わない現在の解決法
   config.name = typeof config.name === "string" ? config.name : "(no name)";
   config.items = typeof config.items === "number" ? config.items : -1;
   config.active = typeof config.active === "boolean" ? config.active : true;
 
-  // Using || operator which could give bad data
-  config.name = config.name || "(no name)"; // does not allow for "" input
-  config.items = config.items || -1; // does not allow for 0 input
-  config.active = config.active || true; // really bad, always true
+  // ||演算子を用いると有効でないデータになる可能性がある
+  config.name = config.name || "(no name)"; // "" の入力が許容できない
+  config.items = config.items || -1; // 0の入力が許容できない
+  config.active = config.active || true; // とても悪いことに、常にtrueになる
 }
 
-// You can read more about nullish coalescing in the 3.7 blog post:
+// 3.7のリリース記事にて、Null合体演算子についてより詳細に知ることができます:
 //
 // https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/
