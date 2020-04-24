@@ -5,6 +5,10 @@ import { createInternational } from "../lib/createInternational"
 import { docCopy } from "../copy/en/documentation"
 import { AllSitePage, createIntlLink } from "./IntlLink";
 
+// Automatic metadata from npm and VS Marketplace
+import releaseInfo from "../lib/release-info.json"
+import { withPrefix } from "gatsby"
+
 export type Props = {
   allSitePage: AllSitePage
   lang: string
@@ -15,19 +19,25 @@ export const QuickJump = (props: Props) => {
   const i = createInternational<typeof docCopy>(intl)
   i
 
+  const releaseURL = withPrefix(releaseInfo.releaseNotesURL)
+  let betaURL: string | undefined = undefined
+  if (releaseInfo.isBeta) betaURL = releaseInfo.betaPostURL
+  if (releaseInfo.isRC) betaURL = releaseInfo.rcPostURL
+
+  console.log(betaURL)
   const IntlLink = createIntlLink(props.lang, props.allSitePage)
 
   return <div className="main-content-block">
-    <h2 style={{ textAlign: "center" }}>Quick Jump</h2>
+    <h2 style={{ textAlign: "center" }}> Next Steps</h2>
     <div className="columns">
       <div className="item raised">
         <h4>Get Started</h4>
         <ul>
-          <li><IntlLink to="#">New to JS</IntlLink></li>
-          <li><IntlLink to="#">JS to TS</IntlLink></li>
-          <li><IntlLink to="#">OOP to JS</IntlLink></li>
-          <li><IntlLink to="#">Functional to JS</IntlLink></li>
-          <li><IntlLink to="#">Installation</IntlLink></li>
+          <li><IntlLink to="/docs/handbook/typescript-in-5-minutes.html">JS to TS</IntlLink></li>
+          <li><IntlLink to="/docs/handbook/typescript-from-scratch.html">New to Programming</IntlLink></li>
+          <li><IntlLink to="/docs/handbook/typescript-in-5-minutes-oop.html">OOP to JS</IntlLink></li>
+          <li><IntlLink to="/docs/handbook/typescript-in-5-minutes-func.html">Functional to JS</IntlLink></li>
+          <li><IntlLink to="/download">Installation</IntlLink></li>
         </ul>
       </div>
 
@@ -35,34 +45,34 @@ export const QuickJump = (props: Props) => {
       <div className="item raised">
         <h4>Handbook</h4>
         <ul>
-          <li><IntlLink to="#">Basic Types</IntlLink></li>
-          <li><IntlLink to="#">Advanced Types</IntlLink></li>
-          <li><IntlLink to="#">Interfaces</IntlLink></li>
-          <li><IntlLink to="#">Variable Declarations</IntlLink></li>
-          <li><IntlLink to="#">Functions</IntlLink></li>
+          <li><IntlLink to="/docs/handbook/basic-types.html">Basic Types</IntlLink></li>
+          <li><IntlLink to="/docs/handbook/advanced-types.html">Advanced Types</IntlLink></li>
+          <li><IntlLink to="/docs/handbook/interfaces.html">Interfaces</IntlLink></li>
+          <li><IntlLink to="/docs/handbook/variable-declarations.html">Variable Declarations</IntlLink></li>
+          <li><IntlLink to="/docs/handbook/functions.html">Functions</IntlLink></li>
         </ul>
       </div>
 
       <div className="item raised">
         <h4>Tools</h4>
         <ul>
-          <li><IntlLink to="#">Playground</IntlLink></li>
-          <li><IntlLink to="#">TSConfig Reference</IntlLink></li>
+          <li><IntlLink to="/play/">Playground</IntlLink></li>
+          <li><IntlLink to="/tsconfig/">TSConfig Reference</IntlLink></li>
         </ul>
         <h4 style={{ marginTop: "28px" }}>Release Notes</h4>
         <ul>
-          <li><IntlLink to="#">What's new in the 3.9 beta</IntlLink></li>
-          <li><IntlLink to="#">What's new in 3.8</IntlLink></li>
+          {betaURL ? <li><a href={betaURL}>What's upcoming in {releaseInfo.tags.betaMajMin}?</a></li> : null}
+          <li><IntlLink to={releaseURL}>What's new in {releaseInfo.tags.stableMajMin}</IntlLink></li>
         </ul>
       </div>
 
       <div className="item raised">
         <h4>Tutorials</h4>
         <ul>
-          <li><IntlLink to="#">ASP.NET</IntlLink></li>
-          <li><IntlLink to="#">Migrating from JS</IntlLink></li>
-          <li><IntlLink to="#">Working with the DOM</IntlLink></li>
-          <li><IntlLink to="#">React & Webpack</IntlLink></li>
+          <li><IntlLink to="/docs/handbook/asp-net-core.html">ASP.NET</IntlLink></li>
+          <li><IntlLink to="/docs/handbook/migrating-from-javascript.html">Migrating from JS</IntlLink></li>
+          <li><IntlLink to="/docs/handbook/dom-manipulation.html">Working with the DOM</IntlLink></li>
+          <li><IntlLink to="/docs/handbook/react-&-webpack.html">React & Webpack</IntlLink></li>
         </ul>
       </div>
     </div>
