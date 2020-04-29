@@ -99,7 +99,15 @@
   }
 }
 
+.show-only-small {
+  display: none;
+}
+
 @media (max-width: $screen-xs) {
+  .show-only-small {
+    display: block !important;
+  }
+
   #index div.headline-diagram div.editor.front {
     max-width: 300px;
   }

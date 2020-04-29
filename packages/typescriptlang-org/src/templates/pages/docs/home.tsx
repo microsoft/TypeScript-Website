@@ -10,6 +10,8 @@ import { createInternational } from "../../../lib/createInternational"
 import { useIntl } from "react-intl"
 import { graphql } from "gatsby"
 import { DocsHomeQuery } from "../../../__generated__/gatsby-types"
+import { QuickJump } from "../../../components/QuickJump"
+
 type Props = {
   data: DocsHomeQuery
   pageContext: any
@@ -52,7 +54,11 @@ const Index: React.FC<Props> = (props) => {
           ]}
           headline={true}
         />
+      </div>
 
+      <QuickJump allSitePage={props.data.allSitePage} lang={props.pageContext.lang} />
+
+      <div className="raised main-content-block">
         <h1>{i("doc_start_a_project")}</h1>
         <p>{i("doc_start_a_project_desc")}</p>
 

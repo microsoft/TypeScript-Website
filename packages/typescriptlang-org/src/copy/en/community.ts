@@ -1,6 +1,7 @@
 export const comCopy = {
   com_layout_title: "How to set up TypeScript",
-  com_layout_description: "",
+  com_layout_description:
+    "Connect with other TypeScripters online and offline.",
   com_headline: "Connect with us",
   com_connect_online: "Online",
   com_connect_online_description:

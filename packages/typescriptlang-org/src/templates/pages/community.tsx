@@ -1,10 +1,10 @@
 import * as React from "react"
 import { Layout } from "../../components/layout"
-import { Intl } from "../../components/Intl"
 import { graphql } from "gatsby"
 import { CommunityPageQuery } from "../../__generated__/gatsby-types"
 import { createInternational } from "../../lib/createInternational"
 import { useIntl } from "react-intl"
+import { Intl } from "../../components/Intl"
 
 import meetups from "../../../../community-meta/generated/meetups.json"
 

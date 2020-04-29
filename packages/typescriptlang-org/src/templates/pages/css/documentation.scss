@@ -69,3 +69,29 @@
     right: 10px;
   }
 }
+
+.columns {
+  // 2 for the container, 0.6 for the item
+  margin: 0 -2.6rem;
+  display: flex;
+  flex-direction: row;
+
+  .item {
+    flex: 1;
+    margin: 0.6rem;
+    padding: 1rem;
+
+    h4 {
+      margin-top: 0;
+    }
+
+    ul {
+      padding: 0;
+    }
+
+    li {
+      list-style: none;
+      margin-left: 0;
+    }
+  }
+}
