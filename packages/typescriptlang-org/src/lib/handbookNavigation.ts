@@ -138,9 +138,14 @@ export const handbookNavigation: NavItem[] = [
       { id: "library-structures", title: "Library Structures" },
       { id: "templates", title: "Templates" },
       {
+        id: "global-d-ts",
+        href: "templates/global-d-ts",
+        title: "Template: Global Library",
+      },
+      {
         id: "global-plugin-d-ts",
-        title: "Template: Global Module",
         href: "/docs/handbook/declaration-files/templates/global-plugin-d-ts.html",
+        title: "Template: Global Plugin",
       },
       {
         id: "global-modifying-module-d-ts",

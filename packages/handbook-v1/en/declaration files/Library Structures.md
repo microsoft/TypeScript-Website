@@ -5,6 +5,12 @@ permalink: /docs/handbook/declaration-files/library-structures.html
 oneline: How to structure your d.ts files
 ---
 
+TODO:
+
+1. The modular libraries discussion needs to call out `import=` as TS-only.
+2. The modular libraries discussion needs to cover (ugh, briefly I hope) `export default` vs `module.exports=` and link to whatever we wrote to explain `--esModuleInterop`.
+3. Actually, there's a section in the footnotes that covers this: Impact of ES6 on Module Call Signatures. It needs to be updated though, since it just suggests workarounds.
+
 # Overview
 
 Broadly speaking, the way you _structure_ your declaration file depends on how the library is consumed.
@@ -23,6 +29,28 @@ Identifying the structure of a library is the first step in writing its declarat
 We'll give hints on how to identify structure both based on its _usage_ and its _code_.
 Depending on the library's documentation and organization, one might be easier than the other.
 We recommend using whichever is more comfortable to you.
+
+## Step by step example
+
+As worked out by looking at jquery. or something else popular.
+
+1. Find the documentation. How do you obtain it, how do you make it available?
+
+   Does that give you enough information to choose a structure?
+
+2. Work out an example usage of the library.
+
+   I hope you know how to use your library.
+
+3. If that fails, try looking at the code (I GUESS).
+
+   Javascript is crazy
+
+Interlude on commonjs vs global vs ES (though that last is a whole can of worms)
+
+## One-liners for different DTS overviews
+
+Maybe not one-liners, but tiny examples with links to the full pages.
 
 ## Global Libraries
 
@@ -60,7 +88,7 @@ function createGreeting(s) {
 or like this:
 
 ```js
-window.createGreeting = function(s) {
+window.createGreeting = function (s) {
   return "Hello, " + s;
 };
 ```
@@ -209,76 +237,9 @@ The same [footnote](#the-impact-of-es6-on-module-plugins) applies to these modul
 
 If your module is not callable or constructable, use the [`module.d.ts`](/docs/handbook/declaration-files/templates/module-d-ts.html) file.
 
-## _Module Plugin_ or _UMD Plugin_
-
-A _module plugin_ changes the shape of another module (either UMD or module).
-For example, in Moment.js, `moment-range` adds a new `range` method to the `moment` object.
-
-For the purposes of writing a declaration file, you'll write the same code whether the module being changed is a plain module or UMD module.
-
 ### Template
 
 Use the [`module-plugin.d.ts`](/docs/handbook/declaration-files/templates/module-plugin-d-ts.html) template.
-
-## _Global Plugin_
-
-A _global plugin_ is global code that changes the shape of some global.
-As with _global-modifying modules_, these raise the possibility of runtime conflict.
-
-For example, some libraries add new functions to `Array.prototype` or `String.prototype`.
-
-### Identifying global plugins
-
-Global plugins are generally easy to identify from their documentation.
-
-You'll see examples that look like this:
-
-```js
-var x = "hello, world";
-// Creates new methods on built-in types
-console.log(x.startsWithHello());
-
-var y = [1, 2, 3];
-// Creates new methods on built-in types
-console.log(y.reverseAndSort());
-```
-
-### Template
-
-Use the [`global-plugin.d.ts`](/docs/handbook/declaration-files/templates/global-plugin-d-ts.html) template.
-
-## _Global-modifying Modules_
-
-A _global-modifying module_ alters existing values in the global scope when they are imported.
-For example, there might exist a library which adds new members to `String.prototype` when imported.
-This pattern is somewhat dangerous due to the possibility of runtime conflicts,
-but we can still write a declaration file for it.
-
-### Identifying global-modifying modules
-
-Global-modifying modules are generally easy to identify from their documentation.
-In general, they're similar to global plugins, but need a `require` call to activate their effects.
-
-You might see documentation like this:
-
-```js
-// 'require' call that doesn't use its return value
-var unused = require("magic-string-time");
-/* or */
-require("magic-string-time");
-
-var x = "hello, world";
-// Creates new methods on built-in types
-console.log(x.startsWithHello());
-
-var y = [1, 2, 3];
-// Creates new methods on built-in types
-console.log(y.reverseAndSort());
-```
-
-### Template
-
-Use the [`global-modifying-module.d.ts`](./templates/global-modifying-module.d.ts.md) template.
 
 # Consuming Dependencies
 
