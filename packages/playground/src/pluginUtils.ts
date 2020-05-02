@@ -2,6 +2,8 @@ import type { Sandbox } from "typescript-sandbox"
 import { Node, DiagnosticRelatedInformation } from "typescript"
 import type React from "react"
 
+export type ASTPresentationOption = {}
+
 /** Creates a set of util functions which is exposed to Plugins to make it easier to build consistent UIs */
 export const createUtils = (sb: any, react: typeof React) => {
   const sandbox: Sandbox = sb
@@ -31,9 +33,80 @@ export const createUtils = (sb: any, react: typeof React) => {
     let decorations: string[] = []
     let decorationLock = false
 
+    const createASTTree = (node: Node, option = {}) => {
+      const div = document.createElement("div")
+      div.className = "ast"
+
+      const infoForNode = (node: Node) => {
+        const name = ts.SyntaxKind[node.kind]
+        return {
+          name,
+        }
+      }
+
+      const renderLiteralField = (key: string, value: string) => {
+        const li = document.createElement("li")
+        li.innerHTML = `${key}: ${value}`
+        return li
+      }
+
+      const renderSingleChild = (key: string, value: Node) => {
+        const li = document.createElement("li")
+        li.innerHTML = `${key}: <strong>${ts.SyntaxKind[value.kind]}</strong>`
+        return li
+      }
+
+      const renderManyChildren = (key: string, value: Node[]) => {
+        const li = document.createElement("li")
+        const nodes = value.map(n => "<strong>&nbsp;&nbsp;" + ts.SyntaxKind[n.kind] + "<strong>").join("<br/>")
+        li.innerHTML = `${key}: [<br/>${nodes}</br>]`
+        return li
+      }
+
+      const renderItem = (parentElement: Element, node: Node) => {
+        const ul = document.createElement("ul")
+        parentElement.appendChild(ul)
+        ul.className = "ast-tree"
+
+        const info = infoForNode(node)
+
+        const li = document.createElement("li")
+        ul.appendChild(li)
+
+        const a = document.createElement("a")
+        a.textContent = info.name
+        li.appendChild(a)
+
+        const properties = document.createElement("ul")
+        properties.className = "ast-tree"
+        li.appendChild(properties)
+
+        Object.keys(node).forEach(field => {
+          if (typeof field === "function") return
+          if (field === "parent" || field === "flowNode") return
+
+          const value = (node as any)[field]
+          if (typeof value === "object" && Array.isArray(value) && "pos" in value[0] && "end" in value[0]) {
+            //  Is an array of Nodes
+            properties.appendChild(renderManyChildren(field, value))
+          } else if (typeof value === "object" && "pos" in value && "end" in value) {
+            // Is a single child property
+            properties.appendChild(renderSingleChild(field, value))
+          } else {
+            properties.appendChild(renderLiteralField(field, value))
+          }
+        })
+      }
+
+      renderItem(div, node)
+      return div
+    }
+
     return {
       /** Clear the sidebar */
       clear,
+      /** Shows a TypeScript node (and its children)  */
+      createASTTree,
       /** Present code in a pre > code  */
       code: (code: string) => {
         const createCodePre = document.createElement("pre")
@@ -177,82 +250,11 @@ export const createUtils = (sb: any, react: typeof React) => {
     }
   }
 
-  const createASTTree = (node: Node) => {
-    const div = document.createElement("div")
-    div.className = "ast"
-
-    const infoForNode = (node: Node) => {
-      const name = ts.SyntaxKind[node.kind]
-      return {
-        name,
-      }
-    }
-
-    const renderLiteralField = (key: string, value: string) => {
-      const li = document.createElement("li")
-      li.innerHTML = `${key}: ${value}`
-      return li
-    }
-
-    const renderSingleChild = (key: string, value: Node) => {
-      const li = document.createElement("li")
-      li.innerHTML = `${key}: <strong>${ts.SyntaxKind[value.kind]}</strong>`
-      return li
-    }
-
-    const renderManyChildren = (key: string, value: Node[]) => {
-      const li = document.createElement("li")
-      const nodes = value.map(n => "<strong>&nbsp;&nbsp;" + ts.SyntaxKind[n.kind] + "<strong>").join("<br/>")
-      li.innerHTML = `${key}: [<br/>${nodes}</br>]`
-      return li
-    }
-
-    const renderItem = (parentElement: Element, node: Node) => {
-      const ul = document.createElement("ul")
-      parentElement.appendChild(ul)
-      ul.className = "ast-tree"
-
-      const info = infoForNode(node)
-
-      const li = document.createElement("li")
-      ul.appendChild(li)
-
-      const a = document.createElement("a")
-      a.textContent = info.name
-      li.appendChild(a)
-
-      const properties = document.createElement("ul")
-      properties.className = "ast-tree"
-      li.appendChild(properties)
-
-      Object.keys(node).forEach(field => {
-        if (typeof field === "function") return
-        if (field === "parent" || field === "flowNode") return
-
-        const value = (node as any)[field]
-        if (typeof value === "object" && Array.isArray(value) && "pos" in value[0] && "end" in value[0]) {
-          //  Is an array of Nodes
-          properties.appendChild(renderManyChildren(field, value))
-        } else if (typeof value === "object" && "pos" in value && "end" in value) {
-          // Is a single child property
-          properties.appendChild(renderSingleChild(field, value))
-        } else {
-          properties.appendChild(renderLiteralField(field, value))
-        }
-      })
-    }
-
-    renderItem(div, node)
-    return div
-  }
-
   return {
     /** Use this to make a few dumb element generation funcs */
     el,
     /** Get a relative URL for something in your dist folder depending on if you're in dev mode or not */
     requireURL,
-    /** Returns a div which has an interactive AST a TypeScript AST by passing in the root node */
-    createASTTree,
     /** The Gatsby copy of React */
     react,
     /**
