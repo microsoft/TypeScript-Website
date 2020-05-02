@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
+    "cross-env": "^7.0.2",
     "danger": "^9.2.10",
     "danger-plugin-lighthouse": "^0.5.2",
     "danger-plugin-spellcheck": "^1.5.0",
@@ -30,6 +31,7 @@
   "scripts": {
     "bootstrap": "yarn workspaces run bootstrap && yarn workspaces run build",
     "start": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"yarn workspace typescriptlang-org start\"",
+    "start-twoslash": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"yarn workspace typescriptlang-org start-twoslash\"",
     "build": "yarn workspaces run build",
     "build-site": "yarn workspace typescriptlang-org build",
     "compile": "yarn workspace typescriptlang-org tsc",

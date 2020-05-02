@@ -46,7 +46,7 @@ const compilerOptions = orderedCategories.filter((o) => !notCompilerOptions.incl
 const sections = [
   { name: "top_level", categories: ["Project_Files_0"] },
   { name: "compilerOptions", categories: compilerOptions },
-  { name: "watchOptions", categories: ["Project_Files_0"] },
+  { name: "watchOptions", categories: ["Watch_Options_999"] },
 ];
 
 const parseMarkdown = (md: string) => remark().use(remarkHTML).processSync(md);
@@ -99,24 +99,42 @@ languages.forEach((lang) => {
 
     // Show a sub-nav for lots of categories
     if (sectionCategories.length > 1) {
-      markdownChunks.push('<nav id="sticky">');
+      const nav = ['<nav id="sticky">'];
+      const overview = ["<div id='full-option-list' class='indent'>"];
+      // {categories!.categories!.map(c => {
+      //   if (!c) return null
+      //   return <div className="tsconfig-nav-top" key={c.anchor!}>
+      //     <h5><a href={"#" + c.anchor}>{c.display}</a></h5>
+      //     <ul key={c.anchor!}>
+      //       {c.options!.map(element => )}
+      //     </ul>
+      //   </div>
+      // })}
+
       sectionCategories.forEach((categoryID) => {
         const categoryPath = getPathInLocale(join("categories", categoryID + ".md"));
         const categoryFile = readMarkdownFile(categoryPath);
-        markdownChunks.push(`<li><a href="#${categoryID}">${categoryFile.data.display}</a></li>`);
-      });
-      markdownChunks.push("</nav>");
-    }
 
-    // {categories!.categories!.map(c => {
-    //   if (!c) return null
-    //   return <div className="tsconfig-nav-top" key={c.anchor!}>
-    //     <h5><a href={"#" + c.anchor}>{c.display}</a></h5>
-    //     <ul key={c.anchor!}>
-    //       {c.options!.map(element => <li key={element!.anchor!}><a href={"#" + element!.anchor!}>{element!.anchor}</a></li>)}
-    //     </ul>
-    //   </div>
-    // })}
+        overview.push(`<div className="tsconfig-nav-top">`);
+        overview.push(`<h5><a href=${"#" + categoryID}>${categoryFile.data.display}</a></h5>`);
+        overview.push("<ul>");
+
+        const optionsForCategory = options.filter(
+          (o) => o.categoryCode == Number(categoryID.split("_").pop())
+        );
+        optionsForCategory.forEach((opt) => {
+          overview.push(`<li><a href=${"#" + opt.name}>${opt.name}</a></li>`);
+        });
+
+        overview.push("</ul></div>");
+        nav.push(`<li><a href="#${categoryID}">${categoryFile.data.display}</a></li>`);
+      });
+      overview.push("</div>");
+      nav.push("</nav>");
+
+      overview.forEach((o) => markdownChunks.push(o));
+      nav.forEach((nav) => markdownChunks.push(nav));
+    }
 
     markdownChunks.push("<div class='indent'>");
 

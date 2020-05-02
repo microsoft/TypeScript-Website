@@ -195,7 +195,7 @@ const watchOptions: CompilerOptionJSON[] = [
   {
     name: "watchFile",
     type: "string",
-    categoryCode: 0,
+    categoryCode: 999,
     // @ts-ignore
     description: {
       message: "The strategy for how individual files are watched.",
@@ -206,7 +206,7 @@ const watchOptions: CompilerOptionJSON[] = [
   {
     name: "watchDirectory",
     type: "list",
-    categoryCode: 0,
+    categoryCode: 999,
     // @ts-ignore
     description: {
       message:
@@ -218,7 +218,7 @@ const watchOptions: CompilerOptionJSON[] = [
   {
     name: "fallbackPolling",
     type: "list",
-    categoryCode: 0,
+    categoryCode: 999,
     // @ts-ignore
     description: {
       message:
@@ -230,7 +230,7 @@ const watchOptions: CompilerOptionJSON[] = [
   {
     name: "synchronousWatchDirectory",
     type: "string",
-    categoryCode: 0,
+    categoryCode: 999,
     // @ts-ignore
     description: {
       message: "Disable deferred watching on directories.",
