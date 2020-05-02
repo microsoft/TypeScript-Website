@@ -35,7 +35,7 @@ export const oldHandbookNavigation: NavItem[] = [
     chronological: true,
     index: "/",
     items: [
-      { id: "index", title: "What is the Handbook?" },
+      { id: "intro", title: "What is the Handbook?" },
       { id: "basic-types", title: "Basic Types" },
       { id: "interfaces", title: "Interfaces" },
       { id: "functions", title: "Functions" },

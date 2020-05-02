@@ -13,6 +13,7 @@ export interface NavItem {
 export type Props = {
   navItems: NavItem[]
   selectedID: string
+  openAllSectionsExceptWhatsNew?: true
 }
 
 import "./Sidebar.scss"
@@ -81,7 +82,8 @@ export const Sidebar = (props: Props) => {
           const hostsSelected = navRoot.items.find(i => i.id === props.selectedID)
           const classes = [] as string[]
 
-          if (hostsSelected) {
+          const forceOpen = props.openAllSectionsExceptWhatsNew && navRoot.id !== "whats-new"
+          if (hostsSelected || forceOpen) {
             classes.push("open")
             classes.push("highlighted")
           } else {

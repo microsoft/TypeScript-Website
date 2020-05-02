@@ -154,7 +154,7 @@ export const SiteFooter = (props: Props) => {
           <p>Made with &#9829; in Redmond, Boston, SF & NYC</p>
 
           <a href=""><img id='microsoft-logo' width={92} height={19} src={require("../../assets/microsoft-logo.png")} alt="Microsoft Logo" /></a>
-          <p>© 2012-{new Date().getFullYear()} Microsoft<br /><a href="https://go.microsoft.com/fwlink/?LinkId=521839">Privacy</a></p>
+          <p>© 2012-{new Date().getFullYear()} Microsoft<br /><a href="https://go.microsoft.com/fwlink/?LinkId=521839" title="Microsoft Privacy Policy" >Privacy</a></p>
         </article>
 
         <article id="using-typescript">

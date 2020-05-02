@@ -293,5 +293,5 @@ If the object or class has all the required properties, then TypeScript will say
 
 This doc is a high level 5 minute overview of the sort of syntax and tools you would use in everyday code. From here you should:
 
-- Read the full Handbook [from start to finish](/docs/handbook/basic-types.html) (30m)
+- Read the full Handbook [from start to finish](/docs/handbook/intro.html) (30m)
 - Explore the [Playground examples](/play#show-examples).
