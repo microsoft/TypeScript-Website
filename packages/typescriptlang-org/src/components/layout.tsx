@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 import { SiteNav, Props } from "./layout/TopNav"
 import { SiteFooter } from "./layout/SiteFooter"
 import { SeoProps, HeadSEO } from "./HeadSEO";

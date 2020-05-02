@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 import { Layout } from "../../../components/layout"
 
 import "../css/documentation.scss"
@@ -10,6 +10,8 @@ import { createInternational } from "../../../lib/createInternational"
 import { useIntl } from "react-intl"
 import { graphql } from "gatsby"
 import { DocsHomeQuery } from "../../../__generated__/gatsby-types"
+import { QuickJump } from "../../../components/QuickJump"
+
 type Props = {
   data: DocsHomeQuery
   pageContext: any
@@ -52,7 +54,11 @@ const Index: React.FC<Props> = (props) => {
           ]}
           headline={true}
         />
+      </div>
 
+      <QuickJump allSitePage={props.data.allSitePage} lang={props.pageContext.lang} />
+
+      <div className="raised main-content-block">
         <h1>{i("doc_start_a_project")}</h1>
         <p>{i("doc_start_a_project_desc")}</p>
 
@@ -102,7 +108,7 @@ const Index: React.FC<Props> = (props) => {
               title: "Vue",
             },
             {
-              href: "https://github.com/typescript-ruby/typescript-rails",
+              href: "https://github.com/rails/webpacker/blob/master/docs/typescript.md",
               badge: "Plugin",
               blurb: i("doc_frameworks_ror_blurb"),
               title: "Ruby on Rails",
@@ -264,7 +270,7 @@ const Index: React.FC<Props> = (props) => {
               title: i("doc_learn_d_ts_title"),
             },
             {
-              href: "/play",
+              href: "/play/",
               blurb: i("doc_learn_playground_blurb"),
               title: i("play_subnav_title" as any),
             },

@@ -647,7 +647,6 @@ input.good {
 .custom-modules li {
   a {
     display: inline-block;
-    float: right;
     border: black 1px solid;
     height: 1rem;
     width: 1rem;
@@ -664,6 +663,10 @@ input.good {
 // These show in the editor!
 .error-highlight {
   background-color: #fcb7b7;
+}
+
+.neutral-highlight {
+  border-bottom: 1px solid green;
 }
 
 #popover-background {

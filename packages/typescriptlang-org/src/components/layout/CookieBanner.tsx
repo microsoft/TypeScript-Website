@@ -5,7 +5,7 @@
 
 // https://uhf.microsoft.com/en/shell/api/mscc?sitename=typescript&domain=typescriptlang.org&country=euregion&mscc_eudomain=true
 
-import React from "react"
+import * as React from "react"
 import "./cookie.scss"
 import { useEffect } from "react"
 

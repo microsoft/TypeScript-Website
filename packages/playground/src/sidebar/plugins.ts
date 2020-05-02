@@ -46,7 +46,7 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
   const plugin: PlaygroundPlugin = {
     id: "plugins",
     displayName: i("play_sidebar_plugins"),
-    shouldBeSelected: () => true, // uncomment to make this the first tab on reloads
+    // shouldBeSelected: () => true, // uncomment to make this the first tab on reloads
     willMount: (_sandbox, container) => {
       const ds = utils.createDesignSystem(container)
 

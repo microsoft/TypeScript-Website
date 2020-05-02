@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 
 import "./SiteFooter.scss"
 import { PlaygroundSamples } from "./SiteFooter-PlaygroundSamples";
@@ -67,7 +67,7 @@ const useTypeScriptLinks = [
   },
   {
     title: "Playground",
-    url: "/play",
+    url: "/play/",
   },
   {
     title: "TSConfig Ref",

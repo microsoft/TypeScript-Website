@@ -99,7 +99,15 @@
   }
 }
 
+.show-only-small {
+  display: none;
+}
+
 @media (max-width: $screen-xs) {
+  .show-only-small {
+    display: block !important;
+  }
+
   #index div.headline-diagram div.editor.front {
     max-width: 300px;
   }
@@ -167,6 +175,14 @@
   .light-grey {
     background-color: $ts-light-bg-sandy-color;
     color: black;
+  }
+
+  .grey {
+    background-color: #d8d8d8;
+    padding-bottom: 0;
+    div.container {
+      padding: 1rem;
+    }
   }
 
   .headline .container {
@@ -377,6 +393,37 @@
         height: 100%;
         margin-left: 20px;
         margin-right: 10px;
+      }
+    }
+  }
+
+  .call-to-action {
+    display: flex;
+    justify-content: center;
+
+    a.flat-button {
+      display: block;
+      width: 12rem;
+      height: 1.4rem;
+      line-height: 1.4rem;
+      background-color: white;
+      color: black;
+      text-align: center;
+      padding: 1rem 0.5rem;
+      text-decoration: none;
+      font-size: 1.2rem;
+
+      &:first-child {
+        margin-right: 2rem;
+      }
+
+      &:hover,
+      &.focus {
+        background-color: #eee;
+      }
+
+      &:active {
+        background-color: #ddd;
       }
     }
   }

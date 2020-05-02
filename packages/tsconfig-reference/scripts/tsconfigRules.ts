@@ -80,6 +80,8 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["allowJs", ["checkJs", "emitDeclarationOnly"]],
   ["checkJs", ["allowJs", "emitDeclarationOnly"]],
   ["declaration", ["declarationDir", "emitDeclarationOnly"]],
+
+  ["moduleResolution", ["module"]],
 ];
 
 /**
@@ -124,6 +126,7 @@ export const defaultsForOptions = {
   listFiles: "false",
   locale: "Platform specific",
   maxNodeModuleJsDepth: "0",
+  moduleResolution: "module === `AMD` or `System` or `ES6` ? `Classic` : `Node`",
   newLine: "Platform specific",
   noEmit: "false",
   noEmitHelpers: "false",

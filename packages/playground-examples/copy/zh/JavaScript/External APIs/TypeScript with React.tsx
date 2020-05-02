@@ -55,7 +55,7 @@ interface FauxactClassComponent<Props extends {}, State = {}> {
 // React 库附带了他们更加全面的类型定义，让我们将其带入我们的游乐场
 // 并探索一些组件。
 
-import React from 'react';
+import * as React from 'react';
 
 // 您的 props 是您公开的 API，所以值得使用 JSDoc 来解释它的工作原理：
 

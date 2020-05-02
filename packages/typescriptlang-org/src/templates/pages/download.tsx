@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 import { Layout } from "../../components/layout"
 import { Intl } from "../../components/Intl"
 import { graphql } from "gatsby"
@@ -6,6 +6,7 @@ import { graphql } from "gatsby"
 import releaseInfo from "../../lib/release-info.json"
 import { createIntlLink } from "../../components/IntlLink"
 import { DownloadPageQuery } from "../../__generated__/gatsby-types"
+import { QuickJump } from "../../components/QuickJump"
 
 type Props = {
   pageContext: any
@@ -109,6 +110,9 @@ const Index: React.FC<Props> = (props) => {
         </div>
       </section>
     </div>
+
+    <QuickJump allSitePage={props.data.allSitePage} lang={props.pageContext.lang} />
+
   </Layout>
 }
 

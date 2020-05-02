@@ -2,7 +2,7 @@ export const docCopy = {
   doc_layout_title: "The starting point for learning TypeScript",
   doc_layout_description:
     "Find TypeScript starter projects: from Angular to React or Node.js and CLIs.",
-  doc_headline: "Start Learning",
+  doc_headline: "Learning Resources",
   doc_headline_ts_for_js_title: "TS for JS",
   doc_headline_ts_for_js_blurb:
     "An overview of TypeScript for engineers with a JavaScript background",
