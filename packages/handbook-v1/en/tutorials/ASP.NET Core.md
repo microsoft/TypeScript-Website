@@ -5,17 +5,13 @@ permalink: /docs/handbook/asp-net-core.html
 oneline: Using TypeScript in ASP.NET Core
 ---
 
-# Setup
-
-## Setup
-
-### Install ASP.NET Core and TypeScript
+## Install ASP.NET Core and TypeScript
 
 First, install [ASP.NET Core](https://dotnet.microsoft.com/apps/aspnet) if you need it. This quick-start guide requires Visual Studio 2015 or 2017.
 
 Next, if your version of Visual Studio does not already have the latest TypeScript, you can [install it](https://www.typescriptlang.org/index.html#download-links).
 
-### Create a new project
+## Create a new project
 
 1. Choose **File**
 2. Choose **New Project** (Ctrl + Shift + N)
@@ -67,7 +63,7 @@ Next we will add a new folder and call it `scripts`.
 
 ![](/images/tutorials/aspnet/scripts.png)
 
-### Add TypeScript code
+## Add TypeScript code
 
 Right click on `scripts` and click **New Item**. Then choose **TypeScript File** and name the file `app.ts`
 
@@ -87,7 +83,7 @@ function sayHello() {
 }
 ```
 
-### Set up the build
+## Set up the build
 
 _Configure the TypeScript compiler_
 
@@ -155,14 +151,14 @@ var gulp = require("gulp");
 var del = require("del");
 
 var paths = {
-  scripts: ["scripts/**/*.js", "scripts/**/*.ts", "scripts/**/*.map"]
+  scripts: ["scripts/**/*.js", "scripts/**/*.ts", "scripts/**/*.map"],
 };
 
-gulp.task("clean", function() {
+gulp.task("clean", function () {
   return del(["wwwroot/scripts/**/*"]);
 });
 
-gulp.task("default", function() {
+gulp.task("default", function () {
   gulp.src(paths.scripts).pipe(gulp.dest("wwwroot/scripts"));
 });
 ```
@@ -177,7 +173,7 @@ If ‘default’ and ‘clean’ tasks don’t show up, refresh the explorer:
 
 ![Screenshot of task explorer with "Gulpfile.js" in it](/images/tutorials/aspnet/taskrunnerrefresh.png)
 
-### Write a HTML page
+## Write a HTML page
 
 Right click on the `wwwroot` folder (if you don't see the folder try building the project) and add a New Item named `index.html` inside. Use the following code for `index.html`
 
@@ -199,14 +195,14 @@ Right click on the `wwwroot` folder (if you don't see the folder try building th
 </html>
 ```
 
-### Test
+## Test
 
 1. Run the project
 2. As you type on the boxes you should see the message appear/change!
 
 ![A GIF of Edge showing the code you have just wrote](https://media.giphy.com/media/U3mTibRAx34DG3zhAN/giphy.gif)
 
-### Debug
+## Debug
 
 1. In Edge, press F12 and click the Debugger tab.
 2. Look in the first localhost folder, then scripts/app.ts
