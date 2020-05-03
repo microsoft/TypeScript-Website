@@ -17,6 +17,10 @@
     }
   }
 
+  article {
+    width: 100%;
+  }
+
   // Handles hash links with a sticky header
   a[name]:before {
     display: block;

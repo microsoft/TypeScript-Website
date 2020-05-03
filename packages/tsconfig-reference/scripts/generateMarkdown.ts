@@ -6,6 +6,19 @@
      yarn ts-node --project packages/tsconfig-reference/tsconfig.json packages/tsconfig-reference/scripts/generateMarkdown.ts 
 */
 
+/**
+ * This sets up:
+ *
+ *   - language (en, ja, zh, pt, etc)
+ *     - Intro
+ *     - Quick Jump for any compiler flag
+ *     - Sections
+ *       - Top Level Fields
+ *       - Compiler Options
+ *       - Watch Options
+ *
+ */
+
 import { writeFileSync, readdirSync, existsSync, readFileSync } from "fs";
 import { join } from "path";
 import * as assert from "assert";
@@ -84,8 +97,57 @@ languages.forEach((lang) => {
     categoryDisplay: string;
   }[];
 
-  const intro = readFileSync(getPathInLocale("intro.md"), "utf8");
+  const intro = parseMarkdown(readFileSync(getPathInLocale("intro.md"), "utf8"));
   markdownChunks.push(intro + "\n");
+
+  const categoryOverviews = orderedCategories.map((cID) => {
+    const categoryPath = getPathInLocale(join("categories", cID + ".md"));
+    return {
+      md: readMarkdownFile(categoryPath),
+      id: cID,
+      code: Number(cID.split("_").pop()),
+    };
+  });
+
+  // Shows the full list of compiler options straight away
+  markdownChunks.push("<div id='full-option-list' class='indent'>");
+  categoryOverviews.forEach((c) => {
+    if (c.code === 6178) return;
+    markdownChunks.push(`<div class="tsconfig-nav-top">`);
+    markdownChunks.push(`<h5><a href=${"#" + c.id}>${c.md.data.display}</a></h5>`);
+    markdownChunks.push("<ul>");
+
+    const optionsForCategory = options.filter((o) => o.categoryCode === c.code);
+    optionsForCategory.forEach((opt) => {
+      markdownChunks.push(`<li><a href=${"#" + opt.name}>${opt.name}</a></li>`);
+    });
+
+    markdownChunks.push("</ul></div>");
+  });
+  markdownChunks.push("<br />");
+
+  // Special case the 'advanced' section because it is so long
+  const advanced = categoryOverviews.find((c) => c.code === 6178);
+
+  const advancedOpts = options.filter((o) => o.categoryCode === advanced.code);
+  const chunkedOptions = chunk(advancedOpts, 10);
+
+  chunkedOptions.forEach((opts, index) => {
+    markdownChunks.push(`<div class="tsconfig-nav-top">`);
+
+    if (index === 0) {
+      markdownChunks.push(`<h5><a href=${"#" + advanced.id}>${advanced.md.data.display}</a></h5>`);
+    } else {
+      markdownChunks.push(`<h5>&nbsp;</h5>`);
+    }
+
+    markdownChunks.push("<ul>");
+    opts.forEach((opt) => {
+      markdownChunks.push(`<li><a href=${"#" + opt.name}>${opt.name}</a></li>`);
+    });
+    markdownChunks.push("</ul>");
+    markdownChunks.push("</div>");
+  });
 
   sections.forEach((section) => {
     const sectionCategories = section.categories;
@@ -95,45 +157,19 @@ languages.forEach((lang) => {
     // Intro to the section
     const sectionsPath = getPathInLocale(join("sections", section.name + ".md"));
     const sectionsFile = readMarkdownFile(sectionsPath);
-    markdownChunks.push(sectionsFile.content);
+    markdownChunks.push("\n" + sectionsFile.content + "\n");
 
-    // Show a sub-nav for lots of categories
+    // Show a sticky sub-nav for the categories
     if (sectionCategories.length > 1) {
-      const nav = ['<nav id="sticky">'];
-      const overview = ["<div id='full-option-list' class='indent'>"];
-      // {categories!.categories!.map(c => {
-      //   if (!c) return null
-      //   return <div className="tsconfig-nav-top" key={c.anchor!}>
-      //     <h5><a href={"#" + c.anchor}>{c.display}</a></h5>
-      //     <ul key={c.anchor!}>
-      //       {c.options!.map(element => )}
-      //     </ul>
-      //   </div>
-      // })}
+      markdownChunks.push(`<nav id="sticky">`);
 
       sectionCategories.forEach((categoryID) => {
         const categoryPath = getPathInLocale(join("categories", categoryID + ".md"));
         const categoryFile = readMarkdownFile(categoryPath);
 
-        overview.push(`<div className="tsconfig-nav-top">`);
-        overview.push(`<h5><a href=${"#" + categoryID}>${categoryFile.data.display}</a></h5>`);
-        overview.push("<ul>");
-
-        const optionsForCategory = options.filter(
-          (o) => o.categoryCode == Number(categoryID.split("_").pop())
-        );
-        optionsForCategory.forEach((opt) => {
-          overview.push(`<li><a href=${"#" + opt.name}>${opt.name}</a></li>`);
-        });
-
-        overview.push("</ul></div>");
-        nav.push(`<li><a href="#${categoryID}">${categoryFile.data.display}</a></li>`);
+        markdownChunks.push(`<li><a href="#${categoryID}">${categoryFile.data.display}</a></li>`);
       });
-      overview.push("</div>");
-      nav.push("</nav>");
-
-      overview.forEach((o) => markdownChunks.push(o));
-      nav.forEach((nav) => markdownChunks.push(nav));
+      markdownChunks.push("</nav>");
     }
 
     markdownChunks.push("<div class='indent'>");
@@ -289,3 +325,11 @@ languages.forEach((lang) => {
 });
 
 writeFileSync(join(__dirname, "..", "output", "languages.json"), JSON.stringify({ languages }));
+
+// From https://stackoverflow.com/questions/8495687/split-array-into-chunks
+function chunk<T>(arr: T[], chunkSize: number): T[][] {
+  const newArray = [];
+  for (let i = 0, len = arr.length; i < len; i += chunkSize)
+    newArray.push(arr.slice(i, i + chunkSize));
+  return newArray;
+}

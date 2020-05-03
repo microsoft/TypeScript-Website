@@ -240,7 +240,9 @@ const watchOptions: CompilerOptionJSON[] = [
   },
 ];
 
-const allOptions = [...topLevelTSConfigOptions, ...filteredOptions, ...watchOptions];
+const allOptions = [...topLevelTSConfigOptions, ...filteredOptions, ...watchOptions].sort((l, r) =>
+  l.name.localeCompare(r.name)
+);
 
 writeJSON("tsconfigOpts.json", {
   options: allOptions,
