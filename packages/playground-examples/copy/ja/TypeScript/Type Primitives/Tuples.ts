@@ -1,40 +1,40 @@
-// Typically an array contains zero to many objects of a
-// single type. TypeScript has special analysis around
-// arrays which contain multiple types, and where the order
-// in which they are indexed is important.
+// 一般的に、配列は0から任意の数の
+// 単一の型のオブジェクトを含みます。
+// TypeScriptは複数の型を含み、
+// 格納順が重要な配列について特別な解析を行います。
 
-// These are called tuples. Think of them as a way to
-// connect some data, but with less syntax than keyed objects.
+// これらはタプルと呼ばれます。これらはキーを持つオブジェクトよりも短い文法で、
+// いくつかのデータをつなげるための方法と考えられます。
 
-// You can create a tuple using JavaScript's array syntax:
+// タプルはJavaScriptの配列の文法で作成できます:
 
 const failingResponse = ["Not Found", 404];
 
-// but you will need to declare its type as a tuple.
+// ただし、タプルとして型を宣言する必要があります。
 
 const passingResponse: [string, number] = ["{}", 200];
 
-// If you hover over the two variable names you can see the
-// difference between an array ( (string | number)[] ) and
-// the tuple ( [string, number] ).
+// もし、ホバーすれば2つの変数が配列( (string | number)[] )と
+// タプル( [string, number] )として解釈されているという
+// 違いを確認できるでしょう。
 
-// As an array, the order is not important so an item at
-// any index could be either a string or a number. In the
-// tuple the order and length are guaranteed.
+// 配列の場合、どのインデックスの要素も文字列または数値の
+// どちらかになるので順番は重要ではありません。
+// タプルでは、順番と長さは保証されています。
 
 if (passingResponse[1] === 200) {
   const localInfo = JSON.parse(passingResponse[0]);
   console.log(localInfo);
 }
 
-// This means TypeScript will provide the correct types at
-// the right index, and even raise an error if you try to
-// access an object at an un-declared index.
+// これは、TypeScriptが正しいインデックスに対して正しい型を提供するだけでなく、
+// もしオブジェクトの宣言していないインデックスに
+// アクセスしようとすればエラーを発生させることを意味します。
 
 passingResponse[2];
 
-// A tuple can feel like a good pattern for short bits of
-// connected data or for fixtures.
+// タプルは接続されたデータの短いまとまりやフィクスチャにとって、
+// 良いパターンとして感じられるでしょう。
 
 type StaffAccount = [number, string, string, string?];
 
@@ -44,10 +44,10 @@ const staff: StaffAccount[] = [
   [2, "Aneurin", "aneurin.s@", "Supervisor"],
 ];
 
-// When you have a set of known types at the beginning of a
-// tuple and then an unknown length, you can use the spread
-// operator to indicate that it can have any length and the
-// extra indexes will be of a particular type:
+// 最初がタプルで、その後の長さが分からない型を扱う場合、
+// スプレッド構文を使うと任意の長さを持ち、
+// 追加のインデックスの要素が
+// 特定の型であると示すことができます。
 
 type PayStubs = [StaffAccount, ...number[]];
 
@@ -61,8 +61,8 @@ const monthOnePayments = payStubs[0][1] + payStubs[1][1] + payStubs[2][1];
 const monthTwoPayments = payStubs[1][2] + payStubs[2][2];
 const monthThreePayments = payStubs[2][2];
 
-// You can use tuples to describe functions which take
-// an undefined number of parameters with types:
+// 以下のようにタプルを用いて任意の数の数値型を
+// 引数として受け取る関数を宣言できます:
 
 declare function calculatePayForEmployee(id: number, ...args: [...number[]]): number;
 

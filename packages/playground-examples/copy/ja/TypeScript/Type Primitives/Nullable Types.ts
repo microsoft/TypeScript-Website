@@ -1,19 +1,19 @@
 //// { order: 3, compiler: { strictNullChecks: false } }
 
-// JavaScript has two ways to declare values which don't
-// exist, and TypeScript adds extra syntax which allows even
-// more ways to declare something as optional or nullable.
+// JavaScriptでは、存在しない値を宣言する方法が2つあります。
+// TypeScriptでは、optionalやnullableな値を宣言する
+// 方法をさらにいくつか提供します。
 
-// First up, the difference between the two JavaScript
-// primitives: undefined and null
+// 最初に、JavaScriptの基本型である
+// undefinedとnullの違いを見てみましょう。
 
-// Undefined is when something cannot be found or set
+// Undefinedは値が見つからないときあるいは設定できない場合です。
 
 const emptyObj = {};
 const anUndefinedProperty: undefined = emptyObj["anything"];
 
-// Null is meant to be used when there is a conscious lack
-// of a value.
+// Nullは値が意図的に欠如していることを
+// 意味します。
 
 const searchResults = {
   video: { name: "LEGO Movie" },
@@ -21,50 +21,50 @@ const searchResults = {
   audio: { name: "LEGO Movie Soundtrack" },
 };
 
-// Why not use undefined? Mainly, because now you can verify
-// that text was correctly included. If text returned as
-// undefined then the result is the same as though it was
-// not there.
+// なぜundefinedを使わないのでしょう?
+// 主な理由としては、textが正しく含まれていることを確認できるからです。
+// もしtextがundefinedの場合、
+// 結果はtextが存在しないときと同じものになります。
 
-// This might feel a bit superficial, but when converted into
-// a JSON string, if text was an undefined, it would not be
-// included in the string equivalent.
+// これは、少し表面的に感じるかもしれません。
+// しかし、JSON文字列に変換したときに、
+// textがundefinedの場合、textは変換された文字列に含まれません。
 
 // Strict Null Types
 
-// Before TypeScript 2.0 undefined and null were effectively
-// ignored in the type system. This let TypeScript provide a
-// coding environment closer to un-typed JavaScript.
+// TypeScript 2.0より前では、undefinedとnullは事実上、型システムから無視されていました。
+// これによって、TypeScriptのコーディング環境は
+// 型のないJavaScriptに近づいてしまっていました。
 
-// Version 2.0 added a compiler flag called "strictNullChecks"
-// and this flag required people to treat undefined and null
-// as types which needs to be handled via code-flow analysis
-// ( see more at example:code-flow )
+// バージョン2.0にて、"strictNullChecks"というコンパイラフラグが追加されました。
+// このフラグをオンにすると、undefinedとnullが
+// コードフロー分析を通して対応すべき型として扱われるようになります。
+// (より詳細にはexample:code-flowを参照ください)
 
-// For an example of the difference in turning on strict null
-// checks to TypeScript, hover over "Potential String" below:
+// TypeScriptでstrict null checksを有効にしたときの違いの例として
+// 以下の"Potential String"型をホバーしてみてください:
 
 type PotentialString = string | undefined | null;
 
-// The PotentialString discards the undefined and null. If
-// you go up to the settings and turn on strict mode and come
-// back, you'll see that hovering on PotentialString now shows
-// the full union.
+// PotentialString型ではundefinedとnullが切り捨てられています。
+// もし、設定に行きstrictモードを有効にして戻ってくると、
+// PotentialString型がすべての型の交差型になっていることが
+// 確認できます。
 
 declare function getID(): PotentialString;
 
 const userID = getID();
 console.log("User Logged in: ", userID.toUpperCase());
 
-// Only in strict mode the above will fail ^
+// strictモードでは、上記はエラーになります。
 
-// There are ways to tell TypeScript you know more, such as
-// a type assertion or via a non-null assertion operator (!)
+// 型アサーションや非nullアサーション演算子(!)を使うなど
+// TypeScriptに詳細を教える方法はいくつかあります。
 
 const definitelyString1 = getID() as string;
 const definitelyString2 = getID()!;
 
-// Or you safely can check for the existence via an if:
+// あるいはifを用いて存在を安全に確認することもできます:
 
 if (userID) {
   console.log(userID);
@@ -74,12 +74,12 @@ if (userID) {
 
 // Void
 
-// Void is the return type of a function which does not
-// return a value.
+// Voidは値を返さない関数の
+// 戻り値型です。
 
 const voidFunction = () => {};
 const resultOfVoidFunction = voidFunction();
 
-// This is usually an accident, and TypeScript keeps the void
-// type around to let you get compiler errors - even though at
-// runtime it would be an undefined.
+// 実行時にはundefinedであっても、
+// TypeScriptはコンパイルエラーを発生させるために
+// void型を保持します。
