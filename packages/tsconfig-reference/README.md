@@ -4,6 +4,14 @@ This "package" hosts multi-lingual docs for the TSConfig. As much as possible is
 off pulling data from `require("typescript")` then augmented with markdown from inside the
 [`./copy`](./copy) folder.
 
+Roughly:
+
+```sh
+TypeScript Compiler + `tsconfigRules.ts` -> `generateJSON.ts` -> JSON (in output) -> `generateMarkdown.ts` -> Markdown (in output)
+```
+
+This happens per-language with fallbacks to English for any missing docs.
+
 ## Contributing
 
 To improve a single compiler option's documentation; all you need to do is go into the [`./copy`](./copy) folder and

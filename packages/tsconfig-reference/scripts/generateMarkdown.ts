@@ -124,7 +124,7 @@ languages.forEach((lang) => {
 
     markdownChunks.push("</ul></div>");
   });
-  markdownChunks.push("<br />");
+  markdownChunks.push("</div><br />");
 
   // Special case the 'advanced' section because it is so long
   const advanced = categoryOverviews.find((c) => c.code === 6178);
@@ -146,6 +146,7 @@ languages.forEach((lang) => {
       markdownChunks.push(`<li><a href=${"#" + opt.name}>${opt.name}</a></li>`);
     });
     markdownChunks.push("</ul>");
+
     markdownChunks.push("</div>");
   });
 

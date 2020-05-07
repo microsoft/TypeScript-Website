@@ -52,64 +52,8 @@ const filteredOptions = options
   .filter((o) => !denyList.includes(o.name as CompilerOptionName))
   .filter((o) => !o.isCommandLineOnly);
 
-filteredOptions.forEach((option) => {
-  const name = option.name as CompilerOptionName;
-
-  // Convert JS Map types to a JSONable obj
-  if ("type" in option && typeof option.type === "object" && "get" in option.type) {
-    // Option definitely has a map obj, need to resolve it
-    const newOptions = {};
-    option.type.forEach((v, k) => (newOptions[k] = v));
-    // @ts-ignore
-    option.type = newOptions;
-  }
-
-  // Convert categories to be something which can be looked up
-  if ("category" in option) {
-    categories.add(option.category);
-    option.categoryCode = option.category.code;
-    option.category = undefined;
-  } else if (option.name in additionalOptionDescriptors) {
-    // Set category code manually because some options have no category
-    option.categoryCode = additionalOptionDescriptors[option.name].categoryCode;
-  }
-
-  // If it's got related fields, set them
-  const relatedMetadata = relatedTo.find((a) => a[0] == name);
-  if (relatedMetadata) {
-    option.related = relatedMetadata[1];
-  }
-
-  if (deprecated.includes(name)) {
-    option.deprecated = "Deprecated";
-  }
-
-  if (internal.includes(name)) {
-    option.internal = true;
-  }
-
-  if (recommended.includes(name)) {
-    option.recommended = true;
-  }
-
-  if (name in allowedValues) {
-    option.allowedValues = allowedValues[name];
-  }
-
-  if (name in configToRelease) {
-    option.releaseVersion = configToRelease[name];
-  }
-
-  if (name in defaultsForOptions) {
-    option.defaultValue = defaultsForOptions[name];
-  }
-
-  option.hostObj = "compilerOptions";
-
-  // Remove irrelevant properties
-  delete option.shortName;
-  delete option.showInSimplifiedHelpView;
-});
+// We don't get structured data for all compiler flags (especially ones which aren't in 'compilerOptions')
+// so, create these manually.
 
 const topLevelTSConfigOptions: CompilerOptionJSON[] = [
   {
@@ -200,7 +144,7 @@ const watchOptions: CompilerOptionJSON[] = [
     description: {
       message: "The strategy for how individual files are watched.",
     },
-    defaultValue: "false",
+    defaultValue: "useFsEvents",
     hostObj: "watchOptions",
   },
   {
@@ -212,7 +156,7 @@ const watchOptions: CompilerOptionJSON[] = [
       message:
         "The strategy for how entire directory trees are watched under systems that lack recursive file-watching functionality.",
     },
-    defaultValue: "false",
+    defaultValue: "useFsEvents",
     hostObj: "watchOptions",
   },
   {
@@ -224,18 +168,6 @@ const watchOptions: CompilerOptionJSON[] = [
       message:
         "The polling strategy that gets used when the system runs out of native file watchers.",
     },
-    defaultValue: "false",
-    hostObj: "watchOptions",
-  },
-  {
-    name: "synchronousWatchDirectory",
-    type: "string",
-    categoryCode: 999,
-    // @ts-ignore
-    description: {
-      message: "Disable deferred watching on directories.",
-    },
-    defaultValue: "false",
     hostObj: "watchOptions",
   },
 ];
@@ -243,6 +175,65 @@ const watchOptions: CompilerOptionJSON[] = [
 const allOptions = [...topLevelTSConfigOptions, ...filteredOptions, ...watchOptions].sort((l, r) =>
   l.name.localeCompare(r.name)
 );
+
+allOptions.forEach((option) => {
+  const name = option.name as CompilerOptionName;
+
+  // Convert JS Map types to a JSONable obj
+  if ("type" in option && typeof option.type === "object" && "get" in option.type) {
+    // Option definitely has a map obj, need to resolve it
+    const newOptions = {};
+    option.type.forEach((v, k) => (newOptions[k] = v));
+    // @ts-ignore
+    option.type = newOptions;
+  }
+
+  // Convert categories to be something which can be looked up
+  if ("category" in option) {
+    categories.add(option.category);
+    option.categoryCode = option.category.code;
+    option.category = undefined;
+  } else if (option.name in additionalOptionDescriptors) {
+    // Set category code manually because some options have no category
+    option.categoryCode = additionalOptionDescriptors[option.name].categoryCode;
+  }
+
+  // If it's got related fields, set them
+  const relatedMetadata = relatedTo.find((a) => a[0] == name);
+  if (relatedMetadata) {
+    option.related = relatedMetadata[1];
+  }
+
+  if (deprecated.includes(name)) {
+    option.deprecated = "Deprecated";
+  }
+
+  if (internal.includes(name)) {
+    option.internal = true;
+  }
+
+  if (recommended.includes(name)) {
+    option.recommended = true;
+  }
+
+  if (name in allowedValues) {
+    option.allowedValues = allowedValues[name];
+  }
+
+  if (name in configToRelease) {
+    option.releaseVersion = configToRelease[name];
+  }
+
+  if (name in defaultsForOptions) {
+    option.defaultValue = defaultsForOptions[name];
+  }
+
+  option.hostObj = "compilerOptions";
+
+  // Remove irrelevant properties
+  delete option.shortName;
+  delete option.showInSimplifiedHelpView;
+});
 
 writeJSON("tsconfigOpts.json", {
   options: allOptions,
