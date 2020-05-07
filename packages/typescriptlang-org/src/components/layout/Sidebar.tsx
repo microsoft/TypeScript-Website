@@ -8,6 +8,7 @@ export interface NavItem {
   index: string
   items: { id: string, title: string, href?: string }[]
   chronological?: true
+  summary: string
 }
 
 export type Props = {

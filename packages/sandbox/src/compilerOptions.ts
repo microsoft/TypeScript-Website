@@ -1,7 +1,7 @@
-import { PlaygroundConfig } from '.'
+import { PlaygroundConfig } from "."
 
-type CompilerOptions = import('monaco-editor').languages.typescript.CompilerOptions
-type Monaco = typeof import('monaco-editor')
+type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
+type Monaco = typeof import("monaco-editor")
 
 /**
  * These are the defaults, but they also act as the list of all compiler options
@@ -61,9 +61,9 @@ export const getCompilerOptionsFromParams = (options: CompilerOptions, params: U
     if (params.has(key)) {
       const urlValue = params.get(key)!
 
-      if (urlValue === 'true') {
+      if (urlValue === "true") {
         acc[key] = true
-      } else if (urlValue === 'false') {
+      } else if (urlValue === "false") {
         acc[key] = false
       } else if (!isNaN(parseInt(urlValue, 10))) {
         acc[key] = parseInt(urlValue, 10)
@@ -95,15 +95,15 @@ export const createURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?:
   const hash = `code/${sandbox.lzstring.compressToEncodedURIComponent(sandbox.getText())}`
 
   let urlParams: any = Object.assign({}, diff)
-  for (const param of ['lib', 'ts']) {
+  for (const param of ["lib", "ts"]) {
     const params = new URLSearchParams(location.search)
     if (params.has(param)) {
       // Special case the nightly where it uses the TS version to hardcode
       // the nightly build
-      if (param === 'ts' && (params.get(param) === 'Nightly' || params.get(param) === 'next')) {
-        urlParams['ts'] = sandbox.ts.version
+      if (param === "ts" && (params.get(param) === "Nightly" || params.get(param) === "next")) {
+        urlParams["ts"] = sandbox.ts.version
       } else {
-        urlParams['ts'] = params.get(param)
+        urlParams["ts"] = params.get(param)
       }
     }
   }
@@ -115,18 +115,18 @@ export const createURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?:
     (s && s.selectionStartLineNumber !== s.positionLineNumber) ||
     (s && s.selectionStartColumn !== s.positionColumn)
   ) {
-    urlParams['ssl'] = s.selectionStartLineNumber
-    urlParams['ssc'] = s.selectionStartColumn
-    urlParams['pln'] = s.positionLineNumber
-    urlParams['pc'] = s.positionColumn
+    urlParams["ssl"] = s.selectionStartLineNumber
+    urlParams["ssc"] = s.selectionStartColumn
+    urlParams["pln"] = s.positionLineNumber
+    urlParams["pc"] = s.positionColumn
   } else {
-    urlParams['ssl'] = undefined
-    urlParams['ssc'] = undefined
-    urlParams['pln'] = undefined
-    urlParams['pc'] = undefined
+    urlParams["ssl"] = undefined
+    urlParams["ssc"] = undefined
+    urlParams["pln"] = undefined
+    urlParams["pc"] = undefined
   }
 
-  if (sandbox.config.useJavaScript) urlParams['useJavaScript'] = true
+  if (sandbox.config.useJavaScript) urlParams["useJavaScript"] = true
 
   if (paramOverrides) {
     urlParams = { ...urlParams, ...paramOverrides }
@@ -139,7 +139,7 @@ export const createURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?:
       .map(([key, value]) => {
         return `${key}=${encodeURIComponent(value as string)}`
       })
-      .join('&')
+      .join("&")
 
     return `?${queryString}#${hash}`
   } else {
