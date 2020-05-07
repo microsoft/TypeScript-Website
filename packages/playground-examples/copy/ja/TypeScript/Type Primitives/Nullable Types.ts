@@ -39,7 +39,7 @@ const searchResults = {
 // バージョン2.0にて、"strictNullChecks"というコンパイラフラグが追加されました。
 // このフラグをオンにすると、undefinedとnullが
 // コードフロー分析を通して対応すべき型として扱われるようになります。
-// (より詳細にはexample:code-flowを参照ください)
+// (より詳細には example:code-flow を参照ください)
 
 // TypeScriptでstrict null checksを有効にしたときの違いの例として
 // 以下の"Potential String"型をホバーしてみてください:
@@ -74,7 +74,7 @@ if (userID) {
 
 // Void
 
-// Voidは値を返さない関数の
+// voidは値を返さない関数の
 // 戻り値型です。
 
 const voidFunction = () => {};
