@@ -46,6 +46,8 @@ The main website for TypeScript, a Gatsby website which is statically deployed. 
 yarn start
 ```
 
+To save your time, twoslash is not applied to code-samples in `yarn start` - to launch the server with twoslash support use: `yarn start-twoslash`.
+
 ## Sandbox
 
 The editor aspect of the TypeScript Playground REPL, useable for all sites which want to show a monaco editor

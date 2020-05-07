@@ -15,9 +15,9 @@ Then it needs to be added to the dropdown, you can find it here: [`packages/play
 
 ```ts
 const allVersions = [
-  '3.9.0-beta',
+  "3.9.0-beta",
   ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)),
-  'Nightly',
+  "Nightly",
 ]
 ```
 
@@ -50,6 +50,12 @@ For each new flag:
   - Default values
   - Linking compiler versions
   - Add a new section to `releaseToConfigsMap` for your version
+
+##### Tests
+
+Run `yarn test`.
+Tests can fail between TS builds, for example snapshot tests in packages which have compiler errors or LSP responses in them.
+Run `yarn workspace [package_name] test -u` to update the snapshots.
 
 ### RC
 

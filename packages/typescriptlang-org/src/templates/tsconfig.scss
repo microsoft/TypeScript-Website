@@ -17,6 +17,10 @@
     }
   }
 
+  article {
+    width: 100%;
+  }
+
   // Handles hash links with a sticky header
   a[name]:before {
     display: block;
@@ -30,7 +34,7 @@
     padding: 2rem;
   }
 
-  > div#full-option-list {
+  div#full-option-list {
     display: flex;
     flex-flow: row wrap;
     padding: 20px;

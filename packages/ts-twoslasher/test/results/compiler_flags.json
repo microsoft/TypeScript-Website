@@ -32,7 +32,7 @@
       "targetString": "console"
     },
     {
-      "text": "(method) Console.log(message?: any, ...optionalParams: any[]): void",
+      "text": "(method) Console.log(...data: any[]): void",
       "docs": "",
       "start": 80,
       "length": 3,
