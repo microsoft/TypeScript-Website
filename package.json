@@ -20,7 +20,7 @@
   "resolutions": {
     "@types/react": "16.9.17",
     "node-gyp": "5.1.0",
-    "typescript": "3.8.1-rc",
+    "typescript": "3.9.1-rc",
     "prettier": "^2.0.2"
   },
   "jest": {
