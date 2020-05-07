@@ -134,7 +134,7 @@ export const SiteFooter = (props: Props) => {
   const Link = createIntlLink(props.lang, props.allSitePage)
 
   return (
-    <footer id="site-footer">
+    <footer id="site-footer" role="contentinfo">
       <section id='popular'>
         <h3>Popular Documentation Pages</h3>
         <ul>

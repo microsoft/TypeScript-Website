@@ -2,7 +2,6 @@ import { loadTheme, getHighlighter, getTheme } from "shiki"
 import { Highlighter } from "shiki/dist/highlighter"
 import { commonLangIds, commonLangAliases, otherLangIds, TLang } from "shiki-languages"
 import { twoslasher } from "@typescript/twoslash"
-import { createDefaultMapFromNodeModules } from "@typescript/vfs"
 
 import visit from "unist-util-visit"
 import { Node } from "unist"
@@ -67,10 +66,12 @@ const visitor = (node: RichNode) => {
   // @ts-ignore
   if (replacer[lang]) lang = replacer[lang]
 
+  const shouldDisableTwoslash = process && process.env && !!process.env.TWOSLASH_DISABLE
+
   // Check we can highlight and render
   const shouldHighlight = lang && languages.includes(lang)
 
-  if (shouldHighlight) {
+  if (shouldHighlight && !shouldDisableTwoslash) {
     const tokens = highlighter.codeToThemedTokens(node.value, lang)
     const results = renderToHTML(tokens, { langId: lang }, node.twoslash)
     node.type = "html"

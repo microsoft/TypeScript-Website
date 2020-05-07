@@ -37,8 +37,9 @@ export const recommended: CompilerOptionName[] = [
 ];
 
 type RootProperties = "files" | "extends" | "include" | "exclude";
+type WatchProperties = "watchFile" | "watchDirectory" | "fallbackPolling";
 
-type AnOption = RootProperties | CompilerOptionName;
+type AnOption = WatchProperties | RootProperties | CompilerOptionName;
 
 /** Allows linking between options */
 export const relatedTo: [AnOption, AnOption[]][] = [
@@ -160,7 +161,7 @@ export const defaultsForOptions = {
   suppressImplicitAnyIndexErrors: "false",
   target: "false",
   traceResolution: "false",
-  tsBuildInfoFile: " .tsbuildinfo",
+  tsBuildInfoFile: ".tsbuildinfo",
 };
 
 export const allowedValues = {
@@ -190,6 +191,20 @@ export const allowedValues = {
     "`ESNext`",
   ],
   importsNotUsedAsValues: ["remove", "preserve", "error"],
+  watchFile: [
+    "fixedPollingInterval",
+    "priorityPollingInterval",
+    "dynamicPriorityPolling",
+    "useFsEvents",
+    "useFsEventsOnParentDirectory",
+  ],
+  fallbackPolling: [
+    "fixedPollingInterval",
+    "dynamicPriorityPolling",
+    "useFsEvents",
+    "synchronousWatchDirectory",
+  ],
+  watchDirectory: ["fixedPollingInterval", "dynamicPriorityPolling", "useFsEvents"],
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
@@ -197,6 +212,9 @@ export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
     "assumeChangesOnlyAffectDirectDependencies",
     "importsNotUsedAsValues",
     "disableSolutionSearching",
+    "fallbackPolling",
+    "watchDirectory",
+    "watchFile",
   ],
 
   "3.7": [
