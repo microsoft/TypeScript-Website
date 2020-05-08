@@ -217,7 +217,7 @@
   padding: 1rem 2rem;
 }
 
-div.small-columns {
+.small-columns {
   @media (max-width: $screen-xs) {
     flex-direction: column !important;
   }

@@ -112,8 +112,9 @@ export const Sidebar = (props: Props) => {
                     aria.className = "highlight"
                   }
 
-                  const filename = item.id === "index" ? "" : `${item.href || item.id}.html`
-                  const path = `/docs/${navRoot.directory}/${filename}`
+                  const href = item.href || item.id
+                  const filename = item.id === "index" ? "" : `${href}.html`
+                  const path = href.startsWith("/") ? href : `/docs/${navRoot.directory}/${filename}`
 
                   return <li key={item.id} {...aria}>
                     <Link to={path} onKeyDown={onAnchorKeyDown}>{item.title}</Link>

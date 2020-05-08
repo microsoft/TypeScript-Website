@@ -146,33 +146,36 @@ export const oldHandbookNavigation: NavItem[] = [
       { id: "library-structures", title: "Library Structures" },
       {
         id: "global-plugin-d-ts",
-        href: "handbook/declaration-files/templates/global-plugin-d-ts",
+        href: "handbook/declaration-files/templates/global-plugin-d-ts.html",
         title: "Template: Global Module",
       },
       {
         id: "global-modifying-module-d-ts",
         href:
-          "/docs/handbook/declaration-files/templates/global-modifying-module-d-ts",
+          "/docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html",
         title: "Template: Global Extends",
       },
       {
         id: "module-d-ts",
-        href: "/docs/handbook/declaration-files/templates/module-d-ts",
+        href: "/docs/handbook/declaration-files/templates/module-d-ts.html",
         title: "Template: Module",
       },
       {
         id: "module-plugin-d-ts",
-        href: "/docs/handbook/declaration-files/templates/module-plugin-d-ts",
+        href:
+          "/docs/handbook/declaration-files/templates/module-plugin-d-ts.html",
         title: "Template: Plugin",
       },
       {
         id: "module-class-d-ts",
-        href: "/docs/handbook/declaration-files/templates/module-class-d-ts",
+        href:
+          "/docs/handbook/declaration-files/templates/module-class-d-ts.html",
         title: "Template: Class",
       },
       {
         id: "module-function-d-ts",
-        href: "/docs/handbook/declaration-files/templates/module-function-d-ts",
+        href:
+          "/docs/handbook/declaration-files/templates/module-function-d-ts.html",
         title: "Template: Function",
       },
       { id: "by-example", title: "By Example" },
