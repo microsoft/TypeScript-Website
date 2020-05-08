@@ -30,7 +30,7 @@ export const Contributors = (props: ContributorsProps) => {
     if (!t) return
 
     const start = t.navigationStart
-    const end = t.loadEventEnd
+    const end = t.domInteractive
     const loadTime = (end - start) / 1000
 
     const copy = document.querySelector('#page-loaded-time');
@@ -54,7 +54,7 @@ const Avatars = (props: { data: typeof attribution["en/Advanced Types.md"] }) =>
   const showRest = props.data.total > props.data.top.length
   return <div>
     {props.data.top.map(t => {
-      const grav = `http://gravatar.com/avatar/${t.gravatar}?s=32&&d=blank`
+      const grav = `https://gravatar.com/avatar/${t.gravatar}?s=32&&d=blank`
       const alt = `${t.name}  (${t.count})`
       const chars = t.name.split(" ").map(dp => dp.substr(0, 1)).join("").toUpperCase()
       return <div className="circle-bg">{chars}<img id={t.gravatar} src={grav} alt={alt} /></div>

@@ -193,7 +193,7 @@ export const oldHandbookNavigation: NavItem[] = [
     items: [
       {
         id: "project-references",
-        href: "../../tsconfig",
+        href: "/tsconfig",
         title: "TSConfig Reference",
       },
       { id: "tsconfig-json", title: "The tsconfig.json" },
