@@ -21,7 +21,7 @@ const handleDupeNames = (name) => {
 // Being first gets you a free x commits
 const getOriginalAuthor = (filepath) => {
   const creator = execSync(
-    `git log  --format='%an | %ae'  --diff-filter=A -- "${filepath}"`
+    `git log  --format="%an | %aE"  --diff-filter=A -- "${filepath}"`
   )
     .toString()
     .trim();
@@ -33,7 +33,7 @@ const getOriginalAuthor = (filepath) => {
 
 // Gets the rest of the authors for a file
 const getAuthorsForFile = (filepath) => {
-  const cmd = `git log  --format='%an | %ae'  -- "${filepath}"`;
+  const cmd = `git log  --format="%an | %aE"  -- "${filepath}"`;
   const contributors = execSync(cmd).toString().trim();
 
   const allContributions = contributors.split("\n").map((c) => {
