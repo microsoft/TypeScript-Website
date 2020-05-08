@@ -91,12 +91,15 @@ allFiles.forEach((f) => {
   });
 
   rest.sort((l, r) => r.count - l.count);
-  console.log(" - " + f + " (" + rest.length + ")");
+  // console.log(" - " + f + " (" + rest.length + ")");
 
   json[f] = { top: rest.slice(0, 5), total: rest.length + originalRef.total };
 });
 
-const outputJSON = path.join(__dirname, "..", "output", "attribution.json");
+const output = path.join(__dirname, "..", "output");
+if (!fs.existsSync(output)) fs.mkdirSync(output);
+
+const outputJSON = path.join(output, "attribution.json");
 fs.writeFileSync(
   outputJSON,
   format(JSON.stringify(json), { filepath: outputJSON })
