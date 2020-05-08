@@ -1,3 +1,5 @@
+@import "../../../style/globals.scss";
+
 .flow-links {
   display: flex;
   flex-wrap: wrap;
@@ -102,30 +104,4 @@
       margin-left: 0;
     }
   }
-}
-
-.circle-bg {
-  background-color: #719af4;
-  color: black;
-  width: 32px;
-  height: 32px;
-  line-height: 31px;
-  border-radius: 16px;
-  text-align: center;
-  display: inline-block;
-  position: relative;
-  margin-top: 12px;
-  margin-right: 3px;
-
-  img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    border-radius: 16px;
-  }
-}
-
-.bottom-section-content {
-  flex: 1;
-  padding: 1rem 2rem;
 }

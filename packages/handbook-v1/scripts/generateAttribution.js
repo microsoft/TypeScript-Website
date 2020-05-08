@@ -73,7 +73,7 @@ const allFiles = recursiveReadDirSync("en/");
 const json = {};
 
 allFiles.forEach((f) => {
-  const oldName = f.replace("en/", "pages/");
+  const oldName = f.replace("en/", "pages/").replace("en\\", "pages/");
   const originalRef = oldJSON[oldName] || { top: [], total: 0 };
 
   const first = getOriginalAuthor(f);

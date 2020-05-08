@@ -8,7 +8,7 @@ interface ContributorsProps {
   lang: string
 }
 
-const Row = (props: { children: any, className?: string }) => <div className={[props.className, "row"].join(" ")}>{props.children}</div>
+const Row = (props: { children: any, className?: string }) => <div className={["row", props.className].join(" ")}>{props.children}</div>
 const Section = (props: { children: any, className?: string }) => <div className="bottom-section-content">{props.children}</div>
 
 export const Contributors = (props: ContributorsProps) => {
@@ -39,7 +39,7 @@ export const Contributors = (props: ContributorsProps) => {
 
   return (
     <div className="whitespace-tight raised" style={{ padding: 0 }}>
-      <Row className="justify-between">
+      <Row className="justify-between small-columns">
         <Section><p>The TypeScript docs are an open source project. Help us improve these pages <a href={repoPageURL}>by sending a Pull Request</a> ❤</p></Section>
         <div className="hide-small vertical-line" style={{ marginTop: "1.5rem" }} />
         <Section><p>Contributors to this page:<br /><Avatars data={page} /></p></Section>
