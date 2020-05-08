@@ -5,6 +5,8 @@ permalink: /docs/handbook/advanced-types.html
 oneline: Advanced concepts around types in TypeScript
 ---
 
+This page lists some of the more advanced ways in which you can model types, it works in tandem with the [Utility Types](/docs/handbook/utility-types.html) doc which includes types which are included in TypeScript and available globally.
+
 # Type Guards and Differentiating Types
 
 Union types are useful for modeling situations when values can overlap in the types they can take on.
@@ -578,10 +580,7 @@ class BasicCalculator {
   // ... other operations go here ...
 }
 
-let v = new BasicCalculator(2)
-  .multiply(5)
-  .add(1)
-  .currentValue();
+let v = new BasicCalculator(2).multiply(5).add(1).currentValue();
 ```
 
 Since the class uses `this` types, you can extend it and the new class can use the old methods with no changes.
@@ -598,11 +597,7 @@ class ScientificCalculator extends BasicCalculator {
   // ... other operations go here ...
 }
 
-let v = new ScientificCalculator(2)
-  .multiply(5)
-  .sin()
-  .add(1)
-  .currentValue();
+let v = new ScientificCalculator(2).multiply(5).sin().add(1).currentValue();
 ```
 
 Without `this` types, `ScientificCalculator` would not have been able to extend `BasicCalculator` and keep the fluent interface.
@@ -616,7 +611,7 @@ For example, a common JavaScript pattern is to pick a subset of properties from 
 
 ```js
 function pluck(o, propertyNames) {
-  return propertyNames.map(n => o[n]);
+  return propertyNames.map((n) => o[n]);
 }
 ```
 
@@ -624,7 +619,7 @@ Here's how you would write and use this function in TypeScript, using the **inde
 
 ```ts
 function pluck<T, K extends keyof T>(o: T, propertyNames: K[]): T[K][] {
-  return propertyNames.map(n => o[n]);
+  return propertyNames.map((n) => o[n]);
 }
 
 interface Car {
@@ -635,7 +630,7 @@ interface Car {
 let taxi: Car = {
   manufacturer: "Toyota",
   model: "Camry",
-  year: 2014
+  year: 2014,
 };
 
 // Manufacturer and model are both of type string,

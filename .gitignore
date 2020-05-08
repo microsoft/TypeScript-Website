@@ -68,3 +68,4 @@ dist
 
 .lighthouserc.json
 .yarn
+packages/handbook-v1/output/attribution.json
