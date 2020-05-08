@@ -19,9 +19,18 @@ import { useIntl } from "react-intl"
 import { createIntlLink } from "../components/IntlLink"
 import { handbookCopy } from "../copy/en/handbook"
 import { setupTwoslashHovers } from "gatsby-remark-shiki-twoslash/dist/dom"
+import { Contributors } from "../components/handbook/Contributors"
 
 type Props = {
-  pageContext: any
+  pageContext: {
+    isOldHandbook: boolean
+    nextID: string
+    previousID: string
+    repoPath: string
+    slug: string
+    lang: string
+    modifiedTime: string
+  }
   data: GetHandbookBySlugQuery
   path: string
 }
@@ -137,7 +146,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
           </article>
 
           <NextPrev next={props.data.next as any} prev={props.data.prev as any} i={i} IntlLink={IntlLink as any} />
-
+          <Contributors i={i} path={props.pageContext.repoPath} lastEdited={props.pageContext.modifiedTime} />
         </div>
       </section>
     </Layout>

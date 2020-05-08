@@ -22,6 +22,7 @@ export const createOldHandbookPages = async (
           id
           name
           modifiedTime
+          absolutePath
 
           childMarkdownRemark {
             frontmatter {
@@ -60,7 +61,9 @@ export const createOldHandbookPages = async (
       const nextDoc = docs.find((d) => d.childMarkdownRemark.frontmatter.permalink === path)
       if (nextDoc) nextID = nextDoc.id
     }
-    // const nextPath = getNextPageID(id) && getNextPageID(id)!.path
+
+    const repoRoot = path.join(process.cwd(), "..", "..")
+    const repoPath = post.absolutePath.replace(repoRoot, "")
 
     if (post.childMarkdownRemark) {
       createPage({
@@ -68,9 +71,12 @@ export const createOldHandbookPages = async (
         component: handbookPage,
         context: {
           slug: post.childMarkdownRemark.frontmatter.permalink,
+          repoPath,
           previousID,
           nextID,
           isOldHandbook: true,
+          lang: "en",
+          modifiedTime: post.modifiedTime,
         },
       })
     } else {

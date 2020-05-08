@@ -6,7 +6,7 @@
   "scripts": {
     "build": "echo 'NOOP'",
     "test": "echo 'NOOP'",
-    "bootstrap": "echo 'NOOP'"
+    "bootstrap": "node ./scripts/generateAttribution.js"
   },
   "prettier": {
     "semi": true
