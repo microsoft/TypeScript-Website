@@ -51,9 +51,9 @@ export const Contributors = (props: ContributorsProps) => {
 }
 
 const Avatars = (props: { data: typeof attribution["en/Advanced Types.md"] }) => {
-  const showRest = props.data.total > props.data.top.length
+  const showRest = props.data && props.data.total > props.data.top.length
   return <div>
-    {props.data.top.map(t => {
+    {props.data && props.data.top.map(t => {
       const grav = `https://gravatar.com/avatar/${t.gravatar}?s=32&&d=blank`
       const alt = `${t.name}  (${t.count})`
       const chars = t.name.split(" ").map(dp => dp.substr(0, 1)).join("").toUpperCase()
