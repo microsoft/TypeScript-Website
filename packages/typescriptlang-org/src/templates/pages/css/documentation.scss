@@ -75,6 +75,14 @@
   margin: 0 -2.6rem;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+
+  &.wide {
+    justify-content: space-between;
+    .item {
+      min-width: 240px;
+    }
+  }
 
   .item {
     flex: 1;

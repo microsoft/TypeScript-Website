@@ -101,7 +101,7 @@ function printName(x: Named) {
 const obj = {
   x: 0,
   y: 0,
-  name: "Origin"
+  name: "Origin",
 };
 
 printPoint(obj);
@@ -187,4 +187,4 @@ For example, `typeof (new Car())` will be `"object"`, not `Car` or `"Car"`.
 
 ---
 
-This is an overview, from here you should read [through the handbook](/docs/handbook/basic-types.html) or explore the [Playground examples](/play#show-examples)
+This is an overview, from here you should read [through the handbook](/docs/handbook/intro.html) or explore the [Playground examples](/play#show-examples)

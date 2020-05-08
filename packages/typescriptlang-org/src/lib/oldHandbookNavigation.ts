@@ -5,6 +5,8 @@ import { NavItem } from "../components/layout/Sidebar"
 export const oldHandbookNavigation: NavItem[] = [
   {
     title: "Get Started",
+    summary:
+      "Get an overview of TypeScript from different starting points depending on your background.",
     id: "get-started",
     directory: "handbook",
     index: "typescript-from-scratch",
@@ -30,12 +32,14 @@ export const oldHandbookNavigation: NavItem[] = [
   },
   {
     title: "Handbook",
+    summary:
+      "A start to finish overview of TypeScript, with the goals to get you productive for daily usage.",
     id: "handbook",
     directory: "handbook",
     chronological: true,
     index: "/",
     items: [
-      { id: "index", title: "What is the Handbook?" },
+      { id: "intro", title: "What is the Handbook?" },
       { id: "basic-types", title: "Basic Types" },
       { id: "interfaces", title: "Interfaces" },
       { id: "functions", title: "Functions" },
@@ -48,6 +52,8 @@ export const oldHandbookNavigation: NavItem[] = [
   },
   {
     title: "Handbook Reference",
+    summary: "Deep dives into how TypeScript works in particular cases.",
+
     id: "handbook-reference",
     directory: "handbook",
     index: "the-handbook",
@@ -71,6 +77,7 @@ export const oldHandbookNavigation: NavItem[] = [
         title: "Type Checking JavaScript Files",
         id: "type-checking-javascript-files",
       },
+      { id: "dom-manipulation", title: "TypeScript & the DOM" },
       { id: "variable-declarations", title: "Variable Declarations" },
     ],
   },
@@ -79,12 +86,13 @@ export const oldHandbookNavigation: NavItem[] = [
     id: "tutorials",
     directory: "handbook",
     index: "typescript-in-5-minutes",
+    summary:
+      "Step by step tutorials how TypeScript works with different tools.",
     items: [
       { id: "asp-net-core", title: "ASP.NET Core" },
       { id: "gulp", title: "Gulp" },
       { id: "migrating-from-javascript", title: "Migrating from JavaScript" },
       { id: "react-&-webpack", title: "React & Webpack" },
-      { id: "dom-manipulation", title: "TypeScript & the DOM" },
     ],
   },
   {
@@ -92,6 +100,8 @@ export const oldHandbookNavigation: NavItem[] = [
     id: "whats-new",
     directory: "handbook/release-notes",
     index: "overview",
+    summary:
+      "Find out how TypeScript has evolved and what's new in the releases.",
     items: [
       { id: "overview", title: "Overview" },
       { id: "typescript-3-8", title: "TypeScript 3.8" },
@@ -126,6 +136,8 @@ export const oldHandbookNavigation: NavItem[] = [
   {
     title: "Declaration Files",
     id: "declaration-files",
+    summary:
+      "Learn how to write declaration files to describe existing JavaScript.",
     directory: "handbook/declaration-files",
     index: "introduction",
     chronological: true,
@@ -134,32 +146,33 @@ export const oldHandbookNavigation: NavItem[] = [
       { id: "library-structures", title: "Library Structures" },
       {
         id: "global-plugin-d-ts",
-        href: "templates/global-plugin-d-ts",
+        href: "handbook/declaration-files/templates/global-plugin-d-ts",
         title: "Template: Global Module",
       },
       {
         id: "global-modifying-module-d-ts",
-        href: "templates/global-modifying-module-d-ts",
+        href:
+          "/docs/handbook/declaration-files/templates/global-modifying-module-d-ts",
         title: "Template: Global Extends",
       },
       {
         id: "module-d-ts",
-        href: "templates/module-d-ts",
+        href: "/docs/handbook/declaration-files/templates/module-d-ts",
         title: "Template: Module",
       },
       {
         id: "module-plugin-d-ts",
-        href: "templates/module-plugin-d-ts",
+        href: "/docs/handbook/declaration-files/templates/module-plugin-d-ts",
         title: "Template: Plugin",
       },
       {
         id: "module-class-d-ts",
-        href: "templates/module-class-d-ts",
+        href: "/docs/handbook/declaration-files/templates/module-class-d-ts",
         title: "Template: Class",
       },
       {
         id: "module-function-d-ts",
-        href: "templates/module-function-d-ts",
+        href: "/docs/handbook/declaration-files/templates/module-function-d-ts",
         title: "Template: Function",
       },
       { id: "by-example", title: "By Example" },
@@ -174,11 +187,17 @@ export const oldHandbookNavigation: NavItem[] = [
   {
     title: "Project Configuration",
     id: "project-config",
+    summary: "Understand how TypeScript is configured.",
     directory: "handbook",
     index: "compiler-options",
     items: [
-      { id: "tsconfig-json", title: "tsconfig.json" },
-      { id: "compiler-options", title: "Compiler Options" },
+      {
+        id: "project-references",
+        href: "../../tsconfig",
+        title: "TSConfig Reference",
+      },
+      { id: "tsconfig-json", title: "The tsconfig.json" },
+      { id: "compiler-options", title: "Options via the CLI" },
       { id: "project-references", title: "Project References" },
       {
         id: "compiler-options-in-msbuild",
