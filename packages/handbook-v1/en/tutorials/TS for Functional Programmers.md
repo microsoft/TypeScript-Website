@@ -309,7 +309,7 @@ if you've worked with other C-syntax languages:
 
 ```ts twoslash
 declare function map<T, U>(f: (t: T) => U, ts: T[]): U[];
-let sns = map(n => n.toString(), [1, 2, 3]);
+let sns = map((n) => n.toString(), [1, 2, 3]);
 ```
 
 Here, `n: number` in this example also, despite the fact that `T` and `U`
@@ -332,7 +332,7 @@ on unit types that would otherwise be inferred as `string` or
 
 ```ts twoslash
 declare function run<T>(thunk: (t: T) => void): T;
-let i: { inference: string } = run(o => {
+let i: { inference: string } = run((o) => {
   o.inference = "INSERT STATE HERE";
 });
 ```
@@ -583,3 +583,10 @@ a[0] = 101; // error
 
 However, none of these options are the default, so they are not
 consistently used in TypeScript code.
+
+## Next Steps
+
+This doc is a high level overview of the syntax and types you would use in everyday code. From here you should:
+
+- Read the full Handbook [from start to finish](/docs/handbook/intro.html) (30m)
+- Explore the [Playground examples](/play#show-examples).

@@ -78,11 +78,16 @@ html {
     fill: white;
   }
 }
+
 .main-content-block {
   max-width: 960px;
   margin: 1rem auto;
   padding: 2rem;
   padding-top: 0.4rem;
+
+  &.headline {
+    max-width: calc(960px + 4rem);
+  }
 }
 
 body {
