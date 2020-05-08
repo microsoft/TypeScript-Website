@@ -43,7 +43,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   }
 
   const i = createInternational<typeof handbookCopy>(useIntl())
-  const IntlLink = createIntlLink("en", props.data.allSitePage)
+  const IntlLink = createIntlLink(props.pageContext.lang, props.data.allSitePage)
 
 
   useEffect(() => {
@@ -146,7 +146,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
           </article>
 
           <NextPrev next={props.data.next as any} prev={props.data.prev as any} i={i} IntlLink={IntlLink as any} />
-          <Contributors i={i} path={props.pageContext.repoPath} lastEdited={props.pageContext.modifiedTime} />
+          <Contributors lang={props.pageContext.lang} i={i} path={props.pageContext.repoPath} lastEdited={props.pageContext.modifiedTime} />
         </div>
       </section>
     </Layout>
