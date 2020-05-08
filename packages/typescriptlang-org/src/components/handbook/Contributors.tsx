@@ -29,12 +29,17 @@ export const Contributors = (props: ContributorsProps) => {
     const t = perf.timing;
     if (!t) return
 
+    const pageLoadIndicator = document.querySelector('#page-loaded-time');
+    if (pageLoadIndicator?.innerHTML.includes("This page")) return
+
     const start = t.navigationStart
     const end = t.domInteractive
     const loadTime = (end - start) / 1000
 
-    const copy = document.querySelector('#page-loaded-time');
-    if (copy) copy.innerHTML += "This page loaded in " + loadTime + " seconds.</p>";
+    // No idea how this is happening, likely from  React re-rendering
+    if (loadTime < 0) return
+
+    if (pageLoadIndicator) pageLoadIndicator.innerHTML += "This page loaded in " + loadTime + " seconds.</p>";
   }, [])
 
   return (
