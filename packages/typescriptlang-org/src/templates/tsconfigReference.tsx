@@ -26,8 +26,6 @@ const TSConfigReferenceTemplateComponent = (props) => {
     return <div></div>
   }
 
-  const categories = props.data.sitePage!.fields!.categories
-
   useEffect(() => {
     // Overrides the anchor behavior to smooth scroll instead
     // Came from https://css-tricks.com/sticky-smooth-active-nav/
@@ -51,7 +49,7 @@ const TSConfigReferenceTemplateComponent = (props) => {
       subnavLinks.forEach(link => {
         const section = document.querySelector<HTMLDivElement>(link.hash);
         if (!section) { return }
-        const isBelow = section.offsetTop <= fromTop
+        const isBelow = section.offsetTop - 100 <= fromTop
         if (isBelow) currentPossibleAnchor = link
       });
 
@@ -78,25 +76,7 @@ const TSConfigReferenceTemplateComponent = (props) => {
   return (
     <Layout title={i("tsconfig_title")} description={i("tsconfig_description")} lang={props.pageContext.locale} allSitePage={props.data.allSitePage}>
       <div className="tsconfig raised main-content-block">
-        <div id="full-option-list" className="indent">
-          {categories!.categories!.map(c => {
-            if (!c) return null
-            return <div className="tsconfig-nav-top" key={c.anchor!}>
-              <h5><a href={"#" + c.anchor}>{c.display}</a></h5>
-              <ul key={c.anchor!}>
-                {c.options!.map(element => <li key={element!.anchor!}><a href={"#" + element!.anchor!}>{element!.anchor}</a></li>)}
-              </ul>
-            </div>
-          })}
-        </div>
-
-        <nav id="sticky">
-          {categories!.categories!.map(c => <li key={c!.anchor!}><a href={"#" + c!.anchor}>{c!.display}</a></li>)}
-        </nav>
-
-        <div className="indent">
-          <div dangerouslySetInnerHTML={{ __html: post.html! }} />
-        </div>
+        <div dangerouslySetInnerHTML={{ __html: post.html! }} />
       </div>
     </Layout>
   )
@@ -104,28 +84,12 @@ const TSConfigReferenceTemplateComponent = (props) => {
 
 
 export const pageQuery = graphql`
-  query TSConfigReferenceTemplate($path: String, $tsconfigMDPath: String!) {
+  query TSConfigReferenceTemplate($tsconfigMDPath: String!) {
     ...AllSitePage
-
-    sitePage(path: { eq: $path }) {
-      id
-      fields {
-        categories {
-          categories {
-            display
-            anchor
-            options {
-              anchor
-            }
-          }
-        }
-      }
-    }
 
     markdownRemark(fileAbsolutePath: {eq: $tsconfigMDPath} ) {
       id
       html
-
       frontmatter {
         permalink
       }

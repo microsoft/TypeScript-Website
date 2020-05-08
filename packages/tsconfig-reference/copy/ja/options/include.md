@@ -8,7 +8,7 @@ oneline: "Files or patterns to include in this project"
 
 ```json
 {
-  "include": ["src/**", "tests/**"]
+  "include": ["src/**/*", "tests/**/*"]
 }
 ```
 

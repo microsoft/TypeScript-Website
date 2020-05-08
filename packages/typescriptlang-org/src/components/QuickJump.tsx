@@ -1,6 +1,5 @@
 import * as React from "react"
 import { useIntl } from "react-intl"
-import { Intl } from "../components/Intl"
 import { createInternational } from "../lib/createInternational"
 import { docCopy } from "../copy/en/documentation"
 import { AllSitePage, createIntlLink } from "./IntlLink";
@@ -24,7 +23,6 @@ export const QuickJump = (props: Props) => {
   if (releaseInfo.isBeta) betaURL = releaseInfo.betaPostURL
   if (releaseInfo.isRC) betaURL = releaseInfo.rcPostURL
 
-  console.log(betaURL)
   const IntlLink = createIntlLink(props.lang, props.allSitePage)
 
   return <div className="main-content-block">

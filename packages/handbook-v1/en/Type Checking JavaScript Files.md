@@ -5,8 +5,6 @@ permalink: /docs/handbook/type-checking-javascript-files.html
 oneline: How to add type checking to JavaScript files using TypeScript
 ---
 
-TypeScript 2.3 and later support type-checking and reporting errors in `.js` files with `--checkJs`.
-
 You can skip checking some files by adding a `// @ts-nocheck` comment to them; conversely, you can choose to check only a few `.js` files by adding a `// @ts-check` comment to them without setting `--checkJs`.
 You can also ignore errors on specific lines by adding `// @ts-ignore` on the preceding line.
 Note that if you have a `tsconfig.json`, JS checking will respect strict flags like `noImplicitAny`, `strictNullChecks`, etc.
@@ -89,7 +87,7 @@ function C() {
   this.constructorOnly = 0;
   this.constructorUnknown = undefined;
 }
-C.prototype.method = function() {
+C.prototype.method = function () {
   this.constructorOnly = false; // error
   this.constructorUnknown = "plunkbat"; // OK, the type is string | undefined
 };
@@ -106,7 +104,7 @@ Similarly, `require` function calls are recognized as module imports. For exampl
 const fs = require("fs");
 
 // same as `export function readFile`
-module.exports.readFile = function(f) {
+module.exports.readFile = function (f) {
   return fs.readFileSync(f);
 };
 ```
@@ -130,7 +128,7 @@ And, for pre-ES2015 code, it can be used to simulate static methods:
 function Outer() {
   this.y = 2;
 }
-Outer.Inner = function() {
+Outer.Inner = function () {
   this.yy = 2;
 };
 ```
@@ -140,14 +138,14 @@ It can also be used to create simple namespaces:
 ```js
 var ns = {};
 ns.C = class {};
-ns.func = function() {};
+ns.func = function () {};
 ```
 
 Other variants are allowed as well:
 
 ```js
 // IIFE
-var ns = (function(n) {
+var ns = (function (n) {
   return n || {};
 })();
 ns.CONST = 1;
@@ -155,7 +153,7 @@ ns.CONST = 1;
 // defaulting to global
 var assign =
   assign ||
-  function() {
+  function () {
     // code goes here
   };
 assign.extra = 1;
@@ -584,7 +582,7 @@ function special(options) {
  * @returns {boolean}
  */
 /** @type {Predicate} */
-const ok = s => !(s.length % 2);
+const ok = (s) => !(s.length % 2);
 ```
 
 Of course, any of these types can be declared using Typescript syntax in a single-line `@typedef`:
@@ -649,7 +647,7 @@ function C(data) {
 /**
  * @param {string} s
  */
-C.prototype.initialize = function(s) {
+C.prototype.initialize = function (s) {
   this.size = s.length;
 };
 
@@ -700,7 +698,7 @@ The `@enum` tag allows you to create an object literal whose members are all of 
 const JSDocState = {
   BeginningOfLine: 0,
   SawAsterisk: 1,
-  SavingComments: 2
+  SavingComments: 2,
 };
 ```
 
@@ -709,9 +707,9 @@ Note that `@enum` is quite different from, and much simpler than, Typescript's `
 ```js
 /** @enum {function(number): number} */
 const Math = {
-  add1: n => n + 1,
-  id: n => -n,
-  sub1: n => n - 1
+  add1: (n) => n + 1,
+  id: (n) => -n,
+  sub1: (n) => n - 1,
 };
 ```
 
@@ -722,32 +720,32 @@ var someObj = {
   /**
    * @param {string} param1 - Docs on property assignments work
    */
-  x: function(param1) {}
+  x: function (param1) {},
 };
 
 /**
  * As do docs on variable assignments
  * @return {Window}
  */
-let someFunc = function() {};
+let someFunc = function () {};
 
 /**
  * And class methods
  * @param {string} greeting The greeting to use
  */
-Foo.prototype.sayHi = greeting => console.log("Hi!");
+Foo.prototype.sayHi = (greeting) => console.log("Hi!");
 
 /**
  * And arrow functions expressions
  * @param {number} x - A multiplier
  */
-let myArrow = x => x * x;
+let myArrow = (x) => x * x;
 
 /**
  * Which means it works for stateless function components in JSX too
  * @param {{a: string, b: number}} test - Some param
  */
-var fc = test => <div>{test.a.charAt(0)}</div>;
+var fc = (test) => <div>{test.a.charAt(0)}</div>;
 
 /**
  * A parameter can be a class constructor, using Closure syntax.
