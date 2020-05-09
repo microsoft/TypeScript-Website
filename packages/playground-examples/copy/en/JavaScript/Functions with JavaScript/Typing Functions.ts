@@ -34,7 +34,7 @@ const callbackWithIndex2 = (callback: NumberCallback) => {
 
 // These can be called like:
 
-callbackWithIndex((index) => {
+callbackWithIndex(index => {
   console.log(index);
 });
 
@@ -52,7 +52,7 @@ const numberToString = (n: number) => {
 // This can be used in a function like map on an array
 // to convert all numbers into a string, if you hover
 // on stringedNumbers below you can see the expected types.
-const stringedNumbers = [1, 4, 6, 10].map((i) => numberToString(i));
+const stringedNumbers = [1, 4, 6, 10].map(i => numberToString(i));
 
 // We can use shorthand to have the function passed directly
 // and get the same results with more focused code:
@@ -90,7 +90,7 @@ printFormattedName({ name: "joey", age: 23 });
 // types for parameters/return, and function overloads.
 
 // Using union types in your parameters makes sense if there
-// is only one or two changes and documentation does not need
+// are only one or two changes and documentation does not need
 // to change between functions.
 
 const boolOrNumberFunction = (input: boolean | number) => {};
