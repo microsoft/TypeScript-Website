@@ -236,7 +236,7 @@ console.log(artworks[0].<span class='underline-error'>name</span>)
 
         inline={() =>
           (<>
-            <div className="error-message" style={{ top: "186px", left: "18px", width: "240px" }}>Property 'name' does not exist<br />on type '&#123; title: string; rbrace;'.</div>
+            <div className="error-message" style={{ top: "186px", left: "18px", width: "240px" }}>Property 'name' does not exist<br />on type '&#123; title: string; &rbrace;'.</div>
           </>)
         } />
     </div>
