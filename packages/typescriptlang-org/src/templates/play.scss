@@ -478,7 +478,12 @@ main #editor-toolbar {
       margin: 0;
     }
 
-    pre {
+    /** Design System Tweaks **/
+    input[type="checkbox"] {
+      margin-right: 6px;
+    }
+
+    . pre {
       margin: 0;
     }
   }
