@@ -80,6 +80,9 @@ console.log(anExampleVariable)
   play_sidebar_plugins_blurb:
     "Handles adding/removing 3rd party extensions to the playground",
 
+  play_sidebar_ast_title: "[WIP] AST Viewer",
+  play_sidebar_ast_blurb: "Inspect the TypeScript AST",
+
   // Notes:
   // Compiler flag information is all from the tsconfig reference info
 }

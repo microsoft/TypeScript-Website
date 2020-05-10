@@ -7,6 +7,7 @@ export type LocalStorageOption = {
   display: string
 
   emptyImpliesEnabled?: true
+  oneline?: true
 }
 
 export type OptionsListConfig = {
@@ -23,6 +24,7 @@ const el = (str: string, elementType: string, container: Element) => {
 // The Playground Plugin design system
 export const createDesignSystem = (sandbox: Sandbox) => {
   const ts = sandbox.ts
+
   return (container: Element) => {
     const clear = () => {
       while (container.firstChild) {
@@ -39,7 +41,8 @@ export const createDesignSystem = (sandbox: Sandbox) => {
 
       const li = document.createElement("li")
       const label = document.createElement("label")
-      label.innerHTML = `<span>${setting.display}</span><br/>${setting.blurb}`
+      const split = setting.oneline ? "" : "<br/>"
+      label.innerHTML = `<span>${setting.display}</span>${split}${setting.blurb}`
 
       const key = setting.flag
       const input = document.createElement("input")
@@ -49,7 +52,6 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       input.checked = invertedLogic ? !localStorage.getItem(key) : !!localStorage.getItem(key)
 
       input.onchange = () => {
-        console.log(key, input.checked, invertedLogic)
         if (input.checked) {
           if (!invertedLogic) localStorage.setItem(key, "true")
           else localStorage.removeItem(key)
@@ -57,7 +59,6 @@ export const createDesignSystem = (sandbox: Sandbox) => {
           if (invertedLogic) localStorage.setItem(key, "true")
           else localStorage.removeItem(key)
         }
-        console.log(localStorage.getItem(key))
       }
 
       label.htmlFor = input.id
@@ -95,11 +96,7 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       return noErrorsMessage
     }
 
-    const listDiags = (
-      sandbox: Sandbox,
-      model: import("monaco-editor").editor.ITextModel,
-      diags: DiagnosticRelatedInformation[]
-    ) => {
+    const listDiags = (model: import("monaco-editor").editor.ITextModel, diags: DiagnosticRelatedInformation[]) => {
       const errorUL = document.createElement("ul")
       errorUL.className = "compiler-diagnostics"
 
@@ -178,6 +175,8 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       ol.className = style.style === "separated" ? "playground-options" : "playground-options tight"
 
       options.forEach(option => {
+        if (style.style === "rows") option.oneline = true
+
         const settingButton = localStorageOption(option)
         ol.appendChild(settingButton)
       })
@@ -238,7 +237,7 @@ export const createDesignSystem = (sandbox: Sandbox) => {
           if (field === "parent" || field === "flowNode") return
 
           const value = (node as any)[field]
-          if (typeof value === "object" && Array.isArray(value) && "pos" in value[0] && "end" in value[0]) {
+          if (typeof value === "object" && Array.isArray(value) && value[0] && "pos" in value[0] && "end" in value[0]) {
             //  Is an array of Nodes
             properties.appendChild(renderManyChildren(field, value))
           } else if (typeof value === "object" && "pos" in value && "end" in value) {
@@ -251,7 +250,71 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       }
 
       renderItem(div, node)
+      container.append(div)
       return div
+    }
+
+    type TextInputConfig = {
+      id: string
+      placeholder: string
+
+      onChanged?: (text: string, input: HTMLInputElement) => void
+      onEnter: (text: string, input: HTMLInputElement) => void
+
+      value?: string
+      keepValueAcrossReloads?: true
+      isEnabled?: (input: HTMLInputElement) => boolean
+    }
+
+    const createTextInput = (config: TextInputConfig) => {
+      const form = document.createElement("form")
+
+      const textbox = document.createElement("input")
+      textbox.id = config.id
+      textbox.placeholder = config.placeholder
+      textbox.autocomplete = "off"
+      textbox.autocapitalize = "off"
+      textbox.spellcheck = false
+      // @ts-ignore
+      textbox.autocorrect = "off"
+
+      const localStorageKey = "playground-input-" + config.id
+
+      if (config.value) {
+        textbox.value = config.value
+      } else if (config.keepValueAcrossReloads) {
+        const storedQuery = localStorage.getItem(localStorageKey)
+        if (storedQuery) textbox.value = storedQuery
+      }
+
+      if (config.isEnabled) {
+        const enabled = config.isEnabled(textbox)
+        textbox.classList.add(enabled ? "good" : "bad")
+      } else {
+        textbox.classList.add("good")
+      }
+
+      const textUpdate = (e: any) => {
+        const href = e.target.value.trim()
+        if (config.keepValueAcrossReloads) {
+          localStorage.setItem(localStorageKey, href)
+        }
+        if (config.onChanged) config.onChanged(e.target.value, textbox)
+      }
+
+      textbox.style.width = "90%"
+      textbox.style.height = "2rem"
+      textbox.addEventListener("input", textUpdate)
+
+      // Suppress the enter key
+      textbox.onkeydown = (evt: KeyboardEvent) => {
+        if (evt.keyCode == 13) {
+          return false
+        }
+      }
+
+      form.appendChild(textbox)
+      return form
     }
 
     return {
@@ -276,6 +339,8 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       localStorageOption,
       /** Uses localStorageOption to create a list of options */
       showOptionList,
+      /** Shows a full-width text input */
+      createTextInput,
       /** Renders an AST tree */
       createASTTree,
     }

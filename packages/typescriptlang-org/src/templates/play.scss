@@ -478,16 +478,13 @@ main #editor-toolbar {
       margin: 0;
     }
 
-    /** Design System Tweaks **/
-    input[type="checkbox"] {
-      margin-right: 6px;
-    }
-
-    . pre {
+    pre {
       margin: 0;
     }
   }
 }
+
+/** Design System Tweaks **/
 
 .playground-plugin-container {
   #log-container {
@@ -592,12 +589,25 @@ main #editor-toolbar {
   }
 
   .playground-options {
+    input[type="checkbox"] {
+      margin-right: 6px;
+    }
+
+    &.tight {
+      li {
+        margin-bottom: 0.2rem;
+      }
+      span {
+        margin-right: 1rem;
+      }
+    }
+
     li {
       list-style: none;
       span {
         font-weight: 600;
       }
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
     }
   }
 }

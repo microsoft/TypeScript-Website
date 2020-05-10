@@ -18,7 +18,7 @@ export const showErrors: PluginFactory = (i, utils) => {
 
           // Clean any potential empty screens
           ds.clear()
-          ds.listDiags(sandbox, model, diags)
+          ds.listDiags(model, diags)
         })
       })
     },
