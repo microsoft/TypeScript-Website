@@ -34,6 +34,38 @@ export const createDesignSystem = (sandbox: Sandbox) => {
     let decorations: string[] = []
     let decorationLock = false
 
+    /** Lets a HTML Element hover to highlight code in the editor  */
+    const addEditorHoverToElement = (
+      element: HTMLElement,
+      pos: { start: number; end: number },
+      config: { type: "error" | "info" }
+    ) => {
+      element.onmouseenter = () => {
+        if (!decorationLock) {
+          const model = sandbox.getModel()
+          const start = model.getPositionAt(pos.start)
+          const end = model.getPositionAt(pos.end)
+          decorations = sandbox.editor.deltaDecorations(decorations, [
+            {
+              range: new sandbox.monaco.Range(start.lineNumber, start.column, end.lineNumber, end.column),
+              options: { inlineClassName: "highlight-" + config.type },
+            },
+          ])
+        }
+      }
+
+      element.onmouseleave = () => {
+        if (!decorationLock) {
+          sandbox.editor.deltaDecorations(decorations, [])
+        }
+      }
+    }
+
+    const flashHTMLElement = (element: HTMLElement) => {
+      element.classList.add("briefly-highlight")
+      setTimeout(() => element.classList.remove("briefly-highlight"), 1000)
+    }
+
     const localStorageOption = (setting: LocalStorageOption) => {
       // Think about this as being something which you want enabled by default and can suppress whether
       // it should do something.
@@ -127,23 +159,8 @@ export const createDesignSystem = (sandbox: Sandbox) => {
         }
         errorUL.appendChild(li)
 
-        li.onmouseenter = () => {
-          if (diag.start && diag.length && !decorationLock) {
-            const start = model.getPositionAt(diag.start)
-            const end = model.getPositionAt(diag.start + diag.length)
-            decorations = sandbox.editor.deltaDecorations(decorations, [
-              {
-                range: new sandbox.monaco.Range(start.lineNumber, start.column, end.lineNumber, end.column),
-                options: { inlineClassName: "error-highlight" },
-              },
-            ])
-          }
-        }
-
-        li.onmouseleave = () => {
-          if (!decorationLock) {
-            sandbox.editor.deltaDecorations(decorations, [])
-          }
+        if (diag.start && diag.length) {
+          addEditorHoverToElement(li, { start: diag.start, end: diag.start + diag.length }, { type: "error" })
         }
 
         li.onclick = () => {
@@ -190,47 +207,77 @@ export const createDesignSystem = (sandbox: Sandbox) => {
 
       const infoForNode = (node: Node) => {
         const name = ts.SyntaxKind[node.kind]
+
         return {
           name,
         }
       }
 
-      const renderLiteralField = (key: string, value: string) => {
+      type NodeInfo = ReturnType<typeof infoForNode>
+
+      const renderLiteralField = (key: string, value: string, info: NodeInfo) => {
         const li = document.createElement("li")
-        li.innerHTML = `${key}: ${value}`
+        const typeofSpan = `ast-node-${typeof value}`
+        let suffix = ""
+        if (key === "kind") {
+          suffix = ` (SyntaxKind.${info.name})`
+        }
+        li.innerHTML = `${key}: <span class='${typeofSpan}'>${value}</span>${suffix}`
         return li
       }
 
-      const renderSingleChild = (key: string, value: Node) => {
+      const renderSingleChild = (key: string, value: Node, depth: number) => {
         const li = document.createElement("li")
-        li.innerHTML = `${key}: <strong>${ts.SyntaxKind[value.kind]}</strong>`
+        li.innerHTML = `${key}: `
+
+        renderItem(li, value, depth + 1)
         return li
       }
 
-      const renderManyChildren = (key: string, value: Node[]) => {
+      const renderManyChildren = (key: string, nodes: Node[], depth: number) => {
+        const childers = document.createElement("div")
+        childers.classList.add("ast-children")
+
         const li = document.createElement("li")
-        const nodes = value.map(n => "<strong>&nbsp;&nbsp;" + ts.SyntaxKind[n.kind] + "<strong>").join("<br/>")
-        li.innerHTML = `${key}: [<br/>${nodes}</br>]`
-        return li
+        li.innerHTML = `${key}: [<br/>`
+        childers.appendChild(li)
+
+        nodes.forEach(node => {
+          renderItem(childers, node, depth + 1)
+        })
+
+        const liEnd = document.createElement("li")
+        liEnd.innerHTML += "]"
+        childers.appendChild(liEnd)
+        return childers
       }
 
-      const renderItem = (parentElement: Element, node: Node) => {
-        const ul = document.createElement("ul")
-        parentElement.appendChild(ul)
-        ul.className = "ast-tree"
+      const renderItem = (parentElement: Element, node: Node, depth: number) => {
+        const itemDiv = document.createElement("div")
+        parentElement.appendChild(itemDiv)
+        itemDiv.className = "ast-tree-start"
+        itemDiv.attributes.setNamedItem
+        // @ts-expect-error
+        itemDiv.dataset.pos = node.pos
+        // @ts-expect-error
+        itemDiv.dataset.end = node.end
+        // @ts-expect-error
+        itemDiv.dataset.depth = depth
+
+        if (depth === 0) itemDiv.classList.add("open")
 
         const info = infoForNode(node)
 
-        const li = document.createElement("li")
-        ul.appendChild(li)
-
         const a = document.createElement("a")
+        a.classList.add("node-name")
         a.textContent = info.name
-        li.appendChild(a)
+        itemDiv.appendChild(a)
+        a.onclick = _ => a.parentElement!.classList.toggle("open")
+        addEditorHoverToElement(a, { start: node.pos, end: node.end }, { type: "info" })
 
         const properties = document.createElement("ul")
         properties.className = "ast-tree"
-        li.appendChild(properties)
+        itemDiv.appendChild(properties)
 
         Object.keys(node).forEach(field => {
           if (typeof field === "function") return
@@ -239,17 +286,17 @@ export const createDesignSystem = (sandbox: Sandbox) => {
           const value = (node as any)[field]
           if (typeof value === "object" && Array.isArray(value) && value[0] && "pos" in value[0] && "end" in value[0]) {
             //  Is an array of Nodes
-            properties.appendChild(renderManyChildren(field, value))
+            properties.appendChild(renderManyChildren(field, value, depth))
           } else if (typeof value === "object" && "pos" in value && "end" in value) {
             // Is a single child property
-            properties.appendChild(renderSingleChild(field, value))
+            properties.appendChild(renderSingleChild(field, value, depth))
           } else {
-            properties.appendChild(renderLiteralField(field, value))
+            properties.appendChild(renderLiteralField(field, value, info))
           }
         })
       }
 
-      renderItem(div, node)
+      renderItem(div, node, 0)
       container.append(div)
       return div
     }
@@ -343,6 +390,8 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       createTextInput,
       /** Renders an AST tree */
       createASTTree,
+      /** Flashes a HTML Element */
+      flashHTMLElement,
     }
   }
 }

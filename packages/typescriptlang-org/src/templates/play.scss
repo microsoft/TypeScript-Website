@@ -369,6 +369,9 @@ main #editor-toolbar {
       background-color: $ts-dark-barely-blue-highlight;
       border-color: white;
     }
+    &:hover {
+      background-color: lightgrey;
+    }
   }
 
   .playground-sidebar {
@@ -485,7 +488,6 @@ main #editor-toolbar {
 }
 
 /** Design System Tweaks **/
-
 .playground-plugin-container {
   #log-container {
     overflow: auto;
@@ -522,43 +524,84 @@ main #editor-toolbar {
     .comma {
       color: #777;
     }
+  }
 
-    ul.ast-tree {
-      li {
-        list-style-type: none;
-        position: relative;
+  div.ast {
+    font-family: $font-code;
+
+    li {
+      list-style-type: none;
+      position: relative;
+      margin-left: 0;
+      margin-bottom: 4px;
+
+      span.ast-node-number {
+        color: blue;
       }
+      span.ast-node-string {
+        color: green;
+      }
+      span.ast-node-boolean {
+        color: red;
+      }
+      span.ast-node-undefined {
+        color: brown;
+      }
+    }
 
-      li ul {
+    // When showing a list of children, always do block so that they are newlined
+    .ast-children > div.ast-tree-start {
+      display: block;
+      margin-left: 12px;
+    }
+
+    div.ast-tree-start {
+      display: inline-block;
+
+      ul.ast-tree {
+        margin-left: 12px;
+        margin-top: 4px;
+        padding-top: 4px;
         display: none;
+        border-left: 1px solid lightgrey;
       }
 
-      li.open > ul {
-        display: block;
-      }
-
-      li a {
-        color: black;
+      a.node-name {
         text-decoration: none;
-      }
+        margin-left: 10px;
+        color: purple;
+        font-weight: bold;
+        position: relative; // for the + and -
 
-      li a:before {
-        height: 1em;
-        padding: 0 0.1em;
-        font-size: 0.8em;
+        &:hover {
+          text-decoration: underline;
+          cursor: pointer;
+        }
+
+        &:before {
+          height: 1em;
+          padding: 0 0.1em;
+          // font-size: 0.8em;
+          display: block;
+          position: absolute;
+          left: -0.8em;
+        }
+      }
+    }
+
+    div.ast-tree-start.open {
+      display: block;
+      > ul {
         display: block;
-        position: absolute;
-        left: -1.3em;
-        top: 0.2em;
       }
+    }
 
-      li > a:not(:last-child):before {
-        content: "+";
-      }
+    div.ast-tree-start > a:not(:last-child):before {
+      content: "+";
+    }
 
-      li.open > a:not(:last-child):before {
-        content: "-";
-      }
+    div.ast-tree-start.open > a:not(:last-child):before {
+      content: "-";
     }
   }
 
@@ -609,6 +652,19 @@ main #editor-toolbar {
       }
       margin-bottom: 1rem;
     }
+  }
+
+  .briefly-highlight {
+    animation: highlight ease 1s 1;
+  }
+}
+
+@keyframes highlight {
+  0% {
+    background-color: yellow;
+  }
+  100% {
+    background-color: inherit;
   }
 }
 
@@ -676,11 +732,15 @@ input.good {
 }
 
 // These show in the editor!
-.error-highlight {
+.highlight-error {
   background-color: #fcb7b7;
 }
 
-.neutral-highlight {
+.highlight-info {
+  background-color: lightgray;
+}
+
+.underscore-neutral {
   border-bottom: 1px solid green;
 }
 
