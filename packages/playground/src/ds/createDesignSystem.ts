@@ -61,11 +61,6 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       }
     }
 
-    const flashHTMLElement = (element: HTMLElement) => {
-      element.classList.add("briefly-highlight")
-      setTimeout(() => element.classList.remove("briefly-highlight"), 1000)
-    }
-
     const localStorageOption = (setting: LocalStorageOption) => {
       // Think about this as being something which you want enabled by default and can suppress whether
       // it should do something.
@@ -390,8 +385,6 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       createTextInput,
       /** Renders an AST tree */
       createASTTree,
-      /** Flashes a HTML Element */
-      flashHTMLElement,
     }
   }
 }

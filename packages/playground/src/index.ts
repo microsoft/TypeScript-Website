@@ -185,10 +185,13 @@ export const setupPlayground = (
   // Add the versions to the dropdown
   const versionsMenu = document.querySelectorAll("#versions > ul").item(0)
 
+  // Enable all submenus
+  document.querySelectorAll("nav ul li").forEach(e => e.classList.add("active"))
+
   const notWorkingInPlayground = ["3.1.6", "3.0.1", "2.8.1", "2.7.2", "2.4.1"]
 
   const allVersions = [
-    "3.9.0-beta",
+    "3.9.1-rc",
     ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)),
     "Nightly",
   ]

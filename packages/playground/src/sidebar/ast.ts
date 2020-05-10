@@ -13,11 +13,10 @@ export const showASTPlugin: PluginFactory = (i, utils) => {
       container = _container
     },
     didMount: (sandbox, container) => {
-      const ds = utils.createDesignSystem(container)
+      // While this plugin is forefront, keep cursor changes in sync with the AST selection
 
       disposable = sandbox.editor.onDidChangeCursorPosition(e => {
         const cursorPos = sandbox.getModel().getOffsetAt(e.position)
-        console.log("pos", cursorPos, e.position)
         const allTreeStarts = (container.querySelectorAll("div.ast-tree-start") as any) as HTMLDivElement[]
 
         let deepestElement: HTMLDivElement = null as any
@@ -31,7 +30,7 @@ export const showASTPlugin: PluginFactory = (i, utils) => {
           const nPos = Number(pos)
           const nEnd = Number(end)
 
-          if (cursorPos >= nPos && cursorPos <= nEnd) {
+          if (cursorPos > nPos && cursorPos <= nEnd) {
             if (deepestElement) {
               const currentDepth = Number(deepestElement!.dataset.depth)
               if (currentDepth < Number(depth)) {
@@ -52,7 +51,7 @@ export const showASTPlugin: PluginFactory = (i, utils) => {
 
         // Scroll and flash to let folks see what's happening
         deepestElement.scrollIntoView({ block: "nearest", behavior: "smooth" })
-        ds.flashHTMLElement(deepestElement)
+        utils.flashHTMLElement(deepestElement)
       })
     },
     modelChangedDebounce: sandbox => {

@@ -237,7 +237,7 @@ main > nav {
   }
 
   > ul {
-    li {
+    li.active {
       &:hover,
       &.open {
         background-color: $ts-light-bg-grey-highlight-color;
