@@ -652,13 +652,10 @@ class TextBox extends Control {
   select() {}
 }
 
-// Error: Property 'state' is missing in type 'Image'.
 class ImageControl implements SelectableControl {
   private state: any;
   select() {}
 }
-
-class Location {}
 ```
 
 In the above example, `SelectableControl` contains all of the members of `Control`, including the private `state` property.
@@ -667,4 +664,4 @@ This is because only descendants of `Control` will have a `state` private member
 
 Within the `Control` class it is possible to access the `state` private member through an instance of `SelectableControl`.
 Effectively, a `SelectableControl` acts like a `Control` that is known to have a `select` method.
-The `Button` and `TextBox` classes are subtypes of `SelectableControl` (because they both inherit from `Control` and have a `select` method), but the `Image` and `Location` classes are not.
+The `Button` and `TextBox` classes are subtypes of `SelectableControl` (because they both inherit from `Control` and have a `select` method). The `ImageControl` class has it's own `state` private member rather than extending `Control`, so it cannot implement `SelectableControl`.
