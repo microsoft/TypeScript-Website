@@ -151,7 +151,7 @@ const Index: React.FC<Props> = (props) => {
             {
               href: "https://github.com/Microsoft/TypeScript-Node-Starter",
               blurb: i("doc_apis_node_blurb"),
-              title: "Node Starter",
+              title: "Node Reference",
             },
             {
               href:
