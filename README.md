@@ -2,7 +2,7 @@
 
 This is the current website for TypeScript. It uses Jekyll for the majority of the work, and uses git-submodules for the playground and the handbook. 
 
-Most of the modern work occurs on [the v2](https://github.com/microsoft/TypeScript-Website/tree/v2) branch which is now the default.
+Most of the modern work occurs on [the v2](https://github.com/microsoft/TypeScript-Website/tree/v2) branch which is now the default on GitHub.
 
 ### Meta
 
