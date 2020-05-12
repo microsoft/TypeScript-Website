@@ -16,7 +16,7 @@ A live version with the daily build can be found [here](http://typescript:3000).
 
 1. Install the latest Ruby and add it to your environment's PATH during setup. Allow the installer to install MSYS2 via `ridk install`.
     * Download Ruby [from here](http://rubyinstaller.org/downloads/).
-1. Install the latest Node.js.
+1. Install Node.js version 10.
     * Download Node.js [from here](https://nodejs.org/en/)
 1. Establish your new environment by opening up a new PowerShell/Command Prompt.
 1. Fork https://github.com/Microsoft/TypeScript-Website to your own GitHub account

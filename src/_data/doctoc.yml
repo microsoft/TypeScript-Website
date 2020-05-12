@@ -12,6 +12,8 @@
   directory: handbook/release-notes
   items:
   - overview
+  - typescript-3-9
+  - typescript-3-8
   - typescript-3-7
   - typescript-3-6
   - typescript-3-5
