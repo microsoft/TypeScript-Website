@@ -4,16 +4,17 @@ sectionid: docs
 ---
 
     <div id="doc-content" class="container-fluid fill docs-container">
-        <a id='try-beta'>Try v2 Beta Page</a>
+        <a id='try-beta' style="display:none;">Try v2 Beta Page</a>
         <script>
           const tryBeta = document.getElementById("try-beta")
+          tryBeta.style.display = "block";
           const mobile = window.outerWidth < 800
           const isHome = document.location.pathname === "/docs/home.html"
           if (!mobile && !isHome) {
             tryBeta.style.display = "block";
 
             tryBeta.onclick = () => {
-              document.location.pathname = "v2" + document.location.pathname
+              document.location  = "https://www.staging-typescript.org/" + document.location.pathname
             }
           }
         </script>
