@@ -189,6 +189,13 @@ export const oldHandbookNavigation: NavItem[] = [
     ],
   },
   {
+    title: "Definitely Typed",
+    id: "definitely-typed",
+    directory: "handbook/definitely-typed",
+    index: "dt-introduction",
+    items: [{ id: "dt-introduction", title: "Introduction" }],
+  },
+  {
     title: "Project Configuration",
     id: "project-config",
     summary: "Understand how TypeScript is configured.",
