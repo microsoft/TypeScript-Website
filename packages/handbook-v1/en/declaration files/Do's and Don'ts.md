@@ -29,7 +29,7 @@ Instead of `Object`, use the non-primitive `object` type ([added in TypeScript 2
 ## Generics
 
 _Don't_ ever have a generic type which doesn't use its type parameter.
-See more details in [TypeScript FAQ page](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-doesnt-type-inference-work-on-this-interface-interface-foot---).
+See more details in [TypeScript FAQ page](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-doesnt-type-inference-work-on-this-interface-interface-foot--).
 
 <!-- TODO: More -->
 
