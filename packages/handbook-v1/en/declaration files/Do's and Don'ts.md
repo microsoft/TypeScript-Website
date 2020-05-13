@@ -35,7 +35,7 @@ See more details in [TypeScript FAQ page](https://github.com/Microsoft/TypeScrip
 
 _Don't_ use `any` as a type unless you are in the process of migrating a JavaScript project to TypeScript.  The compiler _effectively_ treats `any` as "please turn off type checking for this thing".  It is similar to putting an `@ts-ignore` comment around every usage of the variable.  This can be very helpful when you are first migrating a JavaScript project to TypeScript as you can set the type for stuff you haven't migrated yet as `any`, but in a full TypeScript project you are disabling type checking for any parts of your program that use it.
 
-In cases where you don't know what type you want to accept, or when you want to accept anything because you will be blindly passing it through without interacting with it, you can use [`unknown`](https://www.typescriptlang.org/play/index.html?e=136#example/unknown-and-never).
+In cases where you don't know what type you want to accept, or when you want to accept anything because you will be blindly passing it through without interacting with it, you can use [`unknown`](/play/index.html?e=136#example/unknown-and-never).
 
 <!-- TODO: More -->
 
