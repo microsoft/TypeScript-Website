@@ -31,7 +31,7 @@ That is because the understanding of JavaScript baked into TypeScript has been u
 
 ## Defining Types
 
-JavaScript is a dynamic language which allows for a lot of design patterns. Some design patterns can be hard to automatically provide types for automatically (because they might use dynamic programming) in those cases TypeScript supports an extension of the JavaScript language which offers places for you to tell TypeScript what the types should be.
+JavaScript is a dynamic language which allows for a lot of design patterns. Some design patterns can be hard to provide types for automatically (because they might use dynamic programming) in those cases TypeScript supports an extension of the JavaScript language which offers places for you to tell TypeScript what the types should be.
 
 Here is an example of creating an object which has an inferred type which includes `name: string` and `id: number`:
 
