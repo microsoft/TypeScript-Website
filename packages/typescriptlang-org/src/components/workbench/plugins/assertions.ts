@@ -29,7 +29,7 @@ export const workbenchAssertionsPlugin: import("../../../../static/js/playground
         }
         return diag
       })
-      ds.listDiags(sandbox, sandbox.getModel(), queriesAsDiags)
+      ds.listDiags(sandbox.getModel(), queriesAsDiags)
 
       const errorsAsDiags = results.errors.map(t => {
         const diag: import("typescript").DiagnosticRelatedInformation = {
@@ -43,7 +43,7 @@ export const workbenchAssertionsPlugin: import("../../../../static/js/playground
         return diag
       })
 
-      ds.listDiags(sandbox, sandbox.getModel(), errorsAsDiags)
+      ds.listDiags(sandbox.getModel(), errorsAsDiags)
 
       ds.subtitle("TLDR")
       ds.p(

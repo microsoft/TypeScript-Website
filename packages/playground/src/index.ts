@@ -3,7 +3,6 @@ type Monaco = typeof import("monaco-editor")
 
 declare const window: any
 
-import { compiledJSPlugin } from "./sidebar/showJS"
 import {
   createSidebar,
   createTabForPlugin,
@@ -13,18 +12,16 @@ import {
   createDragBar,
   setupSidebarToggle,
 } from "./createElements"
-import { showDTSPlugin } from "./sidebar/showDTS"
-import { runWithCustomLogs, runPlugin } from "./sidebar/runtime"
+import { runWithCustomLogs } from "./sidebar/runtime"
 import { createExporter } from "./exporter"
 import { createUI } from "./createUI"
 import { getExampleSourceCode } from "./getExample"
 import { ExampleHighlighter } from "./monaco/ExampleHighlight"
 import { createConfigDropdown, updateConfigDropdownForCompilerOptions } from "./createConfigDropdown"
-import { showErrors } from "./sidebar/showErrors"
-import { optionsPlugin, allowConnectingToLocalhost, activePlugins, addCustomPlugin } from "./sidebar/plugins"
+import { allowConnectingToLocalhost, activePlugins, addCustomPlugin } from "./sidebar/plugins"
 import { createUtils, PluginUtils } from "./pluginUtils"
 import type React from "react"
-import { settingsPlugin } from "./sidebar/settings"
+import { settingsPlugin, getPlaygroundPlugins } from "./sidebar/settings"
 
 export { PluginUtils } from "./pluginUtils"
 
@@ -70,8 +67,6 @@ interface PlaygroundConfig {
   /** Should this playground load up custom plugins from localStorage? */
   supportCustomPlugins: boolean
 }
-
-const defaultPluginFactories: PluginFactory[] = [compiledJSPlugin, showDTSPlugin, showErrors, runPlugin, optionsPlugin]
 
 export const setupPlayground = (
   sandbox: Sandbox,
@@ -126,7 +121,7 @@ export const setupPlayground = (
     return plugins[tabs.indexOf(selectedTab)]
   }
 
-  const defaultPlugins = config.plugins || defaultPluginFactories
+  const defaultPlugins = config.plugins || getPlaygroundPlugins()
   const utils = createUtils(sandbox, react)
   const initialPlugins = defaultPlugins.map(f => f(i, utils))
   initialPlugins.forEach(p => registerPlugin(p))
@@ -151,7 +146,6 @@ export const setupPlayground = (
 
       // Only call the plugin function once every 0.3s
       if (plugin.modelChangedDebounce && plugin.displayName === getCurrentPlugin().displayName) {
-        console.log("Debounced", container)
         plugin.modelChangedDebounce(sandbox, sandbox.getModel(), container)
       }
     }, 300)
@@ -190,10 +184,13 @@ export const setupPlayground = (
   // Add the versions to the dropdown
   const versionsMenu = document.querySelectorAll("#versions > ul").item(0)
 
+  // Enable all submenus
+  document.querySelectorAll("nav ul li").forEach(e => e.classList.add("active"))
+
   const notWorkingInPlayground = ["3.1.6", "3.0.1", "2.8.1", "2.7.2", "2.4.1"]
 
   const allVersions = [
-    "3.9.0-beta",
+    "3.9.1-rc",
     ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)),
     "Nightly",
   ]
