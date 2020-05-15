@@ -146,7 +146,6 @@ export const setupPlayground = (
 
       // Only call the plugin function once every 0.3s
       if (plugin.modelChangedDebounce && plugin.displayName === getCurrentPlugin().displayName) {
-        console.log("Debounced", container)
         plugin.modelChangedDebounce(sandbox, sandbox.getModel(), container)
       }
     }, 300)
