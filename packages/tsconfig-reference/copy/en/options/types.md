@@ -7,12 +7,12 @@ By default all _visible_ "`@types`" packages are included in your compilation.
 Packages in `node_modules/@types` of any enclosing folder are considered _visible_.
 For example, that means packages within `./node_modules/@types/`, `../node_modules/@types/`, `../../node_modules/@types/`, and so on.
 
-If `types` is specified, only packages listed will be included. For instance:
+If `types` is specified, only packages listed will be included in the global scope. For instance:
 
 ```json
 {
   "compilerOptions": {
-    "types": ["node", "jest", "lodash]
+    "types": ["node", "jest", "lodash"]
   }
 }
 ```
