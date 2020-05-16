@@ -19,7 +19,7 @@ import { createIntlLink } from "../../components/IntlLink"
 import { IndexPageQuery } from "../../__generated__/gatsby-types"
 
 const Section = (props: { children: any, color: string, className?: string }) =>
-  <div key={props.color} className={props.color + " " + props.className ?? ""}><div className="container">{props.children}</div></div>
+  <div key={props.color} className={props.color + " " + (props.className ?? "")}><div className="container">{props.children}</div></div>
 
 const QuarterOrHalfRow = (props: { children: any, className?: string }) => <div className={[props.className, "split-row"].join(" ")}>{props.children}</div>
 const Row = (props: { children: any, className?: string }) => <div className={[props.className, "row"].join(" ")}>{props.children}</div>

@@ -2,25 +2,25 @@ import type { PlaygroundPlugin, PluginUtils } from "./vendor/playground"
 
 const makePlugin = (utils: PluginUtils) => {
   const customPlugin: PlaygroundPlugin = {
-    id: 'example',
-    displayName: 'Dev Example',
+    id: "example",
+    displayName: "Dev Example",
     didMount: (sandbox, container) => {
-      console.log('Showing new plugin')
+      console.log("Showing new plugin")
 
-      const p = (str: string) => utils.el(str, "p", container);
-      const h4 = (str: string) => utils.el(str, "h4", container);
+      // Create a design system object to handle
+      // making DOM elements which fit the playground (and handle mobile/light/dark etc)
+      const ds = utils.createDesignSystem(container)
 
-      h4("Example Plugin")
+      ds.title("Example Plugin")
+      ds.p("This plugin has a button which changes the text in the editor, click below to test it")
 
-      p("This plugin has a button which changes the text in the editor, click below to test it.")
-
-      const startButton = document.createElement('input')
-      startButton.type = 'button'
-      startButton.value = 'Change the code in the editor'
+      const startButton = document.createElement("input")
+      startButton.type = "button"
+      startButton.value = "Change the code in the editor"
       container.appendChild(startButton)
 
       startButton.onclick = () => {
-        sandbox.setText('// You clicked the button!')
+        sandbox.setText("// You clicked the button!")
       }
     },
 
@@ -35,7 +35,7 @@ const makePlugin = (utils: PluginUtils) => {
     // Gives you a chance to remove anything set up,
     // the container itself if wiped of children after this.
     didUnmount: () => {
-      console.log('Removing plugin')
+      console.log("Removing plugin")
     },
   }
 

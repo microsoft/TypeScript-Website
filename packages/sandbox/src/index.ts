@@ -58,6 +58,9 @@ const sharedEditorOptions: import("monaco-editor").editor.IEditorOptions = {
   minimap: {
     enabled: false,
   },
+  lightbulb: {
+    enabled: true,
+  },
 }
 
 /** The default settings which we apply a partial over */
