@@ -356,6 +356,7 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       }
 
       form.appendChild(textbox)
+      container.appendChild(form)
       return form
     }
 
