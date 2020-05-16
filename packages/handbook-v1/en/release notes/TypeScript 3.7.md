@@ -405,7 +405,7 @@ const myNode: VirtualNode = [
   "div",
   { id: "parent" },
   ["div", { id: "first-child" }, "I'm the first child"],
-  ["div", { id: "second-child" }, "I'm the second child"]
+  ["div", { id: "second-child" }, "I'm the second child"],
 ];
 ```
 
@@ -578,13 +578,13 @@ class C {
       enumerable: true,
       configurable: true,
       writable: true,
-      value: 100
+      value: 100,
     });
     Object.defineProperty(this, "bar", {
       enumerable: true,
       configurable: true,
       writable: true,
-      value: void 0
+      value: void 0,
     });
   }
 }
