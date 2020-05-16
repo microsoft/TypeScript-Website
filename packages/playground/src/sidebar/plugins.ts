@@ -105,7 +105,7 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
       const connectToDev = ds.localStorageOption({
         display: i("play_sidebar_plugins_plugin_dev_option"),
         blurb: i("play_sidebar_plugins_plugin_dev_copy"),
-        flag: "connect-dev-plugin",
+        flag: "compiler-setting-connect-dev-plugin",
       })
 
       pluginsDevOL.appendChild(connectToDev)
