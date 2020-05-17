@@ -244,7 +244,7 @@ const obj2: Required<Props> = { a: 5 }; // Error: property 'b' missing
 
 # `ThisParameterType`
 
-Extracts the type of the [this](https://www.typescriptlang.org/docs/handbook/functions.html#this-parameters) parameter of a function type, or `unknown` if the function type has no `this` parameter.
+Extracts the type of the [this](https://www.typescriptlang.org/docs/handbook/functions.html#this-parameters) parameter of a function type, or [unknown](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type) if the function type has no `this` parameter.
 
 Note: This type only works correctly if `--strictFunctionTypes` is enabled. See [#32964](https://github.com/microsoft/TypeScript/issues/32964).
 
