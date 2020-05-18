@@ -691,7 +691,10 @@ input.good {
   margin: 1rem 0;
   border: 1px solid lightgrey;
 
-  padding: 14px 0;
+  li {
+    border-bottom: 1px solid lightgrey;
+    padding: 10px 0;
+  }
 
   li div {
     display: flex;
