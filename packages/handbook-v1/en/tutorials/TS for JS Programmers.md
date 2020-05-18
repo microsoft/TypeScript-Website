@@ -150,7 +150,7 @@ Unions provide a way to handle different types too, for example you may have a f
 
 ```ts twoslash
 function getLength(obj: string | string[]) {
-  return obj;
+  return obj.length;
 }
 ```
 
