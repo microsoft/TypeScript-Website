@@ -244,7 +244,7 @@ const obj2: Required<Props> = { a: 5 }; // Error: property 'b' missing
 
 # `ThisParameterType`
 
-Extracts the type of the `this` parameter of a function type, or `unknown` if the function type has no `this` parameter.
+Extracts the type of the [this](/docs/handbook/functions.html#this-parameters) parameter of a function type, or [unknown](/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type) if the function type has no `this` parameter.
 
 Note: This type only works correctly if `--strictFunctionTypes` is enabled. See [#32964](https://github.com/microsoft/TypeScript/issues/32964).
 
@@ -262,7 +262,7 @@ function numberToString(n: ThisParameterType<typeof toHex>) {
 
 # `OmitThisParameter`
 
-Removes the 'this' parameter from a function type.
+Removes the [this](/docs/handbook/functions.html#this-parameters) parameter from a function type.
 
 Note: This type only works correctly if `--strictFunctionTypes` is enabled. See [#32964](https://github.com/microsoft/TypeScript/issues/32964).
 
@@ -281,7 +281,7 @@ console.log(fiveToHex());
 
 # `ThisType<T>`
 
-This utility does not return a transformed type. Instead, it serves as a marker for a contextual `this` type. Note that the `--noImplicitThis` flag must be enabled to use this utility.
+This utility does not return a transformed type. Instead, it serves as a marker for a contextual [this](/docs/handbook/functions.html#this) type. Note that the `--noImplicitThis` flag must be enabled to use this utility.
 
 ##### Example
 
@@ -314,6 +314,6 @@ obj.y = 20;
 obj.moveBy(5, 5);
 ```
 
-In the example above, the `methods` object in the argument to `makeObject` has a contextual type that includes `ThisType<D & M>` and therefore the type of `this` in methods within the `methods` object is `{ x: number, y: number } & { moveBy(dx: number, dy: number): number }`. Notice how the type of the `methods` property simultaneously is an inference target and a source for the `this` type in methods.
+In the example above, the `methods` object in the argument to `makeObject` has a contextual type that includes `ThisType<D & M>` and therefore the type of [this](/docs/handbook/functions.html#this) in methods within the `methods` object is `{ x: number, y: number } & { moveBy(dx: number, dy: number): number }`. Notice how the type of the `methods` property simultaneously is an inference target and a source for the `this` type in methods.
 
 The `ThisType<T>` marker interface is simply an empty interface declared in `lib.d.ts`. Beyond being recognized in the contextual type of an object literal, the interface acts like any empty interface.
