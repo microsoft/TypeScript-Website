@@ -38,7 +38,7 @@ Option                                         | Type      | Default            
 `--allowUnreachableCode`                       | `boolean` | `false`                        | Do not report errors on unreachable code.
 `--allowUnusedLabels`                          | `boolean` | `false`                        | Do not report errors on unused labels.
 `--alwaysStrict`                               | `boolean` | `false`                        | Parse in strict mode and emit `"use strict"` for each source file
-`--assumeChangesOnlyAffectDirectDependencies`  | `boolean` | `false`                        | Have recompiles in '--incremental' and '--watch' assume that changes within a file will only affect files directly depending on it
+`--assumeChangesOnlyAffectDirectDependencies`  | `boolean` | `false`                        | Have recompiles in `--incremental` and `--watch` assume that changes within a file will only affect files directly depending on it
 `--baseUrl`                                    | `string`  |                                | Base directory to resolve non-relative module names. See [Module Resolution documentation](/docs/handbook/module-resolution.html#base-url) for more details.
 `--build`<br/>`-b`                             | `boolean` | `false`                        | Builds this project and all of its dependencies specified by [Project References](/docs/handbook/project-references.html). Note that this flag is not compatible with others on this page. See more [here](docs/handbook/project-references.html)
 `--charset`                                    | `string`  | `"utf8"`                       | The character set of the input files.
@@ -46,12 +46,12 @@ Option                                         | Type      | Default            
 `--composite`                                  | `boolean` | `true`                         | Ensure TypeScript can determine where to find the outputs of the referenced project to compile project.
 `--declaration`<br/>`-d`                       | `boolean` | `false`                        | Generates corresponding `.d.ts` file.
 `--declarationDir`                             | `string`  |                                | Output directory for generated declaration files.
-`--declarationMap`                             | `boolean` | `false`                        | Generates a sourcemap for each corresponding '.d.ts' file.
+`--declarationMap`                             | `boolean` | `false`                        | Generates a sourcemap for each corresponding `.d.ts` file.
 `--diagnostics`                                | `boolean` | `false`                        | Show diagnostic information.
 `--disableSizeLimit`                           | `boolean` | `false`                        | Disable size limitation on JavaScript project.
 `--downlevelIteration`                         | `boolean` | `false`                        | Provide full support for iterables in `for..of`, spread and destructuring when targeting ES5 or ES3.
 `--emitBOM`                                    | `boolean` | `false`                        | Emit a UTF-8 Byte Order Mark (BOM) in the beginning of output files.
-`--emitDeclarationOnly`                        | `boolean` | `false`                        | Only emit '.d.ts' declaration files.
+`--emitDeclarationOnly`                        | `boolean` | `false`                        | Only emit `.d.ts` declaration files.
 `--emitDecoratorMetadata`<sup>[1]</sup>        | `boolean` | `false`                        | Emit design-type metadata for decorated declarations in source. See [issue #2577](https://github.com/Microsoft/TypeScript/issues/2577) for details.
 `--esModuleInterop`                            | `boolean` | `false`                        | Emit `__importStar` and `__importDefault` helpers for runtime babel ecosystem compatibility and enable `--allowSyntheticDefaultImports` for typesystem compatibility.
 `--experimentalDecorators`<sup>[1]</sup>       | `boolean` | `false`                        | Enables experimental support for ES decorators.
