@@ -8,6 +8,7 @@ export type LocalStorageOption = {
 
   emptyImpliesEnabled?: true
   oneline?: true
+  onchange?: (newValue: boolean) => void
 }
 
 export type OptionsListConfig = {
@@ -86,6 +87,10 @@ export const createDesignSystem = (sandbox: Sandbox) => {
           if (invertedLogic) localStorage.setItem(key, "true")
           else localStorage.removeItem(key)
         }
+
+        if (setting.onchange) {
+          setting.onchange(!!localStorage.getItem(key))
+        }
       }
 
       label.htmlFor = input.id
@@ -94,6 +99,18 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       li.appendChild(label)
       container.appendChild(li)
       return li
+    }
+
+    const button = (settings: { label: string; onclick?: (ev: MouseEvent) => void }) => {
+      const join = document.createElement("input")
+      join.type = "button"
+      join.value = settings.label
+      if (settings.onclick) {
+        join.onclick = settings.onclick
+      }
+
+      container.appendChild(join)
+      return join
     }
 
     const code = (code: string) => {
@@ -386,6 +403,8 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       createTextInput,
       /** Renders an AST tree */
       createASTTree,
+      /** Creates an input button */
+      button,
     }
   }
 }

@@ -35,7 +35,7 @@ const makePlugin = (utils: PluginUtils) => {
     // Gives you a chance to remove anything set up,
     // the container itself if wiped of children after this.
     didUnmount: () => {
-      console.log("Removing plugin")
+      console.log("De-focusing plugin")
     },
   }
 

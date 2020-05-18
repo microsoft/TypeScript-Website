@@ -5,7 +5,17 @@ const pluginRegistry = [
     module: "typescript-playground-presentation-mode",
     display: "Presentation Mode",
     blurb: "Create presentations inside the TypeScript playground, seamlessly jump between slides and live-code.",
-    repo: "https://github.com/orta/playground-slides/#README",
+    repo: "https://github.com/orta/playground-slides/#readme",
+    author: {
+      name: "Orta",
+      href: "https://orta.io",
+    },
+  },
+  {
+    module: "playground-collaborate",
+    display: "Collaborate",
+    blurb: "Create rooms to inspect code together.",
+    repo: "https://github.com/orta/playground-collaborate/#readme",
     author: {
       name: "Orta",
       href: "https://orta.io",
@@ -106,17 +116,14 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
         display: i("play_sidebar_plugins_plugin_dev_option"),
         blurb: i("play_sidebar_plugins_plugin_dev_copy"),
         flag: "compiler-setting-connect-dev-plugin",
+        onchange: () => {
+          utils.declareRestartRequired(i)
+        },
       })
 
       pluginsDevOL.appendChild(connectToDev)
       container.appendChild(pluginsDevOL)
     },
-  }
-
-  const createSection = (title: string, container: Element) => {
-    const pluginDevTitle = document.createElement("h4")
-    pluginDevTitle.textContent = title
-    container.appendChild(pluginDevTitle)
   }
 
   const createPlugin = (plugin: typeof pluginRegistry[0]) => {
