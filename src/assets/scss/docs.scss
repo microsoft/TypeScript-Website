@@ -471,3 +471,10 @@ h1, h2, h3 {
     background-color: #0078D4;
   }
 }
+
+@media (max-width:$screen-md) {
+  #try-beta {
+    top: 1.8em;
+    font-size: 15px;
+  }
+}

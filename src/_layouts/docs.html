@@ -10,7 +10,7 @@ sectionid: docs
           tryBeta.style.display = "block";
           const mobile = window.outerWidth < 800
           const isHome = document.location.pathname === "/docs/home.html"
-          if (!mobile && !isHome) {
+          if (!isHome) {
             tryBeta.style.display = "block";
 
             tryBeta.onclick = () => {
