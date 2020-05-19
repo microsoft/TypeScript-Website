@@ -84,7 +84,7 @@ yarn workspace tsconfig-reference run lint resolveJson
 
 ## Handbook V1
 
-The existing docs for TypeScript as a direct import the repo of [microsoft/TypeScript-Handbook](https://github.com/microsoft/TypeScript-Handbook/)
+The docs for TypeScript. Originally ported over from [microsoft/TypeScript-Handbook](https://github.com/microsoft/TypeScript-Handbook/) then intermingled with [microsoft/TypeScript-New-Handbook](https://github.com/microsoft/TypeScript-New-Handbook), and finally updated for [Twoslash](http://www.staging-typescript.org/dev/twoslash/) and with new content.
 
 ## Playground Examples
 
@@ -96,23 +96,19 @@ Most of of these packages use [`tsdx`](https://github.com/jaredpalmer/tsdx).
 
 ## TS Twoslash
 
-A code sample markup extension for TypeScript.
-
-## Gatsby Remark Twoslasher Code Blocks
-
-A Gatsby Remark plugin which runs twoslash for any code blocks with twoslash in their metadata
-
-## Gatsby Remark Shiki
-
-A Gatsby Remark plugin which highlights code (using vscode's parsers) then annotates the code with twoslash information
+A code sample markup extension for TypeScript. Available on npm: [@typescript/twoslash](https://www.npmjs.com/package/@typescript/twoslash)
 
 ## TypeScript VFS
 
-A comprehensive way to run TypeScript projects in-memory in a browser or node environment
+A comprehensive way to run TypeScript projects in-memory in a browser or node environment. Available on npm: [@typescript/twoslash](https://www.npmjs.com/package/@typescript/vfs)
 
 ## Create Playground Plugin
 
 A template for generating a new playground plugin which you can use via `npm init playground-plugin [name]`
+
+## Community Meta
+
+Generates contributions JSON metadata on who edited handbook pages
 
 # Contributing
 
