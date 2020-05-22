@@ -106,6 +106,10 @@ A comprehensive way to run TypeScript projects in-memory in a browser or node en
 
 A template for generating a new playground plugin which you can use via `npm init playground-plugin [name]`
 
+## Handbook Epub
+
+Generates an epub file from the handbook files. You can try downloading it at http://www.staging-typescript.org/assets/typescript-handbook-beta.epub
+
 ## Community Meta
 
 Generates contributions JSON metadata on who edited handbook pages

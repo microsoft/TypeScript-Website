@@ -12,7 +12,7 @@ import { createInternational } from "../../../../lib/createInternational"
 import { useIntl } from "react-intl"
 import { graphql } from "gatsby"
 import { DocsHomeQuery } from "../../../../__generated__/gatsby-types"
-import { oldHandbookNavigation } from "../../../../lib/oldHandbookNavigation"
+import { handbookNavigation } from "../../../../lib/handbookNavigation"
 
 type Props = {
   data: DocsHomeQuery
@@ -31,7 +31,7 @@ const HandbookIndex: React.FC<Props> = (props) => {
 
       <div className="main-content-block container handbook-content" >
         <div className="columns wide">
-          {oldHandbookNavigation.map(navRoot => {
+          {handbookNavigation.map(navRoot => {
             if (navRoot.id === "whats-new") return null
 
             return (

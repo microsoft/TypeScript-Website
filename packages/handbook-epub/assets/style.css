@@ -1,0 +1,300 @@
+/*
+ * epub.css_t
+ * ~~~~~~~~~~
+ *
+ * Sphinx stylesheet -- epub theme.
+ *
+ * :copyright: Copyright 2007-2018 by the Sphinx team, see AUTHORS.
+ * :license: BSD, see LICENSE for details.
+ *
+ * https://www.sphinx-doc.org/en/stable/
+ *
+ */
+
+/* -- main layout ----------------------------------------------------------- */
+
+body {
+  font-size: 0.7em;
+  font-family: iBooks_Iowan_Old_Style;
+  /*line-height: 16px;*/
+  line-height: 1.6em;
+}
+
+.chapter-name {
+  -webkit-margin-before: 0;
+  /*line-height: 24px;*/
+  line-height: 1.8em;
+}
+
+.para {
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+  margin-top: 3px;
+  margin-bottom: 12px;
+}
+
+.section > .para {
+  margin-bottom: 15px;
+}
+
+.chapter a:visited,
+a {
+  color: rgba(0, 136, 204, 1);
+}
+
+.section h1 {
+  margin: 1em 0;
+  font-size: 1.5em;
+}
+
+.section h2 {
+  margin: 3.5em 0 0;
+  font-size: 1.3em;
+  page-break-after: avoid;
+}
+
+.section h3 {
+  margin: 3em 0 0;
+  font-size: 1.1em;
+  line-height: 1.5em;
+  page-break-after: avoid;
+}
+.section h3 + p {
+  margin-top: 0;
+}
+
+.chapter .section > h3.section-name {
+  /*line-height: 21px;*/
+  font-size: 1.4em;
+  line-height: 1.4em;
+}
+
+.chapter .section > .section > h3.section-name {
+  /*line-height: 19px;*/
+  font-size: 1.1em;
+  line-height: 1.5em;
+}
+
+.section-name {
+  -webkit-margin-after: 0em;
+  page-break-after: avoid; /* won't work until <rdar://problem/11745659> iBooks wants page-break-after: avoid; support */
+}
+
+.chapter > .section > h3.section-name {
+  font-size: 1.3em;
+}
+
+.task-name {
+  margin-top: 15px;
+}
+
+.svg-container {
+  position: relative;
+}
+
+.playground_link a {
+  font-weight: bold;
+}
+
+/*** TABLE STYLES ***/
+
+.inline-graphic,
+.figure {
+  max-width: 60%;
+  page-break-inside: avoid;
+  margin: 25px auto;
+}
+
+.para .inline-graphic {
+  margin: 0;
+}
+
+/* code listings */
+
+code {
+  font-family: Menlo, monospace !important;
+  font-size: 0.85em;
+}
+
+pre code {
+  font-family: Menlo, monospace !important;
+  font-size: 0.85em;
+}
+
+.language-id {
+  display: none;
+}
+
+.code-container {
+  display: block;
+  font-size: 0.85em;
+  font-family: Menlo, monospace !important;
+  padding-left: 21px;
+  border-left: 1px solid grey;
+}
+
+.code-sample .code-lines {
+  margin-left: 0;
+}
+.code-lines {
+  counter-reset: li;
+  line-height: 2em;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.code-sample .code-lines li {
+  list-style-type: none;
+  margin: 0;
+  padding-right: 10px;
+  padding-left: 0;
+  text-indent: -52px;
+  margin-left: 60px;
+  white-space: pre-wrap;
+}
+
+.code-lines li::before {
+  color: rgba(128, 128, 128, 1);
+  content: counter(li);
+  counter-increment: li;
+  font-family: Menlo, monospace;
+  margin-right: 16px;
+  -webkit-user-select: none;
+}
+.code-sample .code-lines li::before {
+  margin-left: -35px;
+  margin-right: 25px;
+}
+.code-sample .code-lines li:nth-child(n + 10)::before {
+  margin-left: -43px;
+  margin-right: 25px;
+}
+.code-sample .code-lines li:only-of-type::before {
+  color: rgba(255, 255, 255, 1);
+  content: " ";
+}
+
+/* no line numbering in syntax outlines */
+.syntax-outline .code-lines li::before {
+  content: " ";
+}
+.syntax-outline .code-lines {
+  line-height: 1.9em;
+}
+.syntax-outline div.Swift {
+  border-color: transparent;
+}
+
+.code-sample div.Swift {
+  width: 93%;
+  line-height: 1.3em;
+  margin-left: 10px;
+  overflow: visible;
+  page-break-inside: avoid;
+}
+div.Swift {
+  border-left: 4px solid rgba(205, 233, 244, 1);
+  padding: 1px 0 1px 10px;
+  margin: 1.5em 0;
+  line-height: 22px;
+}
+
+.highlight .gi {
+  /* code placeholder capsule */
+  background-color: rgba(233, 239, 250, 1);
+  border: 1px solid rgba(196, 212, 241, 1);
+  color: rgba(0, 0, 0, 1) !important;
+  border-radius: 10px;
+  color: rgba(0, 0, 0, 1);
+  padding: 2px 6px;
+  font-style: inherit;
+  white-space: nowrap;
+}
+
+/* grammar */
+
+.admonition.grammar {
+  border-left: 5px solid rgba(233, 233, 233, 1);
+  margin: 20px 0;
+  padding-left: 15px;
+  background: transparent;
+  font-family: Helvetica, sans-serif;
+  width: inherit;
+}
+.admonition.grammar p.admonition-title {
+  margin-bottom: 8px;
+}
+.admonition.grammar p {
+  margin: 0;
+}
+.admonition.grammar p.syntax-def {
+  margin-left: 25px;
+  text-indent: -25px;
+}
+.admonition.grammar .syntax-def-name {
+  color: rgba(128, 128, 128, 1);
+  font-style: italic;
+}
+.admonition.grammar .arrow {
+  padding: 0 6px;
+}
+.admonition.grammar code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-weight: bold;
+  padding: 0 3px;
+}
+.admonition.grammar .syntactic-category a {
+  font-style: italic;
+  padding: 0 3px;
+}
+.admonition.grammar sub {
+  color: rgba(128, 128, 128, 1);
+  font-style: italic;
+  margin-left: -3px;
+  padding-right: 5px;
+}
+
+/* general overrides */
+
+.toctree-wrapper {
+  display: none;
+}
+
+p > code.literal,
+li > code.literal {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  color: #808080;
+  font-size: 0.85em;
+}
+
+.admonition {
+  margin-left: 5px;
+  border-left: solid 4px #ccc;
+  background-color: #f5f5f5;
+  padding: 7px 15px;
+  font-size: 0.9em;
+  margin-bottom: 1.5em;
+  line-height: 1.4em;
+  page-break-inside: avoid;
+}
+.admonition .admonition-title {
+  text-transform: uppercase;
+  color: #777;
+  font-weight: normal;
+  font-size: 0.7em;
+  letter-spacing: 2px;
+  margin-bottom: 0.7em;
+}
+.admonition .last {
+  margin-bottom: 0;
+}
+.admonition p {
+  margin: 0.5em 0;
+}
+.link-target {
+  display: none;
+}

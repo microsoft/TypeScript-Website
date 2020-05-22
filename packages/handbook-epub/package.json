@@ -1,0 +1,18 @@
+{
+  "name": "handbook-epub",
+  "private": true,
+  "license": "MIT",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "ts-node script/createEpub.ts",
+    "test": "echo 'NOOP'",
+    "bootstrap": "echo 'NOOP'"
+  },
+  "prettier": {
+    "semi": true
+  },
+  "dependencies": {
+    "fs-jetpack": "^2.4.0",
+    "streampub": "^1.9.0"
+  }
+}

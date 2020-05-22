@@ -394,7 +394,7 @@ button.animate(0, 0, "uneasy"); // error: "uneasy" is not allowed here
 
 You can pass any of the three allowed strings, but any other string will give the error
 
-```text
+```
 Argument of type '"uneasy"' is not assignable to parameter of type '"ease-in" | "ease-out" | "ease-in-out"'
 ```
 
@@ -580,7 +580,10 @@ class BasicCalculator {
   // ... other operations go here ...
 }
 
-let v = new BasicCalculator(2).multiply(5).add(1).currentValue();
+let v = new BasicCalculator(2)
+  .multiply(5)
+  .add(1)
+  .currentValue();
 ```
 
 Since the class uses `this` types, you can extend it and the new class can use the old methods with no changes.
@@ -597,7 +600,11 @@ class ScientificCalculator extends BasicCalculator {
   // ... other operations go here ...
 }
 
-let v = new ScientificCalculator(2).multiply(5).sin().add(1).currentValue();
+let v = new ScientificCalculator(2)
+  .multiply(5)
+  .sin()
+  .add(1)
+  .currentValue();
 ```
 
 Without `this` types, `ScientificCalculator` would not have been able to extend `BasicCalculator` and keep the fluent interface.
@@ -611,7 +618,7 @@ For example, a common JavaScript pattern is to pick a subset of properties from 
 
 ```js
 function pluck(o, propertyNames) {
-  return propertyNames.map((n) => o[n]);
+  return propertyNames.map(n => o[n]);
 }
 ```
 
@@ -619,7 +626,7 @@ Here's how you would write and use this function in TypeScript, using the **inde
 
 ```ts
 function pluck<T, K extends keyof T>(o: T, propertyNames: K[]): T[K][] {
-  return propertyNames.map((n) => o[n]);
+  return propertyNames.map(n => o[n]);
 }
 
 interface Car {
@@ -630,7 +637,7 @@ interface Car {
 let taxi: Car = {
   manufacturer: "Toyota",
   model: "Camry",
-  year: 2014,
+  year: 2014
 };
 
 // Manufacturer and model are both of type string,

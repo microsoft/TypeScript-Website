@@ -3,7 +3,7 @@ import { NodePluginArgs, CreatePagesArgs } from "gatsby"
 import {
   getNextPageID,
   getPreviousPageID,
-} from "../../../src/lib/oldHandbookNavigation"
+} from "../../../src/lib/handbookNavigation"
 
 export const createOldHandbookPages = async (
   graphql: CreatePagesArgs["graphql"],
@@ -87,5 +87,10 @@ export const createOldHandbookPages = async (
 
 export const idFromURL = (url: string) => {
   // TODO: this needs to support ID's like:         id: "templates/global-plugin-d-ts",
-  return url.split("/").pop()!.replace(".html", "") || "index"
+  return (
+    url
+      .split("/")
+      .pop()!
+      .replace(".html", "") || "index"
+  )
 }

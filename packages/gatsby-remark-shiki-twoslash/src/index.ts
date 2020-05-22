@@ -60,7 +60,7 @@ const visitor = (node: RichNode) => {
   // Shiki doesn't respect json5 as an input, so switch it
   // to json, which can handle comments in the syntax highlight
   const replacer = {
-    json5: "json",
+    json5: "json"
   }
 
   // @ts-ignore
@@ -81,7 +81,10 @@ const visitor = (node: RichNode) => {
 }
 
 /** The plugin API */
-const remarkShiki = async function ({ markdownAST }: any, settings: any) {
+const remarkShiki = async function(
+  { markdownAST }: any,
+  settings: import("shiki/dist/highlighter").HighlighterOptions
+) {
   await getHighlighterObj(settings)
   visit(markdownAST, "code", visitor)
 }
@@ -101,7 +104,7 @@ export const runTwoSlashOnNode = (node: RichNode) => {
   }
 }
 
-/** Does a twoslash  */
+/** Sends the twoslash visitor over the existing MD AST and replaces the code samples inline  */
 export const runTwoSlashAcrossDocument = ({ markdownAST }: any) => visit(markdownAST, "code", runTwoSlashOnNode)
 
 export default remarkShiki
