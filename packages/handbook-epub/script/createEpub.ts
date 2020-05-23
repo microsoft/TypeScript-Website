@@ -125,7 +125,7 @@ const getHTML = async (code: string, settings?: any) => {
       {
         theme: require.resolve(
           "../../typescriptlang-org/lib/themes/typescript-beta-light.json"
-        )
+        ) as any
       }
     );
   }
