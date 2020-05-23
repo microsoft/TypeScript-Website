@@ -6,7 +6,13 @@ const { createReadStream } = jetpack;
 const Streampub = require("streampub");
 const toHAST = require(`mdast-util-to-hast`);
 const hastToHTML = require(`hast-util-to-html`);
-import { readdirSync, readFileSync, lstatSync, copyFileSync } from "fs";
+import {
+  readdirSync,
+  readFileSync,
+  lstatSync,
+  copyFileSync,
+  mkdirSync,
+} from "fs";
 import runTwoSlashAcrossDocument from "gatsby-remark-shiki-twoslash";
 const remark = require("remark");
 import { join } from "path";
@@ -14,6 +20,7 @@ import { read as readMarkdownFile } from "gray-matter";
 
 import { handbookNavigation } from "../../typescriptlang-org/src/lib/handbookNavigation";
 import { idFromURL } from "../../typescriptlang-org/lib/bootup/ingestion/createPagesForOldHandbook";
+import { exists } from "fs-jetpack";
 
 // import releaseInfo from "../../typescriptlang-org/src/lib/release-info.json";
 
@@ -53,7 +60,10 @@ const bookMetadata = {
   ibooksSpecifiedFonts: true,
 };
 
-const epubPath = join(__dirname, "..", "dist", "handbook.epub");
+const dist = join(__dirname, "..", "dist");
+if (!exists(dist)) mkdirSync(dist);
+
+const epubPath = join(dist, "handbook.epub");
 
 const startEpub = async () => {
   const handbook = handbookNavigation.find((i) => i.title === "Handbook");
