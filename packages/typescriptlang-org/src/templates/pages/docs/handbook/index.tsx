@@ -27,6 +27,7 @@ const HandbookIndex: React.FC<Props> = (props) => {
       <div className="main-content-block headline" style={{ marginTop: "40px" }}>
         <h1>TypeScript Handbook</h1>
         <p>The handbook will help you learn to be productive in TypeScript.</p>
+        <p>We also have an <a href='/assets/typescript-handbook-beta.epub'>epub version of the Handbook</a>.</p>
       </div>
 
       <div className="main-content-block container handbook-content" >
