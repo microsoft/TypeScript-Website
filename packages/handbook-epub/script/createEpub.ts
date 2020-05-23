@@ -6,7 +6,7 @@ const { createReadStream } = jetpack;
 const Streampub = require("streampub");
 const toHAST = require(`mdast-util-to-hast`);
 const hastToHTML = require(`hast-util-to-html`);
-import { readdirSync, lstatSync, copyFileSync } from "fs";
+import { readdirSync, readFileSync, lstatSync, copyFileSync } from "fs";
 import runTwoSlashAcrossDocument from "gatsby-remark-shiki-twoslash";
 const remark = require("remark");
 import { join } from "path";
@@ -15,6 +15,8 @@ import { read as readMarkdownFile } from "gray-matter";
 import { handbookNavigation } from "../../typescriptlang-org/src/lib/handbookNavigation";
 import { idFromURL } from "../../typescriptlang-org/lib/bootup/ingestion/createPagesForOldHandbook";
 
+// import releaseInfo from "../../typescriptlang-org/src/lib/release-info.json";
+
 // Reference: https://github.com/AABoyles/LessWrong-Portable/blob/master/build.js
 
 const markdowns = new Map<string, ReturnType<typeof readMarkdownFile>>();
@@ -22,7 +24,7 @@ const markdowns = new Map<string, ReturnType<typeof readMarkdownFile>>();
 // Grab all the md + yml info from the handbook files on disk
 // and add them to ^
 const handbookPath = join(__dirname, "..", "..", "handbook-v1", "en");
-readdirSync(handbookPath, "utf-8").forEach(path => {
+readdirSync(handbookPath, "utf-8").forEach((path) => {
   const filePath = join(handbookPath, path);
   if (lstatSync(filePath).isDirectory() || !filePath.endsWith("md")) {
     return;
@@ -48,16 +50,14 @@ const bookMetadata = {
   publisher: "Microsoft",
   subject: "Non-fiction",
   includeTOC: true,
-  ibooksSpecifiedFonts: true
+  ibooksSpecifiedFonts: true,
 };
 
 const epubPath = join(__dirname, "..", "dist", "handbook.epub");
 
 const startEpub = async () => {
-  const handbook = handbookNavigation.find(i => i.title === "Handbook");
+  const handbook = handbookNavigation.find((i) => i.title === "Handbook");
   const epub = new Streampub(bookMetadata);
-
-  epub.meta["ibooks:specified-fonts"] = true;
 
   epub.pipe(jetpack.createWriteStream(epubPath));
 
@@ -67,16 +67,25 @@ const startEpub = async () => {
 
   // Import CSS
   epub.write(
-    Streampub.newFile("style.css", createReadStream("./assets/style.css"))
+    Streampub.newFile("style.css", createReadStream("./assets/ebook-style.css"))
   );
 
-  epub.write(
-    Streampub.newChapter(
-      bookMetadata.title,
-      jetpack.read("./assets/intro.xhtml"),
-      0
-    )
-  );
+  const releaseInfo = getReleaseInfo();
+  const intro = jetpack.read("./assets/intro.xhtml");
+  const dateOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  const date = new Date().toLocaleString("en-US", dateOptions);
+  const editedIntro = replaceAllInString(intro, {
+    "%%DATE%%": date,
+    "%%COMMIT_SHA%%": getGitSHA().slice(0, 6),
+    "%%TS_VERSION%%": releaseInfo.tags.stableMajMin,
+    "%%RELEASE_DOCS%%": releaseInfo.releaseNotesURL,
+  });
+  epub.write(Streampub.newChapter(bookMetadata.title, editedIntro, 0));
 
   for (const item of handbook.items) {
     const index = handbook.items.indexOf(item) + 1;
@@ -103,16 +112,12 @@ const addHandbookPage = async (epub: any, id: string, index: number) => {
   const title = md.data.title;
   const prefix = `<link href="style.css" type="text/css" rel="stylesheet" /><h1>${title}</h1><div class='section'>`;
   const suffix = "</div>";
-  let html = await getHTML(md.content, {});
-
-  const mapper = {
-    'a href="/': 'a href="http://www.staging-typescript.org/'
-  };
-
-  Object.keys(mapper).forEach(before => {
-    html = html.replace(new RegExp(before, "g"), mapper[before]);
+  const html = await getHTML(md.content, {});
+  const edited = replaceAllInString(html, {
+    'a href="/': 'a href="https://www.staging-typescript.org/',
   });
-  epub.write(Streampub.newChapter(title, prefix + html + suffix, index));
+
+  epub.write(Streampub.newChapter(title, prefix + edited + suffix, index));
 };
 
 const getHTML = async (code: string, settings?: any) => {
@@ -125,13 +130,39 @@ const getHTML = async (code: string, settings?: any) => {
       {
         theme: require.resolve(
           "../../typescriptlang-org/lib/themes/typescript-beta-light.json"
-        ) as any
+        ) as any,
       }
     );
   }
 
   const hAST = toHAST(markdownAST, { allowDangerousHTML: true });
   return hastToHTML(hAST, { allowDangerousHTML: true });
+};
+
+function replaceAllInString(_str: string, obj: any) {
+  let str = _str;
+
+  Object.keys(obj).forEach((before) => {
+    str = str.replace(new RegExp(before, "g"), obj[before]);
+  });
+  return str;
+}
+
+const getGitSHA = () => {
+  const gitRoot = join(__dirname, "..", "..", "..", ".git");
+  const rev = readFileSync(join(gitRoot, "HEAD"), "utf8").trim();
+  if (rev.indexOf(":") === -1) {
+    return rev;
+  } else {
+    return readFileSync(join(gitRoot, rev.substring(5)), "utf8");
+  }
+};
+
+const getReleaseInfo = () => {
+  // prettier-ignore
+  const releaseInfo = join(__dirname, "..", "..", "typescriptlang-org", "src", "lib", "release-info.json");
+  const info = JSON.parse(readFileSync(releaseInfo, "utf8"));
+  return info;
 };
 
 startEpub();
