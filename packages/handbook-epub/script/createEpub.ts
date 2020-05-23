@@ -47,7 +47,8 @@ const bookMetadata = {
   description: "An offline guide to learning TypeScript.",
   publisher: "Microsoft",
   subject: "Non-fiction",
-  includeTOC: true
+  includeTOC: true,
+  ibooksSpecifiedFonts: true
 };
 
 const epubPath = join(__dirname, "..", "dist", "handbook.epub");
@@ -77,13 +78,6 @@ const startEpub = async () => {
     )
   );
 
-  // epub.write(
-  //   Streampub.newFile(
-  //     "cover.png",
-  //     jetpack.createReadStream("./assets/cover.png")
-  //   )
-  // );
-
   for (const item of handbook.items) {
     const index = handbook.items.indexOf(item) + 1;
     await addHandbookPage(epub, item.id, index);
@@ -92,6 +86,8 @@ const startEpub = async () => {
   epub.end();
 };
 
+// The epub generation is async-y, so just wait till everything is
+// done to move over the file into the website's static assets.
 process.once("exit", () => {
   copyFileSync(
     epubPath,
