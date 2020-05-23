@@ -1,25 +1,15 @@
 import React, { MouseEventHandler, useEffect } from "react"
 import { Link } from "gatsby"
 
-export interface NavItem {
-  title: string
-  id: string
-  directory: string
-  index: string
-  items: { id: string, title: string, href?: string }[]
-  chronological?: true
-  summary: string
-}
+import "./Sidebar.scss"
+import { onAnchorKeyDown, onButtonKeydown } from "./Sidebar-keyboard"
+import { NavItem } from "../../lib/handbookNavigation"
 
 export type Props = {
   navItems: NavItem[]
   selectedID: string
   openAllSectionsExceptWhatsNew?: true
 }
-
-import "./Sidebar.scss"
-import { onAnchorKeyDown, onButtonKeydown } from "./Sidebar-keyboard"
-
 const closedChevron = <svg fill="none" height="14" viewBox="0 0 9 14" width="9" xmlns="http://www.w3.org/2000/svg"><path d="m1 13 6-6-6-6" stroke="#000" strokeWidth="2" /></svg>
 const openChevron = <svg fill="none" height="9" viewBox="0 0 14 9" width="14" xmlns="http://www.w3.org/2000/svg"><path d="m1 1 6 6 6-6" stroke="#000" strokeWidth="2" /></svg>
 

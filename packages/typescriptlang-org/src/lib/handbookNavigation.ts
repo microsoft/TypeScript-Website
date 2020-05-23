@@ -1,8 +1,15 @@
-import { NavItem } from "../components/layout/Sidebar"
-
+export interface NavItem {
+  title: string
+  id: string
+  directory: string
+  index: string
+  items: { id: string; title: string; href?: string }[]
+  chronological?: true
+  summary: string
+}
 // IDs come from the filename
 
-export const oldHandbookNavigation: NavItem[] = [
+export const handbookNavigation: NavItem[] = [
   {
     title: "Get Started",
     summary:
@@ -220,7 +227,7 @@ export const oldHandbookNavigation: NavItem[] = [
 
 export function getNextPageID(currentID: string) {
   // prettier-ignore
-  const section = oldHandbookNavigation.find((nav) => nav.items.find((i) => i.id === currentID))
+  const section = handbookNavigation.find((nav) => nav.items.find((i) => i.id === currentID))
   if (!section) return undefined
   if (!section.chronological) return undefined
 
@@ -236,7 +243,7 @@ export function getNextPageID(currentID: string) {
 }
 
 export function getPreviousPageID(currentID: string) {
-  const section = oldHandbookNavigation.find(nav =>
+  const section = handbookNavigation.find(nav =>
     nav.items.find(i => i.id === currentID)
   )
 

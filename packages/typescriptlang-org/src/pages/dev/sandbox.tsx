@@ -23,7 +23,7 @@ const Index: React.FC<Props> = (props) => {
     getLoaderScript.async = true;
     getLoaderScript.onload = () => {
       // @ts-ignore
-      const re = global.require
+      const re: any = global.require
 
       re.config({
         paths: {

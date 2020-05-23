@@ -3,7 +3,7 @@ import { graphql } from "gatsby"
 import { GetHandbookBySlugQuery } from "../__generated__/gatsby-types"
 import { Layout } from "../components/layout"
 import { Sidebar, SidebarToggleButton } from "../components/layout/Sidebar"
-import { oldHandbookNavigation } from "../lib/oldHandbookNavigation"
+import { handbookNavigation } from "../lib/handbookNavigation"
 import { Intl } from "../components/Intl"
 
 // This dependency is used in gatsby-remark-autolink-headers to generate the slugs
@@ -120,7 +120,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
         ` }} />
         </noscript>
 
-        <Sidebar navItems={oldHandbookNavigation} selectedID={selectedID} />
+        <Sidebar navItems={handbookNavigation} selectedID={selectedID} />
         <div id="handbook-content">
           <h2>{post.frontmatter.title}</h2>
           <article>

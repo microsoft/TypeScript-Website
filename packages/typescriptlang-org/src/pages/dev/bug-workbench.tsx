@@ -52,7 +52,7 @@ const Play: React.FC<Props> = (props) => {
       const tsVersion = supportedVersion || "next"
 
       // @ts-ignore
-      const re = global.require
+      const re: any = global.require
       re.config({
         paths: {
           vs: `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/min/vs`,
@@ -194,7 +194,7 @@ const Play: React.FC<Props> = (props) => {
 
   return (
     <Layout title="Bug Workbench" description="Create reproductions of issues with TypeScript" lang="en" allSitePage={props.data.allSitePage}>
-    {/** This is the top nav, which is outside of the editor  */}
+      {/** This is the top nav, which is outside of the editor  */}
       <nav className="navbar-sub">
         <ul className="nav">
           <li className="name hide-small"><span>Bug Workbench</span></li>

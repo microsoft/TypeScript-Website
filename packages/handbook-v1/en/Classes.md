@@ -121,7 +121,7 @@ The example also shows how to override methods in the base class with methods th
 Here both `Snake` and `Horse` create a `move` method that overrides the `move` from `Animal`, giving it functionality specific to each class.
 Note that even though `tom` is declared as an `Animal`, since its value is a `Horse`, calling `tom.move(34)` will call the overriding method in `Horse`:
 
-```Text
+```
 Slithering...
 Sammy the Python moved 5m.
 Galloping...
