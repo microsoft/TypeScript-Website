@@ -54,7 +54,7 @@ const Play: React.FC<Props> = (props) => {
       const tsVersion = supportedVersion || playgroundReleases.versions.sort().pop()
 
       // @ts-ignore
-      const re = global.require
+      const re: any = global.require
       re.config({
         paths: {
           vs: `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/min/vs`,
