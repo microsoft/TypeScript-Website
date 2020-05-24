@@ -3,36 +3,9 @@
 - **URLs:** [production](https://www.typescriptlang.org), [staging](http://testsite-typescript-41eeb979-7eaa-4c74-9d47-9d182c7b61ab.azurewebsites.net/), [static staging](http://www.staging-typescript.org/)
 - **Admin:** Prod: [Azure Portal](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/99160d5b-9289-4b66-8074-ed268e739e8e/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/TypeScript-1ebb3390-2634-4956-a955-eab987b7bb25/appServices), [Deploy logs](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/99160d5b-9289-4b66-8074-ed268e739e8e/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/TypeScript-1ebb3390-2634-4956-a955-eab987b7bb25/vstscd), [App Insights](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/57bfeeed-c34a-4ffd-a06b-ccff27ac91b8/resourceGroups/typescriptlang-org/providers/microsoft.insights/components/TypeScriptLang-Prod-Ai/overview)
 
-### Getting Started
-
-This repo uses [yarn workspaces][y-wrk] with node 13, to get started clone this repo and run `yarn install`.
-
-```sh
-git clone https://github.com/microsoft/TypeScript-website
-cd TypeScript-website
-yarn install
-yarn bootstrap
-code .
-```
-
-Working on this repo is done by running `yarn start` - this starts up the website on port `8000` and creates a
-builder worker for every package in the repo, so if you make a change outside of the site it will compile and lint etc.
-
-Some useful knowledge:
-
-- All packages have: `yarn bootstrap`, `yarn build` and `yarn test`
-- All packages use [debug](https://www.npmjs.com/package/debug) - which means you can do `env DEBUG="*" yarn test` to get verbose logs
-
-## Deployment
-
-Deployment is automatic:
-
-- Merges to the branch `master` trigger deploys to production of the v1 website, and the v2 of branch in a [`/v2` subfolder](https://www.typescriptlang.org/v2/).
-- Pushes to the branch `v2` deploy to [staging](http://testsite-typescript-41eeb979-7eaa-4c74-9d47-9d182c7b61ab.azurewebsites.net/).
-
-You can find the build logs in [GitHub Actions](https://github.com/microsoft/TypeScript-Website/actions)
-
 ## Overview
+
+This repo is the monorepo for all the TypeScript documentation and web tooling.
 
 If you want to know _in-depth_ how this website works, there is an [hour long video covering the codebase, deployment and tooling on YouTube.](https://www.youtube.com/watch?v=HOvivt6B7hE).
 
@@ -113,6 +86,35 @@ Generates an epub file from the handbook files. You can try downloading it at ht
 ## Community Meta
 
 Generates contributions JSON metadata on who edited handbook pages
+
+### Getting Started
+
+This repo uses [yarn workspaces][y-wrk] with node 13, to get started clone this repo and run `yarn install`.
+
+```sh
+git clone https://github.com/microsoft/TypeScript-website
+cd TypeScript-website
+yarn install
+yarn bootstrap
+code .
+```
+
+Working on this repo is done by running `yarn start` - this starts up the website on port `8000` and creates a
+builder worker for every package in the repo, so if you make a change outside of the site it will compile and lint etc.
+
+Some useful knowledge:
+
+- All packages have: `yarn bootstrap`, `yarn build` and `yarn test`
+- All packages use [debug](https://www.npmjs.com/package/debug) - which means you can do `env DEBUG="*" yarn test` to get verbose logs
+
+## Deployment
+
+Deployment is automatic:
+
+- Merges to the branch `master` trigger deploys to production of the v1 website, and the v2 of branch in a [`/v2` subfolder](https://www.typescriptlang.org/v2/).
+- Pushes to the branch `v2` deploy to [staging](http://testsite-typescript-41eeb979-7eaa-4c74-9d47-9d182c7b61ab.azurewebsites.net/).
+
+You can find the build logs in [GitHub Actions](https://github.com/microsoft/TypeScript-Website/actions)
 
 # Contributing
 
