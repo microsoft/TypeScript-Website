@@ -99,15 +99,15 @@ addPrices(3, 4, 6);
   `
 
   const ts = `
-  function addPrices(items<span class='highlight'>: number[]</span>) { 
-    let sum = 0;
-    for (const item of items) {
-      sum += item;
-    }
-    return sum;
- }
- 
- addPrices(<span class='underline-error'>3, 4, 6</span>);
+function addPrices(items<span class='highlight'>: number[]</span>) { 
+  let sum = 0;
+  for (const item of items) {
+    sum += item;
+  }
+  return sum;
+}
+
+addPrices(<span class='underline-error'>3, 4, 6</span>);
 `
 
   return (
