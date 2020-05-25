@@ -5,6 +5,7 @@ type Options = import("shiki/dist/renderer").HtmlRendererOptions
 type TwoSlash = import("@typescript/twoslash").TwoSlashReturn
 
 import { stripHTML, createHighlightedString2 } from "./utils"
+import { highlighter } from './highlighter';
 
 // OK, so - this is just straight up complex code.
 
@@ -105,7 +106,15 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
             if ("kind" in token) range.classes = token.kind
             if ("targetString" in token) {
               range.classes = "lsp"
-              range["lsp"] = stripHTML(token.text)
+              range["lsp"] =
+                stripHTML(
+                  plainOleShikiRenderer(
+                    highlighter.codeToThemedTokens(token.text, 'ts'),
+                    {
+                      langId: 'ts'
+                    }
+                  )
+                )
             }
             return range
           })

@@ -1,43 +1,11 @@
-import { loadTheme, getHighlighter, getTheme } from "shiki"
-import { Highlighter } from "shiki/dist/highlighter"
-import { commonLangIds, commonLangAliases, otherLangIds, TLang } from "shiki-languages"
+import { TLang } from "shiki-languages"
 import { twoslasher } from "@typescript/twoslash"
 
 import visit from "unist-util-visit"
 import { Node } from "unist"
 
 import { renderToHTML } from "./renderer"
-const languages = [...commonLangIds, ...commonLangAliases, ...otherLangIds]
-
-/**
- * This gets filled in by the promise below, then should
- * hopefully be more or less synchronous access by each parse
- * of the highlighter
- */
-let highlighter: Highlighter = null as any
-
-const getHighlighterObj = (options: import("shiki/dist/highlighter").HighlighterOptions) => {
-  if (highlighter) return highlighter
-
-  var settings = options || {}
-  var theme: any = settings.theme || "nord"
-  var shikiTheme
-
-  try {
-    shikiTheme = getTheme(theme)
-  } catch (error) {
-    try {
-      shikiTheme = loadTheme(theme)
-    } catch (error) {
-      throw new Error("Unable to load theme: " + theme + " - " + error.message)
-    }
-  }
-
-  return getHighlighter({ theme: shikiTheme, langs: languages }).then(newHighlighter => {
-    highlighter = newHighlighter
-    return highlighter
-  })
-}
+import { highlighter, languages, getHighlighterObj } from './highlighter';
 
 type RichNode = Node & {
   lang: TLang
