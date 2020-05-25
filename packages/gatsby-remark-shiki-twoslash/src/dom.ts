@@ -28,6 +28,14 @@ const findOrCreateTooltip = () => {
   return globalPopover
 }
 
+const getRootRect = (element: HTMLElement): DOMRect => {
+  if (element.nodeName.toLowerCase() === 'pre') {
+    return element.getBoundingClientRect();
+  }
+
+  return getRootRect(element.parentElement!);
+}
+
 /**
  * Creates the main mouse over popup for LSP info using the DOM API.
  * It is expected to be run inside a `useEffect` block inside your main
@@ -71,6 +79,11 @@ export const setupTwoslashHovers = () => {
     tooltip.style.display = 'block'
     tooltip.style.top = `${position.top + yOffset}px`
     tooltip.style.left = `${position.left}px`
+
+    // limit the width of the tooltip to the outer container (pre)
+    const rootRect = getRootRect(hovered);
+    const relativeLeft = position.left - rootRect.x;
+    tooltip.style.maxWidth = `${rootRect.width - relativeLeft}px`;
   }
 
   twoslashes.forEach((codeblock) => {
