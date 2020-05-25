@@ -111,7 +111,7 @@ export const handbookNavigation: NavItem[] = [
       "Find out how TypeScript has evolved and what's new in the releases.",
     items: [
       { id: "overview", title: "Overview" },
-      { id: "typescript-3-8", title: "TypeScript 3.9" },
+      { id: "typescript-3-9", title: "TypeScript 3.9" },
       { id: "typescript-3-8", title: "TypeScript 3.8" },
       { id: "typescript-3-7", title: "TypeScript 3.7" },
       { id: "typescript-3-6", title: "TypeScript 3.6" },
