@@ -86,7 +86,7 @@ Notes:
    ```ts
    let fst: (a: any, d: any) => any = (a, d) => a;
    // or more precisely:
-   let snd: <T, U>(a: T, d: U) => U = (a, d) => d.
+   let snd: <T, U>(a: T, d: U) => U = (a, d) => d;
    ```
 
 2. Object literal type syntax closely mirrors object literal value syntax:
