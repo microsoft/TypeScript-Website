@@ -11,11 +11,10 @@ import { docCopy } from "../../../../copy/en/documentation"
 import { createInternational } from "../../../../lib/createInternational"
 import { useIntl } from "react-intl"
 import { graphql } from "gatsby"
-import { DocsHomeQuery } from "../../../../__generated__/gatsby-types"
 import { handbookNavigation } from "../../../../lib/handbookNavigation"
 
 type Props = {
-  data: DocsHomeQuery
+  data: GatsbyTypes.DocsHomeQuery
   pageContext: any
 }
 

@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import ReactDOM from "react-dom"
 import { Layout } from "../components/layout"
 import { withPrefix, graphql } from "gatsby"
-import { PlayQuery } from "../__generated__/gatsby-types"
 
 import "./play.scss"
 import { RenderExamples } from "../components/ShowExamples"
@@ -20,7 +19,7 @@ import playgroundReleases from "../../../sandbox/src/releases.json"
 declare const playground: ReturnType<typeof import("typescript-playground").setupPlayground>
 
 type Props = {
-  data: PlayQuery
+  data: GatsbyTypes.PlayQuery
   pageContext: {
     lang: string
     examplesTOC: typeof import("../../static/js/examples/en.json")

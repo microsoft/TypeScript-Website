@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import ReactDOM from "react-dom"
 import { Layout } from "../../components/layout"
 import { withPrefix, graphql } from "gatsby"
-import { BugWorkbenchQuery } from "../../__generated__/gatsby-types"
 
 import "../../templates/play.scss"
 
@@ -21,7 +20,7 @@ import { createDefaultMapFromCDN } from "@typescript/vfs"
 import { twoslasher, TwoSlashReturn } from "@typescript/twoslash"
 
 type Props = {
-  data: BugWorkbenchQuery
+  data: GatsbyTypes.BugWorkbenchQuery
 }
 
 

@@ -10,7 +10,6 @@ import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/devNav"
 import { isTouchDevice } from "../../lib/isTouchDevice"
 import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
-import { TwoSlashQuery } from "../../__generated__/gatsby-types"
 
 /** Note: to run all the web infra in debug, run:
   localStorage.debug = '*'
@@ -19,7 +18,7 @@ import { TwoSlashQuery } from "../../__generated__/gatsby-types"
  */
 
 type Props = {
-  data: TwoSlashQuery
+  data: GatsbyTypes.TwoSlashQuery
 }
 
 const Index: React.FC<Props> = (props) => {

@@ -39,7 +39,7 @@
     "gatsby-plugin-sass": "^2.1.28",
     "gatsby-plugin-sharp": "^2.4.5",
     "gatsby-plugin-sitemap": "^2.2.27",
-    "gatsby-plugin-typegen": "^1.1.1",
+    "gatsby-plugin-typegen": "^2.2.0",
     "gatsby-remark-autolink-headers": "^2.1.24",
     "gatsby-remark-copy-linked-files": "^2.1.37",
     "gatsby-remark-images": "^3.1.44",

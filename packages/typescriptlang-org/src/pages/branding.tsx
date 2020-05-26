@@ -3,7 +3,6 @@ import { Layout } from "../components/layout"
 import { withPrefix, graphql, Link } from "gatsby"
 
 import { Intl } from "../components/Intl"
-import { UpcomingQuery, BrandingQuery } from "../__generated__/gatsby-types"
 import { UpcomingReleaseMeta } from "../components/index/UpcomingReleaseMeta"
 import { useIntl } from "react-intl"
 
@@ -11,7 +10,7 @@ import { useIntl } from "react-intl"
 import "./branding.scss"
 
 type Props = {
-  data: BrandingQuery
+  data: GatsbyTypes.BrandingQuery
 }
 
 const Row = (props: { children: any, className?: string }) => <div className={[props.className, "row"].join(" ")}>{props.children}</div>

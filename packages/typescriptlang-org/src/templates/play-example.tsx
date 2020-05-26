@@ -1,6 +1,5 @@
 import React, { useEffect } from "react"
 import { Layout } from "../components/layout"
-import { PlayExampleQuery } from "../__generated__/gatsby-types"
 
 import "./play.scss"
 
@@ -18,7 +17,7 @@ type Props = {
     title: string
     redirectHref: string
   }
-  data: PlayExampleQuery
+  data: GatsbyTypes.PlayExampleQuery
 }
 
 const Play = (props: Props) => {

@@ -3,14 +3,13 @@ import { Layout } from "../components/layout"
 import { withPrefix, graphql, Link } from "gatsby"
 
 import { Intl } from "../components/Intl"
-import { UpcomingQuery } from "../__generated__/gatsby-types"
 import { UpcomingReleaseMeta } from "../components/index/UpcomingReleaseMeta"
 import { useIntl } from "react-intl"
 
 import "../templates/pages/index.scss"
 
 type Props = {
-  data: UpcomingQuery
+  data: GatsbyTypes.UpcomingQuery
 }
 
 import releasePlan from "../lib/release-plan.json"

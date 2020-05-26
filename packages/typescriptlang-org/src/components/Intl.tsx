@@ -3,10 +3,9 @@ import { IntlProvider } from 'react-intl';
 
 type IntlProps = {
   locale: string
-  children: any
 }
 
-export const Intl = (props: IntlProps) => {
+export const Intl: React.FC<IntlProps> = (props) => {
   const { children, locale } = props
   let messages = require("../copy/en").lang
   try {

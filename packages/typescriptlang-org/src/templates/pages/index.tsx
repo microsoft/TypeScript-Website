@@ -16,7 +16,6 @@ import "../pages/css/documentation.scss"
 
 import { EditorExamples } from "../../components/index/EditorExamples"
 import { createIntlLink } from "../../components/IntlLink"
-import { IndexPageQuery } from "../../__generated__/gatsby-types"
 
 const Section = (props: { children: any, color: string, className?: string }) =>
   <div key={props.color} className={props.color + " " + (props.className ?? "")}><div className="container">{props.children}</div></div>
@@ -27,8 +26,8 @@ const Col = (props: { children: any, className?: string }) => <div className={[p
 const Col2 = (props: { children: any }) => <div className="col2">{props.children}</div>
 
 type Props = {
-  pageContext: any
-  data: IndexPageQuery
+  pageContext: any,
+  data: GatsbyTypes.IndexPageQuery
 }
 
 const Index: React.FC<Props> = (props) => {

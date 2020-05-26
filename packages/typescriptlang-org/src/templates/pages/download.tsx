@@ -5,12 +5,11 @@ import { graphql } from "gatsby"
 
 import releaseInfo from "../../lib/release-info.json"
 import { createIntlLink } from "../../components/IntlLink"
-import { DownloadPageQuery } from "../../__generated__/gatsby-types"
 import { QuickJump } from "../../components/QuickJump"
 
 type Props = {
   pageContext: any
-  data: DownloadPageQuery
+  data: GatsbyTypes.DownloadPageQuery
 }
 
 const changeExample = (code: string) => document.getElementById("code-example")!.textContent = code

@@ -1,12 +1,11 @@
 import * as React from "react"
 import { Layout } from "../../components/layout"
 import { Intl } from "../../components/Intl"
-import { graphql, } from "gatsby"
-import { EmptyPageQuery } from "../../__generated__/gatsby-types"
+import { graphql } from "gatsby"
 
 type Props = {
   pageContext: any
-  data: EmptyPageQuery
+  data: GatsbyTypes.EmptyPageQuery
 }
 
 import "./css/tools.scss"

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react"
 import { graphql } from "gatsby"
-import { GetHandbookBySlugQuery } from "../__generated__/gatsby-types"
 import { Layout } from "../components/layout"
 import { Sidebar, SidebarToggleButton } from "../components/layout/Sidebar"
 import { handbookNavigation } from "../lib/handbookNavigation"
@@ -31,7 +30,7 @@ type Props = {
     lang: string
     modifiedTime: string
   }
-  data: GetHandbookBySlugQuery
+  data: GatsbyTypes.GetHandbookBySlugQuery
   path: string
 }
 
