@@ -6,7 +6,7 @@ Most of the modern work occurs on [the v2](https://github.com/microsoft/TypeScri
 
 ### Meta
 
-* __URLs:__ [production](https://www.typescriptlang.org), [staging](http://testsite-typescript-41eeb979-7eaa-4c74-9d47-9d182c7b61ab.azurewebsites.net/)
+* __URLs:__ [production](https://www.typescriptlang.org), [staging](http://www.staging-typescript.org)
 
 ## Staging
 
