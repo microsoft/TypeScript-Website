@@ -82,7 +82,7 @@ const Index: React.FC<Props> = (props) => {
         <div style={{ padding: "1rem", flex: 1, minWidth: "250px" }}>
           <h3>via Visual Studio Marketplace</h3>
           <p>You can install TypeScript as a Visual Studio extension, which will allow you to use TypeScript across many MSBuild projects in Visual Studio.</p>
-          <p>The latest version is available <a href={releaseInfo.vs.stable.vs2019_download}>here</a>.</p>
+          <p>The latest version is available <a href={releaseInfo.vs.stable.vs2019_download} title="Link to the Visual Studio Marketplace for the TypeScript MSBuild extension">in the Visual Studio Marketplace</a>.</p>
         </div>
       </section>
     </div>
