@@ -245,7 +245,6 @@ languages.forEach((lang) => {
         // Make a markdown table of the important metadata
         const mdTableRows = [] as [string, string][];
 
-        mdTableRows.push(["Flag", option.name]);
         if (option.deprecated) mdTableRows.push(["Status", "Deprecated"]);
 
         if (option.recommended) mdTableRows.push(["Recommended", "True"]);
