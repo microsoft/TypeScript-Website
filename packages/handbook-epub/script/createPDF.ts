@@ -4,8 +4,9 @@ import { execSync } from "child_process";
 import { join } from "path";
 import { copyFileSync } from "fs";
 
-const whichResult = execSync("which ebook-convert", { encoding: "utf8" });
-if (!whichResult.includes("ebook-convert")) {
+try {
+  execSync("which ebook-convert", { encoding: "utf8" });
+} catch (e) {
   console.log("Skipping converting to pdf because calibre is not installed");
   process.exit(0);
 }
