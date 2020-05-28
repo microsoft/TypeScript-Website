@@ -89,6 +89,10 @@
     z-index: 99999;
     background-color: white;
 
+    ul {
+      display: flex;
+      margin: 0;
+    }
     @media (prefers-color-scheme: dark) {
       background-color: $ts-dark-bg-for-foreground-color;
       border-color: black;
@@ -133,15 +137,41 @@
   .category {
     margin-top: 80px;
     margin-bottom: 40px;
+
+    > h2 {
+      
+      > a {
+        &:focus {
+          outline: none;
+          background-color: black;
+          color: white;
+        }
+      }
+    }
   }
 
   .compiler-option {
     margin-bottom: 80px;
 
     > h3 {
-      margin-bottom: 0;
+      &:before { 
+        display: block; 
+        content: " "; 
+        height: 150px;
+        margin-top: -150px;
+        visibility: hidden; 
+      }
 
+      margin-bottom: 0;
       overflow-x: hidden;
+
+      > a {
+        &:focus {
+          outline: none;
+          background-color: black;
+          color: white;
+        }
+      }
     }
 
     .compiler-content {

@@ -54,11 +54,16 @@ const go = async () => {
         const rssText = await rssResponse.text()
         const rss = await xml2js.parseStringPromise(rssText)
 
+        // const removeDoubleLinks =
+
         const upcoming = rss.rss.channel[0].item[0]
 
         if (upcoming.title[0] === title) {
           richDescription = upcoming.description[0]
         }
+
+        const linkifiedRegex = new RegExp(`<a href="[^>]+" class="linkified">`, "g")
+        let filteredRichText = richDescription.replace(linkifiedRegex, "").replace(new RegExp("</a></a>"), "</a>")
 
         const event = {
           id,
@@ -66,7 +71,7 @@ const go = async () => {
           date,
           location,
           textDescription,
-          richDescription,
+          richDescription: filteredRichText,
           title,
         }
 

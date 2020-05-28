@@ -164,7 +164,7 @@ languages.forEach((lang) => {
 
     // Show a sticky sub-nav for the categories
     if (sectionCategories.length > 1) {
-      markdownChunks.push(`<nav id="sticky">`);
+      markdownChunks.push(`<nav id="sticky"><ul>`);
 
       sectionCategories.forEach((categoryID) => {
         const categoryPath = getPathInLocale(join("categories", categoryID + ".md"));
@@ -172,7 +172,7 @@ languages.forEach((lang) => {
 
         markdownChunks.push(`<li><a href="#${categoryID}">${categoryFile.data.display}</a></li>`);
       });
-      markdownChunks.push("</nav>");
+      markdownChunks.push("</ul></nav>");
     }
 
     markdownChunks.push("<div class='indent'>");
@@ -190,7 +190,7 @@ languages.forEach((lang) => {
       markdownChunks.push("<div class='category'>");
 
       // Let the title change it's display but keep the same ID
-      const title = `<h2 id='${categoryID}'><a href='#${categoryID}' name='${categoryID}'>#</a> ${categoryFile.data.display}</h2>`;
+      const title = `<h2 id='${categoryID}' ><a href='#${categoryID}' name='${categoryID}' aria-label="Link to the section ${categoryFile.data.display}" title="Link to the section ${categoryFile.data.display}">#</a>${categoryFile.data.display}</h2>`;
       markdownChunks.push(title);
 
       // Push the category copy
@@ -229,7 +229,7 @@ languages.forEach((lang) => {
         markdownChunks.push("<section class='compiler-option'>");
 
         // Let the title change it's display but keep the same ID
-        const titleLink = `<a aria-label="Link to the compiler option:${option.name}" title="Link to the compiler option:${option.name}" id='${option.name}' href='#${option.name}' name='${option.name}'>#</a>`;
+        const titleLink = `<a aria-label="Link to the compiler option: ${option.name}" title="Link to the compiler option:${option.name}" id='${option.name}' href='#${option.name}' name='${option.name}'>#</a>`;
         const title = `<h3 id='${option.name}-config'>${titleLink} ${optionFile.data.display} - <code>${option.name}</code></h3>`;
         markdownChunks.push(title);
 

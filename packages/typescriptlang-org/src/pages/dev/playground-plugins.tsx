@@ -30,7 +30,7 @@ const Index: React.FC<Props> = (props) => {
             </div>
 
             <div className="sixhundred" style={{ borderLeft: "1px solid gray" }}>
-              <img src={require("../../assets/playground-plugin-preview.png")} width="100%" />
+              <img src={require("../../assets/playground-plugin-preview.png")} width="100%" alt="Screenshot of the playground showing the plugins tab" />
             </div>
           </div>
 
