@@ -94,7 +94,7 @@ export const handbookNavigation: NavItem[] = [
     directory: "handbook",
     index: "typescript-in-5-minutes",
     summary:
-      "Step by step tutorials how TypeScript works with different tools.",
+      "Step by step tutorials on how TypeScript works with different tools.",
     items: [
       { id: "asp-net-core", title: "ASP.NET Core" },
       { id: "gulp", title: "Gulp" },
@@ -209,7 +209,7 @@ export const handbookNavigation: NavItem[] = [
         title: "TSConfig Reference",
       },
       { id: "tsconfig-json", title: "The tsconfig.json" },
-      { id: "compiler-options", title: "Options via the CLI" },
+      { id: "compiler-options", title: "CLI Options" },
       { id: "project-references", title: "Project References" },
       {
         id: "compiler-options-in-msbuild",
