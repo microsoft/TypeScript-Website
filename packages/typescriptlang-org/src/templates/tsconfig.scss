@@ -89,6 +89,10 @@
     z-index: 99999;
     background-color: white;
 
+    ul {
+      display: flex;
+      margin: 0;
+    }
     @media (prefers-color-scheme: dark) {
       background-color: $ts-dark-bg-for-foreground-color;
       border-color: black;
