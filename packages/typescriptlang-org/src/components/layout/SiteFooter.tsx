@@ -90,7 +90,7 @@ const useTypeScriptLinks = [
 const communityLinks = [
   {
     title: "Get Help",
-    url: "/community/index.html",
+    url: "/community",
   },
   {
     title: "Blog",
