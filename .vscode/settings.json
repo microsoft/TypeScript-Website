@@ -4,15 +4,6 @@
     "**/packages/typescriptlang-org/public/*": true,
     "**/packages/typescriptlang-org/.cache/*": true
   },
-  "workbench.colorCustomizations": {
-    "activityBar.background": "#c4d3e4",
-    "activityBar.activeBackground": "#c4d3e4",
-    "activityBar.activeBorder": "#c37c9d",
-    "activityBar.foreground": "#15202b",
-    "activityBar.inactiveForeground": "#15202b99",
-    "activityBarBadge.background": "#c37c9d",
-    "activityBarBadge.foreground": "#15202b"
-  },
   "typescript.tsdk": "node_modules/typescript/lib",
   "debug.node.autoAttach": "on",
   "editor.formatOnSave": true,

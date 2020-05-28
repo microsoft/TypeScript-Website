@@ -4,7 +4,7 @@
     "packages/*"
   ],
   "engines": {
-    "node": "^13"
+    "node": ">13"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
