@@ -326,7 +326,8 @@ export const setupPlayground = (
         settingsContent.className = "playground-settings-container playground-plugin-container"
         const settings = settingsPlugin(i, utils)
         settings.didMount && settings.didMount(sandbox, settingsContent)
-        document.querySelector(".playground-sidebar")!.appendChild(settingsContent)
+        document.querySelector(".playground-sidebar")!.appendChild(settingsContent);
+        (document.querySelector(".playground-sidebar label") as any).focus()
       }
 
       if (open) {
