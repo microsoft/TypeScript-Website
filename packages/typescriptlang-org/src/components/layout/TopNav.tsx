@@ -35,7 +35,7 @@ export const SiteNav = (props: Props) => {
           apiKey: '3c2db2aef0c7ff26e8911267474a9b2c',
           indexName: 'typescriptlang',
           inputSelector: '.search input',
-          // debug: true // Set debug to true if you want to inspect the dropdown
+          debug: true // Set debug to true if you want to inspect the dropdown
         });
 
         searchCSS.rel = 'stylesheet';

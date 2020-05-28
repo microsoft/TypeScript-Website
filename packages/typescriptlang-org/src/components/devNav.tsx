@@ -11,7 +11,7 @@ export const DevNav = (props: DevNavProps) => {
 
   return <nav className="navbar-sub dev-tools">
     <ul className="nav">
-      <li className="name"><span>Developer Tools</span></li>
+      <li className="name"><h3>Developer Tools</h3></li>
       <li style={{ display: "none" }}>
         <a className={isActive("compiler api")} href={withPrefix("/dev/compiler")}>Compiler API</a>
       </li>
