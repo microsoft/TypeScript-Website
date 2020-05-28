@@ -7,7 +7,7 @@ oneline: "How to write a high-quality TypeScript Ddeclaration (d.ts) file"
 
 This guide is designed to teach you how to write a high-quality TypeScript Declaration File.
 
-In this guide, we'll assume basic familiarity with the TypeScript language.
+We assume basic familiarity with the TypeScript language.
 If you haven't already, you should read the [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/basic-types.html)
 to familiarize yourself with basic concepts, especially types and namespaces.
 
@@ -17,13 +17,13 @@ The guide is broken down into the following sections.
 
 ## Library Structures
 
-The [Library Structures](/docs/handbook/declaration-files/library-structures.html) guide helps you understand common library formats and how to write a correct declaration file for each format.
+The [Library Structures](/docs/handbook/declaration-files/library-structures.html) guide helps you understand common library formats and how to write a proper declaration file for each format.
 If you're editing an existing file, you probably don't need to read this section.
-Authors of new declaration files must read this section to properly understand how the format of the library influences the writing of the declaration file.
+Authors of new declaration files are strongly encouraged to read this section to properly understand how the format of the library influences the writing of the declaration file.
 
 ## By Example
 
-Many times, we are faced with writing a declaration file when we only have examples of the underlying library to guide us.
+We are often faced with writing a declaration file when we only have examples of the underlying library to guide us.
 The [By Example](/docs/handbook/declaration-files/by-example.html) section shows many common API patterns and how to write declarations for each of them.
 This guide is aimed at the TypeScript novice who may not yet be familiar with every language construct in TypeScript.
 
