@@ -56,6 +56,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
 
         let target = document.querySelector(event.target!["hash"]);
         target.scrollIntoView({ behavior: "smooth", block: "start" });
+        document.location.hash = event.target!["hash"]
       })
     })
 
