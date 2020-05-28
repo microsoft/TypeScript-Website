@@ -5,7 +5,6 @@
     "**/packages/typescriptlang-org/.cache/*": true
   },
   "typescript.tsdk": "node_modules/typescript/lib",
-  "debug.node.autoAttach": "on",
   "editor.formatOnSave": true,
   "peacock.color": "#a1b9d4"
 }
