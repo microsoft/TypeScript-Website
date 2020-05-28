@@ -1,5 +1,9 @@
 #!/usr/bin/env ts-node
 
+/* With twoslash
+   env CI=213 yarn workspace handbook-epub build
+*/
+
 const jetpack = require("fs-jetpack");
 const { createReadStream } = jetpack;
 

@@ -80,7 +80,7 @@ pre code {
 
 .code-container .error {
   margin-top: 8px;
-  background-color: #ff545419;
+  background-color: rgba(255, 84, 84, 0.2);
   border-left: 3px solid #bf1818;
   color: black;
   margin-left: -23px;
