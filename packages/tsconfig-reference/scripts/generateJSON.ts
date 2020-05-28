@@ -121,18 +121,7 @@ const topLevelTSConfigOptions: CompilerOptionJSON[] = [
     },
     defaultValue: "false",
     hostObj: "top_level",
-  },
-  {
-    name: "importHelpers",
-    type: "string",
-    categoryCode: 6178,
-    // @ts-ignore
-    description: {
-      message: "Print names of files part of the compilation.",
-    },
-    defaultValue: "false",
-    hostObj: "top_level",
-  },
+  }
 ];
 
 const watchOptions: CompilerOptionJSON[] = [
