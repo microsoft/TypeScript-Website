@@ -629,6 +629,13 @@
       max-width: 800px;
       margin: 0 auto;
 
+      @media screen and (-ms-high-contrast: black-on-white) {
+        svg  path { fill: black; }
+      }
+      @media screen and (-ms-high-contrast: white-on-black) {
+        svg  path { fill: white; }
+      }
+
       svg {
         margin: 0 auto;
       }
