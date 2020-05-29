@@ -108,26 +108,39 @@ TypeScript's type checker is designed to allow correct programs through while st
 (Later, we'll learn about settings you can use to configure how strictly TypeScript checks your code.)
 
 If you move some code from a JavaScript file to a TypeScript file, you might see _type errors_ depending on how the code is written.
-These may be legitimate problems with the code, or TypeScript being overly conservative.
+These may be legitimate problems with the code, or TypeScript being overly conservative - most likely because it doesn't have enough information.
+<!--
+Since this is aimed at newbies, it would be good to have an example
+here: have some simple code with both a type error and another error due
+to inference or whatever.  Say that fixing the error is obvious but the
+other problem requires informing TS that something has some type.  Then
+say that TS extends the JS syntax with a `:`, and demonstrate it.  This
+would also make the following sentence redundant.
+-->
 Throughout this guide we'll demonstrate how to add various TypeScript syntax to eliminate such errors.
 
 #### Runtime Behavior
 
 TypeScript is also a programming language that preserves the _runtime behavior_ of JavaScript.
 For example, dividing by zero in JavaScript produces `Infinity` instead of throwing a runtime exception.
-As a principle, TypeScript **never** changes the runtime behavior of JavaScript code.
+As a principle, TypeScript _never_ changes the runtime behavior of JavaScript code.
 
-This means that if you move code from JavaScript to TypeScript, it is **guaranteed** to run the same way, even if TypeScript thinks that the code has type errors.
+This means that if you move code from JavaScript to TypeScript, it is _guaranteed_ to run the same way, even if TypeScript thinks that the code has type errors.
 
 Keeping the same runtime behavior as JavaScript is a foundational promise of TypeScript because it means you can easily transition between the two languages without worrying about subtle differences that might make your program stop working.
 
-<!--
-Missing subsection on the fact that TS extends JS to add syntax for type
-specification.  (Since the immediately preceding text was raving about
-how JS code can be used in TS.)
--->
-
 #### Erased Types
+
+<!--
+We now know that there is a syntax extension for types, and we know that
+we promise not to change runtime behavior.  So rephrase the beginning of
+this section as a question of what happens to these types when the code
+runs.  Should also say here that the compiler produces plain JS code and
+that *that* code is what gets to run -- and this makes the type erasure
+feature more concrete.  Maybe also mention that the JS code is produced
+even if there are type errors, so you can always try to just run the
+result.
+--->
 
 Roughly speaking, once TypeScript's compiler is done with checking your code, it _erases_ the types to produced the resulting "compiled" code.
 This means that once your code is compiled, the resulting plain JS code has no type information.
