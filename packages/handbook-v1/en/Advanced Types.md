@@ -189,7 +189,7 @@ We mentioned these briefly in [the Basic Types section](docs/handbook/basic-type
 By default, the type checker considers `null` and `undefined` assignable to anything.
 Effectively, `null` and `undefined` are valid values of every type.
 That means it's not possible to _stop_ them from being assigned to any type, even when you would like to prevent it.
-The inventor of `null`, Tony Hoare, calls this his ["billion dollar mistake"](https://en.wikipedia.org/wiki/Null_pointer#History).
+The inventor of `null`, Tony Hoare, calls this his ["billion dollar mistake"](https://wikipedia.org/wiki/Null_pointer#History).
 
 The `--strictNullChecks` flag fixes this: when you declare a variable, it doesn't automatically include `null` or `undefined`.
 You can include them explicitly using a union type:
@@ -363,7 +363,7 @@ declare function interfaced(arg: Interface): Interface;
 
 In older versions of TypeScript, type aliases couldn't be extended or implemented from (nor could they extend/implement other types). As of version 2.7, type aliases can be extended by creating a new intersection type e.g. `type Cat = Animal & { purrs: true }`.
 
-Because [an ideal property of software is being open to extension](https://en.wikipedia.org/wiki/Open/closed_principle), you should always use an interface over a type alias if possible.
+Because [an ideal property of software is being open to extension](https://wikipedia.org/wiki/Open/closed_principle), you should always use an interface over a type alias if possible.
 
 On the other hand, if you can't express some shape with an interface and you need to use a union or tuple type, type aliases are usually the way to go.
 
@@ -819,7 +819,7 @@ type Partial<T> = { [P in keyof T]?: T[P] };
 
 In these examples, the properties list is `keyof T` and the resulting type is some variant of `T[P]`.
 This is a good template for any general use of mapped types.
-That's because this kind of transformation is [homomorphic](https://en.wikipedia.org/wiki/Homomorphism), which means that the mapping applies only to properties of `T` and no others.
+That's because this kind of transformation is [homomorphic](https://wikipedia.org/wiki/Homomorphism), which means that the mapping applies only to properties of `T` and no others.
 The compiler knows that it can copy all the existing property modifiers before adding any new ones.
 For example, if `Person.name` was readonly, `Partial<Person>.name` would be readonly and optional.
 

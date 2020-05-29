@@ -1055,7 +1055,7 @@ let x = foo !== null && foo !== undefined ? foo : bar();
 ```
 
 The `??` operator can replace uses of `||` when trying to use a default value.
-For example, the following code snippet tries to fetch the volume that was last saved in [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) (if it ever was);
+For example, the following code snippet tries to fetch the volume that was last saved in [`localStorage`](https://developer.mozilla.org/docs/Web/API/Window/localStorage) (if it ever was);
 however, it has a bug because it uses `||`.
 
 ```ts
@@ -1266,7 +1266,7 @@ type Foo = Foo;
 This is a reasonable restriction because any use of `Foo` would need to be replaced with `Foo` which would need to be replaced with `Foo` which would need to be replaced with `Foo` which... well, hopefully you get the idea!
 In the end, there isn't a type that makes sense in place of `Foo`.
 
-This is fairly [consistent with how other languages treat type aliases](https://en.wikipedia.org/w/index.php?title=Recursive_data_type&oldid=913091335#in_type_synonyms), but it does give rise to some slightly surprising scenarios for how users leverage the feature.
+This is fairly [consistent with how other languages treat type aliases](https://wikipedia.org/w/index.php?title=Recursive_data_type&oldid=913091335#in_type_synonyms), but it does give rise to some slightly surprising scenarios for how users leverage the feature.
 For example, in TypeScript 3.6 and prior, the following causes an error.
 
 ```ts
@@ -5420,7 +5420,7 @@ See [Type checking JavaScript Files documentation](https://github.com/Microsoft/
 
 ## Support for Mix-in classes
 
-TypeScript 2.2 adds support for the ECMAScript 2015 mixin class pattern (see [MDN Mixin description](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Mix-ins) and ["Real" Mixins with JavaScript Classes](http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/) for more details) as well as rules for combining mixin construct signatures with regular construct signatures in intersection types.
+TypeScript 2.2 adds support for the ECMAScript 2015 mixin class pattern (see [MDN Mixin description](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Classes#Mix-ins) and ["Real" Mixins with JavaScript Classes](http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/) for more details) as well as rules for combining mixin construct signatures with regular construct signatures in intersection types.
 
 ##### First some terminology:
 
@@ -7076,7 +7076,7 @@ interface Error {
 
 ## Type parameters as constraints
 
-With TypeScript 1.8 it becomes possible for a type parameter constraint to reference type parameters from the same type parameter list. Previously this was an error. This capability is usually referred to as [F-Bounded Polymorphism](https://en.wikipedia.org/wiki/Bounded_quantification#F-bounded_quantification).
+With TypeScript 1.8 it becomes possible for a type parameter constraint to reference type parameters from the same type parameter list. Previously this was an error. This capability is usually referred to as [F-Bounded Polymorphism](https://wikipedia.org/wiki/Bounded_quantification#F-bounded_quantification).
 
 ##### Example
 
@@ -7295,7 +7295,7 @@ Array.prototype.mapToNumbers = function () {
 ## String literal types
 
 It's not uncommon for an API to expect a specific set of strings for certain values.
-For instance, consider a UI library that can move elements across the screen while controlling the ["easing" of the animation.](https://en.wikipedia.org/wiki/Inbetweening)
+For instance, consider a UI library that can move elements across the screen while controlling the ["easing" of the animation.](https://wikipedia.org/wiki/Inbetweening)
 
 ```ts
 declare class UIElement {
@@ -7482,7 +7482,7 @@ for (var x in a) {
 
 ## Modules are now emitted with a `"use strict";` prologue
 
-Modules were always parsed in strict mode as per ES6, but for non-ES6 targets this was not respected in the generated code. Starting with TypeScript 1.8, emitted modules are always in strict mode. This shouldn't have any visible changes in most code as TS considers most strict mode errors as errors at compile time, but it means that some things which used to silently fail at runtime in your TS code, like assigning to `NaN`, will now loudly fail. You can reference the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode) on strict mode for a detailed list of the differences between strict mode and non-strict mode.
+Modules were always parsed in strict mode as per ES6, but for non-ES6 targets this was not respected in the generated code. Starting with TypeScript 1.8, emitted modules are always in strict mode. This shouldn't have any visible changes in most code as TS considers most strict mode errors as errors at compile time, but it means that some things which used to silently fail at runtime in your TS code, like assigning to `NaN`, will now loudly fail. You can reference the [MDN Article](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Strict_mode) on strict mode for a detailed list of the differences between strict mode and non-strict mode.
 
 ## Including `.js` files with `--allowJs`
 
@@ -7715,7 +7715,7 @@ TypeScript 1.7 adds `ES6` to the list of options available for the `--module` fl
 
 ## `this`-typing
 
-It is a common pattern to return the current object (i.e. `this`) from a method to create [fluent-style APIs](https://en.wikipedia.org/wiki/Fluent_interface).
+It is a common pattern to return the current object (i.e. `this`) from a method to create [fluent-style APIs](https://wikipedia.org/wiki/Fluent_interface).
 For instance, consider the following `BasicCalculator` module:
 
 ```ts

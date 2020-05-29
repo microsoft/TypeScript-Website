@@ -426,7 +426,7 @@ There's clearly boilerplate here, so you should feel free to look into libraries
 
 We're ready to write our first reducer!
 Reducers are just functions that generate changes by creating modified copies of our application's state, but that have _no side effects_.
-In other words, they're what we call _[pure functions](https://en.wikipedia.org/wiki/Pure_function)_.
+In other words, they're what we call _[pure functions](https://wikipedia.org/wiki/Pure_function)_.
 
 Our reducer will go under `src/reducers/index.tsx`.
 Its function will be to ensure that increments raise the enthusiasm level by 1, and that decrements reduce the enthusiasm level by 1, but that the level never falls below 1.

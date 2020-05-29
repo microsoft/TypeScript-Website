@@ -48,7 +48,7 @@ if (typeof possibleOrder === "undefined") {
 }
 
 // 你可以在这里看到全部 typeof 的可能的值:
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
+// https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/typeof
 
 // 使用 JavaScript 操作符仅仅可以帮助您实现一部分功能，
 // 当您希望检查自己定义的类型时，您可以使用类型谓词函数。

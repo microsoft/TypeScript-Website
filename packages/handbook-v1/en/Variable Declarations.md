@@ -262,7 +262,7 @@ foo();
 let a;
 ```
 
-For more information on temporal dead zones, see relevant content on the [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#Temporal_dead_zone_and_errors_with_let).
+For more information on temporal dead zones, see relevant content on the [Mozilla Developer Network](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/let#Temporal_dead_zone_and_errors_with_let).
 
 ## Re-declarations and Shadowing
 
@@ -437,7 +437,7 @@ The [chapter on Interfaces](/docs/handbook/interfaces.html) has the details.
 Given that we have two types of declarations with similar scoping semantics, it's natural to find ourselves asking which one to use.
 Like most broad questions, the answer is: it depends.
 
-Applying the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege), all declarations other than those you plan to modify should use `const`.
+Applying the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege), all declarations other than those you plan to modify should use `const`.
 The rationale is that if a variable didn't need to get written to, others working on the same codebase shouldn't automatically be able to write to the object, and will need to consider whether they really need to reassign to the variable.
 Using `const` also makes code more predictable when reasoning about flow of data.
 
@@ -448,7 +448,7 @@ The majority of this handbook uses `let` declarations.
 # Destructuring
 
 Another ECMAScript 2015 feature that TypeScript has is destructuring.
-For a complete reference, see [the article on the Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment).
+For a complete reference, see [the article on the Mozilla Developer Network](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment).
 In this section, we'll give a short overview.
 
 ## Array destructuring
@@ -689,7 +689,7 @@ Then the `food` property in `defaults` overwrites `food: "rich"`, which is not w
 
 Object spread also has a couple of other surprising limits.
 First, it only includes an objects'
-[own, enumerable properties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties).
+[own, enumerable properties](https://developer.mozilla.org/docs/Web/JavaScript/Enumerability_and_ownership_of_properties).
 Basically, that means you lose methods when you spread instances of an object:
 
 ```ts
