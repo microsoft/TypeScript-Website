@@ -5,7 +5,7 @@
 
 ### Getting Started
 
-This repo uses [yarn workspaces][y-wrk] with node 13, to get started clone this repo and run `yarn install`.
+This repo uses [yarn workspaces][y-wrk] with node 13+, to get started clone this repo and run `yarn install`.
 
 ```sh
 git clone https://github.com/microsoft/TypeScript-website
