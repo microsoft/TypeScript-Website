@@ -133,17 +133,49 @@ export const setupSidebarToggle = () => {
 export const createTabBar = () => {
   const tabBar = document.createElement("div")
   tabBar.classList.add("playground-plugin-tabview")
+  tabBar.id = "playground-plugin-tabbar"
+  tabBar.setAttribute("aria-label", "Tabs for plugins")
+
+  /** Support left/right in the tab bar for accessibility */
+  let tabFocus = 0;
+  tabBar.addEventListener("keydown", e => {
+    const tabs = document.querySelectorAll('.playground-plugin-tabview [role="tab"]')
+    // Move right
+    if (e.keyCode === 39 || e.keyCode === 37) {
+      tabs[tabFocus].setAttribute("tabindex", "-1");
+      if (e.keyCode === 39) {
+        tabFocus++;
+        // If we're at the end, go to the start
+        if (tabFocus >= tabs.length) {
+          tabFocus = 0;
+        }
+        // Move left
+      } else if (e.keyCode === 37) {
+        tabFocus--;
+        // If we're at the start, move to the end
+        if (tabFocus < 0) {
+          tabFocus = tabs.length - 1;
+        }
+      }
+
+      tabs[tabFocus].setAttribute("tabindex", "0");
+      (tabs[tabFocus] as any).focus();
+    }
+  })
+
   return tabBar
 }
 
 export const createPluginContainer = () => {
   const container = document.createElement("div")
+  container.setAttribute("role", "tabpanel")
   container.classList.add("playground-plugin-container")
   return container
 }
 
 export const createTabForPlugin = (plugin: PlaygroundPlugin) => {
   const element = document.createElement("button")
+  element.setAttribute("role", "tab")
   element.textContent = plugin.displayName
   return element
 }
@@ -170,6 +202,8 @@ export const activatePlugin = (
   if (previousPlugin && oldPluginTab) {
     if (previousPlugin.willUnmount) previousPlugin.willUnmount(sandbox, container)
     oldPluginTab.classList.remove("active")
+    oldPluginTab.setAttribute("aria-selected", "false")
+    oldPluginTab.setAttribute("tabindex", "-1")
   }
 
   // Wipe the sidebar
@@ -179,6 +213,8 @@ export const activatePlugin = (
 
   // Start booting up the new plugin
   newPluginTab.classList.add("active")
+  newPluginTab.setAttribute("aria-selected", "true")
+  newPluginTab.setAttribute("tabindex", "0")
 
   // Tell the new plugin to start doing some work
   if (plugin.willMount) plugin.willMount(sandbox, container)

@@ -98,6 +98,7 @@ export const setupPlayground = (
     plugins.push(plugin)
 
     const tab = createTabForPlugin(plugin)
+
     tabs.push(tab)
 
     const tabClicked: HTMLElement["onclick"] = e => {
