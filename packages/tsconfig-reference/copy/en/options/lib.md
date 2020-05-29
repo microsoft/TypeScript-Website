@@ -26,9 +26,9 @@ You may want to change these for a few reasons:
 | `ES2019`     | Additional APIs available in ES2019 - `array.flat`, `array.flatMap`, `Object.fromEntries`, `string.trimStart`, `string.trimEnd`, etc.             |
 | `ES2020`     | Additional APIs available in ES2020 - `string.matchAll`, etc.                                                                                     |
 | `ESNext`     | Additional APIs available in ESNext - This changes as the JavaScript specification evolves                                                        |
-| `DOM`        | [DOM](https://developer.mozilla.org/en-US/docs/Glossary/DOM) definitions - `window`, `document`, etc.                                             |
-| `WebWorker`  | APIs available in [WebWorker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) contexts                        |
-| `ScriptHost` | APIs for the [Windows Script Hosting System](https://en.wikipedia.org/wiki/Windows_Script_Host)                                                   |
+| `DOM`        | [DOM](https://developer.mozilla.org/docs/Glossary/DOM) definitions - `window`, `document`, etc.                                                   |
+| `WebWorker`  | APIs available in [WebWorker](https://developer.mozilla.org/docs/Web/API/Web_Workers_API/Using_web_workers) contexts                              |
+| `ScriptHost` | APIs for the [Windows Script Hosting System](https://wikipedia.org/wiki/Windows_Script_Host)                                                      |
 
 ### Individual library components
 

@@ -134,7 +134,7 @@ let x = foo !== null && foo !== undefined ? foo : bar();
 ```
 
 The `??` operator can replace uses of `||` when trying to use a default value.
-For example, the following code snippet tries to fetch the volume that was last saved in [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) (if it ever was);
+For example, the following code snippet tries to fetch the volume that was last saved in [`localStorage`](https://developer.mozilla.org/docs/Web/API/Window/localStorage) (if it ever was);
 however, it has a bug because it uses `||`.
 
 ```ts
@@ -345,7 +345,7 @@ type Foo = Foo;
 This is a reasonable restriction because any use of `Foo` would need to be replaced with `Foo` which would need to be replaced with `Foo` which would need to be replaced with `Foo` which... well, hopefully you get the idea!
 In the end, there isn't a type that makes sense in place of `Foo`.
 
-This is fairly [consistent with how other languages treat type aliases](https://en.wikipedia.org/w/index.php?title=Recursive_data_type&oldid=913091335#in_type_synonyms), but it does give rise to some slightly surprising scenarios for how users leverage the feature.
+This is fairly [consistent with how other languages treat type aliases](https://wikipedia.org/w/index.php?title=Recursive_data_type&oldid=913091335#in_type_synonyms), but it does give rise to some slightly surprising scenarios for how users leverage the feature.
 For example, in TypeScript 3.6 and prior, the following causes an error.
 
 ```ts

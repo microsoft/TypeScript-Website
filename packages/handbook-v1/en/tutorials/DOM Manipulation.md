@@ -15,7 +15,7 @@ Website are made up of HTML and/or XML documents. These documents are static, th
 
 TypeScript is a typed superset of JavaScript, and it ships type definitions for the DOM API. These definitions are readily available in any default TypeScript project. Of the 20,000+ lines of definitions in _lib.dom.d.ts_, one stands out among the rest: `HTMLElement` . This type is the backbone for DOM manipulation with TypeScript.
 
-> Explore the source code for the DOM type definitions here: [https://github.com/microsoft/TypeScript/blob/master/lib/lib.dom.d.ts](https://github.com/microsoft/TypeScript/blob/master/lib/lib.dom.d.ts)
+> You can explore the source code for the [DOM type definitions](https://github.com/microsoft/TypeScript/blob/master/lib/lib.dom.d.ts)
 
 ## Basic Example
 
@@ -192,9 +192,9 @@ const all = document.querySelectorAll("li"); // returns the list of all li eleme
 
 ## Interested in learning more?
 
-The best part about the _lib.dom.d.ts_ type definitions is that they are reflective of the types annotated in the Mozilla Developer Network (MDN) documentation site. For example, the `HTMLElement` interface is documented by this [HTMLElement page](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) on MDN. These pages list all available properties, methods, and sometimes even examples. Another great aspect of the pages is that they provide links to the corresponding standard documents. Here is the link to the [W3C Recommendation for HTMLElement](https://www.w3.org/TR/html52/dom.html#htmlelement).
+The best part about the _lib.dom.d.ts_ type definitions is that they are reflective of the types annotated in the Mozilla Developer Network (MDN) documentation site. For example, the `HTMLElement` interface is documented by this [HTMLElement page](https://developer.mozilla.org/docs/Web/API/HTMLElement) on MDN. These pages list all available properties, methods, and sometimes even examples. Another great aspect of the pages is that they provide links to the corresponding standard documents. Here is the link to the [W3C Recommendation for HTMLElement](https://www.w3.org/TR/html52/dom.html#htmlelement).
 
 Sources:
 
-- ECMA-262 Standard: [http://www.ecma-international.org/ecma-262/10.0/index.html#Title](http://www.ecma-international.org/ecma-262/10.0/index.html#Title)
-- Introduction to the DOM: [https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction)
+- [ECMA-262 Standard](http://www.ecma-international.org/ecma-262/10.0/index.html)
+- [Introduction to the DOM](https://developer.mozilla.org/docs/Web/API/Document_Object_Model/Introduction)

@@ -14,7 +14,7 @@ const oneBelowMin = -9007199254740992
 // このサイズの数値を扱うための解決策は、
 // これらの数値を、number の代わりに BigInts に変換することです:
 //
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
+// https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt
 
 // TypeScriptは、2の52乗以上の数値リテラル(正/負)の修正機能を提供するようになり、
 // 接尾辞 "n"を追加してJavaScriptにBigInt型であることを知らせるようになりました。

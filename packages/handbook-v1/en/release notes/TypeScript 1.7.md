@@ -38,7 +38,7 @@ printDelayed(["Hello", "beautiful", "asynchronous", "world"]).then(() => {
 });
 ```
 
-For more information see [async function reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) reference.
+For more information see [async function reference](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) reference.
 
 ## Support for `--target ES6` with `--module`
 
@@ -58,7 +58,7 @@ This provides more flexibility to target exactly the features you want in specif
 
 ## `this`-typing
 
-It is a common pattern to return the current object (i.e. `this`) from a method to create [fluent-style APIs](https://en.wikipedia.org/wiki/Fluent_interface).
+It is a common pattern to return the current object (i.e. `this`) from a method to create [fluent-style APIs](https://wikipedia.org/wiki/Fluent_interface).
 For instance, consider the following `BasicCalculator` module:
 
 ```ts

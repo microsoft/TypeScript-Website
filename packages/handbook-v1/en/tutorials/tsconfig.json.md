@@ -12,7 +12,7 @@ The `tsconfig.json` file specifies the root files and the compiler options requi
 
 A project is compiled in one of the following ways:
 
-## Using tsconfig.json
+## Using `tsconfig.json`
 
 - By invoking tsc with no input files, in which case the compiler searches for the `tsconfig.json` file starting in the current directory and continuing up the parent directory chain.
 - By invoking tsc with no input files and a `--project` (or just `-p`) command line option that specifies the path of a directory containing a `tsconfig.json` file, or a path to a valid `.json` file containing the configurations.
@@ -79,4 +79,4 @@ To learn more about the hundreds of configuration options in the [TSConfig Refer
 
 ## Schema
 
-Schema can be found at: [http://json.schemastore.org/tsconfig](http://json.schemastore.org/tsconfig)
+The `tsconfig.json` Schema can be found at [the JSON Schema Store](http://json.schemastore.org/tsconfig).
