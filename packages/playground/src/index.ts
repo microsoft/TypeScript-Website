@@ -180,7 +180,9 @@ export const setupPlayground = (
   // Versions of TypeScript
 
   // Set up the label for the dropdown
-  document.querySelectorAll("#versions > a").item(0).innerHTML = "v" + sandbox.ts.version + " <span class='caret'/>"
+  const versionButton = document.querySelectorAll("#versions > a").item(0)
+  versionButton.innerHTML = "v" + sandbox.ts.version + " <span class='caret'/>"
+  versionButton.setAttribute("aria-label", `Select version of TypeScript, currently ${sandbox.ts.version}`)
 
   // Add the versions to the dropdown
   const versionsMenu = document.querySelectorAll("#versions > ul").item(0)
@@ -233,11 +235,18 @@ export const setupPlayground = (
     a.onclick = _e => {
       if (a.parentElement!.classList.contains("open")) {
         document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
+        a.setAttribute("aria-expanded", "false")
       } else {
         document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
         a.parentElement!.classList.toggle("open")
+        a.setAttribute("aria-expanded", "true")
 
         const exampleContainer = a.closest("li")!.getElementsByTagName("ul").item(0)!
+
+        const firstLabel = exampleContainer.querySelector("label") as HTMLElement
+        if (firstLabel) firstLabel.focus()
+
+
 
         // Set exact height and widths for the popovers for the main playground navigation
         const isPlaygroundSubmenu = !!a.closest("nav")
