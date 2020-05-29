@@ -13,7 +13,7 @@ export const handbookNavigation: NavItem[] = [
   {
     title: "Get Started",
     summary:
-      "Get an overview of TypeScript from different starting points depending on your background.",
+      "Quick introductions based on your background or preference.",
     id: "get-started",
     directory: "handbook",
     index: "typescript-from-scratch",
@@ -40,7 +40,7 @@ export const handbookNavigation: NavItem[] = [
   {
     title: "Handbook",
     summary:
-      "A start to finish overview of TypeScript, with the goals to get you productive for daily usage.",
+      "A good first read for your daily TS work.",
     id: "handbook",
     directory: "handbook",
     chronological: true,
@@ -59,7 +59,7 @@ export const handbookNavigation: NavItem[] = [
   },
   {
     title: "Handbook Reference",
-    summary: "Deep dives into how TypeScript works in particular cases.",
+    summary: "Deep dive reference materials.",
 
     id: "handbook-reference",
     directory: "handbook",
@@ -94,7 +94,7 @@ export const handbookNavigation: NavItem[] = [
     directory: "handbook",
     index: "typescript-in-5-minutes",
     summary:
-      "Step by step tutorials on how TypeScript works with different tools.",
+      "Using TypeScript in several environments.",
     items: [
       { id: "asp-net-core", title: "ASP.NET Core" },
       { id: "gulp", title: "Gulp" },
@@ -145,7 +145,7 @@ export const handbookNavigation: NavItem[] = [
     title: "Declaration Files",
     id: "declaration-files",
     summary:
-      "Learn how to write declaration files to describe existing JavaScript.",
+      "Learn how to write declaration files to describe existing JavaScript. Important for DefinitelyTyped contributions.",
     directory: "handbook/declaration-files",
     index: "introduction",
     chronological: true,
@@ -199,7 +199,7 @@ export const handbookNavigation: NavItem[] = [
   {
     title: "Project Configuration",
     id: "project-config",
-    summary: "Understand how TypeScript is configured.",
+    summary: "Compiler configuration reference.",
     directory: "handbook",
     index: "compiler-options",
     items: [
