@@ -35,7 +35,7 @@ export const playCopy = {
   play_sidebar_plugins_plugin_dev_option:
     "Connect to <code>localhost:5000</code>",
   play_sidebar_plugins_plugin_dev_copy:
-    "Automatically try connect to a playground plugin in development mode. You can read more <a href='https://www.typescriptlang.org/dev/playground-plugins/'>here</a>.",
+    "Automatically try connect to a playground plugin in development mode. You can read more <a href='https://www.typescriptlang.org/dev/playground-plugins/ title='Link to the page about Playground Plugins'>here</a>.",
   play_export_report_issue: "Report GitHub issue on TypeScript",
   play_export_copy_md: "Copy as Markdown Issue",
   play_export_copy_link: "Copy as Markdown Link",
