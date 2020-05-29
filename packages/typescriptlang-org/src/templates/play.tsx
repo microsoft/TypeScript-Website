@@ -130,8 +130,8 @@ const Play: React.FC<Props> = (props) => {
           <li className="name hide-small"><span>Playground</span></li>
 
           <li className="dropdown">
-            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_config")} <span className="caret"></span></a>
-            <ul className="examples-dropdown">
+            <a id="compiler-options-button" href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="compiler-options-dropdown">{i("play_subnav_config")} <span className="caret"></span></a>
+            <ul id="compiler-options-dropdown" className="examples-dropdown" aria-labelledby="compiler-options-button">
               <h3>{i("play_subnav_config")}</h3>
               <div className="info" id="config-container">
                 <button className="examples-close">{i("play_subnav_examples_close")}</button>
@@ -152,37 +152,24 @@ const Play: React.FC<Props> = (props) => {
           </li>
 
           <li className="dropdown">
-            <a href="#" id="examples-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_examples")} <span className="caret"></span></a>
-            <ul className="examples-dropdown" id="examples" >
-              <button className="examples-close">{i("play_subnav_examples_close")}</button>
+            <a href="#" id="examples-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="examples">{i("play_subnav_examples")} <span className="caret"></span></a>
+            <ul className="examples-dropdown" id="examples" aria-labelledby="examples-button">
+              <button className="examples-close" aria-label="Close dropdown" role="button">{i("play_subnav_examples_close")}</button>
               <RenderExamples defaultSection="JavaScript" sections={["JavaScript", "TypeScript"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
             </ul>
           </li>
 
           <li className="dropdown">
-            <a href="#" id="whatisnew-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_subnav_whatsnew")} <span className="caret"></span></a>
-            <ul className="examples-dropdown" id="whatisnew">
-              <button className="examples-close">{i("play_subnav_examples_close")}</button>
+            <a href="#" id="whatisnew-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="whatisnew">{i("play_subnav_whatsnew")} <span className="caret"></span></a>
+            <ul className="examples-dropdown" id="whatisnew" aria-labelledby="whatisnew-button">
+              <button role="button" aria-label="Close dropdown" className="examples-close">{i("play_subnav_examples_close")}</button>
               <RenderExamples defaultSection="3.8" sections={["3.8", "3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
             </ul>
           </li>
         </ul>
 
         <ul className="nav navbar-nav navbar-right hidden-xs">
-          <li><a href="#" id="playground-settings">Settings</a></li>
-
-          {/**
-            <li><a href="https://github.com/microsoft/typescript-website">GitHub</a></li>
-            <li className="dropdown">
-              <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Theme <span className="caret"></span></a>
-              <ul className="dropdown-menu">
-                <li><a id="theme-light" href="#" >Light</a></li>
-                <li><a id="theme-dark" href="#" >Dark</a></li>
-                <li><a id="theme-dark-hc" href="#" >Dark (High Contrast)</a></li>
-              </ul>
-            </li>
-             */}
-
+          <li><a href="#" id="playground-settings" role="button">Settings</a></li>
         </ul>
       </nav>
 
@@ -196,25 +183,25 @@ const Play: React.FC<Props> = (props) => {
             <div id="editor-toolbar" className="navbar-sub" >
 
               <ul>
-                <li id="versions" className="dropdown">
-                  <a href="#">{i("play_downloading_version")}... <span className="caret" /></a>
-                  <ul className="dropdown-menu versions"></ul>
+                <li id="versions" className="dropdown" >
+                  <a href="#" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="versions-dropdown" id='versions-button'>{i("play_downloading_version")}... <span className="caret" /></a>
+                  <ul className="dropdown-menu versions" id="versions-dropdown" aria-labelledby="versions-button"></ul>
                 </li>
-                <li><a id="run-button" href="#">{i("play_toolbar_run")}</a></li>
+                <li><a id="run-button" href="#" role="button">{i("play_toolbar_run")}</a></li>
 
                 <li className="dropdown">
-                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{i("play_toolbar_export")} <span className="caret"></span></a>
-                  <ul className="dropdown-menu">
-                    <li><a href="#" onClick={() => playground.exporter.reportIssue()} >{i("play_export_report_issue")}</a></li>
+                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="export-dropdown-menu">{i("play_toolbar_export")} <span className="caret"></span></a>
+                  <ul className="dropdown-menu" id='export-dropdown-menu' aria-labelledby="whatisnew-button">
+                    <li><a href="#" onClick={() => playground.exporter.reportIssue()} aria-label={i("play_export_report_issue")} >{i("play_export_report_issue")}</a></li>
                     <li role="separator" className="divider"></li>
-                    <li><a href="#" onClick={() => playground.exporter.copyAsMarkdownIssue()} >{i("play_export_copy_md")}</a></li>
-                    <li><a href="#" onClick={() => playground.exporter.copyForChat()} >{i("play_export_copy_link")}</a></li>
-                    < li > <a href="#" onClick={() => playground.exporter.copyForChatWithPreview()} >{i("play_export_copy_link_preview")}</a></li>
+                    <li><a href="#" onClick={() => playground.exporter.copyAsMarkdownIssue()} aria-label={i("play_export_copy_md")} >{i("play_export_copy_md")}</a></li>
+                    <li><a href="#" onClick={() => playground.exporter.copyForChat()} aria-label={i("play_export_copy_link")}  >{i("play_export_copy_link")}</a></li>
+                    < li > <a href="#" onClick={() => playground.exporter.copyForChatWithPreview()} aria-label={i("play_export_copy_link_preview")}  >{i("play_export_copy_link_preview")}</a></li>
                     < li role="separator" className="divider" ></li>
-                    <li><a href="#" onClick={() => playground.exporter.openInTSAST()} >{i("play_export_tsast")}</a></li>
+                    <li><a href="#" onClick={() => playground.exporter.openInTSAST()} aria-label={i("play_export_tsast")}  >{i("play_export_tsast")}</a></li>
                     <li role="separator" className="divider"></li>
-                    <li><a href="#" onClick={() => playground.exporter.openProjectInCodeSandbox()}>{i("play_export_sandbox")}</a></li>
-                    <li><a href="#" onClick={() => playground.exporter.openProjectInStackBlitz()}>{i("play_export_stackblitz")}</a></li>
+                    <li><a href="#" onClick={() => playground.exporter.openProjectInCodeSandbox()} aria-label={i("play_export_sandbox")} >{i("play_export_sandbox")}</a></li>
+                    <li><a href="#" onClick={() => playground.exporter.openProjectInStackBlitz()} aria-label={i("play_export_stackblitz")} >{i("play_export_stackblitz")}</a></li>
                   </ul>
                 </li>
               </ul>
