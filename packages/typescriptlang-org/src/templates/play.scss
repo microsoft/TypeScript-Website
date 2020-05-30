@@ -469,6 +469,10 @@ main #editor-toolbar {
         cursor: pointer;
         outline: inherit;
 
+        &:disabled {
+          opacity: 0.4;
+        }
+
         &.active {
           border-bottom: 1px solid $ts-main-blue-color;
         }
