@@ -56,7 +56,7 @@ const Play: React.FC<Props> = (props) => {
       // Because we can reach to localhost ports from the site, it's possible for the locally built compiler to 
       // be hosted and to power the editor with a bit of elbow grease.
       const useLocalCompiler = tsVersion === "dev"
-      const urlForMonaco = useLocalCompiler ? "http://localhost:5615/dev/vs" : `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/dev/vs`
+      const urlForMonaco = useLocalCompiler ? "http://localhost:5615/dev/vs" : `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/min/vs`
 
       // @ts-ignore
       const re: any = global.require
