@@ -9,7 +9,7 @@ My new plugin for the TypeScript playground.
 or
 
 - Open up the TypeScript Playground
-- Go the "Options" in the sidebar
+- Go the "Plugins" in the sidebar
 - Look for "Plugins from npm"
 - Add "[name]"
 - Reload the browser

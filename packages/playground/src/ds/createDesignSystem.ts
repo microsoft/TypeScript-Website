@@ -140,6 +140,48 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       return noErrorsMessage
     }
 
+    const createTabBar = () => {
+      const tabBar = document.createElement("div")
+      tabBar.classList.add("playground-plugin-tabview")
+
+      /** Support left/right in the tab bar for accessibility */
+      let tabFocus = 0
+      tabBar.addEventListener("keydown", e => {
+        const tabs = tabBar.querySelectorAll('[role="tab"]')
+        // Move right
+        if (e.keyCode === 39 || e.keyCode === 37) {
+          tabs[tabFocus].setAttribute("tabindex", "-1")
+          if (e.keyCode === 39) {
+            tabFocus++
+            // If we're at the end, go to the start
+            if (tabFocus >= tabs.length) {
+              tabFocus = 0
+            }
+            // Move left
+          } else if (e.keyCode === 37) {
+            tabFocus--
+            // If we're at the start, move to the end
+            if (tabFocus < 0) {
+              tabFocus = tabs.length - 1
+            }
+          }
+
+          tabs[tabFocus].setAttribute("tabindex", "0")
+          ;(tabs[tabFocus] as any).focus()
+        }
+      })
+
+      container.appendChild(tabBar)
+      return tabBar
+    }
+
+    const createTabButton = (text: string) => {
+      const element = document.createElement("button")
+      element.setAttribute("role", "tab")
+      element.textContent = text
+      return element
+    }
+
     const listDiags = (model: import("monaco-editor").editor.ITextModel, diags: DiagnosticRelatedInformation[]) => {
       const errorUL = document.createElement("ul")
       errorUL.className = "compiler-diagnostics"
@@ -405,6 +447,10 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       createASTTree,
       /** Creates an input button */
       button,
+      /** Used to re-create a UI like the tab bar at the top of the plugins section */
+      createTabBar,
+      /** Used with createTabBar to add buttons */
+      createTabButton,
     }
   }
 }
