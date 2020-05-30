@@ -6,5 +6,14 @@
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.formatOnSave": true,
-  "peacock.color": "#a1b9d4"
+  "peacock.color": "#a1b9d4",
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#c4d3e4",
+    "activityBar.activeBorder": "#c37c9d",
+    "activityBar.background": "#c4d3e4",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#c37c9d",
+    "activityBarBadge.foreground": "#15202b"
+  }
 }
