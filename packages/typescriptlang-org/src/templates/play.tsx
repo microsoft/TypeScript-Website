@@ -41,7 +41,7 @@ const Play: React.FC<Props> = (props) => {
     window.react = React
     // @ts-ignore - for React-based plugins
     window.reactDOM = ReactDOM
-    // @ts-ignore - so that plugins etc can use local functions
+    // @ts-ignore - so that plugins etc can use i8n
     window.i = i
 
     const getLoaderScript = document.createElement('script');
@@ -49,15 +49,20 @@ const Play: React.FC<Props> = (props) => {
     getLoaderScript.async = true;
     getLoaderScript.onload = () => {
       const params = new URLSearchParams(location.search)
-      // nothing || Nightly -> next || original ts param
+      // nothing || Nightly -> next || original ts param which should be a release of monaco
       const supportedVersion = !params.get("ts") ? undefined : params.get("ts") === "Nightly" ? "next" : params.get("ts")
       const tsVersion = supportedVersion || playgroundReleases.versions.sort().pop()
+
+      // Because we can reach to localhost ports from the site, it's possible for the locally built compiler to 
+      // be hosted and to power the editor with a bit of elbow grease.
+      const useLocalCompiler = tsVersion === "dev"
+      const urlForMonaco = useLocalCompiler ? "http://localhost:5615/dev/vs" : `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/dev/vs`
 
       // @ts-ignore
       const re: any = global.require
       re.config({
         paths: {
-          vs: `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/min/vs`,
+          vs: urlForMonaco,
           "typescript-sandbox": withPrefix('/js/sandbox'),
           "typescript-playground": withPrefix('/js/playground'),
           "unpkg": "https://unpkg.com/",
