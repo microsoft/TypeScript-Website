@@ -449,9 +449,11 @@ main #editor-toolbar {
         justify-content: flex-start;
       }
 
-      height: 2.5rem;
       margin-bottom: 10px;
       overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 6px;
+      flex-wrap: wrap;
 
       button {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -529,6 +531,8 @@ main #editor-toolbar {
 
   div.ast {
     font-family: $font-code;
+    font-size: 0.8rem;
+    line-height: 0.3rem;
 
     li {
       list-style-type: none;
@@ -554,6 +558,7 @@ main #editor-toolbar {
     .ast-children > div.ast-tree-start {
       display: block;
       margin-left: 12px;
+      min-height: 1rem;
     }
 
     div.ast-tree-start {
@@ -562,9 +567,15 @@ main #editor-toolbar {
       ul.ast-tree {
         margin-left: 12px;
         margin-top: 4px;
-        padding-top: 4px;
+        padding-top: 0px;
         display: none;
         border-left: 1px solid lightgrey;
+      }
+
+      &.open {
+        > a.node-name {
+          top: 4px;
+        }
       }
 
       a.node-name {
@@ -573,6 +584,7 @@ main #editor-toolbar {
         color: purple;
         font-weight: bold;
         position: relative; // for the + and -
+        top: 0px;
 
         &:hover {
           text-decoration: underline;
