@@ -111,8 +111,8 @@ needed, since their methods return primitives.
 Number.prototype.toExponential.call(1);
 ```
 
-Note that calling methods on numeric literals requires an additional
-`.` to aid the parser.
+Note that calling a method on a numeric literal requires it to be in
+parentheses to aid the parser.
 
 ## Gradual typing
 
