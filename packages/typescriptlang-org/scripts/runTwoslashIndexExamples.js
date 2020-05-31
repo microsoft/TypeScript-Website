@@ -1,4 +1,9 @@
 // @ts-check
+
+// Converts twoslash code samples for the front page into react components
+/** Run with:
+     yarn workspace typescriptlang-org compile-index-examples
+ */
 const remark = require("remark")
 const toHAST = require(`mdast-util-to-hast`)
 const hastToHTML = require(`hast-util-to-html`)

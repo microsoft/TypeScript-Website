@@ -1,6 +1,9 @@
 @import "../../style/globals.scss";
 @import "./css/grid.scss";
 
+$headline-background-bg: #00273f;
+$headline-foreground-bg: #104261;
+
 .version-bar {
   background-color: $ts-dark-bg-color;
   text-align: center;
@@ -207,7 +210,7 @@
     position: relative;
 
     .editor {
-      border: 2px solid #c4c4c4;
+      border: 4px solid #c4c4c4;
       background-color: $ts-main-blue-darkest-color;
 
       border-radius: 8px;
@@ -218,14 +221,14 @@
       &.front {
         right: 40px;
         bottom: -80px;
-        background-color: #223146;
-        border-color: white;
+        background-color: $headline-foreground-bg;
+        border-color: $headline-foreground-bg;
 
         .titlebar {
-          border-color: white;
+          border-color: $headline-foreground-bg;
         }
         div.lines {
-          border-color: white;
+          border-color: $headline-foreground-bg;
         }
       }
 
@@ -241,7 +244,7 @@
 
       .titlebar {
         height: 2rem;
-        border-bottom: 2px solid #c4c4c4;
+        border-bottom: 2px solid #172e38;
         display: flex;
         flex-direction: row;
 
@@ -311,6 +314,7 @@
       .did-you-mean-icon {
         position: absolute;
       }
+
       .did-you-mean {
         position: absolute;
       }
@@ -321,9 +325,22 @@
         flex-direction: row;
 
         .lines {
-          width: 22px;
-          border-right: 2px solid #c4c4c4;
+          width: 60px;
+          border-right: 4px solid #172e38;
+          border-left: 4px solid #172e38;
           flex-shrink: 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          background-color: $headline-background-bg;
+        }
+
+        svg {
+          margin: 12px auto;
+
+          path {
+            fill: $headline-foreground-bg;
+          }
         }
 
         .text {
@@ -336,9 +353,20 @@
           flex-grow: 1;
           overflow-x: scroll;
           position: relative;
+          background-color: $headline-background-bg;
 
           pre {
             margin: 0;
+            background-color: $headline-background-bg;
+            border: none;
+            code {
+              font-size: 14px;
+              line-height: 16px;
+            }
+            .error {
+              background-color: #341c2c;
+              color: #cf1616;
+            }
           }
 
           .language-id {

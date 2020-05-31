@@ -384,6 +384,12 @@ const darkTheme = {
   name: "Dark (Visual Studio)",
   tokenColors: [
     {
+      settings: {
+        foreground: "#D4D4D4",
+        background: "#1E1E1E",
+      },
+    },
+    {
       scope: ["meta.embedded", "source.groovy.embedded"],
       settings: {
         foreground: "#D4D4D4",
