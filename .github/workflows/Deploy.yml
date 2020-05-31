@@ -19,6 +19,9 @@ jobs:
       with:
         node-version: '13.x'
 
+    # For epub -> PDF generation
+    - run: sudo apt install calibre
+
     # Build v2
     - name: Build website v2
       run: |
