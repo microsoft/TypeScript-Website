@@ -211,7 +211,7 @@
       background-color: $ts-main-blue-darkest-color;
 
       border-radius: 8px;
-      width: 360px;
+      width: 540px;
 
       position: absolute;
 
@@ -327,14 +327,23 @@
         }
 
         .text {
-          padding: 1rem;
+          // padding: 1rem;
           font-family: $font-code;
           font-size: 0.8rem;
           line-height: 0.95rem;
           white-space: pre;
           flex-shrink: 1;
+          flex-grow: 1;
           overflow-x: scroll;
           position: relative;
+
+          pre {
+            margin: 0;
+          }
+
+          .language-id {
+            display: none;
+          }
         }
       }
 
@@ -630,10 +639,14 @@
       margin: 0 auto;
 
       @media screen and (-ms-high-contrast: black-on-white) {
-        svg  path { fill: black; }
+        svg path {
+          fill: black;
+        }
       }
       @media screen and (-ms-high-contrast: white-on-black) {
-        svg  path { fill: white; }
+        svg path {
+          fill: white;
+        }
       }
 
       svg {

@@ -433,7 +433,6 @@ const Editor = (props: EditorProps) => {
             {props.inline && props.inline() || null}
           </div>
         </div>
-        {props.line && props.line() || null}
       </div>
     </div>
   )
