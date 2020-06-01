@@ -129,7 +129,7 @@ how JS code can be used in TS.)
 
 #### Erased Types
 
-Roughly speaking, once TypeScript's compiler is done with checking your code, it _erases_ the types to produced the resulting "compiled" code.
+Roughly speaking, once TypeScript's compiler is done with checking your code, it _erases_ the types to produce the resulting "compiled" code.
 This means that once your code is compiled, the resulting plain JS code has no type information.
 
 This also means that TypeScript never changes the _behavior_ of your program based on the types it inferred.
