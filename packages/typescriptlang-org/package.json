@@ -7,7 +7,7 @@
   "scripts": {
     "build": "gatsby build",
     "clean": "gatsby clean",
-    "bootstrap": "yarn update-versions;",
+    "bootstrap": "yarn update-versions",
     "update-snapshots": "node scripts/updateBackstopJSON.js && backstop test || backstop approve",
     "update-static-assets": "node scripts/downloadPlaygroundAssets.js && node scripts/downloadSearchAssets.js",
     "update-versions": "node scripts/getTypeScriptNPMVersions.js",
