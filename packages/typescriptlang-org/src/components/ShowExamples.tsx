@@ -84,9 +84,14 @@ export const RenderExamples = (props: Props) => {
   useEffect(() => {
     // Update the dots after it's loaded and running in the client instead
     let seenExamples = {}
-    if (localStorage) {
-      const examplesFromLS = localStorage.getItem("examples-seen") || "{}"
-      seenExamples = JSON.parse(examplesFromLS)
+
+    try {
+      if (localStorage) {
+        const examplesFromLS = localStorage.getItem("examples-seen") || "{}"
+        seenExamples = JSON.parse(examplesFromLS)
+      }
+    } catch (_) {
+      // NOOP for folks with cookies banned in-browser
     }
 
     document.querySelectorAll(".example-indicator").forEach(e => {

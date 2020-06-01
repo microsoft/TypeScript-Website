@@ -9,6 +9,8 @@ export const playCopy = {
   play_settings_tabs_settings: "Sidebar Tabs",
   play_downloading_typescript: "Downloading TypeScript...", // when loading
   play_downloading_version: "Version...", // when loading
+  play_error_no_cookies:
+    "Cannot load the Playground with cookies disabled. Please enable them for this page.",
   play_toolbar_run: "Run",
   play_toolbar_export: "Export",
   play_sidebar_js: "JS",

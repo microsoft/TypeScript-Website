@@ -33,6 +33,15 @@ const Play: React.FC<Props> = (props) => {
     if ("playgroundLoaded" in window) return
     window["playgroundLoaded"] = true
 
+
+    try {
+      typeof localStorage !== `undefined`
+    } catch (error) {
+      document.getElementById("#loading-message")!.textContent = i("play_error_no_cookies")
+      return []
+    }
+
+
     // @ts-ignore - so the config options can use localized descriptions
     window.optionsSummary = props.pageContext.optionsSummary
     // @ts-ignore - for React-based plugins

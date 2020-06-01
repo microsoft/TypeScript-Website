@@ -21,7 +21,7 @@ export const createDragBar = () => {
       right.style.flexBasis = `${clampedOffset}px`
       right.style.maxWidth = `${clampedOffset}px`
 
-      // Save the x coordinate of the
+      // Save the x coordinate of the drag bar
       if (window.localStorage) {
         window.localStorage.setItem("dragbar-x", "" + clampedOffset)
         window.localStorage.setItem("dragbar-window-width", "" + window.innerWidth)
@@ -137,29 +137,29 @@ export const createTabBar = () => {
   tabBar.setAttribute("aria-label", "Tabs for plugins")
 
   /** Support left/right in the tab bar for accessibility */
-  let tabFocus = 0;
+  let tabFocus = 0
   tabBar.addEventListener("keydown", e => {
     const tabs = document.querySelectorAll('.playground-plugin-tabview [role="tab"]')
     // Move right
     if (e.keyCode === 39 || e.keyCode === 37) {
-      tabs[tabFocus].setAttribute("tabindex", "-1");
+      tabs[tabFocus].setAttribute("tabindex", "-1")
       if (e.keyCode === 39) {
-        tabFocus++;
+        tabFocus++
         // If we're at the end, go to the start
         if (tabFocus >= tabs.length) {
-          tabFocus = 0;
+          tabFocus = 0
         }
         // Move left
       } else if (e.keyCode === 37) {
-        tabFocus--;
+        tabFocus--
         // If we're at the start, move to the end
         if (tabFocus < 0) {
-          tabFocus = tabs.length - 1;
+          tabFocus = tabs.length - 1
         }
       }
 
-      tabs[tabFocus].setAttribute("tabindex", "0");
-      (tabs[tabFocus] as any).focus();
+      tabs[tabFocus].setAttribute("tabindex", "0")
+      ;(tabs[tabFocus] as any).focus()
     }
   })
 

@@ -5,7 +5,7 @@ type CompilerHost = import("typescript").CompilerHost
 type SourceFile = import("typescript").SourceFile
 type TS = typeof import("typescript")
 
-const hasLocalStorage = typeof localStorage !== `undefined`
+const hasLocalStorage = hasLocalStorageCheck()
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 const debugLog = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
@@ -207,7 +207,7 @@ export const createDefaultMapFromCDN = (
   storer?: typeof localStorage
 ) => {
   const fetchlike = fetcher || fetch
-  const storelike = storer || localStorage
+  const storelike = storer || (hasLocalStorage && localStorage) || { removeItem() {}, getItem() {}, setItem() {} }
   const fsMap = new Map<string, string>()
   const files = knownLibFilesForCompilerOptions(options, ts)
   const prefix = `https://typescript.azureedge.net/cdn/${version}/typescript/lib/`
@@ -432,4 +432,12 @@ export function createVirtualLanguageServiceHost(
     },
   }
   return lsHost
+}
+
+function hasLocalStorageCheck() {
+  try {
+    return typeof localStorage !== `undefined`
+  } catch (error) {
+    return false
+  }
 }

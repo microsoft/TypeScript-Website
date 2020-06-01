@@ -246,8 +246,6 @@ export const setupPlayground = (
         const firstLabel = exampleContainer.querySelector("label") as HTMLElement
         if (firstLabel) firstLabel.focus()
 
-
-
         // Set exact height and widths for the popovers for the main playground navigation
         const isPlaygroundSubmenu = !!a.closest("nav")
         if (isPlaygroundSubmenu) {
@@ -336,8 +334,8 @@ export const setupPlayground = (
         settingsContent.className = "playground-settings-container playground-plugin-container"
         const settings = settingsPlugin(i, utils)
         settings.didMount && settings.didMount(sandbox, settingsContent)
-        document.querySelector(".playground-sidebar")!.appendChild(settingsContent);
-        (document.querySelector(".playground-sidebar label") as any).focus()
+        document.querySelector(".playground-sidebar")!.appendChild(settingsContent)
+        ;(document.querySelector(".playground-sidebar label") as any).focus()
       }
 
       if (open) {
