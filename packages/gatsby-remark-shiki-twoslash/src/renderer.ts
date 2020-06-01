@@ -4,7 +4,7 @@ type Lines = import("shiki").IThemedToken[][]
 type Options = import("shiki/dist/renderer").HtmlRendererOptions
 type TwoSlash = import("@typescript/twoslash").TwoSlashReturn
 
-import { stripHTML, createHighlightedString2 } from "./utils"
+import { stripHTML, createHighlightedString2, subTripleArrow, replaceTripleArrowEncoded } from "./utils"
 
 // OK, so - this is just straight up complex code.
 
@@ -112,7 +112,7 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
 
           tokenContent += createHighlightedString2(ranges, token.content)
         } else {
-          tokenContent += token.content
+          tokenContent += subTripleArrow(token.content)
         }
 
         html += `<span style="color: ${token.color}">${tokenContent}</span>`
@@ -140,7 +140,7 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
       html += "\n"
     }
   })
-  html = html.replace(/\n*$/, "") // Get rid of final new lines
+  html = replaceTripleArrowEncoded(html.replace(/\n*$/, "")) // Get rid of final new lines
   html += `</code></div></pre>`
 
   return html

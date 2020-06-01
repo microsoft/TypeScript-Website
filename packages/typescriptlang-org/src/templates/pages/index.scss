@@ -251,11 +251,13 @@ $headline-foreground-bg: #104261;
         .lang {
           margin-left: 6px;
           margin-top: 3px;
+          display: none;
         }
 
         .window-name {
           margin-left: 10px;
           padding-top: 5px;
+          display: none;
         }
       }
 
@@ -385,8 +387,8 @@ $headline-foreground-bg: #104261;
   }
 
   .next-headline-button {
-    background-color: white;
-    color: black;
+    background-color: #235a97;
+    color: white;
     padding: 3px;
     max-width: 320px;
     position: absolute;
@@ -401,11 +403,11 @@ $headline-foreground-bg: #104261;
 
     &:hover,
     &.focus {
-      background-color: #eee;
+      background-color: #104261;
     }
 
     &:active {
-      background-color: #ddd;
+      background-color: #104261;
     }
 
     .message {
