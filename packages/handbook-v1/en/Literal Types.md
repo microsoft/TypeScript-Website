@@ -78,7 +78,7 @@ TypeScript also has numeric literal types, which act the same as the string lite
 
 ```ts twoslash
 function rollDice(): 1 | 2 | 3 | 4 | 5 | 6 {
-  return (Math.floor(Math.random() * 5) + 1) as 1 | 2 | 3 | 4 | 5 | 6;
+  return (Math.floor(Math.random() * 6) + 1) as 1 | 2 | 3 | 4 | 5 | 6;
 }
 
 const result = rollDice();
