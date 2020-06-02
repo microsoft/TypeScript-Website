@@ -336,7 +336,8 @@
 
 .top_section {
     padding-bottom:2em;
-    background: linear-gradient(to bottom, #3CA7F2 0%, #152740 50%);
+    // background: linear-gradient(to bottom, #3CA7F2 0%, #152740 50%);
+    background-color: black;
     //@include bground-gradient(linear-gradient, to bottom, rgba(203,223,243,1) 0%, rgba(63,169,244,1) 57%, rgba(0,117,189,1) 87%, rgba(0,90,150,1) 100%);  //Vendor prefixes this gradient effect
     //@include bground-gradient(linear-gradient, to bottom, #3CA7F2 0%,  #152740 50%);  //Vendor prefixes this gradient effect
     // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cbdff3', endColorstr='#005a96', GradientType=0 );
@@ -358,13 +359,13 @@
 
 .skyline-img-background {
     @extend %skyline-img;
-    background-image: url('../images/bg_blueprint_2.svg');
+    background-image: url('../images/bg_blueprint_2_black.svg');
     background-repeat: repeat-x;
 }
 
 .skyline-img-foreground {
     @extend %skyline-img;
-    background-image: url('../images/foreground_bluprint.svg');
+    background-image: url('../images/foreground_bluprint-black.svg');
 }
 
 .bannerContainer{

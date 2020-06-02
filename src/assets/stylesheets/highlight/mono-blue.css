@@ -25,7 +25,7 @@
 
 .hljs-comment,
 .hljs-chunk {
-  color: #4f6c8e;
+  color: #3a3a3a;
 }
 
 .hljs-string,
@@ -42,7 +42,7 @@
 .hljs-blockquote,
 .hljs-header,
 .hljs-name {
-  color: #0048ab;
+  color: black;
 }
 
 .hljs-decorator,
@@ -64,5 +64,5 @@
 .hljs-bullet,
 .hljs-sqbracket,
 .hljs-phony {
-  color: #3a68a7;
+  color: #000000;
 }

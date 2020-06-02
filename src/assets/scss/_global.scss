@@ -1,8 +1,8 @@
 /* VARIABLES */
-$brand-background-color: #152740;
+$brand-background-color: #070d15;
 $brand-lightest-color: #3FA8F4;
 $brand-light-gray: darken(white,10%);
-$brand-nav-color: #294E80;
+$brand-nav-color: #03070b;
 $brand-accent-color: #FFA700;
 $brand-nav-color-focus: #243A61;
 $brand-general-focus-color: $brand-lightest-color;
@@ -189,7 +189,8 @@ ul li ul li, ol li ol li {
 }
 
 a {
-  color: #265988;
+  color: black;
+  text-decoration: unde;
 }
 
 // Override bootstrap's 17.5px.
