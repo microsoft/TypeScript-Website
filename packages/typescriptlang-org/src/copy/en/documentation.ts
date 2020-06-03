@@ -40,6 +40,9 @@ export const docCopy = {
     "A progressive Node.js framework for building efficient and scalable server-side applications",
   doc_apis_node_blurb: "A documented starter template from the TS team",
   doc_apis_wechat_blurb: "Use the WeChat JSSDK with TypeScript",
+  doc_apis_loopback_blurb:
+    "A highly extensible Node.js and TypeScript framework for building APIs and microservices",
+  doc_apis_fastify_blurb: "A fast and low overhead web framework for Node.js",
   doc_react: "React Projects",
   doc_react_create_blurb: "Set up a modern web app by running one command",
   doc_react_gatsby_blurb:
