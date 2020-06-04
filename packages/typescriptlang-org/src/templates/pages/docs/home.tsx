@@ -160,6 +160,16 @@ const Index: React.FC<Props> = (props) => {
               blurb: i("doc_apis_wechat_blurb"),
               title: "WeChat",
             },
+            {
+              href: "https://loopback.io",
+              blurb: i("doc_apis_loopback_blurb"),
+              title: "LoopBack",
+            },
+            {
+              href: "https://www.fastify.io/",
+              blurb: i("doc_apis_fastify_blurb"),
+              title: "Fastify",
+            },
           ]}
         />
 
