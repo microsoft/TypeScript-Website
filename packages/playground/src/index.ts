@@ -338,6 +338,16 @@ export const setupPlayground = (
         settings.didMount && settings.didMount(sandbox, settingsContent)
         document.querySelector(".playground-sidebar")!.appendChild(settingsContent);
         (document.querySelector(".playground-sidebar label") as any).focus()
+
+        // When the last tab item is hit, go back to the settings button
+        const labels = document.querySelectorAll(".playground-sidebar input")
+        const lastLabel = labels.item(labels.length - 1) as HTMLElement
+        lastLabel.addEventListener("keydown", (e) => {
+          if (e.keyCode === 9) {
+            (document.querySelector("#playground-settings") as any).focus()
+            e.preventDefault()
+          }
+        })
       }
 
       if (open) {
