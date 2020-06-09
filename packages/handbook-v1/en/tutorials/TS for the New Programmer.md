@@ -17,7 +17,7 @@ At the time it was invented, it was expected to be used for short snippets of co
 Due to this, early web browsers executed such code pretty slowly.
 Over time, though, JS became more and more popular, and web developers started using it to create interactive experiences.
 
-Web browser developersresponded to this increased JS usage by optimizing their execution engines (dynamic compilation) and extending what could be done with it (adding APIs), which in turn made web developers use it even more.
+Web browser developers responded to this increased JS usage by optimizing their execution engines (dynamic compilation) and extending what could be done with it (adding APIs), which in turn made web developers use it even more.
 On modern websites, your browser is frequently running applications that span hundreds of thousands of lines of code.
 This is long and gradual growth of "the web", starting as a simple network of static pages, and evolving into a platform for rich _applications_ of all kinds.
 
