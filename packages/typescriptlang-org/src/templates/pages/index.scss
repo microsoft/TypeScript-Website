@@ -219,7 +219,11 @@ $headline-foreground-bg: #104261;
       position: absolute;
 
       &.front {
-        right: 40px;
+        // @media (min-width: 1000px) {
+        // right: 40px;
+        // }
+
+        width: 90%;
         bottom: -80px;
         background-color: $headline-foreground-bg;
         border-color: $headline-foreground-bg;
@@ -230,12 +234,6 @@ $headline-foreground-bg: #104261;
         div.lines {
           border-color: $headline-foreground-bg;
         }
-      }
-
-      &.back {
-        left: 40px;
-        bottom: -120px;
-        opacity: 0.75;
       }
 
       .editor-inner {
@@ -386,52 +384,59 @@ $headline-foreground-bg: #104261;
     }
   }
 
-  .next-headline-button {
-    background-color: #235a97;
-    color: white;
-    padding: 3px;
-    max-width: 320px;
-    position: absolute;
+  .button-container {
     display: flex;
-    flex-direction: row;
-    text-decoration: none;
-    bottom: 20px;
-    margin: auto 0;
+    height: 100%;
+    width: 100%;
+    flex-direction: column-reverse;
     align-items: center;
-    position: relative;
-    left: -50%;
+    justify-content: center;
 
-    &:hover,
-    &.focus {
-      background-color: #104261;
-    }
-
-    &:active {
-      background-color: #104261;
-    }
-
-    .message {
-      margin: 10px;
-      font-size: 0.9rem;
-      min-width: 200px;
-    }
-
-    .next {
-      border-left: 2px solid black;
+    .next-headline-button {
+      background-color: #235a97;
+      color: white;
+      padding: 3px;
+      max-width: 320px;
 
       display: flex;
       flex-direction: row;
-      justify-content: center;
+      text-decoration: none;
+      bottom: 20px;
+      margin: auto 0;
       align-items: center;
 
-      p {
-        margin-left: 20px;
+      &:hover,
+      &.focus {
+        background-color: #104261;
       }
 
-      svg {
-        height: 100%;
-        margin-left: 20px;
-        margin-right: 10px;
+      &:active {
+        background-color: #104261;
+      }
+
+      .message {
+        margin: 10px;
+        font-size: 0.9rem;
+        min-width: 140px;
+      }
+
+      .next {
+        border-left: 2px solid black;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        p {
+          margin-left: 20px;
+        }
+
+        svg {
+          height: 100%;
+          margin-left: 20px;
+          margin-right: 10px;
+        }
       }
     }
   }
