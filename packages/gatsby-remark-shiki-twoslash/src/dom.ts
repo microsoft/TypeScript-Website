@@ -12,28 +12,28 @@ const getAbsoluteElementPos = (element: HTMLElement) => {
 
 // Hide it
 const resetHover = () => {
-  const globalPopover = document.getElementById('twoslash-mouse-hover-info')
-  if (globalPopover) globalPopover.style.display = 'none'
+  const globalPopover = document.getElementById("twoslash-mouse-hover-info")
+  if (globalPopover) globalPopover.style.display = "none"
 }
 
 // Get it
 const findOrCreateTooltip = () => {
-  let globalPopover = document.getElementById('twoslash-mouse-hover-info')
+  let globalPopover = document.getElementById("twoslash-mouse-hover-info")
   if (!globalPopover) {
-    globalPopover = document.createElement('div')
-    globalPopover.style.position = 'absolute'
-    globalPopover.id = 'twoslash-mouse-hover-info'
+    globalPopover = document.createElement("div")
+    globalPopover.style.position = "absolute"
+    globalPopover.id = "twoslash-mouse-hover-info"
     document.body.appendChild(globalPopover)
   }
   return globalPopover
 }
 
 const getRootRect = (element: HTMLElement): DOMRect => {
-  if (element.nodeName.toLowerCase() === 'pre') {
-    return element.getBoundingClientRect();
+  if (element.nodeName.toLowerCase() === "pre") {
+    return element.getBoundingClientRect()
   }
 
-  return getRootRect(element.parentElement!);
+  return getRootRect(element.parentElement!)
 }
 
 /**
@@ -61,33 +61,35 @@ export const setupTwoslashHovers = () => {
   // Gets triggered on the spans inside the codeblocks
   const hover = (event: Event) => {
     const hovered = event.target as HTMLElement
-    if (hovered.nodeName !== 'DATA-LSP') return resetHover()
+    console.log("Hovering")
+    if (hovered.nodeName !== "DATA-LSP") return resetHover()
 
-    const message = hovered.getAttribute('lsp')!
+    const message = hovered.getAttribute("lsp")!
     const position = getAbsoluteElementPos(hovered)
 
-    // Create or re-use the current hover dic
+    // Create or re-use the current hover div
     const tooltip = findOrCreateTooltip()
 
     // Use a textarea to un-htmlencode for presenting to the user
-    var txt = document.createElement('textarea')
+    var txt = document.createElement("textarea")
     txt.innerHTML = message
     tooltip.textContent = txt.value
 
     // Offset it a bit from the mouse and present it at an absolute position
     const yOffset = 20
-    tooltip.style.display = 'block'
+    tooltip.style.display = "block"
     tooltip.style.top = `${position.top + yOffset}px`
     tooltip.style.left = `${position.left}px`
 
     // limit the width of the tooltip to the outer container (pre)
-    const rootRect = getRootRect(hovered);
-    const relativeLeft = position.left - rootRect.x;
-    tooltip.style.maxWidth = `${rootRect.width - relativeLeft}px`;
+    const rootRect = getRootRect(hovered)
+    const relativeLeft = position.left - rootRect.x
+    tooltip.style.maxWidth = `${rootRect.width - relativeLeft}px`
   }
 
-  twoslashes.forEach((codeblock) => {
-    codeblock.addEventListener('mouseover', hover)
-    codeblock.addEventListener('mouseout', resetHover)
+  twoslashes.forEach(codeblock => {
+    console.log("adding to ", codeblock)
+    codeblock.addEventListener("mouseover", hover)
+    codeblock.addEventListener("mouseout", resetHover)
   })
 }

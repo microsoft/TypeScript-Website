@@ -1,4 +1,3 @@
-// @filename: index.tsx
 import * as React from "react";
 
 interface UserThumbnailProps {

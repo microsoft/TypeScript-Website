@@ -414,6 +414,10 @@ $headline-foreground-bg: #104261;
         background-color: #104261;
       }
 
+      // I don't like this - I don't know why the editor is in front of the button
+      // even though the hierarchy implies it shouldn't - maybe the position abosolute?
+      z-index: 1;
+
       .message {
         margin: 10px;
         font-size: 0.9rem;

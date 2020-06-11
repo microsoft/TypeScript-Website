@@ -40,6 +40,7 @@
     "test": "CI=true yarn workspaces run test"
   },
   "dependencies": {
+    "@types/express": "^4.17.6",
     "serve-handler": "^6.1.2"
   },
   "repository": "microsoft/TypeScript-Website",
