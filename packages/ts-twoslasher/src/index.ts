@@ -30,7 +30,7 @@ declare module "typescript" {
 }
 
 type QueryPosition = {
-  kind: "query"
+  kind: "query" | "completion"
   offset: number
   text: string | undefined
   docs: string | undefined
@@ -38,9 +38,18 @@ type QueryPosition = {
 }
 
 type PartialQueryResults = {
-  kind: string
+  kind: "query"
   text: string
   docs: string | undefined
+  line: number
+  offset: number
+  file: string
+}
+
+type PartialCompletionResults = {
+  kind: "completions"
+  completions: import("typescript").CompletionEntry[]
+
   line: number
   offset: number
   file: string
@@ -64,29 +73,50 @@ function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosit
 
   for (let i = 0; i < codeLines.length; i++) {
     const line = codeLines[i]
-    const highlightMatch = /^\/\/\s*\^+( .+)?$/.exec(line)
-    const queryMatch = /^\/\/\s*\^\?\s*$/.exec(line)
-    if (queryMatch !== null) {
-      const start = line.indexOf("^")
-      queries.push({ kind: "query", offset: start, text: undefined, docs: undefined, line: i + removedLines - 1 })
-      log(`Removing line ${i} for having a query`)
+    const moveForward = () => {
+      contentOffset = nextContentOffset
+      nextContentOffset += line.length + 1
+    }
+
+    const stripLine = (logDesc: string) => {
+      log(`Removing line ${i} for ${logDesc}`)
 
       removedLines++
       codeLines.splice(i, 1)
       i--
-    } else if (highlightMatch !== null) {
-      const start = line.indexOf("^")
-      const length = line.lastIndexOf("^") - start + 1
-      const position = contentOffset + start
-      const description = highlightMatch[1] ? highlightMatch[1].trim() : ""
-      highlights.push({ kind: "highlight", position, length, description, line: i })
-      log(`Removing line ${i} for having a highlight`)
-      codeLines.splice(i, 1)
-      removedLines++
-      i--
+    }
+
+    // We only need to run regexes over lines with comments
+    if (!line.includes("//")) {
+      moveForward()
     } else {
-      contentOffset = nextContentOffset
-      nextContentOffset += line.length + 1
+      const highlightMatch = /^\/\/\s*\^+( .+)?$/.exec(line)
+      const queryMatch = /^\/\/\s*\^\?\s*$/.exec(line)
+      // https://regex101.com/r/2yDsRk/1
+      const removePrettierIgnoreMatch = /^\s*\/\/ prettier-ignore$/.exec(line)
+      const completionsQuery = /^\/\/\s*\^\|$/.exec(line)
+
+      if (queryMatch !== null) {
+        const start = line.indexOf("^")
+        queries.push({ kind: "query", offset: start, text: undefined, docs: undefined, line: i + removedLines - 1 })
+        stripLine("having a query")
+      } else if (highlightMatch !== null) {
+        const start = line.indexOf("^")
+        const length = line.lastIndexOf("^") - start + 1
+        const position = contentOffset + start
+        const description = highlightMatch[1] ? highlightMatch[1].trim() : ""
+        highlights.push({ kind: "highlight", position, length, description, line: i })
+        stripLine("having a highlight")
+      } else if (removePrettierIgnoreMatch !== null) {
+        stripLine("being a prettier ignore")
+      } else if (completionsQuery !== null) {
+        const start = line.indexOf("^")
+        // prettier-ignore
+        queries.push({ kind: "completion", offset: start, text: undefined, docs: undefined, line: i + removedLines - 1 })
+        stripLine("having a completion query")
+      } else {
+        moveForward()
+      }
     }
   }
   return { highlights, queries }
@@ -250,19 +280,21 @@ export interface TwoSlashReturn {
 
   /** Requests to use the LSP to get info for a particular symbol in the source */
   queries: {
-    kind: "query"
+    kind: "query" | "completions"
     /** What line is the highlighted identifier on? */
     line: number
     /** At what index in the line does the caret represent  */
     offset: number
     /** The text of the token which is highlighted */
-    text: string
+    text?: string
     /** Any attached JSDocs */
-    docs: string | undefined
+    docs?: string | undefined
     /** The token start which the query indicates  */
     start: number
     /** The length of the token */
     length: number
+    /** Results for completions at a particular point */
+    completions?: import("typescript").CompletionEntry[]
   }[]
 
   /** Diagnostic error messages which came up when creating the program */
@@ -333,7 +365,7 @@ export function twoslasher(
 
   code = codeLines.join("\n")
 
-  let partialQueries = [] as PartialQueryResults[]
+  let partialQueries = [] as (PartialQueryResults | PartialCompletionResults)[]
   let queries = [] as TwoSlashReturn["queries"]
   let highlights = [] as TwoSlashReturn["highlights"]
 
@@ -374,27 +406,48 @@ export function twoslasher(
     const lspedQueries = updates.queries.map((q, i) => {
       const sourceFile = env.getSourceFile(filename)!
       const position = ts.getPositionOfLineAndCharacter(sourceFile, q.line, q.offset)
-      const quickInfo = ls.getQuickInfoAtPosition(filename, position)
-      const token = ls.getDefinitionAtPosition(filename, position)
+      switch (q.kind) {
+        case "query": {
+          const quickInfo = ls.getQuickInfoAtPosition(filename, position)
+          const token = ls.getDefinitionAtPosition(filename, position)
 
-      // prettier-ignore
-      let text = `Could not get LSP result: ${stringAroundIndex(env.getSourceFile(filename)!.text, position)}`
-      let docs = undefined
+          // prettier-ignore
+          let text = `Could not get LSP result: ${stringAroundIndex(env.getSourceFile(filename)!.text, position)}`
+          let docs = undefined
 
-      if (quickInfo && token && quickInfo.displayParts) {
-        text = quickInfo.displayParts.map(dp => dp.text).join("")
-        docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join("<br/>") : undefined
+          if (quickInfo && token && quickInfo.displayParts) {
+            text = quickInfo.displayParts.map(dp => dp.text).join("")
+            docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join("<br/>") : undefined
+          }
+
+          const queryResult: PartialQueryResults = {
+            kind: "query",
+            text,
+            docs,
+            line: q.line - i,
+            offset: q.offset,
+            file: filename,
+          }
+          return queryResult
+        }
+
+        case "completion": {
+          const quickInfo = ls.getCompletionsAtPosition(filename, position, {})
+          if (!quickInfo) {
+            throw new Error(`Twoslash: The ^| query at line ${q.line} in ${filename} did not return any completions`)
+          }
+          quickInfo.entries
+
+          const queryResult: PartialCompletionResults = {
+            kind: "completions",
+            completions: quickInfo.entries,
+            line: q.line - i,
+            offset: q.offset,
+            file: filename,
+          }
+          return queryResult
+        }
       }
-
-      const queryResult = {
-        kind: "query",
-        text,
-        docs,
-        line: q.line - i,
-        offset: q.offset,
-        file: filename,
-      }
-      return queryResult
     })
     partialQueries.push(...lspedQueries)
 
@@ -459,22 +512,37 @@ export function twoslasher(
 
       // Offset the queries for this file because they are based on the line for that one
       // specific file, and not the global twoslash document. This has to be done here because
-      // in the above loops, the code for queries/highlights hasn't been stripped yet.
+      // in the above loops, the code for queries/highlights/etc hasn't been stripped yet.
       partialQueries
         .filter((q: any) => q.file === file)
         .forEach(q => {
           const pos =
             ts.getPositionOfLineAndCharacter(sourceFile, q.line, q.offset) + fileContentStartIndexInModifiedFile
 
-          queries.push({
-            docs: q.docs,
-            kind: "query",
-            start: pos,
-            length: q.text.length,
-            text: q.text,
-            offset: q.offset,
-            line: q.line + linesAbove,
-          })
+          switch (q.kind) {
+            case "query": {
+              queries.push({
+                docs: q.docs,
+                kind: "query",
+                start: pos,
+                length: q.text.length,
+                text: q.text,
+                offset: q.offset,
+                line: q.line + linesAbove,
+              })
+              break
+            }
+            case "completions": {
+              queries.push({
+                completions: q.completions,
+                kind: "completions",
+                start: pos,
+                length: 1,
+                offset: q.offset,
+                line: q.line + linesAbove,
+              })
+            }
+          }
         })
     }
   })

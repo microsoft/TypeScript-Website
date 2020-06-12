@@ -83,6 +83,10 @@ The Twoslash markup language helps with:
 - Handle multi-file imports in a single code sample
 - Creating a playground link for the code
 
+### Notes
+
+- Lines which have `// prettier-ignore` are stripped
+
 ### API
 
 <!-- AUTO-GENERATED-CONTENT:START (FIXTURES) -->

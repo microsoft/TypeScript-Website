@@ -1,0 +1,170 @@
+{
+  "code": "console.log\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [
+    {
+      "completions": [
+        {
+          "name": "memory",
+          "kind": "property",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "assert",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "clear",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "count",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "countReset",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "debug",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "dir",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "dirxml",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "error",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "exception",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "group",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "groupCollapsed",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "groupEnd",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "info",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "log",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "table",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "time",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "timeEnd",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "timeLog",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "timeStamp",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "trace",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        },
+        {
+          "name": "warn",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "0"
+        }
+      ],
+      "kind": "completions",
+      "start": 9,
+      "length": 1,
+      "offset": 9,
+      "line": 0
+    }
+  ],
+  "staticQuickInfos": [
+    {
+      "text": "var console: Console",
+      "docs": "",
+      "start": 0,
+      "length": 7,
+      "line": 0,
+      "character": 0,
+      "targetString": "console"
+    },
+    {
+      "text": "(method) Console.log(...data: any[]): void",
+      "docs": "",
+      "start": 8,
+      "length": 3,
+      "line": 0,
+      "character": 8,
+      "targetString": "log"
+    }
+  ],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/MYewdgziA2CmB00QHMBQB6dACHusD0AfVIA"
+}
