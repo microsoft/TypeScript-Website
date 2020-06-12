@@ -367,6 +367,7 @@ Turns to:
 >       ],
 >       "kind": "completions",
 >       "start": 9,
+>       "completionsPrefix": "l",
 >       "length": 1,
 >       "offset": 9,
 >       "line": 0
@@ -759,8 +760,8 @@ export interface TwoSlashReturn {
     length: number
     /** Results for completions at a particular point */
     completions?: import("typescript").CompletionEntry[]
-    /* Completion prefix e.g. the letters before the cursor in the word */
-    completionsString?: string
+    /* Completion prefix e.g. the letters before the cursor in the word so you can filter */
+    completionsPrefix?: string
   }[]
   /** Diagnostic error messages which came up when creating the program */
   errors: {
