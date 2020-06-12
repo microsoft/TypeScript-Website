@@ -140,6 +140,7 @@
       ],
       "kind": "completions",
       "start": 9,
+      "completionsPrefix": "l",
       "length": 1,
       "offset": 9,
       "line": 0

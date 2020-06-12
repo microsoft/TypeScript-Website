@@ -11,6 +11,7 @@ import {
   typesToExtension,
   stringAroundIndex,
   getIdentifierTextSpans,
+  getClosestWord,
 } from "./utils"
 import { validateInput, validateCodeForErrors } from "./validation"
 
@@ -49,6 +50,7 @@ type PartialQueryResults = {
 type PartialCompletionResults = {
   kind: "completions"
   completions: import("typescript").CompletionEntry[]
+  completionPrefix: string
 
   line: number
   offset: number
@@ -295,6 +297,8 @@ export interface TwoSlashReturn {
     length: number
     /** Results for completions at a particular point */
     completions?: import("typescript").CompletionEntry[]
+    /* Completion prefix e.g. the letters before the cursor in the word so you can filter */
+    completionsPrefix?: string
   }[]
 
   /** Diagnostic error messages which came up when creating the program */
@@ -436,11 +440,15 @@ export function twoslasher(
           if (!quickInfo) {
             throw new Error(`Twoslash: The ^| query at line ${q.line} in ${filename} did not return any completions`)
           }
-          quickInfo.entries
+
+          const word = getClosestWord(sourceFile.text, position)
+          const prefix = sourceFile.text.slice(word.startPos, position)
+          const lastDot = prefix.split(".").pop() || ""
 
           const queryResult: PartialCompletionResults = {
             kind: "completions",
             completions: quickInfo.entries,
+            completionPrefix: lastDot,
             line: q.line - i,
             offset: q.offset,
             file: filename,
@@ -537,6 +545,7 @@ export function twoslasher(
                 completions: q.completions,
                 kind: "completions",
                 start: pos,
+                completionsPrefix: q.completionPrefix,
                 length: 1,
                 offset: q.offset,
                 line: q.line + linesAbove,
