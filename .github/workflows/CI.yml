@@ -24,12 +24,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      # Verify dependencies are hooked up right
-      - run: node test/verifyPackageVersions.js
-
       # Get local dependencies
       - run: sudo apt install calibre
       - run: yarn install
+      # Verify dependencies are hooked up right
+      - run: node test/verifyPackageVersions.js
+      # Launch
       - run: yarn bootstrap
       - run: yarn build
       - run: yarn compile
