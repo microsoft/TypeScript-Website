@@ -155,8 +155,7 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
                 })
                 .join("")
               html +=
-                "".padStart(query.offset - 2) +
-                `<span class='inline-completions'><ul class='dropdown'>${lis}</ul></span>`
+                "".padStart(query.offset) + `<span class='inline-completions'><ul class='dropdown'>${lis}</ul></span>`
             }
           }
         }
