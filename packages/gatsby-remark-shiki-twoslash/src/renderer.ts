@@ -69,7 +69,7 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
         const findTokenDebug = (start: number) => (e: any) => {
           const result = start <= e.character && start + token.content.length >= e.character + e.length
           // prettier-ignore
-          console.log(result, start, '<=', e.character, '&&', start + token.content.length, '<=', e.character + e.length)
+          console.log(result, start, '<=', e.character, '&&', start + token.content.length, '>=', e.character + e.length)
           if (result) {
             console.log("Found:", e)
             console.log("Inside:", token)

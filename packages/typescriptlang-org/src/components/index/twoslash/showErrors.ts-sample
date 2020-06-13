@@ -1,11 +1,8 @@
-// @errors: 2554
-
-function addPrices(items: number[]) {
-  let sum = 0
-  for (const item of items) {
-    sum += item
-  }
-  return sum
+// @errors: 2339
+const user = {
+  firstName: "Angela",
+  lastName: "Davis",
+  role: "Professor"
 }
 
-addPrices(3, 4, 6)
+console.log(user.name)

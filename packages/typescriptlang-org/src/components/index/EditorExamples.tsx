@@ -6,6 +6,7 @@ import { useIntl } from "react-intl";
 import { ShowErrorsExample } from "./twoslash/generated/showErrors";
 import { ReactExample } from "./twoslash/generated/react";
 import { TypeDefinitionsExample } from "./twoslash/generated/typeDefinitions";
+import { InterfaceExample } from "./twoslash/generated/interface";
 import { setupTwoslashHovers } from "gatsby-remark-shiki-twoslash/dist/dom"
 
 // prettier-ignore
@@ -28,9 +29,10 @@ export const EditorExamples = () => {
   const [index, setIndex] = useState(0);
 
   const explanations = [
-    "Validate your function arguments",
-    "Document your React Props via types",
-    "Type Definitions"
+    "TypeScript validates your JavaScript ahead of time",
+    "Provides auto-complete for untyped libraries",
+    "Describe the shape of objects and functions",
+    "Supports rich type-checking in JSX environments like React",
   ];
 
   const loadIndex = (index: number) => setIndex(index);
@@ -52,13 +54,16 @@ export const EditorExamples = () => {
       <div className="slides">
         {{
           0: (
-            <TypeDefsEditor />
+            <Editor inline={() => <ShowErrorsExample />} />
           ),
           1: (
-            <ReactEditor />
+            <Editor inline={() => <TypeDefinitionsExample />} />
           ),
           2: (
-            <WrongArgumentsEditor />
+            <Editor inline={() => <InterfaceExample />} />
+          ),
+          3: (
+            <Editor inline={() => <ReactExample />} />
           ),
         }[index]}
       </div>
@@ -81,7 +86,7 @@ export const EditorExamples = () => {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path d="M0 14.5V0.5L10.5 7L0 14.5Z" fill="#08446E" />
+                <path d="M0 14.5V0.5L10.5 7L0 14.5Z" fill="white" />
               </svg>
             </p>
           </div>
@@ -91,65 +96,17 @@ export const EditorExamples = () => {
   );
 };
 
-const WrongArgumentsEditor = () => {
-  return (
-    <Editor
-      title="TypeScript"
-      front
-      code={""}
-      line={() => <div className="line-error" style={{ top: "166px" }} />}
-      inline={() => <ShowErrorsExample />}
-    />
-  );
-};
-
-
-const ReactEditor = () => {
-  return (
-    <Editor
-      title="TypeScript"
-      front
-      code={""}
-      line={() => <div className="line-error" style={{ top: "166px" }} />}
-      inline={() => <ReactExample />}
-    />
-  );
-};
-
-
-const TypeDefsEditor = () => {
-  return (
-    <Editor
-      title="TypeScript"
-      front
-      code={""}
-      line={() => <div className="line-error" style={{ top: "166px" }} />}
-      inline={() => <TypeDefinitionsExample />}
-    />
-  )
-};
-
 
 type EditorProps = {
-  title: string;
-  isJS?: boolean;
-  front?: boolean;
-  code: string;
   inline?: () => JSX.Element;
-  line?: () => JSX.Element;
 };
 
 const Editor = (props: EditorProps) => {
-  const classes = ["editor"];
-  classes.push(props.front ? "front" : "back");
-  classes.push(props.isJS ? "js" : "ts");
+  const classes = ["editor", "ts", "front"];
   return (
     <div className={classes.join(" ")}>
       <div className="editor-inner">
-        <div className="titlebar">
-          <div className="lang">{props.isJS ? js() : ts()}</div>
-          <div className="window-name">{props.title}</div>
-        </div>
+        <div className="titlebar" />
         <div className="content">
           <div className="lines">
             <Files />
