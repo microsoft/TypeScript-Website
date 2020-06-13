@@ -52,13 +52,13 @@ export const EditorExamples = () => {
       <div className="slides">
         {{
           0: (
-            <WrongArgumentsEditor />
+            <TypeDefsEditor />
           ),
           1: (
             <ReactEditor />
           ),
           2: (
-            <TypeDefsEditor />
+            <WrongArgumentsEditor />
           ),
         }[index]}
       </div>
@@ -93,46 +93,40 @@ export const EditorExamples = () => {
 
 const WrongArgumentsEditor = () => {
   return (
-    <div>
-      <Editor
-        title="TypeScript"
-        front
-        code={""}
-        line={() => <div className="line-error" style={{ top: "166px" }} />}
-        inline={() => <ShowErrorsExample />}
-      />
-    </div>
+    <Editor
+      title="TypeScript"
+      front
+      code={""}
+      line={() => <div className="line-error" style={{ top: "166px" }} />}
+      inline={() => <ShowErrorsExample />}
+    />
   );
 };
 
 
 const ReactEditor = () => {
   return (
-    <div>
-      <Editor
-        title="TypeScript"
-        front
-        code={""}
-        line={() => <div className="line-error" style={{ top: "166px" }} />}
-        inline={() => <ReactExample />}
-      />
-    </div>
+    <Editor
+      title="TypeScript"
+      front
+      code={""}
+      line={() => <div className="line-error" style={{ top: "166px" }} />}
+      inline={() => <ReactExample />}
+    />
   );
 };
 
 
 const TypeDefsEditor = () => {
   return (
-    <div>
-      <Editor
-        title="TypeScript"
-        front
-        code={""}
-        line={() => <div className="line-error" style={{ top: "166px" }} />}
-        inline={() => <TypeDefinitionsExample />}
-      />
-    </div>
-  );
+    <Editor
+      title="TypeScript"
+      front
+      code={""}
+      line={() => <div className="line-error" style={{ top: "166px" }} />}
+      inline={() => <TypeDefinitionsExample />}
+    />
+  )
 };
 
 

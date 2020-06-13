@@ -209,6 +209,10 @@ $headline-foreground-bg: #104261;
     overflow-y: hidden;
     position: relative;
 
+    pre .code-container {
+      overflow: hidden;
+    }
+
     .editor {
       border: 4px solid #c4c4c4;
       background-color: $ts-main-blue-darkest-color;
@@ -281,32 +285,37 @@ $headline-foreground-bg: #104261;
         width: 200px;
       }
 
-      ul.dropdown {
-        position: absolute;
-        width: 240px;
-        background-color: white;
-        color: grey;
+      .inline-completions {
+        position: relative;
 
-        font-family: $font-code;
-        font-size: 0.8rem;
-        margin: 0;
-        padding: 0;
+        ul.dropdown {
+          display: inline-block;
+          position: absolute;
+          width: 240px;
+          background-color: white;
+          color: grey;
 
-        border-left: 4px solid #4b9edd;
+          font-family: $font-code;
+          font-size: 0.8rem;
+          margin: 0;
+          padding: 0;
 
-        li {
-          border-bottom: 1px solid black;
-          height: 1rem;
-          overflow-x: hidden;
-          padding-left: 4px;
+          border-left: 4px solid #4b9edd;
 
-          span.result-found {
-            color: #4b9edd;
-          }
-          span.result {
-            width: 100px;
-            color: black;
-            display: inline-block;
+          li {
+            border-bottom: 1px solid black;
+            height: 1rem;
+            overflow-x: hidden;
+            padding-left: 4px;
+
+            span.result-found {
+              color: #4b9edd;
+            }
+            span.result {
+              width: 100px;
+              color: black;
+              display: inline-block;
+            }
           }
         }
       }
@@ -390,7 +399,6 @@ $headline-foreground-bg: #104261;
     width: 100%;
     flex-direction: column-reverse;
     align-items: center;
-    justify-content: center;
 
     .next-headline-button {
       background-color: #235a97;
@@ -402,8 +410,9 @@ $headline-foreground-bg: #104261;
       flex-direction: row;
       text-decoration: none;
       bottom: 20px;
-      margin: auto 0;
+
       align-items: center;
+      margin-bottom: 20px;
 
       &:hover,
       &.focus {

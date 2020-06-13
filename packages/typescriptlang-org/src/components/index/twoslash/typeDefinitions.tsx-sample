@@ -1,11 +1,11 @@
-// @errors: 2339
 // @noErrors
 // @esModuleInterop
 import express from "express"
 const app = express()
 
 app.get("/", function (req, res) {
-  res.se/*** @completions */
+  res.sen
+//       ^|
 })
 
 app.listen(3000)

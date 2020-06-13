@@ -19,13 +19,33 @@ export const workbenchAssertionsPlugin: import("../../../../static/js/playground
       ds.subtitle("Assertions Found")
 
       const queriesAsDiags = results.queries.map(t => {
+        let msg = ""
+        switch (t.kind) {
+          case "query": {
+            msg = t.text || "No text found for query"
+            break
+          }
+          case "completions": {
+            if (!t.completions) {
+              msg = "Could not get completions"
+            } else {
+              const all = t.completions.map(c => c.name).join(", ")
+              // prettier-ignore
+              const prefixed = t.completions.filter(c => c.name.startsWith(t.completionsPrefix || "____")).map(c => c.name).join(", ")
+              const prefix = t.completionsPrefix?.length
+                ? `Filtered Completions: ${prefixed}.\n\n`
+                : ""
+              msg = `${prefix}All: ${all}.`
+            }
+          }
+        }
+
         const diag: import("typescript").DiagnosticRelatedInformation = {
           category: 3, // ts.DiagnosticCategory.Message,
           code: 0,
           file: undefined,
           length: t.length,
-          messageText:
-            t.text || t.completions?.map(c => c.name).join(", ") || "-",
+          messageText: msg || "-",
           start: t.start,
         }
         return diag

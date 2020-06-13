@@ -436,12 +436,12 @@ export function twoslasher(
         }
 
         case "completion": {
-          const quickInfo = ls.getCompletionsAtPosition(filename, position, {})
+          const quickInfo = ls.getCompletionsAtPosition(filename, position - 1, {})
           if (!quickInfo) {
             throw new Error(`Twoslash: The ^| query at line ${q.line} in ${filename} did not return any completions`)
           }
 
-          const word = getClosestWord(sourceFile.text, position)
+          const word = getClosestWord(sourceFile.text, position - 1)
           const prefix = sourceFile.text.slice(word.startPos, position)
           const lastDot = prefix.split(".").pop() || ""
 
@@ -532,11 +532,11 @@ export function twoslasher(
               queries.push({
                 docs: q.docs,
                 kind: "query",
-                start: pos,
+                start: pos + fileContentStartIndexInModifiedFile,
                 length: q.text.length,
                 text: q.text,
                 offset: q.offset,
-                line: q.line + linesAbove,
+                line: q.line + linesAbove + 1,
               })
               break
             }
@@ -544,11 +544,11 @@ export function twoslasher(
               queries.push({
                 completions: q.completions,
                 kind: "completions",
-                start: pos,
+                start: pos + fileContentStartIndexInModifiedFile,
                 completionsPrefix: q.completionPrefix,
                 length: 1,
                 offset: q.offset,
-                line: q.line + linesAbove,
+                line: q.line + linesAbove + 1,
               })
             }
           }

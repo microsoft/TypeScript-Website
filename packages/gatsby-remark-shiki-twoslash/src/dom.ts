@@ -61,7 +61,6 @@ export const setupTwoslashHovers = () => {
   // Gets triggered on the spans inside the codeblocks
   const hover = (event: Event) => {
     const hovered = event.target as HTMLElement
-    console.log("Hovering")
     if (hovered.nodeName !== "DATA-LSP") return resetHover()
 
     const message = hovered.getAttribute("lsp")!
