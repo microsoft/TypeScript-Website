@@ -14,7 +14,7 @@
     "start": "tsdx watch",
     "prepublishOnly": "yarn build",
     "build": "tsdx build && yarn tsc src/dom.ts --outDir dist",
-    "bootstrap": "echo 'NOOP'",
+    "bootstrap": "yarn workspace @typescript/twoslash build",
     "test": "tsdx test",
     "lint": "tsdx lint"
   },
