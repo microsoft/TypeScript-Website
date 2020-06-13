@@ -129,7 +129,7 @@ export const runTwoSlashOnNode = (settings: ShikiTwoslashSettings) => (node: Ric
 }
 
 /** Sends the twoslash visitor over the existing MD AST and replaces the code samples inline, does not do highlighting  */
-export const runTwoSlashAcrossDocument = ({ markdownAST }: any, settings: any) =>
-  visit(markdownAST, "code", runTwoSlashOnNode(settings))
+export const runTwoSlashAcrossDocument = ({ markdownAST }: any, settings?: ShikiTwoslashSettings) =>
+  visit(markdownAST, "code", runTwoSlashOnNode(settings || defaultSettings))
 
 export default remarkShiki

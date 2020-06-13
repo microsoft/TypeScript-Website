@@ -24,7 +24,8 @@ export const workbenchAssertionsPlugin: import("../../../../static/js/playground
           code: 0,
           file: undefined,
           length: t.length,
-          messageText: t.text,
+          messageText:
+            t.text || t.completions?.map(c => c.name).join(", ") || "-",
           start: t.start,
         }
         return diag
