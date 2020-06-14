@@ -60,7 +60,7 @@ const b = "345"
   const result = twoslasher(file, "ts")
 
   it("shows the right query results", () => {
-    const bLSPResult = result.queries.find(info => info.line === 0)
+    const bLSPResult = result.queries.find(info => info.line === 1)
     expect(bLSPResult).toBeTruthy()
     expect(bLSPResult!.text).toContain("const b:")
   })
@@ -79,8 +79,7 @@ const c = "678"
   const result = twoslasher(file, "ts")
 
   it("shows the right query results", () => {
-    // 6 = `const ` length
-    const bQueryResult = result.queries.find(info => info.line === 0)
+    const bQueryResult = result.queries.find(info => info.line === 1)
     expect(bQueryResult).toBeTruthy()
     expect(bQueryResult!.text).toContain("const c")
   })

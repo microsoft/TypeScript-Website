@@ -87,7 +87,6 @@ export const setupTwoslashHovers = () => {
   }
 
   twoslashes.forEach(codeblock => {
-    console.log("adding to ", codeblock)
     codeblock.addEventListener("mouseover", hover)
     codeblock.addEventListener("mouseout", resetHover)
   })
