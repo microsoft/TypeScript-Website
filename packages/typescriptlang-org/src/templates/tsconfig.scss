@@ -139,7 +139,6 @@
     margin-bottom: 40px;
 
     > h2 {
-      
       > a {
         &:focus {
           outline: none;
@@ -154,12 +153,12 @@
     margin-bottom: 80px;
 
     > h3 {
-      &:before { 
-        display: block; 
-        content: " "; 
+      &:before {
+        display: block;
+        content: " ";
         height: 150px;
         margin-top: -150px;
-        visibility: hidden; 
+        visibility: hidden;
       }
 
       margin-bottom: 0;
@@ -189,19 +188,29 @@
         }
       }
 
-      table.compiler-option-md {
+      ul.compiler-option-md {
         width: 220px;
         max-width: 220px;
         min-width: 200px;
         overflow-x: hidden;
         margin-left: 20px;
+        padding: 0;
         float: right;
-
+        span {
+          width: 100px;
+          display: block;
+          font-weight: 600;
+        }
+        li {
+          list-style: none;
+          margin-bottom: 12px;
+        }
         tr {
           padding: 10px 0;
         }
-        td > p {
+        li > p {
           margin: 0;
+          display: inline-block;
         }
       }
 
@@ -212,7 +221,7 @@
           width: 100%;
         }
 
-        table.compiler-option-md {
+        ul.compiler-option-md {
           width: 100%;
           margin-left: 0;
         }

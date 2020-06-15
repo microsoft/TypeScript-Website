@@ -148,7 +148,7 @@
       }
 
       a {
-        color: $ts-main-blue-color;
+        color: $ts-main-blue-darker-color;
         padding-left: 0;
         padding-bottom: 0.2rem;
       }
@@ -474,11 +474,11 @@ main #editor-toolbar {
         }
 
         &.active {
-          border-bottom: 1px solid $ts-main-blue-color;
+          border-bottom: 1px solid $ts-main-blue-darker-color;
         }
 
         &:focus {
-          color: $ts-main-blue-color;
+          color: $ts-main-blue-darker-color;
           border-bottom: 1px solid black;
         }
       }
@@ -773,11 +773,13 @@ input.good {
   left: 0;
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
+  z-index: 100;
 }
 
 #popover-modal {
   width: 80%;
   height: 70%;
+  z-index: 101;
 
   &.smaller {
     width: 40%;

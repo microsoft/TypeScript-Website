@@ -44,11 +44,17 @@ const Index: React.FC<Props> = (props) => {
 
       re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "sandbox/index"], async (main: typeof import("monaco-editor"), ts: typeof import("typescript"), sandboxEnv: typeof import("typescript-sandbox")) => {
         // This triggers making "ts" available in the global scope
-        re(["vs/language/typescript/lib/typescriptServices"], async (ts) => {
+        re(["vs/language/typescript/lib/typescriptServices"], async (_ts) => {
+          const ts = (global as any).ts
           const isOK = main && ts && sandboxEnv
+          debugger
+
           if (isOK) {
             document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)
+          } else {
+            console.error("Error: main", !!main, "ts", !!ts, "sandbox", !!sandboxEnv)
           }
+
           document.getElementById("monaco-editor-embed")!.style.display = "block"
           const sandbox = await sandboxEnv.createTypeScriptSandbox({ text: codeSamples[0].code, compilerOptions: {}, domID: "monaco-editor-embed", supportTwoslashCompilerOptions: true }, main, ts)
           sandbox.editor.focus()
@@ -56,14 +62,14 @@ const Index: React.FC<Props> = (props) => {
           // @ts-ignore
           window.sandbox = sandbox
 
-          const mapWithLibFiles = await createDefaultMapFromCDN({ target: ts.ScriptTarget.ES2016 }, '3.7.3', true, ts, sandbox.lzstring as any)
+          const mapWithLibFiles = await createDefaultMapFromCDN({ target: 3 }, '3.7.3', true, ts, sandbox.lzstring as any)
 
           const runTwoslash = () => {
             const newContent = sandbox.getText()
             mapWithLibFiles.set("index.ts", newContent)
 
             try {
-              const newResults = twoslasher(newContent, "tsx", ts, undefined, sandbox.lzstring as any, mapWithLibFiles)
+              const newResults = twoslasher(newContent, "tsx", {}, ts, sandbox.lzstring as any, mapWithLibFiles)
               const codeAsFakeShikiTokens = newResults.code.split("\n").map(line => [{ content: line }])
               const html = renderToHTML(codeAsFakeShikiTokens, {}, newResults)
 
@@ -186,7 +192,7 @@ const Index: React.FC<Props> = (props) => {
             </div>
           </div>
 
-          <div className="raised content main-content-block">
+          <div className="raised content main-content-block" style={{ maxWidth: "90%" }}>
 
             <div className="sixhundred" style={{ flex: 1 }}>
               <SuppressWhenTouch>

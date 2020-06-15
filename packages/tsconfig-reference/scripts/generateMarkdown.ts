@@ -257,7 +257,7 @@ languages.forEach((lang) => {
         }
 
         if (option.allowedValues) {
-          const optionValue = option.allowedValues.join(", ");
+          const optionValue = option.allowedValues.join(",<br/>");
           mdTableRows.push(["Allowed", optionValue]);
         }
 
@@ -277,15 +277,18 @@ languages.forEach((lang) => {
         if (option.releaseVersion) {
           const underscores = option.releaseVersion.replace(".", "-");
           const link = `/docs/handbook/release-notes/typescript-${underscores}.html`;
-          mdTableRows.push(["Released", `<a href="${link}">${option.releaseVersion}</a>`]);
+          mdTableRows.push([
+            "Released",
+            `<a aria-label="Release notes for TypeScript ${option.releaseVersion}" href="${link}">${option.releaseVersion}</a>`,
+          ]);
         }
 
         const table =
-          "<table class='compiler-option-md'><tr><th /><th /></tr>" +
+          "<ul class='compiler-option-md'>" +
           mdTableRows
-            .map((r) => `<tr><td>${r[0]}</td><td>${parseMarkdown(r[1])}<td/></tr>`)
+            .map((r) => `<li><span>${r[0]}:</span>${parseMarkdown(r[1])}</li>`)
             .join("\n") +
-          "</table>";
+          "</ul>";
         markdownChunks.push(table);
 
         markdownChunks.push("</div></section>");
