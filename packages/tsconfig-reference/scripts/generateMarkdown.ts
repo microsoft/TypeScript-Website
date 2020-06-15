@@ -277,7 +277,10 @@ languages.forEach((lang) => {
         if (option.releaseVersion) {
           const underscores = option.releaseVersion.replace(".", "-");
           const link = `/docs/handbook/release-notes/typescript-${underscores}.html`;
-          mdTableRows.push(["Released", `<a href="${link}">${option.releaseVersion}</a>`]);
+          mdTableRows.push([
+            "Released",
+            `<a aria-label="Release notes for TypeScript ${option.releaseVersion}" href="${link}">${option.releaseVersion}</a>`,
+          ]);
         }
 
         const table =

@@ -122,7 +122,7 @@ export const defaultsForOptions = {
   listFiles: "false",
   locale: "Platform specific",
   maxNodeModuleJsDepth: "0",
-  moduleResolution: "module === `AMD` or `System` or `ES6` ? `Classic` : `Node`",
+  moduleResolution: "module === `AMD`, `System` or `ES6` then `Classic`<br/><br/>Otherwise `Node`",
   newLine: "Platform specific",
   noEmit: "false",
   noEmitHelpers: "false",

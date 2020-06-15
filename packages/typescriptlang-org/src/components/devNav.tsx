@@ -27,7 +27,7 @@ export const DevNav = (props: DevNavProps) => {
       <li>
         <a className={isActive("playground plugins")} href={withPrefix("/dev/playground-plugins")}>Playground Plugins</a>
       </li>
-      <li style={{ display: "none" }}>
+      <li>
         <a className={isActive("bug workbench")} href={withPrefix("/dev/bug-workbench")}>Bug Workbench</a>
       </li>
     </ul>
