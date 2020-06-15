@@ -474,11 +474,11 @@ main #editor-toolbar {
         }
 
         &.active {
-          border-bottom: 1px solid $ts-main-blue-color;
+          border-bottom: 1px solid $ts-main-blue-darker-color;
         }
 
         &:focus {
-          color: $ts-main-blue-color;
+          color: $ts-main-blue-darker-color;
           border-bottom: 1px solid black;
         }
       }
