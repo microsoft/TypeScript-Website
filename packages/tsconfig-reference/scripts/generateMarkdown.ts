@@ -257,7 +257,7 @@ languages.forEach((lang) => {
         }
 
         if (option.allowedValues) {
-          const optionValue = option.allowedValues.join(", ");
+          const optionValue = option.allowedValues.join(",<br/>");
           mdTableRows.push(["Allowed", optionValue]);
         }
 
@@ -281,11 +281,11 @@ languages.forEach((lang) => {
         }
 
         const table =
-          "<table class='compiler-option-md'><tr><th /><th /></tr>" +
+          "<div class='compiler-option-md'><tr><th /><th /></tr>" +
           mdTableRows
-            .map((r) => `<tr><td>${r[0]}</td><td>${parseMarkdown(r[1])}<td/></tr>`)
+            .map((r) => `<li><span>${r[0]}:</span>${parseMarkdown(r[1])}</li>`)
             .join("\n") +
-          "</table>";
+          "</div>";
         markdownChunks.push(table);
 
         markdownChunks.push("</div></section>");
