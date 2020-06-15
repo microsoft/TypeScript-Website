@@ -698,7 +698,7 @@ let unknown = getProperty(taxi, "unknown");
 `keyof` and `T[K]` interact with index signatures. An index signature parameter type must be 'string' or 'number'.
 If you have a type with a string index signature, `keyof T` will be `string | number`
 (and not just `string`, since in JavaScript you can access an object property either
-by using strings (`object['42'`]) or numbers (`object[42]`)).
+by using strings (`object['42']`) or numbers (`object[42]`)).
 And `T[string]` is just the type of the index signature:
 
 ```ts
