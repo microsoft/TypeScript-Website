@@ -100,3 +100,17 @@ import { valueOfPi } from "./constants";
 
 export const twoPi = valueOfPi * 2;
 ```
+
+### `None`
+
+```ts twoslash
+// @showEmit
+// @module: none
+// @filename: constants.ts
+export const valueOfPi = 3.142;
+// ---cut---
+// @filename: index.ts
+import { valueOfPi } from "./constants";
+
+export const twoPi = valueOfPi * 2;
+```
