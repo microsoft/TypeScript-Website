@@ -45,7 +45,7 @@ pre {
     /** Style setup */
     font-size: 16px;
     line-height: 20px;
-    font-family: "Jet Brains Mono", Menlo, Monaco, Consolas, Courier New,
+    font-family: "JetBrains Mono", Menlo, Monaco, Consolas, Courier New,
       monospace;
 
     white-space: pre;
@@ -127,13 +127,12 @@ pre:hover data-lsp {
 
 /** The tooltip-like which provides the LSP response */
 #twoslash-mouse-hover-info {
-  background-color: rgb(63, 63, 63);
+  background-color: rgb(230, 230, 230);
   color: #fff;
   text-align: left;
   padding: 5px 8px;
   border-radius: 2px;
-  font-family: "Jet Brains Mono", Menlo, Monaco, Consolas, Courier New,
-    monospace;
+  font-family: "JetBrains Mono", Menlo, Monaco, Consolas, Courier New, monospace;
   font-size: 14px;
   white-space: pre-wrap;
   border-radius: 2px;

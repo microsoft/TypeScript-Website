@@ -151,7 +151,7 @@ With a bit of work you can explain complicated code in a way that lets people in
      text-align: left;
      padding: 5px 8px;
      border-radius: 2px;
-     font-family: 'Jet Brains Mono', Menlo, Monaco, Consolas, Courier New, monospace;
+     font-family: "JetBrains Mono", Menlo, Monaco, Consolas, Courier New, monospace;
      font-size: 14px;
      white-space: pre-wrap;
    }
@@ -200,10 +200,10 @@ If the code sample shows as
 
 ```ts
 function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {
-  throw 'unimplemented'
+  throw "unimplemented"
 }
 
-let a = createLabel('typescript')
+let a = createLabel("typescript")
 ```
 
 Then it worked, and you should be able to hover over `createLabel` to see it's types.

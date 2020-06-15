@@ -2,7 +2,7 @@ type Factory = import("../../../../static/js/playground").PluginFactory
 
 const intro = `
 The bug workbench uses <a href='https://www.npmjs.com/package/@typescript/twoslash'>Twoslash</a> to help you create accurate bug reports. 
-Twoslash is an markup format for TypeScript files which lets you highlight code, handle-multiple files and
+Twoslash is a markup format for TypeScript files which lets you highlight code, handle-multiple files and
 show the files the TypeScript compiler creates.
 `.trim()
 

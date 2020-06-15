@@ -2,7 +2,7 @@
 display: "Strict Checks"
 ---
 
-We recommend using the option [`strict`](#strict) to opt-in to every possible improvement as they are built.
+We recommend using the [compiler option `strict`](#strict) to opt-in to every possible improvement as they are built.
 
 TypeScript supports a wide spectrum of JavaScript patterns and defaults to allowing for quite a lot of flexibility in accommodating these styles.
 Often the safety and potential scalability of a codebase can be at odds with some of these techniques.

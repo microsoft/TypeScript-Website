@@ -26,9 +26,9 @@ TypeScriptには組み込みのJS API（例：`Math`）の型定義や、ブラ�
 | `ES2019`     | ES2019で利用可能なAPI - `array.flat`、`array.flatMap`、`Object.fromEntries`、`string.trimStart`、`string.trimEnd`など。                           |
 | `ES2020`     | ES2020で利用可能なAPI - `string.matchAll`など。                                                                                                   |
 | `ESNext`     | ESNextで利用可能なAPI - JavaScriptの仕様変遷によって内容は変化します。                                                                            |
-| `DOM`        | [DOM](https://developer.mozilla.org/en-US/docs/Glossary/DOM)の型定義 - `window`や`document`など。                                                 |
-| `WebWorker`  | [WebWorker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)コンテキストで利用可能なAPI                        |
-| `ScriptHost` | [Windows Script Hosting System](https://en.wikipedia.org/wiki/Windows_Script_Host)のAPI                                                           |
+| `DOM`        | [DOM](https://developer.mozilla.org/docs/Glossary/DOM)の型定義 - `window`や`document`など。                                                       |
+| `WebWorker`  | [WebWorker](https://developer.mozilla.org/docs/Web/API/Web_Workers_API/Using_web_workers)コンテキストで利用可能なAPI                              |
+| `ScriptHost` | [Windows Script Hosting System](https://wikipedia.org/wiki/Windows_Script_Host)のAPI                                                              |
 
 ### 個別のライブラリコンポーネント
 

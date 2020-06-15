@@ -185,11 +185,11 @@ in that order.
 # Nullable types
 
 TypeScript has two special types, `null` and `undefined`, that have the values null and undefined respectively.
-We mentioned these briefly in [the Basic Types section](docs/handbook/basic-types.html).
+We mentioned these briefly in [the Basic Types section](/docs/handbook/basic-types.html).
 By default, the type checker considers `null` and `undefined` assignable to anything.
 Effectively, `null` and `undefined` are valid values of every type.
 That means it's not possible to _stop_ them from being assigned to any type, even when you would like to prevent it.
-The inventor of `null`, Tony Hoare, calls this his ["billion dollar mistake"](https://en.wikipedia.org/wiki/Null_pointer#History).
+The inventor of `null`, Tony Hoare, calls this his ["billion dollar mistake"](https://wikipedia.org/wiki/Null_pointer#History).
 
 The `--strictNullChecks` flag fixes this: when you declare a variable, it doesn't automatically include `null` or `undefined`.
 You can include them explicitly using a union type:
@@ -363,7 +363,7 @@ declare function interfaced(arg: Interface): Interface;
 
 In older versions of TypeScript, type aliases couldn't be extended or implemented from (nor could they extend/implement other types). As of version 2.7, type aliases can be extended by creating a new intersection type e.g. `type Cat = Animal & { purrs: true }`.
 
-Because [an ideal property of software is being open to extension](https://en.wikipedia.org/wiki/Open/closed_principle), you should always use an interface over a type alias if possible.
+Because [an ideal property of software is being open to extension](https://wikipedia.org/wiki/Open/closed_principle), you should always use an interface over a type alias if possible.
 
 On the other hand, if you can't express some shape with an interface and you need to use a union or tuple type, type aliases are usually the way to go.
 
@@ -394,7 +394,7 @@ button.animate(0, 0, "uneasy"); // error: "uneasy" is not allowed here
 
 You can pass any of the three allowed strings, but any other string will give the error
 
-```text
+```
 Argument of type '"uneasy"' is not assignable to parameter of type '"ease-in" | "ease-out" | "ease-in-out"'
 ```
 
@@ -580,7 +580,10 @@ class BasicCalculator {
   // ... other operations go here ...
 }
 
-let v = new BasicCalculator(2).multiply(5).add(1).currentValue();
+let v = new BasicCalculator(2)
+  .multiply(5)
+  .add(1)
+  .currentValue();
 ```
 
 Since the class uses `this` types, you can extend it and the new class can use the old methods with no changes.
@@ -597,7 +600,11 @@ class ScientificCalculator extends BasicCalculator {
   // ... other operations go here ...
 }
 
-let v = new ScientificCalculator(2).multiply(5).sin().add(1).currentValue();
+let v = new ScientificCalculator(2)
+  .multiply(5)
+  .sin()
+  .add(1)
+  .currentValue();
 ```
 
 Without `this` types, `ScientificCalculator` would not have been able to extend `BasicCalculator` and keep the fluent interface.
@@ -611,7 +618,7 @@ For example, a common JavaScript pattern is to pick a subset of properties from 
 
 ```js
 function pluck(o, propertyNames) {
-  return propertyNames.map((n) => o[n]);
+  return propertyNames.map(n => o[n]);
 }
 ```
 
@@ -619,7 +626,7 @@ Here's how you would write and use this function in TypeScript, using the **inde
 
 ```ts
 function pluck<T, K extends keyof T>(o: T, propertyNames: K[]): T[K][] {
-  return propertyNames.map((n) => o[n]);
+  return propertyNames.map(n => o[n]);
 }
 
 interface Car {
@@ -630,7 +637,7 @@ interface Car {
 let taxi: Car = {
   manufacturer: "Toyota",
   model: "Camry",
-  year: 2014,
+  year: 2014
 };
 
 // Manufacturer and model are both of type string,
@@ -691,7 +698,7 @@ let unknown = getProperty(taxi, "unknown");
 `keyof` and `T[K]` interact with index signatures. An index signature parameter type must be 'string' or 'number'.
 If you have a type with a string index signature, `keyof T` will be `string | number`
 (and not just `string`, since in JavaScript you can access an object property either
-by using strings (`object['42'`]) or numbers (`object[42]`)).
+by using strings (`object['42']`) or numbers (`object[42]`)).
 And `T[string]` is just the type of the index signature:
 
 ```ts
@@ -812,7 +819,7 @@ type Partial<T> = { [P in keyof T]?: T[P] };
 
 In these examples, the properties list is `keyof T` and the resulting type is some variant of `T[P]`.
 This is a good template for any general use of mapped types.
-That's because this kind of transformation is [homomorphic](https://en.wikipedia.org/wiki/Homomorphism), which means that the mapping applies only to properties of `T` and no others.
+That's because this kind of transformation is [homomorphic](https://wikipedia.org/wiki/Homomorphism), which means that the mapping applies only to properties of `T` and no others.
 The compiler knows that it can copy all the existing property modifiers before adding any new ones.
 For example, if `Person.name` was readonly, `Partial<Person>.name` would be readonly and optional.
 

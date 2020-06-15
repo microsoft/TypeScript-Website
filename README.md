@@ -5,7 +5,7 @@
 
 ### Getting Started
 
-This repo uses [yarn workspaces][y-wrk] with node 13, to get started clone this repo and run `yarn install`.
+This repo uses [yarn workspaces][y-wrk] with node 13+, to get started clone this repo and run `yarn install`.
 
 ```sh
 git clone https://github.com/microsoft/TypeScript-website
@@ -105,6 +105,10 @@ A comprehensive way to run TypeScript projects in-memory in a browser or node en
 ## Create Playground Plugin
 
 A template for generating a new playground plugin which you can use via `npm init playground-plugin [name]`
+
+## Handbook Epub
+
+Generates an epub file from the handbook files. You can try downloading it at http://www.staging-typescript.org/assets/typescript-handbook-beta.epub
 
 ## Community Meta
 

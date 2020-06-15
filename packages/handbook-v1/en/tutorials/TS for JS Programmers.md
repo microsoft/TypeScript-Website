@@ -80,7 +80,7 @@ const user: User = {
 };
 ```
 
-Because JavaScript supports classes and object-orient programming, so does TypeScript - an interface declaration can also be used with classes:
+Because JavaScript supports classes and object-oriented programming, so does TypeScript - an interface declaration can also be used with classes:
 
 ```ts twoslash
 interface User {
@@ -138,7 +138,7 @@ type MyBool = true | false;
 
 _Note:_ If you hover over `MyBool` above, you'll see that it is classed as `boolean` - that's a property of the Structural Type System, which we'll get to later.
 
-One of the most popular use-cases for union types is to describe a set of `string`s or `number`s [literal](/handbook/literal-types.html) which a value is allowed to be:
+One of the most popular use-cases for union types is to describe a set of `string`s or `number`s [literal](/docs/handbook/literal-types.html) which a value is allowed to be:
 
 ```ts twoslash
 type WindowStates = "open" | "closed" | "minimized";

@@ -115,7 +115,14 @@ form.search {
     margin-right: 0.3rem;
   }
 
+  &:focus-within {
+    background-color: $ts-main-blue-lighter-color;
+  }
+
   input {
+    &:focus-within {
+      background-color: $ts-main-blue-lighter-color;
+    }
     -webkit-appearance: none;
     background-color: $ts-main-blue-darker-color;
 

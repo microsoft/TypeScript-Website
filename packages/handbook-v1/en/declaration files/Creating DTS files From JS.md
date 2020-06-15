@@ -46,12 +46,17 @@ In this case, you will want a file like the following:
     // Types should go into this directory.
     // Removing this would place the .d.ts files
     // next to the .js files
-    outDir: "dist",
-  },
+    outDir: "dist"
+  }
 }
 ```
 
 You can learn more about the options in the [tsconfig reference](/reference).
+An alternative to using a TSConfig file is the CLI, this is the same behavior as a CLI command.
+
+```sh
+npx typescript src/**/*.js --declaration --allowJs --emitDeclarationOnly --outDir types
+```
 
 ## Run the compiler
 

@@ -98,6 +98,7 @@ export const setupPlayground = (
     plugins.push(plugin)
 
     const tab = createTabForPlugin(plugin)
+
     tabs.push(tab)
 
     const tabClicked: HTMLElement["onclick"] = e => {
@@ -179,7 +180,9 @@ export const setupPlayground = (
   // Versions of TypeScript
 
   // Set up the label for the dropdown
-  document.querySelectorAll("#versions > a").item(0).innerHTML = "v" + sandbox.ts.version + " <span class='caret'/>"
+  const versionButton = document.querySelectorAll("#versions > a").item(0)
+  versionButton.innerHTML = "v" + sandbox.ts.version + " <span class='caret'/>"
+  versionButton.setAttribute("aria-label", `Select version of TypeScript, currently ${sandbox.ts.version}`)
 
   // Add the versions to the dropdown
   const versionsMenu = document.querySelectorAll("#versions > ul").item(0)
@@ -232,11 +235,18 @@ export const setupPlayground = (
     a.onclick = _e => {
       if (a.parentElement!.classList.contains("open")) {
         document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
+        a.setAttribute("aria-expanded", "false")
       } else {
         document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
         a.parentElement!.classList.toggle("open")
+        a.setAttribute("aria-expanded", "true")
 
         const exampleContainer = a.closest("li")!.getElementsByTagName("ul").item(0)!
+
+        const firstLabel = exampleContainer.querySelector("label") as HTMLElement
+        if (firstLabel) firstLabel.focus()
+
+
 
         // Set exact height and widths for the popovers for the main playground navigation
         const isPlaygroundSubmenu = !!a.closest("nav")
@@ -326,7 +336,18 @@ export const setupPlayground = (
         settingsContent.className = "playground-settings-container playground-plugin-container"
         const settings = settingsPlugin(i, utils)
         settings.didMount && settings.didMount(sandbox, settingsContent)
-        document.querySelector(".playground-sidebar")!.appendChild(settingsContent)
+        document.querySelector(".playground-sidebar")!.appendChild(settingsContent);
+        (document.querySelector(".playground-sidebar label") as any).focus()
+
+        // When the last tab item is hit, go back to the settings button
+        const labels = document.querySelectorAll(".playground-sidebar input")
+        const lastLabel = labels.item(labels.length - 1) as HTMLElement
+        lastLabel.addEventListener("keydown", (e) => {
+          if (e.keyCode === 9) {
+            (document.querySelector("#playground-settings") as any).focus()
+            e.preventDefault()
+          }
+        })
       }
 
       if (open) {

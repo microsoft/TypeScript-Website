@@ -9,7 +9,7 @@ export const denyList: CompilerOptionName[] = [
   "version",
   "build",
   "project",
-  "locale"
+  "locale",
 ];
 
 /** Things we should document, but really want to help move people away from */
@@ -19,7 +19,7 @@ export const deprecated: CompilerOptionName[] = [
   "keyofStringsOnly",
   "moduleResolution",
   "noErrorTruncation",
-  "diagnostics"
+  "diagnostics",
 ];
 
 /** Things which people really shouldn't use, but need to document  */
@@ -33,7 +33,7 @@ export const recommended: CompilerOptionName[] = [
   "strictBindCallApply",
   "strictFunctionTypes",
   "noImplicitThis",
-  "noImplicitAny"
+  "noImplicitAny",
 ];
 
 type RootProperties = "files" | "extends" | "include" | "exclude";
@@ -77,7 +77,7 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["checkJs", ["allowJs", "emitDeclarationOnly"]],
   ["declaration", ["declarationDir", "emitDeclarationOnly"]],
 
-  ["moduleResolution", ["module"]]
+  ["moduleResolution", ["module"]],
 ];
 
 /**
@@ -115,14 +115,14 @@ export const defaultsForOptions = {
   inlineSourceMap: "false",
   inlineSources: "false",
   isolatedModules: "false",
-  jsx: '"preserve"',
-  jsxFactory: 'React"',
+  jsx: '`"preserve"`',
+  jsxFactory: "`React.createElement`",
   keyofStringsOnly: "false",
   listEmittedFiles: "false",
   listFiles: "false",
   locale: "Platform specific",
   maxNodeModuleJsDepth: "0",
-  moduleResolution: "module === `AMD` or `System` or `ES6` ? `Classic` : `Node`",
+  moduleResolution: "module === `AMD`, `System` or `ES6` then `Classic`<br/><br/>Otherwise `Node`",
   newLine: "Platform specific",
   noEmit: "false",
   noEmitHelpers: "false",
@@ -162,14 +162,13 @@ export const defaultsForOptions = {
   target: "false",
   traceResolution: "false",
   tsBuildInfoFile: ".tsbuildinfo",
-  useDefineForClassFields: "false"
+  useDefineForClassFields: "false",
 };
 
 export const allowedValues = {
   jsx: ["`react` (default)", "`react-native`", "`preserve`"],
-  jsxFactory: [
-    '**Allowed Values**: Any identifier or dotted identifier; default `"React.createElement"`'
-  ],
+  jsxFactory: ["Any identifier or dotted identifier"],
+  lib: ["See main content"],
   target: [
     "`ES3` (default)",
     "`ES5`",
@@ -179,17 +178,19 @@ export const allowedValues = {
     "`ES2018`",
     "`ES2019`",
     "`ES2020`",
-    "`ESNext`"
+    "`ESNext`",
   ],
   module: [
     "`CommonJS` (default if `target` is `ES3` or `ES5`)",
+    "",
     "`ES6`/`ES2015` (synonymous, default for `target` `ES6` and higher)",
+    "",
     "`ES2020`",
     "`None`",
     "`UMD`",
     "`AMD`",
     "`System`",
-    "`ESNext`"
+    "`ESNext`",
   ],
   importsNotUsedAsValues: ["remove", "preserve", "error"],
   watchFile: [
@@ -197,15 +198,15 @@ export const allowedValues = {
     "priorityPollingInterval",
     "dynamicPriorityPolling",
     "useFsEvents",
-    "useFsEventsOnParentDirectory"
+    "useFsEventsOnParentDirectory",
   ],
   fallbackPolling: [
     "fixedPollingInterval",
     "dynamicPriorityPolling",
     "useFsEvents",
-    "synchronousWatchDirectory"
+    "synchronousWatchDirectory",
   ],
-  watchDirectory: ["fixedPollingInterval", "dynamicPriorityPolling", "useFsEvents"]
+  watchDirectory: ["fixedPollingInterval", "dynamicPriorityPolling", "useFsEvents"],
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
@@ -215,14 +216,13 @@ export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
     "disableSolutionSearching",
     "fallbackPolling",
     "watchDirectory",
-    "watchFile"
+    "watchFile",
   ],
-
   "3.7": [
     "disableSourceOfProjectReferenceRedirect",
     "downlevelIteration",
     "generateCpuProfile",
-    "useDefineForClassFields"
+    "useDefineForClassFields",
   ],
   "3.5": ["allowUmdGlobalAccess"],
   "3.4": ["incremental", "tsBuildInfoFile"],
@@ -246,7 +246,7 @@ export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
     "noImplicitThis",
     "rootDirs",
     "traceResolution",
-    "include"
+    "include",
   ],
   "1.8": [
     "allowJs",
@@ -254,23 +254,23 @@ export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
     "allowUnreachableCode",
     "allowUnusedLabels",
     "noImplicitReturns",
-    "noFallthroughCasesInSwitch"
+    "noFallthroughCasesInSwitch",
   ],
   "1.5": ["inlineSourceMap", "noEmitHelpers", "newLine", "inlineSources", "rootDir"],
   "1.4": ["noEmitOnError"],
-  "1.0": ["declaration", "target", "module", "outFile"]
+  "1.0": ["declaration", "target", "module", "outFile"],
 };
 
 export const additionalOptionDescriptors: Record<string, { categoryCode: number }> = {
   plugins: {
-    categoryCode: 6172
-  }
+    categoryCode: 6172,
+  },
 };
 
 /** When a particular compiler flag (or CLI command...) was added  */
 export const configToRelease = {};
-Object.keys(releaseToConfigsMap).forEach(v => {
-  releaseToConfigsMap[v].forEach(key => {
+Object.keys(releaseToConfigsMap).forEach((v) => {
+  releaseToConfigsMap[v].forEach((key) => {
     configToRelease[key] = v;
   });
 });

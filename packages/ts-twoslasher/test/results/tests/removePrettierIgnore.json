@@ -1,0 +1,28 @@
+{
+  "code": "const myThing = {}\n\nconst anotherThing = {}\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [],
+  "staticQuickInfos": [
+    {
+      "text": "const myThing: {}",
+      "docs": "",
+      "start": 6,
+      "length": 7,
+      "line": 0,
+      "character": 6,
+      "targetString": "myThing"
+    },
+    {
+      "text": "const anotherThing: {}",
+      "docs": "",
+      "start": 26,
+      "length": 12,
+      "line": 2,
+      "character": 6,
+      "targetString": "anotherThing"
+    }
+  ],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/MYewdgzgLgBAtgTwCoAsCWYDmMC8MDeAvgFDED0ZMADgE4CmUUadNAtGpmCPcaJLAEMuUFC1QZseIsSA"
+}

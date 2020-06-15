@@ -55,7 +55,7 @@ JavaScript defines 7 built-in types:
 | `Undefined` | also equivalent to the unit type.           |
 | `Object`    | similar to records.                         |
 
-[See the MDN page for more detail](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures).
+[See the MDN page for more detail](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures).
 
 TypeScript has corresponding primitive types for the built-in types:
 
@@ -86,7 +86,7 @@ Notes:
    ```ts
    let fst: (a: any, d: any) => any = (a, d) => a;
    // or more precisely:
-   let snd: <T, U>(a: T, d: U) => U = (a, d) => d.
+   let snd: <T, U>(a: T, d: U) => U = (a, d) => d;
    ```
 
 2. Object literal type syntax closely mirrors object literal value syntax:
@@ -111,8 +111,8 @@ needed, since their methods return primitives.
 Number.prototype.toExponential.call(1);
 ```
 
-Note that calling methods on numeric literals requires an additional
-`.` to aid the parser.
+Note that calling a method on a numeric literal requires it to be in
+parentheses to aid the parser.
 
 ## Gradual typing
 

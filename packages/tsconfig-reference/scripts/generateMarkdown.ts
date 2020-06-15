@@ -164,7 +164,7 @@ languages.forEach((lang) => {
 
     // Show a sticky sub-nav for the categories
     if (sectionCategories.length > 1) {
-      markdownChunks.push(`<nav id="sticky">`);
+      markdownChunks.push(`<nav id="sticky"><ul>`);
 
       sectionCategories.forEach((categoryID) => {
         const categoryPath = getPathInLocale(join("categories", categoryID + ".md"));
@@ -172,7 +172,7 @@ languages.forEach((lang) => {
 
         markdownChunks.push(`<li><a href="#${categoryID}">${categoryFile.data.display}</a></li>`);
       });
-      markdownChunks.push("</nav>");
+      markdownChunks.push("</ul></nav>");
     }
 
     markdownChunks.push("<div class='indent'>");
@@ -190,7 +190,7 @@ languages.forEach((lang) => {
       markdownChunks.push("<div class='category'>");
 
       // Let the title change it's display but keep the same ID
-      const title = `<h2 id='${categoryID}'><a href='#${categoryID}' name='${categoryID}'>#</a> ${categoryFile.data.display}</h2>`;
+      const title = `<h2 id='${categoryID}' ><a href='#${categoryID}' name='${categoryID}' aria-label="Link to the section ${categoryFile.data.display}" title="Link to the section ${categoryFile.data.display}">#</a>${categoryFile.data.display}</h2>`;
       markdownChunks.push(title);
 
       // Push the category copy
@@ -229,7 +229,7 @@ languages.forEach((lang) => {
         markdownChunks.push("<section class='compiler-option'>");
 
         // Let the title change it's display but keep the same ID
-        const titleLink = `<a aria-label="Link to the compiler option:${option.name}" title="Link to the compiler option:${option.name}" id='${option.name}' href='#${option.name}' name='${option.name}'>#</a>`;
+        const titleLink = `<a aria-label="Link to the compiler option: ${option.name}" title="Link to the compiler option:${option.name}" id='${option.name}' href='#${option.name}' name='${option.name}'>#</a>`;
         const title = `<h3 id='${option.name}-config'>${titleLink} ${optionFile.data.display} - <code>${option.name}</code></h3>`;
         markdownChunks.push(title);
 
@@ -245,7 +245,6 @@ languages.forEach((lang) => {
         // Make a markdown table of the important metadata
         const mdTableRows = [] as [string, string][];
 
-        mdTableRows.push(["Flag", option.name]);
         if (option.deprecated) mdTableRows.push(["Status", "Deprecated"]);
 
         if (option.recommended) mdTableRows.push(["Recommended", "True"]);
@@ -258,7 +257,7 @@ languages.forEach((lang) => {
         }
 
         if (option.allowedValues) {
-          const optionValue = option.allowedValues.join(", ");
+          const optionValue = option.allowedValues.join(",<br/>");
           mdTableRows.push(["Allowed", optionValue]);
         }
 
@@ -278,15 +277,18 @@ languages.forEach((lang) => {
         if (option.releaseVersion) {
           const underscores = option.releaseVersion.replace(".", "-");
           const link = `/docs/handbook/release-notes/typescript-${underscores}.html`;
-          mdTableRows.push(["Released", `<a href="${link}">${option.releaseVersion}</a>`]);
+          mdTableRows.push([
+            "Released",
+            `<a aria-label="Release notes for TypeScript ${option.releaseVersion}" href="${link}">${option.releaseVersion}</a>`,
+          ]);
         }
 
         const table =
-          "<table class='compiler-option-md'><tr><th /><th /></tr>" +
+          "<ul class='compiler-option-md'>" +
           mdTableRows
-            .map((r) => `<tr><td>${r[0]}</td><td>${parseMarkdown(r[1])}<td/></tr>`)
+            .map((r) => `<li><span>${r[0]}:</span>${parseMarkdown(r[1])}</li>`)
             .join("\n") +
-          "</table>";
+          "</ul>";
         markdownChunks.push(table);
 
         markdownChunks.push("</div></section>");

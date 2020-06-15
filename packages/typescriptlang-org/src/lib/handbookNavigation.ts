@@ -1,12 +1,19 @@
-import { NavItem } from "../components/layout/Sidebar"
-
+export interface NavItem {
+  title: string
+  id: string
+  directory: string
+  index: string
+  items: { id: string; title: string; href?: string }[]
+  chronological?: true
+  summary: string
+}
 // IDs come from the filename
 
-export const oldHandbookNavigation: NavItem[] = [
+export const handbookNavigation: NavItem[] = [
   {
     title: "Get Started",
     summary:
-      "Get an overview of TypeScript from different starting points depending on your background.",
+      "Quick introductions based on your background or preference.",
     id: "get-started",
     directory: "handbook",
     index: "typescript-from-scratch",
@@ -33,7 +40,7 @@ export const oldHandbookNavigation: NavItem[] = [
   {
     title: "Handbook",
     summary:
-      "A start to finish overview of TypeScript, with the goals to get you productive for daily usage.",
+      "A good first read for your daily TS work.",
     id: "handbook",
     directory: "handbook",
     chronological: true,
@@ -52,7 +59,7 @@ export const oldHandbookNavigation: NavItem[] = [
   },
   {
     title: "Handbook Reference",
-    summary: "Deep dives into how TypeScript works in particular cases.",
+    summary: "Deep dive reference materials.",
 
     id: "handbook-reference",
     directory: "handbook",
@@ -87,7 +94,7 @@ export const oldHandbookNavigation: NavItem[] = [
     directory: "handbook",
     index: "typescript-in-5-minutes",
     summary:
-      "Step by step tutorials how TypeScript works with different tools.",
+      "Using TypeScript in several environments.",
     items: [
       { id: "asp-net-core", title: "ASP.NET Core" },
       { id: "gulp", title: "Gulp" },
@@ -104,7 +111,7 @@ export const oldHandbookNavigation: NavItem[] = [
       "Find out how TypeScript has evolved and what's new in the releases.",
     items: [
       { id: "overview", title: "Overview" },
-      { id: "typescript-3-8", title: "TypeScript 3.9" },
+      { id: "typescript-3-9", title: "TypeScript 3.9" },
       { id: "typescript-3-8", title: "TypeScript 3.8" },
       { id: "typescript-3-7", title: "TypeScript 3.7" },
       { id: "typescript-3-6", title: "TypeScript 3.6" },
@@ -138,7 +145,7 @@ export const oldHandbookNavigation: NavItem[] = [
     title: "Declaration Files",
     id: "declaration-files",
     summary:
-      "Learn how to write declaration files to describe existing JavaScript.",
+      "Learn how to write declaration files to describe existing JavaScript. Important for DefinitelyTyped contributions.",
     directory: "handbook/declaration-files",
     index: "introduction",
     chronological: true,
@@ -192,7 +199,7 @@ export const oldHandbookNavigation: NavItem[] = [
   {
     title: "Project Configuration",
     id: "project-config",
-    summary: "Understand how TypeScript is configured.",
+    summary: "Compiler configuration reference.",
     directory: "handbook",
     index: "compiler-options",
     items: [
@@ -202,7 +209,7 @@ export const oldHandbookNavigation: NavItem[] = [
         title: "TSConfig Reference",
       },
       { id: "tsconfig-json", title: "The tsconfig.json" },
-      { id: "compiler-options", title: "Options via the CLI" },
+      { id: "compiler-options", title: "CLI Options" },
       { id: "project-references", title: "Project References" },
       {
         id: "compiler-options-in-msbuild",
@@ -220,7 +227,7 @@ export const oldHandbookNavigation: NavItem[] = [
 
 export function getNextPageID(currentID: string) {
   // prettier-ignore
-  const section = oldHandbookNavigation.find((nav) => nav.items.find((i) => i.id === currentID))
+  const section = handbookNavigation.find((nav) => nav.items.find((i) => i.id === currentID))
   if (!section) return undefined
   if (!section.chronological) return undefined
 
@@ -236,7 +243,7 @@ export function getNextPageID(currentID: string) {
 }
 
 export function getPreviousPageID(currentID: string) {
-  const section = oldHandbookNavigation.find(nav =>
+  const section = handbookNavigation.find(nav =>
     nav.items.find(i => i.id === currentID)
   )
 

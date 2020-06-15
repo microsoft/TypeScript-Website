@@ -186,6 +186,43 @@ export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions
 }
 
 /**
+ * Adds recursively files from the FS into the map based on the folder
+ */
+export const addAllFilesFromFolder = (map: Map<string, string>, workingDir: string): void => {
+  const path = require("path")
+  const fs = require("fs")
+
+  const walk = function (dir: string) {
+    let results: string[] = []
+    const list = fs.readdirSync(dir)
+    list.forEach(function (file: string) {
+      file = path.join(dir, file)
+      const stat = fs.statSync(file)
+      if (stat && stat.isDirectory()) {
+        /* Recurse into a subdirectory */
+        results = results.concat(walk(file))
+      } else {
+        /* Is a file */
+        results.push(file)
+      }
+    })
+    return results
+  }
+
+  const allFiles = walk(workingDir)
+
+  allFiles.forEach(lib => {
+    const fsPath = "/node_modules/@types" + lib.replace(workingDir, "")
+    const content = fs.readFileSync(lib, "utf8")
+    map.set(fsPath, content)
+  })
+}
+
+/** Adds all files from node_modules/@types into the FS Map */
+export const addFilesForTypesIntoFolder = (map: Map<string, string>) =>
+  addAllFilesFromFolder(map, "node_modules/@types")
+
+/**
  * Create a virtual FS Map with the lib files from a particular TypeScript
  * version based on the target, Always includes dom ATM.
  *

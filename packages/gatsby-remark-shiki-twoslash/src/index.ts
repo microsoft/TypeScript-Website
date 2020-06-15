@@ -1,11 +1,12 @@
-import { TLang } from "shiki-languages"
-import { twoslasher } from "@typescript/twoslash"
+import type { TLang } from "shiki-languages"
+import type { Node } from "unist"
 
+import { twoslasher } from "@typescript/twoslash"
+import { createDefaultMapFromNodeModules, addAllFilesFromFolder } from "@typescript/vfs"
 import visit from "unist-util-visit"
-import { Node } from "unist"
 
 import { renderToHTML } from "./renderer"
-import { highlighter, languages, getHighlighterObj } from './highlighter';
+import { highlighter, languages, getHighlighterObj } from "./highlighter"
 
 type RichNode = Node & {
   lang: TLang
@@ -16,14 +17,23 @@ type RichNode = Node & {
   twoslash?: import("@typescript/twoslash").TwoSlashReturn
 }
 
+type ShikiTwoslashSettings = {
+  useNodeModules?: true
+  nodeModulesTypesPath?: string
+}
+
+const defaultSettings: ShikiTwoslashSettings = {}
+
 /**
  * The function doing the work of transforming any codeblock samples
  * which have opted-in to the twoslash pattern.
  */
-const visitor = (node: RichNode) => {
+const visitor = (twoslashSettings?: ShikiTwoslashSettings) => (node: RichNode) => {
   let lang = node.lang
+  let settings = twoslashSettings || defaultSettings
 
-  runTwoSlashOnNode(node)
+  // Run twoslash
+  runTwoSlashOnNode(settings)(node)
 
   // Shiki doesn't respect json5 as an input, so switch it
   // to json, which can handle comments in the syntax highlight
@@ -48,28 +58,45 @@ const visitor = (node: RichNode) => {
   }
 }
 
-/** The plugin API */
-const remarkShiki = async function ({ markdownAST }: any, settings: any) {
-  await getHighlighterObj(settings)
-  visit(markdownAST, "code", visitor)
+/**
+ * The main interface for the remark shiki API, sets up the
+ * highlighter then runs a visitor across all code tags in
+ * the markdown running twoslash, then shiki.
+ * */
+const remarkShiki = async function (
+  { markdownAST }: any,
+  shikiSettings: import("shiki/dist/highlighter").HighlighterOptions,
+  settings: ShikiTwoslashSettings
+) {
+  await getHighlighterObj(shikiSettings)
+  visit(markdownAST, "code", visitor(settings))
 }
 
-export const runTwoSlashOnNode = (node: RichNode) => {
+/////////////////// Mainly for internal use, but tests could use this, not considered public API, so could change
+
+/** @internal */
+export const runTwoSlashOnNode = (settings: ShikiTwoslashSettings) => (node: RichNode) => {
   // Run twoslash and replace the main contents if
   // the ``` has 'twoslash' after it
   if (node.meta && node.meta.includes("twoslash")) {
-    // Look into owning grabbing @types
-    // const fsMap = createDefaultMapFromNodeModules({})
-    // const results = twoslasher(node.value, node.lang, undefined, undefined, undefined, fsMap)
+    let map: Map<string, string> | undefined = undefined
 
-    const results = twoslasher(node.value, node.lang)
+    if (settings.useNodeModules) {
+      const laterESVersion = 6 // we don't want a hard dep on TS, so that browsers can run this code)
+      map = createDefaultMapFromNodeModules({ target: laterESVersion })
+      // Add @types to the fsmap
+      addAllFilesFromFolder(map, settings.nodeModulesTypesPath || "node_modules/@types")
+    }
+
+    const results = twoslasher(node.value, node.lang, undefined, undefined, undefined, map)
     node.value = results.code
     node.lang = results.extension as TLang
     node.twoslash = results
   }
 }
 
-/** Does a twoslash  */
-export const runTwoSlashAcrossDocument = ({ markdownAST }: any) => visit(markdownAST, "code", runTwoSlashOnNode)
+/** Sends the twoslash visitor over the existing MD AST and replaces the code samples inline, does not do highlighting  */
+export const runTwoSlashAcrossDocument = ({ markdownAST }: any, settings?: ShikiTwoslashSettings) =>
+  visit(markdownAST, "code", runTwoSlashOnNode(settings || defaultSettings))
 
 export default remarkShiki
