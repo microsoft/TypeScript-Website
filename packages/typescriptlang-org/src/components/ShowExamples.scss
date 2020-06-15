@@ -107,7 +107,7 @@
             }
 
             &.highlight {
-              border-left: $ts-main-blue-color 2px solid;
+              border-left: $ts-main-blue-darker-color 2px solid;
               padding-left: 8px;
             }
           }
@@ -121,10 +121,10 @@
             border-radius: 0.5rem;
 
             &.done {
-              background-color: $ts-main-blue-color;
+              background-color: $ts-main-blue-darker-color;
             }
             &.changed {
-              border: $ts-main-blue-color 1px solid;
+              border: $ts-main-blue-darker-color 1px solid;
             }
           }
         }
