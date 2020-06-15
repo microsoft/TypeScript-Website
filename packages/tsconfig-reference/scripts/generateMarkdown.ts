@@ -281,11 +281,11 @@ languages.forEach((lang) => {
         }
 
         const table =
-          "<div class='compiler-option-md'><tr><th /><th /></tr>" +
+          "<ul class='compiler-option-md'>" +
           mdTableRows
             .map((r) => `<li><span>${r[0]}:</span>${parseMarkdown(r[1])}</li>`)
             .join("\n") +
-          "</div>";
+          "</ul>";
         markdownChunks.push(table);
 
         markdownChunks.push("</div></section>");

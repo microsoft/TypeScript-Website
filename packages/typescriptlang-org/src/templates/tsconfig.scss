@@ -188,12 +188,13 @@
         }
       }
 
-      div.compiler-option-md {
+      ul.compiler-option-md {
         width: 220px;
         max-width: 220px;
         min-width: 200px;
         overflow-x: hidden;
         margin-left: 20px;
+        padding: 0;
         float: right;
         span {
           width: 100px;
@@ -220,7 +221,7 @@
           width: 100%;
         }
 
-        div.compiler-option-md {
+        ul.compiler-option-md {
           width: 100%;
           margin-left: 0;
         }
