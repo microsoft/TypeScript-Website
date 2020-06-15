@@ -1,9 +1,8 @@
 export const indexCopy = {
-  index_headline: "TypeScript is <bold>Typed JavaScript at Any Scale.</bold>",
-  index_byline:
-    "TypeScript extends JavaScript by adding types to the language.",
+  index_headline: "<bold>Typed JavaScript at Any Scale.</bold>",
+  index_byline: "TypeScript extends JavaScript by adding types.",
   index_summary:
-    "TypeScript speeds up your development experience by catching errors and providing fixes before you even run your code.",
+    "By understanding JavaScript, TypeScript saves you time catching errors and providing fixes before you run code.",
   index_locations:
     "Any browser, any OS, anywhere JavaScript runs. Entirely Open Source.",
 

@@ -27,6 +27,9 @@ jobs:
       # Get local dependencies
       - run: sudo apt install calibre
       - run: yarn install
+      # Verify dependencies are hooked up right
+      - run: node test/verifyPackageVersions.js
+      # Launch
       - run: yarn bootstrap
       - run: yarn build
       - run: yarn compile

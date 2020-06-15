@@ -1,16 +1,16 @@
-const remark = require('remark')
-import gatsbyRemarkShiki from '../src/index'
-import { join } from 'path'
+const remark = require("remark")
+import gatsbyRemarkShiki from "../src/index"
+import { join } from "path"
 // const gatsbyTwoSlash = require('gatsby-remark-shiki-twoslasher')
 
 const getMarkdownASTForCode = async (code: string, settings?: any) => {
   const markdownAST = remark().parse(code)
   // gatsbyTwoSlash({ markdownAST })
-  await gatsbyRemarkShiki({ markdownAST }, settings)
+  await gatsbyRemarkShiki({ markdownAST }, settings, {})
   return markdownAST
 }
 
-describe('with a simple example', () => {
+describe("with a simple example", () => {
   const file = `
 hello world
 
@@ -23,20 +23,20 @@ const b = "345"
 OK world
 `
 
-  it('has all the right metadata set up', async () => {
+  it("has all the right metadata set up", async () => {
     const markdownAST = await getMarkdownASTForCode(file)
     const code = markdownAST.children[1]
 
     // Comes from remark
-    expect(code.lang).toEqual('ts')
-    expect(code.meta).toEqual('twoslash')
+    expect(code.lang).toEqual("ts")
+    expect(code.meta).toEqual("twoslash")
 
     // Comes from ts-twoslash
-    expect(code.twoslash.extension).toEqual('ts')
+    expect(code.twoslash.extension).toEqual("ts")
     expect(code.twoslash.staticQuickInfos).toHaveLength(2)
   })
 
-  it('shows the right LSP results', async () => {
+  it("shows the right LSP results", async () => {
     const markdownAST = await getMarkdownASTForCode(file)
     const code = markdownAST.children[1]
 
@@ -46,7 +46,7 @@ OK world
   })
 })
 
-describe('with a more complex example', () => {
+describe("with a more complex example", () => {
   const file = `
 ### This will error
 
@@ -75,17 +75,17 @@ console.log(hello);
 OK world
 `
 
-  it('shows the right LSP results', async () => {
+  it("shows the right LSP results", async () => {
     const markdownAST = await getMarkdownASTForCode(file)
     const code = markdownAST.children[1]
 
-    expect(code.twoslash.extension).toEqual('ts')
+    expect(code.twoslash.extension).toEqual("ts")
     expect(code.twoslash.staticQuickInfos.length).toBeGreaterThan(1)
 
     expect(code.value).toContain(`data-lsp`)
     expect(code.value).toContain(`<data-lsp lsp='function longest`)
 
-    expect(code.twoslash.staticQuickInfos.length).toEqual(code.value.split('<data-lsp').length - 1)
+    expect(code.twoslash.staticQuickInfos.length).toEqual(code.value.split("<data-lsp").length - 1)
 
     // Error message
     expect(code.value).toContain(`span class="error"`)
@@ -94,8 +94,8 @@ OK world
     expect(code.value).toContain(`<span class="code">2345</span>`)
   })
 
-  it('shows the right LSP results when a theme doesnt have unique tokens for identifiers', async () => {
-    const markdownAST = await getMarkdownASTForCode(file, { theme: 'light_vs' })
+  it("shows the right LSP results when a theme doesnt have unique tokens for identifiers", async () => {
+    const markdownAST = await getMarkdownASTForCode(file, { theme: "light_vs" })
     const code = markdownAST.children[1]
 
     expect(code.value).toContain(`<data-lsp lsp='function longest`)
@@ -108,7 +108,7 @@ OK world
   })
 })
 
-describe('raw LSP details example', () => {
+describe("raw LSP details example", () => {
   const file = `
 ### This will error
 
@@ -136,29 +136,29 @@ console.log(hello);
 OK world
 `
 
-  it('shows the right LSP results when a theme doesnt have unique tokens for identifiers', async () => {
-    const markdownAST = await getMarkdownASTForCode(file, { theme: 'light_vs' })
+  it("shows the right LSP results when a theme doesnt have unique tokens for identifiers", async () => {
+    const markdownAST = await getMarkdownASTForCode(file, { theme: "light_vs" })
     const code = markdownAST.children[1]
 
     expect(code.value).toContain(`data-lsp`)
     expect(code.value).toContain(`<data-lsp lsp='function longest`)
 
-    expect(code.value.split('<data-lsp').length).toEqual(code.twoslash.staticQuickInfos.length + 1)
+    expect(code.value.split("<data-lsp").length).toEqual(code.twoslash.staticQuickInfos.length + 1)
   })
 
-  it('shows the right LSP results with the typescript site theme', async () => {
+  it("shows the right LSP results with the typescript site theme", async () => {
     const markdownAST = await getMarkdownASTForCode(file, {
-      theme: join(__dirname, '..', '..', 'typescriptlang-org', ' lib', ' themes', ' typescript-beta-light.json'),
+      theme: join(__dirname, "..", "..", "typescriptlang-org", " lib", " themes", " typescript-beta-light.json"),
     })
     const code = markdownAST.children[1]
 
     expect(code.value).toContain(`data-lsp`)
     expect(code.value).toContain(`<data-lsp lsp='function longest`)
-    expect(code.value.split('<data-lsp').length).toEqual(code.twoslash.staticQuickInfos.length + 1)
+    expect(code.value.split("<data-lsp").length).toEqual(code.twoslash.staticQuickInfos.length + 1)
   })
 })
 
-describe('no twoslash', () => {
+describe("no twoslash", () => {
   const file = `
 ### This should not get twoslashd
 
@@ -171,9 +171,9 @@ function longest() {
 OK world
 `
 
-  it('looks about right', async () => {
-    const markdownAST = await getMarkdownASTForCode(file, { theme: 'light_vs' })
+  it("looks about right", async () => {
+    const markdownAST = await getMarkdownASTForCode(file, { theme: "light_vs" })
     const code = markdownAST.children[1]
-    expect(code.value).not.toContain('twoslash')
+    expect(code.value).not.toContain("twoslash")
   })
 })

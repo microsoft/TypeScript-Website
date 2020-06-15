@@ -10,7 +10,7 @@
       "length": 15,
       "text": "let foo: string",
       "offset": 4,
-      "line": 0
+      "line": 1
     }
   ],
   "staticQuickInfos": [

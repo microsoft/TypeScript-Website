@@ -111,7 +111,7 @@ const Index: React.FC<Props> = (props) => {
       </section>
     </div>
 
-    <QuickJump allSitePage={props.data.allSitePage} lang={props.pageContext.lang} />
+    <QuickJump title="Next Steps" allSitePage={props.data.allSitePage} lang={props.pageContext.lang} />
 
   </Layout>
 }
