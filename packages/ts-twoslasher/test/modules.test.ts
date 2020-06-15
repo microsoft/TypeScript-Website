@@ -19,5 +19,5 @@ glob.hasMagic("OK")
   `
   const result = twoslasher(file, "ts", undefined, undefined, undefined, fsMap)
   expect(result.errors).toEqual([])
-  expect(result.queries[0].text.includes("hasMagic")).toBeTruthy()
+  expect(result.queries[0].text!.includes("hasMagic")).toBeTruthy()
 })

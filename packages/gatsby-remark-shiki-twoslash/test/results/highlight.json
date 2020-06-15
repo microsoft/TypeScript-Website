@@ -11,7 +11,7 @@
         "length": 22,
         "text": "let helloWorld: string",
         "offset": 4,
-        "line": 0
+        "line": 1
       }
     ],
     "staticQuickInfos": [

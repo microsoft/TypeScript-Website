@@ -25,24 +25,24 @@ export function createHighlightedString2(ranges: Range[], text: string) {
 
   // So, use an obscure character to indicate a real < for HTML, then switch it after
 
-  ranges.forEach((r) => {
-    if (r.classes === 'lsp') {
-      actions.push({ text: '⇍/data-lsp⇏', index: r.end })
-      actions.push({ text: `⇍data-lsp lsp=⇯${r.lsp || ''}⇯⇏`, index: r.begin })
-    } else if (r.classes === 'err') {
+  ranges.forEach(r => {
+    if (r.classes === "lsp") {
+      actions.push({ text: "⇍/data-lsp⇏", index: r.end })
+      actions.push({ text: `⇍data-lsp lsp=⇯${r.lsp || ""}⇯⇏`, index: r.begin })
+    } else if (r.classes === "err") {
       hasErrors = true
-    } else if (r.classes === 'query') {
-      actions.push({ text: '⇍/data-highlight⇏', index: r.end })
+    } else if (r.classes === "query") {
+      actions.push({ text: "⇍/data-highlight⇏", index: r.end })
       actions.push({ text: `⇍data-highlight'⇏`, index: r.begin })
     }
   })
 
-  let html = (' ' + text).slice(1)
+  let html = (" " + text).slice(1)
 
   // Apply all the edits
   actions
     .sort((l, r) => r.index - l.index)
-    .forEach((action) => {
+    .forEach(action => {
       html = splice(html, action.index, 0, action.text)
     })
 
@@ -51,18 +51,22 @@ export function createHighlightedString2(ranges: Range[], text: string) {
   return replaceTripleArrow(stripHTML(html))
 }
 
-const replaceTripleArrow = (str: string) => str.replace(/⇍/g, '<').replace(/⇏/g, '>').replace(/⇯/g, "'")
+export const subTripleArrow = (str: string) => str.replace(/</g, "⇍").replace(/>/g, "⇏").replace(/'/g, "⇯")
+export const replaceTripleArrow = (str: string) => str.replace(/⇍/g, "<").replace(/⇏/g, ">").replace(/⇯/g, "'")
+export const replaceTripleArrowEncoded = (str: string) =>
+  str.replace(/⇍/g, "&lt;").replace(/⇏/g, "&gt;").replace(/⇯/g, "&apos;")
 
 export function stripHTML(text: string) {
   var table: any = {
-    '<': 'lt',
-    '"': 'quot',
-    "'": 'apos',
-    '&': 'amp',
-    '\r': '#10',
-    '\n': '#13',
+    "<": "lt",
+    '"': "quot",
+    "'": "apos",
+    "&": "amp",
+    "\r": "#10",
+    "\n": "#13",
   }
+
   return text.toString().replace(/[<"'\r\n&]/g, function (chr) {
-    return '&' + table[chr] + ';'
+    return "&" + table[chr] + ";"
   })
 }

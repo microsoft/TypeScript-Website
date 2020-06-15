@@ -1,6 +1,6 @@
 [
   {
-    "code": "let someValue: any = 'this is a string'\n\nlet strLength: number = (<string>someValue).length",
+    "code": "let someValue: any = \"this is a string\"\n\nlet strLength: number = (<string>someValue).length",
     "extension": "ts",
     "highlights": [],
     "queries": [],
@@ -43,10 +43,10 @@
       }
     ],
     "errors": [],
-    "playgroundURL": "https://www.typescriptlang.org/play/#code/DYUwLgBAzg9gtiAagQ2AVxALgsgdgTwgF4IByMACwEsoIadowAnK3Ac1IChPRIpmAMiHaVsuNHABGIJsQgAKADz8W7AHywEKdCACUAOlAiKQA"
+    "playgroundURL": "https://www.typescriptlang.org/play/#code/DYUwLgBAzg9gtiAagQ2AVxALgsgdgTwgF4IAiMACwEsoIadowAnK3Ac1IChPRIpmAMiHaVsuNHABGIJsQgAKADz8W7AHywEKdCACUAOlAiKQA"
   },
   {
-    "code": "let someValue: any = 'this is a string'\n\nlet strLength: number = (someValue as string).length",
+    "code": "let someValue: any = \"this is a string\"\n\nlet strLength: number = (someValue as string).length",
     "extension": "ts",
     "highlights": [],
     "queries": [],
@@ -89,6 +89,6 @@
       }
     ],
     "errors": [],
-    "playgroundURL": "https://www.typescriptlang.org/play/#code/DYUwLgBAzg9gtiAagQ2AVxALgsgdgTwgF4IByMACwEsoIadowAnK3Ac1IChPRIpmAMiHaVsuNHABGIJsQgAKWAhToQOWvxbsAlADpQIikA"
+    "playgroundURL": "https://www.typescriptlang.org/play/#code/DYUwLgBAzg9gtiAagQ2AVxALgsgdgTwgF4IAiMACwEsoIadowAnK3Ac1IChPRIpmAMiHaVsuNHABGIJsQgAKWAhToQOWvxbsAlADpQIikA"
   }
 ]

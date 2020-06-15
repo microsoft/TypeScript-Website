@@ -1,7 +1,19 @@
 {
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/create-typescript-playground-plugin",
+    "packages/typescript-vfs",
+    "packages/ts-twoslasher",
+    "packages/gatsby-remark-shiki-twoslash",
+    "packages/community-meta",
+    "packages/handbook-v1",
+    "packages/handbook-epub",
+    "packages/sandbox",
+    "packages/playground",
+    "packages/playground-examples",
+    "packages/tsconfig-reference",
+    "packages/twoslash-webworker",
+    "packages/typescriptlang-org"
   ],
   "engines": {
     "node": ">=13"
@@ -40,6 +52,7 @@
     "test": "CI=true yarn workspaces run test"
   },
   "dependencies": {
+    "@types/express": "^4.17.6",
     "serve-handler": "^6.1.2"
   },
   "repository": "microsoft/TypeScript-Website",

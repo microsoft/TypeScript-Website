@@ -6,7 +6,7 @@ const a = "123"
 //    ^?
   `
   const result = twoslasher(file, "ts")
-  const bQueryResult = result.queries.find(info => info.line === 1)
+  const bQueryResult = result.queries.find(info => info.line === 2)
 
   expect(bQueryResult).toBeTruthy()
   expect(bQueryResult!.text).toContain("const a")
@@ -18,7 +18,7 @@ const abc = "123"
 //     ^?
   `
   const result = twoslasher(file, "ts")
-  const bQueryResult = result.queries.find(info => info.line === 1)
+  const bQueryResult = result.queries.find(info => info.line === 2)
   expect(bQueryResult!.text).toContain("const abc")
 })
 
@@ -31,10 +31,10 @@ const b = "345"
   `
   const result = twoslasher(file, "ts")
 
-  const aQueryResult = result.queries.find(info => info.line === 1)
+  const aQueryResult = result.queries.find(info => info.line === 2)
   expect(aQueryResult!.text).toContain("const a:")
 
-  const bQueryResult = result.queries.find(info => info.line === 2)
+  const bQueryResult = result.queries.find(info => info.line === 3)
   expect(bQueryResult!.text).toContain("const b:")
 })
 
@@ -51,13 +51,13 @@ let c = "789"
   const result = twoslasher(file, "ts")
   expect(result.queries.length).toEqual(3)
 
-  const aQueryResult = result.queries.find(info => info.line === 1)
+  const aQueryResult = result.queries.find(info => info.line === 2)
   expect(aQueryResult!.text).toContain("const a:")
 
-  const bQueryResult = result.queries.find(info => info.line === 2)
+  const bQueryResult = result.queries.find(info => info.line === 3)
   expect(bQueryResult!.text).toContain("const b:")
 
-  const cQueryResult = result.queries.find(info => info.line === 4)
+  const cQueryResult = result.queries.find(info => info.line === 5)
   expect(cQueryResult!.text).toContain("let c:")
 })
 
@@ -73,9 +73,9 @@ const b = "345"
   const result = twoslasher(file, "ts")
   expect(result.queries.length).toEqual(2)
 
-  const aQueryResult = result.queries.find(info => info.line === 2)
+  const aQueryResult = result.queries.find(info => info.line === 3)
   expect(aQueryResult!.text).toContain("const a:")
 
-  const bQueryResult = result.queries.find(info => info.line === 4)
+  const bQueryResult = result.queries.find(info => info.line === 5)
   expect(bQueryResult!.text).toContain("const b:")
 })

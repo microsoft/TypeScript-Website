@@ -37,7 +37,7 @@ languages.forEach((lang) => {
     let hasError = false;
 
     try {
-      remarkTwoSlash.runTwoSlashAcrossDocument({ markdownAST });
+      remarkTwoSlash.runTwoSlashAcrossDocument({ markdownAST }, {});
     } catch (error) {
       hasError = true;
       errorReports.push({ path: optionPath, error });

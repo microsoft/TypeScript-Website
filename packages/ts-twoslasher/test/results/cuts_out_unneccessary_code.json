@@ -10,7 +10,7 @@
       "length": 16,
       "text": "let a: NameLabel",
       "offset": 4,
-      "line": 4
+      "line": 5
     },
     {
       "docs": "",
@@ -19,7 +19,7 @@
       "length": 14,
       "text": "let b: IdLabel",
       "offset": 4,
-      "line": 6
+      "line": 7
     },
     {
       "docs": "",
@@ -28,7 +28,7 @@
       "length": 26,
       "text": "let c: IdLabel | NameLabel",
       "offset": 4,
-      "line": 8
+      "line": 9
     }
   ],
   "staticQuickInfos": [
