@@ -119,7 +119,12 @@ module.exports = {
     // Finds auto-generated <a>s and converts them
     // into Gatsby Links at build time, speeding up
     // linking between pages.
-    "gatsby-plugin-catch-links",
+    {
+      resolve: `gatsby-plugin-catch-links`,
+      options: {
+        excludePattern: /(sandbox|play)/,
+      },
+    },
     "gatsby-plugin-client-side-redirect",
   ],
 }
