@@ -246,8 +246,6 @@ const obj2: Required<Props> = { a: 5 }; // Error: property 'b' missing
 
 Extracts the type of the [this](/docs/handbook/functions.html#this-parameters) parameter of a function type, or [unknown](/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type) if the function type has no `this` parameter.
 
-Note: This type only works correctly if `--strictFunctionTypes` is enabled. See [#32964](https://github.com/microsoft/TypeScript/issues/32964).
-
 ##### Example
 
 ```ts
@@ -263,8 +261,6 @@ function numberToString(n: ThisParameterType<typeof toHex>) {
 # `OmitThisParameter`
 
 Removes the [this](/docs/handbook/functions.html#this-parameters) parameter from a function type.
-
-Note: This type only works correctly if `--strictFunctionTypes` is enabled. See [#32964](https://github.com/microsoft/TypeScript/issues/32964).
 
 ##### Example
 
