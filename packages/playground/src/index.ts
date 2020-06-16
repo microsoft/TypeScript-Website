@@ -192,11 +192,7 @@ export const setupPlayground = (
 
   const notWorkingInPlayground = ["3.1.6", "3.0.1", "2.8.1", "2.7.2", "2.4.1"]
 
-  const allVersions = [
-    "3.9.1-rc",
-    ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)),
-    "Nightly",
-  ]
+  const allVersions = [...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)), "Nightly"]
 
   allVersions.forEach((v: string) => {
     const li = document.createElement("li")
@@ -258,6 +254,22 @@ export const setupPlayground = (
       }
     }
   })
+
+  // Handle escape closing dropdowns etc
+  document.onkeydown = function (evt) {
+    evt = evt || window.event
+    var isEscape = false
+    if ("key" in evt) {
+      isEscape = evt.key === "Escape" || evt.key === "Esc"
+    } else {
+      // @ts-ignore - this used to be the case
+      isEscape = evt.keyCode === 27
+    }
+    if (isEscape) {
+      document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
+      document.querySelectorAll(".navbar-sub li").forEach(i => i.setAttribute("aria-expanded", "false"))
+    }
+  }
 
   // Set up some key commands
   sandbox.editor.addAction({
