@@ -32,7 +32,7 @@ const Index: React.FC<Props> = (props) => {
 
             <div className="sixhundred" style={{ borderLeft: "1px solid gray", padding: "20px" }}>
               <h3>Setup with TypeScript from node_modules</h3>
-              <pre><code className="html-code">{`import ts from 'typescript'
+              <pre tabIndex="0"><code className="html-code">{`import ts from 'typescript'
 import tsvfs from '@typescript/vfs'
 
 const fsMap = tsvfs.createDefaultMapFromNodeModules({ target: ts.ScriptTarget.ES2015 })
@@ -42,7 +42,7 @@ fsMap.set('index.ts', 'console.log("Hello World")')
               `}</code></pre>
 
               <h3>Use the TypeScript CDN to get your lib.d.ts files</h3>
-              <pre><code className="html-code">{`import ts from 'typescript'
+              <pre tabIndex="0"><code className="html-code">{`import ts from 'typescript'
 import tsvfs from '@typescript/vfs'
 
 const fsMap = await tsvfs.createDefaultMapFromCDN(compilerOptions, ts.version, true, ts)
