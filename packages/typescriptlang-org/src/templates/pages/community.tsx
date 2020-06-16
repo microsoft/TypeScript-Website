@@ -68,9 +68,7 @@ export const Comm: React.FC<Props> = props => {
                 <a href="https://stackoverflow.com/questions/tagged/typescript" id="stack-header" title="TypeScript tag on Stack Overflow" target="_blank">
                   <h3 className="community-callout-headline">Stack Overflow</h3>
                 </a>
-                {i("com_online_stack_overflow_desc")}{" "}
-                <a href="https://stackoverflow.com/questions/tagged/typescript" target="_blank">Stack Overflow</a>{" "}
-                {i("com_online_stack_overflow_tag")} <b>typescript.</b>
+                {i("com_online_stack_overflow_desc")}
               </div>
             </div>
 

@@ -248,7 +248,7 @@ export const OSS = () => (
           <p>Deno</p>
         </a>
 
-        <a href='https://github.com/zeit/now' target="_blank">
+        <a href='https://github.com/vercel/vercel' target="_blank">
           <svg width="113" height="100" viewBox="0 0 113 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fillRule="evenodd" clipRule="evenodd" d="M56.5 0L113 100H0L56.5 0Z" fill="url(#paint0_linear)" />
             <defs>
@@ -259,7 +259,7 @@ export const OSS = () => (
             </defs>
           </svg>
 
-          <p>Now</p>
+          <p>Vercel</p>
         </a>
 
         <a href='https://yarnpkg.com/' target="_blank">

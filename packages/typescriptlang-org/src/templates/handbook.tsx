@@ -122,7 +122,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
         </noscript>
 
         <Sidebar navItems={handbookNavigation} selectedID={selectedID} />
-        <div id="handbook-content">
+        <div id="handbook-content" role="article">
           <h2>{post.frontmatter.title}</h2>
           <article>
             <div className="whitespace raised">

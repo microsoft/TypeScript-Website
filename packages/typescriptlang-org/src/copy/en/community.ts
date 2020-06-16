@@ -7,8 +7,8 @@ export const comCopy = {
   com_connect_online_description:
     " Tell us what’s working well, what you want to see added or improved, and find out about new updates.",
   com_online_stack_overflow_desc:
-    "Engage with your peers and ask questions about Typescript on",
-  com_online_stack_overflow_tag: "using the tag",
+    "Engage with your peers and ask questions about TypeScript using the tag 'typescript'",
+  com_online_stack_overflow_tag: "",
   com_online_discord_header: "Chat",
   com_online_discord_desc:
     "Chat with other TypeScript users in the TypeScript Community Chat.",

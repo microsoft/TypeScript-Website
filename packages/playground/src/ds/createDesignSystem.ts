@@ -8,11 +8,13 @@ export type LocalStorageOption = {
 
   emptyImpliesEnabled?: true
   oneline?: true
+  requireRestart?: true
   onchange?: (newValue: boolean) => void
 }
 
 export type OptionsListConfig = {
   style: "separated" | "rows"
+  requireRestart?: true
 }
 
 const el = (str: string, elementType: string, container: Element) => {
@@ -62,6 +64,21 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       }
     }
 
+    const declareRestartRequired = (i?: (key: string) => string) => {
+      if (document.getElementById("restart-required")) return
+      const localize = i || (window as any).i
+      const li = document.createElement("li")
+      li.classList.add("disabled")
+      li.id = "restart-required"
+      const a = document.createElement("a")
+      a.style.color = "#c63131"
+      a.textContent = localize("play_sidebar_options_restart_required")
+
+      const nav = document.getElementsByClassName("navbar-right")[0]
+      li.appendChild(a)
+      nav.insertBefore(li, nav.firstChild)
+    }
+
     const localStorageOption = (setting: LocalStorageOption) => {
       // Think about this as being something which you want enabled by default and can suppress whether
       // it should do something.
@@ -90,6 +107,9 @@ export const createDesignSystem = (sandbox: Sandbox) => {
 
         if (setting.onchange) {
           setting.onchange(!!localStorage.getItem(key))
+        }
+        if (setting.requireRestart) {
+          declareRestartRequired()
         }
       }
 
@@ -247,6 +267,7 @@ export const createDesignSystem = (sandbox: Sandbox) => {
 
       options.forEach(option => {
         if (style.style === "rows") option.oneline = true
+        if (style.requireRestart) option.requireRestart = true
 
         const settingButton = localStorageOption(option)
         ol.appendChild(settingButton)
@@ -451,6 +472,8 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       createTabBar,
       /** Used with createTabBar to add buttons */
       createTabButton,
+      /** A general "restart your browser" message  */
+      declareRestartRequired,
     }
   }
 }

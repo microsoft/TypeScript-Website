@@ -32,8 +32,10 @@ const Play: React.FC<Props> = (props) => {
   const i = createInternational<typeof headCopy & typeof playCopy>(useIntl())
 
   useEffect(() => {
-    if ("playgroundLoaded" in window) return
-    window["playgroundLoaded"] = true
+    if (!document.getElementById("monaco-editor-embed")) return
+    if (document.getElementById("monaco-editor-embed")!.childElementCount > 0) {
+      return console.log("Playground already loaded")
+    }
 
     // @ts-ignore - so the config options can use localized descriptions
     window.optionsSummary = props.pageContext.optionsSummary
@@ -75,6 +77,7 @@ const Play: React.FC<Props> = (props) => {
         // Importing "vs/language/typescript/tsWorker" will set ts as a global
         const ts = (global as any).ts
         const isOK = main && ts && sandbox && playground
+
         if (isOK) {
           document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)
         } else {

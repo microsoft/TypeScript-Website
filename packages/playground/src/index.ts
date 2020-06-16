@@ -192,11 +192,7 @@ export const setupPlayground = (
 
   const notWorkingInPlayground = ["3.1.6", "3.0.1", "2.8.1", "2.7.2", "2.4.1"]
 
-  const allVersions = [
-    "3.9.1-rc",
-    ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)),
-    "Nightly",
-  ]
+  const allVersions = [...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)), "Nightly"]
 
   allVersions.forEach((v: string) => {
     const li = document.createElement("li")
@@ -246,8 +242,6 @@ export const setupPlayground = (
         const firstLabel = exampleContainer.querySelector("label") as HTMLElement
         if (firstLabel) firstLabel.focus()
 
-
-
         // Set exact height and widths for the popovers for the main playground navigation
         const isPlaygroundSubmenu = !!a.closest("nav")
         if (isPlaygroundSubmenu) {
@@ -260,6 +254,22 @@ export const setupPlayground = (
       }
     }
   })
+
+  // Handle escape closing dropdowns etc
+  document.onkeydown = function (evt) {
+    evt = evt || window.event
+    var isEscape = false
+    if ("key" in evt) {
+      isEscape = evt.key === "Escape" || evt.key === "Esc"
+    } else {
+      // @ts-ignore - this used to be the case
+      isEscape = evt.keyCode === 27
+    }
+    if (isEscape) {
+      document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
+      document.querySelectorAll(".navbar-sub li").forEach(i => i.setAttribute("aria-expanded", "false"))
+    }
+  }
 
   // Set up some key commands
   sandbox.editor.addAction({
@@ -331,20 +341,20 @@ export const setupPlayground = (
       const sidebarTabs = document.querySelector(".playground-plugin-tabview") as HTMLDivElement
       const sidebarContent = document.querySelector(".playground-plugin-container") as HTMLDivElement
       let settingsContent = document.querySelector(".playground-settings-container") as HTMLDivElement
+
       if (!settingsContent) {
         settingsContent = document.createElement("div")
         settingsContent.className = "playground-settings-container playground-plugin-container"
         const settings = settingsPlugin(i, utils)
         settings.didMount && settings.didMount(sandbox, settingsContent)
-        document.querySelector(".playground-sidebar")!.appendChild(settingsContent);
-        (document.querySelector(".playground-sidebar label") as any).focus()
+        document.querySelector(".playground-sidebar")!.appendChild(settingsContent)
 
         // When the last tab item is hit, go back to the settings button
         const labels = document.querySelectorAll(".playground-sidebar input")
         const lastLabel = labels.item(labels.length - 1) as HTMLElement
-        lastLabel.addEventListener("keydown", (e) => {
+        lastLabel.addEventListener("keydown", e => {
           if (e.keyCode === 9) {
-            (document.querySelector("#playground-settings") as any).focus()
+            ;(document.querySelector("#playground-settings") as any).focus()
             e.preventDefault()
           }
         })
@@ -358,6 +368,7 @@ export const setupPlayground = (
         sidebarTabs.style.display = "none"
         sidebarContent.style.display = "none"
         settingsContent.style.display = "block"
+        ;(document.querySelector(".playground-sidebar label") as any).focus()
       }
       settingsToggle.parentElement!.classList.toggle("open")
     }
