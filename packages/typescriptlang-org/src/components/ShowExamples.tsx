@@ -106,11 +106,15 @@ export const RenderExamples = (props: Props) => {
   const sections = props.sections.map(sectionID => locale.sections.find(localeSection => sectionID === localeSection.id) || english.sections.find(localeSection => sectionID === localeSection.id))
   return (
     <div className="examples">
-      <ol>
+      <ol role="tablist">
         {sections.map(section => {
           const startOpen = section.id === props.defaultSection
           const selectedClass = startOpen ? " selected" : ""
-          return <li key={section.name}><button onClick={buttonOnClick(section.id.toLowerCase().replace(".", "-"))} className={"section-name button " + selectedClass} >{section.name}</button></li>
+          return (
+            <li key={section.name}>
+              <button role="tab" onClick={buttonOnClick(section.id.toLowerCase().replace(".", "-"))} className={"section-name button " + selectedClass} aria-selected={selectedClass.length ? "true" : "false"} >{section.name}</button>
+            </li>
+          )
         }
         )}
       </ol>
@@ -121,7 +125,7 @@ export const RenderExamples = (props: Props) => {
         const startOpen = section.id === props.defaultSection
         const style = startOpen ? {} : { display: "none" }
 
-        return <div key={section.name} className={`section-content button-${section.id.toLowerCase().replace(".", "-")}`} style={style}>
+        return <div key={section.name} className={`section-content button-${section.id.toLowerCase().replace(".", "-")}`} style={style} role="tabpanel">
           <p style={{ width: "100%" }} dangerouslySetInnerHTML={{ __html: section.subtitle }} />
 
           {subsectionNames.map(sectionName => {
