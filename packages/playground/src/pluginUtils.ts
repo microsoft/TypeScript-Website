@@ -25,21 +25,6 @@ export const createUtils = (sb: any, react: typeof React) => {
     setTimeout(() => element.classList.remove("briefly-highlight"), 1000)
   }
 
-  const declareRestartRequired = (i: (key: string) => string) => {
-    if (document.getElementById("restart-required")) return
-
-    const li = document.createElement("li")
-    li.classList.add("disabled")
-    li.id = "restart-required"
-    const a = document.createElement("a")
-    a.style.color = "#c63131"
-    a.textContent = i("play_sidebar_options_restart_required")
-
-    const nav = document.getElementsByClassName("navbar-right")[0]
-    li.appendChild(a)
-    nav.insertBefore(li, nav.firstChild)
-  }
-
   return {
     /** Use this to make a few dumb element generation funcs */
     el,
@@ -54,8 +39,6 @@ export const createUtils = (sb: any, react: typeof React) => {
     createDesignSystem: createDesignSystem(sandbox),
     /** Flashes a HTML Element */
     flashHTMLElement,
-    /** A general "restart your browser" message  */
-    declareRestartRequired,
   }
 }
 

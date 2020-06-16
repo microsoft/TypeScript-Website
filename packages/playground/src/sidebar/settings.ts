@@ -90,10 +90,10 @@ export const settingsPlugin: PluginFactory = (i, utils) => {
       const ds = utils.createDesignSystem(container)
 
       ds.subtitle(i("play_subnav_settings"))
-      ds.showOptionList(settings, { style: "separated" })
+      ds.showOptionList(settings, { style: "separated", requireRestart: true })
 
       ds.subtitle(i("play_settings_tabs_settings"))
-      ds.showOptionList(uiPlugins, { style: "separated" })
+      ds.showOptionList(uiPlugins, { style: "separated", requireRestart: true })
     },
   }
 

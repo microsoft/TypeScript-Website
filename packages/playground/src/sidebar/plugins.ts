@@ -93,7 +93,7 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
           a.onclick = () => {
             removeCustomPlugins(module)
             updateCustomModules()
-            utils.declareRestartRequired(i)
+            ds.declareRestartRequired(i)
             return false
           }
           li.appendChild(a)
@@ -117,7 +117,7 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
         blurb: i("play_sidebar_plugins_plugin_dev_copy"),
         flag: "compiler-setting-connect-dev-plugin",
         onchange: () => {
-          utils.declareRestartRequired(i)
+          ds.declareRestartRequired(i)
         },
       })
 
@@ -143,7 +143,8 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
     input.checked = !!localStorage.getItem(key)
 
     input.onchange = () => {
-      utils.declareRestartRequired(i)
+      const ds = utils.createDesignSystem(div)
+      ds.declareRestartRequired(i)
       if (input.checked) {
         // @ts-ignore
         window.appInsights &&
@@ -173,7 +174,9 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
     form.appendChild(newModuleInput)
 
     form.onsubmit = e => {
-      utils.declareRestartRequired(i)
+      const ds = utils.createDesignSystem(form)
+      ds.declareRestartRequired(i)
+
       addCustomPlugin(newModuleInput.value)
       e.stopPropagation()
       updateOL()
