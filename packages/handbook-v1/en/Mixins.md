@@ -61,11 +61,8 @@ setTimeout(() => smartObj.interact(), 1000);
 function applyMixins(derivedCtor: any, baseCtors: any[]) {
   baseCtors.forEach(baseCtor => {
     Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
-      Object.defineProperty(
-        derivedCtor.prototype,
-        name,
-        Object.getOwnPropertyDescriptor(baseCtor.prototype, name)
-      );
+      const prop = Object.getOwnPropertyDescriptor(baseCtor.prototype, name);
+      if (prop) Object.defineProperty(derivedCtor.prototype, name, prop);
     });
   });
 }
@@ -127,11 +124,8 @@ This will run through the properties of each of the mixins and copy them over to
 function applyMixins(derivedCtor: any, baseCtors: any[]) {
   baseCtors.forEach(baseCtor => {
     Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
-      Object.defineProperty(
-        derivedCtor.prototype,
-        name,
-        Object.getOwnPropertyDescriptor(baseCtor.prototype, name)
-      );
+      const prop = Object.getOwnPropertyDescriptor(baseCtor.prototype, name);
+      if (prop) Object.defineProperty(derivedCtor.prototype, name, prop);
     });
   });
 }
