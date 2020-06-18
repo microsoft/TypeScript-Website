@@ -1,15 +1,15 @@
 //// { order: 3 }
 
-// Deno is a work-in-progress JavaScript and TypeScript
-// runtime based on v8 with a focus on security.
+// Denoはセキュリティに重点を置いた開発中のv8ベースの
+// JavaScript及びTypeScriptのランタイムです。
 
 // https://deno.land
 
-// Deno has a sandbox-based permissions system which reduces the
-// access JavaScript has to the file-system or the network and uses
-// http based imports which are downloaded and cached locally.
+// Denoはサンドボックスベースの権限システムを採用しており、JavaScript
+// がファイルシステムやネットワークへのアクセスを減らし、httpベースの
+// インポートを使用してダウンロードしローカルにキャッシュしています。
 
-// Here is an example of using deno for scripting:
+// ここでは、denoを使用した例をです:
 
 import compose from "https://deno.land/x/denofun/lib/compose.ts";
 
@@ -23,10 +23,10 @@ function makeLoud(x: string) {
 
 const greetLoudly = compose(makeLoud, greet);
 
-// Echos "HELLO, WORLD!."
+// 出力 "HELLO, WORLD!."
 greetLoudly("world");
 
 import concat from "https://deno.land/x/denofun/lib/concat.ts";
 
-// Returns "helloworld"
+// 戻り値 "helloworld"
 concat("hello", "world");
