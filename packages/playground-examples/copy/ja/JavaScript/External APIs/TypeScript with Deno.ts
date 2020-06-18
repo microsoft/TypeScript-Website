@@ -9,7 +9,7 @@
 // がファイルシステムやネットワークへのアクセスを減らし、httpベースの
 // インポートを使用してダウンロードしローカルにキャッシュしています。
 
-// ここでは、denoを使用した例をです:
+// 以下はdenoを使用した例をです:
 
 import compose from "https://deno.land/x/denofun/lib/compose.ts";
 
