@@ -50,6 +50,11 @@ export type PlaygroundConfig = {
 
 const languageType = (config: PlaygroundConfig) => (config.useJavaScript ? "javascript" : "typescript")
 
+// Basically android and monaco is pretty bad, this makes it less bad
+// See https://github.com/microsoft/pxt/pull/7099 for this, and the long
+// read is in https://github.com/microsoft/monaco-editor/issues/563
+const isAndroid = navigator && /android/i.test(navigator.userAgent)
+
 /** Default Monaco settings for playground */
 const sharedEditorOptions: import("monaco-editor").editor.IEditorOptions = {
   automaticLayout: true,
@@ -61,6 +66,14 @@ const sharedEditorOptions: import("monaco-editor").editor.IEditorOptions = {
   lightbulb: {
     enabled: true,
   },
+  quickSuggestions: {
+    other: !isAndroid,
+    comments: !isAndroid,
+    strings: !isAndroid,
+  },
+  acceptSuggestionOnCommitCharacter: !isAndroid,
+  acceptSuggestionOnEnter: !isAndroid ? "on" : "off",
+  accessibilitySupport: !isAndroid ? "on" : "off",
 }
 
 /** The default settings which we apply a partial over */
