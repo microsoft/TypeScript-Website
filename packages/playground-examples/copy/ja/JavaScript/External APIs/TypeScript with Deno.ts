@@ -5,11 +5,11 @@
 
 // https://deno.land
 
-// Denoはサンドボックスベースの権限システムを採用しており、JavaScript
-// がファイルシステムやネットワークへのアクセスを減らし、httpベースの
-// インポートを使用してダウンロードしローカルにキャッシュしています。
+// DenoはJavaScriptのファイルシステムやネットワークへのアクセスを減らす
+// サンドボックスベースの権限システムを採用し、
+// ローカルにダウンロードとキャッシュされるhttpベースのインポートを使用します。
 
-// 以下はdenoを使用した例をです:
+// 以下はdenoを使用した例です:
 
 import compose from "https://deno.land/x/denofun/lib/compose.ts";
 
@@ -23,10 +23,10 @@ function makeLoud(x: string) {
 
 const greetLoudly = compose(makeLoud, greet);
 
-// 出力 "HELLO, WORLD!."
+// "HELLO, WORLD!."を出力します
 greetLoudly("world");
 
 import concat from "https://deno.land/x/denofun/lib/concat.ts";
 
-// 戻り値 "helloworld"
+// "helloworld"を返します
 concat("hello", "world");
