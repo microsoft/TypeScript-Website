@@ -1,8 +1,10 @@
 import * as React from "react"
+import { useEffect } from "react"
 
 import "./SiteFooter.scss"
 import { PlaygroundSamples } from "./SiteFooter-PlaygroundSamples";
 import { AllSitePage, createIntlLink } from "../IntlLink";
+import { whenEscape } from "../../lib/whenEscape";
 
 export type Props = {
   lang: string
@@ -132,6 +134,13 @@ export const SiteFooter = (props: Props) => {
   const playgroundExamples = useTypeScriptLinks.find(l => l.url.includes("#show-examples"))!
 
   const Link = createIntlLink(props.lang, props.allSitePage)
+
+  useEffect(() => {
+    // Handle escape closing dropdowns etc
+    document.onkeydown = whenEscape(() => {
+      document.getElementById("playground-samples-popover")!.style.visibility = "hidden"
+    })
+  }, [])
 
   return (
     <footer id="site-footer" role="contentinfo">
