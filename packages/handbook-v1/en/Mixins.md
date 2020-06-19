@@ -10,64 +10,48 @@ oneline: Using the mixin pattern with TypeScript
 Along with traditional OO hierarchies, another popular way of building up classes from reusable components is to build them by combining simpler partial classes.
 You may be familiar with the idea of mixins or traits for languages like Scala, and the pattern has also reached some popularity in the JavaScript community.
 
-# Mixin sample
+# How Does A Mixin Work?
 
-In the code below, we show how you can model mixins in TypeScript.
-After the code, we'll break down how it works.
+The pattern relies on using Generics with class inheritance to extend a base class.
+To get started, we'll need a class which will have the mixin's applied:
 
-```ts
-// Disposable Mixin
-class Disposable {
-  isDisposed: boolean;
-  dispose() {
-    this.isDisposed = true;
+```ts twoslash
+class Sprite {
+  name = "";
+  x = 0;
+  y = 0;
+
+  constructor(name: string) {
+    this.name = name;
   }
 }
+```
 
-// Activatable Mixin
-class Activatable {
-  isActive: boolean;
-  activate() {
-    this.isActive = true;
-  }
-  deactivate() {
-    this.isActive = false;
-  }
-}
+Then
 
-class SmartObject {
-  constructor() {
-    setInterval(
-      () => console.log(this.isActive + " : " + this.isDisposed),
-      500
-    );
-  }
+```ts twoslash
+// To get started, we need a type which we'll use to extend
+// other classes from. The main responsibility is to declare
+// that the type being passed in is a class.
 
-  interact() {
-    this.activate();
-  }
-}
+type Constructor = new (...args: any[]) => {};
 
-interface SmartObject extends Disposable, Activatable {}
-applyMixins(SmartObject, [Disposable, Activatable]);
+// This mixin adds a scale property, with getters and setters
+// for changing it with an encapsulated private property:
 
-let smartObj = new SmartObject();
-setTimeout(() => smartObj.interact(), 1000);
+function Scale<TBase extends Constructor>(Base: TBase) {
+  return class extends Base {
+    // Mixins may not declare private/protected properties
+    _scale = 1;
 
-////////////////////////////////////////
-// In your runtime library somewhere
-////////////////////////////////////////
+    setScale(scale: number) {
+      this._scale = scale;
+    }
 
-function applyMixins(derivedCtor: any, baseCtors: any[]) {
-  baseCtors.forEach(baseCtor => {
-    Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
-      Object.defineProperty(
-        derivedCtor.prototype,
-        name,
-        Object.getOwnPropertyDescriptor(baseCtor.prototype, name)
-      );
-    });
-  });
+    get scale(): number {
+      return this._scale;
+    }
+  };
 }
 ```
 
@@ -125,8 +109,8 @@ This will run through the properties of each of the mixins and copy them over to
 
 ```ts
 function applyMixins(derivedCtor: any, baseCtors: any[]) {
-  baseCtors.forEach(baseCtor => {
-    Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+  baseCtors.forEach((baseCtor) => {
+    Object.getOwnPropertyNames(baseCtor.prototype).forEach((name) => {
       Object.defineProperty(
         derivedCtor.prototype,
         name,
