@@ -200,7 +200,7 @@ const Index: React.FC<Props> = (props) => {
                 <p id="exampleBlurb">{codeSamples[0].blurb}</p>
                 <div id="loader">
                   <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-                  <p id="loading-message">Downloading Sandbox...</p>
+                  <p id="loading-message" role="status">Downloading Sandbox...</p>
                 </div>
                 <div style={{ height: "300px", display: "none" }} id="monaco-editor-embed" />
                 <div id="example-buttons">
