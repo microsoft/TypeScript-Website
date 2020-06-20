@@ -1,21 +1,22 @@
 import lzstring from "./vendor/lzstring.min"
+import { CompilerOptions } from "typescript"
 
 /**
  * Grabs the sourcecode for an example from the query hash or local storage
  * @param fallback if nothing is found return this
  * @param location DI'd copy of document.location
  */
-export const getInitialCode = (fallback: string, location: Location): Record<string, string> => {
-  const params = new URLSearchParams(location.search)
-  const useJS = params.get("useJavaScript")
-  const xSuffix = params.get("jsx") && params.get("jsx") === "0" ? "x" : ""
-  const filename = `index.${useJS ? "js" : "ts"}${xSuffix ? "x" : ""}`
+export const getInitialCode = (
+  fallback: string,
+  location: Location,
+  defaultFilename: string
+): Record<string, string> => {
   const result: Record<string, string> = {}
 
   // Old school support
   if (location.hash.startsWith("#src")) {
     const code = location.hash.replace("#src=", "").trim()
-    result[filename] = code
+    result[defaultFilename] = code
     return result
   }
 
@@ -27,7 +28,7 @@ export const getInitialCode = (fallback: string, location: Location): Record<str
     // https://gitter.im/Microsoft/TypeScript?at=5dc478ab9c39821509ff189a
     if (!userCode) userCode = lzstring.decompressFromEncodedURIComponent(decodeURIComponent(code))
 
-    result[filename] = userCode
+    result[defaultFilename] = userCode
     return result
   }
 
@@ -40,18 +41,19 @@ export const getInitialCode = (fallback: string, location: Location): Record<str
     try {
       return JSON.parse(userFiles)
     } catch (error) {
-      result[filename] = fallback
+      result[defaultFilename] = fallback
       return result
     }
   }
 
+  // TODO: Do this
   // Local copy fallback
   if (localStorage.getItem("sandbox-history")) {
     // result[filename] = userCode
   }
 
-  if (filename in result === false) {
-    result[filename] = fallback
+  if (defaultFilename in result === false) {
+    result[defaultFilename] = fallback
   }
 
   return result

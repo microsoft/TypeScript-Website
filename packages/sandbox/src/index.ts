@@ -112,10 +112,6 @@ export const createTypeScriptSandbox = (
   if (!("domID" in config) && !("elementToAppend" in config))
     throw new Error("You did not provide a domID or elementToAppend")
 
-  const defaultText = config.suppressAutomaticallyGettingDefaultText
-    ? config.text
-    : getInitialCode(config.text, document.location)
-
   // Defaults
   const compilerDefaults = getDefaultSandboxCompilerOptions(config, monaco)
 
@@ -131,11 +127,18 @@ export const createTypeScriptSandbox = (
     compilerOptions = compilerDefaults
   }
 
+  const defaultFilename = defaultFilePath(config, compilerOptions, monaco)
+  const defaultFiles = config.suppressAutomaticallyGettingDefaultText
+    ? { [defaultFilename]: config.text }
+    : getInitialCode(config.text, document.location, defaultFilename)
+
   const language = languageType(config)
   const filePath = createFileUri(config, compilerOptions, monaco)
   const element = "domID" in config ? document.getElementById(config.domID) : (config as any).elementToAppend
 
-  const model = monaco.editor.createModel(defaultText, language, filePath)
+  const models = Object.keys(defaultFiles).map(f => monaco.editor.createModel(f, language, filePath))
+  const model = models[0]
+
   monaco.editor.defineTheme("sandbox", sandboxTheme)
   monaco.editor.defineTheme("sandbox-dark", sandboxThemeDark)
   monaco.editor.setTheme("sandbox")
