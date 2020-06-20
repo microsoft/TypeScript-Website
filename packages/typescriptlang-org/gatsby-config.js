@@ -122,7 +122,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-catch-links`,
       options: {
-        excludePattern: /(sandbox|play)/,
+        excludePattern: /(sandbox|play|dev)/,
       },
     },
     "gatsby-plugin-client-side-redirect",

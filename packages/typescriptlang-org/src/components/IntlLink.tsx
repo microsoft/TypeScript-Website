@@ -31,7 +31,7 @@ export const createIntlLink = (currentLocale: string, allSitePage: AllSitePageFr
       }
     }
 
-    const blocklistIncludes = ["/play", "sandbox",]
+    const blocklistIncludes = ["/play", "sandbox", "/dev"]
     const blocklisted = blocklistIncludes.find(blocked => to.includes(blocked))
 
     if (blocklisted) {
