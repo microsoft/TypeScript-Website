@@ -189,7 +189,6 @@ const Play: React.FC<Props> = (props) => {
         <div id="playground-container" style={{ display: "none" }}>
           <div id="editor-container">
             <div id="editor-toolbar" className="navbar-sub" >
-
               <ul>
                 <li id="versions" className="dropdown" >
                   <a href="#" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="versions-dropdown" id='versions-button'>{i("play_downloading_version")}... <span className="caret" /></a>
@@ -217,12 +216,48 @@ const Play: React.FC<Props> = (props) => {
                 <li><a id="sidebar-toggle" aria-label="Hide Sidebar" href="#">&#x21E5;</a></li>
               </ul>
             </div>
+
+            <div className="file-tabs">
+
+              <div className="button active" role="button">
+                { /*<div className="drag-handle" /> */}
+                <div className="editable" title="edit component name">
+                  index.ts
+                </div>
+                <span className="remove">
+                  <svg width="12" height="12" viewBox="0 0 24 24">
+                    <line stroke="#999" x1='18' y1='6' x2='6' y2='18' />
+                    <line stroke="#999" x1='6' y1='6' x2='18' y2='18' />
+                  </svg>
+                </span>
+              </div>
+
+              <div className="button" role="button">
+                { /*<div className="drag-handle" /> */}
+                <div className="input-sizer">index.js</div>
+                <input spellcheck={false} value="" />
+                <span className="remove">
+                  <svg width="12" height="12" viewBox="0 0 24 24">
+                    <line stroke="#999" x1='18' y1='6' x2='6' y2='18' />
+                    <line stroke="#999" x1='6' y1='6' x2='18' y2='18' />
+                  </svg>
+                </span>
+              </div>
+
+              <button className="add-new svelte-cghqrp" title="add new component">
+                <svg width="12" height="12" viewBox="0 0 24 24">
+                  <line stroke="#999" x1="12" y1="5" x2="12" y2="19"></line>
+                  <line stroke="#999" x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+            </div>
+
             { /** This is the div which monaco is added into  **/}
             <div id="monaco-editor-embed" />
           </div>
         </div>
       </div>
-    </Layout>
+    </Layout >
   )
 }
 

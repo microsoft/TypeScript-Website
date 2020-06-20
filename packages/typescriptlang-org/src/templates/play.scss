@@ -301,6 +301,105 @@ main #editor-toolbar {
   }
 }
 
+main {
+  .file-tabs {
+    border: none;
+    margin: 0;
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 3em;
+  }
+  .file-tabs .button,
+  .file-tabs button {
+    position: relative;
+    display: inline-block;
+    background: white;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 12px 14px 8px 16px;
+    margin: 0;
+    color: #999;
+    border-radius: 0;
+    cursor: pointer;
+  }
+  .file-tabs .button.active {
+    color: #333;
+    border-bottom: 3px solid $ts-main-blue-color;
+  }
+  .editable,
+  .uneditable,
+  .input-sizer,
+  input {
+    display: inline-block;
+    position: relative;
+    line-height: 1;
+  }
+  .input-sizer {
+    color: #ccc;
+  }
+  input {
+    position: absolute;
+    width: 100%;
+    left: 16px;
+    top: 12px;
+    border: none;
+    color: var(--flash);
+    outline: none;
+    background-color: transparent;
+  }
+  .duplicate {
+    color: var(--prime);
+  }
+  .remove {
+    position: absolute;
+    display: none;
+    right: 1px;
+    top: 4px;
+    width: 16px;
+    text-align: right;
+    padding: 12px 0 12px 5px;
+    font-size: 8px;
+    cursor: pointer;
+  }
+  .remove:hover {
+    color: green;
+  }
+  .file-tabs .button.active .editable {
+    cursor: text;
+  }
+  .file-tabs .button.active .remove {
+    display: block;
+  }
+  .file-tabs .button.drag-over {
+    background: #67677814;
+  }
+  .file-tabs .button.drag-over {
+    cursor: move;
+  }
+
+  .drag-handle {
+    cursor: move;
+    width: 5px;
+    height: 25px;
+    position: absolute;
+    left: 5px;
+    top: 9px;
+    --drag-handle-color: #dedede;
+    background: linear-gradient(
+      to right,
+      var(--drag-handle-color) 1px,
+      white 1px,
+      white 2px,
+      var(--drag-handle-color) 2px,
+      var(--drag-handle-color) 3px,
+      white 3px,
+      white 4px,
+      var(--drag-handle-color) 4px
+    );
+  }
+}
+
 .caret {
   display: inline-block;
   width: 0;
@@ -344,7 +443,7 @@ main #editor-toolbar {
       border-bottom: 1px #c4c4c4 solid;
 
       margin-right: -2px;
-      margin-bottom: 10px;
+      // margin-bottom: 10px;
 
       position: relative;
       ul.right {
