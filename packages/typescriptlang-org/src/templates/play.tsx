@@ -184,7 +184,7 @@ const Play: React.FC<Props> = (props) => {
       <div className="raised" style={{ paddingTop: "0", marginTop: "0", marginBottom: "3rem", paddingBottom: "1.5rem" }}>
         <div id="loader">
           <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-          <p id="loading-message">{i("play_downloading_typescript")}</p>
+          <p id="loading-message" role="status">{i("play_downloading_typescript")}</p>
         </div>
         <div id="playground-container" style={{ display: "none" }}>
           <div id="editor-container">

@@ -77,7 +77,7 @@ export const SiteNav = (props: Props) => {
         </div>
 
         <div className="right above-small">
-          <nav >
+          <div className="search-section">
             <ul>
               <li className="nav-item">
                 <form className="search top-nav" role="search">
@@ -91,7 +91,7 @@ export const SiteNav = (props: Props) => {
                 <li className="nav-item hide-small"><a href="/play">en</a></li>
               */}
             </ul>
-          </nav>
+          </div>
         </div>
       </div>
 
