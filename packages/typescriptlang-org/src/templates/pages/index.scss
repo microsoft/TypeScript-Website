@@ -545,6 +545,19 @@ $headline-foreground-bg: #104261;
     background-color: black;
   }
 
+  @media screen and (-ms-high-contrast: active) {
+    .needle-head {
+      opacity: 0;
+    }
+    .release-info .needle {
+      border: 1px solid black;
+      height: 80px;
+    }
+   .release > div, .beta > div, .rc > div {
+      border: 1px solid black;
+    }
+  }
+
   .release {
     width: 55%;
     .bar {
