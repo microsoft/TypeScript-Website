@@ -177,8 +177,7 @@ const Index: React.FC<Props> = (props) => {
                 <p>If you know TypeScript, you basically know twoslash.</p>
                 <p>Twoslash adds the ability to declare tsconfig options inline, split a sample into multiple files and a few other useful commands. You can see the full API <a href="https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher">inside the README</a></p>
               </div>
-              <div>
-                <h1 style={{ marginTop: "0" }}>&nbsp;</h1>
+              <div style={{ paddingTop: "4.5rem" }}>
                 <p>The Twoslash markup language helps with:</p>
                 <ul>
                   <li>Enforcing accurate errors from a TypeScript code sample, and leaving the messaging to the compiler</li>
