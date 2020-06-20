@@ -169,7 +169,6 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
 
     const newModuleInput = document.createElement("input")
     newModuleInput.type = "text"
-    newModuleInput.id = "gist-input"
     newModuleInput.placeholder = i("play_sidebar_plugins_options_modules_placeholder")
     form.appendChild(newModuleInput)
 

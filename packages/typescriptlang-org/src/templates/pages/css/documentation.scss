@@ -104,4 +104,9 @@
       margin-left: 0;
     }
   }
+
+  @media (max-width: $screen-sm) {
+    flex-direction: column;
+    margin: 0;
+  }
 }

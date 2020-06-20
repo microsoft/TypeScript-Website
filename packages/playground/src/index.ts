@@ -250,6 +250,22 @@ export const setupPlayground = (
 
           const sideBarWidth = (document.querySelector(".playground-sidebar") as any).offsetWidth
           exampleContainer.style.width = `calc(100% - ${sideBarWidth}px - 71px)`
+
+          // All this is to make sure that tabbing stays inside the dropdown for tsconfig/examples
+          const buttons = exampleContainer.querySelectorAll("input")
+          const lastButton = buttons.item(buttons.length - 1) as HTMLElement
+          if (lastButton) {
+            redirectTabPressTo(lastButton, exampleContainer, ".examples-close")
+          } else {
+            const sections = document.querySelectorAll("ul.examples-dropdown .section-content")
+            sections.forEach(s => {
+              const buttons = s.querySelectorAll("a.example-link")
+              const lastButton = buttons.item(buttons.length - 1) as HTMLElement
+              if (lastButton) {
+                redirectTabPressTo(lastButton, exampleContainer, ".examples-close")
+              }
+            })
+          }
         }
       }
     }
@@ -352,12 +368,9 @@ export const setupPlayground = (
         // When the last tab item is hit, go back to the settings button
         const labels = document.querySelectorAll(".playground-sidebar input")
         const lastLabel = labels.item(labels.length - 1) as HTMLElement
-        lastLabel.addEventListener("keydown", e => {
-          if (e.keyCode === 9) {
-            ;(document.querySelector("#playground-settings") as any).focus()
-            e.preventDefault()
-          }
-        })
+        if (lastLabel) {
+          redirectTabPressTo(lastLabel, undefined, "#playground-settings")
+        }
       }
 
       if (open) {
@@ -562,3 +575,17 @@ export const setupPlayground = (
 }
 
 export type Playground = ReturnType<typeof setupPlayground>
+
+const redirectTabPressTo = (element: HTMLElement, container: HTMLElement | undefined, query: string) => {
+  // element.style.backgroundColor = "red"
+  element.addEventListener("keydown", e => {
+    if (e.keyCode === 9) {
+      const host = container || document
+      const result = host.querySelector(query) as any
+      if (!result) throw new Error(`Expected to find a result for keydown`)
+      result.focus()
+      console.log(result)
+      e.preventDefault()
+    }
+  })
+}

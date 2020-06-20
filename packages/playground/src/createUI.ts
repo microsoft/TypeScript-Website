@@ -72,7 +72,7 @@ export const createUI = (): UI => {
     const modal = createModalOverlay()
 
     if (subtitle) {
-      const titleElement = document.createElement("p")
+      const titleElement = document.createElement("h3")
       titleElement.textContent = subtitle
       modal.appendChild(titleElement)
     }

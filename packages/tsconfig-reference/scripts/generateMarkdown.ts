@@ -190,7 +190,7 @@ languages.forEach((lang) => {
       markdownChunks.push("<div class='category'>");
 
       // Let the title change it's display but keep the same ID
-      const title = `<h2 id='${categoryID}' ><a href=' ${categoryID}' name='${categoryID}' aria-label="Link to the section ${categoryFile.data.display}" aria-labelledby='${categoryID}'>#</a>${categoryFile.data.display}</h2>`;
+      const title = `<h2 id='${categoryID}' ><a href='#${categoryID}' name='${categoryID}' aria-label="Link to the section ${categoryFile.data.display}" aria-labelledby='${categoryID}'>#</a>${categoryFile.data.display}</h2>`;
       markdownChunks.push(title);
 
       // Push the category copy
@@ -229,7 +229,7 @@ languages.forEach((lang) => {
         markdownChunks.push("<section class='compiler-option'>");
 
         // Let the title change it's display but keep the same ID
-        const titleLink = `<a aria-label="Link to the compiler option: ${option.name}" title="Link to the compiler option:${option.name}" id='${option.name}' href='#${option.name}' name='${option.name}'>#</a>`;
+        const titleLink = `<a aria-label="Link to the compiler option: ${option.name}" id='${option.name}' href='#${option.name}' name='${option.name}' aria-labelledby="${option.name}-config">#</a>`;
         const title = `<h3 id='${option.name}-config'>${titleLink} ${optionFile.data.display} - <code>${option.name}</code></h3>`;
         markdownChunks.push(title);
 
