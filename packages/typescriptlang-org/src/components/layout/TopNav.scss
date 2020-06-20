@@ -120,6 +120,8 @@ form.search {
   }
 
   input {
+    width: 150px;
+
     &:focus-within {
       background-color: $ts-main-blue-lighter-color;
     }
