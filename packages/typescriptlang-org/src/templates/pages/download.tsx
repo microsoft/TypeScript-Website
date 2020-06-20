@@ -31,7 +31,7 @@ const Index: React.FC<Props> = (props) => {
       <p>Having TypeScript set up on a per-project basis lets you have many projects with many different versions of TypeScript, this keeps each project working consistently.</p>
 
       <section style={{ display: "flex", flexWrap: "wrap" }}>
-        <div style={{ borderRight: "1px lightgrey solid", padding: "1rem", flex: 1, minWidth: "250px" }}>
+        <div style={{ borderRight: "1px lightgrey solid", padding: "1rem", flex: 1, minWidth: "240px" }}>
           <h3>via npm</h3>
           <p>TypeScript is available as a <a href="https://www.npmjs.com/package/typescript">package on the npm registry</a> available as <code>"typescript"</code>.</p>
           <p>You will need a copy of <a href="https://nodejs.org/en/">Node.js</a> as an environment to run the package. Then you use a dependency manager like <a href='https://www.npmjs.com/'>npm</a>, <a href='https://yarnpkg.com/'>yarn</a> or <a href='https://pnpm.js.org/'>pnpm</a> to download TypeScript into your project.</p>
@@ -46,7 +46,7 @@ const Index: React.FC<Props> = (props) => {
           </div>
         </div>
 
-        <div style={{ padding: "1rem", flex: 1, minWidth: "250px" }}>
+        <div style={{ padding: "1rem", flex: 1, minWidth: "240px" }}>
           <h3>with Visual Studio</h3>
           <p>For most project types, you can get TypeScript as a package in Nuget for your MSBuild projects, for example an ASP.NET Core app.</p>
           <p>When using Nuget, you can <a href="https://docs.microsoft.com/en-us/visualstudio/javascript/tutorial-aspnet-with-typescript">install</a> TypeScript through Visual Studio using:</p>
@@ -72,14 +72,14 @@ const Index: React.FC<Props> = (props) => {
       <p>It can be handy to have TypeScript available across all projects, often to test one-off ideas. Long-term, codebases should prefer a project-wide installation over a global install so that they can benefit from reproducible builds across different machines..</p>
 
       <section style={{ display: "flex", flexWrap: "wrap" }}>
-        <div style={{ borderRight: "1px lightgrey solid", padding: "1rem", flex: 1, minWidth: "250px" }}>
+        <div style={{ borderRight: "1px lightgrey solid", padding: "1rem", flex: 1, minWidth: "240px" }}>
           <h3>via npm</h3>
           <p>You can use npm to install TypeScript globally, this means you can use the <code>tsc</code> command anywhere in your terminal.</p>
           <p>To do this, run <code>npm install -g typescript</code>. This will install the latest version (currently {releaseInfo.tags.stableMajMin}).</p>
           <p>An alternative is to use <a href="https://www.npmjs.com/package/npx">npx</a> when you have to run <code>tsc</code> for one-off occasions.</p>
         </div>
 
-        <div style={{ padding: "1rem", flex: 1, minWidth: "250px" }}>
+        <div style={{ padding: "1rem", flex: 1, minWidth: "240px" }}>
           <h3>via Visual Studio Marketplace</h3>
           <p>You can install TypeScript as a Visual Studio extension, which will allow you to use TypeScript across many MSBuild projects in Visual Studio.</p>
           <p>The latest version is available <a href={releaseInfo.vs.stable.vs2019_download} title="Link to the Visual Studio Marketplace for the TypeScript MSBuild extension">in the Visual Studio Marketplace</a>.</p>
@@ -94,17 +94,17 @@ const Index: React.FC<Props> = (props) => {
       <p>Each of these projects handle the file conversion, but do not handle the type-checking aspects of the TypeScript compiler. So, it's likely you'll still need to keep the TypeScript dependency from above around, and you'll want to enable <Link to="/tsconfig#isolatedModules"><code>isolatedModules</code></Link>.</p>
 
       <section style={{ display: "flex", flexWrap: "wrap" }}>
-        <div style={{ borderRight: "1px lightgrey solid", padding: "1rem", flex: 1, minWidth: "20px" }}>
+        <div style={{ borderRight: "1px lightgrey solid", padding: "1rem", flex: 1, minWidth: "240px" }}>
           <h3>Babel</h3>
           <p><a href='https://babeljs.io/'>Babel</a> is a very popular JavaScript transpiler which supports TypeScript files via the plugin <a href='https://babeljs.io/docs/en/babel-preset-typescript#docsNav'>@babel/plugin-transform-typescript</a>.</p>
         </div>
 
-        <div style={{ borderRight: "1px lightgrey solid", padding: "1rem", flex: 1, minWidth: "250px" }}>
+        <div style={{ borderRight: "1px lightgrey solid", padding: "1rem", flex: 1, minWidth: "240px" }}>
           <h3>swc</h3>
           <p><a href='https://swc-project.github.io/docs/installation/'>swc</a> is a fast, transpiler created in Rust which supports many of Babel's features including TypeScript.</p>
         </div>
 
-        <div style={{ padding: "1rem", flex: 1, minWidth: "200px" }}>
+        <div style={{ padding: "1rem", flex: 1, minWidth: "240px" }}>
           <h3>Sucrase</h3>
           <p><a href='https://github.com/alangpierce/sucrase#sucrase/'>Sucrase</a> is a Babel fork focused on speed for using in development mode. Sucrase supports TypeScript natively.</p>
         </div>

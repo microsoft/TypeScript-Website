@@ -190,7 +190,7 @@ languages.forEach((lang) => {
       markdownChunks.push("<div class='category'>");
 
       // Let the title change it's display but keep the same ID
-      const title = `<h2 id='${categoryID}' ><a href=' ${categoryID}' name='${categoryID}' aria-label="Link to the section ${categoryFile.data.display}" aria-labelledby='${categoryID}'>#</a>${categoryFile.data.display}</h2>`;
+      const title = `<h2 id='${categoryID}' ><a href='#${categoryID}' name='${categoryID}' aria-label="Link to the section ${categoryFile.data.display}" aria-labelledby='${categoryID}'>#</a>${categoryFile.data.display}</h2>`;
       markdownChunks.push(title);
 
       // Push the category copy

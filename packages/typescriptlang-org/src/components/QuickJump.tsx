@@ -125,7 +125,7 @@ export const QuickJump = (props: Props) => {
           </li>
           <li>
             <IntlLink to="/docs/handbook/react-&-webpack.html">
-              React & Webpack
+              React &amp; Webpack
             </IntlLink>
           </li>
         </ul>
