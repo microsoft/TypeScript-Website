@@ -153,7 +153,7 @@ OK world
     const code = markdownAST.children[1]
 
     expect(code.value).toContain(`data-lsp`)
-    expect(code.value).toContain(`<data-lsp lsp='function longest`)
+    expect(code.value).toContain(`<data-lsp lsp='`)
     expect(code.value.split("<data-lsp").length).toEqual(code.twoslash.staticQuickInfos.length + 1)
   })
 })

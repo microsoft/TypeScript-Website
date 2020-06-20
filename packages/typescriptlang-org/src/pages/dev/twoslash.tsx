@@ -71,7 +71,9 @@ const Index: React.FC<Props> = (props) => {
             try {
               const newResults = twoslasher(newContent, "tsx", {}, ts, sandbox.lzstring as any, mapWithLibFiles)
               const codeAsFakeShikiTokens = newResults.code.split("\n").map(line => [{ content: line }])
-              const html = renderToHTML(codeAsFakeShikiTokens, {}, newResults)
+              // TODO: FIX
+              const html = newResults.results //  renderToHTML(codeAsFakeShikiTokens, {}, newResults)
+              // const html =   renderToHTML(codeAsFakeShikiTokens, {}, newResults)
 
               const results = document.getElementById("twoslash-results")!
 

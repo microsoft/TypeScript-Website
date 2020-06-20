@@ -72,7 +72,9 @@ export const setupTwoslashHovers = () => {
     // Use a textarea to un-htmlencode for presenting to the user
     var txt = document.createElement("textarea")
     txt.innerHTML = message
-    tooltip.textContent = txt.value
+    tooltip.innerHTML = txt.value
+    // remove shiki wrapper element
+    tooltip.innerHTML = tooltip.querySelector("code")?.innerHTML!
 
     // Offset it a bit from the mouse and present it at an absolute position
     const yOffset = 20

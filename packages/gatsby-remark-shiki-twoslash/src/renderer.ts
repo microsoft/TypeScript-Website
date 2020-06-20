@@ -4,6 +4,7 @@ type Lines = import("shiki").IThemedToken[][]
 type Options = import("shiki/dist/renderer").HtmlRendererOptions
 type TwoSlash = import("@typescript/twoslash").TwoSlashReturn
 
+import { highlighter } from "./highlighter"
 import { stripHTML, createHighlightedString2, subTripleArrow, replaceTripleArrowEncoded } from "./utils"
 
 // OK, so - this is just straight up complex code.
@@ -18,7 +19,7 @@ import { stripHTML, createHighlightedString2, subTripleArrow, replaceTripleArrow
 
 // Things which make it hard:
 //
-// - Twoslash results can be cut, so sometimes there is edge cases between twoslash results
+// - Twoslash results can be cut, so sometimes there are edge cases between twoslash results
 // - Twoslash results can be multi-file
 // - the DOM requires a flattened graph of html elements
 //
@@ -105,7 +106,11 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
             if ("kind" in token) range.classes = token.kind
             if ("targetString" in token) {
               range.classes = "lsp"
-              range["lsp"] = stripHTML(token.text)
+              range["lsp"] = stripHTML(
+                plainOleShikiRenderer(highlighter.codeToThemedTokens(token.text, "ts"), {
+                  langId: "ts",
+                })
+              )
             }
             return range
           })
