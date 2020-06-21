@@ -344,3 +344,21 @@ form.search {
 .skip-to-main:focus {
   border: 1px dashed black;
 }
+
+:root {
+  --docsearch-primary-color: $ts-main-blue-color;
+  --docsearch-modal-background: white;
+  --docsearch-modal-background: blue;
+  // --docsearch-modal-shadow
+}
+
+div.DocSearch-Modal {
+  background-color: white;
+  z-index: $z-index-for-search;
+}
+
+span.DocSearch-Commands-Key {
+  box-shadow: none;
+  background: white;
+  border: 1px solid #969faf;
+}

@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.8.4",
+    "@docsearch/react": "1.0.0-alpha.18",
     "@formatjs/intl-relativetimeformat": "^4.5.15",
     "@mdx-js/mdx": "^1.5.5",
     "@mdx-js/react": "^1.5.5",
