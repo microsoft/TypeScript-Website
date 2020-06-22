@@ -13,7 +13,10 @@ export const PlaygroundSamples = (props: Props) => {
   useEffect(() => {
     // Only allow hovering on wider windows 
     const allowHover = window.innerWidth > 900
-    if (!allowHover) return
+    if (!allowHover) {
+      (document.getElementById("playground-samples-popover") as any).style.display = "none"
+      return
+    }
 
     // Visually enable the popover icon
     const iconSpan = document.getElementsByClassName("footer-icon")[0] as HTMLElement
