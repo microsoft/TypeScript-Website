@@ -21,6 +21,12 @@ nav#sidebar {
     margin: 0;
     padding: 0;
 
+    @media (min-width: $screen-sm) {
+      max-height: calc(100vh - 10px);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
     > li {
       // Mostly stuff for all of the links
       list-style: none;
