@@ -16,6 +16,8 @@ nav#sidebar {
 
   /* "Basically a section of documentation */
   > ul {
+    position: sticky;
+    top: 0;
     margin: 0;
     padding: 0;
 
