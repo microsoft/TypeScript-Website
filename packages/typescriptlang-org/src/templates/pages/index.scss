@@ -553,7 +553,9 @@ $headline-foreground-bg: #104261;
       border: 1px solid black;
       height: 80px;
     }
-   .release > div, .beta > div, .rc > div {
+    .release > div,
+    .beta > div,
+    .rc > div {
       border: 1px solid black;
     }
   }
@@ -659,12 +661,7 @@ $headline-foreground-bg: #104261;
       padding-left: 20px;
       padding-right: 30px;
       width: 260px;
-
-      -webkit-transition: opacity 200ms ease-out;
-      -moz-transition: opacity 200ms ease-out;
-      -o-transition: opacity 200ms ease-out;
-      -ms-transition: opacity 200ms ease-out;
-      transition: opacity 200ms ease-out;
+      animation: fadeInFromNone 1s ease-out;
 
       p {
         padding: 1rem 0;
@@ -684,6 +681,18 @@ $headline-foreground-bg: #104261;
           background-color: white;
           color: black;
         }
+      }
+    }
+
+    @keyframes fadeInFromNone {
+      0% {
+        display: none;
+        opacity: 0;
+      }
+
+      100% {
+        display: block;
+        opacity: 1;
       }
     }
 
