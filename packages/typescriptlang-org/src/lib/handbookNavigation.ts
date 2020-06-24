@@ -96,7 +96,6 @@ export const handbookNavigation: NavItem[] = [
       { id: "asp-net-core", title: "ASP.NET Core" },
       { id: "gulp", title: "Gulp" },
       { id: "migrating-from-javascript", title: "Migrating from JavaScript" },
-      { id: "react-&-webpack", title: "React & Webpack" },
       { id: "babel-with-typescript", title: "Using Babel with TypeScript" },
     ],
   },
