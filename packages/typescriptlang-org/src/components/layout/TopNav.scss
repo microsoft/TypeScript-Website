@@ -49,6 +49,13 @@
     font-size: 1.5rem;
     padding-top: 0.7rem;
 
+    
+    @media screen and (-ms-high-contrast: active) {
+      svg path {
+        fill: blue;
+      }
+    }
+
     svg {
       margin-right: 0.6rem;
       margin-left: 1rem;
@@ -266,6 +273,7 @@ form.search {
     /* Because 'TypeScript' is removed, let the width be auto */
     #home-page-logo {
       width: auto;
+
     }
 
     /* Simplify the nav to a few buttons and home */
