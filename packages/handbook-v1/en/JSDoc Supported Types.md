@@ -189,7 +189,7 @@ myPet.name;
 import types can be used to get the type of a value from a module if you don't know the type, or if it has a large type that is annoying to type:
 
 ```js twoslash
-// @filename: types.d.ts
+// @filename: accounts.d.ts
 export const userAccount = {
   name: "Name",
   address: "An address",
@@ -203,9 +203,9 @@ export const userAccount = {
 // @filename: main.js
 // ---cut---
 /**
- * @type {typeof import("./types").userAccount }
+ * @type {typeof import("./accounts").userAccount }
  */
-var x = require("./a").userAccount;
+var x = require("./accounts").userAccount;
 ```
 
 ## `@param` and `@returns`
