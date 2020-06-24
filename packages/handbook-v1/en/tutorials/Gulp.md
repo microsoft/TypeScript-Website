@@ -61,7 +61,7 @@ npm install -g gulp-cli
 ```
 
 Then install `typescript`, `gulp` and `gulp-typescript` in your project's dev dependencies.
-[Gulp-typescript](https://www.npmjs.com/package/gulp-typescript) is a gulp plugin for Typescript.
+[Gulp-typescript](https://www.npmjs.com/package/gulp-typescript) is a gulp plugin for TypeScript.
 
 ```shell
 npm install --save-dev typescript gulp@4.0.0 gulp-typescript

@@ -68,6 +68,7 @@ export const handbookNavigation: NavItem[] = [
       { id: "decorators", title: "Decorators" },
       { id: "utility-types", title: "Global Utility Types" },
       { id: "iterators-and-generators", title: "Iterators and Generators" },
+      { id: "jsdoc-supported-types", title: "JSDoc Supported Types" },
       { id: "jsx", title: "JSX" },
       { id: "mixins", title: "Mixins" },
       { id: "modules", title: "Modules" },

@@ -67,7 +67,7 @@ TypeScript has corresponding primitive types for the built-in types:
 - `undefined`
 - `object`
 
-### Other important Typescript types
+### Other important TypeScript types
 
 | Type           | Explanation                                                 |
 | -------------- | ----------------------------------------------------------- |

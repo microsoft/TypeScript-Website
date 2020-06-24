@@ -2,7 +2,7 @@
 title: JSDoc Supported Types
 layout: docs
 permalink: /docs/handbook/jsdoc-supported-types.html
-oneline: Using JSDoc with TypeScript
+oneline: Using JSDoc with TypeScript-powered JavaScript
 ---
 
 The list below outlines which constructs are currently supported
@@ -29,9 +29,9 @@ The code below describes the differences and gives some example usage of each ta
 ## `@type`
 
 You can use the "@type" tag and reference a type name (either primitive, defined in a TypeScript declaration, or in a JSDoc "@typedef" tag).
-You can use any Typescript type, and most JSDoc types.
+You can use any TypeScript type, and most JSDoc types.
 
-```js
+```js twoslash
 /**
  * @type {string}
  */
@@ -51,7 +51,7 @@ element.dataset.myData = "";
 
 `@type` can specify a union type &mdash; for example, something can be either a string or a boolean.
 
-```js
+```js twoslash
 /**
  * @type {(string | boolean)}
  */
@@ -60,7 +60,7 @@ var sb;
 
 Note that parentheses are optional for union types.
 
-```js
+```js twoslash
 /**
  * @type {string | boolean}
  */
@@ -69,7 +69,7 @@ var sb;
 
 You can specify array types using a variety of syntaxes:
 
-```js
+```js twoslash
 /** @type {number[]} */
 var ns;
 /** @type {Array.<number>} */
@@ -81,14 +81,14 @@ var nas;
 You can also specify object literal types.
 For example, an object with properties 'a' (string) and 'b' (number) uses the following syntax:
 
-```js
+```js twoslash
 /** @type {{ a: string, b: number }} */
 var var9;
 ```
 
-You can specify map-like and array-like objects using string and number index signatures, using either standard JSDoc syntax or Typescript syntax.
+You can specify map-like and array-like objects using string and number index signatures, using either standard JSDoc syntax or TypeScript syntax.
 
-```js
+```js twoslash
 /**
  * A map-like object that maps arbitrary `string` properties to `number`s.
  *
@@ -100,20 +100,20 @@ var stringToNumber;
 var arrayLike;
 ```
 
-The preceding two types are equivalent to the Typescript types `{ [x: string]: number }` and `{ [x: number]: any }`. The compiler understands both syntaxes.
+The preceding two types are equivalent to the TypeScript types `{ [x: string]: number }` and `{ [x: number]: any }`. The compiler understands both syntaxes.
 
-You can specify function types using either Typescript or Closure syntax:
+You can specify function types using either TypeScript or Closure syntax:
 
-```js
+```js twoslash
 /** @type {function(string, boolean): number} Closure syntax */
 var sbn;
-/** @type {(s: string, b: boolean) => number} Typescript syntax */
+/** @type {(s: string, b: boolean) => number} TypeScript syntax */
 var sbn2;
 ```
 
 Or you can just use the unspecified `Function` type:
 
-```js
+```js twoslash
 /** @type {Function} */
 var fn7;
 /** @type {function} */
@@ -122,7 +122,7 @@ var fn6;
 
 Other types from Closure also work:
 
-```js
+```js twoslash
 /**
  * @type {*} - can be 'any' type
  */
@@ -135,10 +135,10 @@ var question;
 
 ### Casts
 
-Typescript borrows cast syntax from Closure.
+TypeScript borrows cast syntax from Closure.
 This lets you cast types to other types by adding a `@type` tag before any parenthesized expression.
 
-```js
+```js twoslash
 /**
  * @type {number | string}
  */
@@ -149,11 +149,17 @@ var typeAssertedNumber = /** @type {number} */ (numberOrString);
 ### Import types
 
 You can also import declarations from other files using import types.
-This syntax is Typescript-specific and differs from the JSDoc standard:
+This syntax is TypeScript-specific and differs from the JSDoc standard:
 
-```js
+```js twoslash
+// @filename: types.d.ts
+export type Pet = {
+  name: string
+};
+
+// @filename: main.js
 /**
- * @param p { import("./a").Pet }
+ * @param p { import("./types").Pet }
  */
 function walk(p) {
   console.log(`Walking ${p.name}...`);
@@ -162,9 +168,15 @@ function walk(p) {
 
 import types can also be used in type alias declarations:
 
-```js
+```js twoslash
+// @filename: types.d.ts
+export type Pet = {
+  name: string
+};
+// @filename: main.js
+// ---cut---
 /**
- * @typedef { import("./a").Pet } Pet
+ * @typedef { import("./types").Pet } Pet
  */
 
 /**
@@ -176,11 +188,24 @@ myPet.name;
 
 import types can be used to get the type of a value from a module if you don't know the type, or if it has a large type that is annoying to type:
 
-```js
+```js twoslash
+// @filename: types.d.ts
+export const userAccount = {
+  name: "Name",
+  address: "An address",
+  postalCode: "",
+  country: "",
+  planet: "",
+  system: "",
+  galaxy: "",
+  universe: ""
+};
+// @filename: main.js
+// ---cut---
 /**
- * @type {typeof import("./a").x }
+ * @type {typeof import("./types").userAccount }
  */
-var x = require("./a").x;
+var x = require("./a").userAccount;
 ```
 
 ## `@param` and `@returns`
@@ -188,7 +213,7 @@ var x = require("./a").x;
 `@param` uses the same type syntax as `@type`, but adds a parameter name.
 The parameter may also be declared optional by surrounding the name with square brackets:
 
-```js
+```js twoslash
 // Parameters may be declared in a variety of syntactic forms
 /**
  * @param {string}  p1 - A string param.
@@ -204,7 +229,7 @@ function stringsStringStrings(p1, p2, p3, p4) {
 
 Likewise, for the return type of a function:
 
-```js
+```js twoslash
 /**
  * @return {PromiseLike<string>}
  */
@@ -221,7 +246,7 @@ function ab() {}
 `@typedef` may be used to define complex types.
 Similar syntax works with `@param`.
 
-```js
+```js twoslash
 /**
  * @typedef {Object} SpecialType - creates a new type named 'SpecialType'
  * @property {string} prop1 - a string property of SpecialType
@@ -230,19 +255,22 @@ Similar syntax works with `@param`.
  * @prop {number} [prop4] - an optional number property of SpecialType
  * @prop {number} [prop5=42] - an optional number property of SpecialType with default
  */
+
 /** @type {SpecialType} */
 var specialTypeObject;
+specialTypeObject.prop3;
 ```
 
 You can use either `object` or `Object` on the first line.
 
-```js
+```js twoslash
 /**
  * @typedef {object} SpecialType1 - creates a new type named 'SpecialType'
  * @property {string} prop1 - a string property of SpecialType
  * @property {number} prop2 - a number property of SpecialType
  * @property {number=} prop3 - an optional number property of SpecialType
  */
+
 /** @type {SpecialType1} */
 var specialTypeObject1;
 ```
@@ -250,7 +278,7 @@ var specialTypeObject1;
 `@param` allows a similar syntax for one-off type specifications.
 Note that the nested property names must be prefixed with the name of the parameter:
 
-```js
+```js twoslash
 /**
  * @param {Object} options - The shape is the same as SpecialType above
  * @param {string} options.prop1
@@ -266,18 +294,19 @@ function special(options) {
 
 `@callback` is similar to `@typedef`, but it specifies a function type instead of an object type:
 
-```js
+```js twoslash
 /**
  * @callback Predicate
  * @param {string} data
  * @param {number} [index]
  * @returns {boolean}
  */
+
 /** @type {Predicate} */
 const ok = s => !(s.length % 2);
 ```
 
-Of course, any of these types can be declared using Typescript syntax in a single-line `@typedef`:
+Of course, any of these types can be declared using TypeScript syntax in a single-line `@typedef`:
 
 ```js
 /** @typedef {{ prop1: string, prop2: string, prop3?: number }} SpecialType */
@@ -288,15 +317,19 @@ Of course, any of these types can be declared using Typescript syntax in a singl
 
 You can declare generic functions with the `@template` tag:
 
-```js
+```js twoslash
 /**
  * @template T
- * @param {T} p1 - A generic parameter that flows through to the return type
+ * @param {T} x - A generic parameter that flows through to the return type
  * @return {T}
  */
 function id(x) {
   return x;
 }
+
+const a = id("string");
+const b = id(123);
+const c = id({});
 ```
 
 Use comma or multiple tags to declare multiple type parameters:
@@ -311,7 +344,7 @@ Use comma or multiple tags to declare multiple type parameters:
 You can also specify a type constraint before the type parameter name.
 Only the first type parameter in a list is constrained:
 
-```js
+```js twoslash
 /**
  * @template {string} K - K must be a string or string literal
  * @template {{ serious(): string }} Seriousalizable - must have a serious method
@@ -329,7 +362,7 @@ Declaring generic classes or types is unsupported.
 
 Classes can be declared as ES6 classes.
 
-```js
+```js twoslash
 class C {
   /**
    * @param {number} data
@@ -357,7 +390,11 @@ class C {
 }
 
 var c = new C(0);
-var result = C(1); // C should only be called with new
+
+// C should only be called with new, but
+// because it is JavaScript, this is allowed and
+// considered an 'any'.
+var result = C(1);
 ```
 
 They can also be declared as constructor functions, as described in the next section:
@@ -366,7 +403,9 @@ They can also be declared as constructor functions, as described in the next sec
 
 The compiler infers constructor functions based on this-property assignments, but you can make checking stricter and suggestions better if you add a `@constructor` tag:
 
-```js
+```js twoslash
+// @checkJs
+// @errors: 2345 2348
 /**
  * @constructor
  * @param {number} data
@@ -383,7 +422,7 @@ function C(data) {
   /** @type {number} */
   this.size;
 
-  this.initialize(data); // Should error, initializer expects a string
+  this.initialize(data);
 }
 /**
  * @param {string} s
@@ -393,10 +432,12 @@ C.prototype.initialize = function(s) {
 };
 
 var c = new C(0);
-var result = C(1); // C should only be called with new
+c.size;
+
+var result = C(1);
 ```
 
-With `@constructor`, `this` is checked inside the constructor function `C`, so you will get suggestions for the `initialize` method and an error if you pass it a number. You will also get an error if you call `C` instead of constructing it.
+With `@constructor`, `this` is checked inside the constructor function `C`, so you will get suggestions for the `initialize` method and an error if you pass it a number. Your editor may also show warnings if you call `C` instead of constructing it.
 
 Unfortunately, this means that constructor functions that are also callable cannot use `@constructor`.
 
@@ -404,7 +445,7 @@ Unfortunately, this means that constructor functions that are also callable cann
 
 The compiler can usually figure out the type of `this` when it has some context to work with. When it doesn't, you can explicitly specify the type of `this` with `@this`:
 
-```js
+```js twoslash
 /**
  * @this {HTMLElement}
  * @param {*} e
@@ -418,7 +459,7 @@ function callbackForLater(e) {
 
 When Javascript classes extend a generic base class, there is nowhere to specify what the type parameter should be. The `@extends` tag provides a place for that type parameter:
 
-```js
+```js twoslash
 /**
  * @template T
  * @extends {Set<T>}
@@ -434,29 +475,35 @@ Note that `@extends` only works with classes. Currently, there is no way for a c
 
 The `@enum` tag allows you to create an object literal whose members are all of a specified type. Unlike most object literals in Javascript, it does not allow other members.
 
-```js
+```js twoslash
 /** @enum {number} */
 const JSDocState = {
   BeginningOfLine: 0,
   SawAsterisk: 1,
   SavingComments: 2
 };
+
+JSDocState.SawAsterisk;
 ```
 
-Note that `@enum` is quite different from, and much simpler than, Typescript's `enum`. However, unlike Typescript's enums, `@enum` can have any type:
+Note that `@enum` is quite different from, and much simpler than, TypeScript's `enum`. However, unlike TypeScript's enums, `@enum` can have any type:
 
-```js
+```js twoslash
 /** @enum {function(number): number} */
 const Math = {
   add1: n => n + 1,
   id: n => -n,
   sub1: n => n - 1
 };
+
+Math.add1;
 ```
 
 ## More examples
 
-```js
+```js twoslash
+class Foo {}
+// ---cut---
 var someObj = {
   /**
    * @param {string} param1 - Docs on property assignments work
@@ -512,7 +559,7 @@ function fn9(p1) {
 
 Referring to objects in the value space as types doesn't work unless the object also creates a type, like a constructor function.
 
-```js
+```js twoslash
 function aNormalFunction() {}
 /**
  * @type {aNormalFunction}
@@ -527,7 +574,7 @@ var right;
 
 Postfix equals on a property type in an object literal type doesn't specify an optional property:
 
-```js
+```js twoslash
 /**
  * @type {{ a: string, b: number= }}
  */
@@ -541,7 +588,7 @@ var right;
 
 Nullable types only have meaning if `strictNullChecks` is on:
 
-```js
+```js twoslash
 /**
  * @type {?number}
  * With strictNullChecks: true  -- number | null
@@ -552,7 +599,7 @@ var nullable;
 
 You can also use a union type:
 
-```js
+```js twoslash
 /**
  * @type {number | null}
  * With strictNullChecks: true  -- number | null
@@ -563,7 +610,7 @@ var unionNullable;
 
 Non-nullable types have no meaning and are treated just as their original type:
 
-```js
+```js twoslash
 /**
  * @type {!number}
  * Just has type number
@@ -571,7 +618,7 @@ Non-nullable types have no meaning and are treated just as their original type:
 var normal;
 ```
 
-Unlike JSDoc's type system, Typescript only allows you to mark types as containing null or not.
+Unlike JSDoc's type system, TypeScript only allows you to mark types as containing null or not.
 There is no explicit non-nullability -- if strictNullChecks is on, then `number` is not nullable.
 If it is off, then `number` is nullable.
 
