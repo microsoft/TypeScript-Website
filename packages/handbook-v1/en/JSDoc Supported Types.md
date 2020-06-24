@@ -29,7 +29,7 @@ The code below describes the differences and gives some example usage of each ta
 ## `@type`
 
 You can use the "@type" tag and reference a type name (either primitive, defined in a TypeScript declaration, or in a JSDoc "@typedef" tag).
-You can use any TypeScript type, and most JSDoc types.
+You can use most JSDoc types and any TypeScript type, from [the most basic like `string`](/docs/handbook/basic-types.html) to [the most advanced, like conditional types](/docs/handbook/advanced-types.html).
 
 ```js twoslash
 /**
