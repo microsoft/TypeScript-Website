@@ -49,6 +49,13 @@
     font-size: 1.5rem;
     padding-top: 0.7rem;
 
+    
+    @media screen and (-ms-high-contrast: active) {
+      svg path {
+        fill: blue;
+      }
+    }
+
     svg {
       margin-right: 0.6rem;
       margin-left: 1rem;
@@ -106,6 +113,7 @@ form.search {
   @media (prefers-color-scheme: dark) {
     background-color: $ts-main-blue-darkest-color;
   }
+
   padding-left: 1rem;
   display: inline-block;
 
@@ -113,6 +121,12 @@ form.search {
     position: relative;
     top: 0.1rem;
     margin-right: 0.3rem;
+  }
+
+  @media screen and (-ms-high-contrast: black-on-white) {
+    svg path {
+      fill: black;
+    }
   }
 
   &:focus-within {
@@ -259,6 +273,7 @@ form.search {
     /* Because 'TypeScript' is removed, let the width be auto */
     #home-page-logo {
       width: auto;
+
     }
 
     /* Simplify the nav to a few buttons and home */

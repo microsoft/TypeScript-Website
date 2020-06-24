@@ -232,6 +232,10 @@ $headline-foreground-bg: #104261;
         background-color: $headline-foreground-bg;
         border-color: $headline-foreground-bg;
 
+        @media screen and (-ms-high-contrast: active) {
+          border: none;
+        }
+
         .titlebar {
           border-color: $headline-foreground-bg;
         }
@@ -428,6 +432,10 @@ $headline-foreground-bg: #104261;
       align-items: center;
       margin-bottom: 20px;
 
+      @media screen and (-ms-high-contrast: active) {
+        border: 2px solid grey;
+      }
+
       &:hover,
       &.focus {
         background-color: #104261;
@@ -464,6 +472,12 @@ $headline-foreground-bg: #104261;
           height: 100%;
           margin-left: 20px;
           margin-right: 10px;
+
+          @media screen and (-ms-high-contrast: active) {
+            path {
+              fill: grey;
+            }
+          }
         }
       }
     }
@@ -484,6 +498,10 @@ $headline-foreground-bg: #104261;
       padding: 1rem 0.5rem;
       text-decoration: none;
       font-size: 1.2rem;
+
+      @media screen and (-ms-high-contrast: active) {
+        border: 2px solid grey;
+      }
 
       &:first-child {
         margin-right: 2rem;
