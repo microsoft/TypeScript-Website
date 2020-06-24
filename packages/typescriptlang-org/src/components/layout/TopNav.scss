@@ -106,6 +106,7 @@ form.search {
   @media (prefers-color-scheme: dark) {
     background-color: $ts-main-blue-darkest-color;
   }
+
   padding-left: 1rem;
   display: inline-block;
 
@@ -113,6 +114,12 @@ form.search {
     position: relative;
     top: 0.1rem;
     margin-right: 0.3rem;
+  }
+
+  @media screen and (-ms-high-contrast: black-on-white) {
+    svg path {
+      fill: black;
+    }
   }
 
   &:focus-within {
