@@ -43,7 +43,6 @@ Option                                         | Type      | Default            
 `--build`<br/>`-b`                             | `boolean` | `false`                        | Builds this project and all of its dependencies specified by [Project References](/docs/handbook/project-references.html). Note that this flag is not compatible with others on this page. See more [here](docs/handbook/project-references.html)
 `--charset`                                    | `string`  | `"utf8"`                       | The character set of the input files.
 `--checkJs`                                    | `boolean` | `false`                        | Report errors in `.js` files. Use in conjunction with `--allowJs`.
-`--composite`                                  | `boolean` | `true`                         | Ensure TypeScript can determine where to find the outputs of the referenced project to compile project.
 `--declaration`<br/>`-d`                       | `boolean` | `false`                        | Generates corresponding `.d.ts` file.
 `--declarationDir`                             | `string`  |                                | Output directory for generated declaration files.
 `--declarationMap`                             | `boolean` | `false`                        | Generates a sourcemap for each corresponding `.d.ts` file.
