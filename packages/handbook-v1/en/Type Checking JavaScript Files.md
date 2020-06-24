@@ -16,7 +16,7 @@ Here are some notable differences on how checking works in `.js` files compared 
 
 In a `.js` file, types can often be inferred just like in `.ts` files.
 Likewise, when types can't be inferred, they can be specified using JSDoc the same way that type annotations are used in a `.ts` file.
-Just like Typescript, `--noImplicitAny` will give you errors on the places that the compiler could not infer a type.
+Just like TypeScript, `--noImplicitAny` will give you errors on the places that the compiler could not infer a type.
 (With the exception of open-ended object literals; see below for details.)
 
 JSDoc annotations adorning a declaration will be used to set the type of that declaration. For example:
@@ -87,7 +87,7 @@ function C() {
   this.constructorOnly = 0;
   this.constructorUnknown = undefined;
 }
-C.prototype.method = function () {
+C.prototype.method = function() {
   this.constructorOnly = false; // error
   this.constructorUnknown = "plunkbat"; // OK, the type is string | undefined
 };
@@ -95,7 +95,7 @@ C.prototype.method = function () {
 
 ## CommonJS modules are supported
 
-In a `.js` file, Typescript understands the CommonJS module format.
+In a `.js` file, TypeScript understands the CommonJS module format.
 Assignments to `exports` and `module.exports` are recognized as export declarations.
 Similarly, `require` function calls are recognized as module imports. For example:
 
@@ -104,12 +104,12 @@ Similarly, `require` function calls are recognized as module imports. For exampl
 const fs = require("fs");
 
 // same as `export function readFile`
-module.exports.readFile = function (f) {
+module.exports.readFile = function(f) {
   return fs.readFileSync(f);
 };
 ```
 
-The module support in Javascript is much more syntactically forgiving than Typescript's module support.
+The module support in Javascript is much more syntactically forgiving than TypeScript's module support.
 Most combinations of assignments and declarations are supported.
 
 ## Classes, functions, and object literals are namespaces
@@ -128,7 +128,7 @@ And, for pre-ES2015 code, it can be used to simulate static methods:
 function Outer() {
   this.y = 2;
 }
-Outer.Inner = function () {
+Outer.Inner = function() {
   this.yy = 2;
 };
 ```
@@ -138,14 +138,14 @@ It can also be used to create simple namespaces:
 ```js
 var ns = {};
 ns.C = class {};
-ns.func = function () {};
+ns.func = function() {};
 ```
 
 Other variants are allowed as well:
 
 ```js
 // IIFE
-var ns = (function (n) {
+var ns = (function(n) {
   return n || {};
 })();
 ns.CONST = 1;
@@ -153,7 +153,7 @@ ns.CONST = 1;
 // defaulting to global
 var assign =
   assign ||
-  function () {
+  function() {
     // code goes here
   };
 assign.extra = 1;
@@ -337,7 +337,7 @@ The code below describes the differences and gives some example usage of each ta
 ## `@type`
 
 You can use the "@type" tag and reference a type name (either primitive, defined in a TypeScript declaration, or in a JSDoc "@typedef" tag).
-You can use any Typescript type, and most JSDoc types.
+You can use any TypeScript type, and most JSDoc types.
 
 ```js
 /**
@@ -394,7 +394,7 @@ For example, an object with properties 'a' (string) and 'b' (number) uses the fo
 var var9;
 ```
 
-You can specify map-like and array-like objects using string and number index signatures, using either standard JSDoc syntax or Typescript syntax.
+You can specify map-like and array-like objects using string and number index signatures, using either standard JSDoc syntax or TypeScript syntax.
 
 ```js
 /**
@@ -408,14 +408,14 @@ var stringToNumber;
 var arrayLike;
 ```
 
-The preceding two types are equivalent to the Typescript types `{ [x: string]: number }` and `{ [x: number]: any }`. The compiler understands both syntaxes.
+The preceding two types are equivalent to the TypeScript types `{ [x: string]: number }` and `{ [x: number]: any }`. The compiler understands both syntaxes.
 
-You can specify function types using either Typescript or Closure syntax:
+You can specify function types using either TypeScript or Closure syntax:
 
 ```js
 /** @type {function(string, boolean): number} Closure syntax */
 var sbn;
-/** @type {(s: string, b: boolean) => number} Typescript syntax */
+/** @type {(s: string, b: boolean) => number} TypeScript syntax */
 var sbn2;
 ```
 
@@ -443,7 +443,7 @@ var question;
 
 ### Casts
 
-Typescript borrows cast syntax from Closure.
+TypeScript borrows cast syntax from Closure.
 This lets you cast types to other types by adding a `@type` tag before any parenthesized expression.
 
 ```js
@@ -457,7 +457,7 @@ var typeAssertedNumber = /** @type {number} */ (numberOrString);
 ### Import types
 
 You can also import declarations from other files using import types.
-This syntax is Typescript-specific and differs from the JSDoc standard:
+This syntax is TypeScript-specific and differs from the JSDoc standard:
 
 ```js
 /**
@@ -582,10 +582,10 @@ function special(options) {
  * @returns {boolean}
  */
 /** @type {Predicate} */
-const ok = (s) => !(s.length % 2);
+const ok = s => !(s.length % 2);
 ```
 
-Of course, any of these types can be declared using Typescript syntax in a single-line `@typedef`:
+Of course, any of these types can be declared using TypeScript syntax in a single-line `@typedef`:
 
 ```js
 /** @typedef {{ prop1: string, prop2: string, prop3?: number }} SpecialType */
@@ -647,7 +647,7 @@ function C(data) {
 /**
  * @param {string} s
  */
-C.prototype.initialize = function (s) {
+C.prototype.initialize = function(s) {
   this.size = s.length;
 };
 
@@ -698,18 +698,18 @@ The `@enum` tag allows you to create an object literal whose members are all of 
 const JSDocState = {
   BeginningOfLine: 0,
   SawAsterisk: 1,
-  SavingComments: 2,
+  SavingComments: 2
 };
 ```
 
-Note that `@enum` is quite different from, and much simpler than, Typescript's `enum`. However, unlike Typescript's enums, `@enum` can have any type:
+Note that `@enum` is quite different from, and much simpler than, TypeScript's `enum`. However, unlike TypeScript's enums, `@enum` can have any type:
 
 ```js
 /** @enum {function(number): number} */
 const Math = {
-  add1: (n) => n + 1,
-  id: (n) => -n,
-  sub1: (n) => n - 1,
+  add1: n => n + 1,
+  id: n => -n,
+  sub1: n => n - 1
 };
 ```
 
@@ -720,32 +720,32 @@ var someObj = {
   /**
    * @param {string} param1 - Docs on property assignments work
    */
-  x: function (param1) {},
+  x: function(param1) {}
 };
 
 /**
  * As do docs on variable assignments
  * @return {Window}
  */
-let someFunc = function () {};
+let someFunc = function() {};
 
 /**
  * And class methods
  * @param {string} greeting The greeting to use
  */
-Foo.prototype.sayHi = (greeting) => console.log("Hi!");
+Foo.prototype.sayHi = greeting => console.log("Hi!");
 
 /**
  * And arrow functions expressions
  * @param {number} x - A multiplier
  */
-let myArrow = (x) => x * x;
+let myArrow = x => x * x;
 
 /**
  * Which means it works for stateless function components in JSX too
  * @param {{a: string, b: number}} test - Some param
  */
-var fc = (test) => <div>{test.a.charAt(0)}</div>;
+var fc = test => <div>{test.a.charAt(0)}</div>;
 
 /**
  * A parameter can be a class constructor, using Closure syntax.
@@ -819,6 +819,6 @@ Non-nullable types have no meaning and are treated just as their original type:
 var normal;
 ```
 
-Unlike JSDoc's type system, Typescript only allows you to mark types as containing null or not.
+Unlike JSDoc's type system, TypeScript only allows you to mark types as containing null or not.
 There is no explicit non-nullability -- if strictNullChecks is on, then `number` is not nullable.
 If it is off, then `number` is nullable.
