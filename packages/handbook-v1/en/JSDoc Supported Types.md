@@ -437,6 +437,8 @@ c.size;
 var result = C(1);
 ```
 
+> Note: Error messages only show up in JS codebases with [a JSConfig](/docs/handbook/tsconfig-json.html) and [`checkJs`](/tsconfig#checkJs) enabled.
+
 With `@constructor`, `this` is checked inside the constructor function `C`, so you will get suggestions for the `initialize` method and an error if you pass it a number. Your editor may also show warnings if you call `C` instead of constructing it.
 
 Unfortunately, this means that constructor functions that are also callable cannot use `@constructor`.
@@ -490,13 +492,13 @@ Note that `@enum` is quite different from, and much simpler than, TypeScript's `
 
 ```js twoslash
 /** @enum {function(number): number} */
-const Math = {
+const MathFuncs = {
   add1: n => n + 1,
   id: n => -n,
   sub1: n => n - 1
 };
 
-Math.add1;
+MathFuncs.add1;
 ```
 
 ## More examples
