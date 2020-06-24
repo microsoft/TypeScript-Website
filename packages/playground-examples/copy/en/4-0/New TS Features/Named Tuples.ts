@@ -42,7 +42,7 @@ function centerMap(lng: number, lat: number) {}
 // In 4.0, this keeps lng and lat
 type CenterMapParams = Parameters<typeof centerMap>
 
-// In 3.9, this would look likely
+// In 3.9, this would look like
 type OldCenterMapParams = [number, number]
 
 // Making some of the more complex type manipulation lossy
