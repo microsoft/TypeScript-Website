@@ -19,6 +19,7 @@ export const handbookRedirects = {
   "/docs/handbook/release-notes": "/docs/handbook/release-notes/overview.html",
   "/docs/tutorial.html": "/docs/handbook/release-notes/overview.html",
   "/docs/handbook/release-notes/overview": "/docs/handbook/release-notes/overview.html",
+  "/docs/handbook/react-&-webpack.html": "https://webpack.js.org/guides/typescript/"
 }
 
 import { NodePluginArgs } from "gatsby"
@@ -26,9 +27,9 @@ import { NodePluginArgs } from "gatsby"
 export const setupRedirects = (
   createRedirect: NodePluginArgs["actions"]["createRedirect"]
 ) => {
-  const addRedirects = (obj) => {
+  const addRedirects = obj => {
     const fromArray = Object.keys(obj)
-    fromArray.forEach((from) => {
+    fromArray.forEach(from => {
       const to = obj[from]
       console.log(`Making redirect from ${from} to ${to}`)
       createRedirect({
