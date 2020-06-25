@@ -71,10 +71,14 @@ type CreateArtistBioRequest
    = CreateArtistBioBase & { html: string } | { markdown: string }
 
 // Now you can only create a request when you include
-// artistID and either html or markdown
+// either (or both) artistID and html, or markdown
 
-const workingRequest: CreateArtistBioRequest = {
+const workingRequestArtist: CreateArtistBioRequest = {
   artistID: "banksy",
+  html: "https://www.banksy.co.uk/"
+}
+
+const workingRequestMarkdown: CreateArtistBioRequest = {
   markdown: "Banksy is an anonymous England-based graffiti artist..."
 }
 
