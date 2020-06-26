@@ -27,8 +27,7 @@ function joinWithNullTerminators<T extends unknown[], U extends unknown[]>(t: [.
     return ['\0', ...t, '\0', ...u, '\0'] as const;
 }
 
-// Code flow analysis can infer the return type of a function like this
-// via contextual typing:
+// TypeScript can infer the return type of a function like this:
 const result = joinWithNullTerminators(['variadic', 'types'], ["terminators", 3]);
 
 //
