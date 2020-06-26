@@ -1,5 +1,5 @@
 {
-  "code": "",
+  "code": "export {};\n",
   "extension": "js",
   "highlights": [],
   "queries": [],
