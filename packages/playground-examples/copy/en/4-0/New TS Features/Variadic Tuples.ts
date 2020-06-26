@@ -1,3 +1,4 @@
+//// { compiler: { ts: "4.0.0-beta" } }
 // Variadic Tuples gives tuples the ability to handle the rest operator (...)
 // to pass types through type checker in a way that works like generics.
 

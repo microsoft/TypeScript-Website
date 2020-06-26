@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.0.1" } }
+//// { compiler: { ts: "4.0.0-beta" } }
 
 // Because JavaScript allows throwing any value, TypeScript
 // does not support declaring the type of an error

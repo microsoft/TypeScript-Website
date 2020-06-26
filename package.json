@@ -32,7 +32,7 @@
   "resolutions": {
     "@types/react": "16.9.17",
     "node-gyp": "5.1.0",
-    "typescript": "3.9.1-rc",
+    "typescript": "4.0.0-beta",
     "prettier": "^2.0.2"
   },
   "jest": {

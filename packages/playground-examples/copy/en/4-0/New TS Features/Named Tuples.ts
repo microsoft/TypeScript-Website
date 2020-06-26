@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.0.1" } }
+//// { compiler: { ts: "4.0.0-beta" } }
 // Tuples are arrays where the order is important to the type system,
 // you can learn more about them in example:tuples
 

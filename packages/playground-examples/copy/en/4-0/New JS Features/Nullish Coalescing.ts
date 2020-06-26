@@ -1,4 +1,4 @@
-//// { compiler: { ts: "3.9.0" } }
+//// { compiler: { ts: "4.0.0-beta" } }
 
 // # Nullish Coalescing
 //

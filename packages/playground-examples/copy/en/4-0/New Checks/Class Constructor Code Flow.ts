@@ -1,4 +1,4 @@
-//// { compiler: { ts: "3.9.0" } }
+//// { compiler: { ts: "4.0.0-beta" } }
 //
 // In 4.0, we use code flow analysis to
 // infer the potential type of a class based on

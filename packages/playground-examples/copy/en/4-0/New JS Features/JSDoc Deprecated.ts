@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.0.1" } }
+//// { compiler: { ts: "4.0.0-beta" } }
 
 // In 4.0 the JSDoc tag @deprecated is added to the
 // type system. You can use @deprecated in anywhere
@@ -12,8 +12,8 @@ interface AccountInfo {
   sex: "male" | "female";
 }
 
-declare const userinfo: AccountInfo;
-userinfo.sex;
+declare const userInfo: AccountInfo;
+userInfo.sex;
 
 // TypeScript will offer a non-blocking warning when a
 // deprecated property is accessed, and editors like

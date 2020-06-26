@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.0.1" } }
+//// { compiler: { ts: "4.0.0-beta" } }
 
 // Logical Operators and Assignment are new features in
 // JavaScript for 2020. These are a suite of new operators
