@@ -12,8 +12,7 @@ export interface NavItem {
 export const handbookNavigation: NavItem[] = [
   {
     title: "Get Started",
-    summary:
-      "Quick introductions based on your background or preference.",
+    summary: "Quick introductions based on your background or preference.",
     id: "get-started",
     directory: "handbook",
     index: "typescript-from-scratch",
@@ -39,8 +38,7 @@ export const handbookNavigation: NavItem[] = [
   },
   {
     title: "Handbook",
-    summary:
-      "A good first read for your daily TS work.",
+    summary: "A good first read for your daily TS work.",
     id: "handbook",
     directory: "handbook",
     chronological: true,
@@ -70,6 +68,7 @@ export const handbookNavigation: NavItem[] = [
       { id: "decorators", title: "Decorators" },
       { id: "utility-types", title: "Global Utility Types" },
       { id: "iterators-and-generators", title: "Iterators and Generators" },
+      { id: "jsdoc-supported-types", title: "JSDoc Supported Types" },
       { id: "jsx", title: "JSX" },
       { id: "mixins", title: "Mixins" },
       { id: "modules", title: "Modules" },
@@ -93,13 +92,11 @@ export const handbookNavigation: NavItem[] = [
     id: "tutorials",
     directory: "handbook",
     index: "typescript-in-5-minutes",
-    summary:
-      "Using TypeScript in several environments.",
+    summary: "Using TypeScript in several environments.",
     items: [
       { id: "asp-net-core", title: "ASP.NET Core" },
       { id: "gulp", title: "Gulp" },
       { id: "migrating-from-javascript", title: "Migrating from JavaScript" },
-      { id: "react-&-webpack", title: "React & Webpack" },
     ],
   },
   {

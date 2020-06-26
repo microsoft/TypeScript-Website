@@ -195,7 +195,7 @@ nav#sidebar {
 @media (max-width: $screen-sm) {
   // This is a button which will scroll off and on with the nav
   button#small-device-button-sidebar {
-    display: block;
+    display: flex;
     position: fixed;
 
     transition-timing-function: ease;
@@ -210,14 +210,11 @@ nav#sidebar {
     }
 
     left: 20px;
-    width: 44px;
-    height: 44px;
     bottom: 120px;
+    padding: 10px;
     margin-bottom: env(safe-area-inset-bottom);
     background-color: #c4c4c4;
     border-radius: 6px;
-    padding-top: 2px;
-    padding-left: 9px;
 
     z-index: $z-index-for-handbook-nav-button;
 
