@@ -21,8 +21,9 @@ const undefinedValue = response.undefinedValue || "some other default";
 
 const nullValue = response.nullValue || "some other default";
 
-// This works similar to most languages, however when you come from
-// other languages, then the loose equality check can be surprising:
+// These two examples work similar in most languages. As a tool || is
+// pretty good at defaulting things, but JavaScript's falsy checks
+// can surprise you for some common values:
 
 // Potentially unintended. '' is falsy, result: 'Hello, world!'
 const headerText = response.headerText || "Hello, world!";
@@ -33,7 +34,7 @@ const animationDuration = response.animationDuration || 300;
 // Potentially unintended. false is falsy, result: true
 const showSplashScreen = response.showSplashScreen || true;
 
-// When switching to use ?? instead, then === equality is understand
+// When switching to use ?? instead, then === equality is used
 // to compare the two sides:
 
 const emptyHeaderText = response.headerText ?? "Hello, world!";

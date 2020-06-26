@@ -9,7 +9,7 @@ const copyDir = join(__dirname, "..", "copy");
 const jsonDir = join(__dirname, "..", "generated");
 const outDir = join(__dirname, "..", "..", "typescriptlang-org", "static", "js", "examples");
 
-if (existsSync(outDir)) execSync(`mkdir ${outDir}`);
+if (!existsSync(outDir)) execSync(`mkdir ${outDir}`);
 
 // Move samples
 fse.copySync(copyDir, outDir);

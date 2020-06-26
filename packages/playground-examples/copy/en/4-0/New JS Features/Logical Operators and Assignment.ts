@@ -32,16 +32,6 @@ function updateUser(user: User) {
 declare const user: User
 user.location.postalCode ||= "90210"
 
-// The logical assignment operators also won't accidentally
-// trigger a setter, in comparison to the long form version:
-
-user.location.postalCode = user.location.postalCode || "90210"
-//                         ^ this could trigger a setter as a part
-//                           of checking
-
-// If setters are new to you, you can read more at MDN:
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set 
-
 // There are three new operators: 
 //
 //   ||= shown above
