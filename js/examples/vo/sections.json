@@ -1,0 +1,24 @@
+{
+  "sections": [
+    {
+      "name": "J@va$cript",
+      "id": "JavaScript",
+      "subtitle": "See how Type$cr1pt improves day to day working with JavaScript with minimal additional syntax."
+    },
+    {
+      "name": "7ype5cript",
+      "id": "TypeScript",
+      "subtitle": "Explore h0w TypeScript extends JavaScript to add more safety and tooling."
+    },
+    {
+      "name": "3.7",
+      "id": "3.7",
+      "subtitle": "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/'>Release notes</a>."
+    },
+    {
+      "name": "P14yground",
+      "id": "Playground",
+      "subtitle": "Learn what has changed in this website."
+    }
+  ]
+}

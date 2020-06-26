@@ -1,0 +1,54 @@
+{
+  "sections": [
+    {
+      "name": "JavaScript",
+      "id": "JavaScript",
+      "subtitle": "TypeScriptで最小限のシンタックスを追加することで、日々のJavaScriptの開発がでいかに改善できるかについて学びましょう。"
+    },
+    {
+      "name": "TypeScript",
+      "id": "TypeScript",
+      "subtitle": "TypeScriptがJavaScriptをどのように拡張し、より安全で便利にしているかについて学びましょう。"
+    },
+    {
+      "name": "3.7",
+      "id": "3.7",
+      "subtitle": "<a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/'>リリースノート</a>を確認する。"
+    },
+    {
+      "name": "3.8",
+      "id": "3.8",
+      "subtitle": "<a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-8/'>リリースノート</a>を確認する。"
+    },
+    {
+      "name": "プレイグラウンド V3",
+      "id": "Playground",
+      "subtitle": "プレイグラウンドにどのような変更があったかを学びましょう。"
+    }
+  ],
+  "sortedSubSections": [
+    // JS
+    "JavaScriptの基礎",
+    "JavaScriptにおける関数",
+    "JavaScriptにおけるクラス",
+    "モダンなJavaScript",
+    "外部APIとの連携",
+    "JavaScriptのヘルプ機能",
+    // TS
+    "基本的な型",
+    "一般的な型",
+    "型を作成する型",
+    "言語について",
+    "言語拡張",
+    // Examples
+    "新しいシンタックスやエラーメッセージ",
+    "型やコードフローについて",
+    "自動修正",
+    // Playground
+    "コンフィグ",
+    "周辺ツール",
+    // 3.8
+    "Breaking Changes",
+    "JSDoc 改善"
+  ]
+}
