@@ -47,7 +47,6 @@ const Index: React.FC<Props> = (props) => {
         re(["vs/language/typescript/lib/typescriptServices"], async (_ts) => {
           const ts = (global as any).ts
           const isOK = main && ts && sandboxEnv
-          debugger
 
           if (isOK) {
             document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)

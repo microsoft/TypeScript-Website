@@ -23,7 +23,6 @@ const packageJSONURL = (name: string) => unpkgURL(name, "package.json")
 
 const errorMsg = (msg: string, response: any, config: ATAConfig) => {
   config.logger.error(`${msg} - will not try again in this session`, response.status, response.statusText, response)
-  debugger
 }
 
 /**
