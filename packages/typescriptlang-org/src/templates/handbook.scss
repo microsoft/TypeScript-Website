@@ -78,7 +78,7 @@
       a {
         font-weight: normal;
         font-size: 14px;
-        color: black;
+        color: var(--alt-text-color);
 
         @media (prefers-color-scheme: dark) {
           color: white;
