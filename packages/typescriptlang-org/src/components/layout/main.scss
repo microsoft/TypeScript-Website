@@ -2,7 +2,13 @@
 @import "./fonts.scss";
 
 html {
-  background-color: $ts-light-bg-sandy-color;
+  --background-color: #{$ts-light-bg-sandy-color};
+  --text-color: #333;
+  --inline-code-background-color: rgb(241, 241, 254);
+  --link-color: #{$ts-main-blue-darker-color};
+
+  background-color: var(--background-color);
+  color: var(--text-color);
 
   -webkit-font-smoothing: antialiased;
   font-family: "Segoe UI Web (West European)", "Segoe UI", -apple-system,
@@ -11,37 +17,31 @@ html {
   line-height: 1.4;
 
   @media (prefers-color-scheme: dark) {
-    background-color: $ts-dark-bg-color;
-    color: white;
+    --background-color: #{$ts-dark-bg-color};
+    --text-color: #fff;
+    --inline-code-background-color: rgb(58, 58, 92);
+    --link-color: #{$ts-main-blue-lightest-color};
   }
-  color: #333;
 }
 
 .raised {
+  --background-color: #fff;
+  --text-color: #000;
+
   box-shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.132),
     0 0.3px 0.9px 0 rgba(0, 0, 0, 0.108);
-  color: black;
-  background-color: white;
+  color: var(--text-color);
+  background-color: var(--background-color);
 
   @media (prefers-color-scheme: dark) {
-    background-color: $ts-dark-bg-for-foreground-color;
-    color: white;
+    --background-color: #{$ts-dark-bg-for-foreground-color};
+    --text-color: #fff;
     box-shadow: 0 1.6px 3.6px 0 rgba(255, 255, 255, 0.132),
       0 0.3px 0.9px 0 rgba(255, 255, 255, 0.108);
   }
 
   a {
-    color: $ts-main-blue-darker-color;
-    @media (prefers-color-scheme: dark) {
-      color: $ts-main-blue-lightest-color;
-    }
-
-    &:hover {
-      color: darken($ts-main-blue-darker-color, 15%);
-      @media (prefers-color-scheme: dark) {
-        color: lighten($ts-main-blue-lightest-color, 15%);
-      }
-    }
+    color: var(--link-color);
   }
 
   h1,
@@ -67,11 +67,7 @@ html {
 
   p > code,
   li > code {
-    background-color: rgb(241, 241, 254);
-
-    @media (prefers-color-scheme: dark) {
-      background-color: rgb(58, 58, 92);
-    }
+    background-color: var(--inline-code-background-color);
   }
 
   td {
@@ -82,7 +78,7 @@ html {
 // Style the permalink icon in dark colour-scheme
 .raised .markdown .anchor.before svg path {
   @media (prefers-color-scheme: dark) {
-    fill: white;
+    fill: #fff;
   }
 }
 
