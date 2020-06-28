@@ -6,13 +6,8 @@
 
 nav#sidebar {
   min-width: 16rem;
-  background-color: $ts-light-bg-grey;
-  color: black;
-
-  @media (prefers-color-scheme: dark) {
-    background-color: $ts-dark-bg-secondary;
-    color: white;
-  }
+  background-color: var(--sidebar-background-color);
+  color: var(--alt-text-color);
 
   /* "Basically a section of documentation */
   > ul {
@@ -32,11 +27,8 @@ nav#sidebar {
       list-style: none;
       padding: 0;
       min-height: 2.5rem;
-      border-bottom: 1px solid #dfdfdf;
+      border-bottom: 1px solid var(--sidebar-item-border-color);
 
-      @media (prefers-color-scheme: dark) {
-        border-color: #3e3e3e;
-      }
       font-weight: 400;
       font-size: 1rem;
 
@@ -55,10 +47,7 @@ nav#sidebar {
         font-weight: 500;
         cursor: pointer;
 
-        color: black;
-        @media (prefers-color-scheme: dark) {
-          color: white;
-        }
+        color: var(--alt-text-color);
 
         @media (prefers-color-scheme: dark) {
           .open path,
@@ -69,13 +58,8 @@ nav#sidebar {
 
         &:active,
         &:focus {
-          color: black;
-          background-color: #dfdfdf;
-
-          @media (prefers-color-scheme: dark) {
-            color: white;
-            background-color: $ts-bg-selection-grey;
-          }
+          color: var(--alt-text-color);
+          background-color: var(--sidebar-active-button-background-color);
         }
 
         span {
@@ -89,14 +73,10 @@ nav#sidebar {
   // Still looking at the highest level of navigation
   > ul > li {
     &.highlighted {
-      background-color: $ts-barely-blue-highlight;
+      background-color: var(--sibar-list-active-background-color);
 
       svg path {
         stroke: $ts-main-blue-color;
-      }
-
-      @media (prefers-color-scheme: dark) {
-        background-color: $ts-dark-barely-blue-highlight;
       }
     }
 
@@ -121,18 +101,11 @@ nav#sidebar {
   }
 
   > ul > li.open > ul {
-    background-color: #e4e4e4;
-
-    @media (prefers-color-scheme: dark) {
-      background-color: rgb(53, 52, 52);
-    }
+    background-color: var(--sibar-list-background-color);
   }
-  > ul > li.open.highlighted > ul {
-    background-color: $ts-barely-blue-highlight;
 
-    @media (prefers-color-scheme: dark) {
-      background-color: $ts-dark-barely-blue-highlight;
-    }
+  > ul > li.open.highlighted > ul {
+    background-color: var(--sibar-list-active-background-color);
   }
 
   // Individual pages
@@ -144,14 +117,10 @@ nav#sidebar {
       display: block;
       flex-grow: 1;
       text-decoration: none;
-      color: black;
+      color: var(--alt-text-color);
       padding-top: 0.5rem;
       padding-left: 1rem;
       padding-bottom: 0.5rem;
-
-      @media (prefers-color-scheme: dark) {
-        color: white;
-      }
     }
 
     > li {
@@ -174,11 +143,7 @@ nav#sidebar {
 
       a:focus,
       a:hover {
-        border-left: 2px solid black;
-
-        @media (prefers-color-scheme: dark) {
-          border-color: white;
-        }
+        border-left: 2px solid var(--sidebar-link-border-color);
       }
 
       &.highlight a {
