@@ -9,7 +9,7 @@ Often the safety and potential scalability of a codebase can be at odds with som
 
 Because of the variety of supported JavaScript, upgrading to a new version of TypeScript can uncover two types of errors:
 
-- Errors which already exist in your codebase, which TypeScript has uncovered because the language has refined it's understanding of JavaScript.
+- Errors which already exist in your codebase, which TypeScript has uncovered because the language has refined its understanding of JavaScript.
 - A new suite of errors which tackle a new problem domain.
 
 TypeScript will usually add a compiler flag for the latter set of errors, and by default these are not enabled.
