@@ -656,22 +656,22 @@ For any type `T`, `keyof T` is the union of known, public property names of `T`.
 For example:
 
 ```ts
-let carProps: keyof Car; // the union of ('manufacturer' | 'model' | 'year')
+let carProps: keyof Car; // the union of ("manufacturer" | "model" | "year")
 ```
 
-`keyof Car` is completely interchangeable with `'manufacturer' | 'model' | 'year'`.
-The difference is that if you add another property to `Car`, say `ownersAddress: string`, then `keyof Car` will automatically update to be `'manufacturer' | 'model' | 'year' | 'ownersAddress'`.
+`keyof Car` is completely interchangeable with `"manufacturer" | "model" | "year"`.
+The difference is that if you add another property to `Car`, say `ownersAddress: string`, then `keyof Car` will automatically update to be `"manufacturer" | "model" | "year" | "ownersAddress"`.
 And you can use `keyof` in generic contexts like `pluck`, where you can't possibly know the property names ahead of time.
 That means the compiler will check that you pass the right set of property names to `pluck`:
 
 ```ts
-// error, 'unknown' is not in 'manufacturer' | 'model' | 'year'
-pluck(taxi, ['year', 'unknown']); /
+// error, Type '"unknown"' is not assignable to type '"manufacturer" | "model" | "year"'
+pluck(taxi, ["year", "unknown"]);
 ```
 
 The second operator is `T[K]`, the **indexed access operator**.
 Here, the type syntax reflects the expression syntax.
-That means that `person['name']` has the type `Person['name']` &mdash; which in our example is just `string`.
+That means that `person["name"]` has the type `Person["name"]` &mdash; which in our example is just `string`.
 However, just like index type queries, you can use `T[K]` in a generic context, which is where its real power comes to life.
 You just have to make sure that the type variable `K extends keyof T`.
 Here's another example with a function named `getProperty`.
@@ -689,7 +689,7 @@ Once you return the `T[K]` result, the compiler will instantiate the actual type
 let name: string = getProperty(taxi, "manufacturer");
 let year: number = getProperty(taxi, "year");
 
-// error, 'unknown' is not in 'manufacturer' | 'model' | 'year'
+// error, Argument of type '"unknown"' is not assignable to parameter of type '"manufacturer" | "model" | "year"'
 let unknown = getProperty(taxi, "unknown");
 ```
 
@@ -698,7 +698,7 @@ let unknown = getProperty(taxi, "unknown");
 `keyof` and `T[K]` interact with index signatures. An index signature parameter type must be 'string' or 'number'.
 If you have a type with a string index signature, `keyof T` will be `string | number`
 (and not just `string`, since in JavaScript you can access an object property either
-by using strings (`object['42']`) or numbers (`object[42]`)).
+by using strings (`object["42"]`) or numbers (`object[42]`)).
 And `T[string]` is just the type of the index signature:
 
 ```ts
