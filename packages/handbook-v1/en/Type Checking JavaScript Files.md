@@ -5,31 +5,7 @@ permalink: /docs/handbook/type-checking-javascript-files.html
 oneline: How to add type checking to JavaScript files using TypeScript
 ---
 
-You can skip checking some files by adding a `// @ts-nocheck` comment to them; conversely, you can choose to check only a few `.js` files by adding a `// @ts-check` comment to them without setting `--checkJs`.
-You can also ignore errors on specific lines by adding `// @ts-ignore` on the preceding line.
-Note that if you have a `tsconfig.json`, JS checking will respect strict flags like `noImplicitAny`, `strictNullChecks`, etc.
-However, because of the relative looseness of JS checking, combining strict flags with it may be surprising.
-
-Here are some notable differences on how checking works in `.js` files compared to `.ts` files:
-
-## JSDoc types are used for type information
-
-In a `.js` file, types can often be inferred just like in `.ts` files.
-Likewise, when types can't be inferred, they can be specified using JSDoc the same way that type annotations are used in a `.ts` file.
-Just like TypeScript, `--noImplicitAny` will give you errors on the places that the compiler could not infer a type.
-(With the exception of open-ended object literals; see below for details.)
-
-JSDoc annotations adorning a declaration will be used to set the type of that declaration. For example:
-
-```js
-/** @type {number} */
-var x;
-
-x = 0; // OK
-x = false; // Error: boolean is not assignable to number
-```
-
-You can find the full list of supported JSDoc patterns [below](#supported-jsdoc).
+Here are some notable differences on how checking works in `.js` files compared to `.ts` files.
 
 ## Properties are inferred from assignments in class bodies
 
@@ -40,14 +16,16 @@ The type of a property is the type given in the constructor, unless it's not def
 In that case, the type is the union of the types of all the right-hand values in these assignments.
 Properties defined in the constructor are always assumed to exist, whereas ones defined just in methods, getters, or setters are considered optional.
 
-```js
+```js twoslash
+// @checkJs
+// @errors: 2322
 class C {
   constructor() {
     this.constructorOnly = 0;
     this.constructorUnknown = undefined;
   }
   method() {
-    this.constructorOnly = false; // error, constructorOnly is a number
+    this.constructorOnly = false;
     this.constructorUnknown = "plunkbat"; // ok, constructorUnknown is string | undefined
     this.methodOnly = "ok"; // ok, but methodOnly could also be undefined
   }
@@ -61,7 +39,9 @@ If properties are never set in the class body, they are considered unknown.
 If your class has properties that are only read from, add and then annotate a declaration in the constructor with JSDoc to specify the type.
 You don't even have to give a value if it will be initialised later:
 
-```js
+```js twoslash
+// @checkJs
+// @errors: 2322
 class C {
   constructor() {
     /** @type {number | undefined} */
@@ -73,7 +53,7 @@ class C {
 
 let c = new C();
 c.prop = 0; // OK
-c.count = "string"; // Error: string is not assignable to number|undefined
+c.count = "string";
 ```
 
 ## Constructor functions are equivalent to classes
@@ -82,13 +62,15 @@ Before ES2015, Javascript used constructor functions instead of classes.
 The compiler supports this pattern and understands constructor functions as equivalent to ES2015 classes.
 The property inference rules described above work exactly the same way.
 
-```js
+```js twoslash
+// @checkJs
+// @errors: 2683 2322
 function C() {
   this.constructorOnly = 0;
   this.constructorUnknown = undefined;
 }
-C.prototype.method = function() {
-  this.constructorOnly = false; // error
+C.prototype.method = function () {
+  this.constructorOnly = false;
   this.constructorUnknown = "plunkbat"; // OK, the type is string | undefined
 };
 ```
@@ -104,7 +86,7 @@ Similarly, `require` function calls are recognized as module imports. For exampl
 const fs = require("fs");
 
 // same as `export function readFile`
-module.exports.readFile = function(f) {
+module.exports.readFile = function (f) {
   return fs.readFileSync(f);
 };
 ```
@@ -117,35 +99,40 @@ Most combinations of assignments and declarations are supported.
 Classes are namespaces in `.js` files.
 This can be used to nest classes, for example:
 
-```js
+```js twoslash
 class C {}
 C.D = class {};
 ```
 
 And, for pre-ES2015 code, it can be used to simulate static methods:
 
-```js
+```js twoslash
 function Outer() {
   this.y = 2;
 }
-Outer.Inner = function() {
+
+Outer.Inner = function () {
   this.yy = 2;
 };
+
+Outer.innter();
 ```
 
 It can also be used to create simple namespaces:
 
-```js
+```js twoslash
 var ns = {};
 ns.C = class {};
-ns.func = function() {};
+ns.func = function () {};
+
+ns;
 ```
 
 Other variants are allowed as well:
 
-```js
+```js twoslash
 // IIFE
-var ns = (function(n) {
+var ns = (function (n) {
   return n || {};
 })();
 ns.CONST = 1;
@@ -153,7 +140,7 @@ ns.CONST = 1;
 // defaulting to global
 var assign =
   assign ||
-  function() {
+  function () {
     // code goes here
   };
 assign.extra = 1;
@@ -166,7 +153,7 @@ No new members can be added that were not specified in the original literal.
 This rule is relaxed in a `.js` file; object literals have an open-ended type (an index signature) that allows adding and looking up properties that were not defined originally.
 For instance:
 
-```js
+```js twoslash
 var obj = { a: 1 };
 obj.b = 2; // Allowed
 ```
@@ -175,10 +162,12 @@ Object literals behave as if they have an index signature `[x:string]: any` that
 
 Like other special JS checking behaviors, this behavior can be changed by specifying a JSDoc type for the variable. For example:
 
-```js
+```js twoslash
+// @checkJs
+// @errors: 2339
 /** @type {{a: number}} */
 var obj = { a: 1 };
-obj.b = 2; // Error, type {a: number} does not have property b
+obj.b = 2;
 ```
 
 ## null, undefined, and empty array initializers are of type any or any[]
@@ -187,13 +176,14 @@ Any variable, parameter or property that is initialized with null or undefined w
 Any variable, parameter or property that is initialized with [] will have type any[], even if strict null checks is turned on.
 The only exception is for properties that have multiple initializers as described above.
 
-```js
+```js twoslash
 function Foo(i = null) {
   if (!i) i = 1;
   var j = undefined;
   j = 2;
   this.l = [];
 }
+
 var foo = new Foo();
 foo.l.push(foo.i);
 foo.l.push("end");
@@ -208,7 +198,10 @@ It is important to note that it is an error to call a function with too many arg
 
 For instance:
 
-```js
+```js twoslash
+// @checkJs
+// @strict: false
+// @errors: 7006 7006 2554
 function bar(a, b) {
   console.log(a + " " + b);
 }
@@ -219,9 +212,9 @@ bar(1, 2, 3); // Error, too many arguments
 ```
 
 JSDoc annotated functions are excluded from this rule.
-Use JSDoc optional parameter syntax to express optionality. e.g.:
+Use JSDoc optional parameter syntax (`[` `]`) to express optionality. e.g.:
 
-```js
+```js twoslash
 /**
  * @param {string} [somebody] - Somebody's name.
  */
@@ -239,7 +232,7 @@ sayHello();
 
 A function whose body has a reference to the `arguments` reference is implicitly considered to have a var-arg parameter (i.e. `(...arg: any[]) => any`). Use JSDoc var-arg syntax to specify the type of the arguments.
 
-```js
+```js twoslash
 /** @param {...number} args */
 function sum(/* numbers */) {
   var total = 0;
@@ -288,7 +281,7 @@ class MyComponent extends Component {
 
 An unspecified type argument in JSDoc defaults to any:
 
-```js
+```js twoslash
 /** @type{Array} */
 var x = [];
 
@@ -314,4 +307,4 @@ var p = new Promise((resolve, reject) => {
 p; // Promise<any>;
 ```
 
-From here you can learn about the
+To learn all of the features available in JSDoc, see [the reference](/docs/handbook/jsdoc-supported-types.html).
