@@ -21,6 +21,11 @@
   position: relative;
   text-decoration: none;
 
+
+  @media screen and (-ms-high-contrast: active) {
+    border: 1px solid grey;;
+  }
+
   &.headline {
     width: 300px;
     height: 200px;
@@ -103,5 +108,10 @@
       list-style: none;
       margin-left: 0;
     }
+  }
+
+  @media (max-width: $screen-sm) {
+    flex-direction: column;
+    margin: 0;
   }
 }

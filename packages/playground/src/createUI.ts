@@ -60,19 +60,7 @@ export const createUI = (): UI => {
     closeButton.onclick = close
 
     // Support hiding the modal via escape
-    document.onkeydown = function (evt) {
-      evt = evt || window.event
-      var isEscape = false
-      if ("key" in evt) {
-        isEscape = evt.key === "Escape" || evt.key === "Esc"
-      } else {
-        // @ts-ignore - this used to be the case
-        isEscape = evt.keyCode === 27
-      }
-      if (isEscape) {
-        close()
-      }
-    }
+    document.onkeydown = whenEscape(close)
 
     document.body.appendChild(modal)
 
@@ -84,7 +72,7 @@ export const createUI = (): UI => {
     const modal = createModalOverlay()
 
     if (subtitle) {
-      const titleElement = document.createElement("p")
+      const titleElement = document.createElement("h3")
       titleElement.textContent = subtitle
       modal.appendChild(titleElement)
     }
@@ -109,8 +97,13 @@ export const createUI = (): UI => {
     buttonContainer.appendChild(selectAllButton)
 
     modal.appendChild(buttonContainer)
-    textarea.focus()
-    textarea.select()
+    const close = modal.querySelector(".close") as HTMLElement
+    close.addEventListener("keydown", e => {
+      if (e.keyCode === 9) {
+        ;(modal.querySelector("textarea") as any).focus()
+        e.preventDefault()
+      }
+    })
 
     if (links) {
       Object.keys(links).forEach(name => {
@@ -127,6 +120,15 @@ export const createUI = (): UI => {
     }
     selectAll()
 
+    const buttons = modal.querySelectorAll("button")
+    const lastButton = buttons.item(buttons.length - 1) as HTMLElement
+    lastButton.addEventListener("keydown", e => {
+      if (e.keyCode === 9) {
+        ;(document.querySelector(".close") as any).focus()
+        e.preventDefault()
+      }
+    })
+
     selectAllButton.onclick = selectAll
     copyButton.onclick = () => {
       navigator.clipboard.writeText(code)
@@ -137,5 +139,23 @@ export const createUI = (): UI => {
     createModalOverlay,
     showModal,
     flashInfo,
+  }
+}
+
+/**
+ * Runs the closure when escape is tapped
+ * @param func closure to run on escape being pressed
+ */
+const whenEscape = (func: () => void) => (event: KeyboardEvent) => {
+  const evt = event || window.event
+  let isEscape = false
+  if ("key" in evt) {
+    isEscape = evt.key === "Escape" || evt.key === "Esc"
+  } else {
+    // @ts-ignore - this used to be the case
+    isEscape = evt.keyCode === 27
+  }
+  if (isEscape) {
+    func()
   }
 }

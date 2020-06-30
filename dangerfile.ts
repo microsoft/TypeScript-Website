@@ -12,11 +12,11 @@ import lighthouse from "danger-plugin-lighthouse"
 // Spell check all the things
 spellcheck({
   settings: "artsy/peril-settings@spellcheck.json",
-  codeSpellCheck: ["Examples/**/*.ts", "Examples/**/*.js"],
+  codeSpellCheck: ["Examples/**/*.ts", "Examples/**/*.js"]
 })
 
 // Print out the PR url
-const deployURL = `https://typescript-v2-${danger.github.pr.number}.ortam.now.sh`
+const deployURL = `https://typescript-v2-${danger.github.pr.number}.vercel.app`
 message(
   `Deployed to [a PR branch](${deployURL}) - [playground](${deployURL}/play) [tsconfig](${deployURL}/tsconfig) [old handbook](${deployURL}/docs/handbook/integrating-with-build-tools.html)`
 )

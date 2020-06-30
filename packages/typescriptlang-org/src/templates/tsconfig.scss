@@ -100,7 +100,9 @@
 
     @media (max-width: $screen-sm) {
       position: static;
-      flex-wrap: wrap;
+      ul {
+        flex-wrap: wrap;
+      }
 
       li {
         min-width: 120px;
@@ -181,6 +183,7 @@
         width: calc(100% - 250px);
         border-right: 1px solid gray;
         padding-right: 20px;
+        word-wrap: break-word;
 
         @media (max-width: $screen-xs) {
           border-right: none;

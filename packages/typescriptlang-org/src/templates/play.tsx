@@ -171,7 +171,7 @@ const Play: React.FC<Props> = (props) => {
             <a href="#" id="whatisnew-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="whatisnew">{i("play_subnav_whatsnew")} <span className="caret"></span></a>
             <ul className="examples-dropdown" id="whatisnew" aria-labelledby="whatisnew-button">
               <button role="button" aria-label="Close dropdown" className="examples-close">{i("play_subnav_examples_close")}</button>
-              <RenderExamples defaultSection="3.8" sections={["3.8", "3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
+              <RenderExamples defaultSection="4.0" sections={["4.0", "3.8", "3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
             </ul>
           </li>
         </ul>
@@ -184,7 +184,7 @@ const Play: React.FC<Props> = (props) => {
       <div className="raised" style={{ paddingTop: "0", marginTop: "0", marginBottom: "3rem", paddingBottom: "1.5rem" }}>
         <div id="loader">
           <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-          <p id="loading-message">{i("play_downloading_typescript")}</p>
+          <p id="loading-message" role="status">{i("play_downloading_typescript")}</p>
         </div>
         <div id="playground-container" style={{ display: "none" }}>
           <div id="editor-container">

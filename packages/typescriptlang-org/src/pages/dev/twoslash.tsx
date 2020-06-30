@@ -47,7 +47,6 @@ const Index: React.FC<Props> = (props) => {
         re(["vs/language/typescript/lib/typescriptServices"], async (_ts) => {
           const ts = (global as any).ts
           const isOK = main && ts && sandboxEnv
-          debugger
 
           if (isOK) {
             document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)
@@ -177,8 +176,7 @@ const Index: React.FC<Props> = (props) => {
                 <p>If you know TypeScript, you basically know twoslash.</p>
                 <p>Twoslash adds the ability to declare tsconfig options inline, split a sample into multiple files and a few other useful commands. You can see the full API <a href="https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher">inside the README</a></p>
               </div>
-              <div>
-                <h1 style={{ marginTop: "0" }}>&nbsp;</h1>
+              <div style={{ paddingTop: "4.5rem" }}>
                 <p>The Twoslash markup language helps with:</p>
                 <ul>
                   <li>Enforcing accurate errors from a TypeScript code sample, and leaving the messaging to the compiler</li>
@@ -200,7 +198,7 @@ const Index: React.FC<Props> = (props) => {
                 <p id="exampleBlurb">{codeSamples[0].blurb}</p>
                 <div id="loader">
                   <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-                  <p id="loading-message">Downloading Sandbox...</p>
+                  <p id="loading-message" role="status">Downloading Sandbox...</p>
                 </div>
                 <div style={{ height: "300px", display: "none" }} id="monaco-editor-embed" />
                 <div id="example-buttons">

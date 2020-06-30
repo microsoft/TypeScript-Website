@@ -232,6 +232,10 @@ $headline-foreground-bg: #104261;
         background-color: $headline-foreground-bg;
         border-color: $headline-foreground-bg;
 
+        @media screen and (-ms-high-contrast: active) {
+          border: none;
+        }
+
         .titlebar {
           border-color: $headline-foreground-bg;
         }
@@ -410,6 +414,10 @@ $headline-foreground-bg: #104261;
     flex-direction: column-reverse;
     align-items: center;
 
+    // needed for mobile
+    top: 0;
+    position: absolute;
+
     .next-headline-button {
       background-color: #235a97;
       color: white;
@@ -423,6 +431,10 @@ $headline-foreground-bg: #104261;
 
       align-items: center;
       margin-bottom: 20px;
+
+      @media screen and (-ms-high-contrast: active) {
+        border: 2px solid grey;
+      }
 
       &:hover,
       &.focus {
@@ -460,6 +472,12 @@ $headline-foreground-bg: #104261;
           height: 100%;
           margin-left: 20px;
           margin-right: 10px;
+
+          @media screen and (-ms-high-contrast: active) {
+            path {
+              fill: grey;
+            }
+          }
         }
       }
     }
@@ -480,6 +498,10 @@ $headline-foreground-bg: #104261;
       padding: 1rem 0.5rem;
       text-decoration: none;
       font-size: 1.2rem;
+
+      @media screen and (-ms-high-contrast: active) {
+        border: 2px solid grey;
+      }
 
       &:first-child {
         margin-right: 2rem;
@@ -539,6 +561,19 @@ $headline-foreground-bg: #104261;
     height: 12px;
     width: 1px;
     background-color: black;
+  }
+
+  @media screen and (-ms-high-contrast: active) {
+    .needle-head {
+      opacity: 0;
+    }
+    .release-info .needle {
+      border: 1px solid black;
+      height: 80px;
+    }
+   .release > div, .beta > div, .rc > div {
+      border: 1px solid black;
+    }
   }
 
   .release {

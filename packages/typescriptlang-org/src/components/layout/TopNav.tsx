@@ -66,7 +66,7 @@ export const SiteNav = (props: Props) => {
           <nav role="navigation">
             <ul>
               <li className="nav-item hide-small"><IntlLink to="/download">{i("nav_download")}</IntlLink></li>
-              <li className="nav-item"><IntlLink to="/docs/home"><span className="hide-only-medium">{i("nav_documentation")}</span><span className="show-only-medium show-small">{i("nav_documentation_short")}</span></IntlLink></li>
+              <li className="nav-item"><IntlLink to="/docs/home"><span>{i("nav_documentation_short")}</span></IntlLink></li>
               <li className="nav-item show-only-large"><IntlLink to="/docs/handbook/">{i("nav_handbook")}</IntlLink></li>
               <li className="nav-item"><IntlLink to="/community">{i("nav_community")}</IntlLink></li>
               <li className="nav-item show-only-largest"><IntlLink to="/play/">{i("nav_playground")}</IntlLink></li>
@@ -77,7 +77,7 @@ export const SiteNav = (props: Props) => {
         </div>
 
         <div className="right above-small">
-          <nav >
+          <div className="search-section">
             <ul>
               <li className="nav-item">
                 <form className="search top-nav" role="search">
@@ -91,11 +91,11 @@ export const SiteNav = (props: Props) => {
                 <li className="nav-item hide-small"><a href="/play">en</a></li>
               */}
             </ul>
-          </nav>
+          </div>
         </div>
       </div>
 
-      { /** <div className="hide-small" id="beta-notification-menu">{i("nav_beta_notification", { a: (...chunk) => <a href="https://github.com/microsoft/TypeScript-Website/issues">{chunk}</a> })}</div> */}
+      <div className="hide-small" id="beta-notification-menu">{i("nav_beta_notification", { a: (...chunk) => <a href="https://github.com/microsoft/TypeScript-Website/issues">{chunk}</a> })}</div>
 
       { /** Used for skip past navigation button */}
       <div id="site-content" />

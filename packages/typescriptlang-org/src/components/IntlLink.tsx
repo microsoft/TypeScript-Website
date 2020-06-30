@@ -31,7 +31,8 @@ export const createIntlLink = (currentLocale: string, allSitePage: AllSitePageFr
       }
     }
 
-    const blocklistIncludes = ["/play", "sandbox",]
+    // This effectively needs to be duplicated in gatsby-config.js too
+    const blocklistIncludes = ["/play", "sandbox", "/dev"]
     const blocklisted = blocklistIncludes.find(blocked => to.includes(blocked))
 
     if (blocklisted) {

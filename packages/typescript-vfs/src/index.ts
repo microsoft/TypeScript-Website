@@ -132,6 +132,7 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
     "lib.es2020.symbol.wellknown.d.ts",
     "lib.es2020.bigint.d.ts",
     "lib.es2020.promise.d.ts",
+    "lib.es2020.intl.d.ts",
     "lib.esnext.array.d.ts",
     "lib.esnext.asynciterable.d.ts",
     "lib.esnext.bigint.d.ts",

@@ -370,7 +370,7 @@ Turns to:
 >       "completionsPrefix": "l",
 >       "length": 1,
 >       "offset": 9,
->       "line": 0
+>       "line": 1
 >     }
 >   ],
 >   "staticQuickInfos": "[ 2 items ]",
@@ -435,7 +435,7 @@ Turns to:
 >       "length": 16,
 >       "text": "let a: NameLabel",
 >       "offset": 4,
->       "line": 4
+>       "line": 5
 >     },
 >     {
 >       "docs": "",
@@ -444,7 +444,7 @@ Turns to:
 >       "length": 14,
 >       "text": "let b: IdLabel",
 >       "offset": 4,
->       "line": 6
+>       "line": 7
 >     },
 >     {
 >       "docs": "",
@@ -453,7 +453,7 @@ Turns to:
 >       "length": 26,
 >       "text": "let c: IdLabel | NameLabel",
 >       "offset": 4,
->       "line": 8
+>       "line": 9
 >     }
 >   ],
 >   "staticQuickInfos": "[ 14 items ]",
@@ -609,7 +609,7 @@ Turns to:
 >       "length": 15,
 >       "text": "let foo: string",
 >       "offset": 4,
->       "line": 0
+>       "line": 1
 >     }
 >   ],
 >   "staticQuickInfos": "[ 1 items ]",

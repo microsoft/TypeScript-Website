@@ -78,6 +78,9 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["declaration", ["declarationDir", "emitDeclarationOnly"]],
 
   ["moduleResolution", ["module"]],
+
+  ["jsxFactory", ["jsxFragmentFactory"]],
+  ["jsxFragmentFactory", ["jsxFactory"]],
 ];
 
 /**
@@ -210,6 +213,7 @@ export const allowedValues = {
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
+  "4.0": ["jsxFragmentFactory"],
   "3.8": [
     "assumeChangesOnlyAffectDirectDependencies",
     "importsNotUsedAsValues",
