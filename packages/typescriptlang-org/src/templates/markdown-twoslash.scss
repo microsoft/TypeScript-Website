@@ -4,6 +4,7 @@
     <div class='language-id>[lang-id]</div>
     <div class='code-container'>
       <code>[the code as a series of spans]</code>
+      <a href='playground...'>Try</a>
     </div>
   </pre> 
 */
@@ -37,6 +38,33 @@ pre {
   /* The code inside should scroll, but the overflow can't be on the shiki because it would not allow the relative positioning */
   .code-container {
     overflow: auto;
+
+    a {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      border-radius: 4px;
+      border: 1px solid #719af4;
+      padding: 0 8px;
+      color: #719af4;
+      text-decoration: none;
+      opacity: 0;
+      transition-timing-function: ease;
+      transition: opacity 0.3s;
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
+
+      &:hover {
+        color: white;
+        background-color: #719af4;
+      }
+    }
+
+    &:hover a {
+      opacity: 1;
+    }
   }
 
   /* Handle scrolling, and showing code correctly */
