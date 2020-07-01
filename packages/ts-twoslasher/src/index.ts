@@ -23,7 +23,7 @@ const log = debug("twoslasher")
 declare module "typescript" {
   type Option = {
     name: string
-    type: "list" | "boolean" | "number" | "string" | import("typescript").Map<number>
+    type: "list" | "boolean" | "number" | "string" // | Map
     element?: Option
   }
 
@@ -141,10 +141,12 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
           break
 
         default:
-          opts[opt.name] = opt.type.get(value.toLowerCase())
+          // It's a map!
+          const optMap = opt.type as Map<string, string>
+          opts[opt.name] = optMap.get(value.toLowerCase())
           log(`Set ${opt.name} to ${opts[opt.name]}`)
           if (opts[opt.name] === undefined) {
-            const keys = Array.from(opt.type.keys() as any)
+            const keys = Array.from(optMap.keys() as any)
             throw new Error(`Invalid value ${value} for ${opt.name}. Allowed values: ${keys.join(",")}`)
           }
           break

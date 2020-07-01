@@ -1,3 +1,7 @@
+## 0.5.0
+
+- Support TS 4.0
+
 ## 0.4.0
 
 - Lines with `// prettier-ignore` are stripped, if you want to show it in a code sample, use `/** prettier-ignore */`
