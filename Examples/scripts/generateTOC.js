@@ -144,7 +144,11 @@ const toc = {
     "Tooling",
     // 3.8
     "Breaking Changes",
-    "JSDoc Improvements"
+    "JSDoc Improvements",
+    // 4.0
+    "New Checks",
+    "New JS Features",
+    "New TS Features"
   ],
   examples
 }
