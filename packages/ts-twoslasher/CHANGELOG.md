@@ -1,6 +1,7 @@
 ## 0.5.0
 
 - Support TS 4.0
+- Improvements to @showEmit and @showEmittedFile
 
 ## 0.4.0
 
@@ -14,7 +15,7 @@ You can see some results in the main README now.
 ```ts
 const myString = ""
 myString.s
-//        ^?
+//       ^?
 ```
 
 ## 0.3.0

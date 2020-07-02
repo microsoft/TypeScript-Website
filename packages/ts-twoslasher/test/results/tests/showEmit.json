@@ -1,0 +1,9 @@
+{
+  "code": "var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {\n    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;\n    if (typeof Reflect === \"object\" && typeof Reflect.decorate === \"function\") r = Reflect.decorate(decorators, target, key, desc);\n    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;\n    return c > 3 && r && Object.defineProperty(target, key, r), r;\n};\nlet MyComponent = class MyComponent {\n    constructor(Service) {\n        this.Service = Service;\n    }\n    method(x) { }\n};\n__decorate([\n    decorator\n], MyComponent.prototype, \"method\", null);\nMyComponent = __decorate([\n    decorator\n], MyComponent);\nexport {};\n",
+  "extension": "js",
+  "highlights": [],
+  "queries": [],
+  "staticQuickInfos": [],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEFMA8AdIE4EsC2kB2AXAhgGwCKQDGA9gtpmQM4BQIEVAFiQO4CiKSmdY4TrHLpkgATAGJJckAFyhSKWCXQZMAOgBWtHhABmkjNjSyqiAG5IikVZloxFCTHNzYqVUAGUzFyKADeAXxptcD0pdEMZORIFJRVrWlR7R0wAT3g-Dy9LUH9QHQRo0AAiVWATBHNLIqCRYmcEH1NsBFBa0nJKBFlsdBSg8DayCjIaImdXUABZFIBhaMVlLD8aUCj0KkwEAFciToAKWC2AI1wLTIrvWU8LywBKP0CViEGOkdW0TGYRPehZT6QqPcAjRAkA"
+}

@@ -589,7 +589,19 @@ export function twoslasher(
 
   // Handle emitting files
   if (handbookOptions.showEmit) {
-    const output = ls.getEmitOutput(defaultFileName)
+    // Get the file which created the file we want to show:
+    const emitFilename = handbookOptions.showEmittedFile || defaultFileName
+    const emitSourceFilename = emitFilename.replace(".js", "").replace(".d.ts", "").replace(".map", "")
+    const emitSource = filenames.find(f => f === emitSourceFilename + ".ts" || f === emitSourceFilename + ".tsx")
+
+    if (!emitSource) {
+      const allFiles = filenames.join(", ")
+      throw new Error(
+        `Cannot find the corresponding source file for ${emitFilename} ${handbookOptions.showEmittedFile} - in ${allFiles}`
+      )
+    }
+
+    const output = ls.getEmitOutput(emitSource)
     const file = output.outputFiles.find(o => o.name === handbookOptions.showEmittedFile)
     if (!file) {
       const allFiles = output.outputFiles.map(o => o.name).join(", ")
