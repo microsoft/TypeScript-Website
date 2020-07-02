@@ -2,6 +2,7 @@
 
 - Support TS 4.0
 - Improvements to @showEmit and @showEmittedFile
+- when `noStaticSemanticInfo` is enabled then you an still run queries
 
 ## 0.4.0
 

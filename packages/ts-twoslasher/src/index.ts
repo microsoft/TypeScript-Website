@@ -495,12 +495,12 @@ export function twoslasher(
     if (!sourceFile) throw new Error(`No sourcefile found for ${file} in twoslash`)
 
     // Get all of the interesting quick info popover
-    if (!handbookOptions.noStaticSemanticInfo && !handbookOptions.showEmit) {
+    if (!handbookOptions.showEmit) {
       const fileContentStartIndexInModifiedFile = code.indexOf(source) == -1 ? 0 : code.indexOf(source)
       const linesAbove = code.slice(0, fileContentStartIndexInModifiedFile).split("\n").length - 1
 
       // Get all interesting identifiers in the file, so we can show hover info for it
-      const identifiers = getIdentifierTextSpans(ts, sourceFile)
+      const identifiers = handbookOptions.noStaticSemanticInfo ? [] : getIdentifierTextSpans(ts, sourceFile)
       for (const identifier of identifiers) {
         const span = identifier.span
         const quickInfo = ls.getQuickInfoAtPosition(file, span.start)
