@@ -669,6 +669,4 @@ export function twoslasher(
   }
 }
 
-const createLocallyPoweredVFS = (compilerOptions: CompilerOptions) => {
-  return createDefaultMapFromNodeModules(compilerOptions)
-}
+const createLocallyPoweredVFS = (compilerOptions: CompilerOptions) => createDefaultMapFromNodeModules(compilerOptions)
