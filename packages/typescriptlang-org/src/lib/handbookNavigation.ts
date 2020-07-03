@@ -179,14 +179,14 @@ export const handbookNavigation: NavItem[] = [
     chronological: true,
     items: [
       {
-        title: "Intro to JavaScript Files",
+        title: "JS Projects Utilizing TS",
         id: "intro-to-js-ts",
       },
       {
         title: "How TS Type Checks JS",
         id: "type-checking-javascript-files",
       },
-      { id: "jsdoc-supported-types", title: "JSDoc Supported Types" },
+      { id: "jsdoc-supported-types", title: "JSDoc Reference" },
       { id: "dts-from-js", title: "DTS files from JS files", href: "/docs/handbook/declaration-files/dts-from-js.html"  },
     ],
   },

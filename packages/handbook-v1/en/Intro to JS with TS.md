@@ -1,36 +1,45 @@
 ---
-title: Type Checking JavaScript Files
+title: JS Projects Utilizing TypeScript
 layout: docs
 permalink: /docs/handbook/intro-to-js-ts.html
 oneline: How to add type checking to JavaScript files using TypeScript
 ---
 
-The type system in TypeScript has different modes of working:
+The type system in TypeScript has different levels of strictness when working with a codebase:
 
-- A type-system base on inference on un-typed JavaScript code
-- Incremental typing in vanilla JavaScript via JSDoc
-- A looser type-checker for JavaScript code
+- A type-system based only on inference with JavaScript code
+- Incremental typing in JavaScript [via JSDoc](/docs/handbook/jsdoc-supported-types.html)
+- Using `// @ts-check` in a JavaScript file
 - TypeScript code
-- Strict TypeScript
+- TypeScript with [`strict`](/tsconfig#strict) enabled
 
-Each step represents a move towards a safer type-system, but not never project needs to use strict TypeScript.
+Each step represents a move towards a safer type-system, but not every project needs that level of verification.
 
-## Providing Type Hints via JSDoc
+## TypeScript with JavaScript
 
-In a `.js` file, types can often be inferred just like in `.ts` files.
-Likewise, when types can't be inferred, they can be specified using JSDoc syntax.
+This is when you use an editor which uses TypeScript to provide tooling like auto-complete, jump to symbol and refactoring tools like rename.
+The [homepage](/) has a list of editors which have TypeScript plugins.
 
-JSDoc annotations adorning a declaration will be used to set the type of that declaration. For example:
+## Providing Type Hints in JS via JSDoc
+
+In a `.js` file, types can often be inferred. When types can't be inferred, they can be specified using JSDoc syntax.
+
+JSDoc annotations come before a declaration will be used to set the type of that declaration. For example:
 
 ```js twoslash
 /** @type {number} */
 var x;
 
 x = 0; // OK
-x = false; // OK?
+x = false; // OK?!
 ```
 
-The last line should raise an error in TypeScript, but it doesn't by default in a JS project. You can use either a [`jsconfig.json`](/docs/handbook/tsconfig-json.html) or add `// @ts-check` to the first line in your `.js` files to have TypeScript raise it as an error.
+You can find the full list of supported JSDoc patterns [in JSDoc Supported Types](/docs/handbook/jsdoc-supported-types.html).
+
+## `@ts-check`
+
+The last line of the previous code sample would raise an error in TypeScript, but it doesn't by default in a JS project.
+To enable errors in your JavaScript files add: `// @ts-check` to the first line in your `.js` files to have TypeScript raise it as an error.
 
 ```js twoslash
 // @ts-check
@@ -42,9 +51,19 @@ x = 0; // OK
 x = false; // Not OK
 ```
 
-You can find the full list of supported JSDoc patterns [in JSDoc Supported Types](/docs/handbook/jsdoc-supported-types.html).
+If you have a lot of JavaScript files you want to add errors to then you can switch to using a [`jsconfig.json`](/docs/handbook/tsconfig-json.html).
+You can skip checking some files by adding a `// @ts-nocheck` comment to files.
 
-## `@ts-check`
+TypeScript may offer you errors which you disagree with, in those cases you can ignore errors on specific lines by adding `// @ts-ignore` or `// @ts-expect-error` on the preceding line.
 
-In a large project using a `jsconfig.json` you can skip checking some files by adding a `// @ts-nocheck` comment to files.
-You can also ignore errors on specific lines by adding `// @ts-ignore` on the preceding line.
+```js twoslash
+// @ts-check
+/** @type {number} */
+var x;
+
+x = 0; // OK
+// @ts-expect-error
+x = false; // Not OK
+```
+
+To learn more about how JavaScript is interpreted by TypeScript read [How TS Type Checks JS](/docs/handbook/type-checking-javascript-files.html)
