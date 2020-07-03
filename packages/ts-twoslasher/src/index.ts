@@ -23,7 +23,7 @@ const log = debug("twoslasher")
 declare module "typescript" {
   type Option = {
     name: string
-    type: "list" | "boolean" | "number" | "string" | import("typescript").Map<number>
+    type: "list" | "boolean" | "number" | "string" // | Map
     element?: Option
   }
 
@@ -141,10 +141,12 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
           break
 
         default:
-          opts[opt.name] = opt.type.get(value.toLowerCase())
+          // It's a map!
+          const optMap = opt.type as Map<string, string>
+          opts[opt.name] = optMap.get(value.toLowerCase())
           log(`Set ${opt.name} to ${opts[opt.name]}`)
           if (opts[opt.name] === undefined) {
-            const keys = Array.from(opt.type.keys() as any)
+            const keys = Array.from(optMap.keys() as any)
             throw new Error(`Invalid value ${value} for ${opt.name}. Allowed values: ${keys.join(",")}`)
           }
           break
@@ -493,12 +495,12 @@ export function twoslasher(
     if (!sourceFile) throw new Error(`No sourcefile found for ${file} in twoslash`)
 
     // Get all of the interesting quick info popover
-    if (!handbookOptions.noStaticSemanticInfo && !handbookOptions.showEmit) {
+    if (!handbookOptions.showEmit) {
       const fileContentStartIndexInModifiedFile = code.indexOf(source) == -1 ? 0 : code.indexOf(source)
       const linesAbove = code.slice(0, fileContentStartIndexInModifiedFile).split("\n").length - 1
 
       // Get all interesting identifiers in the file, so we can show hover info for it
-      const identifiers = getIdentifierTextSpans(ts, sourceFile)
+      const identifiers = handbookOptions.noStaticSemanticInfo ? [] : getIdentifierTextSpans(ts, sourceFile)
       for (const identifier of identifiers) {
         const span = identifier.span
         const quickInfo = ls.getQuickInfoAtPosition(file, span.start)
@@ -587,7 +589,19 @@ export function twoslasher(
 
   // Handle emitting files
   if (handbookOptions.showEmit) {
-    const output = ls.getEmitOutput(defaultFileName)
+    // Get the file which created the file we want to show:
+    const emitFilename = handbookOptions.showEmittedFile || defaultFileName
+    const emitSourceFilename = emitFilename.replace(".js", "").replace(".d.ts", "").replace(".map", "")
+    const emitSource = filenames.find(f => f === emitSourceFilename + ".ts" || f === emitSourceFilename + ".tsx")
+
+    if (!emitSource) {
+      const allFiles = filenames.join(", ")
+      throw new Error(
+        `Cannot find the corresponding source file for ${emitFilename} ${handbookOptions.showEmittedFile} - in ${allFiles}`
+      )
+    }
+
+    const output = ls.getEmitOutput(emitSource)
     const file = output.outputFiles.find(o => o.name === handbookOptions.showEmittedFile)
     if (!file) {
       const allFiles = output.outputFiles.map(o => o.name).join(", ")
@@ -655,6 +669,4 @@ export function twoslasher(
   }
 }
 
-const createLocallyPoweredVFS = (compilerOptions: CompilerOptions) => {
-  return createDefaultMapFromNodeModules(compilerOptions)
-}
+const createLocallyPoweredVFS = (compilerOptions: CompilerOptions) => createDefaultMapFromNodeModules(compilerOptions)

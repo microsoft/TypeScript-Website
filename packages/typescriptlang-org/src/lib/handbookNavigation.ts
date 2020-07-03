@@ -9,6 +9,7 @@ export interface NavItem {
 }
 // IDs come from the filename
 
+// prettier-ignore
 export const handbookNavigation: NavItem[] = [
   {
     title: "Get Started",
@@ -17,22 +18,10 @@ export const handbookNavigation: NavItem[] = [
     directory: "handbook",
     index: "typescript-from-scratch",
     items: [
-      {
-        id: "typescript-from-scratch",
-        title: "TS for the New Programmer",
-      },
-      {
-        id: "typescript-in-5-minutes",
-        title: "TS for JS Programmers",
-      },
-      {
-        id: "typescript-in-5-minutes-oop",
-        title: "TS for OOP Programmers ",
-      },
-      {
-        id: "typescript-in-5-minutes-func",
-        title: "TS for Functional Programmers",
-      },
+      { id: "typescript-from-scratch", title: "TS for the New Programmer" },
+      { id: "typescript-in-5-minutes", title: "TS for JS Programmers" },
+      { id: "typescript-in-5-minutes-oop", title: "TS for OOP Programmers " },
+      { id: "typescript-in-5-minutes-func",  title: "TS for Functional Programmers" },
       { id: "typescript-tooling-in-5-minutes", title: "Tooling in 5 minutes" },
     ],
   },
@@ -68,7 +57,6 @@ export const handbookNavigation: NavItem[] = [
       { id: "decorators", title: "Decorators" },
       { id: "utility-types", title: "Global Utility Types" },
       { id: "iterators-and-generators", title: "Iterators and Generators" },
-      { id: "jsdoc-supported-types", title: "JSDoc Supported Types" },
       { id: "jsx", title: "JSX" },
       { id: "mixins", title: "Mixins" },
       { id: "modules", title: "Modules" },
@@ -79,10 +67,6 @@ export const handbookNavigation: NavItem[] = [
       { id: "triple-slash-directives", title: "Triple-Slash Directives" },
       { id: "type-compatibility", title: "Type Compatibility" },
       { id: "type-inference", title: "Type Inference" },
-      {
-        title: "Type Checking JavaScript Files",
-        id: "type-checking-javascript-files",
-      },
       { id: "dom-manipulation", title: "TypeScript & the DOM" },
       { id: "variable-declarations", title: "Variable Declarations" },
     ],
@@ -138,7 +122,6 @@ export const handbookNavigation: NavItem[] = [
       { id: "typescript-1-1", title: "TypeScript 1.1" },
     ],
   },
-
   {
     title: "Declaration Files",
     id: "declaration-files",
@@ -149,49 +132,63 @@ export const handbookNavigation: NavItem[] = [
     chronological: true,
     items: [
       { id: "introduction", title: "Introduction" },
+      { id: "by-example", title: "By Example" },
+      { id: "do-s-and-don-ts", title: "Do's and Don'ts" },
+      { id: "deep-dive", title: "Deep Dive" },
       { id: "library-structures", title: "Library Structures" },
+      { id: "templates", title: "Templates" },
       {
         id: "global-plugin-d-ts",
-        href:
-          "/docs/handbook/declaration-files/templates/global-plugin-d-ts.html",
         title: "Template: Global Module",
+        href: "/docs/handbook/declaration-files/templates/global-plugin-d-ts.html",
       },
       {
         id: "global-modifying-module-d-ts",
-        href:
-          "/docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html",
         title: "Template: Global Extends",
+        href: "/docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html",
       },
       {
         id: "module-d-ts",
-        href: "/docs/handbook/declaration-files/templates/module-d-ts.html",
         title: "Template: Module",
+        href: "/docs/handbook/declaration-files/templates/module-d-ts.html",
       },
       {
         id: "module-plugin-d-ts",
-        href:
-          "/docs/handbook/declaration-files/templates/module-plugin-d-ts.html",
         title: "Template: Plugin",
+        href: "/docs/handbook/declaration-files/templates/module-plugin-d-ts.html",
       },
       {
         id: "module-class-d-ts",
-        href:
-          "/docs/handbook/declaration-files/templates/module-class-d-ts.html",
         title: "Template: Class",
+        href: "/docs/handbook/declaration-files/templates/module-class-d-ts.html",
       },
       {
         id: "module-function-d-ts",
-        href:
-          "/docs/handbook/declaration-files/templates/module-function-d-ts.html",
         title: "Template: Function",
+        href: "/docs/handbook/declaration-files/templates/module-function-d-ts.html",
       },
-      { id: "by-example", title: "By Example" },
-      { id: "do-s-and-don-ts", title: "Do's and Don'ts" },
-      { id: "dts-from-js", title: "DTS files from JS files" },
-      { id: "deep-dive", title: "Deep Dive" },
-      { id: "templates", title: "Templates" },
       { id: "publishing", title: "Publishing" },
       { id: "consumption", title: "Consumption" },
+    ],
+  },
+  {
+    title: "JavaScript",
+    id: "javascript",
+    summary: "How to use TypeScript-powered JavaScript tooling.",
+    directory: "handbook",
+    index: "introduction",
+    chronological: true,
+    items: [
+      {
+        title: "JS Projects Utilizing TS",
+        id: "intro-to-js-ts",
+      },
+      {
+        title: "How TS Type Checks JS",
+        id: "type-checking-javascript-files",
+      },
+      { id: "jsdoc-supported-types", title: "JSDoc Reference" },
+      { id: "dts-from-js", title: "DTS files from JS files", href: "/docs/handbook/declaration-files/dts-from-js.html"  },
     ],
   },
   {

@@ -1,3 +1,9 @@
+## 0.5.0
+
+- Support TS 4.0
+- Improvements to @showEmit and @showEmittedFile
+- when `noStaticSemanticInfo` is enabled then you an still run queries
+
 ## 0.4.0
 
 - Lines with `// prettier-ignore` are stripped, if you want to show it in a code sample, use `/** prettier-ignore */`
@@ -10,7 +16,7 @@ You can see some results in the main README now.
 ```ts
 const myString = ""
 myString.s
-//        ^?
+//       ^?
 ```
 
 ## 0.3.0

@@ -1,8 +1,8 @@
 ---
-title: JSDoc Supported Types
+title: JSDoc Reference
 layout: docs
 permalink: /docs/handbook/jsdoc-supported-types.html
-oneline: Using JSDoc with TypeScript-powered JavaScript
+oneline: What JSDoc does TypeScript-powered JavaScript support?
 ---
 
 The list below outlines which constructs are currently supported
@@ -154,7 +154,7 @@ This syntax is TypeScript-specific and differs from the JSDoc standard:
 ```js twoslash
 // @filename: types.d.ts
 export type Pet = {
-  name: string
+  name: string,
 };
 
 // @filename: main.js
@@ -171,7 +171,7 @@ import types can also be used in type alias declarations:
 ```js twoslash
 // @filename: types.d.ts
 export type Pet = {
-  name: string
+  name: string,
 };
 // @filename: main.js
 // ---cut---
@@ -198,7 +198,7 @@ export const userAccount = {
   planet: "",
   system: "",
   galaxy: "",
-  universe: ""
+  universe: "",
 };
 // @filename: main.js
 // ---cut---
@@ -303,7 +303,7 @@ function special(options) {
  */
 
 /** @type {Predicate} */
-const ok = s => !(s.length % 2);
+const ok = (s) => !(s.length % 2);
 ```
 
 Of course, any of these types can be declared using TypeScript syntax in a single-line `@typedef`:
@@ -384,7 +384,7 @@ class C {
   /**
    * @param {string} s
    */
-  initialize = function(s) {
+  initialize = function (s) {
     this.size = s.length;
   };
 }
@@ -427,7 +427,7 @@ function C(data) {
 /**
  * @param {string} s
  */
-C.prototype.initialize = function(s) {
+C.prototype.initialize = function (s) {
   this.size = s.length;
 };
 
@@ -482,7 +482,7 @@ The `@enum` tag allows you to create an object literal whose members are all of 
 const JSDocState = {
   BeginningOfLine: 0,
   SawAsterisk: 1,
-  SavingComments: 2
+  SavingComments: 2,
 };
 
 JSDocState.SawAsterisk;
@@ -493,9 +493,9 @@ Note that `@enum` is quite different from, and much simpler than, TypeScript's `
 ```js twoslash
 /** @enum {function(number): number} */
 const MathFuncs = {
-  add1: n => n + 1,
-  id: n => -n,
-  sub1: n => n - 1
+  add1: (n) => n + 1,
+  id: (n) => -n,
+  sub1: (n) => n - 1,
 };
 
 MathFuncs.add1;
@@ -510,32 +510,32 @@ var someObj = {
   /**
    * @param {string} param1 - Docs on property assignments work
    */
-  x: function(param1) {}
+  x: function (param1) {},
 };
 
 /**
  * As do docs on variable assignments
  * @return {Window}
  */
-let someFunc = function() {};
+let someFunc = function () {};
 
 /**
  * And class methods
  * @param {string} greeting The greeting to use
  */
-Foo.prototype.sayHi = greeting => console.log("Hi!");
+Foo.prototype.sayHi = (greeting) => console.log("Hi!");
 
 /**
  * And arrow functions expressions
  * @param {number} x - A multiplier
  */
-let myArrow = x => x * x;
+let myArrow = (x) => x * x;
 
 /**
  * Which means it works for stateless function components in JSX too
  * @param {{a: string, b: number}} test - Some param
  */
-var sfc = test => <div>{test.a.charAt(0)}</div>;
+var sfc = (test) => <div>{test.a.charAt(0)}</div>;
 
 /**
  * A parameter can be a class constructor, using Closure syntax.
