@@ -82,7 +82,7 @@ allFiles.forEach((f) => {
   const firstInRest = rest.find((a) => a.name === first.name);
   // it's 50 from the original docs in the handbook, which should
   // offset orta "creating" all these files
-  firstInRest.count += 5;
+  if (firstInRest) firstInRest.count += 5;
 
   originalRef.top.forEach((r) => {
     const inRest = rest.find((a) => a.name === r.name);
