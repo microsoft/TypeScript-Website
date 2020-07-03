@@ -54,7 +54,10 @@ export function createVirtualTypeScriptEnvironment(
       updateFile(ts.createSourceFile(fileName, content, mergedCompilerOpts.target!, false))
     },
     updateFile: (fileName, content, optPrevTextSpan) => {
-      const prevSourceFile = languageService.getProgram()!.getSourceFile(fileName)!
+      const prevSourceFile = languageService.getProgram()!.getSourceFile(fileName)
+      if (!prevSourceFile) {
+        throw new Error("Did not find a source file for " + fileName)
+      }
       const prevFullContents = prevSourceFile.text
 
       // TODO: Validate if the default text span has a fencepost error?
@@ -414,6 +417,7 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
     },
     updateFile: sourceFile => {
       const alreadyExists = sourceFiles.has(sourceFile.fileName)
+      console.log("---------", sourceFile.text)
       sys.writeFile(sourceFile.fileName, sourceFile.text)
       sourceFiles.set(sourceFile.fileName, sourceFile)
       return alreadyExists

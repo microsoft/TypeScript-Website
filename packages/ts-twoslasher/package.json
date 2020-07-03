@@ -26,7 +26,7 @@
     "markdown-magic": "^1.0.0",
     "tsdx": "^0.12.3",
     "tslib": "^1.10.0",
-    "typescript": "3.9.2"
+    "typescript": "*"
   },
   "jest": {
     "watchPathIgnorePatterns": [

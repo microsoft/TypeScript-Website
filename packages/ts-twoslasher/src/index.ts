@@ -385,6 +385,7 @@ export function twoslasher(
 
     // Create the file in the vfs
     const newFileCode = codeLines.join("\n")
+    console.log(">>>> creating", filename)
     env.createFile(filename, newFileCode)
 
     const updates = filterHighlightLines(codeLines)
@@ -446,6 +447,7 @@ export function twoslasher(
 
     // Sets the file in the compiler as being without the comments
     const newEditedFileCode = codeLines.join("\n")
+    console.log(">>> updating", filename)
     env.updateFile(filename, newEditedFileCode)
   }
 
@@ -680,6 +682,9 @@ const splitTwoslashCodeInfoFiles = (code: string, defaultFileName: string) => {
   }
   fileMap.push([nameForFile, currentFileContent])
 
-  const nameContent = fileMap.filter(n => n[1].length > 0)
+  // Basically, strip these:
+  // ["index.ts", []]
+  // ["index.ts", [""]]
+  const nameContent = fileMap.filter(n => n[1].length > 0 && (n[1].length > 1 || n[1][0] !== ""))
   return nameContent
 }
