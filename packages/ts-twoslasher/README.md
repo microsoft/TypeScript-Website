@@ -638,7 +638,7 @@ Turns to:
 > // --importHelpers on: Spread helper will be imported from 'tslib'
 > var __read =
 >   (this && this.__read) ||
->   function(o, n) {
+>   function (o, n) {
 >     var m = typeof Symbol === "function" && o[Symbol.iterator]
 >     if (!m) return o
 >     var i = m.call(o),
@@ -660,7 +660,7 @@ Turns to:
 >   }
 > var __spread =
 >   (this && this.__spread) ||
->   function() {
+>   function () {
 >     for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]))
 >     return ar
 >   }

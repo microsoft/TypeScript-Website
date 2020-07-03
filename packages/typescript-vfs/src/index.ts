@@ -417,7 +417,6 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
     },
     updateFile: sourceFile => {
       const alreadyExists = sourceFiles.has(sourceFile.fileName)
-      console.log("---------", sourceFile.text)
       sys.writeFile(sourceFile.fileName, sourceFile.text)
       sourceFiles.set(sourceFile.fileName, sourceFile)
       return alreadyExists
