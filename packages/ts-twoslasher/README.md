@@ -103,7 +103,7 @@ export interface ExampleOptions {
   /** Shows the JS equivalent of the TypeScript code instead */
   showEmit: false
   /**
-   * When mixed with showEmit, lets you choose the file to present instead of the source - defaults to index.js which
+   * Must be used with showEmit, lets you choose the file to present instead of the source - defaults to index.js which
    * means when you just use `showEmit` above it shows the transpiled JS.
    */
   showEmittedFile: string

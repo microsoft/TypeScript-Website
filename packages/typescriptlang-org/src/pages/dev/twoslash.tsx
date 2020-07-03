@@ -4,6 +4,7 @@ import { withPrefix, graphql } from "gatsby"
 import { twoslasher } from "@typescript/twoslash"
 import { createDefaultMapFromCDN } from "@typescript/vfs"
 import { renderToHTML } from "gatsby-remark-shiki-twoslash/src/renderer"
+import { debounce } from 'ts-debounce';
 
 import "./dev.scss"
 import { Intl } from "../../components/Intl"
@@ -126,17 +127,8 @@ const Index: React.FC<Props> = (props) => {
             }
           }
 
-          let debouncingTimerLock = false
-          sandbox.editor.onDidChangeModelContent((e) => {
-            if (debouncingTimerLock) return
-            debouncingTimerLock = true
-
-            runTwoslash()
-            setTimeout(() => {
-              debouncingTimerLock = false
-              runTwoslash()
-            }, 500)
-          })
+          const debouncedTwoslash = debounce(runTwoslash, 500)
+          sandbox.editor.onDidChangeModelContent(debouncedTwoslash)
           runTwoslash()
 
           setTimeout(() => {

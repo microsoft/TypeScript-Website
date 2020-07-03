@@ -54,7 +54,10 @@ export function createVirtualTypeScriptEnvironment(
       updateFile(ts.createSourceFile(fileName, content, mergedCompilerOpts.target!, false))
     },
     updateFile: (fileName, content, optPrevTextSpan) => {
-      const prevSourceFile = languageService.getProgram()!.getSourceFile(fileName)!
+      const prevSourceFile = languageService.getProgram()!.getSourceFile(fileName)
+      if (!prevSourceFile) {
+        throw new Error("Did not find a source file for " + fileName)
+      }
       const prevFullContents = prevSourceFile.text
 
       // TODO: Validate if the default text span has a fencepost error?
@@ -65,11 +68,11 @@ export function createVirtualTypeScriptEnvironment(
         prevFullContents.slice(prevTextSpan.start + prevTextSpan.length)
       const newSourceFile = ts.updateSourceFile(prevSourceFile, newText, {
         span: prevTextSpan,
-        newLength: content.length,
+        newLength: content.length
       })
 
       updateFile(newSourceFile)
-    },
+    }
   }
 }
 
@@ -139,7 +142,7 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
     "lib.esnext.d.ts",
     "lib.esnext.full.d.ts",
     "lib.esnext.intl.d.ts",
-    "lib.esnext.symbol.d.ts",
+    "lib.esnext.symbol.d.ts"
   ]
 
   const targetToCut = ts.ScriptTarget[target]
@@ -193,10 +196,10 @@ export const addAllFilesFromFolder = (map: Map<string, string>, workingDir: stri
   const path = require("path")
   const fs = require("fs")
 
-  const walk = function (dir: string) {
+  const walk = function(dir: string) {
     let results: string[] = []
     const list = fs.readdirSync(dir)
-    list.forEach(function (file: string) {
+    list.forEach(function(file: string) {
       file = path.join(dir, file)
       const stat = fs.statSync(file)
       if (stat && stat.isDirectory()) {
@@ -336,7 +339,7 @@ const defaultCompilerOptions = (ts: typeof import("typescript")): CompilerOption
     suppressOutputPathCheck: true,
     skipLibCheck: true,
     skipDefaultLibCheck: true,
-    moduleResolution: ts.ModuleResolutionKind.NodeJs,
+    moduleResolution: ts.ModuleResolutionKind.NodeJs
   }
 }
 
@@ -368,7 +371,7 @@ export function createSystem(files: Map<string, string>): System {
     write: () => notImplemented("write"),
     writeFile: (fileName, contents) => {
       files.set(fileName, contents)
-    },
+    }
   }
 }
 
@@ -410,14 +413,14 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
           )
         )
       },
-      useCaseSensitiveFileNames: () => sys.useCaseSensitiveFileNames,
+      useCaseSensitiveFileNames: () => sys.useCaseSensitiveFileNames
     },
     updateFile: sourceFile => {
       const alreadyExists = sourceFiles.has(sourceFile.fileName)
       sys.writeFile(sourceFile.fileName, sourceFile.text)
       sourceFiles.set(sourceFile.fileName, sourceFile)
       return alreadyExists
-    },
+    }
   }
   return vHost
 }
@@ -450,7 +453,7 @@ export function createVirtualLanguageServiceHost(
     getScriptVersion: fileName => {
       return fileVersions.get(fileName) || "0"
     },
-    writeFile: sys.writeFile,
+    writeFile: sys.writeFile
   }
 
   type Return = {
@@ -467,7 +470,7 @@ export function createVirtualLanguageServiceHost(
         fileNames.push(sourceFile.fileName)
       }
       updateFile(sourceFile)
-    },
+    }
   }
   return lsHost
 }

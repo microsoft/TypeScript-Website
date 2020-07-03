@@ -3,6 +3,7 @@ import ReactDOM from "react-dom"
 import { Layout } from "../../components/layout"
 import { withPrefix, graphql } from "gatsby"
 import { BugWorkbenchQuery } from "../../__generated__/gatsby-types"
+import { debounce } from 'ts-debounce';
 
 import "../../templates/play.scss"
 
@@ -13,17 +14,17 @@ import { playCopy } from "../../copy/en/playground"
 
 import { Intl } from "../../components/Intl"
 
-import { workbenchHelpPlugin } from "../../components/workbench/plugins/help"
-import { workbenchResultsPlugin } from "../../components/workbench/plugins/results"
-import { workbenchEmitPlugin } from "../../components/workbench/plugins/emits"
+import { workbenchHelpPlugin as workbenchAboutPlugin } from "../../components/workbench/plugins/about"
+import { workbenchDebugPlugin } from "../../components/workbench/plugins/debug"
 import { workbenchAssertionsPlugin } from "../../components/workbench/plugins/assertions"
+import { workbenchMarkdownPlugin } from "../../components/workbench/plugins/markdown"
+import { workbenchReferencePlugin } from "../../components/workbench/plugins/docs"
 import { createDefaultMapFromCDN } from "@typescript/vfs"
 import { twoslasher, TwoSlashReturn } from "@typescript/twoslash"
 
 type Props = {
   data: BugWorkbenchQuery
 }
-
 
 const Play: React.FC<Props> = (props) => {
   const i = createInternational<typeof headCopy & typeof playCopy>(useIntl())
@@ -33,8 +34,6 @@ const Play: React.FC<Props> = (props) => {
     if ("playgroundLoaded" in window) return
     window["playgroundLoaded"] = true
 
-    // @ts-ignore - so the config options can use localized descriptions
-    window.optionsSummary = props.pageContext.optionsSummary
     // @ts-ignore - for React-based plugins
     window.react = React
     // @ts-ignore - for React-based plugins
@@ -95,10 +94,11 @@ const Play: React.FC<Props> = (props) => {
           prefix: withPrefix("/"),
           supportCustomPlugins: false,
           plugins: [
+            workbenchAboutPlugin,
+            workbenchReferencePlugin,
             workbenchAssertionsPlugin,
-            workbenchResultsPlugin,
-            workbenchEmitPlugin,
-            workbenchHelpPlugin,
+            workbenchMarkdownPlugin,
+            workbenchDebugPlugin
           ]
         }
 
@@ -115,16 +115,10 @@ const Play: React.FC<Props> = (props) => {
         sandboxEnv.setDidUpdateCompilerSettings(updateDTSEnv)
         updateDTSEnv(sandboxEnv.getCompilerOptions())
 
-        let debouncingTimer = false
-        sandboxEnv.editor.onDidChangeModelContent(_event => {
-          // This needs to be last in the function
-          if (debouncingTimer) return
-          debouncingTimer = true
-          setTimeout(() => {
-            debouncingTimer = false
-            if (dtsMap) runTwoslash()
-          }, 500)
-        })
+        const debouncedTwoslash = debounce(() => {
+          if (dtsMap) runTwoslash()
+        }, 1000)
+        sandboxEnv.editor.onDidChangeModelContent(debouncedTwoslash)
 
         let currentTwoslashResults: Error | TwoSlashReturn | undefined = undefined
         let currentDTSMap: Map<string, string> | undefined = undefined
@@ -134,19 +128,20 @@ const Play: React.FC<Props> = (props) => {
         playgroundEnv.setDidUpdateTab((newPlugin) => {
           if (!isError(currentTwoslashResults) && "getResults" in newPlugin) {
             // @ts-ignore
-            newPlugin.getResults(sandboxEnv, currentTwoslashResults, currentDTSMap)
+            newPlugin.getResults(sandboxEnv, currentTwoslashResults, currentDTSMap, sandboxEnv.getText().includes("// @showEmit"))
           } else if ("noResults" in newPlugin) {
             // @ts-ignore
-            newPlugin.noResults(currentTwoslashResults)
+            newPlugin.noResults(currentTwoslashResults, currentTwoslashResults)
           }
         })
 
         const runTwoslash = () => {
           const code = sandboxEnv.getText()
+          if (!code) return
 
           try {
             currentDTSMap = new Map(dtsMap)
-            const twoslashConfig = { noStaticSemanticInfo: false, emit: true, noErrorValidation: true } as const
+            const twoslashConfig = { noStaticSemanticInfo: true, emit: true, noErrorValidation: true } as const
             const ext = sandboxEnv.filepath.split(".")[1]
             const twoslash = twoslasher(code, ext, twoslashConfig, ts, sandboxEnv.lzstring as any, currentDTSMap)
             currentTwoslashResults = twoslash
@@ -154,8 +149,7 @@ const Play: React.FC<Props> = (props) => {
             const currentPlugin = playgroundEnv.getCurrentPlugin()
             if ("getResults" in currentPlugin) {
               // @ts-ignore
-
-              currentPlugin.getResults(sandboxEnv, twoslash, currentDTSMap)
+              currentPlugin.getResults(sandboxEnv, twoslash, currentDTSMap, code.includes("// @showEmit"))
             }
 
           } catch (error) {

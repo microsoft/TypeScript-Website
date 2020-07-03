@@ -186,6 +186,8 @@ export const createTypeScriptSandbox = (
   let didUpdateCompilerSettings = (opts: CompilerOptions) => {}
 
   const updateCompilerSettings = (opts: CompilerOptions) => {
+    if (!Object.keys(opts).length) return
+
     config.logger.log("[Compiler] Updating compiler options: ", opts)
     compilerOptions = { ...opts, ...compilerOptions }
     defaults.setCompilerOptions(compilerOptions)
