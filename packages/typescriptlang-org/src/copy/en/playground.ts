@@ -11,8 +11,8 @@ export const playCopy = {
   play_downloading_version: "Version...", // when loading
   play_toolbar_run: "Run",
   play_toolbar_export: "Export",
-  play_sidebar_js: "JS",
-  play_sidebar_dts: "DTS",
+  play_sidebar_js: ".JS",
+  play_sidebar_dts: ".D.TS",
   play_sidebar_errors: "Errors",
   play_sidebar_errors_no_errors: "No errors",
   play_sidebar_logs: "Logs",

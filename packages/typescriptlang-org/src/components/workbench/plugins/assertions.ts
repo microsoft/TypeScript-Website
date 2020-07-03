@@ -11,12 +11,39 @@ export const workbenchAssertionsPlugin: import("../../../../static/js/playground
     didMount: (sandbox, container) => {
       pluginContainer = container
     },
-    noResults: () => {},
-    getResults: (sandbox: any, results: TwoSlashReturns) => {
+    noResults: (sandbox, err) => {
       const ds = utils.createDesignSystem(pluginContainer)
       ds.clear()
 
-      ds.subtitle("Assertions Found")
+      ds.title("Exception Raised")
+      ds.p(
+        "This could be a successful repro of a compiler bug, or potentially an issue in Twoslash."
+      )
+
+      ds.subtitle("Error:")
+      if (err.message) ds.p(err.message)
+      if (err.stack) ds.code(err.stack)
+    },
+    getResults: (
+      sandbox: any,
+      results: TwoSlashReturns,
+      _dtsMap: Map<string, string>,
+      emitRequested: boolean
+    ) => {
+      const ds = utils.createDesignSystem(pluginContainer)
+      ds.clear()
+
+      const anyOutput =
+        results.queries.length > 0 || emitRequested || results.errors.length > 0
+
+      if (!anyOutput) {
+        ds.title("No Assertions")
+        ds.p(
+          "Assuming that this repro is for code which compiles but should not."
+        )
+      } else {
+        ds.title("Assertions Found")
+      }
 
       const queriesAsDiags = results.queries.map(t => {
         let msg = ""
@@ -44,32 +71,38 @@ export const workbenchAssertionsPlugin: import("../../../../static/js/playground
           category: 3, // ts.DiagnosticCategory.Message,
           code: 0,
           file: undefined,
-          length: t.length,
+          length: 0,
           messageText: msg || "-",
-          start: t.start,
+          start: 0,
         }
         return diag
       })
-      ds.listDiags(sandbox.getModel(), queriesAsDiags)
+      if (queriesAsDiags.length) {
+        ds.subtitle("Queries in Code")
+        ds.listDiags(sandbox.getModel(), queriesAsDiags)
+      }
 
       const errorsAsDiags = results.errors.map(t => {
         const diag: import("typescript").DiagnosticRelatedInformation = {
           category: 1, // ts.DiagnosticCategory.Message,
           code: t.code,
           file: undefined,
-          length: t.length,
+          length: 0,
           messageText: t.renderedMessage,
-          start: t.start,
+          start: 0,
         }
         return diag
       })
 
-      ds.listDiags(sandbox.getModel(), errorsAsDiags)
+      if (errorsAsDiags.length) {
+        ds.subtitle("Compiler Errors")
+        ds.listDiags(sandbox.getModel(), errorsAsDiags)
+      }
 
-      ds.subtitle("TLDR")
-      ds.p(
-        "You can highlight code which doesn't work as you expect by starting a comment and then adding ^? under the code which is wrong."
-      )
+      if (emitRequested) {
+        ds.subtitle("Output")
+        ds.code(results.code)
+      }
     },
   }
 }

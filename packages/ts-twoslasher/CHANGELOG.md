@@ -3,6 +3,8 @@
 - Support TS 4.0
 - Improvements to @showEmit and @showEmittedFile
 - when `noStaticSemanticInfo` is enabled then you an still run queries
+- better multi-file support
+- `emit` handbook option actually emits all the JS/DTS files back to the vfs
 
 ## 0.4.0
 

@@ -103,7 +103,7 @@ export interface ExampleOptions {
   /** Shows the JS equivalent of the TypeScript code instead */
   showEmit: false
   /**
-   * When mixed with showEmit, lets you choose the file to present instead of the source - defaults to index.js which
+   * Must be used with showEmit, lets you choose the file to present instead of the source - defaults to index.js which
    * means when you just use `showEmit` above it shows the transpiled JS.
    */
   showEmittedFile: string
@@ -638,7 +638,7 @@ Turns to:
 > // --importHelpers on: Spread helper will be imported from 'tslib'
 > var __read =
 >   (this && this.__read) ||
->   function (o, n) {
+>   function(o, n) {
 >     var m = typeof Symbol === "function" && o[Symbol.iterator]
 >     if (!m) return o
 >     var i = m.call(o),
@@ -660,7 +660,7 @@ Turns to:
 >   }
 > var __spread =
 >   (this && this.__spread) ||
->   function () {
+>   function() {
 >     for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]))
 >     return ar
 >   }

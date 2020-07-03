@@ -41,6 +41,7 @@ export default async function () {
     const packageJSONDiff = await danger.git.JSONDiffForFile("package.json")
     const newDeps = packageJSONDiff.devDependencies.added
     const newTypesDeps = newDeps?.filter(d => d.includes("@types")) ?? []
+
     if (newTypesDeps.length){
         markdown("Added new types packages " + newTypesDeps.join(", "))
     }

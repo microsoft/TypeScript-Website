@@ -11,7 +11,7 @@ import {
   typesToExtension,
   stringAroundIndex,
   getIdentifierTextSpans,
-  getClosestWord,
+  getClosestWord
 } from "./utils"
 import { validateInput, validateCodeForErrors } from "./validation"
 
@@ -195,7 +195,7 @@ export interface ExampleOptions {
   /** Shows the JS equivalent of the TypeScript code instead */
   showEmit: false
   /**
-   * When mixed with showEmit, lets you choose the file to present instead of the source - defaults to index.js which
+   * Must be used with showEmit, lets you choose the file to present instead of the source - defaults to index.js which
    * means when you just use `showEmit` above it shows the transpiled JS.
    */
   showEmittedFile: string
@@ -215,7 +215,7 @@ const defaultHandbookOptions: ExampleOptions = {
   showEmittedFile: "index.js",
   noStaticSemanticInfo: false,
   emit: false,
-  noErrorValidation: false,
+  noErrorValidation: false
 }
 
 function filterHandbookOptions(codeLines: string[]): ExampleOptions {
@@ -351,7 +351,7 @@ export function twoslasher(
   const defaultCompilerOptions: CompilerOptions = {
     strict: true,
     target: ts.ScriptTarget.ES2016,
-    allowJs: true,
+    allowJs: true
   }
 
   validateInput(code)
@@ -375,24 +375,7 @@ export function twoslasher(
   let queries = [] as TwoSlashReturn["queries"]
   let highlights = [] as TwoSlashReturn["highlights"]
 
-  // TODO: This doesn't handle a single file with a name
-  const fileContent = code.split("// @filename: ")
-  const noFilepaths = fileContent.length === 1
-
-  const makeDefault: [string, string[]] = [defaultFileName, code.split(/\r\n?|\n/g)]
-  const makeMultiFile = (filenameSplit: string): [string, string[]] => {
-    const [filename, ...content] = filenameSplit.split(/\r\n?|\n/g)
-    const firstLine = "// @filename: " + filename
-    return [filename, [firstLine, ...content]]
-  }
-
-  /**
-   * Oof, some hard to grok code in this section. To ensure _one_ code path for both
-   * default and multi-file code samples it's all coerced into an array of
-   * [name, lines_of_code] basically for each set.
-   */
-  const unfilteredNameContent: Array<[string, string[]]> = noFilepaths ? [makeDefault] : fileContent.map(makeMultiFile)
-  const nameContent = unfilteredNameContent.filter(n => n[0].length)
+  const nameContent = splitTwoslashCodeInfoFiles(code, defaultFileName)
 
   /** All of the referenced files in the markup */
   const filenames = nameContent.map(nc => nc[0])
@@ -432,7 +415,7 @@ export function twoslasher(
             docs,
             line: q.line - i,
             offset: q.offset,
-            file: filename,
+            file: filename
           }
           return queryResult
         }
@@ -453,7 +436,7 @@ export function twoslasher(
             completionPrefix: lastDot,
             line: q.line - i,
             offset: q.offset,
-            file: filename,
+            file: filename
           }
           return queryResult
         }
@@ -473,7 +456,12 @@ export function twoslasher(
 
   // Lets fs changes propagate back up to the fsMap
   if (handbookOptions.emit) {
-    env.languageService.getProgram()?.emit()
+    filenames.forEach(f => {
+      const output = ls.getEmitOutput(f)
+      output.outputFiles.forEach(output => {
+        system.writeFile(output.name, output.text)
+      })
+    })
   }
 
   // Code should now be safe to compile, so we're going to split it into different files
@@ -538,7 +526,7 @@ export function twoslasher(
                 length: q.text.length,
                 text: q.text,
                 offset: q.offset,
-                line: q.line + linesAbove + 1,
+                line: q.line + linesAbove + 1
               })
               break
             }
@@ -550,7 +538,7 @@ export function twoslasher(
                 completionsPrefix: q.completionPrefix,
                 length: 1,
                 offset: q.offset,
-                line: q.line + linesAbove + 1,
+                line: q.line + linesAbove + 1
               })
             }
           }
@@ -583,7 +571,7 @@ export function twoslasher(
       line,
       character,
       renderedMessage,
-      id,
+      id
     })
   }
 
@@ -591,7 +579,10 @@ export function twoslasher(
   if (handbookOptions.showEmit) {
     // Get the file which created the file we want to show:
     const emitFilename = handbookOptions.showEmittedFile || defaultFileName
-    const emitSourceFilename = emitFilename.replace(".js", "").replace(".d.ts", "").replace(".map", "")
+    const emitSourceFilename = emitFilename
+      .replace(".js", "")
+      .replace(".d.ts", "")
+      .replace(".map", "")
     const emitSource = filenames.find(f => f === emitSourceFilename + ".ts" || f === emitSourceFilename + ".tsx")
 
     if (!emitSource) {
@@ -665,8 +656,30 @@ export function twoslasher(
     queries,
     staticQuickInfos,
     errors,
-    playgroundURL,
+    playgroundURL
   }
 }
 
 const createLocallyPoweredVFS = (compilerOptions: CompilerOptions) => createDefaultMapFromNodeModules(compilerOptions)
+
+const splitTwoslashCodeInfoFiles = (code: string, defaultFileName: string) => {
+  const lines = code.split(/\r\n?|\n/g)
+
+  let nameForFile = code.includes(`@filename: ${defaultFileName}`) ? "global.ts" : defaultFileName
+  let currentFileContent: string[] = []
+  const fileMap: Array<[string, string[]]> = []
+
+  for (const line of lines) {
+    if (line.includes("// @filename: ")) {
+      fileMap.push([nameForFile, currentFileContent])
+      nameForFile = line.split("// @filename: ")[1].trim()
+      currentFileContent = []
+    } else {
+      currentFileContent.push(line)
+    }
+  }
+  fileMap.push([nameForFile, currentFileContent])
+
+  const nameContent = fileMap.filter(n => n[1].length > 0)
+  return nameContent
+}
