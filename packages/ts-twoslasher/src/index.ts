@@ -385,7 +385,6 @@ export function twoslasher(
 
     // Create the file in the vfs
     const newFileCode = codeLines.join("\n")
-    console.log(">>>> creating", filename)
     env.createFile(filename, newFileCode)
 
     const updates = filterHighlightLines(codeLines)
@@ -447,7 +446,6 @@ export function twoslasher(
 
     // Sets the file in the compiler as being without the comments
     const newEditedFileCode = codeLines.join("\n")
-    console.log(">>> updating", filename)
     env.updateFile(filename, newEditedFileCode)
   }
 
