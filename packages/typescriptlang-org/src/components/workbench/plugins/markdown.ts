@@ -1,4 +1,3 @@
-type TwoSlashReturns = import("@typescript/twoslash").TwoSlashReturn
 type PluginFactory = import("../../../../static/js/playground").PluginFactory
 type PluginUtils = import("../../../../static/js/playground").PluginUtils
 
@@ -16,7 +15,7 @@ export const workbenchMarkdownPlugin: PluginFactory = (i, utils) => {
     ds.code(
       `
 \`\`\`ts repro
-${code}
+${code.replace(/</g, "&lt;")}
 \`\`\`
 
 [Workbench Repro](${url})
@@ -29,7 +28,7 @@ ${code}
 
   return {
     id: "md",
-    displayName: "To Markdown",
+    displayName: "Export",
     didMount: (_sandbox, container) => {
       pluginContainer = container
     },
