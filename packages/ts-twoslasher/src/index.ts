@@ -432,7 +432,7 @@ export function twoslasher(
 
           const queryResult: PartialCompletionResults = {
             kind: "completions",
-            completions: quickInfo.entries,
+            completions: quickInfo?.entries || [],
             completionPrefix: lastDot,
             line: q.line - i,
             offset: q.offset,
