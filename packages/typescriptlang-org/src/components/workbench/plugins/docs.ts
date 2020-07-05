@@ -80,17 +80,14 @@ You can set compiler flags via <code>// @[option]</code> comments inside the sam
 
       ds.code(
         `
+// @showEmit
 // @filename: index.ts
 import {pi} from "./utils"
 console.log(pi)
 
-// @filename: util.ts
-export const pi = 3.14"
+// @filename: utils.ts
+export const pi = "3.14"
 `.trim()
-      )
-
-      ds.p(
-        "Today the workbench editor doesn't take multiple files into account, so you're going to start seeing errors between imports. The 'assertions' tab always has accurate mutli-file compiler errors."
       )
 
       const button = document.createElement("button")
