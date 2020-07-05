@@ -21,6 +21,16 @@ const pluginRegistry = [
       href: "https://orta.io",
     },
   },
+  {
+    module: "playground-transformer-timeline",
+    display: "Transformer Timeline",
+    blurb: "Shows the transpilation steps as your code migrates from TS -> JS.",
+    repo: "https://github.com/orta/playground-transformer-timeline#typescript-transformers-playground-plugin",
+    author: {
+      name: "Orta",
+      href: "https://orta.io",
+    },
+  },
 ]
 
 /** Whether the playground should actively reach out to an existing plugin */
