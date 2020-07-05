@@ -7,7 +7,7 @@ export const workbenchAssertionsPlugin: import("../../../../static/js/playground
   let pluginContainer: HTMLDivElement
   return {
     id: "assertions",
-    displayName: "Assertions",
+    displayName: "Asserts",
     didMount: (sandbox, container) => {
       pluginContainer = container
     },
