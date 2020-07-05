@@ -17,7 +17,7 @@ export const workbenchAssertionsPlugin: import("../../../../static/js/playground
 
       ds.title("Exception Raised")
       ds.p(
-        "This could be a successful repro of a compiler bug, or potentially an issue in Twoslash."
+        "This could be a successful repro of a crashing compiler bug, or potentially an issue in Twoslash."
       )
 
       ds.subtitle("Error:")
