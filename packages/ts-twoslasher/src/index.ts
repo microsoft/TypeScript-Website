@@ -11,7 +11,7 @@ import {
   typesToExtension,
   stringAroundIndex,
   getIdentifierTextSpans,
-  getClosestWord
+  getClosestWord,
 } from "./utils"
 import { validateInput, validateCodeForErrors } from "./validation"
 
@@ -215,7 +215,7 @@ const defaultHandbookOptions: ExampleOptions = {
   showEmittedFile: "index.js",
   noStaticSemanticInfo: false,
   emit: false,
-  noErrorValidation: false
+  noErrorValidation: false,
 }
 
 function filterHandbookOptions(codeLines: string[]): ExampleOptions {
@@ -351,7 +351,7 @@ export function twoslasher(
   const defaultCompilerOptions: CompilerOptions = {
     strict: true,
     target: ts.ScriptTarget.ES2016,
-    allowJs: true
+    allowJs: true,
   }
 
   validateInput(code)
@@ -415,14 +415,14 @@ export function twoslasher(
             docs,
             line: q.line - i,
             offset: q.offset,
-            file: filename
+            file: filename,
           }
           return queryResult
         }
 
         case "completion": {
           const quickInfo = ls.getCompletionsAtPosition(filename, position - 1, {})
-          if (!quickInfo) {
+          if (!quickInfo && !handbookOptions.noErrorValidation) {
             throw new Error(`Twoslash: The ^| query at line ${q.line} in ${filename} did not return any completions`)
           }
 
@@ -436,7 +436,7 @@ export function twoslasher(
             completionPrefix: lastDot,
             line: q.line - i,
             offset: q.offset,
-            file: filename
+            file: filename,
           }
           return queryResult
         }
@@ -526,7 +526,7 @@ export function twoslasher(
                 length: q.text.length,
                 text: q.text,
                 offset: q.offset,
-                line: q.line + linesAbove + 1
+                line: q.line + linesAbove + 1,
               })
               break
             }
@@ -538,7 +538,7 @@ export function twoslasher(
                 completionsPrefix: q.completionPrefix,
                 length: 1,
                 offset: q.offset,
-                line: q.line + linesAbove + 1
+                line: q.line + linesAbove + 1,
               })
             }
           }
@@ -571,7 +571,7 @@ export function twoslasher(
       line,
       character,
       renderedMessage,
-      id
+      id,
     })
   }
 
@@ -579,10 +579,7 @@ export function twoslasher(
   if (handbookOptions.showEmit) {
     // Get the file which created the file we want to show:
     const emitFilename = handbookOptions.showEmittedFile || defaultFileName
-    const emitSourceFilename = emitFilename
-      .replace(".js", "")
-      .replace(".d.ts", "")
-      .replace(".map", "")
+    const emitSourceFilename = emitFilename.replace(".js", "").replace(".d.ts", "").replace(".map", "")
     const emitSource = filenames.find(f => f === emitSourceFilename + ".ts" || f === emitSourceFilename + ".tsx")
 
     if (!emitSource) {
@@ -656,7 +653,7 @@ export function twoslasher(
     queries,
     staticQuickInfos,
     errors,
-    playgroundURL
+    playgroundURL,
   }
 }
 

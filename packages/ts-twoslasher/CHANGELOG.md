@@ -5,6 +5,7 @@
 - when `noStaticSemanticInfo` is enabled then you an still run queries
 - better multi-file support
 - `emit` handbook option actually emits all the JS/DTS files back to the vfs
+- `noErrorValidation` is better supported
 
 ## 0.4.0
 
