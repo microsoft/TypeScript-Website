@@ -56,7 +56,7 @@ langs.forEach(lang => {
     let index = 1
     let inlineTitle = undefined
     if (contents.startsWith('//// {')) {
-      const preJSON = contents.split('//// {')[1].split('}' + os.EOL)[0]
+      const preJSON = contents.split('//// {')[1].split('}' + "\n")[0]
       contents = contents
         .split('\n')
         .slice(1)
