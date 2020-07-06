@@ -2703,15 +2703,6 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@typescript/twoslash@0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@typescript/twoslash/-/twoslash-0.5.1.tgz#7dbf1c9f0137b5d3102ec687e6f9f5311d10cb37"
-  integrity sha512-z34UCmsUwFBuJF7H/f/Fy+xbDyzxIobQq9iPmF7PQ3A15yRsclGq6zkRt5kBbNlqfN7NFHg9jIchzVdq71irZg==
-  dependencies:
-    "@typescript/vfs" "1.0.1"
-    debug "^4.1.1"
-    lz-string "^1.4.4"
-
 "@uifabric/azure-themes@^7.0.28":
   version "7.0.28"
   resolved "https://registry.yarnpkg.com/@uifabric/azure-themes/-/azure-themes-7.0.28.tgz#075770107ceb4b5c771b03941475b894f2267daf"
