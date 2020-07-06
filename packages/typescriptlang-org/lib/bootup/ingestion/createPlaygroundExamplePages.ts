@@ -105,7 +105,8 @@ const getCompilerDetailsFromCode = (contents: string) => {
   let inlineTitle = undefined
 
   if (contents.startsWith("//// {")) {
-    const preJSON = contents.split("//// {")[1].split("}" + "\n")[0]
+    // convert windows newlines to linux new lines
+    const preJSON = contents.replace(/\r\n/g, "\n").split("//// {")[1].split("}\n")[0]
     contents = contents
       .split("\n")
       .slice(1)
