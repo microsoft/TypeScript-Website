@@ -1,6 +1,7 @@
 // @ts-check
 const glob = require("glob")
 const { readFileSync, writeFileSync } = require("fs")
+const { format } = require("prettier")
 
 // Make sure that all the versioning is accurate across the packages
 const pgkPaths = glob.sync("packages/*/package.json")
@@ -26,6 +27,10 @@ packages.forEach(d => {
     })
   })
   if (write) {
-    writeFileSync(d.path, JSON.stringify(p))
+    writeFileSync(d.path, format(JSON.stringify(p), { filepath: d.path }))
   }
 })
+
+if (process.exitCode) {
+  console.log("You can automatically fix these fails by running `node test/verifyPackageVersions.js`")
+}
