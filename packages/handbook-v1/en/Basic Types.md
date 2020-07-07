@@ -236,7 +236,7 @@ let n: null = null;
 By default `null` and `undefined` are subtypes of all other types.
 That means you can assign `null` and `undefined` to something like `number`.
 
-However, when using the `--strictNullChecks` flag, `null` and `undefined` are only assignable to `unknown` and their respective types (the one exception being that `undefined` is also assignable to `void`).
+However, when using the `--strictNullChecks` flag, `null` and `undefined` are only assignable to `unknown`, `any` and their respective types (the one exception being that `undefined` is also assignable to `void`).
 This helps avoid _many_ common errors.
 In cases where you want to pass in either a `string` or `null` or `undefined`, you can use the union type `string | null | undefined`.
 
