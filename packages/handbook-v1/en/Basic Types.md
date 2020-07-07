@@ -190,6 +190,7 @@ notSure = false; // okay, definitely a boolean
 If you have a variable with an unknown type, you can narrow it to something more specific by doing `typeof` checks, comparison checks, or more advanced type guards that will be discussed in a later chapter:
 
 ```ts twoslash
+// @errors: 2322 2322 2322
 declare const maybe: unknown
 const aNumber: number = maybe // error, 'maybe' could be a string, object, boolean, undefined, or an array
 if (maybe === true) {
