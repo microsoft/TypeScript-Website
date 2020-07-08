@@ -601,10 +601,31 @@ import { createStore } from "redux";
 import { enthusiasm } from "./reducers/index";
 import { StoreState } from "./types/index";
 
-const store = createStore<StoreState>(enthusiasm, {
-  enthusiasmLevel: 1,
-  languageName: "TypeScript"
-});
+const store = createStore<StoreState, Action<any>, unknown, unknown>(enthusiasm);
+```
+
+The initial state is injected in the reducer, like this.
+
+```ts
+// src/reducers/index.tsx
+import { EnthusiasmAction } from '../actions';
+import { StoreState } from '../types/index';
+import { INCREMENT_ENTHUSIASM, DECREMENT_ENTHUSIASM } from '../constants/index';
+
+const initState: StoreState = {
+    languageName: "TypeScript",
+    enthusiasmLevel: 1
+}
+
+export function enthusiasm(state: StoreState = initState, action: EnthusiasmAction): StoreState {
+    switch (action.type) {
+        case INCREMENT_ENTHUSIASM:
+            return { ...state, enthusiasmLevel: state.enthusiasmLevel + 1 };
+        case DECREMENT_ENTHUSIASM:
+            return { ...state, enthusiasmLevel: Math.max(1, state.enthusiasmLevel - 1) };
+    }
+    return state;
+}
 ```
 
 `store` is, as you might've guessed, our central store for our application's global state.
