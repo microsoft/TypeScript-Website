@@ -178,8 +178,8 @@ console.log(colorName); // Displays 'Green' as its value is 2 above
 # Unknown
 
 We may need to describe the type of variables that we do not know when we are writing an application.
-These values may come from dynamic content, e.g. from the user or a 3rd party library.
-In these cases, we want to provide a type that tells the compiler and future readers that this variable could be anything so we give it the `unknown` type.
+These values may come from dynamic content &ndash; e.g. from the user &ndash; or we may want to intentionally accept all value in our API.
+In these cases, we want to provide a type that tells the compiler and future readers that this variable could be anything, so we give it the `unknown` type.
 
 ```ts twoslash
 let notSure: unknown = 4;
@@ -187,25 +187,70 @@ notSure = "maybe a string instead";
 notSure = false; // okay, definitely a boolean
 ```
 
+You might expect `Object` to play a similar role, as it does in other languages.
+However, variables of type `Object` do not allow you to assign `null` or `undefined` when `--strictNullChecks` is specified.
+
+```ts twoslash
+// @errors: 2322
+const notSure: Object = null; // error, type 'null' is not assignable to type 'Object'
+```
+
 If you have a variable with an unknown type, you can narrow it to something more specific by doing `typeof` checks, comparison checks, or more advanced type guards that will be discussed in a later chapter:
 
 ```ts twoslash
 // @errors: 2322 2322 2322
-declare const maybe: unknown
-const aNumber: number = maybe // error, 'maybe' could be a string, object, boolean, undefined, or an array
+declare const maybe: unknown;
+const aNumber: number = maybe; // error, 'maybe' could be a string, object, boolean, undefined, or an array
 if (maybe === true) {
-  const aBoolean: boolean = maybe // ok
-  const aString: string = maybe // error, 'maybe' is definitely a boolean, so definitely NOT a string
+  const aBoolean: boolean = maybe; // ok
+  const aString: string = maybe; // error, 'maybe' is definitely a boolean, so definitely NOT a string
 }
-if (typeof maybe === 'string') {
-  const aString: string = maybe // ok
-  const aBoolean: boolean = maybe // error, 'maybe' is definitely a string, so definitely NOT a boolean
+if (typeof maybe === "string") {
+  const aString: string = maybe; // ok
+  const aBoolean: boolean = maybe; // error, 'maybe' is definitely a string, so definitely NOT a boolean
 }
 ```
 
+# Any
+
+In some situations, not all type information is available or it's declaration would take an inappropriate amount of effort.
+These may occur for values from code that has been written without TypeScript or a 3rd party library.
+In these cases, we might want to opt-out of type checking.
+To do so, we label these values with the `any` type:
+
+```ts twoslash
+declare function getValue(key: string): any;
+const str: string = getValue("myString"); // ok, return value of 'getValue' is not checked
+```
+
+The `any` type is a powerful way to work with existing JavaScript, allowing you to gradually opt-in and opt-out of type checking during compilation.
+Just like `unknown`, variables of type `any` allow you to assign any value to them.
+Unlike `unknown`, TypeScript let you can call arbitrary methods on them, even ones that don't exist:
+
+```ts twoslash
+// @errors: 2571
+let looselyTyped: any = 4;
+looselyTyped.ifItExists(); // okay, ifItExists might exist at runtime
+looselyTyped.toFixed(); // okay, toFixed exists (but the compiler doesn't check)
+
+let strictlyTyped: unknown = 4;
+strictlyTyped.toFixed(); // Error: Property 'toFixed' doesn't exist on type 'unknown'.
+```
+
+The `any` type is also handy if you know some part of the type, but perhaps not all of it.
+For example, you may have an array but the array has a mix of different types:
+
+```ts twoslash
+let list: any[] = [1, true, "free"];
+list[1] = 100;
+```
+
+After all, remember that all the convenience of `any` comes at the coast of loosing type safety.
+Type safety is the main motivation for using TypeScript and you should try to avoid using `any` when not necessary.
+
 # Void
 
-`void` is the absence of having any type at all.
+`void` is a little like the opposite of `any`: the absence of having any type at all.
 You may commonly see this as the return type of functions that do not return a value:
 
 ```ts twoslash
@@ -256,7 +301,7 @@ Even `any` isn't assignable to `never`.
 Some examples of functions returning `never`:
 
 ```ts twoslash
-// Function returning never must not have any reachable end point
+// Function returning never must not have a reachable end point
 function error(message: string): never {
   throw new Error(message);
 }
@@ -290,25 +335,6 @@ create("string"); // Error
 create(false); // Error
 create(undefined); // Error
 ```
-
-# Any
-
-In some situations, you may want to tell the TypeScript compiler to turn off type checking for a variable entirely.  Normally, this is a bad idea because you will lose all type safety, but sometimes it can make sense such as when converting a JavaScript application into TypeScript and you need to get things compiling while you slowly work on improving type safety of your application over time.
-You might expect `Object` to play a similar role, as it does in other languages.
-However, variables of type `Object` only allow you to assign any value to them. You can't call arbitrary methods on them, even ones that actually exist:
-
-```ts twoslash
-// @errors: 2339
-let notSure: any = 4;
-notSure.ifItExists(); // okay, ifItExists might exist at runtime
-notSure.toFixed(); // okay, toFixed exists (but the compiler doesn't check)
-
-let prettySure: Object = 4;
-prettySure.toFixed(); // Error: Property 'toFixed' doesn't exist on type 'Object'.
-```
-
-In general, you should try to avoid the `any` type if you can and instead use `unknown` for variables that you don't know the type of at compile time, or the more advanced Mapped Types and Index Types which will be discussed in a later chapter.
-
 
 # Type assertions
 
