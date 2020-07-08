@@ -16,7 +16,7 @@ const getHTML = async (code: string, settings?: any) => {
   await gatsbyRemarkShiki({ markdownAST }, settings, {})
 
   // @ts-ignore
-  const twoslashes = markdownAST.children.filter(c => c.meta && c.meta.includes("twoslash")).map(c => c.twoslash)
+  const twoslashes = markdownAST.children.filter((c) => c.meta && c.meta.includes("twoslash")).map((c) => c.twoslash)
   const hAST = toHAST(markdownAST, { allowDangerousHTML: true })
   return {
     html: hastToHTML(hAST, { allowDangerousHTML: true }),
@@ -32,7 +32,7 @@ describe("with fixtures", () => {
   const fixturesFolder = join(__dirname, "fixtures")
   const resultsFolder = join(__dirname, "results")
 
-  readdirSync(fixturesFolder).forEach(fixtureName => {
+  readdirSync(fixturesFolder).forEach((fixtureName) => {
     const fixture = join(fixturesFolder, fixtureName)
     if (lstatSync(fixture).isDirectory()) {
       return

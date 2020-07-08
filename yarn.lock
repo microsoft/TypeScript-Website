@@ -11931,6 +11931,7 @@ fsevents@~2.1.2:
     "@typescript/twoslash": 0.6.2
     "@typescript/vfs": 1.1.2
     rehype-stringify: ^6.0.1
+    render-shiki-twoslash: 1.0.0
     shiki: ^0.1.6
     shiki-languages: ^0.1.6
     tsdx: ^0.12.3
@@ -22020,6 +22021,12 @@ fsevents@~2.1.2:
   checksum: 17dadf3d1f7c51411b7c426c8e2d6a660359bc8dae7686137120483fe4345bfca4bf7460d2c302aa741a7886c932d8dad708d2b971669d74e0fb3ff9a4814408
   languageName: node
   linkType: hard
+
+"render-shiki-twoslash@1.0.0, render-shiki-twoslash@workspace:packages/render-shiki-twoslash":
+  version: 0.0.0-use.local
+  resolution: "render-shiki-twoslash@workspace:packages/render-shiki-twoslash"
+  languageName: unknown
+  linkType: soft
 
 "renderkid@npm:^2.0.1":
   version: 2.0.3

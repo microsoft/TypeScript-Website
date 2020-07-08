@@ -148,7 +148,7 @@ OK world
 
   it("shows the right LSP results with the typescript site theme", async () => {
     const markdownAST = await getMarkdownASTForCode(file, {
-      theme: join(__dirname, "..", "..", "typescriptlang-org", " lib", " themes", " typescript-beta-light.json"),
+      theme: join(__dirname, "..", "..", "typescriptlang-org", "lib", "themes", "typescript-beta-light.json"),
     })
     const code = markdownAST.children[1]
 

@@ -25,7 +25,7 @@ export function createHighlightedString2(ranges: Range[], text: string) {
 
   // So, use an obscure character to indicate a real < for HTML, then switch it after
 
-  ranges.forEach(r => {
+  ranges.forEach((r) => {
     if (r.classes === "lsp") {
       actions.push({ text: "⇍/data-lsp⇏", index: r.end })
       actions.push({ text: `⇍data-lsp lsp=⇯${r.lsp || ""}⇯⇏`, index: r.begin })
@@ -42,7 +42,7 @@ export function createHighlightedString2(ranges: Range[], text: string) {
   // Apply all the edits
   actions
     .sort((l, r) => r.index - l.index)
-    .forEach(action => {
+    .forEach((action) => {
       html = splice(html, action.index, 0, action.text)
     })
 

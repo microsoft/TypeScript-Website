@@ -20,6 +20,7 @@
   "dependencies": {
     "@typescript/twoslash": "0.6.2",
     "@typescript/vfs": "1.1.2",
+    "render-shiki-twoslash": "1.0.0",
     "shiki": "^0.1.6",
     "shiki-languages": "^0.1.6",
     "typescript": "*",
