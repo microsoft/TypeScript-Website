@@ -57,7 +57,6 @@ const isAndroid = navigator && /android/i.test(navigator.userAgent)
 
 /** Default Monaco settings for playground */
 const sharedEditorOptions: import("monaco-editor").editor.IEditorOptions = {
-  automaticLayout: true,
   scrollBeyondLastLine: true,
   scrollBeyondLastColumn: 3,
   minimap: {
@@ -154,7 +153,7 @@ export const createTypeScriptSandbox = (
   // In the future it'd be good to add support for an 'add many files'
   const addLibraryToRuntime = (code: string, path: string) => {
     defaults.addExtraLib(code, path)
-    monaco.editor.createModel(code, "ts", monaco.Uri.file(path))
+    monaco.editor.createModel(code, "javascript", monaco.Uri.file(path))
     config.logger.log(`[ATA] Adding ${path} to runtime`)
   }
 
