@@ -44,21 +44,16 @@ it("runs a virtual environment and gets the right results from the LSP", () => {
   `)
 })
 
-it("runs can use a FS backed system", () => {
+it("can use a FS backed system", () => {
   const compilerOpts: ts.CompilerOptions = { target: ts.ScriptTarget.ES2016, esModuleInterop: true }
-  const fsMap = createDefaultMapFromNodeModules(compilerOpts)
-  addAllFilesFromFolder(fsMap, path.resolve(path.join(__dirname, "../../../node_modules/@types")))
+  const fsMap = new Map<string, string>()
 
   const content = `import * as path from 'path';\npath.`
   fsMap.set("index.ts", content)
 
-  const system = createFSBackedSystem(fsMap)
-  const env = createVirtualTypeScriptEnvironment(
-    system,
-    ["/node_modules/@types/node/path.d.ts", "index.ts"],
-    ts,
-    compilerOpts
-  )
+  const monorepoRoot = path.join(__dirname, "..", "..", "..")
+  const system = createFSBackedSystem(fsMap, monorepoRoot)
+  const env = createVirtualTypeScriptEnvironment(system, ["index.ts"], ts, compilerOpts)
 
   const completions = env.languageService.getCompletionsAtPosition("index.ts", content.length, {})
 

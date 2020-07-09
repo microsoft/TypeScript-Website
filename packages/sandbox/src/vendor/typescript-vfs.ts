@@ -218,7 +218,11 @@ export const addAllFilesFromFolder = (map: Map<string, string>, workingDir: stri
   allFiles.forEach(lib => {
     const fsPath = "/node_modules/@types" + lib.replace(workingDir, "")
     const content = fs.readFileSync(lib, "utf8")
-    map.set(fsPath, content)
+    const validExtensions = [".ts", ".tsx"]
+
+    if (validExtensions.includes(path.extname(fsPath))) {
+      map.set(fsPath, content)
+    }
   })
 }
 
@@ -371,7 +375,44 @@ export function createSystem(files: Map<string, string>): System {
     write: () => notImplemented("write"),
     writeFile: (fileName, contents) => {
       files.set(fileName, contents)
-    }
+    },
+  }
+}
+
+/**
+ * Creates a file-system backed System object which can be used in a TypeScript program, this
+ * is what provides read/write aspects of the virtual fs
+ */
+export function createFSBackedSystem(files: Map<string, string>): System {
+  const fs = require("fs")
+
+  return {
+    args: [],
+    createDirectory: () => notImplemented("createDirectory"),
+    // TODO: could make a real file tree
+    directoryExists: audit("directoryExists", directory => {
+      return Array.from(files.keys()).some(path => path.startsWith(directory)) || fs.existsSync(directory)
+    }),
+    exit: () => notImplemented("exit"),
+    fileExists: audit(
+      "fileExists",
+      fileName => files.has(fileName) || files.has(libize(fileName)) || fs.existsSync(fileName)
+    ),
+    getCurrentDirectory: () => "/",
+    getDirectories: () => [],
+    getExecutingFilePath: () => notImplemented("getExecutingFilePath"),
+    readDirectory: audit("readDirectory", directory => (directory === "/" ? Array.from(files.keys()) : [])),
+    readFile: audit(
+      "readFile",
+      fileName => files.get(fileName) || files.get(libize(fileName) || fs.readFileSync(fileName, { encoding: "utf-8" }))
+    ),
+    resolvePath: path => path,
+    newLine: "\n",
+    useCaseSensitiveFileNames: true,
+    write: () => notImplemented("write"),
+    writeFile: (fileName, contents) => {
+      files.set(fileName, contents)
+    },
   }
 }
 
