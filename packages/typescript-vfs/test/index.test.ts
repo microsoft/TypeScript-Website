@@ -43,7 +43,7 @@ it("runs a virtual environment and gets the right results from the LSP", () => {
   `)
 })
 
-it.only("can use a FS backed system", () => {
+it("can use a FS backed system", () => {
   const compilerOpts: ts.CompilerOptions = { target: ts.ScriptTarget.ES2016, esModuleInterop: true }
   const fsMap = new Map<string, string>()
 
