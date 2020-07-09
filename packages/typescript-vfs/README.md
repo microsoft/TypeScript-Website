@@ -188,7 +188,7 @@ const compilerOpts: ts.CompilerOptions = { target: ts.ScriptTarget.ES2016, esMod
 const fsMap = new Map<string, string>()
 
 // If using imports where the types don't directly match up to their FS representation (like the
-// imports for node) then use triple-slash references to make sure globals are set up first.
+// imports for node) then use triple-slash directives to make sure globals are set up first.
 const content = `/// <reference types="node" />\nimport * as path from 'path';\npath.`
 fsMap.set("index.ts", content)
 
