@@ -100,7 +100,7 @@ A code sample markup extension for TypeScript. Available on npm: [@typescript/tw
 
 ## TypeScript VFS
 
-A comprehensive way to run TypeScript projects in-memory in a browser or node environment. Available on npm: [@typescript/twoslash](https://www.npmjs.com/package/@typescript/vfs)
+A comprehensive way to run TypeScript projects in-memory in a browser or node environment. Available on npm: [@typescript/vfs](https://www.npmjs.com/package/@typescript/vfs)
 
 ## Create Playground Plugin
 
