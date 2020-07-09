@@ -1,7 +1,6 @@
 import {
   createSystem,
   createFSBackedSystem,
-  addAllFilesFromFolder,
   createVirtualTypeScriptEnvironment,
   createDefaultMapFromNodeModules,
   createDefaultMapFromCDN,
@@ -44,11 +43,11 @@ it("runs a virtual environment and gets the right results from the LSP", () => {
   `)
 })
 
-it("can use a FS backed system", () => {
+it.only("can use a FS backed system", () => {
   const compilerOpts: ts.CompilerOptions = { target: ts.ScriptTarget.ES2016, esModuleInterop: true }
   const fsMap = new Map<string, string>()
 
-  const content = `import * as path from 'path';\npath.`
+  const content = `/// <reference types="node" />\nimport * as path from 'path';\npath.`
   fsMap.set("index.ts", content)
 
   const monorepoRoot = path.join(__dirname, "..", "..", "..")
@@ -56,8 +55,8 @@ it("can use a FS backed system", () => {
   const env = createVirtualTypeScriptEnvironment(system, ["index.ts"], ts, compilerOpts)
 
   const completions = env.languageService.getCompletionsAtPosition("index.ts", content.length, {})
-
-  expect(completions).toMatchSnapshot()
+  const hasPathJoinFunc = completions?.entries.find(c => c.name === "join")
+  expect(hasPathJoinFunc).toBeTruthy()
 })
 
 // Previously lib.dom.d.ts was not included

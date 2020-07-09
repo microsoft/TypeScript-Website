@@ -187,13 +187,17 @@ If you can reliably access the file-system, then you can have a simpler time:
 const compilerOpts: ts.CompilerOptions = { target: ts.ScriptTarget.ES2016, esModuleInterop: true }
 const fsMap = new Map<string, string>()
 
-const content = `import * as path from 'path';\npath.`
+// If using imports where the types don't directly match up to their FS representation (like the
+// imports for node) then use triple-slash references to make sure globals are set up first.
+const content = `/// <reference types="node" />\nimport * as path from 'path';\npath.`
 fsMap.set("index.ts", content)
 
+// By providing a project root, then the system knows how to resolve node_modules correctly
 const projectRoot = path.join(__dirname, "..")
 const system = createFSBackedSystem(fsMap, projectRoot)
 const env = createVirtualTypeScriptEnvironment(system, ["index.ts"], ts, compilerOpts)
 
+// Requests auto-completions at `path.|`
 const completions = env.languageService.getCompletionsAtPosition("index.ts", content.length, {})
 ```
 
