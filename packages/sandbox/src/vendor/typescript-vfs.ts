@@ -68,11 +68,11 @@ export function createVirtualTypeScriptEnvironment(
         prevFullContents.slice(prevTextSpan.start + prevTextSpan.length)
       const newSourceFile = ts.updateSourceFile(prevSourceFile, newText, {
         span: prevTextSpan,
-        newLength: content.length
+        newLength: content.length,
       })
 
       updateFile(newSourceFile)
-    }
+    },
   }
 }
 
@@ -142,7 +142,7 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
     "lib.esnext.d.ts",
     "lib.esnext.full.d.ts",
     "lib.esnext.intl.d.ts",
-    "lib.esnext.symbol.d.ts"
+    "lib.esnext.symbol.d.ts",
   ]
 
   const targetToCut = ts.ScriptTarget[target]
@@ -196,10 +196,10 @@ export const addAllFilesFromFolder = (map: Map<string, string>, workingDir: stri
   const path = require("path")
   const fs = require("fs")
 
-  const walk = function(dir: string) {
+  const walk = function (dir: string) {
     let results: string[] = []
     const list = fs.readdirSync(dir)
-    list.forEach(function(file: string) {
+    list.forEach(function (file: string) {
       file = path.join(dir, file)
       const stat = fs.statSync(file)
       if (stat && stat.isDirectory()) {
@@ -343,7 +343,7 @@ const defaultCompilerOptions = (ts: typeof import("typescript")): CompilerOption
     suppressOutputPathCheck: true,
     skipLibCheck: true,
     skipDefaultLibCheck: true,
-    moduleResolution: ts.ModuleResolutionKind.NodeJs
+    moduleResolution: ts.ModuleResolutionKind.NodeJs,
   }
 }
 
@@ -380,32 +380,51 @@ export function createSystem(files: Map<string, string>): System {
 }
 
 /**
- * Creates a file-system backed System object which can be used in a TypeScript program, this
- * is what provides read/write aspects of the virtual fs
+ * Creates a file-system backed System object which can be used in a TypeScript program, you provide
+ * a set of virtual files which are prioritised over the FS versions, then a path to the root of your
+ * project (basically the folder your node_modules lives)
  */
-export function createFSBackedSystem(files: Map<string, string>): System {
+export function createFSBackedSystem(files: Map<string, string>, projectRoot: string): System {
   const fs = require("fs")
+  const path = require("path")
 
   return {
     args: [],
     createDirectory: () => notImplemented("createDirectory"),
     // TODO: could make a real file tree
     directoryExists: audit("directoryExists", directory => {
-      return Array.from(files.keys()).some(path => path.startsWith(directory)) || fs.existsSync(directory)
+      return (
+        Array.from(files.keys()).some(path => path.startsWith(directory)) ||
+        fs.existsSync(path.join(projectRoot, directory))
+      )
     }),
     exit: () => notImplemented("exit"),
-    fileExists: audit(
-      "fileExists",
-      fileName => files.has(fileName) || files.has(libize(fileName)) || fs.existsSync(fileName)
-    ),
+    fileExists: audit("fileExists", fileName => {
+      if (files.has(fileName)) return true
+
+      const fsPath = path.join(projectRoot, fileName)
+      const libPath = path.join(projectRoot, "node_modules", "typescript", "lib", fileName)
+
+      for (const filepath of [fsPath, libPath]) {
+        if (fs.existsSync(filepath)) return true
+      }
+      return false
+    }),
     getCurrentDirectory: () => "/",
     getDirectories: () => [],
     getExecutingFilePath: () => notImplemented("getExecutingFilePath"),
     readDirectory: audit("readDirectory", directory => (directory === "/" ? Array.from(files.keys()) : [])),
-    readFile: audit(
-      "readFile",
-      fileName => files.get(fileName) || files.get(libize(fileName) || fs.readFileSync(fileName, { encoding: "utf-8" }))
-    ),
+    readFile: audit("readFile", fileName => {
+      if (files.has(fileName)) return files.get(fileName)
+
+      const fsPath = path.join(projectRoot, fileName)
+      const libPath = path.join(projectRoot, "node_modules", "typescript", "lib", fileName)
+      for (const filepath of [fsPath, libPath]) {
+        if (fs.existsSync(filepath)) return fs.readFileSync(filepath, { encoding: "utf-8" })
+      }
+
+      return undefined
+    }),
     resolvePath: path => path,
     newLine: "\n",
     useCaseSensitiveFileNames: true,
@@ -454,14 +473,14 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
           )
         )
       },
-      useCaseSensitiveFileNames: () => sys.useCaseSensitiveFileNames
+      useCaseSensitiveFileNames: () => sys.useCaseSensitiveFileNames,
     },
     updateFile: sourceFile => {
       const alreadyExists = sourceFiles.has(sourceFile.fileName)
       sys.writeFile(sourceFile.fileName, sourceFile.text)
       sourceFiles.set(sourceFile.fileName, sourceFile)
       return alreadyExists
-    }
+    },
   }
   return vHost
 }
@@ -494,7 +513,7 @@ export function createVirtualLanguageServiceHost(
     getScriptVersion: fileName => {
       return fileVersions.get(fileName) || "0"
     },
-    writeFile: sys.writeFile
+    writeFile: sys.writeFile,
   }
 
   type Return = {
@@ -511,7 +530,7 @@ export function createVirtualLanguageServiceHost(
         fileNames.push(sourceFile.fileName)
       }
       updateFile(sourceFile)
-    }
+    },
   }
   return lsHost
 }
