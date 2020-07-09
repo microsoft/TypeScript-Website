@@ -107,8 +107,10 @@ When accessing an element with a known index, the correct type is retrieved:
 let x: [string, number];
 x = ["hello", 10]; // OK
 /// ---cut---
-console.log(x[0].substring(1)); // OK
-console.log(x[1].substring(1)); // Error, 'number' does not have 'substring'
+// OK
+console.log(x[0].substring(1));
+
+console.log(x[1].substring(1));
 ```
 
 Accessing an element outside the set of known indices fails with an error:
@@ -118,9 +120,9 @@ Accessing an element outside the set of known indices fails with an error:
 let x: [string, number];
 x = ["hello", 10]; // OK
 /// ---cut---
-x[3] = "world"; // Error, Property '3' does not exist on type '[string, number]'.
+x[3] = "world";
 
-console.log(x[5].toString()); // Error, Property '5' does not exist on type '[string, number]'.
+console.log(x[5].toString());
 ```
 
 # Enum
@@ -172,27 +174,22 @@ enum Color {
 }
 let colorName: string = Color[2];
 
-console.log(colorName); // Displays 'Green' as its value is 2 above
+// Displays 'Green'
+console.log(colorName);
 ```
 
 # Unknown
 
 We may need to describe the type of variables that we do not know when we are writing an application.
-These values may come from dynamic content &ndash; e.g. from the user &ndash; or we may want to intentionally accept all value in our API.
+These values may come from dynamic content &ndash; e.g. from the user &ndash; or we may want to intentionally accept all values in our API.
 In these cases, we want to provide a type that tells the compiler and future readers that this variable could be anything, so we give it the `unknown` type.
 
 ```ts twoslash
 let notSure: unknown = 4;
 notSure = "maybe a string instead";
-notSure = false; // okay, definitely a boolean
-```
 
-You might expect `Object` to play a similar role, as it does in other languages.
-However, variables of type `Object` do not allow you to assign `null` or `undefined` when `--strictNullChecks` is specified.
-
-```ts twoslash
-// @errors: 2322
-const notSure: Object = null; // error, type 'null' is not assignable to type 'Object'
+// OK, definitely a boolean
+notSure = false;
 ```
 
 If you have a variable with an unknown type, you can narrow it to something more specific by doing `typeof` checks, comparison checks, or more advanced type guards that will be discussed in a later chapter:
@@ -200,14 +197,21 @@ If you have a variable with an unknown type, you can narrow it to something more
 ```ts twoslash
 // @errors: 2322 2322 2322
 declare const maybe: unknown;
-const aNumber: number = maybe; // error, 'maybe' could be a string, object, boolean, undefined, or an array
+// 'maybe' could be a string, object, boolean, undefined, or an array
+const aNumber: number = maybe;
+
 if (maybe === true) {
-  const aBoolean: boolean = maybe; // ok
-  const aString: string = maybe; // error, 'maybe' is definitely a boolean, so definitely NOT a string
+  // TypeScript knows that maybe is a boolean now
+  const aBoolean: boolean = maybe;
+  // So, it cannot be a string
+  const aString: string = maybe;
 }
+
 if (typeof maybe === "string") {
-  const aString: string = maybe; // ok
-  const aBoolean: boolean = maybe; // error, 'maybe' is definitely a string, so definitely NOT a boolean
+  // TypeScript knows that maybe is a string
+  const aString: string = maybe;
+  // So, it cannot be a boolean
+  const aBoolean: boolean = maybe;
 }
 ```
 
@@ -220,33 +224,36 @@ To do so, we label these values with the `any` type:
 
 ```ts twoslash
 declare function getValue(key: string): any;
-const str: string = getValue("myString"); // ok, return value of 'getValue' is not checked
+// OK, return value of 'getValue' is not checked
+const str: string = getValue("myString");
 ```
 
 The `any` type is a powerful way to work with existing JavaScript, allowing you to gradually opt-in and opt-out of type checking during compilation.
-Just like `unknown`, variables of type `any` allow you to assign any value to them.
-Unlike `unknown`, TypeScript let you can call arbitrary methods on them, even ones that don't exist:
+
+Unlike `unknown`, TypeScript lets you call arbitrary methods, even ones that don't exist:
 
 ```ts twoslash
 // @errors: 2571
 let looselyTyped: any = 4;
-looselyTyped.ifItExists(); // okay, ifItExists might exist at runtime
-looselyTyped.toFixed(); // okay, toFixed exists (but the compiler doesn't check)
+// OK, ifItExists might exist at runtime
+looselyTyped.ifItExists();
+// OK, toFixed exists (but the compiler doesn't check)
+looselyTyped.toFixed();
 
 let strictlyTyped: unknown = 4;
-strictlyTyped.toFixed(); // Error: Property 'toFixed' doesn't exist on type 'unknown'.
+strictlyTyped.toFixed();
 ```
 
-The `any` type is also handy if you know some part of the type, but perhaps not all of it.
-For example, you may have an array but the array has a mix of different types:
+The `any` will continue to propagate through your objects:
 
 ```ts twoslash
-let list: any[] = [1, true, "free"];
-list[1] = 100;
+let looselyTyped: any = {};
+let d = looselyTyped.a.b.c.d;
+//  ^?
 ```
 
-After all, remember that all the convenience of `any` comes at the coast of loosing type safety.
-Type safety is the main motivation for using TypeScript and you should try to avoid using `any` when not necessary.
+After all, remember that all the convenience of `any` comes at the cost of loosing type safety.
+Type safety is one of the main motivations for using TypeScript and you should try to avoid using `any` when not necessary.
 
 # Void
 
@@ -264,7 +271,8 @@ Declaring variables of type `void` is not useful because you can only assign `nu
 ```ts twoslash
 // @strict: false
 let unusable: void = undefined;
-unusable = null; // OK if `--strictNullChecks` is not given
+// OK if `--strictNullChecks` is not given
+unusable = null;
 ```
 
 # Null and Undefined
@@ -327,14 +335,17 @@ With `object` type, APIs like `Object.create` can be better represented. For exa
 // @errors: 2345
 declare function create(o: object | null): void;
 
-create({ prop: 0 }); // OK
-create(null); // OK
+// OK
+create({ prop: 0 });
+create(null);
 
-create(42); // Error
-create("string"); // Error
-create(false); // Error
-create(undefined); // Error
+create(42);
+create("string");
+create(false);
+create(undefined);
 ```
+
+Generally, you won't need to use this.
 
 # Type assertions
 
@@ -347,20 +358,21 @@ It has no runtime impact, and is used purely by the compiler.
 TypeScript assumes that you, the programmer, have performed any special checks that you need.
 
 Type assertions have two forms.
-One is the "angle-bracket" syntax:
 
-```ts twoslash
-let someValue: any = "this is a string";
-
-let strLength: number = (<string>someValue).length;
-```
-
-And the other is the `as`-syntax:
+One is the `as`-syntax:
 
 ```ts twoslash
 let someValue: any = "this is a string";
 
 let strLength: number = (someValue as string).length;
+```
+
+The other version is the "angle-bracket" syntax:
+
+```ts twoslash
+let someValue: any = "this is a string";
+
+let strLength: number = (<string>someValue).length;
 ```
 
 The two samples are equivalent.
