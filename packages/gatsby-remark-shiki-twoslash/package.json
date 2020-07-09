@@ -21,9 +21,9 @@
   "dependencies": {
     "@typescript/twoslash": "0.5.2",
     "@typescript/vfs": "1.0.1",
-    "typescript": "*",
     "shiki": "^0.1.6",
     "shiki-languages": "^0.1.6",
+    "typescript": "*",
     "unist-util-visit": "^2.0.0"
   },
   "devDependencies": {
