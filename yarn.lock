@@ -25685,8 +25685,10 @@ resolve@^1.17.0:
   resolution: "typescript-sandbox@workspace:packages/sandbox"
   dependencies:
     "@types/jest": ^25.1.3
+    jest: "*"
     monaco-editor: ~0.20.0
     monaco-typescript: ^3.7.0
+    ts-jest: "*"
     typescript: "*"
   languageName: unknown
   linkType: soft
