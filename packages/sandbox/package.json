@@ -11,12 +11,22 @@
   "scripts": {
     "bootstrap": "node script/downloadReleases.js && yarn build",
     "build": "tsc",
-    "test": "tsdx test"
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      ".cache"
+    ]
   },
   "devDependencies": {
     "@types/jest": "^25.1.3",
+    "jest": "*",
     "monaco-editor": "~0.20.0",
     "monaco-typescript": "^3.7.0",
+    "ts-jest": "*",
     "typescript": "*"
   }
 }
