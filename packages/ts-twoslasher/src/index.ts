@@ -1,4 +1,6 @@
-import debug from "debug"
+const hasLocalStorage = typeof localStorage !== `undefined`
+const hasProcess = typeof process !== `undefined`
+const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 
 type LZ = typeof import("lz-string")
 type TS = typeof import("typescript")
@@ -17,7 +19,7 @@ import { validateInput, validateCodeForErrors } from "./validation"
 
 import { createSystem, createVirtualTypeScriptEnvironment, createDefaultMapFromNodeModules } from "@typescript/vfs"
 
-const log = debug("twoslasher")
+const log = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
 
 // Hacking in some internal stuff
 declare module "typescript" {
