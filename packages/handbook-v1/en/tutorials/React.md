@@ -32,10 +32,10 @@ npm install -g create-react-app
 We'll create a new project called `my-app`:
 
 ```shell
-create-react-app my-app --scripts-version=react-scripts-ts
+create-react-app my-app --template typescript
 ```
 
-[react-scripts-ts](https://www.npmjs.com/package/react-scripts-ts) is a set of adjustments to take the standard create-react-app project pipeline and bring TypeScript into the mix.
+The [`typescript` template](https://create-react-app.dev/docs/getting-started/#creating-a-typescript-app) is a set of adjustments to take the standard create-react-app project pipeline and bring TypeScript into the mix.
 
 At this point, your project layout should look like the following:
 
