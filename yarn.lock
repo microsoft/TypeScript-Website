@@ -18053,6 +18053,16 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"micromatch@npm:4.x, micromatch@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "micromatch@npm:4.0.2"
+  dependencies:
+    braces: ^3.0.1
+    picomatch: ^2.0.5
+  checksum: 0cb0e11d647cbb65e398a0a8a1340a7fb751ae2722346219c435704cfac8b3275a94a6464236fe867f52ad46a24046d3bc4ac11b3d21ddb73bc44e27cf1e4904
+  languageName: node
+  linkType: hard
+
 "micromatch@npm:^3.1.10, micromatch@npm:^3.1.4":
   version: 3.1.10
   resolution: "micromatch@npm:3.1.10"
@@ -18071,16 +18081,6 @@ fsevents@^1.2.7:
     snapdragon: ^0.8.1
     to-regex: ^3.0.2
   checksum: a60e73539a3ac6c6231f11642257a460861302df5986a94fd418d1b64a817409cda778d7023b53541a2091b523eda2c6f7212721e380d0b696284b7ca0a45bda
-  languageName: node
-  linkType: hard
-
-"micromatch@npm:^4.0.2":
-  version: 4.0.2
-  resolution: "micromatch@npm:4.0.2"
-  dependencies:
-    braces: ^3.0.1
-    picomatch: ^2.0.5
-  checksum: 0cb0e11d647cbb65e398a0a8a1340a7fb751ae2722346219c435704cfac8b3275a94a6464236fe867f52ad46a24046d3bc4ac11b3d21ddb73bc44e27cf1e4904
   languageName: node
   linkType: hard
 
@@ -18372,6 +18372,15 @@ fsevents@^1.2.7:
   bin:
     mkdirp: bin/cmd.js
   checksum: 8ef65f4f0c7642b2f6e7af417eb9f3f24e8d1e4d612eddc5b1ee3b0ef974ccfaafb38bba6cc9178510c5aae82a6ef9ad85037448c9856b2fb8308162a7c8987e
+  languageName: node
+  linkType: hard
+
+"mkdirp@npm:1.x":
+  version: 1.0.4
+  resolution: "mkdirp@npm:1.0.4"
+  bin:
+    mkdirp: bin/cmd.js
+  checksum: 1aa3a6a2d7514f094a91329ec09994f5d32d2955a4985ecbb3d86f2aaeafc4aa11521f98d606144c1d49cd9835004d9a73342709b8c692c92e59eacf37412468
   languageName: node
   linkType: hard
 
@@ -23221,21 +23230,21 @@ resolve@^1.17.0:
   languageName: node
   linkType: hard
 
+"semver@npm:7.x, semver@npm:^7.2.1, semver@npm:^7.3.2":
+  version: 7.3.2
+  resolution: "semver@npm:7.3.2"
+  bin:
+    semver: bin/semver.js
+  checksum: bceb46d396d039afb5be2b2860bce1b0a43ecbadc72dde7ebe9c56dd9035ca50d9b8e086208ff9bbe53773ebde0bcfc6fc0842d7358398bca7054bb9ced801e3
+  languageName: node
+  linkType: hard
+
 "semver@npm:^6.0.0, semver@npm:^6.1.2, semver@npm:^6.2.0, semver@npm:^6.3.0":
   version: 6.3.0
   resolution: "semver@npm:6.3.0"
   bin:
     semver: ./bin/semver.js
   checksum: f0d155c06a67cc7e500c92d929339f1c6efd4ce9fe398aee6acc00a2333489cca0f5b4e76ee7292beba237fcca4b5a3d4a6153471f105f56299801bdab37289f
-  languageName: node
-  linkType: hard
-
-"semver@npm:^7.2.1, semver@npm:^7.3.2":
-  version: 7.3.2
-  resolution: "semver@npm:7.3.2"
-  bin:
-    semver: bin/semver.js
-  checksum: bceb46d396d039afb5be2b2860bce1b0a43ecbadc72dde7ebe9c56dd9035ca50d9b8e086208ff9bbe53773ebde0bcfc6fc0842d7358398bca7054bb9ced801e3
   languageName: node
   linkType: hard
 
@@ -25324,6 +25333,29 @@ resolve@^1.17.0:
   languageName: node
   linkType: hard
 
+"ts-jest@npm:*":
+  version: 26.1.1
+  resolution: "ts-jest@npm:26.1.1"
+  dependencies:
+    bs-logger: 0.x
+    buffer-from: 1.x
+    fast-json-stable-stringify: 2.x
+    json5: 2.x
+    lodash.memoize: 4.x
+    make-error: 1.x
+    micromatch: 4.x
+    mkdirp: 1.x
+    semver: 7.x
+    yargs-parser: 18.x
+  peerDependencies:
+    jest: ">=26 <27"
+    typescript: ">=3.8 <4.0"
+  bin:
+    ts-jest: cli.js
+  checksum: e972f77c2a4fbf1ef0efd06b393d19de23cc279a13655da06e5e1320423bde903759d687f266df9cbc24c322728aca1ba745b68a0528d5a8e821e6168acb3a9b
+  languageName: node
+  linkType: hard
+
 "ts-jest@npm:^24.0.2":
   version: 24.2.0
   resolution: "ts-jest@npm:24.2.0"
@@ -25727,6 +25759,7 @@ resolve@^1.17.0:
     react-intl: ^3.12.0
     rehype-shiki: ^0.0.7
     ts-debounce: ^2.0.1
+    ts-jest: "*"
     ts-node: ^8.6.2
     typescript: "*"
     typescript-playground: 0.1.0
@@ -27533,6 +27566,16 @@ resolve@^1.17.0:
   languageName: node
   linkType: hard
 
+"yargs-parser@npm:18.x, yargs-parser@npm:^18.1.2, yargs-parser@npm:^18.1.3":
+  version: 18.1.3
+  resolution: "yargs-parser@npm:18.1.3"
+  dependencies:
+    camelcase: ^5.0.0
+    decamelize: ^1.2.0
+  checksum: 33871721679053cc38165afc6356c06c3e820459589b5db78f315886105070eb90cbb583cd6515fa4231937d60c80262ca2b7c486d5942576802446318a39597
+  languageName: node
+  linkType: hard
+
 "yargs-parser@npm:^11.1.1":
   version: 11.1.1
   resolution: "yargs-parser@npm:11.1.1"
@@ -27560,16 +27603,6 @@ resolve@^1.17.0:
     camelcase: ^5.0.0
     decamelize: ^1.2.0
   checksum: 4127b9300e1b0f48e1271f38a588b59e1a0b9d8925816e840dde101b4a66683bcd5b159c51346e8bb023dcbabfcf9d78257559d4f9433dc1091d4e876c416c83
-  languageName: node
-  linkType: hard
-
-"yargs-parser@npm:^18.1.2, yargs-parser@npm:^18.1.3":
-  version: 18.1.3
-  resolution: "yargs-parser@npm:18.1.3"
-  dependencies:
-    camelcase: ^5.0.0
-    decamelize: ^1.2.0
-  checksum: 33871721679053cc38165afc6356c06c3e820459589b5db78f315886105070eb90cbb583cd6515fa4231937d60c80262ca2b7c486d5942576802446318a39597
   languageName: node
   linkType: hard
 
