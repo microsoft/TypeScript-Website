@@ -29,6 +29,8 @@ jobs:
           yarn build
           yarn build-site
           cp -r packages/typescriptlang-org/public site
+        env:
+          YARN_CHECKSUM_BEHAVIOR: ignore
 
       - name: Send a message to Microsoft Teams
         if: failure()

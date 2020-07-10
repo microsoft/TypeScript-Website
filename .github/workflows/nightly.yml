@@ -16,7 +16,10 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: "13.x"
+
       - run: yarn install
+        env:
+          YARN_CHECKSUM_BEHAVIOR: ignore
 
       # Update all the translation issues on a nightly basis
       - run: node packages/typescriptlang-org/scripts/updateGitHubTranslationIssues.ts

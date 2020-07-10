@@ -41,15 +41,15 @@
     ]
   },
   "scripts": {
-    "bootstrap": "yarn workspaces run bootstrap && yarn workspaces run build",
+    "bootstrap": "yarn workspaces foreach -v -a run bootstrap && yarn workspaces foreach -v -a run build",
     "start": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"yarn workspace typescriptlang-org start\"",
     "start-twoslash": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"yarn workspace typescriptlang-org start-twoslash\"",
-    "build": "yarn workspaces run build",
+    "build": "yarn workspaces foreach -v -a run build",
     "build-site": "yarn workspace typescriptlang-org build",
     "compile": "yarn workspace typescriptlang-org tsc",
     "update-snapshots": "yarn workspace typescriptlang-org update-snapshots",
     "clean": "yarn workspace typescriptlang-org gatsby clean",
-    "test": "CI=true yarn workspaces run test"
+    "test": "CI=true yarn workspaces foreach -v -a run test"
   },
   "dependencies": {
     "@types/express": "^4.17.6",
