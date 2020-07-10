@@ -14,6 +14,9 @@ jobs:
           node-version: "13.x"
 
       # Get local dependencies
-      - run: YARN_CHECKSUM_BEHAVIOR=ignore yarn install
+      - run: yarn install
+        env:
+          YARN_CHECKSUM_BEHAVIOR: ignore
+
       - run: yarn bootstrap
       - run: yarn build
