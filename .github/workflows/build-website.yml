@@ -17,6 +17,7 @@ jobs:
 
       # Get local dependencies
       - run: yarn install
+
       # danger for PR builds
       - if: github.event_name == 'pull_request'
         run: yarn danger ci
@@ -33,7 +34,7 @@ jobs:
       # Switch to node 13
       - uses: actions/setup-node@v1
         with:
-          node-version: '13.x'
+          node-version: "13.x"
 
       # Build v2
       - name: Build website v2
@@ -50,6 +51,8 @@ jobs:
           yarn build-site  --prefix-paths # ensure the gatsby site knows it isn't root
           cp -r packages/typescriptlang-org/public ../site/v2
           cd ..
+        env:
+          YARN_CHECKSUM_BEHAVIOR: ignore
 
       # PR: Deploy if we can
       - name: Deploy PR

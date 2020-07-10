@@ -26,7 +26,9 @@ jobs:
 
       # Get local dependencies
       - run: sudo apt install calibre
-      - run: YARN_CHECKSUM_BEHAVIOR=ignore yarn install
+      - run: yarn install
+        env:
+          YARN_CHECKSUM_BEHAVIOR: ignore
 
       # Verify dependencies are hooked up right
       - run: node test/verifyPackageVersions.js
