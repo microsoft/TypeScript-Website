@@ -13,12 +13,12 @@ export const createPages: GatsbyNode["createPages"] = async args => {
   // creation of the pages
 
   setupRedirects(args.actions.createRedirect)
-  await createOldHandbookPages(args.graphql, args.actions.createPage)
-  await createTSConfigReference(args.graphql, args.actions.createPage)
-  await createPlaygrounds(args.graphql, args.actions.createPage)
+  // await createOldHandbookPages(args.graphql, args.actions.createPage)
+  // await createTSConfigReference(args.graphql, args.actions.createPage)
+  // await createPlaygrounds(args.graphql, args.actions.createPage)
 
-  await createPlaygroundExamplePages(args.graphql, args.actions.createPage)
-  await createRootPagesLocalized(args.graphql, args.actions.createPage)
+  // await createPlaygroundExamplePages(args.graphql, args.actions.createPage)
+  // await createRootPagesLocalized(args.graphql, args.actions.createPage)
 
   return null
 }
