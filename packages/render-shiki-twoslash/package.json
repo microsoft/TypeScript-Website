@@ -13,10 +13,17 @@
     "lint": "tsdx lint",
     "bootstrap": "tsdx build"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
+  "dependencies": {
+    "@typescript/twoslash": "0.6.2",
+    "@typescript/vfs": "1.1.2",
+    "shiki": "^0.1.6",
+    "shiki-languages": "^0.1.6",
+    "typescript": "*"
+  },
+  "devDependencies": {
+    "@rollup/pluginutils": "*",
+    "tsdx": "^0.12.3",
+    "tslib": "^1.10.0"
   },
   "prettier": {
     "printWidth": 120,

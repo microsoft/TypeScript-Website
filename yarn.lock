@@ -3335,6 +3335,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rollup/pluginutils@npm:*":
+  version: 3.1.0
+  resolution: "@rollup/pluginutils@npm:3.1.0"
+  dependencies:
+    "@types/estree": 0.0.39
+    estree-walker: ^1.0.1
+    picomatch: ^2.2.2
+  peerDependencies:
+    rollup: ^1.20.0||^2.0.0
+  checksum: 45da6411e045d1b034242a8144f4a5e8c02ff1b68a2e0857807f5bb4b091c416f2015e075057f0f0dec200e7b35efe6ed4e301b43e365cedea09192f01a6839b
+  languageName: node
+  linkType: hard
+
 "@rollup/pluginutils@npm:^3.0.0":
   version: 3.0.8
   resolution: "@rollup/pluginutils@npm:3.0.8"
@@ -6801,8 +6814,8 @@ __metadata:
   linkType: hard
 
 "chokidar@npm:>=2.0.0 <4.0.0":
-  version: 3.4.1
-  resolution: "chokidar@npm:3.4.1"
+  version: 3.4.2
+  resolution: "chokidar@npm:3.4.2"
   dependencies:
     anymatch: ~3.1.1
     braces: ~3.0.2
@@ -6815,7 +6828,7 @@ __metadata:
   dependenciesMeta:
     fsevents:
       optional: true
-  checksum: fdbeae89bdd7832acb0b7a5192b7d6ec1a81aff915609b0b6ff110e58fa211d793fed16ce41ccd9d4c6c7786db1b97cd88984bfe2b87303f04aa6bf0f31feaaa
+  checksum: a394c13d28f3a7df6c3d8ca80791599523c654a9e08bec2bb6d0f44a6d74c61f9b46cd871401b8694e57e909055280adad898b93f4269d53b8b0e0c02f02dc12
   languageName: node
   linkType: hard
 
@@ -19982,7 +19995,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"picomatch@npm:^2.2.1":
+"picomatch@npm:^2.2.1, picomatch@npm:^2.2.2":
   version: 2.2.2
   resolution: "picomatch@npm:2.2.2"
   checksum: 20fa75e0a58b39d83425b3db68744d5f6f361fd4fd66ec7745d884036d502abba0d553a637703af79939b844164b13e60eea339ccb043d7fbd74c3da2592b864
@@ -22025,6 +22038,15 @@ fsevents@~2.1.2:
 "render-shiki-twoslash@1.0.0, render-shiki-twoslash@workspace:packages/render-shiki-twoslash":
   version: 0.0.0-use.local
   resolution: "render-shiki-twoslash@workspace:packages/render-shiki-twoslash"
+  dependencies:
+    "@rollup/pluginutils": "*"
+    "@typescript/twoslash": 0.6.2
+    "@typescript/vfs": 1.1.2
+    shiki: ^0.1.6
+    shiki-languages: ^0.1.6
+    tsdx: ^0.12.3
+    tslib: ^1.10.0
+    typescript: "*"
   languageName: unknown
   linkType: soft
 

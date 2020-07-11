@@ -14,7 +14,7 @@ describe("langs", () => {
 
 describe("with a simple example", () => {
   it("shows the right LSP results", async () => {
-    await setupHighLighter({ theme: "nord" })
+    await setupHighLighter({ theme: "dark_vs" })
     const code = `
 // Hello
 const a = "123"
@@ -53,6 +53,8 @@ console.log(hello);
 `
 
   it("shows the right LSP results", async () => {
+    await setupHighLighter({ theme: "dark_vs" })
+
     const twoslash = runTwoSlash(file, "ts", {})
     const html = renderCodeToHTML(file, "ts", twoslash)
 
@@ -121,6 +123,9 @@ console.log(hello);
 
     const twoslash = runTwoSlash(file, "ts", {})
     const html = renderCodeToHTML(file, "ts", twoslash)
+
+    const messages = html.split("<data-lsp lsp='").map((r) => r.split("'")[0])
+    console.log(messages)
 
     expect(html).toContain(`data-lsp`)
     expect(html).toContain(`<data-lsp lsp='function longest`)
