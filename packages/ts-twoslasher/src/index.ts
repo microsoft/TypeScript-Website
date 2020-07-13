@@ -190,12 +190,12 @@ function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: Comp
 
 /** Available inline flags which are not compiler flags */
 export interface ExampleOptions {
-  /** Let's the sample suppress all error diagnostics */
-  noErrors: false
+  /** Lets the sample suppress all error diagnostics */
+  noErrors: boolean
   /** An array of TS error codes, which you write as space separated - this is so the tool can know about unexpected errors */
   errors: number[]
   /** Shows the JS equivalent of the TypeScript code instead */
-  showEmit: false
+  showEmit: boolean
   /**
    * Must be used with showEmit, lets you choose the file to present instead of the source - defaults to index.js which
    * means when you just use `showEmit` above it shows the transpiled JS.
