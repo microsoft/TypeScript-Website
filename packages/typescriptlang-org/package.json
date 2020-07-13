@@ -25,7 +25,7 @@
     "@mdx-js/react": "^1.5.5",
     "@types/node-fetch": "^2.5.3",
     "@types/react-helmet": "^5.0.15",
-    "@typescript/twoslash": "0.5.2",
+    "@typescript/twoslash": "0.5.3",
     "@uifabric/fluent-theme": "^7.1.22",
     "@uifabric/react-cards": "^0.109.23",
     "canvas": "^2.6.1",
