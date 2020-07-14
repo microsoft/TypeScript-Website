@@ -74,6 +74,7 @@ export const createUI = (): UI => {
     if (subtitle) {
       const titleElement = document.createElement("h3")
       titleElement.textContent = subtitle
+      titleElement.setAttribute("role", "alert")
       modal.appendChild(titleElement)
     }
 
