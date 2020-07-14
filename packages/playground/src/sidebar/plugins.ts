@@ -85,7 +85,8 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
       warning.textContent = i("play_sidebar_plugins_options_external_warning")
       container.appendChild(warning)
 
-      ds.subtitle(i("play_sidebar_plugins_options_modules"))
+      const subheading = ds.subtitle(i("play_sidebar_plugins_options_modules"))
+      subheading.id = "custom-modules-header"
 
       const customModulesOL = document.createElement("ol")
       customModulesOL.className = "custom-modules"
@@ -180,6 +181,7 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
     const newModuleInput = document.createElement("input")
     newModuleInput.type = "text"
     newModuleInput.placeholder = i("play_sidebar_plugins_options_modules_placeholder")
+    newModuleInput.setAttribute("aria-labelledby", "custom-modules-header")
     form.appendChild(newModuleInput)
 
     form.onsubmit = e => {

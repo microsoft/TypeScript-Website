@@ -22,7 +22,10 @@ export const SiteNav = (props: Props) => {
   // This extra bit of mis-direction ensures that non-essential code runs after 
   // the page is loaded
   useEffect(() => {
+    if (document.getElementById("algolia-search")) return
+
     const searchScript = document.createElement('script');
+    searchScript.id = "algolia-search"
     const searchCSS = document.createElement('link');
 
     searchScript.src = withPrefix("/js/docsearch.js");
