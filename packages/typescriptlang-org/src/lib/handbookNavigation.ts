@@ -199,7 +199,7 @@ export const handbookNavigation: NavItem[] = [
     index: "compiler-options",
     items: [
       {
-        id: "project-references",
+        id: "tsconfig-references",
         href: "/tsconfig",
         title: "TSConfig Reference",
       },

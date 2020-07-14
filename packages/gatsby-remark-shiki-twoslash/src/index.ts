@@ -65,8 +65,10 @@ const visitor = (twoslashSettings?: ShikiTwoslashSettings) => (node: RichNode) =
   let lang = node.lang
   let settings = twoslashSettings || defaultSettings
 
+  const shouldDisableTwoslash = process && process.env && !!process.env.TWOSLASH_DISABLE
+
   // Run twoslash
-  runTwoSlashOnNode(settings)(node)
+  if (!shouldDisableTwoslash) runTwoSlashOnNode(settings)(node)
 
   // Shiki doesn't respect json5 as an input, so switch it
   // to json, which can handle comments in the syntax highlight
@@ -76,8 +78,6 @@ const visitor = (twoslashSettings?: ShikiTwoslashSettings) => (node: RichNode) =
 
   // @ts-ignore
   if (replacer[lang]) lang = replacer[lang]
-
-  const shouldDisableTwoslash = process && process.env && !!process.env.TWOSLASH_DISABLE
 
   // Check we can highlight and render
   const shouldHighlight = lang && languages.includes(lang)

@@ -9,7 +9,7 @@ interface ContributorsProps {
 }
 
 const Row = (props: { children: any, className?: string }) => <div className={["row", props.className].join(" ")}>{props.children}</div>
-const Section = (props: { children: any, className?: string }) => <div className="bottom-section-content">{props.children}</div>
+const Section = (props: { children: any, className?: string, sKey: string }) => <div key={props.sKey} className="bottom-section-content">{props.children}</div>
 
 export const Contributors = (props: ContributorsProps) => {
   const attrPath = props.path.replace("/packages/handbook-v1/", "")
@@ -45,11 +45,11 @@ export const Contributors = (props: ContributorsProps) => {
   return (
     <div className="whitespace-tight raised" style={{ padding: 0 }}>
       <Row className="justify-between small-columns">
-        <Section><p>The TypeScript docs are an open source project. Help us improve these pages <a href={repoPageURL}>by sending a Pull Request</a> ❤</p></Section>
-        <div className="hide-small vertical-line" style={{ marginTop: "1.5rem" }} />
-        <Section><p>Contributors to this page:<br /><Avatars data={page} /></p></Section>
-        <div className="hide-small vertical-line" style={{ marginTop: "1.5rem" }} />
-        <Section><p>{`Last updated: ${lastEdited}`}<br /><br /><span id='page-loaded-time'></span></p></Section>
+        <Section sKey="pr"><p>The TypeScript docs are an open source project. Help us improve these pages <a href={repoPageURL}>by sending a Pull Request</a> ❤</p></Section>
+        <div key="line1" className="hide-small vertical-line" style={{ marginTop: "1.5rem" }} />
+        <Section sKey="contribs">Contributors to this page:<br /><Avatars data={page} /></Section>
+        <div key="line2" className="hide-small vertical-line" style={{ marginTop: "1.5rem" }} />
+        <Section sKey="updated"><p>{`Last updated: ${lastEdited}`}<br /><br /><span id='page-loaded-time'></span></p></Section>
       </Row>
     </div >
   )
@@ -62,7 +62,7 @@ const Avatars = (props: { data: typeof attribution["en/Advanced Types.md"] }) =>
       const grav = `https://gravatar.com/avatar/${t.gravatar}?s=32&&d=blank`
       const alt = `${t.name}  (${t.count})`
       const chars = t.name.split(" ").map(dp => dp.substr(0, 1)).join("").toUpperCase()
-      return <div className="circle-bg">{chars}<img id={t.gravatar} src={grav} alt={alt} /></div>
+      return <div key={t.gravatar} className="circle-bg">{chars}<img id={t.gravatar} src={grav} alt={alt} /></div>
     })}
     {showRest && <div className='circle-bg'>{props.data.total - props.data.top.length}+</div>}
   </div>
