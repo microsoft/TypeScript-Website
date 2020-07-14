@@ -1,11 +1,13 @@
 import {
   createSystem,
+  createFSBackedSystem,
   createVirtualTypeScriptEnvironment,
   createDefaultMapFromNodeModules,
   createDefaultMapFromCDN,
   knownLibFilesForCompilerOptions,
 } from "../src"
 
+import path from "path"
 import ts from "typescript"
 
 it("runs a virtual environment and gets the right results from the LSP", () => {
@@ -17,7 +19,7 @@ it("runs a virtual environment and gets the right results from the LSP", () => {
   const compilerOpts = {}
   const env = createVirtualTypeScriptEnvironment(system, ["index.ts"], ts, compilerOpts)
 
-  // You can then interact with tqhe languageService to introspect the code
+  // You can then interact with the languageService to introspect the code
   const definitions = env.languageService.getDefinitionAtPosition("index.ts", 7)
   expect(definitions).toMatchInlineSnapshot(`
     Array [
@@ -39,6 +41,22 @@ it("runs a virtual environment and gets the right results from the LSP", () => {
       },
     ]
   `)
+})
+
+it("can use a FS backed system", () => {
+  const compilerOpts: ts.CompilerOptions = { target: ts.ScriptTarget.ES2016, esModuleInterop: true }
+  const fsMap = new Map<string, string>()
+
+  const content = `/// <reference types="node" />\nimport * as path from 'path';\npath.`
+  fsMap.set("index.ts", content)
+
+  const monorepoRoot = path.join(__dirname, "..", "..", "..")
+  const system = createFSBackedSystem(fsMap, monorepoRoot)
+  const env = createVirtualTypeScriptEnvironment(system, ["index.ts"], ts, compilerOpts)
+
+  const completions = env.languageService.getCompletionsAtPosition("index.ts", content.length, {})
+  const hasPathJoinFunc = completions?.entries.find(c => c.name === "join")
+  expect(hasPathJoinFunc).toBeTruthy()
 })
 
 // Previously lib.dom.d.ts was not included
