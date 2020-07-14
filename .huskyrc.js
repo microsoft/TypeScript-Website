@@ -1,5 +1,5 @@
 const tasks = arr => arr.join(' && ')
-const isOrta = process.env.USER.includes("orta")
+const isOrta = process.env.USER && process.env.USER.includes("orta")
 
 // Everyone else gets a NO-OP
 module.exports = !isOrta ? {} : {
