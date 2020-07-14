@@ -1,4 +1,4 @@
-### A Guide to
+### A Guide to Converting to Twoslash
 
 Code samples on the TypeScript Website should run through [Twoslash](https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher#typescript-twoslash) which lets the compiler do more of the work.
 
@@ -30,7 +30,7 @@ x = [10, "hello"]; // Error
 ```
 ````
 
-This would now break the TypeScript website build because the code sample has a compiler error, this is great. Let's fix that:
+This would now break the TypeScript website build because the code sample has a compiler error, this is great. Let's fix that by telling TypeScript this error is on purpose:
 
 ````
 ```ts twoslash
