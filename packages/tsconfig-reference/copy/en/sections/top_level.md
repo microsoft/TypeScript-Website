@@ -1,3 +1,3 @@
-### Root Fields
+### Campos Raiz
 
-Starting up are the root options in the TSConfig - these options relate to how your TypeScript or JavaScript project is set up.
+Para começar, temos algumas opções na raiz do TSConfig - essas opções são relacionadas a como seu projeto TypeScript ou JavaScript está configurado.
