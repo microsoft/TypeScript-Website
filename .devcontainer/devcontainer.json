@@ -1,0 +1,20 @@
+{
+    "name": "TypeScript website codespace",
+    "extensions": [
+        "streetsidesoftware.code-spell-checker",
+        "emmanuelbeziat.vscode-great-icons",
+        "dbaeumer.vscode-eslint",
+		"ms-vscode.vscode-typescript-tslint-plugin"
+    ],
+	"dockerFile": "Dockerfile",
+
+	// Set *default* container specific settings.json values on container create.
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash"
+    },
+    
+    "forwardPorts": [8000],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "sudo yarn install && sudo yarn bootstrap",
+}
