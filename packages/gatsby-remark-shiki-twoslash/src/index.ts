@@ -121,7 +121,7 @@ export const runTwoSlashOnNode = (settings: ShikiTwoslashSettings) => (node: Ric
       addAllFilesFromFolder(map, settings.nodeModulesTypesPath || "node_modules/@types")
     }
 
-    const results = twoslasher(node.value, node.lang, undefined, undefined, undefined, map)
+    const results = twoslasher(node.value, node.lang, { fsMap: map })
     node.value = results.code
     node.lang = results.extension as TLang
     node.twoslash = results

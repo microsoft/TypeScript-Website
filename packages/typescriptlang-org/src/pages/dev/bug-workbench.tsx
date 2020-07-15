@@ -111,7 +111,7 @@ const Play: React.FC<Props> = (props) => {
           })
         }
 
-        // When the compiler notices a twoslash compiler flag change, this will get triggered and reset the DTS map 
+        // When the compiler notices a twoslash compiler flag change, this will get triggered and reset the DTS map
         sandboxEnv.setDidUpdateCompilerSettings(updateDTSEnv)
         updateDTSEnv(sandboxEnv.getCompilerOptions())
 
@@ -143,7 +143,12 @@ const Play: React.FC<Props> = (props) => {
             currentDTSMap = new Map(dtsMap)
             const twoslashConfig = { noStaticSemanticInfo: true, emit: true, noErrorValidation: true } as const
             const ext = sandboxEnv.filepath.split(".")[1]
-            const twoslash = twoslasher(code, ext, twoslashConfig, ts, sandboxEnv.lzstring as any, currentDTSMap)
+            const twoslash = twoslasher(code, ext, {
+              defaultOptions: twoslashConfig,
+              tsModule: ts,
+              lzstringModule: sandboxEnv.lzstring as any,
+              fsMap: currentDTSMap
+            })
             currentTwoslashResults = twoslash
 
             const currentPlugin = playgroundEnv.getCurrentPlugin()
@@ -170,7 +175,7 @@ const Play: React.FC<Props> = (props) => {
           sandboxEnv.monaco.editor.setTheme("sandbox-dark");
         }
 
-        // On the chance you change your dark mode settings 
+        // On the chance you change your dark mode settings
         darkModeEnabled.addListener((e) => {
           const darkModeOn = e.matches;
           const newTheme = darkModeOn ? "sandbox-dark" : "sandbox-light"
