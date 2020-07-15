@@ -694,23 +694,30 @@ The API is one main exported function:
  *
  * @param code The twoslash markup'd code
  * @param extension For example: "ts", "tsx", "typescript", "javascript" or "js".
- * @param defaultOptions Allows setting any of the handbook options from outside the function, useful if you don't want LSP identifiers
- * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd.
- * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd.
- * @param fsMap An optional Map object which is passed into @typescript/vfs - if you are using twoslash on the
- *              web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
+ * @param options Additional options for twoslash
  */
-export function twoslasher(
-  code: string,
-  extension: string,
-  defaultOptions?: Partial<ExampleOptions>,
-  tsModule?: TS,
-  lzstringModule?: LZ,
-  fsMap?: Map<string, string>
-): TwoSlashReturn
+export function twoslasher(code: string, extension: string, options: TwoSlashOptions = {}): TwoSlashReturn
 ```
 
-Which returns:
+Which takes the options:
+
+```ts
+export interface TwoSlashOptions {
+  /** Allows setting any of the handbook options from outside the function, useful if you don't want LSP identifiers */
+  defaultOptions?: Partial<ExampleOptions>
+  /** An optional copy of the TypeScript import, if missing it will be require'd. */
+  tsModule?: TS
+  /** An optional copy of the lz-string import, if missing it will be require'd. */
+  lzstringModule?: LZ
+  /**
+   * An optional Map object which is passed into @typescript/vfs - if you are using twoslash on the
+   * web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
+   */
+  fsMap?: Map<string, string>
+}
+```
+
+And returns:
 
 ```ts
 export interface TwoSlashReturn {

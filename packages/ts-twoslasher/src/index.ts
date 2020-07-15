@@ -321,28 +321,38 @@ export interface TwoSlashReturn {
   playgroundURL: string
 }
 
+export interface TwoSlashOptions {
+  /** Allows setting any of the handbook options from outside the function, useful if you don't want LSP identifiers */
+  defaultOptions?: Partial<ExampleOptions>
+
+  /** An optional copy of the TypeScript import, if missing it will be require'd. */
+  tsModule?: TS
+
+  /** An optional copy of the lz-string import, if missing it will be require'd. */
+  lzstringModule?: LZ
+
+  /**
+   * An optional Map object which is passed into @typescript/vfs - if you are using twoslash on the
+   * web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
+   */
+  fsMap?: Map<string, string>
+}
+
 /**
  * Runs the checker against a TypeScript/JavaScript code sample returning potentially
  * difference code, and a set of annotations around how it works.
  *
  * @param code The twoslash markup'd code
  * @param extension For example: "ts", "tsx", "typescript", "javascript" or "js".
- * @param defaultOptions Allows setting any of the handbook options from outside the function, useful if you don't want LSP identifiers
- * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd.
- * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd.
- * @param fsMap An optional Map object which is passed into @typescript/vfs - if you are using twoslash on the
- *              web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
+ * @param options Additional options for twoslash
  */
 export function twoslasher(
   code: string,
   extension: string,
-  defaultOptions?: Partial<ExampleOptions>,
-  tsModule?: TS,
-  lzstringModule?: LZ,
-  fsMap?: Map<string, string>
+  options: TwoSlashOptions = {}
 ): TwoSlashReturn {
-  const ts: TS = tsModule ?? require("typescript")
-  const lzstring: LZ = lzstringModule ?? require("lz-string")
+  const ts: TS = options.tsModule ?? require("typescript")
+  const lzstring: LZ = options.lzstringModule ?? require("lz-string")
 
   const originalCode = code
   const safeExtension = typesToExtension(extension)
@@ -350,10 +360,10 @@ export function twoslasher(
 
   log(`\n\nLooking at code: \n\`\`\`${safeExtension}\n${code}\n\`\`\`\n`)
 
-  const defaultCompilerOptions: CompilerOptions = {
+  const defaultCompilerOptions = {
     strict: true,
     target: ts.ScriptTarget.ES2016,
-    allowJs: true,
+    allowJs: true
   }
 
   validateInput(code)
@@ -363,10 +373,10 @@ export function twoslasher(
   // This is mutated as the below functions pull out info
   const codeLines = code.split(/\r\n?|\n/g)
 
-  const handbookOptions = { ...filterHandbookOptions(codeLines), ...defaultOptions }
+  const handbookOptions = { ...filterHandbookOptions(codeLines), ...options.defaultOptions }
   const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions, ts)
 
-  const vfs = fsMap ?? createLocallyPoweredVFS(compilerOptions)
+  const vfs = options.fsMap ?? createLocallyPoweredVFS(compilerOptions)
   const system = createSystem(vfs)
   const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions)
   const ls = env.languageService

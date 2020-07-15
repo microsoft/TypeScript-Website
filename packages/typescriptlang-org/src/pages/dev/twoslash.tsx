@@ -69,7 +69,11 @@ const Index: React.FC<Props> = (props) => {
             mapWithLibFiles.set("index.ts", newContent)
 
             try {
-              const newResults = twoslasher(newContent, "tsx", {}, ts, sandbox.lzstring as any, mapWithLibFiles)
+              const newResults = twoslasher(newContent, "tsx", {
+                tsModule: ts,
+                lzstringModule: sandbox.lzstring as any,
+                fsMap: mapWithLibFiles
+              })
               const codeAsFakeShikiTokens = newResults.code.split("\n").map(line => [{ content: line }])
               const html = renderToHTML(codeAsFakeShikiTokens, {}, newResults)
 
