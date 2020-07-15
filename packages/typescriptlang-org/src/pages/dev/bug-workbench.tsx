@@ -144,7 +144,7 @@ const Play: React.FC<Props> = (props) => {
             const twoslashConfig = { noStaticSemanticInfo: true, emit: true, noErrorValidation: true } as const
             const ext = sandboxEnv.filepath.split(".")[1]
             const twoslash = twoslasher(code, ext, {
-              exampleConfig: twoslashConfig,
+              defaultOptions: twoslashConfig,
               tsModule: ts,
               lzstringModule: sandboxEnv.lzstring as any,
               fsMap: currentDTSMap
