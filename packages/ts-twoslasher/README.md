@@ -705,6 +705,8 @@ Which takes the options:
 export interface TwoSlashOptions {
   /** Allows setting any of the handbook options from outside the function, useful if you don't want LSP identifiers */
   defaultOptions?: Partial<ExampleOptions>
+  /** Allows setting any of the compiler options from outside the function */
+  defaultCompilerOptions?: CompilerOptions
   /** An optional copy of the TypeScript import, if missing it will be require'd. */
   tsModule?: TS
   /** An optional copy of the lz-string import, if missing it will be require'd. */
