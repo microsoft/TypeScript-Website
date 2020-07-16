@@ -1,3 +1,3 @@
-### Compiler Options
+### Opções do compilador
 
-These options make up the bulk of TypeScript's configuration and it covers how the language should work.
+Essas são a maioria das opções do TypeScript e descrevem como o compilador deve funcionar.
