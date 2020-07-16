@@ -37,6 +37,18 @@ const Play: React.FC<Props> = (props) => {
       return console.log("Playground already loaded")
     }
 
+    // Detect if you've left the playground and come back via the back button, which will force
+    // a page reload to ensure the playground is full set up
+    let leftPlayground = false
+    window.addEventListener('popstate', (event) => {
+      const onPlayground = document.location.pathname.endsWith("/play/") || document.location.pathname.endsWith("/play")
+      if (leftPlayground && onPlayground) {
+        document.location.reload()
+      } else if (!leftPlayground && onPlayground) {
+        leftPlayground = true
+      }
+    });
+
     // @ts-ignore - so the config options can use localized descriptions
     window.optionsSummary = props.pageContext.optionsSummary
     // @ts-ignore - for React-based plugins
