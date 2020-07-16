@@ -197,7 +197,7 @@ If you have a variable with an unknown type, you can narrow it to something more
 ```ts twoslash
 // @errors: 2322 2322 2322
 declare const maybe: unknown;
-// 'maybe' could be a string, object, boolean, undefined, or an array
+// 'maybe' could be a string, object, boolean, undefined, or other types
 const aNumber: number = maybe;
 
 if (maybe === true) {
@@ -230,7 +230,8 @@ const str: string = getValue("myString");
 
 The `any` type is a powerful way to work with existing JavaScript, allowing you to gradually opt-in and opt-out of type checking during compilation.
 
-Unlike `unknown`, TypeScript lets you call arbitrary methods, even ones that don't exist:
+Unlike `unknown`, variables of type `any` allow you to access arbitrary properties, even ones that don't exist.
+These properties include functions and TypeScript will not check their existence or type:
 
 ```ts twoslash
 // @errors: 2571
