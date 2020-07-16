@@ -23,7 +23,7 @@ export const Layout = (props: LayoutProps) => {
       <HeadSEO {...props} />
       <div className="ms-Fabric">
         <SiteNav {...props} />
-        <CookieBanner />
+        <CookieBanner {...props} />
         <main role="main">{props.children}</main>
         <SiteFooter {...props} />
       </div>
