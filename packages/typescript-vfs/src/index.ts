@@ -5,7 +5,11 @@ type CompilerHost = import("typescript").CompilerHost
 type SourceFile = import("typescript").SourceFile
 type TS = typeof import("typescript")
 
-const hasLocalStorage = typeof localStorage !== `undefined`
+let hasLocalStorage = false
+try {
+  hasLocalStorage = typeof localStorage !== `undefined`
+} catch (error) {}
+
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 const debugLog = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
