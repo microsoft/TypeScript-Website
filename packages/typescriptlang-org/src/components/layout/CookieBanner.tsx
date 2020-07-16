@@ -1,47 +1,118 @@
-// Re: https://github.com/microsoft/TypeScript-Website/blob/17d33630f824e0d38963c5a04a40640734422fd7/src/assets/javascript/cookies.js#L22
-
-// This version is different, we basically know that nothing is gonna have to change - so I'm 
-// skipping on the extra network requests
-
-// https://uhf.microsoft.com/en/shell/api/mscc?sitename=typescript&domain=typescriptlang.org&country=euregion&mscc_eudomain=true
+// https://www.1eswiki.com/wiki/WCP_Cookie_Consent_API#Cookie_Consent_Library_-_JavaScript
 
 import * as React from "react"
 import "./cookie.scss"
-import { useEffect } from "react"
+import { useState } from "react"
+import { Helmet } from "react-helmet"
 
-export const CookieBanner = () => {
-  useEffect(() => {
-    const cookieName = "MSCC"
+declare const WcpConsent: any
 
-    const hasConsent = hasGivenConsentByActivelyUsingTheSite(cookieName)
-    if (!hasConsent) {
-      const banner = document.getElementById("msccBanner")!
-      banner.style.display = "block"
-
-      const giveConsent = () => {
-        document.cookie = "MSCC=1; path=/"
-        banner.style.display = "none"
+export const CookieBanner = (props: { lang: string }) => {
+  const [scriptLoaded, setScriptLoaded] = useState(typeof window !== 'undefined' && typeof WcpConsent !== 'undefined')
+  const handleChangeClientState = (newState, addedTags) => {
+    if (addedTags && addedTags.scriptTags) {
+      const foundScript = addedTags.scriptTags.find(({ src }) => src === "https://consentdeliveryfd.azurefd.net/mscc/lib/v2/wcp-consent.js")
+      if (foundScript) {
+        foundScript.addEventListener('load', () => setScriptLoaded(true), { once: true })
       }
-
-      document.body.addEventListener('mouseup', giveConsent);
-      document.body.addEventListener('keyup', giveConsent);
-      document.body.addEventListener('submit', giveConsent);
     }
+  }
 
-    function hasGivenConsentByActivelyUsingTheSite(cookieName) {
-      return document.cookie.includes(cookieName)
+  // https://www.1eswiki.com/wiki/WCP_Supported_Language_-_Country_List
+  const allLangs = ["ar-SA",
+    "bg-BG",
+    "bs-BA",
+    "ca-ES",
+    "cs-CZ",
+    "cy-GB",
+    "da-DK",
+    "de-DE",
+    "de-LU",
+    "de-AT",
+    "de-CH",
+    "el-GR",
+    "en-GB",
+    "en-IE",
+    "en-MT",
+    "es-ES",
+    "es-MX",
+    "et-EE",
+    "fi-FI",
+    "fr-CA",
+    "fr-FR",
+    "fr-BE",
+    "fr-LU",
+    "fr-CH",
+    "gd-GB",
+    "ga-IE",
+    "he-IL",
+    "hi-IN",
+    "hr-HR",
+    "hu-HU",
+    "id-ID",
+    "is-IS",
+    "it-IT",
+    "ja-JP",
+    "kk-KZ",
+    "ko-KR",
+    "lb-LU",
+    "lt-lT",
+    "lv-LV",
+    "ms-MY",
+    "mt-MT",
+    "nb-NO",
+    "nl-NL",
+    "nl-BE",
+    "nn-NO",
+    "pl-PL",
+    "pt-BR",
+    "pt-PT",
+    "rm-CH",
+    "ro-RO",
+    "ro-MD",
+    "ru-RU",
+    "sk-SK",
+    "sl-SI",
+    "sr-LATN-RS",
+    "sv-SE",
+    "th-TH",
+    "tr-TR",
+    "uk-UA",
+    "vi-VN",
+    "zh-CN",
+    "zh-HK",
+    "zh-TW"]
+
+  const verboseCookieLogging = () => {
+    let siteConsent
+    const lang = navigator.language
+    const firstWithPrefix = allLangs.find(l => l.startsWith(lang)) || "en-US"
+
+    WcpConsent.init(firstWithPrefix, "cookie-banner", (err, _siteConsent) => {
+      if (err) {
+        alert(err);
+      } else {
+        siteConsent = _siteConsent!;
+        onConsentChanged(siteConsent)
+      }
+    }, onConsentChanged);
+
+    function onConsentChanged(newConsent: any) {
+      if (newConsent.isConsentRequired) {
+        newConsent.manageConsent();
+      }
     }
-
-  }, [])
+  }
 
   return (
-    <div style={{ display: "none" }} id='msccBanner' dir='ltr' data-site-name='uhf-typescript' data-mscc-version='0.4.2' data-nver='aspnet-3.1.3' data-sver='0.1.2' className='cc-banner' role='alert' aria-labelledby='msccMessage' >
-      <div className='cc-container'><svg className='cc-icon cc-v-center' x='0px' y='0px' viewBox='0 0 44 44' height='30px' fill='none' stroke='currentColor'>
-        <circle cx='22' cy='22' r='20' strokeWidth='2'></circle>
-        <line x1='22' x2='22' y1='18' y2='33' strokeWidth='3'></line>
-        <line x1='22' x2='22' y1='12' y2='15' strokeWidth='3'></line></svg>
-        <span id='msccMessage' className='cc-v-center cc-text' tabIndex={0}>This site uses cookies for analytics, personalized content and ads. By continuing to browse this site, you agree to this use.</span> <a href='https://go.microsoft.com/fwlink/?linkid=845480' target='_top' aria-label='Learn more about Microsoft&#39;s Cookie Policy' id='msccLearnMore' className='cc-link cc-v-center cc-float-right' data-mscc-ic='false'>Learn more</a>
-      </div>
-    </div>
+    <>
+      <Helmet htmlAttributes={{ lang: props.lang }} onChangeClientState={handleChangeClientState}>
+        {typeof window !== 'undefined' && typeof WcpConsent === 'undefined'
+          && <script src="https://consentdeliveryfd.azurefd.net/mscc/lib/v2/wcp-consent.js" />}
+      </Helmet>
+
+      <div id="cookie-banner"></div>
+      {scriptLoaded && verboseCookieLogging()}
+    </>
   )
 }
