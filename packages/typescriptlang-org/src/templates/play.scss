@@ -331,6 +331,8 @@ main #editor-toolbar {
     display: flex;
     flex-direction: column;
 
+    -webkit-font-smoothing: subpixel-antialiased;
+
     @media (prefers-color-scheme: dark) {
       background-color: #1e1e1e;
     }
