@@ -93,15 +93,13 @@ export const CookieBanner = (props: { lang: string }) => {
         alert(err);
       } else {
         siteConsent = _siteConsent!;
-        console.log("getConsent()", siteConsent.getConsent());
-        console.log("getConsent().Required", siteConsent.getConsent().Required);
+        onConsentChanged(siteConsent)
       }
     }, onConsentChanged);
 
-    //call back method when consent is changed by user
     function onConsentChanged(newConsent: any) {
-      if (siteConsent.isConsentRequired) {
-        siteConsent.manageConsent();
+      if (newConsent.isConsentRequired) {
+        newConsent.manageConsent();
       }
     }
   }
