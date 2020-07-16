@@ -37,6 +37,15 @@ const Play: React.FC<Props> = (props) => {
       return console.log("Playground already loaded")
     }
 
+    let hasLocalStorage = false
+    try {
+      hasLocalStorage = typeof localStorage !== `undefined`
+    } catch (error) { }
+    if (!hasLocalStorage) {
+      document.getElementById("loading-message")!.innerText = "Cannot load the Playground with storage disabled in your browser"
+      return
+    }
+
     // @ts-ignore - so the config options can use localized descriptions
     window.optionsSummary = props.pageContext.optionsSummary
     // @ts-ignore - for React-based plugins
