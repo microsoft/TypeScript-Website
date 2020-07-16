@@ -100,13 +100,9 @@ export const CookieBanner = (props: { lang: string }) => {
 
     //call back method when consent is changed by user
     function onConsentChanged(newConsent: any) {
-      console.log("onConsentChanged", newConsent);
-      console.log("getConsent()", siteConsent.getConsent());
-      console.log("getConsentFor(wcpConsentCategory.Required)", siteConsent.getConsentFor(WcpConsent.consentCategories.Required));
-      console.log("getConsentFor(wcpConsentCategory.ThirdPartyAnalytics)", siteConsent.getConsentFor(WcpConsent.consentCategories.Analytics));
-      console.log("getConsentFor(wcpConsentCategory.SocialMedia)", siteConsent.getConsentFor(WcpConsent.consentCategories.SocialMedia));
-      console.log("getConsentFor(wcpConsentCategory.Advertising)", siteConsent.getConsentFor(WcpConsent.consentCategories.Advertising));
-      console.log("getConsentFor(wcpConsentCategory.Personalization)", siteConsent.getConsentFor(WcpConsent.consentCategories.Personalization));
+      if (siteConsent.isConsentRequired) {
+        siteConsent.manageConsent();
+      }
     }
   }
 
