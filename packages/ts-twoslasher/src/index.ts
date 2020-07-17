@@ -1,4 +1,7 @@
-const hasLocalStorage = typeof localStorage !== `undefined`
+let hasLocalStorage = false
+try {
+  hasLocalStorage = typeof localStorage !== `undefined`
+} catch (error) {}
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 
@@ -349,11 +352,7 @@ export interface TwoSlashOptions {
  * @param extension For example: "ts", "tsx", "typescript", "javascript" or "js".
  * @param options Additional options for twoslash
  */
-export function twoslasher(
-  code: string,
-  extension: string,
-  options: TwoSlashOptions = {}
-): TwoSlashReturn {
+export function twoslasher(code: string, extension: string, options: TwoSlashOptions = {}): TwoSlashReturn {
   const ts: TS = options.tsModule ?? require("typescript")
   const lzstring: LZ = options.lzstringModule ?? require("lz-string")
 
@@ -367,7 +366,7 @@ export function twoslasher(
     strict: true,
     target: ts.ScriptTarget.ES2016,
     allowJs: true,
-    ...(options.defaultCompilerOptions ?? {})
+    ...(options.defaultCompilerOptions ?? {}),
   }
 
   validateInput(code)
@@ -380,7 +379,7 @@ export function twoslasher(
   const handbookOptions = { ...filterHandbookOptions(codeLines), ...options.defaultOptions }
   const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions, ts)
 
-  const vfs = options.fsMap ?? createLocallyPoweredVFS(compilerOptions)
+  const vfs = options.fsMap ?? createLocallyPoweredVFS(compilerOptions, ts)
   const system = createSystem(vfs)
   const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions)
   const ls = env.languageService
@@ -673,7 +672,8 @@ export function twoslasher(
   }
 }
 
-const createLocallyPoweredVFS = (compilerOptions: CompilerOptions) => createDefaultMapFromNodeModules(compilerOptions)
+const createLocallyPoweredVFS = (compilerOptions: CompilerOptions, ts?: typeof import("typescript")) =>
+  createDefaultMapFromNodeModules(compilerOptions, ts)
 
 const splitTwoslashCodeInfoFiles = (code: string, defaultFileName: string) => {
   const lines = code.split(/\r\n?|\n/g)

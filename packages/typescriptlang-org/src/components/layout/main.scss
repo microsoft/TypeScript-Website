@@ -35,6 +35,13 @@ html {
     @media (prefers-color-scheme: dark) {
       color: $ts-main-blue-lightest-color;
     }
+
+    &:hover {
+      color: darken($ts-main-blue-darker-color, 15%);
+      @media (prefers-color-scheme: dark) {
+        color: lighten($ts-main-blue-lightest-color, 15%);
+      }
+    }
   }
 
   h1,

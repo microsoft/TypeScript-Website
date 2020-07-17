@@ -17,7 +17,6 @@ export const deprecated: CompilerOptionName[] = [
   "out",
   "charset",
   "keyofStringsOnly",
-  "moduleResolution",
   "noErrorTruncation",
   "diagnostics",
 ];
@@ -92,7 +91,7 @@ export const defaultsForOptions = {
   allowJs: "false",
   allowSyntheticDefaultImports: 'module === "system" or esModuleInterop',
   allowUmdGlobalAccess: "false",
-  allowUnreachableCode: "false",
+  allowUnreachableCode: "undefined",
   allowUnusedLabels: "false",
   alwaysStrict: "`false`, unless `strict` is set",
   charset: "utf8",
