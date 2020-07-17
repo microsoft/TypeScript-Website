@@ -14,8 +14,3 @@ if (hasElevatedAccess) {
     settings: "artsy/peril-settings@spellcheck.json",
     codeSpellCheck: ["Examples/**/*.ts", "Examples/**/*.js"]
   });
-
-  // This deploy only happens for staff also
-  const deployURL = `https://typescript-site-${danger.github.pr.number}.ortam.now.sh`;
-  message(`Deployed to [a PR branch](${deployURL})`);
-}
