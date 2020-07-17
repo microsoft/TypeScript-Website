@@ -175,8 +175,8 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
  * Sets up a Map with lib contents by grabbing the necessary files from
  * the local copy of typescript via the file system.
  */
-export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions) => {
-  const ts = require("typescript")
+export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions, ts?: typeof import("typescript")) => {
+  const tsModule = ts || require("typescript")
   const path = require("path")
   const fs = require("fs")
 
@@ -185,7 +185,7 @@ export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions
     return fs.readFileSync(path.join(lib, name), "utf8")
   }
 
-  const libs = knownLibFilesForCompilerOptions(compilerOptions, ts)
+  const libs = knownLibFilesForCompilerOptions(compilerOptions, tsModule)
   const fsMap = new Map<string, string>()
   libs.forEach(lib => {
     fsMap.set("/" + lib, getLib(lib))

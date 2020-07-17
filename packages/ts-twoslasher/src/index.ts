@@ -379,7 +379,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   const handbookOptions = { ...filterHandbookOptions(codeLines), ...options.defaultOptions }
   const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions, ts)
 
-  const vfs = options.fsMap ?? createLocallyPoweredVFS(compilerOptions)
+  const vfs = options.fsMap ?? createLocallyPoweredVFS(compilerOptions, ts)
   const system = createSystem(vfs)
   const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions)
   const ls = env.languageService
@@ -672,7 +672,8 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   }
 }
 
-const createLocallyPoweredVFS = (compilerOptions: CompilerOptions) => createDefaultMapFromNodeModules(compilerOptions)
+const createLocallyPoweredVFS = (compilerOptions: CompilerOptions, ts?: typeof import("typescript")) =>
+  createDefaultMapFromNodeModules(compilerOptions, ts)
 
 const splitTwoslashCodeInfoFiles = (code: string, defaultFileName: string) => {
   const lines = code.split(/\r\n?|\n/g)
