@@ -59,3 +59,9 @@ export module "super-greeter" {
 ```
 
 This uses [declaration merging](/docs/handbook/declaration-merging.html)
+
+## The Impact of ES6 on Module Plugins
+
+Some plugins add or modify top-level exports on existing modules.
+While this is legal in CommonJS and other loaders, ES6 modules are considered immutable and this pattern will not be possible.
+Because TypeScript is loader-agnostic, there is no compile-time enforcement of this policy, but developers intending to transition to an ES6 module loader should be aware of this.

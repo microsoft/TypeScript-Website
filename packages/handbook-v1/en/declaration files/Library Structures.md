@@ -30,27 +30,96 @@ We'll give hints on how to identify structure both based on its _usage_ and its 
 Depending on the library's documentation and organization, one might be easier than the other.
 We recommend using whichever is more comfortable to you.
 
-## Step by step example
+## What should you look for?
 
-As worked out by looking at jquery. or something else popular.
+Question to ask yourself while looking at a library you are trying to type.
 
-1. Find the documentation. How do you obtain it, how do you make it available?
+1. How do you obtain the library?
 
-   Does that give you enough information to choose a structure?
+   For example, can you _only_ get it through npm or only from a CDN?
 
-2. Work out an example usage of the library.
+2. How would you import it?
 
-   I hope you know how to use your library.
+   Does it add a global object? Does it use `require` or `import`/`export` statements?
 
-3. If that fails, try looking at the code (I GUESS).
+## Smaller samples for different types of libraries
 
-   Javascript is crazy
+## Modular Libraries
 
-Interlude on commonjs vs global vs ES (though that last is a whole can of worms)
+Almost every modern Node.js library falls into the module family.
+These type of libraries only work in a JS environment with a module loader.
+For example, `express` only works in Node.js and must be loaded using the CommonJS `require` function.
 
-## One-liners for different DTS overviews
+ECMAScript 2015 (also known as ES2015, ECMAScript 6, and ES6), CommonJS, and RequireJS have similar notions of _importing_ a _module_.
+In JavaScript CommonJS (Node.js), for example, you would write
 
-Maybe not one-liners, but tiny examples with links to the full pages.
+```js
+var fs = require("fs");
+```
+
+In TypeScript or ES6, the `import` keyword serves the same purpose:
+
+```ts
+import * as fs from "fs";
+```
+
+You'll typically see modular libraries include one of these lines in their documentation:
+
+```js
+var someLib = require("someLib");
+```
+
+or
+
+```js
+define(..., ['someLib'], function(someLib) {
+
+});
+```
+
+As with global modules, you might see these examples in the documentation of [a UMD](#module) module, so be sure to check the code or documentation.
+
+### Identifying a Module Library from Code
+
+Modular libraries will typically have at least some of the following:
+
+- Unconditional calls to `require` or `define`
+- Declarations like `import * as a from 'b';` or `export c;`
+- Assignments to `exports` or `module.exports`
+
+They will rarely have:
+
+- Assignments to properties of `window` or `global`
+
+### Templates For Modules
+
+There are four templates available for modules,
+[`module.d.ts`](/docs/handbook/declaration-files/templates/module-d-ts.html), [`module-class.d.ts`](/docs/handbook/declaration-files/templates/module-class-d-ts.html), [`module-function.d.ts`](/docs/handbook/declaration-files/templates/module-function-d-ts.html) and [`module-plugins.d.ts`](/docs/handbook/declaration-files/templates/module-plugins-d-ts.html).
+
+You should first read [`module.d.ts`](/docs/handbook/declaration-files/templates/module-d-ts.html) for an overview on the way they all work.
+
+Then use the template [`module-function.d.ts`](/docs/handbook/declaration-files/templates/module-function-d-ts.html) if your module can be _called_ like a function:
+
+```js
+const x = require("foo");
+// Note: calling 'x' as a function
+const y = x(42);
+```
+
+Use the template [`module-class.d.ts`](/docs/handbook/declaration-files/templates/module-class-d-ts.html) if your module can be _constructed_ using `new`:
+
+```js
+const x = require("bar");
+// Note: using 'new' operator on the imported variable
+const y = new x("hello");
+```
+
+If you have a module which when imported, makes changes to other modules use template [`module-plugin.d.ts`](/docs/handbook/declaration-files/templates/module-plugin-d-ts.html):
+
+```js
+const jest = require("jest");
+require("jest-matchers-files");
+```
 
 ## Global Libraries
 
@@ -88,7 +157,18 @@ function createGreeting(s) {
 or like this:
 
 ```js
+// Web
 window.createGreeting = function (s) {
+  return "Hello, " + s;
+};
+
+// Node
+global.createGreeting = function (s) {
+  return "Hello, " + s;
+};
+
+// Potentially any runtime
+globalThis.createGreeting = function (s) {
   return "Hello, " + s;
 };
 ```
@@ -115,56 +195,6 @@ However, libraries that are small and require the DOM (or have _no_ dependencies
 
 The template file [`global.d.ts`](/docs/handbook/declaration-files/templates/global-plugin-d-ts.html) defines an example library `myLib`.
 Be sure to read the ["Preventing Name Conflicts" footnote](#preventing-name-conflicts).
-
-## Modular Libraries
-
-Some libraries only work in a module loader environment.
-For example, `express` only works in Node.js and must be loaded using the CommonJS `require` function.
-
-ECMAScript 2015 (also known as ES2015, ECMAScript 6, and ES6), CommonJS, and RequireJS have similar notions of _importing_ a _module_.
-In JavaScript CommonJS (Node.js), for example, you would write
-
-```js
-var fs = require("fs");
-```
-
-In TypeScript or ES6, the `import` keyword serves the same purpose:
-
-```ts
-import fs = require("fs");
-```
-
-You'll typically see modular libraries include one of these lines in their documentation:
-
-```js
-var someLib = require("someLib");
-```
-
-or
-
-```js
-define(..., ['someLib'], function(someLib) {
-
-});
-```
-
-As with global modules, you might see these examples in the documentation of a UMD module, so be sure to check the code or documentation.
-
-### Identifying a Module Library from Code
-
-Modular libraries will typically have at least some of the following:
-
-- Unconditional calls to `require` or `define`
-- Declarations like `import * as a from 'b';` or `export c;`
-- Assignments to `exports` or `module.exports`
-
-They will rarely have:
-
-- Assignments to properties of `window` or `global`
-
-### Examples of Modular Libraries
-
-Many popular Node.js libraries are in the module family, such as [`express`](http://expressjs.com/), [`gulp`](http://gulpjs.com/), and [`request`](https://github.com/request/request).
 
 ## _UMD_
 
@@ -209,33 +239,6 @@ and a "Using in the browser" example showing using a `<script>` tag to load the 
 
 Most popular libraries are now available as UMD packages.
 Examples include [jQuery](https://jquery.com/), [Moment.js](http://momentjs.com/), [lodash](https://lodash.com/), and many more.
-
-### Template
-
-There are three templates available for modules,
-[`module.d.ts`](/docs/handbook/declaration-files/templates/module-d-ts.html), [`module-class.d.ts`](/docs/handbook/declaration-files/templates/module-class-d-ts.html) and [`module-function.d.ts`](/docs/handbook/declaration-files/templates/module-function-d-ts.html).
-
-Use [`module-function.d.ts`](/docs/handbook/declaration-files/templates/module-function-d-ts.html) if your module can be _called_ like a function:
-
-```js
-var x = require("foo");
-// Note: calling 'x' as a function
-var y = x(42);
-```
-
-Be sure to read the [footnote "The Impact of ES6 on Module Call Signatures"](#the-impact-of-es6-on-module-plugins)
-
-Use [`module-class.d.ts`](/docs/handbook/declaration-files/templates/module-class-d-ts.html) if your module can be _constructed_ using `new`:
-
-```js
-var x = require("bar");
-// Note: using 'new' operator on the imported variable
-var y = new x("hello");
-```
-
-The same [footnote](#the-impact-of-es6-on-module-plugins) applies to these modules.
-
-If your module is not callable or constructable, use the [`module.d.ts`](/docs/handbook/declaration-files/templates/module-d-ts.html) file.
 
 ### Template
 
@@ -313,12 +316,6 @@ interface CatsKittySettings {}
 
 This guidance also ensures that the library can be transitioned to UMD without breaking declaration file users.
 
-## The Impact of ES6 on Module Plugins
-
-Some plugins add or modify top-level exports on existing modules.
-While this is legal in CommonJS and other loaders, ES6 modules are considered immutable and this pattern will not be possible.
-Because TypeScript is loader-agnostic, there is no compile-time enforcement of this policy, but developers intending to transition to an ES6 module loader should be aware of this.
-
 ## The Impact of ES6 on Module Call Signatures
 
 Many popular libraries, such as Express, expose themselves as a callable function when imported.
@@ -333,38 +330,3 @@ In ES6 module loaders, the top-level object (here imported as `exp`) can only ha
 the top-level module object is _never_ callable.
 The most common solution here is to define a `default` export for a callable/constructable object;
 some module loader shims will automatically detect this situation and replace the top-level object with the `default` export.
-
-## Library file layout
-
-The layout of your declaration files should mirror the layout of the library.
-
-A library can consist of multiple modules, such as
-
-```
-myLib
-  +---- index.js
-  +---- foo.js
-  +---- bar
-         +---- index.js
-         +---- baz.js
-```
-
-These could be imported as
-
-```js
-var a = require("myLib");
-var b = require("myLib/foo");
-var c = require("myLib/bar");
-var d = require("myLib/bar/baz");
-```
-
-Your declaration files should thus be
-
-```
-@types/myLib
-  +---- index.d.ts
-  +---- foo.d.ts
-  +---- bar
-         +---- index.d.ts
-         +---- baz.d.ts
-```

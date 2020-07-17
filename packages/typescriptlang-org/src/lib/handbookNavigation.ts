@@ -134,9 +134,28 @@ export const handbookNavigation: NavItem[] = [
       { id: "introduction", title: "Introduction" },
       { id: "by-example", title: "By Example" },
       { id: "do-s-and-don-ts", title: "Do's and Don'ts" },
-      { id: "deep-dive", title: "Deep Dive" },
       { id: "library-structures", title: "Library Structures" },
-      { id: "templates", title: "Templates" },
+      // { id: "templates", title: "Templates" },
+      {
+        id: "module-d-ts",
+        title: "Template: Module",
+        href: "/docs/handbook/declaration-files/templates/module-d-ts.html",
+      },
+      {
+        id: "module-plugin-d-ts",
+        title: "Template: Module Plugin",
+        href: "/docs/handbook/declaration-files/templates/module-plugin-d-ts.html",
+      },
+      {
+        id: "module-class-d-ts",
+        title: "Template: Module Class",
+        href: "/docs/handbook/declaration-files/templates/module-class-d-ts.html",
+      },
+      {
+        id: "module-function-d-ts",
+        title: "Template: Module Function",
+        href: "/docs/handbook/declaration-files/templates/module-function-d-ts.html",
+      },
       {
         id: "global-d-ts",
         href: "templates/global-d-ts",
@@ -152,26 +171,9 @@ export const handbookNavigation: NavItem[] = [
         title: "Template: Global Extends",
         href: "/docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html",
       },
-      {
-        id: "module-d-ts",
-        title: "Template: Module",
-        href: "/docs/handbook/declaration-files/templates/module-d-ts.html",
-      },
-      {
-        id: "module-plugin-d-ts",
-        title: "Template: Plugin",
-        href: "/docs/handbook/declaration-files/templates/module-plugin-d-ts.html",
-      },
-      {
-        id: "module-class-d-ts",
-        title: "Template: Class",
-        href: "/docs/handbook/declaration-files/templates/module-class-d-ts.html",
-      },
-      {
-        id: "module-function-d-ts",
-        title: "Template: Function",
-        href: "/docs/handbook/declaration-files/templates/module-function-d-ts.html",
-      },
+      
+      { id: "deep-dive", title: "Deep Dive" },
+
       { id: "publishing", title: "Publishing" },
       { id: "consumption", title: "Consumption" },
     ],
