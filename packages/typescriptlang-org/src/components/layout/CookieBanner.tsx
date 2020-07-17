@@ -99,7 +99,7 @@ export const CookieBanner = (props: { lang: string }) => {
 
     function onConsentChanged(newConsent: any) {
       if (newConsent.isConsentRequired) {
-        newConsent.manageConsent();
+        // newConsent.manageConsent();
       }
     }
   }
