@@ -228,10 +228,6 @@ export const createTypeScriptSandbox = (
 
   /** Gets the JS  of compiling your editor's code */
   const getRunnableJS = async () => {
-    if (config.useJavaScript) {
-      return getText()
-    }
-
     const result = await getEmitResult()
     const firstJS = result.outputFiles.find((o: any) => o.name.endsWith(".js") || o.name.endsWith(".jsx"))
     return (firstJS && firstJS.text) || ""
