@@ -8,6 +8,7 @@ const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasPr
 type LZ = typeof import("lz-string")
 type TS = typeof import("typescript")
 type CompilerOptions = import("typescript").CompilerOptions
+type CustomTransformers = import("typescript").CustomTransformers
 
 import {
   parsePrimitive,
@@ -331,6 +332,9 @@ export interface TwoSlashOptions {
   /** Allows setting any of the compiler options from outside the function */
   defaultCompilerOptions?: CompilerOptions
 
+  /** Allows applying custom transformers to the emit result, only useful with the showEmit output */
+  customTransformers?: CustomTransformers
+
   /** An optional copy of the TypeScript import, if missing it will be require'd. */
   tsModule?: TS
 
@@ -381,7 +385,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
 
   const vfs = options.fsMap ?? createLocallyPoweredVFS(compilerOptions, ts)
   const system = createSystem(vfs)
-  const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions)
+  const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions, options.customTransformers)
   const ls = env.languageService
 
   code = codeLines.join("\n")
