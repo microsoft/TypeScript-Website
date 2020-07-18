@@ -253,7 +253,7 @@ let d = looselyTyped.a.b.c.d;
 //  ^?
 ```
 
-After all, remember that all the convenience of `any` comes at the cost of loosing type safety.
+After all, remember that all the convenience of `any` comes at the cost of losing type safety.
 Type safety is one of the main motivations for using TypeScript and you should try to avoid using `any` when not necessary.
 
 # Void
