@@ -206,7 +206,7 @@ export const SiteFooter = (props: Props) => {
     hasLocalStorage = typeof localStorage !== `undefined`
   } catch (error) { }
 
-  const systemIsDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const systemIsDark = window && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
   const customThemeOverride = hasLocalStorage && localStorage.getItem("color-theme")
   const useDark = !customThemeOverride && systemIsDark ? true : customThemeOverride === "dark-theme"
 
@@ -232,13 +232,6 @@ export const SiteFooter = (props: Props) => {
 
   return (
     <footer id="site-footer" role="contentinfo">
-      <section id="switcher">
-        <label className="switch-wrap">
-          <input type="checkbox" onChange={handleThemeChange} />
-          <div className="switch"></div>
-        </label>
-      </section>
-
       <section id="popular">
         <h3>Popular Documentation Pages</h3>
         <ul>
@@ -250,6 +243,20 @@ export const SiteFooter = (props: Props) => {
           ))}
         </ul>
       </section>
+
+      <section id="switcher">
+        <article>
+          <h3>Customize</h3>
+          <label>
+            <p>Site Colours:</p>
+            <div className="switch-wrap">
+              <input type="checkbox" checked={!isDarkMode} onChange={handleThemeChange} />
+              <div className="switch"></div>
+            </div>
+          </label>
+        </article>
+      </section>
+
       <section id="community">
         <article id="logos">
           <svg
@@ -347,6 +354,7 @@ export const SiteFooter = (props: Props) => {
           </ul>
         </article>
       </section>
+
     </footer>
   )
 }

@@ -20,7 +20,7 @@ const CustomColorSwitcherCode = () => {
     hasLocalStorage = typeof localStorage !== "undefined"
   } catch (error) {}
 
-  const systemIsDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const systemIsDark = window && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
   const customThemeOverride = hasLocalStorage && localStorage.getItem("color-theme")
 
   if (!customThemeOverride && systemIsDark) {
