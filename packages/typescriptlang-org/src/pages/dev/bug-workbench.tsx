@@ -170,17 +170,10 @@ const Play: React.FC<Props> = (props) => {
         }
 
         // Dark mode faff
-        const darkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)')
-        if (darkModeEnabled.matches) {
+        const darkModeEnabled = document.documentElement.classList.contains("dark-theme")
+        if (darkModeEnabled) {
           sandboxEnv.monaco.editor.setTheme("sandbox-dark");
         }
-
-        // On the chance you change your dark mode settings
-        darkModeEnabled.addListener((e) => {
-          const darkModeOn = e.matches;
-          const newTheme = darkModeOn ? "sandbox-dark" : "sandbox-light"
-          sandboxEnv.monaco.editor.setTheme(newTheme);
-        });
 
         sandboxEnv.editor.focus()
         sandboxEnv.editor.layout()

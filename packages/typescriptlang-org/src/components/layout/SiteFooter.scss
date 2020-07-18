@@ -16,8 +16,8 @@
 
   section {
     max-width: 920px;
-    padding-left: 2rem;
-    padding-right: 2rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
     margin: 0 auto;
     padding-top: 1rem;
   }
@@ -68,6 +68,70 @@
     }
   }
 
+  section#switcher {
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    article {
+      h3 {
+        width: 240px;
+      }
+      display: flex;
+      flex-direction: row;
+      label {
+        display: flex;
+        flex-direction: row;
+        p {
+          margin: 0;
+          padding: 0;
+          margin-top: 6px;
+          margin-right: 8px;
+        }
+      }
+    }
+
+    .switch-wrap {
+      background: rgba(255, 255, 255, 0.2);
+      width: 50px;
+      height: 20px;
+      padding: 5px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      display: inline-block;
+      cursor: pointer;
+      position: relative;
+
+      input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+
+        &:checked {
+          + .switch {
+            background-color: $ts-barely-blue-highlight;
+            transform: translateX(29px);
+          }
+        }
+      }
+
+      .switch {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        display: block;
+        border-radius: 50%;
+        background-color: #000;
+        transition: background 0.3s, transform 0.3s, content 0.3s;
+
+        @media (prefers-reduced-motion: reduce) {
+          transition: none;
+        }
+
+        height: 22px;
+        width: 22px;
+      }
+    }
+  }
+
   section#community {
     border-top: 1px solid rgba(255, 255, 255, 0.3);
     padding-top: 2rem;
@@ -95,14 +159,14 @@
     }
 
     #logos {
-      width: 180px;
-
+      width: 200px;
+      margin-right: 40px;
       svg {
         margin-bottom: -0.8rem;
       }
-      
+
       @media screen and (-ms-high-contrast: black-on-white) {
-        img { 
+        img {
           filter: invert(100%);
         }
         svg path {
@@ -171,7 +235,7 @@
 #playground-samples-popover {
   position: absolute;
   bottom: 0px;
-  left: -247px;
+  left: -252px;
   right: -400px;
   margin: 0 auto;
   visibility: hidden;
@@ -193,11 +257,7 @@
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-top: 14px solid $ts-light-bg-grey-highlight-color;
-
-    @media (prefers-color-scheme: dark) {
-      border-top: 14px solid $ts-dark-bg-for-foreground-color;
-    }
+    border-top: 14px solid var(--footer-arrow-color);
 
     margin: 0 auto;
     margin-bottom: 20px;

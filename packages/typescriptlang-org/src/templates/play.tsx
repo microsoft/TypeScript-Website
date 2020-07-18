@@ -44,7 +44,7 @@ const Play: React.FC<Props> = (props) => {
       const onPlayground = document.location.pathname.endsWith("/play/") || document.location.pathname.endsWith("/play")
       if (leftPlayground && onPlayground) {
         document.location.reload()
-      } else if (!leftPlayground && onPlayground) {
+      } else if (!leftPlayground && !onPlayground) {
         leftPlayground = true
       }
     });
@@ -130,17 +130,10 @@ const Play: React.FC<Props> = (props) => {
         playground.setupPlayground(sandboxEnv, main, playgroundConfig, i as any, React)
 
         // Dark mode faff
-        const darkModeEnabled = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)')
-        if (darkModeEnabled.matches) {
+        const darkModeEnabled = document.documentElement.classList.contains("dark-theme")
+        if (darkModeEnabled) {
           sandboxEnv.monaco.editor.setTheme("sandbox-dark");
         }
-
-        // On the chance you change your dark mode settings 
-        darkModeEnabled.addListener((e) => {
-          const darkModeOn = e.matches;
-          const newTheme = darkModeOn ? "sandbox-dark" : "sandbox-light"
-          sandboxEnv.monaco.editor.setTheme(newTheme);
-        });
 
         sandboxEnv.editor.focus()
         sandboxEnv.editor.layout()
