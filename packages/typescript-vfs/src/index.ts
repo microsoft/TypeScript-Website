@@ -1,5 +1,6 @@
 type System = import("typescript").System
 type CompilerOptions = import("typescript").CompilerOptions
+type CustomTransformers = import("typescript").CustomTransformers
 type LanguageServiceHost = import("typescript").LanguageServiceHost
 type CompilerHost = import("typescript").CompilerHost
 type SourceFile = import("typescript").SourceFile
@@ -30,17 +31,25 @@ export interface VirtualTypeScriptEnvironment {
  * @param rootFiles a list of files which are considered inside the project
  * @param ts a copy pf the TypeScript module
  * @param compilerOptions the options for this compiler run
+ * @param customTransformers custom transformers for this compiler run
  */
 
 export function createVirtualTypeScriptEnvironment(
   sys: System,
   rootFiles: string[],
   ts: TS,
-  compilerOptions: CompilerOptions = {}
+  compilerOptions: CompilerOptions = {},
+  customTransformers?: CustomTransformers
 ): VirtualTypeScriptEnvironment {
   const mergedCompilerOpts = { ...defaultCompilerOptions(ts), ...compilerOptions }
 
-  const { languageServiceHost, updateFile } = createVirtualLanguageServiceHost(sys, rootFiles, mergedCompilerOpts, ts)
+  const { languageServiceHost, updateFile } = createVirtualLanguageServiceHost(
+    sys,
+    rootFiles,
+    mergedCompilerOpts,
+    ts,
+    customTransformers
+  )
   const languageService = ts.createLanguageService(languageServiceHost)
   const diagnostics = languageService.getCompilerOptionsDiagnostics()
 
@@ -496,7 +505,8 @@ export function createVirtualLanguageServiceHost(
   sys: System,
   rootFiles: string[],
   compilerOptions: CompilerOptions,
-  ts: TS
+  ts: TS,
+  customTransformers?: CustomTransformers
 ) {
   const fileNames = [...rootFiles]
   const { compilerHost, updateFile } = createVirtualCompilerHost(sys, compilerOptions, ts)
@@ -506,6 +516,7 @@ export function createVirtualLanguageServiceHost(
     ...compilerHost,
     getProjectVersion: () => projectVersion.toString(),
     getCompilationSettings: () => compilerOptions,
+    getCustomTransformers: () => customTransformers,
     getScriptFileNames: () => fileNames,
     getScriptSnapshot: fileName => {
       const contents = sys.readFile(fileName)
