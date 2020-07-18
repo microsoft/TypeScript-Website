@@ -13,7 +13,7 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build && cpy src/index.ts ../sandbox/src/vendor --rename=typescript-vfs.ts",
-    "bootstrap": "tsdx build",
+    "bootstrap": "yarn build",
     "test": "tsdx test",
     "lint": "tsdx lint"
   },
