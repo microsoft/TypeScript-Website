@@ -1,7 +1,7 @@
 @import "../../style/globals.scss";
 @import "./fonts.scss";
 
-@mixin darkTheme {
+.dark-theme {
   --background-color: #{$ts-dark-bg-color};
   --text-color: #fff;
   --inline-code-background-color: rgb(58, 58, 92);
@@ -11,15 +11,26 @@
   --raised-box-shadow: 0 1.6px 3.6px 0 rgba(255, 255, 255, 0.132),
     0 0.3px 0.9px 0 rgba(255, 255, 255, 0.108);
   --sidebar-background-color: #{$ts-dark-bg-secondary};
-  --sibar-list-active-background-color: #{$ts-dark-barely-blue-highlight};
-  --sibar-list-background-color: rgb(53, 52, 52);
+  --sidebar-list-active-background-color: #{$ts-dark-barely-blue-highlight};
+  --sidebar-list-background-color: rgb(53, 52, 52);
   --sidebar-link-border-color: #fff;
   --sidebar-item-border-color: #3e3e3e;
   --sidebar-active-button-background-color: #{$ts-bg-selection-grey};
-}
-
-.dark-theme {
-  @include darkTheme;
+  --playground-divider: #{$ts-light-bg-grey-highlight-color};
+  --playground-dropdown-bg: #{$ts-dark-bg-for-foreground-color};
+  --playground-dropdown-shadow: 0 6px 12px rgba(148, 148, 148, 0.175);
+  --playground-dropdown-border: black;
+  --playground-toolbar-hover-bg: #{$ts-dark-bg-color};
+  --playground-dragbar-bg: #{$ts-dark-barely-blue-highlight};
+  --playground-dragbar-border: white;
+  --playground-pre-color: white;
+  --playground-pre-bg: #1e1e1e;
+  --footer-arrow-color: $ts-light-bg-grey-highlight-color;
+  --fade-gradient: linear-gradient(
+    0deg,
+    rgba(49, 49, 49, 1) 0%,
+    rgba(49, 49, 49, 0.2) 100%
+  );
 }
 
 html {
@@ -33,11 +44,26 @@ html {
   --raised-box-shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.132),
     0 0.3px 0.9px 0 rgba(0, 0, 0, 0.108);
   --sidebar-background-color: #{$ts-light-bg-grey};
-  --sibar-list-active-background-color: #{$ts-barely-blue-highlight};
-  --sibar-list-background-color: #e4e4e4;
+  --sidebar-list-active-background-color: #{$ts-barely-blue-highlight};
+  --sidebar-list-background-color: #e4e4e4;
   --sidebar-link-border-color: #000;
   --sidebar-item-border-color: #dfdfdf;
   --sidebar-active-button-background-color: #dfdfdf;
+  --playground-divider: $ts-bg-selection-grey;
+  --playground-dropdown-bg: white;
+  --playground-dropdown-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  --playground-dropdown-border: #{$ts-light-bg-grey-highlight-color};
+  --playground-toolbar-hover-bg: #{$ts-light-bg-grey-highlight-color};
+  --playground-dragbar-bg: white;
+  --playground-dragbar-border: #c4c4c4;
+  --playground-pre-color: black;
+  --playground-pre-bg: rgb(241, 241, 241);
+  --footer-arrow-color: $ts-dark-bg-for-foreground-colo;
+  --fade-gradient: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
 
   background-color: var(--background-color);
   color: var(--text-color);
@@ -47,10 +73,6 @@ html {
     BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
   font-size: 16px;
   line-height: 1.4;
-
-  @media (prefers-color-scheme: dark) {
-    @include darkTheme;
-  }
 }
 
 .raised {

@@ -55,11 +55,7 @@
         font-size: 2rem;
         font-weight: 400;
         text-decoration: none;
-        color: black;
-
-        @media (prefers-color-scheme: dark) {
-          color: white;
-        }
+        color: var(--text-color);
       }
 
       ul {
@@ -73,11 +69,7 @@
         text-overflow: ellipsis;
 
         a {
-          color: rgb(20, 20, 20);
-
-          @media (prefers-color-scheme: dark) {
-            color: white;
-          }
+          color: var(--text-color);
         }
       }
     }
@@ -87,15 +79,11 @@
     position: sticky;
     top: 0px;
     z-index: 99999;
-    background-color: white;
+    background-color: var(--raised-background-color);
 
     ul {
       display: flex;
       margin: 0;
-    }
-    @media (prefers-color-scheme: dark) {
-      background-color: $ts-dark-bg-for-foreground-color;
-      border-color: black;
     }
 
     @media (max-width: $screen-sm) {
@@ -118,12 +106,6 @@
 
     a {
       text-decoration: none;
-      // color: black;
-
-      @media (prefers-color-scheme: dark) {
-        background-color: $ts-dark-bg-for-foreground-color;
-        // border-color: black;
-      }
 
       &.current {
         border-bottom: 1px solid $ts-main-blue-color;

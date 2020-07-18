@@ -201,19 +201,32 @@ export const SiteFooter = (props: Props) => {
     })
   }, [])
 
-  const [isDarkMode, setDarkMode] = useState(false)
+  let hasLocalStorage = false
+  try {
+    hasLocalStorage = typeof localStorage !== `undefined`
+  } catch (error) { }
+
+  const systemIsDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const customThemeOverride = hasLocalStorage && localStorage.getItem("color-theme")
+  const useDark = !customThemeOverride && systemIsDark ? true : customThemeOverride === "dark-theme"
+
+  const [isDarkMode, setDarkMode] = useState(useDark)
 
   const handleThemeChange = () => {
-    return setDarkMode(!isDarkMode)
+    setDarkMode(!isDarkMode)
+    if (document.location.pathname.includes("/play")) {
+      document.location.reload()
+    }
   }
 
   useEffect(() => {
     if (isDarkMode) {
-      console.log("dark")
       document.documentElement.classList.add("dark-theme")
+      hasLocalStorage && localStorage.setItem("color-theme", "dark-theme")
+
     } else {
-      console.log("light")
       document.documentElement.classList.remove("dark-theme")
+      hasLocalStorage && localStorage.setItem("color-theme", "")
     }
   }, [isDarkMode])
 
@@ -225,6 +238,7 @@ export const SiteFooter = (props: Props) => {
           <div className="switch"></div>
         </label>
       </section>
+
       <section id="popular">
         <h3>Popular Documentation Pages</h3>
         <ul>
@@ -320,9 +334,7 @@ export const SiteFooter = (props: Props) => {
           <ul>
             {communityLinks.map(page => {
               const favicon = faviconForURL(page.url)
-              const favSpan = favicon ? (
-                <span className="link-prefix">{favicon}</span>
-              ) : null
+              const favSpan = favicon ? (<span className="link-prefix">{favicon}</span>) : null
               return (
                 <li key={page.url}>
                   <a style={{ position: "relative" }} href={page.url}>

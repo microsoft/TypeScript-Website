@@ -80,10 +80,6 @@
         font-size: 14px;
         color: var(--alt-text-color);
 
-        @media (prefers-color-scheme: dark) {
-          color: white;
-        }
-
         text-decoration: none;
         border-left: 2px solid transparent;
         padding-left: 8px;
@@ -141,22 +137,13 @@
 
     p,
     header {
-      color: black;
-
-      @media (prefers-color-scheme: dark) {
-        color: white;
-      }
+      color: var(--text-color);
     }
 
     &:hover svg path,
     &:hover h3 {
-      fill: black;
-      color: black;
-
-      @media (prefers-color-scheme: dark) {
-        fill: white;
-        color: white;
-      }
+      fill: var(--text-color);
+      color: var(--text-color);
     }
 
     .nav-content {

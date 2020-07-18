@@ -49,11 +49,9 @@ nav#sidebar {
 
         color: var(--alt-text-color);
 
-        @media (prefers-color-scheme: dark) {
-          .open path,
-          .closed path {
-            stroke: white;
-          }
+        .open path,
+        .closed path {
+          stroke: var(--text-color);
         }
 
         &:active,
@@ -73,7 +71,7 @@ nav#sidebar {
   // Still looking at the highest level of navigation
   > ul > li {
     &.highlighted {
-      background-color: var(--sibar-list-active-background-color);
+      background-color: var(--sidebar-list-active-background-color);
 
       svg path {
         stroke: $ts-main-blue-color;
@@ -101,11 +99,11 @@ nav#sidebar {
   }
 
   > ul > li.open > ul {
-    background-color: var(--sibar-list-background-color);
+    background-color: var(--sidebar-list-background-color);
   }
 
   > ul > li.open.highlighted > ul {
-    background-color: var(--sibar-list-active-background-color);
+    background-color: var(--sidebar-list-active-background-color);
   }
 
   // Individual pages

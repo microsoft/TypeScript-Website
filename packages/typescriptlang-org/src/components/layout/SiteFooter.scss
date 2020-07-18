@@ -198,11 +198,7 @@
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-top: 14px solid $ts-light-bg-grey-highlight-color;
-
-    @media (prefers-color-scheme: dark) {
-      border-top: 14px solid $ts-dark-bg-for-foreground-color;
-    }
+    border-top: 14px solid var(--footer-arrow-color);
 
     margin: 0 auto;
     margin-bottom: 20px;

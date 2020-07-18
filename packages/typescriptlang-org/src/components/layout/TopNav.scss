@@ -8,10 +8,6 @@
 #top-menu {
   background-color: $ts-main-blue-color;
 
-  @media (prefers-color-scheme: dark) {
-    background-color: $ts-main-blue-darker-color;
-  }
-
   user-select: none;
   clear: both;
   display: flex;
@@ -49,7 +45,6 @@
     font-size: 1.5rem;
     padding-top: 0.7rem;
 
-    
     @media screen and (-ms-high-contrast: active) {
       svg path {
         fill: blue;
@@ -110,10 +105,6 @@ form.search {
   height: 3rem;
   background-color: $ts-main-blue-darker-color;
 
-  @media (prefers-color-scheme: dark) {
-    background-color: $ts-main-blue-darkest-color;
-  }
-
   padding-left: 1rem;
   display: inline-block;
 
@@ -141,10 +132,6 @@ form.search {
     }
     -webkit-appearance: none;
     background-color: $ts-main-blue-darker-color;
-
-    @media (prefers-color-scheme: dark) {
-      background-color: $ts-main-blue-darkest-color;
-    }
 
     border-color: #152740;
     border-radius: 0;
@@ -273,7 +260,6 @@ form.search {
     /* Because 'TypeScript' is removed, let the width be auto */
     #home-page-logo {
       width: auto;
-
     }
 
     /* Simplify the nav to a few buttons and home */
