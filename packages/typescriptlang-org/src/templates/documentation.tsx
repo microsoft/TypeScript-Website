@@ -17,7 +17,7 @@ import { createInternational } from "../lib/createInternational"
 import { useIntl } from "react-intl"
 import { createIntlLink } from "../components/IntlLink"
 import { handbookCopy } from "../copy/en/handbook"
-import { setupTwoslashHovers } from "gatsby-remark-shiki-twoslash/dist/dom"
+import { setupTwoslashHovers } from "gatsby-remark-shiki-twoslash"
 import { Contributors } from "../components/handbook/Contributors"
 
 type Props = {

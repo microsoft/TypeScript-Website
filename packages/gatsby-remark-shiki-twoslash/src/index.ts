@@ -1,9 +1,14 @@
 import { TLang } from "shiki-languages"
-import { ShikiTwoslashSettings, runTwoSlash, renderCodeToHTML, canHighlightLang } from "render-shiki-twoslash"
+import {
+  ShikiTwoslashSettings,
+  runTwoSlash,
+  renderCodeToHTML,
+  canHighlightLang,
+  setupHighLighter,
+} from "render-shiki-twoslash"
 
 import visit from "unist-util-visit"
 import { Node } from "unist"
-import { setupHighLighter } from "../../render-shiki-twoslash/dist"
 
 type RichNode = Node & {
   lang: TLang

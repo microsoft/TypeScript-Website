@@ -98,6 +98,6 @@ export const runTwoSlash = (code: string, lang: string, settings: ShikiTwoslashS
     addAllFilesFromFolder(map, settings.nodeModulesTypesPath || "node_modules/@types")
   }
 
-  const results = twoslasher(code, lang, undefined, undefined, undefined, map)
+  const results = twoslasher(code, lang, { fsMap: map })
   return results
 }

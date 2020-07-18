@@ -86,7 +86,7 @@ export const setupTwoslashHovers = () => {
     tooltip.style.maxWidth = `${rootRect.width - relativeLeft}px`
   }
 
-  twoslashes.forEach(codeblock => {
+  twoslashes.forEach((codeblock) => {
     codeblock.addEventListener("mouseover", hover)
     codeblock.addEventListener("mouseout", resetHover)
   })
