@@ -20,6 +20,7 @@ jobs:
         node-version: '13.x'
 
     # For epub -> PDF generation
+    - run: sudo apt-get update
     - run: sudo apt install calibre
 
     # Build v2
@@ -33,6 +34,9 @@ jobs:
         yarn bootstrap
         yarn build
         yarn build-site
+      env:
+        YARN_CHECKSUM_BEHAVIOR: ignore
+
     # CI: Deploy to the right branch
     - name: Deploy + Publish
       if: github.event_name != 'pull_request'
