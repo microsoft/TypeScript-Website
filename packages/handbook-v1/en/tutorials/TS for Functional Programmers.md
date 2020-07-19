@@ -49,6 +49,7 @@ JavaScript defines 7 built-in types:
 | ----------- | ------------------------------------------- |
 | `Number`    | a double-precision IEEE 754 floating point. |
 | `String`    | an immutable UTF-16 string.                 |
+| `BigInt`    | integers in the arbitrary precision format. |
 | `Boolean`   | `true` and `false`.                         |
 | `Symbol`    | a unique value usually used as a key.       |
 | `Null`      | equivalent to the unit type.                |
@@ -61,6 +62,7 @@ TypeScript has corresponding primitive types for the built-in types:
 
 - `number`
 - `string`
+- `bigint`
 - `boolean`
 - `symbol`
 - `null`
