@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import attribution from "../../../../handbook-v1/output/attribution.json"
+import attribution from "../../../../documentation/output/attribution.json"
 
 interface ContributorsProps {
   i: (string) => string
@@ -12,10 +12,10 @@ const Row = (props: { children: any, className?: string }) => <div className={["
 const Section = (props: { children: any, className?: string, sKey: string }) => <div key={props.sKey} className="bottom-section-content">{props.children}</div>
 
 export const Contributors = (props: ContributorsProps) => {
-  const attrPath = props.path.replace("/packages/handbook-v1/", "")
+  const attrPath = props.path.replace("/packages/documentation/", "")
   const page = attribution[attrPath]
 
-  // https://github.com/microsoft/TypeScript-Website/blob/v2/packages/handbook-v1/en/Advanced%20Types.md
+  // https://github.com/microsoft/TypeScript-Website/blob/v2/packages/documentation/en/Advanced%20Types.md
   const reposRootURL = "https://github.com/microsoft/TypeScript-Website/blob/v2"
   const repoPageURL = reposRootURL + props.path
 

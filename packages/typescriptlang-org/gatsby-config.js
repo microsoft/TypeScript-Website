@@ -51,8 +51,8 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `${__dirname}/../handbook-v1/en`,
-        name: `handbook-v1`,
+        path: `${__dirname}/../documentation/en`,
+        name: `documentation`,
       },
     },
     // Grabs file from the tsconfig reference

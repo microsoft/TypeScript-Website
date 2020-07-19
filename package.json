@@ -6,7 +6,7 @@
     "packages/ts-twoslasher",
     "packages/gatsby-remark-shiki-twoslash",
     "packages/community-meta",
-    "packages/handbook-v1",
+    "packages/documentation",
     "packages/handbook-epub",
     "packages/sandbox",
     "packages/playground",

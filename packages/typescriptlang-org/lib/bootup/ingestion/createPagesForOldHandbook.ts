@@ -14,7 +14,7 @@ export const createOldHandbookPages = async (
     query GetAllHandbookDocs {
       allFile(
         filter: {
-          sourceInstanceName: { eq: "handbook-v1" }
+          sourceInstanceName: { eq: "documentation" }
           extension: { eq: "md" }
         }
       ) {
@@ -87,10 +87,5 @@ export const createOldHandbookPages = async (
 
 export const idFromURL = (url: string) => {
   // TODO: this needs to support ID's like:         id: "templates/global-plugin-d-ts",
-  return (
-    url
-      .split("/")
-      .pop()!
-      .replace(".html", "") || "index"
-  )
+  return url.split("/").pop()!.replace(".html", "") || "index"
 }

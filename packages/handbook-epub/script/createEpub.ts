@@ -34,7 +34,7 @@ const markdowns = new Map<string, ReturnType<typeof readMarkdownFile>>();
 
 // Grab all the md + yml info from the handbook files on disk
 // and add them to ^
-const handbookPath = join(__dirname, "..", "..", "handbook-v1", "en");
+const handbookPath = join(__dirname, "..", "..", "documentation", "en");
 readdirSync(handbookPath, "utf-8").forEach((path) => {
   const filePath = join(handbookPath, path);
   if (lstatSync(filePath).isDirectory() || !filePath.endsWith("md")) {

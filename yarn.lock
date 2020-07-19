@@ -4077,14 +4077,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript/twoslash@0.5.3, @typescript/twoslash@workspace:packages/ts-twoslasher":
+"@typescript/twoslash@0.6.2, @typescript/twoslash@workspace:packages/ts-twoslasher":
   version: 0.0.0-use.local
   resolution: "@typescript/twoslash@workspace:packages/ts-twoslasher"
   dependencies:
     "@types/jest": ^25.1.3
     "@types/lz-string": ^1.3.33
     "@types/prettier": ^1.19.0
-    "@typescript/vfs": 1.0.1
+    "@typescript/vfs": 1.1.2
     debug: ^4.1.1
     husky: ^4.2.3
     jest-file-snapshot: ^0.3.8
@@ -4097,7 +4097,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript/vfs@1.0.1, @typescript/vfs@workspace:packages/typescript-vfs":
+"@typescript/vfs@1.1.2, @typescript/vfs@workspace:packages/typescript-vfs":
   version: 0.0.0-use.local
   resolution: "@typescript/vfs@workspace:packages/typescript-vfs"
   dependencies:
@@ -9514,6 +9514,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"documentation@workspace:packages/documentation":
+  version: 0.0.0-use.local
+  resolution: "documentation@workspace:packages/documentation"
+  languageName: unknown
+  linkType: soft
+
 "dom-converter@npm:^0.2":
   version: 0.2.0
   resolution: "dom-converter@npm:0.2.0"
@@ -12113,8 +12119,8 @@ fsevents@^1.2.7:
   resolution: "gatsby-remark-shiki-twoslash@workspace:packages/gatsby-remark-shiki-twoslash"
   dependencies:
     "@types/jest": ^25.1.3
-    "@typescript/twoslash": 0.5.3
-    "@typescript/vfs": 1.0.1
+    "@typescript/twoslash": 0.6.2
+    "@typescript/vfs": 1.1.2
     rehype-stringify: ^6.0.1
     shiki: ^0.1.6
     shiki-languages: ^0.1.6
@@ -13064,12 +13070,6 @@ fsevents@^1.2.7:
     fs-jetpack: ^2.4.0
     streampub: "https://github.com/orta/streampub-1.git#ibooks"
     ts-node: "*"
-  languageName: unknown
-  linkType: soft
-
-"handbook-v1@workspace:packages/handbook-v1":
-  version: 0.0.0-use.local
-  resolution: "handbook-v1@workspace:packages/handbook-v1"
   languageName: unknown
   linkType: soft
 
@@ -25726,7 +25726,7 @@ resolve@^1.17.0:
     "@types/react": ^16.9.20
     "@types/react-dom": ^16.9.5
     "@types/react-helmet": ^5.0.15
-    "@typescript/twoslash": 0.5.3
+    "@typescript/twoslash": 0.6.2
     "@uifabric/fluent-theme": ^7.1.22
     "@uifabric/react-cards": ^0.109.23
     canvas: ^2.6.1
