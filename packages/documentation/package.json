@@ -6,7 +6,7 @@
   "scripts": {
     "build": "echo 'NOOP'",
     "test": "echo 'NOOP'",
-    "bootstrap": "node ./scripts/generateAttribution.js"
+    "bootstrap": "node ./scripts/generateTypesForFilesInDocs && node ./scripts/generateAttribution.js && node ./scripts/generateDocsNavigationPerLanguage.js"
   },
   "prettier": {
     "semi": true
