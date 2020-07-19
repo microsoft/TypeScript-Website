@@ -22,6 +22,8 @@ export const SiteNav = (props: Props) => {
   // This extra bit of mis-direction ensures that non-essential code runs after 
   // the page is loaded
   useEffect(() => {
+    setupStickyNavigation()
+
     if (document.getElementById("algolia-search")) return
 
     const searchScript = document.createElement('script');
@@ -49,8 +51,6 @@ export const SiteNav = (props: Props) => {
     }
 
     document.body.appendChild(searchScript);
-
-    setupStickyNavigation()
   }, []);
 
 
