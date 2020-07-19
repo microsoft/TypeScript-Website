@@ -63,11 +63,15 @@ export const renderCodeToHTML = (code: string, lang: string, twoslash?: TwoSlash
   return results
 }
 
-// Basically so that we can store this once, then re-use it per
+// Basically so that we can store this once, then re-use it
 let nodeModulesMap: Map<string, string> | undefined = undefined
 
 /** Runs Twoslash over the code in the  */
-export const runTwoSlash = (code: string, lang: string, settings: ShikiTwoslashSettings = defaultSettings) => {
+export const runTwoSlash = (
+  code: string,
+  lang: string,
+  settings: ShikiTwoslashSettings = defaultSettings
+): TwoSlashReturn => {
   let map: Map<string, string> | undefined = undefined
 
   // Shiki doesn't respect json5 as an input, so switch it

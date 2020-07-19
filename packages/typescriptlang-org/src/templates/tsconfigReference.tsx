@@ -12,7 +12,7 @@ import "./markdown.scss"
 import "./tsconfig.scss"
 
 import { TSConfigReferenceTemplateQuery } from "../__generated__/gatsby-types"
-import { setupTwoslashHovers } from "render-shiki-twoslash/dist/dom"
+import { setupTwoslashHovers } from "render-shiki-twoslash/src/dom"
 
 
 type Props = { pageContext: any, data: TSConfigReferenceTemplateQuery, path: string }

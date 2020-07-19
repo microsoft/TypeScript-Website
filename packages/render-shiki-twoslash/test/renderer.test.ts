@@ -69,6 +69,8 @@ console.log(hello);
   })
 
   it("shows the right LSP results when a theme doesnt have unique tokens for identifiers", async () => {
+    await setupHighLighter({ theme: "dark_vs" })
+
     const twoslash = runTwoSlash(file, "ts", {})
     const html = renderCodeToHTML(file, "ts", twoslash)
 

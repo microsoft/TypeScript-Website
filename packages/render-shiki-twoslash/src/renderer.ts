@@ -72,8 +72,7 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
           // prettier-ignore
           console.log(result, start, '<=', e.character, '&&', start + token.content.length, '>=', e.character + e.length)
           if (result) {
-            console.log("Found:", e)
-            console.log("Inside:", token)
+            console.log("Found:", e, "\n\nInside:", token)
           }
           return result
         }
@@ -94,12 +93,9 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
               end: token.start! + token.length! - filePos,
             }
 
-            if (
-              range.begin < 0 ||
-              range.end < 0
-            ) {
+            if (range.begin < 0 || range.end < 0) {
               // prettier-ignore
-              // throw new Error(`The begin range of a token is at a minus location, filePos:${filePos} current token: ${JSON.stringify(token, null, '  ')}\n result: ${JSON.stringify(range, null, '  ')}`)
+              throw new Error(`The begin range of a token is at a minus location, filePos:${filePos} current token: ${JSON.stringify(token, null, '  ')}\n result: ${JSON.stringify(range, null, '  ')}`)
             }
 
             if ("renderedMessage" in token) range.classes = "err"
