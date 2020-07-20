@@ -110,7 +110,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   const navigation = getDocumentationNavForLanguage(props.pageContext.lang)
 
   return (
-    <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneline || ""} lang="en" allSitePage={props.data.allSitePage}>
+    <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
       <section id="doc-layout">
         <SidebarToggleButton />
         <noscript>
