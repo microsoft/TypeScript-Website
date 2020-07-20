@@ -1,36 +1,32 @@
 // @ts-check
-const {
-  readdirSync,
-  statSync,
-  existsSync,
-  readFileSync,
-  writeFileSync,
-} = require("fs");
+// prettier-ignore
+const { readdirSync, statSync, existsSync, readFileSync, writeFileSync } = require("fs");
 const { join } = require("path");
 const { format } = require("prettier");
 const { enRoot, getFilePaths } = require("./generateTypesForFilesInDocs");
 const { read: readMarkdownFile } = require("gray-matter");
 
-/**
- * @typedef {Object} HandbookNavSubItem
- * @property {import("./types/AllFilenames").AllDocsPages= } file - the reference to the file based on the lang root
- * @property {HandbookNavSubItem[]=} items - pages
- * or!
- * @property {string= } href - a language prefixless
- * @property {string= } title - the display only used when href exists
- * @property {string= } oneliner
- */
+// This file is the definitive sidebar navigation source. It takes either:
+//
+// a  { file: 'path; }
+// a  { href: "url" title: "Button title", oneliner: "some info" }
+// or { title: "Button title", items: SubItems }
+//
+// For files we use the same language lookup system the rest of the site uses,
+// to leave titles, hrefs etc to be done on the document itself
 
-/**
- * @typedef {Object} HandbookNavItem
- * @property {string} title - TBD
- * @property {string} summary - TDB
- * @property {boolean=} chronological - should we recommend a next/prev
- * @property {HandbookNavSubItem[]} items - pages
- */
+// The results are a generated TS function in put into the file:
+// packages/typescriptlang-org/src/lib/documentationNavigation.ts
+// where it's used in the website / epub / etc
+//
 
-// prettier-ignore
+/* 
+  Run this after any changes to propagate:
+     yarn workspace documentation create-handbook-nav
+*/
+
 /** @type {HandbookNavItem[]} */
+// prettier-ignore
 const handbookPages = [
   {
     title: "Get Started",
@@ -89,14 +85,15 @@ const handbookPages = [
       { file: "declaration files/Do's and Don'ts.md"},
       { file: "declaration files/Deep Dive.md" },
       { file: "declaration files/Library Structures.md" },
-      { title: "Templates", items: [
+      { title: ".d.ts Templates", 
+        items: [
         { file: "declaration files/templates/global.d.ts.md" },
         { file: "declaration files/templates/global-modifying-module.d.ts.md"},
         { file: "declaration files/templates/module.d.ts.md" },
         { file: "declaration files/templates/module-plugin.d.ts.md" },
         { file: "declaration files/templates/module-class.d.ts.md" },
         { file: "declaration files/templates/module-function.d.ts.md" },
-      ]}
+      ]},
       { file: "declaration files/Publishing.md" },
       { file: "declaration files/Consumption.md"},
     ],
@@ -164,69 +161,96 @@ for (const lang of langs) {
 
 const codeForTheHandbook = [
   `
-export function getHandbookNavForLanguage(langRequest: string) {
+export function getDocumentationNavForLanguage(langRequest: string): NewNavItem[] {
   const langs = ['${langs.join("', '")}']
   const lang = langs.includes(langRequest) ? langRequest : "en"
-
+  const navigations: Record<string, NewNavItem[]> = {} 
 `,
 ];
 
 for (const lang of langs) {
-  codeForTheHandbook.push(`const ${lang} = [`);
+  codeForTheHandbook.push(`navigations.${lang} = [`);
 
   handbookPages.forEach((section) => {
     // Section metadata:
     codeForTheHandbook.push(`{ 
       title: "${section.title}",
+      oneline: "${section.summary}",
       id: "${section.title.toLowerCase().replace(/\s/g, "-")}",
       chronological: ${section.chronological || false},
-      items: [
     `);
 
-    // 1st level subnav:
-    for (const subItem of section.items) {
-      codeForTheHandbook.push(`{ `);
+    /** @param {{ items?: HandbookNavSubItem[] }} itemable */
+    function addItems(itemable) {
+      // Lots of 2nd level navs dont have subnav, bail for them
+      if ("items" in itemable === false) return;
 
-      // Is it a special link?
-      if ("href" in subItem) {
-        codeForTheHandbook.push(`
+      codeForTheHandbook.push("items: [");
+      for (const subItem of itemable.items) {
+        codeForTheHandbook.push(`{ `);
+
+        // Is it a special link?
+        if ("href" in subItem) {
+          codeForTheHandbook.push(`
         title: "${subItem.title}",
+        id: "${toID(subItem.title)}",
         permalink: "${subItem.href}",
-        oneline: "${subItem.oneliner}",
+        oneline: "${subItem.oneliner}"
       },`);
-      } else {
-        // It's a file reference
-        const subNavInfo =
-          langInfo[lang].get(subItem.file) || langInfo["en"].get(subItem.file);
+        } else if ("items" in subItem) {
+          //Is is a sub-sub-section?
+          codeForTheHandbook.push(`
+            title: "${subItem.title}",
+            id: "${toID(subItem.title)}",
+            oneline: "${subItem.oneliner}",
+          `);
+          addItems(subItem);
+          codeForTheHandbook.push(",");
+        } else {
+          // It's a file reference
+          const subNavInfo =
+            langInfo[lang].get(subItem.file) ||
+            langInfo["en"].get(subItem.file);
 
-        if (!subNavInfo) throwForUnfoundFile(subItem, lang);
+          if (!subNavInfo) throwForUnfoundFile(subItem, lang);
 
-        codeForTheHandbook.push(`
-        title: "${subNavInfo.data.title}",
-        permalink: "${subNavInfo.data.permalink}",
-        oneline: "${subNavInfo.data.oneline}",
-      `);
+          codeForTheHandbook.push(`
+            title: "${subNavInfo.data.short || subNavInfo.data.title}",
+            id: "${toID(subNavInfo.data.title)}",
+            permalink: "${subNavInfo.data.permalink}",
+            oneline: "${subNavInfo.data.oneline}",
+          `);
 
-        const isLast =
-          section.items.indexOf(subItem) === section.items.length - 1;
-        const suffix = isLast ? "" : ",";
-        codeForTheHandbook.push(`}${suffix} `);
+          const isLast =
+            itemable.items.indexOf(subItem) === itemable.items.length - 1;
+          const suffix = isLast ? "" : ",";
+          codeForTheHandbook.push(`}${suffix} `);
+        }
       }
+      // closes the outer 'items'
+      codeForTheHandbook.push("]\n }");
     }
+
+    // Set up the 1st level of recursion for the 2nd level items
+    addItems(section);
 
     // close subnav items
     const isLast = handbookPages.indexOf(section) === section.items.length - 1;
     const suffix = isLast ? "" : ",";
-    codeForTheHandbook.push(`]\n }${suffix}`);
+    codeForTheHandbook.push(`${suffix}`);
   });
   // close sections
   codeForTheHandbook.push(`]`);
 }
 
-codeForTheHandbook.push("}");
+codeForTheHandbook.push(`
+  return navigations[lang]
+}`);
+
+// console.log(codeForTheHandbook.join("\n"));
 
 // prettier-ignore
-const pathToFileWeEdit = join(__dirname, "..", "..", "typescriptlang-org", "src", "lib", "handbookNavigation.ts");
+const pathToFileWeEdit = join(__dirname, "..", "..", "typescriptlang-org", "src", "lib", "documentationNavigation.ts");
 const startMarker = "/** ---INSERT--- */";
 const endMarker = "/** ---INSERT-END--- */";
 const oldCode = readFileSync(pathToFileWeEdit, "utf8");
@@ -245,6 +269,24 @@ writeFileSync(
 );
 
 /// ------------------
+
+/**
+ * @typedef {Object} HandbookNavSubItem
+ * @property {import("./types/AllFilenames").AllDocsPages= } file - the reference to the file based on the lang root
+ * @property {HandbookNavSubItem[]=} items - pages
+ * or!
+ * @property {string= } href - a language prefixless
+ * @property {string= } title - the display only used when href exists
+ * @property {string= } oneliner
+ */
+
+/**
+ * @typedef {Object} HandbookNavItem
+ * @property {string} title - TBD
+ * @property {string} summary - TDB
+ * @property {boolean=} chronological - should we recommend a next/prev
+ * @property {HandbookNavSubItem[]} items - pages
+ */
 
 function validateNonEnglishMarkdownFile(info, lang, filepath) {
   if (!info.data.permalink.startsWith("/" + lang + "/")) {
@@ -284,4 +326,8 @@ function fillReleaseInfo() {
     // @ts-ignore
     whatIsNew.items.push({ file: "release notes/" + file });
   }
+}
+
+function toID(str) {
+  return str.toLowerCase().replace(/\s/g, "-");
 }

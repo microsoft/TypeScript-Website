@@ -22,8 +22,7 @@ const remark = require("remark");
 import { join } from "path";
 import { read as readMarkdownFile } from "gray-matter";
 
-import { handbookNavigation } from "../../typescriptlang-org/src/lib/handbookNavigation";
-import { idFromURL } from "../../typescriptlang-org/lib/bootup/ingestion/createPagesForOldHandbook";
+import { getDocumentationNavForLanguage } from "../../typescriptlang-org/src/lib/documentationNavigation";
 import { exists } from "fs-jetpack";
 
 // import releaseInfo from "../../typescriptlang-org/src/lib/release-info.json";
@@ -31,6 +30,7 @@ import { exists } from "fs-jetpack";
 // Reference: https://github.com/AABoyles/LessWrong-Portable/blob/master/build.js
 
 const markdowns = new Map<string, ReturnType<typeof readMarkdownFile>>();
+const handbookNavigation = getDocumentationNavForLanguage("en");
 
 // Grab all the md + yml info from the handbook files on disk
 // and add them to ^
