@@ -1,16 +1,18 @@
 /* This function is completely auto-generated via the `yarn bootstrap` phase of
    the app. You can re-run it when adding new localized handbook pages by running:
 
-   yarn workspace documentation create-handbook-nav   
+   yarn workspace documentation create-handbook-nav
+
+   Find the source of truth at packages/documentation/scripts/generateDocsNavigationPerLanguage.js
 */
 
 export interface NewNavItem {
-  title: string;
-  id: string;
-  permalink?: string;
-  chronological?: boolean;
-  oneline?: string;
-  items?: NewNavItem[];
+  title: string
+  id: string
+  permalink?: string
+  chronological?: boolean
+  oneline?: string
+  items?: NewNavItem[]
 }
 
 /** ---INSERT--- */
@@ -18,9 +20,9 @@ export interface NewNavItem {
 export function getDocumentationNavForLanguage(
   langRequest: string
 ): NewNavItem[] {
-  const langs = ["en", "vo"];
-  const lang = langs.includes(langRequest) ? langRequest : "en";
-  const navigations: Record<string, NewNavItem[]> = {};
+  const langs = ["en", "vo"]
+  const lang = langs.includes(langRequest) ? langRequest : "en"
+  const navigations: Record<string, NewNavItem[]> = {}
 
   navigations.en = [
     {
@@ -541,7 +543,7 @@ export function getDocumentationNavForLanguage(
         },
       ],
     },
-  ];
+  ]
   navigations.vo = [
     {
       title: "Get Started",
@@ -1061,9 +1063,9 @@ export function getDocumentationNavForLanguage(
         },
       ],
     },
-  ];
+  ]
 
-  return navigations[lang];
+  return navigations[lang]
 }
 
 /** ---INSERT-END--- */
@@ -1071,36 +1073,34 @@ export function getDocumentationNavForLanguage(
 export function getNextPageID(navs: NewNavItem[], currentID: string) {
   // prettier-ignore
   const section = navs.find((nav) => nav.items!.find((i) => i.id === currentID))
-  if (!section) return undefined;
-  if (!section.chronological) return undefined;
-  if (!section.items) return;
+  if (!section) return undefined
+  if (!section.chronological) return undefined
+  if (!section.items) return
 
-  const currentIndex = section.items.findIndex((i) => i.id === currentID);
-  const next = section.items[currentIndex + 1];
+  const currentIndex = section.items.findIndex(i => i.id === currentID)
+  const next = section.items[currentIndex + 1]
   if (next) {
     return {
       path: next.permalink,
       ...section.items[currentIndex + 1],
-    };
+    }
   }
 }
 
 export function getPreviousPageID(navs: NewNavItem[], currentID: string) {
-  const section = navs.find((nav) =>
-    nav.items!.find((i) => i.id === currentID)
-  );
+  const section = navs.find(nav => nav.items!.find(i => i.id === currentID))
 
-  if (!section) return undefined;
-  if (!section.chronological) return undefined;
-  if (!section.items) return;
+  if (!section) return undefined
+  if (!section.chronological) return undefined
+  if (!section.items) return
 
-  const currentIndex = section.items.findIndex((i) => i.id === currentID);
-  const prev = section.items[currentIndex - 1];
+  const currentIndex = section.items.findIndex(i => i.id === currentID)
+  const prev = section.items[currentIndex - 1]
 
   if (prev) {
     return {
       path: prev.permalink,
       ...section.items[currentIndex - 1],
-    };
+    }
   }
 }
