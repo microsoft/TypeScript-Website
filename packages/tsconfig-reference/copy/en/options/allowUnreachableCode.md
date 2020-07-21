@@ -3,7 +3,12 @@ display: "Allow Unreachable Code"
 oneline: "Error when code will never be called"
 ---
 
-Set to false to disable warnings about unreachable code.
+When:
+
+- `undefined` (default) provide suggestions as warnings to editors
+- `true` unreachable code is ignored
+- `false` raises compiler errors about unreachable code
+
 These warnings are only about code which is probably unreachable due to the use of JavaScript syntax, for example:
 
 ```ts

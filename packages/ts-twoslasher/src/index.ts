@@ -1,10 +1,14 @@
-const hasLocalStorage = typeof localStorage !== `undefined`
+let hasLocalStorage = false
+try {
+  hasLocalStorage = typeof localStorage !== `undefined`
+} catch (error) {}
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 
 type LZ = typeof import("lz-string")
 type TS = typeof import("typescript")
 type CompilerOptions = import("typescript").CompilerOptions
+type CustomTransformers = import("typescript").CustomTransformers
 
 import {
   parsePrimitive,
@@ -321,28 +325,40 @@ export interface TwoSlashReturn {
   playgroundURL: string
 }
 
+export interface TwoSlashOptions {
+  /** Allows setting any of the handbook options from outside the function, useful if you don't want LSP identifiers */
+  defaultOptions?: Partial<ExampleOptions>
+
+  /** Allows setting any of the compiler options from outside the function */
+  defaultCompilerOptions?: CompilerOptions
+
+  /** Allows applying custom transformers to the emit result, only useful with the showEmit output */
+  customTransformers?: CustomTransformers
+
+  /** An optional copy of the TypeScript import, if missing it will be require'd. */
+  tsModule?: TS
+
+  /** An optional copy of the lz-string import, if missing it will be require'd. */
+  lzstringModule?: LZ
+
+  /**
+   * An optional Map object which is passed into @typescript/vfs - if you are using twoslash on the
+   * web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
+   */
+  fsMap?: Map<string, string>
+}
+
 /**
  * Runs the checker against a TypeScript/JavaScript code sample returning potentially
  * difference code, and a set of annotations around how it works.
  *
  * @param code The twoslash markup'd code
  * @param extension For example: "ts", "tsx", "typescript", "javascript" or "js".
- * @param defaultOptions Allows setting any of the handbook options from outside the function, useful if you don't want LSP identifiers
- * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd.
- * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd.
- * @param fsMap An optional Map object which is passed into @typescript/vfs - if you are using twoslash on the
- *              web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
+ * @param options Additional options for twoslash
  */
-export function twoslasher(
-  code: string,
-  extension: string,
-  defaultOptions?: Partial<ExampleOptions>,
-  tsModule?: TS,
-  lzstringModule?: LZ,
-  fsMap?: Map<string, string>
-): TwoSlashReturn {
-  const ts: TS = tsModule ?? require("typescript")
-  const lzstring: LZ = lzstringModule ?? require("lz-string")
+export function twoslasher(code: string, extension: string, options: TwoSlashOptions = {}): TwoSlashReturn {
+  const ts: TS = options.tsModule ?? require("typescript")
+  const lzstring: LZ = options.lzstringModule ?? require("lz-string")
 
   const originalCode = code
   const safeExtension = typesToExtension(extension)
@@ -350,10 +366,11 @@ export function twoslasher(
 
   log(`\n\nLooking at code: \n\`\`\`${safeExtension}\n${code}\n\`\`\`\n`)
 
-  const defaultCompilerOptions: CompilerOptions = {
+  const defaultCompilerOptions = {
     strict: true,
     target: ts.ScriptTarget.ES2016,
     allowJs: true,
+    ...(options.defaultCompilerOptions ?? {}),
   }
 
   validateInput(code)
@@ -363,12 +380,12 @@ export function twoslasher(
   // This is mutated as the below functions pull out info
   const codeLines = code.split(/\r\n?|\n/g)
 
-  const handbookOptions = { ...filterHandbookOptions(codeLines), ...defaultOptions }
+  const handbookOptions = { ...filterHandbookOptions(codeLines), ...options.defaultOptions }
   const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions, ts)
 
-  const vfs = fsMap ?? createLocallyPoweredVFS(compilerOptions)
+  const vfs = options.fsMap ?? createLocallyPoweredVFS(compilerOptions, ts)
   const system = createSystem(vfs)
-  const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions)
+  const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions, options.customTransformers)
   const ls = env.languageService
 
   code = codeLines.join("\n")
@@ -659,7 +676,8 @@ export function twoslasher(
   }
 }
 
-const createLocallyPoweredVFS = (compilerOptions: CompilerOptions) => createDefaultMapFromNodeModules(compilerOptions)
+const createLocallyPoweredVFS = (compilerOptions: CompilerOptions, ts?: typeof import("typescript")) =>
+  createDefaultMapFromNodeModules(compilerOptions, ts)
 
 const splitTwoslashCodeInfoFiles = (code: string, defaultFileName: string) => {
   const lines = code.split(/\r\n?|\n/g)

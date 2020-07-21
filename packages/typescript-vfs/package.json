@@ -1,6 +1,6 @@
 {
   "name": "@typescript/vfs",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "license": "MIT",
   "author": "TypeScript team",
   "homepage": "https://github.com/microsoft/TypeScript-Website/",
@@ -13,7 +13,7 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build && cpy src/index.ts ../sandbox/src/vendor --rename=typescript-vfs.ts",
-    "bootstrap": "tsdx build",
+    "bootstrap": "yarn build",
     "test": "tsdx test",
     "lint": "tsdx lint"
   },

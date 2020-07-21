@@ -17,7 +17,7 @@ import glob from "glob"
 glob.hasMagic("OK")
 //   ^?
   `
-  const result = twoslasher(file, "ts", undefined, undefined, undefined, fsMap)
+  const result = twoslasher(file, "ts", { fsMap })
   expect(result.errors).toEqual([])
   expect(result.queries[0].text!.includes("hasMagic")).toBeTruthy()
 })

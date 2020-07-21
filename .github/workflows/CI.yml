@@ -25,6 +25,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       # Get local dependencies
+      - run: sudo apt-get update
       - run: sudo apt install calibre
       - run: yarn install
         env:

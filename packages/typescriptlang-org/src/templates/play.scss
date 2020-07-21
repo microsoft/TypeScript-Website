@@ -36,11 +36,7 @@
       height: 1px;
       margin: 9px 0;
       overflow: hidden;
-      background-color: $ts-light-bg-grey-highlight-color;
-
-      @media (prefers-color-scheme: dark) {
-        background-color: $ts-bg-selection-grey;
-      }
+      background-color: var(--playground-divider);
     }
 
     .example-indicator {
@@ -51,11 +47,7 @@
       display: block;
       padding: 0.95rem 0.75rem 0.5rem 0.7rem;
       text-decoration: none;
-      color: black;
-
-      @media (prefers-color-scheme: dark) {
-        color: white;
-      }
+      color: var(--text-color);
     }
 
     &.dropdown.open ul {
@@ -80,23 +72,16 @@
       font-size: 14px;
       text-align: left;
       list-style: none;
-      background-color: #fff;
+      background-color: var(--playground-dropdown-bg);
       -webkit-background-clip: padding-box;
       background-clip: padding-box;
-      border: 1px solid $ts-light-bg-grey-highlight-color;
+      border: 1px solid var(--playground-dropdown-border);
       border-radius: 4px;
-      -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+      -webkit-box-shadow: var(--playground-dropdown-shadow);
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
       overflow-y: auto;
       max-height: calc(100vh - 150px);
       z-index: 99;
-
-      @media (prefers-color-scheme: dark) {
-        background-color: $ts-dark-bg-for-foreground-color;
-        -webkit-box-shadow: 0 6px 12px rgba(148, 148, 148, 0.175);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-        border-color: black;
-      }
 
       &.versions {
         min-width: 5rem;
@@ -148,7 +133,7 @@
       }
 
       a {
-        color: $ts-main-blue-darker-color;
+        color: var(--link-color);
         padding-left: 0;
         padding-bottom: 0.2rem;
       }
@@ -229,22 +214,14 @@ main > nav {
 
   .examples-dropdown {
     padding-left: 0;
-    background-color: $ts-light-bg-grey-highlight-color;
-
-    @media (prefers-color-scheme: dark) {
-      background-color: $ts-dark-bg-for-foreground-color;
-    }
+    background-color: var(--playground-dropdown-bg);
   }
 
   > ul {
     li.active {
       &:hover,
       &.open {
-        background-color: $ts-light-bg-grey-highlight-color;
-
-        @media (prefers-color-scheme: dark) {
-          background-color: $ts-dark-bg-for-foreground-color;
-        }
+        background-color: var(--playground-dropdown-bg);
       }
 
       &.name:hover {
@@ -292,11 +269,7 @@ main #editor-toolbar {
 
   li {
     &:hover {
-      background-color: $ts-light-bg-grey-highlight-color;
-
-      @media (prefers-color-scheme: dark) {
-        background-color: $ts-dark-bg-color;
-      }
+      background-color: var(--playground-toolbar-hover-bg);
     }
   }
 }
@@ -331,9 +304,8 @@ main #editor-toolbar {
     display: flex;
     flex-direction: column;
 
-    @media (prefers-color-scheme: dark) {
-      background-color: #1e1e1e;
-    }
+    -webkit-font-smoothing: subpixel-antialiased;
+    background-color: var(--playground-dropdown-bg);
 
     #monaco-editor-embed {
       height: 100%;
@@ -348,10 +320,8 @@ main #editor-toolbar {
 
       position: relative;
       ul.right {
-        background-color: white;
-        @media (prefers-color-scheme: dark) {
-          background-color: #1e1e1e;
-        }
+        background-color: var(--playground-dropdown-bg);
+
         position: absolute;
         right: 0;
       }
@@ -361,14 +331,10 @@ main #editor-toolbar {
   .playground-dragbar {
     padding: 3px;
     cursor: col-resize;
-    background-color: white;
-    border-left: 1px #c4c4c4 solid;
+    background-color: var(--playground-dragbar-bg);
+    border-left: 1px var(--playground-dragbar-border) solid;
     margin-left: 2px;
 
-    @media (prefers-color-scheme: dark) {
-      background-color: $ts-dark-barely-blue-highlight;
-      border-color: white;
-    }
     &:hover {
       background-color: lightgrey;
     }
@@ -380,11 +346,7 @@ main #editor-toolbar {
     max-width: 320px;
 
     z-index: 1;
-    background-color: white;
-
-    @media (prefers-color-scheme: dark) {
-      background-color: black;
-    }
+    background-color: var(--playground-dropdown-bg);
 
     @media (max-width: $screen-sm) {
       flex-basis: 300px;
@@ -421,16 +383,11 @@ main #editor-toolbar {
       }
 
       pre {
-        background-color: rgb(241, 241, 241);
-        color: black;
+        background-color: var(--playground-pre-bg);
+        color: var(--text-color);
         border: none;
         overflow-x: auto;
         width: 100%;
-
-        @media (prefers-color-scheme: dark) {
-          background-color: #1e1e1e;
-          color: white;
-        }
 
         code {
           font-family: $font-code;
