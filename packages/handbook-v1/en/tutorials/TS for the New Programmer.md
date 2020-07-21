@@ -95,7 +95,7 @@ As another example, this is JavaScript code that you can run in your browser, an
 console.log(4 / []);
 ```
 
-This syntactically-legal program prints `NaN`.
+This syntactically-legal program prints `Infinity`.
 TypeScript, though, considers division of number by an array to be a nonsensical operation, and will issue an error:
 
 ```ts twoslash
