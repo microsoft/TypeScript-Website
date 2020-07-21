@@ -4084,7 +4084,7 @@ __metadata:
     "@types/jest": ^25.1.3
     "@types/lz-string": ^1.3.33
     "@types/prettier": ^1.19.0
-    "@typescript/vfs": 1.0.1
+    "@typescript/vfs": 1.1.0
     debug: ^4.1.1
     husky: ^4.2.3
     jest-file-snapshot: ^0.3.8
@@ -4097,7 +4097,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript/vfs@1.0.1, @typescript/vfs@workspace:packages/typescript-vfs":
+"@typescript/vfs@1.1.0, @typescript/vfs@workspace:packages/typescript-vfs":
   version: 0.0.0-use.local
   resolution: "@typescript/vfs@workspace:packages/typescript-vfs"
   dependencies:
@@ -12114,7 +12114,7 @@ fsevents@^1.2.7:
   dependencies:
     "@types/jest": ^25.1.3
     "@typescript/twoslash": 0.5.3
-    "@typescript/vfs": 1.0.1
+    "@typescript/vfs": 1.1.0
     rehype-stringify: ^6.0.1
     shiki: ^0.1.6
     shiki-languages: ^0.1.6
