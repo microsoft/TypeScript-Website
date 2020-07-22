@@ -167,7 +167,7 @@ export const Comm: React.FC<Props> = props => {
       </div>
 
 
-      <div className="raised main-content-block container community">
+      {/* <div className="raised main-content-block container community" style={{ display: "none" }}>
         <h3 className="centered-highlight">Upcoming Events</h3>
         <div className="events">
           <Row>
@@ -188,8 +188,7 @@ export const Comm: React.FC<Props> = props => {
               ))}
           </Row>
         </div>
-      </div>
-
+        </div> */}
 
       <div className="raised main-content-block container community">
         <h3 className="centered-highlight">Meetups</h3>

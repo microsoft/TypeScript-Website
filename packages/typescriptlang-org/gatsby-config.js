@@ -15,7 +15,12 @@ module.exports = {
 
   plugins: [
     // SCSS provides inheritance for CSS and which pays the price for the dep
-    "gatsby-plugin-sass",
+    {
+      resolve: `gatsby-plugin-sass`,
+      options: {
+        implementation: require("sass"),
+      },
+    },
     // PWA metadata
     {
       resolve: `gatsby-plugin-manifest`,
