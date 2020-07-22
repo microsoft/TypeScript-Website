@@ -4,7 +4,6 @@
   "license": "MIT",
   "version": "1.0.0",
   "dependencies": {
-    "ical-utils": "^1.0.15",
     "moment": "2.24.0",
     "moment-timezone": "0.5.28"
   },
