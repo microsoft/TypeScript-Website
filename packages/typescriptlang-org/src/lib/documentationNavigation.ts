@@ -45,7 +45,7 @@ export function getDocumentationNavForLanguage(
           oneline: "Learn how TypeScript extends JavaScript",
         },
         {
-          title: "TS for Java/C#/Swift Programmers",
+          title: "TS for Java/C# Programmers",
           id: "typescript-for-java/c#-programmers",
           permalink: "/docs/handbook/typescript-in-5-minutes-oop.html",
           oneline:
@@ -131,6 +131,112 @@ export function getDocumentationNavForLanguage(
       ],
     },
     {
+      title: "Handbook Reference",
+      oneline: "Deep dive reference materials.",
+      id: "handbook-reference",
+      chronological: false,
+
+      items: [
+        {
+          title: "Advanced Types",
+          id: "advanced-types",
+          permalink: "/docs/handbook/advanced-types.html",
+          oneline: "Advanced concepts around types in TypeScript",
+        },
+        {
+          title: "Utility Types",
+          id: "utility-types",
+          permalink: "/docs/handbook/utility-types.html",
+          oneline: "Types which are globally included in TypeScript",
+        },
+        {
+          title: "Decorators",
+          id: "decorators",
+          permalink: "/docs/handbook/decorators.html",
+          oneline: "TypeScript Decorators overview",
+        },
+        {
+          title: "Declaration Merging",
+          id: "declaration-merging",
+          permalink: "/docs/handbook/declaration-merging.html",
+          oneline: "How merging namespaces and interfaces works",
+        },
+        {
+          title: "Iterators and Generators",
+          id: "iterators-and-generators",
+          permalink: "/docs/handbook/iterators-and-generators.html",
+          oneline: "How Iterators and Generators work in TypeScript",
+        },
+        {
+          title: "JSX",
+          id: "jsx",
+          permalink: "/docs/handbook/jsx.html",
+          oneline: "Using JSX with TypeScript",
+        },
+        {
+          title: "Mixins",
+          id: "mixins",
+          permalink: "/docs/handbook/mixins.html",
+          oneline: "Using the mixin pattern with TypeScript",
+        },
+        {
+          title: "Modules",
+          id: "modules",
+          permalink: "/docs/handbook/modules.html",
+          oneline: "How modules work in TypeScript",
+        },
+        {
+          title: "Module Resolution",
+          id: "module-resolution",
+          permalink: "/docs/handbook/module-resolution.html",
+          oneline: "How TypeScript resolves modules in JavaScript",
+        },
+        {
+          title: "Namespaces",
+          id: "namespaces",
+          permalink: "/docs/handbook/namespaces.html",
+          oneline: "How TypeScript namespaces work",
+        },
+        {
+          title: "Namespaces and Modules",
+          id: "namespaces-and-modules",
+          permalink: "/docs/handbook/namespaces-and-modules.html",
+          oneline:
+            "How to organize code in TypeScript via modules or namespaces",
+        },
+        {
+          title: "Symbols",
+          id: "symbols",
+          permalink: "/docs/handbook/symbols.html",
+          oneline: "Using the JavaScript Symbol primitive in TypeScript",
+        },
+        {
+          title: "Triple-Slash Directives",
+          id: "triple-slash-directives",
+          permalink: "/docs/handbook/triple-slash-directives.html",
+          oneline: "How to use triple slash directives in TypeScripit",
+        },
+        {
+          title: "Type Compatibility",
+          id: "type-compatibility",
+          permalink: "/docs/handbook/type-compatibility.html",
+          oneline: "How type-checking works in TypeScript",
+        },
+        {
+          title: "Type Inference",
+          id: "type-inference",
+          permalink: "/docs/handbook/type-inference.html",
+          oneline: "How code flow analysis works in TypeScript",
+        },
+        {
+          title: "Variable Declaration",
+          id: "variable-declaration",
+          permalink: "/docs/handbook/variable-declarations.html",
+          oneline: "How TypeScript handles variable declaration",
+        },
+      ],
+    },
+    {
       title: "Tutorials",
       oneline: "Using TypeScript in several environments.",
       id: "tutorials",
@@ -148,6 +254,12 @@ export function getDocumentationNavForLanguage(
           id: "gulp",
           permalink: "/docs/handbook/gulp.html",
           oneline: "Using TypeScript with Gulp",
+        },
+        {
+          title: "DOM Manipulation",
+          id: "dom-manipulation",
+          permalink: "/docs/handbook/dom-manipulation.html",
+          oneline: "Using the DOM with TypeScript",
         },
         {
           title: "Migrating from JavaScript",
@@ -565,7 +677,7 @@ export function getDocumentationNavForLanguage(
           oneline: "Learn how TypeScript extends JavaScript",
         },
         {
-          title: "TS for Java/C#/Swift Programmers",
+          title: "TS for Java/C# Programmers",
           id: "typescript-for-java/c#-programmers",
           permalink: "/docs/handbook/typescript-in-5-minutes-oop.html",
           oneline:
@@ -651,6 +763,112 @@ export function getDocumentationNavForLanguage(
       ],
     },
     {
+      title: "Handbook Reference",
+      oneline: "Deep dive reference materials.",
+      id: "handbook-reference",
+      chronological: false,
+
+      items: [
+        {
+          title: "Advanced Types",
+          id: "advanced-types",
+          permalink: "/docs/handbook/advanced-types.html",
+          oneline: "Advanced concepts around types in TypeScript",
+        },
+        {
+          title: "Utility Types",
+          id: "utility-types",
+          permalink: "/docs/handbook/utility-types.html",
+          oneline: "Types which are globally included in TypeScript",
+        },
+        {
+          title: "Decorators",
+          id: "decorators",
+          permalink: "/docs/handbook/decorators.html",
+          oneline: "TypeScript Decorators overview",
+        },
+        {
+          title: "Declaration Merging",
+          id: "declaration-merging",
+          permalink: "/docs/handbook/declaration-merging.html",
+          oneline: "How merging namespaces and interfaces works",
+        },
+        {
+          title: "Iterators and Generators",
+          id: "iterators-and-generators",
+          permalink: "/docs/handbook/iterators-and-generators.html",
+          oneline: "How Iterators and Generators work in TypeScript",
+        },
+        {
+          title: "JSX",
+          id: "jsx",
+          permalink: "/docs/handbook/jsx.html",
+          oneline: "Using JSX with TypeScript",
+        },
+        {
+          title: "Mixins",
+          id: "mixins",
+          permalink: "/docs/handbook/mixins.html",
+          oneline: "Using the mixin pattern with TypeScript",
+        },
+        {
+          title: "Modules",
+          id: "modules",
+          permalink: "/docs/handbook/modules.html",
+          oneline: "How modules work in TypeScript",
+        },
+        {
+          title: "Module Resolution",
+          id: "module-resolution",
+          permalink: "/docs/handbook/module-resolution.html",
+          oneline: "How TypeScript resolves modules in JavaScript",
+        },
+        {
+          title: "Namespaces",
+          id: "namespaces",
+          permalink: "/docs/handbook/namespaces.html",
+          oneline: "How TypeScript namespaces work",
+        },
+        {
+          title: "Namespaces and Modules",
+          id: "namespaces-and-modules",
+          permalink: "/docs/handbook/namespaces-and-modules.html",
+          oneline:
+            "How to organize code in TypeScript via modules or namespaces",
+        },
+        {
+          title: "Symbols",
+          id: "symbols",
+          permalink: "/docs/handbook/symbols.html",
+          oneline: "Using the JavaScript Symbol primitive in TypeScript",
+        },
+        {
+          title: "Triple-Slash Directives",
+          id: "triple-slash-directives",
+          permalink: "/docs/handbook/triple-slash-directives.html",
+          oneline: "How to use triple slash directives in TypeScripit",
+        },
+        {
+          title: "Type Compatibility",
+          id: "type-compatibility",
+          permalink: "/docs/handbook/type-compatibility.html",
+          oneline: "How type-checking works in TypeScript",
+        },
+        {
+          title: "Type Inference",
+          id: "type-inference",
+          permalink: "/docs/handbook/type-inference.html",
+          oneline: "How code flow analysis works in TypeScript",
+        },
+        {
+          title: "Variable Declaration",
+          id: "variable-declaration",
+          permalink: "/docs/handbook/variable-declarations.html",
+          oneline: "How TypeScript handles variable declaration",
+        },
+      ],
+    },
+    {
       title: "Tutorials",
       oneline: "Using TypeScript in several environments.",
       id: "tutorials",
@@ -668,6 +886,12 @@ export function getDocumentationNavForLanguage(
           id: "gulp",
           permalink: "/docs/handbook/gulp.html",
           oneline: "Using TypeScript with Gulp",
+        },
+        {
+          title: "DOM Manipulation",
+          id: "dom-manipulation",
+          permalink: "/docs/handbook/dom-manipulation.html",
+          oneline: "Using the DOM with TypeScript",
         },
         {
           title: "Migrating from JavaScript",
@@ -1070,9 +1294,29 @@ export function getDocumentationNavForLanguage(
 
 /** ---INSERT-END--- */
 
+const findInNav = (
+  item: NewNavItem | NewNavItem[],
+  fun: (item: NewNavItem) => boolean
+): NewNavItem | undefined => {
+  if (Array.isArray(item)) {
+    for (const subItem of item) {
+      const sub = findInNav(subItem, fun)
+      if (sub) return sub
+    }
+  } else {
+    if (fun(item)) return item
+    if (!item.items) return undefined
+    for (const subItem of item.items) {
+      const sub = findInNav(subItem, fun)
+      if (sub) return sub
+    }
+    return undefined
+  }
+}
+
 export function getNextPageID(navs: NewNavItem[], currentID: string) {
   // prettier-ignore
-  const section = navs.find((nav) => nav.items!.find((i) => i.id === currentID))
+  const section = findInNav(navs, (i) => i && !!i.items && !!i.items.find(i => i.id === currentID)) || false
   if (!section) return undefined
   if (!section.chronological) return undefined
   if (!section.items) return
@@ -1088,7 +1332,8 @@ export function getNextPageID(navs: NewNavItem[], currentID: string) {
 }
 
 export function getPreviousPageID(navs: NewNavItem[], currentID: string) {
-  const section = navs.find(nav => nav.items!.find(i => i.id === currentID))
+  // prettier-ignore
+  const section = findInNav(navs, (i) => i && !!i.items && !!i.items.find(i => i.id === currentID)) || false
 
   if (!section) return undefined
   if (!section.chronological) return undefined

@@ -34,7 +34,7 @@ const handbookNavigation = getDocumentationNavForLanguage("en");
 
 // Grab all the md + yml info from the handbook files on disk
 // and add them to ^
-const handbookPath = join(__dirname, "..", "..", "documentation", "en");
+const handbookPath = join(__dirname, "..", "..", "documentation", "copy", "en");
 readdirSync(handbookPath, "utf-8").forEach((path) => {
   const filePath = join(handbookPath, path);
   if (lstatSync(filePath).isDirectory() || !filePath.endsWith("md")) {
@@ -45,7 +45,7 @@ readdirSync(handbookPath, "utf-8").forEach((path) => {
   // prettier-ignore
   if (!md.data.permalink) throw new Error(`${path} in the handbook did not have a permalink in the yml header`);
 
-  const id = idFromURL(md.data.permalink);
+  const id = md.data.permalink;
   markdowns.set(id, md);
 });
 
