@@ -10,7 +10,7 @@
 type TimingEvent = { name: "start"; userStarted: boolean } | { name: "closed"; duration: number };
 
 // Cuando el evento entra en esta función, podría ser
-// cualquiera de los dos potenciales tipos.
+// cualquiera de los dos tipos potenciales.
 
 const handleEvent = (event: TimingEvent) => {
   // Mediante el uso de un interruptor en event.name el
@@ -49,7 +49,7 @@ const handleResponse = (response: APIResponses) => {
 
   // TypeScript ahora sabe que APIResponse no puede ser el
   // tipo de error. Si fuera el error, la función habría
-  // regresado. Puede verificar esto pasando el cursor sobre
+  // retornado. Puede verificar esto pasando el cursor sobre
   // response a continuación.
 
   if (response.version === 0) {

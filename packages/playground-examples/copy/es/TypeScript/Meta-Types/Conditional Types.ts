@@ -70,9 +70,6 @@ declare function getID<T extends boolean>(fancy: T): T extends true ? string : n
 // Entonces, dependiendo de cuánto sepa el sistema de tipos
 // sobre el booleano, obtendrá diferentes tipos de retorno:
 
-// Then depending on how much the type-system knows about
-// the boolean, you will get different return types:
-
 let stringReturnValue = getID(true);
 let numberReturnValue = getID(false);
 let stringOrNumber = getID(Math.random() < 0.5);
