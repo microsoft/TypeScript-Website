@@ -1,0 +1,28 @@
+{
+  "code": "var fs = require(\"fs\");\n// import * as fs from \"fs\";\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [],
+  "staticQuickInfos": [
+    {
+      "text": "var fs: any",
+      "docs": "",
+      "start": 4,
+      "length": 2,
+      "line": 0,
+      "character": 4,
+      "targetString": "fs"
+    },
+    {
+      "text": "var require: any",
+      "docs": "",
+      "start": 9,
+      "length": 7,
+      "line": 0,
+      "character": 9,
+      "targetString": "require"
+    }
+  ],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKaiAm8APAOlyIBcBnAKCpzPgCdJkBjeUAJXgEcBXaBuwDeVUKGAAqUJVh0MuaBWQAjBAFpEhMmtmaMLZLFgr1ZAJ4AHeBVATgo0AApouLBTIMcAcwCUWZIhmANwOghQA9rAAbpicPPyCXBHR8CEAvjR0jMxscXwC8EmRMaAiYs6uoO6eiF4ANKDhFmTQ4YgUAPxYQqAWyGQAFp1uHt4A2gC6QaBpflWjtSFifYMUjoJ81mQjNb474xOgAD6giLxG6VT4LMaCoFHIDKAbCbEAcuH4XPmCISAQMAQKHQWEQn3gAH1UJ9ztZgOBzFYKMBIMi+iwANbILzwIgAKwiiCoPQARMD4CSsCTBt5QCSMv8oHAkGhYmD8FCYQhkQjLHDUcAcPhiKRKFRCBZwgwyKB8MxzjKys94MhcID4ABlMyIFhYRw+UAAXgAfPNdnUqGk-mAmUDWVghYRyNR-mo3SxeNo3VQHk9UUblT94I4SaiST5rdhUJLpbZQMgbP7IAxwqg6WGQkA"
+}

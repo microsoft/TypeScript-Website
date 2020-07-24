@@ -40,7 +40,8 @@ Question to ask yourself while looking at a library you are trying to type.
 
 2. How would you import it?
 
-   Does it add a global object? Does it use `require` or `import`/`export` statements?
+   Does it add a global object? Does it use
+   `require` or `import`/`export` statements?
 
 ## Smaller samples for different types of libraries
 
@@ -53,16 +54,16 @@ For example, `express` only works in Node.js and must be loaded using the Common
 ECMAScript 2015 (also known as ES2015, ECMAScript 6, and ES6), CommonJS, and RequireJS have similar notions of _importing_ a _module_.
 In JavaScript CommonJS (Node.js), for example, you would write
 
-```js twoslash
-// @noErrors: true
-var fs = require("fs");
-```
-
-In TypeScript or ES6, the `import` keyword serves the same purpose:
-
 ```ts twoslash
-// @noErrors: true
-import * as fs from "fs";
+// @filename: node_modules/@types/fs/package.json
+{ "name": "thing "}
+// @filename: node_modules/@types/fs/index.d.ts
+export default {
+  readfileSync: () => string,
+};
+// @filename: index.ts
+// ---cut---
+var fs = require("fs");
 ```
 
 You'll typically see modular libraries include one of these lines in their documentation:
@@ -233,14 +234,14 @@ This is an easy-to-spot pattern that looks something like this:
 ```js twoslash
 // @noErrors: true
 (function (root, factory) {
-    if (typeof define === "function" && define.amd) {
-        define(["libName"], factory);
-    } else if (typeof module === "object" && module.exports) {
-        module.exports = factory(require("libName"));
-    } else {
-        root.returnExports = factory(root.libName);
-    }
-}(this, function (b) { }))
+  if (typeof define === "function" && define.amd) {
+    define(["libName"], factory);
+  } else if (typeof module === "object" && module.exports) {
+    module.exports = factory(require("libName"));
+  } else {
+    root.returnExports = factory(root.libName);
+  }
+})(this, function (b) {});
 ```
 
 If you see tests for `typeof define`, `typeof window`, or `typeof module` in the code of a library, especially at the top of the file, it's almost always a UMD library.

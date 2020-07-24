@@ -395,12 +395,19 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   /** All of the referenced files in the markup */
   const filenames = nameContent.map(nc => nc[0])
 
+  const sourceFiles = ["js", "jsx", "ts", "tsx"]
   for (const file of nameContent) {
     const [filename, codeLines] = file
+    const filetype = filename.split(".").pop() || ""
 
     // Create the file in the vfs
     const newFileCode = codeLines.join("\n")
     env.createFile(filename, newFileCode)
+
+    // Only run the LSP-y things on source files
+    if (!sourceFiles.includes(filetype)) {
+      continue
+    }
 
     const updates = filterHighlightLines(codeLines)
     highlights.push(...updates.highlights)
@@ -459,7 +466,6 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     })
     partialQueries.push(...lspedQueries)
 
-    // Sets the file in the compiler as being without the comments
     const newEditedFileCode = codeLines.join("\n")
     env.updateFile(filename, newEditedFileCode)
   }
@@ -488,6 +494,13 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   // const declaredFiles = Object.keys(fileMap)
 
   filenames.forEach(file => {
+    const filetype = file.split(".").pop() || ""
+
+    // Only run the LSP-y things on source files
+    if (!sourceFiles.includes(filetype)) {
+      return
+    }
+
     if (!handbookOptions.noErrors) {
       errs.push(...ls.getSemanticDiagnostics(file))
       errs.push(...ls.getSyntacticDiagnostics(file))
