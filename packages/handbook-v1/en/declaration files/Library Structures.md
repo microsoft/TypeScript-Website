@@ -53,25 +53,29 @@ For example, `express` only works in Node.js and must be loaded using the Common
 ECMAScript 2015 (also known as ES2015, ECMAScript 6, and ES6), CommonJS, and RequireJS have similar notions of _importing_ a _module_.
 In JavaScript CommonJS (Node.js), for example, you would write
 
-```js
+```js twoslash
+// @noErrors: true
 var fs = require("fs");
 ```
 
 In TypeScript or ES6, the `import` keyword serves the same purpose:
 
-```ts
+```ts twoslash
+// @noErrors: true
 import * as fs from "fs";
 ```
 
 You'll typically see modular libraries include one of these lines in their documentation:
 
-```js
+```js twoslash
+// @noErrors: true
 var someLib = require("someLib");
 ```
 
 or
 
-```js
+```js twoslash
+// @noErrors: true
 define(..., ['someLib'], function(someLib) {
 
 });
@@ -100,7 +104,8 @@ You should first read [`module.d.ts`](/docs/handbook/declaration-files/templates
 
 Then use the template [`module-function.d.ts`](/docs/handbook/declaration-files/templates/module-function-d-ts.html) if your module can be _called_ like a function:
 
-```js
+```js twoslash
+// @noErrors: true
 const x = require("foo");
 // Note: calling 'x' as a function
 const y = x(42);
@@ -108,7 +113,8 @@ const y = x(42);
 
 Use the template [`module-class.d.ts`](/docs/handbook/declaration-files/templates/module-class-d-ts.html) if your module can be _constructed_ using `new`:
 
-```js
+```js twoslash
+// @noErrors: true
 const x = require("bar");
 // Note: using 'new' operator on the imported variable
 const y = new x("hello");
@@ -116,7 +122,8 @@ const y = new x("hello");
 
 If you have a module which when imported, makes changes to other modules use template [`module-plugin.d.ts`](/docs/handbook/declaration-files/templates/module-plugin-d-ts.html):
 
-```js
+```js twoslash
+// @noErrors: true
 const jest = require("jest");
 require("jest-matchers-files");
 ```
@@ -127,7 +134,8 @@ A _global_ library is one that can be accessed from the global scope (i.e. witho
 Many libraries simply expose one or more global variables for use.
 For example, if you were using [jQuery](https://jquery.com/), the `$` variable can be used by simply referring to it:
 
-```ts
+```ts twoslash
+// @noErrors: true
 $(() => {
   console.log("hello!");
 });
@@ -148,7 +156,8 @@ Before writing a global declaration file, make sure the library isn't actually U
 Global library code is usually extremely simple.
 A global "Hello, world" library might look like this:
 
-```js
+```js twoslash
+// @noErrors: true
 function createGreeting(s) {
   return "Hello, " + s;
 }
@@ -156,7 +165,8 @@ function createGreeting(s) {
 
 or like this:
 
-```js
+```js twoslash
+// @noErrors: true
 // Web
 window.createGreeting = function (s) {
   return "Hello, " + s;
@@ -202,14 +212,16 @@ A _UMD_ module is one that can _either_ be used as module (through an import), o
 Many popular libraries, such as [Moment.js](http://momentjs.com/), are written this way.
 For example, in Node.js or using RequireJS, you would write:
 
-```ts
+```ts twoslash
+// @noErrors: true
 import moment = require("moment");
 console.log(moment.format());
 ```
 
 whereas in a vanilla browser environment you would write:
 
-```js
+```js twoslash
+// @noErrors: true
 console.log(moment.format());
 ```
 
@@ -218,7 +230,8 @@ console.log(moment.format());
 [UMD modules](https://github.com/umdjs/umd) check for the existence of a module loader environment.
 This is an easy-to-spot pattern that looks something like this:
 
-```js
+```js twoslash
+// @noErrors: true
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define(["libName"], factory);
@@ -227,7 +240,7 @@ This is an easy-to-spot pattern that looks something like this:
     } else {
         root.returnExports = factory(root.libName);
     }
-}(this, function (b) {
+}(this, function (b) { }))
 ```
 
 If you see tests for `typeof define`, `typeof window`, or `typeof module` in the code of a library, especially at the top of the file, it's almost always a UMD library.
@@ -253,7 +266,8 @@ This section shows how to import them into the declaration file.
 
 If your library depends on a global library, use a `/// <reference types="..." />` directive:
 
-```ts
+```ts twoslash
+// @noErrors: true
 /// <reference types="someLib" />
 
 function getThing(): someLib.thing;
@@ -263,7 +277,8 @@ function getThing(): someLib.thing;
 
 If your library depends on a module, use an `import` statement:
 
-```ts
+```ts twoslash
+// @noErrors: true
 import * as moment from "moment";
 
 function getThing(): moment;
@@ -275,7 +290,8 @@ function getThing(): moment;
 
 If your global library depends on a UMD module, use a `/// <reference types` directive:
 
-```ts
+```ts twoslash
+// @noErrors: true
 /// <reference types="moment" />
 
 function getThing(): moment;
@@ -285,7 +301,8 @@ function getThing(): moment;
 
 If your module or UMD library depends on a UMD library, use an `import` statement:
 
-```ts
+```ts twoslash
+// @noErrors: true
 import * as someLib from "someLib";
 ```
 
@@ -301,7 +318,7 @@ We strongly discourage this as it leads to possible unresolvable name conflicts 
 A simple rule to follow is to only declare types _namespaced_ by whatever global variable the library defines.
 For example, if the library defines the global value 'cats', you should write
 
-```ts
+```ts twoslash
 declare namespace cats {
   interface KittySettings {}
 }
@@ -309,7 +326,7 @@ declare namespace cats {
 
 But _not_
 
-```ts
+```ts twoslash
 // at top-level
 interface CatsKittySettings {}
 ```
@@ -321,7 +338,8 @@ This guidance also ensures that the library can be transitioned to UMD without b
 Many popular libraries, such as Express, expose themselves as a callable function when imported.
 For example, the typical Express usage looks like this:
 
-```ts
+```ts twoslash
+// @noErrors: true
 import exp = require("express");
 var app = exp();
 ```

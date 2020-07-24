@@ -10,7 +10,7 @@ permalink: /docs/handbook/declaration-files/templates/module-d-ts.html
 
 A module using CommonJS patterns uses `module.exports` to describe the exported values. For example, here is a module which exports a function and a numerical constant:
 
-```js
+```js twoslash
 const maxInterval = 12;
 
 function getArrayLength(arr) {
@@ -25,7 +25,8 @@ module.exports = {
 
 This can be described by the following `.d.ts`:
 
-```ts
+```ts twoslash
+// @noErrors: true
 export function getArrayLength(arr: any[]): number;
 export const maxInterval: 12;
 ```
@@ -35,7 +36,7 @@ The TypeScript playground can show you the `.d.ts` equivalent for JavaScript cod
 The `.d.ts` syntax intentionally looks like [ES Modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) syntax.
 ES Modules was ratified by TC39 in 2019, while it has been available via transpilers for a long time, however if you have a JavaScript codebase using ES Modules:
 
-```js
+```js twoslash
 export function getArrayLength(arr) {
   return arr.length;
 }
@@ -43,7 +44,8 @@ export function getArrayLength(arr) {
 
 This would have the following `.d.ts` equivalent:
 
-```ts
+```ts twoslash
+// @noErrors: true
 export function getArrayLength(arr: any[]): number;
 ```
 
@@ -51,24 +53,26 @@ export function getArrayLength(arr: any[]): number;
 
 In CommonJS you can export any value as the default export, for example here is a regular expression module:
 
-```js
+```js twoslash
 module.exports = /hello( world)?/;
 ```
 
 Which can be described by the following .d.ts:
 
-```ts
+```ts twoslash
+// @noErrors: true
 const helloWorld: RegExp;
 export default helloWorld;
 ```
 
 Or a number:
 
-```js
+```js twoslash
 module.exports = 3.142;
 ```
 
-```ts
+```ts twoslash
+// @noErrors: true
 const pi: number;
 export default pi;
 ```
@@ -76,7 +80,7 @@ export default pi;
 One style of exporting in CommonJS is to export a function.
 Because a function is also an object, then extra fields can be added are included in the export.
 
-```js
+```js twoslash
 function getArrayLength(arr) {
   return arr.slice;
 }
@@ -87,7 +91,8 @@ module.exports = getArrayLength;
 
 Which can be described with:
 
-```ts
+```ts twoslash
+// @noErrors: true
 export default function getArrayLength(arr: any[]): number;
 export const maxThing: 12;
 ```
@@ -96,7 +101,8 @@ export const maxThing: 12;
 
 There are many ways to import a module in modern consuming code:
 
-```ts
+```ts twoslash
+// @noErrors: true
 const fastify = require("fastify");
 const { fastify } = require("fastify");
 import fastify = require("fastify");
@@ -109,7 +115,8 @@ import fastify, { FastifyInstance } from "fastify";
 Covering all of these cases requires the JavaScript code to actually support all of these patterns.
 To support many of these patterns, a CommonJS module would need to look something like:
 
-```js
+```js twoslash
+// @noErrors: true
 class FastifyInstance {}
 
 function fastify() {
@@ -130,7 +137,7 @@ module.exports = fastify;
 
 You may want to provide a type for JavaScript code which does not exist
 
-```js
+```js twoslash
 function getArrayMetadata(arr) {
   return {
     length: getArrayLength(arr),
@@ -145,7 +152,8 @@ module.exports = {
 
 This can be described with:
 
-```ts
+```ts twoslash
+// @noErrors: true
 export type ArrayMetadata = {
   length: number;
   firstObject: any | undefined;
@@ -155,7 +163,8 @@ export function getArrayMetadata(arr: any[]): ArrayMetadata;
 
 This example is a good case for [using generics](/docs/handbook/generics.html#generic-types) to provide richer type information:
 
-```ts
+```ts twoslash
+// @noErrors: true
 export type ArrayMetadata<ArrType> = {
   length: number;
   firstObject: ArrType | undefined;
@@ -177,7 +186,8 @@ When the ES Module-like syntax doesn't provide enough tools to describe the expo
 
 For example, you may have complex enough types to describe that you choose to namespace them inside your `.d.ts`:
 
-```ts
+```ts twoslash
+// @noErrors: true
 // This represents the JavaScript class which would be available at runtime
 export class API {
   constructor(baseURL: string);
@@ -204,7 +214,8 @@ To understand how namespaces work in `.d.ts` files read the [`.d.ts` deep dive](
 
 You can use `export as namespace` to declare that your module will be available in the global scope in UMD contexts:
 
-```ts
+```ts twoslash
+// @noErrors: true
 export as namespace moduleName;
 ```
 
@@ -212,7 +223,8 @@ export as namespace moduleName;
 
 To give you an idea of how all these pieces can come together, here is a reference `.d.ts` to start with when making a new module
 
-```ts
+```ts twoslash
+// @noErrors: true
 // Type definitions for [~THE LIBRARY NAME~] [~OPTIONAL VERSION NUMBER~]
 // Project: [~THE PROJECT NAME~]
 // Definitions by: [~YOUR NAME~] <[~A URL FOR YOU~]>
@@ -262,7 +274,7 @@ myLib
 
 These could be imported as
 
-```js
+```js twoslash
 var a = require("myLib");
 var b = require("myLib/foo");
 var c = require("myLib/bar");
