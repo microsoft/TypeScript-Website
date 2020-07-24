@@ -9,7 +9,7 @@ oneline: TypeScript 1.8 Release Notes
 
 With TypeScript 1.8 it becomes possible for a type parameter constraint to reference type parameters from the same type parameter list.
 Previously this was an error.
-This capability is usually referred to as [F-Bounded Polymorphism](https://en.wikipedia.org/wiki/Bounded_quantification#F-bounded_quantification).
+This capability is usually referred to as [F-Bounded Polymorphism](https://wikipedia.org/wiki/Bounded_quantification#F-bounded_quantification).
 
 ##### Example
 
@@ -234,7 +234,7 @@ Array.prototype.mapToNumbers = function() {
 ## String literal types
 
 It's not uncommon for an API to expect a specific set of strings for certain values.
-For instance, consider a UI library that can move elements across the screen while controlling the ["easing" of the animation.](https://en.wikipedia.org/wiki/Inbetweening)
+For instance, consider a UI library that can move elements across the screen while controlling the ["easing" of the animation.](https://wikipedia.org/wiki/Inbetweening)
 
 ```ts
 declare class UIElement {
@@ -421,7 +421,7 @@ for (var x in a) {
 
 ## Modules are now emitted with a `"use strict";` prologue
 
-Modules were always parsed in strict mode as per ES6, but for non-ES6 targets this was not respected in the generated code. Starting with TypeScript 1.8, emitted modules are always in strict mode. This shouldn't have any visible changes in most code as TS considers most strict mode errors as errors at compile time, but it means that some things which used to silently fail at runtime in your TS code, like assigning to `NaN`, will now loudly fail. You can reference the [MDN Article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode) on strict mode for a detailed list of the differences between strict mode and non-strict mode.
+Modules were always parsed in strict mode as per ES6, but for non-ES6 targets this was not respected in the generated code. Starting with TypeScript 1.8, emitted modules are always in strict mode. This shouldn't have any visible changes in most code as TS considers most strict mode errors as errors at compile time, but it means that some things which used to silently fail at runtime in your TS code, like assigning to `NaN`, will now loudly fail. You can reference the [MDN Article](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Strict_mode) on strict mode for a detailed list of the differences between strict mode and non-strict mode.
 
 ## Including `.js` files with `--allowJs`
 
@@ -508,7 +508,7 @@ if (fso.isFile()) {
 
 ## Official TypeScript NuGet package
 
-Starting with TypeScript 1.8, official NuGet packages are available for the Typescript Compiler (`tsc.exe`) as well as the MSBuild integration (`Microsoft.TypeScript.targets` and `Microsoft.TypeScript.Tasks.dll`).
+Starting with TypeScript 1.8, official NuGet packages are available for the TypeScript Compiler (`tsc.exe`) as well as the MSBuild integration (`Microsoft.TypeScript.targets` and `Microsoft.TypeScript.Tasks.dll`).
 
 Stable packages are available here:
 

@@ -18,7 +18,12 @@
     {
       "name": "3.8",
       "id": "3.8",
-      "subtitle": "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/'>Beta Release notes</a>."
+      "subtitle": "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-8/'>Release notes</a>."
+    },
+    {
+      "name": "4.0",
+      "id": "4.0",
+      "subtitle": "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-4-0-beta/'>Release notes</a>."
     },
     {
       "name": "Playground V3",
@@ -26,7 +31,6 @@
       "subtitle": "Learn what has changed in this website."
     }
   ],
-
   "sortedSubSections": [
     // JS
     "JavaScript Essentials",
@@ -50,6 +54,10 @@
     "Tooling",
     // 3.8
     "Breaking Changes",
-    "JSDoc Improvements"
+    "JSDoc Improvements",
+    // 4.0
+    "New JS Features",
+    "New TS Features",
+    "New Checks"
   ]
 }

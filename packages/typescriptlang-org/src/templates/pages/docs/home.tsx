@@ -1,22 +1,24 @@
-import * as React from "react"
-import { Layout } from "../../../components/layout"
+import * as React from "react";
+import { Layout } from "../../../components/layout";
 
-import "../css/documentation.scss"
-import { ButtonGrid } from "../../../components/display/ButtonGrid"
-import { Intl } from "../../../components/Intl"
+import "../css/documentation.scss";
+import { ButtonGrid } from "../../../components/display/ButtonGrid";
+import { Intl } from "../../../components/Intl";
 
-import { docCopy } from "../../../copy/en/documentation"
-import { createInternational } from "../../../lib/createInternational"
-import { useIntl } from "react-intl"
-import { graphql } from "gatsby"
-import { DocsHomeQuery } from "../../../__generated__/gatsby-types"
+import { docCopy } from "../../../copy/en/documentation";
+import { createInternational } from "../../../lib/createInternational";
+import { useIntl } from "react-intl";
+import { graphql } from "gatsby";
+import { DocsHomeQuery } from "../../../__generated__/gatsby-types";
+import { QuickJump } from "../../../components/QuickJump";
+
 type Props = {
-  data: DocsHomeQuery
-  pageContext: any
-}
+  data: DocsHomeQuery;
+  pageContext: any;
+};
 
 const Index: React.FC<Props> = (props) => {
-  const i = createInternational<typeof docCopy>(useIntl())
+  const i = createInternational<typeof docCopy>(useIntl());
   return (
     <Layout
       title={i("doc_layout_title")}
@@ -24,35 +26,13 @@ const Index: React.FC<Props> = (props) => {
       lang={props.pageContext.lang}
       allSitePage={props.data.allSitePage}
     >
-      <div id="documentation" className="raised main-content-block">
-        <h1>{i("doc_headline")}</h1>
+      <QuickJump
+        title={i("doc_headline")}
+        allSitePage={props.data.allSitePage}
+        lang={props.pageContext.lang}
+      />
 
-        <ButtonGrid
-          buttons={[
-            {
-              title: i("doc_headline_ts_for_js_title"),
-              href: "/docs/handbook/typescript-in-5-minutes.html",
-              blurb: i("doc_headline_ts_for_js_blurb"),
-            },
-            {
-              title: i("doc_headline_ts_first_title"),
-              href: "/docs/handbook/typescript-from-scratch.html",
-              blurb: i("doc_headline_ts_first_blurb"),
-            },
-            {
-              title: i("doc_headline_handbook_title"),
-              href: "/docs/handbook/basic-types.html",
-              blurb: i("doc_headline_handbook_blurb"),
-            },
-            {
-              title: i("doc_headline_examples_title"),
-              href: "/play?#show-examples",
-              blurb: i("doc_headline_examples_blurb"),
-            },
-          ]}
-          headline={true}
-        />
-
+      <div className="raised main-content-block">
         <h1>{i("doc_start_a_project")}</h1>
         <p>{i("doc_start_a_project_desc")}</p>
 
@@ -102,7 +82,8 @@ const Index: React.FC<Props> = (props) => {
               title: "Vue",
             },
             {
-              href: "https://github.com/typescript-ruby/typescript-rails",
+              href:
+                "https://github.com/rails/webpacker/blob/master/docs/typescript.md",
               badge: "Plugin",
               blurb: i("doc_frameworks_ror_blurb"),
               title: "Ruby on Rails",
@@ -145,7 +126,7 @@ const Index: React.FC<Props> = (props) => {
             {
               href: "https://github.com/Microsoft/TypeScript-Node-Starter",
               blurb: i("doc_apis_node_blurb"),
-              title: "Node Starter",
+              title: "Node Reference",
             },
             {
               href:
@@ -153,6 +134,16 @@ const Index: React.FC<Props> = (props) => {
               badge: "Guide",
               blurb: i("doc_apis_wechat_blurb"),
               title: "WeChat",
+            },
+            {
+              href: "https://loopback.io",
+              blurb: i("doc_apis_loopback_blurb"),
+              title: "LoopBack",
+            },
+            {
+              href: "https://www.fastify.io/",
+              blurb: i("doc_apis_fastify_blurb"),
+              title: "Fastify",
             },
           ]}
         />
@@ -272,17 +263,17 @@ const Index: React.FC<Props> = (props) => {
         />
       </div>
     </Layout>
-  )
-}
+  );
+};
 
 export const query = graphql`
   query DocsHome {
     ...AllSitePage
   }
-`
+`;
 
 export default (props: Props) => (
   <Intl locale={props.pageContext.lang}>
     <Index {...props} />
   </Intl>
-)
+);

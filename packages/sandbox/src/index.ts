@@ -50,14 +50,29 @@ export type PlaygroundConfig = {
 
 const languageType = (config: PlaygroundConfig) => (config.useJavaScript ? "javascript" : "typescript")
 
+// Basically android and monaco is pretty bad, this makes it less bad
+// See https://github.com/microsoft/pxt/pull/7099 for this, and the long
+// read is in https://github.com/microsoft/monaco-editor/issues/563
+const isAndroid = navigator && /android/i.test(navigator.userAgent)
+
 /** Default Monaco settings for playground */
 const sharedEditorOptions: import("monaco-editor").editor.IEditorOptions = {
-  automaticLayout: true,
   scrollBeyondLastLine: true,
   scrollBeyondLastColumn: 3,
   minimap: {
     enabled: false,
   },
+  lightbulb: {
+    enabled: true,
+  },
+  quickSuggestions: {
+    other: !isAndroid,
+    comments: !isAndroid,
+    strings: !isAndroid,
+  },
+  acceptSuggestionOnCommitCharacter: !isAndroid,
+  acceptSuggestionOnEnter: !isAndroid ? "on" : "off",
+  accessibilitySupport: !isAndroid ? "on" : "off",
 }
 
 /** The default settings which we apply a partial over */
@@ -135,9 +150,12 @@ export const createTypeScriptSandbox = (
     ? monaco.languages.typescript.javascriptDefaults
     : monaco.languages.typescript.typescriptDefaults
 
+  defaults.setDiagnosticsOptions({ ...defaults.getDiagnosticsOptions(), noSemanticValidation: false })
+
   // In the future it'd be good to add support for an 'add many files'
   const addLibraryToRuntime = (code: string, path: string) => {
     defaults.addExtraLib(code, path)
+    monaco.editor.createModel(code, "javascript", monaco.Uri.file(path))
     config.logger.log(`[ATA] Adding ${path} to runtime`)
   }
 
@@ -170,6 +188,8 @@ export const createTypeScriptSandbox = (
   let didUpdateCompilerSettings = (opts: CompilerOptions) => {}
 
   const updateCompilerSettings = (opts: CompilerOptions) => {
+    if (!Object.keys(opts).length) return
+
     config.logger.log("[Compiler] Updating compiler options: ", opts)
     compilerOptions = { ...opts, ...compilerOptions }
     defaults.setCompilerOptions(compilerOptions)
@@ -208,10 +228,6 @@ export const createTypeScriptSandbox = (
 
   /** Gets the JS  of compiling your editor's code */
   const getRunnableJS = async () => {
-    if (config.useJavaScript) {
-      return getText()
-    }
-
     const result = await getEmitResult()
     const firstJS = result.outputFiles.find((o: any) => o.name.endsWith(".js") || o.name.endsWith(".jsx"))
     return (firstJS && firstJS.text) || ""
@@ -234,10 +250,7 @@ export const createTypeScriptSandbox = (
   const getText = () => getModel().getValue()
   const setText = (text: string) => getModel().setValue(text)
 
-  /**
-   * Warning: Runs on the main thread
-   */
-  const createTSProgram = async () => {
+  const setupTSVFS = async () => {
     const fsMap = await tsvfs.createDefaultMapFromCDN(compilerOptions, ts.version, true, ts, lzstring)
     fsMap.set(filePath.path, getText())
 
@@ -250,7 +263,22 @@ export const createTypeScriptSandbox = (
       host: host.compilerHost,
     })
 
-    return program
+    return {
+      program,
+      system,
+      host,
+    }
+  }
+
+  /**
+   * Creates a TS Program, if you're doing anything complex
+   * it's likely you want setupTSVFS instead and can pull program out from that
+   *
+   * Warning: Runs on the main thread
+   */
+  const createTSProgram = async () => {
+    const tsvfs = await setupTSVFS()
+    return tsvfs.program
   }
 
   const getAST = async () => {
@@ -295,7 +323,8 @@ export const createTypeScriptSandbox = (
     getAST,
     /** The module you get from require("typescript") */
     ts,
-    /** Create a new Program, a TypeScript data model which represents the entire project.
+    /** Create a new Program, a TypeScript data model which represents the entire project. As well as some of the
+     * primitive objects you would normally need to do work with the files.
      *
      * The first time this is called it has to download all the DTS files which is needed for an exact compiler run. Which
      * at max is about 1.5MB - after that subsequent downloads of dts lib files come from localStorage.
@@ -305,6 +334,8 @@ export const createTypeScriptSandbox = (
      * TODO: It would be good to create an easy way to have a single program instance which is updated for you
      * when the monaco model changes.
      */
+    setupTSVFS,
+    /** Uses the above call setupTSVFS, but only returns the program */
     createTSProgram,
     /** The Sandbox's default compiler options  */
     compilerDefaults,

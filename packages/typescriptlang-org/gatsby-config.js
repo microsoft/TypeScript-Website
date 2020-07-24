@@ -15,7 +15,12 @@ module.exports = {
 
   plugins: [
     // SCSS provides inheritance for CSS and which pays the price for the dep
-    "gatsby-plugin-sass",
+    {
+      resolve: `gatsby-plugin-sass`,
+      options: {
+        implementation: require("sass"),
+      },
+    },
     // PWA metadata
     {
       resolve: `gatsby-plugin-manifest`,
@@ -119,7 +124,12 @@ module.exports = {
     // Finds auto-generated <a>s and converts them
     // into Gatsby Links at build time, speeding up
     // linking between pages.
-    "gatsby-plugin-catch-links",
+    {
+      resolve: `gatsby-plugin-catch-links`,
+      options: {
+        excludePattern: /(sandbox|play|dev)/,
+      },
+    },
     "gatsby-plugin-client-side-redirect",
   ],
 }

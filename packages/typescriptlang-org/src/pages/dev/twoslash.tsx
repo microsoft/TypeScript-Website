@@ -4,6 +4,7 @@ import { withPrefix, graphql } from "gatsby"
 import { twoslasher } from "@typescript/twoslash"
 import { createDefaultMapFromCDN } from "@typescript/vfs"
 import { renderToHTML } from "gatsby-remark-shiki-twoslash/src/renderer"
+import { debounce } from 'ts-debounce';
 
 import "./dev.scss"
 import { Intl } from "../../components/Intl"
@@ -32,7 +33,7 @@ const Index: React.FC<Props> = (props) => {
     getLoaderScript.async = true;
     getLoaderScript.onload = () => {
       // @ts-ignore
-      const re = global.require
+      const re: any = global.require
 
       re.config({
         paths: {
@@ -44,11 +45,16 @@ const Index: React.FC<Props> = (props) => {
 
       re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "sandbox/index"], async (main: typeof import("monaco-editor"), ts: typeof import("typescript"), sandboxEnv: typeof import("typescript-sandbox")) => {
         // This triggers making "ts" available in the global scope
-        re(["vs/language/typescript/lib/typescriptServices"], async (ts) => {
+        re(["vs/language/typescript/lib/typescriptServices"], async (_ts) => {
+          const ts = (global as any).ts
           const isOK = main && ts && sandboxEnv
+
           if (isOK) {
             document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)
+          } else {
+            console.error("Error: main", !!main, "ts", !!ts, "sandbox", !!sandboxEnv)
           }
+
           document.getElementById("monaco-editor-embed")!.style.display = "block"
           const sandbox = await sandboxEnv.createTypeScriptSandbox({ text: codeSamples[0].code, compilerOptions: {}, domID: "monaco-editor-embed", supportTwoslashCompilerOptions: true }, main, ts)
           sandbox.editor.focus()
@@ -56,14 +62,18 @@ const Index: React.FC<Props> = (props) => {
           // @ts-ignore
           window.sandbox = sandbox
 
-          const mapWithLibFiles = await createDefaultMapFromCDN({ target: ts.ScriptTarget.ES2016 }, '3.7.3', true, ts, sandbox.lzstring as any)
+          const mapWithLibFiles = await createDefaultMapFromCDN({ target: 3 }, '3.7.3', true, ts, sandbox.lzstring as any)
 
           const runTwoslash = () => {
             const newContent = sandbox.getText()
             mapWithLibFiles.set("index.ts", newContent)
 
             try {
-              const newResults = twoslasher(newContent, "tsx", ts, undefined, sandbox.lzstring as any, mapWithLibFiles)
+              const newResults = twoslasher(newContent, "tsx", {
+                tsModule: ts,
+                lzstringModule: sandbox.lzstring as any,
+                fsMap: mapWithLibFiles
+              })
               const codeAsFakeShikiTokens = newResults.code.split("\n").map(line => [{ content: line }])
               const html = renderToHTML(codeAsFakeShikiTokens, {}, newResults)
 
@@ -121,17 +131,8 @@ const Index: React.FC<Props> = (props) => {
             }
           }
 
-          let debouncingTimerLock = false
-          sandbox.editor.onDidChangeModelContent((e) => {
-            if (debouncingTimerLock) return
-            debouncingTimerLock = true
-
-            runTwoslash()
-            setTimeout(() => {
-              debouncingTimerLock = false
-              runTwoslash()
-            }, 500)
-          })
+          const debouncedTwoslash = debounce(runTwoslash, 500)
+          sandbox.editor.onDidChangeModelContent(debouncedTwoslash)
           runTwoslash()
 
           setTimeout(() => {
@@ -171,8 +172,7 @@ const Index: React.FC<Props> = (props) => {
                 <p>If you know TypeScript, you basically know twoslash.</p>
                 <p>Twoslash adds the ability to declare tsconfig options inline, split a sample into multiple files and a few other useful commands. You can see the full API <a href="https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher">inside the README</a></p>
               </div>
-              <div>
-                <h1 style={{ marginTop: "0" }}>&nbsp;</h1>
+              <div style={{ paddingTop: "4.5rem" }}>
                 <p>The Twoslash markup language helps with:</p>
                 <ul>
                   <li>Enforcing accurate errors from a TypeScript code sample, and leaving the messaging to the compiler</li>
@@ -186,7 +186,7 @@ const Index: React.FC<Props> = (props) => {
             </div>
           </div>
 
-          <div className="raised content main-content-block">
+          <div className="raised content main-content-block" style={{ maxWidth: "90%" }}>
 
             <div className="sixhundred" style={{ flex: 1 }}>
               <SuppressWhenTouch>
@@ -194,7 +194,7 @@ const Index: React.FC<Props> = (props) => {
                 <p id="exampleBlurb">{codeSamples[0].blurb}</p>
                 <div id="loader">
                   <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-                  <p id="loading-message">Downloading Sandbox...</p>
+                  <p id="loading-message" role="status">Downloading Sandbox...</p>
                 </div>
                 <div style={{ height: "300px", display: "none" }} id="monaco-editor-embed" />
                 <div id="example-buttons">

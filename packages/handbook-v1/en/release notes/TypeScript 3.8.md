@@ -2,7 +2,7 @@
 title: TypeScript 3.8
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-3-8.html
-oneline: TypeScript 3.87 Release Notes
+oneline: TypeScript 3.8 Release Notes
 ---
 
 ## Type-Only Imports and Export
@@ -28,14 +28,13 @@ When using `import type` to import a class, you can't do things like extend from
 import type { Component } from "react";
 
 interface ButtonProps {
-    // ...
+  // ...
 }
 
 class Button extends Component<ButtonProps> {
-    //               ~~~~~~~~~
-    // error! 'Component' only refers to a type, but is being used as a value here.
-
-    // ...
+  //               ~~~~~~~~~
+  // error! 'Component' only refers to a type, but is being used as a value here.
+  // ...
 }
 ```
 
@@ -66,20 +65,20 @@ TypeScript 3.8 brings support for ECMAScript's private fields, part of the [stag
 
 ```ts
 class Person {
-    #name: string
+  #name: string;
 
-    constructor(name: string) {
-        this.#name = name;
-    }
+  constructor(name: string) {
+    this.#name = name;
+  }
 
-    greet() {
-        console.log(`Hello, my name is ${this.#name}!`);
-    }
+  greet() {
+    console.log(`Hello, my name is ${this.#name}!`);
+  }
 }
 
 let jeremy = new Person("Jeremy Bearimy");
 
-jeremy.#name
+jeremy.#name;
 //     ~~~~~
 // Property '#name' is not accessible outside class 'Person'
 // because it has a private identifier.
@@ -123,19 +122,19 @@ With private fields, you'll never have to worry about this, since each field nam
 
 ```ts
 class C {
-    #foo = 10;
+  #foo = 10;
 
-    cHelper() {
-        return this.#foo;
-    }
+  cHelper() {
+    return this.#foo;
+  }
 }
 
 class D extends C {
-    #foo = 20;
+  #foo = 20;
 
-    dHelper() {
-        return this.#foo;
-    }
+  dHelper() {
+    return this.#foo;
+  }
 }
 
 let instance = new D();
@@ -148,15 +147,15 @@ Another thing worth noting is that accessing a private field on any other type w
 
 ```ts
 class Square {
-    #sideLength: number;
+  #sideLength: number;
 
-    constructor(sideLength: number) {
-        this.#sideLength = sideLength;
-    }
+  constructor(sideLength: number) {
+    this.#sideLength = sideLength;
+  }
 
-    equals(other: any) {
-        return this.#sideLength === other.#sideLength;
-    }
+  equals(other: any) {
+    return this.#sideLength === other.#sideLength;
+  }
 }
 
 const a = new Square(100);
@@ -230,7 +229,7 @@ On the other hand, ECMAScript's `#` privates are completely inaccessible outside
 
 ```ts
 class C {
-    #foo = 10;
+  #foo = 10;
 }
 
 console.log(new C().#foo); // SyntaxError
@@ -291,7 +290,7 @@ async function main() {
   console.log(greeting);
 }
 
-main().catch(e => console.error(e));
+main().catch((e) => console.error(e));
 ```
 
 This is because previously in JavaScript (along with most other languages with a similar feature), `await` was only allowed within the body of an `async` function.
@@ -394,7 +393,7 @@ Because every project might work better under different strategies, and this new
   // Some typical compiler options
   compilerOptions: {
     target: "es2020",
-    moduleResolution: "node"
+    moduleResolution: "node",
     // ...
   },
 
@@ -406,28 +405,32 @@ Because every project might work better under different strategies, and this new
 
     // Poll files for updates more frequently
     // when they're updated a lot.
-    fallbackPolling: "dynamicPriority"
-  }
+    fallbackPolling: "dynamicPriority",
+  },
 }
 ```
 
 `watchOptions` contains 4 new options that can be configured:
 
 - `watchFile`: the strategy for how individual files are watched. This can be set to
+
   - `fixedPollingInterval`: Check every file for changes several times a second at a fixed interval.
   - `priorityPollingInterval`: Check every file for changes several times a second, but use heuristics to check certain types of files less frequently than others.
   - `dynamicPriorityPolling`: Use a dynamic queue where less-frequently modified files will be checked less often.
   - `useFsEvents` (the default): Attempt to use the operating system/file system's native events for file changes.
   - `useFsEventsOnParentDirectory`: Attempt to use the operating system/file system's native events to listen for changes on a file's containing directories. This can use fewer file watchers, but might be less accurate.
+
 - `watchDirectory`: the strategy for how entire directory trees are watched under systems that lack recursive file-watching functionality. This can be set to:
+
   - `fixedPollingInterval`: Check every directory for changes several times a second at a fixed interval.
   - `dynamicPriorityPolling`: Use a dynamic queue where less-frequently modified directories will be checked less often.
   - `useFsEvents` (the default): Attempt to use the operating system/file system's native events for directory changes.
+
 - `fallbackPolling`: when using file system events, this option specifies the polling strategy that gets used when the system runs out of native file watchers and/or doesn't support native file watchers. This can be set to
   - `fixedPollingInterval`: _(See above.)_
   - `priorityPollingInterval`: _(See above.)_
   - `dynamicPriorityPolling`: _(See above.)_
-- `synchronousWatchDirectory`: Disable deferred watching on directories. Deferred watching is useful when lots of file changes might occur at once (e.g. a change in `node_modules` from running `npm install`), but you might want to disable it with this flag for some less-common setups.
+  - `synchronousWatchDirectory`: Disable deferred watching on directories. Deferred watching is useful when lots of file changes might occur at once (e.g. a change in `node_modules` from running `npm install`), but you might want to disable it with this flag for some less-common setups.
 
 For more information on these changes, [head over to GitHub to see the pull request](https://github.com/microsoft/TypeScript/pull/35615) to read more.
 

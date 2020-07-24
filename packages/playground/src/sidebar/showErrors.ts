@@ -1,4 +1,4 @@
-import { PlaygroundPlugin, PluginFactory } from ".."
+import { PlaygroundPlugin, PluginFactory, Playground } from ".."
 import { localize } from "../localizeWithFallback"
 
 export const showErrors: PluginFactory = (i, utils) => {
@@ -10,6 +10,12 @@ export const showErrors: PluginFactory = (i, utils) => {
 
       sandbox.getWorkerProcess().then(worker => {
         worker.getSemanticDiagnostics(model.uri.toString()).then(diags => {
+          // @ts-ignore
+          const playground: Playground = window.playground
+
+          // TODO: We should update a badge with the number of labels or something
+          if (playground.getCurrentPlugin().id !== "errors") return
+
           // Bail early if there's nothing to show
           if (!diags.length) {
             ds.showEmptyScreen(localize("play_sidebar_errors_no_errors", "No errors"))
@@ -18,7 +24,7 @@ export const showErrors: PluginFactory = (i, utils) => {
 
           // Clean any potential empty screens
           ds.clear()
-          ds.listDiags(sandbox, model, diags)
+          ds.listDiags(model, diags)
         })
       })
     },

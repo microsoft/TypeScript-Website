@@ -2,7 +2,7 @@ export const docCopy = {
   doc_layout_title: "The starting point for learning TypeScript",
   doc_layout_description:
     "Find TypeScript starter projects: from Angular to React or Node.js and CLIs.",
-  doc_headline: "Start Learning",
+  doc_headline: "Learning Resources",
   doc_headline_ts_for_js_title: "TS for JS",
   doc_headline_ts_for_js_blurb:
     "An overview of TypeScript for engineers with a JavaScript background",
@@ -40,6 +40,9 @@ export const docCopy = {
     "A progressive Node.js framework for building efficient and scalable server-side applications",
   doc_apis_node_blurb: "A documented starter template from the TS team",
   doc_apis_wechat_blurb: "Use the WeChat JSSDK with TypeScript",
+  doc_apis_loopback_blurb:
+    "A highly extensible Node.js and TypeScript framework for building APIs and microservices",
+  doc_apis_fastify_blurb: "A fast and low overhead web framework for Node.js",
   doc_react: "React Projects",
   doc_react_create_blurb: "Set up a modern web app by running one command",
   doc_react_gatsby_blurb:

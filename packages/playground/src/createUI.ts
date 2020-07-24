@@ -9,15 +9,15 @@ export interface UI {
 
 export const createUI = (): UI => {
   const flashInfo = (message: string) => {
-    let flashBG = document.getElementById('flash-bg')
+    let flashBG = document.getElementById("flash-bg")
     if (flashBG) {
       flashBG.parentElement?.removeChild(flashBG)
     }
 
-    flashBG = document.createElement('div')
-    flashBG.id = 'flash-bg'
+    flashBG = document.createElement("div")
+    flashBG.id = "flash-bg"
 
-    const p = document.createElement('p')
+    const p = document.createElement("p")
     p.textContent = message
     flashBG.appendChild(p)
     document.body.appendChild(flashBG)
@@ -28,22 +28,23 @@ export const createUI = (): UI => {
   }
 
   const createModalOverlay = (classList?: string) => {
-    document.querySelectorAll('.navbar-sub li.open').forEach(i => i.classList.remove('open'))
+    document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
 
-    const existingPopover = document.getElementById('popover-modal')
+    const existingPopover = document.getElementById("popover-modal")
     if (existingPopover) existingPopover.parentElement!.removeChild(existingPopover)
 
-    const modalBG = document.createElement('div')
-    modalBG.id = 'popover-background'
+    const modalBG = document.createElement("div")
+    modalBG.id = "popover-background"
     document.body.appendChild(modalBG)
 
-    const modal = document.createElement('div')
-    modal.id = 'popover-modal'
+    const modal = document.createElement("div")
+    modal.id = "popover-modal"
     if (classList) modal.className = classList
 
-    const closeButton = document.createElement('button')
-    closeButton.innerText = 'Close'
-    closeButton.classList.add('close')
+    const closeButton = document.createElement("button")
+    closeButton.innerText = "Close"
+    closeButton.classList.add("close")
+    closeButton.tabIndex = 1
     modal.appendChild(closeButton)
 
     const oldOnkeyDown = document.onkeydown
@@ -59,19 +60,7 @@ export const createUI = (): UI => {
     closeButton.onclick = close
 
     // Support hiding the modal via escape
-    document.onkeydown = function(evt) {
-      evt = evt || window.event
-      var isEscape = false
-      if ('key' in evt) {
-        isEscape = evt.key === 'Escape' || evt.key === 'Esc'
-      } else {
-        // @ts-ignore - this used to be the case
-        isEscape = evt.keyCode === 27
-      }
-      if (isEscape) {
-        close()
-      }
-    }
+    document.onkeydown = whenEscape(close)
 
     document.body.appendChild(modal)
 
@@ -83,31 +72,44 @@ export const createUI = (): UI => {
     const modal = createModalOverlay()
 
     if (subtitle) {
-      const titleElement = document.createElement('p')
+      const titleElement = document.createElement("h3")
       titleElement.textContent = subtitle
+      titleElement.setAttribute("role", "alert")
       modal.appendChild(titleElement)
     }
 
-    const pre = document.createElement('pre')
-    modal.appendChild(pre)
-    pre.textContent = code
+    const textarea = document.createElement("textarea")
+    textarea.autofocus = true
+    textarea.readOnly = true
+    textarea.wrap = "off"
+    textarea.style.marginBottom = "20px"
+    modal.appendChild(textarea)
+    textarea.textContent = code
+    textarea.rows = 60
 
-    const buttonContainer = document.createElement('div')
+    const buttonContainer = document.createElement("div")
 
-    const copyButton = document.createElement('button')
-    copyButton.innerText = 'Copy'
+    const copyButton = document.createElement("button")
+    copyButton.innerText = "Copy"
     buttonContainer.appendChild(copyButton)
 
-    const selectAllButton = document.createElement('button')
-    selectAllButton.innerText = 'Select All'
+    const selectAllButton = document.createElement("button")
+    selectAllButton.innerText = "Select All"
     buttonContainer.appendChild(selectAllButton)
 
     modal.appendChild(buttonContainer)
+    const close = modal.querySelector(".close") as HTMLElement
+    close.addEventListener("keydown", e => {
+      if (e.keyCode === 9) {
+        ;(modal.querySelector("textarea") as any).focus()
+        e.preventDefault()
+      }
+    })
 
     if (links) {
       Object.keys(links).forEach(name => {
         const href = links[name]
-        const extraButton = document.createElement('button')
+        const extraButton = document.createElement("button")
         extraButton.innerText = name
         extraButton.onclick = () => (document.location = href as any)
         buttonContainer.appendChild(extraButton)
@@ -115,15 +117,18 @@ export const createUI = (): UI => {
     }
 
     const selectAll = () => {
-      const selection = window.getSelection()
-      const range = document.createRange()
-      range.selectNodeContents(pre)
-      if (selection) {
-        selection.removeAllRanges()
-        selection.addRange(range)
-      }
+      textarea.select()
     }
     selectAll()
+
+    const buttons = modal.querySelectorAll("button")
+    const lastButton = buttons.item(buttons.length - 1) as HTMLElement
+    lastButton.addEventListener("keydown", e => {
+      if (e.keyCode === 9) {
+        ;(document.querySelector(".close") as any).focus()
+        e.preventDefault()
+      }
+    })
 
     selectAllButton.onclick = selectAll
     copyButton.onclick = () => {
@@ -135,5 +140,23 @@ export const createUI = (): UI => {
     createModalOverlay,
     showModal,
     flashInfo,
+  }
+}
+
+/**
+ * Runs the closure when escape is tapped
+ * @param func closure to run on escape being pressed
+ */
+const whenEscape = (func: () => void) => (event: KeyboardEvent) => {
+  const evt = event || window.event
+  let isEscape = false
+  if ("key" in evt) {
+    isEscape = evt.key === "Escape" || evt.key === "Esc"
+  } else {
+    // @ts-ignore - this used to be the case
+    isEscape = evt.keyCode === 27
+  }
+  if (isEscape) {
+    func()
   }
 }

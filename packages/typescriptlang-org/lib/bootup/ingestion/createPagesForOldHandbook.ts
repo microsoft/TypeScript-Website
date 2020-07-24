@@ -3,7 +3,7 @@ import { NodePluginArgs, CreatePagesArgs } from "gatsby"
 import {
   getNextPageID,
   getPreviousPageID,
-} from "../../../src/lib/oldHandbookNavigation"
+} from "../../../src/lib/handbookNavigation"
 
 export const createOldHandbookPages = async (
   graphql: CreatePagesArgs["graphql"],
@@ -22,6 +22,7 @@ export const createOldHandbookPages = async (
           id
           name
           modifiedTime
+          absolutePath
 
           childMarkdownRemark {
             frontmatter {
@@ -60,7 +61,9 @@ export const createOldHandbookPages = async (
       const nextDoc = docs.find((d) => d.childMarkdownRemark.frontmatter.permalink === path)
       if (nextDoc) nextID = nextDoc.id
     }
-    // const nextPath = getNextPageID(id) && getNextPageID(id)!.path
+
+    const repoRoot = path.join(process.cwd(), "..", "..")
+    const repoPath = post.absolutePath.replace(repoRoot, "")
 
     if (post.childMarkdownRemark) {
       createPage({
@@ -68,9 +71,12 @@ export const createOldHandbookPages = async (
         component: handbookPage,
         context: {
           slug: post.childMarkdownRemark.frontmatter.permalink,
+          repoPath,
           previousID,
           nextID,
           isOldHandbook: true,
+          lang: "en",
+          modifiedTime: post.modifiedTime,
         },
       })
     } else {
@@ -79,5 +85,12 @@ export const createOldHandbookPages = async (
   })
 }
 
-export const idFromURL = (url: string) =>
-  url.split("/").pop()!.replace(".html", "") || "index"
+export const idFromURL = (url: string) => {
+  // TODO: this needs to support ID's like:         id: "templates/global-plugin-d-ts",
+  return (
+    url
+      .split("/")
+      .pop()!
+      .replace(".html", "") || "index"
+  )
+}

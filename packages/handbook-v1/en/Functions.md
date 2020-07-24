@@ -105,12 +105,12 @@ In effect, captured variables are part of the "hidden state" of any function and
 In playing with the example, you may notice that the TypeScript compiler can figure out the type even if you only have types on one side of the equation:
 
 ```ts
-// myAdd has the full function type
+// The parameters 'x' and 'y' have the type number
 let myAdd = function(x: number, y: number): number {
   return x + y;
 };
 
-// The parameters 'x' and 'y' have the type number
+// myAdd has the full function type
 let myAdd: (baseValue: number, increment: number) => number = function(x, y) {
   return x + y;
 };
@@ -466,7 +466,7 @@ let suits = ["hearts", "spades", "clubs", "diamonds"];
 
 function pickCard(x: { suit: string; card: number }[]): number;
 function pickCard(x: number): { suit: string; card: number };
-function pickCard(x): any {
+function pickCard(x: any): any {
   // Check to see if we're working with an object/array
   // if so, they gave us the deck and we'll pick the card
   if (typeof x == "object") {

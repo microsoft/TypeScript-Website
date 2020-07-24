@@ -1,3 +1,27 @@
+## 0.5.0
+
+- Support TS 4.0
+- Improvements to @showEmit and @showEmittedFile
+- when `noStaticSemanticInfo` is enabled then you an still run queries
+- better multi-file support
+- `emit` handbook option actually emits all the JS/DTS files back to the vfs
+- `noErrorValidation` is better supported
+
+## 0.4.0
+
+- Lines with `// prettier-ignore` are stripped, if you want to show it in a code sample, use `/** prettier-ignore */`
+- You can request completions at a particular point in a file, note: the results come directly from TS and a
+  useful but will definitely require some work to massage into being useful (they're un-ordered and un-prioritised.)
+  To make your life easier it also includes a "completionsPrefix" which is the substring between the position indicated and the nearest dot or space, you can use that to filter the results.
+
+You can see some results in the main README now.
+
+```ts
+const myString = ""
+myString.s
+//       ^?
+```
+
 ## 0.3.0
 
 Lots of work on the query engine, now it works across many files and multiple times in the same file. For example:

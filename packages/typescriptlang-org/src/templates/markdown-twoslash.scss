@@ -4,6 +4,7 @@
     <div class='language-id>[lang-id]</div>
     <div class='code-container'>
       <code>[the code as a series of spans]</code>
+      <a href='playground...'>Try</a>
     </div>
   </pre> 
 */
@@ -37,16 +38,43 @@ pre {
   /* The code inside should scroll, but the overflow can't be on the shiki because it would not allow the relative positioning */
   .code-container {
     overflow: auto;
+
+    a {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      border-radius: 4px;
+      border: 1px solid #719af4;
+      padding: 0 8px;
+      color: #719af4;
+      text-decoration: none;
+      opacity: 0;
+      transition-timing-function: ease;
+      transition: opacity 0.3s;
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
+
+      &:hover {
+        color: white;
+        background-color: #719af4;
+      }
+    }
+
+    &:hover a {
+      opacity: 1;
+    }
   }
 
   /* Handle scrolling, and showing code correctly */
   code {
     // These are somewhat redundant in this codebase, but relevant for everyone else
     /** Style setup */
-    font-size: 16px;
-    line-height: 20px;
-    font-family: "Jet Brains Mono", Menlo, Monaco, Consolas, Courier New,
-      monospace;
+    font-size: 15px;
+    line-height: 16px;
+    font-family: "Cascadia Mono", "JetBrains Mono", Menlo, Monaco, Consolas,
+      Courier New, monospace;
 
     white-space: pre;
     -webkit-overflow-scrolling: touch;
@@ -73,6 +101,7 @@ pre {
     margin-bottom: 4px;
     padding: 6px;
     padding-left: 14px;
+    width: calc(100% - 19px);
 
     white-space: pre-wrap;
     display: block;
@@ -131,9 +160,11 @@ pre:hover data-lsp {
   text-align: left;
   padding: 5px 8px;
   border-radius: 2px;
-  font-family: "Jet Brains Mono", Menlo, Monaco, Consolas, Courier New,
-    monospace;
+  font-family: "Cascadia Mono", "JetBrains Mono", Menlo, Monaco, Consolas,
+    Courier New, monospace;
   font-size: 14px;
   white-space: pre-wrap;
   border-radius: 2px;
+  z-index: 100;
+  pointer-events: none;
 }

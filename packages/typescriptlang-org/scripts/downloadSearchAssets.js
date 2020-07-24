@@ -16,7 +16,24 @@ const getFileAndStoreLocally = async (url, path, editFunc) => {
 const go = async () => {
   await getFileAndStoreLocally(
     "https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js",
-    "static/js/docsearch.js"
+    "static/js/docsearch.js",
+    js => {
+      const fixAriaByDroppingCustomText = js.replace(
+        'aria-label="Link to the result"',
+        ""
+      )
+
+      const fixTabbing = fixAriaByDroppingCustomText.replace(
+        'context.selectionMethod==="click"',
+        'context.selectionMethod === "click" || context.selectionMethod === "tabKey"'
+      )
+
+      const echoResultsToScreenReaders = fixTabbing.replace(
+        'this.trigger("cursorMoved",updateInput)',
+        'this.trigger("cursorMoved", updateInput); $el.parent().children().forEach(s => s.setAttribute("role", undefined));$el.attr("role", "alert");'
+      )
+      return echoResultsToScreenReaders
+    }
   )
   // Remove the mapping reference
   await getFileAndStoreLocally(

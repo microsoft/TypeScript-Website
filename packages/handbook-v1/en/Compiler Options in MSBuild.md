@@ -55,6 +55,7 @@ Compiler options can be specified using MSBuild properties within an MSBuild pro
 | `--isolatedModules`                  | TypeScriptIsolatedModules                  | boolean                                     |
 | `--jsx`                              | TypeScriptJSXEmit                          | `react`, `react-native`, `preserve`         |
 | `--jsxFactory`                       | TypeScriptJSXFactory                       | qualified name                              |
+| `--jsxFragmentFactory`               | TypeScriptJSXFragmentFactory               | qualified name                              |
 | `--lib`                              | TypeScriptLib                              | Comma-separated list of strings             |
 | `--listEmittedFiles`                 | _Not supported in MSBuild_                 |
 | `--listFiles`                        | _Not supported in MSBuild_                 |

@@ -22,9 +22,9 @@ export const Layout = (props: LayoutProps) => {
       </Helmet>
       <HeadSEO {...props} />
       <div className="ms-Fabric">
+        <CookieBanner {...props} />
         <SiteNav {...props} />
-        <CookieBanner />
-        <main>{props.children}</main>
+        <main role="main">{props.children}</main>
         <SiteFooter {...props} />
       </div>
       <AppInsights />

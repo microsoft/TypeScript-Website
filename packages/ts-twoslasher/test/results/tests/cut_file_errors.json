@@ -14,7 +14,7 @@
       "targetString": "NetworkState"
     },
     {
-      "text": "type NetworkLoadingState = {\n    state: \"loading\";\n}",
+      "text": "type NetworkLoadingState = {\n    state: 'loading';\n}",
       "docs": "",
       "start": 20,
       "length": 19,
@@ -23,7 +23,7 @@
       "targetString": "NetworkLoadingState"
     },
     {
-      "text": "type NetworkFailedState = {\n    state: \"failed\";\n    code: number;\n}",
+      "text": "type NetworkFailedState = {\n    state: 'failed';\n    code: number;\n}",
       "docs": "",
       "start": 42,
       "length": 18,
@@ -32,7 +32,7 @@
       "targetString": "NetworkFailedState"
     },
     {
-      "text": "type NetworkSuccessState = {\n    state: \"success\";\n    response: {\n        title: string;\n        duration: number;\n        summary: string;\n    };\n}",
+      "text": "type NetworkSuccessState = {\n    state: 'success';\n    response: {\n        title: string;\n        duration: number;\n        summary: string;\n    };\n}",
       "docs": "",
       "start": 63,
       "length": 19,

@@ -49,25 +49,27 @@ JavaScript defines 7 built-in types:
 | ----------- | ------------------------------------------- |
 | `Number`    | a double-precision IEEE 754 floating point. |
 | `String`    | an immutable UTF-16 string.                 |
+| `BigInt`    | integers in the arbitrary precision format. |
 | `Boolean`   | `true` and `false`.                         |
 | `Symbol`    | a unique value usually used as a key.       |
 | `Null`      | equivalent to the unit type.                |
 | `Undefined` | also equivalent to the unit type.           |
 | `Object`    | similar to records.                         |
 
-[See the MDN page for more detail](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures).
+[See the MDN page for more detail](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures).
 
 TypeScript has corresponding primitive types for the built-in types:
 
 - `number`
 - `string`
+- `bigint`
 - `boolean`
 - `symbol`
 - `null`
 - `undefined`
 - `object`
 
-### Other important Typescript types
+### Other important TypeScript types
 
 | Type           | Explanation                                                 |
 | -------------- | ----------------------------------------------------------- |
@@ -86,7 +88,7 @@ Notes:
    ```ts
    let fst: (a: any, d: any) => any = (a, d) => a;
    // or more precisely:
-   let snd: <T, U>(a: T, d: U) => U = (a, d) => d.
+   let snd: <T, U>(a: T, d: U) => U = (a, d) => d;
    ```
 
 2. Object literal type syntax closely mirrors object literal value syntax:
@@ -111,8 +113,8 @@ needed, since their methods return primitives.
 Number.prototype.toExponential.call(1);
 ```
 
-Note that calling methods on numeric literals requires an additional
-`.` to aid the parser.
+Note that calling a method on a numeric literal requires it to be in
+parentheses to aid the parser.
 
 ## Gradual typing
 
@@ -309,7 +311,7 @@ if you've worked with other C-syntax languages:
 
 ```ts twoslash
 declare function map<T, U>(f: (t: T) => U, ts: T[]): U[];
-let sns = map(n => n.toString(), [1, 2, 3]);
+let sns = map((n) => n.toString(), [1, 2, 3]);
 ```
 
 Here, `n: number` in this example also, despite the fact that `T` and `U`
@@ -332,7 +334,7 @@ on unit types that would otherwise be inferred as `string` or
 
 ```ts twoslash
 declare function run<T>(thunk: (t: T) => void): T;
-let i: { inference: string } = run(o => {
+let i: { inference: string } = run((o) => {
   o.inference = "INSERT STATE HERE";
 });
 ```
@@ -583,3 +585,10 @@ a[0] = 101; // error
 
 However, none of these options are the default, so they are not
 consistently used in TypeScript code.
+
+## Next Steps
+
+This doc is a high level overview of the syntax and types you would use in everyday code. From here you should:
+
+- Read the full Handbook [from start to finish](/docs/handbook/intro.html) (30m)
+- Explore the [Playground examples](/play#show-examples).

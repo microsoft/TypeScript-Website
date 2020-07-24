@@ -78,11 +78,7 @@
       a {
         font-weight: normal;
         font-size: 14px;
-        color: black;
-
-        @media (prefers-color-scheme: dark) {
-          color: white;
-        }
+        color: var(--alt-text-color);
 
         text-decoration: none;
         border-left: 2px solid transparent;
@@ -141,22 +137,13 @@
 
     p,
     header {
-      color: black;
-
-      @media (prefers-color-scheme: dark) {
-        color: white;
-      }
+      color: var(--text-color);
     }
 
     &:hover svg path,
     &:hover h3 {
-      fill: black;
-      color: black;
-
-      @media (prefers-color-scheme: dark) {
-        color: white;
-        color: white;
-      }
+      fill: var(--text-color);
+      color: var(--text-color);
     }
 
     .nav-content {
@@ -188,5 +175,37 @@
     flex-basis: 2px;
     flex-grow: 0;
     flex-shrink: 0;
+  }
+}
+
+.circle-bg {
+  background-color: #719af4;
+  color: black;
+  width: 32px;
+  height: 32px;
+  line-height: 31px;
+  border-radius: 16px;
+  text-align: center;
+  display: inline-block;
+  position: relative;
+  margin-top: 12px;
+  margin-right: 3px;
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 16px;
+  }
+}
+
+.bottom-section-content {
+  flex: 1;
+  padding: 1rem 2rem;
+}
+
+.small-columns {
+  @media (max-width: $screen-xs) {
+    flex-direction: column !important;
   }
 }

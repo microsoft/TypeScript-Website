@@ -72,6 +72,7 @@ export type CompilerOptionName =
   | "experimentalDecorators"
   | "emitDecoratorMetadata"
   | "jsxFactory"
+  | "jsxFragmentFactory"
   | "resolveJsonModule"
   | "out"
   | "reactNamespace"

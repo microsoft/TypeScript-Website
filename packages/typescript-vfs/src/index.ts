@@ -1,11 +1,16 @@
 type System = import("typescript").System
 type CompilerOptions = import("typescript").CompilerOptions
+type CustomTransformers = import("typescript").CustomTransformers
 type LanguageServiceHost = import("typescript").LanguageServiceHost
 type CompilerHost = import("typescript").CompilerHost
 type SourceFile = import("typescript").SourceFile
 type TS = typeof import("typescript")
 
-const hasLocalStorage = typeof localStorage !== `undefined`
+let hasLocalStorage = false
+try {
+  hasLocalStorage = typeof localStorage !== `undefined`
+} catch (error) {}
+
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 const debugLog = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
@@ -26,17 +31,25 @@ export interface VirtualTypeScriptEnvironment {
  * @param rootFiles a list of files which are considered inside the project
  * @param ts a copy pf the TypeScript module
  * @param compilerOptions the options for this compiler run
+ * @param customTransformers custom transformers for this compiler run
  */
 
 export function createVirtualTypeScriptEnvironment(
   sys: System,
   rootFiles: string[],
   ts: TS,
-  compilerOptions: CompilerOptions = {}
+  compilerOptions: CompilerOptions = {},
+  customTransformers?: CustomTransformers
 ): VirtualTypeScriptEnvironment {
   const mergedCompilerOpts = { ...defaultCompilerOptions(ts), ...compilerOptions }
 
-  const { languageServiceHost, updateFile } = createVirtualLanguageServiceHost(sys, rootFiles, mergedCompilerOpts, ts)
+  const { languageServiceHost, updateFile } = createVirtualLanguageServiceHost(
+    sys,
+    rootFiles,
+    mergedCompilerOpts,
+    ts,
+    customTransformers
+  )
   const languageService = ts.createLanguageService(languageServiceHost)
   const diagnostics = languageService.getCompilerOptionsDiagnostics()
 
@@ -54,7 +67,10 @@ export function createVirtualTypeScriptEnvironment(
       updateFile(ts.createSourceFile(fileName, content, mergedCompilerOpts.target!, false))
     },
     updateFile: (fileName, content, optPrevTextSpan) => {
-      const prevSourceFile = languageService.getProgram()!.getSourceFile(fileName)!
+      const prevSourceFile = languageService.getProgram()!.getSourceFile(fileName)
+      if (!prevSourceFile) {
+        throw new Error("Did not find a source file for " + fileName)
+      }
       const prevFullContents = prevSourceFile.text
 
       // TODO: Validate if the default text span has a fencepost error?
@@ -132,6 +148,7 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
     "lib.es2020.symbol.wellknown.d.ts",
     "lib.es2020.bigint.d.ts",
     "lib.es2020.promise.d.ts",
+    "lib.es2020.intl.d.ts",
     "lib.esnext.array.d.ts",
     "lib.esnext.asynciterable.d.ts",
     "lib.esnext.bigint.d.ts",
@@ -167,8 +184,8 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
  * Sets up a Map with lib contents by grabbing the necessary files from
  * the local copy of typescript via the file system.
  */
-export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions) => {
-  const ts = require("typescript")
+export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions, ts?: typeof import("typescript")) => {
+  const tsModule = ts || require("typescript")
   const path = require("path")
   const fs = require("fs")
 
@@ -177,13 +194,54 @@ export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions
     return fs.readFileSync(path.join(lib, name), "utf8")
   }
 
-  const libs = knownLibFilesForCompilerOptions(compilerOptions, ts)
+  const libs = knownLibFilesForCompilerOptions(compilerOptions, tsModule)
   const fsMap = new Map<string, string>()
   libs.forEach(lib => {
     fsMap.set("/" + lib, getLib(lib))
   })
   return fsMap
 }
+
+/**
+ * Adds recursively files from the FS into the map based on the folder
+ */
+export const addAllFilesFromFolder = (map: Map<string, string>, workingDir: string): void => {
+  const path = require("path")
+  const fs = require("fs")
+
+  const walk = function (dir: string) {
+    let results: string[] = []
+    const list = fs.readdirSync(dir)
+    list.forEach(function (file: string) {
+      file = path.join(dir, file)
+      const stat = fs.statSync(file)
+      if (stat && stat.isDirectory()) {
+        /* Recurse into a subdirectory */
+        results = results.concat(walk(file))
+      } else {
+        /* Is a file */
+        results.push(file)
+      }
+    })
+    return results
+  }
+
+  const allFiles = walk(workingDir)
+
+  allFiles.forEach(lib => {
+    const fsPath = "/node_modules/@types" + lib.replace(workingDir, "")
+    const content = fs.readFileSync(lib, "utf8")
+    const validExtensions = [".ts", ".tsx"]
+
+    if (validExtensions.includes(path.extname(fsPath))) {
+      map.set(fsPath, content)
+    }
+  })
+}
+
+/** Adds all files from node_modules/@types into the FS Map */
+export const addFilesForTypesIntoFolder = (map: Map<string, string>) =>
+  addAllFilesFromFolder(map, "node_modules/@types")
 
 /**
  * Create a virtual FS Map with the lib files from a particular TypeScript
@@ -335,6 +393,62 @@ export function createSystem(files: Map<string, string>): System {
 }
 
 /**
+ * Creates a file-system backed System object which can be used in a TypeScript program, you provide
+ * a set of virtual files which are prioritised over the FS versions, then a path to the root of your
+ * project (basically the folder your node_modules lives)
+ */
+export function createFSBackedSystem(files: Map<string, string>, projectRoot: string): System {
+  const fs = require("fs")
+  const path = require("path")
+
+  return {
+    args: [],
+    createDirectory: () => notImplemented("createDirectory"),
+    // TODO: could make a real file tree
+    directoryExists: audit("directoryExists", directory => {
+      return (
+        Array.from(files.keys()).some(path => path.startsWith(directory)) ||
+        fs.existsSync(path.join(projectRoot, directory))
+      )
+    }),
+    exit: () => notImplemented("exit"),
+    fileExists: audit("fileExists", fileName => {
+      if (files.has(fileName)) return true
+
+      const fsPath = path.join(projectRoot, fileName)
+      const libPath = path.join(projectRoot, "node_modules", "typescript", "lib", fileName)
+
+      for (const filepath of [fsPath, libPath]) {
+        if (fs.existsSync(filepath)) return true
+      }
+      return false
+    }),
+    getCurrentDirectory: () => "/",
+    getDirectories: () => [],
+    getExecutingFilePath: () => notImplemented("getExecutingFilePath"),
+    readDirectory: audit("readDirectory", directory => (directory === "/" ? Array.from(files.keys()) : [])),
+    readFile: audit("readFile", fileName => {
+      if (files.has(fileName)) return files.get(fileName)
+
+      const fsPath = path.join(projectRoot, fileName)
+      const libPath = path.join(projectRoot, "node_modules", "typescript", "lib", fileName)
+      for (const filepath of [fsPath, libPath]) {
+        if (fs.existsSync(filepath)) return fs.readFileSync(filepath, { encoding: "utf-8" })
+      }
+
+      return undefined
+    }),
+    resolvePath: path => path,
+    newLine: "\n",
+    useCaseSensitiveFileNames: true,
+    write: () => notImplemented("write"),
+    writeFile: (fileName, contents) => {
+      files.set(fileName, contents)
+    },
+  }
+}
+
+/**
  * Creates an in-memory CompilerHost -which is essentially an extra wrapper to System
  * which works with TypeScript objects - returns both a compiler host, and a way to add new SourceFile
  * instances to the in-memory file system.
@@ -391,7 +505,8 @@ export function createVirtualLanguageServiceHost(
   sys: System,
   rootFiles: string[],
   compilerOptions: CompilerOptions,
-  ts: TS
+  ts: TS,
+  customTransformers?: CustomTransformers
 ) {
   const fileNames = [...rootFiles]
   const { compilerHost, updateFile } = createVirtualCompilerHost(sys, compilerOptions, ts)
@@ -401,6 +516,7 @@ export function createVirtualLanguageServiceHost(
     ...compilerHost,
     getProjectVersion: () => projectVersion.toString(),
     getCompilationSettings: () => compilerOptions,
+    getCustomTransformers: () => customTransformers,
     getScriptFileNames: () => fileNames,
     getScriptSnapshot: fileName => {
       const contents = sys.readFile(fileName)

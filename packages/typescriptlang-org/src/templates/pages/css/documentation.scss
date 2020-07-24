@@ -1,3 +1,5 @@
+@import "../../../style/globals.scss";
+
 .flow-links {
   display: flex;
   flex-wrap: wrap;
@@ -18,6 +20,11 @@
   // For the badge
   position: relative;
   text-decoration: none;
+
+
+  @media screen and (-ms-high-contrast: active) {
+    border: 1px solid grey;;
+  }
 
   &.headline {
     width: 300px;
@@ -67,5 +74,44 @@
     background-color: #666;
     top: 10px;
     right: 10px;
+  }
+}
+
+.columns {
+  // 2 for the container, 0.6 for the item
+  margin: 0 -2.6rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  &.wide {
+    justify-content: space-between;
+    .item {
+      min-width: 240px;
+    }
+  }
+
+  .item {
+    flex: 1;
+    margin: 0.6rem;
+    padding: 1rem;
+
+    h4 {
+      margin-top: 0;
+    }
+
+    ul {
+      padding: 0;
+    }
+
+    li {
+      list-style: none;
+      margin-left: 0;
+    }
+  }
+
+  @media (max-width: $screen-sm) {
+    flex-direction: column;
+    margin: 0;
   }
 }

@@ -25,7 +25,7 @@ import {
 } from "./tsconfigRules";
 import { CompilerOptionName } from "../data/_types";
 
-const toJSONString = obj => format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
+const toJSONString = (obj) => format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
 const writeJSON = (name, obj) =>
   writeFileSync(join(__dirname, "..", "data", name), toJSONString(obj));
 const writeString = (name, text) =>
@@ -40,6 +40,7 @@ export interface CompilerOptionJSON extends CommandLineOptionBase {
   internal?: true;
   recommended?: true;
   defaultValue?: string;
+  hostObj: string;
 }
 
 // @ts-ignore because this is private
@@ -48,10 +49,123 @@ const categories = new Set<ts.DiagnosticMessage>();
 
 // Cut down the list
 const filteredOptions = options
-  .filter(o => !denyList.includes(o.name as CompilerOptionName))
-  .filter(o => !o.isCommandLineOnly);
+  .filter((o) => !denyList.includes(o.name as CompilerOptionName))
+  .filter((o) => !o.isCommandLineOnly);
 
-filteredOptions.forEach(option => {
+// We don't get structured data for all compiler flags (especially ones which aren't in 'compilerOptions')
+// so, create these manually.
+
+const topLevelTSConfigOptions: CompilerOptionJSON[] = [
+  {
+    name: "files",
+    type: "list",
+    categoryCode: 0,
+    // @ts-ignore
+    description: {
+      message: "Print names of files part of the compilation.",
+    },
+    defaultValue: "false",
+    hostObj: "top_level",
+  },
+  {
+    name: "include",
+    type: "list",
+    categoryCode: 0,
+    // @ts-ignore
+    description: {
+      message: "Print names of files part of the compilation.",
+    },
+    defaultValue: "false",
+    hostObj: "top_level",
+  },
+  {
+    name: "exclude",
+    type: "list",
+    categoryCode: 0,
+    // @ts-ignore
+    description: {
+      message: "Print names of files part of the compilation.",
+    },
+    defaultValue: "false",
+    hostObj: "top_level",
+  },
+  {
+    name: "extends",
+    type: "string",
+    categoryCode: 0,
+    // @ts-ignore
+    description: {
+      message: "Print names of files part of the compilation.",
+    },
+    defaultValue: "false",
+    hostObj: "top_level",
+  },
+  {
+    name: "typeAcquisition",
+    type: "string",
+    categoryCode: 0,
+    // @ts-ignore
+    description: {
+      message: "Print names of files part of the compilation.",
+    },
+    defaultValue: "false",
+    hostObj: "top_level",
+  },
+  {
+    name: "references",
+    type: "string",
+    categoryCode: 0,
+    // @ts-ignore
+    description: {
+      message: "Print names of files part of the compilation.",
+    },
+    defaultValue: "false",
+    hostObj: "top_level",
+  }
+];
+
+const watchOptions: CompilerOptionJSON[] = [
+  {
+    name: "watchFile",
+    type: "string",
+    categoryCode: 999,
+    // @ts-ignore
+    description: {
+      message: "The strategy for how individual files are watched.",
+    },
+    defaultValue: "useFsEvents",
+    hostObj: "watchOptions",
+  },
+  {
+    name: "watchDirectory",
+    type: "list",
+    categoryCode: 999,
+    // @ts-ignore
+    description: {
+      message:
+        "The strategy for how entire directory trees are watched under systems that lack recursive file-watching functionality.",
+    },
+    defaultValue: "useFsEvents",
+    hostObj: "watchOptions",
+  },
+  {
+    name: "fallbackPolling",
+    type: "list",
+    categoryCode: 999,
+    // @ts-ignore
+    description: {
+      message:
+        "The polling strategy that gets used when the system runs out of native file watchers.",
+    },
+    hostObj: "watchOptions",
+  },
+];
+
+const allOptions = [...topLevelTSConfigOptions, ...filteredOptions, ...watchOptions].sort((l, r) =>
+  l.name.localeCompare(r.name)
+);
+
+allOptions.forEach((option) => {
   const name = option.name as CompilerOptionName;
 
   // Convert JS Map types to a JSONable obj
@@ -69,12 +183,12 @@ filteredOptions.forEach(option => {
     option.categoryCode = option.category.code;
     option.category = undefined;
   } else if (option.name in additionalOptionDescriptors) {
-    // Set category code manually because some options have no category 
+    // Set category code manually because some options have no category
     option.categoryCode = additionalOptionDescriptors[option.name].categoryCode;
   }
 
   // If it's got related fields, set them
-  const relatedMetadata = relatedTo.find(a => a[0] == name);
+  const relatedMetadata = relatedTo.find((a) => a[0] == name);
   if (relatedMetadata) {
     option.related = relatedMetadata[1];
   }
@@ -103,104 +217,41 @@ filteredOptions.forEach(option => {
     option.defaultValue = defaultsForOptions[name];
   }
 
+  option.hostObj = "compilerOptions";
+
   // Remove irrelevant properties
   delete option.shortName;
   delete option.showInSimplifiedHelpView;
 });
 
-const topLevelTSConfigOptions: CompilerOptionJSON[] = [
-  {
-    name: "files",
-    type: "list",
-    categoryCode: 0,
-    // @ts-ignore
-    description: {
-      message: "Print names of files part of the compilation."
-    },
-    defaultValue: "false"
-  },
-  {
-    name: "include",
-    type: "list",
-    categoryCode: 0,
-    // @ts-ignore
-    description: {
-      message: "Print names of files part of the compilation."
-    },
-    defaultValue: "false"
-  },
-  {
-    name: "exclude",
-    type: "list",
-    categoryCode: 0,
-    // @ts-ignore
-    description: {
-      message: "Print names of files part of the compilation."
-    },
-    defaultValue: "false"
-  },
-  {
-    name: "extends",
-    type: "string",
-    categoryCode: 0,
-    // @ts-ignore
-    description: {
-      message: "Print names of files part of the compilation."
-    },
-    defaultValue: "false"
-  },
-  {
-    name: "typeAcquisition",
-    type: "string",
-    categoryCode: 0,
-    // @ts-ignore
-    description: {
-      message: "Print names of files part of the compilation."
-    },
-    defaultValue: "false"
-  },
-  {
-    name: "references",
-    type: "string",
-    categoryCode: 0,
-    // @ts-ignore
-    description: {
-      message: "Print names of files part of the compilation."
-    },
-    defaultValue: "false"
-  },
-  {
-    name: "importHelpers",
-    type: "string",
-    categoryCode: 6178,
-    // @ts-ignore
-    description: {
-      message: "Print names of files part of the compilation."
-    },
-    defaultValue: "false"
-  }
-];
-
-writeJSON("tsconfigOpts.json", { options: [...topLevelTSConfigOptions, ...filteredOptions] });
+writeJSON("tsconfigOpts.json", {
+  options: allOptions,
+});
 
 // Improve the typing for the rules
 writeString(
   "_types.ts",
   `// __auto-generated__ \n\n export type CompilerOptionName = '${options
-    .map(o => o.name)
+    .map((o) => o.name)
     .join("' | '")}'`
 );
 
 const categoryMap = {};
-categories.forEach(c => (categoryMap[c.code] = c));
+categories.forEach((c) => (categoryMap[c.code] = c));
 
 // Add custom categories, for custom compiler flags
-
 categoryMap["0"] = {
   code: 0,
   category: 3,
   key: "Project_Files_0",
-  message: "Project File Management"
+  message: "Project File Management",
+};
+
+categoryMap["999"] = {
+  code: 999,
+  category: 4,
+  key: "Watch_Options_999",
+  message: "Watch Options",
 };
 
 writeJSON("tsconfigCategories.json", categoryMap);

@@ -53,7 +53,10 @@ Use non-relative paths when importing any of your external dependencies.
 
 There are two possible module resolution strategies: [Node](#node) and [Classic](#classic).
 You can use the `--moduleResolution` flag to specify the module resolution strategy.
-If not specified, the default is [Classic](#classic) for `--module AMD | System | ES2015` or [Node](#node) otherwise.
+If not specified, the default is [Node](#node) for `--module commonjs`, and [Classic](#classic) otherwise (including when `--module` is set to `amd`, `system`, `umd`, `es2015`, `esnext`, etc.).
+
+> Note: `node` module resolution is the most-commonly used in the TypeScript community and is recommended for most projects.
+> If you are having resolution problems with `import`s and `export`s in TypeScript, try setting `moduleResolution: "node"` to see if it fixes the issue.
 
 ### Classic
 
@@ -209,7 +212,7 @@ Value of _baseUrl_ is determined as either:
 
 Note that relative module imports are not impacted by setting the baseUrl, as they are always resolved relative to their importing files.
 
-You can find more documentation on baseUrl in [RequireJS](http://requirejs.org/docs/api.html#config-baseUrl) and [SystemJS](https://github.com/systemjs/systemjs/blob/master/docs/config-api.md#baseurl) documentation.
+You can find more documentation on baseUrl in [RequireJS](http://requirejs.org/docs/api.html#config-baseUrl) and [SystemJS](https://github.com/systemjs/systemjs/blob/master/docs/api.md#baseurl) documentation.
 
 ### Path mapping
 

@@ -10,11 +10,11 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: '13.x'
+          node-version: "13.x"
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
 
       - uses: actions/cache@v1
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
@@ -25,7 +25,15 @@ jobs:
             ${{ runner.os }}-yarn-
 
       # Get local dependencies
+      - run: sudo apt-get update
+      - run: sudo apt install calibre
       - run: yarn install
+        env:
+          YARN_CHECKSUM_BEHAVIOR: ignore
+
+      # Verify dependencies are hooked up right
+      - run: node test/verifyPackageVersions.js
+      # Launch
       - run: yarn bootstrap
       - run: yarn build
       - run: yarn compile
@@ -40,11 +48,11 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
 
       # Run any tests
-      - run: yarn workspaces run test --ci
+      - run: yarn test
         env:
           CI: true
 
-      - name: 'Validates that TypeScript plugins work'
+      - name: "Validates that TypeScript plugins work"
         run: npm init typescript-playground-plugin playground-my-plugin
 
   lighthouse_danger:
@@ -54,11 +62,11 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/setup-node@v1
         with:
-          node-version: '13.x'
+          node-version: "13.x"
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
 
       - uses: actions/cache@v1
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)

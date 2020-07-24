@@ -61,7 +61,7 @@ const user = {};
 /** @type {{ owner: User, name: string }} */
 const resource;
 
-/** @typedef {{owner: User, name: string} Resource */
+/** @typedef {{owner: User, name: string}} Resource */
 
 /** @type {Resource} */
 const otherResource;

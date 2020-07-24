@@ -4,12 +4,12 @@ My new plugin for the TypeScript playground.
 
 ## Running this plugin
 
-- [Click this link](https://typescriptlang.org/play?install-plugin=[name]) to install
+- [Click this link](https://www.staging-typescript.org/play?install-plugin=[name]) to install
 
 or
 
 - Open up the TypeScript Playground
-- Go the "Options" in the sidebar
+- Go the "Plugins" in the sidebar
 - Look for "Plugins from npm"
 - Add "[name]"
 - Reload the browser

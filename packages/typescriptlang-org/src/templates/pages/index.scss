@@ -1,6 +1,9 @@
 @import "../../style/globals.scss";
 @import "./css/grid.scss";
 
+$headline-background-bg: #00273f;
+$headline-foreground-bg: #104261;
+
 .version-bar {
   background-color: $ts-dark-bg-color;
   text-align: center;
@@ -99,7 +102,15 @@
   }
 }
 
+.show-only-small {
+  display: none;
+}
+
 @media (max-width: $screen-xs) {
+  .show-only-small {
+    display: block !important;
+  }
+
   #index div.headline-diagram div.editor.front {
     max-width: 300px;
   }
@@ -198,33 +209,39 @@
     overflow-y: hidden;
     position: relative;
 
+    pre .code-container {
+      overflow: hidden;
+    }
+
     .editor {
-      border: 2px solid #c4c4c4;
+      border: 4px solid #c4c4c4;
       background-color: $ts-main-blue-darkest-color;
 
       border-radius: 8px;
-      width: 360px;
+      width: 540px;
 
       position: absolute;
 
       &.front {
-        right: 40px;
+        // @media (min-width: 1000px) {
+        // right: 40px;
+        // }
+        right: 20px;
+        width: 90%;
         bottom: -80px;
-        background-color: #223146;
-        border-color: white;
+        background-color: $headline-foreground-bg;
+        border-color: $headline-foreground-bg;
+
+        @media screen and (-ms-high-contrast: active) {
+          border: none;
+        }
 
         .titlebar {
-          border-color: white;
+          border-color: $headline-foreground-bg;
         }
         div.lines {
-          border-color: white;
+          border-color: $headline-foreground-bg;
         }
-      }
-
-      &.back {
-        left: 40px;
-        bottom: -120px;
-        opacity: 0.75;
       }
 
       .editor-inner {
@@ -233,18 +250,20 @@
 
       .titlebar {
         height: 2rem;
-        border-bottom: 2px solid #c4c4c4;
+        border-bottom: 2px solid #172e38;
         display: flex;
         flex-direction: row;
 
         .lang {
           margin-left: 6px;
           margin-top: 3px;
+          display: none;
         }
 
         .window-name {
           margin-left: 10px;
           padding-top: 5px;
+          display: none;
         }
       }
 
@@ -270,32 +289,47 @@
         width: 200px;
       }
 
-      ul.dropdown {
-        position: absolute;
-        width: 240px;
-        background-color: white;
-        color: grey;
+      .inline-completions {
+        position: relative;
 
-        font-family: $font-code;
-        font-size: 0.8rem;
-        margin: 0;
-        padding: 0;
+        ul.dropdown {
+          display: inline-block;
+          position: absolute;
+          width: 240px;
+          background-color: white;
+          color: grey;
 
-        border-left: 4px solid #4b9edd;
+          font-family: $font-code;
+          font-size: 0.8rem;
+          margin: 0;
+          padding: 0;
 
-        li {
-          border-bottom: 1px solid black;
-          height: 1rem;
-          overflow-x: hidden;
-          padding-left: 4px;
+          border-left: 4px solid #4b9edd;
 
-          span.result-found {
-            color: #4b9edd;
+          // Fake the cursor above us
+          &::before {
+            background-color: white;
+            width: 2px;
+            position: absolute;
+            top: -16px;
+            left: -3px;
+            content: " ";
           }
-          span.result {
-            width: 100px;
-            color: black;
-            display: inline-block;
+
+          li {
+            border-bottom: 1px solid black;
+            height: 1rem;
+            overflow-x: hidden;
+            padding-left: 4px;
+
+            span.result-found {
+              color: #4b9edd;
+            }
+            span.result {
+              width: 100px;
+              color: black;
+              display: inline-block;
+            }
           }
         }
       }
@@ -303,6 +337,7 @@
       .did-you-mean-icon {
         position: absolute;
       }
+
       .did-you-mean {
         position: absolute;
       }
@@ -313,20 +348,53 @@
         flex-direction: row;
 
         .lines {
-          width: 22px;
-          border-right: 2px solid #c4c4c4;
+          width: 60px;
+          border-right: 4px solid #172e38;
+          border-left: 4px solid #172e38;
           flex-shrink: 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          background-color: $headline-background-bg;
+        }
+
+        svg {
+          margin: 12px auto;
+
+          path {
+            fill: $headline-foreground-bg;
+          }
         }
 
         .text {
-          padding: 1rem;
+          // padding: 1rem;
           font-family: $font-code;
           font-size: 0.8rem;
           line-height: 0.95rem;
           white-space: pre;
           flex-shrink: 1;
+          flex-grow: 1;
           overflow-x: scroll;
           position: relative;
+          background-color: $headline-background-bg;
+
+          pre {
+            margin: 0;
+            background-color: $headline-background-bg;
+            border: none;
+            code {
+              font-size: 14px;
+              line-height: 16px;
+            }
+            .error {
+              background-color: #341c2c;
+              color: #cf1616;
+            }
+          }
+
+          .language-id {
+            display: none;
+          }
         }
       }
 
@@ -339,52 +407,79 @@
     }
   }
 
-  .next-headline-button {
-    background-color: white;
-    color: black;
-    padding: 3px;
-    max-width: 320px;
-    position: absolute;
+  .button-container {
     display: flex;
-    flex-direction: row;
-    text-decoration: none;
-    bottom: 20px;
-    margin: auto 0;
+    height: 100%;
+    width: 100%;
+    flex-direction: column-reverse;
     align-items: center;
-    position: relative;
-    left: -50%;
 
-    &:hover,
-    &.focus {
-      background-color: #eee;
+    @media (max-width: 800px) {
+      top: 0;
+      position: absolute;
     }
 
-    &:active {
-      background-color: #ddd;
-    }
-
-    .message {
-      margin: 10px;
-      font-size: 0.9rem;
-      min-width: 200px;
-    }
-
-    .next {
-      border-left: 2px solid black;
+    .next-headline-button {
+      background-color: #235a97;
+      color: white;
+      padding: 3px;
+      max-width: 320px;
 
       display: flex;
       flex-direction: row;
-      justify-content: center;
-      align-items: center;
+      text-decoration: none;
+      bottom: 20px;
 
-      p {
-        margin-left: 20px;
+      align-items: center;
+      margin-bottom: 20px;
+
+      @media screen and (-ms-high-contrast: active) {
+        border: 2px solid grey;
       }
 
-      svg {
-        height: 100%;
-        margin-left: 20px;
-        margin-right: 10px;
+      &:hover,
+      &.focus {
+        background-color: #104261;
+      }
+
+      &:active {
+        background-color: #0a3855;
+        margin-bottom: 19px;
+      }
+
+      // I don't like this - I don't know why the editor is in front of the button
+      // even though the hierarchy implies it shouldn't - maybe the position abosolute?
+      z-index: 1;
+
+      .message {
+        margin: 10px;
+        font-size: 0.9rem;
+        min-width: 140px;
+      }
+
+      .next {
+        border-left: 2px solid white;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        p {
+          margin-left: 20px;
+        }
+
+        svg {
+          height: 100%;
+          margin-left: 20px;
+          margin-right: 10px;
+
+          @media screen and (-ms-high-contrast: active) {
+            path {
+              fill: grey;
+            }
+          }
+        }
       }
     }
   }
@@ -404,6 +499,10 @@
       padding: 1rem 0.5rem;
       text-decoration: none;
       font-size: 1.2rem;
+
+      @media screen and (-ms-high-contrast: active) {
+        border: 2px solid grey;
+      }
 
       &:first-child {
         margin-right: 2rem;
@@ -463,6 +562,21 @@
     height: 12px;
     width: 1px;
     background-color: black;
+  }
+
+  @media screen and (-ms-high-contrast: active) {
+    .needle-head {
+      opacity: 0;
+    }
+    .release-info .needle {
+      border: 1px solid black;
+      height: 80px;
+    }
+    .release > div,
+    .beta > div,
+    .rc > div {
+      border: 1px solid black;
+    }
   }
 
   .release {
@@ -620,6 +734,17 @@
       flex-wrap: wrap;
       max-width: 800px;
       margin: 0 auto;
+
+      @media screen and (-ms-high-contrast: black-on-white) {
+        svg path {
+          fill: black;
+        }
+      }
+      @media screen and (-ms-high-contrast: white-on-black) {
+        svg path {
+          fill: white;
+        }
+      }
 
       svg {
         margin: 0 auto;

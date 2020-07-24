@@ -1,7 +1,7 @@
-import { PlaygroundConfig } from './'
-import lzstring from './vendor/lzstring.min'
+import { PlaygroundConfig } from "./"
+import lzstring from "./vendor/lzstring.min"
 
-const globalishObj: any = typeof globalThis !== 'undefined' ? globalThis : window || {}
+const globalishObj: any = typeof globalThis !== "undefined" ? globalThis : window || {}
 globalishObj.typeDefinitions = {}
 
 /**
@@ -19,11 +19,10 @@ const moduleJSONURL = (name: string) =>
 const unpkgURL = (name: string, path: string) =>
   `https://www.unpkg.com/${encodeURIComponent(name)}/${encodeURIComponent(path)}`
 
-const packageJSONURL = (name: string) => unpkgURL(name, 'package.json')
+const packageJSONURL = (name: string) => unpkgURL(name, "package.json")
 
 const errorMsg = (msg: string, response: any, config: ATAConfig) => {
   config.logger.error(`${msg} - will not try again in this session`, response.status, response.statusText, response)
-  debugger
 }
 
 /**
@@ -61,52 +60,52 @@ const mapModuleNameToModule = (name: string) => {
   // in node repl:
   // > require("module").builtinModules
   const builtInNodeMods = [
-    'assert',
-    'async_hooks',
-    'base',
-    'buffer',
-    'child_process',
-    'cluster',
-    'console',
-    'constants',
-    'crypto',
-    'dgram',
-    'dns',
-    'domain',
-    'events',
-    'fs',
-    'globals',
-    'http',
-    'http2',
-    'https',
-    'index',
-    'inspector',
-    'module',
-    'net',
-    'os',
-    'path',
-    'perf_hooks',
-    'process',
-    'punycode',
-    'querystring',
-    'readline',
-    'repl',
-    'stream',
-    'string_decoder',
-    'timers',
-    'tls',
-    'trace_events',
-    'tty',
-    'url',
-    'util',
-    'v8',
-    'vm',
-    'worker_threads',
-    'zlib',
+    "assert",
+    "async_hooks",
+    "base",
+    "buffer",
+    "child_process",
+    "cluster",
+    "console",
+    "constants",
+    "crypto",
+    "dgram",
+    "dns",
+    "domain",
+    "events",
+    "fs",
+    "globals",
+    "http",
+    "http2",
+    "https",
+    "index",
+    "inspector",
+    "module",
+    "net",
+    "os",
+    "path",
+    "perf_hooks",
+    "process",
+    "punycode",
+    "querystring",
+    "readline",
+    "repl",
+    "stream",
+    "string_decoder",
+    "timers",
+    "tls",
+    "trace_events",
+    "tty",
+    "url",
+    "util",
+    "v8",
+    "vm",
+    "worker_threads",
+    "zlib",
   ]
 
   if (builtInNodeMods.includes(name)) {
-    return 'node'
+    return "node"
   }
   return name
 }
@@ -117,24 +116,24 @@ const mapRelativePath = (moduleDeclaration: string, currentPath: string) => {
   function absolute(base: string, relative: string) {
     if (!base) return relative
 
-    const stack = base.split('/')
-    const parts = relative.split('/')
+    const stack = base.split("/")
+    const parts = relative.split("/")
     stack.pop() // remove current file name (or empty string)
 
     for (var i = 0; i < parts.length; i++) {
-      if (parts[i] == '.') continue
-      if (parts[i] == '..') stack.pop()
+      if (parts[i] == ".") continue
+      if (parts[i] == "..") stack.pop()
       else stack.push(parts[i])
     }
-    return stack.join('/')
+    return stack.join("/")
   }
 
   return absolute(currentPath, moduleDeclaration)
 }
 
 const convertToModuleReferenceID = (outerModule: string, moduleDeclaration: string, currentPath: string) => {
-  const modIsScopedPackageOnly = moduleDeclaration.indexOf('@') === 0 && moduleDeclaration.split('/').length === 2
-  const modIsPackageOnly = moduleDeclaration.indexOf('@') === -1 && moduleDeclaration.split('/').length === 1
+  const modIsScopedPackageOnly = moduleDeclaration.indexOf("@") === 0 && moduleDeclaration.split("/").length === 2
+  const modIsPackageOnly = moduleDeclaration.indexOf("@") === -1 && moduleDeclaration.split("/").length === 1
   const isPackageRootImport = modIsPackageOnly || modIsScopedPackageOnly
 
   if (isPackageRootImport) {
@@ -149,7 +148,7 @@ const convertToModuleReferenceID = (outerModule: string, moduleDeclaration: stri
  * dependencies then add those the to runtime.
  */
 const addModuleToRuntime = async (mod: string, path: string, config: ATAConfig) => {
-  const isDeno = path && path.indexOf('https://') === 0
+  const isDeno = path && path.indexOf("https://") === 0
 
   const dtsFileURL = isDeno ? path : unpkgURL(mod, path)
 
@@ -165,7 +164,7 @@ const addModuleToRuntime = async (mod: string, path: string, config: ATAConfig) 
     const wrapped = `declare module "${path}" { ${content} }`
     config.addLibraryToRuntime(wrapped, path)
   } else {
-    const typelessModule = mod.split('@types/').slice(-1)
+    const typelessModule = mod.split("@types/").slice(-1)
     const wrapped = `declare module "${typelessModule}" { ${content} }`
     config.addLibraryToRuntime(wrapped, `node_modules/${mod}/${path}`)
   }
@@ -200,7 +199,7 @@ const getModuleAndRootDefTypePath = async (packageName: string, config: ATAConfi
 
   acquiredTypeDefs[packageName] = responseJSON
 
-  if (responseJSON.types.ts === 'included') {
+  if (responseJSON.types.ts === "included") {
     const modPackageURL = packageJSONURL(packageName)
 
     const response = await config.fetcher(modPackageURL)
@@ -213,7 +212,7 @@ const getModuleAndRootDefTypePath = async (packageName: string, config: ATAConfi
       return errorMsg(`Could not get Package JSON for the module '${packageName}'`, response, config)
     }
 
-    config.addLibraryToRuntime(JSON.stringify(responseJSON, null, '  '), `node_modules/${packageName}/package.json`)
+    config.addLibraryToRuntime(JSON.stringify(responseJSON, null, "  "), `node_modules/${packageName}/package.json`)
 
     // Get the path of the root d.ts file
 
@@ -221,18 +220,18 @@ const getModuleAndRootDefTypePath = async (packageName: string, config: ATAConfi
     let rootTypePath = responseJSON.typing || responseJSON.typings || responseJSON.types
 
     // package main is custom
-    if (!rootTypePath && typeof responseJSON.main === 'string' && responseJSON.main.indexOf('.js') > 0) {
-      rootTypePath = responseJSON.main.replace(/js$/, 'd.ts')
+    if (!rootTypePath && typeof responseJSON.main === "string" && responseJSON.main.indexOf(".js") > 0) {
+      rootTypePath = responseJSON.main.replace(/js$/, "d.ts")
     }
 
     // Final fallback, to have got here it must have passed in algolia
     if (!rootTypePath) {
-      rootTypePath = 'index.d.ts'
+      rootTypePath = "index.d.ts"
     }
 
     return { mod: packageName, path: rootTypePath, packageJSON: responseJSON }
-  } else if (responseJSON.types.ts === 'definitely-typed') {
-    return { mod: responseJSON.types.definitelyTyped, path: 'index.d.ts', packageJSON: responseJSON }
+  } else if (responseJSON.types.ts === "definitely-typed") {
+    return { mod: responseJSON.types.definitelyTyped, path: "index.d.ts", packageJSON: responseJSON }
   } else {
     throw "This shouldn't happen"
   }
@@ -241,7 +240,7 @@ const getModuleAndRootDefTypePath = async (packageName: string, config: ATAConfi
 const getCachedDTSString = async (config: ATAConfig, url: string) => {
   const cached = localStorage.getItem(url)
   if (cached) {
-    const [dateString, text] = cached.split('-=-^-=-')
+    const [dateString, text] = cached.split("-=-^-=-")
     const cachedDate = new Date(dateString)
     const now = new Date()
 
@@ -251,7 +250,7 @@ const getCachedDTSString = async (config: ATAConfig, url: string) => {
     if (now.getTime() - cachedDate.getTime() < cacheTimeout) {
       return lzstring.decompressFromUTF16(text)
     } else {
-      config.logger.log('Skipping cache for ', url)
+      config.logger.log("Skipping cache for ", url)
     }
   }
 
@@ -274,7 +273,7 @@ const getCachedDTSString = async (config: ATAConfig, url: string) => {
 
 const getReferenceDependencies = async (sourceCode: string, mod: string, path: string, config: ATAConfig) => {
   var match
-  if (sourceCode.indexOf('reference path') > 0) {
+  if (sourceCode.indexOf("reference path") > 0) {
     // https://regex101.com/r/DaOegw/1
     const referencePathExtractionPattern = /<reference path="(.*)" \/>/gm
     while ((match = referencePathExtractionPattern.exec(sourceCode)) !== null) {
@@ -302,7 +301,7 @@ interface ATAConfig {
   sourceCode: string
   addLibraryToRuntime: AddLibToRuntimeFunc
   fetcher: typeof fetch
-  logger: PlaygroundConfig['logger']
+  logger: PlaygroundConfig["logger"]
 }
 
 /**
@@ -322,7 +321,7 @@ export const detectNewImportsToAcquireTypeFor = async (
 
   // Basically start the recursion with an undefined module
   const config: ATAConfig = { sourceCode, addLibraryToRuntime, fetcher, logger: playgroundConfig.logger }
-  const results = getDependenciesForModule(sourceCode, undefined, 'playground.ts', config)
+  const results = getDependenciesForModule(sourceCode, undefined, "playground.ts", config)
   return results
 }
 
@@ -342,7 +341,7 @@ const getDependenciesForModule = (
     // Support grabbing the hard-coded node modules if needed
     const moduleToDownload = mapModuleNameToModule(name)
 
-    if (!moduleName && moduleToDownload.startsWith('.')) {
+    if (!moduleName && moduleToDownload.startsWith(".")) {
       return config.logger.log("[ATA] Can't resolve relative dependencies from the playground root")
     }
 
@@ -353,10 +352,10 @@ const getDependenciesForModule = (
 
     config.logger.log(`[ATA] Looking at ${moduleToDownload}`)
 
-    const modIsScopedPackageOnly = moduleToDownload.indexOf('@') === 0 && moduleToDownload.split('/').length === 2
-    const modIsPackageOnly = moduleToDownload.indexOf('@') === -1 && moduleToDownload.split('/').length === 1
+    const modIsScopedPackageOnly = moduleToDownload.indexOf("@") === 0 && moduleToDownload.split("/").length === 2
+    const modIsPackageOnly = moduleToDownload.indexOf("@") === -1 && moduleToDownload.split("/").length === 1
     const isPackageRootImport = modIsPackageOnly || modIsScopedPackageOnly
-    const isDenoModule = moduleToDownload.indexOf('https://') === 0
+    const isDenoModule = moduleToDownload.indexOf("https://") === 0
 
     if (isPackageRootImport) {
       // So it doesn't run twice for a package
@@ -381,9 +380,9 @@ const getDependenciesForModule = (
       // So it doesn't run twice for a package
       acquiredTypeDefs[moduleID] = null
 
-      const resolvedFilepath = absolutePathForModule.endsWith('.ts')
+      const resolvedFilepath = absolutePathForModule.endsWith(".ts")
         ? absolutePathForModule
-        : absolutePathForModule + '.d.ts'
+        : absolutePathForModule + ".d.ts"
 
       await addModuleToRuntime(moduleName!, resolvedFilepath, config)
     }

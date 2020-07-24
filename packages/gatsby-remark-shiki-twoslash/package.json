@@ -1,6 +1,6 @@
 {
   "name": "gatsby-remark-shiki-twoslash",
-  "version": "0.5.10",
+  "version": "0.6.1",
   "license": "MIT",
   "homepage": "https://github.com/microsoft/TypeScript-Website/",
   "author": "Orta Therox",
@@ -19,10 +19,11 @@
     "lint": "tsdx lint"
   },
   "dependencies": {
-    "@typescript/twoslash": "^0.2.0",
-    "typescript": "*",
+    "@typescript/twoslash": "0.6.2",
+    "@typescript/vfs": "1.1.2",
     "shiki": "^0.1.6",
     "shiki-languages": "^0.1.6",
+    "typescript": "*",
     "unist-util-visit": "^2.0.0"
   },
   "devDependencies": {

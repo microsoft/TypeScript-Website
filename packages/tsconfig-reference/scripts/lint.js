@@ -37,7 +37,7 @@ languages.forEach((lang) => {
     let hasError = false;
 
     try {
-      remarkTwoSlash.runTwoSlashAcrossDocument({ markdownAST });
+      remarkTwoSlash.runTwoSlashAcrossDocument({ markdownAST }, {});
     } catch (error) {
       hasError = true;
       errorReports.push({ path: optionPath, error });
@@ -72,4 +72,8 @@ if (errorReports.length) {
     console.log(err.error);
   });
   console.log("\n\n");
+
+  console.log(
+    "Note: you can add an extra argument to the lint script ( yarn workspace tsconfig-reference lint [opt] ) to just run one lint."
+  );
 }

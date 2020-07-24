@@ -83,6 +83,10 @@ The Twoslash markup language helps with:
 - Handle multi-file imports in a single code sample
 - Creating a playground link for the code
 
+### Notes
+
+- Lines which have `// prettier-ignore` are stripped
+
 ### API
 
 <!-- AUTO-GENERATED-CONTENT:START (FIXTURES) -->
@@ -92,14 +96,14 @@ The twoslash markup API lives inside your code samples code as comments, which c
 ```ts
 /** Available inline flags which are not compiler flags */
 export interface ExampleOptions {
-  /** Let's the sample suppress all error diagnostics */
-  noErrors: false
+  /** Lets the sample suppress all error diagnostics */
+  noErrors: boolean
   /** An array of TS error codes, which you write as space separated - this is so the tool can know about unexpected errors */
   errors: number[]
   /** Shows the JS equivalent of the TypeScript code instead */
-  showEmit: false
+  showEmit: boolean
   /**
-   * When mixed with showEmit, lets you choose the file to present instead of the source - defaults to index.js which
+   * Must be used with showEmit, lets you choose the file to present instead of the source - defaults to index.js which
    * means when you just use `showEmit` above it shows the transpiled JS.
    */
   showEmittedFile: string
@@ -205,6 +209,176 @@ Turns to:
 > }
 > ```
 
+#### `completions.ts`
+
+```ts
+console.log
+//       ^|
+```
+
+Turns to:
+
+> ```ts
+> console.log
+> ```
+
+> With:
+
+> ```json
+> {
+>   "code": "See above",
+>   "extension": "ts",
+>   "highlights": [],
+>   "queries": [
+>     {
+>       "completions": [
+>         {
+>           "name": "memory",
+>           "kind": "property",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "assert",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "clear",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "count",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "countReset",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "debug",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "dir",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "dirxml",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "error",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "exception",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "group",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "groupCollapsed",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "groupEnd",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "info",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "log",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "table",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "time",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "timeEnd",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "timeLog",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "timeStamp",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "trace",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         },
+>         {
+>           "name": "warn",
+>           "kind": "method",
+>           "kindModifiers": "declare",
+>           "sortText": "0"
+>         }
+>       ],
+>       "kind": "completions",
+>       "start": 9,
+>       "completionsPrefix": "l",
+>       "length": 1,
+>       "offset": 9,
+>       "line": 1
+>     }
+>   ],
+>   "staticQuickInfos": "[ 2 items ]",
+>   "errors": [],
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/MYewdgziA2CmB00QHMBQB6dACHusD0AfVIA"
+> }
+> ```
+
 #### `cuts_out_unneccessary_code.ts`
 
 ```ts
@@ -261,7 +435,7 @@ Turns to:
 >       "length": 16,
 >       "text": "let a: NameLabel",
 >       "offset": 4,
->       "line": 4
+>       "line": 5
 >     },
 >     {
 >       "docs": "",
@@ -270,7 +444,7 @@ Turns to:
 >       "length": 14,
 >       "text": "let b: IdLabel",
 >       "offset": 4,
->       "line": 6
+>       "line": 7
 >     },
 >     {
 >       "docs": "",
@@ -279,7 +453,7 @@ Turns to:
 >       "length": 26,
 >       "text": "let c: IdLabel | NameLabel",
 >       "offset": 4,
->       "line": 8
+>       "line": 9
 >     }
 >   ],
 >   "staticQuickInfos": "[ 14 items ]",
@@ -435,7 +609,7 @@ Turns to:
 >       "length": 15,
 >       "text": "let foo: string",
 >       "offset": 4,
->       "line": 0
+>       "line": 1
 >     }
 >   ],
 >   "staticQuickInfos": "[ 1 items ]",
@@ -520,23 +694,34 @@ The API is one main exported function:
  *
  * @param code The twoslash markup'd code
  * @param extension For example: "ts", "tsx", "typescript", "javascript" or "js".
- * @param defaultOptions Allows setting any of the handbook options from outside the function, useful if you don't want LSP identifiers
- * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd.
- * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd.
- * @param fsMap An optional Map object which is passed into @typescript/vfs - if you are using twoslash on the
- *              web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
+ * @param options Additional options for twoslash
  */
-export function twoslasher(
-  code: string,
-  extension: string,
-  defaultOptions?: Partial<ExampleOptions>,
-  tsModule?: TS,
-  lzstringModule?: LZ,
-  fsMap?: Map<string, string>
-): TwoSlashReturn
+export function twoslasher(code: string, extension: string, options: TwoSlashOptions = {}): TwoSlashReturn
 ```
 
-Which returns:
+Which takes the options:
+
+```ts
+export interface TwoSlashOptions {
+  /** Allows setting any of the handbook options from outside the function, useful if you don't want LSP identifiers */
+  defaultOptions?: Partial<ExampleOptions>
+  /** Allows setting any of the compiler options from outside the function */
+  defaultCompilerOptions?: CompilerOptions
+  /** Allows applying custom transformers to the emit result, only useful with the showEmit output */
+  customTransformers?: CustomTransformers
+  /** An optional copy of the TypeScript import, if missing it will be require'd. */
+  tsModule?: TS
+  /** An optional copy of the lz-string import, if missing it will be require'd. */
+  lzstringModule?: LZ
+  /**
+   * An optional Map object which is passed into @typescript/vfs - if you are using twoslash on the
+   * web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
+   */
+  fsMap?: Map<string, string>
+}
+```
+
+And returns:
 
 ```ts
 export interface TwoSlashReturn {
@@ -571,19 +756,23 @@ export interface TwoSlashReturn {
   }[]
   /** Requests to use the LSP to get info for a particular symbol in the source */
   queries: {
-    kind: "query"
+    kind: "query" | "completions"
     /** What line is the highlighted identifier on? */
     line: number
     /** At what index in the line does the caret represent  */
     offset: number
     /** The text of the token which is highlighted */
-    text: string
+    text?: string
     /** Any attached JSDocs */
-    docs: string | undefined
+    docs?: string | undefined
     /** The token start which the query indicates  */
     start: number
     /** The length of the token */
     length: number
+    /** Results for completions at a particular point */
+    completions?: import("typescript").CompletionEntry[]
+    /* Completion prefix e.g. the letters before the cursor in the word so you can filter */
+    completionsPrefix?: string
   }[]
   /** Diagnostic error messages which came up when creating the program */
   errors: {

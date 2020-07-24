@@ -18,12 +18,16 @@ module.exports = {
       let program = ts.createProgram([fileToParse], {})
 
       const sourceFile = program.getSourceFile(fileToParse)
-      let optionsInterface, mainExport, returnInterface
+      let exampleOptionsInterface, optionsInterface, mainExport, returnInterface
 
       ts.forEachChild(sourceFile, (node) => {
         if (node.name && node.name.escapedText) {
           const name = node.name.escapedText
           if (name === 'ExampleOptions') {
+            exampleOptionsInterface = node
+          }
+
+          if (name === 'TwoSlashOptions') {
             optionsInterface = node
           }
 
@@ -40,13 +44,14 @@ module.exports = {
 
       const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed })
       const twoslasher = printer.printNode(ts.EmitHint.Unspecified, mainExport, sourceFile) + '\n'
-      const returnObj = printer.printNode(ts.EmitHint.Unspecified, returnInterface, sourceFile) + '\n'
       const optionsObj = printer.printNode(ts.EmitHint.Unspecified, optionsInterface, sourceFile) + '\n'
+      const returnObj = printer.printNode(ts.EmitHint.Unspecified, returnInterface, sourceFile) + '\n'
+      const exampleOptionsObj = printer.printNode(ts.EmitHint.Unspecified, exampleOptionsInterface, sourceFile) + '\n'
 
       mds.push(
         'The twoslash markup API lives inside your code samples code as comments, which can do special commands. There are the following commands:'
       )
-      mds.push(wrapCode(optionsObj, 'ts'))
+      mds.push(wrapCode(exampleOptionsObj, 'ts'))
 
       mds.push('In addition to this set, you can use `@filename` which allow for exporting between files.')
 
@@ -87,7 +92,9 @@ module.exports = {
       mds.push('### API')
       mds.push('The API is one main exported function:')
       mds.push(wrapCode(twoslasher, 'ts'))
-      mds.push('Which returns:')
+      mds.push('Which takes the options:')
+      mds.push(wrapCode(optionsObj, 'ts'))
+      mds.push('And returns:')
       mds.push(wrapCode(returnObj, 'ts'))
 
       return mds.join('\n\n')

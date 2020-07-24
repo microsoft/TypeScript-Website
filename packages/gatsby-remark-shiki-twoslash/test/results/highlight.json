@@ -5,14 +5,13 @@
     "highlights": [],
     "queries": [
       {
-        "kind": "query",
-        "offset": 4,
-        "position": 4,
-        "text": "let helloWorld: string",
         "docs": "",
-        "line": 1,
-        "start": 10,
-        "length": 4
+        "kind": "query",
+        "start": 4,
+        "length": 22,
+        "text": "let helloWorld: string",
+        "offset": 4,
+        "line": 1
       }
     ],
     "staticQuickInfos": [

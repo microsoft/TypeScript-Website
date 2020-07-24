@@ -3,7 +3,6 @@ type Monaco = typeof import("monaco-editor")
 
 declare const window: any
 
-import { compiledJSPlugin } from "./sidebar/showJS"
 import {
   createSidebar,
   createTabForPlugin,
@@ -13,18 +12,16 @@ import {
   createDragBar,
   setupSidebarToggle,
 } from "./createElements"
-import { showDTSPlugin } from "./sidebar/showDTS"
-import { runWithCustomLogs, runPlugin } from "./sidebar/runtime"
+import { runWithCustomLogs } from "./sidebar/runtime"
 import { createExporter } from "./exporter"
 import { createUI } from "./createUI"
 import { getExampleSourceCode } from "./getExample"
 import { ExampleHighlighter } from "./monaco/ExampleHighlight"
 import { createConfigDropdown, updateConfigDropdownForCompilerOptions } from "./createConfigDropdown"
-import { showErrors } from "./sidebar/showErrors"
-import { optionsPlugin, allowConnectingToLocalhost, activePlugins, addCustomPlugin } from "./sidebar/plugins"
+import { allowConnectingToLocalhost, activePlugins, addCustomPlugin } from "./sidebar/plugins"
 import { createUtils, PluginUtils } from "./pluginUtils"
 import type React from "react"
-import { settingsPlugin } from "./sidebar/settings"
+import { settingsPlugin, getPlaygroundPlugins } from "./sidebar/settings"
 
 export { PluginUtils } from "./pluginUtils"
 
@@ -71,8 +68,6 @@ interface PlaygroundConfig {
   supportCustomPlugins: boolean
 }
 
-const defaultPluginFactories: PluginFactory[] = [compiledJSPlugin, showDTSPlugin, showErrors, runPlugin, optionsPlugin]
-
 export const setupPlayground = (
   sandbox: Sandbox,
   monaco: Monaco,
@@ -103,6 +98,7 @@ export const setupPlayground = (
     plugins.push(plugin)
 
     const tab = createTabForPlugin(plugin)
+
     tabs.push(tab)
 
     const tabClicked: HTMLElement["onclick"] = e => {
@@ -126,7 +122,7 @@ export const setupPlayground = (
     return plugins[tabs.indexOf(selectedTab)]
   }
 
-  const defaultPlugins = config.plugins || defaultPluginFactories
+  const defaultPlugins = config.plugins || getPlaygroundPlugins()
   const utils = createUtils(sandbox, react)
   const initialPlugins = defaultPlugins.map(f => f(i, utils))
   initialPlugins.forEach(p => registerPlugin(p))
@@ -151,7 +147,6 @@ export const setupPlayground = (
 
       // Only call the plugin function once every 0.3s
       if (plugin.modelChangedDebounce && plugin.displayName === getCurrentPlugin().displayName) {
-        console.log("Debounced", container)
         plugin.modelChangedDebounce(sandbox, sandbox.getModel(), container)
       }
     }, 300)
@@ -185,18 +180,19 @@ export const setupPlayground = (
   // Versions of TypeScript
 
   // Set up the label for the dropdown
-  document.querySelectorAll("#versions > a").item(0).innerHTML = "v" + sandbox.ts.version + " <span class='caret'/>"
+  const versionButton = document.querySelectorAll("#versions > a").item(0)
+  versionButton.innerHTML = "v" + sandbox.ts.version + " <span class='caret'/>"
+  versionButton.setAttribute("aria-label", `Select version of TypeScript, currently ${sandbox.ts.version}`)
 
   // Add the versions to the dropdown
   const versionsMenu = document.querySelectorAll("#versions > ul").item(0)
 
+  // Enable all submenus
+  document.querySelectorAll("nav ul li").forEach(e => e.classList.add("active"))
+
   const notWorkingInPlayground = ["3.1.6", "3.0.1", "2.8.1", "2.7.2", "2.4.1"]
 
-  const allVersions = [
-    "3.9.0-beta",
-    ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)),
-    "Nightly",
-  ]
+  const allVersions = ["4.0.0-beta", ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)), "Nightly"]
 
   allVersions.forEach((v: string) => {
     const li = document.createElement("li")
@@ -235,11 +231,16 @@ export const setupPlayground = (
     a.onclick = _e => {
       if (a.parentElement!.classList.contains("open")) {
         document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
+        a.setAttribute("aria-expanded", "false")
       } else {
         document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
         a.parentElement!.classList.toggle("open")
+        a.setAttribute("aria-expanded", "true")
 
         const exampleContainer = a.closest("li")!.getElementsByTagName("ul").item(0)!
+
+        const firstLabel = exampleContainer.querySelector("label") as HTMLElement
+        if (firstLabel) firstLabel.focus()
 
         // Set exact height and widths for the popovers for the main playground navigation
         const isPlaygroundSubmenu = !!a.closest("nav")
@@ -249,10 +250,42 @@ export const setupPlayground = (
 
           const sideBarWidth = (document.querySelector(".playground-sidebar") as any).offsetWidth
           exampleContainer.style.width = `calc(100% - ${sideBarWidth}px - 71px)`
+
+          // All this is to make sure that tabbing stays inside the dropdown for tsconfig/examples
+          const buttons = exampleContainer.querySelectorAll("input")
+          const lastButton = buttons.item(buttons.length - 1) as HTMLElement
+          if (lastButton) {
+            redirectTabPressTo(lastButton, exampleContainer, ".examples-close")
+          } else {
+            const sections = document.querySelectorAll("ul.examples-dropdown .section-content")
+            sections.forEach(s => {
+              const buttons = s.querySelectorAll("a.example-link")
+              const lastButton = buttons.item(buttons.length - 1) as HTMLElement
+              if (lastButton) {
+                redirectTabPressTo(lastButton, exampleContainer, ".examples-close")
+              }
+            })
+          }
         }
       }
     }
   })
+
+  // Handle escape closing dropdowns etc
+  document.onkeydown = function (evt) {
+    evt = evt || window.event
+    var isEscape = false
+    if ("key" in evt) {
+      isEscape = evt.key === "Escape" || evt.key === "Esc"
+    } else {
+      // @ts-ignore - this used to be the case
+      isEscape = evt.keyCode === 27
+    }
+    if (isEscape) {
+      document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
+      document.querySelectorAll(".navbar-sub li").forEach(i => i.setAttribute("aria-expanded", "false"))
+    }
+  }
 
   // Set up some key commands
   sandbox.editor.addAction({
@@ -324,12 +357,20 @@ export const setupPlayground = (
       const sidebarTabs = document.querySelector(".playground-plugin-tabview") as HTMLDivElement
       const sidebarContent = document.querySelector(".playground-plugin-container") as HTMLDivElement
       let settingsContent = document.querySelector(".playground-settings-container") as HTMLDivElement
+
       if (!settingsContent) {
         settingsContent = document.createElement("div")
         settingsContent.className = "playground-settings-container playground-plugin-container"
         const settings = settingsPlugin(i, utils)
         settings.didMount && settings.didMount(sandbox, settingsContent)
         document.querySelector(".playground-sidebar")!.appendChild(settingsContent)
+
+        // When the last tab item is hit, go back to the settings button
+        const labels = document.querySelectorAll(".playground-sidebar input")
+        const lastLabel = labels.item(labels.length - 1) as HTMLElement
+        if (lastLabel) {
+          redirectTabPressTo(lastLabel, undefined, "#playground-settings")
+        }
       }
 
       if (open) {
@@ -340,6 +381,7 @@ export const setupPlayground = (
         sidebarTabs.style.display = "none"
         sidebarContent.style.display = "none"
         settingsContent.style.display = "block"
+        ;(document.querySelector(".playground-sidebar label") as any).focus()
       }
       settingsToggle.parentElement!.classList.toggle("open")
     }
@@ -533,3 +575,17 @@ export const setupPlayground = (
 }
 
 export type Playground = ReturnType<typeof setupPlayground>
+
+const redirectTabPressTo = (element: HTMLElement, container: HTMLElement | undefined, query: string) => {
+  // element.style.backgroundColor = "red"
+  element.addEventListener("keydown", e => {
+    if (e.keyCode === 9) {
+      const host = container || document
+      const result = host.querySelector(query) as any
+      if (!result) throw new Error(`Expected to find a result for keydown`)
+      result.focus()
+      console.log(result)
+      e.preventDefault()
+    }
+  })
+}

@@ -3,19 +3,15 @@
 // This is the visual aspect of the popover ( the white bit )
 // the non-visible layout is above in #playground-samples-popover
 .examples {
-  background-color: $ts-light-bg-grey-highlight-color;
-
-  @media (prefers-color-scheme: dark) {
-    background-color: $ts-dark-bg-for-foreground-color;
-    color: white;
-  }
+  background-color: var(--playground-dropdown-bg);
+  color: var(--text-color);
 
   padding: 20px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   height: 450px;
 
   a {
-    color: $ts-main-blue-color;
+    color: var(--link-color);
   }
 
   // The titles of the sections
@@ -46,9 +42,7 @@
       margin-right: 1rem;
       border: none;
       background-color: transparent;
-      @media (prefers-color-scheme: dark) {
-        color: white;
-      }
+      color: var(--text-color);
     }
 
     button.section-name.selected {
@@ -107,7 +101,7 @@
             }
 
             &.highlight {
-              border-left: $ts-main-blue-color 2px solid;
+              border-left: $ts-main-blue-darker-color 2px solid;
               padding-left: 8px;
             }
           }
@@ -121,10 +115,10 @@
             border-radius: 0.5rem;
 
             &.done {
-              background-color: $ts-main-blue-color;
+              background-color: $ts-main-blue-darker-color;
             }
             &.changed {
-              border: $ts-main-blue-color 1px solid;
+              border: $ts-main-blue-darker-color 1px solid;
             }
           }
         }

@@ -1,11 +1,11 @@
 ### Meta
 
-- **URLs:** [production](https://www.typescriptlang.org), [staging](http://testsite-typescript-41eeb979-7eaa-4c74-9d47-9d182c7b61ab.azurewebsites.net/)
-- **Admin:** Prod: [Azure Portal](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/99160d5b-9289-4b66-8074-ed268e739e8e/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/TypeScript-1ebb3390-2634-4956-a955-eab987b7bb25/appServices), [Deploy logs](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/99160d5b-9289-4b66-8074-ed268e739e8e/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/TypeScript-1ebb3390-2634-4956-a955-eab987b7bb25/vstscd)
+- **URLs:** [production](https://www.typescriptlang.org), [staging](http://testsite-typescript-41eeb979-7eaa-4c74-9d47-9d182c7b61ab.azurewebsites.net/), [static staging](http://www.staging-typescript.org/)
+- **Admin:** Prod: [Azure Portal](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/99160d5b-9289-4b66-8074-ed268e739e8e/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/TypeScript-1ebb3390-2634-4956-a955-eab987b7bb25/appServices), [Deploy logs](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/99160d5b-9289-4b66-8074-ed268e739e8e/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/TypeScript-1ebb3390-2634-4956-a955-eab987b7bb25/vstscd), [App Insights](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/57bfeeed-c34a-4ffd-a06b-ccff27ac91b8/resourceGroups/typescriptlang-org/providers/microsoft.insights/components/TypeScriptLang-Prod-Ai/overview)
 
 ### Getting Started
 
-This repo uses [yarn workspaces][y-wrk] with node 13, to get started clone this repo and run `yarn install`.
+This repo uses [yarn workspaces][y-wrk] with node 13+, to get started clone this repo and run `yarn install`.
 
 ```sh
 git clone https://github.com/microsoft/TypeScript-website
@@ -46,6 +46,8 @@ The main website for TypeScript, a Gatsby website which is statically deployed. 
 yarn start
 ```
 
+To save your time, twoslash is not applied to code-samples in `yarn start` - to launch the server with twoslash support use: `yarn start-twoslash`.
+
 ## Sandbox
 
 The editor aspect of the TypeScript Playground REPL, useable for all sites which want to show a monaco editor
@@ -82,7 +84,7 @@ yarn workspace tsconfig-reference run lint resolveJson
 
 ## Handbook V1
 
-The existing docs for TypeScript as a direct import the repo of [microsoft/TypeScript-Handbook](https://github.com/microsoft/TypeScript-Handbook/)
+The docs for TypeScript. Originally ported over from [microsoft/TypeScript-Handbook](https://github.com/microsoft/TypeScript-Handbook/) then intermingled with [microsoft/TypeScript-New-Handbook](https://github.com/microsoft/TypeScript-New-Handbook), and finally updated for [Twoslash](http://www.staging-typescript.org/dev/twoslash/) and with new content.
 
 ## Playground Examples
 
@@ -94,23 +96,23 @@ Most of of these packages use [`tsdx`](https://github.com/jaredpalmer/tsdx).
 
 ## TS Twoslash
 
-A code sample markup extension for TypeScript.
-
-## Gatsby Remark Twoslasher Code Blocks
-
-A Gatsby Remark plugin which runs twoslash for any code blocks with twoslash in their metadata
-
-## Gatsby Remark Shiki
-
-A Gatsby Remark plugin which highlights code (using vscode's parsers) then annotates the code with twoslash information
+A code sample markup extension for TypeScript. Available on npm: [@typescript/twoslash](https://www.npmjs.com/package/@typescript/twoslash)
 
 ## TypeScript VFS
 
-A comprehensive way to run TypeScript projects in-memory in a browser or node environment
+A comprehensive way to run TypeScript projects in-memory in a browser or node environment. Available on npm: [@typescript/vfs](https://www.npmjs.com/package/@typescript/vfs)
 
 ## Create Playground Plugin
 
 A template for generating a new playground plugin which you can use via `npm init playground-plugin [name]`
+
+## Handbook Epub
+
+Generates an epub file from the handbook files. You can try downloading it at http://www.staging-typescript.org/assets/typescript-handbook-beta.epub
+
+## Community Meta
+
+Generates contributions JSON metadata on who edited handbook pages
 
 # Contributing
 

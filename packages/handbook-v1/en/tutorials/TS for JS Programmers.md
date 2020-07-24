@@ -6,7 +6,7 @@ oneline: Learn how TypeScript extends JavaScript
 ---
 
 The relationship between TypeScript and JavaScript is rather unique among modern programming languages.
-TypeScript sits as a layer on-top of JavaScript, offering the features of JavaScript and then adds it's own layer on top of that. This layer is the TypeScript type system.
+TypeScript sits as a layer on-top of JavaScript, offering the features of JavaScript and then adds its own layer on top of that. This layer is the TypeScript type system.
 
 JavaScript already has a set of language primitives like `string`, `number`, `object`, `undefined` etc, however there are no ahead-of-time checks that these are consistently assigned across your whole codebase. TypeScript acts as that layer.
 
@@ -31,7 +31,7 @@ That is because the understanding of JavaScript baked into TypeScript has been u
 
 ## Defining Types
 
-JavaScript is a dynamic language which allows for a lot of design patterns. Some design patterns can be hard to automatically provide types for automatically (because they might use dynamic programming) in those cases TypeScript supports an extension of the JavaScript language which offers places for you to tell TypeScript what the types should be.
+JavaScript is a dynamic language which allows for a lot of design patterns. Some design patterns can be hard to provide types for automatically (because they might use dynamic programming) in those cases TypeScript supports an extension of the JavaScript language which offers places for you to tell TypeScript what the types should be.
 
 Here is an example of creating an object which has an inferred type which includes `name: string` and `id: number`:
 
@@ -80,7 +80,7 @@ const user: User = {
 };
 ```
 
-Because JavaScript supports classes and object-orient programming, so does TypeScript - an interface declaration can also be used with classes:
+Because JavaScript supports classes and object-oriented programming, so does TypeScript - an interface declaration can also be used with classes:
 
 ```ts twoslash
 interface User {
@@ -136,9 +136,9 @@ A union is a way to declare that a type could be one of many types. For example,
 type MyBool = true | false;
 ```
 
-_Note:_ If you hover over `MyBool` above, you'll see that it is classed as `boolean` - that's an property of the Structural Type System, which we'll get to later.
+_Note:_ If you hover over `MyBool` above, you'll see that it is classed as `boolean` - that's a property of the Structural Type System, which we'll get to later.
 
-One of the most popular use-cases for union types is to describe a set of `string`s or `number`s [literal](/handbook/literal-types.html) which a value is allowed to be:
+One of the most popular use-cases for union types is to describe a set of `string`s or `number`s [literal](/docs/handbook/literal-types.html) which a value is allowed to be:
 
 ```ts twoslash
 type WindowStates = "open" | "closed" | "minimized";
@@ -150,7 +150,7 @@ Unions provide a way to handle different types too, for example you may have a f
 
 ```ts twoslash
 function getLength(obj: string | string[]) {
-  return obj;
+  return obj.length;
 }
 ```
 
@@ -293,5 +293,5 @@ If the object or class has all the required properties, then TypeScript will say
 
 This doc is a high level 5 minute overview of the sort of syntax and tools you would use in everyday code. From here you should:
 
-- Read the full Handbook [from start to finish](/docs/handbook/basic-types.html) (30m)
+- Read the full Handbook [from start to finish](/docs/handbook/intro.html) (30m)
 - Explore the [Playground examples](/play#show-examples).

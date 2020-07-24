@@ -1,23 +1,15 @@
 import React, { MouseEventHandler, useEffect } from "react"
 import { Link } from "gatsby"
 
-export interface NavItem {
-  title: string
-  id: string
-  directory: string
-  index: string
-  items: { id: string, title: string }[]
-  chronological?: true
-}
+import "./Sidebar.scss"
+import { onAnchorKeyDown, onButtonKeydown } from "./Sidebar-keyboard"
+import { NavItem } from "../../lib/handbookNavigation"
 
 export type Props = {
   navItems: NavItem[]
   selectedID: string
+  openAllSectionsExceptWhatsNew?: true
 }
-
-import "./Sidebar.scss"
-import { onAnchorKeyDown, onButtonKeydown } from "./Sidebar-keyboard"
-
 const closedChevron = <svg fill="none" height="14" viewBox="0 0 9 14" width="9" xmlns="http://www.w3.org/2000/svg"><path d="m1 13 6-6-6-6" stroke="#000" strokeWidth="2" /></svg>
 const openChevron = <svg fill="none" height="9" viewBox="0 0 14 9" width="14" xmlns="http://www.w3.org/2000/svg"><path d="m1 1 6 6 6-6" stroke="#000" strokeWidth="2" /></svg>
 
@@ -81,7 +73,8 @@ export const Sidebar = (props: Props) => {
           const hostsSelected = navRoot.items.find(i => i.id === props.selectedID)
           const classes = [] as string[]
 
-          if (hostsSelected) {
+          const forceOpen = props.openAllSectionsExceptWhatsNew && navRoot.id !== "whats-new"
+          if (hostsSelected || forceOpen) {
             classes.push("open")
             classes.push("highlighted")
           } else {
@@ -109,8 +102,9 @@ export const Sidebar = (props: Props) => {
                     aria.className = "highlight"
                   }
 
-                  const filename = item.id === "index" ? "" : `${item.id}.html`
-                  const path = `/docs/${navRoot.directory}/${filename}`
+                  const href = item.href || item.id
+                  const filename = item.id === "index" ? "" : `${href}.html`
+                  const path = href.startsWith("/") ? href : `/docs/${navRoot.directory}/${filename}`
 
                   return <li key={item.id} {...aria}>
                     <Link to={path} onKeyDown={onAnchorKeyDown}>{item.title}</Link>

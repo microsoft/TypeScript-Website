@@ -30,15 +30,14 @@ export const createPlaygrounds = async (
   const anyData = result.data as any
   const docs = anyData.allFile.nodes
 
-  docs.forEach((lang) => {
+  docs.forEach(lang => {
     const appRoot = path.join(__dirname, "..", "..", "..", "..")
     // prettier-ignore
     const examplesForLang = path.join(appRoot, "playground-examples", "generated", lang.name + ".json")
     const examplesTOC = JSON.parse(fs.readFileSync(examplesForLang, "utf8"))
-    // console.log(lang, categoriesForLang)
 
     // prettier-ignore
-    const compilerOptsForLang = path.join(appRoot,"tsconfig-reference","output",lang.name + "-summary.json")
+    const compilerOptsForLang = path.join(appRoot,"tsconfig-reference","output", lang.name + "-summary.json")
     // prettier-ignore
     const compilerOptsForLangFallback = path.join( appRoot, "tsconfig-reference", "output", "en-summary.json")
 

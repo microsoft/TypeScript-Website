@@ -23,7 +23,7 @@ const Index: React.FC<Props> = (props) => {
     getLoaderScript.async = true;
     getLoaderScript.onload = () => {
       // @ts-ignore
-      const re = global.require
+      const re: any = global.require
 
       re.config({
         paths: {
@@ -41,6 +41,7 @@ export default async function () {
     const packageJSONDiff = await danger.git.JSONDiffForFile("package.json")
     const newDeps = packageJSONDiff.devDependencies.added
     const newTypesDeps = newDeps?.filter(d => d.includes("@types")) ?? []
+
     if (newTypesDeps.length){
         markdown("Added new types packages " + newTypesDeps.join(", "))
     }
@@ -98,7 +99,7 @@ export default async function () {
               <div className="sixhundred" style={{ borderLeft: "1px solid gray" }}>
                 <div id="loader">
                   <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-                  <p id="loading-message">Downloading Sandbox...</p>
+                  <p id="loading-message" role="status">Downloading Sandbox...</p>
                 </div>
                 <div style={{ height: "400px", display: "none" }} id="monaco-editor-embed" />
               </div>
@@ -108,7 +109,7 @@ export default async function () {
           <div className="raised main-content-block">
             <h2>Usage</h2>
             <p>A sandbox uses the same tools as monaco-editor, meaning this library is shipped as an AMD bundle which you can use the <a href="https://github.com/microsoft/vscode-loader/">VSCode Loader</a> to <code>require</code>.</p>
-            <p>Because we need it for the TypeScript website, you can use our hosted copy <a href="https://typescriptlang.org/v2/js/vs.loader.js">here.</a> (<em>note</em>, we will eventually deprecate the /v2/ in all routes)</p>
+            <p>Because we need it for the TypeScript website, you can use our hosted copy <a href="https://typescriptlang.org/v2/js/vs.loader.js" title="Link to the JS for the visual studio require loader">here.</a> (<em>note</em>, we will eventually deprecate the /v2/ in all routes)</p>
 
             <h3>Get Started</h3>
             <p>Create a new file: <code>index.html</code> and paste this code into that file.</p>

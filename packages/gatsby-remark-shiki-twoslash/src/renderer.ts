@@ -4,7 +4,7 @@ type Lines = import("shiki").IThemedToken[][]
 type Options = import("shiki/dist/renderer").HtmlRendererOptions
 type TwoSlash = import("@typescript/twoslash").TwoSlashReturn
 
-import { stripHTML, createHighlightedString2 } from "./utils"
+import { stripHTML, createHighlightedString2, subTripleArrow, replaceTripleArrowEncoded } from "./utils"
 
 // OK, so - this is just straight up complex code.
 
@@ -69,7 +69,7 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
         const findTokenDebug = (start: number) => (e: any) => {
           const result = start <= e.character && start + token.content.length >= e.character + e.length
           // prettier-ignore
-          console.log(result, start, '<=', e.character, '&&', start + token.content.length, '<=', e.character + e.length)
+          console.log(result, start, '<=', e.character, '&&', start + token.content.length, '>=', e.character + e.length)
           if (result) {
             console.log("Found:", e)
             console.log("Inside:", token)
@@ -112,7 +112,7 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
 
           tokenContent += createHighlightedString2(ranges, token.content)
         } else {
-          tokenContent += token.content
+          tokenContent += subTripleArrow(token.content)
         }
 
         html += `<span style="color: ${token.color}">${tokenContent}</span>`
@@ -135,13 +135,37 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
     // Add queries to the next line
     if (queries.length) {
       queries.forEach(query => {
-        html += `<span class='query'>${"//" + "".padStart(query.offset - 2) + "^ = " + query.text}</span>`
+        switch (query.kind) {
+          case "query": {
+            html += `<span class='query'>${"//" + "".padStart(query.offset - 2) + "^ = " + query.text}</span>`
+            break
+          }
+          case "completions": {
+            if (!query.completions) {
+              html += `<span class='query'>${"//" + "".padStart(query.offset - 2) + "^ - No completions found"}</span>`
+            } else {
+              const prefixed = query.completions.filter(c => c.name.startsWith(query.completionsPrefix || "____"))
+              console.log("Prefix: ", query.completionsPrefix)
+              const lis = prefixed
+                .sort((l, r) => l.name.localeCompare(r.name))
+                .map(c => {
+                  const after = c.name.substr(query.completionsPrefix?.length || 0)
+                  const name = `<span><span class='result-found'>${query.completionsPrefix || ""}</span>${after}<span>`
+                  return `<li>${name}</li>`
+                })
+                .join("")
+              html +=
+                "".padStart(query.offset) + `<span class='inline-completions'><ul class='dropdown'>${lis}</ul></span>`
+            }
+          }
+        }
       })
       html += "\n"
     }
   })
-  html = html.replace(/\n*$/, "") // Get rid of final new lines
-  html += `</code></div></pre>`
+  html = replaceTripleArrowEncoded(html.replace(/\n*$/, "")) // Get rid of final new lines
+  const playgroundLink = `<a href='${twoslash.playgroundURL}'>Try</a>`
+  html += `</code>${playgroundLink}</div></pre>`
 
   return html
 }

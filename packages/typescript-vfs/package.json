@@ -1,6 +1,6 @@
 {
   "name": "@typescript/vfs",
-  "version": "1.0.0",
+  "version": "1.1.2",
   "license": "MIT",
   "author": "TypeScript team",
   "homepage": "https://github.com/microsoft/TypeScript-Website/",
@@ -12,8 +12,8 @@
   ],
   "scripts": {
     "start": "tsdx watch",
-    "build": "tsdx build",
-    "bootstrap": "tsdx build",
+    "build": "tsdx build && cpy src/index.ts ../sandbox/src/vendor --rename=typescript-vfs.ts",
+    "bootstrap": "yarn build",
     "test": "tsdx test",
     "lint": "tsdx lint"
   },
@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@types/jest": "^25.1.3",
+    "cpy-cli": "^3.1.1",
     "tsdx": "^0.12.3",
     "tslib": "^1.10.0",
     "typescript": "*"

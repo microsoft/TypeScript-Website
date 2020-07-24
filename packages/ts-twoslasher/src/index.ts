@@ -1,8 +1,14 @@
-import debug from "debug"
+let hasLocalStorage = false
+try {
+  hasLocalStorage = typeof localStorage !== `undefined`
+} catch (error) {}
+const hasProcess = typeof process !== `undefined`
+const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 
 type LZ = typeof import("lz-string")
 type TS = typeof import("typescript")
 type CompilerOptions = import("typescript").CompilerOptions
+type CustomTransformers = import("typescript").CustomTransformers
 
 import {
   parsePrimitive,
@@ -11,18 +17,19 @@ import {
   typesToExtension,
   stringAroundIndex,
   getIdentifierTextSpans,
+  getClosestWord,
 } from "./utils"
 import { validateInput, validateCodeForErrors } from "./validation"
 
 import { createSystem, createVirtualTypeScriptEnvironment, createDefaultMapFromNodeModules } from "@typescript/vfs"
 
-const log = debug("twoslasher")
+const log = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
 
 // Hacking in some internal stuff
 declare module "typescript" {
   type Option = {
     name: string
-    type: "list" | "boolean" | "number" | "string" | import("typescript").Map<number>
+    type: "list" | "boolean" | "number" | "string" // | Map
     element?: Option
   }
 
@@ -30,7 +37,7 @@ declare module "typescript" {
 }
 
 type QueryPosition = {
-  kind: "query"
+  kind: "query" | "completion"
   offset: number
   text: string | undefined
   docs: string | undefined
@@ -38,9 +45,19 @@ type QueryPosition = {
 }
 
 type PartialQueryResults = {
-  kind: string
+  kind: "query"
   text: string
   docs: string | undefined
+  line: number
+  offset: number
+  file: string
+}
+
+type PartialCompletionResults = {
+  kind: "completions"
+  completions: import("typescript").CompletionEntry[]
+  completionPrefix: string
+
   line: number
   offset: number
   file: string
@@ -64,29 +81,50 @@ function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosit
 
   for (let i = 0; i < codeLines.length; i++) {
     const line = codeLines[i]
-    const highlightMatch = /^\/\/\s*\^+( .+)?$/.exec(line)
-    const queryMatch = /^\/\/\s*\^\?\s*$/.exec(line)
-    if (queryMatch !== null) {
-      const start = line.indexOf("^")
-      queries.push({ kind: "query", offset: start, text: undefined, docs: undefined, line: i + removedLines - 1 })
-      log(`Removing line ${i} for having a query`)
+    const moveForward = () => {
+      contentOffset = nextContentOffset
+      nextContentOffset += line.length + 1
+    }
+
+    const stripLine = (logDesc: string) => {
+      log(`Removing line ${i} for ${logDesc}`)
 
       removedLines++
       codeLines.splice(i, 1)
       i--
-    } else if (highlightMatch !== null) {
-      const start = line.indexOf("^")
-      const length = line.lastIndexOf("^") - start + 1
-      const position = contentOffset + start
-      const description = highlightMatch[1] ? highlightMatch[1].trim() : ""
-      highlights.push({ kind: "highlight", position, length, description, line: i })
-      log(`Removing line ${i} for having a highlight`)
-      codeLines.splice(i, 1)
-      removedLines++
-      i--
+    }
+
+    // We only need to run regexes over lines with comments
+    if (!line.includes("//")) {
+      moveForward()
     } else {
-      contentOffset = nextContentOffset
-      nextContentOffset += line.length + 1
+      const highlightMatch = /^\/\/\s*\^+( .+)?$/.exec(line)
+      const queryMatch = /^\/\/\s*\^\?\s*$/.exec(line)
+      // https://regex101.com/r/2yDsRk/1
+      const removePrettierIgnoreMatch = /^\s*\/\/ prettier-ignore$/.exec(line)
+      const completionsQuery = /^\/\/\s*\^\|$/.exec(line)
+
+      if (queryMatch !== null) {
+        const start = line.indexOf("^")
+        queries.push({ kind: "query", offset: start, text: undefined, docs: undefined, line: i + removedLines - 1 })
+        stripLine("having a query")
+      } else if (highlightMatch !== null) {
+        const start = line.indexOf("^")
+        const length = line.lastIndexOf("^") - start + 1
+        const position = contentOffset + start
+        const description = highlightMatch[1] ? highlightMatch[1].trim() : ""
+        highlights.push({ kind: "highlight", position, length, description, line: i })
+        stripLine("having a highlight")
+      } else if (removePrettierIgnoreMatch !== null) {
+        stripLine("being a prettier ignore")
+      } else if (completionsQuery !== null) {
+        const start = line.indexOf("^")
+        // prettier-ignore
+        queries.push({ kind: "completion", offset: start, text: undefined, docs: undefined, line: i + removedLines - 1 })
+        stripLine("having a completion query")
+      } else {
+        moveForward()
+      }
     }
   }
   return { highlights, queries }
@@ -109,10 +147,12 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
           break
 
         default:
-          opts[opt.name] = opt.type.get(value.toLowerCase())
+          // It's a map!
+          const optMap = opt.type as Map<string, string>
+          opts[opt.name] = optMap.get(value.toLowerCase())
           log(`Set ${opt.name} to ${opts[opt.name]}`)
           if (opts[opt.name] === undefined) {
-            const keys = Array.from(opt.type.keys() as any)
+            const keys = Array.from(optMap.keys() as any)
             throw new Error(`Invalid value ${value} for ${opt.name}. Allowed values: ${keys.join(",")}`)
           }
           break
@@ -154,14 +194,14 @@ function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: Comp
 
 /** Available inline flags which are not compiler flags */
 export interface ExampleOptions {
-  /** Let's the sample suppress all error diagnostics */
-  noErrors: false
+  /** Lets the sample suppress all error diagnostics */
+  noErrors: boolean
   /** An array of TS error codes, which you write as space separated - this is so the tool can know about unexpected errors */
   errors: number[]
   /** Shows the JS equivalent of the TypeScript code instead */
-  showEmit: false
+  showEmit: boolean
   /**
-   * When mixed with showEmit, lets you choose the file to present instead of the source - defaults to index.js which
+   * Must be used with showEmit, lets you choose the file to present instead of the source - defaults to index.js which
    * means when you just use `showEmit` above it shows the transpiled JS.
    */
   showEmittedFile: string
@@ -250,19 +290,23 @@ export interface TwoSlashReturn {
 
   /** Requests to use the LSP to get info for a particular symbol in the source */
   queries: {
-    kind: "query"
+    kind: "query" | "completions"
     /** What line is the highlighted identifier on? */
     line: number
     /** At what index in the line does the caret represent  */
     offset: number
     /** The text of the token which is highlighted */
-    text: string
+    text?: string
     /** Any attached JSDocs */
-    docs: string | undefined
+    docs?: string | undefined
     /** The token start which the query indicates  */
     start: number
     /** The length of the token */
     length: number
+    /** Results for completions at a particular point */
+    completions?: import("typescript").CompletionEntry[]
+    /* Completion prefix e.g. the letters before the cursor in the word so you can filter */
+    completionsPrefix?: string
   }[]
 
   /** Diagnostic error messages which came up when creating the program */
@@ -281,28 +325,40 @@ export interface TwoSlashReturn {
   playgroundURL: string
 }
 
+export interface TwoSlashOptions {
+  /** Allows setting any of the handbook options from outside the function, useful if you don't want LSP identifiers */
+  defaultOptions?: Partial<ExampleOptions>
+
+  /** Allows setting any of the compiler options from outside the function */
+  defaultCompilerOptions?: CompilerOptions
+
+  /** Allows applying custom transformers to the emit result, only useful with the showEmit output */
+  customTransformers?: CustomTransformers
+
+  /** An optional copy of the TypeScript import, if missing it will be require'd. */
+  tsModule?: TS
+
+  /** An optional copy of the lz-string import, if missing it will be require'd. */
+  lzstringModule?: LZ
+
+  /**
+   * An optional Map object which is passed into @typescript/vfs - if you are using twoslash on the
+   * web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
+   */
+  fsMap?: Map<string, string>
+}
+
 /**
  * Runs the checker against a TypeScript/JavaScript code sample returning potentially
  * difference code, and a set of annotations around how it works.
  *
  * @param code The twoslash markup'd code
  * @param extension For example: "ts", "tsx", "typescript", "javascript" or "js".
- * @param defaultOptions Allows setting any of the handbook options from outside the function, useful if you don't want LSP identifiers
- * @param tsModule An optional copy of the TypeScript import, if missing it will be require'd.
- * @param lzstringModule An optional copy of the lz-string import, if missing it will be require'd.
- * @param fsMap An optional Map object which is passed into @typescript/vfs - if you are using twoslash on the
- *              web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
+ * @param options Additional options for twoslash
  */
-export function twoslasher(
-  code: string,
-  extension: string,
-  defaultOptions?: Partial<ExampleOptions>,
-  tsModule?: TS,
-  lzstringModule?: LZ,
-  fsMap?: Map<string, string>
-): TwoSlashReturn {
-  const ts: TS = tsModule ?? require("typescript")
-  const lzstring: LZ = lzstringModule ?? require("lz-string")
+export function twoslasher(code: string, extension: string, options: TwoSlashOptions = {}): TwoSlashReturn {
+  const ts: TS = options.tsModule ?? require("typescript")
+  const lzstring: LZ = options.lzstringModule ?? require("lz-string")
 
   const originalCode = code
   const safeExtension = typesToExtension(extension)
@@ -310,10 +366,11 @@ export function twoslasher(
 
   log(`\n\nLooking at code: \n\`\`\`${safeExtension}\n${code}\n\`\`\`\n`)
 
-  const defaultCompilerOptions: CompilerOptions = {
+  const defaultCompilerOptions = {
     strict: true,
     target: ts.ScriptTarget.ES2016,
     allowJs: true,
+    ...(options.defaultCompilerOptions ?? {}),
   }
 
   validateInput(code)
@@ -323,38 +380,21 @@ export function twoslasher(
   // This is mutated as the below functions pull out info
   const codeLines = code.split(/\r\n?|\n/g)
 
-  const handbookOptions = { ...filterHandbookOptions(codeLines), ...defaultOptions }
+  const handbookOptions = { ...filterHandbookOptions(codeLines), ...options.defaultOptions }
   const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions, ts)
 
-  const vfs = fsMap ?? createLocallyPoweredVFS(compilerOptions)
+  const vfs = options.fsMap ?? createLocallyPoweredVFS(compilerOptions, ts)
   const system = createSystem(vfs)
-  const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions)
+  const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions, options.customTransformers)
   const ls = env.languageService
 
   code = codeLines.join("\n")
 
-  let partialQueries = [] as PartialQueryResults[]
+  let partialQueries = [] as (PartialQueryResults | PartialCompletionResults)[]
   let queries = [] as TwoSlashReturn["queries"]
   let highlights = [] as TwoSlashReturn["highlights"]
 
-  // TODO: This doesn't handle a single file with a name
-  const fileContent = code.split("// @filename: ")
-  const noFilepaths = fileContent.length === 1
-
-  const makeDefault: [string, string[]] = [defaultFileName, code.split(/\r\n?|\n/g)]
-  const makeMultiFile = (filenameSplit: string): [string, string[]] => {
-    const [filename, ...content] = filenameSplit.split(/\r\n?|\n/g)
-    const firstLine = "// @filename: " + filename
-    return [filename, [firstLine, ...content]]
-  }
-
-  /**
-   * Oof, some hard to grok code in this section. To ensure _one_ code path for both
-   * default and multi-file code samples it's all coerced into an array of
-   * [name, lines_of_code] basically for each set.
-   */
-  const unfilteredNameContent: Array<[string, string[]]> = noFilepaths ? [makeDefault] : fileContent.map(makeMultiFile)
-  const nameContent = unfilteredNameContent.filter(n => n[0].length)
+  const nameContent = splitTwoslashCodeInfoFiles(code, defaultFileName)
 
   /** All of the referenced files in the markup */
   const filenames = nameContent.map(nc => nc[0])
@@ -374,27 +414,52 @@ export function twoslasher(
     const lspedQueries = updates.queries.map((q, i) => {
       const sourceFile = env.getSourceFile(filename)!
       const position = ts.getPositionOfLineAndCharacter(sourceFile, q.line, q.offset)
-      const quickInfo = ls.getQuickInfoAtPosition(filename, position)
-      const token = ls.getDefinitionAtPosition(filename, position)
+      switch (q.kind) {
+        case "query": {
+          const quickInfo = ls.getQuickInfoAtPosition(filename, position)
+          const token = ls.getDefinitionAtPosition(filename, position)
 
-      // prettier-ignore
-      let text = `Could not get LSP result: ${stringAroundIndex(env.getSourceFile(filename)!.text, position)}`
-      let docs = undefined
+          // prettier-ignore
+          let text = `Could not get LSP result: ${stringAroundIndex(env.getSourceFile(filename)!.text, position)}`
+          let docs = undefined
 
-      if (quickInfo && token && quickInfo.displayParts) {
-        text = quickInfo.displayParts.map(dp => dp.text).join("")
-        docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join("<br/>") : undefined
+          if (quickInfo && token && quickInfo.displayParts) {
+            text = quickInfo.displayParts.map(dp => dp.text).join("")
+            docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join("<br/>") : undefined
+          }
+
+          const queryResult: PartialQueryResults = {
+            kind: "query",
+            text,
+            docs,
+            line: q.line - i,
+            offset: q.offset,
+            file: filename,
+          }
+          return queryResult
+        }
+
+        case "completion": {
+          const quickInfo = ls.getCompletionsAtPosition(filename, position - 1, {})
+          if (!quickInfo && !handbookOptions.noErrorValidation) {
+            throw new Error(`Twoslash: The ^| query at line ${q.line} in ${filename} did not return any completions`)
+          }
+
+          const word = getClosestWord(sourceFile.text, position - 1)
+          const prefix = sourceFile.text.slice(word.startPos, position)
+          const lastDot = prefix.split(".").pop() || ""
+
+          const queryResult: PartialCompletionResults = {
+            kind: "completions",
+            completions: quickInfo?.entries || [],
+            completionPrefix: lastDot,
+            line: q.line - i,
+            offset: q.offset,
+            file: filename,
+          }
+          return queryResult
+        }
       }
-
-      const queryResult = {
-        kind: "query",
-        text,
-        docs,
-        line: q.line - i,
-        offset: q.offset,
-        file: filename,
-      }
-      return queryResult
     })
     partialQueries.push(...lspedQueries)
 
@@ -410,7 +475,12 @@ export function twoslasher(
 
   // Lets fs changes propagate back up to the fsMap
   if (handbookOptions.emit) {
-    env.languageService.getProgram()?.emit()
+    filenames.forEach(f => {
+      const output = ls.getEmitOutput(f)
+      output.outputFiles.forEach(output => {
+        system.writeFile(output.name, output.text)
+      })
+    })
   }
 
   // Code should now be safe to compile, so we're going to split it into different files
@@ -432,12 +502,12 @@ export function twoslasher(
     if (!sourceFile) throw new Error(`No sourcefile found for ${file} in twoslash`)
 
     // Get all of the interesting quick info popover
-    if (!handbookOptions.noStaticSemanticInfo && !handbookOptions.showEmit) {
+    if (!handbookOptions.showEmit) {
       const fileContentStartIndexInModifiedFile = code.indexOf(source) == -1 ? 0 : code.indexOf(source)
       const linesAbove = code.slice(0, fileContentStartIndexInModifiedFile).split("\n").length - 1
 
       // Get all interesting identifiers in the file, so we can show hover info for it
-      const identifiers = getIdentifierTextSpans(ts, sourceFile)
+      const identifiers = handbookOptions.noStaticSemanticInfo ? [] : getIdentifierTextSpans(ts, sourceFile)
       for (const identifier of identifiers) {
         const span = identifier.span
         const quickInfo = ls.getQuickInfoAtPosition(file, span.start)
@@ -459,22 +529,38 @@ export function twoslasher(
 
       // Offset the queries for this file because they are based on the line for that one
       // specific file, and not the global twoslash document. This has to be done here because
-      // in the above loops, the code for queries/highlights hasn't been stripped yet.
+      // in the above loops, the code for queries/highlights/etc hasn't been stripped yet.
       partialQueries
         .filter((q: any) => q.file === file)
         .forEach(q => {
           const pos =
             ts.getPositionOfLineAndCharacter(sourceFile, q.line, q.offset) + fileContentStartIndexInModifiedFile
 
-          queries.push({
-            docs: q.docs,
-            kind: "query",
-            start: pos,
-            length: q.text.length,
-            text: q.text,
-            offset: q.offset,
-            line: q.line + linesAbove,
-          })
+          switch (q.kind) {
+            case "query": {
+              queries.push({
+                docs: q.docs,
+                kind: "query",
+                start: pos + fileContentStartIndexInModifiedFile,
+                length: q.text.length,
+                text: q.text,
+                offset: q.offset,
+                line: q.line + linesAbove + 1,
+              })
+              break
+            }
+            case "completions": {
+              queries.push({
+                completions: q.completions,
+                kind: "completions",
+                start: pos + fileContentStartIndexInModifiedFile,
+                completionsPrefix: q.completionPrefix,
+                length: 1,
+                offset: q.offset,
+                line: q.line + linesAbove + 1,
+              })
+            }
+          }
         })
     }
   })
@@ -510,7 +596,19 @@ export function twoslasher(
 
   // Handle emitting files
   if (handbookOptions.showEmit) {
-    const output = ls.getEmitOutput(defaultFileName)
+    // Get the file which created the file we want to show:
+    const emitFilename = handbookOptions.showEmittedFile || defaultFileName
+    const emitSourceFilename = emitFilename.replace(".js", "").replace(".d.ts", "").replace(".map", "")
+    const emitSource = filenames.find(f => f === emitSourceFilename + ".ts" || f === emitSourceFilename + ".tsx")
+
+    if (!emitSource) {
+      const allFiles = filenames.join(", ")
+      throw new Error(
+        `Cannot find the corresponding source file for ${emitFilename} ${handbookOptions.showEmittedFile} - in ${allFiles}`
+      )
+    }
+
+    const output = ls.getEmitOutput(emitSource)
     const file = output.outputFiles.find(o => o.name === handbookOptions.showEmittedFile)
     if (!file) {
       const allFiles = output.outputFiles.map(o => o.name).join(", ")
@@ -578,6 +676,30 @@ export function twoslasher(
   }
 }
 
-const createLocallyPoweredVFS = (compilerOptions: CompilerOptions) => {
-  return createDefaultMapFromNodeModules(compilerOptions)
+const createLocallyPoweredVFS = (compilerOptions: CompilerOptions, ts?: typeof import("typescript")) =>
+  createDefaultMapFromNodeModules(compilerOptions, ts)
+
+const splitTwoslashCodeInfoFiles = (code: string, defaultFileName: string) => {
+  const lines = code.split(/\r\n?|\n/g)
+
+  let nameForFile = code.includes(`@filename: ${defaultFileName}`) ? "global.ts" : defaultFileName
+  let currentFileContent: string[] = []
+  const fileMap: Array<[string, string[]]> = []
+
+  for (const line of lines) {
+    if (line.includes("// @filename: ")) {
+      fileMap.push([nameForFile, currentFileContent])
+      nameForFile = line.split("// @filename: ")[1].trim()
+      currentFileContent = []
+    } else {
+      currentFileContent.push(line)
+    }
+  }
+  fileMap.push([nameForFile, currentFileContent])
+
+  // Basically, strip these:
+  // ["index.ts", []]
+  // ["index.ts", [""]]
+  const nameContent = fileMap.filter(n => n[1].length > 0 && (n[1].length > 1 || n[1][0] !== ""))
+  return nameContent
 }

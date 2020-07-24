@@ -8,10 +8,6 @@
 #top-menu {
   background-color: $ts-main-blue-color;
 
-  @media (prefers-color-scheme: dark) {
-    background-color: $ts-main-blue-darker-color;
-  }
-
   user-select: none;
   clear: both;
   display: flex;
@@ -48,6 +44,12 @@
     font-weight: 600;
     font-size: 1.5rem;
     padding-top: 0.7rem;
+
+    @media screen and (-ms-high-contrast: active) {
+      svg path {
+        fill: blue;
+      }
+    }
 
     svg {
       margin-right: 0.6rem;
@@ -103,9 +105,6 @@ form.search {
   height: 3rem;
   background-color: $ts-main-blue-darker-color;
 
-  @media (prefers-color-scheme: dark) {
-    background-color: $ts-main-blue-darkest-color;
-  }
   padding-left: 1rem;
   display: inline-block;
 
@@ -115,13 +114,24 @@ form.search {
     margin-right: 0.3rem;
   }
 
+  @media screen and (-ms-high-contrast: black-on-white) {
+    svg path {
+      fill: black;
+    }
+  }
+
+  &:focus-within {
+    background-color: $ts-main-blue-lighter-color;
+  }
+
   input {
+    width: 150px;
+
+    &:focus-within {
+      background-color: $ts-main-blue-lighter-color;
+    }
     -webkit-appearance: none;
     background-color: $ts-main-blue-darker-color;
-
-    @media (prefers-color-scheme: dark) {
-      background-color: $ts-main-blue-darkest-color;
-    }
 
     border-color: #152740;
     border-radius: 0;
@@ -140,40 +150,61 @@ form.search {
   }
 }
 
-// Avoid using this, but it's a useful bit for when you need to have text content that changes. This
-// can make it a bit tricky with localization though.
-
-.show-only-medium {
-  display: none;
-}
-
-.hide-only-medium {
-  display: inline;
-}
-
-.show-only-small {
-  display: none;
-}
-
-@media (max-width: $screen-sm) {
-  .show-only-small {
-    display: block !important;
-  }
-  .show-small {
-    display: inline !important;
-  }
-  .hide-only-medium {
+// Avoid using these for other things, but it's a useful bit for when you need to have text content that changes. This
+// can make it a bit tricky with localization for something like german in the future though!
+//
+#top-menu nav ul {
+  .show-only-medium {
     display: none;
   }
-}
-
-@media (min-width: 767px) and (max-width: 900px) {
-  .show-only-medium {
-    display: inline !important;
-  }
 
   .hide-only-medium {
-    display: none !important;
+    display: inline;
+  }
+
+  .show-only-small {
+    display: none;
+  }
+
+  .show-only-largest {
+    display: none;
+  }
+
+  @media (max-width: $screen-sm) {
+    .show-only-small {
+      display: block !important;
+    }
+    .show-small {
+      display: inline !important;
+    }
+    .hide-only-medium {
+      display: none;
+    }
+    .show-only-large {
+      display: none !important;
+    }
+  }
+
+  @media (min-width: 767px) and (max-width: $screen-md) {
+    .show-only-medium {
+      display: inline !important;
+    }
+
+    .hide-only-medium {
+      display: none !important;
+    }
+  }
+
+  @media (min-width: $screen-md) {
+    .show-only-large {
+      display: inline-block !important;
+    }
+  }
+
+  @media (min-width: 1050px) {
+    .show-only-largest {
+      display: inline-block !important;
+    }
   }
 }
 
@@ -248,7 +279,7 @@ form.search {
 
   .above-small {
     /* Make search full length */
-    nav {
+    .search-section {
       width: 100%;
     }
 

@@ -6,12 +6,13 @@ export const playCopy = {
   play_subnav_examples_close: "Close",
   play_subnav_whatsnew: "What's New",
   play_subnav_settings: "Settings",
+  play_settings_tabs_settings: "Sidebar Tabs",
   play_downloading_typescript: "Downloading TypeScript...", // when loading
   play_downloading_version: "Version...", // when loading
   play_toolbar_run: "Run",
   play_toolbar_export: "Export",
-  play_sidebar_js: "JS",
-  play_sidebar_dts: "DTS",
+  play_sidebar_js: ".JS",
+  play_sidebar_dts: ".D.TS",
   play_sidebar_errors: "Errors",
   play_sidebar_errors_no_errors: "No errors",
   play_sidebar_logs: "Logs",
@@ -34,7 +35,7 @@ export const playCopy = {
   play_sidebar_plugins_plugin_dev_option:
     "Connect to <code>localhost:5000</code>",
   play_sidebar_plugins_plugin_dev_copy:
-    "Automatically try connect to a playground plugin in development mode. You can read more <a href='https://www.typescriptlang.org/dev/playground-plugins/'>here</a>.",
+    "Automatically try connect to a playground plugin in development mode. You can read more <a href='https://www.typescriptlang.org/dev/playground-plugins/' title='Link to the page about Playground Plugins'>here</a>.",
   play_export_report_issue: "Report GitHub issue on TypeScript",
   play_export_copy_md: "Copy as Markdown Issue",
   play_export_copy_link: "Copy as Markdown Link",
@@ -61,6 +62,26 @@ console.log(anExampleVariable)
 // To learn more about the language, click above in "Examples" or "What's New".
 // Otherwise, get started by removing these comments and the world is your playground.
   `,
+
+  play_sidebar_js_title: "JavaScript",
+  play_sidebar_js_blurb: "Shows the transpiled JS",
+
+  play_sidebar_dts_title: "Definition Files",
+  play_sidebar_dts_blurb: "Shows the .d.ts output of your code",
+
+  play_sidebar_err_title: "Compiler Errors",
+  play_sidebar_err_blurb: "Shows compiler errors in full",
+
+  play_sidebar_run_title: "Run JavaScript in Browser",
+  play_sidebar_run_blurb:
+    "Shows the output of running the JavaScript in the editor",
+
+  play_sidebar_plugins_title: "Manage Playground Plugins",
+  play_sidebar_plugins_blurb:
+    "Handles adding/removing 3rd party extensions to the playground",
+
+  play_sidebar_ast_title: "[WIP] AST Viewer",
+  play_sidebar_ast_blurb: "Inspect the TypeScript AST",
 
   // Notes:
   // Compiler flag information is all from the tsconfig reference info

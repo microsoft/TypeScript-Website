@@ -5,7 +5,27 @@ const pluginRegistry = [
     module: "typescript-playground-presentation-mode",
     display: "Presentation Mode",
     blurb: "Create presentations inside the TypeScript playground, seamlessly jump between slides and live-code.",
-    repo: "https://github.com/orta/playground-slides/#README",
+    repo: "https://github.com/orta/playground-slides/#readme",
+    author: {
+      name: "Orta",
+      href: "https://orta.io",
+    },
+  },
+  {
+    module: "playground-collaborate",
+    display: "Collaborate",
+    blurb: "Create rooms to inspect code together.",
+    repo: "https://github.com/orta/playground-collaborate/#readme",
+    author: {
+      name: "Orta",
+      href: "https://orta.io",
+    },
+  },
+  {
+    module: "playground-transformer-timeline",
+    display: "Transformer Timeline",
+    blurb: "Shows the transpilation steps as your code migrates from TS -> JS.",
+    repo: "https://github.com/orta/playground-transformer-timeline#typescript-transformers-playground-plugin",
     author: {
       name: "Orta",
       href: "https://orta.io",
@@ -46,12 +66,9 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
   const plugin: PlaygroundPlugin = {
     id: "plugins",
     displayName: i("play_sidebar_plugins"),
-    shouldBeSelected: () => true, // uncomment to make this the first tab on reloads
+    // shouldBeSelected: () => true, // uncomment to make this the first tab on reloads
     willMount: (_sandbox, container) => {
       const ds = utils.createDesignSystem(container)
-
-      const restartReq = ds.p(i("play_sidebar_options_restart_required"))
-      restartReq.id = "restart-required"
 
       ds.subtitle(i("play_sidebar_plugins_options_external"))
 
@@ -68,7 +85,8 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
       warning.textContent = i("play_sidebar_plugins_options_external_warning")
       container.appendChild(warning)
 
-      ds.subtitle(i("play_sidebar_plugins_options_modules"))
+      const subheading = ds.subtitle(i("play_sidebar_plugins_options_modules"))
+      subheading.id = "custom-modules-header"
 
       const customModulesOL = document.createElement("ol")
       customModulesOL.className = "custom-modules"
@@ -86,7 +104,7 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
           a.onclick = () => {
             removeCustomPlugins(module)
             updateCustomModules()
-            announceWeNeedARestart()
+            ds.declareRestartRequired(i)
             return false
           }
           li.appendChild(a)
@@ -108,88 +126,76 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
       const connectToDev = ds.localStorageOption({
         display: i("play_sidebar_plugins_plugin_dev_option"),
         blurb: i("play_sidebar_plugins_plugin_dev_copy"),
-        flag: "connect-dev-plugin",
+        flag: "compiler-setting-connect-dev-plugin",
+        onchange: () => {
+          ds.declareRestartRequired(i)
+        },
       })
+
       pluginsDevOL.appendChild(connectToDev)
       container.appendChild(pluginsDevOL)
-
-      // createSection(i("play_sidebar_options"), categoryDiv)
-
-      // settings.forEach(setting => {
-      //   const settingButton = createButton(setting)
-      //   ol.appendChild(settingButton)
-      // })
-
-      // categoryDiv.appendChild(ol)
     },
   }
 
-  return plugin
-}
+  const createPlugin = (plugin: typeof pluginRegistry[0]) => {
+    const li = document.createElement("li")
+    const div = document.createElement("div")
 
-const announceWeNeedARestart = () => {
-  document.getElementById("restart-required")!.style.display = "block"
-}
+    const label = document.createElement("label")
 
-const createSection = (title: string, container: Element) => {
-  const pluginDevTitle = document.createElement("h4")
-  pluginDevTitle.textContent = title
-  container.appendChild(pluginDevTitle)
-}
+    const top = `<span>${plugin.display}</span> by <a href='${plugin.author.href}'>${plugin.author.name}</a><br/>${plugin.blurb}`
+    const bottom = `<a href='https://www.npmjs.com/package/${plugin.module}'>npm</a> | <a href="${plugin.repo}">repo</a>`
+    label.innerHTML = `${top}<br/>${bottom}`
 
-const createPlugin = (plugin: typeof pluginRegistry[0]) => {
-  const li = document.createElement("li")
-  const div = document.createElement("div")
+    const key = "plugin-" + plugin.module
+    const input = document.createElement("input")
+    input.type = "checkbox"
+    input.id = key
+    input.checked = !!localStorage.getItem(key)
 
-  const label = document.createElement("label")
-
-  const top = `<span>${plugin.display}</span> by <a href='${plugin.author.href}'>${plugin.author.name}</a><br/>${plugin.blurb}`
-  const bottom = `<a href='https://www.npmjs.com/package/${plugin.module}'>npm</a> | <a href="${plugin.repo}">repo</a>`
-  label.innerHTML = `${top}<br/>${bottom}`
-
-  const key = "plugin-" + plugin.module
-  const input = document.createElement("input")
-  input.type = "checkbox"
-  input.id = key
-  input.checked = !!localStorage.getItem(key)
-
-  input.onchange = () => {
-    announceWeNeedARestart()
-    if (input.checked) {
-      // @ts-ignore
-      window.appInsights &&
+    input.onchange = () => {
+      const ds = utils.createDesignSystem(div)
+      ds.declareRestartRequired(i)
+      if (input.checked) {
         // @ts-ignore
-        window.appInsights.trackEvent({ name: "Added Registry Plugin", properties: { id: key } })
-      localStorage.setItem(key, "true")
-    } else {
-      localStorage.removeItem(key)
+        window.appInsights &&
+          // @ts-ignore
+          window.appInsights.trackEvent({ name: "Added Registry Plugin", properties: { id: key } })
+        localStorage.setItem(key, "true")
+      } else {
+        localStorage.removeItem(key)
+      }
     }
+
+    label.htmlFor = input.id
+
+    div.appendChild(input)
+    div.appendChild(label)
+    li.appendChild(div)
+    return li
   }
 
-  label.htmlFor = input.id
+  const createNewModuleInputForm = (updateOL: Function, i: any) => {
+    const form = document.createElement("form")
 
-  div.appendChild(input)
-  div.appendChild(label)
-  li.appendChild(div)
-  return li
-}
+    const newModuleInput = document.createElement("input")
+    newModuleInput.type = "text"
+    newModuleInput.placeholder = i("play_sidebar_plugins_options_modules_placeholder")
+    newModuleInput.setAttribute("aria-labelledby", "custom-modules-header")
+    form.appendChild(newModuleInput)
 
-const createNewModuleInputForm = (updateOL: Function, i: any) => {
-  const form = document.createElement("form")
+    form.onsubmit = e => {
+      const ds = utils.createDesignSystem(form)
+      ds.declareRestartRequired(i)
 
-  const newModuleInput = document.createElement("input")
-  newModuleInput.type = "text"
-  newModuleInput.id = "gist-input"
-  newModuleInput.placeholder = i("play_sidebar_plugins_options_modules_placeholder")
-  form.appendChild(newModuleInput)
+      addCustomPlugin(newModuleInput.value)
+      e.stopPropagation()
+      updateOL()
+      return false
+    }
 
-  form.onsubmit = e => {
-    announceWeNeedARestart()
-    addCustomPlugin(newModuleInput.value)
-    e.stopPropagation()
-    updateOL()
-    return false
+    return form
   }
 
-  return form
+  return plugin
 }

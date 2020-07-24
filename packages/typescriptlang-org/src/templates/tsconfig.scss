@@ -17,6 +17,10 @@
     }
   }
 
+  article {
+    width: 100%;
+  }
+
   // Handles hash links with a sticky header
   a[name]:before {
     display: block;
@@ -30,7 +34,7 @@
     padding: 2rem;
   }
 
-  > div#full-option-list {
+  div#full-option-list {
     display: flex;
     flex-flow: row wrap;
     padding: 20px;
@@ -51,11 +55,7 @@
         font-size: 2rem;
         font-weight: 400;
         text-decoration: none;
-        color: black;
-
-        @media (prefers-color-scheme: dark) {
-          color: white;
-        }
+        color: var(--text-color);
       }
 
       ul {
@@ -69,11 +69,7 @@
         text-overflow: ellipsis;
 
         a {
-          color: rgb(20, 20, 20);
-
-          @media (prefers-color-scheme: dark) {
-            color: white;
-          }
+          color: var(--text-color);
         }
       }
     }
@@ -83,16 +79,18 @@
     position: sticky;
     top: 0px;
     z-index: 99999;
-    background-color: white;
+    background-color: var(--raised-background-color);
 
-    @media (prefers-color-scheme: dark) {
-      background-color: $ts-dark-bg-for-foreground-color;
-      border-color: black;
+    ul {
+      display: flex;
+      margin: 0;
     }
 
     @media (max-width: $screen-sm) {
       position: static;
-      flex-wrap: wrap;
+      ul {
+        flex-wrap: wrap;
+      }
 
       li {
         min-width: 120px;
@@ -108,12 +106,6 @@
 
     a {
       text-decoration: none;
-      // color: black;
-
-      @media (prefers-color-scheme: dark) {
-        background-color: $ts-dark-bg-for-foreground-color;
-        // border-color: black;
-      }
 
       &.current {
         border-bottom: 1px solid $ts-main-blue-color;
@@ -129,15 +121,40 @@
   .category {
     margin-top: 80px;
     margin-bottom: 40px;
+
+    > h2 {
+      > a {
+        &:focus {
+          outline: none;
+          background-color: black;
+          color: white;
+        }
+      }
+    }
   }
 
   .compiler-option {
     margin-bottom: 80px;
 
     > h3 {
-      margin-bottom: 0;
+      &:before {
+        display: block;
+        content: " ";
+        height: 150px;
+        margin-top: -150px;
+        visibility: hidden;
+      }
 
+      margin-bottom: 0;
       overflow-x: hidden;
+
+      > a {
+        &:focus {
+          outline: none;
+          background-color: black;
+          color: white;
+        }
+      }
     }
 
     .compiler-content {
@@ -148,6 +165,7 @@
         width: calc(100% - 250px);
         border-right: 1px solid gray;
         padding-right: 20px;
+        word-wrap: break-word;
 
         @media (max-width: $screen-xs) {
           border-right: none;
@@ -155,19 +173,29 @@
         }
       }
 
-      table.compiler-option-md {
+      ul.compiler-option-md {
         width: 220px;
         max-width: 220px;
         min-width: 200px;
         overflow-x: hidden;
         margin-left: 20px;
+        padding: 0;
         float: right;
-
+        span {
+          width: 100px;
+          display: block;
+          font-weight: 600;
+        }
+        li {
+          list-style: none;
+          margin-bottom: 12px;
+        }
         tr {
           padding: 10px 0;
         }
-        td > p {
+        li > p {
           margin: 0;
+          display: inline-block;
         }
       }
 
@@ -178,7 +206,7 @@
           width: 100%;
         }
 
-        table.compiler-option-md {
+        ul.compiler-option-md {
           width: 100%;
           margin-left: 0;
         }

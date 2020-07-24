@@ -5,7 +5,41 @@ permalink: /docs/handbook/configuring-watch.html
 oneline: How to configure the watch mode of TypeScript
 ---
 
-Compiler supports configuring how to watch files and directories using the environment variables.
+Compiler supports configuring how to watch files and directories using compiler flags in TypeScript 3.8+, and environment variables before that.
+
+## Background
+
+The `--watch` implementation of the compiler relies on using `fs.watch` and `fs.watchFile` which are provided by node, both of these methods have pros and cons.
+
+`fs.watch` uses file system events to notify the changes in the file/directory. But this is OS dependent and the notification is not completely reliable and does not work as expected on many OS. Also there could be limit on number of watches that can be created, eg. linux and we could exhaust it pretty quickly with programs that include large number of files. But because this uses file system events, there is not much CPU cycle involved. Compiler typically uses `fs.watch` to watch directories (eg. source directories included by config file, directories in which module resolution failed etc) These can handle the missing precision in notifying about the changes. But recursive watching is supported on only Windows and OSX. That means we need something to replace the recursive nature on other OS.
+
+`fs.watchFile` uses polling and thus involves CPU cycles. But this is the most reliable mechanism to get the update on the status of file/directory. Compiler typically uses `fs.watchFile` to watch source files, config files and missing files (missing file references) that means the CPU usage depends on number of files in the program.
+
+## Configuring file watching using a `tsconfig.json`
+
+```json
+{
+  // Some typical compiler options
+  "compilerOptions": {
+    "target": "es2020",
+    "moduleResolution": "node"
+    // ...
+  },
+
+  // NEW: Options for file/directory watching
+  "watchOptions": {
+    // Use native file system events for files and directories
+    "watchFile": "useFsEvents",
+    "watchDirectory": "useFsEvents",
+
+    // Poll files for updates more frequently
+    // when they're updated a lot.
+    "fallbackPolling": "dynamicPriority"
+  }
+}
+```
+
+You can read more about this in [the release notes](/docs/handbook/release-notes/typescript-3-8.html#better-directory-watching-on-linux-and-watchoptions).
 
 ## Configuring file watching using environment variable `TSC_WATCHFILE`
 
@@ -29,11 +63,3 @@ Option                                         | Description
 `RecursiveDirectoryUsingFsWatchFile`           | Use `fs.watchFile` to watch the directories and child directories which is a polling watch (consuming CPU cycles)
 `RecursiveDirectoryUsingDynamicPriorityPolling`| Use dynamic polling queue to poll changes to the directory and child directories.
 default (no value specified)                   | Use `fs.watch` to watch directories and child directories
-
-## Background
-
-`--watch` implementation of the compiler relies on `fs.watch` and `fs.watchFile` provided by node, both of these methods have pros and cons.
-
-`fs.watch` uses file system events to notify the changes in the file/directory. But this is OS dependent and the notification is not completely reliable and does not work as expected on many OS. Also there could be limit on number of watches that can be created, eg. linux and we could exhaust it pretty quickly with programs that include large number of files. But because this uses file system events, there is not much CPU cycle involved. Compiler typically uses `fs.watch` to watch directories (eg. source directories included by config file, directories in which module resolution failed etc) These can handle the missing precision in notifying about the changes. But recursive watching is supported on only Windows and OSX. That means we need something to replace the recursive nature on other OS.
-
-`fs.watchFile` uses polling and thus involves CPU cycles. But this is the most reliable mechanism to get the update on the status of file/directory. Compiler typically uses `fs.watchFile` to watch source files, config files and missing files (missing file references) that means the CPU usage depends on number of files in the program.
