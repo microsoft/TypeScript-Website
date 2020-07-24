@@ -55,7 +55,7 @@ export const Contributors = (props: ContributorsProps) => {
   )
 }
 
-const Avatars = (props: { data: typeof attribution["en/Advanced Types.md"] }) => {
+const Avatars = (props: { data: typeof attribution["copy/en/Advanced Types.md"] }) => {
   const showRest = props.data && props.data.total > props.data.top.length
   return <div>
     {props.data && props.data.top.map(t => {

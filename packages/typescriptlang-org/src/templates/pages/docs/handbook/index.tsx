@@ -22,7 +22,7 @@ type Props = {
 const HandbookIndex: React.FC<Props> = (props) => {
   const i = createInternational<typeof docCopy>(useIntl())
   const nav = getDocumentationNavForLanguage(props.pageContext.lang)
-  console.log(props.pageContext)
+
   return (
     <Layout title={i("doc_layout_title")} description={i("doc_layout_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
 

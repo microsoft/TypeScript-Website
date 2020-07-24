@@ -46,10 +46,9 @@ export const createDocumentationPages = async (
   const langs = fs
     .readdirSync(documentationCopyPath)
     .filter(f => fs.statSync(path.join(documentationCopyPath, f)).isDirectory())
-  console.log("langs", langs)
 
   const anyData = result.data as any
-  const docs = anyData.allFile.nodes
+  const docs = anyData.allFile.nodes as any
 
   const findWithPage = (item: NewNavItem, permalink: string) => {
     if (item.permalink === permalink) return item.id

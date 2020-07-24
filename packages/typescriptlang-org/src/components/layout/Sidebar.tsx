@@ -66,7 +66,6 @@ export const Sidebar = (props: Props) => {
   }, [])
 
   const RenderItem = (props: { item: NewNavItem, selectedID: string, openAllSectionsExceptWhatsNew?: boolean }) => {
-    console.log(props)
     const item = props.item
     if (!item.items) {
       // Is it the leaf in the nav?
