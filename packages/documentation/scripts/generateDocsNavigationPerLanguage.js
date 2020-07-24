@@ -177,7 +177,7 @@ for (const lang of langs) {
       }
       validateMarkdownFile(info, localPage);
       // Looks like: path/to/file.md
-      langMap.set(relativeToLangPath.slice(1), info);
+      langMap.set(relativeToLangPath.slice(1).replace(/\\/g, "/"), info);
     }
   }
 }
