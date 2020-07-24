@@ -1,31 +1,32 @@
 //// { compiler: { ts: "3.8.3" } }
-// In previous versions of TypeScript, the checker would not
-// verify that undeclared fields in a union conform to any indexed
-// types in the union.
+// 以前のバージョンのTypeScriptでは、
+// インデックスシグネチャを含む共用体に宣言されていないフィールドについて
+// 型チェックが行われませんでした
 
-// You can learn about indexed types here: example:indexed-types
+// インデックスシグネチャについてはこちら: example:indexed-types
+// を参照してください。
 
-// For example, the TimingCache below indicates that any
-// key on the object will be a number:
+// 例えば、以下のIdentifierCacheは、
+// オブジェクトのすべてのキーが、numberであることを表しています。
 
 type IdentifierCache = { [key: string]: number };
 
-// Meaning this will fail, because 'file_a' has a
-// string value
+// つまり、以下の例は型チェックエラーとなります。
+// 'file_a'のキーにstringの値が設定されているためです。
 
 const cacheWithString: IdentifierCache = { file_a: "12343" };
 
-// However, when you put that into a union, then the
-// validation check would not happen:
+// しかし、IdentifierCacheを共用体に含めると、
+// 以前は、型チェックが行われませんでした。
 
 let userCache: IdentifierCache | { index: number };
 userCache = { file_one: 5, file_two: "abc" };
 
-// This is fixed, and there would be an error about
-// 'file_two' from the compiler.
+// こちらが修正され、型チェックにより、
+// 'file_two'のキーについてのエラーが出るようになりました。
 
-// This also takes into account when the key is a different
-// type, for example: ([key: string] and [key: number])
+// この型チェックは、キーの型が異なる場合にも考慮に入れられています。
+// 例: ([key: string] and [key: number])
 
 type IdentifierResponseCache = { [key: number]: number };
 
