@@ -184,10 +184,10 @@ for (const lang of langs) {
 
 const codeForTheHandbook = [
   `
-export function getDocumentationNavForLanguage(langRequest: string): NewNavItem[] {
+export function getDocumentationNavForLanguage(langRequest: string): SidebarNavItem[] {
   const langs = ['${langs.join("', '")}']
   const lang = langs.includes(langRequest) ? langRequest : "en"
-  const navigations: Record<string, NewNavItem[]> = {} 
+  const navigations: Record<string, SidebarNavItem[]> = {} 
 `,
 ];
 
