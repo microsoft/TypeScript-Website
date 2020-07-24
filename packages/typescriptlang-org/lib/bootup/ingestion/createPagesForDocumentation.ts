@@ -12,7 +12,7 @@ export const createDocumentationPages = async (
   graphql: CreatePagesArgs["graphql"],
   createPage: NodePluginArgs["actions"]["createPage"]
 ) => {
-  const handbookPage = path.resolve(`./src/templates/handbook.tsx`)
+  const handbookPage = path.resolve(`./src/templates/documentation.tsx`)
   const result = await graphql(`
     query GetAllHandbookDocs {
       allFile(

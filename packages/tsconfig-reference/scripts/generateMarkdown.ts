@@ -265,7 +265,7 @@ languages.forEach((lang) => {
           const optionValue = option.related
             .map(
               (r) =>
-                `<a href='${r}' aria-label="Jump to compiler option info for ${r}" ><code>${r}</code></a>`
+                `<a href='#${r}' aria-label="Jump to compiler option info for ${r}" ><code>${r}</code></a>`
             )
             .join(", ");
           mdTableRows.push(["Related", optionValue]);
