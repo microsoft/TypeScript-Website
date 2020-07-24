@@ -9,7 +9,7 @@ import { Intl } from "../components/Intl"
 // This dependency is used in gatsby-remark-autolink-headers to generate the slugs
 import slugger from "github-slugger"
 
-import "./handbook.scss"
+import "./documentation.scss"
 import "./markdown.scss"
 
 import { NextPrev } from "../components/handbook/NextPrev"

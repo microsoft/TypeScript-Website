@@ -3,10 +3,10 @@ import { Link } from "gatsby"
 
 import "./Sidebar.scss"
 import { onAnchorKeyDown, onButtonKeydown } from "./Sidebar-keyboard"
-import { NewNavItem } from "../../lib/documentationNavigation"
+import { SidebarNavItem } from "../../lib/documentationNavigation"
 
 export type Props = {
-  navItems: NewNavItem[]
+  navItems: SidebarNavItem[]
   selectedID: string
   openAllSectionsExceptWhatsNew?: true
 }
@@ -65,7 +65,7 @@ export const Sidebar = (props: Props) => {
     })
   }, [])
 
-  const RenderItem = (props: { item: NewNavItem, selectedID: string, openAllSectionsExceptWhatsNew?: boolean }) => {
+  const RenderItem = (props: { item: SidebarNavItem, selectedID: string, openAllSectionsExceptWhatsNew?: boolean }) => {
     const item = props.item
     if (!item.items) {
       // Is it the leaf in the nav?
@@ -82,7 +82,7 @@ export const Sidebar = (props: Props) => {
       </li>
     } else {
       // Has children
-      const findSelected = (item: NewNavItem) => {
+      const findSelected = (item: SidebarNavItem) => {
         if (item.id === props.selectedID) return true
         if (!item.items) return false
         for (const subItem of item.items) {

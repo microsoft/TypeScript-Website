@@ -3,7 +3,7 @@ import { Layout } from "../../../../components/layout"
 import { Link } from "gatsby"
 
 import "../../css/documentation.scss"
-import "../../../handbook.scss"
+import "../../../documentation.scss"
 
 import { Intl } from "../../../../components/Intl"
 

@@ -5,7 +5,7 @@ import {
   getDocumentationNavForLanguage,
   getNextPageID,
   getPreviousPageID,
-  NewNavItem,
+  SidebarNavItem,
 } from "../../../src/lib/documentationNavigation"
 
 export const createDocumentationPages = async (
@@ -50,7 +50,7 @@ export const createDocumentationPages = async (
   const anyData = result.data as any
   const docs = anyData.allFile.nodes as any
 
-  const findWithPage = (item: NewNavItem, permalink: string) => {
+  const findWithPage = (item: SidebarNavItem, permalink: string) => {
     if (item.permalink === permalink) return item.id
     if (!item.items) return false
     for (const subItem of item.items) {

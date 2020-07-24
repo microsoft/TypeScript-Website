@@ -77,7 +77,6 @@ const handbookPages = [
       { file: "Variable Declarations.md" },
     ],
   },
-
   {
     title: "Tutorials",
     summary: "Using TypeScript in several environments.",
@@ -230,13 +229,13 @@ for (const lang of langs) {
           `);
           addItems(subItem);
           codeForTheHandbook.push(",");
-        } else {
+        } else if ("file" in subItem) {
           // It's a file reference
           const subNavInfo =
             langInfo[lang].get(subItem.file) ||
             langInfo["en"].get(subItem.file);
 
-          if (!subNavInfo) throwForUnfoundFile(subItem, lang);
+          if (!subNavInfo) throwForUnfoundFile(subItem, lang, langInfo["en"]);
 
           codeForTheHandbook.push(`
             title: "${subNavInfo.data.short || subNavInfo.data.title}",
@@ -271,8 +270,6 @@ codeForTheHandbook.push(`
   return navigations[lang]
 }`);
 
-// console.log(codeForTheHandbook.join("\n"));
-
 // prettier-ignore
 const pathToFileWeEdit = join(__dirname, "..", "..", "typescriptlang-org", "src", "lib", "documentationNavigation.ts");
 const startMarker = "/** ---INSERT--- */";
@@ -291,8 +288,6 @@ writeFileSync(
   pathToFileWeEdit,
   format(newCode, { filepath: pathToFileWeEdit })
 );
-
-/// ------------------
 
 /**
  * @typedef {Object} HandbookNavSubItem
@@ -335,10 +330,10 @@ function validateMarkdownFile(info, filepath) {
   }
 }
 
-function throwForUnfoundFile(subItem, lang) {
-  throw new Error(
-    `Could not find the file '${subItem.file}' from the handbook nav in either ${lang} or 'en'`
-  );
+function throwForUnfoundFile(subItem, lang, langInfo) {
+  const keys = [...langInfo.keys()];
+  // prettier-ignore
+  throw new Error(`Could not find the file '${subItem.file}' from the handbook nav in either ${lang} or 'en' - has: ${keys.join(", ")}`);
 }
 
 function fillReleaseInfo() {

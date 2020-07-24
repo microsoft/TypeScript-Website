@@ -44,7 +44,6 @@ readdirSync(handbookPath, "utf-8").forEach((path) => {
   const md = readMarkdownFile(filePath);
   // prettier-ignore
   if (!md.data.permalink) throw new Error(`${path} in the handbook did not have a permalink in the yml header`);
-
   const id = md.data.permalink;
   markdowns.set(id, md);
 });
@@ -101,9 +100,9 @@ const startEpub = async () => {
   });
   epub.write(Streampub.newChapter(bookMetadata.title, editedIntro, 0));
 
-  for (const item of handbook.items) {
-    const index = handbook.items.indexOf(item) + 1;
-    await addHandbookPage(epub, item.id, index);
+  for (const item of handbook!.items!) {
+    const index = handbook!.items!.indexOf(item) + 1;
+    await addHandbookPage(epub, item.permalink!, index);
   }
 
   epub.end();
