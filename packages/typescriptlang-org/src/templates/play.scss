@@ -425,18 +425,30 @@ main #editor-toolbar {
         border: none;
         cursor: pointer;
         outline: inherit;
+        position: relative;
+
+        .plugin-tab-notification {
+          position: absolute;
+          top: -8px;
+          right: -10px;
+          background-color: $ts-muted-red;
+          color: white;
+          padding: 0 4px;
+          height: 20px;
+          border-radius: 20px;
+          text-align: right;
+        }
 
         &:disabled {
           opacity: 0.4;
         }
 
         &.active {
-          border-bottom: 1px solid $ts-main-blue-darker-color;
+          border-bottom: 1px solid var(--link-color);
         }
 
         &:focus {
-          color: $ts-main-blue-darker-color;
-          border-bottom: 1px solid black;
+          color: var(--link-color);
         }
       }
     }
