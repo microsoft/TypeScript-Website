@@ -1,10 +1,9 @@
 //// { compiler: { ts: "3.8.3" } }
 // 以前のバージョンのTypeScriptでは、
 // インデックスシグネチャを含む共用体に宣言されていないフィールドについて
-// 型チェックが行われませんでした
+// 型チェックが行われませんでした。
 
 // インデックスシグネチャについてはこちら: example:indexed-types
-// を参照してください。
 
 // 例えば、以下のIdentifierCacheは、
 // オブジェクトのすべてのキーが、numberであることを表しています。
@@ -22,10 +21,10 @@ const cacheWithString: IdentifierCache = { file_a: "12343" };
 let userCache: IdentifierCache | { index: number };
 userCache = { file_one: 5, file_two: "abc" };
 
-// こちらが修正され、型チェックにより、
+// こちらが修正され、コンパイラーから
 // 'file_two'のキーについてのエラーが出るようになりました。
 
-// この型チェックは、キーの型が異なる場合にも考慮に入れられています。
+// この型チェックは、キーの型が異なる場合も考慮に入れられています。
 // 例: ([key: string] and [key: number])
 
 type IdentifierResponseCache = { [key: number]: number };
