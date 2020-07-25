@@ -5,7 +5,7 @@
 
 // You can learn about indexed types here: example:indexed-types
 
-// For example, the TimingCache below indicates that any
+// For example, the IdentifierCache below indicates that any
 // key on the object will be a number:
 
 type IdentifierCache = { [key: string]: number };
