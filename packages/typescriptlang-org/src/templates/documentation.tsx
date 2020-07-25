@@ -1,19 +1,18 @@
 import React, { useEffect } from "react"
 import { graphql } from "gatsby"
-import { GetHandbookBySlugQuery } from "../__generated__/gatsby-types"
+import { GetDocumentBySlugQuery } from "../__generated__/gatsby-types"
 import { Layout } from "../components/layout"
 import { Sidebar, SidebarToggleButton } from "../components/layout/Sidebar"
-import { handbookNavigation } from "../lib/handbookNavigation"
+import { getDocumentationNavForLanguage } from "../lib/documentationNavigation"
 import { Intl } from "../components/Intl"
 
 // This dependency is used in gatsby-remark-autolink-headers to generate the slugs
 import slugger from "github-slugger"
 
-import "./handbook.scss"
+import "./documentation.scss"
 import "./markdown.scss"
 
 import { NextPrev } from "../components/handbook/NextPrev"
-import { idFromURL } from "../../lib/bootup/ingestion/createPagesForOldHandbook"
 import { createInternational } from "../lib/createInternational"
 import { useIntl } from "react-intl"
 import { createIntlLink } from "../components/IntlLink"
@@ -23,7 +22,8 @@ import { Contributors } from "../components/handbook/Contributors"
 
 type Props = {
   pageContext: {
-    isOldHandbook: boolean
+    // This is only set up if it's in the handbook nav
+    id: string | undefined
     nextID: string
     previousID: string
     repoPath: string
@@ -31,7 +31,7 @@ type Props = {
     lang: string
     modifiedTime: string
   }
-  data: GetHandbookBySlugQuery
+  data: GetDocumentBySlugQuery
   path: string
 }
 
@@ -105,11 +105,12 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   if (!post.frontmatter) throw new Error(`No front-matter found for the file with props: ${props}`)
   if (!post.html) throw new Error(`No html found for the file with props: ${props}`)
 
-  const selectedID = idFromURL(post.frontmatter.permalink!)
+  const selectedID = props.pageContext.id || "NO-ID"
   const showSidebar = !post.frontmatter.disable_toc && post.headings && !!post.headings.length && post.headings.length <= 30
+  const navigation = getDocumentationNavForLanguage(props.pageContext.lang)
 
   return (
-    <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneline || ""} lang="en" allSitePage={props.data.allSitePage}>
+    <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
       <section id="doc-layout">
         <SidebarToggleButton />
         <noscript>
@@ -121,7 +122,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
         ` }} />
         </noscript>
 
-        <Sidebar navItems={handbookNavigation} selectedID={selectedID} />
+        <Sidebar navItems={navigation} selectedID={selectedID} />
         <div id="handbook-content" role="article">
           <h2>{post.frontmatter.title}</h2>
           <article>
@@ -157,7 +158,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
 export default (props: Props) => <Intl locale={props.pageContext.lang}><HandbookTemplate {...props} /></Intl>
 
 export const pageQuery = graphql`
-  query GetHandbookBySlug($slug: String!, $previousID: String, $nextID: String) {
+  query GetDocumentBySlug($slug: String!, $previousID: String, $nextID: String) {
     ...AllSitePage
     
     markdownRemark(frontmatter: { permalink: {eq: $slug}}) {

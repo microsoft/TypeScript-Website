@@ -10,7 +10,7 @@ nav#sidebar {
   color: var(--alt-text-color);
 
   /* "Basically a section of documentation */
-  > ul {
+  ul {
     position: sticky;
     top: 0;
     margin: 0;
@@ -22,7 +22,7 @@ nav#sidebar {
       overflow-x: hidden;
     }
 
-    > li {
+    li {
       // Mostly stuff for all of the links
       list-style: none;
       padding: 0;
@@ -65,11 +65,15 @@ nav#sidebar {
           right: 20px;
         }
       }
+
+      ul ul {
+        margin-left: 0.2rem;
+      }
     }
   }
 
   // Still looking at the highest level of navigation
-  > ul > li {
+  ul li {
     &.highlighted {
       background-color: var(--sidebar-list-active-background-color);
 
@@ -81,7 +85,7 @@ nav#sidebar {
     // When the dropdown for a section is showing
     &.open {
       // Hide the sideways SVG
-      span.closed {
+      > button > span.closed {
         display: none;
       }
     }
@@ -98,16 +102,16 @@ nav#sidebar {
     }
   }
 
-  > ul > li.open > ul {
+  ul li.open > ul {
     background-color: var(--sidebar-list-background-color);
   }
 
-  > ul > li.open.highlighted > ul {
+  ul li.open.highlighted ul {
     background-color: var(--sidebar-list-active-background-color);
   }
 
   // Individual pages
-  > ul > li > ul {
+  ul li ul {
     margin: 0;
     padding: 0;
 
@@ -121,7 +125,7 @@ nav#sidebar {
       padding-bottom: 0.5rem;
     }
 
-    > li {
+    li {
       list-style: none;
 
       a {
@@ -221,7 +225,6 @@ nav#sidebar {
     & > ul > li,
     & > ul > li > button {
       font-size: 1.3rem;
-      height: auto;
     }
   }
 }

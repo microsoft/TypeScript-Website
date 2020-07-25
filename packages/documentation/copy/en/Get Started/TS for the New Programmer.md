@@ -1,5 +1,6 @@
 ---
 title: TypeScript for the New Programmer
+short: TS for the New Programmer
 layout: docs
 permalink: /docs/handbook/typescript-from-scratch.html
 oneline: Learn TypeScript from scratch
@@ -26,9 +27,9 @@ The "run anywhere" nature of JS makes it an attractive choice for cross-platform
 There are many developers these days that use _only_ JavaScript to program their entire stack!
 
 To summarize, we have a language that was designed for quick uses, and then grew to a full-fledged tool to write applications with millions of lines.
-Every language has its own _quirks_ — oddities and surprises, and JavaScript's humble beginning makes it have _many_ of these.  Some examples:
+Every language has its own _quirks_ — oddities and surprises, and JavaScript's humble beginning makes it have _many_ of these. Some examples:
 
-* JavaScript's equality operator (`==`) _coerces_ its arguments, leading to unexpected behavior:
+- JavaScript's equality operator (`==`) _coerces_ its arguments, leading to unexpected behavior:
 
   ```js
   if ("" == 0) {
@@ -39,7 +40,7 @@ Every language has its own _quirks_ — oddities and surprises, and JavaScript's
   }
   ```
 
-* JavaScript also allows accessing properties which aren't present:
+- JavaScript also allows accessing properties which aren't present:
 
   ```js
   const obj = { width: 10, height: 15 };
@@ -137,6 +138,7 @@ The bottom line is that while you might see type errors during compilation, the 
 
 Finally, TypeScript doesn't provide any additional runtime libraries.
 Your programs will use the same standard library (or external libraries) as JavaScript programs, so there's no additional TypeScript-specific framework to learn.
+
 <!--
 Should extend this paragraph to say that there's an exception of
 allowing you to use newer JS features and transpile the code to an older

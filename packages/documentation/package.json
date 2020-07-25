@@ -1,0 +1,15 @@
+{
+  "name": "documentation",
+  "private": true,
+  "license": "MIT",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "echo 'NOOP'",
+    "test": "echo 'NOOP'",
+    "create-handbook-nav": "node ./scripts/generateTypesForFilesInDocs && node ./scripts/generateDocsNavigationPerLanguage.js",
+    "bootstrap": "yarn create-handbook-nav && node ./scripts/generateAttribution.js"
+  },
+  "prettier": {
+    "semi": true
+  }
+}

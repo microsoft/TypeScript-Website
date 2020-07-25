@@ -1,6 +1,6 @@
 /**
     Updates the JSON file `attribution.json` with contributors based on commits to files, to run:
-    yarn workspace handbook-v1 bootstrap
+    yarn workspace documentation bootstrap
 */
 const { execSync } = require("child_process");
 const path = require("path");
@@ -67,7 +67,7 @@ const getAuthorsForFile = (filepath) => {
   return [...objs.values()];
 };
 
-const allFiles = recursiveReadDirSync("en/");
+const allFiles = recursiveReadDirSync("copy/");
 // const allFiles = ["en/JSDoc Supported Types.md"];
 
 const json = {};

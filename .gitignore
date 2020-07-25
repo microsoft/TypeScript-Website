@@ -67,7 +67,7 @@ typings/
 dist
 
 .lighthouserc.json
-packages/handbook-v1/output/attribution.json
+packages/documentation/output/attribution.json
 
 .yarn/cache
 .yarn/unplugged

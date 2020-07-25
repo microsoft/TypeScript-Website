@@ -9294,6 +9294,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"documentation@workspace:packages/documentation":
+  version: 0.0.0-use.local
+  resolution: "documentation@workspace:packages/documentation"
+  languageName: unknown
+  linkType: soft
+
 "dom-converter@npm:^0.2":
   version: 0.2.0
   resolution: "dom-converter@npm:0.2.0"
@@ -12842,12 +12848,6 @@ fsevents@~2.1.2:
     fs-jetpack: ^2.4.0
     streampub: "https://github.com/orta/streampub-1.git#ibooks"
     ts-node: "*"
-  languageName: unknown
-  linkType: soft
-
-"handbook-v1@workspace:packages/handbook-v1":
-  version: 0.0.0-use.local
-  resolution: "handbook-v1@workspace:packages/handbook-v1"
   languageName: unknown
   linkType: soft
 

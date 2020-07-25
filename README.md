@@ -70,7 +70,7 @@ yarn workspace tsconfig-reference run generate-json
 yarn workspace tsconfig-reference run generate-markdown
 ```
 
-Validate the docs
+Validate the docs:
 
 ```sh
 yarn workspace tsconfig-reference run test
@@ -82,7 +82,7 @@ yarn workspace tsconfig-reference run lint
 yarn workspace tsconfig-reference run lint resolveJson
 ```
 
-## Handbook V1
+## Documentation
 
 The docs for TypeScript. Originally ported over from [microsoft/TypeScript-Handbook](https://github.com/microsoft/TypeScript-Handbook/) then intermingled with [microsoft/TypeScript-New-Handbook](https://github.com/microsoft/TypeScript-New-Handbook), and finally updated for [Twoslash](http://www.staging-typescript.org/dev/twoslash/) and with new content.
 

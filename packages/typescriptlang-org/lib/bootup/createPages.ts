@@ -1,5 +1,5 @@
 import { setupRedirects } from "../../src/redirects/setupRedirects"
-import { createOldHandbookPages } from "./ingestion/createPagesForOldHandbook"
+import { createDocumentationPages } from "./ingestion/createPagesForDocumentation"
 import { createTSConfigReference } from "./ingestion/createTSConfigReference"
 
 import { GatsbyNode } from "gatsby"
@@ -13,7 +13,7 @@ export const createPages: GatsbyNode["createPages"] = async args => {
   // creation of the pages
 
   setupRedirects(args.actions.createRedirect)
-  await createOldHandbookPages(args.graphql, args.actions.createPage)
+  await createDocumentationPages(args.graphql, args.actions.createPage)
   await createTSConfigReference(args.graphql, args.actions.createPage)
   await createPlaygrounds(args.graphql, args.actions.createPage)
 

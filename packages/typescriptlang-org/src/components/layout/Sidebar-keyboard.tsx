@@ -1,12 +1,14 @@
 import { KeyboardEventHandler } from "react"
 import { getTagFromParents } from "./Sidebar"
 
+const UpArrow = 38
+const DownArrow = 40
+
 const childOfType = (tag: string, element: any) => {
   let found: HTMLElement | undefined
   for (const e of element.children) {
     if (e.nodeName === tag.toUpperCase()) found = e
   }
-  if (!found) throw new Error(`Could not find a ${tag} in the children of ${element.tagName}`)
   return found
 }
 
@@ -16,29 +18,64 @@ const childOfType = (tag: string, element: any) => {
  */
 export const onAnchorKeyDown: KeyboardEventHandler = (event) => {
   const li = getTagFromParents("li", event.target as any);
+
   // Up, and jump into section headers
-  if (event.keyCode == 38) {
+  if (event.keyCode == UpArrow) {
     const aboveLI = li.previousElementSibling;
-    if (aboveLI)
-      childOfType("a", aboveLI).focus();
-    else {
+    const a = aboveLI && childOfType("a", aboveLI)
+    const button = aboveLI && childOfType("button", aboveLI)
+
+    if (a) {
+      // next link
+      a.focus()
+    } else if (aboveLI && button) {
+      // Jump to the subnav above, either at the bottom item if open or 
+      // the main button otherwise
+      const open = aboveLI.classList.contains("open")
+      if (open) {
+        const listOfLinks = childOfType("ul", aboveLI)!
+        const lastLI = listOfLinks.lastElementChild
+        childOfType("a", lastLI)!.focus();
+      } else {
+        button.focus()
+      }
+    } else {
+      // at the top 
       const sectionHostingLI = getTagFromParents("li", li);
-      childOfType("button", sectionHostingLI).focus();
+      childOfType("button", sectionHostingLI)!.focus();
     }
+
     event.preventDefault();
   }
 
   // Down, and jump into section header belows
-  if (event.keyCode === 40) {
+  if (event.keyCode === DownArrow) {
     const belowLI = li.nextElementSibling;
-    if (belowLI)
-      childOfType("a", belowLI).focus();
+    const a = belowLI && childOfType("a", belowLI)
+    const button = belowLI && childOfType("button", belowLI)
 
-    else {
-      const sectionHostingCurrentLI = getTagFromParents("li", li);
-      const nextLI = sectionHostingCurrentLI.nextElementSibling;
-      childOfType("button", nextLI).focus();
+    if (a) {
+      // next link
+      a.focus()
+    } else if (button) {
+      // potential subnav above
+      button.focus()
+    } else {
+      // at the bottom 
+      const sectionHostingLI = getTagFromParents("li", li);
+      const nextLI = sectionHostingLI.nextElementSibling;
+      const a = nextLI && childOfType("a", nextLI)
+      const button = nextLI && childOfType("button", nextLI)
+
+      if (a) {
+        // next link
+        a.focus()
+      } else if (button) {
+        // potential subnav above
+        button.focus()
+      }
     }
+
     event.preventDefault();
   }
 }
@@ -52,37 +89,59 @@ export const onButtonKeydown: KeyboardEventHandler = (event) => {
   const li = getTagFromParents("li", event.target as any);
   // Up, either go to the bottom of the a's in the section above 
   // if it's open or jump to the previous sibling button
-  if (event.keyCode == 38) {
+  if (event.keyCode == UpArrow) {
     const aboveLI = li.previousElementSibling;
-
     if (!aboveLI) return; // Hit the top
-    const open = aboveLI.classList.contains("open")
-    if (open) {
-      // Need to jump to last a in above section
-      const listOfLinks = childOfType("ul", aboveLI)
-      const lastLI = listOfLinks.lastElementChild
-      childOfType("a", lastLI).focus();
 
+    const a = aboveLI && childOfType("a", aboveLI)
+    const button = aboveLI && childOfType("button", aboveLI)
+
+    if (a) {
+      // next link
+      a.focus()
+    } else if (button) {
+      // potential subnav above
+      const open = aboveLI.classList.contains("open")
+      if (open) {
+        const listOfLinks = childOfType("ul", aboveLI)!
+        const lastLI = listOfLinks.lastElementChild
+        childOfType("a", lastLI)!.focus();
+      } else {
+        button.focus()
+      }
     } else {
-      childOfType("button", aboveLI).focus();
+      // at the top 
+      const sectionHostingLI = getTagFromParents("li", li);
+      childOfType("button", sectionHostingLI)!.focus();
     }
-    // aboveLI.firstElementChild.focus();
 
     event.preventDefault();
   }
 
   // Down, and jump into section header belows
-  if (event.keyCode == 40) {
+  if (event.keyCode == DownArrow) {
+
     const open = li.classList.contains("open")
     if (open) {
       // Need to jump to first in the section
-      const listOfLinks = childOfType("ul", li)
+      const listOfLinks = childOfType("ul", li)!
       const lastLI = listOfLinks.firstElementChild
-      childOfType("a", lastLI).focus();
+      childOfType("a", lastLI)!.focus();
 
     } else {
       const belowLI = li.nextElementSibling;
-      if (belowLI) childOfType("button", belowLI).focus();
+      if (belowLI) {
+        const a = belowLI && childOfType("a", belowLI)
+        const button = belowLI && childOfType("button", belowLI)
+
+        if (a) {
+          // next link
+          a.focus()
+        } else if (button) {
+          // potential subnav above
+          button.focus()
+        }
+      }
     }
     event.preventDefault();
   }
