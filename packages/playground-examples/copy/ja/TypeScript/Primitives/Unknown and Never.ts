@@ -1,14 +1,14 @@
-// Unknown
+// unknown型
 
-// Unknown is one of those types that once it clicks, you
-// can find quite a lot of uses for it. It acts like a sibling
-// to the any type. Where any allows for ambiguity - unknown
-// requires specifics.
+// unknown型は、非常に多くの箇所で使用されています。
+// unknown型は、any型とよく似た振る舞いをします。
+// 違いは、anyは曖昧なままでも使用できますが、 unknownは
+// 詳細を必要とする点です。
 
-// A good example would be in wrapping a JSON parser. JSON
-// data can come in many different forms and the creator
-// of the json parsing function won't know the shape of the
-// data - the person calling that function should.
+// JSONパーサーのWrapperは良い例です。
+// JSONのデータは、多種多様であるため、JSONパーサーの作者は、
+// データがどのような形になっているのかを知ることはできません。
+// データの形は、パーサーを呼び出す利用者が知っているべきなのです。
 
 const jsonParser = (jsonString: string) => JSON.parse(jsonString);
 
@@ -17,10 +17,10 @@ const myAccount = jsonParser(`{ "name": "Dorothea" }`);
 myAccount.name;
 myAccount.email;
 
-// If you hover on jsonParser, you can see that it has the
-// return type of any, so then does myAccount. It's possible
-// to fix this with Generics - but it's also possible to fix
-// this with unknown.
+// 変数jsonParserにカーソルを合わせると、戻り値の型がany型であることがわかります。
+// そして、変数myAccountも同様にany型になります。
+// こちらについて、ジェネリクスを使って型付けすることもできますが、
+// unknown型を使うことによっても修正できます。
 
 const jsonParserUnknown = (jsonString: string): unknown => JSON.parse(jsonString);
 
@@ -28,64 +28,62 @@ const myOtherAccount = jsonParserUnknown(`{ "name": "Samuel" }`);
 
 myOtherAccount.name;
 
-// The object myOtherAccount cannot be used until the type has
-// been declared to TypeScript. This can be used to ensure
-// that API consumers think about their typing up-front:
+// myOtherAccountの型をTypeScriptに示すまでは、myOtherAccountのプロパティを使用する
+// ことができません。こうすることによって、APIの使用者に、型について前もって
+// 考えさせることができます。
 
 type User = { name: string };
 const myUserAccount = jsonParserUnknown(`{ "name": "Samuel" }`) as User;
 myUserAccount.name;
 
-// Unknown is a great tool, to understand it more read these:
+// unknown型はとても優れたツールです。
+// unknown型をより深く理解したい場合はこれらを参照してください。
 // https://mariusschulz.com/blog/the-unknown-type-in-typescript
 // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type
 
-// Never
+// never型
 
-// Because TypeScript supports code flow analysis, the language
-// needs to be able to represent when code logically cannot
-// happen. For example, this function cannot return:
+// TypeScriptは、データフローの解析をサポートしているため、
+// 論理的に絶対に発生しないコードを表現することができる必要があります。
+// 例えば、こちらの関数は絶対にreturnされません。
 
 const neverReturns = () => {
-  // If it throws on the first line
-  throw new Error("Always throws, never returns");
+  // 1行目で例外を投げる場合
+  throw new Error("必ず例外が投げられるので、戻り値は返りません");
 };
 
-// If you hover on the type, you see it is a () => never
-// which means it should never happen. These can still be
-// passed around like other values:
+// この関数にカーソルを合わせると、型が () => neverとなっていることがわかります。
+// つまり、この関数は絶対にreturnされません。
+// neverは、他の値と同様に、代入することは可能です。
 
 const myValue = neverReturns();
 
-// Having a function never return can be useful when dealing
-// with the unpredictability of the JavaScript runtime and
-// API consumers that might not be using types:
+// never型を返す関数は、JavaScriptランタイムの予想できない挙動に
+// 対応する場合や、APIの利用者が、型を使わない可能性がある場合に有用です。
 
 const validateUser = (user: User) => {
   if (user) {
     return user.name !== "NaN";
   }
-
-  // According to the type system, this code path can never
-  // happen, which matches the return type of neverReturns.
+  // 型システム的には、このコードは絶対に実行されません。
+  // つまり、関数neverReturnsの戻り値の型(never型)に合致します。
 
   return neverReturns();
 };
 
-// The type definitions state that a user has to be passed in
-// but there are enough escape valves in JavaScript whereby
-// you can't guarantee that.
+// この関数の型定義では、引数userが必ず渡されることになっていますが、
+// JavaScriptには様々な抜け道があるので、それを保証することはできません。
 
-// Using a function which returns never allows you to add
-// additional code in places which should not be possible.
-// This is useful for presenting better error messages,
-// or closing resources like files or loops.
+// 上記の例のようにnever型を返す関数を使うことで、実行される可能性がない箇所に
+// コードを追加することができます。
+// これは、より良いエラーメッセージを表示したい場合や、ファイルや
+// ループなどのリソースをクローズしたい場合などで有用です。
 
-// A very popular use for never, is to ensure that a
-// switch is exhaustive. E.g., that every path is covered.
+// とてもよくあるnever型の使われ方として、
+// switch文でのすべてのパスが網羅されていることのチェックがあります。
 
-// Here's an enum and an exhaustive switch, try adding
-// a new option to the enum (maybe Tulip?)
+// 以下は、enumと、neverによってすべてのパスが網羅されているswith文の例です。
+// 試しにFlowerに新しいオプションを追加してみてください(例: Tulipなど)
 
 enum Flower {
   Rose,
@@ -111,18 +109,17 @@ const flowerLatinName = (flower: Flower) => {
   }
 };
 
-// You will get a compiler error saying that your new
-// flower type cannot be converted into never.
+// 新しく追加したオプションの型は、never型に変換できない
+// というエラーが表示されるはずです。
 
-// Never in Unions
+// 共用体でのnever型
 
-// A never is something which is automatically removed from
-// a type union.
+// 共用体では、never型は自動的に取り除かれます。
 
 type NeverIsRemoved = string | never | number;
 
-// If you look at the type for NeverIsRemoved, you see that
-// it is string | number. This is because it should never
-// happen at runtime because you cannot assign to it.
+// NeverIsRemovedの型をみてみると、string | number になっています。
+// これは、never型の代入は実行時には絶対に起こらないためです。
 
-// This feature is used a lot in example:conditional-types
+// この特徴は、Conditinal Typesで良く使われています。 example:conditional-types
+
