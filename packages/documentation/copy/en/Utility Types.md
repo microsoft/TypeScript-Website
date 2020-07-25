@@ -220,7 +220,7 @@ class C {
 
 type T0 = InstanceType<typeof C>; // C
 type T1 = InstanceType<any>; // any
-type T2 = InstanceType<never>; // any
+type T2 = InstanceType<never>; // never
 type T3 = InstanceType<string>; // Error
 type T4 = InstanceType<Function>; // Error
 ```
