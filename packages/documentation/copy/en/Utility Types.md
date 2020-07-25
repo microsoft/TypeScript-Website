@@ -168,11 +168,11 @@ declare function f1(arg: { a: number; b: string }): void;
 type T0 = Parameters<() => string>; // []
 type T1 = Parameters<(s: string) => void>; // [string]
 type T2 = Parameters<<T>(arg: T) => T>; // [unknown]
-type T4 = Parameters<typeof f1>; // [{ a: number, b: string }]
-type T5 = Parameters<any>; // unknown[]
-type T6 = Parameters<never>; // never
-type T7 = Parameters<string>; // Error
-type T8 = Parameters<Function>; // Error
+type T3 = Parameters<typeof f1>; // [{ a: number, b: string }]
+type T4 = Parameters<any>; // unknown[]
+type T5 = Parameters<never>; // never
+type T6 = Parameters<string>; // Error
+type T7 = Parameters<Function>; // Error
 ```
 
 # `ConstructorParameters<T>`
@@ -184,7 +184,7 @@ The `ConstructorParameters<T>` type lets us extract all parameter types of a con
 ```ts
 type T0 = ConstructorParameters<ErrorConstructor>; // [(string | undefined)?]
 type T1 = ConstructorParameters<FunctionConstructor>; // string[]
-type T2 = ConstructorParameters<RegExpConstructor>; // [string, (string | undefined)?]
+type T2 = ConstructorParameters<RegExpConstructor>; // [string | RegExp, (string | undefined)?]
 ```
 
 # `ReturnType<T>`
@@ -201,7 +201,7 @@ type T2 = ReturnType<<T>() => T>; // {}
 type T3 = ReturnType<<T extends U, U extends number[]>() => T>; // number[]
 type T4 = ReturnType<typeof f1>; // { a: number, b: string }
 type T5 = ReturnType<any>; // any
-type T6 = ReturnType<never>; // any
+type T6 = ReturnType<never>; // never
 type T7 = ReturnType<string>; // Error
 type T8 = ReturnType<Function>; // Error
 ```
@@ -220,7 +220,7 @@ class C {
 
 type T0 = InstanceType<typeof C>; // C
 type T1 = InstanceType<any>; // any
-type T2 = InstanceType<never>; // any
+type T2 = InstanceType<never>; // never
 type T3 = InstanceType<string>; // Error
 type T4 = InstanceType<Function>; // Error
 ```
