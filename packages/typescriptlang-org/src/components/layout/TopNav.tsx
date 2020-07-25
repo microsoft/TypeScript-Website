@@ -14,7 +14,6 @@ export type Props = {
 import { navCopy } from "../../copy/en/nav"
 import { createInternational } from "../../lib/createInternational"
 
-
 export const SiteNav = (props: Props) => {
   const i = createInternational<typeof navCopy>(useIntl())
   const IntlLink = createIntlLink(props.lang, props.allSitePage)
