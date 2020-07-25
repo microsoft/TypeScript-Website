@@ -22,6 +22,8 @@ import { workbenchReferencePlugin } from "../../components/workbench/plugins/doc
 import { createDefaultMapFromCDN } from "@typescript/vfs"
 import { twoslasher, TwoSlashReturn } from "@typescript/twoslash"
 
+type TwoSlashReturns = import("@typescript/twoslash").TwoSlashReturn
+
 type Props = {
   data: BugWorkbenchQuery
 }
@@ -104,6 +106,8 @@ const Play: React.FC<Props> = (props) => {
 
         const playgroundEnv = playground.setupPlayground(sandboxEnv, main, playgroundConfig, i as any, React)
 
+        const utils = playgroundEnv.createUtils(sandbox, React)
+
         const updateDTSEnv = (opts) => {
           createDefaultMapFromCDN(opts, tsVersion, true, ts, sandboxEnv.lzstring as any).then((defaultMap) => {
             dtsMap = defaultMap
@@ -118,6 +122,7 @@ const Play: React.FC<Props> = (props) => {
         const debouncedTwoslash = debounce(() => {
           if (dtsMap) runTwoslash()
         }, 1000)
+
         sandboxEnv.editor.onDidChangeModelContent(debouncedTwoslash)
 
         let currentTwoslashResults: Error | TwoSlashReturn | undefined = undefined
@@ -143,7 +148,7 @@ const Play: React.FC<Props> = (props) => {
             currentDTSMap = new Map(dtsMap)
             const twoslashConfig = { noStaticSemanticInfo: true, emit: true, noErrorValidation: true } as const
             const ext = sandboxEnv.filepath.split(".")[1]
-            const twoslash = twoslasher(code, ext, {
+            const twoslash: TwoSlashReturns = twoslasher(code, ext, {
               defaultOptions: twoslashConfig,
               tsModule: ts,
               lzstringModule: sandboxEnv.lzstring as any,
@@ -157,6 +162,9 @@ const Play: React.FC<Props> = (props) => {
               currentPlugin.getResults(sandboxEnv, twoslash, currentDTSMap, code.includes("// @showEmit"))
             }
 
+            const assertionCount = twoslash.queries.length + (code.includes("// @showEmit") ? 1 : 0) + twoslash.errors.length
+            utils.setNotifications("assertions", assertionCount)
+
           } catch (error) {
             const err = error as Error
             console.log(err)
@@ -166,6 +174,7 @@ const Play: React.FC<Props> = (props) => {
               // @ts-ignore
               currentPlugin.noResults(sandboxEnv, err)
             }
+            utils.setNotifications("assertions", 1)
           }
         }
 
