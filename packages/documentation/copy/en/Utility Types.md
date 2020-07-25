@@ -184,7 +184,7 @@ The `ConstructorParameters<T>` type lets us extract all parameter types of a con
 ```ts
 type T0 = ConstructorParameters<ErrorConstructor>; // [(string | undefined)?]
 type T1 = ConstructorParameters<FunctionConstructor>; // string[]
-type T2 = ConstructorParameters<RegExpConstructor>; // [string, (string | undefined)?]
+type T2 = ConstructorParameters<RegExpConstructor>; // [string | RegExp, (string | undefined)?]
 ```
 
 # `ReturnType<T>`
