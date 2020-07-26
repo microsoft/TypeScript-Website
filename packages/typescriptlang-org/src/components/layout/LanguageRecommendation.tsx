@@ -41,12 +41,15 @@ const getLocaleVersionOfPage = () => {
 
 export const LanguageRecommendations = (props: Props) => {
   useEffect(() => {
+    // Don't mess with the mobile UI
+    const isSmall = window.innerWidth < 800
+    if (isSmall) return
+
     let hasLocalStorage = false
     try {
       hasLocalStorage = typeof localStorage !== `undefined`
     } catch (error) { }
     const suppressed = hasLocalStorage && localStorage.getItem("dont-recommend-translate")
-    if (suppressed) return
 
     let localePath = getLocaleVersionOfPage()
     if (localePath.startsWith("/en")) {
@@ -63,6 +66,22 @@ export const LanguageRecommendations = (props: Props) => {
     const userLocale = navigator.language || navigator.userLanguage || "en-UK"
     const userLang = userLocale.split("-")[0]
     const lang = inYourLanguage[userLang] || inYourLanguage["en"]
+
+    // Show the top nav anchor for in your language
+    const quickJump = document.getElementById("my-lang-quick-jump")!
+    const quickJumpA = quickJump.firstElementChild as HTMLAnchorElement
+
+    quickJumpA.textContent = lang.shorthand
+    quickJumpA.href = localePath
+    quickJump.style.display = "inline-block";
+
+    // Adding the LI somehow makes the search bump up by 2px
+    const search = document.getElementById("search-form")!
+    search.style.position = "relative"
+    search.style.top = "-2px"
+
+    // Allow not showing the popout
+    if (suppressed) return
 
     document.getElementById("language-recommendation-p")!.textContent = lang.body
     const open = document.getElementById("language-recommendation-open")!
@@ -89,3 +108,6 @@ export const LanguageRecommendations = (props: Props) => {
     </div>
   )
 }
+
+export const OpenInMyLangQuickJump = () =>
+  <li id="my-lang-quick-jump" style={{ display: "none" }} className="nav-item"><a href=''>in En</a></li>

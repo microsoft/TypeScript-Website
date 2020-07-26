@@ -157,11 +157,34 @@ form.search {
 
   color: white;
   background: #152740;
-  box-shadow: var(--raised-box-shadow);
+  box-shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.432),
+    0 0.3px 0.9px 0 rgba(0, 0, 0, 0.408);
 
   border-radius: 4px;
   p {
     padding: 0 10px;
+    font-size: 14px;
+  }
+  div {
+    display: flex;
+    button {
+      flex: 1;
+      flex-grow: 1;
+      background-color: $ts-main-blue-darker-color;
+      color: white;
+      border: none;
+      height: 1.6rem;
+      border-radius: 0;
+
+      &:hover,
+      &.focus {
+        background-color: #104261;
+      }
+
+      &#language-recommendation-open {
+        border-right: white 1px solid;
+      }
+    }
   }
 }
 
@@ -231,7 +254,8 @@ form.search {
   }
 
   /* Support hiding elements from small */
-  .hide-small {
+  .hide-small,
+  #my-lang-quick-jump {
     display: none !important;
   }
 
