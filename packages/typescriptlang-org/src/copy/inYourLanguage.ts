@@ -8,4 +8,10 @@ export const inYourLanguage: Record<
     open: "Go",
     cancel: "Don't ask again",
   },
+  es: {
+    shorthand: "En Es",
+    body: "Esta página está disponible en Español",
+    open: "Adelante",
+    cancel: "No preguntes de nuevo",
+  },
 }
