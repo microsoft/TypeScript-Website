@@ -6,6 +6,7 @@ import "./layout/main.scss"
 import { AppInsights } from "./AppInsights";
 import { Helmet } from "react-helmet";
 import { CookieBanner } from "./layout/CookieBanner"
+import { LanguageRecommendations } from "./layout/LanguageRecommendation";
 
 type LayoutProps = SeoProps & Props & {
   lang: string,
@@ -26,6 +27,7 @@ export const Layout = (props: LayoutProps) => {
         <SiteNav {...props} />
         <main role="main">{props.children}</main>
         <SiteFooter {...props} />
+        <LanguageRecommendations {...props} />
       </div>
       <AppInsights />
     </>

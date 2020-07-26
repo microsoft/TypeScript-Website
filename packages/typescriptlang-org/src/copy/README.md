@@ -40,3 +40,7 @@ export const lang: Copy = defineMessages({
 +  ...navCopy
 })
 ```
+
+### One Exception!
+
+There is one exception to all of this, the "This page is available in your language" popup. Because it is not used by the localization engine (an `es` page may show a `zh` message for example) then please add the three messages there in [`./inYourLanguage.ts`](./inYourLanguage.ts).
