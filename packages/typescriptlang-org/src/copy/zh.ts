@@ -6,6 +6,7 @@ import { headCopy } from "./zh/head-seo"
 import { docCopy } from "./zh/documentation"
 import { indexCopy } from "./zh/index"
 import { comCopy } from "./en/community"
+import { handbookCopy } from './zh/handbook'
 
 export const messages = {
   ...chineseMessages,
@@ -15,6 +16,7 @@ export const messages = {
   ...indexCopy,
   ...playCopy,
   ...comCopy,
+  ...handbookCopy,
 }
 
 export const lang = defineMessages(messages)
