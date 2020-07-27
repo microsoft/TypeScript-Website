@@ -5,7 +5,7 @@ import { navCopy } from "./zh/nav"
 import { headCopy } from "./zh/head-seo"
 import { docCopy } from "./zh/documentation"
 import { indexCopy } from "./zh/index"
-import { comCopy } from "./en/community"
+import { comCopy } from "./zh/community"
 
 export const messages = {
   ...chineseMessages,
