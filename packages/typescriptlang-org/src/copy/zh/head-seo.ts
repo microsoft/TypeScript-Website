@@ -8,6 +8,6 @@ export const headCopy = {
     "不管是 allowJs 还是 useDefineForClassFields， TSConfig 的参考包含所有关于配置项目的有效的 TypeScript 编译器选项。",
   playground_example_prefix: "游乐场示例 - ",
 
-  head_index_title: "适用于任何规模的 JavaScript",
-  head_index_description: "适用于任何规模的 JavaScript",
+  head_index_title: "适用于任何规模应用的 JavaScript",
+  head_index_description: "适用于任何规模应用的 JavaScript",
 }
