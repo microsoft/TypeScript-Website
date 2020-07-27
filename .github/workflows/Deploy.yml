@@ -13,29 +13,28 @@ jobs:
     - uses: actions/checkout@v1
       with:
        submodules: "true"
+    - uses: actions/setup-node@v1
+    - uses: actions/setup-ruby@v1
+
+    # Get local dependencies
+    - run: yarn install
+    # danger for PR builds
+    - if: github.event_name == 'pull_request'
+      run: yarn danger ci
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: (cd src/play && yarn install && yarn setup)
+    - run: gem install bundler -v 1.16.1
+    - run: bundle install
+
+    # Build v1
+    - name: Build website v1
+      run: gulp publish
 
     # Switch to node 13
     - uses: actions/setup-node@v1
       with:
         node-version: '13.x'
-
-    # For epub -> PDF generation
-    - run: sudo apt-get update
-    - run: sudo apt install calibre
-
-    # Build v2
-    - name: Build website v2
-      run: |
-        git clone -b v2 --single-branch https://github.com/microsoft/TypeScript-Website.git v2
-        cd v2
-        git config --global user.email "you@example.com"
-        git config --global user.name "Your Name"
-        yarn install
-        yarn bootstrap
-        yarn build
-        yarn build-site
-      env:
-        YARN_CHECKSUM_BEHAVIOR: ignore
 
     # CI: Deploy to the right branch
     - name: Deploy + Publish
@@ -44,4 +43,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         PUBLISH_BRANCH: 'SITE-PRODUCTION'
-        PUBLISH_DIR: ./v2/packages/typescriptlang-org/public
+        PUBLISH_DIR: ./site
