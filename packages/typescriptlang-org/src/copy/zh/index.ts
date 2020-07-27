@@ -70,11 +70,11 @@ export const indexCopy = {
   index_migration_oss: "开源的 TypeScript",
   index_videos_title: "查看 TypeScript 实践",
 
-  index_cta_play: "在您的浏览器中尝试",
+  index_cta_play: "在浏览器中尝试",
   index_cta_install: "在本地安装",
 
   index_started_docs: "开始一个项目",
-  index_started_docs_blurb: "寻找一个启动工具",
-  index_started_tooling: "工具",
+  index_started_docs_blurb: "寻找一个入手点",
+  index_started_tooling: "工具链",
   index_started_tooling_blurb: "深入 TypeScript",
 }
