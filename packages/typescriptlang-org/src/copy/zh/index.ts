@@ -1,5 +1,5 @@
 export const indexCopy = {
-  index_headline: "TypeScript 是<bold>适用于任何规模的 JavaScript。</bold>",
+  index_headline: "TypeScript 是<bold>适用于任何规模应用的 JavaScript。</bold>",
   index_byline:
     "TypeScript 扩展了 JavaScript ，为它添加了类型支持。",
   index_summary:
