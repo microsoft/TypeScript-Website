@@ -8,6 +8,12 @@ export const inYourLanguage: Record<
     open: "Go",
     cancel: "Don't ask again",
   },
+  pt: {
+    shorthand: "Em Pt",
+    body: "Esta página está disponível em Português",
+    open: "Ir",
+    cancel: "Não perguntar novamente",
+  },
   ja: {
     shorthand: "日本語",
     body: "このページを日本語で利用しますか？",
