@@ -8,4 +8,10 @@ export const inYourLanguage: Record<
     open: "Go",
     cancel: "Don't ask again",
   },
+  zh: {
+    shorthand: '中文',
+    body: '当前页面有中文版本',
+    open: '跳转',
+    cancel: '不再询问'
+  }
 }
