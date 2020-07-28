@@ -6,12 +6,12 @@ export const comCopy = {
   com_connect_online_description:
     " 让我们知道什么地方做得好，什么地方可以做得更好，并了解最新进展。",
   com_online_stack_overflow_desc:
-    "与您的同路人互动，并使用‘typescript’标签询问有关 TypeScript 的问题",
+    "与您的同路人互动，并使用‘ typescript ’标签询问有关 TypeScript 的问题",
   com_online_stack_overflow_tag: "",
   com_online_discord_header: "Chat",
   com_online_discord_desc:
-    "在 TypeScript 社区聊天中与其他 TypeScript 用户聊天。",
-  com_online_github_desc: "找到了 bug， 或者有你独到的见解？",
+    "在 TypeScript 社区聊天室中与其他 TypeScript 用户聊天。",
+  com_online_github_desc: "找到了 bug ， 或者有你独到的见解？",
   com_online_github_href: "在 GitHub 上告诉我们",
   com_online_twitter_desc: "保持最新的消息。在 Twitter 上关注我们",
   com_online_blog_desc: "了解最新的 Typescript 的进展，通过我们的",
