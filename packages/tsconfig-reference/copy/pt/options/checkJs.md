@@ -1,6 +1,6 @@
 ---
 display: "Checar JS"
-oneline: "Rodar o checador de tipos em arquivos .js files do seu projeto"
+oneline: "Executa o verificador de tipos em arquivos .js do seu projeto"
 ---
 
 Funciona em conjunto com o `allowJs`. Quando o `checkJs` está ativado, os erros são relatados também nos arquivos JavaScript. Isto é
