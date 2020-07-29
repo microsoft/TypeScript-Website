@@ -29,4 +29,4 @@ Com um outro arquivo correspondente `olaMundo.d.ts`:
 export let olaMundo = "olá!";
 ```
 
-Ao trabalhar com arquivos `.d.ts` para arquivos JavaScript, você pode usar [`emitDeclarationOnly`](#emitDeclarationOnly) ou usar [`outDir`](#outDir) para garantir que os arquivos JavaScript não sejam substituídos.
+Ao trabalhar com arquivos `.d.ts` para arquivos JavaScript, você pode usar [`emitDeclarationOnly`](#emitDeclarationOnly) ou usar [`outDir`](#outDir) para garantir que os arquivos JavaScript não sejam sobrescritos.
