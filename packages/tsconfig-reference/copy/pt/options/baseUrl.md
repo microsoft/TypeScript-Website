@@ -1,6 +1,6 @@
 ---
 display: "URL Base"
-oneline: "Seta uma URL base para os nomes relativos de módulos"
+oneline: "Configura uma URL base para os nomes relativos de módulos"
 ---
 
 Permite definir um diretório base para resolver nomes de módulo não absolutos.
