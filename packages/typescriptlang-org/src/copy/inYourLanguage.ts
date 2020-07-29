@@ -17,7 +17,7 @@ export const inYourLanguage: Record<
   pt: {
     shorthand: "Em Pt",
     body: "Esta página está disponível em Português",
-    open: "Trocar Língua",
+    open: "Trocar língua",
     cancel: "Não perguntar novamente",
   },
   ja: {
