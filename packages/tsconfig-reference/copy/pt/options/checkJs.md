@@ -25,7 +25,7 @@ import { pi } from "./constantes";
 console.log(pi);
 ```
 
-Você não vai obter nenhum erro. No entanto, se você ativar o `checkJs` então voce também vai ter mensagens de erro no seu arquivo JavaScript.
+Você não vai obter nenhum erro. No entanto, se você ativar o `checkJs` então voce também terá mensagens de erro no seu arquivo JavaScript.
 
 ```ts twoslash
 // @errors: 2345
