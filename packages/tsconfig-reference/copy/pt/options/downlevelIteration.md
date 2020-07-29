@@ -4,7 +4,7 @@ oneline: "Emite JavaScript mais compatível, porém mais verboso, para objetos i
 ---
 
 Downleveling é o termo do TypeScript para transpilar para uma versão mais antiga do JavaScript.
-Esse sinalizador é para permitir o suporte a uma implementação mais precisa de como o JavaScript moderno interage com novos conceitos em runtimes mais antigos do JavaScript.
+Esse sinalizador permite que, em runtimes mais antigos do JavaScript, haja o suporte a uma implementação mais precisa de como o JavaScript moderno interage com novos conceitos.
 
 O ECMAScript 6 adicionou várias novas primitivas de iteração: o loop `for / of` (`for (el of arr)`), operador de spread (`[a, ...b]`), spread de argumento (`fn (... args)`) e o [`Symbol.iterator`](https://medium.com/trainingcenter/iterators-em-javascript-880adef14495). `--downlevelIteration` permite que essas primitivas de iteração sejam usadas com mais precisão nos ambientes ES5 se uma implementação do [`Symbol.iterator`](https://medium.com/trainingcenter/iterators-em-javascript-880adef14495) estiver presente.
 
