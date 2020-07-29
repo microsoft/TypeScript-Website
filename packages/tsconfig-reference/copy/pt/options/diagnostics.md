@@ -1,6 +1,6 @@
 ---
 display: "Diagnósticos"
-oneline: "Dá mais informações de diagnósticos após a compilação"
+oneline: "Gera mais informações de diagnóstico após a compilação"
 ---
 
 Usado para gerar informações de diagnóstico para depuração. Este comando é um subconjunto de [`extendedDiagnostics`](#extendedDiagnostics), que são mais resultados voltados para o usuário e mais fáceis de interpretar.
