@@ -23,5 +23,5 @@ import { olaMundo } from "ola/mundo";
 console.log(olaMundo);
 ```
 
-Se você se cansar de importações sempre parecidas com `"../"` ou `"./"`. Ou precisando
-alterar à medida que você move os arquivos, essa é uma ótima maneira de corrigir isso.
+Se você estiver cansado de importações sempre parecidas com `"../"` ou `"./"`, ou precisando
+alterá-las à medida que move arquivos, essa é uma ótima maneira de simplificar isso.
