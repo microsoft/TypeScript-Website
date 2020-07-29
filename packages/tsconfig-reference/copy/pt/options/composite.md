@@ -1,5 +1,5 @@
 ---
-display: "Combinação"
+display: "Composição"
 oneline: "Usado para criar múltiplos projetos de build"
 ---
 
