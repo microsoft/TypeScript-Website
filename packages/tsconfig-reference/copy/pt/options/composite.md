@@ -12,6 +12,6 @@ Quando esta configuração está ativada:
 
 - Todos os arquivos de implementação devem corresponder a um padrão do `include` ou listados no array `files`. Se esta restrição for violada, o `tsc` informará quais arquivos não foram especificados.
 
-- `declaração` é setado como` true`
+- `declaration` é setado como `true`
 
 Você pode encontrar a documentação de projetos TypeScript [no guia](https://www.typescriptlang.org/docs/handbook/project-references.html).
