@@ -1,15 +1,14 @@
 ---
-display: "Strict Checks"
+display: "Verificações Estritas"
 ---
 
-We recommend using the [compiler option `strict`](#strict) to opt-in to every possible improvement as they are built.
+Recomendamos usar o [compiler option `strict`](#strict) para aceitar todas as melhorias possíveis à medida em que elas são construídas.
 
-TypeScript supports a wide spectrum of JavaScript patterns and defaults to allowing for quite a lot of flexibility in accommodating these styles.
-Often the safety and potential scalability of a codebase can be at odds with some of these techniques.
+O TypeScript suporta uma vasta gama de padrões JavaScript permitindo grande flexibilidade na acomodação desses estilos. Frequentemente a segurança e o potencial de escalabilidade de uma base de código podem estar em desacordo com algumas dessas técnicas.
 
-Because of the variety of supported JavaScript, upgrading to a new version of TypeScript can uncover two types of errors:
+Devido a variedade de JavaScript suportado, atualizar para uma nova versão do TypeScript pode revelar dois tipos de erros:
 
-- Errors which already exist in your codebase, which TypeScript has uncovered because the language has refined its understanding of JavaScript.
-- A new suite of errors which tackle a new problem domain.
+- Erros que já existiam no seu código e o TypeScript descobriu porque a linguagem aprimorou sua compreensão de JavaScript.
+- Um novo conjunto de erros sobre um novo domínio de problemas.
 
-TypeScript will usually add a compiler flag for the latter set of errors, and by default these are not enabled.
+O TypeScript geralmente vai adicionar uma sinalizador de compilador para o conjunto de erros mais recente e, por padrão, eles não estarão habilitados.
