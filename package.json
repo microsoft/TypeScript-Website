@@ -42,7 +42,7 @@
   },
   "scripts": {
     "bootstrap": "yarn workspaces foreach -v -a run bootstrap && yarn workspaces foreach -v -a run build",
-    "start": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"yarn workspace typescriptlang-org start\"",
+    "start": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"yarn workspace typescriptlang-org start\" --kill-others",
     "start-twoslash": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"yarn workspace typescriptlang-org start-twoslash\"",
     "build": "yarn workspaces foreach -v -a run build",
     "build-site": "yarn workspace typescriptlang-org build",

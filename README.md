@@ -5,13 +5,14 @@
 
 ### Getting Started
 
-This repo uses [yarn workspaces][y-wrk] with node 13+, to get started clone this repo and run `yarn install`.
+This repo uses [yarn workspaces][y-wrk] with node 13+, and [watchman](https://facebook.github.io/watchman/docs/install.html).
+
+With those set up, clone this repo and run `yarn install`.
 
 ```sh
 git clone https://github.com/microsoft/TypeScript-website
 cd TypeScript-website
 yarn install
-yarn bootstrap
 code .
 ```
 
@@ -20,7 +21,7 @@ builder worker for every package in the repo, so if you make a change outside of
 
 Some useful knowledge:
 
-- All packages have: `yarn bootstrap`, `yarn build` and `yarn test`
+- All packages have: `yarn build` and `yarn test`
 - All packages use [debug](https://www.npmjs.com/package/debug) - which means you can do `env DEBUG="*" yarn test` to get verbose logs
 
 ## Deployment
