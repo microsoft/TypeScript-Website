@@ -1,6 +1,6 @@
 ---
 display: "JSX"
-oneline: "Controle como o JSX é emitido"
+oneline: "Controla como o JSX é emitido"
 ---
 
 Defina como a sintaxe JSX é gerada em um arquivo JavaScript.
