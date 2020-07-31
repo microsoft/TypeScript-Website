@@ -393,15 +393,19 @@ These types do not refer to the language primitives, and almost never should be 
 
 ```ts twoslash
 // @errors: 2339
-function reverse(s: String): String { return s.reverse() }
+function reverse(s: String): String { 
+  return s.split("").reverse().join("")
+}
 
 reverse("hello world")
 ```
 
-Instead use the types `number`, `string`, `boolean`, and `symbol`.
+Instead, use the types `number`, `string`, `boolean`, and `symbol`.
 
 ```ts twoslash
-function reverse(s: string): string { return s.reverse() }
+function reverse(s: string): string { 
+  return s.split("").reverse().join("") 
+}
 
 reverse("hello world")
 ```
