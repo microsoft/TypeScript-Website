@@ -11,8 +11,8 @@
 //podemos começar com exemplos genéricos:
 //
 
-//-exemplo: funções-genéricas
-//-exemplo: classes-genéricas
+// - example:generic-functions
+// - example:generic-classes
 
 //Primeiro veremos como interfaces genéricas podem ser usadas para
 //mapear componentes do React. Este é um exemplo de componente funcional React:
@@ -69,7 +69,7 @@ import * as React from 'react';
 export interface Props {
   /** O nome do usuário */
   name: string;
-  /** O nome deve ser renderizado em negrito */
+  /** Renderiza o nome em negrito */
   priority?: boolean
 }
 
@@ -95,9 +95,9 @@ const ShowStoredUser: React.FC<Props> = (props) => {
   return <PrintName name={username} priority />
 }
 
-//TypeScript também funciona com código React moderno, aqui você
-//pode ver que count e setCount foram induzidos corretamente a usar números com base
-//no valor inicial passado para o useState.
+//TypeScript também funciona com código React moderno. Aqui você
+//pode ver que count e setCount foram induzidos corretamente a usar números
+//com base no valor inicial passado para o useState.
 
 import { useState, useEffect } from 'react';
 
