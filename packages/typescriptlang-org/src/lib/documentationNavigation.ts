@@ -472,25 +472,13 @@ export function getDocumentationNavForLanguage(
           id: "introduction",
           permalink: "/docs/handbook/declaration-files/introduction.html",
           oneline:
-            "How to write a high-quality TypeScript Ddeclaration (d.ts) file",
+            "How to write a high-quality TypeScript Declaration (d.ts) file",
         },
         {
-          title: "By Example",
-          id: "by-example",
+          title: "Declaration Reference",
+          id: "declaration-reference",
           permalink: "/docs/handbook/declaration-files/by-example.html",
           oneline: "How to create a d.ts file for a module",
-        },
-        {
-          title: "Do's and Don'ts",
-          id: "do's-and-don'ts",
-          permalink: "/docs/handbook/declaration-files/do-s-and-don-ts.html",
-          oneline: "Recommendations for writing d.ts files",
-        },
-        {
-          title: "Deep Dive",
-          id: "deep-dive",
-          permalink: "/docs/handbook/declaration-files/deep-dive.html",
-          oneline: "How do d.ts files work, a deep dive",
         },
         {
           title: "Library Structures",
@@ -505,48 +493,60 @@ export function getDocumentationNavForLanguage(
 
           items: [
             {
-              title: "global.d.ts",
-              id: "global.d.ts",
-              permalink:
-                "/docs/handbook/declaration-files/templates/global-d-ts.html",
-              oneline: "undefined",
-            },
-            {
-              title: "global-modifying-module.d.ts",
-              id: "global-modifying-module.d.ts",
-              permalink:
-                "/docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html",
-              oneline: "undefined",
-            },
-            {
-              title: "module.d.ts",
-              id: "module.d.ts",
+              title: "Modules .d.ts",
+              id: "modules-.d.ts",
               permalink:
                 "/docs/handbook/declaration-files/templates/module-d-ts.html",
               oneline: "undefined",
             },
             {
-              title: "module-plugin.d.ts",
-              id: "module-plugin.d.ts",
+              title: "Module: Plugin",
+              id: "module:-plugin",
               permalink:
                 "/docs/handbook/declaration-files/templates/module-plugin-d-ts.html",
               oneline: "undefined",
             },
             {
-              title: "module-class.d.ts",
-              id: "module-class.d.ts",
+              title: "Module: Class",
+              id: "module:-class",
               permalink:
                 "/docs/handbook/declaration-files/templates/module-class-d-ts.html",
               oneline: "undefined",
             },
             {
-              title: "module-function.d.ts",
-              id: "module-function.d.ts",
+              title: "Module: Function",
+              id: "module:-function",
               permalink:
                 "/docs/handbook/declaration-files/templates/module-function-d-ts.html",
               oneline: "undefined",
             },
+            {
+              title: "Global .d.ts",
+              id: "global-.d.ts",
+              permalink:
+                "/docs/handbook/declaration-files/templates/global-d-ts.html",
+              oneline: "undefined",
+            },
+            {
+              title: "Global: Modifying Module",
+              id: "global:-modifying-module",
+              permalink:
+                "/docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html",
+              oneline: "undefined",
+            },
           ],
+        },
+        {
+          title: "Do's and Don'ts",
+          id: "do's-and-don'ts",
+          permalink: "/docs/handbook/declaration-files/do-s-and-don-ts.html",
+          oneline: "Recommendations for writing d.ts files",
+        },
+        {
+          title: "Deep Dive",
+          id: "deep-dive",
+          permalink: "/docs/handbook/declaration-files/deep-dive.html",
+          oneline: "How do d.ts files work, a deep dive",
         },
         {
           title: "Publishing",
@@ -1104,25 +1104,13 @@ export function getDocumentationNavForLanguage(
           id: "introduction",
           permalink: "/docs/handbook/declaration-files/introduction.html",
           oneline:
-            "How to write a high-quality TypeScript Ddeclaration (d.ts) file",
+            "How to write a high-quality TypeScript Declaration (d.ts) file",
         },
         {
-          title: "By Example",
-          id: "by-example",
+          title: "Declaration Reference",
+          id: "declaration-reference",
           permalink: "/docs/handbook/declaration-files/by-example.html",
           oneline: "How to create a d.ts file for a module",
-        },
-        {
-          title: "Do's and Don'ts",
-          id: "do's-and-don'ts",
-          permalink: "/docs/handbook/declaration-files/do-s-and-don-ts.html",
-          oneline: "Recommendations for writing d.ts files",
-        },
-        {
-          title: "Deep Dive",
-          id: "deep-dive",
-          permalink: "/docs/handbook/declaration-files/deep-dive.html",
-          oneline: "How do d.ts files work, a deep dive",
         },
         {
           title: "Library Structures",
@@ -1137,48 +1125,60 @@ export function getDocumentationNavForLanguage(
 
           items: [
             {
-              title: "global.d.ts",
-              id: "global.d.ts",
-              permalink:
-                "/docs/handbook/declaration-files/templates/global-d-ts.html",
-              oneline: "undefined",
-            },
-            {
-              title: "global-modifying-module.d.ts",
-              id: "global-modifying-module.d.ts",
-              permalink:
-                "/docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html",
-              oneline: "undefined",
-            },
-            {
-              title: "module.d.ts",
-              id: "module.d.ts",
+              title: "Modules .d.ts",
+              id: "modules-.d.ts",
               permalink:
                 "/docs/handbook/declaration-files/templates/module-d-ts.html",
               oneline: "undefined",
             },
             {
-              title: "module-plugin.d.ts",
-              id: "module-plugin.d.ts",
+              title: "Module: Plugin",
+              id: "module:-plugin",
               permalink:
                 "/docs/handbook/declaration-files/templates/module-plugin-d-ts.html",
               oneline: "undefined",
             },
             {
-              title: "module-class.d.ts",
-              id: "module-class.d.ts",
+              title: "Module: Class",
+              id: "module:-class",
               permalink:
                 "/docs/handbook/declaration-files/templates/module-class-d-ts.html",
               oneline: "undefined",
             },
             {
-              title: "module-function.d.ts",
-              id: "module-function.d.ts",
+              title: "Module: Function",
+              id: "module:-function",
               permalink:
                 "/docs/handbook/declaration-files/templates/module-function-d-ts.html",
               oneline: "undefined",
             },
+            {
+              title: "Global .d.ts",
+              id: "global-.d.ts",
+              permalink:
+                "/docs/handbook/declaration-files/templates/global-d-ts.html",
+              oneline: "undefined",
+            },
+            {
+              title: "Global: Modifying Module",
+              id: "global:-modifying-module",
+              permalink:
+                "/docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html",
+              oneline: "undefined",
+            },
           ],
+        },
+        {
+          title: "Do's and Don'ts",
+          id: "do's-and-don'ts",
+          permalink: "/docs/handbook/declaration-files/do-s-and-don-ts.html",
+          oneline: "Recommendations for writing d.ts files",
+        },
+        {
+          title: "Deep Dive",
+          id: "deep-dive",
+          permalink: "/docs/handbook/declaration-files/deep-dive.html",
+          oneline: "How do d.ts files work, a deep dive",
         },
         {
           title: "Publishing",

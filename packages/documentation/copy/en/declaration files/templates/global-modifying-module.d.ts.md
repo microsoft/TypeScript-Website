@@ -1,8 +1,39 @@
 ---
-title: global-modifying-module.d.ts
+title: "Global: Modifying Module"
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html
 ---
+
+## _Global-modifying Modules_
+
+A _global-modifying module_ alters existing values in the global scope when they are imported.
+For example, there might exist a library which adds new members to `String.prototype` when imported.
+This pattern is somewhat dangerous due to the possibility of runtime conflicts,
+but we can still write a declaration file for it.
+
+## Identifying global-modifying modules
+
+Global-modifying modules are generally easy to identify from their documentation.
+In general, they're similar to global plugins, but need a `require` call to activate their effects.
+
+You might see documentation like this:
+
+```js
+// 'require' call that doesn't use its return value
+var unused = require("magic-string-time");
+/* or */
+require("magic-string-time");
+
+var x = "hello, world";
+// Creates new methods on built-in types
+console.log(x.startsWithHello());
+
+var y = [1, 2, 3];
+// Creates new methods on built-in types
+console.log(y.reverseAndSort());
+```
+
+Here is an example
 
 ```ts
 // Type definitions for [~THE LIBRARY NAME~] [~OPTIONAL VERSION NUMBER~]

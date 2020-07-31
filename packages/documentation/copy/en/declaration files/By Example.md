@@ -1,62 +1,15 @@
 ---
-title: By Example
+title: Declaration Reference
 layout: docs
 permalink: /docs/handbook/declaration-files/by-example.html
 oneline: "How to create a d.ts file for a module"
 ---
-
-# Introduction
 
 The purpose of this guide is to teach you how to write a high-quality definition file.
 This guide is structured by showing documentation for some API, along with sample usage of that API,
 and explaining how to write the corresponding declaration.
 
 These examples are ordered in approximately increasing order of complexity.
-
-# The Examples
-
-## Global Variables
-
-_Documentation_
-
-> The global variable `foo` contains the number of widgets present.
-
-_Code_
-
-```ts
-console.log("Half the number of widgets is " + foo / 2);
-```
-
-_Declaration_
-
-Use `declare var` to declare variables.
-If the variable is read-only, you can use `declare const`.
-You can also use `declare let` if the variable is block-scoped.
-
-```ts
-/** The number of widgets present */
-declare var foo: number;
-```
-
-## Global Functions
-
-_Documentation_
-
-> You can call the function `greet` with a string to show a greeting to the user.
-
-_Code_
-
-```ts
-greet("hello, world");
-```
-
-_Declaration_
-
-Use `declare function` to declare functions.
-
-```ts
-declare function greet(greeting: string): void;
-```
 
 ## Objects with Properties
 
@@ -253,23 +206,46 @@ declare class Greeter {
 }
 ```
 
-<!-- Template
+## Global Variables
 
-##
+_Documentation_
 
-*Documentation*
->
+> The global variable `foo` contains the number of widgets present.
 
-*Code*
-
-```ts
-
-```
-
-*Declaration*
+_Code_
 
 ```ts
-
+console.log("Half the number of widgets is " + foo / 2);
 ```
 
--->
+_Declaration_
+
+Use `declare var` to declare variables.
+If the variable is read-only, you can use `declare const`.
+You can also use `declare let` if the variable is block-scoped.
+
+```ts
+/** The number of widgets present */
+declare var foo: number;
+```
+
+## Global Functions
+
+_Documentation_
+
+> You can call the function `greet` with a string to show a greeting to the user.
+
+_Code_
+
+```ts
+greet("hello, world");
+```
+
+_Declaration_
+
+Use `declare function` to declare functions.
+
+```ts
+declare function greet(greeting: string): void;
+```
+
