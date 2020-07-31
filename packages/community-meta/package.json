@@ -9,7 +9,6 @@
   },
   "scripts": {
     "build": "node scripts/generateRichMeetupData.js",
-    "test": "echo 'NOOP'",
-    "bootstrap": "echo 'NOOP'"
+    "test": "echo 'NOOP'"
   }
 }

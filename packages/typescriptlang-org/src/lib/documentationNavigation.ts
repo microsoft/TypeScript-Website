@@ -7,12 +7,12 @@
 */
 
 export interface SidebarNavItem {
-  title: string
-  id: string
-  permalink?: string
-  chronological?: boolean
-  oneline?: string
-  items?: SidebarNavItem[]
+  title: string;
+  id: string;
+  permalink?: string;
+  chronological?: boolean;
+  oneline?: string;
+  items?: SidebarNavItem[];
 }
 
 /** ---INSERT--- */
@@ -20,9 +20,9 @@ export interface SidebarNavItem {
 export function getDocumentationNavForLanguage(
   langRequest: string
 ): SidebarNavItem[] {
-  const langs = ["en", "vo"]
-  const lang = langs.includes(langRequest) ? langRequest : "en"
-  const navigations: Record<string, SidebarNavItem[]> = {}
+  const langs = ["en", "vo"];
+  const lang = langs.includes(langRequest) ? langRequest : "en";
+  const navigations: Record<string, SidebarNavItem[]> = {};
 
   navigations.en = [
     {
@@ -655,7 +655,7 @@ export function getDocumentationNavForLanguage(
         },
       ],
     },
-  ]
+  ];
   navigations.vo = [
     {
       title: "Get Started",
@@ -1287,9 +1287,9 @@ export function getDocumentationNavForLanguage(
         },
       ],
     },
-  ]
+  ];
 
-  return navigations[lang]
+  return navigations[lang];
 }
 
 /** ---INSERT-END--- */
@@ -1300,34 +1300,34 @@ const findInNav = (
 ): SidebarNavItem | undefined => {
   if (Array.isArray(item)) {
     for (const subItem of item) {
-      const sub = findInNav(subItem, fun)
-      if (sub) return sub
+      const sub = findInNav(subItem, fun);
+      if (sub) return sub;
     }
   } else {
-    if (fun(item)) return item
-    if (!item.items) return undefined
+    if (fun(item)) return item;
+    if (!item.items) return undefined;
     for (const subItem of item.items) {
-      const sub = findInNav(subItem, fun)
-      if (sub) return sub
+      const sub = findInNav(subItem, fun);
+      if (sub) return sub;
     }
-    return undefined
+    return undefined;
   }
-}
+};
 
 export function getNextPageID(navs: SidebarNavItem[], currentID: string) {
   // prettier-ignore
   const section = findInNav(navs, (i) => i && !!i.items && !!i.items.find(i => i.id === currentID)) || false
-  if (!section) return undefined
-  if (!section.chronological) return undefined
-  if (!section.items) return
+  if (!section) return undefined;
+  if (!section.chronological) return undefined;
+  if (!section.items) return;
 
-  const currentIndex = section.items.findIndex(i => i.id === currentID)
-  const next = section.items[currentIndex + 1]
+  const currentIndex = section.items.findIndex((i) => i.id === currentID);
+  const next = section.items[currentIndex + 1];
   if (next) {
     return {
       path: next.permalink,
       ...section.items[currentIndex + 1],
-    }
+    };
   }
 }
 
@@ -1335,17 +1335,17 @@ export function getPreviousPageID(navs: SidebarNavItem[], currentID: string) {
   // prettier-ignore
   const section = findInNav(navs, (i) => i && !!i.items && !!i.items.find(i => i.id === currentID)) || false
 
-  if (!section) return undefined
-  if (!section.chronological) return undefined
-  if (!section.items) return
+  if (!section) return undefined;
+  if (!section.chronological) return undefined;
+  if (!section.items) return;
 
-  const currentIndex = section.items.findIndex(i => i.id === currentID)
-  const prev = section.items[currentIndex - 1]
+  const currentIndex = section.items.findIndex((i) => i.id === currentID);
+  const prev = section.items[currentIndex - 1];
 
   if (prev) {
     return {
       path: prev.permalink,
       ...section.items[currentIndex - 1],
-    }
+    };
   }
 }
