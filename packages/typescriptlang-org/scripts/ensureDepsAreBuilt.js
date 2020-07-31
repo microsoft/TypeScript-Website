@@ -9,13 +9,19 @@ if (!fs.existsSync(nodeModsPath)) {
   throw new Error(`Please run ${code("yarn install")}`)
 }
 
-const twoslashDist = join(__dirname, "..", "..", "ts-twoslasher", "dist")
-const vfsDist = join(__dirname, "..", "..", "typescript-vfs", "dist")
-const shiki = join(__dirname, "..", "..", "render-shiki-twoslash", "dist")
+const pkgsRoot = join(__dirname, "..", "..")
+const twoslashDist = join(pkgsRoot, "ts-twoslasher", "dist")
+const vfsDist = join(pkgsRoot, "typescript-vfs", "dist")
+const gatsbyShiki = join(pkgsRoot, "gatsby-remark-shiki-twoslash", "dist")
 
-for (const distDir of [twoslashDist, vfsDist, shiki]) {
+for (const distDir of [twoslashDist, vfsDist, gatsbyShiki]) {
   if (!fs.existsSync(distDir)) {
-    console.clear()
+    const readline = require("readline")
+    const blank = "\n".repeat(process.stdout.rows)
+    console.log(blank)
+    readline.cursorTo(process.stdout, 0, 0)
+    readline.clearScreenDown(process.stdout)
+
     // prettier-ignore
     console.log(`
 

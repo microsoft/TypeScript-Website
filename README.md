@@ -14,6 +14,10 @@ git clone https://github.com/microsoft/TypeScript-website
 cd TypeScript-website
 yarn install
 code .
+
+# Then:
+yarn bootstrap
+yarn start
 ```
 
 Working on this repo is done by running `yarn start` - this starts up the website on port `8000` and creates a

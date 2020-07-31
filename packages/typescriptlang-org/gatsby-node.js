@@ -1,11 +1,3 @@
-require("./scripts/ensureDepsAreBuilt")
-
-// if (process.env.WATCHER) {
-const path = require.resolve("./../../watcher")
-console.log(path)
-require(path)
-// }
-
 const { createPages } = require("./lib/bootup/createPages")
 const { onCreateNode } = require("./lib/bootup/onCreateNode")
 
