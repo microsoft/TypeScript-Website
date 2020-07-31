@@ -1,5 +1,5 @@
 ---
-title: module-function.d.ts
+title: "Module: Function"
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/module-function-d-ts.html
 ---

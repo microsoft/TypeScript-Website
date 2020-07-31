@@ -5,14 +5,6 @@ permalink: /docs/handbook/declaration-files/library-structures.html
 oneline: How to structure your d.ts files
 ---
 
-TODO:
-
-1. The modular libraries discussion needs to call out `import=` as TS-only.
-2. The modular libraries discussion needs to cover (ugh, briefly I hope) `export default` vs `module.exports=` and link to whatever we wrote to explain `--esModuleInterop`.
-3. Actually, there's a section in the footnotes that covers this: Impact of ES6 on Module Call Signatures. It needs to be updated though, since it just suggests workarounds.
-
-# Overview
-
 Broadly speaking, the way you _structure_ your declaration file depends on how the library is consumed.
 There are many ways of offering a library for consumption in JavaScript, and you'll need to write your declaration file to match it.
 This guide covers how to identify common library patterns, and how to write declaration files which correspond to that pattern.
@@ -326,7 +318,9 @@ import exp = require("express");
 var app = exp();
 ```
 
-In ES6 module loaders, the top-level object (here imported as `exp`) can only have properties;
-the top-level module object is _never_ callable.
+In ES6-compl module loaders, the top-level object (here imported as `exp`) can only have properties;
+the top-level module object can _never_ be callable.
+
 The most common solution here is to define a `default` export for a callable/constructable object;
-some module loader shims will automatically detect this situation and replace the top-level object with the `default` export.
+module loaders commonly detect this situation automatically and replace the top-level object with the `default` export.
+Typescript can handle this for you, if you have [`"esModuleInterop": true`](/tsconfig/#esModuleInterop) in tsconfig.json.

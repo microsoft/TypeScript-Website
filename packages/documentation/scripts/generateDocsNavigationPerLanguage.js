@@ -105,8 +105,6 @@ const handbookPages = [
     items: [
       { file: "declaration files/Introduction.md" },
       { file: "declaration files/By Example.md" },
-      { file: "declaration files/Do's and Don'ts.md" },
-      { file: "declaration files/Deep Dive.md" },
       { file: "declaration files/Library Structures.md" },
       {
         title: ".d.ts Templates",
@@ -119,6 +117,8 @@ const handbookPages = [
           { file: "declaration files/templates/global-modifying-module.d.ts.md" },
         ]
       },
+      { file: "declaration files/Do's and Don'ts.md" },
+      { file: "declaration files/Deep Dive.md" },
       { file: "declaration files/Publishing.md" },
       { file: "declaration files/Consumption.md" },
     ],

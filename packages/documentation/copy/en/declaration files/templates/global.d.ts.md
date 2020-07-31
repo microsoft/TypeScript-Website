@@ -1,11 +1,12 @@
 ---
-title: global.d.ts
+title: "Global .d.ts"
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/global-d-ts.html
 ---
 
 ## Global Libraries
 
+<!-- 
 TODO:
 
 1. mention that global nearly always means 'browser'
@@ -13,6 +14,8 @@ TODO:
    a. how to import it
    b. -OR- how to make it work with webpack
 3. Make the page follow the structure of documentation,usage,source example.
+
+-->
 
 A _global_ library is one that can be accessed from the global scope (i.e. without using any form of `import`).
 Many libraries simply expose one or more global variables for use.

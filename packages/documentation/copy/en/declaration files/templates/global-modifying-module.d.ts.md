@@ -1,5 +1,5 @@
 ---
-title: global-modifying-module.d.ts
+title: "Global: Modifying Module"
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html
 ---

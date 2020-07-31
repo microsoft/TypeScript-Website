@@ -1,13 +1,15 @@
 ---
-title: module-class.d.ts
+title: "Module: Class"
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/module-class-d-ts.html
 ---
 
+<!--
 TODO:
 
 1. Not clear why UMD is thrown in here.
 2. Give both commonjs and ES module examples.
+-->
 
 For example, when you want to work with JavaScript code which looks like:
 

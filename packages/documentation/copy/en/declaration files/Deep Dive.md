@@ -5,19 +5,19 @@ permalink: /docs/handbook/declaration-files/deep-dive.html
 oneline: "How do d.ts files work, a deep dive"
 ---
 
-# Definition File Theory: A Deep Dive
+## Declaration File Theory: A Deep Dive
 
 Structuring modules to give the exact API shape you want can be tricky.
 For example, we might want a module that can be invoked with or without `new` to produce different types,
 has a variety of named types exposed in a hierarchy,
 and has some properties on the module object as well.
 
-By reading this guide, you'll have the tools to write complex definition files that expose a friendly API surface.
+By reading this guide, you'll have the tools to write complex declaration files that expose a friendly API surface.
 This guide focuses on module (or UMD) libraries because the options here are more varied.
 
 ## Key Concepts
 
-You can fully understand how to make any shape of definition
+You can fully understand how to make any shape of declaration
 by understanding some key concepts of how TypeScript works.
 
 ### Types
@@ -228,9 +228,5 @@ The second block creates the following name meanings:
 - A type `C` in the `X.Z` namespace
 - A value `C` that is a property of the `X.Z` value
 - A type `X`
-
-## Using with `export =` or `import`
-
-An important rule is that `export` and `import` declarations export or import _all meanings_ of their targets.
 
 <!-- TODO: Write more on that. -->

@@ -1,21 +1,15 @@
 ---
-title: By Example
+title: Declaration Reference
 layout: docs
 permalink: /docs/handbook/declaration-files/by-example.html
 oneline: "How to create a d.ts file for a module"
 ---
-
-# Introduction
 
 The purpose of this guide is to teach you how to write a high-quality definition file.
 This guide is structured by showing documentation for some API, along with sample usage of that API,
 and explaining how to write the corresponding declaration.
 
 These examples are ordered in approximately increasing order of complexity.
-
-# The Examples
-
-
 
 ## Objects with Properties
 
@@ -255,25 +249,3 @@ Use `declare function` to declare functions.
 declare function greet(greeting: string): void;
 ```
 
-
-
-<!-- Template
-
-##
-
-*Documentation*
->
-
-*Code*
-
-```ts
-
-```
-
-*Declaration*
-
-```ts
-
-```
-
--->

@@ -1,5 +1,5 @@
 ---
-title: Modules
+title: Modules .d.ts
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/module-d-ts.html
 ---
@@ -89,8 +89,23 @@ Which can be described with:
 
 ```ts
 export default function getArrayLength(arr: any[]): number;
-export const maxThing: 12;
+export const maxInterval: 12;
 ```
+
+Note that using `export default` in your .d.ts files requires [`esModuleInterop: true`](/tsconfig#esModuleInterop) to work.
+If you can't have `esModuleInterop: true` in your project, such as when you're submitting a PR to Definitely Typed, you'll have to use the `export=` syntax instead. This older syntax is harder to use but works everywhere.
+Here's how the above example would have to be written using `export=`:
+
+```ts
+declare function getArrayLength(arr: any[]): number;
+declare namespace getArrayLength {
+  declare const maxInterval: 12;
+}
+
+export = getArrayLength;
+```
+
+See [Module: Functions](module-function.d.ts.md) for details of how that works, and the [Modules reference](/docs/handbook/modules.html) page.
 
 ## Handling Many Consuming Import
 
@@ -229,10 +244,10 @@ To give you an idea of how all these pieces can come together, here is a referen
  */
 export as namespace myLib;
 
-/*~ If this module has methods, declare them as functions like so.
+/*~ If this module exports functions, declare them like so.
  */
-export function myMethod(a: string): string;
-export function myOtherMethod(a: number): number;
+export function myFunction(a: string): string;
+export function myOtherFunction(a: number): number;
 
 /*~ You can declare types that are available via importing the module */
 export interface SomeType {
@@ -279,3 +294,18 @@ Your declaration files should thus be
          +---- index.d.ts
          +---- baz.d.ts
 ```
+
+### Testing your types
+
+If you are planning on submitting these changes to DefinitelyTyped for everyone to also use, then we recommend you:
+
+> 1. Create a new folder in `node_modules/@types/[libname]`
+> 2. Create an `index.d.ts` in that folder, and copy the example in
+> 3. See where your usage of the module breaks, and start to fill out the index.d.ts
+> 4. When you're happy, clone [DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped) and follow the instructions in the README. 
+
+Otherwise
+
+> 1. Create a new file in the root of your source tree: `[libname].d.ts`
+> 2. Add `declare module "[libname]" {  }`
+> 3. Add the template inside the braces of the declare module, and see where your usage breaks 

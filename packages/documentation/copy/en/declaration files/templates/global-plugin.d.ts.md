@@ -1,5 +1,5 @@
 ---
-title: global-plugin.d.ts
+title: "Global: Plugin"
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/global-plugin-d-ts.html
 ---

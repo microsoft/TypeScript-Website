@@ -1,5 +1,5 @@
 ---
-title: module-plugin.d.ts
+title: "Module: Plugin"
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/module-plugin-d-ts.html
 ---
