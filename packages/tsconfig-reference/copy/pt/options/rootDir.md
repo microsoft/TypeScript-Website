@@ -1,11 +1,11 @@
 ---
 display: "Diretório Raiz"
-oneline: "Define o diretório raiz dentre os seus arquivos fonte"
+oneline: "Define o diretório raiz dos seus arquivos fonte"
 ---
 
 **Padrão**: O caminho mais longo em comum entre todos os arquivos que não são de declaração. Se `composite` está definido, o padrão será o diretório contendo o arquivo `tsconfig.json`.
 
-Quando TypeScript compila os arquivos, ele mantém a mesma estrutura de diretórios no diretório de saída como ela existe no diretório de entrada.
+Quando TypeScript compila os arquivos, ele mantém a estrutura dos diretório de saída igual a dos diretório de entrada.
 
 Por exemplo, suponhamos que você tenha alguns arquivos de entrada:
 
@@ -46,8 +46,7 @@ MeuProj
 │   │   │   ├── c.js
 ```
 
-Importante, a opção `rootDir` **não altera quais arquivos se tornam parte da compilação**.
-Pois não tem interação com `include`, `exclude`, ou com a propriedade `files` em `tsconfig.json`.
+Importante, a opção `rootDir` **não altera quais arquivos se tornam parte da compilação**, pois não há interação com `include`, `exclude`, ou com a propriedade `files` em `tsconfig.json`.
 
 Note que TypeScript nunca irá escrever um arquivo de saída em um diretório fora de `outDir`, e nunca irá pular a emissão de um arquivo.
 Por este motivo, `rootDir` também impõe que todos arquivos que precisam ser emitidos estejam abaixo do caminho `rootDir`.
@@ -63,4 +62,4 @@ MeuProj
 ├── ajudantes.ts
 ```
 
-Seria um erro especificar `rootDir` como `core` _e_ `include` como `*`, porque está se criando um arquivo (`ajudantes.ts`) que precisaria ser emitido _fora_ do `outDir` (i.e. `../ajudantes.js`).
+Seria um erro especificar `rootDir` como `core` _e_ `include` como `*`, porque estaria sendo criado um arquivo (`ajudantes.ts`) que precisaria ser emitido _fora_ do `outDir` (i.e. `../ajudantes.js`).
