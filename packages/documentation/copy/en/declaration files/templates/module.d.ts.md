@@ -1,12 +1,12 @@
 ---
-title: .d.ts files for Modules
+title: Modules
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/module-d-ts.html
 ---
 
-## Comparing JavaScript to an example DTS
+# Comparing JavaScript to an example DTS
 
-### Common CommonJS Patterns
+## Common CommonJS Patterns
 
 A module using CommonJS patterns uses `module.exports` to describe the exported values. For example, here is a module which exports a function and a numerical constant:
 
@@ -92,7 +92,7 @@ export default function getArrayLength(arr: any[]): number;
 export const maxThing: 12;
 ```
 
-### Handling Many Consuming Import
+## Handling Many Consuming Import
 
 There are many ways to import a module in modern consuming code:
 
@@ -126,7 +126,7 @@ fastify.default = fastify;
 module.exports = fastify;
 ```
 
-### Types in Modules
+## Types in Modules
 
 You may want to provide a type for JavaScript code which does not exist
 

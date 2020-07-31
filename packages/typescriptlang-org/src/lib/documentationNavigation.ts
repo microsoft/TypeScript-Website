@@ -472,7 +472,7 @@ export function getDocumentationNavForLanguage(
           id: "introduction",
           permalink: "/docs/handbook/declaration-files/introduction.html",
           oneline:
-            "How to write a high-quality TypeScript Ddeclaration (d.ts) file",
+            "How to write a high-quality TypeScript Declaration (d.ts) file",
         },
         {
           title: "By Example",
@@ -505,22 +505,8 @@ export function getDocumentationNavForLanguage(
 
           items: [
             {
-              title: "global.d.ts",
-              id: "global.d.ts",
-              permalink:
-                "/docs/handbook/declaration-files/templates/global-d-ts.html",
-              oneline: "undefined",
-            },
-            {
-              title: "global-modifying-module.d.ts",
-              id: "global-modifying-module.d.ts",
-              permalink:
-                "/docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html",
-              oneline: "undefined",
-            },
-            {
-              title: "module.d.ts",
-              id: "module.d.ts",
+              title: ".d.ts files for Modules",
+              id: ".d.ts-files-for-modules",
               permalink:
                 "/docs/handbook/declaration-files/templates/module-d-ts.html",
               oneline: "undefined",
@@ -544,6 +530,20 @@ export function getDocumentationNavForLanguage(
               id: "module-function.d.ts",
               permalink:
                 "/docs/handbook/declaration-files/templates/module-function-d-ts.html",
+              oneline: "undefined",
+            },
+            {
+              title: "global.d.ts",
+              id: "global.d.ts",
+              permalink:
+                "/docs/handbook/declaration-files/templates/global-d-ts.html",
+              oneline: "undefined",
+            },
+            {
+              title: "global-modifying-module.d.ts",
+              id: "global-modifying-module.d.ts",
+              permalink:
+                "/docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html",
               oneline: "undefined",
             },
           ],
@@ -1104,7 +1104,7 @@ export function getDocumentationNavForLanguage(
           id: "introduction",
           permalink: "/docs/handbook/declaration-files/introduction.html",
           oneline:
-            "How to write a high-quality TypeScript Ddeclaration (d.ts) file",
+            "How to write a high-quality TypeScript Declaration (d.ts) file",
         },
         {
           title: "By Example",
@@ -1137,22 +1137,8 @@ export function getDocumentationNavForLanguage(
 
           items: [
             {
-              title: "global.d.ts",
-              id: "global.d.ts",
-              permalink:
-                "/docs/handbook/declaration-files/templates/global-d-ts.html",
-              oneline: "undefined",
-            },
-            {
-              title: "global-modifying-module.d.ts",
-              id: "global-modifying-module.d.ts",
-              permalink:
-                "/docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html",
-              oneline: "undefined",
-            },
-            {
-              title: "module.d.ts",
-              id: "module.d.ts",
+              title: ".d.ts files for Modules",
+              id: ".d.ts-files-for-modules",
               permalink:
                 "/docs/handbook/declaration-files/templates/module-d-ts.html",
               oneline: "undefined",
@@ -1176,6 +1162,20 @@ export function getDocumentationNavForLanguage(
               id: "module-function.d.ts",
               permalink:
                 "/docs/handbook/declaration-files/templates/module-function-d-ts.html",
+              oneline: "undefined",
+            },
+            {
+              title: "global.d.ts",
+              id: "global.d.ts",
+              permalink:
+                "/docs/handbook/declaration-files/templates/global-d-ts.html",
+              oneline: "undefined",
+            },
+            {
+              title: "global-modifying-module.d.ts",
+              id: "global-modifying-module.d.ts",
+              permalink:
+                "/docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html",
               oneline: "undefined",
             },
           ],

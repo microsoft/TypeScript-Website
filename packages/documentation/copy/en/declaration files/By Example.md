@@ -15,48 +15,7 @@ These examples are ordered in approximately increasing order of complexity.
 
 # The Examples
 
-## Global Variables
 
-_Documentation_
-
-> The global variable `foo` contains the number of widgets present.
-
-_Code_
-
-```ts
-console.log("Half the number of widgets is " + foo / 2);
-```
-
-_Declaration_
-
-Use `declare var` to declare variables.
-If the variable is read-only, you can use `declare const`.
-You can also use `declare let` if the variable is block-scoped.
-
-```ts
-/** The number of widgets present */
-declare var foo: number;
-```
-
-## Global Functions
-
-_Documentation_
-
-> You can call the function `greet` with a string to show a greeting to the user.
-
-_Code_
-
-```ts
-greet("hello, world");
-```
-
-_Declaration_
-
-Use `declare function` to declare functions.
-
-```ts
-declare function greet(greeting: string): void;
-```
 
 ## Objects with Properties
 
@@ -252,6 +211,51 @@ declare class Greeter {
   showGreeting(): void;
 }
 ```
+
+## Global Variables
+
+_Documentation_
+
+> The global variable `foo` contains the number of widgets present.
+
+_Code_
+
+```ts
+console.log("Half the number of widgets is " + foo / 2);
+```
+
+_Declaration_
+
+Use `declare var` to declare variables.
+If the variable is read-only, you can use `declare const`.
+You can also use `declare let` if the variable is block-scoped.
+
+```ts
+/** The number of widgets present */
+declare var foo: number;
+```
+
+## Global Functions
+
+_Documentation_
+
+> You can call the function `greet` with a string to show a greeting to the user.
+
+_Code_
+
+```ts
+greet("hello, world");
+```
+
+_Declaration_
+
+Use `declare function` to declare functions.
+
+```ts
+declare function greet(greeting: string): void;
+```
+
+
 
 <!-- Template
 
