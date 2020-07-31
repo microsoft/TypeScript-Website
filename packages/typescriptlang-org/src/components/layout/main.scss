@@ -33,7 +33,7 @@
   );
 }
 
-html {
+html, html.light-theme {
   // light theme
   --background-color: #{$ts-light-bg-sandy-color};
   --text-color: #333;

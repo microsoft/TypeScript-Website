@@ -209,7 +209,6 @@ export const SiteFooter = (props: Props) => {
   const systemIsDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
   const customThemeOverride = hasLocalStorage && localStorage.getItem("color-theme")
   const useDark = !customThemeOverride && systemIsDark ? true : customThemeOverride === "dark-theme"
-
   const [isDarkMode, setDarkMode] = useState(useDark)
 
   const handleThemeChange = () => {
@@ -226,7 +225,7 @@ export const SiteFooter = (props: Props) => {
 
     } else {
       document.documentElement.classList.remove("dark-theme")
-      hasLocalStorage && localStorage.setItem("color-theme", "")
+      hasLocalStorage && localStorage.setItem("color-theme", "light-theme")
     }
   }, [isDarkMode])
 
