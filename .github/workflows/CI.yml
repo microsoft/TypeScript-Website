@@ -35,7 +35,7 @@ jobs:
       - run: node test/verifyPackageVersions.js
       # Launch
       - run: yarn bootstrap
-      - run: yarn build
+      - run: yarn workspace typescriptlang-org build
       - run: yarn compile
 
       # PR: Deploy if we can
