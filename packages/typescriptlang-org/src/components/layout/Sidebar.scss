@@ -6,16 +6,11 @@
 
 nav#sidebar {
   min-width: 16rem;
-  background-color: $ts-light-bg-grey;
-  color: black;
-
-  @media (prefers-color-scheme: dark) {
-    background-color: $ts-dark-bg-secondary;
-    color: white;
-  }
+  background-color: var(--sidebar-background-color);
+  color: var(--alt-text-color);
 
   /* "Basically a section of documentation */
-  > ul {
+  ul {
     position: sticky;
     top: 0;
     margin: 0;
@@ -27,16 +22,13 @@ nav#sidebar {
       overflow-x: hidden;
     }
 
-    > li {
+    li {
       // Mostly stuff for all of the links
       list-style: none;
       padding: 0;
       min-height: 2.5rem;
-      border-bottom: 1px solid #dfdfdf;
+      border-bottom: 1px solid var(--sidebar-item-border-color);
 
-      @media (prefers-color-scheme: dark) {
-        border-color: #3e3e3e;
-      }
       font-weight: 400;
       font-size: 1rem;
 
@@ -55,27 +47,17 @@ nav#sidebar {
         font-weight: 500;
         cursor: pointer;
 
-        color: black;
-        @media (prefers-color-scheme: dark) {
-          color: white;
-        }
+        color: var(--alt-text-color);
 
-        @media (prefers-color-scheme: dark) {
-          .open path,
-          .closed path {
-            stroke: white;
-          }
+        .open path,
+        .closed path {
+          stroke: var(--text-color);
         }
 
         &:active,
         &:focus {
-          color: black;
-          background-color: #dfdfdf;
-
-          @media (prefers-color-scheme: dark) {
-            color: white;
-            background-color: $ts-bg-selection-grey;
-          }
+          color: var(--alt-text-color);
+          background-color: var(--sidebar-active-button-background-color);
         }
 
         span {
@@ -83,27 +65,27 @@ nav#sidebar {
           right: 20px;
         }
       }
+
+      ul ul {
+        margin-left: 0.2rem;
+      }
     }
   }
 
   // Still looking at the highest level of navigation
-  > ul > li {
+  ul li {
     &.highlighted {
-      background-color: $ts-barely-blue-highlight;
+      background-color: var(--sidebar-list-active-background-color);
 
       svg path {
         stroke: $ts-main-blue-color;
-      }
-
-      @media (prefers-color-scheme: dark) {
-        background-color: $ts-dark-barely-blue-highlight;
       }
     }
 
     // When the dropdown for a section is showing
     &.open {
       // Hide the sideways SVG
-      span.closed {
+      > button > span.closed {
         display: none;
       }
     }
@@ -120,23 +102,16 @@ nav#sidebar {
     }
   }
 
-  > ul > li.open > ul {
-    background-color: #e4e4e4;
-
-    @media (prefers-color-scheme: dark) {
-      background-color: rgb(53, 52, 52);
-    }
+  ul li.open > ul {
+    background-color: var(--sidebar-list-background-color);
   }
-  > ul > li.open.highlighted > ul {
-    background-color: $ts-barely-blue-highlight;
 
-    @media (prefers-color-scheme: dark) {
-      background-color: $ts-dark-barely-blue-highlight;
-    }
+  ul li.open.highlighted ul {
+    background-color: var(--sidebar-list-active-background-color);
   }
 
   // Individual pages
-  > ul > li > ul {
+  ul li ul {
     margin: 0;
     padding: 0;
 
@@ -144,17 +119,13 @@ nav#sidebar {
       display: block;
       flex-grow: 1;
       text-decoration: none;
-      color: black;
+      color: var(--alt-text-color);
       padding-top: 0.5rem;
       padding-left: 1rem;
       padding-bottom: 0.5rem;
-
-      @media (prefers-color-scheme: dark) {
-        color: white;
-      }
     }
 
-    > li {
+    li {
       list-style: none;
 
       a {
@@ -174,11 +145,7 @@ nav#sidebar {
 
       a:focus,
       a:hover {
-        border-left: 2px solid black;
-
-        @media (prefers-color-scheme: dark) {
-          border-color: white;
-        }
+        border-left: 2px solid var(--sidebar-link-border-color);
       }
 
       &.highlight a {
@@ -258,7 +225,6 @@ nav#sidebar {
     & > ul > li,
     & > ul > li > button {
       font-size: 1.3rem;
-      height: auto;
     }
   }
 }

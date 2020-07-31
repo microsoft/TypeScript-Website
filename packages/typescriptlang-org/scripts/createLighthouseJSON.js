@@ -1,29 +1,32 @@
 const nodeFetch = require("node-fetch").default
 const { writeFileSync } = require("fs")
 const { join } = require("path")
-const parser = require("xml2json")
+const parser = require("xml-js")
 
-const prNumber = process.env.PR_NUMBER || "245"
+const prNumber = process.env.PR_NUMBER || "789"
 
 const go = async () => {
-  const sitemap =
-    "https://typescript-v2-" + prNumber + ".ortam.now.sh/sitemap.xml"
-
+  const sitemap = `https://typescript-v2-${prNumber}.vercel.app/sitemap.xml`
   try {
     const packageJSON = await nodeFetch(sitemap)
 
     const contents = await packageJSON.text()
+    const sitemapJSON = JSON.parse(
+      parser.xml2json(contents, { compact: true, spaces: 4 })
+    )
 
-    const sitemapJSON = JSON.parse(parser.toJson(contents))
     /** @type {string[]} */
     const grabbedURLs = sitemapJSON.urlset.url.map(u => u.loc)
+
     const urls = grabbedURLs
+      .filter(Boolean)
       .map(url => {
         // from "https://www.typescriptlang.org/v2/docs/handbook/advanced-types.html",
-        // to   "https://typescript-v2-" + prNumber + ".ortam.now.sh/docs/handbook/advanced-types.html",
-        return url.replace(
+        // to   "https://typescript-v2-" + prNumber + ".vercel.app/docs/handbook/advanced-types.html",
+
+        return url._text.replace(
           "https://www.typescriptlang.org/",
-          "https://typescript-v2-" + prNumber + ".ortam.now.sh/"
+          "https://typescript-v2-" + prNumber + ".vercel.app/"
         )
       })
       .reverse()
@@ -62,8 +65,10 @@ const go = async () => {
     }
 
     console.log(`Looking at ${json.ci.collect.url.length} urls`)
+    console.log(`- ${json.ci.collect.url.join("\n - ")}`)
     writeFileSync(lighthouseFiles, JSON.stringify(json))
   } catch (error) {
+    console.log(error)
     console.log(
       "Failed to generate lighthouse JSON, this is fine if you are not an orta"
     )

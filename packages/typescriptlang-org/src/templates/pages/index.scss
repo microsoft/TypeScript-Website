@@ -414,7 +414,7 @@ $headline-foreground-bg: #104261;
     flex-direction: column-reverse;
     align-items: center;
 
-    @media (max-width: $screen-xs) {
+    @media (max-width: 800px) {
       top: 0;
       position: absolute;
     }

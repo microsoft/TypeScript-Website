@@ -5,8 +5,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "ts-node script/createEpub.ts && ts-node script/createPDF.ts",
-    "test": "echo 'NOOP'",
-    "bootstrap": "echo 'NOOP'"
+    "test": "echo 'NOOP'"
   },
   "prettier": {
     "semi": true

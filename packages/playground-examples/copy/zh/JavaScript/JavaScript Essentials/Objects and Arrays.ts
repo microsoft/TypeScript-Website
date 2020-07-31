@@ -79,7 +79,7 @@ readonlyOrders.pop();
 // 同样会提供很多额外的安全性。
 
 // 您可以找到更多关于 readonly 的信息：
-//  - [handbook link]
+//  - https://www.typescriptlang.org/docs/handbook/interfaces.html#readonly-properties
 //  - https://basarat.gitbooks.io/typescript/content/docs/types/readonly.html
 
 // 并且您可以在函数的示例中继续了解 JavaScript 和 TypeScript：
