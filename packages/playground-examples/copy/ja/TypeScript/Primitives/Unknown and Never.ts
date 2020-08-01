@@ -20,7 +20,7 @@ myAccount.email;
 // 変数jsonParserにカーソルを合わせると、戻り値の型がany型であることがわかります。
 // そして、変数myAccountも同様にany型になります。
 // これについて、ジェネリクスを使って型付けすることもできますが、
-// unknown型を使うことによっても型付けきます。
+// unknown型を使うことによっても型付けできます。
 
 const jsonParserUnknown = (jsonString: string): unknown => JSON.parse(jsonString);
 
