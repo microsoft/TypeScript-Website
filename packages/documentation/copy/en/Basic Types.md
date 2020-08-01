@@ -383,7 +383,7 @@ Using one over the other is mostly a choice of preference; however, when using T
 
 You may have noticed that so far, we've been using the `let` keyword instead of JavaScript's `var` keyword which you might be more familiar with.
 The `let` keyword is actually a newer JavaScript construct that TypeScript makes available.
-We'll discuss the details later, but many common problems in JavaScript are alleviated by using `let`, so you should use it instead of `var` whenever possible.
+You can read in the Handbook Reference on [Variable Declarations](/docs/handbook/variable-declarations.html) more about how `let` and `const` fix a lot of the problems with var.
 
 
 ## About `Number`, `String`, `Boolean`, `Symbol` and `Object`

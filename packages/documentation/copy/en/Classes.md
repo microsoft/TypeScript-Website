@@ -15,12 +15,14 @@ In TypeScript, we allow developers to use these techniques now, and compile them
 
 Let's take a look at a simple class-based example:
 
-```ts
+```ts twoslash
 class Greeter {
   greeting: string;
+
   constructor(message: string) {
     this.greeting = message;
   }
+
   greet() {
     return "Hello, " + this.greeting;
   }
@@ -45,7 +47,7 @@ One of the most fundamental patterns in class-based programming is being able to
 
 Let's take a look at an example:
 
-```ts
+```ts twoslash
 class Animal {
   move(distanceInMeters: number = 0) {
     console.log(`Animal moved ${distanceInMeters}m.`);
@@ -72,7 +74,7 @@ Because `Dog` extends the functionality from `Animal`, we were able to create an
 
 Let's now look at a more complex example.
 
-```ts
+```ts twoslash
 class Animal {
   name: string;
   constructor(theName: string) {
@@ -139,12 +141,14 @@ In TypeScript, each member is `public` by default.
 You may still mark a member `public` explicitly.
 We could have written the `Animal` class from the previous section in the following way:
 
-```ts
+```ts twoslash
 class Animal {
   public name: string;
+
   public constructor(theName: string) {
     this.name = theName;
   }
+
   public move(distanceInMeters: number) {
     console.log(`${this.name} moved ${distanceInMeters}m.`);
   }
@@ -155,13 +159,16 @@ class Animal {
 
 With TypeScript 3.8, TypeScript supports the new JavaScript syntax for private fields:
 
-```ts
+```ts twoslash
+// @errors: 18013
 class Animal {
-    #name: string;
-    constructor(theName: string) { this.#name = theName; }
+  #name: string;
+  constructor(theName: string) {
+    this.#name = theName;
+  }
 }
 
-new Animal("Cat").#name; // Property '#name' is not accessible outside class 'Animal' because it has a private identifier.
+new Animal("Cat").#name;
 ```
 
 This syntax is built into the JavaScript runtime and can have better guarantees about the isolation of each private field.
@@ -169,17 +176,19 @@ Right now, the best documentation for these private fields is in the TypeScript 
 
 ## Understanding TypeScript's `private`
 
-TypeScript also has it's own way to declare a member as being marked `private`, it cannot be accessed from outside of its containing class. For example:
+TypeScript also has its own way to declare a member as being marked `private`, it cannot be accessed from outside of its containing class. For example:
 
-```ts
+```ts twoslash
+// @errors: 2341
 class Animal {
   private name: string;
+
   constructor(theName: string) {
     this.name = theName;
   }
 }
 
-new Animal("Cat").name; // Error: 'name' is private;
+new Animal("Cat").name;
 ```
 
 TypeScript is a structural type system.
@@ -191,7 +200,8 @@ The same applies to `protected` members.
 
 Let's look at an example to better see how this plays out in practice:
 
-```ts
+```ts twoslash
+// @errors: 2322
 class Animal {
   private name: string;
   constructor(theName: string) {
@@ -217,7 +227,7 @@ let rhino = new Rhino();
 let employee = new Employee("Bob");
 
 animal = rhino;
-animal = employee; // Error: 'Animal' and 'Employee' are not compatible
+animal = employee;
 ```
 
 In this example, we have an `Animal` and a `Rhino`, with `Rhino` being a subclass of `Animal`.
@@ -231,7 +241,8 @@ Even though `Employee` also has a `private` member called `name`, it's not the o
 
 The `protected` modifier acts much like the `private` modifier with the exception that members declared `protected` can also be accessed within deriving classes. For example,
 
-```ts
+```ts twoslash
+// @errors: 2445
 class Person {
   protected name: string;
   constructor(name: string) {
@@ -254,7 +265,7 @@ class Employee extends Person {
 
 let howard = new Employee("Howard", "Sales");
 console.log(howard.getElevatorPitch());
-console.log(howard.name); // error
+console.log(howard.name);
 ```
 
 Notice that while we can't use `name` from outside of `Person`, we can still use it from within an instance method of `Employee` because `Employee` derives from `Person`.
@@ -262,7 +273,8 @@ Notice that while we can't use `name` from outside of `Person`, we can still use
 A constructor may also be marked `protected`.
 This means that the class cannot be instantiated outside of its containing class, but can be extended. For example,
 
-```ts
+```ts twoslash
+// @errors: 2674
 class Person {
   protected name: string;
   protected constructor(theName: string) {
@@ -285,7 +297,7 @@ class Employee extends Person {
 }
 
 let howard = new Employee("Howard", "Sales");
-let john = new Person("John"); // Error: The 'Person' constructor is protected
+let john = new Person("John");
 ```
 
 # Readonly modifier
@@ -293,16 +305,19 @@ let john = new Person("John"); // Error: The 'Person' constructor is protected
 You can make properties readonly by using the `readonly` keyword.
 Readonly properties must be initialized at their declaration or in the constructor.
 
-```ts
+```ts twoslash
+// @errors: 2540
 class Octopus {
   readonly name: string;
   readonly numberOfLegs: number = 8;
+
   constructor(theName: string) {
     this.name = theName;
   }
 }
+
 let dad = new Octopus("Man with the 8 strong legs");
-dad.name = "Man with the 3-piece suit"; // error! name is readonly.
+dad.name = "Man with the 3-piece suit";
 ```
 
 ## Parameter properties
@@ -311,11 +326,14 @@ In our last example, we had to declare a readonly member `name` and a constructo
 _Parameter properties_ let you create and initialize a member in one place.
 Here's a further revision of the previous `Octopus` class using a parameter property:
 
-```ts
+```ts twoslash
 class Octopus {
   readonly numberOfLegs: number = 8;
   constructor(readonly name: string) {}
 }
+
+let dad = new Octopus("Man with the 8 strong legs");
+dad.name;
 ```
 
 Notice how we dropped `theName` altogether and just use the shortened `readonly name: string` parameter on the constructor to create and initialize the `name` member.
@@ -332,13 +350,15 @@ This gives you a way of having finer-grained control over how a member is access
 Let's convert a simple class to use `get` and `set`.
 First, let's start with an example without getters and setters.
 
-```ts
+```ts twoslash
+// @strict: false
 class Employee {
   fullName: string;
 }
 
 let employee = new Employee();
 employee.fullName = "Bob Smith";
+
 if (employee.fullName) {
   console.log(employee.fullName);
 }
@@ -350,7 +370,8 @@ In this version, we add a setter that checks the length of the `newName` to make
 
 To preserve existing functionality, we also add a simple getter that retrieves `fullName` unmodified.
 
-```ts
+```ts twoslash
+// @strict: false
 const fullNameMaxLength = 10;
 
 class Employee {
@@ -371,6 +392,7 @@ class Employee {
 
 let employee = new Employee();
 employee.fullName = "Bob Smith";
+
 if (employee.fullName) {
   console.log(employee.fullName);
 }
@@ -393,14 +415,16 @@ In this example, we use `static` on the origin, as it's a general value for all 
 Each instance accesses this value through prepending the name of the class.
 Similarly to prepending `this.` in front of instance accesses, here we prepend `Grid.` in front of static accesses.
 
-```ts
+```ts twoslash
 class Grid {
   static origin = { x: 0, y: 0 };
+
   calculateDistanceFromOrigin(point: { x: number; y: number }) {
     let xDist = point.x - Grid.origin.x;
     let yDist = point.y - Grid.origin.y;
     return Math.sqrt(xDist * xDist + yDist * yDist) / this.scale;
   }
+
   constructor(public scale: number) {}
 }
 
@@ -418,9 +442,10 @@ They may not be instantiated directly.
 Unlike an interface, an abstract class may contain implementation details for its members.
 The `abstract` keyword is used to define abstract classes as well as abstract methods within an abstract class.
 
-```ts
+```ts twoslash
 abstract class Animal {
   abstract makeSound(): void;
+
   move(): void {
     console.log("roaming the earth...");
   }
@@ -432,7 +457,8 @@ Abstract methods share a similar syntax to interface methods.
 Both define the signature of a method without including a method body.
 However, abstract methods must include the `abstract` keyword and may optionally include access modifiers.
 
-```ts
+```ts twoslash
+// @errors: 2511 2339
 abstract class Department {
   constructor(public name: string) {}
 
@@ -462,7 +488,7 @@ department = new Department(); // error: cannot create an instance of an abstrac
 department = new AccountingDepartment(); // ok to create and assign a non-abstract subclass
 department.printName();
 department.printMeeting();
-department.generateReports(); // error: method doesn't exist on declared abstract type
+department.generateReports();
 ```
 
 # Advanced Techniques
@@ -472,12 +498,14 @@ department.generateReports(); // error: method doesn't exist on declared abstrac
 When you declare a class in TypeScript, you are actually creating multiple declarations at the same time.
 The first is the type of the _instance_ of the class.
 
-```ts
+```ts twoslash
 class Greeter {
   greeting: string;
+
   constructor(message: string) {
     this.greeting = message;
   }
+
   greet() {
     return "Hello, " + this.greeting;
   }
@@ -495,14 +523,17 @@ We're also creating another value that we call the _constructor function_.
 This is the function that is called when we `new` up instances of the class.
 To see what this looks like in practice, let's take a look at the JavaScript created by the above example:
 
-```ts
-let Greeter = (function() {
+```ts twoslash
+// @strict: false
+let Greeter = (function () {
   function Greeter(message) {
     this.greeting = message;
   }
-  Greeter.prototype.greet = function() {
+
+  Greeter.prototype.greet = function () {
     return "Hello, " + this.greeting;
   };
+
   return Greeter;
 })();
 
@@ -518,7 +549,8 @@ Another way to think of each class is that there is an _instance_ side and a _st
 
 Let's modify the example a bit to show this difference:
 
-```ts
+```ts twoslash
+// @strict: false
 class Greeter {
   static standardGreeting = "Hello, there";
   greeting: string;
@@ -559,7 +591,8 @@ We show this by using `new` on `greeterMaker`, creating new instances of `Greete
 As we said in the previous section, a class declaration creates two things: a type representing instances of the class and a constructor function.
 Because classes create types, you can use them in the same places you would be able to use interfaces.
 
-```ts
+```ts twoslash
+// @strict: false
 class Point {
   x: number;
   y: number;

@@ -16,7 +16,7 @@ TypeScript provides both numeric and string-based enums.
 We'll first start off with numeric enums, which are probably more familiar if you're coming from other languages.
 An enum can be defined using the `enum` keyword.
 
-```ts
+```ts twoslash
 enum Direction {
   Up = 1,
   Down,
@@ -31,7 +31,7 @@ In other words, `Direction.Up` has the value `1`, `Down` has `2`, `Left` has `3`
 
 If we wanted, we could leave off the initializers entirely:
 
-```ts
+```ts twoslash
 enum Direction {
   Up,
   Down,
@@ -45,27 +45,30 @@ This auto-incrementing behavior is useful for cases where we might not care abou
 
 Using an enum is simple: just access any member as a property off of the enum itself, and declare types using the name of the enum:
 
-```ts
-enum Response {
+```ts twoslash
+enum UserResponse {
   No = 0,
   Yes = 1
 }
 
-function respond(recipient: string, message: Response): void {
+function respond(recipient: string, message: UserResponse): void {
   // ...
 }
 
-respond("Princess Caroline", Response.Yes);
+respond("Princess Caroline", UserResponse.Yes);
 ```
 
 Numeric enums can be mixed in [computed and constant members (see below)](#computed-and-constant-members).
 The short story is, enums without initializers either need to be first, or have to come after numeric enums initialized with numeric constants or other constant enum members.
 In other words, the following isn't allowed:
 
-```ts
+```ts twoslash
+// @errors: 1061
+const getSomeValue = () => 23
+// ---cut---
 enum E {
   A = getSomeValue(),
-  B // Error! Enum member must have initializer.
+  B
 }
 ```
 
@@ -74,7 +77,7 @@ enum E {
 String enums are a similar concept, but have some subtle [runtime differences](#enums-at-runtime) as documented below.
 In a string enum, each member has to be constant-initialized with a string literal, or with another string enum member.
 
-```ts
+```ts twoslash
 enum Direction {
   Up = "UP",
   Down = "DOWN",
@@ -90,7 +93,7 @@ In other words, if you were debugging and had to read the runtime value of a num
 
 Technically enums can be mixed with string and numeric members, but it's not clear why you would ever want to do so:
 
-```ts
+```ts twoslash
 enum BooleanLikeHeterogeneousEnum {
   No = 0,
   Yes = "YES"
@@ -106,31 +109,31 @@ An enum member is considered constant if:
 
 - It is the first member in the enum and it has no initializer, in which case it's assigned the value `0`:
 
-```ts
-// E.X is constant:
-enum E {
-  X
-}
-```
+  ```ts twoslash
+  // E.X is constant:
+  enum E {
+    X
+  }
+  ```
 
 - It does not have an initializer and the preceding enum member was a _numeric_ constant.
   In this case the value of the current enum member will be the value of the preceding enum member plus one.
 
-```ts
-// All enum members in 'E1' and 'E2' are constant.
+  ```ts twoslash
+  // All enum members in 'E1' and 'E2' are constant.
 
-enum E1 {
-  X,
-  Y,
-  Z
-}
+  enum E1 {
+    X,
+    Y,
+    Z
+  }
 
-enum E2 {
-  A = 1,
-  B,
-  C
-}
-```
+  enum E2 {
+    A = 1,
+    B,
+    C
+  }
+  ```
 
 - The enum member is initialized with a constant enum expression.
   A constant enum expression is a subset of TypeScript expressions that can be fully evaluated at compile time.
@@ -146,7 +149,7 @@ enum E2 {
 
 In all other cases enum member is considered computed.
 
-```ts
+```ts twoslash
 enum FileAccess {
   // constant members
   None,
@@ -172,7 +175,8 @@ When all members in an enum have literal enum values, some special semantics com
 The first is that enum members also become types as well!
 For example, we can say that certain members can _only_ have the value of an enum member:
 
-```ts
+```ts twoslash
+// @errors: 2322
 enum ShapeKind {
   Circle,
   Square
@@ -189,17 +193,18 @@ interface Square {
 }
 
 let c: Circle = {
-  kind: ShapeKind.Square, // Error! Type 'ShapeKind.Square' is not assignable to type 'ShapeKind.Circle'.
+  kind: ShapeKind.Square,
   radius: 100
 };
 ```
 
 The other change is that enum types themselves effectively become a _union_ of each enum member.
 While we haven't discussed [union types](./advanced-types.html#union-types) yet, all that you need to know is that with union enums, the type system is able to leverage the fact that it knows the exact set of values that exist in the enum itself.
-Because of that, TypeScript can catch silly bugs where we might be comparing values incorrectly.
+Because of that, TypeScript can catch bugs where we might be comparing values incorrectly.
 For example:
 
-```ts
+```ts twoslash
+// @errors: 2367
 enum E {
   Foo,
   Bar
@@ -207,8 +212,7 @@ enum E {
 
 function f(x: E) {
   if (x !== E.Foo || x !== E.Bar) {
-    //             ~~~~~~~~~~~
-    // Error! This condition will always return 'true' since the types 'E.Foo' and 'E.Bar' have no overlap.
+    //
   }
 }
 ```
@@ -222,7 +226,7 @@ However, if the check didn't succeed, then `x` can _only_ be `E.Foo`, so it does
 Enums are real objects that exist at runtime.
 For example, the following enum
 
-```ts
+```ts twoslash
 enum E {
   X,
   Y,
@@ -232,7 +236,13 @@ enum E {
 
 can actually be passed around to functions
 
-```ts
+```ts twoslash
+enum E {
+  X,
+  Y,
+  Z
+}
+
 function f(obj: { X: number }) {
   return obj.X;
 }
@@ -245,7 +255,7 @@ f(E);
 
 Even though Enums are real objects that exist at runtime, the `keyof` keyword works differently than you might expect for typical objects. Instead, use `keyof typeof` to get a Type that represents all Enum keys as strings.
 
-```ts
+```ts twoslash
 enum LogLevel {
   ERROR,
   WARN,
@@ -275,23 +285,25 @@ printImportant("ERROR", "This is a message");
 In addition to creating an object with property names for members, numeric enums members also get a _reverse mapping_ from enum values to enum names.
 For example, in this example:
 
-```ts
+```ts twoslash
 enum Enum {
   A
 }
+
 let a = Enum.A;
 let nameOfA = Enum[a]; // "A"
 ```
 
-TypeScript might compile this down to something like the following JavaScript:
+TypeScript compiles this down to the following JavaScript:
 
-```js
-var Enum;
-(function(Enum) {
-  Enum[(Enum["A"] = 0)] = "A";
-})(Enum || (Enum = {}));
-var a = Enum.A;
-var nameOfA = Enum[a]; // "A"
+```ts twoslash
+// @showEmit
+enum Enum {
+  A
+}
+
+let a = Enum.A;
+let nameOfA = Enum[a]; // "A"
 ```
 
 In this generated code, an enum is compiled into an object that stores both forward (`name` -> `value`) and reverse (`value` -> `name`) mappings.
@@ -306,7 +318,7 @@ However sometimes requirements are tighter.
 To avoid paying the cost of extra generated code and additional indirection when accessing enum values, it's possible to use `const` enums.
 Const enums are defined using the `const` modifier on our enums:
 
-```ts
+```ts twoslash
 const enum Enum {
   A = 1,
   B = A * 2
@@ -317,7 +329,7 @@ Const enums can only use constant enum expressions and unlike regular enums they
 Const enum members are inlined at use sites.
 This is possible since const enums cannot have computed members.
 
-```ts
+```ts twoslash
 const enum Directions {
   Up,
   Down,
@@ -335,15 +347,28 @@ let directions = [
 
 in generated code will become
 
-```js
-var directions = [0 /* Up */, 1 /* Down */, 2 /* Left */, 3 /* Right */];
+```ts twoslash
+// @showEmit
+const enum Directions {
+  Up,
+  Down,
+  Left,
+  Right
+}
+
+let directions = [
+  Directions.Up,
+  Directions.Down,
+  Directions.Left,
+  Directions.Right
+];
 ```
 
 ## Ambient enums
 
 Ambient enums are used to describe the shape of already existing enum types.
 
-```ts
+```ts twoslash
 declare enum Enum {
   A = 1,
   B,

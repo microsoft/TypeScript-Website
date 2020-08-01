@@ -7,8 +7,9 @@ oneline: How code flow analysis works in TypeScript
 
 In TypeScript, there are several places where type inference is used to provide type information when there is no explicit type annotation. For example, in this code
 
-```ts
+```ts twoslash
 let x = 3;
+//  ^?
 ```
 
 The type of the `x` variable is inferred to be `number`.
@@ -21,8 +22,9 @@ In the following sections, we'll explore some of the nuances in how types are in
 
 When a type inference is made from several expressions, the types of those expressions are used to calculate a "best common type". For example,
 
-```ts
+```ts twoslash
 let x = [0, 1, null];
+//  ^?
 ```
 
 To infer the type of `x` in the example above, we must consider the type of each array element.
@@ -31,15 +33,41 @@ The best common type algorithm considers each candidate type, and picks the type
 
 Because the best common type has to be chosen from the provided candidate types, there are some cases where types share a common structure, but no one type is the super type of all candidate types. For example:
 
-```ts
+```ts twoslash
+// @strict: false
+class Animal {}
+class Rhino extends Animal {
+  hasHorn: true
+}
+class Elephant extends Animal {
+  hasTrunk: true
+}
+class Snake extends Animal {
+  hasLegs: false
+}
+// ---cut---
 let zoo = [new Rhino(), new Elephant(), new Snake()];
+//    ^?
 ```
 
 Ideally, we may want `zoo` to be inferred as an `Animal[]`, but because there is no object that is strictly of type `Animal` in the array, we make no inference about the array element type.
 To correct this, instead explicitly provide the type when no one type is a super type of all other candidates:
 
-```ts
+```ts twoslash
+// @strict: false
+class Animal {}
+class Rhino extends Animal {
+  hasHorn: true
+}
+class Elephant extends Animal {
+  hasTrunk: true
+}
+class Snake extends Animal {
+  hasLegs: false
+}
+// ---cut---
 let zoo: Animal[] = [new Rhino(), new Elephant(), new Snake()];
+//    ^?
 ```
 
 When no best common type is found, the resulting inference is the union array type, `(Rhino | Elephant | Snake)[]`.

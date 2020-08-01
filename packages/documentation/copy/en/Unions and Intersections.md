@@ -253,6 +253,118 @@ function networkStatus(state: NetworkState): string {
 }
 ```
 
+## Union Exhaustiveness checking
+
+We would like the compiler to tell us when we don't cover all variants of the discriminated union.
+For example, if we add `Triangle` to `Shape`, we need to update `area` as well:
+
+```ts twoslash
+// @errors: 2366
+type NetworkLoadingState = { state: "loading" };
+type NetworkFailedState = { state: "failed"; code: number };
+type NetworkSuccessState = {
+  state: "success";
+  response: {
+    title: string;
+    duration: number;
+    summary: string;
+  };
+};
+// ---cut---
+type NetworkFromCachedState = {
+  state: "from_cache";
+  id: string
+  response: NetworkSuccessState["response"]
+}
+
+type NetworkState =
+  | NetworkLoadingState
+  | NetworkFailedState
+  | NetworkSuccessState
+  | NetworkFromCachedState;
+
+function logger(s: NetworkState) {
+  switch (s.state) {
+    case "loading":
+      return "loading request";
+    case "failed":
+      return `failed with code ${s.code}`;
+    case "success":
+      return "got response"
+  }
+}
+```
+
+There are two ways to do this.
+The first is to turn on `--strictNullChecks` and specify a return type:
+
+```ts twoslash
+// @errors: 2366
+type NetworkLoadingState = { state: "loading" };
+type NetworkFailedState = { state: "failed"; code: number };
+type NetworkSuccessState = { state: "success" };
+type NetworkFromCachedState = { state: "from_cache"; }
+
+type NetworkState =
+  | NetworkLoadingState
+  | NetworkFailedState
+  | NetworkSuccessState
+  | NetworkFromCachedState;
+
+// ---cut---
+function logger(s: NetworkState): string {
+  switch (s.state) {
+    case "loading":
+      return "loading request";
+    case "failed":
+      return `failed with code ${s.code}`;
+    case "success":
+      return "got response"
+  }
+}
+```
+
+Because the `switch` is no longer exhaustive, TypeScript is aware that the function could sometimes return `undefined`.
+If you have an explicit return type `string`, then you will get an error that the return type is actually `string | undefined`.
+However, this method is quite subtle and, besides, [`--strictNullChecks`](/tsconfig#strictNullChecks) does not always work with old code.
+
+The second method uses the `never` type that the compiler uses to check for exhaustiveness:
+
+```ts twoslash
+// @errors: 2345
+type NetworkLoadingState = { state: "loading" };
+type NetworkFailedState = { state: "failed"; code: number };
+type NetworkSuccessState = { state: "success" };
+type NetworkFromCachedState = { state: "from_cache"; }
+
+type NetworkState =
+  | NetworkLoadingState
+  | NetworkFailedState
+  | NetworkSuccessState
+  | NetworkFromCachedState;
+// ---cut---
+function assertNever(x: never): never {
+  throw new Error("Unexpected object: " + x);
+}
+
+function logger(s: NetworkState): string {
+  switch (s.state) {
+    case "loading":
+      return "loading request";
+    case "failed":
+      return `failed with code ${s.code}`;
+    case "success":
+      return "got response";
+    default: 
+      return assertNever(s)
+  }
+}
+```
+
+Here, `assertNever` checks that `s` is of type `never` &mdash; the type that's left after all other cases have been removed.
+If you forget a case, then `s` will have a real type and you will get a type error.
+This method requires you to define an extra function, but it's much more obvious when you forget it because the error message includes the missing type name.
+
 # Intersection Types
 
 Intersection types are closely related to union types, but they are used very differently.
