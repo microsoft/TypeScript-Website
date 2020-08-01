@@ -73,13 +73,14 @@ interface PageInfo {
 
 type Page = "home" | "about" | "contact";
 
-const x: Record<Page, PageInfo> = {
+const nav: Record<Page, PageInfo> = {
   about: { title: "about" },
   contact: { title: "contact" },
   home: { title: "home" }
 };
 
-x.about
+nav.about
+//      ^?
 ```
 
 ## `Pick<Type, Keys>`
@@ -103,6 +104,7 @@ const todo: TodoPreview = {
 };
 
 todo
+// ^?
 ```
 
 ## `Omit<Type, Keys>`
@@ -126,6 +128,7 @@ const todo: TodoPreview = {
 };
 
 todo
+// ^?
 ```
 
 ## `Exclude<Type, ExcludedUnion>`
