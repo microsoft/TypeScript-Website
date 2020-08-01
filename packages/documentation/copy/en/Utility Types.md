@@ -5,17 +5,15 @@ permalink: /docs/handbook/utility-types.html
 oneline: Types which are globally included in TypeScript
 ---
 
-# Introduction
-
 TypeScript provides several utility types to facilitate common type transformations. These utilities are available globally.
 
-# `Partial<T>`
+## `Partial<Type>`
 
-Constructs a type with all properties of `T` set to optional. This utility will return a type that represents all subsets of a given type.
+Constructs a type with all properties of `Type` set to optional. This utility will return a type that represents all subsets of a given type.
 
 ##### Example
 
-```ts
+```ts twoslash
 interface Todo {
   title: string;
   description: string;
@@ -35,13 +33,14 @@ const todo2 = updateTodo(todo1, {
 });
 ```
 
-# `Readonly<T>`
+## `Readonly<Type>`
 
-Constructs a type with all properties of `T` set to `readonly`, meaning the properties of the constructed type cannot be reassigned.
+Constructs a type with all properties of `Type` set to `readonly`, meaning the properties of the constructed type cannot be reassigned.
 
 ##### Example
 
-```ts
+```ts twoslash
+// @errors: 2540
 interface Todo {
   title: string;
 }
@@ -50,7 +49,7 @@ const todo: Readonly<Todo> = {
   title: "Delete inactive users"
 };
 
-todo.title = "Hello"; // Error: cannot reassign a readonly property
+todo.title = "Hello";
 ```
 
 This utility is useful for representing assignment expressions that will fail at runtime (i.e. when attempting to reassign properties of a [frozen object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)).
@@ -58,16 +57,16 @@ This utility is useful for representing assignment expressions that will fail at
 ##### `Object.freeze`
 
 ```ts
-function freeze<T>(obj: T): Readonly<T>;
+function freeze<Type>(obj: Type): Readonly<Type>;
 ```
 
-# `Record<K,T>`
+## `Record<Keys,Type>`
 
-Constructs a type with a set of properties `K` of type `T`. This utility can be used to map the properties of a type to another type.
+Constructs a type with a set of properties `Keys` of type `Type`. This utility can be used to map the properties of a type to another type.
 
 ##### Example
 
-```ts
+```ts twoslash
 interface PageInfo {
   title: string;
 }
@@ -79,15 +78,17 @@ const x: Record<Page, PageInfo> = {
   contact: { title: "contact" },
   home: { title: "home" }
 };
+
+x.about
 ```
 
-# `Pick<T,K>`
+## `Pick<Type, Keys>`
 
-Constructs a type by picking the set of properties `K` from `T`.
+Constructs a type by picking the set of properties `Keys` from `Type`.
 
 ##### Example
 
-```ts
+```ts twoslash
 interface Todo {
   title: string;
   description: string;
@@ -100,15 +101,17 @@ const todo: TodoPreview = {
   title: "Clean room",
   completed: false
 };
+
+todo
 ```
 
-# `Omit<T,K>`
+## `Omit<Type, Keys>`
 
-Constructs a type by picking all properties from `T` and then removing `K`.
+Constructs a type by picking all properties from `Type` and then removing `Keys`.
 
 ##### Example
 
-```ts
+```ts twoslash
 interface Todo {
   title: string;
   description: string;
@@ -121,134 +124,182 @@ const todo: TodoPreview = {
   title: "Clean room",
   completed: false
 };
+
+todo
 ```
 
-# `Exclude<T,U>`
+## `Exclude<Type, ExcludedUnion>`
 
-Constructs a type by excluding from `T` all properties that are assignable to `U`.
+Constructs a type by excluding from `Type` all properties that are assignable to `ExcludedUnion`.
 
 ##### Example
 
-```ts
-type T0 = Exclude<"a" | "b" | "c", "a">; // "b" | "c"
-type T1 = Exclude<"a" | "b" | "c", "a" | "b">; // "c"
-type T2 = Exclude<string | number | (() => void), Function>; // string | number
+```ts twoslash
+type T0 = Exclude<"a" | "b" | "c", "a">;
+//    ^?
+type T1 = Exclude<"a" | "b" | "c", "a" | "b">;
+//    ^?
+type T2 = Exclude<string | number | (() => void), Function>;
+//    ^?
 ```
 
-# `Extract<T,U>`
+## `Extract<Type, Union>`
 
-Constructs a type by extracting from `T` all properties that are assignable to `U`.
+Constructs a type by extracting from `Type` all properties that are assignable to `Union`.
 
 ##### Example
 
-```ts
-type T0 = Extract<"a" | "b" | "c", "a" | "f">; // "a"
-type T1 = Extract<string | number | (() => void), Function>; // () => void
+```ts twoslash
+type T0 = Extract<"a" | "b" | "c", "a" | "f">;
+//    ^?
+type T1 = Extract<string | number | (() => void), Function>;
+//    ^?
 ```
 
-# `NonNullable<T>`
+## `NonNullable<Type>`
 
-Constructs a type by excluding `null` and `undefined` from `T`.
+Constructs a type by excluding `null` and `undefined` from `Type`.
 
 ##### Example
 
-```ts
-type T0 = NonNullable<string | number | undefined>; // string | number
-type T1 = NonNullable<string[] | null | undefined>; // string[]
+```ts twoslash
+type T0 = NonNullable<string | number | undefined>;
+//    ^?
+type T1 = NonNullable<string[] | null | undefined>;
+//    ^?
 ```
 
-# `Parameters<T>`
+## `Parameters<Type>`
 
-Constructs a tuple type of the types of the parameters of a function type `T`.
+Constructs a tuple type from the types used in the parameters of a function type `Type`.
 
 ##### Example
 
-```ts
+```ts twoslash
+// @errors: 2344
 declare function f1(arg: { a: number; b: string }): void;
-type T0 = Parameters<() => string>; // []
-type T1 = Parameters<(s: string) => void>; // [string]
-type T2 = Parameters<<T>(arg: T) => T>; // [unknown]
-type T3 = Parameters<typeof f1>; // [{ a: number, b: string }]
-type T4 = Parameters<any>; // unknown[]
-type T5 = Parameters<never>; // never
-type T6 = Parameters<string>; // Error
-type T7 = Parameters<Function>; // Error
+
+type T0 = Parameters<() => string>;
+//    ^?
+type T1 = Parameters<(s: string) => void>;
+//    ^?
+type T2 = Parameters<<T>(arg: T) => T>;
+//    ^?
+type T3 = Parameters<typeof f1>;
+//    ^?
+type T4 = Parameters<any>;
+//    ^?
+type T5 = Parameters<never>;
+//    ^?
+type T6 = Parameters<string>;
+//    ^?
+type T7 = Parameters<Function>;
+//    ^?
 ```
 
-# `ConstructorParameters<T>`
+## `ConstructorParameters<Type>`
 
-The `ConstructorParameters<T>` type lets us extract all parameter types of a constructor function type. It produces a tuple type with all the parameter types (or the type `never` if `T` is not a function).
+Constructs a tuple or array type from the types of a constructor function type. It produces a tuple type with all the parameter types (or the type `never` if `Type` is not a function).
 
 ##### Example
 
-```ts
-type T0 = ConstructorParameters<ErrorConstructor>; // [(string | undefined)?]
-type T1 = ConstructorParameters<FunctionConstructor>; // string[]
-type T2 = ConstructorParameters<RegExpConstructor>; // [string | RegExp, (string | undefined)?]
+```ts twoslash
+// @errors: 2344
+// @strict: false
+type T0 = ConstructorParameters<ErrorConstructor>;
+//    ^?
+type T1 = ConstructorParameters<FunctionConstructor>;
+//    ^?
+type T2 = ConstructorParameters<RegExpConstructor>;
+//    ^?
+type T3 = ConstructorParameters<any>
+//    ^?
+
+type T4 = ConstructorParameters<Function>
+//    ^?
 ```
 
-# `ReturnType<T>`
+## `ReturnType<Type>`
 
-Constructs a type consisting of the return type of function `T`.
+Constructs a type consisting of the return type of function `Type`.
 
 ##### Example
 
-```ts
+```ts twoslash
+// @errors: 2344 2344
 declare function f1(): { a: number; b: string };
-type T0 = ReturnType<() => string>; // string
-type T1 = ReturnType<(s: string) => void>; // void
-type T2 = ReturnType<<T>() => T>; // {}
-type T3 = ReturnType<<T extends U, U extends number[]>() => T>; // number[]
-type T4 = ReturnType<typeof f1>; // { a: number, b: string }
-type T5 = ReturnType<any>; // any
-type T6 = ReturnType<never>; // never
-type T7 = ReturnType<string>; // Error
-type T8 = ReturnType<Function>; // Error
+
+type T0 = ReturnType<() => string>;
+//    ^?
+type T1 = ReturnType<(s: string) => void>;
+//    ^?
+type T2 = ReturnType<<T>() => T>;
+//    ^?
+type T3 = ReturnType<<T extends U, U extends number[]>() => T>;
+//    ^?
+type T4 = ReturnType<typeof f1>;
+//    ^?
+type T5 = ReturnType<any>;
+//    ^?
+type T6 = ReturnType<never>;
+//    ^?
+type T7 = ReturnType<string>;
+//    ^?
+type T8 = ReturnType<Function>;
+//    ^?
 ```
 
-# `InstanceType<T>`
+## `InstanceType<Type>`
 
-Constructs a type consisting of the instance type of a constructor function type `T`.
+Constructs a type consisting of the instance type of a constructor function in `Type`.
 
 ##### Example
 
-```ts
+```ts twoslash
+// @errors: 2344 2344
+// @strict: false
 class C {
   x = 0;
   y = 0;
 }
 
-type T0 = InstanceType<typeof C>; // C
-type T1 = InstanceType<any>; // any
-type T2 = InstanceType<never>; // never
-type T3 = InstanceType<string>; // Error
-type T4 = InstanceType<Function>; // Error
+type T0 = InstanceType<typeof C>;
+//    ^?
+type T1 = InstanceType<any>;
+//    ^?
+type T2 = InstanceType<never>;
+//    ^?
+type T3 = InstanceType<string>;
+//    ^?
+type T4 = InstanceType<Function>;
+//    ^?
 ```
 
-# `Required<T>`
+## `Required<Type>`
 
-Constructs a type consisting of all properties of `T` set to required.
+Constructs a type consisting of all properties of `T` set to required. The opposite of [`Partial`](#partialtype).
 
 ##### Example
 
-```ts
+```ts twoslash
+// @errors: 2741
 interface Props {
   a?: number;
   b?: string;
 }
 
-const obj: Props = { a: 5 }; // OK
+const obj: Props = { a: 5 };
 
-const obj2: Required<Props> = { a: 5 }; // Error: property 'b' missing
+const obj2: Required<Props> = { a: 5 };
 ```
 
-# `ThisParameterType`
+# `ThisParameterType<Type>`
 
-Extracts the type of the [this](/docs/handbook/functions.html#this-parameters) parameter of a function type, or [unknown](/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type) if the function type has no `this` parameter.
+Extracts the type of the [this](/docs/handbook/functions.html#this-parameters) parameter for a function type, or [unknown](/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type) if the function type has no `this` parameter.
 
 ##### Example
 
-```ts
+```ts twoslash
 function toHex(this: Number) {
   return this.toString(16);
 }
@@ -258,32 +309,30 @@ function numberToString(n: ThisParameterType<typeof toHex>) {
 }
 ```
 
-# `OmitThisParameter`
+## `OmitThisParameter<Type>`
 
-Removes the [this](/docs/handbook/functions.html#this-parameters) parameter from a function type.
+Removes the [`this`](/docs/handbook/functions.html#this-parameters) parameter from `Type`. If `Type` has no explicitly declared `this` parameter, the result is simply `Type`. Otherwise, a new function type with no `this` parameter is created from `Type`. Generics are erased and only the last overload signature is propagated into the new function type.
 
 ##### Example
 
-```ts
+```ts twoslash
 function toHex(this: Number) {
   return this.toString(16);
 }
 
-// The return type of `bind` is already using `OmitThisParameter`, this is just for demonstration.
 const fiveToHex: OmitThisParameter<typeof toHex> = toHex.bind(5);
 
 console.log(fiveToHex());
 ```
 
-# `ThisType<T>`
+## `ThisType<Type>`
 
-This utility does not return a transformed type. Instead, it serves as a marker for a contextual [this](/docs/handbook/functions.html#this) type. Note that the `--noImplicitThis` flag must be enabled to use this utility.
+This utility does not return a transformed type. Instead, it serves as a marker for a contextual [`this`](/docs/handbook/functions.html#this) type. Note that the `--noImplicitThis` flag must be enabled to use this utility.
 
 ##### Example
 
-```ts
-// Compile with --noImplicitThis
-
+```ts twoslash
+// @noImplicitThis: false
 type ObjectDescriptor<D, M> = {
   data?: D;
   methods?: M & ThisType<D & M>; // Type of 'this' in methods is D & M

@@ -329,8 +329,8 @@ function getProperty<T, K extends keyof T>(obj: T, key: K) {
 
 let x = { a: 1, b: 2, c: 3, d: 4 };
 
-getProperty(x, "a"); // okay
-getProperty(x, "m"); // error: Argument of type 'm' isn't assignable to 'a' | 'b' | 'c' | 'd'.
+getProperty(x, "a");
+getProperty(x, "m");
 ```
 
 ## Using Class Types in Generics
