@@ -19,7 +19,8 @@ This allows you to choose the most appropriate approach for your application, wh
 
 To quickly recap what these two approaches look like in JavaScript:
 
-```ts
+```ts twoslash
+// @strict: false
 // Named function
 function add(x, y) {
   return x + y;
@@ -35,7 +36,8 @@ Just as in JavaScript, functions can refer to variables outside of the function 
 When they do so, they're said to _capture_ these variables.
 While understanding how this works (and the trade-offs when using this technique) is outside of the scope of this article, having a firm understanding how this mechanic works is an important piece of working with JavaScript and TypeScript.
 
-```ts
+```ts twoslash
+// @strict: false
 let z = 100;
 
 function addToZ(x, y) {
@@ -49,7 +51,7 @@ function addToZ(x, y) {
 
 Let's add types to our simple examples from earlier:
 
-```ts
+```ts twoslash
 function add(x: number, y: number): number {
   return x + y;
 }
@@ -66,11 +68,9 @@ TypeScript can figure the return type out by looking at the return statements, s
 
 Now that we've typed the function, let's write the full type of the function out by looking at each piece of the function type.
 
-```ts
-let myAdd: (x: number, y: number) => number = function(
-  x: number,
-  y: number
-): number {
+```ts twoslash
+let myAdd: (x: number, y: number) => number = 
+  function(x: number, y: number): number {
   return x + y;
 };
 ```
@@ -81,11 +81,9 @@ We write out the parameter types just like a parameter list, giving each paramet
 This name is just to help with readability.
 We could have instead written:
 
-```ts
-let myAdd: (baseValue: number, increment: number) => number = function(
-  x: number,
-  y: number
-): number {
+```ts twoslash
+let myAdd: (baseValue: number, increment: number) => number = 
+  function(x: number, y: number): number {
   return x + y;
 };
 ```
@@ -93,7 +91,7 @@ let myAdd: (baseValue: number, increment: number) => number = function(
 As long as the parameter types line up, it's considered a valid type for the function, regardless of the names you give the parameters in the function type.
 
 The second part is the return type.
-We make it clear which is the return type by using a fat arrow (`=>`) between the parameters and the return type.
+We make it clear which is the return type by using an arrow (`=>`) between the parameters and the return type.
 As mentioned before, this is a required part of the function type, so if the function doesn't return a value, you would use `void` instead of leaving it off.
 
 Of note, only the parameters and the return type make up the function type.
@@ -104,14 +102,14 @@ In effect, captured variables are part of the "hidden state" of any function and
 
 In playing with the example, you may notice that the TypeScript compiler can figure out the type even if you only have types on one side of the equation:
 
-```ts
+```ts twoslash
 // The parameters 'x' and 'y' have the type number
 let myAdd = function(x: number, y: number): number {
   return x + y;
 };
 
 // myAdd has the full function type
-let myAdd: (baseValue: number, increment: number) => number = function(x, y) {
+let myAdd2: (baseValue: number, increment: number) => number = function(x, y) {
   return x + y;
 };
 ```
@@ -126,7 +124,8 @@ This doesn't mean that it can't be given `null` or `undefined`, but rather, when
 The compiler also assumes that these parameters are the only parameters that will be passed to the function.
 In short, the number of arguments given to a function has to match the number of parameters the function expects.
 
-```ts
+```ts twoslash
+// @errors: 2554
 function buildName(firstName: string, lastName: string) {
   return firstName + " " + lastName;
 }
@@ -141,7 +140,8 @@ When they do, their value is `undefined`.
 We can get this functionality in TypeScript by adding a `?` to the end of parameters we want to be optional.
 For example, let's say we want the last name parameter from above to be optional:
 
-```ts
+```ts twoslash
+// @errors: 2554
 function buildName(firstName: string, lastName?: string) {
   if (lastName) return firstName + " " + lastName;
   else return firstName;
@@ -159,7 +159,8 @@ In TypeScript, we can also set a value that a parameter will be assigned if the 
 These are called default-initialized parameters.
 Let's take the previous example and default the last name to `"Smith"`.
 
-```ts
+```ts twoslash
+// @errors: 2554
 function buildName(firstName: string, lastName = "Smith") {
   return firstName + " " + lastName;
 }
@@ -194,7 +195,8 @@ Unlike plain optional parameters, default-initialized parameters don't _need_ to
 If a default-initialized parameter comes before a required parameter, users need to explicitly pass `undefined` to get the default initialized value.
 For example, we could write our last example with only a default initializer on `firstName`:
 
-```ts
+```ts twoslash
+// @errors: 2554
 function buildName(firstName = "Will", lastName: string) {
   return firstName + " " + lastName;
 }
@@ -205,7 +207,7 @@ let result3 = buildName("Bob", "Adams"); // okay and returns "Bob Adams"
 let result4 = buildName(undefined, "Adams"); // okay and returns "Will Adams"
 ```
 
-# Rest Parameters
+## Rest Parameters
 
 Required, optional, and default parameters all have one thing in common: they talk about one parameter at a time.
 Sometimes, you want to work with multiple parameters as a group, or you may not know how many parameters a function will ultimately take.
@@ -213,7 +215,7 @@ In JavaScript, you can work with the arguments directly using the `arguments` va
 
 In TypeScript, you can gather these arguments together into a variable:
 
-```ts
+```ts twoslash
 function buildName(firstName: string, ...restOfName: string[]) {
   return firstName + " " + restOfName.join(" ");
 }
@@ -228,7 +230,7 @@ The compiler will build an array of the arguments passed in with the name given 
 
 The ellipsis is also used in the type of the function with rest parameters:
 
-```ts
+```ts twoslash
 function buildName(firstName: string, ...restOfName: string[]) {
   return firstName + " " + restOfName.join(" ");
 }
@@ -252,7 +254,8 @@ This is notoriously confusing, especially when returning a function or passing a
 
 Let's look at an example:
 
-```ts
+```ts twoslash
+// @strict: false
 let deck = {
   suits: ["hearts", "spades", "clubs", "diamonds"],
   cards: Array(52),
@@ -284,7 +287,8 @@ This way, regardless of how it's later used, it will still be able to see the or
 To do this, we change the function expression to use the ECMAScript 6 arrow syntax.
 Arrow functions capture the `this` where the function is created rather than where it is invoked:
 
-```ts
+```ts twoslash
+// @strict: false
 let deck = {
   suits: ["hearts", "spades", "clubs", "diamonds"],
   cards: Array(52),
@@ -323,16 +327,18 @@ function f(this: void) {
 
 Let's add a couple of interfaces to our example above, `Card` and `Deck`, to make the types clearer and easier to reuse:
 
-```ts
+```ts twoslash
 interface Card {
   suit: string;
   card: number;
 }
+
 interface Deck {
   suits: string[];
   cards: number[];
   createCardPicker(this: Deck): () => Card;
 }
+
 let deck: Deck = {
   suits: ["hearts", "spades", "clubs", "diamonds"],
   cards: Array(52),
@@ -363,7 +369,7 @@ Because the library that calls your callback will call it like a normal function
 With some work you can use `this` parameters to prevent errors with callbacks too.
 First, the library author needs to annotate the callback type with `this`:
 
-```ts
+```ts twoslash
 interface UIElement {
   addClickListener(onclick: (this: void, e: Event) => void): void;
 }
@@ -372,7 +378,15 @@ interface UIElement {
 `this: void` means that `addClickListener` expects `onclick` to be a function that does not require a `this` type.
 Second, annotate your calling code with `this`:
 
-```ts
+```ts twoslash
+// @strict: false
+// @errors: 2345
+interface UIElement {
+  addClickListener(onclick: (this: void, e: Event) => void): void;
+}
+interface Event { message: string }
+declare const uiElement: UIElement
+// ---cut---
 class Handler {
   info: string;
   onClickBad(this: Handler, e: Event) {
@@ -380,6 +394,7 @@ class Handler {
     this.info = e.message;
   }
 }
+
 let h = new Handler();
 uiElement.addClickListener(h.onClickBad); // error!
 ```
@@ -388,7 +403,14 @@ With `this` annotated, you make it explicit that `onClickBad` must be called on 
 Then TypeScript will detect that `addClickListener` requires a function that has `this: void`.
 To fix the error, change the type of `this`:
 
-```ts
+```ts twoslash
+// @strict: false
+interface UIElement {
+  addClickListener(onclick: (this: void, e: Event) => void): void;
+}
+interface Event { message: string }
+declare const uiElement: UIElement
+// ---cut---
 class Handler {
   info: string;
   onClickGood(this: void, e: Event) {
@@ -396,6 +418,7 @@ class Handler {
     console.log("clicked!");
   }
 }
+
 let h = new Handler();
 uiElement.addClickListener(h.onClickGood);
 ```
@@ -404,7 +427,14 @@ Because `onClickGood` specifies its `this` type as `void`, it is legal to pass t
 Of course, this also means that it can't use `this.info`.
 If you want both then you'll have to use an arrow function:
 
-```ts
+```ts twoslash
+// @strict: false
+interface UIElement {
+  addClickListener(onclick: (this: void, e: Event) => void): void;
+}
+interface Event { message: string }
+declare const uiElement: UIElement
+// ---cut---
 class Handler {
   info: string;
   onClickGood = (e: Event) => {
@@ -423,7 +453,8 @@ They are shared between all objects of type Handler.
 JavaScript is inherently a very dynamic language.
 It's not uncommon for a single JavaScript function to return different types of objects based on the shape of the arguments passed in.
 
-```ts
+```ts twoslash
+// @strict: false
 let suits = ["hearts", "spades", "clubs", "diamonds"];
 
 function pickCard(x): any {
@@ -445,6 +476,7 @@ let myDeck = [
   { suit: "spades", card: 10 },
   { suit: "hearts", card: 4 }
 ];
+
 let pickedCard1 = myDeck[pickCard(myDeck)];
 alert("card: " + pickedCard1.card + " of " + pickedCard1.suit);
 
@@ -461,7 +493,7 @@ The answer is to supply multiple function types for the same function as a list 
 This list is what the compiler will use to resolve function calls.
 Let's create a list of overloads that describe what our `pickCard` accepts and what it returns.
 
-```ts
+```ts twoslash
 let suits = ["hearts", "spades", "clubs", "diamonds"];
 
 function pickCard(x: { suit: string; card: number }[]): number;
@@ -485,6 +517,7 @@ let myDeck = [
   { suit: "spades", card: 10 },
   { suit: "hearts", card: 4 }
 ];
+
 let pickedCard1 = myDeck[pickCard(myDeck)];
 alert("card: " + pickedCard1.card + " of " + pickedCard1.suit);
 

@@ -52,7 +52,7 @@ customObjectCapturingThisAgain.print();
 
 // To work around an unexpected this context, you can also
 // change how you create functions in your class. By
-// creating a property which uses a fat arrow function, the
+// creating a property which uses an arrow function, the
 // binding of this is done at a different time. Which makes
 // it more predictable for those less experienced with the
 // JavaScript runtime.
