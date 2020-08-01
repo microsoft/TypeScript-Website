@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import ReactDOM from "react-dom"
 import { Layout } from "../../components/layout"
 import { withPrefix, graphql } from "gatsby"
-import { BugWorkbenchQuery } from "../../__generated__/gatsby-types"
+import { DTSWorkbenchQuery } from "../../__generated__/gatsby-types"
 import { debounce } from 'ts-debounce';
 
 import "../../templates/play.scss"
@@ -14,18 +14,10 @@ import { playCopy } from "../../copy/en/playground"
 
 import { Intl } from "../../components/Intl"
 
-import { workbenchHelpPlugin as workbenchAboutPlugin } from "../../components/workbench/bug/about"
-import { workbenchDebugPlugin } from "../../components/workbench/bug/debug"
-import { workbenchAssertionsPlugin } from "../../components/workbench/bug/assertions"
-import { workbenchMarkdownPlugin } from "../../components/workbench/bug/markdown"
-import { workbenchReferencePlugin } from "../../components/workbench/bug/docs"
-import { createDefaultMapFromCDN } from "@typescript/vfs"
-import { twoslasher, TwoSlashReturn } from "@typescript/twoslash"
-
-type TwoSlashReturns = import("@typescript/twoslash").TwoSlashReturn
+import { workbenchAboutPlugin } from "../../components/workbench/dts/about"
 
 type Props = {
-  data: BugWorkbenchQuery
+  data: DTSWorkbenchQuery
 }
 
 const Play: React.FC<Props> = (props) => {
@@ -96,87 +88,22 @@ const Play: React.FC<Props> = (props) => {
           prefix: withPrefix("/"),
           supportCustomPlugins: false,
           plugins: [
-            workbenchAboutPlugin,
-            workbenchReferencePlugin,
-            workbenchAssertionsPlugin,
-            workbenchMarkdownPlugin,
-            workbenchDebugPlugin
+            workbenchAboutPlugin
           ]
         }
 
         const playgroundEnv = playground.setupPlayground(sandboxEnv, main, playgroundConfig, i as any, React)
-
         const utils = playgroundEnv.createUtils(sandbox, React)
 
-        const updateDTSEnv = (opts) => {
-          createDefaultMapFromCDN(opts, tsVersion, true, ts, sandboxEnv.lzstring as any).then((defaultMap) => {
-            dtsMap = defaultMap
-            runTwoslash()
-          })
-        }
-
-        // When the compiler notices a twoslash compiler flag change, this will get triggered and reset the DTS map
-        sandboxEnv.setDidUpdateCompilerSettings(updateDTSEnv)
-        updateDTSEnv(sandboxEnv.getCompilerOptions())
-
         const debouncedTwoslash = debounce(() => {
-          if (dtsMap) runTwoslash()
+          // if (dtsMap) runTwoslash()
         }, 1000)
 
         sandboxEnv.editor.onDidChangeModelContent(debouncedTwoslash)
 
-        let currentTwoslashResults: Error | TwoSlashReturn | undefined = undefined
-        let currentDTSMap: Map<string, string> | undefined = undefined
-
-        let isError = (e: any) => e && e.stack && e.message;
-
         playgroundEnv.setDidUpdateTab((newPlugin) => {
-          if (!isError(currentTwoslashResults) && "getResults" in newPlugin) {
-            // @ts-ignore
-            newPlugin.getResults(sandboxEnv, currentTwoslashResults, currentDTSMap, sandboxEnv.getText().includes("// @showEmit"))
-          } else if ("noResults" in newPlugin) {
-            // @ts-ignore
-            newPlugin.noResults(currentTwoslashResults, currentTwoslashResults)
-          }
+
         })
-
-        const runTwoslash = () => {
-          const code = sandboxEnv.getText()
-          if (!code) return
-
-          try {
-            currentDTSMap = new Map(dtsMap)
-            const twoslashConfig = { noStaticSemanticInfo: true, emit: true, noErrorValidation: true } as const
-            const ext = sandboxEnv.filepath.split(".")[1]
-            const twoslash: TwoSlashReturns = twoslasher(code, ext, {
-              defaultOptions: twoslashConfig,
-              tsModule: ts,
-              lzstringModule: sandboxEnv.lzstring as any,
-              fsMap: currentDTSMap
-            })
-            currentTwoslashResults = twoslash
-
-            const currentPlugin = playgroundEnv.getCurrentPlugin()
-            if ("getResults" in currentPlugin) {
-              // @ts-ignore
-              currentPlugin.getResults(sandboxEnv, twoslash, currentDTSMap, code.includes("// @showEmit"))
-            }
-
-            const assertionCount = twoslash.queries.length + (code.includes("// @showEmit") ? 1 : 0) + twoslash.errors.length
-            utils.setNotifications("assertions", assertionCount)
-
-          } catch (error) {
-            const err = error as Error
-            console.log(err)
-            currentTwoslashResults = err
-            const currentPlugin = playgroundEnv.getCurrentPlugin()
-            if ("noResults" in currentPlugin) {
-              // @ts-ignore
-              currentPlugin.noResults(sandboxEnv, err)
-            }
-            utils.setNotifications("assertions", 1)
-          }
-        }
 
         // Dark mode faff
         const darkModeEnabled = document.documentElement.classList.contains("dark-theme")
@@ -198,7 +125,7 @@ const Play: React.FC<Props> = (props) => {
       {/** This is the top nav, which is outside of the editor  */}
       <nav className="navbar-sub">
         <ul className="nav">
-          <li className="name hide-small"><span>Bug Workbench</span></li>
+          <li className="name hide-small"><span>.D.TS Workbench</span></li>
         </ul>
 
         <ul className="nav navbar-nav navbar-right hidden-xs"></ul>
@@ -238,7 +165,7 @@ const Play: React.FC<Props> = (props) => {
 export default (props: Props) => <Intl locale="en"><Play {...props} /></Intl>
 
 export const query = graphql`
-  query BugWorkbench {
+  query DTSWorkbench {
     ...AllSitePage
   }
 `
