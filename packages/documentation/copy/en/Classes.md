@@ -162,8 +162,10 @@ With TypeScript 3.8, TypeScript supports the new JavaScript syntax for private f
 ```ts twoslash
 // @errors: 18013
 class Animal {
-    #name: string;
-    constructor(theName: string) { this.#name = theName; }
+  #name: string;
+  constructor(theName: string) {
+    this.#name = theName;
+  }
 }
 
 new Animal("Cat").#name;
@@ -174,7 +176,7 @@ Right now, the best documentation for these private fields is in the TypeScript 
 
 ## Understanding TypeScript's `private`
 
-TypeScript also has it's own way to declare a member as being marked `private`, it cannot be accessed from outside of its containing class. For example:
+TypeScript also has its own way to declare a member as being marked `private`, it cannot be accessed from outside of its containing class. For example:
 
 ```ts twoslash
 // @errors: 2341
@@ -331,7 +333,7 @@ class Octopus {
 }
 
 let dad = new Octopus("Man with the 8 strong legs");
-dad.name
+dad.name;
 ```
 
 Notice how we dropped `theName` altogether and just use the shortened `readonly name: string` parameter on the constructor to create and initialize the `name` member.
@@ -503,7 +505,7 @@ class Greeter {
   constructor(message: string) {
     this.greeting = message;
   }
-  
+
   greet() {
     return "Hello, " + this.greeting;
   }
@@ -523,12 +525,12 @@ To see what this looks like in practice, let's take a look at the JavaScript cre
 
 ```ts twoslash
 // @strict: false
-let Greeter = (function() {
+let Greeter = (function () {
   function Greeter(message) {
     this.greeting = message;
   }
 
-  Greeter.prototype.greet = function() {
+  Greeter.prototype.greet = function () {
     return "Hello, " + this.greeting;
   };
 

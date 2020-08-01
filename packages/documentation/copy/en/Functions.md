@@ -27,7 +27,7 @@ function add(x, y) {
 }
 
 // Anonymous function
-let myAdd = function(x, y) {
+let myAdd = function (x, y) {
   return x + y;
 };
 ```
@@ -56,7 +56,7 @@ function add(x: number, y: number): number {
   return x + y;
 }
 
-let myAdd = function(x: number, y: number): number {
+let myAdd = function (x: number, y: number): number {
   return x + y;
 };
 ```
@@ -69,8 +69,10 @@ TypeScript can figure the return type out by looking at the return statements, s
 Now that we've typed the function, let's write the full type of the function out by looking at each piece of the function type.
 
 ```ts twoslash
-let myAdd: (x: number, y: number) => number = 
-  function(x: number, y: number): number {
+let myAdd: (x: number, y: number) => number = function (
+  x: number,
+  y: number
+): number {
   return x + y;
 };
 ```
@@ -82,8 +84,10 @@ This name is just to help with readability.
 We could have instead written:
 
 ```ts twoslash
-let myAdd: (baseValue: number, increment: number) => number = 
-  function(x: number, y: number): number {
+let myAdd: (baseValue: number, increment: number) => number = function (
+  x: number,
+  y: number
+): number {
   return x + y;
 };
 ```
@@ -104,12 +108,12 @@ In playing with the example, you may notice that the TypeScript compiler can fig
 
 ```ts twoslash
 // The parameters 'x' and 'y' have the type number
-let myAdd = function(x: number, y: number): number {
+let myAdd = function (x: number, y: number): number {
   return x + y;
 };
 
 // myAdd has the full function type
-let myAdd2: (baseValue: number, increment: number) => number = function(x, y) {
+let myAdd2: (baseValue: number, increment: number) => number = function (x, y) {
   return x + y;
 };
 ```
@@ -259,14 +263,14 @@ Let's look at an example:
 let deck = {
   suits: ["hearts", "spades", "clubs", "diamonds"],
   cards: Array(52),
-  createCardPicker: function() {
-    return function() {
+  createCardPicker: function () {
+    return function () {
       let pickedCard = Math.floor(Math.random() * 52);
       let pickedSuit = Math.floor(pickedCard / 13);
 
       return { suit: this.suits[pickedSuit], card: pickedCard % 13 };
     };
-  }
+  },
 };
 
 let cardPicker = deck.createCardPicker();
@@ -292,7 +296,7 @@ Arrow functions capture the `this` where the function is created rather than whe
 let deck = {
   suits: ["hearts", "spades", "clubs", "diamonds"],
   cards: Array(52),
-  createCardPicker: function() {
+  createCardPicker: function () {
     // NOTE: the line below is now an arrow function, allowing us to capture 'this' right here
     return () => {
       let pickedCard = Math.floor(Math.random() * 52);
@@ -300,7 +304,7 @@ let deck = {
 
       return { suit: this.suits[pickedSuit], card: pickedCard % 13 };
     };
-  }
+  },
 };
 
 let cardPicker = deck.createCardPicker();
@@ -343,14 +347,14 @@ let deck: Deck = {
   suits: ["hearts", "spades", "clubs", "diamonds"],
   cards: Array(52),
   // NOTE: The function now explicitly specifies that its callee must be of type Deck
-  createCardPicker: function(this: Deck) {
+  createCardPicker: function (this: Deck) {
     return () => {
       let pickedCard = Math.floor(Math.random() * 52);
       let pickedSuit = Math.floor(pickedCard / 13);
 
       return { suit: this.suits[pickedSuit], card: pickedCard % 13 };
     };
-  }
+  },
 };
 
 let cardPicker = deck.createCardPicker();
@@ -384,8 +388,10 @@ Second, annotate your calling code with `this`:
 interface UIElement {
   addClickListener(onclick: (this: void, e: Event) => void): void;
 }
-interface Event { message: string }
-declare const uiElement: UIElement
+interface Event {
+  message: string;
+}
+declare const uiElement: UIElement;
 // ---cut---
 class Handler {
   info: string;
@@ -408,8 +414,10 @@ To fix the error, change the type of `this`:
 interface UIElement {
   addClickListener(onclick: (this: void, e: Event) => void): void;
 }
-interface Event { message: string }
-declare const uiElement: UIElement
+interface Event {
+  message: string;
+}
+declare const uiElement: UIElement;
 // ---cut---
 class Handler {
   info: string;
@@ -432,8 +440,10 @@ If you want both then you'll have to use an arrow function:
 interface UIElement {
   addClickListener(onclick: (this: void, e: Event) => void): void;
 }
-interface Event { message: string }
-declare const uiElement: UIElement
+interface Event {
+  message: string;
+}
+declare const uiElement: UIElement;
 // ---cut---
 class Handler {
   info: string;
@@ -457,7 +467,7 @@ It's not uncommon for a single JavaScript function to return different types of 
 // @strict: false
 let suits = ["hearts", "spades", "clubs", "diamonds"];
 
-function pickCard(x): any {
+function pickCard(x: any): any {
   // Check to see if we're working with an object/array
   // if so, they gave us the deck and we'll pick the card
   if (typeof x == "object") {
@@ -474,7 +484,7 @@ function pickCard(x): any {
 let myDeck = [
   { suit: "diamonds", card: 2 },
   { suit: "spades", card: 10 },
-  { suit: "hearts", card: 4 }
+  { suit: "hearts", card: 4 },
 ];
 
 let pickedCard1 = myDeck[pickCard(myDeck)];
@@ -515,7 +525,7 @@ function pickCard(x: any): any {
 let myDeck = [
   { suit: "diamonds", card: 2 },
   { suit: "spades", card: 10 },
-  { suit: "hearts", card: 4 }
+  { suit: "hearts", card: 4 },
 ];
 
 let pickedCard1 = myDeck[pickCard(myDeck)];
