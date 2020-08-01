@@ -10,7 +10,7 @@ oneline: "Step one in learning TypeScript: The basics types."
 For programs to be useful, we need to be able to work with some of the simplest units of data: numbers, strings, structures, boolean values, and the like.
 In TypeScript, we support much the same types as you would expect in JavaScript, with a convenient enumeration type thrown in to help things along.
 
-# Boolean
+## Boolean
 
 The most basic datatype is the simple true/false value, which JavaScript and TypeScript call a `boolean` value.
 
@@ -18,7 +18,7 @@ The most basic datatype is the simple true/false value, which JavaScript and Typ
 let isDone: boolean = false;
 ```
 
-# Number
+##   Number
 
 As in JavaScript, all numbers in TypeScript are either floating point values or BigIntegers.
 These floating point numbers get the type `number`, while BigIntegers get the type `bigint`.
@@ -33,7 +33,7 @@ let octal: number = 0o744;
 let big: bigint = 100n;
 ```
 
-# String
+## String
 
 Another fundamental part of creating programs in JavaScript for webpages and servers alike is working with textual data.
 As in other languages, we use the type `string` to refer to these textual datatypes.
@@ -70,7 +70,7 @@ let sentence: string =
   " years old next month.";
 ```
 
-# Array
+## Array
 
 TypeScript, like JavaScript, allows you to work with arrays of values.
 Array types can be written in one of two ways.
@@ -125,7 +125,7 @@ x[3] = "world";
 console.log(x[5].toString());
 ```
 
-# Enum
+## Enum
 
 A helpful addition to the standard set of datatypes from JavaScript is the `enum`.
 As in languages like C#, an enum is a way of giving more friendly names to sets of numeric values.
@@ -215,7 +215,7 @@ if (typeof maybe === "string") {
 }
 ```
 
-# Any
+## Any
 
 In some situations, not all type information is available or it's declaration would take an inappropriate amount of effort.
 These may occur for values from code that has been written without TypeScript or a 3rd party library.
@@ -256,7 +256,7 @@ let d = looselyTyped.a.b.c.d;
 After all, remember that all the convenience of `any` comes at the cost of losing type safety.
 Type safety is one of the main motivations for using TypeScript and you should try to avoid using `any` when not necessary.
 
-# Void
+## Void
 
 `void` is a little like the opposite of `any`: the absence of having any type at all.
 You may commonly see this as the return type of functions that do not return a value:
@@ -298,7 +298,7 @@ Union types are an advanced topic that we'll cover in a later chapter.
 
 > As a note: we encourage the use of `--strictNullChecks` when possible, but for the purposes of this handbook, we will assume it is turned off.
 
-# Never
+## Never
 
 The `never` type represents the type of values that never occur.
 For instance, `never` is the return type for a function expression or an arrow function expression that always throws an exception or one that never returns.
@@ -348,7 +348,7 @@ create(undefined);
 
 Generally, you won't need to use this.
 
-# Type assertions
+## Type assertions
 
 Sometimes you'll end up in a situation where you'll know more about a value than TypeScript does.
 Usually this will happen when you know the type of some entity could be more specific than its current type.
@@ -384,3 +384,30 @@ Using one over the other is mostly a choice of preference; however, when using T
 You may have noticed that so far, we've been using the `let` keyword instead of JavaScript's `var` keyword which you might be more familiar with.
 The `let` keyword is actually a newer JavaScript construct that TypeScript makes available.
 We'll discuss the details later, but many common problems in JavaScript are alleviated by using `let`, so you should use it instead of `var` whenever possible.
+
+
+## About `Number`, `String`, `Boolean`, `Symbol` and `Object`
+
+It can be tempting to think that the types `Number`, `String`, `Boolean`, `Symbol`, or `Object` are the same as the lowercase versions.
+These types do not refer to the language primitives, and almost never should be used as a type.
+
+```ts twoslash
+// @errors: 2339
+function reverse(s: String): String { 
+  return s.split("").reverse().join("")
+}
+
+reverse("hello world")
+```
+
+Instead, use the types `number`, `string`, `boolean`, and `symbol`.
+
+```ts twoslash
+function reverse(s: string): string { 
+  return s.split("").reverse().join("") 
+}
+
+reverse("hello world")
+```
+
+Instead of `Object`, use the non-primitive `object` type

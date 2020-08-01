@@ -10,8 +10,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "jest",
-    "bootstrap": "echo 'NOOP'"
+    "test": "jest"
   },
   "devDependencies": {
     "@types/jest": "^25.1.3",

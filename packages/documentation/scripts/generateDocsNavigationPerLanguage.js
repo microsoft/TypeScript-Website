@@ -67,11 +67,11 @@ const handbookPages = [
       { file: "JSX.md" },
       { file: "Mixins.md" },
       { file: "Modules.md" },
-      { file: "Module Resolution.md"},
+      { file: "Module Resolution.md" },
       { file: "Namespaces.md" },
       { file: "Namespaces and Modules.md" },
       { file: "Symbols.md" },
-      { file: "Triple-Slash Directives.md"},
+      { file: "Triple-Slash Directives.md" },
       { file: "Type Compatibility.md" },
       { file: "Type Inference.md" },
       { file: "Variable Declarations.md" },
@@ -103,22 +103,24 @@ const handbookPages = [
       "Learn how to write declaration files to describe existing JavaScript. Important for DefinitelyTyped contributions.",
     chronological: true,
     items: [
-      { file: "declaration files/Introduction.md"},
-      { file: "declaration files/By Example.md"},
-      { file: "declaration files/Do's and Don'ts.md"},
-      { file: "declaration files/Deep Dive.md" },
+      { file: "declaration files/Introduction.md" },
+      { file: "declaration files/By Example.md" },
       { file: "declaration files/Library Structures.md" },
-      { title: ".d.ts Templates", 
+      {
+        title: ".d.ts Templates",
         items: [
-        { file: "declaration files/templates/global.d.ts.md" },
-        { file: "declaration files/templates/global-modifying-module.d.ts.md"},
-        { file: "declaration files/templates/module.d.ts.md" },
-        { file: "declaration files/templates/module-plugin.d.ts.md" },
-        { file: "declaration files/templates/module-class.d.ts.md" },
-        { file: "declaration files/templates/module-function.d.ts.md" },
-      ]},
+          { file: "declaration files/templates/module.d.ts.md" },
+          { file: "declaration files/templates/module-plugin.d.ts.md" },
+          { file: "declaration files/templates/module-class.d.ts.md" },
+          { file: "declaration files/templates/module-function.d.ts.md" },
+          { file: "declaration files/templates/global.d.ts.md" },
+          { file: "declaration files/templates/global-modifying-module.d.ts.md" },
+        ]
+      },
+      { file: "declaration files/Do's and Don'ts.md" },
+      { file: "declaration files/Deep Dive.md" },
       { file: "declaration files/Publishing.md" },
-      { file: "declaration files/Consumption.md"},
+      { file: "declaration files/Consumption.md" },
     ],
   },
   {
@@ -127,8 +129,8 @@ const handbookPages = [
     chronological: true,
     items: [
       { file: "Intro to JS with TS.md", },
-      { file:"Type Checking JavaScript Files.md" },
-      { file:"JSDoc Reference.md" },
+      { file: "Type Checking JavaScript Files.md" },
+      { file: "JSDoc Reference.md" },
       { file: "declaration files/Creating DTS files From JS.md" },
     ],
   },
@@ -204,7 +206,7 @@ for (const lang of langs) {
     `);
 
     /** @param {{ items?: HandbookNavSubItem[] }} itemable */
-    function addItems(itemable) {
+    function addItems (itemable) {
       // Lots of 2nd level navs dont have subnav, bail for them
       if ("items" in itemable === false) return;
 
@@ -307,7 +309,7 @@ writeFileSync(
  * @property {HandbookNavSubItem[]} items - pages
  */
 
-function validateNonEnglishMarkdownFile(info, lang, filepath) {
+function validateNonEnglishMarkdownFile (info, lang, filepath) {
   if (!info.data.permalink.startsWith("/" + lang + "/")) {
     throw new Error(
       `Permalink in ${filepath} does not start with '/${lang}/'\n\n`
@@ -315,7 +317,7 @@ function validateNonEnglishMarkdownFile(info, lang, filepath) {
   }
 }
 
-function validateMarkdownFile(info, filepath) {
+function validateMarkdownFile (info, filepath) {
   // const needed = ["permalink", "oneline", "title"];
   const needed = ["permalink", "title"];
   const missing = [];
@@ -330,13 +332,13 @@ function validateMarkdownFile(info, filepath) {
   }
 }
 
-function throwForUnfoundFile(subItem, lang, langInfo) {
+function throwForUnfoundFile (subItem, lang, langInfo) {
   const keys = [...langInfo.keys()];
   // prettier-ignore
   throw new Error(`Could not find the file '${subItem.file}' from the handbook nav in either ${lang} or 'en' - has: ${keys.join(", ")}`);
 }
 
-function fillReleaseInfo() {
+function fillReleaseInfo () {
   const whatIsNew = handbookPages.find((h) => h.title === "What's New");
   const files = readdirSync(
     join(__dirname, "..", "copy", "en", "release notes")
@@ -347,6 +349,6 @@ function fillReleaseInfo() {
   }
 }
 
-function toID(str) {
+function toID (str) {
   return str.toLowerCase().replace(/\s/g, "-");
 }

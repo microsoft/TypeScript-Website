@@ -46,6 +46,7 @@ const HandbookIndex: React.FC<Props> = (props) => {
                 <ul>
                   {navRoot.items && navRoot.items.map(item => {
                     const path = item.permalink!
+                    if (item.items) return null
 
                     return <li key={item.id}>
                       <Link to={path}>{item.title}</Link>

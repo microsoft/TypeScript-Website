@@ -1,3 +1,23 @@
+if (process.env.BOOTSTRAPPING) {
+  const chalk = require("chalk").default
+  const readline = require("readline")
+  const blank = "\n".repeat(process.stdout.rows)
+  console.log(blank)
+  readline.cursorTo(process.stdout, 0, 0)
+  readline.clearScreenDown(process.stdout)
+
+  // prettier-ignore
+  console.log(`
+  Bootstrapped. You can now run the site with ${chalk.greenBright.bold("yarn start")}.`)
+  process.exit(0)
+}
+
+require("./scripts/ensureDepsAreBuilt")
+
+const path = require.resolve("./../../watcher")
+console.log(path)
+require(path)
+
 // https://github.com/gatsbyjs/gatsby/issues/1457
 require("ts-node").register({ files: true })
 const { join } = require("path")
