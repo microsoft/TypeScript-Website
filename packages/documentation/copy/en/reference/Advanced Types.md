@@ -16,9 +16,9 @@ As we mentioned, you can only access members that are guaranteed to be in all th
 
 ```ts twoslash
 // @errors: 2339
-type Fish = { swim: () => void }
-type Bird = { fly: () => void }
-declare function getSmallPet(): Fish | Bird 
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+declare function getSmallPet(): Fish | Bird;
 // ---cut---
 let pet = getSmallPet();
 
@@ -35,13 +35,13 @@ if (pet.fly) {
 To get the same code working via property accessors, we'll need to use a type assertion:
 
 ```ts twoslash
-type Fish = { swim: () => void }
-type Bird = { fly: () => void }
-declare function getSmallPet(): Fish | Bird 
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+declare function getSmallPet(): Fish | Bird;
 // ---cut---
 let pet = getSmallPet();
-let fishPet = pet as Fish
-let birdPet = pet as Bird
+let fishPet = pet as Fish;
+let birdPet = pet as Bird;
 
 if (fishPet.swim) {
   fishPet.swim();
@@ -64,9 +64,9 @@ A type guard is some expression that performs a runtime check that guarantees th
 To define a type guard, we simply need to define a function whose return type is a _type predicate_:
 
 ```ts twoslash
-type Fish = { swim: () => void }
-type Bird = { fly: () => void }
-declare function getSmallPet(): Fish | Bird 
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+declare function getSmallPet(): Fish | Bird;
 // ---cut---
 function isFish(pet: Fish | Bird): pet is Fish {
   return (pet as Fish).swim !== undefined;
@@ -79,9 +79,9 @@ A predicate takes the form `parameterName is Type`, where `parameterName` must b
 Any time `isFish` is called with some variable, TypeScript will _narrow_ that variable to that specific type if the original type is compatible.
 
 ```ts twoslash
-type Fish = { swim: () => void }
-type Bird = { fly: () => void }
-declare function getSmallPet(): Fish | Bird 
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+declare function getSmallPet(): Fish | Bird;
 function isFish(pet: Fish | Bird): pet is Fish {
   return (pet as Fish).swim !== undefined;
 }
@@ -106,8 +106,8 @@ The `in` operator also acts as a narrowing expression for types.
 For a `n in x` expression, where `n` is a string literal or string literal type and `x` is a union type, the "true" branch narrows to types which have an optional or required property `n`, and the "false" branch narrows to types which have an optional or missing property `n`.
 
 ```ts twoslash
-type Fish = { swim: () => void }
-type Bird = { fly: () => void }
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
 // ---cut---
 function move(pet: Fish | Bird) {
   if ("swim" in pet) {
@@ -198,11 +198,11 @@ let padder: Padder = getRandomPadder();
 
 if (padder instanceof SpaceRepeatingPadder) {
   padder;
-//     ^?
+  //     ^?
 }
 if (padder instanceof StringPadder) {
   padder;
-//     ^?
+  //     ^?
 }
 ```
 
@@ -229,12 +229,12 @@ You can include them explicitly using a union type:
 ```ts twoslash
 // @errors: 2322
 let examapleString = "foo";
-examapleString = null; 
+examapleString = null;
 
 let stringOrNull: string | null = "bar";
 stringOrNull = null;
 
-stringOrNull = undefined; 
+stringOrNull = undefined;
 ```
 
 Note that TypeScript treats `null` and `undefined` differently in order to match JavaScript semantics.
@@ -307,24 +307,24 @@ The syntax is postfix `!`: `identifier!` removes `null` and `undefined` from the
 ```ts twoslash
 // @errors: 2532
 function getUser(id: string): UserAccount | undefined {
-  return {} as any
+  return {} as any;
 }
 // ---cut---
 interface UserAccount {
-  id: number
-  email?: string
+  id: number;
+  email?: string;
 }
 
-const user = getUser("admin")
-user.id
+const user = getUser("admin");
+user.id;
 
 if (user) {
-  user.email.length
+  user.email.length;
 }
 
 // Instead if you are sure that these objects or fields exist, the
 // postfix ! lets you short circuit the nullability
-user!.email!.length
+user!.email!.length;
 ```
 
 ## Type Aliases
@@ -333,10 +333,10 @@ Type aliases create a new name for a type.
 Type aliases are sometimes similar to interfaces, but can name primitives, unions, tuples, and any other types that you'd otherwise have to write by hand.
 
 ```ts twoslash
-type Second = number
+type Second = number;
 
-let timeInSecond: number = 10
-let time: Second = 10
+let timeInSecond: number = 10;
+let time: Second = 10;
 ```
 
 Aliasing doesn't actually create a new type - it creates a new _name_ to refer to that type.
@@ -361,7 +361,7 @@ type Tree<T> = {
 Together with [intersection](/docs/handbook/unions-and-intersections.html) types, we can make some pretty mind-bending types:
 
 ```ts twoslash
-declare function getDriversLicenseQueue(): LinkedList<Person>
+declare function getDriversLicenseQueue(): LinkedList<Person>;
 // ---cut---
 type LinkedList<Type> = Type & { next: LinkedList<Type> };
 
@@ -483,10 +483,7 @@ class BasicCalculator {
   // ... other operations go here ...
 }
 
-let v = new BasicCalculator(2)
-  .multiply(5)
-  .add(1)
-  .currentValue();
+let v = new BasicCalculator(2).multiply(5).add(1).currentValue();
 ```
 
 Since the class uses `this` types, you can extend it and the new class can use the old methods with no changes.
@@ -519,11 +516,7 @@ class ScientificCalculator extends BasicCalculator {
   // ... other operations go here ...
 }
 
-let v = new ScientificCalculator(2)
-  .multiply(5)
-  .sin()
-  .add(1)
-  .currentValue();
+let v = new ScientificCalculator(2).multiply(5).sin().add(1).currentValue();
 ```
 
 Without `this` types, `ScientificCalculator` would not have been able to extend `BasicCalculator` and keep the fluent interface.
@@ -536,7 +529,7 @@ For example, a common JavaScript pattern is to pick a subset of properties from 
 
 ```js
 function pluck(o, propertyNames) {
-  return propertyNames.map(n => o[n]);
+  return propertyNames.map((n) => o[n]);
 }
 ```
 
@@ -544,7 +537,7 @@ Here's how you would write and use this function in TypeScript, using the **inde
 
 ```ts twoslash
 function pluck<T, K extends keyof T>(o: T, propertyNames: K[]): T[K][] {
-  return propertyNames.map(n => o[n]);
+  return propertyNames.map((n) => o[n]);
 }
 
 interface Car {
@@ -556,7 +549,7 @@ interface Car {
 let taxi: Car = {
   manufacturer: "Toyota",
   model: "Camry",
-  year: 2014
+  year: 2014,
 };
 
 // Manufacturer and model are both of type string,
@@ -597,7 +590,7 @@ pluck(taxi, ["year", "unknown"]);
 
 The second operator is `T[K]`, the **indexed access operator**.
 Here, the type syntax reflects the expression syntax.
-That means that `person["name"]` has the type `Person["name"]` &mdash; which in our example is just `string`.
+That means that `taxi["name"]` has the type `Car["name"]` &mdash; which in our example is just `string`.
 However, just like index type queries, you can use `T[K]` in a generic context, which is where its real power comes to life.
 You just have to make sure that the type variable `K extends keyof T`.
 Here's another example with a function named `getProperty`.
@@ -624,7 +617,7 @@ interface Car {
 let taxi: Car = {
   manufacturer: "Toyota",
   model: "Camry",
-  year: 2014
+  year: 2014,
 };
 // ---cut---
 let manufacturer: string = getProperty(taxi, "manufacturer");
@@ -706,9 +699,9 @@ And to use it:
 
 ```ts twoslash
 type Person = {
-  name: string
-  age: number
-}
+  name: string;
+  age: number;
+};
 // ---cut---
 type PersonPartial = Partial<Person>;
 //   ^?
@@ -762,9 +755,9 @@ That's where `keyof` and indexed access types come in:
 
 ```ts twoslash
 type Person = {
-  name: string
-  age: number
-}
+  name: string;
+  age: number;
+};
 // ---cut---
 type NullablePerson = { [P in keyof Person]: Person[P] | null };
 //   ^?
@@ -802,10 +795,9 @@ function proxify<T>(o: T): Proxify<T> {
   // ... wrap proxies ...
 }
 
-let props = { rooms: 4 }
+let props = { rooms: 4 };
 let proxyProps = proxify(props);
 //  ^?
-
 ```
 
 Note that `Readonly<T>` and `Partial<T>` are so useful, they are included in TypeScript's standard library along with `Pick` and `Record`:
@@ -845,10 +837,10 @@ type Proxify<T> = {
 };
 
 function proxify<T>(o: T): Proxify<T> {
-  return {} as any
+  return {} as any;
 }
 
-let props = { rooms: 4 }
+let props = { rooms: 4 };
 let proxyProps = proxify(props);
 // ---cut---
 function unproxify<T>(t: Proxify<T>): T {
@@ -906,13 +898,13 @@ type TypeName<T> = T extends string
 
 type T0 = TypeName<string>;
 //   ^?
-type T1 = TypeName<"a">; 
+type T1 = TypeName<"a">;
 //   ^?
-type T2 = TypeName<true>; 
+type T2 = TypeName<true>;
 //   ^?
 type T3 = TypeName<() => void>;
 //   ^?
-type T4 = TypeName<string[]>; 
+type T4 = TypeName<string[]>;
 //   ^?
 ```
 
@@ -994,9 +986,9 @@ The distributive property of conditional types can conveniently be used to _filt
 
 ```ts twoslash
 // @errors: 2300 2322
- // Remove types from T that are assignable to U
+// Remove types from T that are assignable to U
 type Diff<T, U> = T extends U ? never : T;
- // Remove types from T that are not assignable to U
+// Remove types from T that are not assignable to U
 type Filter<T, U> = T extends U ? T : never;
 
 type T1 = Diff<"a" | "b" | "c" | "d", "a" | "c" | "f">;
@@ -1009,7 +1001,7 @@ type T4 = Filter<string | number | (() => void), Function>; // () => void
 //   ^?
 
 // Remove null and undefined from T
-type NotNullable<T> = Diff<T, null | undefined>; 
+type NotNullable<T> = Diff<T, null | undefined>;
 
 type T5 = NotNullable<string | number | undefined>;
 //   ^?
@@ -1099,7 +1091,7 @@ type T1 = Unpacked<string[]>;
 //   ^?
 type T2 = Unpacked<() => string>;
 //   ^?
-type T3 = Unpacked<Promise<string>>; 
+type T3 = Unpacked<Promise<string>>;
 //   ^?
 type T4 = Unpacked<Promise<string>[]>;
 //   ^?
@@ -1139,7 +1131,7 @@ declare function foo(x: string): number;
 declare function foo(x: number): string;
 declare function foo(x: string | number): string | number;
 
-type T1 = ReturnType<typeof foo>; 
+type T1 = ReturnType<typeof foo>;
 //   ^?
 ```
 
