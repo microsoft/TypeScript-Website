@@ -34,7 +34,16 @@ const handbookNavigation = getDocumentationNavForLanguage("en");
 
 // Grab all the md + yml info from the handbook files on disk
 // and add them to ^
-const handbookPath = join(__dirname, "..", "..", "documentation", "copy", "en");
+// prettier-ignore
+const handbookPath = join(
+  __dirname,
+  "..",
+  "..",
+  "documentation",
+  "copy",
+  "en",
+  "handbook-v1",
+);
 readdirSync(handbookPath, "utf-8").forEach((path) => {
   const filePath = join(handbookPath, path);
   if (lstatSync(filePath).isDirectory() || !filePath.endsWith("md")) {
@@ -43,7 +52,11 @@ readdirSync(handbookPath, "utf-8").forEach((path) => {
 
   const md = readMarkdownFile(filePath);
   // prettier-ignore
-  if (!md.data.permalink) throw new Error(`${path} in the handbook did not have a permalink in the yml header`);
+  if (!md.data.permalink) {
+    throw new Error(
+      `${path} in the handbook did not have a permalink in the yml header`,
+    );
+  }
   const id = md.data.permalink;
   markdowns.set(id, md);
 });
@@ -80,7 +93,10 @@ const startEpub = async () => {
 
   // Import CSS
   epub.write(
-    Streampub.newFile("style.css", createReadStream("./assets/ebook-style.css"))
+    Streampub.newFile(
+      "style.css",
+      createReadStream("./assets/ebook-style.css"),
+    ),
   );
 
   const releaseInfo = getReleaseInfo();
@@ -115,15 +131,17 @@ process.once("exit", () => {
     epubPath,
     join(
       __dirname,
-      "../../typescriptlang-org/static/assets/typescript-handbook-beta.epub"
-    )
+      "../../typescriptlang-org/static/assets/typescript-handbook-beta.epub",
+    ),
   );
 });
 
 const addHandbookPage = async (epub: any, id: string, index: number) => {
   const md = markdowns.get(id);
+  if (!md) throw new Error("Could not get markdown for " + id);
   const title = md.data.title;
-  const prefix = `<link href="style.css" type="text/css" rel="stylesheet" /><h1>${title}</h1><div class='section'>`;
+  const prefix =
+    `<link href="style.css" type="text/css" rel="stylesheet" /><h1>${title}</h1><div class='section'>`;
   const suffix = "</div>";
   const html = await getHTML(md.content, {});
   const edited = replaceAllInString(html, {
@@ -142,10 +160,10 @@ const getHTML = async (code: string, settings?: any) => {
       { markdownAST },
       {
         theme: require.resolve(
-          "../../typescriptlang-org/lib/themes/typescript-beta-light.json"
+          "../../typescriptlang-org/lib/themes/typescript-beta-light.json",
         ) as any,
       },
-      {}
+      {},
     );
   }
 
@@ -174,7 +192,15 @@ const getGitSHA = () => {
 
 const getReleaseInfo = () => {
   // prettier-ignore
-  const releaseInfo = join(__dirname, "..", "..", "typescriptlang-org", "src", "lib", "release-info.json");
+  const releaseInfo = join(
+    __dirname,
+    "..",
+    "..",
+    "typescriptlang-org",
+    "src",
+    "lib",
+    "release-info.json",
+  );
   const info = JSON.parse(readFileSync(releaseInfo, "utf8"));
   return info;
 };
