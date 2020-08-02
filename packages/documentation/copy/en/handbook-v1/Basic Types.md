@@ -8,7 +8,7 @@ oneline: "Step one in learning TypeScript: The basics types."
 # Introduction
 
 For programs to be useful, we need to be able to work with some of the simplest units of data: numbers, strings, structures, boolean values, and the like.
-In TypeScript, we support much the same types as you would expect in JavaScript, with a convenient enumeration type thrown in to help things along.
+In TypeScript, we support the same types as you would expect in JavaScript, with an extra enumeration type thrown in to help things along.
 
 ## Boolean
 
@@ -388,8 +388,8 @@ You can read in the Handbook Reference on [Variable Declarations](/docs/handbook
 
 ## About `Number`, `String`, `Boolean`, `Symbol` and `Object`
 
-It can be tempting to think that the types `Number`, `String`, `Boolean`, `Symbol`, or `Object` are the same as the lowercase versions.
-These types do not refer to the language primitives, and almost never should be used as a type.
+It can be tempting to think that the types `Number`, `String`, `Boolean`, `Symbol`, or `Object` are the same as the lowercase versions recommended above.
+These types do not refer to the language primitives however, and almost never should be used as a type.
 
 ```ts twoslash
 // @errors: 2339
@@ -400,7 +400,7 @@ function reverse(s: String): String {
 reverse("hello world")
 ```
 
-Instead, use the types `number`, `string`, `boolean`, and `symbol`.
+Instead, use the types `number`, `string`, `boolean`, `object` and `symbol`.
 
 ```ts twoslash
 function reverse(s: string): string { 
@@ -409,5 +409,3 @@ function reverse(s: string): string {
 
 reverse("hello world")
 ```
-
-Instead of `Object`, use the non-primitive `object` type
