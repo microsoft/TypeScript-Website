@@ -1,5 +1,5 @@
 {
-  "pages/Advanced Types.md": {
+  "reference/Advanced Types.md": {
     "top": [
       {
         "name": "Daniel Rosenwasser",
@@ -29,7 +29,7 @@
     ],
     "total": 41
   },
-  "pages/Basic Types.md": {
+  "handbook-v1/Basic Types.md": {
     "top": [
       {
         "name": "Ryan Cavanaugh",
@@ -59,7 +59,7 @@
     ],
     "total": 32
   },
-  "pages/Classes.md": {
+  "handbook-v1/Classes.md": {
     "top": [
       {
         "name": "Ryan Cavanaugh",
@@ -89,7 +89,7 @@
     ],
     "total": 20
   },
-  "pages/Compiler Options in MSBuild.md": {
+  "project-config/Compiler Options in MSBuild.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -119,7 +119,7 @@
     ],
     "total": 9
   },
-  "pages/Compiler Options.md": {
+  "project-config/Compiler Options.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -149,7 +149,7 @@
     ],
     "total": 43
   },
-  "pages/Configuring Watch.md": {
+  "project-config/Configuring Watch.md": {
     "top": [
       {
         "name": "Sheetal Nandi",
@@ -169,7 +169,7 @@
     ],
     "total": 3
   },
-  "pages/Declaration Merging.md": {
+  "reference/Declaration Merging.md": {
     "top": [
       {
         "name": "Ryan Cavanaugh",
@@ -199,7 +199,7 @@
     ],
     "total": 13
   },
-  "pages/Decorators.md": {
+  "reference/Decorators.md": {
     "top": [
       {
         "name": "Ron Buckton",
@@ -229,7 +229,7 @@
     ],
     "total": 13
   },
-  "pages/Enums.md": {
+  "handbook-v1/Enums.md": {
     "top": [
       {
         "name": "Vladimir Matveev",
@@ -259,7 +259,7 @@
     ],
     "total": 15
   },
-  "pages/Functions.md": {
+  "handbook-v1/Functions.md": {
     "top": [
       {
         "name": "Ryan Cavanaugh",
@@ -289,7 +289,7 @@
     ],
     "total": 19
   },
-  "pages/Generics.md": {
+  "handbook-v1/Generics.md": {
     "top": [
       {
         "name": "Ryan Cavanaugh",
@@ -319,7 +319,7 @@
     ],
     "total": 12
   },
-  "pages/Integrating with Build Tools.md": {
+  "project-config/Integrating with Build Tools.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -349,7 +349,7 @@
     ],
     "total": 10
   },
-  "pages/Interfaces.md": {
+  "handbook-v1/Interfaces.md": {
     "top": [
       {
         "name": "Ryan Cavanaugh",
@@ -379,7 +379,7 @@
     ],
     "total": 35
   },
-  "pages/Iterators and Generators.md": {
+  "reference/Iterators and Generators.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -409,7 +409,7 @@
     ],
     "total": 6
   },
-  "pages/JSDoc Supported Types.md": {
+  "reference/JSDoc Supported Types.md": {
     "top": [
       {
         "name": "Nathan Shively-Sanders",
@@ -419,7 +419,7 @@
     ],
     "total": 1
   },
-  "pages/JSX.md": {
+  "reference/JSX.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -449,7 +449,7 @@
     ],
     "total": 24
   },
-  "pages/Mixins.md": {
+  "handbook-v1/Mixins.md": {
     "top": [
       {
         "name": "Ryan Cavanaugh",
@@ -479,7 +479,7 @@
     ],
     "total": 9
   },
-  "pages/Module Resolution.md": {
+  "reference/Module Resolution.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -509,7 +509,7 @@
     ],
     "total": 23
   },
-  "pages/Modules.md": {
+  "reference/Modules.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -539,7 +539,7 @@
     ],
     "total": 30
   },
-  "pages/Namespaces and Modules.md": {
+  "reference/Namespaces and Modules.md": {
     "top": [
       {
         "name": "Daniel Rosenwasser",
@@ -569,7 +569,7 @@
     ],
     "total": 11
   },
-  "pages/Namespaces.md": {
+  "reference/Namespaces.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -599,7 +599,7 @@
     ],
     "total": 12
   },
-  "pages/Nightly Builds.md": {
+  "Nightly Builds.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -619,7 +619,7 @@
     ],
     "total": 3
   },
-  "pages/Project References.md": {
+  "project-config/Project References.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -649,7 +649,7 @@
     ],
     "total": 11
   },
-  "pages/Symbols.md": {
+  "reference/Symbols.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -679,7 +679,7 @@
     ],
     "total": 5
   },
-  "pages/Triple-Slash Directives.md": {
+  "reference/Triple-Slash Directives.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -709,7 +709,7 @@
     ],
     "total": 6
   },
-  "pages/Type Checking JavaScript Files.md": {
+  "javascript/Type Checking JavaScript Files.md": {
     "top": [
       {
         "name": "Harry Nguyen",
@@ -739,7 +739,7 @@
     ],
     "total": 13
   },
-  "pages/Type Compatibility.md": {
+  "reference/Type Compatibility.md": {
     "top": [
       {
         "name": "Ryan Cavanaugh",
@@ -769,7 +769,7 @@
     ],
     "total": 14
   },
-  "pages/Type Inference.md": {
+  "reference/Type Inference.md": {
     "top": [
       {
         "name": "Ryan Cavanaugh",
@@ -799,27 +799,7 @@
     ],
     "total": 7
   },
-  "pages/Typings for NPM Packages.md": {
-    "top": [
-      {
-        "name": "Mohamed Hegazy",
-        "gravatar": "17e2da9785d45119a4c4cfed99e40d9c",
-        "count": 55
-      },
-      {
-        "name": "Daniel Rosenwasser",
-        "gravatar": "8499bf678149d617cc71a23afb377736",
-        "count": 3
-      },
-      {
-        "name": "Wesley Wigham",
-        "gravatar": "b07f8059b2727c6b084bd0dc921118b9",
-        "count": 1
-      }
-    ],
-    "total": 3
-  },
-  "pages/Utility Types.md": {
+  "reference/Utility Types.md": {
     "top": [
       {
         "name": "christian",
@@ -849,7 +829,7 @@
     ],
     "total": 8
   },
-  "pages/Variable Declarations.md": {
+  "reference/Variable Declarations.md": {
     "top": [
       {
         "name": "Daniel Rosenwasser",
@@ -879,7 +859,7 @@
     ],
     "total": 19
   },
-  "pages/Writing Declaration Files.md": {
+  "declaration-files/Writing declaration-files.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -909,7 +889,7 @@
     ],
     "total": 6
   },
-  "pages/declaration files/By Example.md": {
+  "declaration-files/By Example.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -939,7 +919,7 @@
     ],
     "total": 6
   },
-  "pages/declaration files/Consumption.md": {
+  "declaration-files/Consumption.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -959,7 +939,7 @@
     ],
     "total": 3
   },
-  "pages/declaration files/Deep Dive.md": {
+  "declaration-files/Deep Dive.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -969,7 +949,7 @@
     ],
     "total": 1
   },
-  "pages/declaration files/Do's and Don'ts.md": {
+  "declaration-files/Do's and Don'ts.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -999,7 +979,7 @@
     ],
     "total": 9
   },
-  "pages/declaration files/Introduction.md": {
+  "declaration-files/Introduction.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1029,7 +1009,7 @@
     ],
     "total": 5
   },
-  "pages/declaration files/Library Structures.md": {
+  "declaration-files/Library Structures.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1054,7 +1034,7 @@
     ],
     "total": 4
   },
-  "pages/declaration files/Publishing.md": {
+  "declaration-files/Publishing.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1084,7 +1064,7 @@
     ],
     "total": 9
   },
-  "pages/declaration files/Templates.md": {
+  "declaration-files/Templates.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1094,7 +1074,7 @@
     ],
     "total": 1
   },
-  "pages/declaration files/templates/global-modifying-module.d.ts.md": {
+  "declaration-files/templates/global-modifying-module.d.ts.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1104,7 +1084,7 @@
     ],
     "total": 1
   },
-  "pages/declaration files/templates/global-plugin.d.ts.md": {
+  "declaration-files/templates/global-plugin.d.ts.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1119,7 +1099,7 @@
     ],
     "total": 2
   },
-  "pages/declaration files/templates/global.d.ts.md": {
+  "declaration-files/templates/global.d.ts.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1129,7 +1109,7 @@
     ],
     "total": 1
   },
-  "pages/declaration files/templates/module-class.d.ts.md": {
+  "declaration-files/templates/module-class.d.ts.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1144,7 +1124,7 @@
     ],
     "total": 2
   },
-  "pages/declaration files/templates/module-function.d.ts.md": {
+  "declaration-files/templates/module-function.d.ts.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1159,7 +1139,7 @@
     ],
     "total": 2
   },
-  "pages/declaration files/templates/module-plugin.d.ts.md": {
+  "declaration-files/templates/module-plugin.d.ts.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1169,7 +1149,7 @@
     ],
     "total": 1
   },
-  "pages/declaration files/templates/module.d.ts.md": {
+  "declaration-files/templates/module.d.ts.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1179,7 +1159,7 @@
     ],
     "total": 1
   },
-  "pages/release notes/Overview.md": {
+  "release-notes/Overview.md": {
     "top": [
       {
         "name": "Orta Therox",
@@ -1194,7 +1174,7 @@
     ],
     "total": 2
   },
-  "pages/release notes/TypeScript 1.1.md": {
+  "release-notes/TypeScript 1.1.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1209,7 +1189,7 @@
     ],
     "total": 2
   },
-  "pages/release notes/TypeScript 1.3.md": {
+  "release-notes/TypeScript 1.3.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1224,7 +1204,7 @@
     ],
     "total": 2
   },
-  "pages/release notes/TypeScript 1.4.md": {
+  "release-notes/TypeScript 1.4.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1239,7 +1219,7 @@
     ],
     "total": 2
   },
-  "pages/release notes/TypeScript 1.5.md": {
+  "release-notes/TypeScript 1.5.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1269,7 +1249,7 @@
     ],
     "total": 6
   },
-  "pages/release notes/TypeScript 1.6.md": {
+  "release-notes/TypeScript 1.6.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1289,7 +1269,7 @@
     ],
     "total": 3
   },
-  "pages/release notes/TypeScript 1.7.md": {
+  "release-notes/TypeScript 1.7.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1309,7 +1289,7 @@
     ],
     "total": 3
   },
-  "pages/release notes/TypeScript 1.8.md": {
+  "release-notes/TypeScript 1.8.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1334,7 +1314,7 @@
     ],
     "total": 4
   },
-  "pages/release notes/TypeScript 2.0.md": {
+  "release-notes/TypeScript 2.0.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1354,7 +1334,7 @@
     ],
     "total": 3
   },
-  "pages/release notes/TypeScript 2.1.md": {
+  "release-notes/TypeScript 2.1.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1384,7 +1364,7 @@
     ],
     "total": 6
   },
-  "pages/release notes/TypeScript 2.2.md": {
+  "release-notes/TypeScript 2.2.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1399,7 +1379,7 @@
     ],
     "total": 2
   },
-  "pages/release notes/TypeScript 2.3.md": {
+  "release-notes/TypeScript 2.3.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1429,7 +1409,7 @@
     ],
     "total": 5
   },
-  "pages/release notes/TypeScript 2.4.md": {
+  "release-notes/TypeScript 2.4.md": {
     "top": [
       {
         "name": "Daniel Rosenwasser",
@@ -1444,7 +1424,7 @@
     ],
     "total": 2
   },
-  "pages/release notes/TypeScript 2.5.md": {
+  "release-notes/TypeScript 2.5.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1459,7 +1439,7 @@
     ],
     "total": 2
   },
-  "pages/release notes/TypeScript 2.6.md": {
+  "release-notes/TypeScript 2.6.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1474,7 +1454,7 @@
     ],
     "total": 2
   },
-  "pages/release notes/TypeScript 2.7.md": {
+  "release-notes/TypeScript 2.7.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1504,7 +1484,7 @@
     ],
     "total": 7
   },
-  "pages/release notes/TypeScript 2.8.md": {
+  "release-notes/TypeScript 2.8.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1529,7 +1509,7 @@
     ],
     "total": 4
   },
-  "pages/release notes/TypeScript 2.9.md": {
+  "release-notes/TypeScript 2.9.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1544,7 +1524,7 @@
     ],
     "total": 2
   },
-  "pages/release notes/TypeScript 3.0.md": {
+  "release-notes/TypeScript 3.0.md": {
     "top": [
       {
         "name": "Mohamed Hegazy",
@@ -1574,7 +1554,7 @@
     ],
     "total": 8
   },
-  "pages/release notes/TypeScript 3.1.md": {
+  "release-notes/TypeScript 3.1.md": {
     "top": [
       {
         "name": "Daniel Rosenwasser",
@@ -1604,7 +1584,7 @@
     ],
     "total": 8
   },
-  "pages/release notes/TypeScript 3.2.md": {
+  "release-notes/TypeScript 3.2.md": {
     "top": [
       {
         "name": "Daniel Rosenwasser",
@@ -1619,7 +1599,7 @@
     ],
     "total": 2
   },
-  "pages/release notes/TypeScript 3.3.md": {
+  "release-notes/TypeScript 3.3.md": {
     "top": [
       {
         "name": "Daniel Rosenwasser",
@@ -1639,7 +1619,7 @@
     ],
     "total": 3
   },
-  "pages/release notes/TypeScript 3.4.md": {
+  "release-notes/TypeScript 3.4.md": {
     "top": [
       {
         "name": "Daniel Rosenwasser",
@@ -1654,7 +1634,7 @@
     ],
     "total": 2
   },
-  "pages/release notes/TypeScript 3.5.md": {
+  "release-notes/TypeScript 3.5.md": {
     "top": [
       {
         "name": "Daniel Rosenwasser",
@@ -1664,7 +1644,7 @@
     ],
     "total": 1
   },
-  "pages/release notes/TypeScript 3.6.md": {
+  "release-notes/TypeScript 3.6.md": {
     "top": [
       {
         "name": "Daniel Rosenwasser",
@@ -1679,7 +1659,7 @@
     ],
     "total": 2
   },
-  "pages/release notes/TypeScript 3.7.md": {
+  "release-notes/TypeScript 3.7.md": {
     "top": [
       {
         "name": "Orta Therox",
@@ -1709,7 +1689,7 @@
     ],
     "total": 5
   },
-  "pages/release notes/TypeScript 3.8.md": {
+  "release-notes/TypeScript 3.8.md": {
     "top": [
       {
         "name": "Daniel Rosenwasser",
@@ -1719,7 +1699,7 @@
     ],
     "total": 1
   },
-  "pages/release notes/index.html": {
+  "release-notes/index.html": {
     "top": [
       {
         "name": "Orta Therox",
@@ -1729,7 +1709,7 @@
     ],
     "total": 1
   },
-  "pages/tutorials/ASP.NET Core.md": {
+  "tutorials/ASP.NET Core.md": {
     "top": [
       {
         "name": "Bowden Kelly",
@@ -1759,7 +1739,7 @@
     ],
     "total": 8
   },
-  "pages/tutorials/Angular.md": {
+  "tutorials/Angular.md": {
     "top": [
       {
         "name": "Daniel Rosenwasser",
@@ -1769,7 +1749,7 @@
     ],
     "total": 1
   },
-  "pages/tutorials/Gulp.md": {
+  "tutorials/Gulp.md": {
     "top": [
       {
         "name": "Bowden Kelly",
@@ -1799,7 +1779,7 @@
     ],
     "total": 16
   },
-  "pages/tutorials/Migrating from JavaScript.md": {
+  "tutorials/Migrating from JavaScript.md": {
     "top": [
       {
         "name": "Daniel Rosenwasser",
@@ -1829,7 +1809,7 @@
     ],
     "total": 10
   },
-  "pages/tutorials/React & Webpack.md": {
+  "tutorials/React & Webpack.md": {
     "top": [
       {
         "name": "Bowden Kelly",
@@ -1859,7 +1839,7 @@
     ],
     "total": 26
   },
-  "pages/tutorials/React.md": {
+  "tutorials/React.md": {
     "top": [
       {
         "name": "Daniel Rosenwasser",
@@ -1889,7 +1869,7 @@
     ],
     "total": 10
   },
-  "pages/tutorials/TypeScript in 5 minutes.md": {
+  "tutorials/TypeScript in 5 minutes.md": {
     "top": [
       {
         "name": "Bowden Kelly",
@@ -1919,7 +1899,7 @@
     ],
     "total": 6
   },
-  "pages/tutorials/tsconfig.json.md": {
+  "tutorials/tsconfig.json.md": {
     "top": [
       {
         "name": "dumblole",
