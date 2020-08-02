@@ -1,34 +1,43 @@
-import * as React from "react"
-import { Layout } from "../../../../components/layout"
+import * as React from "react";
+import { Layout } from "../../../components/layout";
+
+import "../css/documentation.scss";
+import { Intl } from "../../../components/Intl";
+
+import { docCopy } from "../../../copy/en/documentation";
+import { createInternational } from "../../../lib/createInternational";
+import { useIntl } from "react-intl";
+import { graphql } from "gatsby";
+import { DocsHomeQuery } from "../../../__generated__/gatsby-types";
+import { QuickJump } from "../../../components/QuickJump";
+import { getDocumentationNavForLanguage } from "../../../lib/documentationNavigation"
+
 import { Link } from "gatsby"
 
-import "../../css/documentation.scss"
-import "../../../documentation.scss"
-
-import { Intl } from "../../../../components/Intl"
-
-import { docCopy } from "../../../../copy/en/documentation"
-import { createInternational } from "../../../../lib/createInternational"
-import { useIntl } from "react-intl"
-import { graphql } from "gatsby"
-import { DocsHomeQuery } from "../../../../__generated__/gatsby-types"
-import { getDocumentationNavForLanguage } from "../../../../lib/documentationNavigation"
+import "../css/documentation.scss"
+import "../../documentation.scss"
 
 type Props = {
-  data: DocsHomeQuery
-  pageContext: any
-}
+  data: DocsHomeQuery;
+  pageContext: any;
+};
 
-const HandbookIndex: React.FC<Props> = (props) => {
-  const i = createInternational<typeof docCopy>(useIntl())
+const Index: React.FC<Props> = (props) => {
+  const i = createInternational<typeof docCopy>(useIntl());
   const nav = getDocumentationNavForLanguage(props.pageContext.lang)
 
   return (
-    <Layout title={i("doc_layout_title")} description={i("doc_layout_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+    <Layout
+      title={i("doc_layout_title")}
+      description={i("doc_layout_description")}
+      lang={props.pageContext.lang}
+      allSitePage={props.data.allSitePage}
+    >
 
       <div className="main-content-block headline" style={{ marginTop: "40px" }}>
         <h1>TypeScript Documentation</h1>
       </div>
+
 
       <div className="main-content-block container handbook-content" >
         <div className="columns wide">
@@ -59,18 +68,25 @@ const HandbookIndex: React.FC<Props> = (props) => {
           })}
         </div>
       </div>
-    </Layout >
-  )
-}
+
+      <QuickJump
+        title={i("doc_headline")}
+        allSitePage={props.data.allSitePage}
+        lang={props.pageContext.lang}
+      />
+
+    </Layout>
+  );
+};
 
 export const query = graphql`
-query HandbookHome {
-  ...AllSitePage
-}
-`
+  query DocsHome {
+    ...AllSitePage
+  }
+`;
 
 export default (props: Props) => (
   <Intl locale={props.pageContext.lang}>
-    <HandbookIndex {...props} />
+    <Index {...props} />
   </Intl>
-)
+);

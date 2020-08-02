@@ -118,10 +118,15 @@ const communityLinks = [
     title: "Web Updates",
     url: "https://github.com/microsoft/TypeScript-Website/issues/130",
   },
+  {
+    title: "Web Repo",
+    url: "https://github.com/microsoft/TypeScript-Website",
+  },
 ]
 
 const faviconForURL = (url: string) => {
   switch (url) {
+    case "https://github.com/microsoft/TypeScript-Website":
     case "https://github.com/microsoft/TypeScript/#readme":
       return (
         <svg

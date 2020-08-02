@@ -1,12 +1,12 @@
 // These are redirects from a very long time ago
 export const veryOldRedirects = {
   Playground: "/play/",
-  Tutorial: "docs/home",
-  Handbook: "docs/home",
-  samples: "docs/home",
+  Tutorial: "/docs",
+  Handbook: "/docs",
+  samples: "/docs",
   "/docs/home.html": "/docs/home",
   "/playground": "/play/",
-  "/docs/index.html": "/docs/home",
+  "/docs/home": "/docs",
 }
 
 // These were .html files in the handbook with some redirection work
