@@ -713,10 +713,10 @@ export function getDocumentationNavForLanguage(
           oneline: "Your first step to learn TypeScript",
         },
         {
-          title: "B4s1c Typ3s",
-          id: "b4s1c-typ3s",
-          permalink: "/vo/docs/handbook/basic-types.html",
-          oneline: "5tep on3 in learning 7ype5cript: The basics types.",
+          title: "Basic Types",
+          id: "basic-types",
+          permalink: "/docs/handbook/basic-types.html",
+          oneline: "Step one in learning TypeScript: The basics types.",
         },
         {
           title: "Interfaces",
