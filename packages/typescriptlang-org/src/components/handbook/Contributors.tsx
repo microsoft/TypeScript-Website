@@ -34,8 +34,8 @@ export const Contributors = (props: ContributorsProps) => {
 
   useEffect(() => {
     // @ts-ignore
-    // prettier-ignore
     const perf = window.performance || window.mozPerformance ||
+      // @ts-ignore
       window.msPerformance || window.webkitPerformance || {};
     const t = perf.timing;
     if (!t) return;
