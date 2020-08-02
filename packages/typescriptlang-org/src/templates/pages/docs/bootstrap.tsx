@@ -11,6 +11,8 @@ import { useIntl } from "react-intl";
 import { graphql } from "gatsby";
 import { DocsHomeQuery } from "../../../__generated__/gatsby-types";
 import { QuickJump } from "../../../components/QuickJump";
+import releaseInfo from "../../../lib/release-info.json";
+
 
 type Props = {
   data: DocsHomeQuery;
@@ -21,16 +23,11 @@ const Index: React.FC<Props> = (props) => {
   const i = createInternational<typeof docCopy>(useIntl());
   return (
     <Layout
-      title={i("doc_layout_title")}
-      description={i("doc_layout_description")}
+      title={i("doc_bootstrap_title")}
+      description={i("doc_bootstrap_description")}
       lang={props.pageContext.lang}
       allSitePage={props.data.allSitePage}
     >
-      <QuickJump
-        title={i("doc_headline")}
-        allSitePage={props.data.allSitePage}
-        lang={props.pageContext.lang}
-      />
 
       <div className="raised main-content-block">
         <h1>{i("doc_start_a_project")}</h1>
@@ -240,7 +237,7 @@ const Index: React.FC<Props> = (props) => {
         <ButtonGrid
           buttons={[
             {
-              href: "/docs/handbook/release-notes/typescript-3-8.html",
+              href: releaseInfo.releaseNotesURL,
               blurb: i("doc_learn_3_5_release_notes_title"),
               title: i("doc_learn_3_5_release_notes_title"),
             },
@@ -262,12 +259,19 @@ const Index: React.FC<Props> = (props) => {
           ]}
         />
       </div>
+
+      <QuickJump
+        title={i("doc_headline")}
+        allSitePage={props.data.allSitePage}
+        lang={props.pageContext.lang}
+      />
+
     </Layout>
   );
 };
 
 export const query = graphql`
-  query DocsHome {
+  query DocsBootstrap {
     ...AllSitePage
   }
 `;

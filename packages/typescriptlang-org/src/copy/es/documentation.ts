@@ -74,7 +74,7 @@ export const docCopy = {
     "Agrupa tus recursos, archivos, imágenes y estilos",
   doc_learn: "¿Ya estás familiarizado con TypeScript?",
   doc_learn_3_5_release_notes_title: "Notas de lanzamiento",
-  doc_learn_3_5_release_notes_blurb: "Notas de lanzamiento versión 3.5",
+  doc_learn_3_5_release_notes_blurb: "Notas de lanzamiento versión",
   doc_learn_handbook_blurb: "La referencia al lenguaje de TypeScript",
   doc_learn_d_ts_title: "Guía para definiciones en TypeScript (d.ts)",
   doc_learn_d_ts_blurb: "Aprende a declarar la forma de JS",
