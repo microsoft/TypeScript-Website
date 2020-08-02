@@ -33,10 +33,9 @@ export const Contributors = (props: ContributorsProps) => {
   const lastEdited = dtf.format(d);
 
   useEffect(() => {
-    // prettier-ignore
     // @ts-ignore
-    const perf = window.performance || window.mozPerformance ||
-      window.msPerformance || window.webkitPerformance || {};
+    // prettier-ignore
+    const perf = window.performance || window.mozPerformance || window.msPerformance || window.webkitPerformance || {};
     const t = perf.timing;
     if (!t) return;
 
@@ -94,7 +93,7 @@ export const Contributors = (props: ContributorsProps) => {
 
 const Avatars = (
   props: {
-    data: typeof attribution["copy/en/declaration-files/By Example.md"];
+    data: typeof attribution["copy/en/Basic Types.md"];
   },
 ) => {
   const showRest = props.data && props.data.total > props.data.top.length;

@@ -114,6 +114,10 @@ const communityLinks = [
     title: "Stack Overflow",
     url: "https://stackoverflow.com/questions/tagged/typescript",
   },
+  {
+    title: "Web Updates",
+    url: "https://github.com/microsoft/TypeScript-Website/issues/130",
+  },
 ]
 
 const faviconForURL = (url: string) => {
