@@ -23,7 +23,7 @@ module.exports = {
 // @filename: index.ts
 import utils from "./utilitarios";
 
-const count = utils.getStringLength("Check JS");
+const count = utils.obterTamanhoDaString("Checagem JS");
 ```
 
 Isto não vai funcionar porque não existe um objeto `default` o qual você pode importar. Apesar de parecer que deveria.
