@@ -133,7 +133,7 @@ todo
 
 ## `Exclude<Type, ExcludedUnion>`
 
-Constructs a type by excluding from `Type` all properties that are assignable to `ExcludedUnion`.
+Constructs a type by excluding from `Type` all union members that are assignable to `ExcludedUnion`.
 
 ##### Example
 
@@ -148,7 +148,7 @@ type T2 = Exclude<string | number | (() => void), Function>;
 
 ## `Extract<Type, Union>`
 
-Constructs a type by extracting from `Type` all properties that are assignable to `Union`.
+Constructs a type by extracting from `Type` all all union members that are assignable to `Union`.
 
 ##### Example
 
