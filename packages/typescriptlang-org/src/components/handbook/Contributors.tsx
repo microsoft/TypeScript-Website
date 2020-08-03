@@ -83,7 +83,7 @@ export const Contributors = (props: ContributorsProps) => {
             {`Last updated: ${lastEdited}`}
             <br />
             <br />
-            <span id="page-loaded-time"></span>
+            <span id="page-loaded-time">&nbsp;</span>
           </p>
         </Section>
       </Row>
