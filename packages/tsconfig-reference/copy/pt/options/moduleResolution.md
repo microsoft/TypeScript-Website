@@ -1,9 +1,9 @@
 ---
 display: "Resolução de Módulos"
-oneline: "Permite estratégias de resolução de módulos TypeScript 1.6"
+oneline: "Permite a especificação de estratégias de resolução de módulos TypeScript 1.6"
 ---
 
-Especifica a estratégia de resolução de módulos: `'node'` (Node.js) ou `classic` (utilizada no TypeScript antes da versão 1.6).
-Você provavelmente não vai precisar utilizar `classic` em código atual.
+Especifica a estratégia de resolução de módulos: `node` (Node.js) ou `classic` (utilizada no TypeScript antes da versão 1.6).
+Você provavelmente não vai precisar utilizar `classic` em código mais recente.
 
-Há uma página de referência em [Resolução de Módulos](/docs/handbook/module-resolution.html)
+Veja a página de referência em: [Resolução de Módulos](/docs/handbook/module-resolution.html)

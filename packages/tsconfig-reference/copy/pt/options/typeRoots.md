@@ -3,7 +3,7 @@ display: "Raizes de Tipo"
 oneline: "Locais onde o TypeScript deve buscar por definições de tipo"
 ---
 
-Por padrão todos pacotes "`@types`" _visíveis_ são incluídos na sua compilação.
+Por padrão todos pacotes `@types` _visíveis_ são incluídos na sua compilação.
 Pacotes em `node_modules/@types` de qualquer diretório adjacente são considerados _visíveis_.
 Por exemplo, isso significa pacotes dentro de `./node_modules/@types/`, `../node_modules/@types/`, `../../node_modules/@types/`, e assim por diante.
 

@@ -3,26 +3,25 @@ display: "Interoperabilidade de Módulo ES"
 oneline: "Emite JS adicional para dar suporte ao importar módulos commonjs"
 ---
 
-Permite interoperabilidade de emição entre Módulos CommonJS e ES através da criação de objetos namespace para todas as importações.
+Permite interoperabilidade de emição entre Módulos CommonJS e ES através da criação de namespaces para todas as importações.
 
-TypeScript adere ao padrão EcmaScript para módulos, o que significa que um arquivo com exportações teria que especificamente
-incluir uma exportação `default` para dar suporte à sintaxes como `import React from "react"`.
+TypeScript adere ao padrão EcmaScript para módulos, o que significa que um arquivo com exportações teria que especificamente incluir uma exportação `default` para dar suporte à sintaxes como `import React from "react"`.
 Este padrão de exportação é raro em módulos para CommonJS. Por exemplo, sem `esModuleInterop` como true:
 
 ```ts twoslash
 // @checkJs
 // @allowJs
 // @allowSyntheticDefaultImports
-// @filename: utilFunctions.js
+// @filename: utilitarios.js
 // @noImplicitAny: false
-const getStringLength = (str) => str.length;
+const obterTamanhoDaString = (str) => str.length;
 
 module.exports = {
-  getStringLength,
+  obterTamanhoDaString,
 };
 
 // @filename: index.ts
-import utils from "./utilFunctions";
+import utils from "./utilitarios";
 
 const count = utils.getStringLength("Check JS");
 ```
@@ -31,13 +30,13 @@ Isto não vai funcionar porque não existe um objeto `default` o qual você pode
 Por conveniência, transpiladores como Babel vão criar um default automaticamente se não encontrarem um existente. Fazendo com que o módulo se pareça um pouco mais com isto:
 
 ```js
-// @filename: utilFunctions.js
-const getStringLength = (str) => str.length;
-const allFunctions = {
-  getStringLength,
+// @filename: utilitarios.js
+const obterTamanhoDaString = (str) => str.length;
+const todasAsFuncoes = {
+  obterTamanhoDaString,
 };
 
-module.exports = allFunctions;
+module.exports = todasAsFuncoes;
 ```
 
-Ativando esta flag no compilador também vai habilitar [`allowSyntheticDefaultImports`](#allowSyntheticDefaultImports).
+Ativando esta flag no compilador, a opção [`allowSyntheticDefaultImports`](#allowSyntheticDefaultImports) também será habilitada.

@@ -3,7 +3,7 @@ display: "Caminhos"
 oneline: "Um conjunto de locais para buscar importações"
 ---
 
-Uma série de entradas que remapeiam as importações para locais de pesquisa relativos à `baseUrl`, há uma cobertura mais abrangente de `paths` no [handbook](/docs/handbook/module-resolution.html#path-mapping).
+Uma série de entradas que remapeiam as importações para locais de pesquisa relativos à `baseUrl`, há uma cobertura mais abrangente de `paths` no [manual](/docs/handbook/module-resolution.html#path-mapping).
 
 `paths` permite que você declare como o TypeScript deve resolver importações nos seus `requires` e `imports`.
 

@@ -3,7 +3,7 @@ display: "Tipos"
 oneline: "Utilizada para criar uma lista de tipos permitidos, a serem incluídos na compilação"
 ---
 
-Por padrão todos pacotes "`@types`" _visíveis_ são incluídos na sua compilação.
+Por padrão todos pacotes `@types` _visíveis_ são incluídos na sua compilação.
 Pacotes em `node_modules/@types` de qualquer diretório adjacente são considerados _visíveis_.
 Por exemplo, isso significa pacotes dentro de `./node_modules/@types/`, `../node_modules/@types/`, `../../node_modules/@types/`, e assim por diante.
 
@@ -37,4 +37,4 @@ Quando você tem esta opção definida, ao não incluir um módulo no vetor de `
 - Não vai adicionar globais ao seu projeto (p. ex. `process` no node, ou `expect` no Jest)
 - Não vai fazer com que exports apareçam como recomendações de auto-import
 
-Esta característica difere de [`typeRoots`](#typeRoots) , pois serve para especificar somente os tipos exatos a serem incluídos, enquanto [`typeRoots`](#typeRoots) permite que você defina diretórios específicos.
+Esta opção difere de [`typeRoots`](#typeRoots), pois serve para especificar somente os tipos exatos a serem incluídos, enquanto [`typeRoots`](#typeRoots) permite que você defina diretórios específicos.
