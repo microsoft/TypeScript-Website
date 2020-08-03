@@ -36,10 +36,10 @@ const Index: React.FC<Props> = (props) => {
           <h2>Recommendations</h2>
 
           <Row className="main-content-block recommendations">
-            <p style={{ flex: 1 }}>Please use the blue TypeScript mark above as the primary logo for TypeScript</p>
+            <p style={{ flex: 1 }}>Please use the blue TypeScript mark above as the primary logo for TypeScript.</p>
+            <p style={{ flex: 1 }}>This is the right logos for blog posts, news articles or give-away stickers.</p>
             <p style={{ flex: 1 }}>The “TS” is the logo is white, not transparent by default.</p>
             <p style={{ flex: 1 }}>There is a capital “S” in TypeScript, just like in JavaScript.</p>
-            <p style={{ flex: 1 }}>Please don’t use this as the logo for your applications</p>
           </Row>
 
           <h2>Alternatives</h2>
@@ -59,9 +59,9 @@ const Index: React.FC<Props> = (props) => {
                 </a>
                 <p className="attached-bottom">Full lettermark version of the TypeScript logo. </p>
               </div>
-
             </Row>
           </div>
+
 
           <h2>Palette</h2>
 
@@ -75,8 +75,17 @@ const Index: React.FC<Props> = (props) => {
             <a href={withPrefix("/branding/typescript-design-assets.zip")}>
               <img src={withPrefix("images/branding/palette-bg.svg")} style={{ maxWidth: "100%" }} />
             </a>
-
           </div>
+
+
+          <h2>Please Don't</h2>
+
+          <Row className="main-content-block recommendations">
+            <p style={{ flex: 1 }}>Use the TypeScript logos for your application.</p>
+            <p style={{ flex: 1 }}>Modify the shape of the logos when used.</p>
+            <p style={{ flex: 1 }}>Integrate the TypeScript logo into your application's logo.</p>
+            <p style={{ flex: 1 }}>Name a product which implies TypeScript's endorsement.</p>
+          </Row>
         </div>
       </Layout>
     </>
