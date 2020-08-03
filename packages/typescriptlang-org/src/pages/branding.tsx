@@ -17,8 +17,6 @@ type Props = {
 const Row = (props: { children: any, className?: string }) => <div className={[props.className, "row"].join(" ")}>{props.children}</div>
 
 const Index: React.FC<Props> = (props) => {
-
-
   return (
     <>
       <Layout title="Branding" description="Logos and design assets" lang="en" allSitePage={props.data.allSitePage}>
@@ -61,7 +59,6 @@ const Index: React.FC<Props> = (props) => {
               </div>
             </Row>
           </div>
-
 
           <h2>Palette</h2>
 
