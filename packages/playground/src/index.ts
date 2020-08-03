@@ -561,13 +561,13 @@ export const setupPlayground = (
 
   if (config.supportCustomPlugins) {
     // Grab ones from localstorage
-    activePlugins().forEach(p => downloadPlugin(p.module, false))
+    activePlugins().forEach(p => downloadPlugin(p.id, false))
 
     // Offer to install one if 'install-plugin' is a query param
     const params = new URLSearchParams(location.search)
     const pluginToInstall = params.get("install-plugin")
     if (pluginToInstall) {
-      const alreadyInstalled = activePlugins().find(p => p.module === pluginToInstall)
+      const alreadyInstalled = activePlugins().find(p => p.id === pluginToInstall)
       if (!alreadyInstalled) {
         const shouldDoIt = confirm("Would you like to install the third party plugin?\n\n" + pluginToInstall)
         if (shouldDoIt) {
