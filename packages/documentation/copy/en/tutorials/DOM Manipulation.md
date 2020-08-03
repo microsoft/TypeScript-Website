@@ -5,7 +5,7 @@ permalink: /docs/handbook/dom-manipulation.html
 oneline: Using the DOM with TypeScript
 ---
 
-# DOM Manipulation
+## DOM Manipulation
 
 ### _An exploration into the `HTMLElement` type_
 

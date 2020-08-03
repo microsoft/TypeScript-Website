@@ -10,14 +10,12 @@ oneline: How TypeScript namespaces work
 > "Internal modules" are now "namespaces".
 > "External modules" are now simply "modules", as to align with [ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/)'s terminology, (namely that `module X {` is equivalent to the now-preferred `namespace X {`).
 
-# Introduction
-
 This post outlines the various ways to organize your code using namespaces (previously "internal modules") in TypeScript.
 As we alluded in our note about terminology, "internal modules" are now referred to as "namespaces".
 Additionally, anywhere the `module` keyword was used when declaring an internal module, the `namespace` keyword can and should be used instead.
 This avoids confusing new users by overloading them with similarly named terms.
 
-# First steps
+## First steps
 
 Let's start with the program we'll be using as our example throughout this page.
 We've written a small set of simplistic string validators, as you might write to check a user's input on a form in a webpage or check the format of an externally-provided data file.
@@ -61,7 +59,7 @@ for (let s of strings) {
 }
 ```
 
-# Namespacing
+## Namespacing
 
 As we add more validators, we're going to want to have some kind of organization scheme so that we can keep track of our types and not worry about name collisions with other objects.
 Instead of putting lots of different names into the global namespace, let's wrap up our objects into a namespace.
@@ -115,7 +113,7 @@ for (let s of strings) {
 }
 ```
 
-# Splitting Across Files
+## Splitting Across Files
 
 As our application grows, we'll want to split the code across multiple files to make it easier to maintain.
 
@@ -218,7 +216,7 @@ If multiple JS files get produced, we'll need to use `<script>` tags on our webp
 <script src="Test.js" type="text/javascript" />
 ```
 
-# Aliases
+## Aliases
 
 Another way that you can simplify working with namespaces is to use `import q = x.y.z` to create shorter names for commonly-used objects.
 Not to be confused with the `import x = require("name")` syntax used to load modules, this syntax simply creates an alias for the specified symbol.
@@ -240,7 +238,7 @@ Notice that we don't use the `require` keyword; instead we assign directly from 
 This is similar to using `var`, but also works on the type and namespace meanings of the imported symbol.
 Importantly, for values, `import` is a distinct reference from the original symbol, so changes to an aliased `var` will not be reflected in the original variable.
 
-# Working with Other JavaScript Libraries
+## Working with Other JavaScript Libraries
 
 To describe the shape of libraries not written in TypeScript, we need to declare the API that the library exposes.
 Because most JavaScript libraries expose only a few top-level objects, namespaces are a good way to represent them.

@@ -12,7 +12,7 @@ This guide covers how to identify common library patterns, and how to write decl
 Each type of major library structuring pattern has a corresponding file in the [Templates](/docs/handbook/declaration-files/templates.html) section.
 You can start with these templates to help you get going faster.
 
-# Identifying Kinds of Libraries
+## Identifying Kinds of Libraries
 
 First, we'll review the kinds of libraries TypeScript declaration files can represent.
 We'll briefly show how each kind of library is _used_, how it is _written_, and list some example libraries from the real world.
@@ -236,7 +236,7 @@ Examples include [jQuery](https://jquery.com/), [Moment.js](http://momentjs.com/
 
 Use the [`module-plugin.d.ts`](/docs/handbook/declaration-files/templates/module-plugin-d-ts.html) template.
 
-# Consuming Dependencies
+## Consuming Dependencies
 
 There are several kinds of dependencies your library might have.
 This section shows how to import them into the declaration file.
@@ -283,7 +283,7 @@ import * as someLib from "someLib";
 
 Do _not_ use a `/// <reference` directive to declare a dependency to a UMD library!
 
-# Footnotes
+## Footnotes
 
 ## Preventing Name Conflicts
 

@@ -10,7 +10,7 @@ What this means is that `"Hello World"` is a `string`, but a `string` is not `"H
 
 There are two sets of literal types available in TypeScript today, strings and numbers, by using literal types you can allow an exact value which a string or number must have.
 
-# Literal Narrowing
+## Literal Narrowing
 
 When you declare a variable via `var` or `let`, you are telling the compiler that there is the chance that this variable will change its contents.
 In contrast, using `const` to declare a variable will inform TypeScript that this object will never change.
@@ -28,7 +28,7 @@ let hiWorld = "Hi World";
 
 The process of going from an infinite number of potential cases (there are an infinite number of possible string values) to a smaller, finite number of potential case (in `helloWorld`'s case: 1) is called narrowing.
 
-# String Literal Types
+## String Literal Types
 
 In practice string literal types combine nicely with union types, type guards, and type aliases.
 You can use these features together to get enum-like behavior with strings.
@@ -72,7 +72,7 @@ function createElement(tagName: string): Element {
 }
 ```
 
-# Numeric Literal Types
+## Numeric Literal Types
 
 TypeScript also has numeric literal types, which act the same as the string literals above.
 

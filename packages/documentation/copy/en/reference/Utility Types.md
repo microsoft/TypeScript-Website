@@ -296,7 +296,7 @@ const obj: Props = { a: 5 };
 const obj2: Required<Props> = { a: 5 };
 ```
 
-# `ThisParameterType<Type>`
+## `ThisParameterType<Type>`
 
 Extracts the type of the [this](/docs/handbook/functions.html#this-parameters) parameter for a function type, or [unknown](/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type) if the function type has no `this` parameter.
 

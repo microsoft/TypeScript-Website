@@ -4,7 +4,7 @@ layout: docs
 permalink: /docs/handbook/declaration-files/templates/module-d-ts.html
 ---
 
-# Comparing JavaScript to an example DTS
+## Comparing JavaScript to an example DTS
 
 ## Common CommonJS Patterns
 

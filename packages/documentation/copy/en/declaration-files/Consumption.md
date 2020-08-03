@@ -5,7 +5,7 @@ permalink: /docs/handbook/declaration-files/consumption.html
 oneline: "How to download d.ts files for your project"
 ---
 
-# Downloading
+## Downloading
 
 Getting type declarations requires no tools apart from npm.
 
@@ -17,7 +17,7 @@ npm install --save @types/lodash
 
 It is worth noting that if the npm package already includes its declaration file as described in [Publishing](/docs/handbook/declaration-files/publishing.html), downloading the corresponding `@types` package is not needed.
 
-# Consuming
+## Consuming
 
 From there you’ll be able to use lodash in your TypeScript code with no fuss.
 This works for both modules and global code.
@@ -35,7 +35,7 @@ or if you’re not using modules, you can just use the global variable `_`.
 _.padStart("Hello TypeScript!", 20, " ");
 ```
 
-# Searching
+## Searching
 
 For the most part, type declaration packages should always have the same name as the package name on `npm`, but prefixed with `@types/`,
 but if you need, you can check out [this Type Search](https://aka.ms/types) to find the package for your favorite library.

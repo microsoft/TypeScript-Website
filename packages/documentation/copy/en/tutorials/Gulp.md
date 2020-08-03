@@ -11,7 +11,7 @@ This guide also shows how to add [Babel](https://babeljs.io/) functionality usin
 
 We assume that you're already using [Node.js](https://nodejs.org/) with [npm](https://www.npmjs.com/).
 
-# Minimal project
+## Minimal project
 
 Let's start out with a new directory.
 We'll name it `proj` for now, but you can change it to whatever you want.
@@ -117,7 +117,7 @@ node dist/main.js
 
 The program should print "Hello from TypeScript!".
 
-# Add modules to the code
+## Add modules to the code
 
 Before we get to Browserify, let's build our code out and add modules to the mix.
 This is the structure you're more likely to use for a real app.
@@ -160,7 +160,7 @@ node dist/main.js
 Notice that even though we used ES2015 module syntax, TypeScript emitted CommonJS modules that Node uses.
 We'll stick with CommonJS for this tutorial, but you could set `module` in the options object to change this.
 
-# Browserify
+## Browserify
 
 Now let's move this project from Node to the browser.
 To do this, we'd like to bundle all our modules into one JavaScript file.
@@ -257,7 +257,7 @@ Source maps let you debug your original TypeScript code in the browser instead o
 You can test that source maps are working by opening the debugger for your browser and putting a breakpoint inside `main.ts`.
 When you refresh the page the breakpoint should pause the page and let you debug `greet.ts`.
 
-# Watchify, Babel, and Uglify
+## Watchify, Babel, and Uglify
 
 Now that we are bundling our code with Browserify and tsify, we can add various features to our build with browserify plugins.
 

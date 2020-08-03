@@ -5,8 +5,6 @@ permalink: /docs/handbook/namespaces-and-modules.html
 oneline: How to organize code in TypeScript via modules or namespaces
 ---
 
-# Introduction
-
 This post outlines the various ways to organize your code using modules and namespaces in TypeScript.
 We'll also go over some advanced topics of how to use namespaces and modules, and address some common pitfalls when using them in TypeScript.
 
@@ -15,7 +13,7 @@ See the [Namespaces](/docs/handbook/namespaces.html) documentation for more info
 
 Note: In _very_ old versions of TypeScript namespaces were called 'Internal Modules', these pre-date JavaScript module systems.
 
-# Using Modules
+## Using Modules
 
 Modules can contain both code and declarations.
 
@@ -27,7 +25,7 @@ It is also worth noting that, for Node.js applications, modules are the default 
 Starting with ECMAScript 2015, modules are native part of the language, and should be supported by all compliant engine implementations.
 Thus, for new projects modules would be the recommended code organization mechanism.
 
-# Using Namespaces
+## Using Namespaces
 
 Namespaces are a TypeScript-specific way to organize code.  
 Namespaces are simply named JavaScript objects in the global namespace.
@@ -37,7 +35,7 @@ Namespaces can be a good way to structure your code in a Web Application, with a
 
 Just like all global namespace pollution, it can be hard to identify component dependencies, especially in a large application.
 
-# Pitfalls of Namespaces and Modules
+## Pitfalls of Namespaces and Modules
 
 In this section we'll describe various common pitfalls in using namespaces and modules, and how to avoid them.
 

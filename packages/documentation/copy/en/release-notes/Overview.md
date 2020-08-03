@@ -7,7 +7,7 @@ oneline: "All TypeScript release notes"
 
 This overview page is a summary contains a shorter version of all the release notes for TypeScript.
 
-# TypeScript 3.9
+## TypeScript 3.9
 
 ## Improvements in Inference and `Promise.all`
 
@@ -503,7 +503,7 @@ This sort of emit is problematic because it's type-directed and can't be emulate
 TypeScript 3.9 will always emit these `export *` declarations.
 In practice, we don't expect this to break much existing code.
 
-# TypeScript 3.8
+## TypeScript 3.8
 
 ## Type-Only Imports and Export
 
@@ -924,7 +924,7 @@ While we don't necessarily recommend this option for all codebases, you might be
 
 For more details, you can [see the original pull request](https://github.com/microsoft/TypeScript/pull/35711).
 
-# TypeScript 3.7
+## TypeScript 3.7
 
 ## Optional Chaining
 

@@ -106,9 +106,10 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   if (!post.html) throw new Error(`No html found for the file with props: ${props}`)
 
   const selectedID = props.pageContext.id || "NO-ID"
-  const showSidebar = !post.frontmatter.disable_toc && post.headings && !!post.headings.length && post.headings.length <= 30
+  const sidebarHeaders = post.headings?.filter(h => (h?.depth || 0) <= 3) || []
+  const showSidebar = !post.frontmatter.disable_toc && post.headings && sidebarHeaders.length <= 30
   const navigation = getDocumentationNavForLanguage(props.pageContext.lang)
-
+  const slug = slugger()
   return (
     <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
       <section id="doc-layout">
@@ -136,9 +137,8 @@ const HandbookTemplate: React.FC<Props> = (props) => {
                 <nav>
                   <h5>On this page</h5>
                   <ul>
-                    {post.headings!.map(heading => {
-                      if (heading!.depth! > 2) return null
-                      const id = slugger().slug(heading!.value, false)
+                    {sidebarHeaders.map(heading => {
+                      const id = slug.slug(heading!.value, false)
                       return <li key={id}><a href={'#' + id}>{heading!.value}</a></li>
                     })}
                   </ul>
@@ -165,7 +165,7 @@ export const pageQuery = graphql`
       id
       excerpt(pruneLength: 160)
       html
-      headings  {
+      headings {
         value
         depth
       }

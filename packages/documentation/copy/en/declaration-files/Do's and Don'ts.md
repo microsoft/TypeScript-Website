@@ -5,7 +5,7 @@ permalink: /docs/handbook/declaration-files/do-s-and-don-ts.html
 oneline: "Recommendations for writing d.ts files"
 ---
 
-# General Types
+## General Types
 
 ## `Number`, `String`, `Boolean`, `Symbol` and `Object`
 
@@ -39,7 +39,7 @@ In cases where you don't know what type you want to accept, or when you want to 
 
 <!-- TODO: More -->
 
-# Callback Types
+## Callback Types
 
 ## Return Types of Callbacks
 
@@ -123,7 +123,7 @@ declare function beforeAll(
 _Why_: It's always legal for a callback to disregard a parameter, so there's no need for the shorter overload.
 Providing a shorter callback first allows incorrectly-typed functions to be passed in because they match the first overload.
 
-# Function Overloads
+## Function Overloads
 
 ## Ordering
 

@@ -11,7 +11,7 @@ By doing this, you can greatly improve build times, enforce logical separation b
 
 We're also introducing a new mode for `tsc`, the `--build` flag, that works hand in hand with project references to enable faster TypeScript builds.
 
-# An Example Project
+## An Example Project
 
 Let's look at a fairly normal program and see how project references can help us better organize it.
 Imagine you have a project with two modules, `converter` and `units`, and a corresponding test file for each:
@@ -48,7 +48,7 @@ You could use multiple tsconfig files to solve _some_ of those problems, but new
 
 Project references can solve all of these problems and more.
 
-# What is a Project Reference?
+## What is a Project Reference?
 
 `tsconfig.json` files have a new top-level property, `references`. It's an array of objects that specifies projects to reference:
 
@@ -73,7 +73,7 @@ When you reference a project, new things happen:
 
 By separating into multiple projects, you can greatly improve the speed of typechecking and compiling, reduce memory usage when using an editor, and improve enforcement of the logical groupings of your program.
 
-# `composite`
+## `composite`
 
 Referenced projects must have the new `composite` setting enabled.
 This setting is needed to ensure TypeScript can quickly determine where to find the outputs of the referenced project.
@@ -83,12 +83,12 @@ Enabling the `composite` flag changes a few things:
 - All implementation files must be matched by an `include` pattern or listed in the `files` array. If this constraint is violated, `tsc` will inform you which files weren't specified
 - `declaration` must be turned on
 
-# `declarationMap`s
+## `declarationMap`s
 
 We've also added support for [declaration source maps](https://github.com/Microsoft/TypeScript/issues/14479).
 If you enable `--declarationMap`, you'll be able to use editor features like "Go to Definition" and Rename to transparently navigate and edit code across project boundaries in supported editors.
 
-# `prepend` with `outFile`
+## `prepend` with `outFile`
 
 You can also enable prepending the output of a dependency using the `prepend` option in a reference:
 
@@ -116,7 +116,7 @@ B     C
 
 It's important in this situation to not prepend at each reference, because you'll end up with two copies of `A` in the output of `D` - this can lead to unexpected results.
 
-# Caveats for Project References
+## Caveats for Project References
 
 Project references have a few trade-offs you should be aware of.
 
@@ -126,7 +126,7 @@ We're working on a behind-the-scenes .d.ts generation process that should be abl
 Additionally, to preserve compatibility with existing build workflows, `tsc` will _not_ automatically build dependencies unless invoked with the `--build` switch.
 Let's learn more about `--build`.
 
-# Build Mode for TypeScript
+## Build Mode for TypeScript
 
 A long-awaited feature is smart incremental builds for TypeScript projects.
 In 3.0 you can use the `--build` flag with `tsc`.
@@ -161,7 +161,7 @@ There are also some flags specific to `tsc -b`:
 - `--force`: Act as if all projects are out of date
 - `--watch`: Watch mode (may not be combined with any flag except `--verbose`)
 
-# Caveats
+## Caveats
 
 Normally, `tsc` will produce outputs (`.js` and `.d.ts`) in the presence of syntax or type errors, unless `noEmitOnError` is on.
 Doing this in an incremental build system would be very bad - if one of your out-of-date dependencies had a new error, you'd only see it _once_ because a subsequent build would skip building the now up-to-date project.
@@ -169,7 +169,7 @@ For this reason, `tsc -b` effectively acts as if `noEmitOnError` is enabled for 
 
 If you check in any build outputs (`.js`, `.d.ts`, `.d.ts.map`, etc.), you may need to run a `--force` build after certain source control operations depending on whether your source control tool preserves timestamps between the local copy and the remote copy.
 
-# MSBuild
+## MSBuild
 
 If you have an msbuild project, you can enable build mode by adding
 
@@ -184,7 +184,7 @@ Note that as with `tsconfig.json` / `-p`, existing TypeScript project properties
 Some teams have set up msbuild-based workflows wherein tsconfig files have the same _implicit_ graph ordering as the managed projects they are paired with.
 If your solution is like this, you can continue to use `msbuild` with `tsc -p` along with project references; these are fully interoperable.
 
-# Guidance
+## Guidance
 
 ## Overall Structure
 

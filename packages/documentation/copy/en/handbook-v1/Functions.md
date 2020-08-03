@@ -5,14 +5,12 @@ permalink: /docs/handbook/functions.html
 oneline: How to add types to a function
 ---
 
-# Introduction
-
 Functions are the fundamental building block of any application in JavaScript.
 They're how you build up layers of abstraction, mimicking classes, information hiding, and modules.
 In TypeScript, while there are classes, namespaces, and modules, functions still play the key role in describing how to _do_ things.
 TypeScript also adds some new capabilities to the standard JavaScript functions to make them easier to work with.
 
-# Functions
+## Functions
 
 To begin, just as in JavaScript, TypeScript functions can be created both as a named function or as an anonymous function.
 This allows you to choose the most appropriate approach for your application, whether you're building a list of functions in an API or a one-off function to hand off to another function.
@@ -45,7 +43,7 @@ function addToZ(x, y) {
 }
 ```
 
-# Function Types
+## Function Types
 
 ## Typing the function
 
@@ -121,7 +119,7 @@ let myAdd2: (baseValue: number, increment: number) => number = function (x, y) {
 This is called "contextual typing", a form of type inference.
 This helps cut down on the amount of effort to keep your program typed.
 
-# Optional and Default Parameters
+## Optional and Default Parameters
 
 In TypeScript, every parameter is assumed to be required by the function.
 This doesn't mean that it can't be given `null` or `undefined`, but rather, when the function is called, the compiler will check that the user has provided a value for each parameter.
@@ -242,7 +240,7 @@ function buildName(firstName: string, ...restOfName: string[]) {
 let buildNameFun: (fname: string, ...rest: string[]) => string = buildName;
 ```
 
-# `this`
+## `this`
 
 Learning how to use `this` in JavaScript is something of a rite of passage.
 Since TypeScript is a superset of JavaScript, TypeScript developers also need to learn how to use `this` and how to spot when it's not being used correctly.
@@ -458,7 +456,7 @@ The downside is that one arrow function is created per object of type Handler.
 Methods, on the other hand, are only created once and attached to Handler's prototype.
 They are shared between all objects of type Handler.
 
-# Overloads
+## Overloads
 
 JavaScript is inherently a very dynamic language.
 It's not uncommon for a single JavaScript function to return different types of objects based on the shape of the arguments passed in.
