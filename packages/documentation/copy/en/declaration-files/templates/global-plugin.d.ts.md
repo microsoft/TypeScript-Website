@@ -146,7 +146,7 @@ console.log(y.reverseAndSort());
 
 Use the [`global-modifying-module.d.ts`](./templates/global-modifying-module.d.ts.md) template.
 
-# Consuming Dependencies
+## Consuming Dependencies
 
 There are several kinds of dependencies your library might have.
 This section shows how to import them into the declaration file.
@@ -193,7 +193,7 @@ import * as someLib from "someLib";
 
 Do _not_ use a `/// <reference` directive to declare a dependency to a UMD library!
 
-# Footnotes
+## Footnotes
 
 ## Preventing Name Conflicts
 

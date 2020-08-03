@@ -5,8 +5,6 @@ permalink: /docs/handbook/type-compatibility.html
 oneline: How type-checking works in TypeScript
 ---
 
-# Introduction
-
 Type compatibility in TypeScript is based on structural subtyping.
 Structural typing is a way of relating types based solely on their members.
 This is in contrast with nominal typing.
@@ -35,7 +33,7 @@ Because JavaScript widely uses anonymous objects like function expressions and o
 
 TypeScript's type system allows certain operations that can't be known at compile-time to be safe. When a type system has this property, it is said to not be "sound". The places where TypeScript allows unsound behavior were carefully considered, and throughout this document we'll explain where these happen and the motivating scenarios behind them.
 
-# Starting out
+## Starting out
 
 The basic rule for TypeScript's structural type system is that `x` is compatible with `y` if `y` has at least the same members as `x`. For example:
 
@@ -67,7 +65,7 @@ Only members of the target type (`Named` in this case) are considered when check
 
 This comparison process proceeds recursively, exploring the type of each member and sub-member.
 
-# Comparing two functions
+## Comparing two functions
 
 While comparing primitive types and object types is relatively straightforward, the question of what kinds of functions should be considered compatible is a bit more involved.
 Let's start with a basic example of two functions that differ only in their parameter lists:
@@ -185,7 +183,7 @@ invokeLater([1, 2], (x?, y?) => console.log(x + ", " + y));
 When a function has overloads, each overload in the source type must be matched by a compatible signature on the target type.
 This ensures that the target function can be called in all the same situations as the source function.
 
-# Enums
+## Enums
 
 Enums are compatible with numbers, and numbers are compatible with enums. Enum values from different enum types are considered incompatible. For example,
 
@@ -204,7 +202,7 @@ let status = Status.Ready;
 status = Color.Green; // Error
 ```
 
-# Classes
+## Classes
 
 Classes work similarly to object literal types and interfaces with one exception: they have both a static and an instance type.
 When comparing two objects of a class type, only members of the instance are compared.
@@ -235,7 +233,7 @@ When an instance of a class is checked for compatibility, if the target type con
 Likewise, the same applies for an instance with a protected member.
 This allows a class to be assignment compatible with its super class, but _not_ with classes from a different inheritance hierarchy which otherwise have the same shape.
 
-# Generics
+## Generics
 
 Because TypeScript is a structural type system, type parameters only affect the resulting type when consumed as part of the type of a member. For example,
 
@@ -279,7 +277,7 @@ let reverse = function<U>(y: U): U {
 identity = reverse; // OK, because (x: any) => any matches (y: any) => any
 ```
 
-# Advanced Topics
+## Advanced Topics
 
 ## Subtype vs Assignment
 

@@ -5,8 +5,6 @@ permalink: /docs/handbook/basic-types.html
 oneline: "Step one in learning TypeScript: The basics types."
 ---
 
-# Introduction
-
 For programs to be useful, we need to be able to work with some of the simplest units of data: numbers, strings, structures, boolean values, and the like.
 In TypeScript, we support the same types as you would expect in JavaScript, with an extra enumeration type thrown in to help things along.
 
@@ -86,7 +84,7 @@ The second way uses a generic array type, `Array<elemType>`:
 let list: Array<number> = [1, 2, 3];
 ```
 
-# Tuple
+## Tuple
 
 Tuple types allow you to express an array with a fixed number of elements whose types are known, but need not be the same. For example, you may want to represent a value as a pair of a `string` and a `number`:
 
@@ -178,7 +176,7 @@ let colorName: string = Color[2];
 console.log(colorName);
 ```
 
-# Unknown
+## Unknown
 
 We may need to describe the type of variables that we do not know when we are writing an application.
 These values may come from dynamic content &ndash; e.g. from the user &ndash; or we may want to intentionally accept all values in our API.
@@ -276,7 +274,7 @@ let unusable: void = undefined;
 unusable = null;
 ```
 
-# Null and Undefined
+## Null and Undefined
 
 In TypeScript, both `undefined` and `null` actually have their own types named `undefined` and `null` respectively.
 Much like `void`, they're not extremely useful on their own:
@@ -326,7 +324,7 @@ function infiniteLoop(): never {
 }
 ```
 
-# Object
+## Object
 
 `object` is a type that represents the non-primitive type, i.e. anything that is not `number`, `string`, `boolean`, `symbol`, `null`, or `undefined`.
 
@@ -379,7 +377,7 @@ let strLength: number = (<string>someValue).length;
 The two samples are equivalent.
 Using one over the other is mostly a choice of preference; however, when using TypeScript with JSX, only `as`-style assertions are allowed.
 
-# A note about `let`
+## A note about `let`
 
 You may have noticed that so far, we've been using the `let` keyword instead of JavaScript's `var` keyword which you might be more familiar with.
 The `let` keyword is actually a newer JavaScript construct that TypeScript makes available.

@@ -9,6 +9,7 @@
     "dist"
   ],
   "scripts": {
+    "bootstrap": "node scripts/getListOfPluginsFromNPM.js",
     "build": "tsc",
     "test": "jest"
   },

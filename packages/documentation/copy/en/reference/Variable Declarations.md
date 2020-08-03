@@ -5,8 +5,6 @@ permalink: /docs/handbook/variable-declarations.html
 oneline: How TypeScript handles variable declaration
 ---
 
-# Variable Declarations
-
 `let` and `const` are two relatively new concepts for variable declarations in JavaScript.
 [As we mentioned earlier](/docs/handbook/basic-types.html#a-note-about-let), `let` is similar to `var` in some respects, but allows users to avoid some of the common "gotchas" that users run into in JavaScript.
 
@@ -18,7 +16,7 @@ Here we'll elaborate more on these new declarations and why they're preferable t
 If you've used JavaScript offhandedly, the next section might be a good way to refresh your memory.
 If you're intimately familiar with all the quirks of `var` declarations in JavaScript, you might find it easier to skip ahead.
 
-# `var` declarations
+## `var` declarations
 
 Declaring a variable in JavaScript has always traditionally been done with the `var` keyword.
 
@@ -189,7 +187,7 @@ for (var i = 0; i < 10; i++) {
 This odd-looking pattern is actually pretty common.
 The `i` in the parameter list actually shadows the `i` declared in the `for` loop, but since we named them the same, we didn't have to modify the loop body too much.
 
-# `let` declarations
+## `let` declarations
 
 By now you've figured out that `var` has some problems, which is precisely why `let` statements were introduced.
 Apart from the keyword used, `let` statements are written the same way `var` statements are.
@@ -395,7 +393,7 @@ and as expected, this will print out
 9
 ```
 
-# `const` declarations
+## `const` declarations
 
 `const` declarations are another way of declaring variables.
 
@@ -432,7 +430,7 @@ Unless you take specific measures to avoid it, the internal state of a `const` v
 Fortunately, TypeScript allows you to specify that members of an object are `readonly`.
 The [chapter on Interfaces](/docs/handbook/interfaces.html) has the details.
 
-# `let` vs. `const`
+## `let` vs. `const`
 
 Given that we have two types of declarations with similar scoping semantics, it's natural to find ourselves asking which one to use.
 Like most broad questions, the answer is: it depends.
@@ -445,7 +443,7 @@ Use your best judgement, and if applicable, consult the matter with the rest of 
 
 The majority of this handbook uses `let` declarations.
 
-# Destructuring
+## Destructuring
 
 Another ECMAScript 2015 feature that TypeScript has is destructuring.
 For a complete reference, see [the article on the Mozilla Developer Network](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment).

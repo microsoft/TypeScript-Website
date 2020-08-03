@@ -5,13 +5,11 @@ permalink: /docs/handbook/classes.html
 oneline: How classes work in TypeScript
 ---
 
-# Introduction
-
 Traditional JavaScript uses functions and prototype-based inheritance to build up reusable components, but this may feel a bit awkward to programmers more comfortable with an object-oriented approach, where classes inherit functionality and objects are built from these classes.
 Starting with ECMAScript 2015, also known as ECMAScript 6, JavaScript programmers can build their applications using this object-oriented class-based approach.
 In TypeScript, we allow developers to use these techniques now, and compile them down to JavaScript that works across all major browsers and platforms, without having to wait for the next version of JavaScript.
 
-# Classes
+## Classes
 
 Let's take a look at a simple class-based example:
 
@@ -40,7 +38,7 @@ This denotes that it's a member access.
 In the last line we construct an instance of the `Greeter` class using `new`.
 This calls into the constructor we defined earlier, creating a new object with the `Greeter` shape, and running the constructor to initialize it.
 
-# Inheritance
+## Inheritance
 
 In TypeScript, we can use common object-oriented patterns.
 One of the most fundamental patterns in class-based programming is being able to extend existing classes to create new ones using inheritance.
@@ -130,7 +128,7 @@ Galloping...
 Tommy the Palomino moved 34m.
 ```
 
-# Public, private, and protected modifiers
+## Public, private, and protected modifiers
 
 ## Public by default
 
@@ -300,7 +298,7 @@ let howard = new Employee("Howard", "Sales");
 let john = new Person("John");
 ```
 
-# Readonly modifier
+## Readonly modifier
 
 You can make properties readonly by using the `readonly` keyword.
 Readonly properties must be initialized at their declaration or in the constructor.
@@ -342,7 +340,7 @@ We've consolidated the declarations and assignment into one location.
 Parameter properties are declared by prefixing a constructor parameter with an accessibility modifier or `readonly`, or both.
 Using `private` for a parameter property declares and initializes a private member; likewise, the same is done for `public`, `protected`, and `readonly`.
 
-# Accessors
+## Accessors
 
 TypeScript supports getters/setters as a way of intercepting accesses to a member of an object.
 This gives you a way of having finer-grained control over how a member is accessed on each object.
@@ -407,7 +405,7 @@ Downleveling to ECMAScript 3 is not supported.
 Second, accessors with a `get` and no `set` are automatically inferred to be `readonly`.
 This is helpful when generating a `.d.ts` file from your code, because users of your property can see that they can't change it.
 
-# Static Properties
+## Static Properties
 
 Up to this point, we've only talked about the _instance_ members of the class, those that show up on the object when it's instantiated.
 We can also create _static_ members of a class, those that are visible on the class itself rather than on the instances.
@@ -435,7 +433,7 @@ console.log(grid1.calculateDistanceFromOrigin({ x: 10, y: 10 }));
 console.log(grid2.calculateDistanceFromOrigin({ x: 10, y: 10 }));
 ```
 
-# Abstract Classes
+## Abstract Classes
 
 Abstract classes are base classes from which other classes may be derived.
 They may not be instantiated directly.
@@ -491,7 +489,7 @@ department.printMeeting();
 department.generateReports();
 ```
 
-# Advanced Techniques
+## Advanced Techniques
 
 ## Constructor functions
 

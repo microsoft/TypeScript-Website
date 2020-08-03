@@ -5,7 +5,7 @@ permalink: /docs/handbook/babel-with-typescript.html
 oneline: How to create a hybrid Babel + TypeScript project
 ---
 
-# Babel vs `tsc` for TypeScript
+## Babel vs `tsc` for TypeScript
 
 When making a modern JavaScript project, you might ask yourself what the right way to convert files from TypeScript to JavaScript.
 

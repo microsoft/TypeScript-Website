@@ -22,7 +22,7 @@ This introduction does not cover object-oriented programming. In
 practice, object-oriented programs in TypeScript are similar to those
 in other popular languages with OO features.
 
-# Prerequisites
+## Prerequisites
 
 In this introduction, I assume you know the following:
 
@@ -40,7 +40,7 @@ not much else.
 a good place to learn about C-style type syntax. Unlike C++,
 TypeScript uses postfix types, like so: `x: string` instead of `string x`.
 
-# Concepts not in Haskell
+## Concepts not in Haskell
 
 ## Built-in types
 
@@ -296,7 +296,7 @@ let s: "left" | "right" = "right";
 pad("hi", 10, s);
 ```
 
-# Concepts similar to Haskell
+## Concepts similar to Haskell
 
 ## Contextual typing
 

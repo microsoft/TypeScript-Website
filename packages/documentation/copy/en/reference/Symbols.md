@@ -5,8 +5,6 @@ permalink: /docs/handbook/symbols.html
 oneline: Using the JavaScript Symbol primitive in TypeScript
 ---
 
-# Introduction
-
 Starting with ECMAScript 2015, `symbol` is a primitive data type, just like `number` and `string`.
 
 `symbol` values are created by calling the `Symbol` constructor.
@@ -53,7 +51,7 @@ let c = new C();
 let className = c[getClassNameSymbol](); // "C"
 ```
 
-# Well-known Symbols
+## Well-known Symbols
 
 In addition to user-defined symbols, there are well-known built-in symbols.
 Built-in symbols are used to represent internal language behaviors.

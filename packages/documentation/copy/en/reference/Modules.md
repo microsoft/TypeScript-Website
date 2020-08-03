@@ -5,8 +5,6 @@ permalink: /docs/handbook/modules.html
 oneline: How modules work in TypeScript
 ---
 
-# Introduction
-
 Starting with ECMAScript 2015, JavaScript has a concept of modules. TypeScript shares this concept.
 
 Modules are executed within their own scope, not in the global scope; this means that variables, functions, classes, etc. declared in a module are not visible outside the module unless they are explicitly exported using one of the [`export` forms](#export).
@@ -21,7 +19,7 @@ Well-known module loaders used in JavaScript are Node.js's loader for [CommonJS]
 In TypeScript, just as in ECMAScript 2015, any file containing a top-level `import` or `export` is considered a module.
 Conversely, a file without any top-level `import` or `export` declarations is treated as a script whose contents are available in the global scope (and therefore to modules as well).
 
-# Export
+## Export
 
 ## Exporting a declaration
 
@@ -94,7 +92,7 @@ export * from "./ParseIntBasedZipCodeValidator"; //  exports the 'ParseIntBasedZ
 // module.
 ```
 
-# Import
+## Import
 
 Importing is just about as easy as exporting from a module.
 Importing an exported declaration is done through using one of the `import` forms below:
@@ -147,7 +145,7 @@ import type {APIResponseType} from "./api";
 `import type` is always guaranteed to be removed from your JavaScript, and tools like Babel can make better assumptions about your code via the `isolatedModules` compiler flag.
 You can read more in the [3.8 release notes](https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/#type-only-imports-exports).
 
-# Default exports
+## Default exports
 
 Each module can optionally export a `default` export.
 Default exports are marked with the keyword `default`; and there can only be one `default` export per module.
@@ -248,7 +246,7 @@ This takes all of the dependencies from a module and makes it an exported field,
 import { utilities } from "./index";
 ```
 
-# `export =` and `import = require()`
+## `export =` and `import = require()`
 
 Both CommonJS and AMD generally have the concept of an `exports` object which contains all exports from a module.
 
@@ -292,7 +290,7 @@ strings.forEach(s => {
 });
 ```
 
-# Code Generation for Modules
+## Code Generation for Modules
 
 Depending on the module target specified during compilation, the compiler will generate appropriate code for Node.js ([CommonJS](http://wiki.commonjs.org/wiki/CommonJS)), require.js ([AMD](https://github.com/amdjs/amdjs-api/wiki/AMD)), [UMD](https://github.com/umdjs/umd), [SystemJS](https://github.com/systemjs/systemjs), or [ECMAScript 2015 native modules](http://www.ecma-international.org/ecma-262/6.0/#sec-modules) (ES6) module-loading systems.
 For more information on what the `define`, `require` and `register` calls in the generated code do, consult the documentation for each module loader.
@@ -363,7 +361,7 @@ import { something } from "./mod";
 export var t = something + 1;
 ```
 
-# Simple Example
+## Simple Example
 
 Below, we've consolidated the Validator implementations used in previous examples to only export a single named export from each module.
 
@@ -440,7 +438,7 @@ strings.forEach(s => {
 });
 ```
 
-# Optional Module Loading and Other Advanced Loading Scenarios
+## Optional Module Loading and Other Advanced Loading Scenarios
 
 In some cases, you may want to only load a module under some conditions.
 In TypeScript, we can use the pattern shown below to implement this and other advanced loading scenarios to directly invoke the module loaders without losing type safety.
@@ -510,7 +508,7 @@ if (needZipValidation) {
 }
 ```
 
-# Working with Other JavaScript Libraries
+## Working with Other JavaScript Libraries
 
 To describe the shape of libraries not written in TypeScript, we need to declare the API that the library exposes.
 
@@ -631,7 +629,7 @@ It can also be used as a global variable, but only inside of a script.
 mathLib.isPrime(2);
 ```
 
-# Guidance for structuring modules
+## Guidance for structuring modules
 
 ## Export as close to top-level as possible
 

@@ -5,7 +5,7 @@ permalink: /docs/handbook/decorators.html
 oneline: TypeScript Decorators overview
 ---
 
-# Introduction
+## Introduction
 
 With the introduction of Classes in TypeScript and ES6, there now exist certain scenarios that require additional features to support annotating or modifying classes and class members.
 Decorators provide a way to add both annotations and a meta-programming syntax for class declarations and members.
@@ -32,7 +32,7 @@ tsc --target ES5 --experimentalDecorators
 }
 ```
 
-# Decorators
+## Decorators
 
 A _Decorator_ is a special kind of declaration that can be attached to a [class declaration](#class-decorators), [method](#method-decorators), [accessor](#accessor-decorators), [property](#property-decorators), or [parameter](#parameter-decorators).
 Decorators use the form `@expression`, where `expression` must evaluate to a function that will be called at runtime with information about the decorated declaration.

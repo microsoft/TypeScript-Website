@@ -10,7 +10,7 @@ However, as you model more types you find yourself looking for tools which let y
 
 Intersection and Union types are one of the ways in which you can compose types.
 
-# Union Types
+## Union Types
 
 Occasionally, you'll run into a library that expects a parameter to be either a `number` or a `string`.
 For instance, take the following function:
@@ -365,7 +365,7 @@ Here, `assertNever` checks that `s` is of type `never` &mdash; the type that's l
 If you forget a case, then `s` will have a real type and you will get a type error.
 This method requires you to define an extra function, but it's much more obvious when you forget it because the error message includes the missing type name.
 
-# Intersection Types
+## Intersection Types
 
 Intersection types are closely related to union types, but they are used very differently.
 An intersection type combines multiple types into one.

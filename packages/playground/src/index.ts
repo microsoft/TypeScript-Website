@@ -386,8 +386,8 @@ export const setupPlayground = (
       } else {
         sidebarTabs.style.display = "none"
         sidebarContent.style.display = "none"
-        settingsContent.style.display = "block"
-        ;(document.querySelector(".playground-sidebar label") as any).focus()
+        settingsContent.style.display = "block";
+        (document.querySelector(".playground-sidebar label") as any).focus()
       }
       settingsToggle.parentElement!.classList.toggle("open")
     }
@@ -460,6 +460,11 @@ export const setupPlayground = (
       document.location = fullURL
     }
   }
+
+  // Ensure that the editor is full-width when the screen resizes
+  window.addEventListener('resize', () => {
+    sandbox.editor.layout();
+  })
 
   const ui = createUI()
   const exporter = createExporter(sandbox, monaco, ui)
@@ -556,13 +561,13 @@ export const setupPlayground = (
 
   if (config.supportCustomPlugins) {
     // Grab ones from localstorage
-    activePlugins().forEach(p => downloadPlugin(p.module, false))
+    activePlugins().forEach(p => downloadPlugin(p.id, false))
 
     // Offer to install one if 'install-plugin' is a query param
     const params = new URLSearchParams(location.search)
     const pluginToInstall = params.get("install-plugin")
     if (pluginToInstall) {
-      const alreadyInstalled = activePlugins().find(p => p.module === pluginToInstall)
+      const alreadyInstalled = activePlugins().find(p => p.id === pluginToInstall)
       if (!alreadyInstalled) {
         const shouldDoIt = confirm("Would you like to install the third party plugin?\n\n" + pluginToInstall)
         if (shouldDoIt) {

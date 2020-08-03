@@ -5,14 +5,12 @@ permalink: /docs/handbook/jsx.html
 oneline: Using JSX with TypeScript
 ---
 
-# Introduction
-
 [JSX](https://facebook.github.io/jsx/) is an embeddable XML-like syntax.
 It is meant to be transformed into valid JavaScript, though the semantics of that transformation are implementation-specific.
 JSX rose to popularity with the [React](https://reactjs.org/) framework, but has since seen other implementations as well.
 TypeScript supports embedding, type checking, and compiling JSX directly to JavaScript.
 
-# Basic usage
+## Basic usage
 
 In order to use JSX you must do two things.
 
@@ -36,7 +34,7 @@ You can specify this mode using either the `--jsx` command line flag or the corr
 
 > \*Note: You can specify the JSX factory function to use when targeting react JSX emit with `--jsxFactory` option (defaults to `React.createElement`)
 
-# The `as` operator
+## The `as` operator
 
 Recall how to write a type assertion:
 
@@ -56,7 +54,7 @@ var foo = bar as foo;
 
 The `as` operator is available in both `.ts` and `.tsx` files, and is identical in behavior to the angle-bracket type assertion style.
 
-# Type Checking
+## Type Checking
 
 In order to understand type checking with JSX, you must first understand the difference between intrinsic elements and value-based elements.
 Given a JSX expression `<expr />`, `expr` may either refer to something intrinsic to the environment (e.g. a `div` or `span` in a DOM environment) or to a custom component that you've created.
@@ -367,14 +365,14 @@ class Component extends React.Component<PropsType, {}> {
 </Component>
 ```
 
-# The JSX result type
+## The JSX result type
 
 By default the result of a JSX expression is typed as `any`.
 You can customize the type by specifying the `JSX.Element` interface.
 However, it is not possible to retrieve type information about the element, attributes or children of the JSX from this interface.
 It is a black box.
 
-# Embedding Expressions
+## Embedding Expressions
 
 JSX allows you to embed expressions between tags by surrounding the expressions with curly braces (`{ }`).
 
@@ -393,7 +391,7 @@ var a = <div>
 </div>
 ```
 
-# React integration
+## React integration
 
 To use JSX with React you should use the [React typings](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react).
 These typings define the `JSX` namespace appropriately for use with React.
@@ -415,7 +413,7 @@ class MyComponent extends React.Component<Props, {}> {
 <MyComponent foo={0} />; // error
 ```
 
-# Factory Functions
+## Factory Functions
 
 The exact factory function used by the `jsx: react` compiler option is configurable. It may be set using either the `jsxFactory` command line option, or an inline `@jsx` comment pragma to set it on a per-file basis. For example, if you set `jsxFactory` to `createElement`, `<div />` will emit as `createElement("div")` instead of `React.createElement("div")`.
 
