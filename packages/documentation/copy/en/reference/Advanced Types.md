@@ -449,7 +449,7 @@ type Window = {
     </tbody>
 </table>
 
-Because [one ideal property of software is being open to extension](https://wikipedia.org/wiki/Open/closed_principle), you should always use an interface over a type alias if possible.
+Because an interface more closely maps how JavaScript object work [by being open to extension](https://wikipedia.org/wiki/Open/closed_principle), we recommend using an interface over a type alias when possible.
 
 On the other hand, if you can't express some shape with an interface and you need to use a union or tuple type, type aliases are usually the way to go.
 
