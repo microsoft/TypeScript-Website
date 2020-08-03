@@ -133,7 +133,7 @@ todo
 
 ## `Exclude<Type, ExcludedUnion>`
 
-Constructs a type by excluding from `Type` all properties that are assignable to `ExcludedUnion`.
+Constructs a type by excluding from `Type` all union members that are assignable to `ExcludedUnion`.
 
 ##### Example
 
