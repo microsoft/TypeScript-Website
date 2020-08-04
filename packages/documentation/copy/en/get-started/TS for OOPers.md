@@ -71,7 +71,7 @@ Because types are just sets, a particular value can belong to _many_ sets at the
 Once you start thinking of types as sets, certain operations become very natural.
 For example, in C#, it's awkward to pass around a value that is _either_ a `string` or `int`, because there isn't a single type that represents this sort of value.
 
-In TypeScript, this becomes very natural once you realize that every type is just a set.
+In TypeScript, this becomes very natural once you realize that every type is just a set or a subset of some other sets(types).
 How do you describe a value that either belongs in the `string` set or the `number` set?
 It simply belongs to the _union_ of those sets: `string | number`.
 
