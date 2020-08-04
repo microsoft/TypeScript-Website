@@ -49,15 +49,6 @@ jobs:
           AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_CDN_STAGING_CONNECTION_STRING }}
         run: az storage blob upload-batch -s ./site -d \$web
 
-      # Skip deploying to the staging appservice
-      #
-      # - name: Deploy + Publish to AppService
-      #   uses: peaceiris/actions-gh-pages@v1.1.0
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     PUBLISH_BRANCH: "SITE-STAGING"
-      #     PUBLISH_DIR: ./site
-
       # Deploy
       - name: Deploy npm Packages
         run: |
