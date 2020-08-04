@@ -56,6 +56,16 @@ const Index: React.FC<Props> = (props) => {
           </Row>
         </Section>
         <VersionBar />
+        <div style={{
+          backgroundColor: "#eee",
+          textAlign: "center",
+          color: "black",
+          padding: "0.7rem 2rem",
+          margin: 0,
+          fontSize: "0.9rem"
+        }}>
+          Welcome to our new website! Find out what's new <a href="https://devblogs.microsoft.com/typescript/announcing-the-new-typescript-website">in the TypeScript Blog</a>
+        </div>
         <Section color="grey" className="hide-small">
           <div className="call-to-action">
             <Link target="_blank" className='flat-button' to="/play/">{i("index_cta_play")}</Link>
