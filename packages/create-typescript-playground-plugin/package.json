@@ -7,7 +7,6 @@
   "homepage": "https://github.com/microsoft/TypeScript-Website/",
   "scripts": {
     "build": "echo NOOP",
-    "bootstrap": "echo NOOP",
     "test": "echo NOOP"
   },
   "dependencies": {

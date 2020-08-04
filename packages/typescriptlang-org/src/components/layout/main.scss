@@ -33,7 +33,7 @@
   );
 }
 
-html {
+html, html.light-theme {
   // light theme
   --background-color: #{$ts-light-bg-sandy-color};
   --text-color: #333;
@@ -116,10 +116,8 @@ html {
 }
 
 // Style the permalink icon in dark colour-scheme
-.raised .markdown .anchor.before svg path {
-  @media (prefers-color-scheme: dark) {
-    fill: #fff;
-  }
+.dark-theme .raised .markdown .anchor.before svg path {
+  fill: #fff;
 }
 
 .main-content-block {

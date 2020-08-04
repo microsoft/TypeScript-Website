@@ -13,7 +13,7 @@
     "update-versions": "node scripts/getTypeScriptNPMVersions.js",
     "create-lighthouse-json": "node scripts/createLighthouseJSON.js",
     "compile-index-examples": "node scripts/runTwoslashIndexExamples.js",
-    "start": "cross-env TWOSLASH_DISABLE=true gatsby develop",
+    "start": "TWOSLASH_DISABLE=true gatsby develop",
     "start-twoslash": "gatsby develop",
     "serve": "gatsby serve",
     "test": "yarn tsc && jest"

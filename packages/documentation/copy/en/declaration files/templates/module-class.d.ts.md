@@ -1,8 +1,26 @@
 ---
-title: module-class.d.ts
+title: "Module: Class"
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/module-class-d-ts.html
 ---
+
+<!--
+TODO:
+
+1. Not clear why UMD is thrown in here.
+2. Give both commonjs and ES module examples.
+-->
+
+For example, when you want to work with JavaScript code which looks like:
+
+```ts
+const Greeter = require("super-greeter");
+
+const greeter = new Greeter();
+greeter.greet();
+```
+
+To handle both importing via UMD and modules:
 
 ```ts
 // Type definitions for [~THE LIBRARY NAME~] [~OPTIONAL VERSION NUMBER~]
@@ -41,9 +59,9 @@ export = MyClass;
 
 /*~ Write your module's methods and properties in this class */
 declare class MyClass {
-  constructor(someParam?: string);
+  constructor(customGreeting?: string);
 
-  someProperty: string[];
+  greet: void;
 
   myMethod(opts: MyClass.MyClassMethodOptions): number;
 }

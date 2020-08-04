@@ -1,8 +1,19 @@
 ---
-title: module-function.d.ts
+title: "Module: Function"
 layout: docs
 permalink: /docs/handbook/declaration-files/templates/module-function-d-ts.html
 ---
+
+For example, when you want to work with JavaScript code which looks like:
+
+```ts
+import greeter from "super-greeter";
+
+greeter(2);
+greeter("Hello world");
+```
+
+To handle both importing via UMD and modules:
 
 ```ts
 // Type definitions for [~THE LIBRARY NAME~] [~OPTIONAL VERSION NUMBER~]
@@ -37,11 +48,11 @@ export as namespace myFuncLib;
 /*~ This declaration specifies that the function
  *~ is the exported object from the file
  */
-export = MyFunction;
+export = Greeter;
 
 /*~ This example shows how to have multiple overloads for your function */
-declare function MyFunction(name: string): MyFunction.NamedReturnType;
-declare function MyFunction(length: number): MyFunction.LengthReturnType;
+declare function Greeter(name: string): Greeter.NamedReturnType;
+declare function Greeter(length: number): Greeter.LengthReturnType;
 
 /*~ If you want to expose types from your module as well, you can
  *~ place them in this block. Often you will want to describe the
@@ -53,7 +64,7 @@ declare function MyFunction(length: number): MyFunction.LengthReturnType;
  *~ --esModuleInterop is turned on:
  *~   import * as x from '[~THE MODULE~]'; // WRONG! DO NOT DO THIS!
  */
-declare namespace MyFunction {
+declare namespace Greeter {
   export interface LengthReturnType {
     width: number;
     height: number;
@@ -65,7 +76,7 @@ declare namespace MyFunction {
 
   /*~ If the module also has properties, declare them here. For example,
    *~ this declaration says that this code is legal:
-   *~   import f = require('myFuncLibrary');
+   *~   import f = require('super-greeter');
    *~   console.log(f.defaultName);
    */
   export const defaultName: string;

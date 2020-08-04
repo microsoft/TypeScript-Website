@@ -17,7 +17,7 @@ export const indexCopy = {
 
 <p>在 TypeScript 中，不是每个地方都需要标注类型，因为类型推断允许您无需编写额外的代码即可获得大量功能。</p>`,
 
-  index_trust: "您可以信任的结果",
+  index_trust: "值得信任的结果",
   index_trust_copy_a: `所有有效的 JavaScript 代码同时也是有效的 TypeScript 代码。你也许会有类型检查的错误，但是这不会阻止你运行生成的 JavaScript。尽管您可以选择更严格的行为，但是这意味着一切依然在您的控制中。`,
   index_trust_copy_b: `TypeScript 代码通过 TypeScript 编译器或 <babel>Babel</babel> 转译为 JavaScript 代码，生成后的代码也是干净，简洁，运行在任何可以运行 JavaScript 的地方，无论是在浏览器，Node.JS 还是在您的应用中。`,
   index_standards: "与标准同步发展",
@@ -52,10 +52,6 @@ export const indexCopy = {
   index_started_title: "开始使用",
   index_started_handbook: "手册",
   index_started_handbook_blurb: "学习语言",
-  index_started_guides: "参考",
-  index_started_guides_blurb: "重点总览",
-  index_started_ref: "参考",
-  index_started_ref_blurb: "了解工具",
   index_started_community: "社区",
   index_started_community_blurb: "不断更新",
   index_install: "安装 TypeScript",
@@ -73,4 +69,12 @@ export const indexCopy = {
   index_migration_title: "迁移故事",
   index_migration_oss: "开源的 TypeScript",
   index_videos_title: "查看 TypeScript 实践",
+
+  index_cta_play: "在浏览器中尝试",
+  index_cta_install: "在本地安装",
+
+  index_started_docs: "开始一个项目",
+  index_started_docs_blurb: "寻找一个入手点",
+  index_started_tooling: "工具链",
+  index_started_tooling_blurb: "深入 TypeScript",
 }
