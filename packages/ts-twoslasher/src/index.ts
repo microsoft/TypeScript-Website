@@ -1,13 +1,14 @@
 let hasLocalStorage = false
 try {
   hasLocalStorage = typeof localStorage !== `undefined`
-} catch (error) {}
+} catch (error) { }
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 
 type LZ = typeof import("lz-string")
 type TS = typeof import("typescript")
 type CompilerOptions = import("typescript").CompilerOptions
+type CustomTransformers = import("typescript").CustomTransformers
 
 import {
   parsePrimitive,
@@ -28,7 +29,7 @@ const log = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any
 declare module "typescript" {
   type Option = {
     name: string
-    type: "list" | "boolean" | "number" | "string" // | Map
+    type: "list" | "boolean" | "number" | "string" | import("typescript").Map<any>
     element?: Option
   }
 
@@ -170,7 +171,7 @@ const valuedConfigRegexp = /^\/\/\s?@(\w+):\s?(.+)$/
 
 function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: CompilerOptions, ts: TS) {
   const options = { ...defaultCompilerOptions }
-  for (let i = 0; i < codeLines.length; ) {
+  for (let i = 0; i < codeLines.length;) {
     let match
     if ((match = booleanConfigRegexp.exec(codeLines[i]))) {
       options[match[1]] = true
@@ -331,6 +332,9 @@ export interface TwoSlashOptions {
   /** Allows setting any of the compiler options from outside the function */
   defaultCompilerOptions?: CompilerOptions
 
+  /** Allows applying custom transformers to the emit result, only useful with the showEmit output */
+  customTransformers?: CustomTransformers
+
   /** An optional copy of the TypeScript import, if missing it will be require'd. */
   tsModule?: TS
 
@@ -379,9 +383,9 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   const handbookOptions = { ...filterHandbookOptions(codeLines), ...options.defaultOptions }
   const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions, ts)
 
-  const vfs = options.fsMap ?? createLocallyPoweredVFS(compilerOptions)
+  const vfs = options.fsMap ?? createLocallyPoweredVFS(compilerOptions, ts)
   const system = createSystem(vfs)
-  const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions)
+  const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions, options.customTransformers)
   const ls = env.languageService
 
   code = codeLines.join("\n")
@@ -685,7 +689,8 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   }
 }
 
-const createLocallyPoweredVFS = (compilerOptions: CompilerOptions) => createDefaultMapFromNodeModules(compilerOptions)
+const createLocallyPoweredVFS = (compilerOptions: CompilerOptions, ts?: typeof import("typescript")) =>
+  createDefaultMapFromNodeModules(compilerOptions, ts)
 
 const splitTwoslashCodeInfoFiles = (code: string, defaultFileName: string) => {
   const lines = code.split(/\r\n?|\n/g)

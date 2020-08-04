@@ -19,4 +19,7 @@ export const navCopy = {
   nav_version_between: ", ",
   nav_version_beta_prefix: "is currently in beta.",
   nav_version_rc_prefix: "has a release candidate to try.",
+  nav_this_page_in_your_lang: "This page is available in your language",
+  nav_this_page_in_your_lang_open: "Open",
+  nav_this_page_in_your_lang_no_more: "Don't show again",
 }

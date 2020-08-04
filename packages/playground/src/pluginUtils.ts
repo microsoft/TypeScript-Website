@@ -25,6 +25,27 @@ export const createUtils = (sb: any, react: typeof React) => {
     setTimeout(() => element.classList.remove("briefly-highlight"), 1000)
   }
 
+  const setNotifications = (pluginID: string, amount: number) => {
+    const tab = document.getElementById("playground-plugin-tab-" + pluginID)
+    if (!tab) return
+
+    const notification = tab.querySelector("div.plugin-tab-notification")
+    if (!amount && notification) tab.removeChild(notification)
+
+    if (amount) {
+      if (!notification) {
+        const label = document.createElement("div")
+        label.textContent = String(amount)
+        label.classList.add("plugin-tab-notification")
+        tab.appendChild(label)
+      } else {
+        if (notification.textContent !== String(amount)) {
+          notification.textContent = String(amount)
+        }
+      }
+    }
+  }
+
   return {
     /** Use this to make a few dumb element generation funcs */
     el,
@@ -39,6 +60,8 @@ export const createUtils = (sb: any, react: typeof React) => {
     createDesignSystem: createDesignSystem(sandbox),
     /** Flashes a HTML Element */
     flashHTMLElement,
+    /** Add a little red button in the top corner of a plugin tab with a number */
+    setNotifications,
   }
 }
 

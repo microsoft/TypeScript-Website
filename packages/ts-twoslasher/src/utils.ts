@@ -30,6 +30,7 @@ export function parsePrimitive(value: string, type: string): any {
     case "boolean":
       return value.toLowerCase() === "true" || value.length === 0
   }
+
   throw new Error(`Unknown primitive type ${type} with - ${value}`)
 }
 

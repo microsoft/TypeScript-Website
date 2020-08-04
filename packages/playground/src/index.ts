@@ -103,8 +103,10 @@ export const setupPlayground = (
 
     const tabClicked: HTMLElement["onclick"] = e => {
       const previousPlugin = getCurrentPlugin()
-      const newTab = e.target as HTMLElement
-      const newPlugin = plugins.find(p => p.displayName == newTab.textContent)!
+      let newTab = e.target as HTMLElement
+      // It could be a notification you clicked on
+      if (newTab.tagName === "DIV") newTab = newTab.parentElement!
+      const newPlugin = plugins.find(p => `playground-plugin-tab-${p.id}` == newTab.id)!
       activatePlugin(newPlugin, previousPlugin, sandbox, tabBar, container)
       didUpdateTab && didUpdateTab(newPlugin, previousPlugin)
     }
@@ -146,7 +148,7 @@ export const setupPlayground = (
       playgroundDebouncedMainFunction()
 
       // Only call the plugin function once every 0.3s
-      if (plugin.modelChangedDebounce && plugin.displayName === getCurrentPlugin().displayName) {
+      if (plugin.modelChangedDebounce && plugin.id === getCurrentPlugin().id) {
         plugin.modelChangedDebounce(sandbox, sandbox.getModel(), container)
       }
     }, 300)
@@ -192,7 +194,11 @@ export const setupPlayground = (
 
   const notWorkingInPlayground = ["3.1.6", "3.0.1", "2.8.1", "2.7.2", "2.4.1"]
 
-  const allVersions = ["4.0.0-beta", ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)), "Nightly"]
+  const allVersions = [
+    "4.0.0-beta",
+    ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)),
+    "Nightly",
+  ]
 
   allVersions.forEach((v: string) => {
     const li = document.createElement("li")
@@ -380,8 +386,8 @@ export const setupPlayground = (
       } else {
         sidebarTabs.style.display = "none"
         sidebarContent.style.display = "none"
-        settingsContent.style.display = "block"
-        ;(document.querySelector(".playground-sidebar label") as any).focus()
+        settingsContent.style.display = "block";
+        (document.querySelector(".playground-sidebar label") as any).focus()
       }
       settingsToggle.parentElement!.classList.toggle("open")
     }
@@ -429,6 +435,13 @@ export const setupPlayground = (
     })
   }
 
+  // This isn't optimal, but it's good enough without me adding support
+  // for https://github.com/microsoft/monaco-editor/issues/313
+  setInterval(() => {
+    const markers = sandbox.monaco.editor.getModelMarkers({})
+    utils.setNotifications("errors", markers.length)
+  }, 500)
+
   // Sets up a way to click between examples
   monaco.languages.registerLinkProvider(sandbox.language, new ExampleHighlighter())
 
@@ -448,6 +461,11 @@ export const setupPlayground = (
     }
   }
 
+  // Ensure that the editor is full-width when the screen resizes
+  window.addEventListener('resize', () => {
+    sandbox.editor.layout();
+  })
+
   const ui = createUI()
   const exporter = createExporter(sandbox, monaco, ui)
 
@@ -459,6 +477,7 @@ export const setupPlayground = (
     getCurrentPlugin,
     tabs,
     setDidUpdateTab,
+    createUtils,
   }
 
   window.ts = sandbox.ts
@@ -542,13 +561,13 @@ export const setupPlayground = (
 
   if (config.supportCustomPlugins) {
     // Grab ones from localstorage
-    activePlugins().forEach(p => downloadPlugin(p.module, false))
+    activePlugins().forEach(p => downloadPlugin(p.id, false))
 
     // Offer to install one if 'install-plugin' is a query param
     const params = new URLSearchParams(location.search)
     const pluginToInstall = params.get("install-plugin")
     if (pluginToInstall) {
-      const alreadyInstalled = activePlugins().find(p => p.module === pluginToInstall)
+      const alreadyInstalled = activePlugins().find(p => p.id === pluginToInstall)
       if (!alreadyInstalled) {
         const shouldDoIt = confirm("Would you like to install the third party plugin?\n\n" + pluginToInstall)
         if (shouldDoIt) {

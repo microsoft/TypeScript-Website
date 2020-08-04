@@ -12,12 +12,12 @@ If `types` is specified, only packages listed will be included in the global sco
 ```json
 {
   "compilerOptions": {
-    "types": ["node", "jest", "lodash"]
+    "types": ["node", "jest", "express"]
   }
 }
 ```
 
-This `tsconfig.json` file will _only_ include `./node_modules/@types/node`, `./node_modules/@types/lodash` and `./node_modules/@types/express`.
+This `tsconfig.json` file will _only_ include `./node_modules/@types/node`, `./node_modules/@types/jest` and `./node_modules/@types/express`.
 Other packages under `node_modules/@types/*` will not be included.
 
 ### What does this affect?

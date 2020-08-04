@@ -11,6 +11,8 @@ The configuration from the base file are loaded first, then overridden by those 
 It's worth noting that `files`, `include` and `exclude` from the inheriting config file _overwrite_ those from the
 base config file, and that circularity between configuration files is not allowed.
 
+Currently, the only top-level property that is excluded from inheritance is [`references`](#references).
+
 ##### Example
 
 `configs/base.json`:
@@ -43,3 +45,5 @@ base config file, and that circularity between configuration files is not allowe
   }
 }
 ```
+
+Properties with relative paths found in the configuration file, which aren't excluded from inheritance, will be resolved relative to the configuration file they originated in.

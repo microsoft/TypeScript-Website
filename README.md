@@ -5,14 +5,19 @@
 
 ### Getting Started
 
-This repo uses [yarn workspaces][y-wrk] with node 13+, to get started clone this repo and run `yarn install`.
+This repo uses [yarn workspaces][y-wrk] with node 13+, and [watchman](https://facebook.github.io/watchman/docs/install.html).
+
+With those set up, clone this repo and run `yarn install`.
 
 ```sh
 git clone https://github.com/microsoft/TypeScript-website
 cd TypeScript-website
 yarn install
-yarn bootstrap
 code .
+
+# Then:
+yarn bootstrap
+yarn start
 ```
 
 Working on this repo is done by running `yarn start` - this starts up the website on port `8000` and creates a
@@ -20,7 +25,7 @@ builder worker for every package in the repo, so if you make a change outside of
 
 Some useful knowledge:
 
-- All packages have: `yarn bootstrap`, `yarn build` and `yarn test`
+- All packages have: `yarn build` and `yarn test`
 - All packages use [debug](https://www.npmjs.com/package/debug) - which means you can do `env DEBUG="*" yarn test` to get verbose logs
 
 ## Deployment
@@ -70,7 +75,7 @@ yarn workspace tsconfig-reference run generate-json
 yarn workspace tsconfig-reference run generate-markdown
 ```
 
-Validate the docs
+Validate the docs:
 
 ```sh
 yarn workspace tsconfig-reference run test
@@ -82,7 +87,7 @@ yarn workspace tsconfig-reference run lint
 yarn workspace tsconfig-reference run lint resolveJson
 ```
 
-## Handbook V1
+## Documentation
 
 The docs for TypeScript. Originally ported over from [microsoft/TypeScript-Handbook](https://github.com/microsoft/TypeScript-Handbook/) then intermingled with [microsoft/TypeScript-New-Handbook](https://github.com/microsoft/TypeScript-New-Handbook), and finally updated for [Twoslash](http://www.staging-typescript.org/dev/twoslash/) and with new content.
 

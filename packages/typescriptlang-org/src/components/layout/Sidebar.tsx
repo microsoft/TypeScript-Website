@@ -3,10 +3,10 @@ import { Link } from "gatsby"
 
 import "./Sidebar.scss"
 import { onAnchorKeyDown, onButtonKeydown } from "./Sidebar-keyboard"
-import { NavItem } from "../../lib/handbookNavigation"
+import { SidebarNavItem } from "../../lib/documentationNavigation"
 
 export type Props = {
-  navItems: NavItem[]
+  navItems: SidebarNavItem[]
   selectedID: string
   openAllSectionsExceptWhatsNew?: true
 }
@@ -52,7 +52,6 @@ export const SidebarToggleButton = () => {
       <svg fill="none" height="26" viewBox="0 0 26 26" width="26" xmlns="http://www.w3.org/2000/svg"><g fill="#fff"><path d="m0 1c0-.552285.447715-1 1-1h24c.5523 0 1 .447715 1 1v3h-26z" /><path d="m0 11h13 13v4h-26z" /><path d="m0 22h26v3c0 .5523-.4477 1-1 1h-24c-.552284 0-1-.4477-1-1z" /></g></svg>
     </button>
   )
-
 }
 
 export const Sidebar = (props: Props) => {
@@ -66,56 +65,67 @@ export const Sidebar = (props: Props) => {
     })
   }, [])
 
+  const RenderItem = (props: { item: SidebarNavItem, selectedID: string, openAllSectionsExceptWhatsNew?: boolean }) => {
+    const item = props.item
+    if (!item.items) {
+      // Is it the leaf in the nav?
+      const isSelected = item.id === props.selectedID
+      const aria: any = {}
+      if (isSelected) {
+        aria["aria-current"] = "page"
+        aria.className = "highlight"
+      }
+
+      const href = item.permalink!
+      return <li key={item.id} {...aria}>
+        <Link to={href} onKeyDown={onAnchorKeyDown}>{item.title}</Link>
+      </li>
+    } else {
+      // Has children
+      const findSelected = (item: SidebarNavItem) => {
+        if (item.id === props.selectedID) return true
+        if (!item.items) return false
+        for (const subItem of item.items) {
+          if (findSelected(subItem)) return true
+        }
+        return false
+      }
+
+      const hostsSelected = findSelected(item)
+      const classes = [] as string[]
+
+      const forceOpen = props.openAllSectionsExceptWhatsNew && item.id !== "whats-new"
+      if (hostsSelected || forceOpen) {
+        classes.push("open")
+        classes.push("highlighted")
+      } else {
+        classes.push("closed")
+      }
+
+      const opened = { "aria-expanded": "true", "aria-label": item.title + " close" }
+      const closed = { "aria-label": item.title + " expand" }
+      const aria = hostsSelected ? opened : closed
+
+      return (
+        <li className={classes.join(" ")} key={item.id}>
+          <button {...aria} onClick={toggleNavigationSection} onKeyDown={onButtonKeydown}>
+            {item.title}
+            <span className="open">{openChevron}</span>
+            <span className="closed">{closedChevron}</span>
+          </button>
+          <ul>
+            {item.items.map(item => <RenderItem item={item} openAllSectionsExceptWhatsNew={props.openAllSectionsExceptWhatsNew} selectedID={props.selectedID} />)}
+          </ul>
+        </li>
+      )
+    }
+  }
+
   return (
     <nav id="sidebar">
       <ul>
-        {props.navItems.map(navRoot => {
-          const hostsSelected = navRoot.items.find(i => i.id === props.selectedID)
-          const classes = [] as string[]
-
-          const forceOpen = props.openAllSectionsExceptWhatsNew && navRoot.id !== "whats-new"
-          if (hostsSelected || forceOpen) {
-            classes.push("open")
-            classes.push("highlighted")
-          } else {
-            classes.push("closed")
-          }
-
-          const opened = { "aria-expanded": "true", "aria-label": navRoot.title + " close" }
-          const closed = { "aria-label": navRoot.title + " expand" }
-          const aria = hostsSelected ? opened : closed
-
-          return (
-            <li className={classes.join(" ")} key={navRoot.id}>
-              <button {...aria} onClick={toggleNavigationSection} onKeyDown={onButtonKeydown}>
-                {navRoot.title}
-                <span className="open">{openChevron}</span>
-                <span className="closed">{closedChevron}</span>
-              </button>
-
-              <ul>
-                {navRoot.items.map(item => {
-                  const isSelected = item.id === props.selectedID
-                  const aria: any = {}
-                  if (isSelected) {
-                    aria["aria-current"] = "page"
-                    aria.className = "highlight"
-                  }
-
-                  const href = item.href || item.id
-                  const filename = item.id === "index" ? "" : `${href}.html`
-                  const path = href.startsWith("/") ? href : `/docs/${navRoot.directory}/${filename}`
-
-                  return <li key={item.id} {...aria}>
-                    <Link to={path} onKeyDown={onAnchorKeyDown}>{item.title}</Link>
-                  </li>
-                })}
-
-              </ul>
-            </li>)
-        })}
+        {props.navItems.map(item => <RenderItem item={item} openAllSectionsExceptWhatsNew={props.openAllSectionsExceptWhatsNew} selectedID={props.selectedID} />)}
       </ul>
     </nav>
-
   )
 }

@@ -89,6 +89,12 @@ pre {
     padding-bottom: 3px;
   }
 
+  .query {
+    margin-bottom: 10px;
+    color: #137998;
+    display: inline-block;
+  }
+
   /* In order to have the 'popped out' style design and to not break the layout
   /* we need to place a fake and un-selectable copy of the error which _isn't_ broken out
   /* behind the actual error message.

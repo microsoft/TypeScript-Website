@@ -137,29 +137,29 @@ export const createTabBar = () => {
   tabBar.setAttribute("aria-label", "Tabs for plugins")
 
   /** Support left/right in the tab bar for accessibility */
-  let tabFocus = 0;
+  let tabFocus = 0
   tabBar.addEventListener("keydown", e => {
     const tabs = document.querySelectorAll('.playground-plugin-tabview [role="tab"]')
     // Move right
     if (e.keyCode === 39 || e.keyCode === 37) {
-      tabs[tabFocus].setAttribute("tabindex", "-1");
+      tabs[tabFocus].setAttribute("tabindex", "-1")
       if (e.keyCode === 39) {
-        tabFocus++;
+        tabFocus++
         // If we're at the end, go to the start
         if (tabFocus >= tabs.length) {
-          tabFocus = 0;
+          tabFocus = 0
         }
         // Move left
       } else if (e.keyCode === 37) {
-        tabFocus--;
+        tabFocus--
         // If we're at the start, move to the end
         if (tabFocus < 0) {
-          tabFocus = tabs.length - 1;
+          tabFocus = tabs.length - 1
         }
       }
 
-      tabs[tabFocus].setAttribute("tabindex", "0");
-      (tabs[tabFocus] as any).focus();
+      tabs[tabFocus].setAttribute("tabindex", "0")
+      ;(tabs[tabFocus] as any).focus()
     }
   })
 
@@ -176,6 +176,7 @@ export const createPluginContainer = () => {
 export const createTabForPlugin = (plugin: PlaygroundPlugin) => {
   const element = document.createElement("button")
   element.setAttribute("role", "tab")
+  element.id = "playground-plugin-tab-" + plugin.id
   element.textContent = plugin.displayName
   return element
 }
@@ -190,8 +191,8 @@ export const activatePlugin = (
   let newPluginTab: Element, oldPluginTab: Element
   // @ts-ignore - This works at runtime
   for (const tab of tabBar.children) {
-    if (tab.textContent === plugin.displayName) newPluginTab = tab
-    if (previousPlugin && tab.textContent === previousPlugin.displayName) oldPluginTab = tab
+    if (tab.id === `playground-plugin-tab-${plugin.id}`) newPluginTab = tab
+    if (previousPlugin && tab.id === `playground-plugin-tab-${previousPlugin.id}`) oldPluginTab = tab
   }
 
   // @ts-ignore

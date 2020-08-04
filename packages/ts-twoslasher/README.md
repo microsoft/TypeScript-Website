@@ -707,6 +707,8 @@ export interface TwoSlashOptions {
   defaultOptions?: Partial<ExampleOptions>
   /** Allows setting any of the compiler options from outside the function */
   defaultCompilerOptions?: CompilerOptions
+  /** Allows applying custom transformers to the emit result, only useful with the showEmit output */
+  customTransformers?: CustomTransformers
   /** An optional copy of the TypeScript import, if missing it will be require'd. */
   tsModule?: TS
   /** An optional copy of the lz-string import, if missing it will be require'd. */
