@@ -28,6 +28,8 @@ Some useful knowledge:
 - All packages have: `yarn build` and `yarn test`
 - All packages use [debug](https://www.npmjs.com/package/debug) - which means you can do `env DEBUG="*" yarn test` to get verbose logs
 
+You can manually via GH Actions for [production here](https://github.com/microsoft/TypeScript-Website/actions?query=workflow%3A%22Monday+Website+Push+To+Production%22) and [staging here](https://github.com/microsoft/TypeScript-Website/actions?query=workflow%3A%22Build+Website+To+Staging%22).
+
 ## Deployment
 
 Deployment is automatic:
