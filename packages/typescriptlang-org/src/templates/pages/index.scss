@@ -188,9 +188,13 @@ $headline-foreground-bg: #104261;
     }
   }
 
+  .headline .col1 {
+    padding-bottom: 3rem;
+  }
+
   .headline .container {
     padding-bottom: 0;
-    padding-top: 20px;
+    padding-top: 40px;
     font-size: 1rem;
   }
 
@@ -350,7 +354,7 @@ $headline-foreground-bg: #104261;
         .lines {
           width: 60px;
           border-right: 4px solid #172e38;
-          border-left: 4px solid #172e38;
+          border-left: none;
           flex-shrink: 0;
           display: flex;
           flex-direction: column;
