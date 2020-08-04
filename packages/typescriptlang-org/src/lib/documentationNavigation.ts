@@ -605,16 +605,16 @@ export function getDocumentationNavForLanguage(
 
       items: [
         {
-          title: "TSConfig Reference",
-          id: "tsconfig-reference",
-          permalink: "/tsconfig",
-          oneline: "The page covering every TSConfig option",
-        },
-        {
           title: "tsconfig.json",
           id: "tsconfig.json",
           permalink: "/docs/handbook/tsconfig-json.html",
           oneline: "Learn about how a TSConfig works",
+        },
+        {
+          title: "TSConfig Reference",
+          id: "tsconfig-reference",
+          permalink: "/tsconfig",
+          oneline: "The page covering every TSConfig option",
         },
         {
           title: "Compiler Options",
@@ -1237,16 +1237,16 @@ export function getDocumentationNavForLanguage(
 
       items: [
         {
-          title: "TSConfig Reference",
-          id: "tsconfig-reference",
-          permalink: "/tsconfig",
-          oneline: "The page covering every TSConfig option",
-        },
-        {
           title: "tsconfig.json",
           id: "tsconfig.json",
           permalink: "/docs/handbook/tsconfig-json.html",
           oneline: "Learn about how a TSConfig works",
+        },
+        {
+          title: "TSConfig Reference",
+          id: "tsconfig-reference",
+          permalink: "/tsconfig",
+          oneline: "The page covering every TSConfig option",
         },
         {
           title: "Compiler Options",

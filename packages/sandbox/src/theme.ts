@@ -1,8 +1,8 @@
-const blue = "3771EF"
+const blue = "3757ef"
 const darkerBlue = "1142AF"
 
-const grey = "84864d"
-const greenDark = "10990D"
+const grey = "6c6f2d"
+const greenDark = "0c840a"
 
 export const sandboxTheme: import("monaco-editor").editor.IStandaloneThemeData = {
   base: "vs",
@@ -28,25 +28,10 @@ export const sandboxTheme: import("monaco-editor").editor.IStandaloneThemeData =
     { token: "delimiter.xml", foreground: "0000FF" },
 
     { token: "tag", foreground: "800000" },
-    { token: "tag.id.pug", foreground: "4F76AC" },
-    { token: "tag.class.pug", foreground: "4F76AC" },
-    { token: "meta.scss", foreground: "800000" },
-    { token: "metatag", foreground: "e00000" },
-    { token: "metatag.content.html", foreground: "FF0000" },
-    { token: "metatag.html", foreground: "808080" },
-    { token: "metatag.xml", foreground: "808080" },
-    { token: "metatag.php", fontStyle: "bold" },
 
     { token: "key", foreground: "863B00" },
     { token: "string.key.json", foreground: "A31515" },
     { token: "string.value.json", foreground: "0451A5" },
-
-    { token: "attribute.name", foreground: "FFFF00" },
-    { token: "attribute.value", foreground: "0451A5" },
-    { token: "attribute.value.number", foreground: "09885A" },
-    { token: "attribute.value.unit", foreground: "09885A" },
-    { token: "attribute.value.html", foreground: "0000FF" },
-    { token: "attribute.value.xml", foreground: "0000FF" },
 
     { token: "string", foreground: greenDark },
 
@@ -54,7 +39,7 @@ export const sandboxTheme: import("monaco-editor").editor.IStandaloneThemeData =
     { token: "keyword.json", foreground: "0451A5" },
   ],
   colors: {
-    editorBackground: "#F6F6F6",
+    editorBackground: "#fafafa",
     editorForeground: "#000000",
     editorInactiveSelection: "#E5EBF1",
     editorIndentGuides: "#D3D3D3",
@@ -68,8 +53,7 @@ export const sandboxThemeDark: import("monaco-editor").editor.IStandaloneThemeDa
   inherit: true,
   rules: [
     { token: "constant", foreground: "44ee11" },
-    { token: "comment", foreground: grey },
-    { token: "number", foreground: greenDark },
+    { token: "comment", foreground: "919441" },
     { token: "regexp", foreground: "#811f3f" },
     { token: "type", foreground: blue },
   ],
