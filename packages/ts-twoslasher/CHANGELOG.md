@@ -1,3 +1,9 @@
+## 0.6.x
+
+- API change from ordered params to a config object
+- Adds support for adding `customTransformers`
+- You can create `.json` files in the vfs
+
 ## 0.5.0
 
 - Support TS 4.0
