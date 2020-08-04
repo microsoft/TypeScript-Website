@@ -54,16 +54,6 @@ jobs:
         env:
           YARN_CHECKSUM_BEHAVIOR: ignore
 
-      # PR: Deploy if we can
-      - name: Deploy PR
-        if: github.event_name == 'pull_request'
-        run: 'if test -z "$NOW_ACCESS_TOKEN"; then echo "Skipping deploy";
-          else npx now site/ --token="$NOW_ACCESS_TOKEN"
-          --name="typescript-site-$PR_NUMBER"; fi'
-        env:
-          NOW_ACCESS_TOKEN: ${{ secrets.NOW_ACCESS_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-
       # CI: Deploy to the right branch
       - name: Deploy + Publish
         if: github.event_name != 'pull_request'
