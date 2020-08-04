@@ -2,10 +2,7 @@ import { PlaygroundPlugin, PluginFactory } from ".."
 
 import { allNPMPlugins } from "./fixtures/npmPlugins"
 
-const pluginRegistry = [
-  "typescript-playground-presentation-mode",
-  "playground-transformer-timeline",
-]
+const pluginRegistry = ["typescript-playground-presentation-mode", "playground-transformer-timeline"]
 
 /** Whether the playground should actively reach out to an existing plugin */
 export const allowConnectingToLocalhost = () => {
@@ -40,7 +37,7 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
   const plugin: PlaygroundPlugin = {
     id: "plugins",
     displayName: i("play_sidebar_plugins"),
-    shouldBeSelected: () => true, // uncomment to make this the first tab on reloads
+    // shouldBeSelected: () => true, // uncomment to make this the first tab on reloads
     willMount: (_sandbox, container) => {
       const ds = utils.createDesignSystem(container)
 
@@ -131,9 +128,9 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
     const label = document.createElement("label")
 
     // Avoid XSS by someone injecting JS via the description, which is the only free text someone can use
-    var p = document.createElement("p");
-    p.appendChild(document.createTextNode(plugin.description));
-    const escapedDescription = p.innerHTML;
+    var p = document.createElement("p")
+    p.appendChild(document.createTextNode(plugin.description))
+    const escapedDescription = p.innerHTML
 
     const top = `<span>${plugin.name}</span> by <a href='https://www.npmjs.com/~${plugin.author}'>${plugin.author}</a><br/>${escapedDescription}`
     const repo = plugin.href.includes("github") ? `| <a href="${plugin.href}">repo</a>` : ""
