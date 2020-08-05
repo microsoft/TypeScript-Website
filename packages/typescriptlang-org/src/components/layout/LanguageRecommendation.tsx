@@ -59,7 +59,7 @@ export const LanguageRecommendations = (props: Props) => {
     if (localePath === "") localePath = "/"
     if (localePath === location.pathname) return
 
-    const doesPageExist = props.allSitePage.nodes.find(f => f.path === localePath)
+    const doesPageExist = props.allSitePage.nodes.find(f => f.path === localePath || f.path + "/" === localePath)
     if (!doesPageExist) return
 
     //@ts-ignore
@@ -73,6 +73,7 @@ export const LanguageRecommendations = (props: Props) => {
 
     quickJumpA.textContent = lang.shorthand
     quickJumpA.href = localePath
+    quickJump.title = lang.body
     quickJump.style.display = "inline-block";
 
     // Adding the LI somehow makes the search bump up by 2px
