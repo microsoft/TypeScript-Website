@@ -21,7 +21,7 @@ We are often faced with writing a declaration file when we only have examples of
 The [Declaration Reference](/docs/handbook/declaration-files/by-example.html) section shows many common API patterns and how to write declarations for each of them.
 This guide is aimed at the TypeScript novice who may not yet be familiar with every language construct in TypeScript.
 
-## [Library Structures]](/docs/handbook/declaration-files/library-structures.html)
+## [Library Structures](/docs/handbook/declaration-files/library-structures.html)
 
 The [Library Structures](/docs/handbook/declaration-files/library-structures.html) guide helps you understand common library formats and how to write a proper declaration file for each format.
 If you're editing an existing file, you probably don't need to read this section.
