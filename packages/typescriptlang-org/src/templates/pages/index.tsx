@@ -186,10 +186,10 @@ const Index: React.FC<Props> = (props) => {
         <Section color="white">
           <h3>{i("index_started_title")}</h3>
           <QuarterOrHalfRow key='call to actions'>
-            <GreyButton href="/docs/handbook" title={i("index_started_handbook")} blurb={i("index_started_handbook_blurb")} first />
-            <GreyButton href="/docs/bootstrap" title={i("index_started_docs")} blurb={i("index_started_docs_blurb")} />
-            <GreyButton href="/community" title={i("index_started_community")} blurb={i("index_started_community_blurb")} />
-            <GreyButton href="/tools" title={i("index_started_tooling")} blurb={i("index_started_tooling_blurb")} />
+            <GreyButton href="/docs/handbook" title={i("index_started_handbook")} blurb={i("index_started_handbook_blurb")} first customClass="white-theme" />
+            <GreyButton href="/docs/bootstrap" title={i("index_started_docs")} blurb={i("index_started_docs_blurb")} customClass="white-theme" />
+            <GreyButton href="/community" title={i("index_started_community")} blurb={i("index_started_community_blurb")} customClass="white-theme" />
+            <GreyButton href="/tools" title={i("index_started_tooling")} blurb={i("index_started_tooling_blurb")} customClass="white-theme" />
           </QuarterOrHalfRow>
 
           <div id="installation" />
