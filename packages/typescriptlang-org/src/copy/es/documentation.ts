@@ -14,7 +14,7 @@ export const docCopy = {
   doc_headline_examples_title: "Ejemplos",
   doc_headline_examples_blurb:
     "Completos tutoriales prácticos en el Playground",
-  doc_start_a_project: "¡Inicie un projecto!",
+  doc_start_a_project: "¡Inicie un proyecto!",
   doc_start_a_project_desc:
     "Debido a que TypeScript es un superconjunto de JavaScript, no tiene una plantilla por defecto - habría demasiadas. En su lugar, otros proyectos tienen sus propias plantillas de TypeScript con su propio contexto. Estos proyectos proporcionan plantillas que incluyen soporte para TypeScript.",
   doc_node_npm: "Node con npm",
