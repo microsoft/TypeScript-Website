@@ -70,6 +70,10 @@ pre code {
   line-height: 1.1em;
 }
 
+.code-container a {
+  display: none;
+}
+
 .error-behind {
   display: none;
 }
