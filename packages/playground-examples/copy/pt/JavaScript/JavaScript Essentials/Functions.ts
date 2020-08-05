@@ -34,7 +34,7 @@ const add1 = (x: any, y: any) => {
 };
 add1("Hello", 23);
 
-//Isso é legítimos em JavaScript (strings pode ser 
+//Isso é legítimo em JavaScript (strings podem ser 
 //adicionados como esse exemplo), porém não é o ideal para 
 //nossa função, que sabemos que é para números, portanto
 //iremos converter os parametros x e y para receberem somente números.
