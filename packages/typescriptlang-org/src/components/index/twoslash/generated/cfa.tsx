@@ -9,6 +9,6 @@ const innerHTML = `<div class="language-id">tsx</div><div class='code-container'
 <span style="color: #D4D4D4">  <data-lsp lsp='var console: Console'>console</data-lsp>.<data-lsp lsp='(method) Console.log(...data: any[]): void'>log</data-lsp>(<data-lsp lsp='const jon: {&amp;#13;    name: string;&amp;#13;}'>jon</data-lsp>)</span>
 <span style="color: #D4D4D4">} </span><span style="color: #569CD6">else</span><span style="color: #D4D4D4"> {</span>
 <span style="color: #D4D4D4">  </span><span style="color: #569CD6">throw</span><span style="color: #D4D4D4"> </span><span style="color: #569CD6">new</span><span style="color: #D4D4D4"> <data-lsp lsp='var Error: ErrorConstructor&amp;#13;new (message?: string | undefined) => Error'>Error</data-lsp>(</span><span style="color: #CE9178">&apos;Could not find user "Jon"&apos;</span><span style="color: #D4D4D4">)</span>
-<span style="color: #D4D4D4">}</span></code></div>`
+<span style="color: #D4D4D4">}</span></code><a href='https://www.typescriptlang.org/play/#code/MYewdgzgLgBArhApgJwjAvDA2gbxmAQwFtEAuGAIgEEALEgEwpgF8AaGPQk8igcUSJECTNh3zEylAFLgRAXQDcAKCWhIsAFbgM8JKgB0AMwCWYegApzcAJQYAfPH1dEGdJgpawFa8qXHDMOaetjhKMDBqECAANoj60SAA5kHg1krMMIjRSBxhMFA0yCAA7viIpQCiyEXI5gDkAMIgcNH0+CCwJma6KNKydWnMSkA'>Try</a></div>`
 
 export const CfaExample = () => <pre className='shiki twoslash' dangerouslySetInnerHTML={{ __html: innerHTML }} />
