@@ -8,6 +8,7 @@ import { whenEscape } from "../../lib/whenEscape"
 
 export type Props = {
   lang: string
+  suppressCustomization?: true
   allSitePage: AllSitePage
 }
 
@@ -251,19 +252,20 @@ export const SiteFooter = (props: Props) => {
           ))}
         </ul>
       </section>
-
-      <section id="switcher">
-        <article>
-          <h3>Customize</h3>
-          <label>
-            <p>Site Colours:</p>
-            <div className="switch-wrap">
-              <input type="checkbox" checked={!isDarkMode} onChange={handleThemeChange} />
-              <div className="switch"></div>
-            </div>
-          </label>
-        </article>
-      </section>
+      { props.suppressCustomization ? null :
+        <section id="switcher">
+          <article>
+            <h3>Customize</h3>
+            <label>
+              <p>Site Colours:</p>
+              <div className="switch-wrap">
+                <input type="checkbox" checked={!isDarkMode} onChange={handleThemeChange} />
+                <div className="switch"></div>
+              </div>
+            </label>
+          </article>
+        </section>
+      }
 
       <section id="community">
         <article id="logos">

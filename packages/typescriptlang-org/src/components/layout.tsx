@@ -11,6 +11,7 @@ import { LanguageRecommendations } from "./layout/LanguageRecommendation";
 type LayoutProps = SeoProps & Props & {
   lang: string,
   children: any
+  suppressCustomization?: true
 }
 
 export const Layout = (props: LayoutProps) => {
