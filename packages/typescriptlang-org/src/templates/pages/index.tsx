@@ -187,7 +187,7 @@ const Index: React.FC<Props> = (props) => {
           <h3>{i("index_started_title")}</h3>
           <QuarterOrHalfRow key='call to actions'>
             <GreyButton href="/docs/handbook" title={i("index_started_handbook")} blurb={i("index_started_handbook_blurb")} first />
-            <GreyButton href="/docs/home" title={i("index_started_docs")} blurb={i("index_started_docs_blurb")} />
+            <GreyButton href="/docs/bootstrap" title={i("index_started_docs")} blurb={i("index_started_docs_blurb")} />
             <GreyButton href="/community" title={i("index_started_community")} blurb={i("index_started_community_blurb")} />
             <GreyButton href="/tools" title={i("index_started_tooling")} blurb={i("index_started_tooling_blurb")} />
           </QuarterOrHalfRow>
