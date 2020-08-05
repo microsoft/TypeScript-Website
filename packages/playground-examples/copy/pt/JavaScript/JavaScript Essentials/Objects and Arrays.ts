@@ -89,7 +89,7 @@ const readonlyOrders: readonly PurchaseOrder[] = [purchaseOrder];
 //             o conteúdo do array sempre permanecerá o mesmo.
 //
 //
-// Agora, se você tentar utilizar o método pop() do array readonlyOrders,
+//Agora, se você tentar utilizar o método pop() do array readonlyOrders,
 //o TypeScript gerará um erro.
 
 readonlyOrders.pop();
