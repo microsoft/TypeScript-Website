@@ -4,7 +4,7 @@ export const navCopy = {
   nav_documentation_short: "文档",
   nav_download: "下载",
   nav_community: "联系我们",
-  nav_tools: "游乐场",
+  nav_tools: "工具",
   nav_search_placeholder: "搜索文档",
   nav_search_aria: "搜索 TypeScript 网站",
   nav_beta: "搜索 TypeScript 网站",
