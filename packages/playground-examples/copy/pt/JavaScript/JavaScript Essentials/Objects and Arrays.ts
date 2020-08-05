@@ -48,7 +48,7 @@ const allOrders = [purchaseOrder];
 
 //Se você passar o mouse por cima de allOrders, você poderá
 //afirmar que é um array, porque as informações passadas pelo
-// cursor terminam com um []. Você pode acessar o primeiro pedido
+//cursor terminam com um []. Você pode acessar o primeiro pedido
 //usando colchetes com um índice (começando do zero).
 
 const firstOrder = allOrders[0];
