@@ -230,11 +230,13 @@ export const SiteFooter = (props: Props) => {
 
   useEffect(() => {
     if (isDarkMode) {
+      document.documentElement.classList.remove("light-theme")
       document.documentElement.classList.add("dark-theme")
       hasLocalStorage && localStorage.setItem("color-theme", "dark-theme")
 
     } else {
       document.documentElement.classList.remove("dark-theme")
+      document.documentElement.classList.add("light-theme")
       hasLocalStorage && localStorage.setItem("color-theme", "light-theme")
     }
   }, [isDarkMode])

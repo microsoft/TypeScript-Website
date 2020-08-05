@@ -205,6 +205,11 @@
   #playground-samples-popover {
     display: none;
   }
+
+  #community-links ul,
+  #using-typescript ul {
+    margin-left: 12px;
+  }
 }
 
 // This is the li which the popover lives within
