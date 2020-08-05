@@ -21,9 +21,21 @@
   position: relative;
   text-decoration: none;
 
+  &.white-theme {
+    background-color: white;
+    border: 1px black solid;
+
+    &:hover {
+      background-color: $ts-light-bg-grey;
+    }
+    &:active {
+      background-color: $ts-light-bg-grey-highlight-color;
+      margin-bottom: 19px;
+    }
+  }
 
   @media screen and (-ms-high-contrast: active) {
-    border: 1px solid grey;;
+    border: 1px solid grey;
   }
 
   &.headline {

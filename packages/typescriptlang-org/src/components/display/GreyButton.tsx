@@ -9,6 +9,7 @@ export type Props = {
   badge?: string
   first?: boolean
   last?: boolean
+  customClass?: string
 }
 
 /** A pretty grey button */
@@ -19,6 +20,7 @@ export const GreyButton = (props: Props) => {
   if (props.headline) classes.push("headline")
   if (props.first) classes.push("first")
   if (props.last) classes.push("last")
+  if (props.customClass) classes.push(props.customClass)
 
   return <a key={props.title} href={href} className={classes.join(" ")}>
     <p>{props.blurb}</p>
