@@ -1,6 +1,6 @@
 //// { order: 1, compiler: { strict: false } }
 
-//Objetos em JavaScript são coleções de valores agrupadas
+//Objetos em JavaScript são coleções de valores agrupados
 //com chaves nomeadas.
 
 const userAccount = {
