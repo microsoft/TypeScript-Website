@@ -10,7 +10,6 @@ $headline-foreground-bg: #104261;
   color: white;
   padding: 0.7rem 2rem;
   margin: 0;
-  font-size: 0.9rem;
 
   p {
     margin: 0;
@@ -88,8 +87,12 @@ $headline-foreground-bg: #104261;
     }
 
     #m-stories div.copy {
-      margin: 80px auto 0;
+      margin: 20px auto 0;
       position: static;
+      text-align: center;
+      a.migration-button {
+        margin: 0 auto;
+      }
     }
 
     .small_full_width {
@@ -114,6 +117,7 @@ $headline-foreground-bg: #104261;
   #index div.headline-diagram div.editor.front {
     max-width: 300px;
   }
+
   #index .next-headline-button {
     max-width: 280px;
   }

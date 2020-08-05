@@ -230,28 +230,19 @@ export const SiteFooter = (props: Props) => {
 
   useEffect(() => {
     if (isDarkMode) {
+      document.documentElement.classList.remove("light-theme")
       document.documentElement.classList.add("dark-theme")
       hasLocalStorage && localStorage.setItem("color-theme", "dark-theme")
 
     } else {
       document.documentElement.classList.remove("dark-theme")
+      document.documentElement.classList.add("light-theme")
       hasLocalStorage && localStorage.setItem("color-theme", "light-theme")
     }
   }, [isDarkMode])
 
   return (
     <footer id="site-footer" role="contentinfo">
-      <section id="popular">
-        <h3>Popular Documentation Pages</h3>
-        <ul>
-          {popularPages.map(page => (
-            <li key={page.url}>
-              <Link to={page.url}>{page.title}</Link>
-              <p>{page.description}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
       { props.suppressCustomization ? null :
         <section id="switcher">
           <article>
@@ -266,6 +257,18 @@ export const SiteFooter = (props: Props) => {
           </article>
         </section>
       }
+
+      <section id="popular">
+        <h3>Popular Documentation Pages</h3>
+        <ul>
+          {popularPages.map(page => (
+            <li key={page.url}>
+              <Link to={page.url}>{page.title}</Link>
+              <p>{page.description}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <section id="community">
         <article id="logos">

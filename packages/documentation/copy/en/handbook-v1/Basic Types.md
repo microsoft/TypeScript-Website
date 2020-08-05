@@ -16,7 +16,7 @@ The most basic datatype is the simple true/false value, which JavaScript and Typ
 let isDone: boolean = false;
 ```
 
-##   Number
+## Number
 
 As in JavaScript, all numbers in TypeScript are either floating point values or BigIntegers.
 These floating point numbers get the type `number`, while BigIntegers get the type `bigint`.
@@ -383,7 +383,6 @@ You may have noticed that so far, we've been using the `let` keyword instead of 
 The `let` keyword is actually a newer JavaScript construct that TypeScript makes available.
 You can read in the Handbook Reference on [Variable Declarations](/docs/handbook/variable-declarations.html) more about how `let` and `const` fix a lot of the problems with var.
 
-
 ## About `Number`, `String`, `Boolean`, `Symbol` and `Object`
 
 It can be tempting to think that the types `Number`, `String`, `Boolean`, `Symbol`, or `Object` are the same as the lowercase versions recommended above.
@@ -391,19 +390,19 @@ These types do not refer to the language primitives however, and almost never sh
 
 ```ts twoslash
 // @errors: 2339
-function reverse(s: String): String { 
-  return s.split("").reverse().join("")
+function reverse(s: String): String {
+  return s.split("").reverse().join("");
 }
 
-reverse("hello world")
+reverse("hello world");
 ```
 
 Instead, use the types `number`, `string`, `boolean`, `object` and `symbol`.
 
 ```ts twoslash
-function reverse(s: string): string { 
-  return s.split("").reverse().join("") 
+function reverse(s: string): string {
+  return s.split("").reverse().join("");
 }
 
-reverse("hello world")
+reverse("hello world");
 ```
