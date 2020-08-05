@@ -22,7 +22,7 @@ if (jon) {
   jon;
 }
 
-//O tipo '{name: string } | undefined' usa uma ferramenta do TypeScript
+//O tipo '{ name: string } | undefined' usa uma ferramenta do TypeScript
 //chamado de union types (união de tipagens). Uma union type é uma forma 
 //de declarar que um objeto pode ser uma de muitas coisas.
 //
