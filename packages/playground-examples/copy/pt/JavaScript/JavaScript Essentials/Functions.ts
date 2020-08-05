@@ -71,7 +71,7 @@ const add4 = (x: number, y: number): number => {
 //Isso é uma versão mais explícita de add2 - Existem casos
 //em que você talvez queira usar uma sintaxe explícita do tipo 
 //de retorno para dar espaço para trabalhar antes de começar.
-//Um pouco como o desenvolvimento orientado a testes recomenda
+//Um pouco como o desenvolvimento orientado a testes (TDD) recomenda
 //começar com um teste com falha, mas nesse caso, é com o formato
 //de uma função com falha.
 
