@@ -14,6 +14,9 @@ const os = require("os")
 const fs = require("fs")
 const exec = require("child_process").execSync
 const spawn = require("cross-spawn")
+const tar = require("tar-fs")
+const gunzip = require("gunzip-maybe")
+const https = require("https")
 
 const install = () => {
   return new Promise((resolve, reject) => {
@@ -38,13 +41,36 @@ const gitInit = () => {
   return true
 }
 
-const branch = "v2"
-const vLess = 2
-
-const getTar = ({ user, repo, path = "", name }) => {
-  const url = `https://codeload.github.com/${user}/${repo}/tar.gz/${branch}`
-  const cmd = `curl ${url} | tar -xz -C ${name} --strip=4 ${repo}-${vLess}/${path}`
-  exec(cmd, { stdio: "inherit" })
+const getTar = ({ user, repo, templatepath = "", name }) => {
+  return new Promise((resolve, reject) => {
+    console.log("Downloading template...", templatepath)
+    const ignorePrefix = "__INITIT_IGNORE__/"
+    const ignorepath = path.join(name, ignorePrefix)
+    const extractTar = tar.extract(name, {
+      map: header => {
+        const prefix = `${repo}-2/${templatepath}`
+        if (header.name.startsWith(prefix)) {
+          return Object.assign({}, header, {
+            name: header.name.substr(prefix.length),
+          })
+        } else {
+          return Object.assign({}, header, {
+            name: ignorePrefix + header.name,
+          })
+        }
+      },
+      ignore: filepath => {
+        const isInIgnoreFolder = !path.relative(ignorepath, filepath).startsWith("..")
+        return isInIgnoreFolder
+      },
+    })
+    https.get(`https://codeload.github.com/${user}/${repo}/tar.gz/v2`, response =>
+      response.pipe(gunzip()).pipe(extractTar)
+    )
+    console.log(`https://codeload.github.com/${user}/${repo}/tar.gz/v2`)
+    extractTar.on("error", reject)
+    extractTar.on("finish", resolve)
+  })
 }
 
 const create = async (opts = {}) => {
@@ -64,12 +90,12 @@ const create = async (opts = {}) => {
     fs.mkdirSync(name)
   }
 
-  getTar(
+  await getTar(
     Object.assign({}, opts, {
       name,
       user,
       repo,
-      path: paths.join("/"),
+      templatepath: paths.join("/"),
     })
   )
 
