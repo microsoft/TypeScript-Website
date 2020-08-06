@@ -57,7 +57,7 @@ export const indexCopy = {
   index_install: "安装 TypeScript",
   index_install_ref: `
   <p>你可以使用 npm 安装 TypeScript<pre>npm install -g typescript</pre>
-  <p>之后执行 <code>tsc</code> 来运行 TypeScript 编译器 <pre>npm install -g typescript</pre>
+  <p>之后执行 <code>tsc</code> 来运行 TypeScript 编译器 <pre>npx tsc</pre>
   `,
   index_releases: "季度发布",
   index_releases_pt1: "我们的下一个版本发布是 ",
