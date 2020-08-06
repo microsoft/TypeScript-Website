@@ -31,7 +31,9 @@ export const setupRedirects = (
     const fromArray = Object.keys(obj)
     fromArray.forEach(from => {
       const to = obj[from]
-      console.log(`Making redirect from ${from} to ${to}`)
+      if (process.env.CI) {
+        console.log(`Making redirect from ${from} to ${to}`)
+      }
       createRedirect({
         isPermanent: true,
         redirectInBrowser: true,
