@@ -63,3 +63,4 @@ declare module JSX {
 // @jsx: react-native
 export const helloWorld = () => <h1>Hello world</h1>;
 ````
+-->

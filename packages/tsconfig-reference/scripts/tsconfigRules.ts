@@ -161,7 +161,7 @@ export const defaultsForOptions = {
   strictNullChecks: "`false`, unless `strict` is set",
   suppressExcessPropertyErrors: "false",
   suppressImplicitAnyIndexErrors: "false",
-  target: "false",
+  target: "es5",
   traceResolution: "false",
   tsBuildInfoFile: ".tsbuildinfo",
   useDefineForClassFields: "false",
