@@ -386,8 +386,8 @@ export const setupPlayground = (
       } else {
         sidebarTabs.style.display = "none"
         sidebarContent.style.display = "none"
-        settingsContent.style.display = "block";
-        (document.querySelector(".playground-sidebar label") as any).focus()
+        settingsContent.style.display = "block"
+        ;(document.querySelector(".playground-sidebar label") as any).focus()
       }
       settingsToggle.parentElement!.classList.toggle("open")
     }
@@ -462,8 +462,8 @@ export const setupPlayground = (
   }
 
   // Ensure that the editor is full-width when the screen resizes
-  window.addEventListener('resize', () => {
-    sandbox.editor.layout();
+  window.addEventListener("resize", () => {
+    sandbox.editor.layout()
   })
 
   const ui = createUI()
