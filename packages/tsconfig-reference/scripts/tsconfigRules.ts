@@ -117,7 +117,7 @@ export const defaultsForOptions = {
   inlineSourceMap: "false",
   inlineSources: "false",
   isolatedModules: "false",
-  jsx: '`"preserve"`',
+  jsx: '`"react"`',
   jsxFactory: "`React.createElement`",
   keyofStringsOnly: "false",
   listEmittedFiles: "false",
