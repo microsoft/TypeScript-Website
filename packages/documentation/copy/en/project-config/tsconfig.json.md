@@ -71,6 +71,35 @@ Example `tsconfig.json` files:
   }
   ```
 
+## TSConfig Bases
+
+Depending on the JavaScript runtime environment which you intend to run your code in, there may be a base configuration which you can use at [github.com/tsconfig/bases](https://github.com/tsconfig/bases/).
+These are `tsconfig.json` files which your project extends from which simplifies your `tsconfig.json` by handling the runtime support.
+
+For example, if you were writing a project which uses Node.js version 12 and above, then you could use the npm module [`@tsconfig/node12`](https://www.npmjs.com/package/@tsconfig/node12)
+
+```json
+{
+  "extends": "@tsconfig/node12/tsconfig.json",
+
+  "compilerOptions": {
+    "preserveConstEnums": true
+  },
+
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}
+```
+
+This lets your `tsconfig.json` focus on the unique choices for your project, and not all of the runtime mechanics. There are a few tsconfig bases already, and we're hoping the community can add more for different environments.
+
+- [Recommended](https://www.npmjs.com/package/@tsconfig/recommended)
+- [Node 10](https://www.npmjs.com/package/@tsconfig/node10)
+- [Node 12](https://www.npmjs.com/package/@tsconfig/node12)
+- [Deno](https://www.npmjs.com/package/@tsconfig/deno)
+- [React Native](https://www.npmjs.com/package/@tsconfig/react-native)
+- [Svelte](https://www.npmjs.com/package/@tsconfig/svelte)
+
 ## Details
 
 The `"compilerOptions"` property can be omitted, in which case the compiler's defaults are used. See our full list of supported [Compiler Options](/tsconfig).
