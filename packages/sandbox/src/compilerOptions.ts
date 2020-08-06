@@ -40,6 +40,8 @@ export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monac
     allowJs: config.useJavaScript,
     declaration: true,
 
+    importHelpers: false,
+
     experimentalDecorators: true,
     emitDecoratorMetadata: true,
     moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
