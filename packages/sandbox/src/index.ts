@@ -150,7 +150,12 @@ export const createTypeScriptSandbox = (
     ? monaco.languages.typescript.javascriptDefaults
     : monaco.languages.typescript.typescriptDefaults
 
-  defaults.setDiagnosticsOptions({ ...defaults.getDiagnosticsOptions(), noSemanticValidation: false })
+  defaults.setDiagnosticsOptions({
+    ...defaults.getDiagnosticsOptions(),
+    noSemanticValidation: false,
+    // This is when tslib is not found
+    diagnosticCodesToIgnore: [2354],
+  })
 
   // In the future it'd be good to add support for an 'add many files'
   const addLibraryToRuntime = (code: string, path: string) => {

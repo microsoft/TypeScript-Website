@@ -522,7 +522,8 @@ let v = new ScientificCalculator(2).multiply(5).sin().add(1).currentValue();
 Without `this` types, `ScientificCalculator` would not have been able to extend `BasicCalculator` and keep the fluent interface.
 `multiply` would have returned `BasicCalculator`, which doesn't have the `sin` method.
 However, with `this` types, `multiply` returns `this`, which is `ScientificCalculator` here.
-Index types
+
+## Index types
 
 With index types, you can get the compiler to check code that uses dynamic property names.
 For example, a common JavaScript pattern is to pick a subset of properties from an object:
