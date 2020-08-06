@@ -117,7 +117,6 @@ export const defaultsForOptions = {
   inlineSourceMap: "false",
   inlineSources: "false",
   isolatedModules: "false",
-  jsx: '`"react"`',
   jsxFactory: "`React.createElement`",
   keyofStringsOnly: "false",
   listEmittedFiles: "false",
