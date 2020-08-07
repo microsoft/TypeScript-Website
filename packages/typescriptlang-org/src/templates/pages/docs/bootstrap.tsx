@@ -37,7 +37,7 @@ const Index: React.FC<Props> = (props) => {
         <ButtonGrid
           buttons={[
             {
-              href: "https://github.com/jaredpalmer/tsdx#readme",
+              href: "https://tsdx.io",
               blurb: i("doc_node_npm_tsdx_blurb"),
               title: "TSDX",
             },

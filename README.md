@@ -99,7 +99,7 @@ The code samples used in the Playground split across many languages
 
 # Infra Packages
 
-Most of of these packages use [`tsdx`](https://github.com/jaredpalmer/tsdx).
+Most of of these packages use [`tsdx`](https://tsdx.io).
 
 ## TS Twoslash
 
