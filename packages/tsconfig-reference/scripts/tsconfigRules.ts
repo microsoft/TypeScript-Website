@@ -33,6 +33,7 @@ export const recommended: CompilerOptionName[] = [
   "strictFunctionTypes",
   "noImplicitThis",
   "noImplicitAny",
+  "esModuleInterop",
 ];
 
 type RootProperties = "files" | "extends" | "include" | "exclude";
