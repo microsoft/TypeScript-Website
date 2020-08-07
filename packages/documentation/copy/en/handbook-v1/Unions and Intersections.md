@@ -256,7 +256,7 @@ function networkStatus(state: NetworkState): string {
 ## Union Exhaustiveness checking
 
 We would like the compiler to tell us when we don't cover all variants of the discriminated union.
-For example, if we add `Triangle` to `Shape`, we need to update `area` as well:
+For example, if we add `NetworkFromCachedState` to `NetworkState`, we need to update `logger` as well:
 
 ```ts twoslash
 // @errors: 2366
