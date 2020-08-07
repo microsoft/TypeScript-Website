@@ -20,8 +20,10 @@ When the module **does not** explicitly specify a default export.
 For example, without `allowSyntheticDefaultImports` as true:
 
 ```ts twoslash
+// @errors: 1259
 // @checkJs
 // @allowJs
+// @esModuleInterop: false
 // @filename: utilFunctions.js
 // @noImplicitAny: false
 const getStringLength = (str) => str.length;
@@ -50,7 +52,5 @@ module.exports = allFunctions;
 module.exports.default = allFunctions;
 ```
 
-Turning on this compiler flag will also enable [`allowSyntheticDefaultImports`](#allowSyntheticDefaultImports).
-
-This does not affect the JavaScript emitted by TypeScript, it only for the type checking.
+This flag does not affect the JavaScript emitted by TypeScript, it only for the type checking.
 This option brings the behavior of TypeScript in-line with Babel, where extra code is emitted to make using a default export of a module more ergonomic.
