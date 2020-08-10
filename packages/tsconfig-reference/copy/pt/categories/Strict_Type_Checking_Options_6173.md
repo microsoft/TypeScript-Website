@@ -2,7 +2,7 @@
 display: "Verificações rígidas"
 ---
 
-Recomendamos utilizar [compiler option `strict`](#strict) para aceitar todas as melhorias possíveis a medida que são feitas.
+Recomendamos utilizar [a opção `strict`](#strict) para aceitar todas as melhorias possíveis a medida que são feitas.
 
 TypeScript suporta um amplo espectro dos padrões do Javascript e padrões para permitir bastante flexibilidade em acomodar estes estilos.
 Freqüentemente, a segurança e escalabiliade em potencial do código base pode estar em conflito com alguma dessas técnicas.
