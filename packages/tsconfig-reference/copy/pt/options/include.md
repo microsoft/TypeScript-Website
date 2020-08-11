@@ -3,7 +3,7 @@ display: "Include"
 oneline: "Arquivos ou padrões a serem incluídos neste projeto"
 ---
 
-Especifica uma matriz de nomes de arquivos ou padrões a serem incluídos no programa.
+Especifica um array de nomes de arquivos ou padrões a serem incluídos no programa.
 Esses nomes de arquivo são resolvidos em relação ao diretório que contém o arquivo tsconfig.json.
 
 ```json
