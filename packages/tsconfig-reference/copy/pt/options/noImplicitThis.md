@@ -1,6 +1,6 @@
 ---
 display: "Sem 'This' Implícito"
-oneline: "Emite erros quando 'this' poderia ser qualquer um"
+oneline: "Emite erro nas expressões 'this' com tipo 'any' implícito"
 ---
 
 Emite erro nas expressões 'this' com tipo 'any' implícito.
