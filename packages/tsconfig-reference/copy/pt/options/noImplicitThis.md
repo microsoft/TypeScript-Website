@@ -5,7 +5,7 @@ oneline: "Emite erro nas expressões 'this' com tipo 'any' implícito"
 
 Emite erro nas expressões 'this' com tipo 'any' implícito.
 
-Por exemplo, a classe abaixo retorna uma função que tenta acessar `this.largura` e `this.area` – mas o contexto para `this` dentro da função dentro de `funcaoObterArea` não é a instância do Retângulo.
+Por exemplo, a classe abaixo retorna uma função que tenta acessar `this.largura` e `this.area` – mas o contexto para `this` dentro da função dentro de `funcaoObterArea` não é a instância de `Retangulo`.
 
 ```ts twoslash
 // @errors: 2683
