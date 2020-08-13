@@ -10,7 +10,4 @@ export const navCopy = {
   nav_tools: "Probar TypeScript!",
   nav_search_placeholder: "Buscar en documentación",
   nav_search_aria: "Búsqueda en el sitio de TypeScript",
-  nav_beta: "Búsqueda en el sitio de TypeScript",
-  nav_beta_notification:
-    "Nota: esta página se encuentra en la fase beta de desarrollo, no confíes en la URL y <a>reporta incidencias en microsoft/TypeScript-Website</a>",
 }
