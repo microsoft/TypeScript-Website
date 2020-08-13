@@ -13,9 +13,6 @@ export const navCopy = {
   nav_tools: "ツール",
   nav_search_placeholder: "検索",
   nav_search_aria: "TypeScript サイト内を検索",
-  nav_beta: "Search the TypeScript site",
-  nav_beta_notification:
-    "Note: we are testing out the new v2 site over the weekend, if we have missed something you rely on please <a>file issues on microsoft/TypeScript-Website</a>.",
   // let me know if you can't make this work in your lang:
   // TypeScript X.Y [stable][between?]Z.Y[beta/rc]
   nav_version_stable_prefix: " が最新バージョンです",
