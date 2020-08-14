@@ -1,5 +1,5 @@
 ---
-display: "Prevenir Erros de Implicit Any Index"
+display: "Prevenir erros de implicit any index"
 oneline: "Remove o aviso ao usar índices de string para acessar propriedades desconhecidas"
 ---
 
