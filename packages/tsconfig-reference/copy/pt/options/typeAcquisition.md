@@ -1,6 +1,6 @@
 ---
 display: "Aquisição de tipo"
-oneline: "Conjunto de opções para Aquisição de Tipo Automática no JavaScript"
+oneline: "Conjunto de opções para aquisição de tipo automática no JavaScript"
 ---
 
 Quando você tem um projeto JavaScript no seu editor, TypeScript providenciará tipos para o seu `node_modules` automaticamente utilizando o conjunto de definições de `@types`, DefinitelyTyped.
