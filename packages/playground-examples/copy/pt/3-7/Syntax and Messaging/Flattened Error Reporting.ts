@@ -1,7 +1,7 @@
 //// { compiler: {  }, order: 3 }
 
-// As mensagens de erros no TypeScript pode ser as vezes um pouco verbosas...
-// Com a versão 3.7, nós tivemos colocado poucos casos a qual poderia ser
+// Às vezes, as mensagens de erros no TypeScript pode ser um pouco verbosas...
+// Com a versão 3.7, nós tratamos alguns casos que poderiam ser
 // particularmente notórios.
 
 // Propriedades aninhadas
