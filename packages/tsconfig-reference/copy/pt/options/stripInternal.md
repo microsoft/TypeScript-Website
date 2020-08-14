@@ -12,7 +12,7 @@ Se você estiver procurando por uma ferramenta para lidar com níveis adicionais
  * Dias disponíveis na semana
  * @internal
  */
-export const daysInAWeek = 7;
+export const diasNaSemana = 7;
 
 /** Calcule quanto alguém ganha em uma semana */
 export function weeklySalary(dayRate: number) {
