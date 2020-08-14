@@ -48,7 +48,7 @@ function fn(x: string) {
 }
 
 // Por fim, uma atribuição insegura, porém não detectada.
-const m: Methodish = {
+const m: PareceUmMetodo = {
   func: fn,
 };
 m.func(10);
