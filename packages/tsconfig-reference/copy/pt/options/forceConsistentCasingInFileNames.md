@@ -1,6 +1,6 @@
 ---
-display: "Mantenha A Consistência Nos Nomes Do Arquivo"
-oneline: "Certifique-se de verificar se as letras maiúsculas e minúsculas estão corretas nas importações"
+display: "Manter a consistência nos nomes do arquivo"
+oneline: "Verifica se as letras maiúsculas e minúsculas estão corretas nas importações"
 ---
 
 TypeScript diferencia letras maiúsculas e minúsculas no arquivo que está sendo executado.
