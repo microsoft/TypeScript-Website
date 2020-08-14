@@ -7,16 +7,16 @@ Quando definido como `true`, o TypeScript gerará um erro quando uma propriedade
 
 ```ts twoslash
 // @errors: 2564
-class UserAccount {
-  name: string;
-  accountType = "user";
+class Conta {
+  nome: string;
+  tipo = "usuario";
 
   email: string;
-  address: string | undefined;
+  endereco: string | undefined;
 
-  constructor(name: string) {
-    this.name = name;
-    // Note quer this.email não foi atribuído
+  constructor(nome: string) {
+    this.nome = nome;
+    // Note que this.email não foi atribuído
   }
 }
 ```
