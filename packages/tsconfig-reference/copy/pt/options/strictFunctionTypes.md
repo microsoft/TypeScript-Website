@@ -44,7 +44,7 @@ type PareceUmMetodo = {
 };
 
 function fn(x: string) {
-  console.log("Hello, " + x.toLowerCase());
+  console.log("Olá, " + x.toLowerCase());
 }
 
 // Por fim, uma atribuição insegura, porém não detectada.
