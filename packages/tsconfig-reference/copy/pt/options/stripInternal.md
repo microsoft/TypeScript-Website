@@ -49,11 +49,11 @@ Com `stripInternal` definido como `true` o `d.ts` emitido será editado.
  * Dias disponíveis na semana
  * @internal
  */
-export const daysInAWeek = 7;
+export const diasNaSemana = 7;
 
 /** Calcule quanto alguém ganha em uma semana */
-export function weeklySalary(dayRate: number) {
-  return daysInAWeek * dayRate;
+export function selarioSemanal(porDia: number) {
+  return diasNaSemana * porDia;
 }
 ```
 
