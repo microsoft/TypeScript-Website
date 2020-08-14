@@ -1,5 +1,5 @@
 ---
-display: "Decorators Experimentais"
+display: "Decorators experimentais"
 oneline: "Habilita suporte aos decorators do TC39 stage 2"
 ---
 
