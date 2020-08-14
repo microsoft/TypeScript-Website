@@ -23,7 +23,7 @@ class Conta {
 
 No caso acima:
 
-- `this.name` é atribuído especificamente.
-- `this.accountType` é atribuído por padrão.
+- `this.nome` é atribuído especificamente.
+- `this.tipo` é atribuído por padrão.
 - `this.email` não é atribuído e gera um erro.
-- `this.address` é declarado como possível `undefined`, o que significa que não precisa ser atribuído.
+- `this.endereco` é declarado como possível `undefined`, o que significa que não precisa ser atribuído.
