@@ -1,9 +1,9 @@
 ---
 display: "Manter Enums Constantes"
-oneline: "Não apague as declarações `const enum` no código gerado"
+oneline: "Não apaga as declarações `const enum` no código gerado"
 ---
 
-Não apague as declarações `const enum` em seu código gerado. `const enum` provê uma maneira de reduzir a quantidade de memória utilizada por sua aplicação em tempo de execução emitindo o valor do enum ao invés de sua referência.
+Não apaga as declarações `const enum` em seu código gerado. `const enum` provê uma maneira de reduzir a quantidade de memória utilizada por sua aplicação em tempo de execução emitindo o valor do enum ao invés de sua referência.
 
 Por exemplo nesse código TypeScript:
 
