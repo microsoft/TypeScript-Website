@@ -21,7 +21,7 @@ let func: StringOrNumberFunc = fn;
 func(10);
 ```
 
-Com `strictFunctionTypes` _on_, o erro é detectado corretamente:
+Com `strictFunctionTypes` ativado, o erro é detectado corretamente:
 
 ```ts twoslash
 // @errors: 2322
