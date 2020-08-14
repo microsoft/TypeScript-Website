@@ -32,7 +32,7 @@ function fn(x: string) {
 type StringOuNumeroFn = (ns: string | number) => void;
 
 // Atribuição não segura é prevenida
-let func: StringOrNumberFunc = fn;
+let func: StringOuNumeroFn = fn;
 ```
 
 Durante o desenvolvimento desse recurso, descobrimos um grande número de hierarquias de classes profundamente não seguras, incluindo algumas no DOM.
