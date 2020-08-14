@@ -1,5 +1,5 @@
 ---
-display: "Aquisição de Tipo"
+display: "Aquisição de tipo"
 oneline: "Conjunto de opções para Aquisição de Tipo Automática no JavaScript"
 ---
 
