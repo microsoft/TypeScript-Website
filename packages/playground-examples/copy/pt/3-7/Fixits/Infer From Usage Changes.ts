@@ -1,9 +1,9 @@
 //// { compiler: {  noImplicitAny: false }, order: 2 }
 
-// Na versão 3.7 do TypeScript há existência de 'dedução por uso'
-// deixando o codigo mais inteligênte, Você agora poderá usar
-// uma lita de importantes tipos conhecidos (string, number, array, Promise)
-// e deduzer se o uso do tipo combina com a API de objetos.
+// Na versão 3.7 do TypeScript a correção 'dedução por uso'
+// ficou mais inteligente. Ela agora poderá usar uma lista conhecida
+// de tipos importantes (string, number, array, Promise)
+// e deduzir se o uso do tipo combina com a API destes objetos.
 
 // Para o próximos pequenos exemplos, selecione o parâmetro das
 // funções, clique na lâmpada e selecione _Infer parameter types from usage_ (Deduzir os tipos de parâmetros pelo uso)
