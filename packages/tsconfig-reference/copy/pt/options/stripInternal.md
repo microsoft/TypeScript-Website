@@ -15,8 +15,8 @@ Se você estiver procurando por uma ferramenta para lidar com níveis adicionais
 export const diasNaSemana = 7;
 
 /** Calcule quanto alguém ganha em uma semana */
-export function weeklySalary(dayRate: number) {
-  return daysInAWeek * dayRate;
+export function salarioSemanal(porDia: number) {
+  return diasNaSemana * porDia;
 }
 ```
 
