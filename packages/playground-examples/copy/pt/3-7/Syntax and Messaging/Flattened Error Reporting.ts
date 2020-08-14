@@ -11,8 +11,8 @@ let b = { b: { c: { d: { e: 12 } } } };
 
 a = b;
 
-// Antes, is levaria duas linhas de código por propriedade aninhada,
-// a qual rapidamente significava que as pessoas aprendiam a ler
+// Antes, isso levaria a duas linhas de código por propriedade aninhada.
+// Isso rapidamente significou que as pessoas aprenderam a ler
 // mensagens de erro lendo a primeira e última linha de mensagem
 // de erro.
 
