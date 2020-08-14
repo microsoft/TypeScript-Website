@@ -1,5 +1,5 @@
 ---
-display: "Prevenir Erros de Propriedades em Excesso"
+display: "Prevenir erros de propriedades em excesso"
 oneline: "Permitir que propriedades adicionais sejam definidas durante a criação de tipos"
 ---
 
