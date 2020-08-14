@@ -1,5 +1,5 @@
 ---
-display: "Remover Internal"
+display: "Remover internal"
 oneline: "Remove as declarações que têm '@internal' em seus comentários JSDoc"
 ---
 
