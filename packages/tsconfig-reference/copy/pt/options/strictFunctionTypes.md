@@ -26,7 +26,7 @@ Com `strictFunctionTypes` ativado, o erro é detectado corretamente:
 ```ts twoslash
 // @errors: 2322
 function fn(x: string) {
-  console.log("Hello, " + x.toLowerCase());
+  console.log("Olá, " + x.toLowerCase());
 }
 
 type StringOrNumberFunc = (ns: string | number) => void;
