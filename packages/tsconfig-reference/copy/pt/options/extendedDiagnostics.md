@@ -1,5 +1,5 @@
 ---
-display: "Diagnóstico Estendido"
+display: "Diagnóstico estendido"
 oneline: "Inclui diversas informações de diagnóstico depois de uma compilação."
 ---
 
