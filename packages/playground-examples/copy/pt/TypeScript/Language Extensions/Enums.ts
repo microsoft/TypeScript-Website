@@ -69,7 +69,7 @@ const handleMouseAction = (action: MouseAction) => {
 };
 
   // Se você olhar o JavaScript transpilado, você poderá ver
-  // como os outtros enums existem como objetos e funções, apesar
+  // como os outros enums existem como objetos e funções, apesar
   // de que MouseAction não estará lá.
 
   // Isto também é verdade para a conferência contra MouseAction.MouseDown
