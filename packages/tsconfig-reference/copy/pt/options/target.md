@@ -1,5 +1,5 @@
 ---
-display: "Target"
+display: "Runtime alvo"
 oneline: "Defina o runtime suportado da linguagem JavaScript para ser transpilado"
 ---
 
