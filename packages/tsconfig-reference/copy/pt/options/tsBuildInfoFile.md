@@ -1,5 +1,5 @@
 ---
-display: "Arquivo de Informações da Build do TS"
+display: "Arquivo de informações da build do TS"
 oneline: "Conjunto de pastas para os arquivos .tsbuildinfo"
 ---
 
