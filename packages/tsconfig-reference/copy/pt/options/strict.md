@@ -1,5 +1,5 @@
 ---
-display: "Strict"
+display: "Modo estrito"
 oneline: "Ativa as regras de verificação de tipo mais detalhadas do TypeScript"
 ---
 
