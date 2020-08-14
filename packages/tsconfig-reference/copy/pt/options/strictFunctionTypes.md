@@ -29,7 +29,7 @@ function fn(x: string) {
   console.log("Olá, " + x.toLowerCase());
 }
 
-type StringOrNumberFunc = (ns: string | number) => void;
+type StringOuNumeroFn = (ns: string | number) => void;
 
 // Atribuição não segura é prevenida
 let func: StringOrNumberFunc = fn;
