@@ -30,11 +30,11 @@ Com a opção definida como `false` (padrão):
  * Dias disponíveis na semana
  * @internal
  */
-export const daysInAWeek = 7;
+export const diasNaSemana = 7;
 
 /** Calcule quanto alguém ganha em uma semana */
-export function weeklySalary(dayRate: number) {
-  return daysInAWeek * dayRate;
+export function salarioSemanal(porDia: number) {
+  return diasNaSemana * porDia;
 }
 ```
 
