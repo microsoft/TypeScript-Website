@@ -1,5 +1,5 @@
 ---
-display: "Resolução de Rastreamento"
+display: "Resolução de rastreamento"
 oneline: "Fazer log de caminhos ao resolver todos os módulos"
 ---
 
