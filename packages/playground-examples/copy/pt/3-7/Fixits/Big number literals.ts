@@ -1,7 +1,7 @@
 //// { compiler: {  target: 99 }, order: 1 }
 
-// Você sabia que existe um limite de tão grande pode
-// ser um número que você pode representar enquanto
+// Você sabia que existe um limite para o maior
+// número que você pode representar enquanto
 // você está escrevendo em Javascript?
 
 const maxHighValue = 9007199254740991;
