@@ -5,10 +5,10 @@ packages/typescriptlang-org/src/copy/ja/**/*.md @sasurau4 @Quramy @Naturalclar @
 packages/documentation/copy/ja/**/*.ts @sasurau4 @Quramy @Naturalclar @Takepepe
 
 # Collaborators for Portuguese Translation of the Website
-packages/playground-examples/copy/pt/**/*.md @khaosdoctor @danilofuchs 
-packages/tsconfig-reference/copy/pt/**/*.md @khaosdoctor @danilofuchs 
-packages/typescriptlang-org/src/copy/pt/**/*.md @khaosdoctor @danilofuchs 
-packages/documentation/copy/pt/**/*.ts @khaosdoctor @danilofuchs 
+packages/playground-examples/copy/pt/**/*.md @khaosdoctor @danilofuchs @orta
+packages/tsconfig-reference/copy/pt/**/*.md @khaosdoctor @danilofuchs  @orta
+packages/typescriptlang-org/src/copy/pt/**/*.md @khaosdoctor @danilofuchs  @orta
+packages/documentation/copy/pt/**/*.ts @khaosdoctor @danilofuchs  @orta
 
 # Collaborators for Spanish Translation of the Website
 packages/playground-examples/copy/es/**/*.md @KingDarBoja
