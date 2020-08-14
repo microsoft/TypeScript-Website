@@ -14,7 +14,7 @@ function pushNumber(arr) {
   arr.push(12);
 }
 
-// Deduzir uma promisse
+// Deduzir uma Promise
 
 function awaitPromise(promise) {
   promise.then(value => console.log(value));
