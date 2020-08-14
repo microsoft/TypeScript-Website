@@ -4,8 +4,8 @@
 // uma variável const para uma let quando o valor
 // for reatribuído.
 
-// Você pode tentar isso destacando o erro abaixo
-// e optando por executar a correção rápida.
+// Você pode experimentar isso destacando o erro abaixo
+// e optando por executar o _Quick Fix_ (Correção rápida).
 
 const displayName = "Andrew";
 
