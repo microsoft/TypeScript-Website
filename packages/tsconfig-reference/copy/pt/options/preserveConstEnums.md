@@ -1,5 +1,5 @@
 ---
-display: "Preserve Const Enums"
+display: "Mantenha Enums Constantes"
 oneline: "Não apague as declarações `const enum` no código gerado"
 ---
 
@@ -53,4 +53,4 @@ if (selectedAlbum === Album.JimmyEatWorldFutures) {
 }
 ```
 
-Isso essencialmente faz com que `const enums` seja uma funcionalidade apenas do código-fonte,
+Isso essencialmente faz com que `const enums` seja uma funcionalidade apenas do código-fonte.
