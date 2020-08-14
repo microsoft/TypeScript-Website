@@ -1,11 +1,13 @@
 # Collaborators for Japanese Translation of the Website
 packages/playground-examples/copy/ja/**/*.md @sasurau4 @Quramy @Naturalclar @Takepepe
+packages/playground-examples/copy/ja/**/*.ts @sasurau4 @Quramy @Naturalclar @Takepepe
 packages/tsconfig-reference/copy/ja/**/*.md @sasurau4 @Quramy @Naturalclar @Takepepe
 packages/typescriptlang-org/src/copy/ja/**/*.md @sasurau4 @Quramy @Naturalclar @Takepepe
 packages/documentation/copy/ja/**/*.ts @sasurau4 @Quramy @Naturalclar @Takepepe
 
 # Collaborators for Portuguese Translation of the Website
 packages/playground-examples/copy/pt/**/*.md @khaosdoctor @danilofuchs @orta
+packages/playground-examples/copy/pt/**/*.ts @khaosdoctor @danilofuchs @orta
 packages/tsconfig-reference/copy/pt/**/*.md @khaosdoctor @danilofuchs  @orta
 packages/tsconfig-reference/copy/pt/options/files.md @orta
 packages/typescriptlang-org/src/copy/pt/**/*.md @khaosdoctor @danilofuchs  @orta
@@ -13,14 +15,16 @@ packages/documentation/copy/pt/**/*.ts @khaosdoctor @danilofuchs  @orta
 
 # Collaborators for Spanish Translation of the Website
 packages/playground-examples/copy/es/**/*.md @KingDarBoja
+packages/playground-examples/copy/es/**/*.ts @KingDarBoja
 packages/tsconfig-reference/copy/es/**/*.md @KingDarBoja
 packages/typescriptlang-org/src/copy/es/**/*.md @KingDarBoja
 packages/documentation/copy/es/**/*.ts @KingDarBoja
 
 # Collaborators for Chinese Translation of the Website
-packages/playground-examples/copy/zh/**/*.md @Kingwl 
-packages/tsconfig-reference/copy/zh/**/*.md @Kingwl 
-packages/typescriptlang-org/src/copy/zh/**/*.md @Kingwl 
-packages/documentation/copy/zh/**/*.ts @Kingwl 
+packages/playground-examples/copy/zh/**/*.md @Kingwl
+packages/playground-examples/copy/zh/**/*.ts @Kingwl
+packages/tsconfig-reference/copy/zh/**/*.md @Kingwl
+packages/typescriptlang-org/src/copy/zh/**/*.md @Kingwl
+packages/documentation/copy/zh/**/*.ts @Kingwl
 
 
