@@ -1,11 +1,12 @@
 ---
-display: "Importação de Auxiliares"
+display: "Importar Auxiliares"
 oneline: "Permite importar funções auxiliares por projeto, ao invés de incluir em arquivos individuais."
 
 ---
-Para algumas operações de nível mais baixo, o TypeScript pode usar alguns códigos auxiliares para operações como extensão de classes, espalhar arrays ou objetos e para operações async. Por padrão esses auxiliares são inseridos em cada arquivo utilizado. Isso pode provocar duplicação de códigos se o mesmo auxiliar for usado em diferentes módulos.
 
-Se o `importHelpers` estiver ligado, as funções auxiliares serão importadas do módulo [tslib](https://www.npmjs.com/package/tslib).Você precisa ter certeza que o módulo `tslib` pode ser importado no runtime. Isso afeta apenas módulos; Os arquivos de scripts globais não tentarão importar módulos.
+Para algumas operações de mais baixo nível, o TypeScript pode usar alguns códigos auxiliares para operações como extensão de classes, fazer spread de arrays ou objetos e para operações async. Por padrão esses auxiliares são inseridos em cada arquivo utilizado. Isso pode provocar duplicação de códigos se o mesmo auxiliar for usado em diferentes módulos.
+
+Se `importHelpers` estiver ligado, as funções auxiliares serão importadas do módulo [tslib](https://www.npmjs.com/package/tslib). Você precisa ter certeza que o módulo `tslib` pode ser importado no runtime. Isso afeta apenas módulos; Os arquivos de scripts globais não tentarão importar módulos.
 
 Exemplo com esse TypeScript:
 
