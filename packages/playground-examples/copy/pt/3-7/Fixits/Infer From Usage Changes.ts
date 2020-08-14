@@ -8,7 +8,7 @@
 // Para o próximos pequenos exmplos, selecione o parâmetro das
 // funções, clique na lâmpada e selecione "Deduzier os tipos de Parâmetros..."
 
-// Deduzir um array de número
+// Deduzir um array de números
 
 function pushNumber(arr) {
   arr.push(12);
