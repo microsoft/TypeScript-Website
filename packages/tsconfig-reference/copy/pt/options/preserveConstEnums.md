@@ -1,5 +1,5 @@
 ---
-display: "Mantenha Enums Constantes"
+display: "Manter Enums Constantes"
 oneline: "Não apague as declarações `const enum` no código gerado"
 ---
 
@@ -14,13 +14,13 @@ const enum Album {
   DogFashionDiscoAdultery = 3
 }
 
-const selectedAlbum = Album.JimmyEatWorldFutures;
-if (selectedAlbum === Album.JimmyEatWorldFutures) {
-  console.log("That is a great choice.");
+const albumSelecionado = Album.JimmyEatWorldFutures;
+if (albumSelecionado === Album.JimmyEatWorldFutures) {
+  console.log("Excelente escolha.");
 }
 ```
 
-O comportamento padrão `const enum` é converter qualquer `Album.Something` para o número literal correspondente, além de remover a referência do enum do JavaScript completamente.
+O comportamento padrão `const enum` é converter qualquer `Album.AlgumaCoisa` para o literal correspondente, além de remover a referência do enum do JavaScript completamente.
 
 ```ts twoslash
 // @showEmit
@@ -30,9 +30,9 @@ const enum Album {
   DogFashionDiscoAdultery = 3
 }
 
-const selectedAlbum = Album.JimmyEatWorldFutures;
-if (selectedAlbum === Album.JimmyEatWorldFutures) {
-  console.log("That is a great choice.");
+const albumSelecionado = Album.JimmyEatWorldFutures;
+if (albumSelecionado === Album.JimmyEatWorldFutures) {
+  console.log("Excelente escolha.");
 }
 ```
 
@@ -47,9 +47,9 @@ const enum Album {
   DogFashionDiscoAdultery = 3
 }
 
-const selectedAlbum = Album.JimmyEatWorldFutures;
-if (selectedAlbum === Album.JimmyEatWorldFutures) {
-  console.log("That is a great choice.");
+const albumSelecionado = Album.JimmyEatWorldFutures;
+if (albumSelecionado === Album.JimmyEatWorldFutures) {
+  console.log("Excelente escolha.");
 }
 ```
 

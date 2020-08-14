@@ -5,11 +5,11 @@
 // e para cada opção é assinalado um número incrementado por um.
 // Isso é útil quando o valor em si não importa.
 
-enum CompassDirection {
-  North,
-  East,
-  South,
-  West,
+enum DirecaoBussola {
+  Norte,
+  Leste,
+  Sul,
+  Oeste,
 }
 
 // Quando se escreve uma opção do enum, o valor é atribuido;
@@ -26,25 +26,25 @@ enum StatusCodes {
 
 // Você referencia um enum usando EnumName.Value
 
-const startingDirection = CompassDirection.East;
-const currentStatus = StatusCodes.OK;
+const direcaoInicial = DirecaoBussola.Leste;
+const statusAtual = StatusCodes.OK;
 
 // Enums suportam o acesso ao dado em ambos os lados: Da chave
 // ao valor e do valor a chave.
 
-const okNumber = StatusCodes.OK;
-const okNumberIndex = StatusCodes["OK"];
+const ok = StatusCodes.OK;
+const indiceOk = StatusCodes["OK"];
 const stringBadRequest = StatusCodes[400];
 
 // Enums podem ser de diferentes tipos, sendo o tipo string mais comum.
 // Quando se usa string, o debug da aplicação pode ser mais fácil de ser
 // realizado porque o valor em tempo de execução não requer que você olhe o número.
 
-enum GamePadInput {
-  Up = "UP",
-  Down = "DOWN",
-  Left = "LEFT",
-  Right = "RIGHT",
+enum entradaGamePad {
+  Cima = "UP",
+  Baixo = "DOWN",
+  Esquerda = "LEFT",
+  Direita = "RIGHT",
 }
 
 // Se você quer reduzir o número de objetos em tempo de
@@ -63,7 +63,7 @@ const enum MouseAction {
 const handleMouseAction = (action: MouseAction) => {
   switch (action) {
     case MouseAction.MouseDown:
-      console.log("Mouse Down");
+      console.log("Clique");
       break;
   }
 };
