@@ -5,8 +5,8 @@
 // uma lita de importantes tipos conhecidos (string, number, array, Promise)
 // e deduzer se o uso do tipo combina com a API de objetos.
 
-// Para o próximos pequenos exmplos, selecione o parâmetro das
-// funções, clique na lâmpada e selecione "Deduzier os tipos de Parâmetros..."
+// Para o próximos pequenos exemplos, selecione o parâmetro das
+// funções, clique na lâmpada e selecione _Infer parameter types from usage_ (Deduzir os tipos de parâmetros pelo uso)
 
 // Deduzir um array de números
 
