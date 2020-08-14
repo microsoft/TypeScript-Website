@@ -1,5 +1,5 @@
 ---
-display: "Inicialização de Propriedade Restrita"
+display: "Inicialização restrita de propriedade"
 oneline: "Garante que todas as propriedades da classe correspondam aos seus tipos depois que o construtor finalizar"
 ---
 
