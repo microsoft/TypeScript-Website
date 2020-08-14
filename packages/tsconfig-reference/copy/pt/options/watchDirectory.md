@@ -1,5 +1,5 @@
 ---
-display: "watchDirectory"
+display: "Observar Diretório"
 oneline: "Determina como os diretórios são observados"
 ---
 
