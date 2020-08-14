@@ -1,5 +1,5 @@
 ---
-display: "watchFile"
+display: "Observar Arquivo"
 oneline: "Qual técnica o observador de arquivos deve usar"
 ---
 
