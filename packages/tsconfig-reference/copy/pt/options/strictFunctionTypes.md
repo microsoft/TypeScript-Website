@@ -39,7 +39,7 @@ Durante o desenvolvimento desse recurso, descobrimos um grande número de hierar
 Por causa disso, a configuração apenas se aplica a funções escritas na sintaxe _function_, não àquelas na sintaxe _method_:
 
 ```ts twoslash
-type Methodish = {
+type PareceUmMetodo = {
   func(x: string | number): void;
 };
 
