@@ -3,6 +3,7 @@ title: Utility Types
 layout: docs
 permalink: /docs/handbook/utility-types.html
 oneline: Types which are globally included in TypeScript
+translatable: true
 ---
 
 TypeScript provides several utility types to facilitate common type transformations. These utilities are available globally.
@@ -25,11 +26,11 @@ function updateTodo(todo: Todo, fieldsToUpdate: Partial<Todo>) {
 
 const todo1 = {
   title: "organize desk",
-  description: "clear clutter"
+  description: "clear clutter",
 };
 
 const todo2 = updateTodo(todo1, {
-  description: "throw out trash"
+  description: "throw out trash",
 });
 ```
 
@@ -46,7 +47,7 @@ interface Todo {
 }
 
 const todo: Readonly<Todo> = {
-  title: "Delete inactive users"
+  title: "Delete inactive users",
 };
 
 todo.title = "Hello";
@@ -76,10 +77,10 @@ type Page = "home" | "about" | "contact";
 const nav: Record<Page, PageInfo> = {
   about: { title: "about" },
   contact: { title: "contact" },
-  home: { title: "home" }
+  home: { title: "home" },
 };
 
-nav.about
+nav.about;
 //      ^?
 ```
 
@@ -100,10 +101,10 @@ type TodoPreview = Pick<Todo, "title" | "completed">;
 
 const todo: TodoPreview = {
   title: "Clean room",
-  completed: false
+  completed: false,
 };
 
-todo
+todo;
 // ^?
 ```
 
@@ -124,10 +125,10 @@ type TodoPreview = Omit<Todo, "description">;
 
 const todo: TodoPreview = {
   title: "Clean room",
-  completed: false
+  completed: false,
 };
 
-todo
+todo;
 // ^?
 ```
 
@@ -215,10 +216,10 @@ type T1 = ConstructorParameters<FunctionConstructor>;
 //    ^?
 type T2 = ConstructorParameters<RegExpConstructor>;
 //    ^?
-type T3 = ConstructorParameters<any>
+type T3 = ConstructorParameters<any>;
 //    ^?
 
-type T4 = ConstructorParameters<Function>
+type T4 = ConstructorParameters<Function>;
 //    ^?
 ```
 
@@ -353,8 +354,8 @@ let obj = makeObject({
     moveBy(dx: number, dy: number) {
       this.x += dx; // Strongly typed this
       this.y += dy; // Strongly typed this
-    }
-  }
+    },
+  },
 });
 
 obj.x = 10;

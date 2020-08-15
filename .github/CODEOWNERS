@@ -27,4 +27,9 @@ packages/tsconfig-reference/copy/zh/**/*.md @Kingwl
 packages/typescriptlang-org/src/copy/zh/**/*.md @Kingwl
 packages/documentation/copy/zh/**/*.ts @Kingwl
 
-
+# Collaborators for Korean Translation of the Website
+packages/playground-examples/copy/ko/**/*.md @Bumkeyy
+packages/playground-examples/copy/ko/**/*.ts @Bumkeyy
+packages/tsconfig-reference/copy/ko/**/*.md @Bumkeyy
+packages/typescriptlang-org/src/copy/ko/**/*.md @Bumkeyy
+packages/documentation/copy/ko/**/*.ts @Bumkeyy

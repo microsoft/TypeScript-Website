@@ -3,6 +3,7 @@ title: Namespaces
 layout: docs
 permalink: /docs/handbook/namespaces.html
 oneline: How TypeScript namespaces work
+translatable: true
 ---
 
 > **A note about terminology:**
