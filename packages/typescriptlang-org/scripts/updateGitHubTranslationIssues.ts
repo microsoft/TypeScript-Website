@@ -11,7 +11,7 @@ const languages = {
   pt: 233,
   es: 232,
   zh: 296,
-  kn: 910,
+  ko: 910,
 }
 
 const go = async () => {
