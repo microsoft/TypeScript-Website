@@ -3,6 +3,7 @@ title: Mixins
 layout: docs
 permalink: /docs/handbook/mixins.html
 oneline: Using the mixin pattern with TypeScript
+translatable: true
 ---
 
 Along with traditional OO hierarchies, another popular way of building up classes from reusable components is to build them by combining simpler partial classes.

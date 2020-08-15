@@ -3,6 +3,7 @@ title: Declaration Merging
 layout: docs
 permalink: /docs/handbook/declaration-merging.html
 oneline: How merging namespaces and interfaces works
+translatable: true
 ---
 
 ## Introduction
@@ -227,7 +228,7 @@ Similarly, namespaces can be used to extend enums with static members:
 enum Color {
   red = 1,
   green = 2,
-  blue = 4
+  blue = 4,
 }
 
 namespace Color {
@@ -264,7 +265,7 @@ export class Observable<T> {
 
 // map.ts
 import { Observable } from "./observable";
-Observable.prototype.map = function(f) {
+Observable.prototype.map = function (f) {
   // ... another exercise for the reader
 };
 ```
@@ -285,7 +286,7 @@ declare module "./observable" {
     map<U>(f: (x: T) => U): Observable<U>;
   }
 }
-Observable.prototype.map = function(f) {
+Observable.prototype.map = function (f) {
   // ... another exercise for the reader
 };
 
@@ -293,7 +294,7 @@ Observable.prototype.map = function(f) {
 import { Observable } from "./observable";
 import "./map";
 let o: Observable<number>;
-o.map(x => x.toFixed());
+o.map((x) => x.toFixed());
 ```
 
 The module name is resolved the same way as module specifiers in `import`/`export`.
@@ -321,7 +322,7 @@ declare global {
   }
 }
 
-Array.prototype.toObservable = function() {
+Array.prototype.toObservable = function () {
   // ...
 };
 ```
