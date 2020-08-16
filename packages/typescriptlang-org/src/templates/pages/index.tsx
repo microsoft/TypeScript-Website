@@ -39,7 +39,7 @@ const Index: React.FC<Props> = (props) => {
   useEffect(() => { setupTwoslashHovers(); setupVideosSection() }, [])
 
   return (
-    <Layout title="Typed JavaScript at Any Scale." description="TypeScript extends JavaScript by adding types to the language. TypeScript speeds up your development experience by catching errors and providing fixes before you even run your code." lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+    <Layout title="Typed JavaScript at Any Scale." description="TypeScript extends JavaScript by adding types to the language. TypeScript speeds up your development experience by catching errors and providing fixes before you even run your code." lang={props.pageContext.lang} allSitePage={props.data.allSitePage} suppressCustomization>
 
       <div id="index">
         <Section color="darkblue" className="headline">
@@ -56,6 +56,16 @@ const Index: React.FC<Props> = (props) => {
           </Row>
         </Section>
         <VersionBar />
+        <div style={{
+          backgroundColor: "#eee",
+          textAlign: "center",
+          color: "black",
+          padding: "0.7rem 2rem",
+          margin: 0,
+          fontSize: "0.9rem"
+        }}>
+          Welcome to our new website! Find out what's new <a href="https://devblogs.microsoft.com/typescript/announcing-the-new-typescript-website">in the TypeScript Blog</a>
+        </div>
         <Section color="grey" className="hide-small">
           <div className="call-to-action">
             <Link target="_blank" className='flat-button' to="/play/">{i("index_cta_play")}</Link>
@@ -176,10 +186,10 @@ const Index: React.FC<Props> = (props) => {
         <Section color="white">
           <h3>{i("index_started_title")}</h3>
           <QuarterOrHalfRow key='call to actions'>
-            <GreyButton href="/docs/handbook" title={i("index_started_handbook")} blurb={i("index_started_handbook_blurb")} first />
-            <GreyButton href="/docs/home" title={i("index_started_docs")} blurb={i("index_started_docs_blurb")} />
-            <GreyButton href="/community" title={i("index_started_community")} blurb={i("index_started_community_blurb")} />
-            <GreyButton href="/tools" title={i("index_started_tooling")} blurb={i("index_started_tooling_blurb")} />
+            <GreyButton href="/docs/handbook" title={i("index_started_handbook")} blurb={i("index_started_handbook_blurb")} first customClass="white-theme" />
+            <GreyButton href="/docs/bootstrap" title={i("index_started_docs")} blurb={i("index_started_docs_blurb")} customClass="white-theme" />
+            <GreyButton href="/community" title={i("index_started_community")} blurb={i("index_started_community_blurb")} customClass="white-theme" />
+            <GreyButton href="/tools" title={i("index_started_tooling")} blurb={i("index_started_tooling_blurb")} customClass="white-theme" />
           </QuarterOrHalfRow>
 
           <div id="installation" />

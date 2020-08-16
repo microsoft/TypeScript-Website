@@ -1,5 +1,8 @@
+// @ts-enable
+
 const { join, basename } = require("path")
 const { recursiveReadDirSync } = require("../lib/utils/recursiveReadDirSync")
+const { read } = require("gray-matter")
 
 const getAllTODOFiles = lang => {
   const diffFolders = (root, lang) => {
@@ -35,12 +38,17 @@ const getAllTODOFiles = lang => {
   const appRoot = join(__dirname, "..", "src", "copy")
   const appTODO = diffFolders(appRoot, lang)
 
-  // Handbook TBD
+  const docsRoot = join(__dirname, "..", "..", "documentation", "copy")
+  const docsTODO = diffFolders(docsRoot, lang)
+  docsTODO.todo = docsTODO.todo.filter(
+    path => read(join(__dirname, "..", "..", path)).data.translatable
+  )
 
   const all = {
     tsconfig: tsconfigFilesTODO,
     playground: playgroundTODO,
     app: appTODO,
+    docs: docsTODO,
   }
 
   return all

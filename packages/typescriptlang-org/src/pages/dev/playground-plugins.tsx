@@ -22,7 +22,7 @@ const Index: React.FC<Props> = (props) => {
               <h1 style={{ marginTop: "20px" }}>Your toys, our sandbox</h1>
               <p>The new TypeScript Playground allows people to hook into the Playground and extend it in ways in which the TypeScript team don't expect.</p>
               <p>The sidebar of the Playground uses the same plugin infrastructure as external plugins, so you have the same level of access as the playground to build interesting projects.</p>
-              <p>Playground plugins use frameworks, you're free to inject them at runtime and use them if you need to - but the current plugins are built with the vanilla DOM APIs and TypeScript.</p>
+              <p>Playground plugins are built via the DOM API and an expansive Design System, however, you're free to inject a framework like React or Svelte at runtime.</p>
               <p>&nbsp;</p>
               <p>Getting started is easy, we have a plugin template, and the Playground has a dev-mode for hooking directly to your local server, so you don't need to run a copy of the TypeScript website to have a working development environment.</p>
               <p>There is a complex reference plugin called <a href="https://github.com/orta/playground-slides">Presentation Mode</a> and a much simpler <a href="https://github.com/orta/playground-plugin-tsquery">plugin for TSQuery</a> which are available by default for you to investigate and understand.</p>

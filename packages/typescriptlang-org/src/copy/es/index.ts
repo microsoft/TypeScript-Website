@@ -17,13 +17,13 @@ export const indexCopy = {
   <p>Denotar tipos es opcional en TypeScript, porque la inferencia de tipos le permite obtener mucha más potencia sin escribir código adicional.</p>`,
 
   index_trust: "Resultados Confiables",
-  index_trust_copy_a: `Todo código en JavaScript tambien es válido en TypeScript. Puedes tener validación de errores de tipo, pero eso no te detendrá de ejecutar el JavaScript resultante. Si bien puedes optar por un comportamiento más estricto, eso significa que aún tienes el control.`,
-  index_trust_copy_b: `TypeScript code is transformed into JavaScript code via the TypeScript compiler or <babel>Babel</babel>. This JavaScript is clean, simple code which runs anywhere JavaScript runs: In a browser, on Node.JS or in your apps.`,
-  index_standards: "Evolucionando Con Estandares.",
+  index_trust_copy_a: `Todo código en JavaScript también es válido en TypeScript. Puedes tener validación de errores de tipo, pero eso no te detendrá de ejecutar el JavaScript resultante. Si bien puedes optar por un comportamiento más estricto, eso significa que aún tienes el control.`,
+  index_trust_copy_b: `El código en TypeScript es transformado en código JavaScript a través del compilador de TypeScript o <babel>Babel</babel>. Este JavaScript es un código limpio y simple que se ejecuta en cualquier lugar donde se ejecuta JavaScript: En un navegador, en Node.JS o en tus aplicaciones.`,
+  index_standards: "Evolucionando Con Estándares.",
   index_standards_copy: `
     <p>El equipo detrás de TypeScript contribuye al comité TC39 que ayuda a guiar la evolución del lenguaje JavaScript.</p>
   
-    <p>Cuando nuevas caracteristicas han alcanzado la etapa 3, es cuando se encuentran listas para ser incluidas en TypeScript.</p>
+    <p>Cuando nuevas características han alcanzado la etapa 3, es cuando se encuentran listas para ser incluidas en TypeScript.</p>
     
     <p>Por ejemplo el equipo de TypeScript logró propuestas como encadenamiento opcional, operador de fusión nulo, expresiones de excepciones e índices de coincidencia RegExp.</p>`,
 
@@ -35,7 +35,7 @@ export const indexCopy = {
 
   index_dts: "Tipado en todas partes",
   index_dts_copy: `
-  <p>El código JavaScript en gran parte del mundo no tiene tipado y la inferencia solo puede llegar hasta donde puede. Para afrontar esto, el equipo de TypeScript ayuda a mantener <dt>Definitely Typed</dt> - un proyecto comunitario para proporcionar tipos y documentación en línea a JavaScript existente.</p>
+  <p>El código JavaScript en gran parte del mundo no tiene tipado y la inferencia solo puede llegar hasta donde puede. Para afrontar esto, el equipo de TypeScript ayuda a mantener <dt>Definitely Typed</dt> - un proyecto comunitario para proporcionar tipos y documentación en línea a JavaScript existente.
   
   <p>Este proyecto permite a la comunidad mantener definiciones de tipo para bibliotecas JavaScript sin ejercer presión adicional sobre sus mantenedores.</p>`,
 
@@ -51,16 +51,16 @@ export const indexCopy = {
   index_started_title: "Empezar",
   index_started_handbook: "Manual",
   index_started_handbook_blurb: "Aprende el lenguaje",
-  index_started_guides: "Referencias",
-  index_started_guides_blurb: "Reseñas de alto nivel",
+  index_started_docs: "Comienza un proyecto",
+  index_started_docs_blurb: "Encuentra una herramienta inicial",
   index_started_ref: "Referencia",
   index_started_ref_blurb: "Entendiendo la herramienta",
   index_started_community: "Comunidad",
   index_started_community_blurb: "Mantente al día",
   index_install: "Instalar TypeScript",
   index_install_ref: `
-    <p>Puedes instalar TypeScript a tráves de npm<pre>npm install -g typescript</pre>
-    <p>Y luego ejecutar el compilador con el comando <code>tsc</code><pre>npm install -g typescript</pre>
+    <p>Puedes instalar TypeScript a través de npm<pre>npm install -g typescript</pre>
+    <p>Y luego ejecutar el compilador con el comando <code>tsc</code><pre>npx tsc</pre>
     `,
   index_releases: "Publicaciones trimestrales",
   index_releases_pt1: "Nuestro siguiente lanzamiento es ",

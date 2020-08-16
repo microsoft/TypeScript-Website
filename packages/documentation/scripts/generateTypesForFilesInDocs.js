@@ -3,6 +3,8 @@
 // For the handbook navigation structure, we want to use
 // filepaths, but want to be prepared in case they change
 
+// yarn workspace documentation create-handbook-nav
+
 const fs = require("fs");
 const { join, basename } = require("path");
 const { format } = require("prettier");

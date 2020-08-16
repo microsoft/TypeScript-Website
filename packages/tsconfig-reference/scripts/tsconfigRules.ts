@@ -33,6 +33,7 @@ export const recommended: CompilerOptionName[] = [
   "strictFunctionTypes",
   "noImplicitThis",
   "noImplicitAny",
+  "esModuleInterop",
 ];
 
 type RootProperties = "files" | "extends" | "include" | "exclude";
@@ -117,14 +118,13 @@ export const defaultsForOptions = {
   inlineSourceMap: "false",
   inlineSources: "false",
   isolatedModules: "false",
-  jsx: '`"preserve"`',
   jsxFactory: "`React.createElement`",
   keyofStringsOnly: "false",
   listEmittedFiles: "false",
   listFiles: "false",
   locale: "Platform specific",
   maxNodeModuleJsDepth: "0",
-  moduleResolution: "module === `AMD`, `System` or `ES6` then `Classic`<br/><br/>Otherwise `Node`",
+  moduleResolution: "module === `AMD`, `UMD`, `System` or `ES6` then `Classic`<br/><br/>Otherwise `Node`",
   newLine: "Platform specific",
   noEmit: "false",
   noEmitHelpers: "false",
@@ -161,7 +161,7 @@ export const defaultsForOptions = {
   strictNullChecks: "`false`, unless `strict` is set",
   suppressExcessPropertyErrors: "false",
   suppressImplicitAnyIndexErrors: "false",
-  target: "false",
+  target: "es5",
   traceResolution: "false",
   tsBuildInfoFile: ".tsbuildinfo",
   useDefineForClassFields: "false",

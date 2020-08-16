@@ -1,5 +1,5 @@
 ---
-display: "Project Options"
+display: "Opções de Projeto"
 ---
 
-These settings are used to define the runtime expectations of your project, how and where you want the JavaScript to be emitted and the level of integration you want with existing JavaScript code.
+Essas configurações são usadas para definir as expectativas de tempo de execução, como e onde você deseja que o JavaScript seja emitido e o nível de integração que você deseja com o código JavaScript existente no seu projeto.

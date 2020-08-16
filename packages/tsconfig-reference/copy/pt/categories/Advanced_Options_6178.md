@@ -1,5 +1,5 @@
 ---
-display: "Advanced"
+display: "Avançado"
 ---
 
-Flags which help with debugging
+Sinalizadores que ajudam na depuração.

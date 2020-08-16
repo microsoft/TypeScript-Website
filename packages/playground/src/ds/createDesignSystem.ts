@@ -68,11 +68,13 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       if (document.getElementById("restart-required")) return
       const localize = i || (window as any).i
       const li = document.createElement("li")
-      li.classList.add("disabled")
       li.id = "restart-required"
+
       const a = document.createElement("a")
       a.style.color = "#c63131"
       a.textContent = localize("play_sidebar_options_restart_required")
+      a.href = "#"
+      a.onclick = () => document.location.reload()
 
       const nav = document.getElementsByClassName("navbar-right")[0]
       li.appendChild(a)

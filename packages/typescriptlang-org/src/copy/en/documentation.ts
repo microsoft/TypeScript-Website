@@ -2,6 +2,9 @@ export const docCopy = {
   doc_layout_title: "The starting point for learning TypeScript",
   doc_layout_description:
     "Find TypeScript starter projects: from Angular to React or Node.js and CLIs.",
+  doc_bootstrap_title: "Bootstrapping tools for TypeScript projects",
+  doc_bootstrap_description:
+    "Toolchains for building CLIs, Web Apps, APIs, and Apps.",
   doc_headline: "Learning Resources",
   doc_headline_ts_for_js_title: "TS for JS",
   doc_headline_ts_for_js_blurb:
@@ -13,7 +16,7 @@ export const docCopy = {
   doc_headline_handbook_blurb: "The TypeScript language reference",
   doc_headline_examples_title: "Examples",
   doc_headline_examples_blurb: "Comprehensive hands-on playground tutorials",
-  doc_start_a_project: "Start a Project",
+  doc_start_a_project: "Start a New Project",
   doc_start_a_project_desc:
     "Because TypeScript is a super-set of JavaScript, it doesn't have a default template - there would be too many. Instead, other projects have their own TypeScript bootstrap templates with their own context. These projects provide templates which include TypeScript support.",
   doc_node_npm: "Node with npm",
@@ -67,7 +70,6 @@ export const docCopy = {
   doc_tooling_webpack_blurb: "Bundle your assets, scripts, images and styles",
   doc_learn: "Familiar With TypeScript already?",
   doc_learn_3_5_release_notes_title: "Release Notes",
-  doc_learn_3_5_release_notes_blurb: "3.5 Release Notes",
   doc_learn_handbook_blurb: "The TypeScript language reference",
   doc_learn_d_ts_title: "d.ts Guide",
   doc_learn_d_ts_blurb: "Learn how to declare the shape of JS",

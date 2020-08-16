@@ -19,7 +19,7 @@ export const SiteNav = (props: Props) => {
   const i = createInternational<typeof navCopy>(useIntl())
   const IntlLink = createIntlLink(props.lang, props.allSitePage)
 
-  // This extra bit of mis-direction ensures that non-essential code runs after 
+  // This extra bit of mis-direction ensures that non-essential code runs after
   // the page is loaded
   useEffect(() => {
     setupStickyNavigation()
@@ -72,9 +72,9 @@ export const SiteNav = (props: Props) => {
             <ul>
               <li className="nav-item hide-small"><IntlLink to="/download">{i("nav_download")}</IntlLink></li>
               <li className="nav-item"><IntlLink to="/docs/home"><span>{i("nav_documentation_short")}</span></IntlLink></li>
-              <li className="nav-item show-only-large"><IntlLink to="/docs/handbook/">{i("nav_handbook")}</IntlLink></li>
+              <li className="nav-item show-only-large"><IntlLink to="/docs/handbook/intro.html">{i("nav_handbook")}</IntlLink></li>
               <li className="nav-item"><IntlLink to="/community">{i("nav_community")}</IntlLink></li>
-              <li className="nav-item show-only-largest"><IntlLink to="/play/">{i("nav_playground")}</IntlLink></li>
+              <li className="nav-item show-only-largest"><IntlLink to="/play">{i("nav_playground")}</IntlLink></li>
               <li className="nav-item"><IntlLink to="/tools">{i("nav_tools")}</IntlLink></li>
             </ul>
           </nav>
@@ -98,9 +98,6 @@ export const SiteNav = (props: Props) => {
         </div>
       </div>
 
-      {/* <div className="hide-small" id="beta-notification-menu">{i("nav_beta_notification", { a: (...chunk) => <a href="https://github.com/microsoft/TypeScript-Website/issues">{chunk}</a> })}</div> */}
-
-      { /** Used for skip past navigation button */}
       <div id="site-content" />
     </header >
   )

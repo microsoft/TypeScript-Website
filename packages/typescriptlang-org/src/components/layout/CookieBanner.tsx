@@ -18,77 +18,10 @@ export const CookieBanner = (props: { lang: string }) => {
     }
   }
 
-  // https://www.1eswiki.com/wiki/WCP_Supported_Language_-_Country_List
-  const allLangs = ["ar-SA",
-    "bg-BG",
-    "bs-BA",
-    "ca-ES",
-    "cs-CZ",
-    "cy-GB",
-    "da-DK",
-    "de-DE",
-    "de-LU",
-    "de-AT",
-    "de-CH",
-    "el-GR",
-    "en-GB",
-    "en-IE",
-    "en-MT",
-    "es-ES",
-    "es-MX",
-    "et-EE",
-    "fi-FI",
-    "fr-CA",
-    "fr-FR",
-    "fr-BE",
-    "fr-LU",
-    "fr-CH",
-    "gd-GB",
-    "ga-IE",
-    "he-IL",
-    "hi-IN",
-    "hr-HR",
-    "hu-HU",
-    "id-ID",
-    "is-IS",
-    "it-IT",
-    "ja-JP",
-    "kk-KZ",
-    "ko-KR",
-    "lb-LU",
-    "lt-lT",
-    "lv-LV",
-    "ms-MY",
-    "mt-MT",
-    "nb-NO",
-    "nl-NL",
-    "nl-BE",
-    "nn-NO",
-    "pl-PL",
-    "pt-BR",
-    "pt-PT",
-    "rm-CH",
-    "ro-RO",
-    "ro-MD",
-    "ru-RU",
-    "sk-SK",
-    "sl-SI",
-    "sr-LATN-RS",
-    "sv-SE",
-    "th-TH",
-    "tr-TR",
-    "uk-UA",
-    "vi-VN",
-    "zh-CN",
-    "zh-HK",
-    "zh-TW"]
-
   const verboseCookieLogging = () => {
     let siteConsent
-    const lang = navigator.language
-    const firstWithPrefix = allLangs.find(l => l.startsWith(lang)) || "en-US"
 
-    WcpConsent.init(firstWithPrefix, "cookie-banner", (err, _siteConsent) => {
+    WcpConsent.init("en-US", "cookie-banner", (err, _siteConsent) => {
       if (err) {
         alert(err);
       } else {
