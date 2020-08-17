@@ -1,5 +1,5 @@
 export const navCopy = {
-  skip_to_content: "Pule para o conteúdo principal",
+  skip_to_content: "Pular para o conteúdo principal",
   nav_documentation: "Documentação",
   nav_documentation_short: "Docs",
   nav_download: "Baixar",
