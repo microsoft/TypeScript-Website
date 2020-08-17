@@ -3,7 +3,7 @@ display: "Out Dir"
 oneline: "Defina uma pasta de saída para todos os arquivos emitidos"
 ---
 
-Se especificado, os arquivos `.js` (como o` .d.ts`, e `.js.map`, etc.) serão emitidos para este diretório.
+Se especificado, os arquivos `.js` (como o `.d.ts`, e `.js.map`, etc.) serão emitidos para este diretório.
 A estrutura de diretório dos arquivos de origem originais é preservada; consulte [rootDir](#rootDir) se a raiz calculada não for o que você pretendia.
 
 Se não for especificado, os arquivos `.js` serão emitidos no mesmo diretório que os arquivos` .ts` de onde foram gerados:
