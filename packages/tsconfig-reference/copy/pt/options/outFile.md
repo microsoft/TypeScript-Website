@@ -1,5 +1,5 @@
 ---
-display: "Out File"
+display: "Arquivo de saída"
 oneline: "Produza um único arquivo de todos os arquivos JS concatenados"
 ---
 
