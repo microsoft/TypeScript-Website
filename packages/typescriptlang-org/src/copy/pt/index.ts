@@ -58,8 +58,8 @@ export const indexCopy = {
   index_started_docs_blurb: "Encontre uma ferramenta de bootstrapping",
   index_started_tooling: "Ferramentas",
   index_started_tooling_blurb: "Aprofunde-se no TypeScript",
-  index_started_community: "Community",
-  index_started_community_blurb: "Keep up to date",
+  index_started_community: "Comunidade",
+  index_started_community_blurb: "Matenha-se atualizado",
   index_install: "Instale TypeScript",
   index_install_ref: `
   <p>Você pode instalar TypeScript através do npm<pre>npm install -g typescript</pre>
