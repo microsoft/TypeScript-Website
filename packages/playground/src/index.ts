@@ -154,10 +154,19 @@ export const setupPlayground = (
     }, 300)
   })
 
+  // If you set this to true, then the next time the playground would
+  // have set the user's hash it would be skipped - used for setting
+  // the text in examples
+  let suppressNextTextChangeForHashChange = false
+
   // Sets the URL and storage of the sandbox string
   const playgroundDebouncedMainFunction = () => {
     const alwaysUpdateURL = !localStorage.getItem("disable-save-on-type")
     if (alwaysUpdateURL) {
+      if (suppressNextTextChangeForHashChange) {
+        suppressNextTextChangeForHashChange = false
+        return
+      }
       const newURL = sandbox.createURLQueryWithCompilerOptions(sandbox)
       window.history.replaceState({}, "", newURL)
     }
@@ -176,6 +185,9 @@ export const setupPlayground = (
     if (model && plugin.modelChanged) plugin.modelChanged(sandbox, model, container)
     if (model && plugin.modelChangedDebounce) plugin.modelChangedDebounce(sandbox, model, container)
   })
+
+  const skipInitiallySettingHash = document.location.hash && document.location.hash.includes("example/")
+  if (!skipInitiallySettingHash) playgroundDebouncedMainFunction()
 
   // Setup working with the existing UI, once it's loaded
 
@@ -409,16 +421,6 @@ export const setupPlayground = (
           localStorage.setItem("examples-seen", JSON.stringify(seen))
         }
 
-        // Set the menu to be the same section as this current example
-        // this happens behind the scene and isn't visible till you hover
-        // const sectionTitle = example.path[0]
-        // const allSectionTitles = document.getElementsByClassName('section-name')
-        // for (const title of allSectionTitles) {
-        //   if (title.textContent === sectionTitle) {
-        //     title.onclick({})
-        //   }
-        // }
-
         const allLinks = document.querySelectorAll("example-link")
         // @ts-ignore
         for (const link of allLinks) {
@@ -428,8 +430,10 @@ export const setupPlayground = (
         }
 
         document.title = "TypeScript Playground - " + example.title
+        suppressNextTextChangeForHashChange = true
         sandbox.setText(code)
       } else {
+        suppressNextTextChangeForHashChange = true
         sandbox.setText("// There was an issue getting the example, bad URL? Check the console in the developer tools")
       }
     })
