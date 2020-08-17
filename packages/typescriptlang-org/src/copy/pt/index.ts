@@ -13,7 +13,7 @@ export const indexCopy = {
 
   index_what_is_js: "JavaScript e Mais",
   index_what_is_js_copy: `
-<p>TypeScript é uma linguagem código aberto construida emcima do Javascript, uma das ferramentas mais usadas do mundo, adicionando definições de tipagem estáticas</p>
+<p>TypeScript é uma linguagem código aberto construida em cima do Javascript, uma das ferramentas mais usadas do mundo, adicionando definições de tipagem estáticas</p>
 
 <p>Tipos fornecem um jeito de descrever a forma de um objeto, fornecendo melhor documentação, e permitindo que o TypeScript valide se seu código está funcionando corretamente.</p>
 
