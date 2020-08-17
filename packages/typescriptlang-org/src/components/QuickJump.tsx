@@ -25,6 +25,7 @@ export const QuickJump = (props: Props) => {
 
   const IntlLink = createIntlLink(props.lang, props.allSitePage);
 
+  // TODO: Internationalize these strings
   return <div className="main-content-block">
     <h2 style={{ textAlign: "center" }}>{props.title}</h2>
     <div className="columns">

@@ -182,7 +182,7 @@ const Index: React.FC<Props> = (props) => {
         <ButtonGrid
           buttons={[
             {
-              href: "https://babeljs.io/docs/en/babel-preset-typescript",
+              href: "https://www.electronjs.org/",
               badge: "Plugin",
               blurb: i("doc_apps_electron_blurb"),
               title: "Electron",
@@ -244,7 +244,7 @@ const Index: React.FC<Props> = (props) => {
             {
               href: "/docs/handbook/basic-types.html",
               blurb: i("doc_headline_handbook_blurb"),
-              title: "Handbook",
+              title: i("doc_headline_handbook_title"),
             },
             {
               href: "/docs/handbook/declaration-files/introduction.html",
