@@ -9,7 +9,7 @@ export const navCopy = {
   nav_handbook: "Manual",
   nav_tools: "Ferramentas",
   nav_search_placeholder: "Pesquise nas Docs",
-  nav_search_aria: "Pesquise o site TypeScript",
+  nav_search_aria: "Pesquise no site do TypeScript",
   nav_beta: "Pesquise o site TypeScript",
   nav_beta_notification:
     "Nota: nós estamos testando a versão v2 do site durante esse final de semana, se esquecemos de algo qual você confia, por favor <a>crie uma issue em microsoft/TypeScript-Website</a>.",
