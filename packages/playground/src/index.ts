@@ -286,6 +286,7 @@ export const setupPlayground = (
           }
         }
       }
+      return false
     }
   })
 
@@ -356,6 +357,7 @@ export const setupPlayground = (
 
       const isJS = sandbox.config.useJavaScript
       ui.flashInfo(i(isJS ? "play_run_js" : "play_run_ts"))
+      return false
     }
   }
 
