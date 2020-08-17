@@ -1,5 +1,5 @@
 ---
-display: "Out Dir"
+display: "Diretório de saída"
 oneline: "Defina uma pasta de saída para todos os arquivos emitidos"
 ---
 
