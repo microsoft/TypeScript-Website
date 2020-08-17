@@ -1,5 +1,5 @@
 ---
-display: "Out"
+display: "Saída"
 oneline: "Não use isso"
 ---
 
