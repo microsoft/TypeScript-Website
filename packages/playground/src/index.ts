@@ -305,8 +305,7 @@ export const setupPlayground = (
     }
   }
 
-  // Set up some key commands
-  sandbox.editor.addAction({
+  const shareAction = {
     id: "copy-clipboard",
     label: "Save to clipboard",
     keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S],
@@ -314,13 +313,23 @@ export const setupPlayground = (
     contextMenuGroupId: "run",
     contextMenuOrder: 1.5,
 
-    run: function (ed) {
+    run: function () {
       window.navigator.clipboard.writeText(location.href.toString()).then(
         () => ui.flashInfo(i("play_export_clipboard")),
         (e: any) => alert(e)
       )
     },
-  })
+  }
+
+  const shareButton = document.getElementById("share-button")!
+  shareButton.onclick = e => {
+    e.preventDefault()
+    shareAction.run()
+    return false
+  }
+
+  // Set up some key commands
+  sandbox.editor.addAction(shareAction)
 
   sandbox.editor.addAction({
     id: "run-js",
