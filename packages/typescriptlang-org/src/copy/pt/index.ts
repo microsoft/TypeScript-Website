@@ -32,7 +32,7 @@ export const indexCopy = {
 
   index_gradual: "Adoção Gradual",
   index_gradual_copy: `
-<p>Adotar TypeScript não é uma escolha binária, você pode começar anotando o JavaScript existente com JSDoc,  e então trocar alguns arquivos para serem checados através do TypeScript e com o tempo preparar todo seu código para ser convertido completamente</p>
+<p>Adotar TypeScript não é uma escolha binária, você pode começar anotando o JavaScript existente com JSDoc, e então trocar alguns arquivos para serem checados através do TypeScript e com o tempo preparar todo seu código para ser convertido completamente</p>
 
 <p>A inferência de tipo do TypeScript significa que você não precisa fazer anotações em seu código até que queira mais segurança.</p>`,
 
