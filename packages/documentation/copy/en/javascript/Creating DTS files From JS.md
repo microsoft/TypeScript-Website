@@ -3,6 +3,7 @@ title: Creating .d.ts Files from .js files
 layout: docs
 permalink: /docs/handbook/declaration-files/dts-from-js.html
 oneline: "How to add d.ts generation to JavaScript projects"
+translatable: true
 ---
 
 [With TypeScript 3.7](/docs/handbook/release-notes/typescript-3-7.html#--declaration-and---allowjs),

@@ -19,7 +19,7 @@ export const SiteNav = (props: Props) => {
   const i = createInternational<typeof navCopy>(useIntl())
   const IntlLink = createIntlLink(props.lang, props.allSitePage)
 
-  // This extra bit of mis-direction ensures that non-essential code runs after 
+  // This extra bit of mis-direction ensures that non-essential code runs after
   // the page is loaded
   useEffect(() => {
     setupStickyNavigation()
@@ -98,9 +98,6 @@ export const SiteNav = (props: Props) => {
         </div>
       </div>
 
-      {/* <div className="hide-small" id="beta-notification-menu">{i("nav_beta_notification", { a: (...chunk) => <a href="https://github.com/microsoft/TypeScript-Website/issues">{chunk}</a> })}</div> */}
-
-      { /** Used for skip past navigation button */}
       <div id="site-content" />
     </header >
   )

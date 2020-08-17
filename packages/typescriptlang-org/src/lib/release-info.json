@@ -15,16 +15,16 @@
   "rcPostURL": "https://devblogs.microsoft.com/typescript/announcing-typescript-4-0-rc/",
   "vs": {
     "stable": {
-      "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-397",
-      "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-397"
+      "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-40rc",
+      "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-40rc"
     },
     "beta": {
       "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-40rc",
       "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-40rc"
     },
     "rc": {
-      "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-40beta",
-      "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-40beta"
+      "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-40rc",
+      "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-40rc"
     }
   }
 }

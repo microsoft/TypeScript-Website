@@ -3,6 +3,7 @@ title: Type Compatibility
 layout: docs
 permalink: /docs/handbook/type-compatibility.html
 oneline: How type-checking works in TypeScript
+translatable: true
 ---
 
 Type compatibility in TypeScript is based on structural subtyping.
@@ -97,7 +98,7 @@ let items = [1, 2, 3];
 items.forEach((item, index, array) => console.log(item));
 
 // Should be OK!
-items.forEach(item => console.log(item));
+items.forEach((item) => console.log(item));
 ```
 
 Now let's look at how return types are treated, using two functions that differ only by their return type:
@@ -121,7 +122,7 @@ In practice, this sort of error is rare, and allowing this enables many common J
 ```ts
 enum EventType {
   Mouse,
-  Keyboard
+  Keyboard,
 }
 
 interface Event {
@@ -190,12 +191,12 @@ Enums are compatible with numbers, and numbers are compatible with enums. Enum v
 ```ts
 enum Status {
   Ready,
-  Waiting
+  Waiting,
 }
 enum Color {
   Red,
   Blue,
-  Green
+  Green,
 }
 
 let status = Status.Ready;
@@ -266,11 +267,11 @@ The resulting types are then checked for compatibility, just as in the non-gener
 For example,
 
 ```ts
-let identity = function<T>(x: T): T {
+let identity = function <T>(x: T): T {
   // ...
 };
 
-let reverse = function<U>(y: U): U {
+let reverse = function <U>(y: U): U {
   // ...
 };
 

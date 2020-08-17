@@ -3,9 +3,10 @@ title: Nightly Builds
 layout: docs
 permalink: /docs/handbook/nightly-builds.html
 oneline: How to use a nightly build of TypeScript
+translatable: true
 ---
 
-A nightly build from the [TypeScript's `master`](https://github.com/Microsoft/TypeScript/tree/master) branch is published by midnight PST to npm and NuGet.
+A nightly build from the [TypeScript's `master`](https://github.com/Microsoft/TypeScript/tree/master) branch is published by midnight PST to npm.
 Here is how you can get it and use it with your tools.
 
 ## Using npm
@@ -13,18 +14,6 @@ Here is how you can get it and use it with your tools.
 ```shell
 npm install -g typescript@next
 ```
-
-## Using NuGet with MSBuild
-
-> Note: You'll need to configure your project to use the NuGet packages.
-> Please see [Configuring MSBuild projects to use NuGet](https://github.com/Microsoft/TypeScript/wiki/Configuring-MSBuild-projects-to-use-NuGet) for more information.
-
-The nightlies are available on [www.myget.org](https://www.myget.org/gallery/typescript-preview).
-
-There are two packages:
-
-- `Microsoft.TypeScript.Compiler`: Tools only (`tsc.exe`, `lib.d.ts`, etc.) .
-- `Microsoft.TypeScript.MSBuild`: Tools as above, as well as MSBuild tasks and targets (`Microsoft.TypeScript.targets`, `Microsoft.TypeScript.Default.props`, etc.)
 
 ## Updating your IDE to use the nightly builds
 

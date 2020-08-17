@@ -3,6 +3,7 @@ title: tsconfig.json
 layout: docs
 permalink: /docs/handbook/tsconfig-json.html
 oneline: Learn about how a TSConfig works
+translatable: true
 ---
 
 ## Overview
