@@ -412,6 +412,15 @@ export const setupPlayground = (
       }
       settingsToggle.parentElement!.classList.toggle("open")
     }
+
+    settingsToggle.addEventListener("keydown", e => {
+      const isOpen = settingsToggle.parentElement!.classList.contains("open")
+      if (e.keyCode === 9 && isOpen) {
+        const result = document.querySelector(".playground-options li input") as any
+        result.focus()
+        e.preventDefault()
+      }
+    })
   }
 
   // Support grabbing examples from the location hash
@@ -609,14 +618,12 @@ export const setupPlayground = (
 export type Playground = ReturnType<typeof setupPlayground>
 
 const redirectTabPressTo = (element: HTMLElement, container: HTMLElement | undefined, query: string) => {
-  // element.style.backgroundColor = "red"
   element.addEventListener("keydown", e => {
     if (e.keyCode === 9) {
       const host = container || document
       const result = host.querySelector(query) as any
       if (!result) throw new Error(`Expected to find a result for keydown`)
       result.focus()
-      console.log(result)
       e.preventDefault()
     }
   })
