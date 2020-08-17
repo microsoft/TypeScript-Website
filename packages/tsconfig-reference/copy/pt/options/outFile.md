@@ -8,4 +8,4 @@ Se especificado, todos os arquivos _global_ (não módulos) serão concatenados 
 Se `module` for `system` ou `amd`, todos os arquivos do módulo também serão concatenados neste arquivo após todo o conteúdo global.
 
 Nota: `outFile` não pode ser usado a menos que `module` seja `None`, `System`, ou `AMD`.
-Esta opção _cannot_ pode ser usada para agrupar módulos CommonJS ou ES6.
+Esta opção _não pode_ pode ser usada para agrupar módulos CommonJS ou ES6.
