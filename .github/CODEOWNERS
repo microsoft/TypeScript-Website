@@ -5,20 +5,23 @@ packages/playground-examples/copy/ja/**/*.md @sasurau4 @Quramy @Naturalclar @Tak
 packages/playground-examples/copy/ja/**/*.ts @sasurau4 @Quramy @Naturalclar @Takepepe
 packages/tsconfig-reference/copy/ja/**/*.md @sasurau4 @Quramy @Naturalclar @Takepepe
 packages/typescriptlang-org/src/copy/ja/**/*.ts @sasurau4 @Quramy @Naturalclar @Takepepe
+packages/typescriptlang-org/src/copy/ja.ts @sasurau4 @Quramy @Naturalclar @Takepepe
 packages/documentation/copy/ja/**/*.ts @sasurau4 @Quramy @Naturalclar @Takepepe
 
 # Collaborators for Portuguese Translation of the Website
 packages/playground-examples/copy/pt/**/*.md @khaosdoctor @danilofuchs @orta
 packages/playground-examples/copy/pt/**/*.ts @khaosdoctor @danilofuchs @orta
-packages/tsconfig-reference/copy/pt/**/*.md @khaosdoctor @danilofuchs  @orta
-packages/typescriptlang-org/src/copy/pt/**/*.ts @khaosdoctor @danilofuchs  @orta
-packages/documentation/copy/pt/**/*.ts @khaosdoctor @danilofuchs  @orta
+packages/tsconfig-reference/copy/pt/**/*.md @khaosdoctor @danilofuchs @orta
+packages/typescriptlang-org/src/copy/pt/**/*.ts @khaosdoctor @danilofuchs @orta
+packages/typescriptlang-org/src/copy/pt.ts @khaosdoctor @danilofuchs @orta
+packages/documentation/copy/pt/**/*.ts @khaosdoctor @danilofuchs @orta
 
 # Collaborators for Spanish Translation of the Website
 packages/playground-examples/copy/es/**/*.md @KingDarBoja
 packages/playground-examples/copy/es/**/*.ts @KingDarBoja
 packages/tsconfig-reference/copy/es/**/*.md @KingDarBoja
 packages/typescriptlang-org/src/copy/es/**/*.ts @KingDarBoja
+packages/typescriptlang-org/src/copy/es.ts @KingDarBoja
 packages/documentation/copy/es/**/*.ts @KingDarBoja
 
 # Collaborators for Chinese Translation of the Website
@@ -26,6 +29,7 @@ packages/playground-examples/copy/zh/**/*.md @Kingwl
 packages/playground-examples/copy/zh/**/*.ts @Kingwl
 packages/tsconfig-reference/copy/zh/**/*.md @Kingwl
 packages/typescriptlang-org/src/copy/zh/**/*.ts @Kingwl
+packages/typescriptlang-org/src/copy/zh.ts @Kingwl
 packages/documentation/copy/zh/**/*.ts @Kingwl
 
 # Collaborators for Korean Translation of the Website
@@ -33,4 +37,5 @@ packages/playground-examples/copy/ko/**/*.md @Bumkeyy
 packages/playground-examples/copy/ko/**/*.ts @Bumkeyy
 packages/tsconfig-reference/copy/ko/**/*.md @Bumkeyy
 packages/typescriptlang-org/src/copy/ko/**/*.ts @Bumkeyy
+packages/typescriptlang-org/src/copy/ko.ts @Bumkeyy
 packages/documentation/copy/ko/**/*.ts @Bumkeyy
