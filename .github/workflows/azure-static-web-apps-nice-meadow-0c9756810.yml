@@ -43,7 +43,7 @@ jobs:
         run: |
           mkdir fakeapp
           mv packages/typescriptlang-org/public fakeapp
-          echo '{ "name": "fake" }' > fakeapp/package.json
+          echo '{ "name": "fake", "scripts": { "build": "" } }' > fakeapp/package.json
 
       - name: Build And Deploy
         id: builddeploy
