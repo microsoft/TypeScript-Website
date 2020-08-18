@@ -1,6 +1,6 @@
 ---
 display: "Importações não utilizadas como valores"
-oneline: "faz algo"
+oneline: "Controla qual a sintaxe você utiliza para importar tipos"
 ---
 
 Essa opção controla como o `import` funciona, são 3 opções diferentes:
