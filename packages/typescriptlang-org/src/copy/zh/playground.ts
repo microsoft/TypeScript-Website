@@ -24,6 +24,7 @@ export const playCopy = {
   play_downloading_version: "版本...", // when loading
   play_toolbar_run: "运行",
   play_toolbar_export: "导出",
+  play_toolbar_share: "Share",
   play_sidebar_js: "JS",
   play_sidebar_dts: "DTS",
   play_sidebar_errors: "错误",

@@ -184,7 +184,7 @@ export const Comm: React.FC<Props> = props => {
         <div className="events">
 
           <div className="callouts">
-            {meetups.sort().map(m => m.meetup).map(meetup => (
+            {meetups.map(({ meetup }) => (
               <Col className="callout">
                 <img src={require("../../assets/community/meetup-logos/" + meetup.image)} className="icon img-square" alt={"logo of " + meetup.title} />
                 <div>
