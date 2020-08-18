@@ -42,7 +42,9 @@ jobs:
       - name: "Make a fake 'app' for the azure project of the static HTML"
         run: |
           mkdir fakeapp
-          mv packages/typescriptlang-org/public fakeapp
+          mv packages/typescriptlang-org/public fakeapp/public
+          ls fakeapp
+          ls fakeapp/public
           echo '{ "name": "fake", "scripts": { "build": "" } }' > fakeapp/package.json
 
       - name: Build And Deploy
@@ -54,9 +56,9 @@ jobs:
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match you app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/fakeapp" # App source code path
+          app_location: "fakeapp" # App source code path
           api_location: "api" # Api source code path - optional
-          app_artifact_location: "/fakeapp/public" # Built app content directory - optional
+          app_artifact_location: "fakeapp/public" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
