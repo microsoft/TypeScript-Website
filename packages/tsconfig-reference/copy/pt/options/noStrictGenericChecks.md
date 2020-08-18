@@ -1,6 +1,6 @@
 ---
 display: "Sem Verificações Genéricas Estritas"
-oneline: "Desativa a verificação estrita de assinaturas genéricas em funções."
+oneline: "Desativa a verificação estrita de assinaturas genéricas em funções"
 ---
 
 O TypeScript unificará os parâmetros de tipo ao comparar duas funções genéricas.
