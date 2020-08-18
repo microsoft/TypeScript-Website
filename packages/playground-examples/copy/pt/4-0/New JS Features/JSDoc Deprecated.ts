@@ -16,6 +16,6 @@ declare const userInfo: AccountInfo;
 userInfo.sex;
 
 // TypeScript irá oferecer um aviso não bloqueante quando 
-// uma propriedade depreciada for acessada, e editores como
+// uma propriedade descontinuada for acessada, e editores como
 // vscode irão usar essa informação em lugares como o 
 // intellisense, outlines e no seu código.
