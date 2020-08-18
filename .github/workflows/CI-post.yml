@@ -1,4 +1,4 @@
-name: post_pull_request
+name: Post CI Secure Run
 on:
   workflow_run:
     workflows: ["CI"]
@@ -11,16 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Dump GitHub Context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "${GITHUB_CONTEXT}"
-
-      - name: Dump GitHub Event
-        run: cat "${GITHUB_EVENT_PATH}"
-
-      - name: Dump Env
-        run: env
+      - run: mkdir built
 
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
@@ -28,11 +19,7 @@ jobs:
           workflow: CI.yml
           commit: ${{ github.event.workflow_run.head_commit.id }}
           name: built-site
-          path: built
-
-      - run: ls
-      - run: echo "-"
-      - run: ls built
+          path: built/public
 
       - name: "Make a fake 'app' for the azure project of the static HTML"
         run: |
@@ -47,7 +34,8 @@ jobs:
           ###### Repository/Build Configurations - These values can be configured to match you app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "built" # App source code path
-          ###### End of Repository/Build Configurations ######
+          app_artifact_location: "public" # Subfolder in built
+          ###### End of Repository/Build Configurations #####
 
       # - if: github.event_name == 'pull_request' && github.event.action == 'closed'
       #   runs-on: ubuntu-latest
