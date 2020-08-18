@@ -9,7 +9,7 @@ Frequentemente, a segurança e escalabiliade em potencial do código base pode e
 
 Devido a variedade do Javascript suportado, a atualização para uma nova versão pode revelar dois tipos de erros:
 
-- Erros que já existem no seu código base, que o Typescript revelou pela linguagem melhorou seu entendimento do Javascript.
+- Erros que já existem no seu código base, que o Typescript passa a revelar, dado um melhor entendimento de Javascript.
 - Um novo conjunto de erros que abordam um novo escopo de problema.
 
 O TypeScript irá adicionar um sinalizador de compilador para o último conjunto de erros, e por padrão estes não estão habilitados.
