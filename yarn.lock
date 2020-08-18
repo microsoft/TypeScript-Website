@@ -22571,9 +22571,9 @@ resolve@^1.17.0:
   languageName: node
   linkType: hard
 
-"root-workspace-0b6124@workspace:.":
+"root@workspace:.":
   version: 0.0.0-use.local
-  resolution: "root-workspace-0b6124@workspace:."
+  resolution: "root@workspace:."
   dependencies:
     "@types/express": ^4.17.6
     concurrently: ^5.1.0
