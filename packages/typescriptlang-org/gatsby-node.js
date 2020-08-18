@@ -22,7 +22,7 @@ config.onCreateWebpackConfig = ({ loaders, actions }) => {
       ],
     },
     externals: {
-      pnpapi: "commonjs pnpapi",
+      pnpapi: "commonjs pnpapi fs",
     },
   })
 }
