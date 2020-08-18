@@ -3,7 +3,7 @@ display: "Sem Parâmetros Não Utilizados"
 oneline: "Emite erro quando um parâmetro não é utilizado"
 ---
 
-Reporta erros em parêmetros não utilizados em funções.
+Reporta erros em parâmetros não utilizados em funções.
 
 ```ts twoslash
 // @noUnusedParameters
