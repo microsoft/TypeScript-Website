@@ -226,7 +226,9 @@ const Play: React.FC<Props> = (props) => {
                     <li><a href="#" onClick={() => playground.exporter.openProjectInStackBlitz()} aria-label={i("play_export_stackblitz")} >{i("play_export_stackblitz")}</a></li>
                   </ul>
                 </li>
+                <li><a id="share-button" href="#" role="button">{i("play_toolbar_share")}</a></li>
               </ul>
+
               <ul className="right">
                 <li><a id="sidebar-toggle" aria-label="Hide Sidebar" href="#">&#x21E5;</a></li>
               </ul>

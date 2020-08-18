@@ -11,6 +11,7 @@ export const playCopy = {
   play_downloading_version: "Version...", // when loading
   play_toolbar_run: "Run",
   play_toolbar_export: "Export",
+  play_toolbar_share: "Share",
   play_sidebar_js: ".JS",
   play_sidebar_dts: ".D.TS",
   play_sidebar_errors: "Errors",
@@ -27,7 +28,8 @@ export const playCopy = {
     "Disable changing the URL when you type.",
   play_sidebar_plugins: "Plugins",
   play_sidebar_featured_plugins: "Featured Plugins",
-  play_sidebar_plugins_options_external: "3rd Party Plugins <a href='https://www.npmjs.com/search?q=keywords:playground-plugin'>from npm</a>",
+  play_sidebar_plugins_options_external:
+    "3rd Party Plugins <a href='https://www.npmjs.com/search?q=keywords:playground-plugin'>from npm</a>",
   play_sidebar_plugins_options_external_warning:
     "Warning: Code from plugins comes from third-parties.",
   play_sidebar_plugins_options_modules: "Custom npm Modules",

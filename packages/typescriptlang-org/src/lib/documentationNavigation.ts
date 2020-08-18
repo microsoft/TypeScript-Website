@@ -214,7 +214,7 @@ export function getDocumentationNavForLanguage(
           title: "Triple-Slash Directives",
           id: "triple-slash-directives",
           permalink: "/docs/handbook/triple-slash-directives.html",
-          oneline: "How to use triple slash directives in TypeScripit",
+          oneline: "How to use triple slash directives in TypeScript",
         },
         {
           title: "Type Compatibility",
@@ -846,7 +846,7 @@ export function getDocumentationNavForLanguage(
           title: "Triple-Slash Directives",
           id: "triple-slash-directives",
           permalink: "/docs/handbook/triple-slash-directives.html",
-          oneline: "How to use triple slash directives in TypeScripit",
+          oneline: "How to use triple slash directives in TypeScript",
         },
         {
           title: "Type Compatibility",

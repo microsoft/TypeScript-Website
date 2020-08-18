@@ -7,7 +7,8 @@ export const docCopy = {
   doc_headline_ts_for_js_blurb: "给 JavaScript 工程师的 TypeScript 概述",
   doc_headline_ts_first_title: "从 TS 开始",
   doc_headline_ts_first_blurb: "针对初学者的 JavaScript 和 TypeScript 的介绍",
-  doc_apis_loopback_blurb: "一个高度可扩展、用于构建 API 和微服务的 TypeScript Node.js 框架",
+  doc_apis_loopback_blurb:
+    "一个高度可扩展、用于构建 API 和微服务的 TypeScript Node.js 框架",
   doc_apis_fastify_blurb: "一个快速且低开销的 Node.js Web 框架",
   doc_headline_handbook_title: "手册",
   doc_headline_handbook_blurb: "TypeScript 语言参考",
@@ -59,8 +60,4 @@ export const docCopy = {
   doc_learn_d_ts_title: "d.ts 指南",
   doc_learn_d_ts_blurb: "学习如何定义 JS 的形状",
   doc_learn_playground_blurb: "在线查看并分享 TypeScript",
-  nav_: {
-    id: "foo",
-    defaultMessage: "foo",
-  },
 }
