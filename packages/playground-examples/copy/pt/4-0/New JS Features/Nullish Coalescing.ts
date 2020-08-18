@@ -22,9 +22,9 @@ const undefinedValue = response.undefinedValue || "some other default";
 const nullValue = response.nullValue || "some other default";
 
 // Esses dois exemplos funcionam de maneira similar na maioria
-// das linguagens. Como ferramenta || é muito bom em padronizar coisas
-// mas o falsy checks do Javascript pode te surpreender com alguns 
-// valores simples:
+// das linguagens. A ferramenta || é muito boa em padronizar coisas
+// mas as checagens de falsidade do Javascript podem te surpreender 
+// com alguns valores simples:
 
 // Potencialmente indesejado. '' é falsy, resultado: 'Hello, world!'
 const headerText = response.headerText || "Hello, world!";
