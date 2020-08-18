@@ -36,7 +36,7 @@ user.location.postalCode ||= "90210"
 //
 //   ||= mostrado acima
 //   &&= que usa a lógica do 'and' ao invés da 'or'
-//   ??= que se baseia no exemplo:nullish-coalescing para oferecer
+//   ??= que se baseia no example:nullish-coalescing para oferecer
 //       uma versão mais rigorosa do || que usa === no lugar.
 
 // Para mais informações da proposta, veja:
