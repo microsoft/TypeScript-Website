@@ -1,43 +1,43 @@
 //// { compiler: { ts: "4.0.0-beta" } }
 
-// Logical Operators and Assignment are new features in
-// JavaScript for 2020. These are a suite of new operators
-// which edit a JavaScript object.
+// Logical Operators e Assignment são novas funcionalidades do
+// JavaScript para 2020. Esses são um conjunto de operadores novos
+// que editam um objeto JavaScript.
 
-// Their goal is to re-use the concept of mathematical 
-// operators (e.g. += -= *=) but with logic instead.
+// Seu objetivo é reutilizar o conceito de operadores 
+// matemáticos (Ex: += -= *=) porém usando lógica.
 
 interface User {
   id?: number
   name: string
   location: {
-      postalCode?: string
+    postalCode?: string
   }
 }
 
 function updateUser(user: User) {
-  // This code can be replaced 
+  // Pode-se trocar esse código:
   if (!user.id) user.id = 1
 
-  // Or this code:
+  // Ou esse código:
   user.id = user.id || 1
 
-  // With this code:
+  // Por esse código:
   user.id ||= 1
 }
 
-// The suites of operators can handle deeply nesting, which 
-// can save on quite a lot of boilerplate code too.
+// Esses conjuntos de operadores podem lidar com encadeamento profundo
+// podendo poupar uma boa quantidade de código repetido.
 
 declare const user: User
 user.location.postalCode ||= "90210"
 
-// There are three new operators: 
+// São três novos operadores: 
 //
-//   ||= shown above
-//   &&= which uses 'and' logic instead of 'or'
-//   ??= which builds on example:nullish-coalescing to offer a stricter
-//       version of || which uses === instead
+//   ||= mostrado acima
+//   &&= que usa a lógica do 'and' ao invés da 'or'
+//   ??= que se baseia no exemplo:nullish-coalescing para oferecer
+//       uma versão mais rigorosa do || que usa === no lugar.
 
-// For more info on the proposal, see:
+// Para mais informações da proposta, veja:
 // https://github.com/tc39/proposal-logical-assignment

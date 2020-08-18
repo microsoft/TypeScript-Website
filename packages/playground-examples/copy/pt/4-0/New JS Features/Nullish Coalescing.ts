@@ -2,11 +2,11 @@
 
 // # Nullish Coalescing
 //
-// This is a new operator `??` which is meant to augment
-// the common usage of `||` in the same way `===` augments `==`
-// as a more strict form of equality.
+// Esse é o novo operador `??` com o intuito de ampliar
+// o uso normal do `||` da mesma maneira que `===` amplia `==`
+// para uma forma mais rígida de igualidade.
 //
-// To understand it, let's look a how || works:
+// Para entender, vamos ver como o || funciona:
 
 const response = {
   nullValue: null,
@@ -17,25 +17,26 @@ const response = {
 } as const;
 
 const undefinedValue = response.undefinedValue || "some other default";
-// This would be: 'some other default'
+// Seria: 'some other default'
 
 const nullValue = response.nullValue || "some other default";
 
-// These two examples work similar in most languages. As a tool || is
-// pretty good at defaulting things, but JavaScript's falsy checks
-// can surprise you for some common values:
+// Esses dois exemplos funcionam de maneira similar na maioria
+// das linguagens. Como ferramenta || é muito bom em padronizar coisas
+// mas o falsy checks do Javascript pode te surpreender com alguns 
+// valores simples:
 
-// Potentially unintended. '' is falsy, result: 'Hello, world!'
+// Potencialmente indesejado. '' é falsy, resultado: 'Hello, world!'
 const headerText = response.headerText || "Hello, world!";
 
-// Potentially unintended. 0 is falsy, result: 300
+// Potencialmente indesejado. 0 é falsy, resultado: 300
 const animationDuration = response.animationDuration || 300;
 
-// Potentially unintended. false is falsy, result: true
+// Potencialmente indesejado. false é falsy, resultado: true
 const showSplashScreen = response.showSplashScreen || true;
 
-// When switching to use ?? instead, then === equality is used
-// to compare the two sides:
+// Alterando para usar ?? no lugar, então a igualdade === é usada
+// para comparar ambos os lados:
 
 const emptyHeaderText = response.headerText ?? "Hello, world!";
 const zeroAnimationDuration = response.animationDuration ?? 300;

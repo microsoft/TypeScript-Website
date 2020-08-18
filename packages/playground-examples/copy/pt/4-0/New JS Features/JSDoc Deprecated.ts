@@ -1,21 +1,21 @@
 //// { compiler: { ts: "4.0.0-beta" } }
 
-// In 4.0 the JSDoc tag @deprecated is added to the
-// type system. You can use @deprecated anywhere
-// you can use JSDoc currently.
+// Na versão 4.0 a tag JSDoc @deprecated foi adicionada ao
+// sistema de tipos. Você pode usar @deprecated em qualquer
+// lugar que usaria JSDoc atualmente.
 
 interface AccountInfo {
   name: string;
   gender: string;
 
-  /** @deprecated use gender field instead */
+  /** @deprecated use o campo de gênero no lugar */
   sex: "male" | "female";
 }
 
 declare const userInfo: AccountInfo;
 userInfo.sex;
 
-// TypeScript will offer a non-blocking warning when a
-// deprecated property is accessed, and editors like
-// vscode will use show the deprecated info in places
-// like intellisense, outlines and in your code.
+// TypeScript irá oferecer um aviso não bloqueante quando 
+// uma propriedade depreciada for acessada, e editores como
+// vscode irão usar essa informação em lugares como o 
+// intellisense, outlines e no seu código.
