@@ -50,7 +50,7 @@
     "compile": "yarn workspace typescriptlang-org tsc",
     "update-snapshots": "yarn workspace typescriptlang-org update-snapshots",
     "clean": "yarn workspace typescriptlang-org gatsby clean",
-    "test": "CI=true yarn workspaces foreach -v -a run test"
+    "test": "CI=true yarn workspaces foreach -v -a  --exclude root run test"
   },
   "dependencies": {
     "@types/express": "^4.17.6",
