@@ -38,7 +38,7 @@ export const docCopy = {
   doc_apis_azure_blurb: "Buat dan luncurkan (deploy) dari VS Code dalam hitungan menit",
   doc_apis_feather_blurb:
     "Sebuah kerangka kerja untuk aplikasi real-time dan REST API",
-  doc_apis_graphql_blurb: "Mulai peladen (server) GraphQL Kamu dalam hitungan detik",
+  doc_apis_graphql_blurb: "Mulai peladen (server) GraphQL kamu dalam hitungan detik",
   doc_apis_nest_blurb:
     "Kerangka kerja Node.js nan progresif untuk membangun aplikasi peladen (server-side) secara efisien dan dapat dikembangkan",
   doc_apis_node_blurb: "Sebuah templat terdokumentasi dari tim TS",
@@ -68,7 +68,7 @@ export const docCopy = {
   doc_tooling_babel_blurb: "Gunakan JavaScript generasi selanjutnya, sekarang",
   doc_tooling_parcel_blurb:
     "Bundler aplikasi web tanpa konfigurasi yang sangat cepat",
-  doc_tooling_webpack_blurb: "Bundle aset, script, gambar dan gaya (styles) Kamu",
+  doc_tooling_webpack_blurb: "Bundle aset, script, gambar dan gaya (styles) kamu",
   doc_learn: "Telah familiar dengan TypeScript?",
   doc_learn_3_5_release_notes_title: "Catatan Rilis",
   doc_learn_handbook_blurb: "The TypeScript language reference", // TODO: Remove, unused
