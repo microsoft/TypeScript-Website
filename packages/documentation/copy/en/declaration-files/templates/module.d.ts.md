@@ -14,7 +14,7 @@ A module using CommonJS patterns uses `module.exports` to describe the exported 
 const maxInterval = 12;
 
 function getArrayLength(arr) {
-  return arr.slice;
+  return arr.length;
 }
 
 module.exports = {
