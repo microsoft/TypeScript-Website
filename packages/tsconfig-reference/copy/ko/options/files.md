@@ -22,4 +22,4 @@ oneline: "Include a set list of files, does not support globs"
 }
 ```
 
-파일의 수가 많지 않아 파일 참조에 glob을 사용할 필요가 없을 때 유용합니다. 필요한 경우 [`include`](#include)을 사용합니다.
+파일 수가 적어 파일 참조에 glob을 사용할 필요가 없을 때 유용합니다. 필요한 경우 [`include`](#include)을 사용합니다.
