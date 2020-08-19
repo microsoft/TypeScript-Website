@@ -8,7 +8,7 @@ oneline: Using literal types with TypeScript
 A literal is a more concrete sub-type of a collective type.
 What this means is that `"Hello World"` is a `string`, but a `string` is not `"Hello World"` inside the type system.
 
-There are two sets of literal types available in TypeScript today, strings and numbers, by using literal types you can allow an exact value which a string or number must have.
+There are three sets of literal types available in TypeScript today: strings, numbers, and booleans; by using literal types you can allow an exact value which a string, number, or boolean must have.
 
 ## Literal Narrowing
 
@@ -97,4 +97,24 @@ interface MapConfig {
 }
 
 setupMap({ lng: -73.935242, lat: 40.73061, tileSize: 16 });
+```
+
+## Boolean Literal Types
+
+TypeScript also has boolean literal types. You might use these to constrain object values whose properties are interrelated.
+
+```ts twoslash
+interface ValidationSuccess {
+  isValid: true;
+  reason: null;
+};
+
+interface ValidationFailure {
+  isValid: false;
+  reason: string;
+};
+
+type ValidationResult =
+  | ValidationSuccess
+  | ValidationFailure;
 ```
