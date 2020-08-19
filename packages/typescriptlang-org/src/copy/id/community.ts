@@ -5,9 +5,9 @@ export const comCopy = {
   com_headline: "Terhubung dengan kami",
   com_connect_online: "Daring",
   com_connect_online_description:
-    " Beri tahu kami apa yang bekerja dengan baik, apa yang ingin Kamu tambahkan atau tingkatkan, dan cari tahu mengenai pembaruan terbaru.",
+    " Beri tahu kami apa yang bekerja dengan baik, apa yang ingin kamu tambahkan atau tingkatkan, dan cari tahu mengenai pembaruan terbaru.",
   com_online_stack_overflow_desc:
-    "Ajak teman Kamu dan ajukan pertanyaan mengenai TypeScript menggunakan tanda 'typescript'",
+    "Ajak teman kamu dan ajukan pertanyaan mengenai TypeScript menggunakan tanda 'typescript'",
   com_online_stack_overflow_tag: "",
   com_online_discord_header: "Obrolan",
   com_online_discord_desc:
