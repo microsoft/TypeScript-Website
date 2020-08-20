@@ -41,9 +41,9 @@ packages/typescriptlang-org/src/copy/ko.ts @Bumkeyy
 packages/documentation/copy/ko/**/*.ts @Bumkeyy
 
 # Collaborators for Indonesian Translation of the Website
-packages/playground-examples/copy/id/**/*.md @jefrydco
-packages/playground-examples/copy/id/**/*.ts @jefrydco
-packages/tsconfig-reference/copy/id/**/*.md @jefrydco
-packages/typescriptlang-org/src/copy/id/**/*.ts @jefrydco
-packages/typescriptlang-org/src/copy/id.ts @jefrydco
-packages/documentation/copy/id/**/*.ts @jefrydco
+packages/playground-examples/copy/id/**/*.md @jefrydco @nusendra @mazipan @mandaputtra
+packages/playground-examples/copy/id/**/*.ts @jefrydco @nusendra @mazipan @mandaputtra
+packages/tsconfig-reference/copy/id/**/*.md @jefrydco @nusendra @mazipan @mandaputtra
+packages/typescriptlang-org/src/copy/id/**/*.ts @jefrydco @nusendra @mazipan @mandaputtra
+packages/typescriptlang-org/src/copy/id.ts @jefrydco @nusendra @mazipan @mandaputtra
+packages/documentation/copy/id/**/*.ts @jefrydco @nusendra @mazipan @mandaputtra
