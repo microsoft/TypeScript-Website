@@ -221,8 +221,8 @@ export const SiteFooter = (props: Props) => {
   const useDark = !customThemeOverride && systemIsDark ? true : customThemeOverride === "dark-theme"
   const [isDarkMode, setDarkMode] = useState(useDark)
 
-  const handleThemeChange = () => {
-    setDarkMode(!isDarkMode)
+  const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDarkMode(!event.currentTarget.checked)
     if (document.location.pathname.includes("/play")) {
       document.location.reload()
     }
