@@ -1,6 +1,6 @@
 //// { compiler: { ts: "4.0.0-beta" } }
 
-// Por causa do Javascript permitir o uso de qualquer valor,
+// Como o Javascript permite o `throw` de qualquer valor,
 // o TypeScript não permite a declaração um tipo de erro.
 
 try {
