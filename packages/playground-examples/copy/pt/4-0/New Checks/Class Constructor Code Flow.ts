@@ -1,9 +1,9 @@
 //// { compiler: { ts: "4.0.0-beta" } }
 //
 
-// No 4.0 nós usamos um fluxo de anlise para
-// interfir o potencial tipo de uma uma classe
-// proprietaria base nos quais valores são configurados
+// No 4.0 nós usamos um fluxo de análise para
+// inferir o potencial tipo de propriedades de uma
+// classe com base nos valores configurados
 // durante sua construção
 
 class UserAccount {
