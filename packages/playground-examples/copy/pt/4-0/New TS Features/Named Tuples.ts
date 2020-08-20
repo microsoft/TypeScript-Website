@@ -42,10 +42,10 @@ const primeiraLogintude = novasLocalizacoes[0][1]
 function centroDoMapa(lng: number, lat: number) {}
 
 // No 4.0, são mantidos os lng e lat
-type parametrosDoCentroDoMapa = Parameters<typeof centroDoMapa>
+type ParametrosDoCentroDoMapa = Parameters<typeof centroDoMapa>
 
 // Na versão 3.9, isso teria que ser feito assim
-type antigosParametrosDoCentroDoMapa = [number, number]
+type AntigosParametrosDoCentroDoMapa = [number, number]
 
 // Fazendo com que uma manipulação de tipos mais complexa
 // leve a perdas de informação
