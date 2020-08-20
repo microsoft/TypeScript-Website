@@ -8,10 +8,10 @@ try {
 } catch (e) {}
 
 // Historicamente, isso significava que o `e` no catch
-// poreria ter qualquer valor. Isso permitia liberdade para qualquer
-// acesso arbitrariamente de qualquer propriedade. Com o 4.0, nós soltamos
-// as restrinções do tipo configurado no clausula catch para permitir ambos
-// `qualquer`(any) e `desconhecido` ( unknow).
+// poderia ter qualquer valor. Isso permitia liberdade para
+// acesso arbitrário de qualquer propriedade. Com o 4.0, nós afrouxamos
+// as restrições do tipo configurado no cláusula catch para permitir ambos
+// `qualquer`(any) e `desconhecido` (unknown).
 
 // Mesmo comportamento com:
 try {
