@@ -26,10 +26,10 @@ try {
   // ..
 } catch (e: unknown) {
 
-  // Você não pode usar `e` para todos os sistemas
-  // de tipos até aprender o que são, para mais informação
-  // a respeito: veja:
-  // exemplo:desconhecido-e-nunca
+  // Você não pode usar `e` até que o sistema
+  // de tipos aprenda o que é. Para mais informação
+  // a respeito, veja o exemplo:
+  // example:unknown-and-never
   
   e.stack;
 
