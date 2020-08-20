@@ -47,5 +47,5 @@ type parametrosDoCentroDoMapa = Parameters<typeof centroDoMapa>
 // Na versão 3.9, isso teria que ser feito assim
 type antigosParametrosDoCentroDoMapa = [number, number]
 
-// Fazendo alguns exemplos mais complexos, a manipulação de tipos
-// é perdido para a o parâmetro de informação.
+// Fazendo com que uma manipulação de tipos mais complexa
+// leve a perdas de informação
