@@ -682,17 +682,17 @@ interface PersonReadonly {
 
 This happens often enough in JavaScript that TypeScript provides a way to create new types based on old types &mdash; **mapped types**.
 In a mapped type, the new type transforms each property in the old type in the same way.
-For example, you can make all properties of a type `readonly` or optional.
+For example, you can make all properties optional or of a type `readonly`.
 Here are a couple of examples:
 
 ```ts twoslash
+type Partial<T> = {
+  [P in keyof T]?: T[P];
+};
+
 // @noErrors
 type Readonly<T> = {
   readonly [P in keyof T]: T[P];
-};
-
-type Partial<T> = {
-  [P in keyof T]?: T[P];
 };
 ```
 
