@@ -1,5 +1,5 @@
 ---
-display: "Reação do Namespace"
+display: "Namespace do React"
 oneline: "Especificar o objeto em que 'createElement' é chamado no JSX"
 
 ---
