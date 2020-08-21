@@ -1,6 +1,6 @@
 ---
 display: "Resolução de módulo JSON"
-oneline: "Permite importar arquivos .json"
+oneline: "Permite importar arquivos .json."
 ---
 
 Permite importar módulos com um uma extensão '.json', que é uma prática comum em projetos node. Isso inclui gerar um arquivo `import`  baseado na forma estática do JSON.
