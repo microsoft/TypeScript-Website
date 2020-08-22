@@ -59,5 +59,5 @@ Please run:
 
 Then re-run the command.`
   )
-  process.exit(1)
+  process.exit(0)
 }
