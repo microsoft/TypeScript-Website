@@ -1,8 +1,8 @@
+import { loadTheme, getHighlighter, getTheme } from "shiki"
 import { Highlighter } from "shiki/dist/highlighter"
 import { commonLangIds, commonLangAliases, otherLangIds, TLang } from "shiki-languages"
 import { twoslasher } from "@typescript/twoslash"
 import { createDefaultMapFromNodeModules, addAllFilesFromFolder } from "@typescript/vfs"
-import { createShikiHighlighter, ShikiTwoslashSettings } from "shiki-twoslash"
 
 import visit from "unist-util-visit"
 import { Node } from "unist"
@@ -10,6 +10,38 @@ import { Node } from "unist"
 import { renderToHTML } from "./renderer"
 
 const languages = [...commonLangIds, ...commonLangAliases, ...otherLangIds]
+/** Checks if it is available in shiki */
+export const canHighlightLang = (lang: string) => languages.includes(lang as any)
+
+/**
+ * This gets filled in by the promise below, then should
+ * hopefully be more or less synchronous access by each parse
+ * of the highlighter
+ */
+let highlighter: Highlighter = null as any
+
+export const createShikiHighlighter = (options: import("shiki/dist/highlighter").HighlighterOptions) => {
+  if (highlighter) return highlighter
+
+  var settings = options || {}
+  var theme: any = settings.theme || "nord"
+  var shikiTheme
+
+  try {
+    shikiTheme = getTheme(theme)
+  } catch (error) {
+    try {
+      shikiTheme = loadTheme(theme)
+    } catch (error) {
+      throw new Error("Unable to load theme: " + theme + " - " + error.message)
+    }
+  }
+
+  return getHighlighter({ theme: shikiTheme, langs: languages }).then(newHighlighter => {
+    highlighter = newHighlighter
+    return highlighter
+  })
+}
 
 type RichNode = Node & {
   lang: TLang
@@ -20,13 +52,18 @@ type RichNode = Node & {
   twoslash?: import("@typescript/twoslash").TwoSlashReturn
 }
 
-const defaultSettings = {}
+export type ShikiTwoslashSettings = {
+  useNodeModules?: true
+  nodeModulesTypesPath?: string
+}
+
+const defaultSettings: ShikiTwoslashSettings = {}
 
 /**
  * The function doing the work of transforming any codeblock samples
  * which have opted-in to the twoslash pattern.
  */
-export const visitor = (highlighter: Highlighter, twoslashSettings?: ShikiTwoslashSettings) => (node: RichNode) => {
+const visitor = (twoslashSettings?: ShikiTwoslashSettings) => (node: RichNode) => {
   let lang = node.lang
   let settings = twoslashSettings || defaultSettings
 
@@ -66,8 +103,8 @@ const remarkShiki = async function (
   shikiSettings: import("shiki/dist/highlighter").HighlighterOptions,
   settings: ShikiTwoslashSettings
 ) {
-  const highlighter = await createShikiHighlighter(shikiSettings)
-  visit(markdownAST, "code", visitor(highlighter, settings))
+  await createShikiHighlighter(shikiSettings)
+  visit(markdownAST, "code", visitor(settings))
 }
 
 /////////////////// Mainly for internal use, but tests could use this, not considered public API, so could change
