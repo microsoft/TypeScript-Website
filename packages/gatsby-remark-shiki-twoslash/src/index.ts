@@ -1,16 +1,12 @@
-import { Highlighter } from "shiki/dist/highlighter"
-import { commonLangIds, commonLangAliases, otherLangIds, TLang } from "shiki-languages"
-import { twoslasher } from "@typescript/twoslash"
-import { createDefaultMapFromNodeModules, addAllFilesFromFolder } from "@typescript/vfs"
-import { createShikiHighlighter, ShikiTwoslashSettings } from "shiki-twoslash"
+import type { Highlighter } from "shiki/dist/highlighter"
+import type { TLang } from "shiki-languages"
+// prettier-ignore
+import { createShikiHighlighter, ShikiTwoslashSettings, renderCodeToHTML, runTwoSlash, canHighlightLang, defaultShikiTwoslashSettings } from "shiki-twoslash"
 
 import visit from "unist-util-visit"
 import { Node } from "unist"
 
-import { renderToHTML } from "./renderer"
-
-const languages = [...commonLangIds, ...commonLangAliases, ...otherLangIds]
-
+/* A rich AST node for uninst with twoslash'd data */
 type RichNode = Node & {
   lang: TLang
   type: string
@@ -20,15 +16,13 @@ type RichNode = Node & {
   twoslash?: import("@typescript/twoslash").TwoSlashReturn
 }
 
-const defaultSettings = {}
-
 /**
  * The function doing the work of transforming any codeblock samples
  * which have opted-in to the twoslash pattern.
  */
 export const visitor = (highlighter: Highlighter, twoslashSettings?: ShikiTwoslashSettings) => (node: RichNode) => {
   let lang = node.lang
-  let settings = twoslashSettings || defaultSettings
+  let settings = twoslashSettings || defaultShikiTwoslashSettings
 
   const shouldDisableTwoslash = process && process.env && !!process.env.TWOSLASH_DISABLE
 
@@ -45,14 +39,26 @@ export const visitor = (highlighter: Highlighter, twoslashSettings?: ShikiTwosla
   if (replacer[lang]) lang = replacer[lang]
 
   // Check we can highlight and render
-  const shouldHighlight = lang && languages.includes(lang)
+  const shouldHighlight = lang && canHighlightLang(lang)
 
   if (shouldHighlight && !shouldDisableTwoslash) {
-    const tokens = highlighter.codeToThemedTokens(node.value, lang)
-    const results = renderToHTML(tokens, { langId: lang }, node.twoslash)
+    const results = renderCodeToHTML(node.value, lang, highlighter, node.twoslash)
     node.type = "html"
     node.value = results
     node.children = []
+  }
+}
+
+/**
+ * Runs twoslash across an AST node, switching out the text content, and lang
+ * and adding a `twoslash` property to the node.
+ */
+export const runTwoSlashOnNode = (settings: ShikiTwoslashSettings) => (node: RichNode) => {
+  if (node.meta && node.meta.includes("twoslash")) {
+    const results = runTwoSlash(node.value, node.lang, settings)
+    node.value = results.code
+    node.lang = results.extension as TLang
+    node.twoslash = results
   }
 }
 
@@ -70,31 +76,8 @@ const remarkShiki = async function (
   visit(markdownAST, "code", visitor(highlighter, settings))
 }
 
-/////////////////// Mainly for internal use, but tests could use this, not considered public API, so could change
-
-/** @internal */
-export const runTwoSlashOnNode = (settings: ShikiTwoslashSettings) => (node: RichNode) => {
-  // Run twoslash and replace the main contents if
-  // the ``` has 'twoslash' after it
-  if (node.meta && node.meta.includes("twoslash")) {
-    let map: Map<string, string> | undefined = undefined
-
-    if (settings.useNodeModules) {
-      const laterESVersion = 6 // we don't want a hard dep on TS, so that browsers can run this code)
-      map = createDefaultMapFromNodeModules({ target: laterESVersion })
-      // Add @types to the fsmap
-      addAllFilesFromFolder(map, settings.nodeModulesTypesPath || "node_modules/@types")
-    }
-
-    const results = twoslasher(node.value, node.lang, { fsMap: map })
-    node.value = results.code
-    node.lang = results.extension as TLang
-    node.twoslash = results
-  }
-}
-
 /** Sends the twoslash visitor over the existing MD AST and replaces the code samples inline, does not do highlighting  */
 export const runTwoSlashAcrossDocument = ({ markdownAST }: any, settings?: ShikiTwoslashSettings) =>
-  visit(markdownAST, "code", runTwoSlashOnNode(settings || defaultSettings))
+  visit(markdownAST, "code", runTwoSlashOnNode(settings || defaultShikiTwoslashSettings))
 
 export default remarkShiki
