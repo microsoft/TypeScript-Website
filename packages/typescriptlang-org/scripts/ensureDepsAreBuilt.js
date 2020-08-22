@@ -14,7 +14,7 @@ const twoslashDist = join(pkgsRoot, "ts-twoslasher", "dist")
 const vfsDist = join(pkgsRoot, "typescript-vfs", "dist")
 const gatsbyShiki = join(pkgsRoot, "gatsby-remark-shiki-twoslash", "dist")
 
-for (const distDir of [twoslashDist, vfsDist, gatsbyShiki]) {
+for (const distDir of [twoslashDist, vfsDist, gatsbyShiki, gatsbyShiki]) {
   if (!fs.existsSync(distDir)) {
     const readline = require("readline")
     const blank = "\n".repeat(process.stdout.rows)
@@ -40,4 +40,24 @@ ${chalk.bgBlueBright.white.bold("  ts")}
   `)
     process.exit(0)
   }
+}
+
+const releaseInfo = join(
+  pkgsRoot,
+  "typescriptlang-org",
+  "src",
+  "lib",
+  "release-info.json"
+)
+
+if (!fs.existsSync(releaseInfo)) {
+  // prettier-ignore
+  console.log(`
+Please run:
+
+> ${chalk.bgBlueBright.white.bold("yarn workspace typescriptlang-org update-versions")}
+
+Then re-run the command.`
+  )
+  process.exit(1)
 }

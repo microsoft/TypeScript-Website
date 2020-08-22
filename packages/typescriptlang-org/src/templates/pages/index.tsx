@@ -6,7 +6,7 @@ import { VersionBar } from "../../components/VersionBar"
 import { GreyButton } from "../../components/display/GreyButton"
 import { UpcomingReleaseMeta } from "../../components/index/UpcomingReleaseMeta"
 import { MigrationStories, GitHubBar, OSS } from "../../components/index/MigrationStories"
-import { setupTwoslashHovers } from "gatsby-remark-shiki-twoslash/dist/dom"
+import { setupTwoslashHovers } from "shiki-twoslash/dist/dom"
 
 import { indexCopy } from "../../copy/en/index"
 import { createInternational } from "../../lib/createInternational"

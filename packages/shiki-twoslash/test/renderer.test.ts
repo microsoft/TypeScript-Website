@@ -132,8 +132,6 @@ console.log(hello);
     const twoslash = runTwoSlash(file, "ts", {})
     const html = renderCodeToHTML(file, "ts", highlighter, twoslash)
 
-    const messages = html.split("<data-lsp lsp='").map(r => r.split("'")[0])
-
     expect(html).toContain(`data-lsp`)
     expect(html).toContain(`<data-lsp lsp='function longest`)
     // expect(html.split("<data-lsp").length).toEqual(twoslash.staticQuickInfos.length + 1)
