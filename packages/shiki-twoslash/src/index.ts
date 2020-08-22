@@ -1,13 +1,18 @@
 import { loadTheme, getHighlighter, getTheme } from "shiki"
 import { Highlighter } from "shiki/dist/highlighter"
 import { commonLangIds, commonLangAliases, otherLangIds } from "shiki-languages"
-import { twoslasher, TwoSlashReturn } from "@typescript/twoslash"
+import { twoslasher, TwoSlashOptions, TwoSlashReturn } from "@typescript/twoslash"
 import { createDefaultMapFromNodeModules, addAllFilesFromFolder } from "@typescript/vfs"
 import { renderToHTML } from "./renderer"
 
+export type ShikiTwoslashSettings = {
+  useNodeModules?: true
+  nodeModulesTypesPath?: string
+}
+
 const languages = [...commonLangIds, ...commonLangAliases, ...otherLangIds]
 
-/** Checks if it is available in shiki */
+/** Checks if a particular lang is available in shiki */
 export const canHighlightLang = (lang: string) => languages.includes(lang as any)
 
 /**
@@ -17,6 +22,13 @@ export const canHighlightLang = (lang: string) => languages.includes(lang as any
  */
 let storedHighlighter: Highlighter = null as any
 
+/**
+ * Creates a Shiki highlighter, this is an async call because of the call to WASM to get the regex parser set up.
+ *
+ * In other functions, passing a the result of this highlighter function is kind of optional but it's the author's
+ * opinion that you should be in control of the highlighter, and not this library.
+ *
+ */
 export const createShikiHighlighter = (options: import("shiki/dist/highlighter").HighlighterOptions) => {
   if (storedHighlighter) return storedHighlighter
 
@@ -40,11 +52,6 @@ export const createShikiHighlighter = (options: import("shiki/dist/highlighter")
   })
 }
 
-export type ShikiTwoslashSettings = {
-  useNodeModules?: true
-  nodeModulesTypesPath?: string
-}
-
 export const defaultShikiTwoslashSettings: ShikiTwoslashSettings = {}
 
 /** Uses Shiki to render the code to HTML */
@@ -61,14 +68,17 @@ export const renderCodeToHTML = (code: string, lang: string, highlighter?: Highl
   return results
 }
 
-// Basically so that we can store this once, then re-use it
+// Basically so that we can store this once, then re-use it in the same process
 let nodeModulesMap: Map<string, string> | undefined = undefined
 
-/** Runs Twoslash over the code in the  */
+/**
+ * Runs Twoslash over the code passed in with a particular language as the default file.
+ */
 export const runTwoSlash = (
   code: string,
   lang: string,
-  settings: ShikiTwoslashSettings = defaultShikiTwoslashSettings
+  settings: ShikiTwoslashSettings = defaultShikiTwoslashSettings,
+  twoslashDefaults: TwoSlashOptions = {}
 ): TwoSlashReturn => {
   let map: Map<string, string> | undefined = undefined
 
@@ -100,6 +110,6 @@ export const runTwoSlash = (
     addAllFilesFromFolder(map, settings.nodeModulesTypesPath || "node_modules/@types")
   }
 
-  const results = twoslasher(code, lang, { fsMap: map })
+  const results = twoslasher(code, lang, { ...twoslashDefaults, fsMap: map })
   return results
 }

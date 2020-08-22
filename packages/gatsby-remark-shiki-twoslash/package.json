@@ -3,6 +3,7 @@
   "version": "0.6.1",
   "license": "MIT",
   "homepage": "https://github.com/microsoft/TypeScript-Website/",
+  "description": "A remark plugin which adds twoslash code samples for TypeScript",
   "author": "Orta Therox",
   "main": "./dist/index.js",
   "module": "./dist/gatsby-remark-shiki-twoslash.esm.js",
@@ -22,7 +23,7 @@
     "@typescript/vfs": "1.1.2",
     "shiki": "^0.1.6",
     "shiki-languages": "^0.1.6",
-    "shiki-twoslash": "0.6.1",
+    "shiki-twoslash": "0.6.2",
     "typescript": "*",
     "unist-util-visit": "^2.0.0"
   },
