@@ -293,7 +293,7 @@ export function getDocumentationNavForLanguage(
           title: "TypeScript 4.0",
           id: "typescript-4.0",
           permalink: "/docs/handbook/release-notes/typescript-4-0.html",
-          oneline: "TypeScript 1.1 Release Notes",
+          oneline: "TypeScript 4.0 Release Notes",
         },
         {
           title: "TypeScript 3.9",
@@ -931,7 +931,7 @@ export function getDocumentationNavForLanguage(
           title: "TypeScript 4.0",
           id: "typescript-4.0",
           permalink: "/docs/handbook/release-notes/typescript-4-0.html",
-          oneline: "TypeScript 1.1 Release Notes",
+          oneline: "TypeScript 4.0 Release Notes",
         },
         {
           title: "TypeScript 3.9",

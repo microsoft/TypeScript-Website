@@ -14,7 +14,7 @@ const twoslashDist = join(pkgsRoot, "ts-twoslasher", "dist")
 const vfsDist = join(pkgsRoot, "typescript-vfs", "dist")
 const gatsbyShiki = join(pkgsRoot, "gatsby-remark-shiki-twoslash", "dist")
 
-for (const distDir of [twoslashDist, vfsDist, gatsbyShiki, gatsbyShiki]) {
+for (const distDir of [twoslashDist, vfsDist, gatsbyShiki]) {
   if (!fs.existsSync(distDir)) {
     const readline = require("readline")
     const blank = "\n".repeat(process.stdout.rows)
