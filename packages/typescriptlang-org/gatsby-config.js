@@ -15,7 +15,6 @@ if (process.env.BOOTSTRAPPING) {
 require("./scripts/ensureDepsAreBuilt")
 
 const path = require.resolve("./../../watcher")
-console.log(path)
 require(path)
 
 // https://github.com/gatsbyjs/gatsby/issues/1457

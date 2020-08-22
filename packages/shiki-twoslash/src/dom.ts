@@ -43,7 +43,7 @@ const getRootRect = (element: HTMLElement): DOMRect => {
  *
  * @example
  * import React, { useEffect } from "react"
- * import { setupTwoslashHovers } from "gatsby-remark-shiki-twoslash/dom";
+ * import { setupTwoslashHovers } from "shiki-twoslash/dom";
  *
  * export default () => {
  *   // Add a the hovers
