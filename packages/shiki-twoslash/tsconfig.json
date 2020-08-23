@@ -2,7 +2,7 @@
   "include": ["src", "types", "test"],
   "exclude": ["test"],
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2015",
     "module": "esnext",
     "lib": ["dom", "esnext"],
     "importHelpers": true,

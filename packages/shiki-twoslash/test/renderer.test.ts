@@ -21,7 +21,7 @@ const a = "123"
 const b = "345"
     `
     const twoslash = runTwoSlash(code, "ts", {})
-    const html = renderCodeToHTML(code, "ts", highlighter, twoslash)
+    const html = renderCodeToHTML(twoslash.code, "ts", ["twoslash"], {}, highlighter, twoslash)
 
     expect(html).toContain(`data-lsp`)
     expect(html).toContain(`<data-lsp lsp='const a:`)
@@ -56,7 +56,7 @@ console.log(hello);
     const highlighter = await createShikiHighlighter({ theme: "dark_vs" })
 
     const twoslash = runTwoSlash(file, "ts", {})
-    const html = renderCodeToHTML(file, "ts", highlighter, twoslash)
+    const html = renderCodeToHTML(twoslash.code, "ts", ["twoslash"], {}, highlighter, twoslash)
 
     expect(html).toContain(`data-lsp`)
     expect(html).toContain(`<data-lsp lsp='function longest`)
@@ -72,7 +72,7 @@ console.log(hello);
     const highlighter = await createShikiHighlighter({ theme: "dark_vs" })
 
     const twoslash = runTwoSlash(file, "ts", {})
-    const html = renderCodeToHTML(file, "ts", highlighter, twoslash)
+    const html = renderCodeToHTML(twoslash.code, "ts", ["twoslash"], {}, highlighter, twoslash)
 
     expect(html).toContain(`<data-lsp lsp='function longest`)
 
@@ -82,10 +82,7 @@ console.log(hello);
     // The error code
     expect(html).toContain(`<span class="code">2345</span>`)
 
-    // Figuring out why 15 instead of twoslash.staticQuickInfos.length + 1
-    // would be an interesting deep dive
-    expect(html.split("<data-lsp").length).toEqual(15)
-    // expect(html.split("<data-lsp").length).toEqual(twoslash.staticQuickInfos.length + 1)
+    expect(html.split("<data-lsp").length).toEqual(twoslash.staticQuickInfos.length + 1)
   })
 })
 
@@ -115,13 +112,12 @@ console.log(hello);
     const highlighter = await createShikiHighlighter({ theme: "dark_vs" })
 
     const twoslash = runTwoSlash(file, "ts", {})
-    const html = renderCodeToHTML(file, "ts", highlighter, twoslash)
+    const html = renderCodeToHTML(twoslash.code, "ts", ["twoslash"], {}, highlighter, twoslash)
 
     expect(html).toContain(`data-lsp`)
     expect(html).toContain(`<data-lsp lsp='function longest`)
 
-    // expect(html.split("<data-lsp").length).toEqual(twoslash.staticQuickInfos.length + 1)
-    expect(html.split("<data-lsp").length).toEqual(15)
+    expect(html.split("<data-lsp").length).toEqual(twoslash.staticQuickInfos.length + 1)
   })
 
   it("shows the right LSP results with the typescript site theme", async () => {
@@ -130,11 +126,10 @@ console.log(hello);
     })
 
     const twoslash = runTwoSlash(file, "ts", {})
-    const html = renderCodeToHTML(file, "ts", highlighter, twoslash)
+    const html = renderCodeToHTML(twoslash.code, "ts", ["twoslash"], {}, highlighter, twoslash)
 
     expect(html).toContain(`data-lsp`)
     expect(html).toContain(`<data-lsp lsp='function longest`)
-    // expect(html.split("<data-lsp").length).toEqual(twoslash.staticQuickInfos.length + 1)
-    expect(html.split("<data-lsp").length).toEqual(15)
+    expect(html.split("<data-lsp").length).toEqual(twoslash.staticQuickInfos.length + 1)
   })
 })

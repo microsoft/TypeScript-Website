@@ -3,8 +3,10 @@ import { Highlighter } from "shiki/dist/highlighter"
 import { commonLangIds, commonLangAliases, otherLangIds } from "shiki-languages"
 import { twoslasher, TwoSlashOptions, TwoSlashReturn } from "@typescript/twoslash"
 import { createDefaultMapFromNodeModules, addAllFilesFromFolder } from "@typescript/vfs"
-import { renderToHTML } from "./renderers/twoslash"
+import { twoslashRenderer } from "./renderers/twoslash"
 import { plainTextRenderer } from "./renderers/plain"
+import { defaultShikiRenderer } from "./renderers/shiki"
+import { tsconfigJSONRenderer } from "./renderers/tsconfig"
 
 export type ShikiTwoslashSettings = {
   useNodeModules?: true
@@ -53,24 +55,54 @@ export const createShikiHighlighter = (options: import("shiki/dist/highlighter")
   })
 }
 
-export const defaultShikiTwoslashSettings: ShikiTwoslashSettings = {}
-
-/** Uses Shiki to render the code to HTML */
-export const renderCodeToHTML = (code: string, lang: string, highlighter?: Highlighter, twoslash?: TwoSlashReturn) => {
+/**
+ * Renders a code sample to HTML, automatically taking into account:
+ *
+ *  - rendering overrides for twoslash and tsconfig
+ *  - whether the language exists in shiki
+ *
+ * @param code the source code to render
+ * @param lang the language to use in highlighting
+ * @param info additional metadata which lives after the codefence lang (e.g. ["twoslash"])
+ * @param highlighter optional, but you should use it, highlighter
+ * @param twoslash optional, but required when info contains 'twoslash' as a string
+ */
+export const renderCodeToHTML = (
+  code: string,
+  lang: string,
+  info: string[],
+  shikiOptions?: import("shiki/dist/renderer").HtmlRendererOptions,
+  highlighter?: Highlighter,
+  twoslash?: TwoSlashReturn
+) => {
   if (!highlighter && !storedHighlighter) {
     throw new Error(
       "The highlighter object hasn't been initialised via `setupHighLighter` yet in render-shiki-twoslash"
     )
   }
 
+  // Shiki doesn't know this lang
+  if (!canHighlightLang(lang)) {
+    return plainTextRenderer(code, shikiOptions || {})
+  }
+
+  // Shiki does know the lang, so tokenize
   const renderHighlighter = highlighter || storedHighlighter
   const tokens = renderHighlighter.codeToThemedTokens(code, lang as any)
-  const results = renderToHTML(tokens, { langId: lang }, twoslash)
-  return results
-}
 
-/** Keeps the same DOM shape, but for arbitrary text */
-export const renderPlainTextToHTML = plainTextRenderer
+  // Twoslash specific renderer
+  if (info.includes("twoslash") && twoslash) {
+    return twoslashRenderer(tokens, shikiOptions || {}, twoslash)
+  }
+
+  // TSConfig renderer
+  if (lang === "json" && info.includes("tsconfig")) {
+    return tsconfigJSONRenderer(tokens, shikiOptions || {})
+  }
+
+  // Otherwise just the normal shiki renderer
+  return defaultShikiRenderer(tokens, { langId: lang })
+}
 
 // Basically so that we can store this once, then re-use it in the same process
 let nodeModulesMap: Map<string, string> | undefined = undefined
@@ -81,7 +113,7 @@ let nodeModulesMap: Map<string, string> | undefined = undefined
 export const runTwoSlash = (
   code: string,
   lang: string,
-  settings: ShikiTwoslashSettings = defaultShikiTwoslashSettings,
+  settings: ShikiTwoslashSettings = {},
   twoslashDefaults: TwoSlashOptions = {}
 ): TwoSlashReturn => {
   let map: Map<string, string> | undefined = undefined
@@ -116,4 +148,12 @@ export const runTwoSlash = (
 
   const results = twoslasher(code, lang, { ...twoslashDefaults, fsMap: map })
   return results
+}
+
+/** Set of renderers if you want to explicitly call one instead of using renderCodeToHTML */
+export const renderers = {
+  plainTextRenderer,
+  defaultShikiRenderer,
+  twoslashRenderer,
+  tsconfigJSONRenderer,
 }

@@ -1,6 +1,6 @@
 {
   "name": "shiki-twoslash",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "license": "MIT",
   "homepage": "https://github.com/microsoft/TypeScript-Website/",
   "description": "API primitives to mix Shiki with Twoslash",

@@ -3,7 +3,6 @@ type Options = import("shiki/dist/renderer").HtmlRendererOptions
 type TwoSlash = import("@typescript/twoslash").TwoSlashReturn
 
 import { stripHTML, createHighlightedString2, subTripleArrow, replaceTripleArrowEncoded, escapeHtml } from "../utils"
-import { plainOleShikiRenderer } from "./shiki"
 
 // OK, so - this is just straight up complex code.
 
@@ -22,13 +21,7 @@ import { plainOleShikiRenderer } from "./shiki"
 // - the DOM requires a flattened graph of html elements
 //
 
-export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash) {
-  // It's a NOOP for us with twoslash, this is basically all
-  // the other languages
-  if (!twoslash) {
-    return plainOleShikiRenderer(lines, options)
-  }
-
+export function twoslashRenderer(lines: Lines, options: Options, twoslash: TwoSlash) {
   let html = ""
 
   html += `<pre class="shiki twoslash">`
