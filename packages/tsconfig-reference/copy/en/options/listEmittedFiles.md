@@ -21,7 +21,7 @@ example
 
 With:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "declaration": true,

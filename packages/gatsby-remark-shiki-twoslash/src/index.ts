@@ -1,7 +1,7 @@
 import type { Highlighter } from "shiki/dist/highlighter"
 import type { TLang } from "shiki-languages"
 // prettier-ignore
-import { createShikiHighlighter, ShikiTwoslashSettings, renderCodeToHTML, runTwoSlash, canHighlightLang, defaultShikiTwoslashSettings } from "shiki-twoslash"
+import { createShikiHighlighter, ShikiTwoslashSettings, renderCodeToHTML, runTwoSlash } from "shiki-twoslash"
 
 import visit from "unist-util-visit"
 import { Node } from "unist"
@@ -22,7 +22,7 @@ type RichNode = Node & {
  */
 export const visitor = (highlighter: Highlighter, twoslashSettings?: ShikiTwoslashSettings) => (node: RichNode) => {
   let lang = node.lang
-  let settings = twoslashSettings || defaultShikiTwoslashSettings
+  let settings = twoslashSettings || {}
 
   const shouldDisableTwoslash = process && process.env && !!process.env.TWOSLASH_DISABLE
 
@@ -38,15 +38,10 @@ export const visitor = (highlighter: Highlighter, twoslashSettings?: ShikiTwosla
   // @ts-ignore
   if (replacer[lang]) lang = replacer[lang]
 
-  // Check we can highlight and render
-  const shouldHighlight = lang && canHighlightLang(lang)
-
-  if (shouldHighlight && !shouldDisableTwoslash) {
-    const results = renderCodeToHTML(node.value, lang, highlighter, node.twoslash)
-    node.type = "html"
-    node.value = results
-    node.children = []
-  }
+  const results = renderCodeToHTML(node.value, lang, node.meta || [], {}, highlighter, node.twoslash)
+  node.type = "html"
+  node.value = results
+  node.children = []
 }
 
 /**
@@ -78,6 +73,6 @@ const remarkShiki = async function (
 
 /** Sends the twoslash visitor over the existing MD AST and replaces the code samples inline, does not do highlighting  */
 export const runTwoSlashAcrossDocument = ({ markdownAST }: any, settings?: ShikiTwoslashSettings) =>
-  visit(markdownAST, "code", runTwoSlashOnNode(settings || defaultShikiTwoslashSettings))
+  visit(markdownAST, "code", runTwoSlashOnNode(settings || {}))
 
 export default remarkShiki

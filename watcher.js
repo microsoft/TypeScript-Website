@@ -27,6 +27,7 @@ const projectForFile = file => {
   // Any output
   if (file.name.includes("/dist/") || file.name.includes("/out/")) return
   if (file.name.includes("/typescriptlang-org/")) return
+  if (file.name.includes(".test.ts")) return
   if (file.name.startsWith("packages/")) {
     return file.name.split("/")[1]
   }

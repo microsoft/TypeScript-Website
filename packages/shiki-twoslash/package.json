@@ -1,8 +1,9 @@
 {
   "name": "shiki-twoslash",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "license": "MIT",
   "homepage": "https://github.com/microsoft/TypeScript-Website/",
+  "description": "API primitives to mix Shiki with Twoslash",
   "author": "Orta Therox",
   "main": "./dist/index.js",
   "module": "./dist/shiki-twoslash.esm.js",
@@ -13,6 +14,7 @@
   "scripts": {
     "start": "tsdx watch",
     "prepublishOnly": "yarn build",
+    "bootstrap": "node scripts/generateTSConfigOneliners.js",
     "build": "tsdx build && yarn tsc src/dom.ts --outDir dist",
     "test": "tsdx test",
     "lint": "tsdx lint"
@@ -26,7 +28,7 @@
   },
   "devDependencies": {
     "@types/jest": "^25.1.3",
-    "gatsby-remark-shiki-twoslash": "0.6.1",
+    "gatsby-remark-shiki-twoslash": "0.7.0",
     "rehype-stringify": "^6.0.1",
     "tsdx": "^0.12.3",
     "tslib": "^1.10.0",

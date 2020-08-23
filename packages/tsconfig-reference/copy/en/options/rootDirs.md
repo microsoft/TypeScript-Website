@@ -20,7 +20,7 @@ For example:
              └── template1.ts (can import "./view1", "./view2")
 ```
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "rootDirs": ["src/views", "generated/templates/views"]

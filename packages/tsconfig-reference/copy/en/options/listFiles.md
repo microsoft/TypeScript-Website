@@ -17,7 +17,7 @@ example
 
 With:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "listFiles": true

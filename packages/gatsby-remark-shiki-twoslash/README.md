@@ -176,13 +176,16 @@ With a bit of work you can explain complicated code in a way that lets people in
 
 With that set up, start up your server and add a codeblock to a markdown file to see if it renders with highlights:
 
-<pre>```json
+````
+```json
 { "json": true }
-```</pre>
+```
+````
 
 If that works, then add a twoslash example:
 
-<pre>```ts twoslash
+````
+```ts twoslash
 interface IdLabel {id: number, /* some fields */ }
 interface NameLabel {name: string, /* other fields */ }
 type NameOrId<T extends number | string> = T extends number ? IdLabel : NameLabel;
@@ -193,8 +196,9 @@ function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {
   throw "unimplemented"
 }
 
-let a = createLabel("typescript");`
-```</pre>
+let a = createLabel("typescript");
+```
+````
 
 If the code sample shows as
 

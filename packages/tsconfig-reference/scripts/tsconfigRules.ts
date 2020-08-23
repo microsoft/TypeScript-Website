@@ -124,7 +124,8 @@ export const defaultsForOptions = {
   listFiles: "false",
   locale: "Platform specific",
   maxNodeModuleJsDepth: "0",
-  moduleResolution: "module === `AMD`, `UMD`, `System` or `ES6` then `Classic`<br/><br/>Otherwise `Node`",
+  moduleResolution:
+    "module === `AMD`, `UMD`, `System` or `ES6` then `Classic`<br/><br/>Otherwise `Node`",
   newLine: "Platform specific",
   noEmit: "false",
   noEmitHelpers: "false",
@@ -212,7 +213,7 @@ export const allowedValues = {
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
-  "4.0": ["jsxFragmentFactory"],
+  "4.0": ["jsxFragmentFactory", "disableReferencedProjectLoad"],
   "3.8": [
     "assumeChangesOnlyAffectDirectDependencies",
     "importsNotUsedAsValues",
