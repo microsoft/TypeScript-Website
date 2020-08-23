@@ -1,10 +1,9 @@
-// This started as a JS port of https://github.com/octref/shiki/blob/master/packages/shiki/src/renderer.ts
-
 type Lines = import("shiki").IThemedToken[][]
 type Options = import("shiki/dist/renderer").HtmlRendererOptions
 type TwoSlash = import("@typescript/twoslash").TwoSlashReturn
 
-import { stripHTML, createHighlightedString2, subTripleArrow, replaceTripleArrowEncoded } from "./utils"
+import { stripHTML, createHighlightedString2, subTripleArrow, replaceTripleArrowEncoded, escapeHtml } from "../utils"
+import { plainOleShikiRenderer } from "./shiki"
 
 // OK, so - this is just straight up complex code.
 
@@ -170,10 +169,6 @@ export function renderToHTML(lines: Lines, options: Options, twoslash?: TwoSlash
   return html
 }
 
-function escapeHtml(html: string) {
-  return html.replace(/</g, "&lt;").replace(/>/g, "&gt;")
-}
-
 /** Returns a map where all the keys are the value in keyGetter  */
 function groupBy<T>(list: T[], keyGetter: (obj: any) => number) {
   const map = new Map<number, T[]>()
@@ -187,30 +182,4 @@ function groupBy<T>(list: T[], keyGetter: (obj: any) => number) {
     }
   })
   return map
-}
-
-export function plainOleShikiRenderer(lines: Lines, options: Options) {
-  let html = ""
-
-  html += `<pre class="shiki">`
-  if (options.langId) {
-    html += `<div class="language-id">${options.langId}</div>`
-  }
-
-  html += `<div class='code-container'><code>`
-
-  lines.forEach(l => {
-    if (l.length === 0) {
-      html += `\n`
-    } else {
-      l.forEach(token => {
-        html += `<span style="color: ${token.color}">${escapeHtml(token.content)}</span>`
-      })
-      html += `\n`
-    }
-  })
-
-  html = html.replace(/\n*$/, "") // Get rid of final new lines
-  html += `</code></div></pre>`
-  return html
 }

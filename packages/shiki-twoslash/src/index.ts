@@ -3,7 +3,8 @@ import { Highlighter } from "shiki/dist/highlighter"
 import { commonLangIds, commonLangAliases, otherLangIds } from "shiki-languages"
 import { twoslasher, TwoSlashOptions, TwoSlashReturn } from "@typescript/twoslash"
 import { createDefaultMapFromNodeModules, addAllFilesFromFolder } from "@typescript/vfs"
-import { renderToHTML } from "./renderer"
+import { renderToHTML } from "./renderers/twoslash"
+import { plainTextRenderer } from "./renderers/plain"
 
 export type ShikiTwoslashSettings = {
   useNodeModules?: true
@@ -30,7 +31,7 @@ let storedHighlighter: Highlighter = null as any
  *
  */
 export const createShikiHighlighter = (options: import("shiki/dist/highlighter").HighlighterOptions) => {
-  if (storedHighlighter) return storedHighlighter
+  if (storedHighlighter) return Promise.resolve(storedHighlighter)
 
   var settings = options || {}
   var theme: any = settings.theme || "nord"
@@ -67,6 +68,9 @@ export const renderCodeToHTML = (code: string, lang: string, highlighter?: Highl
   const results = renderToHTML(tokens, { langId: lang }, twoslash)
   return results
 }
+
+/** Keeps the same DOM shape, but for arbitrary text */
+export const renderPlainTextToHTML = plainTextRenderer
 
 // Basically so that we can store this once, then re-use it in the same process
 let nodeModulesMap: Map<string, string> | undefined = undefined
