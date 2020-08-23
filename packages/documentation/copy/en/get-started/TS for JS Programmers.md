@@ -250,7 +250,6 @@ const rect = { x: 33, y: 3, width: 30, height: 80 };
 printPoint(rect); // prints "33, 3"
 
 const color = { hex: "#187ABF" };
-
 printPoint(color);
 ```
 
