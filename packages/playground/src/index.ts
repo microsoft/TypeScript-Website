@@ -318,29 +318,31 @@ export const setupPlayground = (
     },
   }
 
-  const shareButton = document.getElementById("share-button")!
-  shareButton.onclick = e => {
-    e.preventDefault()
-    shareAction.run()
-    return false
+  const shareButton = document.getElementById("share-button")
+  if (shareButton) {
+    shareButton.onclick = e => {
+      e.preventDefault()
+      shareAction.run()
+      return false
+    }
+
+    // Set up some key commands
+    sandbox.editor.addAction(shareAction)
+
+    sandbox.editor.addAction({
+      id: "run-js",
+      label: "Run the evaluated JavaScript for your TypeScript file",
+      keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
+
+      contextMenuGroupId: "run",
+      contextMenuOrder: 1.5,
+
+      run: function (ed) {
+        const runButton = document.getElementById("run-button")
+        runButton && runButton.onclick && runButton.onclick({} as any)
+      },
+    })
   }
-
-  // Set up some key commands
-  sandbox.editor.addAction(shareAction)
-
-  sandbox.editor.addAction({
-    id: "run-js",
-    label: "Run the evaluated JavaScript for your TypeScript file",
-    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
-
-    contextMenuGroupId: "run",
-    contextMenuOrder: 1.5,
-
-    run: function (ed) {
-      const runButton = document.getElementById("run-button")
-      runButton && runButton.onclick && runButton.onclick({} as any)
-    },
-  })
 
   const runButton = document.getElementById("run-button")
   if (runButton) {
