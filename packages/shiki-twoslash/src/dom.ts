@@ -56,7 +56,7 @@ const getRootRect = (element: HTMLElement): DOMRect => {
  */
 export const setupTwoslashHovers = () => {
   // prettier-ignore
-  const twoslashes = document.querySelectorAll(".shiki.twoslash .code-container code")
+  const twoslashes = document.querySelectorAll(".shiki.lsp .code-container code")
 
   // Gets triggered on the spans inside the codeblocks
   const hover = (event: Event) => {

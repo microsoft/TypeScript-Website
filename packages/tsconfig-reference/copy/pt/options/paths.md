@@ -7,7 +7,7 @@ Uma série de entradas que remapeiam as importações para locais de pesquisa re
 
 `paths` permite que você declare como o TypeScript deve resolver importações nos seus `requires` e `imports`.
 
-```json
+```json tsconfig tsconfig
 {
   "compilerOptions": {
     "baseUrl": ".", // isto deve ser especificado se "paths" está especificado.
@@ -20,7 +20,7 @@ Uma série de entradas que remapeiam as importações para locais de pesquisa re
 
 Isto permitiria que você escreva `import "jquery"`, e obtenha toda a digitação correta localmente.
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "baseUrl": "src",

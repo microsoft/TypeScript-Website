@@ -33,7 +33,7 @@ In addition to that, Babel cannot create `.d.ts` files for your TypeScript which
 
 To fix these issues, you would probably want to set up a command to type check your project using TSC. This likely means duplicating some of your babel config into a corresponding [`tsconfig.json`](/tconfig) and ensuring these flags are enabled:
 
-```json
+```json tsconfig
 "compilerOptions": {
   // Ensure that .d.ts files are created by tsc, but not .js files
   "declaration": true,

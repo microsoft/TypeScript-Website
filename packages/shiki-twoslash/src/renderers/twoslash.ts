@@ -24,7 +24,7 @@ import { stripHTML, createHighlightedString2, subTripleArrow, replaceTripleArrow
 export function twoslashRenderer(lines: Lines, options: Options, twoslash: TwoSlash) {
   let html = ""
 
-  html += `<pre class="shiki twoslash">`
+  html += `<pre class="shiki twoslash lsp">`
   if (options.langId) {
     html += `<div class="language-id">${options.langId}</div>`
   }

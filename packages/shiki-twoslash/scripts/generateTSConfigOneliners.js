@@ -14,7 +14,7 @@ const { format } = require("prettier")
 const englishRoot = join(__dirname, "..", "..", "tsconfig-reference", "copy", "en", "options")
 const options = readdirSync(englishRoot).filter(p => !p.startsWith(".") && p.endsWith(".md"))
 
-const lines = []
+const lines = ["compilerOptions: `The set of compiler options for your project`,"]
 options.forEach(optFilename => {
   const optPath = join(englishRoot, optFilename)
   const md = read(optPath)

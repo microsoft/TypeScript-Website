@@ -1,13 +1,18 @@
 ### shiki-twoslash
 
+> Documentation / made lovely by counting words / maybe we would read!
+
 Provides the API primitives to mix [shiki](https://shiki.matsu.io) with [@typescript/twoslash](https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher).
 
 Things it handles:
 
 - Shiki bootstrapping: `createShikiHighlighter`
-- Checking if shiki can handle a code sample: `canHighlightLang`
 - Running Twoslash over code, with caching and DTS lookups: `runTwoSlash`
 - Rendering any code sample with Shiki: `renderCodeToHTML`
+
+Useful, but not critical:
+
+- Checking if shiki can handle a code sample: `canHighlightLang`
 
 ### API
 
@@ -26,24 +31,60 @@ async function visitor(highlighterOpts, shikiOpts) {
 
 ##### `renderCodeToHTML`
 
-Renders source code into HTML via Shiki:
+```ts
+/**
+ * Renders a code sample to HTML, automatically taking into account:
+ *
+ *  - rendering overrides for twoslash and tsconfig
+ *  - whether the language exists in shiki
+ *
+ * @param code the source code to render
+ * @param lang the language to use in highlighting
+ * @param info additional metadata which lives after the codefence lang (e.g. ["twoslash"])
+ * @param highlighter optional, but you should use it, highlighter
+ * @param twoslash optional, but required when info contains 'twoslash' as a string
+ */
+export declare const renderCodeToHTML: (
+  code: string,
+  lang: string,
+  info: string[],
+  shikiOptions?: import("shiki/dist/renderer").HtmlRendererOptions | undefined,
+  highlighter?: Highlighter | undefined,
+  twoslash?: TwoSlashReturn | undefined
+) => string
+```
+
+For example:
 
 ```ts
-const shouldHighlight = lang && canHighlightLang(lang)
-
-if (shouldHighlight) {
-  const results = renderCodeToHTML(node.value, lang, highlighter)
-  node.type = "html"
-  node.children = []
-}
+const results = renderCodeToHTML(node.value, lang, node.meta || [], {}, highlighter, node.twoslash)
+node.type = "html"
+node.value = results
+node.children = []
 ```
+
+Uses:
+
+- `renderers.plainTextRenderer` for language which shiki cannot handle
+- `renderers.defaultRenderer` for shiki highlighted code samples
+- `renderers.twoslashRenderer` for twoslash powered TypeScript code samples
+- `renderers.tsconfigJSONRenderer` for extra annotations to JSON which is known to be a TSConfig file
+
+These will be used automatically for you, depending on whether the language is available or what the `info` param is set to.
 
 To get access to the twoslash renderer, you'll need to pass in the results of a twoslash run to `renderCodeToHTML`:
 
 ```ts
 const highlighter = await createShikiHighlighter(highlighterOpts)
 const twoslashResults = runTwoSlash(code, lang)
-const html = renderCodeToHTML(twoslashResults.code, twoslashResults.lang, highlighter)
+const results = renderCodeToHTML(
+  twoslashResults.code,
+  twoslashResults.lang,
+  node.meta || ["twoslash"],
+  {},
+  highlighter,
+  node.twoslash
+)
 ```
 
 #### `runTwoSlash`

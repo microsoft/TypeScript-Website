@@ -9,7 +9,7 @@ This option can be used on a per-file basis too similar to [Babel's `/** @jsxFra
 
 For example with this TSConfig:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "target": "esnext",

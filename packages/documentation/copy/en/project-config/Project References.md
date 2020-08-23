@@ -53,7 +53,7 @@ Project references can solve all of these problems and more.
 
 `tsconfig.json` files have a new top-level property, `references`. It's an array of objects that specifies projects to reference:
 
-```js
+```js tsconfig
 {
     "compilerOptions": {
         // The usual

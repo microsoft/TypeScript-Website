@@ -11,7 +11,7 @@ const tokenIsJSONKey = (token: IThemedToken) => {
   return token.explanation.find(e => e.scopes.find(s => s.scopeName.includes("support.type.property-name")))
 }
 
-/** Can you look up the token in the tsconfigh reference? */
+/** Can you look up the token in the tsconfig reference? */
 const isKeyInTSConfig = (token: IThemedToken) => {
   if (token.content === '"') return
   const name = token.content.slice(1, token.content.length - 1)
@@ -26,7 +26,7 @@ const isKeyInTSConfig = (token: IThemedToken) => {
 export function tsconfigJSONRenderer(lines: Lines, options: Options) {
   let html = ""
 
-  html += `<pre class="shiki">`
+  html += `<pre class="shiki tsconfig lsp">`
   if (options.langId) {
     html += `<div class="language-id">${options.langId}</div>`
   }
@@ -43,7 +43,7 @@ export function tsconfigJSONRenderer(lines: Lines, options: Options) {
           const key = token.content.slice(1, token.content.length - 1)
           const oneliner = (tsconfig as Record<string, string>)[key]
           // prettier-ignore
-          html += `<span style="color: ${token.color}"><data-lsp lsp="${oneliner}">${escapeHtml(token.content)}</data-lsp></span>`
+          html += `<span style="color: ${token.color}">"<a aria-hidden=true href='https://www.typescriptlang.org/tsconfig#${key}'><data-lsp lsp="${oneliner}">${escapeHtml(key)}</data-lsp></a>"</span>`
         } else {
           html += `<span style="color: ${token.color}">${escapeHtml(token.content)}</span>`
         }

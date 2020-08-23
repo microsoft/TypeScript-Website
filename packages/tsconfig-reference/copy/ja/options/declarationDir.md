@@ -14,7 +14,7 @@ example
 
 次の`tsconfig.json`は:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "declaration": true,
@@ -23,7 +23,7 @@ example
 }
 ```
 
-`index.ts`に対応するd.tsファイルを`types`フォルダへ配置します:
+`index.ts`に対応する d.ts ファイルを`types`フォルダへ配置します:
 
 ```
 example
