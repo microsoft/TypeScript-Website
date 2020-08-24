@@ -1,46 +1,46 @@
-// Conditional Types provide a way to do simple logic in the
-// TypeScript type system. This is definitely an advanced
-// feature, and it's quite feasible that you won't need to
-// use this in your normal day to day code.
+// 条件付き型はTypeScriptの型システムに
+// 簡単なロジックを組み込む方法を提供します。
+// これは非常に高度な機能のため、
+// 日々の開発において使わないことも十分に可能です。
 
-// A conditional type looks like:
+// 条件付き型は以下のような形です:
 //
 //   A extends B ? C : D
 //
-// Where the condition is whether a type extends an
-// expression, and if so what type should be returned.
+// 条件部はある型がある式を拡張しているかを定義し、
+// 条件を満たす場合にどの型を返すかを定義します。
 
-// Let's go through some examples, for brevity we're
-// going to use single letters for generics. This is optional
-// but restricting ourselves to 60 characters makes it
-// hard to fit on screen.
+// いくつかの例を見てみましょう。
+// ここでは簡潔さのためにジェネリクスに単一の文字を使用していきます。
+// これは任意ですが、
+// 60文字に制限すると画面に収まり難くなります。
 
 type Cat = { meows: true };
 type Dog = { barks: true };
 type Cheetah = { meows: true; fast: true };
 type Wolf = { barks: true; howls: true };
 
-// We can create a conditional type which lets extract
-// types which only conform to something which barks.
+// 以下のように吠える(barks)動物の型だけを
+// 抜き出す条件付き型を作れます。
 
 type ExtractDogish<A> = A extends { barks: true } ? A : never;
 
-// Then we can create types which ExtractDogish wraps:
+// 次に、ExtractDogishで包んだ型を作成します:
 
-// A cat doesn't bark, so it will return never
+// Cat型は吠えないので、neverが返ります。
 type NeverCat = ExtractDogish<Cat>;
-// A wolf will bark, so it returns the wolf shape
+// Wolf型は吠えるので、Wolf型が返ります。
 type Wolfish = ExtractDogish<Wolf>;
 
-// This becomes useful when you want to work with a
-// union of many types and reduce the number of potential
-// options in a union:
+// これは多くの型を含む交差型を扱って、
+// その交差型に含まれる型の数を
+// 絞りたい際に有用です:
 
 type Animals = Cat | Dog | Cheetah | Wolf;
 
-// When you apply ExtractDogish to a union type, it is the
-// same as running the conditional against each member of
-// the type:
+// 交差型にExtractDogish型を適用するのは、
+// その交差型に含まれるそれぞれの型に
+// 条件を当てはめるのと同じです:
 
 type Dogish = ExtractDogish<Animals>;
 
@@ -49,61 +49,61 @@ type Dogish = ExtractDogish<Animals>;
 //
 // = never | Dog | never | Wolf
 //
-// = Dog | Wolf (see example:unknown-and-never)
+// = Dog | Wolf (example:unknown-and-never を参照)
 
-// This is called a distributive conditional type because
-// the type distributes over each member of the union.
+// これは交差型のそれぞれの型に型が割り当てられるため、
+// 分配的条件付き型と呼ばれます。
 
-// Deferred Conditional Types
+// 遅延評価条件付き型
 
-// Conditional types can be used to tighten your APIs which
-// can return different types depending on the inputs.
+// 条件付き型は入力によって
+// 異なる型を返すAPIの型を絞ることにも使えます。
 
-// For example this function which could return either a
-// string or number depending on the boolean passed in.
+// 例えば、この関数は引数に渡される真偽値に応じて
+// 文字列型か数値型のどちらかを返します。
 
 declare function getID<T extends boolean>(fancy: T): T extends true ? string : number;
 
-// Then depending on how much the type-system knows about
-// the boolean, you will get different return types:
+// 型システムが真偽値についてどの程度知っているかによって、
+// 異なる返り値の型を得られます。
 
 let stringReturnValue = getID(true);
 let numberReturnValue = getID(false);
 let stringOrNumber = getID(Math.random() < 0.5);
 
-// In this case above TypeScript can know the return value
-// instantly. However, you can use conditional types in functions
-// where the type isn't known yet. This is called a deferred
-// conditional type.
+// 上記の例では、TypeScriptは返り値についてすぐに知ることができました。
+// しかし、型が未知のときでも
+// 関数の中で条件付き型を使えます。
+// これは遅延評価条件付き方と呼ばれます。
 
-// Same as our Dogish above, but as a function instead
+// 上記のDogish型と同じですが、今回は関数です。
 declare function isCatish<T>(x: T): T extends { meows: true } ? T : undefined;
 
-// There is an extra useful tool within conditional types, which
-// is being able to specifically tell TypeScript that it should
-// infer the type when deferring. That is the 'infer' keyword.
+// 他にも条件付き型で有用なツールがあります。これは遅延評価時に
+// 型について推論をすべしとTypeScriptに具体的に指示できるものです。
+// このツールは'infer'キーワードです。
 
-// infer is typically used to create meta-types which inspect
-// the existing types in your code, think of it as creating
-// a new variable inside the type.
+// inferは一般的にはコードの中の既存の型を検査して、
+// 型の中で新しい変数として扱う
+// メタ型を作るのに使われます。
 
 type GetReturnValue<T> = T extends (...args: any[]) => infer R ? R : T;
 
-// Roughly:
+// 大まかには:
 //
-//  - this is a conditional generic type called GetReturnValue
-//    which takes a type in its first parameter
+//  - 上記は型引数を取るGetReturnValueという
+//    条件付き総称型です
 //
-//  - the conditional checks if the type is a function, and
-//    if so create a new type called R based on the return
-//    value for that function
+//  - この条件部は、
+//    もし関数であれば関数の返り値を元に
+//    Rという新しい型を作成します
 //
-//  - If the check passes, the type value is the inferred
-//    return value, otherwise it is the original type
+//  - もし条件を通過した場合、
+//    型の値は推論された返り値に、そうでなければ元の型になります
 //
 
 type getIDReturn = GetReturnValue<typeof getID>;
 
-// This fails the check for being a function, and would
-// just return the type passed into it.
+// 以下は関数であるというチェックを満たさないので、
+// 与えられた型をそのまま返します。
 type getCat = GetReturnValue<Cat>;

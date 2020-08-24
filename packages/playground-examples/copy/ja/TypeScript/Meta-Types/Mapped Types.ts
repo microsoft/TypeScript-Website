@@ -1,9 +1,9 @@
-// Mapped types are a way to create new types based
-// on another type. Effectively a transformational type.
+// mapped typeは他の型を元に新しい型を作る方法であり、
+// 効率的に変換できる型です。
 
-// Common cases for using a mapped type is dealing with
-// partial subsets of an existing type. For example
-// an API may return an Artist:
+// mapped typeのよくある使い方は
+// 既存の方の部分集合を扱うことです。
+// 例えば、APIが以下のArtistを返すとします:
 
 interface Artist {
   id: number;
@@ -11,9 +11,9 @@ interface Artist {
   bio: string;
 }
 
-// However, if you were to send an update to the API which
-// only changes a subset of the Artist then you would
-// typically have to create an additional type:
+// もし、Artistの一部の変更するAPIを通して
+// 更新を送信したいとき、
+// 一般的には新たに以下の型を作成する必要があるでしょう:
 
 interface ArtistForEdit {
   id: number;
@@ -21,37 +21,37 @@ interface ArtistForEdit {
   bio?: string;
 }
 
-// It's very likely that this would get out of sync with
-// the Artist above. Mapped types let you create a change
-// in an existing type.
+// この型が上記のArtist型と同期されなくなってしまう
+// 可能性は非常に高いでしょう。
+// mapped typeは既存の型を変換した型を作成できます。
 
 type MyPartialType<Type> = {
-  // For every existing property inside the type of Type
-  // convert it to be a ?: version
+  // Typeに含まれるすべてのプロパティを
+  // ?:な値に変換します
   [Property in keyof Type]?: Type[Property];
 };
 
-// Now we can use the mapped type instead to create
-// our edit interface:
+// すると、新しくinterfaceを編集した型を作成する代わりに、
+// mapped typeを使用できます。
 type MappedArtistForEdit = MyPartialType<Artist>;
 
-// This is close to perfect, but it does allow id to be null
-// which should never happen. So, let's make one quick
-// improvement by using an intersection type (see:
-// example:union-and-intersection-types )
+// これでほとんど完璧ですが、
+// これは起こりえないidがnullになるパターンを許容してしまいます。
+// 交差型を使って、ちょっと改善してみましょう。
+// (詳しくは example:union-and-intersection-types を参照)
 
 type MyPartialTypeForEdit<Type> = {
   [Property in keyof Type]?: Type[Property];
 } & { id: number };
 
-// This takes the partial result of the mapped type, and
-// merges it with an object which has id: number set.
-// Effectively forcing id to be in the type.
+// 上記はmapped typeの結果を使って、
+// これとidが数値の集合を持つオブジェクトとマージします。
+// すると、型の中にidが存在していることを強制する型が効率的にできます。
 
 type CorrectMappedArtistForEdit = MyPartialTypeForEdit<Artist>;
 
-// This is a pretty simple example of how mapped types
-// work, but covers most of the basics. If you'd like to
-// dive in with more depth, check out the handbook:
+// 以上はmapped typeがどのように動作するかのとても簡単な例でしたが、
+// 基礎的な動作のほとんどをカバーしています。
+// もし、さらに深く知りたい場合は、handbookを参照ください:
 //
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types
