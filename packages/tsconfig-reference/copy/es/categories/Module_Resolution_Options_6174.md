@@ -1,0 +1,3 @@
+---
+display: "Resolución de Módulos"
+---
