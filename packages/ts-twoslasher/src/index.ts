@@ -1,7 +1,7 @@
 let hasLocalStorage = false
 try {
   hasLocalStorage = typeof localStorage !== `undefined`
-} catch (error) { }
+} catch (error) {}
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 
@@ -21,7 +21,7 @@ import {
 } from "./utils"
 import { validateInput, validateCodeForErrors } from "./validation"
 
-import { createSystem, createVirtualTypeScriptEnvironment, createDefaultMapFromNodeModules } from "@typescript/vfs"
+import { createSystem, createVirtualTypeScriptEnvironment, createFSBackedSystem } from "@typescript/vfs"
 
 const log = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
 
@@ -171,7 +171,7 @@ const valuedConfigRegexp = /^\/\/\s?@(\w+):\s?(.+)$/
 
 function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: CompilerOptions, ts: TS) {
   const options = { ...defaultCompilerOptions }
-  for (let i = 0; i < codeLines.length;) {
+  for (let i = 0; i < codeLines.length; ) {
     let match
     if ((match = booleanConfigRegexp.exec(codeLines[i]))) {
       options[match[1]] = true
@@ -383,8 +383,12 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   const handbookOptions = { ...filterHandbookOptions(codeLines), ...options.defaultOptions }
   const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions, ts)
 
-  const vfs = options.fsMap ?? createLocallyPoweredVFS(compilerOptions, ts)
-  const system = createSystem(vfs)
+  // In a browser we want to DI everything, in node we can use local infra
+  const useFS = !!options.fsMap
+  const vfs = useFS && options.fsMap ? options.fsMap : new Map<string, string>()
+  const system = useFS ? createSystem(vfs) : createFSBackedSystem(vfs, process.cwd(), ts)
+  const fsRoot = useFS ? "/" : process.cwd() + "/"
+
   const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions, options.customTransformers)
   const ls = env.languageService
 
@@ -394,13 +398,20 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   let queries = [] as TwoSlashReturn["queries"]
   let highlights = [] as TwoSlashReturn["highlights"]
 
-  const nameContent = splitTwoslashCodeInfoFiles(code, defaultFileName)
+  const nameContent = splitTwoslashCodeInfoFiles(code, defaultFileName, fsRoot)
+  const sourceFiles = ["js", "jsx", "ts", "tsx"]
 
   /** All of the referenced files in the markup */
   const filenames = nameContent.map(nc => nc[0])
 
   for (const file of nameContent) {
     const [filename, codeLines] = file
+    const filetype = filename.split(".").pop() || ""
+
+    // Only run the LSP-y things on source files
+    if (!sourceFiles.includes(filetype)) {
+      continue
+    }
 
     // Create the file in the vfs
     const newFileCode = codeLines.join("\n")
@@ -492,6 +503,13 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   // const declaredFiles = Object.keys(fileMap)
 
   filenames.forEach(file => {
+    const filetype = file.split(".").pop() || ""
+
+    // Only run the LSP-y things on source files
+    if (!sourceFiles.includes(filetype)) {
+      return
+    }
+
     if (!handbookOptions.noErrors) {
       errs.push(...ls.getSemanticDiagnostics(file))
       errs.push(...ls.getSyntacticDiagnostics(file))
@@ -598,18 +616,18 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   if (handbookOptions.showEmit) {
     // Get the file which created the file we want to show:
     const emitFilename = handbookOptions.showEmittedFile || defaultFileName
-    const emitSourceFilename = emitFilename.replace(".js", "").replace(".d.ts", "").replace(".map", "")
+    const emitSourceFilename = fsRoot + emitFilename.replace(".js", "").replace(".d.ts", "").replace(".map", "")
     const emitSource = filenames.find(f => f === emitSourceFilename + ".ts" || f === emitSourceFilename + ".tsx")
 
     if (!emitSource) {
       const allFiles = filenames.join(", ")
       throw new Error(
-        `Cannot find the corresponding source file for ${emitFilename} ${handbookOptions.showEmittedFile} - in ${allFiles}`
+        `Cannot find the corresponding source file for ${emitFilename} (looking for: ${emitSourceFilename} in the vfs) - in ${allFiles}`
       )
     }
 
     const output = ls.getEmitOutput(emitSource)
-    const file = output.outputFiles.find(o => o.name === handbookOptions.showEmittedFile)
+    const file = output.outputFiles.find(o => o.name === fsRoot + handbookOptions.showEmittedFile)
     if (!file) {
       const allFiles = output.outputFiles.map(o => o.name).join(", ")
       throw new Error(`Cannot find the file ${handbookOptions.showEmittedFile} - in ${allFiles}`)
@@ -676,10 +694,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   }
 }
 
-const createLocallyPoweredVFS = (compilerOptions: CompilerOptions, ts?: typeof import("typescript")) =>
-  createDefaultMapFromNodeModules(compilerOptions, ts)
-
-const splitTwoslashCodeInfoFiles = (code: string, defaultFileName: string) => {
+const splitTwoslashCodeInfoFiles = (code: string, defaultFileName: string, root: string) => {
   const lines = code.split(/\r\n?|\n/g)
 
   let nameForFile = code.includes(`@filename: ${defaultFileName}`) ? "global.ts" : defaultFileName
@@ -688,14 +703,14 @@ const splitTwoslashCodeInfoFiles = (code: string, defaultFileName: string) => {
 
   for (const line of lines) {
     if (line.includes("// @filename: ")) {
-      fileMap.push([nameForFile, currentFileContent])
+      fileMap.push([root + nameForFile, currentFileContent])
       nameForFile = line.split("// @filename: ")[1].trim()
       currentFileContent = []
     } else {
       currentFileContent.push(line)
     }
   }
-  fileMap.push([nameForFile, currentFileContent])
+  fileMap.push([root + nameForFile, currentFileContent])
 
   // Basically, strip these:
   // ["index.ts", []]

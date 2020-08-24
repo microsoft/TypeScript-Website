@@ -324,8 +324,6 @@ export const createDefaultMapFromCDN = (
   return func().then(() => fsMap)
 }
 
-// TODO: Add some kind of debug logger (needs to be compat with sandbox's deployment, not just via npm)
-
 function notImplemented(methodName: string): any {
   throw new Error(`Method '${methodName}' is not implemented.`)
 }
@@ -397,48 +395,56 @@ export function createSystem(files: Map<string, string>): System {
  * a set of virtual files which are prioritised over the FS versions, then a path to the root of your
  * project (basically the folder your node_modules lives)
  */
-export function createFSBackedSystem(files: Map<string, string>, projectRoot: string): System {
-  const fs = require("fs")
+export function createFSBackedSystem(files: Map<string, string>, _projectRoot: string, ts: TS): System {
+  // We need to make an isolated folder for the tsconfig, but also need to be able to resolve the
+  // existing node_modules structures going back through the history
+  const root = _projectRoot + "/vfs"
   const path = require("path")
+
+  // The default System in TypeScript
+  const nodeSys = ts.sys
+  const tsLib = path.dirname(require.resolve("typescript"))
 
   return {
     args: [],
     createDirectory: () => notImplemented("createDirectory"),
     // TODO: could make a real file tree
     directoryExists: audit("directoryExists", directory => {
-      return (
-        Array.from(files.keys()).some(path => path.startsWith(directory)) ||
-        fs.existsSync(path.join(projectRoot, directory))
-      )
+      return Array.from(files.keys()).some(path => path.startsWith(directory)) || nodeSys.directoryExists(directory)
     }),
-    exit: () => notImplemented("exit"),
+    exit: nodeSys.exit,
     fileExists: audit("fileExists", fileName => {
       if (files.has(fileName)) return true
-
-      const fsPath = path.join(projectRoot, fileName)
-      const libPath = path.join(projectRoot, "node_modules", "typescript", "lib", fileName)
-
-      for (const filepath of [fsPath, libPath]) {
-        if (fs.existsSync(filepath)) return true
+      // Don't let other tsconfigs end up touching the vfs
+      if (fileName.includes("tsconfig.json") || fileName.includes("tsconfig.json")) return false
+      if (fileName.startsWith("/lib")) {
+        const tsLibName = `${tsLib}/${fileName.replace("/", "")}`
+        return nodeSys.fileExists(tsLibName)
       }
-      return false
+      return nodeSys.fileExists(fileName)
     }),
-    getCurrentDirectory: () => "/",
-    getDirectories: () => [],
+    getCurrentDirectory: () => root,
+    getDirectories: nodeSys.getDirectories,
     getExecutingFilePath: () => notImplemented("getExecutingFilePath"),
-    readDirectory: audit("readDirectory", directory => (directory === "/" ? Array.from(files.keys()) : [])),
+    readDirectory: audit("readDirectory", (...args) => {
+      if (args[0] === "/") {
+        return Array.from(files.keys())
+      } else {
+        return nodeSys.readDirectory(...args)
+      }
+    }),
     readFile: audit("readFile", fileName => {
       if (files.has(fileName)) return files.get(fileName)
-
-      const fsPath = path.join(projectRoot, fileName)
-      const libPath = path.join(projectRoot, "node_modules", "typescript", "lib", fileName)
-      for (const filepath of [fsPath, libPath]) {
-        if (fs.existsSync(filepath)) return fs.readFileSync(filepath, { encoding: "utf-8" })
+      if (fileName.startsWith("/lib")) {
+        const tsLibName = `${tsLib}/${fileName.replace("/", "")}`
+        return nodeSys.readFile(tsLibName)
       }
-
-      return undefined
+      return nodeSys.readFile(fileName)
     }),
-    resolvePath: path => path,
+    resolvePath: path => {
+      if (files.has(path)) return path
+      return nodeSys.resolvePath(path)
+    },
     newLine: "\n",
     useCaseSensitiveFileNames: true,
     write: () => notImplemented("write"),

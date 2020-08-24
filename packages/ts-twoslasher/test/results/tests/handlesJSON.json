@@ -1,0 +1,19 @@
+{
+  "code": "const i = 123\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [],
+  "staticQuickInfos": [
+    {
+      "text": "const i: 123",
+      "docs": "",
+      "start": 6,
+      "length": 1,
+      "line": 0,
+      "character": 6,
+      "targetString": "i"
+    }
+  ],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEFsHsBMFcA2BTASsgztR8AuBLaAOwC5Qi5kAoECAM3xSIENJkyAHZgYwGtmA5sgB0AKyxEqAb1AAiFm1llZuABb4iA2aAC+NMOAZNW7UBtjIAHsNwZ9oALRPueJw6rdiGXGdABeUABGACYAZiogA"
+}
