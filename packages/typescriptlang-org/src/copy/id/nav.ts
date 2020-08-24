@@ -1,5 +1,5 @@
 export const navCopy = {
-  skip_to_content: "Langsung ke konten utama",
+  skip_to_content: "Lewati ke konten",
   nav_documentation: "Dokumentasi",
   nav_documentation_short: "Dokumentasi",
   nav_download: "Unduh",
