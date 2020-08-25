@@ -211,7 +211,7 @@ backpack.add(23);
 
 One of TypeScript's core principles is that type checking focuses on the _shape_ that values have. This is sometimes called "duck typing" or "structural typing".
 
-In a structural type system, if two objects have the same shape, they are considered the same.
+In a structural type system, if two objects have the same shape, they are considered to be of the same type.
 
 ```ts twoslash
 interface Point {
