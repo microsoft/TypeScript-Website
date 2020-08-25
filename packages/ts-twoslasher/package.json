@@ -1,6 +1,6 @@
 {
   "name": "@typescript/twoslash",
-  "version": "0.6.2",
+  "version": "1.0.0",
   "license": "MIT",
   "author": "TypeScript team",
   "main": "dist/index.js",
@@ -39,7 +39,7 @@
     "lz-string": false
   },
   "dependencies": {
-    "@typescript/vfs": "1.1.2",
+    "@typescript/vfs": "1.2.0",
     "debug": "^4.1.1",
     "lz-string": "^1.4.4"
   }

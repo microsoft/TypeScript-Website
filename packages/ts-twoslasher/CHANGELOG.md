@@ -1,3 +1,8 @@
+## 1.0.0
+
+- Supports falling back to _your project's_ node modules for resolving types and imports. This drastically simplifies setting up a code sample which relies on types not shipped with TypeScript.
+- Support for adding vfs JSON files in a code sample
+
 ## 0.5.0
 
 - Support TS 4.0
