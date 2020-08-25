@@ -58,7 +58,7 @@ module.exports = /hello( world)?/;
 Which can be described by the following .d.ts:
 
 ```ts
-const helloWorld: RegExp;
+declare const helloWorld: RegExp;
 export default helloWorld;
 ```
 
@@ -69,7 +69,7 @@ module.exports = 3.142;
 ```
 
 ```ts
-const pi: number;
+declare const pi: number;
 export default pi;
 ```
 
