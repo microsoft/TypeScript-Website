@@ -28,9 +28,11 @@ export const internal: CompilerOptionName[] = ["preserveWatchOutput", "stripInte
 export const recommended: CompilerOptionName[] = [
   "strict",
   "forceConsistentCasingInFileNames",
+  "alwaysStrict",
   "strictNullChecks",
   "strictBindCallApply",
   "strictFunctionTypes",
+  "strictPropertyInitialization",
   "noImplicitThis",
   "noImplicitAny",
   "esModuleInterop",
@@ -44,7 +46,7 @@ type AnOption = WatchProperties | RootProperties | CompilerOptionName;
 
 /** Allows linking between options */
 export const relatedTo: [AnOption, AnOption[]][] = [
-  ["strict", ["strictBindCallApply", "strictFunctionTypes", "strictPropertyInitialization"]],
+  ["strict", ["alwaysStrict", "strictNullChecks", "strictBindCallApply", "strictFunctionTypes", "strictPropertyInitialization", "noImplicitAny", "noImplicitThis"]],
   ["allowSyntheticDefaultImports", ["esModuleInterop"]],
   ["esModuleInterop", ["allowSyntheticDefaultImports"]],
 
