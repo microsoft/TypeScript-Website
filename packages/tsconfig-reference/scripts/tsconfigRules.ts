@@ -34,6 +34,7 @@ export const recommended: CompilerOptionName[] = [
   "noImplicitThis",
   "noImplicitAny",
   "esModuleInterop",
+  "skipLibCheck",
 ];
 
 type RootProperties = "files" | "extends" | "include" | "exclude";
