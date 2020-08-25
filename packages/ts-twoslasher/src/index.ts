@@ -383,11 +383,15 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   const handbookOptions = { ...filterHandbookOptions(codeLines), ...options.defaultOptions }
   const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions, ts)
 
+  const getRoot = () => {
+    const path = require("path")
+    return process.cwd().split(path.sep).join(path.posix.sep)
+  }
   // In a browser we want to DI everything, in node we can use local infra
   const useFS = !!options.fsMap
   const vfs = useFS && options.fsMap ? options.fsMap : new Map<string, string>()
-  const system = useFS ? createSystem(vfs) : createFSBackedSystem(vfs, process.cwd(), ts)
-  const fsRoot = useFS ? "/" : process.cwd() + "/"
+  const system = useFS ? createSystem(vfs) : createFSBackedSystem(vfs, getRoot(), ts)
+  const fsRoot = useFS ? "/" : getRoot() + "/"
 
   const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions, options.customTransformers)
   const ls = env.languageService
