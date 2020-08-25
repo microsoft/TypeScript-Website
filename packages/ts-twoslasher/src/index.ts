@@ -621,16 +621,16 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
 
     if (!emitSource) {
       const allFiles = filenames.join(", ")
-      throw new Error(
-        `Cannot find the corresponding source file for ${emitFilename} (looking for: ${emitSourceFilename} in the vfs) - in ${allFiles}`
-      )
+      // prettier-ignore
+      throw new Error(`Cannot find the corresponding source file for ${emitFilename} (looking for: ${emitSourceFilename} in the vfs) - in ${allFiles}`)
     }
 
     const output = ls.getEmitOutput(emitSource)
     const file = output.outputFiles.find(o => o.name === fsRoot + handbookOptions.showEmittedFile)
     if (!file) {
       const allFiles = output.outputFiles.map(o => o.name).join(", ")
-      throw new Error(`Cannot find the file ${handbookOptions.showEmittedFile} - in ${allFiles}`)
+      // prettier-ignore
+      throw new Error(`Cannot find the file ${handbookOptions.showEmittedFile} (looking for: ${fsRoot + handbookOptions.showEmittedFile} in the vfs) - in ${allFiles}`)
     }
 
     code = file.text
