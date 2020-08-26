@@ -36,7 +36,7 @@ let tubo: Tubo = { diametro: 12, tamanho: 3 };
 tubo = bola;
 bola = tubo;
 
-// Porque a variável bola não tem a priedade tamanho, ela não pode
+// Porque a variável bola não tem a propriedade tamanho, ela não pode
 // ser atribuída a tubo. No entanto, já que todas as propriedades
 // de Bola estão dentro de tubo, ela pode ser atribuída a variável bola.
 
