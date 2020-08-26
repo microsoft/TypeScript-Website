@@ -346,6 +346,9 @@ export interface TwoSlashOptions {
    * web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
    */
   fsMap?: Map<string, string>
+
+  /** The cwd for the folder which the virtual fs should be overlaid on top of when using local fs, opts to process.cwd() if not present */
+  vfsRoot?: string
 }
 
 /**
@@ -385,8 +388,10 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
 
   const getRoot = () => {
     const path = require("path")
-    return process.cwd().split(path.sep).join(path.posix.sep)
+    const rootPath = options.vfsRoot || process.cwd()
+    return rootPath.split(path.sep).join(path.posix.sep)
   }
+
   // In a browser we want to DI everything, in node we can use local infra
   const useFS = !!options.fsMap
   const vfs = useFS && options.fsMap ? options.fsMap : new Map<string, string>()

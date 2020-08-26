@@ -1,6 +1,6 @@
 {
   "name": "@typescript/twoslash",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "author": "TypeScript team",
   "main": "dist/index.js",

@@ -19,7 +19,7 @@
     "lint": "tsdx lint"
   },
   "dependencies": {
-    "@typescript/twoslash": "1.0.0",
+    "@typescript/twoslash": "1.0.1",
     "@typescript/vfs": "1.2.0",
     "shiki": "^0.1.6",
     "shiki-languages": "^0.1.6",
