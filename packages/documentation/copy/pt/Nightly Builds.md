@@ -6,8 +6,8 @@ oneline: Como usar uma compilação noturna de TypeScript
 translatable: true
 ---
 
-Uma compilação noturna do [`master` do TypeScript](https://github.com/Microsoft/TypeScript/tree/master) branch é publicado da meia-noite PST no npm.
-Veja como você pode obtê-lo e usá-lo com suas ferramentas.
+Uma compilação noturna da branch [`master` do TypeScript](https://github.com/Microsoft/TypeScript/tree/master) é publicada à meia-noite PST no npm.
+Veja como você pode obtê-la e usá-la com suas ferramentas.
 
 ## Usando o npm
 
