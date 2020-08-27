@@ -68,8 +68,8 @@ document.body.textContent = greeter(user);
 ## Digite anotações
 
 As anotações de tipo no TypeScript são maneiras leves de registrar o contrato pretendido da função ou variável.
-Neste caso, pretendemos que a função saudador seja chamada com um único parâmetro de string.
-Podemos tentar alterar o saudador de chamada para passar uma matriz em vez disso:
+Neste caso, pretendemos que a função greeter seja chamada com um único parâmetro de string.
+Podemos tentar alterar a chamada de greeter para passar uma matriz em vez disso:
 
 ```ts twoslash
 // @errors: 2345
