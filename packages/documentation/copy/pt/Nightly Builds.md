@@ -47,7 +47,7 @@ Mais informações estão disponíveis em [Plug-in do TypeScript para documenta�
 
 > Observação: a maioria das alterações não exige a instalação de uma nova versão do plug-in VS TypeScript.
 
-A construção noturna atualmente não inclui a configuração completa do plug-in, mas estamos trabalhando na publicação de um instalador todas as noites também.
+A compilação noturna atualmente não inclui a configuração completa do plug-in, mas estamos trabalhando na publicação de um instalador todas as noites também.
 
 1. Download the [VSDevMode.ps1](https://github.com/Microsoft/TypeScript/blob/master/scripts/VSDevMode.ps1) script.
 
