@@ -177,7 +177,7 @@ Opcional: Abra `greeter.ts` no Visual Studio ou copie o código para o playgroun
 Você pode passar o mouse sobre os identificadores para ver seus tipos.
 Observe que, em alguns casos, esses tipos são inferidos automaticamente para você.
 Digite novamente a última linha e veja as listas de completamento e a ajuda de parâmetros com base nos tipos de elementos DOM.
-Coloque o cursor sobre a referência da função saudação e pressione F12 para ir para sua definição.
+Coloque o cursor sobre a referência da função greeter e pressione F12 para ir para sua definição.
 Observe também que você pode clicar com o botão direito em um símbolo e usar a refatoração para renomeá-lo.
 
 As informações de tipo fornecidas funcionam em conjunto com as ferramentas para trabalhar com JavaScript na escala do aplicativo.
