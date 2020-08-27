@@ -4,7 +4,7 @@
 
 // Isso em contraste a sistemas de tipagem nominais, onde você
 // pode criar dois tipos mas não pode atribuir um ao outro.
-// Veja o exemplo: nominal-typing
+// Veja o example:nominal-typing
 
 // Por exemplo, essas duas interfaces são
 // transferíveis em um sistema de tipo estrutural
