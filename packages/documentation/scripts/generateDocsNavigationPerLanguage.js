@@ -213,7 +213,7 @@ export function getDocumentationNavForLanguage(langRequest: string): SidebarNavI
 for (const lang of langs) {
   codeForTheHandbook.push(`navigations.${lang} = [`);
 
-  handbookPages.forEach((section) => {
+  handbookPages.forEach((section, sectionIndex) => {
     // Section metadata:
     codeForTheHandbook.push(`{ 
       title: "${section.title}",
@@ -235,7 +235,7 @@ for (const lang of langs) {
         if ("href" in subItem) {
           codeForTheHandbook.push(`
         title: "${subItem.title}",
-        id: "${toID(subItem.title)}",
+        id: "${toID(sectionIndex, subItem.title)}",
         permalink: "${subItem.href}",
         oneline: "${subItem.oneliner}"
       },`);
@@ -243,7 +243,7 @@ for (const lang of langs) {
           //Is is a sub-sub-section?
           codeForTheHandbook.push(`
             title: "${subItem.title}",
-            id: "${toID(subItem.title)}",
+            id: "${toID(sectionIndex, subItem.title)}",
             oneline: "${subItem.oneliner}",
           `);
           addItems(subItem);
@@ -258,7 +258,7 @@ for (const lang of langs) {
 
           codeForTheHandbook.push(`
             title: "${subNavInfo.data.short || subNavInfo.data.title}",
-            id: "${toID(subNavInfo.data.title)}",
+            id: "${toID(sectionIndex, subNavInfo.data.title)}",
             permalink: "${subNavInfo.data.permalink}",
             oneline: "${subNavInfo.data.oneline}",
           `);
@@ -367,6 +367,6 @@ function fillReleaseInfo() {
   }
 }
 
-function toID(str) {
-  return str.toLowerCase().replace(/\s/g, "-");
+function toID(secIdx, str) {
+  return secIdx.toString() + str.toLowerCase().replace(/\s/g, "-");
 }

@@ -1,4 +1,3 @@
-// @ts-ignore
 import React, { useEffect } from "react"
 import { graphql } from "gatsby"
 import { GetDocumentBySlugQuery } from "../__generated__/gatsby-types"

@@ -9,7 +9,7 @@ beta: true
 In JavaScript, the fundamental way that we group and pass around relevant data is through objects.
 In TypeScript, we represent those through _object types_.
 
-As we've seen, they can be anonymous
+As we've seen, they can be anonymous:
 
 ```ts twoslash
 function greet(person: { name: string; age: number }) {
@@ -116,9 +116,7 @@ declare function getShape(): Shape;
 interface PaintOptions {
   shape: Shape;
   xPos?: number;
-  //  ^
   yPos?: number;
-  //  ^
 }
 
 // ---cut---
@@ -869,7 +867,7 @@ Since `point`'s type was inferred as `readonly [3, 4]`, it won't be compatible w
 
 ## Other Kinds of Object Members
 
-Most of the declarations in object types
+Most of the declarations in object types:
 
 ### Method Syntax
 
