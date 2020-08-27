@@ -336,7 +336,7 @@ class Square {
 }
 ```
 
-For more details, [see the implementing pull request](https://github.com/microsoft/TypeScript/pull/379200).
+For more details, [see the implementing pull request](https://github.com/microsoft/TypeScript/pull/37920).
 
 ## Short-Circuiting Assignment Operators
 
