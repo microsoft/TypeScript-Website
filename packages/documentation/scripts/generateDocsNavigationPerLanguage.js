@@ -155,6 +155,8 @@ const handbookPages = [
   {
     title: "Handbook v2: Beta",
     summary: "The new handbook which is a work in progress.",
+      chronological: true,
+      beta: true,
     items: [
       { file: "handbook-v2/Basics.md" },
       { file: "handbook-v2/Classes.md" },

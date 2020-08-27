@@ -665,7 +665,7 @@ export function getDocumentationNavForLanguage(
       title: "Handbook v2: Beta",
       oneline: "The new handbook which is a work in progress.",
       id: "handbook-v2:-beta",
-      chronological: false,
+      chronological: true,
 
       items: [
         {
@@ -1378,7 +1378,7 @@ export function getDocumentationNavForLanguage(
       title: "Handbook v2: Beta",
       oneline: "The new handbook which is a work in progress.",
       id: "handbook-v2:-beta",
-      chronological: false,
+      chronological: true,
 
       items: [
         {
