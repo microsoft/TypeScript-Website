@@ -1,5 +1,5 @@
 ---
-title: TypeScript Basics
+title: The Basics
 layout: docs
 permalink: /docs/handbook/2/basic-types.html
 oneline: "Step one in learning TypeScript: The basic types."

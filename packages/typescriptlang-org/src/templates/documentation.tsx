@@ -1,3 +1,4 @@
+// @ts-ignore
 import React, { useEffect } from "react"
 import { graphql } from "gatsby"
 import { GetDocumentBySlugQuery } from "../__generated__/gatsby-types"
@@ -112,6 +113,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   const slug = slugger()
   return (
     <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+      {post.frontmatter.beta && <div style={{ backgroundColor: "#c63131", textAlign: "center", color: "white", padding: 4 }}>Warning: This page is a work in progress</div>}
       <section id="doc-layout">
         <SidebarToggleButton />
         <noscript>
@@ -174,6 +176,7 @@ export const pageQuery = graphql`
         title
         disable_toc
         oneline
+        beta
       }
     }
 
