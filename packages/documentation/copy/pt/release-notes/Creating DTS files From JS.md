@@ -77,9 +77,9 @@ A grosso modo, a resolução verificará primeiro o campo opcional `"types"`, de
 
 Se estiver ausente, "main" é usado
 
-| Package.json             | Localização do padrão .d.ts |
+| Package.json             | Localização padrão do .d.ts |
 | :----------------------- | :------------------------ |
-| No "main" field          | index.d.ts                |
+| Sem campo "main"         | index.d.ts                |
 | "main":"index.js"        | index.d.ts                |
 | "main":"./dist/index.js" | ./dist/index.d.ts         |
 
