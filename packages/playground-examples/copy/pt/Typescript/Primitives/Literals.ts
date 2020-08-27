@@ -1,7 +1,7 @@
 // TypeScript tem alguns casos engraçados para literais em seu código
 
 // Grande parte desse suporte é abordado em widening
-// and narrowing ( exemplo:type-widening-narrowing ) e vale
+// and narrowing ( example:type-widening-narrowing ) e vale
 // a pena cobrir isto primeiro.
 
 // Um literal é um subtipo mais concreto de uma coleção de tipos.
