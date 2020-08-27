@@ -11923,7 +11923,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"gatsby-remark-shiki-twoslash@workspace:packages/gatsby-remark-shiki-twoslash":
+"gatsby-remark-shiki-twoslash@0.6.1, gatsby-remark-shiki-twoslash@workspace:packages/gatsby-remark-shiki-twoslash":
   version: 0.0.0-use.local
   resolution: "gatsby-remark-shiki-twoslash@workspace:packages/gatsby-remark-shiki-twoslash"
   dependencies:
@@ -11933,6 +11933,7 @@ fsevents@~2.1.2:
     rehype-stringify: ^6.0.1
     shiki: ^0.1.6
     shiki-languages: ^0.1.6
+    shiki-twoslash: 0.6.1
     tsdx: ^0.12.3
     tslib: ^1.10.0
     typescript: "*"
@@ -22571,9 +22572,9 @@ resolve@^1.17.0:
   languageName: node
   linkType: hard
 
-"root-workspace-0b6124@workspace:.":
+"root@workspace:.":
   version: 0.0.0-use.local
-  resolution: "root-workspace-0b6124@workspace:."
+  resolution: "root@workspace:."
   dependencies:
     "@types/express": ^4.17.6
     concurrently: ^5.1.0
@@ -23199,6 +23200,25 @@ resolve@^1.17.0:
   checksum: a6b5b3df22cec99284f2e64bfdf347b1051b19210d1c0b9f516a542d44b7ecaa5d2ab220317705cf5fbc70eeecbe6bd52f034a15d832ecf000a91f13da761134
   languageName: node
   linkType: hard
+
+"shiki-twoslash@0.6.1, shiki-twoslash@workspace:packages/shiki-twoslash":
+  version: 0.0.0-use.local
+  resolution: "shiki-twoslash@workspace:packages/shiki-twoslash"
+  dependencies:
+    "@types/jest": ^25.1.3
+    "@typescript/twoslash": 0.6.2
+    "@typescript/vfs": 1.1.2
+    gatsby-remark-shiki-twoslash: 0.6.1
+    rehype-stringify: ^6.0.1
+    shiki: ^0.1.6
+    shiki-languages: ^0.1.6
+    tsdx: ^0.12.3
+    tslib: ^1.10.0
+    typescript: "*"
+    unified: ^8.4.2
+    unist-util-visit: ^2.0.0
+  languageName: unknown
+  linkType: soft
 
 "shiki@npm:^0.1.6":
   version: 0.1.6
@@ -25348,23 +25368,23 @@ resolve@^1.17.0:
   languageName: unknown
   linkType: soft
 
-"typescript@npm:4.0.0-beta":
-  version: 4.0.0-beta
-  resolution: "typescript@npm:4.0.0-beta"
+"typescript@npm:4.0.2":
+  version: 4.0.2
+  resolution: "typescript@npm:4.0.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 4033b368a3f0994de1127fdfa78e43f83b9ba9d4d3ad3dbff3f1d1b8737e3246851edf35176160dad676f62143aebc4e3487a80cd22b9feece6950ebe9eaa732
+  checksum: cc0e7806eee7997a1b4b2990badacc4a8d089893ed0a377f35c9658e2ac392503cb340d0187203ed82e36e427dda94b0fb7107e44a71cca99efac86be26e16ee
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A4.0.0-beta#builtin<compat/typescript>":
-  version: 4.0.0-beta
-  resolution: "typescript@patch:typescript@npm%3A4.0.0-beta#builtin<compat/typescript>::version=4.0.0-beta&hash=5b02a2"
+"typescript@patch:typescript@npm%3A4.0.2#builtin<compat/typescript>":
+  version: 4.0.2
+  resolution: "typescript@patch:typescript@npm%3A4.0.2#builtin<compat/typescript>::version=4.0.2&hash=5b02a2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: c8658c021b814e370bbb547f6a35d74806e9391928908aacf90104cea8f2107f873fe8009efc34aea534f7e85608c5805216ba92e510b6e09345f126e330086c
+  checksum: b8b689ef994cce4fe59950d56ddfffce3c4bdda8edb85b72e752d4a6d27bf7df8a318e76ccde25cbe6e642058f2f4ccf47187db4b243bbc98278a2844db9461b
   languageName: node
   linkType: hard
 

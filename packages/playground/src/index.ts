@@ -154,10 +154,19 @@ export const setupPlayground = (
     }, 300)
   })
 
+  // If you set this to true, then the next time the playground would
+  // have set the user's hash it would be skipped - used for setting
+  // the text in examples
+  let suppressNextTextChangeForHashChange = false
+
   // Sets the URL and storage of the sandbox string
   const playgroundDebouncedMainFunction = () => {
     const alwaysUpdateURL = !localStorage.getItem("disable-save-on-type")
     if (alwaysUpdateURL) {
+      if (suppressNextTextChangeForHashChange) {
+        suppressNextTextChangeForHashChange = false
+        return
+      }
       const newURL = sandbox.createURLQueryWithCompilerOptions(sandbox)
       window.history.replaceState({}, "", newURL)
     }
@@ -177,6 +186,9 @@ export const setupPlayground = (
     if (model && plugin.modelChangedDebounce) plugin.modelChangedDebounce(sandbox, model, container)
   })
 
+  const skipInitiallySettingHash = document.location.hash && document.location.hash.includes("example/")
+  if (!skipInitiallySettingHash) playgroundDebouncedMainFunction()
+
   // Setup working with the existing UI, once it's loaded
 
   // Versions of TypeScript
@@ -194,11 +206,7 @@ export const setupPlayground = (
 
   const notWorkingInPlayground = ["3.1.6", "3.0.1", "2.8.1", "2.7.2", "2.4.1"]
 
-  const allVersions = [
-    "4.0.0-beta",
-    ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)),
-    "Nightly",
-  ]
+  const allVersions = [...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)), "Nightly"]
 
   allVersions.forEach((v: string) => {
     const li = document.createElement("li")
@@ -274,6 +282,7 @@ export const setupPlayground = (
           }
         }
       }
+      return false
     }
   })
 
@@ -293,8 +302,7 @@ export const setupPlayground = (
     }
   }
 
-  // Set up some key commands
-  sandbox.editor.addAction({
+  const shareAction = {
     id: "copy-clipboard",
     label: "Save to clipboard",
     keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S],
@@ -302,27 +310,39 @@ export const setupPlayground = (
     contextMenuGroupId: "run",
     contextMenuOrder: 1.5,
 
-    run: function (ed) {
+    run: function () {
       window.navigator.clipboard.writeText(location.href.toString()).then(
         () => ui.flashInfo(i("play_export_clipboard")),
         (e: any) => alert(e)
       )
     },
-  })
+  }
 
-  sandbox.editor.addAction({
-    id: "run-js",
-    label: "Run the evaluated JavaScript for your TypeScript file",
-    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
+  const shareButton = document.getElementById("share-button")
+  if (shareButton) {
+    shareButton.onclick = e => {
+      e.preventDefault()
+      shareAction.run()
+      return false
+    }
 
-    contextMenuGroupId: "run",
-    contextMenuOrder: 1.5,
+    // Set up some key commands
+    sandbox.editor.addAction(shareAction)
 
-    run: function (ed) {
-      const runButton = document.getElementById("run-button")
-      runButton && runButton.onclick && runButton.onclick({} as any)
-    },
-  })
+    sandbox.editor.addAction({
+      id: "run-js",
+      label: "Run the evaluated JavaScript for your TypeScript file",
+      keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
+
+      contextMenuGroupId: "run",
+      contextMenuOrder: 1.5,
+
+      run: function (ed) {
+        const runButton = document.getElementById("run-button")
+        runButton && runButton.onclick && runButton.onclick({} as any)
+      },
+    })
+  }
 
   const runButton = document.getElementById("run-button")
   if (runButton) {
@@ -335,6 +355,7 @@ export const setupPlayground = (
 
       const isJS = sandbox.config.useJavaScript
       ui.flashInfo(i(isJS ? "play_run_js" : "play_run_ts"))
+      return false
     }
   }
 
@@ -391,6 +412,15 @@ export const setupPlayground = (
       }
       settingsToggle.parentElement!.classList.toggle("open")
     }
+
+    settingsToggle.addEventListener("keydown", e => {
+      const isOpen = settingsToggle.parentElement!.classList.contains("open")
+      if (e.keyCode === 9 && isOpen) {
+        const result = document.querySelector(".playground-options li input") as any
+        result.focus()
+        e.preventDefault()
+      }
+    })
   }
 
   // Support grabbing examples from the location hash
@@ -409,16 +439,6 @@ export const setupPlayground = (
           localStorage.setItem("examples-seen", JSON.stringify(seen))
         }
 
-        // Set the menu to be the same section as this current example
-        // this happens behind the scene and isn't visible till you hover
-        // const sectionTitle = example.path[0]
-        // const allSectionTitles = document.getElementsByClassName('section-name')
-        // for (const title of allSectionTitles) {
-        //   if (title.textContent === sectionTitle) {
-        //     title.onclick({})
-        //   }
-        // }
-
         const allLinks = document.querySelectorAll("example-link")
         // @ts-ignore
         for (const link of allLinks) {
@@ -428,8 +448,10 @@ export const setupPlayground = (
         }
 
         document.title = "TypeScript Playground - " + example.title
+        suppressNextTextChangeForHashChange = true
         sandbox.setText(code)
       } else {
+        suppressNextTextChangeForHashChange = true
         sandbox.setText("// There was an issue getting the example, bad URL? Check the console in the developer tools")
       }
     })
@@ -596,14 +618,12 @@ export const setupPlayground = (
 export type Playground = ReturnType<typeof setupPlayground>
 
 const redirectTabPressTo = (element: HTMLElement, container: HTMLElement | undefined, query: string) => {
-  // element.style.backgroundColor = "red"
   element.addEventListener("keydown", e => {
     if (e.keyCode === 9) {
       const host = container || document
       const result = host.querySelector(query) as any
       if (!result) throw new Error(`Expected to find a result for keydown`)
       result.focus()
-      console.log(result)
       e.preventDefault()
     }
   })

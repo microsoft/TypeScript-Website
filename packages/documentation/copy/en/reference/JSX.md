@@ -3,6 +3,7 @@ title: JSX
 layout: docs
 permalink: /docs/handbook/jsx.html
 oneline: Using JSX with TypeScript
+translatable: true
 ---
 
 [JSX](https://facebook.github.io/jsx/) is an embeddable XML-like syntax.

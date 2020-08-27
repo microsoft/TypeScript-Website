@@ -99,7 +99,7 @@ var out = path.join(__dirname, "output.js");
 Duo(__dirname)
   .entry("entry.ts")
   .use(typescript())
-  .run(function(err, results) {
+  .run(function (err, results) {
     if (err) throw err;
     // Write compiled result to output file
     fs.writeFileSync(out, results.code);
@@ -119,13 +119,13 @@ npm install grunt-ts
 ### Basic Gruntfile.js
 
 ```js
-module.exports = function(grunt) {
+module.exports = function (grunt) {
   grunt.initConfig({
     ts: {
       default: {
-        src: ["**/*.ts", "!node_modules/**/*.ts"]
-      }
-    }
+        src: ["**/*.ts", "!node_modules/**/*.ts"],
+      },
+    },
   });
   grunt.loadNpmTasks("grunt-ts");
   grunt.registerTask("default", ["ts"]);
@@ -148,11 +148,11 @@ npm install gulp-typescript
 var gulp = require("gulp");
 var ts = require("gulp-typescript");
 
-gulp.task("default", function() {
+gulp.task("default", function () {
   var tsResult = gulp.src("src/*.ts").pipe(
     ts({
       noImplicitAny: true,
-      out: "output.js"
+      out: "output.js",
     })
   );
   return tsResult.js.pipe(gulp.dest("built/local"));
@@ -188,17 +188,17 @@ module.exports = {
   entry: "./src/index.tsx",
   output: {
     path: "/",
-    filename: "bundle.js"
+    filename: "bundle.js",
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js", ".json"]
+    extensions: [".tsx", ".ts", ".js", ".json"],
   },
   module: {
     rules: [
       // all files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'
-      { test: /\.tsx?$/, use: ["ts-loader"], exclude: /node_modules/ }
-    ]
-  }
+      { test: /\.tsx?$/, use: ["ts-loader"], exclude: /node_modules/ },
+    ],
+  },
 };
 ```
 
@@ -208,18 +208,18 @@ module.exports = {
 module.exports = {
   entry: "./src/index.tsx",
   output: {
-    filename: "bundle.js"
+    filename: "bundle.js",
   },
   resolve: {
     // Add '.ts' and '.tsx' as a resolvable extension.
-    extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
+    extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"],
   },
   module: {
     rules: [
       // all files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'
-      { test: /\.tsx?$/, loader: "ts-loader" }
-    ]
-  }
+      { test: /\.tsx?$/, loader: "ts-loader" },
+    ],
+  },
 };
 ```
 

@@ -1,55 +1,43 @@
-//// { compiler: { ts: "4.0.0-beta" } }
+//// { compiler: { ts: "4.0.2" } }
 
-// Operadores lógicos e terefas são novos recursos no
-// JavaScript em 2020. Estes são uma suite de novos operadores
-// para editar um objeto JavaScript.
+// Logical Operators e Assignment são novas funcionalidades do
+// JavaScript para 2020. Esses são um conjunto de operadores novos
+// que editam um objeto JavaScript.
 
-// Seus objetivos são os re-usos do conceito de operadores
-// matemáticos (por exemplo += -= *=) mas com lógica ao invés.
+// Seu objetivo é reutilizar o conceito de operadores 
+// matemáticos (Ex: += -= *=) porém usando lógica.
 
-
-interface Usuario {
+interface User {
   id?: number
-  nome: string
-  local: {
-      cep?: string
+  name: string
+  location: {
+    postalCode?: string
   }
 }
 
-function updateUser(usuario: Usuario) {
-  // esse campo pode ser trocado
-  if (!usuario.id) usuario.id = 1
+function updateUser(user: User) {
+  // Pode-se trocar esse código:
+  if (!user.id) user.id = 1
 
   // Ou esse código:
-  usuario.id = usuario.id || 1
+  user.id = user.id || 1
 
-  // Com esse código:
-  usuario.id ||= 1
+  // Por esse código:
+  user.id ||= 1
 }
 
-// Essas suites de operadores podem lidar com aninhamento
-// profundo, na qual podem salvar de um monte códgio clichê
-// também.
+// Esses conjuntos de operadores podem lidar com encadeamento profundo
+// podendo poupar uma boa quantidade de código repetido.
 
-declare const usuario: Usuario
-usuario.local.cep ||= "90210"
+declare const user: User
+user.location.postalCode ||= "90210"
 
-// There are three new operators: 
+// São três novos operadores: 
 //
-//   ||= shown above
-//   &&= which uses 'and' logic instead of 'or'
-//   ??= which builds on example:nullish-coalescing to offer a stricter
-//       version of || which uses === instead
-
-// For more info on the proposal, see:
-// https://github.com/tc39/proposal-logical-assignment
-
-// Estes são os três novos operadores:
-//
-// ||= mostrado acima
-// &&= a qual usa 'e' logico ao invés de 'ou'
-// ??= a qual nosso example se baseia: nullish-coalescing para oferecer
-//       uma versão mais estrita de || que usa === em vez disso
+//   ||= mostrado acima
+//   &&= que usa a lógica do 'and' ao invés da 'or'
+//   ??= que se baseia no example:nullish-coalescing para oferecer
+//       uma versão mais rigorosa do || que usa === no lugar.
 
 // Para mais informações da proposta, veja:
 // https://github.com/tc39/proposal-logical-assignment

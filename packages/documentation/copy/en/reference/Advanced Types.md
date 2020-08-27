@@ -591,7 +591,7 @@ pluck(taxi, ["year", "unknown"]);
 
 The second operator is `T[K]`, the **indexed access operator**.
 Here, the type syntax reflects the expression syntax.
-That means that `taxi["name"]` has the type `Car["name"]` &mdash; which in our example is just `string`.
+That means that `taxi["manufacturer"]` has the type `Car["manufacturer"]` &mdash; which in our example is just `string`.
 However, just like index type queries, you can use `T[K]` in a generic context, which is where its real power comes to life.
 You just have to make sure that the type variable `K extends keyof T`.
 Here's another example with a function named `getProperty`.
@@ -682,17 +682,17 @@ interface PersonReadonly {
 
 This happens often enough in JavaScript that TypeScript provides a way to create new types based on old types &mdash; **mapped types**.
 In a mapped type, the new type transforms each property in the old type in the same way.
-For example, you can make all properties of a type `readonly` or optional.
+For example, you can make all properties optional or of a type `readonly`.
 Here are a couple of examples:
 
 ```ts twoslash
+type Partial<T> = {
+  [P in keyof T]?: T[P];
+};
+
 // @noErrors
 type Readonly<T> = {
   readonly [P in keyof T]: T[P];
-};
-
-type Partial<T> = {
-  [P in keyof T]?: T[P];
 };
 ```
 

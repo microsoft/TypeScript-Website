@@ -6,14 +6,13 @@ permalink: /docs/handbook/typescript-in-5-minutes.html
 oneline: Learn how TypeScript extends JavaScript
 ---
 
-The relationship between TypeScript and JavaScript is rather unique among modern programming languages.
-TypeScript sits as a layer on-top of JavaScript, offering the features of JavaScript and then adds its own layer on top of that. This layer is the TypeScript type system.
+TypeScript stands in an unusual relationship to JavaScript. TypeScript offers all of JavaScript's features, and an additional layer on top of these: TypeScript's type system.
 
-JavaScript already has a set of language primitives like `string`, `number`, `object`, `undefined` etc, however there are no ahead-of-time checks that these are consistently assigned across your whole codebase. TypeScript acts as that layer.
+For example, JavaScript provides language primitives like `string`, `number`, and `object`, but it doesn't check that you've consistently assigned these. TypeScript does.
 
-This means that your existing working JavaScript code is also TypeScript code, however TypeScript's type-checker might highlight discrepancies between what you thought was happening and what the JavaScript language does.
+This means that your existing working JavaScript code is also TypeScript code. The main benefit of TypeScript is that it can highlight unexpected behavior in your code, lowering the chance of bugs.
 
-This tutorial tries to give you a 5 minute overview of the type-system, with a focus on understanding the type-system language extensions which TypeScript adds.
+This tutorial provides a brief overview of TypeScript, focusing on its type system.
 
 ## Types by Inference
 
@@ -25,16 +24,15 @@ let helloWorld = "Hello World";
 //  ^?
 ```
 
-By understanding how JavaScript works, TypeScript can build a type-system which accepts JavaScript code but has types. This offers a type-system without needing to add extra characters to make types explicit in your code. Which is how TypeScript knows that `helloWorld` is a `string` in the above example.
+By understanding how JavaScript works, TypeScript can build a type-system that accepts JavaScript code but has types. This offers a type-system without needing to add extra characters to make types explicit in your code. That's how TypeScript knows that `helloWorld` is a `string` in the above example.
 
-It's quite possible that you have used VS Code with JavaScript, and had editor auto-completion as you worked.
-That is because the understanding of JavaScript baked into TypeScript has been used under-the-hood to improve working with JavaScript.
+You may have written JavaScript in Visual Studio Code, and had editor auto-completion. Visual Studio uses TypeScript under the hood to make it easier to work with JavaScript.
 
 ## Defining Types
 
-JavaScript is a dynamic language which allows for a lot of design patterns. Some design patterns can be hard to provide types for automatically (because they might use dynamic programming) in those cases TypeScript supports an extension of the JavaScript language which offers places for you to tell TypeScript what the types should be.
+You can use a wide variety of design patterns in JavaScript. However, some design patterns make it difficult for types to be inferred automatically (for example, patterns that use dynamic programming). To cover these cases, TypeScript supports an extension of the JavaScript language, which offers places for you to tell TypeScript what the types should be.
 
-Here is an example of creating an object which has an inferred type which includes `name: string` and `id: number`:
+For example, to create an object with an inferred type which includes `name: string` and `id: number`, you can write:
 
 ```ts twoslash
 const user = {
@@ -43,7 +41,7 @@ const user = {
 };
 ```
 
-An explicit way to describe this object's shape is via an `interface` declaration:
+You can explicitly describe this object's shape using an `interface` declaration:
 
 ```ts twoslash
 interface User {
@@ -52,7 +50,7 @@ interface User {
 }
 ```
 
-You can then declare that a JavaScript object conforms to that shape of your new `interface` by using syntax like `: TypeName` after a variable declaration:
+You can then declare that a JavaScript object conforms to the shape of your new `interface` by using syntax like `: TypeName` after a variable declaration:
 
 ```ts twoslash
 interface User {
@@ -66,7 +64,7 @@ const user: User = {
 };
 ```
 
-TypeScript will warn you if you provide an object which doesn't match the interface you have provided:
+If you provide an object that doesn't match the interface you have provided, TypeScript will warn you:
 
 ```ts twoslash
 // @errors: 2322
@@ -81,7 +79,7 @@ const user: User = {
 };
 ```
 
-Because JavaScript supports classes and object-oriented programming, so does TypeScript - an interface declaration can also be used with classes:
+Since JavaScript supports classes and object-oriented programming, so does TypeScript. You can use an interface declaration with classes:
 
 ```ts twoslash
 interface User {
@@ -102,7 +100,7 @@ class UserAccount {
 const user: User = new UserAccount("Murphy", 1);
 ```
 
-Interfaces can be used to annotate parameters and return values to functions:
+You can use interfaces to annotate parameters and return values to functions:
 
 ```ts twoslash
 // @noErrors
@@ -120,26 +118,25 @@ function deleteUser(user: User) {
 }
 ```
 
-There are already a small set of primitive types available in JavaScript: `boolean`, `bigint`, `null`, `number`, `string`, `symbol`, `object` and `undefined`, which you can use in an interface. TypeScript extends this list with a few more. for example: `any` (allow anything), [`unknown`](/en/play#example/unknown-and-never) (ensure someone using this type declares what the type is), [`never`](/en/play#example/unknown-and-never) (it's not possible that this type could happen) `void` (a function which returns `undefined` or has no return value).
+There are already a small set of primitive types available in JavaScript: `boolean`, `bigint`, `null`, `number`, `string`, `symbol`, `object`, and `undefined`, which you can use in an interface. TypeScript extends this list with a few more, such as `any` (allow anything), [`unknown`](/en/play#example/unknown-and-never) (ensure someone using this type declares what the type is), [`never`](/en/play#example/unknown-and-never) (it's not possible that this type could happen), and `void` (a function which returns `undefined` or has no return value).
 
-You'll see quite quickly that there are two syntaxes for building types: [Interfaces and Types](/play/?e=83#example/types-vs-interfaces) - you should prefer `interface`, and use `type` when you need specific features.
+You'll see that there are two syntaxes for building types: [Interfaces and Types](/play/?e=83#example/types-vs-interfaces). You should prefer `interface`. Use `type` when you need specific features.
 
 ## Composing Types
 
-Similar to how you would create larger complex objects by composing them together TypeScript has tools for doing this with types.
-The two most popular techniques you would use in everyday code to create new types by working with many smaller types are Unions and Generics.
+With TypeScript, you can create complex types by combining simple ones. There are two popular ways to do so: with Unions, and with Generics.
 
 ### Unions
 
-A union is a way to declare that a type could be one of many types. For example, you could describe a `boolean` type as being either `true` or `false`:
+With a union, you can declare that a type could be one of many types. For example, you can describe a `boolean` type as being either `true` or `false`:
 
 ```ts twoslash
 type MyBool = true | false;
 ```
 
-_Note:_ If you hover over `MyBool` above, you'll see that it is classed as `boolean` - that's a property of the Structural Type System, which we'll get to later.
+_Note:_ If you hover over `MyBool` above, you'll see that it is classed as `boolean`. That's a property of the Structural Type System. More on this below.
 
-One of the most popular use-cases for union types is to describe a set of `string`s or `number`s [literal](/docs/handbook/literal-types.html) which a value is allowed to be:
+A popular use-case for union types is to describe the set of `string`s or `number`s [literal](/docs/handbook/literal-types.html) that a value is allowed to be:
 
 ```ts twoslash
 type WindowStates = "open" | "closed" | "minimized";
@@ -147,7 +144,7 @@ type LockStates = "locked" | "unlocked";
 type OddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
 ```
 
-Unions provide a way to handle different types too, for example you may have a function which accepts an `array` or a `string`.
+Unions provide a way to handle different types too. For example, you may have a function that takes an `array` or a `string`:
 
 ```ts twoslash
 function getLength(obj: string | string[]) {
@@ -155,7 +152,7 @@ function getLength(obj: string | string[]) {
 }
 ```
 
-TypeScript understands how code changes what the variable could be with time, you can use these checks to narrow the type down.
+To learn the type of a variable, use `typeof`:
 
 | Type      | Predicate                          |
 | --------- | ---------------------------------- |
@@ -166,7 +163,7 @@ TypeScript understands how code changes what the variable could be with time, yo
 | function  | `typeof f === "function"`          |
 | array     | `Array.isArray(a)`                 |
 
-For example, you could differentiate between a `string` and an `array`, using `typeof obj === "string"` and TypeScript will know what the object is down different code paths.
+For example, you can make a function return different values depending on whether it is passed a string or an array:
 
 <!-- prettier-ignore -->
 ```ts twoslash
@@ -182,9 +179,7 @@ function wrapInArray(obj: string | string[]) {
 
 ### Generics
 
-You can get very deep into the TypeScript generic system, but at a 1 minute high-level explanation, generics are a way to provide variables to types.
-
-A common example is an array, an array without generics could contain anything. An array with generics can describe what values are inside in the array.
+Generics provide variables to types. A common example is an array. An array without generics could contain anything. An array with generics can describe the values that the array contains.
 
 ```ts
 type StringArray = Array<string>;
@@ -192,7 +187,7 @@ type NumberArray = Array<number>;
 type ObjectWithNameArray = Array<{ name: string }>;
 ```
 
-You can declare your own types which use generics:
+You can declare your own types that use generics:
 
 ```ts twoslash
 // @errors: 2345
@@ -202,22 +197,21 @@ interface Backpack<Type> {
 }
 
 // This line is a shortcut to tell TypeScript there is a
-// constant called `backpack`, and to not worry about where it came from
+// constant called `backpack`, and to not worry about where it came from.
 declare const backpack: Backpack<string>;
 
-// object is a string, because we declared it above as the variable part of Backpack
+// object is a string, because we declared it above as the variable part of Backpack.
 const object = backpack.get();
 
-// Due to backpack variable being a string, you cannot pass a number to the add function
+// Since the backpack variable is a string, you can't pass a number to the add function.
 backpack.add(23);
 ```
 
 ## Structural Type System
 
-One of TypeScript's core principles is that type checking focuses on the _shape_ which values have.
-This is sometimes called "duck typing" or "structural typing".
+One of TypeScript's core principles is that type checking focuses on the _shape_ that values have. This is sometimes called "duck typing" or "structural typing".
 
-In a structural type system if two objects have the same shape, they are considered the same.
+In a structural type system, if two objects have the same shape, they are considered to be of the same type.
 
 ```ts twoslash
 interface Point {
@@ -234,10 +228,9 @@ const point = { x: 12, y: 26 };
 printPoint(point);
 ```
 
-The `point` variable is never declared to be a `Point` type, but TypeScript compares the shape of `point` to the shape of `Point` in the type-check.
-Because they both have the same shape, then it passes.
+The `point` variable is never declared to be a `Point` type. However, TypeScript compares the shape of `point` to the shape of `Point` in the type-check. They have the same shape, so the code passes.
 
-The shape matching only requires a subset of the object's fields to match.
+The shape-matching only requires a subset of the object's fields to match.
 
 ```ts twoslash
 // @errors: 2345
@@ -257,11 +250,10 @@ const rect = { x: 33, y: 3, width: 30, height: 80 };
 printPoint(rect); // prints "33, 3"
 
 const color = { hex: "#187ABF" };
-
 printPoint(color);
 ```
 
-Finally, to really nail this point down, structurally there is no difference between how classes and objects conform to shapes:
+There is no difference between how classes and objects conform to shapes:
 
 ```ts twoslash
 // @errors: 2345
@@ -288,11 +280,11 @@ const newVPoint = new VirtualPoint(13, 56);
 printPoint(newVPoint); // prints "13, 56"
 ```
 
-If the object or class has all the required properties, then TypeScript will say they match regardless of the implementation details.
+If the object or class has all the required properties, TypeScript will say they match, regardless of the implementation details.
 
 ## Next Steps
 
-This doc is a high level 5 minute overview of the sort of syntax and tools you would use in everyday code. From here you should:
+This was a brief overview of the syntax and tools used in everyday TypeScript. From here, you can:
 
 - Read the full Handbook [from start to finish](/docs/handbook/intro.html) (30m)
 - Explore the [Playground examples](/play#show-examples).

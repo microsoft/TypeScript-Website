@@ -1,7 +1,7 @@
 /* Code blocks look like: 
 
-  <pre class='shiki twoslash'>
-    <div class='language-id>[lang-id]</div>
+<pre class='shiki lsp twoslash'>
+  <div class='language-id>[lang-id]</div>
     <div class='code-container'>
       <code>[the code as a series of spans]</code>
       <a href='playground...'>Try</a>
@@ -39,7 +39,7 @@ pre {
   .code-container {
     overflow: auto;
 
-    a {
+    > a {
       position: absolute;
       right: 8px;
       bottom: 8px;
@@ -78,6 +78,10 @@ pre {
 
     white-space: pre;
     -webkit-overflow-scrolling: touch;
+
+    a {
+      text-decoration: none;
+    }
   }
 
   /* Let errors use the outer shiki for their absolute sizing, and not be affected by the scrolling of the code */

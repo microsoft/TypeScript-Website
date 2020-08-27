@@ -11,6 +11,8 @@ const languages = {
   pt: 233,
   es: 232,
   zh: 296,
+  ko: 910,
+  id: 938,
 }
 
 const go = async () => {
@@ -26,7 +28,8 @@ const go = async () => {
     const issueNumber = languages[lang]
 
     const files = getAllTODOFiles(lang)
-    const body = toMarkdown(files)
+    const header = `Hi! This issue is for keeping track of the localization effort for \`${lang}+"\`. You can learn about the whole roadmap in #100. If you see an un-ticked area below, that means there isn't an version of that file in this language.\n\n`
+    const body = header + toMarkdown(files)
 
     console.log("Updating: ", issueNumber)
     await octokit.issues.update({

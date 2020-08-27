@@ -209,7 +209,7 @@ import { Observable } from "./observable";
 import "./map";
 
 let o: Observable<number>;
-o.map(x => x.toFixed());
+o.map((x) => x.toFixed());
 ```
 
 Similarly, the global scope can be augmented from modules using a `declare global` declarations:
@@ -226,7 +226,7 @@ declare global {
   }
 }
 
-Array.prototype.mapToNumbers = function() {
+Array.prototype.mapToNumbers = function () {
   /* ... */
 };
 ```
@@ -333,14 +333,14 @@ export function createB() {
 Results in:
 
 ```js
-define("lib/b", ["require", "exports"], function(require, exports) {
+define("lib/b", ["require", "exports"], function (require, exports) {
   "use strict";
   function createB() {
     return {};
   }
   exports.createB = createB;
 });
-define("a", ["require", "exports", "lib/b"], function(require, exports, B) {
+define("a", ["require", "exports", "lib/b"], function (require, exports, B) {
   "use strict";
   function createA() {
     return B.createB();
@@ -370,22 +370,22 @@ for (let i = 0; i < 5; i++) {
   list.push(() => i);
 }
 
-list.forEach(f => console.log(f()));
+list.forEach((f) => console.log(f()));
 ```
 
 is compiled to:
 
 ```js
 var list = [];
-var _loop_1 = function(i) {
-  list.push(function() {
+var _loop_1 = function (i) {
+  list.push(function () {
     return i;
   });
 };
 for (var i = 0; i < 5; i++) {
   _loop_1(i);
 }
-list.forEach(function(f) {
+list.forEach(function (f) {
   return console.log(f());
 });
 ```
@@ -550,18 +550,16 @@ The old behavior still remains the same if given a directory - the compiler will
 It's always nice to be able to document your configuration!
 `tsconfig.json` now accepts single and multi-line comments.
 
-```ts
+```json tsconfig
 {
-    "compilerOptions": {
-        "target": "ES2015", // running on node v5, yaay!
-        "sourceMap": true   // makes debugging easier
-    },
-    /*
-     * Excluded files
-      */
-    "exclude": [
-        "file.d.ts"
-    ]
+  "compilerOptions": {
+    "target": "ES2015", // running on node v5, yaay!
+    "sourceMap": true // makes debugging easier
+  },
+  /*
+   * Excluded files
+   */
+  "exclude": ["file.d.ts"]
 }
 ```
 

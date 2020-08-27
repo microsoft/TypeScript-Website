@@ -3,6 +3,7 @@ title: Configuring Watch
 layout: docs
 permalink: /docs/handbook/configuring-watch.html
 oneline: How to configure the watch mode of TypeScript
+translatable: true
 ---
 
 Compiler supports configuring how to watch files and directories using compiler flags in TypeScript 3.8+, and environment variables before that.
@@ -17,7 +18,7 @@ The `--watch` implementation of the compiler relies on using `fs.watch` and `fs.
 
 ## Configuring file watching using a `tsconfig.json`
 
-```json
+```json tsconfig
 {
   // Some typical compiler options
   "compilerOptions": {

@@ -43,7 +43,7 @@ const getRootRect = (element: HTMLElement): DOMRect => {
  *
  * @example
  * import React, { useEffect } from "react"
- * import { setupTwoslashHovers } from "gatsby-remark-shiki-twoslash/dom";
+ * import { setupTwoslashHovers } from "shiki-twoslash/dom";
  *
  * export default () => {
  *   // Add a the hovers
@@ -56,7 +56,7 @@ const getRootRect = (element: HTMLElement): DOMRect => {
  */
 export const setupTwoslashHovers = () => {
   // prettier-ignore
-  const twoslashes = document.querySelectorAll(".shiki.twoslash .code-container code")
+  const twoslashes = document.querySelectorAll(".shiki.lsp .code-container code")
 
   // Gets triggered on the spans inside the codeblocks
   const hover = (event: Event) => {

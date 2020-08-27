@@ -26,7 +26,6 @@ const conferences =
   ]
 
 
-const QuarterOrHalfRow = (props: { children: any, className?: string }) => <div className={[props.className, "split-row"].join(" ")}>{props.children}</div>
 const Row = (props: { children: any, className?: string }) => <div className={[props.className, "row"].join(" ")}>{props.children}</div>
 const Col = (props: { children: any, className?: string }) => <div className={[props.className, "col1"].join(" ")}>{props.children}</div>
 const Col2 = (props: { children: any, className?: string }) => <div className={[props.className, "col2"].join(" ")}>{props.children}</div>
@@ -40,17 +39,6 @@ type Props = {
 export const Comm: React.FC<Props> = props => {
   const intl = useIntl()
   const i = createInternational<typeof comCopy>(intl)
-
-  // Make an array of all the meetups which share a rough location
-  const meetupByArea = {}
-  meetups.forEach(meetup => {
-    const area = meetup.meetup.continentish
-    if (meetupByArea[area]) {
-      meetupByArea[area].push(meetup.meetup)
-    } else {
-      meetupByArea[area] = [meetup.meetup]
-    }
-  });
 
   return (
     <Layout title={i("com_layout_title")} description={i("com_layout_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
@@ -193,23 +181,21 @@ export const Comm: React.FC<Props> = props => {
       <div className="raised main-content-block container community">
         <h3 className="centered-highlight">Meetups</h3>
         <div className="events">
-          {Object.keys(meetupByArea)
-            .map(area => (
-              <>
-                <h4>{area}</h4>
-                <div className="callouts">
-                  {meetupByArea[area].map(meetup => (
-                    <Col className="callout">
-                      <img src={require("../../assets/community/meetup-logos/" + meetup.image)} className="icon img-square" alt={"logo of " + meetup.title} />
-                      <div>
-                        <h4 className="community-callout-headline">{meetup.title}</h4>
-                        <div className="text">{meetup.country}<br /><a rel="noopener" target="blank" href={meetup.url}>Website</a>{meetup.twitter ? <a rel="noopener" target="blank" href={meetup.twitter}>Twitter</a> : null}</div>
-                      </div>
-                    </Col>
-                  ))}
+
+          <div className="callouts">
+            {meetups.map(({ meetup }) => (
+              <Col className="callout">
+                <img src={require("../../assets/community/meetup-logos/" + meetup.image)} className="icon img-square" alt={"logo of " + meetup.title} />
+                <div>
+                  <h4 className="community-callout-headline">{meetup.title}</h4>
+                  <div className="text">{meetup.country}<br />
+                    <a rel="noopener" target="blank" href={meetup.url} title={"Website for " + meetup.title}>Website</a>
+                    {meetup.twitter ? <a rel="noopener" target="blank" href={meetup.twitter} title={"Twitter page for " + meetup.title}>Twitter</a> : null}
+                  </div>
                 </div>
-              </>
+              </Col>
             ))}
+          </div>
         </div>
       </div>
     </Layout >

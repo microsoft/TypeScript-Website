@@ -95,20 +95,21 @@ function rewireLoggingToElement(
       const prefix = '[<span class="log-' + name + '">' + id + "</span>]: "
       const eleContainerLog = eleOverflowLocator()
       allLogs = allLogs + prefix + output + "<br>"
-
-      if (eleLog && eleContainerLog) {
-        if (autoScroll) {
-          const atBottom = eleContainerLog.scrollHeight - eleContainerLog.clientHeight <= eleContainerLog.scrollTop + 1
-          eleLog.innerHTML = allLogs
-
-          if (atBottom) eleContainerLog.scrollTop = eleContainerLog.scrollHeight - eleContainerLog.clientHeight
-        } else {
-          eleLog.innerHTML = allLogs
-        }
+      eleLog.innerHTML = allLogs
+      const scrollElement = eleContainerLog.parentElement
+      if (autoScroll && scrollElement) {
+        scrollToBottom(scrollElement)
       }
-
       // @ts-ignore
       console["old" + name].apply(undefined, objs)
+    }
+  }
+
+  function scrollToBottom(element: Element) {
+    const overflowHeight = element.scrollHeight - element.clientHeight
+    const atBottom = element.scrollTop >= overflowHeight
+    if (!atBottom) {
+      element.scrollTop = overflowHeight
     }
   }
 

@@ -93,7 +93,7 @@ First we need to tell TypeScript how to build. Right click on `scripts` and clic
 
 Replace the contents of the `tsconfig.json` file with:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "noEmitOnError": true,
@@ -123,7 +123,7 @@ We need to setup NPM so that JavaScript packages can be downloaded. Right click 
 
 Inside the `"devDependencies"` section of the `package.json` file, add _gulp_ and _del_
 
-```json
+```json tsconfig
 "devDependencies": {
     "gulp": "4.0.2",
     "del": "5.1.0"

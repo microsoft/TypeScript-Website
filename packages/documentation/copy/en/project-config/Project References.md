@@ -3,6 +3,7 @@ title: Project References
 layout: docs
 permalink: /docs/handbook/project-references.html
 oneline: How to split up a large TypeScript project
+translatable: true
 ---
 
 Project references are a new feature in TypeScript 3.0 that allow you to structure your TypeScript programs into smaller pieces.
@@ -52,7 +53,7 @@ Project references can solve all of these problems and more.
 
 `tsconfig.json` files have a new top-level property, `references`. It's an array of objects that specifies projects to reference:
 
-```js
+```js tsconfig
 {
     "compilerOptions": {
         // The usual

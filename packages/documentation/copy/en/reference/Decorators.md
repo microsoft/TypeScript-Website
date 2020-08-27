@@ -3,6 +3,7 @@ title: Decorators
 layout: docs
 permalink: /docs/handbook/decorators.html
 oneline: TypeScript Decorators overview
+translatable: true
 ---
 
 ## Introduction
@@ -23,7 +24,7 @@ tsc --target ES5 --experimentalDecorators
 
 **tsconfig.json**:
 
-```json
+```json  tsconfig
 {
   "compilerOptions": {
     "target": "ES5",
@@ -57,7 +58,7 @@ We can write a decorator factory in the following fashion:
 ```ts
 function color(value: string) {
   // this is the decorator factory
-  return function(target) {
+  return function (target) {
     // this is the decorator
     // do something with 'target' and 'value'...
   };
@@ -96,14 +97,22 @@ If we were to use [decorator factories](#decorator-factories), we can observe th
 ```ts
 function f() {
   console.log("f(): evaluated");
-  return function(target, propertyKey: string, descriptor: PropertyDescriptor) {
+  return function (
+    target,
+    propertyKey: string,
+    descriptor: PropertyDescriptor
+  ) {
     console.log("f(): called");
   };
 }
 
 function g() {
   console.log("g(): evaluated");
-  return function(target, propertyKey: string, descriptor: PropertyDescriptor) {
+  return function (
+    target,
+    propertyKey: string,
+    descriptor: PropertyDescriptor
+  ) {
     console.log("g(): called");
   };
 }
@@ -234,7 +243,7 @@ We can define the `@enumerable` decorator using the following function declarati
 
 ```ts
 function enumerable(value: boolean) {
-  return function(
+  return function (
     target: any,
     propertyKey: string,
     descriptor: PropertyDescriptor
@@ -296,7 +305,7 @@ We can define the `@configurable` decorator using the following function declara
 
 ```ts
 function configurable(value: boolean) {
-  return function(
+  return function (
     target: any,
     propertyKey: string,
     descriptor: PropertyDescriptor
@@ -422,7 +431,7 @@ function validate(
   descriptor: TypedPropertyDescriptor<Function>
 ) {
   let method = descriptor.value;
-  descriptor.value = function() {
+  descriptor.value = function () {
     let requiredParameters: number[] = Reflect.getOwnMetadata(
       requiredMetadataKey,
       target,
@@ -473,7 +482,7 @@ tsc --target ES5 --experimentalDecorators --emitDecoratorMetadata
 
 **tsconfig.json**:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "target": "ES5",
@@ -522,7 +531,7 @@ function validate<T>(
   descriptor: TypedPropertyDescriptor<T>
 ) {
   let set = descriptor.set;
-  descriptor.set = function(value: T) {
+  descriptor.set = function (value: T) {
     let type = Reflect.getMetadata("design:type", target, propertyKey);
     if (!(value instanceof type)) {
       throw new TypeError("Invalid type.");

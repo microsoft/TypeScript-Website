@@ -5,31 +5,6 @@ permalink: /docs/handbook/release-notes/typescript-1-1.html
 oneline: TypeScript 1.1 Release Notes
 ---
 
-This is a test example, knowingly shipped to prod while v2 is in beta - it's got a really long comment and a twoslash error.
-
-```ts twoslash
-// @errors: 2345
-function longest<T extends { length: number }>(a: T, b: T) {
-  if (a.length >= b.length) {
-    return a;
-  } else {
-    return b;
-  }
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// longerArray is of type 'number[]'
-const longerArray = longest([1, 2], [1, 2, 3]);
-// longerString is of type 'string'
-const longerString = longest("alice", "bob");
-// Error! Numbers don't have a 'length' property
-const notOK = longest(10, 100);
-
-const hello = longest("alice", "bob");
-console.log(hello);
-```
-
 ## Performance Improvements
 
 The 1.1 compiler is typically around 4x faster than any previous release. See [this blog post for some impressive charts.](http://blogs.msdn.com/b/typescript/archive/2014/10/06/announcing-typescript-1-1-ctp.aspx)

@@ -70,11 +70,19 @@ const Play: React.FC<Props> = (props) => {
     const getLoaderScript = document.createElement('script');
     getLoaderScript.src = withPrefix("/js/vs.loader.js");
     getLoaderScript.async = true;
-    getLoaderScript.onload = () => {
+    getLoaderScript.onload = async () => {
       const params = new URLSearchParams(location.search)
-      // nothing || Nightly -> next || original ts param which should be a release of monaco
-      const supportedVersion = !params.get("ts") ? undefined : params.get("ts") === "Nightly" ? "next" : params.get("ts")
-      const tsVersion = supportedVersion || playgroundReleases.versions.sort().pop()
+
+      let tsVersionParam = params.get("ts")
+      // handle the nightly lookup 
+      if (tsVersionParam && tsVersionParam === "Nightly" || tsVersionParam === "next") {
+        // Avoids the CDN to doubly skip caching
+        const nightlyLookup = await fetch("https://tswebinfra.blob.core.windows.net/indexes/next.json", { cache: "no-cache" })
+        const nightlyJSON = await nightlyLookup.json()
+        tsVersionParam = nightlyJSON.version
+      }
+
+      const tsVersion = tsVersionParam || playgroundReleases.versions.sort().pop()
 
       // Because we can reach to localhost ports from the site, it's possible for the locally built compiler to 
       // be hosted and to power the editor with a bit of elbow grease.
@@ -226,7 +234,9 @@ const Play: React.FC<Props> = (props) => {
                     <li><a href="#" onClick={() => playground.exporter.openProjectInStackBlitz()} aria-label={i("play_export_stackblitz")} >{i("play_export_stackblitz")}</a></li>
                   </ul>
                 </li>
+                <li><a id="share-button" href="#" role="button">{i("play_toolbar_share")}</a></li>
               </ul>
+
               <ul className="right">
                 <li><a id="sidebar-toggle" aria-label="Hide Sidebar" href="#">&#x21E5;</a></li>
               </ul>

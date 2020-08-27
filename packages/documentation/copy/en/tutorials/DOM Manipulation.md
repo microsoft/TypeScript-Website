@@ -3,6 +3,7 @@ title: DOM Manipulation
 layout: docs
 permalink: /docs/handbook/dom-manipulation.html
 oneline: Using the DOM with TypeScript
+translatable: true
 ---
 
 ## DOM Manipulation
@@ -26,7 +27,7 @@ Given a simplified _index.html_ file:
       <head><title>TypeScript Dom Manipulation</title></head>
       <body>
         <div id="app"></div>
-    		<!-- Assume index.js is the compiled output of index.ts -->
+        <!-- Assume index.js is the compiled output of index.ts -->
         <script src="index.js"></script>
       </body>
     </html>

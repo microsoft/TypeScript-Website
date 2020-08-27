@@ -3,6 +3,7 @@ title: Type Inference
 layout: docs
 permalink: /docs/handbook/type-inference.html
 oneline: How code flow analysis works in TypeScript
+translatable: true
 ---
 
 In TypeScript, there are several places where type inference is used to provide type information when there is no explicit type annotation. For example, in this code
@@ -37,13 +38,13 @@ Because the best common type has to be chosen from the provided candidate types,
 // @strict: false
 class Animal {}
 class Rhino extends Animal {
-  hasHorn: true
+  hasHorn: true;
 }
 class Elephant extends Animal {
-  hasTrunk: true
+  hasTrunk: true;
 }
 class Snake extends Animal {
-  hasLegs: false
+  hasLegs: false;
 }
 // ---cut---
 let zoo = [new Rhino(), new Elephant(), new Snake()];
@@ -57,13 +58,13 @@ To correct this, instead explicitly provide the type when no one type is a super
 // @strict: false
 class Animal {}
 class Rhino extends Animal {
-  hasHorn: true
+  hasHorn: true;
 }
 class Elephant extends Animal {
-  hasTrunk: true
+  hasTrunk: true;
 }
 class Snake extends Animal {
-  hasLegs: false
+  hasLegs: false;
 }
 // ---cut---
 let zoo: Animal[] = [new Rhino(), new Elephant(), new Snake()];

@@ -41,12 +41,12 @@ const e = Symbol();
 const enum E1 {
   A,
   B,
-  C
+  C,
 }
 const enum E2 {
   A = "A",
   B = "B",
-  C = "C"
+  C = "C",
 }
 
 type Foo = {
@@ -86,13 +86,13 @@ Furthermore, with the `keyof` operator's support for `number` and `symbol` named
 const enum Enum {
   A,
   B,
-  C
+  C,
 }
 
 const enumToStringMap = {
   [Enum.A]: "Name A",
   [Enum.B]: "Name B",
-  [Enum.C]: "Name C"
+  [Enum.C]: "Name C",
 };
 
 const sym1 = Symbol();
@@ -102,7 +102,7 @@ const sym3 = Symbol();
 const symbolToNumberMap = {
   [sym1]: 1,
   [sym2]: 2,
-  [sym3]: 3
+  [sym3]: 3,
 };
 
 type KE = keyof typeof enumToStringMap; // Enum (i.e. Enum.A | Enum.B | Enum.C)
@@ -309,15 +309,15 @@ settings.debug === true; // OK
 settings.dry === 2; // Error: Operator '===' cannot be applied boolean and number
 ```
 
-```ts
+```json tsconfig
 // tsconfig.json
 
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "resolveJsonModule": true,
-        "esModuleInterop": true
-    }
+  "compilerOptions": {
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  }
 }
 ```
 

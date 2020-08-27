@@ -3,6 +3,7 @@ title: Modules
 layout: docs
 permalink: /docs/handbook/modules.html
 oneline: How modules work in TypeScript
+translatable: true
 ---
 
 Starting with ECMAScript 2015, JavaScript has a concept of modules. TypeScript shares this concept.
@@ -136,10 +137,10 @@ With TypeScript 3.8, you can import a type using the `import` statement, or usin
 
 ```ts
 // Re-using the same import
-import {APIResponseType} from "./api";
+import { APIResponseType } from "./api";
 
 // Explicitly use import type
-import type {APIResponseType} from "./api";
+import type { APIResponseType } from "./api";
 ```
 
 `import type` is always guaranteed to be removed from your JavaScript, and tools like Babel can make better assumptions about your code via the `isolatedModules` compiler flag.
@@ -198,7 +199,7 @@ or
 ```ts
 const numberRegexp = /^[0-9]+$/;
 
-export default function(s: string) {
+export default function (s: string) {
   return s.length === 5 && numberRegexp.test(s);
 }
 ```
@@ -211,7 +212,7 @@ import validate from "./StaticZipCodeValidator";
 let strings = ["Hello", "98052", "101"];
 
 // Use function validate
-strings.forEach(s => {
+strings.forEach((s) => {
   console.log(`"${s}" ${validate(s) ? "matches" : "does not match"}`);
 });
 ```
@@ -283,7 +284,7 @@ let strings = ["Hello", "98052", "101"];
 let validator = new zip();
 
 // Show whether each string passed each validator
-strings.forEach(s => {
+strings.forEach((s) => {
   console.log(
     `"${s}" - ${validator.isAcceptable(s) ? "matches" : "does not match"}`
   );
@@ -307,7 +308,7 @@ export let t = m.something + 1;
 ##### AMD / RequireJS SimpleModule.js
 
 ```js
-define(["require", "exports", "./mod"], function(require, exports, mod_1) {
+define(["require", "exports", "./mod"], function (require, exports, mod_1) {
   exports.t = mod_1.something + 1;
 });
 ```
@@ -322,14 +323,14 @@ exports.t = mod_1.something + 1;
 ##### UMD SimpleModule.js
 
 ```js
-(function(factory) {
+(function (factory) {
   if (typeof module === "object" && typeof module.exports === "object") {
     var v = factory(require, exports);
     if (v !== undefined) module.exports = v;
   } else if (typeof define === "function" && define.amd) {
     define(["require", "exports", "./mod"], factory);
   }
-})(function(require, exports) {
+})(function (require, exports) {
   var mod_1 = require("./mod");
   exports.t = mod_1.something + 1;
 });
@@ -338,18 +339,18 @@ exports.t = mod_1.something + 1;
 ##### System SimpleModule.js
 
 ```js
-System.register(["./mod"], function(exports_1) {
+System.register(["./mod"], function (exports_1) {
   var mod_1;
   var t;
   return {
     setters: [
-      function(mod_1_1) {
+      function (mod_1_1) {
         mod_1 = mod_1_1;
-      }
+      },
     ],
-    execute: function() {
+    execute: function () {
       exports_1("t", (t = mod_1.something + 1));
-    }
+    },
   };
 });
 ```
@@ -427,7 +428,7 @@ validators["ZIP code"] = new ZipCodeValidator();
 validators["Letters only"] = new LettersOnlyValidator();
 
 // Show whether each string passed each validator
-strings.forEach(s => {
+strings.forEach((s) => {
   for (let name in validators) {
     console.log(
       `"${s}" - ${
@@ -850,7 +851,7 @@ class ProgrammerCalculator extends Calculator {
     "C",
     "D",
     "E",
-    "F"
+    "F",
   ];
 
   constructor(public base: number) {

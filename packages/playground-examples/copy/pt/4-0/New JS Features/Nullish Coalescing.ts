@@ -1,40 +1,43 @@
-//// { compiler: { ts: "4.0.0-beta" } }
+//// { compiler: { ts: "4.0.2" } }
 
-// Esse é o novo operadorador `??` a qual se refere a aumentar
-// o comum uso de `||` do mesmo modo que `===` argumenta `==`
-// como uma forma mais rigorisa de igualdade.
+// # Nullish Coalescing
+//
+// Esse é o novo operador `??` com o intuito de ampliar
+// o uso normal do `||` da mesma maneira que `===` amplia `==`
+// para uma forma mais rígida de igualidade.
 //
 // Para entender, vamos ver como o || funciona:
 
-const resposta = {
-  valorNulo: null,
-  textoDeCabecalho: "",
-  duracaoDaAnimacao: 0,
-  altura: 400,
-  mostrarTelaInicial: false,
+const response = {
+  nullValue: null,
+  headerText: "",
+  animationDuration: 0,
+  height: 400,
+  showSplashScreen: false,
 } as const;
 
-const valorIndefinido = resposta.valorIndefinido || "algum outro padrão";
-// Esse poderia ser: 'algum outro padrão'
+const undefinedValue = response.undefinedValue || "some other default";
+// Seria: 'some other default'
 
-const valorNulo = resposta.valorNulo || "algum outro padrão";
+const nullValue = response.nullValue || "some other default";
 
-// Esses dois exemplos trabalham de forma similar na maioria das linguages.
-// Como uma ferramenta, || é ótima em difundir as coisas, mas o JavaScript
-// falsamente confere, podendo te surpreender pelos valores padrões.
+// Esses dois exemplos funcionam de maneira similar na maioria
+// das linguagens. A ferramenta || é muito boa em padronizar coisas
+// mas as checagens de falsidade do Javascript podem te surpreender
+// com alguns valores simples:
 
-// Potencialmente não intencional. '' é falsamente, o resultado é: 'Olá mundo!'
-const textoDeCabecalho = resposta.textoDeCabecalho || "Olá mundo!";
+// Potencialmente indesejado. '' é falsy, resultado: 'Hello, world!'
+const headerText = response.headerText || "Hello, world!";
 
-// Potencialmente não intencional. 0 é falsamente, o resultado é: 300
-const duracaoDaAnimacao = resposta.duracaoDaAnimacao || 300;
+// Potencialmente indesejado. 0 é falsy, resultado: 300
+const animationDuration = response.animationDuration || 300;
 
-// Potencialmente não intencional. false é falsamente, o resultado é: true
-const mostrarTelaInicial = resposta.mostrarTelaInicial || true;
+// Potencialmente indesejado. false é falsy, resultado: true
+const showSplashScreen = response.showSplashScreen || true;
 
-// Quando começamos a usar ??, então === é igualmente usado
-// para comparar os dois lados:
+// Alterando para usar ?? no lugar, então a igualdade === é usada
+// para comparar ambos os lados:
 
-const textoDeCabecalhoVazio = resposta.textoDeCabecalho ?? "Olá mundo!";
-const animacaoSemDuracao = resposta.duracaoDaAnimacao ?? 300;
-const pularTelaInicial = resposta.mostrarTelaInicial ?? true;
+const emptyHeaderText = response.headerText ?? "Hello, world!";
+const zeroAnimationDuration = response.animationDuration ?? 300;
+const skipSplashScreen = response.showSplashScreen ?? true;

@@ -1,6 +1,6 @@
 ---
 display: "Imports Not Used As Values"
-oneline: "Does something"
+oneline: "Controls which syntax you use for importing types"
 ---
 
 This flag controls how `import` works, there are 3 different options:

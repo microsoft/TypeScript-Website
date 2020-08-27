@@ -9,6 +9,7 @@ export const playCopy = {
   play_downloading_version: "Versión...", // when loading
   play_toolbar_run: "Ejecutar",
   play_toolbar_export: "Exportar",
+  play_toolbar_share: "Share",
   play_sidebar_js: "JS",
   play_sidebar_dts: "DTS",
   play_sidebar_errors: "Errores",

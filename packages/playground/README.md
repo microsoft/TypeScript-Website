@@ -7,7 +7,7 @@ work by [Artem Tyurin](https://github.com/agentcooper/typescript-play) but now i
 
 ## Architecture
 
-The playground library sits above the [TypeScript sandbox](../Sandbox), and provides features like:
+The playground library sits above the [TypeScript sandbox](../sandbox), and provides features like:
 
 - The code samples support
 - The navigation bars, and compiler flags UI

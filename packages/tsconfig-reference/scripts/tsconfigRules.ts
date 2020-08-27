@@ -28,11 +28,15 @@ export const internal: CompilerOptionName[] = ["preserveWatchOutput", "stripInte
 export const recommended: CompilerOptionName[] = [
   "strict",
   "forceConsistentCasingInFileNames",
+  "alwaysStrict",
   "strictNullChecks",
   "strictBindCallApply",
   "strictFunctionTypes",
+  "strictPropertyInitialization",
   "noImplicitThis",
   "noImplicitAny",
+  "esModuleInterop",
+  "skipLibCheck",
 ];
 
 type RootProperties = "files" | "extends" | "include" | "exclude";
@@ -42,7 +46,7 @@ type AnOption = WatchProperties | RootProperties | CompilerOptionName;
 
 /** Allows linking between options */
 export const relatedTo: [AnOption, AnOption[]][] = [
-  ["strict", ["strictBindCallApply", "strictFunctionTypes", "strictPropertyInitialization"]],
+  ["strict", ["alwaysStrict", "strictNullChecks", "strictBindCallApply", "strictFunctionTypes", "strictPropertyInitialization", "noImplicitAny", "noImplicitThis"]],
   ["allowSyntheticDefaultImports", ["esModuleInterop"]],
   ["esModuleInterop", ["allowSyntheticDefaultImports"]],
 
@@ -123,7 +127,8 @@ export const defaultsForOptions = {
   listFiles: "false",
   locale: "Platform specific",
   maxNodeModuleJsDepth: "0",
-  moduleResolution: "module === `AMD`, `System` or `ES6` then `Classic`<br/><br/>Otherwise `Node`",
+  moduleResolution:
+    "module === `AMD`, `UMD`, `System` or `ES6` then `Classic`<br/><br/>Otherwise `Node`",
   newLine: "Platform specific",
   noEmit: "false",
   noEmitHelpers: "false",
@@ -211,7 +216,7 @@ export const allowedValues = {
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
-  "4.0": ["jsxFragmentFactory"],
+  "4.0": ["jsxFragmentFactory", "disableReferencedProjectLoad"],
   "3.8": [
     "assumeChangesOnlyAffectDirectDependencies",
     "importsNotUsedAsValues",

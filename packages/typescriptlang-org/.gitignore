@@ -91,3 +91,5 @@ static/js/examples/
 src/__generated__/
 static/assets/typescript-handbook-beta.epub
 static/assets/typescript-handbook-beta.pdf
+
+/src/lib/release-info.json
