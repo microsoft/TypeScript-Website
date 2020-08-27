@@ -88,7 +88,7 @@ Recompilando, você verá um erro:
 error TS2345: Argument of type 'number[]' is not assignable to parameter of type 'string'.
 ```
 
-Da mesma forma, tente remover todos os argumentos para a chamada de saudação.
+Da mesma forma, tente remover todos os argumentos para a chamada de greeter.
 O TypeScript permitirá que você saiba que você chamou esta função com um número inesperado de parâmetros.
 Em ambos os casos, o TypeScript pode oferecer análise estática com base na estrutura do seu código e nas anotações de tipo fornecidas.
 
