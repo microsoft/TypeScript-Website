@@ -75,7 +75,7 @@ A grosso modo, a resolução verificará primeiro o campo opcional `"types"`, de
 | "types": "main.d.ts"      | main.d.ts                      |
 | "types": "./dist/main.js" | ./main/main.d.ts               |
 
-If absent, then "main" is used
+Se estiver ausente, "main" é usado
 
 | Package.json             | Localização do padrão .d.ts |
 | :----------------------- | :------------------------ |
