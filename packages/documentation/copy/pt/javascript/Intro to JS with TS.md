@@ -9,7 +9,7 @@ translatable: true
 O sistema de tipos no TypeScript tem diferentes níveis de rigidez ao trabalhar com uma base de código:
 
 - Um sistema de tipo baseado apenas em inferência com código JavaScript
-- Digitação incremental em JavaScript [via JSDoc](/docs/handbook/jsdoc-supported-types.html)
+- Tipagem incremental em JavaScript [via JSDoc](/docs/handbook/jsdoc-supported-types.html)
 - Usando `// @ts-check` em um arquivo JavaScript
 - Código TypeScript
 - TypeScript com [`strict`](/tsconfig#strict) habilitado
