@@ -49,7 +49,7 @@ Mais informações estão disponíveis em [Plug-in do TypeScript para documenta�
 
 A compilação noturna atualmente não inclui a configuração completa do plug-in, mas estamos trabalhando na publicação de um instalador todas as noites também.
 
-1. Download the [VSDevMode.ps1](https://github.com/Microsoft/TypeScript/blob/master/scripts/VSDevMode.ps1) script.
+1. Baixe o script [VSDevMode.ps1](https://github.com/Microsoft/TypeScript/blob/master/scripts/VSDevMode.ps1).
 
    > Veja também nossa página wiki em [usando um arquivo de serviço de idioma personalizado](https://github.com/Microsoft/TypeScript/wiki/Dev-Mode-in-Visual-Studio#using-a-custom-language-service-file).
 
