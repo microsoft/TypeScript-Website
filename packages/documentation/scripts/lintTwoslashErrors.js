@@ -14,8 +14,6 @@ const path = require("path");
 const remark = require("remark");
 const remarkTwoSlash = require("gatsby-remark-shiki-twoslash");
 
-const { read } = require("gray-matter");
-
 const languages = readdirSync(join(__dirname, "..", "copy")).filter(
   (f) => !f.startsWith(".")
 );
@@ -52,7 +50,8 @@ languages.forEach((lang) => {
 
     const sigil = hasError ? cross : tick;
     const name = hasError ? chalk.red(option) : option;
-    process.stdout.write(name + " " + sigil + ", ");
+    const miniPath = name.replace(join(__dirname, "..", "copy"), "");
+    console.log(miniPath + " " + sigil);
   });
 });
 

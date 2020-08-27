@@ -19,17 +19,17 @@ _Conditional types_ help describe the relation between the types of inputs and o
 
 ```ts twoslash
 interface Animal {
-    live(): void;
+  live(): void;
 }
 interface Dog extends Animal {
-    woof(): void;
+  woof(): void;
 }
 
 type Foo = Dog extends Animal ? number : string;
-     ^?
+//   ^?
 
 type Bar = RegExp extends Animal ? number : string;
-     ^?
+//   ^?
 ```
 
 Conditional types take a form that looks a little like conditional expresions (`cond ? trueExpression : falseExpression`) in JavaScript:
@@ -90,23 +90,28 @@ type NameOrId<T extends number | string> = T extends number
 We can then use that conditional type to simplify out overloads down to a single function with no overloads.
 
 ```ts twoslash
-interface IdLabel { id: number, /* some fields */ }
-interface NameLabel { name: string, /* other fields */ }
-type NameOrId<T extends number | string> =
-    T extends number ? IdLabel : NameLabel;
+interface IdLabel {
+  id: number /* some fields */;
+}
+interface NameLabel {
+  name: string /* other fields */;
+}
+type NameOrId<T extends number | string> = T extends number
+  ? IdLabel
+  : NameLabel;
 // ---cut---
 function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {
-    throw "unimplemented"
+  throw "unimplemented";
 }
 
 let a = createLabel("typescript");
-    ^?
+//  ^?
 
 let b = createLabel(2.8);
-    ^?
+//  ^?
 
 let c = createLabel(Math.random() ? "hello" : 42);
-    ^?
+//  ^?
 ```
 
 ### Conditional Type Constraints
@@ -117,6 +122,7 @@ Just like with narrowing with type guards can give us a more specific type, the 
 For example, let's take the following:
 
 ```ts twoslash
+// @errors: 2536
 type MessageOf<T> = T["message"];
 ```
 
@@ -127,15 +133,15 @@ We could constrain `T`, and TypeScript would no longer complain:
 type MessageOf<T extends { message: unknown }> = T["message"];
 
 interface Email {
-    message: string;
+  message: string;
 }
 
 interface Dog {
-    bark(): void;
+  bark(): void;
 }
 
 type EmailMessageContents = MessageOf<Email>;
-     ^?
+//   ^?
 ```
 
 However, what if we wanted `MessageOf` to take any type, and default to something like `never` if a `message` property isn't available?
@@ -144,15 +150,19 @@ We can do this by moving the constraint out and introducing a conditional type:
 ```ts twoslash
 type MessageOf<T> = T extends { message: unknown } ? T["message"] : never;
 
-interface Email { message: string }
+interface Email {
+  message: string;
+}
 
-interface Dog { bark(): void }
+interface Dog {
+  bark(): void;
+}
 
 type EmailMessageContents = MessageOf<Email>;
-     ^?
+//   ^?
 
 type DogMessageContents = MessageOf<Dog>;
-     ^?
+//   ^?
 ```
 
 Within the true branch, TypeScript knows that `T` _will_ have a `message` property.
@@ -160,15 +170,15 @@ Within the true branch, TypeScript knows that `T` _will_ have a `message` proper
 As another example, we could also write a type called `Flatten` that flattens array types to their element types, but leaves them alone otherwise:
 
 ```ts twoslash
-type Flatten<T> = T extends any[] ? T[number] : T
+type Flatten<T> = T extends any[] ? T[number] : T;
 
 // Extracts out the element type.
 type Str = Flatten<string[]>;
-     ^?
+//   ^?
 
 // Leaves the type alone.
 type Num = Flatten<number>;
-     ^?
+//   ^?
 ```
 
 When `Flatten` is given an array type, it uses an indexed access with `number` to fetch out `string[]`'s element type.
@@ -194,17 +204,16 @@ We can write some useful helper type aliases using the `infer` keyword.
 For example, for simple cases, we can extract the return type out from function types:
 
 ```ts twoslash
-type GetReturnType<T> =
-    T extends (...args: never[]) => infer U ? U : never;
+type GetReturnType<T> = T extends (...args: never[]) => infer U ? U : never;
 
 type Foo = GetReturnType<() => number>;
-     ^?
+//   ^?
 
 type Bar = GetReturnType<(x: string) => string>;
-     ^?
+//   ^?
 
 type Baz = GetReturnType<(a: boolean, b: boolean) => boolean[]>;
-     ^?
+//   ^?
 ```
 
 ## Distributive Conditional Types
@@ -222,7 +231,7 @@ If we plug a union type into `Foo`, then the conditional type will be applied to
 type Foo<T> = T extends any ? T[] : never;
 
 type Bar = Foo<string | number>;
-     ^?
+//   ^?
 ```
 
 What happens here is that `Foo` distributes on
@@ -258,5 +267,5 @@ type Foo<T> = [T] extends [any] ? T[] : never;
 
 // 'Bar' is no longer a union.
 type Bar = Foo<string | number>;
-     ^?
+//   ^?
 ```

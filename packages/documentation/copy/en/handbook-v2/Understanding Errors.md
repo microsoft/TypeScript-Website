@@ -40,6 +40,7 @@ Let's work through some examples to see how they work in practice.
 Here's an example that produces an error message longer than the example itself:
 
 ```ts twoslash
+// @errors: 2322
 let a: { m: number[] };
 let b = { m: [""] };
 a = b;
@@ -56,6 +57,7 @@ Its logic for issuing an error follows from its logic for determining if the ass
 ### Extra Properties
 
 ```ts twoslash
+// @errors: 2322
 type A = { m: number };
 const a: A = { m: 10, n: "" };
 ```
@@ -63,6 +65,7 @@ const a: A = { m: 10, n: "" };
 ### Union Assignments
 
 ```ts twoslash
+// @errors: 2322
 type Thing = "none" | { name: string };
 
 const a: Thing = { name: 0 };

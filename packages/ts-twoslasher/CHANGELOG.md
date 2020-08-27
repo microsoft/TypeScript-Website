@@ -1,3 +1,7 @@
+## 1.0.2
+
+- The `// @x`, `// ^?` and `// ^^^` comments ignore preceding whitespace
+
 ## 1.0.1
 
 - Adds an option for declaring the project's root to overlay the vfs over: `vfsRoot`

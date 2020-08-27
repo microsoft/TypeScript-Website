@@ -67,7 +67,7 @@ When you declare a variable using `const`, `var`, or `let`, you can optionally a
 
 ```ts twoslash
 let myName: string = "Alice";
-          ^^^^^^^^ Type annotation
+//        ^^^^^^^^ Type annotation
 ```
 
 > TypeScript doesn't use "types on the left"-style declarations like `int x = 0;`
@@ -98,14 +98,15 @@ Parameter type annotations go after the parameter name:
 ```ts twoslash
 // Parameter type annotation
 function greet(name: string) {
-                   ^^^^^^^^
-    console.log("Hello, " + name.toUpperCase() + "!!");
+  //                 ^^^^^^^^
+  console.log("Hello, " + name.toUpperCase() + "!!");
 }
 ```
 
 When a parameter has a type annotation, calls to that function will be validated:
 
 ```ts twoslash
+// @errors: 2345
 declare function greet(name: string): void;
 // ---cut---
 // Would be a runtime error if executed!
@@ -119,8 +120,8 @@ Return type annotations appear after the parameter list:
 
 ```ts twoslash
 function getFavoriteNumber(): number {
-                            ^^^^^^^^
-    return 26;
+  //                        ^^^^^^^^
+  return 26;
 }
 ```
 
@@ -136,6 +137,7 @@ When a function expression appears in a place where TypeScript can determine how
 Here's an example:
 
 ```ts twoslash
+// @errors: 2551
 // No type annotations here, but TypeScript can spot the bug
 const names = ["Alice", "Bob", "Eve"];
 names.forEach(function (s) {
@@ -159,8 +161,8 @@ For example, here's a function that takes a point-like object:
 
 ```ts twoslash
 // The parameter's type annotation is an object type
-function printCoord(pt: { x: number, y: number }) {
-                        ^^^^^^^^^^^^^^^^^^^^^^^^
+function printCoord(pt: { x: number; y: number }) {
+  //                      ^^^^^^^^^^^^^^^^^^^^^^^^
   console.log("The coordinate's x value is " + pt.x);
   console.log("The coordinate's y value is " + pt.y);
 }
@@ -191,6 +193,7 @@ In JavaScript, if you access a property that doesn't exist, you'll get the value
 Because of this, when you _read_ from an optional property, you'll have to check for `undefined` before using it.
 
 ```ts twoslash
+// @errors: 2532
 function printName(obj: { first: string; last?: string }) {
   // Error - might crash if 'obj.last' wasn't provided!
   console.log(obj.last.toUpperCase());
@@ -215,6 +218,7 @@ We refer to each of these types as the union's _members_.
 Let's write a function that can operate on strings or numbers:
 
 ```ts twoslash
+// @errors: 2322
 function printId(id: number | string) {
   console.log("Your ID is: " + id);
 }
@@ -235,6 +239,7 @@ TypeScript will only allow you to do things with the union if that thing is vali
 For example, if you have the union `string | number`, you can't use methods that are only available on `string`:
 
 ```ts twoslash
+// @errors: 2339
 function printId(id: number | string) {
   console.log(id.toUpperCase());
 }
@@ -396,6 +401,7 @@ TypeScript only allows type assertions which convert to a _more specific_ or _le
 This rule prevents "impossible" coercions like:
 
 ```ts twoslash
+// @errors: 2352
 const x = "hello" as number;
 ```
 
@@ -416,6 +422,7 @@ In addition to the general types `string` and `number`, we can refer to _specifi
 By themselves, literal types aren't very valuable:
 
 ```ts twoslash
+// @errors: 2322
 let x: "hello" = "hello";
 // OK
 x = "hello";
@@ -430,6 +437,7 @@ It's not much use to have a variable that can only have one value!
 But by _combining_ literals into unions, you can express a much more useful thing - for example, functions that only accept a certain set of known values:
 
 ```ts twoslash
+// @errors: 2345
 function printText(s: string, alignment: "left" | "right" | "center") {
   // ...
 }
@@ -448,6 +456,7 @@ function compare(a: string, b: string): -1 | 0 | 1 {
 Of course, you can combine these with non-literal types:
 
 ```ts twoslash
+// @errors: 2345
 interface Options {
   width: number;
 }
@@ -483,6 +492,7 @@ Another way of saying this is that `obj.counter` must have the type `number`, no
 The same applies to strings:
 
 ```ts twoslash
+// @errors: 2345
 declare function handleRequest(url: string, method: "GET" | "POST"): void;
 // ---cut---
 const req = { url: "https://example.com", method: "GET" };

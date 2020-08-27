@@ -19,6 +19,7 @@ If `padding` is a `string`, it should just prepend `padding` to `input`.
 Let's try to implement the logic for when `padLeft` is passed a `number` for `padding`.
 
 ```ts twoslash
+// @errors: 2365
 function padLeft(padding: number | string, input: string) {
   return new Array(padding + 1).join(" ") + input;
 }
@@ -51,12 +52,12 @@ In many editors we can observe these types as they change, and we'll even do so 
 
 ```ts twoslash
 function padLeft(padding: number | string, input: string) {
-    if (typeof padding === "number") {
-        return new Array(padding + 1).join(" ") + input;
-                         ^?
-    }
-    return padding + input;
-           ^?
+  if (typeof padding === "number") {
+    return new Array(padding + 1).join(" ") + input;
+    //               ^?
+  }
+  return padding + input;
+  //     ^?
 }
 ```
 
@@ -84,6 +85,7 @@ For example, notice that in the list above, `typeof` doesn't return the string `
 Check out the following example:
 
 ```ts twoslash
+// @errors: 2531
 function printAll(strs: string | string[] | null) {
   if (typeof strs === "object") {
     for (const s of strs) {
@@ -212,20 +214,19 @@ TypeScript also uses `switch` statements and equality checks like `===`, `!==`, 
 For example:
 
 ```ts twoslash
-function foo(x: string | number, y: string | boolean) {
-    if (x === y) {
-        // We can now call any 'string' method on 'x' or 'y'.
-        x.toUpperCase();
-        ^?
-        y.toLowerCase();
-        ^?
-    }
-    else {
-        console.log(x);
-                    ^?
-        console.log(y);
-                    ^?
-    }
+function foo(left: string | number, right: string | boolean) {
+  if (left === right) {
+    // We can now call any 'string' method on 'x' or 'y'.
+    left.toUpperCase();
+    // ^?
+    right.toLowerCase();
+    // ^?
+  } else {
+    console.log(left);
+    //          ^?
+    console.log(right);
+    //          ^?
+  }
 }
 ```
 
@@ -238,18 +239,17 @@ Instead we could have done a specific check to block out `null`s, and TypeScript
 
 ```ts twoslash
 function printAll(strs: string | string[] | null) {
-    if (strs !== null) {
-        if (typeof strs === "object") {
-            for (const s of strs) {
-                            ^?
-                console.log(s);
-            }
-        }
-        else if (typeof strs === "string") {
-            console.log(strs);
-                        ^?
-        }
+  if (strs !== null) {
+    if (typeof strs === "object") {
+      for (const s of strs) {
+        //           ^?
+        console.log(s);
+      }
+    } else if (typeof strs === "string") {
+      console.log(strs);
+      //          ^?
     }
+  }
 }
 ```
 
@@ -259,18 +259,18 @@ The same applies to `== undefined`: it checks whether a value is either `null` o
 
 ```ts twoslash
 interface Container {
-    value: number | null | undefined
+  value: number | null | undefined;
 }
 
 function multiplyValue(container: Container, factor: number) {
-    // Remove both 'null' and 'undefined' from the type.
-    if (container.value != null) {
-        console.log(container.value);
-                              ^?
+  // Remove both 'null' and 'undefined' from the type.
+  if (container.value != null) {
+    console.log(container.value);
+    //                    ^?
 
-        // Now we can safely multiply 'container.value'.
-        container.value *= factor;
-    }
+    // Now we can safely multiply 'container.value'.
+    container.value *= factor;
+  }
 }
 ```
 
@@ -283,14 +283,13 @@ As you might have guessed, `instanceof` is also a type guard, and TypeScript nar
 
 ```ts twoslash
 function logValue(x: Date | string) {
-    if (x instanceof Date) {
-        console.log(x.toUTCString());
-                    ^?
-    }
-    else {
-        console.log(x.toUpperCase());
-                    ^?
-    }
+  if (x instanceof Date) {
+    console.log(x.toUTCString());
+    //          ^?
+  } else {
+    console.log(x.toUpperCase());
+    //          ^?
+  }
 }
 ```
 
@@ -300,15 +299,15 @@ As we mentioned earlier, when we assign to any variable, TypeScript looks at the
 
 ```ts twoslash
 let x = Math.random() < 0.5 ? 10 : "hello world!";
-    ^?
+//  ^?
 x = 1;
 
 console.log(x);
-            ^?
+//          ^?
 x = "goodbye!";
 
 console.log(x);
-            ^?
+//          ^?
 ```
 
 Notice that each of these assignments is valid.
@@ -318,16 +317,17 @@ This is because the _declared type_ of `x` - the type that `x` started with - is
 If we'd assigned a `boolean` to `x`, we'd have seen an error since that wasn't part of the declared type.
 
 ```ts twoslash
+// @errors: 2322
 let x = Math.random() < 0.5 ? 10 : "hello world!";
-    ^?
+//  ^?
 x = 1;
 
 console.log(x);
-            ^?
+//          ^?
 x = true;
 
 console.log(x);
-            ^?
+//          ^?
 ```
 
 ## Control flow analysis
@@ -354,26 +354,25 @@ When a variable is analyzed, control flow can split off and re-merge over and ov
 
 ```ts twoslash
 function foo() {
-    let x: string | number | boolean;
+  let x: string | number | boolean;
 
-    x = Math.random() < 0.5;
+  x = Math.random() < 0.5;
 
+  console.log(x);
+  //          ^?
+
+  if (Math.random() < 0.5) {
+    x = "hello";
     console.log(x);
-                ^?
+    //          ^?
+  } else {
+    x = 100;
+    console.log(x);
+    //          ^?
+  }
 
-    if (Math.random() < 0.5) {
-        x = "hello";
-        console.log(x);
-                    ^?
-    }
-    else {
-        x = 100;
-        console.log(x);
-                    ^?
-    }
-
-    return x;
-           ^?
+  return x;
+  //     ^?
 }
 ```
 
@@ -399,6 +398,7 @@ Notice we're using a union of string literal types: `"circle"` and `"square"` to
 By using `"circle" | "square"` instead of `string`, we can avoid misspelling issues.
 
 ```ts twoslash
+// @errors: 2367
 interface Shape {
   kind: "circle" | "square";
   radius?: number;
@@ -418,6 +418,7 @@ We can write a `getArea` function that applies the right logic based on if it's 
 We'll first try dealing with circles.
 
 ```ts twoslash
+// @errors: 2532
 interface Shape {
   kind: "circle" | "square";
   radius?: number;
@@ -436,6 +437,7 @@ Under `strictNullChecks` that gives us an error - which is appropriate since `ra
 But what if we perform the appropriate checks on the `kind` property?
 
 ```ts twoslash
+// @errors: 2532
 interface Shape {
   kind: "circle" | "square";
   radius?: number;
@@ -497,6 +499,7 @@ Here, we've properly separated `Shape` out into two types with different values 
 Let's see what happens here when we try to access the `radius` of a `Shape`.
 
 ```ts twoslash
+// @errors: 2339
 interface Circle {
   kind: "circle";
   radius: number;
@@ -524,23 +527,23 @@ But what if we tried checking the `kind` property again?
 
 ```ts twoslash
 interface Circle {
-    kind: "circle";
-    radius: number;
+  kind: "circle";
+  radius: number;
 }
 
 interface Square {
-    kind: "square";
-    sideLength: number;
+  kind: "square";
+  sideLength: number;
 }
 
 type Shape = Circle | Square;
 
 // ---cut---
 function getArea(shape: Shape) {
-    if (shape.kind === "circle") {
-        return Math.PI * shape.radius ** 2;
-                         ^?
-    }
+  if (shape.kind === "circle") {
+    return Math.PI * shape.radius ** 2;
+    //               ^?
+  }
 }
 ```
 
@@ -556,27 +559,27 @@ Now we can try to write our complete `getArea` without any pesky `!` non-null as
 
 ```ts twoslash
 interface Circle {
-    kind: "circle";
-    radius: number;
+  kind: "circle";
+  radius: number;
 }
 
 interface Square {
-    kind: "square";
-    sideLength: number;
+  kind: "square";
+  sideLength: number;
 }
 
 type Shape = Circle | Square;
 
 // ---cut---
 function getArea(shape: Shape) {
-    switch (shape.kind) {
-        case "circle":
-            return Math.PI * shape.radius ** 2;
-                             ^?
-        case "square":
-            return shape.sideLength ** 2;
-                   ^?
-    }
+  switch (shape.kind) {
+    case "circle":
+      return Math.PI * shape.radius ** 2;
+    //                 ^?
+    case "square":
+      return shape.sideLength ** 2;
+    //       ^?
+  }
 }
 ```
 

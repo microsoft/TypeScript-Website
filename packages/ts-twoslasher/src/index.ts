@@ -98,11 +98,11 @@ function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosit
     if (!line.includes("//")) {
       moveForward()
     } else {
-      const highlightMatch = /^\/\/\s*\^+( .+)?$/.exec(line)
-      const queryMatch = /^\/\/\s*\^\?\s*$/.exec(line)
+      const highlightMatch = /^\s*\/\/\s*\^+( .+)?$/.exec(line)
+      const queryMatch = /^\s*\/\/\s*\^\?\s*$/.exec(line)
       // https://regex101.com/r/2yDsRk/1
       const removePrettierIgnoreMatch = /^\s*\/\/ prettier-ignore$/.exec(line)
-      const completionsQuery = /^\/\/\s*\^\|$/.exec(line)
+      const completionsQuery = /^\s*\/\/\s*\^\|$/.exec(line)
 
       if (queryMatch !== null) {
         const start = line.indexOf("^")

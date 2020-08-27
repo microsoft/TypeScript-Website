@@ -16,6 +16,7 @@ Where do these types come from?
 Let's say you write some code like this:
 
 ```ts twoslash
+// @errors: 2339
 const k = Math.max(5, 6);
 const j = Math.mix(7, 8);
 ```

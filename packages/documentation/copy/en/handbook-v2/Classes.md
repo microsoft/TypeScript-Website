@@ -55,6 +55,7 @@ console.log(`${pt.x}, ${pt.y}`);
 Just like with `const`, `let`, and `var`, the initializer of a class property will be used to infer its type:
 
 ```ts twoslash
+// @errors: 2322
 class Point {
   x = 0;
   y = 0;
@@ -69,6 +70,7 @@ pt.x = "0";
 The `strictPropertyInitialization` setting controls whether class fields need to be initialized in the constructor.
 
 ```ts twoslash
+// @errors: 2564
 class BadGreeter {
   name: string;
 }
@@ -102,6 +104,7 @@ Fields may be prefixed with the `readonly` modifier.
 This prevents assignments to the field outside of the constructor.
 
 ```ts twoslash
+// @errors: 2540 2540
 class Greeter {
   readonly name: string = "world";
 
@@ -160,6 +163,7 @@ There are just a few differences between class constructor signatures and functi
 Just as in JavaScript, if you have a base class, you'll need to call `super();` in your constructor body before using any `this.` members:
 
 ```ts twoslash
+// @errors: 17009
 class Base {
   k = 4;
 }
@@ -200,6 +204,7 @@ Note that inside a method body, it is still mandatory to access fields and other
 An unqualified name in a method body will always refer to something in the enclosing scope:
 
 ```ts twoslash
+// @errors: 2322
 let x: number = 0;
 
 class C {
@@ -268,6 +273,7 @@ You can use an `implements` clause to check that a class satisfies a particular 
 An error will be issued if a class fails to correctly implement it:
 
 ```ts twoslash
+// @errors: 2420
 interface Pingable {
   ping(): void;
 }
@@ -294,15 +300,16 @@ It doesn't change the type of the class or its methods _at all_.
 A common source of error is to assume that an `implements` clause will change the class type - it doesn't!
 
 ```ts twoslash
-// @noImplicitAny: false
+// @errors: 7006
 interface Checkable {
   check(name: string): boolean;
 }
+
 class NameChecker implements Checkable {
   check(s) {
     // Notice no error here
     return s.toLowercse() === "ok";
-           ^?
+    //         ^?
   }
 }
 ```
@@ -313,6 +320,7 @@ It is not - `implements` clauses don't change how the class body is checked or i
 Similarly, implementing an interface with an optional property doesn't create that property:
 
 ```ts twoslash
+// @errors: 2339
 interface A {
   x: number;
   y?: number;
@@ -407,6 +415,7 @@ b.greet();
 What if `Derived` didn't follow `Base`'s contract?
 
 ```ts twoslash
+// @errors: 2416
 class Base {
   greet() {
     console.log("Hello, world!");
@@ -545,6 +554,7 @@ Because `public` is already the default visibility modifier, you don't ever _nee
 `protected` members are only visible to subclasses of the class they're declared in.
 
 ```ts twoslash
+// @errors: 2445
 class Greeter {
   public greet() {
     console.log("Hello, " + this.getName());
@@ -558,7 +568,7 @@ class SpecialGreeter extends Greeter {
   public howdy() {
     // OK to access protected member here
     console.log("Howdy, " + this.getName());
-                            ^^^^^^^^^^^^^^
+    //                          ^^^^^^^^^^^^^^
   }
 }
 const g = new SpecialGreeter();
@@ -591,6 +601,7 @@ The main thing to note here is that in the derived class, we need to be careful 
 Different OOP languages disagree about whether it's legal to access a `protected` member through a base class reference:
 
 ```ts twoslash
+// @errors: 2446
 class Base {
   protected x: number = 1;
 }
@@ -620,6 +631,7 @@ See also [Why Can’t I Access A Protected Member From A Derived Class?](https:/
 `private` is like `protected`, but doesn't allow access to the member even from subclasses:
 
 ```ts twoslash
+// @errors: 2341
 class Base {
   private x = 0;
 }
@@ -629,6 +641,7 @@ console.log(b.x);
 ```
 
 ```ts twoslash
+// @errors: 2341
 class Base {
   private x = 0;
 }
@@ -644,6 +657,7 @@ class Derived extends Base {
 Because `private` members aren't visible to derived classes, a derived class can't increase its visibility:
 
 ```ts twoslash
+// @errors: 2415
 class Base {
   private x = 0;
 }
@@ -712,6 +726,7 @@ MyClass.printX();
 Static members can also use the same `public`, `protected`, and `private` visibility modifiers:
 
 ```ts twoslash
+// @errors: 2341
 class MyClass {
   private static x = 0;
 }
@@ -738,6 +753,7 @@ Because classes are themselves functions that can be invoked with `new`, certain
 Function properties like `name`, `length`, and `call` aren't valid to define as `static` members:
 
 ```ts twoslash
+// @errors: 2699
 class S {
   static name = "S!";
 }
@@ -781,7 +797,7 @@ class Box<T> {
 }
 
 const b = new Box("hello!");
-      ^?
+//    ^?
 ```
 
 Classes can use generic constraints and defaults the same way as interfaces.
@@ -791,6 +807,7 @@ Classes can use generic constraints and defaults the same way as interfaces.
 This code isn't legal, and it may not be obvious why:
 
 ```ts twoslash
+// @errors: 2302
 class Box<T> {
   static defaultValue: T;
 }
@@ -882,6 +899,7 @@ TypeScript checks that calling a function with a `this` parameter is done so wit
 Instead of using an arrow function, we can add a `this` parameter to method definitions to statically enforce that the method is called correctly:
 
 ```ts twoslash
+// @errors: 2684
 class MyClass {
   name = "MyClass";
   getName(this: MyClass) {
@@ -908,11 +926,12 @@ This method takes the opposite trade-offs of the arrow function approach:
 In classes, a special type called `this` refers _dynamically_ to the type of the current class.
 Let's see how this is useful:
 
+<!-- prettier-ignore -->
 ```ts twoslash
 class Box {
   contents: string = "";
   set(value: string) {
-   ^?
+//  ^?
     this.contents = value;
     return this;
   }
@@ -939,7 +958,7 @@ class ClearableBox extends Box {
 
 const a = new ClearableBox();
 const b = a.set("hello");
-      ^?
+//    ^?
 ```
 
 You can also use `this` in a parameter type annotation:
@@ -956,6 +975,7 @@ class Box {
 This is different from writing `other: Box` -- if you have a derived class, its `sameAs` method will now only accept other instances of that same derived class:
 
 ```ts twoslash
+// @errors: 2345
 class Box {
   content: string = "";
   sameAs(other: this) {
@@ -979,14 +999,19 @@ These are called _parameter properties_ and are created by prefixing a construct
 The resulting field gets those modifier(s):
 
 ```ts twoslash
+// @errors: 2341
 class A {
-  constructor (public readonly x: number, protected y: number, private z: number) {
+  constructor(
+    public readonly x: number,
+    protected y: number,
+    private z: number
+  ) {
     // No body necessary
   }
 }
 const a = new A(1, 2, 3);
 console.log(a.x);
-              ^?
+//            ^?
 console.log(a.z);
 ```
 
@@ -1003,10 +1028,10 @@ const someClass = class<T> {
   constructor(value: T) {
     this.content = value;
   }
-}
+};
 
 const m = new someClass("Hello, world");
-      ^?
+//    ^?
 ```
 
 ## `abstract` Classes and Members
@@ -1022,6 +1047,7 @@ When a class doesn't have any abstract members, it is said to be _concrete_.
 Let's look at an example
 
 ```ts twoslash
+// @errors: 2511
 abstract class Base {
   abstract getName(): string;
 
@@ -1055,6 +1081,7 @@ d.printName();
 Notice that if we forget to implement the base class's abstract members, we'll get an error:
 
 ```ts twoslash
+// @errors: 2515
 abstract class Base {
   abstract getName(): string;
   printName() {}
@@ -1072,6 +1099,7 @@ Sometimes you want to accept some class constructor function that produces an in
 For example, you might want to write this code:
 
 ```ts twoslash
+// @errors: 2511
 abstract class Base {
   abstract getName(): string;
   printName() {}
@@ -1101,6 +1129,7 @@ greet(Base);
 Instead, you want to write a function that accepts something with a construct signature:
 
 ```ts twoslash
+// @errors: 2345
 abstract class Base {
   abstract getName(): string;
   printName() {}

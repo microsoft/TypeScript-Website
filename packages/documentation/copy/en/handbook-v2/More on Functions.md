@@ -2,7 +2,7 @@
 title: More on Functions
 layout: docs
 permalink: /docs/handbook/2/functions.html
-oneline: "Step one in learning TypeScript: The basics types."
+oneline: "Learn about how Functions work in TypeScript."
 beta: true
 ---
 
@@ -152,6 +152,7 @@ To do this, we need a `length` property that's a number.
 We _constrain_ the type parameter to that type by writing an `extends` clause:
 
 ```ts twoslash
+// @errors: 2345 2322
 function longest<T extends { length: number }>(a: T, b: T) {
   if (a.length >= b.length) {
     return a;
@@ -185,6 +186,7 @@ Finally, just as we'd like, the call to `longest(10, 100)` is rejected because t
 Here's a common error when working with generic constraints:
 
 ```ts twoslash
+// @errors: 2322
 function minimumLength<T extends { length: number }>(
   obj: T,
   minimum: number
@@ -228,6 +230,7 @@ function combine<T>(arr1: T[], arr2: T[]): T[] {
 Normally it would be an error to call this function with mismatched arrays:
 
 ```ts twoslash
+// @errors: 2322
 declare function combine<T>(arr1: T[], arr2: T[]): T[];
 // ---cut---
 const arr = combine([1, 2, 3], ["hello"]);
@@ -374,6 +377,7 @@ function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
 What people usually _intend_ when writing `index?` as an optional parameter is that they want both of these calls to be legal:
 
 ```ts twoslash
+// @errors: 2532
 declare function myForEach(
   arr: any[],
   callback: (arg: any, index?: number) => void
@@ -387,6 +391,7 @@ What this _actually_ means is that _`callback` might get invoked with one argume
 In other words, the function definition says that the implementation might look like this:
 
 ```ts twoslash
+// @errors: 2532
 function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
   for (let i = 0; i < arr.length; i++) {
     // I don't feel like providing the index today
@@ -397,7 +402,9 @@ function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
 
 In turn, TypeScript will enforce this meaning and issue errors that aren't really possible:
 
+<!-- prettier-ignore -->
 ```ts twoslash
+// @errors: 2532
 declare function myForEach(
   arr: any[],
   callback: (arg: any, index?: number) => void
@@ -423,6 +430,7 @@ In TypeScript, we can specify a function that can be called in different ways by
 To do this, write some number of function signatures (usually two or more), followed by the body of the function:
 
 ```ts twoslash
+// @errors: 2575
 function makeDate(timestamp: number): Date;
 function makeDate(m: number, d: number, y: number): Date;
 function makeDate(mOrTimestamp: number, d?: number, y?: number): Date {
@@ -450,6 +458,7 @@ This is a common source of confusion.
 Often people will write code like this and not understand why there is an error:
 
 ```ts twoslash
+// @errors: 2554
 function fn(x: string): void;
 function fn() {
   // ...
@@ -467,6 +476,7 @@ The implementation signature must also be _compatible_ with the overload signatu
 For example, these functions have errors because the implementation signature doesn't match the overloads in a correct way:
 
 ```ts twoslash
+// @errors: 2394
 function fn(x: boolean): void;
 // Argument type isn't right
 function fn(x: string): void;
@@ -474,6 +484,7 @@ function fn(x: boolean) {}
 ```
 
 ```ts twoslash
+// @errors: 2394
 function fn(x: string): string;
 // Return type isn't right
 function fn(x: number): boolean;
@@ -501,6 +512,7 @@ This function is fine; we can invoke it with strings or arrays.
 However, we can't invoke it with a value that might be a string _or_ an array, because TypeScript can only resolve a function call to a single overload:
 
 ```ts twoslash
+// @errors: 2769
 declare function len(s: string): number;
 declare function len(arr: any[]): number;
 // ---cut---
@@ -562,6 +574,7 @@ The `unknown` type represents _any_ value.
 This is similar to the `any` type, but is safer because it's not legal to do anything with an `unknown` value:
 
 ```ts twoslash
+// @errors: 2571
 function f1(a: any) {
   a.b(); // OK
 }
@@ -662,6 +675,7 @@ Note that in general, TypeScript does not assume that arrays are immutable.
 This can lead to some surprising behavior:
 
 ```ts twoslash
+// @errors: 2556
 // Inferred type is number[] -- "an array with zero or more numbers",
 // not specfically two numbers
 const args = [8, 5];

@@ -83,6 +83,7 @@ _Static types systems_ describe the shapes and behaviors of what our values will
 A type-checker like TypeScript uses that information and tells us when things might be going off the rails.
 
 ```ts twoslash
+// @errors: 2349
 let foo = "hello!";
 
 foo();
@@ -112,19 +113,22 @@ Ultimately, a static type system has to make the call over what code should be f
 In TypeScript, the following code produces an error about `location` not being defined:
 
 ```ts twoslash
+// @errors: 2339
 let foo = {
   name: "Daniel",
   age: 26,
 };
 
-foo.location; // returns undefined
+foo.location;
 ```
 
 While sometimes that implies a trade-off in what you can express, the intent is to catch legitimate bugs in our programs.
 And TypeScript catches _a lot_ of legitimate bugs.
+
 For example: typos,
 
 ```ts twoslash
+// @noErrors
 let someString = "Hello World!";
 
 // How quickly can you spot the typos?
@@ -138,6 +142,8 @@ someString.toLocaleLowerCase();
 uncalled functions,
 
 ```ts twoslash
+// @noUnusedLocals
+// @errors: 2365
 function flipCoin() {
   return Math.random < 0.5;
 }
@@ -146,6 +152,7 @@ function flipCoin() {
 or basic logic errors.
 
 ```ts twoslash
+// @errors: 2367
 const value = Math.random() < 0.5 ? "a" : "b";
 if (value !== "a") {
   // ...
@@ -226,7 +233,7 @@ What about if we _did_ introduce a type-checking error?
 Let's rewrite `hello.ts`:
 
 ```ts twoslash
-// @noImplicitAny: false
+// @noErrors
 // This is an industrial-grade general-purpose greeter function:
 function greet(person, date) {
   console.log(`Hello ${person}, today is ${date}!`);
@@ -287,6 +294,7 @@ With this, TypeScript can tell us about other cases where we might have been cal
 For example...
 
 ```ts twoslash
+// @errors: 2345
 function greet(person: string, date: Date) {
   console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
@@ -304,11 +312,11 @@ Anyway, we can quickly fix up the error:
 
 ```ts twoslash
 function greet(person: string, date: Date) {
-    console.log(`Hello ${person}, today is ${date.toDateString()}!`);
+  console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
 
 greet("Maddison", new Date());
-                  ^^^^^^^^^^
+//                ^^^^^^^^^^
 ```
 
 Keep in mind, we don't always have to write explicit type annotations.
@@ -316,7 +324,7 @@ In many cases, TypeScript can even just _infer_ (or "figure out") the types for 
 
 ```ts twoslash
 let foo = "hello there!";
-    ^?
+//  ^?
 ```
 
 Even though we didn't tell TypeScript that `foo` had the type `string` it was able to figure that out.
@@ -326,10 +334,12 @@ That's a feature, and it's best not to add annotations when the type system woul
 
 Let's take a look at what happens when we compile with `tsc`:
 
-```js
-function greet(person, date) {
-  console.log("Hello " + person + ", today is " + date.toDateString() + "!");
+```ts twoslash
+// @showEmit
+function greet(person: string, date: Date) {
+  console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
+
 greet("Maddison", new Date());
 ```
 

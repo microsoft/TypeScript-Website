@@ -27,7 +27,7 @@ TypeScript adds a `typeof` operator you can use in a _type_ context to refer to 
 ```ts twoslash
 let s = "hello";
 let n: typeof s;
-    ^?
+//  ^?
 ```
 
 This isn't very useful for basic types, but combined with other type operators, you can use `typeof` to conveniently express many patterns.
@@ -37,12 +37,13 @@ It takes a _function type_ and produces its return type:
 ```ts twoslash
 type Predicate = (x: unknown) => boolean;
 type K = ReturnType<Predicate>;
-     ^?
+//   ^?
 ```
 
 If we try to use `ReturnType` on a function name, we see an instructive error:
 
 ```ts twoslash
+// @errors: 2749
 function f() {
   return { x: 10, y: 3 };
 }
@@ -54,10 +55,10 @@ To refer to the _type_ that the _value `f`_ has, we use `typeof`:
 
 ```ts twoslash
 function f() {
-    return { x: 10, y: 3 };
+  return { x: 10, y: 3 };
 }
 type P = ReturnType<typeof f>;
-     ^?
+//   ^?
 ```
 
 ### Limitations
@@ -67,6 +68,7 @@ Specifically, it's only legal to use `typeof` on identifiers (i.e. variable name
 This helps avoid the confusing trap of writing code you think is executing, but isn't:
 
 ```ts twoslash
+// @errors: 1005
 declare const msgbox: any;
 type msgbox = any;
 // ---cut---
@@ -79,9 +81,9 @@ let x : msgbox("Are you sure you want to continue?");
 The `keyof` operator takes an object type and produces a string or numeric literal union of its keys:
 
 ```ts twoslash
-type Point = { x: number, y: number };
+type Point = { x: number; y: number };
 type P = keyof Point;
-     ^?
+//   ^?
 ```
 
 If the type has a `string` or `number` index signature, `keyof` will return those types instead:
@@ -89,11 +91,11 @@ If the type has a `string` or `number` index signature, `keyof` will return thos
 ```ts twoslash
 type Arrayish = { [n: number]: unknown };
 type A = keyof Arrayish;
-     ^?
+//   ^?
 
 type Mapish = { [k: string]: boolean };
 type M = keyof Mapish;
-     ^?
+//   ^?
 ```
 
 Note that in this example, `M` is `string | number` -- this is because JavaScript object keys are always coerced to a string, so `obj[0]` is always the same as `obj["0"]`.
@@ -108,30 +110,31 @@ What if we want to reference the type of a property of a type instead?
 We can use an _indexed access type_ to look up a specific property on another type:
 
 ```ts twoslash
-type Person = { age: number, name: string, alive: boolean };
+type Person = { age: number; name: string; alive: boolean };
 type A = Person["age"];
-     ^?
+//   ^?
 ```
 
 The indexing type is itself a type, so we can use unions, `keyof`, or other types entirely:
 
 ```ts twoslash
-type Person = { age: number, name: string, alive: boolean };
+type Person = { age: number; name: string; alive: boolean };
 // ---cut---
 type I1 = Person["age" | "name"];
-     ^?
+//   ^?
 
 type I2 = Person[keyof Person];
-     ^?
+//   ^?
 
 type AliveOrName = "alive" | "name";
 type I3 = Person[AliveOrName];
-     ^?
+//   ^?
 ```
 
 You'll even see an error if you try to index a property that doesn't exist:
 
 ```ts twoslash
+// @errors: 2339
 type Person = { age: number; name: string; alive: boolean };
 // ---cut---
 type I1 = Person["alve"];
@@ -142,11 +145,11 @@ We can combine this with `typeof` to conveniently capture the element type of an
 
 ```ts twoslash
 const MyArray = [
-    { name: "Alice", age: 15 },
-    { name: "Bob", age: 23 },
-    { name: "Eve", age: 38 }
+  { name: "Alice", age: 15 },
+  { name: "Bob", age: 23 },
+  { name: "Eve", age: 38 },
 ];
 
-type T = (typeof MyArray)[number];
-     ^?
+type T = typeof MyArray[number];
+//   ^?
 ```
