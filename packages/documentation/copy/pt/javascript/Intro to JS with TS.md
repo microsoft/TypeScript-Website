@@ -19,7 +19,7 @@ Cada etapa representa um movimento em direção a um sistema de tipo mais seguro
 ## TypeScript com JavaScript
 
 Isso ocorre quando você usa um editor que usa TypeScript para fornecer ferramentas como autocompletar, pular para o símbolo e ferramentas de refatoração como renomear.
-A [home](/) possui uma lista de editores que possuem plugins TypeScript.
+A [página inicial](/) possui uma lista de editores que possuem plugins TypeScript.
 
 ## Fornecimento de dicas de tipo em JS via JSDoc
 
