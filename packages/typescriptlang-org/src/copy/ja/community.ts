@@ -1,28 +1,28 @@
 export const comCopy = {
-  com_layout_title: "How to set up TypeScript",
+  com_layout_title: "TypeScriptのセットアップ方法",
   com_layout_description:
-    "Connect with other TypeScripters online and offline.",
+    "TypeScriptユーザーとオンライン、オフラインでつながる",
   com_headline: "Connect with us",
-  com_connect_online: "Online",
+  com_connect_online: "オンライン",
   com_connect_online_description:
-    " Tell us what’s working well, what you want to see added or improved, and find out about new updates.",
+    "うまくいっていること、新機能や改善点を私達に教えてください。そして、新しいアップデートを見つけましょう。",
   com_online_stack_overflow_desc:
-    "Engage with your peers and ask questions about TypeScript using the tag 'typescript'",
+    "'typescript'タグを使って仲間とつながったり、TypeScriptについての質問をしましょう",
   com_online_stack_overflow_tag: "",
-  com_online_discord_header: "Chat",
+  com_online_discord_header: "チャット",
   com_online_discord_desc:
-    "Chat with other TypeScript users in the TypeScript Community Chat.",
+    "TypeScriptコミュニティのチャットで、他のTypeScriptユーザーとやり取りをしましょう",
   com_online_github_desc:
-    "Found a bug, or want to give us constructive feedback?",
-  com_online_github_href: "Tell us on GitHub",
-  com_online_twitter_desc: "Stay up to date. Follow us on Twitter",
+    "バグや、フィードバックの報告は",
+  com_online_github_href: "GitHubで伝えましょう",
+  com_online_twitter_desc: "最新情報はTwitterでフォロー",
   com_online_blog_desc:
-    "Learn about the latest TypeScript developments via our",
-  com_online_typed_desc: "TypeScript definition files",
-  com_online_typed_href: "Browse the thousands of",
+    "最新のTypeScriptの開発状況は",
+  com_online_typed_desc: "Defenitely Typedで",
+  com_online_typed_href: "多くのライブラリやフレームワーク",
   com_online_typed_available_for:
-    "available for common libraries and frameworks.",
-  com_person: "Connect in person",
-  com_conferences: "Conferences",
-  com_conferences_alt_img: "logo of ",
+    "の型定義を利用できます",
+  com_person: "人とつながる",
+  com_conferences: "カンファレンス",
+  com_conferences_alt_img: "ロゴ ",
 }
