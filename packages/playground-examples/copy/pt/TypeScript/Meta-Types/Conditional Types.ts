@@ -1,18 +1,18 @@
 // Tipos Condicionais fornecem uma maneira simples de adicionar
-// lógica no sistema de tipos do Typescript. Esse é de fato um recurso
-// avançado, e é bastante possível que você não precise utilizá-lo
+// lógica no sistema de tipos do Typescript. Esse é um recurso
+// avançado, e é muito possível que você não precise utilizá-lo
 // no seu código do dia a dia.
 
-// Um tipo condicional se parece como:
+// Um tipo condicional se parece com:
 //
 //   A extends B ? C : D
 //
-// Onde a condição é se um tipo se extende a uma expressão,
+// Onde a condição é: se um tipo se extende a uma expressão,
 // e que tipo deveria ser retornado.
 
 // Vamos passar por alguns exemplos, por questões de brevidade
-// usaremos apenas uma letra para tipos genéricos. Isso é opcional
-// mas nos restringindo à 60 caracteres fica difícil caber na tela.
+// usaremos apenas uma letra para tipos genéricos. Isso é opcional,
+// mas nos restringimos à 60 caracteres para caber na tela.
 
 type Gato = { miau: true };
 type Cachorro = { latido: true };
@@ -24,7 +24,7 @@ type Lobo = { latido: true; uivos: true };
 
 type ExtrairLatidos<A> = A extends { latido: true } ? A : never;
 
-// Assim podemos criar tipos envolvidos pelo ExtrairLatido:
+// Assim podemos criar tipos envolvidos pelo ExtrairLatidos:
 
 // Um gato não late, então iremos retornar never
 type GatoNever = ExtrairLatidos<Gato>;
@@ -54,10 +54,10 @@ type Latido = ExtrairLatidos<Animais>;
 // Tipos condicionais diferidos
 
 // Tipos condicionais podem ser usados para diminuir suas APIs
-// na qual podem retornar diferentes tipos dependendo dos inputs.
+// que podem retornar diferentes tipos dependendo dos inputs.
 
-// Por exemplo essa função na qual pode retornar tanto
-// uma string quanto um number dependendo do boolean passado.
+// Por exemplo, essa função pode retornar tanto uma string
+// quanto um number dependendo do boolean passado.
 
 declare function pegarID<T extends boolean>(legal: T): T extends true ? string : number;
 
@@ -71,10 +71,10 @@ let stringOuNumber = pegarID(Math.random() < 0.5);
 // Contudo, você pode usar tipos condicionais em funções
 // onde o tipo não é conhecido. Isso é chamado tipo condicional diferido.
 
-// O mesmo que o nosso ExtrairLatido acima, mas como uma função
+// O mesmo que o nosso ExtrairLatidos acima, mas como uma função
 declare function extrairMiado<T>(x: T): T extends { miau: true } ? T : undefined;
 
-// Existe uma ferramenta extra útil dentro dos tipos condicionais, na qual
+// Existe uma ferramenta muito útil dentro dos tipos condicionais, na qual
 // é possível especificamente dizer ao TypeScript que ele deve inferir o tipo
 // quando diferido. Essa é a palavra chave 'infer'.
 

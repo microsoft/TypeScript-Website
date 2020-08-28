@@ -1,8 +1,8 @@
 // Unknown
 
-// Unknown é um daqueles tipos que assim que é entendio,
-// você acha muitos casos de uso. Ele age como um irmão para o tipo any.
-// Onde any permite ambiguidade - unkown requer especifidades.
+// Unknown é um daqueles tipos que, assim que você entende,
+// acha muitos casos de uso. Ele age como um irmão para o tipo any.
+// any permite ambiguidade - unknown requer especificidades.
 
 // Um bom exemplo poderia envolver um JSON parser. Dados JSON podem vir
 // de diferentes formas e o criador da função que analisa o JSON não
@@ -33,13 +33,13 @@ type Usuario = { nome: string };
 const minhaContaDeUsuario = transformadorJsonUnkown(`{ "nome": "Samuel" }`) as Usuario;
 minhaContaDeUsuario.nome;
 
-// Unknown é uma boa ferramenta, para entende-lo ainda mais leia:
+// Unknown é uma boa ferramenta, para entendê-lo ainda mais leia:
 // https://mariusschulz.com/blog/the-unknown-type-in-typescript
 // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type
 
 // Never
 
-// Porque o Typescript suporta análise de fluxo do código, a linguagem
+// Como o Typescript suporta análise de fluxo do código, a linguagem
 // precisa ser capaz de representar quando lógicamente o código não pode
 // acontecer. Por exemplo, essa função não pode retornar:
 
@@ -55,7 +55,7 @@ const nuncaRetorna = () => {
 const meuValor = nuncaRetorna();
 
 // Tendo uma função que retorna never pode ser útil quando lidamos com
-// a imprevisiblidade do tempo de execução do JavaScript e os
+// a imprevisiblidade do runtime JavaScript e os
 // consumidores da API que podem não estar usando tipos:
 
 const validarUsuario = (usuario: Usuario) => {
@@ -70,7 +70,7 @@ const validarUsuario = (usuario: Usuario) => {
   return nuncaRetorna();
 };
 
-// O estado da definição de tipos indicam que um usuário deve ser
+// O estado da definição de tipos indica que um usuário deve ser
 // passado, mas existem muitas válvulas de escape no JavaScript
 // por meio das quais você não pode garantir isso.
 
@@ -116,9 +116,9 @@ const nomeDaFlorEmLatim = (flor: Flor) => {
 
 // O never é removido automaticamente do tipo union.
 
-type NeverÉRemovido = string | never | number;
+type NeverERemovido = string | never | number;
 
-// Se você olhar no tipo para NeverÉRemovido, verá que
+// Se você olhar no tipo para NeverERemovido, verá que
 // é string | number. Isso é porque never nunca deve acontecer em
 // tempo de execução, já que você não pode atribuir a ele.
 
