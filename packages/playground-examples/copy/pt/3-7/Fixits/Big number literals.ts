@@ -4,14 +4,14 @@
 // número que você pode representar enquanto
 // você está escrevendo em Javascript?
 
-const maxHighValue = 9007199254740991;
-const maxLowValue = -9007199254740991;
+const valorMaximo = 9007199254740991;
+const valorMinimo = -9007199254740991;
 
 // Se você ultrapassar um ou mais desses números
 // então você entrará em um território perigoso
 
-const oneOverMax = 9007199254740992;
-const oneBelowMin = -9007199254740992;
+const umAcimaDoMaximo = 9007199254740992;
+const umAbaixoDoMinimo = -9007199254740992;
 
 // A solução para lidar com números desse tamanho
 // é converter esses números em BigInts ao invés
