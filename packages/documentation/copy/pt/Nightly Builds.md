@@ -1,7 +1,7 @@
 ---
 title: Compilação Noturna
 layout: docs
-permalink: /docs/handbook/nightly-builds.html
+permalink: /pt/docs/handbook/nightly-builds.html
 oneline: Como usar uma compilação noturna de TypeScript
 translatable: true
 ---

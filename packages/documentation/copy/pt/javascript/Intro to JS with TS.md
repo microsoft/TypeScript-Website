@@ -1,7 +1,7 @@
 ---
 title: Projetos JS utilizando TypeScript
 layout: docs
-permalink: /docs/handbook/intro-to-js-ts.html
+permalink: /pt/docs/handbook/intro-to-js-ts.html
 oneline: Como adicionar verificação de tipo a arquivos JavaScript usando TypeScript
 translatable: true
 ---
@@ -55,7 +55,7 @@ x = false; // Not OK
 Se você tem muitos arquivos JavaScript aos quais deseja adicionar erros, pode passar a usar um [`jsconfig.json`](/docs/handbook/tsconfig-json.html).
 Você pode pular a verificação de alguns arquivos adicionando um comentário `// @ts-nocheck` aos arquivos.
 
-O TypeScript pode oferecer erros dos quais você discorda; nesses casos, você pode ignorar os erros em linhas específicas adicionando `// @ts-ignore` ou` // @ts-expect-error` na linha anterior.
+O TypeScript pode oferecer erros dos quais você discorda; nesses casos, você pode ignorar os erros em linhas específicas adicionando `// @ts-ignore` ou`// @ts-expect-error` na linha anterior.
 
 ```js twoslash
 // @ts-check

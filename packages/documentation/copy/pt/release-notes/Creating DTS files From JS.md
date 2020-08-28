@@ -1,7 +1,7 @@
 ---
 title: Criação de arquivos .d.ts a partir de arquivos .js
 layout: docs
-permalink: /docs/handbook/declaration-files/dts-from-js.html
+permalink: /pt/docs/handbook/declaration-files/dts-from-js.html
 oneline: "Como adicionar geração d.ts a projetos JavaScript"
 translatable: true
 ---
@@ -69,7 +69,7 @@ Você quer ter certeza de que esses arquivos estão incluídos em seu pacote se 
 TypeScript replica a resolução do nó para módulos em um `package.json`, com uma etapa adicional para localizar arquivos `.d.ts`.
 A grosso modo, a resolução verificará primeiro o campo opcional `"types"`, depois o campo `"main"` e, finalmente, tentará `index.d.ts` na raiz.
 
-| Package.json              | Localização do padrão .d.ts      |
+| Package.json              | Localização do padrão .d.ts    |
 | :------------------------ | :----------------------------- |
 | No "types" field          | checks "main", then index.d.ts |
 | "types": "main.d.ts"      | main.d.ts                      |
@@ -78,10 +78,10 @@ A grosso modo, a resolução verificará primeiro o campo opcional `"types"`, de
 Se estiver ausente, "main" é usado
 
 | Package.json             | Localização padrão do .d.ts |
-| :----------------------- | :------------------------ |
-| Sem campo "main"         | index.d.ts                |
-| "main":"index.js"        | index.d.ts                |
-| "main":"./dist/index.js" | ./dist/index.d.ts         |
+| :----------------------- | :-------------------------- |
+| Sem campo "main"         | index.d.ts                  |
+| "main":"index.js"        | index.d.ts                  |
+| "main":"./dist/index.js" | ./dist/index.d.ts           |
 
 ## Dicas
 

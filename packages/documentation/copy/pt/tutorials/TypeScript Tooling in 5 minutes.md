@@ -1,7 +1,7 @@
 ---
 title: Ferramentas TypeScript em 5 minutos
 layout: docs
-permalink: /docs/handbook/typescript-tooling-in-5-minutes.html
+permalink: /pt/docs/handbook/typescript-tooling-in-5-minutes.html
 oneline: Um tutorial para entender como criar um pequeno site com TypeScript
 translatable: true
 ---
@@ -27,6 +27,7 @@ Para usuários npm:
 ## Construindo seu primeiro arquivo TypeScript
 
 Em seu editor, digite o seguinte código JavaScript em `greeter.ts`:
+
 ```ts twoslash
 // @noImplicitAny: false
 function greeter(person) {
