@@ -3,15 +3,17 @@
 #beta {
   background: repeating-linear-gradient(
     45deg,
-    #bc6060,
-    #bc6060 10px,
-    #984646 10px,
-    #984646 20px
+    #9b9a4e,
+    #9b9a4e 10px,
+    #6e6a33 10px,
+    #6e6a33 20px
   );
   background-color: "#c63131";
   text-align: center;
   color: white;
+  text-shadow: 0px 2px 4px black;
   padding: 4px;
+  padding-bottom: 6px;
 }
 
 #doc-layout {
