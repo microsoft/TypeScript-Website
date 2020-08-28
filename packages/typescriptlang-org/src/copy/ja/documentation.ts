@@ -2,13 +2,13 @@ import { docCopy as enDocCopy } from "../en/documentation"
 
 export const docCopy = {
   ...enDocCopy,
-  doc_layout_title: "The starting point for learning TypeScript",
+  doc_layout_title: "TypeScript学習の第一歩",
   doc_layout_description:
-    "Find TypeScript starter projects: from Angular to React or Node.js and CLIs.",
-  doc_bootstrap_title: "Bootstrapping tools for TypeScript projects",
+    "TypeScriptスタータープロジェクトを見つけましょう: AngularからReact、Node.js、そしてCLIまで",
+  doc_bootstrap_title: "TypeScriptプロジェクトを始めるためのツール",
   doc_bootstrap_description:
-    "Toolchains for building CLIs, Web Apps, APIs, and Apps.",
-  doc_headline: "Learning Resources",
+    "CLI、Webアプリケーション、APIそしてネイティブアプリケーションを作るためのツールチェーン",
+  doc_headline: "学習のためのリソース",
   doc_headline_ts_for_js_title: "TS for JS", // TODO: Remove, unused
   doc_headline_ts_for_js_blurb:
     "An overview of TypeScript for engineers with a JavaScript background", // TODO: Remove, unused
@@ -19,63 +19,63 @@ export const docCopy = {
   doc_headline_handbook_blurb: "The TypeScript language reference",
   doc_headline_examples_title: "Examples", // TODO: Remove, unused
   doc_headline_examples_blurb: "Comprehensive hands-on playground tutorials", // TODO: Remove, unused
-  doc_start_a_project: "Start a New Project",
+  doc_start_a_project: "新しいプロジェクトを始める",
   doc_start_a_project_desc:
-    "Because TypeScript is a super-set of JavaScript, it doesn't have a default template - there would be too many. Instead, other projects have their own TypeScript bootstrap templates with their own context. These projects provide templates which include TypeScript support.",
-  doc_node_npm: "Node with npm",
-  doc_node_npm_tsdx_blurb: "Zero config tool for building TypeScript libraries",
-  doc_node_npm_oclif_blurb: "Create command line tools your users love",
+    "TypeScriptはJavaScriptのスーパーセットなので、デフォルトのテンプレートはありません。その代わりに、いくつかのプロジェクトはTypeScriptの初期セットアップのテンプレートを提供しています。以下のプロジェクトはTypeScriptをサポートするテンプレートを提供しています。",
+  doc_node_npm: "npm",
+  doc_node_npm_tsdx_blurb: "TypeScriptのライブラリ作成のための設定不要のツール",
+  doc_node_npm_oclif_blurb: "コマンドラインツールの作成",
   doc_node_npm_gluegun_blurb:
-    "A delightful toolkit for building TypeScript-powered command-line apps",
-  doc_frameworks: "Web Frameworks",
+    "TypeScriptコマンドラインアプリケーション作成のためのすばらしいツールキット",
+  doc_frameworks: "Webフレームワーク",
   doc_frameworks_angular_blurb:
-    "Makes writing beautiful apps be joyful and fun",
-  doc_frameworks_ember_blurb: "A framework for ambitious web developers",
+    "美しいアプリケーションを楽しんで作る",
+  doc_frameworks_ember_blurb: "野心的なWeb開発者のためのフレームワーク",
   doc_frameworks_react_blurb:
-    "A JavaScript library for building user interfaces",
-  doc_frameworks_vue_blurb: "The Progressive JavaScript Framework",
-  doc_frameworks_ror_blurb: "Convention over configuration web framework",
+    "UIを作るためのJavaScriptライブラリ",
+  doc_frameworks_vue_blurb: "進歩的なJavavScriptフレームワーク",
+  doc_frameworks_ror_blurb: "設定より規約のWebフレームワーク",
   doc_frameworks_asp_blurb:
-    "Framework for building modern, cloud-based, Internet-connected applications",
+    "モダンなクラウドベースのアプリケーションを作るためのフレームワーク",
   doc_apis: "Node APIs",
-  doc_apis_azure_blurb: "Build and deploy from VS Code in minutes",
+  doc_apis_azure_blurb: "VSCodeから素早くビルドとデプロイ",
   doc_apis_feather_blurb:
-    "A framework for real-time applications and REST APIs",
-  doc_apis_graphql_blurb: "Bootstrap your GraphQL server within seconds",
+    "リアルタイムアプリケーションとREST APIを作るためのフレームワーク",
+  doc_apis_graphql_blurb: "GraphQLサーバーを即時に作成",
   doc_apis_nest_blurb:
-    "A progressive Node.js framework for building efficient and scalable server-side applications",
-  doc_apis_node_blurb: "A documented starter template from the TS team",
-  doc_apis_wechat_blurb: "Use the WeChat JSSDK with TypeScript",
+    "効率的でスケーラブルなサーバサイドアプリケーションを作るための進歩的なNode.jsフレームワーク",
+  doc_apis_node_blurb: "TypeScriptチームが作成したNodeJSのためのドキュメント付きのスタータープロジェクト",
+  doc_apis_wechat_blurb: "TypeScriptでWeChat JSSDKを使う",
   doc_apis_loopback_blurb:
-    "A highly extensible Node.js and TypeScript framework for building APIs and microservices",
-  doc_apis_fastify_blurb: "A fast and low overhead web framework for Node.js",
-  doc_react: "React Projects",
-  doc_react_create_blurb: "Set up a modern web app by running one command",
+    "APIとマイクロサービスを作るための拡張性が高いNode.js TypeScriptフレームワーク",
+  doc_apis_fastify_blurb: "高速でオーバーヘッドが少ないNode.jsのWebフレームワーク",
+  doc_react: "React プロジェクト",
+  doc_react_create_blurb: "モダンなWebアプリケーションをワンコマンドで",
   doc_react_gatsby_blurb:
-    "Helps developers build blazing fast websites and apps",
-  doc_react_next_blurb: "The React Framework",
+    "超高速なWebサイトとWebアプリを作成",
+  doc_react_next_blurb: "Reactのフレームワーク",
   doc_react_razzle_blurb:
-    "Server-rendered universal JavaScript applications with no configuration",
-  doc_react_toolchains_title: "Recommended Toolchains",
-  doc_react_toolchains_blurb: "Recommendations from the React Team",
-  doc_apps: "Building Apps",
+    "設定不要のサーバサイドレンダリングされたユニバーサルなJavaScriptアプリケーション",
+  doc_react_toolchains_title: "おすすめのツールチェーン",
+  doc_react_toolchains_blurb: "Reactチームおすすめのツールチェーン",
+  doc_apps: "ネイティブアプリケーションの作成",
   doc_apps_electron_blurb:
-    "Build cross-platform desktop apps with JavaScript, HTML, and CSS",
-  doc_apps_expo_blurb: "The fastest way to build an app",
-  doc_apps_react_native_blurb: "Learn once, write anywhere",
+    "クロスプラットフォームのデスクトップアプリケーションをJavaScript、HTML、CSSで作成",
+  doc_apps_expo_blurb: "最も早いアプリケーションの作成方法",
+  doc_apps_react_native_blurb: "一度学習したことをどこででも",
   doc_apps_native_script_blurb:
-    "Open source framework for building truly native mobile apps",
+    "真にネイティブなモバイルアプリケーションを作るためのOSSフレームワーク",
   doc_apps_make_code_blurb:
-    "Brings computer science to life for all students with fun projects",
-  doc_tooling: "Tooling",
-  doc_tooling_babel_blurb: "Use next generation JavaScript, today",
+    "魅力的なプロジェクトですべての学生の人生にコンピューターサイエンスをもたらす",
+  doc_tooling: "ツール",
+  doc_tooling_babel_blurb: "次の世代のJavaScriptを今使う",
   doc_tooling_parcel_blurb:
-    "Blazing fast, zero configuration web application bundler",
-  doc_tooling_webpack_blurb: "Bundle your assets, scripts, images and styles",
-  doc_learn: "Familiar With TypeScript already?",
-  doc_learn_3_5_release_notes_title: "Release Notes",
+    "超高速な設定不要のWebアプリケーションバンドラー",
+  doc_tooling_webpack_blurb: "アセット、スクリプト、画像、CSSのバンドラー",
+  doc_learn: "すでにTypeScriptに詳しいですか？",
+  doc_learn_3_5_release_notes_title: "リリースノート",
   doc_learn_handbook_blurb: "The TypeScript language reference", // TODO: Remove, unused
-  doc_learn_d_ts_title: "d.ts Guide",
-  doc_learn_d_ts_blurb: "Learn how to declare the shape of JS",
-  doc_learn_playground_blurb: "Explore and share TypeScript online",
+  doc_learn_d_ts_title: "d.tsガイド",
+  doc_learn_d_ts_blurb: "JSの型をどのように宣言するかを学習する",
+  doc_learn_playground_blurb: "オンラインでTypeScriptを探求、共有する",
 }
