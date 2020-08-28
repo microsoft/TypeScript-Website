@@ -67,4 +67,4 @@ x = 0; // OK
 x = false; // Not OK
 ```
 
-Para saber mais sobre como o JavaScript é interpretado pelo TypeScript, leia [How TS Type Checks JS](/docs/handbook/type-checking-javascript-files.html)
+Para saber mais sobre como o JavaScript é interpretado pelo TypeScript, leia [Como TS Checa tipos de JS](/docs/handbook/type-checking-javascript-files.html)
