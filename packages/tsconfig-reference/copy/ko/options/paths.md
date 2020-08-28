@@ -10,7 +10,7 @@ oneline: "A set of locations to look for imports in"
 ```json tsconfig
 {
   "compilerOptions": {
-    "baseUrl": ".", // 이 옵션은 반드시 "paths"가 명확한 경우 지정해야 합니다.
+    "baseUrl": ".", // 이 옵션은 반드시 "paths"가 명확할 때 지정해야 합니다.
     "paths": {
       "jquery": ["node_modules/jquery/dist/jquery"] // 이 매핑은 "baseUrl"에 상대적입니다.
     }
@@ -35,5 +35,5 @@ oneline: "A set of locations to look for imports in"
 }
 ```
 
-이 경우 Typescript file resolver에 코드를 찾기 위한 custom prefix들을 지원하도록 지시할 수 있습니다.
-이 패턴은 codebase 내의 긴 상대 경로를 피하고자 사용될 수 있습니다.
+이렇게 하면 TypeScript 파일 resolver가 많은 custom prefix로 코드를 찾을 수 있도록 지원할 수 있습니다.
+이 패턴을 사용하면 codebase 안에서 긴 상대 경로를 피할 수 있습니다.
