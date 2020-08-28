@@ -35,7 +35,7 @@ x = 0; // OK
 x = false; // OK?!
 ```
 
-Você pode encontrar a lista completa de padrões JSDoc suportados [em JSDoc Supported Types](/docs/handbook/jsdoc-supported-types.html).
+Você pode encontrar a lista completa de padrões JSDoc suportados [em tipos suportados de JSDoc](/docs/handbook/jsdoc-supported-types.html).
 
 ## `@ts-check`
 
