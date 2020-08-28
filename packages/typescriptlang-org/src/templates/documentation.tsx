@@ -112,6 +112,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   const slug = slugger()
   return (
     <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+      {post.frontmatter.beta && <div id="beta">Warning: This page is a work in progress</div>}
       <section id="doc-layout">
         <SidebarToggleButton />
         <noscript>
@@ -174,6 +175,7 @@ export const pageQuery = graphql`
         title
         disable_toc
         oneline
+        beta
       }
     }
 

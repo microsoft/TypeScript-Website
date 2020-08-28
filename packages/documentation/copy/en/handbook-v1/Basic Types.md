@@ -2,7 +2,7 @@
 title: Basic Types
 layout: docs
 permalink: /docs/handbook/basic-types.html
-oneline: "Step one in learning TypeScript: The basics types."
+oneline: "Step one in learning TypeScript: The basic types."
 ---
 
 For programs to be useful, we need to be able to work with some of the simplest units of data: numbers, strings, structures, boolean values, and the like.

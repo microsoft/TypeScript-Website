@@ -1,5 +1,19 @@
 @import "../style/globals.scss";
 
+#beta {
+  background: repeating-linear-gradient(
+    45deg,
+    #bc6060,
+    #bc6060 10px,
+    #984646 10px,
+    #984646 20px
+  );
+  background-color: "#c63131";
+  text-align: center;
+  color: white;
+  padding: 4px;
+}
+
 #doc-layout {
   display: flex;
   flex-direction: row;
