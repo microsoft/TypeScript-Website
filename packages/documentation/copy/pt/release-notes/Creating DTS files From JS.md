@@ -9,7 +9,7 @@ translatable: true
 [Com o TypeScript 3.7](/docs/handbook/release-notes/typescript-3-7.html#--declaration-and---allowjs),
 TypeScript adicionou suporte para gerar arquivos .d.ts de JavaScript usando a sintaxe JSDoc.
 
-Essa configuração significa que você pode ter a experiência de editor de editores habilitados para TypeScript sem portar seu projeto para TypeScript ou ter que manter arquivos .d.ts em sua base de código.
+Essa configuração significa que você pode ter a experiência de editores habilitados para TypeScript sem portar seu projeto para TypeScript ou ter que manter arquivos .d.ts em sua base de código.
 TypeScript suporta a maioria das tags JSDoc, você pode encontrar [a referência aqui](/docs/handbook/type-checking-javascript-files.html#supported-jsdoc).
 
 ## Configurando seu projeto para emitir arquivos .d.ts
