@@ -7,7 +7,6 @@ export const headCopy = {
 	tsconfig_description:
 		"Dari allowJs hingga useDefineForClassFields referensi TSConfig meliputi informasi tentang semua tanda kompiler yang aktif untuk mengatur projek TypeScript.",
 	playground_example_prefix: "Contoh Area Bermain - ",
-
 	head_index_title: "JavaScript dengan Tipe dalam skala apapun",
 	head_index_description: "JavaScript dengan Tipe dalam skala apapun",
 }
