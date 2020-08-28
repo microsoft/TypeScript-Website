@@ -32,21 +32,21 @@ Neste caso, você vai querer um arquivo como o seguinte:
 
 ```json5
 {
-  // Change this to match your project
+  // Mude isso para corresponder ao seu projeto
   include: ["src/**/*"],
 
   compilerOptions: {
-    // Tells TypeScript to read JS files, as
-    // normally they are ignored as source files
+    // Diz para o TypeScript ler arquivos JS.
+    // Normalmente, seriam ignorados como arquivos fonte
     allowJs: true,
-    // Generate d.ts files
+    // Gerar arquivos d.ts
     declaration: true,
-    // This compiler run should
-    // only output d.ts files
+    // A compilação só gerará arquivos
+    // d.ts na saída
     emitDeclarationOnly: true,
-    // Types should go into this directory.
-    // Removing this would place the .d.ts files
-    // next to the .js files
+    // Tipos devem ir neste diretório.
+    // Remover isso colocará arquivos .d.ts
+    // ao lado dos arquivos .js
     outDir: "dist",
   },
 }
@@ -66,12 +66,12 @@ Você quer ter certeza de que esses arquivos estão incluídos em seu pacote se 
 
 ## Editando o package.json
 
-TypeScript replica a resolução do nó para módulos em um `package.json`, com uma etapa adicional para localizar arquivos `.d.ts`.
+TypeScript replica a resolução do Node para módulos em um `package.json`, com uma etapa adicional para localizar arquivos `.d.ts`.
 A grosso modo, a resolução verificará primeiro o campo opcional `"types"`, depois o campo `"main"` e, finalmente, tentará `index.d.ts` na raiz.
 
 | Package.json              | Localização do padrão .d.ts    |
 | :------------------------ | :----------------------------- |
-| No "types" field          | checks "main", then index.d.ts |
+| Sem campos "types" field  | checa "main", então index.d.ts |
 | "types": "main.d.ts"      | main.d.ts                      |
 | "types": "./dist/main.js" | ./main/main.d.ts               |
 
