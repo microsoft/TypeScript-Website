@@ -196,7 +196,7 @@ TypeScript 2.1 brings the capability to ES3 and ES5 run-times, meaning you'll be
 
 ##### tsconfig.json
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "lib": ["dom", "es2015.promise", "es5"]
@@ -482,7 +482,7 @@ TypeScript 2.1 supports inheriting configuration using `extends`, where:
 
 `configs/base.json`:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "noImplicitAny": true,
@@ -493,7 +493,7 @@ TypeScript 2.1 supports inheriting configuration using `extends`, where:
 
 `tsconfig.json`:
 
-```json
+```json tsconfig
 {
   "extends": "./configs/base",
   "files": ["main.ts", "supplemental.ts"]
@@ -502,7 +502,7 @@ TypeScript 2.1 supports inheriting configuration using `extends`, where:
 
 `tsconfig.nostrictnull.json`:
 
-```json
+```json tsconfig
 {
   "extends": "./tsconfig",
   "compilerOptions": {

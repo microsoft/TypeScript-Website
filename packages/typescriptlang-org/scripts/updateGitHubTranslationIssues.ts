@@ -12,6 +12,7 @@ const languages = {
   es: 232,
   zh: 296,
   ko: 910,
+  id: 938,
 }
 
 const go = async () => {

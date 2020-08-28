@@ -17,7 +17,7 @@ import { createInternational } from "../lib/createInternational"
 import { useIntl } from "react-intl"
 import { createIntlLink } from "../components/IntlLink"
 import { handbookCopy } from "../copy/en/handbook"
-import { setupTwoslashHovers } from "gatsby-remark-shiki-twoslash/dist/dom"
+import { setupTwoslashHovers } from "shiki-twoslash/dist/dom"
 import { Contributors } from "../components/handbook/Contributors"
 
 type Props = {
@@ -112,6 +112,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   const slug = slugger()
   return (
     <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+      {post.frontmatter.beta && <div id="beta">Warning: This page is a work in progress</div>}
       <section id="doc-layout">
         <SidebarToggleButton />
         <noscript>
@@ -174,6 +175,7 @@ export const pageQuery = graphql`
         title
         disable_toc
         oneline
+        beta
       }
     }
 

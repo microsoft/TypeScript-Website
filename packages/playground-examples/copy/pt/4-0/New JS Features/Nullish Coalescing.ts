@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.0.0-beta" } }
+//// { compiler: { ts: "4.0.2" } }
 
 // # Nullish Coalescing
 //
@@ -23,7 +23,7 @@ const nullValue = response.nullValue || "some other default";
 
 // Esses dois exemplos funcionam de maneira similar na maioria
 // das linguagens. A ferramenta || é muito boa em padronizar coisas
-// mas as checagens de falsidade do Javascript podem te surpreender 
+// mas as checagens de falsidade do Javascript podem te surpreender
 // com alguns valores simples:
 
 // Potencialmente indesejado. '' é falsy, resultado: 'Hello, world!'

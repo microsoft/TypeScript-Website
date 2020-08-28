@@ -6,7 +6,7 @@ oneline: "Set an external root for sourcemaps"
 Specify the location where debugger should locate map files instead of generated locations.
 This string is treated verbatim inside the source-map, for example:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "sourceMap": true,

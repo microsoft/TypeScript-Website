@@ -7,6 +7,6 @@
 // Você pode experimentar isso destacando o erro abaixo
 // e optando por executar o _Quick Fix_ (Correção rápida).
 
-const displayName = "Andrew";
+const nomeDeExibicao = "Andrew";
 
-displayName = "Andrea";
+nomeDeExibicao = "Andrea";

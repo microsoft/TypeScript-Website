@@ -17,19 +17,19 @@ function pushNumber(arr) {
 // Deduzir uma Promise
 
 function awaitPromise(promise) {
-  promise.then(value => console.log(value));
+  promise.then(valor => console.log(valor));
 }
 
 // Deduzir uma função, e o que ela retornará:
 
 function inferAny(app) {
-  const result = app.use("hi");
+  const result = app.use("oi");
   return result;
 }
 
 // Deduzir um array de strings porquê uma
 // string foi adicionada:
 
-function insertString(names) {
-  names[1] = "hello";
+function insertString(nomes) {
+  nomes[1] = "olá";
 }

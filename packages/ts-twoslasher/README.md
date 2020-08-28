@@ -581,6 +581,58 @@ Turns to:
 > }
 > ```
 
+#### `importsModules.ts`
+
+```ts
+// @filename: Component.tsx
+import React from "react"
+
+export function Hello() {
+  return (
+    <div>
+      <h1>Hello World</h1>
+    </div>
+  )
+}
+
+// @filename: index.ts
+import { Hello } from "./Component"
+console.log(Hello)
+```
+
+Turns to:
+
+> ```ts
+> // @filename: Component.tsx
+> import React from "react"
+>
+> export function Hello() {
+>   return (
+>     <div>
+>       <h1>Hello World</h1>
+>     </div>
+>   )
+> }
+>
+> // @filename: index.ts
+> import { Hello } from "./Component"
+> console.log(Hello)
+> ```
+
+> With:
+
+> ```json
+> {
+>   "code": "See above",
+>   "extension": "ts",
+>   "highlights": [],
+>   "queries": [],
+>   "staticQuickInfos": "[ 10 items ]",
+>   "errors": [],
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKAwge1QA66JIAuAdKQM4AeAUNIbgE6mgBK8yAxm5M-lAAiZl15C6deDSKtQkAK6Je0YqAAS8WLFwAKAJSgA3nVChRpBc0Shdps6AA8AE2gA3AHz2HTgBYBGD01tXFAAdRZYZ0dgAK8fGNdPe306AF9JEAgYBBR0LGhEZ2lKKgYmOSMNLR1QNPkBVGFyYDwmEkRSCW5iKlwEch0Ac11gnVSgA"
+> }
+> ```
+
 #### `query.ts`
 
 ```ts
@@ -718,6 +770,8 @@ export interface TwoSlashOptions {
    * web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
    */
   fsMap?: Map<string, string>
+  /** The cwd for the folder which the virtual fs should be overlaid on top of when using local fs, opts to process.cwd() if not present */
+  vfsRoot?: string
 }
 ```
 

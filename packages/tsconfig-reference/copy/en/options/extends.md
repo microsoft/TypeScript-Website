@@ -17,7 +17,7 @@ Currently, the only top-level property that is excluded from inheritance is [`re
 
 `configs/base.json`:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "noImplicitAny": true,
@@ -28,7 +28,7 @@ Currently, the only top-level property that is excluded from inheritance is [`re
 
 `tsconfig.json`:
 
-```json
+```json tsconfig
 {
   "extends": "./configs/base",
   "files": ["main.ts", "supplemental.ts"]
@@ -37,7 +37,7 @@ Currently, the only top-level property that is excluded from inheritance is [`re
 
 `tsconfig.nostrictnull.json`:
 
-```json
+```json tsconfig
 {
   "extends": "./tsconfig",
   "compilerOptions": {

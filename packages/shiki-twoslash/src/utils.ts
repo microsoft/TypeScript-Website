@@ -70,3 +70,7 @@ export function stripHTML(text: string) {
     return "&" + table[chr] + ";"
   })
 }
+
+export function escapeHtml(html: string) {
+  return html.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+}

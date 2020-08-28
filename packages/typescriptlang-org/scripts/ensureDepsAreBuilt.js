@@ -41,3 +41,23 @@ ${chalk.bgBlueBright.white.bold("  ts")}
     process.exit(0)
   }
 }
+
+const releaseInfo = join(
+  pkgsRoot,
+  "typescriptlang-org",
+  "src",
+  "lib",
+  "release-info.json"
+)
+
+if (!fs.existsSync(releaseInfo)) {
+  // prettier-ignore
+  console.log(`
+Please run:
+
+> ${chalk.bgBlueBright.white.bold("yarn workspace typescriptlang-org update-versions")}
+
+Then re-run the command.`
+  )
+  process.exit(0)
+}
