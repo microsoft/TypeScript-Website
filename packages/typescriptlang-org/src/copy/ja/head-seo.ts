@@ -1,14 +1,14 @@
 export const headCopy = {
   head_playground_title:
-    "Playground - An online editor for exploring TypeScript and JavaScript",
+    "プレイグラウンド - TypeScriptとJavascriptを探求するためのオンラインエディタ",
   head_playground_description:
-    "The Playground lets you write TypeScript or JavaScript online in a safe and sharable way.",
-  tsconfig_title: "TSConfig Reference - Docs on every TSConfig option",
+    "プレイグラウンドで、TypeScriptとJavascriptのコードをオンラインで安全に共有できる形で書くことができます",
+  tsconfig_title:
+    "TSConfig リファレンス - すべてのTSConfigのオプションのドキュメント",
   tsconfig_description:
-    "From allowJs to useDefineForClassFields the TSConfig reference includes information about all of the active compiler flags setting up a TypeScript project.",
-  playground_example_prefix: "Playground Example - ",
+    "allowJs から useDefineForClassFields まで、TSConfigのドキュメントは、TypeScriptプロジェクトで有効なコンパイラオプションのすべてを含んでいます",
+  playground_example_prefix: "プレイグラウンド 例 - ",
 
-  head_index_title: "Typed JavaScript at Any Scale",
-  head_index_description: "Typed JavaScript at Any Scale",
+  head_index_title: "どんな規模でも型付けされたJavaScriptを",
+  head_index_description: "どんな規模でも型付けされたJavaScriptを",
 }
-
