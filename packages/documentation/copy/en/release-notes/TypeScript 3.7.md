@@ -658,7 +658,7 @@ class Base {
 
 class Derived extends Base {
   constructor() {
-    data = 10;
+    this.data = 10;
   }
 }
 ```
