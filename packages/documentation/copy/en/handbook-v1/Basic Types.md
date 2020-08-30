@@ -361,7 +361,7 @@ Type assertions have two forms.
 One is the `as`-syntax:
 
 ```ts twoslash
-let someValue: any = "this is a string";
+let someValue: unknown = "this is a string";
 
 let strLength: number = (someValue as string).length;
 ```
@@ -369,7 +369,7 @@ let strLength: number = (someValue as string).length;
 The other version is the "angle-bracket" syntax:
 
 ```ts twoslash
-let someValue: any = "this is a string";
+let someValue: unknown = "this is a string";
 
 let strLength: number = (<string>someValue).length;
 ```
