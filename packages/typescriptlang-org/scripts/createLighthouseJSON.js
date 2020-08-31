@@ -3,10 +3,11 @@ const { writeFileSync } = require("fs")
 const { join } = require("path")
 const parser = require("xml-js")
 
-const prNumber = process.env.PR_NUMBER || "789"
+const prRoot =
+  process.env.PR_DEPLOY_URL_ROOT || "https://www.staging-typescript.org/"
 
 const go = async () => {
-  const sitemap = `https://typescript-v2-${prNumber}.vercel.app/sitemap.xml`
+  const sitemap = `${prRoot}/sitemap.xml`
   try {
     const packageJSON = await nodeFetch(sitemap)
 
@@ -24,10 +25,7 @@ const go = async () => {
         // from "https://www.typescriptlang.org/v2/docs/handbook/advanced-types.html",
         // to   "https://typescript-v2-" + prNumber + ".vercel.app/docs/handbook/advanced-types.html",
 
-        return url._text.replace(
-          "https://www.typescriptlang.org/",
-          "https://typescript-v2-" + prNumber + ".vercel.app/"
-        )
+        return url._text.replace("https://www.typescriptlang.org/", prRoot)
       })
       .reverse()
 
@@ -64,8 +62,8 @@ const go = async () => {
       },
     }
 
-    console.log(`Looking at ${json.ci.collect.url.length} urls`)
-    console.log(`- ${json.ci.collect.url.join("\n - ")}`)
+    console.log(`Looking at ${json.ci.collect.url.length} urls:\n`)
+    console.log(` - ${json.ci.collect.url.join("\n - ")}`)
     writeFileSync(lighthouseFiles, JSON.stringify(json))
   } catch (error) {
     console.log(error)

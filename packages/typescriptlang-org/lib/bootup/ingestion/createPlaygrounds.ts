@@ -60,16 +60,16 @@ export const createPlaygrounds = async (
           optionsSummary,
         },
       })
+    } else {
+      createPage({
+        path: lang.name + "/play",
+        component: playPage,
+        context: {
+          lang: lang.name,
+          examplesTOC,
+          optionsSummary,
+        },
+      })
     }
-
-    createPage({
-      path: lang.name + "/play",
-      component: playPage,
-      context: {
-        lang: lang.name,
-        examplesTOC,
-        optionsSummary,
-      },
-    })
   })
 }
