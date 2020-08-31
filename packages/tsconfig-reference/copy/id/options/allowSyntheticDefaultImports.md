@@ -1,6 +1,6 @@
 ---
-display: "Izinkan Impor Default Sintetis"
-oneline: "Izinkan 'impor x dari y' jika modul tidak memiliki ekspor default"
+display: "Izinkan Setelan Standar Impor Sintetis"
+oneline: "Izinkan 'impor x dari y' jika modul tidak memiliki setelan standar ekspor"
 ---
 
 Jika disetel ke true `allowSyntheticDefaultImports` memungkinkan Anda untuk menulis impor seperti:
@@ -38,7 +38,7 @@ import utils from "./utilFunctions";
 const count = utils.getStringLength("Check JS");
 ```
 
-Kode ini menimbulkan kesalahan karena tidak ada objek `default` yang dapat Anda impor. Meski rasanya seperti itu seharusnya.
+Kode ini menimbulkan galat karena tidak ada objek `default` yang dapat Anda impor. Meski rasanya seperti itu seharusnya.
 Untuk kenyamanan, _transpiler_ seperti Babel akan secara otomatis membuat setelan standar jika tidak dibuat. Membuat modul terlihat lebih seperti:
 
 ```js
