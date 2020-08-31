@@ -1,5 +1,5 @@
 ---
-display: "Keyof Strings Only"
+display: "Somente Strings em KeyOf"
 oneline: "Faça com que keyof retorne apenas strings em vez de strings ou números"
 ---
 

@@ -1,5 +1,5 @@
 ---
-display: "Lib"
+display: "Biblioteca"
 oneline: "Inclua definições de tipo que você sabe que estão disponíveis em seu tempo de execução de JavaScript"
 ---
 

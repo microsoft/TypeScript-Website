@@ -1,5 +1,5 @@
 ---
-display: "Inline Sources"
+display: "Origens Embutidas"
 oneline: "Incluir arquivos de mapa de origem dentro do JavaScript emitido"
 ---
 

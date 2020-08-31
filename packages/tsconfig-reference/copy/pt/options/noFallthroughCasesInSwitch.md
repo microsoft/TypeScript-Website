@@ -1,5 +1,5 @@
 ---
-display: "No Fallthrough Cases In Switch"
+display: "Sem casos de Fallthrough no Switch"
 oneline: "Relate erros para casos de falha nas instruções switch."
 ---
 
@@ -14,9 +14,9 @@ const a: number = 6;
 
 switch (a) {
   case 0:
-    console.log("even");
+    console.log("par");
   case 1:
-    console.log("odd");
+    console.log("impar");
     break;
 }
 ```

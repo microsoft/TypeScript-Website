@@ -1,5 +1,5 @@
 ---
-display: "Isolated Modules"
+display: "Módulos Isolados"
 oneline: "Certifique-se de que cada arquivo pode ser transpilado com segurança, sem depender de outras importações"
 ---
 
