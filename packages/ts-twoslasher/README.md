@@ -846,6 +846,10 @@ export interface TwoSlashReturn {
 
 <!-- AUTO-GENERATED-CONTENT:END -->
 
+## Using this Dependency
+
+This package can be used as a commonjs import, an esmodule and directly via a script tag which edits the global namespace. All of these files are embedded inside the released packages.
+
 ## Local Development
 
 Below is a list of commands you will probably find useful. You can get debug logs by running with the env var of `DEBUG="*"`.

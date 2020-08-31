@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "start": "tsdx watch",
-    "build": "tsdx build && yarn readme && make-global",
+    "build": "tsdx build && yarn readme && yarn make-global",
     "make-global": "node scripts/makeGlobals.js",
     "readme": "yarn md-magic README.md --config ./scripts/inline-results.js && yarn prettier README.md --write",
     "test": "tsdx test",

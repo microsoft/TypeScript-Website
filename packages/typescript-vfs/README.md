@@ -231,3 +231,7 @@ program.emit()
 // Now I can look at the AST for the .ts file too
 const index = program.getSourceFile("index.ts")
 ```
+
+## Using this Dependency
+
+This package can be used as a commonjs import, an esmodule and directly via a script tag which edits the global namespace. All of these files are embedded inside the released packages.
