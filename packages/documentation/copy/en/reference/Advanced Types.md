@@ -249,7 +249,7 @@ With [`--strictNullChecks`](/tsconfig#strictNullChecks), an optional parameter a
 ```ts twoslash
 // @errors: 2345
 function f(x: number, y?: number) {
-  return x + (y || 0);
+  return x + (y ?? 0);
 }
 
 f(1, 2);
@@ -297,7 +297,7 @@ The `null` elimination is pretty obvious here, but you can use terser operators 
 
 ```ts twoslash
 function f(stringOrNull: string | null): string {
-  return stringOrNull || "default";
+  return stringOrNull ?? "default";
 }
 ```
 
