@@ -1,3 +1,12 @@
+## 1.1.0
+
+- Adds a JS file into the npm tarball for using with a vanilla script tag, which sets `global.twoslash` with the main twoslash function. You need to include a copy of tsvfs beforehand.
+
+Unpkg URLS:
+
+- https://unpkg.com/browse/@typescript/vfs@dist/vfs.globals.js
+- https://unpkg.com/browse/@typescript/twoslash@dist/twoslash.globals.js
+
 ## 1.0.2
 
 - The `// @x`, `// ^?` and `// ^^^` comments ignore preceding whitespace
