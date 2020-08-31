@@ -1,16 +1,16 @@
 ---
-display: "Izinkan js"
-oneline: "Biarkan TS menyertakan file .JS dalam impor"
+display: "Allow JS"
+oneline: "Izinkan TS menyertakan berkas .JS di impor"
 ---
 
-Izinkan file JavaScript diimpor di dalam proyek Anda, bukan hanya file `.ts` dan`.tsx`. Misalnya, file JS ini:
+Izinkan berkas JavaScript diimpor ke dalam proyek Anda, bukan hanya berkas `.ts` dan`.tsx`. Contoh, berkas JS ini:
 
 ```js twoslash
 // @filename: card.js
 export const defaultCardDeck = "Heart";
 ```
 
-Ketika diimpor ke file TypeScript akan menimbulkan kesalahan:
+Ketika diimpor ke berkas TypeScript akan menimbulkan galat seperti berikut:
 
 ```ts twoslash
 // @errors: 2307
@@ -23,7 +23,7 @@ import { defaultCardDeck } from "./card";
 console.log(defaultCardDeck);
 ```
 
-Impor baik-baik saja dengan `allowJs` diaktifkan:
+Impor berkas akan baik-baik saja saat `allowJs` diaktifkan:
 
 ```ts twoslash
 // @filename: card.js
@@ -36,4 +36,4 @@ import { defaultCardDeck } from "./card";
 console.log(defaultCardDeck);
 ```
 
-Bendera ini dapat digunakan sebagai cara untuk menambahkan file TypeScript secara bertahap ke dalam proyek JS dengan mengizinkan file `.ts` dan`.tsx` untuk hidup berdampingan dengan file JavaScript yang ada.
+Opsi ini dapat digunakan sebagai cara untuk menambahkan berkas TypeScript secara bertahap ke dalam proyek JS dengan mengizinkan berkas `.ts` dan`.tsx` untuk hidup berdampingan dengan berkas JavaScript yang ada.
