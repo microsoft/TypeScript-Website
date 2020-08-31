@@ -40,7 +40,7 @@
     "lz-string": false
   },
   "dependencies": {
-    "@typescript/vfs": "1.2.0",
+    "@typescript/vfs": "1.3.0",
     "debug": "^4.1.1",
     "lz-string": "^1.4.4"
   }
