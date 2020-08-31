@@ -45,8 +45,8 @@ export const createRootPagesLocalized = async (
       originalSitePath = originalSitePath.substring(0, originalSitePath.length - 3)
     }
 
-    ;["", ...langs].forEach(lang => {
-      const prefix = lang === "" ? "/" : `/${lang}/`
+    langs.forEach(lang => {
+      const prefix = lang === "en" ? "/" : `/${lang}/`
       const sitePath = `${prefix}${originalSitePath}`
 
       const pageOpts = {
