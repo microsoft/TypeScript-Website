@@ -1,11 +1,11 @@
 ---
-display: "jsxFragmentFactory"
+display: "Fábrica de fragmentos JSX"
 oneline: "Faz alguma coisa"
 ---
 
-Especifique a função de fábrica de fragmentos JSX para ser acionada ao direcionar o react JSX emitir com a opção do compilador `jsxFactory` especificada, por exemplo `Fragment`.
+Especifique a função que será a fábrica de fragmentos JSX para ser acionada ao usar o react JSX com a opção do compilador `jsxFactory` especificada, por exemplo `Fragment`.
 
-Esta opção pode ser usada como base por arquivo um muito semelhante a [Babel's `/** @jsxFrag h */` directive](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx#fragments).
+Esta opção pode ser usada por arquivo, muito semelhante a [diretiva `/** @jsxFrag h */` do Babel](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx#fragments).).
 
 Por exemplo, com esse TSConfig:
 

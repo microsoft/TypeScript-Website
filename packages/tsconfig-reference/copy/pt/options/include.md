@@ -1,5 +1,5 @@
 ---
-display: "Include"
+display: "Incluir"
 oneline: "Arquivos ou padrões a serem incluídos neste projeto"
 ---
 
