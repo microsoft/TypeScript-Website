@@ -27,10 +27,10 @@ Se o seu `outDir` fosse `dist`, TypeScript escreveria esta árvore:
 ```
 MeuProj
 ├── dist
-│   ├── a.ts
-│   ├── b.ts
+│   ├── a.js
+│   ├── b.js
 │   ├── sub
-│   │   ├── c.ts
+│   │   ├── c.js
 ```
 
 Contudo, você pode ter a intenção de que `core` seja parte da estrutura do diretório de saída.

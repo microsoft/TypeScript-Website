@@ -23,9 +23,17 @@ const filterString = process.argv[2] ? process.argv[2] : "";
 const errorReports = [];
 
 languages.forEach((lang) => {
-  const locale = join(__dirname, "..", "copy", lang);
-  const options = readdirSync(join(locale, "options")).filter((f) => !f.startsWith("."));
   console.log("\n\nLanguage: " + chalk.bold(lang) + "\n");
+
+  const locale = join(__dirname, "..", "copy", lang);
+  let options;
+
+  try {
+    options = readdirSync(join(locale, "options")).filter((f) => !f.startsWith("."));
+  } catch {
+    errorReports.push({ path: join(locale, "options"), error: `Options directory ${join(locale, "options")} doesn't exist` });
+    return;
+  }
 
   options.forEach((option) => {
     if (filterString.length && !option.includes(filterString)) return;

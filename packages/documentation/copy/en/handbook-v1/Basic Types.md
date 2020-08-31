@@ -2,7 +2,7 @@
 title: Basic Types
 layout: docs
 permalink: /docs/handbook/basic-types.html
-oneline: "Step one in learning TypeScript: The basics types."
+oneline: "Step one in learning TypeScript: The basic types."
 ---
 
 For programs to be useful, we need to be able to work with some of the simplest units of data: numbers, strings, structures, boolean values, and the like.
@@ -361,7 +361,7 @@ Type assertions have two forms.
 One is the `as`-syntax:
 
 ```ts twoslash
-let someValue: any = "this is a string";
+let someValue: unknown = "this is a string";
 
 let strLength: number = (someValue as string).length;
 ```
@@ -369,7 +369,7 @@ let strLength: number = (someValue as string).length;
 The other version is the "angle-bracket" syntax:
 
 ```ts twoslash
-let someValue: any = "this is a string";
+let someValue: unknown = "this is a string";
 
 let strLength: number = (<string>someValue).length;
 ```

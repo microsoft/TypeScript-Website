@@ -1,0 +1,110 @@
+{
+  "code": "function paintShape(opts: PaintOptions) {\n  let xPos = opts.xPos\n  let yPos = opts.yPos\n  // ...\n}\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [
+    {
+      "docs": "",
+      "kind": "query",
+      "start": 335,
+      "length": 49,
+      "text": "(property) PaintOptions.xPos?: number | undefined",
+      "offset": 18,
+      "line": 2
+    },
+    {
+      "docs": "",
+      "kind": "query",
+      "start": 358,
+      "length": 49,
+      "text": "(property) PaintOptions.yPos?: number | undefined",
+      "offset": 18,
+      "line": 3
+    }
+  ],
+  "staticQuickInfos": [
+    {
+      "text": "function paintShape(opts: PaintOptions): void",
+      "docs": "",
+      "start": 9,
+      "length": 10,
+      "line": 0,
+      "character": 9,
+      "targetString": "paintShape"
+    },
+    {
+      "text": "(parameter) opts: PaintOptions",
+      "docs": "",
+      "start": 20,
+      "length": 4,
+      "line": 0,
+      "character": 20,
+      "targetString": "opts"
+    },
+    {
+      "text": "interface PaintOptions",
+      "docs": "",
+      "start": 26,
+      "length": 12,
+      "line": 0,
+      "character": 26,
+      "targetString": "PaintOptions"
+    },
+    {
+      "text": "let xPos: number | undefined",
+      "docs": "",
+      "start": 48,
+      "length": 4,
+      "line": 1,
+      "character": 6,
+      "targetString": "xPos"
+    },
+    {
+      "text": "(parameter) opts: PaintOptions",
+      "docs": "",
+      "start": 55,
+      "length": 4,
+      "line": 1,
+      "character": 13,
+      "targetString": "opts"
+    },
+    {
+      "text": "(property) PaintOptions.xPos?: number | undefined",
+      "docs": "",
+      "start": 60,
+      "length": 4,
+      "line": 1,
+      "character": 18,
+      "targetString": "xPos"
+    },
+    {
+      "text": "let yPos: number | undefined",
+      "docs": "",
+      "start": 71,
+      "length": 4,
+      "line": 2,
+      "character": 6,
+      "targetString": "yPos"
+    },
+    {
+      "text": "(parameter) opts: PaintOptions",
+      "docs": "",
+      "start": 78,
+      "length": 4,
+      "line": 2,
+      "character": 13,
+      "targetString": "opts"
+    },
+    {
+      "text": "(property) PaintOptions.yPos?: number | undefined",
+      "docs": "",
+      "start": 83,
+      "length": 4,
+      "line": 2,
+      "character": 18,
+      "targetString": "yPos"
+    }
+  ],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/JYOwLgpgTgZghgYwgAgMoAs4AcUG8C+AUACYQIA2cUKMAriAmMAPYjIDmEYG2EAFAEoAXGkw5ChAPSTkAFQDyAEXkiAYhAjlktLMhjMoyOMgSZy5CCE4AaZNQC2zAG4ow6FBAAeYKMYTN7e0swAGcpGWRIqIAjTWYAd2QwZg4uIzs4YBCIYmQvJCwmVj0oALlUCVBIWEQUAAVM8HlClhAQ5FxCSJCxCBEecUjPOuYQgH4REFp7WKgu5GkFiIA9eYBPEfHJ6dn5xcXkVaJw5ABac4RaMHPTwjoGIrYsRu5evmZCkJEGqubHkIEHXmFjAyGGo2QAF5kB9QgA6cFhSIHKKotHLMbAtIbCHQ2EhOE4pFLNGkqIYvYyOHUwhEIA"
+}
