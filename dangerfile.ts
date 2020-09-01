@@ -5,16 +5,23 @@ import { danger, message, markdown } from "danger"
 // import { basename } from "path"
 // import spellcheck from "danger-plugin-spellcheck"
 import lighthouse from "danger-plugin-lighthouse"
+import { readFileSync } from "fs"
 
 // Spell check all the things
 // spellcheck({ settings: "artsy/peril-settings@spellcheck.json" })
 
-export default (webhook: any) => {
-  console.log(webhook)
+export default () => {
+  // JSON reference: https://github.com/haya14busa/github-actions-playground/runs/987846369
+  const contextText = readFileSync(process.env.GITHUB_CONTEXT, "utf8")
+  const context = JSON.parse(contextText)
+
+  const repo = { owner: context.event.repository.owner.login, repo: context.event.repository.name }
+  const prNumber = context.event.workflow_run.pull_requests[0].number
+  console.log(repo)
 
   console.log(process.env.PR_DEPLOY_URL_ROOT)
 
-  const changedFiles = getChangedFiles(webhook.pull_request.number)
+  const changedFiles = getChangedFiles(prNumber)
   console.log(changedFiles)
 
   // Print out the PR url
