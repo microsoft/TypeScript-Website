@@ -38,7 +38,7 @@ Then queries tend to be about changing the state of the Playground setup from th
   There are two special cases for the `ts` option:
 
   - `ts=Nightly` where it will switch to most recently the nightly version.
-  - `ts=dev` where it uses your local developer's build of TypeScript (docs coming later)
+  - `ts=dev` where it uses your [local developer's build of TypeScript](https://github.com/microsoft/TypeScript/blob/master/scripts/createPlaygroundBuild.js)
 
 - `?flag=value` - Any compiler flag referenced in can be set from a query
 - `?useJavaScript=true` - Tells the Playground to treat the editor's code as a JS file instead of a TS one
