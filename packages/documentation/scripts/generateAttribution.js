@@ -68,8 +68,6 @@ const getAuthorsForFile = (filepath) => {
 };
 
 const allFiles = recursiveReadDirSync("copy/");
-// const allFiles = ["en/JSDoc Supported Types.md"];
-
 const json = {};
 
 allFiles.forEach((f) => {

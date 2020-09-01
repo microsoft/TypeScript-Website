@@ -22,7 +22,6 @@ export const createRootPagesLocalized = async (
     .readdirSync(languageRootDir)
     .filter(f => f.endsWith(".ts") && f.length === 5)
     .map(f => path.basename(f, ".ts"))
-    .filter(f => f !== "en")
 
   const files = recursiveReadDirSync(rootPagesDir)
     .filter(f => !f.startsWith(".")) // only useful files
@@ -48,7 +47,6 @@ export const createRootPagesLocalized = async (
     langs.forEach(lang => {
       const prefix = lang === "en" ? "/" : `/${lang}/`
       const sitePath = `${prefix}${originalSitePath}`
-
       const pageOpts = {
         path: sitePath,
         component: fullpath,
