@@ -4,7 +4,6 @@ export const setupLikeDislikeButtons = (slug: string, i: any) => {
   if (!likeButton || !dislikeButton) return
 
   const clicked = (eventName: string) => () => {
-    console.log("clicked")
     // @ts-ignore
     window.appInsights &&
       // @ts-ignore

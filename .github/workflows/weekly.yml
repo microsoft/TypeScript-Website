@@ -1,10 +1,9 @@
-name: Monday Website Push To Production
+name: Weekly
 
 on:
   schedule:
-    # https://crontab.guru/#0_12_*_*_1
-    - cron: "0 12 * * 1"
-  workflow_dispatch:
+    # https://crontab.guru/#0_06_*_*_1
+    - cron: "0 06 * * 1"
 
 jobs:
   build:
@@ -14,28 +13,12 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
 
-      # For epub -> PDF conversion
-      - run: sudo apt-get update
-      - run: sudo apt install calibre
-
       # Build v2
-      - name: Build website v2
+      - name: Setup
         run: |
           yarn install
-          yarn bootstrap
-          yarn build
-          yarn build-site
-          cp -r packages/typescriptlang-org/public site
         env:
           YARN_CHECKSUM_BEHAVIOR: ignore
-
-      # Deploy to the prod appservice
-      - name: Deploy + Publish to AppService
-        uses: peaceiris/actions-gh-pages@v1.1.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: "SITE-PRODUCTION"
-          PUBLISH_DIR: ./site
 
       # Update the site stats
       - run: node packages/typescriptlang-org/scripts/updateAppInsightsGitHubIssue.js
@@ -49,6 +32,6 @@ jobs:
         uses: aliencube/microsoft-teams-actions@v0.8.0
         with:
           webhook_uri: ${{ secrets.TEAMS_WEB_BOT_INCOMING_URL }}
-          title: Prod deploy failed
-          summary: Could not build the site for production
+          title: AppInsights issue update failed
+          summary: Could not generate site stats for the week
           actions: '[{ "@type": "OpenUri", "name": "View Logs", "targets": [{ "os": "default", "uri": "https://github.com/microsoft/TypeScript-Website/runs/${{ github.run_id }}?check_suite_focus=true" }] }]'

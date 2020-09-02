@@ -1,5 +1,5 @@
 {
-  "include": ["./src/**/*", "gatsby-browser.js"],
+  "include": ["./src/**/*"],
   "compilerOptions": {
     "target": "esnext",
     "module": "commonjs",
