@@ -1,6 +1,6 @@
-## Intro to the TSConfig Reference
+## TSConfig リファレンス紹介
 
-A TSConfig file in a directory indicates that the directory is the root of a TypeScript or JavaScript project.
-The TSConfig file can be either a `tsconfig.json` or `jsconfig.json`, both have the same behavior and the same set of config variables.
+ディレクトリ内の TSConfig ファイルは、TypeScript や JavaScript のプロジェクトルートであることを示します。
+TSConfig ファイルは、`tsconfig.json` や `jsconfig.json` のいずれかが利用可能です。どちらを選んでも同じ挙動、同じ設定変数をセットできます。
 
-This page covers all of the different flags available inside a TSConfig file. It starts with an overview of every flag, then moves into the root attributes in the JSON file, then the `compilerOptions` which are the bulk of the options and wraps up with `watchOptions`.
+このページは TSConfig ファイルで利用できるフラグを余す所なくカバーしています。このページは、フラグ毎の概要から始まり、JSON ファイルのルート属性、オプションの大部分を占める `compilerOptions` へと至り、`watchOptions` で締めくくります。
