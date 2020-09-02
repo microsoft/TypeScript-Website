@@ -98,7 +98,7 @@ class OKGreeter {
 }
 ```
 
-### `readonly` {#readonly-class-properties}
+### `readonly`
 
 Fields may be prefixed with the `readonly` modifier.
 This prevents assignments to the field outside of the constructor.
@@ -247,7 +247,7 @@ It is not possible to have accessors with different types for getting and settin
 
 If you have a getter without a setter, the field is automatically `readonly`
 
-### Index Signatures {#class-index-signatures}
+### Index Signatures
 
 Classes can declare index signatures; these work the same as [[Index Signatures]] for other object types:
 
@@ -684,7 +684,7 @@ class A {
 }
 ```
 
-#### Caveats {#private-and-runtime-privacy}
+#### Caveats
 
 Like other aspects of TypeScript's type system, `private` and `protected` are only enforced during type checking.
 This means that JavaScript runtime constructs like `in` or simple property lookup can still access a `private` or `protected` member:
@@ -818,7 +818,7 @@ At runtime, there's only _one_ `Box.defaultValue` property slot.
 This means that setting `Box<string>.defaultValue` (if that were possible) would _also_ change `Box<number>.defaultValue` - not good.
 The `static` members of a generic class can never refer to the class's type parameters.
 
-## `this` at Runtime in Classes {#runtime-this-in-classes}
+## `this` at Runtime in Classes
 
 > > [Background Reading: `this` keyword (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)
 

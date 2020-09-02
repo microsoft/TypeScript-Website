@@ -338,7 +338,7 @@ const myAge: Age = 73;
 const myWeight: Weight = myAge;
 ```
 
-## Interfaces {#interfaces}
+## Interfaces
 
 An _interface declaration_ is another way to name an object type:
 
@@ -360,7 +360,7 @@ Just like when we used a type alias above, the example works just as if we had u
 TypeScript is only concerned with the _structure_ of the value we passed to `printCoord` - it only cares that it has the expected properties.
 Being concerned only with the structure and capabilities of types is why we call TypeScript a _structurally typed_ type system.
 
-### Differences Between Type Aliases and Interfaces {#interface-vs-alias}
+### Differences Between Type Aliases and Interfaces
 
 Type aliases and interfaces are very similar, and in many cases you can choose between them freely.
 Here are the most relevant differences between the two that you should be aware of.
@@ -542,7 +542,7 @@ function doSomething(x: string | null) {
 }
 ```
 
-### Non-null Assertion Operator (Postfix `!`) {#non-null-operator}
+### Non-null Assertion Operator (Postfix `!`)
 
 TypeScript also has a special syntax for removing `null` and `undefined` from a type without doing any explicit checking.
 Writing `!` after any expression is effectively a type assertion that the value isn't `null` or `undefined`:

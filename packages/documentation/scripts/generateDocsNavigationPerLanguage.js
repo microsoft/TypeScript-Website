@@ -364,6 +364,7 @@ function fillReleaseInfo() {
     join(__dirname, "..", "copy", "en", "release-notes")
   );
   for (const file of files.reverse()) {
+    if (file.includes("overview")) return;
     // @ts-ignore
     whatIsNew.items.push({ file: "release-notes/" + file });
   }
