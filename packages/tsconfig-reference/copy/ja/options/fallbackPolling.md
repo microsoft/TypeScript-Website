@@ -1,11 +1,11 @@
 ---
-display: "fallbackPolling"
-oneline: "What the watcher should use if the system runs out of native file watchers"
+display: "フォールバック ポーリング"
+oneline: "システムがネイティブのファイルウォッチャーを使い切ったら、ウォッチャー使うべきもの"
 ---
 
-When using file system events, this option specifies the polling strategy that gets used when the system runs out of native file watchers and/or doesn't support native file watchers.
+ファイルシステムのイベントを使用している時、システムがネイティブのファイルウォッチャーを使い切ったり、ネイティブのファイルウォッチャーが対応していない場合、どのようなポーリング戦略を行使するかを指定するオプションです。
 
-- `fixedPollingInterval`: Check every file for changes several times a second at a fixed interval.
-- `priorityPollingInterval`: Check every file for changes several times a second, but use heuristics to check certain types of files less frequently than others.
-- `dynamicPriorityPolling`: Use a dynamic queue where less-frequently modified files will be checked less often.
-- `synchronousWatchDirectory`: Disable deferred watching on directories. Deferred watching is useful when lots of file changes might occur at once (e.g. a change in `node_modules` from running `npm install`), but you might want to disable it with this flag for some less-common setups.
+- `fixedPollingInterval`: 一定の間隔を開けて、1 秒間に数回、全ファイルをチェックします。
+- `priorityPollingInterval`: 1 秒間に数回、全ファイルをチェックします。しかし、特定の種類のファイルにはヒューリスティックを使用して、他ファイルよりも低頻度でチェックします。
+- `dynamicPriorityPolling`: 変更頻度の少ないファイルは、低頻度でチェックされるように動的キューを使用します。
+- `synchronousWatchDirectory`: ディレクトリの遅延監視を無効にします。遅延監視は、沢山のファイル変更が一度に引き起こされる場合に有効です(例： `npm install` 実行による `node_modules` の変更)。しかし、このフラグは余り一般的でないセットアップの為にあるので、無効にしておくのが良いでしょう。
