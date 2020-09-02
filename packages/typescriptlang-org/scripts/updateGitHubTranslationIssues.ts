@@ -16,7 +16,7 @@ const languages = {
 }
 
 const go = async () => {
-  const octokit = Octokit({
+  const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
     userAgent: "TS Lang Issue Updater",
   })

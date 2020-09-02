@@ -625,7 +625,7 @@ function fn(x: string | number) {
 }
 ```
 
-### `Function` {#the-global-function-type}
+### `Function`
 
 The global type `Function` describes properties like `bind`, `call`, `apply`, and others present on all function values in JavaScript.
 It also has the special property that values of type `Function` can always be called; these calls return `any`:

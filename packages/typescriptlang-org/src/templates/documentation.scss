@@ -215,6 +215,25 @@
   }
 }
 
+div#like-dislike-subnav {
+  div {
+    font-size: 14px;
+    padding-top: 16px;
+    padding-left: 4px;
+
+    button {
+      border: none;
+      background: none;
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      svg {
+        margin-right: 4px;
+      }
+    }
+  }
+}
+
 .bottom-section-content {
   flex: 1;
   padding: 1rem 2rem;

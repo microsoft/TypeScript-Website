@@ -13,7 +13,7 @@ It's also possible to express types in terms of _values_ that we already have.
 By combining various type operators, we can express complex operations and values in a succinct, maintainable way.
 In this chapter we'll cover ways to express a type in terms of an existing type or value.
 
-## The `typeof` type operator {#typeof}
+## The `typeof` type operator
 
 JavaScript already has a `typeof` operator you can use in an _expression_ context:
 
@@ -76,7 +76,7 @@ type msgbox = any;
 let x : msgbox("Are you sure you want to continue?");
 ```
 
-## The `keyof` type operator {#keyof}
+## The `keyof` type operator
 
 The `keyof` operator takes an object type and produces a string or numeric literal union of its keys:
 

@@ -1,0 +1,37 @@
+name: Weekly
+
+on:
+  schedule:
+    # https://crontab.guru/#0_06_*_*_1
+    - cron: "0 06 * * 1"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+
+      # Build v2
+      - name: Setup
+        run: |
+          yarn install
+        env:
+          YARN_CHECKSUM_BEHAVIOR: ignore
+
+      # Update the site stats
+      - run: node packages/typescriptlang-org/scripts/updateAppInsightsGitHubIssue.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_BOT_TOKEN }}
+          APP_INSIGHTS_API_KEY: ${{ secrets.APP_INSIGHTS_API_KEY }}
+          APP_INSIGHTS_ID: ${{ secrets.APP_INSIGHTS_ID }}
+
+      - name: Send a message to Microsoft Teams
+        if: ${{ failure() }}
+        uses: aliencube/microsoft-teams-actions@v0.8.0
+        with:
+          webhook_uri: ${{ secrets.TEAMS_WEB_BOT_INCOMING_URL }}
+          title: AppInsights issue update failed
+          summary: Could not generate site stats for the week
+          actions: '[{ "@type": "OpenUri", "name": "View Logs", "targets": [{ "os": "default", "uri": "https://github.com/microsoft/TypeScript-Website/runs/${{ github.run_id }}?check_suite_focus=true" }] }]'
