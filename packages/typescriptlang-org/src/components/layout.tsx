@@ -3,7 +3,6 @@ import { SiteNav, Props } from "./layout/TopNav"
 import { SiteFooter } from "./layout/SiteFooter"
 import { SeoProps, HeadSEO } from "./HeadSEO";
 import "./layout/main.scss"
-import { AppInsights } from "./AppInsights";
 import { Helmet } from "react-helmet";
 import { CookieBanner } from "./layout/CookieBanner"
 import { LanguageRecommendations } from "./layout/LanguageRecommendation";
