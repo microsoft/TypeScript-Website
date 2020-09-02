@@ -629,9 +629,17 @@ $headline-foreground-bg: #104261;
       text-align: center;
       line-height: 2.5rem;
       z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       &:hover {
         background-color: #eee;
+      }
+
+      &:active {
+        background-color: #ddd;
+        top: calc(70% + 1px);
       }
 
       &.left {
