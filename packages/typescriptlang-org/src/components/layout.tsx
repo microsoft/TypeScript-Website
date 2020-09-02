@@ -30,7 +30,6 @@ export const Layout = (props: LayoutProps) => {
         <SiteFooter {...props} />
         <LanguageRecommendations {...props} />
       </div>
-      <AppInsights />
     </>
   )
 }
