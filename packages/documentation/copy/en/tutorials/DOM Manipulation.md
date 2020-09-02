@@ -148,7 +148,7 @@ Modify the html by removing one of the `p` tags, but keep the text.
 const div = document.getElementByTagName("div")[0];
 
 div.children;
-// HTMLCOllection(1) [p]
+// HTMLCollection(1) [p]
 
 div.childNodes;
 // NodeList(2) [p, text]
