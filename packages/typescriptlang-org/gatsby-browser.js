@@ -27,10 +27,17 @@ exports.onRouteUpdate = ({ location, prevLocation }) => {
   const referrerWithoutPlaygroundCode =
     document.referrer && document.referrer.split("#code")[0].split("#src")[0]
 
+  let hasLocalStorage = false
+  try {
+    hasLocalStorage = typeof localStorage !== `undefined`
+  } catch (error) {}
+
   // @ts-ignore
   aisdk.trackPageView({
     uri: locationWithoutPlaygroundCode,
     refUri: referrerWithoutPlaygroundCode,
     prev: previousLocationWithoutPlaygroundCode,
+    visitedPlayground:
+      hasLocalStorage && localStorage.getItem("sandbox-history") !== null,
   })
 }
