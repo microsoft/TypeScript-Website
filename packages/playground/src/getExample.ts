@@ -4,7 +4,7 @@ export const getExampleSourceCode = async (prefix: string, lang: string, example
     const examplesTOCHref = `${site}/js/examples/${lang}.json`
     const res = await fetch(examplesTOCHref)
     if (!res.ok) {
-      console.error('Could not fetch example TOC for lang: ' + lang)
+      console.error("Could not fetch example TOC for lang: " + lang)
       return {}
     }
 
@@ -16,21 +16,18 @@ export const getExampleSourceCode = async (prefix: string, lang: string, example
       return {}
     }
 
-    const exampleCodePath = `${site}/js/examples/${example.lang}/${example.path.join('/')}/${example.name}`
+    const exampleCodePath = `${site}/js/examples/${example.lang}/${example.path.join("/")}/${example.name}`
     const codeRes = await fetch(exampleCodePath)
     let code = await codeRes.text()
 
     // Handle removing the compiler settings stuff
-    if (code.startsWith('//// {')) {
-      code = code
-        .split('\n')
-        .slice(1)
-        .join('\n')
-        .trim()
+    if (code.startsWith("//// {")) {
+      code = code.split("\n").slice(1).join("\n").trim()
     }
 
     // @ts-ignore
-    window.appInsights.trackEvent({ name: 'Read Playground Example', properties: { id: exampleID, lang } })
+    window.appInsights &&
+      window.appInsights.trackEvent({ name: "Read Playground Example", properties: { id: exampleID, lang } })
 
     return {
       example,
