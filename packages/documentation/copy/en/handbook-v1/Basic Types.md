@@ -215,7 +215,7 @@ if (typeof maybe === "string") {
 
 ## Any
 
-In some situations, not all type information is available or it's declaration would take an inappropriate amount of effort.
+In some situations, not all type information is available or its declaration would take an inappropriate amount of effort.
 These may occur for values from code that has been written without TypeScript or a 3rd party library.
 In these cases, we might want to opt-out of type checking.
 To do so, we label these values with the `any` type:
@@ -276,7 +276,7 @@ unusable = null;
 
 ## Null and Undefined
 
-In TypeScript, both `undefined` and `null` actually have their own types named `undefined` and `null` respectively.
+In TypeScript, both `undefined` and `null` actually have their types named `undefined` and `null` respectively.
 Much like `void`, they're not extremely useful on their own:
 
 ```ts twoslash
@@ -349,11 +349,11 @@ Generally, you won't need to use this.
 ## Type assertions
 
 Sometimes you'll end up in a situation where you'll know more about a value than TypeScript does.
-Usually this will happen when you know the type of some entity could be more specific than its current type.
+Usually, this will happen when you know the type of some entity could be more specific than its current type.
 
 _Type assertions_ are a way to tell the compiler "trust me, I know what I'm doing."
-A type assertion is like a type cast in other languages, but performs no special checking or restructuring of data.
-It has no runtime impact, and is used purely by the compiler.
+A type assertion is like a type cast in other languages, but it performs no special checking or restructuring of data.
+It has no runtime impact and is used purely by the compiler.
 TypeScript assumes that you, the programmer, have performed any special checks that you need.
 
 Type assertions have two forms.
