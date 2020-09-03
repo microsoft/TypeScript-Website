@@ -23,7 +23,7 @@ exports.helloWorld = "Olá";
 //# sourceMappingURL=// helloWorld.js.map
 ```
 
-E isso irá gerar o seguinte mapa json:
+E isso irá gerar o seguinte arquivo json do mapa:
 
 ```json
 // helloWorld.js.map
