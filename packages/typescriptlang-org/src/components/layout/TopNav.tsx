@@ -24,6 +24,16 @@ export const SiteNav = (props: Props) => {
   useEffect(() => {
     setupStickyNavigation()
 
+    // @ts-ignore - this could come from a previous page load
+    if (typeof docsearch !== 'undefined') {
+      // @ts-ignore - just been validate
+      docsearch({
+        apiKey: '3c2db2aef0c7ff26e8911267474a9b2c',
+        indexName: 'typescriptlang',
+        inputSelector: '.search input',
+      });
+    }
+
     if (document.getElementById("algolia-search")) return
 
     const searchScript = document.createElement('script');
@@ -39,8 +49,7 @@ export const SiteNav = (props: Props) => {
         docsearch({
           apiKey: '3c2db2aef0c7ff26e8911267474a9b2c',
           indexName: 'typescriptlang',
-          inputSelector: '.search input',
-          debug: true // Set debug to true if you want to inspect the dropdown
+          inputSelector: '.search input'
         });
 
         searchCSS.rel = 'stylesheet';
