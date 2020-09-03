@@ -3451,6 +3451,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/classnames@npm:^2.2.10":
+  version: 2.2.10
+  resolution: "@types/classnames@npm:2.2.10"
+  checksum: 31b6380183c2123c69f5e50b9e40c7da2862ddfe634361d906a6e300dacd716656ce95e508541d0ec300f71aeed57d30a7ea46f36e881c01eb2334843700fadc
+  languageName: node
+  linkType: hard
+
 "@types/color-name@npm:^1.1.1":
   version: 1.1.1
   resolution: "@types/color-name@npm:1.1.1"
@@ -4070,14 +4077,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript/twoslash@0.6.2, @typescript/twoslash@workspace:packages/ts-twoslasher":
+"@typescript/twoslash@1.1.0, @typescript/twoslash@workspace:packages/ts-twoslasher":
   version: 0.0.0-use.local
   resolution: "@typescript/twoslash@workspace:packages/ts-twoslasher"
   dependencies:
     "@types/jest": ^25.1.3
     "@types/lz-string": ^1.3.33
     "@types/prettier": ^1.19.0
-    "@typescript/vfs": 1.1.2
+    "@typescript/vfs": 1.3.0
     debug: ^4.1.1
     husky: ^4.2.3
     jest-file-snapshot: ^0.3.8
@@ -4090,7 +4097,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript/vfs@1.1.2, @typescript/vfs@workspace:packages/typescript-vfs":
+"@typescript/vfs@1.3.0, @typescript/vfs@workspace:packages/typescript-vfs":
   version: 0.0.0-use.local
   resolution: "@typescript/vfs@workspace:packages/typescript-vfs"
   dependencies:
@@ -6884,6 +6891,13 @@ __metadata:
     isobject: ^3.0.0
     static-extend: ^0.1.1
   checksum: 6411679ad4d2bde81b62ad721d4771d108d5d8ef32805d10ebfa6f1d6bdcfd5cb6dfea5232b85221f079e42691c36cf2db05a5e76b87ba8f6deb37a2c23a4a41
+  languageName: node
+  linkType: hard
+
+"classnames@npm:^2.2.6":
+  version: 2.2.6
+  resolution: "classnames@npm:2.2.6"
+  checksum: 490eaeca5931846737ffd33e472a701d268d5b8bc5717dd4cf108a127b06e86e05350e06799abbbe763a0e4c945b4217f6700b7ae00ddc703505682c370e5cf2
   languageName: node
   linkType: hard
 
@@ -11923,17 +11937,17 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"gatsby-remark-shiki-twoslash@0.6.1, gatsby-remark-shiki-twoslash@workspace:packages/gatsby-remark-shiki-twoslash":
+"gatsby-remark-shiki-twoslash@0.7.0, gatsby-remark-shiki-twoslash@workspace:packages/gatsby-remark-shiki-twoslash":
   version: 0.0.0-use.local
   resolution: "gatsby-remark-shiki-twoslash@workspace:packages/gatsby-remark-shiki-twoslash"
   dependencies:
     "@types/jest": ^25.1.3
-    "@typescript/twoslash": 0.6.2
-    "@typescript/vfs": 1.1.2
+    "@typescript/twoslash": 1.1.0
+    "@typescript/vfs": 1.3.0
     rehype-stringify: ^6.0.1
     shiki: ^0.1.6
     shiki-languages: ^0.1.6
-    shiki-twoslash: 0.6.1
+    shiki-twoslash: 0.8.0
     tsdx: ^0.12.3
     tslib: ^1.10.0
     typescript: "*"
@@ -22576,7 +22590,9 @@ resolve@^1.17.0:
   version: 0.0.0-use.local
   resolution: "root@workspace:."
   dependencies:
+    "@types/classnames": ^2.2.10
     "@types/express": ^4.17.6
+    classnames: ^2.2.6
     concurrently: ^5.1.0
     cross-env: ^7.0.2
     danger: ^9.2.10
@@ -23201,14 +23217,14 @@ resolve@^1.17.0:
   languageName: node
   linkType: hard
 
-"shiki-twoslash@0.6.1, shiki-twoslash@workspace:packages/shiki-twoslash":
+"shiki-twoslash@0.8.0, shiki-twoslash@workspace:packages/shiki-twoslash":
   version: 0.0.0-use.local
   resolution: "shiki-twoslash@workspace:packages/shiki-twoslash"
   dependencies:
     "@types/jest": ^25.1.3
-    "@typescript/twoslash": 0.6.2
-    "@typescript/vfs": 1.1.2
-    gatsby-remark-shiki-twoslash: 0.6.1
+    "@typescript/twoslash": 1.1.0
+    "@typescript/vfs": 1.3.0
+    gatsby-remark-shiki-twoslash: 0.7.0
     rehype-stringify: ^6.0.1
     shiki: ^0.1.6
     shiki-languages: ^0.1.6
@@ -25401,7 +25417,7 @@ resolve@^1.17.0:
     "@types/react": ^16.9.20
     "@types/react-dom": ^16.9.5
     "@types/react-helmet": ^5.0.15
-    "@typescript/twoslash": 0.6.2
+    "@typescript/twoslash": 1.1.0
     canvas: ^2.6.1
     concurrently: ^5.1.0
     gatsby: ^2.19.18

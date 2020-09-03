@@ -1,0 +1,43 @@
+export type SearchResults = {
+    exhaustiveFacetsCount: boolean
+    exhaustiveNbHits: boolean
+    hits: SearchHit[]
+    hitsPerPage: number
+    page: number
+    query: string
+}
+
+export type SearchHit = {
+    deprecated: boolean
+    description: string
+    downloadsLast30Days: number
+    homepage: string | null
+    humanDownloadsLast30Days: string
+    keywords: string
+    license: string | null
+    modified: number
+    name: string
+    objectID: string
+    owner: SearchOwner
+    repository: SearchRepository
+    types: SearchTypes
+    version: string
+}
+
+export type SearchOwner = {
+    avatar: string
+    link: string
+    name: "zeekay"
+}
+
+export type SearchRepository = {
+    host: string
+    path: string
+    project: string
+    url: string
+    user: string
+}
+
+export type SearchTypes = {
+    ts: boolean
+}
