@@ -11,64 +11,52 @@ type CompilerOptions = import("typescript").CompilerOptions
  * from the source code
  */
 
-export const extractTwoSlashComplierOptions = (ts: TS) => (code: string) => {
-  const codeLines = code.split("\n")
-  const options = {} as any
-
-  codeLines.forEach(line => {
-    let match
-    if ((match = booleanConfigRegexp.exec(line))) {
-      options[match[1]] = true
-      setOption(match[1], "true", options, ts)
-    } else if ((match = valuedConfigRegexp.exec(line))) {
-      setOption(match[1], match[2], options, ts)
-    }
-  })
-  return options
-}
-
-function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
-  const skipList = [
-    "noErrors",
-    "showEmit",
-    "showEmittedFile",
-    "noStaticSemanticInfo",
-    "emit",
-    "noErrorValidation",
-    "filename",
-  ]
-  if (skipList.includes(name)) return
+export const extractTwoSlashComplierOptions = (ts: TS) => {
+  const optMap = new Map<string, any>()
 
   // @ts-ignore - optionDeclarations is not public API
   for (const opt of ts.optionDeclarations) {
-    if (opt.name.toLowerCase() === name.toLowerCase()) {
-      switch (opt.type) {
-        case "number":
-        case "string":
-        case "boolean":
-          opts[opt.name] = parsePrimitive(value, opt.type)
-          break
-
-        case "list":
-          opts[opt.name] = value.split(",").map(v => parsePrimitive(v, opt.element!.type as string))
-          break
-
-        default:
-          opts[opt.name] = opt.type.get(value.toLowerCase())
-
-          if (opts[opt.name] === undefined) {
-            const keys = Array.from(opt.type.keys() as any)
-            console.log(`Invalid value ${value} for ${opt.name}. Allowed values: ${keys.join(",")}`)
-          }
-          break
-      }
-      return
-    }
+    optMap.set(opt.name.toLowerCase(), opt)
   }
 
-  // Skip the note of errors
-  if (name !== "errors") {
-    console.log(`No compiler setting named '${name}' exists!`)
+  return (code: string) => {
+    const codeLines = code.split("\n")
+    const options = {} as any
+
+    codeLines.forEach(line => {
+      let match
+      if ((match = booleanConfigRegexp.exec(line))) {
+        options[match[1]] = true
+        setOption(match[1], "true", options, optMap)
+      } else if ((match = valuedConfigRegexp.exec(line))) {
+        setOption(match[1], match[2], options, optMap)
+      }
+    })
+    return options
+  }
+}
+
+function setOption(name: string, value: string, opts: CompilerOptions, optMap: Map<string, any>) {
+  const opt = optMap.get(name.toLowerCase())
+  if (!opt) return
+  switch (opt.type) {
+    case "number":
+    case "string":
+    case "boolean":
+      opts[opt.name] = parsePrimitive(value, opt.type)
+      break
+
+    case "list":
+      opts[opt.name] = value.split(",").map(v => parsePrimitive(v, opt.element!.type as string))
+      break
+
+    default:
+      opts[opt.name] = opt.type.get(value.toLowerCase())
+
+      if (opts[opt.name] === undefined) {
+        const keys = Array.from(opt.type.keys() as any)
+        console.log(`Invalid value ${value} for ${opt.name}. Allowed values: ${keys.join(",")}`)
+      }
   }
 }
 
