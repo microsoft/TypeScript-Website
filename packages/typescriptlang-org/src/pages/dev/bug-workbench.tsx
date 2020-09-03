@@ -88,7 +88,8 @@ const Play: React.FC<Props> = (props) => {
           compilerOptions: {},
           domID: "monaco-editor-embed",
           useJavaScript: !!params.get("useJavaScript"),
-          acquireTypes: !localStorage.getItem("disable-ata")
+          acquireTypes: !localStorage.getItem("disable-ata"),
+          supportTwoslashCompilerOptions: true
         }, main, ts)
 
         const playgroundConfig = {
@@ -121,6 +122,13 @@ const Play: React.FC<Props> = (props) => {
 
         const debouncedTwoslash = debounce(() => {
           if (dtsMap) runTwoslash()
+
+          const isTSErrorsEnabled = !sandboxEnv.languageServiceDefaults.getDiagnosticsOptions().noSemanticValidation
+          const shouldBeEnabled = !sandboxEnv.getText().includes("// @filename")
+          if (isTSErrorsEnabled !== shouldBeEnabled) {
+            // Turn off the suggestions for multi-file reports
+            sandboxEnv.languageServiceDefaults.setDiagnosticsOptions({ noSemanticValidation: !shouldBeEnabled })
+          }
         }, 1000)
 
         sandboxEnv.editor.onDidChangeModelContent(debouncedTwoslash)
