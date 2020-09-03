@@ -3,9 +3,8 @@ const booleanConfigRegexp = /^\/\/\s?@(\w+)$/
 // https://regex101.com/r/8B2Wwh/1
 const valuedConfigRegexp = /^\/\/\s?@(\w+):\s?(.+)$/
 
-type Sandbox = ReturnType<typeof import('.').createTypeScriptSandbox>
-type TS = typeof import('typescript')
-type CompilerOptions = import('typescript').CompilerOptions
+type TS = typeof import("typescript")
+type CompilerOptions = import("typescript").CompilerOptions
 
 /**
  * This is a port of the twoslash bit which grabs compiler options
@@ -13,14 +12,14 @@ type CompilerOptions = import('typescript').CompilerOptions
  */
 
 export const extractTwoSlashComplierOptions = (ts: TS) => (code: string) => {
-  const codeLines = code.split('\n')
+  const codeLines = code.split("\n")
   const options = {} as any
 
-  codeLines.forEach((line) => {
+  codeLines.forEach(line => {
     let match
     if ((match = booleanConfigRegexp.exec(line))) {
       options[match[1]] = true
-      setOption(match[1], 'true', options, ts)
+      setOption(match[1], "true", options, ts)
     } else if ((match = valuedConfigRegexp.exec(line))) {
       setOption(match[1], match[2], options, ts)
     }
@@ -29,18 +28,29 @@ export const extractTwoSlashComplierOptions = (ts: TS) => (code: string) => {
 }
 
 function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
+  const skipList = [
+    "noErrors",
+    "showEmit",
+    "showEmittedFile",
+    "noStaticSemanticInfo",
+    "emit",
+    "noErrorValidation",
+    "filename",
+  ]
+  if (skipList.includes(name)) return
+
   // @ts-ignore - optionDeclarations is not public API
   for (const opt of ts.optionDeclarations) {
     if (opt.name.toLowerCase() === name.toLowerCase()) {
       switch (opt.type) {
-        case 'number':
-        case 'string':
-        case 'boolean':
+        case "number":
+        case "string":
+        case "boolean":
           opts[opt.name] = parsePrimitive(value, opt.type)
           break
 
-        case 'list':
-          opts[opt.name] = value.split(',').map((v) => parsePrimitive(v, opt.element!.type as string))
+        case "list":
+          opts[opt.name] = value.split(",").map(v => parsePrimitive(v, opt.element!.type as string))
           break
 
         default:
@@ -48,7 +58,7 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
 
           if (opts[opt.name] === undefined) {
             const keys = Array.from(opt.type.keys() as any)
-            throw new Error(`Invalid value ${value} for ${opt.name}. Allowed values: ${keys.join(',')}`)
+            console.log(`Invalid value ${value} for ${opt.name}. Allowed values: ${keys.join(",")}`)
           }
           break
       }
@@ -57,19 +67,19 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
   }
 
   // Skip the note of errors
-  if (name !== 'errors') {
-    throw new Error(`No compiler setting named '${name}' exists!`)
+  if (name !== "errors") {
+    console.log(`No compiler setting named '${name}' exists!`)
   }
 }
 
 export function parsePrimitive(value: string, type: string): any {
   switch (type) {
-    case 'number':
+    case "number":
       return +value
-    case 'string':
+    case "string":
       return value
-    case 'boolean':
-      return value.toLowerCase() === 'true' || value.length === 0
+    case "boolean":
+      return value.toLowerCase() === "true" || value.length === 0
   }
   console.log(`Unknown primitive type ${type} with - ${value}`)
 }
