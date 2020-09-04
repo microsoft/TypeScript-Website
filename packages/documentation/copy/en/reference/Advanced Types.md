@@ -822,6 +822,8 @@ type ThreeStringProps = Record<"prop1" | "prop2" | "prop3", string>;
 
 Non-homomorphic types are essentially creating new properties, so they can't copy property modifiers from anywhere.
 
+Note that `keyof any` represents the type of any value that can be used as an index to an object. In otherwords, `keyof any` is currently equal to `string | number | symbol`.
+
 ## Inference from mapped types
 
 Now that you know how to wrap the properties of a type, the next thing you'll want to do is unwrap them.
