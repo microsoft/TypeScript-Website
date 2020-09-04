@@ -1,3 +1,4 @@
+import { withPrefix } from "gatsby"
 import * as React from "react"
 
 import { cx } from "../../lib/cx"
@@ -23,6 +24,11 @@ export const ResultRow: React.FC<ResultRowprops> = ({
     types,
   },
 }) => {
+  const [icon, label] =
+    types.ts === "included"
+      ? ["in", "included"]
+      : ["dt", "from DefinitelyTyped"]
+
   return (
     <tr className={cx("resultRow", exactMatch && "resultRowExactMatch")}>
       <td
@@ -30,14 +36,18 @@ export const ResultRow: React.FC<ResultRowprops> = ({
           "downloads",
           downloadsLast30Days > 1_000_000
             ? "downloadsMillion"
-            : downloadsLast30Days > 100_000
-            ? "downloadsHundredThousand"
-            : "downloadsMeh"
+            : downloadsLast30Days > 100_000 && "downloadsHundredThousand"
         )}
       >
         {humanDownloadsLast30Days}
       </td>
-      <td className="via">{types.ts === "included" ? "IN" : "DT"}</td>
+      <td className="via">
+        <div
+          aria-label={`Types ${label}`}
+          className={cx("typeImage", icon)}
+          role="img"
+        />
+      </td>
       <td className="name">
         <strong>{name}</strong>
         {description}

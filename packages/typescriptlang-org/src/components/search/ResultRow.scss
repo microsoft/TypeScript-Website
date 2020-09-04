@@ -28,8 +28,64 @@
   width: 3.5rem;
 }
 
+.downloadsMillion,
+.downloadsHundredThousand {
+  &::after {
+    content: " ";
+    display: block;
+    width: 70%;
+    margin-left: 15%;
+    height: 1px;
+  }
+}
+
+.downloadsMillion::after {
+  background: $ts-main-blue-color;
+}
+
+.downloadsHundredThousand::after {
+  background: $ts-js-yellow-muted-color;
+}
+
 .via {
-  width: 2rem;
+  width: 2.5rem;
+}
+
+.typeImage {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    box-sizing: border-box;
+    height: 20px;
+    text-align: right;
+    width: 20px;
+  }
+}
+
+.dt::after {
+  align-items: flex-end;
+  border-radius: 4px;
+  border: 1px solid black;
+  content: "DT";
+  display: flex;
+  font-size: 7px;
+  font-weight: bold;
+  padding-right: 2px;
+  justify-content: flex-end;
+  vertical-align: bottom;
+}
+
+.in::after {
+  content: " ";
+  background: center center no-repeat
+    url("data:image/svg+xml,%3Csvg width='20' height='21' viewBox='0 0 22 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 17.1333V6.44762L11 1L21 6.44762V17.5524L11 23L1 17.1333Z' fill='%23F3F3F3' stroke='black'/%3E%3C/svg%3E%0A");
 }
 
 .name {
