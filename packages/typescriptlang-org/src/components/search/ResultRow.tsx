@@ -1,22 +1,16 @@
 import * as React from "react"
 
 import { cx } from "../../lib/cx"
-import { JoinedPackage } from "./types"
+import { SearchHit } from "./types"
 
 export type ResultRowprops = {
   installer: [string, string]
-  joinedPackage: JoinedPackage
+  hit: SearchHit
 }
 
 export const ResultRow: React.FC<ResultRowprops> = ({
   installer,
-  joinedPackage: {
-    description,
-    downloadsLast30Days,
-    externalTypes,
-    modified,
-    name,
-  },
+  hit: { description, downloadsLast30Days, modified, name, types },
 }) => {
   return (
     <tr className="resultRow">
@@ -32,7 +26,7 @@ export const ResultRow: React.FC<ResultRowprops> = ({
       >
         {humanize(downloadsLast30Days)}
       </td>
-      <td>{externalTypes ? "DT" : "IN"}</td>
+      <td>{types.ts === "included" ? "IN" : "DT"}</td>
       <td>
         <strong>{name}</strong> <br /> {description}
       </td>
@@ -41,10 +35,10 @@ export const ResultRow: React.FC<ResultRowprops> = ({
         <pre>
           <code>
             &gt; {installer[0]} {name}
-            {externalTypes && (
+            {types.ts === "definitely-typed" && (
               <>
                 {"\n"}
-                &gt; {installer[0]} @types/${name} {installer[1]}
+                &gt; {installer[0]} ${types.definitelytyped} {installer[1]}
               </>
             )}
           </code>

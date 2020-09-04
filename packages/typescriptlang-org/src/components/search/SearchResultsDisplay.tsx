@@ -1,11 +1,11 @@
 import React, { useState } from "react"
 
 import { ResultRow } from "./ResultRow"
-import { JoinedSearchResult } from "./types"
-import { Installer, Installers, PackageSource } from "./constants"
+import { Installers, PackageSource } from "./constants"
+import { RawSearchResult } from "./types"
 
 export type SearchResultsProps = {
-  result?: JoinedSearchResult
+  result?: RawSearchResult
   search: string
 }
 
@@ -19,9 +19,13 @@ export const SearchResultsDisplay: React.FC<SearchResultsProps> = ({
     return <div>default search goes here ;)</div>
   }
 
-  if (!result.packages.length) {
+  const typedHits = result.hits.filter(hit => hit.types.ts)
+
+  if (!typedHits.length) {
     return <div>sad, no results for {search} :(</div>
   }
+
+  const exactMatch = typedHits.find(hit => hit.name === search)
 
   return (
     <>
@@ -32,11 +36,8 @@ export const SearchResultsDisplay: React.FC<SearchResultsProps> = ({
           </tr>
         </thead>
         <tbody>
-          {result.exactMatch && (
-            <ResultRow
-              installer={Installers[installer]}
-              joinedPackage={result.exactMatch}
-            />
+          {exactMatch && (
+            <ResultRow hit={exactMatch} installer={Installers[installer]} />
           )}
         </tbody>
       </table>
@@ -51,13 +52,16 @@ export const SearchResultsDisplay: React.FC<SearchResultsProps> = ({
           </tr>
         </thead>
         <tbody>
-          {result.packages.map(joinedPackage => (
-            <ResultRow
-              key={joinedPackage.name}
-              installer={Installers[installer]}
-              joinedPackage={joinedPackage}
-            />
-          ))}
+          {typedHits.map(
+            hit =>
+              hit.name !== search && (
+                <ResultRow
+                  hit={hit}
+                  key={hit.name}
+                  installer={Installers[installer]}
+                />
+              )
+          )}
         </tbody>
       </table>
     </>

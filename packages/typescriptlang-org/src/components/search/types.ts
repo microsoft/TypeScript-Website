@@ -1,9 +1,5 @@
-
 export type RawSearchResults = {
-    /**
-     * @remarks These should be from two queries: ["packageName", "@types/packageName"]
-     */
-    results: [RawSearchResult, RawSearchResult]
+    results: [RawSearchResult]
 }
 
 export type RawSearchResult = {
@@ -46,20 +42,20 @@ export type SearchRepository = {
     user: string
 }
 
-export type SearchTypes = {
-    ts: boolean
+export type SearchTypes =
+    | SearchTypesExternal
+    | SearchTypesIncluded
+    | SearchTypesMissing
+
+export type SearchTypesExternal = {
+    definitelytyped: string;
+    ts: "definitely-typed"
 }
 
-export type JoinedSearchResult = {
-    exactMatch?: JoinedPackage
-    packages: JoinedPackage[]
-    query: string
+export type SearchTypesIncluded = {
+    ts: "included"
 }
 
-export type JoinedPackage = {
-    description: string
-    downloadsLast30Days: number
-    externalTypes: boolean
-    modified: number
-    name: string
+export type SearchTypesMissing = {
+    ts: false
 }

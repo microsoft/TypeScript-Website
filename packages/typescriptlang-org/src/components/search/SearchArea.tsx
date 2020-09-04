@@ -2,10 +2,10 @@ import { withPrefix } from "gatsby"
 import * as React from "react"
 
 import { cx } from "../../lib/cx"
-import { JoinedSearchResult } from "./types"
+import { RawSearchResult } from "./types"
 
 export type SearchAreaProps = {
-  result?: JoinedSearchResult
+  result?: RawSearchResult
   search: string
   setSearch: (newSearch: string) => void
 }
@@ -29,7 +29,7 @@ export const SearchArea: React.FC<SearchAreaProps> = ({
         />
         {search === result?.query && (
           <span aria-live="polite" className="resultsCount">
-            {pluralize(result.packages.length, 50, "match", "es")}
+            {pluralize(result.hits.length, 50, "match", "es")}
           </span>
         )}
         {!search ? (

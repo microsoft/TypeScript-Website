@@ -8,7 +8,7 @@ import "./search.scss"
 import { DTSearchPageQuery } from "../../../__generated__/gatsby-types"
 import { SearchArea } from "../../../components/search/SearchArea"
 import { SearchResultsDisplay } from "../../../components/search/SearchResultsDisplay"
-import { useSearchResult } from "../../../components/search/useJoinedSearchResult"
+import { useSearchResult } from "../../../components/search/useSearchResult"
 
 type Props = {
   data: DTSearchPageQuery
