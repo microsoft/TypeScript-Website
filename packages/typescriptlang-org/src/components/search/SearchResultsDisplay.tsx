@@ -59,11 +59,11 @@ export const SearchResultsDisplay: React.FC<SearchResultsDisplayProps> = ({
           </>
         )}
         <tr className={cx("headRow", (exactMatch || search) && "afterTop")}>
-          <th>DLs</th>
+          <th className="dlsHead">DLs</th>
           <th>Via</th>
           <th>Module</th>
-          <th>Last Updated</th>
-          <th>
+          <th className="updatedHead">Last Updated</th>
+          <th className="installHead">
             Install
             <div className="installers">
               {installerOptions.map(installOption => (

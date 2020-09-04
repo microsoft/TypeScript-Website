@@ -96,6 +96,17 @@
 
 .updated {
   width: 10rem;
+
+  @media (max-width: $screen-sm) {
+    width: 7.5rem;
+  }
+}
+
+@media (max-width: $screen-xs) {
+  .downloads,
+  .updated {
+    display: none;
+  }
 }
 
 .install {
@@ -113,6 +124,10 @@
     right: 0;
     top: 0;
     width: 15px;
+  }
+
+  @media (max-width: $screen-sm) {
+    display: none;
   }
 }
 

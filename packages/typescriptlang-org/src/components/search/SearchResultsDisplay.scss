@@ -33,8 +33,8 @@
   border-radius: 2px;
   border-spacing: 0;
   font-size: 14px;
-  margin-bottom: 1rem;
-  width: 100%;
+  margin: 0 1rem 1rem;
+  width: calc(100% - 2rem);
 
   th {
     font-weight: normal;
@@ -59,6 +59,19 @@
 
 .afterTop th {
   padding-top: 2rem;
+}
+
+@media (max-width: $screen-xs) {
+  .dlsHead,
+  .updatedHead {
+    display: none;
+  }
+}
+
+@media (max-width: $screen-sm) {
+  .installHead {
+    display: none;
+  }
 }
 
 .installers {

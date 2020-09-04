@@ -61,6 +61,12 @@
   font-size: 20px;
   margin-right: 1rem;
   white-space: nowrap;
+
+  @media (max-width: $screen-xs) {
+    height: 0;
+    overflow: hidden;
+    width: 0;
+  }
 }
 
 .magnifier {

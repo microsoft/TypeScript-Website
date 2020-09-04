@@ -1,8 +1,6 @@
 import * as React from "react"
 import { useIntl, FormattedRelativeTime } from "react-intl"
 
-import { searchCopy } from "../../copy/en/search"
-import { createInternational } from "../../lib/createInternational"
 import { cx } from "../../lib/cx"
 import { SearchHit } from "./types"
 
@@ -26,8 +24,6 @@ export const ResultRow: React.FC<ResultRowprops> = ({
     types,
   },
 }) => {
-  const i = createInternational<typeof searchCopy>(useIntl())
-  const fallback = i("just_now")
   const [icon, label] =
     types.ts === "included"
       ? ["in", "included"]
@@ -59,7 +55,7 @@ export const ResultRow: React.FC<ResultRowprops> = ({
           .replace(/\!?\[(.*)\]\(.*\)/g, "$1")}
       </td>
       <td className="updated">
-        <TimeAgo ago={Date.now() - modified} fallback={fallback} />
+        <TimeAgo ago={Date.now() - modified} />
       </td>
       <td className="install">
         {!exactMatch && (
@@ -95,13 +91,12 @@ const timeMeasures = [
 
 type TimeAgoProps = {
   ago: number
-  fallback: string
 }
 
-const TimeAgo: React.FC<TimeAgoProps> = ({ ago, fallback }) => {
+const TimeAgo: React.FC<TimeAgoProps> = ({ ago }) => {
   const measureIndex = timeMeasures.findIndex(([ms]) => ago > ms)
   if (measureIndex === -1) {
-    return <>{fallback}</>
+    return <>just now</>
   }
 
   const [ms, unit] = timeMeasures[measureIndex]
