@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 
 import { cx } from "../../lib/cx"
+import { useLocalStorage } from "../../lib/useLocalStorage"
 import { ResultRow } from "./ResultRow"
 import { installerOptions, Installers, PackageSource } from "./constants"
 import { RawSearchResult } from "./types"
@@ -16,7 +17,10 @@ export const SearchResultsDisplay: React.FC<SearchResultsProps> = ({
   result,
   search,
 }) => {
-  const [installer, setInstaller] = useState(PackageSource.Npm)
+  const [installer, setInstaller] = useLocalStorage<PackageSource>(
+    "dt/search/packageSource",
+    PackageSource.Npm
+  )
 
   if (!result) {
     return <div className="loading">...</div>
