@@ -1,4 +1,4 @@
-// Tipo unions é uma forma de declarar que um objeto
+// União de tipos (type unions) é uma forma de declarar que um objeto
 // pode ser mais de um tipo.
 
 type StringOrNumber = string | number;
@@ -7,13 +7,13 @@ type OddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
 type AMessyUnion = "hello" | 156 | { error: true };
 
 // Se o uso de "open" e "closed" vs string é
-// novo para você, verifique: example: literals
+// novo para você, verifique: example:literals
 
-// Nos podemos misturar diferentes tipos em um union, e
-// o que estamos dizendo é que o valor é um destes tipos.
+// Podemos misturar diferentes tipos em um union, dizendo que o valor é 
+// de um destes tipos.
 
-// TypeScript irá então deixar você descobrir como
-// determinar qual valor poderá ser em tempo de execução.
+// TypeScript irá então deixar para você o trabalho de 
+// determinar qual valor deve ser em tempo de execução.
 
 // Unions podem ser prejudicados pelo 'type-widening', 
 // por exemplo:
@@ -24,9 +24,9 @@ type WindowStates = "open" | "closed" | "minimized" | string;
 // se transforma em uma string - não em um union. Isto é explicado em
 // example:type-widening-and-narrowing
 
-// Se um union é um 'OU', então um intersection é um 'É'.
-// Tipo intersection é tipo com dois tipos que se cruzam 
-// para criar um novo tipo. Ele permite a composição de tipos.
+// Se um union é um 'OU', então um intersection é um 'E'.
+// Interseção de tipos (type intersection) consiste de dois tipos que
+// se cruzam para criar um novo tipo. Ele permite a composição de tipos.
 
 interface ErrorHandling {
   success: boolean;

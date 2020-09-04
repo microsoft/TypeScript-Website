@@ -13,8 +13,8 @@ const myObject = JSON.parse("{}");
 
 myObject.x.y.z;
 
-// Utilizar any prove a você a habilidade de escrever código próximo 
-// ao JavaScript original sem a segurança do tipos.
+// Utilizar any provê a você a habilidade de escrever código próximo 
+// ao JavaScript original sem a segurança de tipos.
 
 // Any é muito semelhante a um 'tipo coringa' do qual 
 // você pode substituir com qualquer tipo (exceto never) 
@@ -29,7 +29,7 @@ debug({ color: "blue" });
 // Cada chamada para debug é permitida porque você pode substituir o
 // tipo any com o tipo do argumento correspondente.
 
-// Typrescript irá considerar a posição dos anys de diferentes formas,
+// TypeScript irá considerar a posição dos anys de diferentes formas,
 // como, por exemplo, com essas tuplas como argumento da função.
 
 declare function swap(x: [number, string]): [string, number];
@@ -43,7 +43,7 @@ swap(pair);
 
 // Se tuplas são novas para você, veja: example:tuples
 
-// Unknown é um irmão do tipo any, se any é sobre dizer "Eu sei 
-// o que é melhor", então Unknown é sobre dizer "Eu não sei o que 
+// Unknown é um irmão do tipo any, any é como dizer "Eu sei 
+// o que é melhor", já Unknown é como dizer "Eu não sei o que 
 // é o melhor, então você precisa dizer ao TS o tipo".
-// example: unknown-and-never
+// example:unknown-and-never

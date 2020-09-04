@@ -1,6 +1,6 @@
 //// { order: 3, compiler: { strictNullChecks: true } }
 
-// Quando um tipo específico parece util na maioria 
+// Quando um tipo específico parece útil na maioria 
 // das bases de código, eles são adicionados ao TypeScript e
 // se tornam disponíveis para todos, o que significa que 
 // você pode contar com a disponibilidade deles.
@@ -29,8 +29,8 @@ type StickerFromAPI = Readonly<Sticker>;
 
 // Record<KeysFrom, Type>
 
-// Cria um tipo que usa a lista de propriedaes do
-// KeysFrom e da a eles o valor do tipo.
+// Cria um tipo que usa a lista de propriedades do
+// KeysFrom e dá a eles o valor do tipo.
 
 // Lista de chaves:
 
@@ -61,7 +61,7 @@ type StickerSortPreview = Pick<Sticker, "name" | "updatedAt">;
 
 // Omit<Type, Keys>
 
-// Cria um tipo removendo o conjunto de propriedas Keys 
+// Cria um tipo removendo o conjunto de propriedades Keys 
 // de um tipo. Essencialmente uma lista de bloqueio para extrair
 // informação de tipo de um tipo.
 
@@ -76,14 +76,14 @@ type HomeNavigationPages = Exclude<NavigationPages, "home">;
 
 // Extract<Type, MatchUnion>
 
-// Cria um tipo com as proprieades de Type que sobrepõe MatchUnion.
+// Cria um tipo com as propriedades de Type que sobrepõe MatchUnion.
 
 type DynamicPages = Extract<NavigationPages, "home" | "stickers">;
 
 // NonNullable<Type>
 
 // Cria um tipo removendo null e undefined do conjunto de propriedades.
-// Util quando você tem uma checagem de validação.
+// Útil quando você tem uma checagem de validação.
 
 type StickerLookupResult = Sticker | undefined | null;
 type ValidatedResult = NonNullable<StickerLookupResult>;
@@ -116,7 +116,7 @@ type AccessiblePageInfo = Required<PageInfo>;
 
 // Diferente dos outros tipos, ThisType não retorna um novo tipo,
 // ao invés, ele manipula a definição de this dentro da função. 
-// Você pode apenas utilzar ThisType quando você tem noImplicitThis
+// Você pode apenas utilizar ThisType quando você tem noImplicitThis
 // ativado no seu TSConfig.
 
 // https://www.typescriptlang.org/docs/handbook/utility-types.html
