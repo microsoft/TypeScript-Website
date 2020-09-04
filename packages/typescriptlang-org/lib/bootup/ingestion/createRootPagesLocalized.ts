@@ -29,7 +29,6 @@ export const createRootPagesLocalized = async (
 
   files.forEach(f => {
     const fullpath = path.join(__dirname, "..", "..", "..", "..", f)
-      .replace("..//", "../")
     let originalSitePath = path
       .relative(rootPagesDir, fullpath)
       .replace(/.tsx$/g, "")
@@ -44,10 +43,6 @@ export const createRootPagesLocalized = async (
       // prettier-ignore
       originalSitePath = originalSitePath.substring(0, originalSitePath.length - 3)
     }
-
-    // Always use /s for the path, because the join above in windows would be \
-    originalSitePath = originalSitePath.split("\\").join("/")
-    // fullpath = fullpath.split("\\").join("/");
 
     langs.forEach(lang => {
       const prefix = lang === "en" ? "/" : `/${lang}/`
