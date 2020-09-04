@@ -373,7 +373,7 @@ To preserve existing functionality, we also add a simple getter that retrieves `
 const fullNameMaxLength = 10;
 
 class Employee {
-  private _fullName: string;
+  private _fullName: string = "";
 
   get fullName(): string {
     return this._fullName;
