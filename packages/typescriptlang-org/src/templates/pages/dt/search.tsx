@@ -38,8 +38,10 @@ const Index: React.FC<Props> = props => {
       <div className="topContents">
         <SearchArea result={result} search={search} setSearch={setSearch} />
       </div>
-      <div className="resultsArea">
-        <SearchResultsDisplay result={result} search={search} />
+      <div className="resultsBackground">
+        <div className="resultsArea">
+          <SearchResultsDisplay result={result} search={search} />
+        </div>
       </div>
     </Layout>
   )

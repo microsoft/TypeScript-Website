@@ -4,6 +4,8 @@ import { ResultRow } from "./ResultRow"
 import { Installers, PackageSource } from "./constants"
 import { RawSearchResult } from "./types"
 
+import "./SearchResultsDisplay.scss"
+
 export type SearchResultsProps = {
   result?: RawSearchResult
   search: string
@@ -19,31 +21,29 @@ export const SearchResultsDisplay: React.FC<SearchResultsProps> = ({
     return <div>default search goes here ;)</div>
   }
 
-  const typedHits = result.hits.filter(hit => hit.types.ts)
-
-  if (!typedHits.length) {
+  if (!result.hits.length) {
     return <div>sad, no results for {search} :(</div>
   }
 
-  const exactMatch = typedHits.find(hit => hit.name === search)
+  const exactMatch = result.hits.find(hit => hit.name === search)
 
   return (
-    <>
-      <table>
+    <div className="searchResultsDisplay">
+      <table className="resultsTable">
         <thead>
-          <tr>
-            <th colSpan={5}>Exact match</th>
-          </tr>
-        </thead>
-        <tbody>
           {exactMatch && (
-            <ResultRow hit={exactMatch} installer={Installers[installer]} />
+            <>
+              <tr>
+                <th colSpan={5}>Exact match</th>
+              </tr>
+              <ResultRow
+                hit={exactMatch}
+                installer={Installers[installer]}
+                raised
+              />
+            </>
           )}
-        </tbody>
-      </table>
-      <table>
-        <thead>
-          <tr>
+          <tr className="headRow">
             <th>DLs</th>
             <th>Via</th>
             <th>Module</th>
@@ -51,8 +51,8 @@ export const SearchResultsDisplay: React.FC<SearchResultsProps> = ({
             <th>Install</th>
           </tr>
         </thead>
-        <tbody>
-          {typedHits.map(
+        <tbody className="resultsRaised">
+          {result.hits.map(
             hit =>
               hit.name !== search && (
                 <ResultRow
@@ -64,6 +64,6 @@ export const SearchResultsDisplay: React.FC<SearchResultsProps> = ({
           )}
         </tbody>
       </table>
-    </>
+    </div>
   )
 }

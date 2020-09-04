@@ -66,7 +66,12 @@ export const useSearchResult = (search: string) => {
                     return
                 }
 
-                setResult((json as RawSearchResults).results[0])
+                const [rawResult] = (json as RawSearchResults).results
+
+                setResult({
+                    ...rawResult,
+                    hits: rawResult.hits.filter(hit => hit.types.ts)
+                })
             }
         )
 

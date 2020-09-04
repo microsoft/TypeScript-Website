@@ -3,36 +3,48 @@ import * as React from "react"
 import { cx } from "../../lib/cx"
 import { SearchHit } from "./types"
 
+import "./ResultRow.scss"
+
 export type ResultRowprops = {
   installer: [string, string]
   hit: SearchHit
+  raised?: boolean
 }
 
 export const ResultRow: React.FC<ResultRowprops> = ({
   installer,
-  hit: { description, downloadsLast30Days, modified, name, types },
+  hit: {
+    description,
+    downloadsLast30Days,
+    humanDownloadsLast30Days,
+    modified,
+    name,
+    types,
+  },
+  raised,
 }) => {
   return (
-    <tr className="resultRow">
+    <tr className={cx("resultRow", raised && "resultRowRaised")}>
       <td
         className={cx(
-          "hitDownloads",
+          "downloads",
           downloadsLast30Days > 1_000_000
-            ? "hitDownloadsMillion"
+            ? "downloadsMillion"
             : downloadsLast30Days > 100_000
-            ? "hitDownloadsHundredThousand"
-            : "hitDownloadsMeh"
+            ? "downloadsHundredThousand"
+            : "downloadsMeh"
         )}
       >
-        {humanize(downloadsLast30Days)}
+        {humanDownloadsLast30Days}
       </td>
-      <td>{types.ts === "included" ? "IN" : "DT"}</td>
-      <td>
-        <strong>{name}</strong> <br /> {description}
+      <td className="via">{types.ts === "included" ? "IN" : "DT"}</td>
+      <td className="name">
+        <strong>{name}</strong>
+        {description}
       </td>
-      <td>{modified}</td>
-      <td>
-        <pre>
+      <td className="updated">{modified}</td>
+      <td className="install">
+        <pre className="pre">
           <code>
             &gt; {installer[0]} {name}
             {types.ts === "definitely-typed" && (
@@ -47,5 +59,3 @@ export const ResultRow: React.FC<ResultRowprops> = ({
     </tr>
   )
 }
-
-const humanize = (count: number) => `${count}...!`

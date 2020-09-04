@@ -4,6 +4,8 @@ import * as React from "react"
 import { cx } from "../../lib/cx"
 import { RawSearchResult } from "./types"
 
+import "./SearchArea.scss"
+
 export type SearchAreaProps = {
   result?: RawSearchResult
   search: string

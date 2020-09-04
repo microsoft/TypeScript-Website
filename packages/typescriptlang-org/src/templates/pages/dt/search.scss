@@ -5,94 +5,11 @@
   border: none;
 }
 
-.searchArea,
+.resultsBackground {
+  background: $ts-light-bg-sandy-color;
+}
+
 .resultsArea {
   margin: auto;
   max-width: 1040px;
-}
-
-.searchArea {
-  padding: 8rem 1rem 2rem;
-
-  &.searchAreaSearching {
-    padding: 2rem 1rem 2rem;
-  }
-}
-
-.searchBar {
-  align-items: center;
-  border-bottom: 2px solid $ts-light-bg-grey-highlight-color;
-  display: flex;
-  flex-direction: row;
-  padding-bottom: 0.5rem;
-}
-
-.searchInput {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 36px;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  padding-bottom: 0.25rem;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 100%;
-
-  &::-ms-clear {
-    display: none;
-    width: 0;
-    height: 0;
-  }
-  &::-ms-reveal {
-    display: none;
-    width: 0;
-    height: 0;
-  }
-  &::-webkit-search-decoration,
-  &::-webkit-search-cancel-button,
-  &::-webkit-search-results-button,
-  &::-webkit-search-results-decoration {
-    display: none;
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  &::placeholder {
-    color: white;
-  }
-}
-
-.resultsCount {
-  color: transparentize(white, 0.2);
-  display: block;
-  font-size: 20px;
-  margin-right: 1rem;
-  white-space: nowrap;
-}
-
-.magnifier {
-  user-select: none;
-}
-
-.closer {
-  margin-top: 2px;
-}
-
-.description {
-  color: white;
-  font-size: 18px;
-}
-
-.hitResult {
-  background: white;
-}
-
-.hitDownloads {
-  font-weight: bold;
-}
-
-.hitName strong {
-  display: block;
 }

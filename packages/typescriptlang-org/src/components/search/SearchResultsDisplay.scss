@@ -1,0 +1,29 @@
+@import "../../style/globals.scss";
+
+.searchResultsDisplay {
+  table {
+    border-radius: 2px;
+    border-spacing: 0;
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+
+  th {
+    font-weight: normal;
+    padding: 1.5rem 0 0.5rem;
+    text-align: left;
+  }
+
+  td {
+    box-sizing: border-box;
+    position: relative;
+  }
+}
+
+.headRow th {
+  padding-top: 2.5rem;
+}
+
+.resultsRaised {
+  box-shadow: var(--raised-box-shadow);
+}
