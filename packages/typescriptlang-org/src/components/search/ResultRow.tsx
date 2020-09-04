@@ -50,7 +50,9 @@ export const ResultRow: React.FC<ResultRowprops> = ({
       </td>
       <td className="name">
         <strong>{name}</strong>
-        {description}
+        {description
+          .replace(/\!?\[.*\]\[(.*)\]/g, "$1")
+          .replace(/\!?\[(.*)\]\(.*\)/g, "$1")}
       </td>
       <td className="updated">{modified}</td>
       <td className="install">
