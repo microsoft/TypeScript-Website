@@ -1,0 +1,5 @@
+name: Closed PR
+on:
+  pull_request:
+    types:
+      - closed

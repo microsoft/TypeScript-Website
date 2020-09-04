@@ -4,7 +4,7 @@
 import { danger, message, markdown } from "danger"
 // import { basename } from "path"
 // import spellcheck from "danger-plugin-spellcheck"
-import lighthouse from "danger-plugin-lighthouse"
+// import lighthouse from "danger-plugin-lighthouse"
 import { readFileSync } from "fs"
 
 // Spell check all the things
@@ -12,7 +12,7 @@ import { readFileSync } from "fs"
 
 export default () => {
   // JSON reference: https://github.com/haya14busa/github-actions-playground/runs/987846369
-  const contextText = readFileSync(process.env.GITHUB_CONTEXT, "utf8")
+  const contextText = readFileSync(process.env.GITHUB_EVENT_PATH, "utf8")
   const context = JSON.parse(contextText)
 
   const repo = { owner: context.event.repository.owner.login, repo: context.event.repository.name }
@@ -30,7 +30,7 @@ export default () => {
     `Deployed to [a PR branch](${deployURL}) - [playground](${deployURL}/play) [tsconfig](${deployURL}/tsconfig) [old handbook](${deployURL}/docs/handbook/integrating-with-build-tools.html)`
   )
 
-  lighthouse()
+  // lighthouse()
 }
 
 const getChangedFiles = async (prNumber: number) => {
