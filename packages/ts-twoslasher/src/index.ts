@@ -1,7 +1,7 @@
 let hasLocalStorage = false
 try {
   hasLocalStorage = typeof localStorage !== `undefined`
-} catch (error) {}
+} catch (error) { }
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 
@@ -171,7 +171,7 @@ const valuedConfigRegexp = /^\/\/\s?@(\w+):\s?(.+)$/
 
 function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: CompilerOptions, ts: TS) {
   const options = { ...defaultCompilerOptions }
-  for (let i = 0; i < codeLines.length; ) {
+  for (let i = 0; i < codeLines.length;) {
     let match
     if ((match = booleanConfigRegexp.exec(codeLines[i]))) {
       options[match[1]] = true

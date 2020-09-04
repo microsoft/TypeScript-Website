@@ -1,19 +1,19 @@
 export enum PackageSource {
     Npm = "npm",
+    Yarn = "yarn",
     Pnpm = "pnpm",
-    Yarn = "yarn"
 }
 
 export type Installer = [string, string]
 
 export const Installers: Record<PackageSource, Installer> = {
     [PackageSource.Npm]: ["npm i", "--save-dev"],
+    [PackageSource.Yarn]: ["yarn add", "--save-dev"],
     [PackageSource.Pnpm]: ["pnpm add", "--dev"],
-    [PackageSource.Yarn]: ["yarn add", "--save-dev"]
 }
 
 export const installerOptions = [
     PackageSource.Npm,
-    PackageSource.Pnpm,
     PackageSource.Yarn,
+    PackageSource.Pnpm,
 ] as const

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 
 import { cx } from "../../lib/cx"
 import { useLocalStorage } from "../../lib/useLocalStorage"
