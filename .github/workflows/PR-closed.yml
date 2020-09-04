@@ -1,0 +1,11 @@
+name: Closed PR
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  playground:
+    runs-on: ubuntu-latest
+    steps:
+      - run: "echo 'NOOP'"

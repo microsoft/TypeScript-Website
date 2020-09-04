@@ -23,7 +23,7 @@ const go = async () => {
 
   const md = await makeMarkdownOfWeeklyAppInsightsInfo()
 
-  await octokit.issues.createComment({
+  await octokit.issues.update({
     owner: "Microsoft",
     repo: "TypeScript-Website",
     issue_number: 1014,
