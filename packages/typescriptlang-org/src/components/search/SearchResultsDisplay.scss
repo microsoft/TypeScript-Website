@@ -1,12 +1,11 @@
 @import "../../style/globals.scss";
 
 .searchResultsDisplay {
-  table {
-    border-radius: 2px;
-    border-spacing: 0;
-    margin-bottom: 1rem;
-    width: 100%;
-  }
+  border-radius: 2px;
+  border-spacing: 0;
+  font-size: 14px;
+  margin-bottom: 1rem;
+  width: 100%;
 
   th {
     font-weight: normal;
@@ -22,6 +21,20 @@
 
 .headRow th {
   padding-top: 2.5rem;
+}
+
+.installers {
+  float: right;
+}
+
+.installer {
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.installerSelected {
+  border-bottom: 1px solid #3178c6;
 }
 
 .resultsRaised {

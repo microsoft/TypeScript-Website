@@ -48,7 +48,7 @@ export type SearchTypes =
     | SearchTypesMissing
 
 export type SearchTypesExternal = {
-    definitelytyped: string;
+    definitelyTyped: string;
     ts: "definitely-typed"
 }
 

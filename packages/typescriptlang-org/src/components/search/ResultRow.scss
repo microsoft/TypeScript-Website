@@ -14,13 +14,12 @@
   }
 }
 
-.resultRowRaised {
+.resultRowExactMatch {
   box-shadow: var(--raised-box-shadow);
 }
 
 .downloads,
-.via,
-.updated {
+.via {
   text-align: center;
 }
 
@@ -34,15 +33,17 @@
 }
 
 .name {
-  width: calc(100% - 3.5rem - 2rem - 15rem);
-
   strong {
     display: block;
   }
 }
 
+.updated {
+  width: 10rem;
+}
+
 .install {
-  width: 15rem;
+  width: 20rem;
 }
 
 .pre {
@@ -52,7 +53,7 @@
   display: flex;
   justify-content: left;
   left: 0;
-  margin: 0;
+  margin: 0 0 0 0.5rem;
   overflow-x: hidden;
   padding: 0;
   position: absolute;

@@ -6,12 +6,13 @@ import { SearchHit } from "./types"
 import "./ResultRow.scss"
 
 export type ResultRowprops = {
+  exactMatch?: boolean
   installer: [string, string]
   hit: SearchHit
-  raised?: boolean
 }
 
 export const ResultRow: React.FC<ResultRowprops> = ({
+  exactMatch,
   installer,
   hit: {
     description,
@@ -21,10 +22,9 @@ export const ResultRow: React.FC<ResultRowprops> = ({
     name,
     types,
   },
-  raised,
 }) => {
   return (
-    <tr className={cx("resultRow", raised && "resultRowRaised")}>
+    <tr className={cx("resultRow", exactMatch && "resultRowExactMatch")}>
       <td
         className={cx(
           "downloads",
@@ -44,17 +44,19 @@ export const ResultRow: React.FC<ResultRowprops> = ({
       </td>
       <td className="updated">{modified}</td>
       <td className="install">
-        <pre className="pre">
-          <code>
-            &gt; {installer[0]} {name}
-            {types.ts === "definitely-typed" && (
-              <>
-                {"\n"}
-                &gt; {installer[0]} ${types.definitelytyped} {installer[1]}
-              </>
-            )}
-          </code>
-        </pre>
+        {!exactMatch && (
+          <pre className="pre">
+            <code>
+              &gt; {installer[0]} {name}
+              {types.ts === "definitely-typed" && (
+                <>
+                  {"\n"}
+                  &gt; {installer[0]} {types.definitelyTyped} {installer[1]}
+                </>
+              )}
+            </code>
+          </pre>
+        )}
       </td>
     </tr>
   )
