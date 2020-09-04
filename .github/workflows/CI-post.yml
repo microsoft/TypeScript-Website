@@ -45,6 +45,11 @@ jobs:
         run: |
           echo '{ "name": "fake", "scripts": { "build": "" } }' > built/package.json
 
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
       - name: "Change branch to one specific to this PR, as that's what the SWA uploader uses to determine env"
         run: |
           git checkout -b pr_${{ github.event.workflow_run.pull_requests[0].number }}
