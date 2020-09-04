@@ -29,7 +29,11 @@ export const SearchResultsDisplay: React.FC<SearchResultsDisplayProps> = ({
   if (!result.hits.length) {
     return (
       <div className="empty">
-        No results found for <strong>{search}</strong>. Try another search?
+        <div>
+          No results found for <strong>{search}</strong>.
+        </div>
+
+        <div>Try another search?</div>
       </div>
     )
   }
