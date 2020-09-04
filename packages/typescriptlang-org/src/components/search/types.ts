@@ -1,4 +1,12 @@
-export type SearchResults = {
+
+export type RawSearchResults = {
+    /**
+     * @remarks These should be from two queries: ["packageName", "@types/packageName"]
+     */
+    results: [RawSearchResult, RawSearchResult]
+}
+
+export type RawSearchResult = {
     exhaustiveFacetsCount: boolean
     exhaustiveNbHits: boolean
     hits: SearchHit[]
@@ -40,4 +48,18 @@ export type SearchRepository = {
 
 export type SearchTypes = {
     ts: boolean
+}
+
+export type JoinedSearchResult = {
+    exactMatch?: JoinedPackage
+    packages: JoinedPackage[]
+    query: string
+}
+
+export type JoinedPackage = {
+    description: string
+    downloadsLast30Days: number
+    externalTypes: boolean
+    modified: number
+    name: string
 }
