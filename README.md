@@ -35,7 +35,7 @@ You can manually via GH Actions for [production here](https://github.com/microso
 Deployment is automatic:
 
 - Pushes to the branch `v2` deploy to [staging](http://www.staging-typescript.org)
-- On a monday the v2 branch is deployed to [production](https://www.typescriptlang.org)
+- On a Monday the v2 branch is deployed to [production](https://www.typescriptlang.org)
 
 You can find the build logs in [GitHub Actions](https://github.com/microsoft/TypeScript-Website/actions)
 
@@ -62,7 +62,7 @@ with TypeScript or JavaScript code.
 
 ## Playground
 
-The JS code as an AMD module for the playground which is loaded at runtime in the Playground website.
+The JS code has an AMD module for the playground which is loaded at runtime in the Playground website.
 
 # Doc Packages
 
