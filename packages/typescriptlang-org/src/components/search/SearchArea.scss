@@ -8,6 +8,10 @@
   &.searchAreaSearching {
     padding: 2rem 1rem 2rem;
   }
+
+  @media (max-width: $screen-md) {
+    padding-top: 3rem;
+  }
 }
 
 .searchBar {
