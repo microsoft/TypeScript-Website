@@ -54,7 +54,7 @@ export const SearchResultsDisplay: React.FC<SearchResultsProps> = ({
             />
           </>
         )}
-        <tr className={cx("headRow", exactMatch && "afterExactMatch")}>
+        <tr className={cx("headRow", (exactMatch || search) && "afterTop")}>
           <th>DLs</th>
           <th>Via</th>
           <th>Module</th>
