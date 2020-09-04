@@ -13,7 +13,7 @@ export type RawSearchResult = {
 
 export type SearchHit = {
     deprecated: boolean
-    description: string
+    description?: string
     downloadsLast30Days: number
     homepage: string | null
     humanDownloadsLast30Days: string
