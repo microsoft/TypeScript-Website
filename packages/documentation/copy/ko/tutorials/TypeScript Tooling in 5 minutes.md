@@ -1,7 +1,7 @@
 ---
 title: TypeScript Tooling in 5 minutes
 layout: docs
-permalink: /docs/handbook/typescript-tooling-in-5-minutes.html
+permalink: /ko/docs/handbook/typescript-tooling-in-5-minutes.html
 oneline: A tutorial to understand how to create a small website with TypeScript
 translatable: true
 ---

@@ -1,7 +1,7 @@
 ---
 title: Using Babel with TypeScript
 layout: docs
-permalink: /docs/handbook/babel-with-typescript.html
+permalink: /ko/docs/handbook/babel-with-typescript.html
 oneline: How to create a hybrid Babel + TypeScript project
 translatable: true
 ---

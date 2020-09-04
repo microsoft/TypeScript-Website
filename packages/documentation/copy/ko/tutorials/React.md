@@ -1,7 +1,7 @@
 ---
 title: React
 layout: docs
-permalink: /docs/handbook/react.html
+permalink: /ko/docs/handbook/react.html
 oneline: Links to learn about TypeScript and React
 translatable: true
 ---
