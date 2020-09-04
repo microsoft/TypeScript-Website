@@ -1,6 +1,35 @@
 @import "../../style/globals.scss";
 
-.searchResultsDisplay {
+.loading {
+  font-size: 4rem;
+  padding: 10rem 1rem;
+  text-align: center;
+  user-select: none;
+}
+
+.empty {
+  padding: 5rem 0;
+  text-align: center;
+
+  &::before {
+    align-items: flex-end;
+    background: $ts-main-blue-color;
+    border-radius: 1rem;
+    box-sizing: border-box;
+    color: white;
+    content: ":(";
+    display: flex;
+    font-size: 7.5rem;
+    font-weight: bold;
+    height: 15rem;
+    justify-content: flex-end;
+    margin: 0 auto 3rem;
+    padding: 1rem 1.5rem;
+    width: 15rem;
+  }
+}
+
+.resultsTable {
   border-radius: 2px;
   border-spacing: 0;
   font-size: 14px;
@@ -11,6 +40,11 @@
     font-weight: normal;
     padding: 1.5rem 0 0.5rem;
     text-align: left;
+
+    &.popular {
+      font-weight: bold;
+      padding-top: 2rem;
+    }
   }
 
   td {
@@ -20,7 +54,11 @@
 }
 
 .headRow th {
-  padding-top: 2.5rem;
+  padding-top: 0.5rem;
+}
+
+.afterExactMatch th {
+  padding-top: 2rem;
 }
 
 .installers {

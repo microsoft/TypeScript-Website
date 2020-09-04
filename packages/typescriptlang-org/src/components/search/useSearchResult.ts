@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 
-import { RawSearchResults, RawSearchResult } from "./types";
+import { RawSearchResults, RawSearchResult } from "./types"
 
-const createPostData = (search: string) => {
+const createPostData = (requestedSearch: string) => {
+    const search = requestedSearch || "react"
     return {
         requests: [{
             analyticsTags: ["yarnpkg.com"],
@@ -23,7 +24,7 @@ const createPostData = (search: string) => {
                 "version",
             ],
             facets: ["keywords", "keywords", "owner.name"],
-            hitsPerPage: 51,
+            hitsPerPage: requestedSearch ? 51 : 25,
             indexName: "npm-search",
             maxValuesPerFacet: 10,
             page: 0,
@@ -44,12 +45,15 @@ const searchParams = new URLSearchParams({
 
 const href = `https://ofcncog2cu-2.algolianet.com/1/indexes/*/queries?${searchParams.toString()}`
 
+const cache = new Map<string, RawSearchResult>()
+
 export const useSearchResult = (search: string) => {
     const [result, setResult] = useState<RawSearchResult>()
 
     useEffect(() => {
-        if (!search) {
-            setResult(undefined)
+        const cached = cache.get(search)
+        if (cached) {
+            setResult(cached)
             return
         }
 
@@ -67,11 +71,13 @@ export const useSearchResult = (search: string) => {
                 }
 
                 const [rawResult] = (json as RawSearchResults).results
-
-                setResult({
+                const processedResult = {
                     ...rawResult,
                     hits: rawResult.hits.filter(hit => hit.types.ts)
-                })
+                }
+
+                cache.set(search, processedResult)
+                setResult(processedResult)
             }
         )
 

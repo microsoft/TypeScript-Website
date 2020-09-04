@@ -19,22 +19,29 @@ export const SearchResultsDisplay: React.FC<SearchResultsProps> = ({
   const [installer, setInstaller] = useState(PackageSource.Npm)
 
   if (!result) {
-    return <div>default search goes here ;)</div>
-  }
-
-  if (!result && search) {
-    return <div>loading first result set...</div>
+    return <div className="loading">...</div>
   }
 
   if (!result.hits.length) {
-    return <div>sad, no results for {search} :(</div>
+    return (
+      <div className="empty">
+        No results found for <strong>{search}</strong>. Try another search?
+      </div>
+    )
   }
 
   const exactMatch = result.hits.find(hit => hit.name === search)
 
   return (
-    <table className="searchResultsDisplay">
+    <table className="resultsTable">
       <thead>
+        {!search && (
+          <tr>
+            <th className="popular" colSpan={5}>
+              Popular
+            </th>
+          </tr>
+        )}
         {exactMatch && (
           <>
             <tr>
@@ -47,7 +54,7 @@ export const SearchResultsDisplay: React.FC<SearchResultsProps> = ({
             />
           </>
         )}
-        <tr className="headRow">
+        <tr className={cx("headRow", exactMatch && "afterExactMatch")}>
           <th>DLs</th>
           <th>Via</th>
           <th>Module</th>
