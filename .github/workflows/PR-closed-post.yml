@@ -1,0 +1,22 @@
+name: Post CI Secure Run
+on:
+  workflow_run:
+    workflows: ["Closed PR"]
+    types:
+      - completed
+
+jobs:
+  playground:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: "Change branch to one specific to this PR, as that's what the SWA close-r uses to determine env"
+        run: |
+          git checkout -b pr_${{ github.event.workflow_run.pull_requests.[0].number }}
+
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v0.0.1-preview
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_NICE_MEADOW_0C9756810 }}
+          action: "close"

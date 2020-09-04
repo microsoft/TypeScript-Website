@@ -37,6 +37,13 @@ jobs:
           PUBLISH_BRANCH: "SITE-PRODUCTION"
           PUBLISH_DIR: ./site
 
+      # Update the site stats
+      - run: node packages/typescriptlang-org/scripts/updateAppInsightsGitHubIssue.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_BOT_TOKEN }}
+          APP_INSIGHTS_API_KEY: ${{ secrets.APP_INSIGHTS_API_KEY }}
+          APP_INSIGHTS_ID: ${{ secrets.APP_INSIGHTS_ID }}
+
       - name: Send a message to Microsoft Teams
         if: ${{ failure() }}
         uses: aliencube/microsoft-teams-actions@v0.8.0

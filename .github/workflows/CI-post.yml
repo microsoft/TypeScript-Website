@@ -45,6 +45,10 @@ jobs:
         run: |
           echo '{ "name": "fake", "scripts": { "build": "" } }' > built/package.json
 
+      - name: "Change branch to one specific to this PR, as that's what the SWA uploader uses to determine env"
+        run: |
+          git checkout -b pr_${{ github.event.workflow_run.pull_requests.[0].number }}
+
       - name: Build And Deploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
         id: deploy
