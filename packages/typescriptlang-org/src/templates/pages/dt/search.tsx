@@ -18,7 +18,7 @@ type Props = {
 
 const Index: React.FC<Props> = props => {
   const [search, setSearch] = useState<string>(
-    new URLSearchParams(location.search).get("search") || ""
+    new URLSearchParams(props.location.search).get("search") || ""
   )
   const result = useSearchResult(search)
 
