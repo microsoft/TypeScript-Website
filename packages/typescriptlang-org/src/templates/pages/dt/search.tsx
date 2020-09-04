@@ -40,11 +40,7 @@ const Search: React.FC<SearchProps> = ({ data, location, pageContext }) => {
       </div>
       <div className="resultsBackground">
         <div className="resultsArea">
-          <SearchResultsDisplay
-            lang={pageContext.lang}
-            result={result}
-            search={search}
-          />
+          <SearchResultsDisplay result={result} search={search} />
         </div>
       </div>
     </Layout>
