@@ -1,6 +1,8 @@
-import { withPrefix } from "gatsby"
 import * as React from "react"
+import { useIntl, FormattedRelativeTime } from "react-intl"
 
+import { searchCopy } from "../../copy/en/search"
+import { createInternational } from "../../lib/createInternational"
 import { cx } from "../../lib/cx"
 import { SearchHit } from "./types"
 
@@ -24,6 +26,8 @@ export const ResultRow: React.FC<ResultRowprops> = ({
     types,
   },
 }) => {
+  const i = createInternational<typeof searchCopy>(useIntl())
+  const fallback = i("just_now")
   const [icon, label] =
     types.ts === "included"
       ? ["in", "included"]
@@ -54,7 +58,9 @@ export const ResultRow: React.FC<ResultRowprops> = ({
           .replace(/\!?\[.*\]\[(.*)\]/g, "$1")
           .replace(/\!?\[(.*)\]\(.*\)/g, "$1")}
       </td>
-      <td className="updated">{modified}</td>
+      <td className="updated">
+        <TimeAgo ago={Date.now() - modified} fallback={fallback} />
+      </td>
       <td className="install">
         {!exactMatch && (
           <pre className="pre">
@@ -71,5 +77,41 @@ export const ResultRow: React.FC<ResultRowprops> = ({
         )}
       </td>
     </tr>
+  )
+}
+
+const msHour = 60 * 1000 * 60
+const msDay = msHour * 24
+const msWeek = msDay * 7
+const msMonth = msDay * 30
+const msYear = msDay * 365
+
+const timeMeasures = [
+  [msYear, "year"],
+  [msMonth, "month"],
+  [msWeek, "week"],
+  [msDay, "day"],
+] as const
+
+type TimeAgoProps = {
+  ago: number
+  fallback: string
+}
+
+const TimeAgo: React.FC<TimeAgoProps> = ({ ago, fallback }) => {
+  const measureIndex = timeMeasures.findIndex(([ms]) => ago > ms)
+  if (measureIndex === -1) {
+    return <>{fallback}</>
+  }
+
+  const [ms, unit] = timeMeasures[measureIndex]
+
+  return (
+    <FormattedRelativeTime
+      numeric="auto"
+      style="long"
+      value={Math.ceil(-ago / ms)}
+      unit={unit}
+    />
   )
 }

@@ -8,12 +8,12 @@ import { RawSearchResult } from "./types"
 
 import "./SearchResultsDisplay.scss"
 
-export type SearchResultsProps = {
+export type SearchResultsDisplayProps = {
   result?: RawSearchResult
   search: string
 }
 
-export const SearchResultsDisplay: React.FC<SearchResultsProps> = ({
+export const SearchResultsDisplay: React.FC<SearchResultsDisplayProps> = ({
   result,
   search,
 }) => {

@@ -10,15 +10,15 @@ import { SearchArea } from "../../../components/search/SearchArea"
 import { SearchResultsDisplay } from "../../../components/search/SearchResultsDisplay"
 import { useSearchResult } from "../../../components/search/useSearchResult"
 
-type Props = {
+type SearchProps = {
   data: DTSearchPageQuery
   location: Location
   pageContext: any
 }
 
-const Index: React.FC<Props> = props => {
+const Search: React.FC<SearchProps> = ({ data, location, pageContext }) => {
   const [search, setSearch] = useState<string>(
-    new URLSearchParams(props.location.search).get("search") || ""
+    new URLSearchParams(location.search).get("search") || ""
   )
   const result = useSearchResult(search)
 
@@ -32,24 +32,28 @@ const Index: React.FC<Props> = props => {
     <Layout
       title="Search for typed packages"
       description="Find npm packages that have type declarations, either bundled or on DefinitelyTyped."
-      lang={props.pageContext.lang}
-      allSitePage={props.data.allSitePage}
+      lang={pageContext.lang}
+      allSitePage={data.allSitePage}
     >
       <div className="topContents">
         <SearchArea result={result} search={search} setSearch={setSearch} />
       </div>
       <div className="resultsBackground">
         <div className="resultsArea">
-          <SearchResultsDisplay result={result} search={search} />
+          <SearchResultsDisplay
+            lang={pageContext.lang}
+            result={result}
+            search={search}
+          />
         </div>
       </div>
     </Layout>
   )
 }
 
-export default (props: Props) => (
+export default (props: SearchProps) => (
   <Intl locale={props.pageContext.lang}>
-    <Index {...props} />
+    <Search {...props} />
   </Intl>
 )
 
