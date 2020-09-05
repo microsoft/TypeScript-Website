@@ -85,3 +85,12 @@
   color: white;
   font-size: 18px;
 }
+
+#search-by-algolia {
+  text-align: center;
+  margin: 2rem;
+
+  .text {
+    fill: var(--text-color);
+  }
+}
