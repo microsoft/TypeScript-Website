@@ -26,6 +26,7 @@ settings.dry === 2;
 Enabling the option allows importing JSON, and validating the types in that JSON file.
 
 ```ts twoslash
+// @errors: 2367
 // @resolveJsonModule
 // @module: commonjs
 // @moduleResolution: node
