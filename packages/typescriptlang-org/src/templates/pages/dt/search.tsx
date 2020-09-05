@@ -31,7 +31,7 @@ const Search: React.FC<SearchProps> = ({ data, location, pageContext }) => {
   return (
     <Layout
       title="Search for typed packages"
-      description="Find npm packages that have type declarations, either bundled or on DefinitelyTyped."
+      description="Find npm packages that have type declarations, either bundled or on Definitely Typed."
       lang={pageContext.lang}
       allSitePage={data.allSitePage}
     >

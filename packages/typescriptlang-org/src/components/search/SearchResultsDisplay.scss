@@ -82,6 +82,7 @@
   background: none;
   border: 0;
   cursor: pointer;
+  color: var(--foreground-color);
 }
 
 .installerSelected {
@@ -90,4 +91,6 @@
 
 .resultsRaised {
   box-shadow: var(--raised-box-shadow);
+  background-color: var(--raised-background-color);
+  color: var(--alt-text-color);
 }

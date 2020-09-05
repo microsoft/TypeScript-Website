@@ -46,7 +46,7 @@ export const SearchResultsDisplay: React.FC<SearchResultsDisplayProps> = ({
         {!search && (
           <tr>
             <th className="popular" colSpan={5}>
-              Popular
+              Popular on Definitely Typed
             </th>
           </tr>
         )}

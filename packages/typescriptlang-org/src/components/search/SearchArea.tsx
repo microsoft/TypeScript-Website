@@ -41,19 +41,19 @@ export const SearchArea: React.FC<SearchAreaProps> = ({
             src={withPrefix("images/dt/magnifier.svg")}
           />
         ) : (
-          <input
-            alt="Clear search"
-            className="closer"
-            onClick={() => setSearch("")}
-            src={withPrefix("images/dt/close.svg")}
-            type="image"
-          />
-        )}
+            <input
+              alt="Clear search"
+              className="closer"
+              onClick={() => setSearch("")}
+              src={withPrefix("images/dt/close.svg")}
+              type="image"
+            />
+          )}
       </div>
       {!search && (
         <p className="description">
           Find npm packages that have type declarations, either bundled or on
-          DefinitelyTyped.
+          Definitely Typed.
         </p>
       )}
     </div>

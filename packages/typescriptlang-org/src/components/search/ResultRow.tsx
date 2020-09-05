@@ -27,7 +27,7 @@ export const ResultRow: React.FC<ResultRowprops> = ({
   const [icon, label] =
     types.ts === "included"
       ? ["in", "included"]
-      : ["dt", "from DefinitelyTyped"]
+      : ["dt", "from Definitely Typed"]
 
   return (
     <tr className={cx("resultRow", exactMatch && "resultRowExactMatch")}>
@@ -58,19 +58,18 @@ export const ResultRow: React.FC<ResultRowprops> = ({
         <TimeAgo ago={Date.now() - modified} />
       </td>
       <td className="install">
-        {!exactMatch && (
-          <pre className="pre">
-            <code>
-              &gt; {installer[0]} {name}
-              {types.ts === "definitely-typed" && (
-                <>
-                  {"\n"}
-                  &gt; {installer[0]} {types.definitelyTyped} {installer[1]}
-                </>
-              )}
-            </code>
-          </pre>
-        )}
+
+        <pre className="pre">
+          <code>
+            <span className="no-select">&gt; </span>{installer[0]} {name}
+            {types.ts === "definitely-typed" && (
+              <>
+                {"\n"}
+                <span className="no-select">&gt; </span>{installer[0]} {types.definitelyTyped} {installer[1]}
+              </>
+            )}
+          </code>
+        </pre>
       </td>
     </tr>
   )
