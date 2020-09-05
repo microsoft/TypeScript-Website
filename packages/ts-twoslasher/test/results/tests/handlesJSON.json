@@ -1,19 +1,66 @@
 {
-  "code": "const i = 123\n",
+  "code": "// @filename: settings.json\n{\n    \"repo\": \"TypeScript\",\n    \"dry\": false,\n    \"debug\": false\n}\n// @filename: index.ts\nimport settings from \"./settings.json\";\n\nsettings.debug === true;\nsettings.dry === 2;\n",
   "extension": "ts",
   "highlights": [],
   "queries": [],
   "staticQuickInfos": [
     {
-      "text": "const i: 123",
+      "text": "import settings",
       "docs": "",
-      "start": 6,
-      "length": 1,
-      "line": 0,
-      "character": 6,
-      "targetString": "i"
+      "start": 125,
+      "length": 8,
+      "line": 7,
+      "character": 7,
+      "targetString": "settings"
+    },
+    {
+      "text": "import settings",
+      "docs": "",
+      "start": 159,
+      "length": 8,
+      "line": 9,
+      "character": 0,
+      "targetString": "settings"
+    },
+    {
+      "text": "(property) \"debug\": boolean",
+      "docs": "",
+      "start": 168,
+      "length": 5,
+      "line": 9,
+      "character": 9,
+      "targetString": "debug"
+    },
+    {
+      "text": "import settings",
+      "docs": "",
+      "start": 184,
+      "length": 8,
+      "line": 10,
+      "character": 0,
+      "targetString": "settings"
+    },
+    {
+      "text": "(property) \"dry\": boolean",
+      "docs": "",
+      "start": 193,
+      "length": 3,
+      "line": 10,
+      "character": 9,
+      "targetString": "dry"
     }
   ],
-  "errors": [],
-  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEFsHsBMFcA2BTASsgztR8AuBLaAOwC5Qi5kAoECAM3xSIENJkyAHZgYwGtmA5sgB0AKyxEqAb1AAiFm1llZuABb4iA2aAC+NMOAZNW7UBtjIAHsNwZ9oALRPueJw6rdiGXGdABeUABGACYAZiogA"
+  "errors": [
+    {
+      "category": 1,
+      "code": 2367,
+      "length": 18,
+      "start": 184,
+      "line": 3,
+      "character": 0,
+      "renderedMessage": "This condition will always return 'false' since the types 'boolean' and 'number' have no overlap.",
+      "id": "err-2367-66-18"
+    }
+  ],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEFMCdoe2gZwFygEwGYBsB2AUCBNJInADYBukAUqQHYCycAJgK5mQFjgC2L7kVAGM4PPnQBWiLhD5sOAJRLlWAFwCWcOqjotOhcADN1HOgEMeg0IkiqNdAOaIAdFK14A3nlA-QAImIABzg-VD8AFQBPQMgAZSFodUDVPwAab18-ZmhI0NBDMzIbdN9-ZkgAI1YHPIKizgBfGSMTSHNLVHU6coAPZ1VpdR5g6FVrW3snfPgef2dgGzsup1d6PwBuPDxFyZdyqodQAF4T0FVoVkhNneW9nOPTtE2gA"
 }
