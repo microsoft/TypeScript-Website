@@ -1,5 +1,6 @@
 import { graphql } from "gatsby"
 import React, { useEffect, useState } from "react"
+import { debounce } from "ts-debounce"
 import { Layout } from "../../../components/layout"
 import { Intl } from "../../../components/Intl"
 
@@ -16,6 +17,12 @@ type SearchProps = {
   pageContext: any
 }
 
+const updateHistorySearch = debounce((search: string) => {
+  const params = new URLSearchParams(window.location.search)
+  params.set("search", search)
+  history.pushState(null, "", `${window.location.pathname}?${params}`)
+}, 250)
+
 const Search: React.FC<SearchProps> = ({ data, location, pageContext }) => {
   const [search, setSearch] = useState<string>(
     new URLSearchParams(location.search).get("search") || ""
@@ -23,9 +30,7 @@ const Search: React.FC<SearchProps> = ({ data, location, pageContext }) => {
   const result = useSearchResult(search)
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    params.set("search", search)
-    history.pushState(null, "", `${window.location.pathname}?${params}`)
+    updateHistorySearch(search)
   }, [search])
 
   return (
