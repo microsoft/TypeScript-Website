@@ -97,15 +97,11 @@ export const ResultRow: React.FC<ResultRowprops> = ({
       <td className="install">
         <pre className="pre">
           <code>
-            <span className="no-select">&gt; </span>
-            {installCommands[0]}
-            {installCommands.length > 1 && (
-              <>
-                {"\n"}
-                <span className="no-select">&gt; </span>
-                {installCommands[1]}
-              </>
-            )}
+            {installCommands.map(command => (
+              <span className="code-line" key={command}>
+                {command}
+              </span>
+            ))}
           </code>
         </pre>
         <button
