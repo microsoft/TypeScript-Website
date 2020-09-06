@@ -9,6 +9,7 @@ import { RenderExamples } from "../components/ShowExamples"
 
 import { useIntl } from "react-intl";
 import { createInternational } from "../lib/createInternational"
+import { hasLocalStorage } from "../lib/hasLocalStorage"
 import { headCopy } from "../copy/en/head-seo"
 import { playCopy } from "../copy/en/playground"
 
@@ -49,10 +50,6 @@ const Play: React.FC<Props> = (props) => {
       }
     });
 
-    let hasLocalStorage = false
-    try {
-      hasLocalStorage = typeof localStorage !== `undefined`
-    } catch (error) { }
     if (!hasLocalStorage) {
       document.getElementById("loading-message")!.innerText = "Cannot load the Playground with storage disabled in your browser"
       return
