@@ -537,13 +537,13 @@ Another simple way is to use class expressions:
 
 ```ts twoslash
 // @strictPropertyInitialization: false
-// @noImplicitAny: fals
+// @noImplicitAny: false
 interface ClockConstructor {
-  new (hour: number, minute: number);
+  new (hour: number, minute: number): ClockInterface;
 }
 
 interface ClockInterface {
-  tick();
+  tick(): void;
 }
 
 const Clock: ClockConstructor = class Clock implements ClockInterface {
