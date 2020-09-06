@@ -33,8 +33,9 @@
   border-radius: 2px;
   border-spacing: 0;
   font-size: 14px;
-  margin: 0 1rem 1rem;
-  width: calc(100% - 2rem);
+  margin: 0 0 1rem;
+  max-width: 1040px;
+  width: 100%;
 
   th {
     font-weight: normal;

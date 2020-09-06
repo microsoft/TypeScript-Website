@@ -63,7 +63,8 @@ export const ResultRow: React.FC<ResultRowprops> = ({
         </a>
         {description
           ?.replace(/\!?\[.*\]\[(.*)\]/g, "$1")
-          .replace(/\!?\[(.*)\]\(.*\)/g, "$1")}
+          .replace(/\!?\[(.*)\]\(.*\)/g, "$1")
+          .replace(/\&amp;/g, "&")}
       </td>
       <td className="updated">
         <TimeAgo ago={Date.now() - modified} />
