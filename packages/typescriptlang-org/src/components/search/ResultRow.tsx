@@ -79,7 +79,6 @@ export const ResultRow: React.FC<ResultRowprops> = ({
           aria-label={`Types ${label}`}
           className={cx("resultLink typeImage", icon)}
           href={viaUrl}
-          role="img"
         />
       </td>
       <td className="name">

@@ -23,6 +23,7 @@ export const SearchArea: React.FC<SearchAreaProps> = ({
     <div className={cx("searchArea", search && "searchAreaSearching")}>
       <div className="searchBar">
         <input
+          aria-label={i("dt_s_title")}
           autoComplete="off"
           autoFocus
           className="searchInput"
