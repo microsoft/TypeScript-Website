@@ -15,10 +15,10 @@ TypeScript로 간단한 웹 애플리케이션을 만들어봅시다.
 - npm 사용하기(Node.js 패키지 매니저)
 - Visual Studio TypeScript 플러그인 설치하기
 
-Visual Studio 2017과 Visual Studio 2015 Update 3에는 TypeScript가 기본적으로 포함되어있습니다.
-만약 Visual Studio로 TypeScript를 다운받지 않았다면, [여기서 다운로드받으세요](/download).
+Visual Studio 2017과 Visual Studio 2015 Update 3에는 TypeScript가 기본적으로 포함되어 있습니다.
+만약 Visual Studio로 TypeScript를 설치하지 않았다면, [여기서 다운로드하세요](/download).
 
-npm 사용자들:
+npm 사용자의 경우:
 
 ```shell
 > npm install -g typescript
