@@ -23,7 +23,7 @@ export type SearchHit = {
     name: string
     objectID: string
     owner: SearchOwner
-    repository: SearchRepository
+    repository?: SearchRepository
     types: SearchTypes
     version: string
 }

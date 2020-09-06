@@ -1,5 +1,5 @@
-import * as React from "react"
-import { useIntl, FormattedRelativeTime } from "react-intl"
+import React, { useState } from "react"
+import { FormattedRelativeTime } from "react-intl"
 
 import { cx } from "../../lib/cx"
 import { SearchHit } from "./types"
@@ -25,15 +25,37 @@ export const ResultRow: React.FC<ResultRowprops> = ({
     types,
   },
 }) => {
+  const npmUrl = `https://www.npmjs.com/package/${name}`
   const [icon, label, viaUrl] =
     types.ts === "included"
-      ? ["in", "included", repository.url]
+      ? ["in", "included", repository?.url || npmUrl]
       : [
           "dt",
           "from Definitely Typed",
           `https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/${name}`,
         ]
-  const npmUrl = `https://www.npmjs.com/package/${name}`
+
+  const initialCopyStatus = ["copy", `Copy ${name} installation script`]
+  const [copyStatus, setCopyStatus] = useState(initialCopyStatus)
+
+  const installCommands = [`${installer[0]} ${name}`]
+  if (types.ts === "definitely-typed") {
+    installCommands.push(
+      `${installer[0]} ${types.definitelyTyped} ${installer[1]}`
+    )
+  }
+  const copyInstall = async () => {
+    try {
+      await navigator.clipboard.writeText(installCommands.join("\n"))
+      setCopyStatus(["copied", `Copied ${name} installation script`])
+    } catch {
+      setCopyStatus([":(", `Failed to copy ${name} installation script`])
+    }
+  }
+
+  const resetCopyInstall = () => {
+    setCopyStatus(initialCopyStatus)
+  }
 
   return (
     <tr className={cx("resultRow", exactMatch && "resultRowExactMatch")}>
@@ -73,16 +95,26 @@ export const ResultRow: React.FC<ResultRowprops> = ({
         <pre className="pre">
           <code>
             <span className="no-select">&gt; </span>
-            {installer[0]} {name}
-            {types.ts === "definitely-typed" && (
+            {installCommands[0]}
+            {installCommands.length > 1 && (
               <>
                 {"\n"}
                 <span className="no-select">&gt; </span>
-                {installer[0]} {types.definitelyTyped} {installer[1]}
+                {installCommands[1]}
               </>
             )}
           </code>
         </pre>
+        <button
+          aria-label={copyStatus[1]}
+          aria-live="polite"
+          className="copyInstall"
+          onBlur={resetCopyInstall}
+          onClick={copyInstall}
+          role="button"
+        >
+          {copyStatus[0]}
+        </button>
       </td>
     </tr>
   )
