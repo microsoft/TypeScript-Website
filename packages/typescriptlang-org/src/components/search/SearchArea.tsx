@@ -2,13 +2,14 @@ import { withPrefix } from "gatsby"
 import * as React from "react"
 
 import { cx } from "../../lib/cx"
-import { RawSearchResult } from "./types"
+import { ISearch, RawSearchResult } from "./types"
 
 import "./SearchArea.scss"
 
 export type SearchAreaProps = {
   result?: RawSearchResult
   search: string
+  i: ISearch
   setSearch: (newSearch: string) => void
 }
 
@@ -16,6 +17,7 @@ export const SearchArea: React.FC<SearchAreaProps> = ({
   result,
   search,
   setSearch,
+  i
 }) => {
   return (
     <div className={cx("searchArea", search && "searchAreaSearching")}>
@@ -25,7 +27,7 @@ export const SearchArea: React.FC<SearchAreaProps> = ({
           autoFocus
           className="searchInput"
           onChange={event => setSearch(event.target.value)}
-          placeholder="Type Search"
+          placeholder={i("dt_s_title")}
           type="search"
           value={search}
         />
@@ -52,8 +54,7 @@ export const SearchArea: React.FC<SearchAreaProps> = ({
       </div>
       {!search && (
         <p className="description">
-          Find npm packages that have type declarations, either bundled or on
-          Definitely Typed.
+          {i("dt_s_subtitle")}
         </p>
       )}
     </div>

@@ -10,6 +10,9 @@ import { DTSearchPageQuery } from "../../../__generated__/gatsby-types"
 import { SearchArea } from "../../../components/search/SearchArea"
 import { SearchResultsDisplay } from "../../../components/search/SearchResultsDisplay"
 import { useSearchResult } from "../../../components/search/useSearchResult"
+import { createInternational } from "../../../lib/createInternational"
+import { useIntl } from "react-intl"
+import { dtCopy } from "../../../copy/en/dt"
 
 type SearchProps = {
   data: DTSearchPageQuery
@@ -24,6 +27,8 @@ const updateHistorySearch = debounce((search: string) => {
 }, 250)
 
 const Search: React.FC<SearchProps> = ({ data, location, pageContext }) => {
+  const i = createInternational<typeof dtCopy>(useIntl())
+
   const [search, setSearch] = useState<string>(
     new URLSearchParams(location.search).get("search") || ""
   )
@@ -35,17 +40,17 @@ const Search: React.FC<SearchProps> = ({ data, location, pageContext }) => {
 
   return (
     <Layout
-      title="Search for typed packages"
-      description="Find npm packages that have type declarations, either bundled or on Definitely Typed."
+      title={i("dt_s_page_title")}
+      description={i("dt_s_subtitle")}
       lang={pageContext.lang}
       allSitePage={data.allSitePage}
     >
       <div className="topContents">
-        <SearchArea result={result} search={search} setSearch={setSearch} />
+        <SearchArea result={result} search={search} setSearch={setSearch} i={i} />
       </div>
       <div className="resultsBackground">
         <div className="resultsArea">
-          <SearchResultsDisplay result={result} search={search} />
+          <SearchResultsDisplay result={result} search={search} i={i} />
         </div>
       </div>
     </Layout>

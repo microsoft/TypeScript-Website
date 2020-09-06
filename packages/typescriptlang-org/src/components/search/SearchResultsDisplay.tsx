@@ -4,13 +4,14 @@ import { cx } from "../../lib/cx"
 import { useLocalStorage } from "../../lib/useLocalStorage"
 import { ResultRow } from "./ResultRow"
 import { installerOptions, Installers, PackageSource } from "./constants"
-import { RawSearchResult } from "./types"
+import { ISearch, RawSearchResult } from "./types"
 
 import "./SearchResultsDisplay.scss"
 
 export type SearchResultsDisplayProps = {
   result?: RawSearchResult
   search: string
+  i: ISearch
 }
 
 const SearchByAlgolia = () => <div id="search-by-algolia"><a href="https://www.algolia.com/" title="Search powered by Algolia">
@@ -27,6 +28,7 @@ const SearchByAlgolia = () => <div id="search-by-algolia"><a href="https://www.a
 export const SearchResultsDisplay: React.FC<SearchResultsDisplayProps> = ({
   result,
   search,
+  i
 }) => {
   const [installer, setInstaller] = useLocalStorage<PackageSource>(
     "dt/search/packageSource",
@@ -41,10 +43,10 @@ export const SearchResultsDisplay: React.FC<SearchResultsDisplayProps> = ({
     return (
       <div className="empty">
         <div>
-          No results found for <strong>{search}</strong>.
+          {i("dt_s_no_results")} <strong>{search}</strong>.
         </div>
 
-        <div>Try another search?</div>
+        <div>{i("dt_s_no_results_try")}</div>
       </div>
     )
   }
@@ -58,30 +60,31 @@ export const SearchResultsDisplay: React.FC<SearchResultsDisplayProps> = ({
           {!search && (
             <tr>
               <th className="popular" colSpan={5}>
-                Popular on Definitely Typed
-            </th>
+                {i("dt_s_popular_on_dt")}
+              </th>
             </tr>
           )}
           {exactMatch && (
             <>
               <tr>
-                <th colSpan={5}>Exact match</th>
+                <th colSpan={5}>{i("dt_s_match_exact")}</th>
               </tr>
               <ResultRow
                 exactMatch
                 hit={exactMatch}
                 installer={Installers[installer]}
+                i={i}
               />
             </>
           )}
           <tr className={cx("headRow", (exactMatch || search) && "afterTop")}>
-            <th className="dlsHead">DLs</th>
-            <th>Via</th>
-            <th>Module</th>
-            <th className="updatedHead">Last Updated</th>
+            <th className="dlsHead">{i("dt_s_downloads_short")}</th>
+            <th>{i("dt_s_downloads_via")}</th>
+            <th>{i("dt_s_module")}</th>
+            <th className="updatedHead">{i("dt_s_last_update")}</th>
             <th className="installHead">
-              Install
-            <div className="installers">
+              {i("dt_s_install")}
+              <div className="installers">
                 {installerOptions.map(installOption => (
                   <button
                     className={cx(
@@ -107,6 +110,7 @@ export const SearchResultsDisplay: React.FC<SearchResultsDisplayProps> = ({
                   hit={hit}
                   key={hit.name}
                   installer={Installers[installer]}
+                  i={i}
                 />
               )
           )}

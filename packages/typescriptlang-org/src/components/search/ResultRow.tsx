@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { FormattedRelativeTime } from "react-intl"
 
 import { cx } from "../../lib/cx"
-import { SearchHit } from "./types"
+import { ISearch, SearchHit } from "./types"
 
 import "./ResultRow.scss"
 
@@ -10,6 +10,7 @@ export type ResultRowprops = {
   exactMatch?: boolean
   installer: [string, string]
   hit: SearchHit
+  i: ISearch
 }
 
 export const ResultRow: React.FC<ResultRowprops> = ({
@@ -24,18 +25,20 @@ export const ResultRow: React.FC<ResultRowprops> = ({
     repository,
     types,
   },
+  i
 }) => {
   const npmUrl = `https://www.npmjs.com/package/${name}`
+  const dtID = !name.includes("@") ? name : name.toString().replace("@", "").replace("/", "__")
   const [icon, label, viaUrl] =
     types.ts === "included"
       ? ["in", "included", repository?.url || npmUrl]
       : [
-          "dt",
-          "from Definitely Typed",
-          `https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/${name}`,
-        ]
+        "dt",
+        "from Definitely Typed",
+        `https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/${dtID}`,
+      ]
 
-  const initialCopyStatus = ["copy", `Copy ${name} installation script`]
+  const initialCopyStatus = [i("dt_s_copy"), `Copy ${name} installation script`]
   const [copyStatus, setCopyStatus] = useState(initialCopyStatus)
 
   const installCommands = [`${installer[0]} ${name}`]
@@ -47,7 +50,7 @@ export const ResultRow: React.FC<ResultRowprops> = ({
   const copyInstall = async () => {
     try {
       await navigator.clipboard.writeText(installCommands.join("\n"))
-      setCopyStatus(["copied", `Copied ${name} installation script`])
+      setCopyStatus([i("dt_s_copied"), `Copied ${name} installation script`])
     } catch {
       setCopyStatus([":(", `Failed to copy ${name} installation script`])
     }
