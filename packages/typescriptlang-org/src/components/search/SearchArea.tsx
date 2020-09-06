@@ -17,7 +17,7 @@ export const SearchArea: React.FC<SearchAreaProps> = ({
   result,
   search,
   setSearch,
-  i
+  i,
 }) => {
   return (
     <div className={cx("searchArea", search && "searchAreaSearching")}>
@@ -38,26 +38,17 @@ export const SearchArea: React.FC<SearchAreaProps> = ({
           </span>
         )}
         {!search ? (
-          <img
-            alt=""
-            className="magnifier"
-            src={withPrefix("images/dt/magnifier.svg")}
-          />
+          <div className="magnifier" />
         ) : (
-            <input
-              alt="Clear search"
-              className="closer"
-              onClick={() => setSearch("")}
-              src={withPrefix("images/dt/close.svg")}
-              type="image"
-            />
-          )}
+          <input
+            alt="Clear search"
+            className="closer"
+            onClick={() => setSearch("")}
+            type="button"
+          />
+        )}
       </div>
-      {!search && (
-        <p className="description">
-          {i("dt_s_subtitle")}
-        </p>
-      )}
+      {!search && <p className="description">{i("dt_s_subtitle")}</p>}
     </div>
   )
 }

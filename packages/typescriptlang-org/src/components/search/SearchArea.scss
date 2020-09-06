@@ -74,11 +74,21 @@
 }
 
 .magnifier {
+  background: no-repeat center center
+    url("data:image/svg+xml,%3Csvg width='39' height='40' viewBox='0 0 39 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='16.8824' cy='16.8824' r='14.8824' stroke='%23FAF9F8' stroke-width='4'/%3E%3Cline x1='27.4799' y1='27.6547' x2='37.4799' y2='38.6547' stroke='%23FAF9F8' stroke-width='4'/%3E%3C/svg%3E%0A");
+  height: 40px;
   user-select: none;
+  width: 49px;
 }
 
 .closer {
+  background: no-repeat center center
+    url("data:image/svg+xml,%3Csvg width='26' height='26' viewBox='0 0 26 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M26 13C26 20.1797 20.1797 26 13 26C5.82031 26 0 20.1797 0 13C0 5.8203 5.82031 0 13 0C20.1797 0 26 5.8203 26 13ZM10 13L5 8L7.82843 5.17157L12.8284 10.1716L18 5L20.8284 7.82843L15.6569 13L20.8284 18.1716L18 21L12.8284 15.8284L7.82843 20.8284L5 18L10 13Z' fill='white'/%3E%3C/svg%3E%0A");
+  border: none;
+  cursor: pointer;
+  height: 28px;
   margin-top: 2px;
+  width: 28px;
 }
 
 .description {
