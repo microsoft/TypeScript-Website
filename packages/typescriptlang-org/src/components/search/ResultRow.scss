@@ -26,6 +26,11 @@
     width: 3.5rem;
   }
 
+  .resultLink {
+    color: inherit;
+    text-decoration: none;
+  }
+
   .downloadsMillion,
   .downloadsHundredThousand {
     &::after {
@@ -86,8 +91,11 @@
     content: " ";
   }
 
-  .name {
-    strong {
+  .resultName {
+    font-weight: bold;
+
+    &::after {
+      content: " ";
       display: block;
     }
   }
