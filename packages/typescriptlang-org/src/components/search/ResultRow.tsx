@@ -143,12 +143,19 @@ const TimeAgo: React.FC<TimeAgoProps> = ({ ago }) => {
 
   const [ms, unit] = timeMeasures[measureIndex]
 
-  return (
-    <FormattedRelativeTime
-      numeric="auto"
-      style="long"
-      value={Math.ceil(-ago / ms)}
-      unit={unit}
-    />
-  )
+  // @ts-expect-error - this isn't in the JSTS dom APIs
+  if (Intl.RelativeTimeFormat) {
+    return (
+      <FormattedRelativeTime
+        numeric="auto"
+        style="long"
+        value={Math.ceil(-ago / ms)}
+        unit={unit}
+      />
+    )
+  } else {
+    const value = -1 * Math.ceil(-ago / ms)
+    const suffix = value === 1 ? "" : "s"
+    return <>{value} {unit}{suffix}</>
+  }
 }
