@@ -418,7 +418,8 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     const filetype = filename.split(".").pop() || ""
 
     // Only run the LSP-y things on source files
-    if (!sourceFiles.includes(filetype)) {
+    const allowJSON = compilerOptions.resolveJsonModule && filetype === "json"
+    if (!sourceFiles.includes(filetype) && !allowJSON) {
       continue
     }
 
@@ -496,6 +497,9 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   // Lets fs changes propagate back up to the fsMap
   if (handbookOptions.emit) {
     filenames.forEach(f => {
+      const filetype = f.split(".").pop() || ""
+      if (!sourceFiles.includes(filetype)) return
+
       const output = ls.getEmitOutput(f)
       output.outputFiles.forEach(output => {
         system.writeFile(output.name, output.text)
