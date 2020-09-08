@@ -2,7 +2,7 @@
 
 // O TypeScript suporta muitos fixits que ajudam a refatorar
 // seu código. Por exemplo, se você selecionar o texto
-// na linha 7 e clicar na lampada que aparece, você
+// na linha 7 e clicar na lâmpada que aparece, você
 // receberá algumas sugestões de refatoração.
 
 function addOne(x: number) {
