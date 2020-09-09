@@ -7,10 +7,10 @@
 // convertido para JavaScript de uma maneira bem previsível porque
 // isso sempre será removido.
 
-// Por exemplo, esta linha nunca adicionará um 'import' ou 'require'
+// Por exemplo, esta linha nunca adicionará um 'import' ou 'require' na saída
 import type { CSSProperties } from "react";
 
-// Que é usada aqui como um 'type'
+// Esse tipo é utilizado aqui
 const style: CSSProperties = {
   textAlign: "center",
 };
@@ -29,8 +29,8 @@ export class Welcome extends React.Component {
   }
 }
 
-// Contudo, se o 'import' sem tipos, apenas importa
-// tipos - também poderia ser removido. Se você olhar na
+// Contudo, se utilizar o 'import' comum para importar apenas
+// tipos, ele também pode ser removido. Se você olhar na
 // saída compilada do JavaScript, este 'import' não está incluído.
 
 import { FunctionComponent } from "react";
