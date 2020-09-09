@@ -332,7 +332,7 @@ writeFileSync(
 function validateNonEnglishMarkdownFile(info, lang, filepath) {
   if (!info.data.permalink.startsWith("/" + lang + "/")) {
     throw new Error(
-      `Permalink in ${filepath} does not start with '/${lang}/'\n\n`
+      `Permalink in ${filepath} does not start with '/${lang}/'\n\nExpected ${info.data.permalink} to be /${lang}${info.data.permalink}\n\n`
     );
   }
 }
