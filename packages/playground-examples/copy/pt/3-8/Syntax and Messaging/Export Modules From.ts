@@ -16,8 +16,8 @@ import * as reporters from "@jest/reporters";
 export { console, reporters };
 
 // Com a versão 3.8, o TypeScript suporta mais das formas
-// de declaração de 'export' nas especificações do JavaScript, deixando
-// você escrever uma única linha para re-exportar um módulo.
+// de declaração de 'export', conforme as especificações do JavaScript,
+// deixando você escrever uma única linha para re-exportar um módulo.
 
 export * as jestConsole from "@jest/console";
 export * as jestReporters from "@jest/reporters";
