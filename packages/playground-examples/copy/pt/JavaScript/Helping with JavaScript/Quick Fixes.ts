@@ -1,5 +1,5 @@
 // O Typescript fornece recomendações rápidas para problemas comuns.
-// Os comandos apareceram no seu editor com base nas recomendações.
+// Os comandos aparecem no seu editor com base nas recomendações.
 
 // Por exemplo, o TypeScript pode fornecer
 // recomendações rápidas para seus erros de digitação:
