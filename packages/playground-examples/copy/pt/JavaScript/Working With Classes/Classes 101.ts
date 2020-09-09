@@ -2,7 +2,7 @@
 
 // Uma classe é um tipo especial do objeto JavaScript, no qual
 // sempre é criada a partir de um constructor. Essas classes
-// atuam muito como objetos, e possuem uma estrutura de herança
+// agem muito como objetos, e possuem uma estrutura de herança
 // parecida a linguagens como Java/C#/Swift.
 
 // Aqui está um exemplo de uma classe:
@@ -20,14 +20,14 @@ class Vendor {
 }
 
 // Uma instância pode ser criada por meio da palavra-chave new, e
-// você pode chamar métodos e acessar propriedades
+// você pode chamar métodos e acessar propriedades do
 // objeto.
 
 const shop = new Vendor("Ye Olde Shop");
 console.log(shop.greet());
 
-// Você pode subclass um objeto. Aqui está um carrinho de comida no qual
-// que tem uma variedade e também um nome:
+// Você pode criar uma subclasse de um objeto. Aqui está um carrinho de comida que
+// tem uma variedade assim como um nome:
 
 class FoodTruck extends Vendor {
   cuisine: string;
@@ -42,9 +42,9 @@ class FoodTruck extends Vendor {
   }
 }
 
-// Porque nós indicamos que ali precisa ter dois argumentos
-// para criar um novo FoodTruck, TypeScript fornecerá errors
-// quando você usa apenas um:
+// Porque nós indicamos que deve ter dois argumentos
+// para criar um novo FoodTruck, TypeScript fornecerá erros
+// caso você utilize apenas um:
 
 const nameOnlyTruck = new FoodTruck("Salome's Adobo");
 
