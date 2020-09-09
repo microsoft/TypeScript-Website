@@ -11,7 +11,6 @@
 type IdentifierCache = { [key: string]: number };
 
 // Significa que isso irá falhar, porque 'file_a' é uma string.
-//  this will fail, because 'file_a' has a string value
 
 const cacheWithString: IdentifierCache = { file_a: "12343" };
 
