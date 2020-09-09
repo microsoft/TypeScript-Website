@@ -1,13 +1,12 @@
-// TypeScript provides quick-fix recommendations for
-// common accidents. Prompts show up in your editor based
-// on these recommendations.
+// O Typescript fornece recomendações rápidas para problemas comuns.
+// Os comandos apareceram no seu editor com base nas recomendações.
 
-// For example TypeScript can provide quick-fixes
-// for typos in your types:
+// Por exemplo, o TypeScript pode fornecer
+// recomendações rápidas para seus erros de digitação:
 
 const eulersNumber = 2.7182818284;
 eulersNumber.toStrang();
-//           ^______^ - select this to see the light bulb
+//           ^______^ - selecione isso para ver a lâmpada
 
 class ExampleClass {
   method() {
