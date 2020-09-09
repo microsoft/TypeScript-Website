@@ -16,7 +16,7 @@ class Cofre{
 }
 
 const cofre = new Cofre("Jóias da Coroa");
-seguro.imprimeConteudo();
+cofre.imprimeConteudo();
 // Se você veio de uma linguagem orientada a objeto onde
 // a variável this/self é facilmente previsível, então você
 // talvez precise ler sobre como o "this" pode ser confuso:
@@ -31,11 +31,11 @@ seguro.imprimeConteudo();
 // outro objeto, e então chama ela através dele - a variável this
 // vai passar a ter de referência o objeto que recebe:
 
-const objetoCapturandoThis = { conteudo: "http://gph.is/VxeHsW", imprime: safe.printConteudo };
+const objetoCapturandoThis = { conteudo: "http://gph.is/VxeHsW", imprime: cofre.imprimeConteudo };
 objetoCapturandoThis.imprime(); // Imprime "http://gph.is/VxeHsW", e não "Jóias da Coroa"
 
 // Isso é complicado, porque quando lidamos com callback de APIs
-// pode ser bastante tentador passar a referencia direto para
+// pode ser bastante tentador passar a referência direto para
 // a função. Isso pode ser resolvido criando uma nova função
 // no lugar de chamada.
 
@@ -46,7 +46,7 @@ objetoQueNaoCapturaThis.imprime();
 // é forçar a ligação do this com o objeto que você originalmente
 // pretendia ligar.
 
-const objetoCapturandoOThisDeNovo = { conteudo: "N/A", imprime: cofre.imprimeConteudo.bind(safe) };
+const objetoCapturandoOThisDeNovo = { conteudo: "N/A", imprime: cofre.imprimeConteudo.bind(cofre) };
 objetoCapturandoOThisDeNovo.imprime();
 
 // Para lidar com um contexto inesperado, você também pode
