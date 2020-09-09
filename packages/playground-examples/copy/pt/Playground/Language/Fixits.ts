@@ -18,6 +18,6 @@ function addOne(x: number) {
 // De qualquer maneira, ter fixits disponíveis significa que
 // podemos documentá-las no playground e isso é valioso.
 
-// exemplo:big-number-literals
-// exemplo:const-to-let
-// exemplo:infer-from-usage-changes
+// example:big-number-literals
+// example:const-to-let
+// example:infer-from-usage-changes
