@@ -3,7 +3,7 @@
 // Quando um método de uma classe é chamado, você geralmente espera
 // que ele se refira a atual instância dessa classe.
 
-class Cofre{
+class Cofre {
   conteudo: string;
   
   constructor(conteudo: string) {
@@ -17,7 +17,8 @@ class Cofre{
 
 const cofre = new Cofre("Jóias da Coroa");
 cofre.imprimeConteudo();
-// Se você veio de uma linguagem orientada a objeto onde
+
+// Se você veio de uma linguagem orientada a objetos onde
 // a variável this/self é facilmente previsível, então você
 // talvez precise ler sobre como o "this" pode ser confuso:
 //
@@ -71,7 +72,7 @@ class CofreComSegurança {
 // Agora ao passar a função para outro objeto
 // ele não vai acidentalmente mudar o this.
 
-const cofreASegurado = new CofreComSegurança ("Caveira de Cristal");
+const cofreASegurado = new CofreComSegurança("Caveira de Cristal");
 cofreASegurado.imprimeConteudo();
 
 const objetoTentandoMudarOThis = {
@@ -80,6 +81,7 @@ const objetoTentandoMudarOThis = {
 };
 
 objetoTentandoMudarOThis.imprime();
+
 // Se você tem um projeto em TypeScript, você pode usar a flag
 // do compilador noImplicitThis para marcar casos onde o TypeScript
 // não pode determinar que tipo de "this" é para a função.
