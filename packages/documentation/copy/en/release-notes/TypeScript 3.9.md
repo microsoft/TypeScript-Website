@@ -100,7 +100,7 @@ doStuff(123, 456);
 ```
 
 That's why TypeScript 3.9 brings a new feature: `// @ts-expect-error` comments.
-When a line is prefixed with a `// @ts-expect-error` comment, TypeScript will suppress that error from being reported;
+When a line is preceded by a `// @ts-expect-error` comment, TypeScript will suppress that error from being reported;
 but if there's no error, TypeScript will report that `// @ts-expect-error` wasn't necessary.
 
 As a quick example, the following code is okay
