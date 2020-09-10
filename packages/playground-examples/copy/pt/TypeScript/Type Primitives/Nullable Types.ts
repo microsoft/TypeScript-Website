@@ -32,10 +32,10 @@ const searchResults = {
 
 // Strict Null Types
 
-// Antes do TypeScrips 2.0, undefined e null eram efetivamente
-// ignorados no sistema de typagem. Isso fazia com que TypeScript
-// pudesse prover um ambiente de codagem mais próximo de um JavaScript
-// sem tipagem.
+// Antes do TypeScript 2.0, undefined e null eram efetivamente
+// ignorados no sistema de tipagem. Isso fazia com que TypeScript
+// pudesse prover um ambiente de desenvolvimento mais próximo de
+// um JavaScript sem tipagem.
 
 // A versāo 2.0 adiciona um marcador de compilagem, chamado "strictNullChecks"
 // esse marcador requer que undefined e null fossem tratados como tipos,
