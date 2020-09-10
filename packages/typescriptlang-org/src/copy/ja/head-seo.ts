@@ -6,7 +6,7 @@ export const headCopy = {
   tsconfig_title:
     "TSConfig リファレンス - すべてのTSConfigのオプションのドキュメント",
   tsconfig_description:
-    "allowJs から useDefineForClassFields まで、TSConfigのドキュメントは、TypeScriptプロジェクトで有効なコンパイラオプションのすべてを含んでいます",
+    "allowJs から useDefineForClassFields まで、TSConfigのドキュメントは、TypeScriptプロジェクトで設定可能なコンパイラオプションのすべてを含んでいます",
   playground_example_prefix: "プレイグラウンド 例 - ",
 
   head_index_title: "どんな規模でも型付けされたJavaScriptを",

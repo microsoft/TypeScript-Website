@@ -24,7 +24,7 @@ export const docCopy = {
     "TypeScriptはJavaScriptのスーパーセットなので、デフォルトのテンプレートはありません。その代わりに、いくつかのプロジェクトはTypeScriptの初期セットアップのテンプレートを提供しています。以下のプロジェクトはTypeScriptをサポートするテンプレートを提供しています。",
   doc_node_npm: "npm",
   doc_node_npm_tsdx_blurb: "TypeScriptのライブラリ作成のための設定不要のツール",
-  doc_node_npm_oclif_blurb: "コマンドラインツールの作成",
+  doc_node_npm_oclif_blurb: "ユーザーが気に入ってくれるコマンドラインツールの作成",
   doc_node_npm_gluegun_blurb:
     "TypeScriptコマンドラインアプリケーション作成のためのすばらしいツールキット",
   doc_frameworks: "Webフレームワーク",
@@ -62,7 +62,7 @@ export const docCopy = {
   doc_apps_electron_blurb:
     "クロスプラットフォームのデスクトップアプリケーションをJavaScript、HTML、CSSで作成",
   doc_apps_expo_blurb: "最も早いアプリケーションの作成方法",
-  doc_apps_react_native_blurb: "一度学習したことをどこででも",
+  doc_apps_react_native_blurb: "Learn once, write anywhere",
   doc_apps_native_script_blurb:
     "真にネイティブなモバイルアプリケーションを作るためのOSSフレームワーク",
   doc_apps_make_code_blurb:
