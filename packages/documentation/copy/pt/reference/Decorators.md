@@ -1,22 +1,22 @@
 ---
-title: Decorators
+titulo: Decorators
 layout: docs
 permalink: /docs/handbook/decorators.html
-oneline: TypeScript Decorators overview
-translatable: true
+uma linha: Visão geral dos Decorators no TypeScript
+traduzível: true
 ---
 
-## Introduction
+## Introdução
 
-With the introduction of Classes in TypeScript and ES6, there now exist certain scenarios that require additional features to support annotating or modifying classes and class members.
-Decorators provide a way to add both annotations and a meta-programming syntax for class declarations and members.
-Decorators are a [stage 2 proposal](https://github.com/tc39/proposal-decorators) for JavaScript and are available as an experimental feature of TypeScript.
+Com a introdução as Classes no TypeScript e ES6, agora existem certos cenários que requerem recursos adicionais para dar suporte à anotação ou modificação de classes e membros da classe.
+Decorators fornecem uma maneira de adicionar anotações e uma sintaxe de metaprogramação para declarações de classe e membros.
+Decorators são uma [proposta de estágio 2](https://github.com/tc39/proposal-decorators) para JavaScript e estão disponíveis como um recurso experimental do TypeScript.
 
-> NOTE&emsp; Decorators are an experimental feature that may change in future releases.
+> NOTA&emsp; Decorators são um recurso experimental que podem mudar em versões futuras.
 
-To enable experimental support for decorators, you must enable the `experimentalDecorators` compiler option either on the command line or in your `tsconfig.json`:
+Para habilitar o suporte experimental para os Decorators, você deve habilitar a opção do compilador `experimentalDecorators` na linha de comando ou em seu` tsconfig.json`:
 
-**Command Line**:
+**Linha de Comando**:
 
 ```shell
 tsc --target ES5 --experimentalDecorators
