@@ -10,7 +10,7 @@
 //
 
 // No exemplo temos a classe pai Animal, ela tem propriedades private e protected.
-// Suclasses podem acessar "this.isRapido" mas não podem acessar "this.type"
+// Subclasses podem acessar "this.isRapido" mas não podem acessar "this.type"
 
 // Fora dessa classes, ambos os campos não são visíveis  e retornam um erro do compilador quando
 // @ts-check é ativado:
