@@ -84,4 +84,4 @@ const resultOfVoidFunction = voidFunction();
 
 // Isso geralmente é um acidente, e o TypeScript mantém o tipo void
 // para que você tenha erros de compilação - mesmo que em
-// runtime ele seria um valor undefined.
+// tempo de execução ele seria um valor undefined.
