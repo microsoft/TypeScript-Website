@@ -3,7 +3,7 @@
 // se os campos não declarados em uma união de tipos estavam em 
 // conformidade com qualquer tipo indexado na união.
 
-// Você pode aprender mais sobre tipagens indexadas aqui: exemplo:indexed-types
+// Você pode aprender mais sobre tipagens indexadas aqui: example:indexed-types
 
 // Por exemplo, o IdentifierCache abaixo indica que qualquer
 // 'key' no objeto, será um número:
