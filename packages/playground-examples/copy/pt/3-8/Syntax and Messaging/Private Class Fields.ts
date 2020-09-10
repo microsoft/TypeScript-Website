@@ -41,14 +41,14 @@ console.log("Sobrenome de Pessoas:", jeremias["#sobrenome"]);
 // palavra-chave 'private' dentro de uma classe?" - vamos fazer uma 
 // comparação sobre para ver como isso funciona após a 3.8:
 
-class cachorro {
+class Cachorro {
   private _nome: string;
   constructor(nome: string) {
     this._nome = nome;
   }
 }
 
-let rex = new cachorro("Rex");
+let rex = new Cachorro("Rex");
 // Não permite que você acesse através da notação de ponto
 rex._nome = "Caramelo";
 // Mas permite que seja acessado através da notação de colchetes.
