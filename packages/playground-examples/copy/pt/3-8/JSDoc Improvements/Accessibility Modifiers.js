@@ -25,7 +25,7 @@ class Animal {
 
   fazerBarulho() {
     // Supostamente são muito silenciosos
-    if (this.tipo === "bengal") {
+    if (this.tipo === "bengala") {
       console.log("");
     } else {
       throw new Error("fazerBarulho foi invocado na classe pai");
