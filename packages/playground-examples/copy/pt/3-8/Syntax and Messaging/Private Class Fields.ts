@@ -35,7 +35,7 @@ let jeremias = new Pessoa("Jeremias", "Beremias", "Sr.");
 console.log(jeremias.#primeiroNome);
 
 // Nem isso:
-console.log("Sobrenome de Pessoas:", jeremy["#sobrenome"]);
+console.log("Sobrenome de Pessoas:", jeremias["#sobrenome"]);
 
 // Uma pergunta comum que fazemos é "Porque você usaria isso no lugar da
 // palavra-chave 'private' dentro de uma classe?" - vamos fazer uma 
@@ -44,7 +44,7 @@ console.log("Sobrenome de Pessoas:", jeremy["#sobrenome"]);
 class cachorro {
   private _nome: string;
   constructor(nome: string) {
-    this._name = name;
+    this._nome = nome;
   }
 }
 
