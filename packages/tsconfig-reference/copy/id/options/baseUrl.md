@@ -23,4 +23,4 @@ import { helloWorld } from "hello/world";
 console.log(helloWorld);
 ```
 
-Jika bosan impor selalu terlihat seperti `"../"` atau `"./"`. Atau harus untuk merubah saat Anda memindahkan berkas, ini adalah cara terbaik untuk memperbaikinya.
+Jika Anda lelah cara impor selalu seperti `"../"` atau `"./"`. Atau harus untuk merubah saat Anda memindahkan berkas, ini adalah cara terbaik untuk memperbaikinya.

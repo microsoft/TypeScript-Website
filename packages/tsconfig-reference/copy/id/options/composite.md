@@ -3,7 +3,7 @@ display: "Composite"
 oneline: "Digunakan untuk membuat banyak proyek pembangunan"
 ---
 
-Opsi `composite` memberlakukan batasan tertentu yang menjadikan mungkin untuk membangun (termasuk TypeScript
+Opsi `composite` memberlakukan batasan tertentu yang memungkinkan untuk membangun (termasuk TypeScript
 sendiri, di bawah mode `--build`) untuk menentukan dengan cepat apakah proyek telah dibangun.
 
 Saat pengaturan ini aktif:
@@ -12,6 +12,6 @@ Saat pengaturan ini aktif:
 
 - Semua berkas implementasi harus cocok dengan sebuah `include` contoh atau terdaftar dalam aturan `files`. Jika batasan ini dilanggar, `tsc` akan memberi tahu Anda berkas mana yang tidak ditentukan.
 
-- `declaration` defaults to `true`
+- `declaration` defaults ke `true`
 
 Anda dapat menemukan dokumentasi tentang proyek TypeScript di [the handbook](https://www.typescriptlang.org/docs/handbook/project-references.html).

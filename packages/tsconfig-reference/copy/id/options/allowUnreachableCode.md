@@ -1,13 +1,13 @@
 ---
 display: "Izinkan Kode Tak Terjangkau"
-oneline: "Kesalahan ketika kode tidak akan pernah dipanggil"
+oneline: "Galat ketika kode tidak akan pernah dipanggil"
 ---
 
 Kapan:
 
-- `undefined` (default) memberikan saran sebagai peringatan kepada editor
+- `undefined` _default_ memberikan saran sebagai peringatan kepada editor
 - `true` kode yang tidak dapat dijangkau diabaikan
-- `false` menimbulkan kesalahan kompiler tentang kode yang tidak dapat dijangkau
+- `false` menimbulkan galat kompiler tentang kode yang tidak dapat dijangkau
 
 Peringatan ini hanya tentang kode yang terbukti tidak dapat dijangkau karena penggunaan sintaks JavaScript, misalnya:
 
@@ -37,4 +37,4 @@ function fn(n: number) {
 }
 ```
 
-Ini tidak mempengaruhi kesalahan atas dasar kode yang _muncul_ menjadi tidak dapat dijangkau karena menggolongkan uraian.
+Ini tidak mempengaruhi galat atas dasar kode yang _muncul_ menjadi tidak dapat dijangkau karena menggolongkan uraian.
