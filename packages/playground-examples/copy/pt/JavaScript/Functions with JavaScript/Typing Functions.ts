@@ -1,136 +1,137 @@
-// TypeScript's inference can get you very far, but there
-// are lots of extra ways to provide a richer way to document
-// the shape of your functions.
+// Você pode chegar bem longe usando a inferência do TypeScript,
+// porém existem muitas outras maneiras de prover um modo mais
+// rico para documentar a forma das suas funções.
 
-// A good first place is to look at optional params, which
-// is a way of letting others know you can skip params.
+// Uma boa primeira opção é observar os parâmetros opcionais,
+// que é uma forma de deixar os outros saberem que alguns
+// parâmetros podem ser pulados.
 
 let i = 0;
-const incrementIndex = (value?: number) => {
-  i += value === undefined ? 1 : value;
+const incrementarIndice = (valor?: number) => {
+  i += valor === undefined ? 1 : valor;
 };
 
-// This function can be called like:
+// Esta função pode ser invocada das seguintes maneiras:
 
-incrementIndex();
-incrementIndex(0);
-incrementIndex(3);
+incrementarIndice();
+incrementarIndice(0);
+incrementarIndice(3);
 
-// You can type parameters as functions, which provides
-// type inference when you write the functions.
+// Você pode tipar parâmetros como funções, que provêm
+// inferência de tipos quando escrever estas funções.
 
-const callbackWithIndex = (callback: (i: number) => void) => {
+const callbackComIndice = (callback: (i: number) => void) => {
   callback(i);
 };
 
-// Embedding function interfaces can get a bit hard to read
-// with all the arrows. Using a type alias will let you name
-// the function param.
+// Embutir interfaces de funções pode dificultar um pouco a leitura
+// com todas essas setas. Usar um apelido para o tipo permitirá
+// que você nomeie a função passada como parâmetro.
 
-type NumberCallback = (i: number) => void;
-const callbackWithIndex2 = (callback: NumberCallback) => {
+type CallbackComNumero = (i: number) => void;
+const callbackComIndice2 = (callback: CallbackComNumero) => {
   callback(i);
 };
 
-// These can be called like:
+// Esta função pode ser invocada da seguinte maneira:
 
-callbackWithIndex(index => {
-  console.log(index);
+callbackComIndice2(indice => {
+  console.log(indice);
 });
 
-// By hovering on index above, you can see how TypeScript
-// has inferred the index to be a number correctly.
+// Se passar o cursor sobre o índice acima, você verá como o TypeScript
+// inferiu corretamente que o índice deveria ser um número.
 
-// TypeScript inference can work when passing a function
-// as an instance reference too. To show this, we'll use
-// a function which changed a number into string:
+// A inferência do TypeScript também pode funcionar quando passamos uma
+// função como uma referência de instância. Para demonstrar, usaremos
+// uma função que transforma um número em uma string:
 
-const numberToString = (n: number) => {
+const numeroParaString = (n: number) => {
   return n.toString();
 };
 
-// This can be used in a function like map on an array
-// to convert all numbers into a string, if you hover
-// on stringedNumbers below you can see the expected types.
-const stringedNumbers = [1, 4, 6, 10].map(i => numberToString(i));
+// Isso pode ser utilizado em uma função como map em um array
+// para converter todos os números em strings. Se passar o cursor
+// sobre numerosComoString abaixo, você verá os tipos esperados.
+const numerosComoString = [1, 4, 6, 10].map(i => numeroParaString(i));
 
-// We can use shorthand to have the function passed directly
-// and get the same results with more focused code:
-const stringedNumbersTerse = [1, 4, 6, 10].map(numberToString);
+// Podemos usar uma abreviação para passar a função diretamente
+// e termos o mesmo resultado com um código mais focado:
+const numerosComoStringConciso = [1, 4, 6, 10].map(numeroParaString);
 
-// You may have functions which could accept a lot of types
-// but you are only interested in a few properties. This is
-// a useful case for indexed signatures in types. The
-// following type declares that this function is OK to use
-// any object so long as it includes the property name:
+// Você pode ter funções que aceitam muitos tipos
+// mas estar somente interessado em algumas propriedades.
+// Esse é um caso útil para assinaturas indexadas em tipos.
+// O seguinte tipo declara que nesta função é OK usar qualquer objeto,
+// contanto que ele inclua a propriedade nome:
 
-interface AnyObjectButMustHaveName {
-  name: string;
-  [key: string]: any;
+interface QualquerObjetoDeveTerNome {
+  nome: string;
+  [chave: string]: any;
 }
 
-const printFormattedName = (input: AnyObjectButMustHaveName) => {};
+const apresentaNomeFormatado = (entrada: QualquerObjetoDeveTerNome) => {};
 
-printFormattedName({ name: "joey" });
-printFormattedName({ name: "joey", age: 23 });
+apresentaNomeFormatado({ nome: "joey" });
+apresentaNomeFormatado({ nome: "joey", age: 23 });
 
-// If you'd like to learn more about index-signatures
-// we recommend:
+// Se quiser aprender mais sobre assinaturas indexadas
+// nós recomendamos:
 //
 // https://www.typescriptlang.org/docs/handbook/interfaces.html#excess-property-checks
 // https://basarat.gitbooks.io/typescript/docs/types/index-signatures.html
 
-// You can also allow this kind of behavior everywhere
-// via the tsconfig flag suppressExcessPropertyErrors -
-// however, you can't know if others using your API have
-// this set to off.
+// Você também pode permitir este tipo de comportamento em qualquer lugar
+// usando a flag suppressExcessPropertyErrors do arquivo tsconfig -
+// porém, você não tem como saber se quem estiver usando sua API
+// têm esta configuração desligada.
 
-// Functions in JavaScript can accept different sets of params.
-// There are two common patterns for describing these: union
-// types for parameters/return, and function overloads.
+// Funções em JavaScript podem aceitar diferentes conjuntos de parâmetros.
+// Existem dois padrões comuns para descrevê-los: union types (união de tipagens)
+// para parâmetros/retorno, e function overloads (sobrecarga de funções).
 
-// Using union types in your parameters makes sense if there
-// are only one or two changes and documentation does not need
-// to change between functions.
+// Usar union types nos seus parâmetros faz sentido se existirem
+// apenas uma ou duas mudanças e a documentação não precisar ser
+// modificada entre essas funções.
 
-const boolOrNumberFunction = (input: boolean | number) => {};
+const FuncaoBoolOuNumber = (input: boolean | number) => {};
 
-boolOrNumberFunction(true);
-boolOrNumberFunction(23);
+FuncaoBoolOuNumber(true);
+FuncaoBoolOuNumber(23);
 
-// Function overloads on the other hand offer a much richer
-// syntax for the parameters and return types.
+// Function overloads, por outro lado, oferecem uma sintaxe
+// bem mais rica para parâmetros e tipos de retorno.
 
-interface BoolOrNumberOrStringFunction {
-  /** Takes a bool, returns a bool */
-  (input: boolean): boolean;
-  /** Takes a number, returns a number */
-  (input: number): number;
-  /** Takes a string, returns a bool */
-  (input: string): boolean;
+interface FuncaoBoolOuNumberOuString {
+  /** Recebe um boolean, retorna um boolean */
+  (entrada: boolean): boolean;
+  /** Recebe um número, retorna um número */
+  (entrada: number): number;
+  /** Recebe uma string, retorna um boolean */
+  (entrada: string): boolean;
 }
 
-// If this is your first time seeing declare, it allows you
-// to tell TypeScript something exists even if it doesn't
-// exist in the runtime in this file. Useful for mapping
-// code with side-effects but extremely useful for demos
-// where making the implementation would be a lot of code.
+// Se esta for a primeira vez que esteja vendo a expressão declare,
+// ela permite que você diga ao TypeScript que algo existe, mesmo
+// que não esteja presente em runtime neste arquivo. Isso é útil para
+// mapear código com side-effects mas extremamente útil para demos, onde
+// implementar algo poderia ser bem custoso.
 
-declare const boolOrNumberOrStringFunction: BoolOrNumberOrStringFunction;
+declare const funcaoBoolOuNumberOuString: FuncaoBoolOuNumberOuString;
 
-const boolValue = boolOrNumberOrStringFunction(true);
-const numberValue = boolOrNumberOrStringFunction(12);
-const boolValue2 = boolOrNumberOrStringFunction("string");
+const valorBool = funcaoBoolOuNumberOuString(true);
+const valorNumero = funcaoBoolOuNumberOuString(12);
+const valorBool2 = funcaoBoolOuNumberOuString("string");
 
-// If you hover over the above values and functions you
-// can see the right documentation and return values.
+// Se passar o cursor sobre os valores e funções acima
+// você verá a documentação e valores retornados corretos.
 
-// Using function overloads can get you very far, however
-// there's another tool for dealing with different types of
-// inputs and return values and that is generics.
+// Você pode chegar bem longe usando function overloads, porém
+// existe uma outra ferramenta para lidar com diferentes tipos
+// de valores de entrada e retorno: tipos genéricos.
 
-// These provide a way for you to have types as placeholder
-// variables in type definitions.
+// Tipos genéricos provêm uma forma de você ter tipos como variáveis
+// substituíveis em definições de tipo.
 
 // example:generic-functions
 // example:function-chaining
