@@ -1,4 +1,4 @@
-// 区別された総称型は
+// 共用型の識別とは
 // コードフロー解析で可能性のあるオブジェクトの種類を
 // 特定の1つのオブジェクトに減らすのに使うものです。
 //
@@ -15,11 +15,11 @@ type TimingEvent = { name: "start"; userStarted: boolean } | { name: "closed"; d
 const handleEvent = (event: TimingEvent) => {
   // event.nameに対してswitch文を用いることで、
   // TypeScriptのコードフロー解析はオブジェクトが
-  // 総称型のうちの片方で表せるということを決定できます。
+  // 共用型のうちの片方で表せるということを確定できます。
 
   switch (event.name) {
     case "start":
-      // TimingEventのうち、"start"になる型は1つしかないので、
+      // TimingEventのうち、nameが"start"になる型は1つしかないので、
       // これはuserStartedに
       // 安全にアクセスできることを意味します。
       const initiatedByUser = event.userStarted;
@@ -31,10 +31,10 @@ const handleEvent = (event: TimingEvent) => {
   }
 };
 
-// このパターンは数字を区別する道具として
-// 使った場合でも同じです。
+// このパターンは型の識別にnumber型を使った
+// 場合でも同じです。
 
-// 以下の例では、区別できる総称型に加えて
+// 以下の例では、区別できる共用型に加えて
 // ハンドリングする必要のあるエラーがあります。
 
 type APIResponses = { version: 0; msg: string } | { version: 1; message: string; status: number } | { error: string };
@@ -58,7 +58,7 @@ const handleResponse = (response: APIResponses) => {
   }
 };
 
-// 総称型のすべてをチェックしたかどうかを保証できるので、
+// 共用型のすべてをチェックしたかどうかを保証できるので、
 // if文よりもswitch文を使うほうが良いでしょう。
 // ハンドブックの中に、
 // never型を使ってこのパターンを説明した章があります:

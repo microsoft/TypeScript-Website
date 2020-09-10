@@ -2,7 +2,7 @@
 // 効率的に変換できる型です。
 
 // mapped typeのよくある使い方は
-// 既存の方の部分集合を扱うことです。
+// 既存の型の部分集合を扱うことです。
 // 例えば、APIが以下のArtistを返すとします:
 
 interface Artist {
@@ -36,7 +36,7 @@ type MyPartialType<Type> = {
 type MappedArtistForEdit = MyPartialType<Artist>;
 
 // これでほとんど完璧ですが、
-// これは起こりえないidがnullになるパターンを許容してしまいます。
+// これは、本来発生しない、idがnullになるパターンを許容してしまいます。
 // 交差型を使って、ちょっと改善してみましょう。
 // (詳しくは example:union-and-intersection-types を参照)
 
