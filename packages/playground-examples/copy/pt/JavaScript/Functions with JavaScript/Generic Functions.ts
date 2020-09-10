@@ -1,99 +1,99 @@
-// Generics provide a way to use Types as variables in other
-// types. Meta.
+// Tipos genéricos provêm uma forma de usar Tipos como variáveis em outros
+// tipos. Meta.
 
-// We'll be trying to keep this example light, you can do
-// a lot with generics and it's likely you will see some very
-// complicated code using generics at some point - but that
-// does not mean that generics are complicated.
+// Tentaremos manter este exemplo leve. Você pode fazer
+// muita coisa com tipos genéricos e é provável que veja algum código bem
+// complicado usando tipos genéricos em algum ponto - mas isso
+// não significa que tipos genéricos são complicados.
 
-// Let's start with an example where we wrap an input object
-// in an array. We will only care about one variable in this
-// case, the type which was passed in:
+// Vamos começar com um exemplo onde envolveremos um objeto de entrada
+// em um array. Apenas nos importaremos com uma só variável neste
+// caso: o tipo que foi passado como argumento:
 
-function wrapInArray<Type>(input: Type): Type[] {
-  return [input];
+function envolverEmArray<Tipo>(entrada: Tipo): Tipo[] {
+  return [entrada];
 }
 
-// Note: it's common to see Type referred to as T. This is
-// culturally similar to how people use i in a for loop to
-// represent index. T normally represents Type, so we'll
-// be using the full name for clarity.
+// Nota: é comum ver Tipo ser referido como T. Isso é
+// culturalmente similar à como as pessoas usam i em um loop for
+// para representar índice. T normalmente representa Tipo, então
+// usaremos o nome completo para maior clareza
 
-// Our function will use inference to always keep the type
-// passed in the same as the type passed out (though
-// it will be wrapped in an array).
+// Nossa função usará inferência para para sempre manter o tipo
+// passado como argumento igual ao tipo retornado (porém
+// envolvido em um array)
 
-const stringArray = wrapInArray("hello generics");
-const numberArray = wrapInArray(123);
+const stringArray = envolverEmArray("hello generics");
+const numberArray = envolverEmArray(123);
 
-// We can verify this works as expected by checking
-// if we can assign a string array to a function which
-// should be an object array:
-const notStringArray: string[] = wrapInArray({});
+// Podemos verificar que isso funciona como esperado ao checar
+// se podemos atribuir um array de strings à uma função que
+// deveria ser um array de objetos
+const naoArrayDeStrings: string[] = envolverEmArray({});
 
-// You can also skip the generic inference by adding the
-// type yourself also:
-const stringArray2 = wrapInArray<string>("");
+// Você também pode evitar a inferência adicionando
+// o tipo você mesmo:
+const arrayDeStrings2 = envolverEmArray<string>("");
 
-// wrapInArray allows any type to be used, however there
-// are cases when you need to only allow a subset of types.
-// In these cases you can say the type has to extend a
-// particular type.
+// envolverEmArray permite que qualquer tipo seja usado, porém existem
+// casos onde você precisa permitir apenas um subconjunto de tipos.
+// Nesses casos você pode dizer que o tipo deve estender um
+// tipo específico.
 
-interface Drawable {
-  draw: () => void;
+interface Desenhavel {
+  desenhar: () => void;
 }
 
-// This function takes a set of objects which have a function
-// for drawing to the screen
-function renderToScreen<Type extends Drawable>(input: Type[]) {
-  input.forEach(i => i.draw());
+// Esta função receve um conjunto de objetos os quais possuem uma função
+// para desenhar na tela
+function renderizarNaTela<Tipo extends Desenhavel>(entrada: Tipo[]) {
+  entrada.forEach(i => i.desenhar());
 }
 
-const objectsWithDraw = [{ draw: () => {} }, { draw: () => {} }];
-renderToScreen(objectsWithDraw);
+const objetosComDesenhar = [{ desenhar: () => {} }, { desenhar: () => {} }];
+renderizarNaTela(objetosComDesenhar);
 
-// It will fail if draw is missing:
+// Isso falhará se desenhar não estiver present:
 
-renderToScreen([{}, { draw: () => {} }]);
+renderizarNaTela([{}, { desenhar: () => {} }]);
 
-// Generics can start to look complicated when you have
-// multiple variables. Here is an example of a caching
-// function that lets you have different sets of input types
-// and caches.
+// Tipos genéricos podem começar a parecer complicados quando você tem
+// múltiplas variáveis. Aqui está um exemplo de uma função de caching
+// que permite que você tenha diferentes conjuntos de tipos de entrada
+// e caches.
 
-interface CacheHost {
-  save: (a: any) => void;
+interface HostDeCache {
+  salvar: (a: any) => void;
 }
 
-function addObjectToCache<Type, Cache extends CacheHost>(obj: Type, cache: Cache): Cache {
-  cache.save(obj);
+function adicionarObjetoAoCache<Tipo, Cache extends HostDeCache>(obj: Tipo, cache: Cache): Cache {
+  cache.salvar(obj);
   return cache;
 }
 
-// This is the same as above, but with an extra parameter.
-// Note: to make this work though, we had to use an any. This
-// can be worked out by using a generic interface.
+// Este é o mesmo exemplo que acima, porém com um parâmetro extra.
+// Nota: para fazê-lo funcionar, porém, tivemos que usar any. Isso
+// pode ser resolvido usando uma interface genérica
 
-interface CacheHostGeneric<ContentType> {
-  save: (a: ContentType) => void;
+interface HostDeCacheGenerico<TipoDeConteudo> {
+  salvar: (a: TipoDeConteudo) => void;
 }
 
-// Now when the CacheHostGeneric is used, you need to tell
-// it what ContentType is.
+// Agora quando o HostDeCacheGenerico é usado, você deve dizer
+// à dele qual é o TipoDeConteudo
 
-function addTypedObjectToCache<Type, Cache extends CacheHostGeneric<Type>>(obj: Type, cache: Cache): Cache {
-  cache.save(obj);
+function adicionarObjetoTipadoAoCache<Tipo, Cache extends HostDeCacheGenerico<Tipo>>(obj: Tipo, cache: Cache): Cache {
+  cache.salvar(obj);
   return cache;
 }
 
-// That escalated pretty quickly in terms of syntax. However,
-// this provides more safety. These are trade-offs, that you
-// have more knowledge to make now. When providing APIs for
-// others, generics offer a flexible way to let others use
-// their own types with full code inference.
+// O exemplo acima é bem intenso em termos de sintaxe. Porém,
+// isso provê uma segurança maior. Estes são trade-offs (comprometimentos),
+// os quais você agora possui conhecimento para fazer. Quando for prover APIs
+// à outras pessoas, tipos genéricos oferecem um jeito flexível de permitir
+// que elas usem seus próprios tipos sem ter que inferir seu código por completo.
 
-// For more examples of generics with classes and interfaces:
+// Para mais exemplos de tipos genéricos com classes e interfaces:
 //
 // example:advanced-classes
 // example:typescript-with-react
