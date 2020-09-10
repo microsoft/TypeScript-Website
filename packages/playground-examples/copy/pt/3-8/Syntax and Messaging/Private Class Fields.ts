@@ -54,7 +54,7 @@ rex._nome = "Caramelo";
 // Mas permite que seja acessado através da notação de colchetes.
 rex["_nome"] = "Bidu";
 
-// A referencia de private no TypeScript existe no type-level o que
+// A referência de private no TypeScript só existe no nível de tipos, o que
 // significa que você só pode confiar nisso. Agora com os campos
 // privados fazendo parte da linguagem JavaScript, você pode então
 // garantir de uma forma melhor a visibilidade no seu código.
