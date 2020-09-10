@@ -37,9 +37,10 @@ const searchResults = {
 // pudesse prover um ambiente de desenvolvimento mais próximo de
 // um JavaScript sem tipagem.
 
-// A versāo 2.0 adiciona um marcador de compilagem, chamado "strictNullChecks"
-// esse marcador requer que undefined e null fossem tratados como tipos,
-// o que significa que devem ser manipulados via análise de code-flow.
+// A versāo 2.0 adiciona uma configuração de compilação (flag),
+// chamada "strictNullChecks". Essa flag requer que undefined e null
+// sejam tratados como tipos, o que significa que devem ser manipulados
+// via análise de fluxo de código (code-flow).
 // ( veja mais em example:code-flow )
 
 // Para um exemplo da diferença quando se usa o stric null
