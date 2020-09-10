@@ -64,7 +64,7 @@ rex["_nome"] = "Bidu";
 // a funcionar, mas agora você pode escrever código de uma forma mais
 // proxima da linguagem JavaScript.
 
-// Você pode aprender mais sobre campos de classes na tc39 proposta
+// Você pode aprender mais sobre campos de classes na proposta da tc39
 // https://github.com/tc39/proposal-class-fields/
 // e nas notas de lançamentos beta:
 // https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/#ecmascript-private-fields
