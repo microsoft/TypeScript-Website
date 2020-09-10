@@ -48,9 +48,9 @@ const searchResults = {
 
 type PotentialString = string | undefined | null;
 
-// O PotentialString discarta o undefined e null. Se você
+// O PotentialString discarta o undefined e null. Se você ir
 // até as configurações, ligar o strict mode e voltar
-// você pode ver que ao passar o mouse por cime de PotencialString
+// você pode ver que ao passar o mouse por cima de PotencialString
 // agora pode ver a união completa.
 
 declare function getID(): PotentialString;
