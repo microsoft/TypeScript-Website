@@ -43,7 +43,7 @@ const searchResults = {
 // via análise de fluxo de código (code-flow).
 // ( veja mais em example:code-flow )
 
-// Para um exemplo da diferença quando se usa o stric null
+// Para um exemplo da diferença quando se usa o strict null
 // checks no TypeScript, passe o mouse por cima de "Potential String" abaixo:
 
 type PotentialString = string | undefined | null;
