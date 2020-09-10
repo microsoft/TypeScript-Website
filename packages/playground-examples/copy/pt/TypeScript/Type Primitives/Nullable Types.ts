@@ -1,7 +1,7 @@
 //// { order: 3, compiler: { strictNullChecks: false } }
 
 // No JavaScript existem duas maneiras de declarar valores que não
-// existem, o TypesScript adiciona sintaxe extra que nos proporciona
+// existem, o TypeScript adiciona sintaxe extra que nos proporciona
 // mais maneiras de declarar algo como opcional ou nulo.
 
 // Primeiramente a diferença entre os dois primitivos
