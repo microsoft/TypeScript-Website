@@ -39,7 +39,7 @@ console.log("Sobrenome de Pessoas:", jeremias["#sobrenome"]);
 
 // Uma pergunta comum que fazemos é "Porque você usaria isso no lugar da
 // palavra-chave 'private' dentro de uma classe?" - vamos fazer uma 
-// comparação sobre para ver como isso funciona apos a 3.8:
+// comparação sobre para ver como isso funciona após a 3.8:
 
 class cachorro {
   private _nome: string;
