@@ -19,7 +19,7 @@ function envolverEmArray<Tipo>(entrada: Tipo): Tipo[] {
 // para representar índice. T normalmente representa Tipo, então
 // usaremos o nome completo para maior clareza
 
-// Nossa função usará inferência para para sempre manter o tipo
+// Nossa função usará inferência para sempre manter o tipo
 // passado como argumento igual ao tipo retornado (porém
 // envolvido em um array)
 
