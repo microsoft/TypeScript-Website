@@ -60,8 +60,9 @@ console.log("User Logged in: ", userID.toUpperCase());
 
 // Somente em strict mode a linha acima vai falhar^
 
-// Existem maneiras de dizer ao TypeScript que você melhor sobre a tipagem,
-// como type assertion ou através do non-null assertion operator (!)
+// Existem maneiras de dizer ao TypeScript que você sabe mais
+// sobre a tipagem, como type assertion ou através do
+// non-null assertion operator (!)
 
 const definitelyString1 = getID() as string;
 const definitelyString2 = getID()!;
