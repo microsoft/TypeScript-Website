@@ -1,48 +1,42 @@
 # See https://github.com/orta/code-owner-self-merge
 
 # Collaborators for Japanese Translation of the Website
-packages/playground-examples/copy/ja/**/*.md @sasurau4 @Quramy @Naturalclar @Takepepe [translation] [jp]
-packages/playground-examples/copy/ja/**/*.ts @sasurau4 @Quramy @Naturalclar @Takepepe [translation] [jp]
+packages/playground-examples/copy/ja @sasurau4 @Quramy @Naturalclar @Takepepe [translation] [jp]
 packages/tsconfig-reference/copy/ja/**/*.md @sasurau4 @Quramy @Naturalclar @Takepepe [translation] [jp]
 packages/typescriptlang-org/src/copy/ja/**/*.ts @sasurau4 @Quramy @Naturalclar @Takepepe [translation] [jp]
 packages/typescriptlang-org/src/copy/ja.ts @sasurau4 @Quramy @Naturalclar @Takepepe [translation] [jp]
 packages/documentation/copy/ja/**/*.ts @sasurau4 @Quramy @Naturalclar @Takepepe [translation] [jp]
 
 # Collaborators for Portuguese Translation of the Website
-packages/playground-examples/copy/pt/**/*.md @khaosdoctor @danilofuchs [translation] [pt]
-packages/playground-examples/copy/pt/**/*.ts @khaosdoctor @danilofuchs [translation] [pt]
+packages/playground-examples/copy/pt @khaosdoctor @danilofuchs [translation] [pt
 packages/tsconfig-reference/copy/pt/**/*.md @khaosdoctor @danilofuchs [translation] [pt]
 packages/typescriptlang-org/src/copy/pt/**/*.ts @khaosdoctor @danilofuchs [translation] [pt]
 packages/typescriptlang-org/src/copy/pt.ts @khaosdoctor @danilofuchs [translation] [pt]
 packages/documentation/copy/pt/**/*.ts @khaosdoctor @danilofuchs [translation] [pt]
 
 # Collaborators for Spanish Translation of the Website
-packages/playground-examples/copy/es/**/*.md @KingDarBoja [translation] [es]
-packages/playground-examples/copy/es/**/*.ts @KingDarBoja [translation] [es]
+packages/playground-examples/copy/es @KingDarBoja [translation] [es]
 packages/tsconfig-reference/copy/es/**/*.md @KingDarBoja [translation] [es]
 packages/typescriptlang-org/src/copy/es/**/*.ts @KingDarBoja [translation] [es]
 packages/typescriptlang-org/src/copy/es.ts @KingDarBoja [translation] [es]
 packages/documentation/copy/es/**/*.ts @KingDarBoja [translation] [es]
 
 # Collaborators for Chinese Translation of the Website
-packages/playground-examples/copy/zh/**/*.md @Kingwl [translation] [zh]
-packages/playground-examples/copy/zh/**/*.ts @Kingwl [translation] [zh]
+packages/playground-examples/copy/zh @Kingwl [translation] [zh]
 packages/tsconfig-reference/copy/zh/**/*.md @Kingwl [translation] [zh]
 packages/typescriptlang-org/src/copy/zh/**/*.ts @Kingwl [translation] [zh]
 packages/typescriptlang-org/src/copy/zh.ts @Kingwl [translation] [zh]
 packages/documentation/copy/zh/**/*.ts @Kingwl [translation] [zh]
 
 # Collaborators for Korean Translation of the Website
-packages/playground-examples/copy/ko/**/*.md @Bumkeyy [translation] [ko]
-packages/playground-examples/copy/ko/**/*.ts @Bumkeyy [translation] [ko]
+packages/playground-examples/copy/ko @Bumkeyy [translation] [ko]
 packages/tsconfig-reference/copy/ko/**/*.md @Bumkeyy [translation] [ko]
 packages/typescriptlang-org/src/copy/ko/**/*.ts @Bumkeyy [translation] [ko]
 packages/typescriptlang-org/src/copy/ko.ts @Bumkeyy [translation] [ko]
 packages/documentation/copy/ko/**/*.ts @Bumkeyy [translation] [ko]
 
 # Collaborators for Indonesian Translation of the Website
-packages/playground-examples/copy/id/**/*.md @jefrydco @nusendra @mazipan @mandaputtra [translation] [id]
-packages/playground-examples/copy/id/**/*.ts @jefrydco @nusendra @mazipan @mandaputtra [translation] [id]
+packages/playground-examples/copy/id @jefrydco @nusendra @mazipan @mandaputtra [translation] [id]
 packages/tsconfig-reference/copy/id/**/*.md @jefrydco @nusendra @mazipan @mandaputtra [translation] [id]
 packages/typescriptlang-org/src/copy/id/**/*.ts @jefrydco @nusendra @mazipan @mandaputtra [translation] [id]
 packages/typescriptlang-org/src/copy/id.ts @jefrydco @nusendra @mazipan @mandaputtra [translation] [id]
