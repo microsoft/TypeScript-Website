@@ -53,7 +53,7 @@ function renderizarNaTela<Tipo extends Desenhavel>(entrada: Tipo[]) {
 const objetosComDesenhar = [{ desenhar: () => {} }, { desenhar: () => {} }];
 renderizarNaTela(objetosComDesenhar);
 
-// Isso falhará se desenhar não estiver present:
+// Isso falhará se desenhar não estiver presente:
 
 renderizarNaTela([{}, { desenhar: () => {} }]);
 
@@ -88,7 +88,7 @@ function adicionarObjetoTipadoAoCache<Tipo, Cache extends HostDeCacheGenerico<Ti
 }
 
 // O exemplo acima é bem intenso em termos de sintaxe. Porém,
-// isso provê uma segurança maior. Estes são trade-offs (comprometimentos),
+// isso provê uma segurança maior. Estes são trade-offs (compromissos),
 // os quais você agora possui conhecimento para fazer. Quando for prover APIs
 // à outras pessoas, tipos genéricos oferecem um jeito flexível de permitir
 // que elas usem seus próprios tipos sem ter que inferir seu código por completo.
