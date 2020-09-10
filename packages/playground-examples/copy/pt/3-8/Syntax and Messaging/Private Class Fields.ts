@@ -10,7 +10,7 @@ class Pessoa {
   #sobrenome: string;
   #prefixo: string;
   
-  constructor(primeiroNome: string, sobrenome: string, prefixo:string) {
+  constructor(primeiroNome: string, sobrenome: string, prefixo: string) {
     this.#primeiroNome = primeiroNome;
     this.#sobrenome = sobrenome;
     this.#prefixo = prefixo;
