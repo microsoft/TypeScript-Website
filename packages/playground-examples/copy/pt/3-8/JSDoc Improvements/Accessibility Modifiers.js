@@ -4,13 +4,13 @@
 // O JSDoc para TypeScript foi extendido para suportar
 // os modificadores de acesso nas propriedades das classes. Aqui estão eles:
 //
-// @public - Padrão. Configurado este se não for definido um modificador.
+// @public - Padrão. É utilizado se não for definido um modificador.
 // @private - O campo somente pode ser acessado na mesma classe onde foi definido.
 // @protected - O campo é acessível para a classe onde foi definida e suas subclasses.
 //
 
 // No exemplo temos a classe pai Animal, ela tem propriedades private e protected.
-// Suclasses podem acessar "this.isRapido" mas não podem acessar "this.type"
+// Subclasses podem acessar "this.isRapido" mas não podem acessar "this.type"
 
 // Fora dessa classes, ambos os campos não são visíveis  e retornam um erro do compilador quando
 // @ts-check é ativado:
