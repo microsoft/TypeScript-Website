@@ -2,7 +2,7 @@
 
 // No JavaScript existem duas maneiras de declarar valores que não
 // existem, o TypesScript adiciona sintaxe extra que nos proporciona
-// mais maneiras de declarar algo como opicional ou nulo.
+// mais maneiras de declarar algo como opcional ou nulo.
 
 // Primeiramente a diferença entre os dois primitivos
 // no JavaScript: undefined e null.
