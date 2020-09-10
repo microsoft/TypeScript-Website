@@ -27,7 +27,7 @@ const searchResults = {
 // foi declarado.
 
 // Isso pode parecer superficial, mas quando convertido
-// em uma JSON string, se o text fosse undefined, nāo seria
+// em uma string JSON, se o text fosse undefined, nāo seria
 // incluido na conversão para string.
 
 // Strict Null Types
