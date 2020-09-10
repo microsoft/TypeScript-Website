@@ -1,9 +1,9 @@
-// 条件付き型はTypeScriptの型システムに
+// Conditional TypesはTypeScriptの型システムに
 // 簡単なロジックを組み込む方法を提供します。
 // これは非常に高度な機能のため、
 // 日々の開発において使わないことも十分に可能です。
 
-// 条件付き型は以下のような形です:
+// Conditional Typesは以下のような形です:
 //
 //   A extends B ? C : D
 //
@@ -21,7 +21,7 @@ type Cheetah = { meows: true; fast: true };
 type Wolf = { barks: true; howls: true };
 
 // 以下のように吠える(barks)動物の型だけを
-// 抜き出す条件付き型を作れます。
+// 抜き出すConditional Typesを作れます。
 
 type ExtractDogish<A> = A extends { barks: true } ? A : never;
 
@@ -54,7 +54,7 @@ type Dogish = ExtractDogish<Animals>;
 // これは共用型のそれぞれの型にConditional Typesが割り当てられるため、
 // Distributive Conditional Typesと呼ばれます。
 
-// 遅延評価条件付き型
+// Deferred Conditional Types
 
 // 条件型は、入力によって異なる型を返すようなAPIの
 // 型を絞ることにも使えます。
@@ -73,13 +73,13 @@ let stringOrNumber = getID(Math.random() < 0.5);
 
 // 上記の例では、TypeScriptは返り値についてすぐに知ることができました。
 // しかし、型が未知のときでも
-// 関数の中で条件付き型を使えます。
+// 関数の中でConditional Typesを使えます。
 // これはDeferred Conditonal Typesと呼ばれます。
 
 // 上記のDogish型と同じですが、今回は関数です。
 declare function isCatish<T>(x: T): T extends { meows: true } ? T : undefined;
 
-// 他にも条件付き型で有用なツールがあります。これは遅延評価時に
+// 他にもConditional Typesで有用なツールがあります。これは遅延評価時に
 // 型について推論をすべしとTypeScriptに明確に指示できるものです。
 // それは'infer'キーワードです。
 
