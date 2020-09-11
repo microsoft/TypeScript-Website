@@ -1,20 +1,20 @@
 ---
-titulo: Decorators
+titulo: Decoradores
 layout: docs
-permalink: /docs/handbook/decorators.html
-uma linha: Visão geral dos Decorators no TypeScript
+permalink: /docs/handbook/Decoradores.html
+uma linha: Visão geral dos Decoradores no TypeScript
 traduzível: true
 ---
 
 ## Introdução
 
 Com a introdução as Classes no TypeScript e ES6, agora existem certos cenários que requerem recursos adicionais para dar suporte à anotação ou modificação de classes e membros da classe.
-Decorators fornecem uma maneira de adicionar anotações e uma sintaxe de metaprogramação para declarações de classe e membros.
-Decorators são uma [proposta de estágio 2](https://github.com/tc39/proposal-decorators) para JavaScript e estão disponíveis como um recurso experimental do TypeScript.
+Decoradores fornecem uma maneira de adicionar anotações e uma sintaxe de metaprogramação para declarações de classe e membros.
+Decoradores são uma [proposta de estágio 2](https://github.com/tc39/proposal-decorators) para JavaScript e estão disponíveis como um recurso experimental do TypeScript.
 
-> NOTA&emsp; Decorators são um recurso experimental que podem mudar em versões futuras.
+> NOTA&emsp; Decoradores são um recurso experimental que podem mudar em versões futuras.
 
-Para habilitar o suporte experimental para os Decorators, você deve habilitar a opção do compilador `experimentalDecorators` na linha de comando ou em seu` tsconfig.json`:
+Para habilitar o suporte experimental para os Decoradores, você deve habilitar a opção do compilador `experimentalDecorators` na linha de comando ou em seu` tsconfig.json`:
 
 **Linha de Comando**:
 
@@ -33,51 +33,51 @@ tsc --target ES5 --experimentalDecorators
 }
 ```
 
-## Decorators
+## Decoradores
 
-A _Decorator_ is a special kind of declaration that can be attached to a [class declaration](#class-decorators), [method](#method-decorators), [accessor](#accessor-decorators), [property](#property-decorators), or [parameter](#parameter-decorators).
-Decorators use the form `@expression`, where `expression` must evaluate to a function that will be called at runtime with information about the decorated declaration.
+Um _Decorador_ é um tipo especial de declaração que pode ser anexado a uma [declaração de classe](#class-decorators), [métodos](#method-decorators), [acessor](#accessor-decorators), [propriedades](#property-decorators), ou [parâmetros](#parameter-decorators).
+Decoradores usam a forma `@expressão`, onde `expressão` deve ser avaliada como uma função que será chamada em tempo de execução com informações sobre a declaração decorada.
 
-For example, given the decorator `@sealed` we might write the `sealed` function as follows:
+Por exemplo, dado o decorador `@selado`, podemos escrever a função `selado` da seguinte forma:
 
 ```ts
-function sealed(target) {
-  // do something with 'target' ...
+function selado(alvo) {
+  // executa algo com o alvo...
 }
 ```
 
-> NOTE&emsp; You can see a more detailed example of a decorator in [Class Decorators](#class-decorators), below.
+> NOTA&emsp; Você pode ver um exemplo mais detalhado de um decorator em [Decoradores de Classes](#class-decorators), abaixo
 
-## Decorator Factories
+## Fábrica de Decoradores
 
-If we want to customize how a decorator is applied to a declaration, we can write a decorator factory.
-A _Decorator Factory_ is simply a function that returns the expression that will be called by the decorator at runtime.
+Se quisermos personalizar como um decorador é aplicado a uma declaração, podemos escrever uma fábrica de decoradores.
+Uma _Fábrica de Decoradores_ é simplesmente uma função que retorna a expressão que será chamada pelo decorador em tempo de execução.
 
-We can write a decorator factory in the following fashion:
+Podemos escrever uma fábrica de decoradores da seguinte maneira:
 
 ```ts
-function color(value: string) {
-  // this is the decorator factory
-  return function (target) {
-    // this is the decorator
-    // do something with 'target' and 'value'...
+function cor(valor: string) {
+  // isso é uma fábrica de decoradores
+  return function (alvo) {
+    // este é o decorador
+    // executa algo com 'alvo' e 'valor' ...
   };
 }
 ```
 
-> NOTE&emsp; You can see a more detailed example of a decorator factory in [Method Decorators](#method-decorators), below.
+> NOTA&emsp; Você pode ver um exemplo mais detalhado de uma fábrica de decoradores em [Decoradores de Métodos](#decoradores-de-métodos), abaixo.
 
-## Decorator Composition
+## Composição Decorator
 
-Multiple decorators can be applied to a declaration, as in the following examples:
+Vários decoradores podem ser aplicados a uma declaração, como nos exemplos a seguir:
 
-- On a single line:
+- Em uma única linha:
 
   ```ts
   @f @g x
   ```
 
-- On multiple lines:
+- Em diversas linhas:
 
   ```ts
   @f
@@ -85,35 +85,36 @@ Multiple decorators can be applied to a declaration, as in the following example
   x
   ```
 
-When multiple decorators apply to a single declaration, their evaluation is similar to [function composition in mathematics](http://wikipedia.org/wiki/Function_composition). In this model, when composing functions _f_ and _g_, the resulting composite (_f_ ∘ _g_)(_x_) is equivalent to _f_(_g_(_x_)).
+Quando vários decoradores se aplicam a uma única declaração, sua avaliação é semelhante a
+[composição de funções em matemática](http://wikipedia.org/wiki/Function_composition). Neste modelo, ao compor as funções _f_ e _g_, o composto resultante (_f_ ∘ _g_)(_x_) é equivalente a _f_(_g_(_x_)).
 
-As such, the following steps are performed when evaluating multiple decorators on a single declaration in TypeScript:
+Assim, as etapas a seguir são executadas ao avaliar vários decoradores em uma única declaração no TypeScript:
 
-1. The expressions for each decorator are evaluated top-to-bottom.
-2. The results are then called as functions from bottom-to-top.
+1. As expressões para cada decorador são avaliadas de cima para baixo.
+2. Os resultados são chamados como funções de baixo para cima.
 
-If we were to use [decorator factories](#decorator-factories), we can observe this evaluation order with the following example:
+Se fôssemos usar [fábrica de decoradores](#fábrica-de-decoradores),podemos observar esta ordem de avaliação com o seguinte exemplo:
 
 ```ts
 function f() {
-  console.log("f(): evaluated");
+  console.log("f(): avaliada");
   return function (
     target,
     propertyKey: string,
     descriptor: PropertyDescriptor
   ) {
-    console.log("f(): called");
+    console.log("f(): chamada");
   };
 }
 
 function g() {
-  console.log("g(): evaluated");
+  console.log("g(): avaliada");
   return function (
     target,
     propertyKey: string,
     descriptor: PropertyDescriptor
   ) {
-    console.log("g(): called");
+    console.log("g(): chamada");
   };
 }
 
@@ -124,164 +125,164 @@ class C {
 }
 ```
 
-Which would print this output to the console:
+Que imprimiria esta saída no console:
 
 ```shell
-f(): evaluated
-g(): evaluated
-g(): called
-f(): called
+f(): avaliada
+g(): avaliada
+g(): chamada
+f(): chamada
 ```
 
-## Decorator Evaluation
+## Avaliação de Decoradores
 
-There is a well defined order to how decorators applied to various declarations inside of a class are applied:
+Há uma ordem bem definida para como os decoradores aplicados a várias declarações, dentro de uma classe, são aplicados:
 
-1. _Parameter Decorators_, followed by _Method_, _Accessor_, or _Property Decorators_ are applied for each instance member.
-2. _Parameter Decorators_, followed by _Method_, _Accessor_, or _Property Decorators_ are applied for each static member.
-3. _Parameter Decorators_ are applied for the constructor.
-4. _Class Decorators_ are applied for the class.
+1. _Decoradores de Parâmetros_, seguido por _Mêtodo_, _Acessório_ ou _Decoradores de Propriedades_ são aplicados para cada membro da instância.
+2. _Decoradores de Parâmetros_, seguido por _Mêtodo_, _Acessório_ ou _Decoradores de Propriedades_ são aplicados para cada membro estático.
+3. _Decoradores de Parâmetros_ são aplicados para o construtor.
+4. _Decoradores de classe_ são aplicados para a classe.
 
-## Class Decorators
+## Decoradores de Classes
 
-A _Class Decorator_ is declared just before a class declaration.
-The class decorator is applied to the constructor of the class and can be used to observe, modify, or replace a class definition.
-A class decorator cannot be used in a declaration file, or in any other ambient context (such as on a `declare` class).
+O _Decorador de Dlasses_ é declarado antes de uma declaração de classe.
+O decorador de classe é aplicado ao construtor da classe e pode ser usado para observar, modificar ou substituir uma definição de classe.
+Um decorador de classe não pode ser usado em um arquivo de declaração, ou em qualquer outro contexto de ambiente (como em uma classe `declare`).
 
-The expression for the class decorator will be called as a function at runtime, with the constructor of the decorated class as its only argument.
+A expressão para o decorador de classe será chamada como uma função em tempo de execução, com o construtor da classe decorada como seu único argumento.
 
-If the class decorator returns a value, it will replace the class declaration with the provided constructor function.
+Se o decorador da classe retornar um valor, ele substituirá a declaração da classe pela função construtora fornecida.
 
-> NOTE&nbsp; Should you choose to return a new constructor function, you must take care to maintain the original prototype.
-> The logic that applies decorators at runtime will **not** do this for you.
+> NOTA&nbsp; Se você decidir retornar uma nova função de construtor, deve tomar cuidado para manter o protótipo original.
+> A lógica que aplica decoradores em tempo de execução **não** fará isso por você.
 
-The following is an example of a class decorator (`@sealed`) applied to the `Greeter` class:
+A seguir está um exemplo de um decorador de classe (`@selada`) aplicado a classe `Recepcionista`
 
 ```ts
-@sealed
-class Greeter {
-  greeting: string;
-  constructor(message: string) {
-    this.greeting = message;
+@selada
+class Recepcionista {
+  recepcionista: string;
+  constructor(mensagem: string) {
+    this.cumprimento = mensagem;
   }
-  greet() {
-    return "Hello, " + this.greeting;
+  cumprimentar() {
+    return "Olá, " + this.cumprimento;
   }
 }
 ```
 
-We can define the `@sealed` decorator using the following function declaration:
+Podemos definir o decorador `@selado` usando a seguinte declaração de função:
 
 ```ts
-function sealed(constructor: Function) {
-  Object.seal(constructor);
-  Object.seal(constructor.prototype);
+function selado(constructor: Function) {
+  Object.selado(constructor);
+  Object.selado(constructor.prototype);
 }
 ```
 
-When `@sealed` is executed, it will seal both the constructor and its prototype.
+Quando `@selado` é executado, ele irá selar o construtor e seu protótipo.
 
-Next we have an example of how to override the constructor.
+A seguir, temos um exemplo de como substituir o construtor.
 
 ```ts
-function classDecorator<T extends { new (...args: any[]): {} }>(
+function decoradorDeClasse<T extends { new (...args: any[]): {} }>(
   constructor: T
 ) {
   return class extends constructor {
-    newProperty = "new property";
-    hello = "override";
+    novaPropriedade = "nova propriedade";
+    ola = "sobrepor";
   };
 }
 
 @classDecorator
-class Greeter {
-  property = "property";
-  hello: string;
+class Recepcionista {
+  propriedade = "propriedade";
+  ola: string;
   constructor(m: string) {
-    this.hello = m;
+    this.ola = m;
   }
 }
 
-console.log(new Greeter("world"));
+console.log(new Recepcionista("mundo"));
 ```
 
-## Method Decorators
+## Decoradores de Métodos
 
-A _Method Decorator_ is declared just before a method declaration.
-The decorator is applied to the _Property Descriptor_ for the method, and can be used to observe, modify, or replace a method definition.
-A method decorator cannot be used in a declaration file, on an overload, or in any other ambient context (such as in a `declare` class).
+Um _Decorador de Método_ é declarado imediatamente antes de uma declaração de método.
+O decorador é aplicado ao _Descritor de Propriedade_ para o método e pode ser usado para observar, modificar ou substituir uma definição de método.
+Um decorador de método não pode ser usado em um arquivo de declaração, em uma sobrecarga ou em qualquer outro contexto de ambiente (como em uma classe `declare`).
 
-The expression for the method decorator will be called as a function at runtime, with the following three arguments:
+A expressão para o decorador de método será chamada como uma função em tempo de execução, com os três argumentos a seguir:
 
-1. Either the constructor function of the class for a static member, or the prototype of the class for an instance member.
-2. The name of the member.
-3. The _Property Descriptor_ for the member.
+1. A função construtora da classe para um membro estático ou o protótipo da classe para um membro de instância.
+2. O nome do membro
+3. O _Descritor de Propriedade_ para o membro.
 
-> NOTE&emsp; The _Property Descriptor_ will be `undefined` if your script target is less than `ES5`.
+> NOTA&emsp; O _Descritor de Propriedade_ será `indefinido` se o destino do seu script for menor que` ES5`.
 
-If the method decorator returns a value, it will be used as the _Property Descriptor_ for the method.
+Se o decorador do método retornar um valor, ele será usado como o _Descritor de Propriedade_ para o método.
 
-> NOTE&emsp; The return value is ignored if your script target is less than `ES5`.
+> NOTA&emsp; O valor de retorno é ignorado se o destino do script for menor que `ES5`.
 
-The following is an example of a method decorator (`@enumerable`) applied to a method on the `Greeter` class:
+A seguir está um exemplo de um decorador de método (`@enumerável`) aplicado a um método na classe` Recepcionista`:
 
 ```ts
-class Greeter {
-  greeting: string;
-  constructor(message: string) {
-    this.greeting = message;
+class Recepcionista {
+  recepcionista: string;
+  constructor(mensagem: string) {
+    this.recepcionista = mensagem;
   }
 
-  @enumerable(false)
-  greet() {
-    return "Hello, " + this.greeting;
+  @enumerável(false)  
+  cumprimentar() {
+    return "Olá, " + this.recepcionista;
   }
 }
 ```
 
-We can define the `@enumerable` decorator using the following function declaration:
+Podemos definir o decorador `@enumerável` usando a seguinte declaração de função:
 
 ```ts
-function enumerable(value: boolean) {
+function enumerável(valor: boolean) {
   return function (
-    target: any,
-    propertyKey: string,
-    descriptor: PropertyDescriptor
+    alvo: any,
+    chaveDePropriedade: string,
+    descritor: DescritorDePropriedade
   ) {
-    descriptor.enumerable = value;
+    descritor.enumerável = valor;
   };
 }
 ```
 
-The `@enumerable(false)` decorator here is a [decorator factory](#decorator-factories).
-When the `@enumerable(false)` decorator is called, it modifies the `enumerable` property of the property descriptor.
+O decorador `@enumerável(false)` aqui é uma [fábrica de decoradores](#fábrica-de-decoradores).
+Quando o decorador `@enumerável(false)` é chamado, ele modifica a propriedade `enumerável` do descritor de propriedade.
 
-## Accessor Decorators
+## Decoradores de Acessos
 
-An _Accessor Decorator_ is declared just before an accessor declaration.
-The accessor decorator is applied to the _Property Descriptor_ for the accessor and can be used to observe, modify, or replace an accessor's definitions.
-An accessor decorator cannot be used in a declaration file, or in any other ambient context (such as in a `declare` class).
+Um _Decorador de Acessos_ é declarado antes de uma declaração de acessos.
+O Decorador de Acessos é aplicado ao _Descritor de Propriedades_ do acessador e pode ser usado para observar, modificar ou substituir as definições de um acesso.
+Um Decorador de Acessos não pode ser usado em um arquivo de declaração ou em qualquer outro contexto de ambiente (como em uma classe `declare`).
 
-> NOTE&emsp; TypeScript disallows decorating both the `get` and `set` accessor for a single member.
-> Instead, all decorators for the member must be applied to the first accessor specified in document order.
-> This is because decorators apply to a _Property Descriptor_, which combines both the `get` and `set` accessor, not each declaration separately.
+> NOTA&emsp; O TypeScript não permite decorar os acessadores `get` e` set` para um único membro.
+> Em vez disso, todos os decoradores do membro devem ser aplicados ao primeiro acessador especificado na ordem do documento.
+> Isso ocorre porque os decoradores se aplicam a um _Descritor de Propriedades_, que combina os acessadores `get` e` set`, não a cada declaração separadamente.
 
-The expression for the accessor decorator will be called as a function at runtime, with the following three arguments:
+A expressão para o Decorador de Acesso será chamada como uma função em tempo de execução, com os três seguintes argumentos:
 
-1. Either the constructor function of the class for a static member, or the prototype of the class for an instance member.
-2. The name of the member.
-3. The _Property Descriptor_ for the member.
+1. A função construtora da classe para um membro estático ou o protótipo da classe para um membro de instância.
+2. O nome do membro.
+3. O _Descritor de Propriedade_ do membro.
 
-> NOTE&emsp; The _Property Descriptor_ will be `undefined` if your script target is less than `ES5`.
+> NOTA&emsp; O _Descriptor de Propriedade_ será `indefinido` se o destino do seu script for menor que` ES5`.
 
-If the accessor decorator returns a value, it will be used as the _Property Descriptor_ for the member.
+Se o Decorador de Acesso retornar um valor, ele será usado como o _Descritor de Propriedade_ para o membro.
 
-> NOTE&emsp; The return value is ignored if your script target is less than `ES5`.
+> NOTA&emsp; O valor de retorno é ignorado se o destino do script for menor que `ES5`.
 
-The following is an example of an accessor decorator (`@configurable`) applied to a member of the `Point` class:
+A seguir está um exemplo de um Decorador de Acesso (`@configuravel`) aplicado a um membro da classe` Ponto`:
 
 ```ts
-class Point {
+class Ponto {
   private _x: number;
   private _y: number;
   constructor(x: number, y: number) {
@@ -289,161 +290,161 @@ class Point {
     this._y = y;
   }
 
-  @configurable(false)
+  @configuravel(false)
   get x() {
     return this._x;
   }
 
-  @configurable(false)
+  @configuravel(false)
   get y() {
     return this._y;
   }
 }
 ```
 
-We can define the `@configurable` decorator using the following function declaration:
+Podemos definir o decorador `@configuravel` usando a seguinte declaração de função:
 
 ```ts
-function configurable(value: boolean) {
+function configuravel(valor: boolean) {
   return function (
-    target: any,
-    propertyKey: string,
-    descriptor: PropertyDescriptor
+    alvo: any,
+    chaveDePropriedade: string,
+    descritor: DescritorDePropriedade
   ) {
-    descriptor.configurable = value;
+    descritor.configurable = valor;
   };
 }
 ```
 
-## Property Decorators
+## Decoradores de Propriedades
 
-A _Property Decorator_ is declared just before a property declaration.
-A property decorator cannot be used in a declaration file, or in any other ambient context (such as in a `declare` class).
+Um _Decorador de Propriedade_ é declarado antes de uma declaração de propriedade.
+Um decorador de propriedade não pode ser usado em um arquivo de declaração ou em qualquer outro contexto de ambiente (como em uma classe `declare`).
 
-The expression for the property decorator will be called as a function at runtime, with the following two arguments:
+A expressão para o Decorador de Propriedade será chamada como uma função em tempo de execução, com os dois argumentos a seguir:
 
-1. Either the constructor function of the class for a static member, or the prototype of the class for an instance member.
-2. The name of the member.
+1. A função construtora da classe para um membro estático ou o protótipo da classe para um membro de instância.
+2. O nome do membro.
 
-> NOTE&emsp; A _Property Descriptor_ is not provided as an argument to a property decorator due to how property decorators are initialized in TypeScript.
-> This is because there is currently no mechanism to describe an instance property when defining members of a prototype, and no way to observe or modify the initializer for a property. The return value is ignored too.
-> As such, a property decorator can only be used to observe that a property of a specific name has been declared for a class.
+> NOTA&emsp; Um _Descritor de Propriedade_ não é fornecido como um argumento para um decorador de propriedade devido a como os decoradores de propriedade são inicializados no TypeScript.
+> Isso ocorre porque não existe atualmente nenhum mecanismo para descrever uma propriedade de instância ao definir membros de um protótipo e nenhuma maneira de observar ou modificar o inicializador de uma propriedade. O valor de retorno também é ignorado.
+> Dessa forma, um decorador de propriedade só pode ser usado para observar que uma propriedade de um nome específico foi declarada para uma classe.
 
-We can use this information to record metadata about the property, as in the following example:
+Podemos usar essas informações para registrar metadados sobre a propriedade, como no exemplo a seguir:
 
 ```ts
-class Greeter {
-  @format("Hello, %s")
-  greeting: string;
+class Recepcionista {
+  @formato("Olá, %s")
+  cumprimento: string;
 
-  constructor(message: string) {
-    this.greeting = message;
+  constructor(mensagem: string) {
+    this.cumprimento = mensagem;
   }
-  greet() {
-    let formatString = getFormat(this, "greeting");
-    return formatString.replace("%s", this.greeting);
+  cumprimentar() {
+    let formatoString = obterFormato(this, "cumprimento");
+    return formatoString.replace("%s", this.cumprimento);
   }
 }
 ```
 
-We can then define the `@format` decorator and `getFormat` functions using the following function declarations:
+Podemos então definir o decorador `@formato` e as funções` obterFormato` usando as seguintes declarações de função:
 
 ```ts
 import "reflect-metadata";
 
-const formatMetadataKey = Symbol("format");
+const formatoMetadataKey = Symbol("format");
 
-function format(formatString: string) {
-  return Reflect.metadata(formatMetadataKey, formatString);
+function formato(formatoString: string) {
+  return Reflect.metadata(formatoMetadataKey, formatoString);
 }
 
-function getFormat(target: any, propertyKey: string) {
-  return Reflect.getMetadata(formatMetadataKey, target, propertyKey);
+function obterFormato(alvo: any, chaveDePropriedade: string) {
+  return Reflect.getMetadata(formatoMetadataKey, alvo, chaveDePropriedade);
 }
 ```
 
-The `@format("Hello, %s")` decorator here is a [decorator factory](#decorator-factories).
-When `@format("Hello, %s")` is called, it adds a metadata entry for the property using the `Reflect.metadata` function from the `reflect-metadata` library.
-When `getFormat` is called, it reads the metadata value for the format.
+O decorador `@formato (" Olá,% s ")` aqui é uma [fábrica de decoradores](#fábrica-de-decoradores).
+Quando `@formato (" Olá,% s ")` é chamado, ele adiciona uma entrada de metadados para a propriedade usando a função `Reflect.metadata` da biblioteca` reflet-metadata`.
+Quando `obterFormato` é chamado, ele lê o valor dos metadados para o formato.
 
-> NOTE&emsp; This example requires the `reflect-metadata` library.
-> See [Metadata](#metadata) for more information about the `reflect-metadata` library.
+> NOTA&emsp; Este exemplo requer a biblioteca `reflect-metadata`.
+> Veja [Metadados](#metadados) para mais informações sobre a biblioteca `reflet-metadata`.
 
-## Parameter Decorators
+## Decoradores de Parâmetros
 
-A _Parameter Decorator_ is declared just before a parameter declaration.
-The parameter decorator is applied to the function for a class constructor or method declaration.
-A parameter decorator cannot be used in a declaration file, an overload, or in any other ambient context (such as in a `declare` class).
+Um _Decorador de Parâmetros_ é declarado antes de uma declaração de parâmetro.
+O decorador de parâmetro é aplicado à função para um construtor de classe ou declaração de método.
+Um decorador de parâmetro não pode ser usado em um arquivo de declaração, uma sobrecarga ou em qualquer outro contexto de ambiente (como em uma classe `declare`).
 
-The expression for the parameter decorator will be called as a function at runtime, with the following three arguments:
+A expressão para o decorador de parâmetro será chamada como uma função em tempo de execução, com os três argumentos a seguir:
 
-1. Either the constructor function of the class for a static member, or the prototype of the class for an instance member.
-2. The name of the member.
-3. The ordinal index of the parameter in the function's parameter list.
+1. A função construtora da classe para um membro estático ou o protótipo da classe para um membro de instância.
+2. O nome do membro.
+3. O índice ordinal do parâmetro na lista de parâmetros da função.
 
-> NOTE&emsp; A parameter decorator can only be used to observe that a parameter has been declared on a method.
+> NOTA&emsp; Um decorador de parâmetro só pode ser usado para observar que um parâmetro que foi declarado em um método.
 
-The return value of the parameter decorator is ignored.
+O valor de retorno do decorador de parâmetro é ignorado.
 
-The following is an example of a parameter decorator (`@required`) applied to parameter of a member of the `Greeter` class:
+A seguir está um exemplo de um decorador de parâmetro (`@requerido`) aplicado ao parâmetro de um membro da classe` Recepcionista`:
 
 ```ts
-class Greeter {
-  greeting: string;
+class Recepcionista {
+  cumprimento: string;
 
-  constructor(message: string) {
-    this.greeting = message;
+  constructor(mensagem: string) {
+    this.cumprimento = mensagem;
   }
 
-  @validate
-  greet(@required name: string) {
-    return "Hello " + name + ", " + this.greeting;
+  @validar
+  cumprimentar(@requerido nome: string) {
+    return "Olá " + nome + ", " + this.cumprimento;
   }
 }
 ```
 
-We can then define the `@required` and `@validate` decorators using the following function declarations:
+Podemos então definir os decoradores `@requerido` e` @validar` usando as seguintes declarações de função:
 
 ```ts
 import "reflect-metadata";
 
-const requiredMetadataKey = Symbol("required");
+const chaveDeMetodosNecessaria = Symbol("requerido");
 
-function required(
-  target: Object,
-  propertyKey: string | symbol,
-  parameterIndex: number
+function requerido(
+  alvo: Object,
+  chaveDePropriedade: string | symbol,
+  indiceDeParametro: number
 ) {
-  let existingRequiredParameters: number[] =
-    Reflect.getOwnMetadata(requiredMetadataKey, target, propertyKey) || [];
-  existingRequiredParameters.push(parameterIndex);
+  let parametrosNecessariosExistentes: number[] =
+    Reflect.getOwnMetadata(chaveDeMetodosNecessaria, alvo, chaveDePropriedade) || [];
+  parametrosNecessariosExistentes.push(indiceDeParametro);
   Reflect.defineMetadata(
-    requiredMetadataKey,
-    existingRequiredParameters,
-    target,
-    propertyKey
+    chaveDeMetodosNecessaria,
+    parametrosNecessariosExistentes,
+    alvo,
+    chaveDePropriedade
   );
 }
 
-function validate(
-  target: any,
-  propertyName: string,
-  descriptor: TypedPropertyDescriptor<Function>
+function validar(
+  alvo: any,
+  nomeDaPropriedade: string,
+  descritor: DescritorDePropriedadeTipada<Function>
 ) {
-  let method = descriptor.value;
-  descriptor.value = function () {
-    let requiredParameters: number[] = Reflect.getOwnMetadata(
-      requiredMetadataKey,
-      target,
-      propertyName
+  let método = descritor.value;
+  descritor.value = function () {
+    let parametrosObrigatorios: number[] = Reflect.getOwnMetadata(
+      chaveDeMetodosNecessaria,
+      alvo,
+      nomeDaPropriedade
     );
-    if (requiredParameters) {
-      for (let parameterIndex of requiredParameters) {
+    if (parametrosObrigatorios) {
+      for (let indiceDeParametro of parametrosObrigatorios) {
         if (
-          parameterIndex >= arguments.length ||
-          arguments[parameterIndex] === undefined
+          indiceDeParametro >= arguments.length ||
+          arguments[indiceDeParametro] === undefined
         ) {
-          throw new Error("Missing required argument.");
+          throw new Error("Argumento obrigatório ausente.");
         }
       }
     }
@@ -453,28 +454,28 @@ function validate(
 }
 ```
 
-The `@required` decorator adds a metadata entry that marks the parameter as required.
-The `@validate` decorator then wraps the existing `greet` method in a function that validates the arguments before invoking the original method.
+O decorador `@requerido` adiciona uma entrada de metadados que marca o parâmetro como necessário.
+O decorador `@validar` então envolve o método` cumprimentar` existente em uma função que valida os argumentos antes de invocar o método original.
 
-> NOTE&emsp; This example requires the `reflect-metadata` library.
-> See [Metadata](#metadata) for more information about the `reflect-metadata` library.
+> NOTA&emsp; Este exemplo requer a biblioteca `reflect-metadata`.
+> Veja [Metadados](#metadados) para mais informações sobre a biblioteca `reflet-metadata`.
 
-## Metadata
+## Metadados
 
-Some examples use the `reflect-metadata` library which adds a polyfill for an [experimental metadata API](https://github.com/rbuckton/ReflectDecorators).
-This library is not yet part of the ECMAScript (JavaScript) standard.
-However, once decorators are officially adopted as part of the ECMAScript standard these extensions will be proposed for adoption.
+Alguns exemplos usam a biblioteca `reflet-metadata` que adiciona um polyfill para uma [API de metadados experimental](https://github.com/rbuckton/ReflectDecorators).
+Esta biblioteca ainda não faz parte do padrão ECMAScript (JavaScript).
+No entanto, assim que decoradores forem oficialmente adotados como parte do padrão ECMAScript, essas extensões serão propostas para adoção.
 
-You can install this library via npm:
+Você pode instalar esta biblioteca via npm:
 
 ```shell
 npm i reflect-metadata --save
 ```
 
-TypeScript includes experimental support for emitting certain types of metadata for declarations that have decorators.
-To enable this experimental support, you must set the `emitDecoratorMetadata` compiler option either on the command line or in your `tsconfig.json`:
+O TypeScript inclui suporte experimental para a emissão de certos tipos de metadados para declarações que possuem decoradores.
+Para habilitar este suporte experimental, você deve definir a opção do compilador `emitDecoratorMetadata` na linha de comando ou em seu` tsconfig.json`:
 
-**Command Line**:
+**Linha de Comando**:
 
 ```shell
 tsc --target ES5 --experimentalDecorators --emitDecoratorMetadata
@@ -492,76 +493,76 @@ tsc --target ES5 --experimentalDecorators --emitDecoratorMetadata
 }
 ```
 
-When enabled, as long as the `reflect-metadata` library has been imported, additional design-time type information will be exposed at runtime.
+Quando habilitado, contanto que a biblioteca `reflet-metadata` tenha sido importada, informações adicionais de tipo de tempo de design serão expostas no tempo de execução.
 
-We can see this in action in the following example:
+Podemos ver isso em ação no seguinte exemplo:
 
 ```ts
 import "reflect-metadata";
 
-class Point {
+class Ponto {
   x: number;
   y: number;
 }
 
-class Line {
-  private _p0: Point;
-  private _p1: Point;
+class Linha {
+  private _p0: Ponto;
+  private _p1: Ponto;
 
-  @validate
-  set p0(value: Point) {
-    this._p0 = value;
+  @validar
+  set p0(valor: Ponto) {
+    this._p0 = valor;
   }
   get p0() {
     return this._p0;
   }
 
-  @validate
-  set p1(value: Point) {
-    this._p1 = value;
+  @validar
+  set p1(valor: Ponto) {
+    this._p1 = valor;
   }
   get p1() {
     return this._p1;
   }
 }
 
-function validate<T>(
-  target: any,
-  propertyKey: string,
-  descriptor: TypedPropertyDescriptor<T>
+function validar<T>(
+  alvo: any,
+  chaveDePropriedade: string,
+  descritor: DescritorDePropriedadeTipada<T>
 ) {
-  let set = descriptor.set;
-  descriptor.set = function (value: T) {
-    let type = Reflect.getMetadata("design:type", target, propertyKey);
-    if (!(value instanceof type)) {
-      throw new TypeError("Invalid type.");
+  let set = descritor.set;
+  descritor.set = function (valor: T) {
+    let type = Reflect.getMetadata("design:type", alvo, chaveDePropriedade);
+    if (!(valor instanceof type)) {
+      throw new TypeError("Tipo inválido.");
     }
-    set.call(target, value);
+    set.call(alvo, valor);
   };
 }
 ```
 
-The TypeScript compiler will inject design-time type information using the `@Reflect.metadata` decorator.
-You could consider it the equivalent of the following TypeScript:
+O compilador TypeScript injetará informações de tipo em tempo de design usando o decorador `@Reflect.metadata`.
+Você pode considerá-lo o equivalente ao seguinte TypeScript:
 
 ```ts
-class Line {
-  private _p0: Point;
-  private _p1: Point;
+class Linha {
+  private _p0: Ponto;
+  private _p1: Ponto;
 
-  @validate
-  @Reflect.metadata("design:type", Point)
-  set p0(value: Point) {
-    this._p0 = value;
+  @validar
+  @Reflect.metadata("design:type", Ponto)
+  set p0(valor: Ponto) {
+    this._p0 = valor;
   }
   get p0() {
     return this._p0;
   }
 
-  @validate
-  @Reflect.metadata("design:type", Point)
-  set p1(value: Point) {
-    this._p1 = value;
+  @validar
+  @Reflect.metadata("design:type", Ponto)
+  set p1(valor: Ponto) {
+    this._p1 = valor;
   }
   get p1() {
     return this._p1;
@@ -569,4 +570,4 @@ class Line {
 }
 ```
 
-> NOTE&emsp; Decorator metadata is an experimental feature and may introduce breaking changes in future releases.
+> NOTA&emsp; Os metadados do Decorator são um recurso experimental e podem apresentar alterações importantes em versões futuras.
