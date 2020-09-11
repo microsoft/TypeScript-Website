@@ -53,7 +53,7 @@ jobs:
         if: ${{ failure() }}
         uses: aliencube/microsoft-teams-actions@v0.8.0
         with:
-          webhook-uri: ${{ secrets.TEAMS_WEB_BOT_INCOMING_URL }}
+          webhook_uri: ${{ secrets.TEAMS_WEB_BOT_INCOMING_URL }}
           title: Staging deploy failed
           summary: Could not build the site for staging
-          actions: '[{ "@type": "OpenUri", "name": "View Logs", "targets": [{ "os": "default", "uri": "https://github.com/microsoft/TypeScript-Website/runs/${{ github.run_id }}?check_suite_focus=true" }] }]'
+          actions: '[{ "@type": "OpenUri", "name": "View Logs", "targets": [{ "os": "default", "uri": "https://github.com/microsoft/TypeScript-Website/actions/runs/${{ github.run_id }}?check_suite_focus=true" }] }]'

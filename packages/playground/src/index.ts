@@ -178,7 +178,7 @@ export const setupPlayground = (
   sandbox.setDidUpdateCompilerSettings(() => {
     playgroundDebouncedMainFunction()
     // @ts-ignore
-    window.appInsights.trackEvent({ name: "Compiler Settings changed" })
+    window.appInsights && window.appInsights.trackEvent({ name: "Compiler Settings changed" })
 
     const model = sandbox.editor.getModel()
     const plugin = getCurrentPlugin()

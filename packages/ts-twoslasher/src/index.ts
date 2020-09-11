@@ -98,11 +98,11 @@ function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosit
     if (!line.includes("//")) {
       moveForward()
     } else {
-      const highlightMatch = /^\/\/\s*\^+( .+)?$/.exec(line)
-      const queryMatch = /^\/\/\s*\^\?\s*$/.exec(line)
+      const highlightMatch = /^\s*\/\/\s*\^+( .+)?$/.exec(line)
+      const queryMatch = /^\s*\/\/\s*\^\?\s*$/.exec(line)
       // https://regex101.com/r/2yDsRk/1
       const removePrettierIgnoreMatch = /^\s*\/\/ prettier-ignore$/.exec(line)
-      const completionsQuery = /^\/\/\s*\^\|$/.exec(line)
+      const completionsQuery = /^\s*\/\/\s*\^\|$/.exec(line)
 
       if (queryMatch !== null) {
         const start = line.indexOf("^")
@@ -418,7 +418,8 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     const filetype = filename.split(".").pop() || ""
 
     // Only run the LSP-y things on source files
-    if (!sourceFiles.includes(filetype)) {
+    const allowJSON = compilerOptions.resolveJsonModule && filetype === "json"
+    if (!sourceFiles.includes(filetype) && !allowJSON) {
       continue
     }
 
@@ -496,6 +497,9 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   // Lets fs changes propagate back up to the fsMap
   if (handbookOptions.emit) {
     filenames.forEach(f => {
+      const filetype = f.split(".").pop() || ""
+      if (!sourceFiles.includes(filetype)) return
+
       const output = ls.getEmitOutput(f)
       output.outputFiles.forEach(output => {
         system.writeFile(output.name, output.text)

@@ -1,6 +1,15 @@
+// @errors: 2367
+// @resolveJsonModule
+// @module: commonjs
 // @moduleResolution: node
-// @filename: package.json
-{ "name": "thing" }
+// @filename: settings.json
+{
+    "repo": "TypeScript",
+    "dry": false,
+    "debug": false
+}
 // @filename: index.ts
-// ---cut---
-const i = 123
+import settings from "./settings.json";
+
+settings.debug === true;
+settings.dry === 2;

@@ -1923,5 +1923,186 @@
       }
     ],
     "total": 4
+  },
+
+  "handbook-v2/Basics.md": {
+    "top": [
+      {
+        "name": "Ryan Cavanaugh",
+        "gravatar": "2484d99c8a58bc51ae587e07a05ba6e2",
+        "count": 55
+      },
+      {
+        "name": "Daniel Rosenwasser",
+        "gravatar": "96588baac26f6b833dfd1ed0cd084287",
+        "count": 4
+      },
+      {
+        "name": "Eli Barzilay",
+        "gravatar": "74530a34228bb8fa1f87ae92c78909b7",
+        "count": 2
+      }
+    ],
+    "total": 3
+  },
+  "handbook-v2/Classes.md": {
+    "top": [
+      {
+        "name": "Ryan Cavanaugh",
+        "gravatar": "2484d99c8a58bc51ae587e07a05ba6e2",
+        "count": 60
+      },
+      {
+        "name": "zjopy",
+        "gravatar": "481656440fe3c44f391336565bb4dbaf",
+        "count": 1
+      },
+      {
+        "name": "Daniel Rosenwasser",
+        "gravatar": "cd1cc3769958ccc22b86d6a87badfe31",
+        "count": 1
+      }
+    ],
+    "total": 3
+  },
+  "handbook-v2/Everyday Types.md": {
+    "top": [
+      {
+        "name": "Ryan Cavanaugh",
+        "gravatar": "2484d99c8a58bc51ae587e07a05ba6e2",
+        "count": 56
+      },
+      {
+        "name": "Daniel Rosenwasser",
+        "gravatar": "cd1cc3769958ccc22b86d6a87badfe31",
+        "count": 2
+      }
+    ],
+    "total": 2
+  },
+  "handbook-v2/Modules.md": {
+    "top": [
+      {
+        "name": "Ryan Cavanaugh",
+        "gravatar": "2484d99c8a58bc51ae587e07a05ba6e2",
+        "count": 52
+      }
+    ],
+    "total": 1
+  },
+  "handbook-v2/More on Functions.md": {
+    "top": [
+      {
+        "name": "Ryan Cavanaugh",
+        "gravatar": "2484d99c8a58bc51ae587e07a05ba6e2",
+        "count": 52
+      },
+      {
+        "name": "zjopy",
+        "gravatar": "481656440fe3c44f391336565bb4dbaf",
+        "count": 1
+      },
+      {
+        "name": "David Henley",
+        "gravatar": "7fe86646b541d12af40dd2d498e0a8f6",
+        "count": 1
+      },
+      {
+        "name": "Eli Barzilay",
+        "gravatar": "74530a34228bb8fa1f87ae92c78909b7",
+        "count": 1
+      },
+      {
+        "name": "Daniel Rosenwasser",
+        "gravatar": "cd1cc3769958ccc22b86d6a87badfe31",
+        "count": 1
+      }
+    ],
+    "total": 5
+  },
+  "handbook-v2/Narrowing.md": {
+    "top": [
+      {
+        "name": "Ryan Cavanaugh",
+        "gravatar": "2484d99c8a58bc51ae587e07a05ba6e2",
+        "count": 52
+      },
+      {
+        "name": "Daniel Rosenwasser",
+        "gravatar": "cd1cc3769958ccc22b86d6a87badfe31",
+        "count": 2
+      }
+    ],
+    "total": 2
+  },
+  "handbook-v2/Object Types.md": {
+    "top": [
+      {
+        "name": "Daniel Rosenwasser",
+        "gravatar": "96588baac26f6b833dfd1ed0cd084287",
+        "count": 52
+      },
+      {
+        "name": "Ryan Cavanaugh",
+        "gravatar": "2484d99c8a58bc51ae587e07a05ba6e2",
+        "count": 2
+      }
+    ],
+    "total": 2
+  },
+  "handbook-v2/Type Declarations.md": {
+    "top": [
+      {
+        "name": "Ryan Cavanaugh",
+        "gravatar": "2484d99c8a58bc51ae587e07a05ba6e2",
+        "count": 51
+      }
+    ],
+    "total": 1
+  },
+  "handbook-v2/Types from Extraction.md": {
+    "top": [
+      {
+        "name": "Ryan Cavanaugh",
+        "gravatar": "2484d99c8a58bc51ae587e07a05ba6e2",
+        "count": 57
+      },
+      {
+        "name": "zjopy",
+        "gravatar": "481656440fe3c44f391336565bb4dbaf",
+        "count": 1
+      },
+      {
+        "name": "Daniel Rosenwasser",
+        "gravatar": "cd1cc3769958ccc22b86d6a87badfe31",
+        "count": 1
+      }
+    ],
+    "total": 3
+  },
+  "handbook-v2/Types from Transformation.md": {
+    "top": [
+      {
+        "name": "Daniel Rosenwasser",
+        "gravatar": "96588baac26f6b833dfd1ed0cd084287",
+        "count": 51
+      }
+    ],
+    "total": 1
+  },
+  "handbook-v2/Understanding Errors.md": {
+    "top": [
+      {
+        "name": "Ryan Cavanaugh",
+        "gravatar": "2484d99c8a58bc51ae587e07a05ba6e2",
+        "count": 52
+      },
+      {
+        "name": "Daniel Rosenwasser",
+        "gravatar": "cd1cc3769958ccc22b86d6a87badfe31",
+        "count": 1
+      }
+    ],
+    "total": 2
   }
 }

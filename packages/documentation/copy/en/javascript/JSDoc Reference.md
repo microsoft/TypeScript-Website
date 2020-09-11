@@ -636,4 +636,4 @@ The following tags have open issues to support them:
 - `@memberof` ([issue #7237](https://github.com/Microsoft/TypeScript/issues/7237))
 - `@readonly` ([issue #17233](https://github.com/Microsoft/TypeScript/issues/17233))
 - `@yields` ([issue #23857](https://github.com/Microsoft/TypeScript/issues/23857))
-- `{@link …}` ([issue #16498](https://github.com/Microsoft/TypeScript/issues/16498))
+- `{@link …}` ([issue #35524](https://github.com/Microsoft/TypeScript/issues/35524))

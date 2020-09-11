@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import "./SiteFooter.scss"
 import { PlaygroundSamples } from "./SiteFooter-PlaygroundSamples"
 import { AllSitePage, createIntlLink } from "../IntlLink"
+import { hasLocalStorage } from "../../lib/hasLocalStorage"
 import { whenEscape } from "../../lib/whenEscape"
 
 export type Props = {
@@ -210,11 +211,6 @@ export const SiteFooter = (props: Props) => {
         "hidden"
     })
   }, [])
-
-  let hasLocalStorage = false
-  try {
-    hasLocalStorage = typeof localStorage !== `undefined`
-  } catch (error) { }
 
   const systemIsDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
   const customThemeOverride = hasLocalStorage && localStorage.getItem("color-theme")

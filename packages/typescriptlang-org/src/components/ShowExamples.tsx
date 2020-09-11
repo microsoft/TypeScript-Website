@@ -4,6 +4,7 @@ import "./ShowExamples.scss"
 
 // @ts-ignore - this is a fallback to english
 import english from "../../static/js/examples/en"
+import { hasLocalStorage } from "../lib/hasLocalStorage"
 
 interface SamplesJSON {
   sections: { name: string, subtitle: string, id?: string }[]
@@ -84,10 +85,6 @@ export const RenderExamples = (props: Props) => {
   useEffect(() => {
     // Update the dots after it's loaded and running in the client instead
     let seenExamples = {}
-    let hasLocalStorage = false
-    try {
-      hasLocalStorage = typeof localStorage !== `undefined`
-    } catch (error) { }
 
     if (hasLocalStorage) {
       const examplesFromLS = localStorage.getItem("examples-seen") || "{}"

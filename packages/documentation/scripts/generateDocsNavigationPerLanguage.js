@@ -152,6 +152,25 @@ const handbookPages = [
       { file: "Nightly Builds.md" },
     ],
   },
+  {
+    title: "Handbook v2: Beta",
+    summary: "The new handbook which is a work in progress.",
+      chronological: true,
+      beta: true,
+    items: [
+      { file: "handbook-v2/Basics.md" },
+      { file: "handbook-v2/Classes.md" },
+      { file: "handbook-v2/Everyday Types.md" },
+      { file: "handbook-v2/Modules.md" },
+      { file: "handbook-v2/More on Functions.md" },
+      { file: "handbook-v2/Narrowing.md" },
+      { file: "handbook-v2/Object Types.md" },
+      { file: "handbook-v2/Type Declarations.md" },
+      { file: "handbook-v2/Types from Extraction.md" },
+      { file: "handbook-v2/Types from Transformation.md" },
+      { file: "handbook-v2/Understanding Errors.md" },
+    ],
+  },
 ]
 fillReleaseInfo();
 
@@ -196,7 +215,7 @@ export function getDocumentationNavForLanguage(langRequest: string): SidebarNavI
 for (const lang of langs) {
   codeForTheHandbook.push(`navigations.${lang} = [`);
 
-  handbookPages.forEach((section) => {
+  handbookPages.forEach((section, sectionIndex) => {
     // Section metadata:
     codeForTheHandbook.push(`{ 
       title: "${section.title}",
@@ -206,7 +225,7 @@ for (const lang of langs) {
     `);
 
     /** @param {{ items?: HandbookNavSubItem[] }} itemable */
-    function addItems (itemable) {
+    function addItems(itemable) {
       // Lots of 2nd level navs dont have subnav, bail for them
       if ("items" in itemable === false) return;
 
@@ -218,7 +237,7 @@ for (const lang of langs) {
         if ("href" in subItem) {
           codeForTheHandbook.push(`
         title: "${subItem.title}",
-        id: "${toID(subItem.title)}",
+        id: "${toID(sectionIndex, subItem.title)}",
         permalink: "${subItem.href}",
         oneline: "${subItem.oneliner}"
       },`);
@@ -226,7 +245,7 @@ for (const lang of langs) {
           //Is is a sub-sub-section?
           codeForTheHandbook.push(`
             title: "${subItem.title}",
-            id: "${toID(subItem.title)}",
+            id: "${toID(sectionIndex, subItem.title)}",
             oneline: "${subItem.oneliner}",
           `);
           addItems(subItem);
@@ -241,7 +260,7 @@ for (const lang of langs) {
 
           codeForTheHandbook.push(`
             title: "${subNavInfo.data.short || subNavInfo.data.title}",
-            id: "${toID(subNavInfo.data.title)}",
+            id: "${toID(sectionIndex, subNavInfo.data.title)}",
             permalink: "${subNavInfo.data.permalink}",
             oneline: "${subNavInfo.data.oneline}",
           `);
@@ -261,7 +280,7 @@ for (const lang of langs) {
 
     // close subnav items
     const isLast = handbookPages.indexOf(section) === section.items.length - 1;
-    const suffix = isLast ? "" : ",";
+    const suffix = isLast ? "," : ",";
     codeForTheHandbook.push(`${suffix}`);
   });
   // close sections
@@ -306,18 +325,19 @@ writeFileSync(
  * @property {string} title - TBD
  * @property {string} summary - TDB
  * @property {boolean=} chronological - should we recommend a next/prev
+ * @property {boolean=} beta - should it be shown differently
  * @property {HandbookNavSubItem[]} items - pages
  */
 
-function validateNonEnglishMarkdownFile (info, lang, filepath) {
+function validateNonEnglishMarkdownFile(info, lang, filepath) {
   if (!info.data.permalink.startsWith("/" + lang + "/")) {
     throw new Error(
-      `Permalink in ${filepath} does not start with '/${lang}/'\n\n`
+      `Permalink in ${filepath} does not start with '/${lang}/'\n\nExpected ${info.data.permalink} to be /${lang}${info.data.permalink}\n\n`
     );
   }
 }
 
-function validateMarkdownFile (info, filepath) {
+function validateMarkdownFile(info, filepath) {
   // const needed = ["permalink", "oneline", "title"];
   const needed = ["permalink", "title"];
   const missing = [];
@@ -332,23 +352,24 @@ function validateMarkdownFile (info, filepath) {
   }
 }
 
-function throwForUnfoundFile (subItem, lang, langInfo) {
+function throwForUnfoundFile(subItem, lang, langInfo) {
   const keys = [...langInfo.keys()];
   // prettier-ignore
   throw new Error(`Could not find the file '${subItem.file}' from the handbook nav in either ${lang} or 'en' - has: ${keys.join(", ")}`);
 }
 
-function fillReleaseInfo () {
+function fillReleaseInfo() {
   const whatIsNew = handbookPages.find((h) => h.title === "What's New");
   const files = readdirSync(
     join(__dirname, "..", "copy", "en", "release-notes")
   );
   for (const file of files.reverse()) {
+    if (file.includes("overview")) return;
     // @ts-ignore
     whatIsNew.items.push({ file: "release-notes/" + file });
   }
 }
 
-function toID (str) {
-  return str.toLowerCase().replace(/\s/g, "-");
+function toID(secIdx, str) {
+  return secIdx.toString() + str.toLowerCase().replace(/\s/g, "-");
 }

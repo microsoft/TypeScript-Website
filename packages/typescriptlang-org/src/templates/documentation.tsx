@@ -19,6 +19,9 @@ import { createIntlLink } from "../components/IntlLink"
 import { handbookCopy } from "../copy/en/handbook"
 import { setupTwoslashHovers } from "shiki-twoslash/dist/dom"
 import { Contributors } from "../components/handbook/Contributors"
+import { overrideSubNavLinksWithSmoothScroll, updateSidebarOnScroll } from "./scripts/setupSubNavigationSidebar"
+import { setupLikeDislikeButtons } from "./scripts/setupLikeDislikeButtons"
+import { DislikeUnfilledSVG, LikeUnfilledSVG } from "../components/svgs/documentation"
 
 type Props = {
   pageContext: {
@@ -47,57 +50,18 @@ const HandbookTemplate: React.FC<Props> = (props) => {
 
 
   useEffect(() => {
-    // Overrides the anchor behavior to smooth scroll instead
-    // Came from https://css-tricks.com/sticky-smooth-active-nav/
-    const subnavLinks = document.querySelectorAll<HTMLAnchorElement>("#handbook-content nav ul li a");
-    subnavLinks.forEach(link => {
-      link.addEventListener("click", event => {
-        event.preventDefault();
-
-        let target = document.querySelector(event.target!["hash"]);
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-        document.location.hash = event.target!["hash"]
-      })
-    })
-
-    // Sets the current selection
-    const updateSidebar = () => {
-      const fromTop = window.scrollY;
-      let currentPossibleAnchor: HTMLAnchorElement | undefined
-      const offset = 100
-
-      // Scroll down to find the highest anchor on the screen
-      subnavLinks.forEach(link => {
-        try {
-          const section = document.querySelector<HTMLDivElement>(link.hash);
-          if (!section) { return }
-          const isBelow = section.offsetTop - offset <= fromTop
-          if (isBelow) currentPossibleAnchor = link
-
-        } catch (error) {
-          return
-        }
-      });
-
-      // Then set the active tag
-      subnavLinks.forEach(link => {
-        if (link === currentPossibleAnchor) {
-          link.classList.add("current");
-        } else {
-          link.classList.remove("current");
-        }
-      })
-    }
+    overrideSubNavLinksWithSmoothScroll()
 
     // Handles setting the scroll 
-    window.addEventListener("scroll", updateSidebar, { passive: true, capture: true });
+    window.addEventListener("scroll", updateSidebarOnScroll, { passive: true, capture: true });
     // Sets current selection
-    updateSidebar()
+    updateSidebarOnScroll()
 
     setupTwoslashHovers()
+    setupLikeDislikeButtons(props.pageContext.slug, i)
 
     return () => {
-      window.removeEventListener("scroll", updateSidebar)
+      window.removeEventListener("scroll", updateSidebarOnScroll)
     }
   }, [])
 
@@ -107,11 +71,13 @@ const HandbookTemplate: React.FC<Props> = (props) => {
 
   const selectedID = props.pageContext.id || "NO-ID"
   const sidebarHeaders = post.headings?.filter(h => (h?.depth || 0) <= 3) || []
-  const showSidebar = !post.frontmatter.disable_toc && post.headings && sidebarHeaders.length <= 30
+  const showSidebar = !post.frontmatter.disable_toc
+  const showSidebarHeadings = post.headings && sidebarHeaders.length <= 30
   const navigation = getDocumentationNavForLanguage(props.pageContext.lang)
   const slug = slugger()
   return (
     <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+      {post.frontmatter.beta && <div id="beta">Warning: This page is a work in progress</div>}
       <section id="doc-layout">
         <SidebarToggleButton />
         <noscript>
@@ -135,13 +101,25 @@ const HandbookTemplate: React.FC<Props> = (props) => {
             {showSidebar &&
               <aside className="handbook-toc">
                 <nav>
-                  <h5>On this page</h5>
-                  <ul>
-                    {sidebarHeaders.map(heading => {
-                      const id = slug.slug(heading!.value, false)
-                      return <li key={id}><a href={'#' + id}>{heading!.value}</a></li>
-                    })}
-                  </ul>
+                  {showSidebarHeadings && <>
+                    <h5>{i("handb_on_this_page")}</h5>
+                    <ul>
+                      {
+                        sidebarHeaders.map(heading => {
+                          const id = slug.slug(heading!.value, false)
+                          return <li key={id}><a href={'#' + id}>{heading!.value}</a></li>
+                        })
+                      }
+                    </ul>
+                  </>
+                  }
+                  <div id="like-dislike-subnav">
+                    <h5>{i("handb_like_dislike_title")}</h5>
+                    <div>
+                      <button id="like-button"><LikeUnfilledSVG /> {i("handb_like_desc")}</button>
+                      <button id="dislike-button"><DislikeUnfilledSVG /> {i("handb_dislike_desc")}</button>
+                    </div>
+                  </div>
                 </nav>
               </aside>
             }
@@ -174,6 +152,7 @@ export const pageQuery = graphql`
         title
         disable_toc
         oneline
+        beta
       }
     }
 
