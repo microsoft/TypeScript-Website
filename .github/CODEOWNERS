@@ -8,7 +8,7 @@ packages/typescriptlang-org/src/copy/ja.ts @sasurau4 @Quramy @Naturalclar @Takep
 packages/documentation/copy/ja/**/*.ts @sasurau4 @Quramy @Naturalclar @Takepepe [translation] [jp]
 
 # Collaborators for Portuguese Translation of the Website
-packages/playground-examples/copy/pt @khaosdoctor @danilofuchs [translation] [pt
+packages/playground-examples/copy/pt @khaosdoctor @danilofuchs [translation] [pt]
 packages/tsconfig-reference/copy/pt/**/*.md @khaosdoctor @danilofuchs [translation] [pt]
 packages/typescriptlang-org/src/copy/pt/**/*.ts @khaosdoctor @danilofuchs [translation] [pt]
 packages/typescriptlang-org/src/copy/pt.ts @khaosdoctor @danilofuchs [translation] [pt]
