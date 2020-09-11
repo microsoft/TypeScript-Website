@@ -17,7 +17,7 @@ translatable: true
 - 빌드 출력 결과와 소스 입력 파일이 거의 비슷한가요? `tsc`를 사용하세요.
 - 여러 잠재적인 결과물을 내는 빌드 파이프라인이 필요하신가요? `babel`로 트랜스파일링을 하고, `tsc`로 타입을 검사하세요.
 
-## 트랜스파일링은 Babel, 타입은 `tsc` (Babel for transpiling, `tsc` for types)
+## 트랜스파일링은 Babel, 타입은 `tsc`
 
 JavaScript 코드 베이스에서 TypeScript로 포팅되었을 수 있는 기존 빌드 인프라 구조를 가진 프로젝트의 일반적인 패턴입니다.
 
@@ -25,7 +25,7 @@ JavaScript 코드 베이스에서 TypeScript로 포팅되었을 수 있는 기�
 
 Babel은 TypeScript를 지원하기 때문에, 기존 빌드 파이프라인으로 작업할 수 있고 Babel이 코드 타입을 검사하지 않기 때문에 JS 출력 시간이 더 빨라질 수 있습니다.
 
-#### 타입 검사와 d.ts 파일 생성 (Type Checking and d.ts file generation)
+#### 타입 검사와 d.ts 파일 생성
 
 Babel 사용의 단점은 TS를 JS로 전환하는 동안 타입 검사를 할 수 없다는 점입니다. 즉, 에디터에서 잡지 못한 타입 오류가 프로덕션 코드에 포함될 수도 있다는 뜻입니다.
 
