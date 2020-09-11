@@ -17,14 +17,12 @@ Um projeto pode ser compilado segindo uma das seguintes maneiras:
 
 ## Usando `tsconfig.json` ou `jsconfig.json`
 
-- Invocando o tsc sem arquivos de entrada, nesse caso o compilador procura o arquivo `tsconfig.json` começando no diretório atual e continuando na cadeia do diretório pai.
+- Invocando o tsc sem arquivos de entrada, nesse caso o compilador procura o arquivo `tsconfig.json` começando no diretório atual e continua em sua sub pastas.
+- Invocando o tsc sem arquivos de entrada e a opção de linha de comando `--project` (ou apenas `-p`) que especifica o caminho para o diretório que contem o arquivo `tsconfig.json`, ou o caminho para um aquivo `.json` válido contendo as configurações.
 
-- By invoking tsc with no input files, in which case the compiler searches for the `tsconfig.json` file starting in the current directory and continuing up the parent directory chain.
-- By invoking tsc with no input files and a `--project` (or just `-p`) command line option that specifies the path of a directory containing a `tsconfig.json` file, or a path to a valid `.json` file containing the configurations.
+Quando os arquivos e entrada são expecificados por linha de comando, os arquivos `tsconfig.json` são ignorados.
 
-When input files are specified on the command line, `tsconfig.json` files are ignored.
-
-## Examples
+## Exemplo
 
 Exemplo de arquivos `tsconfig.json`:
 
@@ -74,12 +72,12 @@ Exemplo de arquivos `tsconfig.json`:
   }
   ```
 
-## TSConfig Bases
+## Bases TSConfig
 
-Depending on the JavaScript runtime environment which you intend to run your code in, there may be a base configuration which you can use at [github.com/tsconfig/bases](https://github.com/tsconfig/bases/).
-These are `tsconfig.json` files which your project extends from which simplifies your `tsconfig.json` by handling the runtime support.
+Dependendo do ambinete de execução javascript, no qual voçê deseja executar seu código, pode haver uma configuração básica que pode ser usada em [github.com/tsconfig/bases](https://github.com/tsconfig/bases/).
+Esses são arquivos `tsconfig.json` que seu projeto se estende o que simplifica o seu `tsconfig.json` ao lidar com o suporte de tempo de execução.
 
-For example, if you were writing a project which uses Node.js version 12 and above, then you could use the npm module [`@tsconfig/node12`](https://www.npmjs.com/package/@tsconfig/node12):
+Por exemplo, se você está desenvolvendo um projeto que usa node.js na versão 12 ou maior, então você pode usar o módulo npm [`@tsconfig/node12`](https://www.npmjs.com/package/@tsconfig/node12)
 
 ```json tsconfig
 {
@@ -94,7 +92,7 @@ For example, if you were writing a project which uses Node.js version 12 and abo
 }
 ```
 
-This lets your `tsconfig.json` focus on the unique choices for your project, and not all of the runtime mechanics. There are a few tsconfig bases already, and we're hoping the community can add more for different environments.
+Isso permite que seu `tsconfig.json` se concentre nas escolhas únicas para o seu projeto, e não em todas as mecânicas de tempo de execução. Já existem algumas bases tsconfig e esperamos que a comunidade possa adicionar mais para diferentes ambientes.
 
 - [Recommended](https://www.npmjs.com/package/@tsconfig/recommended)
 - [Node 10](https://www.npmjs.com/package/@tsconfig/node10)
@@ -103,14 +101,15 @@ This lets your `tsconfig.json` focus on the unique choices for your project, and
 - [React Native](https://www.npmjs.com/package/@tsconfig/react-native)
 - [Svelte](https://www.npmjs.com/package/@tsconfig/svelte)
 
-## Details
+## Detalhes
 
-The `"compilerOptions"` property can be omitted, in which case the compiler's defaults are used. See our full list of supported [Compiler Options](/tsconfig).
+A propriedade `"compilerOptions"` pode ser omitida, casos em que os padroes do compilador são usados. Veja nossa lista completa das [Opções que o compilador suporta](/tsconfig).
 
-## TSConfig Reference
+## Referências TSConfig
 
 To learn more about the hundreds of configuration options in the [TSConfig Reference](/tsconfig).
+Você saber mais sobre as centenas de opçãos de configurações em [Referências TSConfig](/tsconfig)
 
-## Schema
+## Esquema
 
-The `tsconfig.json` Schema can be found at [the JSON Schema Store](http://json.schemastore.org/tsconfig).
+O esquema `tsconfig.json` pode ser encontardo no[Armazenamento de Esquema JSON](http://json.schemastore.org/tsconfig).
