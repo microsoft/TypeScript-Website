@@ -35,7 +35,7 @@ tsc --target ES5 --experimentalDecorators
 
 ## Decoradores
 
-Um _Decorador_ é um tipo especial de declaração que pode ser anexado a uma [declaração de classe](#class-decorators), [métodos](#method-decorators), [acessor](#accessor-decorators), [propriedades](#property-decorators), ou [parâmetros](#parameter-decorators).
+Um _Decorador_ é um tipo especial de declaração que pode ser anexado a uma [declaração de classe](#decoradores-de-classes), [métodos](#decoradores-de-métodos), [acessor](#decoradores-de-acessos), [propriedades](#decoradores-de-propriedades), ou [parâmetros](#decoradores-de-parâmetros).
 Decoradores usam a forma `@expressão`, onde `expressão` deve ser avaliada como uma função que será chamada em tempo de execução com informações sobre a declaração decorada.
 
 Por exemplo, dado o decorador `@selado`, podemos escrever a função `selado` da seguinte forma:
@@ -46,7 +46,7 @@ function selado(alvo) {
 }
 ```
 
-> NOTA&emsp; Você pode ver um exemplo mais detalhado de um decorator em [Decoradores de Classes](#class-decorators), abaixo
+> NOTA&emsp; Você pode ver um exemplo mais detalhado de um decorator em [Decoradores de Classes](#decoradores-de-classes), abaixo
 
 ## Fábrica de Decoradores
 
@@ -93,15 +93,15 @@ Assim, as etapas a seguir são executadas ao avaliar vários decoradores em uma 
 1. As expressões para cada decorador são avaliadas de cima para baixo.
 2. Os resultados são chamados como funções de baixo para cima.
 
-Se fôssemos usar [fábrica de decoradores](#fábrica-de-decoradores),podemos observar esta ordem de avaliação com o seguinte exemplo:
+Se fôssemos usar [fábrica de decoradores](#fábrica-de-decoradores), podemos observar esta ordem de avaliação com o seguinte exemplo:
 
 ```ts
 function f() {
   console.log("f(): avaliada");
   return function (
-    target,
-    propertyKey: string,
-    descriptor: PropertyDescriptor
+    alvo,
+    chaveDePropriedade: string,
+    descritor: descritorDePropriedade
   ) {
     console.log("f(): chamada");
   };
@@ -110,9 +110,9 @@ function f() {
 function g() {
   console.log("g(): avaliada");
   return function (
-    target,
-    propertyKey: string,
-    descriptor: PropertyDescriptor
+    alvo,
+    chaveDePropriedade: string,
+    descritor: descritorDePropriedade
   ) {
     console.log("g(): chamada");
   };
@@ -224,7 +224,7 @@ Se o decorador do método retornar um valor, ele será usado como o _Descritor d
 
 > NOTA&emsp; O valor de retorno é ignorado se o destino do script for menor que `ES5`.
 
-A seguir está um exemplo de um decorador de método (`@enumerável`) aplicado a um método na classe` Recepcionista`:
+A seguir está um exemplo de um decorador de método (`@enumeravel`) aplicado a um método na classe` Recepcionista`:
 
 ```ts
 class Recepcionista {
@@ -233,29 +233,29 @@ class Recepcionista {
     this.recepcionista = mensagem;
   }
 
-  @enumerável(false)  
+  @enumeravel(false)  
   cumprimentar() {
     return "Olá, " + this.recepcionista;
   }
 }
 ```
 
-Podemos definir o decorador `@enumerável` usando a seguinte declaração de função:
+Podemos definir o decorador `@enumeravel` usando a seguinte declaração de função:
 
 ```ts
-function enumerável(valor: boolean) {
+function enumeravel(valor: boolean) {
   return function (
     alvo: any,
     chaveDePropriedade: string,
     descritor: DescritorDePropriedade
   ) {
-    descritor.enumerável = valor;
+    descritor.enumeravel = valor;
   };
 }
 ```
 
-O decorador `@enumerável(false)` aqui é uma [fábrica de decoradores](#fábrica-de-decoradores).
-Quando o decorador `@enumerável(false)` é chamado, ele modifica a propriedade `enumerável` do descritor de propriedade.
+O decorador `@enumeravel(false)` aqui é uma [fábrica de decoradores](#fábrica-de-decoradores).
+Quando o decorador `@enumeravel(false)` é chamado, ele modifica a propriedade `enumeravel` do descritor de propriedade.
 
 ## Decoradores de Acessos
 
