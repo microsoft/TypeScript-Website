@@ -1,16 +1,16 @@
-// Com o novo Playground, nos temos muito mais controle sobre
+// Com o novo Playground, nós temos muito mais controle sobre
 // o ambiente em que seu código é executado. O novo Playground
-// esta agora vagamente acoplado ao monaco-editor e ao 
-// monaco-typescript que fornecem a experiencia de edição
+// está agora levemente acoplado ao monaco-editor e ao 
+// monaco-typescript que fornecem a experiência de edição
 
 // https://github.com/microsoft/monaco-editor/
 // https://github.com/microsoft/monaco-typescript
 
-// Vagamente acoplado significa que o playground permite que o
+// Levemente acoplado significa que o playground permite que o
 // usuário tenha suporte ao uso de diferentes versões
 // do TypeScript que o monaco-typescript tem integrado.
 
-// Nós temos a infraestrutura para criar uma copia do monaco-editor
+// Nós temos a infraestrutura para criar uma cópia do monaco-editor
 // e do monaco-typescript para qualquer versão do TypeScript. Isso
 // significa que agora nós podemos suportar:
 
