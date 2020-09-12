@@ -67,7 +67,7 @@ function cor(valor: string) {
 
 > NOTA&emsp; Você pode ver um exemplo mais detalhado de uma fábrica de decoradores em [Decoradores de Métodos](#decoradores-de-métodos), abaixo.
 
-## Composição Decorator
+## Composição de Decoradores
 
 Vários decoradores podem ser aplicados a uma declaração, como nos exemplos a seguir:
 
@@ -138,14 +138,14 @@ f(): chamada
 
 Há uma ordem bem definida para como os decoradores aplicados a várias declarações, dentro de uma classe, são aplicados:
 
-1. _Decoradores de Parâmetros_, seguido por _Mêtodo_, _Acessório_ ou _Decoradores de Propriedades_ são aplicados para cada membro da instância.
-2. _Decoradores de Parâmetros_, seguido por _Mêtodo_, _Acessório_ ou _Decoradores de Propriedades_ são aplicados para cada membro estático.
+1. _Decoradores de Parâmetros_, seguido por _Mêtodo_, _Decoradores de Acesso_ ou _Decoradores de Propriedades_ são aplicados para cada membro da instância.
+2. _Decoradores de Parâmetros_, seguido por _Mêtodo_, _Decoradores de Acesso_ ou _Decoradores de Propriedades_ são aplicados para cada membro estático.
 3. _Decoradores de Parâmetros_ são aplicados para o construtor.
 4. _Decoradores de classe_ são aplicados para a classe.
 
 ## Decoradores de Classes
 
-O _Decorador de Dlasses_ é declarado antes de uma declaração de classe.
+O _Decorador de Classe_ é declarado antes de uma declaração de classe.
 O decorador de classe é aplicado ao construtor da classe e pode ser usado para observar, modificar ou substituir uma definição de classe.
 Um decorador de classe não pode ser usado em um arquivo de declaração, ou em qualquer outro contexto de ambiente (como em uma classe `declare`).
 
@@ -175,8 +175,8 @@ Podemos definir o decorador `@selado` usando a seguinte declaração de função
 
 ```ts
 function selado(constructor: Function) {
-  Object.selado(constructor);
-  Object.selado(constructor.prototype);
+  Object.seal(constructor);
+  Object.seal(constructor.prototype);
 }
 ```
 
@@ -194,7 +194,7 @@ function decoradorDeClasse<T extends { new (...args: any[]): {} }>(
   };
 }
 
-@classDecorator
+@decoradorDeClasse
 class Recepcionista {
   propriedade = "propriedade";
   ola: string;
@@ -218,13 +218,13 @@ A expressão para o decorador de método será chamada como uma função em temp
 2. O nome do membro
 3. O _Descritor de Propriedade_ para o membro.
 
-> NOTA&emsp; O _Descritor de Propriedade_ será `indefinido` se o destino do seu script for menor que` ES5`.
+> NOTA&emsp; O _Descritor de Propriedade_ será `indefinido` se o destino do seu script for menor que `ES5`.
 
 Se o decorador do método retornar um valor, ele será usado como o _Descritor de Propriedade_ para o método.
 
 > NOTA&emsp; O valor de retorno é ignorado se o destino do script for menor que `ES5`.
 
-A seguir está um exemplo de um decorador de método (`@enumeravel`) aplicado a um método na classe` Recepcionista`:
+A seguir está um exemplo de um decorador de método (`@enumeravel`) aplicado a um método na classe `Recepcionista`:
 
 ```ts
 class Recepcionista {
@@ -257,15 +257,15 @@ function enumeravel(valor: boolean) {
 O decorador `@enumeravel(false)` aqui é uma [fábrica de decoradores](#fábrica-de-decoradores).
 Quando o decorador `@enumeravel(false)` é chamado, ele modifica a propriedade `enumeravel` do descritor de propriedade.
 
-## Decoradores de Acessos
+## Decoradores de Acesso
 
-Um _Decorador de Acessos_ é declarado antes de uma declaração de acessos.
-O Decorador de Acessos é aplicado ao _Descritor de Propriedades_ do acessador e pode ser usado para observar, modificar ou substituir as definições de um acesso.
-Um Decorador de Acessos não pode ser usado em um arquivo de declaração ou em qualquer outro contexto de ambiente (como em uma classe `declare`).
+Um _Decorador de Acesso_ é declarado antes de uma declaração de acesso.
+O Decorador de Acesso é aplicado ao _Descritor de Propriedades_ do acessador e pode ser usado para observar, modificar ou substituir as definições de um acesso.
+Um Decorador de Acesso não pode ser usado em um arquivo de declaração ou em qualquer outro contexto de ambiente (como em uma classe `declare`).
 
 > NOTA&emsp; O TypeScript não permite decorar os acessadores `get` e` set` para um único membro.
 > Em vez disso, todos os decoradores do membro devem ser aplicados ao primeiro acessador especificado na ordem do documento.
-> Isso ocorre porque os decoradores se aplicam a um _Descritor de Propriedades_, que combina os acessadores `get` e` set`, não a cada declaração separadamente.
+> Isso ocorre porque os decoradores se aplicam a um _Descritor de Propriedades_, que combina os acessadores `get` e `set`, não a cada declaração separadamente.
 
 A expressão para o Decorador de Acesso será chamada como uma função em tempo de execução, com os três seguintes argumentos:
 
