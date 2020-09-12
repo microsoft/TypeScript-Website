@@ -1,7 +1,7 @@
 ---
 title: tsconfig.json
 layout: docs
-permalink: /docs/handbook/tsconfig-json.html
+permalink: /pt/docs/handbook/tsconfig-json.html
 oneline: Aprenda sobre como o TSConfig funciona
 translatable: true
 ---
