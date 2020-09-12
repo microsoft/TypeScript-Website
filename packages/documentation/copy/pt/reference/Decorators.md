@@ -1,20 +1,20 @@
 ---
-titulo: Decoradores
+title: Decoradores
 layout: docs
-permalink: /docs/handbook/Decoradores.html
-uma linha: Visão geral dos Decoradores no TypeScript
-traduzível: true
+permalink: /pt/docs/handbook/Decorators.html
+oneline: Visão geral dos Decoradores no TypeScript
+translatable: true
 ---
 
 ## Introdução
 
-Com a introdução as Classes no TypeScript e ES6, agora existem certos cenários que requerem recursos adicionais para dar suporte à anotação ou modificação de classes e membros da classe.
+Com a introdução das Classes no TypeScript e ES6, agora existem certos cenários que requerem recursos adicionais para dar suporte à anotação ou modificação de classes e membros da classe.
 Decoradores fornecem uma maneira de adicionar anotações e uma sintaxe de metaprogramação para declarações de classe e membros.
 Decoradores são uma [proposta de estágio 2](https://github.com/tc39/proposal-decorators) para JavaScript e estão disponíveis como um recurso experimental do TypeScript.
 
 > NOTA&emsp; Decoradores são um recurso experimental que podem mudar em versões futuras.
 
-Para habilitar o suporte experimental para os Decoradores, você deve habilitar a opção do compilador `experimentalDecorators` na linha de comando ou em seu` tsconfig.json`:
+Para habilitar o suporte experimental para os Decoradores, você deve habilitar a opção do compilador `experimentalDecorators` na linha de comando ou em seu `tsconfig.json`:
 
 **Linha de Comando**:
 
@@ -273,13 +273,13 @@ A expressão para o Decorador de Acesso será chamada como uma função em tempo
 2. O nome do membro.
 3. O _Descritor de Propriedade_ do membro.
 
-> NOTA&emsp; O _Descriptor de Propriedade_ será `indefinido` se o destino do seu script for menor que` ES5`.
+> NOTA&emsp; O _Descriptor de Propriedade_ será `undefined` se o destino do seu script for menor que `ES5`.
 
 Se o Decorador de Acesso retornar um valor, ele será usado como o _Descritor de Propriedade_ para o membro.
 
 > NOTA&emsp; O valor de retorno é ignorado se o destino do script for menor que `ES5`.
 
-A seguir está um exemplo de um Decorador de Acesso (`@configuravel`) aplicado a um membro da classe` Ponto`:
+A seguir está um exemplo de um Decorador de Acesso (`@configuravel`) aplicado a um membro da classe `Ponto`:
 
 ```ts
 class Ponto {
@@ -347,7 +347,7 @@ class Recepcionista {
 }
 ```
 
-Podemos então definir o decorador `@formato` e as funções` obterFormato` usando as seguintes declarações de função:
+Podemos então definir o decorador `@formato` e as funções `obterFormato` usando as seguintes declarações de função:
 
 ```ts
 import "reflect-metadata";
@@ -372,7 +372,7 @@ Quando `obterFormato` é chamado, ele lê o valor dos metadados para o formato.
 
 ## Decoradores de Parâmetros
 
-Um _Decorador de Parâmetros_ é declarado antes de uma declaração de parâmetro.
+Um _Decorador de Parâmetro_ é declarado antes de uma declaração de parâmetro.
 O decorador de parâmetro é aplicado à função para um construtor de classe ou declaração de método.
 Um decorador de parâmetro não pode ser usado em um arquivo de declaração, uma sobrecarga ou em qualquer outro contexto de ambiente (como em uma classe `declare`).
 
@@ -386,7 +386,7 @@ A expressão para o decorador de parâmetro será chamada como uma função em t
 
 O valor de retorno do decorador de parâmetro é ignorado.
 
-A seguir está um exemplo de um decorador de parâmetro (`@requerido`) aplicado ao parâmetro de um membro da classe` Recepcionista`:
+A seguir está um exemplo de um decorador de parâmetro (`@obrigatorio`) aplicado ao parâmetro de um membro da classe `Recepcionista`:
 
 ```ts
 class Recepcionista {
@@ -397,20 +397,20 @@ class Recepcionista {
   }
 
   @validar
-  cumprimentar(@requerido nome: string) {
+  cumprimentar(@obrigatorio nome: string) {
     return "Olá " + nome + ", " + this.cumprimento;
   }
 }
 ```
 
-Podemos então definir os decoradores `@requerido` e` @validar` usando as seguintes declarações de função:
+Podemos então definir os decoradores `@obrigatorio` e` @validar` usando as seguintes declarações de função:
 
 ```ts
 import "reflect-metadata";
 
-const chaveDeMetodosNecessaria = Symbol("requerido");
+const chaveDeMetodosNecessaria = Symbol("obrigatorio");
 
-function requerido(
+function obrigatorio(
   alvo: Object,
   chaveDePropriedade: string | symbol,
   indiceDeParametro: number
@@ -448,13 +448,13 @@ function validar(
         }
       }
     }
-
+    
     return method.apply(this, arguments);
   };
 }
 ```
 
-O decorador `@requerido` adiciona uma entrada de metadados que marca o parâmetro como necessário.
+O decorador `@obrigatorio` adiciona uma entrada de metadados que marca o parâmetro como necessário.
 O decorador `@validar` então envolve o método` cumprimentar` existente em uma função que valida os argumentos antes de invocar o método original.
 
 > NOTA&emsp; Este exemplo requer a biblioteca `reflect-metadata`.
