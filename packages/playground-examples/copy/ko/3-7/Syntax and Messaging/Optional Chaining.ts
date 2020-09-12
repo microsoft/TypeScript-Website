@@ -5,7 +5,7 @@
 // null 또는 undefined인 코드에 도달했을 때
 // 즉시 중지할 수 있는 코드를 작성할 수 있습니다.
 
-// 프로퍼티 접근(Property Access)
+// 프로퍼티 접근 (Property Access)
 
 // 우리가 아티스트와 아티스트 약력이 없는
 // 앨범을 가지고 있다고 가정해 보겠습니다. 예를 들면,
@@ -32,13 +32,13 @@ const artistBio = album?.artist?.bio;
 const maybeArtistBio = album.artist && album.artist.bio;
 
 // 이 경우 ?.는  &&과는 다르게 동작합니다. 왜냐하면,
-// &&는 "falsy"값에 대한 동작이 다르기 때문입니다.
+// &&는 "falsy" 값에 대한 동작이 다르기 때문입니다.
 // (예. 빈 문자열, 0, NaN, 그리고, false).
 
-// 선택적 체이닝은 null이거나, 연산을 멈추고 undefined를 반환하는
-// 신호로 사용됩니다.
+// 선택적 체이닝은 null이거나 undefined이면
+// 동작을 멈추고, undefined를 반환합니다.
 
-// 선택적 요소 접근(Optional Element Access)
+// 선택적 요소 접근 (Optional Element Access)
 
 // 프로퍼티 접근은 .연산자만을 이용하고,
 // 선택적 체이닝이 요소에 접근할 때는 []연산자와 함께 이용합니다.
