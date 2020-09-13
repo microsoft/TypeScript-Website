@@ -171,16 +171,16 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       tabBar.addEventListener("keydown", e => {
         const tabs = tabBar.querySelectorAll('[role="tab"]')
         // Move right
-        if (e.key === "ArrowRight" || e.code === "ArrowRight" || e.key === "ArrowLeft" || e.code === "ArrowLeft") {
+        if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
           tabs[tabFocus].setAttribute("tabindex", "-1")
-          if (e.key === "ArrowRight" || e.code === "ArrowRight") {
+          if (e.key === "ArrowRight") {
             tabFocus++
             // If we're at the end, go to the start
             if (tabFocus >= tabs.length) {
               tabFocus = 0
             }
             // Move left
-          } else if (e.key === "ArrowLeft" || e.code === "ArrowLeft") {
+          } else if (e.key === "ArrowLeft") {
             tabFocus--
             // If we're at the start, move to the end
             if (tabFocus < 0) {
