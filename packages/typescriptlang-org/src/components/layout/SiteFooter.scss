@@ -15,7 +15,7 @@
   }
 
   section {
-    max-width: 920px;
+    max-width: 1040px;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     margin: 0 auto;
@@ -68,7 +68,9 @@
   }
 
   section#switcher {
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding-top: 2px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+
     article {
       h3 {
         width: 240px;
@@ -203,6 +205,11 @@
   // the viewport because it uses opacity which affects layout
   #playground-samples-popover {
     display: none;
+  }
+
+  #community-links ul,
+  #using-typescript ul {
+    margin-left: 12px;
   }
 }
 

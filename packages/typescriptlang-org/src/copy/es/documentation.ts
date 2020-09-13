@@ -14,7 +14,7 @@ export const docCopy = {
   doc_headline_examples_title: "Ejemplos",
   doc_headline_examples_blurb:
     "Completos tutoriales prácticos en el Playground",
-  doc_start_a_project: "¡Inicie un projecto!",
+  doc_start_a_project: "¡Inicie un proyecto!",
   doc_start_a_project_desc:
     "Debido a que TypeScript es un superconjunto de JavaScript, no tiene una plantilla por defecto - habría demasiadas. En su lugar, otros proyectos tienen sus propias plantillas de TypeScript con su propio contexto. Estos proyectos proporcionan plantillas que incluyen soporte para TypeScript.",
   doc_node_npm: "Node con npm",
@@ -74,13 +74,9 @@ export const docCopy = {
     "Agrupa tus recursos, archivos, imágenes y estilos",
   doc_learn: "¿Ya estás familiarizado con TypeScript?",
   doc_learn_3_5_release_notes_title: "Notas de lanzamiento",
-  doc_learn_3_5_release_notes_blurb: "Notas de lanzamiento versión 3.5",
+  doc_learn_3_5_release_notes_blurb: "Notas de lanzamiento versión",
   doc_learn_handbook_blurb: "La referencia al lenguaje de TypeScript",
   doc_learn_d_ts_title: "Guía para definiciones en TypeScript (d.ts)",
   doc_learn_d_ts_blurb: "Aprende a declarar la forma de JS",
   doc_learn_playground_blurb: "Explora y comparte TypeScript en línea",
-  nav_: {
-    id: "foo",
-    defaultMessage: "foo",
-  },
 }

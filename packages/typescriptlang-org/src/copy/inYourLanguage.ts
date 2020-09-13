@@ -12,7 +12,7 @@ export const inYourLanguage: Record<
     shorthand: "En Es",
     body: "Esta página está disponible en Español",
     open: "Adelante",
-    cancel: "No preguntes de nuevo",
+    cancel: "No preguntar de nuevo",
   },
   pt: {
     shorthand: "Em Pt",

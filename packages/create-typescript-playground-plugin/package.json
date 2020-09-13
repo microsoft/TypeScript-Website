@@ -1,16 +1,17 @@
 {
   "name": "create-typescript-playground-plugin",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "bin": "index.js",
   "author": "TypeScript team",
   "license": "MIT",
   "homepage": "https://github.com/microsoft/TypeScript-Website/",
   "scripts": {
     "build": "echo NOOP",
-    "bootstrap": "echo NOOP",
     "test": "echo NOOP"
   },
   "dependencies": {
-    "cross-spawn": "^7.0.1"
+    "cross-spawn": "^7.0.1",
+    "gunzip-maybe": "^1.4.1",
+    "tar-fs": "^2.1.0"
   }
 }

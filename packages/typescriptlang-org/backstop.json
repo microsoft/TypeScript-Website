@@ -31,7 +31,7 @@
     },
     {
       "label": "TSConfig Example",
-      "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/en/tsconfig/index.html",
+      "url": "file:///Users/ortatherox/dev/typescript/new-website/packages/typescriptlang-org/public/tsconfig/index.html",
       "misMatchThreshold": 0.1,
       "selectors": ["viewport"]
     }

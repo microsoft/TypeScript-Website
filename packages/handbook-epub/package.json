@@ -4,9 +4,9 @@
   "license": "MIT",
   "version": "1.0.0",
   "scripts": {
+    "bootstrap": "yarn workspace typescriptlang-org update-versions",
     "build": "ts-node script/createEpub.ts && ts-node script/createPDF.ts",
-    "test": "echo 'NOOP'",
-    "bootstrap": "echo 'NOOP'"
+    "test": "echo 'NOOP'"
   },
   "prettier": {
     "semi": true

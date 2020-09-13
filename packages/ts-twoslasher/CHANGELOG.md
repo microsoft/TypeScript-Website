@@ -1,3 +1,29 @@
+## 1.1.1
+
+- Better handling of JSON files
+
+## 1.1.0
+
+- Adds a JS file into the npm tarball for using with a vanilla script tag, which sets `global.twoslash` with the main twoslash function. You need to include a copy of tsvfs beforehand.
+
+Unpkg URLS:
+
+- https://unpkg.com/browse/@typescript/vfs@dist/vfs.globals.js
+- https://unpkg.com/browse/@typescript/twoslash@dist/twoslash.globals.js
+
+## 1.0.2
+
+- The `// @x`, `// ^?` and `// ^^^` comments ignore preceding whitespace
+
+## 1.0.1
+
+- Adds an option for declaring the project's root to overlay the vfs over: `vfsRoot`
+
+## 1.0.0
+
+- Supports falling back to _your project's_ node modules for resolving types and imports. This drastically simplifies setting up a code sample which relies on types not shipped with TypeScript.
+- Support for adding vfs JSON files in a code sample
+
 ## 0.5.0
 
 - Support TS 4.0

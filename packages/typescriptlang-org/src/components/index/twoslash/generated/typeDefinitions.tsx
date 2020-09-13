@@ -9,6 +9,6 @@ const innerHTML = `<div class="language-id">tsx</div><div class='code-container'
          <span class='inline-completions'><ul class='dropdown'><li><span><span class='result-found'>sen</span>d<span></li><li><span><span class='result-found'>sen</span>dDate<span></li><li><span><span class='result-found'>sen</span>dfile<span></li><li><span><span class='result-found'>sen</span>dFile<span></li><li><span><span class='result-found'>sen</span>dStatus<span></li></ul></span>
 <span style="color: #D4D4D4">})</span>
 
-<span style="color: #D4D4D4"><data-lsp lsp='const app: Express'>app</data-lsp>.<data-lsp lsp='(method) Application.listen(port: number, callback?: ((...args: any[]) => void) | undefined): Server (+5 overloads)'>listen</data-lsp>(</span><span style="color: #B5CEA8">3000</span><span style="color: #D4D4D4">)</span></code></div>`
+<span style="color: #D4D4D4"><data-lsp lsp='const app: Express'>app</data-lsp>.<data-lsp lsp='(method) Application.listen(port: number, callback?: ((...args: any[]) => void) | undefined): Server (+5 overloads)'>listen</data-lsp>(</span><span style="color: #B5CEA8">3000</span><span style="color: #D4D4D4">)</span></code><a href='https://www.typescriptlang.org/play/#code/PTAEAEDsHsFECd7XgZwFAggUxQWWgCYCuANlgJKQAuWSADmgJYC2dyVoWAHnfDiqABmSZqABE3XvzFoAxtEgoOAQzp1QAXk48+KFAAoAlGjSq6AOgDmWKvrHAxAGiFFIsqowWh9fAI7PdQ1AAbzRQUF1zFCxIDDBwhNAAPQAfNABfY1M1cxJGJRj9AGYABjLjIA'>Try</a></div>`
 
 export const TypeDefinitionsExample = () => <pre className='shiki twoslash' dangerouslySetInnerHTML={{ __html: innerHTML }} />

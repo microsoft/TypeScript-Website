@@ -1,18 +1,23 @@
 ### Meta
 
-- **URLs:** [production](https://www.typescriptlang.org), [staging](http://testsite-typescript-41eeb979-7eaa-4c74-9d47-9d182c7b61ab.azurewebsites.net/), [static staging](http://www.staging-typescript.org/)
+- **URLs:** [production](https://www.typescriptlang.org), [staging](http://www.staging-typescript.org/)
 - **Admin:** Prod: [Azure Portal](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/99160d5b-9289-4b66-8074-ed268e739e8e/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/TypeScript-1ebb3390-2634-4956-a955-eab987b7bb25/appServices), [Deploy logs](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/99160d5b-9289-4b66-8074-ed268e739e8e/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/TypeScript-1ebb3390-2634-4956-a955-eab987b7bb25/vstscd), [App Insights](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/57bfeeed-c34a-4ffd-a06b-ccff27ac91b8/resourceGroups/typescriptlang-org/providers/microsoft.insights/components/TypeScriptLang-Prod-Ai/overview)
 
 ### Getting Started
 
-This repo uses [yarn workspaces][y-wrk] with node 13+, to get started clone this repo and run `yarn install`.
+This repo uses [yarn workspaces][y-wrk] with node 13+, and [watchman](https://facebook.github.io/watchman/docs/install.html).
+
+With those set up, clone this repo and run `yarn install`.
 
 ```sh
 git clone https://github.com/microsoft/TypeScript-website
 cd TypeScript-website
 yarn install
-yarn bootstrap
 code .
+
+# Then:
+yarn bootstrap
+yarn start
 ```
 
 Working on this repo is done by running `yarn start` - this starts up the website on port `8000` and creates a
@@ -20,15 +25,17 @@ builder worker for every package in the repo, so if you make a change outside of
 
 Some useful knowledge:
 
-- All packages have: `yarn bootstrap`, `yarn build` and `yarn test`
+- All packages have: `yarn build` and `yarn test`
 - All packages use [debug](https://www.npmjs.com/package/debug) - which means you can do `env DEBUG="*" yarn test` to get verbose logs
+
+You can manually via GH Actions for [production here](https://github.com/microsoft/TypeScript-Website/actions?query=workflow%3A%22Monday+Website+Push+To+Production%22) and [staging here](https://github.com/microsoft/TypeScript-Website/actions?query=workflow%3A%22Build+Website+To+Staging%22).
 
 ## Deployment
 
 Deployment is automatic:
 
-- Merges to the branch `master` trigger deploys to production of the v1 website, and the v2 of branch in a [`/v2` subfolder](https://www.typescriptlang.org/v2/).
-- Pushes to the branch `v2` deploy to [staging](http://testsite-typescript-41eeb979-7eaa-4c74-9d47-9d182c7b61ab.azurewebsites.net/).
+- Pushes to the branch `v2` deploy to [staging](http://www.staging-typescript.org)
+- On a Monday the v2 branch is deployed to [production](https://www.typescriptlang.org)
 
 You can find the build logs in [GitHub Actions](https://github.com/microsoft/TypeScript-Website/actions)
 
@@ -55,7 +62,7 @@ with TypeScript or JavaScript code.
 
 ## Playground
 
-The JS code as an AMD module for the playground which is loaded at runtime in the Playground website.
+The JS code has an AMD module for the playground which is loaded at runtime in the Playground website.
 
 # Doc Packages
 
@@ -92,7 +99,7 @@ The code samples used in the Playground split across many languages
 
 # Infra Packages
 
-Most of of these packages use [`tsdx`](https://github.com/jaredpalmer/tsdx).
+Most of these packages use [`tsdx`](https://tsdx.io).
 
 ## TS Twoslash
 

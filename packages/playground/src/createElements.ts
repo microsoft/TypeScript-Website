@@ -135,6 +135,7 @@ export const createTabBar = () => {
   tabBar.classList.add("playground-plugin-tabview")
   tabBar.id = "playground-plugin-tabbar"
   tabBar.setAttribute("aria-label", "Tabs for plugins")
+  tabBar.setAttribute("role", "tablist")
 
   /** Support left/right in the tab bar for accessibility */
   let tabFocus = 0

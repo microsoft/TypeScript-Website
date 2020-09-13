@@ -21,7 +21,7 @@ import {
 } from "./utils"
 import { validateInput, validateCodeForErrors } from "./validation"
 
-import { createSystem, createVirtualTypeScriptEnvironment, createDefaultMapFromNodeModules } from "@typescript/vfs"
+import { createSystem, createVirtualTypeScriptEnvironment, createFSBackedSystem } from "@typescript/vfs"
 
 const log = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
 
@@ -29,7 +29,7 @@ const log = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any
 declare module "typescript" {
   type Option = {
     name: string
-    type: "list" | "boolean" | "number" | "string" // | Map
+    type: "list" | "boolean" | "number" | "string" | import("typescript").Map<any>
     element?: Option
   }
 
@@ -98,11 +98,11 @@ function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosit
     if (!line.includes("//")) {
       moveForward()
     } else {
-      const highlightMatch = /^\/\/\s*\^+( .+)?$/.exec(line)
-      const queryMatch = /^\/\/\s*\^\?\s*$/.exec(line)
+      const highlightMatch = /^\s*\/\/\s*\^+( .+)?$/.exec(line)
+      const queryMatch = /^\s*\/\/\s*\^\?\s*$/.exec(line)
       // https://regex101.com/r/2yDsRk/1
       const removePrettierIgnoreMatch = /^\s*\/\/ prettier-ignore$/.exec(line)
-      const completionsQuery = /^\/\/\s*\^\|$/.exec(line)
+      const completionsQuery = /^\s*\/\/\s*\^\|$/.exec(line)
 
       if (queryMatch !== null) {
         const start = line.indexOf("^")
@@ -346,6 +346,9 @@ export interface TwoSlashOptions {
    * web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
    */
   fsMap?: Map<string, string>
+
+  /** The cwd for the folder which the virtual fs should be overlaid on top of when using local fs, opts to process.cwd() if not present */
+  vfsRoot?: string
 }
 
 /**
@@ -383,8 +386,18 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   const handbookOptions = { ...filterHandbookOptions(codeLines), ...options.defaultOptions }
   const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions, ts)
 
-  const vfs = options.fsMap ?? createLocallyPoweredVFS(compilerOptions, ts)
-  const system = createSystem(vfs)
+  const getRoot = () => {
+    const path = require("path")
+    const rootPath = options.vfsRoot || process.cwd()
+    return rootPath.split(path.sep).join(path.posix.sep)
+  }
+
+  // In a browser we want to DI everything, in node we can use local infra
+  const useFS = !!options.fsMap
+  const vfs = useFS && options.fsMap ? options.fsMap : new Map<string, string>()
+  const system = useFS ? createSystem(vfs) : createFSBackedSystem(vfs, getRoot(), ts)
+  const fsRoot = useFS ? "/" : getRoot() + "/"
+
   const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions, options.customTransformers)
   const ls = env.languageService
 
@@ -394,13 +407,21 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   let queries = [] as TwoSlashReturn["queries"]
   let highlights = [] as TwoSlashReturn["highlights"]
 
-  const nameContent = splitTwoslashCodeInfoFiles(code, defaultFileName)
+  const nameContent = splitTwoslashCodeInfoFiles(code, defaultFileName, fsRoot)
+  const sourceFiles = ["js", "jsx", "ts", "tsx"]
 
   /** All of the referenced files in the markup */
   const filenames = nameContent.map(nc => nc[0])
 
   for (const file of nameContent) {
     const [filename, codeLines] = file
+    const filetype = filename.split(".").pop() || ""
+
+    // Only run the LSP-y things on source files
+    const allowJSON = compilerOptions.resolveJsonModule && filetype === "json"
+    if (!sourceFiles.includes(filetype) && !allowJSON) {
+      continue
+    }
 
     // Create the file in the vfs
     const newFileCode = codeLines.join("\n")
@@ -476,6 +497,9 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   // Lets fs changes propagate back up to the fsMap
   if (handbookOptions.emit) {
     filenames.forEach(f => {
+      const filetype = f.split(".").pop() || ""
+      if (!sourceFiles.includes(filetype)) return
+
       const output = ls.getEmitOutput(f)
       output.outputFiles.forEach(output => {
         system.writeFile(output.name, output.text)
@@ -492,6 +516,13 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   // const declaredFiles = Object.keys(fileMap)
 
   filenames.forEach(file => {
+    const filetype = file.split(".").pop() || ""
+
+    // Only run the LSP-y things on source files
+    if (!sourceFiles.includes(filetype)) {
+      return
+    }
+
     if (!handbookOptions.noErrors) {
       errs.push(...ls.getSemanticDiagnostics(file))
       errs.push(...ls.getSyntacticDiagnostics(file))
@@ -598,21 +629,21 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   if (handbookOptions.showEmit) {
     // Get the file which created the file we want to show:
     const emitFilename = handbookOptions.showEmittedFile || defaultFileName
-    const emitSourceFilename = emitFilename.replace(".js", "").replace(".d.ts", "").replace(".map", "")
+    const emitSourceFilename = fsRoot + emitFilename.replace(".js", "").replace(".d.ts", "").replace(".map", "")
     const emitSource = filenames.find(f => f === emitSourceFilename + ".ts" || f === emitSourceFilename + ".tsx")
 
     if (!emitSource) {
       const allFiles = filenames.join(", ")
-      throw new Error(
-        `Cannot find the corresponding source file for ${emitFilename} ${handbookOptions.showEmittedFile} - in ${allFiles}`
-      )
+      // prettier-ignore
+      throw new Error(`Cannot find the corresponding source file for ${emitFilename} (looking for: ${emitSourceFilename} in the vfs) - in ${allFiles}`)
     }
 
     const output = ls.getEmitOutput(emitSource)
-    const file = output.outputFiles.find(o => o.name === handbookOptions.showEmittedFile)
+    const file = output.outputFiles.find(o => o.name === fsRoot + handbookOptions.showEmittedFile)
     if (!file) {
       const allFiles = output.outputFiles.map(o => o.name).join(", ")
-      throw new Error(`Cannot find the file ${handbookOptions.showEmittedFile} - in ${allFiles}`)
+      // prettier-ignore
+      throw new Error(`Cannot find the file ${handbookOptions.showEmittedFile} (looking for: ${fsRoot + handbookOptions.showEmittedFile} in the vfs) - in ${allFiles}`)
     }
 
     code = file.text
@@ -676,10 +707,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   }
 }
 
-const createLocallyPoweredVFS = (compilerOptions: CompilerOptions, ts?: typeof import("typescript")) =>
-  createDefaultMapFromNodeModules(compilerOptions, ts)
-
-const splitTwoslashCodeInfoFiles = (code: string, defaultFileName: string) => {
+const splitTwoslashCodeInfoFiles = (code: string, defaultFileName: string, root: string) => {
   const lines = code.split(/\r\n?|\n/g)
 
   let nameForFile = code.includes(`@filename: ${defaultFileName}`) ? "global.ts" : defaultFileName
@@ -688,14 +716,14 @@ const splitTwoslashCodeInfoFiles = (code: string, defaultFileName: string) => {
 
   for (const line of lines) {
     if (line.includes("// @filename: ")) {
-      fileMap.push([nameForFile, currentFileContent])
+      fileMap.push([root + nameForFile, currentFileContent])
       nameForFile = line.split("// @filename: ")[1].trim()
       currentFileContent = []
     } else {
       currentFileContent.push(line)
     }
   }
-  fileMap.push([nameForFile, currentFileContent])
+  fileMap.push([root + nameForFile, currentFileContent])
 
   // Basically, strip these:
   // ["index.ts", []]

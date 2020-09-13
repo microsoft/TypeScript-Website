@@ -32,10 +32,10 @@ const handbookPages = [
     title: "Get Started",
     summary: "Quick introductions based on your background or preference.",
     items: [
-      { file: "Get Started/TS for the New Programmer.md" },
-      { file: "Get Started/TS for JS Programmers.md" },
-      { file: "Get Started/TS for OOPers.md" },
-      { file: "Get Started/TS for Functional Programmers.md" },
+      { file: "get-started/TS for the New Programmer.md" },
+      { file: "get-started/TS for JS Programmers.md" },
+      { file: "get-started/TS for OOPers.md" },
+      { file: "get-started/TS for Functional Programmers.md" },
       { file: "tutorials/TypeScript Tooling in 5 minutes.md" },
     ],
   },
@@ -44,37 +44,37 @@ const handbookPages = [
     summary: "A good first read for your daily TS work.",
     chronological: true,
     items: [
-      { file: "The Handbook.md" },
-      { file: "Basic Types.md" },
-      { file: "Interfaces.md" },
-      { file: "Functions.md" },
-      { file: "Literal Types.md" },
-      { file: "Unions and Intersections.md" },
-      { file: "Classes.md" },
-      { file: "Enums.md" },
-      { file: "Generics.md" },
+      { file: "handbook-v1/The Handbook.md" },
+      { file: "handbook-v1/Basic Types.md" },
+      { file: "handbook-v1/Interfaces.md" },
+      { file: "handbook-v1/Functions.md" },
+      { file: "handbook-v1/Literal Types.md" },
+      { file: "handbook-v1/Unions and Intersections.md" },
+      { file: "handbook-v1/Classes.md" },
+      { file: "handbook-v1/Enums.md" },
+      { file: "handbook-v1/Generics.md" },
     ],
   },
   {
     title: "Handbook Reference",
     summary: "Deep dive reference materials.",
     items: [
-      { file: "Advanced Types.md" },
-      { file: "Utility Types.md" },
-      { file: "Decorators.md" },
-      { file: "Declaration Merging.md" },
-      { file: "Iterators and Generators.md" },
-      { file: "JSX.md" },
-      { file: "Mixins.md" },
-      { file: "Modules.md" },
-      { file: "Module Resolution.md"},
-      { file: "Namespaces.md" },
-      { file: "Namespaces and Modules.md" },
-      { file: "Symbols.md" },
-      { file: "Triple-Slash Directives.md"},
-      { file: "Type Compatibility.md" },
-      { file: "Type Inference.md" },
-      { file: "Variable Declarations.md" },
+      { file: "reference/Advanced Types.md" },
+      { file: "reference/Utility Types.md" },
+      { file: "reference/Decorators.md" },
+      { file: "reference/Declaration Merging.md" },
+      { file: "reference/Iterators and Generators.md" },
+      { file: "reference/JSX.md" },
+      { file: "reference/Mixins.md" },
+      { file: "reference/Modules.md" },
+      { file: "reference/Module Resolution.md" },
+      { file: "reference/Namespaces.md" },
+      { file: "reference/Namespaces and Modules.md" },
+      { file: "reference/Symbols.md" },
+      { file: "reference/Triple-Slash Directives.md" },
+      { file: "reference/Type Compatibility.md" },
+      { file: "reference/Type Inference.md" },
+      { file: "reference/Variable Declarations.md" },
     ],
   },
   {
@@ -93,7 +93,7 @@ const handbookPages = [
     summary:
       "Find out how TypeScript has evolved and what's new in the releases.",
     items: [
-      { file: "release notes/Overview.md" },
+      { file: "release-notes/Overview.md" },
       // This is auto-filled
     ],
   },
@@ -103,22 +103,24 @@ const handbookPages = [
       "Learn how to write declaration files to describe existing JavaScript. Important for DefinitelyTyped contributions.",
     chronological: true,
     items: [
-      { file: "declaration files/Introduction.md"},
-      { file: "declaration files/By Example.md"},
-      { file: "declaration files/Do's and Don'ts.md"},
-      { file: "declaration files/Deep Dive.md" },
-      { file: "declaration files/Library Structures.md" },
-      { title: ".d.ts Templates", 
+      { file: "declaration-files/Introduction.md" },
+      { file: "declaration-files/By Example.md" },
+      { file: "declaration-files/Library Structures.md" },
+      {
+        title: ".d.ts Templates",
         items: [
-        { file: "declaration files/templates/global.d.ts.md" },
-        { file: "declaration files/templates/global-modifying-module.d.ts.md"},
-        { file: "declaration files/templates/module.d.ts.md" },
-        { file: "declaration files/templates/module-plugin.d.ts.md" },
-        { file: "declaration files/templates/module-class.d.ts.md" },
-        { file: "declaration files/templates/module-function.d.ts.md" },
-      ]},
-      { file: "declaration files/Publishing.md" },
-      { file: "declaration files/Consumption.md"},
+          { file: "declaration-files/templates/module.d.ts.md" },
+          { file: "declaration-files/templates/module-plugin.d.ts.md" },
+          { file: "declaration-files/templates/module-class.d.ts.md" },
+          { file: "declaration-files/templates/module-function.d.ts.md" },
+          { file: "declaration-files/templates/global.d.ts.md" },
+          { file: "declaration-files/templates/global-modifying-module.d.ts.md" },
+        ]
+      },
+      { file: "declaration-files/Do's and Don'ts.md" },
+      { file: "declaration-files/Deep Dive.md" },
+      { file: "declaration-files/Publishing.md" },
+      { file: "declaration-files/Consumption.md" },
     ],
   },
   {
@@ -126,28 +128,47 @@ const handbookPages = [
     summary: "How to use TypeScript-powered JavaScript tooling.",
     chronological: true,
     items: [
-      { file: "Intro to JS with TS.md", },
-      { file:"Type Checking JavaScript Files.md" },
-      { file:"JSDoc Reference.md" },
-      { file: "declaration files/Creating DTS files From JS.md" },
+      { file: "javascript/Intro to JS with TS.md", },
+      { file: "javascript/Type Checking JavaScript Files.md" },
+      { file: "javascript/JSDoc Reference.md" },
+      { file: "javascript/Creating DTS files From JS.md" },
     ],
   },
   {
     title: "Project Configuration",
     summary: "Compiler configuration reference.",
     items: [
+      { file: "project-config/tsconfig.json.md" },
       {
         href: "/tsconfig",
         title: "TSConfig Reference",
         oneliner: "The page covering every TSConfig option"
       },
-      { file: "tutorials/tsconfig.json.md" },
-      { file: "Compiler Options.md" },
-      { file: "Project References.md" },
-      { file: "Compiler Options in MSBuild.md" },
-      { file: "Integrating with Build Tools.md" },
-      { file: "Configuring Watch.md" },
+      { file: "project-config/Compiler Options.md" },
+      { file: "project-config/Project References.md" },
+      { file: "project-config/Compiler Options in MSBuild.md" },
+      { file: "project-config/Integrating with Build Tools.md" },
+      { file: "project-config/Configuring Watch.md" },
       { file: "Nightly Builds.md" },
+    ],
+  },
+  {
+    title: "Handbook v2: Beta",
+    summary: "The new handbook which is a work in progress.",
+      chronological: true,
+      beta: true,
+    items: [
+      { file: "handbook-v2/Basics.md" },
+      { file: "handbook-v2/Classes.md" },
+      { file: "handbook-v2/Everyday Types.md" },
+      { file: "handbook-v2/Modules.md" },
+      { file: "handbook-v2/More on Functions.md" },
+      { file: "handbook-v2/Narrowing.md" },
+      { file: "handbook-v2/Object Types.md" },
+      { file: "handbook-v2/Type Declarations.md" },
+      { file: "handbook-v2/Types from Extraction.md" },
+      { file: "handbook-v2/Types from Transformation.md" },
+      { file: "handbook-v2/Understanding Errors.md" },
     ],
   },
 ]
@@ -194,7 +215,7 @@ export function getDocumentationNavForLanguage(langRequest: string): SidebarNavI
 for (const lang of langs) {
   codeForTheHandbook.push(`navigations.${lang} = [`);
 
-  handbookPages.forEach((section) => {
+  handbookPages.forEach((section, sectionIndex) => {
     // Section metadata:
     codeForTheHandbook.push(`{ 
       title: "${section.title}",
@@ -216,7 +237,7 @@ for (const lang of langs) {
         if ("href" in subItem) {
           codeForTheHandbook.push(`
         title: "${subItem.title}",
-        id: "${toID(subItem.title)}",
+        id: "${toID(sectionIndex, subItem.title)}",
         permalink: "${subItem.href}",
         oneline: "${subItem.oneliner}"
       },`);
@@ -224,7 +245,7 @@ for (const lang of langs) {
           //Is is a sub-sub-section?
           codeForTheHandbook.push(`
             title: "${subItem.title}",
-            id: "${toID(subItem.title)}",
+            id: "${toID(sectionIndex, subItem.title)}",
             oneline: "${subItem.oneliner}",
           `);
           addItems(subItem);
@@ -239,7 +260,7 @@ for (const lang of langs) {
 
           codeForTheHandbook.push(`
             title: "${subNavInfo.data.short || subNavInfo.data.title}",
-            id: "${toID(subNavInfo.data.title)}",
+            id: "${toID(sectionIndex, subNavInfo.data.title)}",
             permalink: "${subNavInfo.data.permalink}",
             oneline: "${subNavInfo.data.oneline}",
           `);
@@ -259,7 +280,7 @@ for (const lang of langs) {
 
     // close subnav items
     const isLast = handbookPages.indexOf(section) === section.items.length - 1;
-    const suffix = isLast ? "" : ",";
+    const suffix = isLast ? "," : ",";
     codeForTheHandbook.push(`${suffix}`);
   });
   // close sections
@@ -304,13 +325,14 @@ writeFileSync(
  * @property {string} title - TBD
  * @property {string} summary - TDB
  * @property {boolean=} chronological - should we recommend a next/prev
+ * @property {boolean=} beta - should it be shown differently
  * @property {HandbookNavSubItem[]} items - pages
  */
 
 function validateNonEnglishMarkdownFile(info, lang, filepath) {
   if (!info.data.permalink.startsWith("/" + lang + "/")) {
     throw new Error(
-      `Permalink in ${filepath} does not start with '/${lang}/'\n\n`
+      `Permalink in ${filepath} does not start with '/${lang}/'\n\nExpected ${info.data.permalink} to be /${lang}${info.data.permalink}\n\n`
     );
   }
 }
@@ -339,14 +361,15 @@ function throwForUnfoundFile(subItem, lang, langInfo) {
 function fillReleaseInfo() {
   const whatIsNew = handbookPages.find((h) => h.title === "What's New");
   const files = readdirSync(
-    join(__dirname, "..", "copy", "en", "release notes")
+    join(__dirname, "..", "copy", "en", "release-notes")
   );
   for (const file of files.reverse()) {
+    if (file.includes("overview")) return;
     // @ts-ignore
-    whatIsNew.items.push({ file: "release notes/" + file });
+    whatIsNew.items.push({ file: "release-notes/" + file });
   }
 }
 
-function toID(str) {
-  return str.toLowerCase().replace(/\s/g, "-");
+function toID(secIdx, str) {
+  return secIdx.toString() + str.toLowerCase().replace(/\s/g, "-");
 }

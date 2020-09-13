@@ -1,65 +1,65 @@
 //// { compiler: {  }, order: 3 }
 
-// As mensagens de erro do TypeScript algumas vezes podem ser 
-// um pouco verbosas...
-// Com o 3.7, nós temos alguns casos que poderiam ser particularmente notórios.
+// Às vezes, as mensagens de erros no TypeScript pode ser um pouco verbosas...
+// Com a versão 3.7, nós tratamos alguns casos que poderiam ser
+// particularmente notórios.
 
 // Propriedades aninhadas
 
-let a = { b: { c: { d: { e: "texto" } } } };
+let a = { b: { c: { d: { e: "string" } } } };
 let b = { b: { c: { d: { e: 12 } } } };
 
 a = b;
 
-// Antes, eram duas linhas de código por propriedade aninhada,
-// o que significa resumidamente que as pessoas aprenderam a 
-// ler mensagens de erro lendo a primeira e a última linha de
-// uma mensagem de erro.
+// Antes, isso levaria a duas linhas de código por propriedade aninhada.
+// Isso rapidamente significou que as pessoas aprenderam a ler
+// mensagens de erro lendo a primeira e última linha de mensagem
+// de erro.
 
-// Agora elas estão na linha. :tada:
+// Agora eles estão alinhados. :tada:
 
-// Anteriormente na 3.6:
+// Anteriormente no 3.6:
 //
-// Tipo '{ b: { c: { d: { e: number; }; }; }; }' não é atribuível ao tipo '{ b: { c: { d: { e: string; }; }; }; }'.
-//   Tipos da propriedade 'b' são incompatíveis.
-//     Tipo '{ c: { d: { e: number; }; }; }' não é atribuível ao tipo '{ c: { d: { e: string; }; }; }'.
-//       Tipos da propriedade 'c' são incompatíveis.
-//         Tipo '{ d: { e: number; }; }' não é atribuível ao tipo '{ d: { e: string; }; }'.
-//           Tipos da propriedade 'd' são incompatíveis.
-//             Tipo '{ e: number; }' não é atribuível ao tipo '{ e: string; }'.
-//               Tipos da propriedade 'e' são incompatíveis.
-//                 Tipo 'number' não é atribuível ao tipo 'string'
+// Type '{ b: { c: { d: { e: number; }; }; }; }' is not assignable to type '{ b: { c: { d: { e: string; }; }; }; }'.
+//   Types of property 'b' are incompatible.
+//     Type '{ c: { d: { e: number; }; }; }' is not assignable to type '{ c: { d: { e: string; }; }; }'.
+//       Types of property 'c' are incompatible.
+//         Type '{ d: { e: number; }; }' is not assignable to type '{ d: { e: string; }; }'.
+//           Types of property 'd' are incompatible.
+//             Type '{ e: number; }' is not assignable to type '{ e: string; }'.
+//               Types of property 'e' are incompatible.
+//                 Type 'number' is not assignable to type 'string'
 
-// Isso pode lidar com o trabalho por meio de diferentes tipos de objetos,
-// para ainda fornecer uma mensagem de erro útil e concisa. 
+// Isso pode lidar com diferentes tipos de objetos,
+// para fornecer uma mensagem de erro útil e coesa.
 
-class ClasseExemplo {
+class ExampleClass {
   state = "ok";
 }
 
-class OutraClasse {
+class OtherClass {
   state = 12;
 }
 
-let x = { a: { b: { c: { d: { e: { f: ClasseExemplo } } } } } };
-let y = { a: { b: { c: { d: { e: { f: OutraClasse } } } } } };
+let x = { a: { b: { c: { d: { e: { f: ExampleClass } } } } } };
+let y = { a: { b: { c: { d: { e: { f: OtherClass } } } } } };
 x = y;
 
-// Anteriormente na 3.6:
+// Anteriormente no 3.6:
 //
-// Tipo '{ a: { b: { c: { d: { e: { f: typeof OutraClasse; }; }; }; }; }; }' não é atribuível ao tipo '{ a: { b: { c: { d: { e: { f: typeof ClasseExemplo; }; }; }; }; }; }'.
-//   Tipos da propriedade 'a' são incompatíveis.
-//     Tipo '{ b: { c: { d: { e: { f: typeof OutraClasse; }; }; }; }; }' não é atribuível ao tipo '{ b: { c: { d: { e: { f: typeof ClasseExemplo; }; }; }; }; }'.
-//       Tipos da propriedade 'b' são incompatíveis.
-//         Tipo '{ c: { d: { e: { f: typeof OutraClasse; }; }; }; }' não é atribuível ao tipo '{ c: { d: { e: { f: typeof ClasseExemplo; }; }; }; }'.
-//           Tipos da propriedade 'c' são incompatíveis.
-//             Tipo '{ d: { e: { f: typeof OutraClasse; }; }; }' não é atribuível ao tipo '{ d: { e: { f: typeof ClasseExemplo; }; }; }'.
-//               Tipos da propriedade 'd' são incompatíveis.
-//                 Tipo '{ e: { f: typeof OutraClasse; }; }' não é atribuível ao tipo '{ e: { f: typeof ClasseExemplo; }; }'.
-//                   Tipos da propriedade 'e' são incompatíveis.
-//                     Tipo '{ f: typeof OutraClasse; }' não é atribuível ao tipo '{ f: typeof ClasseExemplo; }'.
-//                       Tipos da propriedade 'f' são incompatíveis.
-//                         Tipo 'typeof OutraClasse' não é atribuível ao tipo 'typeof ClasseExemplo'.
-//                           Tipo 'OutraClasse' não é atribuível ao tipo 'ClasseExemplo'.
-//                             Tipos da propriedade 'stasão incompatíveis are incompatible.
-//                               Tipo 'number' não é atribuível ao tipo 'string'
+// Type '{ a: { b: { c: { d: { e: { f: typeof OtherClass; }; }; }; }; }; }' is not assignable to type '{ a: { b: { c: { d: { e: { f: typeof ExampleClass; }; }; }; }; }; }'.
+//   Types of property 'a' are incompatible.
+//     Type '{ b: { c: { d: { e: { f: typeof OtherClass; }; }; }; }; }' is not assignable to type '{ b: { c: { d: { e: { f: typeof ExampleClass; }; }; }; }; }'.
+//       Types of property 'b' are incompatible.
+//         Type '{ c: { d: { e: { f: typeof OtherClass; }; }; }; }' is not assignable to type '{ c: { d: { e: { f: typeof ExampleClass; }; }; }; }'.
+//           Types of property 'c' are incompatible.
+//             Type '{ d: { e: { f: typeof OtherClass; }; }; }' is not assignable to type '{ d: { e: { f: typeof ExampleClass; }; }; }'.
+//               Types of property 'd' are incompatible.
+//                 Type '{ e: { f: typeof OtherClass; }; }' is not assignable to type '{ e: { f: typeof ExampleClass; }; }'.
+//                   Types of property 'e' are incompatible.
+//                     Type '{ f: typeof OtherClass; }' is not assignable to type '{ f: typeof ExampleClass; }'.
+//                       Types of property 'f' are incompatible.
+//                         Type 'typeof OtherClass' is not assignable to type 'typeof ExampleClass'.
+//                           Type 'OtherClass' is not assignable to type 'ExampleClass'.
+//                             Types of property 'state' are incompatible.
+//                               Type 'number' is not assignable to type 'string'

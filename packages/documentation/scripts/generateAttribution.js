@@ -21,7 +21,7 @@ const handleDupeNames = (name) => {
 // Being first gets you a free x commits
 const getOriginalAuthor = (filepath) => {
   const creator = execSync(
-    `git log  --format="%an | %aE"  --diff-filter=A "${filepath}"`
+    `git log --follow --format="%an | %aE"  --diff-filter=A "${filepath}"`
   )
     .toString()
     .trim();
@@ -33,7 +33,7 @@ const getOriginalAuthor = (filepath) => {
 
 // Gets the rest of the authors for a file
 const getAuthorsForFile = (filepath) => {
-  const cmd = `git log  --format="%an | %aE" "${filepath}"`;
+  const cmd = `git log --follow --format="%an | %aE" "${filepath}"`;
   const contributors = execSync(cmd).toString().trim();
 
   const allContributions = contributors.split("\n").map((c) => {
@@ -68,12 +68,10 @@ const getAuthorsForFile = (filepath) => {
 };
 
 const allFiles = recursiveReadDirSync("copy/");
-// const allFiles = ["en/JSDoc Supported Types.md"];
-
 const json = {};
 
 allFiles.forEach((f) => {
-  const oldName = f.replace("en/", "pages/").replace("en\\", "pages/");
+  const oldName = f.split("/").splice(2).join("/");
   const originalRef = oldJSON[oldName] || { top: [], total: 0 };
 
   const first = getOriginalAuthor(f);
@@ -130,3 +128,7 @@ function recursiveReadDirSync(folderPath) {
     (f) => !f.endsWith(".DS_Store") && !f.endsWith("README.md")
   );
 }
+
+module.exports = {
+  recursiveReadDirSync,
+};

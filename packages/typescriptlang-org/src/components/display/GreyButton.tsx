@@ -9,19 +9,25 @@ export type Props = {
   badge?: string
   first?: boolean
   last?: boolean
+  customClass?: string
 }
 
 /** A pretty grey button */
 export const GreyButton = (props: Props) => {
-  const href = props.href.startsWith("http") ? props.href : withPrefix(props.href)
+  const href = props.href.startsWith("http")
+    ? props.href
+    : withPrefix(props.href)
   const classes = ["clicky-grey-button"]
 
   if (props.headline) classes.push("headline")
   if (props.first) classes.push("first")
   if (props.last) classes.push("last")
+  if (props.customClass) classes.push(props.customClass)
 
-  return <a key={props.title} href={href} className={classes.join(" ")}>
-    <p>{props.blurb}</p>
-    <h4>{props.title}</h4>
-  </a>
+  return (
+    <a key={props.title} href={href} className={classes.join(" ")}>
+      <p>{props.blurb}</p>
+      <div>{props.title}</div>
+    </a>
+  )
 }

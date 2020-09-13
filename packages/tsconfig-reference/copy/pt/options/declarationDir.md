@@ -14,7 +14,7 @@ exemplo
 
 com este `tsconfig.json`:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "declaration": true,

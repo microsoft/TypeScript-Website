@@ -3,7 +3,6 @@ import { SiteNav, Props } from "./layout/TopNav"
 import { SiteFooter } from "./layout/SiteFooter"
 import { SeoProps, HeadSEO } from "./HeadSEO";
 import "./layout/main.scss"
-import { AppInsights } from "./AppInsights";
 import { Helmet } from "react-helmet";
 import { CookieBanner } from "./layout/CookieBanner"
 import { LanguageRecommendations } from "./layout/LanguageRecommendation";
@@ -11,6 +10,7 @@ import { LanguageRecommendations } from "./layout/LanguageRecommendation";
 type LayoutProps = SeoProps & Props & {
   lang: string,
   children: any
+  suppressCustomization?: true
 }
 
 export const Layout = (props: LayoutProps) => {
@@ -29,7 +29,6 @@ export const Layout = (props: LayoutProps) => {
         <SiteFooter {...props} />
         <LanguageRecommendations {...props} />
       </div>
-      <AppInsights />
     </>
   )
 }

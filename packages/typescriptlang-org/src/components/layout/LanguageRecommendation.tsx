@@ -4,6 +4,7 @@ import "./Sidebar.scss"
 import { SeoProps } from "../HeadSEO"
 import { AllSitePageFragment } from "../../__generated__/gatsby-types";
 import { inYourLanguage } from "../../copy/inYourLanguage";
+import { hasLocalStorage } from "../../lib/hasLocalStorage";
 
 export type AllSitePage = AllSitePageFragment["allSitePage"];
 
@@ -45,10 +46,6 @@ export const LanguageRecommendations = (props: Props) => {
     const isSmall = window.innerWidth < 800
     if (isSmall) return
 
-    let hasLocalStorage = false
-    try {
-      hasLocalStorage = typeof localStorage !== `undefined`
-    } catch (error) { }
     const suppressed = hasLocalStorage && localStorage.getItem("dont-recommend-translate")
 
     let localePath = getLocaleVersionOfPage()
@@ -59,7 +56,7 @@ export const LanguageRecommendations = (props: Props) => {
     if (localePath === "") localePath = "/"
     if (localePath === location.pathname) return
 
-    const doesPageExist = props.allSitePage.nodes.find(f => f.path === localePath)
+    const doesPageExist = props.allSitePage.nodes.find(f => f.path === localePath || f.path + "/" === localePath)
     if (!doesPageExist) return
 
     //@ts-ignore
@@ -73,6 +70,7 @@ export const LanguageRecommendations = (props: Props) => {
 
     quickJumpA.textContent = lang.shorthand
     quickJumpA.href = localePath
+    quickJump.title = lang.body
     quickJump.style.display = "inline-block";
 
     // Adding the LI somehow makes the search bump up by 2px

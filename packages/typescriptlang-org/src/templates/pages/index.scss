@@ -10,7 +10,6 @@ $headline-foreground-bg: #104261;
   color: white;
   padding: 0.7rem 2rem;
   margin: 0;
-  font-size: 0.9rem;
 
   p {
     margin: 0;
@@ -88,8 +87,12 @@ $headline-foreground-bg: #104261;
     }
 
     #m-stories div.copy {
-      margin: 80px auto 0;
+      margin: 20px auto 0;
       position: static;
+      text-align: center;
+      a.migration-button {
+        margin: 0 auto;
+      }
     }
 
     .small_full_width {
@@ -114,6 +117,7 @@ $headline-foreground-bg: #104261;
   #index div.headline-diagram div.editor.front {
     max-width: 300px;
   }
+
   #index .next-headline-button {
     max-width: 280px;
   }
@@ -131,7 +135,7 @@ $headline-foreground-bg: #104261;
     }
   }
 
-  h3 {
+  h2 {
     text-align: center;
     font-weight: 500;
     font-size: 2.5rem;
@@ -139,11 +143,12 @@ $headline-foreground-bg: #104261;
     margin-top: 0;
   }
 
-  h4 {
+  h3 {
     font-weight: 400;
     font-size: 1.6rem;
     line-height: 1.6rem;
     margin-top: 0;
+    margin-bottom: 2.5rem;
   }
 
   .darkblue {
@@ -188,9 +193,13 @@ $headline-foreground-bg: #104261;
     }
   }
 
+  .headline .col1 {
+    padding-bottom: 3rem;
+  }
+
   .headline .container {
     padding-bottom: 0;
-    padding-top: 20px;
+    padding-top: 40px;
     font-size: 1rem;
   }
 
@@ -350,7 +359,7 @@ $headline-foreground-bg: #104261;
         .lines {
           width: 60px;
           border-right: 4px solid #172e38;
-          border-left: 4px solid #172e38;
+          border-left: none;
           flex-shrink: 0;
           display: flex;
           flex-direction: column;
@@ -490,13 +499,12 @@ $headline-foreground-bg: #104261;
 
     a.flat-button {
       display: block;
-      width: 12rem;
       height: 1.4rem;
       line-height: 1.4rem;
       background-color: white;
       color: black;
       text-align: center;
-      padding: 1rem 0.5rem;
+      padding: 1rem 1rem;
       text-decoration: none;
       font-size: 1.2rem;
 
@@ -620,9 +628,17 @@ $headline-foreground-bg: #104261;
       text-align: center;
       line-height: 2.5rem;
       z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       &:hover {
         background-color: #eee;
+      }
+
+      &:active {
+        background-color: #ddd;
+        top: calc(70% + 1px);
       }
 
       &.left {

@@ -1,0 +1,100 @@
+{
+  "code": "// @filename: Component.tsx\nimport React from \"react\"\n\nexport function Hello() {\n  return (\n    <div>\n      <h1>Hello World</h1>\n    </div>\n  )\n}\n\n// @filename: index.ts\nimport { Hello } from \"./Component\"\nconsole.log(Hello)\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [],
+  "staticQuickInfos": [
+    {
+      "text": "(alias) namespace React\nimport React",
+      "docs": "",
+      "start": 35,
+      "length": 5,
+      "line": 1,
+      "character": 7,
+      "targetString": "React"
+    },
+    {
+      "text": "function Hello(): JSX.Element",
+      "docs": "",
+      "start": 71,
+      "length": 5,
+      "line": 3,
+      "character": 16,
+      "targetString": "Hello"
+    },
+    {
+      "text": "(property) JSX.IntrinsicElements.div: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>",
+      "docs": "",
+      "start": 97,
+      "length": 3,
+      "line": 5,
+      "character": 5,
+      "targetString": "div"
+    },
+    {
+      "text": "(property) JSX.IntrinsicElements.h1: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>",
+      "docs": "",
+      "start": 109,
+      "length": 2,
+      "line": 6,
+      "character": 7,
+      "targetString": "h1"
+    },
+    {
+      "text": "(property) JSX.IntrinsicElements.h1: React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>",
+      "docs": "",
+      "start": 125,
+      "length": 2,
+      "line": 6,
+      "character": 23,
+      "targetString": "h1"
+    },
+    {
+      "text": "(property) JSX.IntrinsicElements.div: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>",
+      "docs": "",
+      "start": 135,
+      "length": 3,
+      "line": 7,
+      "character": 6,
+      "targetString": "div"
+    },
+    {
+      "text": "(alias) function Hello(): JSX.Element\nimport Hello",
+      "docs": "",
+      "start": 179,
+      "length": 5,
+      "line": 12,
+      "character": 9,
+      "targetString": "Hello"
+    },
+    {
+      "text": "var console: Console",
+      "docs": "",
+      "start": 206,
+      "length": 7,
+      "line": 13,
+      "character": 0,
+      "targetString": "console"
+    },
+    {
+      "text": "(method) Console.log(...data: any[]): void",
+      "docs": "",
+      "start": 214,
+      "length": 3,
+      "line": 13,
+      "character": 8,
+      "targetString": "log"
+    },
+    {
+      "text": "(alias) function Hello(): JSX.Element\nimport Hello",
+      "docs": "",
+      "start": 218,
+      "length": 5,
+      "line": 13,
+      "character": 12,
+      "targetString": "Hello"
+    }
+  ],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKAwge1QA66JIAuAdKQM4AeAUNIbgE6mgBK8yAxm5M-lAAiZl15C6deDSKtQkAK6Je0YqAAS8WLFwAKAJSgA3nVChRpBc0Shdps6AA8AE2gA3AHz2HTgBYBGD01tXFAAdRZYZ0dgAK8fGNdPe306AF9JEAgYBBR0LGhEZ2lKKgYmOSMNLR1QNPkBVGFyYDwmEkRSCW5iKlwEch0Ac11gnVSgA"
+}

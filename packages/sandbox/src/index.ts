@@ -150,7 +150,12 @@ export const createTypeScriptSandbox = (
     ? monaco.languages.typescript.javascriptDefaults
     : monaco.languages.typescript.typescriptDefaults
 
-  defaults.setDiagnosticsOptions({ ...defaults.getDiagnosticsOptions(), noSemanticValidation: false })
+  defaults.setDiagnosticsOptions({
+    ...defaults.getDiagnosticsOptions(),
+    noSemanticValidation: false,
+    // This is when tslib is not found
+    diagnosticCodesToIgnore: [2354],
+  })
 
   // In the future it'd be good to add support for an 'add many files'
   const addLibraryToRuntime = (code: string, path: string) => {
@@ -164,6 +169,7 @@ export const createTypeScriptSandbox = (
   // Then update it when the model changes, perhaps this could be a debounced plugin instead in the future?
   editor.onDidChangeModelContent(() => {
     const code = editor.getModel()!.getValue()
+
     if (config.supportTwoslashCompilerOptions) {
       const configOpts = getTwoSlashComplierOptions(code)
       updateCompilerSettings(configOpts)
@@ -188,6 +194,15 @@ export const createTypeScriptSandbox = (
   let didUpdateCompilerSettings = (opts: CompilerOptions) => {}
 
   const updateCompilerSettings = (opts: CompilerOptions) => {
+    const newKeys = Object.keys(opts)
+    if (!newKeys.length) return
+
+    // Don't update a compiler setting if it's the same
+    // as the current setting
+    newKeys.forEach(key => {
+      if (compilerOptions[key] === opts[key]) delete opts[key]
+    })
+
     if (!Object.keys(opts).length) return
 
     config.logger.log("[Compiler] Updating compiler options: ", opts)

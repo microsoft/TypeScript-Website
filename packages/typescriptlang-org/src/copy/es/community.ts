@@ -20,12 +20,8 @@ export const comCopy = {
   com_online_typed_desc: "Archivos de definiciones de TypeScript.",
   com_online_typed_href: "Navegue por los miles de",
   com_online_typed_available_for:
-    "disponibles para las librerias y marcos de trabajo comunes.",
-  com_person: "Conectesé en persona",
+    "disponibles para las librerías y marcos de trabajo comunes.",
+  com_person: "Conéctate en persona",
   com_conferences: "Conferencias",
   com_conferences_alt_img: "logo de ",
-  nav_: {
-    id: "foo",
-    defaultMessage: "foo",
-  },
 }

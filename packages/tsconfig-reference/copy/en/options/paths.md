@@ -7,7 +7,7 @@ A series of entries which re-map imports to lookup locations relative to the `ba
 
 `paths` lets you declare how TypeScript should resolve an import in your `require`/`import`s.
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "baseUrl": ".", // this must be specified if "paths" is specified.
@@ -20,7 +20,7 @@ A series of entries which re-map imports to lookup locations relative to the `ba
 
 This would allow you to be able to write `import "jquery"`, and get all of the correct typing locally.
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "baseUrl": "src",

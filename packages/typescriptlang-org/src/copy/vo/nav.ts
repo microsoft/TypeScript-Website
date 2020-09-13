@@ -9,6 +9,4 @@ export const navCopy = {
   nav_community: "Konnect",
   nav_tools: "Playground",
   nav_search_placeholder: "Se4rch D0cz",
-  nav_beta_notification:
-    "Note: this page is a b3ta page, don't rely on the URL and <a>file issues on microsoft/TypeScript-Website</a>",
 }

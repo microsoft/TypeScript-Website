@@ -13,7 +13,7 @@
     "update-versions": "node scripts/getTypeScriptNPMVersions.js",
     "create-lighthouse-json": "node scripts/createLighthouseJSON.js",
     "compile-index-examples": "node scripts/runTwoslashIndexExamples.js",
-    "start": "cross-env TWOSLASH_DISABLE=true gatsby develop",
+    "start": "TWOSLASH_DISABLE=true gatsby develop",
     "start-twoslash": "gatsby develop",
     "serve": "gatsby serve",
     "test": "yarn tsc && jest"
@@ -25,7 +25,7 @@
     "@mdx-js/react": "^1.5.5",
     "@types/node-fetch": "^2.5.3",
     "@types/react-helmet": "^5.0.15",
-    "@typescript/twoslash": "0.6.2",
+    "@typescript/twoslash": "1.1.1",
     "canvas": "^2.6.1",
     "gatsby": "^2.19.18",
     "gatsby-plugin-catch-links": "^2.1.25",

@@ -13,5 +13,5 @@ interface User {
 function updateUser(id: number, update: Partial<User>) {
   const user = getUser(id)
   const newUser = {...user, ...update}  
-  saveUser(id, user)
+  saveUser(id, newUser)
 }

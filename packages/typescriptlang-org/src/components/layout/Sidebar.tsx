@@ -110,11 +110,11 @@ export const Sidebar = (props: Props) => {
         <li className={classes.join(" ")} key={item.id}>
           <button {...aria} onClick={toggleNavigationSection} onKeyDown={onButtonKeydown}>
             {item.title}
-            <span className="open">{openChevron}</span>
-            <span className="closed">{closedChevron}</span>
+            <span key="open" className="open">{openChevron}</span>
+            <span key="closed" className="closed">{closedChevron}</span>
           </button>
           <ul>
-            {item.items.map(item => <RenderItem item={item} openAllSectionsExceptWhatsNew={props.openAllSectionsExceptWhatsNew} selectedID={props.selectedID} />)}
+            {item.items.map(item => <RenderItem key={item.id} item={item} openAllSectionsExceptWhatsNew={props.openAllSectionsExceptWhatsNew} selectedID={props.selectedID} />)}
           </ul>
         </li>
       )
@@ -124,7 +124,7 @@ export const Sidebar = (props: Props) => {
   return (
     <nav id="sidebar">
       <ul>
-        {props.navItems.map(item => <RenderItem item={item} openAllSectionsExceptWhatsNew={props.openAllSectionsExceptWhatsNew} selectedID={props.selectedID} />)}
+        {props.navItems.map(item => <RenderItem key={item.id} item={item} openAllSectionsExceptWhatsNew={props.openAllSectionsExceptWhatsNew} selectedID={props.selectedID} />)}
       </ul>
     </nav>
   )

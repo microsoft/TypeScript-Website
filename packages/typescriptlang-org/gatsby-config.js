@@ -1,3 +1,22 @@
+if (process.env.BOOTSTRAPPING) {
+  const chalk = require("chalk").default
+  const readline = require("readline")
+  const blank = "\n".repeat(process.stdout.rows)
+  console.log(blank)
+  readline.cursorTo(process.stdout, 0, 0)
+  readline.clearScreenDown(process.stdout)
+
+  // prettier-ignore
+  console.log(`
+  Bootstrapped. You can now run the site with ${chalk.greenBright.bold("yarn start")}.`)
+  process.exit(0)
+}
+
+require("./scripts/ensureDepsAreBuilt")
+
+const path = require.resolve("./../../watcher")
+require(path)
+
 // https://github.com/gatsbyjs/gatsby/issues/1457
 require("ts-node").register({ files: true })
 const { join } = require("path")
@@ -49,7 +68,13 @@ module.exports = {
     // Support ts/tsx files in src
     "gatsby-plugin-typescript",
     // SEO
-    `gatsby-plugin-sitemap`,
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        // Skip handbook v2 frmo appearing in search
+        exclude: [`*/2/*`],
+      },
+    },
     // Lets you edit the head from inside a react tree
     "gatsby-plugin-react-helmet",
     // Grabs the old handbook markdown files

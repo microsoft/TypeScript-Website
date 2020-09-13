@@ -13,7 +13,7 @@ We assume you've read enough of the handbook to write new TypeScript code.
 
 If you're looking to convert a React project, we recommend looking at the [React Conversion Guide](https://github.com/Microsoft/TypeScript-React-Conversion-Guide#typescript-react-conversion-guide) first.
 
-# Setting up your Directories
+## Setting up your Directories
 
 If you're writing in plain JavaScript, it's likely that you're running your JavaScript directly,
 where your `.js` files are in a `src`, `lib`, or `dist` directory, and then ran as desired.
@@ -38,7 +38,7 @@ projectRoot
 
 If you have a `tests` folder outside of your `src` directory, you might have one `tsconfig.json` in `src`, and one in `tests` as well.
 
-# Writing a Configuration File
+## Writing a Configuration File
 
 TypeScript uses a file called `tsconfig.json` for managing your project's options, such as which files you want to include, and what sorts of checking you want to perform.
 Let's create a bare-bones one for our project:
@@ -76,7 +76,7 @@ You can also catch certain bugs with options like:
 
 TypeScript will also warn about unreachable code and labels, which you can disable with `allowUnreachableCode` and `allowUnusedLabels` respectively.
 
-# Integrating with Build Tools
+## Integrating with Build Tools
 
 You might have some more build steps in your pipeline.
 Perhaps you concatenate something to each of your files.
@@ -135,7 +135,7 @@ You can read more about the differences between the two [here](https://github.co
 
 You can see an example of using Webpack in our [tutorial on React and Webpack](./React%20&%20Webpack.md).
 
-# Moving to TypeScript Files
+## Moving to TypeScript Files
 
 At this point, you're probably ready to start using TypeScript files.
 The first step is to rename one of your `.js` files to `.ts`.

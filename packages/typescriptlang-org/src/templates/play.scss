@@ -674,11 +674,16 @@ input.good {
 }
 
 #playground-container .playground-plugins {
+  &.featured {
+    border: 1px solid lightgrey;
+    li {
+      border-bottom: 1px solid lightgrey;
+    }
+  }
+  
   margin: 1rem 0;
-  border: 1px solid lightgrey;
-
+  
   li {
-    border-bottom: 1px solid lightgrey;
     padding: 10px 0;
   }
 

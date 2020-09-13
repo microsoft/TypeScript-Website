@@ -4070,14 +4070,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript/twoslash@0.6.2, @typescript/twoslash@workspace:packages/ts-twoslasher":
+"@typescript/twoslash@1.1.0, @typescript/twoslash@workspace:packages/ts-twoslasher":
   version: 0.0.0-use.local
   resolution: "@typescript/twoslash@workspace:packages/ts-twoslasher"
   dependencies:
     "@types/jest": ^25.1.3
     "@types/lz-string": ^1.3.33
     "@types/prettier": ^1.19.0
-    "@typescript/vfs": 1.1.2
+    "@typescript/vfs": 1.3.0
     debug: ^4.1.1
     husky: ^4.2.3
     jest-file-snapshot: ^0.3.8
@@ -4090,7 +4090,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript/vfs@1.1.2, @typescript/vfs@workspace:packages/typescript-vfs":
+"@typescript/vfs@1.3.0, @typescript/vfs@workspace:packages/typescript-vfs":
   version: 0.0.0-use.local
   resolution: "@typescript/vfs@workspace:packages/typescript-vfs"
   dependencies:
@@ -6055,6 +6055,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"browserify-zlib@npm:^0.1.4":
+  version: 0.1.4
+  resolution: "browserify-zlib@npm:0.1.4"
+  dependencies:
+    pako: ~0.2.0
+  checksum: 2f61bb842285bec4156f184c6d704687e81e1498747413ae49131379913107d9bb2f31bab010836cf486352d9659339c18bf288bdc4df0ddda04f4904b7222d3
+  languageName: node
+  linkType: hard
+
 "browserify-zlib@npm:^0.2.0":
   version: 0.2.0
   resolution: "browserify-zlib@npm:0.2.0"
@@ -7780,6 +7789,8 @@ __metadata:
   resolution: "create-typescript-playground-plugin@workspace:packages/create-typescript-playground-plugin"
   dependencies:
     cross-spawn: ^7.0.1
+    gunzip-maybe: ^1.4.1
+    tar-fs: ^2.1.0
   bin:
     create-typescript-playground-plugin: index.js
   languageName: unknown
@@ -9519,7 +9530,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"duplexify@npm:^3.4.2, duplexify@npm:^3.6.0":
+"duplexify@npm:^3.4.2, duplexify@npm:^3.5.0, duplexify@npm:^3.6.0":
   version: 3.7.1
   resolution: "duplexify@npm:3.7.1"
   dependencies:
@@ -11912,16 +11923,17 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"gatsby-remark-shiki-twoslash@workspace:packages/gatsby-remark-shiki-twoslash":
+"gatsby-remark-shiki-twoslash@0.7.0, gatsby-remark-shiki-twoslash@workspace:packages/gatsby-remark-shiki-twoslash":
   version: 0.0.0-use.local
   resolution: "gatsby-remark-shiki-twoslash@workspace:packages/gatsby-remark-shiki-twoslash"
   dependencies:
     "@types/jest": ^25.1.3
-    "@typescript/twoslash": 0.6.2
-    "@typescript/vfs": 1.1.2
+    "@typescript/twoslash": 1.1.0
+    "@typescript/vfs": 1.3.0
     rehype-stringify: ^6.0.1
     shiki: ^0.1.6
     shiki-languages: ^0.1.6
+    shiki-twoslash: 0.8.0
     tsdx: ^0.12.3
     tslib: ^1.10.0
     typescript: "*"
@@ -12829,6 +12841,22 @@ fsevents@~2.1.2:
     lodash.template: ^4.4.0
     through2: ^2.0.0
   checksum: e2c453b194c74c5c1e7a19d7c8e0ca47b732f0a48b0c9ffdaaa49dba3c67afa9a1f6dc31bd8faf7357f4cafc3710748dd33ffb2ab414c235dfe82cad5a05c9db
+  languageName: node
+  linkType: hard
+
+"gunzip-maybe@npm:^1.4.1":
+  version: 1.4.2
+  resolution: "gunzip-maybe@npm:1.4.2"
+  dependencies:
+    browserify-zlib: ^0.1.4
+    is-deflate: ^1.0.0
+    is-gzip: ^1.0.0
+    peek-stream: ^1.1.0
+    pumpify: ^1.3.3
+    through2: ^2.0.3
+  bin:
+    gunzip-maybe: bin.js
+  checksum: c6b1b7b2ccaae5fbf9f492fb0ee6a8d70493eec2ee022432fc323b5d657a4f9db9fd68d65baf1b1cd2ee3a99229d0ad75f53a44d0efdce17afa401fee9ce1b69
   languageName: node
   linkType: hard
 
@@ -14375,6 +14403,13 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"is-deflate@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "is-deflate@npm:1.0.0"
+  checksum: 62d9701be6c0228e14b35d26139a3f9f4e2b049cb18fd572136547224b55b157dfe2d4b920b03f2afdf6e30e86192c3ef598050019e3accd83a8479a41f8a4cd
+  languageName: node
+  linkType: hard
+
 "is-descriptor@npm:^0.1.0":
   version: 0.1.6
   resolution: "is-descriptor@npm:0.1.6"
@@ -14511,6 +14546,13 @@ fsevents@~2.1.2:
   dependencies:
     is-extglob: ^2.1.0
   checksum: 9911e04e28285c50bfd5ff79950c6cf712ed9d959ef640acba2daeca8a17a921494b78b3143d5d1749c4dc3bbeb296b8955064a4f17d014112f0c63a239322d6
+  languageName: node
+  linkType: hard
+
+"is-gzip@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "is-gzip@npm:1.0.0"
+  checksum: 5c3dc242daf9ad1b8384e0356d2e2f6893e4ca629fd13ad79a92d58e272487619946c301e21c712739deb1e5fd7969fcd438a90c57cb3cd7a170947e3175ae9d
   languageName: node
   linkType: hard
 
@@ -18044,6 +18086,13 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"mkdirp-classic@npm:^0.5.2":
+  version: 0.5.3
+  resolution: "mkdirp-classic@npm:0.5.3"
+  checksum: b3c46c62840bdc82c2a5bee417e4e7518a8109d32a85a6dc67bdcfecbe6aff5cfc73cdb98844a61178ddd8ac75743f977857f0badd6e12d14fd18cf1639e41a1
+  languageName: node
+  linkType: hard
+
 "mkdirp@npm:0.5.1, mkdirp@npm:0.x, mkdirp@npm:^0.5.0, mkdirp@npm:^0.5.1, mkdirp@npm:~0.5.1":
   version: 0.5.1
   resolution: "mkdirp@npm:0.5.1"
@@ -19437,6 +19486,13 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"pako@npm:~0.2.0":
+  version: 0.2.9
+  resolution: "pako@npm:0.2.9"
+  checksum: 27a029909dba1c8b6ad89a38d935ed0ce8cf96d5865265446e8ebbddf9b698283fb3e42a3514c47668b62e376d468abb49a04b9f5e50fd26569a2daf2810df55
+  languageName: node
+  linkType: hard
+
 "parallel-transform@npm:^1.1.0":
   version: 1.2.0
   resolution: "parallel-transform@npm:1.2.0"
@@ -19877,6 +19933,17 @@ fsevents@~2.1.2:
     safe-buffer: ^5.0.1
     sha.js: ^2.4.8
   checksum: 6a5ad5bb8f70d3d1f7f9a022afdc39809e20562c1f4aed424881c1a9fddf3ff15073c9d952000f13cdee885e04b0f2b4b748abac6b813a36717641ef4993cdf0
+  languageName: node
+  linkType: hard
+
+"peek-stream@npm:^1.1.0":
+  version: 1.1.3
+  resolution: "peek-stream@npm:1.1.3"
+  dependencies:
+    buffer-from: ^1.0.0
+    duplexify: ^3.5.0
+    through2: ^2.0.3
+  checksum: 6863865c2e455fa0139ae419a51ef7b530572591e4a6b549faee16b95f124c07a49adec8a3c9c668d7f05f2749f51ac8308156a86395930d249ddef48b3f0b98
   languageName: node
   linkType: hard
 
@@ -22505,9 +22572,9 @@ resolve@^1.17.0:
   languageName: node
   linkType: hard
 
-"root-workspace-0b6124@workspace:.":
+"root@workspace:.":
   version: 0.0.0-use.local
-  resolution: "root-workspace-0b6124@workspace:."
+  resolution: "root@workspace:."
   dependencies:
     "@types/express": ^4.17.6
     concurrently: ^5.1.0
@@ -23133,6 +23200,25 @@ resolve@^1.17.0:
   checksum: a6b5b3df22cec99284f2e64bfdf347b1051b19210d1c0b9f516a542d44b7ecaa5d2ab220317705cf5fbc70eeecbe6bd52f034a15d832ecf000a91f13da761134
   languageName: node
   linkType: hard
+
+"shiki-twoslash@0.8.0, shiki-twoslash@workspace:packages/shiki-twoslash":
+  version: 0.0.0-use.local
+  resolution: "shiki-twoslash@workspace:packages/shiki-twoslash"
+  dependencies:
+    "@types/jest": ^25.1.3
+    "@typescript/twoslash": 1.1.0
+    "@typescript/vfs": 1.3.0
+    gatsby-remark-shiki-twoslash: 0.7.0
+    rehype-stringify: ^6.0.1
+    shiki: ^0.1.6
+    shiki-languages: ^0.1.6
+    tsdx: ^0.12.3
+    tslib: ^1.10.0
+    typescript: "*"
+    unified: ^8.4.2
+    unist-util-visit: ^2.0.0
+  languageName: unknown
+  linkType: soft
 
 "shiki@npm:^0.1.6":
   version: 0.1.6
@@ -24363,6 +24449,18 @@ resolve@^1.17.0:
   languageName: node
   linkType: hard
 
+"tar-fs@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "tar-fs@npm:2.1.0"
+  dependencies:
+    chownr: ^1.1.1
+    mkdirp-classic: ^0.5.2
+    pump: ^3.0.0
+    tar-stream: ^2.0.0
+  checksum: aa0a6b2fd3b23bc50a10613a53ed1a7aa13202fce24cd86abf85b5347a4b05399abb7e5d160ae071552be13bb7d8b69603172be2cbf2c786dd6d94d147b928fa
+  languageName: node
+  linkType: hard
+
 "tar-stream@npm:^1.5.2":
   version: 1.6.2
   resolution: "tar-stream@npm:1.6.2"
@@ -24553,7 +24651,7 @@ resolve@^1.17.0:
   languageName: node
   linkType: hard
 
-"through2@npm:^2.0.0, through2@npm:^2.0.1":
+"through2@npm:^2.0.0, through2@npm:^2.0.1, through2@npm:^2.0.3":
   version: 2.0.5
   resolution: "through2@npm:2.0.5"
   dependencies:
@@ -25270,23 +25368,23 @@ resolve@^1.17.0:
   languageName: unknown
   linkType: soft
 
-"typescript@npm:4.0.0-beta":
-  version: 4.0.0-beta
-  resolution: "typescript@npm:4.0.0-beta"
+"typescript@npm:4.0.2":
+  version: 4.0.2
+  resolution: "typescript@npm:4.0.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 4033b368a3f0994de1127fdfa78e43f83b9ba9d4d3ad3dbff3f1d1b8737e3246851edf35176160dad676f62143aebc4e3487a80cd22b9feece6950ebe9eaa732
+  checksum: cc0e7806eee7997a1b4b2990badacc4a8d089893ed0a377f35c9658e2ac392503cb340d0187203ed82e36e427dda94b0fb7107e44a71cca99efac86be26e16ee
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A4.0.0-beta#builtin<compat/typescript>":
-  version: 4.0.0-beta
-  resolution: "typescript@patch:typescript@npm%3A4.0.0-beta#builtin<compat/typescript>::version=4.0.0-beta&hash=5b02a2"
+"typescript@patch:typescript@npm%3A4.0.2#builtin<compat/typescript>":
+  version: 4.0.2
+  resolution: "typescript@patch:typescript@npm%3A4.0.2#builtin<compat/typescript>::version=4.0.2&hash=5b02a2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: c8658c021b814e370bbb547f6a35d74806e9391928908aacf90104cea8f2107f873fe8009efc34aea534f7e85608c5805216ba92e510b6e09345f126e330086c
+  checksum: b8b689ef994cce4fe59950d56ddfffce3c4bdda8edb85b72e752d4a6d27bf7df8a318e76ccde25cbe6e642058f2f4ccf47187db4b243bbc98278a2844db9461b
   languageName: node
   linkType: hard
 
@@ -25303,7 +25401,7 @@ resolve@^1.17.0:
     "@types/react": ^16.9.20
     "@types/react-dom": ^16.9.5
     "@types/react-helmet": ^5.0.15
-    "@typescript/twoslash": 0.6.2
+    "@typescript/twoslash": 1.1.0
     canvas: ^2.6.1
     concurrently: ^5.1.0
     gatsby: ^2.19.18

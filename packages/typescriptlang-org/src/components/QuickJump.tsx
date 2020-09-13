@@ -25,12 +25,18 @@ export const QuickJump = (props: Props) => {
 
   const IntlLink = createIntlLink(props.lang, props.allSitePage);
 
+  // TODO: Internationalize these strings
   return <div className="main-content-block">
     <h2 style={{ textAlign: "center" }}>{props.title}</h2>
     <div className="columns">
       <div className="item raised">
         <h4>Get Started</h4>
         <ul>
+          <li>
+            <IntlLink to="/docs/bootstrap">
+              Bootstrap a TS project
+            </IntlLink>
+          </li>
           <li>
             <IntlLink to="/docs/handbook/typescript-in-5-minutes.html">
               JS to TS

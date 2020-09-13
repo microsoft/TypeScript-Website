@@ -1,5 +1,21 @@
 @import "../style/globals.scss";
 
+#beta {
+  background: repeating-linear-gradient(
+    45deg,
+    #9b9a4e,
+    #9b9a4e 10px,
+    #6e6a33 10px,
+    #6e6a33 20px
+  );
+  background-color: "#c63131";
+  text-align: center;
+  color: white;
+  text-shadow: 0px 2px 4px black;
+  padding: 4px;
+  padding-bottom: 6px;
+}
+
 #doc-layout {
   display: flex;
   flex-direction: row;
@@ -196,6 +212,25 @@
     top: 0;
     left: 0;
     border-radius: 16px;
+  }
+}
+
+div#like-dislike-subnav {
+  div {
+    font-size: 14px;
+    padding-top: 16px;
+    padding-left: 4px;
+
+    button {
+      border: none;
+      background: none;
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      svg {
+        margin-right: 4px;
+      }
+    }
   }
 }
 

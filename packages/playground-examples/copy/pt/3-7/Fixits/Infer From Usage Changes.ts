@@ -1,36 +1,35 @@
 //// { compiler: {  noImplicitAny: false }, order: 2 }
 
-// Com a 3.7 a correção do código tornou-se mais inteligente 
-// com a existência da 'inferência do uso'. Agora é utilizado uma lista
-// dos tipos importantes conhecidos (string, number, array, Promise)
-// e inferido se houver o uso de um tipo corresponde à API desses objetos.
+// Na versão 3.7 do TypeScript a correção 'dedução por uso'
+// ficou mais inteligente. Ela agora poderá usar uma lista conhecida
+// de tipos importantes (string, number, array, Promise)
+// e deduzir se o uso do tipo combina com a API destes objetos.
 
-// Para os próximos exemplos, selecione os parâmetros
-// para as funções, clique na lâmpada e escolha 
-// "Inferir os tipos de parâmetros..."
+// Para o próximos pequenos exemplos, selecione o parâmetro das
+// funções, clique na lâmpada e selecione _Infer parameter types from usage_ (Deduzir os tipos de parâmetros pelo uso)
 
-// Inferir uma lista de números:
+// Deduzir um array de números
 
-function acrescentarNumero(lista) {
-  lista.push(12);
+function pushNumber(arr) {
+  arr.push(12);
 }
 
-// Inferir uma promise:
+// Deduzir uma Promise
 
-function aguardarPromise(promise) {
-  promise.then((value) => console.log(value));
+function awaitPromise(promise) {
+  promise.then(valor => console.log(valor));
 }
 
-// Inferir a função e seu tipo de retorno:
+// Deduzir uma função, e o que ela retornará:
 
-function inferirQualquer(app) {
-  const resultado = app.use("hi");
-  return resultado;
+function inferAny(app) {
+  const result = app.use("oi");
+  return result;
 }
 
-// Inferir uma lista de textos, porque 
-// um texto foi adicionado a ela:
+// Deduzir um array de strings porquê uma
+// string foi adicionada:
 
-function inserirTexto(nomes) {
-  nomes[1] = "hello";
+function insertString(nomes) {
+  nomes[1] = "olá";
 }

@@ -25,7 +25,7 @@ const CustomColorSwitcherCode = () => {
 
   if (!customThemeOverride && systemIsDark) {
     document.documentElement.classList.add("dark-theme")
-  } else if (customThemeOverride) {
+  } else if (customThemeOverride !== undefined) {
     document.documentElement.classList.add(customThemeOverride)
   }
 })()

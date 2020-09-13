@@ -1,12 +1,12 @@
 // These are redirects from a very long time ago
 export const veryOldRedirects = {
   Playground: "/play/",
-  Tutorial: "docs/home",
-  Handbook: "docs/home",
-  samples: "docs/home",
+  Tutorial: "/docs",
+  Handbook: "/docs",
+  samples: "/docs",
   "/docs/home.html": "/docs/home",
   "/playground": "/play/",
-  "/docs/index.html": "/docs/home",
+  "/docs/home": "/docs",
 }
 
 // These were .html files in the handbook with some redirection work
@@ -31,7 +31,9 @@ export const setupRedirects = (
     const fromArray = Object.keys(obj)
     fromArray.forEach(from => {
       const to = obj[from]
-      console.log(`Making redirect from ${from} to ${to}`)
+      if (process.env.CI) {
+        console.log(`Making redirect from ${from} to ${to}`)
+      }
       createRedirect({
         isPermanent: true,
         redirectInBrowser: true,

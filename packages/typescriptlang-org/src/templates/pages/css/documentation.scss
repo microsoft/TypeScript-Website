@@ -21,9 +21,21 @@
   position: relative;
   text-decoration: none;
 
+  &.white-theme {
+    background-color: white;
+    border: 1px black solid;
+
+    &:hover {
+      background-color: $ts-light-bg-grey;
+    }
+    &:active {
+      background-color: $ts-light-bg-grey-highlight-color;
+      margin-bottom: 19px;
+    }
+  }
 
   @media screen and (-ms-high-contrast: active) {
-    border: 1px solid grey;;
+    border: 1px solid grey;
   }
 
   &.headline {
@@ -48,13 +60,13 @@
     color: black;
   }
 
-  h4 {
+  div {
     color: black;
     text-decoration: none;
-    font-size: 2.5rem;
-    font-weight: 300;
+    font-size: 1.6rem;
+    font-weight: normal;
     margin-bottom: 0.2rem;
-    line-height: 2.5rem;
+    line-height: 1.6rem;
     &:hover {
       text-decoration: none;
     }

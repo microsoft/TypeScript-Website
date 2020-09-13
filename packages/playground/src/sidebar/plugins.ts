@@ -1,37 +1,8 @@
 import { PlaygroundPlugin, PluginFactory } from ".."
 
-const pluginRegistry = [
-  {
-    module: "typescript-playground-presentation-mode",
-    display: "Presentation Mode",
-    blurb: "Create presentations inside the TypeScript playground, seamlessly jump between slides and live-code.",
-    repo: "https://github.com/orta/playground-slides/#readme",
-    author: {
-      name: "Orta",
-      href: "https://orta.io",
-    },
-  },
-  {
-    module: "playground-collaborate",
-    display: "Collaborate",
-    blurb: "Create rooms to inspect code together.",
-    repo: "https://github.com/orta/playground-collaborate/#readme",
-    author: {
-      name: "Orta",
-      href: "https://orta.io",
-    },
-  },
-  {
-    module: "playground-transformer-timeline",
-    display: "Transformer Timeline",
-    blurb: "Shows the transpilation steps as your code migrates from TS -> JS.",
-    repo: "https://github.com/orta/playground-transformer-timeline#typescript-transformers-playground-plugin",
-    author: {
-      name: "Orta",
-      href: "https://orta.io",
-    },
-  },
-]
+import { allNPMPlugins } from "./fixtures/npmPlugins"
+
+const pluginRegistry = ["typescript-playground-presentation-mode", "playground-transformer-timeline"]
 
 /** Whether the playground should actively reach out to an existing plugin */
 export const allowConnectingToLocalhost = () => {
@@ -39,8 +10,8 @@ export const allowConnectingToLocalhost = () => {
 }
 
 export const activePlugins = () => {
-  const existing = customPlugins().map(module => ({ module }))
-  return existing.concat(pluginRegistry.filter(p => !!localStorage.getItem("plugin-" + p.module)))
+  const existing = customPlugins().map(module => ({ id: module }))
+  return existing.concat(allNPMPlugins.filter(p => !!localStorage.getItem("plugin-" + p.id)))
 }
 
 const removeCustomPlugins = (mod: string) => {
@@ -70,11 +41,24 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
     willMount: (_sandbox, container) => {
       const ds = utils.createDesignSystem(container)
 
+      const featured = allNPMPlugins.filter(p => pluginRegistry.includes(p.id))
+      const rest = allNPMPlugins.filter(p => !pluginRegistry.includes(p.id))
+
+      ds.subtitle(i("play_sidebar_featured_plugins"))
+
+      const featuredPluginsOL = document.createElement("ol")
+      featuredPluginsOL.className = "playground-plugins featured"
+      featured.forEach(plugin => {
+        const settingButton = createPlugin(plugin)
+        featuredPluginsOL.appendChild(settingButton)
+      })
+      container.appendChild(featuredPluginsOL)
+
       ds.subtitle(i("play_sidebar_plugins_options_external"))
 
       const pluginsOL = document.createElement("ol")
       pluginsOL.className = "playground-plugins"
-      pluginRegistry.forEach(plugin => {
+      rest.forEach(plugin => {
         const settingButton = createPlugin(plugin)
         pluginsOL.appendChild(settingButton)
       })
@@ -137,17 +121,23 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
     },
   }
 
-  const createPlugin = (plugin: typeof pluginRegistry[0]) => {
+  const createPlugin = (plugin: typeof allNPMPlugins[0]) => {
     const li = document.createElement("li")
     const div = document.createElement("div")
 
     const label = document.createElement("label")
 
-    const top = `<span>${plugin.display}</span> by <a href='${plugin.author.href}'>${plugin.author.name}</a><br/>${plugin.blurb}`
-    const bottom = `<a href='https://www.npmjs.com/package/${plugin.module}'>npm</a> | <a href="${plugin.repo}">repo</a>`
+    // Avoid XSS by someone injecting JS via the description, which is the only free text someone can use
+    var p = document.createElement("p")
+    p.appendChild(document.createTextNode(plugin.description))
+    const escapedDescription = p.innerHTML
+
+    const top = `<span>${plugin.name}</span> by <a href='https://www.npmjs.com/~${plugin.author}'>${plugin.author}</a><br/>${escapedDescription}`
+    const repo = plugin.href.includes("github") ? `| <a href="${plugin.href}">repo</a>` : ""
+    const bottom = `<a href='https://www.npmjs.com/package/${plugin.id}'>npm</a> ${repo}`
     label.innerHTML = `${top}<br/>${bottom}`
 
-    const key = "plugin-" + plugin.module
+    const key = "plugin-" + plugin.id
     const input = document.createElement("input")
     input.type = "checkbox"
     input.id = key
