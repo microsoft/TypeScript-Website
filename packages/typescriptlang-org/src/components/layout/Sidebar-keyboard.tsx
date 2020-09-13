@@ -145,7 +145,7 @@ export const onButtonKeydown: KeyboardEventHandler = event => {
   }
 
   // Right, open
-  if (event.key === "ArrowRight" || event.code === "ArrowRight") {
+  if (event.key === "ArrowRight") {
     li.classList.remove("closed")
     li.classList.add("open")
 
@@ -153,7 +153,7 @@ export const onButtonKeydown: KeyboardEventHandler = event => {
   }
 
   // Right, close
-  if (event.key === "ArrowLeft" || event.code === "ArrowLeft") {
+  if (event.key === "ArrowLeft") {
     li.classList.remove("open")
     li.classList.add("closed")
 
