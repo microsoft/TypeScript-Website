@@ -230,7 +230,7 @@ type NetworkState =
   | NetworkFailedState
   | NetworkSuccessState;
 
-function networkStatus(state: NetworkState): string {
+function logger(state: NetworkState): string {
   // Right now TypeScript does not know which of the three
   // potential types state could be.
 
