@@ -1,10 +1,10 @@
 export interface UI {
   /** Show a text modal, with some buttons */
-  showModal: (message: string, subtitle?: string, buttons?: { [text: string]: string }) => void
+  showModal: (message: string, postFocalElement: HTMLElement, subtitle?: string, buttons?: { [text: string]: string }) => void
   /** A quick flash of some text */
   flashInfo: (message: string) => void
   /** Creates a modal container which you can put your own DOM elements inside */
-  createModalOverlay: (classes?: string) => HTMLDivElement
+  createModalOverlay: (postFocalElement: HTMLElement, classes?: string) => HTMLDivElement
 }
 
 export const createUI = (): UI => {
@@ -27,7 +27,7 @@ export const createUI = (): UI => {
     }, 1000)
   }
 
-  const createModalOverlay = (classList?: string) => {
+  const createModalOverlay = (postFocalElement: HTMLElement, classList?: string) => {
     document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
 
     const existingPopover = document.getElementById("popover-modal")
@@ -54,6 +54,7 @@ export const createUI = (): UI => {
       modal.parentNode!.removeChild(modal)
       // @ts-ignore
       document.onkeydown = oldOnkeyDown
+      postFocalElement.focus()
     }
 
     modalBG.onclick = close
@@ -68,8 +69,8 @@ export const createUI = (): UI => {
   }
 
   /** For showing a lot of code */
-  const showModal = (code: string, subtitle?: string, links?: { [text: string]: string }) => {
-    const modal = createModalOverlay()
+  const showModal = (code: string, postFocalElement: HTMLElement, subtitle?: string, links?: { [text: string]: string }) => {
+    const modal = createModalOverlay(postFocalElement)
 
     if (subtitle) {
       const titleElement = document.createElement("h3")
@@ -101,7 +102,7 @@ export const createUI = (): UI => {
     const close = modal.querySelector(".close") as HTMLElement
     close.addEventListener("keydown", e => {
       if (e.key === "Tab") {
-        ;(modal.querySelector("textarea") as any).focus()
+        ; (modal.querySelector("textarea") as any).focus()
         e.preventDefault()
       }
     })
@@ -125,7 +126,7 @@ export const createUI = (): UI => {
     const lastButton = buttons.item(buttons.length - 1) as HTMLElement
     lastButton.addEventListener("keydown", e => {
       if (e.key === "Tab") {
-        ;(document.querySelector(".close") as any).focus()
+        ; (document.querySelector(".close") as any).focus()
         e.preventDefault()
       }
     })

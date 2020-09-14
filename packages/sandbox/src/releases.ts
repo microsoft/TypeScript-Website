@@ -2,6 +2,7 @@
 
 export const supportedReleases = [
   "4.0.2",
+  "3.9.7",
   "3.9.2",
   "3.8.3",
   "3.8.2",
@@ -18,6 +19,7 @@ export const supportedReleases = [
 
 export type ReleaseVersions =
   | "4.0.2"
+  | "3.9.7"
   | "3.9.2"
   | "3.8.3"
   | "3.8.2"
