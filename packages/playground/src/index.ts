@@ -415,7 +415,7 @@ export const setupPlayground = (
 
     settingsToggle.addEventListener("keydown", e => {
       const isOpen = settingsToggle.parentElement!.classList.contains("open")
-      if (e.keyCode === 9 && isOpen) {
+      if (e.key === "Tab" && isOpen) {
         const result = document.querySelector(".playground-options li input") as any
         result.focus()
         e.preventDefault()
@@ -619,7 +619,7 @@ export type Playground = ReturnType<typeof setupPlayground>
 
 const redirectTabPressTo = (element: HTMLElement, container: HTMLElement | undefined, query: string) => {
   element.addEventListener("keydown", e => {
-    if (e.keyCode === 9) {
+    if (e.key === "Tab") {
       const host = container || document
       const result = host.querySelector(query) as any
       if (!result) throw new Error(`Expected to find a result for keydown`)

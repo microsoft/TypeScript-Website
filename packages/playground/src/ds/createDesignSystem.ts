@@ -171,16 +171,16 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       tabBar.addEventListener("keydown", e => {
         const tabs = tabBar.querySelectorAll('[role="tab"]')
         // Move right
-        if (e.keyCode === 39 || e.keyCode === 37) {
+        if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
           tabs[tabFocus].setAttribute("tabindex", "-1")
-          if (e.keyCode === 39) {
+          if (e.key === "ArrowRight") {
             tabFocus++
             // If we're at the end, go to the start
             if (tabFocus >= tabs.length) {
               tabFocus = 0
             }
             // Move left
-          } else if (e.keyCode === 37) {
+          } else if (e.key === "ArrowLeft") {
             tabFocus--
             // If we're at the start, move to the end
             if (tabFocus < 0) {
@@ -432,7 +432,7 @@ export const createDesignSystem = (sandbox: Sandbox) => {
 
       // Suppress the enter key
       textbox.onkeydown = (evt: KeyboardEvent) => {
-        if (evt.keyCode == 13) {
+        if (evt.key === "Enter" || evt.code === "Enter") {
           return false
         }
       }

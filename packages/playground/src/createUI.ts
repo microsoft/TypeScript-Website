@@ -100,7 +100,7 @@ export const createUI = (): UI => {
     modal.appendChild(buttonContainer)
     const close = modal.querySelector(".close") as HTMLElement
     close.addEventListener("keydown", e => {
-      if (e.keyCode === 9) {
+      if (e.key === "Tab") {
         ;(modal.querySelector("textarea") as any).focus()
         e.preventDefault()
       }
@@ -124,7 +124,7 @@ export const createUI = (): UI => {
     const buttons = modal.querySelectorAll("button")
     const lastButton = buttons.item(buttons.length - 1) as HTMLElement
     lastButton.addEventListener("keydown", e => {
-      if (e.keyCode === 9) {
+      if (e.key === "Tab") {
         ;(document.querySelector(".close") as any).focus()
         e.preventDefault()
       }
