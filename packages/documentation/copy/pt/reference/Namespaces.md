@@ -1,8 +1,8 @@
 ---
 title: Namespaces
 layout: docs
-permalink: /docs/handbook/namespaces.html
-oneline: Como funciona os Namespaces no TypeScript
+permalink: /pt/docs/handbook/namespaces.html
+oneline: Como funcionam os Namespaces no TypeScript
 translatable: true
 ---
 
@@ -121,8 +121,8 @@ Como nossa aplicação cresce, nós vamos dividir o código entre múltiplos arq
 ## Múltiplos namespaces
 
 Aqui, nós vamos dividir nosso namespace `Validation` em vários arquivos.
-Apesar dos arquivos estarem separados, eles podem contribuir com o mesmo namespace e pode ser consumidos como se eles fossem definidos em um único lugar.
-Porque existem dependencias entre os arquivos, nós vamos adicionar tags de referência para informar o compilador sobre a relação entre os arquivos.
+Apesar dos arquivos estarem separados, eles podem contribuir com o mesmo namespace e podem ser consumidos como se eles fossem definidos em um único lugar.
+Porque existem dependências entre os arquivos, nós vamos adicionar tags de referência para informar o compilador sobre a relação entre os arquivos.
 Nosso teste de código não é alterado.
 
 ##### Validation.ts
@@ -190,7 +190,7 @@ for (let s of strings) {
 }
 ```
 
-Uma vez que há múltiplos arquivos envolvidos, nós precisamo nos certificar que todo código compilado seja carregado.
+Uma vez que há múltiplos arquivos envolvidos, nós precisamos nos certificar que todo código compilado seja carregado.
 Há duas maneiras de fazer isso.
 
 Primeiro, nós podemos usar um output concatenado usando a flag `--outFile` para compilar todos os arquivos em um único arquivo JavaScript:
@@ -236,7 +236,7 @@ let sq = new polygons.Square(); // Mesmo que 'new Shapes.Polygons.Square()'
 ```
 
 Note que não usamos a palavra-chave `require`; Ao invés disso nós atribuimos diretamente do nome qualificado do simbolo que nós estamos importando.
-Isso é similar ao uso do `var`, mas também funciona no significados do tipo e namespace do simbolo importado.
+Isso é similar ao uso do `var`, mas também funciona para significados do tipo e namespace do símbolo importado.
 Importante, para valores, `import` é uma referência distinta do simbolo original, então mudanças para um apelido `var` não vai ser refletida na variável original.
 
 ## Trabalhando com outras Bibliotecas JavaScript
@@ -244,13 +244,9 @@ Importante, para valores, `import` é uma referência distinta do simbolo origin
 Para descrever o formato das bibliotecas não escritas em TypeScript, nós precisamos declarar a API que a biblioteca expõe.
 Porque a maioria das Bibliotecas JavaScript expõe apenas alguns objetos top-level, namespaces são uma boa forma para representar eles.
 
-If you're familiar with C/C++, you can think of these as `.h` files.
-Let's look at a few examples.
 Nós chamamos declarações que não definem uma implementação de "ambiente".
 Normalmente essas são definidas em arquivos `.d.ts`.
 Se você tiver familiaridade com C/C++, você pode pensar como se estes fossem os arquivos `.h`.
-
-## Ambient Namespaces
 
 ## Namespaces de Ambiente
 
@@ -259,7 +255,7 @@ Porque essa biblioteca é carregada através de uma tag `<script>` (Ao invés de
 Para que o compilador TypeScript veja esse formato, nós usamos uma declaração namespace de ambiente.  
 Por exemplo, nós podemos começar escrevendo como segue:
 
-##### D3.d.ts (excerpt simplificado)
+##### D3.d.ts (trecho simplificado)
 
 ```ts
 declare namespace D3 {
