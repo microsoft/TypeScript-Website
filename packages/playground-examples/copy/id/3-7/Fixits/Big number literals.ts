@@ -18,7 +18,7 @@ const kurangSatuDariMinimal = -9007199254740992;
 //
 // https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt
 
-// TypeScript kini menawarkan sebuah fixit untuk angka
+// TypeScript kini menawarkan sebuah _fixit_ untuk angka
 // literal yang memiliki nilai diatas 2^52 (positif / negatif).
 // Fixit tersebut menambahkan sufiks "n" yang menginformasikan pada JavaScript
 // bahwa tipe untuk bilangan tersebut adalah BigInts.
