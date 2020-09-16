@@ -76,8 +76,9 @@ export const relatedTo: [AnOption, AnOption[]][] = [
 
   ["noLib", ["lib"]],
 
-  ["allowJs", ["checkJs", "emitDeclarationOnly"]],
-  ["checkJs", ["allowJs", "emitDeclarationOnly"]],
+  ["allowJs", ["checkJs"]],
+  ["checkJs", ["allowJs"]],
+
   ["declaration", ["declarationDir", "emitDeclarationOnly"]],
 
   ["moduleResolution", ["module"]],
