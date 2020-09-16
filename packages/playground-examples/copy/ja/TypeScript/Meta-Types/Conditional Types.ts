@@ -56,7 +56,7 @@ type Dogish = ExtractDogish<Animals>;
 
 // Deferred Conditional Types
 
-// 条件型は、入力によって異なる型を返すようなAPIの
+// Conditional Typesは、入力によって異なる型を返すようなAPIの
 // 型を絞ることにも使えます。
 
 // 例えば、この関数は引数に渡される真偽値に応じて
