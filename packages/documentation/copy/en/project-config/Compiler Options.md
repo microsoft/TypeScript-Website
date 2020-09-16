@@ -134,4 +134,4 @@ Option                                         | Type      | Default            
 
 - Setting compiler options in [`tsconfig.json`](/docs/handbook/tsconfig-json.html) files.
 - Setting compiler options in [MSBuild projects](/docs/handbook/compiler-options-in-msbuild.html).
-- There's also out the [TSConfig Reference](/tsconfig).
+- There's also the [TSConfig Reference](/tsconfig).
