@@ -4,7 +4,7 @@
 // que retorna o lado direito da expressão se o lado esquerdo
 // é nulo ou undefined (indefinido)
 
-// Em contraste, || usa a checagem falsy, signigicando que um texto vazio
+// Em contraste, || usa a checagem falsy, significando que um texto vazio
 // ou o número 0 seriam considerados falso.
 
 // Um bom exemplo para essa funcionalidade é lidar com
