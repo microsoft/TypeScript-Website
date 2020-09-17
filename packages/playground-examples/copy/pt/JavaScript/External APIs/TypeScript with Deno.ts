@@ -17,7 +17,7 @@ function cumprimento(nome: string) {
   return `Olá, ${nome}!`;
 }
 
-function makeLoud(x: string) {
+function gritar(x: string) {
   return x.toUpperCase();
 }
 
