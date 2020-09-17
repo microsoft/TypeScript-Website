@@ -64,7 +64,7 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["include", ["files", "exclude"]],
   ["exclude", ["include", "files"]],
 
-  ["importHelpers", ["noEmitHelpers", "downlevelIteration", "importHelpers"]],
+  ["importHelpers", ["noEmitHelpers", "downlevelIteration"]],
   ["noEmitHelpers", ["importHelpers"]],
 
   ["incremental", ["composite", "tsBuildInfoFile"]],
