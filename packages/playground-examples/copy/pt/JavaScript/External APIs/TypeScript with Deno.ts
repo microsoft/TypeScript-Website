@@ -13,7 +13,7 @@
 
 import compose from "https://deno.land/x/denofun/lib/compose.ts";
 
-function greet(name: string) {
+function cumprimento(nome: string) {
   return `Hello, ${name}!`;
 }
 
