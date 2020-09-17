@@ -14,7 +14,7 @@
 import compose from "https://deno.land/x/denofun/lib/compose.ts";
 
 function cumprimento(nome: string) {
-  return `Hello, ${name}!`;
+  return `Olá, ${nome}!`;
 }
 
 function makeLoud(x: string) {
