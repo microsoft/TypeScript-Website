@@ -1,6 +1,6 @@
 //// { compiler: {  }, order: 2 }
 
-// O operador nullish coalescing é uma alternativa ao ||
+// O operador de coalescencia nula é uma alternativa ao ||
 // que retorna o lado direito da expressão se o lado esquerdo
 // é nulo ou undefined (indefinido)
 
