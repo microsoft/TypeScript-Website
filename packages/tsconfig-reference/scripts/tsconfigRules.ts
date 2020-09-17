@@ -121,6 +121,7 @@ export const defaultsForOptions = {
   inlineSourceMap: "false",
   inlineSources: "false",
   isolatedModules: "false",
+  jsx: "undefined",
   jsxFactory: "`React.createElement`",
   keyofStringsOnly: "false",
   listEmittedFiles: "false",
@@ -172,7 +173,7 @@ export const defaultsForOptions = {
 };
 
 export const allowedValues = {
-  jsx: ["`react` (default)", "`react-native`", "`preserve`"],
+  jsx: ["`react`", "`react-native`", "`preserve`"],
   jsxFactory: ["Any identifier or dotted identifier"],
   lib: ["See main content"],
   target: [
