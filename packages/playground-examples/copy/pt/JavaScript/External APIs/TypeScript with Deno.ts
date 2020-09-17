@@ -6,7 +6,7 @@
 // https://deno.land
 
 // Deno tem um sistema de permissão maleável que reduz o acesso que
-// o JavaScript tem com o sistema de arquivos ou rede e usa importações
+// o JavaScript tem ao sistema de arquivos ou rede e usa importações
 // baseadas em http que são baixadas e armazenadas localmente
 
 // Aqui está um exemplo do uso do deno para criar scripts:
