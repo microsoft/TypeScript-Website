@@ -124,7 +124,7 @@ gl.compileShader(vertexShader)
 
 const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER)
 gl.shaderSource(
-  fragmentShader,
+  sombreadorFragmentos,
   `
 precision lowp float;
 varying vec2 v_position;
