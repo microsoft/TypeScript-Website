@@ -82,8 +82,9 @@ export const relatedTo: [AnOption, AnOption[]][] = [
 
   ["moduleResolution", ["module"]],
 
-  ["jsxFactory", ["jsxFragmentFactory"]],
-  ["jsxFragmentFactory", ["jsxFactory"]],
+  ["jsx", ["jsxFactory", "jsxFragmentFactory"]],
+  ["jsxFactory", ["jsx", "jsxFragmentFactory"]],
+  ["jsxFragmentFactory", ["jsx", "jsxFactory"]],
 ];
 
 /**
