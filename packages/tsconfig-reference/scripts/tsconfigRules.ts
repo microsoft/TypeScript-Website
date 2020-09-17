@@ -117,7 +117,7 @@ export const defaultsForOptions = {
   generateCpuProfile: " profile.cpuprofile",
   importHelpers: "false",
   includes: ' `[]` if `files` is specified, otherwise `["**/*"]`',
-  incremental: "true",
+  incremental: "`true` if `composite`, `false` otherwise",
   inlineSourceMap: "false",
   inlineSources: "false",
   isolatedModules: "false",
