@@ -11,7 +11,7 @@
 // pela API do DOM e definir alguns atributos de estilo em linha. 
 
 const canvas = document.createElement("canvas")
-canvas.id = "spinning-canvas"
+canvas.id = "canvas-giratorio"
 canvas.style.backgroundColor = "#0078D4"
 canvas.style.position = "fixed"
 canvas.style.bottom = "10px"
@@ -24,9 +24,9 @@ canvas.style.height = "400px"
 // fazer alterações e vê-las refletidas quando apertar "Run"
 // ou (cmd + enter):
 
-const existingCanvas = document.getElementById(canvas.id)
-if (existingCanvas && existingCanvas.parentElement) {
-  existingCanvas.parentElement.removeChild(existingCanvas)
+const canvasExistente = document.getElementById(canvas.id)
+if (canvasExistente && canvasExistente.parentElement) {
+  canvasExistente.parentElement.removeChild(canvasExistente)
 }
 
 // Diga ao elemento canvas que iremos usar o WebGL para desenhar
@@ -44,9 +44,9 @@ const gl = canvas.getContext("webgl")
 // Existe uma visão geral boa de como eles funcionam aqui:
 // https://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html
 
-const vertexShader = gl.createShader(gl.VERTEX_SHADER)
+const sombreadorVertice = gl.createShader(gl.VERTEX_SHADER)
 gl.shaderSource(
-  vertexShader,
+  sombreadorVertice,
   `
 precision lowp float;
 
@@ -112,7 +112,7 @@ void main() {
 }
 `
 )
-gl.compileShader(vertexShader)
+gl.compileShader(sombreadorVertice)
 
 // Esse exemplo também faz uso sombreadores em fragmento - um sombreador
 // em fragmento é outro pequeno programa que passa por todo
@@ -122,7 +122,7 @@ gl.compileShader(vertexShader)
 // isso afeta a iluminação na cena, tal como a espessura da 
 // da borda no confete:
 
-const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER)
+const sombreadorFragmentos = gl.createShader(gl.FRAGMENT_SHADER)
 gl.shaderSource(
   sombreadorFragmentos,
   `

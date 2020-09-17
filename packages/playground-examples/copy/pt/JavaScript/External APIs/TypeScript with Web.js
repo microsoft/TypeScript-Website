@@ -1,14 +1,14 @@
 //// { order: 0, isJavaScript: true }
 
 // O DOM (Document Object Model) é a API essencial para
-// trabalhar com uma página web, e o TypeSctipt é 
+// trabalhar com uma página web, e o TypeSctipt tem
 // um bom suporte para essa API.
 
-// Vamos criar um popover para ser exibido quando você pressionar "Run"
-// na barra de ferramentas acima.
+// Vamos criar um popover para ser exibido quando você pressionar "Executar"
+// na barra de ferramentas no topo.
 
 const popover = document.createElement("div");
-popover.id = "example-popover";
+popover.id = "popover-exemplo";
 
 // Perceba que o popover está tipado corretamente para ser um HTMLDivElement
 // especificamente porque passamos em uma "div".
@@ -17,9 +17,9 @@ popover.id = "example-popover";
 // adicionar uma função para remover o popover se ele já estiver presente. 
 
 const removePopover = () => {
-  const existingPopover = document.getElementById(popover.id);
-  if (existingPopover && existingPopover.parentElement) {
-    existingPopover.parentElement.removeChild(existingPopover);
+  const popoverExistente = document.getElementById(popover.id);
+  if (popoverExistente && popoverExistente.parentElement) {
+    popoverExistente.parentElement.removeChild(popoverExistente);
   }
 };
 
@@ -46,25 +46,25 @@ popover.style.webkitBorderRadius = "4px";
 // Para adicionar conteúdo ao popover, precisamos incluir
 // um elemento parágrafo e usá-lo para adicionar algum texto. 
 
-const message = document.createElement("p");
-message.textContent = "Here is an example popover";
+const mensagem = document.createElement("p");
+mensagem.textContent = "Exemplo de popover";
 
 // E também adicionaremos um botão de fechar.
 
-const closeButton = document.createElement("a");
-closeButton.textContent = "X";
-closeButton.style.position = "absolute";
-closeButton.style.top = "3px";
-closeButton.style.right = "8px";
-closeButton.style.color = "white";
+const botaoFechar = document.createElement("a");
+botaoFechar.textContent = "X";
+botaoFechar.style.position = "absolute";
+botaoFechar.style.top = "3px";
+botaoFechar.style.right = "8px";
+botaoFechar.style.color = "white";
 
-closeButton.onclick = () => {
+botaoFechar.onclick = () => {
   removePopover();
 };
 
 // Então adicione todos esses elementos na página.
-popover.appendChild(message);
-popover.appendChild(closeButton);
+popover.appendChild(mensagem);
+popover.appendChild(botaoFechar);
 document.body.appendChild(popover);
 
 // Se você apertar "Run" acima, então o popup deve aparecer
