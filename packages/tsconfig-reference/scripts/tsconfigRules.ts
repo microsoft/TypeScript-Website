@@ -101,7 +101,7 @@ export const defaultsForOptions = {
   charset: "utf8",
   checkJs: "false",
   composite: "true",
-  declaration: "True when TS",
+  declaration: "false",
   declarationDir: " n/a",
   declarationMap: "false",
   diagnostics: "false",
