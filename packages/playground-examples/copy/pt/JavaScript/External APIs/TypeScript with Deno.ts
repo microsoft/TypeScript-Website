@@ -21,7 +21,7 @@ function gritar(x: string) {
   return x.toUpperCase();
 }
 
-const greetLoudly = compose(makeLoud, greet);
+const cumprimentarGritando = compose(gritar, cumprimento);
 
 // Imprime "HELLO, WORLD!."
 greetLoudly("world");
