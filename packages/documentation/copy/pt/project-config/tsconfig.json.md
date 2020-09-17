@@ -72,7 +72,7 @@ Exemplo de arquivos `tsconfig.json`:
 }
 ```
 
-## TSConfig Básicas
+## Configurações Básicas
 
 Dependendo do ambiente de execução JavaScript, no qual você deseja executar seu código, pode haver uma configuração básica que pode ser usada em [github.com/tsconfig/bases](https://github.com/tsconfig/bases/).
 Esses são arquivos `tsconfig.json` que seu projeto pode estender, o que simplifica o seu `tsconfig.json` ao já lidarem com o suporte de tempo de execução.
