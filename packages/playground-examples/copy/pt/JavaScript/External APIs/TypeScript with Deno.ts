@@ -28,5 +28,5 @@ cumprimentarGritando("mundo");
 
 import concat from "https://deno.land/x/denofun/lib/concat.ts";
 
-// Retorna "helloworld"
-concat("hello", "world");
+// Retorna "olámundo"
+concat("olá", "mundo");
