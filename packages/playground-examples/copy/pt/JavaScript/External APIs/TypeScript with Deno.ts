@@ -24,7 +24,7 @@ function gritar(x: string) {
 const cumprimentarGritando = compose(gritar, cumprimento);
 
 // Imprime "HELLO, WORLD!."
-greetLoudly("world");
+cumprimentarGritando("mundo");
 
 import concat from "https://deno.land/x/denofun/lib/concat.ts";
 
