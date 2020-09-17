@@ -136,7 +136,7 @@ void main() {
 }
 `
 )
-gl.compileShader(fragmentShader)
+gl.compileShader(sombreadorFragmentos)
 
 // Recebe o sombreador compilado e o adiciona ao contexto
 // WebGL do canvas para que possa ser usado:
