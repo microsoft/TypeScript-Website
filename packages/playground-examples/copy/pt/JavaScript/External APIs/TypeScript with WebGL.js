@@ -169,7 +169,7 @@ const STRIDE = Object.keys(attrs).length + 1
 // possa ser capaz de preencher o sombreador. 
 
 // Para compreender essa API um pouco: WebGL é baseada no OpenGL
-// que é uma 'state-machine styled API'. Você passa comandos em uma 
+// que é uma 'API baseada em uma máquina de estados'. Você passa comandos em uma 
 // ordem em particular para renderizar coisas na tela.
 
 // Então, o uso desejado é geralmente não passar objetos para cada chamada
