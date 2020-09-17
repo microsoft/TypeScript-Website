@@ -141,11 +141,11 @@ gl.compileShader(fragmentShader)
 // Recebe o sombreador compilado e o adiciona ao contexto
 // WebGL do canvas para que possa ser usado:
 
-const shaderProgram = gl.createProgram()
-gl.attachShader(shaderProgram, vertexShader)
-gl.attachShader(shaderProgram, fragmentShader)
-gl.linkProgram(shaderProgram)
-gl.useProgram(shaderProgram)
+const sombreador = gl.createProgram()
+gl.attachShader(sombreador, sombreadorVertice)
+gl.attachShader(sombreador, sombreadorFragmentos)
+gl.linkProgram(sombreador)
+gl.useProgram(sombreador)
 
 gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer())
 
