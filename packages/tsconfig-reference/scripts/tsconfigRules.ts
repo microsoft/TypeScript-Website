@@ -47,6 +47,14 @@ type AnOption = WatchProperties | RootProperties | CompilerOptionName;
 /** Allows linking between options */
 export const relatedTo: [AnOption, AnOption[]][] = [
   ["strict", ["alwaysStrict", "strictNullChecks", "strictBindCallApply", "strictFunctionTypes", "strictPropertyInitialization", "noImplicitAny", "noImplicitThis"]],
+  ["alwaysStrict", ["strict"]],
+  ["strictNullChecks", ["strict"]],
+  ["strictBindCallApply", ["strict"]],
+  ["strictFunctionTypes", ["strict"]],
+  ["strictPropertyInitialization", ["strict"]],
+  ["noImplicitAny", ["strict"]],
+  ["noImplicitThis", ["strict"]],
+
   ["allowSyntheticDefaultImports", ["esModuleInterop"]],
   ["esModuleInterop", ["allowSyntheticDefaultImports"]],
 
@@ -66,21 +74,27 @@ export const relatedTo: [AnOption, AnOption[]][] = [
 
   ["importHelpers", ["noEmitHelpers", "downlevelIteration", "importHelpers"]],
   ["noEmitHelpers", ["importHelpers"]],
+  ["downlevelIteration", ["importHelpers"]],
 
   ["incremental", ["composite", "tsBuildInfoFile"]],
   ["composite", ["incremental", "tsBuildInfoFile"]],
+  ["tsBuildInfoFile", ["incremental", "composite"]],
 
   ["types", ["typeRoots"]],
   ["typeRoots", ["types"]],
   ["declaration", ["emitDeclarationOnly"]],
 
   ["noLib", ["lib"]],
+  ["lib", ["noLib"]],
 
   ["allowJs", ["checkJs", "emitDeclarationOnly"]],
   ["checkJs", ["allowJs", "emitDeclarationOnly"]],
   ["declaration", ["declarationDir", "emitDeclarationOnly"]],
+  ["declarationDir", ["declaration"]],
+  ["emitDeclarationOnly", ["declaration"]],
 
   ["moduleResolution", ["module"]],
+  ["module", ["moduleResolution"]],
 
   ["jsxFactory", ["jsxFragmentFactory"]],
   ["jsxFragmentFactory", ["jsxFactory"]],
