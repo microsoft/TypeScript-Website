@@ -165,7 +165,7 @@ const attrs = [
 
 const STRIDE = Object.keys(attrs).length + 1
 
-// Intere sobre nossos atributos conhecidos e cria ponteiros na memória para que o lado JS
+// Itere sobre nossos atributos conhecidos e crie ponteiros na memória para que o lado JS
 // possa ser capaz de preencher o sombreador. 
 
 // Para compreender essa API um pouco: WebGL é baseada no OpenGL
