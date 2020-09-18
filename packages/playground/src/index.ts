@@ -12,7 +12,7 @@ import {
   createDragBar,
   setupSidebarToggle,
 } from "./createElements"
-import { runWithCustomLogs } from "./sidebar/runtime"
+import { runWithCustomLogs, clearLogs } from "./sidebar/runtime"
 import { createExporter } from "./exporter"
 import { createUI } from "./createUI"
 import { getExampleSourceCode } from "./getExample"

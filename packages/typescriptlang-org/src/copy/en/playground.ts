@@ -47,6 +47,7 @@ export const playCopy = {
   play_export_sandbox: "Open in CodeSandbox",
   play_export_stackblitz: "Open in StackBlitz",
   play_export_clipboard: "URL copied to clipboard",
+  play_clear_logs: "Logs cleared",
   play_run_js: "Executed JavaScript",
   play_run_ts: "Executed transpiled TypeScript",
   play_run_js_fail: "Executed JavaScript Failed:",
