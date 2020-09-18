@@ -2,7 +2,7 @@
 
 // _Optional Chaining_ mencapai konsesus TC39 Tahap 3 ketika
 // TypeScript 3.7 sedang dikembangkan. _Optional Chaining_
-// mengizinkan anda untuk menulis kode yang akan langsung berhenti
+// mengizinkan Anda untuk menulis kode yang akan langsung berhenti
 // menjalankan ekspresi ketika sebuah nilai null dan undefined
 // ditemukan.
 
@@ -24,7 +24,7 @@ type ResponAPIAlbum = {
 
 declare const album: ResponAPIAlbum;
 
-// Dengan _optional chaining_, anda dapat
+// Dengan _optional chaining_, Anda dapat
 // menulis kode seperti berikut:
 
 const biografiArtis = album?.artis?.biografi;
