@@ -5,7 +5,7 @@ oneline: "Inclui uma lista de arquivos, não suporta globs"
 
 Especifica uma lista de arquivos permitidos para incluir no programa. Um erro ocorre se qualquer um dos arquivos não puder ser encontrado.
 
-```json
+```json tsconfig
 {
   "compilerOptions": {},
   "files": [

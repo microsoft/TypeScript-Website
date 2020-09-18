@@ -123,7 +123,7 @@ const CounterExample = () => {
 // React and TypeScript is a really, really big topic
 // but the fundamentals are pretty small: TypeScript
 // supports JSX, and the rest is handled by the React
-// typings from DefinitelyTyped.
+// typings from Definitely Typed.
 
 // You can learn more about using React with TypeScript
 // from these sites:

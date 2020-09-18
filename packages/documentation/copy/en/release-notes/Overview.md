@@ -312,7 +312,7 @@ By default, editors powered by TypeScript's language server do this by walking u
 
 One case where this slightly fell over is when a `tsconfig.json` simply existed to reference other `tsconfig.json` files.
 
-```json5
+```json tsconfig
 // tsconfig.json
 {
   files: [],
@@ -888,7 +888,7 @@ To prevent this, TypeScript 3.8 waits slightly before installing directory watch
 
 Because every project might work better under different strategies, and this new approach might not work well for your workflows, TypeScript 3.8 introduces a new `watchOptions` field in `tsconfig.json` and `jsconfig.json` which allows users to tell the compiler/language service which watching strategies should be used to keep track of files and directories.
 
-```json5
+```json tsconfig
 {
   // Some typical compiler options
   compilerOptions: {
@@ -2342,7 +2342,7 @@ To learn more, [check out the original pull request on GitHub](https://github.co
 TypeScript 3.4 introduces a new flag called `--incremental` which tells TypeScript to save information about the project graph from the last compilation.
 The next time TypeScript is invoked with `--incremental`, it will use that information to detect the least costly way to type-check and emit changes to your project.
 
-```json5
+```json tsconfig
 // tsconfig.json
 {
   compilerOptions: {
@@ -2360,7 +2360,7 @@ But if it does, `tsc` will try to use that file to incrementally type-check and 
 These `.tsbuildinfo` files can be safely deleted and don't have any impact on our code at runtime - they're purely used to make compilations faster.
 We can also name them anything that we want, and place them anywhere we want using the `--tsBuildInfoFile` flag.
 
-```json5
+```json tsconfig
 // front-end.tsconfig.json
 {
   compilerOptions: {
@@ -3056,7 +3056,7 @@ function unwrap<T>(result: Result<T>) {
 
 TypeScript 3.2 now resolves `tsconfig.json`s from `node_modules`. When using a bare path for the `"extends"` field in `tsconfig.json`, TypeScript will dive into `node_modules` packages for us.
 
-```json5
+```json tsconfig
 {
     "extends": "@my-team/tsconfig-base",
     "include": ["./**/*"]
@@ -3173,7 +3173,7 @@ TypeScript introduces a new feature called `typesVersions` to help accomodate th
 When using Node module resolution in TypeScript 3.1, when TypeScript cracks open a `package.json` file to figure out which files it needs to read, it first looks at a new field called `typesVersions`.
 A `package.json` with a `typesVersions` field might look like this:
 
-```json
+```json tsconfig
 {
   "name": "package-name",
   "version": "1.0",
@@ -3202,7 +3202,7 @@ The way that TypeScript decides on whether a version of the compiler & language 
 
 `typesVersions` can support multiple fields where each field name is specified by the range to match on.
 
-```json
+```json tsconfig
 {
   "name": "package-name",
   "version": "1.0",
@@ -3217,7 +3217,7 @@ The way that TypeScript decides on whether a version of the compiler & language 
 Since ranges have the potential to overlap, determining which redirect applies is order-specific.
 That means in the above example, even though both the `>=3.2` and the `>=3.1` matchers support TypeScript 3.2 and above, reversing the order could have different behavior, so the above sample would not be equivalent to the following.
 
-```json5
+```json tsconfig
 {
   name: "package-name",
   version: "1.0",
@@ -3880,9 +3880,7 @@ settings.debug === true; // OK
 settings.dry === 2; // Error: Operator '===' cannot be applied boolean and number
 ```
 
-```ts
-// tsconfig.json
-
+```json tsconfig
 {
     "compilerOptions": {
         "module": "commonjs",
@@ -5807,7 +5805,7 @@ TypeScript 2.1 brings the capability to ES3 and ES5 run-times, meaning you'll be
 
 ##### tsconfig.json
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "lib": ["dom", "es2015.promise", "es5"]
@@ -6093,7 +6091,7 @@ TypeScript 2.1 supports inheriting configuration using `extends`, where:
 
 `configs/base.json`:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "noImplicitAny": true,
@@ -6104,7 +6102,7 @@ TypeScript 2.1 supports inheriting configuration using `extends`, where:
 
 `tsconfig.json`:
 
-```json
+```json tsconfig
 {
   "extends": "./configs/base",
   "files": ["main.ts", "supplemental.ts"]
@@ -6113,7 +6111,7 @@ TypeScript 2.1 supports inheriting configuration using `extends`, where:
 
 `tsconfig.nostrictnull.json`:
 
-```json
+```json tsconfig
 {
   "extends": "./tsconfig",
   "compilerOptions": {
@@ -6611,7 +6609,7 @@ Glob-like file patterns are supported two properties `"include"` and `"exclude"`
 
 #### Example
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "module": "commonjs",
@@ -6656,7 +6654,7 @@ All module imports with non-relative names are assumed to be relative to the `ba
 
 #### Example
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "baseUrl": "./modules"
@@ -6681,7 +6679,7 @@ The TypeScript compiler supports the declaration of such mappings using `"paths"
 
 For instance, an import to a module `"jquery"` would be translated at runtime to `"node_modules/jquery/dist/jquery.slim.min.js"`.
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "baseUrl": "./node_modules",
@@ -6721,7 +6719,7 @@ At run-time, a view can expect its template to exist next to it, and thus should
 `"rootDirs"` specify a list of _roots_ whose contents are expected to merge at run-time.
 So following our example, the `tsconfig.json` file should look like:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "rootDirs": ["src/views", "generated/templates/views"]
@@ -6966,7 +6964,7 @@ Here is a list of available API groups:
 tsc --target es5 --lib es5,es2015.promise
 ```
 
-```json
+```json tsconfig
 "compilerOptions": {
     "lib": ["es5", "es2015.promise"]
 }
@@ -7704,7 +7702,7 @@ TypeScript 1.7 adds `ES6` to the list of options available for the `--module` fl
 
 ##### Example
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "module": "amd",
@@ -8290,7 +8288,7 @@ if (isCat(x)) {
 
 A tsconfig.json file that doesn't specify a files property (and therefore implicitly references all \*.ts files in all subdirectories) can now contain an exclude property that specifies a list of files and/or directories to exclude from the compilation. The exclude property must be an array of strings that each specify a file or folder name relative to the location of the tsconfig.json file. For example:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "out": "test.js"
@@ -8639,7 +8637,7 @@ Adding a `tsconfig.json` file in a directory indicates that the directory is the
 
 ##### Example
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "module": "commonjs",

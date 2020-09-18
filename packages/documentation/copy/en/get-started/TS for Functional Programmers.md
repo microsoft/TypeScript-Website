@@ -44,7 +44,7 @@ TypeScript uses postfix types, like so: `x: string` instead of `string x`.
 
 ## Built-in types
 
-JavaScript defines 7 built-in types:
+JavaScript defines 8 built-in types:
 
 | Type        | Explanation                                 |
 | ----------- | ------------------------------------------- |

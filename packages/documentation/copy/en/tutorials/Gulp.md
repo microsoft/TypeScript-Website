@@ -81,7 +81,7 @@ hello("TypeScript");
 
 In the project root, `proj`, create the file `tsconfig.json`:
 
-```json
+```json tsconfig
 {
   "files": ["src/main.ts"],
   "compilerOptions": {
@@ -100,11 +100,8 @@ var gulp = require("gulp");
 var ts = require("gulp-typescript");
 var tsProject = ts.createProject("tsconfig.json");
 
-gulp.task("default", function() {
-  return tsProject
-    .src()
-    .pipe(tsProject())
-    .js.pipe(gulp.dest("dist"));
+gulp.task("default", function () {
+  return tsProject.src().pipe(tsProject()).js.pipe(gulp.dest("dist"));
 });
 ```
 
@@ -140,7 +137,7 @@ console.log(sayHello("TypeScript"));
 
 Finally, add `src/greet.ts` to `tsconfig.json`:
 
-```json
+```json tsconfig
 {
   "files": ["src/main.ts", "src/greet.ts"],
   "compilerOptions": {
@@ -216,22 +213,22 @@ var browserify = require("browserify");
 var source = require("vinyl-source-stream");
 var tsify = require("tsify");
 var paths = {
-  pages: ["src/*.html"]
+  pages: ["src/*.html"],
 };
 
-gulp.task("copy-html", function() {
+gulp.task("copy-html", function () {
   return gulp.src(paths.pages).pipe(gulp.dest("dist"));
 });
 
 gulp.task(
   "default",
-  gulp.series(gulp.parallel("copy-html"), function() {
+  gulp.series(gulp.parallel("copy-html"), function () {
     return browserify({
       basedir: ".",
       debug: true,
       entries: ["src/main.ts"],
       cache: {},
-      packageCache: {}
+      packageCache: {},
     })
       .plugin(tsify)
       .bundle()
@@ -287,7 +284,7 @@ var watchify = require("watchify");
 var tsify = require("tsify");
 var fancy_log = require("fancy-log");
 var paths = {
-  pages: ["src/*.html"]
+  pages: ["src/*.html"],
 };
 
 var watchedBrowserify = watchify(
@@ -296,11 +293,11 @@ var watchedBrowserify = watchify(
     debug: true,
     entries: ["src/main.ts"],
     cache: {},
-    packageCache: {}
+    packageCache: {},
   }).plugin(tsify)
 );
 
-gulp.task("copy-html", function() {
+gulp.task("copy-html", function () {
   return gulp.src(paths.pages).pipe(gulp.dest("dist"));
 });
 
@@ -363,22 +360,22 @@ var uglify = require("gulp-uglify");
 var sourcemaps = require("gulp-sourcemaps");
 var buffer = require("vinyl-buffer");
 var paths = {
-  pages: ["src/*.html"]
+  pages: ["src/*.html"],
 };
 
-gulp.task("copy-html", function() {
+gulp.task("copy-html", function () {
   return gulp.src(paths.pages).pipe(gulp.dest("dist"));
 });
 
 gulp.task(
   "default",
-  gulp.series(gulp.parallel("copy-html"), function() {
+  gulp.series(gulp.parallel("copy-html"), function () {
     return browserify({
       basedir: ".",
       debug: true,
       entries: ["src/main.ts"],
       cache: {},
-      packageCache: {}
+      packageCache: {},
     })
       .plugin(tsify)
       .bundle()
@@ -421,27 +418,27 @@ var tsify = require("tsify");
 var sourcemaps = require("gulp-sourcemaps");
 var buffer = require("vinyl-buffer");
 var paths = {
-  pages: ["src/*.html"]
+  pages: ["src/*.html"],
 };
 
-gulp.task("copy-html", function() {
+gulp.task("copy-html", function () {
   return gulp.src(paths.pages).pipe(gulp.dest("dist"));
 });
 
 gulp.task(
   "default",
-  gulp.series(gulp.parallel("copy-html"), function() {
+  gulp.series(gulp.parallel("copy-html"), function () {
     return browserify({
       basedir: ".",
       debug: true,
       entries: ["src/main.ts"],
       cache: {},
-      packageCache: {}
+      packageCache: {},
     })
       .plugin(tsify)
       .transform("babelify", {
         presets: ["es2015"],
-        extensions: [".ts"]
+        extensions: [".ts"],
       })
       .bundle()
       .pipe(source("bundle.js"))
@@ -457,7 +454,7 @@ We also need to have TypeScript target ES2015.
 Babel will then produce ES5 from the ES2015 code that TypeScript emits.
 Let's modify `tsconfig.json`:
 
-```json
+```json tsconfig
 {
   "files": ["src/main.ts"],
   "compilerOptions": {

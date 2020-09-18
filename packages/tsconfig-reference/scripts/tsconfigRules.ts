@@ -28,12 +28,15 @@ export const internal: CompilerOptionName[] = ["preserveWatchOutput", "stripInte
 export const recommended: CompilerOptionName[] = [
   "strict",
   "forceConsistentCasingInFileNames",
+  "alwaysStrict",
   "strictNullChecks",
   "strictBindCallApply",
   "strictFunctionTypes",
+  "strictPropertyInitialization",
   "noImplicitThis",
   "noImplicitAny",
   "esModuleInterop",
+  "skipLibCheck",
 ];
 
 type RootProperties = "files" | "extends" | "include" | "exclude";
@@ -43,7 +46,15 @@ type AnOption = WatchProperties | RootProperties | CompilerOptionName;
 
 /** Allows linking between options */
 export const relatedTo: [AnOption, AnOption[]][] = [
-  ["strict", ["strictBindCallApply", "strictFunctionTypes", "strictPropertyInitialization"]],
+  ["strict", ["alwaysStrict", "strictNullChecks", "strictBindCallApply", "strictFunctionTypes", "strictPropertyInitialization", "noImplicitAny", "noImplicitThis"]],
+  ["alwaysStrict", ["strict"]],
+  ["strictNullChecks", ["strict"]],
+  ["strictBindCallApply", ["strict"]],
+  ["strictFunctionTypes", ["strict"]],
+  ["strictPropertyInitialization", ["strict"]],
+  ["noImplicitAny", ["strict"]],
+  ["noImplicitThis", ["strict"]],
+
   ["allowSyntheticDefaultImports", ["esModuleInterop"]],
   ["esModuleInterop", ["allowSyntheticDefaultImports"]],
 
@@ -61,23 +72,29 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["include", ["files", "exclude"]],
   ["exclude", ["include", "files"]],
 
-  ["importHelpers", ["noEmitHelpers", "downlevelIteration", "importHelpers"]],
+  ["importHelpers", ["noEmitHelpers", "downlevelIteration"]],
   ["noEmitHelpers", ["importHelpers"]],
+  ["downlevelIteration", ["importHelpers"]],
 
   ["incremental", ["composite", "tsBuildInfoFile"]],
   ["composite", ["incremental", "tsBuildInfoFile"]],
+  ["tsBuildInfoFile", ["incremental", "composite"]],
 
   ["types", ["typeRoots"]],
   ["typeRoots", ["types"]],
   ["declaration", ["emitDeclarationOnly"]],
 
   ["noLib", ["lib"]],
+  ["lib", ["noLib"]],
 
   ["allowJs", ["checkJs", "emitDeclarationOnly"]],
   ["checkJs", ["allowJs", "emitDeclarationOnly"]],
   ["declaration", ["declarationDir", "emitDeclarationOnly"]],
+  ["declarationDir", ["declaration"]],
+  ["emitDeclarationOnly", ["declaration"]],
 
   ["moduleResolution", ["module"]],
+  ["module", ["moduleResolution"]],
 
   ["jsxFactory", ["jsxFragmentFactory"]],
   ["jsxFragmentFactory", ["jsxFactory"]],
@@ -98,7 +115,7 @@ export const defaultsForOptions = {
   charset: "utf8",
   checkJs: "false",
   composite: "true",
-  declaration: "True when TS",
+  declaration: "false",
   declarationDir: " n/a",
   declarationMap: "false",
   diagnostics: "false",
@@ -124,7 +141,8 @@ export const defaultsForOptions = {
   listFiles: "false",
   locale: "Platform specific",
   maxNodeModuleJsDepth: "0",
-  moduleResolution: "module === `AMD`, `UMD`, `System` or `ES6` then `Classic`<br/><br/>Otherwise `Node`",
+  moduleResolution:
+    "module === `AMD`, `UMD`, `System` or `ES6` then `Classic`<br/><br/>Otherwise `Node`",
   newLine: "Platform specific",
   noEmit: "false",
   noEmitHelpers: "false",
@@ -161,7 +179,7 @@ export const defaultsForOptions = {
   strictNullChecks: "`false`, unless `strict` is set",
   suppressExcessPropertyErrors: "false",
   suppressImplicitAnyIndexErrors: "false",
-  target: "es5",
+  target: "ES3",
   traceResolution: "false",
   tsBuildInfoFile: ".tsbuildinfo",
   useDefineForClassFields: "false",
@@ -212,7 +230,7 @@ export const allowedValues = {
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
-  "4.0": ["jsxFragmentFactory"],
+  "4.0": ["jsxFragmentFactory", "disableReferencedProjectLoad"],
   "3.8": [
     "assumeChangesOnlyAffectDirectDependencies",
     "importsNotUsedAsValues",

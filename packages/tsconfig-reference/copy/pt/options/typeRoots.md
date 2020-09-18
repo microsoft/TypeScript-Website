@@ -9,7 +9,7 @@ Por exemplo, isso significa pacotes dentro de `./node_modules/@types/`, `../node
 
 Se `typeRoots` está especificado, _somente_ pacotes dentro de `typeRoots` serão incluídos. Por exemplo:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "typeRoots": ["./typings", "./vendor/types"]

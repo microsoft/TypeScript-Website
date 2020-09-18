@@ -445,7 +445,7 @@ A tsconfig.json file that doesn't specify a files property (and therefore implic
 The exclude property must be an array of strings that each specify a file or folder name relative to the location of the tsconfig.json file.
 For example:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "out": "test.js"

@@ -1,6 +1,6 @@
 ---
 display: "jsxFragmentFactory"
-oneline: "Does something"
+oneline: "Specifies what identifiers a JSX fragment should be transformed to"
 ---
 
 Specify the JSX fragment factory function to use when targeting react JSX emit with `jsxFactory` compiler option is specified, e.g. `Fragment`.
@@ -9,7 +9,7 @@ This option can be used on a per-file basis too similar to [Babel's `/** @jsxFra
 
 For example with this TSConfig:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "target": "esnext",

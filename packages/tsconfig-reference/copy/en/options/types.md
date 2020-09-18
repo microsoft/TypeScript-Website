@@ -9,7 +9,7 @@ For example, that means packages within `./node_modules/@types/`, `../node_modul
 
 If `types` is specified, only packages listed will be included in the global scope. For instance:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "types": ["node", "jest", "express"]

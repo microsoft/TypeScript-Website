@@ -27,7 +27,7 @@ async function printDelayed(elements: string[]) {
 }
 
 async function delay(milliseconds: number) {
-  return new Promise<void>(resolve => {
+  return new Promise<void>((resolve) => {
     setTimeout(resolve, milliseconds);
   });
 }
@@ -47,7 +47,7 @@ This provides more flexibility to target exactly the features you want in specif
 
 ##### Example
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "module": "amd",
@@ -96,10 +96,7 @@ A user could express `2 * 5 + 1` as
 ```ts
 import calc from "./BasicCalculator";
 
-let v = new calc(2)
-  .multiply(5)
-  .add(1)
-  .currentValue();
+let v = new calc(2).multiply(5).add(1).currentValue();
 ```
 
 This often opens up very elegant ways of writing code; however, there was a problem for classes that wanted to extend from `BasicCalculator`.

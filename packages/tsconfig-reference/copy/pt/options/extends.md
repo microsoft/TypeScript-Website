@@ -16,7 +16,7 @@ Atualmente, a única propriedade de _top-level_ que é excluída da herança é 
 
 `configs/base.json`:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "noImplicitAny": true,
@@ -27,7 +27,7 @@ Atualmente, a única propriedade de _top-level_ que é excluída da herança é 
 
 `tsconfig.json`:
 
-```json
+```json tsconfig
 {
   "extends": "./configs/base",
   "files": ["main.ts", "supplemental.ts"]
@@ -36,7 +36,7 @@ Atualmente, a única propriedade de _top-level_ que é excluída da herança é 
 
 `tsconfig.nostrictnull.json`:
 
-```json
+```json tsconfig
 {
   "extends": "./tsconfig",
   "compilerOptions": {

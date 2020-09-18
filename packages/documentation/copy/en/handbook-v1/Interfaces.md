@@ -173,7 +173,7 @@ interface SquareConfig {
 }
 
 function createSquare(config: SquareConfig): { color: string; area: number } {
-  return { color: config.color || "red", area: config.width || 20 };
+  return { color: config.color || "red", area: config.width ? config.width*config.width : 20 };
 }
 
 let mySquare = createSquare({ colour: "red", width: 100 });
@@ -196,7 +196,7 @@ interface SquareConfig {
 }
 
 function createSquare(config: SquareConfig): { color: string; area: number } {
-  return { color: config.color || "red", area: config.width || 20 };
+  return { color: config.color || "red", area: config.width ? config.width*config.width : 20 };
 }
 // ---cut---
 let mySquare = createSquare({ colour: "red", width: 100 });
@@ -213,7 +213,7 @@ interface SquareConfig {
 }
 
 function createSquare(config: SquareConfig): { color: string; area: number } {
-  return { color: config.color || "red", area: config.width || 20 };
+  return { color: config.color || "red", area: config.width ? config.width*config.width : 20 };
 }
 // ---cut---
 let mySquare = createSquare({ width: 100, opacity: 0.5 } as SquareConfig);
@@ -243,7 +243,7 @@ interface SquareConfig {
 }
 
 function createSquare(config: SquareConfig): { color: string; area: number } {
-  return { color: config.color || "red", area: config.width || 20 };
+  return { color: config.color || "red", area: config.width ? config.width*config.width : 20 };
 }
 // ---cut---
 let squareOptions = { colour: "red", width: 100 };
@@ -261,7 +261,7 @@ interface SquareConfig {
 }
 
 function createSquare(config: SquareConfig): { color: string; area: number } {
-  return { color: config.color || "red", area: config.width || 20 };
+  return { color: config.color || "red", area: config.width ? config.width*config.width : 20 };
 }
 // ---cut---
 let squareOptions = { colour: "red" };
@@ -537,13 +537,13 @@ Another simple way is to use class expressions:
 
 ```ts twoslash
 // @strictPropertyInitialization: false
-// @noImplicitAny: fals
+// @noImplicitAny: false
 interface ClockConstructor {
-  new (hour: number, minute: number);
+  new (hour: number, minute: number): ClockInterface;
 }
 
 interface ClockInterface {
-  tick();
+  tick(): void;
 }
 
 const Clock: ClockConstructor = class Clock implements ClockInterface {

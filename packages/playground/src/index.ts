@@ -178,7 +178,7 @@ export const setupPlayground = (
   sandbox.setDidUpdateCompilerSettings(() => {
     playgroundDebouncedMainFunction()
     // @ts-ignore
-    window.appInsights.trackEvent({ name: "Compiler Settings changed" })
+    window.appInsights && window.appInsights.trackEvent({ name: "Compiler Settings changed" })
 
     const model = sandbox.editor.getModel()
     const plugin = getCurrentPlugin()
@@ -318,29 +318,31 @@ export const setupPlayground = (
     },
   }
 
-  const shareButton = document.getElementById("share-button")!
-  shareButton.onclick = e => {
-    e.preventDefault()
-    shareAction.run()
-    return false
+  const shareButton = document.getElementById("share-button")
+  if (shareButton) {
+    shareButton.onclick = e => {
+      e.preventDefault()
+      shareAction.run()
+      return false
+    }
+
+    // Set up some key commands
+    sandbox.editor.addAction(shareAction)
+
+    sandbox.editor.addAction({
+      id: "run-js",
+      label: "Run the evaluated JavaScript for your TypeScript file",
+      keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
+
+      contextMenuGroupId: "run",
+      contextMenuOrder: 1.5,
+
+      run: function (ed) {
+        const runButton = document.getElementById("run-button")
+        runButton && runButton.onclick && runButton.onclick({} as any)
+      },
+    })
   }
-
-  // Set up some key commands
-  sandbox.editor.addAction(shareAction)
-
-  sandbox.editor.addAction({
-    id: "run-js",
-    label: "Run the evaluated JavaScript for your TypeScript file",
-    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
-
-    contextMenuGroupId: "run",
-    contextMenuOrder: 1.5,
-
-    run: function (ed) {
-      const runButton = document.getElementById("run-button")
-      runButton && runButton.onclick && runButton.onclick({} as any)
-    },
-  })
 
   const runButton = document.getElementById("run-button")
   if (runButton) {
@@ -413,7 +415,7 @@ export const setupPlayground = (
 
     settingsToggle.addEventListener("keydown", e => {
       const isOpen = settingsToggle.parentElement!.classList.contains("open")
-      if (e.keyCode === 9 && isOpen) {
+      if (e.key === "Tab" && isOpen) {
         const result = document.querySelector(".playground-options li input") as any
         result.focus()
         e.preventDefault()
@@ -617,7 +619,7 @@ export type Playground = ReturnType<typeof setupPlayground>
 
 const redirectTabPressTo = (element: HTMLElement, container: HTMLElement | undefined, query: string) => {
   element.addEventListener("keydown", e => {
-    if (e.keyCode === 9) {
+    if (e.key === "Tab") {
       const host = container || document
       const result = host.querySelector(query) as any
       if (!result) throw new Error(`Expected to find a result for keydown`)

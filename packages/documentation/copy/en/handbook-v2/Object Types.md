@@ -1,0 +1,878 @@
+---
+title: Object Types
+layout: docs
+permalink: /docs/handbook/2/objects.html
+oneline: "Step one in learning TypeScript: The basics types."
+beta: true
+---
+
+In JavaScript, the fundamental way that we group and pass around relevant data is through objects.
+In TypeScript, we represent those through _object types_.
+
+As we've seen, they can be anonymous:
+
+```ts twoslash
+function greet(person: { name: string; age: number }) {
+  //                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  return "Hello " + person.age;
+}
+```
+
+or they can be named by using either an interface
+
+```ts twoslash
+interface Person {
+  //      ^^^^^^
+  name: string;
+  age: number;
+}
+
+function greet(person: Person) {
+  return "Hello " + person.age;
+}
+```
+
+or a type alias.
+
+```ts twoslash
+type Person = {
+  // ^^^^^^
+  name: string;
+  age: number;
+};
+
+function greet(person: Person) {
+  return "Hello " + person.age;
+}
+```
+
+In all three examples above, we've written functions that take objects that contain the property `name` (which must be a `string`) and `age` (which must be a `number`).
+
+## Property Modifiers
+
+Each property in an object type can specify a couple of things: the type, whether the property is optional, and whether the property can be written to.
+
+### Optional Properties
+
+Much of the time, we'll find ourselves dealing with objects that _might_ have a property set.
+In those cases, we can mark those properties as _optional_ by adding a question mark (`?`) to the end of their names.
+
+```ts twoslash
+interface Shape {}
+declare function getShape(): Shape;
+
+// ---cut---
+interface PaintOptions {
+  shape: Shape;
+  xPos?: number;
+  //  ^
+  yPos?: number;
+  //  ^
+}
+
+function paintShape(opts: PaintOptions) {
+  // ...
+}
+
+const shape = getShape();
+paintShape({ shape });
+paintShape({ shape, xPos: 100 });
+paintShape({ shape, yPos: 100 });
+paintShape({ shape, xPos: 100, yPos: 100 });
+```
+
+In this example, both `xPos` and `yPos` are considered optional.
+We can choose to provide either of them, so every call above to `paintShape` is valid.
+All optionality really says is that if the property _is_ set, it better have a specific type.
+
+```ts twoslash
+interface Shape {}
+declare function getShape(): Shape;
+
+// ---cut---
+interface PaintOptions {
+  shape: Shape;
+  xPos?: number;
+  //  ^
+  yPos?: number;
+  //  ^
+}
+
+function paintShape(opts: PaintOptions) {
+  // ...
+}
+
+const shape = getShape();
+paintShape({ shape });
+paintShape({ shape, xPos: 100 });
+```
+
+We can also read from those properties - but when we do under `strictNullChecks`, TypeScript will tell us they're potentially `undefined`.
+
+```ts twoslash
+interface Shape {}
+declare function getShape(): Shape;
+
+interface PaintOptions {
+  shape: Shape;
+  xPos?: number;
+  yPos?: number;
+}
+
+// ---cut---
+function paintShape(opts: PaintOptions) {
+  let xPos = opts.xPos;
+  //              ^?
+  let yPos = opts.yPos;
+  //              ^?
+  // ...
+}
+```
+
+In JavaScript, even if the property has never been set, we can still access it - it's just going to give us the value `undefined`.
+We can just handle `undefined` specially.
+
+```ts twoslash
+interface Shape {}
+declare function getShape(): Shape;
+
+interface PaintOptions {
+  shape: Shape;
+  xPos?: number;
+  yPos?: number;
+}
+
+// ---cut---
+function paintShape(opts: PaintOptions) {
+  let xPos = opts.xPos === undefined ? 0 : opts.xPos;
+  //  ^?
+  let yPos = opts.yPos === undefined ? 0 : opts.yPos;
+  //  ^?
+  // ...
+}
+```
+
+Note that this pattern of setting defaults for unspecified values is so common that JavaScript has syntax to support it.
+
+```ts twoslash
+interface Shape {}
+declare function getShape(): Shape;
+
+interface PaintOptions {
+  shape: Shape;
+  xPos?: number;
+  yPos?: number;
+}
+
+// ---cut---
+function paintShape({ shape, xPos = 0, yPos = 0 }: PaintOptions) {
+  console.log("x coordinate at", xPos);
+  //                             ^?
+  console.log("y coordinate at", yPos);
+  //                             ^?
+  // ...
+}
+```
+
+Here we used [a destructuring pattern](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) for `paintShape`'s parameter, and provided [default values](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Default_values) for `xPos` and `yPos`.
+Now `xPos` and `yPos` are both definitely present within the body of `paintShape`, but optional for any callers to `paintShape`.
+
+<aside>
+Note that there is currently no way to place type annotations within destructuring patterns.
+This is because the following syntax already means something different in JavaScript.
+
+```ts twoslash
+// @noImplicitAny: false
+// @errors: 2552 2304
+interface Shape {}
+declare function doSomething(x: unknown);
+// ---cut---
+function foo({ shape: Shape, xPos: number = 100 /*...*/ }) {
+  doSomething(shape);
+  doSomething(xPos);
+}
+```
+
+In an object destructuring pattern, `shape: Shape` means "grab the property `shape` and redefine it locally as a variable named `Shape`.
+Likewise `xPos: number` creates a variable named `number` whose value is based on the parameter's `xPos`.
+
+</aside>
+
+### `readonly` Properties
+
+Properties can also be marked as `readonly` for TypeScript.
+While it won't change any behavior at runtime, a property marked as `readonly` can't be written to during type-checking.
+
+```ts twoslash
+// @errors: 2540
+interface SomeType {
+  readonly prop: string;
+}
+
+function doSomething(obj: SomeType) {
+  // We can read from 'obj.prop'.
+  console.log(`prop has the value '${obj.prop}'.`);
+
+  // But we can't re-assign it.
+  obj.prop = "hello";
+}
+```
+
+Using the `readonly` modifier doesn't necessarily imply that a value is totally immutable - or in other words, that its internal contents can't be changed.
+It just means the property itself can't be re-written to.
+
+```ts twoslash
+// @errors: 2540
+interface Home {
+  readonly resident: { name: string; age: number };
+}
+
+function visitForBirthday(home: Home) {
+  // We can read and update properties from 'home.resident'.
+  console.log(`Happy birthday ${home.resident.name}!`);
+  home.resident.age++;
+}
+
+function evict(home: Home) {
+  // But we can't write to the 'resident' property itself on a 'Home'.
+  home.resident = {
+    name: "Victor the Evictor",
+    age: 42,
+  };
+}
+```
+
+It's important to manage expectations of what `readonly` implies.
+It's useful to signal intent during development time for TypeScript on how an object should be used.
+TypeScript doesn't factor in whether properties on two types are `readonly` when checking whether those types are compatible, so `readonly` properties can also change via aliasing.
+
+```ts twoslash
+interface Person {
+  name: string;
+  age: number;
+}
+
+interface ReadonlyPerson {
+  readonly name: string;
+  readonly age: number;
+}
+
+let writablePerson: Person = {
+  name: "Person McPersonface",
+  age: 42,
+};
+
+// works
+let readonlyPerson: ReadonlyPerson = writablePerson;
+
+console.log(readonlyPerson.age); // prints '42'
+writablePerson.age++;
+console.log(readonlyPerson.age); // prints '43'
+```
+
+## Extending Types
+
+It's pretty common to have types that might be more specific versions of other types.
+For example, we might have a `BasicAddress` type that describes the fields necessary for sending letters and packages in the U.S.
+
+```ts twoslash
+interface BasicAddress {
+  name?: string;
+  street: string;
+  city: string;
+  country: string;
+  postalCode: string;
+}
+```
+
+In some situations that's enough, but addresses often have a unit number associated with them if the building at an address has multiple units.
+We can then describe an `AddressWithUnit`.
+
+<!-- prettier-ignore -->
+```ts twoslash
+interface AddressWithUnit {
+  name?: string;
+  unit: string;
+//^^^^^^^^^^^^^
+  street: string;
+  city: string;
+  country: string;
+  postalCode: string;
+}
+```
+
+This does the job, but the downside here is that we had to repeat all the other fields from `BasicAddress` when our changes were purely additive.
+Instead, we can extend the original `BasicAddress` type and just add the new fields that are unique to `AddressWithUnit`.
+
+```ts twoslash
+interface BasicAddress {
+  name?: string;
+  street: string;
+  city: string;
+  country: string;
+  postalCode: string;
+}
+
+interface AddressWithUnit extends BasicAddress {
+  unit: string;
+}
+```
+
+The `extends` keyword on an `interface` allows us to effectively copy members from other named types, and add whatever new members we want.
+This can be useful for cutting down the amount of type declaration boilerplate we have to write, and for signaling intent that several different declarations of the same property might be related.
+For example, `AddressWithUnit` didn't need to repeat the `street` property, and because `street` originates from `BasicAddress`, a reader will know that those two types are related in some capacity.
+
+`interface`s can also extend from multiple types.
+
+```ts twoslash
+interface Colorful {
+  color: string;
+}
+
+interface Circle {
+  radius: number;
+}
+
+interface ColorfulCircle extends Colorful, Circle {}
+
+const cc: ColorfulCircle = {
+  color: "red",
+  radius: 42,
+};
+```
+
+## Intersection Types
+
+`interface`s allowed us to build up new types from other types by extending them.
+TypeScript provides another construct called _intersection types_ that is mainly used to combine existing object types.
+
+An intersection type is defined using the `&` operator.
+
+```ts twoslash
+interface Colorful {
+  color: string;
+}
+interface Circle {
+  radius: number;
+}
+
+type ColorfulCircle = Colorful & Circle;
+```
+
+Here, we've intersected `Colorful` and `Circle` to produce a new type that has all the members of `Colorful` _and_ `Circle`.
+
+```ts twoslash
+// @errors: 2345
+interface Colorful {
+  color: string;
+}
+interface Circle {
+  radius: number;
+}
+// ---cut---
+function draw(circle: Colorful & Circle) {
+  console.log(`Color was ${circle.color}`);
+  console.log(`Radius was ${circle.radius}`);
+}
+
+// okay
+draw({ color: "blue", radius: 42 });
+
+// oops
+draw({ color: "red", raidus: 42 });
+```
+
+## Interfaces vs. Intersections
+
+We just looked at two ways to combine types which are similar, but are actually subtly different.
+With interfaces, we could use an `extends` clause to extend from other types, and we were able to do something similar with intersections and name the result with a type alias.
+The principle difference between the two is how conflicts are handled, and that difference is typically one of the main reasons why you'd pick one over the other between an interface and a type alias of an intersection type.
+
+For example, two types can declare the same property in an interface.
+
+TODO
+
+## Generic Object Types
+
+Let's imagine a `Box` type that can contain any value - `string`s, `number`s, `Giraffe`s, whatever.
+
+```ts twoslash
+interface Box {
+  contents: any;
+}
+```
+
+Right now, the `contents` property is typed as `any` which works, but can lead to accidents down the line.
+
+We could instead use `unknown`, but that would mean that in cases where we already know the type of `contents`, we'd need to do precautionary checks, or use error-prone type assertions.
+
+```ts twoslash
+interface Box {
+  contents: unknown;
+}
+
+let x: Box = {
+  contents: "hello world",
+};
+
+// we could check 'x.contents'
+if (typeof x.contents === "string") {
+  console.log(x.contents.toLowerCase());
+}
+
+// or we could use a type assertion
+console.log((x.contents as string).toLowerCase());
+```
+
+If we really cared to get type safety, we could instead scaffold out different `Box` types for every type of `contents`
+
+```ts twoslash
+// @errors: 2322
+interface NumberBox {
+  contents: number;
+}
+
+interface StringBox {
+  contents: string;
+}
+
+interface BooleanBox {
+  contents: boolean;
+}
+```
+
+but that means we'll have to create different functions, or overloads of functions, to operate on these types.
+
+```ts twoslash
+interface NumberBox {
+  contents: number;
+}
+
+interface StringBox {
+  contents: string;
+}
+
+interface BooleanBox {
+  contents: boolean;
+}
+// ---cut---
+function setContents(box: StringBox, newContents: string): void;
+function setContents(box: NumberBox, newContents: number): void;
+function setContents(box: BooleanBox, newContents: boolean): void;
+function setContents(box: { contents: any }, newContents: any) {
+  box.contents = newContents;
+}
+```
+
+That's a lot of boilerplate, and technically we might later need to introduce new types and overloads.
+This is frustrating since our box types and overloads are all effectively the same.
+
+Instead, we can make a _generic_ `Box` type which declares a _type parameters_.
+
+```ts twoslash
+interface Box<T> {
+  contents: T;
+}
+```
+
+You might read this as "A `Box` of `T` is something whose `contents` have type `T`.
+Later on, when we refer to `Box`, we have to give some _type arguments_ in place of `T`.
+
+```ts twoslash
+interface Box<T> {
+  contents: T;
+}
+// ---cut---
+let box: Box<string>;
+```
+
+Think of `Box` as a template for a real type, where `T` is a placeholder that will get replaced with some other type.
+When TypeScript sees `Box<string>`, it will replace every instance of `T` in `Box<T>` with `string`, and end up working with something like `{ contents: string }`.
+In other words, `Box<string>` and our earlier `StringBox` work identically.
+
+```ts twoslash
+// @errors: 2532
+interface Box<T> {
+  contents: T;
+}
+interface StringBox {
+  contents: string;
+}
+
+let boxA: Box<string> = { contents: "hello" };
+let boxB: StringBox = { contents: "world" };
+```
+
+`Box` is reusable in that `T` can be substituted with anything, and that means that when we need a box for a new type, we don't need to declare a new box type at all (though we certainly could if we wanted to).
+
+```ts twoslash
+interface Box<T> {
+  contents: T;
+}
+
+interface Apple {
+  // ....
+}
+
+// Same as '{ contents: Apple }'.
+type AppleBox = Box<Apple>;
+```
+
+This also means that we can avoid overloads entirely by instead using [generic functions](./More-on-Functions.md#Generic-Functions).
+
+```ts twoslash
+interface Box<T> {
+  contents: T;
+}
+
+// ---cut---
+function setContents<T>(box: Box<T>, newContents: T) {
+  box.contents = newContents;
+}
+```
+
+At this point, it's also worth calling out that type aliases can also be generic, and we could have defined our new `Box<T>` interface
+
+```ts twoslash
+interface Box<T> {
+  contents: T;
+}
+```
+
+by using a type alias instead:
+
+```ts twoslash
+type Box<T> = {
+  contents: T;
+};
+```
+
+In fact, given that type aliases can describe more than just object types, we can occasionally write some generic helper types as well.
+
+```ts twoslash
+// @errors: 2575
+type OrNull<T> = T | null;
+
+type OneOrMany<T> = T | T[];
+
+type OneOrManyOrNull<T> = OrNull<OneOrMany<T>>;
+//   ^?
+
+type Foo = OneOrManyOrNull<string>;
+//   ^?
+```
+
+We'll circle back to type aliases in just a little bit.
+
+### The `Array` Type
+
+Generic object types are often some sort of container type that work independently of the type of elements they contain.
+It's ideal for data structures to work this way so that they're re-usable across different data types.
+
+It turns out we've been working with a type just like that throughout this handbook: the `Array` type.
+Whenever we write out types like `number[]` or `string[]`, that's really just a shorthand for `Array<number>` and `Array<string>`.
+
+```ts twoslash
+function doSomething(value: Array<string>) {
+  // ...
+}
+
+let myArray: string[] = ["hello", "world"];
+
+// either of these work!
+doSomething(myArray);
+doSomething(new Array("hello", "world"));
+```
+
+Much like the `Box` type above, `Array` itself is a generic type.
+
+```ts twoslash
+// @noLib: true
+interface Number {}
+interface String {}
+interface Boolean {}
+interface Symbol {}
+// ---cut---
+interface Array<T> {
+  /**
+   * Gets or sets the length of the array.
+   */
+  length: number;
+
+  /**
+   * Removes the last element from an array and returns it.
+   */
+  pop(): T | undefined;
+
+  /**
+   * Appends new elements to an array, and returns the new length of the array.
+   */
+  push(...items: T[]): number;
+
+  // ...
+}
+```
+
+Modern JavaScript also provides other data structures which are generic, like `Map<K, V>`, `Set<T>`, and `Promise<T>`.
+All this really means is that because of how `Map`, `Set`, and `Promise` behave, they can work with any sets of types.
+
+### The `ReadonlyArray` Type
+
+The `ReadonlyArray` is a special type that describes arrays that shouldn't be changed.
+
+```ts twoslash
+// @errors: 2339
+function doStuff(values: ReadonlyArray<string>) {
+  // We can read from 'values'...
+  const copy = values.slice();
+  console.log(`The first value is ${values[0]}`);
+
+  // ...but we can't mutate 'values'.
+  values.push("hello!");
+}
+```
+
+Much like the `readonly` modifier for properties, it's mainly a tool we can use for intent.
+When we see a function that returns `ReadonlyArray`s, it tells us we're not meant to change the contents at all, and when we see a function that consumes `ReadonlyArray`s, it tells us that we can pass any array into that function without worrying that it will change its contents.
+
+Unlike `Array`, there isn't a `ReadonlyArray` constructor that we can use.
+
+```ts twoslash
+// @errors: 2693
+new ReadonlyArray("red", "green", "blue");
+```
+
+Instead, we can assign regular `Array`s to `ReadonlyArray`s.
+
+```ts twoslash
+let roArray: ReadonlyArray<string> = ["red", "green", "blue"];
+```
+
+Just as TypeScript provides a shorthand syntax for `Array<Foo>` with `Foo[]`, it also provides a shorthand syntax for `ReadonlyArray<Foo>` with `readonly Foo[]`.
+
+```ts twoslash
+// @errors: 2339
+function doStuff(values: readonly string[]) {
+  //                     ^^^^^^^^^^^^^^^^^
+  // We can read from 'values'...
+  const copy = values.slice();
+  console.log(`The first value is ${values[0]}`);
+
+  // ...but we can't mutate 'values'.
+  values.push("hello!");
+}
+```
+
+One last thing to note is that unlike the `readonly` property modifier, assignability isn't bidirectional between regular `Array`s and `ReadonlyArray`s.
+
+```ts twoslash
+// @errors: 4104
+let x: readonly string[] = [];
+let y: string[] = [];
+
+x = y;
+y = x;
+```
+
+### Tuple Types
+
+A _tuple type_ is another sort of `Array` type that knows exactly how many elements it contains, and exactly which types it contains at specific positions.
+
+```ts twoslash
+type StringNumberPair = [string, number];
+//                      ^^^^^^^^^^^^^^^^
+```
+
+Here, `StringNumberPair` is a tuple type of `string` and `number`.
+Like `ReadonlyArray`, it has no representation at runtime, but is significant to TypeScript.
+To the type system, `StringNumberPair` describes arrays whose `0` index contains a `string` and whose `1` index contains a `number`.
+
+```ts twoslash
+function doSomething(pair: [string, number]) {
+  const a = pair[0];
+  //    ^?
+  const b = pair[1];
+  //    ^?
+  // ...
+}
+
+doSomething(["hello", 42]);
+```
+
+If we try to index past the number of elements, we'll get an error.
+
+```ts twoslash
+// @errors: 2493
+function doSomething(pair: [string, number]) {
+  // ...
+
+  const c = pair[2];
+}
+```
+
+We can also [destructure tuples](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Array_destructuring) using JavaScript's array destructuring.
+
+```ts twoslash
+function doSomething(stringHash: [string, number]) {
+  const [inputString, hash] = stringHash;
+
+  console.log(inputString);
+  //          ^?
+
+  console.log(hash);
+  //          ^?
+}
+```
+
+<aside>
+Tuple types are useful in heavily convention-based APIs, where each element's meaning is "obvious".
+This gives us flexibility in whatever we want to name our variables when we destructure them.
+In the above example, we were able to name elements `0` and `1` to whatever we wanted.
+
+However, since not every user holds the same view of what's obvious, it may be worth reconsidering whether using objects with descriptive property names may be better for your API.
+
+</aside>
+
+Other than those length checks, simple tuple types like these are equivalent to types which are versions of `Array`s that declare properties for specific indexes, and that declare `length` with a numeric literal type.
+
+```ts twoslash
+interface StringNumberPair {
+  // specialized properties
+  length: 2;
+  0: string;
+  1: number;
+
+  // Other 'Array<string | number>' members...
+  slice(start?: number, end?: number): Array<string | number>;
+}
+```
+
+Another thing you may be interested in is that tuples can have optional properties by writing out a question mark (`?` after an element's type).
+Optional tuple elements can only come at the end, and also affect the type of `length`.
+
+```ts twoslash
+type Either2dOr3d = [number, number, number?];
+
+function setCoordinate(coord: Either2dOr3d) {
+  const [x, y, z] = coord;
+  //           ^?
+
+  console.log(`Provided coordinates had ${coord.length} dimensions`);
+  //                                            ^?
+}
+```
+
+Tuples can also have rest elements, which have to be an array/tuple type.
+
+```ts twoslash
+type StringNumberBooleans = [string, number, ...boolean[]];
+```
+
+`StringNumberBooleans` describes a tuple whose first two elements are `string` and `number` respectively, but which may have any number of `boolean`s following.
+A tuple with a rest element has no set `length` - it only has a set of well-known elements at the beginning.
+
+```ts twoslash
+type StringNumberBooleans = [string, number, ...boolean[]];
+// ---cut---
+const a: StringNumberBooleans = ["hello", 1];
+const b: StringNumberBooleans = ["beautiful", 2, true];
+const c: StringNumberBooleans = ["world", 3, true, false, true, false, true];
+```
+
+Why might optional and rest elements be useful?
+Well, it allows TypeScript to correspond tuples with parameter lists.
+Tuples types can be used in [rest parameters and arguments](./More-on-Functions.md#rest-parameters-and-arguments), so that the following:
+
+```ts twoslash
+function foo(...args: [string, number, ...boolean[]]) {
+  var [x, y, ...z] = args;
+  // ...
+}
+```
+
+is basically equivalent to:
+
+```ts twoslash
+function foo(x: string, y: number, ...z: boolean[]) {
+  // ...
+}
+```
+
+This is handy when you want to take a variable number of arguments with a rest parameter, and you need a minimum number of elements, but you don't want to introduce intermediate variables.
+
+<!--
+TODO do we need this example?
+
+For example, imagine we need to write a function that adds up `number`s based on arguments that get passed in.
+
+```ts twoslash
+function sum(...args: number[]) {
+    // ...
+}
+```
+
+We might feel like it makes little sense to take any fewer than 2 elements, so we want to require callers to provide at least 2 arguments.
+A first attempt might be
+
+```ts twoslash
+function foo(a: number, b: number, ...args: number[]) {
+    args.unshift(a, b);
+
+    let result = 0;
+    for (const value of args) {
+        result += value;
+    }
+    return result;
+}
+```
+
+-->
+
+### `readonly` Tuple Types
+
+One final note about tuple types - tuples types have `readonly` variants, and can be specified by sticking a `readonly` modifier in front of them - just like with array shorthands.
+
+```ts twoslash
+function doSomething(pair: readonly [string, number]) {
+  //                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  // ...
+}
+```
+
+As you might expect, writing to any property of a `readonly` tuple isn't allowed in TypeScript.
+
+```ts twoslash
+// @errors: 2540
+function doSomething(pair: readonly [string, number]) {
+  pair[0] = "hello!";
+}
+```
+
+Tuples tend to be created and left un-modified in most code, so annotating types as `readonly` tuples when possible is a good default.
+This is also important given that array literals with `const` assertions will be inferred with `readonly` tuple types.
+
+```ts twoslash
+// @errors: 2345
+let point = [3, 4] as const;
+
+function distanceFromOrigin([x, y]: [number, number]) {
+  return Math.sqrt(x ** 2 + y ** 2);
+}
+
+distanceFromOrigin(point);
+```
+
+Here, `distanceFromOrigin` never modifies its elements, but expects a mutable tuple.
+Since `point`'s type was inferred as `readonly [3, 4]`, it won't be compatible with `[number, number]` since that type can't guarantee `point`'s elements won't be mutated.
+
+## Other Kinds of Object Members
+
+Most of the declarations in object types:
+
+### Method Syntax
+
+### Call Signatures
+
+### Construct Signatures
+
+### Index Signatures

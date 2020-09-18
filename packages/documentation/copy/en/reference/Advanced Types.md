@@ -249,7 +249,7 @@ With [`--strictNullChecks`](/tsconfig#strictNullChecks), an optional parameter a
 ```ts twoslash
 // @errors: 2345
 function f(x: number, y?: number) {
-  return x + (y || 0);
+  return x + (y ?? 0);
 }
 
 f(1, 2);
@@ -297,7 +297,7 @@ The `null` elimination is pretty obvious here, but you can use terser operators 
 
 ```ts twoslash
 function f(stringOrNull: string | null): string {
-  return stringOrNull || "default";
+  return stringOrNull ?? "default";
 }
 ```
 
@@ -821,6 +821,8 @@ type ThreeStringProps = Record<"prop1" | "prop2" | "prop3", string>;
 ```
 
 Non-homomorphic types are essentially creating new properties, so they can't copy property modifiers from anywhere.
+
+Note that `keyof any` represents the type of any value that can be used as an index to an object. In otherwords, `keyof any` is currently equal to `string | number | symbol`.
 
 ## Inference from mapped types
 

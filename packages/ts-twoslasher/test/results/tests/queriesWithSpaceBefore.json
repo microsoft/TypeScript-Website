@@ -1,0 +1,56 @@
+{
+  "code": "const a: string = \"242342\"\nconst b = \"hello\"\nif (a === b) {\n}\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [
+    {
+      "docs": "",
+      "kind": "query",
+      "start": 55,
+      "length": 16,
+      "text": "const b: \"hello\"",
+      "offset": 10,
+      "line": 3
+    }
+  ],
+  "staticQuickInfos": [
+    {
+      "text": "const a: string",
+      "docs": "",
+      "start": 6,
+      "length": 1,
+      "line": 0,
+      "character": 6,
+      "targetString": "a"
+    },
+    {
+      "text": "const b: \"hello\"",
+      "docs": "",
+      "start": 33,
+      "length": 1,
+      "line": 1,
+      "character": 6,
+      "targetString": "b"
+    },
+    {
+      "text": "const a: string",
+      "docs": "",
+      "start": 49,
+      "length": 1,
+      "line": 2,
+      "character": 4,
+      "targetString": "a"
+    },
+    {
+      "text": "const b: \"hello\"",
+      "docs": "",
+      "start": 55,
+      "length": 1,
+      "line": 2,
+      "character": 10,
+      "targetString": "b"
+    }
+  ],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/MYewdgzgLgBAhgLhtATgSzAcxgXhgIgCYAWQgZlPwChRJYAjXAgCwFMAbdkatAMxgAUcXDjz0AlDADeVGDAD08ucpgA9APxUAvlSA"
+}

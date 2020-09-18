@@ -84,7 +84,7 @@ const meetups = [
   },
   {
     title: "TypeScript NYC",
-    url: "https://www.meetup.com/TypeScriptNYC",
+    url: "https://www.meetup.com/NYC-Typescript",
     image: "typescript-nyc.jpg",
     country: "🇺🇸",
     continentish: "North America"

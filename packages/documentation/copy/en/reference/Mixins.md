@@ -29,7 +29,7 @@ class Sprite {
 }
 ```
 
-Then you need a type and a class which
+Then you need a type and a factory function which returns a class expression extending the base class.
 
 ```ts twoslash
 // To get started, we need a type which we'll use to extend

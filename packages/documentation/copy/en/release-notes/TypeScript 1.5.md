@@ -259,8 +259,8 @@ function makeNode(name: string, initialNeighbor: Node): Node {
   return {
     name: name,
     neighbors: {
-      [initialNeighbor.name]: initialNeighbor
-    }
+      [initialNeighbor.name]: initialNeighbor,
+    },
   };
 }
 ```
@@ -308,7 +308,7 @@ will be emitted as
 
 ```js
 function oddRawStrings(strs, n1, n2) {
-  return strs.raw.filter(function(raw, index) {
+  return strs.raw.filter(function (raw, index) {
     return index % 2 === 1;
   });
 }
@@ -334,7 +334,7 @@ moduleA.callStuff();
 Generated JS code:
 
 ```js
-define(["require", "exports", "legacy/moduleA"], function(
+define(["require", "exports", "legacy/moduleA"], function (
   require,
   exports,
   moduleA
@@ -353,7 +353,7 @@ The tsconfig.json file specifies the root files and the compiler options require
 
 ##### Example
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "module": "commonjs",

@@ -18,7 +18,7 @@ The `--watch` implementation of the compiler relies on using `fs.watch` and `fs.
 
 ## Configuring file watching using a `tsconfig.json`
 
-```json
+```json tsconfig
 {
   // Some typical compiler options
   "compilerOptions": {

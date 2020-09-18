@@ -6,6 +6,7 @@ import { indexCopy } from "./en/index"
 import { playCopy } from "./en/playground"
 import { comCopy } from "./en/community"
 import { handbookCopy } from "./en/handbook"
+import { dtCopy } from "./en/dt"
 
 export const messages = {
   ...navCopy,
@@ -15,6 +16,7 @@ export const messages = {
   ...playCopy,
   ...comCopy,
   ...handbookCopy,
+  ...dtCopy,
 }
 
 export const lang = defineMessages(messages)

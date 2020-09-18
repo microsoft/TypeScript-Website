@@ -5,6 +5,7 @@
     "packages/create-typescript-playground-plugin",
     "packages/typescript-vfs",
     "packages/ts-twoslasher",
+    "packages/shiki-twoslash",
     "packages/gatsby-remark-shiki-twoslash",
     "packages/community-meta",
     "packages/documentation",

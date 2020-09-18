@@ -24,7 +24,7 @@ tsc --target ES5 --experimentalDecorators
 
 **tsconfig.json**:
 
-```json
+```json  tsconfig
 {
   "compilerOptions": {
     "target": "ES5",
@@ -482,7 +482,7 @@ tsc --target ES5 --experimentalDecorators --emitDecoratorMetadata
 
 **tsconfig.json**:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "target": "ES5",

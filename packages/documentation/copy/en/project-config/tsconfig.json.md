@@ -28,7 +28,7 @@ Example `tsconfig.json` files:
 
 - Using the `"files"` property
 
-  ```json
+  ```json tsconfig
   {
     "compilerOptions": {
       "module": "commonjs",
@@ -57,7 +57,7 @@ Example `tsconfig.json` files:
 
 - Using the `"include"` and `"exclude"` properties
 
-  ```json
+  ```json  tsconfig
   {
     "compilerOptions": {
       "module": "system",
@@ -77,9 +77,9 @@ Example `tsconfig.json` files:
 Depending on the JavaScript runtime environment which you intend to run your code in, there may be a base configuration which you can use at [github.com/tsconfig/bases](https://github.com/tsconfig/bases/).
 These are `tsconfig.json` files which your project extends from which simplifies your `tsconfig.json` by handling the runtime support.
 
-For example, if you were writing a project which uses Node.js version 12 and above, then you could use the npm module [`@tsconfig/node12`](https://www.npmjs.com/package/@tsconfig/node12)
+For example, if you were writing a project which uses Node.js version 12 and above, then you could use the npm module [`@tsconfig/node12`](https://www.npmjs.com/package/@tsconfig/node12):
 
-```json
+```json tsconfig
 {
   "extends": "@tsconfig/node12/tsconfig.json",
 

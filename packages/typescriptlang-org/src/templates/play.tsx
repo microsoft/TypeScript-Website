@@ -9,6 +9,7 @@ import { RenderExamples } from "../components/ShowExamples"
 
 import { useIntl } from "react-intl";
 import { createInternational } from "../lib/createInternational"
+import { hasLocalStorage } from "../lib/hasLocalStorage"
 import { headCopy } from "../copy/en/head-seo"
 import { playCopy } from "../copy/en/playground"
 
@@ -49,10 +50,6 @@ const Play: React.FC<Props> = (props) => {
       }
     });
 
-    let hasLocalStorage = false
-    try {
-      hasLocalStorage = typeof localStorage !== `undefined`
-    } catch (error) { }
     if (!hasLocalStorage) {
       document.getElementById("loading-message")!.innerText = "Cannot load the Playground with storage disabled in your browser"
       return
@@ -70,11 +67,19 @@ const Play: React.FC<Props> = (props) => {
     const getLoaderScript = document.createElement('script');
     getLoaderScript.src = withPrefix("/js/vs.loader.js");
     getLoaderScript.async = true;
-    getLoaderScript.onload = () => {
+    getLoaderScript.onload = async () => {
       const params = new URLSearchParams(location.search)
-      // nothing || Nightly -> next || original ts param which should be a release of monaco
-      const supportedVersion = !params.get("ts") ? undefined : params.get("ts") === "Nightly" ? "next" : params.get("ts")
-      const tsVersion = supportedVersion || playgroundReleases.versions.sort().pop()
+
+      let tsVersionParam = params.get("ts")
+      // handle the nightly lookup 
+      if (tsVersionParam && tsVersionParam === "Nightly" || tsVersionParam === "next") {
+        // Avoids the CDN to doubly skip caching
+        const nightlyLookup = await fetch("https://tswebinfra.blob.core.windows.net/indexes/next.json", { cache: "no-cache" })
+        const nightlyJSON = await nightlyLookup.json()
+        tsVersionParam = nightlyJSON.version
+      }
+
+      const tsVersion = tsVersionParam || playgroundReleases.versions.sort().pop()
 
       // Because we can reach to localhost ports from the site, it's possible for the locally built compiler to 
       // be hosted and to power the editor with a bit of elbow grease.
@@ -118,7 +123,8 @@ const Play: React.FC<Props> = (props) => {
           compilerOptions: {},
           domID: "monaco-editor-embed",
           useJavaScript: !!params.get("useJavaScript"),
-          acquireTypes: !localStorage.getItem("disable-ata")
+          acquireTypes: !localStorage.getItem("disable-ata"),
+          supportTwoslashCompilerOptions: true
         }, main, ts)
 
         const playgroundConfig = {
@@ -212,7 +218,7 @@ const Play: React.FC<Props> = (props) => {
                 <li><a id="run-button" href="#" role="button">{i("play_toolbar_run")}</a></li>
 
                 <li className="dropdown">
-                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="export-dropdown-menu">{i("play_toolbar_export")} <span className="caret"></span></a>
+                  <a href="#" id="exports-drpdown" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="export-dropdown-menu">{i("play_toolbar_export")} <span className="caret"></span></a>
                   <ul className="dropdown-menu" id='export-dropdown-menu' aria-labelledby="whatisnew-button">
                     <li><a href="#" onClick={() => playground.exporter.reportIssue()} aria-label={i("play_export_report_issue")} >{i("play_export_report_issue")}</a></li>
                     <li role="separator" className="divider"></li>

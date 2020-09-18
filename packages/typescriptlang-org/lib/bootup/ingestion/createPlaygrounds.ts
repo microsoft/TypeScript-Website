@@ -49,21 +49,9 @@ export const createPlaygrounds = async (
     const optionsSummary = JSON.parse(fs.readFileSync(optionsPath, "utf8"))
       .options
 
-    // Support backwards compat with urls doing ts.org/play
-    if (lang.name === "en") {
-      createPage({
-        path: "/play",
-        component: playPage,
-        context: {
-          lang: lang.name,
-          examplesTOC,
-          optionsSummary,
-        },
-      })
-    }
-
+    const pathName = lang.name === "en" ? "/play" : `/${lang.name}/play`
     createPage({
-      path: lang.name + "/play",
+      path: pathName,
       component: playPage,
       context: {
         lang: lang.name,

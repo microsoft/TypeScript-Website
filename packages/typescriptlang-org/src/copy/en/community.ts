@@ -1,8 +1,8 @@
 export const comCopy = {
-  com_layout_title: "How to set up TypeScript",
+  com_layout_title: "How to set up TypeScript", // FIXME: Is this the right title for the community page?
   com_layout_description:
     "Connect with other TypeScripters online and offline.",
-  com_headline: "Connect with us",
+  com_headline: "Connect with us", // FIXME: I think this is not used anywhere
   com_connect_online: "Online",
   com_connect_online_description:
     " Tell us what’s working well, what you want to see added or improved, and find out about new updates.",
@@ -17,8 +17,8 @@ export const comCopy = {
   com_online_github_href: "Tell us on GitHub",
   com_online_twitter_desc: "Stay up to date. Follow us on Twitter",
   com_online_blog_desc:
-    "Learn about the latest TypeScript developments via our",
-  com_online_typed_desc: "TypeScript definition files",
+    "Learn about the latest TypeScript developments via our", //... blog
+  com_online_typed_desc: "TypeScript definition files.",
   com_online_typed_href: "Browse the thousands of",
   com_online_typed_available_for:
     "available for common libraries and frameworks.",

@@ -24,6 +24,7 @@
   --playground-dragbar-bg: #{$ts-dark-barely-blue-highlight};
   --playground-dragbar-border: white;
   --playground-pre-color: white;
+  --table-border-color: #545454;
   --playground-pre-bg: #1e1e1e;
   --footer-arrow-color: $ts-light-bg-grey-highlight-color;
   --fade-gradient: linear-gradient(
@@ -59,7 +60,8 @@ html.light-theme {
   --playground-dragbar-border: #c4c4c4;
   --playground-pre-color: black;
   --playground-pre-bg: #f7f7f7;
-  --footer-arrow-color: $ts-dark-bg-for-foreground-colo;
+  --footer-arrow-color: $ts-dark-bg-for-foreground-color;
+  --table-border-color: #f1f1f1;
   --fade-gradient: linear-gradient(
     0deg,
     rgba(255, 255, 255, 1) 0%,
