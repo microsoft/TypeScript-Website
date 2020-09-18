@@ -82,7 +82,6 @@ export const relatedTo: [AnOption, AnOption[]][] = [
 
   ["types", ["typeRoots"]],
   ["typeRoots", ["types"]],
-  ["declaration", ["emitDeclarationOnly"]],
 
   ["noLib", ["lib"]],
   ["lib", ["noLib"]],
