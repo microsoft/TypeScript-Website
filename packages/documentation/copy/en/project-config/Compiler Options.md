@@ -35,7 +35,7 @@ Option                                         | Type      | Default            
 `--allowJs`                                    | `boolean` | `false`                        | Allow JavaScript files to be compiled.
 `--allowSyntheticDefaultImports`               | `boolean` | `module === "system"` or `--esModuleInterop` | Allow default imports from modules with no default export. This does not affect code emit, just typechecking.
 `--allowUmdGlobalAccess`                       | `boolean` | `false`                        | Allow accessing UMD globals from modules.
-`--allowUnreachableCode`                       | `boolean` | `false`                        | Do not report errors on unreachable code.
+`--allowUnreachableCode`                       | `boolean` |                                | Do not report errors on unreachable code.
 `--allowUnusedLabels`                          | `boolean` | `false`                        | Do not report errors on unused labels.
 `--alwaysStrict`                               | `boolean` | `false`                        | Parse in strict mode and emit `"use strict"` for each source file
 `--assumeChangesOnlyAffectDirectDependencies`  | `boolean` | `false`                        | Have recompiles in `--incremental` and `--watch` assume that changes within a file will only affect files directly depending on it
@@ -69,7 +69,6 @@ Option                                         | Type      | Default            
 `--jsxFactory`                                 | `string`  | `"React.createElement"`        | Specify the JSX factory function to use when targeting react JSX emit, e.g. `React.createElement` or `h`.
 `--jsxFragmentFactory`                         | `string`  | `"React.Fragment"`             | Specify the JSX fragment factory function to use when targeting react JSX emit, e.g. `Fragment`.
 `--keyofStringsOnly`                           | `boolean` | `false`                        | Resolve `keyof` to string valued property names only (no numbers or symbols).
-`--useDefineForClassFields`                    | `boolean` | `false`                        | Emit class fields with ECMAScript-standard semantics.
 `--lib`                                        | `string[]`|                                | List of library files to be included in the compilation.<br/>Possible values are:  <br/>► `ES5` <br/>► `ES6` <br/>► `ES2015` <br/>► `ES7` <br/>► `ES2016` <br/>► `ES2017`  <br/>► `ES2018` <br/>► `ESNext` <br/>► `DOM` <br/>► `DOM.Iterable` <br/>► `WebWorker` <br/>► `ScriptHost` <br/>► `ES2015.Core` <br/>► `ES2015.Collection` <br/>► `ES2015.Generator` <br/>► `ES2015.Iterable` <br/>► `ES2015.Promise` <br/>► `ES2015.Proxy` <br/>► `ES2015.Reflect` <br/>► `ES2015.Symbol` <br/>► `ES2015.Symbol.WellKnown` <br/>► `ES2016.Array.Include` <br/>► `ES2017.object` <br/>► `ES2017.Intl` <br/>► `ES2017.SharedMemory` <br/>► `ES2017.String` <br/>► `ES2017.TypedArrays` <br/>► `ES2018.Intl` <br/>► `ES2018.Promise` <br/>► `ES2018.RegExp` <br/>► `ESNext.AsyncIterable` <br/>► `ESNext.Array` <br/>► `ESNext.Intl` <br/>► `ESNext.Symbol` <br/><br/> Note: If `--lib` is not specified a default list of libraries are injected. The default libraries injected are:  <br/> ► For `--target ES5`: `DOM,ES5,ScriptHost`<br/>  ► For `--target ES6`: `DOM,ES6,DOM.Iterable,ScriptHost`
 `--listEmittedFiles`                           | `boolean` | `false`                        | Print names of generated files part of the compilation.
 `--listFiles`                                  | `boolean` | `false`                        | Print names of files part of the compilation.
@@ -95,7 +94,7 @@ Option                                         | Type      | Default            
 `--noUnusedParameters`                         | `boolean` | `false`                        | Report errors on unused parameters.
 ~~`--out`~~                                    | `string`  |                                | DEPRECATED. Use `--outFile` instead.
 `--outDir`                                     | `string`  |                                | Redirect output structure to the directory.
-`--outFile`                                    | `string`  |                                | Concatenate and emit output to single file. The order of concatenation is determined by the list of files passed to the compiler on the command line along with triple-slash references and imports. See [output file order documentation](https://github.com/Microsoft/TypeScript/wiki/FAQ#how-do-i-control-file-ordering-in-combined-output---out-) for more details.
+`--outFile`                                    | `string`  |                                | Concatenate and emit output to single file. The order of concatenation is determined by the list of files passed to the compiler on the command line along with triple-slash references and imports. See [output file order documentation](https://github.com/Microsoft/TypeScript/wiki/FAQ#how-do-i-control-file-ordering-in-combined-output---out) for more details.
 `paths`<sup>[2]</sup>                          | `Object`  |                                | List of path mapping entries for module names to locations relative to the `baseUrl`. See [Module Resolution documentation](/docs/handbook/module-resolution.html#path-mapping) for more details.
 `--preserveConstEnums`                         | `boolean` | `false`                        | Do not erase const enum declarations in generated code. See [const enums documentation](https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#94-constant-enum-declarations) for more details.
 `--preserveSymlinks`                            | `boolean` | `false`                       | Do not resolve symlinks to their real path; treat a symlinked file like a real one.
@@ -108,7 +107,7 @@ Option                                         | Type      | Default            
 `--rootDir`                                    | `string`  | *(common root directory is computed from the list of input files)*   | Specifies the root directory of input files. Only use to control the output directory structure with `--outDir`.
 `rootDirs`<sup>[2]</sup>                       | `string[]`|                                | List of <i>root</i> folders whose combined content represent the structure of the project at runtime. See [Module Resolution documentation](/docs/handbook/module-resolution.html#virtual-directories-with-rootdirs) for more details.
 `--showConfig`                                 | `boolean` | `false`                        | Rather than actually execute a build with the other input options and config files, show the final implied config file in the output.
-`--skipDefaultLibCheck`                        | `boolean` | `false`                        | DEPRECATED. Use `--skipLibCheck` instead.<br/>Skip type checking of [default library declaration files](/docs/handbook/triple-slash-directives.htmld#-reference-no-default-libtrue).
+`--skipDefaultLibCheck`                        | `boolean` | `false`                        | DEPRECATED. Use `--skipLibCheck` instead.<br/>Skip type checking of [default library declaration files](/docs/handbook/triple-slash-directives.html#-reference-no-default-libtrue).
 `--skipLibCheck`                               | `boolean` | `false`                        | Skip type checking of all declaration files (`*.d.ts`).
 `--sourceMap`                                  | `boolean` | `false`                        | Generates corresponding `.map` file.
 `--sourceRoot`                                 | `string`  |                                | Specifies the location where debugger should locate TypeScript files instead of source locations. Use this flag if the sources will be located at run-time in a different location than that at design-time. The location specified will be embedded in the sourceMap to direct the debugger where the source files will be located.
@@ -124,6 +123,7 @@ Option                                         | Type      | Default            
 `--tsBuildInfoFile`                            | `string`  | `.tsbuildinfo`                 | Specify what file to store incremental build information in.
 `--types`                                      | `string[]`|                                | List of names of type definitions to include. See [@types, --typeRoots and --types](/tsconfig#types) for more details.
 `--typeRoots`                                  | `string[]`|                                | List of folders to include type definitions from. See [@types, --typeRoots and --types](/tsconfig#types) for more details.
+`--useDefineForClassFields`                    | `boolean` | `false`                        | Emit class fields with ECMAScript-standard semantics.
 `--version`<br/>`-v`                           |           |                                | Print the compiler's version.
 `--watch`<br/>`-w`                             |           |                                | Run the compiler in watch mode. Watch input files and trigger recompilation on changes. The implementation of watching files and directories can be configured using environment variable. See [configuring watch](/docs/handbook/configuring-watch.html) for more details.
 
@@ -134,4 +134,4 @@ Option                                         | Type      | Default            
 
 - Setting compiler options in [`tsconfig.json`](/docs/handbook/tsconfig-json.html) files.
 - Setting compiler options in [MSBuild projects](/docs/handbook/compiler-options-in-msbuild.html).
-- There's also out the [TSConfig Reference](/tsconfig).
+- There's also the [TSConfig Reference](/tsconfig).

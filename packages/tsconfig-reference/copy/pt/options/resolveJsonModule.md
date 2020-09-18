@@ -7,7 +7,8 @@ Permite importar módulos com um uma extensão '.json', que é uma prática comu
 
 O TypeScript não suporta a resolução de arquivos JSON por padrão:
 
-```ts
+```ts twoslash
+// @errors: 2732
 // @filename: settings.json
 {
     "repo": "TypeScript",
@@ -23,7 +24,11 @@ settings.dry === 2;
 
 Ativar essa opção permite importar JSON e validar os tipos nesse arquivo JSON.
 
-```ts
+```ts twoslash
+// @errors: 2367
+// @resolveJsonModule
+// @module: commonjs
+// @moduleResolution: node
 // @filename: settings.json
 {
     "repo": "TypeScript",

@@ -1,3 +1,7 @@
+## 1.1.1
+
+- Better handling of JSON files
+
 ## 1.1.0
 
 - Adds a JS file into the npm tarball for using with a vanilla script tag, which sets `global.twoslash` with the main twoslash function. You need to include a copy of tsvfs beforehand.

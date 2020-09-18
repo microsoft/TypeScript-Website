@@ -2,8 +2,25 @@ import { useEffect, useState } from "react"
 
 import { RawSearchResults, RawSearchResult } from "./types"
 
+const randomQuery = [
+  "react",
+  "express",
+  "lodash",
+  "preact",
+  "lambda",
+  "jest",
+  "danger",
+  "ember",
+  "vue",
+  "svelte",
+  "node",
+  "ASP",
+]
+
 const createPostData = (requestedSearch: string) => {
-  const search = requestedSearch || "react"
+  const search =
+    requestedSearch ||
+    randomQuery[Math.floor(Math.random() * randomQuery.length)]
   return {
     requests: [
       {

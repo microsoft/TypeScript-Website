@@ -218,7 +218,7 @@ const Play: React.FC<Props> = (props) => {
                 <li><a id="run-button" href="#" role="button">{i("play_toolbar_run")}</a></li>
 
                 <li className="dropdown">
-                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="export-dropdown-menu">{i("play_toolbar_export")} <span className="caret"></span></a>
+                  <a href="#" id="exports-drpdown" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="export-dropdown-menu">{i("play_toolbar_export")} <span className="caret"></span></a>
                   <ul className="dropdown-menu" id='export-dropdown-menu' aria-labelledby="whatisnew-button">
                     <li><a href="#" onClick={() => playground.exporter.reportIssue()} aria-label={i("play_export_report_issue")} >{i("play_export_report_issue")}</a></li>
                     <li role="separator" className="divider"></li>

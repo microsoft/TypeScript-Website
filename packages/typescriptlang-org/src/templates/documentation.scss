@@ -64,6 +64,7 @@
 
   aside {
     display: none;
+
     @media (min-width: 1000px) {
       display: block;
     }
@@ -108,6 +109,7 @@
         &:active {
           border-left: 2px solid rgba(0, 120, 212, 0.3);
         }
+
         &.current {
           border-left: 2px solid #0078d4;
         }
@@ -178,6 +180,7 @@
         margin-right: 0px;
         margin-left: 20px;
       }
+
       svg {
         transform: scaleX(-1);
       }
@@ -227,8 +230,12 @@ div#like-dislike-subnav {
       display: inline-flex;
       flex-direction: row;
       align-items: center;
+      color: var(--text-color);
+
       svg {
         margin-right: 4px;
+        fill: var(--text-color);
+        color: var(--text-color);
       }
     }
   }

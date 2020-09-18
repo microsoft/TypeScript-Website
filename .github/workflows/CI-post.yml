@@ -27,7 +27,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      # Install, should be absically instant if cached
+      # Install, should be basically be instant if cached
       - run: yarn install
         env:
           YARN_CHECKSUM_BEHAVIOR: ignore
@@ -66,17 +66,6 @@ jobs:
           app_location: "built" # App source code path
           app_artifact_location: "public" # Subfolder in built
           ###### End of Repository/Build Configurations #####
-
-      # - if: github.event_name == 'pull_request' && github.event.action == 'closed'
-      #   runs-on: ubuntu-latest
-      #   name: Close Pull Request Job
-      #   steps:
-      #     - name: Close Pull Request
-      #       id: closepullrequest
-      #       uses: Azure/static-web-apps-deploy@v0.0.1-preview
-      #       with:
-      #         azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_NICE_MEADOW_0C9756810 }}
-      #         action: "close"
 
       - run: "yarn workspace typescriptlang-org create-lighthouse-json"
         env:

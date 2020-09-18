@@ -30,7 +30,7 @@ const go = async () => {
 
       const echoResultsToScreenReaders = fixTabbing.replace(
         'this.trigger("cursorMoved",updateInput)',
-        'this.trigger("cursorMoved", updateInput); $el.parent().children().forEach(s => s.setAttribute("role", undefined));$el.attr("role", "alert");'
+        'this.trigger("cursorMoved", updateInput); $el.parent().children().forEach(s => s.setAttribute("role", undefined)); console.log($el); ; $el.find(".algolia-docsearch-suggestion--wrapper").attr("role", "alert");'
       )
       return echoResultsToScreenReaders
     }

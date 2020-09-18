@@ -1,0 +1,63 @@
+{
+    "sections": [
+        {
+            "name": "JavaScript",
+            "id": "JavaScript",
+            "subtitle": "Lihat bagaimana TypeScript meningkatkan pekerjaan JavaScript sehari-hari dengan sedikit penambahan sintaks."
+        },
+        {
+            "name": "TypeScript",
+            "id": "TypeScript",
+            "subtitle": "Jelajahi bagaimana TypeScript mengembangkan JavaScript untuk menambah keamanan dan perkakas."
+        },
+        {
+            "name": "3.7",
+            "id": "3.7",
+            "subtitle": "Lihat <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/'>Catatan rilis</a>."
+        },
+        {
+            "name": "3.8",
+            "id": "3.8",
+            "subtitle": "Lihat <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-8/'>Catatan rilis</a>."
+        },
+        {
+            "name": "4.0",
+            "id": "4.0",
+            "subtitle": "Lihat <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-4-0-beta/'>Catatan rilis</a>."
+        },
+        {
+            "name": "Playground V3",
+            "id": "Playground",
+            "subtitle": "Ketahui apa yang telah berubah pada situs ini."
+        }
+    ],
+    "sortedSubSections": [
+        // JS
+        "JavaScript Esensial",
+        "Fungsi dengan JavaScript",
+        "Bekerja dengan Kelas",
+        "JavaScript Modern",
+        "API Eksternal",
+        "Bantuan dengan JavaScript",
+        // TS
+        "Primitif",
+        "Tipe Primitif",
+        "Meta-Types",
+        "Bahasa",
+        "Ekstensi Bahasa",
+        // Examples
+        "Sintaks dan Pesan",
+        "Tipe dan Alur Kode",
+        "Fixits",
+        // Playground
+        "Pengaturan",
+        "Perkakas",
+        // 3.8
+        "Perubahan yang Merusak",
+        "Peningkatan JSDoc",
+        // 4.0
+        "Fitur JavaScript Baru",
+        "Fitur TypeScript Baru",
+        "Pemeriksaan Baru"
+    ]
+}

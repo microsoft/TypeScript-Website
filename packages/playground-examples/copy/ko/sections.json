@@ -1,0 +1,63 @@
+{
+  "sections": [
+    {
+      "name": "JavaScript",
+      "id": "JavaScript",
+      "subtitle": "TypeScript가 최소한의 추가 구문으로 JavaScript 작업을 어떻게 개선하는지 확인해보세요."
+    },
+    {
+      "name": "TypeScript",
+      "id": "TypeScript",
+      "subtitle": "TypeScript가 JavaScript를 확장하여 안전성과 도구를 추가하는 방법을 살펴보세요."
+    },
+    {
+      "name": "3.7",
+      "id": "3.7",
+      "subtitle": "<a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/'>릴리즈 노트</a>를 확인해보세요."
+    },
+    {
+      "name": "3.8",
+      "id": "3.8",
+      "subtitle": "<a href='https://devblogs.microsoft.com/typescript/announcing-typescript-3-8/'>릴리즈 노트</a>를 확인해보세요."
+    },
+    {
+      "name": "4.0",
+      "id": "4.0",
+      "subtitle": "<a href='https://devblogs.microsoft.com/typescript/announcing-typescript-4-0-beta/'>릴리즈 노트</a>를 확인해보세요."
+    },
+    {
+      "name": "Playground V3",
+      "id": "Playground",
+      "subtitle": "이 웹사이트에서 변경된 사항을 확인해보세요."
+    }
+  ],
+  "sortedSubSections": [
+    // JS
+    "JavaScript Essentials",
+    "Functions with JavaScript",
+    "Working With Classes",
+    "Modern JavaScript",
+    "External APIs",
+    "Helping with JavaScript",
+    // TS
+    "Primitives",
+    "Type Primitives",
+    "Meta-Types",
+    "Language",
+    "Language Extensions",
+    // Examples
+    "Syntax and Messaging",
+    "Types and Code Flow",
+    "Fixits",
+    // Playground
+    "Config",
+    "Tooling",
+    // 3.8
+    "Breaking Changes",
+    "JSDoc Improvements",
+    // 4.0
+    "New JS Features",
+    "New TS Features",
+    "New Checks"
+  ]
+}
