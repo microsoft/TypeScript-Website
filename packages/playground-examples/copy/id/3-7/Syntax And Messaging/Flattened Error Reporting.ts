@@ -1,6 +1,6 @@
 //// { compiler: {  }, order: 3 }
 
-// Pesan kesalahan TypeScript kadang-kadang dapat agak bertele-tele
+// Pesan kesalahan yang ditampilkan TypeScript terkadang berlebihan.
 // Dengan TypeScript 3.7, kami telah mengambil beberapa kasus dimana
 // pesan kesalahan yang ditampilkan oleh TypeScript sangat buruk.
 

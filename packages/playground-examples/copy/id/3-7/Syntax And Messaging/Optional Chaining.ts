@@ -59,7 +59,7 @@ const mungkinAlbumSebelumnyaYangPertama = album?.artis?.albumSebelumnya?.[0];
 // biasanya ditulis seperti: if (func) func()
 
 // Sebagai contoh, disini terdapat sebuah pemanggilan opsional
-// pada callback dari sebuah permintaan API
+// pada _callback_ dari sebuah permintaan API
 
 const panggilPembaruanMetadata = (metadata: any) => Promise.resolve(metadata); // Pemanggilan API palsu
 

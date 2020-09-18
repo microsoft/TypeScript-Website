@@ -8,17 +8,17 @@
 // sebuah string kosong atau bilangan yang bernilai akan dianggap false.
 
 // Sebuah contoh yang baik untuk fitur ini adalah ketika berurusan dengan
-// objek parsial yang memiliki nilai default ketika sebuah pengidentifikasi
+// objek parsial yang memiliki nilai anggapan ketika sebuah pengidentifikasi
 // tidak dinyatakan.
 
 interface KonfigurasiAplikasi {
-    // Nilai default: "(tidak bernama)"; string kosong merupakan nilai yang VALID
+    // Nilai anggapan: "(tidak bernama)"; string kosong merupakan nilai yang VALID
     nama: string;
 
-    // Nilai default: -1; 0 merupakan nilai yang valid
+    // Nilai anggapan: -1; 0 merupakan nilai yang valid
     barang: number;
 
-    // Nilai default: true
+    // Nilai anggapan: true
     aktif: boolean;
 }
 
