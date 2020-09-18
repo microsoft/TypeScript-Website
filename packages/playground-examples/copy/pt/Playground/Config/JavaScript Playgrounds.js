@@ -28,7 +28,7 @@
  * @param {number} O segundo número
  * @returns {number}
  */
-function addTwoNumbers(a, b) {
+function somaDoisNumeros(a, b) {
   return a + b;
 }
 

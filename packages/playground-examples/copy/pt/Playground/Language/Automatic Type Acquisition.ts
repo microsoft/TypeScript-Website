@@ -8,7 +8,7 @@
 // ao TypeScript.
 
 // Você pode utilizá-lo criando importações no seu código.
-// Funciona tanto através do @types de DefinitelyTyped ou por
+// Funciona tanto através do @types do DefinitelyTyped ou por
 // arquivos d.ts dentro da própria dependência.
 
 import { danger } from "danger";

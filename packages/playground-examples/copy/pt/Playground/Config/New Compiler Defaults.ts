@@ -5,7 +5,7 @@
 // time recomenda que os usuários tentem migrar para ter o modo
 // strict ativado nas suas configurações.
 
-// Porém, para o playground felizmente podemos estabelecer os
+// Porém, para o playground, felizmente podemos estabelecer os
 // padrões como strict. O playground também vai manter um 
 // acompanhamento das flags do compilador que mudaram dos padrões
 // do playground e fazer elas serem compartilháveis na URL.
