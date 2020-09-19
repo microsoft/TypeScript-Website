@@ -15,8 +15,8 @@ function envolverEmArray<Tipo>(entrada: Tipo): Tipo[] {
 }
 
 // Nota: é comum ver Tipo ser referido como T. Isso é
-// culturalmente similar à como as pessoas usam i em um loop for
-// para representar índice. T normalmente representa Tipo, então
+// culturalmente similar a como as pessoas usam i em um loop for
+// para representar índice. T normalmente representa Tipo (Type), então
 // usaremos o nome completo para maior clareza
 
 // Nossa função usará inferência para sempre manter o tipo
@@ -27,7 +27,7 @@ const stringArray = envolverEmArray("hello generics");
 const numberArray = envolverEmArray(123);
 
 // Podemos verificar que isso funciona como esperado ao checar
-// se podemos atribuir um array de strings à uma função que
+// se podemos atribuir um array de strings a uma função que
 // deveria ser um array de objetos
 const naoArrayDeStrings: string[] = envolverEmArray({});
 
@@ -44,7 +44,7 @@ interface Desenhavel {
   desenhar: () => void;
 }
 
-// Esta função receve um conjunto de objetos os quais possuem uma função
+// Esta função recebe um conjunto de objetos que possuem uma função
 // para desenhar na tela
 function renderizarNaTela<Tipo extends Desenhavel>(entrada: Tipo[]) {
   entrada.forEach(i => i.desenhar());
@@ -80,7 +80,7 @@ interface HostDeCacheGenerico<TipoDeConteudo> {
 }
 
 // Agora quando o HostDeCacheGenerico é usado, você deve dizer
-// à dele qual é o TipoDeConteudo
+// a dele qual é o TipoDeConteudo
 
 function adicionarObjetoTipadoAoCache<Tipo, Cache extends HostDeCacheGenerico<Tipo>>(obj: Tipo, cache: Cache): Cache {
   cache.salvar(obj);
@@ -88,9 +88,9 @@ function adicionarObjetoTipadoAoCache<Tipo, Cache extends HostDeCacheGenerico<Ti
 }
 
 // O exemplo acima é bem intenso em termos de sintaxe. Porém,
-// isso provê uma segurança maior. Estes são trade-offs (compromissos),
-// os quais você agora possui conhecimento para fazer. Quando for prover APIs
-// à outras pessoas, tipos genéricos oferecem um jeito flexível de permitir
+// isso provê uma segurança maior. Essas são escolhas que
+// agora você tem conhecimento para fazer. Quando for prover APIs
+// a outras pessoas, tipos genéricos oferecem um jeito flexível de permitir
 // que elas usem seus próprios tipos sem ter que inferir seu código por completo.
 
 // Para mais exemplos de tipos genéricos com classes e interfaces:
