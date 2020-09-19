@@ -7,8 +7,8 @@
 // não significa que tipos genéricos são complicados.
 
 // Vamos começar com um exemplo onde envolveremos um objeto de entrada
-// em um array. Apenas nos importaremos com uma só variável neste
-// caso: o tipo que foi passado como argumento:
+// em um array. Só vamos nos importar com uma variável neste caso:
+// o tipo que foi passado como argumento:
 
 function envolverEmArray<Tipo>(entrada: Tipo): Tipo[] {
   return [entrada];
