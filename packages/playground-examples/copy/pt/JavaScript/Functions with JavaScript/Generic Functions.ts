@@ -1,5 +1,5 @@
-// Tipos genéricos provêm uma forma de usar Tipos como variáveis em outros
-// tipos. Meta.
+// Tipos genéricos permitem usar Tipos como variáveis em outros tipos.
+// Meta
 
 // Tentaremos manter este exemplo leve. Você pode fazer
 // muita coisa com tipos genéricos e é provável que veja algum código bem
