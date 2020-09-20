@@ -12,7 +12,7 @@ type CompilerOptions = import("typescript").CompilerOptions
  */
 
 export const extractTwoSlashComplierOptions = (ts: TS) => {
-  const optMap = new Map<string, any>()
+  let optMap = new Map<string, any>()
 
   // @ts-ignore - optionDeclarations is not public API
   for (const opt of ts.optionDeclarations) {
@@ -26,10 +26,14 @@ export const extractTwoSlashComplierOptions = (ts: TS) => {
     codeLines.forEach(line => {
       let match
       if ((match = booleanConfigRegexp.exec(line))) {
-        options[match[1]] = true
-        setOption(match[1], "true", options, optMap)
+        if (optMap.has(match[1])) {
+          options[match[1]] = true
+          setOption(match[1], "true", options, optMap)
+        }
       } else if ((match = valuedConfigRegexp.exec(line))) {
-        setOption(match[1], match[2], options, optMap)
+        if (optMap.has(match[1])) {
+          setOption(match[1], match[2], options, optMap)
+        }
       }
     })
     return options
