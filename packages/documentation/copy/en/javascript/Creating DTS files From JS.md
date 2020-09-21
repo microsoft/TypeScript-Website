@@ -27,7 +27,7 @@ You can learn how to do this in our [installation page](/download).
 
 ### TSConfig
 
-The TSConfig is a json5 file which configures both your compiler flags, and declare where to find files.
+The TSConfig is a jsonc file which configures both your compiler flags, and declare where to find files.
 In this case, you will want a file like the following:
 
 ```json5
