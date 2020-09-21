@@ -330,7 +330,7 @@ Const enum members are inlined at use sites.
 This is possible since const enums cannot have computed members.
 
 ```ts twoslash
-const enum Directions {
+const enum Direction {
   Up,
   Down,
   Left,
@@ -338,10 +338,10 @@ const enum Directions {
 }
 
 let directions = [
-  Directions.Up,
-  Directions.Down,
-  Directions.Left,
-  Directions.Right
+  Direction.Up,
+  Direction.Down,
+  Direction.Left,
+  Direction.Right
 ];
 ```
 
@@ -349,7 +349,7 @@ in generated code will become
 
 ```ts twoslash
 // @showEmit
-const enum Directions {
+const enum Direction {
   Up,
   Down,
   Left,
@@ -357,10 +357,10 @@ const enum Directions {
 }
 
 let directions = [
-  Directions.Up,
-  Directions.Down,
-  Directions.Left,
-  Directions.Right
+  Direction.Up,
+  Direction.Down,
+  Direction.Left,
+  Direction.Right
 ];
 ```
 
