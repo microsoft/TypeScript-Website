@@ -51,6 +51,9 @@ jobs:
       - name: "Validates that TypeScript plugins work"
         run: npm init typescript-playground-plugin playground-my-plugin
 
+      - name: "Copy PR JSON"
+        run: cp $GITHUB_EVENT_PATH ${{ github.workspace }}/packages/typescriptlang-org/public/pr.json
+
       - uses: actions/upload-artifact@v2
         with:
           name: built-site

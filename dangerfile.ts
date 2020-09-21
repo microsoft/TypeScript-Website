@@ -12,7 +12,8 @@ import { readFileSync } from "fs"
 
 export default () => {
   // JSON reference: https://github.com/haya14busa/github-actions-playground/runs/987846369
-  const contextText = readFileSync(process.env.GITHUB_EVENT_PATH, "utf8")
+  const contextText = readFileSync("built/public/pr.json", "utf8")
+  console.log(contextText)
   const context = JSON.parse(contextText)
 
   const repo = { owner: context.event.repository.owner.login, repo: context.event.repository.name }
