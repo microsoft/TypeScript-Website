@@ -26,12 +26,13 @@ export const extractTwoSlashComplierOptions = (ts: TS) => {
     codeLines.forEach(line => {
       let match
       if ((match = booleanConfigRegexp.exec(line))) {
-        if (optMap.has(match[1])) {
+        if (optMap.has(match[1].toLowerCase())) {
           options[match[1]] = true
           setOption(match[1], "true", options, optMap)
         }
       } else if ((match = valuedConfigRegexp.exec(line))) {
-        if (optMap.has(match[1])) {
+        console.log(match)
+        if (optMap.has(match[1].toLowerCase())) {
           setOption(match[1], match[2], options, optMap)
         }
       }
