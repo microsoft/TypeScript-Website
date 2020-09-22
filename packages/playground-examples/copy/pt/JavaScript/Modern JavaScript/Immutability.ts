@@ -1,11 +1,11 @@
-// O JavaScript é uma linguagem com algumas maneiras de
+// O JavaScript é uma linguagem que possui algumas maneiras de
 // declarar que alguns de seus objetos não mudam.
-// O mais proeminente é const - no qual diz que o valor não mudará.
+// O mais proeminente é const - que diz que o valor não mudará.
 
 const olaMundo = "Olá Mundo";
 
 // Você não pode mudar olaMundo agora, o TypeScript
-// te dará um erro sobre isso, porque você teria um erro no
+// te dará um erro, porque você teria um erro em
 // tempo de execução.
 
 olaMundo = "Oi mundo";

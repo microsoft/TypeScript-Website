@@ -1,8 +1,8 @@
 //// { order: 1, target: "es5" }
 
 // O JavaScript moderno adicionou um modo de lidar com callbacks
-// de uma maneira elegante adicionando uma API baseada em Promise
-// na qual tem uma sintaxe especial que te permite tratar
+// de uma maneira elegante adicionando uma API baseada em Promises
+// a qual tem uma sintaxe especial que te permite tratar
 // código assíncrono como se fosse síncrono.
 
 // Assim como todos os recursos da linguagem, isso é uma troca em
@@ -105,5 +105,5 @@ const checarRaizQuadrada = async (valor: number) => {
 // const terceiraResposta = await pegarResposta(dadosDaResposta.url)
 // ...
 
-// No qual pode fazer o código ficar mais perto do canto esquerdo
+// O qual pode fazer o código ficar mais perto do canto esquerdo
 // e ser lido com um ritmo consistente.
