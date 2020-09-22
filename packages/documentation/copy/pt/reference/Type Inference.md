@@ -6,125 +6,125 @@ oneline: How code flow analysis works in TypeScript
 translatable: true
 ---
 
-In TypeScript, there are several places where type inference is used to provide type information when there is no explicit type annotation. For example, in this code
+Em TypeScript, existem varios locais onde a inferencia de tipos é usada para prover informacao quando não se tem um tipo explícito de anotação. Por exemplo, esse código
 
 ```ts twoslash
 let x = 3;
 //  ^?
 ```
 
-The type of the `x` variable is inferred to be `number`.
-This kind of inference takes place when initializing variables and members, setting parameter default values, and determining function return types.
+O tipo da variável `x` é inferido como sendo `number`.
+Esse tipo de inferência ocorre ao inicializar variaveis e membros, definir valores padrão de parâmetros e ao determinar o tipo de valor retornado por funções. 
 
-In most cases, type inference is straightforward.
-In the following sections, we'll explore some of the nuances in how types are inferred.
+Na maioria dos casos, inferencia de tipos é fácil de entender.
+Na próxima sessão, iremos explorar algumas das nunancias em como tipos são inferidos.
 
-## Best common type
+## Melhor tipo comum
 
-When a type inference is made from several expressions, the types of those expressions are used to calculate a "best common type". For example,
+Quando uma inferência de tipo é composta por várias expressões, o tipo dessas expressões é usada para calcular o "melhor tipo comum". Por exemplo:
 
 ```ts twoslash
 let x = [0, 1, null];
 //  ^?
 ```
 
-To infer the type of `x` in the example above, we must consider the type of each array element.
-Here we are given two choices for the type of the array: `number` and `null`.
-The best common type algorithm considers each candidate type, and picks the type that is compatible with all the other candidates.
+Para iferir o tipo de `x` no exemplo acima, nós precisamos considerar o tipo de cada elemento do array. 
+Aqui nos foi dada duas escolhas para o tipo do array: `number` e `null`.
+O algorítimo do melhor tipo comum considera o tipo de cada candidato e escolhe o tipo que é compativel com todos os outros candidatos.
 
-Because the best common type has to be chosen from the provided candidate types, there are some cases where types share a common structure, but no one type is the super type of all candidate types. For example:
-
-```ts twoslash
-// @strict: false
-class Animal {}
-class Rhino extends Animal {
-  hasHorn: true;
-}
-class Elephant extends Animal {
-  hasTrunk: true;
-}
-class Snake extends Animal {
-  hasLegs: false;
-}
-// ---cut---
-let zoo = [new Rhino(), new Elephant(), new Snake()];
-//    ^?
-```
-
-Ideally, we may want `zoo` to be inferred as an `Animal[]`, but because there is no object that is strictly of type `Animal` in the array, we make no inference about the array element type.
-To correct this, instead explicitly provide the type when no one type is a super type of all other candidates:
+Porquê o melhor tipo comum tem de ser escolhido a partir dos tipos candidatos providos, existem alguns casos onde tipos compartilham uma estrutura comum, mas nunhum tipo é o super tipo de todos os tipos candidatos. Por Exemplo:
 
 ```ts twoslash
 // @strict: false
 class Animal {}
-class Rhino extends Animal {
-  hasHorn: true;
+class Rinoceronte extends Animal {
+  temChifre: true;
 }
-class Elephant extends Animal {
-  hasTrunk: true;
+class Elefante extends Animal {
+  temTromba: true;
 }
-class Snake extends Animal {
-  hasLegs: false;
+class Cobra extends Animal {
+  temPernas: false;
 }
 // ---cut---
-let zoo: Animal[] = [new Rhino(), new Elephant(), new Snake()];
+let zoo = [new Rinoceronte(), new Elefante(), new Cobra()];
 //    ^?
 ```
 
-When no best common type is found, the resulting inference is the union array type, `(Rhino | Elephant | Snake)[]`.
+De forma ideal, queremos que `zoo` seja inferido como um `Animal[]`, mas como não existe um objeto que seja estritamente do tipo `Animal` no array, nós não fazemos inferências sobre o tipo de elemento do array.
+Para corrigir isso, em troca forneça explicitamente o tipo quando nenhum tipo é um super tipo de todos os outros candidatos:
 
-## Contextual Typing
+```ts twoslash
+// @strict: false
+class Animal {}
+class Rinoceronte extends Animal {
+  temChifre: true;
+}
+class Elefante extends Animal {
+  temTromba: true;
+}
+class Cobra extends Animal {
+  temPernas: false;
+}
+// ---cut---
+let zoo: Animal[] = [new Rinoceronte(), new Elefante(), new Cobra()];
+//    ^?
+```
 
-Type inference also works in "the other direction" in some cases in TypeScript.
-This is known as "contextual typing". Contextual typing occurs when the type of an expression is implied by its location. For example:
+Quando nenhum tipo comum é encontrado, a inferência resultante é a união dos tipos do array, `(Rinoceronte | Elefante | Cobra)[]`.
+
+## Tipagem Contextual
+
+Inferência de tipo também funciona "em direção oposta" em alguns casos no TypeScript.
+Isso é conhecido como "tipagem contextual". Tipagem contextual ocorre quando o tipo de uma expressão é implícito por sua localização. Por exemplo:
 
 ```ts
 window.onmousedown = function (mouseEvent) {
-  console.log(mouseEvent.button); //<- OK
-  console.log(mouseEvent.kangaroo); //<- Error!
+  console.log(mouseEvent.botao); //<- OK
+  console.log(mouseEvent.canguru); //<- Error!
 };
 ```
 
-Here, the TypeScript type checker used the type of the `Window.onmousedown` function to infer the type of the function expression on the right hand side of the assignment.
-When it did so, it was able to infer the [type](https://developer.mozilla.org/docs/Web/API/MouseEvent) of the `mouseEvent` parameter, which does contain a `button` property, but not a `kangaroo` property.
+Aqui, o verificador de tipos do TypeScript usa o tipo da função `Window.onmousedown` para inferir o tipo da expressão função do lado direito da atribuição.
+Ao fazer isso, ele foi capaz de inferir o [tipo](https://developer.mozilla.org/docs/Web/API/MouseEvent) do parâmetro `mouseEvent`, que de fato contém uma propriedade `botao`, mas não uma propriedade `canguru`.
 
-TypeScript is smart enough to infer types in other contexts as well:
+TypeScript é inteligente o suficiente para inferir tipos em outros contextos também:
 
 ```ts
 window.onscroll = function (uiEvent) {
-  console.log(uiEvent.button); //<- Error!
+  console.log(uiEvent.botao); //<- Erro!
 };
 ```
 
-Based on the fact that the above function is being assigned to `Window.onscroll`, TypeScript knows that `uiEvent` is a [UIEvent](https://developer.mozilla.org/docs/Web/API/UIEvent), and not a [MouseEvent](https://developer.mozilla.org/docs/Web/API/MouseEvent) like the previous example. `UIEvent` objects contain no `button` property, and so TypeScript will throw an error.
+Baseado no fato que a função acima foi atribuida a `Window.onscroll`, TypeScript sabe que `uiEvent` é um [UIEvent](https://developer.mozilla.org/docs/Web/API/UIEvent), e não um [MouseEvent](https://developer.mozilla.org/docs/Web/API/MouseEvent) como no exemplo anterior. Objetos `UIEvent` não contém a propriedade `botao`, dessa forma TypeScript irá lançar um erro.
 
-If this function were not in a contextually typed position, the function's argument would implicitly have type `any`, and no error would be issued (unless you are using the `--noImplicitAny` option):
+Se essa função não estivesse digitada em uma posição contextualizada, os argumentos da função teriam implicitamente o tipo `any`, e nenhum erro seria emitido (a não ser que você esteja usando a opção `--noImplicitAny`):
 
 ```ts
 const handler = function (uiEvent) {
-  console.log(uiEvent.button); //<- OK
+  console.log(uiEvent.botao); //<- OK
 };
 ```
 
-We can also explicitly give type information to the function's argument to override any contextual type:
+Nós também podemos fornecer explicitamente informação sobre o tipo para que os argumentos da função sobrescrevam qualquer tipo contextual:
 
 ```ts
 window.onscroll = function (uiEvent: any) {
-  console.log(uiEvent.button); //<- Now, no error is given
+  console.log(uiEvent.botao); //<- Agora, nenhum erro é fornecido
 };
 ```
 
-However, this code will log `undefined`, since `uiEvent` has no property called `button`.
+Entretanto, esse código será exibido no log como `undefined`, uma vez que `uiEvent` não tem nenhuma propriedade `botao`.
 
-Contextual typing applies in many cases.
-Common cases include arguments to function calls, right hand sides of assignments, type assertions, members of object and array literals, and return statements.
-The contextual type also acts as a candidate type in best common type. For example:
+Tipagem contextual se aplica em muitos casos.
+Casos comuns incluem argumentos para chamadas de fuções, lado direito de atribuições, asserções de tipo, membros de objetos, arrays literais, e declarações de retorno.
+O tipo contextual também age como um tipo candidato no melhor tipo comum. Por exemplo: 
 
 ```ts
-function createZoo(): Animal[] {
-  return [new Rhino(), new Elephant(), new Snake()];
+function criaZologico(): Animal[] {
+  return [new Rinoceronte(), new Elefante(), new Cobra()];
 }
 ```
 
-In this example, best common type has a set of four candidates: `Animal`, `Rhino`, `Elephant`, and `Snake`.
-Of these, `Animal` can be chosen by the best common type algorithm.
+Nesse exemplo, o melhor tipo comum tem um grupo de quatro candidatos: `Animal`, `Rinoceronte`, `Elefante`, and `Cobra`.
+Desses, `Animal` pode ser escolhido pelo algorítimo de melhor candidato comum.
