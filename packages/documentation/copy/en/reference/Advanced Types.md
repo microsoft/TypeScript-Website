@@ -228,8 +228,8 @@ You can include them explicitly using a union type:
 
 ```ts twoslash
 // @errors: 2322
-let examapleString = "foo";
-examapleString = null;
+let exampleString = "foo";
+exampleString = null;
 
 let stringOrNull: string | null = "bar";
 stringOrNull = null;
