@@ -7,7 +7,7 @@ const sandboxMock: any = (code: string) => ({
 })
 
 describe("gets twoslash compiler error messages", () => {
-  it.only("gets the right vars", () => {
+  it("gets the right vars", () => {
     const sandbox = sandboxMock(`
 // @noImplicitAny: false
 // @target: ES2015
