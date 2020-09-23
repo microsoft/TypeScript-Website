@@ -6,7 +6,7 @@ oneline: How code flow analysis works in TypeScript
 translatable: true
 ---
 
-Em TypeScript, existem varios locais onde a inferencia de tipos é usada para prover informacao quando não se tem um tipo explícito de anotação. Por exemplo, esse código
+Em TypeScript, existem vários locais onde a inferência de tipos é usada para prover informação quando não se tem um tipo explícito de anotação. Por exemplo, nesse código
 
 ```ts twoslash
 let x = 3;
@@ -14,10 +14,10 @@ let x = 3;
 ```
 
 O tipo da variável `x` é inferido como sendo `number`.
-Esse tipo de inferência ocorre ao inicializar variaveis e membros, definir valores padrão de parâmetros e ao determinar o tipo de valor retornado por funções. 
+Esse tipo de inferência ocorre ao inicializar variáveis e membros, definir valores padrão de parâmetros e ao determinar o tipo de valor retornado por funções. 
 
-Na maioria dos casos, inferencia de tipos é fácil de entender.
-Na próxima sessão, iremos explorar algumas das nunancias em como tipos são inferidos.
+Na maioria dos casos, inferência de tipos é fácil de entender.
+Na próxima sessão, iremos explorar algumas das nuances em como tipos são inferidos.
 
 ## Melhor tipo comum
 
@@ -28,11 +28,11 @@ let x = [0, 1, null];
 //  ^?
 ```
 
-Para iferir o tipo de `x` no exemplo acima, nós precisamos considerar o tipo de cada elemento do array. 
+Para inferir o tipo de `x` no exemplo acima, nós precisamos considerar o tipo de cada elemento do array. 
 Aqui nos foi dada duas escolhas para o tipo do array: `number` e `null`.
-O algorítimo do melhor tipo comum considera o tipo de cada candidato e escolhe o tipo que é compativel com todos os outros candidatos.
+O algoritmo do melhor tipo comum considera o tipo de cada candidato e escolhe o tipo que é compatível com todos os outros candidatos.
 
-Porquê o melhor tipo comum tem de ser escolhido a partir dos tipos candidatos providos, existem alguns casos onde tipos compartilham uma estrutura comum, mas nunhum tipo é o super tipo de todos os tipos candidatos. Por Exemplo:
+Porquê o melhor tipo comum tem de ser escolhido a partir dos tipos candidatos providos, existem alguns casos onde tipos compartilham uma estrutura comum, mas nenhum tipo é o supertipo de todos os tipos candidatos. Por Exemplo:
 
 ```ts twoslash
 // @strict: false
@@ -52,7 +52,7 @@ let zoo = [new Rinoceronte(), new Elefante(), new Cobra()];
 ```
 
 De forma ideal, queremos que `zoo` seja inferido como um `Animal[]`, mas como não existe um objeto que seja estritamente do tipo `Animal` no array, nós não fazemos inferências sobre o tipo de elemento do array.
-Para corrigir isso, em troca forneça explicitamente o tipo quando nenhum tipo é um super tipo de todos os outros candidatos:
+Para corrigir isso, em troca forneça explicitamente o tipo quando nenhum outro tipo é um supertipo de todos os outros candidatos:
 
 ```ts twoslash
 // @strict: false
@@ -76,7 +76,7 @@ Quando nenhum tipo comum é encontrado, a inferência resultante é a união dos
 ## Tipagem Contextual
 
 Inferência de tipo também funciona "em direção oposta" em alguns casos no TypeScript.
-Isso é conhecido como "tipagem contextual". Tipagem contextual ocorre quando o tipo de uma expressão é implícito por sua localização. Por exemplo:
+Isso é conhecido como "tipagem contextual". Tipagem contextual ocorre quando o tipo de uma expressão é inferido por sua localização. Por exemplo:
 
 ```ts
 window.onmousedown = function (mouseEvent) {
@@ -117,7 +117,7 @@ window.onscroll = function (uiEvent: any) {
 Entretanto, esse código será exibido no log como `undefined`, uma vez que `uiEvent` não tem nenhuma propriedade `botao`.
 
 Tipagem contextual se aplica em muitos casos.
-Casos comuns incluem argumentos para chamadas de fuções, lado direito de atribuições, asserções de tipo, membros de objetos, arrays literais, e declarações de retorno.
+Casos comuns incluem argumentos para chamadas de funções, lado direito de atribuições, asserções de tipo, membros de objetos, arrays literais, e declarações de retorno.
 O tipo contextual também age como um tipo candidato no melhor tipo comum. Por exemplo: 
 
 ```ts
@@ -126,5 +126,5 @@ function criaZologico(): Animal[] {
 }
 ```
 
-Nesse exemplo, o melhor tipo comum tem um grupo de quatro candidatos: `Animal`, `Rinoceronte`, `Elefante`, and `Cobra`.
+Nesse exemplo, o melhor tipo comum tem um grupo de quatro candidatos: `Animal`, `Rinoceronte`, `Elefante`, e `Cobra`.
 Desses, `Animal` pode ser escolhido pelo algorítimo de melhor candidato comum.
