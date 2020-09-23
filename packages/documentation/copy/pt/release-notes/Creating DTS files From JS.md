@@ -27,7 +27,7 @@ Você pode aprender como fazer isso em nossa [página de instalação](/download
 
 ### TSConfig
 
-O TSConfig é um arquivo json5 que configura ambos os sinalizadores do compilador e declara onde encontrar os arquivos.
+O TSConfig é um arquivo jsonc que configura ambos os sinalizadores do compilador e declara onde encontrar os arquivos.
 Neste caso, você vai querer um arquivo como o seguinte:
 
 ```json5
