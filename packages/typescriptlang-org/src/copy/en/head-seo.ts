@@ -1,6 +1,6 @@
 export const headCopy = {
   head_playground_title:
-    "Playground - An online editor for exploring TypeScript and JavaScript",
+    "TS Playground - An online editor for exploring TypeScript and JavaScript",
   head_playground_description:
     "The Playground lets you write TypeScript or JavaScript online in a safe and sharable way.",
   tsconfig_title: "TSConfig Reference - Docs on every TSConfig option",
