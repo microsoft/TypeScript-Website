@@ -257,7 +257,6 @@ In this example, it was the property `width`. It will however, fail if the varia
 interface SquareConfig {
   color?: string;
   width?: number;
-  [propName: string]: any;
 }
 
 function createSquare(config: SquareConfig): { color: string; area: number } {
