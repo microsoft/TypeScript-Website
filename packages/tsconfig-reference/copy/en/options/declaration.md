@@ -20,8 +20,12 @@ Akan menghasilkan file `index.js` seperti ini:
 export let helloWorld = "hi";
 ```
 
+<<<<<<< HEAD
 Dengan `helloWorld.d.ts` yang sesuai:
 
+=======
+Dengan korespondensi`helloWorld.d.ts`:
+>>>>>>> 7f10138c6b6b7d45bbe86702761b30e182294a5e
 
 ```ts twoslash
 // @showEmittedFile: index.d.ts
@@ -30,4 +34,8 @@ Dengan `helloWorld.d.ts` yang sesuai:
 export let helloWorld = "hi";
 ```
 
+<<<<<<< HEAD
 Saat bekerja dengan file `.d.ts` untuk file JavaScript, Anda mungkin ingin menggunakan [`emitDeclarationOnly`](#emitDeclarationOnly) atau menggunakan [`outDir`](#outDir) untuk memastikan bahwa file JavaScript tidak ditimpa.
+=======
+Saat bekerja dengan file `.d.ts` untuk file JavaScript, Anda mungkin ingin menggunakan [`emitDeclarationOnly`](#emitDeclarationOnly) atau menggunakan [`outDir`](# outDir) untuk memastikan bahwa file JavaScript tidak ditimpa.
+>>>>>>> 7f10138c6b6b7d45bbe86702761b30e182294a5e
