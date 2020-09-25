@@ -1,8 +1,8 @@
 ---
-display: "Disable Solution Searching"
-oneline: " Opt a project out of multi-project reference checking"
+display: "Nonaktifkan Pencarian Solusi"
+oneline: "Memilih sebuah proyek dari check in referensi multi-proyek"
 ---
 
-When working with [composite TypeScript projects](/docs/handbook/project-references.html), this option provides a way to declare that you do not want a project to be included when using features like _find all references_ or _jump to definition_ in an editor.
+Saat bekerja dengan [Proyek Typescript komposit](/docs/handbook/project-references.html), opsinya menyediakan cara untuk menyatakan bahwa Anda tidak ingin proyek disertakan saat menggunakan fitur seperti _find all reference_ atau _jump to definition_ di editor.
 
-This flag is something you can use to increase responsiveness in large composite projects.
+Peringatan ini adalah sesuatu yang dapat Anda gunakan untuk meningkatkan daya tanggap dalam proyek komposit besar.
