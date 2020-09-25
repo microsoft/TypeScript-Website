@@ -1,26 +1,27 @@
 ---
 display: "Declaration"
-oneline: "Emit d.ts files for referenced files in the project"
+oneline: "Emit file d.ts untuk file referensi dalam proyek"
 ---
 
-Generate `.d.ts` files for every TypeScript or JavaScript file inside your project.
-These `.d.ts` files are type definition files which describe the external API of your module.
-With `.d.ts` files, tools like TypeScript can provide intellisense and accurate types for un-typed code.
+Buat file `.d.ts` untuk setiap file TypeScript atau JavaScript di dalam proyek Anda.
+File `.d.ts` ini adalah file definisi tipe yang menjelaskan API eksternal modul Anda.
+Dengan file `.d.ts`, alat seperti TypeScript dapat menyediakan tipe yang masuk akal dan akurat untuk kode yang tidak diketik.
 
-When `declaration` is set to `true`, running the compiler with this TypeScript code:
+Jika `declaration` disetel ke` true`, jalankan compiler dengan kode TypeScript:
 
 ```ts twoslash
 export let helloWorld = "hi";
 ```
 
-Will generate an `index.js` file like this:
+Akan menghasilkan file `index.js` seperti ini:
 
 ```ts twoslash
 // @showEmit
 export let helloWorld = "hi";
 ```
 
-With a corresponding `helloWorld.d.ts`:
+Dengan `helloWorld.d.ts` yang sesuai:
+
 
 ```ts twoslash
 // @showEmittedFile: index.d.ts
@@ -29,4 +30,4 @@ With a corresponding `helloWorld.d.ts`:
 export let helloWorld = "hi";
 ```
 
-When working with `.d.ts` files for JavaScript files you may want to use [`emitDeclarationOnly`](#emitDeclarationOnly) or use [`outDir`](#outDir) to ensure that the JavaScript files are not overwritten.
+Saat bekerja dengan file `.d.ts` untuk file JavaScript, Anda mungkin ingin menggunakan [`emitDeclarationOnly`](#emitDeclarationOnly) atau menggunakan [`outDir`](#outDir) untuk memastikan bahwa file JavaScript tidak ditimpa.
