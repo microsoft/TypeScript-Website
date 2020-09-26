@@ -5,9 +5,9 @@
 
 ### Getting Started
 
-This repo uses [yarn workspaces][y-wrk] with node 13+, and [watchman](https://facebook.github.io/watchman/docs/install.html).
+This repo uses [yarn workspaces][y-wrk] with node 13+ and [watchman](https://facebook.github.io/watchman/docs/install.html).
 
-With those set up, clone this repo and run `yarn install`.
+With that setup, clone this repo and run `yarn install`.
 
 ```sh
 git clone https://github.com/microsoft/TypeScript-website
@@ -21,7 +21,7 @@ yarn start
 ```
 
 Working on this repo is done by running `yarn start` - this starts up the website on port `8000` and creates a
-builder worker for every package in the repo, so if you make a change outside of the site it will compile and lint etc.
+builder worker for every package in the repo, so if you make a change outside of the site it will compile and lint, etc.
 
 Some useful knowledge:
 
@@ -62,7 +62,7 @@ with TypeScript or JavaScript code.
 
 ## Playground
 
-The JS code has an AMD module for the playground which is loaded at runtime in the Playground website.
+The JS code has an AMD module for the playground which is loaded at runtime on the Playground website.
 
 # Doc Packages
 
@@ -139,17 +139,17 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 Microsoft and any contributors grant you a license to the Microsoft documentation and other content
 in this repository under the [Creative Commons Attribution 4.0 International Public License](https://creativecommons.org/licenses/by/4.0/legalcode),
-see the [LICENSE](LICENSE) file, and grant you a license to any code in the repository under the [MIT License](https://opensource.org/licenses/MIT), see the
+see the [LICENSE](LICENSE) file and grant you a license to any code in the repository under the [MIT License](https://opensource.org/licenses/MIT), see the
 [LICENSE-CODE](LICENSE-CODE) file.
 
-Microsoft, Windows, Microsoft Azure and/or other Microsoft products and services referenced in the documentation
+Microsoft, Windows, Microsoft Azure, and/or other Microsoft products and services referenced in the documentation
 may be either trademarks or registered trademarks of Microsoft in the United States and/or other countries.
-The licenses for this project do not grant you rights to use any Microsoft names, logos, or trademarks.
+The licenses for this project do not grant you the right to use any Microsoft names, logos, or trademarks.
 Microsoft's general trademark guidelines can be found at http://go.microsoft.com/fwlink/?LinkID=254653.
 
 Privacy information can be found at https://privacy.microsoft.com/en-us/
 
 Microsoft and any contributors reserve all other rights, whether under their respective copyrights, patents,
-or trademarks, whether by implication, estoppel or otherwise.
+or trademarks, whether by implication, estoppel, or otherwise.
 
 [y-wrk]: https://yarnpkg.com/blog/2017/08/02/introducing-workspaces/
