@@ -43,7 +43,7 @@ packages/typescriptlang-org/src/copy/id.ts @jefrydco @nusendra @mazipan @mandapu
 packages/documentation/copy/id/**/*.md @jefrydco @nusendra @mazipan @mandaputtra [translation] [id]
 
 # Collaborators for Ukrainian Translation of the Website
-packages/playground-examples/copy/id @AMashoshyna [translation] [ua]
+packages/playground-examples/copy/id @AMashoshyna [translation] [uk]
 packages/tsconfig-reference/copy/id/**/*.md @AMashoshyna [translation] [ua]
 packages/typescriptlang-org/src/copy/id/**/*.ts @AMashoshyna [translation] [ua]
 packages/typescriptlang-org/src/copy/id.ts @AMashoshyna [translation] [ua]
