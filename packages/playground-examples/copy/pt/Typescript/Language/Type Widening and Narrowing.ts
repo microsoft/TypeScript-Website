@@ -1,23 +1,23 @@
-// It might be easiest to start of the discussion of
-// widening and narrowing with an example:
+// Deve ser mais fácil para começar a discussão do
+// widening e narrowing com um exemplo:
 
 const welcomeString = "Hello There";
 let replyString = "Hey";
 
-// Aside from the text differences of the strings, welcomeString
-// is a const (which means the value will never change)
-// and replyString is a let (which means it can change).
+// Além das diferenças de texto das strings, welcomeString
+// é uma const (no qual significa que o valor nunca mudará)
+// e replyString é um let (no qual significa que pode mudar).
 
-// If you hover over both variables, you get very different
-// type information from TypeScript:
+// Se você hover sobre ambas as variáveis, você pega muito diferente
+// tipo de informação do TypeScript:
 //
 //   const welcomeString: "Hello There"
 //
 //   let replyString: string
 
-// TypeScript has inferred the type of welcomeString to be
-// the literal string "Hello There", whereas replyString
-// is general string.
+// TypeScript tem tipo de inferência do welcomeString para ser
+// a string literal "Hello There", onde replyString
+// é uma string genérica.
 
 // This is because a let needs to have a wider type, you
 // could set replyString to be any other string - which means
