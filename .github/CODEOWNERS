@@ -46,5 +46,5 @@ packages/documentation/copy/id/**/*.md @jefrydco @nusendra @mazipan @mandaputtra
 packages/playground-examples/copy/id @AMashoshyna [translation] [uk]
 packages/tsconfig-reference/copy/id/**/*.md @AMashoshyna [translation] [uk]
 packages/typescriptlang-org/src/copy/id/**/*.ts @AMashoshyna [translation] [ua]
-packages/typescriptlang-org/src/copy/id.ts @AMashoshyna [translation] [ua]
+packages/typescriptlang-org/src/copy/id.ts @AMashoshyna [translation] [uk]
 packages/documentation/copy/id/**/*.md @AMashoshyna [translation] [ua]
