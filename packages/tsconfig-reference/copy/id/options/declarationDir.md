@@ -3,7 +3,7 @@ display: "Declaration Dir"
 oneline: "Atur direktori _root_ untuk berkas d.ts yang akan dituju"
 ---
 
-Menawarkan cara untuk mengonfigurasi direktori _root_ tempat berkas deklarasi dikeluarkan.
+Menawarkan cara untuk mengonfigurasi direktori _root_ tempat berkas deklarasi dihasilkan.
 
 ```
 example
