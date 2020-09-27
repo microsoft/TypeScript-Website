@@ -1,9 +1,9 @@
 ---
 display: "Declaration Dir"
-oneline: "Atur direktori root untuk file d.ts yang akan dituju"
+oneline: "Atur direktori _root_ untuk berkas d.ts yang akan dituju"
 ---
 
-Menawarkan cara untuk mengonfigurasi direktori root tempat file deklarasi dipancarkan.
+Menawarkan cara untuk mengonfigurasi direktori _root_ tempat berkas deklarasi dikeluarkan.
 
 ```
 example
@@ -23,7 +23,7 @@ dengan `tsconfig.json`;
 }
 ```
 
-Akan menempatkan d.ts untuk `index.ts` di folder` types`:
+Akan menempatkan d.ts untuk `index.ts` di folder `types`:
 
 ```
 example
