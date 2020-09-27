@@ -44,7 +44,7 @@ packages/documentation/copy/id/**/*.md @jefrydco @nusendra @mazipan @mandaputtra
 
 # Collaborators for Ukrainian Translation of the Website
 packages/playground-examples/copy/id @AMashoshyna [translation] [uk]
-packages/tsconfig-reference/copy/id/**/*.md @AMashoshyna [translation] [ua]
+packages/tsconfig-reference/copy/id/**/*.md @AMashoshyna [translation] [uk]
 packages/typescriptlang-org/src/copy/id/**/*.ts @AMashoshyna [translation] [ua]
 packages/typescriptlang-org/src/copy/id.ts @AMashoshyna [translation] [ua]
 packages/documentation/copy/id/**/*.md @AMashoshyna [translation] [ua]
