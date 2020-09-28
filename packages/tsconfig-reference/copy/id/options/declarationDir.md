@@ -23,7 +23,7 @@ dengan `tsconfig.json`;
 }
 ```
 
-Akan menempatkan d.ts untuk `index.ts` di folder `types`:
+Akan menempatkan d.ts untuk `index.ts` di direktori `types`:
 
 ```
 example
