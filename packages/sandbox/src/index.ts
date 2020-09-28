@@ -200,13 +200,14 @@ export const createTypeScriptSandbox = (
     // Don't update a compiler setting if it's the same
     // as the current setting
     newKeys.forEach(key => {
-      if (compilerOptions[key] === opts[key]) delete opts[key]
+      if (compilerOptions[key] == opts[key]) delete opts[key]
     })
 
     if (!Object.keys(opts).length) return
 
     config.logger.log("[Compiler] Updating compiler options: ", opts)
-    compilerOptions = { ...opts, ...compilerOptions }
+
+    compilerOptions = { ...compilerOptions, ...opts }
     defaults.setCompilerOptions(compilerOptions)
     didUpdateCompilerSettings(compilerOptions)
   }

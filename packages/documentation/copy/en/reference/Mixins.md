@@ -246,7 +246,7 @@ playerTwo.shouldFreeze;
 
 #### Static Property Mixins [`#17829`](https://github.com/microsoft/TypeScript/issues/17829)
 
-More of a gotcha then a constraint.
+More of a gotcha than a constraint.
 The class expression pattern creates singletons, so they can't be mapped at the type system to support different variable types.
 
 You can work around this by using functions to return your classes which differ based on a generic:

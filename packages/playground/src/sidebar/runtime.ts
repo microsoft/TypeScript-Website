@@ -1,13 +1,21 @@
+import { Sandbox } from "typescriptlang-org/static/js/sandbox"
 import { PlaygroundPlugin, PluginFactory } from ".."
+import { createUI, UI } from "../createUI"
 import { localize } from "../localizeWithFallback"
 
 let allLogs = ""
+let addedClearAction = false
 
 export const runPlugin: PluginFactory = (i, utils) => {
   const plugin: PlaygroundPlugin = {
     id: "logs",
     displayName: i("play_sidebar_logs"),
     willMount: (sandbox, container) => {
+      if (!addedClearAction) {
+        const ui = createUI()
+        addClearAction(sandbox, ui, i)
+      }
+
       if (allLogs.length === 0) {
         const noErrorsMessage = document.createElement("div")
         noErrorsMessage.id = "empty-message-container"
@@ -31,6 +39,14 @@ export const runPlugin: PluginFactory = (i, utils) => {
   }
 
   return plugin
+}
+
+export const clearLogs = () => {
+  allLogs = ""
+  const logs = document.getElementById("log")
+  if (logs) {
+    logs.textContent = ""
+  }
 }
 
 export const runWithCustomLogs = (closure: Promise<string>, i: Function) => {
@@ -62,6 +78,9 @@ function rewireLoggingToElement(
   fixLoggingFunc("warn", "WRN")
   fixLoggingFunc("error", "ERR")
   fixLoggingFunc("info", "INF")
+  // @ts-expect-error
+  console["oldclear"] = console.clear
+  console.clear = clearLogs
 
   closure.then(js => {
     try {
@@ -73,11 +92,14 @@ function rewireLoggingToElement(
 
     allLogs = allLogs + "<hr />"
 
+    // @ts-expect-error
+    console["clear"] = console["oldclear"]
     undoLoggingFunc("log")
     undoLoggingFunc("debug")
     undoLoggingFunc("warn")
     undoLoggingFunc("error")
     undoLoggingFunc("info")
+    undoLoggingFunc("clear")
   })
 
   function undoLoggingFunc(name: string) {
@@ -113,22 +135,56 @@ function rewireLoggingToElement(
     }
   }
 
+  const objectToText = (arg: any): string => {
+    const isObj = typeof arg === "object"
+    let textRep = ""
+    if (arg && arg.stack && arg.message) {
+      // special case for err
+      textRep = arg.message
+    } else if (arg === null) {
+      textRep = "<span class='literal'>null</span>"
+    } else if (arg === undefined) {
+      textRep = "<span class='literal'>undefined</span>"
+    } else if (Array.isArray(arg)) {
+      textRep = "[" + arg.map(objectToText).join("<span class='comma'>, </span>") + "]"
+    } else if (typeof arg === "string") {
+      textRep = '"' + arg + '"'
+    } else if (isObj) {
+      const name = arg.constructor && arg.constructor.name
+      // No one needs to know an obj is an obj
+      const nameWithoutObject = name && name === "Object" ? "" : name
+      const prefix = nameWithoutObject ? `${nameWithoutObject}: ` : ""
+      textRep = prefix + JSON.stringify(arg, null, 2)
+    } else {
+      textRep = arg as any
+    }
+    return textRep
+  }
+
   function produceOutput(args: any[]) {
     return args.reduce((output: any, arg: any, index) => {
-      const isObj = typeof arg === "object"
-      let textRep = ""
-      if (arg && arg.stack && arg.message) {
-        // special case for err
-        textRep = arg.message
-      } else if (isObj) {
-        textRep = JSON.stringify(arg, null, 2)
-      } else {
-        textRep = arg as any
-      }
-
+      const textRep = objectToText(arg)
       const showComma = index !== args.length - 1
       const comma = showComma ? "<span class='comma'>, </span>" : ""
       return output + textRep + comma + "&nbsp;"
     }, "")
   }
+}
+
+const addClearAction = (sandbox: Sandbox, ui: UI, i: any) => {
+  const clearLogsAction = {
+    id: "clear-logs-play",
+    label: "Clear Playground Logs",
+    keybindings: [sandbox.monaco.KeyMod.CtrlCmd | sandbox.monaco.KeyCode.KEY_K],
+
+    contextMenuGroupId: "run",
+    contextMenuOrder: 1.5,
+
+    run: function () {
+      clearLogs()
+      ui.flashInfo(i("play_clear_logs"))
+    },
+  }
+
+  sandbox.editor.addAction(clearLogsAction)
 }

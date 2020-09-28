@@ -47,6 +47,14 @@ type AnOption = WatchProperties | RootProperties | CompilerOptionName;
 /** Allows linking between options */
 export const relatedTo: [AnOption, AnOption[]][] = [
   ["strict", ["alwaysStrict", "strictNullChecks", "strictBindCallApply", "strictFunctionTypes", "strictPropertyInitialization", "noImplicitAny", "noImplicitThis"]],
+  ["alwaysStrict", ["strict"]],
+  ["strictNullChecks", ["strict"]],
+  ["strictBindCallApply", ["strict"]],
+  ["strictFunctionTypes", ["strict"]],
+  ["strictPropertyInitialization", ["strict"]],
+  ["noImplicitAny", ["strict"]],
+  ["noImplicitThis", ["strict"]],
+
   ["allowSyntheticDefaultImports", ["esModuleInterop"]],
   ["esModuleInterop", ["allowSyntheticDefaultImports"]],
 
@@ -64,26 +72,32 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["include", ["files", "exclude"]],
   ["exclude", ["include", "files"]],
 
-  ["importHelpers", ["noEmitHelpers", "downlevelIteration", "importHelpers"]],
+  ["importHelpers", ["noEmitHelpers", "downlevelIteration"]],
   ["noEmitHelpers", ["importHelpers"]],
+  ["downlevelIteration", ["importHelpers"]],
 
   ["incremental", ["composite", "tsBuildInfoFile"]],
   ["composite", ["incremental", "tsBuildInfoFile"]],
+  ["tsBuildInfoFile", ["incremental", "composite"]],
 
   ["types", ["typeRoots"]],
   ["typeRoots", ["types"]],
-  ["declaration", ["emitDeclarationOnly"]],
 
   ["noLib", ["lib"]],
+  ["lib", ["noLib"]],
 
   ["allowJs", ["checkJs", "emitDeclarationOnly"]],
   ["checkJs", ["allowJs", "emitDeclarationOnly"]],
   ["declaration", ["declarationDir", "emitDeclarationOnly"]],
+  ["declarationDir", ["declaration"]],
+  ["emitDeclarationOnly", ["declaration"]],
 
   ["moduleResolution", ["module"]],
+  ["module", ["moduleResolution"]],
 
-  ["jsxFactory", ["jsxFragmentFactory"]],
-  ["jsxFragmentFactory", ["jsxFactory"]],
+  ["jsx", ["jsxFactory", "jsxFragmentFactory"]],
+  ["jsxFactory", ["jsx", "jsxFragmentFactory"]],
+  ["jsxFragmentFactory", ["jsx", "jsxFactory"]],
 ];
 
 /**
@@ -101,7 +115,7 @@ export const defaultsForOptions = {
   charset: "utf8",
   checkJs: "false",
   composite: "true",
-  declaration: "True when TS",
+  declaration: "false",
   declarationDir: " n/a",
   declarationMap: "false",
   diagnostics: "false",
@@ -117,10 +131,11 @@ export const defaultsForOptions = {
   generateCpuProfile: " profile.cpuprofile",
   importHelpers: "false",
   includes: ' `[]` if `files` is specified, otherwise `["**/*"]`',
-  incremental: "true",
+  incremental: "`true` if `composite`, `false` otherwise",
   inlineSourceMap: "false",
   inlineSources: "false",
   isolatedModules: "false",
+  jsx: "undefined",
   jsxFactory: "`React.createElement`",
   keyofStringsOnly: "false",
   listEmittedFiles: "false",
@@ -128,7 +143,7 @@ export const defaultsForOptions = {
   locale: "Platform specific",
   maxNodeModuleJsDepth: "0",
   moduleResolution:
-    "module === `AMD`, `UMD`, `System` or `ES6` then `Classic`<br/><br/>Otherwise `Node`",
+    "module === `AMD` or `UMD` or `System` or `ES6`, then `Classic`<br/><br/>Otherwise `Node`",
   newLine: "Platform specific",
   noEmit: "false",
   noEmitHelpers: "false",
@@ -172,7 +187,7 @@ export const defaultsForOptions = {
 };
 
 export const allowedValues = {
-  jsx: ["`react` (default)", "`react-native`", "`preserve`"],
+  jsx: ["`react`", "`react-native`", "`preserve`"],
   jsxFactory: ["Any identifier or dotted identifier"],
   lib: ["See main content"],
   target: [
