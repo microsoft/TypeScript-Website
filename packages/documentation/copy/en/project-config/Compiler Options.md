@@ -1,8 +1,8 @@
 ---
-title: Compiler Options
+title: tsc CLI Options
 layout: docs
 permalink: /docs/handbook/compiler-options.html
-oneline: A very high-level overview of the compiler options in TypeScript
+oneline: A very high-level overview of the CLI compiler options for tsc
 disable_toc: true
 ---
 
@@ -132,6 +132,7 @@ Option                                         | Type      | Default            
 
 ## Related
 
-- Setting compiler options in [`tsconfig.json`](/docs/handbook/tsconfig-json.html) files.
-- Setting compiler options in [MSBuild projects](/docs/handbook/compiler-options-in-msbuild.html).
-- There's also the [TSConfig Reference](/tsconfig).
+- Every option is fully explained in the [TSConfig Reference](/tsconfig).
+- Learn how to use a [`tsconfig.json`](/docs/handbook/tsconfig-json.html) files.
+- Learn how to work in an [MSBuild project](/docs/handbook/compiler-options-in-msbuild.html).
+
