@@ -388,7 +388,7 @@ greet("Maddison", new Date());
 ```
 
 > While the default target is ES3, the great majority of current browsers support ES5.
-> Most developers can therefore safely specify ES5 or even ES2016 as a target, unless compatibility with certain ancient browers is important.
+> Most developers can therefore safely specify ES5 or even ES2016 as a target, unless compatibility with certain ancient browsers is important.
 
 ## Strictness
 
