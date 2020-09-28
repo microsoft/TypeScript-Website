@@ -79,12 +79,32 @@ const Play: React.FC<Props> = (props) => {
         tsVersionParam = nightlyJSON.version
       }
 
-      const tsVersion = tsVersionParam || playgroundReleases.versions.sort().pop()
+      // Somehow people keep trying -insiders urls instead of -dev - maybe some tooling I don't know?
+      if (tsVersionParam && tsVersionParam.includes("-insiders.")) {
+        tsVersionParam = tsVersionParam.replace("-insiders.", "-dev.")
+      }
+
+      const latestRelease = [...playgroundReleases.versions].sort().pop()
+      const tsVersion = tsVersionParam || latestRelease
 
       // Because we can reach to localhost ports from the site, it's possible for the locally built compiler to 
       // be hosted and to power the editor with a bit of elbow grease.
       const useLocalCompiler = tsVersion === "dev"
       const urlForMonaco = useLocalCompiler ? "http://localhost:5615/dev/vs" : `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/min/vs`
+
+      // Make a quick HEAD call for the main monaco editor for this version of TS, if it
+      // bails then give a useful error message and bail.
+      const nightlyLookup = await fetch(urlForMonaco + "/editor/editor.main.js", { method: "HEAD" })
+      if (!nightlyLookup.ok) {
+        document.querySelectorAll<HTMLDivElement>(".lds-grid div").forEach(div => {
+          div.style.backgroundColor = "red"
+          div.style.animation = ""
+          div.style.webkitAnimation = ""
+        })
+
+        document.getElementById("loading-message")!.innerHTML = `This version of TypeScript <em>(${tsVersion?.replace("<", "-")})</em><br/>has not been prepared for the Playground<br/><br/>Try <a href='/play?ts=${latestRelease}${document.location.hash}'>${latestRelease}</a> or <a href="/play?ts=next${document.location.hash}">Nightly</a>`
+        return
+      }
 
       // @ts-ignore
       const re: any = global.require
