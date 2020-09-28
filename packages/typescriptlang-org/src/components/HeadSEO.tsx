@@ -1,5 +1,4 @@
 import * as React from "react"
-import { withPrefix } from "gatsby"
 import { Helmet } from "react-helmet";
 
 
@@ -16,6 +15,12 @@ export const HeadSEO = (props: SeoProps) => {
     "og:title": props.title,
     "og:description": props.description,
     "twitter:site": "typescriptlang",
+  }
+
+  // Skip indexing on the staging site
+  const staging = process && process.env && process.env.TYPESCRIPT_SITE_STAGING
+  if (staging) {
+    ogTags["robots"] = "noindex"
   }
 
   // do we want localized pages to be the english version?
