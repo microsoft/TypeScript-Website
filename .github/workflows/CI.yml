@@ -6,6 +6,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # temporary
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+      - name: Dump strategy context
+        env:
+          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+        run: echo "$STRATEGY_CONTEXT"
+      - name: Dump matrix context
+        env:
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+        run: echo "$MATRIX_CONTEXT"
+
       # Check out, and set up the node/ruby infra
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
@@ -41,6 +67,31 @@ jobs:
       - run: yarn bootstrap
       - run: yarn workspace typescriptlang-org build
 
+      # PR deploys via static web apps
+      - name: "Make a fake 'app' for the azure project of the static HTML"
+        run: |
+          mkdir fakeapp
+          mv packages/typescriptlang-org/public fakeapp/public
+          ls fakeapp
+          ls fakeapp/public
+          echo '{ "name": "fake", "scripts": { "build": "" } }' > fakeapp/package.json
+
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v0.0.1-preview
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_NICE_MEADOW_0C9756810 }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: "upload"
+          ###### Repository/Build Configurations - These values can be configured to match you app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: "fakeapp" # App source code path
+          api_location: "api" # Api source code path - optional
+          app_artifact_location: "public" # Built app content directory - optional
+          ###### End of Repository/Build Configurations ######
+        env:
+          SAME_REPO_PR: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_NICE_MEADOW_0C9756810 }}
+
       # Verify it compiles
       - run: yarn compile
       # Run all the package's tests
@@ -51,40 +102,20 @@ jobs:
       - name: "Validates that TypeScript plugins work"
         run: npm init typescript-playground-plugin playground-my-plugin
 
-      - name: "Copy PR JSON"
-        run: cp $GITHUB_EVENT_PATH ${{ github.workspace }}/packages/typescriptlang-org/public/pr.json
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: built-site
-          path: ${{ github.workspace }}/packages/typescriptlang-org/public/**/*
-
-  windows:
-    runs-on: windows-latest
-
-    steps:
-      # Check out, and set up the node infra
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: "13.x"
-
-      # Cache yarn deps, to speed up CI
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      # Get local dependencies
-      - run: yarn install
+      # danger for PR builds
+      - if: github.event_name == 'pull_request'
+        run: 'if test -z "$GITHUB_TOKEN"; then echo "Skipping danger"; else yarn danger ci; fi'
         env:
-          YARN_CHECKSUM_BEHAVIOR: ignore
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: yarn bootstrap
-      - run: yarn build
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close Pull Request Job
+    steps:
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v0.0.1-preview
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_NICE_MEADOW_0C9756810 }}
+          action: "close"
