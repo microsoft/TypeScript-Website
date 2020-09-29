@@ -18,15 +18,13 @@ We're currently running on App Service, the places where you can find info:
 
 ### Deployment
 
-The build to deploy train looks like this:
+The build to deploy train normally looks like this:
 
-- `v2` branch gets pushed
-- pushes trigger a deploy to `SITE-STAGING` via GH Actions
-- Azure picks up pushes to SITE-STAGING to deploy to the site
+- `v2` branch gets pushed:
+- A deploy is made to azure blob storage via [`.github/workflows/v2-merged-staging.yml`](https://github.com/microsoft/TypeScript-website/blob/v2/.github/workflows/v2-merged-staging.yml)
+- Every Monday, a deploy is made from v2 to the production app via [`.github/workflows/deploy-prod.yml`](https://github.com/microsoft/TypeScript-website/blob/v2/.github/workflows/deploy-prod.yml)
 
-We deploy by pushing to the branches [`SITE-STAGING`](https://github.com/microsoft/TypeScript-Website/tree/SITE-STAGING/) and [`SITE-PRODUCTION`](https://github.com/microsoft/TypeScript-Website/tree/SITE-PRODUCTION/) - they should show you exactly what files exist in the deploy
-
-You can push directly to those branches from your local computer if you have a very specific fix
+You can deploy `v2` to production anytime via the ["Run workflow" button here](https://github.com/microsoft/TypeScript-Website/actions?query=workflow%3A%22Monday+Website+Push+To+Production%22), so if you have an emergency commit - it goes to `v2` then you can run the action.
 
 App Service apps are configured by [`Web.config`](https://github.com/microsoft/TypeScript-website/blob/92a9585d033e7cf802fae14v22baa73250fd610266/packages/typescriptlang-org/static/Web.config). [Here's a reference on the format](https://hangouts.google.com/call/H553wrJ9d97l2LMpNh9hAEEE). I've seen files (`*.json` & `*.manifest`) be 404s on the site because they were not in the config.
 

@@ -37,6 +37,21 @@ Then run `yarn install`.
 
 That will update all of the site to use 3.9.0 for building. Run `yarn build` to see if any of the website's code broke.
 
+##### New Handbook Docs
+
+You might have a new reference doc to add, they live in [`packages/documentation/copy`](https://github.com/microsoft/TypeScript-website/blob/v2/packages/documentation/copy). You can ignore languages other than `en`. The folder structure is only for your reference and has no bearing on the site navigation. Each markdown document needs a header like:
+
+```md
+---
+title: Basic Types
+layout: docs
+permalink: /docs/handbook/basic-types.html
+oneline: "Step one in learning TypeScript: The basic types."
+---
+```
+
+Or the site will fail the build. Once that file is ready, add it to the sidebar via the file [`packages/documentation/scripts/generateDocsNavigationPerLanguage.js`](https://github.com/microsoft/TypeScript-website/blob/v2/packages/documentation/scripts/generateDocsNavigationPerLanguage.js).
+
 ##### TSConfig Reference
 
 Updating the version of TypeScript will force you to update the TSConfig Reference. It will fail incrementally with each missing compiler flag.
