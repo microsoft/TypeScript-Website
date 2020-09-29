@@ -11,39 +11,12 @@ import { readFileSync } from "fs"
 // spellcheck({ settings: "artsy/peril-settings@spellcheck.json" })
 
 export default () => {
-  // JSON reference: https://github.com/haya14busa/github-actions-playground/runs/987846369
-  const contextText = readFileSync("built/public/pr.json", "utf8")
-  console.log(contextText)
-  const context = JSON.parse(contextText)
-
-  const repo = { owner: context.event.repository.owner.login, repo: context.event.repository.name }
-  const prNumber = context.event.workflow_run.pull_requests[0].number
-  console.log(repo)
-
-  console.log(process.env.PR_DEPLOY_URL_ROOT)
-
-  const changedFiles = getChangedFiles(prNumber)
-  console.log(changedFiles)
-
-  // Print out the PR url
   const deployURL = process.env.PR_DEPLOY_URL_ROOT
   message(
     `Deployed to [a PR branch](${deployURL}) - [playground](${deployURL}/play) [tsconfig](${deployURL}/tsconfig) [old handbook](${deployURL}/docs/handbook/integrating-with-build-tools.html)`
   )
 
   // lighthouse()
-}
-
-const getChangedFiles = async (prNumber: number) => {
-  const repo = { owner: "microsoft", name: "TypeScript-website" }
-
-  // https://developer.github.com/v3/pulls/#list-pull-requests-files
-  const options = danger.github.api.pulls.listFiles.endpoint.merge({ ...repo, pull_number: prNumber })
-
-  /** @type { import("@octokit/rest").PullsListFilesResponseItem[]} */
-  const files = await danger.github.api.paginate(options)
-  const fileStrings = files.map(f => `/${f.filename}`)
-  return fileStrings
 }
 
 // // Look for new snapshots and show in a HTML table
