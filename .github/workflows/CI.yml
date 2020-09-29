@@ -41,26 +41,29 @@ jobs:
       - run: yarn bootstrap
       - run: yarn workspace typescriptlang-org build
 
-      # PR deploys via static web apps
-      - name: "Make a fake 'app' for the azure project of the static HTML"
-        run: |
-          mkdir fakeapp
-          mv packages/typescriptlang-org/public fakeapp/public
-          ls fakeapp
-          ls fakeapp/public
-          echo '{ "name": "fake", "scripts": { "build": "" } }' > fakeapp/package.json
+      #  Blocked on https://github.com/Azure/static-web-apps/issues/147
+      #
 
-      - name: Build And Deploy
-        id: builddeploy
-        uses: Azure/static-web-apps-deploy@v0.0.1-preview
-        if: github.event.base.repo.id == github.event.head.repo.id
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_NICE_MEADOW_0C9756810 }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          app_location: "fakeapp"
-          api_location: "api"
-          app_artifact_location: "public"
+      # PR deploys via static web apps
+      # - name: "Make a fake 'app' for the azure project of the static HTML"
+      #   run: |
+      #     mkdir fakeapp
+      #     mv packages/typescriptlang-org/public fakeapp/public
+      #     ls fakeapp
+      #     ls fakeapp/public
+      #     echo '{ "name": "fake", "scripts": { "build": "" } }' > fakeapp/package.json
+
+      # - name: Build And Deploy
+      #   id: builddeploy
+      #   uses: Azure/static-web-apps-deploy@v0.0.1-preview
+      #   if: github.event.base.repo.id == github.event.head.repo.id
+      #   with:
+      #     azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_NICE_MEADOW_0C9756810 }}
+      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #     action: "upload"
+      #     app_location: "fakeapp"
+      #     api_location: "api"
+      #     app_artifact_location: "public"
 
       # Verify it compiles
       - run: yarn compile
@@ -78,15 +81,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_DEPLOY_URL_ROOT: ${{ steps.deploy.outputs.static_web_app_url }}
-
-  close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.base.repo.id == github.event.head.repo.id
-    runs-on: ubuntu-latest
-    name: Close Pull Request Job
-    steps:
-      - name: Close Pull Request
-        id: closepullrequest
-        uses: Azure/static-web-apps-deploy@v0.0.1-preview
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_NICE_MEADOW_0C9756810 }}
-          action: "close"
+  #
+  #  Blocked on https://github.com/Azure/static-web-apps/issues/147
+  #
+  # close_pull_request_job:
+  #   if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.base.repo.id == github.event.head.repo.id
+  #   runs-on: ubuntu-latest
+  #   name: Close Pull Request Job
+  #   steps:
+  #     - name: Close Pull Request
+  #       id: closepullrequest
+  #       uses: Azure/static-web-apps-deploy@v0.0.1-preview
+  #       with:
+  #         azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_NICE_MEADOW_0C9756810 }}
+  #         action: "close"
