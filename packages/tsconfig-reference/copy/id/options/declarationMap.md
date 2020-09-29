@@ -1,5 +1,5 @@
 ---
-display: "Declaration Map"
+display: "_Declaration Map_"
 oneline: "Buat peta sumber untuk berkas d.ts"
 ---
 
