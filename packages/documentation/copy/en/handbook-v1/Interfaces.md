@@ -254,6 +254,7 @@ The above workaround will work as long as you have a common property between `sq
 In this example, it was the property `width`. It will however, fail if the variable does not have any common object property. For example:
 
 ```ts twoslash
+// @errors: 2559
 interface SquareConfig {
   color?: string;
   width?: number;
