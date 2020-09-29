@@ -24,7 +24,7 @@ Note any tags which are not explicitly listed below (such as `@async`) are not y
 
 #### `class` extensions
 
-- [Property Modifiers](#jsdoc-property-modifiers)
+- [Property Modifiers](#jsdoc-property-modifiers) `@public`, `@private`, `@protected`, `@readonly`
 
 The meaning is usually the same, or a superset, of the meaning of the tag given at [jsdoc.app](https://jsdoc.app).
 The code below describes the differences and gives some example usage of each tag.
@@ -638,7 +638,6 @@ The following tags have open issues to support them:
 - `@const` ([issue #19672](https://github.com/Microsoft/TypeScript/issues/19672))
 - `@inheritdoc` ([issue #23215](https://github.com/Microsoft/TypeScript/issues/23215))
 - `@memberof` ([issue #7237](https://github.com/Microsoft/TypeScript/issues/7237))
-- `@readonly` ([issue #17233](https://github.com/Microsoft/TypeScript/issues/17233))
 - `@yields` ([issue #23857](https://github.com/Microsoft/TypeScript/issues/23857))
 - `{@link …}` ([issue #35524](https://github.com/Microsoft/TypeScript/issues/35524))
 
