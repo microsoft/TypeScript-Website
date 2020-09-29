@@ -30,6 +30,8 @@ Some useful knowledge:
 
 You can manually via GH Actions for [production here](https://github.com/microsoft/TypeScript-Website/actions?query=workflow%3A%22Monday+Website+Push+To+Production%22) and [staging here](https://github.com/microsoft/TypeScript-Website/actions?query=workflow%3A%22Build+Website+To+Staging%22).
 
+Having issues getting set up? [Consult the troubleshooting](./docs/Setup Troubleshooting.md).
+
 ## Deployment
 
 Deployment is automatic:
@@ -39,9 +41,14 @@ Deployment is automatic:
 
 You can find the build logs in [GitHub Actions](https://github.com/microsoft/TypeScript-Website/actions)
 
-## Overview
+## Docs
 
-If you want to know _in-depth_ how this website works, there is an [hour long video covering the codebase, deployment and tooling on YouTube.](https://www.youtube.com/watch?v=HOvivt6B7hE).
+If you want to know _in-depth_ how this website works, there is an [hour long video covering the codebase, deployment and tooling on YouTube.](https://www.youtube.com/watch?v=HOvivt6B7hE). Otherwise there are some short guides:
+
+- [Converting Twoslash Code Samples](./docs/Converting Twoslash Code Samples.md)
+- [How i8n Works For Site Copy](./docs/How i8n Works For Site Copy.md)
+- [Updating the TypeScript Version](./docs/New TypeScript Version.md)
+- [Something Went Wrong](./docs/Something Went Wrong.md)
 
 # Website Packages
 
