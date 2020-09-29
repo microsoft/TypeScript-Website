@@ -1,5 +1,5 @@
 ---
-title: Using Babel with TypeScript
+title: Usando Babel com TypeScript
 layout: docs
 permalink: /pt/docs/handbook/babel-with-typescript.html
 oneline: Como criar um projeto híbrido com Babel + TypeScript
@@ -8,9 +8,9 @@ translatable: true
 
 ## Babel vs `tsc` para TypeScript
 
-Desenvolvendo um projeto JavaScript moderno, você pode se perguntar qual a forma correta de converter arquivos do TypeScript para o JavaScript.
+Ao desenvolver um projeto JavaScript moderno, você pode se perguntar qual a forma correta de converter arquivos do TypeScript para o JavaScript.
 
-Várias vezes a resposta é _"depende"_, ou _"alguém pode ter decidido por você"_ dependendo do projeto. Se você está construindo seu projeto com algum framework existente como [tsdx](https://tsdx.io), [Angular](https://angular.io/), [NestJS](https://nestjs.com/) ou qualquer outro framework mencionado na seção [Getting Started](/docs/home) então essa decisão é sua.
+Várias vezes a resposta é _"depende"_, ou _"alguém pode ter decidido por você"_ dependendo do projeto. Se você está construindo seu projeto com algum framework existente como [tsdx](https://tsdx.io), [Angular](https://angular.io/), [NestJS](https://nestjs.com/) ou qualquer outro framework mencionado na seção [Começando com TypeScript](/docs/home) então essa decisão é sua.
 
 Contudo, uma heurística útil seria:
 
