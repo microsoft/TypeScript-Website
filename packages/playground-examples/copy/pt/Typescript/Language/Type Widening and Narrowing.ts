@@ -19,18 +19,18 @@ let replyString = "Hey";
 // a string literal "Hello There", onde replyString
 // é uma string genérica.
 
-// This is because a let needs to have a wider type, you
-// could set replyString to be any other string - which means
-// it has a wider set of possibilities.
+// Isso é porque um let precisa ter um tipo vasto, você
+// pode determinar replyString para ser qualquer outra string - no qual significa
+// ter uma grande group de possibilidades.
 
 replyString = "Hi :wave:";
 
-// If replyString had the string literal type "Hey" - then
-// you could never change the value because it could only
-// change to "Hey" again.
+// Se replyString tiver uma string literal "Hey" - então
+// você nunca poderia mudar o valor porque ele poderia mudar
+// para apenas "Hey" de novo.
 
-// Widening and Narrowing types is about expanding and reducing
-// the possibilities which a type could represent.
+// Widening e Narrowing tipos é sobre expandir e reduzir
+// as possibilidades no qual um type poderia representar.
 
 // An example of type narrowing is working with unions, the
 // example on code flow analysis is almost entirely based on
