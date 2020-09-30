@@ -12,7 +12,7 @@ const hello = "Hello";
 
 // 오른쪽에서 TypeScript 컴파일러의 결과를 볼 수
 // 있습니다. 결과는 브라우저나 서버 및 어디에서나
-// 실제로 실행할 수 있는 바닐라 JavaScript입니다.
+// 실제로 실행할 수 있는 vanilla JavaScript입니다.
 
 const world = "World";
 
