@@ -18,7 +18,7 @@ const world = "World";
 
 // "const"를 "var"로 변환하면 코드에서 작은 변화를 
 // 확인할 수 있습니다. 이것은 TypeScript를
-// JavaScript가 실행되는 모든 곳에서 실행할 수 있게 하려고
+// 모든 JavaScript 환경에서 실행 가능하도록
 // 수행하는 많은 작업 중 하나입니다.
 
 console.log(hello + " " + world);
