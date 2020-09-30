@@ -50,11 +50,7 @@ export const createPlaygroundExamplePages = async (
         .replace(/\+/g, "-")
 
     const language = rPath.split("/")[0]
-    const postLangPath = rPath
-      .split("/")
-      .slice(1)
-      .map(idize)
-      .join("/")
+    const postLangPath = rPath.split("/").slice(1).map(idize).join("/")
 
     const langPrefix = language === "en" ? "" : language
     const newPagePath = langPrefix + "/play/" + postLangPath
@@ -64,14 +60,11 @@ export const createPlaygroundExamplePages = async (
     const exampleCodePath = path.join(appRoot, "playground-examples", "copy", rPath)
     const code = fs.readFileSync(exampleCodePath, "utf8")
 
-    const id = postLangPath
-      .split("/")
-      .slice(-1)[0]
-      .split(".")[0]
+    const id = postLangPath.split("/").slice(-1)[0].split(".")[0]
 
     const { inlineTitle, compilerSettings } = getCompilerDetailsFromCode(code)
     createPage({
-      path: newPagePath,
+      path: newPagePath + ".html",
       component: playPage,
       context: {
         name,
@@ -106,11 +99,11 @@ const getCompilerDetailsFromCode = (contents: string) => {
 
   if (contents.startsWith("//// {")) {
     // convert windows newlines to linux new lines
-    const preJSON = contents.replace(/\r\n/g, "\n").split("//// {")[1].split("}\n")[0]
-    contents = contents
-      .split("\n")
-      .slice(1)
-      .join("\n")
+    const preJSON = contents
+      .replace(/\r\n/g, "\n")
+      .split("//// {")[1]
+      .split("}\n")[0]
+    contents = contents.split("\n").slice(1).join("\n")
     const code = "({" + preJSON + "})"
 
     try {
