@@ -1,6 +1,6 @@
 ---
-display: "フォールバック ポーリング"
-oneline: "システムがネイティブのファイルウォッチャーを使い切ったら、ウォッチャー使うべきもの"
+display: "fallbackPolling"
+oneline: "What the watcher should use if the system runs out of native file watchers"
 ---
 
 ファイルシステムのイベントを使用するときに、システムがネイティブのファイルウォッチャーを使い切ったり、ネイティブのファイルウォッチャーが対応していない場合、どのようなポーリング戦略を行使するかを指定するオプションです。

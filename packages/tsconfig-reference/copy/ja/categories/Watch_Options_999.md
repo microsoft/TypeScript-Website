@@ -1,5 +1,5 @@
 ---
-display: "監視オプション"
+display: "Watch Options"
 ---
 
 TypeScript 3.8 にてディレクトリを監視するための新戦略をリリースしました。これは、`node_modules` の変更を効率的に検知するために極めて重要なものです。
