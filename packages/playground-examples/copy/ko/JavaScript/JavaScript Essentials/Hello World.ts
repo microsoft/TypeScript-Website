@@ -17,7 +17,7 @@ const hello = "Hello";
 const world = "World";
 
 // "const"를 "var"로 변환하면 코드에서 작은 변화를 
-// 생기는 것을 볼 수 있습니다. 이것은 TypeScript를
+// 확인할 수 있습니다. 이것은 TypeScript를
 // JavaScript가 실행되는 모든 곳에서 실행할 수 있게 하려고
 // 수행하는 많은 작업 중 하나입니다.
 
