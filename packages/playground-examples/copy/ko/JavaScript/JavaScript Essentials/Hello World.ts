@@ -23,7 +23,7 @@ const world = "World";
 
 console.log(hello + " " + world);
 
-// 이제 플레이그라운드가 어떻게 동작하는지 아이디어를 얻었으니,
+// 이제 플레이그라운드가 어떻게 동작하는지 알게 되었으니,
 // TypeScript가 JavaScript 작업을 더 즐겁게 만드는 방법을 알아봅시다.
 // 이 부분에서는, 어떻게 기존지식을 재사용할 수 있는지 
 // 보여주기 위해, 가능한 한 바닐라 JavaScript에 
