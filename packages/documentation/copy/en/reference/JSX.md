@@ -140,7 +140,7 @@ Because a Function Component is simply a JavaScript function, function overloads
 
 ```ts
 interface ClickableProps {
-  children: JSX.Element[] | JSX.Element
+  children: React.ReactNode
 }
 
 interface HomeProps extends ClickableProps {
