@@ -193,7 +193,7 @@ export const allowedValues = {
   target: [
     "`ES3` (default)",
     "`ES5`",
-    "`ES6`/`ES2015` (synonomous)",
+    "`ES6`/`ES2015` (synonymous)",
     "`ES7`/`ES2016`",
     "`ES2017`",
     "`ES2018`",
