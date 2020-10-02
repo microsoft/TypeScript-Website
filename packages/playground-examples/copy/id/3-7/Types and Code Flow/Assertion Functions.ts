@@ -13,7 +13,7 @@
 // tanpa harus melakukan `import` terlebih dahulu.
 
 // Sekarang, kita akan membuat fungsi `assert` kita sendiri.
-// Kode program dibawah ini akan mendeklarasikan fungsi yang
+// Kode program di bawah ini akan mendeklarasikan fungsi yang
 // menegaskan bahwa ekspresi yang bernama `value` bernilai
 // `true`.
 declare function assert(value: unknown): asserts value;
@@ -26,7 +26,7 @@ assert(typeof mungkinAngkaAtauString === "string");
 // Dengan TypeScript versi 3.7, fitur analisis alur kode dapat
 // menggunakan fungsi-fungsi semacam ini untuk mengetahui
 // maksud dari kode program. Jadi, ketika Anda menyorot
-// variabel dibawah ini - Anda dapat melihat bahwa variabel
+// variabel di bawah ini - Anda dapat melihat bahwa variabel
 // tersebut telah dipersempit dari sebuah _string_ atau bilangan
 // menjadi hanya sebuah _string_
 

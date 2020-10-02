@@ -26,7 +26,7 @@ if (plugin.pluginShouldLoad) {
     // Lakukan sesuatu ketika `pluginShouldLoad` ada.
 }
 
-// Pada TypeScript versi 3.6 kebawah, hal ini bukan merupakan sebuah kesalahan.
+// Pada TypeScript versi 3.6 ke bawah, hal ini bukan merupakan sebuah kesalahan.
 
 if (plugin.pluginIsActivated) {
     // Ingin melakukan sesuatu ketika _plugin_ diaktifkan,

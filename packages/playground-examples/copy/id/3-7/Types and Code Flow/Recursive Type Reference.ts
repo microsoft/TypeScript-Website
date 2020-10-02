@@ -13,10 +13,10 @@
 // batasan yang tidak terdapat dalam sebuah antarmuka, dan dapat
 // diatasi dengan sebuah cara tertentu.
 
-// Contohnya, ekspresi dibawah ini tidak valid pada TypeScript versi 3.6:
+// Contohnya, ekspresi di bawah ini tidak valid pada TypeScript versi 3.6:
 type NilaiAtauArray<T> = T | Array<NilaiAtauArray<T>>;
 
-// Dibawah ini merupakan cara untuk mengatasi masalah tersebut, dengan
+// Di bawah ini merupakan cara untuk mengatasi masalah tersebut, dengan
 // menggabungkan tipe dengan sebuah antarmuka
 type NilaiAtauArray2<T> = T | ArrayOfNilaiAtauArray<T>;
 interface ArrayOfNilaiAtauArray<T> extends Array<NilaiAtauArray2<T>> { }
