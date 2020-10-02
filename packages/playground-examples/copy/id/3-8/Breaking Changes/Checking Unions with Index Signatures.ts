@@ -24,7 +24,7 @@ let cachePengguna: IdentifierCache | { index: number };
 cachePengguna = { file_pertama: 5, file_kedua: "abc" };
 
 // Masalah tersebut sudah diperbaiki, dan akan ada
-// sebuah pesan kesalahan mengenai 'file_kedua' dari _compiler_.
+// sebuah pesan kesalahan mengenai 'file_kedua' dari kompilator.
 
 // Perbaikan tersebut juga sudah mampu mengangani kasus dimana _key_
 // memiliki tipe yang berbeda, contohnya ([key: string] dan [key: number])
