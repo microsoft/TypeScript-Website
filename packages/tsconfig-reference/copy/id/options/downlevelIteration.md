@@ -6,8 +6,8 @@ oneline: "Menghasilkan JavaScript yang lebih sesuai, tetapi sangat rumit untuk o
 _Downleveling_ adalah istilah TypeScript untuk mentranspilasi ke versi JavaScript yang lebih lama.
 Saran ini untuk mengaktifkan dukungan implementasi yang lebih akurat tentang bagaimana JavaScript modern melakukan iterasi melalui konsep baru di _runtime_ JavaScript yang lebih lama.
 
-ECMAScript 6 menambahkan beberapa iterasi primitif baru: loop `for / of` (`for (el of arr)`), Array spread (`[a, ...b]`), penyebaran argumen (`fn(...args)`), dan `Symbol.iterator`.
-`--downlevelIteration` memungkinkan iterasi primitif ini digunakan secara lebih akurat dalam lingkungan ES5 jika ada implementasi `Symbol.iterator`. 
+ECMAScript 6 menambahkan beberapa iterasi primitif baru: loop `for / of` (`for (el of arr)`), Array _spread_ (`[a, ...b]`), penyebaran argumen (`fn(...args)`), dan `Symbol.iterator`.
+`--downlevelIteration` memungkinkan iterasi primitif ini digunakan secara lebih akurat dalam lingkungan ES5 jika ada implementasi `Symbol.iterator`.
 
 #### Contoh: Efek pada `for / of`
 
@@ -18,7 +18,7 @@ Tanpa `downlevelIteration` aktif, loop `for / of` pada objek apa pun diturunkan 
 // @showEmit
 const str = "Hello!";
 for (const s of str) {
-    console.log(s);
+  console.log(s);
 }
 ```
 
@@ -41,9 +41,9 @@ for (const s of str) {
 
 > > **Catatan:** memungkinkan `downlevelIteration` tidak meningkatkan kepatuhan jika `Symbol.iterator` tidak ada saat runtime.
 
-#### Contoh: Efek pada Array Spreads
+#### Contoh: Efek pada Array _Spreads_
 
-ini adalah array spread:
+ini adalah array _spread_:
 
 ```js
 // Buat array baru yang elemennya 1 diikuti dengan elemen arr2
