@@ -185,64 +185,64 @@ Então `import { b } from "moduleB"` no arquivo `/root/src/moduleA.ts` resultari
 Não se assuste com o número de etapas aqui - o TypeScript ainda só pula os diretórios duas vezes nas etapas (9) e (17).
 Isso realmente não é mais complexo do que o que o próprio Node.js está fazendo.
 
-## Additional module resolution flags
+## Flags de resolução de módulo adicional
 
-A project source layout sometimes does not match that of the output.
-Usually a set of build steps result in generating the final output.
-These include compiling `.ts` files into `.js`, and copying dependencies from different source locations to a single output location.
-The net result is that modules at runtime may have different names than the source files containing their definitions.
-Or module paths in the final output may not match their corresponding source file paths at compile time.
+Um layout de origem do projeto às vezes não corresponde ao da saída.
+Normalmente, um conjunto de etapas de construção resulta na geração da saída final.
+Isso inclui compilar arquivos `.ts` em `.js` e copiar dependências de diferentes locais de origem para um único local de saída.
+O resultado líquido é que os módulos em tempo de execução podem ter nomes diferentes dos arquivos de origem que contêm suas definições.
+Ou os caminhos do módulo na saída final podem não corresponder aos caminhos do arquivo de origem correspondente no momento da compilação.
 
-The TypeScript compiler has a set of additional flags to _inform_ the compiler of transformations that are expected to happen to the sources to generate the final output.
+O compilador TypeScript tem um conjunto de sinalizadores adicionais para _informar_ o compilador de transformações que devem ocorrer nas fontes para gerar a saída final.
 
-It is important to note that the compiler will _not_ perform any of these transformations;
-it just uses these pieces of information to guide the process of resolving a module import to its definition file.
+É importante observar que o compilador _não_ executará nenhuma dessas transformações;
+Ele apenas usa essas informações para guiar o processo de resolução de uma importação de módulo para seu arquivo de definição.
 
-### Base URL
+### URL base
 
-Using a `baseUrl` is a common practice in applications using AMD module loaders where modules are "deployed" to a single folder at run-time.
-The sources of these modules can live in different directories, but a build script will put them all together.
+Usar um `baseUrl` é uma prática comum em aplicativos que usam carregadores de módulo AMD onde os módulos são" implantados "em uma única pasta em tempo de execução.
+As fontes desses módulos podem estar em diretórios diferentes, mas um script de construção irá colocá-los todos juntos.
 
-Setting `baseUrl` informs the compiler where to find modules.
-All module imports with não relativa names are assumed to be relative to the `baseUrl`.
+Definir `baseUrl` informa ao compilador onde encontrar os módulos.
+Todas as importações de módulos com nomes não relativos são consideradas relativas ao `baseUrl`.
 
-Value of _baseUrl_ is determined as either:
+O valor de _baseUrl_ é determinado como:
 
-- value of _baseUrl_ command line argument (if given path is relative, it is computed based on current directory)
-- value of _baseUrl_ property in 'tsconfig.json' (if given path is relative, it is computed based on the location of 'tsconfig.json')
+- valor do argumento da linha de comando _baseUrl_ (se o caminho fornecido for relativo, é calculado com base no diretório atual)
+- valor da propriedade _baseUrl_ em 'tsconfig.json' (se o caminho fornecido for relativo, ele é calculado com base na localização de 'tsconfig.json')
 
-Note that relative module imports are not impacted by setting the baseUrl, as they are always resolved relative to their importing files.
+Observe que as importações de módulos relativos não são afetadas pela configuração de baseUrl, pois elas sempre são resolvidas em relação aos arquivos de importação.
 
-You can find more documentation on baseUrl in [RequireJS](http://requirejs.org/docs/api.html#config-baseUrl) and [SystemJS](https://github.com/systemjs/systemjs/blob/master/docs/api.md#baseurl) documentation.
+Você pode encontrar mais documentação sobre baseUrl em [RequireJS](http://requirejs.org/docs/api.html#config-baseUrl) e [SystemJS](https://github.com/systemjs/systemjs/blob/master /docs/api.md#baseurl).
 
-### Path mapping
+### Mapeamento de caminhos
 
-Sometimes modules are not directly located under _baseUrl_.
-For instance, an import to a module `"jquery"` would be translated at runtime to `"node_modules/jquery/dist/jquery.slim.min.js"`.
-Loaders use a mapping configuration to map module names to files at run-time, see [RequireJs documentation](http://requirejs.org/docs/api.html#config-paths) and [SystemJS documentation](https://github.com/systemjs/systemjs/blob/master/docs/config-api.md#paths).
+Às vezes, os módulos não estão localizados diretamente em _baseUrl_.
+Por exemplo, uma importação para um módulo `"jquery"` seria traduzido em tempo de execução para `"node_modules/jquery/dist/jquery.slim.min.js"`.
+Os carregadores usam uma configuração de mapeamento para mapear nomes de módulos para arquivos em tempo de execução, consulte a [documentação do RequireJs](http://requirejs.org/docs/api.html#config-paths) e a [documentação do SystemJS](https://github.com/systemjs/systemjs/blob/master/docs/config-api.md#paths).
 
-The TypeScript compiler supports the declaration of such mappings using `"paths"` property in `tsconfig.json` files.
-Here is an example for how to specify the `"paths"` property for `jquery`.
+O compilador TypeScript suporta a declaração de tais mapeamentos usando a propriedade `"paths"` nos arquivos `tsconfig.json`.
+Aqui está um exemplo de como especificar a propriedade `"paths"` para `jquery`.
 
 ```json tsconfig
 {
   "compilerOptions": {
-    "baseUrl": ".", // This must be specified if "paths" is.
+    "baseUrl": ".", // Deve ser especificado se "caminhos" for .
     "paths": {
-      "jquery": ["node_modules/jquery/dist/jquery"] // This mapping is relative to "baseUrl"
+      "jquery": ["node_modules/jquery/dist/jquery"] // Este mapeamento é relativo a "baseUrl"
     }
   }
 }
 ```
 
-Please notice that `"paths"` are resolved relative to `"baseUrl"`.
-When setting `"baseUrl"` to another value than `"."`, i.e. the directory of `tsconfig.json`, the mappings must be changed accordingly.
-Say, you set `"baseUrl": "./src"` in the above example, then jquery should be mapped to `"../node_modules/jquery/dist/jquery"`.
+Observe que `"paths"` são resolvidos relativamente a `"baseUrl"`.
+Ao definir`"baseUrl"` para outro valor que não `"."`, ou seja, o diretório de `tsconfig.json`, os mapeamentos devem ser alterados de acordo.
+Digamos que, você define `"baseUrl": "./src"` no exemplo acima, então jquery deve ser mapeado para `"../node_modules/jquery/dist/jquery"`.
 
-Using `"paths"` also allows for more sophisticated mappings including multiple fall back locations.
-Consider a project configuration where only some modules are available in one location, and the rest are in another.
-A build step would put them all together in one place.
-The project layout may look like:
+Usando `"paths"` também permite mapeamentos mais sofisticados, incluindo vários locais de fallback.
+Considere uma configuração de projeto em que apenas alguns módulos estão disponíveis em um local e o restante em outro.
+Uma etapa de construção iria colocá-los todos juntos em um só lugar.
+O layout do projeto pode ser semelhante a:
 
 ```tree
 projectRoot
@@ -256,7 +256,7 @@ projectRoot
 └── tsconfig.json
 ```
 
-The corresponding `tsconfig.json` would look like:
+O correspondente `tsconfig.json` pareceria com:
 
 ```json tsconfig
 {
@@ -269,39 +269,39 @@ The corresponding `tsconfig.json` would look like:
 }
 ```
 
-This tells the compiler for any module import that matches the pattern `"*"` (i.e. all values), to look in two locations:
+Isso diz ao compilador para qualquer importação de módulo que corresponda ao padrão `"*"`  (ou seja, todos os valores), para olhar em dois locais:
 
-1.  `"*"`: meaning the same name unchanged, so map `<moduleName>` => `<baseUrl>/<moduleName>`
-2.  `"generated/*"` meaning the module name with an appended prefix "generated", so map `<moduleName>` => `<baseUrl>/generated/<moduleName>`
+1.  `"*"`: significando o mesmo nome inalterado, então mapear `<moduleName>` => `<baseUrl>/<moduleName>`
+2.  `"generated/*"` significando o nome do módulo com um prefixo anexado "gerado", então mapear `<moduleName>` => `<baseUrl>/generated/<moduleName>`
 
-Following this logic, the compiler will attempt to resolve the two imports as such:
+Seguindo essa lógica, o compilador tentará resolver as duas importações como tais:
 
 import 'folder1/file2':
 
-1.  pattern '\*' is matched and wildcard captures the whole module name
-2.  try first substitution in the list: '\*' -> `folder1/file2`
-3.  result of substitution is não relativa name - combine it with _baseUrl_ -> `projectRoot/folder1/file2.ts`.
-4.  File exists. Done.
+1.  o padrão '\*' é correspondido e o curinga captura todo o nome do módulo
+2.  tente a primeira substituição na lista: '\*' -> `folder1/file2`
+3.  resultado da substituição é nome não relativo - combiná-lo com _baseUrl_ -> `projectRoot/folder1/file2.ts`.
+4.  O arquivo existe. Feito.
 
 import 'folder2/file3':
 
 1.  pattern '\*' is matched and wildcard captures the whole module name
-2.  try first substitution in the list: '\*' -> `folder2/file3`
-3.  result of substitution is não relativa name - combine it with _baseUrl_ -> `projectRoot/folder2/file3.ts`.
-4.  File does not exist, move to the second substitution
-5.  second substitution 'generated/\*' -> `generated/folder2/file3`
-6.  result of substitution is não relativa name - combine it with _baseUrl_ -> `projectRoot/generated/folder2/file3.ts`.
-7.  File exists. Done.
+2.  tente a primeira substituição na lista: '\*' -> `folder2/file3`
+3.  resultado da substituição é nome não relativo - combiná-lo com _baseUrl_ -> `projectRoot/folder2/file3.ts`.
+4.  Arquivo não existe, passar para a segunda substituição
+5.  segunda substituição 'gerada/\*' -> `generated/folder2/file3`
+6.  resultado da substituição é nome não relativo - combiná-lo com _baseUrl_ -> `projectRoot/generated/folder2/file3.ts`.
+7.  O arquivo existe. Feito.
 
-### Virtual Directories with `rootDirs`
+### Diretórios virtuais com `rootDirs`
 
-Sometimes the project sources from multiple directories at compile time are all combined to generate a single output directory.
-This can be viewed as a set of source directories create a "virtual" directory.
+Às vezes, os fontes do projeto de vários diretórios em tempo de compilação são todos combinados para gerar um único diretório de saída.
+Isso pode ser visto como um conjunto de diretórios de origem para criar um diretório "virtual".
 
-Using 'rootDirs', you can inform the compiler of the _roots_ making up this "virtual" directory;
-and thus the compiler can resolve relative modules imports within these "virtual" directories _as if_ were merged together in one directory.
+Usando 'rootDirs', você pode informar ao compilador as _roots_ que compõem este diretório "virtual";
+e, portanto, o compilador pode resolver as importações de módulos relativos dentro desses diretórios "virtuais" _como se_ fossem mesclados em um diretório.
 
-For example consider this project structure:
+Por exemplo, considere esta estrutura de projeto:
 
 ```tree
  src
@@ -315,14 +315,14 @@ For example consider this project structure:
              └── template1.ts (imports './view2')
 ```
 
-Files in `src/views` are user code for some UI controls.
-Files in `generated/templates` are UI template binding code auto-generated by a template generator as part of the build.
-A build step will copy the files in `/src/views` and `/generated/templates/views` to the same directory in the output.
-At run-time, a view can expect its template to exist next to it, and thus should import it using a relative name as `"./template"`.
+Arquivos em `src/views` são códigos de usuário para alguns controles de interface de usuário.
+Os arquivos em `generated/templates` são códigos de vinculação de templates de interface de usuário gerado automaticamente por um gerador de template como parte da construção.
+Uma etapa de compilação irá copiar os arquivos em `/src/views` e `/generated/templates/views` para o mesmo diretório na saída.
+Em tempo de execução, uma visão pode esperar que seu modelo exista próximo a ela e, portanto, deve importá-lo usando um nome relativo como `"./template"`.
 
-To specify this relationship to the compiler, use`"rootDirs"`.
-`"rootDirs"` specify a list of _roots_ whose contents are expected to merge at run-time.
-So following our example, the `tsconfig.json` file should look like:
+Para especificar essa relação com o compilador, use `"rootDirs"`.
+`"rootDirs"` especifique uma lista de _roots_ cujo conteúdo deve se fundir em tempo de execução.
+Então, seguindo nosso exemplo, o `tsconfig.json` arquivo deve ser parecido com:
 
 ```json tsconfig
 {
@@ -332,19 +332,19 @@ So following our example, the `tsconfig.json` file should look like:
 }
 ```
 
-Every time the compiler sees a relative module import in a subfolder of one of the `rootDirs`, it will attempt to look for this import in each of the entries of `rootDirs`.
+Cada vez que o compilador vê uma importação de módulo relativa em uma subpasta de um dos `rootDirs`, ele tentará procurar por essa importação em cada uma das entradas de `rootDirs`.
 
-The flexibility of `rootDirs` is not limited to specifying a list of physical source directories that are logically merged. The supplied array may include any number of ad hoc, arbitrary directory names, regardless of whether they exist or not. This allows the compiler to capture sophisticated bundling and runtime features such as conditional inclusion and project specific loader plugins in a type safe way.
+A flexibilidade de `rootDirs` não se limita a especificar uma lista de diretórios de origem física que são mesclados logicamente. O array fornecido pode incluir qualquer número de nomes de diretório arbitrários ad hoc, independentemente de existirem ou não. Isso permite que o compilador capture pacotes sofisticados e recursos de tempo de execução, como inclusão condicional e plug-ins de carregador específicos do projeto de maneira segura.
 
-Consider an internationalization scenario where a build tool automatically generates locale specific bundles by interpolating a special path token, say `#{locale}`, as part of a relative module path such as `./#{locale}/messages`. In this hypothetical setup the tool enumerates supported locales, mapping the abstracted path into `./zh/messages`, `./de/messages`, and so forth.
+Considere um cenário de internacionalização onde uma ferramenta de construção gera automaticamente pacotes específicos de localidade interpolando um token de caminho especial, digamos `#{locale}`, como parte de um caminho de módulo relativo, como `./#{locale}/messages`. Nesta configuração hipotética, a ferramenta enumera localidades com suporte, mapeando o caminho abstrato em `./zh/messages`, `./de/messages`, e assim por diante.
 
-Assume that each of these modules exports an array of strings. For example `./zh/messages` might contain:
+Suponha que cada um desses módulos exporte um array de strings. Por exemplo `./zh/messages` pode conter:
 
 ```ts
 export default ["您好吗", "很高兴认识你"];
 ```
 
-By leveraging `rootDirs` we can inform the compiler of this mapping and thereby allow it to safely resolve `./#{locale}/messages`, even though the directory will never exist. For example, with the following `tsconfig.json`:
+Aproveitando `rootDirs` podemos informar o compilador deste mapeamento e, assim, permitir que ele resolva com segurança `./#{locale}/messages`, mesmo que o diretório nunca exista. Por exemplo, com o seguinte `tsconfig.json`:
 
 ```json tsconfig
 {
@@ -354,7 +354,7 @@ By leveraging `rootDirs` we can inform the compiler of this mapping and thereby 
 }
 ```
 
-The compiler will now resolve `import messages from './#{locale}/messages'` to `import messages from './zh/messages'` for tooling purposes, allowing development in a locale agnostic manner without compromising design time support.
+O compilador agora resolverá `import messages from './#{locale}/messages'` para `import messages from './zh/messages'` para fins de ferramentas, permitindo o desenvolvimento de uma maneira agnóstica de localidade sem comprometer o suporte ao tempo de design.
 
 ## Tracing module resolution
 
