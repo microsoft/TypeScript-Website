@@ -1,12 +1,12 @@
 ---
 display: "Menyelesaikan Module JSON"
-oneline: "Memperbolehkan mengimpor file .json"
+oneline: "Memperbolehkan mengimpor berkas .json"
 ---
 
 Memperbolehkan mengimpor modul dengan ekstensi '.json' merupakan praktik umum pada proyek node.
 Ini termasuk membuat jenis untuk `import` berdasarkan bentuk JSON statis.
 
-TypeScript tidak mendukung penyelesaian file JSON secara default:
+TypeScript tidak mendukung penyelesaian berkas JSON secara default:
 
 ```ts twoslash
 // @errors: 2732
@@ -23,7 +23,7 @@ settings.debug === true;
 settings.dry === 2;
 ```
 
-Mengaktifkan opsi memungkinkan impor JSON, dan memvalidasi jenis dalam file JSON tersebut.
+Mengaktifkan opsi memungkinkan impor JSON, dan memvalidasi jenis dalam berkas JSON tersebut.
 
 ```ts twoslash
 // @errors: 2367
