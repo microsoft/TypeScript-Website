@@ -17,7 +17,7 @@ type IdentifierCache = { [key: string]: number };
 
 const cacheDenganString: IdentifierCache = { file_a: "12343" };
 
-// Namun, ketika anda menyatakan hal tersebut dalam sebuah _union_,
+// Namun, ketika Anda menyatakan hal tersebut dalam sebuah _union_,
 // maka pemeriksaan kode tidak akan dijalankan:
 
 let cachePengguna: IdentifierCache | { index: number };
@@ -26,7 +26,7 @@ cachePengguna = { file_pertama: 5, file_kedua: "abc" };
 // Masalah tersebut sudah diperbaiki, dan akan ada
 // sebuah pesan kesalahan mengenai 'file_kedua' dari _compiler_.
 
-// Perbaikan tersebut juga sudah mampu menanngani kasus dimana _key_
+// Perbaikan tersebut juga sudah mampu mengangani kasus dimana _key_
 // memiliki tipe yang berbeda, contohnya ([key: string] dan [key: number])
 
 type IdentifierResponseCache = { [key: number]: number };
