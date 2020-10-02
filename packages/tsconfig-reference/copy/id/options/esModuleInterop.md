@@ -7,12 +7,12 @@ Secara bawaan (dengan `esModuleInterop` _false_ atau tidak disetel) TypeScript m
 
 - impor namespace seperti `import * as moment from "moment"` bertindak sama seperti `const moment = require("moment")`
 
-- impor bawaan seperti `import moment as "moment"` berfungsi sama seperti `const moment = require ("moment").default`
+- impor bawaan seperti `import moment as "moment"` berfungsi sama seperti `const moment = require("moment").default`
 
 Ketidakcocokan ini menyebabkan dua masalah berikut:
 
 - spesifikasi modul ES6 menyatakan bahwa impor namespace (`import * as x`) hanya dapat menjadi objek, dengan memiliki TypeScript
-    memperlakukannya sama dengan `= require ("x")` maka TypeScript diizinkan untuk impor diperlakukan sebagai fungsi dan dapat dipanggil. Ini melanggar rekomendasi spesifikasi.
+  memperlakukannya sama dengan `= require ("x")` maka TypeScript diizinkan untuk impor diperlakukan sebagai fungsi dan dapat dipanggil. Ini melanggar rekomendasi spesifikasi.
 
 - Meskipun akurat untuk spesifikasi modul ES6, sebagian besar pustaka dengan modul CommonJS/AMD/UMD tidak seketat implementasi TypeScript.
 
