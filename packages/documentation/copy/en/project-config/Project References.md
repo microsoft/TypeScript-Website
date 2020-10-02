@@ -189,7 +189,7 @@ If your solution is like this, you can continue to use `msbuild` with `tsc -p` a
 
 ## Overall Structure
 
-With more `tsconfig.json` files, you'll usually want to use [Configuration file inheritance](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) to centralize your common compiler options.
+With more `tsconfig.json` files, you'll usually want to use [Configuration file inheritance](/docs/handbook/tsconfig-json.html) to centralize your common compiler options.
 This way you can change a setting in one file rather than having to edit multiple files.
 
 Another good practice is to have a "solution" `tsconfig.json` file that simply has `references` to all of your leaf-node projects and sets `files` to an empty array (otherwise the solution file will cause double compilation of files). Note that starting with 3.0, it is no longer an error to have an empty `files` array if you have at least one `reference` in a `tsconfig.json` file.

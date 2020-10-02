@@ -7,7 +7,7 @@ oneline: "How to write a high-quality TypeScript Declaration (d.ts) file"
 
 The Declaration Files section is designed to teach you how to write a high-quality TypeScript Declaration File. We need to assume basic familiarity with the TypeScript language in order to get started.
 
-If you haven't already, you should read the [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/basic-types.html)
+If you haven't already, you should read the [TypeScript Handbook](/docs/handbook/basic-types.html)
 to familiarize yourself with basic concepts, especially types and modules.
 
 The most common case for learning how .d.ts files work is that you're typing an npm package with no types. 
@@ -33,15 +33,15 @@ when writing a new file. If you already know what your structure is, see the d.t
 ## [Do's and Don'ts](/docs/handbook/declaration-files/do-s-and-don-ts.html)
 
 Many common mistakes in declaration files can be easily avoided.
-The [Do's and Don'ts](/docs/handbook/declaration-files/do-s-and-don-ts.html) section identifies common errors,
-describes how to detect them,
+The [Do's and Don'ts](/docs/handbook/declaration-files/do-s-and-don-ts.html) section identifies common errors, 
+describes how to detect them, 
 and how to fix them.
 Everyone should read this section to help themselves avoid common mistakes.
 
 ## [Deep Dive](/docs/handbook/declaration-files/deep-dive.html)
 
-For seasoned authors interested in the underlying mechanics of how declaration files work,
-the [Deep Dive](/docs/handbook/declaration-files/deep-dive.html) section explains many advanced concepts in declaration writing,
+For seasoned authors interested in the underlying mechanics of how declaration files work, 
+the [Deep Dive](/docs/handbook/declaration-files/deep-dive.html) section explains many advanced concepts in declaration writing, 
 and shows how to leverage these concepts to create cleaner and more intuitive declaration files.
 
 ## [Publish to npm](/docs/handbook/declaration-files/publishing.html)
