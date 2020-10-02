@@ -7,5 +7,5 @@ _Hanya_ menghasilkan berkas `.d.ts`; jangan mengirimkan berkas `.js`.
 
 Pengaturan ini berguna dalam dua kasus:
 
-- Anda menggunakan transpiler selain TypeScript untuk membuat JavaScript Anda.
+- Anda menggunakan _transpiler_ selain TypeScript untuk membuat JavaScript Anda.
 - Anda menggunakan TypeScript untuk hanya menghasilkan berkas `d.ts` untuk konsumen Anda.
