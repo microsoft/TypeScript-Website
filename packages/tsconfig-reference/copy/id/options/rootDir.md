@@ -1,13 +1,13 @@
 ---
 display: "Root Dir"
-oneline: "Menyetel folder root di dalam file sumber Anda"
+oneline: "Menyetel direktori root di dalam berkas sumber Anda"
 ---
 
-**Default**: Jalur umum terpanjang dari semua file masukan non-deklarasi. jika `composite` disetel, defaultnya adalah direktori yang berisi file `tsconfig.json`.
+**Default**: Jalur umum terpanjang dari semua berkas masukan non-deklarasi. jika `composite` disetel, defaultnya adalah direktori yang berisi berkas `tsconfig.json`.
 
-Ketika TypeScript mengkompilasi file, ia mempertahankan struktur direktori yang sama pada direktori keluaran seperti struktur di direktori masukan.
+Ketika TypeScript mengkompilasi berkas, ia mempertahankan struktur direktori yang sama pada direktori keluaran seperti struktur di direktori masukan.
 
-Misalnya, Anda memiliki beberapa file input:
+Misalnya, Anda memiliki beberapa berkas masukan:
 
 ```
 MyProj
@@ -20,9 +20,9 @@ MyProj
 ├── types.d.ts
 ```
 
-Kasimpulan untuk `rootDir` adalah jalur umum terpanjang dari semua file input non-deklarasi, yang dalam hal ini adalah`core/`.
+Kasimpulan untuk `rootDir` adalah jalur umum terpanjang dari semua berkas masukan non-deklarasi, yang dalam hal ini adalah`core/`.
 
-Jika nilai `outDir` anda adalah `dist`, maka TypeScript akan membuat struktur folder seperti ini:
+Jika nilai `outDir` anda adalah `dist`, maka TypeScript akan membuat struktur direktori seperti ini:
 
 ```
 MyProj
@@ -33,7 +33,7 @@ MyProj
 │   │   ├── c.ts
 ```
 
-Namun, kamu mungkin mengharapkan `core` menjadi bagian dari struktur direktori keluaran.
+Namun, anda mungkin mengharapkan `core` menjadi bagian dari struktur direktori keluaran.
 Dengan mensetel `rootDir: "."` pada `tsconfig.json`, TypeScript akan menghasilkan struktur direktori seperti ini:
 
 ```
@@ -46,13 +46,13 @@ MyProj
 │   │   │   ├── c.js
 ```
 
-Yang terpenting, `rootDir` **tidak mempengaruhi file mana yang menjadi bagian dari kompilasi**.
+Yang terpenting, `rootDir` **tidak mempengaruhi berkas mana yang menjadi bagian dari kompilasi**.
 `rootDir` tidak memiliki hubungan dengan pengaturan `include`, `exclude`, atau `files` pada `tsconfig.json`
 
-Perhatikan bahwa TypeScript tidak akan pernah menulis file keluaran ke direktori di luar dari `outDir`, dan tidak akan pernah melewatkan pengeluaran file.
-Karena alasan ini, `rootDir` menetapkan bahwa semua file yang perlu dikeluarkan berada dibawah jalur `rootDir`.
+Perhatikan bahwa TypeScript tidak akan pernah menulis berkas keluaran ke direktori di luar dari `outDir`, dan tidak akan pernah melewatkan pengeluaran berkas.
+Karena alasan ini, `rootDir` mengharuskan semua berkas yang perlu dikeluarkan berada dibawah jalur `rootDir`.
 
-Misalnya, Anda memiliki struktur folder seperti ini:
+Misalnya, Anda memiliki struktur direktori seperti ini:
 
 ```
 MyProj
@@ -63,4 +63,4 @@ MyProj
 ├── helpers.ts
 ```
 
-Ini akan menimbulkan error ketika menentukan `rootDir` sebagai `core` _dan_ `include` sebagai `*` karena ini membuat file (`helpers.ts`) yang perlu diletakkan _diluar_ dari `outDir` (yaitu `../helpers.js`)
+Ini akan menimbulkan galat ketika menentukan `rootDir` sebagai `core` dan `include` sebagai `*` karena ini membuat berkas (`helpers.ts`) yang perlu diletakkan di luar dari `outDir` (yaitu `../helpers.js`)
