@@ -23,7 +23,7 @@ yarn start
 Working on this repo is done by running `yarn start` - this starts up the website on port `8000` and creates a
 builder worker for every package in the repo, so if you make a change outside of the site it will compile and lint etc.
 
-Some useful knowledge:
+Some useful knowledge you need to know:
 
 - All packages have: `yarn build` and `yarn test`
 - All packages use [debug](https://www.npmjs.com/package/debug) - which means you can do `env DEBUG="*" yarn test` to get verbose logs
@@ -102,7 +102,7 @@ The docs for TypeScript. Originally ported over from [microsoft/TypeScript-Handb
 
 ## Playground Examples
 
-The code samples used in the Playground split across many languages
+The code samples used in the Playground split across many languages.
 
 # Infra Packages
 
@@ -126,7 +126,7 @@ Generates an epub file from the handbook files. You can try downloading it at ht
 
 ## Community Meta
 
-Generates contributions JSON metadata on who edited handbook pages
+Generates contributions JSON metadata on who edited handbook pages.
 
 # Contributing
 
