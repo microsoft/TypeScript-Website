@@ -8,7 +8,7 @@
 // Anda dapat mengetahui lebih lanjut tentang hal ini pada
 // example:types-vs-interfaces
 
-// Dulunya, anda tidak dapat mengacu pada tipe yang anda
+// Dulunya, Anda tidak dapat mengacu pada tipe yang Anda
 // definiskan di dalam tipe itu sendiri. Hal ini adalah sebuah
 // batasan yang tidak terdapat dalam sebuah antarmuka, dan dapat
 // diatasi dengan sebuah cara tertentu.
