@@ -133,7 +133,7 @@ It's important to note that ts-loader will need to run before any other loader t
 The same goes for [awesome-typescript-loader](https://github.com/TypeStrong/ts-loader), another TypeScript loader for Webpack.
 You can read more about the differences between the two [here](https://github.com/s-panferov/awesome-typescript-loader#differences-between-ts-loader).
 
-You can see an example of using Webpack in our [tutorial on React and Webpack](https://www.typescriptlang.org/docs/handbook/react-&-webpack.html).
+You can see an example of using Webpack in our [tutorial on React and Webpack](/docs/handbook/react-&-webpack.html).
 
 ## Moving to TypeScript Files
 
