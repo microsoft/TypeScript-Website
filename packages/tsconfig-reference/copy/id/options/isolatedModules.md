@@ -73,4 +73,4 @@ console.log(Numbers.Zero + Numbers.One);
 ```
 
 Tanpa pengetahuan tentang nilai anggota ini, _transpiler_ lain tidak dapat menggantikan referensi ke `Number`, yang akan menjadi galat dijalankan jika dibiarkan (karena tidak ada objek `Numbers` pada waktu proses).
-Karena itu, ketika `isolatedModules` dipilih, akan terjadi kesalahan yang mereferensikan anggota `const enum` disekelilingnya.
+Karena itu, ketika `isolatedModules` dipilih, akan terjadi kesalahan yang mereferensikan anggota `const enum` di sekelilingnya.
