@@ -358,7 +358,7 @@ System.register(["./mod"], function (exports_1) {
 ##### Native ECMAScript 2015 modules SimpleModule.js
 
 ```js
-import { something } from "./mod";
+import { something } from "./mod.js";
 export var t = something + 1;
 ```
 
