@@ -53,7 +53,7 @@ const arr = [1, ...arr2];
 Berdasarkan uraian tersebut, sepertinya mudah untuk menurunkan ke ES5:
 
 ```js
-// The same, right?
+// Sama kan?
 const arr = [1].concat(arr2);
 ```
 
@@ -66,9 +66,9 @@ let missing = [0, , 1];
 let spreaded = [...missing];
 let concated = [].concat(missing);
 
-// true
+// benar
 "1" in spreaded;
-// false
+// salah
 "1" in concated;
 ```
 
