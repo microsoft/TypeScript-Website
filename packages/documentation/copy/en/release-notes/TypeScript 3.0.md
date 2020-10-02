@@ -11,7 +11,7 @@ TypeScript 3.0 introduces a new concept of project references. Project reference
 
 TypeScript 3.0 also introduces a new mode for tsc, the `--build` flag, that works hand-in-hand with project references to enable faster TypeScript builds.
 
-See [Project References handbook page](../Project%20References.md) for more documentation.
+See [Project References handbook page](https://www.typescriptlang.org/docs/handbook/project-references.html) for more documentation.
 
 ## Tuples in rest parameters and spread expressions
 
