@@ -3,7 +3,7 @@
 //// {order: 3, compiler: {strictNullChecks: true}}
 
 // Bagaimana kode mengalir di dalam file JavaScript dapat mempengaruhi
-// tipe (type) di seluruh program kita.
+// tipe data di seluruh program kita.
 
 const users = [{ name: "Ahmed" }, { name: "Gemma" }, { name: "Jon" }];
 
@@ -11,7 +11,7 @@ const users = [{ name: "Ahmed" }, { name: "Gemma" }, { name: "Jon" }];
 const jon = users.find(u => u.name === "jon");
 
 // Dalam kasus di atas, 'find' bisa gagal. Dalam hal ini kita
-// tidak memiliki objek. Ini menghasilkan sebuah tipe (type):
+// tidak memiliki objek. Ini menghasilkan sebuah tipe data:
 //
 // {name: string} | undefined
 //
@@ -25,13 +25,15 @@ if (jon) {
 }
 
 // Tipe '{name: string} | undefined' menggunakan fitur TypeScript
-// yang disebut tipe gabungan (union types). Tipe gabungan (union types) adalah cara untuk
-// nyatakan bahwa sebuah objek bisa menjadi salah satu dari banyak hal.
-// //
-// Tanda pipa (|) bertindak sebagai pemisah antara tipe (type) yang berbeda.
+// yang disebut tipe data gabungan (union types). Tipe data gabungan 
+// (union types) adalah cara untuk nyatakan bahwa sebuah objek bisa 
+// menjadi salah satu dari banyak hal.
+// 
+// Tanda pipa (|) bertindak sebagai pemisah antara tipe data yang berbeda.
 // Sifat dinamis JavaScript berarti bahwa banyak fungsi
-// menerima dan dan mengembalikan objek dari tipe (type) yang tidak terkait dan kita perlu
-// untuk dapat mengungkapkan tipe (type) mana yang mungkin kita hadapi.
+// menerima dan dan mengembalikan objek dari tipe data yang tidak terkait 
+// dan kita perlu untuk dapat mengungkapkan tipe data mana yang mungkin 
+// kita hadapi.
 
 // Kita bisa menggunakan ini dalam beberapa cara. Mari kita mulai dengan melihat
 // himpunan (array) yang nilainya memiliki tipe berbeda.

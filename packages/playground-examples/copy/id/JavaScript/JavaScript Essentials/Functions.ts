@@ -15,7 +15,8 @@ const anonymousOldSchoolFunction = function (x, y) {
   return x + y;
 };
 
-// Anda juga dapat menggunakan singkatan panah-gemuk (fat-arrow) untuk suatu fungsi
+// Anda juga dapat menggunakan singkatan panah-gemuk (fat-arrow) 
+// untuk suatu fungsi
 const addFunction = (x, y) => {
   return x + y;
 };
@@ -24,7 +25,7 @@ const addFunction = (x, y) => {
 // berlaku untuk ketiga format termasuk dua yang sebelumnya.
 
 // TypeScript menyediakan sintaks tambahan yang ditambahkan ke
-// definisi fungsi dan menawarkan petunjuk tentang tipe (type) apa
+// definisi fungsi dan menawarkan petunjuk tentang tipe data apa
 // diharapkan oleh fungsi ini.
 //
 // Selanjutnya adalah versi paling terbuka dari fungsi add, versi ini
@@ -48,8 +49,9 @@ add2(16, 23);
 add2("Hello", 23);
 
 // Bagus. Kita mendapatkan kesalahan ketika ada selain angka
-// yang diteruskan ke dalam fungsi. Jika Anda mengarahkan kursor ke kata add2 di atas,
-// Anda akan melihat bahwa TypeScript mendeskripsikannya sebagai:
+// yang diteruskan ke dalam fungsi. Jika Anda mengarahkan kursor 
+// ke kata add2 di atas, Anda akan melihat bahwa TypeScript 
+// mendeskripsikannya sebagai:
 //
 // const add2: (x: number, y: number) => number
 //
@@ -63,8 +65,8 @@ const add3 = (x: number, y: number): string => {
 };
 
 // Fungsi ini gagal karena kita memberi tahu TypeScript bahwa TypeScipt
-// seharusnya menerima nilai kembali dalam bentuk string, tetapi ternyata fungsinya
-// tidak memenuhi janji itu.
+// seharusnya menerima nilai kembali dalam bentuk string, tetapi 
+// ternyata fungsinya tidak memenuhi janji itu.
 
 const add4 = (x: number, y: number): number => {
   return x + y;
@@ -78,12 +80,12 @@ const add4 = (x: number, y: number): number => {
 // ini dengan bentuk fungsi yang gagal.
 
 // Contoh ini hanyalah dasar, Anda dapat mempelajari lebih banyak lagi
-// tentang bagaimana fungsi bekerja di TypeScript di buku pegangan (handbook) dan
-// di dalam bagian JavaScript Fungsional dari contoh:
+// tentang bagaimana fungsi bekerja di TypeScript di buku pegangan 
+// (handbook) dan di dalam bagian JavaScript Fungsional dari contoh:
 //
 // https://www.typescriptlang.org/docs/handbook/functions.html
 // example:function-chaining
 
 // Dan untuk melanjutkan tur dasar-dasar JavaScript,
-// kita akan melihat bagaimana aliran kode memengaruhi tipe (type) TypeScript:
+// kita akan melihat bagaimana aliran kode memengaruhi tipe data TypeScript:
 // example:code-flow

@@ -24,7 +24,7 @@ const purchaseOrder = {
 // kursor ke beberapa kata ini (coba arahkan kursor
 // ke objek purchaseOrder di atas) Anda dapat melihat
 // bagaimana TypeScript menafsirkan JavaScript Anda menjadi
-// jenis (type) berlabel.
+// tipe data berlabel.
 
 // Nilai dapat diakses melalui ".", Jadi untuk mendapatkan
 // nama pengguna untuk pesanan pembelian:
@@ -44,7 +44,8 @@ console.log(purchaseOrder.item.type);
 // informasi tanpa harus mencarinya di tempat lain.
 
 // TypeScript juga menawarkan fitur yang sama untuk himpunan (array).
-// Berikut adalah himpunan (array) yang isinya hanya pesanan pembelian yang kita buat.
+// Berikut adalah himpunan (array) yang isinya hanya pesanan pembelian 
+// yang kita buat.
 
 const allOrders = [purchaseOrder];
 
@@ -58,8 +59,8 @@ const firstOrder = allOrders[0];
 console.log(firstOrder.item.type);
 
 // Cara alternatif untuk mendapatkan objek adalah melalui memencet (popping)
-// himpunan (array) untuk menghapus objek. Dengan melakukan ini, kita bisa menghapus objek
-// dari himpunan (array), dan mengembalikan objek. Ini disebut
+// himpunan (array) untuk menghapus objek. Dengan melakukan ini, kita bisa 
+// menghapus objek dari himpunan (array), dan mengembalikan objek. Ini disebut
 // mutasi himpunan (array), karena mengubah data di dalamnya.
 
 const poppedFirstOrder = allOrders.pop();
@@ -69,7 +70,7 @@ const poppedFirstOrder = allOrders.pop();
 // basis kode Anda adalah dengan menghindari mutasi. TypeScript menawarkan cara
 // untuk mendeklarasikan himpunan (array) hanya baca (read-only):
 
-// Membuat tipe (type) berdasarkan bentuk pesanan pembelian:
+// Membuat tipe data berdasarkan bentuk pesanan pembelian:
 type PurchaseOrder = typeof purchaseOrder;
 
 // Membuat himpunan (array) pesanan pembelian yang hanya bisa dibaca
@@ -78,10 +79,10 @@ const readonlyOrders: readonly PurchaseOrder[] = [purchaseOrder];
 // Ya! Agak lebih banyak kode memang. Ada empat
 // hal-hal baru di sini:
 //
-// type PurchaseOrder - Menyatakan tipe (type) baru ke TypeScript.
+// type PurchaseOrder - Menyatakan tipe data baru ke TypeScript.
 //
-// typeof - Gunakan sistem inferensi tipe (type inference) untuk menyetel tipe (type)
-// berdasarkan konstanta yang diteruskan berikutnya.
+// typeof - Gunakan sistem inferensi tipe data (type inference) untuk 
+// menyetel tipe data berdasarkan konstanta yang diteruskan berikutnya.
 //
 // purchaseOrder - Dapatkan variabel purchaseOrder dan beri tahu
 // TypeScript ini adalah bentuk dari semua
