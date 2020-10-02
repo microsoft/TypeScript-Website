@@ -3,9 +3,9 @@ display: "Menghapus Komentar"
 oneline: "Menghapus Komentar di TypeScript sehingga tidak muncul di Javascript"
 ---
 
-Menghapus semua komentar pada file Typescript pada saat mengkonversi ke file Javascript. Pengaturan default-nya adalah `false`
+Menghapus semua komentar pada berkas Typescript pada saat mengkonversi ke berkas Javascript. Pengaturan bawaannya adalah `false`
 
-Sebagai contoh, ini adalah file TypeScript yang memiliki komentar JSDoc:
+Sebagai contoh, ini adalah berkas TypeScript yang memiliki komentar JSDoc:
 
 ```ts
 /** Terjemahan dari 'Hello world' ke bahasa Portugis */
