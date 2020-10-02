@@ -356,14 +356,14 @@ Aproveitando `rootDirs` podemos informar o compilador deste mapeamento e, assim,
 
 O compilador agora resolverá `import messages from './#{locale}/messages'` para `import messages from './zh/messages'` para fins de ferramentas, permitindo o desenvolvimento de uma maneira agnóstica de localidade sem comprometer o suporte ao tempo de design.
 
-## Tracing module resolution
+## Resolução do módulo de rastreamento
 
-As discussed earlier, the compiler can visit files outside the current folder when resolving a module.
-This can be hard when diagnosing why a module is not resolved, or is resolved to an incorrect definition.
-Enabling the compiler module resolution tracing using `--traceResolution` provides insight in what happened during the module resolution process.
+Conforme discutido anteriormente, o compilador pode visitar arquivos fora da pasta atual ao resolver um módulo.
+Isso pode ser difícil ao diagnosticar porque um módulo não foi resolvido ou foi resolvido para uma definição incorreta.
+Habilitar o rastreamento de resolução do módulo do compilador usando `--traceResolution` fornece uma visão do que aconteceu durante o processo de resolução do módulo.
 
-Let's say we have a sample application that uses the `typescript` module.
-`app.ts` has an import like `import * as ts from "typescript"`.
+Digamos que temos um aplicativo de amostra que usa o módulo `typescript`.
+`app.ts` contém uma importação como `import * as ts from "typescript"`.
 
 ```tree
 │   tsconfig.json
@@ -375,13 +375,13 @@ Let's say we have a sample application that uses the `typescript` module.
         app.ts
 ```
 
-Invoking the compiler with `--traceResolution`
+Invocar o compilador com `--traceResolution`
 
 ```shell
 tsc --traceResolution
 ```
 
-Results in an output such as:
+Resulta em uma saída como:
 
 ```txt
 ======== Resolving module 'typescript' from 'src/app.ts'. ========
@@ -400,38 +400,38 @@ File 'node_modules/typescript/lib/typescript.d.ts' exist - use it as a module re
 ======== Module name 'typescript' was successfully resolved to 'node_modules/typescript/lib/typescript.d.ts'. ========
 ```
 
-#### Things to look out for
+#### Coisas para procurar
 
-- Name and location of the import
+- Nome e localização da importação
 
-> ======== Resolving module **'typescript'** from **'src/app.ts'**. ========
+> ======== Resolving module **'typescript'** of **'src/app.ts'**. ========
 
-- The strategy the compiler is following
+- A estratégia que o compilador está seguindo
 
-> Module resolution kind is not specified, using **'NodeJs'**.
+> O tipo de resolução do módulo não é especificado, usando **'NodeJs'**.
 
-- Loading of types from npm packages
+- Carregando tipos de pacotes npm
 
-> 'package.json' has **'types'** field './lib/typescript.d.ts' that references 'node_modules/typescript/lib/typescript.d.ts'.
+> 'package.json' tem campos **'types'** em './lib/typescript.d.ts' que referencia 'node_modules/typescript/lib/typescript.d.ts'.
 
-- Final result
+- Resultado final
 
 > ======== Module name 'typescript' was **successfully resolved** to 'node_modules/typescript/lib/typescript.d.ts'. ========
 
-## Using `--noResolve`
+## Utilizando `--noResolve`
 
-Normally the compiler will attempt to resolve all module imports before it starts the compilation process.
-Every time it successfully resolves an `import` to a file, the file is added to the set of files the compiler will process later on.
+Normalmente, o compilador tentará resolver todas as importações de módulo antes de iniciar o processo de compilação.
+Cada vez que ele resolve com sucesso uma `importação` para um arquivo, o arquivo é adicionado ao conjunto de arquivos que o compilador irá processar mais tarde.
 
-The `--noResolve` compiler options instructs the compiler not to "add" any files to the compilation that were not passed on the command line.
-It will still try to resolve the module to files, but if the file is not specified, it will not be included.
+A opção de compliação `--noResolve` instrui o compilador a não "adicionar" nenhum arquivo à compilação que não tenha sido passado na linha de comando.
+Ele ainda tentará resolver o módulo em arquivos, mas se o arquivo não for especificado, ele não será incluído.
 
-For instance:
+Por exemplo:
 
 #### app.ts
 
 ```ts
-import * as A from "moduleA"; // OK, 'moduleA' passed on the command-line
+import * as A from "moduleA"; // OK, 'moduleA' passou na linha de comando
 import * as B from "moduleB"; // Error TS2307: Cannot find module 'moduleB'.
 ```
 
@@ -439,21 +439,21 @@ import * as B from "moduleB"; // Error TS2307: Cannot find module 'moduleB'.
 tsc app.ts moduleA.ts --noResolve
 ```
 
-Compiling `app.ts` using `--noResolve` should result in:
+Compilando `app.ts` usando `--noResolve` deve resultar em:
 
-- Correctly finding `moduleA` as it was passed on the command-line.
-- Error for not finding `moduleB` as it was not passed.
+- Encontrando corretamente `moduleA` conforme foi passado na linha de comando.
+- Erro por não encontrar `moduleB` como não foi passado.
 
 ## Common Questions
 
-### Why does a module in the exclude list still get picked up by the compiler?
+### Por que um módulo na lista de exclusão ainda é selecionado pelo compilador?
 
-`tsconfig.json` turns a folder into a “project”.
-Without specifying any `“exclude”` or `“files”` entries, all files in the folder containing the `tsconfig.json` and all its sub-directories are included in your compilation.
-If you want to exclude some of the files use `“exclude”`, if you would rather specify all the files instead of letting the compiler look them up, use `“files”`.
+`tsconfig.json` transforma uma pasta em um “projeto”.
+Sem especificar nenhuma entrada `“exclude”` ou `“files”`, todos os arquivos na pasta que contém o `tsconfig.json` e todos os seus subdiretórios estão incluídos em sua compilação.
+Se você deseja excluir alguns dos arquivos, use `“exclude”`, se você preferir especificar todos os arquivos em vez de permitir que o compilador os procure, use `“files”`.
 
-That was `tsconfig.json` automatic inclusion.
-That does not embed module resolution as discussed above.
-If the compiler identified a file as a target of a module import, it will be included in the compilation regardless if it was excluded in the previous steps.
+Essa foi a inclusão automática de `tsconfig.json`.
+Isso não incorpora a resolução do módulo conforme discutido acima.
+Se o compilador identificou um arquivo como destino de uma importação de módulo, ele será incluído na compilação, independentemente de ter sido excluído nas etapas anteriores.
 
-So to exclude a file from the compilation, you need to exclude it and **all** files that have an `import` or `/// <reference path="..." />` directive to it.
+Portanto, para excluir um arquivo da compilação, você precisa excluí-lo e ** todos ** os arquivos que possuem uma diretiva `import` ou `/// <reference path="..." />`.
