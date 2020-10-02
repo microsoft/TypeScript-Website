@@ -9,9 +9,8 @@
 // Hal ini hanya berlaku bila fungsi yang dimaksud ada,
 // yang menyebabkan pernyataan `if` akan selalu bernilai `true`.
 
-// Dibawah ini merupakan sebuah contoh antarmuka _plugin_,
+// Di bawah ini merupakan sebuah contoh antarmuka _plugin_,
 // dimana ada _callback_ yang harus ada dan _callback_ pilihan.
-
 interface PengaturanPlugin {
     pluginShouldLoad?: () => void;
     pluginIsActivated: () => void;
