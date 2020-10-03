@@ -3,7 +3,7 @@ display: "Root Dirs"
 oneline: "Mengatur banyak direktori root"
 ---
 
-Degan menggunakan `rootDirs`, Anda dapat memberi tahu kompiler bahwa ada banyak direktori "virtual" yang bertindak sebagai salah satu akar (root).
+Degan menggunakan `rootDirs`, Anda dapat memberi tahu kompilator bahwa ada banyak direktori "virtual" yang bertindak sebagai salah satu akar (root).
 Hal ini memungkinkan kompilator untuk menyelesaikan impor pada modul relatif dalam direktori "virtual", seolah-olah digabungkan menjadi satu direktori.
 
 Sebagai contoh:
@@ -28,4 +28,4 @@ Sebagai contoh:
 }
 ```
 
-Ini tidak memengaruhi bagaimana Typescript _emit_ Javascript, ini hanya mengemulasi asumsi bahwa mereka akan mampu melalukan perkerjaan melalui Jalur relatif tersebut saat runtime.
+Ini tidak memengaruhi bagaimana Typescript menghasilkan Javascript, ini hanya mengemulasi asumsi bahwa mereka akan mampu melakukan perkerjaan melalui Jalur relatif tersebut saat runtime.

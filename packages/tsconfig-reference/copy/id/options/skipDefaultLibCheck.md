@@ -1,6 +1,6 @@
 ---
-display: "Melewati pemeriksaan pustaka default"
+display: "Melewati pemeriksaan pustaka bawaan"
 oneline: "Gunakan SkipLibCheck sebagai gantinya"
 ---
 
-Gunakan [`--skipLibCheck`](# skipLibCheck) sebagai gantinya. Lewati pemeriksaan jenis file deklarasi pustaka default.
+Gunakan [`--skipLibCheck`](# skipLibCheck) sebagai gantinya. Lewati pemeriksaan jenis file deklarasi pustaka bawaan.
