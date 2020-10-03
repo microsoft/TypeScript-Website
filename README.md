@@ -45,10 +45,10 @@ You can find the build logs in [GitHub Actions](https://github.com/microsoft/Typ
 
 If you want to know _in-depth_ how this website works, there is an [hour long video covering the codebase, deployment and tooling on YouTube.](https://www.youtube.com/watch?v=HOvivt6B7hE). Otherwise there are some short guides:
 
-- [Converting Twoslash Code Samples](./docs/Converting Twoslash Code Samples.md)
-- [How i8n Works For Site Copy](./docs/How i8n Works For Site Copy.md)
-- [Updating the TypeScript Version](./docs/New TypeScript Version.md)
-- [Something Went Wrong](./docs/Something Went Wrong.md)
+- [Converting Twoslash Code Samples](./docs/Converting%20Twoslash%20Code%20Samples.md)
+- [How i8n Works For Site Copy](./docs/How%20i8n%20Works%20For%20Site%20Copy.md)
+- [Updating the TypeScript Version](./docs/New%20TypeScript%20Version.md)
+- [Something Went Wrong](./docs/Something%20Went%20Wrong.md)
 
 # Website Packages
 
