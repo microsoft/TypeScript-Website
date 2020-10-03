@@ -3,7 +3,7 @@ display: "Root Dir"
 oneline: "Menyetel direktori root di dalam berkas sumber Anda"
 ---
 
-**Default**: Jalur umum terpanjang dari semua berkas masukan non-deklarasi. jika `composite` disetel, defaultnya adalah direktori yang berisi berkas `tsconfig.json`.
+**Bawaan**: Jalur umum terpanjang dari semua berkas masukan non-deklarasi. jika `composite` disetel, bawaannya adalah direktori yang berisi berkas `tsconfig.json`.
 
 Ketika TypeScript mengkompilasi berkas, ia mempertahankan struktur direktori yang sama pada direktori keluaran seperti struktur di direktori masukan.
 

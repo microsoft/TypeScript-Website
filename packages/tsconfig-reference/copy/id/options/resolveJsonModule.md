@@ -6,7 +6,7 @@ oneline: "Memperbolehkan mengimpor berkas .json"
 Memperbolehkan mengimpor modul dengan ekstensi '.json' merupakan praktik umum pada proyek node.
 Ini termasuk membuat jenis untuk `import` berdasarkan bentuk JSON statis.
 
-TypeScript tidak mendukung penyelesaian berkas JSON secara default:
+TypeScript tidak mendukung penyelesaian berkas JSON secara bawaan:
 
 ```ts twoslash
 // @errors: 2732
