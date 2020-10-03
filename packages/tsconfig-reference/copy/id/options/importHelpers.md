@@ -9,7 +9,7 @@ Ini dapat mengakibatkan duplikasi kode jika penunjang yang sama digunakan di ban
 
 Jika `importHelpers` kode ini aktif, fungsi penunjang ini diimpor dari [tslib](https://www.npmjs.com/package/tslib) modul.
 Anda perlu memastikan bahwa berkas `tslib` modul dapat diimpor saat dijalankan.
-Ini hanya mempengaruhi modul; berkas kode tidak akan mencoba mengimpor modul.
+Ini hanya mempengaruhi modul, berkas kode tidak akan mencoba mengimpor modul.
 
 Misalnya, dengan TypeScript:
 

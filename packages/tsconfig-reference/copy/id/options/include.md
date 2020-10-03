@@ -57,7 +57,7 @@ Yang akan mencakup:
 └── yarn.lock
 ```
 
-`include` dan `exclude` mendukung karakter untuk membuat contoh umum:
+`include` dan `exclude` mendukung karakter untuk membuat pola _global_:
 
 - `*` cocok dengan nol atau lebih karakter (tidak termasuk pemisah direktori)
 - `?` cocok dengan salah satu karakter (tidak termasuk pemisah direktori)
