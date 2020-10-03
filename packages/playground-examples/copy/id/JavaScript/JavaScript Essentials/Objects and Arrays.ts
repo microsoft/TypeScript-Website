@@ -43,37 +43,37 @@ console.log(purchaseOrder.item.type);
 // dan memungkinkan Anda menghindari kesalahan ketik dan melihat tambahan
 // informasi tanpa harus mencarinya di tempat lain.
 
-// TypeScript juga menawarkan fitur yang sama untuk himpunan (array).
-// Berikut adalah himpunan (array) yang isinya hanya pesanan pembelian 
+// TypeScript juga menawarkan fitur yang sama untuk himpunan (_array_).
+// Berikut adalah himpunan yang isinya hanya pesanan pembelian 
 // yang kita buat.
 
 const allOrders = [purchaseOrder];
 
 // Jika Anda mengarahkan kursor ke allOrders, Anda dapat
-// mengetahui bahwa itu adalah himpunan (array)
-// karena info hover diakhiri dengan []. Anda dapat mengakses
+// mengetahui bahwa itu adalah himpunan karena info _hover_ 
+// diakhiri dengan []. Anda dapat mengakses
 // urutan pertama menggunakan tanda kurung siku dengan indeks
 // (mulai dari nol).
 
 const firstOrder = allOrders[0];
 console.log(firstOrder.item.type);
 
-// Cara alternatif untuk mendapatkan objek adalah melalui memencet (popping)
-// himpunan (array) untuk menghapus objek. Dengan melakukan ini, kita bisa 
-// menghapus objek dari himpunan (array), dan mengembalikan objek. Ini disebut
-// mutasi himpunan (array), karena mengubah data di dalamnya.
+// Cara alternatif untuk mendapatkan objek adalah dengan memencet (_popping_)
+// himpunan untuk menghapus objek. Dengan melakukan ini, kita bisa 
+// menghapus objek dari himpunan, dan mengembalikan objek. Ini disebut
+// mutasi himpunan, karena mengubah data di dalamnya.
 
 const poppedFirstOrder = allOrders.pop();
 
 // Sekarang allOrders menjadi kosong. Mutasi data dapat bermanfaat untuk
 // banyak hal, tapi satu cara untuk mengurangi kerumitan di
 // basis kode Anda adalah dengan menghindari mutasi. TypeScript menawarkan cara
-// untuk mendeklarasikan himpunan (array) hanya baca (read-only):
+// untuk mendeklarasikan himpunan hanya baca (_read-only_):
 
 // Membuat tipe data berdasarkan bentuk pesanan pembelian:
 type PurchaseOrder = typeof purchaseOrder;
 
-// Membuat himpunan (array) pesanan pembelian yang hanya bisa dibaca
+// Membuat himpunan pesanan pembelian yang hanya bisa dibaca
 const readonlyOrders: readonly PurchaseOrder[] = [purchaseOrder];
 
 // Ya! Agak lebih banyak kode memang. Ada empat
@@ -81,15 +81,15 @@ const readonlyOrders: readonly PurchaseOrder[] = [purchaseOrder];
 //
 // type PurchaseOrder - Menyatakan tipe data baru ke TypeScript.
 //
-// typeof - Gunakan sistem inferensi tipe data (type inference) untuk 
+// typeof - Gunakan sistem inferensi tipe data (_type inference_) untuk 
 // menyetel tipe data berdasarkan konstanta yang diteruskan berikutnya.
 //
 // purchaseOrder - Dapatkan variabel purchaseOrder dan beri tahu
 // TypeScript ini adalah bentuk dari semua
-// objek didalam himpunan (array) pesanan.
+// objek didalam himpunan pesanan.
 //
 // readonly - Objek ini tidak mendukung mutasi, sekali
-// objek ini dibuat maka isi himpunan (array)
+// objek ini dibuat maka isi himpunan
 // akan selalu sama.
 //
 // Sekarang jika Anda mencoba untuk keluar dari readonlyOrders, TypeScript
@@ -97,7 +97,7 @@ const readonlyOrders: readonly PurchaseOrder[] = [purchaseOrder];
 
 readonlyOrders.pop();
 
-// Anda bisa menggunakan readonly di semua tempat,
+// Anda bisa menggunakan _readonly_ di semua tempat,
 // sedikit lebih banyak sintaks tambahan di sana-sini, tapi sintaks
 // ini memberikan lebih banyak keamanan ekstra.
 

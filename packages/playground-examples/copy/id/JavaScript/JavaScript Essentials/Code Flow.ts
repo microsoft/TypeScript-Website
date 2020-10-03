@@ -25,8 +25,8 @@ if (jon) {
 }
 
 // Tipe '{name: string} | undefined' menggunakan fitur TypeScript
-// yang disebut tipe data gabungan (union types). Tipe data gabungan 
-// (union types) adalah cara untuk nyatakan bahwa sebuah objek bisa 
+// yang disebut tipe data gabungan (_union types_). Tipe data gabungan 
+// adalah cara untuk nyatakan bahwa sebuah objek bisa 
 // menjadi salah satu dari banyak hal.
 // 
 // Tanda pipa (|) bertindak sebagai pemisah antara tipe data yang berbeda.
@@ -36,7 +36,7 @@ if (jon) {
 // kita hadapi.
 
 // Kita bisa menggunakan ini dalam beberapa cara. Mari kita mulai dengan melihat
-// himpunan (array) yang nilainya memiliki tipe berbeda.
+// himpunan (_array_) yang nilainya memiliki tipe berbeda.
 
 const identifiers = ["Hello", "World", 24, 19];
 

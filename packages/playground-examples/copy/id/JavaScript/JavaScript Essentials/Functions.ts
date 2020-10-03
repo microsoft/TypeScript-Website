@@ -15,7 +15,7 @@ const anonymousOldSchoolFunction = function (x, y) {
   return x + y;
 };
 
-// Anda juga dapat menggunakan singkatan panah-gemuk (fat-arrow) 
+// Anda juga dapat menggunakan singkatan panah-gemuk (_fat-arrow_) 
 // untuk suatu fungsi
 const addFunction = (x, y) => {
   return x + y;
@@ -29,15 +29,16 @@ const addFunction = (x, y) => {
 // diharapkan oleh fungsi ini.
 //
 // Selanjutnya adalah versi paling terbuka dari fungsi add, versi ini
-// mengatakan bahwa add mengambil dua masukan dari jenis apa pun: dimana masukan ini bisa
-// berupa string, angka atau objek yang telah Anda buat.
+// mengatakan bahwa add mengambil dua masukan dari jenis 
+// apa pun: dimana masukan ini bisa berupa _string_, angka atau objek 
+// yang telah Anda buat.
 
 const add1 = (x: any, y: any) => {
   return x + y;
 };
 add1("Hello", 23);
 
-// Ini adalah JavaScript yang sah (string dapat ditambahkan
+// Ini adalah JavaScript yang sah (_string_ dapat ditambahkan
 // seperti ini misalnya) tetapi tidak optimal untuk fungsi kita
 // yang kita tahu adalah angka, jadi kita akan mengonversi x dan
 // y hanya menjadi angka.
@@ -65,7 +66,7 @@ const add3 = (x: number, y: number): string => {
 };
 
 // Fungsi ini gagal karena kita memberi tahu TypeScript bahwa TypeScipt
-// seharusnya menerima nilai kembali dalam bentuk string, tetapi 
+// seharusnya menerima nilai kembali dalam bentuk _string_, tetapi 
 // ternyata fungsinya tidak memenuhi janji itu.
 
 const add4 = (x: number, y: number): number => {
