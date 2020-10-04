@@ -26,7 +26,7 @@ class Binatang {
     /** @private */
     this.tipe = tipe
     /** @protected */
-    this.cepat = tipe === 'cheetah'
+    this.cepat = tipe === 'citah'
   }
 
   bersuara() {
