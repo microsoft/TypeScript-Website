@@ -30,7 +30,7 @@ Some useful knowledge you need to know:
 
 You can manually via GH Actions for [production here](https://github.com/microsoft/TypeScript-Website/actions?query=workflow%3A%22Monday+Website+Push+To+Production%22) and [staging here](https://github.com/microsoft/TypeScript-Website/actions?query=workflow%3A%22Build+Website+To+Staging%22).
 
-Having issues getting set up? [Consult the troubleshooting](./docs/Setup Troubleshooting.md).
+Having issues getting set up? [Consult the troubleshooting](./docs/Setup%20Troubleshooting.md).
 
 ## Deployment
 
