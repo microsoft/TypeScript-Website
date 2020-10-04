@@ -7,10 +7,10 @@
 // @public - yang merupakan nilai anggapan.
 // @private - atribut yang memiliki izin akses ini
 //            hanya dapat diakses pada kelas yang sama
-//            dimana properti ini ditetapkan.
+//            dimana atribut ini ditetapkan.
 // @protected - atribut yang memiliki izin akses ini 
 //              dapat diakses pada kelas dimana
-//              properti ini ditetapkan dan kelas-kelas turunannya.
+//              atribut ini ditetapkan dan kelas-kelas turunannya.
 
 // Di bawah ini merupakan sebuah kelas dasar yang bernama Binatang,
 // kelas ini memiliki sebuah atribut `private` dan `protected`.
