@@ -49,7 +49,7 @@ MyProj
 Yang terpenting, `rootDir` **tidak mempengaruhi berkas mana yang menjadi bagian dari kompilasi**.
 `rootDir` tidak memiliki hubungan dengan pengaturan `include`, `exclude`, atau `files` pada `tsconfig.json`
 
-Perhatikan bahwa TypeScript tidak akan pernah menulis berkas keluaran ke direktori di luar dari `outDir`, dan tidak akan pernah melewatkan pengeluaran berkas.
+Perhatikan bahwa TypeScript tidak akan pernah menulis berkas keluaran (_file output_) ke direktori di luar dari `outDir`, dan tidak akan pernah melewatkan pengeluaran berkas.
 Karena alasan ini, `rootDir` mengharuskan semua berkas yang perlu dikeluarkan berada dibawah jalur `rootDir`.
 
 Misalnya, Anda memiliki struktur direktori seperti ini:
