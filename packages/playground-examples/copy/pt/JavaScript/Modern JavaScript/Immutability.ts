@@ -54,4 +54,4 @@ meuArrayCongelado.push("Mundo");
 // na seção de exemplos do TypeScript:
 //
 // example:literals
-// example:type-type-widening-and-narrowing
+// example:type-widening-and-narrowing
