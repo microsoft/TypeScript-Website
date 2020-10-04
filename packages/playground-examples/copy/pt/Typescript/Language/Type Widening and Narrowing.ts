@@ -1,67 +1,67 @@
-// Deve ser mais fácil para começar a discussão do
+// Deve ser mais fácil começar a discussão do
 // widening e narrowing com um exemplo:
 
 const welcomeString = "Hello There";
 let replyString = "Hey";
 
 // Além das diferenças de texto das strings, welcomeString
-// é uma const (no qual significa que o valor nunca mudará)
+// é um const (no qual significa que o valor nunca mudará)
 // e replyString é um let (no qual significa que pode mudar).
 
-// Se você hover sobre ambas as variáveis, você pega muito diferente
-// tipo de informação do TypeScript:
+// Se você passar o mouse sobre as duas variáveis, 
+// obterá informações de tipo muito diferentes do TypeScript:
 //
 //   const welcomeString: "Hello There"
 //
 //   let replyString: string
 
-// TypeScript tem tipo de inferência do welcomeString para ser
+// TypeScript inferiu que o tipo do welcomeString é
 // a string literal "Hello There", onde replyString
 // é uma string genérica.
 
-// Isso é porque um let precisa ter um tipo vasto, você
+// Isso ocorre porque um let precisa ter um tipo mais amplo, você
 // pode determinar replyString para ser qualquer outra string - no qual significa
-// ter uma grande group de possibilidades.
+// ter uma grande conjunto de possibilidades.
 
 replyString = "Hi :wave:";
 
-// Se replyString tiver uma string literal "Hey" - então
-// você nunca poderia mudar o valor porque ele poderia mudar
+// Se replyString tiver uma string literal "Hey" - logo
+// você nunca poderia mudar o valor pois ele poderia mudar
 // para apenas "Hey" de novo.
 
-// Widening e Narrowing tipos é sobre expandir e reduzir
-// as possibilidades no qual um type poderia representar.
+// Os tipos Widening e Narrowing são sobre expandir e reduzir
+// as possibilidades no qual um tipo pode representar.
 
-// An example of type narrowing is working with unions, the
-// example on code flow analysis is almost entirely based on
+// Um exemplo do tipo narrowing é trabalhando com uniões, o
+// exemplo do fluxo de análise do código é quase inteiramente baseado no
 // narrowing: example:code-flow
 
-// Type narrowing is what powers the strict mode of TypeScript
-// via the nullability checks. With strict mode turned off,
-// markers for nullability like undefined and null are ignored
-// in a union.
+// O tipo narrowing é o que dá poder ao modo estrito do TypeScript
+// por meio das verificações de nulidade. Com o modo estrito desligado,
+// marcadores de nulidade como undefined e null são ignorados
+// em uma união.
 
 declare const quantumString: string | undefined;
-// This will fail in strict mode only
+// Isso irá falhar no modo strict apenas
 quantumString.length;
 
-// In strict mode the onus is on the code author to ensure
-// that the type has been narrowed to the non-null type.
-// Usually this is as simple as an if check:
+// No modo estrito a responsabilidade recai sobre o autor do código para garantir
+// que o tipo foi limitado ao tipo não nulo.
+// Normalmente, isso é tão simples quanto uma verificação if:
 
 if (quantumString) {
   quantumString.length;
 }
 
-// In strict mode the type quantumString has two representations.
-// Inside the if, the type was narrowed to just string.
+// No modo estrito o tipo quantumString tem duas representações.
+// Dentro do if, o tipo foi limitado para apenas string.
 
-// You can see more examples of narrowing in:
+// Você pode ver mais exemplos de narrowing aqui:
 //
 // example:union-and-intersection-types
 // example:discriminate-types
 
-// And even more resources on the web:
+// E ainda mais materiais na web:
 //
 // https://mariusschulz.com/blog/literal-type-widening-in-typescript
 // https://sandersn.github.io/manual/Widening-and-Narrowing-in-Typescript.html
