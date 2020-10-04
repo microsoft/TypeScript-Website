@@ -3,7 +3,7 @@ display: "Root Dir"
 oneline: "Menyetel direktori root di dalam berkas sumber Anda"
 ---
 
-**Bawaan**: Jalur umum terpanjang dari semua berkas masukan non-deklarasi. jika `composite` disetel, bawaannya adalah direktori yang berisi berkas `tsconfig.json`.
+**Bawaan**: Jalur umum terpanjang dari semua berkas masukan non-deklarasi. Jika `composite` disetel, bawaannya adalah direktori yang berisi berkas `tsconfig.json`.
 
 Ketika TypeScript mengkompilasi berkas, ia mempertahankan struktur direktori yang sama pada direktori keluaran seperti struktur di direktori masukan.
 
@@ -34,7 +34,7 @@ MyProj
 ```
 
 Namun, anda mungkin mengharapkan `core` menjadi bagian dari struktur direktori keluaran.
-Dengan mensetel `rootDir: "."` pada `tsconfig.json`, TypeScript akan menghasilkan struktur direktori seperti ini:
+Dengan menyetel `rootDir: "."` pada `tsconfig.json`, TypeScript akan menghasilkan struktur direktori seperti ini:
 
 ```
 MyProj
@@ -46,7 +46,7 @@ MyProj
 │   │   │   ├── c.js
 ```
 
-Yang terpenting, `rootDir` **tidak mempengaruhi berkas mana yang menjadi bagian dari kompilasi**.
+Yang terpenting, `rootDir` **tidak memengaruhi berkas mana yang menjadi bagian dari kompilasi**.
 `rootDir` tidak memiliki hubungan dengan pengaturan `include`, `exclude`, atau `files` pada `tsconfig.json`
 
 Perhatikan bahwa TypeScript tidak akan pernah menulis berkas keluaran (_file output_) ke direktori di luar dari `outDir`, dan tidak akan pernah melewatkan pengeluaran berkas.
