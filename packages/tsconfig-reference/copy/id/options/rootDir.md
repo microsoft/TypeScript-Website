@@ -20,7 +20,7 @@ MyProj
 ├── types.d.ts
 ```
 
-Kasimpulan untuk `rootDir` adalah jalur umum terpanjang dari semua berkas masukan non-deklarasi, yang dalam hal ini adalah`core/`.
+Kesimpulan untuk `rootDir` adalah jalur umum terpanjang dari semua berkas masukan non-deklarasi, yang dalam hal ini adalah`core/`.
 
 Jika nilai `outDir` anda adalah `dist`, maka TypeScript akan membuat struktur direktori seperti ini:
 
