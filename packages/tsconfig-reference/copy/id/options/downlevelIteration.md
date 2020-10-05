@@ -26,7 +26,7 @@ Hal ini sering kali diharapkan orang, tetapi tidak 100% sesuai dengan perilaku E
 String tertentu, seperti emoji (😜), memiliki `.length` 2 (atau bahkan lebih!), Tetapi harus diiterasi sebagai 1 unit dalam loop `for-of`.
 Lihat [postingan blog oleh Jonathan New](https://blog.jonnew.com/posts/poo-dot-length-equals-two) untuk penjelasan yang lebih lengkap.
 
-Jika `downlevelIteration` diaktifkan, TypeScript akan menggunakan fungsi helper yang memeriksa implementasi `Symbol.iterator` (baik native maupun polyfill).
+Jika `downlevelIteration` diaktifkan, TypeScript akan menggunakan fungsi bantuan yang memeriksa implementasi `Symbol.iterator` (baik _native_ maupun _polyfill_).
 Jika implementasi ini hilang, Anda akan kembali ke iterasi berbasis _indeks_.
 
 ```ts twoslash
