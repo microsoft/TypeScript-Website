@@ -48,7 +48,7 @@ export const PengumumanBeta: FunctionComponent = () => {
 
 // Hal ini disebut sebagai _import elision_, dan hal tersebut
 // dapat menjadi sumber kebingungan. Sintaks `import type`
-// mengizinkan Anda untuk menuliskan apa yang Anda inginkan
+// memperbolehkan Anda untuk menuliskan apa yang Anda inginkan
 // secara lebih spesifik pada JavaScript.
 
 // Dokumen ini merupakan gambaran singkat dari kasus penggunaan

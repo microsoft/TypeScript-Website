@@ -55,10 +55,10 @@ class Anjing {
 }
 
 let oby = new Anjing("Oby");
-// Pernyataan tersebut tidak mengizinkan Anda mengakses atribut
+// Pernyataan tersebut tidak memperbolehkan Anda mengakses atribut
 // nama menggunakan notasi titik.
 oby._nama = "Spot";
-// Namun, TypeScript mengizinkan pengaksesan atribut sebagai
+// Namun, TypeScript memperbolehkan pengaksesan atribut sebagai
 // jalan keluarnya.
 oby["_nama"] = "Cherny";
 
