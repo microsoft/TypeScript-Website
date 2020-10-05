@@ -54,7 +54,7 @@ fs.readFileSync("file.txt", "utf8");
 _.chunk(["a", "b", "c", "d"], 2);
 ```
 
-_Catatan_: Anda dapat membuat emisi JS lebih pendek dengan mengaktifkan [`importHelpers`](#importHelpers):
+_Catatan_: Anda dapat meminimalisir ukuran keluaran dengan mengaktifkan [`importHelpers`](#importHelpers):
 
 ```ts twoslash
 // @noErrors
