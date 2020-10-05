@@ -160,12 +160,9 @@ export const createTypeScriptSandbox = (
   // In the future it'd be good to add support for an 'add many files'
   const addLibraryToRuntime = (code: string, path: string) => {
     defaults.addExtraLib(code, path)
-    try {
-      monaco.editor.createModel(code, "javascript", monaco.Uri.file(path))
-    } catch (err) {
-      if (err?.message === 'Cannot add model because it already exists!') {
-        // noop skip
-      }
+    const uri = monaco.Uri.file(path)
+    if (monaco.editor.getModel(uri) === null) {
+      monaco.editor.createModel(code, "javascript", uri)
     }
     config.logger.log(`[ATA] Adding ${path} to runtime`)
   }
