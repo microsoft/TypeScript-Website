@@ -140,7 +140,7 @@ used in your code, a bit like Java.</p>
 
                                 <pre><code>{`
 var name: string = "Danger"
-console.log("Hello, " + danger)
+console.log("Hello, " + name)
 `.trim()}</code></pre>
 
                                 <p>This extra <code>: string</code> allow the reader to be certain that <code>name</code> will only be a string. Annotating your variables
