@@ -15,7 +15,7 @@
 // sebuah pernyataan `import` atau `require`
 import type { CSSProperties } from "react";
 
-// Yang akan digunakan disini sebagai sebuah tipe
+// Tipe tersebut akan digunakan pada baris kode di bawah ini:
 const style: CSSProperties = {
   textAlign: "center",
 };
