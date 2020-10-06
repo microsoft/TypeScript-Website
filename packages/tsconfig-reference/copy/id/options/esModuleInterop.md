@@ -5,18 +5,18 @@ oneline: "Menghasilkan JS tambahan untuk memudahkan dukungan untuk mengimpor mod
 
 Secara bawaan (dengan `esModuleInterop` _false_ atau tidak disetel) TypeScript memperlakukan modul CommonJS/AMD/UMD mirip dengan modul ES6. Dalam melakukan ini, ada dua bagian tertentu yang ternyata merupakan asumsi yang salah:
 
-- impor namespace seperti `import * as moment from "moment"` bertindak sama seperti `const moment = require("moment")`
+- Impor namespace seperti `import * as moment from "moment"` bertindak sama seperti `const moment = require("moment")`
 
-- impor bawaan seperti `import moment as "moment"` berfungsi sama seperti `const moment = require("moment").default`
+- Impor bawaan seperti `import moment as "moment"` berfungsi sama seperti `const moment = require("moment").default`
 
 Ketidakcocokan ini menyebabkan dua masalah berikut:
 
-- spesifikasi modul ES6 menyatakan bahwa impor namespace (`import * as x`) hanya dapat menjadi objek, dengan memiliki TypeScript
+- Spesifikasi modul ES6 menyatakan bahwa impor namespace (`import * as x`) hanya dapat menjadi objek, dengan memiliki TypeScript
   memperlakukannya sama dengan `= require ("x")` maka TypeScript diizinkan untuk impor diperlakukan sebagai fungsi dan dapat dipanggil. Ini melanggar rekomendasi spesifikasi.
 
 - Meskipun akurat untuk spesifikasi modul ES6, sebagian besar pustaka dengan modul CommonJS/AMD/UMD tidak seketat implementasi TypeScript.
 
-Mengaktifkan `esModuleInterop` akan memperbaiki kedua masalah ini dalam kode yang ditranspilasi oleh TypeScript. Perubahan pertama perilaku di compiler, yang kedua diperbaiki oleh dua fungsi pembantu baru yang menyediakan _shim_ untuk memastikan kompatibilitas dalam JavaScript yang dihasilkan:
+Mengaktifkan `esModuleInterop` akan memperbaiki kedua masalah ini dalam kode yang ditranspilasi oleh TypeScript. Perubahan pertama perilaku di kompilator, yang kedua diperbaiki oleh dua fungsi pembantu baru yang menyediakan _shim_ untuk memastikan kompatibilitas dalam JavaScript yang dihasilkan:
 
 ```ts
 import * as fs from "fs";
