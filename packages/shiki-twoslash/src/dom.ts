@@ -36,6 +36,34 @@ const getRootRect = (element: HTMLElement): DOMRect => {
   return getRootRect(element.parentElement!)
 }
 
+// Gets triggered on the spans inside the codeblocks
+const hover = (event: Event) => {
+  const hovered = event.target as HTMLElement
+  if (hovered.nodeName !== "DATA-LSP") return resetHover()
+
+  const message = hovered.getAttribute("lsp")!
+  const position = getAbsoluteElementPos(hovered)
+
+  // Create or re-use the current hover div
+  const tooltip = findOrCreateTooltip()
+
+  // Use a textarea to un-htmlencode for presenting to the user
+  var txt = document.createElement("textarea")
+  txt.innerHTML = message
+  tooltip.textContent = txt.value
+
+  // Offset it a bit from the mouse and present it at an absolute position
+  const yOffset = 20
+  tooltip.style.display = "block"
+  tooltip.style.top = `${position.top + yOffset}px`
+  tooltip.style.left = `${position.left}px`
+
+  // limit the width of the tooltip to the outer container (pre)
+  const rootRect = getRootRect(hovered)
+  const relativeLeft = position.left - rootRect.x
+  tooltip.style.maxWidth = `${rootRect.width - relativeLeft}px`
+}
+
 /**
  * Creates the main mouse over popup for LSP info using the DOM API.
  * It is expected to be run inside a `useEffect` block inside your main
@@ -47,7 +75,7 @@ const getRootRect = (element: HTMLElement): DOMRect => {
  *
  * export default () => {
  *   // Add a the hovers
- *   useEffect(setupTwoslashHovers, [])
+ *   useEffect(setupTwoslashHovers)
  *
  *   // Normal JSX
  *   return </>
@@ -55,39 +83,15 @@ const getRootRect = (element: HTMLElement): DOMRect => {
  *
  */
 export const setupTwoslashHovers = () => {
-  // prettier-ignore
-  const twoslashes = document.querySelectorAll(".shiki.lsp .code-container code")
-
-  // Gets triggered on the spans inside the codeblocks
-  const hover = (event: Event) => {
-    const hovered = event.target as HTMLElement
-    if (hovered.nodeName !== "DATA-LSP") return resetHover()
-
-    const message = hovered.getAttribute("lsp")!
-    const position = getAbsoluteElementPos(hovered)
-
-    // Create or re-use the current hover div
-    const tooltip = findOrCreateTooltip()
-
-    // Use a textarea to un-htmlencode for presenting to the user
-    var txt = document.createElement("textarea")
-    txt.innerHTML = message
-    tooltip.textContent = txt.value
-
-    // Offset it a bit from the mouse and present it at an absolute position
-    const yOffset = 20
-    tooltip.style.display = "block"
-    tooltip.style.top = `${position.top + yOffset}px`
-    tooltip.style.left = `${position.left}px`
-
-    // limit the width of the tooltip to the outer container (pre)
-    const rootRect = getRootRect(hovered)
-    const relativeLeft = position.left - rootRect.x
-    tooltip.style.maxWidth = `${rootRect.width - relativeLeft}px`
-  }
-
-  twoslashes.forEach(codeblock => {
-    codeblock.addEventListener("mouseover", hover)
-    codeblock.addEventListener("mouseout", resetHover)
+  const blocks = document.querySelectorAll(".shiki.lsp .code-container code")
+  blocks.forEach((code) => {
+    code.addEventListener("mouseover", hover)
+    code.addEventListener("mouseout", resetHover)
   })
+  return () => {
+    blocks.forEach((code) => {
+      code.removeEventListener("mouseover", hover)
+      code.removeEventListener("mouseout", resetHover)
+    })
+  }
 }
