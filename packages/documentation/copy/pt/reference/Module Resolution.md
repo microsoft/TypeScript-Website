@@ -9,7 +9,7 @@ translatable: true
 > Esta seção assume alguns conhecimentos básicos sobre módulos.
 > Por favor veja a documentação de [Modulos](/docs/handbook/modules.html) para mais informações.
 
-_Module resolution_ é o processo que o compilador usa para descobrir a que se refere uma importação.
+_Resolução de Módulos_ (ou _Module Resolution_) é o processo que o compilador usa para descobrir a que se refere uma importação.
 Considere uma declaração de importação como `import { a } from "moduleA"`;
 a fim de verificar qualquer uso de `a`, o compilador precisa saber exatamente o que ele representa, e será necessário verificar sua definição `moduleA`.
 
@@ -17,7 +17,7 @@ Neste ponto, o compilador perguntará "qual é a forma do módulo `moduleA`?"
 Embora isso pareça simples, `moduleA` poderia ser definido em um de seus próprios arquivos `.ts`/`.tsx`, ou em um arquivo `.d.ts` que seu código depende.
 
 Primeiro, o compilador tentará localizar um arquivo que representa o módulo importado.
-Para fazer isso, o compilador segue uma das duas estratégias diferentes: [Clássico](#classic) ou [Node](#node).
+Para fazer isso, o compilador segue uma das duas estratégias diferentes: [Clássico](#classico) ou [Node](#node).
 Essas estratégias dizem ao compilador _onde_ procurar por `moduleA`.
 
 Se isso não funcionar e se o nome do módulo não for relativo (e no caso de `"moduleA"`, é relativo), então o compilador tentará localizar um [ambient module declaration](/docs/handbook/modules.html#ambient-modules).
@@ -52,9 +52,9 @@ Use caminhos não relativos ao importar qualquer uma de suas dependências exter
 
 ## Estratégias de resolução de módulo
 
-Existem duas estratégias de resolução de módulo possíveis: [Node](#node) e [Clássico](#classic).
+Existem duas estratégias de resolução de módulo possíveis: [Node](#node) e [Clássico](#classico).
 Você pode usar a flag `--moduleResolution` para especificar a estratégia de resolução do módulo.
-Se não for especificado, o padrão é [Node](#node) para `--module commonjs`, e [Clássico](#classic) para qualquer outra forma (incluso quando `--module` está configurado para `amd`, `system`, `umd`, `es2015`, `esnext`, etc.).
+Se não for especificado, o padrão é [Node](#node) para `--module commonjs`, e [Clássico](#classico) para qualquer outra forma (incluso quando `--module` está configurado para `amd`, `system`, `umd`, `es2015`, `esnext`, etc.).
 
 > Note: `node` A resolução do módulo é a mais comumente usada na comunidade TypeScript e é recomendada para a maioria dos projetos.
 > Se você está tendo problemas de resolução com `import`s e `export`s em TypeScript, tente definir `moduleResolution: "node"` para ver se isso corrige o problema.
@@ -70,11 +70,11 @@ Então `import { b } from "./moduleB"` no arquivo `/root/src/folder/A.ts` result
 1. `/root/src/folder/moduleB.ts`
 2. `/root/src/folder/moduleB.d.ts`
 
-Para importações de móddulos não relativos, entretanto, o compilador sobe na árvore de diretórios começando com o diretório que contém o arquivo de importação, tentando localizar um arquivo de definição correspondente.
+Para importações de módulos não relativos, entretanto, o compilador sobe na árvore de diretórios começando com o diretório que contém o arquivo de importação, tentando localizar um arquivo de definição correspondente.
 
 Por exemplo:
 
-Uma importação não relativa para `moduleB` como `import { b } from "moduleB"`, no arquivo `/root/src/folder/A.ts`,resultaria na tentativa dos seguintes locais para localizar `"moduleB"`:
+Uma importação não relativa para `moduleB` como `import { b } from "moduleB"`, no arquivo `/root/src/folder/A.ts`, resultaria na tentativa dos seguintes locais para localizar `"moduleB"`:
 
 1. `/root/src/folder/moduleB.ts`
 2. `/root/src/folder/moduleB.d.ts`
@@ -92,7 +92,7 @@ O algoritmo de resolução Node.js completo é descrito na [Documentação de m�
 
 #### Como o Node.js resolve os módulos
 
-Para entender quais etapas o compilador TS seguirá, é importante 'iluminar' os módulos Node.js.
+Para entender quais etapas o compilador TS seguirá, é importante explicar como funciona os módulos Node.js.
 Tradicionalmente, as importações em Node.js são realizadas chamando uma função chamada `require`.
 O comportamento do Node.js será diferente dependendo se `require` recebe um caminho relativo ou um caminho não relativo.
 
@@ -110,12 +110,12 @@ Node.js resolve essa importação na seguinte ordem:
 
 Você pode ler mais sobre isso na documentação do Node.js disponível em [módulos de arquivo](https://nodejs.org/api/modules.html#modules_file_modules) e [módulos de pasta](https://nodejs.org/api/modules.html#modules_folders_as_modules).
 
-No entanto, a resolução para um [nome do módulo não relativa](#relative-vs-não relativa-module-imports) é realizada de forma diferente.
+No entanto, a resolução para um [nome do módulo não relativa](#importacoes-de-modulos-relativos-vs.-nao-relativos) é realizada de forma diferente.
 O Node irá procurar seus módulos em pastas especiais chamadas `node_modules`.
-Uma pasta `node_modules` pode estar no mesmo nível do arquivo atual, ou superior na cadeia de diretório.
+Uma pasta `node_modules` pode estar no mesmo nível do arquivo atual, ou superior na cadeia de pastas.
 O Node irá percorrer a cadeia de diretórios, olhando através de cada `node_modules` até encontrar o módulo que você tentou carregar.
 
-Seguindo nosso exemplo acima, considere se `/root/src/moduleA.js` em vez disso usasse um caminho não relativa e tivesse a importação `var x = require("moduleB");`.
+Seguindo nosso exemplo acima, considere se `/root/src/moduleA.js` em vez disso usasse um caminho não relativo e tivesse a importação `var x = require("moduleB");`.
 O Node tentaria resolver o `moduleB` para cada um dos locais até que um funcionasse.
 
 1. `/root/src/node_modules/moduleB.js`
@@ -138,7 +138,7 @@ Você pode ler mais sobre o processo na documentação do Node.js em [carregando
 
 O TypeScript irá imitar a estratégia de resolução de tempo de execução do Node.js para localizar arquivos de definição para módulos em tempo de compilação.
 Para realizar isso, TypeScript sobrepõe as extensões de arquivo de origem do TypeScript (`.ts`, `.tsx`, and `.d.ts`) sobre a lógica de resolução do Node.
-TypeScript também usará um campo em `package.json` chamado `"types"` para espelhar o propósito de `"main"` - o compilador irá usá-lo para encontrar o arquivo de definição "principal" para consultar.
+TypeScript também usará um campo no `package.json` chamado `"types"` para espelhar o propósito de `"main"` - o compilador irá usá-lo para encontrar o arquivo de definição "principal" para consultar.
 
 Por exemplo, uma declaração de importação como `import { b } from "./moduleB"` em `/root/src/moduleA.ts` resultaria na tentativa dos seguintes locais para localizar `"./moduleB"`:
 
@@ -190,7 +190,7 @@ Isso realmente não é mais complexo do que o que o próprio Node.js está fazen
 Um layout de origem do projeto às vezes não corresponde ao da saída.
 Normalmente, um conjunto de etapas de construção resulta na geração da saída final.
 Isso inclui compilar arquivos `.ts` em `.js` e copiar dependências de diferentes locais de origem para um único local de saída.
-O resultado líquido é que os módulos em tempo de execução podem ter nomes diferentes dos arquivos de origem que contêm suas definições.
+O resultado final é que os módulos em tempo de execução podem ter nomes diferentes dos arquivos de origem que contêm suas definições.
 Ou os caminhos do módulo na saída final podem não corresponder aos caminhos do arquivo de origem correspondente no momento da compilação.
 
 O compilador TypeScript tem um conjunto de sinalizadores adicionais para _informar_ o compilador de transformações que devem ocorrer nas fontes para gerar a saída final.
@@ -200,7 +200,7 @@ Ele apenas usa essas informações para guiar o processo de resolução de uma i
 
 ### URL base
 
-Usar um `baseUrl` é uma prática comum em aplicativos que usam carregadores de módulo AMD onde os módulos são" implantados "em uma única pasta em tempo de execução.
+Usar um `baseUrl` é uma prática comum em aplicativos que usam carregadores de módulo AMD onde os módulos são "deployados" em uma única pasta em tempo de execução.
 As fontes desses módulos podem estar em diretórios diferentes, mas um script de construção irá colocá-los todos juntos.
 
 Definir `baseUrl` informa ao compilador onde encontrar os módulos.
@@ -269,7 +269,7 @@ O correspondente `tsconfig.json` pareceria com:
 }
 ```
 
-Isso diz ao compilador para qualquer importação de módulo que corresponda ao padrão `"*"`  (ou seja, todos os valores), para olhar em dois locais:
+Isso diz ao compilador para qualquer importação de módulo que corresponda ao padrão `"*"` (ou seja, todos os valores), para olhar em dois locais:
 
 1.  `"*"`: significando o mesmo nome inalterado, então mapear `<moduleName>` => `<baseUrl>/<moduleName>`
 2.  `"generated/*"` significando o nome do módulo com um prefixo anexado "gerado", então mapear `<moduleName>` => `<baseUrl>/generated/<moduleName>`
@@ -444,7 +444,7 @@ Compilando `app.ts` usando `--noResolve` deve resultar em:
 - Encontrando corretamente `moduleA` conforme foi passado na linha de comando.
 - Erro por não encontrar `moduleB` como não foi passado.
 
-## Common Questions
+## Perguntas Frequentes
 
 ### Por que um módulo na lista de exclusão ainda é selecionado pelo compilador?
 
