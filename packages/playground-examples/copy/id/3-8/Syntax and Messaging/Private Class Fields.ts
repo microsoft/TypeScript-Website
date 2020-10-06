@@ -5,7 +5,7 @@
 // yang tidak dapat diakses diluar kelas tempat atribut tersebut 
 // dinyatakan, termasuk oleh kelas turunannya.
 
-// Sebgai contoh, kelas Orang di bawah ini tidak mengizinkan siapapun
+// Sebagai contoh, kelas Orang di bawah ini tidak mengizinkan siapapun
 // menggunakan objek dari kelas tersebut untuk membaca nama depan,
 // nama belakang, atau prefiks
 
