@@ -456,4 +456,4 @@ Essa foi a inclusão automática de `tsconfig.json`.
 Isso não incorpora a resolução do módulo conforme discutido acima.
 Se o compilador identificou um arquivo como destino de uma importação de módulo, ele será incluído na compilação, independentemente de ter sido excluído nas etapas anteriores.
 
-Portanto, para excluir um arquivo da compilação, você precisa excluí-lo e ** todos ** os arquivos que possuem uma diretiva `import` ou `/// <reference path="..." />`.
+Portanto, para excluir um arquivo da compilação, você precisa excluí-lo em **todos** os arquivos que possuem uma diretiva `import` ou `/// <reference path="..." />`.
