@@ -3,7 +3,7 @@ display: "No Implicit Any"
 oneline: "Avoid introducing anys inside your codebase when a type could be specified"
 ---
 
-타입 표기가 존재하지 않을 때, TypeScript는 타입을 추론할 수 없을 때 해당 변수의 타입을 `any`로 대체합니다.
+타입이 표기되어 있지 않아, 타입 추론을 할 수 없을 때 TypeScript는 해당 변수의 타입을 `any`로 대체합니다.
 
 이것으로 인해 일부 오류가 누락될 수 있습니다. 예를 들면:
 
