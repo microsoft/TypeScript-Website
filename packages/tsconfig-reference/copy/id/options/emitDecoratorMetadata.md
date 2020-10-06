@@ -3,9 +3,9 @@ display: "Menghasilkan Dekorator Metadata"
 oneline: "Menambahkan metadata jenis tambahan ke dekorator dalam kode yang dihasilkan"
 ---
 
-Mengaktifkan dukungan eksperimental untuk menghasilkan jenis metadata untuk dekorator yang bekerja dengan modul [`reflect-metadata`](https://www.npmjs.com/package/reflect-metadata).
+Mengaktifkan dukungan eksperimental untuk menghasilkan tipe data metadata untuk dekorator yang bekerja dengan modul [`reflect-metadata`](https://www.npmjs.com/package/reflect-metadata).
 
-Contohnya, berikut adalah JavaScript
+Sebagai contoh, berikut adalah JavaScript
 
 ```ts twoslash
 // @experimentalDecorators
