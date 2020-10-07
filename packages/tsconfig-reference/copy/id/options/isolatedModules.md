@@ -9,7 +9,7 @@ Pembatasan ini juga berlaku untuk API `ts.transpileModule` TypeScript yang digun
 Batasan ini dapat menyebabkan masalah waktu proses dengan beberapa fitur TypeScript seperti `const enum`s dan `namespace`s.
 Pilihan `isolatedModules` memberi tahu TypeScript untuk memperingatkan Anda jika menulis kode tertentu yang tidak dapat diartikan dengan benar oleh proses transpilasi berkas tunggal.
 
-Itu tidak mengubah kode Anda atau mengubah perilaku proses pemeriksaan dan mengecek kode TypeScript.
+Itu tidak mengubah kode Anda atau mengubah perilaku proses pemeriksaan dan pengecekan kode TypeScript.
 
 Beberapa contoh kode yang tidak berfungsi saat `isolatedModules` diaktifkan.
 
@@ -26,17 +26,17 @@ someFunction();
 export { someType, someFunction };
 ```
 
-Karena tidak ada nilai untuk `someType`, `export` yang ditampilkan tidak akan mencoba mengekspornya (ini akan menjadi kesalahan waktu proses di JavaScript):
+Karena tidak ada nilai untuk `someType`, `export` yang ditampilkan tidak akan mencoba mengekspornya (ini akan menjadi galat waktu proses di JavaScript):
 
 ```js
 export { someFunction };
 ```
 
-_Transpiler_ satu berkas tidak tahu apakah `someType` menghasilkan nilai atau tidak, jadi adalah kesalahan untuk mengekspor nama yang hanya merujuk ke sebuah tipe.
+_Transpiler_ satu berkas tidak tahu apakah `someType` menghasilkan nilai atau tidak, jadi itu adalah galat untuk mengekspor nama yang hanya mengacu pada sebuah tipe.
 
 #### Non-Module Files
 
-Jika `isolatedModules` dipilih, semua berkas implementasi harus dalam _modules_ (yang berarti memiliki beberapa bentuk `import` / `export`). Kesalahan terjadi jika berkas:
+Jika `isolatedModules` dipilih, semua berkas implementasi harus dalam _modules_ (yang berarti memiliki beberapa bentuk `import` / `export`). galat terjadi jika berkas:
 
 ```ts twoslash
 // @errors: 1208
@@ -73,4 +73,4 @@ console.log(Numbers.Zero + Numbers.One);
 ```
 
 Tanpa pengetahuan tentang nilai anggota ini, _transpiler_ lain tidak dapat menggantikan referensi ke `Number`, yang akan menjadi galat dijalankan jika dibiarkan (karena tidak ada objek `Numbers` pada waktu proses).
-Karena itu, ketika `isolatedModules` dipilih, akan terjadi kesalahan yang mereferensikan anggota `const enum` di sekelilingnya.
+Karena itu, ketika `isolatedModules` dipilih, akan terjadi galat yang mereferensikan anggota `const enum` di sekelilingnya.

@@ -11,5 +11,5 @@ Opsi ini hanya dapat digunakan dari CLI melalui: `--generateCpuProfile tsc-outpu
 npm run tsc --generateCpuProfile tsc-output.cpuprofile
 ```
 
-Berkas ini dapat dibuka di peramban berbasis chromium seperti Chrome atau Edge Developer di [Riwayat CPU](https://developers.google.com/web/tools/chrome-devtools/rendering-tools/js-execution) bagian.
+Berkas ini dapat dibuka di peramban berbasis chromium seperti Chrome atau Edge Developer di bagian [Riwayat CPU](https://developers.google.com/web/tools/chrome-devtools/rendering-tools/js-execution).
 Anda dapat mempelajari lebih lanjut tentang memahami kinerja penyusun di [Bagian wiki TypeScript tentang kinerja](https://github.com/microsoft/TypeScript/wiki/Performance).

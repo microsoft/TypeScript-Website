@@ -1,9 +1,9 @@
 ---
-display: "Impor Penunjang"
+display: "Import Helpers"
 oneline: "Izinkan mengimpor fungsi penunjang satu kali per proyek, termasuk menyertakan per-berkas"
 ---
 
-Untuk operasi penurunan tingkat tertentu, TypeScript menggunakan beberapa kode penunjang untuk operasi seperti memperluas kelas, menyebarkan susunan atau objek, dan menyambungkan operasi.
+Untuk operasi penurunan tingkat tertentu, TypeScript menggunakan beberapa kode penunjang untuk operasi seperti memperluas kelas, himpunan(spread) susunan atau objek, dan menyambungkan operasi.
 Secara umum, penunjang ini dimasukkan ke dalam berkas yang menggunakannya.
 Ini dapat mengakibatkan duplikasi kode jika penunjang yang sama digunakan di banyak berkas yang berbeda.
 
