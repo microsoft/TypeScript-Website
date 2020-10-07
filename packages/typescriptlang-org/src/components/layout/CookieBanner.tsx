@@ -20,6 +20,9 @@ export const CookieBanner = (props: { lang: string }) => {
 
   const verboseCookieLogging = () => {
     let siteConsent
+    // If they ship a bad build of the cookie banner, then even though the script is fully there
+    // the global symbols won't be
+    if (!WcpConsent) return
 
     WcpConsent.init("en-US", "cookie-banner", (err, _siteConsent) => {
       if (err) {
@@ -29,6 +32,7 @@ export const CookieBanner = (props: { lang: string }) => {
         onConsentChanged(siteConsent)
       }
     }, onConsentChanged);
+
 
     function onConsentChanged(newConsent: any) {
       if (newConsent.isConsentRequired) {
