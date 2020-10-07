@@ -180,6 +180,7 @@ Now `xPos` and `yPos` are both definitely present within the body of `paintShape
 <aside>
 Note that there is currently no way to place type annotations within destructuring patterns.
 This is because the following syntax already means something different in JavaScript.
+</aside>
 
 ```ts twoslash
 // @noImplicitAny: false
@@ -195,8 +196,6 @@ function foo({ shape: Shape, xPos: number = 100 /*...*/ }) {
 
 In an object destructuring pattern, `shape: Shape` means "grab the property `shape` and redefine it locally as a variable named `Shape`.
 Likewise `xPos: number` creates a variable named `number` whose value is based on the parameter's `xPos`.
-
-</aside>
 
 ### `readonly` Properties
 
@@ -491,7 +490,6 @@ When TypeScript sees `Box<string>`, it will replace every instance of `T` in `Bo
 In other words, `Box<string>` and our earlier `StringBox` work identically.
 
 ```ts twoslash
-// @errors: 2532
 interface Box<T> {
   contents: T;
 }
@@ -500,7 +498,12 @@ interface StringBox {
 }
 
 let boxA: Box<string> = { contents: "hello" };
+boxA.contents;
+//   ^?
+
 let boxB: StringBox = { contents: "world" };
+boxB.contents;
+//   ^?
 ```
 
 `Box` is reusable in that `T` can be substituted with anything, and that means that when we need a box for a new type, we don't need to declare a new box type at all (though we certainly could if we wanted to).
@@ -531,7 +534,7 @@ function setContents<T>(box: Box<T>, newContents: T) {
 }
 ```
 
-At this point, it's also worth calling out that type aliases can also be generic, and we could have defined our new `Box<T>` interface
+At this point, it's also worth calling out that type aliases can also be generic, and we could have defined our new `Box<T>` interface which was:
 
 ```ts twoslash
 interface Box<T> {
@@ -758,7 +761,7 @@ function setCoordinate(coord: Either2dOr3d) {
   //           ^?
 
   console.log(`Provided coordinates had ${coord.length} dimensions`);
-  //                                            ^?
+  //                                             ^?
 }
 ```
 
