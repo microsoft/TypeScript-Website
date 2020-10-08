@@ -62,6 +62,9 @@
       border-bottom: 0;
       border-style: solid;
     }
+    tr:nth-child(2n) {
+      background-color: var(--background-minor-highlight-color);
+    }
     th {
       border-top: none;
     }
