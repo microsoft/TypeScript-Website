@@ -37,6 +37,7 @@ exports.onRouteUpdate = ({ location, prevLocation }) => {
     uri: locationWithoutPlaygroundCode,
     refUri: referrerWithoutPlaygroundCode,
     prev: previousLocationWithoutPlaygroundCode,
+    lang: document.documentElement.lang,
     visitedPlayground:
       hasLocalStorage && localStorage.getItem("sandbox-history") !== null,
   })

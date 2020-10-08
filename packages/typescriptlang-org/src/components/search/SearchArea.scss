@@ -22,6 +22,10 @@
   padding-bottom: 0.5rem;
 }
 
+input#search-box-top:focus {
+  outline: none;
+}
+
 .searchInput {
   background: none;
   border: none;
