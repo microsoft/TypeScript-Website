@@ -1,8 +1,8 @@
 ---
-title: Compiler Options
+title: tsc CLI Options
 layout: docs
 permalink: /docs/handbook/compiler-options.html
-oneline: A very high-level overview of the compiler options in TypeScript
+oneline: A very high-level overview of the CLI compiler options for tsc
 disable_toc: true
 ---
 
@@ -96,7 +96,7 @@ Option                                         | Type      | Default            
 `--outDir`                                     | `string`  |                                | Redirect output structure to the directory.
 `--outFile`                                    | `string`  |                                | Concatenate and emit output to single file. The order of concatenation is determined by the list of files passed to the compiler on the command line along with triple-slash references and imports. See [output file order documentation](https://github.com/Microsoft/TypeScript/wiki/FAQ#how-do-i-control-file-ordering-in-combined-output---out) for more details.
 `paths`<sup>[2]</sup>                          | `Object`  |                                | List of path mapping entries for module names to locations relative to the `baseUrl`. See [Module Resolution documentation](/docs/handbook/module-resolution.html#path-mapping) for more details.
-`--preserveConstEnums`                         | `boolean` | `false`                        | Do not erase const enum declarations in generated code. See [const enums documentation](https://www.typescriptlang.org/docs/handbook/enums.html#const-enums) for more details.
+`--preserveConstEnums`                         | `boolean` | `false`                        | Do not erase const enum declarations in generated code. See [const enums documentation](/docs/handbook/enums.html#const-enums) for more details.
 `--preserveSymlinks`                            | `boolean` | `false`                       | Do not resolve symlinks to their real path; treat a symlinked file like a real one.
 `--preserveWatchOutput`                        | `boolean` | `false`                        | Keep outdated console output in watch mode instead of clearing the screen
 `--pretty`                                     | `boolean` | `true` unless piping to another program or redirecting output to a file | Stylize errors and messages using color and context.
@@ -132,6 +132,7 @@ Option                                         | Type      | Default            
 
 ## Related
 
-- Setting compiler options in [`tsconfig.json`](/docs/handbook/tsconfig-json.html) files.
-- Setting compiler options in [MSBuild projects](/docs/handbook/compiler-options-in-msbuild.html).
-- There's also the [TSConfig Reference](/tsconfig).
+- Every option is fully explained in the [TSConfig Reference](/tsconfig).
+- Learn how to use a [`tsconfig.json`](/docs/handbook/tsconfig-json.html) files.
+- Learn how to work in an [MSBuild project](/docs/handbook/compiler-options-in-msbuild.html).
+

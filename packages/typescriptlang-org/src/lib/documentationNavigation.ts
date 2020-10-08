@@ -611,10 +611,16 @@ export function getDocumentationNavForLanguage(
 
       items: [
         {
-          title: "tsconfig.json",
-          id: "7tsconfig.json",
+          title: "What is a tsconfig.json",
+          id: "7what-is-a-tsconfig.json",
           permalink: "/docs/handbook/tsconfig-json.html",
           oneline: "Learn about how a TSConfig works",
+        },
+        {
+          title: "Compiler Options in MSBuild",
+          id: "7compiler-options-in-msbuild",
+          permalink: "/docs/handbook/compiler-options-in-msbuild.html",
+          oneline: "Which compiler options are available in MSBuild projects.",
         },
         {
           title: "TSConfig Reference",
@@ -623,23 +629,17 @@ export function getDocumentationNavForLanguage(
           oneline: "The page covering every TSConfig option",
         },
         {
-          title: "Compiler Options",
-          id: "7compiler-options",
+          title: "tsc CLI Options",
+          id: "7tsc-cli-options",
           permalink: "/docs/handbook/compiler-options.html",
           oneline:
-            "A very high-level overview of the compiler options in TypeScript",
+            "A very high-level overview of the CLI compiler options for tsc",
         },
         {
           title: "Project References",
           id: "7project-references",
           permalink: "/docs/handbook/project-references.html",
           oneline: "How to split up a large TypeScript project",
-        },
-        {
-          title: "Compiler Options in MSBuild",
-          id: "7compiler-options-in-msbuild",
-          permalink: "/docs/handbook/compiler-options-in-msbuild.html",
-          oneline: "Which compiler options are available in MSBuild projects.",
         },
         {
           title: "Integrating with Build Tools",
@@ -1324,10 +1324,16 @@ export function getDocumentationNavForLanguage(
 
       items: [
         {
-          title: "tsconfig.json",
-          id: "7tsconfig.json",
+          title: "What is a tsconfig.json",
+          id: "7what-is-a-tsconfig.json",
           permalink: "/docs/handbook/tsconfig-json.html",
           oneline: "Learn about how a TSConfig works",
+        },
+        {
+          title: "Compiler Options in MSBuild",
+          id: "7compiler-options-in-msbuild",
+          permalink: "/docs/handbook/compiler-options-in-msbuild.html",
+          oneline: "Which compiler options are available in MSBuild projects.",
         },
         {
           title: "TSConfig Reference",
@@ -1336,23 +1342,17 @@ export function getDocumentationNavForLanguage(
           oneline: "The page covering every TSConfig option",
         },
         {
-          title: "Compiler Options",
-          id: "7compiler-options",
+          title: "tsc CLI Options",
+          id: "7tsc-cli-options",
           permalink: "/docs/handbook/compiler-options.html",
           oneline:
-            "A very high-level overview of the compiler options in TypeScript",
+            "A very high-level overview of the CLI compiler options for tsc",
         },
         {
           title: "Project References",
           id: "7project-references",
           permalink: "/docs/handbook/project-references.html",
           oneline: "How to split up a large TypeScript project",
-        },
-        {
-          title: "Compiler Options in MSBuild",
-          id: "7compiler-options-in-msbuild",
-          permalink: "/docs/handbook/compiler-options-in-msbuild.html",
-          oneline: "Which compiler options are available in MSBuild projects.",
         },
         {
           title: "Integrating with Build Tools",
@@ -1576,10 +1576,10 @@ export function getDocumentationNavForLanguage(
           oneline: "Types which are globally included in TypeScript",
         },
         {
-          title: "Decorators",
-          id: "2decorators",
-          permalink: "/docs/handbook/decorators.html",
-          oneline: "TypeScript Decorators overview",
+          title: "Decoradores",
+          id: "2decoradores",
+          permalink: "/pt/docs/handbook/Decorators.html",
+          oneline: "Visão geral dos Decoradores no TypeScript",
         },
         {
           title: "Declaration Merging",
@@ -1620,8 +1620,8 @@ export function getDocumentationNavForLanguage(
         {
           title: "Namespaces",
           id: "2namespaces",
-          permalink: "/docs/handbook/namespaces.html",
-          oneline: "How TypeScript namespaces work",
+          permalink: "/pt/docs/handbook/namespaces.html",
+          oneline: "Como funcionam os Namespaces no TypeScript",
         },
         {
           title: "Namespaces and Modules",
@@ -1631,10 +1631,10 @@ export function getDocumentationNavForLanguage(
             "How to organize code in TypeScript via modules or namespaces",
         },
         {
-          title: "Symbols",
-          id: "2symbols",
-          permalink: "/docs/handbook/symbols.html",
-          oneline: "Using the JavaScript Symbol primitive in TypeScript",
+          title: "Símbolos (Symbols)",
+          id: "2símbolos-(symbols)",
+          permalink: "/pt/docs/handbook/symbols.html",
+          oneline: "Usando o símbolo primitivo do JavaScript no TypeScript",
         },
         {
           title: "Triple-Slash Directives",
@@ -2037,10 +2037,16 @@ export function getDocumentationNavForLanguage(
 
       items: [
         {
-          title: "tsconfig.json",
-          id: "7tsconfig.json",
+          title: "What is a tsconfig.json",
+          id: "7what-is-a-tsconfig.json",
           permalink: "/docs/handbook/tsconfig-json.html",
           oneline: "Learn about how a TSConfig works",
+        },
+        {
+          title: "Compiler Options in MSBuild",
+          id: "7compiler-options-in-msbuild",
+          permalink: "/docs/handbook/compiler-options-in-msbuild.html",
+          oneline: "Which compiler options are available in MSBuild projects.",
         },
         {
           title: "TSConfig Reference",
@@ -2049,23 +2055,17 @@ export function getDocumentationNavForLanguage(
           oneline: "The page covering every TSConfig option",
         },
         {
-          title: "Compiler Options",
-          id: "7compiler-options",
+          title: "tsc CLI Options",
+          id: "7tsc-cli-options",
           permalink: "/docs/handbook/compiler-options.html",
           oneline:
-            "A very high-level overview of the compiler options in TypeScript",
+            "A very high-level overview of the CLI compiler options for tsc",
         },
         {
           title: "Project References",
           id: "7project-references",
           permalink: "/docs/handbook/project-references.html",
           oneline: "How to split up a large TypeScript project",
-        },
-        {
-          title: "Compiler Options in MSBuild",
-          id: "7compiler-options-in-msbuild",
-          permalink: "/docs/handbook/compiler-options-in-msbuild.html",
-          oneline: "Which compiler options are available in MSBuild projects.",
         },
         {
           title: "Integrating with Build Tools",
@@ -2750,10 +2750,16 @@ export function getDocumentationNavForLanguage(
 
       items: [
         {
-          title: "tsconfig.json",
-          id: "7tsconfig.json",
+          title: "What is a tsconfig.json",
+          id: "7what-is-a-tsconfig.json",
           permalink: "/docs/handbook/tsconfig-json.html",
           oneline: "Learn about how a TSConfig works",
+        },
+        {
+          title: "Compiler Options in MSBuild",
+          id: "7compiler-options-in-msbuild",
+          permalink: "/docs/handbook/compiler-options-in-msbuild.html",
+          oneline: "Which compiler options are available in MSBuild projects.",
         },
         {
           title: "TSConfig Reference",
@@ -2762,23 +2768,17 @@ export function getDocumentationNavForLanguage(
           oneline: "The page covering every TSConfig option",
         },
         {
-          title: "Compiler Options",
-          id: "7compiler-options",
+          title: "tsc CLI Options",
+          id: "7tsc-cli-options",
           permalink: "/docs/handbook/compiler-options.html",
           oneline:
-            "A very high-level overview of the compiler options in TypeScript",
+            "A very high-level overview of the CLI compiler options for tsc",
         },
         {
           title: "Project References",
           id: "7project-references",
           permalink: "/docs/handbook/project-references.html",
           oneline: "How to split up a large TypeScript project",
-        },
-        {
-          title: "Compiler Options in MSBuild",
-          id: "7compiler-options-in-msbuild",
-          permalink: "/docs/handbook/compiler-options-in-msbuild.html",
-          oneline: "Which compiler options are available in MSBuild projects.",
         },
         {
           title: "Integrating with Build Tools",

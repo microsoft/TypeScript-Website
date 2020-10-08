@@ -33,6 +33,7 @@ jobs:
           cp -r packages/typescriptlang-org/public site
         env:
           YARN_CHECKSUM_BEHAVIOR: ignore
+          TYPESCRIPT_SITE_STAGING: true
 
       - name: Deploy + Publish to CDN
         # You can find these keys here:

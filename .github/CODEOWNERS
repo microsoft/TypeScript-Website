@@ -41,3 +41,10 @@ packages/tsconfig-reference/copy/id/**/*.md @jefrydco @nusendra @mazipan @mandap
 packages/typescriptlang-org/src/copy/id/**/*.ts @jefrydco @nusendra @mazipan @mandaputtra [translation] [id]
 packages/typescriptlang-org/src/copy/id.ts @jefrydco @nusendra @mazipan @mandaputtra [translation] [id]
 packages/documentation/copy/id/**/*.md @jefrydco @nusendra @mazipan @mandaputtra [translation] [id]
+
+# Collaborators for Ukrainian Translation of the Website
+packages/playground-examples/copy/uk @AMashoshyna [translation] [uk]
+packages/tsconfig-reference/copy/uk/**/*.md @AMashoshyna [translation] [uk]
+packages/typescriptlang-org/src/copy/uk/**/*.ts @AMashoshyna [translation] [uk]
+packages/typescriptlang-org/src/copy/uk.ts @AMashoshyna [translation] [uk]
+packages/documentation/copy/uk/**/*.md @AMashoshyna [translation] [uk]

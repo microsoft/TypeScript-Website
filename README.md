@@ -23,12 +23,14 @@ yarn start
 Working on this repo is done by running `yarn start` - this starts up the website on port `8000` and creates a
 builder worker for every package in the repo, so if you make a change outside of the site it will compile and lint etc.
 
-Some useful knowledge:
+Some useful knowledge you need to know:
 
 - All packages have: `yarn build` and `yarn test`
 - All packages use [debug](https://www.npmjs.com/package/debug) - which means you can do `env DEBUG="*" yarn test` to get verbose logs
 
 You can manually via GH Actions for [production here](https://github.com/microsoft/TypeScript-Website/actions?query=workflow%3A%22Monday+Website+Push+To+Production%22) and [staging here](https://github.com/microsoft/TypeScript-Website/actions?query=workflow%3A%22Build+Website+To+Staging%22).
+
+Having issues getting set up? [Consult the troubleshooting](./docs/Setup%20Troubleshooting.md).
 
 ## Deployment
 
@@ -39,9 +41,14 @@ Deployment is automatic:
 
 You can find the build logs in [GitHub Actions](https://github.com/microsoft/TypeScript-Website/actions)
 
-## Overview
+## Docs
 
-If you want to know _in-depth_ how this website works, there is an [hour long video covering the codebase, deployment and tooling on YouTube.](https://www.youtube.com/watch?v=HOvivt6B7hE).
+If you want to know _in-depth_ how this website works, there is an [hour long video covering the codebase, deployment and tooling on YouTube.](https://www.youtube.com/watch?v=HOvivt6B7hE). Otherwise there are some short guides:
+
+- [Converting Twoslash Code Samples](./docs/Converting%20Twoslash%20Code%20Samples.md)
+- [How i8n Works For Site Copy](./docs/How%20i8n%20Works%20For%20Site%20Copy.md)
+- [Updating the TypeScript Version](./docs/New%20TypeScript%20Version.md)
+- [Something Went Wrong](./docs/Something%20Went%20Wrong.md)
 
 # Website Packages
 
@@ -95,7 +102,7 @@ The docs for TypeScript. Originally ported over from [microsoft/TypeScript-Handb
 
 ## Playground Examples
 
-The code samples used in the Playground split across many languages
+The code samples used in the Playground split across many languages.
 
 # Infra Packages
 
@@ -119,7 +126,7 @@ Generates an epub file from the handbook files. You can try downloading it at ht
 
 ## Community Meta
 
-Generates contributions JSON metadata on who edited handbook pages
+Generates contributions JSON metadata on who edited handbook pages.
 
 # Contributing
 
