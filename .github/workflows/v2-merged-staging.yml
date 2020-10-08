@@ -23,17 +23,20 @@ jobs:
       - run: sudo apt-get update
       - run: sudo apt install calibre
 
-      # Build v2
-      - name: Build website v2
+      - name: Prepare website v2
         run: |
           yarn install
           yarn bootstrap
           yarn build
+        env:
+          YARN_CHECKSUM_BEHAVIOR: ignore
+
+      - name: Build website v2
+        run: |
           yarn build-site
           cp -r packages/typescriptlang-org/public site
         env:
-          YARN_CHECKSUM_BEHAVIOR: ignore
-          TYPESCRIPT_SITE_STAGING: true
+          GATSBY_TYPESCRIPT_SITE_STAGING: true
 
       - name: Deploy + Publish to CDN
         # You can find these keys here:
