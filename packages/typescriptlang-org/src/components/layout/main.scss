@@ -4,6 +4,7 @@
 .dark-theme {
   --background-color: #{$ts-dark-bg-color};
   --text-color: #fff;
+  --border-color: #444;
   --inline-code-background-color: rgb(58, 58, 92);
   --link-color: #{$ts-main-blue-lightest-color};
   --raised-background-color: #{$ts-dark-bg-for-foreground-color};
@@ -39,6 +40,7 @@ html.light-theme {
   // light theme
   --background-color: #{$ts-light-bg-sandy-color};
   --text-color: #333;
+  --border-color: #eee;
   --inline-code-background-color: rgb(241, 241, 254);
   --link-color: #{$ts-main-blue-darker-color};
   --raised-background-color: #fff;
