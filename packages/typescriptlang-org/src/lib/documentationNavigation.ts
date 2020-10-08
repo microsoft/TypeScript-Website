@@ -457,12 +457,6 @@ export function getDocumentationNavForLanguage(
           permalink: "/docs/handbook/release-notes/typescript-1-1.html",
           oneline: "TypeScript 1.1 Release Notes",
         },
-        {
-          title: "Overview",
-          id: "4overview",
-          permalink: "/docs/handbook/release-notes/overview.html",
-          oneline: "All TypeScript release notes",
-        },
       ],
     },
     {
@@ -675,33 +669,9 @@ export function getDocumentationNavForLanguage(
           oneline: "Step one in learning TypeScript: The basic types.",
         },
         {
-          title: "Classes",
-          id: "8classes",
-          permalink: "/docs/handbook/2/classes.html",
-          oneline: "How classes work in TypeScript",
-        },
-        {
           title: "Everyday Types",
           id: "8everyday-types",
           permalink: "/docs/handbook/2/everyday-types.html",
-          oneline: "Step one in learning TypeScript: The basics types.",
-        },
-        {
-          title: "Modules",
-          id: "8modules",
-          permalink: "/docs/handbook/2/modules.html",
-          oneline: "Learn how TypeScript handles different module styles.",
-        },
-        {
-          title: "More on Functions",
-          id: "8more-on-functions",
-          permalink: "/docs/handbook/2/functions.html",
-          oneline: "Learn about how Functions work in TypeScript.",
-        },
-        {
-          title: "Narrowing",
-          id: "8narrowing",
-          permalink: "/docs/handbook/2/narrowing.html",
           oneline: "Step one in learning TypeScript: The basics types.",
         },
         {
@@ -717,6 +687,18 @@ export function getDocumentationNavForLanguage(
           oneline: "Step one in learning TypeScript: The basics types.",
         },
         {
+          title: "Narrowing",
+          id: "8narrowing",
+          permalink: "/docs/handbook/2/narrowing.html",
+          oneline: "Step one in learning TypeScript: The basics types.",
+        },
+        {
+          title: "More on Functions",
+          id: "8more-on-functions",
+          permalink: "/docs/handbook/2/functions.html",
+          oneline: "Learn about how Functions work in TypeScript.",
+        },
+        {
           title: "Types from Extraction",
           id: "8types-from-extraction",
           permalink: "/docs/handbook/2/types-from-extraction.html",
@@ -727,6 +709,18 @@ export function getDocumentationNavForLanguage(
           id: "8types-from-transformation",
           permalink: "/docs/handbook/2/types-from-transformation.html",
           oneline: "Step one in learning TypeScript: The basics types.",
+        },
+        {
+          title: "Classes",
+          id: "8classes",
+          permalink: "/docs/handbook/2/classes.html",
+          oneline: "How classes work in TypeScript",
+        },
+        {
+          title: "Modules",
+          id: "8modules",
+          permalink: "/docs/handbook/2/modules.html",
+          oneline: "Learn how TypeScript handles different module styles.",
         },
         {
           title: "Understanding Errors",
@@ -1170,12 +1164,6 @@ export function getDocumentationNavForLanguage(
           permalink: "/docs/handbook/release-notes/typescript-1-1.html",
           oneline: "TypeScript 1.1 Release Notes",
         },
-        {
-          title: "Overview",
-          id: "4overview",
-          permalink: "/docs/handbook/release-notes/overview.html",
-          oneline: "All TypeScript release notes",
-        },
       ],
     },
     {
@@ -1388,33 +1376,9 @@ export function getDocumentationNavForLanguage(
           oneline: "Step one in learning TypeScript: The basic types.",
         },
         {
-          title: "Classes",
-          id: "8classes",
-          permalink: "/docs/handbook/2/classes.html",
-          oneline: "How classes work in TypeScript",
-        },
-        {
           title: "Everyday Types",
           id: "8everyday-types",
           permalink: "/docs/handbook/2/everyday-types.html",
-          oneline: "Step one in learning TypeScript: The basics types.",
-        },
-        {
-          title: "Modules",
-          id: "8modules",
-          permalink: "/docs/handbook/2/modules.html",
-          oneline: "Learn how TypeScript handles different module styles.",
-        },
-        {
-          title: "More on Functions",
-          id: "8more-on-functions",
-          permalink: "/docs/handbook/2/functions.html",
-          oneline: "Learn about how Functions work in TypeScript.",
-        },
-        {
-          title: "Narrowing",
-          id: "8narrowing",
-          permalink: "/docs/handbook/2/narrowing.html",
           oneline: "Step one in learning TypeScript: The basics types.",
         },
         {
@@ -1430,6 +1394,18 @@ export function getDocumentationNavForLanguage(
           oneline: "Step one in learning TypeScript: The basics types.",
         },
         {
+          title: "Narrowing",
+          id: "8narrowing",
+          permalink: "/docs/handbook/2/narrowing.html",
+          oneline: "Step one in learning TypeScript: The basics types.",
+        },
+        {
+          title: "More on Functions",
+          id: "8more-on-functions",
+          permalink: "/docs/handbook/2/functions.html",
+          oneline: "Learn about how Functions work in TypeScript.",
+        },
+        {
           title: "Types from Extraction",
           id: "8types-from-extraction",
           permalink: "/docs/handbook/2/types-from-extraction.html",
@@ -1440,6 +1416,18 @@ export function getDocumentationNavForLanguage(
           id: "8types-from-transformation",
           permalink: "/docs/handbook/2/types-from-transformation.html",
           oneline: "Step one in learning TypeScript: The basics types.",
+        },
+        {
+          title: "Classes",
+          id: "8classes",
+          permalink: "/docs/handbook/2/classes.html",
+          oneline: "How classes work in TypeScript",
+        },
+        {
+          title: "Modules",
+          id: "8modules",
+          permalink: "/docs/handbook/2/modules.html",
+          oneline: "Learn how TypeScript handles different module styles.",
         },
         {
           title: "Understanding Errors",
@@ -1694,10 +1682,10 @@ export function getDocumentationNavForLanguage(
           oneline: "How to migrate from JavaScript to TypeScript",
         },
         {
-          title: "Using Babel with TypeScript",
-          id: "3using-babel-with-typescript",
-          permalink: "/docs/handbook/babel-with-typescript.html",
-          oneline: "How to create a hybrid Babel + TypeScript project",
+          title: "Usando Babel com TypeScript",
+          id: "3usando-babel-com-typescript",
+          permalink: "/pt/docs/handbook/babel-with-typescript.html",
+          oneline: "Como criar um projeto híbrido com Babel + TypeScript",
         },
       ],
     },
@@ -1883,12 +1871,6 @@ export function getDocumentationNavForLanguage(
           permalink: "/docs/handbook/release-notes/typescript-1-1.html",
           oneline: "TypeScript 1.1 Release Notes",
         },
-        {
-          title: "Overview",
-          id: "4overview",
-          permalink: "/docs/handbook/release-notes/overview.html",
-          oneline: "All TypeScript release notes",
-        },
       ],
     },
     {
@@ -2037,10 +2019,10 @@ export function getDocumentationNavForLanguage(
 
       items: [
         {
-          title: "What is a tsconfig.json",
-          id: "7what-is-a-tsconfig.json",
-          permalink: "/docs/handbook/tsconfig-json.html",
-          oneline: "Learn about how a TSConfig works",
+          title: "tsconfig.json",
+          id: "7tsconfig.json",
+          permalink: "/pt/docs/handbook/tsconfig-json.html",
+          oneline: "Aprenda sobre como o TSConfig funciona",
         },
         {
           title: "Compiler Options in MSBuild",
@@ -2101,33 +2083,9 @@ export function getDocumentationNavForLanguage(
           oneline: "Step one in learning TypeScript: The basic types.",
         },
         {
-          title: "Classes",
-          id: "8classes",
-          permalink: "/docs/handbook/2/classes.html",
-          oneline: "How classes work in TypeScript",
-        },
-        {
           title: "Everyday Types",
           id: "8everyday-types",
           permalink: "/docs/handbook/2/everyday-types.html",
-          oneline: "Step one in learning TypeScript: The basics types.",
-        },
-        {
-          title: "Modules",
-          id: "8modules",
-          permalink: "/docs/handbook/2/modules.html",
-          oneline: "Learn how TypeScript handles different module styles.",
-        },
-        {
-          title: "More on Functions",
-          id: "8more-on-functions",
-          permalink: "/docs/handbook/2/functions.html",
-          oneline: "Learn about how Functions work in TypeScript.",
-        },
-        {
-          title: "Narrowing",
-          id: "8narrowing",
-          permalink: "/docs/handbook/2/narrowing.html",
           oneline: "Step one in learning TypeScript: The basics types.",
         },
         {
@@ -2143,6 +2101,18 @@ export function getDocumentationNavForLanguage(
           oneline: "Step one in learning TypeScript: The basics types.",
         },
         {
+          title: "Narrowing",
+          id: "8narrowing",
+          permalink: "/docs/handbook/2/narrowing.html",
+          oneline: "Step one in learning TypeScript: The basics types.",
+        },
+        {
+          title: "More on Functions",
+          id: "8more-on-functions",
+          permalink: "/docs/handbook/2/functions.html",
+          oneline: "Learn about how Functions work in TypeScript.",
+        },
+        {
           title: "Types from Extraction",
           id: "8types-from-extraction",
           permalink: "/docs/handbook/2/types-from-extraction.html",
@@ -2153,6 +2123,18 @@ export function getDocumentationNavForLanguage(
           id: "8types-from-transformation",
           permalink: "/docs/handbook/2/types-from-transformation.html",
           oneline: "Step one in learning TypeScript: The basics types.",
+        },
+        {
+          title: "Classes",
+          id: "8classes",
+          permalink: "/docs/handbook/2/classes.html",
+          oneline: "How classes work in TypeScript",
+        },
+        {
+          title: "Modules",
+          id: "8modules",
+          permalink: "/docs/handbook/2/modules.html",
+          oneline: "Learn how TypeScript handles different module styles.",
         },
         {
           title: "Understanding Errors",
@@ -2596,12 +2578,6 @@ export function getDocumentationNavForLanguage(
           permalink: "/docs/handbook/release-notes/typescript-1-1.html",
           oneline: "TypeScript 1.1 Release Notes",
         },
-        {
-          title: "Overview",
-          id: "4overview",
-          permalink: "/docs/handbook/release-notes/overview.html",
-          oneline: "All TypeScript release notes",
-        },
       ],
     },
     {
@@ -2814,33 +2790,9 @@ export function getDocumentationNavForLanguage(
           oneline: "Step one in learning TypeScript: The basic types.",
         },
         {
-          title: "Classes",
-          id: "8classes",
-          permalink: "/docs/handbook/2/classes.html",
-          oneline: "How classes work in TypeScript",
-        },
-        {
           title: "Everyday Types",
           id: "8everyday-types",
           permalink: "/docs/handbook/2/everyday-types.html",
-          oneline: "Step one in learning TypeScript: The basics types.",
-        },
-        {
-          title: "Modules",
-          id: "8modules",
-          permalink: "/docs/handbook/2/modules.html",
-          oneline: "Learn how TypeScript handles different module styles.",
-        },
-        {
-          title: "More on Functions",
-          id: "8more-on-functions",
-          permalink: "/docs/handbook/2/functions.html",
-          oneline: "Learn about how Functions work in TypeScript.",
-        },
-        {
-          title: "Narrowing",
-          id: "8narrowing",
-          permalink: "/docs/handbook/2/narrowing.html",
           oneline: "Step one in learning TypeScript: The basics types.",
         },
         {
@@ -2856,6 +2808,18 @@ export function getDocumentationNavForLanguage(
           oneline: "Step one in learning TypeScript: The basics types.",
         },
         {
+          title: "Narrowing",
+          id: "8narrowing",
+          permalink: "/docs/handbook/2/narrowing.html",
+          oneline: "Step one in learning TypeScript: The basics types.",
+        },
+        {
+          title: "More on Functions",
+          id: "8more-on-functions",
+          permalink: "/docs/handbook/2/functions.html",
+          oneline: "Learn about how Functions work in TypeScript.",
+        },
+        {
           title: "Types from Extraction",
           id: "8types-from-extraction",
           permalink: "/docs/handbook/2/types-from-extraction.html",
@@ -2866,6 +2830,18 @@ export function getDocumentationNavForLanguage(
           id: "8types-from-transformation",
           permalink: "/docs/handbook/2/types-from-transformation.html",
           oneline: "Step one in learning TypeScript: The basics types.",
+        },
+        {
+          title: "Classes",
+          id: "8classes",
+          permalink: "/docs/handbook/2/classes.html",
+          oneline: "How classes work in TypeScript",
+        },
+        {
+          title: "Modules",
+          id: "8modules",
+          permalink: "/docs/handbook/2/modules.html",
+          oneline: "Learn how TypeScript handles different module styles.",
         },
         {
           title: "Understanding Errors",
