@@ -10,7 +10,7 @@ const { format } = require("prettier");
 
 // We need to work across two repos
 const oldJSON = JSON.parse(
-  fs.readFileSync(path.join(__dirname, "handbookAttribution.json"), "utf8"),
+  fs.readFileSync(path.join(__dirname, "handbookAttribution.json"), "utf8")
 );
 
 const handleDupeNames = (name) => {
@@ -21,7 +21,7 @@ const handleDupeNames = (name) => {
 // Being first gets you a free x commits
 const getOriginalAuthor = (filepath) => {
   const creator = execSync(
-    `git log --follow --format="%an | %aE"  --diff-filter=A "${filepath}"`,
+    `git log --follow --format="%an | %aE"  --diff-filter=A "${filepath}"`
   )
     .toString()
     .trim();
@@ -68,8 +68,6 @@ const getAuthorsForFile = (filepath) => {
 };
 
 const allFiles = recursiveReadDirSync("copy/");
-// const allFiles = ["en/JSDoc Supported Types.md"];
-
 const json = {};
 
 allFiles.forEach((f) => {
@@ -102,7 +100,7 @@ if (!fs.existsSync(output)) fs.mkdirSync(output);
 const outputJSON = path.join(output, "attribution.json");
 fs.writeFileSync(
   outputJSON,
-  format(JSON.stringify(json), { filepath: outputJSON }),
+  format(JSON.stringify(json), { filepath: outputJSON })
 );
 
 /** Recursively retrieve file paths from a given folder and its subfolders. */
@@ -119,14 +117,18 @@ function recursiveReadDirSync(folderPath) {
     fs.statSync(entryPath).isFile()
   );
   const dirPaths = entryPaths.filter(
-    (entryPath) => !filePaths.includes(entryPath),
+    (entryPath) => !filePaths.includes(entryPath)
   );
   const dirFiles = dirPaths.reduce(
     (prev, curr) => prev.concat(recursiveReadDirSync(curr)),
-    [],
+    []
   );
 
   return [...filePaths, ...dirFiles].filter(
-    (f) => !f.endsWith(".DS_Store") && !f.endsWith("README.md"),
+    (f) => !f.endsWith(".DS_Store") && !f.endsWith("README.md")
   );
 }
+
+module.exports = {
+  recursiveReadDirSync,
+};

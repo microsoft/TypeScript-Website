@@ -12,8 +12,7 @@ import "./markdown.scss"
 import "./tsconfig.scss"
 
 import { TSConfigReferenceTemplateQuery } from "../__generated__/gatsby-types"
-import { setupTwoslashHovers } from "gatsby-remark-shiki-twoslash/dist/dom"
-
+import { setupTwoslashHovers } from "shiki-twoslash/dist/dom"
 
 type Props = { pageContext: any, data: TSConfigReferenceTemplateQuery, path: string }
 
@@ -75,7 +74,7 @@ const TSConfigReferenceTemplateComponent = (props) => {
 
   return (
     <Layout title={i("tsconfig_title")} description={i("tsconfig_description")} lang={props.pageContext.locale} allSitePage={props.data.allSitePage}>
-      <div className="tsconfig raised main-content-block">
+      <div className="tsconfig raised main-content-block markdown">
         <div dangerouslySetInnerHTML={{ __html: post.html! }} />
       </div>
     </Layout>

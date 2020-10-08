@@ -3,6 +3,7 @@ title: Mixins
 layout: docs
 permalink: /docs/handbook/mixins.html
 oneline: Using the mixin pattern with TypeScript
+translatable: true
 ---
 
 Along with traditional OO hierarchies, another popular way of building up classes from reusable components is to build them by combining simpler partial classes.
@@ -28,7 +29,7 @@ class Sprite {
 }
 ```
 
-Then you need a type and a class which
+Then you need a type and a factory function which returns a class expression extending the base class.
 
 ```ts twoslash
 // To get started, we need a type which we'll use to extend
@@ -245,7 +246,7 @@ playerTwo.shouldFreeze;
 
 #### Static Property Mixins [`#17829`](https://github.com/microsoft/TypeScript/issues/17829)
 
-More of a gotcha then a constraint.
+More of a gotcha than a constraint.
 The class expression pattern creates singletons, so they can't be mapped at the type system to support different variable types.
 
 You can work around this by using functions to return your classes which differ based on a generic:

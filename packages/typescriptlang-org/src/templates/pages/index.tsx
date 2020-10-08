@@ -6,7 +6,7 @@ import { VersionBar } from "../../components/VersionBar"
 import { GreyButton } from "../../components/display/GreyButton"
 import { UpcomingReleaseMeta } from "../../components/index/UpcomingReleaseMeta"
 import { MigrationStories, GitHubBar, OSS } from "../../components/index/MigrationStories"
-import { setupTwoslashHovers } from "gatsby-remark-shiki-twoslash/dist/dom"
+import { setupTwoslashHovers } from "shiki-twoslash/dist/dom"
 
 import { indexCopy } from "../../copy/en/index"
 import { createInternational } from "../../lib/createInternational"
@@ -56,16 +56,6 @@ const Index: React.FC<Props> = (props) => {
           </Row>
         </Section>
         <VersionBar />
-        <div style={{
-          backgroundColor: "#eee",
-          textAlign: "center",
-          color: "black",
-          padding: "0.7rem 2rem",
-          margin: 0,
-          fontSize: "0.9rem"
-        }}>
-          Welcome to our new website! Find out what's new <a href="https://devblogs.microsoft.com/typescript/announcing-the-new-typescript-website">in the TypeScript Blog</a>
-        </div>
         <Section color="grey" className="hide-small">
           <div className="call-to-action">
             <Link target="_blank" className='flat-button' to="/play/">{i("index_cta_play")}</Link>
@@ -73,14 +63,14 @@ const Index: React.FC<Props> = (props) => {
           </div>
         </Section>
         <Section color="white">
-          <h3>{i("index_what_is")}</h3>
+          <h2>{i("index_what_is")}</h2>
           <Row>
             <Col key='what is js'>
-              <h4>{i("index_what_is_js")}</h4>
+              <h3>{i("index_what_is_js")}</h3>
               <div>{i("index_what_is_js_copy", { p: (...chunk) => <p>{chunk}</p> })}</div>
             </Col>
             <Col key='you can trust typescipt'>
-              <h4>{i("index_trust")}</h4>
+              <h3>{i("index_trust")}</h3>
               <div>
                 <p>{i("index_trust_copy_a")}</p>
                 <p>{i("index_trust_copy_b", {
@@ -91,7 +81,7 @@ const Index: React.FC<Props> = (props) => {
               </div>
             </Col>
             <Col key='TS improves JS'>
-              <h4>{i("index_gradual")}</h4>
+              <h3>{i("index_gradual")}</h3>
               <div>{i("index_gradual_copy", { p: (...chunk) => <p>{chunk}</p> })}</div>
             </Col>
           </Row>
@@ -100,14 +90,14 @@ const Index: React.FC<Props> = (props) => {
         <Section color="blue">
           <Row>
             <Col key='dts description'>
-              <h4>{i("index_dts")}</h4>
+              <h3>{i("index_dts")}</h3>
               <div>{i("index_dts_copy", {
                 p: (...chunk) => <p>{chunk}</p>,
                 dt: (...chunk) => <a href='https://github.com/DefinitelyTyped/DefinitelyTyped' target="_blank">{chunk}</a>
               })}</div>
             </Col>
             <Col key='tools description'>
-              <h4>{i("index_tools")}</h4>
+              <h3>{i("index_tools")}</h3>
               <div>{i("index_tools_copy", {
                 p: (...chunk) => <p>{chunk}</p>,
                 vs: (...chunk) => <a key={1} href='https://visualstudio.microsoft.com' target="_blank">{chunk}</a>,
@@ -122,14 +112,14 @@ const Index: React.FC<Props> = (props) => {
               })}</div>
             </Col>
             <Col key='why trust ts'>
-              <h4>{i("index_standards")}</h4>
+              <h3>{i("index_standards")}</h3>
               <div>{i("index_standards_copy", { p: (...chunk) => <p>{chunk}</p> })}</div>
             </Col>
           </Row>
         </Section>
 
         <Section color="purple" className="migrations">
-          <h3 id='migration_title'>{i("index_migration_title")}</h3>
+          <h2 id='migration_title'>{i("index_migration_title")}</h2>
           <div className="github-bar left">
             <GitHubBar left />
           </div>
@@ -184,7 +174,7 @@ const Index: React.FC<Props> = (props) => {
 
 
         <Section color="white">
-          <h3>{i("index_started_title")}</h3>
+          <h2>{i("index_started_title")}</h2>
           <QuarterOrHalfRow key='call to actions'>
             <GreyButton href="/docs/handbook" title={i("index_started_handbook")} blurb={i("index_started_handbook_blurb")} first customClass="white-theme" />
             <GreyButton href="/docs/bootstrap" title={i("index_started_docs")} blurb={i("index_started_docs_blurb")} customClass="white-theme" />

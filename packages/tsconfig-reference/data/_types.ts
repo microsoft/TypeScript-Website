@@ -87,6 +87,7 @@ export type CompilerOptionName =
   | "disableSizeLimit"
   | "disableSourceOfProjectReferenceRedirect"
   | "disableSolutionSearching"
+  | "disableReferencedProjectLoad"
   | "noImplicitUseStrict"
   | "noEmitHelpers"
   | "noEmitOnError"

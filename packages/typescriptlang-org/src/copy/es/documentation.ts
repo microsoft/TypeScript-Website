@@ -79,8 +79,4 @@ export const docCopy = {
   doc_learn_d_ts_title: "Guía para definiciones en TypeScript (d.ts)",
   doc_learn_d_ts_blurb: "Aprende a declarar la forma de JS",
   doc_learn_playground_blurb: "Explora y comparte TypeScript en línea",
-  nav_: {
-    id: "foo",
-    defaultMessage: "foo",
-  },
 }

@@ -39,44 +39,55 @@ html.dark-theme {
   height: 48px;
   line-height: 48px;
   margin: 0;
-  padding: 0 32px;
+  padding: 0 1rem;
   border-radius: 0;
+
+  .DocSearch-Button-Key {
+    opacity: 0.3;
+  }
+
+  &:hover,
+  &:active,
+  &:focus {
+    background: rgb(53, 142, 241);
+    box-shadow: none;
+    color: white;
+    .DocSearch-Button-Key {
+      opacity: 1;
+    }
+  }
+
+  .DocSearch-Search-Icon {
+    color: white;
+  }
+  .DocSearch-Button-Placeholder {
+    margin-right: 3rem;
+  }
+
+  .DocSearch-Button-Key {
+    color: white;
+    background: transparent;
+    box-shadow: none;
+    border: white solid 1px;
+  }
+
+  .DocSearch-Hit-path,
+  .DocSearch-Hit-title {
+    font-weight: 600;
+  }
 }
 
-.DocSearch-Button:hover,
-.DocSearch-Button:active,
-.DocSearch-Button:focus {
-  background: rgb(53, 142, 241);
-  box-shadow: none;
-  color: white;
-}
-
-.DocSearch-Button .DocSearch-Search-Icon {
-  color: white;
-}
-
-.DocSearch-Button-Key {
-  color: rgb(61, 78, 88);
-  background: linear-gradient(
-    -26.5deg,
-    rgb(250, 249, 248) 0%,
-    rgb(130, 156, 177) 100%
-  );
-  box-shadow: inset 0 -2px 0 0 rgb(151, 161, 207), inset 0 0 1px 1px #fff,
-    0 1px 2px 1px rgba(30, 35, 90, 0.6);
-}
-
-.DocSearch-Hit-path,
-.DocSearch-Hit-title {
-  font-weight: 600;
-}
-
-@media (max-width: 750px) {
+@media (max-width: 790px) {
   .DocSearch-Button {
     width: 100%;
     padding: 0 16px;
   }
+
   .DocSearch-Button-Placeholder {
     display: block;
+  }
+
+  .DocSearch-Button-Key {
+    display: none;
   }
 }

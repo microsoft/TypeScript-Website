@@ -16,12 +16,6 @@ nav#sidebar {
     margin: 0;
     padding: 0;
 
-    @media (min-width: $screen-sm) {
-      max-height: calc(100vh - 10px);
-      overflow-y: auto;
-      overflow-x: hidden;
-    }
-
     li {
       // Mostly stuff for all of the links
       list-style: none;
@@ -155,6 +149,15 @@ nav#sidebar {
         margin-right: -0.5rem;
         font-weight: 500;
       }
+    }
+  }
+
+  // Only set max-height and overflow rules for direct ul children to prevent scrolling in subnav uls
+  & > ul {
+    @media (min-width: $screen-sm) {
+      max-height: calc(100vh - 10px);
+      overflow-y: auto;
+      overflow-x: hidden;
     }
   }
 }

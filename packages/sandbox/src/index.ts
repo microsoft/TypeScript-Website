@@ -160,7 +160,10 @@ export const createTypeScriptSandbox = (
   // In the future it'd be good to add support for an 'add many files'
   const addLibraryToRuntime = (code: string, path: string) => {
     defaults.addExtraLib(code, path)
-    monaco.editor.createModel(code, "javascript", monaco.Uri.file(path))
+    const uri = monaco.Uri.file(path)
+    if (monaco.editor.getModel(uri) === null) {
+      monaco.editor.createModel(code, "javascript", uri)
+    }
     config.logger.log(`[ATA] Adding ${path} to runtime`)
   }
 
@@ -169,6 +172,7 @@ export const createTypeScriptSandbox = (
   // Then update it when the model changes, perhaps this could be a debounced plugin instead in the future?
   editor.onDidChangeModelContent(() => {
     const code = editor.getModel()!.getValue()
+
     if (config.supportTwoslashCompilerOptions) {
       const configOpts = getTwoSlashComplierOptions(code)
       updateCompilerSettings(configOpts)
@@ -193,10 +197,20 @@ export const createTypeScriptSandbox = (
   let didUpdateCompilerSettings = (opts: CompilerOptions) => {}
 
   const updateCompilerSettings = (opts: CompilerOptions) => {
+    const newKeys = Object.keys(opts)
+    if (!newKeys.length) return
+
+    // Don't update a compiler setting if it's the same
+    // as the current setting
+    newKeys.forEach(key => {
+      if (compilerOptions[key] == opts[key]) delete opts[key]
+    })
+
     if (!Object.keys(opts).length) return
 
     config.logger.log("[Compiler] Updating compiler options: ", opts)
-    compilerOptions = { ...opts, ...compilerOptions }
+
+    compilerOptions = { ...compilerOptions, ...opts }
     defaults.setCompilerOptions(compilerOptions)
     didUpdateCompilerSettings(compilerOptions)
   }

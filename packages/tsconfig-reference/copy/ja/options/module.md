@@ -24,8 +24,8 @@ export const twoPi = valueOfPi * 2;
 // @module: commonjs
 // @filename: constants.ts
 export const valueOfPi = 3.142;
-// @filename: index.ts
 // ---cut---
+// @filename: index.ts
 import { valueOfPi } from "./constants";
 
 export const twoPi = valueOfPi * 2;

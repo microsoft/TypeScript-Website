@@ -252,6 +252,7 @@ ${codify(stringifiedCompilerOptions, "json")}
     } else {
       ui.showModal(
         body,
+        document.getElementById("exports-drpdown")!,
         "Issue too long to post automatically. Copy this text, then click 'Create New Issue' to begin.",
         {
           "Create New Issue": "https://github.com/Microsoft/TypeScript/issues/new",
@@ -259,18 +260,21 @@ ${codify(stringifiedCompilerOptions, "json")}
       )
       // document.querySelector("#popover-modal pre") && (document.querySelector("#popover-modal pre") as any).focus()
     }
+    return false
   }
 
   async function copyAsMarkdownIssue() {
     const markdown = await makeMarkdown()
-    ui.showModal(markdown, "Markdown for Issue")
+    ui.showModal(markdown, document.getElementById("exports-drpdown")!, "Markdown Version of Playgrund Code for GitHub Issue")
+    return false
   }
 
   function copyForChat() {
     const query = sandbox.createURLQueryWithCompilerOptions(sandbox)
     const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
     const chat = `[Playground Link](${fullURL})`
-    ui.showModal(chat, "Markdown for chat")
+    ui.showModal(chat, document.getElementById("exports-drpdown")!, "Markdown for chat")
+    return false
   }
 
   function copyForChatWithPreview() {
@@ -282,7 +286,8 @@ ${codify(stringifiedCompilerOptions, "json")}
 
     const code = "```\n" + preview + "\n```\n"
     const chat = `${code}\n[Playground Link](${fullURL})`
-    ui.showModal(chat, "Markdown code")
+    ui.showModal(chat, document.getElementById("exports-drpdown")!, "Markdown code")
+    return false
   }
 
   return {

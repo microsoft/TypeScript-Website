@@ -1,5 +1,8 @@
+// @ts-enable
+
 const { join, basename } = require("path")
 const { recursiveReadDirSync } = require("../lib/utils/recursiveReadDirSync")
+const { read } = require("gray-matter")
 
 const getAllTODOFiles = lang => {
   const diffFolders = (root, lang) => {
@@ -35,19 +38,27 @@ const getAllTODOFiles = lang => {
   const appRoot = join(__dirname, "..", "src", "copy")
   const appTODO = diffFolders(appRoot, lang)
 
-  // Handbook TBD
+  const docsRoot = join(__dirname, "..", "..", "documentation", "copy")
+  const docsTODO = diffFolders(docsRoot, lang)
+  docsTODO.todo = docsTODO.todo.filter(
+    path => read(join(__dirname, "..", "..", path)).data.translatable
+  )
 
   const all = {
     tsconfig: tsconfigFilesTODO,
     playground: playgroundTODO,
     app: appTODO,
+    docs: docsTODO,
   }
 
   return all
 }
 
+let totalDone = 0
+let totalTodo = 0
+
 const toMarkdown = files => {
-  const md = []
+  const md = [""]
 
   const markdownLink = (f, done) => {
     const name = basename(f)
@@ -61,8 +72,8 @@ const toMarkdown = files => {
     const todo = files[section].todo
     const done = files[section].done
 
-    md.push("\n\n## " + section + "\n\n")
-
+    md.push("\n\n## " + section + "\n")
+    md.push(`Done: ${done.length}, TODO: ${todo.length}.\n\n`)
     done.forEach(f => {
       md.push(markdownLink(f, true))
     })
@@ -70,8 +81,12 @@ const toMarkdown = files => {
     todo.forEach(f => {
       md.push(markdownLink(f))
     })
+
+    totalDone += done.length
+    totalTodo += todo.length
   })
 
+  md[0] = `For this language there are ${totalDone} translated files, with ${totalTodo} TODO.\n\n`
   return md.join("\n")
 }
 

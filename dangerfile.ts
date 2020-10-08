@@ -1,25 +1,21 @@
-// This Dangerfile only runs on same-repo PRs
-
 // You can test it by running
 // yarn danger pr https://github.com/microsoft/TypeScript-Website/pull/115
 
 import { danger, message, markdown } from "danger"
 import { basename } from "path"
-import { readFileSync } from "fs"
 import spellcheck from "danger-plugin-spellcheck"
-import lighthouse from "danger-plugin-lighthouse"
+
+// Blocked on PR deploys, see CI.yml
+// import lighthouse from "danger-plugin-lighthouse"
 
 // Spell check all the things
-spellcheck({
-  settings: "artsy/peril-settings@spellcheck.json",
-  codeSpellCheck: ["Examples/**/*.ts", "Examples/**/*.js"]
-})
+spellcheck({ settings: "artsy/peril-settings@spellcheck.json" })
 
-// Print out the PR url
-const deployURL = `https://typescript-v2-${danger.github.pr.number}.vercel.app`
-message(
-  `Deployed to [a PR branch](${deployURL}) - [playground](${deployURL}/play) [tsconfig](${deployURL}/tsconfig) [old handbook](${deployURL}/docs/handbook/integrating-with-build-tools.html)`
-)
+const deployURL = process.env.PR_DEPLOY_URL_ROOT
+if (deployURL) {
+  const msg = `Deployed to [a PR branch](${deployURL}) - [playground](${deployURL}/play) [tsconfig](${deployURL}/tsconfig) [old handbook](${deployURL}/docs/handbook/integrating-with-build-tools.html)`
+  message(msg)
+}
 
 // Look for new snapshots and show in a HTML table
 const snapshots = danger.git.fileMatch("packages/typescriptlang-org/_tests/backstop_data/bitmaps_reference/*.png")
@@ -42,27 +38,3 @@ Before             |  After
 
   markdown(`## Snapshots updated\n\n ${tables.join("\n\n")}`)
 }
-
-import * as glob from "glob"
-
-// Make sure that all the versioning is accurate across the packages
-const pgkPaths = glob.sync("packages/*/package.json")
-const packages = pgkPaths.map(p => JSON.parse(readFileSync(p, "utf8")))
-const inWorkspace = (dep: string) => {
-  return packages.find(p => p.name === dep)
-}
-
-packages.forEach(p => {
-  const deps = [p.devDependencies || {}, p.dependencies || {}]
-  deps.forEach(d => {
-    const keysInWorkSpace = Object.keys(d).filter(dep => inWorkspace(dep))
-    keysInWorkSpace.forEach(key => {
-      const version = packages.find(p => p.name === key).version
-      if (d[key] !== version) {
-        fail(`${p.name} has the wrong dependency for: ${key}. Expected ${version} got ${d[key]}`)
-      }
-    })
-  })
-})
-
-lighthouse()

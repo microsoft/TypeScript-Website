@@ -1,7 +1,6 @@
 import React, { Fragment, useState, useRef, useCallback } from "react"
 import { createPortal } from "react-dom"
 import { Link, navigate } from "gatsby"
-import { Helmet } from "react-helmet"
 import {
   DocSearchButton,
   useDocSearchKeyboardEvents,
@@ -64,17 +63,6 @@ export function DocSearch(props) {
 
   return (
     <Fragment>
-      <Helmet>
-        {/* This hints the browser that the website will load data from Algolia,
-        and allows it to preconnect to the DocSearch cluster. It makes the first
-        query faster, especially on mobile. */}
-        <link
-          rel="preconnect"
-          href={`https://${props.appId}-dsn.algolia.net`}
-          crossOrigin="true"
-        />
-      </Helmet>
-
       <DocSearchButton
         onTouchStart={importDocSearchModalIfNeeded}
         onFocus={importDocSearchModalIfNeeded}

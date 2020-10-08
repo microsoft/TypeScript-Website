@@ -3,11 +3,12 @@ title: Iterators and Generators
 layout: docs
 permalink: /docs/handbook/iterators-and-generators.html
 oneline: How Iterators and Generators work in TypeScript
+translatable: true
 ---
 
 ## Iterables
 
-An object is deemed iterable if it has an implementation for the [`Symbol.iterator`](Symbols.md#symboliterator) property.
+An object is deemed iterable if it has an implementation for the [`Symbol.iterator`](Symbols.html#symboliterator) property.
 Some built-in types like `Array`, `Map`, `Set`, `String`, `Int32Array`, `Uint32Array`, etc. have their `Symbol.iterator` property already implemented.
 `Symbol.iterator` function on an object is responsible for returning the list of values to iterate on.
 

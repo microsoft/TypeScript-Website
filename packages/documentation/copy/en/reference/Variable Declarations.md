@@ -3,6 +3,7 @@ title: Variable Declaration
 layout: docs
 permalink: /docs/handbook/variable-declarations.html
 oneline: How TypeScript handles variable declaration
+translatable: true
 ---
 
 `let` and `const` are two relatively new concepts for variable declarations in JavaScript.
@@ -123,7 +124,7 @@ Take a quick second to guess what the output of the following snippet is:
 
 ```ts
 for (var i = 0; i < 10; i++) {
-  setTimeout(function() {
+  setTimeout(function () {
     console.log(i);
   }, 100 * i);
 }
@@ -176,8 +177,8 @@ A common work around is to use an IIFE - an Immediately Invoked Function Express
 for (var i = 0; i < 10; i++) {
   // capture the current state of 'i'
   // by invoking a function with its current value
-  (function(i) {
-    setTimeout(function() {
+  (function (i) {
+    setTimeout(function () {
       console.log(i);
     }, 100 * i);
   })(i);
@@ -351,7 +352,7 @@ function theCityThatAlwaysSleeps() {
 
   if (true) {
     let city = "Seattle";
-    getCity = function() {
+    getCity = function () {
       return city;
     };
   }
@@ -372,7 +373,7 @@ Since this is what we were doing anyway with our IIFE, we can change our old `se
 
 ```ts
 for (let i = 0; i < 10; i++) {
-  setTimeout(function() {
+  setTimeout(function () {
     console.log(i);
   }, 100 * i);
 }
@@ -410,13 +411,13 @@ This should not be confused with the idea that the values they refer to are _imm
 const numLivesForCat = 9;
 const kitty = {
   name: "Aurora",
-  numLives: numLivesForCat
+  numLives: numLivesForCat,
 };
 
 // Error
 kitty = {
   name: "Danielle",
-  numLives: numLivesForCat
+  numLives: numLivesForCat,
 };
 
 // all "okay"
@@ -546,7 +547,7 @@ You can also destructure objects:
 let o = {
   a: "foo",
   b: 12,
-  c: "bar"
+  c: "bar",
 };
 let { a, b } = o;
 ```

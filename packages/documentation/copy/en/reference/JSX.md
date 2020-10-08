@@ -3,6 +3,7 @@ title: JSX
 layout: docs
 permalink: /docs/handbook/jsx.html
 oneline: Using JSX with TypeScript
+translatable: true
 ---
 
 [JSX](https://facebook.github.io/jsx/) is an embeddable XML-like syntax.
@@ -183,7 +184,7 @@ var myComponent = new MyComponent();
 
 function MyFactoryFunction() {
   return {
-    render: () => {}
+    render: () => {},
   };
 }
 
@@ -377,18 +378,26 @@ It is a black box.
 JSX allows you to embed expressions between tags by surrounding the expressions with curly braces (`{ }`).
 
 ```ts
-var a = <div>
-  {["foo", "bar"].map(i => <span>{i / 2}</span>)}
-</div>
+var a = (
+  <div>
+    {["foo", "bar"].map((i) => (
+      <span>{i / 2}</span>
+    ))}
+  </div>
+);
 ```
 
 The above code will result in an error since you cannot divide a string by a number.
 The output, when using the `preserve` option, looks like:
 
 ```ts
-var a = <div>
-  {["foo", "bar"].map(function (i) { return <span>{i / 2}</span>; })}
-</div>
+var a = (
+  <div>
+    {["foo", "bar"].map(function (i) {
+      return <span>{i / 2}</span>;
+    })}
+  </div>
+);
 ```
 
 ## React integration

@@ -119,7 +119,7 @@ const CounterExample = () => {
 }
 //React e TypeScript é um tópico gigantesco, mas os fundamentos são
 //bem simples: TypeScript suporta JSX, e o restante é manipulado
-//pelas tipagens do React no DefinitelyTyped.
+//pelas tipagens do React no Definitely Typed.
 
 //Você pode aprender mais sobre o uso de React e TypeScript nos sites abaixo:
 //

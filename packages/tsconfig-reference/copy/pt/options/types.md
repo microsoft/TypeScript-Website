@@ -9,7 +9,7 @@ Por exemplo, isso significa pacotes dentro de `./node_modules/@types/`, `../node
 
 Se `types` está especificado, somente pacotes listados serão incluídos no escopo global. Por exemplo:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "types": ["node", "jest", "express"]

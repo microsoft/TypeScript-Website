@@ -9,6 +9,7 @@ import { RenderExamples } from "../components/ShowExamples"
 
 import { useIntl } from "react-intl";
 import { createInternational } from "../lib/createInternational"
+import { hasLocalStorage } from "../lib/hasLocalStorage"
 import { headCopy } from "../copy/en/head-seo"
 import { playCopy } from "../copy/en/playground"
 
@@ -49,10 +50,6 @@ const Play: React.FC<Props> = (props) => {
       }
     });
 
-    let hasLocalStorage = false
-    try {
-      hasLocalStorage = typeof localStorage !== `undefined`
-    } catch (error) { }
     if (!hasLocalStorage) {
       document.getElementById("loading-message")!.innerText = "Cannot load the Playground with storage disabled in your browser"
       return
@@ -70,16 +67,44 @@ const Play: React.FC<Props> = (props) => {
     const getLoaderScript = document.createElement('script');
     getLoaderScript.src = withPrefix("/js/vs.loader.js");
     getLoaderScript.async = true;
-    getLoaderScript.onload = () => {
+    getLoaderScript.onload = async () => {
       const params = new URLSearchParams(location.search)
-      // nothing || Nightly -> next || original ts param which should be a release of monaco
-      const supportedVersion = !params.get("ts") ? undefined : params.get("ts") === "Nightly" ? "next" : params.get("ts")
-      const tsVersion = supportedVersion || playgroundReleases.versions.sort().pop()
+
+      let tsVersionParam = params.get("ts")
+      // handle the nightly lookup 
+      if (tsVersionParam && tsVersionParam === "Nightly" || tsVersionParam === "next") {
+        // Avoids the CDN to doubly skip caching
+        const nightlyLookup = await fetch("https://tswebinfra.blob.core.windows.net/indexes/next.json", { cache: "no-cache" })
+        const nightlyJSON = await nightlyLookup.json()
+        tsVersionParam = nightlyJSON.version
+      }
+
+      // Somehow people keep trying -insiders urls instead of -dev - maybe some tooling I don't know?
+      if (tsVersionParam && tsVersionParam.includes("-insiders.")) {
+        tsVersionParam = tsVersionParam.replace("-insiders.", "-dev.")
+      }
+
+      const latestRelease = [...playgroundReleases.versions].sort().pop()
+      const tsVersion = tsVersionParam || latestRelease
 
       // Because we can reach to localhost ports from the site, it's possible for the locally built compiler to 
       // be hosted and to power the editor with a bit of elbow grease.
       const useLocalCompiler = tsVersion === "dev"
       const urlForMonaco = useLocalCompiler ? "http://localhost:5615/dev/vs" : `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/min/vs`
+
+      // Make a quick HEAD call for the main monaco editor for this version of TS, if it
+      // bails then give a useful error message and bail.
+      const nightlyLookup = await fetch(urlForMonaco + "/editor/editor.main.js", { method: "HEAD" })
+      if (!nightlyLookup.ok) {
+        document.querySelectorAll<HTMLDivElement>(".lds-grid div").forEach(div => {
+          div.style.backgroundColor = "red"
+          div.style.animation = ""
+          div.style.webkitAnimation = ""
+        })
+
+        document.getElementById("loading-message")!.innerHTML = `This version of TypeScript <em>(${tsVersion?.replace("<", "-")})</em><br/>has not been prepared for the Playground<br/><br/>Try <a href='/play?ts=${latestRelease}${document.location.hash}'>${latestRelease}</a> or <a href="/play?ts=next${document.location.hash}">Nightly</a>`
+        return
+      }
 
       // @ts-ignore
       const re: any = global.require
@@ -118,7 +143,8 @@ const Play: React.FC<Props> = (props) => {
           compilerOptions: {},
           domID: "monaco-editor-embed",
           useJavaScript: !!params.get("useJavaScript"),
-          acquireTypes: !localStorage.getItem("disable-ata")
+          acquireTypes: !localStorage.getItem("disable-ata"),
+          supportTwoslashCompilerOptions: true
         }, main, ts)
 
         const playgroundConfig = {
@@ -212,7 +238,7 @@ const Play: React.FC<Props> = (props) => {
                 <li><a id="run-button" href="#" role="button">{i("play_toolbar_run")}</a></li>
 
                 <li className="dropdown">
-                  <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="export-dropdown-menu">{i("play_toolbar_export")} <span className="caret"></span></a>
+                  <a href="#" id="exports-drpdown" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="export-dropdown-menu">{i("play_toolbar_export")} <span className="caret"></span></a>
                   <ul className="dropdown-menu" id='export-dropdown-menu' aria-labelledby="whatisnew-button">
                     <li><a href="#" onClick={() => playground.exporter.reportIssue()} aria-label={i("play_export_report_issue")} >{i("play_export_report_issue")}</a></li>
                     <li role="separator" className="divider"></li>
@@ -226,7 +252,9 @@ const Play: React.FC<Props> = (props) => {
                     <li><a href="#" onClick={() => playground.exporter.openProjectInStackBlitz()} aria-label={i("play_export_stackblitz")} >{i("play_export_stackblitz")}</a></li>
                   </ul>
                 </li>
+                <li><a id="share-button" href="#" role="button">{i("play_toolbar_share")}</a></li>
               </ul>
+
               <ul className="right">
                 <li><a id="sidebar-toggle" aria-label="Hide Sidebar" href="#">&#x21E5;</a></li>
               </ul>

@@ -3,6 +3,7 @@ title: Module Resolution
 layout: docs
 permalink: /docs/handbook/module-resolution.html
 oneline: How TypeScript resolves modules in JavaScript
+translatable: true
 ---
 
 > This section assumes some basic knowledge about modules.
@@ -223,7 +224,7 @@ Loaders use a mapping configuration to map module names to files at run-time, se
 The TypeScript compiler supports the declaration of such mappings using `"paths"` property in `tsconfig.json` files.
 Here is an example for how to specify the `"paths"` property for `jquery`.
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "baseUrl": ".", // This must be specified if "paths" is.
@@ -257,7 +258,7 @@ projectRoot
 
 The corresponding `tsconfig.json` would look like:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "baseUrl": ".",
@@ -323,7 +324,7 @@ To specify this relationship to the compiler, use`"rootDirs"`.
 `"rootDirs"` specify a list of _roots_ whose contents are expected to merge at run-time.
 So following our example, the `tsconfig.json` file should look like:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "rootDirs": ["src/views", "generated/templates/views"]
@@ -345,7 +346,7 @@ export default ["您好吗", "很高兴认识你"];
 
 By leveraging `rootDirs` we can inform the compiler of this mapping and thereby allow it to safely resolve `./#{locale}/messages`, even though the directory will never exist. For example, with the following `tsconfig.json`:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "rootDirs": ["src/zh", "src/de", "src/#{locale}"]

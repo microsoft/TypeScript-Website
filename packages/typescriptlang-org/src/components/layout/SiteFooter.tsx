@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import "./SiteFooter.scss"
 import { PlaygroundSamples } from "./SiteFooter-PlaygroundSamples"
 import { AllSitePage, createIntlLink } from "../IntlLink"
+import { hasLocalStorage } from "../../lib/hasLocalStorage"
 import { whenEscape } from "../../lib/whenEscape"
 
 export type Props = {
@@ -211,18 +212,13 @@ export const SiteFooter = (props: Props) => {
     })
   }, [])
 
-  let hasLocalStorage = false
-  try {
-    hasLocalStorage = typeof localStorage !== `undefined`
-  } catch (error) { }
-
   const systemIsDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
   const customThemeOverride = hasLocalStorage && localStorage.getItem("color-theme")
   const useDark = !customThemeOverride && systemIsDark ? true : customThemeOverride === "dark-theme"
   const [isDarkMode, setDarkMode] = useState(useDark)
 
-  const handleThemeChange = () => {
-    setDarkMode(!isDarkMode)
+  const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDarkMode(!event.currentTarget.checked)
     if (document.location.pathname.includes("/play")) {
       document.location.reload()
     }

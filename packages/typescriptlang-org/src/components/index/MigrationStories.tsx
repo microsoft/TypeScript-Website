@@ -46,7 +46,7 @@ const Slack = () => (
           <path d="M35.567 41.327C32.3528 41.327 29.755 38.7295 29.755 35.5157C29.755 32.3018 32.3528 29.7043 35.567 29.7043H50.141C53.3552 29.7043 55.953 32.3018 55.953 35.5157C55.953 38.7295 53.3552 41.327 50.141 41.327H35.567Z" fill="white" />
         </svg>
 
-        <p>Felix Rieseberg at Slack covered the transition their desktop app's from JavaScript to TypeScript in their blog</p>
+        <p>Felix Rieseberg at Slack covered the transition of their desktop app from JavaScript to TypeScript in their blog</p>
 
         <a className='migration-button' href="https://slack.engineering/typescript-at-slack-a81307fa288d" target="_blank">Read</a>
       </div>

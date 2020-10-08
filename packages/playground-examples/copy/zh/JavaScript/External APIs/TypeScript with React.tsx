@@ -111,7 +111,7 @@ const CounterExample = () => {
 }
 
 // React 和 TypeScript 是一个非常非常大的主题，但基本原理非
-// 常简单：TypeScript 支持 JSX，其余的由 DefinitelyTyped
+// 常简单：TypeScript 支持 JSX，其余的由 Definitely Typed
 // 中的 React 类型定义处理。
 
 // 在如下网站您可以了解更多关于共同使用 React 和 TypeScript 的信息：

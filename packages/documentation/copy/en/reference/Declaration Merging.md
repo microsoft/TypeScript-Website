@@ -3,6 +3,7 @@ title: Declaration Merging
 layout: docs
 permalink: /docs/handbook/declaration-merging.html
 oneline: How merging namespaces and interfaces works
+translatable: true
 ---
 
 ## Introduction
@@ -201,7 +202,7 @@ namespace Album {
 }
 ```
 
-The visibility rules for merged members is the same as described in the 'Merging Namespaces' section, so we must export the `AlbumLabel` class for the merged class to see it.
+The visibility rules for merged members is the same as described in the [Merging Namespaces](./declaration-merging.html#merging-namespaces) section, so we must export the `AlbumLabel` class for the merged class to see it.
 The end result is a class managed inside of another class.
 You can also use namespaces to add more static members to an existing class.
 
@@ -227,7 +228,7 @@ Similarly, namespaces can be used to extend enums with static members:
 enum Color {
   red = 1,
   green = 2,
-  blue = 4
+  blue = 4,
 }
 
 namespace Color {
@@ -264,7 +265,7 @@ export class Observable<T> {
 
 // map.ts
 import { Observable } from "./observable";
-Observable.prototype.map = function(f) {
+Observable.prototype.map = function (f) {
   // ... another exercise for the reader
 };
 ```
@@ -285,7 +286,7 @@ declare module "./observable" {
     map<U>(f: (x: T) => U): Observable<U>;
   }
 }
-Observable.prototype.map = function(f) {
+Observable.prototype.map = function (f) {
   // ... another exercise for the reader
 };
 
@@ -293,7 +294,7 @@ Observable.prototype.map = function(f) {
 import { Observable } from "./observable";
 import "./map";
 let o: Observable<number>;
-o.map(x => x.toFixed());
+o.map((x) => x.toFixed());
 ```
 
 The module name is resolved the same way as module specifiers in `import`/`export`.
@@ -321,7 +322,7 @@ declare global {
   }
 }
 
-Array.prototype.toObservable = function() {
+Array.prototype.toObservable = function () {
   // ...
 };
 ```

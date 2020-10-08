@@ -242,7 +242,7 @@ The watcher logic has been completely rewritten to respond faster to change even
 
 ## Write-only references now flagged as unused
 
-TypeScript 2.6 adds revised implementation the `--noUnusedLocals` and `--noUnusedParameters` [compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
+TypeScript 2.6 adds revised implementation the `--noUnusedLocals` and `--noUnusedParameters` [compiler options](/docs/handbook/compiler-options.html).
 Declarations are only written to but never read from are now flagged as unused.
 
 ##### Example

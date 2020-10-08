@@ -3,7 +3,7 @@ display: "List Files"
 oneline: "Print all of the files read during the compilation"
 ---
 
-コンパイルされるファイル名を出力します。これは、コンパイルしてほしいファイルをTypeScriptが対象に含めてくれているかが分からないときに有用です。
+コンパイルされるファイル名を出力します。これは、コンパイルしてほしいファイルを TypeScript が対象に含めてくれているかが分からないときに有用です。
 
 例えば、以下のようなときに:
 
@@ -16,7 +16,7 @@ example
 
 以下の設定をすると:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "listFiles": true
@@ -24,7 +24,7 @@ example
 }
 ```
 
-出力されるpathは以下のようになります:
+出力される path は以下のようになります:
 
 ```
 $ npm run tsc

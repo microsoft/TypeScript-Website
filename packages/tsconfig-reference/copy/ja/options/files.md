@@ -5,7 +5,7 @@ oneline: "Include a set list of files, does not support globs"
 
 プログラムに含めるファイルの許可リストを指定します。ファイルが見つからない場合、エラーが発生します。
 
-```json
+```json tsconfig
 {
   "compilerOptions": {},
   "files": [

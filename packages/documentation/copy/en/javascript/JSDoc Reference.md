@@ -3,6 +3,7 @@ title: JSDoc Reference
 layout: docs
 permalink: /docs/handbook/jsdoc-supported-types.html
 oneline: What JSDoc does TypeScript-powered JavaScript support?
+translatable: true
 ---
 
 The list below outlines which constructs are currently supported
@@ -20,6 +21,10 @@ Note any tags which are not explicitly listed below (such as `@async`) are not y
 - `@this`
 - `@extends` (or `@augments`)
 - `@enum`
+
+#### `class` extensions
+
+- [Property Modifiers](#jsdoc-property-modifiers) `@public`, `@private`, `@protected`, `@readonly`
 
 The meaning is usually the same, or a superset, of the meaning of the tag given at [jsdoc.app](https://jsdoc.app).
 The code below describes the differences and gives some example usage of each tag.
@@ -633,6 +638,56 @@ The following tags have open issues to support them:
 - `@const` ([issue #19672](https://github.com/Microsoft/TypeScript/issues/19672))
 - `@inheritdoc` ([issue #23215](https://github.com/Microsoft/TypeScript/issues/23215))
 - `@memberof` ([issue #7237](https://github.com/Microsoft/TypeScript/issues/7237))
-- `@readonly` ([issue #17233](https://github.com/Microsoft/TypeScript/issues/17233))
 - `@yields` ([issue #23857](https://github.com/Microsoft/TypeScript/issues/23857))
-- `{@link …}` ([issue #16498](https://github.com/Microsoft/TypeScript/issues/16498))
+- `{@link …}` ([issue #35524](https://github.com/Microsoft/TypeScript/issues/35524))
+
+## JS Class extensions
+
+### JSDoc Property Modifiers
+
+From TypeScript 3.8 onwards, you can use JSDoc to modify the properties in a class. First are the accessibility modifiers: `@public`, `@private`, and `@protected`.
+These tags work exactly like `public`, `private`, and `protected` respectively work in TypeScript.
+
+```js twoslash
+// @errors: 2341
+// @ts-check
+
+class Car {
+  constructor() {
+    /** @private */
+    this.identifier = 100;
+  }
+
+  printIdentifier() {
+    console.log(this.identifier);
+  }
+}
+
+const c = new Car();
+console.log(c.identifier);
+```
+
+- `@public` is always implied and can be left off, but means that a property can be reached from anywhere.
+- `@private` means that a property can only be used within the containing class.
+- `@protected` means that a property can only be used within the containing class, and all derived subclasses, but not on dissimilar instances of the containing class.
+
+Next, we've also added the `@readonly` modifier to ensure that a property is only ever written to during initialization.
+
+```js twoslash
+// @errors: 2540
+// @ts-check
+
+class Car {
+  constructor() {
+    /** @readonly */
+    this.identifier = 100;
+  }
+
+  printIdentifier() {
+    console.log(this.identifier);
+  }
+}
+
+const c = new Car();
+console.log(c.identifier);
+```

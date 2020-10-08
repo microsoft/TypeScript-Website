@@ -15,7 +15,6 @@ if (process.env.BOOTSTRAPPING) {
 require("./scripts/ensureDepsAreBuilt")
 
 const path = require.resolve("./../../watcher")
-console.log(path)
 require(path)
 
 // https://github.com/gatsbyjs/gatsby/issues/1457
@@ -69,7 +68,13 @@ module.exports = {
     // Support ts/tsx files in src
     "gatsby-plugin-typescript",
     // SEO
-    `gatsby-plugin-sitemap`,
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        // Skip handbook v2 frmo appearing in search
+        exclude: [`*/2/*`],
+      },
+    },
     // Lets you edit the head from inside a react tree
     "gatsby-plugin-react-helmet",
     // Grabs the old handbook markdown files

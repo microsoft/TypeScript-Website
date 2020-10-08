@@ -24,8 +24,4 @@ export const comCopy = {
   com_person: "Conéctate en persona",
   com_conferences: "Conferencias",
   com_conferences_alt_img: "logo de ",
-  nav_: {
-    id: "foo",
-    defaultMessage: "foo",
-  },
 }

@@ -47,11 +47,11 @@ export const Contributors = (props: ContributorsProps) => {
     const end = t.domInteractive;
     const loadTime = (end - start) / 1000;
 
-    // No idea how this is happening, likely from  React re-rendering
+    // No idea how this is happening, likely from React re-rendering
     if (loadTime < 0) return;
 
     if (pageLoadIndicator) {
-      pageLoadIndicator.innerHTML += "This page loaded in " + loadTime +
+      pageLoadIndicator.innerHTML = "This page loaded in " + loadTime +
         " seconds.</p>";
     }
   }, []);

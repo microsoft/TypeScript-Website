@@ -199,7 +199,7 @@ let c: Circle = {
 ```
 
 The other change is that enum types themselves effectively become a _union_ of each enum member.
-While we haven't discussed [union types](./advanced-types.html#union-types) yet, all that you need to know is that with union enums, the type system is able to leverage the fact that it knows the exact set of values that exist in the enum itself.
+With union enums, the type system is able to leverage the fact that it knows the exact set of values that exist in the enum itself.
 Because of that, TypeScript can catch bugs where we might be comparing values incorrectly.
 For example:
 
@@ -330,7 +330,7 @@ Const enum members are inlined at use sites.
 This is possible since const enums cannot have computed members.
 
 ```ts twoslash
-const enum Directions {
+const enum Direction {
   Up,
   Down,
   Left,
@@ -338,10 +338,10 @@ const enum Directions {
 }
 
 let directions = [
-  Directions.Up,
-  Directions.Down,
-  Directions.Left,
-  Directions.Right
+  Direction.Up,
+  Direction.Down,
+  Direction.Left,
+  Direction.Right
 ];
 ```
 
@@ -349,7 +349,7 @@ in generated code will become
 
 ```ts twoslash
 // @showEmit
-const enum Directions {
+const enum Direction {
   Up,
   Down,
   Left,
@@ -357,10 +357,10 @@ const enum Directions {
 }
 
 let directions = [
-  Directions.Up,
-  Directions.Down,
-  Directions.Left,
-  Directions.Right
+  Direction.Up,
+  Direction.Down,
+  Direction.Left,
+  Direction.Right
 ];
 ```
 

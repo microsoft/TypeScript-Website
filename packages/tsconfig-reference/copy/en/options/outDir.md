@@ -18,7 +18,7 @@ example
 
 With a `tsconfig.json` like this:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "outDir": "dist"

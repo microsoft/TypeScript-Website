@@ -3,6 +3,7 @@ title: Creating .d.ts Files from .js files
 layout: docs
 permalink: /docs/handbook/declaration-files/dts-from-js.html
 oneline: "How to add d.ts generation to JavaScript projects"
+translatable: true
 ---
 
 [With TypeScript 3.7](/docs/handbook/release-notes/typescript-3-7.html#--declaration-and---allowjs),
@@ -26,7 +27,7 @@ You can learn how to do this in our [installation page](/download).
 
 ### TSConfig
 
-The TSConfig is a json5 file which configures both your compiler flags, and declare where to find files.
+The TSConfig is a jsonc file which configures both your compiler flags, and declare where to find files.
 In this case, you will want a file like the following:
 
 ```json5

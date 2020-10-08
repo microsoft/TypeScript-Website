@@ -230,7 +230,7 @@ type NetworkState =
   | NetworkFailedState
   | NetworkSuccessState;
 
-function networkStatus(state: NetworkState): string {
+function logger(state: NetworkState): string {
   // Right now TypeScript does not know which of the three
   // potential types state could be.
 
@@ -256,7 +256,7 @@ function networkStatus(state: NetworkState): string {
 ## Union Exhaustiveness checking
 
 We would like the compiler to tell us when we don't cover all variants of the discriminated union.
-For example, if we add `Triangle` to `Shape`, we need to update `area` as well:
+For example, if we add `NetworkFromCachedState` to `NetworkState`, we need to update `logger` as well:
 
 ```ts twoslash
 // @errors: 2366
@@ -373,7 +373,7 @@ This allows you to add together existing types to get a single type that has all
 For example, `Person & Serializable & Loggable` is a type which is all of `Person` _and_ `Serializable` _and_ `Loggable`.
 That means an object of this type will have all members of all three types.
 
-For example, if you had networking requests with consistent error handling then you could separate out the error handling into it's own type which is merged with types which correspond to a single response type.
+For example, if you had networking requests with consistent error handling then you could separate out the error handling into its own type which is merged with types which correspond to a single response type.
 
 ```ts twoslash
 interface ErrorHandling {

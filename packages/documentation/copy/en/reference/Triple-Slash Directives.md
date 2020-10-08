@@ -2,7 +2,8 @@
 title: Triple-Slash Directives
 layout: docs
 permalink: /docs/handbook/triple-slash-directives.html
-oneline: How to use triple slash directives in TypeScripit
+oneline: How to use triple slash directives in TypeScript
+translatable: true
 ---
 
 Triple-slash directives are single-line comments containing a single XML tag.
@@ -107,8 +108,8 @@ Will result in assigning the name `NamedModule` to the module as part of calling
 ##### amdModule.js
 
 ```js
-define("NamedModule", ["require", "exports"], function(require, exports) {
-  var C = (function() {
+define("NamedModule", ["require", "exports"], function (require, exports) {
+  var C = (function () {
     function C() {}
     return C;
   })();
@@ -133,7 +134,7 @@ moduleA.callStuff();
 Generated JS code:
 
 ```js
-define(["require", "exports", "legacy/moduleA"], function(
+define(["require", "exports", "legacy/moduleA"], function (
   require,
   exports,
   moduleA
