@@ -34,7 +34,7 @@ function joinWithNullTerminators<T extends unknown[], U extends unknown[]>(t: [.
     return ['\0', ...t, '\0', ...u, '\0'] as const;
 }
 
-// TypeScript dapat menyimpilkan tipe kembalian dari sebuah fungsi
+// TypeScript dapat menyimpulkan tipe kembalian dari sebuah fungsi
 // seperti berikut:
 const result = joinWithNullTerminators(['variadic', 'types'], ["terminators", 3]);
 
