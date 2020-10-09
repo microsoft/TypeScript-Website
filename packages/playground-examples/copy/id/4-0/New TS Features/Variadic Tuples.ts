@@ -1,8 +1,8 @@
 //// { compiler: { ts: "4.0.2" } }
 
 // _Variadic tuples_ memberikan kemampuan pada _tuple_ untuk menangani
-// operator _rest_ (...) untuk memberikan tipe pada pemeriksa tipe
-// dengan cara yang mirip dengan tipe generik.
+// operator _rest_ (...) untuk memberikan tipe data pada pemeriksa tipe
+// data dengan cara yang mirip dengan tipe generik.
 
 // _Variadic tuples_ merupakan topik yang rumit, sehingga Anda tidak perlu
 // khawatir bila Anda merasa kebingungan. Contoh di bawah berdasarkan
@@ -18,7 +18,7 @@ type AddMax<T extends unknown[]> = [max: number, ...rest: T];
 //                                                  untuk mengetahui letak
 //                                                  penggabungan
 
-// Tipe di atas dapat digunakan untuk komposisi:
+// Tipe data di atas dapat digunakan untuk komposisi:
 type MaxMin = AddMax<[min: number]>
 type MaxMinDiameter = AddMax<[min: number, diameter: number]>
 
@@ -34,12 +34,12 @@ function joinWithNullTerminators<T extends unknown[], U extends unknown[]>(t: [.
     return ['\0', ...t, '\0', ...u, '\0'] as const;
 }
 
-// TypeScript dapat menyimpulkan tipe kembalian dari sebuah fungsi
-// seperti berikut:
+// TypeScript dapat menyimpulkan tipe data kembalian dari sebuah
+// fungsi seperti berikut:
 const result = joinWithNullTerminators(['variadic', 'types'], ["terminators", 3]);
 
 //
-// Perkakas ini memungkinkan kita untuk memberi tipe
+// Perkakas ini memungkinkan kita untuk memberi tipe data
 // pada sebuah fungsi seperti fungsi untuk _currying_
 // yang merupakan sebuah konsep yang sering digunakan
 // pada pemrograman fungsional:

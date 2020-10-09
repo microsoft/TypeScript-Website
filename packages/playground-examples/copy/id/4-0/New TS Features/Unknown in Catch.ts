@@ -1,8 +1,8 @@
 //// { compiler: { ts: "4.0.2" } }
 
-// Karena JavaScript memperbolehkan kesalahan untuk melempar
-// nilai apapun, TypeScript tidak mendukung deklarasi tipe
-// dari sebuah kesalahan.
+// Dikarenakan JavaScript memperbolehkan untuk menggunakan
+// tipe data apapun, TypeScript tidak mendukung
+// deklarasi tipe data pada sebuah galat (`Error()`)
 
 try {
   // ..
@@ -28,7 +28,7 @@ try {
   // ..
 } catch (e) {
   // Anda tidak dapat menggunakan `e` sama sekali
-  // sampai sistem tipe mengetahui tipe dari `e`.
+  // sampai sistem tipe data mengetahui tipe data dari `e`.
   // Anda dapat mempelajari lebih lanjut mengenai
   // hal tersebut melalui example:unknown-and-never.
   e.stack;

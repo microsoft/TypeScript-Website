@@ -36,7 +36,7 @@ const lokasiBaru: LokasiBaru[] = [
 const lintangPertama = lokasiBaru[0][0]
 const bujurPertama = lokasiBaru[0][1]
 
-// Walaupun terkesan tidak berguna, tujuan utama dari fitur
+// Walaupun terkesan sangat sederhana, tujuan utama dari fitur
 // tersebut adalah menjamin bahwa informasi tidak hilang
 // ketika bekerja dengan sistem tipe. Sebagai contoh, ketika
 // mengekstrak parameter dari sebuah fungsi menggunakan
