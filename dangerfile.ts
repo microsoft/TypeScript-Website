@@ -9,7 +9,7 @@ import spellcheck from "danger-plugin-spellcheck"
 // import lighthouse from "danger-plugin-lighthouse"
 
 // Spell check all the things
-spellcheck({ settings: "artsy/peril-settings@spellcheck.json" })
+spellcheck({ settings: "microsoft/TypeScript-Website@spellcheck.json" })
 
 const deployURL = process.env.PR_DEPLOY_URL_ROOT
 if (deployURL) {
