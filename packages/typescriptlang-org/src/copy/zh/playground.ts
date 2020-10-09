@@ -46,7 +46,7 @@ export const playCopy = {
   play_sidebar_plugins_plugin_dev_option:
     "访问 <code>localhost:5000/index.js</code>",
   play_sidebar_plugins_plugin_dev_copy:
-    "在开发模式下自动尝试连接到游乐场的插件。你可以在<a href='https://www.typescriptlang.org/v2/dev/playground-plugins/'>这里</a>查看更多。",
+    "在开发模式下自动尝试连接到游乐场的插件。你可以在<a href='/dev/playground-plugins/' title='链接到游乐场插件相关插件的页面'>这里开始创建一个插件</a>。",
   play_export_report_issue: "为 TypeScript 提交 Github issue。",
   play_export_copy_md: "复制为 Markdown 格式的 issue 模板",
   play_export_copy_link: "复制为 Markdown 格式的链接",
