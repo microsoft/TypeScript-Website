@@ -39,8 +39,35 @@
 
   table {
     max-width: 100%;
+    width: 100%;
     overflow-x: auto;
     display: block;
+    table-layout: auto;
+    font-size: 0.875rem;
+    border-collapse: separate;
+    border-spacing: 0;
+
+    td,
+    th {
+      text-align: left;
+      display: table-cell;
+      word-wrap: break-word;
+      padding: 0.75rem 1rem;
+      line-height: 1.5;
+      vertical-align: top;
+      border-top: 1px solid hsla(0, 0%, 89%, 1);
+      border-top: 1px solid var(--border-color);
+      border-right: 0;
+      border-left: 0;
+      border-bottom: 0;
+      border-style: solid;
+    }
+    tr:nth-child(2n) {
+      background-color: var(--background-minor-highlight-color);
+    }
+    th {
+      border-top: none;
+    }
   }
 
   img {
