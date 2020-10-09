@@ -8,27 +8,29 @@ try {
   // ..
 } catch (e) { }
 
-// Historically, this has meant that the `e` in the catch
-// would default to any. This allowed for the freedom to
-// arbitrarily access any property. With 4.0, we've loosened
-// the restrictions on type assignment in the catch clause
-// to allow both `any` and `unknown`.
+// Secara historis, hal tersebut menandakan bahwa `e` dalam
+// blok `catch` akan dianggap sebagai `any`. Anggapan tersebut
+// memberikan kebebasan untuk mengakses properti apapun.
+// Pada TypeScript versi 4.0, kami telah melonggarkan 
+// batasan pada pernyataan tipe pada klausa `catch` sehingga
+// tipe `any` dan `unknown` merupakan tipe yang valid.  
 
-// Same behavior with any:
+// Perilaku yang sama dengan `any`:
 try {
   // ..
 } catch (e) {
   e.stack;
 }
 
-// Explicit behavior with unknown:
+// Perilaku eksplisit dengan `unknown`:
 
 try {
   // ..
 } catch (e) {
-  // You cannot use `e` at all until the type
-  // system learns what it is, for more info see:
-  // example:unknown-and-never
+  // Anda tidak dapat menggunakan `e` sama sekali
+  // sampai sistem tipe mengetahui tipe dari `e`.
+  // Anda dapat mempelajari lebih lanjut mengenai
+  // hal tersebut melalui example:unknown-and-never.
   e.stack;
 
   if (e instanceof SyntaxError) {
