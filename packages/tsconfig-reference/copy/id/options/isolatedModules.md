@@ -1,5 +1,5 @@
 ---
-display: "Isolated Modules"
+display: "Modul Terisolasi (_Isolated Modules_)"
 oneline: "Pastikan setiap berkas dapat dilihat dengan aman tanpa bergantung pada impor lain"
 ---
 

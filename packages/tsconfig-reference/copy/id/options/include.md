@@ -1,5 +1,5 @@
 ---
-display: "Memasukkan"
+display: "Disertakan (_Include_)"
 oneline: "Berkas atau pola untuk disertakan dalam proyek ini"
 ---
 
