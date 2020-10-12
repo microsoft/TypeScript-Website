@@ -1,6 +1,6 @@
-// Type Guarding é o termo onde você influência o código
-// o fluxo analítico pelo código. TypeScript usa o comportamento existente do javascript
-// no qual valida seus objetos em tempo de execução para influenciar
+// Type Guarding é o termo dado para quando você influencia a análise
+// de fluxo do código através dele mesmo. O TypeScript usa o comportamento existente do javascript
+// o qual valida seus objetos em tempo de execução para influenciar
 // o fluxo do código. Este exemplo assume que você já leu example:code-flow
 
 // Para rodar através desses exemplos, vamos criar algumas classes,
