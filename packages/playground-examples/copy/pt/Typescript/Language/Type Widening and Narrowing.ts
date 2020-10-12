@@ -1,7 +1,7 @@
 // Deve ser mais fácil começar a discussão do
 // widening e narrowing com um exemplo:
 
-const welcomeString = "Hello There";
+const welcomeString = "Olá! Estranho";
 let replyString = "Hey";
 
 // Além das diferenças de texto das strings, welcomeString
