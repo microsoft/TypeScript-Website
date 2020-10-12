@@ -56,7 +56,7 @@ if (quantumString) {
 // No modo estrito o tipo quantumString tem duas representações.
 // Dentro do if, o tipo foi limitado para apenas string.
 
-// Você pode ver mais exemplos de narrowing aqui:
+// Você pode ver mais exemplos de estreitamento aqui:
 //
 // example:union-and-intersection-types
 // example:discriminate-types
