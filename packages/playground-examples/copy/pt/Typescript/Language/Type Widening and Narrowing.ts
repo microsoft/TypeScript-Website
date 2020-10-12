@@ -32,7 +32,7 @@ replyString = "Hi :wave:";
 // Os tipos Widening e Narrowing são sobre expandir e reduzir
 // as possibilidades no qual um tipo pode representar.
 
-// Um exemplo do tipo narrowing é trabalhando com uniões, o
+// Um exemplo de estreitamento de tipos é trabalhando com uniões, o
 // exemplo do fluxo de análise do código é quase inteiramente baseado no
 // estreitamento: example:code-flow
 
