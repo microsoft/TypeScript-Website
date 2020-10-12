@@ -1,5 +1,5 @@
 // Deve ser mais fácil começar a discussão do
-// widening e narrowing com um exemplo:
+// alargamento e estreitamento com um exemplo:
 
 const welcomeString = "Olá! Estranho";
 let replyString = "Hey";
