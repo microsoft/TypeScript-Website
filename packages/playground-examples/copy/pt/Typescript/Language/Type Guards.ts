@@ -16,7 +16,7 @@ interface InternetOrder extends Order {
   email: string;
 }
 
-// Logo um tipo no qual poderia ser uma dos dois Order subtypes ou undefined
+// Aqui um tipo que poderia ser um dos dois subtipos de Order ou undefined
 type PossibleOrders = TelephoneOrder | InternetOrder | undefined;
 
 // E uma função no qual retorna um PossibleOrder
