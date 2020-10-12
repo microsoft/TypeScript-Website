@@ -25,7 +25,7 @@ let replyString = "Hey";
 
 replyString = "Hi :wave:";
 
-// Se replyString tiver uma string literal "Hey" - logo
+// Se replyString tiver uma string literal "Hey" - então
 // você nunca poderia mudar o valor pois ele poderia mudar
 // para apenas "Hey" de novo.
 
