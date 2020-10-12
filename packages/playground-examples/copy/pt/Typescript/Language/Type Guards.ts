@@ -62,7 +62,7 @@ if (typeof possibleOrder === "undefined") {
 // retorno oferece informação a análise do fluxo de código quando
 // a função retorna verdadeira.
 
-// Usando o pedido possível, nós podemos usar dois type guards
+// Usando o PossibleOrder, nós podemos usar dois type guards
 // para declarar qual tipo o possibleOrder é:
 
 function isAnInternetOrder(order: PossibleOrders): order is InternetOrder {
