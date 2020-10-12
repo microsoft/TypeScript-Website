@@ -51,7 +51,7 @@ if (typeof possibleOrder === "undefined") {
   const definitelyNotAnOder = possibleOrder;
 }
 
-// Você pode ver uma lista completa de possíveis typeof values
+// Você pode ver uma lista completa de possíveis valores para o typeof
 // aqui: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/typeof
 
 // Usando operadores JavaScript pode levar você muito longe. Quando
