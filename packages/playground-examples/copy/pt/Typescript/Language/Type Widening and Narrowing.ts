@@ -16,7 +16,7 @@ let replyString = "Hey";
 //   let replyString: string
 
 // TypeScript inferiu que o tipo do welcomeString é
-// a string literal "Hello There", onde replyString
+// a string literal "Hello There", enquanto replyString
 // é uma string genérica.
 
 // Isso ocorre porque um let precisa ter um tipo mais amplo, você
