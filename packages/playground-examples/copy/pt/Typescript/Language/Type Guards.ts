@@ -54,7 +54,7 @@ if (typeof possibleOrder === "undefined") {
 // Você pode ver uma lista completa de possíveis valores para o typeof
 // aqui: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/typeof
 
-// Usando operadores JavaScript pode levar você muito longe. Quando
+// Usar operadores JavaScript pode levar você muito longe. Quando
 // você quiser verificar seu próprio tipos de objeto você pode usar
 // type predicate functions.
 
