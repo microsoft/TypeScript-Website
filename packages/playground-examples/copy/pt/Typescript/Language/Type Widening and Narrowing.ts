@@ -1,4 +1,4 @@
-// Deve ser mais fácil começar a discussão do
+// Pode ser mais fácil começar a discussão do
 // alargamento e estreitamento com um exemplo:
 
 const welcomeString = "Olá! Estranho";
