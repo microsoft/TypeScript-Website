@@ -6,7 +6,7 @@ let replyString = "Hey";
 
 // Além das diferenças de texto das strings, welcomeString
 // é um const (o que significa que o valor nunca mudará)
-// e replyString é um let (no qual significa que pode mudar).
+// e replyString é um let (que significa que o valor pode mudar).
 
 // Se você passar o mouse sobre as duas variáveis, 
 // obterá informações de tipo muito diferentes do TypeScript:
