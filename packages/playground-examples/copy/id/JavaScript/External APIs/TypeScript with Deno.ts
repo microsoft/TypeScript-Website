@@ -1,8 +1,8 @@
 //// { order: 3 }
 
 // Deno adalah sebuah _runtime_ JavaScript dan TypeScript
-// yang masih dalam proses pengembangan dan dibuat
-// berdasarkan v8 dengan fokus pada keamanan.
+// yang masih dalam proses pengembangan dan dibangun
+// di atas v8 dengan fokus pada keamanan.
 
 // https://deno.land
 

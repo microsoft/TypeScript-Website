@@ -1,52 +1,57 @@
 //// { order: 3, isJavaScript: true }
 
-// Node.js is a very popular JavaScript runtime built on v8,
-// the JavaScript engine which powers Chrome. You can use it
-// to build servers, front-end clients and anything in-between.
+// Node.js adalah sebuah _runtime_ JavaScript populer yang dibangun
+// di atas v8, mesin JavaScript yang diberdayakan oleh Chrome.
+// Anda dapat menggunakan Node.js untuk membangun peladen, klien
+// _front-end_, dan apapun yang menengahi kedua hal tersebut. 
 
 // https://nodejs.org/
 
-// Node.js comes with a set of core libraries which extend the
-// JavaScript runtime. They range from path handling:
+// Node.js hadir dengan seperangkat pustaka utama yang memperluas
+// _runtime_ JavaScript. Pustaka-pustaka tersebut memiliki
+// kemampuan dari penanganan alur berkas:
 
 import { join } from "path";
-const myPath = join("~", "downloads", "todo_list.json");
+const alurBerkasku = join("~", "downloads", "todo_list.json");
 
-// To file manipulation:
+// Sampai manipulasi berkas:
 
 import { readFileSync } from "fs";
-const todoListText = readFileSync(myPath, "utf8");
+const teksToDo = readFileSync(alurBerkasku, "utf8");
 
-// You can incrementally add types to your JavaScript projects
-// using JSDoc-style type. We'll make one for our TODO list item
-// based on the JSON structure:
+// Anda dapat menambahkan tipe data pada proyek JavaScript Anda
+// menggunakan gaya JSDoc secara bertahap. Kami akan membuat
+// salah satu TODO berdasarkan struktur JSON di bawah ini:
 
 /**
- * @typedef {Object} TODO a TODO item
- * @property {string} title The display name for the TODO item
- * @property {string} body The description of the TODO item
- * @property {boolean} done Whether the TODO item is completed
+ * @typedef {Object} TODO Sebuah TODO
+ * @property {string} judul Nama tampilan untuk sebuah TODO
+ * @property {string} deskripsi Deskripsi untuk sebuah TODO
+ * @property {boolean} selesai Menandakan apakah TODO sudah selesai atau belum
  */
 
-// Now assign that to the return value of JSON.parse
-// to learn more about this, see: example:jsdoc-support
+// Sekarang, tetapkan komentar tersebut pada tipe kembalian
+// dari JSON.parse. Anda dapat mempelajari hal ini lebih lanjut
+// melalui: example:jsdoc-support
 
-/** @type {TODO[]} a list of TODOs */
-const todoList = JSON.parse(todoListText);
+/** @type {TODO[]} sebuah daftar TODO */
+const daftarTodo = JSON.parse(todoListText);
 
-// And process handling:
+// Dan penanganan proses:
 import { spawnSync } from "child_process";
-todoList
+daftarTodo
   .filter(todo => !todo.done)
   .forEach(todo => {
-    // Use the ghi client to create an issue for every todo
-    // list item which hasn't been completed yet.
+    // Gunakan klien ghi untuk membuat isu bagi setiap todo
+    // yang belum selesai.
 
-    // Note that you get correct auto-complete and
-    // docs in JS when you highlight 'todo.title' below.
-    spawnSync(`ghi open --message "${todo.title}\n${todo.body}"`);
+    // Sebagai catatan, Anda akan memperoleh _autocomplete_
+    // yang tepat dan dokumentasi di JavaScript ketika Anda
+    // menyorot `todo.judul` di bawah ini.
+    spawnSync(`ghi open --message "${todo.judul}\n${todo.deskripsi}"`);
   });
 
-// TypeScript has up-to-date type definitions for all of the
-// built in modules via DefinitelyTyped - which means you
-// can write node programs with strong type coverage.
+// TypeScript memiliki definisi tipe data modul Node.js
+// yang  mutakhir melalui DefinitelyTyped - sehingga Anda
+// dapat menulis program berbasis Node.js dengan cakupan
+// tipe data yang kuat.
