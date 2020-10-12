@@ -1,54 +1,59 @@
 //// { order: 2, compiler: { jsx: 2, esModuleInterop: true } }
 
-// React is a popular library for creating user interfaces.
-// It provides a JavaScript abstraction for creating view
-// components using a JavaScript language extension called
-// JSX.
+// React adalah sebuah pustaka yang populer untuk membangun
+// antarmuka pengguna. React menyediakan abstraksi JavaScript
+// untuk membuat komponen tampilan menggunakan ekstensi
+// bahasa JavaScript yang bernama JSX.
 
-// TypeScript supports JSX, and provides a rich set of
-// type tools to richly model how components connect.
+// TypeScript mendukung JSX, dan menyediakan banyak perkakas
+// tipe data untuk menetapkan bagaimana komponen-komponen
+// saling terhubung.
 
-// To understand how TypeScript works with React components
-// you may want a primer on generics:
+// Untuk memahami bagaimana TypeScript bekerja dengan komponen
+// React, Anda mungkin ingin untuk melihat dasar-dasar tipe
+// generik:
 //
 // - example:generic-functions
 // - example:generic-classes
 
-// First we'll look at how generic interfaces are used to map
-// React components. This is a faux-React functional component:
+// Pertama, kita akan lihat bagaimana antarmuka generik digunakan
+// untuk memetakan komponen React. Di bawah ini merupakan sebuah
+// komponen fungsional React yang semu:
 
 type FauxactFunctionComponent<Props extends {}> = (
   props: Props,
-  context?: any
+  context?: any,
 ) => FauxactFunctionComponent<any> | null | JSX.Element;
 
-// Roughly:
+// Secara kasar:
 //
-// FauxactFunctionComponent is a generic function which relies on
-// another type, Props. Props has to be an object (to make sure
-// you don't pass a primitive) and the Props type will be
-// re-used as the first argument in the function.
+// FauxactFunctionComponent merupakan sebuah fungsi generik yang
+// bergantung pada tipe data lain, yaitu Props. Props harus merupakan
+// sebuah objek (supaya Anda tidak meneruskan sebuah tipe data primitif)
+// dan tipe data Props akan digunakan ulang sebagai argumen
+// pertama dari fungsi tersebut.
 
-// To use it, you need a props type:
+// Untuk menggunakan fungsi tersebut, Anda membutuhkan sebuah
+// tipe data untuk properti:
 
 interface DateProps {
   iso8601Date: string;
   message: string;
 }
 
-// We can then create a DateComponent which uses the
-// DateProps interface, and renders the date.
+// Kita nantinya dapat membuat sebuah DateComponent yang
+// menggunakan antarmuka DateProps, dan mengeluarkan tanggal.
 
-const DateComponent: FauxactFunctionComponent<DateProps> = props => (
+const DateComponent: FauxactFunctionComponent<DateProps> = (props) => (
   <time dateTime={props.iso8601Date}>{props.message}</time>
 );
 
-// This creates a function which is generic with a Props
-// variable which has to be an object. The component function
-// returns either another component function or null.
+// Ekspresi di atas membuat sebuah fungsi generik dengan
+// sebuah variabel Props yang harus merupakan sebuah objek.
+// Fungsi komponen akan mengembalikan komponen lain atau null.
 
-// The other component API is a class-based one.Here's a
-// simplified version of that API:
+// API komponen lain adalah sebuah API berbasis kelas. Berikut
+// merupakan penyederhanaan dari API tersebut:
 
 interface FauxactClassComponent<Props extends {}, State = {}> {
   props: Props;
@@ -59,51 +64,58 @@ interface FauxactClassComponent<Props extends {}, State = {}> {
   render(): FauxactClassComponent<any> | null;
 }
 
-// Because this class can have both Props and State - it has
-// two generic arguments which are used throughout the class.
+// Karena kelas ini dapat memiliki Props dan State - kelas
+// ini memiliki dua buah argumen generik yang digunakan
+// di sepanjang kelas.
 
-// The React library comes with it's own type definitions
-// like these but are much more comprehensive. Let's bring
-// those into our playground and explore a few components.
+// Pustaka React memiliki definisi tipe datanya sendiri
+// seperti di atas namun jauh lebih komprehensif. Mari
+// kita gunakan tipe data tersebut pada arena bermain ini
+// dna menjelajahi beberapa komponen.
 
 import * as React from "react";
 
-// Your props are your public API, so it's worth taking the
-// time to use JSDoc to explain how it works:
+// Properti Anda merupakan API publik Anda, sehingga
+// ada baiknya untuk meluangkan waktu untuk menggunakan
+// JSDoc untuk menjelaskan bagaimana properti tersebut
+// bekerja:
 
 export interface Props {
-  /** The user's name */
+  /** Nama pengguna */
   name: string;
-  /** Should the name be rendered in bold */
+  /** Menentukan apakah nama harus dicetak dengan huruf tebal */
   priority?: boolean;
 }
 
-const PrintName: React.FC<Props> = props => {
+const PrintName: React.FC<Props> = (props) => {
   return (
     <div>
-      <p style={{ fontWeight: props.priority ? "bold" : "normal" }}>{props.name}</p>
+      <p style={{ fontWeight: props.priority ? "bold" : "normal" }}>
+        {props.name}
+      </p>
     </div>
   );
 };
 
-// You can play with the new component's usage below:
+// Anda dapat mencoba menggunakan komponen baru tersebut
+// seperti di bawah ini:
 
-const ShowUser: React.FC<Props> = props => {
+const ShowUser: React.FC<Props> = (props) => {
   return <PrintName name="Ned" />;
 };
 
-// TypeScript supports providing intellisense inside
-// the {} in an attribute
+// TypeScript mendukung penyediaan _intellisense_ di dalam
+// atribut {}
 
 let username = "Cersei";
-const ShowStoredUser: React.FC<Props> = props => {
+const ShowStoredUser: React.FC<Props> = (props) => {
   return <PrintName name={username} priority />;
 };
 
-// TypeScript works with modern React code too, here you can
-// see that count and setCount have correctly been inferred
-// to use numbers based on the initial value passed into
-// useState.
+// TypeScript juga mendukung kode React modern, di sini Anda
+// dapat melihat bahwa `count` dan `setCount` telah
+// disimpulkan untuk menggunakan bilangan dengan tepat
+// berdasarkan nilai awal yang diberikan pada `useState`.
 
 import { useState, useEffect } from "react";
 
@@ -122,13 +134,13 @@ const CounterExample = () => {
   );
 };
 
-// React and TypeScript is a really, really big topic
-// but the fundamentals are pretty small: TypeScript
-// supports JSX, and the rest is handled by the React
-// typings from Definitely Typed.
+// React dan TypeScript merupakan topik yang sangat luas
+// namun memiliki dasar yang sederhana: TypeScript mendukung
+// JSX dan sisanya ditangani oleh tipe-tipe data milik
+// React dari Definitely Typed.
 
-// You can learn more about using React with TypeScript
-// from these sites:
+// Anda dapat mempelajari lebih lanjut tentang cara menggunakan
+// React dengan TypeScript melalui situs web berikut:
 //
 // https://github.com/typescript-cheatsheets/react-typescript-cheatsheet
 // https://egghead.io/courses/use-typescript-to-develop-react-applications
