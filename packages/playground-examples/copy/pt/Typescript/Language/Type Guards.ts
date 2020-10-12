@@ -56,7 +56,7 @@ if (typeof possibleOrder === "undefined") {
 
 // Usar operadores JavaScript pode levar você muito longe. Quando
 // você quiser verificar seu próprio tipos de objeto você pode usar
-// type predicate functions.
+// funções com predicado de tipos.
 
 // Um type predicate function é uma função onde o tipo de
 // retorno oferece informação a análise do fluxo de código quando
