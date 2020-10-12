@@ -77,7 +77,7 @@ function isATelephoneOrder(order: PossibleOrders): order is TelephoneOrder {
 // o tipo no qual possibleOrder está dentro do if:
 
 if (isAnInternetOrder(possibleOrder)) {
-  console.log("Order received via email:", possibleOrder.email);
+  console.log("Pedido recebido por email:", possibleOrder.email);
 }
 
 if (isATelephoneOrder(possibleOrder)) {
