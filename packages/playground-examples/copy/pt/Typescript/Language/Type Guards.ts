@@ -3,7 +3,7 @@
 // o qual valida seus objetos em tempo de execução para influenciar
 // o fluxo do código. Este exemplo assume que você já leu example:code-flow
 
-// Para rodar através desses exemplos, vamos criar algumas classes,
+// Para rodar esses exemplos, vamos criar algumas classes,
 // aqui está um sistema para lidar com pedidos pela internet ou telefone.
 
 interface Order {
