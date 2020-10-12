@@ -36,7 +36,7 @@ replyString = "Hi :wave:";
 // exemplo do fluxo de análise do código é quase inteiramente baseado no
 // narrowing: example:code-flow
 
-// O tipo narrowing é o que dá poder ao modo estrito do TypeScript
+// O estreitamento de tipos é o que dá poder ao modo estrito do TypeScript
 // por meio das verificações de nulidade. Com o modo estrito desligado,
 // marcadores de nulidade como undefined e null são ignorados
 // em uma união.
