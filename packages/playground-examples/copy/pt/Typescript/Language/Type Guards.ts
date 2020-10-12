@@ -58,7 +58,7 @@ if (typeof possibleOrder === "undefined") {
 // você quiser verificar seu próprio tipos de objeto você pode usar
 // funções com predicado de tipos.
 
-// Um type predicate function é uma função onde o tipo de
+// Um função com predicado de tipos é uma função onde o tipo de
 // retorno oferece informação a análise do fluxo de código quando
 // a função retorna verdadeira.
 
