@@ -5,7 +5,7 @@ const welcomeString = "Olá! Estranho";
 let replyString = "Hey";
 
 // Além das diferenças de texto das strings, welcomeString
-// é um const (no qual significa que o valor nunca mudará)
+// é um const (o que significa que o valor nunca mudará)
 // e replyString é um let (no qual significa que pode mudar).
 
 // Se você passar o mouse sobre as duas variáveis, 
