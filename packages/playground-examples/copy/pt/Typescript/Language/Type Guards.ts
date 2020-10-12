@@ -81,7 +81,7 @@ if (isAnInternetOrder(possibleOrder)) {
 }
 
 if (isATelephoneOrder(possibleOrder)) {
-  console.log("Order received via phone:", possibleOrder.callerNumber);
+  console.log("Pedido recebido por telefone:", possibleOrder.callerNumber);
 }
 
 // Você pode ler mais sobre análise de fluxo de código aqui:
