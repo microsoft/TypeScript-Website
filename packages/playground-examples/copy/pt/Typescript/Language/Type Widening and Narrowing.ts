@@ -29,7 +29,7 @@ replyString = "Hi :wave:";
 // você nunca poderia mudar o valor pois ele poderia mudar
 // para apenas "Hey" de novo.
 
-// Os tipos Widening e Narrowing são sobre expandir e reduzir
+// Os alargamento e estreitamento de tipos são sobre expandir e reduzir
 // as possibilidades no qual um tipo pode representar.
 
 // Um exemplo de estreitamento de tipos é trabalhando com uniões, o
