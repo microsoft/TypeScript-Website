@@ -1,34 +1,37 @@
 //// { order: 0, isJavaScript: true }
 
-// The DOM (Document Object Model) is the underlying API for
-// working with a webpage, and TypeScript has great support
-// for that API.
+// DOM (_Document Object Model_) merupakan API dasar ketika
+// ingin bekerja dengan sebuah halaman web, dan TypeScript
+// memiliki dukungan yang baik untuk API tersebut.
 
-// Let's create a popover to show when you press "Run" in
-// the toolbar above.
+// Mari kita buat sebuah _popover_ untuk tampil ketika
+// Anda menekan tombol "Run" pada _toolbar_ di atas.
 
 const popover = document.createElement("div");
 popover.id = "example-popover";
 
-// Note that popover is correctly typed to be a HTMLDivElement
-// specifically because we passed in "div".
+// Perhatikan bahwa tipe data _popover_ disimpulkan dengan tepat
+// menjadi sebuah HTMLDivElement karena kita memberikan elemen "div"
+// secara spesifik.
 
-// To make it possible to re-run this code, we'll first
-// add a function to remove the popover if it was already there.
+// Supaya kode program dapat dijalankan kembali, kita akan
+// membuat sebuah fungsi untuk menghapus _popover_ jika
+// _popover_ sudah ada pada halaman web.
 
-const removePopover = () => {
-  const existingPopover = document.getElementById(popover.id);
-  if (existingPopover && existingPopover.parentElement) {
-    existingPopover.parentElement.removeChild(existingPopover);
+const hapusPopover = () => {
+  const popoverYangSudahAda = document.getElementById(popover.id);
+  if (popoverYangSudahAda && popoverYangSudahAda.parentElement) {
+    popoverYangSudahAda.parentElement.removeChild(existingPopover);
   }
 };
 
-// Then call it right away.
+// Sekarang, panggil fungsi tersebut.
 
-removePopover();
+hapusPopover();
 
-// We can set the inline styles on the element via the
-// .style property on a HTMLElement - this is fully typed.
+// Kita dapat mengatur _inline styles_ pada elemen
+// melalui properti `.style` pada sebuah HTMLElement
+// - seluruh properti tersebut memiliki definisi tipe data.
 
 popover.style.backgroundColor = "#0078D4";
 popover.style.color = "white";
@@ -40,40 +43,48 @@ popover.style.width = "200px";
 popover.style.height = "100px";
 popover.style.padding = "10px";
 
-// Including more obscure, or deprecated CSS attributes.
+// Termasuk atribut CSS yang kurang dikenal atau sudah
+// tidak didukung lagi.
 popover.style.webkitBorderRadius = "4px";
 
-// To add content to the popover, we'll need to add
-// a paragraph element and use it to add some text.
+// Untuk menambahkan konten pada _popover_, kita akan
+// menambahkan sebuah elemen paragraf dan menggunakan
+// elemen tersebut untuk menambahkan beberapa teks.
 
-const message = document.createElement("p");
-message.textContent = "Here is an example popover";
+const pesan = document.createElement("p");
+pesan.textContent = "Ini adalah contoh popover";
 
-// And we'll also add a close button.
+// Dan kita juga akan menambahkan sebuah tombol
+// untuk menutup _popover_.
 
-const closeButton = document.createElement("a");
-closeButton.textContent = "X";
-closeButton.style.position = "absolute";
-closeButton.style.top = "3px";
-closeButton.style.right = "8px";
-closeButton.style.color = "white";
+const tombolTutup = document.createElement("a");
+tombolTutup.textContent = "X";
+tombolTutup.style.position = "absolute";
+tombolTutup.style.top = "3px";
+tombolTutup.style.right = "8px";
+tombolTutup.style.color = "white";
 
-closeButton.onclick = () => {
-  removePopover();
+tombolTutup.onclick = () => {
+  hapusPopover();
 };
 
-// Then add all of these elements on to the page.
-popover.appendChild(message);
-popover.appendChild(closeButton);
+// Lalu tambahkan seluruh elemen di atas pada halaman web.
+popover.appendChild(pesan);
+popover.appendChild(tombolTutup);
 document.body.appendChild(popover);
 
-// If you hit "Run" above, then a popup should appear
-// in the bottom left, which you can close by clicking
-// on the x in the top right of the popup.
+// Apabila Anda menekan tombol "Run" di atas, maka sebuah _popup_
+// seharusnya muncul pada bagian kiri bawah penjelajah web,
+// yang Anda dapat tutup dengan menekan "x" yang ada pada
+// bagian kanan atas dari _popup_.
 
-// This example shows how you can work with the DOM API
-// in JavaScript - but using TypeScript to provide great
-// tooling support.
+// Contoh ini menunjukkan bagaimana Anda dapat menggunakan
+// API DOM pada JavaScript - namun juga menggunakan TypeScript
+// untuk menyediakan dukungan perkakas yang baik.
+
+// Ada sebuah contoh lain yang lebih luas tentang dukungan
+// perkakas TypeScript dengan WebGL yang dapat dilihat di sini:
+// example:typescript-with-webgl
 
 // There is an extended example for TypeScript tooling with
 // WebGL available here: example:typescript-with-webgl

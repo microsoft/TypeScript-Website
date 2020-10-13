@@ -36,16 +36,16 @@ type FauxactFunctionComponent<Props extends {}> = (
 // Untuk menggunakan fungsi tersebut, Anda membutuhkan sebuah
 // tipe data untuk properti:
 
-interface DateProps {
-  iso8601Date: string;
-  message: string;
+interface PropertiTanggal {
+  tanggalIso8601: string;
+  pesan: string;
 }
 
 // Kita nantinya dapat membuat sebuah DateComponent yang
 // menggunakan antarmuka DateProps, dan mengeluarkan tanggal.
 
-const DateComponent: FauxactFunctionComponent<DateProps> = (props) => (
-  <time dateTime={props.iso8601Date}>{props.message}</time>
+const KomponenTanggal: FauxactFunctionComponent<PropertiTanggal> = (props) => (
+  <time dateTime={props.tanggalIso8601}>{props.pesan}</time>
 );
 
 // Ekspresi di atas membuat sebuah fungsi generik dengan
@@ -82,16 +82,16 @@ import * as React from "react";
 
 export interface Props {
   /** Nama pengguna */
-  name: string;
+  nama: string;
   /** Menentukan apakah nama harus dicetak dengan huruf tebal */
-  priority?: boolean;
+  prioritas?: boolean;
 }
 
 const PrintName: React.FC<Props> = (props) => {
   return (
     <div>
-      <p style={{ fontWeight: props.priority ? "bold" : "normal" }}>
-        {props.name}
+      <p style={{ fontWeight: props.prioritas ? "bold" : "normal" }}>
+        {props.nama}
       </p>
     </div>
   );
@@ -100,16 +100,16 @@ const PrintName: React.FC<Props> = (props) => {
 // Anda dapat mencoba menggunakan komponen baru tersebut
 // seperti di bawah ini:
 
-const ShowUser: React.FC<Props> = (props) => {
-  return <PrintName name="Ned" />;
+const TampilkanPengguna: React.FC<Props> = (props) => {
+  return <PrintName nama="Ned" />;
 };
 
 // TypeScript mendukung penyediaan _intellisense_ di dalam
 // atribut {}
 
-let username = "Cersei";
-const ShowStoredUser: React.FC<Props> = (props) => {
-  return <PrintName name={username} priority />;
+let namaPengguna = "Cersei";
+const TampilkanPenggunaTersimpan: React.FC<Props> = (props) => {
+  return <PrintName name={namaPengguna} prioritas />;
 };
 
 // TypeScript juga mendukung kode React modern, di sini Anda
@@ -119,17 +119,17 @@ const ShowStoredUser: React.FC<Props> = (props) => {
 
 import { useState, useEffect } from "react";
 
-const CounterExample = () => {
+const ContohPenghitung = () => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    document.title = `You clicked ${count} times`;
+    document.title = `Anda mengklik sebanyak ${count} times`;
   });
 
   return (
     <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>Click me</button>
+      <p>Anda mengklik sebanyak {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Klik disini</button>
     </div>
   );
 };
