@@ -27,7 +27,7 @@ const Index: React.FC<Props> = (props) => {
                 <li>Running TypeScript to emit files like <code>*.js</code>, <code>*.d.ts</code> or <code>*.map</code></li>
                 <li>Using TypeScript's language service to make the same calls an editor would make</li>
               </ul>
-              <p>You can learn more in the <a href="https://github.com/microsoft/TypeScript-Website/blob/v2/packages/@typescript/vfs/">TypeScript VFS README</a></p>
+              <p>You can learn more in the <a href="https://github.com/microsoft/TypeScript-Website/blob/v2/packages/typescript-vfs/">TypeScript VFS README</a></p>
             </div>
 
             <div className="sixhundred" style={{ borderLeft: "1px solid gray", padding: "20px" }}>
