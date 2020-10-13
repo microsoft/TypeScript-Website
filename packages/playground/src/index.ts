@@ -22,6 +22,7 @@ import { allowConnectingToLocalhost, activePlugins, addCustomPlugin } from "./si
 import { createUtils, PluginUtils } from "./pluginUtils"
 import type React from "react"
 import { settingsPlugin, getPlaygroundPlugins } from "./sidebar/settings"
+import { setupFileTree } from "./filetree"
 
 export { PluginUtils } from "./pluginUtils"
 
@@ -317,6 +318,10 @@ export const setupPlayground = (
       )
     },
   }
+
+  const tree = setupFileTree(document.getElementById("filetree")!, sandbox.editor)
+  // tree.tree.refresh()
+  tree.tree.layout()
 
   const shareButton = document.getElementById("share-button")
   if (shareButton) {

@@ -116,7 +116,7 @@ const Play: React.FC<Props> = (props) => {
           "unpkg": "https://unpkg.com/",
           "local": "http://localhost:5000"
         },
-        ignoreDuplicateModules: ["vs/editor/editor.main"],
+        ignoreDuplicateModules: ["vs/editor/editor.main", "vs/base/parts/tree/browser/treeImpl"],
       });
 
       re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("typescript-sandbox"), playground: typeof import("typescript-playground")) => {
@@ -152,6 +152,7 @@ const Play: React.FC<Props> = (props) => {
           prefix: withPrefix("/"),
           supportCustomPlugins: true
         }
+
 
         playground.setupPlayground(sandboxEnv, main, playgroundConfig, i as any, React)
 
@@ -227,9 +228,9 @@ const Play: React.FC<Props> = (props) => {
           <p id="loading-message" role="status">{i("play_downloading_typescript")}</p>
         </div>
         <div id="playground-container" style={{ display: "none" }}>
+          <div id="filetree" className="vs-dark show-file-icons show-folder-icons" style={{ width: "400px", height: "600px" }}></div>
           <div id="editor-container">
             <div id="editor-toolbar" className="navbar-sub" >
-
               <ul>
                 <li id="versions" className="dropdown" >
                   <a href="#" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="versions-dropdown" id='versions-button'>{i("play_downloading_version")}... <span className="caret" /></a>
