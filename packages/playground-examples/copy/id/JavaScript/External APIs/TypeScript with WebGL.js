@@ -1,14 +1,16 @@
 //// { order: 5, isJavaScript: true }
 
-// This example creates an HTML canvas which uses WebGL to
-// render spinning confetti using JavaScript. We're going
-// to walk through the code to understand how it works, and
-// see how TypeScript's tooling provides useful insight.
+// Di bawah ini merupakan contoh pembuata sebuah kanvas HTML
+// yang menggunakan WebGL untuk menghasilkan _confetti_ yang
+// berputar menggunakan JavaScript. Kita akan menelusuri kode
+// program untuk mengerti bagaimana program bekerja, dan melihat
+// bagaimana perkakas TypeScript menyediakan fitur yang berguna.
 
-// This example builds off: example:working-with-the-dom
+// Contoh ini dibangun berdasarkan: example:working-with-the-dom
 
-// First up, we need to create an HTML canvas element, which
-// we do via the DOM API and set some inline style attributes:
+// Pertama, kita harus membuat sebuah elemen `canvas`, yang
+// kita buat menggunakan API DOM dan menetapkan beberapa
+// _inline styles_:
 
 const canvas = document.createElement("canvas")
 canvas.id = "spinning-canvas"
@@ -19,29 +21,31 @@ canvas.style.right = "20px"
 canvas.style.width = "500px"
 canvas.style.height = "400px"
 
-// Next, to make it easy to make changes, we remove any older
-// versions of the canvas when hitting "Run" - now you can
-// make changes and see them reflected when you press "Run"
-// or (cmd + enter):
+// Selanjutnya, untuk mempermudah perubahan, kita akan menghapus
+// kanvas versi lama dengan ketika menekan tombol "Run"  - sekarang
+// Anda dapat membuat perubahan dan melihat perubahan tersebut
+// ketika Anda menekan tombol "Run" atau (`cmd + enter`):
 
-const existingCanvas = document.getElementById(canvas.id)
-if (existingCanvas && existingCanvas.parentElement) {
-  existingCanvas.parentElement.removeChild(existingCanvas)
+const kanvasYangSudahAda = document.getElementById(canvas.id)
+if (kanvasYangSudahAda && kanvasYangSudahAda.parentElement) {
+  kanvasYangSudahAda.parentElement.removeChild(kanvasYangSudahAda)
 }
 
-// Tell the canvas element that we will use WebGL to draw
-// inside the element (and not the default raster engine):
+// Perintahkan elemen kanvas untuk menggunakan WebGL ketika akan
+// menggambar dalam elemen (dan jangan gunakan mesin _raster_ anggapan):
 
 const gl = canvas.getContext("webgl")
 
-// Next we need to create vertex shaders - these roughly are
-// small programs that apply maths to a set of incoming
-// array of vertices (numbers).
+// Selanjutnya, kita perlu untuk membuat _vertex shaders_ - sederhananya,
+// _vertex shaders_ adalah program kecil yang menerapkan fungsi matematika
+// pada sekumpulan titik (bilangan).
 
-// You can see the large set of attributes at the top of the shader,
-// these are passed into the compiled shader further down the example.
+// Anda dapat melihat banyak atribut di atas _shader_, atribut-atribut
+// tersebut akan diteruskan pada _shader_ hasil kompilasi pada 
+// bagian bawah contoh.
 
-// There's a great overview on how they work here:
+// Anda dapat melihat gambaran umum tentang bagaimana WebGL bekerja
+// melalui:
 // https://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html
 
 const vertexShader = gl.createShader(gl.VERTEX_SHADER)
@@ -114,13 +118,14 @@ void main() {
 )
 gl.compileShader(vertexShader)
 
-// This example also uses fragment shaders - a fragment
-// shader is another small program that runs through every
-// pixel in the canvas and sets its color.
+// Contoh ini juga menggunakan _fragment shader_ - sebuah 
+// _fragment shader_ adalah program kecil yang berjalan
+// di seluruh piksel dalam kanvas dan menetapkan warna bagi
+// piksel.
 
-// In this case, if you play around with the numbers you can see how
-// this affects the lighting in the scene, as well as the border
-// radius on the confetti:
+// Dalam kasus ini, apabila Anda mencoba masukan lain, Anda dapat
+// melihat bahwa masukan tersebut mempengaruhi pencahayaan pada
+// layar, dan juga _border radius_ dari _confetti_:
 
 const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER)
 gl.shaderSource(
@@ -138,8 +143,9 @@ void main() {
 )
 gl.compileShader(fragmentShader)
 
-// Takes the compiled shaders and adds them to the canvas'
-// WebGL context so that can be used:
+// Ambil _shader-shader_ yang telah dikompilasi dan
+// tambahkan _shader-shader_ tersebut ke dalam konteks
+// kanvas WebGL sehingga dapat digunakan:
 
 const shaderProgram = gl.createProgram()
 gl.attachShader(shaderProgram, vertexShader)
@@ -149,13 +155,13 @@ gl.useProgram(shaderProgram)
 
 gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer())
 
-// We need to get/set the input variables into the shader in a
-// memory-safe way, so the order and the length of their
-// values needs to be stored.
-
+// Kita butuh kemampuan untuk menetapkan atau memperoleh
+// variabel masukan pada _shader_ dengan cara yang aman
+// secara memori, sehingga urutan dan panjang dari nilai-nilai
+// harus disimpan.
 const attrs = [
-  { name: "a_position", length: 2, offset: 0 }, // e.g. x and y represent 2 spaces in memory
-  { name: "a_startAngle", length: 1, offset: 2 }, // but angle is just 1 value
+  { name: "a_position", length: 2, offset: 0 }, // contoh: x dan y membutuhkan dua tempat di memori
+  { name: "a_startAngle", length: 1, offset: 2 }, // namun, _angle_ hanya membutuhkan satu tempat di memori
   { name: "a_angularVelocity", length: 1, offset: 3 },
   { name: "a_rotationAxisAngle", length: 1, offset: 4 },
   { name: "a_particleDistance", length: 1, offset: 5 },
@@ -165,17 +171,21 @@ const attrs = [
 
 const STRIDE = Object.keys(attrs).length + 1
 
-// Loop through our known attributes and create pointers in memory for the JS side
-// to be able to fill into the shader.
+// Lakukan _looping_ pada seluruh atribut yang diketahui dan buat _pointer_
+// di memori supaya JavaScript dapat mengisi atribut-atribut
+// tersebut pada _shader_.
 
-// To understand this API a little bit: WebGL is based on OpenGL
-// which is a state-machine styled API. You pass in commands in a
-// particular order to render things to the screen.
+// Berikut merupakan sedikit penjelasan mengenai API ini:
+// WebGL merupakan teknologi yang berbasis pada OpenGL yang
+// merupakan sebuah API dengan gaya _state-machine_. Anda
+// dapat meneruskan perintah dalam urutan tertentu untuk
+// mengeluarkan sesuatu pada layar.
 
-// So, the intended usage is often not passing objects to every WebGL
-// API call, but instead passing one thing to one function, then passing
-// another to the next. So, here we prime WebGL to create an array of
-// vertex pointers:
+// Sehingga, WebGL biasanya tidak bekerja dengan cara meneruskan
+// seluruh objek pada setiap pemanggilan API WebGL, namun meneruskan
+// satu objek pada sebuah fungsi, kemudian meneruskan objek lain
+// pada fungsi selanjutnya. Sehingga, di sini kita memerintahkan WebGL
+// untuk membuat sebuah _array vertex pointer_:
 
 for (var i = 0; i < attrs.length; i++) {
   const name = attrs[i].name
@@ -186,23 +196,24 @@ for (var i = 0; i < attrs.length; i++) {
   gl.enableVertexAttribArray(attribLocation)
 }
 
-// Then on this line they are bound to an array in memory:
+// Kemudian pada baris ini, kumpulan _vertex pointer_ tersebut
+// terikat pada sebuah _array_ dalam memori: 
 
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer())
 
-// Set up some constants for rendering:
+// Tetapkan beberapa konstanta yang akan digunakan pada proses _rendering_:
 
 const NUM_PARTICLES = 200
 const NUM_VERTICES = 4
 
-// Try reducing this one and hitting "Run" again,
-// it represents how many points should exist on
-// each confetti and having an odd number sends
-// it way out of whack.
+// Coba kurangi nilai ini dan jalankan program kembali,
+// nilai ini menentukan banyaknya titik yang ada
+// pada setiap _confetti_ dan nilai ganjil akan
+// mengacaukan _confetti_ yang ditampilkan.
 
 const NUM_INDICES = 6
 
-// Create the arrays of inputs for the vertex shaders
+// Buat _array_ masukan untuk kumpulan _vertex shader_
 const vertices = new Float32Array(NUM_PARTICLES * STRIDE * NUM_VERTICES)
 const indices = new Uint16Array(NUM_PARTICLES * NUM_INDICES)
 
@@ -218,15 +229,15 @@ for (let i = 0; i < NUM_PARTICLES; i++) {
 
   for (let j = 0; j < 4; j++) {
     const vertexPtr = groupPtr + j * STRIDE
-    vertices[vertexPtr + 2] = startAngle       // Start angle
-    vertices[vertexPtr + 3] = angularVelocity  // Angular velocity
-    vertices[vertexPtr + 4] = axisAngle        // Angle diff
-    vertices[vertexPtr + 5] = particleDistance // Distance of the particle from the (0,0,0)
-    vertices[vertexPtr + 6] = particleAngle    // Angle around Y axis
-    vertices[vertexPtr + 7] = particleY        // Angle around Y axis
+    vertices[vertexPtr + 2] = startAngle       // Sudut awal
+    vertices[vertexPtr + 3] = angularVelocity  // Kecepatan sudut
+    vertices[vertexPtr + 4] = axisAngle        // Perbedaan arah
+    vertices[vertexPtr + 5] = particleDistance // Jarak partikel yang dihitung dari titik (0, 0, 0)
+    vertices[vertexPtr + 6] = particleAngle    // Arah berdasarkan sumbu Y
+    vertices[vertexPtr + 7] = particleY        // Arah berdasarkan sumbu Y
   }
 
-  // Coordinates
+  // Koordinat
   vertices[groupPtr] = vertices[groupPtr + STRIDE * 2] = -1
   vertices[groupPtr + STRIDE] = vertices[groupPtr + STRIDE * 3] = +1
   vertices[groupPtr + 1] = vertices[groupPtr + STRIDE + 1] = -1
@@ -240,7 +251,7 @@ for (let i = 0; i < NUM_PARTICLES; i++) {
   indices[indicesPtr + 5] = vertexPtr + 3
 }
 
-// Pass in the data to the WebGL context
+// Teruskan data pada konteks WebGL
 gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW)
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW)
 
@@ -248,33 +259,33 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW)
 const timeUniformLocation = gl.getUniformLocation(shaderProgram, "u_time")
 const startTime = (window.performance || Date).now()
 
-// Start the background colour as black
+// Awali warna latar dengan warna hitam
 gl.clearColor(0, 0, 0, 1)
 
-// Allow alpha channels on in the vertex shader
+// Nyalakan _alpha channel_ pada _vertex shader_
 gl.enable(gl.BLEND)
 gl.blendFunc(gl.SRC_ALPHA, gl.ONE)
 
-// Set the WebGL context to be the full size of the canvas
+// Tetapkan ukuran konteks WebGL sebesar ukuran kanvas
 gl.viewport(0, 0, canvas.width, canvas.height)
 
-// Create a run-loop to draw all of the confetti
-;(function frame() {
-  gl.uniform1f(timeUniformLocation, ((window.performance || Date).now() - startTime) / 1000)
+  // Buat sebuah _run-loop_ untuk menggambar seluruh _confetti_ 
+  ; (function frame() {
+    gl.uniform1f(timeUniformLocation, ((window.performance || Date).now() - startTime) / 1000)
 
-  gl.clear(gl.COLOR_BUFFER_BIT)
-  gl.drawElements(
-    gl.TRIANGLES,
-    NUM_INDICES * NUM_PARTICLES,
-    gl.UNSIGNED_SHORT,
-    0
-  )
-  requestAnimationFrame(frame)
-})()
+    gl.clear(gl.COLOR_BUFFER_BIT)
+    gl.drawElements(
+      gl.TRIANGLES,
+      NUM_INDICES * NUM_PARTICLES,
+      gl.UNSIGNED_SHORT,
+      0
+    )
+    requestAnimationFrame(frame)
+  })()
 
-// Add the new canvas element into the bottom left
-// of the playground
+// Tambahkan elemen kanvas yang baru pada bagian
+// kiri bawah dari arena bermain
 document.body.appendChild(canvas)
 
-// Credit: based on this JSFiddle by Subzey
+// Dibuat berdasarkan JSFiddle biatan Subzey
 // https://jsfiddle.net/subzey/52sowezj/
