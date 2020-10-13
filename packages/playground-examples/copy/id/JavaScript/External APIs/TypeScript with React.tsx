@@ -25,7 +25,7 @@ type FauxactFunctionComponent<Props extends {}> = (
   context?: any,
 ) => FauxactFunctionComponent<any> | null | JSX.Element;
 
-// Secara kasar:
+// Secara garis besar:
 //
 // FauxactFunctionComponent merupakan sebuah fungsi generik yang
 // bergantung pada tipe data lain, yaitu Props. Props harus merupakan
