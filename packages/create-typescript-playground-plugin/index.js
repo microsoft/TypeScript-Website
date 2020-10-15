@@ -26,6 +26,7 @@ const install = () => {
     child.on("close", code => {
       if (code !== 0) {
         reject()
+        process.exitCode = 1
         return
       }
       resolve()
