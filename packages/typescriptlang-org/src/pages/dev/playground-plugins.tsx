@@ -42,7 +42,7 @@ const Index: React.FC<Props> = (props) => {
             <p><b>Step 3</b>: Open the <a href={withPrefix("/play/")}>playground</a> in your browser, click "Options" and enable <code>"Connect to localhost:5000/index.js"</code></p>
             <p><b>Step 4</b>: Refresh, and see the new tab. That's your plugin up and running</p>
             <p>&nbsp;</p>
-            <p>That's all the pieces working in tandem, now you can make changes to the template and build out your plugin. The plugin in dev mode will always become forefront when connected, so you can re-load without a lot off clicks. To understand the template's technology, read the <a href='https://github.com/microsoft/TypeScript-Website/blob/v2/packages/create-typescript-playground-plugin/template/CONTRIBUTING.md'>CONTRIBUTING.md</a></p>
+            <p>That's all the pieces working in tandem, now you can make changes to the template and build out your plugin. The plugin in dev mode will always become forefront when connected, so you can re-load without a lot of clicks. To understand the template's technology, read the <a href='https://github.com/microsoft/TypeScript-Website/blob/v2/packages/create-typescript-playground-plugin/template/CONTRIBUTING.md'>CONTRIBUTING.md</a></p>
 
             <h2>Alternatives</h2>
             <p>There are community-run templates for Playground plugins which bootstrap your plugin with well-known view libraries:</p>
