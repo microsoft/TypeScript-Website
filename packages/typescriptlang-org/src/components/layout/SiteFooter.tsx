@@ -46,8 +46,8 @@ const popularPages = [
   },
   {
     title: "TSConfig Options",
-    url: "/docs/handbook/tsconfig-json.html",
-    description: "JavaScript primitive types inside TypeScript",
+    url: "/tsconfig.html",
+    description: "All the configuration options for a project",
   },
   {
     title: "Classes",

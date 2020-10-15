@@ -48,15 +48,17 @@ jobs:
         env:
           CI: true
 
-      - name: "Validates that TypeScript plugins work"
-        run: npm init typescript-playground-plugin playground-my-plugin
-
       # danger for PR builds
       - if: github.event_name == 'pull_request' && github.event.base.repo.id == github.event.head.repo.id
         run: "yarn danger ci"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_DEPLOY_URL_ROOT: ${{ steps.deploy.outputs.static_web_app_url }}
+
+      - name: "Validates that TypeScript plugins work"
+        run: |
+          cd ..
+          npm init typescript-playground-plugin playground-my-plugin
 
   windows:
     runs-on: windows-latest
