@@ -433,6 +433,7 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       // Suppress the enter key
       textbox.onkeydown = (evt: KeyboardEvent) => {
         if (evt.key === "Enter" || evt.code === "Enter") {
+          config.onEnter(textbox.value, textbox)
           return false
         }
       }
