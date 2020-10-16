@@ -437,7 +437,14 @@ export function createFSBackedSystem(files: Map<string, string>, _projectRoot: s
       if (files.has(fileName)) return files.get(fileName)
       if (fileName.startsWith("/lib")) {
         const tsLibName = `${tsLib}/${fileName.replace("/", "")}`
-        return nodeSys.readFile(tsLibName)
+        const result = nodeSys.readFile(tsLibName)
+        if (!result) {
+          const libs = nodeSys.readDirectory(tsLib)
+          throw new Error(
+            `TSVFS: A request was made for ${tsLibName} but there wasn't a file found in the file map. You likely have a mismatching in the compiler options for the CDN download vs the compiler program. Existing Libs: ${libs}.`
+          )
+        }
+        return result
       }
       return nodeSys.readFile(fileName)
     }),
