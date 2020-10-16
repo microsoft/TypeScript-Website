@@ -133,7 +133,7 @@ function ComponentFoo(prop: FooProp) {
   return <AnotherComponent name={prop.name} />;
 }
 
-const Button = (prop: {value: string}, context: { color: string }) => <button>
+const Button = (prop: {value: string}, context: { color: string }) => <button />
 ```
 
 Because a Function Component is simply a JavaScript function, function overloads may be used here as well:
