@@ -48,3 +48,10 @@ packages/tsconfig-reference/copy/uk/**/*.md @AMashoshyna [translation] [uk]
 packages/typescriptlang-org/src/copy/uk/**/*.ts @AMashoshyna [translation] [uk]
 packages/typescriptlang-org/src/copy/uk.ts @AMashoshyna [translation] [uk]
 packages/documentation/copy/uk/**/*.md @AMashoshyna [translation] [uk]
+
+# Collaborators for Polish Translation of the Website
+packages/playground-examples/copy/pl @msieroslawska @TomWebwalker [translation] [pl]
+packages/tsconfig-reference/copy/pl/**/*.md @msieroslawska @TomWebwalker [translation] [pl]
+packages/typescriptlang-org/src/copy/pl/**/*.ts @msieroslawska @TomWebwalker [translation] [pl]
+packages/typescriptlang-org/src/copy/pl.ts @msieroslawska @TomWebwalker [translation] [pl]
+packages/documentation/copy/pl/**/*.md @msieroslawska @TomWebwalker [translation] [pl]

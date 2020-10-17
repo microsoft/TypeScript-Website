@@ -22,11 +22,11 @@ const Index: React.FC<Props> = (props) => {
               <h1 style={{ marginTop: "20px" }}>Your toys, our sandbox</h1>
               <p>The new TypeScript Playground allows people to hook into the Playground and extend it in ways in which the TypeScript team don't expect.</p>
               <p>The sidebar of the Playground uses the same plugin infrastructure as external plugins, so you have the same level of access as the playground to build interesting projects.</p>
-              <p>Playground plugins are built via the DOM API and an expansive Design System, however, you're free to inject a framework like React or Svelte at runtime.</p>
+              <p>Playground plugins are built via the DOM API and an expansive Design System, however, you're free to use a framework like React or Svelte at runtime.</p>
               <p>&nbsp;</p>
               <p>Getting started is easy, we have a plugin template, and the Playground has a dev-mode for hooking directly to your local server, so you don't need to run a copy of the TypeScript website to have a working development environment.</p>
-              <p>There is a complex reference plugin called <a href="https://github.com/orta/playground-slides">Presentation Mode</a> and a much simpler <a href="https://github.com/orta/playground-plugin-tsquery">plugin for TSQuery</a> which are available by default for you to investigate and understand.</p>
-              <p>If you have questions as you are working on your plugin, ask in the <a href='https://discord.gg/typescript'>TypeScript Community Discord</a>. When it is polished let us know and we can add it to the default registry - making it visible to everyone easily.</p>
+              <p>There is a repo of sample plugins at <a href="https://github.com/microsoft/TypeScript-Playground-Samples/">microsoft/TypeScript-Playground-Samples</a> and there are many existing open source plugins to look at too: <a href="https://github.com/orta/playground-slides">Presentation Mode</a>, <a href="https://github.com/orta/playground-clippy#playground-plugin-clippy">Clippy</a> <a href="https://github.com/orta/playground-plugin-tsquery">TSQuery</a>, <a href="https://github.com/orta/playground-collaborate#typescript-playground-collaborate">Collaborate</a> and <a href="https://github.com/orta/playground-transformer-timeline">Transformer</a> which are available by default for you to investigate and understand.</p>
+              <p>If you have questions as you are working on your plugin, ask in the <a href='https://discord.gg/typescript'>TypeScript Community Discord</a>. When it is polished, ship it to the npm registry and it will make its way into the plugins sidebar.</p>
             </div>
 
             <div className="sixhundred" style={{ borderLeft: "1px solid gray" }}>
@@ -42,7 +42,7 @@ const Index: React.FC<Props> = (props) => {
             <p><b>Step 3</b>: Open the <a href={withPrefix("/play/")}>playground</a> in your browser, click "Options" and enable <code>"Connect to localhost:5000/index.js"</code></p>
             <p><b>Step 4</b>: Refresh, and see the new tab. That's your plugin up and running</p>
             <p>&nbsp;</p>
-            <p>That's all the pieces working in tandem, now you can make changes to the template and build out your plugin. The plugin in dev mode will always become forefront when connected, so you can re-load without a lot off clicks. To understand the template's technology, read the <a href='https://github.com/microsoft/TypeScript-Website/blob/v2/packages/create-playground-plugin/template/CONTRIBUTING.md'>CONTRIBUTING.md</a></p>
+            <p>That's all the pieces working in tandem, now you can make changes to the template and build out your plugin. The plugin in dev mode will always become forefront when connected, so you can re-load without a lot of clicks. To understand the template's technology, read the <a href='https://github.com/microsoft/TypeScript-Website/blob/v2/packages/create-typescript-playground-plugin/template/CONTRIBUTING.md'>CONTRIBUTING.md</a></p>
 
             <h2>Alternatives</h2>
             <p>There are community-run templates for Playground plugins which bootstrap your plugin with well-known view libraries:</p>
