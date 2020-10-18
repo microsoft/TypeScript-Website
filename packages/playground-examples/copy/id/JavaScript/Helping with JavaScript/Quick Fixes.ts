@@ -1,16 +1,16 @@
-// TypeScript provides quick-fix recommendations for
-// common accidents. Prompts show up in your editor based
-// on these recommendations.
+// TypeScript menyediakan rekomendasi perbaikan cepat
+// untuk kejadian umum. _Prompt_ akan muncul di editor
+// Anda berdasarkan rekomendasi-rekomendasi tersebut.
 
-// For example TypeScript can provide quick-fixes
-// for typos in your types:
+// Sebagai contoh, TypeScript dapat menyediakan perbaikan
+// cepat untuk kesalahan eja pada tipe data Anda:
 
-const eulersNumber = 2.7182818284;
-eulersNumber.toStrang();
-//           ^______^ - select this to see the light bulb
+const bilanganEuler = 2.7182818284;
+bilanganEuler.toStrang();
+//           ^______^ - pilih kode ini untuk melihat lampu bohlam.
 
-class ExampleClass {
+class ContohKelas {
   method() {
-    this.notDeclared = 10;
+    this.tidakDideklarasikan = 10;
   }
 }

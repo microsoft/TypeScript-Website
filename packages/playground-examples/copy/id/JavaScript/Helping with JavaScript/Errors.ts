@@ -42,6 +42,3 @@ galatkuYangDiabaikan = {};
 // Anda dapat menggunakan fitur menyimpulkan tipe data
 // melalui alur kode program untuk membuat perubahan
 // pada kode JavaScript Anda: example:code-flow
-
-// You can use type inference via the flow of code to make
-// changes to your JavaScript: example:code-flow
