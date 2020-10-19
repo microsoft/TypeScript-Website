@@ -2,8 +2,8 @@
 
 // TypeScript secara bawaan tidak memeriksa galat
 // yang ada dalam kode JavaScript. Sebaliknya, perkakas
-// TypeScript terfokus pada menyediakan dukungan yang
-// kaya pada editor.
+// TypeScript difokuskan untuk memberikan banyak dukungan
+// pada editor.
 
 // Namun, mengaktifkan fitur pemeriksaan galat merupakan hal
 // yang cukup mudah untuk dilakukan. Pada sebuah berkas
