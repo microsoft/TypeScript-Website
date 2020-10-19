@@ -1,16 +1,16 @@
 //// {compiler: { strictFunctionTypes: false } }
 
 // Sem um histórico na teoria de tipos, é improvável que você
-// esteja familiarizado com a ideia de um sistema de tipos ser "sólido".
+// esteja familiarizado com a ideia de um sistema de tipos ser "sólido" (_sound_).
 
-// Solidez é a ideia de que o compilador pode dar garantias sobre o tipo
+// Solidez (_Soundness_) é a ideia de que o compilador pode dar garantias sobre o tipo
 // de um valor em tempo de execução, e não apenas durante a compilação.
 // Isso é normal para a maioria das linguagens de programação
-// que são construídas com tipos desde o primeiro dia.
+// que são construídas com tipos desde a sua criação.
 
 // Construir um sistema de tipo que modela uma linguagem que existe
 // há algumas décadas, no entanto, torna-se sobre tomar
-// decisões com trocas em três qualidades: Simplicidade,
+// decisões que podem ter efeitos em três propriedades: Simplicidade,
 // Usabilidade e Solidez.
 
 // Com o objetivo do TypeScript de ser capaz de suportar todo o código
@@ -69,7 +69,7 @@ escuteOEvento("mouse", (event: {}) => {});
 
 escuteOEvento("mouse", (event: string) => {});
 
-// Isso cobre o padrão real do ouvinte de eventos em JavaScript,
+// Isso cobre o padrão real do event listener em JavaScript,
 // às custas de ser sólido.
 
 // O TypeScript pode gerar um erro quando isso acontecer por meio
@@ -77,16 +77,16 @@ escuteOEvento("mouse", (event: string) => {});
 // específico com sobrecargas de função, consulte:
 // exemplo: typing-functions
 
-// Void special casing
+// Casing especial para Void
 
 // Descarte de parâmetros
 
 // Para aprender sobre casos especiais com parâmetros de função,
 // consulte o exemplo: structural-typing
 
-// Parâmetros restantes
+// Parâmetros rest
 
-// Os parâmetros restantes são considerados opcionais, isso significa
+// Os parâmetros rest são considerados opcionais, isso significa
 // que o TypeScript não terá uma maneira de impor o número de
 // parâmetros disponíveis para um retorno de chamada.
 
