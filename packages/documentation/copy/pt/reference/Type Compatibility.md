@@ -32,7 +32,7 @@ Por que o Javascript faz uso amplo de objetos anônimos como funções de expres
 ## Uma nota sobre Solidez
 
 O sistema de tipos TypeScript permite certas operações, que não poderiam ser conhecidas em tempo de compilação, a serem seguras.
-Quando um sistema de tipos tem essa propriedade, fica dito não ser "solido" (_sound_). Os locais onde Typescript permite comportamento não sólido foram considerados cuidadosamente, e ao decorrer desse documento iremos explicar onde eles ocorrem e os cenários motivadores por trás deles. 
+Quando um sistema de tipos tem essa propriedade, fica dito não ser "sólido" (_sound_). Os locais onde Typescript permite comportamento não sólido foram considerados cuidadosamente, e ao decorrer desse documento iremos explicar onde eles ocorrem e os cenários motivadores por trás deles. 
 
 ## Começando
 
