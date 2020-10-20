@@ -1,8 +1,8 @@
 ---
-title: Type Inference
+title: Inferência de Tipo
 layout: docs
 permalink: /docs/handbook/type-inference.html
-oneline: How code flow analysis works in TypeScript
+oneline: Como a analise do fluxo de código funciona em TypeScript
 translatable: true
 ---
 

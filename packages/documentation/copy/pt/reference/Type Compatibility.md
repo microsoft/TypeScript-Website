@@ -1,8 +1,8 @@
 ---
-title: Type Compatibility
+title: Compatibilidade de Tipos
 layout: docs
 permalink: /docs/handbook/type-compatibility.html
-oneline: How type-checking works in TypeScript
+oneline: Como checagem de tipos funciona em TypeScript
 translatable: true
 ---
 
@@ -26,13 +26,13 @@ p = new Pessoa();
 ```
 Em linguagens nominalmente tipadas como C# ou Java, o código equivalente seria um erro porque a classe `Pessoa` não se descreve explícitamente como sendo um implementador da interface `Nomeado`.
 
-O sistema de tipagem estrutura do TypeScript foi projetado baseado em como o código Javascript é tipicamente escrito.
+O sistema de tipagem estrutural TypeScript foi projetado baseado em como o código Javascript é tipicamente escrito.
 Por que o Javascript faz uso amplo de objetos anônimos como funções de expressões e literais de objetos, é muito mais natural representar os tipos de relacionamentos encontrados em bibliotecas JavaScript com um sistema de tipo estrutural do que um tipo nominal.
 
-## Uma nota sobre Correção
+## Uma nota sobre Solidez
 
-O sistema de tipos do TypeScript permite certas operações, que não poderiam ser conhecidas em tempo de compilação, serem seguras.
-Quando um sistema de tipos tem essa propriedade, fica dito para não ser "correto". Os locais onde Typescript permite comportamento incorreto foram considerados cuidadosamente, e ao decorrer desse documento iremos explicar onde eles ocorrem e os cenários motivadores por tás deles. 
+O sistema de tipos TypeScript permite certas operações, que não poderiam ser conhecidas em tempo de compilação, a serem seguras.
+Quando um sistema de tipos tem essa propriedade, fica dito não ser "solido" (_sound_). Os locais onde Typescript permite comportamento não sólido foram considerados cuidadosamente, e ao decorrer desse documento iremos explicar onde eles ocorrem e os cenários motivadores por trás deles. 
 
 ## Começando
 
@@ -68,7 +68,7 @@ Esse processo de comparação ocorre recursivamente, explorando o tipo de cada m
 
 ## Comparando duas funções
 
-Enquanto comparar tipos primitivos é relativamente simples, a questão de quais tipos de funções deveriam ser consideradas compatíveis é um pouco mais embaralhado. Vamos começar com um exemplo básico de duas funções que diferem apenas em sua lista de parâmetros:
+Enquanto comparar tipos primitivos é relativamente simples, a questão de quais tipos de funções deveriam ser consideradas compatíveis é um pouco mais difícil. Vamos começar com um exemplo básico de duas funções que diferem apenas em sua lista de parâmetros:
 
 ```ts
 let x = (a: number) => 0;
@@ -115,7 +115,7 @@ O sistema de tipos força que o retorno da função fonte seja um subtipo do tip
 ## Parâmetro de Função Bivariado
 
 Ao comparar os tipos de parâmetros de funções, a atribuição tem sucesso se o parâmetro fonte é atribuível ao parâmetro alvo, ou vice versa.
-Isso é incorreto pois pode ser dada a uma função chamadora uma função que retorna um tipo mais especializado, mas invoca a função com um tipo menos especializado. 
+Isso é não sólido pois pode ser dada a uma função chamadora uma função que retorna um tipo mais especializado, mas invoca a função com um tipo menos especializado. 
 Na pratica, esse tipo de erro é raro, e permitir esse comportamento viabiliza muitos padrões comuns do JavaScript. Um exemplo breve:
 
 ```ts
@@ -139,10 +139,10 @@ function listenEvent(eventType: EventType, handler: (n: Event) => void) {
   /* ... */
 }
 
-// Incorreto, mas útil e comum
+// Não sólido, mas útil e comum
 listenEvent(EventType.Mouse, (e: MouseEvent) => console.log(e.x + "," + e.y));
 
-// Alternativas indesejáveis na presença de correção
+// Alternativas indesejáveis na presença de solidez
 listenEvent(EventType.Mouse, (e: Event) =>
   console.log((e as MouseEvent).x + "," + (e as MouseEvent).y)
 );
@@ -162,7 +162,7 @@ Parâmetros opcionais extras do tipo fonte não são um erro e parâmetros opcio
 
 Quando uma função tem um parâmetro do tipo rest, ela é tratada como se tivesse uma série infinita de parâmetros opcionais.
 
-Isso é incorreto pela perspectiva do sistema de tipos, mas pelo ponto de vista do tempo de execução a ideia de um parâmetro opcional é geralmente reforçada, uma vez que é o equivalente a passar `undefined` naquela posição para a maioria das funções.
+Isso não sólido pela perspectiva do sistema de tipos, mas pelo ponto de vista do tempo de execução a ideia de um parâmetro opcional é geralmente reforçada, uma vez que é o equivalente a passar `undefined` naquela posição para a maioria das funções.
 
 O exemplo motivacional é o padrão comum de uma função que recebe um callback e a chama com alguma previsibilidade (para o programador) mas com numero desconhecido (para o sistema de tipos) de argumentos:
 
@@ -171,7 +171,7 @@ function chamaDepois(args: any[], callback: (...args: any[]) => void) {
   /* ... Chama callback com 'args' ... */
 }
 
-// Incorreto - chamaDepois "poderia" prover qualquer numero de argumentos
+// Não sólido - chamaDepois "poderia" prover qualquer numero de argumentos
 chamaDepois([1, 2], (x, y) => console.log(x + ", " + y));
 
 // Confuso (x e y, na verdade, são requeridos ) e indetectáveis
