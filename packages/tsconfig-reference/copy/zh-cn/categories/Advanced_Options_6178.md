@@ -2,4 +2,4 @@
 display: "Advanced"
 ---
 
-Flags which help with debugging
+debugging 相关的选项。

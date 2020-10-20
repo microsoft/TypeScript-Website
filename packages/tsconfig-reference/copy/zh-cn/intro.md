@@ -1,6 +1,6 @@
-## Intro to the TSConfig Reference
+## TSConfig 前言
 
-A TSConfig file in a directory indicates that the directory is the root of a TypeScript or JavaScript project.
-The TSConfig file can be either a `tsconfig.json` or `jsconfig.json`, both have the same behavior and the same set of config variables.
+目录中的 TSConfig 文件表明该目录是 TypeScript 或 JavaScript 项目的根目录。
+TSConfig 文件可以是 `tsconfig.json` 或 `jsconfig.json`，它们的配置项和行为相同。
 
-This page covers all of the different flags available inside a TSConfig file. It starts with an overview of every flag, then moves into the root attributes in the JSON file, then the `compilerOptions` which are the bulk of the options and wraps up with `watchOptions`.
+此页涵盖了 TSConfig 文件中可用的所有不同标志。它从每个标志的概述开始，到 JSON 文件的根属性，然后是`compilerOptions`(大部分选项)，最后是 `watchOptions`。

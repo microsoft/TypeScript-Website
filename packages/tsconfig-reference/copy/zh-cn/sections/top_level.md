@@ -1,3 +1,3 @@
-### Root Fields
+### 上层选项
 
-Starting up are the root options in the TSConfig - these options relate to how your TypeScript or JavaScript project is set up.
+首先是 TSConfig 中的顶层选项——这些选项与 TypeScript 或 JavaScript 项目的设置方式有关。
