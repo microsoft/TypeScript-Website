@@ -1,7 +1,7 @@
 ---
 title: Modules
 layout: docs
-permalink: /docs/handbook/modules.html
+permalink: /pt/docs/handbook/modules.html
 oneline: Como módulos funcionam no TypeScript
 translatable: true
 ---
