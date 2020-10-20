@@ -8,8 +8,8 @@ translatable: true
 
 Inciando com ECMAScript 2015, JavaScript possui um conceito de módulos. TypeScript compartilha deste conceito.
 
-Os Módulos são executados dentro de seu próprio escopo, não no escopo global; isso significa que variáveis, funções, classes, etc. declaradas em um módulo não são visíveis fora do módulo, a menos que sejam explicitamente exportadas utilizando um dos [`export` forms](#export).
-De forma recíproca, para consumir uma variável, função, classe, interface, etc. exportada de um módulo diferente, ela deve ser importada usando um dos [`import` forms](#import).
+Os Módulos são executados dentro de seu próprio escopo, não no escopo global; isso significa que variáveis, funções, classes, etc. declaradas em um módulo não são visíveis fora do módulo, a menos que sejam explicitamente exportadas utilizando uma das [formas de `export`](#export).
+De forma recíproca, para consumir uma variável, função, classe, interface, etc. exportada de um módulo diferente, ela deve ser importada usando uma das [formas de `import`](#import).
 
 Módulos são declarativos; os relacionamentos entre módulos são especificados pelos imports e exports em nível de arquivo.
 
