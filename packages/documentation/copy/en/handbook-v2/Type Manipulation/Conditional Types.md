@@ -1,17 +1,10 @@
 ---
-title: Types from Transformation
+title: Conditional Types
 layout: docs
-permalink: /docs/handbook/2/types-from-transformation.html
+permalink: /docs/handbook/2/conditional-types.html
 oneline: "Step one in learning TypeScript: The basics types."
 beta: true
 ---
-
-There are certain patterns that are very commonplace in JavaScript, like iterating over the keys of objects to create new ones, and returning different values based on the inputs given to us.
-This idea of creating new values and types on the fly is somewhat untraditional in typed languages, but TypeScript provides some useful base constructs in the type system to accurately model that behavior, much in the same way that `keyof` can be used to discuss the property names of objects, and indexed access types can be used to fetch values of a certain property name.
-
-We'll quickly see that combined, these smaller constructs can be surprisingly powerful and can express many patterns in the JavaScript ecosystem.
-
-## Conditional Types
 
 At the heart of most useful programs, we have to make decisions based on input.
 JavaScript programs are no different, but given the fact that values can be easily introspected, those decisions are also based on the types of the inputs.

@@ -136,6 +136,50 @@ pre {
     user-select: none;
     color: #ffeeee;
   }
+
+  .inline-completions {
+    position: relative;
+
+    ul.dropdown {
+      display: inline-block;
+      position: absolute;
+      width: 240px;
+      background-color: gainsboro;
+      color: grey;
+
+      font-family: $font-code;
+      font-size: 0.8rem;
+      margin: 0;
+      padding: 0;
+
+      border-left: 4px solid #4b9edd;
+
+      // Fake the cursor above us
+      &::before {
+        background-color: #4b9edd;
+        width: 2px;
+        position: absolute;
+        top: -1.2rem;
+        left: -3px;
+        content: " ";
+      }
+
+      li {
+        height: 1rem;
+        overflow-x: hidden;
+        padding-left: 4px;
+
+        span.result-found {
+          color: #4b9edd;
+        }
+        span.result {
+          width: 100px;
+          color: black;
+          display: inline-block;
+        }
+      }
+    }
+  }
 }
 
 // Extracted from vscode
