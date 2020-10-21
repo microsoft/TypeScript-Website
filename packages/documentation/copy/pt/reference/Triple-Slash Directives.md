@@ -24,22 +24,22 @@ Os arquivos são emitidos para o local do arquivo de saída na mesma ordem da en
 
 O compilador executa uma passagem de pré-processamento nos arquivos de entrada para resolver todas as diretivas de referência de barra tripla. Durante este processo, arquivos adicionais são adicionados à compilação.
 
-O processo começa com um conjunto de _arquivos raíz_ ;
+O processo começa com um conjunto de _arquivos raizes_ ;
 esses são os nomes de arquivo especificados na linha de comando ou na lista `"files"` do arquivo `tsconfig.json`.
-Esses arquivos raízes são pré-processados ​​na mesma ordem em que são especificados.
+Esses arquivos raizes são pré-processados ​​na mesma ordem em que são especificados.
 Antes de um arquivo ser adicionado à lista, todas as referências de barra tripla nele são processadas e seus destinos incluídos.
 As referências de barra tripla são resolvidas primeiro em profundidade, na ordem em que foram vistas no arquivo.
 
 Um caminho de referência de barra tripla é resolvido em relação ao arquivo que o contém, se não tiver raiz.
 
-### Errors
+### Erros
 
-It is an error to reference a file that does not exist.
-It is an error for a file to have a triple-slash reference to itself.
+É um erro fazer referência a um arquivo que não existe.
+É um erro um arquivo ter uma referência de barra tripla a si mesmo.
 
-### Using `--noResolve`
+### Usando `--noResolve`
 
-If the compiler flag `--noResolve` is specified, triple-slash references are ignored; they neither result in adding new files, nor change the order of the files provided.
+Se a flag do compilador `--noResolve` for especificada, as referências de barra tripla serão ignoradas; elas não resultam na adição de novos arquivos, nem alteram a ordem dos arquivos fornecidos..
 
 ## `/// <reference types="..." />`
 
