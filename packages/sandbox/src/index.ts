@@ -286,6 +286,7 @@ export const createTypeScriptSandbox = (
       program,
       system,
       host,
+      fsMap,
     }
   }
 

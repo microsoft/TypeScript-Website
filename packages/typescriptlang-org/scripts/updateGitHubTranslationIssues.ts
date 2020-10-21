@@ -14,6 +14,7 @@ const languages = {
   ko: 910,
   id: 938,
   uk: 1149,
+  pl: 1235,
 }
 
 const go = async () => {

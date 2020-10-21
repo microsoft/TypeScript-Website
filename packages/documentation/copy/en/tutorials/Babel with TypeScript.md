@@ -31,7 +31,7 @@ The downside to using babel is that you don't get type checking during the trans
 
 In addition to that, Babel cannot create `.d.ts` files for your TypeScript which can make it harder to work with your project if it is a library.
 
-To fix these issues, you would probably want to set up a command to type check your project using TSC. This likely means duplicating some of your babel config into a corresponding [`tsconfig.json`](/tconfig) and ensuring these flags are enabled:
+To fix these issues, you would probably want to set up a command to type check your project using TSC. This likely means duplicating some of your babel config into a corresponding [`tsconfig.json`](/tsconfig) and ensuring these flags are enabled:
 
 ```json tsconfig
 "compilerOptions": {
