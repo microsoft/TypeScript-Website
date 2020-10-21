@@ -681,12 +681,6 @@ export function getDocumentationNavForLanguage(
           oneline: "Step one in learning TypeScript: The basics types.",
         },
         {
-          title: "Type Declarations",
-          id: "8type-declarations",
-          permalink: "/docs/handbook/2/type-declarations.html",
-          oneline: "Step one in learning TypeScript: The basics types.",
-        },
-        {
           title: "Narrowing",
           id: "8narrowing",
           permalink: "/docs/handbook/2/narrowing.html",
@@ -699,28 +693,60 @@ export function getDocumentationNavForLanguage(
           oneline: "Learn about how Functions work in TypeScript.",
         },
         {
-          title: "Types from Extraction",
-          id: "8types-from-extraction",
-          permalink: "/docs/handbook/2/types-from-extraction.html",
-          oneline: "Step one in learning TypeScript: The basics types.",
-        },
-        {
-          title: "Types from Transformation",
-          id: "8types-from-transformation",
-          permalink: "/docs/handbook/2/types-from-transformation.html",
-          oneline: "Step one in learning TypeScript: The basics types.",
-        },
-        {
           title: "Classes",
           id: "8classes",
           permalink: "/docs/handbook/2/classes.html",
           oneline: "How classes work in TypeScript",
         },
         {
+          title: "Type Manipulation",
+          id: "8type-manipulation",
+          oneline: "undefined",
+
+          items: [
+            {
+              title: "Creating Types from Types",
+              id: "8creating-types-from-types",
+              permalink: "/docs/handbook/2/types-from-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Keyof Type Operator",
+              id: "8keyof-type-operator",
+              permalink: "/docs/handbook/2/indexed-access-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Typeof Type Operator",
+              id: "8typeof-type-operator",
+              permalink: "/docs/handbook/2/typeof-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Indexed Access Types",
+              id: "8indexed-access-types",
+              permalink: "/docs/handbook/2/indexed-access-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Conditional Types",
+              id: "8conditional-types",
+              permalink: "/docs/handbook/2/conditional-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+          ],
+        },
+        {
           title: "Modules",
           id: "8modules",
           permalink: "/docs/handbook/2/modules.html",
           oneline: "Learn how TypeScript handles different module styles.",
+        },
+        {
+          title: "Type Declarations",
+          id: "8type-declarations",
+          permalink: "/docs/handbook/2/type-declarations.html",
+          oneline: "Step one in learning TypeScript: The basics types.",
         },
         {
           title: "Understanding Errors",
@@ -1388,12 +1414,6 @@ export function getDocumentationNavForLanguage(
           oneline: "Step one in learning TypeScript: The basics types.",
         },
         {
-          title: "Type Declarations",
-          id: "8type-declarations",
-          permalink: "/docs/handbook/2/type-declarations.html",
-          oneline: "Step one in learning TypeScript: The basics types.",
-        },
-        {
           title: "Narrowing",
           id: "8narrowing",
           permalink: "/docs/handbook/2/narrowing.html",
@@ -1406,28 +1426,60 @@ export function getDocumentationNavForLanguage(
           oneline: "Learn about how Functions work in TypeScript.",
         },
         {
-          title: "Types from Extraction",
-          id: "8types-from-extraction",
-          permalink: "/docs/handbook/2/types-from-extraction.html",
-          oneline: "Step one in learning TypeScript: The basics types.",
-        },
-        {
-          title: "Types from Transformation",
-          id: "8types-from-transformation",
-          permalink: "/docs/handbook/2/types-from-transformation.html",
-          oneline: "Step one in learning TypeScript: The basics types.",
-        },
-        {
           title: "Classes",
           id: "8classes",
           permalink: "/docs/handbook/2/classes.html",
           oneline: "How classes work in TypeScript",
         },
         {
+          title: "Type Manipulation",
+          id: "8type-manipulation",
+          oneline: "undefined",
+
+          items: [
+            {
+              title: "Creating Types from Types",
+              id: "8creating-types-from-types",
+              permalink: "/docs/handbook/2/types-from-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Keyof Type Operator",
+              id: "8keyof-type-operator",
+              permalink: "/docs/handbook/2/indexed-access-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Typeof Type Operator",
+              id: "8typeof-type-operator",
+              permalink: "/docs/handbook/2/typeof-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Indexed Access Types",
+              id: "8indexed-access-types",
+              permalink: "/docs/handbook/2/indexed-access-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Conditional Types",
+              id: "8conditional-types",
+              permalink: "/docs/handbook/2/conditional-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+          ],
+        },
+        {
           title: "Modules",
           id: "8modules",
           permalink: "/docs/handbook/2/modules.html",
           oneline: "Learn how TypeScript handles different module styles.",
+        },
+        {
+          title: "Type Declarations",
+          id: "8type-declarations",
+          permalink: "/docs/handbook/2/type-declarations.html",
+          oneline: "Step one in learning TypeScript: The basics types.",
         },
         {
           title: "Understanding Errors",
@@ -1600,10 +1652,10 @@ export function getDocumentationNavForLanguage(
           oneline: "How modules work in TypeScript",
         },
         {
-          title: "Module Resolution",
-          id: "2module-resolution",
-          permalink: "/docs/handbook/module-resolution.html",
-          oneline: "How TypeScript resolves modules in JavaScript",
+          title: "Resolução de módulos",
+          id: "2resolução-de-módulos",
+          permalink: "/pt/docs/handbook/module-resolution.html",
+          oneline: "Como o TypeScript resolve módulos em JavaScript",
         },
         {
           title: "Namespaces",
@@ -2095,12 +2147,6 @@ export function getDocumentationNavForLanguage(
           oneline: "Step one in learning TypeScript: The basics types.",
         },
         {
-          title: "Type Declarations",
-          id: "8type-declarations",
-          permalink: "/docs/handbook/2/type-declarations.html",
-          oneline: "Step one in learning TypeScript: The basics types.",
-        },
-        {
           title: "Narrowing",
           id: "8narrowing",
           permalink: "/docs/handbook/2/narrowing.html",
@@ -2113,28 +2159,60 @@ export function getDocumentationNavForLanguage(
           oneline: "Learn about how Functions work in TypeScript.",
         },
         {
-          title: "Types from Extraction",
-          id: "8types-from-extraction",
-          permalink: "/docs/handbook/2/types-from-extraction.html",
-          oneline: "Step one in learning TypeScript: The basics types.",
-        },
-        {
-          title: "Types from Transformation",
-          id: "8types-from-transformation",
-          permalink: "/docs/handbook/2/types-from-transformation.html",
-          oneline: "Step one in learning TypeScript: The basics types.",
-        },
-        {
           title: "Classes",
           id: "8classes",
           permalink: "/docs/handbook/2/classes.html",
           oneline: "How classes work in TypeScript",
         },
         {
+          title: "Type Manipulation",
+          id: "8type-manipulation",
+          oneline: "undefined",
+
+          items: [
+            {
+              title: "Creating Types from Types",
+              id: "8creating-types-from-types",
+              permalink: "/docs/handbook/2/types-from-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Keyof Type Operator",
+              id: "8keyof-type-operator",
+              permalink: "/docs/handbook/2/indexed-access-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Typeof Type Operator",
+              id: "8typeof-type-operator",
+              permalink: "/docs/handbook/2/typeof-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Indexed Access Types",
+              id: "8indexed-access-types",
+              permalink: "/docs/handbook/2/indexed-access-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Conditional Types",
+              id: "8conditional-types",
+              permalink: "/docs/handbook/2/conditional-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+          ],
+        },
+        {
           title: "Modules",
           id: "8modules",
           permalink: "/docs/handbook/2/modules.html",
           oneline: "Learn how TypeScript handles different module styles.",
+        },
+        {
+          title: "Type Declarations",
+          id: "8type-declarations",
+          permalink: "/docs/handbook/2/type-declarations.html",
+          oneline: "Step one in learning TypeScript: The basics types.",
         },
         {
           title: "Understanding Errors",
@@ -2802,12 +2880,6 @@ export function getDocumentationNavForLanguage(
           oneline: "Step one in learning TypeScript: The basics types.",
         },
         {
-          title: "Type Declarations",
-          id: "8type-declarations",
-          permalink: "/docs/handbook/2/type-declarations.html",
-          oneline: "Step one in learning TypeScript: The basics types.",
-        },
-        {
           title: "Narrowing",
           id: "8narrowing",
           permalink: "/docs/handbook/2/narrowing.html",
@@ -2820,28 +2892,60 @@ export function getDocumentationNavForLanguage(
           oneline: "Learn about how Functions work in TypeScript.",
         },
         {
-          title: "Types from Extraction",
-          id: "8types-from-extraction",
-          permalink: "/docs/handbook/2/types-from-extraction.html",
-          oneline: "Step one in learning TypeScript: The basics types.",
-        },
-        {
-          title: "Types from Transformation",
-          id: "8types-from-transformation",
-          permalink: "/docs/handbook/2/types-from-transformation.html",
-          oneline: "Step one in learning TypeScript: The basics types.",
-        },
-        {
           title: "Classes",
           id: "8classes",
           permalink: "/docs/handbook/2/classes.html",
           oneline: "How classes work in TypeScript",
         },
         {
+          title: "Type Manipulation",
+          id: "8type-manipulation",
+          oneline: "undefined",
+
+          items: [
+            {
+              title: "Creating Types from Types",
+              id: "8creating-types-from-types",
+              permalink: "/docs/handbook/2/types-from-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Keyof Type Operator",
+              id: "8keyof-type-operator",
+              permalink: "/docs/handbook/2/indexed-access-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Typeof Type Operator",
+              id: "8typeof-type-operator",
+              permalink: "/docs/handbook/2/typeof-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Indexed Access Types",
+              id: "8indexed-access-types",
+              permalink: "/docs/handbook/2/indexed-access-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Conditional Types",
+              id: "8conditional-types",
+              permalink: "/docs/handbook/2/conditional-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+          ],
+        },
+        {
           title: "Modules",
           id: "8modules",
           permalink: "/docs/handbook/2/modules.html",
           oneline: "Learn how TypeScript handles different module styles.",
+        },
+        {
+          title: "Type Declarations",
+          id: "8type-declarations",
+          permalink: "/docs/handbook/2/type-declarations.html",
+          oneline: "Step one in learning TypeScript: The basics types.",
         },
         {
           title: "Understanding Errors",

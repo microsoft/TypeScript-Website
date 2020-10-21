@@ -69,7 +69,7 @@ The alternative is to use a _static_ type system to make predictions about what 
 
 ## Static type-checking
 
-Think back to that `TypeError` we got earlier from calling a `string`.
+Think back to that `TypeError` we got earlier from trying to call a `string` as a function.
 _Most people_ don't like to get any sorts of errors when running their code - those are considered bugs!
 And when we write new code, we try our best to avoid introducing new bugs.
 
@@ -163,8 +163,6 @@ if (value !== "a") {
 
 ## Types for Tooling
 
-<!-- TODO: this section's title sucks -->
-
 TypeScript can catch bugs when we make mistakes in our code.
 That's great, but TypeScript can _also_ prevent us from making those mistakes in the first place.
 
@@ -174,13 +172,24 @@ Once it has that information, it can also start _suggesting_ which properties yo
 That means TypeScript can be leveraged for editing code too, and the core type-checker can provide error messages and code completion as you type in the editor.
 That's part of what people often refer to when they talk about tooling in TypeScript.
 
-<!-- TODO: insert GIF of completions here -->
+<!-- prettier-ignore -->
+```ts twoslash
+// @noErrors
+// @esModuleInterop
+import express from "express";
+const app = express();
+
+app.get("/", function (req, res) {
+  res.sen
+//       ^|
+});
+
+app.listen(3000);
+```
 
 TypeScript takes tooling seriously, and that goes beyond completions and errors as you type.
 An editor that supports TypeScript can deliver "quick fixes" to automatically fix errors, refactorings to easily re-organize code, and useful navigation features for jumping to definitions of a variable, or finding all references to a given variable.
 All of this is built on top of the type-checker and fully cross-platform, so it's likely that [your favorite editor has TypeScript support available](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support).
-
-<!-- TODO: validate that link -->
 
 ## `tsc`, the TypeScript compiler
 
