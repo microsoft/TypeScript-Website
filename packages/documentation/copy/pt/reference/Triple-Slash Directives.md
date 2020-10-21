@@ -115,7 +115,7 @@ define("NamedModule", ["require", "exports"], function (require, exports) {
 
 ## `/// <amd-dependency />`
 
-> **Note**: thesta diretiva foi descontinuada. Use `import "moduleName";` em vez disso.
+> **Note**: esta diretiva foi descontinuada. Use `import "moduleName";` em vez disso.
 
 `/// <amd-dependency path="x" />` informa o compilador sobre uma dependência do módulo não-TS que precisa ser injetada na chamada de requerimento do módulo resultante.
 
