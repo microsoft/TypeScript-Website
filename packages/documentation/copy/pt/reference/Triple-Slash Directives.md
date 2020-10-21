@@ -61,13 +61,13 @@ veja [usando `@types`, `typeRoots` e `types` em arquivos `tsconfig.json`](/docs/
 
 ## `/// <reference lib="..." />`
 
-This directive allows a file to explicitly include an existing built-in _lib_ file.
+Esta diretiva permite que um arquivo inclua explicitamente um arquivo _lib_ integrado existente.
 
-Built-in _lib_ files are referenced in the same fashion as the `"lib"` compiler option in _tsconfig.json_ (e.g. use `lib="es2015"` and not `lib="lib.es2015.d.ts"`, etc.).
+Os arquivos _lib_ integrados são referenciados da mesma maneira que a opção `"lib"` do compilador em _tsconfig.json_ (e.g. use `lib="es2015"` e não `lib="lib.es2015.d.ts"`, etc.).
 
-For declaration file authors who rely on built-in types, e.g. DOM APIs or built-in JS run-time constructors like `Symbol` or `Iterable`, triple-slash-reference lib directives are recommended. Previously these .d.ts files had to add forward/duplicate declarations of such types.
+Para autores de arquivos de declaração que dependem de tipos integrados, por exemplo, APIs DOM ou construtores de tempo de execução JS integrados como `Symbol` ou `Iterable`, diretivas lib de referência de barra tripla são recomendadas. Anteriormente, esses arquivos .d.ts tinham que adicionar declarações de forward/duplicate desses tipos.
 
-For example, adding `/// <reference lib="es2017.string" />` to one of the files in a compilation is equivalent to compiling with `--lib es2017.string`.
+Por exemplo, adicionar `/// <reference lib="es2017.string" />` a um dos arquivos em uma compilação é equivalente a compilar com `--lib es2017.string`.
 
 ```ts
 /// <reference lib="es2017.string" />
