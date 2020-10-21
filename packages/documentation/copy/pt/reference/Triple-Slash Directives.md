@@ -39,25 +39,25 @@ Um caminho de referência de barra tripla é resolvido em relação ao arquivo q
 
 ### Usando `--noResolve`
 
-Se a flag do compilador `--noResolve` for especificada, as referências de barra tripla serão ignoradas; elas não resultam na adição de novos arquivos, nem alteram a ordem dos arquivos fornecidos..
+Se a flag do compilador `--noResolve` for especificada, as referências de barra tripla serão ignoradas; elas não resultam na adição de novos arquivos, nem alteram a ordem dos arquivos fornecidos.
 
 ## `/// <reference types="..." />`
 
-Similar to a `/// <reference path="..." />` directive, which serves as a declaration of _dependency_, a `/// <reference types="..." />` directive declares a dependency on a package.
+Semelhante à uma diretiva `/// <reference path="..." />`, que serve como uma declaração de _dependência_ , uma diretiva `/// <reference types="..." />` declara uma dependência em um pacote.
 
-The process of resolving these package names is similar to the process of resolving module names in an `import` statement.
-An easy way to think of triple-slash-reference-types directives are as an `import` for declaration packages.
+O processo de resolução desses nomes de pacote é semelhante ao processo de resolução de nomes de módulo em uma instrução `import`.
+Uma maneira fácil de pensar em diretivas de tipos de referência de barra tripla é como um `import` para declaração de pacotes.
 
-For example, including `/// <reference types="node" />` in a declaration file declares that this file uses names declared in `@types/node/index.d.ts`;
-and thus, this package needs to be included in the compilation along with the declaration file.
+Por exemplo, incluir `/// <reference types="node" />` em um arquivo de declaração declara que esse arquivo usa nomes declarados em `@types/node/index.d.ts`;
+e, portanto, este pacote precisa ser incluído na compilação junto com o arquivo de declaração.
 
-Use these directives only when you're authoring a `d.ts` file by hand.
+Use essas diretivas apenas quando estiver criando um arquivo `d.ts` manualmente.
 
-For declaration files generated during compilation, the compiler will automatically add `/// <reference types="..." />` for you;
-A `/// <reference types="..." />` in a generated declaration file is added _if and only if_ the resulting file uses any declarations from the referenced package.
+Para arquivos de declaração gerados durante a compilação, o compilador adicionará automaticamente `/// <reference types="..." />` para você;
+Um `/// <reference types="..." />` em um arquivo de declaração gerado é adicionado _se e se somente se_ o arquivo resultante usar qualquer declaração do pacote referenciado.
 
-For declaring a dependency on an `@types` package in a `.ts` file, use `--types` on the command line or in your `tsconfig.json` instead.
-See [using `@types`, `typeRoots` and `types` in `tsconfig.json` files](/docs/handbook/tsconfig-json.html#types-typeroots-and-types) for more details.
+Para declarar uma dependência de um `@types` pacote em um arquivo `.ts`, use `--types` na linha de comando ou em seu arquivo `tsconfig.json`.
+veja [usando `@types`, `typeRoots` e `types` em arquivos `tsconfig.json`](/docs/handbook/tsconfig-json.html#types-typeroots-and-types) para mais detalhes.
 
 ## `/// <reference lib="..." />`
 
