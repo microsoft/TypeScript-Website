@@ -115,11 +115,11 @@ define("NamedModule", ["require", "exports"], function (require, exports) {
 
 ## `/// <amd-dependency />`
 
-> **Note**: this directive has been deprecated. Use `import "moduleName";` statements instead.
+> **Note**: thesta diretiva foi descontinuada. Use `import "moduleName";` em vez disso.
 
-`/// <amd-dependency path="x" />` informs the compiler about a non-TS module dependency that needs to be injected in the resulting module's require call.
+`/// <amd-dependency path="x" />` informa o compilador sobre uma dependência do módulo não-TS que precisa ser injetada na chamada de requerimento do módulo resultante.
 
-The `amd-dependency` directive can also have an optional `name` property; this allows passing an optional name for an amd-dependency:
+A diretiva `amd-dependency` também pode ter uma propriedade `name`; isso permite passar um nome opcional para uma `amd-dependency`:
 
 ```ts
 /// <amd-dependency path="legacy/moduleA" name="moduleA"/>
@@ -127,7 +127,7 @@ declare var moduleA: MyType;
 moduleA.callStuff();
 ```
 
-Generated JS code:
+Código JS gerado:
 
 ```js
 define(["require", "exports", "legacy/moduleA"], function (
