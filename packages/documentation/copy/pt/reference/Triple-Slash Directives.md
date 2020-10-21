@@ -1,40 +1,36 @@
 ---
-title: Triple-Slash Directives
+title: Diretivas de barra tripla
 layout: docs
 permalink: /pt/docs/handbook/triple-slash-directives.html
-oneline: How to use triple slash directives in TypeScript
+oneline: Como usar diretivas de barra tripla no TypeScript
 translatable: true
 ---
 
-Triple-slash directives are single-line comments containing a single XML tag.
-The contents of the comment are used as compiler directives.
+As diretivas de barra tripla são comentários de uma única linha contendo uma única tag XML. O conteúdo do comentário é usado como diretivas do compilador.
 
-Triple-slash directives are **only** valid at the top of their containing file.
-A triple-slash directive can only be preceded by single or multi-line comments, including other triple-slash directives.
-If they are encountered following a statement or a declaration they are treated as regular single-line comments, and hold no special meaning.
+As diretivas de barra tripla são válidas **apenas** na parte superior do arquivo que as contém. Uma diretiva de barra tripla só pode ser precedida por comentários de uma ou várias linhas, incluindo outras diretivas de barra tripla. Se forem encontrados após uma declaração ou declaração, serão tratados como comentários regulares de uma única linha e não terão nenhum significado especial.
 
 ## `/// <reference path="..." />`
 
-The `/// <reference path="..." />` directive is the most common of this group.
-It serves as a declaration of _dependency_ between files.
+A diretiva `/// <reference path="..." />` é a mais comum desse grupo.
+Ela serve como uma declaração de _dependência_ entre arquivos.
 
-Triple-slash references instruct the compiler to include additional files in the compilation process.
+As referências de barra tripla instruem o compilador a incluir arquivos adicionais no processo de compilação.
 
-They also serve as a method to order the output when using `--out` or `--outFile`.
-Files are emitted to the output file location in the same order as the input after preprocessing pass.
+Elas também servem como um método para ordenar a saída ao usar `--out` ou `--outFile`.
+Os arquivos são emitidos para o local do arquivo de saída na mesma ordem da entrada após a passagem de pré-processamento.
 
-### Preprocessing input files
+### Arquivos de pré-processamento de entrada
 
-The compiler performs a preprocessing pass on input files to resolve all triple-slash reference directives.
-During this process, additional files are added to the compilation.
+O compilador executa uma passagem de pré-processamento nos arquivos de entrada para resolver todas as diretivas de referência de barra tripla. Durante este processo, arquivos adicionais são adicionados à compilação.
 
-The process starts with a set of _root files_;
-these are the file names specified on the command-line or in the `"files"` list in the `tsconfig.json` file.
-These root files are preprocessed in the same order they are specified.
-Before a file is added to the list, all triple-slash references in it are processed, and their targets included.
-Triple-slash references are resolved in a depth first manner, in the order they have been seen in the file.
+O processo começa com um conjunto de _arquivos raíz_ ;
+esses são os nomes de arquivo especificados na linha de comando ou na lista `"files"` do arquivo `tsconfig.json`.
+Esses arquivos raízes são pré-processados ​​na mesma ordem em que são especificados.
+Antes de um arquivo ser adicionado à lista, todas as referências de barra tripla nele são processadas e seus destinos incluídos.
+As referências de barra tripla são resolvidas primeiro em profundidade, na ordem em que foram vistas no arquivo.
 
-A triple-slash reference path is resolved relative to the containing file, if unrooted.
+Um caminho de referência de barra tripla é resolvido em relação ao arquivo que o contém, se não tiver raiz.
 
 ### Errors
 
