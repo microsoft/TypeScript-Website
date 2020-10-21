@@ -87,10 +87,10 @@ Observe também que, ao passar `--skipDefaultLibCheck`, o compilador só irá ig
 
 ## `/// <amd-module />`
 
-By default AMD modules are generated anonymous.
-This can lead to problems when other tools are used to process the resulting modules, such as bundlers (e.g. `r.js`).
+Por padrão, os módulos AMD são gerados anônimos.
+Isso pode levar a problemas quando outras ferramentas são usadas para processar os módulos resultantes, como bundlers (por exemplo `r.js`).
 
-The `amd-module` directive allows passing an optional module name to the compiler:
+A diretiva `amd-module` permite passar um nome de módulo opcional para o compilador:
 
 ##### amdModule.ts
 
@@ -99,7 +99,7 @@ The `amd-module` directive allows passing an optional module name to the compile
 export class C {}
 ```
 
-Will result in assigning the name `NamedModule` to the module as part of calling the AMD `define`:
+Resultará na atribuição do nome `NamedModule` ao módulo como parte da chamada do AMD `define`:
 
 ##### amdModule.js
 
