@@ -32,4 +32,10 @@ export const inYourLanguage: Record<
     open: "跳转",
     cancel: "不再询问",
   },
+  pl: {
+    shorthand: "Po polsku",
+    body: "Ta strona jest dostępna po polsku",
+    open: "Zmień język",
+    cancel: "Nie pytaj ponownie",
+  },
 }
