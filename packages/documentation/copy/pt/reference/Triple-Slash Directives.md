@@ -77,13 +77,13 @@ Por exemplo, adicionar `/// <reference lib="es2017.string" />` a um dos arquivos
 
 ## `/// <reference no-default-lib="true"/>`
 
-This directive marks a file as a _default library_.
-You will see this comment at the top of `lib.d.ts` and its different variants.
+Esta diretiva marca um arquivo como uma _biblioteca padrão_.
+Você verá este comentário na parte superior `lib.d.ts` e suas diferentes variantes.
 
-This directive instructs the compiler to _not_ include the default library (i.e. `lib.d.ts`) in the compilation.
-The impact here is similar to passing `--noLib` on the command line.
+Esta diretiva instrui o compilador a não incluir a biblioteca padrão (ou seja, `lib.d.ts`) na compilação.
+O impacto aqui é semelhante a passar `--noLib` na linha de comando.
 
-Also note that when passing `--skipDefaultLibCheck`, the compiler will only skip checking files with `/// <reference no-default-lib="true"/>`.
+Observe também que, ao passar `--skipDefaultLibCheck`, o compilador só irá ignorar a verificação de arquivos com `/// <reference no-default-lib="true"/>`.
 
 ## `/// <amd-module />`
 
