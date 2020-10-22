@@ -1,7 +1,7 @@
 ---
 title: Compatibilidade de Tipos
 layout: docs
-permalink: /docs/handbook/type-compatibility.html
+permalink: /pt/docs/handbook/type-compatibility.html
 oneline: Como checagem de tipos funciona em TypeScript
 translatable: true
 ---
