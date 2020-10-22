@@ -1,22 +1,21 @@
 ---
-display: "ES Module Interop"
-oneline: "Emit additional JS to ease support for importing commonjs modules"
+display: "ES 模块互通"
+oneline: "为了便于支持导入 commonjs 模块生成额外的 JS"
 ---
+默认情况下（未设置 `esModuleInterop` 或值为 false），TypeScript 像 ES6 模块一样对待 Commonjs/AMD/UMD。这样的行为有两个被证实的缺陷：
 
-By default (with `esModuleInterop` false or not set) TypeScript treats CommonJS/AMD/UMD modules similar to ES6 modules. In doing this, there are two parts in particular which turned out to be flawed assumptions:
+- 形如 `import * as moment from "moment"` 这样的命名空间导入等价于 `const moment = require("moment")`
 
-- a namespace import like `import * as moment from "moment"` acts the same as `const moment = require("moment")`
+- 形如 `import moment as "moment"` 这样的默认导入等价于 `const moment = require("moment").default`
 
-- a default import like `import moment as "moment"` acts the same as `const moment = require("moment").default`
 
-This mis-match causes these two issues:
+这种错误的行为导致了这两个问题：
 
-- the ES6 modules spec states that a namespace import (`import * as x`) can only be an object, by having TypeScript
-  treating it the same as `= require("x")` then TypeScript allowed for the import to be treated as a function and be callable. This breaks the spec's recommendations.
+- ES6 模块规范规定，命名空间导入（`import * as x`）只能是一个对象。TypeScript 把它处理成 `= require("x")` 的行为允许把导入当作一个可调用的函数，这样不符合规范。
 
-- while accurate to the ES6 modules spec, most libraries with CommonJS/AMD/UMD modules didn't conform as strictly as TypeScript's implementation.
+- 虽然 TypeScript 准确实现了 ES6 模块规范，但是大多数使用 Commonjs/AMD/UMD 模块的库并没有像 TypeScript 那样严格遵守。
 
-Turning on `esModuleInterop` will fix both of these problems in the code transpiled by TypeScript. The first changes the behavior in the compiler,the second is fixed by two new helper functions which provide a shim to ensure compatibility in the emitted JavaScript:
+开启 `esModuleInterop` 选项将会修复 TypeScript 转译中的这两个问题。第一个问题通过改变编译器的行为来修复，第二个问题则由两个新的工具函数来解决，它们提供了确保生成的 JavaScript 兼容性的适配层：
 
 ```ts
 import * as fs from "fs";
@@ -26,7 +25,7 @@ fs.readFileSync("file.txt", "utf8");
 _.chunk(["a", "b", "c", "d"], 2);
 ```
 
-With `esModuleInterop` disabled:
+当 `esModuleInterop` 未启用：
 
 ```ts twoslash
 // @noErrors
@@ -40,7 +39,7 @@ fs.readFileSync("file.txt", "utf8");
 _.chunk(["a", "b", "c", "d"], 2);
 ```
 
-With `esModuleInterop` set to `true`:
+当启用 `esModuleInterop`：
 
 ```ts twoslash
 // @noErrors
@@ -54,7 +53,7 @@ fs.readFileSync("file.txt", "utf8");
 _.chunk(["a", "b", "c", "d"], 2);
 ```
 
-_Note_: You can make JS emit terser by enabling [`importHelpers`](#importHelpers):
+_注_：你可以通过启用 [`importHelpers`](#importHelpers) 来让 JS 输出更紧凑：
 
 ```ts twoslash
 // @noErrors
@@ -69,4 +68,4 @@ fs.readFileSync("file.txt", "utf8");
 _.chunk(["a", "b", "c", "d"], 2);
 ```
 
-Enabling `esModuleInterop` will also enable [`allowSyntheticDefaultImports`](#allowSyntheticDefaultImports).
+当启用 `esModuleInterop` 时，将同时启用 [`allowSyntheticDefaultImports`](#allowSyntheticDefaultImports)。
