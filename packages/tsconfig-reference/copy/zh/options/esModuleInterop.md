@@ -1,5 +1,5 @@
 ---
-display: "ES 模块互通"
+display: "ES 模块互操作性"
 oneline: "为了便于支持导入 commonjs 模块生成额外的 JS"
 ---
 默认情况下（未设置 `esModuleInterop` 或值为 false），TypeScript 像 ES6 模块一样对待 Commonjs/AMD/UMD。这样的行为有两个被证实的缺陷：
