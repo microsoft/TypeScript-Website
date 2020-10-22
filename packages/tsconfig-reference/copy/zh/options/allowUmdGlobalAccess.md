@@ -1,8 +1,9 @@
 ---
-display: "Allow Umd Global Access"
-oneline: "Assume UMD imports are all globally available"
+display: "允许 Umd 全局使用"
+oneline: "假设 UMD 的导入是全局可用的"
 ---
 
-When set to true, `allowUmdGlobalAccess` lets you access UMD exports as globals from inside module files. A module file is a file that has imports and/or exports. Without this flag, using an export from a UMD module requires an import declaration.
+当 `allowUmdGlobalAccess` 设置为 true 时，将允许你在模块文件中以全局变量的形式使用 UMD 的导出。
+模块文件是具有或同时导入、导出的文件。当未设置这个选项时，使用 UMD 模块的导出需要首先导入声明。
 
-An example use case for this flag would be a web project where you know the particular library (like jQuery or Lodash) will always be available at runtime, but you can’t access it with an import.
+一个典型场景是：在一个 Web 项目中， 您知道特定的库（如 jQuery 或 Lodash ）在运行时总是可用的，但您不能在通过导入来使用他们。

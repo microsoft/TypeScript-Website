@@ -1,11 +1,11 @@
 ---
-display: "Base Url"
-oneline: "Set a baseurl for relative module names"
+display: "基准目录"
+oneline: "为相对路径的模块名设置基准目录"
 ---
 
-Lets you set a base directory to resolve non-absolute module names.
+可以让您设置解析非绝对路径模块名时的基准目录。
 
-You can define a root folder where you can do absolute file resolution. E.g.
+你可以定义一个根目录，以进行绝对路径文件解析。例如：
 
 ```
 baseUrl
@@ -15,7 +15,7 @@ baseUrl
 └── tsconfig.json
 ```
 
-With `"baseUrl": "./"` inside this project TypeScript will look for files starting at the same folder as the `tsconfig.json`.
+在这个项目中被配置为 `"baseUrl": "./"`，TypeScript 将会从首先寻找与 `tsconfig.json` 处于相同目录的文件。
 
 ```ts
 import { helloWorld } from "hello/world";
@@ -23,5 +23,4 @@ import { helloWorld } from "hello/world";
 console.log(helloWorld);
 ```
 
-If you get tired of imports always looking like `"../"` or `"./"`. Or needing
-to change as you move files, this is a great way to fix that.
+当你厌倦了导入文件时总是 `"../"` 或 `"./"`，或需要在移动文件时更改路径，这是一个很好的解决方法。

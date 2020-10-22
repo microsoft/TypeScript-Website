@@ -1,12 +1,11 @@
 ---
-display: "Root Dirs"
-oneline: "Set multiple root directories"
+display: "根目录"
+oneline: "设置多个根目录"
 ---
 
-Using `rootDirs`, you can inform the compiler that there are many "virtual" directories acting as a single root.
-This allows the compiler to resolve relative module imports within these "virtual" directories, as if they were merged in to one directory.
+通过 `rootDirs`，你可以告诉编译器有许多“虚拟”的目录作为一个根目录。这将会允许编译器在这些“虚拟”目录中解析相对应的模块导入，就像它们被合并到同一目录中一样。
 
-For example:
+例如：
 
 ```
  src
@@ -28,5 +27,4 @@ For example:
 }
 ```
 
-This does not affect how TypeScript emits JavaScript, it only emulates the assumption that they will be able to
-work via those relative paths at runtime.
+这不会影响到 TypeScript 如何生成 JavaScript，而仅是模拟了假设它们在运行时能通过这些相对路径工作。

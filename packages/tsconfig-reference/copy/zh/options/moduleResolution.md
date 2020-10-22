@@ -1,9 +1,9 @@
 ---
-display: "Module Resolution"
-oneline: "Allow TypeScript 1.6 module resolution strategies"
+display: "模块解析"
+oneline: "允许 TypeScript 1.6 的模块解析策略"
 ---
 
-Specify the module resolution strategy: `'node'` (Node.js) or `'classic'` (used in TypeScript before the release of 1.6).
-You probably won't need to use `classic` in modern code.
+指定模块解析策略：`'node'` （Node.js） 或 `'classic'` （在 TypeScript 1.6 版本之前使用）。
+你可能不需要在新代码中使用 `classic`。
 
-There is a handbook reference page on [Module Resolution](/docs/handbook/module-resolution.html)
+这里有一个关于[模块解析](/docs/handbook/module-resolution.html)的手册参考。

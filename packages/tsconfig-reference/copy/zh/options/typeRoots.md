@@ -1,13 +1,13 @@
 ---
-display: "Type Roots"
-oneline: "locations where TypeScript should look for type definitions"
+display: "类型根路径"
+oneline: "TypeScript 应该去哪些路径寻找类型定义"
 ---
 
-By default all _visible_ "`@types`" packages are included in your compilation.
-Packages in `node_modules/@types` of any enclosing folder are considered _visible_.
-For example, that means packages within `./node_modules/@types/`, `../node_modules/@types/`, `../../node_modules/@types/`, and so on.
+默认情况下，所有 _可见_ 的 "`@types`" 包都将包含在你的编译过程中。
+在 `node_modules/@types` 中的任何包都被认为是 _可见_ 的。
+例如，这意味着包含 `./node_modules/@types/`，`../node_modules/@types/`，`../../node_modules/@types/` 中所有的包。
 
-If `typeRoots` is specified, _only_ packages under `typeRoots` will be included. For example:
+当 `typeRoots` 被指定，_仅有_ 在 `typeRoots` 下的包会被包含。例如：
 
 ```json tsconfig
 {
@@ -17,5 +17,4 @@ If `typeRoots` is specified, _only_ packages under `typeRoots` will be included.
 }
 ```
 
-This config file will include _all_ packages under `./typings` and `./vendor/types`, and no packages from `./node_modules/@types`.
-All paths are relative to the `tsconfig.json`.
+这个配置文件将包含 `./typings` 和 `./vendor/types` 下的所有包，而不包括 `./node_modules/@types` 下的。其中所有的路径都是相对于 `tsconfig.json`。

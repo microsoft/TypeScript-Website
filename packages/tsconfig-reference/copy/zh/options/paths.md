@@ -1,11 +1,11 @@
 ---
-display: "Paths"
-oneline: "A set of locations to look for imports in"
+display: "路径设置"
+oneline: "一组用于寻找模块导入的路径"
 ---
 
-A series of entries which re-map imports to lookup locations relative to the `baseUrl`, there is a larger coverage of `paths` in [the handbook](/docs/handbook/module-resolution.html#path-mapping).
+一些将模块导入重新映射到相对于 `baseUrl` 路径的配置。[手册](/docs/handbook/module-resolution.html#path-mapping)中有更多关于 `paths` 的内容。
 
-`paths` lets you declare how TypeScript should resolve an import in your `require`/`import`s.
+`paths` 可以允许你声明 TypeScript 应该如何解析你的 `require`/`import`。
 
 ```json tsconfig
 {
@@ -18,7 +18,7 @@ A series of entries which re-map imports to lookup locations relative to the `ba
 }
 ```
 
-This would allow you to be able to write `import "jquery"`, and get all of the correct typing locally.
+这将使你可以写 `import "jquery"`，并且在本地获得所有正确的类型。
 
 ```json tsconfig
 {
@@ -35,5 +35,5 @@ This would allow you to be able to write `import "jquery"`, and get all of the c
 }
 ```
 
-In this case, you can tell the TypeScript file resolver to support a number of custom prefixes to find code.
-This pattern can be used to avoid long relative paths within your codebase.
+这种情况下，你可以告诉 TypeScript 文件解析器支持一些自定义的前缀来寻找代码。
+这种模式可以避免在你的代码中出现过长的相对路径。
