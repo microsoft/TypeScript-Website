@@ -1,6 +1,6 @@
 ---
 display: "Emit BOM"
-oneline: "it a UTF-8 Byte Order Mark (BOM) in the beginning of output files."
+oneline: "Emit a UTF-8 Byte Order Mark (BOM) in the beginning of output files."
 ---
 
 Controls whether TypeScript will emit a [byte order mark (BOM)](https://wikipedia.org/wiki/Byte_order_mark) when writing output files.

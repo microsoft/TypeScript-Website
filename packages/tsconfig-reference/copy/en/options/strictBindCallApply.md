@@ -1,6 +1,6 @@
 ---
 display: "Strict Bind Call Apply"
-oneline: "Checks that the arguments for `bind`, `call`, and `apply` methods match the original function"
+oneline: "Checks that the arguments for `bind`, `call`, and `apply` methods match the original function."
 ---
 
 When set, TypeScript will check that the built-in methods of functions `call`, `bind`, and `apply` are invoked with correct argument for the underlying function:
@@ -11,7 +11,7 @@ When set, TypeScript will check that the built-in methods of functions `call`, `
 
 // With strictBindCallApply on
 function fn(x: string) {
-   return parseInt(x);
+  return parseInt(x);
 }
 
 const n1 = fn.call(undefined, "10");
@@ -26,7 +26,7 @@ Otherwise, these functions accept any arguments and will return `any`:
 
 // With strictBindCallApply off
 function fn(x: string) {
-   return parseInt(x);
+  return parseInt(x);
 }
 
 // Note: No error; return type is 'any'

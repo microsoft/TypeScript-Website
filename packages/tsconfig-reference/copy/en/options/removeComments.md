@@ -1,6 +1,6 @@
 ---
 display: "Remove Comments"
-oneline: "Do not emit comments"
+oneline: "Do not emit comments."
 ---
 
 Strips all comments from TypeScript files when converting into JavaScript. Defaults to `false`.

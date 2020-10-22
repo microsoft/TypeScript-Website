@@ -1,6 +1,6 @@
 ---
 display: "Root Dir"
-oneline: "NaN"
+oneline: "Sets the root folder within your source files."
 ---
 
 **Default**: The longest common path of all non-declaration input files. If `composite` is set, the default is instead the directory containing the `tsconfig.json` file.

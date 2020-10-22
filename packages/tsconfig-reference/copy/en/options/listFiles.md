@@ -1,6 +1,6 @@
 ---
 display: "List Files"
-oneline: "Print all of the files read during the compilation"
+oneline: "Print all of the files read during the compilation."
 ---
 
 Print names of files part of the compilation. This is useful when you are not sure that TypeScript has

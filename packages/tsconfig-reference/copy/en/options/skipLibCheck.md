@@ -1,6 +1,6 @@
 ---
 display: "Skip Lib Check"
-oneline: "Skip type checking all .d.ts files"
+oneline: "Skip type checking all .d.ts files."
 ---
 
 Skip type checking of declaration files.

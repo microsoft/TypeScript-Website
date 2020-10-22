@@ -1,6 +1,6 @@
 ---
 display: "Type Acquisition"
-oneline: "Provides options for automatic acquisition of declaration files"
+oneline: "Provides options for automatic acquisition of declaration files."
 ---
 
 When you have a JavaScript project in your editor, TypeScript will provide types for your `node_modules` automatically using the DefinitelyTyped set of `@types` definitions.

@@ -1,6 +1,6 @@
 ---
 display: "Module"
-oneline: "Module code generation"
+oneline: "Module code generation."
 ---
 
 Sets the module system for the program. See the <a href='/docs/handbook/modules.html#ambient-modules'>Modules</a> chapter of the handbook for more information. You very likely want `"CommonJS"`.

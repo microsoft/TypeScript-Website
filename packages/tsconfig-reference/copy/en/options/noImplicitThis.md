@@ -1,6 +1,6 @@
 ---
 display: "No Implicit This"
-oneline: "Error when 'this' would be any"
+oneline: "Error when 'this' would be any."
 ---
 
 Raise error on 'this' expressions with an implied 'any' type.
@@ -20,7 +20,7 @@ class Rectangle {
   }
 
   getAreaFunction() {
-    return function() {
+    return function () {
       return this.width * this.height;
     };
   }

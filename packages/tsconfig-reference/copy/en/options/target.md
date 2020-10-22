@@ -1,6 +1,6 @@
 ---
 display: "Target"
-oneline: "Sets the JavaScript language version for emitted JavaScript and includes compatible library declarations"
+oneline: "Sets the JavaScript language version for emitted JavaScript and includes compatible library declarations."
 ---
 
 Modern browsers support all ES6 features, so `ES6` is a good choice.

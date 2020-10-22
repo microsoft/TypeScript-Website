@@ -1,6 +1,6 @@
 ---
 display: "Emit Declaration Only"
-oneline: "Only output d.ts files and not .js files"
+oneline: "Only output d.ts files and not .js files."
 ---
 
 _Only_ emit `.d.ts` files; do not emit `.js` files.
