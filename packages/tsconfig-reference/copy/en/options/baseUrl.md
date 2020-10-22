@@ -1,6 +1,6 @@
 ---
 display: "Base Url"
-oneline: "Set a baseurl for relative module names"
+oneline: "Base directory to resolve non-relative module names."
 ---
 
 Lets you set a base directory to resolve non-absolute module names.

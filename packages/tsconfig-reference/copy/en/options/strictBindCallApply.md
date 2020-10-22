@@ -1,6 +1,6 @@
 ---
 display: "Strict Bind Call Apply"
-oneline: "Ensure that 'call', 'bind' and 'apply' have the right arguments"
+oneline: "Checks that the arguments for `bind`, `call`, and `apply` methods match the original function"
 ---
 
 When set, TypeScript will check that the built-in methods of functions `call`, `bind`, and `apply` are invoked with correct argument for the underlying function:

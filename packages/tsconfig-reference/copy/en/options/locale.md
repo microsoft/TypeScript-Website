@@ -1,6 +1,6 @@
 ---
 display: "Locale"
-oneline: "Set the language of the tsc output"
+oneline: "Set the language of the messaging from TypeScript, does not affect emit"
 ---
 
 TypeScript supports a number of languages, however this cannot be set via the `tsconfig.json`, only

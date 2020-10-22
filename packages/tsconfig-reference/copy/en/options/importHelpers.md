@@ -1,6 +1,6 @@
 ---
 display: "Import Helpers"
-oneline: "Allow importing helper functions once per project, instead of including them per-file"
+oneline: "Allow importing helper functions from tslib once per project, instead of including them per-file"
 ---
 
 For certain downleveling operations, TypeScript uses some helper code for operations like extending class, spreading arrays or objects, and async operations.

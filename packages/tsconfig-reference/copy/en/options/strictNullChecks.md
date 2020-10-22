@@ -1,6 +1,6 @@
 ---
 display: "Strict Null Checks"
-oneline: "Ensure that nullability is respected in the type checker"
+oneline: "When type checking take into account `null` and `undefined`"
 ---
 
 When `strictNullChecks` is `false`, `null` and `undefined` are effectively ignored by the language.

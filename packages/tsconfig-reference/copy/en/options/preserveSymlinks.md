@@ -1,6 +1,6 @@
 ---
 display: "Preserve Symlinks"
-oneline: "Do not resolve symlink paths"
+oneline: "Correlates to the same flag in node. Do not resolve symlinks to their realpath."
 ---
 
 This is to reflect the same flag in Node.js; which does not resolve the real path of symlinks.

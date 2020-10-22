@@ -1,6 +1,6 @@
 ---
 display: "Allow Unused Labels"
-oneline: "Error when accidentally creating a label"
+oneline: "Do not report errors on unused labels."
 ---
 
 Set to false to disable warnings about unused labels.

@@ -1,6 +1,6 @@
 ---
 display: "Inline Sources"
-oneline: "Include sourcemap files inside the emitted JavaScript"
+oneline: "clude source code in the sourcemap files inside the emitted JavaScript"
 ---
 
 When set, TypeScript will include the original content of the `.ts` file as an embedded string in the source map.

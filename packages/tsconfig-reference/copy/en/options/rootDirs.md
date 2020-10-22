@@ -1,6 +1,6 @@
 ---
 display: "Root Dirs"
-oneline: "Set multiple root directories"
+oneline: "Treat multiple folders as one when resolving modules."
 ---
 
 Using `rootDirs`, you can inform the compiler that there are many "virtual" directories acting as a single root.

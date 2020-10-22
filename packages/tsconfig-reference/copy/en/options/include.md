@@ -1,6 +1,6 @@
 ---
 display: "Include"
-oneline: "Files or patterns to include in this project"
+oneline: "Specifies a list of glob patterns that match files to be included in compilation"
 ---
 
 Specifies an array of filenames or patterns to include in the program.

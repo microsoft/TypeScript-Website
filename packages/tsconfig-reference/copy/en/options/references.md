@@ -1,6 +1,6 @@
 ---
 display: "References"
-oneline: "Provide a structure for composite projects"
+oneline: "An array of objects that specifies paths for projects. Used in project references."
 ---
 
 Project references are a way to structure your TypeScript programs into smaller pieces.

@@ -1,6 +1,6 @@
 ---
 display: "No Implicit This"
-oneline: "Raise errors when 'this' would be any"
+oneline: "Error when 'this' would be any"
 ---
 
 Raise error on 'this' expressions with an implied 'any' type.

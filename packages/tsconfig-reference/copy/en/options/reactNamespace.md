@@ -1,6 +1,6 @@
 ---
 display: "React Namespace"
-oneline: "Specify the object which 'createElement' is called on in JSX"
+oneline: "Specifies the object invoked for `createElement` only when targeting 'react' JSX emit"
 ---
 
 Use [`--jsxFactory`](#jsxFactory) instead. Specify the object invoked for `createElement` when targeting `react` for TSX files.

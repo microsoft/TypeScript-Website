@@ -1,6 +1,6 @@
 ---
 display: "Strict Function Types"
-oneline: "Ensure that function parameters are consistent"
+oneline: "Checks when assigning functions to ensure parameters and the return values are subtype-compatible"
 ---
 
 When enabled, this flag causes functions parameters to be checked more correctly.

@@ -1,6 +1,6 @@
 ---
 display: "JSX Factory"
-oneline: "Control the function emitted by JSX"
+oneline: "The JSX factory function to use when targeting React JSX emit, e.g. 'React.createElement' or 'h'"
 ---
 
 Changes the function called in `.js` files when compiling JSX Elements.

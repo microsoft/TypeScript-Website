@@ -1,6 +1,6 @@
 ---
 display: "No Implicit Use Strict"
-oneline: "Disable 'use strict' in the JS emit"
+oneline: "Do not add 'use strict' directives in emitted JS."
 ---
 
 You shouldn't need this. By default, when emitting a module file to a non-ES6 target, TypeScript emits a `"use strict";` prologue at the top of the file.

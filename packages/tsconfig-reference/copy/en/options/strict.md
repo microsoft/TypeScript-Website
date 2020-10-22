@@ -1,6 +1,6 @@
 ---
 display: "Strict"
-oneline: "Enable TypeScript's most in-depth type checking rules"
+oneline: "Enable all strict type checking options"
 ---
 
 The `strict` flag enables a wide range of type checking behavior that results in stronger guarantees of program correctness.
