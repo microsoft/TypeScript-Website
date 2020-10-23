@@ -1,6 +1,6 @@
 ---
 display: "No Lib"
-oneline: "Ignore options from lib"
+oneline: "Do not include any library files, including the default lib.d.ts."
 ---
 
 Disables the automatic inclusion of any library files.

@@ -1,6 +1,6 @@
 ---
 display: "Strict Null Checks"
-oneline: "Ensure that nullability is respected in the type checker"
+oneline: "When type checking take into account `null` and `undefined`."
 ---
 
 When `strictNullChecks` is `false`, `null` and `undefined` are effectively ignored by the language.
@@ -18,10 +18,10 @@ declare const loggedInUsername: string;
 
 const users = [
   { name: "Oby", age: 12 },
-  { name: "Heera", age: 32 }
+  { name: "Heera", age: 32 },
 ];
 
-const loggedInUser = users.find(u => u.name === loggedInUsername);
+const loggedInUser = users.find((u) => u.name === loggedInUsername);
 console.log(loggedInUser.age);
 ```
 
@@ -35,10 +35,10 @@ declare const loggedInUsername: string;
 
 const users = [
   { name: "Oby", age: 12 },
-  { name: "Heera", age: 32 }
+  { name: "Heera", age: 32 },
 ];
 
-const loggedInUser = users.find(u => u.name === loggedInUsername);
+const loggedInUser = users.find((u) => u.name === loggedInUsername);
 console.log(loggedInUser.age);
 ```
 

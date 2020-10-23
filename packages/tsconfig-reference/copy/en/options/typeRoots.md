@@ -1,6 +1,6 @@
 ---
 display: "Type Roots"
-oneline: "locations where TypeScript should look for type definitions"
+oneline: "Locations where TypeScript should look for type definitions."
 ---
 
 By default all _visible_ "`@types`" packages are included in your compilation.

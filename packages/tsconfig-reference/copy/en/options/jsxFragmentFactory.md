@@ -1,6 +1,6 @@
 ---
 display: "jsxFragmentFactory"
-oneline: "Specifies what identifiers a JSX fragment should be transformed to"
+oneline: "Specify the JSX Fragment reference to use for fragements when targeting React JSX emit, e.g. 'React.Fragment' or 'Fragment'."
 ---
 
 Specify the JSX fragment factory function to use when targeting react JSX emit with `jsxFactory` compiler option is specified, e.g. `Fragment`.

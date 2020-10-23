@@ -1,6 +1,6 @@
 ---
 display: "Suppress Excess Property Errors"
-oneline: "Allow additional properties being set during creation of types"
+oneline: "This disables reporting of excess property errors during the creation of object literals."
 ---
 
 This disables reporting of excess property errors, such as the one shown in the following example:
