@@ -137,13 +137,15 @@ export function twoslashRenderer(lines: Lines, options: Options, twoslash: TwoSl
               html += `<span class='query'>${"//" + "".padStart(query.offset - 2) + "^ - No completions found"}</span>`
             } else {
               const prefixed = query.completions.filter(c => c.name.startsWith(query.completionsPrefix || "____"))
-              console.log("Prefix: ", query.completionsPrefix)
+
               const lis = prefixed
                 .sort((l, r) => l.name.localeCompare(r.name))
                 .map(c => {
                   const after = c.name.substr(query.completionsPrefix?.length || 0)
                   const name = `<span><span class='result-found'>${query.completionsPrefix || ""}</span>${after}<span>`
-                  return `<li>${name}</li>`
+                  const isDeprecated = c.kindModifiers?.split(",").includes("deprecated")
+                  const liClass = isDeprecated ? "deprecated" : ""
+                  return `<li class='${liClass}'>${name}</li>`
                 })
                 .join("")
               html +=
