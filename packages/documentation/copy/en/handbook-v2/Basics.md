@@ -345,6 +345,7 @@ Let's take a look at what happens when we compile with `tsc`:
 
 ```ts twoslash
 // @showEmit
+// @target: es5
 function greet(person: string, date: Date) {
   console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
@@ -396,18 +397,18 @@ function greet(person, date) {
 greet("Maddison", new Date());
 ```
 
-> While the default target is ES3, the great majority of current browsers support ES5.
-> Most developers can therefore safely specify ES5 or even ES2016 as a target, unless compatibility with certain ancient browsers is important.
+> While the default target is ES3, the great majority of current browsers support ES2015.
+> Most developers can therefore safely specify ES2015 or above as a target, unless compatibility with certain ancient browsers is important.
 
 ## Strictness
 
 Different users come to TypeScript looking for different things in a type-checker.
-Some people are looking for a more loose opt-in experience which can help validate only some parts of our program and get decent tooling.
+Some people are looking for a more loose opt-in experience which can help validate only some parts of their program, and still have decent tooling.
 This is the default experience with TypeScript, where types are optional, inference takes the most lenient types, and there's no checking for potentially `null`/`undefined` values.
 Much like how `tsc` emits in the face of errors, these defaults are put in place to stay out of your way.
 If you're migrating existing JavaScript, that might be a desirable first step.
 
-In contrast, a lot of users prefer to have TypeScript validate as much as it can off the bat, and that's why the language provides strictness settings as well.
+In contrast, a lot of users prefer to have TypeScript validate as much as it can straight away, and that's why the language provides strictness settings as well.
 These strictness settings turn static type-checking from a switch (either your code is checked or not) into something closer to a dial.
 The farther you turn this dial up, the more TypeScript will check for you.
 This can require a little extra work, but generally speaking it pays for itself in the long run, and enables more thorough checks and more accurate tooling.
@@ -429,5 +430,5 @@ Turning on the `noImplicitAny` flag will issue an error on any variables whose t
 ### `strictNullChecks`
 
 By default, values like `null` and `undefined` are assignable to any other type.
-This can make writing some code easier, but forgetting to handle `null` and `undefined` is the cause of countless bugs in the world - even in other languages!
+This can make writing some code easier, but forgetting to handle `null` and `undefined` is the cause of countless bugs in the world - some consider it a [billion dollar mistake](https://www.youtube.com/watch?v=ybrQvs4x0Ps)!
 The `strictNullChecks` flag makes handling `null` and `undefined` more explicit, and _spares_ us from worrying about whether we _forgot_ to handle `null` and `undefined`.

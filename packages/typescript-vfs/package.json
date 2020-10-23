@@ -19,9 +19,9 @@
     "lint": "tsdx lint"
   },
   "browser": {
-    "typescript": false,
+    "fs": false,
     "lz-string": false,
-    "fs": false
+    "typescript": false
   },
   "dependencies": {
     "debug": "^4.1.1"

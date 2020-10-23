@@ -30,6 +30,8 @@ The `react-native` mode is the equivalent of `preserve` in that it keeps all JSX
 | `preserve`     | `<div />` | `<div />`                    | `.jsx`                |
 | `react`        | `<div />` | `React.createElement("div")` | `.js`                 |
 | `react-native` | `<div />` | `<div />`                    | `.js`                 |
+| `react-jsx`    | `<div />` | `<div />`                    | `.js`                 |
+| `react-jsxdev` | `<div />` | `<div />`                    | `.js`                 |
 
 You can specify this mode using either the `--jsx` command line flag or the corresponding option in your [tsconfig.json](/docs/handbook/tsconfig-json.html) file.
 
@@ -128,12 +130,14 @@ interface FooProp {
   Y: number;
 }
 
-declare function AnotherComponent(prop: {name: string});
+declare function AnotherComponent(prop: { name: string });
 function ComponentFoo(prop: FooProp) {
   return <AnotherComponent name={prop.name} />;
 }
 
-const Button = (prop: {value: string}, context: { color: string }) => <button />
+const Button = (prop: { value: string }, context: { color: string }) => (
+  <button />
+);
 ```
 
 Because a Function Component is simply a JavaScript function, function overloads may be used here as well:

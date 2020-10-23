@@ -236,133 +236,133 @@ Turns to:
 >           "name": "memory",
 >           "kind": "property",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "assert",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "clear",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "count",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "countReset",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "debug",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "dir",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "dirxml",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "error",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "exception",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "group",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "groupCollapsed",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "groupEnd",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "info",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "log",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "table",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "time",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "timeEnd",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "timeLog",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "timeStamp",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "trace",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         },
 >         {
 >           "name": "warn",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "0"
+>           "sortText": "1"
 >         }
 >       ],
 >       "kind": "completions",
@@ -451,7 +451,7 @@ Turns to:
 >       "kind": "query",
 >       "start": 417,
 >       "length": 26,
->       "text": "let c: IdLabel | NameLabel",
+>       "text": "let c: NameLabel | IdLabel",
 >       "offset": 4,
 >       "line": 9
 >     }

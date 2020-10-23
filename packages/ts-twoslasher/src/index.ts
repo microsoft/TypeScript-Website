@@ -630,16 +630,24 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     // Get the file which created the file we want to show:
     const emitFilename = handbookOptions.showEmittedFile || defaultFileName
     const emitSourceFilename = fsRoot + emitFilename.replace(".js", "").replace(".d.ts", "").replace(".map", "")
-    const emitSource = filenames.find(f => f === emitSourceFilename + ".ts" || f === emitSourceFilename + ".tsx")
+    let emitSource = filenames.find(f => f === emitSourceFilename + ".ts" || f === emitSourceFilename + ".tsx")
 
-    if (!emitSource) {
+    if (!emitSource && !compilerOptions.outFile) {
       const allFiles = filenames.join(", ")
       // prettier-ignore
-      throw new Error(`Cannot find the corresponding source file for ${emitFilename} (looking for: ${emitSourceFilename} in the vfs) - in ${allFiles}`)
+      throw new Error(`Cannot find the corresponding **source** file for ${emitFilename} (looking for: ${emitSourceFilename} in the vfs) - in ${allFiles}`)
     }
 
-    const output = ls.getEmitOutput(emitSource)
-    const file = output.outputFiles.find(o => o.name === fsRoot + handbookOptions.showEmittedFile)
+    // Allow outfile, in which case you need any file.
+    if (compilerOptions.outFile) {
+      emitSource = filenames[0]
+    }
+
+    const output = ls.getEmitOutput(emitSource!)
+    const file = output.outputFiles.find(
+      o => o.name === fsRoot + handbookOptions.showEmittedFile || o.name === handbookOptions.showEmittedFile
+    )
+
     if (!file) {
       const allFiles = output.outputFiles.map(o => o.name).join(", ")
       // prettier-ignore

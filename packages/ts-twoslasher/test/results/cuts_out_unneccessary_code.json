@@ -26,7 +26,7 @@
       "kind": "query",
       "start": 417,
       "length": 26,
-      "text": "let c: IdLabel | NameLabel",
+      "text": "let c: NameLabel | IdLabel",
       "offset": 4,
       "line": 9
     }

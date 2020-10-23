@@ -1,0 +1,9 @@
+{
+  "code": "export const helloWorld = () => Hello, world;\n/h1>;\n",
+  "extension": "js",
+  "highlights": [],
+  "queries": [],
+  "staticQuickInfos": [],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/CYUwxgNghgTiAEBbA9sArhBApAygDXgG8AoeeASwDsAXEGAMyjAQFFNEQaiBfUimuo2bwAkjRhUAzuTBsQHGpKJ8yAbUkAueJOoTKAcwC6WqJQCefXrwD01+AAFJAC2QB3FonLVith5WQsMDDIMJI+dvYAVpIAHloADnCSdABuIMQgMfEh1PBgyJQ68E4gEBDIAOohEMDwALzwABQAlPUAfPAAPE4AjG0AEqXl8K7VwJ3WvW3EQA"
+}

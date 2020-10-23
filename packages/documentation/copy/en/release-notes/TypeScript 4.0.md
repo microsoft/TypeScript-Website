@@ -114,8 +114,9 @@ type Strings = [string, string];
 type Numbers = number[];
 
 type Unbounded = [...Strings, ...Numbers, boolean];
-//   ^?
 ```
+
+**Note: This sample code does not work in TypeScript 4.1**.
 
 By combining both of these behaviors together, we can write a single well-typed signature for `concat`:
 

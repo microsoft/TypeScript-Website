@@ -36,8 +36,8 @@
   },
   "browser": {
     "fs": false,
-    "typescript": false,
-    "lz-string": false
+    "lz-string": false,
+    "typescript": false
   },
   "dependencies": {
     "@typescript/vfs": "1.3.0",

@@ -106,9 +106,10 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["moduleResolution", ["module"]],
   ["module", ["moduleResolution"]],
 
-  ["jsx", ["jsxFactory", "jsxFragmentFactory"]],
-  ["jsxFactory", ["jsx", "jsxFragmentFactory"]],
-  ["jsxFragmentFactory", ["jsx", "jsxFactory"]],
+  ["jsx", ["jsxFactory", "jsxFragmentFactory", "jsxImportSource"]],
+  ["jsxFactory", ["jsx", "jsxFragmentFactory", "jsxImportSource"]],
+  ["jsxFragmentFactory", ["jsx", "jsxFactory", "jsxImportSource"]],
+  ["jsxImportSource", ["jsx", "jsxFactory"]],
 
   ["suppressImplicitAnyIndexErrors", ["noImplicitAny"]],
 ];
@@ -200,7 +201,7 @@ export const defaultsForOptions = {
 };
 
 export const allowedValues = {
-  jsx: ["`react`", "`react-native`", "`preserve`"],
+  jsx: ["`react`", "`react-jsx`", "`react-jsxdev`", "`react-native`", "`preserve`"],
   jsxFactory: ["Any identifier or dotted identifier"],
   lib: ["See main content"],
   target: [
@@ -244,6 +245,7 @@ export const allowedValues = {
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
+  "4.1": ["jsxImportSource", "bundledPackageName", "noUncheckedIndexedAccess"],
   "4.0": ["jsxFragmentFactory", "disableReferencedProjectLoad"],
   "3.8": [
     "assumeChangesOnlyAffectDirectDependencies",
