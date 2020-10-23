@@ -3,7 +3,9 @@ display: "Module"
 oneline: "Module code generation."
 ---
 
-Sets the module system for the program. See the <a href='/docs/handbook/modules.html#ambient-modules'>Modules</a> chapter of the handbook for more information. You very likely want `"CommonJS"`.
+Sets the module system for the program. See the <a href='/docs/handbook/modules.html'>Modules</a> reference page for more information. You very likely want `"CommonJS"`.
+
+Changing `module` affects [`moduleResolution`](#moduleResolution) which [also has a reference page](/docs/handbook/module-resolution.html).
 
 Here's some example output for this file:
 
