@@ -18,7 +18,7 @@ export const createDocumentationPages = async (
       allFile(
         filter: {
           sourceInstanceName: { eq: "documentation" }
-          extension: { eq: "md" }
+          extension: { glob: "md*" }
         }
       ) {
         nodes {
@@ -27,6 +27,11 @@ export const createDocumentationPages = async (
           modifiedTime
           absolutePath
 
+          childMdx {
+            frontmatter {
+              permalink
+            }
+          }
           childMarkdownRemark {
             frontmatter {
               permalink
@@ -61,7 +66,7 @@ export const createDocumentationPages = async (
   }
 
   docs.forEach((post: any) => {
-    const permalink = post.childMarkdownRemark.frontmatter.permalink
+    const permalink = getPermaLink(post)
     const lang = langs.find(l => permalink.startsWith("/" + l + "/")) || "en"
     const handbookNav = getDocumentationNavForLanguage(lang)
 
@@ -79,7 +84,7 @@ export const createDocumentationPages = async (
       if (previousPath) {
         const path = getPreviousPageID(handbookNav, id)!.path
         // prettier-ignore
-        const previousDoc = docs.find((d) => d.childMarkdownRemark.frontmatter.permalink === path)
+        const previousDoc = docs.find((d) => getPermaLink(d) === path)
         if (previousDoc) previousID = previousDoc.id
       }
 
@@ -87,7 +92,7 @@ export const createDocumentationPages = async (
       if (nextPath) {
         const path = getNextPageID(handbookNav, id)!.path
         // prettier-ignore
-        const nextDoc = docs.find((d) => d.childMarkdownRemark.frontmatter.permalink === path)
+        const nextDoc = docs.find((d) => getPermaLink(d) === path)
         if (nextDoc) nextID = nextDoc.id
       }
     }
@@ -97,11 +102,11 @@ export const createDocumentationPages = async (
 
     if (post.childMarkdownRemark) {
       createPage({
-        path: post.childMarkdownRemark.frontmatter.permalink,
+        path: getPermaLink(post),
         component: handbookPage,
         context: {
           id: id,
-          slug: post.childMarkdownRemark.frontmatter.permalink,
+          slug: getPermaLink(post),
           repoPath,
           previousID,
           nextID,
@@ -113,4 +118,10 @@ export const createDocumentationPages = async (
       console.log(`skipping page generation for ${post.name}`)
     }
   })
+}
+
+const getPermaLink = (post: any) => {
+  if (post.childMarkdownRemark)
+    return post.childMarkdownRemark.frontmatter.permalink
+  if (post.childMdx) return post.childMdx.frontmatter.permalink
 }

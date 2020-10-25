@@ -54,6 +54,13 @@ module.exports = {
       },
     },
 
+    {
+      resolve: `gatsby-plugin-mdx`,
+      options: {
+        extensions: [`.mdx`, `.md`],
+      },
+    },
+
     // Support for downloading or pre-caching pages, needed for PWAs
     // "gatsby-plugin-offline",
 

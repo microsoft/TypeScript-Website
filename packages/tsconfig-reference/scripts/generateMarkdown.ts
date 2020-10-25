@@ -114,7 +114,7 @@ languages.forEach((lang) => {
   categoryOverviews.forEach((c) => {
     if (c.code === 6178) return;
     markdownChunks.push(`<div class="tsconfig-nav-top">`);
-    markdownChunks.push(`<h5><a href=${"#" + c.id}>${c.md.data.display}</a></h5>`);
+    markdownChunks.push(`<h5><a href='${"#" + c.id}'>${c.md.data.display}</a></h5>`);
     markdownChunks.push("<ul>");
 
     const optionsForCategory = options.filter((o) => o.categoryCode === c.code);
@@ -136,8 +136,10 @@ languages.forEach((lang) => {
     markdownChunks.push(`<div class="tsconfig-nav-top">`);
 
     if (index === 0) {
-      markdownChunks.push(`<h5><a href=${"#" + advanced.id}>${advanced.md.data.display}</a></h5>`);
     } else {
+      markdownChunks.push(
+        `<h5><a href='${"#" + advanced.id}'>${advanced.md.data.display}</a></h5>`
+      );
       markdownChunks.push(`<h5>&nbsp;</h5>`);
     }
 

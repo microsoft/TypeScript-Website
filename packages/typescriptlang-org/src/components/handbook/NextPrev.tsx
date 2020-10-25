@@ -2,8 +2,8 @@ import * as React from "react"
 import { Link } from "gatsby"
 
 interface NextPrevProps {
-  prev: { childMarkdownRemark: { frontmatter: { title: string, oneline: string, permalink: string } } } | undefined
-  next: { childMarkdownRemark: { frontmatter: { title: string, oneline: string, permalink: string } } } | undefined,
+  prev: { childMdx: { frontmatter: { title: string, oneline: string, permalink: string } } } | undefined
+  next: { childMdx: { frontmatter: { title: string, oneline: string, permalink: string } } } | undefined,
   i: (string) => string,
   IntlLink: typeof Link
 }
@@ -12,9 +12,9 @@ const Row = (props: { children: any, className?: string }) => <div className={[p
 
 
 export const NextPrev = (props: NextPrevProps) => {
-  if (!props.prev && !props.next) return null
-  const prev = props.prev && props.prev.childMarkdownRemark.frontmatter
-  const next = props.next && props.next.childMarkdownRemark.frontmatter
+  if (!props.prev?.childMdx && !props.next?.childMdx) return null
+  const prev = props.prev?.childMdx && props.prev.childMdx.frontmatter
+  const next = props.next?.childMdx && props.next.childMdx.frontmatter
 
   return (
     <div className="whitespace-tight raised">

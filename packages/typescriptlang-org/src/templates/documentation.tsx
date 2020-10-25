@@ -5,6 +5,7 @@ import { Layout } from "../components/layout"
 import { Sidebar, SidebarToggleButton } from "../components/layout/Sidebar"
 import { getDocumentationNavForLanguage } from "../lib/documentationNavigation"
 import { Intl } from "../components/Intl"
+import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 // This dependency is used in gatsby-remark-autolink-headers to generate the slugs
 import slugger from "github-slugger"
@@ -39,10 +40,10 @@ type Props = {
 }
 
 const HandbookTemplate: React.FC<Props> = (props) => {
-  const post = props.data.markdownRemark
+  const post = props.data.mdx
   if (!post) {
     console.log("Could not render:", JSON.stringify(props))
-    return <div></div>
+    return <div><h1>Error, see console.log</h1></div>
   }
 
   const i = createInternational<typeof handbookCopy>(useIntl())
@@ -67,7 +68,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
 
 
   if (!post.frontmatter) throw new Error(`No front-matter found for the file with props: ${props}`)
-  if (!post.html) throw new Error(`No html found for the file with props: ${props}`)
+  if (!post.body) throw new Error(`No html found for the file with props: ${props}`)
 
   const selectedID = props.pageContext.id || "NO-ID"
   const sidebarHeaders = post.headings?.filter(h => (h?.depth || 0) <= 3) || []
@@ -94,7 +95,9 @@ const HandbookTemplate: React.FC<Props> = (props) => {
           <h2>{post.frontmatter.title}</h2>
           <article>
             <div className="whitespace raised">
-              <div className="markdown" dangerouslySetInnerHTML={{ __html: post.html! }} />
+              <div className="markdown">
+              <MDXRenderer>{post.body}</MDXRenderer>
+              </div>
             </div>
 
 
@@ -139,10 +142,10 @@ export const pageQuery = graphql`
   query GetDocumentBySlug($slug: String!, $previousID: String, $nextID: String) {
     ...AllSitePage
     
-    markdownRemark(frontmatter: { permalink: {eq: $slug}}) {
+    mdx(frontmatter: { permalink: {eq: $slug}}) {
       id
       excerpt(pruneLength: 160)
-      html
+      body
       headings {
         value
         depth
@@ -157,7 +160,7 @@ export const pageQuery = graphql`
     }
 
     prev: file(id: { eq: $previousID } ) {
-      childMarkdownRemark  {
+      childMdx  {
         frontmatter {
           title
           oneline
@@ -167,7 +170,7 @@ export const pageQuery = graphql`
     }
 
     next: file(id: { eq: $nextID } ) {
-      childMarkdownRemark  {
+      childMdx  {
         frontmatter {
           title
           oneline
