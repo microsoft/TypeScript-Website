@@ -29,7 +29,7 @@ class Sprite {
 }
 ```
 
-Kemudian kamu butuh sebuah type dan sebuah fungsi factory yang mengembalikan sebuah ekspresi kelas untuk meng-extend kelas dasar.
+Kemudian kamu butuh sebuah tipe dan sebuah fungsi factory yang mengembalikan sebuah ekspresi kelas untuk meng-extend kelas dasar.
 
 ```ts twoslash
 // Untuk memulai, kita membutuhkan tipe yang akan kita gunakan untuk memperluas kelas lain.
@@ -37,12 +37,12 @@ Kemudian kamu butuh sebuah type dan sebuah fungsi factory yang mengembalikan seb
 
 type Constructor = new (...args: any[]) => {};
 
-// Mixin ini menambahkan property scale, dengan getter dan setter
+// Mixin ini menambahkan properti scale, dengan getter dan setter
 // untuk mengubahnya dengan properti private yang dienkapsulasi:
 
 function Scale<TBase extends Constructor>(Base: TBase) {
   return class Scaling extends Base {
-    // Mixin mungkin tidak mendeklarasikan property private/protected
+    // Mixin mungkin tidak mendeklarasikan properti private/protected
     // namun, Anda dapat menggunakan field private ES2020
     _scale = 1;
 
@@ -72,7 +72,7 @@ class Sprite {
 type Constructor = new (...args: any[]) => {};
 function Scale<TBase extends Constructor>(Base: TBase) {
   return class Scaling extends Base {
-    // Mixin mungkin tidak mendeklarasikan property private/protected
+    // Mixin mungkin tidak mendeklarasikan properti private/protected
     // namun, Anda dapat menggunakan field private ES2020
     _scale = 1;
 
@@ -160,7 +160,7 @@ function Jumpable<TBase extends Positionable>(Base: TBase) {
 
 ## Pola Alternatif
 
-Versi sebelumnya dari dokumen ini merekomendasikan cara untuk menulis mixin di mana Anda membuat runtime dan hierarki type secara terpisah, lalu menggabungkannya di akhir:
+Versi sebelumnya dari dokumen ini merekomendasikan cara untuk menulis mixin di mana Anda membuat runtime dan hierarki tipe secara terpisah, lalu menggabungkannya di akhir:
 
 ```ts twoslash
 // @strict: false
@@ -204,11 +204,11 @@ function applyMixins(derivedCtor: any, constructors: any[]) {
 }
 ```
 
-Pola ini tidak terlalu bergantung pada compiler, dan lebih banyak pada basis kode Anda untuk memastikan runtime dan sistem tipe tetap sinkron dengan benar.
+Pola ini tidak terlalu bergantung pada kompilator, dan lebih banyak pada basis kode Anda untuk memastikan runtime dan sistem tipe tetap sinkron dengan benar.
 
 ## Kendala
 
-Pola mixin didukung secara native di dalam compiler TypeScript oleh code flow analysis.
+Pola mixin didukung secara native di dalam kompilator TypeScript oleh code flow analysis.
 Ada beberapa kasus di mana Anda dapat mencapai tepi dukungan native.
 
 #### Decorator dan Mixin [`#4881`](https://github.com/microsoft/TypeScript/issues/4881)
@@ -245,7 +245,7 @@ playerTwo.shouldFreeze;
 
 #### Static Property Mixins [`#17829`](https://github.com/microsoft/TypeScript/issues/17829)
 
-Pola ekspresi kelas membuat singletons, jadi mereka tidak dapat dipetakan pada sistem type untuk mendukung tipe variabel yang berbeda.
+Pola ekspresi kelas membuat singletons, jadi mereka tidak dapat dipetakan pada sistem tipe untuk mendukung tipe variabel yang berbeda.
 
 Anda bisa mengatasinya dengan menggunakan fungsi untuk mengembalikan kelas Anda yang berbeda berdasarkan generik:
 

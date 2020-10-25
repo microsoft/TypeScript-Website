@@ -1,5 +1,5 @@
 ---
-title: JSDoc Reference
+title: Referensi JSDoc
 layout: docs
 permalink: /id/docs/handbook/jsdoc-supported-types.html
 oneline: JSDoc apa yang didukung JavaScript dan TypeScript?
@@ -104,7 +104,7 @@ var stringToNumber;
 var arrayLike;
 ```
 
-Dua jenis sebelumnya sama dengan type TypeScript `{ [x: string]: number }` dan `{ [x: number]: any }`. Compiler memahami kedua sintaks tersebut.
+Dua jenis sebelumnya sama dengan tipe TypeScript `{ [x: string]: number }` dan `{ [x: number]: any }`. Kompilator memahami kedua sintaks tersebut.
 
 Anda dapat menentukan jenis fungsi menggunakan sintaks TypeScript atau Closure:
 
@@ -140,7 +140,7 @@ var question;
 ### Casts
 
 TypeScript meminjam sintaks cast dari Closure.
-Ini memungkinkan Anda mentransmisikan type ke type lain dengan menambahkan tag `@type` sebelum ekspresi dalam tanda kurung.
+Ini memungkinkan Anda mentransmisikan tipe ke tipe lain dengan menambahkan tag `@type` sebelum ekspresi dalam tanda kurung.
 
 ```js twoslash
 /**
@@ -152,7 +152,7 @@ var typeAssertedNumber = /** @type {number} */ (numberOrString);
 
 ### Impor type
 
-Anda bisa juga mengimpor deklarasi dari file lain menggunakan impor type.
+Anda bisa juga mengimpor deklarasi dari file lain menggunakan impor tipe.
 Sintaks ini khusus untuk TypeScript dan berbeda dari standar JSDoc:
 
 ```js twoslash
@@ -170,7 +170,7 @@ function walk(p) {
 }
 ```
 
-mengimpor type juga dapat digunakan di deklarasi type alias:
+mengimpor tipe juga dapat digunakan di deklarasi tipe alias:
 
 ```js twoslash
 // @filename: types.d.ts
@@ -190,7 +190,7 @@ var myPet;
 myPet.name;
 ```
 
-Mengimpor type dapat digunakan untuk mendapatkan type nilai dari module, jika Anda tidak mengetahui jenisnya, atau jika nilai tersebut memiliki type yang besar yang dapat mengganggu untuk diketik:
+Mengimpor tipe dapat digunakan untuk mendapatkan tipe nilai dari modul, jika Anda tidak mengetahui jenisnya, atau jika nilai tersebut memiliki tipe yang besar yang dapat mengganggu untuk diketik:
 
 ```js twoslash
 // @filename: accounts.d.ts
@@ -231,7 +231,7 @@ function stringsStringStrings(p1, p2, p3, p4) {
 }
 ```
 
-Demikian juga, untuk type kembalian suatu fungsi:
+Demikian juga, untuk tipe kembalian suatu fungsi:
 
 ```js twoslash
 /**
@@ -253,11 +253,11 @@ Sintaks yang bekerja dengan `@params`.
 ```js twoslash
 /**
  * @typedef {Object} SpecialType - buat type baru bernama 'SpecialType'
- * @property {string} prop1 - property string dari SpecialType
- * @property {number} prop2 - property number dari SpecialType
- * @property {number=} prop3 - opsional property number dari SpecialType
- * @prop {number} [prop4] - opsional property number dari SpecialType
- * @prop {number} [prop5=42] - opsional property number dari SpecialType dengan nilai standar
+ * @property {string} prop1 - properti string dari SpecialType
+ * @property {number} prop2 - properti number dari SpecialType
+ * @property {number=} prop3 - properti number opsional dari SpecialType
+ * @prop {number} [prop4] - properti number opsional dari SpecialType
+ * @prop {number} [prop5=42] - properti number opsional dari SpecialType dengan nilai standar
  */
 
 /** @type {SpecialType} */
@@ -269,18 +269,18 @@ Anda bisa menggunakan `object` atau `Object` pada baris pertama.
 
 ```js twoslash
 /**
- * @typedef {object} SpecialType1 - buat type baru bernama 'SpecialType'
- * @property {string} prop1 - property string dari SpecialType
- * @property {number} prop2 - property number dari SpecialType
- * @property {number=} prop3 - opsional property number dari SpecialType
+ * @typedef {object} SpecialType1 - buat tipe baru bernama 'SpecialType'
+ * @property {string} prop1 - properti string dari SpecialType
+ * @property {number} prop2 - properti number dari SpecialType
+ * @property {number=} prop3 - opsional properti number dari SpecialType
  */
 
 /** @type {SpecialType1} */
 var specialTypeObject1;
 ```
 
-`@params` memperbolehkan sintaks yang serupa untuk spesifikasi type-nya.
-Perhatikan bahwa nama nested property harus diawali dengan nama parameternya:
+`@params` memperbolehkan sintaks yang serupa untuk spesifikasi tipenya.
+Perhatikan bahwa nama properti _nested_ harus diawali dengan nama parameternya:
 
 ```js twoslash
 /**
@@ -296,7 +296,7 @@ function special(options) {
 }
 ```
 
-`@callback` mirip dengan `@typedef`, tetapi ini menetapkan type fungsi daripada type objek:
+`@callback` mirip dengan `@typedef`, tetapi ini menetapkan tipe fungsi daripada tipe objek:
 
 ```js twoslash
 /**
@@ -324,7 +324,7 @@ Anda dapat mendeklarasikan fungsi generik dengan tag `@template`:
 ```js twoslash
 /**
  * @template T
- * @param {T} x - Parameter umum yang mengalir ke return type
+ * @param {T} x - Parameter umum yang mengalir ke tipe kembalian
  * @return {T}
  */
 function id(x) {
@@ -336,7 +336,7 @@ const b = id(123);
 const c = id({});
 ```
 
-Gunakan koma atau beberapa tag untuk mendeklarasikan beberapa parameter type:
+Gunakan koma atau beberapa tag untuk mendeklarasikan beberapa parameter tipe:
 
 ```js
 /**
@@ -345,8 +345,8 @@ Gunakan koma atau beberapa tag untuk mendeklarasikan beberapa parameter type:
  */
 ```
 
-Anda juga bisa menentukan batasan type sebelum nama parameternya.
-Hanya parameter type pertama dalam sebuah list yang dibatasi.
+Anda juga bisa menentukan batasan tipe sebelum nama parameternya.
+Hanya parameter tipe pertama dalam sebuah list yang dibatasi.
 
 ```js twoslash
 /**
@@ -383,7 +383,7 @@ class C {
     /** @type {number} */
     this.size;
 
-    this.initialize(data); // Seharusnya error, karena initialize mengharapkan string
+    this.initialize(data); // Seharusnya galat, karena inisialisasi mengharapkan string
   }
   /**
    * @param {string} s
@@ -405,7 +405,7 @@ Mereka juga dapat dideklarasikan sebagai fungsi konstruktor, seperti yang dijela
 
 ## `@constructor`
 
-Compiler menyimpulkan fungsi konstruktor berdasarkan penetapan properti ini, tetapi Anda dapat membuat pemeriksaan lebih ketat dan saran lebih baik jika Anda menambahkan tag `@constructor`:
+Kompilator menyimpulkan fungsi konstruktor berdasarkan penetapan properti ini, tetapi Anda dapat membuat pemeriksaan lebih ketat dan saran lebih baik jika Anda menambahkan tag `@constructor`:
 
 ```js twoslash
 // @checkJs
@@ -415,7 +415,7 @@ Compiler menyimpulkan fungsi konstruktor berdasarkan penetapan properti ini, tet
  * @param {number} data
  */
 function C(data) {
-  // type property yang dapat diketahui
+  // tipe properti yang dapat diketahui
   this.name = "foo";
 
   // atau atur secara eksplisit
@@ -441,15 +441,15 @@ c.size;
 var result = C(1);
 ```
 
-> Catatan: Pesan error hanya tampil di basis kode JS dengan [JSConfig](/docs/handbook/tsconfig-json.html) dan [`checkJS`](/tsconfig#checkJs) yang diaktifkan.
+> Catatan: Pesan galat hanya tampil di basis kode JS dengan [JSConfig](/docs/handbook/tsconfig-json.html) dan [`checkJS`](/tsconfig#checkJs) yang diaktifkan.
 
-Dengan `@constructor`, `this` diperiksa didalam fungsi konstruktor `C`, jadi anda akan mendapatkan saran untuk method `initialize` dan sebuah error jika anda memasukkan sebuah angka. Editor-mu mungkin akan menampilkan peringatan jika memanggil `C` daripada mengkonstruksikannya.
+Dengan `@constructor`, `this` diperiksa didalam fungsi konstruktor `C`, jadi anda akan mendapatkan saran untuk method `initialize` dan sebuah galat jika anda memasukkan sebuah angka. Editor-mu mungkin akan menampilkan peringatan jika memanggil `C` daripada mengkonstruksikannya.
 
 Sayangnya, ini berarti bahwa fungsi konstruktor yang juga dapat dipanggil tidak dapat menggunakan `@constructor`.
 
 ## `@this`
 
-Compiler biasanya dapat mengetahui type `this` ketika ia memiliki beberapa konteks untuk dikerjakan. Jika tidak, Anda dapat secara eksplisit menentukan jenis `this` dengan `@this`:
+Kompilator biasanya dapat mengetahui tipe `this` ketika ia memiliki beberapa konteks untuk dikerjakan. Jika tidak, Anda dapat secara eksplisit menentukan jenis `this` dengan `@this`:
 
 ```js twoslash
 /**
@@ -463,7 +463,7 @@ function callbackForLater(e) {
 
 ## `@extends`
 
-Ketika kelas JavaScript memperluas _base class_, tidak ada tempat untuk menentukan seharusnya menggunakan parameter type yang seperti apa. Tag `@extends` menyediakan tempat untuk parameter jenis itu:
+Ketika kelas JavaScript memperluas _base class_, tidak ada tempat untuk menentukan seharusnya menggunakan parameter tipe yang seperti apa. Tag `@extends` menyediakan tempat untuk parameter jenis itu:
 
 ```js twoslash
 /**
@@ -479,7 +479,7 @@ Perhatikan bahwa `@extends` hanya berfungsi dengan kelas. Saat ini, tidak ada ca
 
 ## `@enum`
 
-Tag `@enum` memungkinkan Anda membuat literal objek yang type anggotanya spesifik. Tidak seperti kebanyakan literal objek di JavaScript, ini tidak mengizinkan anggota lain.
+Tag `@enum` memungkinkan Anda membuat literal objek yang tipe anggotanya spesifik. Tidak seperti kebanyakan literal objek di JavaScript, ini tidak mengizinkan anggota lain.
 
 ```js twoslash
 /** @enum {number} */
@@ -512,7 +512,7 @@ class Foo {}
 // ---cut---
 var someObj = {
   /**
-   * @param {string} param1 - Dokumen tentang tugas property
+   * @param {string} param1 - Dokumen tentang tugas properti
    */
   x: function (param1) {},
 };
@@ -563,7 +563,7 @@ function fn9(p1) {
 
 ## Pola yang diketahui TIDAK didukung
 
-Mengacu pada objek di value space sebagai type yang tidak berfungsi, kecuali objek tersebut juga membuat type, seperti fungsi konstruktor.
+Mengacu pada objek di value space sebagai tipe yang tidak berfungsi, kecuali objek tersebut juga membuat tipe, seperti fungsi konstruktor.
 
 ```js twoslash
 function aNormalFunction() {}
@@ -578,7 +578,7 @@ var wrong;
 var right;
 ```
 
-Postfix sama dengan type property dalam type literal objek yang tidak menetapkan properti opsional:
+Postfix sama dengan tipe properti dalam tipe literal objek yang tidak menetapkan properti opsional:
 
 ```js twoslash
 /**
@@ -619,13 +619,13 @@ Type non-nullable tidak memiliki arti dan diperlakukan seperti jenis aslinya:
 ```js twoslash
 /**
  * @type {!number}
- * Hanya ber-type number
+ * Hanya bertipe number
  */
 var normal;
 ```
 
 If it is off, then `number` is nullable.
-Tidak seperti sistem type JSDoc, TypeScript hanya memungkinkan Anda untuk menandai type, apakah mengandung null atau tidak.
+Tidak seperti sistem tipe JSDoc, TypeScript hanya memungkinkan Anda untuk menandai tipe, apakah mengandung null atau tidak.
 Tidak ada non-nullability eksplisit - jika strictNullChecks aktif, `number` tidak dapat dinihilkan.
 Jika tidak aktif, maka `number` adalah nullable.
 
@@ -667,11 +667,11 @@ const c = new Car();
 console.log(c.identifier);
 ```
 
-- `@public` ini berarti property dapat diakses dari mana saja.
+- `@public` ini berarti properti dapat diakses dari mana saja.
 - `@private` berarti bahwa properti hanya dapat digunakan di dalam kelas yang memuatnya.
 - `@protected` berarti bahwa properti hanya dapat digunakan di dalam kelas penampung, dan semua subkelas turunan, tetapi tidak pada instance kelas penampung yang berbeda.
 
-Selanjutnya, kita juga telah menambahkan modifier `@readonly` untuk memastikan bahwa sebuah property hanya dapat di-write selama inisialisasi.
+Selanjutnya, kita juga telah menambahkan modifier `@readonly` untuk memastikan bahwa sebuah properti hanya dapat di-write selama inisialisasi.
 
 ```js twoslash
 // @errors: 2540

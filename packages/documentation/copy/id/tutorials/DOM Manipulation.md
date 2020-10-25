@@ -1,5 +1,5 @@
 ---
-title: DOM Manipulation
+title: Manipulasi DOM
 layout: docs
 permalink: /id/docs/handbook/dom-manipulation.html
 oneline: Menggunakan DOM dengan TypeScript
@@ -8,7 +8,7 @@ translatable: true
 
 ## Manipulasi DOM
 
-### _Eksplorasi ke dalam type `HTMLElement`_
+### _Eksplorasi ke dalam tipe `HTMLElement`_
 
 Dalam 20+ tahun sejak standarisasi, JavaScript telah berkembang pesat. Meskipun pada tahun 2020, JavaScript dapat digunakan di server, dalam ilmu data, dan bahkan pada perangkat IoT, penting untuk mengingat kasus penggunaannya yang paling populer: web browser.
 
@@ -35,7 +35,7 @@ Diberikan file _index.html_ yang disederhanakan:
 Mari kita jelajahi skrip TypeScript yang menambahkan elemen `<p> Hello, World </p>` ke elemen `#app`.
 
 ```ts
-// 1. Pilih elemen div menggunakan property id
+// 1. Pilih elemen div menggunakan properti id
 const app = document.getElementById("app");
 
 // 2. Buat element <p></p> baru secara terprogram
@@ -98,7 +98,7 @@ interface HTMLElementTagNameMap {
 }
 ```
 
-Beberapa elemen tidak menunjukkan properti unik sehingga mereka hanya mengembalikan `HTMLElement`, tetapi tipe lain memiliki property dan method unik sehingga mereka mengembalikan antarmuka spesifiknya (yang akan memperluas atau mengimplementasikan `HTMLElement`).
+Beberapa elemen tidak menunjukkan properti unik sehingga mereka hanya mengembalikan `HTMLElement`, tetapi tipe lain memiliki properti dan method unik sehingga mereka mengembalikan antarmuka spesifiknya (yang akan memperluas atau mengimplementasikan `HTMLElement`).
 
 Sekarang, untuk sisa definisi `createElement`:`(tagName: K, options ?: ElementCreationOptions): HTMLElementTagNameMap [K]`. Argumen pertama `tagName` didefinisikan sebagai parameter umum `K`. Interpreter TypeScript cukup pintar untuk _infer_ parameter generik dari argumen ini. Ini berarti bahwa pengembang sebenarnya tidak harus menentukan parameter umum saat menggunakan metode ini; nilai apa pun yang diteruskan ke argumen `tagName` akan disimpulkan sebagai `K` dan karenanya dapat digunakan di seluruh definisi lainnya. Itulah yang sebenarnya terjadi; nilai kembalian `HTMLElementTagNameMap [K]` mengambil argumen `tagName` dan menggunakannya untuk mengembalikan jenis yang sesuai. Definisi ini adalah bagaimana variabel `p` dari kode sebelumnya mendapatkan jenis `HTMLParagraphElement`. Dan jika kodenya adalah `document.createElement ('a')`, maka itu akan menjadi elemen jenis `HTMLAnchorElement`.
 
@@ -176,7 +176,7 @@ querySelectorAll<K extends keyof SVGElementTagNameMap>(selectors: K): NodeListOf
 querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
 ```
 
-Definisi `querySelectorAll` mirip dengan `getElementsByTagName`, kecuali ia mengembalikan tipe baru: `NodeListOf`. Jenis kembalian ini pada dasarnya adalah implementasi khusus dari elemen daftar standar JavaScript. Bisa dibilang, mengganti `NodeListOf<E>` dengan `E[]` akan menghasilkan pengalaman pengguna yang sangat mirip. `NodeListOf` hanya mengimplementasikan property dan method berikut:`length`, `item (index)`,`forEach ((value, key, parent) => void)`, dan numeric indexing. Selain itu, metode ini mengembalikan daftar _elements_, bukan _nodes_, yang dikembalikan oleh `NodeList` dari method `.childNodes`. Meskipun ini mungkin tampak sebagai perbedaan, perhatikan bahwa antarmuka `Element` merupakan turunan dari `Node`.
+Definisi `querySelectorAll` mirip dengan `getElementsByTagName`, kecuali ia mengembalikan tipe baru: `NodeListOf`. Jenis kembalian ini pada dasarnya adalah implementasi khusus dari elemen daftar standar JavaScript. Bisa dibilang, mengganti `NodeListOf<E>` dengan `E[]` akan menghasilkan pengalaman pengguna yang sangat mirip. `NodeListOf` hanya mengimplementasikan properti dan method berikut:`length`, `item (index)`,`forEach ((value, key, parent) => void)`, dan numeric indexing. Selain itu, metode ini mengembalikan daftar _elements_, bukan _nodes_, yang dikembalikan oleh `NodeList` dari method `.childNodes`. Meskipun ini mungkin tampak sebagai perbedaan, perhatikan bahwa antarmuka `Element` merupakan turunan dari `Node`.
 
 Untuk melihat method ini beraksi, ubah kode yang ada menjadi:
 
@@ -193,7 +193,7 @@ const all = document.querySelectorAll("li"); // mengembalikan daftar semua eleme
 
 ## Tertarik untuk mempelajari lebih lanjut?
 
-Bagian terbaik tentang definisi type _lib.dom.d.ts_ adalah bahwa definisi tersebut mencerminkan type yang dijelaskan di situs dokumentasi Mozilla Developer Network (MDN). Misalnya, antarmuka `HTMLElement` didokumentasikan oleh [halaman HTMLElement](https://developer.mozilla.org/docs/Web/API/HTMLElement) di MDN. Halaman ini mencantumkan semua property yang tersedia, method, dan terkadang bahkan contoh. Aspek hebat lainnya dari halaman-halaman tersebut adalah mereka menyediakan tautan ke dokumen standar yang sesuai. Berikut ini tautan ke [Rekomendasi W3C untuk HTMLElement](https://www.w3.org/TR/html52/dom.html#htmlelement).
+Bagian terbaik tentang definisi tipe _lib.dom.d.ts_ adalah bahwa definisi tersebut mencerminkan tipe yang dijelaskan di situs dokumentasi Mozilla Developer Network (MDN). Misalnya, antarmuka `HTMLElement` didokumentasikan oleh [halaman HTMLElement](https://developer.mozilla.org/docs/Web/API/HTMLElement) di MDN. Halaman ini mencantumkan semua properti yang tersedia, method, dan terkadang bahkan contoh. Aspek hebat lainnya dari halaman-halaman tersebut adalah mereka menyediakan tautan ke dokumen standar yang sesuai. Berikut ini tautan ke [Rekomendasi W3C untuk HTMLElement](https://www.w3.org/TR/html52/dom.html#htmlelement).
 
 Sumber:
 

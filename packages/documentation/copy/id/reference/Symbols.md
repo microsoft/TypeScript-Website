@@ -25,7 +25,7 @@ let sym3 = Symbol("key");
 sym2 === sym3; // false, symbol itu unik
 ```
 
-Sama seperti string, simbol dapat digunakan sebagai kunci untuk property objek.
+Sama seperti string, simbol dapat digunakan sebagai kunci untuk properti objek.
 
 ```ts
 const sym = Symbol();
@@ -99,7 +99,7 @@ Dipanggil oleh operasi abstrak `ToPrimitive`.
 
 ## `Symbol.toStringTag`
 
-Nilai String yang digunakan dalam pembuatan deskripsi string default dari suatu objek.
+Nilai String yang digunakan dalam pembuatan deskripsi string bawaan dari suatu objek.
 Dipanggil oleh method bawaan `Object.prototype.toString`.
 
 ## `Symbol.unscopables`

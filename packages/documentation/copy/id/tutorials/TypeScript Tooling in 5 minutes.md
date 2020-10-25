@@ -1,5 +1,5 @@
 ---
-title: TypeScript Tooling in 5 minutes
+title: TypeScript Tooling dalam 5 menit
 layout: docs
 permalink: /id/docs/handbook/typescript-tooling-in-5-minutes.html
 oneline: Sebuah tutorial untuk memahami cara membuat situs web kecil dengan TypeScript
@@ -44,7 +44,7 @@ document.body.textContent = greeter(user);
 Kita menggunakan ekstensi `.ts`, tapi kode ini hanyalah JavaScript.
 Anda dapat menyalin/menempel ini langsung dari aplikasi JavaScript yang ada.
 
-Di command line, jalankan TypeScript compiler:
+Di command line, jalankan TypeScript kompilator:
 
 ```shell
 tsc greeter.ts
@@ -83,7 +83,7 @@ let user = [0, 1, 2];
 document.body.textContent = greeter(user);
 ```
 
-Compile ulang, dan anda akan melihat error berikut:
+Compile ulang, dan Anda akan melihat galat berikut:
 
 ```shell
 error TS2345: Argument of type 'number[]' is not assignable to parameter of type 'string'.
@@ -93,8 +93,8 @@ Demikian pula, coba hapus semua argumen saat pemanggilan fungsi greeter.
 TypeScript akan memberi tahu Anda bahwa Anda telah memanggil fungsi ini dengan jumlah parameter yang tidak terduga.
 Dalam kedua kasus, TypeScript dapat menawarkan analisis statis berdasarkan struktur kode Anda, dan jenis anotasi yang Anda berikan.
 
-Perhatikan ketika terjadi error, file `greeter.js` tetap dibuat.
-Anda bisa menggunakan TypeScript bahkan jika terjadi error pada kodemu. Tapi pada kasus ini, TypeScript memperingatkan bahwa kodemu akan bekerja tidak sesuai dengan ekspektasi.
+Perhatikan ketika terjadi galat, file `greeter.js` tetap dibuat.
+Anda bisa menggunakan TypeScript bahkan jika terjadi galat pada kodemu. Tapi pada kasus ini, TypeScript memperingatkan bahwa kodemu akan bekerja tidak sesuai dengan ekspektasi.
 
 ## Interfaces
 
@@ -125,7 +125,7 @@ TypeScript mendukung fitur baru di JavaScript, seperti dukungan untuk kelas berb
 Disini kita mulai dengan membuat kelas `Student` dengan konstruktor dan beberapa field publik.
 Perhatikan bahwa kelas dan interface saling bersinergi, sehingga memberikan kebebasan ke programmer untuk memutuskan level abstraksi yang tepat.
 
-Juga perlu perhatikan, pernggunaan `public` pada argumen di konstruktor adalah singkatan yang membolehkan kita untuk secara otomatis membuat property dengan nama tersebut.
+Juga perlu perhatikan, pernggunaan `public` pada argumen di konstruktor adalah singkatan yang membolehkan kita untuk secara otomatis membuat properti dengan nama tersebut.
 
 ```ts twoslash
 class Student {
@@ -175,7 +175,7 @@ Sekarang ketik kode berikut di `greeter.html`:
 Buka `greeter.html` di browser untuk menjalankan aplikasi web TypeScript-mu yang pertama!
 
 Opsional: Buka `greeter.ts` di Visual Studio, atau salin kode ke TypeScript playground.
-Anda dapat mengarahkan kursor ke identifier untuk melihat type mereka.
+Anda dapat mengarahkan kursor ke identifier untuk melihat tipe mereka.
 Perhatikan bahwa dalam beberapa kasus, tipe ini disimpulkan secara otomatis untuk Anda.
 Ketik ulang baris terakhir, dan lihat daftar penyelesaian dan bantuan parameter berdasarkan jenis elemen DOM.
 Letakkan kursor Anda pada referensi ke fungsi greeter, dan tekan F12 untuk masuk ke definisinya.

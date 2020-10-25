@@ -1,5 +1,5 @@
 ---
-title: Iterators and Generators
+title: Iterators dan Generators
 layout: docs
 permalink: /id/docs/handbook/iterators-and-generators.html
 oneline: Bagaimana Iterator dan Generator bekerja di TypeScript
@@ -9,7 +9,7 @@ translatable: true
 ## Iterasi
 
 Sebuah objek dapat dilakukan perulangan jika memiliki poperty [`Symbol.iterator`](Symbols.html#symboliterator).
-Beberapa type bawaan seperti `Array`, `Map`, `Set`, `String`, `Int32Array`, `Uint32Array`, etc. sudah memiliki property `Symbol.iterator`.
+Beberapa tipe bawaan seperti `Array`, `Map`, `Set`, `String`, `Int32Array`, `Uint32Array`, etc. sudah memiliki properti `Symbol.iterator`.
 Fungsi `Symbol.iterator` pada sebuah objek, bertanggungjawab untuk mengembalikan list nilai-nilai untuk menjalankan iterasi.
 
 ## Pernyataan `for..of`
@@ -27,7 +27,7 @@ for (let entry of someArray) {
 
 ### Pernyataan `for..of` vs `for..in`
 
-Baik pernyataan `for..of` dan `for..in` akan mengiterasi list; yang membedakan antara keduanya adalah `for..in` akan mengembalikan daftar _keys_ dari objek tersebut, sedangkan `for..of` mengembalikan daftar _values_ property numeric dari objek yang diiterasi.
+Baik pernyataan `for..of` dan `for..in` akan mengiterasi list; yang membedakan antara keduanya adalah `for..in` akan mengembalikan daftar _keys_ dari objek tersebut, sedangkan `for..of` mengembalikan daftar _values_ properti numeric dari objek yang diiterasi.
 
 Berikut adalah contoh implementasi dari perbedaan keduanya:
 
@@ -64,9 +64,9 @@ for (let pet of pets) {
 #### Menargetkan ES5 dan ES3
 
 Ketika menargetkan ke engine ES5 atau ES3, iterator hanya membolehkan nilai bertipe `Array`.
-Akan terjadi error jika `for..of` melakukan perulangan pada nilai yang bukan Array, bahkan jika nilai non Array tersebut memiliki property `Symbol.iterator`.
+Akan terjadi galat jika `for..of` melakukan perulangan pada nilai yang bukan Array, bahkan jika nilai non Array tersebut memiliki properti `Symbol.iterator`.
 
-Compiler akan menghasilkan perulangan `for` sederhana untuk `for..of`, misalnya:
+Kompilator akan menghasilkan perulangan `for` sederhana untuk `for..of`, misalnya:
 
 ```ts
 let numbers = [1, 2, 3];
@@ -87,4 +87,4 @@ for (var _i = 0; _i < numbers.length; _i++) {
 
 #### Menargetkan ECMAScript 2015 dan yang lebih tinggi
 
-Ketika menargetkan ke engine ECMAScript 2015, compiler akan membuat perulangan `for..of` untuk menargetkan implementasi iterator bawaan di mesin.
+Ketika menargetkan ke engine ECMAScript 2015, kompilator akan membuat perulangan `for..of` untuk menargetkan implementasi iterator bawaan di mesin.

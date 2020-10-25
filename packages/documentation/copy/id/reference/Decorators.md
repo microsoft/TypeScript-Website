@@ -24,7 +24,7 @@ tsc --target ES5 --experimentalDecorators
 
 **tsconfig.json**:
 
-```json  tsconfig
+```json tsconfig
 {
   "compilerOptions": {
     "target": "ES5",
@@ -255,7 +255,7 @@ function enumerable(value: boolean) {
 ```
 
 Decorator `@enumerable(false)` disini adalah sebuah [decorator factory](#decorator-factories).
-Ketika decorator `@enumerable(false)` dipanggil, ia akan merubah `enumerable` property dari property descriptor.
+Ketika decorator `@enumerable(false)` dipanggil, ia akan merubah `enumerable` properti dari properti descriptor.
 
 ## Decorator Aksesor
 
@@ -321,16 +321,16 @@ function configurable(value: boolean) {
 Sebuah _Property Decorator_ dideklarasikan tepat sebelum deklarasi properti.
 _Property Decorator_ tidak dapat digunakan dalam deklarasi file, atau dalam konteks ambien lainnya (seperti dalam kelas `declare`).
 
-Ekspresi untuk property decorator akan dipanggil sebagai fungsi pada waktu proses, dengan dua argumen berikut:
+Ekspresi untuk properti decorator akan dipanggil sebagai fungsi pada waktu proses, dengan dua argumen berikut:
 
 1. Dapat berupa fungsi konstruktor kelas untuk anggota statis, atau prototipe kelas untuk anggota instance.
 2. Nama anggota.
 
-> CATATAN&emsp; _Property Descriptior_ tidak menyediakan sebuah argumen untuk property decorator karena bergantung tentang bagaimana property decorator diinisialisasi pada TypeScript.
-> Ini karena, saat ini tidak ada mekanisme untuk mendeskripsikan sebuah instance property ketika mendefinisikan anggota dari sebuah prototipe, dan tidak ada cara untuk mengamati atau memodifikasi initializer untuk property. Dan nilai kembalian juga akan dibiarkan.
-> Sehingga, sebuah property decorator hanya bisa digunakan untuk mengamati property dengan nama yang spesifik, yang telah dideklarasikan pada sebuah kelas.
+> CATATAN&emsp; _Property Descriptior_ tidak menyediakan sebuah argumen untuk properti decorator karena bergantung tentang bagaimana properti decorator diinisialisasi pada TypeScript.
+> Ini karena, saat ini tidak ada mekanisme untuk mendeskripsikan sebuah instance properti ketika mendefinisikan anggota dari sebuah prototipe, dan tidak ada cara untuk mengamati atau memodifikasi initializer untuk properti. Dan nilai kembalian juga akan dibiarkan.
+> Sehingga, sebuah properti decorator hanya bisa digunakan untuk mengamati properti dengan nama yang spesifik, yang telah dideklarasikan pada sebuah kelas.
 
-Kita dapat menggunakan informasi tersebut untuk memantau property metadata, seperti pada contoh berikut:
+Kita dapat menggunakan informasi tersebut untuk memantau properti metadata, seperti pada contoh berikut:
 
 ```ts
 class Greeter {
@@ -364,7 +364,7 @@ function getFormat(target: any, propertyKey: string) {
 ```
 
 Decorator `@format("Hello, %s")` disini adalah sebuah [decorator factory](#decorator-factories).
-Ketika `@format("Hello, %s")` dipanggil, ia akan menambahkan property metadata menggunakan fungsi `Reflect.metadata` dari pustaka `reflect-metadata`.
+Ketika `@format("Hello, %s")` dipanggil, ia akan menambahkan properti metadata menggunakan fungsi `Reflect.metadata` dari pustaka `reflect-metadata`.
 Ketika `getFormat` dipanggil, ia akan membaca format dari nilai metadata-nya.
 
 > CATATAN&emsp; Contoh ini membutuhkan pustaka `reflect-metadata`.
@@ -473,7 +473,7 @@ npm i reflect-metadata --save
 ```
 
 TypeScript menyertakan dukungan eksperimental untuk menghadirkan jenis metadata tertentu untuk deklarasi yang memiliki decorator.
-Untuk mengaktifkan dukungan eksperimental ini, Anda harus mengatur opsi compiler `emitDecoratorMetadata` baik pada baris perintah atau di `tsconfig.json` Anda:
+Untuk mengaktifkan dukungan eksperimental ini, Anda harus mengatur opsi kompilator `emitDecoratorMetadata` baik pada baris perintah atau di `tsconfig.json` Anda:
 
 **Command Line**:
 
@@ -542,7 +542,7 @@ function validate<T>(
 }
 ```
 
-Compiler TypeScript akan memasukkan informasi jenis design-time menggunakan decorator `@Reflect.metadata`.
+Kompilator TypeScript akan memasukkan informasi jenis design-time menggunakan decorator `@Reflect.metadata`.
 Anda dapat menganggapnya setara dengan TypeScript berikut:
 
 ```ts

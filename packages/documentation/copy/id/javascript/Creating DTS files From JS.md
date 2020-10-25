@@ -1,5 +1,5 @@
 ---
-title: Creating .d.ts Files from .js files
+title: Membuat Berkas .d.ts dari berkas .js
 layout: docs
 permalink: /id/docs/handbook/declaration-files/dts-from-js.html
 oneline: "Bagaimana cara menambahkan hasil d.ts ke proyek JavaScript"
@@ -15,9 +15,9 @@ TypeScript mendukung sebagian besar tag JSDoc, Anda bisa menemukannya [di refere
 
 Untuk menambahkan pembuatan file .d.ts di proyekmu, Anda perlu melakukan hingga empat langkah:
 
-- Tambahkan TypeScript ke dependensi dev Anda
+- Tambahkan TypeScript ke dependensi _dev_ Anda
 - Tambahkan `tsconfig.json` untuk mengkonfigurasi TypeScript
-- Jalankan compiler TypeScript untuk menghasilkan file d.ts yang sesuai untuk file JS
+- Jalankan kompilator TypeScript untuk menghasilkan file d.ts yang sesuai untuk file JS
 - (opsional) Edit package.json Anda untuk mereferensikan tipe
 
 ### Menambahkan TypeScript
@@ -26,26 +26,26 @@ Anda bisa mempelajari cara melakukan ini di [halaman instalasi](/download) kami.
 
 ### TSConfig
 
-TSConfig adalah file jsonc yang mengkonfigurasi kedua flag compiler Anda, dan menyatakan di mana mencari file.
-Dalam kasus ini, Anda menginginkan file seperti berikut:
+TSConfig adalah file jsonc yang mengkonfigurasi kedua _flag_ kompilator Anda, dan menyatakan di mana mencari file.
+Dalam kasus ini, Anda menginginkan berkas seperti berikut:
 
 ```json5
 {
-  // Change this to match your project
+  // Ubah ini agar sesuai dengan proyek Anda
   include: ["src/**/*"],
 
   compilerOptions: {
-    // Tells TypeScript to read JS files, as
-    // normally they are ignored as source files
+    // Memberi tahu TypeScript untuk membaca file JS,
+    // karena biasanya file tersebut diabaikan sebagai file sumber
     allowJs: true,
-    // Generate d.ts files
+    // Hasilkan berkas d.ts
     declaration: true,
-    // This compiler run should
-    // only output d.ts files
+    // Proses kompilator ini seharusnya
+    // hanya mengeluarkan berkas d.ts
     emitDeclarationOnly: true,
-    // Types should go into this directory.
-    // Removing this would place the .d.ts files
-    // next to the .js files
+    // Tipe harus masuk ke direktori ini.
+    // Menghapus ini akan menempatkan berkas .d.ts
+    // di sebelah file .js
     outDir: "dist",
   },
 }
@@ -58,15 +58,15 @@ Alternatif untuk menggunakan file TSConfig adalah CLI, ini adalah perilaku yang 
 npx typescript src/**/*.js --declaration --allowJs --emitDeclarationOnly --outDir types
 ```
 
-## Menjalankan compiler
+## Menjalankan kompilator
 
 Anda bisa mempelajari bagaimana melakukan ini di [halaman pemasangan](/download) TypeScript kami.
 Anda perlu memastikan file-file ini disertakan dalam package Anda jika Anda memiliki file dalam `gitignore` proyek Anda.
 
-## Meng-edit file package.json
+## Menyunting file package.json
 
 TypeScript mereplikasi resolusi node untuk modul di `package.json`, dengan langkah tambahan untuk menemukan file .d.ts.
-Secara kasar, resolusi pertama-tama akan memeriksa bidang `"types"` opsional, kemudian bidang `"main"`, dan terakhir akan mencoba `index.d.ts` di root.
+Secara garis besar, Pertama-tama resolusi akan memeriksa bagian `"types"` yang opsional, kemudian bidang `"main"`, dan terakhir akan mencoba `index.d.ts` di root.
 
 | Package.json              | Location of default .d.ts      |
 | :------------------------ | :----------------------------- |

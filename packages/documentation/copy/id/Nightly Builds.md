@@ -6,7 +6,7 @@ oneline: Cara menggunakan nightly build TypeScript
 translatable: true
 ---
 
-Nightly build dari branch [master TypeScript](https://github.com/Microsoft/TypeScript/tree/master) diterbitkan pada tengah malam, di zona waktu PST ke npm.
+_Nightly build_ dari _branch_ [master TypeScript](https://github.com/Microsoft/TypeScript/tree/master) diterbitkan pada tengah malam, di zona waktu PST ke npm.
 Berikut adalah cara untuk mendapatkan versi ini dan cara menggunakannya.
 
 ## Menggunakan npm
@@ -15,11 +15,11 @@ Berikut adalah cara untuk mendapatkan versi ini dan cara menggunakannya.
 npm install -g typescript@next
 ```
 
-## Memperbarui IDE-mu untuk menggunakan nightly builds
+## Memperbarui IDE-mu untuk menggunakan _nightly builds_
 
-Anda juga dapat memperbarui IDE-mu untuk menggunakan nightly drop.
-Pertama, anda akan perlu untuk memasang package melalui npm.
-Anda juga dapat memasang npm package secara global atau pada folder `node_modules` di dalam proyek-mu.
+Anda juga dapat memperbarui IDE-mu untuk menggunakan _nightly_ drop.
+Pertama, Anda akan perlu untuk memasang package melalui npm.
+Anda juga dapat memasang npm package secara global atau pada direktori `node_modules` di dalam proyekmu.
 
 Pada tahap ini diasumsikan bahwa `typescript@next` sudah di-install.
 
@@ -35,10 +35,10 @@ Informasi lebih lanjut ada di [VSCode documentation](https://code.visualstudio.c
 
 ### Sublime Text
 
-Perbarui file `Settings - User` dengan cara berikut:
+Perbarui berkas `Settings - User` dengan cara berikut:
 
 ```json
-"typescript_tsdk": "<path ke folder-mu>/node_modules/typescript/lib"
+"typescript_tsdk": "<path ke direktorimu>/node_modules/typescript/lib"
 ```
 
 Informasi lebih lanjut ada di [TypeScript Plugin for Sublime Text installation documentation](https://github.com/Microsoft/TypeScript-Sublime-Plugin#installation).
@@ -49,16 +49,16 @@ Informasi lebih lanjut ada di [TypeScript Plugin for Sublime Text installation d
 
 Saat ini, Nightly build tidak menyertakan plugin secara lengkap, tapi kami sedang mengupayakan untuk menerbitkan sebuah installer di nightly.
 
-1. Unduh skrip [VSDevMode.ps1](https://github.com/Microsoft/TypeScript/blob/master/scripts/VSDevMode.ps1) script.
+1. Unduh kode [VSDevMode.ps1](https://github.com/Microsoft/TypeScript/blob/master/scripts/VSDevMode.ps1) kode.
 
-   > Lihat juga halaman wiki kami di [menggunakan custom language service file](https://github.com/Microsoft/TypeScript/wiki/Dev-Mode-in-Visual-Studio#using-a-custom-language-service-file).
+   > Lihat juga halaman wiki kami di [menggunakan berkas custom language service](https://github.com/Microsoft/TypeScript/wiki/Dev-Mode-in-Visual-Studio#using-a-custom-language-service-file).
 
 2. Melalui perintah PowerShell, jalankan:
 
 Untuk VS 2015:
 
 ```posh
-VSDevMode.ps1 14 -tsScript <path ke folder-mu>/node_modules/typescript/lib
+VSDevMode.ps1 14 -tsScript <path ke direktorimu>/node_modules/typescript/lib
 ```
 
 Untuk VS 2013:
