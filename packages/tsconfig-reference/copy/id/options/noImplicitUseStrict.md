@@ -1,10 +1,10 @@
 ---
 display: "No Implicit Use Strict"
-oneline: "Disable 'use strict' in the JS emit"
+oneline: "Menonaktifkan 'use strict' dalam mengeluarkan JS"
 ---
 
-You shouldn't need this. By default, when emitting a module file to a non-ES6 target, TypeScript emits a `"use strict";` prologue at the top of the file.
-This setting disables the prologue.
+Anda seharusnya tidak memerlukan ini. Secara bawaan, saat memancarkan sebuah berkas modul kepada sebuah target non-ES6, TypeScript memancarkan sebuah kata pengantar `"use strict";` di bagian atas berkas.
+Ini dapat menonaktifkan setelan kata pengantar itu.
 
 ```ts twoslash
 // @showEmit
