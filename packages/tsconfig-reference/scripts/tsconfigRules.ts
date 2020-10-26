@@ -151,6 +151,7 @@ export const defaultsForOptions = {
   isolatedModules: "false",
   jsx: "undefined",
   jsxFactory: "`React.createElement`",
+  jsxImportSource: "react",
   keyofStringsOnly: "false",
   listEmittedFiles: "false",
   listFiles: "false",

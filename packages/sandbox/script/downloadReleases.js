@@ -50,7 +50,7 @@ export const allReleases = ["${versions.join('", "')}"] as const
 export const supportedReleases = ["${supportedVersions.join('", "')}"] as const
 
 /** A type of all versions **/
-export type ReleaseVersions = "${versions.join('" | "')}"
+export type ReleaseVersions = "${[possibleBeta, possibleRc, ...versions].join('" | "')}"
 `
   const path = join(__dirname, "..", "src", "releases.ts")
   writeFileSync(path, format(code, { filepath: path }), "utf8")

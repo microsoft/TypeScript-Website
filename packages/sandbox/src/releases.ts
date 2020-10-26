@@ -37,6 +37,8 @@ export const supportedReleases = [
 
 /** A type of all versions **/
 export type ReleaseVersions =
+  | "4.1.0-beta"
+  | "4.1.0-rc"
   | "4.0.3"
   | "4.0.2"
   | "3.9.7"

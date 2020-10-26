@@ -5,7 +5,7 @@ oneline: "Specify the JSX Fragment reference to use for fragements when targetin
 
 Specify the JSX fragment factory function to use when targeting react JSX emit with `jsxFactory` compiler option is specified, e.g. `Fragment`.
 
-This option can be used on a per-file basis too similar to [Babel's `/** @jsxFrag h */` directive](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx#fragments).
+This option can be used on a per-file basis too similar to [Babel's `/* @jsxFrag h */` directive](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx#fragments).
 
 For example with this TSConfig:
 
