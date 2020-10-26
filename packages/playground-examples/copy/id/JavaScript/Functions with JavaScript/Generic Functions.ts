@@ -1,102 +1,119 @@
-// Generik menyediakan sebuah cara untuk menggunakan tipe
+// Tipe data generik menyediakan sebuah cara untuk menggunakan tipe
 // data sebagai sebuah variabel dalam tipe data lain, yaitu
 // meta.
 
-// Kami akan 
+// Kami akan berusaha membuat contoh ini sesederhana mungkin,
+// Anda dapat melakukan banyak hal dengan tipe data generik dan 
+// kemungkinan suatu saat Anda akan melihat kode program yang
+// sangat rumit yang memanfaatkan tipe data generik - namun hal
+// tersebut tidak berarti bahwa tipe data generik merupakan sesuatu
+// yang rumit.
 
-// We'll be trying to keep this example light, you can do
-// a lot with generics and it's likely you will see some very
-// complicated code using generics at some point - but that
-// does not mean that generics are complicated.
+// Mari kita mulai dengan sebuah contoh dimana kita akan
+// membungkus sebuah objek input dalam sebuah _array_. Kita
+// hanya akan mengamati satu variabel pada contoh ini,
+// yaitu tipe data yang diteruskan:
 
-// Let's start with an example where we wrap an input object
-// in an array. We will only care about one variable in this
-// case, the type which was passed in:
-
-function wrapInArray<Type>(input: Type): Type[] {
+function bungkusDalamArray<Tipe>(input: Tipe): Tipe[] {
   return [input];
 }
 
-// Note: it's common to see Type referred to as T. This is
-// culturally similar to how people use i in a for loop to
-// represent index. T normally represents Type, so we'll
-// be using the full name for clarity.
+// Catatan: biasanya kita melihat `Tipe` ditulis sebagai `T`.
+// Hal  tersebut merupakan kebiasaan yang mirip dengan bagaimana
+// orang menggunakan `i` dalam sebuah perulangan `for` untuk
+// merepresentasikan indeks. `T` biasanya merepresentasikan `Tipe`,
+// sehingga kami akan menuliskan dengan lengkap demi
+// kejelasan kode program.
 
-// Our function will use inference to always keep the type
-// passed in the same as the type passed out (though
-// it will be wrapped in an array).
+// Fungsi yang kita buat akan menggunakan fitur penyimpulan
+// tipe data supaya dapat menjamin tipe data yang
+// diteruskan pada fungsi akan selalu sama dengan tipe
+// data yang dikembalikan oleh fungsi tersebut (walaupun
+// tipe data tersebut akan dibungkus dalam sebuah _array_). 
 
-const stringArray = wrapInArray("hello generics");
-const numberArray = wrapInArray(123);
+const arrayString = bungkusDalamArray("hello generics");
+const arrayBilangan = bungkusDalamArray(123);
 
-// We can verify this works as expected by checking
-// if we can assign a string array to a function which
-// should be an object array:
-const notStringArray: string[] = wrapInArray({});
+// Kita dapat membuktikan bahwa jaminan tersebut
+// bekerja sesuai keinginan dengan memeriksa apakah
+// kita dapat menetapkan sebuah _array string_ pada sebuah
+// fungsi yang seharusnya merupakan sebuah _array_ objek: 
+const bukanArrayString: string[] = bungkusDalamArray({});
 
-// You can also skip the generic inference by adding the
-// type yourself also:
-const stringArray2 = wrapInArray<string>("");
+// Anda juga dapat melewati penyimpulan tipe data generik
+// dengan menambahkan tipe data:
+const arrayStringKedua = bungkusDalamArray<string>("");
 
-// wrapInArray allows any type to be used, however there
-// are cases when you need to only allow a subset of types.
-// In these cases you can say the type has to extend a
-// particular type.
+// `bungkusDalamArray` memperbolehkan penggunaan semua
+// tipe data, namun ada beberapa masalah dimana Anda ingin
+// bahwa hanya beberapa tipe data dan turunannya yang diperbolehkan.
+// Untuk mengatasi masalah tersebut, Anda dapat menetapkan
+// bahwa tipe data generik harus merupakan turunan dari tipe
+// data tertentu.
 
 interface Drawable {
-  draw: () => void;
+  gambar: () => void;
 }
 
-// This function takes a set of objects which have a function
-// for drawing to the screen
-function renderToScreen<Type extends Drawable>(input: Type[]) {
-  input.forEach((i) => i.draw());
+// Fungsi ini menerima sekumpulan objek yang memiliki
+// fungsi untuk menggambar pada layar.
+function gambarPadaLayar<Tipe extends Drawable>(input: Tipe[]) {
+  input.forEach((i) => i.gambar());
 }
 
-const objectsWithDraw = [{ draw: () => { } }, { draw: () => { } }];
-renderToScreen(objectsWithDraw);
+const objekDenganGambar = [{ gambar: () => { } }, { gambar: () => { } }];
+gambarPadaLayar(objekDenganGambar);
 
-// It will fail if draw is missing:
+// Fungsi tersebut akan gagal dipanggil
+// apabila salah satu objek tidak memiliki
+// fungsi `gambar`:
 
-renderToScreen([{}, { draw: () => { } }]);
+gambarPadaLayar([{}, { gambar: () => { } }]);
 
-// Generics can start to look complicated when you have
-// multiple variables. Here is an example of a caching
-// function that lets you have different sets of input types
-// and caches.
+// Tipe data generik akan mulai terlihat rumit ketika Anda
+// memiliki banyak variabel. Berikut merupakan sebuah
+// contoh sebuah fungsi _caching_ yang memperbolehkan
+// Anda untuk memiliki sekumpulan tipe data input dan
+// _cache_.
 
 interface CacheHost {
-  save: (a: any) => void;
+  simpan: (a: any) => void;
 }
 
-function addObjectToCache<Type, Cache extends CacheHost>(obj: Type, cache: Cache): Cache {
-  cache.save(obj);
+function simpanObjekDalamCache<Tipe, Cache extends CacheHost>(obj: Tipe, cache: Cache): Cache {
+  cache.simpan(obj);
   return cache;
 }
 
-// This is the same as above, but with an extra parameter.
-// Note: to make this work though, we had to use an any. This
-// can be worked out by using a generic interface.
+// Contoh tersebut merupakan contoh yang sama seperti
+// contoh sebelumnya, namun memiliki sebuah parameter tambahan.
+// Catatan: supaya fungsi tersebut dapat dijalankan, kita harus
+// menggunakan tipe data `any`. Hal tersebut dapat diatasi
+// menggunakan antar muka generik.
 
-interface CacheHostGeneric<ContentType> {
-  save: (a: ContentType) => void;
+interface CacheHostGenerik<TipeKonten> {
+  simpan: (a: TipeKonten) => void;
 }
 
-// Now when the CacheHostGeneric is used, you need to tell
-// it what ContentType is.
+// Sekarang ketika `CacheHostGeneric` digunakan, Anda
+// harus menetapkan `TipeKonten`.
 
-function addTypedObjectToCache<Type, Cache extends CacheHostGeneric<Type>>(obj: Type, cache: Cache): Cache {
-  cache.save(obj);
+function simpanObjekBertipeDataPadaCache<Type, Cache extends CacheHostGenerik<Type>>(obj: Type, cache: Cache): Cache {
+  cache.simpan(obj);
   return cache;
 }
 
-// That escalated pretty quickly in terms of syntax. However,
-// this provides more safety. These are trade-offs, that you
-// have more knowledge to make now. When providing APIs for
-// others, generics offer a flexible way to let others use
-// their own types with full code inference.
+// Contoh-contoh di atas sudah menjelaskan sintaks tipe data generik
+// secara sekilas. Namun, tipe data generik mampu memastikan bahwa
+// kode program yang Anda buat lebih aman. Hal tersebut merupakan
+// kompromi, bahwa Anda memiliki lebih banyak pengetahuan sekarang.
+// Ketika Anda menyediakan API untuk orang lain, tipe data generik
+// menyediakan sebuah cara yang fleksibel yang memperbolehkan
+// orang lain untuk menggunakan tipe data mereka sendiri
+// dengan dukungan fitur penyimpulan tipe data.
 
-// For more examples of generics with classes and interfaces:
+// Anda dapat melihat contoh-contoh lain tentang tipe data generik
+// dengan kelas dan antar muka melalui: 
 //
 // example:advanced-classes
 // example:typescript-with-react
