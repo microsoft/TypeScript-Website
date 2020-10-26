@@ -1,12 +1,12 @@
 ---
 display: "No Implicit This"
-oneline: "Raise errors when 'this' would be any"
+oneline: "Menimbulkan kesalahan-kesalahan saat 'this' menjadi bertipe any"
 ---
 
-Raise error on 'this' expressions with an implied 'any' type.
+Menimbulkan kesalahan kepada pernyataan 'this' dengan tersiratnya tipe 'any'.
 
-For example, the class below returns a function which tries to access `this.width` and `this.height` – but the context
-for `this` inside the function inside `getAreaFunction` is not the instance of the Rectangle.
+Sebagai contoh, class dibawah ini mengembalikan suatu fungsi yang mencoba mengakses `this.width` dan `this.height` – tapi konteksnya
+untuk `this` didalam fungsi yang didalam `getAreaFunction` ini, bukanlah instansi dari class Rectangle.
 
 ```ts twoslash
 // @errors: 2683
