@@ -1,9 +1,9 @@
 ---
 display: "No Implicit Returns"
-oneline: "Ensure that all codepaths return in a function"
+oneline: "Memastikan semua jalur kode mengembalikan nilai di suatu fungsi"
 ---
 
-When enabled, TypeScript will check all code paths in a function to ensure they return a value.
+Saat diaktifkaan, TypeScript akan melakukan pengecekan semua jalur kode di suatu fungsi untuk memastikan mereka mengembalikan suatu nilai.
 
 ```ts twoslash
 // @errors: 2366 2322
