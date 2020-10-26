@@ -1,136 +1,150 @@
-// TypeScript's inference can get you very far, but there
-// are lots of extra ways to provide a richer way to document
-// the shape of your functions.
+// Fitur penyimpulan tipe data yang dimiliki TypeScript
+// dapat meningkatkan kemampuan Anda secara drastis, namun
+// terdapat banyak cara lain untuk mendokumentasikan
+// fungsi Anda dengan lebih rinci. 
 
-// A good first place is to look at optional params, which
-// is a way of letting others know you can skip params.
+// Salah satu titik awal yang baik adalah parameter opsional,
+// yang merupakan sebuah cara untuk memberitahu orang lain
+// bahwa Anda tidak wajib untuk meneruskan parameter.
 
 let i = 0;
-const incrementIndex = (value?: number) => {
-  i += value === undefined ? 1 : value;
+const tambahkanIndeks = (nilai?: number) => {
+  i += nilai === undefined ? 1 : nilai;
 };
 
-// This function can be called like:
+// Fungsi tersebut dapat dipanggil dengan cara:
 
-incrementIndex();
-incrementIndex(0);
-incrementIndex(3);
+tambahkanIndeks();
+tambahkanIndeks(0);
+tambahkanIndeks(3);
 
-// You can type parameters as functions, which provides
-// type inference when you write the functions.
+// Anda dapat menjadikan fungsi sebagai parameter, dimana
+// hal tersebut menyediakan fitur penyimpulan tipe data
+// ketika Anda menulis fungsi tersebut.
 
-const callbackWithIndex = (callback: (i: number) => void) => {
+const callbackDenganIndeks = (callback: (i: number) => void) => {
   callback(i);
 };
 
-// Embedding function interfaces can get a bit hard to read
-// with all the arrows. Using a type alias will let you name
-// the function param.
+// Menyisipkan antar muka fungsi dapat menyebabkan kode program
+// sulit dibaca. Menggunakan fitur alias pada tipe data akan
+// memperbolehkan Anda memberi nama pada parameter fungsi yang diteruskan.
 
-type NumberCallback = (i: number) => void;
-const callbackWithIndex2 = (callback: NumberCallback) => {
+type callbackBilangan = (i: number) => void;
+const callbackDenganIndeks2 = (callback: callbackBilangan) => {
   callback(i);
 };
 
-// These can be called like:
+// Fungsi tersebut dapat dipanggil seperti berikut:
 
-callbackWithIndex(index => {
+callbackDenganIndeks(index => {
   console.log(index);
 });
 
-// By hovering on index above, you can see how TypeScript
-// has inferred the index to be a number correctly.
+// Dengan menyorot indeks di atas, Anda dapat melihat bagaimana
+// TypeScript telah menyimpulkan indeks sebagai angka dengan tepat.
 
-// TypeScript inference can work when passing a function
-// as an instance reference too. To show this, we'll use
-// a function which changed a number into string:
+// Penyimpulan tipe data TypeScript juga dapat dijalankan ketika
+// meneruskan sebuah fungsi sebagai sebuah _reference_. Untuk
+// menunjukkan hal tersebut, kita akan menggunakan sebuah fungsi
+// yang mengubah sebuah angka menjadi sebuah _string_:
 
-const numberToString = (n: number) => {
+const angkaKeString = (n: number) => {
   return n.toString();
 };
 
-// This can be used in a function like map on an array
-// to convert all numbers into a string, if you hover
-// on stringedNumbers below you can see the expected types.
-const stringedNumbers = [1, 4, 6, 10].map(i => numberToString(i));
+// Fungsi tersebut dapat digunakan pada `map` dalam sebuah
+// _array_ untuk mengubah seluruh angka menjadi sebuah sebuah
+// _string_. Jika Anda menyorot `angkaSebagaiString` di bawah ini,
+// Anda dapat melihat tipe data yang diharapkan.
+const angkaSebagaiString = [1, 4, 6, 10].map(i => angkaKeString(i));
 
-// We can use shorthand to have the function passed directly
-// and get the same results with more focused code:
-const stringedNumbersTerse = [1, 4, 6, 10].map(numberToString);
+// Kita dapat menyingkat penulisan kode program dengan
+// langsung meneruskan fungsi dan mendapatkan hasil yang sama
+// namun dengan kode program yang lebih terfokus:
+const angkaSebagaiStringTerse = [1, 4, 6, 10].map(angkaKeString);
 
-// You may have functions which could accept a lot of types
-// but you are only interested in a few properties. This is
-// a useful case for indexed signatures in types. The
-// following type declares that this function is OK to use
-// any object so long as it includes the property name:
+// Anda bisa saja memiliki fungsi yang mampu menerima banyak
+// tipe data sekaligus, namun Anda hanya tertarik pada beberapa
+// atribut. Kasus tersebut merupakan contoh kasus yang berguna
+// untuk _indexed signatures_ pada tipe data. Tipe data di bawah
+// ini mendeklarasikan bahwa fungsi ini dapat dipanggil
+// menggunakan objek apapun selama objek tersebut memiliki
+// atribut `nama`:
 
-interface AnyObjectButMustHaveName {
-  name: string;
+interface SeluruhObjekBernama {
+  nama: string;
   [key: string]: any;
 }
 
-const printFormattedName = (input: AnyObjectButMustHaveName) => {};
+const cetakNama = (input: SeluruhObjekBernama) => { };
 
-printFormattedName({ name: "joey" });
-printFormattedName({ name: "joey", age: 23 });
+cetakNama({ nama: "joey" });
+cetakNama({ nama: "joey", umur: 23 });
 
-// If you'd like to learn more about index-signatures
-// we recommend:
+// Apabila Anda ingin mempelajari mengenai _index-signatures_
+// kami merekomendasikan:
 //
 // https://www.typescriptlang.org/docs/handbook/interfaces.html#excess-property-checks
 // https://basarat.gitbooks.io/typescript/docs/types/index-signatures.html
 
-// You can also allow this kind of behavior everywhere
-// via the tsconfig flag suppressExcessPropertyErrors -
-// however, you can't know if others using your API have
-// this set to off.
+// Anda juga dapat memperbolehkan perilaku TypeScript
+// seperti ini dimanapun dengan menyetel `suppressExcessPropertyError`
+// pada `tsconfig` - namun, orang lain tidak dapat mengetahui
+// hal tersebut apabila API ini dimatikan.
 
-// Functions in JavaScript can accept different sets of params.
-// There are two common patterns for describing these: union
-// types for parameters/return, and function overloads.
+// Fungsi dalam JavaScript dapat menerima berbagai parameter.
+// Terdapat dua cara yang umum digunakan untuk mendeskripsikan
+// hal tersebut: tipe data gabungan untuk kembalian / masukan, dan
+// _function overload_.
 
-// Using union types in your parameters makes sense if there
-// are only one or two changes and documentation does not need
-// to change between functions.
+// Menggunakan tipe data gabungan pada parameter Anda merupakan
+// pilihan yang masuk akal apabila hanya ada satu atau dua perubahan
+// dan dokumentasi kode program tidak perlu diubah apabila fungsi
+// berubah.
 
-const boolOrNumberFunction = (input: boolean | number) => {};
+const fungsiBooleanAtauAngka = (input: boolean | number) => { };
 
-boolOrNumberFunction(true);
-boolOrNumberFunction(23);
+fungsiBooleanAtauAngka(true);
+fungsiBooleanAtauAngka(23);
 
-// Function overloads on the other hand offer a much richer
-// syntax for the parameters and return types.
-
-interface BoolOrNumberOrStringFunction {
-  /** Takes a bool, returns a bool */
+// Namun, _function overload_ menyediakan sintaks
+// yang lebih luas untuk parameter dan tipe data kembalian.
+interface fungsiBooleanAtauAngkaAtauString {
+  /** Menerima sebuah boolean, mengembalikan sebuah boolean */
   (input: boolean): boolean;
-  /** Takes a number, returns a number */
+  /** Menerima sebuah angka, mengembalikan sebuah angka */
   (input: number): number;
-  /** Takes a string, returns a bool */
+  /** Menerima sebuah _string_, mengembalikan sebuah _string_ */
   (input: string): boolean;
 }
 
-// If this is your first time seeing declare, it allows you
-// to tell TypeScript something exists even if it doesn't
-// exist in the runtime in this file. Useful for mapping
-// code with side-effects but extremely useful for demos
-// where making the implementation would be a lot of code.
+// Apabila ini merupakan kali pertama Anda melihat `declare`,
+// `declare` memperbolehkan Anda untuk memberi tahu TypeScript
+// bahwa sesuatu memang ada walaupun benda tersebut tidak
+// ada pada waktu eksekusi berkas ini. Hal tersebut berguna
+// untuk memetakan kode program yang memiliki efek samping
+// namun sangat berguna pada saat demonstrasi program
+// yang membutuhkan banyak kode program untuk mengimplementasikannya.
 
-declare const boolOrNumberOrStringFunction: BoolOrNumberOrStringFunction;
+declare const fungsiBooleanAtauAngkaAtauString: fungsiBooleanAtauAngkaAtauString;
 
-const boolValue = boolOrNumberOrStringFunction(true);
-const numberValue = boolOrNumberOrStringFunction(12);
-const boolValue2 = boolOrNumberOrStringFunction("string");
+const nilaiBoolean = fungsiBooleanAtauAngkaAtauString(true);
+const nilaiAngka = fungsiBooleanAtauAngkaAtauString(12);
+const nilaiBoolean2 = fungsiBooleanAtauAngkaAtauString("string");
 
-// If you hover over the above values and functions you
-// can see the right documentation and return values.
+// Apabila Anda menyorot nilai-nilai di atas dan fungsinya, Anda
+// dapat melihat dokumentasi yang tepat beserta dengan 
+// tipe data kembaliannya.
 
-// Using function overloads can get you very far, however
-// there's another tool for dealing with different types of
-// inputs and return values and that is generics.
+// Menggunakan _function overload_ dapat meningkatkan kemampuan
+// Anda secara drastis, namun ada perkakas lain yang dapat
+// digunakan untuk tipe data masukan dan kembalian yang berbeda,
+// yaitu tipe data generik.
 
-// These provide a way for you to have types as placeholder
-// variables in type definitions.
+// Contoh ini menyediakan sebuah cara bagi Anda untuk
+// menetapkan tipe data sebagai variabel sementara
+// pada deklarasi tipe data. 
 
 // example:generic-functions
 // example:function-chaining
