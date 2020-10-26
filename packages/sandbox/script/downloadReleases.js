@@ -19,10 +19,10 @@ const go = async () => {
 
   // e.g. 4.3.1 -> 4.4.0-beta
   // this won't work for 5.0 specifically, but that's an ok edge case for me
-  const possibleBeta = `${latestStable.split(".")[0]}.${latestStable.split(".")[1]}.0-beta`
+  const possibleBeta = `${latestStable.split(".")[0]}.${Number(latestStable.split(".")[1]) + 1}.0-beta`
   const addBeta = preReleases.data.versions.includes(possibleBeta)
 
-  const possibleRc = `${latestStable.split(".")[0]}.${latestStable.split(".")[1]}.0-rc`
+  const possibleRc = `${latestStable.split(".")[0]}.${Number(latestStable.split(".")[1]) + 1}.0-rc`
   const addRc = preReleases.data.versions.includes(possibleRc)
 
   // Get the highest maj/min ignoring patch versions
