@@ -54,7 +54,7 @@ In TypeScript, when you reference a `const enum` member, the reference is replac
 ```ts twoslash
 declare const enum Numbers {
   Zero = 0,
-  One = 1
+  One = 1,
 }
 console.log(Numbers.Zero + Numbers.One);
 ```
@@ -66,7 +66,7 @@ To this JavaScript:
 // @removeComments
 declare const enum Numbers {
   Zero = 0,
-  One = 1
+  One = 1,
 }
 console.log(Numbers.Zero + Numbers.One);
 ```

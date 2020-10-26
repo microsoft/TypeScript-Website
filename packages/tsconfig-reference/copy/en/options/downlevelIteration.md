@@ -11,7 +11,16 @@ ECMAScript 6 added several new iteration primitives: the `for / of` loop (`for (
 
 #### Example: Effects on `for / of`
 
-Without `downlevelIteration` on, a `for / of` loop on any object is downleveled to a traditional `for` loop:
+With this TypeScript code:
+
+```ts twoslash
+const str = "Hello!";
+for (const s of str) {
+  console.log(s);
+}
+```
+
+Without `downlevelIteration` enabled, a `for / of` loop on any object is downleveled to a traditional `for` loop:
 
 ```ts twoslash
 // @target: ES5
@@ -22,7 +31,7 @@ for (const s of str) {
 }
 ```
 
-This is often what people expect, but it's not 100% compliant with ECMAScript 6 behavior.
+This is often what people expect, but it's not 100% compliant with ECMAScript iteration protocol.
 Certain strings, such as emoji (😜), have a `.length` of 2 (or even more!), but should iterate as 1 unit in a `for-of` loop.
 See [this blog post by Jonathan New](https://blog.jonnew.com/posts/poo-dot-length-equals-two) for a longer explanation.
 
@@ -39,7 +48,20 @@ for (const s of str) {
 }
 ```
 
-> > **Note:** enabling `downlevelIteration` does not improve compliance if `Symbol.iterator` is not present in the runtime.
+You can use [tslib](https://www.npmjs.com/package/tslib) via [`importHelpers`](#importHelpers) to reduce the amount of inline JavaScript too:
+
+```ts twoslash
+// @target: ES5
+// @downlevelIteration
+// @importHelpers
+// @showEmit
+const str = "Hello!";
+for (const s of str) {
+  console.log(s);
+}
+```
+
+**Note:** enabling `downlevelIteration` does not improve compliance if `Symbol.iterator` is not present in the runtime.
 
 #### Example: Effects on Array Spreads
 

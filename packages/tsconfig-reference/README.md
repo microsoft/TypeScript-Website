@@ -23,12 +23,8 @@ Then, during a deploy, all of the markdown files are bundled together and any me
 
 If you'd like to create a new language:
 
-- Do you plan on making an evening or two on it and go all out? then you can use the
-  script [`./scripts/createLanguage.ts`](./scripts/createLanguage.ts) to set up a new language.
-
-- Do you want to work on it incrementally? Create a new subfolder in `./copy` with your language code and
-  then make sure the files you work on have the same name as English and your changes will overwrite the English
-  version.
+Create a new subfolder in `./copy` with your language code and then make sure the files you work on have the same
+name as English and your changes will overwrite the English version. You will need
 
 ## Building
 

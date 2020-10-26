@@ -1,6 +1,6 @@
 ---
 display: "No Implicit Returns"
-oneline: "Ensure that all codepaths return in a function"
+oneline: "Ensure that all codepaths explicitly return in a function"
 ---
 
 When enabled, TypeScript will check all code paths in a function to ensure they return a value.

@@ -1,6 +1,6 @@
 ---
 display: "Strict Property Initialization"
-oneline: "Ensure that all class properties match their types after the constructor has finished"
+oneline: "Checks for class properties which are declared but not set in the constructor."
 ---
 
 When set to true, TypeScript will raise an error when a class property was declared but not set in the constructor.

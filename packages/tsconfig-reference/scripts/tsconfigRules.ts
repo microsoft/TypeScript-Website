@@ -46,7 +46,18 @@ type AnOption = WatchProperties | RootProperties | CompilerOptionName;
 
 /** Allows linking between options */
 export const relatedTo: [AnOption, AnOption[]][] = [
-  ["strict", ["alwaysStrict", "strictNullChecks", "strictBindCallApply", "strictFunctionTypes", "strictPropertyInitialization", "noImplicitAny", "noImplicitThis"]],
+  [
+    "strict",
+    [
+      "alwaysStrict",
+      "strictNullChecks",
+      "strictBindCallApply",
+      "strictFunctionTypes",
+      "strictPropertyInitialization",
+      "noImplicitAny",
+      "noImplicitThis",
+    ],
+  ],
   ["alwaysStrict", ["strict"]],
   ["strictNullChecks", ["strict"]],
   ["strictBindCallApply", ["strict"]],
@@ -98,6 +109,8 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["jsx", ["jsxFactory", "jsxFragmentFactory"]],
   ["jsxFactory", ["jsx", "jsxFragmentFactory"]],
   ["jsxFragmentFactory", ["jsx", "jsxFactory"]],
+
+  ["suppressImplicitAnyIndexErrors", ["noImplicitAny"]],
 ];
 
 /**
