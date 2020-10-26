@@ -20,25 +20,6 @@ That will update all of the site to use 3.9.0 for building. Run `yarn build` to 
 
 You might see issues with yarn patching TypeScript, if so, try run: `yarn set version latest` first to update to the latest yarn.
 
-##### Playground
-
-To add a new version for folks to be able to use
-
-- Create a tag for [3.9.0-beta](https://github.com/microsoft/typescript-make-monaco-builds) in `microsoft/typescript-make-monaco-builds` against the current master.
-- Push that tag, then check the [GitHub Actions section](https://github.com/microsoft/typescript-make-monaco-builds/actions) ([Here's 3.9.0's](https://github.com/microsoft/typescript-make-monaco-builds/runs/546571003?check_suite_focus=true))
-
-Then it needs to be added to the dropdown, you can find it here: [`packages/playgound/src/inrdex.ts`](https://github.com/microsoft/TypeScript-website/blob/v2/packages/playground/src/index.ts)
-
-```ts
-const allVersions = [
-  "3.9.0-beta",
-  ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)),
-  "Nightly",
-]
-```
-
-_There is a space for this to be automated away entirely in the future, there is enough data in the site's sourcecode to derive this._
-
 ##### New Handbook Docs
 
 You might have a new reference doc to add, they live in [`packages/documentation/copy`](https://github.com/microsoft/TypeScript-website/blob/v2/packages/documentation/copy). You can ignore languages other than `en`. The folder structure is only for your reference and has no bearing on the site navigation. Each markdown document needs a header like:
