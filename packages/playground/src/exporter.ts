@@ -252,7 +252,7 @@ ${codify(stringifiedCompilerOptions, "json")}
     } else {
       ui.showModal(
         body,
-        document.getElementById("exports-drpdown")!,
+        document.getElementById("exports-dropdown")!,
         "Issue too long to post automatically. Copy this text, then click 'Create New Issue' to begin.",
         {
           "Create New Issue": "https://github.com/Microsoft/TypeScript/issues/new",
@@ -265,7 +265,11 @@ ${codify(stringifiedCompilerOptions, "json")}
 
   async function copyAsMarkdownIssue() {
     const markdown = await makeMarkdown()
-    ui.showModal(markdown, document.getElementById("exports-drpdown")!, "Markdown Version of Playgrund Code for GitHub Issue")
+    ui.showModal(
+      markdown,
+      document.getElementById("exports-dropdown")!,
+      "Markdown Version of Playgrund Code for GitHub Issue"
+    )
     return false
   }
 
@@ -273,7 +277,7 @@ ${codify(stringifiedCompilerOptions, "json")}
     const query = sandbox.createURLQueryWithCompilerOptions(sandbox)
     const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
     const chat = `[Playground Link](${fullURL})`
-    ui.showModal(chat, document.getElementById("exports-drpdown")!, "Markdown for chat")
+    ui.showModal(chat, document.getElementById("exports-dropdown")!, "Markdown for chat")
     return false
   }
 
@@ -286,8 +290,15 @@ ${codify(stringifiedCompilerOptions, "json")}
 
     const code = "```\n" + preview + "\n```\n"
     const chat = `${code}\n[Playground Link](${fullURL})`
-    ui.showModal(chat, document.getElementById("exports-drpdown")!, "Markdown code")
+    ui.showModal(chat, document.getElementById("exports-dropdown")!, "Markdown code")
     return false
+  }
+
+  function exportAsTweet() {
+    const query = sandbox.createURLQueryWithCompilerOptions(sandbox)
+    const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
+
+    document.location.assign(`http://www.twitter.com/share?url=${fullURL}`)
   }
 
   return {
@@ -298,5 +309,6 @@ ${codify(stringifiedCompilerOptions, "json")}
     copyForChat,
     copyForChatWithPreview,
     openInTSAST,
+    exportAsTweet,
   }
 }

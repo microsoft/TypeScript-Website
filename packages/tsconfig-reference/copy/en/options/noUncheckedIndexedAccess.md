@@ -17,7 +17,7 @@ interface EnvironmentVars {
 declare const env: EnvironmentVars;
 
 // Declared as existing
-const name = env.NAME;
+const sysName = env.NAME;
 const os = env.OS;
 //    ^?
 
@@ -42,7 +42,7 @@ interface EnvironmentVars {
 declare const env: EnvironmentVars;
 
 // Declared as existing
-const name = env.NAME;
+const sysName = env.NAME;
 const os = env.OS;
 //    ^?
 
