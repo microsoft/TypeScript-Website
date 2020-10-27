@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "start": "tsdx watch",
+    "bootstrap": "yarn build",
     "build": "tsdx build && yarn make-for-website && yarn make-global",
     "make-for-website": "cpy src/index.ts ../sandbox/src/vendor --rename=typescript-vfs.ts",
     "make-global": "node scripts/makeGlobals.js",

@@ -13,6 +13,7 @@
   ],
   "scripts": {
     "start": "tsdx watch",
+    "bootstrap": "yarn build",
     "prepublishOnly": "yarn build",
     "build": "tsdx build",
     "test": "tsdx test",

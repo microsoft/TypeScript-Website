@@ -2,20 +2,7 @@
   "private": true,
   "name": "root",
   "workspaces": [
-    "packages/create-typescript-playground-plugin",
-    "packages/typescript-vfs",
-    "packages/ts-twoslasher",
-    "packages/shiki-twoslash",
-    "packages/gatsby-remark-shiki-twoslash",
-    "packages/community-meta",
-    "packages/documentation",
-    "packages/handbook-epub",
-    "packages/sandbox",
-    "packages/playground",
-    "packages/playground-examples",
-    "packages/tsconfig-reference",
-    "packages/twoslash-webworker",
-    "packages/typescriptlang-org"
+    "packages/*"
   ],
   "engines": {
     "node": ">=13"
