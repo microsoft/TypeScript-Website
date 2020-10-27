@@ -129,7 +129,13 @@ export function twoslashRenderer(lines: Lines, options: Options, twoslash: TwoSl
       queries.forEach(query => {
         switch (query.kind) {
           case "query": {
-            html += `<span class='query'>${"//" + "".padStart(query.offset - 2) + "^ = " + query.text}</span>`
+            const previousLine = (lines[i - 1] || [])[0]?.content || ""
+            const previousLineWhitespace = previousLine.slice(0, /\S/.exec(previousLine)?.index || 0)
+            // prettier-ignore
+            const linePrefix = previousLineWhitespace + "//" + "".padStart(query.offset - 2 - previousLineWhitespace.length)
+            // prettier-ignore
+            const queryTextWithPrefix = query.text?.split("\n").map((l, i) => i !== 0 ? linePrefix + l : l).join("\n")
+            html += `<span class='query'>${linePrefix + "^ = " + queryTextWithPrefix}</span>`
             break
           }
           case "completions": {

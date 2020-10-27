@@ -214,11 +214,14 @@ export interface ExampleOptions {
   noErrorValidation: boolean
 }
 
-const defaultHandbookOptions: ExampleOptions = {
+// Keys in this object are used to filter out handbook options
+// before compiler options are set.
+
+const defaultHandbookOptions: Partial<ExampleOptions> = {
   errors: [],
   noErrors: false,
   showEmit: false,
-  showEmittedFile: "index.js",
+  showEmittedFile: undefined,
   noStaticSemanticInfo: false,
   emit: false,
   noErrorValidation: false,
@@ -385,6 +388,12 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
 
   const handbookOptions = { ...filterHandbookOptions(codeLines), ...options.defaultOptions }
   const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions, ts)
+
+  // Handle special casing the lookup for when using jsx preserve which creates .jsx files
+  if (!handbookOptions.showEmittedFile) {
+    handbookOptions.showEmittedFile =
+      compilerOptions.jsx && compilerOptions.jsx === ts.JsxEmit.Preserve ? "index.jsx" : "index.js"
+  }
 
   const getRoot = () => {
     const path = require("path")
@@ -629,7 +638,9 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   if (handbookOptions.showEmit) {
     // Get the file which created the file we want to show:
     const emitFilename = handbookOptions.showEmittedFile || defaultFileName
-    const emitSourceFilename = fsRoot + emitFilename.replace(".js", "").replace(".d.ts", "").replace(".map", "")
+    const emitSourceFilename =
+      fsRoot + emitFilename.replace(".jsx", "").replace(".js", "").replace(".d.ts", "").replace(".map", "")
+
     let emitSource = filenames.find(f => f === emitSourceFilename + ".ts" || f === emitSourceFilename + ".tsx")
 
     if (!emitSource && !compilerOptions.outFile) {

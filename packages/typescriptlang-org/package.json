@@ -49,6 +49,7 @@
     "gatsby-source-filesystem": "^2.3.35",
     "gatsby-transformer-remark": "^2.8.46",
     "jsdom": "^16.2.0",
+    "preact": "^10.5.5",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-helmet": "^5.2.1",

@@ -1,5 +1,5 @@
+// @filename: index.tsx
 // This doesn't work!
-
 declare module JSX {
   interface Element {}
   interface IntrinsicElements {

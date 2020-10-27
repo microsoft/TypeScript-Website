@@ -64,13 +64,30 @@ Alternatively, you can use a per-file pragma to set this option:
 
 With `"jsxImportSource": "preact"`:
 
+E.g. this code:
+
 ```tsx twoslash
-// @showEmit
+// @module: commonjs
 // @jsx: react-jsx
 // @target: esnext
 // @noErrors
 
-/* @jsxImportSource preact */
+/** @jsxImportSource preact */
+function App() {
+  return <h1>Hello World</h1>;
+}
+```
+
+Looks like this:
+
+```tsx twoslash
+// @showEmit
+// @module: commonjs
+// @jsx: react-jsx
+// @target: esnext
+// @noErrors
+
+/** @jsxImportSource preact */
 function App() {
   return <h1>Hello World</h1>;
 }
