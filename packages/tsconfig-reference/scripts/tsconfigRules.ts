@@ -144,7 +144,7 @@ export const defaultsForOptions = {
   forceConsistentCasingInFileNames: "false",
   generateCpuProfile: " profile.cpuprofile",
   importHelpers: "false",
-  includes: ' `[]` if `files` is specified, otherwise `["**/*"]`',
+  include: ' `[]` if `files` is specified, otherwise `["**/*"]`',
   incremental: "`true` if `composite`, `false` otherwise",
   inlineSourceMap: "false",
   inlineSources: "false",
