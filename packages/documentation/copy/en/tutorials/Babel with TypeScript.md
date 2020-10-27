@@ -8,7 +8,7 @@ translatable: true
 
 ## Babel vs `tsc` for TypeScript
 
-When making a modern JavaScript project, you might ask yourself what the right way to convert files from TypeScript to JavaScript.
+When making a modern JavaScript project, you might ask yourself what is the right way to convert files from TypeScript to JavaScript?
 
 A lot of the time the answer is _"it depends"_, or _"someone may have decided for you"_ depending on the project. If you are building your project with an existing framework like [tsdx](https://tsdx.io), [Angular](https://angular.io/), [NestJS](https://nestjs.com/) or any framework mentioned in the [Getting Started](/docs/home) then this decision is handled for you.
 
