@@ -60,35 +60,16 @@ function App() {
 }
 ```
 
-Alternatively, you can use a per-file pragma to set this option:
+Alternatively, you can use a per-file pragma to set this option, for example:
 
-With `"jsxImportSource": "preact"`:
-
-E.g. this code:
-
-```tsx twoslash
-// @module: commonjs
-// @jsx: react-jsx
-// @target: esnext
-// @noErrors
-
+```tsx
 /** @jsxImportSource preact */
-function App() {
+
+export function App() {
   return <h1>Hello World</h1>;
 }
 ```
 
-Looks like this:
+Would add `preact/jsx-runtime` as an import for the `_jsx` factory.
 
-```tsx twoslash
-// @showEmit
-// @module: commonjs
-// @jsx: react-jsx
-// @target: esnext
-// @noErrors
-
-/** @jsxImportSource preact */
-function App() {
-  return <h1>Hello World</h1>;
-}
-```
+_Note:_ In order for this to work like you would expect, your `tsx` file must include an `export` or `import` so that it is considered a module.
