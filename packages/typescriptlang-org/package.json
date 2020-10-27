@@ -39,6 +39,7 @@
     "gatsby-plugin-sass": "^2.3.21",
     "gatsby-plugin-sharp": "^2.6.43",
     "gatsby-plugin-sitemap": "^2.2.27",
+    "gatsby-plugin-typegen": "^1.1.1",
     "gatsby-react-router-scroll": "2.3.1",
     "gatsby-remark-autolink-headers": "^2.3.15",
     "gatsby-remark-copy-linked-files": "^2.3.19",
