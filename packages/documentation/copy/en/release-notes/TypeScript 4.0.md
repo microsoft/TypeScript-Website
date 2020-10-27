@@ -91,12 +91,11 @@ const r2 = tail([...myTuple, ...myArray] as const);
 
 The second change is that rest elements can occur anywhere in a tuple - not just at the end!
 
-```ts twoslash
+```ts
 type Strings = [string, string];
 type Numbers = [number, number];
 
 type StrStrNumNumBool = [...Strings, ...Numbers, boolean];
-//   ^?
 ```
 
 Previously, TypeScript would issue an error like the following:
@@ -109,12 +108,11 @@ But with TypeScript 4.0, this restriction is relaxed.
 
 Note that in cases when we spread in a type without a known length, the resulting type becomes unbounded as well, and all the following elements factor into the resulting rest element type.
 
-```ts twoslash
+```ts
 type Strings = [string, string];
 type Numbers = number[];
 
 type Unbounded = [...Strings, ...Numbers, boolean];
-//   ^?
 ```
 
 By combining both of these behaviors together, we can write a single well-typed signature for `concat`:

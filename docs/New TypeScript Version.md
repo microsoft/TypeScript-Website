@@ -4,25 +4,6 @@ We'll use 3.9.0 as the example. Note this looks long because there's a lot of ex
 
 ### Beta
 
-##### Playground
-
-To add a new version for folks to be able to use
-
-- Create a tag for [3.9.0-beta](https://github.com/orta/make-monaco-builds) in `orta/make-monaco-builds` against the current master.
-- Push that tag, then check the [GitHub Actions section](https://github.com/orta/make-monaco-builds/actions) ([Here's 3.9.0's](https://github.com/orta/make-monaco-builds/runs/546571003?check_suite_focus=true))
-
-Then it needs to be added to the dropdown, you can find it here: [`packages/playground/src/index.ts`](https://github.com/microsoft/TypeScript-website/blob/v2/packages/playground/src/index.ts)
-
-```ts
-const allVersions = [
-  "3.9.0-beta",
-  ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)),
-  "Nightly",
-]
-```
-
-_There is a space for this to be automated away entirely in the future, there is enough data in the site's sourcecode to derive this._
-
 ##### Site
 
 The website uses one version of TypeScript which you can find in the root `package.json` inside the `resolutions` field. It's always a specific version, so change the version to:
@@ -36,6 +17,8 @@ The website uses one version of TypeScript which you can find in the root `packa
 Then run `yarn install`.
 
 That will update all of the site to use 3.9.0 for building. Run `yarn build` to see if any of the website's code broke.
+
+You might see issues with yarn patching TypeScript, if so, try run: `yarn set version latest` first to update to the latest yarn.
 
 ##### New Handbook Docs
 

@@ -7,20 +7,20 @@ Controls how JSX constructs are emitted in JavaScript files.
 This only affects output of JS files that started in `.tsx` files.
 
 - `react`: Emit `.js` files with JSX changed to the equivalent `React.createElement` calls
+- `react-jsx`: Emit `.js` files with the changed to `_jsx` calls
+- `react-jsxdev`: Emit `.js` files with the JSX to `_jsx` calls
 - `preserve`: Emit `.jsx` files with the JSX unchanged
 - `react-native`: Emit `.js` files with the JSX unchanged
-
-<!-- This is blocked on https://github.com/microsoft/TypeScript-Website/issues/860
 
 ### For example
 
 This sample code:
 
-```ts
+```tsx
 export const helloWorld = () => <h1>Hello world</h1>;
 ```
 
-Default: ("react")
+Default: `"react"`
 
 ```tsx twoslash
 declare module JSX {
@@ -34,9 +34,9 @@ declare module JSX {
 export const helloWorld = () => <h1>Hello world</h1>;
 ```
 
-Preserve:
+Preserve: `"preserve"`
 
-```ts twoslash
+```tsx twoslash
 declare module JSX {
   interface Element {}
   interface IntrinsicElements {
@@ -49,9 +49,9 @@ declare module JSX {
 export const helloWorld = () => <h1>Hello world</h1>;
 ```
 
-React Native:
+React Native: `"react-native"`
 
-````ts twoslash
+```tsx twoslash
 declare module JSX {
   interface Element {}
   interface IntrinsicElements {
@@ -62,5 +62,34 @@ declare module JSX {
 // @noErrors
 // @jsx: react-native
 export const helloWorld = () => <h1>Hello world</h1>;
-````
--->
+```
+
+React 17 transform: `"react-jsx"`<sup>[[1]](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html)</sup>
+
+```tsx twoslash
+declare module JSX {
+  interface Element {}
+  interface IntrinsicElements {
+    [s: string]: any;
+  }
+}
+// @showEmit
+// @noErrors
+// @jsx: react-jsx
+export const helloWorld = () => <h1>Hello world</h1>;
+```
+
+React 17 dev transform: `"react-jsxdev"`<sup>[[1]](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html)</sup>
+
+```tsx twoslash
+declare module JSX {
+  interface Element {}
+  interface IntrinsicElements {
+    [s: string]: any;
+  }
+}
+// @showEmit
+// @noErrors
+// @jsx: react-jsxdev
+export const helloWorld = () => <h1>Hello world</h1>;
+```

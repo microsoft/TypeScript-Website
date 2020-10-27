@@ -469,6 +469,7 @@ main #editor-toolbar {
     overflow: auto;
     font-family: $font-code;
     line-height: 1.5rem;
+    white-space: pre-wrap;
 
     .log-warn {
       color: orange;
@@ -680,9 +681,9 @@ input.good {
       border-bottom: 1px solid lightgrey;
     }
   }
-  
+
   margin: 1rem 0;
-  
+
   li {
     padding: 10px 0;
   }
@@ -766,7 +767,7 @@ input.good {
   padding: 20px;
   background-color: white;
   color: black;
-  
+
   /* https://stackoverflow.com/questions/2005954/center-a-positionfixed-element */
   left: 50%;
   top: 50%;

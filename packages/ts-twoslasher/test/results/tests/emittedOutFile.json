@@ -1,0 +1,9 @@
+{
+  "code": "declare module \"hello/nested/base\" {\n    export const a = \"123\";\n}\ndeclare module \"hello\" {\n    export * from \"hello/nested/base\";\n}\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [],
+  "staticQuickInfos": [],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKADgJwPYBW8AxgC4BK++Zw0iAJvAB4B0ZAzgFAvb65lQAKlCQCqUACJWwRPA5l4DYACNkHeJK5cQEGAhToseIqUrVachUtXr47br36CS+RAtDJQAXikBGACYAZi0dMHAVAFdGBAYABWQSAGtkAHN4ADk0TFAAC3hYWHwwiFR8BkiELDQGEvB8SLJ9HPomNkJuXXAmElhkXGQyaDcsMlxI+DqOXPwAdwBRVGgyKZmFpbJFBgAxOBbGFlYGBy4gA"
+}

@@ -138,14 +138,13 @@ pre {
   }
 
   .inline-completions {
-    position: relative;
-
     ul.dropdown {
       display: inline-block;
       position: absolute;
       width: 240px;
       background-color: gainsboro;
       color: grey;
+      padding-top: 4px;
 
       font-family: $font-code;
       font-size: 0.8rem;
@@ -165,9 +164,13 @@ pre {
       }
 
       li {
-        height: 1rem;
         overflow-x: hidden;
         padding-left: 4px;
+        margin-bottom: 4px;
+
+        &.deprecated {
+          text-decoration: line-through;
+        }
 
         span.result-found {
           color: #4b9edd;

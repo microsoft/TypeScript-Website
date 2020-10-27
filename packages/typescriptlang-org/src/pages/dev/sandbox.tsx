@@ -27,7 +27,7 @@ const Index: React.FC<Props> = (props) => {
 
       re.config({
         paths: {
-          vs: "https://typescript.azureedge.net/cdn/3.7.3/monaco/min/vs",
+          vs: "https://typescript.azureedge.net/cdn/4.0.5/monaco/min/vs",
           sandbox: withPrefix('/js/sandbox')
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],
@@ -109,7 +109,7 @@ export default async function () {
           <div className="raised main-content-block">
             <h2>Usage</h2>
             <p>A sandbox uses the same tools as monaco-editor, meaning this library is shipped as an AMD bundle which you can use the <a href="https://github.com/microsoft/vscode-loader/">VSCode Loader</a> to <code>require</code>.</p>
-            <p>Because we need it for the TypeScript website, you can use our hosted copy <a href="https://typescriptlang.org/v2/js/vs.loader.js" title="Link to the JS for the visual studio require loader">here.</a> (<em>note</em>, we will eventually deprecate the /v2/ in all routes)</p>
+            <p>Because we need it for the TypeScript website, you can use our hosted copy <a href="https://typescriptlang.org/js/vs.loader.js" title="Link to the JS for the visual studio require loader">here.</a></p>
 
             <h3>Get Started</h3>
             <p>Create a new file: <code>index.html</code> and paste this code into that file.</p>
@@ -123,7 +123,7 @@ export default async function () {
   <script>
     // First set up the VSCode loader in a script tag
     const getLoaderScript = document.createElement('script')
-    getLoaderScript.src = 'https://www.typescriptlang.org/v2/js/vs.loader.js'
+    getLoaderScript.src = 'https://www.typescriptlang.org/js/vs.loader.js'
     getLoaderScript.async = true
     getLoaderScript.onload = () => {
       // Now the loader is ready, tell require where it can get the version of monaco, and the sandbox
@@ -135,9 +135,9 @@ export default async function () {
       //
       require.config({
         paths: {
-          vs: 'https://typescript.azureedge.net/cdn/3.7.3/monaco/min/vs',
-          // vs: 'https://unpkg.com/@typescript-deploys/monaco-editor@3.7.3/min/vs',
-          sandbox: 'https://www.typescriptlang.org/v2/js/sandbox',
+          vs: 'https://typescript.azureedge.net/cdn/4.0.5/monaco/min/vs',
+          // vs: 'https://unpkg.com/@typescript-deploys/monaco-editor@4.0.5/min/vs',
+          sandbox: 'https://www.typescriptlang.org/js/sandbox',
         },
         // This is something you need for monaco to work
         ignoreDuplicateModules: ['vs/editor/editor.main'],
@@ -147,7 +147,7 @@ export default async function () {
       require(['vs/editor/editor.main', 'vs/language/typescript/tsWorker', 'sandbox/index'], (
         main,
         _tsWorker,
-        tsSandbox
+        sandboxFactory
       ) => {
         const initialCode = \`import {markdown, danger} from "danger"
 
@@ -162,7 +162,7 @@ export default async function () {
 }
 \`
 
-        const isOK = main && window.ts && sandbox
+        const isOK = main && window.ts && sandboxFactory
         if (isOK) {
           document.getElementById('loader').parentNode.removeChild(document.getElementById('loader'))
         } else {
@@ -178,7 +178,7 @@ export default async function () {
           domID: 'monaco-editor-embed',
         }
 
-        tsSandbox.createTypeScriptSandbox(sandboxConfig, main, window.ts).then(sandbox => {
+        sandboxFactory.createTypeScriptSandbox(sandboxConfig, main, window.ts).then(sandbox => {
           sandbox.editor.focus()
         })
       })
@@ -186,8 +186,7 @@ export default async function () {
 
     document.body.appendChild(getLoaderScript)
   </script>
-</html>
-          `}
+</html>`}
             </code></pre>
             <p>Opening the file <code>index.html</code> in a web browser will load up the same sandbox up at the top of the page.</p>
             <h3>Some examples of the API</h3>

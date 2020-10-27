@@ -125,6 +125,8 @@ export const updateConfigDropdownForCompilerOptions = (sandbox: Sandbox, monaco:
     const map = compilerIDToMaps[flagID]
     // @ts-ignore
     const realValue = map[currentValue]
+    if (!realValue) return
+
     // @ts-ignore
     for (const option of input.children) {
       option.selected = option.value.toLowerCase() === realValue.toLowerCase()
