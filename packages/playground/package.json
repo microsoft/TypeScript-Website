@@ -18,6 +18,7 @@
     "jest": "*",
     "monaco-editor": "~0.20.0",
     "monaco-typescript": "^3.7.0",
+    "typescript-sandbox": "0.1.0",
     "typescript": "*"
   }
 }
