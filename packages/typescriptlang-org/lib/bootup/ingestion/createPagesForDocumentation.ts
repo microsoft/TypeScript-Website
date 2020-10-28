@@ -1,5 +1,6 @@
 const path = require(`path`)
 const fs = require(`fs`)
+const { green } = require("chalk")
 import { NodePluginArgs, CreatePagesArgs } from "gatsby"
 import {
   getDocumentationNavForLanguage,
@@ -14,6 +15,7 @@ export const createDocumentationPages = async (
   graphql: CreatePagesArgs["graphql"],
   createPage: NodePluginArgs["actions"]["createPage"]
 ) => {
+  console.log(`${green("success")} Creating Documentation Pages`)
   const handbookPage = path.resolve(`./src/templates/documentation.tsx`)
   const result = await graphql(`
     query GetAllHandbookDocs {

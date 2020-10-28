@@ -1,5 +1,6 @@
 import path from "path"
 import fs from "fs"
+const { green } = require("chalk")
 
 import { NodePluginArgs, CreatePagesArgs, withPrefix } from "gatsby"
 import { invertCodeToHTML } from "../../utils/invertCodeToHTML"
@@ -9,6 +10,8 @@ export const createPlaygroundExamplePages = async (
   graphql: CreatePagesArgs["graphql"],
   createPage: NodePluginArgs["actions"]["createPage"]
 ) => {
+  console.log(`${green("success")} Creating Playground Example Pages`)
+
   const playPage = path.resolve(`./src/templates/play-example.tsx`)
   const result = await graphql(`
     query GetAllPlaygroundSamples {

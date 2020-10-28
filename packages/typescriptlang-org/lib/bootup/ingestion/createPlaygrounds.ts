@@ -1,5 +1,6 @@
 const path = require(`path`)
 const fs = require(`fs`)
+const { green } = require("chalk")
 
 import { NodePluginArgs, CreatePagesArgs } from "gatsby"
 import { addPathToSite } from "../pathsOnSiteTracker"
@@ -9,6 +10,8 @@ export const createPlaygrounds = async (
   graphql: CreatePagesArgs["graphql"],
   createPage: NodePluginArgs["actions"]["createPage"]
 ) => {
+  console.log(`${green("success")} Creating Playground Pages`)
+
   const playPage = path.resolve(`./src/templates/play.tsx`)
   const result = await graphql(`
     query GetAllPlaygroundLocalizations {

@@ -1,6 +1,6 @@
 import path from "path"
 import fs from "fs"
-import { green } from "chalk"
+const { green } = require("chalk")
 
 import { NodePluginArgs, CreatePagesArgs } from "gatsby"
 import { recursiveReadDirSync } from "../../utils/recursiveReadDirSync"
