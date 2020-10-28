@@ -10,7 +10,7 @@ Este post descreve as várias formas de organizar seu código usando módulos e 
 Abordaremos também alguns tópicos avançados sobre como usar namespaces e módulos, e algumas armadilhas comuns ao usá-los no TypeScrypt.
 
 Veja a documentação de [Módulos](/docs/handbook/modules.html) para mais informações sobre os módulos do ES.
-Veja a documentação de [Namespaces](/docs/handbook/namespaces.html) para mais informações sobre os namespaces do Typescript. 
+Veja a documentação de [Namespaces](/pt/docs/handbook/namespaces.html) para mais informações sobre os namespaces do Typescript. 
 
 Nota: Em versões _muito_ antigas do TypeScript, namespaces eram chamados de 'Módulos Internos' (ou 'Internal Modules', em inglês), estes sistemas anteriores de módulos JavaScript.
 
