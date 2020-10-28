@@ -58,6 +58,8 @@
     // 4.0
     "New JS Features",
     "New TS Features",
-    "New Checks"
+    "New Checks",
+    // 4.1
+    "Template Literals"
   ]
 }

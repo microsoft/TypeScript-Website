@@ -3,7 +3,7 @@ display: "noUncheckedIndexedAccess"
 oneline: "Add undefined to a type when accessed using an index"
 ---
 
-TypeScript has a way to describe objects which have unknown keys but know values on an object, via index signatures.
+TypeScript has a way to describe objects which have unknown keys but known values on an object, via index signatures.
 
 ```ts twoslash
 interface EnvironmentVars {

@@ -33,6 +33,7 @@ The emitted JavaScript from TypeScript is:
 
 ```tsx twoslash
 // @showEmit
+// @noErrors
 // @jsx: react-jsx
 // @module: commonjs
 // @target: esnext

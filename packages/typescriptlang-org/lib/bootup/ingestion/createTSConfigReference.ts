@@ -36,16 +36,8 @@ export const createTSConfigReference = async (
   const docs = anyData.allFile.nodes
 
   docs.forEach(element => {
-    const categoriesForLang = path.join(
-      __dirname,
-      "..",
-      "..",
-      "..",
-      "..",
-      "tsconfig-reference",
-      "output",
-      element.name + ".json"
-    )
+    // prettier-ignore
+    const categoriesForLang = path.join( __dirname, "..", "..", "..", "..", "tsconfig-reference", "output", element.name + ".json")
 
     const lang = element.name
     if (!isMultiLingual && lang !== "en") return
