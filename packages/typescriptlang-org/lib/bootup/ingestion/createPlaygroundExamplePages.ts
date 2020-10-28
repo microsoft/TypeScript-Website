@@ -1,9 +1,9 @@
 import path from "path"
 import fs from "fs"
-import os from "os"
 
 import { NodePluginArgs, CreatePagesArgs, withPrefix } from "gatsby"
 import { invertCodeToHTML } from "../../utils/invertCodeToHTML"
+import { isMultiLingual } from "./languageFilter"
 
 export const createPlaygroundExamplePages = async (
   graphql: CreatePagesArgs["graphql"],
@@ -50,6 +50,8 @@ export const createPlaygroundExamplePages = async (
         .replace(/\+/g, "-")
 
     const language = rPath.split("/")[0]
+    if (!isMultiLingual && language !== "en") return
+
     const postLangPath = rPath.split("/").slice(1).map(idize).join("/")
 
     const langPrefix = language === "en" ? "" : language
@@ -63,6 +65,9 @@ export const createPlaygroundExamplePages = async (
     const id = postLangPath.split("/").slice(-1)[0].split(".")[0]
 
     const { inlineTitle, compilerSettings } = getCompilerDetailsFromCode(code)
+
+    // Intentionally not adding addPathToSite here
+
     createPage({
       path: newPagePath + ".html",
       component: playPage,

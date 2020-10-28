@@ -7,6 +7,8 @@ import {
   getPreviousPageID,
   SidebarNavItem,
 } from "../../../src/lib/documentationNavigation"
+import { addPathToSite } from "../pathsOnSiteTracker"
+import { isMultiLingual } from "./languageFilter"
 
 export const createDocumentationPages = async (
   graphql: CreatePagesArgs["graphql"],
@@ -63,6 +65,8 @@ export const createDocumentationPages = async (
   docs.forEach((post: any) => {
     const permalink = post.childMarkdownRemark.frontmatter.permalink
     const lang = langs.find(l => permalink.startsWith("/" + l + "/")) || "en"
+    if (!isMultiLingual && lang !== "en") return
+
     const handbookNav = getDocumentationNavForLanguage(lang)
 
     const fakeTopRoot = {
@@ -96,12 +100,15 @@ export const createDocumentationPages = async (
     const repoPath = post.absolutePath.replace(repoRoot, "")
 
     if (post.childMarkdownRemark) {
+      const path = post.childMarkdownRemark.frontmatter.permalink
+      addPathToSite(path)
+
       createPage({
-        path: post.childMarkdownRemark.frontmatter.permalink,
+        path,
         component: handbookPage,
         context: {
           id: id,
-          slug: post.childMarkdownRemark.frontmatter.permalink,
+          slug: path,
           repoPath,
           previousID,
           nextID,

@@ -161,7 +161,7 @@ const Index: React.FC<Props> = (props) => {
 
   return (
     <>
-      <Layout title="Developers - Twoslash Code Samples" description="Learn about the TypeScript code sample library twoslash. Used for transpiling, providing hover to identifiers and compiler-driven error states." lang="en" allSitePage={props.data.allSitePage}>
+      <Layout title="Developers - Twoslash Code Samples" description="Learn about the TypeScript code sample library twoslash. Used for transpiling, providing hover to identifiers and compiler-driven error states." lang="en">
         <div id="dev">
           <DevNav active="twoslash" />
           <div className="raised content main-content-block">
@@ -321,9 +321,3 @@ greet("Maddison", new Date());
 `
   }
 ]
-
-export const query = graphql`
-  query TwoSlash {
-    ...AllSitePage
-  }
-`

@@ -24,7 +24,7 @@ const HandbookIndex: React.FC<Props> = (props) => {
   const nav = getDocumentationNavForLanguage(props.pageContext.lang)
 
   return (
-    <Layout title={i("doc_layout_title")} description={i("doc_layout_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+    <Layout title={i("doc_layout_title")} description={i("doc_layout_description")} lang={props.pageContext.lang}>
 
       <div className="main-content-block headline" style={{ marginTop: "40px" }}>
         <h1>TypeScript Documentation</h1>
@@ -62,12 +62,6 @@ const HandbookIndex: React.FC<Props> = (props) => {
     </Layout >
   )
 }
-
-export const query = graphql`
-query HandbookHome {
-  ...AllSitePage
-}
-`
 
 export default (props: Props) => (
   <Intl locale={props.pageContext.lang}>

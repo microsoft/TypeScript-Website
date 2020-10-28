@@ -3,14 +3,13 @@ import { useEffect, useState } from "react"
 
 import "./SiteFooter.scss"
 import { PlaygroundSamples } from "./SiteFooter-PlaygroundSamples"
-import { AllSitePage, createIntlLink } from "../IntlLink"
+import { createIntlLink } from "../IntlLink"
 import { hasLocalStorage } from "../../lib/hasLocalStorage"
 import { whenEscape } from "../../lib/whenEscape"
 
 export type Props = {
   lang: string
   suppressCustomization?: true
-  allSitePage: AllSitePage
 }
 
 const popularPages = [
@@ -202,7 +201,7 @@ export const SiteFooter = (props: Props) => {
     l.url.includes("#show-examples")
   )!
 
-  const Link = createIntlLink(props.lang, props.allSitePage)
+  const Link = createIntlLink(props.lang)
 
   useEffect(() => {
     // Handle escape closing dropdowns etc

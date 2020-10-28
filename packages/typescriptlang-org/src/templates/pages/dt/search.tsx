@@ -43,7 +43,6 @@ const Search: React.FC<SearchProps> = ({ data, location, pageContext }) => {
       title={i("dt_s_page_title")}
       description={i("dt_s_subtitle")}
       lang={pageContext.lang}
-      allSitePage={data.allSitePage}
     >
       <div className="topContents">
         <SearchArea result={result} search={search} setSearch={setSearch} i={i} />
@@ -62,9 +61,3 @@ export default (props: SearchProps) => (
     <Search {...props} />
   </Intl>
 )
-
-export const query = graphql`
-  query DTSearchPage {
-    ...AllSitePage
-  }
-`

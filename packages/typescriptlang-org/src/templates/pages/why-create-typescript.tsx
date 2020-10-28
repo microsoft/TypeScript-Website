@@ -12,9 +12,9 @@ type Props = {
 }
 
 const Index: React.FC<Props> = (props) => {
-        const Link = createIntlLink(props.pageContext.lang, props.data.allSitePage)
+        const Link = createIntlLink(props.pageContext.lang)
 
-        return <Layout title="Why does TypeScript exist?" description="" lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+        return <Layout title="Why does TypeScript exist?" description="" lang={props.pageContext.lang}>
                 <div className="main-content-block" style={{ textAlign: "center" }}>
                         <p>TypeScript is a language from Microsoft which builds on JavaScript.<br />This post is a non-technical overview of what JavaScript is, how TypeScript extends JavaScript and what problems it solves.</p>
                 </div>
@@ -178,10 +178,3 @@ and causing ripples to spread out to the bank.</p>
 }
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Index {...props} /></Intl>
-
-
-export const query = graphql`
-  query WhyCreateTypeScriptPage {
-    ...AllSitePage
-  }
-`

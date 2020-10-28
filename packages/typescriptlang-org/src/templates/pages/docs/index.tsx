@@ -31,7 +31,6 @@ const Index: React.FC<Props> = (props) => {
       title={i("doc_layout_title")}
       description={i("doc_layout_description")}
       lang={props.pageContext.lang}
-      allSitePage={props.data.allSitePage}
     >
 
       <div className="main-content-block headline" style={{ marginTop: "40px" }}>
@@ -69,21 +68,10 @@ const Index: React.FC<Props> = (props) => {
         </div>
       </div>
 
-      <QuickJump
-        title={i("doc_headline")}
-        allSitePage={props.data.allSitePage}
-        lang={props.pageContext.lang}
-      />
-
+      <QuickJump title={i("doc_headline")} lang={props.pageContext.lang} />
     </Layout>
   );
 };
-
-export const query = graphql`
-  query DocsHome {
-    ...AllSitePage
-  }
-`;
 
 export default (props: Props) => (
   <Intl locale={props.pageContext.lang}>

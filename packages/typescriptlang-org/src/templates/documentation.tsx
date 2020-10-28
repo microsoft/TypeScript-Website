@@ -46,7 +46,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   }
 
   const i = createInternational<typeof handbookCopy>(useIntl())
-  const IntlLink = createIntlLink(props.pageContext.lang, props.data.allSitePage)
+  const IntlLink = createIntlLink(props.pageContext.lang)
 
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   const navigation = getDocumentationNavForLanguage(props.pageContext.lang)
   const slug = slugger()
   return (
-    <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+    <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang}>
       {post.frontmatter.beta && <div id="beta">Warning: This page is a work in progress</div>}
       <section id="doc-layout">
         <SidebarToggleButton />
@@ -136,9 +136,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
 export default (props: Props) => <Intl locale={props.pageContext.lang}><HandbookTemplate {...props} /></Intl>
 
 export const pageQuery = graphql`
-  query GetDocumentBySlug($slug: String!, $previousID: String, $nextID: String) {
-    ...AllSitePage
-    
+  query GetDocumentBySlug($slug: String!, $previousID: String, $nextID: String) {    
     markdownRemark(frontmatter: { permalink: {eq: $slug}}) {
       id
       excerpt(pruneLength: 160)

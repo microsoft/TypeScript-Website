@@ -14,7 +14,7 @@ type Props = {
 const Index: React.FC<Props> = (props) => {
   return (
     <>
-      <Layout title="Developers - Playground Plugins" description="What is a TypeScript Playground Plugin, and how can you make one?" lang="en" allSitePage={props.data.allSitePage}>
+      <Layout title="Developers - Playground Plugins" description="What is a TypeScript Playground Plugin, and how can you make one?" lang="en">
         <div id="dev">
           <DevNav active="playground plugins" />
           <div className="raised content main-content-block">
@@ -59,10 +59,3 @@ const Index: React.FC<Props> = (props) => {
 }
 
 export default (props: Props) => <Intl locale="en"><Index {...props} /></Intl>
-
-
-export const query = graphql`
-  query PlaygroundPlugin {
-    ...AllSitePage
-  }
-`

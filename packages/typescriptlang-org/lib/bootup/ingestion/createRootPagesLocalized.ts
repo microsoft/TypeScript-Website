@@ -1,8 +1,11 @@
 import path from "path"
 import fs from "fs"
+import { green } from "chalk"
 
 import { NodePluginArgs, CreatePagesArgs } from "gatsby"
 import { recursiveReadDirSync } from "../../utils/recursiveReadDirSync"
+import { isMultiLingual } from "./languageFilter"
+import { addPathToSite } from "../pathsOnSiteTracker"
 
 /**
  * Basically you can have a set of files in src/templates/pages
@@ -14,6 +17,8 @@ export const createRootPagesLocalized = async (
   graphql: CreatePagesArgs["graphql"],
   createPage: NodePluginArgs["actions"]["createPage"]
 ) => {
+  console.log(`${green("success")} Creating Internationalized Pages`)
+
   // prettier-ignore
   const rootPagesDir = path.join(__dirname, "..", "..", "..", "src", "templates", "pages")
   const languageRootDir = path.join(__dirname, "..", "..", "..", "src", "copy")
@@ -45,6 +50,8 @@ export const createRootPagesLocalized = async (
     }
 
     langs.forEach(lang => {
+      if (!isMultiLingual && lang !== "en") return
+
       const prefix = lang === "en" ? "/" : `/${lang}/`
       const sitePath = `${prefix}${originalSitePath}`
       const pageOpts = {
@@ -55,6 +62,7 @@ export const createRootPagesLocalized = async (
         },
       }
 
+      addPathToSite(sitePath)
       createPage(pageOpts)
     })
   })

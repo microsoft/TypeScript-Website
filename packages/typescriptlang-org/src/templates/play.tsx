@@ -171,7 +171,7 @@ const Play: React.FC<Props> = (props) => {
 
 
   return (
-    <Layout title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+    <Layout title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang}>
       {/** This is the top nav, which is outside of the editor  */}
       <nav className="navbar-sub">
         <ul className="nav">
@@ -273,9 +273,3 @@ const Play: React.FC<Props> = (props) => {
 
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Play {...props} /></Intl>
-
-export const query = graphql`
-  query Play {
-    ...AllSitePage
-  }
-`

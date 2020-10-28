@@ -18,9 +18,9 @@ const Col = (props: { children: any, className?: string }) => <div className={[p
 
 
 const Index: React.FC<Props> = (props) => {
-  const Link = createIntlLink(props.pageContext.lang, props.data.allSitePage)
+  const Link = createIntlLink(props.pageContext.lang)
 
-  return <Layout title="Reference Tools" description="Online tooling to help you understand TypeScript" lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+  return <Layout title="Reference Tools" description="Online tooling to help you understand TypeScript" lang={props.pageContext.lang}>
     <div className="raised main-content-block">
       <Row>
         <Col>
@@ -46,11 +46,5 @@ const Index: React.FC<Props> = (props) => {
   </Layout>
 
 }
-export const query = graphql`
-  query ToolsPage {
-      ...AllSitePage
-    }
-`
-
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Index {...props} /></Intl>

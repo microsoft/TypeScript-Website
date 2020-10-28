@@ -34,12 +34,12 @@ type Props = {
 
 const Index: React.FC<Props> = (props) => {
   const i = createInternational<typeof indexCopy>(useIntl())
-  const Link = createIntlLink(props.pageContext.lang, props.data.allSitePage)
+  const Link = createIntlLink(props.pageContext.lang)
 
   useEffect(() => { setupTwoslashHovers(); setupVideosSection() }, [])
 
   return (
-    <Layout title="Typed JavaScript at Any Scale." description="TypeScript extends JavaScript by adding types to the language. TypeScript speeds up your development experience by catching errors and providing fixes before you even run your code." lang={props.pageContext.lang} allSitePage={props.data.allSitePage} suppressCustomization>
+    <Layout title="Typed JavaScript at Any Scale." description="TypeScript extends JavaScript by adding types to the language. TypeScript speeds up your development experience by catching errors and providing fixes before you even run your code." lang={props.pageContext.lang} suppressCustomization>
 
       <div id="index">
         <Section color="darkblue" className="headline">
@@ -235,10 +235,3 @@ const setupVideosSection = () => {
 
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Index {...props} /></Intl>
-
-
-export const query = graphql`
-  query IndexPage {
-    ...AllSitePage
-  }
-`

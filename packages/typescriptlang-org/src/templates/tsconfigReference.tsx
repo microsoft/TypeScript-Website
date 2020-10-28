@@ -73,7 +73,7 @@ const TSConfigReferenceTemplateComponent = (props) => {
   }, [])
 
   return (
-    <Layout title={i("tsconfig_title")} description={i("tsconfig_description")} lang={props.pageContext.locale} allSitePage={props.data.allSitePage}>
+    <Layout title={i("tsconfig_title")} description={i("tsconfig_description")} lang={props.pageContext.locale}>
       <div className="tsconfig raised main-content-block markdown">
         <div dangerouslySetInnerHTML={{ __html: post.html! }} />
       </div>
@@ -84,7 +84,6 @@ const TSConfigReferenceTemplateComponent = (props) => {
 
 export const pageQuery = graphql`
   query TSConfigReferenceTemplate($tsconfigMDPath: String!) {
-    ...AllSitePage
 
     markdownRemark(fileAbsolutePath: {eq: $tsconfigMDPath} ) {
       id

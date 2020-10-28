@@ -36,26 +36,38 @@ The emitted JavaScript from TypeScript is:
 // @jsx: react-jsx
 // @module: commonjs
 // @target: esnext
-import React from "react";
 
 function App() {
   return <h1>Hello World</h1>;
 }
 ```
 
-With `"jsxImportSource": "preact"`:
+For example if you wanted to use `"jsxImportSource": "preact"`, you need a tsconfig like:
+
+```json tsconfig
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "types": ["preact"]
+  }
+}
+```
+
+Which generates code like:
 
 ```tsx twoslash
 // @showEmit
 // @jsxImportSource: preact
+// @types: preact
 // @jsx: react-jsx
 // @target: esnext
 // @module: commonjs
 // @noErrors
 
-import React from "react";
-
-function App() {
+export function App() {
   return <h1>Hello World</h1>;
 }
 ```
