@@ -425,8 +425,6 @@ By themselves, literal types aren't very valuable:
 let x: "hello" = "hello";
 // OK
 x = "hello";
-// OK
-x = "hello";
 // ...
 x = "howdy";
 ```
@@ -562,9 +560,9 @@ Though we will not go into depth here.
 
 ##### `bigint`
 
-There is a primitive in JavaScript used for very large integers, `BitInt`:
+There is a primitive in JavaScript used for very large integers, `BigInt`:
 
-```ts
+```ts twoslash
 // Creating a bigint via the BigInt function
 let foo: bigint = BigInt(100);
 
