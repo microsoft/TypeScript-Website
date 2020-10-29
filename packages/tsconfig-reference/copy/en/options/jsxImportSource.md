@@ -37,6 +37,13 @@ The emitted JavaScript from TypeScript is:
 // @jsx: react-jsx
 // @module: commonjs
 // @target: esnext
+declare module JSX {
+  interface Element {}
+  interface IntrinsicElements {
+    [s: string]: any;
+  }
+}
+import React from "react";
 
 function App() {
   return <h1>Hello World</h1>;

@@ -131,7 +131,7 @@ export const Comm: React.FC<Props> = props => {
             <div className="callouts">
               <div className="row">
                 {conferences.map(conference => (
-                  <div className="callout">
+                  <div key={conference.url} className="callout">
                     <a href={conference.url} rel="noopener" target="blank" title={`Link to ${conference.title}`}>
                       <img src={conference.logo} className="icon img-square" alt={`${i("com_conferences_alt_img")} ` + conference.title} />
                     </a>

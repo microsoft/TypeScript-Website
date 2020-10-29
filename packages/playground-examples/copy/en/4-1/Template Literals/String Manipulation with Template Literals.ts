@@ -1,22 +1,19 @@
 //// { compiler: { ts: "4.1.0-dev.20201028" } }
 
-// If you are active on twitter as a developer, when
-// the 4.1 beta was announced a lot of the community focus was
-// on some of the ways in which template literal strings
-// could be used to manipulate strings to create parsers.
-
-// There is a list of these types in
-// https://github.com/ghoullier/awesome-template-literal-types
+// Template literals can be used to extract and manipulate string literal types.
+// These string literal types, in turn, can be used as properties, and can describe
+// possible transformations from a string to an object in an API.
 
 // ## String Splitting To An Object
 
-// Template literals can use positioning of a substring to infer
-// where a string can be split. For example:
+// Template literals can use patterns as "split-points" to infer the
+// substrings in between. For example...
 
-// This type is a string literal which conforms to SemVer
+// This type is a string literal which conforms to a SemVer-like string.
 type TSVersion = "4.1.2"
 
-// We can create a type to extract the components of that string
+// We can create a type to extract the components of that string.
+// We'll split across two '.' characters.
 type ExtractSemver<SemverString extends string> = 
    SemverString extends `${infer Major}.${infer Minor}.${infer Patch}` ? 
         { major: Major, minor: Minor, patch: Patch } : { error: "Cannot parse semver string" }
@@ -25,7 +22,7 @@ type ExtractSemver<SemverString extends string> =
 // example:intro-to-template-literals / example:mapped-types-with-template-literals
 
 // Line 2 is a conditional type, TypeScript validates that the infer pattern matches
-// against SemverString parameter
+// against SemverString parameter.
 
 // Line 3 is the result of the conditional, if true then provide an object
 // with the substrings passed into different positions in an object. If the string
@@ -36,13 +33,14 @@ type TS = ExtractSemver<TSVersion>
 // This won't handle SemVer 100%, because it is an example:
 type BadSemverButOKString = ExtractSemver<"4.0.Four.4444">
 
-// But it will fail on strings which dont fit the format:
+// However, ExtractSemver will fail on strings which don't fit the format. This case
+// will only match when a string has the format "X.Y.Z", which the next line does not:
 type SemverError = ExtractSemver<"Four point Zero point Five">
 
 // ## Recursive String Splitting
 
-// To understand how some of the abstract foundations of these projects work, 
-// you should first go through the TypeScript 4.0 feature: example:variadic-tuples.
+// The previous example will only work when you have an exact string to match,
+// for more nuanced cases you want work with the TypeScript 4.0 feature: example:variadic-tuples.
 
 // To split a string into re-usable components, Tuples are a good way to keep
 // track of the results. Here's a split type:
@@ -80,17 +78,22 @@ type S3 = Split<"1.2", ".">
 // Will recurse once to get all the .'s splitted
 type S4 = Split<"1.2.3", ".">
 
+// The 
+
 // With this knowledge, you should be able to read and understand quite a
-// few of the examples in awesome-template-literals. Try them in this order:
-//
-// - The port of ELIZA By Jacob Bloom
-// https://twitter.com/mrjacobbloom/status/1310530442177568768
-// 
-// - A CSS parser By Anurag Hazra
-// https://twitter.com/anuraghazru/status/1310634306092462080
+// few of the community examples of template literals, for example:
 //
 // - An express route extractor by Dan Vanderkam
 // https://twitter.com/danvdk/status/1301707026507198464
 //
+// - A definition for document.querySelector by Mike Ryan
+// https://twitter.com/mikeryandev/status/1308472279010025477
+//
+// People have also experimented with quite complicated string parsers 
+// using template string literals, which are fun - but not recommended for
+// production codebases.
+//
+// https://github.com/ghoullier/awesome-template-literal-types
+// 
 // Or read the announcement blog post:
 // https://devblogs.microsoft.com/typescript/announcing-typescript-4-1-beta/#template-literal-types
