@@ -558,20 +558,6 @@ Just like other type assertions, this doesn't change the runtime behavior of you
 It's worth mentioning the rest of the primitives in JavaScript which are represented in the type system.
 Though we will not go into depth here.
 
-##### `bigint`
-
-There is a primitive in JavaScript used for very large integers, `BigInt`:
-
-```ts twoslash
-// Creating a bigint via the BigInt function
-let foo: bigint = BigInt(100);
-
-// Creating a BigInt via the literal syntax
-let bar: bigint = 100n;
-```
-
-You can learn more about BitInt in [the TypeScript 3.2 release notes](/docs/handbook/release-notes/typescript-3-2.html#bigint).
-
 ##### `symbol`
 
 There is a primitive in JavaScript used to create a globally unique reference via the function `Symbol()`:
@@ -587,3 +573,19 @@ if (firstName === secondName) {
 ```
 
 You can learn more about them in [Symbols handbook reference page](/docs/handbook/symbols.html).
+
+##### `bigint`
+
+From ES2020 onwards, there is a primitive in JavaScript used for very large integers, `BigInt`:
+
+```ts twoslash
+// @target: es2020
+
+// Creating a bigint via the BigInt function
+let foo: bigint = BigInt(100);
+
+// Creating a BigInt via the literal syntax
+let bar: bigint = 100n;
+```
+
+You can learn more about BigInt in [the TypeScript 3.2 release notes](/docs/handbook/release-notes/typescript-3-2.html#bigint).
