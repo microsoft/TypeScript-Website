@@ -15,11 +15,11 @@ Types can also appear in many more _places_ than just type annotations.
 As we learn about the types themselves, we'll also learn about the places where we can refer to these types to form new constructs.
 
 We'll start by reviewing the most basic and common types you might encounter when writing JavaScript or TypeScript code.
-These will later form the core "building blocks" of more complex types.
+These will later form the core building blocks of more complex types.
 
 ## The primitives: `string`, `number`, and `boolean`
 
-JavaScript has three very commonly used [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive) kinds of values: `string`, `number`, and `boolean`.
+JavaScript has three very commonly used [primitives](https://developer.mozilla.org/en-US/docs/Glossary/Primitive): `string`, `number`, and `boolean`.
 Each has a corresponding type in TypeScript.
 As you might expect, these are the same names you'd see if you used the JavaScript `typeof` operator on a value of those types:
 
@@ -57,9 +57,10 @@ The `any` type is useful when you don't want to write out a long type just to co
 
 ### `noImplicitAny`
 
-When a type isn't specified and can't be inferred from context, TypeScript will typically default to `any`.
-Because `any` values don't benefit from type-checking, it's usually desirable to avoid these situations.
-The compiler flag `noImplicitAny` will cause any _implicit_ `any` to be flagged as an error.
+When you don't specify a type, and Typescript can't infer it from context, the compiler will typically default to any.
+
+You usually want to avoid this, though, because any isn't type-checked.
+Use the compiler flag [`noImplicitAny`](/tsconfig#noImplicitAny) to flag any implicit any as an error.
 
 ## Type Annotations on Variables
 
@@ -92,7 +93,7 @@ TypeScript allows you to specify the types of both the input and output values o
 
 ### Parameter Type Annotations
 
-When you declare a function, you can add type annotations after each parameter to declare what kinds of parameters the function accepts.
+When you declare a function, you can add type annotations after each parameter to declare what types of parameters the function accepts.
 Parameter type annotations go after the parameter name:
 
 ```ts twoslash
@@ -103,7 +104,7 @@ function greet(name: string) {
 }
 ```
 
-When a parameter has a type annotation, calls to that function will be validated:
+When a parameter has a type annotations, arguments to that function will be checked:
 
 ```ts twoslash
 // @errors: 2345
@@ -112,6 +113,8 @@ declare function greet(name: string): void;
 // Would be a runtime error if executed!
 greet(42);
 ```
+
+> Even if you don't have type annotations on your parameters, TypeScript will still check that you passed the right number of arguments.
 
 ### Return Type Annotations
 
@@ -218,7 +221,7 @@ We refer to each of these types as the union's _members_.
 Let's write a function that can operate on strings or numbers:
 
 ```ts twoslash
-// @errors: 2322
+// @errors: 2345
 function printId(id: number | string) {
   console.log("Your ID is: " + id);
 }
@@ -227,7 +230,7 @@ printId(101);
 // OK
 printId("202");
 // Error
-printId([1, 2]);
+printId([ myID: 22342 ]);
 ```
 
 ### Working with Union Types
@@ -330,12 +333,20 @@ When you use the alias, it's exactly as if you had written the aliased type.
 In other words, this code might _look_ illegal, but is OK according to TypeScript because both types are aliases for the same type:
 
 ```ts twoslash
-type Age = number;
-type Weight = number;
+declare function getInput(): string;
+declare function sanitize(str: string): string;
+// ---cut---
+type UserInputSanitizedString = number;
 
-const myAge: Age = 73;
-// *not* an error
-const myWeight: Weight = myAge;
+function sanitizeInput(str: string): UserInputSanitizedString {
+  return sanitize(str);
+}
+
+// Create a sanitized input
+let userInput = sanitizeInput(getInput());
+
+// Can still be re-assigned with a string though
+userInput = "new input";
 ```
 
 ## Interfaces
@@ -558,22 +569,6 @@ Just like other type assertions, this doesn't change the runtime behavior of you
 It's worth mentioning the rest of the primitives in JavaScript which are represented in the type system.
 Though we will not go into depth here.
 
-##### `symbol`
-
-There is a primitive in JavaScript used to create a globally unique reference via the function `Symbol()`:
-
-```ts twoslash
-// @errors: 2367
-const firstName = Symbol("name");
-const secondName = Symbol("name");
-
-if (firstName === secondName) {
-  // Can't ever happen
-}
-```
-
-You can learn more about them in [Symbols handbook reference page](/docs/handbook/symbols.html).
-
 ##### `bigint`
 
 From ES2020 onwards, there is a primitive in JavaScript used for very large integers, `BigInt`:
@@ -589,3 +584,19 @@ let bar: bigint = 100n;
 ```
 
 You can learn more about BigInt in [the TypeScript 3.2 release notes](/docs/handbook/release-notes/typescript-3-2.html#bigint).
+
+##### `symbol`
+
+There is a primitive in JavaScript used to create a globally unique reference via the function `Symbol()`:
+
+```ts twoslash
+// @errors: 2367
+const firstName = Symbol("name");
+const secondName = Symbol("name");
+
+if (firstName === secondName) {
+  // Can't ever happen
+}
+```
+
+You can learn more about them in [Symbols handbook reference page](/docs/handbook/symbols.html).
