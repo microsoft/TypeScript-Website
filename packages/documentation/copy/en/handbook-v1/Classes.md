@@ -570,6 +570,10 @@ greeterMaker.standardGreeting = "Hey there!";
 
 let greeter2: Greeter = new greeterMaker();
 console.log(greeter2.greet()); // "Hey there!"
+
+let greeter3: Greeter;
+greeter3 = new Greeter();
+console.log(greeter3.greet()); // "Hey there!"
 ```
 
 In this example, `greeter1` works similarly to before.
@@ -583,6 +587,7 @@ Here we use `typeof Greeter`, that is "give me the type of the `Greeter` class i
 Or, more precisely, "give me the type of the symbol called `Greeter`," which is the type of the constructor function.
 This type will contain all of the static members of Greeter along with the constructor that creates instances of the `Greeter` class.
 We show this by using `new` on `greeterMaker`, creating new instances of `Greeter` and invoking them as before.
+It is also good to mention that changing static property is frowned upon, here `greeter3` has `"Hey there!"` instead of `"Hello, there"` on `standardGreeting`.
 
 ## Using a class as an interface
 
