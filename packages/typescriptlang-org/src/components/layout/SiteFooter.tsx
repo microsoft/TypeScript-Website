@@ -45,7 +45,7 @@ const popularPages = [
   },
   {
     title: "TSConfig Options",
-    url: "/tsconfig.html",
+    url: "/tsconfig",
     description: "All the configuration options for a project",
   },
   {
