@@ -336,7 +336,7 @@ In other words, this code might _look_ illegal, but is OK according to TypeScrip
 declare function getInput(): string;
 declare function sanitize(str: string): string;
 // ---cut---
-type UserInputSanitizedString = number;
+type UserInputSanitizedString = string;
 
 function sanitizeInput(str: string): UserInputSanitizedString {
   return sanitize(str);
