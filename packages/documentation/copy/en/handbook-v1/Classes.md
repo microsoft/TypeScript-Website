@@ -587,7 +587,7 @@ Here we use `typeof Greeter`, that is "give me the type of the `Greeter` class i
 Or, more precisely, "give me the type of the symbol called `Greeter`," which is the type of the constructor function.
 This type will contain all of the static members of Greeter along with the constructor that creates instances of the `Greeter` class.
 We show this by using `new` on `greeterMaker`, creating new instances of `Greeter` and invoking them as before.
-It is also good to mention that changing static property is frowned upon, here `greeter3` has `"Hey there!"` instead of `"Hello, there"` on `standardGreeting`.
+It is also good to mention that changing static property is frowned upon, here the class `Greeter` has `"Hey there!"` instead of `"Hello, there"` as shown in `greeter3`.
 
 ## Using a class as an interface
 
