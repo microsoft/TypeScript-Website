@@ -12,13 +12,13 @@ Abordaremos também alguns tópicos avançados sobre como usar namespaces e mód
 Veja a documentação de [Módulos](/docs/handbook/modules.html) para mais informações sobre os módulos do ES.
 Veja a documentação de [Namespaces](/pt/docs/handbook/namespaces.html) para mais informações sobre os namespaces do Typescript. 
 
-Nota: Em versões _muito_ antigas do TypeScript, namespaces eram chamados de 'Módulos Internos' (ou 'Internal Modules', em inglês), estes sistemas anteriores de módulos JavaScript.
+Nota: Em versões _muito_ antigas do TypeScript, namespaces eram chamados de 'Módulos Internos' (ou 'Internal Modules', em inglês).
 
 ## Usando Módulos
 
 Módulos podem conter código e declarações.
 
-Os módulos também dependem de um carregador de módulos (como CommomJs/Require.js) ou um ambiente que suporta módulos ES.
+Os módulos também dependem de um carregador de módulos (como CommonJs/Require.js) ou um ambiente que suporta módulos ES.
 Módulos fornecem melhor reutilização de código, isolamento mais forte e melhor suporte a ferramentas para empacotamento.
 
 Também é importante notar que, para aplicações Node.js, moódulos são o padrão e **nós recomendamos módulos em vez de namespaces em códigos modernos**.
