@@ -230,7 +230,7 @@ printId(101);
 // OK
 printId("202");
 // Error
-printId([ myID: 22342 ]);
+printId({ myID: 22342 });
 ```
 
 ### Working with Union Types
