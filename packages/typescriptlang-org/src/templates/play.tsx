@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import ReactDOM from "react-dom"
 import { Layout } from "../components/layout"
 import { withPrefix, graphql } from "gatsby"
-import { PlayQuery } from "../__generated__/gatsby-types"
 
 import "./play.scss"
 import { RenderExamples } from "../components/ShowExamples"
@@ -21,7 +20,6 @@ import playgroundReleases from "../../../sandbox/src/releases.json"
 declare const playground: ReturnType<typeof import("typescript-playground").setupPlayground>
 
 type Props = {
-  data: PlayQuery
   pageContext: {
     lang: string
     examplesTOC: typeof import("../../static/js/examples/en.json")
@@ -171,7 +169,7 @@ const Play: React.FC<Props> = (props) => {
 
 
   return (
-    <Layout title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+    <Layout title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang}>
       {/** This is the top nav, which is outside of the editor  */}
       <nav className="navbar-sub">
         <ul className="nav">
@@ -211,7 +209,7 @@ const Play: React.FC<Props> = (props) => {
             <a href="#" id="whatisnew-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="whatisnew">{i("play_subnav_whatsnew")} <span className="caret"></span></a>
             <ul className="examples-dropdown" id="whatisnew" aria-labelledby="whatisnew-button">
               <button role="button" aria-label="Close dropdown" className="examples-close">{i("play_subnav_examples_close")}</button>
-              <RenderExamples defaultSection="4.0" sections={["4.0", "3.8", "3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
+              <RenderExamples defaultSection="4.1" sections={["4.1", "4.0", "3.8", "3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
             </ul>
           </li>
         </ul>
@@ -273,9 +271,3 @@ const Play: React.FC<Props> = (props) => {
 
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Play {...props} /></Intl>
-
-export const query = graphql`
-  query Play {
-    ...AllSitePage
-  }
-`

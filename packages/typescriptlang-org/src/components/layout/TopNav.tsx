@@ -4,10 +4,9 @@ import { withPrefix } from "gatsby"
 import "./TopNav.scss"
 import { setupStickyNavigation } from "./stickyNavigation";
 import { useIntl } from "react-intl";
-import { AllSitePage, createIntlLink } from "../IntlLink";
+import { createIntlLink } from "../IntlLink";
 
 export type Props = {
-  allSitePage: AllSitePage
   lang: string
 }
 
@@ -17,7 +16,7 @@ import { OpenInMyLangQuickJump } from "./LanguageRecommendation";
 
 export const SiteNav = (props: Props) => {
   const i = createInternational<typeof navCopy>(useIntl())
-  const IntlLink = createIntlLink(props.lang, props.allSitePage)
+  const IntlLink = createIntlLink(props.lang)
 
   // This extra bit of mis-direction ensures that non-essential code runs after
   // the page is loaded

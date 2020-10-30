@@ -1,25 +1,19 @@
 import * as React from "react"
 import { Layout } from "../components/layout"
-import { withPrefix, graphql, Link } from "gatsby"
+import { withPrefix } from "gatsby"
 
 import { Intl } from "../components/Intl"
-import { UpcomingQuery, BrandingQuery } from "../__generated__/gatsby-types"
-import { UpcomingReleaseMeta } from "../components/index/UpcomingReleaseMeta"
-import { useIntl } from "react-intl"
-
 
 import "./branding.scss"
 
-type Props = {
-  data: BrandingQuery
-}
+type Props = {}
 
 const Row = (props: { children: any, className?: string }) => <div className={[props.className, "row"].join(" ")}>{props.children}</div>
 
 const Index: React.FC<Props> = (props) => {
   return (
     <>
-      <Layout title="Branding" description="Logos and design assets" lang="en" allSitePage={props.data.allSitePage}>
+      <Layout title="Branding" description="Logos and design assets" lang="en" >
         <div id="branding">
           <h1>Branding</h1>
           <h2 className="subnav">Logos and design assets for TypeScript</h2>
@@ -91,8 +85,3 @@ const Index: React.FC<Props> = (props) => {
 
 export default (props: Props) => <Intl locale="en"><Index {...props} /></Intl>
 
-export const query = graphql`
-  query Branding {
-    ...AllSitePage
-  }
-`

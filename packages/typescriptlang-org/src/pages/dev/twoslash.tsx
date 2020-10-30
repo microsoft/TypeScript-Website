@@ -11,7 +11,6 @@ import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/devNav"
 import { isTouchDevice } from "../../lib/isTouchDevice"
 import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
-import { TwoSlashQuery } from "../../__generated__/gatsby-types"
 
 /** Note: to run all the web infra in debug, run:
   localStorage.debug = '*'
@@ -19,9 +18,7 @@ import { TwoSlashQuery } from "../../__generated__/gatsby-types"
   to remove logging: localStorage.debug = undefined
  */
 
-type Props = {
-  data: TwoSlashQuery
-}
+type Props = {}
 
 const Index: React.FC<Props> = (props) => {
   useEffect(() => {
@@ -161,7 +158,7 @@ const Index: React.FC<Props> = (props) => {
 
   return (
     <>
-      <Layout title="Developers - Twoslash Code Samples" description="Learn about the TypeScript code sample library twoslash. Used for transpiling, providing hover to identifiers and compiler-driven error states." lang="en" allSitePage={props.data.allSitePage}>
+      <Layout title="Developers - Twoslash Code Samples" description="Learn about the TypeScript code sample library twoslash. Used for transpiling, providing hover to identifiers and compiler-driven error states." lang="en">
         <div id="dev">
           <DevNav active="twoslash" />
           <div className="raised content main-content-block">
@@ -321,9 +318,3 @@ greet("Maddison", new Date());
 `
   }
 ]
-
-export const query = graphql`
-  query TwoSlash {
-    ...AllSitePage
-  }
-`

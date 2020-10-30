@@ -2,7 +2,7 @@ import * as React from "react";
 import { useIntl } from "react-intl";
 import { createInternational } from "../lib/createInternational";
 import { docCopy } from "../copy/en/documentation";
-import { AllSitePage, createIntlLink } from "./IntlLink";
+import { createIntlLink } from "./IntlLink";
 
 // Automatic metadata from npm and VS Marketplace
 import releaseInfo from "../lib/release-info.json";
@@ -10,7 +10,6 @@ import { withPrefix } from "gatsby";
 
 export type Props = {
   title: string;
-  allSitePage: AllSitePage;
   lang: string;
 };
 export const QuickJump = (props: Props) => {
@@ -23,7 +22,7 @@ export const QuickJump = (props: Props) => {
   if (releaseInfo.isBeta) betaURL = releaseInfo.betaPostURL;
   if (releaseInfo.isRC) betaURL = releaseInfo.rcPostURL;
 
-  const IntlLink = createIntlLink(props.lang, props.allSitePage);
+  const IntlLink = createIntlLink(props.lang);
 
   // TODO: Internationalize these strings
   return <div className="main-content-block">
