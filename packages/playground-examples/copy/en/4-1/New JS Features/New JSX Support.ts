@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.1.0-dev.20201028", jsx: "react-jsx" } }
+//// { compiler: { ts: "4.1.0-dev.20201028", jsx: 4 } }
 
 // In version 17, the React team introduced a new format
 // for the JavaScript emitted by JSX transforms. You
