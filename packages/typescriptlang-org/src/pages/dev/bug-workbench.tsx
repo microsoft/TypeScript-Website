@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import ReactDOM from "react-dom"
 import { Layout } from "../../components/layout"
 import { withPrefix, graphql } from "gatsby"
-import { BugWorkbenchQuery } from "../../__generated__/gatsby-types"
 import { debounce } from 'ts-debounce';
 
 import "../../templates/play.scss"
@@ -24,9 +23,7 @@ import { twoslasher, TwoSlashReturn } from "@typescript/twoslash"
 
 type TwoSlashReturns = import("@typescript/twoslash").TwoSlashReturn
 
-type Props = {
-  data: BugWorkbenchQuery
-}
+type Props = {}
 
 const Play: React.FC<Props> = (props) => {
   const i = createInternational<typeof headCopy & typeof playCopy>(useIntl())

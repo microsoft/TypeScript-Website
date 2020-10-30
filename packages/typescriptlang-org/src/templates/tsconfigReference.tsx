@@ -11,10 +11,9 @@ import { headCopy } from "../copy/en/head-seo"
 import "./markdown.scss"
 import "./tsconfig.scss"
 
-import { TSConfigReferenceTemplateQuery } from "../__generated__/gatsby-types"
 import { setupTwoslashHovers } from "shiki-twoslash/dist/dom"
 
-type Props = { pageContext: any, data: TSConfigReferenceTemplateQuery, path: string }
+type Props = { pageContext: any, data: GatsbyTypes.TSConfigReferenceTemplateQuery, path: string }
 
 const TSConfigReferenceTemplateComponent = (props) => {
   const i = createInternational<typeof headCopy>(useIntl())

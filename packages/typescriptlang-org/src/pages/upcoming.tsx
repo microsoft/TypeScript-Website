@@ -2,19 +2,14 @@ import * as React from "react"
 import { Layout } from "../components/layout"
 
 import { Intl } from "../components/Intl"
-import { UpcomingQuery } from "../__generated__/gatsby-types"
 import { UpcomingReleaseMeta } from "../components/index/UpcomingReleaseMeta"
 import { useIntl } from "react-intl"
 
 import "../templates/pages/index.scss"
 
-type Props = {
-  data: UpcomingQuery
-}
-
 import releasePlan from "../lib/release-plan.json"
 
-const Index: React.FC<Props> = (props) => {
+const Index: React.FC<{}> = (props) => {
   const intl = useIntl()
   const today = new Date()
 
@@ -67,5 +62,5 @@ const Index: React.FC<Props> = (props) => {
 }
 
 
-export default (props: Props) => <Intl locale="en"><Index {...props} /></Intl>
+export default (props: {}) => <Intl locale="en"><Index {...props} /></Intl>
 

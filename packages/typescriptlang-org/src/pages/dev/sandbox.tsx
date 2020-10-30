@@ -7,11 +7,8 @@ import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/devNav"
 import { isTouchDevice } from "../../lib/isTouchDevice"
 import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
-import { SandboxQuery } from "../../__generated__/gatsby-types"
 
-type Props = {
-  data: SandboxQuery
-}
+type Props = {}
 
 const Index: React.FC<Props> = (props) => {
   useEffect(() => {

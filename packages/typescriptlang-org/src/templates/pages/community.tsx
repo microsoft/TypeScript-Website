@@ -1,7 +1,6 @@
 import * as React from "react"
 import { Layout } from "../../components/layout"
 import { graphql } from "gatsby"
-import { CommunityPageQuery } from "../../__generated__/gatsby-types"
 import { createInternational } from "../../lib/createInternational"
 import { useIntl } from "react-intl"
 import { Intl } from "../../components/Intl"
@@ -32,7 +31,6 @@ const Col2 = (props: { children: any, className?: string }) => <div className={[
 
 
 type Props = {
-  data: CommunityPageQuery
   pageContext: any
 }
 

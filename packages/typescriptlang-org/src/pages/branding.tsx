@@ -1,17 +1,12 @@
 import * as React from "react"
 import { Layout } from "../components/layout"
-import { withPrefix, graphql, Link } from "gatsby"
+import { withPrefix } from "gatsby"
 
 import { Intl } from "../components/Intl"
-import { BrandingQuery } from "../__generated__/gatsby-types"
-
-
 
 import "./branding.scss"
 
-type Props = {
-  data: BrandingQuery
-}
+type Props = {}
 
 const Row = (props: { children: any, className?: string }) => <div className={[props.className, "row"].join(" ")}>{props.children}</div>
 

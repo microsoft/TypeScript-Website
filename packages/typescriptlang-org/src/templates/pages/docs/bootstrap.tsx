@@ -8,14 +8,11 @@ import { Intl } from "../../../components/Intl";
 import { docCopy } from "../../../copy/en/documentation";
 import { createInternational } from "../../../lib/createInternational";
 import { useIntl } from "react-intl";
-import { graphql } from "gatsby";
-import { DocsHomeQuery } from "../../../__generated__/gatsby-types";
 import { QuickJump } from "../../../components/QuickJump";
 import releaseInfo from "../../../lib/release-info.json";
 
 
 type Props = {
-  data: DocsHomeQuery;
   pageContext: any;
 };
 

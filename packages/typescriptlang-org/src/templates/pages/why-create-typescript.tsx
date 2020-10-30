@@ -1,13 +1,10 @@
 import * as React from "react"
 import { Layout } from "../../components/layout"
 import { Intl } from "../../components/Intl"
-import { graphql } from "gatsby"
 
 import { createIntlLink } from "../../components/IntlLink"
-import { WhyCreateTypeScriptPageQuery } from "../../__generated__/gatsby-types"
 
 type Props = {
-        data: WhyCreateTypeScriptPageQuery
         pageContext: any
 }
 
