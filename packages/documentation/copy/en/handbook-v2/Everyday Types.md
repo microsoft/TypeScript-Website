@@ -562,7 +562,7 @@ Though we will not go into depth here.
 
 ##### `bigint`
 
-There is a primitive in JavaScript used for very large integers, `BitInt`:
+There is a primitive in JavaScript used for very large integers, `BigInt`:
 
 ```ts
 // Creating a bigint via the BigInt function
@@ -572,7 +572,7 @@ let foo: bigint = BigInt(100);
 let bar: bigint = 100n;
 ```
 
-You can learn more about BitInt in [the TypeScript 3.2 release notes](/docs/handbook/release-notes/typescript-3-2.html#bigint).
+You can learn more about BigInt in [the TypeScript 3.2 release notes](/docs/handbook/release-notes/typescript-3-2.html#bigint).
 
 ##### `symbol`
 
