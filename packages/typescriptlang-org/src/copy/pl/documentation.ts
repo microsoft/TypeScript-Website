@@ -1,5 +1,5 @@
 export const docCopy = {
-  doc_layout_title: "Punkt wyjścia do naukio TypeScriptu",
+  doc_layout_title: "Punkt wyjścia do nauki TypeScriptu",
   doc_layout_description:
     "Znajdź projekty startowe TypeScript: od Angulara do Reacta lub Node.js i CLI",
   doc_bootstrap_title: "Narzędzia bootstrapowania dla projektów w TypeScripcie",
@@ -19,7 +19,7 @@ export const docCopy = {
   doc_frameworks: "Frameworki webowe",
   doc_frameworks_angular_blurb:
     "Sprawia, że pisanie pięknych aplikacji jest przyjemne i radosne",
-  doc_frameworks_ember_blurb: "Framework dla ambitnych webdeveloperów i webdeveloperek",
+  doc_frameworks_ember_blurb: "Framework dla ambitnych webdeveloperów/ek",
   doc_frameworks_react_blurb:
     "Biblioteka JavaScript do tworzenia interfejsów użytkownika",
   doc_frameworks_vue_blurb: "Progresywny framework JavaScript",
@@ -55,7 +55,7 @@ export const docCopy = {
   doc_apps_native_script_blurb:
     "Framework open source do tworzenia natywnych aplikacji mobilnych",
   doc_apps_make_code_blurb:
-    "Ożywia informatykę dla wszystkich uczniów i uczennic dzięki ciekawym projektom",
+    "Urozmaica informatykę dla wszystkich uczniów i uczennic dzięki ciekawym projektom",
   doc_tooling: "Narzędzia",
   doc_tooling_babel_blurb: "Użyj JavaScriptu nowej generacji już dziś",
   doc_tooling_parcel_blurb:
