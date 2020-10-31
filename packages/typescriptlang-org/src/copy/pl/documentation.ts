@@ -6,16 +6,8 @@ export const docCopy = {
   doc_bootstrap_description:
     "Łańcuchy narzędzi do tworzenia CLI, aplikacji webowych, API i aplikacji.",
   doc_headline: "Zasoby szkoleniowe",
-  doc_headline_ts_for_js_title: "TS dla JS", // TODO: Remove, unused
-  doc_headline_ts_for_js_blurb:
-    "Omówienie TypeScriptu dla osób znających JavaScript", // TODO: Remove, unused
-  doc_headline_ts_first_title: "Zacznij z TypeScriptem", // TODO: Remove, unused
-  doc_headline_ts_first_blurb:
-    "Wprowadzenie do JavaScriptu i TypeScriptu dla początkujących", // TODO: Remove, unused
   doc_headline_handbook_title: "Przewodnik", // TODO: This is not actually used on headline section, should be moved to the doc_learn section
   doc_headline_handbook_blurb: "Dokumentacja języka TypeScript",
-  doc_headline_examples_title: "Przykłady", // TODO: Remove, unused
-  doc_headline_examples_blurb: "Wszechstronne samouczki z zadaniami praktycznymi", // TODO: Remove, unused
   doc_start_a_project: "Zacznij nowy projekt",
   doc_start_a_project_desc:
     "Ponieważ TypeScript jest super-setem JavaScriptu, nie ma domyślnego szablonu - byłoby ich zbyt wiele. Zamiast tego inne projekty mają własne TypeScriptowe szablony ze swoim specyficznym kontekstem. Te projekty zapewniają szablony, które obejmują obsługę TypeScriptu.",
@@ -71,7 +63,6 @@ export const docCopy = {
   doc_tooling_webpack_blurb: "Spakuj swoje assety, skrypty, obrazy i style",
   doc_learn: "Znasz już TypeScript?",
   doc_learn_3_5_release_notes_title: "Informacje o wersji",
-  doc_learn_handbook_blurb: "Dokumentacja języka TypeScript", // TODO: Remove, unused
   doc_learn_d_ts_title: "Przewodnik po plikach d.ts",
   doc_learn_d_ts_blurb: "Dowiedz się, jak opisać biblioteki JS",
   doc_learn_playground_blurb: "Przeglądaj i udostępniaj kod TypeScript online",
