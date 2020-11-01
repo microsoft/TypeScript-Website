@@ -14,6 +14,7 @@ export const runPlugin: PluginFactory = (i, utils) => {
       if (!addedClearAction) {
         const ui = createUI()
         addClearAction(sandbox, ui, i)
+        addedClearAction = true
       }
 
       if (allLogs.length === 0) {
