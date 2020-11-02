@@ -87,9 +87,11 @@ Notes:
 1. Function syntax includes parameter names. This is pretty hard to get used to!
 
    ```ts
-   let fst: (a: any, d: any) => any = (a, d) => a;
+   let fst: (a: any, b: any) => any = (a, b) => a;
+
    // or more precisely:
-   let snd: <T, U>(a: T, d: U) => T = (a, d) => a;
+
+   let fst: <T, U>(a: T, b: U) => T = (a, b) => a;
    ```
 
 2. Object literal type syntax closely mirrors object literal value syntax:
