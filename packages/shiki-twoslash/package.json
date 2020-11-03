@@ -1,6 +1,6 @@
 {
   "name": "shiki-twoslash",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "license": "MIT",
   "homepage": "https://github.com/microsoft/TypeScript-Website/",
   "description": "API primitives to mix Shiki with Twoslash",
@@ -22,8 +22,8 @@
   "dependencies": {
     "@typescript/twoslash": "1.1.1",
     "@typescript/vfs": "1.3.0",
-    "shiki": "^0.1.6",
-    "shiki-languages": "^0.1.6",
+    "shiki": "^0.2.6",
+    "shiki-languages": "^0.2.6",
     "typescript": "*"
   },
   "devDependencies": {
