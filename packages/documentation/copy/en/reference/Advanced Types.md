@@ -99,6 +99,19 @@ if (isFish(pet)) {
 Notice that TypeScript not only knows that `pet` is a `Fish` in the `if` branch;
 it also knows that in the `else` branch, you _don't_ have a `Fish`, so you must have a `Bird`.
 
+You may use the type guard `isFish` to filter an array of `Fish | Bird` and obtain an array of `Fish`:
+
+```ts twoslash
+const zoo: (Fish | Bird)[] = [getSmallPet(), getSmallPet(), getSmallPet()];
+const underWater: Fish[] = zoo.filter(isFish);
+// or, equivalently
+const underWater: Fish[] = zoo.filter<Fish>(isFish);
+// error "Signature '(pet: Fish | Bird): boolean' must be a type predicate"
+const underWater: Fish[] = zoo.filter<Fish>(pet => isFish(pet));
+```
+
+
+
 ### Using the `in` operator
 
 The `in` operator also acts as a narrowing expression for types.
