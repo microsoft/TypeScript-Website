@@ -88,7 +88,7 @@ Opcionalmente, um módulo pode envolver um ou mais módulos e combinar todas as 
 export * from "./StringValidator"; // exporta a interface 'StringValidator'
 export * from "./ZipCodeValidator"; // exporta 'ZipCodeValidator' e a const 'numberRegexp'
 export * from "./ParseIntBasedZipCodeValidator"; //  exporta a classe 'ParseIntBasedZipCodeValidator'
-// e re-exporta 'RegExpBasedZipCodeValidator' como um alias
+// e reexporta 'RegExpBasedZipCodeValidator' como um alias
 // da classe 'ZipCodeValidator' do 'ZipCodeValidator.ts'
 // módulo.
 ```
