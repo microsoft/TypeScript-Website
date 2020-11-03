@@ -2,7 +2,7 @@ import { createShikiHighlighter, renderers } from "../src/index"
 
 describe("with a simple example", () => {
   it("renders a tsconfig", async () => {
-    const highlighter = await createShikiHighlighter({ theme: "dark_vs" })
+    const highlighter = await createShikiHighlighter({ theme: "dark-plus" })
     const code = `
 {
   "compilerOptions": {
@@ -33,7 +33,7 @@ describe("with a simple example", () => {
 
 describe("with a simple example", () => {
   it("links to the ts website for a compiler option", async () => {
-    const highlighter = await createShikiHighlighter({ theme: "dark_vs" })
+    const highlighter = await createShikiHighlighter({ theme: "dark-plus" })
     const code = `
 {
   "compilerOptions": {
@@ -48,7 +48,7 @@ describe("with a simple example", () => {
   })
 
   it("includes a <data-lsp for the hover", async () => {
-    const highlighter = await createShikiHighlighter({ theme: "dark_vs" })
+    const highlighter = await createShikiHighlighter({ theme: "dark-plus" })
     const code = `
 {
   "compilerOptions": {

@@ -1,6 +1,5 @@
 import { loadTheme, getHighlighter, getTheme } from "shiki"
 import { Highlighter } from "shiki/dist/highlighter"
-import { BUNDLED_LANGUAGES } from "shiki-languages"
 import { twoslasher, TwoSlashOptions, TwoSlashReturn } from "@typescript/twoslash"
 import { createDefaultMapFromNodeModules, addAllFilesFromFolder } from "@typescript/vfs"
 import { twoslashRenderer } from "./renderers/twoslash"
@@ -12,10 +11,6 @@ export type ShikiTwoslashSettings = {
   useNodeModules?: true
   nodeModulesTypesPath?: string
 }
-
-/** Checks if a particular lang is available in shiki */
-export const canHighlightLang = (lang: string) =>
-  BUNDLED_LANGUAGES.find(l => l.aliases?.includes(lang) || l.id === lang)
 
 /**
  * This gets filled in by the promise below, then should
@@ -48,7 +43,7 @@ export const createShikiHighlighter = (options: import("shiki/dist/highlighter")
     }
   }
 
-  return getHighlighter({ theme: shikiTheme, langs: BUNDLED_LANGUAGES }).then(newHighlighter => {
+  return getHighlighter({ theme: shikiTheme, langs: options.langs }).then(newHighlighter => {
     storedHighlighter = newHighlighter
     return storedHighlighter
   })
@@ -80,6 +75,9 @@ export const renderCodeToHTML = (
     )
   }
 
+  if(highlighter.){
+
+  }
   // Shiki doesn't know this lang
   if (!canHighlightLang(lang)) {
     return plainTextRenderer(code, shikiOptions || {})

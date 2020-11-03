@@ -95,7 +95,7 @@ OK world
   })
 
   it("shows the right LSP results when a theme doesnt have unique tokens for identifiers", async () => {
-    const markdownAST = await getMarkdownASTForCode(file, { theme: "light_vs" })
+    const markdownAST = await getMarkdownASTForCode(file, { theme: "dark-plus" })
     const code = markdownAST.children[1]
 
     expect(code.value).toContain(`<data-lsp lsp='function longest`)
@@ -137,7 +137,7 @@ OK world
 `
 
   it("shows the right LSP results when a theme doesnt have unique tokens for identifiers", async () => {
-    const markdownAST = await getMarkdownASTForCode(file, { theme: "light_vs" })
+    const markdownAST = await getMarkdownASTForCode(file, { theme: "dark-plus" })
     const code = markdownAST.children[1]
 
     expect(code.value).toContain(`data-lsp`)
@@ -172,7 +172,7 @@ OK world
 `
 
   it("looks about right", async () => {
-    const markdownAST = await getMarkdownASTForCode(file, { theme: "light_vs" })
+    const markdownAST = await getMarkdownASTForCode(file, { theme: "dark-plus" })
     const code = markdownAST.children[1]
     expect(code.value).not.toContain("twoslash")
   })
