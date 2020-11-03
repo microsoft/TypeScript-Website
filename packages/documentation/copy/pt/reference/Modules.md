@@ -121,7 +121,7 @@ import * as validator from "./ZipCodeValidator";
 let myValidator = new validator.ZipCodeValidator();
 ```
 
-## Importa um múdulo apenas para efeitos colaterais
+## Importa um módulo apenas para efeitos colaterais
 
 Embora não seja uma prática recomendada, alguns módulos configuram estados globais que podem ser usados por outros módulos.
 Esses módulos podem não ter exportações, ou o consumidor não está interessado em nenhuma de suas exportações.
