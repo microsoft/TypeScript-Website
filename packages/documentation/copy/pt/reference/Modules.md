@@ -95,7 +95,6 @@ export * from "./ParseIntBasedZipCodeValidator"; //  exporta a classe 'ParseIntB
 
 ## Import
 
-
 Importar é tão fácil quanto exportar de um módulo.
 A importação de uma declaração exportada é feita usando um dos `import` abaixo:
 
