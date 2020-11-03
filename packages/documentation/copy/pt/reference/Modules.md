@@ -107,7 +107,7 @@ import { ZipCodeValidator } from "./ZipCodeValidator";
 let myValidator = new ZipCodeValidator();
 ```
 
-imports também podem ser renomeados
+Imports também podem ser renomeados
 
 ```ts
 import { ZipCodeValidator as ZCV } from "./ZipCodeValidator";
