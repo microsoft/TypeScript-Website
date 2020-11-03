@@ -39,6 +39,7 @@ Just like JavaScript, TypeScript also uses double quotes (`"`) or single quotes 
 
 ```ts twoslash
 let color: string = "blue";
+// prettier-ignore
 color = 'red';
 ```
 
