@@ -171,7 +171,6 @@ import $ from "jquery";
 $("button.continue").html("Próximo passo...");
 ```
 
-
 Classes e declarações de funções podem ser criadas diretamente como exportações padrão.
 Os nomes de declaração de função e classe de exportação padrão são opcionais.
 
