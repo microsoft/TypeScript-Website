@@ -726,7 +726,7 @@ let x = new myLargeModule.Dog();
 
 ## Reexportar para estender
 
-Freqüentemente, você precisará estender a funcionalidade de um módulo.
+Frequentemente, você precisará estender a funcionalidade de um módulo.
 Um padrão JS comum é aumentar o objeto original com _extensions_, semelhante a como as extensões JQuery funcionam.
 Como mencionamos antes, os módulos não se _mergeiam_ como os objetos de namespace global fariam.
 A solução recomendada é _não_ alterar o objeto original, mas sim exportar uma nova entidade que fornece a nova funcionalidade.
