@@ -6,7 +6,7 @@ oneline: "为了便于支持导入 commonjs 模块生成额外的 JS"
 
 - 形如 `import * as moment from "moment"` 这样的命名空间导入等价于 `const moment = require("moment")`
 
-- 形如 `import moment as "moment"` 这样的默认导入等价于 `const moment = require("moment").default`
+- 形如 `import moment from "moment"` 这样的默认导入等价于 `const moment = require("moment").default`
 
 
 这种错误的行为导致了这两个问题：
