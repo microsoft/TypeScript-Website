@@ -449,7 +449,7 @@ No TypeScript, podemos usar o padrão mostrado abaixo para implementar este e ou
 
 O compilador detecta se cada módulo é usado no JavaScript emitido.
 Se um identificador de módulo é usado apenas como parte de uma anotação de tipo e nunca como uma expressão, nenhuma chamada `require` é emitida para esse módulo.
-Essa elisão de referências não utilizadas é uma boa otimização de desempenho e também permite o carregamento opcional desses módulos.
+Essa exclusão de referências não utilizadas é uma boa otimização de desempenho e também permite o carregamento opcional desses módulos.
 
 A ideia central do padrão é que a instrução `import id = require ("...")` nos dá acesso aos tipos expostos pelo módulo.
 O carregador de módulo é chamado (por meio do `require`) de forma dinâmica, conforme mostrado nos blocos `if` abaixo.
