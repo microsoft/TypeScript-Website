@@ -7,7 +7,7 @@ Secara bawaan (dengan `esModuleInterop` _false_ atau tidak disetel) TypeScript m
 
 - Impor namespace seperti `import * as moment from "moment"` bertindak sama seperti `const moment = require("moment")`
 
-- Impor bawaan seperti `import moment as "moment"` berfungsi sama seperti `const moment = require("moment").default`
+- Impor bawaan seperti `import moment from "moment"` berfungsi sama seperti `const moment = require("moment").default`
 
 Ketidakcocokan ini menyebabkan dua masalah berikut:
 
