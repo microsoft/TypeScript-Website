@@ -114,7 +114,6 @@ const zoo: (Fish | Bird)[] = [getSmallPet(), getSmallPet(), getSmallPet()];
 const underWater1: Fish[] = zoo.filter(isFish);
 // or, equivalently
 const underWater2: Fish[] = zoo.filter<Fish>(isFish);
-// error "Signature '(pet: Fish | Bird): boolean' must be a type predicate"
 const underWater3: Fish[] = zoo.filter<Fish>(pet => isFish(pet));
 ```
 
