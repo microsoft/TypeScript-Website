@@ -102,12 +102,20 @@ it also knows that in the `else` branch, you _don't_ have a `Fish`, so you must 
 You may use the type guard `isFish` to filter an array of `Fish | Bird` and obtain an array of `Fish`:
 
 ```ts twoslash
+// @errors: 2345
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+declare function getSmallPet(): Fish | Bird;
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined;
+}
+// ---cut---
 const zoo: (Fish | Bird)[] = [getSmallPet(), getSmallPet(), getSmallPet()];
-const underWater: Fish[] = zoo.filter(isFish);
+const underWater1: Fish[] = zoo.filter(isFish);
 // or, equivalently
-const underWater: Fish[] = zoo.filter<Fish>(isFish);
+const underWater2: Fish[] = zoo.filter<Fish>(isFish);
 // error "Signature '(pet: Fish | Bird): boolean' must be a type predicate"
-const underWater: Fish[] = zoo.filter<Fish>(pet => isFish(pet));
+const underWater3: Fish[] = zoo.filter<Fish>(pet => isFish(pet));
 ```
 
 
