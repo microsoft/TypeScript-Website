@@ -67,8 +67,8 @@ const parseMarkdown = (md: string) => remark().use(remarkHTML).processSync(md);
 const languages = readdirSync(join(__dirname, "..", "copy")).filter((f) => !f.startsWith("."));
 
 languages.forEach((lang) => {
-  const locale = join(__dirname, "..", "copy", lang);
-  const fallbackLocale = join(__dirname, "..", "copy", "en");
+  const locale = join(__dirname, "..", "..", "copy", lang);
+  const fallbackLocale = join(__dirname, "..", "..", "copy", "en");
 
   const markdownChunks: string[] = [];
 

@@ -4,8 +4,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "generate-json": "yarn ts-node scripts/generateJSON.ts",
-    "generate-markdown": "yarn ts-node --project tsconfig.json scripts/generateMarkdown.ts ",
+    "generate-json": "yarn ts-node tsconfig/scripts/generateJSON.ts",
+    "generate-markdown": "yarn ts-node --project tsconfig.json tsconfig/scripts/generateMarkdown.ts ",
     "build": "yarn generate-json && yarn generate-markdown",
     "test": "yarn build && yarn lint",
     "lint": "node scripts/lint.js"

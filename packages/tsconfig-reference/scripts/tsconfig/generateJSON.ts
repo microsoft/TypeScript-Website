@@ -2,13 +2,13 @@
 // Data-dump all the TSConfig options
 
 /** Run with:
-     node --inspect-brk ./node_modules/.bin/ts-node packages/tsconfig-reference/scripts/generateJSON.ts
-     yarn ts-node packages/tsconfig-reference/scripts/generateJSON.ts
+     node --inspect-brk ./node_modules/.bin/ts-node packages/tsconfig-reference/scripts/tsconfig/generateJSON.ts
+     yarn ts-node packages/tsconfig-reference/scripts/tsconfig/generateJSON.ts
 */
 
 import * as ts from "typescript";
 
-import { CommandLineOptionBase } from "./types";
+import { CommandLineOptionBase } from "../types";
 import { writeFileSync } from "fs";
 import { join } from "path";
 import { format } from "prettier";
@@ -22,14 +22,14 @@ import {
   allowedValues,
   configToRelease,
   additionalOptionDescriptors,
-} from "./tsconfigRules";
-import { CompilerOptionName } from "../data/_types";
+} from "../tsconfigRules";
+import { CompilerOptionName } from "../../data/_types";
 
 const toJSONString = (obj) => format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
 const writeJSON = (name, obj) =>
-  writeFileSync(join(__dirname, "..", "data", name), toJSONString(obj));
+  writeFileSync(join(__dirname, "..", "..", "data", name), toJSONString(obj));
 const writeString = (name, text) =>
-  writeFileSync(join(__dirname, "..", "data", name), format(text, { filepath: name }));
+  writeFileSync(join(__dirname, "..", "..", "data", name), format(text, { filepath: name }));
 
 export interface CompilerOptionJSON extends CommandLineOptionBase {
   releaseVersion?: string;
@@ -121,7 +121,7 @@ const topLevelTSConfigOptions: CompilerOptionJSON[] = [
     },
     defaultValue: "false",
     hostObj: "top_level",
-  }
+  },
 ];
 
 const watchOptions: CompilerOptionJSON[] = [
