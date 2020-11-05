@@ -1,6 +1,5 @@
 import React, { useEffect } from "react"
 import { graphql } from "gatsby"
-import { GetDocumentBySlugQuery } from "../__generated__/gatsby-types"
 import { Layout } from "../components/layout"
 import { Sidebar, SidebarToggleButton } from "../components/layout/Sidebar"
 import { getDocumentationNavForLanguage } from "../lib/documentationNavigation"
@@ -35,19 +34,21 @@ type Props = {
     lang: string
     modifiedTime: string
   }
-  data: GetDocumentBySlugQuery
+  data: GatsbyTypes.GetDocumentBySlugQuery
   path: string
 }
 
 const HandbookTemplate: React.FC<Props> = (props) => {
-  const post = props.data.mdx
-  if (!post) {
+  console.log(props)
+
+  const md = props.data.mdx || props.data.markdownRemark
+  if (!md) {
     console.log("Could not render:", JSON.stringify(props))
     return <div><h1>Error, see console.log</h1></div>
   }
 
   const i = createInternational<typeof handbookCopy>(useIntl())
-  const IntlLink = createIntlLink(props.pageContext.lang, props.data.allSitePage)
+  const IntlLink = createIntlLink(props.pageContext.lang)
 
 
   useEffect(() => {
@@ -67,18 +68,19 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   }, [])
 
 
-  if (!post.frontmatter) throw new Error(`No front-matter found for the file with props: ${props}`)
-  if (!post.body) throw new Error(`No html found for the file with props: ${props}`)
+  if (!md.frontmatter) throw new Error(`No front-matter found for the file with props: ${props}`)
+  const body = "body" in md && md.body || "html" in md && md.html
+  if (!body) throw new Error(`No html found for the file with props: ${props}`)
 
   const selectedID = props.pageContext.id || "NO-ID"
-  const sidebarHeaders = post.headings?.filter(h => (h?.depth || 0) <= 3) || []
-  const showSidebar = !post.frontmatter.disable_toc
-  const showSidebarHeadings = post.headings && sidebarHeaders.length <= 30
+  const sidebarHeaders = md.headings?.filter(h => (h?.depth || 0) <= 3) || []
+  const showSidebar = !md.frontmatter.disable_toc
+  const showSidebarHeadings = md.headings && sidebarHeaders.length <= 30
   const navigation = getDocumentationNavForLanguage(props.pageContext.lang)
   const slug = slugger()
   return (
-    <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
-      {post.frontmatter.beta && <div id="beta">Warning: This page is a work in progress</div>}
+    <Layout title={"Handbook - " + md.frontmatter.title} description={md.frontmatter.oneline || ""} lang={props.pageContext.lang}>
+      {md.frontmatter.beta && <div id="beta">Warning: This page is a work in progress</div>}
       <section id="doc-layout">
         <SidebarToggleButton />
         <noscript>
@@ -92,11 +94,13 @@ const HandbookTemplate: React.FC<Props> = (props) => {
 
         <Sidebar navItems={navigation} selectedID={selectedID} />
         <div id="handbook-content" role="article">
-          <h2>{post.frontmatter.title}</h2>
+          <h2>{md.frontmatter.title}</h2>
           <article>
             <div className="whitespace raised">
               <div className="markdown">
-              <MDXRenderer>{post.body}</MDXRenderer>
+              { props.data.mdx && <MDXRenderer>{props.data.mdx.body}</MDXRenderer>}
+              { props.data.markdownRemark && <div dangerouslySetInnerHTML={{ __html: props.data.markdownRemark.html! }} /> }
+              
               </div>
             </div>
 
@@ -140,12 +144,27 @@ export default (props: Props) => <Intl locale={props.pageContext.lang}><Handbook
 
 export const pageQuery = graphql`
   query GetDocumentBySlug($slug: String!, $previousID: String, $nextID: String) {
-    ...AllSitePage
-    
     mdx(frontmatter: { permalink: {eq: $slug}}) {
       id
       excerpt(pruneLength: 160)
       body
+      headings {
+        value
+        depth
+      }
+      frontmatter {
+        permalink
+        title
+        disable_toc
+        oneline
+        beta
+      }
+    }
+
+    markdownRemark(frontmatter: { permalink: {eq: $slug}}) {
+      id
+      excerpt(pruneLength: 160)
+      html
       headings {
         value
         depth

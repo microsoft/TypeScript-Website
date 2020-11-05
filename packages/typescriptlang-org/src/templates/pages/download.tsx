@@ -1,25 +1,22 @@
 import * as React from "react"
 import { Layout } from "../../components/layout"
 import { Intl } from "../../components/Intl"
-import { graphql } from "gatsby"
 
 import releaseInfo from "../../lib/release-info.json"
 import { createIntlLink } from "../../components/IntlLink"
-import { DownloadPageQuery } from "../../__generated__/gatsby-types"
 import { QuickJump } from "../../components/QuickJump"
 
 type Props = {
   pageContext: any
-  data: DownloadPageQuery
 }
 
 const changeExample = (code: string) => document.getElementById("code-example")!.textContent = code
 const changeExample2 = (code: string) => document.getElementById("code-run")!.textContent = code
 
 const Index: React.FC<Props> = (props) => {
-  const Link = createIntlLink(props.pageContext.lang, props.data.allSitePage)
+  const Link = createIntlLink(props.pageContext.lang)
 
-  return <Layout title="How to set up TypeScript" description="Add TypeScript to your project, or install TypeScript globally" lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+  return <Layout title="How to set up TypeScript" description="Add TypeScript to your project, or install TypeScript globally" lang={props.pageContext.lang}>
     <div className="raised main-content-block">
       <h1>Download TypeScript</h1>
       <p>TypeScript can be installed through three installation routes depending on how you intend to use it: an npm module, a NuGet package or a Visual Studio Extension.</p>
@@ -111,16 +108,9 @@ const Index: React.FC<Props> = (props) => {
       </section>
     </div>
 
-    <QuickJump title="Next Steps" allSitePage={props.data.allSitePage} lang={props.pageContext.lang} />
-
+    <QuickJump title="Next Steps" lang={props.pageContext.lang} />
   </Layout>
 }
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Index {...props} /></Intl>
 
-
-export const query = graphql`
-  query DownloadPage {
-    ...AllSitePage
-  }
-`

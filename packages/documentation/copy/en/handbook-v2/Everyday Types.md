@@ -15,11 +15,11 @@ Types can also appear in many more _places_ than just type annotations.
 As we learn about the types themselves, we'll also learn about the places where we can refer to these types to form new constructs.
 
 We'll start by reviewing the most basic and common types you might encounter when writing JavaScript or TypeScript code.
-These will later form the core "building blocks" of more complex types.
+These will later form the core building blocks of more complex types.
 
 ## The primitives: `string`, `number`, and `boolean`
 
-JavaScript has three very commonly used [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive) kinds of values: `string`, `number`, and `boolean`.
+JavaScript has three very commonly used [primitives](https://developer.mozilla.org/en-US/docs/Glossary/Primitive): `string`, `number`, and `boolean`.
 Each has a corresponding type in TypeScript.
 As you might expect, these are the same names you'd see if you used the JavaScript `typeof` operator on a value of those types:
 
@@ -57,9 +57,10 @@ The `any` type is useful when you don't want to write out a long type just to co
 
 ### `noImplicitAny`
 
-When a type isn't specified and can't be inferred from context, TypeScript will typically default to `any`.
-Because `any` values don't benefit from type-checking, it's usually desirable to avoid these situations.
-The compiler flag `noImplicitAny` will cause any _implicit_ `any` to be flagged as an error.
+When you don't specify a type, and Typescript can't infer it from context, the compiler will typically default to any.
+
+You usually want to avoid this, though, because any isn't type-checked.
+Use the compiler flag [`noImplicitAny`](/tsconfig#noImplicitAny) to flag any implicit any as an error.
 
 ## Type Annotations on Variables
 
@@ -92,7 +93,7 @@ TypeScript allows you to specify the types of both the input and output values o
 
 ### Parameter Type Annotations
 
-When you declare a function, you can add type annotations after each parameter to declare what kinds of parameters the function accepts.
+When you declare a function, you can add type annotations after each parameter to declare what types of parameters the function accepts.
 Parameter type annotations go after the parameter name:
 
 ```ts twoslash
@@ -103,7 +104,7 @@ function greet(name: string) {
 }
 ```
 
-When a parameter has a type annotation, calls to that function will be validated:
+When a parameter has a type annotations, arguments to that function will be checked:
 
 ```ts twoslash
 // @errors: 2345
@@ -112,6 +113,8 @@ declare function greet(name: string): void;
 // Would be a runtime error if executed!
 greet(42);
 ```
+
+> Even if you don't have type annotations on your parameters, TypeScript will still check that you passed the right number of arguments.
 
 ### Return Type Annotations
 
@@ -218,7 +221,7 @@ We refer to each of these types as the union's _members_.
 Let's write a function that can operate on strings or numbers:
 
 ```ts twoslash
-// @errors: 2322
+// @errors: 2345
 function printId(id: number | string) {
   console.log("Your ID is: " + id);
 }
@@ -227,7 +230,7 @@ printId(101);
 // OK
 printId("202");
 // Error
-printId([1, 2]);
+printId({ myID: 22342 });
 ```
 
 ### Working with Union Types
@@ -330,12 +333,20 @@ When you use the alias, it's exactly as if you had written the aliased type.
 In other words, this code might _look_ illegal, but is OK according to TypeScript because both types are aliases for the same type:
 
 ```ts twoslash
-type Age = number;
-type Weight = number;
+declare function getInput(): string;
+declare function sanitize(str: string): string;
+// ---cut---
+type UserInputSanitizedString = string;
 
-const myAge: Age = 73;
-// *not* an error
-const myWeight: Weight = myAge;
+function sanitizeInput(str: string): UserInputSanitizedString {
+  return sanitize(str);
+}
+
+// Create a sanitized input
+let userInput = sanitizeInput(getInput());
+
+// Can still be re-assigned with a string though
+userInput = "new input";
 ```
 
 ## Interfaces
@@ -366,10 +377,10 @@ Type aliases and interfaces are very similar, and in many cases you can choose b
 Here are the most relevant differences between the two that you should be aware of.
 You'll learn more about these concepts in later chapters, so don't worry if you don't understand all of these right away.
 
+- Type alias names [_may_ appear in error messages](/play?#code/PTAEGEHsFsAcEsA2BTATqNrLusgzngIYDm+oA7koqIYuYQJ56gCueyoAUCKAC4AWHAHaFcoSADMaQ0PCG80EwgGNkALk6c5C1EtWgAsqOi1QAb06groEbjWg8vVHOKcAvpokshy3vEgyyMr8kEbQJogAFND2YREAlOaW1soBeJAoAHSIkMTRmbbI8e6aPMiZxJmgACqCGKhY6ABGyDnkFFQ0dIzMbBwCwqIccabcYLyQoKjIEmh8kwN8DLAc5PzwwbLMyAAeK77IACYaQSEjUWZWhfYAjABMAMwALA+gbsVjoADqgjKESytQPxCHghAByXigYgBfr8LAsYj8aQMUASbDQcRSExCeCwFiIQh+AKfAYyBiQFgOPyIaikSGLQo0Zj-aazaY+dSaXjLDgAGXgAC9CKhDqAALxJaw2Ib2RzOISuDycLw+ImBYKQflCkWRRD2LXCw6JCxS1JCdJZHJ5RAFIbFJU8ADKC3WzEcnVZaGYE1ABpFnFOmsFhsil2uoHuzwArO9SmAAEIsSFrZB-GgAjjA5gtVN8VCEc1o1C4Q4AGlR2AwO1EsBQoAAbvB-gJ4HhPgB5aDwem-Ph1TCV3AEEirTp4ELtRbTPD4vwKjOfAuioSQHuDXBcnmgACC+eCONFEs73YAPGGZVT5cRyyhiHh7AAON7lsG3vBggB8XGV3l8-nVISOgghxoLq9i7io-AHsayRWGaFrlFauq2rg9qaIGQHwCBqChtKdgRo8TxRjeyB3o+7xAA), sometimes in place of the equivalent anonymous type (which may or may not be desirable). Interfaces will always be named in error messages.
 - Type aliases may not participate [in declaration merging, but interfaces can](/play?#code/PTAEEEDtQS0gXApgJwGYEMDGjSfdAIx2UQFoB7AB0UkQBMAoEUfO0Wgd1ADd0AbAK6IAzizp16ALgYM4SNFhwBZdAFtV-UAG8GoPaADmNAcMmhh8ZHAMMAvjLkoM2UCvWad+0ARL0A-GYWVpA29gyY5JAWLJAwGnxmbvGgALzauvpGkCZmAEQAjABMAMwALLkANBl6zABi6DB8okR4Jjg+iPSgABboovDk3jjo5pbW1d6+dGb5djLwAJ7UoABKiJTwjThpnpnGpqPBoTLMAJrkArj4kOTwYmycPOhW6AR8IrDQ8N04wmo4HHQCwYi2Waw2W1S6S8HX8gTGITsQA).
 - Interfaces may only be used to [declare the shapes of object, not re-name primitives](/play?#code/PTAEAkFMCdIcgM6gC4HcD2pIA8CGBbABwBtIl0AzUAKBFAFcEBLAOwHMUBPQs0XFgCahWyGBVwBjMrTDJMAshOhMARpD4tQ6FQCtIE5DWoixk9QEEWAeV37kARlABvaqDegAbrmL1IALlAEZGV2agBfampkbgtrWwMAJlAAXmdXdy8ff0Dg1jZwyLoAVWZ2Lh5QVHUJflAlSFxROsY5fFAWAmk6CnRoLGwmILzQQmV8JmQmDzI-SOiKgGV+CaYAL0gBBdyy1KCQ-Pn1AFFplgA5enw1PtSWS+vCsAAVAAtB4QQWOEMKBuYVUiVCYvYQsUTQcRSBDGMGmKSgAAa-VEgiQe2GLgKQA).
 - Interface names will [_always_ appear in their original form](/play?#code/PTAEGEHsFsAcEsA2BTATqNrLusgzngIYDm+oA7koqIYuYQJ56gCueyoAUCKAC4AWHAHaFcoSADMaQ0PCG80EwgGNkALk6c5C1EtWgAsqOi1QAb06groEbjWg8vVHOKcAvpokshy3vEgyyMr8kEbQJogAFND2YREAlOaW1soBeJAoAHSIkMTRmbbI8e6aPMiZxJmgACqCGKhY6ABGyDnkFFQ0dIzMbBwCwqIccabcYLyQoKjIEmh8kwN8DLAc5PzwwbLMyAAeK77IACYaQSEjUWY2Q-YAjABMAMwALA+gbsVjNXW8yxySoAADaAA0CCaZbPh1XYqXgOIY0ZgmcK0AA0nyaLFhhGY8F4AHJmEJILCWsgZId4NNfIgGFdcIcUTVfgBlZTOWC8T7kAJ42G4eT+GS42QyRaYbCgXAEEguTzeXyCjDBSAAQSE8Ai0Xsl0K9kcziExDeiQs1lAqSE6SyOTy0AKQ2KHk4p1V6s1OuuoHuzwArMagA) in error messages, but _only_ when they are used by name.
-- Type alias names [_may_ appear in error messages](/play?#code/PTAEGEHsFsAcEsA2BTATqNrLusgzngIYDm+oA7koqIYuYQJ56gCueyoAUCKAC4AWHAHaFcoSADMaQ0PCG80EwgGNkALk6c5C1EtWgAsqOi1QAb06groEbjWg8vVHOKcAvpokshy3vEgyyMr8kEbQJogAFND2YREAlOaW1soBeJAoAHSIkMTRmbbI8e6aPMiZxJmgACqCGKhY6ABGyDnkFFQ0dIzMbBwCwqIccabcYLyQoKjIEmh8kwN8DLAc5PzwwbLMyAAeK77IACYaQSEjUWZWhfYAjABMAMwALA+gbsVjoADqgjKESytQPxCHghAByXigYgBfr8LAsYj8aQMUASbDQcRSExCeCwFiIQh+AKfAYyBiQFgOPyIaikSGLQo0Zj-aazaY+dSaXjLDgAGXgAC9CKhDqAALxJaw2Ib2RzOISuDycLw+ImBYKQflCkWRRD2LXCw6JCxS1JCdJZHJ5RAFIbFJU8ADKC3WzEcnVZaGYE1ABpFnFOmsFhsil2uoHuzwArO9SmAAEIsSFrZB-GgAjjA5gtVN8VCEc1o1C4Q4AGlR2AwO1EsBQoAAbvB-gJ4HhPgB5aDwem-Ph1TCV3AEEirTp4ELtRbTPD4vwKjOfAuioSQHuDXBcnmgACC+eCONFEs73YAPGGZVT5cRyyhiHh7AAON7lsG3vBggB8XGV3l8-nVISOgghxoLq9i7io-AHsayRWGaFrlFauq2rg9qaIGQHwCBqChtKdgRo8TxRjeyB3o+7xAA), sometimes in place of the equivalent anonymous type (which may or may not be desirable).
 
 For the most part, you can choose based on personal preference, and TypeScript will tell you if it needs something to be the other kind of declaration.
 
@@ -393,7 +404,7 @@ You can also use the angle-bracket syntax (except if the code is in a `.tsx` fil
 const myCanvas = <HTMLCanvasElement>document.getElementById("main_canvas");
 ```
 
-> Reminder: Because they are removed at compile-time, there is no runtime checking associated with a type assertion.
+> Reminder: Because type assertions are removed at compile-time, there is no runtime checking associated with a type assertion.
 > There won't be an exception or `null` generated if the type assertion is wrong.
 
 TypeScript only allows type assertions which convert to a _more specific_ or _less specific_ version of a type.
@@ -423,8 +434,6 @@ By themselves, literal types aren't very valuable:
 ```ts twoslash
 // @errors: 2322
 let x: "hello" = "hello";
-// OK
-x = "hello";
 // OK
 x = "hello";
 // ...
@@ -562,9 +571,11 @@ Though we will not go into depth here.
 
 ##### `bigint`
 
-There is a primitive in JavaScript used for very large integers, `BitInt`:
+From ES2020 onwards, there is a primitive in JavaScript used for very large integers, `BigInt`:
 
-```ts
+```ts twoslash
+// @target: es2020
+
 // Creating a bigint via the BigInt function
 let foo: bigint = BigInt(100);
 
@@ -572,7 +583,7 @@ let foo: bigint = BigInt(100);
 let bar: bigint = 100n;
 ```
 
-You can learn more about BitInt in [the TypeScript 3.2 release notes](/docs/handbook/release-notes/typescript-3-2.html#bigint).
+You can learn more about BigInt in [the TypeScript 3.2 release notes](/docs/handbook/release-notes/typescript-3-2.html#bigint).
 
 ##### `symbol`
 

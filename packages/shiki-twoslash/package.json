@@ -14,7 +14,7 @@
   "scripts": {
     "start": "tsdx watch",
     "prepublishOnly": "yarn build",
-    "bootstrap": "node scripts/generateTSConfigOneliners.js",
+    "bootstrap": "node scripts/generateTSConfigOneliners.js && yarn build",
     "build": "tsdx build && yarn tsc src/dom.ts --outDir dist",
     "test": "tsdx test",
     "lint": "tsdx lint"

@@ -21,6 +21,9 @@
       ".cache"
     ]
   },
+  "dependencies": {
+    "@typescript/vfs": "1.3.0"
+  },
   "devDependencies": {
     "@types/jest": "^25.1.3",
     "jest": "*",

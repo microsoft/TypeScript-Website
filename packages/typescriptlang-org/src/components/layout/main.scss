@@ -55,7 +55,7 @@ html.light-theme {
   --sidebar-link-border-color: #000;
   --sidebar-item-border-color: #dfdfdf;
   --sidebar-active-button-background-color: #dfdfdf;
-  --playground-divider: $ts-bg-selection-grey;
+  --playground-divider: #{$ts-bg-selection-grey};
   --playground-dropdown-bg: white;
   --playground-dropdown-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   --playground-dropdown-border: #{$ts-light-bg-grey-highlight-color};

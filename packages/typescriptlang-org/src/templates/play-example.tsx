@@ -1,6 +1,5 @@
 import React, { useEffect } from "react"
 import { Layout } from "../components/layout"
-import { PlayExampleQuery } from "../__generated__/gatsby-types"
 
 import "./play.scss"
 
@@ -8,7 +7,7 @@ import { useIntl } from "react-intl";
 import { createInternational } from "../lib/createInternational"
 import { headCopy } from "../copy/en/head-seo"
 import { Intl } from "../components/Intl"
-import { withPrefix, graphql } from "gatsby";
+import { withPrefix } from "gatsby";
 
 type Props = {
   pageContext: {
@@ -18,7 +17,6 @@ type Props = {
     title: string
     redirectHref: string
   }
-  data: PlayExampleQuery
 }
 
 const Play = (props: Props) => {
@@ -33,7 +31,7 @@ const Play = (props: Props) => {
   }, [])
 
   return (
-    <Layout title={i("playground_example_prefix") + props.pageContext.title} description={i("head_playground_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+    <Layout title={i("playground_example_prefix") + props.pageContext.title} description={i("head_playground_description")} lang={props.pageContext.lang}>
       <div className="raised main-content-block markdown">
         <h2>{props.pageContext.title}</h2>
         <div style={{ maxWidth: "800px", margin: "0 auto", padding: "80px" }}>
@@ -44,11 +42,6 @@ const Play = (props: Props) => {
   )
 }
 
-export const query = graphql`
-  query PlayExample {
-    ...AllSitePage
-  }
-`
 
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Play {...props} /></Intl>

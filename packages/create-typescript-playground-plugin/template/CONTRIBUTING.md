@@ -21,7 +21,7 @@ Roughly:
 
 ### Sandbox
 
-The plugins are passed copies of the TypeScript sandbox, which is a high level API wrapper to the [`monaco-editor`](https://microsoft.github.io/monaco-editor/). You can learn more about the sandbox on [the TypeScript website](http://www.typescriptlang.org/v2/dev/sandbox/
+The plugins are passed copies of the TypeScript sandbox, which is a high level API wrapper to the [`monaco-editor`](https://microsoft.github.io/monaco-editor/). You can learn more about the sandbox on [the TypeScript website](http://www.typescriptlang.org/dev/sandbox/
 
 #### Rollup
 
@@ -50,9 +50,9 @@ This module should be deployed to npm when you would like the world to see it, t
 For example, this is how you can handle getting the URL for a CSS file which is included in your `dist` folder:
 
 ```ts
-const isDev = document.location.host.includes('localhost')
-const unpkgURL = 'https://unpkg.com/typescript-playground-presentation-mode@latest/dist/slideshow.css'
-const cssHref = isDev ? 'http://localhost:5000/slideshow.css' : unpkgURL
+const isDev = document.location.host.includes("localhost")
+const unpkgURL = "https://unpkg.com/typescript-playground-presentation-mode@latest/dist/slideshow.css"
+const cssHref = isDev ? "http://localhost:5000/slideshow.css" : unpkgURL
 ```
 
 ### Post-Deploy

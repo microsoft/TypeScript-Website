@@ -22,7 +22,7 @@ const go = async () => {
     const urls = grabbedURLs
       .filter(Boolean)
       .map(url => {
-        // from "https://www.typescriptlang.org/v2/docs/handbook/advanced-types.html",
+        // from "https://www.typescriptlang.org/docs/handbook/advanced-types.html",
         // to   "https://typescript-v2-" + prNumber + ".vercel.app/docs/handbook/advanced-types.html",
 
         return url._text.replace("https://www.typescriptlang.org/", prRoot)

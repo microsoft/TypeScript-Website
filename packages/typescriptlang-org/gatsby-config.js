@@ -37,7 +37,9 @@ const remarkPlugins = [
       wrapperStyle: `margin-bottom: 1.0725rem`,
     },
   },
-  "gatsby-remark-autolink-headers",
+  {
+    resolve: "gatsby-remark-autolink-headers",
+  },
   {
     resolve: shiki,
     options: {
@@ -45,9 +47,18 @@ const remarkPlugins = [
       theme: require.resolve("./lib/themes/typescript-beta-light.json"),
     },
   },
-  "gatsby-remark-copy-linked-files",
-  "gatsby-remark-smartypants",
+  {
+    resolve: "gatsby-remark-copy-linked-files",
+  },
+  {
+    resolve: "gatsby-remark-smartypants",
+  },
 ]
+
+const mdxRemarkPlugins = remarkPlugins.map(r => {
+  if ("options" in r) return [require(r.resolve), r.options]
+  return require(r.resolve)
+})
 
 module.exports = {
   siteMetadata: {
@@ -83,13 +94,29 @@ module.exports = {
       resolve: `gatsby-plugin-mdx`,
       options: {
         extensions: [`.mdx`],
-        resolve: `gatsby-plugin-mdx`,
-        gatsbyRemarkPlugins: remarkPlugins,
+        gatsbyRemarkPlugins: [],
+        // gatsbyRemarkPlugins: [
+        // [
+        //   `gatsby-remark-shiki-twoslash`,
+        //   {
+        //     theme: require.resolve("./lib/themes/typescript-beta-light.json"),
+        //   },
+        // ],
+        // ],
       },
     },
 
     // Support for downloading or pre-caching pages, needed for PWAs
     // "gatsby-plugin-offline",
+
+    // Creates TS types for queries during `gatsby dev`
+    {
+      resolve: "gatsby-plugin-typegen",
+      options: {
+        // Ensure it works in a monorepo
+        outputPath: __dirname + "/src/__generated__/gatsby-types.ts",
+      },
+    },
 
     // Support ts/tsx files in src
     "gatsby-plugin-typescript",

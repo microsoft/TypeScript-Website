@@ -7,7 +7,7 @@ By default (with `esModuleInterop` false or not set) TypeScript treats CommonJS/
 
 - a namespace import like `import * as moment from "moment"` acts the same as `const moment = require("moment")`
 
-- a default import like `import moment as "moment"` acts the same as `const moment = require("moment").default`
+- a default import like `import moment from "moment"` acts the same as `const moment = require("moment").default`
 
 This mis-match causes these two issues:
 

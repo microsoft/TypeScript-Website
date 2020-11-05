@@ -42,7 +42,7 @@ export const indexCopy = {
 
 <p>Proyek ini memungkinkan komunitas untuk mempertahankan definisi tipe untuk pustaka JavaScript tanpa memberi tekanan ekstra pada pemeliharanya.</p>`,
 
-	index_tools: "Consistently Good Tooling",
+	index_tools: "Perkakas yang Bagus",
 	index_tools_copy: `
   <p>Dengan menangani banyak integrasi editor di dalam TypeScript, Anda bisa mendapatkan pengalaman yang konsisten bekerja di banyak editor.</p>
 

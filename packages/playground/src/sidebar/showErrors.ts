@@ -15,6 +15,7 @@ export const showErrors: PluginFactory = (i, utils) => {
     // @ts-ignore
     const playground: Playground = window.playground
 
+    if (!playground) return
     if (playground.getCurrentPlugin().id !== "errors") return
 
     // Bail early if there's nothing to show

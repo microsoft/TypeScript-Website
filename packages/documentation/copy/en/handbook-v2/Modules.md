@@ -25,7 +25,7 @@ Different parts of a program could talk to each other through global variables.
 This is represented today by the setting `module: "none"` - there are no modules.
 
 This was good for simple programs, but the limitations of this approach are quickly encountered.
-Loading all JavaScript at once is bad for page load times, and different files had to be careful to not interefere with each other' global variables.
+Loading all JavaScript at once is bad for page load times, and different files had to be careful to not interfere with each other's global variables.
 Worse, there was no way for a single JavaScript file to declare its dependencies.
 Programmers had to ensure that any HTML file their file was included in had the proper prerequisites.
 
