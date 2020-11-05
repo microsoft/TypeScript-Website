@@ -138,7 +138,7 @@ const handbookPages = [
     title: "Project Configuration",
     summary: "Compiler configuration reference.",
     items: [
-      { file: "project-config/tsconfig.json.md" },
+      { file: "project-config/tsconfig.json.mdx" },
       { file: "project-config/Compiler Options in MSBuild.md" },
       {
         href: "/tsconfig",
