@@ -15,12 +15,7 @@ export const createDocumentationPages = async (
   const handbookPage = path.resolve(`./src/templates/documentation.tsx`)
   const result = await graphql(`
     query GetAllHandbookDocs {
-      allFile(
-        filter: {
-          sourceInstanceName: { eq: "documentation" }
-          extension: { glob: "md*" }
-        }
-      ) {
+      allFile(filter: { sourceInstanceName: { eq: "documentation" } }) {
         nodes {
           id
           name
@@ -100,28 +95,25 @@ export const createDocumentationPages = async (
     const repoRoot = path.join(process.cwd(), "..", "..")
     const repoPath = post.absolutePath.replace(repoRoot, "")
 
-    if (post.childMarkdownRemark) {
-      createPage({
-        path: getPermaLink(post),
-        component: handbookPage,
-        context: {
-          id: id,
-          slug: getPermaLink(post),
-          repoPath,
-          previousID,
-          nextID,
-          lang,
-          modifiedTime: post.modifiedTime,
-        },
-      })
-    } else {
-      console.log(`skipping page generation for ${post.name}`)
-    }
+    createPage({
+      path: getPermaLink(post),
+      component: handbookPage,
+      context: {
+        id: id,
+        slug: getPermaLink(post),
+        repoPath,
+        previousID,
+        nextID,
+        lang,
+        modifiedTime: post.modifiedTime,
+      },
+    })
   })
 }
 
 const getPermaLink = (post: any) => {
   if (post.childMarkdownRemark)
     return post.childMarkdownRemark.frontmatter.permalink
+
   if (post.childMdx) return post.childMdx.frontmatter.permalink
 }

@@ -24,6 +24,31 @@ const { join } = require("path")
 // prettier-ignore
 const shiki = join(require.resolve(`gatsby-remark-shiki-twoslash`), "..", "..", "package.json")
 
+const remarkPlugins = [
+  {
+    resolve: `gatsby-remark-images`,
+    options: {
+      maxWidth: 590,
+    },
+  },
+  {
+    resolve: `gatsby-remark-responsive-iframe`,
+    options: {
+      wrapperStyle: `margin-bottom: 1.0725rem`,
+    },
+  },
+  "gatsby-remark-autolink-headers",
+  {
+    resolve: shiki,
+    options: {
+      // theme: "nord",
+      theme: require.resolve("./lib/themes/typescript-beta-light.json"),
+    },
+  },
+  "gatsby-remark-copy-linked-files",
+  "gatsby-remark-smartypants",
+]
+
 module.exports = {
   siteMetadata: {
     siteUrl: `https://www.typescriptlang.org/`,
@@ -57,7 +82,9 @@ module.exports = {
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
-        extensions: [`.mdx`, `.md`],
+        extensions: [`.mdx`],
+        resolve: `gatsby-plugin-mdx`,
+        gatsbyRemarkPlugins: remarkPlugins,
       },
     },
 
@@ -119,30 +146,7 @@ module.exports = {
     {
       resolve: `gatsby-transformer-remark`,
       options: {
-        plugins: [
-          {
-            resolve: `gatsby-remark-images`,
-            options: {
-              maxWidth: 590,
-            },
-          },
-          {
-            resolve: `gatsby-remark-responsive-iframe`,
-            options: {
-              wrapperStyle: `margin-bottom: 1.0725rem`,
-            },
-          },
-          "gatsby-remark-autolink-headers",
-          {
-            resolve: shiki,
-            options: {
-              // theme: "nord",
-              theme: require.resolve("./lib/themes/typescript-beta-light.json"),
-            },
-          },
-          "gatsby-remark-copy-linked-files",
-          "gatsby-remark-smartypants",
-        ],
+        plugins: remarkPlugins,
       },
     },
     // Finds auto-generated <a>s and converts them
