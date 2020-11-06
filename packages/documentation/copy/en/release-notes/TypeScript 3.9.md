@@ -142,7 +142,7 @@ Pick `ts-expect-error` if:
 
 Pick `ts-ignore` if:
 
-- you have an a larger project and and new errors have appeared in code with no clear owner
+- you have a larger project and new errors have appeared in code with no clear owner
 - you are in the middle of an upgrade between two different versions of TypeScript, and a line of code errors in one version but not another.
 - you honestly don't have the time to decide which of these options is better.
 
