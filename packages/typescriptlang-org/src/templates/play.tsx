@@ -215,7 +215,6 @@ const Play: React.FC<Props> = (props) => {
         </ul>
 
         <ul className="nav navbar-nav navbar-right hidden-xs">
-          <li><a href="https://dev.to/typescript">Type | Treat</a></li>
           <li><a href="#" id="playground-settings" role="button">Settings</a></li>
         </ul>
       </nav>
