@@ -7,33 +7,33 @@ translatable: true
 ---
 
 [JSX](https://facebook.github.io/jsx/) adalah sebuah sintaks tertanam, yang seperti XML.
-Ini dimaksudkan untuk diubah menjadi JavaScript yang valid, meskipun semantik dari transformasi itu khusus untuk implementasi.
+Ini dimaksudkan untuk diubah menjadi JavaScript yang _valid_, meskipun semantik dari transformasi itu khusus untuk implementasi.
 JSX menjadi populer dengan kerangka kerja [React](https://reactjs.org/), tetapi sejak itu juga melihat implementasi lain.
-TypeScript mendukung embeding, pemeriksaan tipe, dan mengkompilasi JSX secara langsung ke JavaScript.
+TypeScript mendukung _embeding_, pemeriksaan tipe, dan mengkompilasi JSX secara langsung ke JavaScript.
 
 ## Dasar Penggunaan
 
 Untuk menggunakan JSX, Anda harus melakukan dua hal berikut:
 
-1. Penamaan file dengan ekstensi `.tsx`
+1. Penamaan berkas dengan ekstensi `.tsx`
 2. Mengaktifkan opsi `jsx`
 
 TypeScript memiliki tiga jenis mode JSX: `preserve`, `react`, dan `react-native`.
-Mode tersebut hanya berlaku untuk stage, sedangkan untuk pemeriksaan tipe, hal itu tidak berlaku.
-Mode `preserve` akan mempertahankan JSX sebagai bagian dari output untuk selanjutnya digunakan oleh langkah transformasi lain (mis. [Babel](https://babeljs.io/)).
-Selain itu, output-nya akan memiliki ekstensi file `.jsx`.
-Mode `react` akan mengeluarkan`React.createElement`, tidak perlu melalui transformasi JSX sebelum digunakan, dan outputnya akan memiliki ekstensi file `.js`.
-Mode `react-native` sama dengan `pertahankan` yang mempertahankan semua JSX, tetapi hasilnya justru akan memiliki ekstensi file `.js`.
+Mode tersebut hanya berlaku untuk _stage_, sedangkan untuk pemeriksaan tipe, hal itu tidak berlaku.
+Mode `preserve` akan mempertahankan JSX sebagai bagian dari _output_ untuk selanjutnya digunakan oleh langkah transformasi lain (mis. [Babel](https://babeljs.io/)).
+Selain itu, _output_-nya akan memiliki ekstensi berkas `.jsx`.
+Mode `react` akan mengeluarkan`React.createElement`, tidak perlu melalui transformasi JSX sebelum digunakan, dan outputnya akan memiliki ekstensi berkas `.js`.
+Mode `react-native` sama dengan `pertahankan` yang mempertahankan semua JSX, tetapi hasilnya justru akan memiliki ekstensi berkas `.js`.
 
-| Mode           | Input     | Output                       | Output File Extension |
-| -------------- | --------- | ---------------------------- | --------------------- |
-| `preserve`     | `<div />` | `<div />`                    | `.jsx`                |
-| `react`        | `<div />` | `React.createElement("div")` | `.js`                 |
-| `react-native` | `<div />` | `<div />`                    | `.js`                 |
+| Mode           | Input     | Output                       | Berkas Output Extension |
+| -------------- | --------- | ---------------------------- | ----------------------- |
+| `preserve`     | `<div />` | `<div />`                    | `.jsx`                  |
+| `react`        | `<div />` | `React.createElement("div")` | `.js`                   |
+| `react-native` | `<div />` | `<div />`                    | `.js`                   |
 
-Anda dapat menetapkan mode ini menggunakan flag baris perintah `--jsx` atau opsi yang sesuai di file [tsconfig.json](/docs/handbook/tsconfig-json.html) Anda.
+Anda dapat menetapkan mode ini menggunakan _flag_ baris perintah `--jsx` atau opsi yang sesuai di berkas [tsconfig.json](/docs/handbook/tsconfig-json.html) Anda.
 
-> \*Catatan: Anda dapat menentukan fungsi factory JSX yang akan digunakan saat menargetkan react JSX emit dengan opsi `--jsxFactory` (nilai bawaan ke `React.createElement`)
+> \*Catatan: Anda dapat menentukan fungsi _factory_ JSX yang akan digunakan saat menargetkan react JSX _emit_ dengan opsi `--jsxFactory` (nilai bawaan ke `React.createElement`)
 
 ## Opeartor `as`
 
@@ -44,16 +44,16 @@ var foo = <foo>bar;
 ```
 
 Ini menegaskan variabel `bar` memiliki tipe `foo`.
-Sejak TypeScript juga menggunakan kurung siku untuk penegasan tipe, mengkombinasikannya dengan sintaks JSX akan menimbulkan kesulitan tertentu. Hasilnya, TypeScript tidak membolehkan penggunaan kurung siku untuk penegasan tipe pada file `.tsx`.
+Sejak TypeScript juga menggunakan kurung siku untuk penegasan tipe, mengkombinasikannya dengan sintaks JSX akan menimbulkan kesulitan tertentu. Hasilnya, TypeScript tidak membolehkan penggunaan kurung siku untuk penegasan tipe pada berkas `.tsx`.
 
-Karena sintaks diatas tidak bisa digunakan pada file `.tsx`, maka alternatif untuk penegasan tipe dapat menggunakan operator `as`.
+Karena sintaks diatas tidak bisa digunakan pada berkas `.tsx`, maka alternatif untuk penegasan tipe dapat menggunakan operator `as`.
 Contohnya dapat dengan mudah ditulis ulang dengan operator `as`.
 
 ```ts
 var foo = bar as foo;
 ```
 
-Operator `as` tersedia dikedua jenis file, `.ts` dan `.tsx`, dan memiliki perlakuan yang sama seperti penegasan tipe menggunakan kurung siku.
+Operator `as` tersedia dikedua jenis berkas, `.ts` dan `.tsx`, dan memiliki perlakuan yang sama seperti penegasan tipe menggunakan kurung siku.
 
 ## Pemeriksaan Tipe
 
@@ -69,9 +69,9 @@ Elemen intrinsik selalu dimulai dengan huruf kecil, dan elemen berbasiskan nilai
 
 ## Elemen intrinsik
 
-Elemen intrinsik dicari pada interface khusus, yaitu `JSX.IntrinsicElements`.
-Standarnya, jika interface ini tidak ditentukan, maka apapun yang terjadi dan elemen intrinsik tidak akan diperiksa tipenya.
-Namun, jika interface ini ada, maka nama elemen intrinsik akan dicari sebagai properti di interface `JSX.IntrinsicElements`.
+Elemen intrinsik dicari pada _interface_ khusus, yaitu `JSX.IntrinsicElements`.
+Standarnya, jika _interface_ ini tidak ditentukan, maka apapun yang terjadi dan elemen intrinsik tidak akan diperiksa tipenya.
+Namun, jika _interface_ ini ada, maka nama elemen intrinsik akan dicari sebagai properti di _interface_ `JSX.IntrinsicElements`.
 Contohnya:
 
 ```ts
@@ -85,9 +85,9 @@ declare namespace JSX {
 <bar />; // galat
 ```
 
-Pada contoh diatas, `<foo />` akan berjalan dengan baik, tapi `<bar />` akan menghasilkan galat, karena `<bar />` tidak ditentukan pada interface `JSX.IntrinsicElements`.
+Pada contoh diatas, `<foo />` akan berjalan dengan baik, tapi `<bar />` akan menghasilkan galat, karena `<bar />` tidak ditentukan pada _interface_ `JSX.IntrinsicElements`.
 
-> Catatan: Anda juga bisa menentukan indexer untuk mendapatkan seluruh elemen bertipe string didalam `JSX.IntrinsicElements`, seperti berikut:
+> Catatan: Anda juga bisa menentukan _indexer_ untuk mendapatkan seluruh elemen bertipe string didalam `JSX.IntrinsicElements`, seperti berikut:
 
 ```ts
 declare namespace JSX {
@@ -99,7 +99,7 @@ declare namespace JSX {
 
 ## Elemen Berbasiskan Nilai
 
-Elemen berbasiskan nilai akan dicari oleh identifier yang ada pada sebuah scope.
+Elemen berbasiskan nilai akan dicari oleh _identifier_ yang ada pada sebuah _scope_.
 
 ```ts
 import MyComponent from "./myComponent";
@@ -110,12 +110,12 @@ import MyComponent from "./myComponent";
 
 Terdapat dua cara untuk mendefinisikan sebuah elemen berbasiskan nilai, yaitu:
 
-1. Function Component (FC)
-2. Class Component
+1. _Function Component_ (FC)
+2. _Class Component_
 
-Karena kedua jenis elemen berbasis nilai ini tidak dapat dibedakan satu sama lain dalam ekspresi JSX, maka pertama TS akan mencoba menyelesaikan ekspresi tersebut sebagai Function Component menggunakan overloading. Jika proses berhasil, maka TS selesai menyelesaikan ekspresi ke deklarasinya. Jika gagal untuk menyelesaikan sebagai Function Component, maka TS kemudian akan mencoba untuk menyelesaikannya sebagai Class Component. Jika gagal, TS akan melaporkan kesalahan.
+Karena kedua jenis elemen berbasis nilai ini tidak dapat dibedakan satu sama lain dalam ekspresi JSX, maka pertama TS akan mencoba menyelesaikan ekspresi tersebut sebagai _Function Component_ menggunakan _overloading_. Jika proses berhasil, maka TS selesai menyelesaikan ekspresi ke deklarasinya. Jika gagal untuk menyelesaikan sebagai _Function Component_, maka TS kemudian akan mencoba untuk menyelesaikannya sebagai _Class Component_. Jika gagal, TS akan melaporkan kesalahan.
 
-### Function Component
+### _Function Component_
 
 Seperti namanya, komponen ini didefinisikan menggunakan fungsi JavaScript dimana argumen pertamanya adalah sebuah `props` objek.
 TS memberlakukan bahwa tipe kembaliannya harus dapat diberikan ke `JSX.Element`.
@@ -135,7 +135,7 @@ function ComponentFoo(prop: FooProp) {
 const Button = (prop: {value: string}, context: { color: string }) => <button>
 ```
 
-Karena Function Component adalah fungsi JavaScript, maka fungsi overload dapat digunakan di sini:
+Karena _Function Component_ adalah fungsi JavaScript, maka fungsi overload dapat digunakan di sini:
 
 ```ts
 interface ClickableProps {
@@ -156,19 +156,19 @@ function MainButton(prop: SideProps): JSX.Element {
 }
 ```
 
-> Catatan: Function Component sebelumnya dikenal sebagai Stateless Function Component (SFC). Karena Function Component tidak dapat lagi dianggap stateless di versi terbaru react, jenis `SFC` dan aliasnya`StatelessComponent` tidak digunakan lagi.
+> Catatan: _Function Component_ sebelumnya dikenal sebagai _Stateless Function Component_ (SFC). Karena _Function Component_ tidak dapat lagi dianggap _stateless_ di versi terbaru react, jenis `SFC` dan aliasnya`StatelessComponent` tidak digunakan lagi.
 
-### Class Component
+### _Class Component_
 
-Ini memungkinkan untuk mendefinisikan tipe dari class component.
+Ini memungkinkan untuk mendefinisikan tipe dari _class component_.
 Namun, untuk melakukannya, yang terbaik adalah memahami dua istilah baru berikut: _type class elemen_ dan _type instance elemen_.
 
 Jika terdapat `<Expr />`, maka _type class elemennya_ adalah `Expr`.
-Jadi pada contoh diatas, jika `MyComponent` adalah class ES6, maka tipe class-nya adalah konstruktor dan static dari class tersebut.
-Jika `MyComponent` adalah factory function, maka tipe class-nya adalah fungsi itu sendiri.
+Jadi pada contoh diatas, jika `MyComponent` adalah _class_ ES6, maka tipe _class_-nya adalah konstruktor dan _static_ dari _class_ tersebut.
+Jika `MyComponent` adalah factory function, maka tipe _class_-nya adalah fungsi itu sendiri.
 
-Setelah tipe class dibuat, tipe instance ditentukan oleh gabungan tipe kembalian dari konstruksi tipe class atau call signature (mana saja yang ada).
-Jadi sekali lagi, dalam kasus kelas ES6, jenis instans adalah jenis instans kelas itu, dan dalam kasus factory function, itu akan menjadi jenis nilai yang dikembalikan dari fungsi tersebut.
+Setelah tipe class dibuat, tipe _instance_ ditentukan oleh gabungan tipe kembalian dari konstruksi tipe _class_ atau _call signature_ (mana saja yang ada).
+Jadi sekali lagi, dalam kasus kelas ES6, jenis instans adalah jenis instans kelas itu, dan dalam kasus _factory function_, itu akan menjadi jenis nilai yang dikembalikan dari fungsi tersebut.
 
 ```ts
 class MyComponent {
@@ -194,7 +194,7 @@ var myComponent = MyFactoryFunction();
 // tipe instance elemen => { render: () => void }
 ```
 
-Tipe elemen instance itu menarik, karena ini harus dapat di-assign ke `JSX.ElementClass` atau hasilnya akan galat.
+Tipe elemen _instance_ itu menarik, karena ini harus dapat di-_assign_ ke `JSX.ElementClass` atau hasilnya akan galat.
 Standarnya `JSX.ElementClass` adalah `{}`, tetapi ini bisa ditambah untuk membatasi penggunaan JSX hanya untuk jenis yang sesuai dengan interface yang tepat.
 
 ```ts
@@ -243,10 +243,10 @@ declare namespace JSX {
 
 Untuk elemen berbasis nilai, ini sedikit lebih kompleks.
 Ini ditentukan oleh tipe dari properti pada _type elemen instance_ yang telah ditentukan.
-Property mana yang digunakan untuk ditentukan oleh `JSX.ElementAttributesProperty`.
+Properti mana yang digunakan untuk ditentukan oleh `JSX.ElementAttributesProperty`.
 Ini harus dideklarasikan dengan satu properti.
 Nama properti itu kemudian digunakan.
-Mulai TypeScript 2.8, jika `JSX.ElementAttributesProperty` tidak disediakan, jenis parameter pertama dari konstruktor elemen kelas atau pemanggilan Function Component akan digunakan sebagai gantinya.
+Mulai TypeScript 2.8, jika `JSX.ElementAttributesProperty` tidak disediakan, jenis parameter pertama dari konstruktor elemen kelas atau pemanggilan _Function Component_ akan digunakan sebagai gantinya.
 
 ```ts
 declare namespace JSX {
@@ -266,7 +266,7 @@ class MyComponent {
 <MyComponent foo="bar" />;
 ```
 
-Type atribut elemen digunakan untuk memeriksa atribut di JSX.
+Tipe atribut elemen digunakan untuk memeriksa atribut di JSX.
 Properti opsional dan wajib telah didukung.
 
 ```ts
@@ -284,11 +284,11 @@ declare namespace JSX {
 <foo requiredProp="bar" some-unknown-prop />; // ok, karena 'some-unknown-prop' bukan identifier yang valid
 ```
 
-> Catatan: Jika nama atribut bukan identifier JS yang valid (seperti atribut `data- *`), itu tidak dianggap sebagai kesalahan jika tidak ditemukan dalam tipe atribut elemen.
+> Catatan: Jika nama atribut bukan _identifier_ JS yang valid (seperti atribut `data- *`), itu tidak dianggap sebagai kesalahan jika tidak ditemukan dalam tipe atribut elemen.
 
-Selain itu, antarmuka `JSX.IntrinsicAttributes` dapat digunakan untuk menentukan properti tambahan yang digunakan oleh framework JSX yang umumnya tidak digunakan oleh props atau argumen komponen - misalnya `key` di React. Mengkhususkan lebih lanjut, tipe generik `JSX.IntrinsicClassAttributes<T>` juga dapat digunakan untuk menetapkan tipe atribut tambahan yang sama hanya untuk class component (dan bukan function component). Dalam tipe ini, parameter generik sesuai dengan tipe instance class. Di React, ini digunakan untuk mengizinkan atribut `ref` dengan tipe `Ref <T>`. Secara umum, semua properti pada interface ini harus bersifat opsional, kecuali Anda bermaksud agar pengguna framework JSX Anda perlu menyediakan beberapa atribut pada setiap tag.
+Selain itu, antarmuka `JSX.IntrinsicAttributes` dapat digunakan untuk menentukan properti tambahan yang digunakan oleh _framework_ JSX yang umumnya tidak digunakan oleh props atau argumen komponen - misalnya `key` di React. Mengkhususkan lebih lanjut, tipe generik `JSX.IntrinsicClassAttributes<T>` juga dapat digunakan untuk menetapkan tipe atribut tambahan yang sama hanya untuk _class component_ (dan bukan _function component_). Dalam tipe ini, parameter generik sesuai dengan tipe _instance class_. Di React, ini digunakan untuk mengizinkan atribut `ref` dengan tipe `Ref <T>`. Secara umum, semua properti pada interface ini harus bersifat opsional, kecuali Anda bermaksud agar pengguna _framework_ JSX Anda perlu menyediakan beberapa atribut pada setiap tag.
 
-Spread operator juga bekerja:
+_Spread operator_ juga bekerja:
 
 ```ts
 var props = { requiredProp: "bar" };
@@ -298,9 +298,9 @@ var badProps = {};
 <foo {...badProps} />; // galat
 ```
 
-## Pemeriksaan Type Children
+## Pemeriksaan _Children Type_
 
-Di TypeScript 2.3, TS mengenalkan pemeriksaan tipe pada _children_. _Children_ adalah properti khusus di _type atribut elemen_ dimana child _JSXExpression_ diambil untuk dimasukkan ke atribut.
+Di TypeScript 2.3, TS mengenalkan pemeriksaan tipe pada _children_. _Children_ adalah properti khusus di _type atribut elemen_ dimana _child_ _JSXExpression_ diambil untuk dimasukkan ke atribut.
 Mirip dengan bagaimana menggunakan `JSX.ElementAttributesProperty` untuk menentukan nama dari _props_, TS menggunakan `JSX`.
 `JSX.ElementChildrenAttribute` harus dideklarasikan dengan properti tunggal.
 
@@ -365,12 +365,12 @@ class Component extends React.Component<PropsType, {}> {
 </Component>
 ```
 
-## Type hasil JSX
+## Tipe hasil JSX
 
 Secara standar, hasil dari ekspresi JSX bertipe `any`.
-Anda bisa menyesuaikan tipe dengan menentukan interface `JSX.Element`.
-Namun, tidak mungkin untuk mengambil informasi tipe tentang elemen, atribut atau turunan dari JSX dari interface ini.
-Itu adalah black box.
+Anda bisa menyesuaikan tipe dengan menentukan _interface_ `JSX.Element`.
+Namun, tidak mungkin untuk mengambil informasi tipe tentang elemen, atribut atau turunan dari JSX dari _interface_ ini.
+Itu adalah _black box_.
 
 ## Menyematkan Ekspresi
 
@@ -386,8 +386,8 @@ var a = (
 );
 ```
 
-Kode di atas akan menghasilkan kesalahan karena Anda tidak dapat membagi string dengan angka.
-Outputnya, saat menggunakan opsi `preserve`, terlihat seperti:
+Kode di atas akan menghasilkan kesalahan karena Anda tidak dapat membagi _string_ dengan angka.
+_Output_-nya, saat menggunakan opsi `preserve`, terlihat seperti:
 
 ```ts
 var a = (
@@ -401,7 +401,7 @@ var a = (
 
 ## Integrasi React
 
-Untuk menggunakan JSX dengan React, Anda harus menggunakan [React typings](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react). Typings ini mendefinisikan namespace `JSX` dengan tepat untuk digunakan dengan React.
+Untuk menggunakan JSX dengan React, Anda harus menggunakan [React typings](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react). Typings ini mendefinisikan _namespace_ `JSX` dengan tepat untuk digunakan dengan React.
 
 ```ts
 /// <reference path="react.d.ts" />
@@ -422,7 +422,7 @@ class MyComponent extends React.Component<Props, {}> {
 
 ## Factory Function
 
-Factory function yang digunakan oleh opsi kompilator `jsx: react` dapat dikonfigurasi. Ini dapat disetel menggunakan opsi baris perintah `jsxFactory`, atau komentar `@jsx` sebaris untuk menyetelnya pada basis per file. Misalnya, jika Anda menyetel `jsxFactory` ke `createElement`, `<div />` akan melakukannya sebagai `createElement("div")` bukan `React.createElement("div")`.
+Factory function yang digunakan oleh opsi kompilator `jsx: react` dapat dikonfigurasi. Ini dapat disetel menggunakan opsi baris perintah `jsxFactory`, atau komentar `@jsx` sebaris untuk menyetelnya pada basis per berkas. Misalnya, jika Anda menyetel `jsxFactory` ke `createElement`, `<div />` akan melakukannya sebagai `createElement("div")` bukan `React.createElement("div")`.
 
 Versi pragma komentar dapat digunakan seperti itu (dalam TypeScript 2.8):
 
@@ -439,4 +439,4 @@ const preact = require("preact");
 const x = preact.h("div", null);
 ```
 
-Factory yang dipilih juga akan mempengaruhi di mana namespace `JSX` dicari (untuk informasi pemeriksaan tipe) sebelum kembali ke global. Jika factory ditentukan sebagai `React.createElement` (standar), kompilator akan memeriksa `React.JSX` sebelum memeriksa `JSX` global. Jika factory ditentukan sebagai `h`, maka ia akan memeriksa `h.JSX` sebelum `JSX` global.
+_Factory_ yang dipilih juga akan mempengaruhi di mana _namespace_ `JSX` dicari (untuk informasi pemeriksaan tipe) sebelum kembali ke _global_. Jika _factory_ ditentukan sebagai `React.createElement` (standar), kompilator akan memeriksa `React.JSX` sebelum memeriksa `JSX` _global_. Jika _factory_ ditentukan sebagai `h`, maka ia akan memeriksa `h.JSX` sebelum `JSX` _global_.

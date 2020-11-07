@@ -6,19 +6,19 @@ oneline: "Bagaimana cara menambahkan hasil d.ts ke proyek JavaScript"
 translatable: true
 ---
 
-[Dengan TypeScript 3.7](/docs/handbook/release-notes/typescript-3-7.html#--declaration-and---allowjs), TypeScript menambahkan dukungan untuk menghasilkan file .d.ts dari JavaScript menggunakan sintaks JSDoc.
+[Dengan TypeScript 3.7](/docs/handbook/release-notes/typescript-3-7.html#--declaration-and---allowjs), TypeScript menambahkan dukungan untuk menghasilkan berkas .d.ts dari JavaScript menggunakan sintaks JSDoc.
 
-Pengaturan ini berarti Anda memiliki editor yang mendukung TypeScript tanpa memindahkan proyek anda ke TypeScript, atau harus memelihara file .d.ts di basis kodemu.
+Pengaturan ini berarti Anda memiliki _editor_ yang mendukung TypeScript tanpa memindahkan proyek anda ke TypeScript, atau harus memelihara berkas .d.ts di basis kodemu.
 TypeScript mendukung sebagian besar tag JSDoc, Anda bisa menemukannya [di referensi ini](/docs/handbook/type-checking-javascript-files.html#supported-jsdoc).
 
-## Menyiapkan proyekmu untuk menggunakan file .d.ts
+## Menyiapkan proyekmu untuk menggunakan berkas .d.ts
 
-Untuk menambahkan pembuatan file .d.ts di proyekmu, Anda perlu melakukan hingga empat langkah:
+Untuk menambahkan pembuatan berkas .d.ts di proyekmu, Anda perlu melakukan empat langkah berikut:
 
 - Tambahkan TypeScript ke dependensi _dev_ Anda
 - Tambahkan `tsconfig.json` untuk mengkonfigurasi TypeScript
-- Jalankan kompilator TypeScript untuk menghasilkan file d.ts yang sesuai untuk file JS
-- (opsional) Edit package.json Anda untuk mereferensikan tipe
+- Jalankan kompilator TypeScript untuk menghasilkan berkas d.ts yang sesuai untuk berkas JS
+- (_opsional_) Sunting package.json Anda untuk mereferensikan tipe
 
 ### Menambahkan TypeScript
 
@@ -26,7 +26,7 @@ Anda bisa mempelajari cara melakukan ini di [halaman instalasi](/download) kami.
 
 ### TSConfig
 
-TSConfig adalah file jsonc yang mengkonfigurasi kedua _flag_ kompilator Anda, dan menyatakan di mana mencari file.
+TSConfig adalah berkas jsonc yang mengkonfigurasi kedua _flag_ kompilator Anda, dan menyatakan di mana mencari berkas.
 Dalam kasus ini, Anda menginginkan berkas seperti berikut:
 
 ```json5
@@ -35,8 +35,8 @@ Dalam kasus ini, Anda menginginkan berkas seperti berikut:
   include: ["src/**/*"],
 
   compilerOptions: {
-    // Memberi tahu TypeScript untuk membaca file JS,
-    // karena biasanya file tersebut diabaikan sebagai file sumber
+    // Memberi tahu TypeScript untuk membaca berkas JS,
+    // karena biasanya berkas tersebut diabaikan sebagai berkas sumber
     allowJs: true,
     // Hasilkan berkas d.ts
     declaration: true,
@@ -45,14 +45,14 @@ Dalam kasus ini, Anda menginginkan berkas seperti berikut:
     emitDeclarationOnly: true,
     // Tipe harus masuk ke direktori ini.
     // Menghapus ini akan menempatkan berkas .d.ts
-    // di sebelah file .js
+    // di sebelah berkas .js
     outDir: "dist",
   },
 }
 ```
 
 Anda dapat mempelajari lebih lanjut tentang opsi di [referensi tsconfig](/reference).
-Alternatif untuk menggunakan file TSConfig adalah CLI, ini adalah perilaku yang sama seperti perintah CLI.
+Alternatif untuk menggunakan berkas TSConfig adalah CLI, ini adalah perilaku yang sama seperti perintah CLI.
 
 ```sh
 npx typescript src/**/*.js --declaration --allowJs --emitDeclarationOnly --outDir types
@@ -61,12 +61,12 @@ npx typescript src/**/*.js --declaration --allowJs --emitDeclarationOnly --outDi
 ## Menjalankan kompilator
 
 Anda bisa mempelajari bagaimana melakukan ini di [halaman pemasangan](/download) TypeScript kami.
-Anda perlu memastikan file-file ini disertakan dalam package Anda jika Anda memiliki file dalam `gitignore` proyek Anda.
+Anda perlu memastikan berkas-berkas ini disertakan dalam package Anda jika Anda memiliki berkas dalam `gitignore` proyek Anda.
 
-## Menyunting file package.json
+## Menyunting berkas package.json
 
-TypeScript mereplikasi resolusi node untuk modul di `package.json`, dengan langkah tambahan untuk menemukan file .d.ts.
-Secara garis besar, Pertama-tama resolusi akan memeriksa bagian `"types"` yang opsional, kemudian bidang `"main"`, dan terakhir akan mencoba `index.d.ts` di root.
+TypeScript mereplikasi resolusi _node_ untuk modul di `package.json`, dengan langkah tambahan untuk menemukan berkas .d.ts.
+Secara garis besar, Pertama-tama resolusi akan memeriksa bagian `"types"` yang opsional, kemudian bidang `"main"`, dan terakhir akan mencoba `index.d.ts` di _root_.
 
 | Package.json              | Location of default .d.ts      |
 | :------------------------ | :----------------------------- |
@@ -84,4 +84,4 @@ Jika tidak ada, maka "main" akan digunakan
 
 ## Tips
 
-Jika kamu suka menulis tes untuk file .d.ts, coba [tsd](https://github.com/SamVerschueren/tsd).
+Jika kamu suka menulis tes untuk berkas .d.ts, coba [tsd](https://github.com/SamVerschueren/tsd).

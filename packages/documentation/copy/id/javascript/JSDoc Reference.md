@@ -6,7 +6,7 @@ oneline: JSDoc apa yang didukung JavaScript dan TypeScript?
 translatable: true
 ---
 
-Dibawah ini adalah daftar anotasi yang didukung saat menggunakan JSDoc untuk menyediakan informasi di file Javscript.
+Dibawah ini adalah daftar anotasi yang didukung saat menggunakan JSDoc untuk menyediakan informasi di berkas Javscript.
 
 Perhatikan semua tag yang tidak secara eksplisit dicantumkan di bawah (seperti `@ async`) belum didukung.
 
@@ -25,14 +25,14 @@ Perhatikan semua tag yang tidak secara eksplisit dicantumkan di bawah (seperti `
 
 - [Property Modifiers](#jsdoc-property-modifiers) `@public`, `@private`, `@protected`, `@readonly`
 
-Artinya biasanya sama, atau superset, dari arti tag yang diberikan di [jsdoc.app](https://jsdoc.app).
-Kode dibawah mendeskripsikan perbedaan dan beberapa contoh dari setiap tag-nya.
+Artinya biasanya sama, atau _superset_, dari arti _tag_ yang diberikan di [jsdoc.app](https://jsdoc.app).
+Kode dibawah mendeskripsikan perbedaan dan beberapa contoh dari setiap _tag_-nya.
 
-**Catatan:** Anda bisa menggunakan [playground untuk mengeksplor dukungan JSDoc](/play?useJavaScript=truee=4#example/jsdoc-support).
+**Catatan:** Anda bisa menggunakan [_playground_ untuk mengeksplor dukungan JSDoc](/play?useJavaScript=truee=4#example/jsdoc-support).
 
 ## `@type`
 
-Anda dapat menggunakan tag "@type" dan mereferensikan nama jenis (baik primitif, ditentukan dalam deklarasi TypeScript, atau dalam tag "@typedef" JSDoc).
+Anda dapat menggunakan _tag_ "@type" dan mereferensikan nama jenis (baik primitif, ditentukan dalam deklarasi TypeScript, atau dalam _tag_ "@typedef" JSDoc).
 Anda dapat menggunakan sebagian besar jenis JSDoc dan jenis TypeScript apa pun, dari [yang paling dasar seperti `string`](/docs/handbookbasic-types.html) hingga [yang paling canggih, seperti jenis bersyarat](/docs/handbook/advanced-types.html).
 
 ```js twoslash
@@ -53,7 +53,7 @@ var myElement = document.querySelector(selector);
 element.dataset.myData = "";
 ```
 
-`@type` dapat menetapkan tipe gabungan &mdash; misalnya, sesuatu bisa berupa string atau boolean.
+`@type` dapat menetapkan tipe gabungan &mdash; misalnya, sesuatu bisa berupa _string_ atau _boolean_.
 
 ```js twoslash
 /**
@@ -71,7 +71,7 @@ Perhatikan bahwa tanda kurung bersifat opsional untuk tipe gabungan.
 var sb;
 ```
 
-Anda dapat menentukan tipe array menggunakan berbagai sintaks:
+Anda dapat menentukan tipe _array_ menggunakan berbagai sintaks:
 
 ```js twoslash
 /** @type {number[]} */
@@ -82,15 +82,15 @@ var nds;
 var nas;
 ```
 
-Anda juga dapat menentukan tipe literal objek.
-Misalnya, objek dengan properti 'a' (string) dan 'b' (angka) menggunakan sintaks berikut:
+Anda juga dapat menentukan tipe _literal_ objek.
+Misalnya, objek dengan properti 'a' (_string_) dan 'b' (angka) menggunakan sintaks berikut:
 
 ```js twoslash
 /** @type {{ a: string, b: number }} */
 var var9;
 ```
 
-Anda dapat menentukan objek seperti map dan array menggunakan index signature string dan angka, menggunakan sintaks JSDoc standar atau sintaks TypeScript.
+Anda dapat menentukan objek seperti _map_ dan _array_ menggunakan index signature _string_ dan angka, menggunakan sintaks JSDoc standar atau sintaks TypeScript.
 
 ```js twoslash
 /**
@@ -106,7 +106,7 @@ var arrayLike;
 
 Dua jenis sebelumnya sama dengan tipe TypeScript `{ [x: string]: number }` dan `{ [x: number]: any }`. Kompilator memahami kedua sintaks tersebut.
 
-Anda dapat menentukan jenis fungsi menggunakan sintaks TypeScript atau Closure:
+Anda dapat menentukan jenis fungsi menggunakan sintaks TypeScript atau _Closure_:
 
 ```js twoslash
 /** @type {function(string, boolean): number} Closure syntax */
@@ -124,7 +124,7 @@ var fn7;
 var fn6;
 ```
 
-Type lainnya dari Closure juga berfungsi:
+Type lainnya dari _Closure_ juga berfungsi:
 
 ```js twoslash
 /**
@@ -139,7 +139,7 @@ var question;
 
 ### Casts
 
-TypeScript meminjam sintaks cast dari Closure.
+TypeScript meminjam sintaks _cast_ dari _Closure_.
 Ini memungkinkan Anda mentransmisikan tipe ke tipe lain dengan menambahkan tag `@type` sebelum ekspresi dalam tanda kurung.
 
 ```js twoslash
@@ -152,7 +152,7 @@ var typeAssertedNumber = /** @type {number} */ (numberOrString);
 
 ### Impor type
 
-Anda bisa juga mengimpor deklarasi dari file lain menggunakan impor tipe.
+Anda bisa juga mengimpor deklarasi dari berkas lain menggunakan impor tipe.
 Sintaks ini khusus untuk TypeScript dan berbeda dari standar JSDoc:
 
 ```js twoslash
@@ -214,8 +214,8 @@ var x = require("./accounts").userAccount;
 
 ## `@param` and `@returns`
 
-`@param` menggunakan jenis sintaks yang sama dengan `@type`, tapi dengan tambahan sebuah nama parameter.
-Parameter juga dapat dideklarasikan secara opsional dengan membungkus namanya menggunakan kurung siku:
+`@param` menggunakan jenis sintaks yang sama dengan `@type`, tapi dengan tambahan sebuah nama _parameter_.
+_Parameter_ juga dapat dideklarasikan secara opsional dengan membungkus namanya menggunakan kurung siku:
 
 ```js twoslash
 // Parameter dapat dideklarasikan dalam berbagai bentuk sintaksis
@@ -247,7 +247,7 @@ function ab() {}
 
 ## `@typedef`, `@callback`, and `@param`
 
-`@ty[edef` juga dapat digunakan untuk mendefinisikan type yang kompleks.
+`@ty[edef` juga dapat digunakan untuk mendefinisikan tipe yang kompleks.
 Sintaks yang bekerja dengan `@params`.
 
 ```js twoslash
@@ -280,7 +280,7 @@ var specialTypeObject1;
 ```
 
 `@params` memperbolehkan sintaks yang serupa untuk spesifikasi tipenya.
-Perhatikan bahwa nama properti _nested_ harus diawali dengan nama parameternya:
+Perhatikan bahwa nama properti _nested_ harus diawali dengan nama _parameter_-nya:
 
 ```js twoslash
 /**
@@ -336,7 +336,7 @@ const b = id(123);
 const c = id({});
 ```
 
-Gunakan koma atau beberapa tag untuk mendeklarasikan beberapa parameter tipe:
+Gunakan koma atau beberapa _tag_ untuk mendeklarasikan beberapa _parameter_ tipe:
 
 ```js
 /**
@@ -345,8 +345,8 @@ Gunakan koma atau beberapa tag untuk mendeklarasikan beberapa parameter tipe:
  */
 ```
 
-Anda juga bisa menentukan batasan tipe sebelum nama parameternya.
-Hanya parameter tipe pertama dalam sebuah list yang dibatasi.
+Anda juga bisa menentukan batasan tipe sebelum nama _parameter_-nya.
+Hanya _parameter_ tipe pertama dalam sebuah list yang dibatasi.
 
 ```js twoslash
 /**
@@ -360,7 +360,7 @@ function seriousalize(key, object) {
 }
 ```
 
-Mendeklarasikan kelas generik atau type yang tidak didukung.
+Mendeklarasikan kelas generik atau tipe yang tidak didukung.
 
 ## Classes
 
@@ -405,7 +405,7 @@ Mereka juga dapat dideklarasikan sebagai fungsi konstruktor, seperti yang dijela
 
 ## `@constructor`
 
-Kompilator menyimpulkan fungsi konstruktor berdasarkan penetapan properti ini, tetapi Anda dapat membuat pemeriksaan lebih ketat dan saran lebih baik jika Anda menambahkan tag `@constructor`:
+Kompilator menyimpulkan fungsi konstruktor berdasarkan penetapan properti ini, tetapi Anda dapat membuat pemeriksaan lebih ketat dan saran lebih baik jika Anda menambahkan _tag_ `@constructor`:
 
 ```js twoslash
 // @checkJs
@@ -463,7 +463,7 @@ function callbackForLater(e) {
 
 ## `@extends`
 
-Ketika kelas JavaScript memperluas _base class_, tidak ada tempat untuk menentukan seharusnya menggunakan parameter tipe yang seperti apa. Tag `@extends` menyediakan tempat untuk parameter jenis itu:
+Ketika kelas JavaScript memperluas _base class_, tidak ada tempat untuk menentukan seharusnya menggunakan parameter tipe yang seperti apa. _Tag_ `@extends` menyediakan tempat untuk parameter jenis itu:
 
 ```js twoslash
 /**
@@ -479,7 +479,7 @@ Perhatikan bahwa `@extends` hanya berfungsi dengan kelas. Saat ini, tidak ada ca
 
 ## `@enum`
 
-Tag `@enum` memungkinkan Anda membuat literal objek yang tipe anggotanya spesifik. Tidak seperti kebanyakan literal objek di JavaScript, ini tidak mengizinkan anggota lain.
+Tag `@enum` memungkinkan Anda membuat _literal_ objek yang tipe anggotanya spesifik. Tidak seperti kebanyakan _literal_ objek di JavaScript, ini tidak mengizinkan anggota lain.
 
 ```js twoslash
 /** @enum {number} */
@@ -492,7 +492,7 @@ const JSDocState = {
 JSDocState.SawAsterisk;
 ```
 
-Perhatikan bahwa `@enum` sangat berbeda, dan jauh lebih sederhana daripada `enum` TypeScript. Namun, tidak seperti enum TypeScript, `@enum` dapat memiliki tipe apa saja:
+Perhatikan bahwa `@enum` sangat berbeda, dan jauh lebih sederhana daripada `enum` TypeScript. Namun, tidak seperti _enum_ TypeScript, `@enum` dapat memiliki tipe apa saja:
 
 ```js twoslash
 /** @enum {function(number): number} */
@@ -563,7 +563,7 @@ function fn9(p1) {
 
 ## Pola yang diketahui TIDAK didukung
 
-Mengacu pada objek di value space sebagai tipe yang tidak berfungsi, kecuali objek tersebut juga membuat tipe, seperti fungsi konstruktor.
+Mengacu pada objek di _value space_ sebagai tipe yang tidak berfungsi, kecuali objek tersebut juga membuat tipe, seperti fungsi konstruktor.
 
 ```js twoslash
 function aNormalFunction() {}
@@ -578,7 +578,7 @@ var wrong;
 var right;
 ```
 
-Postfix sama dengan tipe properti dalam tipe literal objek yang tidak menetapkan properti opsional:
+_Postfix_ sama dengan tipe properti dalam tipe _literal_ objek yang tidak menetapkan properti opsional:
 
 ```js twoslash
 /**
@@ -592,7 +592,7 @@ var wrong;
 var right;
 ```
 
-Jenis Nullable hanya memiliki arti jika `strictNullChecks` aktif:
+Jenis _Nullable_ hanya memiliki arti jika `strictNullChecks` aktif:
 
 ```js twoslash
 /**
@@ -614,7 +614,7 @@ Anda juga bisa menggunakan tipe gabungan:
 var unionNullable;
 ```
 
-Type non-nullable tidak memiliki arti dan diperlakukan seperti jenis aslinya:
+Tipe _non-nullable_ tidak memiliki arti dan diperlakukan seperti jenis aslinya:
 
 ```js twoslash
 /**
@@ -624,16 +624,15 @@ Type non-nullable tidak memiliki arti dan diperlakukan seperti jenis aslinya:
 var normal;
 ```
 
-If it is off, then `number` is nullable.
 Tidak seperti sistem tipe JSDoc, TypeScript hanya memungkinkan Anda untuk menandai tipe, apakah mengandung null atau tidak.
 Tidak ada non-nullability eksplisit - jika strictNullChecks aktif, `number` tidak dapat dinihilkan.
 Jika tidak aktif, maka `number` adalah nullable.
 
-### Tag yang tidak didukung
+### _Tag_ yang tidak didukung
 
-TypeScript mengabaikan semua tag JSDoc yang tidak didukung.
+TypeScript mengabaikan semua _tag_ JSDoc yang tidak didukung.
 
-Tag berikut memiliki isu terbuka untuk mendukungnya:
+_Tag_ berikut memiliki isu terbuka untuk mendukungnya:
 
 - `@const` ([issue #19672](https://github.com/Microsoft/TypeScript/issues/19672))
 - `@inheritdoc` ([issue #23215](https://github.com/Microsoft/TypeScript/issues/23215))
@@ -643,7 +642,7 @@ Tag berikut memiliki isu terbuka untuk mendukungnya:
 
 ## Extensi kelas JS
 
-### Modifier Property JSDoc
+### _Modifier Property_ JSDoc
 
 Dari TypeScript 3.8 dan seterusnya, Anda dapat menggunakan JSDoc untuk mengubah properti kelas. Pertama adalah pengubah aksesibilitas: `@public`,`@private`, dan `@protected`.
 Tag ini bekerja persis seperti `public`,`private`, dan `protected`, masing-masing berfungsi di TypeScript.
@@ -671,7 +670,7 @@ console.log(c.identifier);
 - `@private` berarti bahwa properti hanya dapat digunakan di dalam kelas yang memuatnya.
 - `@protected` berarti bahwa properti hanya dapat digunakan di dalam kelas penampung, dan semua subkelas turunan, tetapi tidak pada instance kelas penampung yang berbeda.
 
-Selanjutnya, kita juga telah menambahkan modifier `@readonly` untuk memastikan bahwa sebuah properti hanya dapat di-write selama inisialisasi.
+Selanjutnya, kita juga telah menambahkan _modifier_ `@readonly` untuk memastikan bahwa sebuah properti hanya dapat di-_write_ selama inisialisasi.
 
 ```js twoslash
 // @errors: 2540

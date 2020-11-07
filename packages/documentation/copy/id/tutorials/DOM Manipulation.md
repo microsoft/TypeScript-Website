@@ -8,19 +8,19 @@ translatable: true
 
 ## Manipulasi DOM
 
-### _Eksplorasi ke dalam tipe `HTMLElement`_
+### Eksplorasi ke dalam tipe `HTMLElement`
 
-Dalam 20+ tahun sejak standarisasi, JavaScript telah berkembang pesat. Meskipun pada tahun 2020, JavaScript dapat digunakan di server, dalam ilmu data, dan bahkan pada perangkat IoT, penting untuk mengingat kasus penggunaannya yang paling populer: web browser.
+Dalam 20+ tahun sejak standarisasi, JavaScript telah berkembang pesat. Meskipun pada tahun 2020, JavaScript dapat digunakan di _server_, dalam ilmu data, dan bahkan pada perangkat _IoT_, penting untuk mengingat kasus penggunaannya yang paling populer: _web browser_.
 
-Situs web terdiri dari dokumen HTML dan/atau XML. Dokumen-dokumen ini statis, tidak berubah. _Document Object Model (DOM)_ adalah antarmuka pemrograman yang diterapkan oleh browser untuk membuat situs web statis berfungsi. API DOM dapat digunakan untuk mengubah struktur dokumen, style, dan konten. API ini sangat kuat sehingga framework frontend yang tak terhitung jumlahnya (jQuery, React, Angular, dll.) telah dikembangkan di sekitarnya untuk membuat situs web dinamis lebih mudah dikembangkan.
+Situs _web_ terdiri dari dokumen HTML dan/atau XML. Dokumen-dokumen ini statis, tidak berubah. _Document Object Model (DOM)_ adalah antarmuka pemrograman yang diterapkan oleh _browser_ untuk membuat situs _web_ statis berfungsi. API DOM dapat digunakan untuk mengubah struktur dokumen, _style_, dan konten. API ini sangat kuat sehingga _framework frontend_ yang tak terhitung jumlahnya (jQuery, React, Angular, dll.) telah dikembangkan di sekitarnya untuk membuat situs _web_ dinamis lebih mudah dikembangkan.
 
-TypeScript adalah superset dari JavaScript, dan TypeScript dilengkapi dengan definisi tipe untuk DOM API. Secara standar, definisi ini sudah tersedia dalam proyek TypeScript. Dari 20.000+ baris definisi di _lib.dom.d.ts_, satu yang menonjol di antara yang lain: `HTMLElement`. Jenis ini adalah hal penting untuk manipulasi DOM dengan TypeScript.
+TypeScript adalah _superset_ dari JavaScript, dan TypeScript dilengkapi dengan definisi tipe untuk DOM API. Secara standar, definisi ini sudah tersedia dalam proyek TypeScript. Dari 20.000+ baris definisi di _lib.dom.d.ts_, satu yang menonjol di antara yang lain: `HTMLElement`. Jenis ini adalah hal penting untuk manipulasi DOM dengan TypeScript.
 
 > Anda bisa mengeksplor source code [Definisi tipe DOM](https://github.com/microsoft/TypeScript/blob/master/lib/lib.dom.d.ts)
 
 ## Contoh Dasar
 
-Diberikan file _index.html_ yang disederhanakan:
+Diberikan berkas _index.html_ yang disederhanakan:
 
     <!DOCTYPE html>
     <html lang="en">
@@ -32,7 +32,7 @@ Diberikan file _index.html_ yang disederhanakan:
       </body>
     </html>
 
-Mari kita jelajahi skrip TypeScript yang menambahkan elemen `<p> Hello, World </p>` ke elemen `#app`.
+Mari kita jelajahi kode TypeScript yang menambahkan elemen `<p>Hello, World</p>` ke elemen `#app`.
 
 ```ts
 // 1. Pilih elemen div menggunakan properti id
@@ -58,17 +58,17 @@ Setelah menyusun dan menjalankan halaman _index.html_, HTML yang dihasilkan adal
 
 ## Antarmuka `Document`
 
-Baris pertama kode TypeScript menggunakan variabel global `document`. Memeriksa variabel menunjukkan bahwa ia didefinisikan oleh antarmuka `Dokumen` dari file _lib.dom.d.ts_. Cuplikan kode berisi panggilan ke dua metode, `getElementById` dan `createElement`.
+Baris pertama kode TypeScript menggunakan variabel global `document`. Memeriksa variabel menunjukkan bahwa ia didefinisikan oleh antarmuka `Dokumen` dari berkas _lib.dom.d.ts_. Cuplikan kode berisi panggilan ke dua _method_, `getElementById` dan `createElement`.
 
 ### `Document.getElementById`
 
-Definisi dari metode ini adalah sebagai berikut:
+Definisi dari _method_ ini adalah sebagai berikut:
 
 ```ts
 getElementById(elementId: string): HTMLElement | null;
 ```
 
-Berikan string id elemen dan itu akan mengembalikan `HTMLElement` atau`null`. Metode ini memperkenalkan salah satu jenis terpenting, `HTMLElement`. Ini berfungsi sebagai antarmuka dasar untuk setiap antarmuka elemen lainnya. Misalnya, variabel `p` dalam contoh kode berjenis `HTMLParagraphElement`. Perhatikan juga bahwa metode ini dapat mengembalikan `null`. Ini karena metode tidak dapat memastikan kapan elemen itu tersedia atau apakah elemen tersebut ada atau tidak. Di baris terakhir cuplikan kode, operator _optional chaining_ digunakan untuk memanggil `appendChild`.
+Berikan string id elemen dan itu akan mengembalikan `HTMLElement` atau`null`. _Method_ ini memperkenalkan salah satu jenis terpenting, `HTMLElement`. Ini berfungsi sebagai antarmuka dasar untuk setiap antarmuka elemen lainnya. Misalnya, variabel `p` dalam contoh kode berjenis `HTMLParagraphElement`. Perhatikan juga bahwa _method_ ini dapat mengembalikan `null`. Ini karena _method_ tidak dapat memastikan kapan elemen itu tersedia atau apakah elemen tersebut ada atau tidak. Di baris terakhir cuplikan kode, operator _optional chaining_ digunakan untuk memanggil `appendChild`.
 
 ### `Document.createElement`
 
@@ -83,7 +83,7 @@ Ini adalah definisi fungsi yang kelebihan beban. Kelebihan kedua adalah yang pal
 
 Misalnya `document.createElement('xyz')` mengembalikan elemen `<xyz></xyz>`, jelas bukan elemen yang ditentukan oleh spesifikasi HTML.
 
-> Jika tertarik, Anda dapat berinteraksi dengan elemen tag kustom menggunakan `document.getElementsByTagName`
+> Jika tertarik, Anda dapat berinteraksi dengan elemen _tag_ kustom menggunakan `document.getElementsByTagName`
 
 Untuk definisi pertama dari `createElement`, ini menggunakan beberapa pola umum lanjutan. Paling baik dipahami jika dipecah menjadi beberapa bagian, dimulai dengan ekspresi umum: `<K extends keyof HTMLElementTagNameMap>`. Ekspresi ini mendefinisikan parameter umum `K` yang _constrained_ ke kunci antarmuka`HTMLElementTagNameMap`. Antarmuka peta berisi setiap nama tag HTML yang ditentukan dan antarmuka tipe yang sesuai. Berikut adalah 5 nilai yang dipetakan pertama:
 
@@ -104,11 +104,11 @@ Sekarang, untuk sisa definisi `createElement`:`(tagName: K, options ?: ElementCr
 
 ## Antarmuka `Node`
 
-Fungsi `document.getElementById` mengembalikan `HTMLElement`. Antarmuka `HTMLElement` memperluas antarmuka `Element`, yang memperluas antarmuka `Node`. Ekstensi prototipe ini memungkinkan semua `HTMLElements` untuk menggunakan subset method standar. Dalam cuplikan kode, kami menggunakan properti yang ditentukan pada antarmuka `Node` untuk menambahkan elemen`p` baru ke situs web.
+Fungsi `document.getElementById` mengembalikan `HTMLElement`. Antarmuka `HTMLElement` memperluas antarmuka `Element`, yang memperluas antarmuka `Node`. Ekstensi prototipe ini memungkinkan semua `HTMLElements` untuk menggunakan _subset_ method standar. Dalam cuplikan kode, kami menggunakan properti yang ditentukan pada antarmuka `Node` untuk menambahkan elemen`p` baru ke situs _web_.
 
 ### `Node.appendChild`
 
-Baris terakhir dari potongan kode adalah `app?.AppendChild (p)`. Bagian sebelumnya, `document.getElementById`, merinci bahwa operator _optional chaining_ digunakan di sini karena `app` berpotensi menjadi null pada waktu proses. Method `appendChild` didefinisikan oleh:
+Baris terakhir dari potongan kode adalah `app?.AppendChild (p)`. Bagian sebelumnya, `document.getElementById`, merinci bahwa operator _optional chaining_ digunakan di sini karena `app` berpotensi menjadi _null_ pada waktu proses. Method `appendChild` didefinisikan oleh:
 
 ```ts
 appendChild<T extends Node>(newChild: T): T;
@@ -135,9 +135,9 @@ div.childNodes;
 // NodeList(2) [p, p]
 ```
 
-Setelah menangkap elemen `div`, prop `children` akan mengembalikan daftar `HTMLCollection` yang berisi `HTMLParagraphElements`. Property `childNodes` akan mengembalikan daftar node `NodeList` yang serupa. Setiap tag `p` akan tetap berjenis `HTMLParagraphElements`, tetapi `NodeList` dapat berisi _HTML node_ tambahan yang tidak bisa dilakukan oleh list `HTMLCollection`.
+Setelah menangkap elemen `div`, _prop_ `children` akan mengembalikan daftar `HTMLCollection` yang berisi `HTMLParagraphElements`. Properti `childNodes` akan mengembalikan daftar node `NodeList` yang serupa. Setiap _tag_ `p` akan tetap berjenis `HTMLParagraphElements`, tetapi `NodeList` dapat berisi _HTML node_ tambahan yang tidak bisa dilakukan oleh _list_ `HTMLCollection`.
 
-Ubah html dengan menghapus salah satu tag `p`, tetapi pertahankan teksnya.
+Ubah html dengan menghapus salah satu _tag_ `p`, tetapi pertahankan teksnya.
 
 ```tsx
 <div>
@@ -154,11 +154,11 @@ div.childNodes;
 // NodeList(2) [p, text]
 ```
 
-Lihat bagaimana kedua daftar berubah. `children` sekarang hanya berisi elemen `<p>Hello, World</p>`, dan `childNodes` berisi simpul `teks` daripada dua simpul `p`. Bagian `teks` dari `NodeList` adalah `Node` literal yang berisi teks `TypeScript!`. List `children` tidak berisi `Node`, ini karena tidak dianggap sebagai `HTMLElement`.
+Lihat bagaimana kedua daftar berubah. `children` sekarang hanya berisi elemen `<p>Hello, World</p>`, dan `childNodes` berisi simpul `teks` daripada dua simpul `p`. Bagian `teks` dari `NodeList` adalah `Node` _literal_ yang berisi teks `TypeScript!`. _List_ `children` tidak berisi `Node`, ini karena tidak dianggap sebagai `HTMLElement`.
 
-## Method `querySelector` dan `querySelectorAll`
+## _Method_ `querySelector` dan `querySelectorAll`
 
-Kedua method ini adalah tool yang hebat untuk mendapatkan daftar elemen dom yang sesuai dengan kumpulan constraint yang lebih unik. Mereka didefinisikan di _lib.dom.d.ts_ sebagai:
+Kedua _method_ ini adalah _tool_ yang hebat untuk mendapatkan daftar elemen dom yang sesuai dengan kumpulan _constraint_ yang lebih unik. Mereka didefinisikan di _lib.dom.d.ts_ sebagai:
 
 ```ts
 /**
@@ -176,9 +176,9 @@ querySelectorAll<K extends keyof SVGElementTagNameMap>(selectors: K): NodeListOf
 querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
 ```
 
-Definisi `querySelectorAll` mirip dengan `getElementsByTagName`, kecuali ia mengembalikan tipe baru: `NodeListOf`. Jenis kembalian ini pada dasarnya adalah implementasi khusus dari elemen daftar standar JavaScript. Bisa dibilang, mengganti `NodeListOf<E>` dengan `E[]` akan menghasilkan pengalaman pengguna yang sangat mirip. `NodeListOf` hanya mengimplementasikan properti dan method berikut:`length`, `item (index)`,`forEach ((value, key, parent) => void)`, dan numeric indexing. Selain itu, metode ini mengembalikan daftar _elements_, bukan _nodes_, yang dikembalikan oleh `NodeList` dari method `.childNodes`. Meskipun ini mungkin tampak sebagai perbedaan, perhatikan bahwa antarmuka `Element` merupakan turunan dari `Node`.
+Definisi `querySelectorAll` mirip dengan `getElementsByTagName`, kecuali ia mengembalikan tipe baru: `NodeListOf`. Jenis kembalian ini pada dasarnya adalah implementasi khusus dari elemen daftar standar JavaScript. Bisa dibilang, mengganti `NodeListOf<E>` dengan `E[]` akan menghasilkan pengalaman pengguna yang sangat mirip. `NodeListOf` hanya mengimplementasikan properti dan method berikut:`length`, `item (index)`,`forEach ((value, key, parent) => void)`, dan _numeric indexing_. Selain itu, _method_ ini mengembalikan daftar _elements_, bukan _nodes_, yang dikembalikan oleh `NodeList` dari _method_ `.childNodes`. Meskipun ini mungkin tampak sebagai perbedaan, perhatikan bahwa antarmuka `Element` merupakan turunan dari `Node`.
 
-Untuk melihat method ini beraksi, ubah kode yang ada menjadi:
+Untuk melihat _method_ ini beraksi, ubah kode yang ada menjadi:
 
 ```tsx
 <ul>
@@ -193,9 +193,9 @@ const all = document.querySelectorAll("li"); // mengembalikan daftar semua eleme
 
 ## Tertarik untuk mempelajari lebih lanjut?
 
-Bagian terbaik tentang definisi tipe _lib.dom.d.ts_ adalah bahwa definisi tersebut mencerminkan tipe yang dijelaskan di situs dokumentasi Mozilla Developer Network (MDN). Misalnya, antarmuka `HTMLElement` didokumentasikan oleh [halaman HTMLElement](https://developer.mozilla.org/docs/Web/API/HTMLElement) di MDN. Halaman ini mencantumkan semua properti yang tersedia, method, dan terkadang bahkan contoh. Aspek hebat lainnya dari halaman-halaman tersebut adalah mereka menyediakan tautan ke dokumen standar yang sesuai. Berikut ini tautan ke [Rekomendasi W3C untuk HTMLElement](https://www.w3.org/TR/html52/dom.html#htmlelement).
+Bagian terbaik tentang definisi tipe _lib.dom.d.ts_ adalah bahwa definisi tersebut mencerminkan tipe yang dijelaskan di situs dokumentasi _Mozilla Developer Network_ (MDN). Misalnya, antarmuka `HTMLElement` didokumentasikan oleh [halaman HTMLElement](https://developer.mozilla.org/docs/Web/API/HTMLElement) di MDN. Halaman ini mencantumkan semua properti yang tersedia, method, dan terkadang bahkan contoh. Aspek hebat lainnya dari halaman-halaman tersebut adalah mereka menyediakan tautan ke dokumen standar yang sesuai. Berikut ini tautan ke [Rekomendasi W3C untuk HTMLElement](https://www.w3.org/TR/html52/dom.html#htmlelement).
 
 Sumber:
 
 - [ECMA-262 Standard](http://www.ecma-international.org/ecma-262/10.0/index.html)
-- [Introduction to the DOM](https://developer.mozilla.org/docs/Web/API/Document_Object_Model/Introduction)
+- [Pengenalan DOM](https://developer.mozilla.org/docs/Web/API/Document_Object_Model/Introduction)

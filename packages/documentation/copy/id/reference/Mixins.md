@@ -7,15 +7,15 @@ translatable: true
 ---
 
 Bersamaan dengan hierarki OO tradisional, cara populer lainnya untuk membangun kelas dari komponen yang dapat digunakan kembali adalah membangunnya dengan menggabungkan kelas parsial yang lebih sederhana.
-Anda mungkin sudah familiar dengan ide mixin atau ciri untuk bahasa seperti Scala, dan polanya juga mendapatkan popularitas di komunitas JavaScript.
+Anda mungkin sudah familiar dengan ide _mixin_ atau ciri untuk bahasa seperti Scala, dan polanya juga mendapatkan popularitas di komunitas JavaScript.
 
 ## Bagaimana Cara Kerja Mixin?
 
 Pola ini bergantung pada penggunaan Generik dengan warisan kelas untuk memperluas kelas dasar.
-Dukungan mixin terbaik TypeScript dilakukan melalui pola ekspresi kelas.
+Dukungan _mixin_ terbaik TypeScript dilakukan melalui pola ekspresi kelas.
 Anda dapat membaca lebih lanjut mengenai bagaimana pola ini bekerja di [Javscript disini](https://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/).
 
-Untuk memulai, kita akan butuh kelas yang akan diterapkan mixin:
+Untuk memulai, kita akan butuh kelas yang akan diterapkan _mixin_:
 
 ```ts twoslash
 class Sprite {
@@ -29,7 +29,7 @@ class Sprite {
 }
 ```
 
-Kemudian kamu butuh sebuah tipe dan sebuah fungsi factory yang mengembalikan sebuah ekspresi kelas untuk meng-extend kelas dasar.
+Kemudian kamu butuh sebuah tipe dan sebuah fungsi factory yang mengembalikan sebuah ekspresi kelas untuk meng-_extend_ kelas dasar.
 
 ```ts twoslash
 // Untuk memulai, kita membutuhkan tipe yang akan kita gunakan untuk memperluas kelas lain.
@@ -57,7 +57,7 @@ function Scale<TBase extends Constructor>(Base: TBase) {
 }
 ```
 
-Setelah hal-hal diatas siap, Anda dapat membuat kelas yang mewakili kelas dasar dengan mixin yang diterapkan:
+Setelah hal-hal diatas siap, Anda dapat membuat kelas yang mewakili kelas dasar dengan _mixin_ yang diterapkan:
 
 ```ts twoslash
 class Sprite {
@@ -95,11 +95,11 @@ flappySprite.setScale(0.8);
 console.log(flappySprite.scale);
 ```
 
-## Mixin yang Dibatasi
+## _Mixin_ yang Dibatasi
 
-Dalam bentuk di atas, mixin tidak memiliki pengetahuan yang mendasari kelas yang dapat menyulitkan pembuatan desain yang diinginkan.
+Dalam bentuk di atas, _mixin_ tidak memiliki pengetahuan yang mendasari kelas yang dapat menyulitkan pembuatan desain yang diinginkan.
 
-Untuk memodelkan ini, kami memodifikasi tipe konstruktor asli untuk menerima argumen generic.
+Untuk memodelkan ini, kami memodifikasi tipe konstruktor asli untuk menerima argumen _generic_.
 
 ```ts twoslash
 // Ini adalah konstruktor kita sebelumnya:
@@ -128,7 +128,7 @@ type Spritable = GConstructor<typeof Sprite>;
 type Loggable = GConstructor<{ print: () => void }>;
 ```
 
-Kemudian Anda dapat membuat mixin yang hanya berfungsi jika Anda memiliki basis tertentu untuk dibangun:
+Kemudian Anda dapat membuat _mixin_ yang hanya berfungsi jika Anda memiliki basis tertentu untuk dibangun:
 
 ```ts twoslash
 type GConstructor<T = {}> = new (...args: any[]) => T;
@@ -160,7 +160,7 @@ function Jumpable<TBase extends Positionable>(Base: TBase) {
 
 ## Pola Alternatif
 
-Versi sebelumnya dari dokumen ini merekomendasikan cara untuk menulis mixin di mana Anda membuat runtime dan hierarki tipe secara terpisah, lalu menggabungkannya di akhir:
+Versi sebelumnya dari dokumen ini merekomendasikan cara untuk menulis _mixin_ di mana Anda membuat runtime dan hierarki tipe secara terpisah, lalu menggabungkannya di akhir:
 
 ```ts twoslash
 // @strict: false
@@ -208,12 +208,12 @@ Pola ini tidak terlalu bergantung pada kompilator, dan lebih banyak pada basis k
 
 ## Kendala
 
-Pola mixin didukung secara native di dalam kompilator TypeScript oleh code flow analysis.
-Ada beberapa kasus di mana Anda dapat mencapai tepi dukungan native.
+Pola _mixin_ didukung secara native di dalam kompilator TypeScript oleh _code flow analysis_.
+Ada beberapa kasus di mana Anda dapat mencapai tepi dukungan _native_.
 
-#### Decorator dan Mixin [`#4881`](https://github.com/microsoft/TypeScript/issues/4881)
+#### _Decorator_ dan _Mixin_ [`#4881`](https://github.com/microsoft/TypeScript/issues/4881)
 
-Anda tidak bisa menggunakan decorator untuk menyediakan mixin melalui code flow analysis:
+Anda tidak bisa menggunakan decorator untuk menyediakan _mixin_ melalui _code flow analysis_:
 
 ```ts twoslash
 // @experimentalDecorators
@@ -243,9 +243,9 @@ const playerTwo = (new Player() as unknown) as FreezablePlayer;
 playerTwo.shouldFreeze;
 ```
 
-#### Static Property Mixins [`#17829`](https://github.com/microsoft/TypeScript/issues/17829)
+#### _Static Property Mixins_ [`#17829`](https://github.com/microsoft/TypeScript/issues/17829)
 
-Pola ekspresi kelas membuat singletons, jadi mereka tidak dapat dipetakan pada sistem tipe untuk mendukung tipe variabel yang berbeda.
+Pola ekspresi kelas membuat _singletons_, jadi mereka tidak dapat dipetakan pada sistem tipe untuk mendukung tipe variabel yang berbeda.
 
 Anda bisa mengatasinya dengan menggunakan fungsi untuk mengembalikan kelas Anda yang berbeda berdasarkan generik:
 

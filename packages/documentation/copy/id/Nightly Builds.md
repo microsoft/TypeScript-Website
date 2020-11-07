@@ -19,9 +19,9 @@ npm install -g typescript@next
 
 Anda juga dapat memperbarui IDE-mu untuk menggunakan _nightly_ drop.
 Pertama, Anda akan perlu untuk memasang package melalui npm.
-Anda juga dapat memasang npm package secara global atau pada direktori `node_modules` di dalam proyekmu.
+Anda juga dapat memasang npm _package_ secara global atau pada direktori `node_modules` di dalam proyekmu.
 
-Pada tahap ini diasumsikan bahwa `typescript@next` sudah di-install.
+Pada tahap ini diasumsikan bahwa `typescript@next` sudah dipasang.
 
 ### Visual Studio Code
 
@@ -31,7 +31,7 @@ Perbarui `.vscode/settings.json` dengan cara berikut:
 "typescript.tsdk": "<path ke folder-mu>/node_modules/typescript/lib"
 ```
 
-Informasi lebih lanjut ada di [VSCode documentation](https://code.visualstudio.com/Docs/languages/typescript#_using-newer-typescript-versions).
+Informasi lebih lanjut ada di [Dokumentasi VSCode](https://code.visualstudio.com/Docs/languages/typescript#_using-newer-typescript-versions).
 
 ### Sublime Text
 
@@ -41,13 +41,13 @@ Perbarui berkas `Settings - User` dengan cara berikut:
 "typescript_tsdk": "<path ke direktorimu>/node_modules/typescript/lib"
 ```
 
-Informasi lebih lanjut ada di [TypeScript Plugin for Sublime Text installation documentation](https://github.com/Microsoft/TypeScript-Sublime-Plugin#installation).
+Informasi lebih lanjut ada di [Dokumentasi pemasangan _Plugin_ TypeScript untuk Sublime Text](https://github.com/Microsoft/TypeScript-Sublime-Plugin#installation).
 
 ### Visual Studio 2013 dan 2015
 
-> Catatan: Sebagian besar perubahan tidak mengharuskan anda untuk memasang versi terbaru dari plugin VS TypeScript.
+> Catatan: Sebagian besar perubahan tidak mengharuskan anda untuk memasang versi terbaru dari _plugin_ VS TypeScript.
 
-Saat ini, Nightly build tidak menyertakan plugin secara lengkap, tapi kami sedang mengupayakan untuk menerbitkan sebuah installer di nightly.
+Saat ini, _Nightly build_ tidak menyertakan _plugin_ secara lengkap, tapi kami sedang mengupayakan untuk menerbitkan sebuah _installer_ di _nightly_.
 
 1. Unduh kode [VSDevMode.ps1](https://github.com/Microsoft/TypeScript/blob/master/scripts/VSDevMode.ps1) kode.
 
@@ -71,10 +71,10 @@ VSDevMode.ps1 12 -tsScript <path ke folder-mu>/node_modules/typescript/lib
 
 Masuk ke `Preferences` > `Languages & Frameworks` > `TypeScript`:
 
-> TypeScript Version: Jika anda memasangnya dengan npm, maka akan ada di `/usr/local/lib/node_modules/typescript/lib`
+> Versi TypeScript: Jika anda memasangnya dengan npm, maka akan ada di `/usr/local/lib/node_modules/typescript/lib`
 
 ### IntelliJ IDEA (Windows)
 
 Masuk ke `File` > `Settings` > `Languages & Frameworks` > `TypeScript`:
 
-> TypeScript Version: Jika anda memasangnya dengan npm, maka akan ada di `C:\Users\USERNAME\AppData\Roaming\npm\node_modules\typescript\lib`
+> Versi TypeScript: Jika anda memasangnya dengan npm, maka akan ada di `C:\Users\USERNAME\AppData\Roaming\npm\node_modules\typescript\lib`

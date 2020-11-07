@@ -25,7 +25,7 @@ let sym3 = Symbol("key");
 sym2 === sym3; // false, symbol itu unik
 ```
 
-Sama seperti string, simbol dapat digunakan sebagai kunci untuk properti objek.
+Sama seperti _string_, simbol dapat digunakan sebagai kunci untuk properti objek.
 
 ```ts
 const sym = Symbol();
@@ -61,27 +61,27 @@ Berikut adalah daftar simbol yang terkenal:
 
 ## `Symbol.hasInstance`
 
-Sebuah method yang menentukan apakah objek konstruktor mengenali objek sebagai salah satu contoh konstruktor. Dipanggil oleh semantik dari operator instanceof.
+Sebuah method yang menentukan apakah objek konstruktor mengenali objek sebagai salah satu contoh konstruktor. Dipanggil oleh semantik dari operator _instanceof_.
 
 ## `Symbol.isConcatSpreadable`
 
-Nilai Boolean yang menunjukkan bahwa sebuah objek harus diratakan ke elemen arraynya dengan Array.prototype.concat.
+Nilai _Boolean_ yang menunjukkan bahwa sebuah objek harus diratakan ke elemen _array_-nya dengan Array.prototype.concat.
 
 ## `Symbol.iterator`
 
-Sebuah method yang mengembalikan iterator standar untuk sebuah objek. Dipanggil oleh semantik pada pernyataan for-of.
+Sebuah method yang mengembalikan _iterator_ standar untuk sebuah objek. Dipanggil oleh semantik pada pernyataan _for-of_.
 
 ## `Symbol.match`
 
-Metode ekspresi reguler yang mencocokkan ekspresi reguler dengan string. Dipanggil dengan method `String.prototype.match`.
+_Method_ ekspresi reguler yang mencocokkan ekspresi reguler dengan _string_. Dipanggil dengan _method_ `String.prototype.match`.
 
 ## `Symbol.replace`
 
-Method regular expression yang menggantikan substring yang cocok dari sebuah string. Dipanggil dengan method `String.prototype.replace`.
+_Method regular expression_ yang menggantikan substring yang cocok dari sebuah string. Dipanggil dengan method `String.prototype.replace`.
 
 ## `Symbol.search`
 
-Method regular expression yang mengembalikan indeks dalam string yang cocok dengan ekspresi reguler. Dipanggil dengan method `String.prototype.search`.
+_Method regular expression_ yang mengembalikan indeks dalam _string_ yang cocok dengan ekspresi reguler. Dipanggil dengan method `String.prototype.search`.
 
 ## `Symbol.species`
 
@@ -89,7 +89,7 @@ Properti bernilai fungsi yang merupakan fungsi konstruktor yang digunakan untuk 
 
 ## `Symbol.split`
 
-Method regular expression yang memisahkan string pada indeks yang cocok dengan ekspresi reguler.
+_Method regular expression_ yang memisahkan _string_ pada indeks yang cocok dengan ekspresi reguler.
 Dipanggil dengan method `String.prototype.split`.
 
 ## `Symbol.toPrimitive`
