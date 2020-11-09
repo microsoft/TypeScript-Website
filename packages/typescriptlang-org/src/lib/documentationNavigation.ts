@@ -1648,8 +1648,8 @@ export function getDocumentationNavForLanguage(
         {
           title: "Modules",
           id: "2modules",
-          permalink: "/docs/handbook/modules.html",
-          oneline: "How modules work in TypeScript",
+          permalink: "/pt/docs/handbook/modules.html",
+          oneline: "Como módulos funcionam no TypeScript",
         },
         {
           title: "Resolução de módulos",
@@ -1664,11 +1664,11 @@ export function getDocumentationNavForLanguage(
           oneline: "Como funcionam os Namespaces no TypeScript",
         },
         {
-          title: "Namespaces and Modules",
-          id: "2namespaces-and-modules",
-          permalink: "/docs/handbook/namespaces-and-modules.html",
+          title: "Namespaces e Módulos",
+          id: "2namespaces-e-módulos",
+          permalink: "/pt/docs/handbook/namespaces-and-modules.html",
           oneline:
-            "How to organize code in TypeScript via modules or namespaces",
+            "Como organizar o código em TypeScript através de módulos ou namespaces",
         },
         {
           title: "Símbolos (Symbols)",
@@ -1677,22 +1677,22 @@ export function getDocumentationNavForLanguage(
           oneline: "Usando o símbolo primitivo do JavaScript no TypeScript",
         },
         {
-          title: "Triple-Slash Directives",
-          id: "2triple-slash-directives",
-          permalink: "/docs/handbook/triple-slash-directives.html",
-          oneline: "How to use triple slash directives in TypeScript",
+          title: "Diretivas de barra tripla",
+          id: "2diretivas-de-barra-tripla",
+          permalink: "/pt/docs/handbook/triple-slash-directives.html",
+          oneline: "Como usar diretivas de barra tripla no TypeScript",
         },
         {
-          title: "Type Compatibility",
-          id: "2type-compatibility",
-          permalink: "/docs/handbook/type-compatibility.html",
-          oneline: "How type-checking works in TypeScript",
+          title: "Compatibilidade de Tipos",
+          id: "2compatibilidade-de-tipos",
+          permalink: "/pt/docs/handbook/type-compatibility.html",
+          oneline: "Como checagem de tipos funciona em TypeScript",
         },
         {
-          title: "Type Inference",
-          id: "2type-inference",
-          permalink: "/docs/handbook/type-inference.html",
-          oneline: "How code flow analysis works in TypeScript",
+          title: "Inferência de Tipo",
+          id: "2inferência-de-tipo",
+          permalink: "/pt/docs/handbook/type-inference.html",
+          oneline: "Como a analise do fluxo de código funciona em TypeScript",
         },
         {
           title: "Variable Declaration",
