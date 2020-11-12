@@ -268,7 +268,7 @@ ${codify(stringifiedCompilerOptions, "json")}
     ui.showModal(
       markdown,
       document.getElementById("exports-dropdown")!,
-      "Markdown Version of Playgrund Code for GitHub Issue"
+      "Markdown Version of Playground Code for GitHub Issue"
     )
     return false
   }
