@@ -19,12 +19,12 @@
       "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-40rc"
     },
     "beta": {
-      "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-40rc",
-      "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-40rc"
-    },
-    "rc": {
       "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-40beta",
       "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-40beta"
+    },
+    "rc": {
+      "vs2017_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-40rc",
+      "vs2019_download": "https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.typescript-40rc"
     }
   }
 }
