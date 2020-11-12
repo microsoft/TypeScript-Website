@@ -36,6 +36,17 @@ const Index: React.FC<Props> = (props) => {
 
   useEffect(() => { setupTwoslashHovers(); setupVideosSection() }, [])
 
+  let hasSentTrack = false
+  const onclickNPMInstall = () => {
+    if (hasSentTrack) return
+    hasSentTrack = true
+
+    // @ts-ignore
+    window.appInsights &&
+      // @ts-ignore
+      window.appInsights.trackEvent({ name: "Copied npm instructions on Index" })
+  }
+
   return (
     <Layout title="Typed JavaScript at Any Scale." description="TypeScript extends JavaScript by adding types to the language. TypeScript speeds up your development experience by catching errors and providing fixes before you even run your code." lang={props.pageContext.lang} suppressCustomization>
 
@@ -184,7 +195,7 @@ const Index: React.FC<Props> = (props) => {
           <Row key="overall info">
             <Col key="installation">
               <h4>{i("index_install")}</h4>
-              <div className='grey-box'>
+              <div className='grey-box' onClick={onclickNPMInstall}>
                 {i("index_install_ref", {
                   p: (...chunk) => <p key={Math.random()}>{chunk}</p>,
                   pre: (...chunk) => <pre>{chunk}</pre>,
