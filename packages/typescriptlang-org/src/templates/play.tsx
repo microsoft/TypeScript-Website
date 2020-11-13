@@ -238,13 +238,13 @@ const Play: React.FC<Props> = (props) => {
                 <li className="dropdown">
                   <a href="#" id="exports-dropdown" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="export-dropdown-menu">{i("play_toolbar_export")} <span className="caret"></span></a>
                   <ul className="dropdown-menu" id='export-dropdown-menu' aria-labelledby="whatisnew-button">
-                    <li><a href="#" onClick={() => playground.exporter.reportIssue()} aria-label={i("play_export_report_issue")} >{i("play_export_report_issue")}</a></li>
+                    <li><a href="#" onClick={(e: any) => playground.exporter.reportIssue(e)} aria-label={i("play_export_report_issue")} >{i("play_export_report_issue")}</a></li>
                     <li role="separator" className="divider"></li>
                     <li><a href="#" onClick={() => playground.exporter.exportAsTweet()} aria-label={i("play_export_tweet_md")} >{i("play_export_tweet_md")}</a></li>
                     <li role="separator" className="divider"></li>
-                    <li><a href="#" onClick={() => playground.exporter.copyAsMarkdownIssue()} aria-label={i("play_export_copy_md")} >{i("play_export_copy_md")}</a></li>
-                    <li><a href="#" onClick={() => playground.exporter.copyForChat()} aria-label={i("play_export_copy_link")}  >{i("play_export_copy_link")}</a></li>
-                    < li > <a href="#" onClick={() => playground.exporter.copyForChatWithPreview()} aria-label={i("play_export_copy_link_preview")}  >{i("play_export_copy_link_preview")}</a></li>
+                    <li><a href="#" onClick={(e: any) => playground.exporter.copyAsMarkdownIssue(e)} aria-label={i("play_export_copy_md")} >{i("play_export_copy_md")}</a></li>
+                    <li><a href="#" onClick={(e: any) => playground.exporter.copyForChat(e)} aria-label={i("play_export_copy_link")}  >{i("play_export_copy_link")}</a></li>
+                    < li > <a href="#" onClick={(e: any) => playground.exporter.copyForChatWithPreview(e)} aria-label={i("play_export_copy_link_preview")}  >{i("play_export_copy_link_preview")}</a></li>
                     < li role="separator" className="divider" ></li>
                     <li><a href="#" onClick={() => playground.exporter.openInTSAST()} aria-label={i("play_export_tsast")}>{i("play_export_tsast")}</a></li>
                     <li role="separator" className="divider"></li>
