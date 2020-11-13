@@ -3,7 +3,7 @@ display: "Root Dirs"
 oneline: "Mengatur banyak direktori root"
 ---
 
-Degan menggunakan `rootDirs`, Anda dapat memberi tahu kompilator bahwa ada banyak direktori "virtual" yang bertindak sebagai salah satu akar (root).
+Dengan menggunakan `rootDirs`, Anda dapat memberi tahu kompilator bahwa ada banyak direktori "virtual" yang bertindak sebagai salah satu akar (root).
 Hal ini memungkinkan kompilator untuk menyelesaikan impor pada modul relatif dalam direktori "virtual", seolah-olah digabungkan menjadi satu direktori.
 
 Sebagai contoh:
