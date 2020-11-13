@@ -245,7 +245,9 @@ ${codify(stringifiedCompilerOptions, "json")}
       `
   }
 
-  async function reportIssue() {
+  async function reportIssue(e: React.MouseEvent) {
+    e.persist()
+
     const body = await makeMarkdown()
     if (body.length < 4000) {
       window.open("https://github.com/Microsoft/TypeScript/issues/new?body=" + encodeURIComponent(body))
@@ -256,32 +258,39 @@ ${codify(stringifiedCompilerOptions, "json")}
         "Issue too long to post automatically. Copy this text, then click 'Create New Issue' to begin.",
         {
           "Create New Issue": "https://github.com/Microsoft/TypeScript/issues/new",
-        }
+        },
+        e
       )
       // document.querySelector("#popover-modal pre") && (document.querySelector("#popover-modal pre") as any).focus()
     }
     return false
   }
 
-  async function copyAsMarkdownIssue() {
+  async function copyAsMarkdownIssue(e: React.MouseEvent) {
+    e.persist()
+
     const markdown = await makeMarkdown()
     ui.showModal(
       markdown,
       document.getElementById("exports-dropdown")!,
-      "Markdown Version of Playground Code for GitHub Issue"
+      "Markdown Version of Playground Code for GitHub Issue",
+      undefined,
+      e
     )
     return false
   }
 
-  function copyForChat() {
+  function copyForChat(e: React.MouseEvent) {
     const query = sandbox.createURLQueryWithCompilerOptions(sandbox)
     const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
     const chat = `[Playground Link](${fullURL})`
-    ui.showModal(chat, document.getElementById("exports-dropdown")!, "Markdown for chat")
+    ui.showModal(chat, document.getElementById("exports-dropdown")!, "Markdown for chat", undefined, e)
     return false
   }
 
-  function copyForChatWithPreview() {
+  function copyForChatWithPreview(e: React.MouseEvent) {
+    e.persist()
+
     const query = sandbox.createURLQueryWithCompilerOptions(sandbox)
     const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
 
@@ -290,7 +299,7 @@ ${codify(stringifiedCompilerOptions, "json")}
 
     const code = "```\n" + preview + "\n```\n"
     const chat = `${code}\n[Playground Link](${fullURL})`
-    ui.showModal(chat, document.getElementById("exports-dropdown")!, "Markdown code")
+    ui.showModal(chat, document.getElementById("exports-dropdown")!, "Markdown code", undefined, e)
     return false
   }
 

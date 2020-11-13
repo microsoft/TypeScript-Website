@@ -4,7 +4,8 @@ export interface UI {
     message: string,
     postFocalElement: HTMLElement,
     subtitle?: string,
-    buttons?: { [text: string]: string }
+    buttons?: { [text: string]: string },
+    event?: React.MouseEvent
   ) => void
   /** A quick flash of some text */
   flashInfo: (message: string) => void
@@ -78,9 +79,11 @@ export const createUI = (): UI => {
     code: string,
     postFocalElement: HTMLElement,
     subtitle?: string,
-    links?: { [text: string]: string }
+    links?: { [text: string]: string },
+    event?: React.MouseEvent
   ) => {
     const modal = createModalOverlay(postFocalElement)
+    const isNotMouse = event && event.screenX === 0 && event.screenY === 0
 
     if (subtitle) {
       const titleElement = document.createElement("h3")
@@ -132,7 +135,13 @@ export const createUI = (): UI => {
     const selectAll = () => {
       textarea.select()
     }
-    selectAll()
+
+    const shouldAutoSelect = !isNotMouse
+    if (shouldAutoSelect) {
+      selectAll()
+    } else {
+      textarea.focus()
+    }
 
     const buttons = modal.querySelectorAll("button")
     const lastButton = buttons.item(buttons.length - 1) as HTMLElement
