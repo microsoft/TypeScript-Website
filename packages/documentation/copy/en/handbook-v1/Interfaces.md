@@ -430,7 +430,7 @@ let myArray: ReadonlyStringArray = ["Alice", "Bob"];
 myArray[2] = "Mallory"; // error!
 ```
 
-You can't set `myArray[2]` because the index signature is readonly.
+You can't set `myArray[2]` because the index signature is `readonly`.
 
 ## Class Types
 
