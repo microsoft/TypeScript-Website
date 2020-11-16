@@ -3,13 +3,8 @@ display: "Include"
 oneline: "Specifies a list of glob patterns that match files to be included in compilation"
 ---
 
-
-
 프로그램에 포함할 파일 이름이나 패턴을 배열로 지정합니다.
-
 이 파일 이름은 `tsconfig.json` 파일에 포함된 디렉터리를 기준으로 하여 결정됩니다.
-
-
 
 ```json
 {
@@ -19,7 +14,27 @@ oneline: "Specifies a list of glob patterns that match files to be included in c
 
 위 문법은 아래와 같이 파일을 포함합니다.
 
-
+<!-- TODO: #135
+```diff
+  .
+- ├── scripts
+- │   ├── lint.ts
+- │   ├── update_deps.ts
+- │   └── utils.ts
++ ├── src
++ │   ├── client
++ │   │    ├── index.ts
++ │   │    └── utils.ts
++ │   ├── server
++ │   │    └── index.ts
++ ├── tests
++ │   ├── app.test.ts
++ │   ├── utils.ts
++ │   └── tests.d.ts
+- ├── package.json
+- ├── tsconfig.json
+- └── yarn.lock
+``` -->
 
 ```
 .
