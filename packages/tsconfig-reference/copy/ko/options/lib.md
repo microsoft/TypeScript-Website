@@ -5,7 +5,7 @@ oneline: "A list of bundled library declaration files which describe the target 
 
 TypeScript는 JS API(`Math` 와 같은)에 대한 기본적인 타입 정의와 브라우저 환경(`document` 와 같은)에 있는 타입 정의를 포함합니다. 
 
-이 뿐만 아니라 TypeScript는 지정한 `target` 과 일치시키는 최신 JS 기능을 위한 API도 포함되어 있습니다; 예를 들어 `target`이 `ES6` 이상이면 `Map` 에 대한 정의를 사용할 수 있습니다.
+이 뿐만 아니라 TypeScript는 지정한 `target` 과 일치하는 최신 JS 기능을 위한 API도 포함되어 있습니다; 예를 들어 `target`이 `ES6` 이상이면 `Map` 에 대한 정의를 사용할 수 있습니다.
 
 이는 몇 가지 이유에 의해 변경될 수 있습니다:
 
@@ -76,4 +76,3 @@ TypeScript는 JS API(`Math` 와 같은)에 대한 기본적인 타입 정의와 
 
 
 위 목록들은 오래된 것일 수 있습니다. 전체적인 목록은 [TypeScript의 소스 코드](https://github.com/microsoft/TypeScript/tree/master/lib) 에서 조회할 수 있습니다.
-
