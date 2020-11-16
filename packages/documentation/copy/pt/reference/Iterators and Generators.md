@@ -27,7 +27,7 @@ for (let entry of someArray) {
 
 ### Declarações `for..of` vs. `for..in`
 
-Ambas declarações `for..of` e `for..in` iteram em listas; os valores iterados são diferentes, porém, `for..in` retorna uma lista de _keys_ no objeto que está sendo iterado, enquanto `for..of` retorna uma lista de _values_ das propriedades numéricas do objeto que está sendo iterado.
+Ambas declarações `for..of` e `for..in` iteram em listas; os valores iterados são diferentes, porém, `for..in` retorna uma lista de _chaves_ no objeto que está sendo iterado, enquanto `for..of` retorna uma lista de _valores_ das propriedades numéricas do objeto que está sendo iterado.
 
 Aqui está um exemplo que demonstra essa distinção:
 
