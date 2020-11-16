@@ -75,4 +75,4 @@ TypeScript는 JS API(`Math` 와 같은)에 대한 기본적인 타입 정의와 
 
 
 
-위 목록들은 오래된 것일 수 있습니다. 전체적인 목록은 [TypeScript의 소스 코드](https://github.com/microsoft/TypeScript/tree/master/lib) 에서 조회할 수 있습니다.
+위 목록들은 최신이 아닐수도 있습니다. 전체적인 목록은 [TypeScript의 소스 코드](https://github.com/microsoft/TypeScript/tree/master/lib) 에서 조회할 수 있습니다.
