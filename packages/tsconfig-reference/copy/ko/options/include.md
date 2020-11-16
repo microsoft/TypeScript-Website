@@ -5,7 +5,7 @@ oneline: "Specifies a list of glob patterns that match files to be included in c
 
 
 
-프로그램에 포함할 파일 이름이나 패턴을 지정합니다.
+프로그램에 포함할 파일 이름이나 패턴을 배열로 지정합니다.
 
 이 파일 이름은 `tsconfig.json` 파일에 포함된 디렉터리를 기준으로 하여 결정됩니다.
 
