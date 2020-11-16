@@ -19,7 +19,7 @@ Let's take some example code from inside the [top navigation bar](../packages/ty
 There are two i8n primitives in here:
 
 - `IntlLink`
-- `i("nav_download)`
+- `i("nav_download")`
 
 ## IntlLink
 
