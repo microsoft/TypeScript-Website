@@ -108,7 +108,7 @@ A função `document.getElementById` retorna um `HTMLElement`. A interface `HTML
 
 ### `Node.appendChild`
 
-A última linha do trecho de código é `app?.appendChild(p)`. A seção anterior, `document.getElementById`, detalha o que o operador _optional chaining_  é usado aqui porquê `app` pode ser potencialmente nulo durante a execução. O método `appendChild` é definido por:
+A última linha do trecho de código é `app?.appendChild(p)`. A seção anterior, `document.getElementById`, detalha o que o operador _optional chaining_  é usado aqui porque `app` pode ser potencialmente nulo durante a execução. O método `appendChild` é definido por:
 
 ```ts
 appendChild<T extends Node>(newChild: T): T;
