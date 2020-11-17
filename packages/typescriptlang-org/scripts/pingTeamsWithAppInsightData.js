@@ -3,6 +3,8 @@
  *
  * run with:
     APP_INSIGHTS_ID="X" APP_INSIGHTS_API_KEY="Y" node packages/typescriptlang-org/scripts/pingTeamsWithAppInsightData.js
+
+   if process.env.STATS_WEBHOOK_INCOMING_URL is set, then the message will go into teams 
   */
 
 const nodeFetch = require("node-fetch").default
@@ -10,8 +12,6 @@ const querystring = require("querystring")
 
 const go = async () => {
   const dl = await getDetailsForDownloadIntention()
-  console.log({ dl })
-  return
 
   // Sessions
   const all = await getCountForSessions()
@@ -30,7 +30,7 @@ const go = async () => {
   // Users
   const allUsers = await getCountForQuery(getUsersAllPrefixed())
 
-  // console.log({ allUsers, all, index, playground, handbook })
+  // https://adaptivecards.io/designer
 
   const headline = {
     type: "FactSet",
@@ -44,11 +44,15 @@ const go = async () => {
         value: comma(allUsers),
       },
       {
-        title: "Homepage",
+        title: "Homepage Sessions",
         value: comma(index),
       },
     ],
   }
+
+  const homepageSection = makeColumn("Download", {
+    All: comma(dl),
+  })
 
   const playgroundSection = makeColumn("Playground Usage", {
     All: comma(playground),
@@ -71,12 +75,39 @@ const go = async () => {
       headline,
       {
         type: "ColumnSet",
-        columns: [playgroundSection, handbookSection, jsInTSSection],
+        columns: [
+          homepageSection,
+          playgroundSection,
+          handbookSection,
+          jsInTSSection,
+        ],
       },
     ],
   }
 
-  console.log(JSON.stringify(card))
+  if (!process.env.STATS_WEBHOOK_INCOMING_URL) {
+    console.log(JSON.stringify(card, null, "  "))
+  } else {
+    // https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using#send-adaptive-cards-using-an-incoming-webhook
+
+    const outer = {
+      type: "message",
+      attachments: [
+        {
+          contentType: "application/vnd.microsoft.card.adaptive",
+          contentUrl: null,
+          content: card,
+        },
+      ],
+    }
+
+    const r = await nodeFetch(process.env.STATS_WEBHOOK_INCOMING_URL, {
+      method: "post",
+      body: JSON.stringify(outer),
+      headers: { "Content-Type": "application/json" },
+    })
+    console.log(r)
+  }
 }
 
 go()
@@ -182,8 +213,7 @@ async function getDetailsForDownloadIntention() {
       | make-series Sessions = dcount(session_Id) default = 0 on timestamp from ago(7d) to now() step iff(true, 7d, 7d)`
 
   const response = await makeQuery(query)
-  console.log(response.tables[0].rows)
-  return {}
+  return JSON.parse(response.tables[0].rows[0][0])[0]
 }
 
 function comma(x) {
