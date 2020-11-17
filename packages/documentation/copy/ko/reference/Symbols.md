@@ -1,7 +1,7 @@
 ---
 title: Symbols
 layout: docs
-permalink: /docs/handbook/symbols.html
+permalink: /ko/docs/handbook/symbols.html
 oneline: Using the JavaScript Symbol primitive in TypeScript
 translatable: true
 ---
