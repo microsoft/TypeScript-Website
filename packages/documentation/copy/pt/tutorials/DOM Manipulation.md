@@ -32,8 +32,7 @@ Dado um arquivo _index.html_ simplificado:
       </body>
     </html>
 
-Lets explore a TypeScript script that adds a `<p>Olá, Mundo!</p>` element to the `#app` element.
-Vamos explorar um script TypeScript que adiciona um elemento `<p>Olá, Mundo!</p>` no elemento `#app`
+Vamos explorar um script TypeScript que adiciona um elemento `<p>Olá, Mundo!</p>` ao elemento `#app`
 
 ```ts
 // 1. Seleciona o elemento div usando a propriedade id
