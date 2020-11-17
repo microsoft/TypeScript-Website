@@ -12,7 +12,7 @@ translatable: true
 
 Nos mais de 20 anos desde sua padronização, o JavaScript tem percorrido um longo caminho. Enquanto em 2020, o JavaScript pode ser usado em servidores, em ciência de dados, e até mesmo em dispositivos Internet das Coisas (IoT), é importante lembrar seu caso de uso mais popular: navegadores web.
 
-Websites são feitos de documentos HTML e/ou XML. Estes documentos são estáticos, eles não mudam. O *Modelo de Objeto de Documento (DOM)* é uma interface de programação implementado por navegadores para tornar sites estáticos funcionais. A API do DOM pode ser usada para alterar a estrutura do documento, estilo e conteúdo. A API é tão poderosa que inúmeras estruturas de front-end (jQuery, React, Angular, etc.) foram desenvolvidos em torno dele, a fim de tornar os sites dinâmicos ainda mais fáceis de desenvolver.
+Websites são feitos de documentos HTML e/ou XML. Estes documentos são estáticos, eles não mudam. O *Modelo de Objeto de Documento (DOM)* é uma interface de programação implementada por navegadores para tornar sites estáticos funcionais. A API do DOM pode ser usada para alterar a estrutura do documento, estilo e conteúdo. A API é tão poderosa que inúmeras ferramentas de front-end (jQuery, React, Angular, etc.) foram desenvolvidos em torno dele, a fim de tornar os sites dinâmicos ainda mais fáceis de desenvolver.
 
 TypeScript é um superconjunto do JavaScript, e envia definições de tipo para a API DOM. Essas definições estão prontamente disponíveis em qualquer projeto TypeScript padrão. Das mais de 20.000 linhas de definições em _lib.dom.d.ts_, uma se destaca entre as demais: `HTMLElement`. Este tipo é a espinha dorsal para a manipulação do DOM com TypeScript.
 
