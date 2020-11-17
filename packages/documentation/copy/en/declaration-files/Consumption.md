@@ -12,7 +12,7 @@ Getting type declarations requires no tools apart from npm.
 As an example, getting the declarations for a library like lodash takes nothing more than the following command
 
 ```cmd
-npm install --save @types/lodash
+npm install --save-dev @types/lodash
 ```
 
 It is worth noting that if the npm package already includes its declaration file as described in [Publishing](/docs/handbook/declaration-files/publishing.html), downloading the corresponding `@types` package is not needed.
