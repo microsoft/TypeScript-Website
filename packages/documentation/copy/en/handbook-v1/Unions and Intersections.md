@@ -3,6 +3,7 @@ title: Unions and Intersection Types
 layout: docs
 permalink: /docs/handbook/unions-and-intersections.html
 oneline: How to use unions and intersection types in TypeScript
+handbook: true
 ---
 
 So far, the handbook has covered types which are atomic objects.
@@ -273,9 +274,9 @@ type NetworkSuccessState = {
 // ---cut---
 type NetworkFromCachedState = {
   state: "from_cache";
-  id: string
-  response: NetworkSuccessState["response"]
-}
+  id: string;
+  response: NetworkSuccessState["response"];
+};
 
 type NetworkState =
   | NetworkLoadingState
@@ -290,7 +291,7 @@ function logger(s: NetworkState) {
     case "failed":
       return `failed with code ${s.code}`;
     case "success":
-      return "got response"
+      return "got response";
   }
 }
 ```
@@ -303,7 +304,7 @@ The first is to turn on `--strictNullChecks` and specify a return type:
 type NetworkLoadingState = { state: "loading" };
 type NetworkFailedState = { state: "failed"; code: number };
 type NetworkSuccessState = { state: "success" };
-type NetworkFromCachedState = { state: "from_cache"; }
+type NetworkFromCachedState = { state: "from_cache" };
 
 type NetworkState =
   | NetworkLoadingState
@@ -319,7 +320,7 @@ function logger(s: NetworkState): string {
     case "failed":
       return `failed with code ${s.code}`;
     case "success":
-      return "got response"
+      return "got response";
   }
 }
 ```
@@ -335,7 +336,7 @@ The second method uses the `never` type that the compiler uses to check for exha
 type NetworkLoadingState = { state: "loading" };
 type NetworkFailedState = { state: "failed"; code: number };
 type NetworkSuccessState = { state: "success" };
-type NetworkFromCachedState = { state: "from_cache"; }
+type NetworkFromCachedState = { state: "from_cache" };
 
 type NetworkState =
   | NetworkLoadingState
@@ -355,8 +356,8 @@ function logger(s: NetworkState): string {
       return `failed with code ${s.code}`;
     case "success":
       return "got response";
-    default: 
-      return assertNever(s)
+    default:
+      return assertNever(s);
   }
 }
 ```

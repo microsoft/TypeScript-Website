@@ -3,6 +3,7 @@ title: Enums
 layout: docs
 permalink: /docs/handbook/enums.html
 oneline: How TypeScript enums work
+handbook: true
 ---
 
 Enums are one of the few features TypeScript has which is not a type-level extension of JavaScript.
@@ -21,7 +22,7 @@ enum Direction {
   Up = 1,
   Down,
   Left,
-  Right
+  Right,
 }
 ```
 
@@ -36,7 +37,7 @@ enum Direction {
   Up,
   Down,
   Left,
-  Right
+  Right,
 }
 ```
 
@@ -48,7 +49,7 @@ Using an enum is simple: just access any member as a property off of the enum it
 ```ts twoslash
 enum UserResponse {
   No = 0,
-  Yes = 1
+  Yes = 1,
 }
 
 function respond(recipient: string, message: UserResponse): void {
@@ -64,11 +65,11 @@ In other words, the following isn't allowed:
 
 ```ts twoslash
 // @errors: 1061
-const getSomeValue = () => 23
+const getSomeValue = () => 23;
 // ---cut---
 enum E {
   A = getSomeValue(),
-  B
+  B,
 }
 ```
 
@@ -82,7 +83,7 @@ enum Direction {
   Up = "UP",
   Down = "DOWN",
   Left = "LEFT",
-  Right = "RIGHT"
+  Right = "RIGHT",
 }
 ```
 
@@ -96,7 +97,7 @@ Technically enums can be mixed with string and numeric members, but it's not cle
 ```ts twoslash
 enum BooleanLikeHeterogeneousEnum {
   No = 0,
-  Yes = "YES"
+  Yes = "YES",
 }
 ```
 
@@ -112,7 +113,7 @@ An enum member is considered constant if:
   ```ts twoslash
   // E.X is constant:
   enum E {
-    X
+    X,
   }
   ```
 
@@ -125,13 +126,13 @@ An enum member is considered constant if:
   enum E1 {
     X,
     Y,
-    Z
+    Z,
   }
 
   enum E2 {
     A = 1,
     B,
-    C
+    C,
   }
   ```
 
@@ -157,7 +158,7 @@ enum FileAccess {
   Write = 1 << 2,
   ReadWrite = Read | Write,
   // computed member
-  G = "123".length
+  G = "123".length,
 }
 ```
 
@@ -179,7 +180,7 @@ For example, we can say that certain members can _only_ have the value of an enu
 // @errors: 2322
 enum ShapeKind {
   Circle,
-  Square
+  Square,
 }
 
 interface Circle {
@@ -194,7 +195,7 @@ interface Square {
 
 let c: Circle = {
   kind: ShapeKind.Square,
-  radius: 100
+  radius: 100,
 };
 ```
 
@@ -207,7 +208,7 @@ For example:
 // @errors: 2367
 enum E {
   Foo,
-  Bar
+  Bar,
 }
 
 function f(x: E) {
@@ -230,7 +231,7 @@ For example, the following enum
 enum E {
   X,
   Y,
-  Z
+  Z,
 }
 ```
 
@@ -240,7 +241,7 @@ can actually be passed around to functions
 enum E {
   X,
   Y,
-  Z
+  Z,
 }
 
 function f(obj: { X: number }) {
@@ -260,7 +261,7 @@ enum LogLevel {
   ERROR,
   WARN,
   INFO,
-  DEBUG
+  DEBUG,
 }
 
 /**
@@ -287,7 +288,7 @@ For example, in this example:
 
 ```ts twoslash
 enum Enum {
-  A
+  A,
 }
 
 let a = Enum.A;
@@ -299,7 +300,7 @@ TypeScript compiles this down to the following JavaScript:
 ```ts twoslash
 // @showEmit
 enum Enum {
-  A
+  A,
 }
 
 let a = Enum.A;
@@ -321,7 +322,7 @@ Const enums are defined using the `const` modifier on our enums:
 ```ts twoslash
 const enum Enum {
   A = 1,
-  B = A * 2
+  B = A * 2,
 }
 ```
 
@@ -334,14 +335,14 @@ const enum Direction {
   Up,
   Down,
   Left,
-  Right
+  Right,
 }
 
 let directions = [
   Direction.Up,
   Direction.Down,
   Direction.Left,
-  Direction.Right
+  Direction.Right,
 ];
 ```
 
@@ -353,14 +354,14 @@ const enum Direction {
   Up,
   Down,
   Left,
-  Right
+  Right,
 }
 
 let directions = [
   Direction.Up,
   Direction.Down,
   Direction.Left,
-  Direction.Right
+  Direction.Right,
 ];
 ```
 
@@ -372,7 +373,7 @@ Ambient enums are used to describe the shape of already existing enum types.
 declare enum Enum {
   A = 1,
   B,
-  C = 2
+  C = 2,
 }
 ```
 
