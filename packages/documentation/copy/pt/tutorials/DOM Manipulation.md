@@ -118,7 +118,7 @@ Este método funciona de forma semelhante ao método `createElement` com o parâ
 
 ## Diferença entre `children` e `childNodes`
 
-Anteriormente, este documento detalhou a interface `HTMLElement` extendendo de `Element` que extende de `Node`. Na API DOM existe um conceito de elementos _filhos_. Por exemplo no HTML seguinte, as tags `p` são filhas do elemento `div`
+Anteriormente, este documento detalhou a interface `HTMLElement` extendendo de `Element` que estende de `Node`. Na API DOM existe um conceito de elementos _filhos_. Por exemplo no HTML seguinte, as tags `p` são filhas do elemento `div`
 
 ```tsx
 <div>
