@@ -104,7 +104,7 @@ Agora, para o restante da definição do `createElement`: `(tagName: K, options?
 
 ## A interface `Node`
 
-A função `document.getElementById` retorna um `HTMLElement`. A interface `HTMLElement` extende a interface `Element` que, por sua vez, extende a interface `Node`. Essa extenção a nível de protótipo permite a todos `HTMLElements` a utilizar um subconjunto de métodos padrão. No trecho de código, nós usamos uma propriedade definida na interface `Node` para anexar o novo elemento `p` ao website.
+A função `document.getElementById` retorna um `HTMLElement`. A interface `HTMLElement` extende a interface `Element` que, por sua vez, extende a interface `Node`. Essa extensão a nível de protótipo permite a todos `HTMLElements` a utilizar um subconjunto de métodos padrão. No trecho de código, nós usamos uma propriedade definida na interface `Node` para anexar o novo elemento `p` ao website.
 
 ### `Node.appendChild`
 
