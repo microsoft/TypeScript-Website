@@ -1,6 +1,6 @@
 ---
 display: "JSX"
-oneline: "JSX code generation"
+oneline: "Specify what JSX code is generated."
 ---
 
 Controls how JSX constructs are emitted in JavaScript files.

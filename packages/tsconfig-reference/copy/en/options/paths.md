@@ -1,6 +1,6 @@
 ---
 display: "Paths"
-oneline: "A series of entries which re-maps imports to additional lookup locations."
+oneline: "Specify a set of entries that re-map imports to additional lookup locations."
 ---
 
 A series of entries which re-map imports to lookup locations relative to the `baseUrl`, there is a larger coverage of `paths` in [the handbook](/docs/handbook/module-resolution.html#path-mapping).
