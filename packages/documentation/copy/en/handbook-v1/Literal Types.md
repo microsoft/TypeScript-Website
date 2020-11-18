@@ -3,7 +3,7 @@ title: Literal Types
 layout: docs
 permalink: /docs/handbook/literal-types.html
 oneline: Using literal types with TypeScript
-handbook: true
+handbook: "true"
 ---
 
 A literal is a more concrete sub-type of a collective type.

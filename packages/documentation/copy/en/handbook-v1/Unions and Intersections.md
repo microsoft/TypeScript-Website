@@ -3,7 +3,7 @@ title: Unions and Intersection Types
 layout: docs
 permalink: /docs/handbook/unions-and-intersections.html
 oneline: How to use unions and intersection types in TypeScript
-handbook: true
+handbook: "true"
 ---
 
 So far, the handbook has covered types which are atomic objects.

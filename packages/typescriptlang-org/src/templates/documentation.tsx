@@ -150,6 +150,7 @@ export const pageQuery = graphql`
         permalink
         title
         disable_toc
+        handbook
         oneline
         beta
       }
