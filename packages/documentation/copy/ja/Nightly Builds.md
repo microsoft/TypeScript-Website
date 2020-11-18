@@ -1,67 +1,67 @@
 ---
-title: Nightly Builds
+title: ナイトリービルド
 layout: docs
-permalink: /docs/handbook/nightly-builds.html
-oneline: How to use a nightly build of TypeScript
+permalink: /ja/docs/handbook/nightly-builds.html
+oneline: TypeScriptのナイトリービルドを使うには
 translatable: true
 ---
 
-A nightly build from the [TypeScript's `master`](https://github.com/Microsoft/TypeScript/tree/master) branch is published by midnight PST to npm.
-Here is how you can get it and use it with your tools.
+ナイトリービルドは、[TypeScriptの`master`](https://github.com/Microsoft/TypeScript/tree/master)ブランチからビルドされて、PST深夜0時までにnpmに公開されています。
+これを入手してご自身のツールで利用する手順は次のとおりです。
 
-## Using npm
+## npmを使う
 
 ```shell
 npm install -g typescript@next
 ```
 
-## Updating your IDE to use the nightly builds
+## ナイトリービルドを使用するためにIDEを更新する
 
-You can also update your IDE to use the nightly drop.
-First you will need to install the package through npm.
-You can either install the npm package globally or to a local `node_modules` folder.
+ナイトリービルドを使うように、IDEを更新することもできます。
+まず、npmを使ってパッケージをインストールする必要があります。
+npmパッケージはグローバルにインストールするか、ローカルの`node_modules`フォルダにインストールします。
 
-The rest of this section assumes `typescript@next` is already installed.
+このセクションの残りの部分は、`typescript@next`がすでにインストールされていることを前提としています。
 
 ### Visual Studio Code
 
-Update `.vscode/settings.json` with the following:
+次のように`.vscode/settings.json`を更新します:
 
 ```json
 "typescript.tsdk": "<path to your folder>/node_modules/typescript/lib"
 ```
 
-More information is available at [VSCode documentation](https://code.visualstudio.com/Docs/languages/typescript#_using-newer-typescript-versions).
+詳細は[VSCode documentation](https://code.visualstudio.com/Docs/languages/typescript#_using-newer-typescript-versions)を参照してください。
 
 ### Sublime Text
 
-Update the `Settings - User` file with the following:
+`Settings - User`ファイルを次のように更新します:
 
 ```json
 "typescript_tsdk": "<path to your folder>/node_modules/typescript/lib"
 ```
 
-More information is available at the [TypeScript Plugin for Sublime Text installation documentation](https://github.com/Microsoft/TypeScript-Sublime-Plugin#installation).
+詳細は[TypeScript Plugin for Sublime Text installation documentation](https://github.com/Microsoft/TypeScript-Sublime-Plugin#installation)を参照してください。
 
-### Visual Studio 2013 and 2015
+### Visual Studio 2013 と 2015
 
-> Note: Most changes do not require you to install a new version of the VS TypeScript plugin.
+> 注意: ほとんどの変更は新しいバージョンのVS TypeScriptプラグインをインストールする必要はありません
 
-The nightly build currently does not include the full plugin setup, but we are working on publishing an installer on a nightly basis as well.
+現在、ナイトリービルドには完全なプラグインのセットアップは含まれていませんが、インストーラーも同様に毎晩公開する作業を行っています。
 
-1. Download the [VSDevMode.ps1](https://github.com/Microsoft/TypeScript/blob/master/scripts/VSDevMode.ps1) script.
+1. [VSDevMode.ps1](https://github.com/Microsoft/TypeScript/blob/master/scripts/VSDevMode.ps1)スクリプトをダウンロードします。
 
-   > Also see our wiki page on [using a custom language service file](https://github.com/Microsoft/TypeScript/wiki/Dev-Mode-in-Visual-Studio#using-a-custom-language-service-file).
+   > [カスタム言語サービスファイルの利用](https://github.com/Microsoft/TypeScript/wiki/Dev-Mode-in-Visual-Studio#using-a-custom-language-service-file)についてはwikiページもご確認ください。
 
-2. From a PowerShell command window, run:
+2. PowerShellコマンドウィンドウで次のように実行します:
 
-For VS 2015:
+VS 2015では:
 
 ```posh
 VSDevMode.ps1 14 -tsScript <path to your folder>/node_modules/typescript/lib
 ```
 
-For VS 2013:
+VS 2013では:
 
 ```posh
 VSDevMode.ps1 12 -tsScript <path to your folder>/node_modules/typescript/lib
@@ -69,12 +69,12 @@ VSDevMode.ps1 12 -tsScript <path to your folder>/node_modules/typescript/lib
 
 ### IntelliJ IDEA (Mac)
 
-Go to `Preferences` > `Languages & Frameworks` > `TypeScript`:
+`Preferences` > `Languages & Frameworks` > `TypeScript`へと進む:
 
-> TypeScript Version: If you installed with npm: `/usr/local/lib/node_modules/typescript/lib`
+> TypeScript Version: npmからインストールした場合: `/usr/local/lib/node_modules/typescript/lib`
 
 ### IntelliJ IDEA (Windows)
 
-Go to `File` > `Settings` > `Languages & Frameworks` > `TypeScript`:
+`File` > `Settings` > `Languages & Frameworks` > `TypeScript`へと進む:
 
-> TypeScript Version: If you installed with npm: `C:\Users\USERNAME\AppData\Roaming\npm\node_modules\typescript\lib`
+> TypeScript Version: npmからインストールした場合: `C:\Users\USERNAME\AppData\Roaming\npm\node_modules\typescript\lib`
