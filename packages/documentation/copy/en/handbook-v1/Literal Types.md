@@ -3,6 +3,7 @@ title: Literal Types
 layout: docs
 permalink: /docs/handbook/literal-types.html
 oneline: Using literal types with TypeScript
+handbook: "true"
 ---
 
 A literal is a more concrete sub-type of a collective type.
@@ -107,14 +108,12 @@ TypeScript also has boolean literal types. You might use these to constrain obje
 interface ValidationSuccess {
   isValid: true;
   reason: null;
-};
+}
 
 interface ValidationFailure {
   isValid: false;
   reason: string;
-};
+}
 
-type ValidationResult =
-  | ValidationSuccess
-  | ValidationFailure;
+type ValidationResult = ValidationSuccess | ValidationFailure;
 ```

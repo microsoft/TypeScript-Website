@@ -73,9 +73,11 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   const showSidebar = !post.frontmatter.disable_toc
   const showSidebarHeadings = post.headings && sidebarHeaders.length <= 30
   const navigation = getDocumentationNavForLanguage(props.pageContext.lang)
+  const isHandbook = post.frontmatter.handbook
+  const prefix = isHandbook ? "Handbook" : "Docmentation"
   const slug = slugger()
   return (
-    <Layout title={"Handbook - " + post.frontmatter.title} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang}>
+    <Layout title={`${prefix} - ${post.frontmatter.title}`} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang}>
       {post.frontmatter.beta && <div id="beta">Warning: This page is a work in progress</div>}
       <section id="doc-layout">
         <SidebarToggleButton />
@@ -148,6 +150,7 @@ export const pageQuery = graphql`
         permalink
         title
         disable_toc
+        handbook
         oneline
         beta
       }

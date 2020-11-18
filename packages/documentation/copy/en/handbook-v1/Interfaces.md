@@ -3,6 +3,7 @@ title: Interfaces
 layout: docs
 permalink: /docs/handbook/interfaces.html
 oneline: How to write an interface with TypeScript
+handbook: "true"
 ---
 
 One of TypeScript's core principles is that type checking focuses on the _shape_ that values have.
@@ -173,7 +174,10 @@ interface SquareConfig {
 }
 
 function createSquare(config: SquareConfig): { color: string; area: number } {
-  return { color: config.color || "red", area: config.width ? config.width*config.width : 20 };
+  return {
+    color: config.color || "red",
+    area: config.width ? config.width * config.width : 20,
+  };
 }
 
 let mySquare = createSquare({ colour: "red", width: 100 });
@@ -196,7 +200,10 @@ interface SquareConfig {
 }
 
 function createSquare(config: SquareConfig): { color: string; area: number } {
-  return { color: config.color || "red", area: config.width ? config.width*config.width : 20 };
+  return {
+    color: config.color || "red",
+    area: config.width ? config.width * config.width : 20,
+  };
 }
 // ---cut---
 let mySquare = createSquare({ colour: "red", width: 100 });
@@ -213,7 +220,10 @@ interface SquareConfig {
 }
 
 function createSquare(config: SquareConfig): { color: string; area: number } {
-  return { color: config.color || "red", area: config.width ? config.width*config.width : 20 };
+  return {
+    color: config.color || "red",
+    area: config.width ? config.width * config.width : 20,
+  };
 }
 // ---cut---
 let mySquare = createSquare({ width: 100, opacity: 0.5 } as SquareConfig);
@@ -243,7 +253,10 @@ interface SquareConfig {
 }
 
 function createSquare(config: SquareConfig): { color: string; area: number } {
-  return { color: config.color || "red", area: config.width ? config.width*config.width : 20 };
+  return {
+    color: config.color || "red",
+    area: config.width ? config.width * config.width : 20,
+  };
 }
 // ---cut---
 let squareOptions = { colour: "red", width: 100 };
@@ -261,7 +274,10 @@ interface SquareConfig {
 }
 
 function createSquare(config: SquareConfig): { color: string; area: number } {
-  return { color: config.color || "red", area: config.width ? config.width*config.width : 20 };
+  return {
+    color: config.color || "red",
+    area: config.width ? config.width * config.width : 20,
+  };
 }
 // ---cut---
 let squareOptions = { colour: "red" };
