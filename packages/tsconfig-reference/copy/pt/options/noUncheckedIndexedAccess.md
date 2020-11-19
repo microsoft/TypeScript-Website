@@ -27,7 +27,7 @@ const nodeEnd = env.NODE_ENV;
 //    ^?
 ```
 
-Ativando o `noUncheckedIndexedAccess` adicionara `undefined` para qualquer campo não declarao no tipo.
+Ativar `noUncheckedIndexedAccess` adicionará `undefined` para qualquer campo não declarado no tipo.
 
 ```ts twoslash
 interface EnvironmentVars {
