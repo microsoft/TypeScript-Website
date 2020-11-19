@@ -74,7 +74,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   const showSidebarHeadings = post.headings && sidebarHeaders.length <= 30
   const navigation = getDocumentationNavForLanguage(props.pageContext.lang)
   const isHandbook = post.frontmatter.handbook
-  const prefix = isHandbook ? "Handbook" : "Docmentation"
+  const prefix = isHandbook ? "Handbook" : "Documentation"
   const slug = slugger()
   return (
     <Layout title={`${prefix} - ${post.frontmatter.title}`} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang}>
