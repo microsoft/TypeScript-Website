@@ -35,6 +35,16 @@ const Index: React.FC<Props> = (props) => {
           <p>An annotated reference to more than a hundred compiler options available in a <code>tsconfig.json</code> or <code>jsconfig.json</code>.</p>
         </Col>
       </Row>
+      <Row>
+        <Col>
+          <a className="cropper" href="../dt/search">
+            <img src={require("../../../static/images/tools/dt-search.png")} alt="Preview of the Definitely Typed search" />
+            <p>Type Search</p>
+          </a>
+          <p>Search for npm modules with types from DefinitelyTyped or embedded in the module.</p>
+        </Col>
+        <Col>&nbsp;</Col>
+      </Row>
     </div>
 
     <div className="raised main-content-block" style={{ paddingBottom: "0.4rem" }}>
