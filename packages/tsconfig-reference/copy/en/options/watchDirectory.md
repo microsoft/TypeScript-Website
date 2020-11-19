@@ -1,6 +1,6 @@
 ---
 display: "watchDirectory"
-oneline: "Determine how directories are watched"
+oneline: "Specify how directories are watched on systems that lack recursive file-watching functionality."
 ---
 
 The strategy for how entire directory trees are watched under systems that lack recursive file-watching functionality.

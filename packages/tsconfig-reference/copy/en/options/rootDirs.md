@@ -1,6 +1,6 @@
 ---
 display: "Root Dirs"
-oneline: "Treat multiple folders as one when resolving modules."
+oneline: "Allow multiple folders to be treated as one when resolving modules."
 ---
 
 Using `rootDirs`, you can inform the compiler that there are many "virtual" directories acting as a single root.
@@ -54,7 +54,7 @@ work via those relative paths at runtime.
 }
 ```
 
-This technique lets you generate types ahead of time for the non-code source files.  Imports then work naturally based off the source file's location.
+This technique lets you generate types ahead of time for the non-code source files. Imports then work naturally based off the source file's location.
 For example `./src/index.ts` can import the file `./src/css/main.css` and TypeScript will be aware of the bundler's behavior for that filetype via the corresponding generated declaration file.
 
 ```ts twoslash

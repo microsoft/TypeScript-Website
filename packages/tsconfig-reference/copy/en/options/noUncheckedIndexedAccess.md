@@ -1,6 +1,6 @@
 ---
 display: "noUncheckedIndexedAccess"
-oneline: "Add undefined to a type when accessed using an index"
+oneline: "Add `undefined` to a type when accessed using an index."
 ---
 
 TypeScript has a way to describe objects which have unknown keys but known values on an object, via index signatures.

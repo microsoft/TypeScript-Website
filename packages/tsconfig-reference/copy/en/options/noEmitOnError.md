@@ -1,6 +1,6 @@
 ---
 display: "No Emit On Error"
-oneline: "Do not emit files if any type checking errors were reported."
+oneline: "Disable emitting files if any type checking errors are reported."
 ---
 
 Do not emit compiler output files like JavaScript source code, source-maps or declarations if any errors were reported.

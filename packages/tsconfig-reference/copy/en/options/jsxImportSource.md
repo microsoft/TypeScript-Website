@@ -1,6 +1,6 @@
 ---
 display: "jsxImportSource"
-oneline: "The module specifier for importing the jsx factory functions"
+oneline: "Specify module specifier used to import the JSX factory functions when using `jsx: react-jsx*`.`"
 ---
 
 Declares the module specifier to be used for importing the `jsx` and `jsxs` factory functions when using [`jsx`](#jsx) as `"react-jsx"` or `"react-jsxdev"` which were introduced in TypeScript 4.1.

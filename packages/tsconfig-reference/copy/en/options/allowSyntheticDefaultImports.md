@@ -1,6 +1,6 @@
 ---
 display: "Allow Synthetic Default Imports"
-oneline: "Allow 'import x from y' when a module doesn't have a default export"
+oneline: "Allow 'import x from y' when a module doesn't have a default export."
 ---
 
 When set to true, `allowSyntheticDefaultImports` allows you to write an import like:

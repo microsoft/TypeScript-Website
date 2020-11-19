@@ -1,6 +1,6 @@
 ---
 display: "Declaration Dir"
-oneline: "Specify output directory for generated declaration files"
+oneline: "Specify the output directory for generated declaration files."
 ---
 
 Offers a way to configure the root directory for where declaration files are emitted.
