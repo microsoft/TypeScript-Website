@@ -2,7 +2,7 @@
 // Tuples are arrays where the order is important to the type system,
 // you can learn more about them in example:tuples
 
-// In TypeScript 3.9, the type of a Tuple's gained the ability to give
+// In TypeScript 4.0, the type of a Tuple's gained the ability to give
 // a name to the different parts of the array.
 
 // For example, you used to write a Lat Long location via a tuple:

@@ -20,7 +20,7 @@ type MaxMinDiameter = AddMax<[min: number, diameter: number]>
 type SuffixDIContext<T extends unknown[]> = [...first: T, context: any];
 type DIContainer = SuffixDIContext<[param: string]>
 
-// This mechanism can be combined with multiple input params. For example, This
+// This mechanism can be combined with multiple input params. For example, this
 // function merges two arrays but uses '\0' as a sigil to indicate where the arrays 
 // start and stop.
 function joinWithNullTerminators<T extends unknown[], U extends unknown[]>(t: [...T], u: [...U]) {
@@ -30,7 +30,6 @@ function joinWithNullTerminators<T extends unknown[], U extends unknown[]>(t: [.
 // TypeScript can infer the return type of a function like this:
 const result = joinWithNullTerminators(['variadic', 'types'], ["terminators", 3]);
 
-//
 // These tools make it possible to correctly type a function like curry which
 // is a well used concept in functional programming:
 

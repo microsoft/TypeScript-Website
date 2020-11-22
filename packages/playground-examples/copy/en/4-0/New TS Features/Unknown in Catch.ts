@@ -24,7 +24,7 @@ try {
 
 try {
   // ..
-} catch (e) {
+} catch (e: unknown) {
   // You cannot use `e` at all until the type
   // system learns what it is, for more info see:
   // example:unknown-and-never
