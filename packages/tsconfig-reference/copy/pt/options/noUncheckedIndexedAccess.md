@@ -1,6 +1,6 @@
 ---
 display: "noUncheckedIndexedAccess"
-oneline: "Adicionar undefined para um tipo quando acessado através de um índice"
+oneline: "Usa undefined para um tipo quando acessado através de um índice"
 ---
 
 TypeScript tem uma maneira para descrever objetos que têm chaves desconhecidas, mas valores conhecidos, através da assinatura de índice.
