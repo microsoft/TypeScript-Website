@@ -88,13 +88,13 @@ export const Comm: React.FC<Props> = props => {
             </div>
             </div>
             <div className="callout">
-              <a aria-labelledby="blog-header" className="icon blog img-circle" href="https://devblogs.microsoft.com/typescript/" target="_blank" title="The official TypeSCript blog" />
+              <a aria-labelledby="blog-header" className="icon blog img-circle" href="https://devblogs.microsoft.com/typescript/" target="_blank" title="The official TypeScript blog" />
               <div className="text">
-                <a href="https://devblogs.microsoft.com/typescript/" id="blog-header" target="_blank" title="The official TypeSCript blog">
+                <a href="https://devblogs.microsoft.com/typescript/" id="blog-header" target="_blank" title="The official TypeScript blog">
                   <h3 className="community-callout-headline">Blog</h3>
                 </a>
                 {i("com_online_blog_desc") + " "}
-                <a href="https://devblogs.microsoft.com/typescript/" target="_blank" title="The official TypeSCript blog">blog</a>!
+                <a href="https://devblogs.microsoft.com/typescript/" target="_blank" title="The official TypeScript blog">blog</a>!
             </div>
             </div>
             <div className="callout">
