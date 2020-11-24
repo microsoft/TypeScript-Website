@@ -246,7 +246,7 @@ export const allowedValues = {
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
-  "4.1": ["jsxImportSource", "bundledPackageName", "noUncheckedIndexedAccess"],
+  "4.1": ["jsxImportSource", "noUncheckedIndexedAccess"],
   "4.0": ["jsxFragmentFactory", "disableReferencedProjectLoad"],
   "3.8": [
     "assumeChangesOnlyAffectDirectDependencies",
