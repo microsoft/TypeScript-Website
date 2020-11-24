@@ -11,10 +11,10 @@
 // type into four functions which correspond to traditional REST calls.
 
 // Template strings literals to describe each API endpoint:
-type GET<T extends string> =  `get${Capitalize<T>}`
-type POST<T extends string> =  `post${Capitalize<T>}`
-type PUT<T extends string> =  `put${Capitalize<T>}`
-type DELETE<T extends string> =  `delete${Capitalize<T>}`
+type GET<T extends string> = `get${Capitalize<T>}`
+type POST<T extends string> = `post${Capitalize<T>}`
+type PUT<T extends string> = `put${Capitalize<T>}`
+type DELETE<T extends string> = `delete${Capitalize<T>}`
 
 // A union of the above literal types
 type REST<T extends string> = GET<T> | POST<T> | PUT<T> | DELETE<T>

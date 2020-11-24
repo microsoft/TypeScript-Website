@@ -50,7 +50,7 @@ type Split<S extends string, D extends string> =
         S extends '' ? [] :
             S extends `${infer T}${D}${infer U}` ?  [T, ...Split<U, D>] :  [S];
 
-// Line 1 declares two params, we'll use single characters for brevity
+// Line 1 declares two params, we'll use single characters for brevity.
 // S represents the string to split, and D is the deliminator. This
 // line ensures they are both strings.
 
@@ -77,8 +77,6 @@ type S3 = Split<"1.2", ".">
 
 // Will recurse once to get all the .'s splitted
 type S4 = Split<"1.2.3", ".">
-
-// The 
 
 // With this knowledge, you should be able to read and understand quite a
 // few of the community examples of template literals, for example:
