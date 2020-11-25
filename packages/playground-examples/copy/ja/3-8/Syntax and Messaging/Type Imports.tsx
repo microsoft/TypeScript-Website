@@ -8,7 +8,7 @@
 // it will always be removed!
 // 'import type'は、型のみのインポートを宣言する方法を提供します。これは、
 // JavaScriptに変換される際に必ずコードが削除されるため、
-// どのコードが削除されるのか非常に予測しやすいということです！
+// どのコードが削除されるのか非常に予測しやすいということを意味します！
 
 // 例えば、次の行は決してimportやrequireを追加しません
 import type { CSSProperties } from 'react';
