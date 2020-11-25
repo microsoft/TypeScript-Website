@@ -40,7 +40,7 @@
       "targetString": "length"
     },
     {
-      "text": "var module: {\n    \"\\\"/Users/ortatherox/dev/typescript/new-website/packages/ts-twoslasher/utilFunctions\\\"\": typeof import(\"/Users/ortatherox/dev/typescript/new-website/packages/ts-twoslasher/utilFunctions\");\n}",
+      "text": "var module: {\n    \"\\\"[home]/utilFunctions\\\"\": typeof import(\"[home]/utilFunctions\");\n}",
       "docs": "",
       "start": 73,
       "length": 6,
@@ -49,7 +49,7 @@
       "targetString": "module"
     },
     {
-      "text": "module \"/Users/ortatherox/dev/typescript/new-website/packages/ts-twoslasher/utilFunctions\"",
+      "text": "module \"[home]/utilFunctions\"",
       "docs": "",
       "start": 80,
       "length": 7,

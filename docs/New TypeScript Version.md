@@ -52,8 +52,9 @@ For each new flag:
 ##### Tests
 
 Run `yarn test`.
+
 Tests can fail between TS builds, for example snapshot tests in packages which have compiler errors or LSP responses in them.
-Run `yarn update-test-snapshots` to try auto-update all snapshots, otherwise use `yarn workspace [package_name] test -u` for 1 package.
+Run `yarn build; yarn update-test-snapshots` to try auto-update all snapshots, otherwise use `yarn workspace [package_name] test -u` for 1 package.
 
 ### RC
 
