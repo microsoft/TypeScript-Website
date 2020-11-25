@@ -1,37 +1,34 @@
 //// { compiler: {  }, order: 1 }
 
-// Given JavaScript's flexibility, it can be a good idea to add
-// runtime checks to your code to validate your assumptions.
+// JavaScriptの柔軟性を考えると、ランタイムチェックにコードを追加して
+// 仮定を検証するというのは良い考えかもしれません。
 
-// These are typically called assertions (or invariants) and
-// they are small functions which raise errors early when
-// your variables don't match up to what you expect.
+// この検証を行うコードは一般的にアサーション(または不変条件)とよばれ、
+// 変数が期待と一致しない場合に早期にエラーを発生させる
+// 小さな関数です。
 
-// Node comes with a function for doing this out of the box,
-// it's called assert and it's available without an import.
+// Nodeには標準でこれを行うための、assertと呼ばれる関数が付属しており、
+// インポートなしで使用することができます。
 
-// We're going to define our own though. This declares a
-// function which asserts that the expression called
-// value is true:
+// でもここでは、自前で定義してみましょう。 valueという式が
+// trueであることをアサートする関数を次のように定義します:
 declare function assert(value: unknown): asserts value;
 
-// Now we're use it to validate the type of an enum
+// では、これを使用してEnumの型を検証してみましょう
 declare const maybeStringOrNumber: string | number;
 assert(typeof maybeStringOrNumber === "string");
 
-// With TypeScript 3.7, the code flow analysis can use these
-// types of functions to figure out what the code is. So,
-// when you hover over the variable below - you can see that
-// it has been narrowed from a string or number to
-// just a string.
+// TypeScript 3.7では、コードフロー解析でこのような関数を使い、
+// コードがどのようなものであるか把握することができます。そのため、下記の
+// 変数にマウスをホバーすると、文字列や数値から単なる文字列に
+// 絞り込まれていることがわかります。
 
 maybeStringOrNumber;
 
-// You can use assertion functions to make guarantees of
-// your types throughout your inferred code, for example
-// TypeScript knows that this function will return a
-// number without the need to add types to the parameter
-// via the above assert declaration.
+// アサーション関数を使えば、推論されたコード全体で型の保証を行うことが
+// できます。 例えば、TypeScriptは、上記のアサート宣言を介して
+// この関数がパラメータに型を追加する必要なしに数値を返すことを
+// 知っています。
 
 function multiply(x: any, y: any) {
   assert(typeof x === "number");
@@ -40,30 +37,29 @@ function multiply(x: any, y: any) {
   return x * y;
 }
 
-// Assertion functions are siblings to Type Guards
-// example:type-guards except they affect the control flow
-// when it continues through the function.
+// アサーション関数はタイプガードexample:type-guardsと
+// 兄弟関係にありますが、関数を通して継続する場合に制御フローに
+// 影響を与えるということ点が異なります。
 
-// For example, we can use assertion functions to narrow
-// an enum down over time:
+// 例えば、アサーション関数を使って段々とEnumを絞り込むことが
+// できます
 
 declare const oneOfFirstFiveNumbers: 1 | 2 | 3 | 4 | 5;
 
 declare function isOdd(param: unknown): asserts param is 1 | 3 | 5;
 declare function isBelowFour(param: unknown): asserts param is 1 | 2 | 3 | 4;
 
-// This should cut down the enum to: 1 | 3 | 5
+// これにより、Enumは次のように絞り込まれるはずです: 1 | 3 | 5
 
 isOdd(oneOfFirstFiveNumbers);
 oneOfFirstFiveNumbers;
 
-// This will then cut the enum's possible states to: 1 | 3
+// さらにこれにより、Enumの取りうる値は次のように切り取られます: 1 | 3
 
 isBelowFour(oneOfFirstFiveNumbers);
 oneOfFirstFiveNumbers;
 
-// This is a primer on some of the features of assertion functions
-// in TypeScript 3.7 - you can find out more by reading the
-// release notes:
+// 上記は、TypeScript 3.7のアサーション関数の機能の一部についての入門書です。
+// 詳細はリリースノートを確認してください:
 //
 // https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/

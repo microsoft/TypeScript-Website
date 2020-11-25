@@ -1,23 +1,21 @@
 //// { compiler: { ts: "3.8.3" }, isJavaScript: true }
 // @ts-check
 
-// The JSDoc support for TypeScript was extended to support
-// the accessibility modifiers on class properties. There is:
+// TypeScriptのJSDocが拡張され、クラスプロパティのアクセシビリティ修飾子が
+// サポートされるようになりました。
 //
-// @public - the default, and what happens if you don't set one
-// @private - the field can only be accessed in the same class
-//            where the field is defined
-// @protected - the field is accessible to the class where it is
-//              defined and subclasses of that class
-//
+// @public - デフォルト。もしこれを設定しなかったらどうなるでしょう？
+// @private - フィールドが定義されているクラスからのみアクセスできます。
+// @protected - フィールドが定義されているクラスとそのクラスの
+//              サブクラスからアクセスできます。
 
-// This is a base class of Animal, it has both a private and
-// protected field. Subclasses can access "this.isFast" but
-// not "this.type".
 
-// Outside of these the class, both of these fields are not
-// visible and return a compiler error when // @ts-check is
-// turned on:
+// 以下は、Animalの基底クラスで、privateフィールドとprotectedフィールドの
+// 両方を持ちます。サブクラスは"this.isFast"にアクセスできますが、
+// "this.type"にはアクセスできません。
+
+// これらのクラスの外側では、両方のフィールドはどちらも表示されず、
+// @ts-checkがオンになっている場合はコンパイラエラーとなります:
 
 class Animal {
   constructor(type) {
@@ -28,7 +26,7 @@ class Animal {
   }
 
   makeNoise() {
-    // Supposedly these are pretty much silent
+    // おそらく、これらのAnimalはとても静かなのでしょう
     if (this.type === 'bengal') {
       console.log('')
     } else {
@@ -70,9 +68,9 @@ class Bengal extends Cat {
 const housecat = new Cat()
 housecat.makeNoise()
 
-// These are not available
+// 次のようには利用できません
 housecat.type
 housecat.isFast
 
-// You can read more in the post
+// 詳細はこちらの記事で確認できます
 // https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/#jsdoc-modifiers

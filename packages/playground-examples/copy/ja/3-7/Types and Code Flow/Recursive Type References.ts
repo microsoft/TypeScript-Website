@@ -1,26 +1,25 @@
 //// { compiler: {  }, order: 2 }
 
-// Choosing between using type vs interface is about the
-// constraints in the features for each. With 3.7, one of
-// the constrains on type but not in interface was removed.
+// タイプを使うかインターフェースを使うかはそれぞれの機能の制約に依るところがあります。
+// 3.7では、タイプに関する制約のうち、インターフェースにはない制約が削除
+// されました。
 
-// You can find out more about this in example:types-vs-interfaces
+// これについての詳細はexample:types-vs-interfacesを参照してください。
 
-// It used to be that you could not refer to the type you
-// are defining inside the type itself. This was a limit
-// which didn't exist inside an interface, and could be worked
-// around with a little work.
+// 以前は、定義している型自体の内部では、定義している型を参照することは
+// できませんでした。これはインターフェースには存在しない制約であり、
+// 回避するには少しの作業が必要でした。
 
-// For example, this is not feasible in 3.6:
+// 例えば、これは3.6では実行不可能です:
 type ValueOrArray<T> = T | Array<ValueOrArray<T>>;
 
-// An implementation would have looked like this, by mixing
-// the type with an interface.
+// ワークアラウンドの実装は、タイプとインターフェースを組み合わせることで
+// 次のようになっていたでしょう。
 type ValueOrArray2<T> = T | ArrayOfValueOrArray<T>;
 interface ArrayOfValueOrArray<T> extends Array<ValueOrArray2<T>> {}
 
-// This allows for a comprehensive definition of JSON,
-// which works by referring to itself.
+// この制約の削除により、自身を参照することで機能するJSONを包括的に
+// 定義することができます。
 
 type Json = string | number | boolean | null | Json[] | { [key: string]: Json };
 
@@ -29,12 +28,12 @@ const exampleStatusJSON: Json = {
   username: "Jean-loup",
   room: {
     name: "Highcrest",
-    // Cannot add functions into the Json type
+    // Json型に関数を追加できない
     // update: () => {}
   },
 };
 
-// There's more to learn from the 3.7 beta release notes and its PR:
+// 3.7ベータ版のリリースノートとそのPRでより多くのことが学べます:
 //
 // https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/
 // https://github.com/microsoft/TypeScript/pull/33050
