@@ -105,6 +105,5 @@ export type CompilerOptionName =
   | "maxNodeModuleJsDepth"
   | "noStrictGenericChecks"
   | "useDefineForClassFields"
-  | "bundledPackageName"
   | "keyofStringsOnly"
   | "plugins";
