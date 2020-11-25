@@ -2,10 +2,6 @@
 // 3.8では、型をインポートするための新しい構文を追加しました。
 // これはflowユーザーにはおなじみのものです。
 
-// 'import type' provides a way to declare a type only import
-// which means you can be sure that the code will erased when
-// converting to JavaScript in a very predictable way because
-// it will always be removed!
 // 'import type'は、型のみのインポートを宣言する方法を提供します。これは、
 // JavaScriptに変換される際に必ずコードが削除されるため、
 // どのコードが削除されるのか非常に予測しやすいということを意味します！
