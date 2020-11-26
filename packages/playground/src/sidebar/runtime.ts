@@ -83,9 +83,11 @@ function rewireLoggingToElement(
   console["oldclear"] = console.clear
   console.clear = clearLogs
 
-  closure.then(js => {
+  closure.then(async js => {
     try {
-      eval(js)
+      // The produced JS might well have asynchronous code in it, so await it.
+      // (Having the await fixes https://github.com/microsoft/TypeScript-Website/issues/367)
+      await eval(js)
     } catch (error) {
       console.error(i("play_run_js_fail"))
       console.error(error)
