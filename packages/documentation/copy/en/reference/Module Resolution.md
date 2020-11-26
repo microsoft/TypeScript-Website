@@ -160,29 +160,32 @@ So `import { b } from "moduleB"` in source file `/root/src/moduleA.ts` would res
 3. `/root/src/node_modules/moduleB.d.ts`
 4. `/root/src/node_modules/moduleB/package.json` (if it specifies a `"types"` property)
 5. `/root/src/node_modules/@types/moduleB.d.ts`
-6. `/root/src/node_modules/moduleB/index.ts`
-7. `/root/src/node_modules/moduleB/index.tsx`
-8. `/root/src/node_modules/moduleB/index.d.ts`
+6. `/root/src/node_modules/@types/moduleB/index.d.ts`
+7. `/root/src/node_modules/moduleB/index.ts`
+8. `/root/src/node_modules/moduleB/index.tsx`
+9. `/root/src/node_modules/moduleB/index.d.ts`
    <br /><br />
-9. `/root/node_modules/moduleB.ts`
-10. `/root/node_modules/moduleB.tsx`
-11. `/root/node_modules/moduleB.d.ts`
-12. `/root/node_modules/moduleB/package.json` (if it specifies a `"types"` property)
-13. `/root/node_modules/@types/moduleB.d.ts`
-14. `/root/node_modules/moduleB/index.ts`
-15. `/root/node_modules/moduleB/index.tsx`
-16. `/root/node_modules/moduleB/index.d.ts`
+10. `/root/node_modules/moduleB.ts`
+11. `/root/node_modules/moduleB.tsx`
+12. `/root/node_modules/moduleB.d.ts`
+13. `/root/node_modules/moduleB/package.json` (if it specifies a `"types"` property)
+14. `/root/node_modules/@types/moduleB.d.ts`
+15. `/root/node_modules/@types/moduleB/index.d.ts`
+16. `/root/node_modules/moduleB/index.ts`
+17. `/root/node_modules/moduleB/index.tsx`
+18. `/root/node_modules/moduleB/index.d.ts`
     <br /><br />
-17. `/node_modules/moduleB.ts`
-18. `/node_modules/moduleB.tsx`
-19. `/node_modules/moduleB.d.ts`
-20. `/node_modules/moduleB/package.json` (if it specifies a `"types"` property)
-21. `/node_modules/@types/moduleB.d.ts`
-22. `/node_modules/moduleB/index.ts`
-23. `/node_modules/moduleB/index.tsx`
-24. `/node_modules/moduleB/index.d.ts`
+19. `/node_modules/moduleB.ts`
+20. `/node_modules/moduleB.tsx`
+21. `/node_modules/moduleB.d.ts`
+22. `/node_modules/moduleB/package.json` (if it specifies a `"types"` property)
+23. `/node_modules/@types/moduleB.d.ts`
+24. `/node_modules/@types/moduleB/index.d.ts`
+25. `/node_modules/moduleB/index.ts`
+26. `/node_modules/moduleB/index.tsx`
+27. `/node_modules/moduleB/index.d.ts`
 
-Don't be intimidated by the number of steps here - TypeScript is still only jumping up directories twice at steps (9) and (17).
+Don't be intimidated by the number of steps here - TypeScript is still only jumping up directories twice at steps (10) and (19).
 This is really no more complex than what Node.js itself is doing.
 
 ## Additional module resolution flags
