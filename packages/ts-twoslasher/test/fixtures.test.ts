@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync, lstatSync } from "fs"
 import { join, extname, parse } from "path"
 import { toMatchFile } from "jest-file-snapshot"
-import { twoslasher } from "../src/index"
+import { twoslasher, TwoSlashReturn } from "../src/index"
 import { format } from "prettier"
 
 expect.extend({ toMatchFile })
@@ -28,7 +28,7 @@ describe("with fixtures", () => {
       const file = readFileSync(fixture, "utf8")
 
       const fourslashed = twoslasher(file, extname(fixtureName).substr(1))
-      const jsonString = format(JSON.stringify(fourslashed), { parser: "json" })
+      const jsonString = format(JSON.stringify(cleanFixture(fourslashed)), { parser: "json" })
       expect(jsonString).toMatchFile(result)
     })
   })
@@ -47,7 +47,7 @@ describe("with fixtures", () => {
       const file = readFileSync(fixture, "utf8")
 
       const fourslashed = twoslasher(file, extname(fixtureName).substr(1))
-      const jsonString = format(JSON.stringify(fourslashed), { parser: "json" })
+      const jsonString = format(JSON.stringify(cleanFixture(fourslashed)), { parser: "json" })
       expect(jsonString).toMatchFile(result)
     })
   })
@@ -66,7 +66,7 @@ describe("with fixtures", () => {
       const file = readFileSync(fixture, "utf8")
 
       const fourslashed = twoslasher(file, extname(fixtureName).substr(1))
-      const jsonString = format(JSON.stringify(fourslashed), { parser: "json" })
+      const jsonString = format(JSON.stringify(cleanFixture(fourslashed)), { parser: "json" })
       expect(jsonString).toMatchFile(result)
     })
   })
@@ -97,3 +97,11 @@ describe("with fixtures", () => {
     })
   })
 })
+
+const cleanFixture = (ts: TwoSlashReturn) => {
+  const wd = process.cwd()
+  ts.staticQuickInfos.forEach(info => {
+    info.text = info.text.replace(new RegExp(wd, "g"), "[home]")
+  })
+  return ts
+}

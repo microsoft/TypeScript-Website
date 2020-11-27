@@ -84,7 +84,7 @@ Each build tool is different, but we'll do our best to cover the gist of things.
 
 ## Gulp
 
-If you're using Gulp in some fashion, we have a tutorial on [using Gulp](./Gulp.md) with TypeScript, and integrating with common build tools like Browserify, Babelify, and Uglify.
+If you're using Gulp in some fashion, we have a tutorial on [using Gulp](/docs/handbook/gulp.html) with TypeScript, and integrating with common build tools like Browserify, Babelify, and Uglify.
 You can read more there.
 
 ## Webpack
@@ -103,7 +103,7 @@ and merge in options from the following into your `webpack.config.js` file:
 module.exports = {
   entry: "./src/index.ts",
   output: {
-    filename: "./dist/bundle.js"
+    filename: "./dist/bundle.js",
   },
 
   // Enable sourcemaps for debugging webpack's output.
@@ -111,7 +111,7 @@ module.exports = {
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
+    extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"],
   },
 
   module: {
@@ -120,9 +120,9 @@ module.exports = {
       { test: /\.tsx?$/, loader: "ts-loader" },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-      { test: /\.js$/, loader: "source-map-loader" }
-    ]
-  }
+      { test: /\.js$/, loader: "source-map-loader" },
+    ],
+  },
 
   // Other options...
 };
@@ -198,7 +198,7 @@ foo.doStuff();
 or the following RequireJS/AMD code:
 
 ```js
-define(["foo"], function(foo) {
+define(["foo"], function (foo) {
   foo.doStuff();
 });
 ```
@@ -233,7 +233,7 @@ TypeScript allows you to use top-level export statements.
 For instance, if you exported a function like so:
 
 ```js
-module.exports.feedPets = function(pets) {
+module.exports.feedPets = function (pets) {
   // ...
 };
 ```
@@ -288,13 +288,13 @@ function myCoolFunction() {
 }
 
 myCoolFunction(
-  function(x) {
+  function (x) {
     console.log(x);
   },
   [1, 2, 3, 4]
 );
 myCoolFunction(
-  function(x) {
+  function (x) {
     console.log(x);
   },
   1,
@@ -339,7 +339,7 @@ If you instead moved the declarations into the object literal themselves, you'd 
 ```ts
 let options = {
   color: "red",
-  volume: 11
+  volume: 11,
 };
 ```
 
@@ -425,7 +425,7 @@ class Point {
 interface Point {
   distanceFromOrigin(): number;
 }
-Point.prototype.distanceFromOrigin = function() {
+Point.prototype.distanceFromOrigin = function () {
   return this.getDistance({ x: 0, y: 0 });
 };
 ```
@@ -436,7 +436,7 @@ When that option is set, TypeScript will issue an error when `this` is used with
 The fix is to use a `this`-parameter to give an explicit type in the interface or in the function itself:
 
 ```ts
-Point.prototype.distanceFromOrigin = function(this: Point) {
+Point.prototype.distanceFromOrigin = function (this: Point) {
   return this.getDistance({ x: 0, y: 0 });
 };
 ```

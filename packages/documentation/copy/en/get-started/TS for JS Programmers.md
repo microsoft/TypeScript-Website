@@ -26,7 +26,7 @@ let helloWorld = "Hello World";
 
 By understanding how JavaScript works, TypeScript can build a type-system that accepts JavaScript code but has types. This offers a type-system without needing to add extra characters to make types explicit in your code. That's how TypeScript knows that `helloWorld` is a `string` in the above example.
 
-You may have written JavaScript in Visual Studio Code, and had editor auto-completion. Visual Studio uses TypeScript under the hood to make it easier to work with JavaScript.
+You may have written JavaScript in Visual Studio Code, and had editor auto-completion. Visual Studio Code uses TypeScript under the hood to make it easier to work with JavaScript.
 
 ## Defining Types
 

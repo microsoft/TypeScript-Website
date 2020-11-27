@@ -1,0 +1,37 @@
+{
+  "code": "const map = new Map<string, Set<number>>()\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [],
+  "staticQuickInfos": [
+    {
+      "text": "const map: Map<string, Set<number>>",
+      "docs": "",
+      "start": 6,
+      "length": 3,
+      "line": 0,
+      "character": 6,
+      "targetString": "map"
+    },
+    {
+      "text": "var Map: MapConstructor\nnew <string, Set<number>>(entries?: readonly (readonly [string, Set<number>])[] | null | undefined) => Map<string, Set<number>> (+2 overloads)",
+      "docs": "",
+      "start": 16,
+      "length": 3,
+      "line": 0,
+      "character": 16,
+      "targetString": "Map"
+    },
+    {
+      "text": "interface Set<T>",
+      "docs": "",
+      "start": 28,
+      "length": 3,
+      "line": 0,
+      "character": 28,
+      "targetString": "Set"
+    }
+  ],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEBsEsCMC5QFMDOAmADARgKwCgBjAewDsUAXUAWwEMAHUAXlBKQHdQBZegHgoCdoJAOYAaUAGUk5HiQCuVWEn4A+FQAoAlHiA"
+}
