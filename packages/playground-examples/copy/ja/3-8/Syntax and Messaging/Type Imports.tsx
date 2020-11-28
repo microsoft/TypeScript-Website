@@ -42,7 +42,8 @@ export const BetaNotice: FunctionComponent = () => {
 // 'import type'構文を使うと、JavaScriptで何をしたいのかを
 // 具体的に指定することができます。
 
-// 以下は'import types'の主なユースケースの一つについての短い概要ですが、
-// 3.8のリリースノートでも詳細を読むことができます。
+// 以上は'import types'の
+// 主なユースケースの一つについての簡単な概要ですが、
+// 3.8のリリースノートにてさらなる詳細を読むことができます。
 
 // https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/#type-only-imports-exports

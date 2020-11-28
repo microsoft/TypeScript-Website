@@ -1,5 +1,5 @@
 //// { compiler: { ts: "3.8.3" } }
-// 3.8ではprivateフィールドが追加されました。これはサブクラスを含め、包括しているクラスの外側からは
+// 3.8ではprivateフィールドが追加されました。これはサブクラスを含め、フィールドを定義しているクラスの外側からは
 // アクセスできないようにするクラスフィールドの宣言方法です。
 
 // 例えば、以下のPersonクラスでは、どのクラスのインスタンスからも
@@ -38,7 +38,8 @@ console.log(jeremy.#lastName);
 console.log("Person's last name:", jeremy["#lastName"]);
 
 // よくある質問は、"なぜクラスフィールドの'private'キーワードよりもこちらを使うのか？"
-// というものです。 - では、3.8以前のTypeScriptでのふるまいと比較してみましょう。
+// というものです。
+// では、3.8以前のTypeScriptでのふるまいと比較してみましょう。
 
 class Dog {
   private _name: string;
@@ -50,18 +51,19 @@ class Dog {
 let oby = new Dog("Oby");
 // ドット記法でのアクセスはできません
 oby._name = "Spot";
-// しかし、TypeScriptはエスケープ句としてブラケット記法を使うことを許してしまいます
+// しかし、TypeScriptでは抜け道としてブラケット記法を使えてしまいます
 oby["_name"] = "Cherny";
 
-// privateキーワードのTypeScriptの参照は型レベルでしか存在しないので、ここまでしか
-// 信用できません。でも、privateフィールドがJavaScript言語の一部となるのは
-// もうすぐなので、そうなればコードの可視性がより強く保証されるようになります。
+// privateキーワードのTypeScriptの参照は型レベルでしか存在しないので
+// 型レベルまでしか信用できません。
+// 一方で、privateフィールドは近いうちにJavaScript言語の一部となるので
+// そうなればコードの可視性をより強く保証できるようになります。
 
 // TypeScriptの`private`フィールドキーワードを廃止する予定はないので、
-// 既存のコードは引き続き動作しますが、この機能によりJavaScript言語に近いコードを
-// 書くことができるようになりました。
+// 既存のコードは引き続き動作します。今では、`private`キーワードの代わりに
+// よりJavaScriptに近いコードを書くこともできるようになりました。
 
-// クラスフィールドについての詳細はtc29の提案
+// クラスフィールドについての詳細はtc39の提案
 // https://github.com/tc39/proposal-class-fields/
 // とベータ版リリースノートを参照してください:
 // https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/#ecmascript-private-fields

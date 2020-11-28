@@ -1,11 +1,9 @@
 //// { compiler: {  }, order: 1 }
 
-// 3.7では、関数の戻り値の代わりに誤って関数を
-// 使用してしまった場合に備えて、if文の中に
-// チェック機能が追加されました。
+// 3.7ではif文の中で誤って
+// 関数の戻り値の代わりに関数そのものを使っていないかを
+// 検出する機能が追加されました。
 
-// This only applies when the function is known
-// to exist making the if statement always be true.
 // これは関数が存在することがわかっていて、if文が常にtrueになる
 // 場合にのみ適用されます。
 
@@ -23,14 +21,14 @@ declare const plugin: PluginSettings;
 // 次のチェックは正当なものとなります。
 
 if (plugin.pluginShouldLoad) {
-  // pluginShouldLoadが存在する場合のアクション
+  // pluginShouldLoadが存在する場合の処理
 }
 
-// 3.6以前ではこれはエラーではありませんでした。
+// 3.6以前で以下はエラーではありませんでした。
 
 if (plugin.pluginIsActivated) {
-  // プラグインがアクティブになった場合になにかアクションを
-  // 行おうとしていますが、ここではメソッドを呼び出すのではなく
+  // プラグインが有効化されていた場合になにか処理を
+  // 行おうとしていますが、関数を呼び出すのではなく
   // プロパティとして使用しています。
 }
 

@@ -40,7 +40,7 @@ function multiply(x: any, y: any) {
 
 // アサーション関数はタイプガードexample:type-guardsと
 // 兄弟関係にありますが、関数を通して継続する場合に制御フローに
-// 影響を与えるということ点が異なります。
+// 影響を与えるという点が異なります。
 
 // 例えば、アサーション関数を使って段々とEnumを絞り込むことが
 // できます
@@ -60,7 +60,8 @@ oneOfFirstFiveNumbers;
 isBelowFour(oneOfFirstFiveNumbers);
 oneOfFirstFiveNumbers;
 
-// 上記は、TypeScript 3.7のアサーション関数の機能の一部についての入門書です。
+// 上記は、TypeScript 3.7のアサーション関数の
+// 機能についての入門です。
 // 詳細はリリースノートを確認してください:
 //
 // https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/
