@@ -10,7 +10,7 @@
 // Nodeには標準でこれを行うための、assertと呼ばれる関数が付属しており、
 // インポートなしで使用することができます。
 
-// でもここでは、自前で定義してみましょう。 valueという式が
+// しかし、ここでは自前で定義してみましょう。 valueという式が
 // trueであることをアサートする関数を次のように定義します:
 declare function assert(value: unknown): asserts value;
 
