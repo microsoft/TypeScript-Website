@@ -26,8 +26,9 @@ assert(typeof maybeStringOrNumber === "string");
 maybeStringOrNumber;
 
 // アサーション関数を使えば、推論されたコード全体で型の保証を行うことが
-// できます。 例えば、TypeScriptは、上記のアサート宣言を介して
-// この関数がパラメータに型を追加する必要なしに数値を返すことを
+// できます。 
+// 例えば、TypeScriptはパラメータに型を追加せずとも、
+// 上記のアサート宣言を介して、この関数が数値を返すと
 // 知っています。
 
 function multiply(x: any, y: any) {
