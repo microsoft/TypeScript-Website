@@ -1,7 +1,7 @@
 ---
 title: Type Inference
 layout: docs
-permalink: /docs/handbook/type-inference.html
+permalink: /ko/docs/handbook/type-inference.html
 oneline: How code flow analysis works in TypeScript
 translatable: true
 ---
@@ -21,7 +21,7 @@ let x = 3;
 
 ## 가장 일반적인 유형
 
-여러 표현 식에서 타입 유추를 수행할 때, 이러한 표현 식의 형식을 사용하여, "가장 일반적인 형식"을 계산합니다. 예를 들어서,
+여러 표현 식에서 타입 유추를 수행할 때, 이러한 표현 식의 형식을 사용하여, "가장 일반적인 형식"을 계산합니다. 예를 들어서:
 
 ```ts twoslash
 let x = [0, 1, null];
