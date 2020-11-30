@@ -1,7 +1,7 @@
 ---
 title: Fusão de Declarações
 layout: docs
-permalink: /docs/handbook/declaration-merging.html
+permalink: /pt/docs/handbook/declaration-merging.html
 oneline: Como a fusão de namespaces e interfaces funciona
 translatable: true
 ---

@@ -1,7 +1,7 @@
 ---
 title: Referência de Projeto
 layout: docs
-permalink: /docs/handbook/project-references.html
+permalink: /pt/docs/handbook/project-references.html
 oneline: Como dividir um projeto Typescript grande
 translatable: true
 ---

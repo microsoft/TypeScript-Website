@@ -1,7 +1,7 @@
 ---
 title: Referência JSDoc
 layout: docs
-permalink: /docs/handbook/jsdoc-supported-types.html
+permalink: /pt/docs/handbook/jsdoc-supported-types.html
 oneline: Quais JSDoc Javascript baseado em Typescript suporta?
 translatable: true
 ---

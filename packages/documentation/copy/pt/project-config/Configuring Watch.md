@@ -1,7 +1,7 @@
 ---
 title: Configurando Watch
 layout: docs
-permalink: /docs/handbook/configuring-watch.html
+permalink: /pt/docs/handbook/configuring-watch.html
 oneline: Como configurar o modo de observação do Typescript
 translatable: true
 ---
