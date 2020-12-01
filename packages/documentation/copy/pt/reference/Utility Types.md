@@ -6,54 +6,53 @@ oneline: Types which are globally included in TypeScript
 translatable: true
 ---
 
-TypeScript provides several utility types to facilitate common type transformations. These utilities are available globally.
+TypeScript provém vários tipos utilitários para facilitar transformações de tipo comum. Essas utilidades são avaliadas globalmente.
 
 ## `Partial<Type>`
 
-Constructs a type with all properties of `Type` set to optional. This utility will return a type that represents all subsets of a given type.
+Constroi um tipo com todas as propriedades de `Type` definidas para opcional. Essa utilidade irá retornar um tipo que representa todos os subsets de um determinado tipo.
 
-##### Example
+##### Exemplo
 
 ```ts twoslash
-interface Todo {
-  title: string;
-  description: string;
+interface AFazer {
+  titulo: string;
+  descricao: string;
 }
 
-function updateTodo(todo: Todo, fieldsToUpdate: Partial<Todo>) {
-  return { ...todo, ...fieldsToUpdate };
+function atualizaAFazer(afazer: AFazer, camposParaAtualizar: Parcial<AFazer>) {
+  return { ...afazer, ...camposParaAtualizar };
 }
 
-const todo1 = {
-  title: "organize desk",
-  description: "clear clutter",
+const aFazer1 = {
+  titulo: "organizar a mesa",
+  descricao: "limpar bagunça",
 };
 
-const todo2 = updateTodo(todo1, {
-  description: "throw out trash",
+const aFazer2 = atualizaAFazer(aFazer1, {
+  descricao: "tirar o lixo",
 });
 ```
 
 ## `Readonly<Type>`
 
-Constructs a type with all properties of `Type` set to `readonly`, meaning the properties of the constructed type cannot be reassigned.
+Constroi um tipo com todas as propriedades de `Type` definidas para `readonly`, significando que as propriedades do tipo construído não podem ser reatribuídas.
 
-##### Example
+##### Exemplo
 
 ```ts twoslash
 // @errors: 2540
-interface Todo {
-  title: string;
+interface AFazer {
+  titulo: string;
 }
 
-const todo: Readonly<Todo> = {
-  title: "Delete inactive users",
+const afazer: Readonly<Todo> = {
+  titulo: "Deleta usuários inativos",
 };
 
-todo.title = "Hello";
+afazer.titulo = "Olá";
 ```
-
-This utility is useful for representing assignment expressions that will fail at runtime (i.e. when attempting to reassign properties of a [frozen object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)).
+Esse utilitário é útil para representar expresões de atribuição que irão falhar em tempo de execução (Ex. Ao tentar reatribuir propriedades de um [frozen object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)).
 
 ##### `Object.freeze`
 
@@ -63,21 +62,21 @@ function freeze<Type>(obj: Type): Readonly<Type>;
 
 ## `Record<Keys,Type>`
 
-Constructs a type with a set of properties `Keys` of type `Type`. This utility can be used to map the properties of a type to another type.
+Constroi um tipo com um conjunto de propriedades `Keys` do tipo `Type`. Esse utilitário pode ser usado para mapear as propriedades de um tipo para outro tipo.
 
-##### Example
+##### Exemplo
 
 ```ts twoslash
-interface PageInfo {
-  title: string;
+interface InfoPagina {
+  titulo: string;
 }
 
-type Page = "home" | "about" | "contact";
+type Pagina = "inicio" | "sobre" | "contate-me";
 
 const nav: Record<Page, PageInfo> = {
-  about: { title: "about" },
-  contact: { title: "contact" },
-  home: { title: "home" },
+  sobre: { titulo: "sobre" },
+  contate: { titulo: "contate-me" },
+  home: { titulo: "inicio" },
 };
 
 nav.about;
@@ -86,15 +85,15 @@ nav.about;
 
 ## `Pick<Type, Keys>`
 
-Constructs a type by picking the set of properties `Keys` from `Type`.
+Controi um tipo pegando um conjunto de propriedades `Keys` de `Type`.
 
-##### Example
+##### Exemple
 
 ```ts twoslash
-interface Todo {
-  title: string;
-  description: string;
-  completed: boolean;
+interface AFazer {
+  titulo: string;
+  descricao: string;
+  completado: boolean;
 }
 
 type TodoPreview = Pick<Todo, "title" | "completed">;
@@ -110,15 +109,15 @@ todo;
 
 ## `Omit<Type, Keys>`
 
-Constructs a type by picking all properties from `Type` and then removing `Keys`.
+Controi um tipo pegando todas as propriedades de `Type` e então removendo `Keys`.
 
-##### Example
+##### Exemplo
 
 ```ts twoslash
-interface Todo {
-  title: string;
-  description: string;
-  completed: boolean;
+interface AFazer {
+  titulo: string;
+  descricao: string;
+  completado: boolean;
 }
 
 type TodoPreview = Omit<Todo, "description">;
@@ -134,9 +133,9 @@ todo;
 
 ## `Exclude<Type, ExcludedUnion>`
 
-Constructs a type by excluding from `Type` all union members that are assignable to `ExcludedUnion`.
+Constroi um tipo excluindo de `Type` todos membros unidos que são atribuíveis a `ExcludedUnion`.
 
-##### Example
+##### Exemplo
 
 ```ts twoslash
 type T0 = Exclude<"a" | "b" | "c", "a">;
@@ -149,9 +148,9 @@ type T2 = Exclude<string | number | (() => void), Function>;
 
 ## `Extract<Type, Union>`
 
-Constructs a type by extracting from `Type` all union members that are assignable to `Union`.
+Constroi um tipo excluindo de `Type` todos membros unidos que são atribuíveis a `Union`.
 
-##### Example
+##### Exemplo
 
 ```ts twoslash
 type T0 = Extract<"a" | "b" | "c", "a" | "f">;
@@ -162,7 +161,7 @@ type T1 = Extract<string | number | (() => void), Function>;
 
 ## `NonNullable<Type>`
 
-Constructs a type by excluding `null` and `undefined` from `Type`.
+Constroi um tipo por excluir `null` e `undefined` de `Type`.
 
 ##### Example
 
@@ -175,9 +174,9 @@ type T1 = NonNullable<string[] | null | undefined>;
 
 ## `Parameters<Type>`
 
-Constructs a tuple type from the types used in the parameters of a function type `Type`.
+Constroi uma tipo tupla a partir de tipos usados nos parâmetros de uma função tipo `Type`.
 
-##### Example
+##### Exemplo
 
 ```ts twoslash
 // @errors: 2344
@@ -203,9 +202,9 @@ type T7 = Parameters<Function>;
 
 ## `ConstructorParameters<Type>`
 
-Constructs a tuple or array type from the types of a constructor function type. It produces a tuple type with all the parameter types (or the type `never` if `Type` is not a function).
+Constroi um tipo tupla ou array a partir do tipo de uma função construtora. Isso gera um tipo tupla com todos os tipos parâmetros (ou o tipo `never` se `Typo ` não for uma função).
 
-##### Example
+##### Exemplo
 
 ```ts twoslash
 // @errors: 2344
@@ -225,9 +224,9 @@ type T4 = ConstructorParameters<Function>;
 
 ## `ReturnType<Type>`
 
-Constructs a type consisting of the return type of function `Type`.
+Constroi um tipo consistindo do tipo retorno da função `Type`.
 
-##### Example
+##### Exemplo
 
 ```ts twoslash
 // @errors: 2344 2344
@@ -255,9 +254,9 @@ type T8 = ReturnType<Function>;
 
 ## `InstanceType<Type>`
 
-Constructs a type consisting of the instance type of a constructor function in `Type`.
+Constroi um tipo consistindo do tipo instancia de uma função construtora em `Type`.
 
-##### Example
+##### Exemplo
 
 ```ts twoslash
 // @errors: 2344 2344
@@ -281,9 +280,9 @@ type T4 = InstanceType<Function>;
 
 ## `Required<Type>`
 
-Constructs a type consisting of all properties of `T` set to required. The opposite of [`Partial`](#partialtype).
+Constroi um tipo consistindo de todas propriedades de `T` definidas como obrigatórias. I oposto de [`Partial`](#partialtype).
 
-##### Example
+##### Exemplo
 
 ```ts twoslash
 // @errors: 2741
@@ -299,9 +298,9 @@ const obj2: Required<Props> = { a: 5 };
 
 ## `ThisParameterType<Type>`
 
-Extracts the type of the [this](/docs/handbook/functions.html#this-parameters) parameter for a function type, or [unknown](/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type) if the function type has no `this` parameter.
+Extrai o tipo do parâmetro [this](/docs/handbook/functions.html#this-parameters) para o tipo função, ou [unknown](/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type) se o tipo da função não tem o parâmetro `this`.
 
-##### Example
+##### Exemplo
 
 ```ts twoslash
 function toHex(this: Number) {
@@ -315,9 +314,9 @@ function numberToString(n: ThisParameterType<typeof toHex>) {
 
 ## `OmitThisParameter<Type>`
 
-Removes the [`this`](/docs/handbook/functions.html#this-parameters) parameter from `Type`. If `Type` has no explicitly declared `this` parameter, the result is simply `Type`. Otherwise, a new function type with no `this` parameter is created from `Type`. Generics are erased and only the last overload signature is propagated into the new function type.
+Remove o parâmetro [`this`](/docs/handbook/functions.html#this-parameters) de `Type`. Se `Type` não tem parâmetro `this` explicitamente declarado, o resultado é simplesmente `Type`. Caso contrário, um nova tipo função sem o parâmetro `this` é criado a partir de `Type`. Genérics são apagados e apenas a ultima assinatura sobrecarregada é propagada para o novo tipo função. 
 
-##### Example
+##### Exemplo
 
 ```ts twoslash
 function toHex(this: Number) {
