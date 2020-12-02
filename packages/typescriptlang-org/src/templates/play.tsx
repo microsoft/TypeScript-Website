@@ -115,6 +115,12 @@ const Play: React.FC<Props> = (props) => {
           "local": "http://localhost:5000"
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],
+        catchError: true,
+        onError: function (err) {
+          document.getElementById("loading-message")!.innerText = "Cannot load the Playground in this browser"
+          console.error("Error setting up monaco/sandbox/playground from the JS, this is likely that you're using a browser which monaco doesn't support.")
+          console.error(err)
+        }
       });
 
       re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("typescript-sandbox"), playground: typeof import("typescript-playground")) => {
