@@ -18,7 +18,7 @@ myString = {};
 // dentro do JavaScript, você tem algumas ferramentas para
 // corrigir esses erros.
 
-// Para alguns do erros, no qual você não sente que mudanças
+// Para alguns do erros, onde você não sente que mudanças
 // no código devem ocorrer, você pode usar as anotações JSDoc
 // para dizer ao TypeScript quais devem ser os tipos:
 
@@ -26,7 +26,7 @@ myString = {};
 let myStringOrObject = "123";
 myStringOrObject = {};
 
-// No qual você pode ler mais aqui: example:jsdoc-support
+// Você pode ler mais aqui: example:jsdoc-support
 
 // Você pode declarar a falha sem importância, dizendo
 // ao TypeScript para ignorar o próximo erro:
