@@ -1,58 +1,58 @@
 ---
 title: Utility Types
 layout: docs
-permalink: /docs/handbook/utility-types.html
+permalink: /pt/docs/handbook/utility-types.html
 oneline: Types which are globally included in TypeScript
 translatable: true
 ---
 
-TypeScript provém vários tipos utilitários para facilitar transformações de tipo comum. Essas utilidades são avaliadas globalmente.
+TypeScript provém vários tipos utilitários para facilitar transformações de tipo comum. Essas utilitários estão disponíveis globalmente.
 
 ## `Partial<Type>`
 
-Constroi um tipo com todas as propriedades de `Type` definidas para opcional. Essa utilidade irá retornar um tipo que representa todos os subsets de um determinado tipo.
+Constroi um tipo com todas as propriedades de `Type` definidas como opcional. Esse utilitário irá retornar um tipo que representa todos os subconjuntos de um determinado tipo.
 
 ##### Exemplo
 
 ```ts twoslash
-interface AFazer {
+interface Todo {
   titulo: string;
   descricao: string;
 }
 
-function atualizaAFazer(afazer: AFazer, camposParaAtualizar: Parcial<AFazer>) {
-  return { ...afazer, ...camposParaAtualizar };
+function atualizaTodo(todo: Todo, camposParaAtualizar: Parcial<Todo>) {
+  return { ...todo, ...camposParaAtualizar };
 }
 
-const aFazer1 = {
+const todo1 = {
   titulo: "organizar a mesa",
   descricao: "limpar bagunça",
 };
 
-const aFazer2 = atualizaAFazer(aFazer1, {
+const todo2 = atualizarTodo(todo1, {
   descricao: "tirar o lixo",
 });
 ```
 
 ## `Readonly<Type>`
 
-Constroi um tipo com todas as propriedades de `Type` definidas para `readonly`, significando que as propriedades do tipo construído não podem ser reatribuídas.
+Constroi um tipo com todas as propriedades de `Type` definidas como `readonly`, significando que as propriedades do tipo construído não podem ser reatribuídas.
 
 ##### Exemplo
 
 ```ts twoslash
 // @errors: 2540
-interface AFazer {
+interface Todo {
   titulo: string;
 }
 
-const afazer: Readonly<Todo> = {
+const todo: Readonly<Todo> = {
   titulo: "Deleta usuários inativos",
 };
 
-afazer.titulo = "Olá";
+todo.titulo = "Olá";
 ```
-Esse utilitário é útil para representar expresões de atribuição que irão falhar em tempo de execução (Ex. Ao tentar reatribuir propriedades de um [frozen object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)).
+Esse utilitário é útil para representar expressões de atribuição que irão falhar em tempo de execução (Ex. Ao tentar reatribuir propriedades de um [frozen object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)).
 
 ##### `Object.freeze`
 
@@ -71,11 +71,11 @@ interface InfoPagina {
   titulo: string;
 }
 
-type Pagina = "inicio" | "sobre" | "contate-me";
+type Pagina = "inicio" | "sobre" | "contato";
 
-const nav: Record<Page, PageInfo> = {
+const nav: Registro<Pagina, InfoPagina> = {
   sobre: { titulo: "sobre" },
-  contate: { titulo: "contate-me" },
+  contato: { titulo: "contato" },
   home: { titulo: "inicio" },
 };
 
@@ -90,17 +90,17 @@ Controi um tipo pegando um conjunto de propriedades `Keys` de `Type`.
 ##### Exemple
 
 ```ts twoslash
-interface AFazer {
+interface Todo {
   titulo: string;
   descricao: string;
   completado: boolean;
 }
 
-type TodoPreview = Pick<Todo, "title" | "completed">;
+type TodoPreVisualizacao = Pega<Todo, "titulo" | "completado">;
 
-const todo: TodoPreview = {
-  title: "Clean room",
-  completed: false,
+const todo: TodoPreVisualizacao = {
+  titulo: "Limpar quarto",
+  completado: false,
 };
 
 todo;
@@ -114,17 +114,17 @@ Controi um tipo pegando todas as propriedades de `Type` e então removendo `Keys
 ##### Exemplo
 
 ```ts twoslash
-interface AFazer {
+interface Todo {
   titulo: string;
   descricao: string;
   completado: boolean;
 }
 
-type TodoPreview = Omit<Todo, "description">;
+type TodoPreVisualizacao = Omitir<Todo, "descricao">;
 
-const todo: TodoPreview = {
-  title: "Clean room",
-  completed: false,
+const todo: TodoPreVisualizacao = {
+  titulo: "Limpar quarto",
+  completado: false,
 };
 
 todo;
@@ -133,7 +133,7 @@ todo;
 
 ## `Exclude<Type, ExcludedUnion>`
 
-Constroi um tipo excluindo de `Type` todos membros unidos que são atribuíveis a `ExcludedUnion`.
+Constroi um tipo excluindo de `Type` todos membros de união que são atribuíveis a `ExcludedUnion`.
 
 ##### Exemplo
 
@@ -148,7 +148,7 @@ type T2 = Exclude<string | number | (() => void), Function>;
 
 ## `Extract<Type, Union>`
 
-Constroi um tipo excluindo de `Type` todos membros unidos que são atribuíveis a `Union`.
+Constroi um tipo extraindo de `Type` todos membros de união que são atribuíveis a `Union`.
 
 ##### Exemplo
 
@@ -202,7 +202,7 @@ type T7 = Parameters<Function>;
 
 ## `ConstructorParameters<Type>`
 
-Constroi um tipo tupla ou array a partir do tipo de uma função construtora. Isso gera um tipo tupla com todos os tipos parâmetros (ou o tipo `never` se `Typo ` não for uma função).
+Constroi um tipo tupla ou array a partir dos tipos de um tipo função construtora. Isso gera um tipo tupla com todos os tipos parâmetros (ou o tipo `never` se `Type` não for uma função).
 
 ##### Exemplo
 
@@ -280,7 +280,7 @@ type T4 = InstanceType<Function>;
 
 ## `Required<Type>`
 
-Constroi um tipo consistindo de todas propriedades de `T` definidas como obrigatórias. I oposto de [`Partial`](#partialtype).
+Constroi um tipo consistindo de todas propriedades de `T` definidas como obrigatórias. O oposto de [`Partial`](#partialtype).
 
 ##### Exemplo
 
@@ -298,70 +298,70 @@ const obj2: Required<Props> = { a: 5 };
 
 ## `ThisParameterType<Type>`
 
-Extrai o tipo do parâmetro [this](/docs/handbook/functions.html#this-parameters) para o tipo função, ou [unknown](/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type) se o tipo da função não tem o parâmetro `this`.
+Extrai o tipo do parâmetro [this](/docs/handbook/functions.html#this-parameters) para um tipo função, ou [unknown](/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type) se o tipo da função não tem o parâmetro `this`.
 
 ##### Exemplo
 
 ```ts twoslash
-function toHex(this: Number) {
-  return this.toString(16);
+function paraHex(this: Number) {
+  return this.paraString(16);
 }
 
-function numberToString(n: ThisParameterType<typeof toHex>) {
-  return toHex.apply(n);
+function numeroToString(n: ThisParameterType<typeof paraHex>) {
+  return paraHex.apply(n);
 }
 ```
 
 ## `OmitThisParameter<Type>`
 
-Remove o parâmetro [`this`](/docs/handbook/functions.html#this-parameters) de `Type`. Se `Type` não tem parâmetro `this` explicitamente declarado, o resultado é simplesmente `Type`. Caso contrário, um nova tipo função sem o parâmetro `this` é criado a partir de `Type`. Genérics são apagados e apenas a ultima assinatura sobrecarregada é propagada para o novo tipo função. 
+Remove o parâmetro [`this`](/docs/handbook/functions.html#this-parameters) de `Type`. Se `Type` não tem parâmetro `this` explicitamente declarado, o resultado é simplesmente `Type`. Caso contrário, um novo tipo função sem o parâmetro `this` é criado a partir de `Type`. Genérics são apagados e apenas a ultima assinatura sobrecarregada é propagada para o novo tipo função. 
 
 ##### Exemplo
 
 ```ts twoslash
-function toHex(this: Number) {
-  return this.toString(16);
+function paraHex(this: Number) {
+  return this.paraString(16);
 }
 
-const fiveToHex: OmitThisParameter<typeof toHex> = toHex.bind(5);
+const cincoParaHex: OmiteEsseParametro<typeof paraHex> = paraHex.bind(5);
 
-console.log(fiveToHex());
+console.log(cincoParaHex());
 ```
 
 ## `ThisType<Type>`
 
-This utility does not return a transformed type. Instead, it serves as a marker for a contextual [`this`](/docs/handbook/functions.html#this) type. Note that the `--noImplicitThis` flag must be enabled to use this utility.
+Esse utilitário não retorna um tipo transformado. Ao invés, serve como um marcador para um tipo contextual [`this`](/docs/handbook/functions.html#this). Note que a flag `--noImplicitThis` precisa ser ativada para usar esse utilitário. 
 
-##### Example
+##### Exemplo
 
 ```ts twoslash
 // @noImplicitThis: false
-type ObjectDescriptor<D, M> = {
-  data?: D;
-  methods?: M & ThisType<D & M>; // Type of 'this' in methods is D & M
+type DescritorDeObjeto<D, M> = {
+  dado?: D;
+  metodos?: M & EsseTipo<D & M>; // Tipo de this em metodos é D & M
 };
 
-function makeObject<D, M>(desc: ObjectDescriptor<D, M>): D & M {
-  let data: object = desc.data || {};
-  let methods: object = desc.methods || {};
-  return { ...data, ...methods } as D & M;
+function fazObjeto<D, M>(desc: DescritorDeObjeto<D, M>): D & M {
+  let dado: object = desc.dado || {};
+  let metodos: object = desc.metodos || {};
+  return { ...dado, ...metodos } as D & M;
 }
 
-let obj = makeObject({
-  data: { x: 0, y: 0 },
-  methods: {
-    moveBy(dx: number, dy: number) {
-      this.x += dx; // Strongly typed this
-      this.y += dy; // Strongly typed this
+let obj = fazObjeto({
+  dado: { x: 0, y: 0 },
+  metodos: {
+    movePor(dx: number, dy: number) {
+      this.x += dx; // this fortemente tipado
+      this.y += dy; // this fortemente tipado
     },
   },
 });
 
 obj.x = 10;
 obj.y = 20;
-obj.moveBy(5, 5);
+obj.movePor(5, 5);
 ```
 
-In the example above, the `methods` object in the argument to `makeObject` has a contextual type that includes `ThisType<D & M>` and therefore the type of [this](/docs/handbook/functions.html#this) in methods within the `methods` object is `{ x: number, y: number } & { moveBy(dx: number, dy: number): number }`. Notice how the type of the `methods` property simultaneously is an inference target and a source for the `this` type in methods.
+No exemplo acima, o objeto `metodos` no argumento para `fazObjeto` tem um tipo contextual que inclui `EsseTipo<D & M>` portanto o tipo de [this](/docs/handbook/functions.html#this) em metodos dentro do objeto `metodos` é `{ x: number, y: number } & { movePor(dx: number, dy: number): number }`. Perceba como o tipo da propriedade `metodos` é simultaneamente uma interface alvo e a fonte para o tipo `this` nos metodos.
 
-The `ThisType<T>` marker interface is simply an empty interface declared in `lib.d.ts`. Beyond being recognized in the contextual type of an object literal, the interface acts like any empty interface.
+O marcador interface `EsseTipo<T>` é simplesmente uma interface vazia declarada em `lib.d.ts`. Além de ser reconhecida no tipo contextual de um objeto literal, a interface age como qualquer interface vazia.
