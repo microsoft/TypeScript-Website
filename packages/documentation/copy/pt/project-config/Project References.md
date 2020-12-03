@@ -170,7 +170,7 @@ Normalmente `tsc` produzirá saídas (`.js` e `.d.ts`) na presença de erros de 
 Fazer isso em um sistema de compilação incremental seria bem ruim - se um dos seus projetos desatualizados tivesse um novo erro, você só veria ele _uma vez_ pois em uma compilação subsequente, a compilação deste projeto seria pulada, pois o projeto agora está atualizado.
 Por essa razão, `tsc -b` age efetivamente como se `noEmitOnError` estivesse habilitada para todos os projetos.
 
-If you check in any build outputs (`.js`, `.d.ts`, `.d.ts.map`, etc.), you may need to run a `--force` build after certain source control operations depending on whether your source control tool preserves timestamps between the local copy and the remote copy.
+Se você checar qualquer saida de compilação (`.js`, `.d.ts`, `.d.ts.map`, etc.), talvez você precise executar uma compilação com a opção `--force` antes de operaçoes de controle de código dependendo se sua ferramenta de controle de código preserva o timestamp entre a cópia local e a cópia remota.
 
 ## MSBuild
 
