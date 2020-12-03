@@ -8,7 +8,7 @@ translatable: true
 
 Referências de projeto são uma nova funcionalidade no Typescript 3.0 que permitem que você estruture seus programas Typescript em peças menores.
 
-Fazendo isso, você pode melhorar muito tempos de compilação, garantir serparação lógica entre componentes e organizar seu código de melhores maneiras.
+Fazendo isso, você pode melhorar muito tempos de compilação, garantir separação lógica entre componentes e organizar seu código de melhores maneiras.
 
 Nós também estamos introduzindo um novo modo para o `tsc`, o sinalizador `--buld`, que funciona juntamente com as referências de projeto para habilitar compilações Typescript mais rápidas.
 
@@ -44,8 +44,7 @@ Previamente, essa estrutura era um pouco estranha de se trabalhar se você usass
 Você poderia usar múltiplos arquivos tsconfig para resolver _alguns_ desses problemas, mas novos apareceriam:
 
 - Não há checagem atualizada embutida, então você acaba sempre rodando `tsc` duas vezes
-- Invoking `tsc` twice incurs more startup time overhead
-- Invocar `tsc` duas vezes implicaria em mais sobrecarga de tempo de início
+- Invocar `tsc` duas vezes implicaria em mais sobrecarga no tempo de inicialização
 - `tsc -w` não pode ser executado em múltiplos arquivos de configuração de uma vez
 
 Referências de projeto podem resolver todos esses problemas e mais.
@@ -79,21 +78,20 @@ Por meio da separação em múltiplos projetos, você pode melhorar muito a velo
 
 Projetos referenciados devem ter a nova configuração `composite` habilitada.
 Essa configuração é necessária para garantir que o Typescript possa rapidamente determinar onde encontrar as saídas do projeto referenciado.
-Enabling the `composite` flag changes a few things:
 Habilitar a configuração `composite` muda algumas coisas:
 
 - A configuração `rootDir`, se não explicitamente declarada, tem como padrão o diretório onde o arquivo `tsconfig` está
 - Todos os arquivos de implementação tem que ser cobridos por um padrão `include` ou listados no vetor `files`. Se essa restrição for violada, o `tsc` vai te informar de quais arquivos não foram especificados.
 - `declaration` tem que estar habilitada
 
-## `declarationMap`s
+## `declarationMap`
 
 Nós também adicionamos suporte para [mapas de declaração de fontes](https://github.com/Microsoft/TypeScript/issues/14479).
-Se você habilitar `--declarationMap`, você será capaz de usar funcionalidades de editores tais como "Ir para definição" e Renomear para transparentemente navegar e editar código entre limites de projeto em editores que são suportados.
+Se você habilitar `--declarationMap`, você será capaz de usar funcionalidades de editores tais como "Ir para definição" e Renomear para transparentemente navegar e editar código entre projetos em editores que são suportados.
 
 ## `prepend` com `outFile`
 
-Você também pode habilitar a pre-adição de saídas de uma dependência usando a opção `prepend` em uma referência:
+Você também pode habilitar a prefixação de saídas de uma dependência usando a opção `prepend` em uma referência:
 
 ```js
    "references": [
@@ -101,7 +99,7 @@ Você também pode habilitar a pre-adição de saídas de uma dependência usand
    ]
 ```
 
-Pré-adicionar um projeto vai incluir a saída dele acima da saída do projeto atual.
+Prefixar um projeto vai incluir a saída dele acima da saída do projeto atual.
 A opção funciona tanto para arquivos `.js` como para arquivos `.d.ts`, e arquivos de mapa de fontes também serão emitidos corretamente.
 
 `tsc` vai usar apenas arquivos existentes no disco para realizar esse processo, então é possível criar um projeto onde o arquivo de saída correto não pode ser gerado porque a saída de outro projeto estaria presente mais que uma vez no arquivo resultante.
@@ -117,7 +115,7 @@ B     C
    D
 ```
 
-É importante nessa situação que não seja realizada a pré-adição em cada referência, porque você vai acabar tendo duas cópias de `A` na saída de `D` - isso pode levar a resultados inesperados.
+É importante nessa situação que não seja realizada a prefixação em cada referência, porque você vai acabar tendo duas cópias de `A` na saída de `D` - isso pode levar a resultados inesperados.
 
 ## Ressalvas para Referências de Projetos
 
@@ -180,7 +178,7 @@ Se você tem um projeto msbuild, você pode habilitar o modo de compilação adi
     <TypeScriptBuildMode>true</TypeScriptBuildMode>
 ```
 
-ao seu arquivo proj. Isso vai habilitar compilação incremental e limpeza automáticas.
+Ao seu arquivo proj. Isso vai habilitar compilação incremental e limpeza automáticas.
 
 Note que como com `tsconfig.json`/`-p`, propriedades de projetos Typescript existentes não serão respeitados - todas as configurações devem ser gerenciadas usando seu arquivo tsconfig.
 

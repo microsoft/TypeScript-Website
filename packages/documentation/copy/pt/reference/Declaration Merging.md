@@ -8,8 +8,8 @@ translatable: true
 
 ## Introdução
 
-Alguns dos conceitos únicos em Typescript descreve a forma de um objeto Javascript ao nível de tipo.
-Um exemplo que é especialmente único do Typescript é o coneito de 'fusão de declarações'.
+Alguns dos conceitos únicos em Typescript descrevem a forma de um objeto Javascript ao nível de tipo.
+Um exemplo que é especialmente único do Typescript é o conceito de 'fusão de declarações'.
 Entender este conceito vai lhe dar uma vantagem quando trabalhando com Javascript existente.
 Ele também abre portas para mais coneceitos de abstração avançados.
 
@@ -124,7 +124,7 @@ interface Document {
 
 ## Fundindo Namespaces
 
-Similar às interfaces, namespaces de mesmo nome serão também fundir seus membros.
+Similar às interfaces, namespaces de mesmo nome terão seus membros fundidos.
 Já que namespaces criam ambos um namespace e um valor, precisamos entender como os dois se fundem.
 
 Para fundir namespaces, definições de tipo de interfaces exportadas declaradas em cada namespace são elas mesmas fundidas, formando um único namespace com declarações de interface fundidas dentro dele.
@@ -175,7 +175,7 @@ namespace Animal {
 
 namespace Animal {
   export function doAnimalsHaveMuscles() {
-    return haveMuscles; // Error, because haveMuscles is not accessible here
+    return haveMuscles; // Erro, porque haveMuscles não é acessível aqui
   }
 }
 ```
@@ -183,7 +183,6 @@ namespace Animal {
 Por `haveMuscles` não ser exportado, apenas a função `animalsHaveMuscles` que compartilha o mesmo namespace não fundido pode ver o símbolo.
 A função `doAnimalsHaveMuscles`, mesmo que seja parte do namespace fundido `Animal` não pode ver este membro não exportado.
 
-## Merging Namespaces with Classes, Functions, and Enums
 
 ## Fundindo Namespaces com Classes, Funções, e Enums
 
@@ -257,7 +256,7 @@ Para mais informações em simular a fusão de classes, veja a seção de [Mixin
 ## Aumento de Módulos
 
 Ainda que módulos JavaScript não suportem fusões, você pode alterar objetos existentes por meio da importação e atualização deles.
-Olhemos para um exemplo de brinquedo de Observable:
+Olhemos para um exemplo de Observable:
 
 ```ts
 // observable.ts
