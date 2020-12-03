@@ -40,7 +40,7 @@ A implementação `--watch` do compilador se apoia em usar `fs.watch` e `fs.watc
 }
 ```
 
-Você pode ler mais sobre isso nas [notas de lançamento](/docs/handbook/release-notes/typescript-3-8.html#better-directory-watching-on-linux-and-watchoptions).
+Você pode ler mais sobre isso nas [notas de atualização](/docs/handbook/release-notes/typescript-3-8.html#better-directory-watching-on-linux-and-watchoptions).
 
 ## Configurando observação de arquivos usando variáveis de ambiente `TSC_WATCHFILE`
 
@@ -49,14 +49,14 @@ Opção                                          | Descrição
 -----------------------------------------------|----------------------------------------------------------------------
 `PriorityPollingInterval`                      | Usa `fs.watchFile` mas usa diferentes intervalos de checagem para arquivos fonte, arquivos de configuração e arquivos em falta
 `DynamicPriorityPolling`                       | Usa uma fila dinâmica onde os arquivos modificados mais frequentemente serão checados em menor intervalo e os que se mantem inalterados serão checados em um intervalo maior
-`UseFsEvents`                                  | Usa o `fs.watch` que por sua vez usa os eventos de file system (mas pode não ser exato em diferentes SO) para conseguir as notificações de mudança/criação/deleção de arquivos. Note que alguns SO eg. linux tem um limite no número de observadores e a falha de criação de um observador com `fs.watch` resultará na criação de outro observador usando `fs.watchFile`
+`UseFsEvents`                                  | Usa o `fs.watch` que por sua vez usa os eventos de file system (mas pode não ser exato em diferentes SOs) para conseguir as notificações de mudança/criação/remoção de arquivos. Note que alguns SOs eg. linux tem um limite no número de observadores e a falha de criação de um observador com `fs.watch` resultará na criação de outro observador usando `fs.watchFile`
 `UseFsEventsWithFallbackDynamicPolling`        | Essa opção é similar a `UseFsEvents` exceto na falha de criação de um observador usando `fs.watch`, a contingência de observação acontece por filas de checagem dinâmicas (como explicado em `DynamicPriorityPolling`)
 `UseFsEventsOnParentDirectory`                 | Essa opção observa o diretório pai do arquivo com `fs.watch` (usando eventos do file system) causando com que o uso de CPU seja baixo
 default (nenhum valor especificado)            | Se a variável de ambiente `TSC_NONPOLLING_WATCHER` tem valor true, observa os diretórios pai dos arquivos (assim como `UseFsEventsOnParentDirectory`). De outra forma observa os arquivos usando `fs.watchFile` com `250ms` como tempo limite para qualquer arquivo.
 
 ## Configurando observação de diretório usando a variável de ambiente `TSC_WATCHDIRECTORY`
 
-A observação de diretório em plataformas que não suportam observação recursiva de diretório nativamente em node, é suportada por meio da criação recursiva de observadores de diretório para os diretórios filhos usando diferentes opções selecionadas pela variável ambiente `TSC_WATCHDIRECTORY`. Note que em plataformas que suportam observação de diretórios recursivamente (e.g. windows) o valor dessa variável é ignorado.
+A observação de diretório em plataformas que não suportam observação recursiva de diretório nativamente em node é suportada por meio da criação recursiva de observadores de diretório para os diretórios filhos usando diferentes opções selecionadas pela variável ambiente `TSC_WATCHDIRECTORY`. Note que, em plataformas que suportam observação de diretórios recursivamente (e.g. windows), o valor dessa variável é ignorado.
 
 <!-- prettier-ignore -->
 Opção                                          | Descrição
