@@ -2,7 +2,7 @@
 title: Narrowing
 layout: docs
 permalink: /docs/handbook/2/narrowing.html
-oneline: "Step one in learning TypeScript: The basics types."
+oneline: "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects."
 beta: true
 ---
 
