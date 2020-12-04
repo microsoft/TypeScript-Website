@@ -29,7 +29,7 @@ const todo1 = {
   descricao: "limpar bagunça",
 };
 
-const todo2 = atualizarTodo(todo1, {
+const todo2 = atualizaTodo(todo1, {
   descricao: "tirar o lixo",
 });
 ```
