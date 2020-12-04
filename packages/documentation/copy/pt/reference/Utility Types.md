@@ -73,7 +73,7 @@ interface InfoPagina {
 
 type Pagina = "inicio" | "sobre" | "contato";
 
-const nav: Registro<Pagina, InfoPagina> = {
+const nav: Record<Pagina, InfoPagina> = {
   sobre: { titulo: "sobre" },
   contato: { titulo: "contato" },
   home: { titulo: "inicio" },
@@ -96,7 +96,7 @@ interface Todo {
   completado: boolean;
 }
 
-type TodoPreVisualizacao = Pega<Todo, "titulo" | "completado">;
+type TodoPreVisualizacao = Pick<Todo, "titulo" | "completado">;
 
 const todo: TodoPreVisualizacao = {
   titulo: "Limpar quarto",
@@ -120,7 +120,7 @@ interface Todo {
   completado: boolean;
 }
 
-type TodoPreVisualizacao = Omitir<Todo, "descricao">;
+type TodoPreVisualizacao = Omit<Todo, "descricao">;
 
 const todo: TodoPreVisualizacao = {
   titulo: "Limpar quarto",
