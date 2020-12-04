@@ -1,15 +1,15 @@
 ---
-title: Variable Declaration
+title: Declarações de variáveis
 layout: docs
 permalink: /pt/docs/handbook/variable-declarations.html
-oneline: How TypeScript handles variable declaration
+oneline: Como TypeScript lida com declarações de variáveis
 translatable: true
 ---
 
 `let` e `const`são dois conceitos relativamente novos para declarações de variáveis em JavaScript.
 [Como mencionamos anteriormente](/docs/handbook/basic-types.html#a-note-about-let), `let` é similar a `var` em alguns aspectos, mas evita que alguns usuários caiam em momentos "te peguei" em JavaScript. 
 
-`const` é uma ampliação de `let` no qual previne re atribuições a uma variável.
+`const` é uma ampliação de `let` no qual previne reatribuições a uma variável.
 
 Com TypeScript sendo uma extensão de JavaScript, a linguagem naturalmente suporta `let` e `const`.
 Aqui iremos nos aprofundar nessas novas declarações e porque elas tem melhor preferência do que `var`.
@@ -95,11 +95,11 @@ f(false); // retorna 'undefined'
 Talvez alguns leitores precisem dar uma segunda olhada nesse exemplo.
 A variável `x` foi declarada _dentro do bloco `if`_, e mesmo assim fomos capazes de acessa-la de fora daquele bloco.
 Isso porque declarações `var` são acessíveis em qualquer lugar dentro da função, modulo, namespace ou escopo global em que estão contidas - o que iremos ver tudo sobre à frente - independente do bloco contido.
-Algumas pessoas chamam isso _`var`-scoping_ ou _function-scoping_.
+Algumas pessoas chamam isso _escopo-`var`_ ou _funcao-escopo_.
 Parâmetros também tem escopo de função.
 
 Essas regras de escopo podem causar muitos tipos de erros.
-Um problema que ele deixa exacerbado é o fato de que não é um erro declarar a mesma variável várias vezes:
+Um problema que elas deixam exacerbado é o fato de que não é um erro declarar a mesma variável várias vezes:
 
 ```ts
 function sumaMatriz(matriz: number[][]) {
@@ -171,7 +171,7 @@ Vamos parar um pouco para entender o que isso significa.
 Quando o loop `for` parar sua execução, o valor de `i` é `10`.
 Então cada vez que a função for chamada irá imprimir `10`!
 
-Uma forma comum de contornar o caso é usar um IIFE - uma Immediately Invoked Function Expression (Função Expressão de Invocação imediata) - para capturar `i` a cada iteração:
+Uma forma comum de contornar o caso é usar um IIFE - uma Immediately Invoked Function Expression (Função Expressão de Invocação Imediata) - para capturar `i` a cada iteração:
 
 ```ts
 for (var i = 0; i < 10; i++) {
@@ -197,13 +197,12 @@ Independentemente da palavra chave usada, afirmações `let` são escritas da me
 let ola = "Olá!";
 ```
 
-Aa principal diferença não está na sintaxe, mas na semântica, na qual iremos nos aprofundar agora. 
+A principal diferença não está na sintaxe, mas na semântica, na qual iremos nos aprofundar agora. 
 
 ## Escopo de bloco
 
-Quando uma variável é declarada usando `let`, usa o que alguns chama de _escopo-lexical_ ou _escopo-de-bloco_.
-Diferente de variáveis declaradas com `var` no qual o escopo permeia suas funções, variáveis com escopo de bloco não são visíveis de fora de seus 
-blocos mais próximos ou loop-`for`.
+Quando uma variável é declarada usando `let`, usa-se o que alguns chamam de _escopo-lexical_ ou _escopo-de-bloco_.
+Diferente de variáveis declaradas com `var` no qual o escopo permeia suas funções, variáveis com escopo de bloco não são visíveis de fora de seus blocos mais próximos ou loop-`for`.
 
 ```ts
 function f(input: boolean) {
@@ -223,7 +222,7 @@ function f(input: boolean) {
 Aqui, temos duas variáveis locais `a` e `b`.
 O escopo de `a` é limitado ao corpo de `f` em quanto o escopo de `b` é limitado ao bloco `if` na qual está contida.
 
-Variáveis declaradas em uma cláusula `cathc` também possuem regras similares de escopo.
+Variáveis declaradas em uma cláusula `catch` também possuem regras similares de escopo.
 
 ```ts
 try {
@@ -238,7 +237,7 @@ console.log(e);
 
 Outra propriedade de variáveis com escopo de bloco é que elas não podem ser lidas ou escritas antes de serem declaradas.
 Enquanto essas variáveis estão "presentes" através de seu escopo, todas apontam para cima até que sua declaração seja parte de sua _zona morta temporal_.
-Isso é apenas uma forma sofisticada de dizer que você não pode acessa-las antes da afirmação `let`, por sorte o TypeScript fará com que você saiba disso.
+Isso é apenas uma forma sofisticada de dizer que você não pode acessa-las antes da afirmação `let` e por sorte o TypeScript fará com que você saiba disso.
 
 ```ts
 a++; // ilegal usar `a` antes de ser declarada;
@@ -334,39 +333,39 @@ function somaMatriz(matriz: number[][]) {
 ```
 
 Essa versão do loop irá na verdade fazer a soma corretamente porque o `i` do loop interior espelha `i` do loop exterior.
-Espelhamento deveria _usualmente_ ser evitado com o intúito de escrever código mas claro.
-While there are some scenarios where it may be fitting to take advantage of it, you should use your best judgement.
+Swadowing deveria _usualmente_ ser evitado com o intúito de escrever código mas claro.
+Embora existam alguns cenários onde ele pode se encaixar de forma vantajosa, você deve julgar a melhor forma de usa-lo.
 
-## Block-scoped variable capturing
+## Captura de variáveis de escopo de bloco
 
-When we first touched on the idea of variable capturing with `var` declaration, we briefly went into how variables act once captured.
-To give a better intuition of this, each time a scope is run, it creates an "environment" of variables.
-That environment and its captured variables can exist even after everything within its scope has finished executing.
+Quando abordamos pela primeira vez a idéia de captura de variáveis com declarações `var`, abordamos de forma breve como variáveis agem quando capturadas.
+Para dar uma melhor visão sobre isso, cada vez que um escopo é rodado, ele cria um "ambiente" de variáveis.
+Esse ambiente e suas variáveis capturadas podem existir mesmo após tudo em seu escopo tiver terminado de ser executado.
 
 ```ts
-function theCityThatAlwaysSleeps() {
-  let getCity;
+function aCidadeQueSempreDorme() {
+  let getCidade;
 
   if (true) {
-    let city = "Seattle";
-    getCity = function () {
-      return city;
+    let cidade = "Seattle";
+    getCidade = function () {
+      return cidade;
     };
   }
 
-  return getCity();
+  return getCidade();
 }
 ```
 
-Because we've captured `city` from within its environment, we're still able to access it despite the fact that the `if` block finished executing.
+Porque nós capturamos `cidade` de dentro de seu ambiente, ainda somos capazes de acessa-la a pesar do fato de que o bloco `if` terminou sua execução.
 
-Recall that with our earlier `setTimeout` example, we ended up needing to use an IIFE to capture the state of a variable for every iteration of the `for` loop.
-In effect, what we were doing was creating a new variable environment for our captured variables.
-That was a bit of a pain, but luckily, you'll never have to do that again in TypeScript.
+Lembre que com nosso exemplo anterior `setTimeout`, adicionamos a necessidade de usar um IIFE para capturar o estado de uma variável para cada iteração do loop `for`.
+Na prática, o que estávamos fazendo era criar uma nova variável de ambiente para nossas variáveis capturadas. 
+Isso foi um pouco doloroso, mas felizmente, você nunca terá de fazer isso em TypeScript de novo.
 
-`let` declarations have drastically different behavior when declared as part of a loop.
-Rather than just introducing a new environment to the loop itself, these declarations sort of create a new scope _per iteration_.
-Since this is what we were doing anyway with our IIFE, we can change our old `setTimeout` example to just use a `let` declaration.
+Declarações `let` tem um comportamento drasticamente diferentes quando declaradas como parte de um loop.
+Além de apenas introduzir um novo ambiente ao próprio loop, essas declarações meio que criam um novo escopo _por iteração_.
+Como isso é o que estamos fazendo de qualquer forma com nosso IIFE, nós podemos mudar nosso exemplo antigo `setTimeout` para usar apenas uma declaração `let`.
 
 ```ts
 for (let i = 0; i < 10; i++) {
@@ -376,7 +375,7 @@ for (let i = 0; i < 10; i++) {
 }
 ```
 
-and as expected, this will print out
+como esperado, isso irá imprimir
 
 ```
 0
@@ -391,154 +390,155 @@ and as expected, this will print out
 9
 ```
 
-## `const` declarations
+## Declarações `const`
 
-`const` declarations are another way of declaring variables.
+Declarações `const` são outra forma de declarar variáveis.
 
 ```ts
-const numLivesForCat = 9;
+const numVidasParaPorGato = 9;
 ```
 
-They are like `let` declarations but, as their name implies, their value cannot be changed once they are bound.
-In other words, they have the same scoping rules as `let`, but you can't re-assign to them.
+Elas são como declarações `let` mas, como seu nome indica, seu valor não pode ser alterado uma vez que o mesmo é delimitado.
+Em outras palavras, elas tem a mesma regra de escopo de `let`, mas você não pode reatribui-las.
 
-This should not be confused with the idea that the values they refer to are _immutable_.
+Isso não deveria ser confundido com a idéia de que os valores nos quais elas fazem referência são _imutáveis_.
 
 ```ts
-const numLivesForCat = 9;
-const kitty = {
-  name: "Aurora",
-  numLives: numLivesForCat,
+const numVidasParaPorGato = 9;
+const gatinho = {
+  nome: "Aurora",
+  numVidas: numVidasParaPorGato,
 };
 
-// Error
-kitty = {
+// Erro
+gatinho = {
   name: "Danielle",
-  numLives: numLivesForCat,
+  numVidas: numVidasParaPorGato,
 };
 
-// all "okay"
-kitty.name = "Rory";
-kitty.name = "Kitty";
-kitty.name = "Cat";
-kitty.numLives--;
+// tudo "okay"
+gatinho.nome = "Rory";
+gatinho.nome = "Kitty";
+gatinho.nome = "Cat";
+gatinho.numVidas--;
 ```
 
-Unless you take specific measures to avoid it, the internal state of a `const` variable is still modifiable.
-Fortunately, TypeScript allows you to specify that members of an object are `readonly`.
-The [chapter on Interfaces](/docs/handbook/interfaces.html) has the details.
+A não ser que você tome medidas específicas para evitar, o estado interior de uma variável `const` ainda é modificável.
+Felizmente, TypeScript te permite especificar que membros de um objeto são `readonly`.
+O [capítulo sobre Interfaces](/docs/handbook/interfaces.html) tem mais detalhes.
 
 ## `let` vs. `const`
 
-Given that we have two types of declarations with similar scoping semantics, it's natural to find ourselves asking which one to use.
-Like most broad questions, the answer is: it depends.
+Dado que temos dois tipos de declarações com semântica de escopo similares, é natural nos perguntarmos qual usar. 
+Como a maioria das perguntas amplas, a resposta é: depende.
 
-Applying the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege), all declarations other than those you plan to modify should use `const`.
-The rationale is that if a variable didn't need to get written to, others working on the same codebase shouldn't automatically be able to write to the object, and will need to consider whether they really need to reassign to the variable.
-Using `const` also makes code more predictable when reasoning about flow of data.
+Aplicando o [princípio do menos privilegiado](https://wikipedia.org/wiki/Principle_of_least_privilege), todas declarações além daquelas que você planeja modificar deveriam usar `const`.
 
-Use your best judgement, and if applicable, consult the matter with the rest of your team.
+A justificativa é que se uma variável não precisa ser escrita , outros trabalhando na mesma base de dados não deveriam ser possibilitados de escrever automaticamente no objeto, e precisarão considerar quando eles realmente precisam reatribuir para a variável.
+Usando `const` também faz o código mais previsível quando se está raciocinando sobre o fluxo de dados.
 
-The majority of this handbook uses `let` declarations.
+Use seu melhor julgamento, e se aplicável, consulte o assunto com o resto de seu time.
 
-## Destructuring
+A maioria desse manual usa declarações `let`.
 
-Another ECMAScript 2015 feature that TypeScript has is destructuring.
-For a complete reference, see [the article on the Mozilla Developer Network](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment).
-In this section, we'll give a short overview.
+## Desestruturação
 
-## Array destructuring
+Outra funcionalidade do ECMAScript 2015 que o TypeScript tem é desestruturação.
 
-The simplest form of destructuring is array destructuring assignment:
+Para uma referência completa, veja [o artigo na Mozilla Developer Network](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment).
+Nessa sessão, daremos uma visão geral breve.
+
+## Desestruturação de Array
+
+A forma mais simples de desestruturação são atribuições de desestruturação de arrays:
 
 ```ts
-let input = [1, 2];
-let [first, second] = input;
-console.log(first); // outputs 1
-console.log(second); // outputs 2
+let entrada = [1, 2];
+let [primeiro, segundo] = entrada;
+console.log(primeiro); // retorna saída 1
+console.log(segundo); // retorna saída 2
 ```
 
-This creates two new variables named `first` and `second`.
-This is equivalent to using indexing, but is much more convenient:
+Isso cria duas novas variáveis chamadas `primeiro` e `segundo`.
+Isso é equivalente a usar indexação, mas é muito mais conveniente:
 
 ```ts
-first = input[0];
-second = input[1];
+primeiro = entrada[0];
+segundo = entrada[1];
 ```
 
-Destructuring works with already-declared variables as well:
+Desestruturação também funciona com variáveis ja declaradas: 
 
 ```ts
-// swap variables
-[first, second] = [second, first];
+// variáveis de troca
+[primeiro, segundo] = [segundo, primeiro];
 ```
 
-And with parameters to a function:
+E com parâmetros para uma função:
 
 ```ts
-function f([first, second]: [number, number]) {
-  console.log(first);
-  console.log(second);
+function f([primeiro, segundo]: [number, number]) {
+  console.log(primeiro);
+  console.log(segundo);
 }
 f([1, 2]);
 ```
-
-You can create a variable for the remaining items in a list using the syntax `...`:
-
-```ts
-let [first, ...rest] = [1, 2, 3, 4];
-console.log(first); // outputs 1
-console.log(rest); // outputs [ 2, 3, 4 ]
-```
-
-Of course, since this is JavaScript, you can just ignore trailing elements you don't care about:
+Você pode criar uma variável para os itens restantes da lista usando a sintaxe `...`:
 
 ```ts
-let [first] = [1, 2, 3, 4];
-console.log(first); // outputs 1
+let [primeiro, ...restante] = [1, 2, 3, 4];
+console.log(primeiro); // retorna saída 1
+console.log(restante); // retorna saída [ 2, 3, 4 ]
 ```
 
-Or other elements:
+Claro, como isso é JavaScript, você pode apenas ignorar elementos finais que não se importa:
 
 ```ts
-let [, second, , fourth] = [1, 2, 3, 4];
-console.log(second); // outputs 2
-console.log(fourth); // outputs 4
+let [primeiro] = [1, 2, 3, 4];
+console.log(primeiro); // retorna saída 1
 ```
 
-## Tuple destructuring
-
-Tuples may be destructured like arrays; the destructuring variables get the types of the corresponding tuple elements:
+Ou outros elementos:
 
 ```ts
-let tuple: [number, string, boolean] = [7, "hello", true];
-
-let [a, b, c] = tuple; // a: number, b: string, c: boolean
+let [, segundo, , quarto] = [1, 2, 3, 4];
+console.log(segundo); // retorna saída 2
+console.log(quarto); // retorna saída 4
 ```
 
-It's an error to destructure a tuple beyond the range of its elements:
+## Desestruturação de Tupla
+
+Tuplas podem ser desestruturadas como arrays; as variáveis de desestruturação pegam os tipos dos elementos tupla correspondentes:
 
 ```ts
-let [a, b, c, d] = tuple; // Error, no element at index 3
+let tupla: [number, string, boolean] = [7, "olá", true];
+
+let [a, b, c] = tupla; // a: number, b: string, c: boolean
 ```
 
-As with arrays, you can destructure the rest of the tuple with `...`, to get a shorter tuple:
+É um erro desestruturar a tupla além do limite de seus elementos:
 
 ```ts
-let [a, ...bc] = tuple; // bc: [string, boolean]
-let [a, b, c, ...d] = tuple; // d: [], the empty tuple
+let [a, b, c, d] = tupla; // Erro, sem elementos no index 3
 ```
 
-Or ignore trailing elements, or other elements:
+Como nos arrays, você pode desestruturar o resto da tupla com `...`, para obter uma tupla mais curta:
 
 ```ts
-let [a] = tuple; // a: number
-let [, b] = tuple; // b: string
+let [a, ...bc] = tupla; // bc: [string, boolean]
+let [a, b, c, ...d] = tupla; // d: [], a tupla vazia
 ```
 
-## Object destructuring
+Ou ignorar elementos finais, ou outros elementos:
 
-You can also destructure objects:
+```ts
+let [a] = tupla; // a: number
+let [, b] = tupla; // b: string
+```
+
+## Desestruturação de Objetos
+
+Você também pode desestruturar objetos:
 
 ```ts
 let o = {
@@ -549,66 +549,64 @@ let o = {
 let { a, b } = o;
 ```
 
-This creates new variables `a` and `b` from `o.a` and `o.b`.
-Notice that you can skip `c` if you don't need it.
+Isso cria novas variáveis `a` e `b` a partir de `o.a` e `o.b`.
+Perceba que você pode pular `c` se você não o quiser.
 
-Like array destructuring, you can have assignment without declaration:
+Como desestruturação de arrays, você pode ter atribuições sem declarações:
 
 ```ts
 ({ a, b } = { a: "baz", b: 101 });
 ```
+Pereba que tivemos que cercar esse elemento com parêntesis.
+JavaScript normalmente analisa um `{` como o começo do bloco.
 
-Notice that we had to surround this statement with parentheses.
-JavaScript normally parses a `{` as the start of block.
-
-You can create a variable for the remaining items in an object using the syntax `...`:
-
-```ts
-let { a, ...passthrough } = o;
-let total = passthrough.b + passthrough.c.length;
-```
-
-### Property renaming
-
-You can also give different names to properties:
+Você pode criar uma variável para o restante dos itens em um objeto usando a sintaxe `...`:
 
 ```ts
-let { a: newName1, b: newName2 } = o;
+let { a, ...atravessando } = o;
+let total = atravessando.b + atravessando.c.length;
 ```
 
-Here the syntax starts to get confusing.
-You can read `a: newName1` as "`a` as `newName1`".
-The direction is left-to-right, as if you had written:
+### Renomeação de propriedades
+
+Você também pode dar nomes diferentes para propriedades:
 
 ```ts
-let newName1 = o.a;
-let newName2 = o.b;
+let { a: novoNome1, b: novoNome2 } = o;
 ```
 
-Confusingly, the colon here does _not_ indicate the type.
-The type, if you specify it, still needs to be written after the entire destructuring:
+Aqui a sintaxe começa a ficar confusa.
+Você pode ler `a: novoNome1` como "`a` sendo `novoNome1`".
+A direção é esquerda para direita, como se você tivesse escrito:
+
+```ts
+let novoNome1 = o.a;
+let novoNome2 = o.b;
+```
+De forma confusa, os dois pontos _não_ indicam o tipo.
+O tipo, se você o especificar, ainda precisa ser escrito após toda desestruturação:
 
 ```ts
 let { a, b }: { a: string; b: number } = o;
 ```
 
-### Default values
+### Valores padrão
 
-Default values let you specify a default value in case a property is undefined:
+Valores padrão te permitem especificar um valor caso a propriedade seja undefined:
 
 ```ts
-function keepWholeObject(wholeObject: { a: string; b?: number }) {
-  let { a, b = 1001 } = wholeObject;
+function mantenhaObjetoInteiro(objetoInteiro: { a: string; b?: number }) {
+  let { a, b = 1001 } = objetoInteiro;
 }
 ```
 
-In this example the `b?` indicates that `b` is optional, so it may be `undefined`.
-`keepWholeObject` now has a variable for `wholeObject` as well as the properties `a` and `b`, even if `b` is undefined.
+Nesse exemplo o `b?` indica que `b` é opcional, então ele pode ser `undefined`.
+`mantenhaObjetoInteiro` agora tem uma variável para `objetoInteiro` assim como as propriedades `a` e `b`, mesmo se `b` for undefined.
 
-## Function declarations
+## Declaração de Funções
 
-Destructuring also works in function declarations.
-For simple cases this is straightforward:
+Desestruturação também funciona em declarações de funções.
+Para casos simples é bem descomplicado:
 
 ```ts
 type C = { a: string; b?: number };
@@ -617,8 +615,8 @@ function f({ a, b }: C): void {
 }
 ```
 
-But specifying defaults is more common for parameters, and getting defaults right with destructuring can be tricky.
-First of all, you need to remember to put the pattern before the default value.
+Mas especificar valores padrões é mais comum para parâmetros, e ter valores padrão de forma correta com desestruturação pode ser complicado.
+Primeiro, você precisa lembrar de por a padronização antes do valor padrão. 
 
 ```ts
 function f({ a = "", b = 0 } = {}): void {
@@ -627,66 +625,65 @@ function f({ a = "", b = 0 } = {}): void {
 f();
 ```
 
-> The snippet above is an example of type inference, explained later in the handbook.
+> O código acima é um exemplo de inferência de tipo, explicado anteriormente nesse manual.
 
-Then, you need to remember to give a default for optional properties on the destructured property instead of the main initializer.
-Remember that `C` was defined with `b` optional:
+Então, você precisa lembrar de prover um valor padrão para parâmetros opcionais na propriedade desestruturada ao invés do inicializador principal. 
+Lembre que `C` foi definida com `b` opcional:
 
 ```ts
 function f({ a, b = 0 } = { a: "" }): void {
   // ...
 }
-f({ a: "yes" }); // ok, default b = 0
-f(); // ok, default to { a: "" }, which then defaults b = 0
-f({}); // error, 'a' is required if you supply an argument
+f({ a: "sim" }); // ok, padrão b = 0
+f(); // ok, padrão para { a: "" }, no qual então define padrão b = 0
+f({}); // erro, 'a' é requerido se você fornecer um argumento
 ```
 
-Use destructuring with care.
-As the previous example demonstrates, anything but the simplest destructuring expression is confusing.
-This is especially true with deeply nested destructuring, which gets _really_ hard to understand even without piling on renaming, default values, and type annotations.
-Try to keep destructuring expressions small and simple.
-You can always write the assignments that destructuring would generate yourself.
+Use desestruturação com cuidado.
+Como os exemplos anteriores demonstram, qualquer coisa a mais do que desestruturação simples é confuso.
+Isso é especialmente verdade com desestruturação em encadeamentos profundos, que fica _realmente_ difícil de entender mesmo sem empilhamento, renomeação, valores padrão e anotações de tipo.
+Tente manter expressões de desestruturação pequenas e simples.
+Você pode sempre escrever as atribuições que a desestruturação geraria.
 
-## Spread
+## Propagação
 
-The spread operator is the opposite of destructuring.
-It allows you to spread an array into another array, or an object into another object.
-For example:
+O operador de propagação é o oporto do de desestruturação.
+Ele te permite propagar um array para outro array, ou um objeto para outro objeto.
+Por exemplo:
 
 ```ts
-let first = [1, 2];
-let second = [3, 4];
-let bothPlus = [0, ...first, ...second, 5];
+let primeiro = [1, 2];
+let segundo = [3, 4];
+let ambosMais = [0, ...primeiro, ...segundo, 5];
 ```
 
-This gives bothPlus the value `[0, 1, 2, 3, 4, 5]`.
-Spreading creates a shallow copy of `first` and `second`.
-They are not changed by the spread.
+Isso dá a ambosMais o valor `[0, 1, 2, 3, 4, 5]`.
+Propagação cria uma cópia rasa de `primeiro` e `segundo`.
+Eles não são modificados pela propagação.
 
-You can also spread objects:
+Você também pode propagar objetos:
 
 ```ts
-let defaults = { food: "spicy", price: "$$", ambiance: "noisy" };
-let search = { ...defaults, food: "rich" };
+let padroes = { comida: "apimentada", preco: "$$", ambiente: "barulhento" };
+let busca = { ...padroes, comida: "rica" };
 ```
 
-Now `search` is `{ food: "rich", price: "$$", ambiance: "noisy" }`.
-Object spreading is more complex than array spreading.
-Like array spreading, it proceeds from left-to-right, but the result is still an object.
-This means that properties that come later in the spread object overwrite properties that come earlier.
-So if we modify the previous example to spread at the end:
+Agora `busca` é `{ comida: "rica", preco: "$$", ambiente: "barulhento" }`.
+Propagação de objetos é mais complexo do que propagação de array.
+Como propagação de array, procede-se da esquerda para direita, mas o resultado ainda é um objeto.
+Isso significa que propriedades que vem depois no objeto propagado sobrescrevem propriedades que vieram anteriormente.
+Então se modificarmos o exemplo anterior para propagar no final:
 
 ```ts
-let defaults = { food: "spicy", price: "$$", ambiance: "noisy" };
-let search = { food: "rich", ...defaults };
+let padroes = { comida: "apimentada", preco: "$$", ambiente: "barulhento" };
+let busca = { comida: "rica", ...padroes };
 ```
 
-Then the `food` property in `defaults` overwrites `food: "rich"`, which is not what we want in this case.
+Então a propriedade `comida` em `padroes` sobrescreve `comida: "rica"`, o que não é o que queremos nesse caso. 
 
-Object spread also has a couple of other surprising limits.
-First, it only includes an objects'
-[own, enumerable properties](https://developer.mozilla.org/docs/Web/JavaScript/Enumerability_and_ownership_of_properties).
-Basically, that means you lose methods when you spread instances of an object:
+Propagação de objetos também possui outros limites surpreendentes.
+Primeiro, ele apenas inclui [as próprias propriedades enumeradas](https://developer.mozilla.org/docs/Web/JavaScript/Enumerability_and_ownership_of_properties) de um objeto.
+Basicamente, isso significa que você perde metodos quando propaga instancias de um objeto:
 
 ```ts
 class C {
@@ -696,8 +693,7 @@ class C {
 let c = new C();
 let clone = { ...c };
 clone.p; // ok
-clone.m(); // error!
+clone.m(); // erro!
 ```
-
-Second, the TypeScript compiler doesn't allow spreads of type parameters from generic functions.
-That feature is expected in future versions of the language.
+Segundo, o compilador TypeScript não permite propagação do tipo dos parâmetros para funções genéricas. 
+Essa funcionalidade é esperada em versões futuras da linguagem.

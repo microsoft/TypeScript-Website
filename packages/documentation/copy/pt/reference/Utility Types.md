@@ -1,12 +1,12 @@
 ---
-title: Utility Types
+title: Tipos Utilitários
 layout: docs
 permalink: /pt/docs/handbook/utility-types.html
-oneline: Types which are globally included in TypeScript
+oneline: Tipos que são inclusos globalmente em TypeScript
 translatable: true
 ---
 
-TypeScript provém vários tipos utilitários para facilitar transformações de tipo comum. Essas utilitários estão disponíveis globalmente.
+TypeScript provém vários tipos utilitários para facilitar transformações de tipo comum. Esses utilitários estão disponíveis globalmente.
 
 ## `Partial<Type>`
 
@@ -52,7 +52,7 @@ const todo: Readonly<Todo> = {
 
 todo.titulo = "Olá";
 ```
-Esse utilitário é útil para representar expressões de atribuição que irão falhar em tempo de execução (Ex. Ao tentar reatribuir propriedades de um [frozen object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)).
+Esse utilitário é útil para representar expressões de atribuição que irão falhar em tempo de execução (Ex. Ao tentar reatribuir propriedades de um [objeto congelado](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)).
 
 ##### `Object.freeze`
 
