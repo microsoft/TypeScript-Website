@@ -20,7 +20,7 @@ interface Todo {
   descricao: string;
 }
 
-function atualizaTodo(todo: Todo, camposParaAtualizar: Parcial<Todo>) {
+function atualizaTodo(todo: Todo, camposParaAtualizar: Partial<Todo>) {
   return { ...todo, ...camposParaAtualizar };
 }
 
