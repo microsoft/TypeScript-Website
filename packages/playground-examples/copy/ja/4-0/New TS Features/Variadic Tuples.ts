@@ -1,46 +1,46 @@
 //// { compiler: { ts: "4.0.2" } }
-// Variadic Tuples gives tuples the ability to handle the rest operator (...)
-// to pass types through type checker in a way that works like generics.
+// 可変長タプルによって、タプルはジェネリクスのように
+// 型を型チェッカーに渡すことができるrest演算子(...)を扱えるようになりました。
 
-// This is quite an advanced topic, so if you get lost do not worry too much.
-// It builds on example:generic-functions and example:tuples
+// かなり高度なトピックなので、理解できなくでもあまり心配しないでください。
+// これはexample:generic-functionsとexample:tuplesの発展です。
 
-// To start off, here is a variadic tuple which will always prefix another
-// tuple with a number:
+// 手始めに、別のタプルの前に常に数字を付けている可変長タプルを
+// 見てみましょう:
 
 type AddMax<T extends unknown[]> = [max: number,  ...rest: T];
-//          ^ Generic used to constrain the T
-//                                                ^ ... used to indicate where to merge
+//          ^ ジェネリクスでTをタプルに制限しています
+//                                                ^ ... でどこにマージするかを示しています
 
-// This can then be used for composition:
+// これは次のように型を合成することができます:
 type MaxMin = AddMax<[min: number]>
 type MaxMinDiameter = AddMax<[min: number, diameter: number]>
 
-// The same can be used after the tuple:
+// タプルの後ろに型があっても同様です:
 type SuffixDIContext<T extends unknown[]> = [...first: T, context: any];
 type DIContainer = SuffixDIContext<[param: string]>
 
-// This mechanism can be combined with multiple input params. For example, this
-// function merges two arrays but uses '\0' as a sigil to indicate where the arrays 
-// start and stop.
+// この仕組みは、複数の入力パラメータと組み合わせることができます。
+// 例えば、次の関数は、配列の開始と終了を表す印として
+// '\0'を使用して2つの配列をマージします。
 function joinWithNullTerminators<T extends unknown[], U extends unknown[]>(t: [...T], u: [...U]) {
     return ['\0', ...t, '\0', ...u, '\0'] as const;
 }
 
-// TypeScript can infer the return type of a function like this:
+// TypeScriptは次のように関数の戻り値の型を推測することができます:
 const result = joinWithNullTerminators(['variadic', 'types'], ["terminators", 3]);
 
-// These tools make it possible to correctly type a function like curry which
-// is a well used concept in functional programming:
+// これらを使うことで、関数型プログラミングでよく使われる概念であるカリー化関数に
+// 正しく型をつけることができるようになります。
 
 function curry<T extends unknown[], U extends unknown[], R>(f: (...args: [...T, ...U]) => R, ...a: T) {
     return (...b: U) => f(...a, ...b);
 }
 
-// There are three generic arguments:
-// - T: The params which are array of inputs to the curry function
-// - U: The parameters which _aren't_ passed into to curry function, and need applying to the return func
-// - R: the return type of the passed in function
+// ここでは、3つのジェネリクス引数が使われています:
+// - T: カリー化関数への入力の配列であるパラメータ
+// - U: カリー化関数に _渡されておらず_ 戻り値の関数に適用されるパラメータ
+// - R: カリー化関数に渡された関数の戻り値の型
 
 const sum = (left: number, right: number,) => left + right
 
@@ -48,6 +48,6 @@ const a = curry(sum, 1, 2)
 const b = curry(sum, 1)(2)
 const c = curry(sum)(1, 2)
 
-// You can find a more indepth explanation, with more code samples in
+// そのほか詳細な説明とコードサンプルはこちら:
 // https://github.com/microsoft/TypeScript/pull/39094
  

@@ -1,11 +1,11 @@
 //// { compiler: { ts: "4.0.2" } }
-// Tuples are arrays where the order is important to the type system,
-// you can learn more about them in example:tuples
+// タプルは型システムにとって順序が重要な配列です。
+// example:tuplesでタプルについてもっと詳しく学ぶことができます。
 
-// In TypeScript 4.0, the type of a Tuple's gained the ability to give
-// a name to the different parts of the array.
+// TypeScript 4.0では、タプル型において、配列の様々な部分に名前をつけることが
+// できるようになりました。
 
-// For example, you used to write a Lat Long location via a tuple:
+// 例えば、以前はタプルを使って次のように緯度経度を書いていました:
 
 type OldLocation = [number, number]
 
@@ -14,10 +14,10 @@ const locations: OldLocation[] = [
     [53.6458, -1.785]
 ]
 
-// Knowing which is Latitude and Longitude is ambiguous, and so you
-// would more likely have called it a LatLong tuple.
+// どちらが緯度でどちらが経度なのか、わかり辛いので
+// このタプルをLatLongと名付けたほうがよかったかもしれません。
 
-// With 4.0, you can write:
+// 4.0では次のように記述できます:
 
 type NewLocation = [lat: number, long: number]
 
@@ -26,24 +26,24 @@ const newLocations: NewLocation[] = [
     [53.3498, -6.2603]
 ]
 
-// The names now show up in the editor when you hover over
-// the 0 and 1 at the end of the next line
+// 次の行の最後にある0と1にマウスをホバーすると
+// エディタに名前が表示されるようになりました
 const firstLat = newLocations[0][0]
 const firstLong = newLocations[0][1]
 
-// While that might seem a tad underwhelming, the main goal 
-// is to ensure that information isn't lost when working
-// with the type system. For example, when extracting
-// parameters from a function using the Parameter 
-// utility type:
+// これだけだとちょっと印象が薄いかもしれません。
+// しかし、この機能が追加された主な目的は型システムを使って
+// 作業する際に情報が失われないようにすることです。
+// 例えば、パラメータユティリティ型を使って
+// 関数からパラメータを抽出する場合を考えてみましょう:
 
 function centerMap(lng: number, lat: number) {}
 
-// In 4.0, this keeps lng and lat
+// 4.0では、抽出したパラメータにlngとlatが保持されています
 type CenterMapParams = Parameters<typeof centerMap>
 
-// In 3.9, this would look like
+// 3.9では、次のようになります
 type OldCenterMapParams = [number, number]
 
-// Making some of the more complex type manipulation lossy
-// for the parameter information.
+// より複雑な型の操作によって、
+// パラメータの情報が失われることがあります。

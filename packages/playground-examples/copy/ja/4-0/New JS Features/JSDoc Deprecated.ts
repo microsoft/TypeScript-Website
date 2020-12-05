@@ -1,19 +1,19 @@
-// In 4.0 the JSDoc tag @deprecated is added to the
-// type system. You can use @deprecated anywhere
-// you can use JSDoc currently.
+// 4.0では、JSDocのタグである@deprecated(非推奨)が型システムに
+// 追加されました。今現在JSDocを使用しているところであれば
+// どこでも@deprecatedを使用できます。
 
 interface AccountInfo {
   name: string;
   gender: string;
 
-  /** @deprecated use gender field instead */
+  /** @deprecated 代わりにgenderフィールドを使用してください */
   sex: "male" | "female";
 }
 
 declare const userInfo: AccountInfo;
 userInfo.sex;
 
-// TypeScript will offer a non-blocking warning when a
-// deprecated property is accessed, and editors like
-// vscode will use show the deprecated info in places
-// like intellisense, outlines and in your code.
+// TypeScriptは、非推奨のプロパティにアクセスしたとき、
+// 処理を止めることはありませんが、警告を出します。
+// vscodeなどのエディタであればintellisenseやアウトライン、
+// コード内で、deprecatedタグの情報を表示します。

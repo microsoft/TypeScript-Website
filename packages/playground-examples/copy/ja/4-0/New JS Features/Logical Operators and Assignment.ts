@@ -1,9 +1,9 @@
-// Logical Operators and Assignment are new features in
-// JavaScript for 2020. These are a suite of new operators
-// which edit a JavaScript object.
+// 論理代入演算子は、
+// 2020年のJavaScriptの新しい機能であり、
+// JavaScriptのオブジェクトを編集できる新しい演算子のグループです。
 
-// Their goal is to re-use the concept of mathematical 
-// operators (e.g. += -= *=) but with logic instead.
+// これら新しい演算子の目的は、数学的演算子(例えば+= -= *=)の概念を再利用しつつ
+// 論理を用いることです。
 
 interface User {
   id?: number
@@ -14,28 +14,28 @@ interface User {
 }
 
 function updateUser(user: User) {
-  // This code can be replaced 
+  // 次のコードや
   if (!user.id) user.id = 1
 
-  // Or this code:
+  // あるいは次のコードも
   user.id = user.id || 1
 
-  // With this code:
+  // 以下のコードに置き換えることができます
   user.id ||= 1
 }
 
-// The suites of operators can handle deeply nesting, which 
-// can save on quite a lot of boilerplate code too.
+// これらの演算子は、プロパティの深いネストを扱うことができるため、
+// それによってかなり多くの冗長なコードも節約することができます。
 
 declare const user: User
 user.location.postalCode ||= "90210"
 
-// There are three new operators: 
+// 新しい演算子は3つあります:
 //
-//   ||= shown above
-//   &&= which uses 'and' logic instead of 'or'
-//   ??= which builds on example:nullish-coalescing to offer a stricter
-//       version of || which uses === instead
+//   ||= 上述のとおり
+//   &&= 論理和('and')ではなく、論理積('or')を使用します
+//   ??= example:nullish-coalescingを発展させたもので、
+//       === を代わりに使う || のより厳密なバージョンです
 
-// For more info on the proposal, see:
+// 提案の詳細についてはこちらを確認してください:
 // https://github.com/tc39/proposal-logical-assignment
