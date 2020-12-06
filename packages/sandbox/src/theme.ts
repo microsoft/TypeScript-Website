@@ -3,7 +3,7 @@ const darkerBlue = "1142AF"
 
 const grey = "6c6f2d"
 const greenDark = "0c840a"
-const green = "7caf3d" // dark mode comment color
+const green = "8cff00" // dark mode comment color
 
 export const sandboxTheme: import("monaco-editor").editor.IStandaloneThemeData = {
   base: "vs",
