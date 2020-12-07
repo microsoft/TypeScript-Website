@@ -693,7 +693,7 @@ class DogHouse extends AnimalHouse {
 ```
 
 Currently `useDefineForClassFields` is only available when targeting ES5 and upwards, since `Object.defineProperty` doesn't exist in ES3.
-To achieve similar checking for issues, you can create a seperate project that targets ES5 and uses `--noEmit` to avoid a full build.
+To achieve similar checking for issues, you can create a separate project that targets ES5 and uses `--noEmit` to avoid a full build.
 
 For more information, you can [take a look at the original pull request for these changes](https://github.com/microsoft/TypeScript/pull/33509).
 
