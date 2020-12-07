@@ -2,7 +2,7 @@
 title: Type Declarations
 layout: docs
 permalink: /docs/handbook/2/type-declarations.html
-oneline: "Step one in learning TypeScript: The basics types."
+oneline: "How TypeScript creates types for un-typed JavaScript."
 beta: true
 ---
 

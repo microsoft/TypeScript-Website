@@ -6,7 +6,7 @@ by the [fourslash test system](https://github.com/orta/typescript-notes/blob/mas
 Used as a pre-parser before showing code samples inside the TypeScript website and to create a standard way for us
 to create examples for bugs on the compiler's issue tracker.
 
-You can preview twoslash on the TypeScript website here: https://typescriptlang.org/dev/twoslash
+You can preview twoslash on the TypeScript website here: https://www.typescriptlang.org/dev/twoslash/
 
 ### What is Twoslash?
 
