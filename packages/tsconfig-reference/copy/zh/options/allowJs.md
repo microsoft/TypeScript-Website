@@ -1,6 +1,6 @@
 ---
 display: "允许 JS"
-oneline: "允许你的程序包含 JS 文件。使用 checkJS 来获取在这些文件中的错误。"
+oneline: "允许你的程序包含 JS 文件。使用 checkJS 来检查在这些文件中的错误。"
 ---
 
 允许 JavaScript 文件在你的工程中被引入，而不是仅仅允许 `.ts` 和 `.tsx` 文件。例如这个 JS 文件：

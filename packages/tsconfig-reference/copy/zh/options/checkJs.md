@@ -5,14 +5,10 @@ oneline: "在经过类型检查的 JavaScript 中报告错误。"
 
 与 `allowJs` 配合使用，当 `checkJs` 被启用时，JavaScript 文件中会报告错误。也就是相当于在项目中所有 JavaScript 文件顶部包含 `// @ts-check`。
 
-
-Works in tandem with `allowJs`. When `checkJs` is enabled then errors are reported in JavaScript files. This is
-the equivalent of including `// @ts-check` at the top of all JavaScript files which are included in your project.
-
 例如，根据 TypeScript 自带的 `parseFloat` 类型定义，这是不正确的 JavaScript：
 
 ```js
-// parseFloat only takes a string
+// parseFloat 仅接受一个字符串作为参数
 module.exports.pi = parseFloat(3.124);
 ```
 
