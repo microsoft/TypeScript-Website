@@ -195,7 +195,7 @@ function MyFactoryFunction() {
 // use a call signature
 var myComponent = MyFactoryFunction();
 
-// element class type => FactoryFunction
+// element class type => MyFactoryFunction
 // element instance type => { render: () => void }
 ```
 
