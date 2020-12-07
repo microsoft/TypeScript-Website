@@ -76,10 +76,10 @@ type Pagina = "inicio" | "sobre" | "contato";
 const nav: Record<Pagina, InfoPagina> = {
   sobre: { titulo: "sobre" },
   contato: { titulo: "contato" },
-  home: { titulo: "inicio" },
+  inicio: { titulo: "inicio" },
 };
 
-nav.about;
+nav.sobre;
 // ^?
 ```
 
