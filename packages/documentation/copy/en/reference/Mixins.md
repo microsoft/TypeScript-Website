@@ -205,13 +205,6 @@ function applyMixins(derivedCtor: any, constructors: any[]) {
 }
 ```
 
-This pattern relies less on the compiler, and more on your codebase to ensure both runtime and type-system are correctly kept in sync.
-
-## Constraints
-
-The mixin pattern is supported natively inside the TypeScript compiler by code flow analysis.
-There are a few cases where you can hit the edges of the native support.
-
 #### Decorators and Mixins [`#4881`](https://github.com/microsoft/TypeScript/issues/4881)
 
 You cannot use decorators to provide mixins via code flow analysis:
@@ -232,17 +225,21 @@ class Player {
   y = 0;
 }
 
-// The Player class does not have the decorator's type merged:
+interface Player {
+   shouldFreeze: boolean;
+}
+
+// The Player class does have the decorator's type merged:
 const player = new Player();
 player.shouldFreeze;
-
-// It the runtime aspect could be manually replicated via
-// type composition or interface merging.
-type FreezablePlayer = typeof Player & { shouldFreeze: boolean };
-
-const playerTwo = (new Player() as unknown) as FreezablePlayer;
-playerTwo.shouldFreeze;
 ```
+
+This pattern relies less on the compiler, and more on your codebase to ensure both runtime and type-system are correctly kept in sync.
+
+## Constraints
+
+The mixin pattern is supported natively inside the TypeScript compiler by code flow analysis.
+There are a few cases where you can hit the edges of the native support.
 
 #### Static Property Mixins [`#17829`](https://github.com/microsoft/TypeScript/issues/17829)
 
@@ -270,4 +267,24 @@ class Spec extends derived<string>() {}
 
 Spec.prop; // string
 Spec.anotherProp; // string
+```
+
+You can also solve the problem through type composition or interface merging:
+
+##### Spec.ts
+```ts twolash
+class Base {
+  static prop: string;
+}
+class Spec extends Base {}
+
+export default Spec as typeof Spec & { anotherProp: string };
+```
+
+##### Test.ts
+```ts twolash
+import Spec from "./Spec.ts";
+
+Spec.prop; // string
+Spec.anotherProp; // string;
 ```
