@@ -30,7 +30,7 @@ function joinWithNullTerminators<T extends unknown[], U extends unknown[]>(t: [.
 // TypeScriptは次のように関数の戻り値の型を推測することができます:
 const result = joinWithNullTerminators(['variadic', 'types'], ["terminators", 3]);
 
-// これらを使うことで、関数型プログラミングでよく使われる概念であるカリー化関数に
+// これらを使うことで、関数型プログラミングでよく使われる概念であるカリー化関数などの関数に
 // 正しく型をつけることができるようになります。
 
 function curry<T extends unknown[], U extends unknown[], R>(f: (...args: [...T, ...U]) => R, ...a: T) {
@@ -39,7 +39,7 @@ function curry<T extends unknown[], U extends unknown[], R>(f: (...args: [...T, 
 
 // ここでは、3つのジェネリクス引数が使われています:
 // - T: カリー化関数への入力の配列であるパラメータ
-// - U: カリー化関数に _渡されておらず_ 戻り値の関数に適用されるパラメータ
+// - U: カリー化関数に _渡されておらず_ 戻り値の関数に適用される必要があるパラメータ
 // - R: カリー化関数に渡された関数の戻り値の型
 
 const sum = (left: number, right: number,) => left + right

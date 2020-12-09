@@ -33,7 +33,7 @@ const animationDuration = response.animationDuration || 300;
 const showSplashScreen = response.showSplashScreen || true;
 
 // || の代わりに ?? を使うと、
-// === 等号が演算子の両サイドの比較に使用されます:
+// === 演算子が両サイドの比較に使用されます:
 
 const emptyHeaderText = response.headerText ?? "Hello, world!";
 const zeroAnimationDuration = response.animationDuration ?? 300;
