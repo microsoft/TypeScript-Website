@@ -81,7 +81,7 @@ const nav: Record<Page, PageInfo> = {
 };
 
 nav.about;
-// ^?
+//   ^?
 ```
 
 ## `Pick<Type, Keys>`

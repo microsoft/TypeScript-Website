@@ -132,10 +132,10 @@ Much like variable type annotations, you usually don't need a return type annota
 The type annotation in the above example doesn't change anything.
 Some codebases will explicitly specify a return type for documentation purposes, to prevent accidental changes, or just for personal preference.
 
-### Function Expressions
+### Anonymous Functions
 
-Function expressions are a little bit different from function declarations.
-When a function expression appears in a place where TypeScript can determine how it's going to be called, the parameters of that function are automatically given types.
+Anonymous functions are a little bit different from function declarations.
+When a function appears in a place where TypeScript can determine how it's going to be called, the parameters of that function are automatically given types.
 
 Here's an example:
 
@@ -143,7 +143,14 @@ Here's an example:
 // @errors: 2551
 // No type annotations here, but TypeScript can spot the bug
 const names = ["Alice", "Bob", "Eve"];
+
+// Contextual typing for function
 names.forEach(function (s) {
+  console.log(s.toUppercase());
+});
+
+// Contextual typing also applies to arrow functions
+names.forEach((s) => {
   console.log(s.toUppercase());
 });
 ```
@@ -429,6 +436,23 @@ const a = (expr as any) as T;
 
 In addition to the general types `string` and `number`, we can refer to _specific_ strings and numbers in type positions.
 
+One way to think about this is to consider how JavaScript comes with different ways to declare a variable. Both `var` and `let` allow for changing what is held inside the variable, and `const` does not. This is reflected in how TypeScript creates types for literals.
+
+```ts twoslash
+let changingString = "Hello World";
+changingString = "Ola Mundo";
+// Because `changingString` can represent any possible string, that
+// is how TypeScript describes it in the type system
+changingString;
+// ^?
+
+const constantString = "Hello World";
+// Because `changingString` can only represent 1 possible string, it
+// has a literal type representation
+constantString;
+// ^?
+```
+
 By themselves, literal types aren't very valuable:
 
 ```ts twoslash
@@ -442,7 +466,7 @@ x = "howdy";
 
 It's not much use to have a variable that can only have one value!
 
-But by _combining_ literals into unions, you can express a much more useful thing - for example, functions that only accept a certain set of known values:
+But by _combining_ literals into unions, you can express a much more useful concept - for example, functions that only accept a certain set of known values:
 
 ```ts twoslash
 // @errors: 2345
@@ -507,21 +531,31 @@ const req = { url: "https://example.com", method: "GET" };
 handleRequest(req.url, req.method);
 ```
 
-<!-- TODO: Use and explain const contexts -->
-
 Because it'd be legal to assign a string like `"GUESS"` TO `req.method`, TypeScript considers this code to have an error.
-You can change this inference by adding a type assertion in either location:
 
-```ts twoslash
-declare function handleRequest(url: string, method: "GET" | "POST"): void;
-// ---cut---
-const req = { url: "https://example.com", method: "GET" as "GET" };
-/* or */
-handleRequest(req.url, req.method as "GET");
-```
+There are two ways to work around this.
 
-The first change means "I intend for `req.method` to always have the _literal type_ `"GET"`", preventing the possible assignment of `"GUESS"` to that field.
-The second change means "I know for other reasons that `req.method` has the value `"GET"`".
+1. You can change the inference by adding a type assertion in either location:
+
+   ```ts twoslash
+   declare function handleRequest(url: string, method: "GET" | "POST"): void;
+   // ---cut---
+   const req = { url: "https://example.com", method: "GET" as "GET" };
+   /* or */
+   handleRequest(req.url, req.method as "GET");
+   ```
+
+   The first change means "I intend for `req.method` to always have the _literal type_ `"GET"`", preventing the possible assignment of `"GUESS"` to that field.
+   The second change means "I know for other reasons that `req.method` has the value `"GET"`".
+
+2. You can use `as const` to convert the entire object to be type literals:
+
+   ```ts twoslash
+   declare function handleRequest(url: string, method: "GET" | "POST"): void;
+   // ---cut---
+   const req = { url: "https://example.com", method: "GET" } as const;
+   handleRequest(req.url, req.method);
+   ```
 
 ## `null` and `undefined`
 
@@ -541,8 +575,8 @@ With `strictNullChecks` _on_, when a value is `null` or `undefined`, you will ne
 Just like checking for `undefined` before using an optional property, we can use _narrowing_ to check for values that might be `null`:
 
 ```ts twoslash
-function doSomething(x: string | null) {
-  if (x === null) {
+function doSomething(x: string | undefined) {
+  if (x === undefined) {
     // do nothing
   } else {
     console.log("Hello, " + x.toUpperCase());
@@ -556,7 +590,7 @@ TypeScript also has a special syntax for removing `null` and `undefined` from a 
 Writing `!` after any expression is effectively a type assertion that the value isn't `null` or `undefined`:
 
 ```ts twoslash
-function liveDangerously(x?: number | null) {
+function liveDangerously(x?: number | undefined) {
   // No error
   console.log(x!.toFixed());
 }
