@@ -2,7 +2,7 @@
 title: Typeof Type Operator
 layout: docs
 permalink: /docs/handbook/2/typeof-types.html
-oneline: "Step one in learning TypeScript: The basics types."
+oneline: "Using the typeof operator in type contexts."
 beta: true
 ---
 
