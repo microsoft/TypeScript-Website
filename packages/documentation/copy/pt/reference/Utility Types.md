@@ -76,10 +76,10 @@ type Pagina = "inicio" | "sobre" | "contato";
 const nav: Record<Pagina, InfoPagina> = {
   sobre: { titulo: "sobre" },
   contato: { titulo: "contato" },
-  home: { titulo: "inicio" },
+  inicio: { titulo: "inicio" },
 };
 
-nav.about;
+nav.sobre;
 // ^?
 ```
 
@@ -304,7 +304,7 @@ Extrai o tipo do parâmetro [this](/docs/handbook/functions.html#this-parameters
 
 ```ts twoslash
 function paraHex(this: Number) {
-  return this.paraString(16);
+  return this.toString(16);
 }
 
 function numeroToString(n: ThisParameterType<typeof paraHex>) {
@@ -320,10 +320,10 @@ Remove o parâmetro [`this`](/docs/handbook/functions.html#this-parameters) de `
 
 ```ts twoslash
 function paraHex(this: Number) {
-  return this.paraString(16);
+  return this.toString(16);
 }
 
-const cincoParaHex: OmiteEsseParametro<typeof paraHex> = paraHex.bind(5);
+const cincoParaHex: OmitThisParameter<typeof paraHex> = paraHex.bind(5);
 
 console.log(cincoParaHex());
 ```
@@ -338,7 +338,7 @@ Esse utilitário não retorna um tipo transformado. Ao invés, serve como um mar
 // @noImplicitThis: false
 type DescritorDeObjeto<D, M> = {
   dado?: D;
-  metodos?: M & EsseTipo<D & M>; // Tipo de this em metodos é D & M
+  metodos?: M & ThisType<D & M>; // Tipo de this em metodos é D & M
 };
 
 function fazObjeto<D, M>(desc: DescritorDeObjeto<D, M>): D & M {
@@ -350,7 +350,7 @@ function fazObjeto<D, M>(desc: DescritorDeObjeto<D, M>): D & M {
 let obj = fazObjeto({
   dado: { x: 0, y: 0 },
   metodos: {
-    movePor(dx: number, dy: number) {
+    moveBy(dx: number, dy: number) {
       this.x += dx; // this fortemente tipado
       this.y += dy; // this fortemente tipado
     },
@@ -359,7 +359,7 @@ let obj = fazObjeto({
 
 obj.x = 10;
 obj.y = 20;
-obj.movePor(5, 5);
+obj.moveBy(5, 5);
 ```
 
 No exemplo acima, o objeto `metodos` no argumento para `fazObjeto` tem um tipo contextual que inclui `EsseTipo<D & M>` portanto o tipo de [this](/docs/handbook/functions.html#this) em metodos dentro do objeto `metodos` é `{ x: number, y: number } & { movePor(dx: number, dy: number): number }`. Perceba como o tipo da propriedade `metodos` é simultaneamente uma interface alvo e a fonte para o tipo `this` nos metodos.
