@@ -2,7 +2,7 @@
 title: Indexed Access Types
 layout: docs
 permalink: /docs/handbook/2/indexed-access-types.html
-oneline: 'Using Type["a"] syntax to access a subset of a type.'
+oneline: "Using Type['a'] syntax to access a subset of a type."
 beta: true
 ---
 
@@ -51,9 +51,9 @@ const MyArray = [
 
 type Person = typeof MyArray[number];
 //   ^?
-type Age = typeof MyArray[number]["age"]
+type Age = typeof MyArray[number]["age"];
 //   ^?
 // Or
-type Age2 = Person["age]
+type Age2 = Person["age"];
 //   ^?
 ```
