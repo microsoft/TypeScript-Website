@@ -1,5 +1,5 @@
 ---
-display: "Watch Options"
+display: "监听选项"
 ---
 
 TypeScript 3.8 提供了一个监听目录的新策略，这对于有效地获取 `node_modules` 的更改至关重要。

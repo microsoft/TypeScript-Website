@@ -1,3 +1,3 @@
 ---
-display: "Command Line"
+display: "命令行"
 ---

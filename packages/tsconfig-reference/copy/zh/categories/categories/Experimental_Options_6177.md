@@ -1,5 +1,5 @@
 ---
-display: "Experimental"
+display: "实验选项"
 ---
 
 TypeScript力求只包含那些确认要添加到JavaScript语言中的特性。

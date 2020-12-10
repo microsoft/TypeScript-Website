@@ -1,5 +1,5 @@
 ---
-display: "Strict Checks"
+display: "严格模式"
 ---
 
 我们建议使用[编译器选项`strict`](#strict)来选择性的启用每个可能的改进。
