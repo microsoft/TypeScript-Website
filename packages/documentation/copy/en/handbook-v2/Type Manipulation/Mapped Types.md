@@ -66,7 +66,7 @@ type UnlockedAccount = CreateMutable<LockedAccount>;
 ```
 
 ```ts twoslash
-type Concrete<T> = {
+type Concrete<Type> = {
   [Property in keyof Type]-?: Type[Property];
 };
 
