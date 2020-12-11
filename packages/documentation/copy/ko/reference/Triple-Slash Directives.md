@@ -1,7 +1,7 @@
 ---
 title: Triple-Slash Directives
 layout: docs
-permalink: /docs/handbook/triple-slash-directives.html
+permalink: /ko/docs/handbook/triple-slash-directives.html
 oneline: How to use triple slash directives in TypeScript
 translatable: true
 ---
