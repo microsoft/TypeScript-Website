@@ -81,7 +81,7 @@ const nav: Record<Page, PageInfo> = {
 };
 
 nav.about;
-// ^?
+//   ^?
 ```
 
 ## `Pick<Type, Keys>`
@@ -366,3 +366,7 @@ obj.moveBy(5, 5);
 In the example above, the `methods` object in the argument to `makeObject` has a contextual type that includes `ThisType<D & M>` and therefore the type of [this](/docs/handbook/functions.html#this) in methods within the `methods` object is `{ x: number, y: number } & { moveBy(dx: number, dy: number): number }`. Notice how the type of the `methods` property simultaneously is an inference target and a source for the `this` type in methods.
 
 The `ThisType<T>` marker interface is simply an empty interface declared in `lib.d.ts`. Beyond being recognized in the contextual type of an object literal, the interface acts like any empty interface.
+
+## Intrinsic String Manipulation Types
+
+To help with string manipulation around template string literals, TypeScript includes a set of types which can be used in string manipulation within the type system. You can

@@ -2,7 +2,7 @@
 title: Conditional Types
 layout: docs
 permalink: /docs/handbook/2/conditional-types.html
-oneline: "Step one in learning TypeScript: The basics types."
+oneline: "Create types which act like if statements."
 beta: true
 ---
 
@@ -25,7 +25,7 @@ type Bar = RegExp extends Animal ? number : string;
 //   ^?
 ```
 
-Conditional types take a form that looks a little like conditional expresions (`cond ? trueExpression : falseExpression`) in JavaScript:
+Conditional types take a form that looks a little like conditional expressions (`condition ? trueExpression : falseExpression`) in JavaScript:
 
 ```ts twoslash
 type SomeType = any;
@@ -227,7 +227,7 @@ type Bar = Foo<string | number>;
 //   ^?
 ```
 
-What happens here is that `Foo` distributes on
+What happens here is that `Foo` distributes on:
 
 ```ts twoslash
 type Blah =
@@ -235,7 +235,7 @@ type Blah =
   string | number;
 ```
 
-and maps over each member type of the union, to what is effectively
+and maps over each member type of the union, to what is effectively:
 
 ```ts twoslash
 type Foo<T> = T extends any ? T[] : never;
@@ -244,7 +244,7 @@ type Blah =
   Foo<string> | Foo<number>;
 ```
 
-which leaves us with
+which leaves us with:
 
 ```ts twoslash
 type Blah =

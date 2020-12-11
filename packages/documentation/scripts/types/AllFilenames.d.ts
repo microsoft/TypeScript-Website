@@ -40,6 +40,8 @@ export type AllDocsPages =
   | "handbook-v2/Type Manipulation/Conditional Types.md"
   | "handbook-v2/Type Manipulation/Indexed Access Types.md"
   | "handbook-v2/Type Manipulation/Keyof Type Operator.md"
+  | "handbook-v2/Type Manipulation/Mapped Types.md"
+  | "handbook-v2/Type Manipulation/Template Literal Types.md"
   | "handbook-v2/Type Manipulation/Typeof Type Operator.md"
   | "handbook-v2/Type Manipulation/_Creating Types from Types.md"
   | "javascript/Creating DTS files From JS.md"
