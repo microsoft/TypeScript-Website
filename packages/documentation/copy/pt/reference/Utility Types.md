@@ -10,7 +10,7 @@ TypeScript provém vários tipos utilitários para facilitar transformações de
 
 ## `Partial<Type>`
 
-Constroi um tipo com todas as propriedades de `Type` definidas como opcional. Esse utilitário irá retornar um tipo que representa todos os subconjuntos de um determinado tipo.
+Constrói um tipo com todas as propriedades de `Type` definidas como opcionais. Esse utilitário irá retornar um tipo que representa todos os subconjuntos de um determinado tipo.
 
 ##### Exemplo
 
@@ -36,7 +36,7 @@ const todo2 = atualizaTodo(todo1, {
 
 ## `Readonly<Type>`
 
-Constroi um tipo com todas as propriedades de `Type` definidas como `readonly`, significando que as propriedades do tipo construído não podem ser reatribuídas.
+Constrói um tipo com todas as propriedades de `Type` definidas como `readonly`, significando que as propriedades do tipo construído não podem ser reatribuídas.
 
 ##### Exemplo
 
@@ -52,6 +52,7 @@ const todo: Readonly<Todo> = {
 
 todo.titulo = "Olá";
 ```
+
 Esse utilitário é útil para representar expressões de atribuição que irão falhar em tempo de execução (Ex. Ao tentar reatribuir propriedades de um [objeto congelado](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)).
 
 ##### `Object.freeze`
@@ -62,7 +63,7 @@ function freeze<Type>(obj: Type): Readonly<Type>;
 
 ## `Record<Keys,Type>`
 
-Constroi um tipo com um conjunto de propriedades `Keys` do tipo `Type`. Esse utilitário pode ser usado para mapear as propriedades de um tipo para outro tipo.
+Constrói um tipo com um conjunto de propriedades `Keys` do tipo `Type`. Esse utilitário pode ser usado para mapear as propriedades de um tipo para outro tipo.
 
 ##### Exemplo
 
@@ -85,7 +86,7 @@ nav.sobre;
 
 ## `Pick<Type, Keys>`
 
-Controi um tipo pegando um conjunto de propriedades `Keys` de `Type`.
+Constrói um tipo pegando um conjunto de propriedades `Keys` de `Type`.
 
 ##### Exemple
 
@@ -109,7 +110,7 @@ todo;
 
 ## `Omit<Type, Keys>`
 
-Controi um tipo pegando todas as propriedades de `Type` e então removendo `Keys`.
+Constrói um tipo pegando todas as propriedades de `Type` e então removendo `Keys`.
 
 ##### Exemplo
 
@@ -133,7 +134,7 @@ todo;
 
 ## `Exclude<Type, ExcludedUnion>`
 
-Constroi um tipo excluindo de `Type` todos membros de união que são atribuíveis a `ExcludedUnion`.
+Constrói um tipo excluindo de `Type` todos membros de união que são atribuíveis a `ExcludedUnion`.
 
 ##### Exemplo
 
@@ -148,7 +149,7 @@ type T2 = Exclude<string | number | (() => void), Function>;
 
 ## `Extract<Type, Union>`
 
-Constroi um tipo extraindo de `Type` todos membros de união que são atribuíveis a `Union`.
+Constrói um tipo extraindo de `Type` todos membros de união que são atribuíveis a `Union`.
 
 ##### Exemplo
 
@@ -161,7 +162,7 @@ type T1 = Extract<string | number | (() => void), Function>;
 
 ## `NonNullable<Type>`
 
-Constroi um tipo por excluir `null` e `undefined` de `Type`.
+Constrói um tipo por excluir `null` e `undefined` de `Type`.
 
 ##### Example
 
@@ -174,7 +175,7 @@ type T1 = NonNullable<string[] | null | undefined>;
 
 ## `Parameters<Type>`
 
-Constroi uma tipo tupla a partir de tipos usados nos parâmetros de uma função tipo `Type`.
+Constrói uma tipo tupla a partir de tipos usados nos parâmetros de uma função tipo `Type`.
 
 ##### Exemplo
 
@@ -202,7 +203,7 @@ type T7 = Parameters<Function>;
 
 ## `ConstructorParameters<Type>`
 
-Constroi um tipo tupla ou array a partir dos tipos de um tipo função construtora. Isso gera um tipo tupla com todos os tipos parâmetros (ou o tipo `never` se `Type` não for uma função).
+Constrói um tipo tupla ou array a partir dos tipos de um tipo função construtora. Isso gera um tipo tupla com todos os tipos parâmetros (ou o tipo `never` se `Type` não for uma função).
 
 ##### Exemplo
 
@@ -224,7 +225,7 @@ type T4 = ConstructorParameters<Function>;
 
 ## `ReturnType<Type>`
 
-Constroi um tipo consistindo do tipo retorno da função `Type`.
+Constrói um tipo consistindo do tipo retorno da função `Type`.
 
 ##### Exemplo
 
@@ -254,7 +255,7 @@ type T8 = ReturnType<Function>;
 
 ## `InstanceType<Type>`
 
-Constroi um tipo consistindo do tipo instancia de uma função construtora em `Type`.
+Constrói um tipo consistindo do tipo instancia de uma função construtora em `Type`.
 
 ##### Exemplo
 
@@ -280,7 +281,7 @@ type T4 = InstanceType<Function>;
 
 ## `Required<Type>`
 
-Constroi um tipo consistindo de todas propriedades de `T` definidas como obrigatórias. O oposto de [`Partial`](#partialtype).
+Constrói um tipo consistindo de todas propriedades de `T` definidas como obrigatórias. O oposto de [`Partial`](#partialtype).
 
 ##### Exemplo
 
@@ -314,7 +315,7 @@ function numeroToString(n: ThisParameterType<typeof paraHex>) {
 
 ## `OmitThisParameter<Type>`
 
-Remove o parâmetro [`this`](/docs/handbook/functions.html#this-parameters) de `Type`. Se `Type` não tem parâmetro `this` explicitamente declarado, o resultado é simplesmente `Type`. Caso contrário, um novo tipo função sem o parâmetro `this` é criado a partir de `Type`. Genérics são apagados e apenas a ultima assinatura sobrecarregada é propagada para o novo tipo função. 
+Remove o parâmetro [`this`](/docs/handbook/functions.html#this-parameters) de `Type`. Se `Type` não tem parâmetro `this` explicitamente declarado, o resultado é simplesmente `Type`. Caso contrário, um novo tipo função sem o parâmetro `this` é criado a partir de `Type`. Genérics são apagados e apenas a ultima assinatura sobrecarregada é propagada para o novo tipo função.
 
 ##### Exemplo
 
@@ -330,7 +331,7 @@ console.log(cincoParaHex());
 
 ## `ThisType<Type>`
 
-Esse utilitário não retorna um tipo transformado. Ao invés, serve como um marcador para um tipo contextual [`this`](/docs/handbook/functions.html#this). Note que a flag `--noImplicitThis` precisa ser ativada para usar esse utilitário. 
+Esse utilitário não retorna um tipo transformado. Ao invés, serve como um marcador para um tipo contextual [`this`](/docs/handbook/functions.html#this). Note que a flag `--noImplicitThis` precisa ser ativada para usar esse utilitário.
 
 ##### Exemplo
 
