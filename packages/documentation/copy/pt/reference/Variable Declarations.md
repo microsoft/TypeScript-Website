@@ -7,19 +7,19 @@ translatable: true
 ---
 
 `let` e `const`são dois conceitos relativamente novos para declarações de variáveis em JavaScript.
-[Como mencionamos anteriormente](/docs/handbook/basic-types.html#a-note-about-let), `let` é similar a `var` em alguns aspectos, mas evita que alguns usuários caiam em momentos "te peguei" em JavaScript. 
+[Como mencionamos anteriormente](/docs/handbook/basic-types.html#a-note-about-let), `let` é similar a `var` em alguns aspectos, mas evita que alguns usuários caiam em momentos "te peguei" em JavaScript.
 
 `const` é uma ampliação de `let` no qual previne reatribuições a uma variável.
 
 Com TypeScript sendo uma extensão de JavaScript, a linguagem naturalmente suporta `let` e `const`.
 Aqui iremos nos aprofundar nessas novas declarações e porque elas tem melhor preferência do que `var`.
 
-Se você vem usando JavaScript descuidadamente, a próxima sessão pode ser uma boa maneira de refrescar sua memória. 
-Se você está intimamente familiarizado com todas as peculiaridades de declarações `var` em JavaScript, talvéz você ache mais fácil pular a sessão.
+Se você vem usando JavaScript descuidadamente, a próxima sessão pode ser uma boa maneira de refrescar sua memória.
+Se você está intimamente familiarizado com todas as peculiaridades de declarações `var` em JavaScript, talvéz você ache mais fácil pular essa sessão.
 
-## declarações `var` 
+## declarações `var`
 
-Tradicionalmente declarar uma variável em JavaScript sempre foi feito usando a palavra chave `var`.
+Tradicionalmente, declarar uma variável em JavaScript sempre foi feito usando a palavra chave `var`.
 
 ```ts
 var a = 10;
@@ -53,7 +53,7 @@ g(); // retorna '11'
 ```
 
 No exemplo acima, `g` capturou a variável `a` declarada em `f`.
-Em qualquer ponto que `g` for chamada, o valor de `a` será amarrado com o valor de `a` em `f`.
+Em qualquer ponto que `g` for chamada, o valor de `a` será atrelado com o valor de `a` em `f`.
 Mesmo se `g` for chamada quando `f` tiver terminado de rodar, ela será capaz de acessar e modificar `a`.
 
 ```ts
@@ -94,8 +94,8 @@ f(false); // retorna 'undefined'
 
 Talvez alguns leitores precisem dar uma segunda olhada nesse exemplo.
 A variável `x` foi declarada _dentro do bloco `if`_, e mesmo assim fomos capazes de acessa-la de fora daquele bloco.
-Isso porque declarações `var` são acessíveis em qualquer lugar dentro da função, modulo, namespace ou escopo global em que estão contidas - o que iremos ver tudo sobre à frente - independente do bloco contido.
-Algumas pessoas chamam isso _escopo-`var`_ ou _funcao-escopo_.
+Isso porque declarações `var` são acessíveis em qualquer lugar dentro da função, módulo, namespace ou escopo global em que estão contidas - o que iremos ver mais à frente - independente do bloco contido.
+Algumas pessoas chamam isso _escopo-`var`_ ou _escopo de função_.
 Parâmetros também tem escopo de função.
 
 Essas regras de escopo podem causar muitos tipos de erros.
@@ -115,12 +115,12 @@ function sumaMatriz(matriz: number[][]) {
 }
 ```
 
-Talvez tenha sido fácil para alguns desenvolvedores JavaScript experientes identificar, mas o `for`-loop interno acidentalmente sobrescreve a variável `i` porque `i` faz referência para a mesma variável com escopo de função.
+Talvez tenha sido fácil para alguns desenvolvedores JavaScript experientes identificar, mas o loop `for` interno acidentalmente sobrescreve a variável `i` porque `i` faz referência para a mesma variável com escopo de função.
 Como desenvolvedores experientes já sabem, tipos similares de bugs escorregam pelo code review e podem ser uma fonte interminável de frustração.
 
 ## Captura de peculiaridades em variáveis
 
-Gaste alguns segundos para adivinhar qual é a saída do seguinte trecho de código: 
+Gaste alguns segundos para adivinhar qual é a saída do seguinte trecho de código:
 
 ```ts
 for (var i = 0; i < 10; i++) {
@@ -132,7 +132,7 @@ for (var i = 0; i < 10; i++) {
 
 Para aqueles sem familiaridade, `setTimeout` irá tentar executar a função após um certo numero de milissegundos (esperando, entretanto, qualquer outra coisa parar de rodar).
 
-Preparado ? Dê uma olhada:
+Preparado? Dê uma olhada:
 
 ```
 10
@@ -148,7 +148,7 @@ Preparado ? Dê uma olhada:
 ```
 
 Muitos desenvolvedores JavaScript estão intimamente familiarizados com esse comportamento, mas se você está surpreso, certamente não esta sozinho.
-A maioria das pessoas espera que a saída seja
+A maioria das pessoas espera que a saída seja:
 
 ```
 0
@@ -163,7 +163,7 @@ A maioria das pessoas espera que a saída seja
 9
 ```
 
-Lembra o que mencionamos anteriormente sobre captura de variáveis ?
+Lembra o que mencionamos anteriormente sobre captura de variáveis?
 Toda expressão função que passamos para `setTimeout` na verdade faz referencia para `i` do mesmo escopo.
 
 Vamos parar um pouco para entender o que isso significa.
@@ -171,7 +171,7 @@ Vamos parar um pouco para entender o que isso significa.
 Quando o loop `for` parar sua execução, o valor de `i` é `10`.
 Então cada vez que a função for chamada irá imprimir `10`!
 
-Uma forma comum de contornar o caso é usar um IIFE - uma Immediately Invoked Function Expression (Função Expressão de Invocação Imediata) - para capturar `i` a cada iteração:
+Uma forma comum de contornar o caso é usar um IIFE - uma Immediately Invoked Function Expression (Expressão de Invocação Imediata) - para capturar `i` a cada iteração:
 
 ```ts
 for (var i = 0; i < 10; i++) {
@@ -185,10 +185,10 @@ for (var i = 0; i < 10; i++) {
 }
 ```
 
-Esse padrão de aparência estranha é, na verdade, bem comum. 
+Esse padrão de aparência estranha é, na verdade, bem comum.
 O `i` na lista de parâmetros, na verdade, oculta o `i` declarado no loop `for`, mas como demos o mesmo nome para ambos, não temos de modificar muito o corpo do loop.
 
-## Declarações `let` 
+## Declarações `let`
 
 Até agora você descobriu que `var` tem alguns problemas, o que é precisamente o porque afirmações `let` foram introduzidas.
 Independentemente da palavra chave usada, afirmações `let` são escritas da mesma forma que afirmações `var`.
@@ -197,11 +197,11 @@ Independentemente da palavra chave usada, afirmações `let` são escritas da me
 let ola = "Olá!";
 ```
 
-A principal diferença não está na sintaxe, mas na semântica, na qual iremos nos aprofundar agora. 
+A principal diferença não está na sintaxe, mas na semântica, na qual iremos nos aprofundar agora.
 
 ## Escopo de bloco
 
-Quando uma variável é declarada usando `let`, usa-se o que alguns chamam de _escopo-lexical_ ou _escopo-de-bloco_.
+Quando uma variável é declarada usando `let`, usa-se o que alguns chamam de _escopo léxico_ ou _escopo de bloco_.
 Diferente de variáveis declaradas com `var` no qual o escopo permeia suas funções, variáveis com escopo de bloco não são visíveis de fora de seus blocos mais próximos ou loop-`for`.
 
 ```ts
@@ -243,9 +243,10 @@ Isso é apenas uma forma sofisticada de dizer que você não pode acessa-las ant
 a++; // ilegal usar `a` antes de ser declarada;
 let a;
 ```
+
 Algo a se notar é que você ainda pode _capturar_ uma variável de escopo antes dela ser declarada.
-O único problema é que é ilegal chamar essa função antes da declaração. 
-Se tivermos como foco ES2015, um ambiente de execução moderno irá lançar um erro; entretanto, atualmente TypeScript é permissívo e não irá reportar isso com um erro. 
+O único problema é que é ilegal chamar essa função antes da declaração.
+Se tivermos como foco ES2015, um ambiente de execução moderno irá lançar um erro; entretanto, atualmente TypeScript é permissívo e não irá reportar isso com um erro.
 
 ```ts
 function foo() {
@@ -259,9 +260,10 @@ foo();
 
 let a;
 ```
+
 Para mais informações sobre zonas mortas temporais, veja conteúdo relevante no [Mozilla Developer Network](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/let#Temporal_dead_zone_and_errors_with_let).
 
-## Re-declarações e Shadowing 
+## Re-declarações e Shadowing
 
 Com declarações `var`, mencionamos que não importa quantas vezes você declara suas variáveis; você tem apenas uma.
 
@@ -284,6 +286,7 @@ Felizmente, declarações `let` não são tão permissíveis.
 let x = 10;
 let x = 20; // erro: não pode redeclarar 'x' no mesmo escopo
 ```
+
 Ambas as variáveis não precisam necessáriamente ter escopo de bloco para o TypeScript nos falar que existe um problema.
 
 ```ts
@@ -332,8 +335,8 @@ function somaMatriz(matriz: number[][]) {
 }
 ```
 
-Essa versão do loop irá na verdade fazer a soma corretamente porque o `i` do loop interior espelha `i` do loop exterior.
-Swadowing deveria _usualmente_ ser evitado com o intúito de escrever código mas claro.
+Essa versão do loop irá, na verdade, fazer a soma corretamente porque o `i` do loop interior espelha o `i` do loop exterior.
+O _shadowing_ deveria _normalmente_ ser evitado com o intuito de escrever código mas claro.
 Embora existam alguns cenários onde ele pode se encaixar de forma vantajosa, você deve julgar a melhor forma de usa-lo.
 
 ## Captura de variáveis de escopo de bloco
@@ -360,7 +363,7 @@ function aCidadeQueSempreDorme() {
 Porque nós capturamos `cidade` de dentro de seu ambiente, ainda somos capazes de acessa-la a pesar do fato de que o bloco `if` terminou sua execução.
 
 Lembre que com nosso exemplo anterior `setTimeout`, adicionamos a necessidade de usar um IIFE para capturar o estado de uma variável para cada iteração do loop `for`.
-Na prática, o que estávamos fazendo era criar uma nova variável de ambiente para nossas variáveis capturadas. 
+Na prática, o que estávamos fazendo era criar uma nova variável de ambiente para nossas variáveis capturadas.
 Isso foi um pouco doloroso, mas felizmente, você nunca terá de fazer isso em TypeScript de novo.
 
 Declarações `let` tem um comportamento drasticamente diferentes quando declaradas como parte de um loop.
@@ -429,12 +432,12 @@ O [capítulo sobre Interfaces](/docs/handbook/interfaces.html) tem mais detalhes
 
 ## `let` vs. `const`
 
-Dado que temos dois tipos de declarações com semântica de escopo similares, é natural nos perguntarmos qual usar. 
+Dado que temos dois tipos de declarações com semântica de escopo similares, é natural nos perguntarmos qual usar.
 Como a maioria das perguntas amplas, a resposta é: depende.
 
 Aplicando o [princípio do menos privilegiado](https://wikipedia.org/wiki/Principle_of_least_privilege), todas declarações além daquelas que você planeja modificar deveriam usar `const`.
 
-A justificativa é que se uma variável não precisa ser escrita , outros trabalhando na mesma base de dados não deveriam ser possibilitados de escrever automaticamente no objeto, e precisarão considerar quando eles realmente precisam reatribuir para a variável.
+A justificativa é que, se uma variável não precisa ser escrita, outros trabalhando na mesma base de dados não deveriam ser possibilitados de escrever automaticamente no objeto, e precisarão considerar quando eles realmente precisam reatribuir para a variável.
 Usando `const` também faz o código mais previsível quando se está raciocinando sobre o fluxo de dados.
 
 Use seu melhor julgamento, e se aplicável, consulte o assunto com o resto de seu time.
@@ -467,7 +470,7 @@ primeiro = entrada[0];
 segundo = entrada[1];
 ```
 
-Desestruturação também funciona com variáveis ja declaradas: 
+Desestruturação também funciona com variáveis ja declaradas:
 
 ```ts
 // variáveis de troca
@@ -483,6 +486,7 @@ function f([primeiro, segundo]: [number, number]) {
 }
 f([1, 2]);
 ```
+
 Você pode criar uma variável para os itens restantes da lista usando a sintaxe `...`:
 
 ```ts
@@ -557,7 +561,8 @@ Como desestruturação de arrays, você pode ter atribuições sem declarações
 ```ts
 ({ a, b } = { a: "baz", b: 101 });
 ```
-Pereba que tivemos que cercar esse elemento com parêntesis.
+
+Perceba que tivemos que cercar esse elemento com parêntesis.
 JavaScript normalmente analisa um `{` como o começo do bloco.
 
 Você pode criar uma variável para o restante dos itens em um objeto usando a sintaxe `...`:
@@ -583,6 +588,7 @@ A direção é esquerda para direita, como se você tivesse escrito:
 let novoNome1 = o.a;
 let novoNome2 = o.b;
 ```
+
 De forma confusa, os dois pontos _não_ indicam o tipo.
 O tipo, se você o especificar, ainda precisa ser escrito após toda desestruturação:
 
@@ -592,7 +598,7 @@ let { a, b }: { a: string; b: number } = o;
 
 ### Valores padrão
 
-Valores padrão te permitem especificar um valor caso a propriedade seja undefined:
+Valores padrão te permitem especificar um valor caso a propriedade seja `undefined`:
 
 ```ts
 function mantenhaObjetoInteiro(objetoInteiro: { a: string; b?: number }) {
@@ -601,7 +607,7 @@ function mantenhaObjetoInteiro(objetoInteiro: { a: string; b?: number }) {
 ```
 
 Nesse exemplo o `b?` indica que `b` é opcional, então ele pode ser `undefined`.
-`mantenhaObjetoInteiro` agora tem uma variável para `objetoInteiro` assim como as propriedades `a` e `b`, mesmo se `b` for undefined.
+`mantenhaObjetoInteiro` agora tem uma variável para `objetoInteiro` assim como as propriedades `a` e `b`, mesmo se `b` for `undefined`.
 
 ## Declaração de Funções
 
@@ -616,7 +622,7 @@ function f({ a, b }: C): void {
 ```
 
 Mas especificar valores padrões é mais comum para parâmetros, e ter valores padrão de forma correta com desestruturação pode ser complicado.
-Primeiro, você precisa lembrar de por a padronização antes do valor padrão. 
+Primeiro, você precisa lembrar de por a padronização antes do valor padrão.
 
 ```ts
 function f({ a = "", b = 0 } = {}): void {
@@ -627,7 +633,7 @@ f();
 
 > O código acima é um exemplo de inferência de tipo, explicado anteriormente nesse manual.
 
-Então, você precisa lembrar de prover um valor padrão para parâmetros opcionais na propriedade desestruturada ao invés do inicializador principal. 
+Então, você precisa lembrar de prover um valor padrão para parâmetros opcionais na propriedade desestruturada ao invés do inicializador principal.
 Lembre que `C` foi definida com `b` opcional:
 
 ```ts
@@ -657,7 +663,7 @@ let segundo = [3, 4];
 let ambosMais = [0, ...primeiro, ...segundo, 5];
 ```
 
-Isso dá a ambosMais o valor `[0, 1, 2, 3, 4, 5]`.
+Isso dá a `ambosMais` o valor `[0, 1, 2, 3, 4, 5]`.
 Propagação cria uma cópia rasa de `primeiro` e `segundo`.
 Eles não são modificados pela propagação.
 
@@ -679,11 +685,11 @@ let padroes = { comida: "apimentada", preco: "$$", ambiente: "barulhento" };
 let busca = { comida: "rica", ...padroes };
 ```
 
-Então a propriedade `comida` em `padroes` sobrescreve `comida: "rica"`, o que não é o que queremos nesse caso. 
+Então a propriedade `comida` em `padroes` sobrescreve `comida: "rica"`, o que não é o que queremos nesse caso.
 
 Propagação de objetos também possui outros limites surpreendentes.
 Primeiro, ele apenas inclui [as próprias propriedades enumeradas](https://developer.mozilla.org/docs/Web/JavaScript/Enumerability_and_ownership_of_properties) de um objeto.
-Basicamente, isso significa que você perde metodos quando propaga instancias de um objeto:
+Basicamente, isso significa que você perde métodos quando propaga instancias de um objeto:
 
 ```ts
 class C {
@@ -695,5 +701,6 @@ let clone = { ...c };
 clone.p; // ok
 clone.m(); // erro!
 ```
-Segundo, o compilador TypeScript não permite propagação do tipo dos parâmetros para funções genéricas. 
+
+Segundo, o compilador TypeScript não permite propagação do tipo dos parâmetros para funções genéricas.
 Essa funcionalidade é esperada em versões futuras da linguagem.
