@@ -135,10 +135,11 @@ export const createURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?:
     urlParams = { ...urlParams, ...paramOverrides }
   }
 
-  if (Object.keys(urlParams).length > 0) {
-    const queryString = Object.entries(urlParams)
-      .filter(([_k, v]) => v !== undefined)
-      .filter(([_k, v]) => v !== null)
+  const queryStringOpts = Object.entries(urlParams)
+    .filter(([_k, v]) => v !== undefined)
+    .filter(([_k, v]) => v !== null)
+  if (queryStringOpts.length > 0) {
+    const queryString = queryStringOpts
       .map(([key, value]) => {
         return `${key}=${encodeURIComponent(value as string)}`
       })

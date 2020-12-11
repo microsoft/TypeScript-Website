@@ -167,8 +167,24 @@ export const setupPlayground = (
         suppressNextTextChangeForHashChange = false
         return
       }
-      const newURL = sandbox.createURLQueryWithCompilerOptions(sandbox)
-      window.history.replaceState({}, "", newURL)
+      const newURLSuffix = sandbox.createURLQueryWithCompilerOptions(sandbox)
+      console.log(newURLSuffix)
+      const search = newURLSuffix.split("#")
+      console.log(search)
+      if (search[0].length !== 0) {
+        // There is both a query and a hash
+        const currentSearch = "?" + document.location.search
+        if (search[0] === currentSearch) {
+          // Just a hash change, no need to update history
+          window.location.hash = newURLSuffix
+        } else {
+          // The compiler flags have changed, mark that
+          window.history.replaceState({}, "", newURLSuffix)
+        }
+      } else {
+        // Just a hash change, no need to update history
+        window.window.location.hash = newURLSuffix
+      }
     }
 
     localStorage.setItem("sandbox-history", sandbox.getText())
