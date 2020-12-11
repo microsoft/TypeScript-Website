@@ -17,8 +17,8 @@ Um projeto pode ser compilado seguindo uma das seguintes maneiras:
 
 ## Usando `tsconfig.json` ou `jsconfig.json`
 
-- Invocando o tsc sem os arquivos de entrada, nesse caso o compilador procura o arquivo `tsconfig.json` começando no diretório atual e continua em suas sub pastas.
-- Invocando o tsc sem os arquivos de entrada e a opção de linha de comando `--project` (ou apenas `-p`) que especifica o caminho para o diretório que contém o arquivo `tsconfig.json`, ou o caminho para um arquivo `.json` válido contendo as configurações.
+- Invocando o `tsc` sem os arquivos de entrada, nesse caso o compilador procura o arquivo `tsconfig.json` começando no diretório atual e continua em suas sub pastas.
+- Invocando o `tsc` sem os arquivos de entrada e a opção de linha de comando `--project` (ou apenas `-p`) que especifica o caminho para o diretório que contém o arquivo `tsconfig.json`, ou o caminho para um arquivo `.json` válido contendo as configurações.
 
 Quando os arquivos de entrada são especificados por linha de comando, os arquivos `tsconfig.json` são ignorados.
 
@@ -94,7 +94,7 @@ Por exemplo, se você está desenvolvendo um projeto que usa Node.js na versão 
 
 Isso permite que seu `tsconfig.json` se concentre nas escolhas únicas para o seu projeto, e não em todas as mecânicas de tempo de execução. Já existem algumas tsconfig básicas e esperamos que a comunidade possa adicionar mais para diferentes ambientes.
 
-- [Recommended](https://www.npmjs.com/package/@tsconfig/recommended)
+- [Recomendado](https://www.npmjs.com/package/@tsconfig/recommended)
 - [Node 10](https://www.npmjs.com/package/@tsconfig/node10)
 - [Node 12](https://www.npmjs.com/package/@tsconfig/node12)
 - [Deno](https://www.npmjs.com/package/@tsconfig/deno)
