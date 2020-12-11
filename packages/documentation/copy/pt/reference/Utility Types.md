@@ -218,7 +218,6 @@ type T2 = ConstructorParameters<RegExpConstructor>;
 //    ^?
 type T3 = ConstructorParameters<any>;
 //    ^?
-
 type T4 = ConstructorParameters<Function>;
 //    ^?
 ```
@@ -299,7 +298,7 @@ const obj2: Required<Props> = { a: 5 };
 
 ## `ThisParameterType<Type>`
 
-Extrai o tipo do parâmetro [this](/docs/handbook/functions.html#this-parameters) para um tipo função, ou [unknown](/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type) se o tipo da função não tem o parâmetro `this`.
+Extrai o tipo do parâmetro [this](/docs/handbook/functions.html#this-parameters) para um tipo `function`, ou [unknown](/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type) se o tipo da função não tem o parâmetro `this`.
 
 ##### Exemplo
 
@@ -315,7 +314,7 @@ function numeroToString(n: ThisParameterType<typeof paraHex>) {
 
 ## `OmitThisParameter<Type>`
 
-Remove o parâmetro [`this`](/docs/handbook/functions.html#this-parameters) de `Type`. Se `Type` não tem parâmetro `this` explicitamente declarado, o resultado é simplesmente `Type`. Caso contrário, um novo tipo função sem o parâmetro `this` é criado a partir de `Type`. Genérics são apagados e apenas a ultima assinatura sobrecarregada é propagada para o novo tipo função.
+Remove o parâmetro [`this`](/docs/handbook/functions.html#this-parameters) de `Type`. Se `Type` não tem parâmetro `this` explicitamente declarado, o resultado é simplesmente `Type`. Caso contrário, um novo tipo função sem o parâmetro `this` é criado a partir de `Type`. Generics são apagados e apenas a ultima assinatura sobrecarregada é propagada para o novo tipo função.
 
 ##### Exemplo
 
