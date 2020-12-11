@@ -43,7 +43,7 @@ type FeatureFlags = {
   newUserProfile: () => void;
 };
 
-type FeatureOptions = OptionsFlag<FeatureFlags>;
+type FeatureOptions = OptionsFlags<FeatureFlags>;
 //   ^?
 ```
 

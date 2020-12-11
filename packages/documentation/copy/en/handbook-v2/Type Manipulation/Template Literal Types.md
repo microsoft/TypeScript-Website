@@ -120,7 +120,6 @@ const person = makeWatchedObject({
   age: 26
 });
 
-//
 person.on("firstNameChanged", newName => {
     //                        ^?
     console.log(`new name is ${newName.toUpperCase()}`);
