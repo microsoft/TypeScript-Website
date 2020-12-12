@@ -1,9 +1,9 @@
 //// { compiler: { ts: "4.1.0-dev.20201028", jsx: 4 } }
 
-// In version 17, the React team introduced a new format
-// for the JavaScript emitted by JSX transforms. You
-// can see the JavaScript in the right hand side of
-// the playground in the ".JS" tab  ->
+// Reactのバージョン17には、JSXを変換する際に
+// 出力されるJavaScriptに新しい形式が導入されました。
+// 出力されたJavaScriptはプレイグラウンド右側の
+// ".JS"タブで確認できます。
 
 import { useState } from "react";
 
@@ -18,15 +18,15 @@ export function ExampleApp() {
   );
 }
 
-// The some of the main changes:
+// 以下は、主な変更点の抜粋です:
 //
-// - Use an `import` to provide functions instead of a React identifier
-// - Different functions for a single element (jsx) vs many children (jsxs)
-// - Key is separate from the props
+// - React識別子の代わりとなる関数が、`import`を介して提供される
+// - 単一要素(jsx)と複数の子要素(jsxs)にそれぞれ異なる関数が使用される
+// - keyがpropsから切り離される
 //
-// You can read the RFC which this change implements here
+// 上記の変更が実装されているRFCは以下で読むことができます:
 // https://github.com/reactjs/rfcs/blob/createlement-rfc/text/0000-create-element-changes.md
 
-// These changes are mostly under-the-hood changes
-// which shouldn't affect you you write JSX code as
-// an end user.
+// こうした変更のほとんどは内部的なものであり、
+// エンドユーザーがJSXのコードを記述することには
+// 影響ないはずです。

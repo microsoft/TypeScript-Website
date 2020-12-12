@@ -1,36 +1,36 @@
 //// { compiler: { ts: "4.1.0-dev.20201028" } }
 
-// TypeScript 4.1 added support for template literals, you can
-// understand some of the basics in example:intro-to-template-literals
+// TypeScript 4.1では、テンプレートリテラルがサポートされました。
+// テンプレートリテラルの基本はexample:intro-to-template-literalsで学ぶことができます。
 
-// 4.1 introduces new syntax inside a mapped types declaration,
-// you can now use "as `templated string`" which can be used to transform
-// strings inside a union.
+// また、Mapped Type宣言に新しい構文が4.1で追加されました。
+// これにより、"as `templated string`"の形で
+// Union型の文字列変換ができるようになります。
 
-// For example, this type will transform all of the properties of an existing
-// type into four functions which correspond to traditional REST calls.
+// 例えば、次の型は既存の型のすべてのプロパティを
+// 従来のRESTの呼び出しに対応する4つの関数に変換します。
 
-// Template strings literals to describe each API endpoint:
+// 各APIのエンドポイントを記述するための文字列のテンプレートリテラル:
 type GET<T extends string> = `get${Capitalize<T>}`
 type POST<T extends string> = `post${Capitalize<T>}`
 type PUT<T extends string> = `put${Capitalize<T>}`
 type DELETE<T extends string> = `delete${Capitalize<T>}`
 
-// A union of the above literal types
+// 上記のリテラル型のUnion
 type REST<T extends string> = GET<T> | POST<T> | PUT<T> | DELETE<T>
 
-// Takes a type, then for each string property in the type, map
-// that key to REST above, which would create the four functions.
+// 型を引数に取り、その型にあるそれぞれの文字列プロパティに対して、
+// 上記のREST型をマッピングし、4つの関数を作成します。
 
 type RESTify<Type> = {
   [Key in keyof Type as REST<Key extends string ? Key : never>]: () => Type[Key]
 };
 
-// The `Key extends string ? Key : never` is needed because an object
-// can contain strings, numbers and symbols as keys. We can only handle
-// the string cases here.
+// オブジェクトのキーは文字列、数値、シンボルをとりうるため、
+// `Key extends string ? Key : never`が必要になります。
+// これにより、この型はキーが文字列のケースのみを扱うことができます。
 
-// Now we have a list of objects available through the API:
+// 次に、APIから利用可能なオブジェクトのリストを作ります:
 
 interface APIs {
   artwork: { id: string, title: string};
@@ -38,17 +38,17 @@ interface APIs {
   location: { id: string, address: string, country: string }
 }
 
-// Then when we have an object which uses these types
+// そして、上記の型を使用するオブジェクトを宣言します:
 declare const api: RESTify<APIs>
 
-// Then all these functions are automatically created 
+// そうすると、下記の関数がすべて自動的に作成されます
 api.getArtist()
 api.postArtist()
 api.putLocation()
 
-// Continue learning more about template literals in:
+// テンプレートリテラルについて続けて詳しく学びたい場合は以下を参照してください:
 // example:string-manipulation-with-template-literals
 
-// Or read the announcement blog post:
+// もしくは告知ブログ記事をご覧ください:
 // https://devblogs.microsoft.com/typescript/announcing-typescript-4-1-beta/#template-literal-types
 

@@ -1,12 +1,12 @@
 //// { compiler: { ts: "4.1.0-beta" } }
 
-// With 4.1 the JSDoc parser in TypeScript
-// used in both JavaScript and TypeScript files
-// supports the @see parameter.
+// 4.1では、TypeScriptとJavaScriptファイルの両方で
+// TypeScriptのJSDocパーサが
+// @seeパラメータをサポートします。
 
-// You can use the @see to help people quickly
-// jump to other related code via clicking
-// (cmd/ctrl + clicking) or getting hover info
+// @seeを使えば、クリック(cmd/ctrl + クリック)するか、
+// あるいはマウスをホバーした時に表示される情報から
+// 関連するコードに素早くアクセスすることができます。
 
 /**
  * @see hello
