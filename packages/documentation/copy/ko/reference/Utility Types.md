@@ -6,7 +6,7 @@ oneline: Types which are globally included in TypeScript
 translatable: true
 ---
 
-TypeScript는 일반적인 타입 변환을 쉽게 하기 위해서 몇 가지 유틸리티 타입을 제공합니다. 이러한 유틸리티는 전역적으로 사용 가능합니다.
+TypeScript는 일반적인 타입 변환을 쉽게 하기 위해서 몇 가지 유틸리티 타입을 제공합니다. 이러한 유틸리티는 전역으로 사용 가능합니다.
 
 ## `Partial<Type>`
 
