@@ -1,7 +1,7 @@
 ---
 title: Namespaces and Modules
 layout: docs
-permalink: ko/docs/handbook/namespaces-and-modules.html
+permalink: /ko/docs/handbook/namespaces-and-modules.html
 oneline: How to organize code in TypeScript via modules or namespaces
 translatable: true
 ---
