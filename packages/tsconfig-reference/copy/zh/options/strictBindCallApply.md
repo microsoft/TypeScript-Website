@@ -10,7 +10,7 @@ oneline: "检查 `bind`，`call` 和 `apply` 的参数是否与原函数匹配�
 // @strictBindCallApply: true
 // @errors: 2345
 
-// With strictBindCallApply on
+// 启用 strictBindCallApply 选项
 function fn(x: string) {
   return parseInt(x);
 }
