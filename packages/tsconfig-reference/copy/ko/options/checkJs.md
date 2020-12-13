@@ -3,7 +3,8 @@ display: "Check JS"
 oneline: "Enable error reporting in type-checked JavaScript files."
 ---
 
-`allowJs`와 함께 작동합니다. `checkJs` 이 사용가능하다면 에러는 JavaScript 파일에 보고됩니다. 이것은 당신의 프로젝트에 포함된 모든 JavaScript 파일의 제일 위에 `// @ts-check`을 포함하는 것과 동일합니다.
+`allowJs`와 함께 작동합니다. `checkJs` 이 사용가능하다면 에러는 JavaScript 파일에 보고됩니다. 
+이것은 당신의 프로젝트에 포함된 모든 JavaScript 파일의 제일 위에 `// @ts-check`을 포함하는 것과 동일합니다.
 
 예를 들어, TypeScript와 함께 제공되는 `parseFloat` 에 따르면 이것은 잘못된 JavaScript입니다 :
 
