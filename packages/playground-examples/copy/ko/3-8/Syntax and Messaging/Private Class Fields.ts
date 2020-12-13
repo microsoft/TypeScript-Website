@@ -37,8 +37,8 @@ console.log(jeremy.#lastName);
 // 이것 또한:
 console.log("Person's last name:", jeremy["#lastName"]);
 
-// 우리가 받는 일반적인 질문은 
-// "왜 클래스 필드에 있는 'private' 키워드 대신 이것을 사용하려고 하나요?"입니다.
+// 우리는 흔히 
+// "왜 클래스 필드에 있는 'private' 키워드 대신 이것을 사용하려고 하나요?"라는 질문을 받습니다. 
 // TypeScript 3.8 이전에 어떻게 동작했었는지 비교해 봅시다:
 
 class Dog {
