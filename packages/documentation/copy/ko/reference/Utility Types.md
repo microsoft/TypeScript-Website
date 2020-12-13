@@ -149,7 +149,7 @@ type T2 = Exclude<string | number | (() => void), Function>;
 
 ## `Extract<Type, Union>`
 
-`union`에 할당할 수 있는 모든 유니온 멤버를 `Type`에서 가져와서 타입을 생성합니다.
+`Union`에 할당할 수 있는 모든 유니온 멤버를 `Type`에서 가져와서 타입을 생성합니다.
 
 ##### 예제
 
