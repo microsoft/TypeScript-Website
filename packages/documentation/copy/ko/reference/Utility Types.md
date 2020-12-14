@@ -366,3 +366,7 @@ obj.moveBy(5, 5);
 위 예제에서, `makeObject`의 인수인 `methods` 객체는 `ThisType<D & M>` 을 포함한 문맥적 타입을 가지고 따라서 `methods` 객체의 메서드 안에 [this](/docs/handbook/functions.html#this) 타입은 `{ x: number, y: number } & { moveBy(dx: number, dy: number): number }`입니다.  `methods` 프로퍼티의 타입은 추론 대상인 동시에 메서드의 `this` 타입의 출처인 것에 주목하세요. 
 
 `ThisType<T>` 마커 인터페이스는 단지  `lib.d.ts`에 선언된 빈 인터페이스입니다. 객체 리터럴의 문맥적 타입으로 인식되는 것을 넘어, 그 인터페이스는 빈 인터페이스처럼 동작합니다.
+
+## 내장 문자열 조작 타입
+
+템플릿 문자열 리터럴 주변의 문자열 조작을 돕기 위해, TypeScript는 타입 시스템 내에서 문자열 조작에 사용할 수 있는 타입 집합이 포함되어 있습니다. 할 수 있어요
