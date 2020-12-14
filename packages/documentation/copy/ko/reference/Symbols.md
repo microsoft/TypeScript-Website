@@ -54,7 +54,8 @@ let className = c[getClassNameSymbol](); // "C"
 
 ## 잘 알려진 심벌 (Well-known Symbols)
 
-사용자 정의 심벌 외에, 잘 알려진 내장 심벌이 있습니다. 내장 심벌은 언어 내부의 동작을 나타내는데 사용됩니다.
+사용자 정의 심벌 외에, 잘 알려진 내장 심벌이 있습니다. 
+내장 심벌은 언어 내부의 동작을 나타내는데 사용됩니다.
 
 아래는 잘 알려진 심벌의 목록입니다:
 
@@ -93,7 +94,8 @@ let className = c[getClassNameSymbol](); // "C"
 
 ## `Symbol.toPrimitive`
 
-객체를 대응되는 기본 값으로 변환하는 메서드.  `ToPrimitive` 추상 연산으로 호출됩니다.
+객체를 대응되는 기본 값으로 변환하는 메서드.  
+`ToPrimitive` 추상 연산으로 호출됩니다.
 
 ## `Symbol.toStringTag`
 
@@ -103,6 +105,3 @@ let className = c[getClassNameSymbol](); // "C"
 ## `Symbol.unscopables`
 
 자신의 프로퍼티 이름이 연결된 개체의 'with' 환경 바인딩에서 제외되는 프로퍼티 이름인 객체.
-
-
-
