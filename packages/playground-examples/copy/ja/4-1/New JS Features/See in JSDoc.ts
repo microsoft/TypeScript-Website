@@ -1,7 +1,7 @@
 //// { compiler: { ts: "4.1.0-beta" } }
 
 // 4.1では、TypeScriptとJavaScriptファイルの両方で
-// TypeScriptのJSDocパーサが
+// 使われているTypeScriptのJSDocパーサが
 // @seeパラメータをサポートします。
 
 // @seeを使えば、クリック(cmd/ctrl + クリック)するか、

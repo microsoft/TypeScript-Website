@@ -28,5 +28,5 @@ export function ExampleApp() {
 // https://github.com/reactjs/rfcs/blob/createlement-rfc/text/0000-create-element-changes.md
 
 // こうした変更のほとんどは内部的なものであり、
-// エンドユーザーがJSXのコードを記述することには
-// 影響ないはずです。
+// エンドユーザーがJSXのコードを記述することに
+// 影響はありません。

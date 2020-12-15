@@ -27,14 +27,14 @@ type FeatureID = `${Lowercase<Features>}-id`;
 type FeatureEnvVar = `${Uppercase<Features>}-ID`;
 
 // Union型を構成する文字列は掛け合わされます。
-// したがって、複数のUnion型を使用した場合、Union型を構成するそれぞれ型は、
+// したがって、複数のUnion型を使用した場合、Union型を構成するそれぞれの型は、
 // 他のUnion型を構成するそれぞれの型に対して評価されます。
 
 type EnabledStates = "enabled" | "disabled";
 type FeatureUIStrings = `${Features} is ${EnabledStates}`;
 
 // このことにより、それぞれのUnion型の要素の
-// すべての可能な組み合わせが考慮されます。
+// すべての可能な組み合わせが考慮されることが保証されます。
 
 // 次の型では、インデックスシグネチャと併用することで
 // プロパティキーのリストを素早く作成することができます。
