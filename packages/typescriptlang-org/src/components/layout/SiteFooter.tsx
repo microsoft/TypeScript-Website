@@ -296,7 +296,7 @@ export const SiteFooter = (props: Props) => {
               fillRule="evenodd"
             />
           </svg>
-          <p>Made with &#9829; in Redmond, Boston, SF &amp; NYC</p>
+          <p>Made with &#9829; in Redmond, Boston, SF &amp; Dublin</p>
 
           <a href="">
             <img

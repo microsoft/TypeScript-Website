@@ -171,6 +171,8 @@ const handbookPages = [
           { file: "handbook-v2/Type Manipulation/Typeof Type Operator.md" },
           { file: "handbook-v2/Type Manipulation/Indexed Access Types.md" },
           { file: "handbook-v2/Type Manipulation/Conditional Types.md" },
+          { file: "handbook-v2/Type Manipulation/Mapped Types.md" },
+          { file: "handbook-v2/Type Manipulation/Template Literal Types.md" },
         ]
       },
       { file: "handbook-v2/Classes.md" },

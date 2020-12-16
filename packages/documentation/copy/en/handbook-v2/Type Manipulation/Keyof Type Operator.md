@@ -2,7 +2,7 @@
 title: Keyof Type Operator
 layout: docs
 permalink: /docs/handbook/2/indexed-access-types.html
-oneline: "Step one in learning TypeScript: The basics types."
+oneline: "Using the keyof operator in type contexts."
 beta: true
 ---
 

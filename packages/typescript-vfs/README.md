@@ -210,7 +210,7 @@ What does a full example look like? This comes basically verbatim from the TypeS
 ```ts
 import ts from "typescript"
 import tsvfs from "@typescript/vfs"
-import lzstring from "lzstring"
+import lzstring from "lz-string"
 
 const fsMap = await tsvfs.createDefaultMapFromCDN(compilerOptions, ts.version, true, ts, lzstring)
 fsMap.set("index.ts", "// main TypeScript file content")
