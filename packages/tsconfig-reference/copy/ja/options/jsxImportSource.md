@@ -3,11 +3,11 @@ display: "jsxImportSource"
 oneline: "The module specifier for importing the jsx factory functions"
 ---
 
-Declares the module specifier to be used for importing the `jsx` and `jsxs` factory functions when using [`jsx`](#jsx) as `"react-jsx"` or `"react-jsxdev"` which were introduced in TypeScript 4.1.
+TypeScript 4.1で導入された`"react-jsx"`や`"react-jsxdev"`を[`jsx`](#jsx)に指定する際に`jsx`と`jsxs`のファクトリ関数をインポートするモジュール指定子を宣言します。
 
-With [React 17](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html) the library supports a new form of JSX transformation via a separate import.
+[React 17](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html)では、それぞれのインポートによる新しいJSXの変換がサポートされています。
 
-For example with this code:
+例えば、このコードで:
 
 ```tsx
 import React from "react";
@@ -17,7 +17,7 @@ function App() {
 }
 ```
 
-Using this TSConfig:
+次のようなTSConfigの場合:
 
 ```json tsconfig
 {
@@ -29,7 +29,7 @@ Using this TSConfig:
 }
 ```
 
-The emitted JavaScript from TypeScript is:
+TypeScriptからコンパイルされるJavaScriptは次のようになります:
 
 ```tsx twoslash
 // @showEmit
@@ -50,7 +50,7 @@ function App() {
 }
 ```
 
-For example if you wanted to use `"jsxImportSource": "preact"`, you need a tsconfig like:
+`"jsxImportSource": "preact"`を使用する場合、tsconfigは次のようになり:
 
 ```json tsconfig
 {
@@ -64,7 +64,7 @@ For example if you wanted to use `"jsxImportSource": "preact"`, you need a tscon
 }
 ```
 
-Which generates code like:
+以下のようなコードが生成されます:
 
 ```tsx twoslash
 // @showEmit
@@ -80,7 +80,7 @@ export function App() {
 }
 ```
 
-Alternatively, you can use a per-file pragma to set this option, for example:
+あるいは、ファイル単位のディレクティブを使ってこのオプションを設定することもできます。例えば:
 
 ```tsx
 /** @jsxImportSource preact */
@@ -90,6 +90,6 @@ export function App() {
 }
 ```
 
-Would add `preact/jsx-runtime` as an import for the `_jsx` factory.
+これにより、`_jsx`ファクトリをインポートする`preact/jsx-runtime`が追加されます。
 
-_Note:_ In order for this to work like you would expect, your `tsx` file must include an `export` or `import` so that it is considered a module.
+_注意:_ このオプションを期待通りに動作させるには、`tsx`ファイルに`export`または`import`を含める必要があります。これにより、ファイルはモジュールとみなされます。

@@ -3,9 +3,9 @@ display: "jsxFragmentFactory"
 oneline: "Specify the JSX Fragment reference to use for fragements when targeting React JSX emit, e.g. 'React.Fragment' or 'Fragment'."
 ---
 
-Specify the JSX fragment factory function to use when targeting react JSX emit with `jsxFactory` compiler option is specified, e.g. `Fragment`.
+コンパイラオプションに`jsxFactory`が指定されており、React JSXのコンパイルを目的とする場合に使用されるJSXフラグメントファクトリ関数(例: `Fragment`)を指定します。
 
-For example with this TSConfig:
+例えば、次のTSConfigでは:
 
 ```json tsconfig
 {
@@ -19,7 +19,7 @@ For example with this TSConfig:
 }
 ```
 
-This TSX file:
+このTSXファイルは:
 
 ```tsx
 import { h, Fragment } from "preact";
@@ -31,7 +31,7 @@ const HelloWorld = () => (
 );
 ```
 
-Would look like:
+次のようになります:
 
 ```tsx twoslash
 // @showEmit
@@ -51,9 +51,9 @@ const HelloWorld = () => (
 );
 ```
 
-This option can be used on a per-file basis too similar to [Babel's `/* @jsxFrag h */` directive](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx#fragments).
+このオプションは[Babelの`/* @jsxFrag h */`ディレクティブ](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx#fragments)とよく似ており、ファイル単位で使用できます。
 
-For example:
+例:
 
 ```tsx twoslash
 /** @jsx h */

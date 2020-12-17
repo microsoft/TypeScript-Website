@@ -3,10 +3,10 @@ display: "watchFile"
 oneline: "What technique should the watcher use"
 ---
 
-The strategy for how individual files are watched.
+個々のファイルを監視する方法を指定します。
 
-- `fixedPollingInterval`: Check every file for changes several times a second at a fixed interval.
-- `priorityPollingInterval`: Check every file for changes several times a second, but use heuristics to check certain types of files less frequently than others.
-- `dynamicPriorityPolling`: Use a dynamic queue where less-frequently modified files will be checked less often.
-- `useFsEvents` (the default): Attempt to use the operating system/file system's native events for file changes.
-- `useFsEventsOnParentDirectory`: Attempt to use the operating system/file system's native events to listen for changes on a file's parent directory
+- `fixedPollingInterval`: すべてのファイルの変更を一定間隔で毎秒数回チェックします。
+- `priorityPollingInterval`: すべてのファイルの変更を毎秒数回チェックしますが、ヒューリスティックスを使用して他のファイルよりも少ない頻度で特定のタイプのファイルをチェックします。
+- `dynamicPriorityPolling`: 変更頻度の低いファイルがチェックされる頻度が低くなるような動的なキューを使用します。
+- `useFsEvents` (デフォルト): オペレーティングシステム/ファイルシステムのネイティブイベントの使用をファイルの変更に試みます。
+- `useFsEventsOnParentDirectory`: ファイルの親ディレクトリでオペレーティングシステム/ファイルシステムのネイティブイベントを使用を試み、変更をリッスンします。

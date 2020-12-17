@@ -3,8 +3,8 @@ display: "watchDirectory"
 oneline: "Determine how directories are watched"
 ---
 
-The strategy for how entire directory trees are watched under systems that lack recursive file-watching functionality.
+再帰的なファイル監視機能を持たないシステムで、ディレクトリツリー全体を監視する方法を指定します。
 
-- `fixedPollingInterval`: Check every directory for changes several times a second at a fixed interval.
-- `dynamicPriorityPolling`: Use a dynamic queue where less-frequently modified directories will be checked less often.
-- `useFsEvents` (the default): Attempt to use the operating system/file system's native events for directory changes.
+- `fixedPollingInterval`: すべてのディレクトリの変更を一定間隔で毎秒数回チェックします。
+- `dynamicPriorityPolling`: 変更頻度の低いディレクトリがチェックされる頻度が低くなるような動的なキューを使用します。
+- `useFsEvents` (デフォルト): オペレーティングシステム/ファイルシステムのネイティブイベントの使用をディレクトリの変更に試みます。

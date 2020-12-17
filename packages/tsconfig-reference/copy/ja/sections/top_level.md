@@ -1,3 +1,3 @@
-### Root Fields
+### ルートフィールド
 
-Starting up are the root options in the TSConfig - these options relate to how your TypeScript or JavaScript project is set up.
+まずは、TSConfigのルートオプションです - これらのオプションはTypeScriptやJavaScriptプロジェクトの設定方法に関連したものです。

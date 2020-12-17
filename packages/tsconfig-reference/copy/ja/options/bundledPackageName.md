@@ -3,9 +3,9 @@ display: "bundledPackageName"
 oneline: "Provides a name for bundled UMD .d.ts files"
 ---
 
-When you mix [`declaration`](#declaration) and [`outFile`](#outFile) the resulting .d.ts needs to know what the root name of the module is so that paths can be correctly resolved internally.
+[`declaration`](#declaration)と[`outFile`](#outFile)を組み合わせた場合、生成される`.d.ts`ファイルはモジュールのルート名を知る必要があります。その結果、パスを内部的に正しく解決することができます。
 
-For example, this project:
+例えば、次のプロジェクトについて:
 
 ```ts twoslash
 // @filename: projectRoot/index.ts
@@ -15,7 +15,7 @@ export * from "./nested/base";
 export const a = "123";
 ```
 
-With the following `tsconfig.json`:
+`tsconfig.json`が以下の通りであるとします:
 
 ```json tsconfig
 {
@@ -28,7 +28,7 @@ With the following `tsconfig.json`:
 }
 ```
 
-Would create this `index.d.ts` where the internal modules resolve according to the name from `bundledPackageName`:
+内部モジュールが`bundledPackageName`の名前に応じて解決された次の`index.d.ts`が作成されます:
 
 ```ts twoslash
 // @filename: projectRoot/index.ts

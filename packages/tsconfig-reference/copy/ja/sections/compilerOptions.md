@@ -1,3 +1,3 @@
-### Compiler Options
+### コンパイラオプション
 
-These options make up the bulk of TypeScript's configuration and it covers how the language should work.
+これらのオプションはTypeScriptの設定の大部分を占めており、TypeScriptがどのように動作すべきかを扱います。
