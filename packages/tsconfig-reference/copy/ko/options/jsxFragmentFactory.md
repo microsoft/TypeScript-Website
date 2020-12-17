@@ -3,7 +3,7 @@ display: "jsxFragmentFactory"
 oneline: "Specify the JSX Fragment reference to use for fragements when targeting React JSX emit, e.g. 'React.Fragment' or 'Fragment'."
 ---
 
-`Fragment`와 같이, `JsxFactory` 컴파일러 옵션이 지정된 react JSX 방출을 목표로 할 때 사용할 JSX 피그먼트 팩토리 함수를 지정합니다.
+`Fragment`와 같이, `JsxFactory` 컴파일러 옵션이 지정된 react JSX 출력을 목표로 할 때 사용할 JSX 프래그먼트 팩토리 함수를 지정합니다.
 
 예를 들어 이 TSConfig의 경우:
 

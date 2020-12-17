@@ -20,12 +20,12 @@ JSX를 사용하기 전에 아래의 두 가지를 수행해야 합니다.
 
 2. `jsx` 옵션 활성화하기
 
-   TypeScript는 다음 세 가지의 JSX 모드를 제공합니다: `preserve`, `react`, `react-native`.
-   이 모드는 방출(emit) 단계에서만 영향을 미치며 타입 검사에는 영향을 미치지 않습니다.
-   `preserve` 모드는 JSX를 출력 일부로 유지하여 이를 다른 변환 단계(예: [Babel](https://babeljs.io/))에서 추가로 사용합니다.
-   또한 출력 파일 확장자는 `.jsx` 입니다.
-   `react` 모드는 `React.createElement`를 내보내고 사용하기 전 JSX 변환을 거칠 필요가 없으며 출력 파일 확장자는 `.js`입니다.
-   `react-native`모드는 모든 JSX를 유지한다는 점에서 `preserve` 모드와 유사하나, 출력 파일 확장자가 `.js` 이라는 차이가 있습니다.
+TypeScript는 다음 세 가지의 JSX 모드를 제공합니다: `preserve`, `react`, `react-native`.
+이 모드는 출력 단계에만 영향을 미치며 타입 검사에는 영향을 미치지 않습니다.
+`preserve` 모드는 JSX를 출력 일부로 유지하여 이를 다른 변환 단계(예: [Babel](https://babeljs.io/))에서 추가로 사용합니다.
+또한 출력 파일 확장자는 `.jsx`입니다.
+`react` 모드는 `React.createElement`를 출력하고 사용하기 전 JSX 변환을 거칠 필요가 없으며 출력 파일 확장자는 `.js`입니다.
+`react-native` 모드는 모든 JSX를 유지한다는 점에서 `preserve` 모드와 유사하나, 출력 파일 확장자가 `.js`라는 차이가 있습니다.
 
 | 모드           | 입력      | 출력                                              | 출력 파일 확장자 |
 | -------------- | --------- | ------------------------------------------------- | ---------------- |
@@ -35,9 +35,9 @@ JSX를 사용하기 전에 아래의 두 가지를 수행해야 합니다.
 | `react-jsx`    | `<div />` | `_jsx("div", {}, void 0);`                        | `.js`            |
 | `react-jsxdev` | `<div />` | `_jsxDEV("div", {}, void 0, false, {...}, this);` | `.js`            |
 
-`--jsx` 명령 줄 플래그(command line flag) 또는 [tsconfig.json](/tsconfig#jsx) 파일 내 `jsx`의 해당 옵션을 통해 모드를 설정할 수 있습니다.
+`--jsx` 커맨드 라인 플래그 또는 [tsconfig.json](/tsconfig#jsx) 파일 내 `jsx`의 해당 옵션을 통해 모드를 설정할 수 있습니다.
 
-> \*참고: `--jsxFactory` 옵션을 사용하여 React JSX 방출 시 사용할 JSX 팩토리(JSX factory) 함수로 지정할 수 있습니다. (기본값은 `React.createElement`)
+> \*참고: `--jsxFactory` 옵션을 사용하여 React JSX 방출 시 사용할 JSX 팩토리 함수로 지정할 수 있습니다. (기본값은 `React.createElement`)
 
 ## `as` 연산자
 
@@ -358,13 +358,13 @@ class Component extends React.Component<PropsType, {}> {
   <h1>Hello World</h1>
 </Component>
 
-// Error: children is of type JSX.Element not array of JSX.Element
+// 오류: 자식은 JSX.Element의 배열이 아닌 JSX.Element 타입입니다
 <Component name="bar">
   <h1>Hello World</h1>
   <h2>Hello World</h2>
 </Component>
 
-// Error: children is of type JSX.Element not array of JSX.Element or string.
+// 오류: 자식은 JSX.Element의 배열 또는 문자열이 아닌 JSX.Element 타입입니다
 <Component name="baz">
   <h1>Hello</h1>
   World
