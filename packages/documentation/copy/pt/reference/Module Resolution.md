@@ -213,13 +213,13 @@ O valor de _baseUrl_ é determinado como:
 
 Observe que as importações de módulos relativos não são afetadas pela configuração de baseUrl, pois elas sempre são resolvidas em relação aos arquivos de importação.
 
-Você pode encontrar mais documentação sobre baseUrl em [RequireJS](http://requirejs.org/docs/api.html#config-baseUrl) e [SystemJS](https://github.com/systemjs/systemjs/blob/master /docs/api.md#baseurl).
+Você pode encontrar mais documentação sobre baseUrl em [RequireJS](http://requirejs.org/docs/api.html#config-baseUrl) e [SystemJS](https://github.com/systemjs/systemjs/blob/master/docs/api.md).
 
 ### Mapeamento de caminhos
 
 Às vezes, os módulos não estão localizados diretamente em _baseUrl_.
 Por exemplo, uma importação para um módulo `"jquery"` seria traduzido em tempo de execução para `"node_modules/jquery/dist/jquery.slim.min.js"`.
-Os carregadores usam uma configuração de mapeamento para mapear nomes de módulos para arquivos em tempo de execução, consulte a [documentação do RequireJs](http://requirejs.org/docs/api.html#config-paths) e a [documentação do SystemJS](https://github.com/systemjs/systemjs/blob/master/docs/config-api.md#paths).
+Os carregadores usam uma configuração de mapeamento para mapear nomes de módulos para arquivos em tempo de execução, consulte a [documentação do RequireJs](http://requirejs.org/docs/api.html#config-paths) e a [documentação do SystemJS](https://github.com/systemjs/systemjs/blob/master/docs/import-maps.md).
 
 O compilador TypeScript suporta a declaração de tais mapeamentos usando a propriedade `"paths"` nos arquivos `tsconfig.json`.
 Aqui está um exemplo de como especificar a propriedade `"paths"` para `jquery`.

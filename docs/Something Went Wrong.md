@@ -26,6 +26,6 @@ The build to deploy train normally looks like this:
 
 You can deploy `v2` to production anytime via the ["Run workflow" button here](https://github.com/microsoft/TypeScript-Website/actions?query=workflow%3A%22Monday+Website+Push+To+Production%22), so if you have an emergency commit - it goes to `v2` then you can run the action.
 
-App Service apps are configured by [`Web.config`](https://github.com/microsoft/TypeScript-website/blob/92a9585d033e7cf802fae14v22baa73250fd610266/packages/typescriptlang-org/static/Web.config). [Here's a reference on the format](https://hangouts.google.com/call/H553wrJ9d97l2LMpNh9hAEEE). I've seen files (`*.json` & `*.manifest`) be 404s on the site because they were not in the config.
+App Service apps are configured by [`Web.config`](https://github.com/microsoft/TypeScript-website/blob/v2/packages/typescriptlang-org/static/Web.config). [Here's a reference on the format](https://hangouts.google.com/call/H553wrJ9d97l2LMpNh9hAEEE). I've seen files (`*.json` & `*.manifest`) be 404s on the site because they were not in the config.
 
 Check the build logs, they are always in [GitHub Actions](https://github.com/microsoft/TypeScript-Website/actions)
