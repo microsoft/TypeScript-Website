@@ -8,6 +8,7 @@ import gatsbyRemarkShiki from "../src/index"
 const remark = require("remark")
 // const gatsbyTwoSlash = require('gatsby-remark-shiki-twoslasher')
 import { Node } from "unist"
+import { TwoSlashReturn } from "@typescript/twoslash"
 expect.extend({ toMatchFile })
 
 const getHTML = async (code: string, settings?: any) => {
@@ -55,10 +56,10 @@ describe("with fixtures", () => {
       })
 
       const htmlString = format(results.html + style, { parser: "html" })
-      expect(htmlString).toMatchFile(resultHTMLPath)
+      expect(cleanFixture(htmlString)).toMatchFile(resultHTMLPath)
 
       const twoString = format(JSON.stringify(results.twoslashes), { parser: "json" })
-      expect(twoString).toMatchFile(resultTwoSlashPath)
+      expect(cleanFixture(twoString)).toMatchFile(resultTwoSlashPath)
     })
   })
 })
@@ -104,3 +105,8 @@ color: #ffeeee;
 }
 </style>
 `
+
+const cleanFixture = (text: string) => {
+  const wd = process.cwd()
+  return text.replace(new RegExp(wd, "g"), "[home]")
+}

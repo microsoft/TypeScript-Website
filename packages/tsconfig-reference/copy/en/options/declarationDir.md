@@ -1,6 +1,6 @@
 ---
 display: "Declaration Dir"
-oneline: "Set the root directory for d.ts files to go"
+oneline: "Specify the output directory for generated declaration files."
 ---
 
 Offers a way to configure the root directory for where declaration files are emitted.

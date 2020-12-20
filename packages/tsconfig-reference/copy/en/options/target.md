@@ -1,6 +1,6 @@
 ---
 display: "Target"
-oneline: "Set the supported JavaScript language runtime to transpile to"
+oneline: "Set the JavaScript language version for emitted JavaScript and include compatible library declarations."
 ---
 
 Modern browsers support all ES6 features, so `ES6` is a good choice.
@@ -12,15 +12,7 @@ For example, an arrow function `() => this` will be turned into an equivalent `f
 Changing `target` also changes the default value of [`lib`](#lib).
 You may "mix and match" `target` and `lib` settings as desired, but you could just set `target` for convenience.
 
-If you are only working with Node.js, here are recommended `target`s based on the Node version:
-
-| Name    | Supported Target |
-| ------- | ---------------- |
-| Node 8  | `ES2017`         |
-| Node 10 | `ES2018`         |
-| Node 12 | `ES2019`         |
-
-These are based on [node.green](https://node.green)'s database of support.
+For developer platforms like Node will have a certain baselines for the their target depending on their version. You can find a set of community organized TSConfigs at [tsconfig/bases](https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases) for common platforms and their versions.
 
 The special `ESNext` value refers to the highest version your version of TypeScript supports.
 This setting should be used with caution, since it doesn't mean the same thing between different TypeScript versions and can make upgrades less predictable.

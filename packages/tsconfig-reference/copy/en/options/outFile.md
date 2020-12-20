@@ -1,6 +1,6 @@
 ---
 display: "Out File"
-oneline: "Output a single file of all JS files concatenated"
+oneline: "Specify a file that bundles all outputs into one JavaScript file. If `declaration` is true, also designates a file that bundles all .d.ts output."
 ---
 
 If specified, all _global_ (non-module) files will be concatenated into the single output file specified.

@@ -1,11 +1,9 @@
 ---
 display: "jsxFragmentFactory"
-oneline: "Specifies what identifiers a JSX fragment should be transformed to"
+oneline: "Specify the JSX Fragment reference used for fragments when targeting React JSX emit e.g. 'React.Fragment' or 'Fragment'."
 ---
 
 Specify the JSX fragment factory function to use when targeting react JSX emit with `jsxFactory` compiler option is specified, e.g. `Fragment`.
-
-This option can be used on a per-file basis too similar to [Babel's `/** @jsxFrag h */` directive](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx#fragments).
 
 For example with this TSConfig:
 
@@ -43,6 +41,23 @@ Would look like:
 // @noErrors
 // @target: esnext
 // @module: commonjs
+
+import { h, Fragment } from "preact";
+
+const HelloWorld = () => (
+  <>
+    <div>Hello</div>
+  </>
+);
+```
+
+This option can be used on a per-file basis too similar to [Babel's `/* @jsxFrag h */` directive](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx#fragments).
+
+For example:
+
+```tsx twoslash
+/** @jsx h */
+/** @jsxFrag Fragment */
 
 import { h, Fragment } from "preact";
 

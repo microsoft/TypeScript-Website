@@ -5,7 +5,7 @@
 
 ### Getting Started
 
-This repo uses [yarn workspaces][y-wrk] with node 13+, and [watchman](https://facebook.github.io/watchman/docs/install.html).
+This repo uses [yarn workspaces][y-wrk] with node 13+, and [watchman](https://facebook.github.io/watchman/docs/install.html). (Windows users can install [watchman via chocolatey](https://chocolatey.org/packages/watchman))
 
 With those set up, clone this repo and run `yarn install`.
 
@@ -61,6 +61,7 @@ yarn start
 ```
 
 To save your time, twoslash is not applied to code-samples in `yarn start` - to launch the server with twoslash support use: `yarn start-twoslash`.
+To optimize even more, the env var `NO_TRANSLATIONS` as truthy will make the website only load pages for English.
 
 ## Sandbox
 

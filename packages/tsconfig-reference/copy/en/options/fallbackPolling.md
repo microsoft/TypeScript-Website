@@ -1,6 +1,6 @@
 ---
 display: "fallbackPolling"
-oneline: "What the watcher should use if the system runs out of native file watchers"
+oneline: "Specify what approach the watcher should use if the system runs out of native file watchers."
 ---
 
 When using file system events, this option specifies the polling strategy that gets used when the system runs out of native file watchers and/or doesn't support native file watchers.

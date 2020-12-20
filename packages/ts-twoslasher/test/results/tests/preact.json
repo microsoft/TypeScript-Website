@@ -1,0 +1,35 @@
+{
+  "code": "\n/** @jsxImportSource preact */\nfunction App() {\n  return <h1>Hello World</h1>\n}\n",
+  "extension": "tsx",
+  "highlights": [],
+  "queries": [],
+  "staticQuickInfos": [
+    {
+      "text": "function App(): any",
+      "docs": "",
+      "start": 41,
+      "length": 3,
+      "line": 2,
+      "character": 9,
+      "targetString": "App"
+    },
+    {
+      "text": "any",
+      "start": 59,
+      "length": 2,
+      "line": 3,
+      "character": 10,
+      "targetString": "h1"
+    },
+    {
+      "text": "any",
+      "start": 75,
+      "length": 2,
+      "line": 3,
+      "character": 26,
+      "targetString": "h1"
+    }
+  ],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEFsHsBMFcA2BTAXKAxtSMB2ArAZwCgQIiAPdAJ2QEMMAXAWktLHEbuoHNlH0yQrmQVG7CLmgBRatWjUSpAFTLyhCgElIABwWMAytHjUMyUDtoNGoZcGIAzeLiYBLaLlABBHToAUAJSgAN7EoKC0jCaeADwAFgCMAHwAEsiIiNCgAOoKiLAxwIlJxAC+xEA"
+}

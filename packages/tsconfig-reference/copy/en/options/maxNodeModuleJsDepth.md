@@ -1,6 +1,6 @@
 ---
 display: "Max Node Module JS Depth"
-oneline: "How deep should TypeScript run type checking in node_modules"
+oneline: "Specify the maximum folder depth used for checking JavaScript files from `node_modules`. Only applicable with `allowJs`."
 ---
 
 The maximum dependency depth to search under `node_modules` and load JavaScript files.

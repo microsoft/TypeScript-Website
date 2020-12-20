@@ -1,6 +1,6 @@
 ---
 display: "Preserve Const Enums"
-oneline: "Do not erase `const enum` declarations in generated code"
+oneline: "Disable erasing `const enum` declarations in generated code."
 ---
 
 Do not erase `const enum` declarations in generated code. `const enum`s provide a way to reduce the overall memory footprint
@@ -12,7 +12,7 @@ For example with this TypeScript:
 const enum Album {
   JimmyEatWorldFutures = 1,
   TubRingZooHypothesis = 2,
-  DogFashionDiscoAdultery = 3
+  DogFashionDiscoAdultery = 3,
 }
 
 const selectedAlbum = Album.JimmyEatWorldFutures;
@@ -29,7 +29,7 @@ to the enum from the JavaScript completely.
 const enum Album {
   JimmyEatWorldFutures = 1,
   TubRingZooHypothesis = 2,
-  DogFashionDiscoAdultery = 3
+  DogFashionDiscoAdultery = 3,
 }
 
 const selectedAlbum = Album.JimmyEatWorldFutures;
@@ -46,7 +46,7 @@ With `preserveConstEnums` set to `true`, the `enum` exists at runtime and the nu
 const enum Album {
   JimmyEatWorldFutures = 1,
   TubRingZooHypothesis = 2,
-  DogFashionDiscoAdultery = 3
+  DogFashionDiscoAdultery = 3,
 }
 
 const selectedAlbum = Album.JimmyEatWorldFutures;

@@ -39,7 +39,7 @@ for (let i in list) {
 }
 
 for (let i of list) {
-  console.log(i); // "4", "5", "6"
+  console.log(i); // 4, 5, 6
 }
 ```
 

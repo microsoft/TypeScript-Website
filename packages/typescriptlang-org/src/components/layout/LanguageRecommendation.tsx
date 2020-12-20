@@ -2,16 +2,13 @@ import React, { useEffect } from "react"
 
 import "./Sidebar.scss"
 import { SeoProps } from "../HeadSEO"
-import { AllSitePageFragment } from "../../__generated__/gatsby-types";
 import { inYourLanguage } from "../../copy/inYourLanguage";
 import { hasLocalStorage } from "../../lib/hasLocalStorage";
-
-export type AllSitePage = AllSitePageFragment["allSitePage"];
+import { allFiles } from "../../__generated__/allPages"
 
 type Props = SeoProps & {
   lang: string,
   children: any
-  allSitePage: AllSitePage
 }
 
 const getLocaleVersionOfPage = () => {
@@ -56,7 +53,7 @@ export const LanguageRecommendations = (props: Props) => {
     if (localePath === "") localePath = "/"
     if (localePath === location.pathname) return
 
-    const doesPageExist = props.allSitePage.nodes.find(f => f.path === localePath || f.path + "/" === localePath)
+    const doesPageExist = allFiles.find(f => f === localePath || f + "/" === localePath)
     if (!doesPageExist) return
 
     //@ts-ignore

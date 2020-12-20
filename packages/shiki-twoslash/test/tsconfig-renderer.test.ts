@@ -20,9 +20,9 @@ describe("with a simple example", () => {
       "<pre class=\\"shiki tsconfig lsp\\"><div class='code-container'><code>
       <span style=\\"color: #D4D4D4\\">{</span>
       <span style=\\"color: #D4D4D4\\">  </span><span style=\\"color: #9CDCFE\\">\\"<a aria-hidden=true href='https://www.typescriptlang.org/tsconfig#compilerOptions'><data-lsp lsp=\\"The set of compiler options for your project\\">compilerOptions</data-lsp></a>\\"</span><span style=\\"color: #D4D4D4\\">: {</span>
-      <span style=\\"color: #D4D4D4\\">    </span><span style=\\"color: #9CDCFE\\">\\"<a aria-hidden=true href='https://www.typescriptlang.org/tsconfig#module'><data-lsp lsp=\\"Sets the expected module system for your runtime\\">module</data-lsp></a>\\"</span><span style=\\"color: #D4D4D4\\">: </span><span style=\\"color: #CE9178\\">\\"commonjs\\"</span>
+      <span style=\\"color: #D4D4D4\\">    </span><span style=\\"color: #9CDCFE\\">\\"<a aria-hidden=true href='https://www.typescriptlang.org/tsconfig#module'><data-lsp lsp=\\"Specify what module code is generated.\\">module</data-lsp></a>\\"</span><span style=\\"color: #D4D4D4\\">: </span><span style=\\"color: #CE9178\\">\\"commonjs\\"</span>
       <span style=\\"color: #D4D4D4\\">  },</span>
-      <span style=\\"color: #D4D4D4\\">  </span><span style=\\"color: #9CDCFE\\">\\"<a aria-hidden=true href='https://www.typescriptlang.org/tsconfig#files'><data-lsp lsp=\\"Include a set list of files, does not support globs\\">files</data-lsp></a>\\"</span><span style=\\"color: #D4D4D4\\">: [</span>
+      <span style=\\"color: #D4D4D4\\">  </span><span style=\\"color: #9CDCFE\\">\\"<a aria-hidden=true href='https://www.typescriptlang.org/tsconfig#files'><data-lsp lsp=\\"Include a list of files. This does not support glob patterns, as opposed to \`include\`.\\">files</data-lsp></a>\\"</span><span style=\\"color: #D4D4D4\\">: [</span>
       <span style=\\"color: #D4D4D4\\">    </span><span style=\\"color: #CE9178\\">\\"core.ts\\"</span>
       <span style=\\"color: #D4D4D4\\">  ]</span>
       <span style=\\"color: #D4D4D4\\">}</span>

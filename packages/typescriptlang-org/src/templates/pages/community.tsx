@@ -1,7 +1,6 @@
 import * as React from "react"
 import { Layout } from "../../components/layout"
 import { graphql } from "gatsby"
-import { CommunityPageQuery } from "../../__generated__/gatsby-types"
 import { createInternational } from "../../lib/createInternational"
 import { useIntl } from "react-intl"
 import { Intl } from "../../components/Intl"
@@ -32,7 +31,6 @@ const Col2 = (props: { children: any, className?: string }) => <div className={[
 
 
 type Props = {
-  data: CommunityPageQuery
   pageContext: any
 }
 
@@ -41,7 +39,7 @@ export const Comm: React.FC<Props> = props => {
   const i = createInternational<typeof comCopy>(intl)
 
   return (
-    <Layout title={i("com_layout_title")} description={i("com_layout_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+    <Layout title={i("com_layout_title")} description={i("com_layout_description")} lang={props.pageContext.lang}>
       <div className="raised main-content-block container community" style={{ marginTop: "80px" }}>
         <Row>
           <Col className="sidebar">
@@ -90,13 +88,13 @@ export const Comm: React.FC<Props> = props => {
             </div>
             </div>
             <div className="callout">
-              <a aria-labelledby="blog-header" className="icon blog img-circle" href="https://devblogs.microsoft.com/typescript/" target="_blank" title="The official TypeSCript blog" />
+              <a aria-labelledby="blog-header" className="icon blog img-circle" href="https://devblogs.microsoft.com/typescript/" target="_blank" title="The official TypeScript blog" />
               <div className="text">
-                <a href="https://devblogs.microsoft.com/typescript/" id="blog-header" target="_blank" title="The official TypeSCript blog">
+                <a href="https://devblogs.microsoft.com/typescript/" id="blog-header" target="_blank" title="The official TypeScript blog">
                   <h3 className="community-callout-headline">Blog</h3>
                 </a>
                 {i("com_online_blog_desc") + " "}
-                <a href="https://devblogs.microsoft.com/typescript/" target="_blank" title="The official TypeSCript blog">blog</a>!
+                <a href="https://devblogs.microsoft.com/typescript/" target="_blank" title="The official TypeScript blog">blog</a>!
             </div>
             </div>
             <div className="callout">
@@ -131,7 +129,7 @@ export const Comm: React.FC<Props> = props => {
             <div className="callouts">
               <div className="row">
                 {conferences.map(conference => (
-                  <div className="callout">
+                  <div key={conference.url} className="callout">
                     <a href={conference.url} rel="noopener" target="blank" title={`Link to ${conference.title}`}>
                       <img src={conference.logo} className="icon img-square" alt={`${i("com_conferences_alt_img")} ` + conference.title} />
                     </a>
@@ -207,9 +205,3 @@ export default (props: Props) => (
     <Comm {...props} />
   </Intl>
 )
-
-export const query = graphql`
-  query CommunityPage {
-    ...AllSitePage
-  }
-`

@@ -1,6 +1,6 @@
 ---
 display: "Source Root"
-oneline: "Sets the root path for debuggers to find the reference source code"
+oneline: "Specify the root path for debuggers to find the reference source code."
 ---
 
 Specify the location where a debugger should locate TypeScript files instead of relative source locations.

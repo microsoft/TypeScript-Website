@@ -1,5 +1,11 @@
 import { CompilerOptionName } from "../data/_types";
 
+/**
+ * Changes to these rules should be reflected in the following files:
+ * https://github.com/SchemaStore/schemastore/blob/master/src/schemas/json/tsconfig.json
+ * https://github.com/SchemaStore/schemastore/blob/master/src/schemas/json/jsconfig.json
+ */
+
 /** Options which should never show on the references, basically anything that's for the CLI not the TSConfig */
 export const denyList: CompilerOptionName[] = [
   "help",
@@ -46,7 +52,18 @@ type AnOption = WatchProperties | RootProperties | CompilerOptionName;
 
 /** Allows linking between options */
 export const relatedTo: [AnOption, AnOption[]][] = [
-  ["strict", ["alwaysStrict", "strictNullChecks", "strictBindCallApply", "strictFunctionTypes", "strictPropertyInitialization", "noImplicitAny", "noImplicitThis"]],
+  [
+    "strict",
+    [
+      "alwaysStrict",
+      "strictNullChecks",
+      "strictBindCallApply",
+      "strictFunctionTypes",
+      "strictPropertyInitialization",
+      "noImplicitAny",
+      "noImplicitThis",
+    ],
+  ],
   ["alwaysStrict", ["strict"]],
   ["strictNullChecks", ["strict"]],
   ["strictBindCallApply", ["strict"]],
@@ -95,9 +112,12 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["moduleResolution", ["module"]],
   ["module", ["moduleResolution"]],
 
-  ["jsx", ["jsxFactory", "jsxFragmentFactory"]],
-  ["jsxFactory", ["jsx", "jsxFragmentFactory"]],
-  ["jsxFragmentFactory", ["jsx", "jsxFactory"]],
+  ["jsx", ["jsxFactory", "jsxFragmentFactory", "jsxImportSource"]],
+  ["jsxFactory", ["jsx", "jsxFragmentFactory", "jsxImportSource"]],
+  ["jsxFragmentFactory", ["jsx", "jsxFactory", "jsxImportSource"]],
+  ["jsxImportSource", ["jsx", "jsxFactory"]],
+
+  ["suppressImplicitAnyIndexErrors", ["noImplicitAny"]],
 ];
 
 /**
@@ -130,13 +150,14 @@ export const defaultsForOptions = {
   forceConsistentCasingInFileNames: "false",
   generateCpuProfile: " profile.cpuprofile",
   importHelpers: "false",
-  includes: ' `[]` if `files` is specified, otherwise `["**/*"]`',
+  include: ' `[]` if `files` is specified, otherwise `["**/*"]`',
   incremental: "`true` if `composite`, `false` otherwise",
   inlineSourceMap: "false",
   inlineSources: "false",
   isolatedModules: "false",
   jsx: "undefined",
   jsxFactory: "`React.createElement`",
+  jsxImportSource: "react",
   keyofStringsOnly: "false",
   listEmittedFiles: "false",
   listFiles: "false",
@@ -187,7 +208,7 @@ export const defaultsForOptions = {
 };
 
 export const allowedValues = {
-  jsx: ["`react`", "`react-native`", "`preserve`"],
+  jsx: ["`react`", "`react-jsx`", "`react-jsxdev`", "`react-native`", "`preserve`"],
   jsxFactory: ["Any identifier or dotted identifier"],
   lib: ["See main content"],
   target: [
@@ -223,14 +244,18 @@ export const allowedValues = {
   ],
   fallbackPolling: [
     "fixedPollingInterval",
+    "priorityPollingInterval",
+    "dynamicPriorityPolling",
+  ],
+  watchDirectory: [
+    "fixedPollingInterval",
     "dynamicPriorityPolling",
     "useFsEvents",
-    "synchronousWatchDirectory",
   ],
-  watchDirectory: ["fixedPollingInterval", "dynamicPriorityPolling", "useFsEvents"],
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
+  "4.1": ["jsxImportSource", "noUncheckedIndexedAccess"],
   "4.0": ["jsxFragmentFactory", "disableReferencedProjectLoad"],
   "3.8": [
     "assumeChangesOnlyAffectDirectDependencies",
@@ -242,7 +267,6 @@ export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
   ],
   "3.7": [
     "disableSourceOfProjectReferenceRedirect",
-    "downlevelIteration",
     "generateCpuProfile",
     "useDefineForClassFields",
   ],
@@ -255,7 +279,7 @@ export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
   "2.7": ["strictPropertyInitialization", "esModuleInterop"],
   "2.6": ["strictFunctionTypes"],
   "2.4": ["noStrictGenericChecks"],
-  "2.3": ["strict", "downlevelIteration", "init"],
+  "2.3": ["strict", "downlevelIteration", "init", "checkJs"],
   "2.2": ["jsx"],
   "2.1": ["extends", "alwaysStrict"],
   "2.0": [

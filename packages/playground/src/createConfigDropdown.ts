@@ -92,6 +92,16 @@ export const createConfigDropdown = (sandbox: Sandbox, monaco: Monaco) => {
   const jsxSwitch = createSelect(jsx.display, "jsx", jsx.oneliner, sandbox, monaco.languages.typescript.JsxEmit)
   dropdownContainer.appendChild(jsxSwitch)
 
+  // When switching between a .ts and a .tsx file - refresh the playground
+  const internalSwitch = jsxSwitch.getElementsByTagName("select")[0]
+  internalSwitch.addEventListener("change", () => {
+    const isNowJSX = internalSwitch.selectedIndex !== 0
+    const isJSX = sandbox.filepath.endsWith("x")
+    if (isNowJSX !== isJSX) {
+      setTimeout(() => document.location.reload(), 300)
+    }
+  })
+
   const modSum = optionsSummary.find(sum => sum.id === "module")!
   const moduleSwitch = createSelect(
     modSum.display,
@@ -125,6 +135,8 @@ export const updateConfigDropdownForCompilerOptions = (sandbox: Sandbox, monaco:
     const map = compilerIDToMaps[flagID]
     // @ts-ignore
     const realValue = map[currentValue]
+    if (!realValue) return
+
     // @ts-ignore
     for (const option of input.children) {
       option.selected = option.value.toLowerCase() === realValue.toLowerCase()

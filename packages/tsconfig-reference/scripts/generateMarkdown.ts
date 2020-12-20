@@ -275,10 +275,6 @@ languages.forEach((lang) => {
           mdTableRows.push(["Status", "internal"]);
         }
 
-        if (option.deprecated) {
-          mdTableRows.push(["Status", "Deprecated"]);
-        }
-
         if (option.releaseVersion) {
           const underscores = option.releaseVersion.replace(".", "-");
           const link = `/docs/handbook/release-notes/typescript-${underscores}.html`;

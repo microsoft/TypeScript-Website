@@ -25,13 +25,15 @@ Additionally the output will have a `.jsx` file extension.
 The `react` mode will emit `React.createElement`, does not need to go through a JSX transformation before use, and the output will have a `.js` file extension.
 The `react-native` mode is the equivalent of `preserve` in that it keeps all JSX, but the output will instead have a `.js` file extension.
 
-| Mode           | Input     | Output                       | Output File Extension |
-| -------------- | --------- | ---------------------------- | --------------------- |
-| `preserve`     | `<div />` | `<div />`                    | `.jsx`                |
-| `react`        | `<div />` | `React.createElement("div")` | `.js`                 |
-| `react-native` | `<div />` | `<div />`                    | `.js`                 |
+| Mode           | Input     | Output                                            | Output File Extension |
+| -------------- | --------- | ------------------------------------------------- | --------------------- |
+| `preserve`     | `<div />` | `<div />`                                         | `.jsx`                |
+| `react`        | `<div />` | `React.createElement("div")`                      | `.js`                 |
+| `react-native` | `<div />` | `<div />`                                         | `.js`                 |
+| `react-jsx`    | `<div />` | `_jsx("div", {}, void 0);`                        | `.js`                 |
+| `react-jsxdev` | `<div />` | `_jsxDEV("div", {}, void 0, false, {...}, this);` | `.js`                 |
 
-You can specify this mode using either the `--jsx` command line flag or the corresponding option in your [tsconfig.json](/docs/handbook/tsconfig-json.html) file.
+You can specify this mode using either the `--jsx` command line flag or the corresponding option [`jsx` in your tsconfig.json](/tsconfig#jsx) file.
 
 > \*Note: You can specify the JSX factory function to use when targeting react JSX emit with `--jsxFactory` option (defaults to `React.createElement`)
 
@@ -128,12 +130,14 @@ interface FooProp {
   Y: number;
 }
 
-declare function AnotherComponent(prop: {name: string});
+declare function AnotherComponent(prop: { name: string });
 function ComponentFoo(prop: FooProp) {
   return <AnotherComponent name={prop.name} />;
 }
 
-const Button = (prop: {value: string}, context: { color: string }) => <button />
+const Button = (prop: { value: string }, context: { color: string }) => (
+  <button />
+);
 ```
 
 Because a Function Component is simply a JavaScript function, function overloads may be used here as well:
@@ -191,7 +195,7 @@ function MyFactoryFunction() {
 // use a call signature
 var myComponent = MyFactoryFunction();
 
-// element class type => FactoryFunction
+// element class type => MyFactoryFunction
 // element instance type => { render: () => void }
 ```
 
@@ -422,23 +426,10 @@ class MyComponent extends React.Component<Props, {}> {
 <MyComponent foo={0} />; // error
 ```
 
-## Factory Functions
+### Configuring JSX
 
-The exact factory function used by the `jsx: react` compiler option is configurable. It may be set using either the `jsxFactory` command line option, or an inline `@jsx` comment pragma to set it on a per-file basis. For example, if you set `jsxFactory` to `createElement`, `<div />` will emit as `createElement("div")` instead of `React.createElement("div")`.
+There are multiple compiler flags which can be used to customize your JSX, which work as both a compiler flag and via inline per-file pragmas. To learn more see their tsconfig reference pages:
 
-The comment pragma version may be used like so (in TypeScript 2.8):
-
-```ts
-import preact = require("preact");
-/* @jsx preact.h */
-const x = <div />;
-```
-
-emits as:
-
-```ts
-const preact = require("preact");
-const x = preact.h("div", null);
-```
-
-The factory chosen will also affect where the `JSX` namespace is looked up (for type checking information) before falling back to the global one. If the factory is defined as `React.createElement` (the default), the compiler will check for `React.JSX` before checking for a global `JSX`. If the factory is defined as `h`, it will check for `h.JSX` before a global `JSX`.
+- [`jsxFactory`](/tsconfig/#jsxFactory)
+- [`jsxFragmentFactory`](/tsconfig/#jsxFragmentFactory)
+- [`jsxImportSource`](/tsconfig/#jsxImportSource)
