@@ -2,7 +2,7 @@
 title: Object Types
 layout: docs
 permalink: /docs/handbook/2/objects.html
-oneline: "Step one in learning TypeScript: The basics types."
+oneline: "How TypeScript describes the shapes of JavaScript objects."
 beta: true
 ---
 

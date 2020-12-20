@@ -1,4 +1,3 @@
-import { graphql } from "gatsby"
 import React, { useEffect, useState } from "react"
 import { debounce } from "ts-debounce"
 import { Layout } from "../../../components/layout"
@@ -6,7 +5,6 @@ import { Intl } from "../../../components/Intl"
 
 import "./search.scss"
 
-import { DTSearchPageQuery } from "../../../__generated__/gatsby-types"
 import { SearchArea } from "../../../components/search/SearchArea"
 import { SearchResultsDisplay } from "../../../components/search/SearchResultsDisplay"
 import { useSearchResult } from "../../../components/search/useSearchResult"
@@ -15,7 +13,6 @@ import { useIntl } from "react-intl"
 import { dtCopy } from "../../../copy/en/dt"
 
 type SearchProps = {
-  data: DTSearchPageQuery
   location: Location
   pageContext: any
 }
@@ -26,7 +23,7 @@ const updateHistorySearch = debounce((search: string) => {
   history.pushState(null, "", `${window.location.pathname}?${params}`)
 }, 250)
 
-const Search: React.FC<SearchProps> = ({ data, location, pageContext }) => {
+const Search: React.FC<SearchProps> = ({ location, pageContext }) => {
   const i = createInternational<typeof dtCopy>(useIntl())
 
   const [search, setSearch] = useState<string>(
@@ -39,12 +36,7 @@ const Search: React.FC<SearchProps> = ({ data, location, pageContext }) => {
   }, [search])
 
   return (
-    <Layout
-      title={i("dt_s_page_title")}
-      description={i("dt_s_subtitle")}
-      lang={pageContext.lang}
-      allSitePage={data.allSitePage}
-    >
+    <Layout title={i("dt_s_page_title")} description={i("dt_s_subtitle")} lang={pageContext.lang}>
       <div className="topContents">
         <SearchArea result={result} search={search} setSearch={setSearch} i={i} />
       </div>
@@ -62,9 +54,3 @@ export default (props: SearchProps) => (
     <Search {...props} />
   </Intl>
 )
-
-export const query = graphql`
-  query DTSearchPage {
-    ...AllSitePage
-  }
-`

@@ -10,11 +10,11 @@ Each and every value in JavaScript has a set of behaviors you can observe from r
 That sounds abstract, but as a quick example, consider some operations we might run on a variable named `foo`.
 
 ```js
-// accessing the property 'toLowerCase'
+// Accessing the property 'toLowerCase'
 // on 'foo' and then calling it
 foo.toLowerCase();
 
-// calling 'foo'
+// Calling 'foo'
 foo();
 ```
 
@@ -23,10 +23,12 @@ The second one tries to call `foo` directly.
 
 But assuming we don't know the value of `foo` - and that's pretty common - we can't reliably say what results we'll get from trying to run any of this code.
 The behavior of each operation depends entirely on what value we had in the first place.
-Is `foo` callable?
-Does it have a property called `toLowerCase` on it?
-And if it does, is `toLowerCase` callable?
-If all of these values are callable, what do they return?
+
+- Is `foo` callable?
+- Does it have a property called `toLowerCase` on it?
+- If it does, is `toLowerCase` even callable?
+- If both of these values are callable, what do they return?
+
 The answers to these questions are usually things we keep in our heads when we write JavaScript, and we have to hope we got all the details right.
 
 Let's say `foo` was defined in the following way.
@@ -45,6 +47,7 @@ TypeError: foo is not a function
 ```
 
 It'd be great if we could avoid mistakes like this.
+
 When we run our code, the way that our JavaScript runtime chooses what to do is by figuring out the _type_ of the value - what sorts of behaviors and capabilities it has.
 That's part of what that `TypeError` is alluding to - it's saying that the string `"Hello World"` cannot be called as a function.
 
@@ -62,18 +65,18 @@ We can _observe_ by reading the code that this function will only work if given 
 The only way in pure JavaScript to tell what `fn` does with a particular value is to call it and see what happens.
 This kind of behavior makes it hard to predict what code will do before it runs, which means it's harder to know what your code is going to do while you're writing it.
 
-Seen in this way, a _type_ is the concept of describing which values are legal to pass to `fn` and which aren't legal.
+Seen in this way, a _type_ is the concept of describing which values are can be passed to `fn` and which will crash.
 JavaScript only truly provides _dynamic_ typing - running the code to see what happens.
 
-The alternative is to use a _static_ type system to make predictions about what code is legal _before_ it runs.
+The alternative is to use a _static_ type system to make predictions about what code is expected _before_ it runs.
 
 ## Static type-checking
 
-Think back to that `TypeError` we got earlier from calling a `string`.
+Think back to that `TypeError` we got earlier from trying to call a `string` as a function.
 _Most people_ don't like to get any sorts of errors when running their code - those are considered bugs!
 And when we write new code, we try our best to avoid introducing new bugs.
 
-If we add just a bit of code, save our file, refresh our app, and immediately see the error, we might be able to isolate the problem quickly; but that's not always the case.
+If we add just a bit of code, save our file, re-run the code, and immediately see the error, we might be able to isolate the problem quickly; but that's not always the case.
 We might not have tested the feature thoroughly enough, so we might never actually run into a potential error that would be thrown!
 Or if we were lucky enough to witness the error, we might have ended up doing large refactorings and adding a lot of different code that we're forced to dig through.
 
@@ -93,7 +96,7 @@ Running that last sample with TypeScript will give us an error message before we
 
 ## Non-exception Failures
 
-So far we've been discussing certain things like runtime errors - cases where the JavaScript runtime throws its hands up and tells us that it thinks something is nonsensical.
+So far we've been discussing certain things like runtime errors - cases where the JavaScript runtime tells us that it thinks something is nonsensical.
 Those cases come up because [the ECMAScript specification](https://tc39.github.io/ecma262/) has explicit instructions on how the language should behave when it runs into something unexpected.
 
 For example, the specification says that trying to call something that isn't callable should throw an error.
@@ -145,6 +148,7 @@ uncalled functions,
 // @noUnusedLocals
 // @errors: 2365
 function flipCoin() {
+  // Meant to be Math.random()
   return Math.random < 0.5;
 }
 ```
@@ -163,8 +167,6 @@ if (value !== "a") {
 
 ## Types for Tooling
 
-<!-- TODO: this section's title sucks -->
-
 TypeScript can catch bugs when we make mistakes in our code.
 That's great, but TypeScript can _also_ prevent us from making those mistakes in the first place.
 
@@ -174,13 +176,24 @@ Once it has that information, it can also start _suggesting_ which properties yo
 That means TypeScript can be leveraged for editing code too, and the core type-checker can provide error messages and code completion as you type in the editor.
 That's part of what people often refer to when they talk about tooling in TypeScript.
 
-<!-- TODO: insert GIF of completions here -->
+<!-- prettier-ignore -->
+```ts twoslash
+// @noErrors
+// @esModuleInterop
+import express from "express";
+const app = express();
+
+app.get("/", function (req, res) {
+  res.sen
+//       ^|
+});
+
+app.listen(3000);
+```
 
 TypeScript takes tooling seriously, and that goes beyond completions and errors as you type.
 An editor that supports TypeScript can deliver "quick fixes" to automatically fix errors, refactorings to easily re-organize code, and useful navigation features for jumping to definitions of a variable, or finding all references to a given variable.
 All of this is built on top of the type-checker and fully cross-platform, so it's likely that [your favorite editor has TypeScript support available](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support).
-
-<!-- TODO: validate that link -->
 
 ## `tsc`, the TypeScript compiler
 
@@ -278,7 +291,7 @@ You'll notice that `hello.js` never gets updated.
 ## Explicit Types
 
 Up until now, we haven't told TypeScript what `person` or `date` are.
-Let's change up our code a little bit so that we tell TypeScript that `person` is a `string`, and that `date` should be a `Date` object.
+Let's edit the code to tell TypeScript that `person` is a `string`, and that `date` should be a `Date` object.
 We'll also use the `toDateString()` method on `date`.
 
 ```ts twoslash
@@ -330,12 +343,15 @@ let foo = "hello there!";
 Even though we didn't tell TypeScript that `foo` had the type `string` it was able to figure that out.
 That's a feature, and it's best not to add annotations when the type system would end up inferring the same type anyway.
 
+> Note: when you see <pre><code class="query">code comment colored like this</code></pre> it means that we're highlighting what your editor would should you inline. You can get the same experience in the web browser by hovering your mouse over blue-tinted code samples.
+
 ## Erased Types
 
 Let's take a look at what happens when we compile with `tsc`:
 
 ```ts twoslash
 // @showEmit
+// @target: es5
 function greet(person: string, date: Date) {
   console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
@@ -387,18 +403,18 @@ function greet(person, date) {
 greet("Maddison", new Date());
 ```
 
-> While the default target is ES3, the great majority of current browsers support ES5.
-> Most developers can therefore safely specify ES5 or even ES2016 as a target, unless compatibility with certain ancient browsers is important.
+> While the default target is ES3, the great majority of current browsers support ES2015.
+> Most developers can therefore safely specify ES2015 or above as a target, unless compatibility with certain ancient browsers is important.
 
 ## Strictness
 
 Different users come to TypeScript looking for different things in a type-checker.
-Some people are looking for a more loose opt-in experience which can help validate only some parts of our program and get decent tooling.
+Some people are looking for a more loose opt-in experience which can help validate only some parts of their program, and still have decent tooling.
 This is the default experience with TypeScript, where types are optional, inference takes the most lenient types, and there's no checking for potentially `null`/`undefined` values.
 Much like how `tsc` emits in the face of errors, these defaults are put in place to stay out of your way.
 If you're migrating existing JavaScript, that might be a desirable first step.
 
-In contrast, a lot of users prefer to have TypeScript validate as much as it can off the bat, and that's why the language provides strictness settings as well.
+In contrast, a lot of users prefer to have TypeScript validate as much as it can straight away, and that's why the language provides strictness settings as well.
 These strictness settings turn static type-checking from a switch (either your code is checked or not) into something closer to a dial.
 The farther you turn this dial up, the more TypeScript will check for you.
 This can require a little extra work, but generally speaking it pays for itself in the long run, and enables more thorough checks and more accurate tooling.
@@ -420,5 +436,5 @@ Turning on the `noImplicitAny` flag will issue an error on any variables whose t
 ### `strictNullChecks`
 
 By default, values like `null` and `undefined` are assignable to any other type.
-This can make writing some code easier, but forgetting to handle `null` and `undefined` is the cause of countless bugs in the world - even in other languages!
+This can make writing some code easier, but forgetting to handle `null` and `undefined` is the cause of countless bugs in the world - some consider it a [billion dollar mistake](https://www.youtube.com/watch?v=ybrQvs4x0Ps)!
 The `strictNullChecks` flag makes handling `null` and `undefined` more explicit, and _spares_ us from worrying about whether we _forgot_ to handle `null` and `undefined`.

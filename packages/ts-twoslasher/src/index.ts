@@ -130,6 +130,16 @@ function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosit
   return { highlights, queries }
 }
 
+function getOptionValueFromMap(name: string, key: string, optMap: Map<string, string>) {
+  const result = optMap.get(key.toLowerCase())
+  log(`Get ${name} mapped option: ${key} => ${result}`)
+  if (result === undefined) {
+    const keys = Array.from(optMap.keys() as any)
+    throw new Error(`Invalid value ${key} for ${name}. Allowed values: ${keys.join(",")}`)
+  }
+  return result
+}
+
 function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
   log(`Setting ${name} to ${value}`)
 
@@ -143,18 +153,19 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
           break
 
         case "list":
-          opts[opt.name] = value.split(",").map(v => parsePrimitive(v, opt.element!.type as string))
+          const elementType = opt.element!.type
+          const strings = value.split(",")
+          if (typeof elementType === 'string') {
+            opts[opt.name] = strings.map(v => parsePrimitive(v, elementType))
+          } else {
+            opts[opt.name] = strings.map(v => getOptionValueFromMap(opt.name, v, elementType as Map<string, string>))
+          }
           break
 
         default:
           // It's a map!
           const optMap = opt.type as Map<string, string>
-          opts[opt.name] = optMap.get(value.toLowerCase())
-          log(`Set ${opt.name} to ${opts[opt.name]}`)
-          if (opts[opt.name] === undefined) {
-            const keys = Array.from(optMap.keys() as any)
-            throw new Error(`Invalid value ${value} for ${opt.name}. Allowed values: ${keys.join(",")}`)
-          }
+          opts[opt.name] = getOptionValueFromMap(opt.name, value, optMap)
           break
       }
       return
@@ -214,11 +225,14 @@ export interface ExampleOptions {
   noErrorValidation: boolean
 }
 
-const defaultHandbookOptions: ExampleOptions = {
+// Keys in this object are used to filter out handbook options
+// before compiler options are set.
+
+const defaultHandbookOptions: Partial<ExampleOptions> = {
   errors: [],
   noErrors: false,
   showEmit: false,
-  showEmittedFile: "index.js",
+  showEmittedFile: undefined,
   noStaticSemanticInfo: false,
   emit: false,
   noErrorValidation: false,
@@ -385,6 +399,12 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
 
   const handbookOptions = { ...filterHandbookOptions(codeLines), ...options.defaultOptions }
   const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions, ts)
+
+  // Handle special casing the lookup for when using jsx preserve which creates .jsx files
+  if (!handbookOptions.showEmittedFile) {
+    handbookOptions.showEmittedFile =
+      compilerOptions.jsx && compilerOptions.jsx === ts.JsxEmit.Preserve ? "index.jsx" : "index.js"
+  }
 
   const getRoot = () => {
     const path = require("path")
@@ -629,17 +649,27 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   if (handbookOptions.showEmit) {
     // Get the file which created the file we want to show:
     const emitFilename = handbookOptions.showEmittedFile || defaultFileName
-    const emitSourceFilename = fsRoot + emitFilename.replace(".js", "").replace(".d.ts", "").replace(".map", "")
-    const emitSource = filenames.find(f => f === emitSourceFilename + ".ts" || f === emitSourceFilename + ".tsx")
+    const emitSourceFilename =
+      fsRoot + emitFilename.replace(".jsx", "").replace(".js", "").replace(".d.ts", "").replace(".map", "")
 
-    if (!emitSource) {
+    let emitSource = filenames.find(f => f === emitSourceFilename + ".ts" || f === emitSourceFilename + ".tsx")
+
+    if (!emitSource && !compilerOptions.outFile) {
       const allFiles = filenames.join(", ")
       // prettier-ignore
-      throw new Error(`Cannot find the corresponding source file for ${emitFilename} (looking for: ${emitSourceFilename} in the vfs) - in ${allFiles}`)
+      throw new Error(`Cannot find the corresponding **source** file for ${emitFilename} (looking for: ${emitSourceFilename} in the vfs) - in ${allFiles}`)
     }
 
-    const output = ls.getEmitOutput(emitSource)
-    const file = output.outputFiles.find(o => o.name === fsRoot + handbookOptions.showEmittedFile)
+    // Allow outfile, in which case you need any file.
+    if (compilerOptions.outFile) {
+      emitSource = filenames[0]
+    }
+
+    const output = ls.getEmitOutput(emitSource!)
+    const file = output.outputFiles.find(
+      o => o.name === fsRoot + handbookOptions.showEmittedFile || o.name === handbookOptions.showEmittedFile
+    )
+
     if (!file) {
       const allFiles = output.outputFiles.map(o => o.name).join(", ")
       // prettier-ignore

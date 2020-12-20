@@ -3,14 +3,13 @@ import { useEffect, useState } from "react"
 
 import "./SiteFooter.scss"
 import { PlaygroundSamples } from "./SiteFooter-PlaygroundSamples"
-import { AllSitePage, createIntlLink } from "../IntlLink"
+import { createIntlLink } from "../IntlLink"
 import { hasLocalStorage } from "../../lib/hasLocalStorage"
 import { whenEscape } from "../../lib/whenEscape"
 
 export type Props = {
   lang: string
   suppressCustomization?: true
-  allSitePage: AllSitePage
 }
 
 const popularPages = [
@@ -46,7 +45,7 @@ const popularPages = [
   },
   {
     title: "TSConfig Options",
-    url: "/tsconfig.html",
+    url: "/tsconfig",
     description: "All the configuration options for a project",
   },
   {
@@ -202,7 +201,7 @@ export const SiteFooter = (props: Props) => {
     l.url.includes("#show-examples")
   )!
 
-  const Link = createIntlLink(props.lang, props.allSitePage)
+  const Link = createIntlLink(props.lang)
 
   useEffect(() => {
     // Handle escape closing dropdowns etc
@@ -297,7 +296,7 @@ export const SiteFooter = (props: Props) => {
               fillRule="evenodd"
             />
           </svg>
-          <p>Made with &#9829; in Redmond, Boston, SF &amp; NYC</p>
+          <p>Made with &#9829; in Redmond, Boston, SF &amp; Dublin</p>
 
           <a href="">
             <img

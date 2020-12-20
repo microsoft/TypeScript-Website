@@ -1,6 +1,6 @@
 ---
 display: "Diagnostics"
-oneline: "Output additional information after a compile"
+oneline: "Output compiler performance information after building."
 ---
 
 Used to output diagnostic information for debugging. This command is a subset of [`extendedDiagnostics`](#extendedDiagnostics) which are more user-facing results, and easier to interpret.

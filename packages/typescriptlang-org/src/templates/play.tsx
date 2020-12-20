@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import ReactDOM from "react-dom"
 import { Layout } from "../components/layout"
 import { withPrefix, graphql } from "gatsby"
-import { PlayQuery } from "../__generated__/gatsby-types"
 
 import "./play.scss"
 import { RenderExamples } from "../components/ShowExamples"
@@ -21,7 +20,6 @@ import playgroundReleases from "../../../sandbox/src/releases.json"
 declare const playground: ReturnType<typeof import("typescript-playground").setupPlayground>
 
 type Props = {
-  data: PlayQuery
   pageContext: {
     lang: string
     examplesTOC: typeof import("../../static/js/examples/en.json")
@@ -117,6 +115,12 @@ const Play: React.FC<Props> = (props) => {
           "local": "http://localhost:5000"
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],
+        catchError: true,
+        onError: function (err) {
+          document.getElementById("loading-message")!.innerText = "Cannot load the Playground in this browser"
+          console.error("Error setting up monaco/sandbox/playground from the JS, this is likely that you're using a browser which monaco doesn't support.")
+          console.error(err)
+        }
       });
 
       re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("typescript-sandbox"), playground: typeof import("typescript-playground")) => {
@@ -171,7 +175,7 @@ const Play: React.FC<Props> = (props) => {
 
 
   return (
-    <Layout title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+    <Layout title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang}>
       {/** This is the top nav, which is outside of the editor  */}
       <nav className="navbar-sub">
         <ul className="nav">
@@ -211,7 +215,7 @@ const Play: React.FC<Props> = (props) => {
             <a href="#" id="whatisnew-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="whatisnew">{i("play_subnav_whatsnew")} <span className="caret"></span></a>
             <ul className="examples-dropdown" id="whatisnew" aria-labelledby="whatisnew-button">
               <button role="button" aria-label="Close dropdown" className="examples-close">{i("play_subnav_examples_close")}</button>
-              <RenderExamples defaultSection="4.0" sections={["4.0", "3.8", "3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
+              <RenderExamples defaultSection="4.1" sections={["4.1", "4.0", "3.8", "3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
             </ul>
           </li>
         </ul>
@@ -238,15 +242,17 @@ const Play: React.FC<Props> = (props) => {
                 <li><a id="run-button" href="#" role="button">{i("play_toolbar_run")}</a></li>
 
                 <li className="dropdown">
-                  <a href="#" id="exports-drpdown" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="export-dropdown-menu">{i("play_toolbar_export")} <span className="caret"></span></a>
+                  <a href="#" id="exports-dropdown" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="export-dropdown-menu">{i("play_toolbar_export")} <span className="caret"></span></a>
                   <ul className="dropdown-menu" id='export-dropdown-menu' aria-labelledby="whatisnew-button">
-                    <li><a href="#" onClick={() => playground.exporter.reportIssue()} aria-label={i("play_export_report_issue")} >{i("play_export_report_issue")}</a></li>
+                    <li><a href="#" onClick={(e: any) => playground.exporter.reportIssue(e)} aria-label={i("play_export_report_issue")} >{i("play_export_report_issue")}</a></li>
                     <li role="separator" className="divider"></li>
-                    <li><a href="#" onClick={() => playground.exporter.copyAsMarkdownIssue()} aria-label={i("play_export_copy_md")} >{i("play_export_copy_md")}</a></li>
-                    <li><a href="#" onClick={() => playground.exporter.copyForChat()} aria-label={i("play_export_copy_link")}  >{i("play_export_copy_link")}</a></li>
-                    < li > <a href="#" onClick={() => playground.exporter.copyForChatWithPreview()} aria-label={i("play_export_copy_link_preview")}  >{i("play_export_copy_link_preview")}</a></li>
+                    <li><a href="#" onClick={() => playground.exporter.exportAsTweet()} aria-label={i("play_export_tweet_md")} >{i("play_export_tweet_md")}</a></li>
+                    <li role="separator" className="divider"></li>
+                    <li><a href="#" onClick={(e: any) => playground.exporter.copyAsMarkdownIssue(e)} aria-label={i("play_export_copy_md")} >{i("play_export_copy_md")}</a></li>
+                    <li><a href="#" onClick={(e: any) => playground.exporter.copyForChat(e)} aria-label={i("play_export_copy_link")}  >{i("play_export_copy_link")}</a></li>
+                    < li > <a href="#" onClick={(e: any) => playground.exporter.copyForChatWithPreview(e)} aria-label={i("play_export_copy_link_preview")}  >{i("play_export_copy_link_preview")}</a></li>
                     < li role="separator" className="divider" ></li>
-                    <li><a href="#" onClick={() => playground.exporter.openInTSAST()} aria-label={i("play_export_tsast")}  >{i("play_export_tsast")}</a></li>
+                    <li><a href="#" onClick={() => playground.exporter.openInTSAST()} aria-label={i("play_export_tsast")}>{i("play_export_tsast")}</a></li>
                     <li role="separator" className="divider"></li>
                     <li><a href="#" onClick={() => playground.exporter.openProjectInCodeSandbox()} aria-label={i("play_export_sandbox")} >{i("play_export_sandbox")}</a></li>
                     <li><a href="#" onClick={() => playground.exporter.openProjectInStackBlitz()} aria-label={i("play_export_stackblitz")} >{i("play_export_stackblitz")}</a></li>
@@ -270,9 +276,3 @@ const Play: React.FC<Props> = (props) => {
 
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Play {...props} /></Intl>
-
-export const query = graphql`
-  query Play {
-    ...AllSitePage
-  }
-`

@@ -1,5 +1,8 @@
 // @ts-check
 // Loops through all the sample code and ensures that twoslash doesn't raise
+
+// yarn workspace tsconfig-reference lint
+
 const chalk = require("chalk").default;
 
 const tick = chalk.bold.greenBright("✓");
@@ -31,7 +34,10 @@ languages.forEach((lang) => {
   try {
     options = readdirSync(join(locale, "options")).filter((f) => !f.startsWith("."));
   } catch {
-    errorReports.push({ path: join(locale, "options"), error: `Options directory ${join(locale, "options")} doesn't exist` });
+    errorReports.push({
+      path: join(locale, "options"),
+      error: `Options directory ${join(locale, "options")} doesn't exist`,
+    });
     return;
   }
 

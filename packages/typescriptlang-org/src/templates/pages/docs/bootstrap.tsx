@@ -8,14 +8,11 @@ import { Intl } from "../../../components/Intl";
 import { docCopy } from "../../../copy/en/documentation";
 import { createInternational } from "../../../lib/createInternational";
 import { useIntl } from "react-intl";
-import { graphql } from "gatsby";
-import { DocsHomeQuery } from "../../../__generated__/gatsby-types";
 import { QuickJump } from "../../../components/QuickJump";
 import releaseInfo from "../../../lib/release-info.json";
 
 
 type Props = {
-  data: DocsHomeQuery;
   pageContext: any;
 };
 
@@ -26,7 +23,6 @@ const Index: React.FC<Props> = (props) => {
       title={i("doc_bootstrap_title")}
       description={i("doc_bootstrap_description")}
       lang={props.pageContext.lang}
-      allSitePage={props.data.allSitePage}
     >
 
       <div className="raised main-content-block">
@@ -262,7 +258,6 @@ const Index: React.FC<Props> = (props) => {
 
       <QuickJump
         title={i("doc_headline")}
-        allSitePage={props.data.allSitePage}
         lang={props.pageContext.lang}
       />
 
@@ -270,11 +265,6 @@ const Index: React.FC<Props> = (props) => {
   );
 };
 
-export const query = graphql`
-  query DocsBootstrap {
-    ...AllSitePage
-  }
-`;
 
 export default (props: Props) => (
   <Intl locale={props.pageContext.lang}>

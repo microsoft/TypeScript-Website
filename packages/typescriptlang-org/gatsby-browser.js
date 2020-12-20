@@ -3,6 +3,15 @@
 // https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby-plugin-google-analytics/src/gatsby-browser.js
 
 exports.onRouteUpdate = ({ location, prevLocation }) => {
+  // Run both clear and app insights for a bit, then drop app insights
+
+  // prettier-ignore
+  // ;(function(c,l,a,r,i,t,y){
+  //       c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+  //       t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+  //       y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  //   })(window, document, "clarity", "script", "3w5kyel345");
+
   var sdkInstance = "appInsightsSDK"
   window[sdkInstance] = "appInsights"
   const config = {

@@ -41,7 +41,7 @@
         "targetString": "length"
       },
       {
-        "text": "module export=\n(property) export=: {\n    getStringLength: (str: any) => any;\n}",
+        "text": "var module: {\n    \"\\\"[home]/utilFunctions\\\"\": typeof import(\"[home]/utilFunctions\");\n}",
         "docs": "",
         "start": 73,
         "length": 6,
@@ -50,7 +50,7 @@
         "targetString": "module"
       },
       {
-        "text": "module export=\n(property) export=: {\n    getStringLength: (str: any) => any;\n}",
+        "text": "module \"[home]/utilFunctions\"",
         "docs": "",
         "start": 80,
         "length": 7,
@@ -59,7 +59,7 @@
         "targetString": "exports"
       },
       {
-        "text": "(property) getStringLength: (str: any) => any",
+        "text": "(alias) const getStringLength: (str: any) => any\nimport getStringLength",
         "docs": "",
         "start": 94,
         "length": 15,
@@ -95,7 +95,7 @@
         "targetString": "utils"
       },
       {
-        "text": "(property) getStringLength: (str: any) => any",
+        "text": "(alias) getStringLength(str: any): any\nimport getStringLength",
         "docs": "",
         "start": 193,
         "length": 15,

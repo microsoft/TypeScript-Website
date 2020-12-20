@@ -20,7 +20,7 @@ Jika modul **tidak** secara eksplisit menentukan ekspor default.
 Misalnya, tanpa`allowSyntheticDefaultImports` disetel ke _true_:
 
 ```ts twoslash
-// @errors: 1259
+// @errors: 1259 1192
 // @checkJs
 // @allowJs
 // @esModuleInterop: false

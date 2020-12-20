@@ -1,6 +1,6 @@
 ---
 display: "No Fallthrough Cases In Switch"
-oneline: "Report errors for fallthrough cases in switch statements."
+oneline: "Enable error reporting for fallthrough cases in switch statements."
 ---
 
 Report errors for fallthrough cases in switch statements.

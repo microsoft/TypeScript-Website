@@ -65,6 +65,7 @@ module.exports = {
         outputPath: __dirname + "/src/__generated__/gatsby-types.ts",
       },
     },
+
     // Support ts/tsx files in src
     "gatsby-plugin-typescript",
     // SEO

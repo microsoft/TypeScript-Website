@@ -37,7 +37,7 @@ interface Props {
 
 class MyComponent extends React.Component<Props, {}> {
   render() {
-    return <span>{this.props.foo}</span>;
+    return <span>{this.props.name}</span>;
   }
 }
 

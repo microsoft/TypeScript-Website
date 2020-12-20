@@ -50,9 +50,9 @@ This module should be deployed to npm when you would like the world to see it, t
 For example, this is how you can handle getting the URL for a CSS file which is included in your `dist` folder:
 
 ```ts
-const isDev = document.location.host.includes('localhost')
-const unpkgURL = 'https://unpkg.com/typescript-playground-presentation-mode@latest/dist/slideshow.css'
-const cssHref = isDev ? 'http://localhost:5000/slideshow.css' : unpkgURL
+const isDev = document.location.host.includes("localhost")
+const unpkgURL = "https://unpkg.com/typescript-playground-presentation-mode@latest/dist/slideshow.css"
+const cssHref = isDev ? "http://localhost:5000/slideshow.css" : unpkgURL
 ```
 
 ### Post-Deploy
