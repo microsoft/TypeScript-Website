@@ -166,7 +166,7 @@ function MainButton(prop: SideProps): JSX.Element {
 
 ### 클래스형 컴포넌트
 
-클래스형 컴포넌트 타입을 정의하는 것이 가능합니다.
+클래스형 컴포넌트 타입을 정의하는 것도 가능합니다.
 하지만 이를 위해서는 _요소 클래스 타입(element class type)_ 과 _요소 인스턴스 타입(element instance type)_이라는 두 가지 용어를 이해하는 것이 좋습니다.
 
 `<Expr />`가 주어지면, _요소 클래스 타입_은 `Expr`타입입니다.
