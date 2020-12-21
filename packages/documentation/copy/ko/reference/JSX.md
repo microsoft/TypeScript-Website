@@ -141,7 +141,7 @@ const Button = (prop: { value: string }, context: { color: string }) => (
 );
 ```
 
-함수형 컴포넌트는 JavaScript의 함수이기 때문에 과부하를 사용할 수 있습니다:
+함수형 컴포넌트는 JavaScript 함수이기 때문에 과부하를 사용할 수 있습니다:
 
 ```ts
 interface ClickableProps {
