@@ -25,8 +25,7 @@ import { pi } from "./constants";
 console.log(pi);
 ```
 
-No obtendrás ningún error. De cualquier manera, si habilitas `checkJs` entonces obtendrás mensajes de error del archivo JavaScript.
-You will not get any errors. However, if you turn on `checkJs` then you will get error messages from the JavaScript file.
+No obtendrás ningún error. Sin embargo, si habilitas `checkJs` entonces obtendrás mensajes de error del archivo JavaScript.
 
 ```ts twoslash
 // @errors: 2345

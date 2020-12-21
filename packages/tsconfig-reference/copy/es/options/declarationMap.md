@@ -1,6 +1,6 @@
 ---
 display: "Declaration Map"
-oneline: "Crea un sourcemap para archivos d.ts"
+oneline: "Crea un mapa de fuente para archivos d.ts"
 ---
 
 Genera un _source map_ para los archivos `.d.ts` que representa al archivo fuente `.ts`.

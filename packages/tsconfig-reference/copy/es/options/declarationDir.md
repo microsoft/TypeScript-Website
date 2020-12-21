@@ -23,7 +23,7 @@ con `tsconfig.json`:
 }
 ```
 
-Colocaría el archivo d.ts para el `index.ts` en una carpeta `types`:
+Colocaría el archivo d.ts para `index.ts` en una carpeta `types`:
 
 ```
 ejemplo
