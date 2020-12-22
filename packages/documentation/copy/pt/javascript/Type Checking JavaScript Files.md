@@ -5,16 +5,16 @@ permalink: /pt/docs/handbook/type-checking-javascript-files.html
 oneline: Como adicionar checagem de tipos a arquivos JavaScript usando Typescript
 ---
 
-Here are some notable differences on how checking works in `.js` files compared to `.ts` files.
+Aqui estão algumas diferenças notáveis em como a checagem de tipo funciona em arquivos `.js` comparados com arquivos `.ts`.
 
-## Properties are inferred from assignments in class bodies
+## Propriedades sao inferidas de atribuiçoes no corpo das classes
 
-ES2015 does not have a means for declaring properties on classes. Properties are dynamically assigned, just like object literals.
+ES2015 nao tem meios de declaração de propriedades em uma classe. Propriedades são atribuídas dinamicamente, assim como object literals.
 
-In a `.js` file, the compiler infers properties from property assignments inside the class body.
-The type of a property is the type given in the constructor, unless it's not defined there, or the type in the constructor is undefined or null.
-In that case, the type is the union of the types of all the right-hand values in these assignments.
-Properties defined in the constructor are always assumed to exist, whereas ones defined just in methods, getters, or setters are considered optional.
+Em um arquivo `.js`, o compilador infere propriedades a partir da atribuição de propriedades dentro de um corpo de uma classe.
+O tipo de uma propriedade é o tipo dado no construtor, a não ser que não seja definido lá ou o tipo no construtor for undefined ou null.
+Neste caso, o tipo é uma união dos tipos de todos os valores que estao do lado direito nessas atribuições.
+Propriedades definidas no construtor são sempre assumidas existentes, enquanto as que foram definidas apenas em métodos, getters ou setters são consideradas opcionais.
 
 ```js twoslash
 // @checkJs
@@ -26,18 +26,18 @@ class C {
   }
   method() {
     this.constructorOnly = false;
-    this.constructorUnknown = "plunkbat"; // ok, constructorUnknown is string | undefined
-    this.methodOnly = "ok"; // ok, but methodOnly could also be undefined
+    this.constructorUnknown = "plunkbat"; // ok, construtorUnknown é uma string | undefined
+    this.methodOnly = "ok"; // ok, mas methodOnly também pode ser undefined
   }
   method2() {
-    this.methodOnly = true; // also, ok, methodOnly's type is string | boolean | undefined
+    this.methodOnly = true; // também ok, methodOnly's type é string | boolean | undefined
   }
 }
 ```
 
-If properties are never set in the class body, they are considered unknown.
-If your class has properties that are only read from, add and then annotate a declaration in the constructor with JSDoc to specify the type.
-You don't even have to give a value if it will be initialised later:
+Se propriedades nunca forem declaradas no corpo da classe, elas são consideradas desconhecidas.
+Se sua classe tem propriedades que são apenas lidas, adicione e então anote uma declaraçao no construtor com JSDoc para especificação de tipo.
+Você não precisa nem atribuir um valor a ela se for inicializada posteriormente.
 
 ```js twoslash
 // @checkJs
@@ -56,11 +56,11 @@ c.prop = 0; // OK
 c.count = "string";
 ```
 
-## Constructor functions are equivalent to classes
+## Funções construtoras sao equivalentes a classes
 
-Before ES2015, Javascript used constructor functions instead of classes.
-The compiler supports this pattern and understands constructor functions as equivalent to ES2015 classes.
-The property inference rules described above work exactly the same way.
+Antes do ES2015, Javascript usava funções construtoras ao invés de classes.
+O compilador suporta esse padrão e entende que funções construtoras são equivalentes a Classes do ES2015.
+As regras de inferência de propriedades funcionam exatamente da mesma forma.
 
 ```js twoslash
 // @checkJs
@@ -71,40 +71,40 @@ function C() {
 }
 C.prototype.method = function () {
   this.constructorOnly = false;
-  this.constructorUnknown = "plunkbat"; // OK, the type is string | undefined
+  this.constructorUnknown = "plunkbat"; // OK, o tipo é string | undefined
 };
 ```
 
-## CommonJS modules are supported
+## CommonJS modules são suportados
 
-In a `.js` file, TypeScript understands the CommonJS module format.
-Assignments to `exports` and `module.exports` are recognized as export declarations.
-Similarly, `require` function calls are recognized as module imports. For example:
+Em um arquivo `.js`, TypeScript entende o formato de módulo CommonJS.
+Atribuiçoes a `exports` e `modules.exports` são reconhecidas como declarações de exportação.
+Similarmente, chamadas de função `require` são reconhecidas como importações de módulos. Por exemplo:
 
 ```js
-// same as `import module "fs"`
+// o mesmo que `import module "fs"`
 const fs = require("fs");
 
-// same as `export function readFile`
+// o mesmo que `export funcion readFile`
 module.exports.readFile = function (f) {
   return fs.readFileSync(f);
 };
 ```
 
-The module support in Javascript is much more syntactically forgiving than TypeScript's module support.
-Most combinations of assignments and declarations are supported.
+O suporte de módulo em Javascript é muito mais flexível sinteticamente que o suporte de módulo de TypeScript.
+Muitas das combinações de atribuições e declarações são suportadas.
 
-## Classes, functions, and object literals are namespaces
+## Classes, funções, e object literals sao namespaces
 
-Classes are namespaces in `.js` files.
-This can be used to nest classes, for example:
+Classes sao namespaces em arquivos `.js`.
+Isso pode ser usado para aninhar classes, por exemplo:
 
 ```js twoslash
 class C {}
 C.D = class {};
 ```
 
-And, for pre-ES2015 code, it can be used to simulate static methods:
+E para código pre-ES2015, pode ser usado para simular métodos estáticos:
 
 ```js twoslash
 function Outer() {
@@ -118,7 +118,7 @@ Outer.Inner = function () {
 Outer.innter();
 ```
 
-It can also be used to create simple namespaces:
+Também pode ser usado para criar namespaces simples:
 
 ```js twoslash
 var ns = {};
@@ -128,7 +128,7 @@ ns.func = function () {};
 ns;
 ```
 
-Other variants are allowed as well:
+Outras variantes são permitidas também:
 
 ```js twoslash
 // IIFE
@@ -146,21 +146,21 @@ var assign =
 assign.extra = 1;
 ```
 
-## Object literals are open-ended
+## Objetos literais são abertos
 
-In a `.ts` file, an object literal that initializes a variable declaration gives its type to the declaration.
-No new members can be added that were not specified in the original literal.
-This rule is relaxed in a `.js` file; object literals have an open-ended type (an index signature) that allows adding and looking up properties that were not defined originally.
-For instance:
+Em um arquivo `.ts`, um objeto literal que inicializa uma declaração de variável dá o seu tipo para a declaração.
+Nenhum membro novo que não foi especificado na declaração pode ser adicionado.
+Essas regras são relaxadas em um arquivo `.js`; objetos literais tem um tipo aberto (uma assinatura de índice) que permite adicionar e procurar propriedades que não foram adicionadas originalmente.
+Por exempo:
 
 ```js twoslash
 var obj = { a: 1 };
-obj.b = 2; // Allowed
+obj.b = 2; // Permitido
 ```
 
-Object literals behave as if they have an index signature `[x:string]: any` that allows them to be treated as open maps instead of closed objects.
+Objetos literais se comportam como se tivessem uma assinatura de index `[x:string]: any` que permite que sejam tratados como maps abertos ao invés de objetos fechados.
 
-Like other special JS checking behaviors, this behavior can be changed by specifying a JSDoc type for the variable. For example:
+Assim como outros comportamentos especiais do JS, esse comportamento pode ser mudado adicionando um tipo JSDoc para a variável. Por exemplo:
 
 ```js twoslash
 // @checkJs
@@ -170,11 +170,11 @@ var obj = { a: 1 };
 obj.b = 2;
 ```
 
-## null, undefined, and empty array initializers are of type any or any[]
+## Inicializadores null, undefined e arrays vazios são do tipo any ou any[]
 
-Any variable, parameter or property that is initialized with null or undefined will have type any, even if strict null checks is turned on.
-Any variable, parameter or property that is initialized with [] will have type any[], even if strict null checks is turned on.
-The only exception is for properties that have multiple initializers as described above.
+Qualquer variável, parâmetro ou propriedade que é inicializado com null ou undefined terão tipo any, mesmo que a checagem estrita de null esteja habilitada.
+Qualquer variável, parâmetro ou propriedade que é inicializada com [] terá tipo any[], mesmo que a checagem estrita de null esteja habiltada.
+A única exceção é para propriedades que tem múltiplos inicializadores como descrito acima.
 
 ```js twoslash
 function Foo(i = null) {
@@ -189,12 +189,12 @@ foo.l.push(foo.i);
 foo.l.push("end");
 ```
 
-## Function parameters are optional by default
+## Parâmetros de funções são opcionais por padrão
 
-Since there is no way to specify optionality on parameters in pre-ES2015 Javascript, all function parameters in `.js` file are considered optional.
-Calls with fewer arguments than the declared number of parameters are allowed.
+Uma vez que não há uma forma de especificar opcionalidade em parâmetros de funções em Javascript pre-ES2015, todas os parâmetros de funções são considerados opcionais.
+Chamadas com menos argumentos que a quantidade declarada na função são permitidas.
 
-It is important to note that it is an error to call a function with too many arguments.
+É importante notar que é um erro chamar funções com mais argumentos do que declarados.
 
 For instance:
 
@@ -206,17 +206,17 @@ function bar(a, b) {
   console.log(a + " " + b);
 }
 
-bar(1); // OK, second argument considered optional
+bar(1); // OK, segundo argumento considerado opcional
 bar(1, 2);
-bar(1, 2, 3); // Error, too many arguments
+bar(1, 2, 3); // Erro, argumentos em excesso
 ```
 
-JSDoc annotated functions are excluded from this rule.
-Use JSDoc optional parameter syntax (`[` `]`) to express optionality. e.g.:
+Funções anotadas com JSDoc são excluídas dessa regra.
+Use a sintaxe de parâmetro opcional JSDoc (`[` `]`) para expressar opcionalidade. e.g.:
 
 ```js twoslash
 /**
- * @param {string} [somebody] - Somebody's name.
+ * @param {string} [somebody] - O nome de alguém.
  */
 function sayHello(somebody) {
   if (!somebody) {
@@ -228,9 +228,9 @@ function sayHello(somebody) {
 sayHello();
 ```
 
-## Var-args parameter declaration inferred from use of `arguments`
+## Declarações de parâmetros var-args são inferidos do uso de `arguments`
 
-A function whose body has a reference to the `arguments` reference is implicitly considered to have a var-arg parameter (i.e. `(...arg: any[]) => any`). Use JSDoc var-arg syntax to specify the type of the arguments.
+Uma função que tem uma referência à referência `arguments` é considerada tendo parâmetros var-arg (i.e. `(...arg: any[]) => any`). Use a sintaxe de var-arg JSDoc para especificar o tipo destes argumentos.
 
 ```js twoslash
 /** @param {...number} args */
@@ -243,26 +243,26 @@ function sum(/* numbers */) {
 }
 ```
 
-## Unspecified type parameters default to `any`
+## Tipos de parâmetros não especificados tem como padrão `any`
 
-Since there is no natural syntax for specifying generic type parameters in Javascript, an unspecified type parameter defaults to `any`.
+Uma vez que não há sintaxe natual para especificar tipos de parâmetros genéricos em Javascript, um tipo de parâmetro não especificado tem como padrão `any`.
 
-### In extends clause
+### Em uma cláusula extends
 
-For instance, `React.Component` is defined to have two type parameters, `Props` and `State`.
-In a `.js` file, there is no legal way to specify these in the extends clause. By default the type arguments will be `any`:
+Por exemplo, `React.Component` é definido para ter dois parâmetros específicos, `Props` e `State`.
+Em um arquivo `.js`, não há forma legal de especificar esses parâmetros na cláusula extends. Por padrão o tipo dos argumentos será `any`:
 
 ```js
 import { Component } from "react";
 
 class MyComponent extends Component {
   render() {
-    this.props.b; // Allowed, since this.props is of type any
+    this.props.b; // Permitido, já que this.props tem o tipo any
   }
 }
 ```
 
-Use JSDoc `@augments` to specify the types explicitly. for instance:
+Use o JSDoc `@arguments` para especificar os tipos explicitamente. Por exemplo:
 
 ```js
 import { Component } from "react";
@@ -272,32 +272,32 @@ import { Component } from "react";
  */
 class MyComponent extends Component {
   render() {
-    this.props.b; // Error: b does not exist on {a:number}
+    this.props.b; // Erro: b não existe em {a: number}
   }
 }
 ```
 
-### In JSDoc references
+### Em referências JSDoc
 
-An unspecified type argument in JSDoc defaults to any:
+Um tipo de argumento não especificado em JSDoc tem como padrão any
 
 ```js twoslash
 /** @type{Array} */
 var x = [];
 
 x.push(1); // OK
-x.push("string"); // OK, x is of type Array<any>
+x.push("string"); // OK, x é do tipo Array<any>
 
 /** @type{Array.<number>} */
 var y = [];
 
 y.push(1); // OK
-y.push("string"); // Error, string is not assignable to number
+y.push("string"); // Erro, string não é atribuível a number
 ```
 
-### In function calls
+### Em chamadas de função
 
-A call to a generic function uses the arguments to infer the type parameters. Sometimes this process fails to infer any types, mainly because of lack of inference sources; in these cases, the type parameters will default to `any`. For example:
+Uma chamada para uma função genérica usa os argumentos para inferir o tipo dos parâmetros. As vezes este processo falha ao inferir qualquer tipo, principalmente por causa da falta de fontes de inferência; nesses casos, o tipo dos parâmetros será `any`. Por exemplo:
 
 ```js
 var p = new Promise((resolve, reject) => {
@@ -307,4 +307,4 @@ var p = new Promise((resolve, reject) => {
 p; // Promise<any>;
 ```
 
-To learn all of the features available in JSDoc, see [the reference](/docs/handbook/jsdoc-supported-types.html).
+Para aprender todas as features disponíveis em JSDoc, veja [a referência](/docs/handbook/jsdoc-supported-types.html)
