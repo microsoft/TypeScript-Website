@@ -4,7 +4,6 @@ layout: docs
 permalink: /ko/docs/handbook/jsx.html
 oneline: Using JSX with TypeScript
 translatable: true
-
 ---
 
 [JSX](https://facebook.github.io/jsx/)는 XML과 유사한 내장형 구문입니다.
@@ -17,7 +16,6 @@ TypeScript는 임베딩(embedding), 타입 검사 및 JSX를 JavaScript로 직�
 JSX를 사용하기 전에 아래의 두 가지를 수행해야 합니다.
 
 1. `.tsx` 확장자로 파일 이름 지정하기
-
 2. `jsx` 옵션 활성화하기
 
 TypeScript는 다음 세 가지의 JSX 모드를 제공합니다: `preserve`, `react`, `react-native`.
@@ -66,7 +64,8 @@ JSX를 통한 타입 검사를 이해하기 위해서는 먼저 내장 요소와
 이것이 중요한 이유 두 가지는 다음과 같습니다:
 
 1. React에서 내장 요소는 문자열 (`React.createElement("div")`)로 방출되지만 생성한 구성 요소는 (`React.createElement(MyComponent)`)가 아닙니다.
-2. JSX 요소에 전달되는 속성의 타입은 다르게 조회되어야 합니다. 내장 요소의 속성은 _내재적으로_ 알려져야 하지만, 컴포넌트는 각자의 속성 집합을 지정하고자 합니다.
+2. JSX 요소에 전달되는 속성의 타입은 다르게 조회되어야 합니다.
+   내장 요소의 속성은 _내재적으로_ 알려져야 하지만, 컴포넌트는 각자의 속성 집합을 지정하고자 합니다.
 
 TypeScript는 이를 구분하기 위해 [React와 같은 규칙](http://facebook.github.io/react/docs/jsx-in-depth.html#html-tags-vs.-react-components)을 사용합니다.
 내장 요소는 항상 소문자로 시작하고, 값-기반 요소는 항상 대문자로 시작합니다.
