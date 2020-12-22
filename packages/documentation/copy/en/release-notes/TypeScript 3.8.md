@@ -161,7 +161,6 @@ class Square {
 const a = new Square(100);
 const b = { sideLength: 100 };
 
-// Boom!
 // TypeError: attempted to get private field on non-instance
 // This fails because 'b' is not an instance of 'Square'.
 console.log(a.equals(b));
