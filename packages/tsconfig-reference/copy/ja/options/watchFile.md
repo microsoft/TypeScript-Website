@@ -9,4 +9,4 @@ oneline: "What technique should the watcher use"
 - `priorityPollingInterval`: すべてのファイルの変更を毎秒数回チェックしますが、ヒューリスティックスを使用して他のファイルよりも少ない頻度で特定のタイプのファイルをチェックします。
 - `dynamicPriorityPolling`: 変更頻度の低いファイルがチェックされる頻度が低くなるような動的なキューを使用します。
 - `useFsEvents` (デフォルト): オペレーティングシステム/ファイルシステムのネイティブイベントの使用をファイルの変更に試みます。
-- `useFsEventsOnParentDirectory`: ファイルの親ディレクトリでオペレーティングシステム/ファイルシステムのネイティブイベントを使用を試み、変更をリッスンします。
+- `useFsEventsOnParentDirectory`: ファイルの親ディレクトリの変更を監視するためにオペレーティングシステム/ファイルシステムのネイティブイベントを使用を試みます。
