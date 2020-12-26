@@ -219,13 +219,13 @@ interface Point {
   y: number;
 }
 
-function printPoint(p: Point) {
+function logPoint(p: Point) {
   console.log(`${p.x}, ${p.y}`);
 }
 
-// prints "12, 26"
+// logs "12, 26"
 const point = { x: 12, y: 26 };
-printPoint(point);
+logPoint(point);
 ```
 
 The `point` variable is never declared to be a `Point` type. However, TypeScript compares the shape of `point` to the shape of `Point` in the type-check. They have the same shape, so the code passes.
@@ -239,18 +239,18 @@ interface Point {
   y: number;
 }
 
-function printPoint(p: Point) {
+function logPoint(p: Point) {
   console.log(`${p.x}, ${p.y}`);
 }
 // ---cut---
 const point3 = { x: 12, y: 26, z: 89 };
-printPoint(point3); // prints "12, 26"
+logPoint(point3); // logs "12, 26"
 
 const rect = { x: 33, y: 3, width: 30, height: 80 };
-printPoint(rect); // prints "33, 3"
+logPoint(rect); // logs "33, 3"
 
 const color = { hex: "#187ABF" };
-printPoint(color);
+logPoint(color);
 ```
 
 There is no difference between how classes and objects conform to shapes:
@@ -262,7 +262,7 @@ interface Point {
   y: number;
 }
 
-function printPoint(p: Point) {
+function logPoint(p: Point) {
   console.log(`${p.x}, ${p.y}`);
 }
 // ---cut---
@@ -277,7 +277,7 @@ class VirtualPoint {
 }
 
 const newVPoint = new VirtualPoint(13, 56);
-printPoint(newVPoint); // prints "13, 56"
+logPoint(newVPoint); // logs "13, 56"
 ```
 
 If the object or class has all the required properties, TypeScript will say they match, regardless of the implementation details.

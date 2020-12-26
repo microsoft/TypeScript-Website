@@ -91,11 +91,11 @@ interface Named {
   name: string;
 }
 
-function printPoint(point: Pointlike) {
+function logPoint(point: Pointlike) {
   console.log("x = " + point.x + ", y = " + point.y);
 }
 
-function printName(x: Named) {
+function logName(x: Named) {
   console.log("Hello, " + x.name);
 }
 
@@ -105,8 +105,8 @@ const obj = {
   name: "Origin",
 };
 
-printPoint(obj);
-printName(obj);
+logPoint(obj);
+logName(obj);
 ```
 
 TypeScript's type system is _structural_, not nominal: We can use `obj` as a `Pointlike` because it has `x` and `y` properties that are both numbers.
@@ -176,7 +176,7 @@ OOP programmers are accustomed to being able to query the type of any value, eve
 
 ```csharp
 // C#
-static void PrintType<T>() {
+static void LogType<T>() {
     Console.WriteLine(typeof(T).Name);
 }
 ```
