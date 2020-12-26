@@ -369,4 +369,4 @@ The `ThisType<T>` marker interface is simply an empty interface declared in `lib
 
 ## Intrinsic String Manipulation Types
 
-To help with string manipulation around template string literals, TypeScript includes a set of types which can be used in string manipulation within the type system. You can
+To help with string manipulation around template string literals, TypeScript includes a set of types which can be used in string manipulation within the type system. You can find those in the [Template Literal Types](/docs/handbook/2/template-literal-types.html#uppercasestringtype) documentation.
