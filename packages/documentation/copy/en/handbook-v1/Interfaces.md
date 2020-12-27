@@ -450,6 +450,7 @@ For improved type safety, explicitly declare that the indexer can return `undefi
 (or enable the `noUncheckedIndexedAccess` linter option to do this automatically):
 
 ```ts twoslash
+// @errors: 2532
 interface Dictionary {
     [index: string]: string | undefined;
 }
