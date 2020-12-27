@@ -434,6 +434,29 @@ interface NumberOrStringDictionary {
 }
 ```
 
+Beware, the compiler assumes indexes and properties return the type declared but it cannot actually verify that specific index or
+property names exist. Reading a nonexistent index or property returns `undefined` but is not checked by the type system.
+This program type checks but fails at runtime:
+
+```ts twoslash
+interface Dictionary {
+    [index: string]: string;
+}
+const words: Dictionary = {};
+words["nonexistent"].toUpperCase(); // TypeError: Cannot read property 'toUpperCase' of undefined
+```
+
+For improved type safety, explicitly declare that the indexer can return `undefined`
+(or enable the `noUncheckedIndexedAccess` linter option to do this automatically):
+
+```ts twoslash
+interface Dictionary {
+    [index: string]: string | undefined;
+}
+const words: Dictionary = {};
+words["nonexistent"].toUpperCase(); // bug caught at compile time
+```
+
 Finally, you can make index signatures `readonly` in order to prevent assignment to their indices:
 
 ```ts twoslash
