@@ -48,6 +48,6 @@ const os = env.OS;
 
 // 宣言されていませんが、インデックス
 // シグネチャのおかげで、stringとして扱われます
-const nodeEnd = env.NODE_ENV;
+const nodeEnv = env.NODE_ENV;
 //    ^?
 ```
