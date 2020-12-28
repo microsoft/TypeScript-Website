@@ -21,7 +21,7 @@ const nullValue = response.nullValue || "some other default";
 
 // 2개의 예시는 대부분 언어에서 비슷하게 동작합니다.
 // 하나의 도구로써 || 연산자는 기본값을 설정할 때 매우 적합하지만,
-// JavaScript falsy 체크는 몇 가지 일반적인 값으로 여러분을 놀라게 할 수 있습니다:
+// JavaScript falsy 체크는 몇 가지 일반적인 값으로 여러분을 놀래게 할 수 있습니다:
 
 // 의도된 것이 아닐 수 있습니다. ''은 falsy고, 결과는 다음과 같습니다: 'Hello, world!'
 const headerText = response.headerText || "Hello, world!";

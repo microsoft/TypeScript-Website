@@ -15,7 +15,7 @@ const locations: OldLocation[] = [
 ]
 
 // 어떤 것이 Latitude이고 Longitude인지 아는 것은 모호하므로,
-// 여러분은 LatLong 튜플이라고 불러 왔을 겁니다.
+// 여러분은 LatLong 튜플이라고 불러왔을 겁니다.
 
 // 4.0에서는, 이렇게 작성할 수 있습니다.
 
