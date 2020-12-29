@@ -12,7 +12,7 @@ translatable: true
 `Array`, `Map`, `Set`, `String`, `Int32Array`, `Uint32Array`, 등과 같은 내장 타입에는 `Symbol.iterator` 프로퍼티가 이미 구현되어 있습니다.
 객체에 있는 `Symbol.iterator` 함수는 반복할 값 목록을 반환합니다.
 
-## `for..of`문
+## `for..of` 문
 
 `for..of`문은 객체 내부 `Symbol.iterator` 프로퍼티를 호출해 이터러블 객체를 반복합니다.
 다음은 배열의 간단한 `for..of` 루프입니다:
