@@ -6,7 +6,7 @@ oneline: How Iterators and Generators work in TypeScript
 translatable: true
 ---
 
-## 이터러블 (Iterables)
+## 이터러블
 
 [`Symbol.iterator`](Symbols.html#symboliterator) 프로퍼티에 대한 구현을 가진 객체는 이터러블로 간주합니다.
 `Array`, `Map`, `Set`, `String`, `Int32Array`, `Uint32Array`, 등과 같은 내장 타입에는 `Symbol.iterator` 프로퍼티가 이미 구현되어 있습니다.
