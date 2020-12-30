@@ -2,7 +2,7 @@ export const headCopy = {
   head_playground_title:
     "TS Playground - Edytor online dla eksploracji TypeScript oraz JavaScript",
   head_playground_description:
-    "Playground poazwala na pisanie TypeScript lub JavaScript online w bezpieczny i udostępnialny sposób.",
+    "Playground pozwala na pisanie TypeScript lub JavaScript online w bezpieczny i udostępnialny sposób.",
   tsconfig_title:
     "Dokumentacja TSConfig - Dokumenty dla każdej opcji TSConfig.",
   tsconfig_description:
