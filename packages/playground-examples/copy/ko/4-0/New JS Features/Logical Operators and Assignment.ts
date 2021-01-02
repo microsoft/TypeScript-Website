@@ -14,7 +14,7 @@ interface User {
 }
 
 function updateUser(user: User) {
-  // 이 코드는 바뀔 수 있습니다
+  // 이 코드는 대체 될 수 있습니다
   if (!user.id) user.id = 1
 
   // 또한 이 코드를:
