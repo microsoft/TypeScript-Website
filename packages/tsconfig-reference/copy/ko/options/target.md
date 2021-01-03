@@ -4,7 +4,7 @@ oneline: "Set the JavaScript language version for emitted JavaScript and include
 ---
 
 최신 브라우저는 모든 ES6 기능을 지원하므로 `ES6`는 좋은 선택입니다.
-만약 코드가 이전 환경에서 배포된 경우라면 더 낮은 대상을, 최신 환경에서 실행이 보장되는 경우 더 높은 대상을 선택할 수 있습니다.
+만약 코드가 이전 환경에서 배포된 경우라면 더 낮은 버전을, 최신 환경에서 실행이 보장되는 경우 더 높은 버전을 선택할 수 있습니다.
 
 `target` 설정은 하향 평준화된 JS 기능과 온전히 남아있는 것을 변경합니다.
 예를 들어 `target`이 ES5 이하인 경우, 화살 함수 `()=> this`는 동등한 `function` 표현식으로 바뀝니다.
