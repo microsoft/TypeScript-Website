@@ -14,5 +14,5 @@ oneline: "Set the JavaScript language version for emitted JavaScript and include
 
 Node와 같은 개발자 플랫폼의 경우 버전에 따라 대상에 대한 특정 기준이 있습니다. [tsconfig/bases](https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases)에서 공통 플랫폼 및 해당 버전에 대한 커뮤니티 구성 TSConfig 세트를 찾을 수 있습니다.
 
-특수 `ESNet` 값은 사용자 버전의 TypeScript가 지원하는 가장 높은 버전을 나타냅니다.
+`ESNext` 값은 특별하게 TypeScript가 지원하는 가장 높은 버전을 나타냅니다.
 이 설정은 TypeScript 버전과 같다는 것을 의미하는 것이 아니며 업그레이드 예측 가능성을 낮출 수 있으므로 주의해야 합니다.
