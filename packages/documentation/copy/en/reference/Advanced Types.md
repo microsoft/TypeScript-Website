@@ -76,7 +76,7 @@ function isFish(pet: Fish | Bird): pet is Fish {
 `pet is Fish` is our type predicate in this example.
 A predicate takes the form `parameterName is Type`, where `parameterName` must be the name of a parameter from the current function signature.
 
-Any time `isFish` is called with some variable, TypeScript will _narrow_ that variable to that specific type if the original type is compatible.
+Any time `isFish` is called with some variables, TypeScript will _narrow_ that variable to that specific type if the original type is compatible.
 
 ```ts twoslash
 type Fish = { swim: () => void };
