@@ -63,7 +63,7 @@ function freeze<Type>(obj: Type): Readonly<Type>;
 
 ## `Record<Keys,Type>`
 
-Constructs a type with a set of properties `Keys` of type `Type`. This utility can be used to map the properties of a type to another type.
+Constructs an object type whose property keys are `Keys` and whose property values are `Type`. This utility can be used to map the properties of a type to another type.
 
 ##### Example
 
