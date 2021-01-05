@@ -41,13 +41,18 @@ exports.onRouteUpdate = ({ location, prevLocation }) => {
     hasLocalStorage = typeof localStorage !== `undefined`
   } catch (error) {}
 
-  // @ts-ignore
-  aisdk.trackPageView({
-    uri: locationWithoutPlaygroundCode,
-    refUri: referrerWithoutPlaygroundCode,
-    prev: previousLocationWithoutPlaygroundCode,
-    lang: document.documentElement.lang,
-    visitedPlayground:
-      hasLocalStorage && localStorage.getItem("sandbox-history") !== null,
-  })
+  try {
+    // @ts-ignore
+    aisdk.trackPageView({
+      uri: locationWithoutPlaygroundCode,
+      refUri: referrerWithoutPlaygroundCode,
+      prev: previousLocationWithoutPlaygroundCode,
+      lang: document.documentElement.lang,
+      visitedPlayground:
+        hasLocalStorage && localStorage.getItem("sandbox-history") !== null,
+    })
+  } catch (error) {
+    console.error("Error with Application Insights")
+    console.error(error)
+  }
 }
