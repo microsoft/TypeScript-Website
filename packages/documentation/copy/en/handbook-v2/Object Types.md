@@ -6,7 +6,7 @@ oneline: "How TypeScript describes the shapes of JavaScript objects."
 beta: true
 ---
 
-In JavaScript, the fundamental way that we group and pass around relevant data is through objects.
+In JavaScript, the fundamental way that we group and pass around data is through objects.
 In TypeScript, we represent those through _object types_.
 
 As we've seen, they can be anonymous:
@@ -319,7 +319,7 @@ interface AddressWithUnit extends BasicAddress {
 
 The `extends` keyword on an `interface` allows us to effectively copy members from other named types, and add whatever new members we want.
 This can be useful for cutting down the amount of type declaration boilerplate we have to write, and for signaling intent that several different declarations of the same property might be related.
-For example, `AddressWithUnit` didn't need to repeat the `street` property, and because `street` originates from `BasicAddress`, a reader will know that those two types are related in some capacity.
+For example, `AddressWithUnit` didn't need to repeat the `street` property, and because `street` originates from `BasicAddress`, a reader will know that those two types are related in some way.
 
 `interface`s can also extend from multiple types.
 
@@ -401,7 +401,7 @@ interface Box {
 }
 ```
 
-Right now, the `contents` property is typed as `any` which works, but can lead to accidents down the line.
+Right now, the `contents` property is typed as `any`, which works, but can lead to accidents down the line.
 
 We could instead use `unknown`, but that would mean that in cases where we already know the type of `contents`, we'd need to do precautionary checks, or use error-prone type assertions.
 
@@ -423,7 +423,7 @@ if (typeof x.contents === "string") {
 console.log((x.contents as string).toLowerCase());
 ```
 
-If we really cared to get type safety, we could instead scaffold out different `Box` types for every type of `contents`
+One type safe approach would be to instead scaffold out different `Box` types for every type of `contents`.
 
 ```ts twoslash
 // @errors: 2322
@@ -440,7 +440,7 @@ interface BooleanBox {
 }
 ```
 
-but that means we'll have to create different functions, or overloads of functions, to operate on these types.
+But that means we'll have to create different functions, or overloads of functions, to operate on these types.
 
 ```ts twoslash
 interface NumberBox {
@@ -463,10 +463,10 @@ function setContents(box: { contents: any }, newContents: any) {
 }
 ```
 
-That's a lot of boilerplate, and technically we might later need to introduce new types and overloads.
-This is frustrating since our box types and overloads are all effectively the same.
+That's a lot of boilerplate. Moreover, we might later need to introduce new types and overloads.
+This is frustrating, since our box types and overloads are all effectively the same.
 
-Instead, we can make a _generic_ `Box` type which declares a _type parameters_.
+Instead, we can make a _generic_ `Box` type which declares a _type parameter_.
 
 ```ts twoslash
 interface Box<T> {
@@ -474,8 +474,8 @@ interface Box<T> {
 }
 ```
 
-You might read this as "A `Box` of `T` is something whose `contents` have type `T`.
-Later on, when we refer to `Box`, we have to give some _type arguments_ in place of `T`.
+You might read this as “A `Box` of `T` is something whose `contents` have type `T`”.
+Later on, when we refer to `Box`, we have to give a _type argument_ in place of `T`.
 
 ```ts twoslash
 interface Box<T> {
@@ -506,7 +506,7 @@ boxB.contents;
 //   ^?
 ```
 
-`Box` is reusable in that `T` can be substituted with anything, and that means that when we need a box for a new type, we don't need to declare a new box type at all (though we certainly could if we wanted to).
+`Box` is reusable in that `T` can be substituted with anything. That means that when we need a box for a new type, we don't need to declare a new `Box` type at all (though we certainly could if we wanted to).
 
 ```ts twoslash
 interface Box<T> {
@@ -534,7 +534,7 @@ function setContents<T>(box: Box<T>, newContents: T) {
 }
 ```
 
-At this point, it's also worth calling out that type aliases can also be generic, and we could have defined our new `Box<T>` interface which was:
+It is worthing noting that type aliases can also be generic. We could have defined our new `Box<T>` interface, which was:
 
 ```ts twoslash
 interface Box<T> {
@@ -550,7 +550,7 @@ type Box<T> = {
 };
 ```
 
-In fact, given that type aliases can describe more than just object types, we can occasionally write some generic helper types as well.
+Since type aliases, unlike interfaces, can describe more than just object types, we can also use them to write other kinds of generic helper types.
 
 ```ts twoslash
 // @errors: 2575
