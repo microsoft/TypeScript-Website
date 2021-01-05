@@ -534,7 +534,7 @@ function setContents<T>(box: Box<T>, newContents: T) {
 }
 ```
 
-It is worthing noting that type aliases can also be generic. We could have defined our new `Box<T>` interface, which was:
+It is worth noting that type aliases can also be generic. We could have defined our new `Box<T>` interface, which was:
 
 ```ts twoslash
 interface Box<T> {
