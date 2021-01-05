@@ -135,6 +135,11 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-e
     document.body.removeChild(form)
   }
 
+  function openInBugWorkbench() {
+    const hash = `#code/${sandbox.lzstring.compressToEncodedURIComponent(sandbox.getText())}`
+    document.location.assign(`/dev/bug-workbench/${hash}`)
+  }
+
   function openInTSAST() {
     const hash = `#code/${sandbox.lzstring.compressToEncodedURIComponent(sandbox.getText())}`
     document.location.assign(`https://ts-ast-viewer.com/${hash}`)
@@ -207,30 +212,6 @@ ${codify(await sandbox.getRunnableJS(), "ts")}
 `
 
     return `
-<!-- 🚨 STOP 🚨 𝗦𝗧𝗢𝗣 🚨 𝑺𝑻𝑶𝑷 🚨
-
-Half of all issues filed here are duplicates, answered in the FAQ, or not appropriate for the bug tracker. Even if you think you've found a *bug*, please read the FAQ first, especially the Common "Bugs" That Aren't Bugs section!
-
-Please help us by doing the following steps before logging an issue:
-  * Search: https://github.com/Microsoft/TypeScript/search?type=Issues
-  * Read the FAQ: https://github.com/Microsoft/TypeScript/wiki/FAQ
-
-Please fill in the *entire* template below.
--->
-
-**TypeScript Version:**  ${typescriptVersion}
-
-<!-- Search terms you tried before logging this (so others can find this issue more easily) -->
-**Search Terms:**
-
-**Expected behavior:**
-
-**Actual behavior:**
-
-<!-- Did you find other bugs that looked similar? -->
-**Related Issues:**
-
-**Code**
 ${codify(sandbox.getText(), "ts")}
 
 ${jsSection}
@@ -244,28 +225,6 @@ ${codify(stringifiedCompilerOptions, "json")}
 **Playground Link:** [Provided](${fullURL})
       `
   }
-
-  async function reportIssue(e: React.MouseEvent) {
-    e.persist()
-
-    const body = await makeMarkdown()
-    if (body.length < 4000) {
-      window.open("https://github.com/Microsoft/TypeScript/issues/new?body=" + encodeURIComponent(body))
-    } else {
-      ui.showModal(
-        body,
-        document.getElementById("exports-dropdown")!,
-        "Issue too long to post automatically. Copy this text, then click 'Create New Issue' to begin.",
-        {
-          "Create New Issue": "https://github.com/Microsoft/TypeScript/issues/new",
-        },
-        e
-      )
-      // document.querySelector("#popover-modal pre") && (document.querySelector("#popover-modal pre") as any).focus()
-    }
-    return false
-  }
-
   async function copyAsMarkdownIssue(e: React.MouseEvent) {
     e.persist()
 
@@ -313,11 +272,11 @@ ${codify(stringifiedCompilerOptions, "json")}
   return {
     openProjectInStackBlitz,
     openProjectInCodeSandbox,
-    reportIssue,
     copyAsMarkdownIssue,
     copyForChat,
     copyForChatWithPreview,
     openInTSAST,
+    openInBugWorkbench,
     exportAsTweet,
   }
 }
