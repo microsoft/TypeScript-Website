@@ -39,6 +39,7 @@ export const playCopy = {
   play_export_copy_link: "Markdownリンクとしてコピー",
   play_export_copy_link_preview: "プレビュー付きMarkdownリンクとしてコピー",
   play_export_tsast: "TypeScript AST Viewerで開く",
+  play_export_bugworkbench: "Bug Workbenchで開く",
   play_export_sandbox: "CodeSandboxで開く",
   play_export_stackblitz: "StackBlitzで開く",
   play_export_clipboard: "URLをクリップボードにコピーしました。",
