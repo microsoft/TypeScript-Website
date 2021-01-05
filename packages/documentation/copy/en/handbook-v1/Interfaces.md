@@ -568,6 +568,9 @@ const Clock: ClockConstructor = class Clock implements ClockInterface {
     console.log("beep beep");
   }
 };
+
+let clock = new Clock(12, 17);
+clock.tick();
 ```
 
 ## Extending Interfaces
