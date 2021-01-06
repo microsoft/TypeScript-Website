@@ -318,7 +318,7 @@ import exp = require("express");
 var app = exp();
 ```
 
-In ES6-compl module loaders, the top-level object (here imported as `exp`) can only have properties;
+In ES6-compliant module loaders, the top-level object (here imported as `exp`) can only have properties;
 the top-level module object can _never_ be callable.
 
 The most common solution here is to define a `default` export for a callable/constructable object;
