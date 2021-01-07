@@ -60,7 +60,7 @@ O operador `as` está disponívem em ambos arquivos `.ts` e `.tsx`, e é idênti
 ## Verificação de tipos
 
 Para entender a verificação de tipo com JSX, você deve primeiro entender a diferença entre os elementos intrínsecos e os elementos baseados em valores.
-Dada uma expressão JSX `<expr />`, `expr` pode se referir a algo intrínseco ao ambiente (e.g. uma `div` ou `span` em um ambiente DOM) oua um componente personalizado que você criou.
+Dada uma expressão JSX `<expr />`, `expr` pode se referir a algo intrínseco ao ambiente (e.g. uma `div` ou `span` em um ambiente DOM) ou a um componente personalizado que você criou.
 Isto é importante por duas razões:
 
 1. Para React, os elementos intrínsecos são emitidos como strings (`React.createElement("div")`), enquanto um componente que você criou não é (`React.createElement(MyComponent)`).
