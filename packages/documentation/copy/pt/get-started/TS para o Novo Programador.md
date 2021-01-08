@@ -2,7 +2,7 @@
 title: TypeScript para o Novo Programador
 short: TS para o novo programador
 layout: docs
-permalink: pt/docs/handbook/typescript-from-scratch.html
+permalink: /pt/docs/handbook/typescript-from-scratch.html
 oneline: Aprenda TypeScript do zero
 ---
 
