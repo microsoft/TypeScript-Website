@@ -107,7 +107,7 @@ Para modelar isso, modificamos o tipo de construtor original para aceitar um arg
 type Construtor = new (...args: any[]) => {};
 // Agora usamos uma versão genérica que pode aplicar uma restrição em
 // a classe a qual este mixin é aplicado
-type Construtor<T = {}> = new (...args: any[]) => T;
+type GConstrutor<T = {}> = new (...args: any[]) => T;
 ```
 
 Isso permite a criação de classes que funcionam apenas com classes de base restritas:
@@ -170,7 +170,7 @@ class Saltavel {
   saltar() {}
 }
 
-class Abaixavel  {
+class Abaixavel {
   abaixar() {}
 }
 
