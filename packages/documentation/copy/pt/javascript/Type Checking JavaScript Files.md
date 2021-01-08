@@ -11,7 +11,7 @@ Aqui estão algumas diferenças notáveis em como a checagem de tipo funciona em
 
 ES2015 não tem meios de declaração de propriedades em uma classe. Propriedades são atribuídas dinamicamente, assim como objetos literais.
 
-Em um arquivo `.js`, o compilador infere propriedades a partir da atribuição de propriedades dentro de um corpo de uma classe.
+Em um arquivo `.js`, o compilador infere propriedades a partir da atribuição das mesmas dentro de um corpo de uma classe.
 O tipo de uma propriedade é o tipo dado no construtor, a não ser que não seja definido lá ou o tipo no construtor for undefined ou null.
 Neste caso, o tipo é uma união dos tipos de todos os valores que estão do lado direito dessas atribuições.
 Propriedades definidas no construtor são sempre assumidas existentes, enquanto as que foram definidas apenas em métodos, getters ou setters são consideradas opcionais.
@@ -35,7 +35,7 @@ class C {
 }
 ```
 
-Se propriedades nunca forem declaradas no corpo da classe, elas são consideradas desconhecidas.
+Se propriedades nunca forem declaradas no corpo da classe, elas são consideradas desconhecidas (com o tipo unknown).
 Se sua classe tem propriedades que são apenas lidas, adicione e então anote uma declaraçao no construtor com JSDoc para especificação de tipo.
 Você não precisa nem atribuir um valor a ela se for inicializada posteriormente.
 
