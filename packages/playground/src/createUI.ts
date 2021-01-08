@@ -99,7 +99,6 @@ export const createUI = (): UI => {
     }
 
     const textarea = document.createElement("textarea")
-    textarea.autofocus = true
     textarea.readOnly = true
     textarea.wrap = "off"
     textarea.style.marginBottom = "20px"
