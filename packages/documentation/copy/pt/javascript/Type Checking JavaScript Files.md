@@ -9,11 +9,11 @@ Aqui estão algumas diferenças notáveis em como a checagem de tipo funciona em
 
 ## Propriedades são inferidas de atribuições no corpo das classes
 
-ES2015 nao tem meios de declaração de propriedades em uma classe. Propriedades são atribuídas dinamicamente, assim como object literals.
+ES2015 não tem meios de declaração de propriedades em uma classe. Propriedades são atribuídas dinamicamente, assim como objetos literais.
 
 Em um arquivo `.js`, o compilador infere propriedades a partir da atribuição de propriedades dentro de um corpo de uma classe.
 O tipo de uma propriedade é o tipo dado no construtor, a não ser que não seja definido lá ou o tipo no construtor for undefined ou null.
-Neste caso, o tipo é uma união dos tipos de todos os valores que estao do lado direito nessas atribuições.
+Neste caso, o tipo é uma união dos tipos de todos os valores que estão do lado direito dessas atribuições.
 Propriedades definidas no construtor são sempre assumidas existentes, enquanto as que foram definidas apenas em métodos, getters ou setters são consideradas opcionais.
 
 ```js twoslash
@@ -56,7 +56,7 @@ c.prop = 0; // OK
 c.count = "string";
 ```
 
-## Funções construtoras sao equivalentes a classes
+## Funções construtoras são equivalentes a classes
 
 Antes do ES2015, Javascript usava funções construtoras ao invés de classes.
 O compilador suporta esse padrão e entende que funções construtoras são equivalentes a Classes do ES2015.
@@ -94,7 +94,7 @@ module.exports.readFile = function (f) {
 O suporte de módulo em Javascript é muito mais flexível sinteticamente que o suporte de módulo de TypeScript.
 Muitas das combinações de atribuições e declarações são suportadas.
 
-## Classes, funções, e object literals sao namespaces
+## Classes, funções, e object literals são namespaces
 
 Classes sao namespaces em arquivos `.js`.
 Isso pode ser usado para aninhar classes, por exemplo:
