@@ -194,11 +194,12 @@ console.log(jogador.x, jogador.y);
 // Isso pode estar em qualquer lugar em sua base de código:
 function aplicarMixins(derivadoCtor: any, construtores: any[]) {
   construtores.forEach((baseCtor) => {
-    Object.obterNomesDePropriedade(baseCtor.prototype).forEach((nome) => {
+    Object.getOwnPropertyNames(baseCtor.prototype).forEach((nome) => {
       Object.defineProperty(
-        derivedCtor.prototype,
+        derivadoCtor.prototype,
         nome,
-        Object.obterNomesDePropriedade(baseCtor.prototype, nome)
+        Object.getOwnPropertyDescriptor(baseCtor.prototype, nome) ||
+          Object.create(null)
       );
     });
   });
@@ -266,8 +267,8 @@ function derivado<T>() {
   return Derivado;
 }
 
-class Spec extends Derivado<string>() {}
+class Spec extends derivado<string>() {}
 
 Spec.prop; // string
-Spec.anotherProp; // string
+Spec.outraProp; // string
 ```
