@@ -22,9 +22,9 @@ export const inYourLanguage: Record<
   },
   ja: {
     shorthand: "日本語",
-    body: "このページを日本語で利用しますか？",
+    body: "このページは日本語で利用可能です",
     open: "利用する",
-    cancel: "質問を表示しない",
+    cancel: "次回から表示しない",
   },
   zh: {
     shorthand: "中文",

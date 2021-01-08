@@ -4,6 +4,7 @@ import { docCopy } from "./ja/documentation"
 import { headCopy } from "./ja/head-seo"
 import { playCopy } from "./ja/playground"
 import { comCopy } from "./ja/community"
+import { handbookCopy } from "./ja/handbook"
 import { Copy, messages as englishMessages } from "./en"
 
 export const lang: Copy = defineMessages({
@@ -13,4 +14,5 @@ export const lang: Copy = defineMessages({
   ...headCopy,
   ...playCopy,
   ...comCopy,
+  ...handbookCopy,
 })
