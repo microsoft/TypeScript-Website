@@ -151,14 +151,14 @@ assign.extra = 1;
 Em um arquivo `.ts`, um objeto literal que inicializa uma declaração de variável dá o seu tipo para a declaração.
 Nenhum membro novo que não foi especificado na declaração pode ser adicionado.
 Essas regras são relaxadas em um arquivo `.js`; objetos literais tem um tipo aberto (uma assinatura de índice) que permite adicionar e procurar propriedades que não foram adicionadas originalmente.
-Por exempo:
+Por exemplo:
 
 ```js twoslash
 var obj = { a: 1 };
 obj.b = 2; // Permitido
 ```
 
-Objetos literais se comportam como se tivessem uma assinatura de index `[x:string]: any` que permite que sejam tratados como maps abertos ao invés de objetos fechados.
+Objetos literais se comportam como se tivessem uma assinatura de índice `[x:string]: any` que permite que sejam tratados como maps abertos ao invés de objetos fechados.
 
 Assim como outros comportamentos especiais do JS, esse comportamento pode ser mudado adicionando um tipo JSDoc para a variável. Por exemplo:
 
@@ -196,7 +196,7 @@ Chamadas com menos argumentos que a quantidade declarada na função são permit
 
 É importante notar que é um erro chamar funções com mais argumentos do que declarados.
 
-For instance:
+Por exemplo:
 
 ```js twoslash
 // @checkJs
