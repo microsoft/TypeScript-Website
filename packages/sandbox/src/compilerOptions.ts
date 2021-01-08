@@ -52,7 +52,7 @@ export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monac
     module: monaco.languages.typescript.ModuleKind.ESNext,
   }
 
-  return settings
+  return { ...settings, ...config.compilerOptions };
 }
 
 /**

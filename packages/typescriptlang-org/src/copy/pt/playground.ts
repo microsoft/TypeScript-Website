@@ -43,6 +43,7 @@ export const playCopy = {
   play_export_copy_link: "Copiar Como 'Link Markdown'",
   play_export_copy_link_preview: "Copiar como 'Link Markdown com visualização'",
   play_export_tsast: "Abrir no 'TypeScript AST Viewer'",
+  play_export_bugworkbench: "Abrir no 'Bug Workbench'",
   play_export_sandbox: "Abrir no CodeSandbox",
   play_export_stackblitz: "Abrir no StackBlitz",
   play_export_clipboard: "[URL copiado para a área de transferência]",

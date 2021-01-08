@@ -63,7 +63,7 @@ function freeze<Type>(obj: Type): Readonly<Type>;
 
 ## `Record<Keys,Type>`
 
-Constructs a type with a set of properties `Keys` of type `Type`. This utility can be used to map the properties of a type to another type.
+Constructs an object type whose property keys are `Keys` and whose property values are `Type`. This utility can be used to map the properties of a type to another type.
 
 ##### Example
 
@@ -369,4 +369,4 @@ The `ThisType<T>` marker interface is simply an empty interface declared in `lib
 
 ## Intrinsic String Manipulation Types
 
-To help with string manipulation around template string literals, TypeScript includes a set of types which can be used in string manipulation within the type system. You can
+To help with string manipulation around template string literals, TypeScript includes a set of types which can be used in string manipulation within the type system. You can find those in the [Template Literal Types](/docs/handbook/2/template-literal-types.html#uppercasestringtype) documentation.

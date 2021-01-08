@@ -23,7 +23,7 @@ const os = env.OS;
 
 // Not declared, but because of the index
 // signature, then it is considered a string
-const nodeEnd = env.NODE_ENV;
+const nodeEnv = env.NODE_ENV;
 //    ^?
 ```
 
@@ -48,6 +48,6 @@ const os = env.OS;
 
 // Not declared, but because of the index
 // signature, then it is considered a string
-const nodeEnd = env.NODE_ENV;
+const nodeEnv = env.NODE_ENV;
 //    ^?
 ```

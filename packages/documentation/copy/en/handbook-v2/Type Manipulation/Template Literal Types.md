@@ -173,8 +173,8 @@ type Greeting = "Hello, world"
 type QuietGreeting = Lowercase<Greeting>
 // ^?
 
-type ASCIICacheKey<Str extends string> = `ID-${Uppercase<Str>}`
-type MainID = ASCIICacheKey<"my_app">
+type ASCIICacheKey<Str extends string> = `id-${Lowercase<Str>}`
+type MainID = ASCIICacheKey<"MY_APP">
 //   ^?
 ```
 
