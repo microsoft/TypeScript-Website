@@ -1,15 +1,15 @@
 ---
-title: JSDoc Reference
+title: JSDocリファレンス
 layout: docs
-permalink: /docs/handbook/jsdoc-supported-types.html
-oneline: What JSDoc does TypeScript-powered JavaScript support?
+permalink: /ja/docs/handbook/jsdoc-supported-types.html
+oneline: TypeScriptを備えたJavaScriptはどのようなJSDocをサポートしているか
 translatable: true
 ---
 
-The list below outlines which constructs are currently supported
-when using JSDoc annotations to provide type information in JavaScript files.
+以下のリストは、JavaScriptファイルの型情報を提供する
+JSDocアノテーションにおいて、現在サポートされている構文の概要です。
 
-Note any tags which are not explicitly listed below (such as `@async`) are not yet supported.
+以下に明示的にリストに入っていないタグ(`@async`など)はまだサポートされていないことに注意してください。
 
 - `@type`
 - `@param` (or `@arg` or `@argument`)
@@ -22,19 +22,19 @@ Note any tags which are not explicitly listed below (such as `@async`) are not y
 - `@extends` (or `@augments`)
 - `@enum`
 
-#### `class` extensions
+#### `class`拡張
 
-- [Property Modifiers](#jsdoc-property-modifiers) `@public`, `@private`, `@protected`, `@readonly`
+- [プロパティ修飾子](#jsdoc-property-modifiers) `@public`、`@private`、`@protected`、`@readonly`
 
-The meaning is usually the same, or a superset, of the meaning of the tag given at [jsdoc.app](https://jsdoc.app).
-The code below describes the differences and gives some example usage of each tag.
+タグの意味は通常、[jsdoc.app](https://jsdoc.app)で与えられたものと同じか、あるいはそのスーパーセットです。
+以下のコードでは、それぞれのタグの違いを説明し、使用例を示します。
 
-**Note:** You can use [the playground to explore JSDoc support](/play?useJavaScript=truee=4#example/jsdoc-support).
+**注意:** [JSDocサポートを探るプレイグラウンド](/play?useJavaScript=truee=4#example/jsdoc-support)を使用できます
 
 ## `@type`
 
-You can use the "@type" tag and reference a type name (either primitive, defined in a TypeScript declaration, or in a JSDoc "@typedef" tag).
-You can use most JSDoc types and any TypeScript type, from [the most basic like `string`](/docs/handbook/basic-types.html) to [the most advanced, like conditional types](/docs/handbook/advanced-types.html).
+"@type"タグを使用すれば、型名(プリミティブ、TypeScript宣言やJSDocの"@typedef"タグで定義されたもの)を参照することができます。
+ほとんどのJSDoc型と、[`string`のような最も基本的なもの](/docs/handbook/basic-types.html)から[Conditional Typesのような高度なもの](/docs/handbook/advanced-types.html)まで、あらゆるTypeScriptの型を使うことができます。
 
 ```js twoslash
 /**
@@ -48,13 +48,13 @@ var win;
 /** @type {PromiseLike<string>} */
 var promisedString;
 
-// You can specify an HTML Element with DOM properties
+// DOMプロパティを使ってHTML要素を指定することができます。
 /** @type {HTMLElement} */
 var myElement = document.querySelector(selector);
 element.dataset.myData = "";
 ```
 
-`@type` can specify a union type &mdash; for example, something can be either a string or a boolean.
+`@type`ではUnion型も指定できます &mdash; 例えば、次の型は文字列か真偽値のどちらかになります。
 
 ```js twoslash
 /**
@@ -63,7 +63,7 @@ element.dataset.myData = "";
 var sb;
 ```
 
-Note that parentheses are optional for union types.
+Union型の場合は、丸括弧はオプションであることに注意してください。
 
 ```js twoslash
 /**
@@ -72,7 +72,7 @@ Note that parentheses are optional for union types.
 var sb;
 ```
 
-You can specify array types using a variety of syntaxes:
+様々な構文を使って配列の型を指定することができます:
 
 ```js twoslash
 /** @type {number[]} */
@@ -83,19 +83,19 @@ var nds;
 var nas;
 ```
 
-You can also specify object literal types.
-For example, an object with properties 'a' (string) and 'b' (number) uses the following syntax:
+オブジェクトリテラル型を指定することもできます。
+例えば、'a' (文字列) と 'b' (数値) をプロパティとして持つオブジェクトは次のような構文を使って指定します:
 
 ```js twoslash
 /** @type {{ a: string, b: number }} */
 var var9;
 ```
 
-You can specify map-like and array-like objects using string and number index signatures, using either standard JSDoc syntax or TypeScript syntax.
+JSDocの標準構文かTypeScriptの構文を使えば、文字列と数値のインデックスシグネチャを使ってマップや配列のようなオブジェクトを指定することができます。
 
 ```js twoslash
 /**
- * A map-like object that maps arbitrary `string` properties to `number`s.
+ * 任意の`string`プロパティを`number`にマッピングするマップライクなオブジェクト
  *
  * @type {Object.<string, number>}
  */
@@ -105,18 +105,18 @@ var stringToNumber;
 var arrayLike;
 ```
 
-The preceding two types are equivalent to the TypeScript types `{ [x: string]: number }` and `{ [x: number]: any }`. The compiler understands both syntaxes.
+前述の2つの型は、TypeScriptの型である`{ [x: string]: number }`と`{ [x: number]: any }`と等価です。コンパイラは両方の構文を理解します。
 
-You can specify function types using either TypeScript or Closure syntax:
+関数は、TypeScriptとClosureのどちらの構文を使っても指定することができます:
 
 ```js twoslash
-/** @type {function(string, boolean): number} Closure syntax */
+/** @type {function(string, boolean): number} Closure構文 */
 var sbn;
-/** @type {(s: string, b: boolean) => number} TypeScript syntax */
+/** @type {(s: string, b: boolean) => number} TypeScript構文 */
 var sbn2;
 ```
 
-Or you can just use the unspecified `Function` type:
+あるいは、型が特定されていない`Function`型を使うこともできます:
 
 ```js twoslash
 /** @type {Function} */
@@ -125,23 +125,23 @@ var fn7;
 var fn6;
 ```
 
-Other types from Closure also work:
+Closureの他の型でも動作します:
 
 ```js twoslash
 /**
- * @type {*} - can be 'any' type
+ * @type {*} - 'any'型になります
  */
 var star;
 /**
- * @type {?} - unknown type (same as 'any')
+ * @type {?} - 不明な型('any'と同じ)
  */
 var question;
 ```
 
-### Casts
+### キャスト
 
-TypeScript borrows cast syntax from Closure.
-This lets you cast types to other types by adding a `@type` tag before any parenthesized expression.
+TypeScriptはClosureからキャスト構文を借用しています。
+これにより、丸括弧で囲まれた式の前に`@type`タグを追加することで、型を他の型にキャストすることができます。
 
 ```js twoslash
 /**
@@ -151,10 +151,10 @@ var numberOrString = Math.random() < 0.5 ? "hello" : 100;
 var typeAssertedNumber = /** @type {number} */ (numberOrString);
 ```
 
-### Import types
+### インポート型
 
-You can also import declarations from other files using import types.
-This syntax is TypeScript-specific and differs from the JSDoc standard:
+インポート型を使用して他のファイルから宣言をインポートすることもできます。
+この構文はTypeScript固有のものであり、JSDocの標準とは異なります:
 
 ```js twoslash
 // @filename: types.d.ts
@@ -171,7 +171,7 @@ function walk(p) {
 }
 ```
 
-import types can also be used in type alias declarations:
+インポート型は型エイリアス宣言でも使用できます:
 
 ```js twoslash
 // @filename: types.d.ts
@@ -191,7 +191,7 @@ var myPet;
 myPet.name;
 ```
 
-import types can be used to get the type of a value from a module if you don't know the type, or if it has a large type that is annoying to type:
+型がわからない場合や型が大きくて型を付けるのが面倒な場合に、インポート型を使ってモジュールから値の型を取得することができます:
 
 ```js twoslash
 // @filename: accounts.d.ts
@@ -213,26 +213,26 @@ export const userAccount = {
 var x = require("./accounts").userAccount;
 ```
 
-## `@param` and `@returns`
+## `@param`と`@returns`
 
-`@param` uses the same type syntax as `@type`, but adds a parameter name.
-The parameter may also be declared optional by surrounding the name with square brackets:
+`@param`は`@type`と同じ型の構文を使用しますが、パラメータ名を追加します。
+また、パラメータ名を角括弧で囲むことで、パラメータをオプションとして宣言することもできます:
 
 ```js twoslash
-// Parameters may be declared in a variety of syntactic forms
+// パラメータは様々な構文形式で宣言することができます
 /**
- * @param {string}  p1 - A string param.
- * @param {string=} p2 - An optional param (Closure syntax)
- * @param {string} [p3] - Another optional param (JSDoc syntax).
- * @param {string} [p4="test"] - An optional param with a default value
- * @return {string} This is the result
+ * @param {string}  p1 - 文字列パラメータ
+ * @param {string=} p2 - オプションのパラメータ(Closure構文)
+ * @param {string} [p3] - 別のオプションのパラメータ(JSDoc構文).
+ * @param {string} [p4="test"] - デフォルト値を持つオプションのパラメータ
+ * @return {string} 結果
  */
 function stringsStringStrings(p1, p2, p3, p4) {
   // TODO
 }
 ```
 
-Likewise, for the return type of a function:
+関数の戻り値の型についても同様です:
 
 ```js twoslash
 /**
@@ -241,24 +241,24 @@ Likewise, for the return type of a function:
 function ps() {}
 
 /**
- * @returns {{ a: string, b: number }} - May use '@returns' as well as '@return'
+ * @returns {{ a: string, b: number }} - '@returns'と同じく'@return'を使うことができます
  */
 function ab() {}
 ```
 
-## `@typedef`, `@callback`, and `@param`
+## `@typedef`、`@callback`および`@param`
 
-`@typedef` may be used to define complex types.
-Similar syntax works with `@param`.
+複雑な型を定義するために`@typedef`を使うことができます。
+`@param`を使った同様の構文でも動作します。
 
 ```js twoslash
 /**
- * @typedef {Object} SpecialType - creates a new type named 'SpecialType'
- * @property {string} prop1 - a string property of SpecialType
- * @property {number} prop2 - a number property of SpecialType
- * @property {number=} prop3 - an optional number property of SpecialType
- * @prop {number} [prop4] - an optional number property of SpecialType
- * @prop {number} [prop5=42] - an optional number property of SpecialType with default
+ * @typedef {Object} SpecialType - 'SpecialType'という名前の新しい型を作成
+ * @property {string} prop1 - SpecialTypeの文字列プロパティ
+ * @property {number} prop2 - SpecialTypeの数値プロパティ
+ * @property {number=} prop3 - SpecialTypeのオプションの数値プロパティ
+ * @prop {number} [prop4] - SpecialTypeのオプションの数値プロパティ
+ * @prop {number} [prop5=42] - SpecialTypeのデフォルト値を持つオプションの数値プロパティ
  */
 
 /** @type {SpecialType} */
@@ -266,26 +266,26 @@ var specialTypeObject;
 specialTypeObject.prop3;
 ```
 
-You can use either `object` or `Object` on the first line.
+最初の行には、`object`あるいは`Object`のどちらかを使うことができます。
 
 ```js twoslash
 /**
- * @typedef {object} SpecialType1 - creates a new type named 'SpecialType'
- * @property {string} prop1 - a string property of SpecialType
- * @property {number} prop2 - a number property of SpecialType
- * @property {number=} prop3 - an optional number property of SpecialType
+ * @typedef {object} SpecialType1 - 'SpecialType'という名前の新しい型を作成
+ * @property {string} prop1 - SpecialTypeの文字列プロパティ
+ * @property {number} prop2 - SpecialTypeの数値プロパティ
+ * @property {number=} prop3 - SpecialTypeのオプションの数値プロパティ
  */
 
 /** @type {SpecialType1} */
 var specialTypeObject1;
 ```
 
-`@param` allows a similar syntax for one-off type specifications.
-Note that the nested property names must be prefixed with the name of the parameter:
+`@param`を使えば、同様の構文で一回限りの型を指定することができます。
+ネストされたプロパティ名の前には、パラメータ名をつけなければならないことに注意してください:
 
 ```js twoslash
 /**
- * @param {Object} options - The shape is the same as SpecialType above
+ * @param {Object} options - 形状は上記のSpecialTypeと同じ
  * @param {string} options.prop1
  * @param {number} options.prop2
  * @param {number=} options.prop3
@@ -297,7 +297,7 @@ function special(options) {
 }
 ```
 
-`@callback` is similar to `@typedef`, but it specifies a function type instead of an object type:
+`@callback`は`@typedef`に似ていますが、オブジェクト型ではなく関数型を指定します:
 
 ```js twoslash
 /**
@@ -311,7 +311,7 @@ function special(options) {
 const ok = (s) => !(s.length % 2);
 ```
 
-Of course, any of these types can be declared using TypeScript syntax in a single-line `@typedef`:
+もちろん、これらの型はすべてTypeScriptの構文を使って一行の`@typedef`で宣言することができます:
 
 ```js
 /** @typedef {{ prop1: string, prop2: string, prop3?: number }} SpecialType */
@@ -320,12 +320,12 @@ Of course, any of these types can be declared using TypeScript syntax in a singl
 
 ## `@template`
 
-You can declare generic functions with the `@template` tag:
+ジェネリクス関数は`@template`タグを使って宣言することができます:
 
 ```js twoslash
 /**
  * @template T
- * @param {T} x - A generic parameter that flows through to the return type
+ * @param {T} x - 戻り値に流用するジェネリクスパラメータ
  * @return {T}
  */
 function id(x) {
@@ -337,7 +337,7 @@ const b = id(123);
 const c = id({});
 ```
 
-Use comma or multiple tags to declare multiple type parameters:
+複数の型パラメータを宣言するには、コンマか複数のタグを使用します:
 
 ```js
 /**
@@ -346,13 +346,13 @@ Use comma or multiple tags to declare multiple type parameters:
  */
 ```
 
-You can also specify a type constraint before the type parameter name.
-Only the first type parameter in a list is constrained:
+型パラメータ名の前に、型制約を指定することもできます。
+リストにある最初の型パラメータだけが、制約を受けます:
 
 ```js twoslash
 /**
- * @template {string} K - K must be a string or string literal
- * @template {{ serious(): string }} Seriousalizable - must have a serious method
+ * @template {string} K - Kは文字列または文字列リテラルでなければなりません
+ * @template {{ serious(): string }} Seriousalizable - seriousメソッドを持っていなければなりません
  * @param {K} key
  * @param {Seriousalizable} object
  */
@@ -361,11 +361,11 @@ function seriousalize(key, object) {
 }
 ```
 
-Declaring generic classes or types is unsupported.
+ジェネリクスのクラスや型の宣言はサポートされていません。
 
-## Classes
+## クラス
 
-Classes can be declared as ES6 classes.
+クラスはES6のクラスとして宣言することができます。
 
 ```js twoslash
 class C {
@@ -373,18 +373,18 @@ class C {
    * @param {number} data
    */
   constructor(data) {
-    // property types can be inferred
+    // プロパティの型は推測されます
     this.name = "foo";
 
-    // or set explicitly
+    // あるいは、明示的に設定することもできます
     /** @type {string | null} */
     this.title = null;
 
-    // or simply annotated, if they're set elsewhere
+    // また、他のところで設定されている場合は、単に型注釈をつけることもできます
     /** @type {number} */
     this.size;
 
-    this.initialize(data); // Should error, initializer expects a string
+    this.initialize(data); // initializerは文字列を受け取るので、エラーになるべきです
   }
   /**
    * @param {string} s
@@ -396,17 +396,17 @@ class C {
 
 var c = new C(0);
 
-// C should only be called with new, but
-// because it is JavaScript, this is allowed and
-// considered an 'any'.
+// Cはnewを使用した場合のみ呼び出されるべきですが、
+// JavaScriptでは、以下は許可されており、
+// これは'any'型とみなされます。
 var result = C(1);
 ```
 
-They can also be declared as constructor functions, as described in the next section:
+次の節で説明するように、コンストラクタ関数として宣言することもできます:
 
 ## `@constructor`
 
-The compiler infers constructor functions based on this-property assignments, but you can make checking stricter and suggestions better if you add a `@constructor` tag:
+コンパイラはthisプロパティの代入に基づいてコンストラクタ関数を推測しますが、`@constructor`タグを追加すればより厳密なチェックとより良い提案を受けることができます:
 
 ```js twoslash
 // @checkJs
@@ -416,14 +416,14 @@ The compiler infers constructor functions based on this-property assignments, bu
  * @param {number} data
  */
 function C(data) {
-  // property types can be inferred
+  // プロパティの型は推測されます
   this.name = "foo";
 
-  // or set explicitly
+  // あるいは、明示的に設定することもできます
   /** @type {string | null} */
   this.title = null;
 
-  // or simply annotated, if they're set elsewhere
+  // また、他のところで設定されている場合は、単に型注釈をつけることもできます
   /** @type {number} */
   this.size;
 
@@ -442,15 +442,15 @@ c.size;
 var result = C(1);
 ```
 
-> Note: Error messages only show up in JS codebases with [a JSConfig](/docs/handbook/tsconfig-json.html) and [`checkJs`](/tsconfig#checkJs) enabled.
+> 注意: エラーメッセージが表示されるのは、[JSConfig](/docs/handbook/tsconfig-json.html)と[`checkJs`](/tsconfig#checkJs)が有効化されているJSコードベースのみです。
 
-With `@constructor`, `this` is checked inside the constructor function `C`, so you will get suggestions for the `initialize` method and an error if you pass it a number. Your editor may also show warnings if you call `C` instead of constructing it.
+`@constructor`では、`this`はコンストラクタ関数`C`の内部でチェックされるので、数値を渡すと`initialize`メソッドへの提案とエラーが表示されます。また、コンストラクタの代わりに`C`を呼び出すと、エディタが警告を表示することもあります。
 
-Unfortunately, this means that constructor functions that are also callable cannot use `@constructor`.
+残念ながら、これは呼び出しも可能なコンストラクタ関数では、`@constructor`を使用できないことを意味します。
 
 ## `@this`
 
-The compiler can usually figure out the type of `this` when it has some context to work with. When it doesn't, you can explicitly specify the type of `this` with `@this`:
+コンパイラは通常、`this`が用いられるコンテクストから`this`の型を推測することができます。推測できない場合、`@this`を使って明示的に`this`の型を指定することができます:
 
 ```js twoslash
 /**
@@ -458,13 +458,13 @@ The compiler can usually figure out the type of `this` when it has some context 
  * @param {*} e
  */
 function callbackForLater(e) {
-  this.clientHeight = parseInt(e); // should be fine!
+  this.clientHeight = parseInt(e); // 大丈夫なはず！
 }
 ```
 
 ## `@extends`
 
-When Javascript classes extend a generic base class, there is nowhere to specify what the type parameter should be. The `@extends` tag provides a place for that type parameter:
+JavaScriptクラスがジェネリクスの基底クラスを拡張するとき、型パラメータが何であるべきかを指定するところがありません。`@extends`タグはそのような型パラメータを指定する方法を提供しています:
 
 ```js twoslash
 /**
@@ -476,11 +476,11 @@ class SortableSet extends Set {
 }
 ```
 
-Note that `@extends` only works with classes. Currently, there is no way for a constructor function extend a class.
+`@extends`は、クラスに対してのみ動作することに注意してください。現在、コンストラクタ関数がクラスを拡張する方法はありません。
 
 ## `@enum`
 
-The `@enum` tag allows you to create an object literal whose members are all of a specified type. Unlike most object literals in Javascript, it does not allow other members.
+`@enum`タグを使うと、すべてのメンバが指定された型であるオブジェクトリテラルを作成することができます。JavaScriptのたいていのオブジェクトリテラルとは異なり、明示されていないメンバは使用できません。
 
 ```js twoslash
 /** @enum {number} */
@@ -493,7 +493,7 @@ const JSDocState = {
 JSDocState.SawAsterisk;
 ```
 
-Note that `@enum` is quite different from, and much simpler than, TypeScript's `enum`. However, unlike TypeScript's enums, `@enum` can have any type:
+注意すべき点は、`@enum`はTypeScriptの`enum`とは大きく異なっており、とてもシンプルです。一方で、TypeScriptの`enum`とは違って、`@enum`は任意の型を持つことができます:
 
 ```js twoslash
 /** @enum {function(number): number} */
@@ -506,65 +506,65 @@ const MathFuncs = {
 MathFuncs.add1;
 ```
 
-## More examples
+## その他の例
 
 ```js twoslash
 class Foo {}
 // ---cut---
 var someObj = {
   /**
-   * @param {string} param1 - Docs on property assignments work
+   * @param {string} param1 - プロパティの割り当てに関する仕様は、
    */
   x: function (param1) {},
 };
 
 /**
- * As do docs on variable assignments
+ * 変数の代入や
  * @return {Window}
  */
 let someFunc = function () {};
 
 /**
- * And class methods
- * @param {string} greeting The greeting to use
+ * クラスメソッド、
+ * @param {string} greeting 使用する挨拶
  */
 Foo.prototype.sayHi = (greeting) => console.log("Hi!");
 
 /**
- * And arrow functions expressions
- * @param {number} x - A multiplier
+ * アロー関数式でも同様に動作します
+ * @param {number} x - 乗数
  */
 let myArrow = (x) => x * x;
 
 /**
- * Which means it works for stateless function components in JSX too
- * @param {{a: string, b: number}} test - Some param
+ * つまり、JSXのステートレス関数コンポーネントでも動作するということです
+ * @param {{a: string, b: number}} test - いくつかのパラメータ
  */
 var sfc = (test) => <div>{test.a.charAt(0)}</div>;
 
 /**
- * A parameter can be a class constructor, using Closure syntax.
+ * パラメータには、Closure構文を使用して、クラスのコンストラクタを使用することができます。
  *
- * @param {{new(...args: any[]): object}} C - The class to register
+ * @param {{new(...args: any[]): object}} C - 登録するクラス
  */
 function registerClass(C) {}
 
 /**
- * @param {...string} p1 - A 'rest' arg (array) of strings. (treated as 'any')
+ * @param {...string} p1 - 文字列の'レストパラメータ'(配列)引数 ('any'として扱われます)
  */
 function fn10(p1) {}
 
 /**
- * @param {...string} p1 - A 'rest' arg (array) of strings. (treated as 'any')
+ * @param {...string} p1 - 文字列の'レストパラメータ'(配列)引数 ('any'として扱われます)
  */
 function fn9(p1) {
   return p1.join();
 }
 ```
 
-## Patterns that are known NOT to be supported
+## サポートされていないことが知られているパターン
 
-Referring to objects in the value space as types doesn't work unless the object also creates a type, like a constructor function.
+コンストラクタ関数のようにオブジェクトも型を作らない限り、値空間のオブジェクトを型として参照することはできません。
 
 ```js twoslash
 function aNormalFunction() {}
@@ -573,13 +573,13 @@ function aNormalFunction() {}
  */
 var wrong;
 /**
- * Use 'typeof' instead:
+ * 'typeof'を代わりに使用します:
  * @type {typeof aNormalFunction}
  */
 var right;
 ```
 
-Postfix equals on a property type in an object literal type doesn't specify an optional property:
+オブジェクトリテラル型のプロパティ型の後ろに等号をつけても、オプションのプロパティにはなりません:
 
 ```js twoslash
 /**
@@ -587,53 +587,53 @@ Postfix equals on a property type in an object literal type doesn't specify an o
  */
 var wrong;
 /**
- * Use postfix question on the property name instead:
+ * 代わりにプロパティ名の前にクエスチョンマークを付けます:
  * @type {{ a: string, b?: number }}
  */
 var right;
 ```
 
-Nullable types only have meaning if `strictNullChecks` is on:
+`strictNullChecks`が有効化されている場合のみ、Nullable型は動作します:
 
 ```js twoslash
 /**
  * @type {?number}
- * With strictNullChecks: true  -- number | null
- * With strictNullChecks: false -- number
+ * strictNullChecks: trueの場合  -- number | null
+ * strictNullChecks: falseの場合 -- number
  */
 var nullable;
 ```
 
-You can also use a union type:
+Union型も使うことができます:
 
 ```js twoslash
 /**
  * @type {number | null}
- * With strictNullChecks: true  -- number | null
- * With strictNullChecks: false -- number
+ * strictNullChecks: trueの場合  -- number | null
+ * strictNullChecks: falseの場合 -- number
  */
 var unionNullable;
 ```
 
-Non-nullable types have no meaning and are treated just as their original type:
+非Nullable型は意味を持たず、元の型と同じように扱われます:
 
 ```js twoslash
 /**
  * @type {!number}
- * Just has type number
+ * 数値型だけをもちます
  */
 var normal;
 ```
 
-Unlike JSDoc's type system, TypeScript only allows you to mark types as containing null or not.
-There is no explicit non-nullability -- if strictNullChecks is on, then `number` is not nullable.
-If it is off, then `number` is nullable.
+JSDocの型システムとは異なり、TypeScriptは型にnullが含まれるかどうか記すことしかできません。
+明示的な非Nullable型はありません -- strictNullChecksが有効なら、`number`はNullableではありません。
+有効でないなら、`number`はNullableです。
 
-### Unsupported tags
+### サポートされていないタグ
 
-TypeScript ignores any unsupported JSDoc tags.
+TypeScriptはサポートされていないJSDocタグを無視します。
 
-The following tags have open issues to support them:
+以下のタグは、サポートを目標としたオープンIssueがあります:
 
 - `@const` ([issue #19672](https://github.com/Microsoft/TypeScript/issues/19672))
 - `@inheritdoc` ([issue #23215](https://github.com/Microsoft/TypeScript/issues/23215))
@@ -641,12 +641,12 @@ The following tags have open issues to support them:
 - `@yields` ([issue #23857](https://github.com/Microsoft/TypeScript/issues/23857))
 - `{@link …}` ([issue #35524](https://github.com/Microsoft/TypeScript/issues/35524))
 
-## JS Class extensions
+## JSクラスの拡張
 
-### JSDoc Property Modifiers
+### JSDocプロパティ修飾子
 
-From TypeScript 3.8 onwards, you can use JSDoc to modify the properties in a class. First are the accessibility modifiers: `@public`, `@private`, and `@protected`.
-These tags work exactly like `public`, `private`, and `protected` respectively work in TypeScript.
+TypeScript 3.8以降、JSDocを使ってクラスプロパティを修飾することができます。まずは、アクセシビリティ修飾子`@public`、`@private`、`@protected`です。
+これらのタグは、TypeScriptの`public`、`private`、`protected`とそれぞれ同じように動作します。
 
 ```js twoslash
 // @errors: 2341
@@ -667,11 +667,11 @@ const c = new Car();
 console.log(c.identifier);
 ```
 
-- `@public` is always implied and can be left off, but means that a property can be reached from anywhere.
-- `@private` means that a property can only be used within the containing class.
-- `@protected` means that a property can only be used within the containing class, and all derived subclasses, but not on dissimilar instances of the containing class.
+- `@public`は常に暗示的であり、省略可能です。どこからでもプロパティにアクセスできることを意味します。
+- `@private`は、そのプロパティが含まれるクラス内でのみ使用可能であることを意味します。
+- `@protected`は、そのプロパティが含まれるクラスと、そのクラスの派生クラス内で使用可能ですが、クラスのインスタンスからはアクセスできません。
 
-Next, we've also added the `@readonly` modifier to ensure that a property is only ever written to during initialization.
+次に、`@readonly`修飾子を追加しました。これを使用すると、プロパティが初期化時にのみ書き込まれることが保証されます。
 
 ```js twoslash
 // @errors: 2540

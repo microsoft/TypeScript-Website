@@ -1,20 +1,20 @@
 ---
-title: Type Checking JavaScript Files
+title: JavaScriptファイルの型チェック
 layout: docs
-permalink: /docs/handbook/type-checking-javascript-files.html
-oneline: How to add type checking to JavaScript files using TypeScript
+permalink: /ja/docs/handbook/type-checking-javascript-files.html
+oneline: TypeScriptを使ってJavaScriptファイルに型チェックを追加する方法
 ---
 
-Here are some notable differences on how checking works in `.js` files compared to `.ts` files.
+ここでは、`.js`ファイルを`.ts`ファイルと比較したときの、チェック機能の違いについて注目すべき点をいくつか挙げます。
 
-## Properties are inferred from assignments in class bodies
+## プロパティはクラス本体における代入から推測される
 
-ES2015 does not have a means for declaring properties on classes. Properties are dynamically assigned, just like object literals.
+ES2015には、クラスのプロパティを宣言する手段がありません。プロパティはオブジェクトリテラルのように、動的に代入されます。
 
-In a `.js` file, the compiler infers properties from property assignments inside the class body.
-The type of a property is the type given in the constructor, unless it's not defined there, or the type in the constructor is undefined or null.
-In that case, the type is the union of the types of all the right-hand values in these assignments.
-Properties defined in the constructor are always assumed to exist, whereas ones defined just in methods, getters, or setters are considered optional.
+`.js`ファイルでは、コンパイラはクラス本体のプロパティの代入からプロパティを推測します。
+コンストラクタで型が定義されていない場合や、コンストラクタでの型がundefinedまたはnullである場合を除いて、プロパティの型はコンストラクタ内で与えられた型になります。
+プロパティの型がコンストラクタ内で与えられない場合、プロパティの型は、プロパティの代入式におけるすべての右辺の値の型によるUnion型となります。
+メソッドやgetter、setter内で定義されたプロパティはオプションとみなされるのに対して、コンストラクタで定義されたプロパティは常に存在するものとみなされます。
 
 ```js twoslash
 // @checkJs
@@ -26,18 +26,18 @@ class C {
   }
   method() {
     this.constructorOnly = false;
-    this.constructorUnknown = "plunkbat"; // ok, constructorUnknown is string | undefined
-    this.methodOnly = "ok"; // ok, but methodOnly could also be undefined
+    this.constructorUnknown = "plunkbat"; // ok、constructorUnknown は string | undefined です
+    this.methodOnly = "ok"; // ok、しかし、methodOnlyはundefinedの可能性もあります
   }
   method2() {
-    this.methodOnly = true; // also, ok, methodOnly's type is string | boolean | undefined
+    this.methodOnly = true; // こちらもokです。methodOnlyの型は string | boolean | undefined です
   }
 }
 ```
 
-If properties are never set in the class body, they are considered unknown.
-If your class has properties that are only read from, add and then annotate a declaration in the constructor with JSDoc to specify the type.
-You don't even have to give a value if it will be initialised later:
+クラス本体でプロパティが設定されていない場合、そのプロパティは未知のものとみなされます。
+クラスプロパティが読み取り専用ならば、コンストラクタにプロパティを追加した後に、型指定のためJSDocを使って型宣言の注釈を付けます。
+後で初期化されるのであれば、値を指定する必要さえありません:
 
 ```js twoslash
 // @checkJs
@@ -56,11 +56,11 @@ c.prop = 0; // OK
 c.count = "string";
 ```
 
-## Constructor functions are equivalent to classes
+## コンストラクタ関数はクラスと同等である
 
-Before ES2015, Javascript used constructor functions instead of classes.
-The compiler supports this pattern and understands constructor functions as equivalent to ES2015 classes.
-The property inference rules described above work exactly the same way.
+ES2015以前のJavascriptでは、クラスの代わりにコンストラクタ関数が使われていました。
+コンパイラはこうしたパターンをサポートしており、コンストラクタ関数をES2015のクラスと同等のものとして理解します。
+上記で説明したプロパティの推論ルールも全く同じように動作します。
 
 ```js twoslash
 // @checkJs
@@ -71,40 +71,40 @@ function C() {
 }
 C.prototype.method = function () {
   this.constructorOnly = false;
-  this.constructorUnknown = "plunkbat"; // OK, the type is string | undefined
+  this.constructorUnknown = "plunkbat"; // OK、型はstring | undefinedです
 };
 ```
 
-## CommonJS modules are supported
+## CommonJSモジュールがサポートされている
 
-In a `.js` file, TypeScript understands the CommonJS module format.
-Assignments to `exports` and `module.exports` are recognized as export declarations.
-Similarly, `require` function calls are recognized as module imports. For example:
+`.js`ファイルでは、TypeScriptはCommonJSモジュールフォーマットをサポートしています。
+`exports`や`module.exports`への代入は、エクスポート宣言として認識されていますし、
+同様に`require`関数の呼び出しも、モジュールインポートとして認識されます。例えば:
 
 ```js
-// same as `import module "fs"`
+// `import module "fs"`と同じ
 const fs = require("fs");
 
-// same as `export function readFile`
+// `export function readFile`と同じ
 module.exports.readFile = function (f) {
   return fs.readFileSync(f);
 };
 ```
 
-The module support in Javascript is much more syntactically forgiving than TypeScript's module support.
-Most combinations of assignments and declarations are supported.
+JavaScriptのモジュールサポートは、TypeScriptのモジュールサポートよりも構文的に寛容です。
+ほとんどの代入と宣言の組み合わせがサポートされています。
 
-## Classes, functions, and object literals are namespaces
+## クラス、関数、オブジェクトリテラルは名前空間を作る
 
-Classes are namespaces in `.js` files.
-This can be used to nest classes, for example:
+クラスは`.js`ファイルにおける名前空間を作成します。
+これを利用してクラスをネストすることができます。例えば:
 
 ```js twoslash
 class C {}
 C.D = class {};
 ```
 
-And, for pre-ES2015 code, it can be used to simulate static methods:
+また、ES2015以前のコードのための擬似的な静的メソッドとしても利用できます:
 
 ```js twoslash
 function Outer() {
@@ -118,7 +118,7 @@ Outer.Inner = function () {
 Outer.innter();
 ```
 
-It can also be used to create simple namespaces:
+シンプルな名前空間を作成することにも使えます:
 
 ```js twoslash
 var ns = {};
@@ -128,39 +128,39 @@ ns.func = function () {};
 ns;
 ```
 
-Other variants are allowed as well:
+その他の変形も同様に可能です:
 
 ```js twoslash
-// IIFE
+// IIFE (即時実行関数式)
 var ns = (function (n) {
   return n || {};
 })();
 ns.CONST = 1;
 
-// defaulting to global
+// グローバル名前空間をデフォルトにする
 var assign =
   assign ||
   function () {
-    // code goes here
+    // ここにコードを記述する
   };
 assign.extra = 1;
 ```
 
-## Object literals are open-ended
+## オブジェクトリテラルは無制限型である
 
-In a `.ts` file, an object literal that initializes a variable declaration gives its type to the declaration.
-No new members can be added that were not specified in the original literal.
-This rule is relaxed in a `.js` file; object literals have an open-ended type (an index signature) that allows adding and looking up properties that were not defined originally.
-For instance:
+`.ts`ファイルにおいて、変数宣言を初期化するオブジェクトリテラルは、宣言に型を与えます。
+元のリテラルで指定されていない新しいメンバを追加することはできません。
+このルールは`.js`ファイルでは緩和されています; オブジェクトリテラルには無制限型(インデックスシグネチャ)があり、元々定義されていないプロパティを追加したり検索したりすることができます。
+例えば:
 
 ```js twoslash
 var obj = { a: 1 };
-obj.b = 2; // Allowed
+obj.b = 2; // これは許容されます
 ```
 
-Object literals behave as if they have an index signature `[x:string]: any` that allows them to be treated as open maps instead of closed objects.
+オブジェクトリテラルはインデックスシグネチャ `[x:string]: any` を持っているかのように動作し、制限をもつオブジェクトではなく無制限のマップとして扱うことができます。
 
-Like other special JS checking behaviors, this behavior can be changed by specifying a JSDoc type for the variable. For example:
+他の特別なJSチェックの動作と同様に、変数にJSDoc型を指定することでこの動作を変更することができます。例えば:
 
 ```js twoslash
 // @checkJs
@@ -170,11 +170,11 @@ var obj = { a: 1 };
 obj.b = 2;
 ```
 
-## null, undefined, and empty array initializers are of type any or any[]
+## null、undefined、空の配列の初期化子はanyまたはany[]型を付ける
 
-Any variable, parameter or property that is initialized with null or undefined will have type any, even if strict null checks is turned on.
-Any variable, parameter or property that is initialized with [] will have type any[], even if strict null checks is turned on.
-The only exception is for properties that have multiple initializers as described above.
+nullまたはundefinedで初期化されたパラメータやプロパティは、厳密なnullチェックが有効化されていたとしても、any型になります。
+[]で初期化されたパラメータやプロパティは、厳密なnullチェックが有効化されていたとしても、any[]型になります。
+唯一の例外は上記で説明した初期化子を複数持つプロパティの場合です。
 
 ```js twoslash
 function Foo(i = null) {
@@ -189,14 +189,14 @@ foo.l.push(foo.i);
 foo.l.push("end");
 ```
 
-## Function parameters are optional by default
+## 関数のパラメータはデフォルトではオプションである
 
-Since there is no way to specify optionality on parameters in pre-ES2015 Javascript, all function parameters in `.js` file are considered optional.
-Calls with fewer arguments than the declared number of parameters are allowed.
+ES2015以前のJavascriptでは、パラメータがオプションかどうかを指定する方法がないため、`.js`ファイルの関数パラメータはすべてオプションとみなされます。
+宣言されたパラメータ数よりも少ない引数で、関数を呼び出すことが可能です。
 
-It is important to note that it is an error to call a function with too many arguments.
+宣言された数より、引数の数が多い関数を呼び出すとエラーになるので注意が必要です。
 
-For instance:
+例えば:
 
 ```js twoslash
 // @checkJs
@@ -206,17 +206,17 @@ function bar(a, b) {
   console.log(a + " " + b);
 }
 
-bar(1); // OK, second argument considered optional
+bar(1); // OK、二番目の引数はオプションとみなされます
 bar(1, 2);
-bar(1, 2, 3); // Error, too many arguments
+bar(1, 2, 3); // エラー、引数が多すぎます
 ```
 
-JSDoc annotated functions are excluded from this rule.
-Use JSDoc optional parameter syntax (`[` `]`) to express optionality. e.g.:
+JSDocの注釈付き関数はこの規則から除外されます。
+オプションであることを表すには、JSDocのオプションパラメータ構文(`[` `]`)を使用します。例えば:
 
 ```js twoslash
 /**
- * @param {string} [somebody] - Somebody's name.
+ * @param {string} [somebody] - 誰かの名前
  */
 function sayHello(somebody) {
   if (!somebody) {
@@ -228,9 +228,9 @@ function sayHello(somebody) {
 sayHello();
 ```
 
-## Var-args parameter declaration inferred from use of `arguments`
+## 可変長引数のパラメータ宣言は、`arguments`の使い方から推測される
 
-A function whose body has a reference to the `arguments` reference is implicitly considered to have a var-arg parameter (i.e. `(...arg: any[]) => any`). Use JSDoc var-arg syntax to specify the type of the arguments.
+関数本体で`arguments`を参照すると、暗黙的に可変長引数パラメータ(例: `(...arg: any[]) => any`)を持っているとみなされます。JSDocの可変長引数構文を使って、引数の型を指定します。
 
 ```js twoslash
 /** @param {...number} args */
@@ -243,26 +243,26 @@ function sum(/* numbers */) {
 }
 ```
 
-## Unspecified type parameters default to `any`
+## 未指定の型パラメータのデフォルトは`any`である
 
-Since there is no natural syntax for specifying generic type parameters in Javascript, an unspecified type parameter defaults to `any`.
+Javascriptにはジェネリクス型のパラメータを指定するための標準構文がないため、未指定の型パラメータはデフォルトで`any`となります。
 
-### In extends clause
+### extends句において
 
-For instance, `React.Component` is defined to have two type parameters, `Props` and `State`.
-In a `.js` file, there is no legal way to specify these in the extends clause. By default the type arguments will be `any`:
+例えば、`React.Component`は、`Props`と`State`の2つの型パラメータを持つように定義されています。
+`.js`ファイルでは、extends句でこれらを指定する正当な方法はありません。型引数はデフォルトで`any`となります:
 
 ```js
 import { Component } from "react";
 
 class MyComponent extends Component {
   render() {
-    this.props.b; // Allowed, since this.props is of type any
+    this.props.b; // this.propsはany型なので、許可されています
   }
 }
 ```
 
-Use JSDoc `@augments` to specify the types explicitly. for instance:
+JSDocの`@augments`を使って明示的に型を指定します。例えば:
 
 ```js
 import { Component } from "react";
@@ -272,32 +272,32 @@ import { Component } from "react";
  */
 class MyComponent extends Component {
   render() {
-    this.props.b; // Error: b does not exist on {a:number}
+    this.props.b; // エラー: b は {a:number} に存在しません
   }
 }
 ```
 
-### In JSDoc references
+### JSDocリファレンスにおいて
 
-An unspecified type argument in JSDoc defaults to any:
+JSDocで指定されていない型引数のデフォルトはanyです:
 
 ```js twoslash
 /** @type{Array} */
 var x = [];
 
 x.push(1); // OK
-x.push("string"); // OK, x is of type Array<any>
+x.push("string"); // OK、xはArray<any>型です
 
 /** @type{Array.<number>} */
 var y = [];
 
 y.push(1); // OK
-y.push("string"); // Error, string is not assignable to number
+y.push("string"); // エラー、stringはnumberに代入できません
 ```
 
-### In function calls
+### 関数呼び出しにおいて
 
-A call to a generic function uses the arguments to infer the type parameters. Sometimes this process fails to infer any types, mainly because of lack of inference sources; in these cases, the type parameters will default to `any`. For example:
+ジェネリクス関数の呼び出しでは、引数から型パラメータを推論します。この処理では、主に推論の根拠がないために型の推論に失敗することが時たまあります。そのような場合、型パラメータはデフォルトで`any`となります。例えば:
 
 ```js
 var p = new Promise((resolve, reject) => {
@@ -307,4 +307,4 @@ var p = new Promise((resolve, reject) => {
 p; // Promise<any>;
 ```
 
-To learn all of the features available in JSDoc, see [the reference](/docs/handbook/jsdoc-supported-types.html).
+JSDocで利用可能なすべての機能を知りたい場合は、[リファレンス](/docs/handbook/jsdoc-supported-types.html)を参照してください。

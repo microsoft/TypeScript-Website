@@ -1,31 +1,31 @@
 ---
-title: JS Projects Utilizing TypeScript
+title: TypeScriptを活用したJSプロジェクト
 layout: docs
-permalink: /docs/handbook/intro-to-js-ts.html
-oneline: How to add type checking to JavaScript files using TypeScript
+permalink: /ja/docs/handbook/intro-to-js-ts.html
+oneline: TypeScriptを使ってJavaScriptファイルに型チェックを追加する方法
 translatable: true
 ---
 
-The type system in TypeScript has different levels of strictness when working with a codebase:
+TypeScriptの型システムがコードベースを扱う際には、様々な厳密さのレベルがあります:
 
-- A type-system based only on inference with JavaScript code
-- Incremental typing in JavaScript [via JSDoc](/docs/handbook/jsdoc-supported-types.html)
-- Using `// @ts-check` in a JavaScript file
-- TypeScript code
-- TypeScript with [`strict`](/tsconfig#strict) enabled
+- JavaScriptのコードを使った推論のみに基づく型システム
+- [JSDoc](/docs/handbook/jsdoc-supported-types.html)によるJavaScriptの段階的な型付け
+- JavaScriptファイルにおける`// @ts-check`の使用
+- TypeScriptコード
+- [`strict`](/tsconfig#strict)を有効にしたTypeScript
 
-Each step represents a move towards a safer type-system, but not every project needs that level of verification.
+それぞれのステップはより安全な型システムへの動きを表していますが、すべてのプロジェクトがそのレベルでの検証を必要としているわけではありません。
 
-## TypeScript with JavaScript
+## JavaScriptと併用するTypeScript
 
-This is when you use an editor which uses TypeScript to provide tooling like auto-complete, jump to symbol and refactoring tools like rename.
-The [homepage](/) has a list of editors which have TypeScript plugins.
+こちらは、オートコンプリートやシンボルへのジャンプといった機能や、リネームなどのリファクタリングツールを提供するためにTypeScriptを使用しているエディタを使う場合です。
+[homepage](/)では、TypeScriptプラグインを備えているエディタをリストしています。
 
-## Providing Type Hints in JS via JSDoc
+## JSDocを使ってJSで型ヒントを提供する
 
-In a `.js` file, types can often be inferred. When types can't be inferred, they can be specified using JSDoc syntax.
+`.js`ファイルでは、多くの場合型を推測することが可能です。型が推測できない場合、JSDoc構文を使って指定することができます。
 
-JSDoc annotations come before a declaration will be used to set the type of that declaration. For example:
+宣言の前でJSDocのアノテーションを使い、その宣言の型を設定します。例えば:
 
 ```js twoslash
 /** @type {number} */
@@ -35,12 +35,12 @@ x = 0; // OK
 x = false; // OK?!
 ```
 
-You can find the full list of supported JSDoc patterns [in JSDoc Supported Types](/docs/handbook/jsdoc-supported-types.html).
+サポートしているJSDocパターンの全リストは[JSDocがサポートする型](/docs/handbook/jsdoc-supported-types.html)にあります。
 
 ## `@ts-check`
 
-The last line of the previous code sample would raise an error in TypeScript, but it doesn't by default in a JS project.
-To enable errors in your JavaScript files add: `// @ts-check` to the first line in your `.js` files to have TypeScript raise it as an error.
+前述のコードサンプルの最後の行はTypeScriptではエラーとなりますが、JSプロジェクトではデフォルトではエラーを発生させません。
+JavaScriptファイルでエラーを有効化するには、`.js`ファイルの最初の行に`// @ts-check`を追加して、TypeScriptのエラーを発生させるようにします。
 
 ```js twoslash
 // @ts-check
@@ -49,13 +49,13 @@ To enable errors in your JavaScript files add: `// @ts-check` to the first line 
 var x;
 
 x = 0; // OK
-x = false; // Not OK
+x = false; // エラー
 ```
 
-If you have a lot of JavaScript files you want to add errors to then you can switch to using a [`jsconfig.json`](/docs/handbook/tsconfig-json.html).
-You can skip checking some files by adding a `// @ts-nocheck` comment to files.
+エラーを追加したいJavaScriptファイルがたくさんある場合は、[`jsconfig.json`](/docs/handbook/tsconfig-json.html)を使用するように変更しましょう。
+ファイルに`// @ts-nocheck`コメントをつけることで、ファイルのチェックを省略することができます。
 
-TypeScript may offer you errors which you disagree with, in those cases you can ignore errors on specific lines by adding `// @ts-ignore` or `// @ts-expect-error` on the preceding line.
+TypeScriptはあなたが納得できないようなエラーを発生させるかもしれませんが、その場合は前の行に`// @ts-ignore`または`// @ts-expect-error`を追加することで、特定の行のエラーを無視することができます。
 
 ```js twoslash
 // @ts-check
@@ -64,7 +64,7 @@ var x;
 
 x = 0; // OK
 // @ts-expect-error
-x = false; // Not OK
+x = false; // エラー
 ```
 
-To learn more about how JavaScript is interpreted by TypeScript read [How TS Type Checks JS](/docs/handbook/type-checking-javascript-files.html)
+JavaScriptがTypeScriptによってどのように解釈されるかについて知りたい場合は、[TSの型がJSをチェックする方法](/docs/handbook/type-checking-javascript-files.html)を参照してください。
