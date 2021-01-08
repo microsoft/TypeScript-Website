@@ -11,7 +11,7 @@ String literal types in TypeScript allow us to model functions and APIs that exp
 
 ```ts twoslash
 // @errors: 2345
-function setVerticalAlignment(color: "top" | "middle" | "bottom") {
+function setVerticalAlignment(location: "top" | "middle" | "bottom") {
   // ...
 }
 
