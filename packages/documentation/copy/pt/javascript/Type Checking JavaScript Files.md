@@ -7,7 +7,7 @@ oneline: Como adicionar checagem de tipos a arquivos JavaScript usando Typescrip
 
 Aqui estão algumas diferenças notáveis em como a checagem de tipo funciona em arquivos `.js` comparados com arquivos `.ts`.
 
-## Propriedades sao inferidas de atribuiçoes no corpo das classes
+## Propriedades são inferidas de atribuições no corpo das classes
 
 ES2015 nao tem meios de declaração de propriedades em uma classe. Propriedades são atribuídas dinamicamente, assim como object literals.
 
