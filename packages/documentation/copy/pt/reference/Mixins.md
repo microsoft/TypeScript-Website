@@ -1,7 +1,7 @@
 ---
 title: Mixins
 layout: docs
-permalink: /docs/handbook/mixins.html
+permalink: /pt/docs/handbook/mixins.html
 oneline: Usando o padrão Mixin com TypeScript
 translatable: true
 ---
