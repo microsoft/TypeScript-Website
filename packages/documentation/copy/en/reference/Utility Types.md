@@ -281,7 +281,7 @@ type T4 = InstanceType<Function>;
 
 ## `Required<Type>`
 
-Constructs a type consisting of all properties of `T` set to required. The opposite of [`Partial`](#partialtype).
+Constructs a type consisting of all properties of `Type` set to required. The opposite of [`Partial`](#partialtype).
 
 ##### Example
 
