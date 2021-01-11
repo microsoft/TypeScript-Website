@@ -29,7 +29,7 @@ const headerText = response.headerText || "Hello, world!";
 // 의도와 다를 수 있습니다. 0은 falsy고, 결과는 다음과 같습니다: 300
 const animationDuration = response.animationDuration || 300;
 
-// 의도된 것이 아닐 수 있습니다. false는 falsy고, 결과는 다음과 같습니다: true
+// 의도와 다를 수 있습니다. false는 falsy고, 결과는 다음과 같습니다: true
 const showSplashScreen = response.showSplashScreen || true;
 
 // 대신 ??으로 전환하여 사용한다면,
