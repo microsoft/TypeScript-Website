@@ -15,4 +15,4 @@ oneline: "Sets the root path for debuggers to find the reference source code"
 }
 ```
 
-`index.js`는 `https://my-website.com/debug/source/index.ts`소스 파일을 갖게 될 것입니다.
+`index.js` 에 `https://my-website.com/debug/source/index.ts` 위치에 소스 파일이 있다고 명시해야 합니다.
