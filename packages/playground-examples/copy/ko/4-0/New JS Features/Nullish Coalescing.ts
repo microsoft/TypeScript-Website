@@ -15,7 +15,7 @@ const response = {
 } as const;
 
 const undefinedValue = response.undefinedValue || "some other default";
-// 결과는 이렇게 될 겁니다: 'some other default'
+// 결과는 이렇게 됩니다: 'some other default'
 
 const nullValue = response.nullValue || "some other default";
 
