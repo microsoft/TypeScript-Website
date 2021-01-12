@@ -118,6 +118,8 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["jsxImportSource", ["jsx", "jsxFactory"]],
 
   ["suppressImplicitAnyIndexErrors", ["noImplicitAny"]],
+
+  ["listFiles", ["explainFiles"]],
 ];
 
 /**
@@ -175,6 +177,7 @@ export const defaultsForOptions = {
   noImplicitReturns: "false",
   noImplicitThis: "`false`, unless `strict` is set",
   noImplicitUseStrict: "false",
+  noPropertyAccessFromIndexSignature: "false",
   noLib: "false",
   noResolve: "false",
   noStrictGenericChecks: "false",
@@ -242,19 +245,12 @@ export const allowedValues = {
     "useFsEvents",
     "useFsEventsOnParentDirectory",
   ],
-  fallbackPolling: [
-    "fixedPollingInterval",
-    "priorityPollingInterval",
-    "dynamicPriorityPolling",
-  ],
-  watchDirectory: [
-    "fixedPollingInterval",
-    "dynamicPriorityPolling",
-    "useFsEvents",
-  ],
+  fallbackPolling: ["fixedPollingInterval", "priorityPollingInterval", "dynamicPriorityPolling"],
+  watchDirectory: ["fixedPollingInterval", "dynamicPriorityPolling", "useFsEvents"],
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
+  "4.2": ["noPropertyAccessFromIndexSignature", "explainFiles"],
   "4.1": ["jsxImportSource", "noUncheckedIndexedAccess"],
   "4.0": ["jsxFragmentFactory", "disableReferencedProjectLoad"],
   "3.8": [

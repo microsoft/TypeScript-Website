@@ -29285,23 +29285,23 @@ resolve@^1.18.1:
   languageName: unknown
   linkType: soft
 
-"typescript@npm:4.1.2":
-  version: 4.1.2
-  resolution: "typescript@npm:4.1.2"
+"typescript@npm:4.2.0-dev.20210112":
+  version: 4.2.0-dev.20210112
+  resolution: "typescript@npm:4.2.0-dev.20210112"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: d2ac373b469e973448c7287d0fbc732dbd34d00d07911b9506bbf81469a80db6613361fc9293d021da357cb7c7da2ee32f56d8ef76446361231374200cd6aee9
+  checksum: 4eb8a0240cbca5d02ec21f1fae008e0bb2a058049335221cc1e9fad2dc6eeb9d0ee7480c1d8220f7a6a30cf1ee23107eee8bc0fbd554476402e8c90353d0b563
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A4.1.2#builtin<compat/typescript>":
-  version: 4.1.2
-  resolution: "typescript@patch:typescript@npm%3A4.1.2#builtin<compat/typescript>::version=4.1.2&hash=5bf698"
+"typescript@patch:typescript@npm%3A4.2.0-dev.20210112#builtin<compat/typescript>":
+  version: 4.2.0-dev.20210112
+  resolution: "typescript@patch:typescript@npm%3A4.2.0-dev.20210112#builtin<compat/typescript>::version=4.2.0-dev.20210112&hash=5bf698"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: acfc7be6a091806432f324ad258c4a7d2a63996106a4c001db1eebb2661608a9fd0d109d0d29249c3e6890e3547a97b8580cbe0833aa64b2fb83f66e4d88a466
+  checksum: cba7416ff605475e31a77c511a75053207bff6d5ab5179b209485bb5d6006aca871ad10730f5d575da0486a8619f189f6e7733df5a3fdcd7c863affbb50cf989
   languageName: node
   linkType: hard
 
