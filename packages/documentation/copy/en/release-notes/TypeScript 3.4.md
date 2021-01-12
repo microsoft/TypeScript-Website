@@ -383,9 +383,11 @@ One thing to note is that `const` assertions can only be applied immediately on 
 // Error! A 'const' assertion can only be applied to a
 // to a string, number, boolean, array, or object literal.
 let a = (Math.random() < 0.5 ? 0 : 1) as const;
+let b = (60 * 60 * 1000) as const;
 
 // Works!
-let b = Math.random() < 0.5 ? (0 as const) : (1 as const);
+let c = Math.random() < 0.5 ? (0 as const) : (1 as const);
+let d = 3_600_000 as const
 ```
 
 Another thing to keep in mind is that `const` contexts don't immediately convert an expression to be fully immutable.
