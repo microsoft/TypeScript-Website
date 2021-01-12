@@ -83,7 +83,11 @@ export const createUI = (): UI => {
     event?: React.MouseEvent
   ) => {
     const modal = createModalOverlay(postFocalElement)
-    const isNotMouse = event && event.screenX === 0 && event.screenY === 0
+    // I've not been able to get this to work in a way which
+    // works with every screenreader and browser combination, so
+    // instead I'm dropping the feature.
+
+    const isNotMouse = false //  event && event.screenX === 0 && event.screenY === 0
 
     if (subtitle) {
       const titleElement = document.createElement("h3")
@@ -95,7 +99,6 @@ export const createUI = (): UI => {
     }
 
     const textarea = document.createElement("textarea")
-    textarea.autofocus = true
     textarea.readOnly = true
     textarea.wrap = "off"
     textarea.style.marginBottom = "20px"

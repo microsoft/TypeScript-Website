@@ -487,7 +487,7 @@ department = new Department(); // error: cannot create an instance of an abstrac
 department = new AccountingDepartment(); // ok to create and assign a non-abstract subclass
 department.printName();
 department.printMeeting();
-department.generateReports();
+department.generateReports(); // error: department is not of type AccountingDepartment, cannot access generateReports
 ```
 
 ## Advanced Techniques

@@ -11,8 +11,8 @@
 // TypeScript에서 React 컴포넌트가 어떻게 동작하는지 이해하기 위해서는
 // 제네릭에 대해 미리 알 필요가 있습니다:
 //
-// - 예:generic-functions
-// - 예:generic-classes
+// - example:generic-functions
+// - example:generic-classes
 
 // 먼저 제네릭 인터페이스가 React 컴포넌트 매핑에서 어떻게 쓰이는지 알아보겠습니다.
 // 다음은 함수형 컴포넌트 faux-React입니다:

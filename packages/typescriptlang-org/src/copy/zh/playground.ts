@@ -52,6 +52,7 @@ export const playCopy = {
   play_export_copy_link: "复制为 Markdown 格式的链接",
   play_export_copy_link_preview: "复制为 Markdown 格式可预览的链接",
   play_export_tsast: "在 TypeScript AST 查看器中打开",
+  play_export_bugworkbench: "在 Bug Workbench 中打开",
   play_export_sandbox: "在 CodeSandbox 中打开",
   play_export_stackblitz: "在 StackBlitz 中打开",
   play_export_clipboard: "复制 URL 到剪贴板",

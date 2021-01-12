@@ -29,7 +29,7 @@ const todoListText = readFileSync(myPath, "utf8");
  */
 
 // 이제 이 값을 JSON.parse 반환 값에 할당합니다.
-// 더 자세한 내용은, 예:jsdoc-support를 참조하십시오.
+// 더 자세한 내용은, example:jsdoc-support를 참조하십시오.
 
 /** @type {TODO[]} TODO 리스트 */
 const todoList = JSON.parse(todoListText);

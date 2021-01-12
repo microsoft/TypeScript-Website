@@ -34,8 +34,8 @@ const parseFileForModuleReferences = (sourceCode: string) => {
   const requirePattern = /(const|let|var)(.|\n)*? require\(('|")(.*)('|")\);?$/gm
   // this handle ths 'from' imports  https://regex101.com/r/hdEpzO/4
   const es6Pattern = /(import|export)((?!from)(?!require)(.|\n))*?(from|require\()\s?('|")(.*)('|")\)?;?$/gm
-  // https://regex101.com/r/hdEpzO/6
-  const es6ImportOnly = /import\s?('|")(.*)('|")\)?;?/gm
+  // https://regex101.com/r/hdEpzO/8
+  const es6ImportOnly = /import\s+?\(?('|")(.*)('|")\)?;?/gm;
 
   const foundModules = new Set<string>()
   var match

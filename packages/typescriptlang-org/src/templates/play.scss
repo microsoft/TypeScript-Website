@@ -776,6 +776,11 @@ input.good {
   display: flex;
   flex-direction: column;
 
+  textarea {
+    font-family: $font-code;
+    padding: 8px;
+  }
+
   .close {
     position: absolute;
     top: 20px;
