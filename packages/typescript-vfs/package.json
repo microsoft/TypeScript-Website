@@ -1,11 +1,11 @@
 {
   "name": "@typescript/vfs",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "license": "MIT",
   "author": "TypeScript team",
   "homepage": "https://github.com/microsoft/TypeScript-Website/",
   "main": "./dist/index.js",
-  "module": "./dist/typescript-vsf.esm.js",
+  "module": "./dist/vsf.esm.js",
   "typings": "./dist/index.d.ts",
   "files": [
     "dist"
