@@ -53,15 +53,49 @@ const markersToTSDiags = (
   model: import("monaco-editor").editor.IModel,
   markers: import("monaco-editor").editor.IMarker[]
 ): import("typescript").DiagnosticRelatedInformation[] => {
-  return markers.map(m => {
-    const start = model.getOffsetAt({ column: m.startColumn, lineNumber: m.startLineNumber })
-    return {
-      code: -1,
-      category: 1,
-      file: undefined,
-      start,
-      length: model.getCharacterCountInRange(m),
-      messageText: m.message,
-    }
-  })
+  return markers
+    .map(m => {
+      const start = model.getOffsetAt({ column: m.startColumn, lineNumber: m.startLineNumber })
+      return {
+        code: -1,
+        category: markerToDiagSeverity(m.severity),
+        file: undefined,
+        start,
+        length: model.getCharacterCountInRange(m),
+        messageText: m.message,
+      }
+    })
+    .sort((lhs, rhs) => lhs.category - rhs.category)
+}
+
+/*
+export enum MarkerSeverity {
+    Hint = 1,
+    Info = 2,
+    Warning = 4,
+    Error = 8
+}
+
+to 
+
+export enum DiagnosticCategory {
+    Warning = 0,
+    Error = 1,
+    Suggestion = 2,
+    Message = 3
+}
+  */
+const markerToDiagSeverity = (markerSev: number) => {
+  switch (markerSev) {
+    case 1:
+      return 2
+    case 2:
+      return 3
+    case 4:
+      return 0
+    case 8:
+      return 1
+    default:
+      return 3
+  }
 }
