@@ -181,7 +181,6 @@ export const createTypeScriptSandbox = (
       detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
     }
   }
-  textUpdated()
 
   // Debounced sandbox features like twoslash and type acquisition to once every second
   let debouncingTimer = false
@@ -320,6 +319,8 @@ export const createTypeScriptSandbox = (
 
   // Pass along the supported releases for the playground
   const supportedVersions = supportedReleases
+
+  textUpdated()
 
   return {
     /** The same config you passed in */
