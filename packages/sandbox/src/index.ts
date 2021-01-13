@@ -169,8 +169,7 @@ export const createTypeScriptSandbox = (
 
   const getTwoSlashComplierOptions = extractTwoSlashComplierOptions(ts)
 
-  // Then update it when the model changes, perhaps this could be a debounced plugin instead in the future?
-  editor.onDidChangeModelContent(() => {
+  const textUpdated = () => {
     const code = editor.getModel()!.getValue()
 
     if (config.supportTwoslashCompilerOptions) {
@@ -181,6 +180,18 @@ export const createTypeScriptSandbox = (
     if (config.acquireTypes) {
       detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
     }
+  }
+  textUpdated()
+
+  // Debounced sandbox features like twoslash and type acquisition to once every second
+  let debouncingTimer = false
+  editor.onDidChangeModelContent(_e => {
+    if (debouncingTimer) return
+    debouncingTimer = true
+    setTimeout(() => {
+      debouncingTimer = false
+      textUpdated()
+    }, 1000)
   })
 
   config.logger.log("[Compiler] Set compiler options: ", compilerOptions)
