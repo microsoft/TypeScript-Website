@@ -5683,7 +5683,7 @@ __metadata:
     "@types/jest": ^25.1.3
     "@types/lz-string": ^1.3.33
     "@types/prettier": ^1.19.0
-    "@typescript/vfs": 1.3.0
+    "@typescript/vfs": 1.3.2
     debug: ^4.1.1
     husky: ^4.2.3
     jest-file-snapshot: ^0.3.8
@@ -5696,7 +5696,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript/vfs@1.3.0, @typescript/vfs@workspace:packages/typescript-vfs":
+"@typescript/vfs@1.3.2, @typescript/vfs@workspace:packages/typescript-vfs":
   version: 0.0.0-use.local
   resolution: "@typescript/vfs@workspace:packages/typescript-vfs"
   dependencies:
@@ -14479,7 +14479,7 @@ fsevents@~2.1.2:
   dependencies:
     "@types/jest": ^25.1.3
     "@typescript/twoslash": 1.1.2
-    "@typescript/vfs": 1.3.0
+    "@typescript/vfs": 1.3.2
     rehype-stringify: ^6.0.1
     shiki: ^0.1.6
     shiki-languages: ^0.1.6
@@ -26852,7 +26852,7 @@ resolve@^1.18.1:
   dependencies:
     "@types/jest": ^25.1.3
     "@typescript/twoslash": 1.1.2
-    "@typescript/vfs": 1.3.0
+    "@typescript/vfs": 1.3.2
     gatsby-remark-shiki-twoslash: 0.7.0
     rehype-stringify: ^6.0.1
     shiki: ^0.1.6
@@ -29262,7 +29262,7 @@ resolve@^1.18.1:
   resolution: "typescript-sandbox@workspace:packages/sandbox"
   dependencies:
     "@types/jest": ^25.1.3
-    "@typescript/vfs": 1.3.0
+    "@typescript/vfs": 1.3.2
     jest: "*"
     monaco-editor: ~0.20.0
     monaco-typescript: ^3.7.0
