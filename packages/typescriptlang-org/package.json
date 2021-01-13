@@ -56,7 +56,7 @@
     "react-intl": "^3.12.0",
     "rehype-shiki": "^0.0.7",
     "sass": "^1.26.10",
-    "ts-debounce": "^2.0.1",
+    "ts-debounce": "^2.2.0",
     "ts-node": "^8.6.2",
     "typescript": "*",
     "typescript-playground": "0.1.0",
@@ -70,7 +70,7 @@
     "concurrently": "^5.1.0",
     "gatsby-plugin-typescript": "^2.4.24",
     "jest": "*",
-    "ts-jest": "*"
+    "ts-jest": "^26.4.4"
   },
   "jest": {
     "preset": "ts-jest",

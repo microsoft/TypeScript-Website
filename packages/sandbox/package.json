@@ -29,7 +29,7 @@
     "jest": "*",
     "monaco-editor": "~0.20.0",
     "monaco-typescript": "^3.7.0",
-    "ts-jest": "*",
+    "ts-jest": "^26.4.4",
     "typescript": "*"
   }
 }
