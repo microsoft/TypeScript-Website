@@ -6,7 +6,7 @@ export const dtCopy = {
   dt_s_match: "resultado",
   dt_s_matchs: "resultados",
   dt_s_match_exact: "Combinação exata",
-  dt_s_popular_on_dt: "Popular em Definitely Typed",
+  dt_s_popular_on_dt: "Popular no Definitely Typed",
   dt_s_downloads_short: "Downl.",
   dt_s_downloads_via: "Via",
   dt_s_module: "Módulo",
