@@ -35,7 +35,7 @@ O modo `react-native` é o equivalente ao modo `preserve` no sentido de que mant
 
 Você pode especificar esse modo usando tanto a flag na linha de comando `--jsx` ou a opção [`jsx` correspondente no seu arquivo tsconfig.json](/tsconfig#jsx).
 
-> \*Note: Você pode especificar a função factory JSX para usar quando direcionar react JSX com a opção `--jsxFactory` (padrão para `React.createElement`)
+> \*Nota: Você pode especificar a função factory JSX para usar quando direcionar react JSX com a opção `--jsxFactory` (padrão para `React.createElement`)
 
 ## O operador `as`
 
@@ -90,7 +90,7 @@ declare namespace JSX {
 
 No exemplo acima, `<foo />` vai funcionar bem, mas `<bar />` resultará em um erro, pois não foi especificado em `JSX.IntrinsicElements`.
 
-> Note: Você também pode especificar um indexador de string abrangente em `JSX.IntrinsicElements` do seguinte modo:
+> Nota: Você também pode especificar um indexador de string abrangente em `JSX.IntrinsicElements` do seguinte modo:
 
 ```ts
 declare namespace JSX {
@@ -140,7 +140,7 @@ const Button = (prop: { value: string }, context: { color: string }) => (
 );
 ```
 
-Because a Function Component is simply a JavaScript function, function overloads may be used here as well:
+Como um componente de função é simplesmente uma função JavaScript, sobrecargas de função também podem ser usadas aqui:
 
 ```ts
 interface ClickableProps {
@@ -161,7 +161,7 @@ function MainButton(prop: SideProps): JSX.Element {
 }
 ```
 
-> Note: Componentes de Função eram anteriormente conhecidos como Stateless Function Components (SFC). Como Function Components não pode mais ser considerado sem estado nas versões recentes do react, o tipo `SFC` e seu alias `StatelessComponent` foram descontinuados.
+> Nota: Componentes de Função eram anteriormente conhecidos como Stateless Function Components (SFC). Como Function Components não pode mais ser considerado sem estado nas versões recentes do react, o tipo `SFC` e seu alias `StatelessComponent` foram descontinuados.
 
 ### Class Component
 
@@ -289,7 +289,7 @@ declare namespace JSX {
 <foo requiredProp="bar" some-unknown-prop />; // ok, because 'some-unknown-prop' is not a valid identifier
 ```
 
-> Note: Se um nome de atributo não for um identificador JS válido (como um atributo `data-*`), não é considerado um erro se não for encontrado no tipo de atributos do elemento.
+> Nota: Se um nome de atributo não for um identificador JS válido (como um atributo `data-*`), não é considerado um erro se não for encontrado no tipo de atributos do elemento.
 
 Além disso, a interface `JSX.IntrinsicAttributes` pode ser usada para especificar propriedades extras usadas pela estrutura JSX que geralmente não são usadas pelos adereços ou argumentos dos componentes - por exemplo `key` em React. Especializando-se ainda mais, o tipo genérico `JSX.IntrinsicClassAttributes<T>` também pode ser usado para especificar o mesmo tipo de atributos extras apenas para class components (e não Function Components). Nesse tipo, o parâmetro genérico corresponde ao tipo de instância de classe. Em React, isso é usado para permitir o atributo `ref` do tipo `Ref<T>`. De modo geral, todas as propriedades dessas interfaces devem ser opcionais, a menos que você pretenda que os usuários de sua estrutura JSX precisem fornecer algum atributo em cada tag.
 
@@ -404,7 +404,7 @@ var a = (
 );
 ```
 
-## Integração com React 
+## Integração com React
 
 Para usar JSX com React, você deve usar a [tipagem React](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react).
 Essa tipagem define o namespace `JSX` apropriadamente para uso com React.
