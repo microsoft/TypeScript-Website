@@ -13,7 +13,7 @@ export const dtCopy = {
   dt_s_last_update: "Última atualização",
   dt_s_install: "Instalar",
   dt_s_no_results: "Nenhum resultado encontrado para",
-  dt_s_no_results_try: "Tente outra pesquisa?",
+  dt_s_no_results_try: "Tentar outra busca?",
   dt_s_copy: "copiar",
   dt_s_copied: "copiado",
 }
