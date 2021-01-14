@@ -1,6 +1,5 @@
-import { loadTheme, getHighlighter, getTheme } from "shiki"
+import { loadTheme, getHighlighter, getTheme, IThemedToken } from "shiki"
 import { Highlighter } from "shiki/dist/highlighter"
-import { commonLangIds, commonLangAliases, otherLangIds } from "shiki-languages"
 import { twoslasher, TwoSlashOptions, TwoSlashReturn } from "@typescript/twoslash"
 import { createDefaultMapFromNodeModules, addAllFilesFromFolder } from "@typescript/vfs"
 import { twoslashRenderer } from "./renderers/twoslash"
@@ -12,11 +11,6 @@ export type ShikiTwoslashSettings = {
   useNodeModules?: true
   nodeModulesTypesPath?: string
 }
-
-const languages = [...commonLangIds, ...commonLangAliases, ...otherLangIds]
-
-/** Checks if a particular lang is available in shiki */
-export const canHighlightLang = (lang: string) => languages.includes(lang as any)
 
 /**
  * This gets filled in by the promise below, then should
@@ -49,7 +43,7 @@ export const createShikiHighlighter = (options: import("shiki/dist/highlighter")
     }
   }
 
-  return getHighlighter({ theme: shikiTheme, langs: languages }).then(newHighlighter => {
+  return getHighlighter({ theme: shikiTheme, langs: options.langs }).then(newHighlighter => {
     storedHighlighter = newHighlighter
     return storedHighlighter
   })
@@ -80,15 +74,16 @@ export const renderCodeToHTML = (
       "The highlighter object hasn't been initialised via `setupHighLighter` yet in render-shiki-twoslash"
     )
   }
+  const renderHighlighter = highlighter || storedHighlighter
 
-  // Shiki doesn't know this lang
-  if (!canHighlightLang(lang)) {
+  let tokens: IThemedToken[][]
+  try {
+    // Shiki does know the lang, so tokenize
+    tokens = renderHighlighter.codeToThemedTokens(code, lang as any)
+  } catch (error) {
+    // Shiki doesn't know this lang
     return plainTextRenderer(code, shikiOptions || {})
   }
-
-  // Shiki does know the lang, so tokenize
-  const renderHighlighter = highlighter || storedHighlighter
-  const tokens = renderHighlighter.codeToThemedTokens(code, lang as any)
 
   // Twoslash specific renderer
   if (info.includes("twoslash") && twoslash) {

@@ -155,7 +155,7 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
         case "list":
           const elementType = opt.element!.type
           const strings = value.split(",")
-          if (typeof elementType === 'string') {
+          if (typeof elementType === "string") {
             opts[opt.name] = strings.map(v => parsePrimitive(v, elementType))
           } else {
             opts[opt.name] = strings.map(v => getOptionValueFromMap(opt.name, v, elementType as Map<string, string>))
@@ -657,7 +657,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     if (!emitSource && !compilerOptions.outFile) {
       const allFiles = filenames.join(", ")
       // prettier-ignore
-      throw new Error(`Cannot find the corresponding **source** file for ${emitFilename} (looking for: ${emitSourceFilename} in the vfs) - in ${allFiles}`)
+      throw new Error(`Cannot find the corresponding **source** file for ${emitFilename} (looking for: ${emitSourceFilename} in the vfs) - in [${allFiles}]`)
     }
 
     // Allow outfile, in which case you need any file.
@@ -667,13 +667,16 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
 
     const output = ls.getEmitOutput(emitSource!)
     const file = output.outputFiles.find(
-      o => o.name === fsRoot + handbookOptions.showEmittedFile || o.name === handbookOptions.showEmittedFile
+      o =>
+        o.name === fsRoot + handbookOptions.showEmittedFile ||
+        o.name === fsRoot + handbookOptions.showEmittedFile + "x" ||
+        o.name === handbookOptions.showEmittedFile
     )
 
     if (!file) {
       const allFiles = output.outputFiles.map(o => o.name).join(", ")
       // prettier-ignore
-      throw new Error(`Cannot find the file ${handbookOptions.showEmittedFile} (looking for: ${fsRoot + handbookOptions.showEmittedFile} in the vfs) - in ${allFiles}`)
+      throw new Error(`Cannot find the file ${handbookOptions.showEmittedFile} (looking for: ${fsRoot + handbookOptions.showEmittedFile} in the vfs) - inside [${allFiles}]`)
     }
 
     code = file.text

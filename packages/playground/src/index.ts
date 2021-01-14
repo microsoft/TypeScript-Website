@@ -75,6 +75,8 @@ export const setupPlayground = (
   i: (key: string) => string,
   react: typeof React
 ) => {
+  const initialParams = new URLSearchParams(location.search)
+
   const playgroundParent = sandbox.getDomNode().parentElement!.parentElement!.parentElement!
   const dragBar = createDragBar()
   playgroundParent.appendChild(dragBar)
@@ -476,8 +478,7 @@ export const setupPlayground = (
 
   const languageSelector = document.getElementById("language-selector") as HTMLSelectElement
   if (languageSelector) {
-    const params = new URLSearchParams(location.search)
-    languageSelector.options.selectedIndex = params.get("useJavaScript") ? 1 : 0
+    languageSelector.options.selectedIndex = initialParams.get("useJavaScript") ? 1 : 0
 
     languageSelector.onchange = () => {
       const useJavaScript = languageSelector.value === "JavaScript"
@@ -593,8 +594,7 @@ export const setupPlayground = (
     activePlugins().forEach(p => downloadPlugin(p.id, false))
 
     // Offer to install one if 'install-plugin' is a query param
-    const params = new URLSearchParams(location.search)
-    const pluginToInstall = params.get("install-plugin")
+    const pluginToInstall = initialParams.get("install-plugin")
     if (pluginToInstall) {
       const alreadyInstalled = activePlugins().find(p => p.id === pluginToInstall)
       if (!alreadyInstalled) {
