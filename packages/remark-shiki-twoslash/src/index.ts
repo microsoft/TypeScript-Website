@@ -57,40 +57,11 @@ export const runTwoSlashOnNode = (settings: ShikiTwoslashSettings) => (node: Ric
   }
 }
 
-/**
- * The main interface for the remark shiki API, sets up the
- * highlighter then runs a visitor across all code tags in
- * the markdown running twoslash, then shiki.
- * */
-const remarkShiki = async function (
-  { markdownAST }: any,
-  shikiSettings: import("shiki/dist/highlighter").HighlighterOptions,
-  settings: ShikiTwoslashSettings
-) {
-  const highlighter = await createShikiHighlighter(shikiSettings)
-  visit(markdownAST, "code", visitor(highlighter, settings))
-}
-
-/** Sends the twoslash visitor over the existing MD AST and replaces the code samples inline, does not do highlighting  */
-export const runTwoSlashAcrossDocument = ({ markdownAST }: any, settings?: ShikiTwoslashSettings) =>
-  visit(markdownAST, "code", runTwoSlashOnNode(settings || {}))
-
-function remarkTwoslash() {
-  // function replace(match) {
-  //   return {
-  //     type: "text",
-  //     value: match,
-  //     data: {
-  //       hName: "span",
-  //       hProperties: { role: "img", ariaLabel: getEmojiDescription(match) },
-  //       hChildren: [{ type: "text", value: match }],
-  //     },
-  //   }
-  // }
-
-  function transform(markdownAST) {
-    console.log(markdownAST)
-    // findAndReplace(markdownAST, emojiRegex(), replace)
+function remarkTwoslash(shikiSettings: ShikiTwoslashSettings & import("shiki/dist/highlighter").HighlighterOptions) {
+  // @ts-ignore
+  const transform = async (markdownAST: any) => {
+    const highlighter = await createShikiHighlighter(shikiSettings)
+    visit(markdownAST, "code", visitor(highlighter, shikiSettings))
   }
 
   return transform

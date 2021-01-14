@@ -25,6 +25,7 @@
     "shiki": "^0.1.6",
     "shiki-languages": "^0.1.6",
     "shiki-twoslash": "0.8.1",
+    "tslib": "2.1.0",
     "typescript": "*",
     "unist-util-visit": "^2.0.0"
   },

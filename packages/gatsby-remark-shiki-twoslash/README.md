@@ -161,7 +161,7 @@ With a bit of work you can explain complicated code in a way that lets people in
 
    ```jsx
    import React, { useEffect } from "react"
-   import { setupTwoslashHovers } from "gatsby-remark-shiki-twoslash/dom";
+   import { setupTwoslashHovers } from "shiki-twoslash/dom";
 
    export default () => {
      // Add a the hovers

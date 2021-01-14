@@ -1,49 +1,33 @@
-### gatsby-remark-shiki-twoslash
+### gatsby-shiki-twoslash
 
 Sets up markdown code blocks to run through [shiki](https://shiki.matsu.io) which means it gets the VS Code quality
-syntax highlighting. This part is basically the same as [gatsby-remark-shiki](https://www.gatsbyjs.org/packages/gatsby-remark-shiki/).
+syntax highlighting. This code is basically the same as [gatsby-remark-shiki-twoslash](https://www.gatsbyjs.org/packages/gatsby-remark-shiki-thoslash/).
 
 Why Shiki? Shiki uses the same syntax highlighter engine as VS Code, which means no matter how complex your code is - it will syntax highlight correctly.
 
-In addition to all the languages shiki handles ([it's a lot](https://github.com/octref/shiki/blob/master/packages/languages/README.md#literal-values)), this module adds opt-in [@typescript/twoslash](https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher) rendering for TypeScript code blocks.
+In addition to all the languages shiki handles ([it's a lot](https://github.com/octref/shiki/blob/master/packages/languages/README.md#literal-values)), this module adds opt-in [@typescript/twoslash](https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher) rendering for TypeScript code blocks and tsconfig JSON files.
 
 This module powers the code samples on the TypeScript website.
 
 ![](https://user-images.githubusercontent.com/49038/78996047-ca7be880-7b11-11ea-9e6e-fa7ea8854993.png)
 
-With a bit of work you can explain complicated code in a way that lets people introspect at their own pace.
+With a bit of work, you can explain complicated code in a way that lets people introspect at their own pace.
 
 ## Plugin Setup
 
-#### Express Setup
-
-[Read this PR](https://github.com/orta/gatsby-twoslash-shiki-blog/pull/1) and apply the same to your project.
-
 #### Setup
 
-1. **Install the dependency**: `yarn add gatsby-remark-shiki-twoslash`
-1. **Include `"gatsby-remark-shiki-twoslash"` in the plugins section** of `gatsby-transformer-remark`
+1. **Install the dependency**: `yarn add remark-shiki-twoslash`
+1. **Include `"gatsby-remark-shiki-twoslash"` in the plugins section** of whatever you're using:
 
    ```diff
-   {
-     resolve: `gatsby-transformer-remark`,
-     options: {
-       plugins: [
-         "gatsby-remark-autolink-headers",
-   +       {
-   +         resolve: "gatsby-remark-shiki-twoslash",
-   +         options: {
-   +            theme: "nord",
-   +         }
-   +       },
-         "gatsby-remark-copy-linked-files",
-         "gatsby-remark-smartypants",
-       ],
-     },
+    const jsx = await mdx(content, {
+      filepath: "file/path/file.mdx",
+   -  remarkPlugins: [],
+   +  remarkPlugins: [[remarkShikiTwoslash, { theme: "dark_vs" }]],
+    }
    }
    ```
-
-   If you have `gatsby-remark-prismjs` in, delete it from the config and run `yarn remove gatsby-remark-prismjs`.
 
 1. **Add the CSS**
 
@@ -159,9 +143,11 @@ With a bit of work you can explain complicated code in a way that lets people in
 
 1. **Add the JS** for hover info to your component:
 
+   In a React codebase:
+
    ```jsx
    import React, { useEffect } from "react"
-   import { setupTwoslashHovers } from "gatsby-remark-shiki-twoslash/dom";
+   import { setupTwoslashHovers } from "shiki-twoslash/dom";
 
    export default () => {
      // Add a the hovers
@@ -171,6 +157,9 @@ With a bit of work you can explain complicated code in a way that lets people in
      return </>
    }
    ```
+
+   In a non-React codebase, you can still call `setupTwoslashHovers` via a bundler or module import, it will set up all
+   of the hovers on the page, this will need to be after the HTML is set up.
 
 ### Verify
 
@@ -214,5 +203,5 @@ Then it worked, and you should be able to hover over `createLabel` to see it's t
 
 ### Plugin Config
 
-This plugin passes the config options directly to Shiki. You probably will want to
-[set `theme`](https://github.com/octref/shiki/blob/master/packages/themes/README.md#shiki-themes).
+This plugin passes the config options directly to Shiki and Twoslash. You probably will want to
+[set `theme`](https://github.com/octref/shiki/blob/master/packages/themes/README.md#shiki-themes), then also the [TwoslashOptions here](https://www.npmjs.com/package/@typescript/twoslash#api-1).
