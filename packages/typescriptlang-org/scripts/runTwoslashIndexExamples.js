@@ -15,7 +15,7 @@ const runTwoSlash = require("gatsby-remark-shiki-twoslash").default
 // prettier-ignore
 const examplesPath = join(__dirname,"..", "src", "components", "index", "twoslash")
 
-// Loop through all code sames in src/components/index/twoslash and generate HTM
+// Loop through all code sames in src/components/index/twoslash and generate HTML
 const go = async () => {
   console.log("Parsing index examples ->")
   for (const path of readdirSync(examplesPath, "utf-8")) {

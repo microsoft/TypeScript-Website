@@ -26,7 +26,7 @@
     "jest-file-snapshot": "^0.3.8",
     "markdown-magic": "^1.0.0",
     "prettier": "*",
-    "tsdx": "^0.12.3",
+    "tsdx": "^0.14.1",
     "tslib": "^1.10.0",
     "typescript": "*"
   },
