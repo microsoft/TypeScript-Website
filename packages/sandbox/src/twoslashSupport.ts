@@ -75,3 +75,54 @@ export function parsePrimitive(value: string, type: string): any {
   }
   console.log(`Unknown primitive type ${type} with - ${value}`)
 }
+
+// Function to generate autocompletion results
+export const twoslashCompletions = (ts: TS, monaco: typeof import("monaco-editor")) => (
+  model: import("monaco-editor").editor.ITextModel,
+  position: import("monaco-editor").Position,
+  _token: any
+) => {
+  // Split everything the user has typed on the current line up at each space, and only look at the last word
+  const thisLine = model.getValueInRange({
+    startLineNumber: position.lineNumber,
+    startColumn: 0,
+    endLineNumber: position.lineNumber,
+    endColumn: position.column,
+  })
+
+  // Not a comment
+  if (!thisLine.startsWith("//")) {
+    return { suggestions: [] }
+  }
+
+  const words = thisLine.replace("\t", "").split(" ")
+  // Not the right amount of
+  if (words.length !== 2) {
+    return { suggestions: [] }
+  }
+
+  const word = words[1]
+  // Not a @ at the first word
+  if (!word.startsWith("@")) {
+    return { suggestions: [] }
+  }
+
+  const result: import("monaco-editor").languages.CompletionItem[] = []
+
+  // @ts-ignore - optionDeclarations is not public API
+  for (const opt of ts.optionDeclarations) {
+    if (opt.name.startsWith(word.slice(1))) {
+      // @ts-ignore
+      result.push({
+        label: opt.name,
+        kind: 14,
+        detail: "Twoslash comment",
+        insertText: opt.name,
+      })
+    }
+  }
+
+  return {
+    suggestions: result,
+  }
+}
