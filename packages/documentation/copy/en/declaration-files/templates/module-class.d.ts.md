@@ -50,7 +50,7 @@ To handle both importing via UMD and modules:
  *~ loaded outside a module loader environment, declare that global here.
  *~ Otherwise, delete this declaration.
  */
-export as namespace super-greeter;
+export as namespace "super-greeter";
 
 /*~ This declaration specifies that the class constructor function
  *~ is the exported object from the file
