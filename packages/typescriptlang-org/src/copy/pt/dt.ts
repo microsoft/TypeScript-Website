@@ -2,7 +2,7 @@ export const dtCopy = {
   dt_s_page_title: "Procure por pacotes tipados",
   dt_s_title: "Pesquisa de tipo",
   dt_s_subtitle:
-    "Encontre pacotes npm que tenham declarações de tipo, agrupados ou Definitely Typed.",
+    "Encontre pacotes npm que tenham declarações de tipo, tanto agrupados quanto no Definitely Typed.",
   dt_s_match: "resultado",
   dt_s_matchs: "resultados",
   dt_s_match_exact: "Combinação exata",
