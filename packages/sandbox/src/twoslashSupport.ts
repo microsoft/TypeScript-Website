@@ -109,18 +109,28 @@ export const twoslashCompletions = (ts: TS, monaco: typeof import("monaco-editor
 
   const result: import("monaco-editor").languages.CompletionItem[] = []
 
-  // @ts-ignore - optionDeclarations is not public API
-  for (const opt of ts.optionDeclarations) {
-    if (opt.name.startsWith(word.slice(1))) {
-      // @ts-ignore
+  const knowns = [
+    "noErrors",
+    "errors",
+    "showEmit",
+    "showEmittedFile",
+    "noStaticSemanticInfo",
+    "emit",
+    "noErrorValidation",
+  ]
+  // @ts-ignore - ts.optionDeclarations is private
+  const optsNames = ts.optionDeclarations.map(o => o.name)
+  knowns.concat(optsNames).forEach(name => {
+    if (name.startsWith(word.slice(1))) {
+      // @ts-ignore - somehow adding the range seems to not give autocomplete results?
       result.push({
-        label: opt.name,
+        label: name,
         kind: 14,
         detail: "Twoslash comment",
-        insertText: opt.name,
+        insertText: name,
       })
     }
-  }
+  })
 
   return {
     suggestions: result,
