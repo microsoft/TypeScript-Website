@@ -710,14 +710,14 @@ Turns to:
 >     }
 >     return ar
 >   }
-> var __spread =
->   (this && this.__spread) ||
->   function () {
->     for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]))
->     return ar
+> var __spreadArray =
+>   (this && this.__spreadArray) ||
+>   function (to, from) {
+>     for (var i = 0, il = from.length, j = to.length; i < il; i++, j++) to[j] = from[i]
+>     return to
 >   }
 > export function fn(arr) {
->   var arr2 = __spread([1], arr)
+>   var arr2 = __spreadArray([1], __read(arr))
 > }
 > ```
 

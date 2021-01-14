@@ -26326,16 +26326,16 @@ resolve@1.1.7:
   languageName: node
   linkType: hard
 
-"shelljs@npm:^0.8.3":
-  version: 0.8.3
-  resolution: "shelljs@npm:0.8.3"
+"shelljs@npm:0.8.4":
+  version: 0.8.4
+  resolution: "shelljs@npm:0.8.4"
   dependencies:
     glob: ^7.0.0
     interpret: ^1.0.0
     rechoir: ^0.6.2
   bin:
-    shjs: ./bin/shjs
-  checksum: 8cad18280d43c03280404ccc5d4074c951db3b4baa5ba1efcf8cf064ba38d84e5ffc26ed10f7c4407fd4db551e37f37b27ed9118903f59606bce1cba07860b95
+    shjs: bin/shjs
+  checksum: bdf68e3c2a8a6d191dde3be2800bfcfd688c126344ccaf6cf7024cdaf824d0d3523b8e514cd52264f739cbabd2b0569637dd5a8183377347225af918e03ff5dc
   languageName: node
   linkType: hard
 
