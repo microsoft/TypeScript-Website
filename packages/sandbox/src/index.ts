@@ -9,7 +9,7 @@ import {
 import lzstring from "./vendor/lzstring.min"
 import { supportedReleases } from "./releases"
 import { getInitialCode } from "./getInitialCode"
-import { extractTwoSlashComplierOptions } from "./twoslashSupport"
+import { extractTwoSlashComplierOptions, twoslashCompletions } from "./twoslashSupport"
 import * as tsvfs from "./vendor/typescript-vfs"
 
 type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
@@ -168,6 +168,17 @@ export const createTypeScriptSandbox = (
   }
 
   const getTwoSlashComplierOptions = extractTwoSlashComplierOptions(ts)
+
+  // Auto-complete twoslash comments
+  if (config.supportTwoslashCompilerOptions) {
+    const langs = ["javascript", "typescript"]
+    langs.forEach(l =>
+      monaco.languages.registerCompletionItemProvider(l, {
+        triggerCharacters: ["@", "/"],
+        provideCompletionItems: twoslashCompletions(ts, monaco),
+      })
+    )
+  }
 
   const textUpdated = () => {
     const code = editor.getModel()!.getValue()
