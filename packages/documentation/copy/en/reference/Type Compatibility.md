@@ -289,7 +289,7 @@ These differ only in that assignment extends subtype compatibility with rules to
 Different places in the language use one of the two compatibility mechanisms, depending on the situation.
 For practical purposes, type compatibility is dictated by assignment compatibility, even in the cases of the `implements` and `extends` clauses.
 
-## Any, unknown, object, void, undefined, null, and never
+## `Any`, `unknown`, `object`, `void`, `undefined`, `null`, and `never` assignability
 
 The following table summarizes assignability between some abstract types.
 Rows indicate what each is assignable to, columns indicate what is assignable to them.
@@ -314,4 +314,4 @@ Reiterating [Basic Types](/handbook/basic-types.html):
 - `void` is not assignable to or from anything, with the following exceptions: `any`, `unknown`, `never`, `undefined`, and `null` (if `--strictNullChecks` is off, see table for details).
 - When `--strictNullChecks` is off, `null` and `undefined` are similar to `never`: assignable to most types, most types are not assignable to them.
   They are assignable to each other.
-- When `--strictNullChecks` is on, they behave more like `void`: not assignable to or from anything, except for `any`, `unknown`, `never`, and `void` (`undefined` is always assignable to `void`).
+- When `--strictNullChecks` is on, `null` and `undefined` behave more like `void`: not assignable to or from anything, except for `any`, `unknown`, `never`, and `void` (`undefined` is always assignable to `void`).
