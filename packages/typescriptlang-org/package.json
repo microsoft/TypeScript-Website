@@ -12,7 +12,7 @@
     "update-static-assets": "node scripts/downloadSearchAssets.js",
     "update-versions": "node scripts/getTypeScriptNPMVersions.js",
     "create-lighthouse-json": "node scripts/createLighthouseJSON.js",
-    "compile-index-examples": "node scripts/runTwoslashIndexExamples.js",
+    "compile-index-examples": "node scripts/runTwoslashIndexExamples.js light; node scripts/runTwoslashIndexExamples.js dark",
     "start": "TWOSLASH_DISABLE=true gatsby develop",
     "start-twoslash": "gatsby develop",
     "serve": "gatsby serve",

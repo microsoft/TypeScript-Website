@@ -831,3 +831,48 @@ $headline-foreground-bg: #104261;
     }
   }
 }
+
+// Prototypes for an index page two
+
+.yellow {
+  background-color: #f1dd3f;
+  color: black;
+  margin-bottom: -110px;
+
+  .col1 {
+    width: 50%;
+    align-self: stretch;
+
+    pre {
+      overflow: hidden;
+      height: 220px;
+      code {
+        font-size: 14px;
+        line-height: 16px;
+      }
+    }
+  }
+
+  a {
+    color: black;
+  }
+}
+
+.darkblue.dt {
+  position: relative;
+
+  .dark-blue-trans-bg {
+    background-color: $ts-main-blue-darkest-color;
+  }
+  .dt-background {
+    font-size: 1.2rem;
+    font-family: $font-code;
+    opacity: 0.2;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 80%;
+    bottom: 20px;
+    overflow: hidden;
+  }
+}
