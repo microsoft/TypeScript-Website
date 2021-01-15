@@ -8,8 +8,10 @@ export const overrideSubNavLinksWithSmoothScroll = () => {
     link.addEventListener("click", event => {
       event.preventDefault()
 
-      let target = document.querySelector(event.target!["hash"])
-      target.scrollIntoView({ behavior: "smooth", block: "start" })
+      let target = document.querySelector(
+        decodeURIComponent(event.target!["hash"])
+      )
+      target!.scrollIntoView({ behavior: "smooth", block: "start" })
       document.location.hash = event.target!["hash"]
     })
   })
@@ -28,7 +30,9 @@ export const updateSidebarOnScroll = () => {
   // Scroll down to find the highest anchor on the screen
   subnavLinks.forEach(link => {
     try {
-      const section = document.querySelector<HTMLDivElement>(link.hash)
+      const section = document.querySelector<HTMLDivElement>(
+        decodeURIComponent(link.hash)
+      )
       if (!section) {
         return
       }
