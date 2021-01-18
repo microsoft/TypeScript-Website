@@ -63,7 +63,7 @@ element.dataset.myData = "";
 var sb;
 ```
 
-Union型の場合は、丸括弧はオプションであることに注意してください。
+Union型の場合は、丸括弧は任意であることに注意してください。
 
 ```js twoslash
 /**
@@ -216,15 +216,15 @@ var x = require("./accounts").userAccount;
 ## `@param`と`@returns`
 
 `@param`は`@type`と同じ型の構文を使用しますが、パラメータ名を追加します。
-また、パラメータ名を角括弧で囲むことで、パラメータをオプションとして宣言することもできます:
+また、パラメータ名を角括弧で囲むことで、パラメータを任意のものとして宣言することもできます:
 
 ```js twoslash
 // パラメータは様々な構文形式で宣言することができます
 /**
  * @param {string}  p1 - 文字列パラメータ
- * @param {string=} p2 - オプションのパラメータ(Closure構文)
- * @param {string} [p3] - オプションのパラメータ(JSDoc構文).
- * @param {string} [p4="test"] - デフォルト値を持つオプションのパラメータ
+ * @param {string=} p2 - 任意のパラメータ(Closure構文)
+ * @param {string} [p3] - 任意のパラメータ(JSDoc構文).
+ * @param {string} [p4="test"] - デフォルト値を持つ任意のパラメータ
  * @return {string} 結果
  */
 function stringsStringStrings(p1, p2, p3, p4) {
@@ -256,9 +256,9 @@ function ab() {}
  * @typedef {Object} SpecialType - 'SpecialType'という名前の新しい型を作成
  * @property {string} prop1 - SpecialTypeの文字列プロパティ
  * @property {number} prop2 - SpecialTypeの数値プロパティ
- * @property {number=} prop3 - SpecialTypeのオプションの数値プロパティ
- * @prop {number} [prop4] - SpecialTypeのオプションの数値プロパティ
- * @prop {number} [prop5=42] - SpecialTypeのデフォルト値を持つオプションの数値プロパティ
+ * @property {number=} prop3 - SpecialTypeの任意の数値プロパティ
+ * @prop {number} [prop4] - SpecialTypeの任意の数値プロパティ
+ * @prop {number} [prop5=42] - SpecialTypeのデフォルト値を持つ任意の数値プロパティ
  */
 
 /** @type {SpecialType} */
@@ -273,7 +273,7 @@ specialTypeObject.prop3;
  * @typedef {object} SpecialType1 - 'SpecialType'という名前の新しい型を作成
  * @property {string} prop1 - SpecialTypeの文字列プロパティ
  * @property {number} prop2 - SpecialTypeの数値プロパティ
- * @property {number=} prop3 - SpecialTypeのオプションの数値プロパティ
+ * @property {number=} prop3 - SpecialTypeの任意の数値プロパティ
  */
 
 /** @type {SpecialType1} */
@@ -579,7 +579,7 @@ var wrong;
 var right;
 ```
 
-オブジェクトリテラル型のプロパティ型の後ろに等号をつけても、オプションのプロパティにはなりません:
+オブジェクトリテラル型のプロパティ型の後ろに等号をつけても、任意のプロパティにはなりません:
 
 ```js twoslash
 /**

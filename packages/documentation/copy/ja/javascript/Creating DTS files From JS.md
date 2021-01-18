@@ -67,7 +67,7 @@ npx typescript src/**/*.js --declaration --allowJs --emitDeclarationOnly --outDi
 ## package.jsonを編集する
 
 TypeScriptは、.d.tsファイルを見つけるためのステップを追加し、`package.json`の中でNodeのモジュール解決を再現します。
-大まかには、モジュール解決はオプションである`"types"`フィールドをチェックし、次に`"main"`フィールド、そして最後にルートの`index.d.ts`を試します。
+大まかには、モジュール解決は任意のフィールドである`"types"`フィールドをチェックし、次に`"main"`フィールド、そして最後にルートの`index.d.ts`を試します。
 
 | Package.json              | デフォルトの.d.tsの場所           |
 | :------------------------ | :----------------------------- |
