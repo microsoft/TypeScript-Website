@@ -77,7 +77,7 @@ C.prototype.method = function () {
 
 ## CommonJSモジュールがサポートされている
 
-`.js`ファイルでは、TypeScriptはCommonJSモジュールフォーマットをサポートしています。
+`.js`ファイルでは、TypeScriptはCommonJSモジュール形式をサポートしています。
 `exports`や`module.exports`への代入は、エクスポート宣言として認識されていますし、
 同様に`require`関数の呼び出しも、モジュールインポートとして認識されます。例えば:
 
@@ -230,7 +230,7 @@ sayHello();
 
 ## 可変長引数のパラメータ宣言は、`arguments`の使い方から推測される
 
-関数本体で`arguments`を参照すると、暗黙的に可変長引数パラメータ(例: `(...arg: any[]) => any`)を持っているとみなされます。JSDocの可変長引数構文を使って、引数の型を指定します。
+関数本体で`arguments`を参照すると、暗黙的に可変長引数パラメータ(つまり: `(...arg: any[]) => any`)を持っているとみなされます。JSDocの可変長引数構文を使って、引数の型を指定します。
 
 ```js twoslash
 /** @param {...number} args */
@@ -250,7 +250,7 @@ Javascriptにはジェネリクス型のパラメータを指定するための�
 ### extends句において
 
 例えば、`React.Component`は、`Props`と`State`の2つの型パラメータを持つように定義されています。
-`.js`ファイルでは、extends句でこれらを指定する正当な方法はありません。型引数はデフォルトで`any`となります:
+`.js`ファイルでは、extends句でこれらを指定する正しい方法はありません。型引数はデフォルトで`any`となります:
 
 ```js
 import { Component } from "react";

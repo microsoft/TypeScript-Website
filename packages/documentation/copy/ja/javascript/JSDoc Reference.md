@@ -105,7 +105,7 @@ var stringToNumber;
 var arrayLike;
 ```
 
-前述の2つの型は、TypeScriptの型である`{ [x: string]: number }`と`{ [x: number]: any }`と等価です。コンパイラは両方の構文を理解します。
+前述の2つの型は、TypeScriptの型である`{ [x: string]: number }`および`{ [x: number]: any }`と等価です。コンパイラは両方の構文を理解します。
 
 関数は、TypeScriptとClosureのどちらの構文を使っても指定することができます:
 
@@ -223,7 +223,7 @@ var x = require("./accounts").userAccount;
 /**
  * @param {string}  p1 - 文字列パラメータ
  * @param {string=} p2 - オプションのパラメータ(Closure構文)
- * @param {string} [p3] - 別のオプションのパラメータ(JSDoc構文).
+ * @param {string} [p3] - オプションのパラメータ(JSDoc構文).
  * @param {string} [p4="test"] - デフォルト値を持つオプションのパラメータ
  * @return {string} 結果
  */
@@ -587,7 +587,7 @@ var right;
  */
 var wrong;
 /**
- * 代わりにプロパティ名の前にクエスチョンマークを付けます:
+ * 代わりにプロパティ名の後ろにクエスチョンマークを付けます:
  * @type {{ a: string, b?: number }}
  */
 var right;
@@ -627,13 +627,13 @@ var normal;
 
 JSDocの型システムとは異なり、TypeScriptは型にnullが含まれるかどうか記すことしかできません。
 明示的な非Nullable型はありません -- strictNullChecksが有効なら、`number`はNullableではありません。
-有効でないなら、`number`はNullableです。
+無効なら、`number`はNullableです。
 
 ### サポートされていないタグ
 
 TypeScriptはサポートされていないJSDocタグを無視します。
 
-以下のタグは、サポートを目標としたオープンIssueがあります:
+以下のタグは、サポートを目標とした進行中のIssueがあります:
 
 - `@const` ([issue #19672](https://github.com/Microsoft/TypeScript/issues/19672))
 - `@inheritdoc` ([issue #23215](https://github.com/Microsoft/TypeScript/issues/23215))
@@ -667,7 +667,7 @@ const c = new Car();
 console.log(c.identifier);
 ```
 
-- `@public`は常に暗示的であり、省略可能です。どこからでもプロパティにアクセスできることを意味します。
+- `@public`は常に暗黙的に宣言されており、省略可能です。どこからでもプロパティにアクセスできることを意味します。
 - `@private`は、そのプロパティが含まれるクラス内でのみ使用可能であることを意味します。
 - `@protected`は、そのプロパティが含まれるクラスと、そのクラスの派生クラス内で使用可能ですが、クラスのインスタンスからはアクセスできません。
 

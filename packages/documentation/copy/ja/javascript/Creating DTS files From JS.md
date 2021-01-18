@@ -9,7 +9,7 @@ translatable: true
 [TypeScript 3.7](/docs/handbook/release-notes/typescript-3-7.html#--declaration-and---allowjs)では、
 TypeScriptに、JSDoc構文を使ったJavaScriptから.d.tsファイルを生成するためのサポートが導入されました。
 
-この仕組みは、プロジェクトをTypeScriptに移行することなく、TypeScriptが備わったエディタの経験を自分のものにできるということを意味します。
+この仕組みは、プロジェクトをTypeScriptに移行することなく、TypeScriptが備わったエディタの体験を自分のものにできるということを意味します。
 TypeScriptはほとんどのJSDocタグをサポートしています。リファレンスは[こちら](/docs/handbook/type-checking-javascript-files.html#supported-jsdoc)。
 
 ## .d.tsファイルを出力するようにプロジェクトを設定する
@@ -19,7 +19,7 @@ TypeScriptはほとんどのJSDocタグをサポートしています。リフ�
 - dev dependenciesにTypeScriptを追加する
 - TypeScriptを設定するための`tsconfig.json`を追加する
 - TypeScriptコンパイラを実行して、JSファイルに対応するd.tsファイルを生成する
-- (オプション) package.jsonを編集して型を参照できるようにする
+- (任意) package.jsonを編集して型を参照できるようにする
 
 ### TypeScriptを追加する
 
@@ -36,7 +36,7 @@ TSConfigはコンパイラのフラグを設定し、対象のファイルを宣
   include: ["src/**/*"],
 
   compilerOptions: {
-    // JSファイルは通常はソースファイルとしては無視されますが、
+    // JSファイルは通常、ソースファイルとして無視されますが、
     // ここではJSファイルを読み込むようにTypeScriptに指示します
     allowJs: true,
     // d.tsファイルを生成します
@@ -53,7 +53,7 @@ TSConfigはコンパイラのフラグを設定し、対象のファイルを宣
 ```
 
 オプションについては、[tsconfigリファレンス](/reference)で詳しく知ることができます。
-TSConfigファイルを使用する代替手段としてCLIがあります。次は上記のTSConfigファイルと同じふるまいをするCLIコマンドです。
+TSConfigファイルを使用する代替手段としてCLIがあります。次は上記のTSConfigファイルの設定と同じふるまいをするCLIコマンドです。
 
 ```sh
 npx typescript src/**/*.js --declaration --allowJs --emitDeclarationOnly --outDir types
@@ -62,12 +62,12 @@ npx typescript src/**/*.js --declaration --allowJs --emitDeclarationOnly --outDi
 ## コンパイラを実行する
 
 実行方法については[インストールページ](/download)を参照してください。
-プロジェクトの`.gitignore`に生成されたファイルがある場合は、確実にパッケージにそれらのファイルが含まれるようにしてください。
+プロジェクトの`.gitignore`にファイルが指定してある場合は、これらのファイルがパッケージに含まれていることを確認しましょう。
 
 ## package.jsonを編集する
 
-TypeScriptは、`package.json`の中でNodeのモジュール解決を再現し、.d.tsファイルを見つけるためのステップを追加します。
-大まかには、ノード解決はオプションである`"types"`フィールドをチェックし、次に`"main"`フィールド、そして最後にルートの`index.d.ts`を試します。
+TypeScriptは、.d.tsファイルを見つけるためのステップを追加し、`package.json`の中でNodeのモジュール解決を再現します。
+大まかには、モジュール解決はオプションである`"types"`フィールドをチェックし、次に`"main"`フィールド、そして最後にルートの`index.d.ts`を試します。
 
 | Package.json              | デフォルトの.d.tsの場所           |
 | :------------------------ | :----------------------------- |

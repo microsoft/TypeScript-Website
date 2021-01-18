@@ -39,8 +39,8 @@ x = false; // OK?!
 
 ## `@ts-check`
 
-前述のコードサンプルの最後の行はTypeScriptではエラーとなりますが、JSプロジェクトではデフォルトではエラーを発生させません。
-JavaScriptファイルでエラーを有効化するには、`.js`ファイルの最初の行に`// @ts-check`を追加して、TypeScriptのエラーを発生させるようにします。
+前述のコードサンプルの最後の行はTypeScriptではエラーとなりますが、JSプロジェクトのデフォルトではエラーを発生させません。
+JavaScriptファイルでエラーを有効化するには、`.js`ファイルの最初の行に`// @ts-check`を追加して、TypeScriptにエラーを発生させるようにします。
 
 ```js twoslash
 // @ts-check
