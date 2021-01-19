@@ -244,7 +244,7 @@ const Installation = () => {
       // @ts-ignore
       window.appInsights &&
         // @ts-ignore
-        window.appInsights.trackEvent({ name: "Copied npm instructions on Index" })
+        window.appInsights.trackEvent({ name: "Copied npm instructions on Index", properties: { ab: "a" } })
     }
     navigator.clipboard.writeText(text).then(function () {
       const tooltip = document.querySelector(".installation-panel .tooltip") as HTMLElement
