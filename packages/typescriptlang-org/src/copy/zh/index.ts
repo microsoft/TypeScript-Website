@@ -1,7 +1,6 @@
 export const indexCopy = {
   index_headline: "TypeScript 是<bold>适用于任何规模应用的 JavaScript。</bold>",
-  index_byline:
-    "TypeScript 扩展了 JavaScript ，为它添加了类型支持。",
+  index_byline: "TypeScript 扩展了 JavaScript ，为它添加了类型支持。",
   index_summary:
     "TypeScript 可以在您运行代码之前找到错误并提供修复，从而改善您的开发体验。",
   index_locations:
@@ -56,7 +55,7 @@ export const indexCopy = {
   index_started_community_blurb: "不断更新",
   index_install: "安装 TypeScript",
   index_install_ref: `
-  <p>你可以使用 npm 安装 TypeScript<pre>npm install -g typescript</pre>
+  <p>你可以使用 npm 安装 TypeScript<install>
   <p>之后执行 <code>tsc</code> 来运行 TypeScript 编译器 <pre>npx tsc</pre>
   `,
   index_releases: "季度发布",
