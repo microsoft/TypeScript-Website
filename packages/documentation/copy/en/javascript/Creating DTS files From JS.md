@@ -73,7 +73,7 @@ Roughly, the resolution will first check the optional `"types"` field, then the 
 | :------------------------ | :----------------------------- |
 | No "types" field          | checks "main", then index.d.ts |
 | "types": "main.d.ts"      | main.d.ts                      |
-| "types": "./dist/main.js" | ./main/main.d.ts               |
+| "types": "./dist/main.js" | ./dist/main.d.ts               |
 
 If absent, then "main" is used
 
