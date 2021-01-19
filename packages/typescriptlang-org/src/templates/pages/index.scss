@@ -903,8 +903,9 @@ $headline-foreground-bg: #104261;
   position: relative;
 
   .dark-blue-trans-bg {
-    background-color: $ts-main-blue-darkest-color;
+    background-color: rgba(0, 39, 62, 0.77);
   }
+
   .dt-background {
     font-size: 1.2rem;
     font-family: $font-code;
