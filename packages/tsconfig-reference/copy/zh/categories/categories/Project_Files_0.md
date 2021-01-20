@@ -2,4 +2,5 @@
 display: "文件包含"
 ---
 
-这些设置可以帮助您确保 TypeScript 选择正确的文件。
+这些设置用于确保 TypeScript 处理正确的文件。
+
