@@ -111,6 +111,7 @@ const Play: React.FC<Props> = (props) => {
             dtsMap = defaultMap
             runTwoslash()
           })
+
         }
 
         // When the compiler notices a twoslash compiler flag change, this will get triggered and reset the DTS map
