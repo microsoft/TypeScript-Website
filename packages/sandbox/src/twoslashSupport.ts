@@ -117,6 +117,7 @@ export const twoslashCompletions = (ts: TS, monaco: typeof import("monaco-editor
     "noStaticSemanticInfo",
     "emit",
     "noErrorValidation",
+    "filename"
   ]
   // @ts-ignore - ts.optionDeclarations is private
   const optsNames = ts.optionDeclarations.map(o => o.name)
