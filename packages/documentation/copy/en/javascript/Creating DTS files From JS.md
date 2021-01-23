@@ -33,21 +33,21 @@ In this case, you will want a file like the following:
 ```json5
 {
   // Change this to match your project
-  include: ["src/**/*"],
+  "include": ["src/**/*"],
 
-  compilerOptions: {
+  "compilerOptions": {
     // Tells TypeScript to read JS files, as
     // normally they are ignored as source files
-    allowJs: true,
+    "allowJs": true,
     // Generate d.ts files
-    declaration: true,
+    "declaration": true,
     // This compiler run should
     // only output d.ts files
-    emitDeclarationOnly: true,
+    "emitDeclarationOnly": true,
     // Types should go into this directory.
     // Removing this would place the .d.ts files
     // next to the .js files
-    outDir: "dist",
+    "outDir": "dist",
   },
 }
 ```

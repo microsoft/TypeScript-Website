@@ -391,21 +391,21 @@ Because every project might work better under different strategies, and this new
 ```json5
 {
   // Some typical compiler options
-  compilerOptions: {
-    target: "es2020",
-    moduleResolution: "node",
+  "compilerOptions": {
+    "target": "es2020",
+    "moduleResolution": "node",
     // ...
   },
 
   // NEW: Options for file/directory watching
-  watchOptions: {
+  "watchOptions": {
     // Use native file system events for files and directories
-    watchFile: "useFsEvents",
-    watchDirectory: "useFsEvents",
+    "watchFile": "useFsEvents",
+    "watchDirectory": "useFsEvents",
 
     // Poll files for updates more frequently
     // when they're updated a lot.
-    fallbackPolling: "dynamicPriority",
+    "fallbackPolling": "dynamicPriority",
   },
 }
 ```

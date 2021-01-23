@@ -122,10 +122,10 @@ That means in the above example, even though both the `>=3.2` and the `>=3.1` ma
 
 ```json5
 {
-  name: "package-name",
-  version: "1.0",
-  types: "./index.d.ts",
-  typesVersions: {
+  "name": "package-name",
+  "version": "1.0",
+  "types": "./index.d.ts",
+  "typesVersions": {
     // NOTE: this doesn't work!
     ">=3.1": { "*": ["ts3.1/*"] },
     ">=3.2": { "*": ["ts3.2/*"] }

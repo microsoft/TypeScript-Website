@@ -311,11 +311,11 @@ One case where this slightly fell over is when a `tsconfig.json` simply existed 
 ```json5
 // tsconfig.json
 {
-  files: [],
-  references: [
-    { path: "./tsconfig.shared.json" },
-    { path: "./tsconfig.frontend.json" },
-    { path: "./tsconfig.backend.json" },
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.shared.json" },
+    { "path": "./tsconfig.frontend.json" },
+    { "path": "./tsconfig.backend.json" },
   ],
 }
 ```

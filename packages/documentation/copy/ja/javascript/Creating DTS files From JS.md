@@ -33,21 +33,21 @@ TSConfigはコンパイラのフラグを設定し、対象のファイルを宣
 ```json5
 {
   // プロジェクトに合わせて変更してください
-  include: ["src/**/*"],
+  "include": ["src/**/*"],
 
-  compilerOptions: {
+  "compilerOptions": {
     // JSファイルは通常、ソースファイルとして無視されますが、
     // ここではJSファイルを読み込むようにTypeScriptに指示します
-    allowJs: true,
+    "allowJs": true,
     // d.tsファイルを生成します
-    declaration: true,
+    "declaration": true,
     // コンパイラを実行すると
     // d.tsファイルのみ出力されます
-    emitDeclarationOnly: true,
+    "emitDeclarationOnly": true,
     // 型はこのディレクトリに出力されます
     // このオプションを削除すると
     // .jsファイルの隣に.d.tsファイルが置かれます
-    outDir: "dist",
+    "outDir": "dist",
   },
 }
 ```
