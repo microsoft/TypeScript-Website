@@ -2,7 +2,15 @@
   "name": "shiki-twoslash",
   "version": "0.8.1",
   "license": "MIT",
-  "homepage": "https://github.com/microsoft/TypeScript-Website/",
+  "homepage": "https://github.com/microsoft/TypeScript-Website",
+  "repository": {
+    "url": "https://github.com/microsoft/TypeScript-Website.git",
+    "directory": "packages/create-typescript-playground-plugin",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/microsoft/TypeScript-Website/issues"
+  },
   "description": "API primitives to mix Shiki with Twoslash",
   "author": "Orta Therox",
   "main": "./dist/index.js",
