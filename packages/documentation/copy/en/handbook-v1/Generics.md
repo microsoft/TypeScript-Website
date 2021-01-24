@@ -231,7 +231,7 @@ myGenericNumber.add = function (x, y) {
 This is a pretty literal use of the `GenericNumber` class, but you may have noticed that nothing is restricting it to only use the `number` type.
 We could have instead used `string` or even more complex objects.
 
-```ts
+```ts twoslash
 // @strict: false
 class GenericNumber<T> {
   zeroValue: T;
