@@ -1,31 +1,31 @@
 ---
-title: Migrating from JavaScript
+title: JavaScriptからの移行
 layout: docs
-permalink: /docs/handbook/migrating-from-javascript.html
-oneline: How to migrate from JavaScript to TypeScript
+permalink: /ja/docs/handbook/migrating-from-javascript.html
+oneline: JavaScriptからTypeScriptに移行する方法
 ---
 
-TypeScript doesn't exist in a vacuum.
-It was built with the JavaScript ecosystem in mind, and a lot of JavaScript exists today.
-Converting a JavaScript codebase over to TypeScript is, while somewhat tedious, usually not challenging.
-In this tutorial, we're going to look at how you might start out.
-We assume you've read enough of the handbook to write new TypeScript code.
+TypeScriptはそれ単独で存在しているわけではありません。
+JavaScriptのエコシステムを念頭において構築されたものであり、今日ではたくさんのJavaScriptが存在しています。
+JavaScriptのコードベースをTypeScriptに移行することは、多少面倒ですが、通常は難しくはありません。
+本チュートリアルでは、どのようにして移行を開始するのが良いのかについて見ていきましょう。
+新しいTypeScriptコードを記述するためのハンドブックを十分読み込んだことを前提としています。
 
-If you're looking to convert a React project, we recommend looking at the [React Conversion Guide](https://github.com/Microsoft/TypeScript-React-Conversion-Guide#typescript-react-conversion-guide) first.
+Reactプロジェクトでの移行を考えているのであれば、まずは[React Conversion Guide](https://github.com/Microsoft/TypeScript-React-Conversion-Guide#typescript-react-conversion-guide)を読むことをおすすめします。
 
-## Setting up your Directories
+## ディレクトリの設定
 
-If you're writing in plain JavaScript, it's likely that you're running your JavaScript directly,
-where your `.js` files are in a `src`, `lib`, or `dist` directory, and then ran as desired.
+素のJavaScriptを書いているならば、JavaScriptを直接実行している可能性が高いです。
+この場合、`.js`ファイルは`src`、`lib`、あるいは`dist`ディレクトリに置かれ、必要に応じて実行されていることでしょう。
 
-If that's the case, the files that you've written are going to be used as inputs to TypeScript, and you'll run the outputs it produces.
-During our JS to TS migration, we'll need to separate our input files to prevent TypeScript from overwriting them.
-If your output files need to reside in a specific directory, then that will be your output directory.
+こうしたケースでは、記述したファイルはTypeScriptの入力として使用され、TypeScriptが生成する出力を実行することになります。
+JSからTSへの移行中、TypeScriptが入力ファイルを上書きしないように入力ファイルを分離する必要があります。
+出力ファイルを特定のディレクトリに置く必要がある場合、そのディレクトリが出力ディレクトリとなります。
 
-You might also be running some intermediate steps on your JavaScript, such as bundling or using another transpiler like Babel.
-In this case, you might already have a folder structure like this set up.
+バンドルしたり、Babelのような別のトランスパイラを使ったり、JavaScriptに対して中間ステップを実行していることがあるかもしれません。
+この場合は、すでに上述したようなフォルダ構成が設定されている可能性があります。
 
-From this point on, we're going to assume that your directory is set up something like this:
+ここからは、ディレクトリが次のように設定されていると仮定します:
 
 ```
 projectRoot
@@ -36,12 +36,12 @@ projectRoot
 └── tsconfig.json
 ```
 
-If you have a `tests` folder outside of your `src` directory, you might have one `tsconfig.json` in `src`, and one in `tests` as well.
+`src`ディレクトリの外に`tests`フォルダがある場合、`src`の中に`tsconfig.json`をひとつ置き、`tests`の中にもひとつ置くことができます。
 
-## Writing a Configuration File
+## 設定ファイルの記述
 
-TypeScript uses a file called `tsconfig.json` for managing your project's options, such as which files you want to include, and what sorts of checking you want to perform.
-Let's create a bare-bones one for our project:
+TypeScriptは、どのファイルを含めたいのか、どの種類のチェックを実行したいのかといったプロジェクトの設定を管理する`tsconfig.json`と呼ばれるファイルを使用します。
+プロジェクトにとって必要最低限の設定ファイルを作成してみましょう:
 
 ```json
 {
@@ -54,50 +54,50 @@ Let's create a bare-bones one for our project:
 }
 ```
 
-Here we're specifying a few things to TypeScript:
+上記では、TypeScriptに対して数点指定しています:
 
-1. Read in any files it understands in the `src` directory (with `include`).
-2. Accept JavaScript files as inputs (with `allowJs`).
-3. Emit all of the output files in `built` (with `outDir`).
-4. Translate newer JavaScript constructs down to an older version like ECMAScript 5 (using `target`).
+1. `src`ディレクトリにある解釈可能なファイルを読み込む(`include`にて)
+2. JavaScriptファイルを入力ファイルとして許可する(`allowJs`にて)
+3. `built`ディレクトリにすべての出力ファイルを出力する(`outDir`にて)
+4. 新しいJavaScriptの構造をECMAScript5のようなより古いバージョンに変換する(`target`にて)
 
-At this point, if you try running `tsc` at the root of your project, you should see output files in the `built` directory.
-The layout of files in `built` should look identical to the layout of `src`.
-You should now have TypeScript working with your project.
+この時点でプロジェクトのルートで`tsc`を実行してみると、`built`ディレクトリに出力ファイルが確認できるはずです。
+`built`にあるファイルのレイアウトは`src`のものと同じように見えるでしょう。
+これで、あなたのプロジェクトにおいて、TypeScriptが動作するようになりました。
 
-## Early Benefits
+## 初期に導入することによるメリット
 
-Even at this point you can get some great benefits from TypeScript understanding your project.
-If you open up an editor like [VS Code](https://code.visualstudio.com) or [Visual Studio](https://visualstudio.com), you'll see that you can often get some tooling support like completion.
-You can also catch certain bugs with options like:
+この段階でも、TypeScriptがあなたのプロジェクトを理解することで受けられるメリットがいくつかあります。
+[VS Code](https://code.visualstudio.com)や[Visual Studio](https://visualstudio.com)のようなエディタを開くと、補完などのツールによるサポートをたびたび受けられることが確認できるでしょう。
+また、以下のようなオプションを設定することで、特定のバグを発見することもできます:
 
-- `noImplicitReturns` which prevents you from forgetting to return at the end of a function.
-- `noFallthroughCasesInSwitch` which is helpful if you never want to forget a `break` statement between `case`s in a `switch` block.
+- `noImplicitReturns`は、関数の最後の戻り値の設定忘れを防止します。
+- `noFallthroughCasesInSwitch`は、`switch`ブロックの`case`間で`break`文を忘れたくない時に便利です。
 
-TypeScript will also warn about unreachable code and labels, which you can disable with `allowUnreachableCode` and `allowUnusedLabels` respectively.
+TypeScriptは、到達不可能なコードやラベルについても警告します。この警告は、それぞれ`allowUnreachableCode`と`allowUnusedLabels`でオフにできます。
 
-## Integrating with Build Tools
+## ビルドツールとの統合
 
-You might have some more build steps in your pipeline.
-Perhaps you concatenate something to each of your files.
-Each build tool is different, but we'll do our best to cover the gist of things.
+パイプラインにもっと多くのビルドステップが存在しているかもしれません。
+もしかしたらそれぞれのファイルに何か他のファイルを連結していることもあるでしょう。
+それぞれビルドツールは異なりますが、ここではその要点をできる限りカバーします。
 
 ## Gulp
 
-If you're using Gulp in some fashion, we have a tutorial on [using Gulp](/docs/handbook/gulp.html) with TypeScript, and integrating with common build tools like Browserify, Babelify, and Uglify.
-You can read more there.
+Gulpを何らかの方法で使用してる場合は、TypeScriptと[Gulpの使用](/docs/handbook/gulp.html)について、およびBrowserify、Babelify、Uglifyといった一般的なビルドツールとの統合についてのチュートリアルがあります。
+詳しくはそちらをご確認ください。
 
 ## Webpack
 
-Webpack integration is pretty simple.
-You can use `ts-loader`, a TypeScript loader, combined with `source-map-loader` for easier debugging.
-Simply run
+Webpackとの統合はとても簡単です。
+TypeScriptローダーである`ts-loader`と、デバッグを簡単にするための`source-map-loader`を組み合わせることができます。
+次のコマンドを実行します
 
 ```shell
 npm install ts-loader source-map-loader
 ```
 
-and merge in options from the following into your `webpack.config.js` file:
+そして、以下のオプションを`webpack.config.js`ファイルにマージします:
 
 ```js
 module.exports = {
@@ -106,88 +106,88 @@ module.exports = {
     filename: "./dist/bundle.js",
   },
 
-  // Enable sourcemaps for debugging webpack's output.
+  // webpack の出力をデバッグするためのソースマップを有効にします。
   devtool: "source-map",
 
   resolve: {
-    // Add '.ts' and '.tsx' as resolvable extensions.
+    // 解決可能な拡張子として'.ts'と'.tsx'を追加します。
     extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"],
   },
 
   module: {
     rules: [
-      // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
+      // '.ts'または'.tsx'拡張子を持つすべてのファイルは'ts-loader'によって処理されます。
       { test: /\.tsx?$/, loader: "ts-loader" },
 
-      // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+      // 出力されるすべての'.js'ファイルは'source-map-loader'によって再処理されたソースマップを持ちます。
       { test: /\.js$/, loader: "source-map-loader" },
     ],
   },
 
-  // Other options...
+  // その他のオプション...
 };
 ```
 
-It's important to note that ts-loader will need to run before any other loader that deals with `.js` files.
+重要なのは、`.js`ファイルを扱う他のどのローダーよりも先に、ts-loaderを実行する必要があるという点です。
 
-The same goes for [awesome-typescript-loader](https://github.com/TypeStrong/ts-loader), another TypeScript loader for Webpack.
-You can read more about the differences between the two [here](https://github.com/s-panferov/awesome-typescript-loader#differences-between-ts-loader).
+WebpackのもうひとつのTypeScriptローダーである[awesome-typescript-loader](https://github.com/TypeStrong/ts-loader)でも同様です。
+この2つの違いについては、[こちら](https://github.com/s-panferov/awesome-typescript-loader#differences-between-ts-loader)を参照してください。
 
-You can see an example of using Webpack in our [tutorial on React and Webpack](/docs/handbook/react-&-webpack.html).
+Webpackを使用している例は、[ReactとWebpackのチュートリアル](/docs/handbook/react-&-webpack.html)で確認することができます。
 
-## Moving to TypeScript Files
+## TypeScriptファイルに移行する
 
-At this point, you're probably ready to start using TypeScript files.
-The first step is to rename one of your `.js` files to `.ts`.
-If your file uses JSX, you'll need to rename it to `.tsx`.
+ここまでで、TypeScriptファイルを使い始める準備ができたことでしょう。
+移行の最初のステップとして、`.js`ファイルを`.ts`にリネームします。
+もしファイルがJSXを使用している場合は、`.tsx`にリネームする必要があります。
 
-Finished with that step?
-Great!
-You've successfully migrated a file from JavaScript to TypeScript!
+このステップを終えましたか？
+いいですね！
+これでJavaScriptからTypeScriptへのファイルの移行に成功しました！
 
-Of course, that might not feel right.
-If you open that file in an editor with TypeScript support (or if you run `tsc --pretty`), you might see red squiggles on certain lines.
-You should think of these the same way you'd think of red squiggles in an editor like Microsoft Word.
-TypeScript will still translate your code, just like Word will still let you print your documents.
+もちろん、このステップが正しくないと思うかもしれません。
+TypeScriptサポートがあるエディタでファイルを開く(あるいは `tsc --pretty` を実行する)と、特定の行に赤い波線が表示されている可能性があります。
+これは、Microsoft Wordようなエディタの赤い波線と同じように考えてください。
+赤い波線があってもWordで文書を印刷することができるのと同じように、赤い波線があってもTypeScriptはコードを変換します。
 
-If that sounds too lax for you, you can tighten that behavior up.
-If, for instance, you _don't_ want TypeScript to compile to JavaScript in the face of errors, you can use the `noEmitOnError` option.
-In that sense, TypeScript has a dial on its strictness, and you can turn that knob up as high as you want.
+これが手抜きだと思うならば、このふるまいを厳しくすることができます。
+例えば、エラーがあるときはTypeScriptにJavaScriptへのコンパイルを _させたくない_ 場合、`noEmitOnError`オプションを使うことができます。
+そうした意味では、TypeScriptには厳しさの調整つまみがあり、そのつまみを好きなだけ強くすることができると言えます。
 
-If you plan on using the stricter settings that are available, it's best to turn them on now (see [Getting Stricter Checks](#getting-stricter-checks) below).
-For instance, if you never want TypeScript to silently infer `any` for a type without you explicitly saying so, you can use `noImplicitAny` before you start modifying your files.
-While it might feel somewhat overwhelming, the long-term gains become apparent much more quickly.
+もし利用可能なより厳しい設定を使用するつもりならば、今のうちに設定を有効化しておくのがベストです(後述の[より厳密なチェック](#getting-stricter-checks)を確認してください)。
+例えば、明示的に指定していない型をTypeScriptが`any`と暗黙的に推測することを望まない場合、ファイルの修正を始める前に`noImplicitAny`を使いましょう。
+修正すべきコードが多くて多少困惑するかもしれませんが、長期的な利益をかなり早い時点で受けることができます。
 
-## Weeding out Errors
+## エラーの除去
 
-Like we mentioned, it's not unexpected to get error messages after conversion.
-The important thing is to actually go one by one through these and decide how to deal with the errors.
-Often these will be legitimate bugs, but sometimes you'll have to explain what you're trying to do a little better to TypeScript.
+前述したように、変換後にエラーメッセージが出ることは予測できないことではありません。
+重要なことは、実際にエラーをひとつひとつ確認して、そのエラーにどう対処するかを決めることです。
+多くの場合、これらは妥当なバグなのですが、時には何をしようとしているのかをTypeScriptにもう少し上手に説明しなければならないこともあるでしょう。
 
-### Importing from Modules
+### Modulesからのインポート
 
-You might start out getting a bunch of errors like `Cannot find name 'require'.`, and `Cannot find name 'define'.`.
-In these cases, it's likely that you're using modules.
-While you can just convince TypeScript that these exist by writing out
+最初は、`Cannot find name 'require'.`や`Cannot find name 'define'.`といったエラーがたくさん表示されるかもしれません。
+このようなケースでは、おそらくモジュールを使用していることでしょう。
+これらの呼び出しが存在していることをTypeScriptに確信させるには、次のようなコードや
 
 ```ts
-// For Node/CommonJS
+// Node/CommonJS用
 declare function require(path: string): any;
 ```
 
-or
+あるいは次のようなコード
 
 ```ts
-// For RequireJS/AMD
+// RequireJS/AMD用
 declare function define(...args: any[]): any;
 ```
 
-it's better to get rid of those calls and use TypeScript syntax for imports.
+を記述することもできますが、これらの呼び出しを削除し、インポートにはTypeScriptの構文を使った方が良いでしょう。
 
-First, you'll need to enable some module system by setting TypeScript's `module` flag.
-Valid options are `commonjs`, `amd`, `system`, and `umd`.
+まず、TypeScriptの`module`フラグを設定してモジュールシステムを有効化する必要があります。
+有効なオプションは、`commonjs`、`amd`、`system`そして`umd`です。
 
-If you had the following Node/CommonJS code:
+以下のようなNode/CommonJSコード:
 
 ```js
 var foo = require("foo");
@@ -195,7 +195,7 @@ var foo = require("foo");
 foo.doStuff();
 ```
 
-or the following RequireJS/AMD code:
+あるいは次のような RequireJS/AMDコードがあったとします:
 
 ```js
 define(["foo"], function (foo) {
@@ -203,7 +203,7 @@ define(["foo"], function (foo) {
 });
 ```
 
-then you would write the following TypeScript code:
+その場合、次のようなTypeScriptコードを記述することになります:
 
 ```ts
 import foo = require("foo");
@@ -211,26 +211,26 @@ import foo = require("foo");
 foo.doStuff();
 ```
 
-### Getting Declaration Files
+### 宣言ファイルの取得
 
-If you started converting over to TypeScript imports, you'll probably run into errors like `Cannot find module 'foo'.`.
-The issue here is that you likely don't have _declaration files_ to describe your library.
-Luckily this is pretty easy.
-If TypeScript complains about a package like `lodash`, you can just write
+TypeScriptのインポートに変換し始めた場合、おそらく`Cannot find module 'foo'.`といったエラーに遭遇するでしょう。
+ここでの問題は、ライブラリを記述するための _宣言ファイル_ を持っていないことです。
+幸運なことに、これはとても簡単に解決できます。
+TypeScriptが`lodash`のようなパッケージについて文句を言ってきたら、ただ次のように記述すればよいのです
 
 ```shell
 npm install -S @types/lodash
 ```
 
-If you're using a module option other than `commonjs`, you'll need to set your `moduleResolution` option to `node`.
+もし、`commonjs`以外のモジュールオプションを使用しているならば、`moduleResolution`オプションに`node`を設定する必要があるでしょう。
 
-After that, you'll be able to import lodash with no issues, and get accurate completions.
+これで、問題なくlodashをインポートして、正確な補完を得ることができます。
 
-### Exporting from Modules
+### モジュールからのエクスポート
 
-Typically, exporting from a module involves adding properties to a value like `exports` or `module.exports`.
-TypeScript allows you to use top-level export statements.
-For instance, if you exported a function like so:
+通常、モジュールからのエクスポートは、`exports`や`module.exports`のような値にプロパティを追加することを必要とします。
+TypeScriptでは、トップレベルのエクスポート宣言を使うことができます。
+例えば、次のような関数をエクスポートしたとします:
 
 ```js
 module.exports.feedPets = function (pets) {
@@ -238,7 +238,7 @@ module.exports.feedPets = function (pets) {
 };
 ```
 
-you could write that out as the following:
+これは、次のように記述することもできます:
 
 ```ts
 export function feedPets(pets) {
@@ -246,15 +246,15 @@ export function feedPets(pets) {
 }
 ```
 
-Sometimes you'll entirely overwrite the exports object.
-This is a common pattern people use to make their modules immediately callable like in this snippet:
+時々、exportsオブジェクトを完全に上書きすることがあります。
+これは、以下のスニペットのように、すぐに呼び出すことのできるモジュールを作成するために、よく使われるパターンです:
 
 ```js
 var express = require("express");
 var app = express();
 ```
 
-You might have previously written that like so:
+以前は次のように記述していたかもしれません:
 
 ```js
 function foo() {
@@ -263,7 +263,7 @@ function foo() {
 module.exports = foo;
 ```
 
-In TypeScript, you can model this with the `export =` construct.
+TypeScriptでは、`export =`構造体でモデル化することができます。
 
 ```ts
 function foo() {
@@ -272,10 +272,10 @@ function foo() {
 export = foo;
 ```
 
-### Too many/too few arguments
+### 多すぎる/少なすぎる引数
 
-You'll sometimes find yourself calling a function with too many/few arguments.
-Typically, this is a bug, but in some cases, you might have declared a function that uses the `arguments` object instead of writing out any parameters:
+多すぎる/少なすぎる引数で関数を呼び出していることに気づくことが時々あります。
+通常、これはバグですが、場合によってはパラメータを記述する代わりに`arguments`オブジェクトを使用する関数を宣言しているかもしれません。
 
 ```js
 function myCoolFunction() {
@@ -304,7 +304,7 @@ myCoolFunction(
 );
 ```
 
-In this case, we need to use TypeScript to tell any of our callers about the ways `myCoolFunction` can be called using function overloads.
+この場合、関数のオーバーロードを使って`myCoolFunction`を呼び出すことのできる方法を、呼び出し元に伝えるためにTypeScriptを使用する必要があります。
 
 ```ts
 function myCoolFunction(f: (x: number) => void, nums: number[]): void;
@@ -319,13 +319,13 @@ function myCoolFunction() {
 }
 ```
 
-We added two overload signatures to `myCoolFunction`.
-The first checks states that `myCoolFunction` takes a function (which takes a `number`), and then a list of `number`s.
-The second one says that it will take a function as well, and then uses a rest parameter (`...nums`) to state that any number of arguments after that need to be `number`s.
+2つのオーバーロードシグネチャを`myCoolFunction`に追加しました。
+最初の関数シグネチャは、`myCoolFunction`が(`number`を受け取る)関数を受け取り、次に`number`のリストを受け取ることを示しています。
+二番目は、同様に関数を受け取り、レストパラメータ(`...nums`)を使ってそれ以降の引数は任意の数の`number`である必要があることを示しています。
 
-### Sequentially Added Properties
+### 順次追加されるプロパティ
 
-Some people find it more aesthetically pleasing to create an object and add properties immediately after like so:
+次のように、オブジェクトを作成してその後すぐにプロパティを追加するほうが、審美性が高いと思う人もいます:
 
 ```js
 var options = {};
@@ -333,8 +333,8 @@ options.color = "red";
 options.volume = 11;
 ```
 
-TypeScript will say that you can't assign to `color` and `volume` because it first figured out the type of `options` as `{}` which doesn't have any properties.
-If you instead moved the declarations into the object literal themselves, you'd get no errors:
+TypeScriptは、`options`型をプロパティを持たない`{}`として最初に理解したので、`color`と`volume`を代入できないと言うでしょう。
+プロパティの宣言をオブジェクトリテラルの中に移動させれば、エラーが発生しません:
 
 ```ts
 let options = {
@@ -343,7 +343,7 @@ let options = {
 };
 ```
 
-You could also define the type of `options` and add a type assertion on the object literal.
+また、`options`型を定義して、オブジェクトリテラルに型アサーションを追加することができます。
 
 ```ts
 interface Options {
@@ -356,59 +356,59 @@ options.color = "red";
 options.volume = 11;
 ```
 
-Alternatively, you can just say `options` has the type `any` which is the easiest thing to do, but which will benefit you the least.
+あるいは、`options`は、`any`型であると指定することもできます。これが最も簡単な方法ですが、メリットは最も少ないです。
 
-### `any`, `Object`, and `{}`
+### `any`、`Object`、そして`{}`
 
-You might be tempted to use `Object` or `{}` to say that a value can have any property on it because `Object` is, for most purposes, the most general type.
-However **`any` is actually the type you want to use** in those situations, since it's the most _flexible_ type.
+`Object`は、ほとんどの場合最も一般的な型なので、値に任意の型を持たせるために、`Object`や`{}`を使いたくなるかもしれません。
+しかし、このような場合では **`any`こそ実際に使用したい型**です。というのも、これこそが最も _柔軟な_ 型だからです。
 
-For instance, if you have something that's typed as `Object` you won't be able to call methods like `toLowerCase()` on it.
-Being more general usually means you can do less with a type, but `any` is special in that it is the most general type while still allowing you to do anything with it.
-That means you can call it, construct it, access properties on it, etc.
-Keep in mind though, whenever you use `any`, you lose out on most of the error checking and editor support that TypeScript gives you.
+例えば、`Object`と型が付けられているものでは、`toLowerCase()`のようなメソッドを呼び出すことはできません。
+より一般的な型であるということは、通常、型でできることは少なくなるということを意味しますが、`any`は最も一般的な型でありながら何でもできるという点で特別です。
+つまり、呼び出したり、コンストラクタとして使えたり、プロパティにアクセスしたりなどができるということです。
+しかし、`any`を使うと常に、TypeScriptが提供するエラーチェックやエディタサポートが失われるということは覚えておいてください。
 
-If a decision ever comes down to `Object` and `{}`, you should prefer `{}`.
-While they are mostly the same, technically `{}` is a more general type than `Object` in certain esoteric cases.
+もし、`Object`か`{}`を選ぶことになったら、`{}`を選ぶべきです。
+2つはほとんど同じですが、特定の難解なケースでは`{}`のほうが`Object`より技術的に一般的な型です。
 
-## Getting Stricter Checks
+## より厳密なチェック
 
-TypeScript comes with certain checks to give you more safety and analysis of your program.
-Once you've converted your codebase to TypeScript, you can start enabling these checks for greater safety.
+TypeScriptには、安全性を高めプログラムの解析を向上させるための、あるチェック機能が備わっています。
+ひとたびコードベースをTypeScriptに変換したら、安全性を高めるために、これらのチェックを有効化することができます。
 
-### No Implicit `any`
+### 暗黙的な`any`の禁止
 
-There are certain cases where TypeScript can't figure out what certain types should be.
-To be as lenient as possible, it will decide to use the type `any` in its place.
-While this is great for migration, using `any` means that you're not getting any type safety, and you won't get the same tooling support you'd get elsewhere.
-You can tell TypeScript to flag these locations down and give an error with the `noImplicitAny` option.
+TypeScriptがある種の型が何であるかを理解できない場合があります。
+できる限り型の選択肢を緩くするために、TypeScriptは代わりに`any`を使うことになるでしょう。
+この決定はTypeScriptへの移行という点では最適ですが、`any`を使うことは型の安全性が得られないということを意味し、他のところで得られていたツールサポートも得られません。
+`noImplicitAny`を使えば、TypeScriptに対してこうした箇所に印をつけてエラーを出すように指示することができます。
 
-### Strict `null` & `undefined` Checks
+### 厳密な`null`と`undefined`チェック
 
-By default, TypeScript assumes that `null` and `undefined` are in the domain of every type.
-That means anything declared with the type `number` could be `null` or `undefined`.
-Since `null` and `undefined` are such a frequent source of bugs in JavaScript and TypeScript, TypeScript has the `strictNullChecks` option to spare you the stress of worrying about these issues.
+デフォルトでは、TypeScriptは`null`と`undefined`があらゆるの型の領域にあると仮定しています。
+つまり、`number`型で宣言されたものはすべて`null`や`undefined`になる可能性があるということです。
+`null`や`undefined`はJavaScriptやTypeScriptで頻繁にバグの原因となるため、TypeScriptには`strictNullChecks`オプションがあり、こういった問題を心配するストレスを軽減してくれます。
 
-When `strictNullChecks` is enabled, `null` and `undefined` get their own types called `null` and `undefined` respectively.
-Whenever anything is _possibly_ `null`, you can use a union type with the original type.
-So for instance, if something could be a `number` or `null`, you'd write the type out as `number | null`.
+`strictNullChecks`を有効にすると、`null`と`undefined`はそれぞれ`null`と`undefined`という独自の型を取得します。
+何らかの値が`null`である _可能性がある_ 場合は常に元の型とのUnion型を使うことができます。
+例えば、ある値が`number`や`null`になる可能性がある場合、その型を`number | null`と記述します。
 
-If you ever have a value that TypeScript thinks is possibly `null`/`undefined`, but you know better, you can use the postfix `!` operator to tell it otherwise.
+もし、TypeScriptが`null`/`undefined`の可能性があると考えている値があったとしても、あなたがその可能性がないことを知っている場合は、接尾辞`!`演算子を使って、そう伝えることができます。
 
 ```ts
 declare var foo: string[] | null;
 
-foo.length; // error - 'foo' is possibly 'null'
+foo.length; // エラー - 'foo'は'null'の可能性があります
 
-foo!.length; // okay - 'foo!' just has type 'string[]'
+foo!.length; // OK - 'foo!'は'string[]'型だけです
 ```
 
-As a heads up, when using `strictNullChecks`, your dependencies may need to be updated to use `strictNullChecks` as well.
+注意点として、`strictNullChecks`を使う場合は、同様に`strictNullChecks`を使うように依存関係を更新する必要があるかもしれません。
 
-### No Implicit `any` for `this`
+### `this`に対する暗黙的な`any`の禁止
 
-When you use the `this` keyword outside of classes, it has the type `any` by default.
-For instance, imagine a `Point` class, and imagine a function that we wish to add as a method:
+クラスの外側で`this`キーワードを使用する場合、デフォルトでは`any`型となります。
+例えば、`Point`クラスがあり、メソッドとして追加したい関数があるとしましょう:
 
 ```ts
 class Point {
@@ -421,7 +421,7 @@ class Point {
 }
 // ...
 
-// Reopen the interface.
+// インターフェースを再定義する
 interface Point {
   distanceFromOrigin(): number;
 }
@@ -430,10 +430,10 @@ Point.prototype.distanceFromOrigin = function () {
 };
 ```
 
-This has the same problems we mentioned above - we could easily have misspelled `getDistance` and not gotten an error.
-For this reason, TypeScript has the `noImplicitThis` option.
-When that option is set, TypeScript will issue an error when `this` is used without an explicit (or inferred) type.
-The fix is to use a `this`-parameter to give an explicit type in the interface or in the function itself:
+これは、前述したものと同じ問題があります - `getDistance`のスペルを間違えてしまうかもしれませんし、その場合エラーも出ません。
+このため、TypeScriptには、`noImplicitThis`オプションがあります。
+このオプションが設定されていれば、TypeScriptは、`this`が明示的な(あるいは推測された)型を持たないで使用された場合、エラーを出します。
+修正するには、`this`パラメータを使ってインターフェースや関数自体の中で明示的な型を与えます。
 
 ```ts
 Point.prototype.distanceFromOrigin = function (this: Point) {

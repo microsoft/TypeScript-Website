@@ -1,49 +1,49 @@
 ---
-title: Using Babel with TypeScript
+title: TypeScriptでBabelを使用する
 layout: docs
-permalink: /docs/handbook/babel-with-typescript.html
-oneline: How to create a hybrid Babel + TypeScript project
+permalink: /ja/docs/handbook/babel-with-typescript.html
+oneline: BabelとTypeScriptを組み合わせたプロジェクトの作成方法
 translatable: true
 ---
 
-## Babel vs `tsc` for TypeScript
+## BabelとTypeScriptの`tsc`の比較
 
-When making a modern JavaScript project, you might ask yourself what is the right way to convert files from TypeScript to JavaScript?
+モダンなJavaScriptプロジェクトを作る際、TypeScriptからJavaScriptにファイルをトランスパイルするにはどのような方法が正しいのでしょうか？
 
-A lot of the time the answer is _"it depends"_, or _"someone may have decided for you"_ depending on the project. If you are building your project with an existing framework like [tsdx](https://tsdx.io), [Angular](https://angular.io/), [NestJS](https://nestjs.com/) or any framework mentioned in the [Getting Started](/docs/home) then this decision is handled for you.
+その答えは、プロジェクトによって異なりますが _"状況次第"_ だったり、 _"誰かが決めてくれたもの"_ であることが多いです。[tsdx](https://tsdx.io)、[Angular](https://angular.io/)、[NestJS](https://nestjs.com/)といった既存のフレームワークや、あるいは[Getting Started](/docs/home)で紹介したようなフレームワークを使ってプロジェクトを構築しているのならば、あなたに代わってこの決定を行ってくれます。
 
-However, a useful heuristic could be:
+一方で、有用な経験則としては次のようなものがあります:
 
-- Is your build output mostly the same as your source input files? Use `tsc`
-- Do you need a build pipeline with multiple potential outputs? Use `babel` for transpiling and `tsc` for type checking
+- ビルド出力はソースの入力ファイルとほとんど同じですか？では、`tsc`を使いましょう
+- 出力が複数になる可能性があるビルドパイプラインが必要ですか？では、トランスパイルには`babel`を、型チェックには`tsc`を使いましょう
 
-## Babel for transpiling, `tsc` for types
+## トランスパイルのためのBabel、型のための`tsc`
 
-This is a common pattern for projects with existing build infrastructure which may have been ported from a JavaScript codebase to TypeScript.
+ここで紹介するのは、JavaScriptのコードベースからTypeScriptに移植された可能性がある既存のビルドインフラストラクチャを持つプロジェクトでよく見られるパターンです。
 
-This technique is a hybrid approach, using Babel's [preset-typescript](https://babeljs.io/docs/en/babel-preset-typescript) to generate your JS files, and then using TypeScript to do type checking and `.d.ts` file generation.
+このテクニックは、Babelの[preset-typescript](https://babeljs.io/docs/en/babel-preset-typescript)を使ってJSファイルを生成し、次にTypeScriptを用いて型チェックと`.d.ts`ファイルの生成を行うというハイブリッドなアプローチです。
 
-By using babel's support for TypeScript, you get the ability to work with existing build pipelines and are more likely to have a faster JS emit time because Babel does not type check your code.
+BabelのTypeScriptサポートを活用することで、既存のビルドパイプラインとの連携が可能になり、また、Babelはコードの型チェックを行わないため、JS出力にかかる時間が短縮できる可能性が高まります。
 
-#### Type Checking and d.ts file generation
+#### 型チェックとd.tsファイルの生成
 
-The downside to using babel is that you don't get type checking during the transition from TS to JS. This can mean that type errors which you miss in your editor could sneak through into production code.
+Babelを使う際の欠点としては、TSからJSへのトランスパイルを行う際に型チェックを受けられないことがあります。これは、エディタで見逃した型エラーが本番コードに潜り込んでしまうかもしれないことを意味します。
 
-In addition to that, Babel cannot create `.d.ts` files for your TypeScript which can make it harder to work with your project if it is a library.
+加えて、BabelはTypeScript用の`.d.ts`ファイルを生成することができないため、プロジェクトがライブラリである場合、そのライブラリを扱うのが難しくなる可能性があります。
 
-To fix these issues, you would probably want to set up a command to type check your project using TSC. This likely means duplicating some of your babel config into a corresponding [`tsconfig.json`](/tsconfig) and ensuring these flags are enabled:
+こうした問題を解決するには、TSCを使ってプロジェクトの型チェックを行うコマンドを設定する必要があります。これはおそらく、Babelの設定の一部を対応する[`tsconfig.json`](/tsconfig)にコピーし、次のフラグが有効になっていることを確認することになるでしょう:
 
 ```json tsconfig
 "compilerOptions": {
-  // Ensure that .d.ts files are created by tsc, but not .js files
+  // tscによって.d.tsファイルを作成させますが、.jsファイルは作成されないようにします
   "declaration": true,
   "emitDeclarationOnly": true,
-  // Ensure that Babel can safely transpile files in the TypeScript project
+  // BabelがTypeScriptプロジェクト内のファイルを安全にトランスパイルできるようにします
   "isolatedModules": true
 }
 ```
 
-For more information on these flags:
+上記のフラグの詳細についてはこちらをご確認ください:
 
 - [`isolatedModules`](/tsconfig#isolatedModules)
-- [`declaration`](/tsconfig#declaration), [`emitDeclarationOnly`](/tsconfig#emitDeclarationOnly)
+- [`declaration`](/tsconfig#declaration)、[`emitDeclarationOnly`](/tsconfig#emitDeclarationOnly)

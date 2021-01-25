@@ -1,26 +1,26 @@
 ---
-title: DOM Manipulation
+title: DOMの操作
 layout: docs
-permalink: /docs/handbook/dom-manipulation.html
-oneline: Using the DOM with TypeScript
+permalink: /ja/docs/handbook/dom-manipulation.html
+oneline: TypeScriptでDOMを扱う
 translatable: true
 ---
 
-## DOM Manipulation
+## DOMの操作
 
-### _An exploration into the `HTMLElement` type_
+### _`HTMLElement`型の探索_
 
-In the 20+ years since its standardization, JavaScript has come a very long way. While in 2020, JavaScript can be used on servers, in data science, and even on IoT devices, it is important to remember its most popular use case: web browsers.
+標準化されてから20年以上の間に、JavaScriptは非常に長い道のりを歩んできました。2020年には、JavaScriptはサーバー上、データサイエンス、さらにはIoTデバイスでさえも使用できるようになりましたが、最も一般的なユースケースであるWebブラウザについて覚えておくことが重要です。
 
-Websites are made up of HTML and/or XML documents. These documents are static, they do not change. The *Document Object Model (DOM)* is a programming interface implemented by browsers in order to make static websites functional. The DOM API can be used to change the document structure, style, and content. The API is so powerful that countless frontend frameworks (jQuery, React, Angular, etc.) have been developed around it in order to make dynamic websites even easier to develop.
+Webサイトは、HTMLおよびXMLドキュメントで構成されています。これらのドキュメントは静的で、変化しません。_Document Object Model (DOM)_ は、静的なWebサイトを機能的にするためにブラウザによって実装されたプログラミングインターフェースです。DOM APIは、ドキュメントの構造、スタイル、そして内容を変更するために使うことができます。このAPIはとても強力なので、動的なWebサイトを簡単に作成するために数え切れないほど多くのフロントエンドフレームワーク(jQuery、React、Angularなど)が開発されてきました。
 
-TypeScript is a typed superset of JavaScript, and it ships type definitions for the DOM API. These definitions are readily available in any default TypeScript project. Of the 20,000+ lines of definitions in _lib.dom.d.ts_, one stands out among the rest: `HTMLElement` . This type is the backbone for DOM manipulation with TypeScript.
+TypeScriptはJavaScriptの型付きスーパーセットであり、DOM APIの型定義を提供しています。こうした定義はあらゆるデフォルトのTypeScriptプロジェクトでもすぐに利用できるようになっています。20,000行を超える _lib.dom.d.ts_ の定義の中で、ひときわ目立つものがあります。それが`HTMLElement`です。この型はTypeScriptでのDOM操作の根幹となるものです。
 
-> You can explore the source code for the [DOM type definitions](https://github.com/microsoft/TypeScript/blob/master/lib/lib.dom.d.ts)
+> [DOMの型定義](https://github.com/microsoft/TypeScript/blob/master/lib/lib.dom.d.ts)のソースコードを細かく調べることができます
 
-## Basic Example
+## 基本的な例
 
-Given a simplified _index.html_ file:
+次のような単純化された _index.html_ ファイルがあるとします:
 
     <!DOCTYPE html>
     <html lang="en">
@@ -32,23 +32,23 @@ Given a simplified _index.html_ file:
       </body>
     </html>
 
-Lets explore a TypeScript script that adds a `<p>Hello, World</p>` element to the `#app` element.
+`#app`要素に`<p>Hello, World</p>`要素を追加するTypeScriptのスクリプトを見てみましょう。
 
 ```ts
-// 1. Select the div element using the id property
+// 1. idプロパティを使ってdiv要素を選択します
 const app = document.getElementById("app");
 
-// 2. Create a new <p></p> element programmatically
+// 2. プログラムによって新しい<p></p>要素を作成します
 const p = document.createElement("p");
 
-// 3. Add the text content
+// 3. テキストの内容を追加します
 p.textContent = "Hello, World!";
 
-// 4. Append the p element to the div element
+// 4. p要素をdiv要素に追加します
 app?.appendChild(p);
 ```
 
-After compiling and running the _index.html_ page, the resulting HTML will be:
+コンパイルして、 _index.html_ ページを開くと、HTMLは結果的に次のようになります:
 
 ```html
 <div id="app">
@@ -56,36 +56,36 @@ After compiling and running the _index.html_ page, the resulting HTML will be:
 </div>
 ```
 
-## The `Document` Interface
+## `Document`インターフェース
 
-The first line of the TypeScript code uses a global variable `document`. Inspecting the variable shows it is defined by the `Document` interface from the _lib.dom.d.ts_ file. The code snippet contains calls to two methods, `getElementById` and `createElement`.
+TypeScriptの最初の行では、グローバル変数`document`を使用しています。この変数を調べてみると、_lib.dom.d.ts_ ファイルの`Document`インターフェースで定義されていることが分かります。コードスニペットには、`getElementById`と`createElement`の2つのメソッドの呼び出しが含まれています。
 
 ### `Document.getElementById`
 
-The definition for this method is as follows:
+このメソッドの定義は次のとおりです:
 
 ```ts
 getElementById(elementId: string): HTMLElement | null;
 ```
 
-Pass it an element id string and it will return either `HTMLElement` or `null` . This method introduces one of the most important types, `HTMLElement`. It serves as the base interface for every other element interface. For example, the `p` variable in the code example is of type `HTMLParagraphElement`. Also take note that this method can return `null`. This is because the method can't be certain pre-runtime if it will be able to actually find the specified element or not. In the last line of the code snippet, the new _optional chaining_ operator is used in order to call `appendChild`.
+要素のid文字列を渡し、`HTMLElement`あるいは`null`を返します。このメソッドによって、最も重要な型のひとつである`HTMLElement`が導かれます。この型は他のすべての要素のインターフェースのベースとなるインターフェースとして機能します。例えば、前述のコード例の変数`p`は、`HTMLParagraphElement`型です。また、このメソッドは`null`を返す可能性があることにも注意してください。これは、指定された要素を実際に見つけることができるかどうか、このメソッドの実行前には保証できないためです。コードスニペットの最後の行では、`appendChild`を呼び出すために、新機能の _オプショナルチェイニング_ 演算子を用いています。
 
 ### `Document.createElement`
 
-The definition for this method is (I have omitted the _deprecated_ definition):
+このメソッドの定義は次のとおりです (_非推奨の_ 定義は省略しています):
 
 ```ts
 createElement<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): HTMLElementTagNameMap[K];
 createElement(tagName: string, options?: ElementCreationOptions): HTMLElement;
 ```
 
-This is an overloaded function definition. The second overload is simplest and works a lot like the `getElementById` method does. Pass it any `string` and it will return a standard HTMLElement. This definition is what enables developers to create unique HTML element tags.
+この関数の定義はオーバーロードされています。2番目のオーバーロードは最も単純で、`getElementById`と非常に似た動作を行います。任意の`string`を渡すと、標準のHTMLElementを返します。この定義により、開発者はユニークなHTML要素のタグを作成することができます。
 
-For example `document.createElement('xyz')` returns a `<xyz></xyz>` element, clearly not an element that is specified by the HTML specification.
+例えば、`document.createElement('xyz')`は`<xyz></xyz>`要素を返しますが、これは明らかにHTMLの仕様で指定された要素ではありません。
 
-> For those interested, you can interact with custom tag elements using the `document.getElementsByTagName`
+> 興味ある方は、`document.getElementsByTagName`を使用してカスタムタグ要素に触れてみてください
 
-For the first definition of `createElement`, it is using some advanced generic patterns. It is best understood broken down into chunks, starting with the generic expression: `<K extends keyof HTMLElementTagNameMap>`. This expression defines a generic parameter `K` that is _constrained_ to the keys of the interface `HTMLElementTagNameMap`. The map interface contains every specified HTML tag name and its corresponding type interface. For example here are the first 5 mapped values:
+`createElement`の最初の定義では、複数の高度なジェネリクスパターンを使用しています。これはチャンクに分けて理解するのが最良です。まずは、ジェネリクス式`<K extends keyof HTMLElementTagNameMap>`から見ていきます。この式は`HTMLElementTagNameMap`のキーに **制限された** ジェネリクスパラメータ`K`を定義しています。マップインターフェースは、指定されたすべてのHTMLタグ名とそれに対応するすべての型インターフェースを含みます。例えば、マップされた値の最初の5つは次のとおりです:
 
 ```ts
 interface HTMLElementTagNameMap {
@@ -98,27 +98,27 @@ interface HTMLElementTagNameMap {
 }
 ```
 
-Some elements do not exhibit unique properties and so they just return `HTMLElement`, but other types do have unique properties and methods so they return their specific interface (which will extend from or implement `HTMLElement`).
+固有のプロパティを持たない要素は`HTMLElement`を返すだけですが、そうでない型は、(`HTMLElement`を拡張あるいは実装した)特定のインターフェースを返します。
 
-Now, for the remainder of the `createElement` definition: `(tagName: K, options?: ElementCreationOptions): HTMLElementTagNameMap[K]`. The first argument `tagName` is defined as the generic parameter `K` . The TypeScript interpreter is smart enough to _infer_ the generic parameter from this argument. This means that the developer does not actually have to specify the generic parameter when using the method; whatever value is passed to the `tagName` argument will be inferred as `K` and thus can be used throughout the remainder of the definition. Which is exactly what happens; the return value `HTMLElementTagNameMap[K]` takes the `tagName` argument and uses it to return the corresponding type. This definition is how the `p` variable from the code snippet gets a type of `HTMLParagraphElement`. And if the code was `document.createElement('a')`, then it would be an element of type `HTMLAnchorElement`.
+さて、`createElement`定義の残りの部分、`(tagName: K, options?: ElementCreationOptions): HTMLElementTagNameMap[K]`についてですが、第一引数 `tagName`はジェネリクスパラメータ`K`として定義されています。TypeScriptのインタープリタは、十分に精度が高いのでこの引数からジェネリクスパラメータを _推測_ することができます。開発者がこのメソッドを使うときには、実際にはジェネリクスパラメータを指定する必要がない、ということです。`tagName`引数に渡された値がなんであれ、`K`として推測され、定義の残りの部分を通してずっと使用することができます。その結果次のようなことが起こります。戻り値`HTMLElementTagNameMap[K]`は`tagName`引数を取り、それを使って対応する型を返します。この定義によって、前述のコードスニペットの`p`変数は`HTMLParagraphElement`型を取得します。また、もしコードが`document.createElement('a')`であったならば、`HTMLAnchorElement`型の要素となっていました。
 
-## The `Node` interface
+## `Node`インターフェース
 
-The `document.getElementById` function returns an `HTMLElement`. `HTMLElement` interface extends the `Element` interface which extends the `Node` interface. This prototypal extension allows for all `HTMLElements` to utilize a subset of standard methods. In the code snippet, we use a property defined on the `Node` interface to append the new `p` element to the website.
+`document.getElementById`関数は`HTMLElement`を返します。`HTMLElement`は、`Node`インターフェースを拡張した`Element`インターフェースを拡張したものです。このプロトタイプの拡張により、すべての`HTMLElements`が標準メソッドのサブセットを活用できます。前述のコードスニペットでは、`Node`インターフェースで定義されたプロパティを使って新しい`p`要素をWebサイトに追加しています。
 
 ### `Node.appendChild`
 
-The last line of the code snippet is `app?.appendChild(p)`. The previous, `document.getElementById` , section detailed that the _optional chaining_ operator is used here because `app` can potentially be null at runtime. The `appendChild` method is defined by:
+コードスニペットの最後の行は`app?.appendChild(p)`です。前述の`document.getElementById`のセクションでは、実行時に`app`がnullになる可能性があるため、ここでは _オプショナルチェイニング_ 演算子を用いることを説明しました。`appendChild`は次のように定義されています:
 
 ```ts
 appendChild<T extends Node>(newChild: T): T;
 ```
 
-This method works similarly to the `createElement` method as the generic parameter `T` is inferred from the `newChild` argument. `T` is _constrained_ to another base interface `Node`.
+このメソッドは`createElement`メソッドと同様に動作し、ジェネリクスパラメータ`T`は `newChild`引数から推測されます。`T`は別の基底インターフェースである`Node`に _制限_ されています。
 
-## Difference between `children` and `childNodes`
+## `children`と`childNodes`の違い
 
-Previously, this document details the `HTMLElement` interface extends from `Element` which extends from `Node`. In the DOM API there is a concept of _children_ elements. For example in the following HTML, the `p` tags are children of the `div` element
+前のセクションでは、`HTMLElement`インターフェースは、`Node`を拡張した`Element`を拡張したものであることについて説明しました。DOM APIには、_子_ 要素というものがあり、例えば、次のHTMLでは、`p`タグは`div`要素の子です。
 
 ```tsx
 <div>
@@ -135,9 +135,9 @@ div.childNodes;
 // NodeList(2) [p, p]
 ```
 
-After capturing the `div` element, the `children` prop will return a `HTMLCollection` list containing the `HTMLParagraphElements`. The `childNodes` property will return a similar `NodeList` list of nodes. Each `p` tag will still be of type `HTMLParagraphElements`, but the `NodeList` can contain additional _HTML nodes_ that the `HTMLCollection` list cannot.
+`div`要素を取得した後、`children`プロパティは、`HTMLParagraphElements`を含むリストである`HTMLCollection`を返します。`childNodes`プロパティは、同様のノードのリストである`NodeList`を返します。それぞれの`p`タグは`HTMLParagraphElements`型のままですが、`NodeList`は`HTMLCollection`リストにはない _HTMLノード_ を含めることができます。
 
-Modify the html by removing one of the `p` tags, but keep the text.
+テキストは保ったまま、一方の`p`タグを削除してHTMLを変更してみましょう。
 
 ```tsx
 <div>
@@ -154,31 +154,31 @@ div.childNodes;
 // NodeList(2) [p, text]
 ```
 
-See how both lists change. `children` now only contains the `<p>Hello, World</p>` element, and the `childNodes` contains a `text` node rather than two `p` nodes. The `text` part of the `NodeList` is the literal `Node` containing the text `TypeScript!`. The `children` list does not contain this `Node` because it is not considered an `HTMLElement`.
+両方のリストがどのように変化するか見てみましょう。`children`には、`<p>Hello, World</p>`要素だけが含まれるようになり、`childNodes`には、2つの`p`ノードの代わりに、`text`ノードが含まれるようになりました。`NodeList`の`text`の部分は、テキストである `TypeScript!`を含むリテラル`Node`です。この`Node`は`HTMLElement`とはみなされないため、`children`リストには含まれていません。
 
-## The `querySelector` and `querySelectorAll` methods
+## `querySelector`と`querySelectorAll`メソッド
 
-Both of these methods are great tools for getting lists of dom elements that fit a more unique set of constraints. They are defined in _lib.dom.d.ts_ as:
+これらのメソッドは、どちらもよりユニークな制約に適合するDOM要素のリストを取得するための優れたツールです。_lib.dom.d.ts_ において、次のように定義されています:
 
 ```ts
 /**
- * Returns the first element that is a descendant of node that matches selectors.
+ * セレクタにマッチするノードの子孫である最初の要素を返します。
  */
 querySelector<K extends keyof HTMLElementTagNameMap>(selectors: K): HTMLElementTagNameMap[K] | null;
 querySelector<K extends keyof SVGElementTagNameMap>(selectors: K): SVGElementTagNameMap[K] | null;
 querySelector<E extends Element = Element>(selectors: string): E | null;
 
 /**
- * Returns all element descendants of node that match selectors.
+ * セレクタにマッチするノードの子孫であるすべての要素を返します。
  */
 querySelectorAll<K extends keyof HTMLElementTagNameMap>(selectors: K): NodeListOf<HTMLElementTagNameMap[K]>;
 querySelectorAll<K extends keyof SVGElementTagNameMap>(selectors: K): NodeListOf<SVGElementTagNameMap[K]>;
 querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
 ```
 
-The `querySelectorAll` definition is similar to `getElementsByTagName`, except it returns a new type: `NodeListOf`. This return type is essentially a custom implementation of the standard JavaScript list element. Arguably, replacing `NodeListOf<E>` with `E[]` would result in a very similar user experience. `NodeListOf` only implements the following properties and methods: `length` , `item(index)`, `forEach((value, key, parent) => void)` , and numeric indexing. Additionally, this method returns a list of _elements_, not _nodes_, which is what `NodeList` was returning from the `.childNodes` method. While this may appear as a discrepancy, take note that interface `Element` extends from `Node`.
+`querySelectorAll`の定義は、新しい型`NodeListOf`を返すという点以外は `getElementsByTagName`と似ています。この戻り値の型は、基本的には標準的なJavaScriptのリスト要素のカスタム実装です。まず間違いなく、`NodeListOf<E>`を`E[]`と置き換えても、非常によく似たユーザー体験が得られるでしょう。`NodeListOf`は、`length` 、`item(index)`、`forEach((value, key, parent) => void)`、数値インデックスといったプロパティとメソッドのみを実装しています。加えて、このメソッドは`NodeList`が`.childNodes`メソッドから返していた _ノード_ ではなく、_要素_ のリストを返します。これは矛盾しているようにみえるかもしれませんが、`Element`インターフェースが`Node`を拡張したものであることを思い出してください。
 
-To see these methods in action modify the existing code to:
+上記のメソッドの実際の動作を確認するために、既存のコードを次のように変更しましょう:
 
 ```tsx
 <ul>
@@ -187,15 +187,15 @@ To see these methods in action modify the existing code to:
   <li>Third times a charm.</li>
 </ul>;
 
-const first = document.querySelector("li"); // returns the first li element
-const all = document.querySelectorAll("li"); // returns the list of all li elements
+const first = document.querySelector("li"); // 最初のli要素を返す
+const all = document.querySelectorAll("li"); // すべてのli要素のリストを返す
 ```
 
-## Interested in learning more?
+## もっと知りたいですか？
 
-The best part about the _lib.dom.d.ts_ type definitions is that they are reflective of the types annotated in the Mozilla Developer Network (MDN) documentation site. For example, the `HTMLElement` interface is documented by this [HTMLElement page](https://developer.mozilla.org/docs/Web/API/HTMLElement) on MDN. These pages list all available properties, methods, and sometimes even examples. Another great aspect of the pages is that they provide links to the corresponding standard documents. Here is the link to the [W3C Recommendation for HTMLElement](https://www.w3.org/TR/html52/dom.html#htmlelement).
+_lib.dom.d.ts_ の型定義の最も良いところは、Mozilla Developer Network (MDN)のドキュメントサイトで注釈されている型を反映しているところです。例えば、`HTMLElement`は[HTMLElementページ](https://developer.mozilla.org/docs/Web/API/HTMLElement)に記載されています。こうしたページには、利用可能なすべてのプロパティ、メソッド、時には例さえもリストしています。こうしたページの、もう1つ素晴らしいところは、対応する標準ドキュメントのリンクを掲載している点です。上記のページには[HTMLElementのW3C勧告](https://www.w3.org/TR/html52/dom.html#htmlelement)のリンクがあります。
 
-Sources:
+資料:
 
 - [ECMA-262 Standard](http://www.ecma-international.org/ecma-262/10.0/index.html)
-- [Introduction to the DOM](https://developer.mozilla.org/docs/Web/API/Document_Object_Model/Introduction)
+- [DOMの紹介](https://developer.mozilla.org/docs/Web/API/Document_Object_Model/Introduction)

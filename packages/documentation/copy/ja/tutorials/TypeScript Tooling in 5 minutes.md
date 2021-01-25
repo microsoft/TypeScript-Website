@@ -1,32 +1,32 @@
 ---
-title: TypeScript Tooling in 5 minutes
+title: 5分でわかるTypeScriptツール
 layout: docs
-permalink: /docs/handbook/typescript-tooling-in-5-minutes.html
-oneline: A tutorial to understand how to create a small website with TypeScript
+permalink: /ja/docs/handbook/typescript-tooling-in-5-minutes.html
+oneline: TypeScriptで小さなウェブサイトを作る方法を理解するためのチュートリアル
 translatable: true
 ---
 
-Let's get started by building a simple web application with TypeScript.
+TypeScriptを使って簡単なWebアプリケーションを作ることからはじめてみましょう。
 
-## Installing TypeScript
+## TypeScriptのインストール
 
-There are two main ways to get the TypeScript available for your project:
+プロジェクトでTypeScriptを利用できるようにするには、主に2つの方法があります:
 
-- Via npm (the Node.js package manager)
-- By installing TypeScript's Visual Studio plugins
+- npm(Node.jsのパッケージマネージャー)を使う
+- TypeScriptのVisual Studioプラグインをインストールする
 
-Visual Studio 2017 and Visual Studio 2015 Update 3 include TypeScript by default.
-If you didn't install TypeScript with Visual Studio, you can still [download it](/download).
+Visual Studio 2017とVisual Studio 2015 Update 3にはTypeScriptがデフォルトで含まれています。
+Visual StudioにTypeScriptをインストールしなかった場合でも、[ダウンロード](/download)は可能です。
 
-For npm users:
+npmを使う場合はこちら:
 
 ```shell
 > npm install -g typescript
 ```
 
-## Building your first TypeScript file
+## 初めてのTypeScriptファイルの作成
 
-In your editor, type the following JavaScript code in `greeter.ts`:
+エディタで`greeter.ts`ファイルに次のJavaScriptコードを入力してください:
 
 ```ts twoslash
 // @noImplicitAny: false
@@ -39,22 +39,22 @@ let user = "Jane User";
 document.body.textContent = greeter(user);
 ```
 
-## Compiling your code
+## コードのコンパイル
 
-We used a `.ts` extension, but this code is just JavaScript.
-You could have copy/pasted this straight out of an existing JavaScript app.
+上記で`.ts`拡張子を使いましたが、コードはただのJavaScriptです。
+既存のJavaScriptアプリからそのままコピー/ペーストすることもできます。
 
-At the command line, run the TypeScript compiler:
+コマンドラインで、TypeScriptコンパイラを実行します:
 
 ```shell
 tsc greeter.ts
 ```
 
-The result will be a file `greeter.js` which contains the same JavaScript that you fed in.
-We're up and running using TypeScript in our JavaScript app!
+結果は、先ほど入力したJavaScriptと同じものが含まれた`greeter.js`というファイルになります。
+つまり、JavaScriptアプリ上でTypeScriptを実行しているのです！
 
-Now we can start taking advantage of some of the new tools TypeScript offers.
-Add a `: string` type annotation to the 'person' function argument as shown here:
+これで、TypeScriptが提供する新しいツールを活用できるようになりました。
+次に示すように、関数の引数'person'に対して`: string`という型注釈を付けてみましょう:
 
 ```ts twoslash
 function greeter(person: string) {
@@ -66,11 +66,11 @@ let user = "Jane User";
 document.body.textContent = greeter(user);
 ```
 
-## Type annotations
+## 型注釈
 
-Type annotations in TypeScript are lightweight ways to record the intended contract of the function or variable.
-In this case, we intend the greeter function to be called with a single string parameter.
-We can try changing the call greeter to pass an array instead:
+TypeScriptの型注釈は、関数や変数に対する意図的な制約を記録するための軽量な方法です。
+この例では、greeter関数を単一の文字列パラメータで呼び出すことを意図しています。
+代わりに配列を渡すように、greeterの呼び出しを変更してみましょう:
 
 ```ts twoslash
 // @errors: 2345
@@ -83,24 +83,24 @@ let user = [0, 1, 2];
 document.body.textContent = greeter(user);
 ```
 
-Re-compiling, you'll now see an error:
+再コンパイルすると、エラーが表示されます:
 
 ```shell
 error TS2345: Argument of type 'number[]' is not assignable to parameter of type 'string'.
 ```
 
-Similarly, try removing all the arguments to the greeter call.
-TypeScript will let you know that you have called this function with an unexpected number of parameters.
-In both cases, TypeScript can offer static analysis based on both the structure of your code, and the type annotations you provide.
+同様に、greeter関数の呼び出しに渡す引数をすべて削除してみてください。
+TypeScriptは、予期しない数のパラメータを使ってこの関数を呼び出したことを知らせてくれます。
+どちらの場合も、TypeScriptはコードの構造と提供された型注釈に基づいた静的解析を行うことができます。
 
-Notice that although there were errors, the `greeter.js` file is still created.
-You can use TypeScript even if there are errors in your code. But in this case, TypeScript is warning that your code will likely not run as expected.
+エラーがあったにもかかわらず`greeter.js`ファイルが生成されたことに注意してください。
+コード中にエラーがあってもTypeScriptを使用することはできます。しかし、その場合は、TypeScriptは期待通りに動作しない可能性が高いことを警告しています。
 
-## Interfaces
+## インターフェース
 
-Let's develop our sample further. Here we use an interface that describes objects that have a firstName and lastName field.
-In TypeScript, two types are compatible if their internal structure is compatible.
-This allows us to implement an interface just by having the shape the interface requires, without an explicit `implements` clause.
+サンプルをさらに発展させましょう。ここでは、firstNameとlastNameフィールドをもつオブジェクトを記述するインターフェースを使用します。
+TypeScript では、2つの型の内部構造に互換性があれば、それらの型は互換性があるとみなされます。
+このことにより、明示的な`implements`句がなくても、インターフェースが必要とする形状を持つだけで、インターフェースを実装することができます。
 
 ```ts twoslash
 interface Person {
@@ -117,15 +117,15 @@ let user = { firstName: "Jane", lastName: "User" };
 document.body.textContent = greeter(user);
 ```
 
-## Classes
+## クラス
 
-Finally, let's extend the example one last time with classes.
-TypeScript supports new features in JavaScript, like support for class-based object-oriented programming.
+最後に、クラスを使ってこの例をもう一度だけ拡張してみましょう。
+TypeScriptは、クラスベースのオブジェクト指向プログラミングなど、JavaScriptの新しい機能をサポートしています。
 
-Here we're going to create a `Student` class with a constructor and a few public fields.
-Notice that classes and interfaces play well together, letting the programmer decide on the right level of abstraction.
+ここでは、コンストラクタといくつかのpublicフィールドをもつ`Student`クラスを作成します。
+クラスとインターフェースがうまく連携し、プログラマーが適切な抽象度を決定できるようになっていることに注目してください。
 
-Also of note, the use of `public` on arguments to the constructor is a shorthand that allows us to automatically create properties with that name.
+また、コンストラクタの引数に`public`を使うことが、その名前のプロパティを自動的に作成する省略表現になっていることにも注意してください。
 
 ```ts twoslash
 class Student {
@@ -153,12 +153,12 @@ let user = new Student("Jane", "M.", "User");
 document.body.textContent = greeter(user);
 ```
 
-Re-run `tsc greeter.ts` and you'll see the generated JavaScript is the same as the earlier code.
-Classes in TypeScript are just a shorthand for the same prototype-based OO that is frequently used in JavaScript.
+`tsc greeter.ts`を再実行すると、生成されたJavaScriptが前述のコードと同じであることが確認できます。
+TypeScriptのクラスは、JavaScriptで頻繁に使われているプロトタイプベースのオブジェクト指向プログラミングの単なる省略表現にしかすぎません。
 
-## Running your TypeScript web app
+## TypeScript の Web アプリを実行
 
-Now type the following in `greeter.html`:
+`greeter.html`に次のように入力してください:
 
 ```html
 <!DOCTYPE html>
@@ -172,16 +172,16 @@ Now type the following in `greeter.html`:
 </html>
 ```
 
-Open `greeter.html` in the browser to run your first simple TypeScript web application!
+ブラウザで`greeter.html`を開いて、あなたにとって初めてのシンプルなTypeScriptのWebアプリケーションを実行してみましょう！
 
-Optional: Open `greeter.ts` in Visual Studio, or copy the code into the TypeScript playground.
-You can hover over identifiers to see their types.
-Notice that in some cases these types are inferred automatically for you.
-Re-type the last line, and see completion lists and parameter help based on the types of the DOM elements.
-Put your cursor on the reference to the greeter function, and hit F12 to go to its definition.
-Notice, too, that you can right-click on a symbol and use refactoring to rename it.
+任意: `greeter.ts`をVisual Studioで開くか、TypeScriptプレイグラウンドにコードをコピーしてください。
+識別子にマウスをホバーすると、その型が表示されます。
+型が自動的に推測されているケースもあることに注目してください。
+最後の行を再入力すると、DOM要素の型に基づいた補完リストとパラメータのヘルプが表示されます。
+greeter関数の参照にマウスを置いて、F12を押せば、関数の定義に移動します。
+シンボルを右クリックして、名前を変更するリファクタリングツールを使うことができることにも注目してください。
 
-The type information provided works together with the tools to work with JavaScript at application scale.
-For more examples of what's possible in TypeScript, see the Samples section of the website.
+提供された型情報は、アプリケーションの規模でJavaScriptを操作するツールと連携して動作します。
+TypeScriptで可能なことのその他の例ついては、Webサイトのサンプルセクションを参照してください。
 
 ![Visual Studio picture](/images/docs/greet_person.png)
