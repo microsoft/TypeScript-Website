@@ -96,18 +96,33 @@ export const twoslashCompletions = (ts: TS, monaco: typeof import("monaco-editor
   }
 
   const words = thisLine.replace("\t", "").split(" ")
+
   // Not the right amount of
   if (words.length !== 2) {
     return { suggestions: [] }
   }
 
   const word = words[1]
+
+  const result: import("monaco-editor").languages.CompletionItem[] = []
+
+  if (!word.startsWith("-")) {
+    return {
+      suggestions: [
+        {
+          label: "---cut---",
+          kind: 14,
+          detail: "Twoslash split output",
+          insertText: "---cut---",
+        },
+      ],
+    }
+  }
+
   // Not a @ at the first word
   if (!word.startsWith("@")) {
     return { suggestions: [] }
   }
-
-  const result: import("monaco-editor").languages.CompletionItem[] = []
 
   const knowns = [
     "noErrors",
@@ -117,7 +132,7 @@ export const twoslashCompletions = (ts: TS, monaco: typeof import("monaco-editor
     "noStaticSemanticInfo",
     "emit",
     "noErrorValidation",
-    "filename"
+    "filename",
   ]
   // @ts-ignore - ts.optionDeclarations is private
   const optsNames = ts.optionDeclarations.map(o => o.name)

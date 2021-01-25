@@ -14691,6 +14691,16 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"glossary@workspace:packages/glossary":
+  version: 0.0.0-use.local
+  resolution: "glossary@workspace:packages/glossary"
+  dependencies:
+    remark: ^11.0.2
+    remark-html: ^10.0.0
+    ts-node: "*"
+  languageName: unknown
+  linkType: soft
+
 "got@npm:8.3.2, got@npm:^8.3.1":
   version: 8.3.2
   resolution: "got@npm:8.3.2"
