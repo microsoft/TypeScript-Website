@@ -51,7 +51,7 @@ type FeatureOptions = OptionsFlags<FeatureFlags>;
 
 There are a two additional modifiers which can be applied during mapping: `readonly` and `?` which affect mutability and optionality respectively. Both of these modifiers support a prefix of `-` or `+` with `+` being the default.
 
-```ts
+```ts twoslash
 type CreateMutable<Type> = {
   -readonly [Property in keyof Type]: Type[Property];
 };
