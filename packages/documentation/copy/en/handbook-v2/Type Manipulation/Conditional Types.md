@@ -2,7 +2,7 @@
 title: Conditional Types
 layout: docs
 permalink: /docs/handbook/2/conditional-types.html
-oneline: "Step one in learning TypeScript: The basics types."
+oneline: "Create types which act like if statements."
 beta: true
 ---
 
@@ -25,7 +25,7 @@ type Bar = RegExp extends Animal ? number : string;
 //   ^?
 ```
 
-Conditional types take a form that looks a little like conditional expresions (`cond ? trueExpression : falseExpression`) in JavaScript:
+Conditional types take a form that looks a little like conditional expressions (`condition ? trueExpression : falseExpression`) in JavaScript:
 
 ```ts twoslash
 type SomeType = any;
@@ -189,8 +189,7 @@ For example, we could have inferred the element type in `Flatten` instead of fet
 type Flatten<T> = T extends Array<infer U> ? U : T;
 ```
 
-Here, we used the `infer` keyword declaratively introduced a new generic type variable named `U` instead of specifying how to retrieve the element type of `T`.
-Within the true branch
+Here, we used the `infer` keyword declaratively introduced a new generic type variable named `U` instead of specifying how to retrieve the element type of `T` within the true branch.
 This frees us from having to think about how to dig through and probing apart the structure of the types we're interested.
 
 We can write some useful helper type aliases using the `infer` keyword.
@@ -227,7 +226,7 @@ type Bar = Foo<string | number>;
 //   ^?
 ```
 
-What happens here is that `Foo` distributes on
+What happens here is that `Foo` distributes on:
 
 ```ts twoslash
 type Blah =
@@ -235,7 +234,7 @@ type Blah =
   string | number;
 ```
 
-and maps over each member type of the union, to what is effectively
+and maps over each member type of the union, to what is effectively:
 
 ```ts twoslash
 type Foo<T> = T extends any ? T[] : never;
@@ -244,7 +243,7 @@ type Blah =
   Foo<string> | Foo<number>;
 ```
 
-which leaves us with
+which leaves us with:
 
 ```ts twoslash
 type Blah =

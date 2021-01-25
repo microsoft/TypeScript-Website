@@ -21,8 +21,10 @@
   "resolutions": {
     "@types/react": "16.9.17",
     "node-gyp": "5.1.0",
-    "typescript": "4.1.0-beta",
-    "prettier": "^2.0.2"
+    "typescript": "4.2.0-dev.20210112",
+    "tslib": "2.1.0",
+    "prettier": "^2.0.2",
+    "shelljs": "0.8.4"
   },
   "jest": {
     "transformIgnorePatterns": [
@@ -38,7 +40,8 @@
     "compile": "yarn workspace typescriptlang-org tsc",
     "update-snapshots": "yarn workspace typescriptlang-org update-snapshots",
     "clean": "yarn workspace typescriptlang-org gatsby clean",
-    "test": "CI=true yarn workspaces foreach -v -t --exclude root run test"
+    "test": "CI=true yarn workspaces foreach -v -t --exclude root run test",
+    "update-test-snapshots": "CI=true yarn workspaces foreach --include gatsby-remark-shiki-twoslash  --include @typescript/twoslash --include shiki-twoslash --include @typescript/vfs run test -u"
   },
   "dependencies": {
     "@types/express": "^4.17.6",

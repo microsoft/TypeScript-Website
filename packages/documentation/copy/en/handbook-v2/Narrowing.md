@@ -2,7 +2,7 @@
 title: Narrowing
 layout: docs
 permalink: /docs/handbook/2/narrowing.html
-oneline: "Step one in learning TypeScript: The basics types."
+oneline: "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects."
 beta: true
 ---
 
@@ -212,17 +212,17 @@ TypeScript also uses `switch` statements and equality checks like `===`, `!==`, 
 For example:
 
 ```ts twoslash
-function foo(left: string | number, right: string | boolean) {
-  if (left === right) {
+function foo(x: string | number, y: string | boolean) {
+  if (x === y) {
     // We can now call any 'string' method on 'x' or 'y'.
-    left.toUpperCase();
+    x.toUpperCase();
     // ^?
-    right.toLowerCase();
+    y.toLowerCase();
     // ^?
   } else {
-    console.log(left);
+    console.log(x);
     //          ^?
-    console.log(right);
+    console.log(y);
     //          ^?
   }
 }

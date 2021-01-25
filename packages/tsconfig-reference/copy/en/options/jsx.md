@@ -1,13 +1,13 @@
 ---
 display: "JSX"
-oneline: "JSX code generation"
+oneline: "Specify what JSX code is generated."
 ---
 
 Controls how JSX constructs are emitted in JavaScript files.
 This only affects output of JS files that started in `.tsx` files.
 
 - `react`: Emit `.js` files with JSX changed to the equivalent `React.createElement` calls
-- `react-jsx`: Emit `.js` files with the changed to `_jsx` calls
+- `react-jsx`: Emit `.js` files with the JSX changed to `_jsx` calls
 - `react-jsxdev`: Emit `.js` files with the JSX to `_jsx` calls
 - `preserve`: Emit `.jsx` files with the JSX unchanged
 - `react-native`: Emit `.js` files with the JSX unchanged

@@ -1,6 +1,6 @@
 ---
 display: "Out"
-oneline: "Do not use this, use `outFile` instead."
+oneline: "Deprecated setting. Use `outFile` instead."
 ---
 
 Use [outFile](#outFile) instead.

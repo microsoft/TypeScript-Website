@@ -90,13 +90,13 @@ This means you can take any working JavaScript code and put it in a TypeScript f
 However, TypeScript is a _typed_ superset, meaning that it adds rules about how different kinds of values can be used.
 The earlier error about `obj.heigth` was not a _syntax_ error: it is an error of using some kind of value (a _type_) in an incorrect way.
 
-As another example, this is JavaScript code that you can run in your browser, and it _will_ print a value:
+As another example, this is JavaScript code that you can run in your browser, and it _will_ log a value:
 
 ```js
 console.log(4 / []);
 ```
 
-This syntactically-legal program prints `Infinity`.
+This syntactically-legal program logs `Infinity`.
 TypeScript, though, considers division of number by an array to be a nonsensical operation, and will issue an error:
 
 ```ts twoslash
@@ -155,7 +155,7 @@ The answer is that you can't learn TypeScript without learning JavaScript!
 TypeScript shares syntax and runtime behavior with JavaScript, so anything you learn about JavaScript is helping you learn TypeScript at the same time.
 
 There are many, many resources available for programmers to learn JavaScript; you should _not_ ignore these resources if you're writing TypeScript.
-For example, there about 20 times more StackOverflow questions tagged `javascript` than `typescript`, but _all_ of the `javascript` questions also apply to TypeScript.
+For example, there are about 20 times more StackOverflow questions tagged `javascript` than `typescript`, but _all_ of the `javascript` questions also apply to TypeScript.
 
 If you find yourself searching for something like "how to sort a list in TypeScript", remember: **TypeScript is JavaScript's runtime with a compile-time type checker**.
 The way you sort a list in TypeScript is the same way you do so in JavaScript.

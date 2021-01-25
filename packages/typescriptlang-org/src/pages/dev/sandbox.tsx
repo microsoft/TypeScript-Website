@@ -7,11 +7,8 @@ import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/devNav"
 import { isTouchDevice } from "../../lib/isTouchDevice"
 import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
-import { SandboxQuery } from "../../__generated__/gatsby-types"
 
-type Props = {
-  data: SandboxQuery
-}
+type Props = {}
 
 const Index: React.FC<Props> = (props) => {
   useEffect(() => {
@@ -77,7 +74,7 @@ export default async function () {
 
   return (
     <>
-      <Layout title="Developers - Sandbox" description="The TypeScript sandbox powers the TypeScript Playground. Learn how you can make your experiences like the playground using the sandbox." lang="en" allSitePage={props.data.allSitePage}>
+      <Layout title="Developers - Sandbox" description="The TypeScript sandbox powers the TypeScript Playground. Learn how you can make your experiences like the playground using the sandbox." lang="en">
         <div id="dev">
           <DevNav active="sandbox" />
           <div className="raised content main-content-block">
@@ -273,11 +270,3 @@ const decorations = sandbox.editor.deltaDecorations([], [
 `
   }
 ]
-
-
-
-export const query = graphql`
-  query Sandbox {
-    ...AllSitePage
-  }
-`

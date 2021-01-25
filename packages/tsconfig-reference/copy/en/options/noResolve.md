@@ -1,6 +1,6 @@
 ---
 display: "No Resolve"
-oneline: "Do not use `import`s, `require`s or `<reference`s to expand the number of files TypeScript should add to a project."
+oneline: "Disallow `import`s, `require`s or `<reference>`s from expanding the number of files TypeScript should add to a project."
 ---
 
 By default, TypeScript will examine the initial set of files for `import` and `<reference` directives and add these resolved files to your program.

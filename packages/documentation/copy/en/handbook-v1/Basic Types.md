@@ -3,6 +3,7 @@ title: Basic Types
 layout: docs
 permalink: /docs/handbook/basic-types.html
 oneline: "Step one in learning TypeScript: The basic types."
+handbook: "true"
 ---
 
 For programs to be useful, we need to be able to work with some of the simplest units of data: numbers, strings, structures, boolean values, and the like.
@@ -39,7 +40,8 @@ Just like JavaScript, TypeScript also uses double quotes (`"`) or single quotes 
 
 ```ts twoslash
 let color: string = "blue";
-color = "red";
+// prettier-ignore
+color = 'red';
 ```
 
 You can also use _template strings_, which can span multiple lines and have embedded expressions.
@@ -337,11 +339,11 @@ declare function create(o: object | null): void;
 // OK
 create({ prop: 0 });
 create(null);
+create(undefined); // Remember, undefined is a subtype of null 
 
 create(42);
 create("string");
 create(false);
-create(undefined);
 ```
 
 Generally, you won't need to use this.

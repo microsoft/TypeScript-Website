@@ -9,7 +9,7 @@ import {
 import lzstring from "./vendor/lzstring.min"
 import { supportedReleases } from "./releases"
 import { getInitialCode } from "./getInitialCode"
-import { extractTwoSlashComplierOptions } from "./twoslashSupport"
+import { extractTwoSlashComplierOptions, twoslashCompletions } from "./twoslashSupport"
 import * as tsvfs from "./vendor/typescript-vfs"
 
 type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
@@ -169,8 +169,18 @@ export const createTypeScriptSandbox = (
 
   const getTwoSlashComplierOptions = extractTwoSlashComplierOptions(ts)
 
-  // Then update it when the model changes, perhaps this could be a debounced plugin instead in the future?
-  editor.onDidChangeModelContent(() => {
+  // Auto-complete twoslash comments
+  if (config.supportTwoslashCompilerOptions) {
+    const langs = ["javascript", "typescript"]
+    langs.forEach(l =>
+      monaco.languages.registerCompletionItemProvider(l, {
+        triggerCharacters: ["@", "/"],
+        provideCompletionItems: twoslashCompletions(ts, monaco),
+      })
+    )
+  }
+
+  const textUpdated = () => {
     const code = editor.getModel()!.getValue()
 
     if (config.supportTwoslashCompilerOptions) {
@@ -181,6 +191,17 @@ export const createTypeScriptSandbox = (
     if (config.acquireTypes) {
       detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
     }
+  }
+
+  // Debounced sandbox features like twoslash and type acquisition to once every second
+  let debouncingTimer = false
+  editor.onDidChangeModelContent(_e => {
+    if (debouncingTimer) return
+    debouncingTimer = true
+    setTimeout(() => {
+      debouncingTimer = false
+      textUpdated()
+    }, 1000)
   })
 
   config.logger.log("[Compiler] Set compiler options: ", compilerOptions)
@@ -309,6 +330,8 @@ export const createTypeScriptSandbox = (
 
   // Pass along the supported releases for the playground
   const supportedVersions = supportedReleases
+
+  textUpdated()
 
   return {
     /** The same config you passed in */

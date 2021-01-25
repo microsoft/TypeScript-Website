@@ -6,6 +6,7 @@ export type CompilerOptionName =
   | "watch"
   | "preserveWatchOutput"
   | "listFiles"
+  | "explainFiles"
   | "listEmittedFiles"
   | "pretty"
   | "traceResolution"
@@ -57,6 +58,7 @@ export type CompilerOptionName =
   | "noImplicitReturns"
   | "noFallthroughCasesInSwitch"
   | "noUncheckedIndexedAccess"
+  | "noPropertyAccessFromIndexSignature"
   | "moduleResolution"
   | "baseUrl"
   | "paths"
@@ -105,6 +107,5 @@ export type CompilerOptionName =
   | "maxNodeModuleJsDepth"
   | "noStrictGenericChecks"
   | "useDefineForClassFields"
-  | "bundledPackageName"
   | "keyofStringsOnly"
   | "plugins";

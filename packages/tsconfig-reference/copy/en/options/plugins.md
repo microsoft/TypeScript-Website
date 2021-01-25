@@ -1,6 +1,6 @@
 ---
 display: "Plugins"
-oneline: "A list of language service plugins to include"
+oneline: "Specify a list of language service plugins to include."
 ---
 
 List of language service plugins to run inside the editor.

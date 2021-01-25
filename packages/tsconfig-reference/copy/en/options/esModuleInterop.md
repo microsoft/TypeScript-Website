@@ -1,13 +1,13 @@
 ---
 display: "ES Module Interop"
-oneline: "Emit additional JS to ease support for importing commonjs modules, and enables `allowSyntheticDefaultImports` for type compatibility."
+oneline: "Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility."
 ---
 
 By default (with `esModuleInterop` false or not set) TypeScript treats CommonJS/AMD/UMD modules similar to ES6 modules. In doing this, there are two parts in particular which turned out to be flawed assumptions:
 
 - a namespace import like `import * as moment from "moment"` acts the same as `const moment = require("moment")`
 
-- a default import like `import moment as "moment"` acts the same as `const moment = require("moment").default`
+- a default import like `import moment from "moment"` acts the same as `const moment = require("moment").default`
 
 This mis-match causes these two issues:
 

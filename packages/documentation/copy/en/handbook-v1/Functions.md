@@ -3,6 +3,7 @@ title: Functions
 layout: docs
 permalink: /docs/handbook/functions.html
 oneline: How to add types to a function
+handbook: "true"
 ---
 
 Functions are the fundamental building block of any application in JavaScript.

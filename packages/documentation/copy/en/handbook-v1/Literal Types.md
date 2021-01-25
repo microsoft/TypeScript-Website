@@ -3,6 +3,7 @@ title: Literal Types
 layout: docs
 permalink: /docs/handbook/literal-types.html
 oneline: Using literal types with TypeScript
+handbook: "true"
 ---
 
 A literal is a more concrete sub-type of a collective type.
@@ -19,7 +20,7 @@ In contrast, using `const` to declare a variable will inform TypeScript that thi
 // We're making a guarantee that this variable
 // helloWorld will never change, by using const.
 
-// So, TypeScript sets the type to be "Hello World" not string
+// So, TypeScript sets the type to be "Hello World", not string
 const helloWorld = "Hello World";
 
 // On the other hand, a let can change, and so the compiler declares it a string
@@ -107,14 +108,12 @@ TypeScript also has boolean literal types. You might use these to constrain obje
 interface ValidationSuccess {
   isValid: true;
   reason: null;
-};
+}
 
 interface ValidationFailure {
   isValid: false;
   reason: string;
-};
+}
 
-type ValidationResult =
-  | ValidationSuccess
-  | ValidationFailure;
+type ValidationResult = ValidationSuccess | ValidationFailure;
 ```

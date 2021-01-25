@@ -6,7 +6,7 @@ by the [fourslash test system](https://github.com/orta/typescript-notes/blob/mas
 Used as a pre-parser before showing code samples inside the TypeScript website and to create a standard way for us
 to create examples for bugs on the compiler's issue tracker.
 
-You can preview twoslash on the TypeScript website here: https://typescriptlang.org/dev/twoslash
+You can preview twoslash on the TypeScript website here: https://www.typescriptlang.org/dev/twoslash/
 
 ### What is Twoslash?
 
@@ -710,14 +710,14 @@ Turns to:
 >     }
 >     return ar
 >   }
-> var __spread =
->   (this && this.__spread) ||
->   function () {
->     for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]))
->     return ar
+> var __spreadArray =
+>   (this && this.__spreadArray) ||
+>   function (to, from) {
+>     for (var i = 0, il = from.length, j = to.length; i < il; i++, j++) to[j] = from[i]
+>     return to
 >   }
 > export function fn(arr) {
->   var arr2 = __spread([1], arr)
+>   var arr2 = __spreadArray([1], __read(arr))
 > }
 > ```
 

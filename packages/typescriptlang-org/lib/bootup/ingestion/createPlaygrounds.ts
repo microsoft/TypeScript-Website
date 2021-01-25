@@ -1,12 +1,17 @@
 const path = require(`path`)
 const fs = require(`fs`)
+const { green } = require("chalk")
 
 import { NodePluginArgs, CreatePagesArgs } from "gatsby"
+import { addPathToSite } from "../pathsOnSiteTracker"
+import { isMultiLingual } from "./languageFilter"
 
 export const createPlaygrounds = async (
   graphql: CreatePagesArgs["graphql"],
   createPage: NodePluginArgs["actions"]["createPage"]
 ) => {
+  console.log(`${green("success")} Creating Playground Pages`)
+
   const playPage = path.resolve(`./src/templates/play.tsx`)
   const result = await graphql(`
     query GetAllPlaygroundLocalizations {
@@ -31,6 +36,8 @@ export const createPlaygrounds = async (
   const docs = anyData.allFile.nodes
 
   docs.forEach(lang => {
+    if (!isMultiLingual && lang !== "en") return
+
     const appRoot = path.join(__dirname, "..", "..", "..", "..")
     // prettier-ignore
     const examplesForLang = path.join(appRoot, "playground-examples", "generated", lang.name + ".json")
@@ -50,6 +57,8 @@ export const createPlaygrounds = async (
       .options
 
     const pathName = lang.name === "en" ? "/play" : `/${lang.name}/play`
+    addPathToSite(pathName)
+
     createPage({
       path: pathName,
       component: playPage,

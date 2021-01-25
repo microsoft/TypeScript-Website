@@ -5,16 +5,13 @@ import { withPrefix, graphql, Link } from "gatsby"
 import "./dev.scss"
 import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/devNav"
-import { PlaygroundPluginQuery } from "../../__generated__/gatsby-types"
 
-type Props = {
-  data: PlaygroundPluginQuery
-}
+type Props = {}
 
 const Index: React.FC<Props> = (props) => {
   return (
     <>
-      <Layout title="Developers - TypeScript VFS" description="Run TypeScript in the browser, or anywhere - using a virtual file-system" lang="en" allSitePage={props.data.allSitePage}>
+      <Layout title="Developers - TypeScript VFS" description="Run TypeScript in the browser, or anywhere - using a virtual file-system" lang="en">
         <div id="dev">
           <DevNav active="typescript vfs" />
           <div className="raised content main-content-block">
@@ -73,10 +70,3 @@ const index = program.getSourceFile('index.ts')
 }
 
 export default (props: Props) => <Intl locale="en"><Index {...props} /></Intl>
-
-
-export const query = graphql`
-  query TypeScriptVFS {
-    ...AllSitePage
-  }
-`

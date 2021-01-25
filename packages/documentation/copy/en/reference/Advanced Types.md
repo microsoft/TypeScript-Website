@@ -99,6 +99,26 @@ if (isFish(pet)) {
 Notice that TypeScript not only knows that `pet` is a `Fish` in the `if` branch;
 it also knows that in the `else` branch, you _don't_ have a `Fish`, so you must have a `Bird`.
 
+You may use the type guard `isFish` to filter an array of `Fish | Bird` and obtain an array of `Fish`:
+
+```ts twoslash
+// @errors: 2345
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+declare function getSmallPet(): Fish | Bird;
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined;
+}
+// ---cut---
+const zoo: (Fish | Bird)[] = [getSmallPet(), getSmallPet(), getSmallPet()];
+const underWater1: Fish[] = zoo.filter(isFish);
+// or, equivalently
+const underWater2: Fish[] = zoo.filter<Fish>(isFish);
+const underWater3: Fish[] = zoo.filter<Fish>(pet => isFish(pet));
+```
+
+
+
 ### Using the `in` operator
 
 The `in` operator also acts as a narrowing expression for types.

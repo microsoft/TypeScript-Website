@@ -1,12 +1,9 @@
 import * as React from "react"
 import { Layout } from "../../components/layout"
 import { Intl } from "../../components/Intl"
-import { graphql, } from "gatsby"
-import { EmptyPageQuery } from "../../__generated__/gatsby-types"
 
 type Props = {
   pageContext: any
-  data: EmptyPageQuery
 }
 
 import "./css/tools.scss"
@@ -18,9 +15,9 @@ const Col = (props: { children: any, className?: string }) => <div className={[p
 
 
 const Index: React.FC<Props> = (props) => {
-  const Link = createIntlLink(props.pageContext.lang, props.data.allSitePage)
+  const Link = createIntlLink(props.pageContext.lang)
 
-  return <Layout title="Reference Tools" description="Online tooling to help you understand TypeScript" lang={props.pageContext.lang} allSitePage={props.data.allSitePage}>
+  return <Layout title="Reference Tools" description="Online tooling to help you understand TypeScript" lang={props.pageContext.lang}>
     <div className="raised main-content-block">
       <Row>
         <Col>
@@ -38,6 +35,16 @@ const Index: React.FC<Props> = (props) => {
           <p>An annotated reference to more than a hundred compiler options available in a <code>tsconfig.json</code> or <code>jsconfig.json</code>.</p>
         </Col>
       </Row>
+      <Row>
+        <Col>
+          <a className="cropper" href="../dt/search">
+            <img src={require("../../../static/images/tools/dt-search.png")} alt="Preview of the Definitely Typed search" />
+            <p>Type Search</p>
+          </a>
+          <p>Search for npm modules with types from DefinitelyTyped or embedded in the module.</p>
+        </Col>
+        <Col>&nbsp;</Col>
+      </Row>
     </div>
 
     <div className="raised main-content-block" style={{ paddingBottom: "0.4rem" }}>
@@ -46,11 +53,5 @@ const Index: React.FC<Props> = (props) => {
   </Layout>
 
 }
-export const query = graphql`
-  query ToolsPage {
-      ...AllSitePage
-    }
-`
-
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Index {...props} /></Intl>

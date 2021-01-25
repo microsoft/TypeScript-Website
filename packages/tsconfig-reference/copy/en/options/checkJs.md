@@ -1,6 +1,6 @@
 ---
 display: "Check JS"
-oneline: "Report errors in type-checked JavaScript files."
+oneline: "Enable error reporting in type-checked JavaScript files."
 ---
 
 Works in tandem with `allowJs`. When `checkJs` is enabled then errors are reported in JavaScript files. This is

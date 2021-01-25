@@ -198,7 +198,8 @@ function applyMixins(derivedCtor: any, constructors: any[]) {
       Object.defineProperty(
         derivedCtor.prototype,
         name,
-        Object.getOwnPropertyDescriptor(baseCtor.prototype, name)
+        Object.getOwnPropertyDescriptor(baseCtor.prototype, name) ||
+          Object.create(null)
       );
     });
   });
@@ -238,7 +239,7 @@ player.shouldFreeze;
 
 // It the runtime aspect could be manually replicated via
 // type composition or interface merging.
-type FreezablePlayer = typeof Player & { shouldFreeze: boolean };
+type FreezablePlayer = Player & { shouldFreeze: boolean };
 
 const playerTwo = (new Player() as unknown) as FreezablePlayer;
 playerTwo.shouldFreeze;

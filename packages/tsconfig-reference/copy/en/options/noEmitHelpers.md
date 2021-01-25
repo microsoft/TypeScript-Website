@@ -1,6 +1,6 @@
 ---
 display: "No Emit Helpers"
-oneline: "Do not generate custom helper functions like __extends in compiled output."
+oneline: "Disable generating custom helper functions like `__extends` in compiled output."
 ---
 
 Instead of importing helpers with [`importHelpers`](#importHelpers), you can provide implementations in the global scope for the helpers you use and completely turn off emitting of helper functions.

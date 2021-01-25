@@ -18,7 +18,7 @@ import * as React from "react";
 例如：`allowSyntheticDefaultImports` 不为 true 时：
 
 ```ts twoslash
-// @errors: 1259
+// @errors: 1259 1192
 // @checkJs
 // @allowJs
 // @esModuleInterop: false
@@ -38,7 +38,6 @@ const count = utils.getStringLength("Check JS");
 
 这段代码会引发一个错误，因为没有“default”对象可以导入，即使你认为应该有。
 为了使用方便，Babel 这样的转译器会在没有默认导出时自动为其创建，使模块看起来更像：
-
 
 ```js
 // @filename: utilFunctions.js

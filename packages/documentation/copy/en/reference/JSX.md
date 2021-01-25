@@ -142,9 +142,17 @@ const Button = (prop: { value: string }, context: { color: string }) => (
 
 Because a Function Component is simply a JavaScript function, function overloads may be used here as well:
 
-```ts
+```ts twoslash
+// @noErrors
+declare module JSX {
+  interface Element {}
+  interface IntrinsicElements {
+    [s: string]: any;
+  }
+}
+// ---cut---
 interface ClickableProps {
-  children: JSX.Element[] | JSX.Element
+  children: JSX.Element[] | JSX.Element;
 }
 
 interface HomeProps extends ClickableProps {
@@ -156,8 +164,9 @@ interface SideProps extends ClickableProps {
 }
 
 function MainButton(prop: HomeProps): JSX.Element;
-function MainButton(prop: SideProps): JSX.Element {
-  ...
+function MainButton(prop: SideProps): JSX.Element;
+function MainButton(prop: ClickableProps): JSX.Element {
+  // ...
 }
 ```
 
@@ -195,7 +204,7 @@ function MyFactoryFunction() {
 // use a call signature
 var myComponent = MyFactoryFunction();
 
-// element class type => FactoryFunction
+// element class type => MyFactoryFunction
 // element instance type => { render: () => void }
 ```
 

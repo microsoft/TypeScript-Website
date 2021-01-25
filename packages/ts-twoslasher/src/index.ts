@@ -130,6 +130,16 @@ function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosit
   return { highlights, queries }
 }
 
+function getOptionValueFromMap(name: string, key: string, optMap: Map<string, string>) {
+  const result = optMap.get(key.toLowerCase())
+  log(`Get ${name} mapped option: ${key} => ${result}`)
+  if (result === undefined) {
+    const keys = Array.from(optMap.keys() as any)
+    throw new Error(`Invalid value ${key} for ${name}. Allowed values: ${keys.join(",")}`)
+  }
+  return result
+}
+
 function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
   log(`Setting ${name} to ${value}`)
 
@@ -143,18 +153,19 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
           break
 
         case "list":
-          opts[opt.name] = value.split(",").map(v => parsePrimitive(v, opt.element!.type as string))
+          const elementType = opt.element!.type
+          const strings = value.split(",")
+          if (typeof elementType === 'string') {
+            opts[opt.name] = strings.map(v => parsePrimitive(v, elementType))
+          } else {
+            opts[opt.name] = strings.map(v => getOptionValueFromMap(opt.name, v, elementType as Map<string, string>))
+          }
           break
 
         default:
           // It's a map!
           const optMap = opt.type as Map<string, string>
-          opts[opt.name] = optMap.get(value.toLowerCase())
-          log(`Set ${opt.name} to ${opts[opt.name]}`)
-          if (opts[opt.name] === undefined) {
-            const keys = Array.from(optMap.keys() as any)
-            throw new Error(`Invalid value ${value} for ${opt.name}. Allowed values: ${keys.join(",")}`)
-          }
+          opts[opt.name] = getOptionValueFromMap(opt.name, value, optMap)
           break
       }
       return

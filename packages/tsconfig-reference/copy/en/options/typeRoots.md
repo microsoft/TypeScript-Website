@@ -1,6 +1,6 @@
 ---
 display: "Type Roots"
-oneline: "Locations where TypeScript should look for type definitions."
+oneline: "Specify multiple folders that act like `./node_modules/@types`."
 ---
 
 By default all _visible_ "`@types`" packages are included in your compilation.

@@ -1,6 +1,6 @@
 ---
 display: "Module Resolution"
-oneline: "How TypeScript looks up a file based from a module specifier."
+oneline: "Specify how TypeScript looks up a file from a given module specifier."
 ---
 
 Specify the module resolution strategy: `'node'` (Node.js) or `'classic'` (used in TypeScript before the release of 1.6).

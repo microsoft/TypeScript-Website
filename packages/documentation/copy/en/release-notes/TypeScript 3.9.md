@@ -142,7 +142,7 @@ Pick `ts-expect-error` if:
 
 Pick `ts-ignore` if:
 
-- you have an a larger project and and new errors have appeared in code with no clear owner
+- you have a larger project and new errors have appeared in code with no clear owner
 - you are in the middle of an upgrade between two different versions of TypeScript, and a line of code errors in one version but not another.
 - you honestly don't have the time to decide which of these options is better.
 
@@ -369,7 +369,7 @@ foo?.bar!.baz;
 
 The JSX Specification forbids the use of the `}` and `>` characters in text positions.
 TypeScript and Babel have both decided to enforce this rule to be more comformant.
-The new way to insert these characters is to use an HTML escape code (e.g. `<span> 2 &gt 1 </div>`) or insert an expression with a string literal (e.g. `<span> 2 {">"} 1 </div>`).
+The new way to insert these characters is to use an HTML escape code (e.g. `<span> 2 &gt 1 </span>`) or insert an expression with a string literal (e.g. `<span> 2 {">"} 1 </span>`).
 
 Luckily, thanks to the [pull request](https://github.com/microsoft/TypeScript/pull/36636) enforcing this from [Brad Zacher](https://github.com/bradzacher), you'll get an error message along the lines of
 
@@ -381,7 +381,7 @@ Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
 For example:
 
 ```tsx
-let directions = <span>Navigate to: Menu Bar > Tools > Options</div>
+let directions = <span>Navigate to: Menu Bar > Tools > Options</span>
 //                                           ~       ~
 // Unexpected token. Did you mean `{'>'}` or `&gt;`?
 ```

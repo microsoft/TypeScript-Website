@@ -1,5 +1,7 @@
 // @ts-enable
 
+//  node packages/typescriptlang-org/scripts/makeMarkdownOfTranslations.js [lang]
+
 const { join, basename } = require("path")
 const { recursiveReadDirSync } = require("../lib/utils/recursiveReadDirSync")
 const { read } = require("gray-matter")
@@ -63,7 +65,7 @@ const toMarkdown = files => {
   const markdownLink = (f, done) => {
     const name = basename(f)
     const url =
-      "https://github.com/microsoft/TypeScript-Website/blob/v2/packages/"
+      "https://github.com/microsoft/TypeScript-Website/blob/v2/packages"
     const check = done ? "x" : " "
     return `- [${check}] [\`${name}\`](${url}${f.replace(/ /g, "%20")})`
   }

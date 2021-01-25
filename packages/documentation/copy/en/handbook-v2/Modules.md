@@ -221,7 +221,7 @@ import df from "m";
 df.greet();
 
 // Becomes (CommonJS; AMD is similar)
-var _m = df;
+var _m = require("m");
 _m.default.greet();
 ```
 

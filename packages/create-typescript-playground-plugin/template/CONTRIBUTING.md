@@ -12,7 +12,7 @@ Then set up the TypeScript playground to connect to a dev plugin at `http://loca
 
 #### Plugin API
 
-The plugin API is documented in the [interface PlaygroundPlugin in `./src/vendor/playground.d.ts`](src/vendor/playground.d.ts)
+The plugin API is documented in the [interface PlaygroundPlugin in `./src/index.ts`](src/index.ts).
 
 Roughly:
 
@@ -21,7 +21,7 @@ Roughly:
 
 ### Sandbox
 
-The plugins are passed copies of the TypeScript sandbox, which is a high level API wrapper to the [`monaco-editor`](https://microsoft.github.io/monaco-editor/). You can learn more about the sandbox on [the TypeScript website](http://www.typescriptlang.org/dev/sandbox/
+The plugins are passed copies of the TypeScript sandbox, which is a high level API wrapper to the [`monaco-editor`](https://microsoft.github.io/monaco-editor/). You can learn more about the sandbox on [the TypeScript website](http://www.typescriptlang.org/v2/dev/sandbox/).
 
 #### Rollup
 

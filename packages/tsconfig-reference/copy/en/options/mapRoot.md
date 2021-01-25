@@ -1,6 +1,6 @@
 ---
 display: "Map Root"
-oneline: "Specifies the location where debugger should locate map files instead of generated locations."
+oneline: "Specify the location where debugger should locate map files instead of generated locations."
 ---
 
 Specify the location where debugger should locate map files instead of generated locations.
