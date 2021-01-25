@@ -49,13 +49,13 @@ export const createTSConfigSingleFlagPages = async (
     const url = `/tsconfig/${option.name}`
 
     createPage({
-      path: withPrefix(url + ".html"),
+      path: url + ".html",
       component: playPage,
       context: {
         title: option.name,
         lang: "en",
         html: option.childMarkdownRemark.html,
-        redirectHref: withPrefix(`/tsconfig#${option.name}`),
+        redirectHref: `/tsconfig#${option.name}`,
       },
     })
   })
