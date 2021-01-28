@@ -2,7 +2,15 @@
   "name": "gatsby-remark-shiki-twoslash",
   "version": "0.7.0",
   "license": "MIT",
-  "homepage": "https://github.com/microsoft/TypeScript-Website/",
+  "homepage": "https://github.com/microsoft/TypeScript-Website",
+  "repository": {
+    "url": "https://github.com/microsoft/TypeScript-Website.git",
+    "directory": "packages/create-typescript-playground-plugin",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/microsoft/TypeScript-Website/issues"
+  },
   "description": "A remark plugin for Gatsby which adds twoslash code samples for TypeScript",
   "author": "Orta Therox",
   "main": "./dist/index.js",

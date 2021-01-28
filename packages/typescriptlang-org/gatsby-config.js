@@ -117,6 +117,13 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/../tsconfig-reference/copy/en/options`,
+        name: `tsconfig-en`,
+      },
+    },
+    {
       resolve: "gatsby-plugin-i18n",
       options: {
         langKeyDefault: "en",
