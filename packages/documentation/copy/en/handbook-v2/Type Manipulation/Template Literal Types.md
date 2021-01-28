@@ -155,7 +155,7 @@ Converts each character in the string to the uppercase version.
 ```ts twoslash
 type Greeting = "Hello, world"
 type ShoutyGreeting = Uppercase<Greeting>
-// ^?
+//   ^?
 
 type ASCIICacheKey<Str extends string> = `ID-${Uppercase<Str>}`
 type MainID = ASCIICacheKey<"my_app">
@@ -171,7 +171,7 @@ Converts each character in the string to the lowercase equivalent.
 ```ts twoslash
 type Greeting = "Hello, world"
 type QuietGreeting = Lowercase<Greeting>
-// ^?
+//   ^?
 
 type ASCIICacheKey<Str extends string> = `id-${Lowercase<Str>}`
 type MainID = ASCIICacheKey<"MY_APP">
