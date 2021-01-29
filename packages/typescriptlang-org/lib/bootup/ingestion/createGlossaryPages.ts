@@ -1,5 +1,6 @@
 const path = require(`path`)
 const { green } = require("chalk")
+const { readFileSync } = require("fs")
 
 import { NodePluginArgs, CreatePagesArgs } from "gatsby"
 import { addPathToSite } from "../pathsOnSiteTracker"
@@ -10,7 +11,7 @@ export const createGlossaryPages = async (
   createPage: NodePluginArgs["actions"]["createPage"]
 ) => {
   console.log(`${green("success")} Creating Glossary pages`)
-  const tsConfigRefPage = path.resolve(`./src/templates/glossary.tsx`)
+  const GlossaryTemplatePath = path.resolve(`./src/templates/glossary.tsx`)
   const result = await graphql(`
     query GetAllHandbookDocs {
       allFile(
@@ -33,11 +34,11 @@ export const createGlossaryPages = async (
   const docs = anyData.allFile.nodes
 
   docs.forEach(element => {
-    // prettier-ignore
-    const categoriesForLang = path.join( __dirname, "..", "..", "..", "..", "glossary", "output", element.name + ".json")
-
     const lang = element.name
     if (!isMultiLingual && lang !== "en") return
+
+    // prettier-ignore
+    const termsForLang = JSON.parse(readFileSync(path.join( __dirname, "..", "..", "..", "..", "glossary", "output", element.name + ".json"), "utf8"))
 
     // Support urls being consistent with the current infra, e.g. en with no prefix
     const pagePath = (lang === "en" ? "" : "/" + lang) + "/glossary"
@@ -45,11 +46,11 @@ export const createGlossaryPages = async (
 
     createPage({
       path: pagePath,
-      component: tsConfigRefPage,
+      component: GlossaryTemplatePath,
       context: {
         locale: element.name,
-        tsconfigMDPath: element.absolutePath,
-        categoriesPath: categoriesForLang,
+        glossaryPath: element.absolutePath,
+        languageMeta: termsForLang,
       },
     })
   })

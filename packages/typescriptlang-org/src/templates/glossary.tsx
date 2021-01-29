@@ -70,9 +70,16 @@ const GlossaryTemplateComponent = (props) => {
       // window.removeEventListener("scroll", updateSidebar)
     }
   }, [])
-
+  const meta = props.pageContext.languageMeta as typeof import("../../../glossary/output/en.json")
+  console.log(props)
   return (
     <Layout title={i("tsconfig_title")} description={i("tsconfig_description")} lang={props.pageContext.locale}>
+
+      <ul>
+        {meta.terms.map(t => {
+          return <li><a href={"#" + t.id}>{t.display}</a></li>
+        })}
+      </ul>
       <div dangerouslySetInnerHTML={{ __html: post.html! }} />
     </Layout>
   )
@@ -80,8 +87,8 @@ const GlossaryTemplateComponent = (props) => {
 
 
 export const pageQuery = graphql`
-  query GlossaryTemplate($tsconfigMDPath: String!) {
-    markdownRemark(fileAbsolutePath: {eq: $tsconfigMDPath} ) {
+  query GlossaryTemplate($glossaryPath: String!) {
+    markdownRemark(fileAbsolutePath: {eq: $glossaryPath} ) {
       id
       html
       frontmatter {

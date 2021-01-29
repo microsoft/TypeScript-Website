@@ -14,7 +14,7 @@
  *
  */
 
-import { writeFileSync, readdirSync, existsSync, readFileSync, mkdirSync } from "fs";
+import { writeFileSync, readdirSync, existsSync, mkdirSync } from "fs";
 import { join } from "path";
 import * as assert from "assert";
 import { read as readMarkdownFile } from "gray-matter";
@@ -22,8 +22,6 @@ import * as prettier from "prettier";
 
 import * as remark from "remark";
 import * as remarkHTML from "remark-html";
-
-const parseMarkdown = (md: string) => remark().use(remarkHTML).processSync(md);
 
 const languages = readdirSync(join(__dirname, "..", "copy")).filter((f) => !f.startsWith("."));
 
@@ -34,6 +32,7 @@ languages.forEach((lang) => {
   const locale = join(__dirname, "..", "copy", lang);
   const fallbackLocale = join(__dirname, "..", "copy", "en");
 
+  const languageMeta = { terms: [] };
   const markdownChunks: string[] = [];
 
   const glossaryTerms = readdirSync(join(__dirname, "..", "copy", "en")).filter(
@@ -65,19 +64,26 @@ languages.forEach((lang) => {
         const md = readMarkdownFile(glossaryMdPath);
         assert.ok(md.data.display, "No display data for term: " + filename);
 
-        markdownChunks.push(`\n### ${md.data.display}`);
+        const termID = filename.split(".")[0].toLowerCase();
+        const termDisplay = md.data.display;
+        languageMeta.terms.push({ display: termDisplay, id: termID });
+
+        const title = `<h3 id='${termID}' ><a href='#${termID}' name='${termDisplay}' aria-label="Link to the section ${termDisplay}" aria-labelledby='${termID}'>#</a> ${termDisplay}</h3>`;
+        markdownChunks.push(title);
+
         markdownChunks.push(md.content);
       });
     });
   });
 
-  // const intro = parseMarkdown(readFileSync(getPathInLocale("intro.md"), "utf8"));
-  // markdownChunks.push(intro + "\n");
-
   // Write the Markdown and JSON
   const markdown = prettier.format(markdownChunks.join("\n"), { filepath: "index.md" });
   const mdPath = join(__dirname, "..", "output", lang + ".md");
   writeFileSync(mdPath, markdown);
+
+  const jsonInfo = prettier.format(JSON.stringify(languageMeta), { filepath: "index.json" });
+  const jsonPath = join(__dirname, "..", "output", lang + ".json");
+  writeFileSync(jsonPath, jsonInfo);
 });
 
 writeFileSync(join(__dirname, "..", "output", "languages.json"), JSON.stringify({ languages }));

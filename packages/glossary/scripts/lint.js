@@ -64,13 +64,6 @@ languages.forEach((lang) => {
       errorReports.push({ path: optionPath, error: new Error("Did not have a 'display' property in the YML header") });
     }
 
-    if (!optionFile.data.tags) {
-      hasError = true;
-      // prettier-ignore
-
-      errorReports.push({ path: optionPath, error: new Error("Did not have a 'tags' property in the YML header") });
-    }
-
     const sigil = hasError ? cross : tick;
     const name = hasError ? chalk.red(option) : option;
     process.stdout.write(name + " " + sigil + ", ");
