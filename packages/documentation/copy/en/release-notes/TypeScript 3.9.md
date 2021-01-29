@@ -308,15 +308,15 @@ By default, editors powered by TypeScript's language server do this by walking u
 
 One case where this slightly fell over is when a `tsconfig.json` simply existed to reference other `tsconfig.json` files.
 
-```json5
+```jsonc tsconfig
 // tsconfig.json
 {
   "files": [],
   "references": [
     { "path": "./tsconfig.shared.json" },
     { "path": "./tsconfig.frontend.json" },
-    { "path": "./tsconfig.backend.json" },
-  ],
+    { "path": "./tsconfig.backend.json" }
+  ]
 }
 ```
 
@@ -381,7 +381,7 @@ Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
 For example:
 
 ```tsx
-let directions = <span>Navigate to: Menu Bar > Tools > Options</span>
+let directions = <span>Navigate to: Menu Bar > Tools > Options</span>;
 //                                           ~       ~
 // Unexpected token. Did you mean `{'>'}` or `&gt;`?
 ```

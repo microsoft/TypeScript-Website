@@ -29,7 +29,7 @@ Anda bisa mempelajari cara melakukan ini di [halaman instalasi](/download) kami.
 TSConfig adalah berkas jsonc yang mengkonfigurasi kedua _flag_ kompilator Anda, dan menyatakan di mana mencari berkas.
 Dalam kasus ini, Anda menginginkan berkas seperti berikut:
 
-```json5
+```jsonc tsconfig
 {
   // Ubah ini agar sesuai dengan proyek Anda
   "include": ["src/**/*"],
@@ -46,8 +46,8 @@ Dalam kasus ini, Anda menginginkan berkas seperti berikut:
     // Tipe harus masuk ke direktori ini.
     // Menghapus ini akan menempatkan berkas .d.ts
     // di sebelah berkas .js
-    "outDir": "dist",
-  },
+    "outDir": "dist"
+  }
 }
 ```
 

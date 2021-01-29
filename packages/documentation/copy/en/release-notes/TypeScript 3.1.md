@@ -50,7 +50,7 @@ Additionally, this approach for property declarations allows us to express commo
 export const FooComponent = ({ name }) => <div>Hello! I am {name}</div>;
 
 FooComponent.defaultProps = {
-  name: "(anonymous)"
+  name: "(anonymous)",
 };
 ```
 
@@ -105,7 +105,7 @@ The way that TypeScript decides on whether a version of the compiler & language 
 
 `typesVersions` can support multiple fields where each field name is specified by the range to match on.
 
-```json
+```json tsconfig
 {
   "name": "package-name",
   "version": "1.0",
@@ -120,7 +120,7 @@ The way that TypeScript decides on whether a version of the compiler & language 
 Since ranges have the potential to overlap, determining which redirect applies is order-specific.
 That means in the above example, even though both the `>=3.2` and the `>=3.1` matchers support TypeScript 3.2 and above, reversing the order could have different behavior, so the above sample would not be equivalent to the following.
 
-```json5
+```jsonc tsconfig
 {
   "name": "package-name",
   "version": "1.0",

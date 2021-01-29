@@ -30,7 +30,7 @@ Você pode aprender como fazer isso em nossa [página de instalação](/download
 O TSConfig é um arquivo jsonc que configura ambos os sinalizadores do compilador e declara onde encontrar os arquivos.
 Neste caso, você vai querer um arquivo como o seguinte:
 
-```json5
+```jsonc tsconfig
 {
   // Mude isso para corresponder ao seu projeto
   "include": ["src/**/*"],
@@ -47,8 +47,8 @@ Neste caso, você vai querer um arquivo como o seguinte:
     // Tipos devem ir neste diretório.
     // Remover isso colocará arquivos .d.ts
     // ao lado dos arquivos .js
-    "outDir": "dist",
-  },
+    "outDir": "dist"
+  }
 }
 ```
 

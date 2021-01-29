@@ -30,7 +30,7 @@ You can learn how to do this in our [installation page](/download).
 The TSConfig is a jsonc file which configures both your compiler flags, and declare where to find files.
 In this case, you will want a file like the following:
 
-```json5
+```jsonc tsconfig
 {
   // Change this to match your project
   "include": ["src/**/*"],
@@ -47,8 +47,8 @@ In this case, you will want a file like the following:
     // Types should go into this directory.
     // Removing this would place the .d.ts files
     // next to the .js files
-    "outDir": "dist",
-  },
+    "outDir": "dist"
+  }
 }
 ```
 
