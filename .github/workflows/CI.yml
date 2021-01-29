@@ -15,7 +15,9 @@ jobs:
       - uses: actions/cache@v2
         id: yarn-cache
         with:
-          path: "node_modules"
+          path: |
+            packages/typescriptlang-org/.cache
+            **/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-

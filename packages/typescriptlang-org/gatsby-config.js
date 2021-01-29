@@ -1,5 +1,5 @@
 if (process.env.BOOTSTRAPPING) {
-  const chalk = require("chalk").default
+  const chalk = require("chalk")
   const readline = require("readline")
   const blank = "\n".repeat(process.stdout.rows)
   console.log(blank)

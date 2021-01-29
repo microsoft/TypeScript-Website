@@ -3,7 +3,7 @@
 
 // yarn workspace glossary lint
 
-const chalk = require("chalk").default;
+const chalk = require("chalk");
 
 const tick = chalk.bold.greenBright("✓");
 const cross = chalk.bold.redBright("⤫");
