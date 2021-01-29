@@ -96,7 +96,7 @@ export const renderCodeToHTML = (
   }
 
   // TSConfig renderer
-  if (lang === "json" && info.includes("tsconfig")) {
+  if (lang.startsWith("json") && info.includes("tsconfig")) {
     return tsconfigJSONRenderer(tokens, shikiOptions || {})
   }
 

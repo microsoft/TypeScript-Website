@@ -503,15 +503,15 @@ In TypeScript 4.0, users can customize the fragment factory through the new `jsx
 
 As an example, the following `tsconfig.json` file tells TypeScript to transform JSX in a way compatible with React, but switches each factory invocation to `h` instead of `React.createElement`, and uses `Fragment` instead of `React.Fragment`.
 
-```json5
+```jsonc  twoslash
 {
   "compilerOptions": {
     "target": "esnext",
     "module": "commonjs",
     "jsx": "react",
     "jsxFactory": "h",
-    "jsxFragmentFactory": "Fragment",
-  },
+    "jsxFragmentFactory": "Fragment"
+  }
 }
 ```
 
