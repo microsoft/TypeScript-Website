@@ -29,9 +29,6 @@ module.exports = {
     siteUrl: `https://www.typescriptlang.org/`,
   },
 
-  // This should only be used in a CI deploy while we're working in a v2 sub-folder
-  pathPrefix: `/v2`,
-
   plugins: [
     // SCSS provides inheritance for CSS and which pays the price for the dep
     {
@@ -73,7 +70,7 @@ module.exports = {
       resolve: `gatsby-plugin-sitemap`,
       options: {
         // Skip handbook v2 frmo appearing in search
-        exclude: [`*/2/*`],
+        exclude: [`*/2/*`, `*/glossary`],
       },
     },
     // Lets you edit the head from inside a react tree
@@ -92,6 +89,14 @@ module.exports = {
       options: {
         path: `${__dirname}/../tsconfig-reference/output`,
         name: `tsconfig-reference`,
+      },
+    },
+    // Grabs file from the tsconfig reference
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/../glossary/output`,
+        name: `glossary`,
       },
     },
     {
