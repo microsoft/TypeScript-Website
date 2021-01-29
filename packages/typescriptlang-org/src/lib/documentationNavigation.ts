@@ -714,7 +714,7 @@ export function getDocumentationNavForLanguage(
             {
               title: "Keyof Type Operator",
               id: "8keyof-type-operator",
-              permalink: "/docs/handbook/2/indexed-access-types.html",
+              permalink: "/docs/handbook/2/keyof-types.html",
               oneline: "Using the keyof operator in type contexts.",
             },
             {
@@ -1455,7 +1455,7 @@ export function getDocumentationNavForLanguage(
             {
               title: "Keyof Type Operator",
               id: "8keyof-type-operator",
-              permalink: "/docs/handbook/2/indexed-access-types.html",
+              permalink: "/docs/handbook/2/keyof-types.html",
               oneline: "Using the keyof operator in type contexts.",
             },
             {
@@ -2197,7 +2197,7 @@ export function getDocumentationNavForLanguage(
             {
               title: "Keyof Type Operator",
               id: "8keyof-type-operator",
-              permalink: "/docs/handbook/2/indexed-access-types.html",
+              permalink: "/docs/handbook/2/keyof-types.html",
               oneline: "Using the keyof operator in type contexts.",
             },
             {
@@ -2938,7 +2938,7 @@ export function getDocumentationNavForLanguage(
             {
               title: "Keyof Type Operator",
               id: "8keyof-type-operator",
-              permalink: "/docs/handbook/2/indexed-access-types.html",
+              permalink: "/docs/handbook/2/keyof-types.html",
               oneline: "Using the keyof operator in type contexts.",
             },
             {
@@ -3679,7 +3679,7 @@ export function getDocumentationNavForLanguage(
             {
               title: "Keyof Type Operator",
               id: "8keyof-type-operator",
-              permalink: "/docs/handbook/2/indexed-access-types.html",
+              permalink: "/docs/handbook/2/keyof-types.html",
               oneline: "Using the keyof operator in type contexts.",
             },
             {
@@ -4420,7 +4420,7 @@ export function getDocumentationNavForLanguage(
             {
               title: "Keyof Type Operator",
               id: "8keyof-type-operator",
-              permalink: "/docs/handbook/2/indexed-access-types.html",
+              permalink: "/docs/handbook/2/keyof-types.html",
               oneline: "Using the keyof operator in type contexts.",
             },
             {
@@ -5161,7 +5161,7 @@ export function getDocumentationNavForLanguage(
             {
               title: "Keyof Type Operator",
               id: "8keyof-type-operator",
-              permalink: "/docs/handbook/2/indexed-access-types.html",
+              permalink: "/docs/handbook/2/keyof-types.html",
               oneline: "Using the keyof operator in type contexts.",
             },
             {
@@ -5902,7 +5902,7 @@ export function getDocumentationNavForLanguage(
             {
               title: "Keyof Type Operator",
               id: "8keyof-type-operator",
-              permalink: "/docs/handbook/2/indexed-access-types.html",
+              permalink: "/docs/handbook/2/keyof-types.html",
               oneline: "Using the keyof operator in type contexts.",
             },
             {
