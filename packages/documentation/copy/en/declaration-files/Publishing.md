@@ -127,7 +127,7 @@ The way that TypeScript decides on whether a version of the compiler & language 
 
 `typesVersions` can support multiple fields where each field name is specified by the range to match on.
 
-```json twoslash
+```json tsconfig
 {
   "name": "package-name",
   "version": "1.0",
