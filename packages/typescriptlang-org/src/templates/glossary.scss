@@ -1,0 +1,42 @@
+@import "../style/globals.scss";
+
+#glossary {
+  ul.filterable-quicklinks {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  li {
+    list-style: none;
+    background-color: white;
+    color: black;
+    padding: 0.3rem 0.3rem;
+    text-decoration: none;
+    cursor: pointer;
+    margin: 0.1rem;
+
+    @media screen and (-ms-high-contrast: active) {
+      border: 2px solid grey;
+    }
+
+    &:hover,
+    &.focus {
+      background-color: #eee;
+    }
+
+    &:active {
+      background-color: #ddd;
+    }
+
+    a {
+      text-decoration: none;
+      color: black;
+
+      &:visited {
+        color: rgb(80, 80, 80);
+      }
+    }
+  }
+}
