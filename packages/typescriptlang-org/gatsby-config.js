@@ -29,9 +29,6 @@ module.exports = {
     siteUrl: `https://www.typescriptlang.org/`,
   },
 
-  // This should only be used in a CI deploy while we're working in a v2 sub-folder
-  pathPrefix: `/v2`,
-
   plugins: [
     // SCSS provides inheritance for CSS and which pays the price for the dep
     {

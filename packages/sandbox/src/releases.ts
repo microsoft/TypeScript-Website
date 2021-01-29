@@ -19,7 +19,7 @@ export const allReleases = [
   "2.8.1",
   "2.7.2",
   "2.4.1",
-] as const
+] as const;
 
 /** The latest major.min version **/
 export const supportedReleases = [
@@ -37,7 +37,7 @@ export const supportedReleases = [
   "2.8.1",
   "2.7.2",
   "2.4.1",
-] as const
+] as const;
 
 /** A type of all versions **/
 export type ReleaseVersions =
@@ -60,4 +60,4 @@ export type ReleaseVersions =
   | "3.0.1"
   | "2.8.1"
   | "2.7.2"
-  | "2.4.1"
+  | "2.4.1";
