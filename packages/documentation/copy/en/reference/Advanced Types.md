@@ -59,7 +59,7 @@ It would be much better if once we performed the check, we could know the type o
 It just so happens that TypeScript has something called a _type guard_.
 A type guard is some expression that performs a runtime check that guarantees the type in some scope.
 
-#### Using type predicates
+### Using type predicates
 
 To define a type guard, we simply need to define a function whose return type is a _type predicate_:
 
