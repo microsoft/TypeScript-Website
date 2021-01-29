@@ -308,7 +308,7 @@ By default, editors powered by TypeScript's language server do this by walking u
 
 One case where this slightly fell over is when a `tsconfig.json` simply existed to reference other `tsconfig.json` files.
 
-```jsonc  twoslash
+```jsonc tsconfig
 // tsconfig.json
 {
   "files": [],

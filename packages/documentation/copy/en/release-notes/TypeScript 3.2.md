@@ -179,7 +179,7 @@ function unwrap<T>(result: Result<T>) {
 
 TypeScript 3.2 now resolves `tsconfig.json`s from `node_modules`. When using a bare path for the `"extends"` field in `tsconfig.json`, TypeScript will dive into `node_modules` packages for us.
 
-```jsonc  twoslash
+```jsonc tsconfig
 {
   "extends": "@my-team/tsconfig-base",
   "include": ["./**/*"],

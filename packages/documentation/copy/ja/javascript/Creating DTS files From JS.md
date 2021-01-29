@@ -30,7 +30,7 @@ TypeScript はほとんどの JSDoc タグをサポートしています。リ�
 TSConfig はコンパイラのフラグを設定し、対象のファイルを宣言するための jsonc ファイルです。
 今回のケースでは、次のようなファイルが必要になるでしょう:
 
-```jsonc  twoslash
+```jsonc tsconfig
 {
   // プロジェクトに合わせて変更してください
   "include": ["src/**/*"],

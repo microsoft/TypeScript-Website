@@ -30,7 +30,7 @@ Você pode aprender como fazer isso em nossa [página de instalação](/download
 O TSConfig é um arquivo jsonc que configura ambos os sinalizadores do compilador e declara onde encontrar os arquivos.
 Neste caso, você vai querer um arquivo como o seguinte:
 
-```jsonc  twoslash
+```jsonc tsconfig
 {
   // Mude isso para corresponder ao seu projeto
   "include": ["src/**/*"],

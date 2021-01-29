@@ -142,7 +142,7 @@ The way that TypeScript decides on whether a version of the compiler & language 
 Since ranges have the potential to overlap, determining which redirect applies is order-specific.
 That means in the above example, even though both the `>=3.2` and the `>=3.1` matchers support TypeScript 3.2 and above, reversing the order could have different behavior, so the above sample would not be equivalent to the following.
 
-```jsonc twoslash
+```jsonc tsconfig
 {
   "name": "package-name",
   "version": "1.0",

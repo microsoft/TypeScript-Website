@@ -10,7 +10,7 @@ oneline: TypeScript 3.4 Release Notes
 TypeScript 3.4 introduces a new flag called `--incremental` which tells TypeScript to save information about the project graph from the last compilation.
 The next time TypeScript is invoked with `--incremental`, it will use that information to detect the least costly way to type-check and emit changes to your project.
 
-```jsonc twoslash
+```jsonc tsconfig
 // tsconfig.json
 {
   "compilerOptions": {
@@ -28,7 +28,7 @@ But if it does, `tsc` will try to use that file to incrementally type-check and 
 These `.tsbuildinfo` files can be safely deleted and don't have any impact on our code at runtime - they're purely used to make compilations faster.
 We can also name them anything that we want, and place them anywhere we want using the `--tsBuildInfoFile` flag.
 
-```jsonc  twoslash
+```jsonc tsconfig
 // front-end.tsconfig.json
 {
   "compilerOptions": {
