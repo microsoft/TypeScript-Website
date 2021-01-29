@@ -182,7 +182,7 @@ TypeScript 3.2 now resolves `tsconfig.json`s from `node_modules`. When using a b
 ```json5
 {
     "extends": "@my-team/tsconfig-base",
-    "include": ["./**/*"]
+    "include": ["./**/*"],
     "compilerOptions": {
         // Override certain options on a project-by-project basis.
         "strictBindCallApply": false,

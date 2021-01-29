@@ -505,12 +505,12 @@ As an example, the following `tsconfig.json` file tells TypeScript to transform 
 
 ```json5
 {
-  compilerOptions: {
-    target: "esnext",
-    module: "commonjs",
-    jsx: "react",
-    jsxFactory: "h",
-    jsxFragmentFactory: "Fragment",
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "jsx": "react",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
   },
 }
 ```

@@ -32,21 +32,21 @@ Dalam kasus ini, Anda menginginkan berkas seperti berikut:
 ```json5
 {
   // Ubah ini agar sesuai dengan proyek Anda
-  include: ["src/**/*"],
+  "include": ["src/**/*"],
 
-  compilerOptions: {
+  "compilerOptions": {
     // Memberi tahu TypeScript untuk membaca berkas JS,
     // karena biasanya berkas tersebut diabaikan sebagai berkas sumber
-    allowJs: true,
+    "allowJs": true,
     // Hasilkan berkas d.ts
-    declaration: true,
+    "declaration": true,
     // Proses kompilator ini seharusnya
     // hanya mengeluarkan berkas d.ts
-    emitDeclarationOnly: true,
+    "emitDeclarationOnly": true,
     // Tipe harus masuk ke direktori ini.
     // Menghapus ini akan menempatkan berkas .d.ts
     // di sebelah berkas .js
-    outDir: "dist",
+    "outDir": "dist",
   },
 }
 ```

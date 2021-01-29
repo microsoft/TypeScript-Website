@@ -885,12 +885,12 @@ As an example, the following `tsconfig.json` file tells TypeScript to transform 
 
 ```json5
 {
-  compilerOptions: {
-    target: "esnext",
-    module: "commonjs",
-    jsx: "react",
-    jsxFactory: "h",
-    jsxFragmentFactory: "Fragment",
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "jsx": "react",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
   },
 }
 ```
@@ -3991,7 +3991,7 @@ TypeScript 3.2 now resolves `tsconfig.json`s from `node_modules`. When using a b
 ```json tsconfig
 {
     "extends": "@my-team/tsconfig-base",
-    "include": ["./**/*"]
+    "include": ["./**/*"],
     "compilerOptions": {
         // Override certain options on a project-by-project basis.
         "strictBindCallApply": false,

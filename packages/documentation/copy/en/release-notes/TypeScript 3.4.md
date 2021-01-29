@@ -13,11 +13,11 @@ The next time TypeScript is invoked with `--incremental`, it will use that infor
 ```json5
 // tsconfig.json
 {
-  compilerOptions: {
-    incremental: true,
-    outDir: "./lib"
+  "compilerOptions": {
+    "incremental": true,
+    "outDir": "./lib"
   },
-  include: ["./src"]
+  "include": ["./src"]
 }
 ```
 
@@ -31,12 +31,12 @@ We can also name them anything that we want, and place them anywhere we want usi
 ```json5
 // front-end.tsconfig.json
 {
-  compilerOptions: {
-    incremental: true,
-    tsBuildInfoFile: "./buildcache/front-end",
-    outDir: "./lib"
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "./buildcache/front-end",
+    "outDir": "./lib"
   },
-  include: ["./src"]
+  "include": ["./src"]
 }
 ```
 
