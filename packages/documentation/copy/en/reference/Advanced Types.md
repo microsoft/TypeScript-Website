@@ -218,11 +218,11 @@ let padder: Padder = getRandomPadder();
 
 if (padder instanceof SpaceRepeatingPadder) {
   padder;
-  //     ^?
+  //   ^?
 }
 if (padder instanceof StringPadder) {
   padder;
-  //     ^?
+  //   ^?
 }
 ```
 
