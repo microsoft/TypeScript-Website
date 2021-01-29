@@ -1,7 +1,7 @@
 ---
 title: Keyof Type Operator
 layout: docs
-permalink: /docs/handbook/2/indexed-access-types.html
+permalink: /docs/handbook/2/keyof-types.html
 oneline: "Using the keyof operator in type contexts."
 beta: true
 ---

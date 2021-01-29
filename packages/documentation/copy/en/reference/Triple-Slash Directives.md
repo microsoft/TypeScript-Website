@@ -32,9 +32,9 @@ The process starts with a set of _root files_;
 these are the file names specified on the command-line or in the `"files"` list in the `tsconfig.json` file.
 These root files are preprocessed in the same order they are specified.
 Before a file is added to the list, all triple-slash references in it are processed, and their targets included.
-Triple-slash references are resolved in a depth first manner, in the order they have been seen in the file.
+Triple-slash references are resolved in a depth-first manner, in the order they have been seen in the file.
 
-A triple-slash reference path is resolved relative to the containing file, if unrooted.
+A triple-slash reference path is resolved relative to the containing file, if a relative path is used.
 
 ### Errors
 

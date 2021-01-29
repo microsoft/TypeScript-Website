@@ -3,6 +3,15 @@
   "version": "1.1.2",
   "license": "MIT",
   "author": "TypeScript team",
+  "homepage": "https://github.com/microsoft/TypeScript-Website",
+  "repository": {
+    "url": "https://github.com/microsoft/TypeScript-Website.git",
+    "directory": "packages/create-typescript-playground-plugin",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/microsoft/TypeScript-Website/issues"
+  },
   "main": "dist/index.js",
   "module": "dist/twoslash.esm.js",
   "typings": "dist/index.d.ts",

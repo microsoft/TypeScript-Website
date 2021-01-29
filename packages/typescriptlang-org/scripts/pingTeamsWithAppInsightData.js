@@ -20,10 +20,10 @@ const go = async () => {
   const handbook = await getCountForSessions("Handbook")
 
   const JSinTSPages = [
-    "TypeScript: Handbook - JSDoc Reference",
-    "TypeScript: Handbook - Migrating from JavaScript",
-    "TypeScript: Handbook - Type Checking JavaScript Files",
-    "TypeScript: Handbook - Creating .d.ts Files from .js files",
+    "TypeScript: Documentation - JSDoc Reference",
+    "TypeScript: Documentation - Migrating from JavaScript",
+    "TypeScript: Documentation - Type Checking JavaScript Files",
+    "TypeScript: Documentation - Creating .d.ts Files from .js files",
   ]
   const jsInTS = await getCountForQuery(getSessionsInList(JSinTSPages))
 
