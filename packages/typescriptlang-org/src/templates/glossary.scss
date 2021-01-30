@@ -7,34 +7,35 @@
     align-items: center;
     flex-wrap: wrap;
     justify-content: center;
-  }
-  li {
-    list-style: none;
-    background-color: #e0e0e0;
-    padding: 0.3rem 0.3rem;
-    text-decoration: none;
-    cursor: pointer;
-    margin: 0.1rem;
 
-    @media screen and (-ms-high-contrast: active) {
-      border: 2px solid grey;
-    }
-
-    &:hover,
-    &.focus {
-      background-color: rgb(206, 206, 206);
-    }
-
-    &:active {
-      background-color: rgb(173, 173, 173);
-    }
-
-    a {
+    li {
+      list-style: none;
+      background-color: #e0e0e0;
+      padding: 0.3rem 0.3rem;
       text-decoration: none;
-      color: black;
+      cursor: pointer;
+      margin: 0.1rem;
 
-      &:visited {
-        color: rgb(80, 80, 80);
+      @media screen and (-ms-high-contrast: active) {
+        border: 2px solid grey;
+      }
+
+      &:hover,
+      &.focus {
+        background-color: rgb(206, 206, 206);
+      }
+
+      &:active {
+        background-color: rgb(173, 173, 173);
+      }
+
+      a {
+        text-decoration: none;
+        color: black;
+
+        &:visited {
+          color: rgb(80, 80, 80);
+        }
       }
     }
   }
