@@ -20,7 +20,7 @@ safe.printContents();
 
 // this/self를 쉽게 예상할 수 있는 객체지향언어 경험이 있다면
 // 'this'가 얼마나 혼란스러울 수 있는지
-// 읽어볼 필요가 있다는 것을 알게 될 것입니다:
+// 확인할 필요가 있습니다:
 //
 // https://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/
 // https://aka.ms/AA5ugm2
