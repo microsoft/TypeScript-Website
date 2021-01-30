@@ -152,3 +152,8 @@ html,
   display: flex;
   flex-direction: column;
 }
+
+.dark-theme pre {
+  mix-blend-mode: difference;
+  filter: invert(98%) hue-rotate(180deg);
+}
