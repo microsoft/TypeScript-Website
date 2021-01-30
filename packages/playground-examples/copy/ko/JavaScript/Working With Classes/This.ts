@@ -50,11 +50,11 @@ objectNotCapturingThis.print();
 const customObjectCapturingThisAgain = { contents: "N/A", print: safe.printContents.bind(safe) };
 customObjectCapturingThisAgain.print();
 
-// 예기치 못한 this context를 해결하기 위하여,
+// 예기치 못한 이 context를 해결하기 위하여,
 // 클래스에서 함수를 생성하는 방법을 변경할 수도 있습니다.
 // 화살표 함수를 사용하는 프로퍼티를 만듦으로써,
 // this의 바인딩은 다른 시간에 수행합니다.
-// 따라서 JavaScript 런타임에 덜 수행했던 context는
+// 따라서 덜 수행했던 context는 JavaScript 런타임에
 // 더 예측할 수 있습니다.
 
 class SafelyBoundSafe {
