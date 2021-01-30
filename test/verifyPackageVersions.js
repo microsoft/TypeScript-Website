@@ -26,7 +26,12 @@ packages.forEach(d => {
       }
     })
   })
+
   if (write) {
+    const [major, minor, patch] = p.version.split(".")
+    if (major !== "0" && minor !== "0" && patch !== "0") {
+      p.version = `${major}.${minor}.${Number(patch) + 1}`
+    }
     writeFileSync(d.path, format(JSON.stringify(p), { filepath: d.path }))
   }
 })
