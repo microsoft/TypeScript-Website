@@ -98,6 +98,8 @@ export const createConfigDropdown = (sandbox: Sandbox, monaco: Monaco) => {
     const isNowJSX = internalSwitch.selectedIndex !== 0
     const isJSX = sandbox.filepath.endsWith("x")
     if (isNowJSX !== isJSX) {
+      const newURL = sandbox.createURLQueryWithCompilerOptions(sandbox)
+      window.history.replaceState({}, "", newURL)
       setTimeout(() => document.location.reload(), 300)
     }
   })

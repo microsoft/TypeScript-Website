@@ -339,11 +339,11 @@ declare function create(o: object | null): void;
 // OK
 create({ prop: 0 });
 create(null);
+create(undefined); // Remember, undefined is a subtype of null 
 
 create(42);
 create("string");
 create(false);
-create(undefined);
 ```
 
 Generally, you won't need to use this.

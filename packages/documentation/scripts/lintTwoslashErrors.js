@@ -1,7 +1,7 @@
 // @ts-check
 // Loops through all the sample code and ensures that twoslash doesn't raise
 
-const chalk = require("chalk").default;
+const chalk = require("chalk");
 
 const tick = chalk.bold.greenBright("✓");
 const cross = chalk.bold.redBright("⤫");

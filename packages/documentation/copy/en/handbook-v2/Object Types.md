@@ -761,7 +761,7 @@ function setCoordinate(coord: Either2dOr3d) {
   //           ^?
 
   console.log(`Provided coordinates had ${coord.length} dimensions`);
-  //                                             ^?
+  //                                            ^?
 }
 ```
 
