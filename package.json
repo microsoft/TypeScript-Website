@@ -44,6 +44,7 @@
     "update-test-snapshots": "CI=true yarn workspaces foreach --include gatsby-remark-shiki-twoslash  --include @typescript/twoslash --include shiki-twoslash --include @typescript/vfs run test -u"
   },
   "dependencies": {
+    "@oss-docs/sync": "^1.0.0",
     "@types/express": "^4.17.6",
     "serve-handler": "^6.1.2"
   },

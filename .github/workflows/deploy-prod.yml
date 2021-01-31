@@ -44,11 +44,6 @@ jobs:
           APP_INSIGHTS_API_KEY: ${{ secrets.APP_INSIGHTS_API_KEY }}
           APP_INSIGHTS_ID: ${{ secrets.APP_INSIGHTS_ID }}
 
-      # Update all the translation issues on a nightly basis
-      - run: node packages/typescriptlang-org/scripts/updateGitHubTranslationIssues.ts
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_BOT_TOKEN }}
-
       - name: Send a message to Microsoft Teams
         if: ${{ failure() }}
         uses: aliencube/microsoft-teams-actions@v0.8.0
