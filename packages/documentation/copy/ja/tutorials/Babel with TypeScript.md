@@ -10,7 +10,7 @@ translatable: true
 
 モダンなJavaScriptプロジェクトを作る際、TypeScriptからJavaScriptにファイルをトランスパイルするにはどのような方法が正しいのでしょうか？
 
-その答えは、プロジェクトによって異なりますが _"状況次第"_ だったり、 _"誰かが決めてくれたもの"_ であることが多いです。[tsdx](https://tsdx.io)、[Angular](https://angular.io/)、[NestJS](https://nestjs.com/)といった既存のフレームワークや、あるいは[Getting Started](/docs/home)で紹介したようなフレームワークを使ってプロジェクトを構築しているのならば、あなたに代わってこの決定を行ってくれます。
+その答えは、プロジェクトによって _"状況次第"_ だったり、 _"誰かが決めてくれたもの"_ であることが多いです。[tsdx](https://tsdx.io)、[Angular](https://angular.io/)、[NestJS](https://nestjs.com/)といった既存のフレームワークや、あるいは[Getting Started](/docs/home)で紹介したようなフレームワークを使ってプロジェクトを構築しているのならば、あなたに代わってこの決定を行ってくれます。
 
 一方で、有用な経験則としては次のようなものがあります:
 
