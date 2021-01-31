@@ -343,7 +343,7 @@ let foo = "hello there!";
 Even though we didn't tell TypeScript that `foo` had the type `string` it was able to figure that out.
 That's a feature, and it's best not to add annotations when the type system would end up inferring the same type anyway.
 
-> Note: when you see <pre><code class="query">code comment colored like this</code></pre> it means that we're highlighting what your editor would should you inline. You can get the same experience in the web browser by hovering your mouse over blue-tinted code samples.
+> Note: when you see <pre><code class="query">code comment colored like this</code></pre> it means that we're highlighting what your editor would show you inline. You can get the same experience in the web browser by hovering your mouse over blue-tinted code samples.
 
 ## Erased Types
 
