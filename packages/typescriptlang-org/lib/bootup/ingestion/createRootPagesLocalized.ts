@@ -55,7 +55,7 @@ export const createRootPagesLocalized = async (
       // prettier-ignore
       originalSitePath = originalSitePath.substring(0, originalSitePath.length - 3)
     }
-    console.log(langs)
+
     langs.forEach(lang => {
       if (!isMultiLingual && lang !== "en") return
 
