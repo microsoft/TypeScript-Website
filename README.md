@@ -17,6 +17,10 @@ code .
 
 # Then:
 yarn bootstrap
+# Optional, grab the translations:
+yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
+
+# Now you can start up the website
 yarn start
 ```
 

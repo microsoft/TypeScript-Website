@@ -34,6 +34,9 @@ jobs:
       # Verify dependencies are hooked up right
       - run: node test/verifyPackageVersions.js
 
+      # Grab localizations
+      - run: yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
+
       # Build the packages
       - run: yarn bootstrap
       - run: yarn workspace typescriptlang-org build

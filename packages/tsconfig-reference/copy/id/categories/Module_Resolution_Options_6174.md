@@ -1,3 +1,0 @@
----
-display: "Resolusi Modul"
----

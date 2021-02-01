@@ -93,3 +93,7 @@ static/assets/typescript-handbook-beta.epub
 static/assets/typescript-handbook-beta.pdf
 
 /src/lib/release-info.json
+
+# Handled by @oss-docs/sync
+src/copy/**
+!src/copy/**/en

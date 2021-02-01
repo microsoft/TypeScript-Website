@@ -26,6 +26,7 @@ jobs:
       - name: Prepare website v2
         run: |
           yarn install
+          yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
           yarn bootstrap
           yarn build
         env:

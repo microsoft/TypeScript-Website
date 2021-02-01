@@ -1,5 +1,5 @@
-output
 
 # Handled by @oss-docs/sync
 copy/**
 !copy/**/en
+!copy/inYourLanguage.ts
