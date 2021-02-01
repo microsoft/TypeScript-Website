@@ -22,6 +22,7 @@ jobs:
       - name: Build website v2
         run: |
           yarn install
+          yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
           yarn bootstrap
           yarn build
           yarn build-site
