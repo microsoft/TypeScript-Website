@@ -3739,10 +3739,10 @@ export function getDocumentationNavForLanguage(
 
       items: [
         {
-          title: "TS for the New Programmer",
-          id: "0typescript-for-the-new-programmer",
-          permalink: "/docs/handbook/typescript-from-scratch.html",
-          oneline: "Learn TypeScript from scratch",
+          title: "TS para o novo programador",
+          id: "0typescript-para-o-novo-programador",
+          permalink: "/pt/docs/handbook/typescript-from-scratch.html",
+          oneline: "Aprenda TypeScript do zero",
         },
         {
           title: "TypeScript for JS Programmers",
