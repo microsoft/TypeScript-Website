@@ -3974,9 +3974,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oss-docs/sync@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@oss-docs/sync@npm:1.0.0"
+"@oss-docs/sync@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@oss-docs/sync@npm:1.0.1"
   dependencies:
     cachedir: ^2.3.0
     chalk: ^4.1.0
@@ -3987,7 +3987,7 @@ __metadata:
     yargs: ^16.2.0
   bin:
     docs-sync: bin/docs-sync
-  checksum: 22e3c9e7bb3015400023f46cb6adae0e7a5106dfc10d30b751d6eab0741ac3df69f810471ff8bdf9614f81c05ebf36d790817549f772a82eb9c2e832b18e8191
+  checksum: 0546a3bc2a839302d8dd7482f5b31614c89bdc525fe9887c5b7146b0ddfa4a541cf1bdb4a021526f091fc9f93b394865f21fde50264cfa04b489f33714683ac9
   languageName: node
   linkType: hard
 
@@ -25758,7 +25758,7 @@ resolve@1.1.7:
   version: 0.0.0-use.local
   resolution: "root@workspace:."
   dependencies:
-    "@oss-docs/sync": ^1.0.0
+    "@oss-docs/sync": ^1.0.1
     "@types/express": ^4.17.6
     concurrently: ^5.1.0
     cross-env: ^7.0.2
