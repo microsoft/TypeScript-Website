@@ -24,7 +24,7 @@ With a bit of work, you can explain complicated code in a way that lets people i
     const jsx = await mdx(content, {
       filepath: "file/path/file.mdx",
    -  remarkPlugins: [],
-   +  remarkPlugins: [[remarkShikiTwoslash, { theme: "dark_vs" }]],
+   +  remarkPlugins: [[remarkShikiTwoslash, { theme: "dark-plus" }]],
     }
    }
    ```

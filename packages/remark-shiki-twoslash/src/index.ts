@@ -1,14 +1,13 @@
-import type { Highlighter } from "shiki/dist/highlighter"
-import type { TLang } from "shiki-languages"
 // prettier-ignore
 import { createShikiHighlighter, ShikiTwoslashSettings, renderCodeToHTML, runTwoSlash } from "shiki-twoslash"
+import type { Lang, Highlighter, HighlighterOptions } from "shiki"
 
 import visit from "unist-util-visit"
 import { Node } from "unist"
 
 /* A rich AST node for uninst with twoslash'd data */
 type RichNode = Node & {
-  lang: TLang
+  lang: Lang
   type: string
   children: Node[]
   value: string
@@ -52,16 +51,17 @@ export const runTwoSlashOnNode = (settings: ShikiTwoslashSettings) => (node: Ric
   if (node.meta && node.meta.includes("twoslash")) {
     const results = runTwoSlash(node.value, node.lang, settings)
     node.value = results.code
-    node.lang = results.extension as TLang
+    node.lang = results.extension as Lang
     node.twoslash = results
   }
 }
 
-function remarkTwoslash(shikiSettings: ShikiTwoslashSettings & import("shiki/dist/highlighter").HighlighterOptions) {
+function remarkTwoslash(shikiSettings?: ShikiTwoslashSettings & HighlighterOptions) {
   // @ts-ignore
+  let settings = shikiSettings || { theme: "light-plus" }
   const transform = async (markdownAST: any) => {
-    const highlighter = await createShikiHighlighter(shikiSettings)
-    visit(markdownAST, "code", visitor(highlighter, shikiSettings))
+    const highlighter = await createShikiHighlighter(settings)
+    visit(markdownAST, "code", visitor(highlighter, settings))
   }
 
   return transform

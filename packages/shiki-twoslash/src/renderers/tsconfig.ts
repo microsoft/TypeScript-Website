@@ -1,9 +1,9 @@
 type Lines = import("shiki").IThemedToken[][]
-type Options = import("shiki/dist/renderer").HtmlRendererOptions
 
 import type { IThemedToken } from "shiki"
 import { escapeHtml } from "../utils"
 import { tsconfig } from "../tsconfig-oneliners.generated"
+import { HtmlRendererOptions } from "./plain"
 
 /** Uses tmLanguage scopes to determine what the content of the token is */
 const tokenIsJSONKey = (token: IThemedToken) => {
@@ -23,7 +23,7 @@ const isKeyInTSConfig = (token: IThemedToken) => {
  * @param lines the result of shiki highlighting
  * @param options shiki display options
  */
-export function tsconfigJSONRenderer(lines: Lines, options: Options) {
+export function tsconfigJSONRenderer(lines: Lines, options: HtmlRendererOptions) {
   let html = ""
 
   html += `<pre class="shiki tsconfig lsp">`

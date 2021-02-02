@@ -1,9 +1,9 @@
 import { escapeHtml } from "../utils"
+import { HtmlRendererOptions } from "./plain"
 
 type Lines = import("shiki").IThemedToken[][]
-type Options = import("shiki/dist/renderer").HtmlRendererOptions
 
-export function defaultShikiRenderer(lines: Lines, options: Options) {
+export function defaultShikiRenderer(lines: Lines, options: HtmlRendererOptions) {
   let html = ""
 
   html += `<pre class="shiki">`

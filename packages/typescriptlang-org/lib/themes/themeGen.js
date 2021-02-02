@@ -26,7 +26,11 @@ const colors = {
 }
 
 const lightTheme = {
-  name: "Light Visual Studio",
+  name: "TypeScript",
+  colors,
+  type: "light",
+  fg: colors.black,
+  bg: colors.white,
   settings: [
     {
       scope: "emphasis",
@@ -744,6 +748,7 @@ const darkTheme = {
 const { writeFileSync } = require("fs")
 const { join } = require("path")
 const { format } = require("prettier")
+const { isWhiteSpaceLike } = require("typescript")
 
 const betaLightPath = join(__dirname, "typescript-beta-light.json")
 const betaDarkPath = join(__dirname, "typescript-beta-dark.json")

@@ -1,22 +1,17 @@
-import { loadTheme, getHighlighter, getTheme } from "shiki"
-import { Highlighter } from "shiki/dist/highlighter"
-import { commonLangIds, commonLangAliases, otherLangIds } from "shiki-languages"
+import { loadTheme, getHighlighter, Highlighter, HighlighterOptions, IThemedToken } from "shiki"
+// import { commonLangIds, commonLangAliases, otherLangIds } from "shiki-languages"
 import { twoslasher, TwoSlashOptions, TwoSlashReturn } from "@typescript/twoslash"
 import { createDefaultMapFromNodeModules, addAllFilesFromFolder } from "@typescript/vfs"
 import { twoslashRenderer } from "./renderers/twoslash"
-import { plainTextRenderer } from "./renderers/plain"
+import { HtmlRendererOptions, plainTextRenderer } from "./renderers/plain"
 import { defaultShikiRenderer } from "./renderers/shiki"
 import { tsconfigJSONRenderer } from "./renderers/tsconfig"
+import { createImportSpecifier } from "typescript"
 
 export type ShikiTwoslashSettings = {
   useNodeModules?: true
   nodeModulesTypesPath?: string
 }
-
-const languages = [...commonLangIds, ...commonLangAliases, ...otherLangIds]
-
-/** Checks if a particular lang is available in shiki */
-export const canHighlightLang = (lang: string) => languages.includes(lang as any)
 
 /**
  * This gets filled in by the promise below, then should
@@ -32,24 +27,24 @@ let storedHighlighter: Highlighter = null as any
  * opinion that you should be in control of the highlighter, and not this library.
  *
  */
-export const createShikiHighlighter = (options: import("shiki/dist/highlighter").HighlighterOptions) => {
+export const createShikiHighlighter = (options: HighlighterOptions) => {
   if (storedHighlighter) return Promise.resolve(storedHighlighter)
 
   var settings = options || {}
   var theme: any = settings.theme || "nord"
   var shikiTheme
 
-  try {
-    shikiTheme = getTheme(theme)
-  } catch (error) {
-    try {
-      shikiTheme = loadTheme(theme)
-    } catch (error) {
-      throw new Error("Unable to load theme: " + theme + " - " + error.message)
-    }
-  }
+  // try {
+  //   shikiTheme = getTheme(theme)
+  // } catch (error) {
+  //   try {
+  //     shikiTheme = loadTheme(theme)
+  //   } catch (error) {
+  //     throw new Error("Unable to load theme: " + theme + " - " + error.message)
+  //   }
+  // }
 
-  return getHighlighter({ theme: shikiTheme, langs: languages }).then(newHighlighter => {
+  return getHighlighter(options).then(newHighlighter => {
     storedHighlighter = newHighlighter
     return storedHighlighter
   })
@@ -71,7 +66,7 @@ export const renderCodeToHTML = (
   code: string,
   lang: string,
   info: string[],
-  shikiOptions?: import("shiki/dist/renderer").HtmlRendererOptions,
+  shikiOptions?: HtmlRendererOptions,
   highlighter?: Highlighter,
   twoslash?: TwoSlashReturn
 ) => {
@@ -81,14 +76,17 @@ export const renderCodeToHTML = (
     )
   }
 
-  // Shiki doesn't know this lang
-  if (!canHighlightLang(lang)) {
-    return plainTextRenderer(code, shikiOptions || {})
-  }
-
   // Shiki does know the lang, so tokenize
   const renderHighlighter = highlighter || storedHighlighter
-  const tokens = renderHighlighter.codeToThemedTokens(code, lang as any)
+
+  let tokens: IThemedToken[][]
+  try {
+    // Shiki does know the lang, so tokenize
+    tokens = renderHighlighter.codeToThemedTokens(code, lang as any)
+  } catch (error) {
+    // Shiki doesn't know this lang
+    return plainTextRenderer(code, shikiOptions || {})
+  }
 
   // Twoslash specific renderer
   if (info.includes("twoslash") && twoslash) {
@@ -96,7 +94,7 @@ export const renderCodeToHTML = (
   }
 
   // TSConfig renderer
-  if (lang.startsWith("json") && info.includes("tsconfig")) {
+  if (lang && lang.startsWith("json") && info.includes("tsconfig")) {
     return tsconfigJSONRenderer(tokens, shikiOptions || {})
   }
 
