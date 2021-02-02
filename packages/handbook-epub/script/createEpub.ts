@@ -152,9 +152,7 @@ const getHTML = async (code: string, settings?: any) => {
     await runTwoSlashAcrossDocument(
       { markdownAST },
       {
-        theme: require.resolve(
-          "../../typescriptlang-org/lib/themes/typescript-beta-light.json"
-        ) as any,
+        theme: require("../../typescriptlang-org/lib/themes/typescript-beta-light.json"),
       },
       {}
     );
