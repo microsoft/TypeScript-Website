@@ -6,7 +6,6 @@ import { twoslashRenderer } from "./renderers/twoslash"
 import { HtmlRendererOptions, plainTextRenderer } from "./renderers/plain"
 import { defaultShikiRenderer } from "./renderers/shiki"
 import { tsconfigJSONRenderer } from "./renderers/tsconfig"
-import { createImportSpecifier } from "typescript"
 
 export type ShikiTwoslashSettings = {
   useNodeModules?: true

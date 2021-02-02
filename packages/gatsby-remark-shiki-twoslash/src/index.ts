@@ -24,7 +24,7 @@ export const visitor = (highlighter: Highlighter, twoslashSettings?: ShikiTwosla
   let settings = twoslashSettings || {}
 
   const shouldDisableTwoslash = process && process.env && !!process.env.TWOSLASH_DISABLE
-  console.log({ shouldDisableTwoslash })
+
   // Run twoslash
   if (!shouldDisableTwoslash) runTwoSlashOnNode(settings)(node)
 
