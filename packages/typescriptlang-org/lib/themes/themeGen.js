@@ -743,12 +743,17 @@ const darkTheme = {
         foreground: "#569cd6",
       },
     },
+    {
+      scope: ["entity.name.type.alias.ts", "entity.name.type.ts"],
+      settings: {
+        foreground: colors.darkBurgendyAAA,
+      },
+    },
   ],
 }
 const { writeFileSync } = require("fs")
 const { join } = require("path")
 const { format } = require("prettier")
-const { isWhiteSpaceLike } = require("typescript")
 
 const betaLightPath = join(__dirname, "typescript-beta-light.json")
 const betaDarkPath = join(__dirname, "typescript-beta-dark.json")

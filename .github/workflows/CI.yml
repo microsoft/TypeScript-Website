@@ -17,6 +17,7 @@ jobs:
         with:
           path: |
             packages/typescriptlang-org/.cache
+            packages/.cache
             **/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
