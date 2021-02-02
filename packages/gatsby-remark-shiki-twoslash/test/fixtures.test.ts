@@ -6,14 +6,12 @@ import { toMatchFile } from "jest-file-snapshot"
 import { format } from "prettier"
 import gatsbyRemarkShiki from "../src/index"
 const remark = require("remark")
-// const gatsbyTwoSlash = require('gatsby-remark-shiki-twoslasher')
 import { Node } from "unist"
-import { TwoSlashReturn } from "@typescript/twoslash"
+import { HighlighterOptions } from "shiki"
 expect.extend({ toMatchFile })
 
-const getHTML = async (code: string, settings?: any) => {
+const getHTML = async (code: string, settings: HighlighterOptions) => {
   const markdownAST: Node = remark().parse(code)
-  // gatsbyTwoSlash({ markdownAST })
   await gatsbyRemarkShiki({ markdownAST }, settings, {})
 
   // @ts-ignore
@@ -39,7 +37,7 @@ describe("with fixtures", () => {
       return
     }
 
-    // if (!fixtureName.includes('exporting')) {
+    // if (!fixtureName.includes("exporting")) {
     //   return
     // }
 
@@ -51,8 +49,9 @@ describe("with fixtures", () => {
       const resultTwoSlashPath = join(resultsFolder, resultTwoSlashName)
 
       const code = readFileSync(fixture, "utf8")
+
       const results = await getHTML(code, {
-        theme: require.resolve("../../typescriptlang-org/lib/themes/typescript-beta-light.json"),
+        theme: require("../../typescriptlang-org/lib/themes/typescript-beta-light.json"),
       })
 
       const htmlString = format(results.html + style, { parser: "html" })

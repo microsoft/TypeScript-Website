@@ -1,8 +1,8 @@
 type Lines = import("shiki").IThemedToken[][]
-type Options = import("shiki/dist/renderer").HtmlRendererOptions
 type TwoSlash = import("@typescript/twoslash").TwoSlashReturn
 
 import { stripHTML, createHighlightedString2, subTripleArrow, replaceTripleArrowEncoded, escapeHtml } from "../utils"
+import { HtmlRendererOptions } from "./plain"
 
 // OK, so - this is just straight up complex code.
 
@@ -21,7 +21,7 @@ import { stripHTML, createHighlightedString2, subTripleArrow, replaceTripleArrow
 // - the DOM requires a flattened graph of html elements
 //
 
-export function twoslashRenderer(lines: Lines, options: Options, twoslash: TwoSlash) {
+export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, twoslash: TwoSlash) {
   let html = ""
 
   html += `<pre class="shiki twoslash lsp">`

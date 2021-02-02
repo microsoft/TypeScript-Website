@@ -1,6 +1,6 @@
 {
   "name": "gatsby-remark-shiki-twoslash",
-  "version": "0.7.1",
+  "version": "1.0.0",
   "license": "MIT",
   "homepage": "https://github.com/microsoft/TypeScript-Website",
   "repository": {
@@ -30,9 +30,8 @@
   "dependencies": {
     "@typescript/twoslash": "1.1.4",
     "@typescript/vfs": "1.3.2",
-    "shiki": "^0.1.6",
-    "shiki-languages": "^0.1.6",
-    "shiki-twoslash": "0.8.2",
+    "shiki": "^0.9.1",
+    "shiki-twoslash": "1.0.0",
     "typescript": "*",
     "unist-util-visit": "^2.0.0"
   },
@@ -43,5 +42,8 @@
     "tslib": "^1.10.0",
     "typescript": "*",
     "unified": "^8.4.2"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }

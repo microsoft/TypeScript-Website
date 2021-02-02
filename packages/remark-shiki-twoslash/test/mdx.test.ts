@@ -31,7 +31,7 @@ it("renders twoslash with settings", async () => {
   const transpile = async () => {
     const jsx = await mdx(content, {
       filepath: "file/path/file.mdx",
-      remarkPlugins: [[remarkShikiTwoslash, { theme: "dark_vs" }]],
+      remarkPlugins: [[remarkShikiTwoslash, { theme: "dark-plus" }]],
     })
     return jsx
   }

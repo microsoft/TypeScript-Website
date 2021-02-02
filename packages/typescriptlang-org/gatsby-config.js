@@ -150,8 +150,7 @@ module.exports = {
           {
             resolve: shiki,
             options: {
-              // theme: "nord",
-              theme: require.resolve("./lib/themes/typescript-beta-light.json"),
+              theme: require("./lib/themes/typescript-beta-light.json"),
             },
           },
           "gatsby-remark-copy-linked-files",

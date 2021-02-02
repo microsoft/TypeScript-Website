@@ -3974,20 +3974,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oss-docs/sync@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "@oss-docs/sync@npm:1.0.1"
+"@oss-docs/sync@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@oss-docs/sync@npm:1.1.1"
   dependencies:
     cachedir: ^2.3.0
     chalk: ^4.1.0
     cross-spawn: ^7.0.1
     gunzip-maybe: ^1.4.1
+    micromatch: ^4.0.2
     mvdir: ^1.0.21
     tar-fs: ^2.1.0
     yargs: ^16.2.0
   bin:
     docs-sync: bin/docs-sync
-  checksum: 0546a3bc2a839302d8dd7482f5b31614c89bdc525fe9887c5b7146b0ddfa4a541cf1bdb4a021526f091fc9f93b394865f21fde50264cfa04b489f33714683ac9
+  checksum: 2144c21004f2953a54220c2fe35a1cf8cea6755cf128583d0c2f189322126e7a04e14e7e7f99cbb50796213d1e50640d6413bc31e7db392fd7ab2318907e911d
   languageName: node
   linkType: hard
 
@@ -14039,8 +14040,7 @@ fsevents@~2.1.2:
     "@typescript/twoslash": 1.1.4
     "@typescript/vfs": 1.3.2
     rehype-stringify: ^6.0.1
-    shiki: ^0.1.6
-    shiki-languages: ^0.1.6
+    shiki: ^0.9.1
     shiki-twoslash: 0.8.2
     tsdx: ^0.14.1
     tslib: ^1.10.0
@@ -21802,6 +21802,15 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"onigasm@npm:^2.2.5":
+  version: 2.2.5
+  resolution: "onigasm@npm:2.2.5"
+  dependencies:
+    lru-cache: ^5.1.1
+  checksum: 9db74810f55bc0b9718991d36ea445e2095f09743f22d5e76bc37a31e34b9b5204b1224ea2fb30253e810fe57222bf86274d5b38073b1c14534fee4c6da300b4
+  languageName: node
+  linkType: hard
+
 "open@npm:^7.0.3":
   version: 7.3.0
   resolution: "open@npm:7.3.0"
@@ -25068,8 +25077,7 @@ fsevents@~2.1.2:
     babel-jest: ^26.6.3
     mdx: "*"
     rehype-stringify: ^6.0.1
-    shiki: ^0.1.6
-    shiki-languages: ^0.1.6
+    shiki: ^0.9.1
     shiki-twoslash: 0.8.2
     tsdx: ^0.14.1
     tslib: ^1.10.0
@@ -25758,7 +25766,7 @@ resolve@1.1.7:
   version: 0.0.0-use.local
   resolution: "root@workspace:."
   dependencies:
-    "@oss-docs/sync": ^1.0.1
+    "@oss-docs/sync": ^1.1.1
     "@types/express": ^4.17.6
     concurrently: ^5.1.0
     cross-env: ^7.0.2
@@ -26437,8 +26445,7 @@ resolve@1.1.7:
     "@typescript/vfs": 1.3.2
     gatsby-remark-shiki-twoslash: 0.7.1
     rehype-stringify: ^6.0.1
-    shiki: ^0.1.6
-    shiki-languages: ^0.1.6
+    shiki: ^0.9.1
     tsdx: ^0.14.1
     tslib: ^1.10.0
     typescript: "*"
@@ -26456,6 +26463,16 @@ resolve@1.1.7:
     shiki-themes: ^0.1.5
     vscode-textmate: "git+https://github.com/octref/vscode-textmate.git"
   checksum: 6a03a993e2607acadf5d4c9349d13039c59f910672c859090f86e87df1c5951127e6258fb1ca1f10b440a546962dd6904f6a8a32d6644fcacfa62a35ccb3f947
+  languageName: node
+  linkType: hard
+
+"shiki@npm:^0.9.1":
+  version: 0.9.1
+  resolution: "shiki@npm:0.9.1"
+  dependencies:
+    onigasm: ^2.2.5
+    vscode-textmate: ^5.2.0
+  checksum: d1f1f9f2e4fc1d4dd19e10799016adf376248900336e778b1694e4aec889ba0009c3bf3f01de8baac711987ead38b378fc790225e9fcff172d9b8b3789ffc1dd
   languageName: node
   linkType: hard
 
@@ -29829,6 +29846,13 @@ resolve@1.1.7:
     onigasm: ^2.1.0
     oniguruma: ^7.0.0
   checksum: e23464b4975d4a1a2cc079bb4904cbd0a1479588a77c26f75f942dd29b5242dd936dc91f6fa017bc30b9931d153cc226cbc3f0f5e60317a64714691e9a9546e0
+  languageName: node
+  linkType: hard
+
+"vscode-textmate@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "vscode-textmate@npm:5.2.0"
+  checksum: 67ec1fed58690b6d21fb75462694ebfeefe93d9a4091dfbea9db4e1b718d172ac2e60e3944a0dd88c53ff50e7604dfcccde19d8a4d25616c0b2df330052df2b9
   languageName: node
   linkType: hard
 
