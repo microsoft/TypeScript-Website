@@ -188,7 +188,7 @@ export const Comm: React.FC<Props> = props => {
                   <h4 className="community-callout-headline">{meetup.title}</h4>
                   <div className="text">{meetup.country}<br />
                     <a rel="noopener" target="blank" href={meetup.url} title={"Website for " + meetup.title}>Website</a>
-                    {meetup.twitter ? <a rel="noopener" target="blank" href={meetup.twitter} title={"Twitter page for " + meetup.title}>Twitter</a> : null}
+                    {" "}{meetup.twitter ? <a rel="noopener" target="blank" href={meetup.twitter} title={"Twitter page for " + meetup.title}>Twitter</a> : null}
                   </div>
                 </div>
               </Col>
