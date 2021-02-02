@@ -60,9 +60,6 @@ jobs:
           cd ..
           npm init typescript-playground-plugin playground-my-plugin
 
-      # Verify localizations are hooked up right
-      - run: node packages/typescriptlang-org/scripts/validatePathsInLocalizedFolders.js
-
   windows:
     runs-on: windows-latest
 
