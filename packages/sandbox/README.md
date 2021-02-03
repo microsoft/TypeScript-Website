@@ -41,7 +41,7 @@ we'll accept it.
       // Now the loader is ready, tell require where it can get the version of monaco, and the sandbox
       // This version uses the latest version of the sandbox, which is used on the TypeScript website
 
-      // For the monaco version you can use unpkg or the TypeSCript web infra CDN
+      // For the monaco version you can use unpkg or the TypeScript web infra CDN
       // You can see the available releases for TypeScript here:
       // https://typescript.azureedge.net/indexes/releases.json
       //
