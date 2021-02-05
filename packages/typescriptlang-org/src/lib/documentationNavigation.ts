@@ -712,6 +712,12 @@ export function getDocumentationNavForLanguage(
               oneline: "Step one in learning TypeScript: The basics types.",
             },
             {
+              title: "Generics",
+              id: "8generics",
+              permalink: "/docs/handbook/2/generics.html",
+              oneline: "Generics Types",
+            },
+            {
               title: "Keyof Type Operator",
               id: "8keyof-type-operator",
               permalink: "/docs/handbook/2/keyof-types.html",

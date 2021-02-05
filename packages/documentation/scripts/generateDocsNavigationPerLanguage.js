@@ -167,6 +167,7 @@ const handbookPages = [
         title: "Type Manipulation",
         items: [
           { file: "handbook-v2/Type Manipulation/_Creating Types from Types.md" },
+          { file: "handbook-v2/Type Manipulation/Generics.md" },
           { file: "handbook-v2/Type Manipulation/Keyof Type Operator.md" },
           { file: "handbook-v2/Type Manipulation/Typeof Type Operator.md" },
           { file: "handbook-v2/Type Manipulation/Indexed Access Types.md" },

@@ -66,6 +66,6 @@ This helps avoid the confusing trap of writing code you think is executing, but 
 declare const msgbox: () => boolean;
 // type msgbox = any;
 // ---cut---
-// Meant to use =
+// Meant to use = ReturnType<typeof msgbox>
 let shouldContinue: typeof msgbox("Are you sure you want to continue?");
 ```
