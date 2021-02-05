@@ -95,5 +95,5 @@ static/assets/typescript-handbook-beta.pdf
 /src/lib/release-info.json
 
 # Handled by @oss-docs/sync
-src/copy/**
-!src/copy/**/en
+src/copy/*
+!src/copy/en
