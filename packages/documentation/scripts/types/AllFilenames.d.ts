@@ -38,6 +38,7 @@ export type AllDocsPages =
   | "handbook-v2/Type Declarations.md"
   | "handbook-v2/Understanding Errors.md"
   | "handbook-v2/Type Manipulation/Conditional Types.md"
+  | "handbook-v2/Type Manipulation/Generics.md"
   | "handbook-v2/Type Manipulation/Indexed Access Types.md"
   | "handbook-v2/Type Manipulation/Keyof Type Operator.md"
   | "handbook-v2/Type Manipulation/Mapped Types.md"
