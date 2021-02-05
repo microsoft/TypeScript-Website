@@ -13,5 +13,3 @@ It's also possible to express types in terms of _values_ that we already have.
 
 By combining various type operators, we can express complex operations and values in a succinct, maintainable way.
 In this section we'll cover ways to express a type in terms of an existing type or value.
-
--
