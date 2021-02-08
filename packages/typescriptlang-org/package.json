@@ -5,10 +5,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "gatsby build",
+    "build": "GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES=true gatsby build",
     "clean": "gatsby clean",
     "bootstrap": "yarn update-versions",
-    "update-snapshots": "node scripts/updateBackstopJSON.js && backstop test || backstop approve",
     "update-static-assets": "node scripts/downloadSearchAssets.js",
     "update-versions": "node scripts/getTypeScriptNPMVersions.js",
     "create-lighthouse-json": "node scripts/createLighthouseJSON.js",
