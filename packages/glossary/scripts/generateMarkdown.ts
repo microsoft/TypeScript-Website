@@ -20,8 +20,8 @@ import * as assert from "assert";
 import { read as readMarkdownFile } from "gray-matter";
 import * as prettier from "prettier";
 
-import * as remark from "remark";
-import * as remarkHTML from "remark-html";
+// import * as remark from "remark";
+// import * as remarkHTML from "remark-html";
 
 const languages = readdirSync(join(__dirname, "..", "copy")).filter((f) => !f.startsWith("."));
 

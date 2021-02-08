@@ -14664,6 +14664,18 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"gray-matter@npm:4.0.2, gray-matter@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "gray-matter@npm:4.0.2"
+  dependencies:
+    js-yaml: ^3.11.0
+    kind-of: ^6.0.2
+    section-matter: ^1.0.0
+    strip-bom-string: ^1.0.0
+  checksum: a4e24f74db6e7827012bb82633330d25b7a220676e4438c6213c145e4b7412872f6ce0fc19d01991331222b6c90dbd6243c937700776ed43b956728f08b94f23
+  languageName: node
+  linkType: hard
+
 "gray-matter@npm:^2.1.0":
   version: 2.1.1
   resolution: "gray-matter@npm:2.1.1"
@@ -14674,18 +14686,6 @@ fsevents@~2.1.2:
     js-yaml: ^3.8.1
     toml: ^2.3.2
   checksum: 3a0b6ff996198d485de2d68d0053f6165b3483b7da9b523fe701a28fc38e965769d9966d2a73fb66570aba0c2551e05f8dfb741b729266a6dc53dc2d2f4bb986
-  languageName: node
-  linkType: hard
-
-"gray-matter@npm:^4.0.2":
-  version: 4.0.2
-  resolution: "gray-matter@npm:4.0.2"
-  dependencies:
-    js-yaml: ^3.11.0
-    kind-of: ^6.0.2
-    section-matter: ^1.0.0
-    strip-bom-string: ^1.0.0
-  checksum: a4e24f74db6e7827012bb82633330d25b7a220676e4438c6213c145e4b7412872f6ce0fc19d01991331222b6c90dbd6243c937700776ed43b956728f08b94f23
   languageName: node
   linkType: hard
 
@@ -25227,6 +25227,7 @@ resolve@1.1.7:
     danger-plugin-spellcheck: ^1.5.0
     fb-watchman: ^2.0.1
     git-branch-is: ^3.1.0
+    gray-matter: 4.0.2
     husky: ^4.2.3
     pleb: ^2.5.6
     serve-handler: ^6.1.2
