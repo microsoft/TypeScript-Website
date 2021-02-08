@@ -117,8 +117,12 @@ const Play: React.FC<Props> = (props) => {
         ignoreDuplicateModules: ["vs/editor/editor.main"],
         catchError: true,
         onError: function (err) {
-          document.getElementById("loading-message")!.innerText = "Cannot load the Playground in this browser"
-          console.error("Error setting up monaco/sandbox/playground from the JS, this is likely that you're using a browser which monaco doesn't support.")
+          if (document.getElementById("loading-message")) {
+            document.getElementById("loading-message")!.innerText = "Cannot load the Playground in this browser"
+            console.error("Error setting up monaco/sandbox/playground from the JS, this is likely that you're using a browser which monaco doesn't support.")
+          } else {
+            console.error("Caught an error which is likely happening during initializing a playground plugin:")
+          }
           console.error(err)
         }
       });
