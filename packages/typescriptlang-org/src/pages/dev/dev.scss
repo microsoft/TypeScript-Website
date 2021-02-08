@@ -7,6 +7,9 @@
 
   .content {
     display: flex;
+    @media (max-width: $screen-sm) {
+      flex-direction: column;
+    }
   }
 
   pre {
@@ -35,17 +38,17 @@
     }
   }
 
-  .split-sixhundred {
-    width: calc(100% - 600px);
-    @media (max-width: $screen-sm) {
+  .split-fivehundred {
+    width: calc(100% - 500px);
+    @media (max-width: $screen-md) {
       width: 100%;
     }
   }
-  .sixhundred {
-    width: 600px;
+  .fivehundred {
+    width: 500px;
     margin-left: 20px;
 
-    @media (max-width: $screen-sm) {
+    @media (max-width: $screen-md) {
       width: 100%;
       margin-left: 0px;
       padding-left: 20px;

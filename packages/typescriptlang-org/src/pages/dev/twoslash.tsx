@@ -185,7 +185,7 @@ const Index: React.FC<Props> = (props) => {
 
           <div className="raised content main-content-block" style={{ maxWidth: "90%" }}>
 
-            <div className="sixhundred" style={{ flex: 1 }}>
+            <div className="fivehundred" style={{ flex: 1 }}>
               <SuppressWhenTouch>
                 <h3 style={{ marginTop: "0" }}>Markup</h3>
                 <p id="exampleBlurb">{codeSamples[0].blurb}</p>

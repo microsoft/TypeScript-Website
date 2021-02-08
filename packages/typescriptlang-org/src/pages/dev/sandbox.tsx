@@ -78,7 +78,7 @@ export default async function () {
         <div id="dev">
           <DevNav active="sandbox" />
           <div className="raised content main-content-block">
-            <div className="split-sixhundred">
+            <div className="split-fivehundred">
               <h1 style={{ marginTop: "20px" }}>TypeScript Sandbox</h1>
               <p>A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the <a href={withPrefix("/play/")}>TypeScript playground</a></p>
               <p>You can use the TypeScript sandbox for:</p>
@@ -93,7 +93,7 @@ export default async function () {
             </div>
 
             <SuppressWhenTouch hideOnTouch>
-              <div className="sixhundred" style={{ borderLeft: "1px solid gray" }}>
+              <div className="fivehundred" style={{ borderLeft: "1px solid gray" }}>
                 <div id="loader">
                   <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                   <p id="loading-message" role="status">Downloading Sandbox...</p>

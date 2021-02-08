@@ -14,9 +14,13 @@ type CompilerOptions = import("typescript").CompilerOptions
 export const extractTwoSlashComplierOptions = (ts: TS) => {
   let optMap = new Map<string, any>()
 
-  // @ts-ignore - optionDeclarations is not public API
-  for (const opt of ts.optionDeclarations) {
-    optMap.set(opt.name.toLowerCase(), opt)
+  if (!("optionDeclarations" in ts)) {
+    console.error("Could not get compiler options from ts.optionDeclarations - skipping twoslash support.")
+  } else {
+    // @ts-ignore - optionDeclarations is not public API
+    for (const opt of ts.optionDeclarations) {
+      optMap.set(opt.name.toLowerCase(), opt)
+    }
   }
 
   return (code: string) => {

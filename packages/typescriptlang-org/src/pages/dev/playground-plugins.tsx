@@ -15,7 +15,7 @@ const Index: React.FC<Props> = (props) => {
         <div id="dev">
           <DevNav active="playground plugins" />
           <div className="raised content main-content-block">
-            <div className="split-sixhundred">
+            <div className="split-fivehundred">
               <h1 style={{ marginTop: "20px" }}>Your toys, our sandbox</h1>
               <p>The new TypeScript Playground allows people to hook into the Playground and extend it in ways in which the TypeScript team don't expect.</p>
               <p>The sidebar of the Playground uses the same plugin infrastructure as external plugins, so you have the same level of access as the playground to build interesting projects.</p>
@@ -26,7 +26,7 @@ const Index: React.FC<Props> = (props) => {
               <p>If you have questions as you are working on your plugin, ask in the <a href='https://discord.gg/typescript'>TypeScript Community Discord</a>. When it is polished, ship it to the npm registry and it will make its way into the plugins sidebar.</p>
             </div>
 
-            <div className="sixhundred" style={{ borderLeft: "1px solid gray" }}>
+            <div className="fivehundred" style={{ borderLeft: "1px solid gray" }}>
               <img src={require("../../assets/playground-plugin-preview.png")} width="100%" alt="Screenshot of the playground showing the plugins tab" />
             </div>
           </div>
