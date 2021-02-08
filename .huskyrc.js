@@ -8,7 +8,6 @@ module.exports = !isOrta
       hooks: {
         "pre-push": tasks([
           "yarn build-site",
-          "yarn workspace typescriptlang-org run update-snapshots",
           "afplay .vscode/done.aiff",
           "afplay .vscode/done.aiff",
           "afplay .vscode/done.aiff",

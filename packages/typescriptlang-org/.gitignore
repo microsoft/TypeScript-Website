@@ -72,11 +72,6 @@ yarn-error.log
 schema.json
 apollo.config.js
 
-# backstop files
-_tests/backstop_data/bitmaps_test
-_tests/backstop_data/engine_scripts
-_tests/backstop_data/html_report
-
 # Build artifacts
 static/js/sandbox/
 !static/js/sandbox/.gitkeep
