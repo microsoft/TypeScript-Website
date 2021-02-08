@@ -160,15 +160,27 @@ const handbookPages = [
     items: [
       { file: "handbook-v2/Basics.md" },
       { file: "handbook-v2/Everyday Types.md" },
-      { file: "handbook-v2/Object Types.md" },
-      { file: "handbook-v2/Type Declarations.md" },
       { file: "handbook-v2/Narrowing.md" },
       { file: "handbook-v2/More on Functions.md" },
-      { file: "handbook-v2/Types from Extraction.md" },
-      { file: "handbook-v2/Types from Transformation.md" },
+      { file: "handbook-v2/Object Types.md" },
+      {
+        title: "Type Manipulation",
+        items: [
+          { file: "handbook-v2/Type Manipulation/_Creating Types from Types.md" },
+          { file: "handbook-v2/Type Manipulation/Generics.md" },
+          { file: "handbook-v2/Type Manipulation/Keyof Type Operator.md" },
+          { file: "handbook-v2/Type Manipulation/Typeof Type Operator.md" },
+          { file: "handbook-v2/Type Manipulation/Indexed Access Types.md" },
+          { file: "handbook-v2/Type Manipulation/Conditional Types.md" },
+          { file: "handbook-v2/Type Manipulation/Mapped Types.md" },
+          { file: "handbook-v2/Type Manipulation/Template Literal Types.md" },
+        ]
+      },
       { file: "handbook-v2/Classes.md" },
       { file: "handbook-v2/Modules.md" },
-      { file: "handbook-v2/Understanding Errors.md" },
+      // These two are probably good reference pages
+      // { file: "handbook-v2/Type Declarations.md" }, 
+      // { file: "handbook-v2/Understanding Errors.md" },
     ],
   },
 ]
@@ -364,7 +376,7 @@ function fillReleaseInfo() {
     join(__dirname, "..", "copy", "en", "release-notes")
   );
   for (const file of files.reverse()) {
-    if (file.includes("overview")) return;
+    if (file.toLowerCase().includes("overview")) return;
     // @ts-ignore
     whatIsNew.items.push({ file: "release-notes/" + file });
   }

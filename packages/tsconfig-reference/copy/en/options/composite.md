@@ -1,6 +1,6 @@
 ---
 display: "Composite"
-oneline: "Used to create multiple build projects"
+oneline: "Enable constraints that allow a TypeScript project to be used with project references."
 ---
 
 The `composite` option enforces certain constraints which make it possible for build tools (including TypeScript

@@ -1,6 +1,6 @@
 ---
 display: "Allow Synthetic Default Imports"
-oneline: "Allow 'import x from y' when a module doesn't have a default export"
+oneline: "Allow 'import x from y' when a module doesn't have a default export."
 ---
 
 When set to true, `allowSyntheticDefaultImports` allows you to write an import like:
@@ -20,7 +20,7 @@ When the module **does not** explicitly specify a default export.
 For example, without `allowSyntheticDefaultImports` as true:
 
 ```ts twoslash
-// @errors: 1259
+// @errors: 1259 1192
 // @checkJs
 // @allowJs
 // @esModuleInterop: false

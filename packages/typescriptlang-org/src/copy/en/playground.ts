@@ -40,10 +40,12 @@ export const playCopy = {
   play_sidebar_plugins_plugin_dev_copy:
     "Automatically try connect to a playground plugin in development mode. You can get started with <a href='/dev/playground-plugins/' title='Link to the page about Playground Plugins'>making a plugin here</a>.",
   play_export_report_issue: "Report GitHub issue on TypeScript",
+  play_export_tweet_md: "Tweet link to Playground",
   play_export_copy_md: "Copy as Markdown Issue",
   play_export_copy_link: "Copy as Markdown Link",
   play_export_copy_link_preview: "Copy as Markdown Link with Preview",
   play_export_tsast: "Open in TypeScript AST Viewer",
+  play_export_bugworkbench: "Open in Bug Workbench",
   play_export_sandbox: "Open in CodeSandbox",
   play_export_stackblitz: "Open in StackBlitz",
   play_export_clipboard: "URL copied to clipboard",

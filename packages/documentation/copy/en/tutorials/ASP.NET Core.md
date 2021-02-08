@@ -106,7 +106,7 @@ Replace the contents of the `tsconfig.json` file with:
 }
 ```
 
-- `onEmitOnError` : Do not emit outputs if any errors were reported.
+- `noEmitOnError` : Do not emit outputs if any errors were reported.
 - `noImplicitAny` : Raise error on expressions and declarations with an implied `any` type.
 - `sourceMap` : Generates corresponding `.map` file.
 - `target` : Specify ECMAScript target version.

@@ -1,6 +1,6 @@
 const fs = require("fs")
 const { join } = require("path")
-const chalk = require("chalk").default
+const chalk = require("chalk")
 
 const code = str => chalk.bold.greenBright(str)
 

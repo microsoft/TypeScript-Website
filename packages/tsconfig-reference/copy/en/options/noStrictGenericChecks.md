@@ -1,6 +1,6 @@
 ---
 display: "No Strict Generic Checks"
-oneline: "Disable strict checking of generic signatures in functions."
+oneline: "Disable strict checking of generic signatures in function types."
 ---
 
 TypeScript will unify type parameters when comparing two generic functions.

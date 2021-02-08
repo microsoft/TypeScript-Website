@@ -1,5 +1,3 @@
-//// { compiler: { ts: "4.0.2" } }
-
 // In 4.0 the JSDoc tag @deprecated is added to the
 // type system. You can use @deprecated anywhere
 // you can use JSDoc currently.

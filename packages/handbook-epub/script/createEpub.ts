@@ -96,13 +96,12 @@ const startEpub = async () => {
 
   const releaseInfo = getReleaseInfo();
   const intro = jetpack.read("./assets/intro.xhtml");
-  const dateOptions = {
+  const date = new Date().toLocaleString("en-US", {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
-  };
-  const date = new Date().toLocaleString("en-US", dateOptions);
+  });
   const editedIntro = replaceAllInString(intro, {
     "%%DATE%%": date,
     "%%COMMIT_SHA%%": getGitSHA().slice(0, 6),
@@ -153,9 +152,7 @@ const getHTML = async (code: string, settings?: any) => {
     await runTwoSlashAcrossDocument(
       { markdownAST },
       {
-        theme: require.resolve(
-          "../../typescriptlang-org/lib/themes/typescript-beta-light.json"
-        ) as any,
+        theme: require("../../typescriptlang-org/lib/themes/typescript-beta-light.json"),
       },
       {}
     );

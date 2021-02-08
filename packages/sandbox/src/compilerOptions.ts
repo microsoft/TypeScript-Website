@@ -16,6 +16,7 @@ export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monac
     strictBindCallApply: true,
     noImplicitThis: true,
     noImplicitReturns: true,
+    noUncheckedIndexedAccess: false,
 
     // 3.7 off, 3.8 on I think
     useDefineForClassFields: false,
@@ -51,7 +52,7 @@ export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monac
     module: monaco.languages.typescript.ModuleKind.ESNext,
   }
 
-  return settings
+  return { ...settings, ...config.compilerOptions };
 }
 
 /**

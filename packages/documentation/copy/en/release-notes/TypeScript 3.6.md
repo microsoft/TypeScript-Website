@@ -228,12 +228,12 @@ console.log(import.meta.url);
 
 // gets turned into the following:
 
-System.register([], function(exports, context) {
+System.register([], function (exports, context) {
   return {
     setters: [],
-    execute: function() {
+    execute: function () {
       console.log(context.meta.url);
-    }
+    },
   };
 });
 ```
@@ -322,10 +322,6 @@ For the most part, TypeScript would default to auto-importing using ECMAScript m
 
 TypeScript 3.6 is now a bit smarter about looking at your existing imports before deciding on how to auto-import other modules.
 You can [see more details in the original pull request here](https://github.com/microsoft/TypeScript/pull/32684).
-
-## `await` Completions on Promises
-
-In TypeScript 3.6, completions on an
 
 ## New TypeScript Playground
 

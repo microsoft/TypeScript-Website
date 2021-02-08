@@ -425,7 +425,7 @@ let v2 = c2; // Type "hello"
 
 In ES2015, constructors which return an object implicitly substitute the value of `this` for any callers of `super()`.
 As a result, it is necessary to capture any potential return value of `super()` and replace it with `this`.
-This change enables working with [Custom Elements](https://w3c.github.io/webcomponents/spec/custom/#htmlelement-constructor), which takes advantage of this to initialize browser-allocated elements with user-written constructors.
+This change enables working with [Custom Elements](https://www.w3.org/TR/custom-elements/), which takes advantage of this to initialize browser-allocated elements with user-written constructors.
 
 ##### Example
 

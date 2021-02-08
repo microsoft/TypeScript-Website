@@ -1,6 +1,7 @@
 {
   "include": ["src", "types", "test"],
   "exclude": ["test"],
+
   "compilerOptions": {
     "target": "ES2015",
     "module": "esnext",
@@ -8,7 +9,7 @@
     "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
-    "rootDir": "./",
+    "rootDir": "./src",
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -21,7 +22,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "paths": {
       "*": ["src/*", "node_modules/*"]
     },

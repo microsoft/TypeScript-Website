@@ -1,5 +1,3 @@
-//// { compiler: { ts: "4.0.2" } }
-
 // # Nullish Coalescing
 //
 // This is a new operator `??` which is meant to augment

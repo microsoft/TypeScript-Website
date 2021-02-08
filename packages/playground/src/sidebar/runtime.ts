@@ -3,7 +3,9 @@ import { PlaygroundPlugin, PluginFactory } from ".."
 import { createUI, UI } from "../createUI"
 import { localize } from "../localizeWithFallback"
 
-let allLogs = ""
+const allLogs: string[] = []
+let offset = 0
+let curLog = 0
 let addedClearAction = false
 
 export const runPlugin: PluginFactory = (i, utils) => {
@@ -14,6 +16,7 @@ export const runPlugin: PluginFactory = (i, utils) => {
       if (!addedClearAction) {
         const ui = createUI()
         addClearAction(sandbox, ui, i)
+        addedClearAction = true
       }
 
       if (allLogs.length === 0) {
@@ -33,7 +36,7 @@ export const runPlugin: PluginFactory = (i, utils) => {
 
       const logs = document.createElement("div")
       logs.id = "log"
-      logs.innerHTML = allLogs
+      logs.innerHTML = allLogs.join('<hr />')
       errorUL.appendChild(logs)
     },
   }
@@ -42,7 +45,8 @@ export const runPlugin: PluginFactory = (i, utils) => {
 }
 
 export const clearLogs = () => {
-  allLogs = ""
+  offset += allLogs.length
+  allLogs.length = 0
   const logs = document.getElementById("log")
   if (logs) {
     logs.textContent = ""
@@ -73,57 +77,42 @@ function rewireLoggingToElement(
   autoScroll: boolean,
   i: Function
 ) {
-  fixLoggingFunc("log", "LOG")
-  fixLoggingFunc("debug", "DBG")
-  fixLoggingFunc("warn", "WRN")
-  fixLoggingFunc("error", "ERR")
-  fixLoggingFunc("info", "INF")
-  // @ts-expect-error
-  console["oldclear"] = console.clear
-  console.clear = clearLogs
+
+  const rawConsole = console
 
   closure.then(js => {
     try {
+      const replace = {} as any
+      bindLoggingFunc(replace, rawConsole, 'log', 'LOG', curLog)
+      bindLoggingFunc(replace, rawConsole, 'debug', 'DBG', curLog)
+      bindLoggingFunc(replace, rawConsole, 'warn', 'WRN', curLog)
+      bindLoggingFunc(replace, rawConsole, 'error', 'ERR', curLog)
+      replace['clear'] = clearLogs
+      const console = Object.assign({}, rawConsole, replace)
       eval(js)
     } catch (error) {
       console.error(i("play_run_js_fail"))
       console.error(error)
     }
-
-    allLogs = allLogs + "<hr />"
-
-    // @ts-expect-error
-    console["clear"] = console["oldclear"]
-    undoLoggingFunc("log")
-    undoLoggingFunc("debug")
-    undoLoggingFunc("warn")
-    undoLoggingFunc("error")
-    undoLoggingFunc("info")
-    undoLoggingFunc("clear")
+    curLog++
   })
 
-  function undoLoggingFunc(name: string) {
-    // @ts-ignore
-    console[name] = console["old" + name]
-  }
-
-  function fixLoggingFunc(name: string, id: string) {
-    // @ts-ignore
-    console["old" + name] = console[name]
-    // @ts-ignore
-    console[name] = function (...objs: any[]) {
+  function bindLoggingFunc(obj: any, raw: any, name: string, id: string, cur: number) {
+    obj[name] = function (...objs: any[]) {
       const output = produceOutput(objs)
       const eleLog = eleLocator()
-      const prefix = '[<span class="log-' + name + '">' + id + "</span>]: "
+      const prefix = `[<span class="log-${name}">${id}</span>]: `
       const eleContainerLog = eleOverflowLocator()
-      allLogs = allLogs + prefix + output + "<br>"
-      eleLog.innerHTML = allLogs
+      const index = cur - offset
+      if (index >= 0) {
+        allLogs[index] = (allLogs[index] ?? '') + prefix + output + "<br>"
+      }
+      eleLog.innerHTML = allLogs.join("<hr />")
       const scrollElement = eleContainerLog.parentElement
       if (autoScroll && scrollElement) {
         scrollToBottom(scrollElement)
       }
-      // @ts-ignore
-      console["old" + name].apply(undefined, objs)
+      raw[name](...objs)
     }
   }
 

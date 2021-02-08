@@ -2,7 +2,7 @@
 title: Narrowing
 layout: docs
 permalink: /docs/handbook/2/narrowing.html
-oneline: "Step one in learning TypeScript: The basics types."
+oneline: "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects."
 beta: true
 ---
 
@@ -111,8 +111,6 @@ This might be a good segue into what we'll call "truthiness" checking.
 
 Truthiness might not be a word you'll find in the dictionary, but it's very much something you'll hear about in JavaScript.
 
-<!-- TODO: I'm on an airplane, is truthiness in the dictionary?? -->
-
 In JavaScript, we can use any expression in conditionals, `&&`s, `||`s, `if` statements, and Boolean negations (`!`), and more.
 As an example, `if` statements don't expect their condition to always have the type `boolean`.
 
@@ -214,17 +212,17 @@ TypeScript also uses `switch` statements and equality checks like `===`, `!==`, 
 For example:
 
 ```ts twoslash
-function foo(left: string | number, right: string | boolean) {
-  if (left === right) {
+function foo(x: string | number, y: string | boolean) {
+  if (x === y) {
     // We can now call any 'string' method on 'x' or 'y'.
-    left.toUpperCase();
+    x.toUpperCase();
     // ^?
-    right.toLowerCase();
+    y.toLowerCase();
     // ^?
   } else {
-    console.log(left);
+    console.log(x);
     //          ^?
-    console.log(right);
+    console.log(y);
     //          ^?
   }
 }
@@ -242,7 +240,7 @@ function printAll(strs: string | string[] | null) {
   if (strs !== null) {
     if (typeof strs === "object") {
       for (const s of strs) {
-        //           ^?
+        //            ^?
         console.log(s);
       }
     } else if (typeof strs === "string") {

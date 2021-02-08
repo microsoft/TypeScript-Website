@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import ReactDOM from "react-dom"
 import { Layout } from "../../components/layout"
 import { withPrefix, graphql } from "gatsby"
-import { BugWorkbenchQuery } from "../../__generated__/gatsby-types"
 import { debounce } from 'ts-debounce';
 
 import "../../templates/play.scss"
@@ -24,9 +23,7 @@ import { twoslasher, TwoSlashReturn } from "@typescript/twoslash"
 
 type TwoSlashReturns = import("@typescript/twoslash").TwoSlashReturn
 
-type Props = {
-  data: BugWorkbenchQuery
-}
+type Props = {}
 
 const Play: React.FC<Props> = (props) => {
   const i = createInternational<typeof headCopy & typeof playCopy>(useIntl())
@@ -46,17 +43,23 @@ const Play: React.FC<Props> = (props) => {
     const getLoaderScript = document.createElement('script');
     getLoaderScript.src = withPrefix("/js/vs.loader.js");
     getLoaderScript.async = true;
-    getLoaderScript.onload = () => {
+    getLoaderScript.onload = async () => {
       const params = new URLSearchParams(location.search)
-      // nothing || Nightly -> next || original ts param
-      const supportedVersion = !params.get("ts") ? undefined : params.get("ts") === "Nightly" ? "next" : params.get("ts")
-      const tsVersion = supportedVersion || "next"
+
+      let tsVersionParam = params.get("ts")
+      // handle the nightly lookup 
+      if (!tsVersionParam || tsVersionParam && tsVersionParam === "Nightly" || tsVersionParam === "next") {
+        // Avoids the CDN to doubly skip caching
+        const nightlyLookup = await fetch("https://tswebinfra.blob.core.windows.net/indexes/next.json", { cache: "no-cache" })
+        const nightlyJSON = await nightlyLookup.json()
+        tsVersionParam = nightlyJSON.version
+      }
 
       // @ts-ignore
       const re: any = global.require
       re.config({
         paths: {
-          vs: `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/min/vs`,
+          vs: `https://typescript.azureedge.net/cdn/${tsVersionParam}/monaco/min/vs`,
           "typescript-sandbox": withPrefix('/js/sandbox'),
           "typescript-playground": withPrefix('/js/playground'),
           "unpkg": "https://unpkg.com/",
@@ -110,10 +113,11 @@ const Play: React.FC<Props> = (props) => {
         const utils = playgroundEnv.createUtils(sandbox, React)
 
         const updateDTSEnv = (opts) => {
-          createDefaultMapFromCDN(opts, tsVersion, true, ts, sandboxEnv.lzstring as any).then((defaultMap) => {
+          createDefaultMapFromCDN(opts, tsVersionParam!, true, ts, sandboxEnv.lzstring as any).then((defaultMap) => {
             dtsMap = defaultMap
             runTwoslash()
           })
+
         }
 
         // When the compiler notices a twoslash compiler flag change, this will get triggered and reset the DTS map
@@ -202,7 +206,7 @@ const Play: React.FC<Props> = (props) => {
 
 
   return (
-    <Layout title="Bug Workbench" description="Create reproductions of issues with TypeScript" lang="en" allSitePage={props.data.allSitePage}>
+    <Layout title="Bug Workbench" description="Create reproductions of issues with TypeScript" lang="en">
       {/** This is the top nav, which is outside of the editor  */}
       <nav className="navbar-sub">
         <ul className="nav">
@@ -244,9 +248,3 @@ const Play: React.FC<Props> = (props) => {
 
 
 export default (props: Props) => <Intl locale="en"><Play {...props} /></Intl>
-
-export const query = graphql`
-  query BugWorkbench {
-    ...AllSitePage
-  }
-`

@@ -1,6 +1,6 @@
 ---
 display: "No Error Truncation"
-oneline: "Do not truncate error messages"
+oneline: "Disable truncating types in error messages."
 ---
 
 Do not truncate error messages.

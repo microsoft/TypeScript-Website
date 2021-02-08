@@ -150,7 +150,7 @@ const Greeter = ({ name = "world" }) => <div>Hello, {name}!</div>;
 let example = <Greeter name="TypeScript 1.8" />;
 ```
 
-For this feature and simplified props, be sure to be use the [latest version of react.d.ts](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/react).
+For this feature and simplified props, be sure to be use the [latest version of react.d.ts](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react/index.d.ts).
 
 ## Simplified `props` type management in React
 

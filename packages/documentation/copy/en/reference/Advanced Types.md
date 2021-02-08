@@ -59,7 +59,7 @@ It would be much better if once we performed the check, we could know the type o
 It just so happens that TypeScript has something called a _type guard_.
 A type guard is some expression that performs a runtime check that guarantees the type in some scope.
 
-#### Using type predicates
+### Using type predicates
 
 To define a type guard, we simply need to define a function whose return type is a _type predicate_:
 
@@ -98,6 +98,26 @@ if (isFish(pet)) {
 
 Notice that TypeScript not only knows that `pet` is a `Fish` in the `if` branch;
 it also knows that in the `else` branch, you _don't_ have a `Fish`, so you must have a `Bird`.
+
+You may use the type guard `isFish` to filter an array of `Fish | Bird` and obtain an array of `Fish`:
+
+```ts twoslash
+// @errors: 2345
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+declare function getSmallPet(): Fish | Bird;
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined;
+}
+// ---cut---
+const zoo: (Fish | Bird)[] = [getSmallPet(), getSmallPet(), getSmallPet()];
+const underWater1: Fish[] = zoo.filter(isFish);
+// or, equivalently
+const underWater2: Fish[] = zoo.filter<Fish>(isFish);
+const underWater3: Fish[] = zoo.filter<Fish>(pet => isFish(pet));
+```
+
+
 
 ### Using the `in` operator
 
@@ -198,11 +218,11 @@ let padder: Padder = getRandomPadder();
 
 if (padder instanceof SpaceRepeatingPadder) {
   padder;
-  //     ^?
+  //   ^?
 }
 if (padder instanceof StringPadder) {
   padder;
-  //     ^?
+  //   ^?
 }
 ```
 
@@ -381,7 +401,7 @@ people.next.next.next.name;
 
 As we mentioned, type aliases can act sort of like interfaces; however, there are some subtle differences.
 
-Almost all features of an `interface` are available in `type`, the key distinction is that a type cannot be re-opened to add new properties vs a interface which is always extendable.
+Almost all features of an `interface` are available in `type`, the key distinction is that a type cannot be re-opened to add new properties vs an interface which is always extendable.
 
 <table class='full-width-table'>
   <tbody>
@@ -449,7 +469,7 @@ type Window = {
     </tbody>
 </table>
 
-Because an interface more closely maps how JavaScript object work [by being open to extension](https://wikipedia.org/wiki/Open/closed_principle), we recommend using an interface over a type alias when possible.
+Because an interface more closely maps how JavaScript objects work [by being open to extension](https://wikipedia.org/wiki/Open/closed_principle), we recommend using an interface over a type alias when possible.
 
 On the other hand, if you can't express some shape with an interface and you need to use a union or tuple type, type aliases are usually the way to go.
 

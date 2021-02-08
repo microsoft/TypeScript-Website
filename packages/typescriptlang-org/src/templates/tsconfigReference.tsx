@@ -11,10 +11,9 @@ import { headCopy } from "../copy/en/head-seo"
 import "./markdown.scss"
 import "./tsconfig.scss"
 
-import { TSConfigReferenceTemplateQuery } from "../__generated__/gatsby-types"
 import { setupTwoslashHovers } from "shiki-twoslash/dist/dom"
 
-type Props = { pageContext: any, data: TSConfigReferenceTemplateQuery, path: string }
+type Props = { pageContext: any, data: GatsbyTypes.TSConfigReferenceTemplateQuery, path: string }
 
 const TSConfigReferenceTemplateComponent = (props) => {
   const i = createInternational<typeof headCopy>(useIntl())
@@ -73,7 +72,7 @@ const TSConfigReferenceTemplateComponent = (props) => {
   }, [])
 
   return (
-    <Layout title={i("tsconfig_title")} description={i("tsconfig_description")} lang={props.pageContext.locale} allSitePage={props.data.allSitePage}>
+    <Layout title={i("tsconfig_title")} description={i("tsconfig_description")} lang={props.pageContext.locale}>
       <div className="tsconfig raised main-content-block markdown">
         <div dangerouslySetInnerHTML={{ __html: post.html! }} />
       </div>
@@ -84,7 +83,6 @@ const TSConfigReferenceTemplateComponent = (props) => {
 
 export const pageQuery = graphql`
   query TSConfigReferenceTemplate($tsconfigMDPath: String!) {
-    ...AllSitePage
 
     markdownRemark(fileAbsolutePath: {eq: $tsconfigMDPath} ) {
       id

@@ -1,3 +1,0 @@
----
-display: "Linha de comando"
----

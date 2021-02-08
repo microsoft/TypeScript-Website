@@ -3,6 +3,7 @@ title: Classes
 layout: docs
 permalink: /docs/handbook/classes.html
 oneline: How classes work in TypeScript
+handbook: "true"
 ---
 
 Traditional JavaScript uses functions and prototype-based inheritance to build up reusable components, but this may feel a bit awkward to programmers more comfortable with an object-oriented approach, where classes inherit functionality and objects are built from these classes.
@@ -486,7 +487,7 @@ department = new Department(); // error: cannot create an instance of an abstrac
 department = new AccountingDepartment(); // ok to create and assign a non-abstract subclass
 department.printName();
 department.printMeeting();
-department.generateReports();
+department.generateReports(); // error: department is not of type AccountingDepartment, cannot access generateReports
 ```
 
 ## Advanced Techniques
@@ -570,6 +571,10 @@ greeterMaker.standardGreeting = "Hey there!";
 
 let greeter2: Greeter = new greeterMaker();
 console.log(greeter2.greet()); // "Hey there!"
+
+let greeter3: Greeter;
+greeter3 = new Greeter();
+console.log(greeter3.greet()); // "Hey there!"
 ```
 
 In this example, `greeter1` works similarly to before.
@@ -583,6 +588,7 @@ Here we use `typeof Greeter`, that is "give me the type of the `Greeter` class i
 Or, more precisely, "give me the type of the symbol called `Greeter`," which is the type of the constructor function.
 This type will contain all of the static members of Greeter along with the constructor that creates instances of the `Greeter` class.
 We show this by using `new` on `greeterMaker`, creating new instances of `Greeter` and invoking them as before.
+It is also good to mention that changing static property is frowned upon, here `greeter3` has `"Hey there!"` instead of `"Hello, there"` on `standardGreeting`.
 
 ## Using a class as an interface
 

@@ -1,5 +1,23 @@
 {
-  "name": "Light Visual Studio",
+  "name": "TypeScript",
+  "colors": {
+    "black": "#000000",
+    "white": "#FFFFFF",
+    "identifier": "#1a1a1a",
+    "veryBrightBlue": "#0000FF",
+    "veryDarkBlue": "#000080",
+    "mutedGreenAA": "#09835A",
+    "mutedBlueAAA": "#0451A5",
+    "darkGreenAA": "#008000",
+    "darkGreenAAA": "#036705",
+    "lightBurgendyAAA": "#A31515",
+    "burgendyAAA": "#811f3f",
+    "darkBurgendyAAA": "#800000",
+    "brightRedAAA": "#AF0B08"
+  },
+  "type": "light",
+  "fg": "#000000",
+  "bg": "#FFFFFF",
   "settings": [
     { "scope": "emphasis", "settings": { "fontStyle": "italic" } },
     { "scope": "strong", "settings": { "fontStyle": "bold" } },

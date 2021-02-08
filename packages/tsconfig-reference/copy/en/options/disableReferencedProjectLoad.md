@@ -1,6 +1,6 @@
 ---
 display: "disableReferencedProjectLoad"
-oneline: "Reduces the number of projects loaded automatically by TypeScript"
+oneline: "Reduce the number of projects loaded automatically by TypeScript."
 ---
 
 In multi-project TypeScript programs, TypeScript will load all of the available projects into memory in order to provide accurate results for editor responses which require a full knowledge graph like 'Find All References'.

@@ -1,25 +1,19 @@
 import * as React from "react"
 import { Layout } from "../components/layout"
-import { withPrefix, graphql, Link } from "gatsby"
+import { withPrefix } from "gatsby"
 
 import { Intl } from "../components/Intl"
-import { UpcomingQuery, BrandingQuery } from "../__generated__/gatsby-types"
-import { UpcomingReleaseMeta } from "../components/index/UpcomingReleaseMeta"
-import { useIntl } from "react-intl"
-
 
 import "./branding.scss"
 
-type Props = {
-  data: BrandingQuery
-}
+type Props = {}
 
 const Row = (props: { children: any, className?: string }) => <div className={[props.className, "row"].join(" ")}>{props.children}</div>
 
 const Index: React.FC<Props> = (props) => {
   return (
     <>
-      <Layout title="Branding" description="Logos and design assets" lang="en" allSitePage={props.data.allSitePage}>
+      <Layout title="Branding" description="Logos and design assets" lang="en" >
         <div id="branding">
           <h1>Branding</h1>
           <h2 className="subnav">Logos and design assets for TypeScript</h2>
@@ -35,7 +29,7 @@ const Index: React.FC<Props> = (props) => {
 
           <Row className="main-content-block recommendations">
             <p style={{ flex: 1 }}>Please use the blue TypeScript mark above as the primary logo for TypeScript.</p>
-            <p style={{ flex: 1 }}>This is the right logos for blog posts, news articles or give-away stickers.</p>
+            <p style={{ flex: 1 }}>This is the right logos for blog posts, news articles, give-away stickers and general marketing for yourself.</p>
             <p style={{ flex: 1 }}>The “TS” is the logo is white, not transparent by default.</p>
             <p style={{ flex: 1 }}>There is a capital “S” in TypeScript, just like in JavaScript.</p>
           </Row>
@@ -78,10 +72,10 @@ const Index: React.FC<Props> = (props) => {
           <h2>Please Don't</h2>
 
           <Row className="main-content-block recommendations">
-            <p style={{ flex: 1 }}>Use the TypeScript logos for your application.</p>
+            <p style={{ flex: 1 }}>Use the TypeScript logos for your application/product.</p>
             <p style={{ flex: 1 }}>Modify the shape of the logos when used.</p>
             <p style={{ flex: 1 }}>Integrate the TypeScript logo into your application's logo.</p>
-            <p style={{ flex: 1 }}>Name a product which implies TypeScript's endorsement.</p>
+            <p style={{ flex: 1 }}>Name a product which implies TypeScript's endorsement of the product.</p>
           </Row>
         </div>
       </Layout>
@@ -91,8 +85,3 @@ const Index: React.FC<Props> = (props) => {
 
 export default (props: Props) => <Intl locale="en"><Index {...props} /></Intl>
 
-export const query = graphql`
-  query Branding {
-    ...AllSitePage
-  }
-`

@@ -1,6 +1,6 @@
 ---
 display: "List Files"
-oneline: "Print all of the files read during the compilation"
+oneline: "Print all of the files read during the compilation."
 ---
 
 Print names of files part of the compilation. This is useful when you are not sure that TypeScript has
@@ -36,3 +36,5 @@ path/to/example/node_modules/typescript/lib/lib.webworker.importscripts.d.ts
 path/to/example/node_modules/typescript/lib/lib.scripthost.d.ts
 path/to/example/index.ts
 ```
+
+Note if using TypeScript 4.2, prefer [`explainFiles`](#explainFiles) which offers an explanation of why a file was added too.

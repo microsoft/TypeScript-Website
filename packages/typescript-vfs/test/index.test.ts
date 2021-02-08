@@ -4,6 +4,7 @@ import {
   createDefaultMapFromNodeModules,
   createDefaultMapFromCDN,
   knownLibFilesForCompilerOptions,
+  createVirtualCompilerHost,
 } from "../src"
 
 import ts from "typescript"
@@ -189,4 +190,20 @@ describe(knownLibFilesForCompilerOptions, () => {
     const baseline = knownLibFilesForCompilerOptions({ target: ts.ScriptTarget.ES2016 }, ts)
     expect(baseline).toContain("lib.es2016.d.ts")
   })
+})
+
+it("throws when you request a lib file which isn't in the fsMap", () => {
+  const t = () => {
+    const fsMap = new Map()
+    fsMap.set("index.js", "// hi there")
+    const system = createSystem(fsMap)
+    const host = createVirtualCompilerHost(system, { target: ts.ScriptTarget.ES2020 }, ts)
+    ts.createProgram({
+      rootNames: ["/index.js"],
+      options: { target: ts.ScriptTarget.ES2020 },
+      host: host.compilerHost,
+    })
+  }
+
+  expect(t).toThrow()
 })

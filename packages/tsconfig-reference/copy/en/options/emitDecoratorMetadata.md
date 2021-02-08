@@ -1,6 +1,6 @@
 ---
 display: "Emit Decorator Metadata"
-oneline: "Adds additional type metadata to decorators in emitted code"
+oneline: "Emit design-type metadata for decorated declarations in source files."
 ---
 
 Enables experimental support for emitting type metadata for decorators which works with the module [`reflect-metadata`](https://www.npmjs.com/package/reflect-metadata).

@@ -1,6 +1,12 @@
 export interface UI {
   /** Show a text modal, with some buttons */
-  showModal: (message: string, postFocalElement: HTMLElement, subtitle?: string, buttons?: { [text: string]: string }) => void
+  showModal: (
+    message: string,
+    postFocalElement: HTMLElement,
+    subtitle?: string,
+    buttons?: { [text: string]: string },
+    event?: React.MouseEvent
+  ) => void
   /** A quick flash of some text */
   flashInfo: (message: string) => void
   /** Creates a modal container which you can put your own DOM elements inside */
@@ -69,18 +75,30 @@ export const createUI = (): UI => {
   }
 
   /** For showing a lot of code */
-  const showModal = (code: string, postFocalElement: HTMLElement, subtitle?: string, links?: { [text: string]: string }) => {
+  const showModal = (
+    code: string,
+    postFocalElement: HTMLElement,
+    subtitle?: string,
+    links?: { [text: string]: string },
+    event?: React.MouseEvent
+  ) => {
     const modal = createModalOverlay(postFocalElement)
+    // I've not been able to get this to work in a way which
+    // works with every screenreader and browser combination, so
+    // instead I'm dropping the feature.
+
+    const isNotMouse = false //  event && event.screenX === 0 && event.screenY === 0
 
     if (subtitle) {
       const titleElement = document.createElement("h3")
       titleElement.textContent = subtitle
-      titleElement.setAttribute("role", "alert")
+      setTimeout(() => {
+        titleElement.setAttribute("role", "alert")
+      }, 100)
       modal.appendChild(titleElement)
     }
 
     const textarea = document.createElement("textarea")
-    textarea.autofocus = true
     textarea.readOnly = true
     textarea.wrap = "off"
     textarea.style.marginBottom = "20px"
@@ -102,7 +120,7 @@ export const createUI = (): UI => {
     const close = modal.querySelector(".close") as HTMLElement
     close.addEventListener("keydown", e => {
       if (e.key === "Tab") {
-        ; (modal.querySelector("textarea") as any).focus()
+        ;(modal.querySelector("textarea") as any).focus()
         e.preventDefault()
       }
     })
@@ -120,13 +138,19 @@ export const createUI = (): UI => {
     const selectAll = () => {
       textarea.select()
     }
-    selectAll()
+
+    const shouldAutoSelect = !isNotMouse
+    if (shouldAutoSelect) {
+      selectAll()
+    } else {
+      textarea.focus()
+    }
 
     const buttons = modal.querySelectorAll("button")
     const lastButton = buttons.item(buttons.length - 1) as HTMLElement
     lastButton.addEventListener("keydown", e => {
       if (e.key === "Tab") {
-        ; (document.querySelector(".close") as any).focus()
+        ;(document.querySelector(".close") as any).focus()
         e.preventDefault()
       }
     })

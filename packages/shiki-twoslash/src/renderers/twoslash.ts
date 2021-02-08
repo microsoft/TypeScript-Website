@@ -1,8 +1,8 @@
 type Lines = import("shiki").IThemedToken[][]
-type Options = import("shiki/dist/renderer").HtmlRendererOptions
 type TwoSlash = import("@typescript/twoslash").TwoSlashReturn
 
 import { stripHTML, createHighlightedString2, subTripleArrow, replaceTripleArrowEncoded, escapeHtml } from "../utils"
+import { HtmlRendererOptions } from "./plain"
 
 // OK, so - this is just straight up complex code.
 
@@ -21,7 +21,7 @@ import { stripHTML, createHighlightedString2, subTripleArrow, replaceTripleArrow
 // - the DOM requires a flattened graph of html elements
 //
 
-export function twoslashRenderer(lines: Lines, options: Options, twoslash: TwoSlash) {
+export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, twoslash: TwoSlash) {
   let html = ""
 
   html += `<pre class="shiki twoslash lsp">`
@@ -129,7 +129,13 @@ export function twoslashRenderer(lines: Lines, options: Options, twoslash: TwoSl
       queries.forEach(query => {
         switch (query.kind) {
           case "query": {
-            html += `<span class='query'>${"//" + "".padStart(query.offset - 2) + "^ = " + query.text}</span>`
+            const previousLine = (lines[i - 1] || [])[0]?.content || ""
+            const previousLineWhitespace = previousLine.slice(0, /\S/.exec(previousLine)?.index || 0)
+            // prettier-ignore
+            const linePrefix = previousLineWhitespace + "//" + "".padStart(query.offset - 2 - previousLineWhitespace.length)
+            // prettier-ignore
+            const queryTextWithPrefix = query.text?.split("\n").map((l, i) => i !== 0 ? linePrefix + l : l).join("\n")
+            html += `<span class='query'>${linePrefix + "^ = " + queryTextWithPrefix}</span>`
             break
           }
           case "completions": {
@@ -137,13 +143,15 @@ export function twoslashRenderer(lines: Lines, options: Options, twoslash: TwoSl
               html += `<span class='query'>${"//" + "".padStart(query.offset - 2) + "^ - No completions found"}</span>`
             } else {
               const prefixed = query.completions.filter(c => c.name.startsWith(query.completionsPrefix || "____"))
-              console.log("Prefix: ", query.completionsPrefix)
+
               const lis = prefixed
                 .sort((l, r) => l.name.localeCompare(r.name))
                 .map(c => {
                   const after = c.name.substr(query.completionsPrefix?.length || 0)
                   const name = `<span><span class='result-found'>${query.completionsPrefix || ""}</span>${after}<span>`
-                  return `<li>${name}</li>`
+                  const isDeprecated = c.kindModifiers?.split(",").includes("deprecated")
+                  const liClass = isDeprecated ? "deprecated" : ""
+                  return `<li class='${liClass}'>${name}</li>`
                 })
                 .join("")
               html +=

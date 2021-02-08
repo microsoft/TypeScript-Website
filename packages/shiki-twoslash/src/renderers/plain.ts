@@ -1,9 +1,14 @@
 import { escapeHtml } from "../utils"
 
-type Options = import("shiki/dist/renderer").HtmlRendererOptions
+// C&P'd from shiki
+export interface HtmlRendererOptions {
+  langId?: string
+  fg?: string
+  bg?: string
+}
 
 /** You don't have a language which shiki twoslash can handle, make a DOM compatible version  */
-export function plainTextRenderer(code: string, options: Options) {
+export function plainTextRenderer(code: string, options: HtmlRendererOptions) {
   let html = ""
 
   html += `<pre class="shiki">`

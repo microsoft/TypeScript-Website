@@ -22,7 +22,7 @@ export const CookieBanner = (props: { lang: string }) => {
     let siteConsent
     // If they ship a bad build of the cookie banner, then even though the script is fully there
     // the global symbols won't be
-    if (!WcpConsent) return
+    if (typeof WcpConsent === 'undefined' || !WcpConsent) return
 
     WcpConsent.init("en-US", "cookie-banner", (err, _siteConsent) => {
       if (err) {

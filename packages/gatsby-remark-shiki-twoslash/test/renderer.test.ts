@@ -3,9 +3,12 @@ import gatsbyRemarkShiki from "../src/index"
 import { join } from "path"
 // const gatsbyTwoSlash = require('gatsby-remark-shiki-twoslasher')
 
-const getMarkdownASTForCode = async (code: string, settings?: any) => {
+const getMarkdownASTForCode = async (code: string) => {
   const markdownAST = remark().parse(code)
-  // gatsbyTwoSlash({ markdownAST })
+
+  const settings = {
+    theme: require("../../typescriptlang-org/lib/themes/typescript-beta-light.json"),
+  }
   await gatsbyRemarkShiki({ markdownAST }, settings, {})
   return markdownAST
 }
@@ -95,7 +98,7 @@ OK world
   })
 
   it("shows the right LSP results when a theme doesnt have unique tokens for identifiers", async () => {
-    const markdownAST = await getMarkdownASTForCode(file, { theme: "light_vs" })
+    const markdownAST = await getMarkdownASTForCode(file) //, { theme: "light_vs" })
     const code = markdownAST.children[1]
 
     expect(code.value).toContain(`<data-lsp lsp='function longest`)
@@ -137,7 +140,7 @@ OK world
 `
 
   it("shows the right LSP results when a theme doesnt have unique tokens for identifiers", async () => {
-    const markdownAST = await getMarkdownASTForCode(file, { theme: "light_vs" })
+    const markdownAST = await getMarkdownASTForCode(file) //, { theme: "light_vs" })
     const code = markdownAST.children[1]
 
     expect(code.value).toContain(`data-lsp`)
@@ -147,9 +150,7 @@ OK world
   })
 
   it("shows the right LSP results with the typescript site theme", async () => {
-    const markdownAST = await getMarkdownASTForCode(file, {
-      theme: join(__dirname, "..", "..", "typescriptlang-org", " lib", " themes", " typescript-beta-light.json"),
-    })
+    const markdownAST = await getMarkdownASTForCode(file)
     const code = markdownAST.children[1]
 
     expect(code.value).toContain(`data-lsp`)
@@ -172,7 +173,7 @@ OK world
 `
 
   it("looks about right", async () => {
-    const markdownAST = await getMarkdownASTForCode(file, { theme: "light_vs" })
+    const markdownAST = await getMarkdownASTForCode(file)
     const code = markdownAST.children[1]
     expect(code.value).not.toContain("twoslash")
   })

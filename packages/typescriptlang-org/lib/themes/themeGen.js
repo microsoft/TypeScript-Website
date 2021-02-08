@@ -26,7 +26,11 @@ const colors = {
 }
 
 const lightTheme = {
-  name: "Light Visual Studio",
+  name: "TypeScript",
+  colors,
+  type: "light",
+  fg: colors.black,
+  bg: colors.white,
   settings: [
     {
       scope: "emphasis",
@@ -737,6 +741,12 @@ const darkTheme = {
       scope: "variable.language",
       settings: {
         foreground: "#569cd6",
+      },
+    },
+    {
+      scope: ["entity.name.type.alias.ts", "entity.name.type.ts"],
+      settings: {
+        foreground: colors.darkBurgendyAAA,
       },
     },
   ],

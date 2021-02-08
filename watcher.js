@@ -5,7 +5,7 @@
 
 const watchman = require("fb-watchman")
 const client = new watchman.Client({})
-const chalk = require("chalk").default
+const chalk = require("chalk")
 const { spawn } = require("child_process")
 const { join } = require("path")
 const { existsSync, readFileSync } = require("fs")

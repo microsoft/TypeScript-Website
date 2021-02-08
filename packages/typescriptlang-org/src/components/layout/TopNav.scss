@@ -74,6 +74,11 @@
     a {
       display: block;
       padding: 0.95rem 0.5em 0.7em;
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &.active,
       &:focus {
         text-decoration: underline;
       }
@@ -156,11 +161,13 @@ form.search {
   bottom: 20px;
 
   color: white;
-  background: #152740;
+  background: #222;
+  border-radius: 5px;
   box-shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.432),
     0 0.3px 0.9px 0 rgba(0, 0, 0, 0.408);
 
   border-radius: 4px;
+
   p {
     padding: 0 10px;
     font-size: 14px;

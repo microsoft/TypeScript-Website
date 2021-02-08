@@ -1,6 +1,6 @@
 ---
 display: "TS Build Info File"
-oneline: "Set the folder for .tsbuildinfo files"
+oneline: "Specify the folder for .tsbuildinfo incremental compilation files."
 ---
 
 This setting lets you specify a file for storing incremental compilation information as a part of composite projects which enables faster
