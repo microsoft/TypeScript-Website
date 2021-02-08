@@ -130,6 +130,11 @@ export const createTypeScriptSandbox = (
     compilerOptions = compilerDefaults
   }
 
+  // Don't allow a state like allowJs = false, and useJavascript = true
+  if (config.useJavaScript) {
+    compilerOptions.allowJs = true
+  }
+
   const language = languageType(config)
   const filePath = createFileUri(config, compilerOptions, monaco)
   const element = "domID" in config ? document.getElementById(config.domID) : (config as any).elementToAppend
