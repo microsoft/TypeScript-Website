@@ -197,8 +197,8 @@ Converts the first character in the string to a lowercase equivalent.
 ##### Example
 
 ```ts twoslash
-type LowercaseGreeting = "HELLO WORLD";
-type UncomfortableGreeting = Uncapitalize<LowercaseGreeting>;
+type UppercaseGreeting = "HELLO WORLD";
+type UncomfortableGreeting = Uncapitalize<UppercaseGreeting>;
 //   ^?
 ```
 
