@@ -79,17 +79,11 @@ export const createConfigDropdown = (sandbox: Sandbox, monaco: Monaco) => {
   const dropdownContainer = document.getElementById("compiler-dropdowns")!
 
   const target = optionsSummary.find(sum => sum.id === "target")!
-  const targetSwitch = createSelect(
-    target.display,
-    "target",
-    target.oneliner,
-    sandbox,
-    monaco.languages.typescript.ScriptTarget
-  )
+  const targetSwitch = createSelect(target.display, "target", target.oneliner, sandbox, sandbox.ts.ScriptTarget)
   dropdownContainer.appendChild(targetSwitch)
 
   const jsx = optionsSummary.find(sum => sum.id === "jsx")!
-  const jsxSwitch = createSelect(jsx.display, "jsx", jsx.oneliner, sandbox, monaco.languages.typescript.JsxEmit)
+  const jsxSwitch = createSelect(jsx.display, "jsx", jsx.oneliner, sandbox, sandbox.ts.JsxEmit)
   dropdownContainer.appendChild(jsxSwitch)
 
   // When switching between a .ts and a .tsx file - refresh the playground
@@ -105,13 +99,7 @@ export const createConfigDropdown = (sandbox: Sandbox, monaco: Monaco) => {
   })
 
   const modSum = optionsSummary.find(sum => sum.id === "module")!
-  const moduleSwitch = createSelect(
-    modSum.display,
-    "module",
-    modSum.oneliner,
-    sandbox,
-    monaco.languages.typescript.ModuleKind
-  )
+  const moduleSwitch = createSelect(modSum.display, "module", modSum.oneliner, sandbox, sandbox.ts.ModuleKind)
   dropdownContainer.appendChild(moduleSwitch)
 }
 
