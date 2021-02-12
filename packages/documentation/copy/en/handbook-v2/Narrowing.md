@@ -212,7 +212,7 @@ TypeScript also uses `switch` statements and equality checks like `===`, `!==`, 
 For example:
 
 ```ts twoslash
-function foo(x: string | number, y: string | boolean) {
+function example(x: string | number, y: string | boolean) {
   if (x === y) {
     // We can now call any 'string' method on 'x' or 'y'.
     x.toUpperCase();
@@ -351,7 +351,7 @@ This analysis of code based on reachability is called _control flow analysis_, a
 When a variable is analyzed, control flow can split off and re-merge over and over again, and that variable can be observed to have a different type at each point.
 
 ```ts twoslash
-function foo() {
+function example() {
   let x: string | number | boolean;
 
   x = Math.random() < 0.5;

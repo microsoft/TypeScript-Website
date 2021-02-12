@@ -211,6 +211,9 @@ function printName(obj: { first: string; last?: string }) {
     // OK
     console.log(obj.last.toUpperCase());
   }
+
+  // A safe alternative using modern JavaScript syntax:
+  console.log(obj.last?.toUpperCase());
 }
 ```
 
@@ -614,10 +617,10 @@ From ES2020 onwards, there is a primitive in JavaScript used for very large inte
 // @target: es2020
 
 // Creating a bigint via the BigInt function
-let foo: bigint = BigInt(100);
+const oneHundred: bigint = BigInt(100);
 
 // Creating a BigInt via the literal syntax
-let bar: bigint = 100n;
+const anotherHundred: bigint = 100n;
 ```
 
 You can learn more about BigInt in [the TypeScript 3.2 release notes](/docs/handbook/release-notes/typescript-3-2.html#bigint).

@@ -10,43 +10,43 @@ beta: true
 ---
 
 Each and every value in JavaScript has a set of behaviors you can observe from running different operations.
-That sounds abstract, but as a quick example, consider some operations we might run on a variable named `foo`.
+That sounds abstract, but as a quick example, consider some operations we might run on a variable named `message`.
 
 ```js
 // Accessing the property 'toLowerCase'
-// on 'foo' and then calling it
-foo.toLowerCase();
+// on 'message' and then calling it
+message.toLowerCase();
 
-// Calling 'foo'
-foo();
+// Calling 'message'
+message();
 ```
 
 If we break this down, the first runnable line of code accesses a property called `toLowerCase` and then calls it.
-The second one tries to call `foo` directly.
+The second one tries to call `message` directly.
 
-But assuming we don't know the value of `foo` - and that's pretty common - we can't reliably say what results we'll get from trying to run any of this code.
+But assuming we don't know the value of `message` - and that's pretty common - we can't reliably say what results we'll get from trying to run any of this code.
 The behavior of each operation depends entirely on what value we had in the first place.
 
-- Is `foo` callable?
+- Is `message` callable?
 - Does it have a property called `toLowerCase` on it?
 - If it does, is `toLowerCase` even callable?
 - If both of these values are callable, what do they return?
 
 The answers to these questions are usually things we keep in our heads when we write JavaScript, and we have to hope we got all the details right.
 
-Let's say `foo` was defined in the following way.
+Let's say `message` was defined in the following way.
 
 ```js
-let foo = "Hello World!";
+const message = "Hello World!";
 ```
 
-As you can probably guess, if we try to run `foo.toLowerCase()`, we'll get the same string only in lower-case.
+As you can probably guess, if we try to run `message.toLowerCase()`, we'll get the same string only in lower-case.
 
 What about that second line of code?
 If you're familiar with JavaScript, you'll know this fails with an exception:
 
 ```txt
-TypeError: foo is not a function
+TypeError: message is not a function
 ```
 
 It'd be great if we could avoid mistakes like this.
@@ -90,9 +90,9 @@ A type-checker like TypeScript uses that information and tells us when things mi
 
 ```ts twoslash
 // @errors: 2349
-let foo = "hello!";
+const message = "hello!";
 
-foo();
+message();
 ```
 
 Running that last sample with TypeScript will give us an error message before we run the code in the first place.
@@ -107,12 +107,12 @@ Maybe that sounds like "obvious behavior", but you could imagine that accessing 
 Instead, JavaScript gives us different behavior and returns the value `undefined`:
 
 ```js
-let foo = {
+const user = {
   name: "Daniel",
   age: 26,
 };
 
-foo.location; // returns undefined
+user.location; // returns undefined
 ```
 
 Ultimately, a static type system has to make the call over what code should be flagged as an error in its system, even if it's "valid" JavaScript that won't immediately throw an error.
@@ -120,12 +120,12 @@ In TypeScript, the following code produces an error about `location` not being d
 
 ```ts twoslash
 // @errors: 2339
-let foo = {
+const user = {
   name: "Daniel",
   age: 26,
 };
 
-foo.location;
+user.location;
 ```
 
 While sometimes that implies a trade-off in what you can express, the intent is to catch legitimate bugs in our programs.
@@ -135,14 +135,14 @@ For example: typos,
 
 ```ts twoslash
 // @noErrors
-let someString = "Hello World!";
+const announcement = "Hello World!";
 
 // How quickly can you spot the typos?
-someString.toLocaleLowercase();
-someString.toLocalLowerCase();
+announcement.toLocaleLowercase();
+announcement.toLocalLowerCase();
 
 // We probably meant to write this...
-someString.toLocaleLowerCase();
+announcement.toLocaleLowerCase();
 ```
 
 uncalled functions,
@@ -339,11 +339,11 @@ Keep in mind, we don't always have to write explicit type annotations.
 In many cases, TypeScript can even just _infer_ (or "figure out") the types for us even if we omit them.
 
 ```ts twoslash
-let foo = "hello there!";
+let msg = "hello there!";
 //  ^?
 ```
 
-Even though we didn't tell TypeScript that `foo` had the type `string` it was able to figure that out.
+Even though we didn't tell TypeScript that `msg` had the type `string` it was able to figure that out.
 That's a feature, and it's best not to add annotations when the type system would end up inferring the same type anyway.
 
 > Note: when you see <pre><code class="query">code comment colored like this</code></pre> it means that we're highlighting what your editor would show you inline. You can get the same experience in the web browser by hovering your mouse over blue-tinted code samples.
@@ -424,7 +424,7 @@ This can require a little extra work, but generally speaking it pays for itself 
 When possible, a new codebase should always turn these strictness checks on.
 
 TypeScript has several type-checking strictness flags that can be turned on or off, and all of our examples will be written with all of them enabled unless otherwise stated.
-The `--strict` flag toggles them all on simultaneously, but we can opt out of them individually.
+The `--strict` flag in the CLI, or `"strict": true` in a [`tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) toggles them all on simultaneously, but we can opt out of them individually.
 The two biggest ones you should know about are `noImplicitAny` and `strictNullChecks`.
 
 ### `noImplicitAny`
