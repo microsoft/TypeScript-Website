@@ -6,7 +6,7 @@
   --text-color: #fff;
   --border-color: #444;
   --background-minor-highlight-color: #343434;
-  --inline-code-background-color: rgb(58, 58, 92);
+  --inline-code-background-color: rgb(58, 58, 92, 0.7);
   --link-color: #{$ts-main-blue-lightest-color};
   --raised-background-color: #{$ts-dark-bg-for-foreground-color};
   --alt-text-color: #fff;
@@ -82,6 +82,40 @@ html.light-theme {
   line-height: 1.4;
 }
 
+html {
+  --code-font: "Cascadia Mono-SemiLight", Menlo, Monaco, Consolas, monospace;
+}
+
+// These match the ids from the select in SiteFooter-Customize.tsx
+
+html.font-cascadia-ligatures {
+  --code-font: "Cascadia Code-SemiLight", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-consolas {
+  --code-font: Consolas, monospace;
+}
+
+html.font-dank-mono {
+  --code-font: "Dank Mono Regular", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-jetbrains-mono {
+  --code-font: "JetBrains Mono-Regular", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-fira-code {
+  --code-font: "FiraCode-Regular", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-sf-mono {
+  --code-font: "SF Mono", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-source-code-pro {
+  --code-font: "SourceCode Pro Regular", Menlo, Monaco, Consolas, monospace;
+}
+
 .raised {
   box-shadow: var(--raised-box-shadow);
   background-color: var(--raised-background-color);
@@ -115,6 +149,7 @@ html.light-theme {
   p > code,
   li > code {
     background-color: var(--inline-code-background-color);
+    font-family: $font-code;
   }
 
   td {

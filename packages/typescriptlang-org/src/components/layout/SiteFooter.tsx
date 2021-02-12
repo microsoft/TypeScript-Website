@@ -1,11 +1,11 @@
 import * as React from "react"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
 import "./SiteFooter.scss"
 import { PlaygroundSamples } from "./SiteFooter-PlaygroundSamples"
 import { createIntlLink } from "../IntlLink"
-import { hasLocalStorage } from "../../lib/hasLocalStorage"
 import { whenEscape } from "../../lib/whenEscape"
+import { Customize } from "./SiteFooter-Customize"
 
 export type Props = {
   lang: string
@@ -206,52 +206,14 @@ export const SiteFooter = (props: Props) => {
   useEffect(() => {
     // Handle escape closing dropdowns etc
     document.onkeydown = whenEscape(() => {
-      document.getElementById("playground-samples-popover")!.style.visibility =
-        "hidden"
+      document.getElementById("playground-samples-popover")!.style.visibility = "hidden"
     })
   }, [])
 
-  const systemIsDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-  const customThemeOverride = hasLocalStorage && localStorage.getItem("color-theme")
-  const useDark = !customThemeOverride && systemIsDark ? true : customThemeOverride === "dark-theme"
-  const [isDarkMode, setDarkMode] = useState(useDark)
-
-  const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDarkMode(!event.currentTarget.checked)
-    if (document.location.pathname.includes("/play")) {
-      document.location.reload()
-    }
-  }
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.remove("light-theme")
-      document.documentElement.classList.add("dark-theme")
-      hasLocalStorage && localStorage.setItem("color-theme", "dark-theme")
-
-    } else {
-      document.documentElement.classList.remove("dark-theme")
-      document.documentElement.classList.add("light-theme")
-      hasLocalStorage && localStorage.setItem("color-theme", "light-theme")
-    }
-  }, [isDarkMode])
 
   return (
     <footer id="site-footer" role="contentinfo">
-      { props.suppressCustomization ? null :
-        <section id="switcher">
-          <article>
-            <h3>Customize</h3>
-            <label>
-              <p>Site Colours:</p>
-              <div className="switch-wrap">
-                <input type="checkbox" checked={!isDarkMode} onChange={handleThemeChange} />
-                <div className="switch"></div>
-              </div>
-            </label>
-          </article>
-        </section>
-      }
+      { props.suppressCustomization ? null : <Customize />}
 
       <section id="popular">
         <h3>Popular Documentation Pages</h3>
@@ -363,6 +325,6 @@ export const SiteFooter = (props: Props) => {
         </article>
       </section>
 
-    </footer>
+    </footer >
   )
 }

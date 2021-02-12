@@ -1,9 +1,51 @@
+// Code fonts
+
+// Default
 @font-face {
   font-family: "Cascadia Mono-SemiLight";
   src: url("/fonts/CascadiaMono-SemiLight.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
 }
+
+// Custom options
+
+@font-face {
+  font-family: "Cascadia Code-SemiLight";
+  src: url("/fonts/CascadiaCode-SemiLight.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "JetBrains Mono-Regular";
+  src: url("/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "FiraCode-Regular";
+  src: url("/fonts/FiraCode-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Dank Mono Regular";
+  src: url("/fonts/DankMono-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SourceCode Pro Regular";
+  src: url("/fonts/SourceCodePro-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+// Fluent App Fonts, taken from the source code from the fluent gatsby template
 
 @font-face {
   font-family: "Leelawadee UI Web";
@@ -592,9 +634,4 @@ body[lang^="zh-hant"],
 [lang^="zh-hant"] body {
   font-family: "Microsoft Jhenghei UI", Pmingliu, "Segoe UI", -apple-system,
     BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
-}
-
-body--selawik {
-  font-family: "Selawik Web", "Segoe UI", -apple-system, BlinkMacSystemFont,
-    Roboto, "Helvetica Neue", sans-serif;
 }
