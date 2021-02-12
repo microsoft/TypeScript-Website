@@ -69,7 +69,7 @@ define(..., ['someLib'], function(someLib) {
 });
 ```
 
-As with global modules, you might see these examples in the documentation of [a UMD](#module) module, so be sure to check the code or documentation.
+As with global modules, you might see these examples in the documentation of [a UMD](#umd) module, so be sure to check the code or documentation.
 
 ### Identifying a Module Library from Code
 

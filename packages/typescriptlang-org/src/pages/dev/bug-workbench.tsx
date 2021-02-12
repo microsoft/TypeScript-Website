@@ -113,7 +113,7 @@ const Play: React.FC<Props> = (props) => {
         const utils = playgroundEnv.createUtils(sandbox, React)
 
         const updateDTSEnv = (opts) => {
-          createDefaultMapFromCDN(opts, tsVersionParam, true, ts, sandboxEnv.lzstring as any).then((defaultMap) => {
+          createDefaultMapFromCDN(opts, tsVersionParam!, true, ts, sandboxEnv.lzstring as any).then((defaultMap) => {
             dtsMap = defaultMap
             runTwoslash()
           })

@@ -34,6 +34,26 @@ const todo2 = updateTodo(todo1, {
 });
 ```
 
+
+## `Required<Type>`
+
+Constructs a type consisting of all properties of `Type` set to required. The opposite of [`Partial`](#partialtype).
+
+##### Example
+
+```ts twoslash
+// @errors: 2741
+interface Props {
+  a?: number;
+  b?: string;
+}
+
+const obj: Props = { a: 5 };
+
+const obj2: Required<Props> = { a: 5 };
+```
+
+
 ## `Readonly<Type>`
 
 Constructs a type with all properties of `Type` set to `readonly`, meaning the properties of the constructed type cannot be reassigned.
@@ -277,24 +297,6 @@ type T3 = InstanceType<string>;
 //    ^?
 type T4 = InstanceType<Function>;
 //    ^?
-```
-
-## `Required<Type>`
-
-Constructs a type consisting of all properties of `Type` set to required. The opposite of [`Partial`](#partialtype).
-
-##### Example
-
-```ts twoslash
-// @errors: 2741
-interface Props {
-  a?: number;
-  b?: string;
-}
-
-const obj: Props = { a: 5 };
-
-const obj2: Required<Props> = { a: 5 };
 ```
 
 ## `ThisParameterType<Type>`
