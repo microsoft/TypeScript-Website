@@ -90,45 +90,14 @@
     }
 
     .switch-wrap {
-      background: rgba(255, 255, 255, 0.2);
-      width: 50px;
       height: 20px;
       padding: 5px;
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.4);
       display: inline-block;
-      cursor: pointer;
-      position: relative;
+      margin-right: 1rem;
 
-      input {
-        position: absolute;
-        opacity: 0;
-        width: 0;
-        height: 0;
-
-        &:checked {
-          + .switch {
-            background-color: $ts-barely-blue-highlight;
-            transform: translateX(29px);
-          }
-        }
-      }
-
-      .switch {
-        position: absolute;
-        top: 4px;
-        left: 4px;
-        display: block;
-        border-radius: 50%;
-        background-color: #000;
-        transition: background 0.3s, transform 0.3s, content 0.3s;
-
-        @media (prefers-reduced-motion: reduce) {
-          transition: none;
-        }
-
-        height: 22px;
-        width: 22px;
+      select {
+        background-color: $ts-main-blue-darkest-color;
+        color: white;
       }
     }
   }

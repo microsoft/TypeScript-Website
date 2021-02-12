@@ -73,8 +73,7 @@ pre {
     /** Style setup */
     font-size: 15px;
     line-height: 16px;
-    font-family: "Cascadia Mono-SemiLight", "JetBrains Mono", Menlo, Monaco,
-      Consolas, Courier New, monospace;
+    font-family: var(--code-font);
 
     white-space: pre;
     -webkit-overflow-scrolling: touch;
