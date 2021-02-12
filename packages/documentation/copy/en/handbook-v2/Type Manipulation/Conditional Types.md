@@ -2,7 +2,7 @@
 title: Conditional Types
 layout: docs
 permalink: /docs/handbook/2/conditional-types.html
-oneline: "Create types which act like if statements."
+oneline: "Create types which act like if statements in the type system."
 beta: true
 ---
 
