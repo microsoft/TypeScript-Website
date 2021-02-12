@@ -63,7 +63,7 @@ export const Customize = () => {
 
 
   return (
-    <section id="switcher">
+    <section id="customize">
       <article>
         <h3>Customize</h3>
         <label>
