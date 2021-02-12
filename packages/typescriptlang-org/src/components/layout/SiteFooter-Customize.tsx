@@ -75,7 +75,9 @@ export const Customize = () => {
               <option value="force-dark">Always Dark</option>
             </select>
           </div>
+        </label>
 
+        <label>
           <p>Code Font:</p>
           <div className="switch-wrap">
             <select name="font" value={fontValue} onChange={handleFontChange}>
