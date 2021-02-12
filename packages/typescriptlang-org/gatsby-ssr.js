@@ -21,7 +21,7 @@ const CustomColorSwitcherCode = () => {
   } catch (error) {}
 
   const systemIsDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-  const customThemeOverride = hasLocalStorage && localStorage.getItem("force-color-theme")
+  const customThemeOverride = hasLocalStorage && localStorage.getItem("force-color-theme") || "force-light"
 
   if (!customThemeOverride && systemIsDark) {
     document.documentElement.classList.add("dark-theme")
