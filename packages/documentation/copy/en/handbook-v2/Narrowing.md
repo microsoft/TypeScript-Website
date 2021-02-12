@@ -594,6 +594,17 @@ They're good for representing any sort of messaging scheme in JavaScript, like w
 
 # The `never` type
 
+When narrowing, you can reduce the options to a point where you have removed all possibilities and have nothing left.
+In those cases, TypeScript will use a `never` type to represent an state which doesn't exist.
+
+<!-- TODO -->
+
+# Exhaustiveness checking
+
+The never type is assignable to every type; however, no type is assignable to `never` (except never itself). This means you can use narrowing with making assumptions on the `never` type to do exhaustive checking in a switch statement.
+
+This pattern is used
+
 ```ts twoslash
 interface Circle {
   kind: "circle";
@@ -617,10 +628,6 @@ function getArea(shape: Shape) {
   }
 }
 ```
-
-<!-- TODO -->
-
-# Exhaustiveness checking
 
 <!-- TODO -->
 

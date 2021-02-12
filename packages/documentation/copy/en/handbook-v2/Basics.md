@@ -3,6 +3,9 @@ title: The Basics
 layout: docs
 permalink: /docs/handbook/2/basic-types.html
 oneline: "Step one in learning TypeScript: The basic types."
+preamble: >
+  <p>Welcome to the first page of the handbook, if this is your first experience with TypeScript - you may want to start at one of the '<a href='https://www.typescriptlang.org/docs/handbook/intro.html#get-started'>Getting Started</a>' guides</a>
+
 beta: true
 ---
 
@@ -193,7 +196,7 @@ app.listen(3000);
 
 TypeScript takes tooling seriously, and that goes beyond completions and errors as you type.
 An editor that supports TypeScript can deliver "quick fixes" to automatically fix errors, refactorings to easily re-organize code, and useful navigation features for jumping to definitions of a variable, or finding all references to a given variable.
-All of this is built on top of the type-checker and fully cross-platform, so it's likely that [your favorite editor has TypeScript support available](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support).
+All of this is built on top of the type-checker and is fully cross-platform, so it's likely that [your favorite editor has TypeScript support available](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support).
 
 ## `tsc`, the TypeScript compiler
 
@@ -269,7 +272,7 @@ Thanks TypeScript!
 
 One thing you might not have noticed from the last example was that our `hello.js` file changed again.
 If we open that file up then we'll see that the contents still basically look the same as our input file.
-That might be a bit surprising given the fact that `tsc` reported an error about our code, but this based on one of TypeScript's core values: much of the time, _you_ will know better than TypeScript.
+That might be a bit surprising given the fact that `tsc` reported an error about our code, but this is based on one of TypeScript's core values: much of the time, _you_ will know better than TypeScript.
 
 To reiterate from earlier, type-checking code limits the sorts of programs you can run, and so there's a tradeoff on what sorts of things a type-checker finds acceptable.
 Most of the time that's okay, but there are scenarios where those checks get in the way.
@@ -347,7 +350,7 @@ That's a feature, and it's best not to add annotations when the type system woul
 
 ## Erased Types
 
-Let's take a look at what happens when we compile with `tsc`:
+Let's take a look at what happens when we compile the above function `greet` with `tsc` to output JavaScript:
 
 ```ts twoslash
 // @showEmit
