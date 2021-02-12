@@ -13,19 +13,16 @@ const makeLight = () => {
 }
 
 const switchFont = (newStyle: string, old?: string) => {
-  console.log({ newStyle, old })
   if (old) document.documentElement.classList.remove("font-" + old)
   document.documentElement.classList.add("font-" + newStyle)
 }
 
 export const Customize = () => {
-  if (!hasLocalStorage) return null
-
   const systemIsDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-  const customThemeOverride = localStorage.getItem("force-color-theme") || "system"
+  const customThemeOverride = hasLocalStorage && localStorage.getItem("force-color-theme") || "system"
   const [darkModeValue, setDarkMode] = useState(customThemeOverride)
 
-  const customFontOverride = localStorage.getItem("force-font") || "cascadia"
+  const customFontOverride = hasLocalStorage && localStorage.getItem("force-font") || "cascadia"
   const [fontValue, setFont] = useState(customFontOverride)
 
   // Localstorage: force-dark, force-light, undefined 
@@ -35,13 +32,13 @@ export const Customize = () => {
   const handleThemeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (event.target.value === "system") {
       systemIsDark ? makeDark() : makeLight()
-      localStorage.removeItem("force-color-theme")
+      hasLocalStorage && localStorage.removeItem("force-color-theme")
     } else if (event.target.value === "force-light") {
       makeLight()
-      localStorage.setItem("force-color-theme", "force-light")
+      hasLocalStorage && localStorage.setItem("force-color-theme", "force-light")
     } else if (event.target.value === "force-dark") {
       makeDark()
-      localStorage.setItem("force-color-theme", "force-dark")
+      hasLocalStorage && localStorage.setItem("force-color-theme", "force-dark")
     }
 
     setDarkMode(event.target.value)
