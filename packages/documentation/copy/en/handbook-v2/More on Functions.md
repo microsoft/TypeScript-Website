@@ -104,16 +104,16 @@ In TypeScript, _generics_ are used when we want to describe a correspondence bet
 We do this by declaring a _type parameter_ in the function signature:
 
 ```ts twoslash
-function firstElement<T>(arr: T[]): T {
+function firstElement<Type>(arr: Type[]): Type {
   return arr[0];
 }
 ```
 
-By adding a type parameter `T` to this function and using it in two places, we've created a link between the input of the function (the array) and the output (the return value).
+By adding a type parameter `Type` to this function and using it in two places, we've created a link between the input of the function (the array) and the output (the return value).
 Now when we call it, a more specific type comes out:
 
 ```ts twoslash
-declare function firstElement<T>(arr: T[]): T;
+declare function firstElement<Type>(arr: Type[]): Type;
 // ---cut---
 // s is of type 'string'
 const s = firstElement(["a", "b", "c"]);
@@ -123,14 +123,15 @@ const n = firstElement([1, 2, 3]);
 
 ### Inference
 
-Note that we didn't have to specify `T` in this sample.
+Note that we didn't have to specify `Type` in this sample.
 The type was _inferred_ - chosen automatically - by TypeScript.
 
 We can use multiple type parameters as well.
 For example, a standalone version of `map` would look like this:
 
 ```ts twoslash
-function map<E, O>(arr: E[], func: (arg: E) => O): O[] {
+// prettier-ignore
+function map<Input, Output>(arr: Input[], func: (arg: Input) => Output): Output[] {
   return arr.map(func);
 }
 
@@ -153,7 +154,7 @@ We _constrain_ the type parameter to that type by writing an `extends` clause:
 
 ```ts twoslash
 // @errors: 2345 2322
-function longest<T extends { length: number }>(a: T, b: T) {
+function longest<Type extends { length: number }>(a: Type, b: Type) {
   if (a.length >= b.length) {
     return a;
   } else {
@@ -187,10 +188,10 @@ Here's a common error when working with generic constraints:
 
 ```ts twoslash
 // @errors: 2322
-function minimumLength<T extends { length: number }>(
-  obj: T,
+function minimumLength<Type extends { length: number }>(
+  obj: Type,
   minimum: number
-): T {
+): Type {
   if (obj.length >= minimum) {
     return obj;
   } else {
@@ -204,10 +205,10 @@ The problem is that the function promises to return the _same_ kind of object as
 If this code were legal, you could write code that definitely wouldn't work:
 
 ```ts twoslash
-declare function minimumLength<T extends { length: number }>(
-  obj: T,
+declare function minimumLength<Type extends { length: number }>(
+  obj: Type,
   minimum: number
-): T;
+): Type;
 // ---cut---
 // 'arr' gets value { length: 6 }
 const arr = minimumLength([1, 2, 3], 6);
@@ -231,15 +232,15 @@ Normally it would be an error to call this function with mismatched arrays:
 
 ```ts twoslash
 // @errors: 2322
-declare function combine<T>(arr1: T[], arr2: T[]): T[];
+declare function combine<Type>(arr1: Type[], arr2: Type[]): Type[];
 // ---cut---
 const arr = combine([1, 2, 3], ["hello"]);
 ```
 
-If you intended to do this, however, you could manually specify `T`:
+If you intended to do this, however, you could manually specify `Type`:
 
 ```ts twoslash
-declare function combine<T>(arr1: T[], arr2: T[]): T[];
+declare function combine<Type>(arr1: Type[], arr2: Type[]): Type[];
 // ---cut---
 const arr = combine<string | number>([1, 2, 3], ["hello"]);
 ```
@@ -254,11 +255,11 @@ Having too many type parameters or using constraints where they aren't needed ca
 Here are two ways of writing a function that appear similar:
 
 ```ts twoslash
-function firstElement1<T>(arr: T[]) {
+function firstElement1<Type>(arr: Type[]) {
   return arr[0];
 }
 
-function firstElement2<T extends any[]>(arr: T) {
+function firstElement2<Type extends any[]>(arr: Type) {
   return arr[0];
 }
 
@@ -269,7 +270,7 @@ const b = firstElement2([1, 2, 3]);
 ```
 
 These might seem identical at first glance, but `firstElement1` is a much better way to write this function.
-Its inferred return type is `T`, but `firstElement2`'s inferred return type is `any` because TypeScript has to resolve the `arr[0]` expression using the constraint type, rather than "waiting" to resolve the element during a call.
+Its inferred return type is `Type`, but `firstElement2`'s inferred return type is `any` because TypeScript has to resolve the `arr[0]` expression using the constraint type, rather than "waiting" to resolve the element during a call.
 
 > **Rule**: When possible, use the type parameter itself rather than constraining it
 
@@ -278,18 +279,21 @@ Its inferred return type is `T`, but `firstElement2`'s inferred return type is `
 Here's another pair of similar functions:
 
 ```ts twoslash
-function filter1<T>(arr: T[], func: (arg: T) => boolean): T[] {
+function filter1<Type>(arr: Type[], func: (arg: Type) => boolean): Type[] {
   return arr.filter(func);
 }
 
-function filter2<T, F extends (arg: T) => boolean>(arr: T[], func: F): T[] {
+function filter2<Type, Func extends (arg: Type) => boolean>(
+  arr: Type[],
+  func: Func
+): Type[] {
   return arr.filter(func);
 }
 ```
 
-We've created a type parameter `F` that _doesn't relate two values_.
+We've created a type parameter `Func` that _doesn't relate two values_.
 That's always a red flag, because it means callers wanting to specify type arguments have to manually specify an extra type argument for no reason.
-`F` doesn't do anything but make the function harder to read and reason about!
+`Func` doesn't do anything but make the function harder to read and reason about!
 
 > **Rule**: Always use as few type parameters as possible
 
@@ -298,7 +302,7 @@ That's always a red flag, because it means callers wanting to specify type argum
 Sometimes we forget that function doesn't need to be generic:
 
 ```ts twoslash
-function greet<S extends string>(s: S) {
+function greet<Str extends string>(s: Str) {
   console.log("Hello, " + s);
 }
 
@@ -734,65 +738,68 @@ The `void` return type for functions can produce some unusual, but expected beha
 Contextual typing with a return type of `void` does **not** force functions to **not** return something. Another way to say this is a contextual function type with a `void` return type (`type vf = () => void`), when implemented, can return _any_ other value, but it will be ignored.
 
 Thus, the following implementations of the type `() => void` are valid:
+
 ```ts twoslash
-type voidFunc = () => void
+type voidFunc = () => void;
 
 const f1: voidFunc = () => {
-  return true
-}
+  return true;
+};
 
-const f2: voidFunc = () => true
+const f2: voidFunc = () => true;
 
 const f3: voidFunc = function () {
-  return true
-}
+  return true;
+};
 ```
 
 And when the return value of one of these functions is assigned to another variable, it will retain the type of `void`:
 
 ```ts twoslash
-type voidFunc = () => void
+type voidFunc = () => void;
 
 const f1: voidFunc = () => {
-  return true
-}
+  return true;
+};
 
-const f2: voidFunc = () => true
+const f2: voidFunc = () => true;
 
 const f3: voidFunc = function () {
-  return true
-}
+  return true;
+};
 // ---cut---
-const v1 = f1()
+const v1 = f1();
 
-const v2 = f2()
+const v2 = f2();
 
-const v3 = f3()
+const v3 = f3();
 ```
 
 This behavior exists so that the following code is valid even though `Array.prototype.push` returns a number and the `Array.prototype.forEach` method expects a function with a return type of `void`.
-```ts twoslash
-const src = [1, 2, 3]
-const dst = [0]
 
-src.forEach(el => dst.push(el))
+```ts twoslash
+const src = [1, 2, 3];
+const dst = [0];
+
+src.forEach((el) => dst.push(el));
 ```
 
 There is one other special case to be aware of, when a literal function definition has a `void` return type, that function must **not** return anything.
 
 ```ts twoslash
-function f2 (): void {
+function f2(): void {
   // @ts-expect-error
-  return true 
+  return true;
 }
 
 const f3 = function (): void {
   // @ts-expect-error
-  return true 
-}
+  return true;
+};
 ```
 
 For more on `void` please refer to these other documentation entries:
+
 - [v1 handbook](https://www.typescriptlang.org/docs/handbook/basic-types.html#void)
 - [v2 handbook](https://www.typescriptlang.org/docs/handbook/2/functions.html#void)
 - [FAQ - "Why are functions returning non-void assignable to function returning void?"](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-are-functions-returning-non-void-assignable-to-function-returning-void)

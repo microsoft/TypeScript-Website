@@ -54,11 +54,15 @@ export const visitor = (highlighter: Highlighter, twoslashSettings?: ShikiTwosla
  */
 export const runTwoSlashOnNode = (settings: ShikiTwoslashSettings) => (node: RichNode) => {
   if (node.meta && node.meta.includes("twoslash")) {
-    const results = cachedTwoslashCall(node.value, node.lang, settings)
-
-    node.value = results.code
-    node.lang = results.extension as Lang
-    node.twoslash = results
+    try {
+      const results = cachedTwoslashCall(node.value, node.lang, settings)
+      node.value = results.code
+      node.lang = results.extension as Lang
+      node.twoslash = results
+    } catch (error) {
+      error.message = `gatsby-remark-shiki-twoslash: Error thrown in code sample on line ${node.position?.start.line}\n\n${error.message}`
+      throw error
+    }
   }
 }
 

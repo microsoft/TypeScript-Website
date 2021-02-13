@@ -186,11 +186,11 @@ This is because the following syntax already means something different in JavaSc
 // @noImplicitAny: false
 // @errors: 2552 2304
 interface Shape {}
-declare function doSomething(x: unknown);
+declare function render(x: unknown);
 // ---cut---
-function foo({ shape: Shape, xPos: number = 100 /*...*/ }) {
-  doSomething(shape);
-  doSomething(xPos);
+function draw({ shape: Shape, xPos: number = 100 /*...*/ }) {
+  render(shape);
+  render(xPos);
 }
 ```
 
@@ -561,7 +561,7 @@ type OneOrMany<T> = T | T[];
 type OneOrManyOrNull<T> = OrNull<OneOrMany<T>>;
 //   ^?
 
-type Foo = OneOrManyOrNull<string>;
+type OneOrManyOrNullStrings = OneOrManyOrNull<string>;
 //   ^?
 ```
 
@@ -648,10 +648,10 @@ new ReadonlyArray("red", "green", "blue");
 Instead, we can assign regular `Array`s to `ReadonlyArray`s.
 
 ```ts twoslash
-let roArray: ReadonlyArray<string> = ["red", "green", "blue"];
+const roArray: ReadonlyArray<string> = ["red", "green", "blue"];
 ```
 
-Just as TypeScript provides a shorthand syntax for `Array<Foo>` with `Foo[]`, it also provides a shorthand syntax for `ReadonlyArray<Foo>` with `readonly Foo[]`.
+Just as TypeScript provides a shorthand syntax for `Array<Type>` with `Type[]`, it also provides a shorthand syntax for `ReadonlyArray<Type>` with `readonly Type[]`.
 
 ```ts twoslash
 // @errors: 2339
@@ -769,10 +769,15 @@ Tuples can also have rest elements, which have to be an array/tuple type.
 
 ```ts twoslash
 type StringNumberBooleans = [string, number, ...boolean[]];
+type StringBooleansNumber = [string, ...boolean[], number];
+type BooleansStringNumber = [...boolean[], string, number];
 ```
 
-`StringNumberBooleans` describes a tuple whose first two elements are `string` and `number` respectively, but which may have any number of `boolean`s following.
-A tuple with a rest element has no set `length` - it only has a set of well-known elements at the beginning.
+- `StringNumberBooleans` describes a tuple whose first two elements are `string` and `number` respectively, but which may have any number of `boolean`s following.
+- `StringBooleansNumber` describes a tuple whose first element is `string` and then any number of `boolean`s and ending with a `number`.
+- `BooleansStringNumber` describes a tuple whose starting elements any number of `boolean`s and ending with a `string` then a `number`.
+
+A tuple with a rest element has no set "length" - it only has a set of well-known elements in different positions.
 
 ```ts twoslash
 type StringNumberBooleans = [string, number, ...boolean[]];
@@ -787,8 +792,8 @@ Well, it allows TypeScript to correspond tuples with parameter lists.
 Tuples types can be used in [rest parameters and arguments](./More-on-Functions.md#rest-parameters-and-arguments), so that the following:
 
 ```ts twoslash
-function foo(...args: [string, number, ...boolean[]]) {
-  var [x, y, ...z] = args;
+function readButtonInput(...args: [string, number, ...boolean[]]) {
+  const [name, version, ...input] = args;
   // ...
 }
 ```
@@ -796,7 +801,7 @@ function foo(...args: [string, number, ...boolean[]]) {
 is basically equivalent to:
 
 ```ts twoslash
-function foo(x: string, y: number, ...z: boolean[]) {
+function readButtonInput(name: string, version: number, ...input: boolean[]) {
   // ...
 }
 ```
