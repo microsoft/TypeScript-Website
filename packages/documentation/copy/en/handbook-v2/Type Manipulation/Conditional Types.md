@@ -186,7 +186,7 @@ Conditional types provide us with a way to infer from types we compare against i
 For example, we could have inferred the element type in `Flatten` instead of fetching it out "manually" with an indexed access type:
 
 ```ts twoslash
-type Flatten<Type> = ypeT extends Array<infer Item> ? Item : Type;
+type Flatten<Type> = Type extends Array<infer Item> ? Item : Type;
 ```
 
 Here, we used the `infer` keyword declaratively introduced a new generic type variable named `U` instead of specifying how to retrieve the element type of `T` within the true branch.
@@ -196,8 +196,9 @@ We can write some useful helper type aliases using the `infer` keyword.
 For example, for simple cases, we can extract the return type out from function types:
 
 ```ts twoslash
-// prettier-ignore
-type GetReturnType<Type> = Type extends (...args: never[]) => infer Return ? Return : never;
+type GetReturnType<Type> = Type extends (...args: never[]) => infer Return
+  ? Return
+  : never;
 
 type Num = GetReturnType<() => number>;
 //   ^?

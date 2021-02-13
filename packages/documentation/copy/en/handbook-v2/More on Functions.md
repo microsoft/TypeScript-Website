@@ -240,7 +240,7 @@ const arr = combine([1, 2, 3], ["hello"]);
 If you intended to do this, however, you could manually specify `Type`:
 
 ```ts twoslash
-declare function combine<T>(arr1: Type[], arr2: Type[]): Type[];
+declare function combine<Type>(arr1: Type[], arr2: Type[]): Type[];
 // ---cut---
 const arr = combine<string | number>([1, 2, 3], ["hello"]);
 ```
