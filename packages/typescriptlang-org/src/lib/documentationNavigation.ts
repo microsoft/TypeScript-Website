@@ -715,7 +715,7 @@ export function getDocumentationNavForLanguage(
               title: "Generics",
               id: "8generics",
               permalink: "/docs/handbook/2/generics.html",
-              oneline: "Generics Types",
+              oneline: "Types which take parameters",
             },
             {
               title: "Keyof Type Operator",
@@ -739,7 +739,8 @@ export function getDocumentationNavForLanguage(
               title: "Conditional Types",
               id: "8conditional-types",
               permalink: "/docs/handbook/2/conditional-types.html",
-              oneline: "Create types which act like if statements.",
+              oneline:
+                "Create types which act like if statements in the type system.",
             },
             {
               title: "Mapped Types",

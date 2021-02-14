@@ -29,20 +29,6 @@ let storedHighlighter: Highlighter = null as any
 export const createShikiHighlighter = (options: HighlighterOptions) => {
   if (storedHighlighter) return Promise.resolve(storedHighlighter)
 
-  var settings = options || {}
-  var theme: any = settings.theme || "nord"
-  var shikiTheme
-
-  // try {
-  //   shikiTheme = getTheme(theme)
-  // } catch (error) {
-  //   try {
-  //     shikiTheme = loadTheme(theme)
-  //   } catch (error) {
-  //     throw new Error("Unable to load theme: " + theme + " - " + error.message)
-  //   }
-  // }
-
   return getHighlighter(options).then(newHighlighter => {
     storedHighlighter = newHighlighter
     return storedHighlighter
@@ -146,6 +132,8 @@ export const runTwoSlash = (
   const results = twoslasher(code, lang, { ...twoslashDefaults, fsMap: map })
   return results
 }
+
+export {parseCodeFenceInfo} from "./parseCodeFenceInfo" 
 
 /** Set of renderers if you want to explicitly call one instead of using renderCodeToHTML */
 export const renderers = {

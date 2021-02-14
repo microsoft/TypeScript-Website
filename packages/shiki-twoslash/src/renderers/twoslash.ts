@@ -9,7 +9,7 @@ import { HtmlRendererOptions } from "./plain"
 // What we're trying to do is merge two sets of information into a single tree for HTML
 
 // 1: Syntax highlight info from shiki
-// 2: Twoslash metadata like errors, indentifiers etc
+// 2: Twoslash metadata like errors, identifiers etc
 
 // Because shiki gives use a set of lines to work from, then the first thing which happens
 // is converting twoslash data into the same format.
