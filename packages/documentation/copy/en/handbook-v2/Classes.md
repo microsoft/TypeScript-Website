@@ -490,7 +490,7 @@ Other downlevel compilers generally have the same limitation by default.
 For a subclass like the following:
 
 ```ts twoslash
-class FooError extends Error {
+class MsgError extends Error {
   constructor(m: string) {
     super(m);
   }
@@ -503,17 +503,17 @@ class FooError extends Error {
 you may find that:
 
 - methods may be `undefined` on objects returned by constructing these subclasses, so calling `sayHello` will result in an error.
-- `instanceof` will be broken between instances of the subclass and their instances, so `(new FooError()) instanceof FooError` will return `false`.
+- `instanceof` will be broken between instances of the subclass and their instances, so `(new MsgError()) instanceof MsgError` will return `false`.
 
 As a recommendation, you can manually adjust the prototype immediately after any `super(...)` calls.
 
 ```ts twoslash
-class FooError extends Error {
+class MsgError extends Error {
   constructor(m: string) {
     super(m);
 
     // Set the prototype explicitly.
-    Object.setPrototypeOf(this, FooError.prototype);
+    Object.setPrototypeOf(this, MsgError.prototype);
   }
 
   sayHello() {
@@ -522,11 +522,11 @@ class FooError extends Error {
 }
 ```
 
-However, any subclass of `FooError` will have to manually set the prototype as well.
+However, any subclass of `MsgError` will have to manually set the prototype as well.
 For runtimes that don't support [`Object.setPrototypeOf`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf), you may instead be able to use [`__proto__`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto).
 
 Unfortunately, [these workarounds will not work on Internet Explorer 10 and prior](<https://msdn.microsoft.com/en-us/library/s4esdbwz(v=vs.94).aspx>).
-One can manually copy methods from the prototype onto the instance itself (i.e. `FooError.prototype` onto `this`), but the prototype chain itself cannot be fixed.
+One can manually copy methods from the prototype onto the instance itself (i.e. `MsgError.prototype` onto `this`), but the prototype chain itself cannot be fixed.
 
 ## Member Visibility
 

@@ -27,7 +27,7 @@ As you might expect, these are the same names you'd see if you used the JavaScri
 - `number` is for numbers like `42`. JavaScript does not have a special runtime value for integers, so there's no equivalent to `int` or `float` - everything is simply `number`
 - `boolean` is for the two values `true` and `false`
 
-> The type names `String`, `Number`, and `Boolean` (starting with capital letters) are legal, but refer to some special built-in types that shouldn't appear in your code. _Always_ use `string`, `number`, or `boolean`.
+> The type names `String`, `Number`, and `Boolean` (starting with capital letters) are legal, but refer to some special built-in types that will very rarely appear in your code. _Always_ use `string`, `number`, or `boolean` for types.
 
 ## Arrays
 
@@ -211,6 +211,9 @@ function printName(obj: { first: string; last?: string }) {
     // OK
     console.log(obj.last.toUpperCase());
   }
+
+  // A safe alternative using modern JavaScript syntax:
+  console.log(obj.last?.toUpperCase());
 }
 ```
 
@@ -518,7 +521,7 @@ if (someCondition) {
 }
 ```
 
-TypeScript doesn't assume the assignment of `1` to a field that previously had `0` to be an error.
+TypeScript doesn't assume the assignment of `1` to a field which previously had `0` is an error.
 Another way of saying this is that `obj.counter` must have the type `number`, not `0`, because types are used to determine both _reading_ and _writing_ behavior.
 
 The same applies to strings:
@@ -531,7 +534,7 @@ const req = { url: "https://example.com", method: "GET" };
 handleRequest(req.url, req.method);
 ```
 
-Because it'd be legal to assign a string like `"GUESS"` TO `req.method`, TypeScript considers this code to have an error.
+In the above example `req.method` is a inferred to be `string`, not `"GET"`. Because code can be evaluated between the creation of `req` and the call of `handleRequest` which could assign a new string like `"GUESS"` TO `req.method`, TypeScript considers this code to have an error.
 
 There are two ways to work around this.
 
@@ -540,13 +543,14 @@ There are two ways to work around this.
    ```ts twoslash
    declare function handleRequest(url: string, method: "GET" | "POST"): void;
    // ---cut---
+   // Change 1:
    const req = { url: "https://example.com", method: "GET" as "GET" };
-   /* or */
+   // Change 2
    handleRequest(req.url, req.method as "GET");
    ```
 
-   The first change means "I intend for `req.method` to always have the _literal type_ `"GET"`", preventing the possible assignment of `"GUESS"` to that field.
-   The second change means "I know for other reasons that `req.method` has the value `"GET"`".
+   Change 1 means "I intend for `req.method` to always have the _literal type_ `"GET"`", preventing the possible assignment of `"GUESS"` to that field after.
+   Change 2 means "I know for other reasons that `req.method` has the value `"GET"`".
 
 2. You can use `as const` to convert the entire object to be type literals:
 
@@ -556,6 +560,8 @@ There are two ways to work around this.
    const req = { url: "https://example.com", method: "GET" } as const;
    handleRequest(req.url, req.method);
    ```
+
+The `as const` prefix acts like `const` but for the type system, ensuring that all properties are assigned the literal type instead of a more general version like `string` or `number`.
 
 ## `null` and `undefined`
 
@@ -611,10 +617,10 @@ From ES2020 onwards, there is a primitive in JavaScript used for very large inte
 // @target: es2020
 
 // Creating a bigint via the BigInt function
-let foo: bigint = BigInt(100);
+const oneHundred: bigint = BigInt(100);
 
 // Creating a BigInt via the literal syntax
-let bar: bigint = 100n;
+const anotherHundred: bigint = 100n;
 ```
 
 You can learn more about BigInt in [the TypeScript 3.2 release notes](/docs/handbook/release-notes/typescript-3-2.html#bigint).

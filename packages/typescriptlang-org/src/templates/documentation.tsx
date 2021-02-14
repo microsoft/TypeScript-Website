@@ -93,6 +93,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
         <Sidebar navItems={navigation} selectedID={selectedID} />
         <div id="handbook-content" role="article">
           <h2>{post.frontmatter.title}</h2>
+          {post.frontmatter.preamble && <div className="preamble" dangerouslySetInnerHTML={{ __html: post.frontmatter.preamble }} />}
           <article>
             <div className="whitespace raised">
               <div className="markdown" dangerouslySetInnerHTML={{ __html: post.html! }} />
@@ -153,6 +154,7 @@ export const pageQuery = graphql`
         handbook
         oneline
         beta
+        preamble
       }
     }
 

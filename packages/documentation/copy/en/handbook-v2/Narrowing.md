@@ -212,7 +212,7 @@ TypeScript also uses `switch` statements and equality checks like `===`, `!==`, 
 For example:
 
 ```ts twoslash
-function foo(x: string | number, y: string | boolean) {
+function example(x: string | number, y: string | boolean) {
   if (x === y) {
     // We can now call any 'string' method on 'x' or 'y'.
     x.toUpperCase();
@@ -351,7 +351,7 @@ This analysis of code based on reachability is called _control flow analysis_, a
 When a variable is analyzed, control flow can split off and re-merge over and over again, and that variable can be observed to have a different type at each point.
 
 ```ts twoslash
-function foo() {
+function example() {
   let x: string | number | boolean;
 
   x = Math.random() < 0.5;
@@ -594,6 +594,15 @@ They're good for representing any sort of messaging scheme in JavaScript, like w
 
 # The `never` type
 
+When narrowing, you can reduce the options of a union to a point where you have removed all possibilities and have nothing left.
+In those cases, TypeScript will use a `never` type to represent an state which shouldn't exist.
+
+# Exhaustiveness checking
+
+The `never` type is assignable to every type; however, no type is assignable to `never` (except `never` itself). This means you can use narrowing and rely on `never` turning up to do exhaustive checking in a switch statement.
+
+For example, adding a `default` to our `getArea` function which tries to assign the shape to `never` will raise when every possible case has not been handled.
+
 ```ts twoslash
 interface Circle {
   kind: "circle";
@@ -604,30 +613,52 @@ interface Square {
   kind: "square";
   sideLength: number;
 }
-
+// ---cut---
 type Shape = Circle | Square;
 
-// ---cut---
 function getArea(shape: Shape) {
   switch (shape.kind) {
     case "circle":
       return Math.PI * shape.radius ** 2;
     case "square":
       return shape.sideLength ** 2;
+    default:
+      const _exhaustiveCheck: never = shape;
+      return _exhaustiveCheck;
   }
 }
 ```
 
-<!-- TODO -->
-
-# Exhaustiveness checking
-
-<!-- TODO -->
-
-<!--
-As another example, consider a `setVisible` function, that takes an `HTMLElement` and either takes a `boolean` to set whether or not the element is visible on the page, or a `number` to adjust the element's opacity (i.e. how non-transparent it is).
+Adding a new member to the `Shape` union, will cause a TypeScript error:
 
 ```ts twoslash
+// @errors: 2322
+interface Circle {
+  kind: "circle";
+  radius: number;
+}
 
+interface Square {
+  kind: "square";
+  sideLength: number;
+}
+// ---cut---
+interface Triangle {
+  kind: "triangle";
+  sideLength: number;
+}
+
+type Shape = Circle | Square | Triangle;
+
+function getArea(shape: Shape) {
+  switch (shape.kind) {
+    case "circle":
+      return Math.PI * shape.radius ** 2;
+    case "square":
+      return shape.sideLength ** 2;
+    default:
+      const _exhaustiveCheck: never = shape;
+      return _exhaustiveCheck;
+  }
+}
 ```
--->
