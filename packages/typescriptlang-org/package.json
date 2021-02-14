@@ -8,7 +8,6 @@
     "build": "GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES=true gatsby build",
     "clean": "gatsby clean",
     "bootstrap": "yarn update-versions",
-    "update-static-assets": "node scripts/downloadSearchAssets.js",
     "update-versions": "node scripts/getTypeScriptNPMVersions.js",
     "create-lighthouse-json": "node scripts/createLighthouseJSON.js",
     "compile-index-examples": "node scripts/runTwoslashIndexExamples.js light; node scripts/runTwoslashIndexExamples.js dark",
@@ -19,6 +18,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.8.4",
+    "@docsearch/react": "^3.0.0-alpha.33",
     "@formatjs/intl-relativetimeformat": "^4.5.15",
     "@types/node-fetch": "^2.5.3",
     "@types/react-helmet": "^5.0.15",
