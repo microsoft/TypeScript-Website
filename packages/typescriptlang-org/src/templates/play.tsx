@@ -215,7 +215,7 @@ const Play: React.FC<Props> = (props) => {
             <a href="#" id="examples-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="examples">{i("play_subnav_examples")} <span className="caret"></span></a>
             <ul className="examples-dropdown" id="examples" aria-labelledby="examples-button">
               <button className="examples-close" aria-label="Close dropdown" role="button">{i("play_subnav_examples_close")}</button>
-              <RenderExamples defaultSection="JavaScript" sections={["JavaScript", "TypeScript"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
+              <RenderExamples defaultSection="TypeScript" sections={["JavaScript", "TypeScript"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
             </ul>
           </li>
 
