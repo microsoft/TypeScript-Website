@@ -117,6 +117,9 @@
     }
   }
 
+  .preamble a {
+    color: var(--text-color);
+  }
   .justify-between {
     justify-content: space-between;
   }

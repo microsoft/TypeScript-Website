@@ -90,9 +90,8 @@ export default async function () {
           domID: "monaco-editor-embed",
         }
 
-        sandboxFactory.createTypeScriptSandbox(sandboxConfig, main, window.ts).then(sandbox => {
-          sandbox.editor.focus()
-        })
+        sandboxFactory.createTypeScriptSandbox(sandboxConfig, main, window.ts)
+        sandbox.editor.focus()
       })
     }
 
