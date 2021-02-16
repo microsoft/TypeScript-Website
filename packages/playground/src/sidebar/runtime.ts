@@ -81,14 +81,14 @@ function rewireLoggingToElement(
   const rawConsole = console
 
   closure.then(js => {
+    const replace = {} as any
+    bindLoggingFunc(replace, rawConsole, 'log', 'LOG', curLog)
+    bindLoggingFunc(replace, rawConsole, 'debug', 'DBG', curLog)
+    bindLoggingFunc(replace, rawConsole, 'warn', 'WRN', curLog)
+    bindLoggingFunc(replace, rawConsole, 'error', 'ERR', curLog)
+    replace['clear'] = clearLogs
+    const console = Object.assign({}, rawConsole, replace)
     try {
-      const replace = {} as any
-      bindLoggingFunc(replace, rawConsole, 'log', 'LOG', curLog)
-      bindLoggingFunc(replace, rawConsole, 'debug', 'DBG', curLog)
-      bindLoggingFunc(replace, rawConsole, 'warn', 'WRN', curLog)
-      bindLoggingFunc(replace, rawConsole, 'error', 'ERR', curLog)
-      replace['clear'] = clearLogs
-      const console = Object.assign({}, rawConsole, replace)
       eval(js)
     } catch (error) {
       console.error(i("play_run_js_fail"))
