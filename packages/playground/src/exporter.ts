@@ -1,6 +1,6 @@
 import { UI } from "./createUI"
 
-type Sandbox = import("typescript-sandbox").Sandbox
+type Sandbox = import("@typescript/sandbox").Sandbox
 type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
 
 export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-editor"), ui: UI) => {

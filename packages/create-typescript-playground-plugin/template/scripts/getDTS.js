@@ -42,7 +42,7 @@ const go = async () => {
 
   // Util funcs
   await getFileAndStoreLocally(host + "/js/playground/pluginUtils.d.ts", join(vendor, "pluginUtils.d.ts"), text => {
-    const renameImport = text.replace('from "typescript-sandbox"', 'from "./sandbox"')
+    const renameImport = text.replace('from "@typescript/sandbox"', 'from "./sandbox"')
     return renameImport
   })
 

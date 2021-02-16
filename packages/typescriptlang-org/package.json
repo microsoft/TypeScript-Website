@@ -22,6 +22,8 @@
     "@formatjs/intl-relativetimeformat": "^4.5.15",
     "@types/node-fetch": "^2.5.3",
     "@types/react-helmet": "^5.0.15",
+    "@typescript/playground": "0.1.0",
+    "@typescript/sandbox": "0.1.0",
     "@typescript/twoslash": "1.1.4",
     "canvas": "^2.6.1",
     "gatsby": "^2.24.85",
@@ -56,8 +58,6 @@
     "ts-debounce": "^2.2.0",
     "ts-node": "^8.6.2",
     "typescript": "*",
-    "typescript-playground": "0.1.0",
-    "typescript-sandbox": "0.1.0",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {

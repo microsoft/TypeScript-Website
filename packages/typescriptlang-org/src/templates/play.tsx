@@ -17,7 +17,7 @@ import { Intl } from "../components/Intl"
 import playgroundReleases from "../../../sandbox/src/releases.json"
 
 // This gets set by the playground
-declare const playground: ReturnType<typeof import("typescript-playground").setupPlayground>
+declare const playground: ReturnType<typeof import("@typescript/playground").setupPlayground>
 
 type Props = {
   pageContext: {
@@ -109,8 +109,8 @@ const Play: React.FC<Props> = (props) => {
       re.config({
         paths: {
           vs: urlForMonaco,
-          "typescript-sandbox": withPrefix('/js/sandbox'),
-          "typescript-playground": withPrefix('/js/playground'),
+          "@typescript/sandbox": withPrefix('/js/sandbox'),
+          "@typescript/playground": withPrefix('/js/playground'),
           "unpkg": "https://unpkg.com/",
           "local": "http://localhost:5000"
         },
@@ -127,7 +127,7 @@ const Play: React.FC<Props> = (props) => {
         }
       });
 
-      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("typescript-sandbox"), playground: typeof import("typescript-playground")) => {
+      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("@typescript/sandbox"), playground: typeof import("@typescript/playground")) => {
         // Importing "vs/language/typescript/tsWorker" will set ts as a global
         const ts = (global as any).ts
         const isOK = main && ts && sandbox && playground
