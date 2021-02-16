@@ -8,8 +8,8 @@ export type Installer = [string, string]
 
 export const Installers: Record<PackageSource, Installer> = {
     [PackageSource.Npm]: ["npm i", "--save-dev"],
-    [PackageSource.Yarn]: ["yarn add", "--save-dev"],
-    [PackageSource.Pnpm]: ["pnpm add", "--dev"],
+    [PackageSource.Yarn]: ["yarn add", "--dev"],
+    [PackageSource.Pnpm]: ["pnpm add", "--save-dev"],
 }
 
 export const installerOptions = [
