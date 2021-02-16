@@ -1,4 +1,4 @@
-import type { Sandbox } from "typescript-sandbox"
+import type { Sandbox } from "@typescript/sandbox"
 import type React from "react"
 import { createDesignSystem } from "./ds/createDesignSystem"
 

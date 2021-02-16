@@ -41,7 +41,7 @@ const Index: React.FC<Props> = props => {
         async (
           main: typeof import("monaco-editor"),
           ts: typeof import("typescript"),
-          sandboxEnv: typeof import("typescript-sandbox")
+          sandboxEnv: typeof import("@typescript/sandbox")
         ) => {
           const initialCode = `import {markdown, danger} from "danger"
 
@@ -156,7 +156,7 @@ export default async function () {
               </p>
               <p>
                 You can find the code for the TypeScript Sandbox inside the{" "}
-                <a href="https://github.com/microsoft/TypeScript-Website/tree/v2/packages/sandbox#typescript-sandbox">
+                <a href="https://github.com/microsoft/TypeScript-Website/tree/v2/packages/sandbox#@typescript/sandbox">
                   microsoft/TypeScript-Website
                 </a>{" "}
                 mono-repo.

@@ -60,15 +60,15 @@ const Play: React.FC<Props> = (props) => {
       re.config({
         paths: {
           vs: `https://typescript.azureedge.net/cdn/${tsVersionParam}/monaco/min/vs`,
-          "typescript-sandbox": withPrefix('/js/sandbox'),
-          "typescript-playground": withPrefix('/js/playground'),
+          "@typescript/sandbox": withPrefix('/js/sandbox'),
+          "@typescript/playground": withPrefix('/js/playground'),
           "unpkg": "https://unpkg.com/",
           "local": "http://localhost:5000"
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],
       });
 
-      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("typescript-sandbox"), playground: typeof import("typescript-playground")) => {
+      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("@typescript/sandbox"), playground: typeof import("@typescript/playground")) => {
         // Importing "vs/language/typescript/tsWorker" will set ts as a global
         const ts = (global as any).ts
         const isOK = main && ts && sandbox && playground

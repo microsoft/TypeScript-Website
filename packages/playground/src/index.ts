@@ -1,4 +1,4 @@
-type Sandbox = import("typescript-sandbox").Sandbox
+type Sandbox = import("@typescript/sandbox").Sandbox
 type Monaco = typeof import("monaco-editor")
 
 declare const window: any

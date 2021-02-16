@@ -51,7 +51,7 @@ const Index: React.FC<Props> = props => {
         async (
           main: typeof import("monaco-editor"),
           ts: typeof import("typescript"),
-          sandboxEnv: typeof import("typescript-sandbox")
+          sandboxEnv: typeof import("@typescript/sandbox")
         ) => {
           // This triggers making "ts" available in the global scope
           re(["vs/language/typescript/lib/typescriptServices"], async _ts => {
