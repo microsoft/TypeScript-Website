@@ -35,7 +35,7 @@ const parseFileForModuleReferences = (sourceCode: string) => {
   // this handle ths 'from' imports  https://regex101.com/r/hdEpzO/4
   const es6Pattern = /(import|export)((?!from)(?!require)(.|\n))*?(from|require\()\s?('|")(.*)('|")\)?;?$/gm
   // https://regex101.com/r/hdEpzO/8
-  const es6ImportOnly = /import\s+?\(?('|")(.*)('|")\)?;?/gm;
+  const es6ImportOnly = /import\s+?\(?('|")(.*)('|")\)?;?/gm
 
   const foundModules = new Set<string>()
   var match
@@ -62,7 +62,6 @@ const mapModuleNameToModule = (name: string) => {
   const builtInNodeMods = [
     "assert",
     "async_hooks",
-    "base",
     "buffer",
     "child_process",
     "cluster",
@@ -74,11 +73,10 @@ const mapModuleNameToModule = (name: string) => {
     "domain",
     "events",
     "fs",
-    "globals",
+    "fs/promises",
     "http",
     "http2",
     "https",
-    "index",
     "inspector",
     "module",
     "net",
@@ -92,6 +90,7 @@ const mapModuleNameToModule = (name: string) => {
     "repl",
     "stream",
     "string_decoder",
+    "sys",
     "timers",
     "tls",
     "trace_events",
@@ -100,6 +99,7 @@ const mapModuleNameToModule = (name: string) => {
     "util",
     "v8",
     "vm",
+    "wasi",
     "worker_threads",
     "zlib",
   ]
@@ -110,7 +110,7 @@ const mapModuleNameToModule = (name: string) => {
   return name
 }
 
-//** A really dumb version of path.resolve */
+//** A really simple version of path.resolve */
 const mapRelativePath = (moduleDeclaration: string, currentPath: string) => {
   // https://stackoverflow.com/questions/14780350/convert-relative-path-to-absolute-using-javascript
   function absolute(base: string, relative: string) {
@@ -164,9 +164,7 @@ const addModuleToRuntime = async (mod: string, path: string, config: ATAConfig) 
     const wrapped = `declare module "${path}" { ${content} }`
     config.addLibraryToRuntime(wrapped, path)
   } else {
-    const typelessModule = mod.split("@types/").slice(-1)
-    const wrapped = `declare module "${typelessModule}" { ${content} }`
-    config.addLibraryToRuntime(wrapped, `node_modules/${mod}/${path}`)
+    config.addLibraryToRuntime(content, `file:///node_modules/${mod}/${path}`)
   }
 }
 
@@ -212,7 +210,10 @@ const getModuleAndRootDefTypePath = async (packageName: string, config: ATAConfi
       return errorMsg(`Could not get Package JSON for the module '${packageName}'`, response, config)
     }
 
-    config.addLibraryToRuntime(JSON.stringify(responseJSON, null, "  "), `node_modules/${packageName}/package.json`)
+    config.addLibraryToRuntime(
+      JSON.stringify(responseJSON, null, "  "),
+      `file:///node_modules/${packageName}/package.json`
+    )
 
     // Get the path of the root d.ts file
 
@@ -289,7 +290,7 @@ const getReferenceDependencies = async (sourceCode: string, mod: string, path: s
           }
 
           await getDependenciesForModule(dtsReferenceResponseText, mod, newPath, config)
-          const representationalPath = `node_modules/${mod}/${newPath}`
+          const representationalPath = `file:///node_modules/${mod}/${newPath}`
           config.addLibraryToRuntime(dtsReferenceResponseText, representationalPath)
         }
       }
