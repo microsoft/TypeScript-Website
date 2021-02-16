@@ -15,12 +15,13 @@ export function defaultShikiRenderer(lines: Lines, options: HtmlRendererOptions)
 
   lines.forEach(l => {
     if (l.length === 0) {
-      html += `\n`
+      html += `<div class='line'></div>`
     } else {
+      html += `<div class='line'>`
       l.forEach(token => {
         html += `<span style="color: ${token.color}">${escapeHtml(token.content)}</span>`
       })
-      html += `\n`
+      html += `</div>`
     }
   })
 

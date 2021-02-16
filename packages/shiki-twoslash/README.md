@@ -2,17 +2,13 @@
 
 > Documentation / made lovely by counting words / maybe we would read!
 
-Provides the API primitives to mix [shiki](https://shiki.matsu.io) with [@typescript/twoslash](https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher).
+Provides the API primitives to mix [shiki](https://shiki.matsu.io) with [@typescript/twoslash](https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher) to provide rich contextual code samples.
 
 Things it handles:
 
 - Shiki bootstrapping: `createShikiHighlighter`
 - Running Twoslash over code, with caching and DTS lookups: `runTwoSlash`
 - Rendering any code sample with Shiki: `renderCodeToHTML`
-
-Useful, but not critical:
-
-- Checking if shiki can handle a code sample: `canHighlightLang`
 
 ### API
 
@@ -103,3 +99,4 @@ if (node.meta && node.meta.includes("twoslash")) {
 ### Used in:
 
 - [gatsby-remark-shiki-twoslash](https://www.npmjs.com/package/gatsby-remark-shiki-twoslash)
+- [remark-shiki-twoslash](https://www.npmjs.com/package/remark-shiki-twoslash)

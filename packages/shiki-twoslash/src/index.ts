@@ -6,6 +6,7 @@ import { twoslashRenderer } from "./renderers/twoslash"
 import { HtmlRendererOptions, plainTextRenderer } from "./renderers/plain"
 import { defaultShikiRenderer } from "./renderers/shiki"
 import { tsconfigJSONRenderer } from "./renderers/tsconfig"
+import { parseCodeFenceInfo } from "./parseCodeFenceInfo"
 
 export type ShikiTwoslashSettings = {
   useNodeModules?: true
@@ -75,7 +76,9 @@ export const renderCodeToHTML = (
 
   // Twoslash specific renderer
   if (info.includes("twoslash") && twoslash) {
-    return twoslashRenderer(tokens, shikiOptions || {}, twoslash)
+    const metaInfo = info && typeof info === "string" ? info : info.join(" ")
+    const codefenceMeta = parseCodeFenceInfo(lang, metaInfo || "")
+    return twoslashRenderer(tokens, shikiOptions || {}, twoslash, codefenceMeta.meta)
   }
 
   // TSConfig renderer
@@ -133,7 +136,7 @@ export const runTwoSlash = (
   return results
 }
 
-export {parseCodeFenceInfo} from "./parseCodeFenceInfo" 
+export { parseCodeFenceInfo } from "./parseCodeFenceInfo"
 
 /** Set of renderers if you want to explicitly call one instead of using renderCodeToHTML */
 export const renderers = {

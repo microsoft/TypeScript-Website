@@ -40,7 +40,9 @@ With a bit of work, you can explain complicated code in a way that lets people i
    <pre class='shiki twoslash'>
     <div class='language-id>[lang-id]</div>
     <div class='code-container'>
-       <code>[the code as a series of spans]</code>
+       <code>
+        <div class='line'>[the code as a series of spans]</div>
+       </code>
     </div>
    </pre> 
    */

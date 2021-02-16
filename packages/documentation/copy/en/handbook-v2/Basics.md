@@ -326,13 +326,12 @@ On the other hand, constructing a `Date` with `new Date()` actually gives us wha
 
 Anyway, we can quickly fix up the error:
 
-```ts twoslash
+```ts twoslash {4}
 function greet(person: string, date: Date) {
   console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
 
 greet("Maddison", new Date());
-//                ^^^^^^^^^^
 ```
 
 Keep in mind, we don't always have to write explicit type annotations.

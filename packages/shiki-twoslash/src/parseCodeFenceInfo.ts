@@ -1,6 +1,6 @@
 // Based on https://github.com/andrewbranch/gatsby-remark-vscode/blob/7bf5c036a58652c1f45d27c5874557f7b531102c/src/index.js
 // which is MIT https://github.com/andrewbranch/gatsby-remark-vscode/blob/7bf5c036a58652c1f45d27c5874557f7b531102c/LICENSE
-// Only difference is conversion to TypeScript
+// Only difference is conversion to TypeScript, and a replace at the top
 
 const identifierPattern = /[a-z0-9-–—_+#]/i
 const triviaPattern = /\s/

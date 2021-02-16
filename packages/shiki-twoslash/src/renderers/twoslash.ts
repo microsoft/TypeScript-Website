@@ -1,6 +1,7 @@
 type Lines = import("shiki").IThemedToken[][]
 type TwoSlash = import("@typescript/twoslash").TwoSlashReturn
 
+import { shouldBeHighlightable, shouldHighlightLine } from "../parseCodeFenceInfo"
 import { stripHTML, createHighlightedString2, subTripleArrow, replaceTripleArrowEncoded, escapeHtml } from "../utils"
 import { HtmlRendererOptions } from "./plain"
 
@@ -21,8 +22,11 @@ import { HtmlRendererOptions } from "./plain"
 // - the DOM requires a flattened graph of html elements
 //
 
-export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, twoslash: TwoSlash) {
+export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, twoslash: TwoSlash, codefenceMeta: any) {
   let html = ""
+
+  const hasHighlight = shouldBeHighlightable(codefenceMeta)
+  const hl = shouldHighlightLine(codefenceMeta)
 
   html += `<pre class="shiki twoslash lsp">`
   if (options.langId) {
@@ -35,7 +39,12 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
   // A query is always about the line above it!
   const queriesGroupedByLine = groupBy(twoslash.queries, q => q.line - 1) || new Map()
 
+  /**
+   * This is the index of the original twoslash code reference, it is not
+   * related to the HTML output
+   */
   let filePos = 0
+
   lines.forEach((l, i) => {
     const errors = errorsGroupedByLine.get(i) || []
     const lspValues = staticQuickInfosGroupedByLine.get(i) || []
@@ -48,6 +57,10 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
       filePos += 1
       html += `\n`
     } else {
+      const hiClass = hasHighlight ? (hl(i) ? " highlight" : " dim") : ""
+      const prefix = `<div class='line${hiClass}'>`
+      html += prefix
+
       // Keep track of the position of the current token in a line so we can match it up to the
       // errors and lang serv identifiers
       let tokenPos = 0
@@ -85,10 +98,8 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
               end: token.start! + token.length! - filePos,
             }
 
-            if (
-              range.begin < 0 ||
-              range.end < 0
-            ) {
+            // prettier-ignore
+            if (range.begin < 0 || range.end < 0) {
               // prettier-ignore
               // throw new Error(`The begin range of a token is at a minus location, filePos:${filePos} current token: ${JSON.stringify(token, null, '  ')}\n result: ${JSON.stringify(range, null, '  ')}`)
             }
@@ -102,7 +113,7 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
             return range
           })
 
-          tokenContent += createHighlightedString2(ranges, token.content)
+          tokenContent += createHighlightedString2(ranges, token.content, 0)
         } else {
           tokenContent += subTripleArrow(token.content)
         }
@@ -112,7 +123,8 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
         filePos += token.content.length
       })
 
-      html += `\n`
+      html += `</div>`
+      // This is the \n which the </div> represents
       filePos += 1
     }
 
@@ -138,6 +150,7 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
             html += `<span class='query'>${linePrefix + "^ = " + queryTextWithPrefix}</span>`
             break
           }
+
           case "completions": {
             if (!query.completions) {
               html += `<span class='query'>${"//" + "".padStart(query.offset - 2) + "^ - No completions found"}</span>`
