@@ -113,7 +113,7 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
             return range
           })
 
-          tokenContent += createHighlightedString2(ranges, token.content, 0)
+          tokenContent += createHighlightedString2(ranges, token.content)
         } else {
           tokenContent += subTripleArrow(token.content)
         }
