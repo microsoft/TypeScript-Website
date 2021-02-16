@@ -403,10 +403,10 @@ const decorations = sandbox.editor.deltaDecorations([], [
 
 // Use a script to make a JSON file like:
 // { 
-//   "file:///node_modules/types/keyboard.d.ts": "export const enterKey: string"
+//   "file:///node_modules/types/keyboard/index.d.ts": "export const enterKey: string"
 // }
 //
-// Where the keys are your paths, and the values are the source-code. The sandbox
+// Where the keys are the paths, and the values are the source-code. The sandbox
 // will use the node resolution lookup strategy by default.
 
 const dtsFiles = {} 
