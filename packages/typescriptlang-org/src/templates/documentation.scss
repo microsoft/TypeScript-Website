@@ -198,6 +198,45 @@
     flex-grow: 0;
     flex-shrink: 0;
   }
+
+  .docs-footer {
+    height: 2rem;
+    margin: 0 -2rem;
+    padding: 0 0;
+    border-top: var(--border-color) 1px solid;
+    display: flex;
+    flex-direction: row-reverse;
+
+    h5 {
+      margin: 0;
+      padding: 0;
+      padding-top: 0.5rem;
+      padding-right: 1rem;
+      font-weight: normal;
+    }
+
+    button {
+      border: none;
+      background: none;
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      color: var(--text-color);
+      border-left: 1px solid var(--border-color);
+      padding: 0 1rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--border-color);
+      }
+
+      svg {
+        margin-right: 4px;
+        fill: var(--text-color);
+        color: var(--text-color);
+      }
+    }
+  }
 }
 
 .circle-bg {
@@ -218,29 +257,6 @@
     top: 0;
     left: 0;
     border-radius: 16px;
-  }
-}
-
-div#like-dislike-subnav {
-  div {
-    font-size: 14px;
-    padding-top: 16px;
-    padding-left: 4px;
-
-    button {
-      border: none;
-      background: none;
-      display: inline-flex;
-      flex-direction: row;
-      align-items: center;
-      color: var(--text-color);
-
-      svg {
-        margin-right: 4px;
-        fill: var(--text-color);
-        color: var(--text-color);
-      }
-    }
   }
 }
 
