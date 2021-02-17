@@ -14,7 +14,7 @@ The `--watch` implementation of the compiler relies on using `fs.watch` and `fs.
 
 `fs.watch` uses file system events to notify the changes in the file/directory. But this is OS dependent and the notification is not completely reliable and does not work as expected on many OS. Also there could be limit on number of watches that can be created, eg. linux and we could exhaust it pretty quickly with programs that include large number of files. But because this uses file system events, there is not much CPU cycle involved. Compiler typically uses `fs.watch` to watch directories (eg. source directories included by config file, directories in which module resolution failed etc) These can handle the missing precision in notifying about the changes. But recursive watching is supported on only Windows and OSX. That means we need something to replace the recursive nature on other OS.
 
-`fs.watchFile` uses polling and thus involves CPU cycles. But this is the most reliable mechanism to get the update on the status of file/directory. Compiler typically uses `fs.watchFile` to watch source files, config files and missing files (missing file references) that means the CPU usage depends on number of files in the program.
+`fs.watchFile` uses polling and thus involves CPU cycles. However, `fs.watchFile` is the most reliable mechanism to get the update on the status of file/directory. The compiler typically uses `fs.watchFile` to watch source files, config files and missing files (missing file references). This means the CPU usage when using `fs.watchFile` depends on number of files in the program.
 
 ## Configuring file watching using a `tsconfig.json`
 
