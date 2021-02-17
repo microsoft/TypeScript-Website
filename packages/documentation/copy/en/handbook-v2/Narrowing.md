@@ -123,7 +123,7 @@ function getUsersOnlineMessage(numUsersOnline: number) {
 }
 ```
 
-In JavaScript, constructs like`if` first "coerce" their conditions to `boolean`s to make sense of them, and then choose their branches depending on whether the result is `true` or `false`.
+In JavaScript, constructs like `if` first "coerce" their conditions to `boolean`s to make sense of them, and then choose their branches depending on whether the result is `true` or `false`.
 Values like
 
 - `0`
