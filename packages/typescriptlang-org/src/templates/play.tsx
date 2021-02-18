@@ -109,8 +109,8 @@ const Play: React.FC<Props> = (props) => {
       re.config({
         paths: {
           vs: urlForMonaco,
-          "@typescript/sandbox": withPrefix('/js/sandbox'),
-          "@typescript/playground": withPrefix('/js/playground'),
+          "typescript-sandbox": withPrefix('/js/sandbox'),
+          "typescript-playground": withPrefix('/js/playground'),
           "unpkg": "https://unpkg.com/",
           "local": "http://localhost:5000"
         },
