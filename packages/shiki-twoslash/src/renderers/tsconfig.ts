@@ -29,7 +29,7 @@ export function tsconfigJSONRenderer(lines: Lines, options: HtmlRendererOptions)
   const bg = options.bg || "#fff"
   const fg = options.fg || "black"
 
-  html += `<pre class="shiki tsconfig lsp" style="background-color: ${bg}; color: ${fg}}">`
+  html += `<pre class="shiki tsconfig lsp" style="background-color: ${bg}; color: ${fg}">`
   if (options.langId) {
     html += `<div class="language-id">${options.langId}</div>`
   }
