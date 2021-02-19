@@ -37,11 +37,11 @@ describe("with fixtures", () => {
       return
     }
 
-    // if (!fixtureName.includes("exporting")) {
+    // if (fixtureName.includes("Relative")) {
     //   return
     // }
 
-    it("Fixture: " + fixtureName, async () => {
+    it.skip("Fixture: " + fixtureName, async () => {
       const resultHTMLName = parse(fixtureName).name + ".html"
       const resultTwoSlashName = parse(fixtureName).name + ".json"
 
