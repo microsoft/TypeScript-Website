@@ -6,7 +6,10 @@ type Lines = import("shiki").IThemedToken[][]
 export function defaultShikiRenderer(lines: Lines, options: HtmlRendererOptions) {
   let html = ""
 
-  html += `<pre class="shiki">`
+  const bg = options.bg || "#fff"
+  const fg = options.fg || "black"
+
+  html += `<pre class="shiki" style="background-color: ${bg}; color: ${fg}">`
   if (options.langId) {
     html += `<div class="language-id">${options.langId}</div>`
   }

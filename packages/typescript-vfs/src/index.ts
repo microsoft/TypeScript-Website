@@ -59,6 +59,8 @@ export function createVirtualTypeScriptEnvironment(
   }
 
   return {
+    // @ts-ignore
+    name: "vfs",
     sys,
     languageService,
     getSourceFile: fileName => languageService.getProgram()?.getSourceFile(fileName),
@@ -407,6 +409,9 @@ export function createFSBackedSystem(files: Map<string, string>, _projectRoot: s
   const tsLib = path.dirname(require.resolve("typescript"))
 
   return {
+    // @ts-ignore
+    name: "fs-vfs",
+    root,
     args: [],
     createDirectory: () => notImplemented("createDirectory"),
     // TODO: could make a real file tree

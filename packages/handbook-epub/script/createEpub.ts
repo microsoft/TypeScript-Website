@@ -153,8 +153,7 @@ const getHTML = async (code: string, settings?: any) => {
       { markdownAST },
       {
         theme: require("../../typescriptlang-org/lib/themes/typescript-beta-light.json"),
-      },
-      {}
+      }
     );
   }
 

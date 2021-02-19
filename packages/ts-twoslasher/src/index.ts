@@ -155,7 +155,7 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
         case "list":
           const elementType = opt.element!.type
           const strings = value.split(",")
-          if (typeof elementType === 'string') {
+          if (typeof elementType === "string") {
             opts[opt.name] = strings.map(v => parsePrimitive(v, elementType))
           } else {
             opts[opt.name] = strings.map(v => getOptionValueFromMap(opt.name, v, elementType as Map<string, string>))

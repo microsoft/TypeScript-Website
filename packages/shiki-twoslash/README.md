@@ -10,6 +10,75 @@ Things it handles:
 - Running Twoslash over code, with caching and DTS lookups: `runTwoSlash`
 - Rendering any code sample with Shiki: `renderCodeToHTML`
 
+### User Settings
+
+The config which a user passes is an intersection of Shiki's [`HighlighterOptions`](https://unpkg.com/shiki/dist/index.d.ts)
+
+```ts
+interface HighlighterOptions {
+  theme?: IThemeRegistration
+  langs?: (Lang | ILanguageRegistration)[]
+  themes?: IThemeRegistration[]
+  /**
+   * Paths for loading themes and langs. Relative to the package's root.
+   */
+  paths?: IHighlighterPaths
+}
+```
+
+With twoslash's [`TwoSlashOptions`](https://unpkg.com/@typescript/twoslash/dist/index.d.ts)
+
+```ts
+export interface TwoSlashOptions {
+  /** Allows setting any of the handbook options from outside the function, useful if you don't want LSP identifiers */
+  defaultOptions?: Partial<ExampleOptions>
+  /** Allows setting any of the compiler options from outside the function */
+  defaultCompilerOptions?: CompilerOptions
+  /** Allows applying custom transformers to the emit result, only useful with the showEmit output */
+  customTransformers?: CustomTransformers
+  /** An optional copy of the TypeScript import, if missing it will be require'd. */
+  tsModule?: TS
+  /** An optional copy of the lz-string import, if missing it will be require'd. */
+  lzstringModule?: LZ
+  /**
+   * An optional Map object which is passed into @typescript/vfs - if you are using twoslash on the
+   * web then you'll need this to set up your lib *.d.ts files. If missing, it will use your fs.
+   */
+  fsMap?: Map<string, string>
+  /** The cwd for the folder which the virtual fs should be overlaid on top of when using local fs, opts to process.cwd() if not present */
+  vfsRoot?: string
+}
+```
+
+Most people will want to set a `theme`, and _maybe_ `vfsRoot` if they want to do twoslash with custom libraries in a monorepo:
+
+```ts
+{
+  resolve: "gatsby-remark-shiki-twoslash",
+  options: {
+    theme: "github-light",
+    vfsRoot: path.join(__dirname, "..", "..")
+  },
+}
+```
+
+### Common Use Case
+
+##### Node Types in a Code Sample
+
+To get the Node globals set up, import them via an inline triple-slash reference:
+
+````
+```ts twoslash
+/// <reference types="node" />
+import { execSync } from "child_process"
+const files = execSync("git status --porcelain", { encoding: "utf8" })
+files.length
+```
+````
+
+This applies to other projects which use globals, like Jest etc. If you think that's ugly, that's OK, you can use `// ---cut---` to trim the user-visible output.
+
 ### API
 
 The user-exposed parts of the API is a single file, you might find it easier to just read that: [`src/index.ts`](https://github.com/microsoft/TypeScript-website/blob/v2/packages/shiki-twoslash/src/index.ts).
@@ -19,9 +88,9 @@ The user-exposed parts of the API is a single file, you might find it easier to 
 Sets up the highlighter for Shiki, accepts shiki options:
 
 ```ts
-async function visitor(highlighterOpts, shikiOpts) {
-  const highlighter = await createShikiHighlighter(highlighterOpts)
-  visit(markdownAST, "code", visitor(highlighter, shikiOpts))
+async function visitor(highlighterOpts) {
+  const highlighter = await createShikiHighlighter(userOpts)
+  visit(markdownAST, "code", visitor(highlighter, userOpts))
 }
 ```
 

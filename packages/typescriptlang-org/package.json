@@ -24,7 +24,7 @@
     "@types/react-helmet": "^5.0.15",
     "@typescript/playground": "0.1.0",
     "@typescript/sandbox": "0.1.0",
-    "@typescript/twoslash": "1.1.4",
+    "@typescript/twoslash": "1.1.5",
     "canvas": "^2.6.1",
     "gatsby": "^2.24.85",
     "gatsby-link": "2.4.16",

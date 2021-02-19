@@ -1,17 +1,13 @@
-import { loadTheme, getHighlighter, Highlighter, HighlighterOptions, IThemedToken } from "shiki"
-// import { commonLangIds, commonLangAliases, otherLangIds } from "shiki-languages"
+import { getHighlighter, Highlighter, HighlighterOptions, IThemedToken } from "shiki"
 import { twoslasher, TwoSlashOptions, TwoSlashReturn } from "@typescript/twoslash"
-import { createDefaultMapFromNodeModules, addAllFilesFromFolder } from "@typescript/vfs"
 import { twoslashRenderer } from "./renderers/twoslash"
 import { HtmlRendererOptions, plainTextRenderer } from "./renderers/plain"
 import { defaultShikiRenderer } from "./renderers/shiki"
 import { tsconfigJSONRenderer } from "./renderers/tsconfig"
 import { parseCodeFenceInfo } from "./parseCodeFenceInfo"
 
-export type ShikiTwoslashSettings = {
-  useNodeModules?: true
-  nodeModulesTypesPath?: string
-}
+/** The possible user config, a combination of all shiki and twoslash options */
+export type UserConfigSettings = HighlighterOptions & TwoSlashOptions
 
 /**
  * This gets filled in by the promise below, then should
@@ -44,7 +40,7 @@ export const createShikiHighlighter = (options: HighlighterOptions) => {
  *
  * @param code the source code to render
  * @param lang the language to use in highlighting
- * @param info additional metadata which lives after the codefence lang (e.g. ["twoslash"])
+ * @param info additional metadata which lives after the code-fence lang (e.g. ["twoslash"])
  * @param highlighter optional, but you should use it, highlighter
  * @param twoslash optional, but required when info contains 'twoslash' as a string
  */
@@ -90,49 +86,21 @@ export const renderCodeToHTML = (
   return defaultShikiRenderer(tokens, { langId: lang })
 }
 
-// Basically so that we can store this once, then re-use it in the same process
-let nodeModulesMap: Map<string, string> | undefined = undefined
-
 /**
  * Runs Twoslash over the code passed in with a particular language as the default file.
  */
-export const runTwoSlash = (
-  code: string,
-  lang: string,
-  settings: ShikiTwoslashSettings = {},
-  twoslashDefaults: TwoSlashOptions = {}
-): TwoSlashReturn => {
-  let map: Map<string, string> | undefined = undefined
-
+export const runTwoSlash = (code: string, lang: string, settings: UserConfigSettings = {}): TwoSlashReturn => {
   // Shiki doesn't respect json5 as an input, so switch it
   // to json, which can handle comments in the syntax highlight
   const replacer = {
     json5: "json",
+    yml: "yaml",
   }
 
   // @ts-ignore
   if (replacer[lang]) lang = replacer[lang]
 
-  // Add @types to the fsmap
-  if (settings.useNodeModules) {
-    // we don't want a hard dep on TS, so that browsers can run this code)
-    const laterESVersion = 6
-
-    // Save node modules into a cached object which we re-create from (emits can edit the map)
-    if (nodeModulesMap) {
-      map = new Map(nodeModulesMap)
-    } else {
-      map = createDefaultMapFromNodeModules({ target: laterESVersion })
-      nodeModulesMap = map
-    }
-
-    // Maybe it's worth only doing the imports in the file, but that would break dts deps
-    // const imports = parseFileForModuleReferences(code).filter((mod) => !mod.startsWith("."))
-
-    addAllFilesFromFolder(map, settings.nodeModulesTypesPath || "node_modules/@types")
-  }
-
-  const results = twoslasher(code, lang, { ...twoslashDefaults, fsMap: map })
+  const results = twoslasher(code, lang, settings)
   return results
 }
 
