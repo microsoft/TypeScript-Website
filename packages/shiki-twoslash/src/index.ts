@@ -40,7 +40,7 @@ export const createShikiHighlighter = (options: HighlighterOptions) => {
  *
  * @param code the source code to render
  * @param lang the language to use in highlighting
- * @param info additional metadata which lives after the codefence lang (e.g. ["twoslash"])
+ * @param info additional metadata which lives after the code-fence lang (e.g. ["twoslash"])
  * @param highlighter optional, but you should use it, highlighter
  * @param twoslash optional, but required when info contains 'twoslash' as a string
  */
@@ -100,7 +100,6 @@ export const runTwoSlash = (code: string, lang: string, settings: UserConfigSett
   // @ts-ignore
   if (replacer[lang]) lang = replacer[lang]
 
-  console.log({ runTwoSlash, settings })
   const results = twoslasher(code, lang, settings)
   return results
 }

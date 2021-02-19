@@ -417,7 +417,6 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   const vfs = useFS && options.fsMap ? options.fsMap : new Map<string, string>()
   const system = useFS ? createSystem(vfs) : createFSBackedSystem(vfs, getRoot(), ts)
   const fsRoot = useFS ? "/" : getRoot() + "/"
-  console.log({ useFS, system })
 
   const env = createVirtualTypeScriptEnvironment(system, [], ts, compilerOptions, options.customTransformers)
   const ls = env.languageService
