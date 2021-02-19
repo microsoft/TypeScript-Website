@@ -27,8 +27,10 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
 
   const hasHighlight = shouldBeHighlightable(codefenceMeta)
   const hl = shouldHighlightLine(codefenceMeta)
+  const bg = options.bg || "#fff"
+  const fg = options.fg || "black"
 
-  html += `<pre class="shiki twoslash lsp">`
+  html += `<pre class="shiki twoslash lsp" style="background-color: ${bg}; color: ${fg}}">`
   if (options.langId) {
     html += `<div class="language-id">${options.langId}</div>`
   }
