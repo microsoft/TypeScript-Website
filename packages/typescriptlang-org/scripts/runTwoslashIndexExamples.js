@@ -44,10 +44,6 @@ const go = async () => {
         theme: useLightTheme
           ? "min-light"
           : require.resolve("../lib/themes/typescript-beta-dark.json"),
-      },
-      {
-        useNodeModules: true,
-        nodeModulesTypesPath: "../../node_modules/@types",
       }
     )
 

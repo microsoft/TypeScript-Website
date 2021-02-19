@@ -7,12 +7,12 @@ import { format } from "prettier"
 import gatsbyRemarkShiki from "../src/index"
 const remark = require("remark")
 import { Node } from "unist"
-import { HighlighterOptions } from "shiki"
 expect.extend({ toMatchFile })
 
-const getHTML = async (code: string, settings: HighlighterOptions) => {
+const getHTML = async (code: string, settings: any) => {
+  //import("shiki-twoslash").UserConfigSettings) => {
   const markdownAST: Node = remark().parse(code)
-  await gatsbyRemarkShiki({ markdownAST }, settings, {})
+  await gatsbyRemarkShiki({ markdownAST }, settings)
 
   // @ts-ignore
   const twoslashes = markdownAST.children.filter(c => c.meta && c.meta.includes("twoslash")).map(c => c.twoslash)
@@ -52,6 +52,7 @@ describe("with fixtures", () => {
 
       const results = await getHTML(code, {
         theme: require("../../typescriptlang-org/lib/themes/typescript-beta-light.json"),
+        vfsRoot: join(__dirname, "..", "..", ".."),
       })
 
       const htmlString = format(results.html + style, { parser: "html" })

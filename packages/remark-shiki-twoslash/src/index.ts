@@ -1,5 +1,5 @@
 // prettier-ignore
-import { createShikiHighlighter, ShikiTwoslashSettings, renderCodeToHTML, runTwoSlash } from "shiki-twoslash"
+import { createShikiHighlighter, UserConfigSettings, renderCodeToHTML, runTwoSlash } from "shiki-twoslash"
 import type { Lang, Highlighter, HighlighterOptions } from "shiki"
 
 import visit from "unist-util-visit"
@@ -19,7 +19,7 @@ type RichNode = Node & {
  * The function doing the work of transforming any codeblock samples
  * which have opted-in to the twoslash pattern.
  */
-export const visitor = (highlighter: Highlighter, twoslashSettings?: ShikiTwoslashSettings) => (node: RichNode) => {
+export const visitor = (highlighter: Highlighter, twoslashSettings: UserConfigSettings = {}) => (node: RichNode) => {
   let lang = node.lang
   let settings = twoslashSettings || {}
 
@@ -47,7 +47,7 @@ export const visitor = (highlighter: Highlighter, twoslashSettings?: ShikiTwosla
  * Runs twoslash across an AST node, switching out the text content, and lang
  * and adding a `twoslash` property to the node.
  */
-export const runTwoSlashOnNode = (settings: ShikiTwoslashSettings) => (node: RichNode) => {
+export const runTwoSlashOnNode = (settings: UserConfigSettings = {}) => (node: RichNode) => {
   if (node.meta && node.meta.includes("twoslash")) {
     const results = runTwoSlash(node.value, node.lang, settings)
     node.value = results.code
@@ -56,7 +56,7 @@ export const runTwoSlashOnNode = (settings: ShikiTwoslashSettings) => (node: Ric
   }
 }
 
-function remarkTwoslash(shikiSettings?: ShikiTwoslashSettings & HighlighterOptions) {
+function remarkTwoslash(shikiSettings: UserConfigSettings = {}) {
   // @ts-ignore
   let settings = shikiSettings || { theme: "light-plus" }
   const transform = async (markdownAST: any) => {
