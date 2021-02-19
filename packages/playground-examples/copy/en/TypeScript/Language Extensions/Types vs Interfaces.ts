@@ -62,7 +62,7 @@ interface Kitten {
 }
 
 // In the other case a type cannot be changed outside of
-// it's declaration.
+// its declaration.
 
 type Puppy = {
   color: string;
