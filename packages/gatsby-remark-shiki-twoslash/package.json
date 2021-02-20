@@ -28,10 +28,10 @@
     "lint": "tsdx lint"
   },
   "dependencies": {
-    "@typescript/twoslash": "1.1.5",
-    "@typescript/vfs": "1.3.2",
+    "@typescript/twoslash": "1.1.6",
+    "@typescript/vfs": "1.3.3",
     "shiki": "^0.9.1",
-    "shiki-twoslash": "1.2.0",
+    "shiki-twoslash": "1.2.3",
     "typescript": "*",
     "unist-util-visit": "^2.0.0"
   },
