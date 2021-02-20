@@ -5308,7 +5308,7 @@ __metadata:
   resolution: "@typescript/sandbox@workspace:packages/sandbox"
   dependencies:
     "@types/jest": ^25.1.3
-    "@typescript/vfs": 1.3.2
+    "@typescript/vfs": 1.3.3
     jest: "*"
     monaco-editor: ~0.20.0
     monaco-typescript: ^3.7.0
@@ -5317,14 +5317,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript/twoslash@1.1.4, @typescript/twoslash@workspace:packages/ts-twoslasher":
+"@typescript/twoslash@1.1.6, @typescript/twoslash@workspace:packages/ts-twoslasher":
   version: 0.0.0-use.local
   resolution: "@typescript/twoslash@workspace:packages/ts-twoslasher"
   dependencies:
     "@types/jest": ^25.1.3
     "@types/lz-string": ^1.3.33
     "@types/prettier": ^1.19.0
-    "@typescript/vfs": 1.3.2
+    "@typescript/vfs": 1.3.3
     debug: ^4.1.1
     husky: ^4.2.3
     jest-file-snapshot: ^0.3.8
@@ -5337,7 +5337,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript/vfs@1.3.2, @typescript/vfs@workspace:packages/typescript-vfs":
+"@typescript/vfs@1.3.3, @typescript/vfs@workspace:packages/typescript-vfs":
   version: 0.0.0-use.local
   resolution: "@typescript/vfs@workspace:packages/typescript-vfs"
   dependencies:
@@ -13973,16 +13973,16 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"gatsby-remark-shiki-twoslash@1.0.0, gatsby-remark-shiki-twoslash@workspace:packages/gatsby-remark-shiki-twoslash":
+"gatsby-remark-shiki-twoslash@1.0.1, gatsby-remark-shiki-twoslash@workspace:packages/gatsby-remark-shiki-twoslash":
   version: 0.0.0-use.local
   resolution: "gatsby-remark-shiki-twoslash@workspace:packages/gatsby-remark-shiki-twoslash"
   dependencies:
     "@types/jest": ^25.1.3
-    "@typescript/twoslash": 1.1.4
-    "@typescript/vfs": 1.3.2
+    "@typescript/twoslash": 1.1.6
+    "@typescript/vfs": 1.3.3
     rehype-stringify: ^6.0.1
     shiki: ^0.9.1
-    shiki-twoslash: 1.1.0
+    shiki-twoslash: 1.2.4
     tsdx: ^0.14.1
     tslib: ^1.10.0
     typescript: "*"
@@ -24872,13 +24872,13 @@ fsevents@~2.1.2:
   dependencies:
     "@mdx-js/mdx": ^1.5.5
     "@types/jest": ^25.1.3
-    "@typescript/twoslash": 1.1.4
-    "@typescript/vfs": 1.3.2
+    "@typescript/twoslash": 1.1.6
+    "@typescript/vfs": 1.3.3
     babel-jest: ^26.6.3
     mdx: "*"
     rehype-stringify: ^6.0.1
     shiki: ^0.9.1
-    shiki-twoslash: 1.1.0
+    shiki-twoslash: 1.2.4
     tsdx: ^0.14.1
     tslib: ^1.10.0
     typescript: "*"
@@ -26211,14 +26211,14 @@ resolve@1.1.7:
   languageName: node
   linkType: hard
 
-"shiki-twoslash@1.1.0, shiki-twoslash@workspace:packages/shiki-twoslash":
+"shiki-twoslash@1.2.4, shiki-twoslash@workspace:packages/shiki-twoslash":
   version: 0.0.0-use.local
   resolution: "shiki-twoslash@workspace:packages/shiki-twoslash"
   dependencies:
     "@types/jest": ^25.1.3
-    "@typescript/twoslash": 1.1.4
-    "@typescript/vfs": 1.3.2
-    gatsby-remark-shiki-twoslash: 1.0.0
+    "@typescript/twoslash": 1.1.6
+    "@typescript/vfs": 1.3.3
+    gatsby-remark-shiki-twoslash: 1.0.1
     rehype-stringify: ^6.0.1
     shiki: ^0.9.1
     tsdx: ^0.14.1
@@ -28575,7 +28575,7 @@ resolve@1.1.7:
     "@types/react-helmet": ^5.0.15
     "@typescript/playground": 0.1.0
     "@typescript/sandbox": 0.1.0
-    "@typescript/twoslash": 1.1.4
+    "@typescript/twoslash": 1.1.6
     canvas: ^2.6.1
     concurrently: ^5.1.0
     gatsby: ^2.24.85
