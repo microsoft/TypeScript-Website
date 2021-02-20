@@ -41,7 +41,7 @@ describe("with fixtures", () => {
     //   return
     // }
 
-    it.skip("Fixture: " + fixtureName, async () => {
+    it("Fixture: " + fixtureName, async () => {
       const resultHTMLName = parse(fixtureName).name + ".html"
       const resultTwoSlashName = parse(fixtureName).name + ".json"
 
@@ -108,5 +108,7 @@ color: #ffeeee;
 
 const cleanFixture = (text: string) => {
   const wd = process.cwd()
-  return text.replace(new RegExp(wd, "g"), "[home]")
+  return text
+    .replace(new RegExp(wd, "g"), "[home]")
+    .replace(/\/home\/runner\/work\/TypeScript-Website\/TypeScript-Website/g, "[home]")
 }
