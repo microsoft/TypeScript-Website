@@ -88,19 +88,20 @@ Constructs an object type whose property keys are `Keys` and whose property valu
 ##### Example
 
 ```ts twoslash
-interface PageInfo {
-  title: string;
+interface CatInfo {
+  age: number;
+  breed: string;
 }
 
-type Page = "home" | "about" | "contact";
+type CatName = "miffy" | "boris" | "mordred";
 
-const nav: Record<Page, PageInfo> = {
-  about: { title: "about" },
-  contact: { title: "contact" },
-  home: { title: "home" },
+const cats: Record<CatName, CatInfo> = {
+  miffy: { age: 10, breed: "Persian" },
+  boris: { age: 5, breed: "Maine Coon" },
+  mordred: { age: 16, breed: "British Shorthair" }
 };
 
-nav.about;
+cats.boris;
 // ^?
 ```
 
