@@ -84,9 +84,9 @@ export const Customize = () => {
               <option value="dank-mono">Dank Mono</option>
               <option value="fira-code">Fira Code</option>
               <option value="jetbrains-mono">JetBrains Mono</option>
+              <option value="open-dyslexic">OpenDyslexic</option>
               <option value="sf-mono">SF Mono</option>
               <option value="source-code-pro">Source Code Pro</option>
-              <option value="open-dyslexic">OpenDyslexic</option>
             </select>
           </div>
         </label>
