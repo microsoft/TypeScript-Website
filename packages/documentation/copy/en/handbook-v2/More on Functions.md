@@ -699,7 +699,7 @@ const angle = Math.atan2(...args);
 
 ## Parameter Destructuring
 
-> > **Background reading**: [Destructuring Assignment](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
+> **Background reading**: [Destructuring Assignment](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
 
 You can use parameter destructuring to conveniently unpack objects provided as an argument into one or more local variables in the function body.
 In JavaScript, it looks like this:

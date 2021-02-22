@@ -31,11 +31,17 @@
 
   blockquote {
     border-left: 2px solid var(--border-color);
-    background-color: rgba(100, 100, 100, 0.05);
+    background-color: var(--inline-code-background-color);
     font-size: 0.8rem;
     // margin: 1rem -0 1rem -2rem;
     margin: 1rem -2rem 1rem 0;
     padding: 0.1rem 2rem;
+
+    &.bg-reading {
+      float: right;
+      margin-left: 0.5rem;
+      border-left: none;
+    }
   }
 
   .language-id {
