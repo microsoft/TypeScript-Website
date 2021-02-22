@@ -66,6 +66,10 @@ export const createDocumentationPages = async (
 
   docs.forEach((post: any) => {
     const permalink = post.childMarkdownRemark.frontmatter.permalink
+    if (!permalink)
+      // prettier-ignore
+      throw new Error(`Did not find a permalink for page: ${JSON.stringify(post)}`)
+
     const lang = langs.find(l => permalink.startsWith("/" + l + "/")) || "en"
     if (!isMultiLingual && lang !== "en") return
 
