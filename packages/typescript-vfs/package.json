@@ -13,7 +13,7 @@
     "url": "https://github.com/microsoft/TypeScript-Website/issues"
   },
   "main": "./dist/index.js",
-  "module": "./dist/vsf.esm.js",
+  "module": "./dist/vfs.esm.js",
   "typings": "./dist/index.d.ts",
   "files": [
     "dist"
