@@ -76,14 +76,15 @@ html.light-theme {
   color: var(--text-color);
 
   -webkit-font-smoothing: antialiased;
-  font-family: "Segoe UI Web (West European)", "Segoe UI", -apple-system,
-    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  font-family: var(--body-font);
   font-size: 16px;
   line-height: 1.4;
 }
 
 html {
   --code-font: "Cascadia Mono-SemiLight", Menlo, Monaco, Consolas, monospace;
+  --body-font: "Segoe UI Web (West European)", "Segoe UI", -apple-system,
+    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
 }
 
 // These match the ids from the select in SiteFooter-Customize.tsx
@@ -114,6 +115,13 @@ html.font-sf-mono {
 
 html.font-source-code-pro {
   --code-font: "SourceCode Pro Regular", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-open-dyslexic {
+  --code-font: "OpenDyslexicMono Regular", Menlo, Monaco, Consolas, monospace;
+  --body-font: "OpenDyslexic Regular", "Segoe UI Web (West European)",
+    "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue",
+    sans-serif;
 }
 
 .raised {
