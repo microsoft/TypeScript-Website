@@ -16,7 +16,7 @@ In this section we'll cover ways to express a new type in terms of an existing t
 
 - [Generics](/docs/handbook/2/generics.html) - Types which take parameters
 - [Keyof Type Operator](/docs/handbook/2/keyof-types.html) - Using the `keyof` operator to create new types
-- [Typeof Type Operator](/docs/handbook/2/typeof-types.html) - Using the `keyof` operator to create new types
+- [Typeof Type Operator](/docs/handbook/2/typeof-types.html) - Using the `typeof` operator to create new types
 - [Indexed Access Types](/docs/handbook/2/indexed-access-types.html) - Using `Type['a']` syntax to access a subset of a type
 - [Conditional Types](/docs/handbook/2/conditional-types.html) - Types which act like if statements in the type system
 - [Mapped Types](/docs/handbook/2/mapped-types.html) - Creating types by mapping each property in an existing type
