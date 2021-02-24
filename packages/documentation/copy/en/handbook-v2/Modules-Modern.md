@@ -23,6 +23,21 @@ Modules are executed within their own scope, not in the global scope.
 This means that variables, functions, classes, etc. declared in a module are not visible outside the module unless they are explicitly exported using one of the export forms.
 Conversely, to consume a variable, function, class, interface, etc. exported from a different module, it has to be imported using one of the import forms.
 
+## Non-modules
+
+Before we start, it's important to understand what TypeScript considers a module.
+The JavaScript specification declares that any JavaScript files without an `export` or top-level `await` should be considered a script and not a module.
+
+Inside a script file variables are declared to be in the shared global scope, and it's assumed that you'll either use the `--outFile` compiler option to join multiple input files into one output file, or use multiple `<script>` tags in your HTML to load these files (in the correct order!).
+
+If you have a file that doesn't currently have any `import`s or `export`s, but you want to be treated as a module, add the line:
+
+```ts twoslash
+export {};
+```
+
+to make the file be a module exporting nothing. This syntax works regardless of your module target.
+
 ## Modules in TypeScript
 
 <blockquote class='bg-reading'>
@@ -36,7 +51,7 @@ There are three main things to consider when writing module-based code in TypeSc
 
 - **Syntax**: What syntax do I want to use to import and export things?
 - **Module Resolution**: What is the relationship between module names (or paths) and files on disk?
-- **Module Target**: What module format should my emitted JavaScript use?
+- **Module Output Target**: What should the should my emitted JavaScript module look like?
 
 #### ES Module Syntax
 
@@ -97,6 +112,38 @@ const positivePhi = absolute(phi);
 //    ^?
 ```
 
+### Additional Import Syntax
+
+An import can be renamed using a format like `import {old as new}`:
+
+```ts twoslash
+// @filename: maths.ts
+export var pi = 3.14;
+// ---cut---
+// @filename: app.ts
+import { pi as π } from "./maths.js";
+
+console.log(π);
+//          ^?
+```
+
+You can mix and match the above syntax into a single `import`:
+
+```ts twoslash
+// @filename: maths.ts
+export const pi = 3.14;
+export default class RandomNumberGenerator {}
+
+// @filename: app.ts
+import RNGen, { pi as π } from "./maths.js";
+
+RNGen;
+// ^?
+
+console.log(π);
+//          ^?
+```
+
 You can take all of the exported objects and put them into a single namespace using `* as name`:
 
 ```ts twoslash
@@ -117,6 +164,20 @@ console.log(math.pi);
 const positivePhi = math.absolute(math.phi);
 //    ^?
 ```
+
+You can import a file and _not_ include any variables into your current module via `import "./file"`
+
+```ts twoslash
+// @filename: maths.ts
+export var pi = 3.14;
+// ---cut---
+// @filename: app.ts
+import "./maths.js";
+
+console.log("3.14");
+```
+
+In this case, the `import` does nothing. However, all of the code in `maths.ts` was evaluated, which could trigger side-effects which affect other objects.
 
 #### TypeScript Specific ES Module Syntax
 
@@ -159,3 +220,86 @@ This syntax allows a non-TypeScript transpiler like Babel, swc or esbuild to kno
 #### ES Module Syntax with CommonJS
 
 When working in Node.js, most libraries are CommonJS.
+
+## CommonJS Syntax
+
+## TypeScript's Module Resolution Options
+
+Module resolution is the process of taking a string from the `import` or `require` statement, and determining what file that string refers to.
+
+TypeScript includes two resolution strategies: Classic and Node. Classic, the default when the compiler flag [`module`](/tsconfig/#module) is not `commonjs`, is included for backwards compatibility.
+The Node strategy replicates how Node.js works in CommonJS mode, with additional checks for `.ts` and `.d.ts`.
+
+There are many TSConfig flags which influence the module strategy within TypeScript: [`moduleResolution`](/tsconfig/#moduleResolution), [`baseUrl`](/tsconfig/#baseUrl), [`paths`](/tsconfig/#paths), [`rootDirs`](/tsconfig/#rootDirs).
+
+For the full details on how these strategies work, you can consult the [Module Resolution](/docs/handbook/module-resolution.html).
+
+## TypeScript's Module Output Options
+
+There are two options which affect the emitted JavaScript output:
+
+- [`target`](/tsconfig/#target) which determines which JS features are downleveled (converted to run in older JavaScript runtimes) and which are left intact.
+- [`module](/tsconfig/#module) which determines what code is used for modules to interact with each other
+
+Which `target` you use is determined by the features available in the JavaScript runtime you expect to run the TypeScript code in. That could be: the oldest web browser you support, the lowest version of Node.js you expect to run on or could come from unique constraints from your runtime - like Electron for example.
+
+The all modules import one another using a module loader, the compiler flag [`module`](/tsconfig#module) determines which one is used.
+At runtime the module loader is responsible for locating and executing all dependencies of a module before executing it.
+
+For example, here is a TypeScript file using ES Modules syntax, showcasing a few different options for [`module`](/tsconfig#module):
+
+```ts twoslash
+// @filename: constants.ts
+export const valueOfPi = 3.142;
+// ---cut---
+// @filename: index.ts
+import { valueOfPi } from "./constants";
+
+export const twoPi = valueOfPi * 2;
+```
+
+#### `CommonJS`
+
+```ts twoslash
+// @showEmit
+// @module: commonjs
+// @filename: constants.ts
+export const valueOfPi = 3.142;
+// ---cut---
+// @filename: index.ts
+import { valueOfPi } from "./constants";
+
+export const twoPi = valueOfPi * 2;
+```
+
+#### `UMD`
+
+```ts twoslash
+// @showEmit
+// @module: umd
+// @filename: constants.ts
+export const valueOfPi = 3.142;
+// ---cut---
+// @filename: index.ts
+import { valueOfPi } from "./constants";
+
+export const twoPi = valueOfPi * 2;
+```
+
+#### `ES2020`
+
+```ts twoslash
+// @showEmit
+// @module: es2020
+// @filename: constants.ts
+export const valueOfPi = 3.142;
+// ---cut---
+// @filename: index.ts
+import { valueOfPi } from "./constants";
+
+export const twoPi = valueOfPi * 2;
+```
+
+> Note that ES2020 is effectively the same as the original `index.ts`.
+
+You can see all of the available options and what their code looks like in the [TSConfig Reference for `module`](/tsconfig/#module).
