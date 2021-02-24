@@ -12,20 +12,20 @@ This is in contrast with nominal typing.
 Consider the following code:
 
 ```ts
-interface Named {
+interface Pet {
   name: string;
 }
 
-class Person {
+class Dog {
   name: string;
 }
 
-let p: Named;
+let pet: Pet;
 // OK, because of structural typing
-p = new Person();
+pet = new Dog();
 ```
 
-In nominally-typed languages like C# or Java, the equivalent code would be an error because the `Person` class does not explicitly describe itself as being an implementer of the `Named` interface.
+In nominally-typed languages like C# or Java, the equivalent code would be an error because the `Dog` class does not explicitly describe itself as being an implementer of the `Pet` interface.
 
 TypeScript's structural type system was designed based on how JavaScript code is typically written.
 Because JavaScript widely uses anonymous objects like function expressions and object literals, it's much more natural to represent the kinds of relationships found in JavaScript libraries with a structural type system instead of a nominal one.
@@ -36,33 +36,39 @@ TypeScript's type system allows certain operations that can't be known at compil
 
 ## Starting out
 
-The basic rule for TypeScript's structural type system is that `x` is compatible with `y` if `y` has at least the same members as `x`. For example:
+The basic rule for TypeScript's structural type system is that `x` is compatible with `y` if `y` has at least the same members as `x`. For example consider the following code involving an interface named `Pet` which has a `name` property:
 
 ```ts
-interface Named {
+interface Pet {
   name: string;
 }
 
-let x: Named;
-// y's inferred type is { name: string; location: string; }
-let y = { name: "Alice", location: "Seattle" };
-x = y;
+let pet: Pet;
+// y's inferred type is { name: string; owner: string; }
+let dog = { name: "Lassie", owner: "Rudd Weatherwax" };
+pet = deg;
 ```
 
-To check whether `y` can be assigned to `x`, the compiler checks each property of `x` to find a corresponding compatible property in `y`.
-In this case, `y` must have a member called `name` that is a string. It does, so the assignment is allowed.
+To check whether `dog` can be assigned to `pet`, the compiler checks each property of `pet` to find a corresponding compatible property in `dog`.
+In this case, `dog` must have a member called `name` that is a string. It does, so the assignment is allowed.
 
 The same rule for assignment is used when checking function call arguments:
 
 ```ts
-function greet(n: Named) {
-  console.log("Hello, " + n.name);
+interface Pet {
+  name: string;
 }
-greet(y); // OK
+
+let dog = { name: "Lassie", owner: "Rudd Weatherwax" };
+
+function greet(pet: Pet) {
+  console.log("Hello, " + pet.name);
+}
+greet(dog); // OK
 ```
 
-Note that `y` has an extra `location` property, but this does not create an error.
-Only members of the target type (`Named` in this case) are considered when checking for compatibility.
+Note that `y` has an extra `owner` property, but this does not create an error.
+Only members of the target type (`Pet` in this case) are considered when checking for compatibility.
 
 This comparison process proceeds recursively, exploring the type of each member and sub-member.
 
