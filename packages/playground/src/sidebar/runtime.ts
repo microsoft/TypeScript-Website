@@ -134,6 +134,8 @@ function rewireLoggingToElement(
       textRep = "<span class='literal'>null</span>"
     } else if (arg === undefined) {
       textRep = "<span class='literal'>undefined</span>"
+    } else if (typeof arg === "symbol") {
+      textRep = `<span class='literal'>${String(arg)}</span>`
     } else if (Array.isArray(arg)) {
       textRep = "[" + arg.map(objectToText).join("<span class='comma'>, </span>") + "]"
     } else if (typeof arg === "string") {
@@ -145,7 +147,7 @@ function rewireLoggingToElement(
       const prefix = nameWithoutObject ? `${nameWithoutObject}: ` : ""
       textRep = prefix + JSON.stringify(arg, null, 2)
     } else {
-      textRep = arg as any
+      textRep = String(arg)
     }
     return textRep
   }
