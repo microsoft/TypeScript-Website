@@ -80,6 +80,15 @@ const HandbookTemplate: React.FC<Props> = (props) => {
       {post.frontmatter.beta && <div id="beta">Warning: This page is a work in progress</div>}
       <section id="doc-layout">
         <SidebarToggleButton />
+
+        <div className="page-popup" id="page-helpful-popup" style={{ opacity: 0 }}>
+          <p>Was this page helpful?</p>
+          <div>
+            <button className="first" id="like-button-popup"><LikeUnfilledSVG /></button>
+            <button id="dislike-button-popup"><DislikeUnfilledSVG /></button>
+          </div>
+        </div>
+
         <noscript>
           <style dangerouslySetInnerHTML={{
             __html: `
