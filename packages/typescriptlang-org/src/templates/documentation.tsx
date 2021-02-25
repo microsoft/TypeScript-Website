@@ -80,6 +80,15 @@ const HandbookTemplate: React.FC<Props> = (props) => {
       {post.frontmatter.beta && <div id="beta">Warning: This page is a work in progress</div>}
       <section id="doc-layout">
         <SidebarToggleButton />
+
+        <div className="page-popup" id="page-helpful-popup" style={{ opacity: 0 }}>
+          <p>Was this page helpful?</p>
+          <div>
+            <button className="first" id="like-button-popup"><LikeUnfilledSVG /></button>
+            <button id="dislike-button-popup"><DislikeUnfilledSVG /></button>
+          </div>
+        </div>
+
         <noscript>
           <style dangerouslySetInnerHTML={{
             __html: `
@@ -94,17 +103,9 @@ const HandbookTemplate: React.FC<Props> = (props) => {
           <h2>{post.frontmatter.title}</h2>
           {post.frontmatter.preamble && <div className="preamble" dangerouslySetInnerHTML={{ __html: post.frontmatter.preamble }} />}
           <article>
-            <div className="whitespace raised" style={{paddingBottom: "0"}}>
+            <div className="whitespace raised">
               <div className="markdown" dangerouslySetInnerHTML={{ __html: post.html! }} />
-              <div className="docs-footer" id="like-dislike-subnav">
-                
-                <button id="like-button"><LikeUnfilledSVG /> {i("handb_like_desc")}</button>
-                <button id="dislike-button"><DislikeUnfilledSVG /> {i("handb_dislike_desc")}</button>
-                <h5>{i("handb_like_dislike_title")}</h5>
-              </div>
             </div>
-
-
             {showSidebar &&
               <aside className="handbook-toc">
                 <nav>
@@ -120,6 +121,14 @@ const HandbookTemplate: React.FC<Props> = (props) => {
                     </ul>
                   </>
                   }
+                  <div id="like-dislike-subnav">
+                    <h5>{i("handb_like_dislike_title")}</h5>
+                    <div>
+                      <button id="like-button"><LikeUnfilledSVG /> {i("handb_like_desc")}</button>
+                      <button id="dislike-button"><DislikeUnfilledSVG /> {i("handb_dislike_desc")}</button>
+                    </div>
+                  </div>
+
                 </nav>
               </aside>
             }

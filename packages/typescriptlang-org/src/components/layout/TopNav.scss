@@ -155,7 +155,12 @@ form.search {
   }
 }
 
-#language-recommendation {
+#like-dislike-subnav,
+.page-popup {
+  transition: opacity 0.2s linear;
+}
+
+.page-popup {
   z-index: 2;
   position: fixed;
   right: 20px;
@@ -188,10 +193,13 @@ form.search {
         background-color: #104261;
       }
 
-      &#language-recommendation-open {
+      &.first {
         border-right: white 1px solid;
       }
     }
+  }
+  svg {
+    fill: white;
   }
 }
 
