@@ -53,7 +53,7 @@ There are three main things to consider when writing module-based code in TypeSc
 - **Module Resolution**: What is the relationship between module names (or paths) and files on disk?
 - **Module Output Target**: What should the should my emitted JavaScript module look like?
 
-#### ES Module Syntax
+### ES Module Syntax
 
 A file can declare a main export via `export default`:
 
@@ -108,7 +108,7 @@ export function absolute(num: number) {
 import { pi, phi, absolute } from "./maths.js";
 
 console.log(pi);
-const positivePhi = absolute(phi);
+const absPhi = absolute(phi);
 //    ^?
 ```
 
@@ -217,9 +217,19 @@ const name = createCatName();
 
 This syntax allows a non-TypeScript transpiler like Babel, swc or esbuild to know what imports can be safely removed.
 
-#### ES Module Syntax with CommonJS
+#### ES Module Syntax with CommonJS Behavior
 
-When working in Node.js, most libraries are CommonJS.
+TypeScript has ES Module syntax which _directly_ correlates to a CommonJS and AMD `require`. Imports using ES Module are _for most cases_ the same as the `require` from those environments, but this syntax ensures you have a 1 to 1 match in your TypeScript file with the CommonJS output:
+
+```ts twoslash
+/// <reference types="node" />
+// @module: commonjs
+// ---cut---
+import fs = require("fs");
+const code = fs.readFileSync("hello.ts", "utf8");
+```
+
+You can learn more about this syntax in the modules reference page
 
 ## CommonJS Syntax
 
