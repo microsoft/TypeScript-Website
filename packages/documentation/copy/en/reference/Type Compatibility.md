@@ -46,7 +46,7 @@ interface Pet {
 let pet: Pet;
 // y's inferred type is { name: string; owner: string; }
 let dog = { name: "Lassie", owner: "Rudd Weatherwax" };
-pet = deg;
+pet = dog;
 ```
 
 To check whether `dog` can be assigned to `pet`, the compiler checks each property of `pet` to find a corresponding compatible property in `dog`.
