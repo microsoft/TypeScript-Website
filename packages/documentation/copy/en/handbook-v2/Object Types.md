@@ -470,7 +470,7 @@ Instead, we can make a _generic_ `Box` type which declares a _type parameter_.
 
 ```ts twoslash
 interface Box<Type> {
-  contents: T;
+  contents: Type;
 }
 ```
 

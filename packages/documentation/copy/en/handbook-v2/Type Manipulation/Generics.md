@@ -100,7 +100,7 @@ We might be tempted to write this:
 
 ```ts twoslash
 // @errors: 2339
-function loggingIdentity<Type>(arg: Type): T {
+function loggingIdentity<Type>(arg: Type): Type {
   console.log(arg.length);
   return arg;
 }
