@@ -792,9 +792,9 @@ Classes, much like interfaces, can be generic.
 When a generic class is instantiated with `new`, its type parameters are inferred the same way as in a function call:
 
 ```ts twoslash
-class Box<T> {
-  contents: T;
-  constructor(value: T) {
+class Box<Type> {
+  contents: Type;
+  constructor(value: Type) {
     this.contents = value;
   }
 }
@@ -811,8 +811,8 @@ This code isn't legal, and it may not be obvious why:
 
 ```ts twoslash
 // @errors: 2302
-class Box<T> {
-  static defaultValue: T;
+class Box<Type> {
+  static defaultValue: Type;
 }
 ```
 
@@ -1026,9 +1026,9 @@ Class expressions are very similar to class declarations.
 The only real difference is that class expressions don't need a name, though we can refer to them via whatever identifier they ended up bound to:
 
 ```ts twoslash
-const someClass = class<T> {
-  content: T;
-  constructor(value: T) {
+const someClass = class<Type> {
+  content: Type;
+  constructor(value: Type) {
     this.content = value;
   }
 };

@@ -223,7 +223,7 @@ TypeScript can usually infer the intended type arguments in a generic call, but 
 For example, let's say you wrote a function to combine two arrays:
 
 ```ts twoslash
-function combine<T>(arr1: T[], arr2: T[]): T[] {
+function combine<Type>(arr1: Type[], arr2: Type[]): Type[] {
   return arr1.concat(arr2);
 }
 ```
