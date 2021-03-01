@@ -44,7 +44,7 @@ interface Pet {
 }
 
 let pet: Pet;
-// y's inferred type is { name: string; owner: string; }
+// dog's inferred type is { name: string; owner: string; }
 let dog = { name: "Lassie", owner: "Rudd Weatherwax" };
 pet = dog;
 ```
@@ -67,7 +67,7 @@ function greet(pet: Pet) {
 greet(dog); // OK
 ```
 
-Note that `y` has an extra `owner` property, but this does not create an error.
+Note that `dog` has an extra `owner` property, but this does not create an error.
 Only members of the target type (`Pet` in this case) are considered when checking for compatibility.
 
 This comparison process proceeds recursively, exploring the type of each member and sub-member.
