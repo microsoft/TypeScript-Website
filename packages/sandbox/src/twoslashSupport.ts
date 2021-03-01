@@ -109,14 +109,14 @@ export const twoslashCompletions = (ts: TS, monaco: typeof import("monaco-editor
   }
 
   const word = words[1]
-  if (!word.startsWith("-")) {
+  if (word.startsWith("-")) {
     return {
       suggestions: [
         {
           label: "---cut---",
           kind: 14,
           detail: "Twoslash split output",
-          insertText: "---cut---",
+          insertText: "---cut---".replace(word, ""),
         } as any,
       ],
     }

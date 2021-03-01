@@ -199,7 +199,7 @@
 
           span.compiler-flag-blurb {
             display: block;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--body-font);
             font-weight: 400;
           }
         }
@@ -413,7 +413,7 @@ main #editor-toolbar {
       flex-wrap: wrap;
 
       button {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-family: var(--body-font);
         cursor: pointer;
         margin: 5px 2px;
         margin-top: 14px;

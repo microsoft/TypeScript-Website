@@ -98,10 +98,10 @@ export const LanguageRecommendations = (props: Props) => {
   }, [])
 
   return (
-    <div id="language-recommendation" style={{ display: "none" }}>
+    <div className="page-popup" id="language-recommendation" style={{ display: "none" }}>
       <p id="language-recommendation-p">MSG</p>
       <div>
-        <button id="language-recommendation-open"></button>
+        <button className="first" id="language-recommendation-open"></button>
         <button id="language-recommendation-no-more"></button>
       </div>
     </div>

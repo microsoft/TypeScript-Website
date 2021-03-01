@@ -77,6 +77,13 @@
       }
       display: flex;
       flex-direction: row;
+      @media (max-width: $screen-sm) {
+        flex-direction: column;
+        margin-bottom: 1rem;
+        label {
+          margin-left: 8px;
+        }
+      }
       label {
         display: flex;
         flex-direction: row;

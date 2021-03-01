@@ -34,7 +34,6 @@ const todo2 = updateTodo(todo1, {
 });
 ```
 
-
 ## `Required<Type>`
 
 Constructs a type consisting of all properties of `Type` set to required. The opposite of [`Partial`](#partialtype).
@@ -52,7 +51,6 @@ const obj: Props = { a: 5 };
 
 const obj2: Required<Props> = { a: 5 };
 ```
-
 
 ## `Readonly<Type>`
 
@@ -98,7 +96,7 @@ type CatName = "miffy" | "boris" | "mordred";
 const cats: Record<CatName, CatInfo> = {
   miffy: { age: 10, breed: "Persian" },
   boris: { age: 5, breed: "Maine Coon" },
-  mordred: { age: 16, breed: "British Shorthair" }
+  mordred: { age: 16, breed: "British Shorthair" },
 };
 
 cats.boris;
@@ -371,5 +369,13 @@ In the example above, the `methods` object in the argument to `makeObject` has a
 The `ThisType<T>` marker interface is simply an empty interface declared in `lib.d.ts`. Beyond being recognized in the contextual type of an object literal, the interface acts like any empty interface.
 
 ## Intrinsic String Manipulation Types
+
+### `Uppercase<StringType>`
+
+### `Lowercase<StringType>`
+
+### `Capitalize<StringType>`
+
+### `Uncapitalize<StringType>`
 
 To help with string manipulation around template string literals, TypeScript includes a set of types which can be used in string manipulation within the type system. You can find those in the [Template Literal Types](/docs/handbook/2/template-literal-types.html#uppercasestringtype) documentation.

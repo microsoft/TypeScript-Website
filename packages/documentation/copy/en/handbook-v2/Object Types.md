@@ -469,29 +469,29 @@ This is frustrating, since our box types and overloads are all effectively the s
 Instead, we can make a _generic_ `Box` type which declares a _type parameter_.
 
 ```ts twoslash
-interface Box<T> {
-  contents: T;
+interface Box<Type> {
+  contents: Type;
 }
 ```
 
-You might read this as “A `Box` of `T` is something whose `contents` have type `T`”.
-Later on, when we refer to `Box`, we have to give a _type argument_ in place of `T`.
+You might read this as “A `Box` of `Type` is something whose `contents` have type `Type`”.
+Later on, when we refer to `Box`, we have to give a _type argument_ in place of `Type`.
 
 ```ts twoslash
-interface Box<T> {
-  contents: T;
+interface Box<Type> {
+  contents: Type;
 }
 // ---cut---
 let box: Box<string>;
 ```
 
-Think of `Box` as a template for a real type, where `T` is a placeholder that will get replaced with some other type.
-When TypeScript sees `Box<string>`, it will replace every instance of `T` in `Box<T>` with `string`, and end up working with something like `{ contents: string }`.
+Think of `Box` as a template for a real type, where `Type` is a placeholder that will get replaced with some other type.
+When TypeScript sees `Box<string>`, it will replace every instance of `Type` in `Box<Type>` with `string`, and end up working with something like `{ contents: string }`.
 In other words, `Box<string>` and our earlier `StringBox` work identically.
 
 ```ts twoslash
-interface Box<T> {
-  contents: T;
+interface Box<Type> {
+  contents: Type;
 }
 interface StringBox {
   contents: string;
@@ -506,11 +506,11 @@ boxB.contents;
 //   ^?
 ```
 
-`Box` is reusable in that `T` can be substituted with anything. That means that when we need a box for a new type, we don't need to declare a new `Box` type at all (though we certainly could if we wanted to).
+`Box` is reusable in that `Type` can be substituted with anything. That means that when we need a box for a new type, we don't need to declare a new `Box` type at all (though we certainly could if we wanted to).
 
 ```ts twoslash
-interface Box<T> {
-  contents: T;
+interface Box<Type> {
+  contents: Type;
 }
 
 interface Apple {
@@ -524,29 +524,29 @@ type AppleBox = Box<Apple>;
 This also means that we can avoid overloads entirely by instead using [generic functions](./More-on-Functions.md#Generic-Functions).
 
 ```ts twoslash
-interface Box<T> {
-  contents: T;
+interface Box<Type> {
+  contents: Type;
 }
 
 // ---cut---
-function setContents<T>(box: Box<T>, newContents: T) {
+function setContents<Type>(box: Box<Type>, newContents: Type) {
   box.contents = newContents;
 }
 ```
 
-It is worth noting that type aliases can also be generic. We could have defined our new `Box<T>` interface, which was:
+It is worth noting that type aliases can also be generic. We could have defined our new `Box<Type>` interface, which was:
 
 ```ts twoslash
-interface Box<T> {
-  contents: T;
+interface Box<Type> {
+  contents: Type;
 }
 ```
 
 by using a type alias instead:
 
 ```ts twoslash
-type Box<T> = {
-  contents: T;
+type Box<Type> = {
+  contents: Type;
 };
 ```
 
@@ -554,11 +554,11 @@ Since type aliases, unlike interfaces, can describe more than just object types,
 
 ```ts twoslash
 // @errors: 2575
-type OrNull<T> = T | null;
+type OrNull<Type> = Type | null;
 
-type OneOrMany<T> = T | T[];
+type OneOrMany<Type> = Type | Type[];
 
-type OneOrManyOrNull<T> = OrNull<OneOrMany<T>>;
+type OneOrManyOrNull<Type> = OrNull<OneOrMany<Type>>;
 //   ^?
 
 type OneOrManyOrNullStrings = OneOrManyOrNull<string>;
@@ -596,7 +596,7 @@ interface String {}
 interface Boolean {}
 interface Symbol {}
 // ---cut---
-interface Array<T> {
+interface Array<Type> {
   /**
    * Gets or sets the length of the array.
    */
@@ -605,12 +605,12 @@ interface Array<T> {
   /**
    * Removes the last element from an array and returns it.
    */
-  pop(): T | undefined;
+  pop(): Type | undefined;
 
   /**
    * Appends new elements to an array, and returns the new length of the array.
    */
-  push(...items: T[]): number;
+  push(...items: Type[]): number;
 
   // ...
 }

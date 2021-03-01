@@ -179,7 +179,7 @@ export const createTypeScriptSandbox = (
     const langs = ["javascript", "typescript"]
     langs.forEach(l =>
       monaco.languages.registerCompletionItemProvider(l, {
-        triggerCharacters: ["@", "/"],
+        triggerCharacters: ["@", "/", "-"],
         provideCompletionItems: twoslashCompletions(ts, monaco),
       })
     )

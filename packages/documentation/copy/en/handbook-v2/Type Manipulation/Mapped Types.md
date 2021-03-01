@@ -142,5 +142,6 @@ type DBFields = {
   name: { type: string; pii: true };
 };
 
-type ObjectsNeedingGDPRDeletion = CreateMutable<DBFields>;
+type ObjectsNeedingGDPRDeletion = ExtractPII<DBFields>;
+//   ^?
 ```
