@@ -32,7 +32,7 @@ Given a simplified _index.html_ file:
       </body>
     </html>
 
-Lets explore a TypeScript script that adds a `<p>Hello, World</p>` element to the `#app` element.
+Lets explore a TypeScript script that adds a `<p>Hello, World!</p>` element to the `#app` element.
 
 ```ts
 // 1. Select the div element using the id property
