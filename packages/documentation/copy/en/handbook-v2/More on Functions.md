@@ -378,7 +378,7 @@ function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
 }
 ```
 
-What people usually _intend_ when writing `index?` as an optional parameter is that they want both of these calls to be legal:
+What people usually intend when writing `index?` as an optional parameter is that they want both of these calls to be legal:
 
 ```ts twoslash
 // @errors: 2532
@@ -538,6 +538,58 @@ Callers can invoke this with either sort of value, and as an added bonus, we don
 
 > Always prefer parameters with union types instead of overloads when possible
 
+### Declaring `this` in a Function
+
+TypeScript will infer what the `this` function should be in a function via code flow analysis, for example in the following:
+
+```ts twoslash
+const user = {
+  id: 123,
+
+  admin: false,
+  becomeAdmin: function () {
+    this.admin = true;
+  },
+};
+```
+
+TypeScript understands that the function `user.becomeAdmin` has a corresponding `this` which is the outer object `user`. `this`, _heh_, can be enough for a lot of cases, but there are a lot of cases where you need more control over what object `this` represents. The JavaScript specification states that you cannot have a parameter called `this`, and so TypeScript uses that syntax space to let you declare the type for `this` in the function body.
+
+```ts twoslash
+interface User {
+  id: number;
+  isAdmin: boolean;
+}
+declare const getDB: () => DB;
+// ---cut---
+interface DB {
+  filterUsers(filter: (this: User) => boolean): User[];
+}
+
+const db = getDB();
+const admins = db.filterUsers(function () {
+  return this.isAdmin;
+});
+```
+
+This pattern is common with callback-style APIs, where another object typically controls when your function is called. Note that you need to use `function` and not arrow functions to get this behavior:
+
+```ts twoslash
+// @errors: 7041 7017
+interface User {
+  id: number;
+  isAdmin: boolean;
+}
+declare const getDB: () => DB;
+interface DB {
+  filterUsers(filter: (this: User) => boolean): User[];
+}
+
+// ---cut---
+const db = getDB();
+const admins = db.filterUsers(() => this.isAdmin);
+```
+
 ## Other Types to Know About
 
 There are some additional types you'll want to recognize that appear often when working with function types.
@@ -681,7 +733,7 @@ This can lead to some surprising behavior:
 ```ts twoslash
 // @errors: 2556
 // Inferred type is number[] -- "an array with zero or more numbers",
-// not specfically two numbers
+// not specifically two numbers
 const args = [8, 5];
 const angle = Math.atan2(...args);
 ```
@@ -694,6 +746,8 @@ const args = [8, 5] as const;
 // OK
 const angle = Math.atan2(...args);
 ```
+
+Using rest arguments may require turning on [`downlevelIteration`](/tsconfig/#downlevelIteration) when targeting older runtimes.
 
 <!-- TODO link to downlevel iteration -->
 

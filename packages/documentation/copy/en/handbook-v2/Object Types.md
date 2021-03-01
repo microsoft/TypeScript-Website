@@ -873,7 +873,7 @@ distanceFromOrigin(point);
 Here, `distanceFromOrigin` never modifies its elements, but expects a mutable tuple.
 Since `point`'s type was inferred as `readonly [3, 4]`, it won't be compatible with `[number, number]` since that type can't guarantee `point`'s elements won't be mutated.
 
-## Other Kinds of Object Members
+<!-- ## Other Kinds of Object Members
 
 Most of the declarations in object types:
 
@@ -883,4 +883,4 @@ Most of the declarations in object types:
 
 ### Construct Signatures
 
-### Index Signatures
+### Index Signatures -->

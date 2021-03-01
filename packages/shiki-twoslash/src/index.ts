@@ -60,6 +60,8 @@ export const renderCodeToHTML = (
 
   // Shiki does know the lang, so tokenize
   const renderHighlighter = highlighter || storedHighlighter
+  const metaInfo = info && typeof info === "string" ? info : info.join(" ")
+  const codefenceMeta = parseCodeFenceInfo(lang, metaInfo || "")
 
   let tokens: IThemedToken[][]
   try {
@@ -67,23 +69,21 @@ export const renderCodeToHTML = (
     tokens = renderHighlighter.codeToThemedTokens(code, lang as any)
   } catch (error) {
     // Shiki doesn't know this lang
-    return plainTextRenderer(code, shikiOptions || {})
+    return plainTextRenderer(code, shikiOptions || {}, codefenceMeta.meta)
   }
 
   // Twoslash specific renderer
   if (info.includes("twoslash") && twoslash) {
-    const metaInfo = info && typeof info === "string" ? info : info.join(" ")
-    const codefenceMeta = parseCodeFenceInfo(lang, metaInfo || "")
     return twoslashRenderer(tokens, shikiOptions || {}, twoslash, codefenceMeta.meta)
   }
 
   // TSConfig renderer
   if (lang && lang.startsWith("json") && info.includes("tsconfig")) {
-    return tsconfigJSONRenderer(tokens, shikiOptions || {})
+    return tsconfigJSONRenderer(tokens, shikiOptions || {}, codefenceMeta.meta)
   }
 
   // Otherwise just the normal shiki renderer
-  return defaultShikiRenderer(tokens, { langId: lang })
+  return defaultShikiRenderer(tokens, { langId: lang }, codefenceMeta.meta)
 }
 
 /**

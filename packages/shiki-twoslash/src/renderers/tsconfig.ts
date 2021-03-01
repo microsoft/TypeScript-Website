@@ -23,13 +23,14 @@ const isKeyInTSConfig = (token: IThemedToken) => {
  * @param lines the result of shiki highlighting
  * @param options shiki display options
  */
-export function tsconfigJSONRenderer(lines: Lines, options: HtmlRendererOptions) {
+export function tsconfigJSONRenderer(lines: Lines, options: HtmlRendererOptions, codefenceMeta: any) {
   let html = ""
 
   const bg = options.bg || "#fff"
   const fg = options.fg || "black"
+  const classes = codefenceMeta.class || ""
 
-  html += `<pre class="shiki tsconfig lsp" style="background-color: ${bg}; color: ${fg}">`
+  html += `<pre class="shiki tsconfig lsp ${classes}" style="background-color: ${bg}; color: ${fg}">`
   if (options.langId) {
     html += `<div class="language-id">${options.langId}</div>`
   }

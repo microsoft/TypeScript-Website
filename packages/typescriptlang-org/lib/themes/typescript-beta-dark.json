@@ -176,6 +176,10 @@
       "name": "this.self",
       "scope": "variable.language",
       "settings": { "foreground": "#569cd6" }
+    },
+    {
+      "scope": ["entity.name.type.alias.ts", "entity.name.type.ts"],
+      "settings": { "foreground": "#800000" }
     }
   ]
 }
