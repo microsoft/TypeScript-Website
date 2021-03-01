@@ -265,9 +265,6 @@ define(["fs"], function (fs) {});
 
 ## Unused and Type-Only Imports
 
-TypeScript uses the same syntax for importing types and namespaces as it does for values.
-TODO finish
-
 ## Module Syntax in TypeScript
 
 TypeScript allows you to write module-based code in a syntax that can be transpiled to the module format of your choice.
