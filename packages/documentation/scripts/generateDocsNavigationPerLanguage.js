@@ -56,7 +56,7 @@ const handbookPages = [
     ],
   },
   {
-    title: "Handbook Reference",
+    title: "Reference",
     summary: "Deep dive reference materials.",
     items: [
       { file: "reference/Advanced Types.md" },
