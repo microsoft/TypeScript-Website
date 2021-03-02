@@ -838,7 +838,7 @@ function foo(a: number, b: number, ...args: number[]) {
 
 ### `readonly` Tuple Types
 
-One final note about tuple types - tuples types have `readonly` variants, and can be specified by sticking a `readonly` modifier in front of them - just like with array shorthands.
+One final note about tuple types - tuples types have `readonly` variants, and can be specified by sticking a `readonly` modifier in front of them - just like with array shorthand syntax.
 
 ```ts twoslash
 function doSomething(pair: readonly [string, number]) {
