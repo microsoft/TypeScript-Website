@@ -54,7 +54,7 @@ There are two additional modifiers which can be applied during mapping: `readonl
 You can remove or add these modifiers by prefixing with `-` or `+`. If you don't add a prefix, then `+` is assumed.
 
 ```ts twoslash
-// Removes 'readonly' attributes from a type's propertie
+// Removes 'readonly' attributes from a type's properties
 type CreateMutable<Type> = {
   -readonly [Property in keyof Type]: Type[Property];
 };
