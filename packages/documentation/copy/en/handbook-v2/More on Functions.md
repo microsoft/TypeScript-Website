@@ -540,7 +540,7 @@ Callers can invoke this with either sort of value, and as an added bonus, we don
 
 ### Declaring `this` in a Function
 
-TypeScript will infer what the `this` function should be in a function via code flow analysis, for example in the following:
+TypeScript will infer what the `this` should be in a function via code flow analysis, for example in the following:
 
 ```ts twoslash
 const user = {
