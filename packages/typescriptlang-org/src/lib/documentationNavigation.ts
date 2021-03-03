@@ -7,12 +7,12 @@
 */
 
 export interface SidebarNavItem {
-  title: string
-  id: string
-  permalink?: string
-  chronological?: boolean
-  oneline?: string
-  items?: SidebarNavItem[]
+  title: string;
+  id: string;
+  permalink?: string;
+  chronological?: boolean;
+  oneline?: string;
+  items?: SidebarNavItem[];
 }
 
 /** ---INSERT--- */
@@ -20,9 +20,9 @@ export interface SidebarNavItem {
 export function getDocumentationNavForLanguage(
   langRequest: string
 ): SidebarNavItem[] {
-  const langs = ["en", "id", "ja", "ko", "pl", "pt", "vo", "zh"]
-  const lang = langs.includes(langRequest) ? langRequest : "en"
-  const navigations: Record<string, SidebarNavItem[]> = {}
+  const langs = ["en", "id", "ja", "ko", "pl", "pt", "vo", "zh"];
+  const lang = langs.includes(langRequest) ? langRequest : "en";
+  const navigations: Record<string, SidebarNavItem[]> = {};
 
   navigations.en = [
     {
@@ -69,71 +69,119 @@ export function getDocumentationNavForLanguage(
     },
     {
       title: "Handbook",
-      oneline: "A good first read for your daily TS work.",
+      oneline: "A great first read for your daily TS work.",
       id: "handbook",
       chronological: true,
 
       items: [
         {
-          title: "The TypeScript Handbook",
-          id: "1the-typescript-handbook",
-          permalink: "/docs/handbook/intro.html",
-          oneline: "Your first step to learn TypeScript",
-        },
-        {
-          title: "Basic Types",
-          id: "1basic-types",
-          permalink: "/docs/handbook/basic-types.html",
+          title: "The Basics",
+          id: "1the-basics",
+          permalink: "/docs/handbook/2/basic-types.html",
           oneline: "Step one in learning TypeScript: The basic types.",
         },
         {
-          title: "Interfaces",
-          id: "1interfaces",
-          permalink: "/docs/handbook/interfaces.html",
-          oneline: "How to write an interface with TypeScript",
+          title: "Everyday Types",
+          id: "1everyday-types",
+          permalink: "/docs/handbook/2/everyday-types.html",
+          oneline: "The language primitives.",
         },
         {
-          title: "Functions",
-          id: "1functions",
-          permalink: "/docs/handbook/functions.html",
-          oneline: "How to add types to a function",
+          title: "Narrowing",
+          id: "1narrowing",
+          permalink: "/docs/handbook/2/narrowing.html",
+          oneline:
+            "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects.",
         },
         {
-          title: "Literal Types",
-          id: "1literal-types",
-          permalink: "/docs/handbook/literal-types.html",
-          oneline: "Using literal types with TypeScript",
+          title: "More on Functions",
+          id: "1more-on-functions",
+          permalink: "/docs/handbook/2/functions.html",
+          oneline: "Learn about how Functions work in TypeScript.",
         },
         {
-          title: "Unions and Intersection Types",
-          id: "1unions-and-intersection-types",
-          permalink: "/docs/handbook/unions-and-intersections.html",
-          oneline: "How to use unions and intersection types in TypeScript",
+          title: "Object Types",
+          id: "1object-types",
+          permalink: "/docs/handbook/2/objects.html",
+          oneline: "How TypeScript describes the shapes of JavaScript objects.",
+        },
+        {
+          title: "Type Manipulation",
+          id: "1type-manipulation",
+          oneline: "undefined",
+
+          items: [
+            {
+              title: "Creating Types from Types",
+              id: "1creating-types-from-types",
+              permalink: "/docs/handbook/2/types-from-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Generics",
+              id: "1generics",
+              permalink: "/docs/handbook/2/generics.html",
+              oneline: "Types which take parameters",
+            },
+            {
+              title: "Keyof Type Operator",
+              id: "1keyof-type-operator",
+              permalink: "/docs/handbook/2/keyof-types.html",
+              oneline: "Using the keyof operator in type contexts.",
+            },
+            {
+              title: "Typeof Type Operator",
+              id: "1typeof-type-operator",
+              permalink: "/docs/handbook/2/typeof-types.html",
+              oneline: "Using the typeof operator in type contexts.",
+            },
+            {
+              title: "Indexed Access Types",
+              id: "1indexed-access-types",
+              permalink: "/docs/handbook/2/indexed-access-types.html",
+              oneline: "Using Type['a'] syntax to access a subset of a type.",
+            },
+            {
+              title: "Conditional Types",
+              id: "1conditional-types",
+              permalink: "/docs/handbook/2/conditional-types.html",
+              oneline:
+                "Create types which act like if statements in the type system.",
+            },
+            {
+              title: "Mapped Types",
+              id: "1mapped-types",
+              permalink: "/docs/handbook/2/mapped-types.html",
+              oneline: "Generating types by re-using an existing type.",
+            },
+            {
+              title: "Template Literal Types",
+              id: "1template-literal-types",
+              permalink: "/docs/handbook/2/template-literal-types.html",
+              oneline:
+                "Generating mapping types which change properties via template literal strings.",
+            },
+          ],
         },
         {
           title: "Classes",
           id: "1classes",
-          permalink: "/docs/handbook/classes.html",
+          permalink: "/docs/handbook/2/classes.html",
           oneline: "How classes work in TypeScript",
         },
         {
-          title: "Enums",
-          id: "1enums",
-          permalink: "/docs/handbook/enums.html",
-          oneline: "How TypeScript enums work",
-        },
-        {
-          title: "Generics",
-          id: "1generics",
-          permalink: "/docs/handbook/generics.html",
-          oneline: "Introduction to TypeScript and Generics",
+          title: "Modules",
+          id: "1modules",
+          permalink: "/docs/handbook/2/modules.html",
+          oneline:
+            "How JavaScript handles communicating across file boundaries.",
         },
       ],
     },
     {
-      title: "Handbook Reference",
+      title: "Reference",
       oneline: "Deep dive reference materials.",
-      id: "handbook-reference",
+      id: "reference",
       chronological: false,
 
       items: [
@@ -288,6 +336,12 @@ export function getDocumentationNavForLanguage(
           id: "4overview",
           permalink: "/docs/handbook/release-notes/overview.html",
           oneline: "All TypeScript release notes",
+        },
+        {
+          title: "TypeScript 4.2",
+          id: "4typescript-4.2",
+          permalink: "/docs/handbook/release-notes/typescript-4-2.html",
+          oneline: "TypeScript 4.2 Release Notes",
         },
         {
           title: "TypeScript 4.1",
@@ -767,11 +821,12 @@ export function getDocumentationNavForLanguage(
           title: "Modules",
           id: "8modules",
           permalink: "/docs/handbook/2/modules.html",
-          oneline: "Learn how TypeScript handles different module styles.",
+          oneline:
+            "How JavaScript handles communicating across file boundaries.",
         },
       ],
     },
-  ]
+  ];
   navigations.id = [
     {
       title: "Get Started",
@@ -817,71 +872,119 @@ export function getDocumentationNavForLanguage(
     },
     {
       title: "Handbook",
-      oneline: "A good first read for your daily TS work.",
+      oneline: "A great first read for your daily TS work.",
       id: "handbook",
       chronological: true,
 
       items: [
         {
-          title: "The TypeScript Handbook",
-          id: "1the-typescript-handbook",
-          permalink: "/docs/handbook/intro.html",
-          oneline: "Your first step to learn TypeScript",
-        },
-        {
-          title: "Basic Types",
-          id: "1basic-types",
-          permalink: "/docs/handbook/basic-types.html",
+          title: "The Basics",
+          id: "1the-basics",
+          permalink: "/docs/handbook/2/basic-types.html",
           oneline: "Step one in learning TypeScript: The basic types.",
         },
         {
-          title: "Interfaces",
-          id: "1interfaces",
-          permalink: "/docs/handbook/interfaces.html",
-          oneline: "How to write an interface with TypeScript",
+          title: "Everyday Types",
+          id: "1everyday-types",
+          permalink: "/docs/handbook/2/everyday-types.html",
+          oneline: "The language primitives.",
         },
         {
-          title: "Functions",
-          id: "1functions",
-          permalink: "/docs/handbook/functions.html",
-          oneline: "How to add types to a function",
+          title: "Narrowing",
+          id: "1narrowing",
+          permalink: "/docs/handbook/2/narrowing.html",
+          oneline:
+            "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects.",
         },
         {
-          title: "Literal Types",
-          id: "1literal-types",
-          permalink: "/docs/handbook/literal-types.html",
-          oneline: "Using literal types with TypeScript",
+          title: "More on Functions",
+          id: "1more-on-functions",
+          permalink: "/docs/handbook/2/functions.html",
+          oneline: "Learn about how Functions work in TypeScript.",
         },
         {
-          title: "Unions and Intersection Types",
-          id: "1unions-and-intersection-types",
-          permalink: "/docs/handbook/unions-and-intersections.html",
-          oneline: "How to use unions and intersection types in TypeScript",
+          title: "Object Types",
+          id: "1object-types",
+          permalink: "/docs/handbook/2/objects.html",
+          oneline: "How TypeScript describes the shapes of JavaScript objects.",
+        },
+        {
+          title: "Type Manipulation",
+          id: "1type-manipulation",
+          oneline: "undefined",
+
+          items: [
+            {
+              title: "Creating Types from Types",
+              id: "1creating-types-from-types",
+              permalink: "/docs/handbook/2/types-from-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Generics",
+              id: "1generics",
+              permalink: "/docs/handbook/2/generics.html",
+              oneline: "Types which take parameters",
+            },
+            {
+              title: "Keyof Type Operator",
+              id: "1keyof-type-operator",
+              permalink: "/docs/handbook/2/keyof-types.html",
+              oneline: "Using the keyof operator in type contexts.",
+            },
+            {
+              title: "Typeof Type Operator",
+              id: "1typeof-type-operator",
+              permalink: "/docs/handbook/2/typeof-types.html",
+              oneline: "Using the typeof operator in type contexts.",
+            },
+            {
+              title: "Indexed Access Types",
+              id: "1indexed-access-types",
+              permalink: "/docs/handbook/2/indexed-access-types.html",
+              oneline: "Using Type['a'] syntax to access a subset of a type.",
+            },
+            {
+              title: "Conditional Types",
+              id: "1conditional-types",
+              permalink: "/docs/handbook/2/conditional-types.html",
+              oneline:
+                "Create types which act like if statements in the type system.",
+            },
+            {
+              title: "Mapped Types",
+              id: "1mapped-types",
+              permalink: "/docs/handbook/2/mapped-types.html",
+              oneline: "Generating types by re-using an existing type.",
+            },
+            {
+              title: "Template Literal Types",
+              id: "1template-literal-types",
+              permalink: "/docs/handbook/2/template-literal-types.html",
+              oneline:
+                "Generating mapping types which change properties via template literal strings.",
+            },
+          ],
         },
         {
           title: "Classes",
           id: "1classes",
-          permalink: "/docs/handbook/classes.html",
+          permalink: "/docs/handbook/2/classes.html",
           oneline: "How classes work in TypeScript",
         },
         {
-          title: "Enums",
-          id: "1enums",
-          permalink: "/docs/handbook/enums.html",
-          oneline: "How TypeScript enums work",
-        },
-        {
-          title: "Generics",
-          id: "1generics",
-          permalink: "/docs/handbook/generics.html",
-          oneline: "Introduction to TypeScript and Generics",
+          title: "Modules",
+          id: "1modules",
+          permalink: "/docs/handbook/2/modules.html",
+          oneline:
+            "How JavaScript handles communicating across file boundaries.",
         },
       ],
     },
     {
-      title: "Handbook Reference",
+      title: "Reference",
       oneline: "Deep dive reference materials.",
-      id: "handbook-reference",
+      id: "reference",
       chronological: false,
 
       items: [
@@ -1036,6 +1139,12 @@ export function getDocumentationNavForLanguage(
           id: "4overview",
           permalink: "/docs/handbook/release-notes/overview.html",
           oneline: "All TypeScript release notes",
+        },
+        {
+          title: "TypeScript 4.2",
+          id: "4typescript-4.2",
+          permalink: "/docs/handbook/release-notes/typescript-4-2.html",
+          oneline: "TypeScript 4.2 Release Notes",
         },
         {
           title: "TypeScript 4.1",
@@ -1515,11 +1624,12 @@ export function getDocumentationNavForLanguage(
           title: "Modules",
           id: "8modules",
           permalink: "/docs/handbook/2/modules.html",
-          oneline: "Learn how TypeScript handles different module styles.",
+          oneline:
+            "How JavaScript handles communicating across file boundaries.",
         },
       ],
     },
-  ]
+  ];
   navigations.ja = [
     {
       title: "Get Started",
@@ -1565,71 +1675,119 @@ export function getDocumentationNavForLanguage(
     },
     {
       title: "Handbook",
-      oneline: "A good first read for your daily TS work.",
+      oneline: "A great first read for your daily TS work.",
       id: "handbook",
       chronological: true,
 
       items: [
         {
-          title: "The TypeScript Handbook",
-          id: "1the-typescript-handbook",
-          permalink: "/docs/handbook/intro.html",
-          oneline: "Your first step to learn TypeScript",
-        },
-        {
-          title: "Basic Types",
-          id: "1basic-types",
-          permalink: "/docs/handbook/basic-types.html",
+          title: "The Basics",
+          id: "1the-basics",
+          permalink: "/docs/handbook/2/basic-types.html",
           oneline: "Step one in learning TypeScript: The basic types.",
         },
         {
-          title: "Interfaces",
-          id: "1interfaces",
-          permalink: "/docs/handbook/interfaces.html",
-          oneline: "How to write an interface with TypeScript",
+          title: "Everyday Types",
+          id: "1everyday-types",
+          permalink: "/docs/handbook/2/everyday-types.html",
+          oneline: "The language primitives.",
         },
         {
-          title: "Functions",
-          id: "1functions",
-          permalink: "/docs/handbook/functions.html",
-          oneline: "How to add types to a function",
+          title: "Narrowing",
+          id: "1narrowing",
+          permalink: "/docs/handbook/2/narrowing.html",
+          oneline:
+            "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects.",
         },
         {
-          title: "Literal Types",
-          id: "1literal-types",
-          permalink: "/docs/handbook/literal-types.html",
-          oneline: "Using literal types with TypeScript",
+          title: "More on Functions",
+          id: "1more-on-functions",
+          permalink: "/docs/handbook/2/functions.html",
+          oneline: "Learn about how Functions work in TypeScript.",
         },
         {
-          title: "Unions and Intersection Types",
-          id: "1unions-and-intersection-types",
-          permalink: "/docs/handbook/unions-and-intersections.html",
-          oneline: "How to use unions and intersection types in TypeScript",
+          title: "Object Types",
+          id: "1object-types",
+          permalink: "/docs/handbook/2/objects.html",
+          oneline: "How TypeScript describes the shapes of JavaScript objects.",
+        },
+        {
+          title: "Type Manipulation",
+          id: "1type-manipulation",
+          oneline: "undefined",
+
+          items: [
+            {
+              title: "Creating Types from Types",
+              id: "1creating-types-from-types",
+              permalink: "/docs/handbook/2/types-from-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Generics",
+              id: "1generics",
+              permalink: "/docs/handbook/2/generics.html",
+              oneline: "Types which take parameters",
+            },
+            {
+              title: "Keyof Type Operator",
+              id: "1keyof-type-operator",
+              permalink: "/docs/handbook/2/keyof-types.html",
+              oneline: "Using the keyof operator in type contexts.",
+            },
+            {
+              title: "Typeof Type Operator",
+              id: "1typeof-type-operator",
+              permalink: "/docs/handbook/2/typeof-types.html",
+              oneline: "Using the typeof operator in type contexts.",
+            },
+            {
+              title: "Indexed Access Types",
+              id: "1indexed-access-types",
+              permalink: "/docs/handbook/2/indexed-access-types.html",
+              oneline: "Using Type['a'] syntax to access a subset of a type.",
+            },
+            {
+              title: "Conditional Types",
+              id: "1conditional-types",
+              permalink: "/docs/handbook/2/conditional-types.html",
+              oneline:
+                "Create types which act like if statements in the type system.",
+            },
+            {
+              title: "Mapped Types",
+              id: "1mapped-types",
+              permalink: "/docs/handbook/2/mapped-types.html",
+              oneline: "Generating types by re-using an existing type.",
+            },
+            {
+              title: "Template Literal Types",
+              id: "1template-literal-types",
+              permalink: "/docs/handbook/2/template-literal-types.html",
+              oneline:
+                "Generating mapping types which change properties via template literal strings.",
+            },
+          ],
         },
         {
           title: "Classes",
           id: "1classes",
-          permalink: "/docs/handbook/classes.html",
+          permalink: "/docs/handbook/2/classes.html",
           oneline: "How classes work in TypeScript",
         },
         {
-          title: "Enums",
-          id: "1enums",
-          permalink: "/docs/handbook/enums.html",
-          oneline: "How TypeScript enums work",
-        },
-        {
-          title: "Generics",
-          id: "1generics",
-          permalink: "/docs/handbook/generics.html",
-          oneline: "Introduction to TypeScript and Generics",
+          title: "Modules",
+          id: "1modules",
+          permalink: "/docs/handbook/2/modules.html",
+          oneline:
+            "How JavaScript handles communicating across file boundaries.",
         },
       ],
     },
     {
-      title: "Handbook Reference",
+      title: "Reference",
       oneline: "Deep dive reference materials.",
-      id: "handbook-reference",
+      id: "reference",
       chronological: false,
 
       items: [
@@ -1784,6 +1942,12 @@ export function getDocumentationNavForLanguage(
           id: "4overview",
           permalink: "/docs/handbook/release-notes/overview.html",
           oneline: "All TypeScript release notes",
+        },
+        {
+          title: "TypeScript 4.2",
+          id: "4typescript-4.2",
+          permalink: "/docs/handbook/release-notes/typescript-4-2.html",
+          oneline: "TypeScript 4.2 Release Notes",
         },
         {
           title: "TypeScript 4.1",
@@ -2264,11 +2428,12 @@ export function getDocumentationNavForLanguage(
           title: "Modules",
           id: "8modules",
           permalink: "/docs/handbook/2/modules.html",
-          oneline: "Learn how TypeScript handles different module styles.",
+          oneline:
+            "How JavaScript handles communicating across file boundaries.",
         },
       ],
     },
-  ]
+  ];
   navigations.ko = [
     {
       title: "Get Started",
@@ -2314,71 +2479,119 @@ export function getDocumentationNavForLanguage(
     },
     {
       title: "Handbook",
-      oneline: "A good first read for your daily TS work.",
+      oneline: "A great first read for your daily TS work.",
       id: "handbook",
       chronological: true,
 
       items: [
         {
-          title: "The TypeScript Handbook",
-          id: "1the-typescript-handbook",
-          permalink: "/docs/handbook/intro.html",
-          oneline: "Your first step to learn TypeScript",
-        },
-        {
-          title: "Basic Types",
-          id: "1basic-types",
-          permalink: "/docs/handbook/basic-types.html",
+          title: "The Basics",
+          id: "1the-basics",
+          permalink: "/docs/handbook/2/basic-types.html",
           oneline: "Step one in learning TypeScript: The basic types.",
         },
         {
-          title: "Interfaces",
-          id: "1interfaces",
-          permalink: "/docs/handbook/interfaces.html",
-          oneline: "How to write an interface with TypeScript",
+          title: "Everyday Types",
+          id: "1everyday-types",
+          permalink: "/docs/handbook/2/everyday-types.html",
+          oneline: "The language primitives.",
         },
         {
-          title: "Functions",
-          id: "1functions",
-          permalink: "/docs/handbook/functions.html",
-          oneline: "How to add types to a function",
+          title: "Narrowing",
+          id: "1narrowing",
+          permalink: "/docs/handbook/2/narrowing.html",
+          oneline:
+            "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects.",
         },
         {
-          title: "Literal Types",
-          id: "1literal-types",
-          permalink: "/docs/handbook/literal-types.html",
-          oneline: "Using literal types with TypeScript",
+          title: "More on Functions",
+          id: "1more-on-functions",
+          permalink: "/docs/handbook/2/functions.html",
+          oneline: "Learn about how Functions work in TypeScript.",
         },
         {
-          title: "Unions and Intersection Types",
-          id: "1unions-and-intersection-types",
-          permalink: "/docs/handbook/unions-and-intersections.html",
-          oneline: "How to use unions and intersection types in TypeScript",
+          title: "Object Types",
+          id: "1object-types",
+          permalink: "/docs/handbook/2/objects.html",
+          oneline: "How TypeScript describes the shapes of JavaScript objects.",
+        },
+        {
+          title: "Type Manipulation",
+          id: "1type-manipulation",
+          oneline: "undefined",
+
+          items: [
+            {
+              title: "Creating Types from Types",
+              id: "1creating-types-from-types",
+              permalink: "/docs/handbook/2/types-from-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Generics",
+              id: "1generics",
+              permalink: "/docs/handbook/2/generics.html",
+              oneline: "Types which take parameters",
+            },
+            {
+              title: "Keyof Type Operator",
+              id: "1keyof-type-operator",
+              permalink: "/docs/handbook/2/keyof-types.html",
+              oneline: "Using the keyof operator in type contexts.",
+            },
+            {
+              title: "Typeof Type Operator",
+              id: "1typeof-type-operator",
+              permalink: "/docs/handbook/2/typeof-types.html",
+              oneline: "Using the typeof operator in type contexts.",
+            },
+            {
+              title: "Indexed Access Types",
+              id: "1indexed-access-types",
+              permalink: "/docs/handbook/2/indexed-access-types.html",
+              oneline: "Using Type['a'] syntax to access a subset of a type.",
+            },
+            {
+              title: "Conditional Types",
+              id: "1conditional-types",
+              permalink: "/docs/handbook/2/conditional-types.html",
+              oneline:
+                "Create types which act like if statements in the type system.",
+            },
+            {
+              title: "Mapped Types",
+              id: "1mapped-types",
+              permalink: "/docs/handbook/2/mapped-types.html",
+              oneline: "Generating types by re-using an existing type.",
+            },
+            {
+              title: "Template Literal Types",
+              id: "1template-literal-types",
+              permalink: "/docs/handbook/2/template-literal-types.html",
+              oneline:
+                "Generating mapping types which change properties via template literal strings.",
+            },
+          ],
         },
         {
           title: "Classes",
           id: "1classes",
-          permalink: "/docs/handbook/classes.html",
+          permalink: "/docs/handbook/2/classes.html",
           oneline: "How classes work in TypeScript",
         },
         {
-          title: "Enums",
-          id: "1enums",
-          permalink: "/docs/handbook/enums.html",
-          oneline: "How TypeScript enums work",
-        },
-        {
-          title: "Generics",
-          id: "1generics",
-          permalink: "/docs/handbook/generics.html",
-          oneline: "Introduction to TypeScript and Generics",
+          title: "Modules",
+          id: "1modules",
+          permalink: "/docs/handbook/2/modules.html",
+          oneline:
+            "How JavaScript handles communicating across file boundaries.",
         },
       ],
     },
     {
-      title: "Handbook Reference",
+      title: "Reference",
       oneline: "Deep dive reference materials.",
-      id: "handbook-reference",
+      id: "reference",
       chronological: false,
 
       items: [
@@ -2535,6 +2748,12 @@ export function getDocumentationNavForLanguage(
           oneline: "All TypeScript release notes",
         },
         {
+          title: "TypeScript 4.2",
+          id: "4typescript-4.2",
+          permalink: "/docs/handbook/release-notes/typescript-4-2.html",
+          oneline: "TypeScript 4.2 Release Notes",
+        },
+        {
           title: "TypeScript 4.1",
           id: "4typescript-4.1",
           permalink: "/docs/handbook/release-notes/typescript-4-1.html",
@@ -3012,11 +3231,12 @@ export function getDocumentationNavForLanguage(
           title: "Modules",
           id: "8modules",
           permalink: "/docs/handbook/2/modules.html",
-          oneline: "Learn how TypeScript handles different module styles.",
+          oneline:
+            "How JavaScript handles communicating across file boundaries.",
         },
       ],
     },
-  ]
+  ];
   navigations.pl = [
     {
       title: "Get Started",
@@ -3062,71 +3282,119 @@ export function getDocumentationNavForLanguage(
     },
     {
       title: "Handbook",
-      oneline: "A good first read for your daily TS work.",
+      oneline: "A great first read for your daily TS work.",
       id: "handbook",
       chronological: true,
 
       items: [
         {
-          title: "Przewodnik po TypeScript",
-          id: "1przewodnik-po-typescript",
-          permalink: "/pl/docs/handbook/intro.html",
-          oneline: "Twoje pierwsze kroki w nauce TypeScript",
-        },
-        {
-          title: "Basic Types",
-          id: "1basic-types",
-          permalink: "/docs/handbook/basic-types.html",
+          title: "The Basics",
+          id: "1the-basics",
+          permalink: "/docs/handbook/2/basic-types.html",
           oneline: "Step one in learning TypeScript: The basic types.",
         },
         {
-          title: "Interfaces",
-          id: "1interfaces",
-          permalink: "/docs/handbook/interfaces.html",
-          oneline: "How to write an interface with TypeScript",
+          title: "Everyday Types",
+          id: "1everyday-types",
+          permalink: "/docs/handbook/2/everyday-types.html",
+          oneline: "The language primitives.",
         },
         {
-          title: "Functions",
-          id: "1functions",
-          permalink: "/docs/handbook/functions.html",
-          oneline: "How to add types to a function",
+          title: "Narrowing",
+          id: "1narrowing",
+          permalink: "/docs/handbook/2/narrowing.html",
+          oneline:
+            "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects.",
         },
         {
-          title: "Literal Types",
-          id: "1literal-types",
-          permalink: "/docs/handbook/literal-types.html",
-          oneline: "Using literal types with TypeScript",
+          title: "More on Functions",
+          id: "1more-on-functions",
+          permalink: "/docs/handbook/2/functions.html",
+          oneline: "Learn about how Functions work in TypeScript.",
         },
         {
-          title: "Unions and Intersection Types",
-          id: "1unions-and-intersection-types",
-          permalink: "/docs/handbook/unions-and-intersections.html",
-          oneline: "How to use unions and intersection types in TypeScript",
+          title: "Object Types",
+          id: "1object-types",
+          permalink: "/docs/handbook/2/objects.html",
+          oneline: "How TypeScript describes the shapes of JavaScript objects.",
+        },
+        {
+          title: "Type Manipulation",
+          id: "1type-manipulation",
+          oneline: "undefined",
+
+          items: [
+            {
+              title: "Creating Types from Types",
+              id: "1creating-types-from-types",
+              permalink: "/docs/handbook/2/types-from-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Generics",
+              id: "1generics",
+              permalink: "/docs/handbook/2/generics.html",
+              oneline: "Types which take parameters",
+            },
+            {
+              title: "Keyof Type Operator",
+              id: "1keyof-type-operator",
+              permalink: "/docs/handbook/2/keyof-types.html",
+              oneline: "Using the keyof operator in type contexts.",
+            },
+            {
+              title: "Typeof Type Operator",
+              id: "1typeof-type-operator",
+              permalink: "/docs/handbook/2/typeof-types.html",
+              oneline: "Using the typeof operator in type contexts.",
+            },
+            {
+              title: "Indexed Access Types",
+              id: "1indexed-access-types",
+              permalink: "/docs/handbook/2/indexed-access-types.html",
+              oneline: "Using Type['a'] syntax to access a subset of a type.",
+            },
+            {
+              title: "Conditional Types",
+              id: "1conditional-types",
+              permalink: "/docs/handbook/2/conditional-types.html",
+              oneline:
+                "Create types which act like if statements in the type system.",
+            },
+            {
+              title: "Mapped Types",
+              id: "1mapped-types",
+              permalink: "/docs/handbook/2/mapped-types.html",
+              oneline: "Generating types by re-using an existing type.",
+            },
+            {
+              title: "Template Literal Types",
+              id: "1template-literal-types",
+              permalink: "/docs/handbook/2/template-literal-types.html",
+              oneline:
+                "Generating mapping types which change properties via template literal strings.",
+            },
+          ],
         },
         {
           title: "Classes",
           id: "1classes",
-          permalink: "/docs/handbook/classes.html",
+          permalink: "/docs/handbook/2/classes.html",
           oneline: "How classes work in TypeScript",
         },
         {
-          title: "Enums",
-          id: "1enums",
-          permalink: "/docs/handbook/enums.html",
-          oneline: "How TypeScript enums work",
-        },
-        {
-          title: "Generics",
-          id: "1generics",
-          permalink: "/docs/handbook/generics.html",
-          oneline: "Introduction to TypeScript and Generics",
+          title: "Modules",
+          id: "1modules",
+          permalink: "/docs/handbook/2/modules.html",
+          oneline:
+            "How JavaScript handles communicating across file boundaries.",
         },
       ],
     },
     {
-      title: "Handbook Reference",
+      title: "Reference",
       oneline: "Deep dive reference materials.",
-      id: "handbook-reference",
+      id: "reference",
       chronological: false,
 
       items: [
@@ -3283,6 +3551,12 @@ export function getDocumentationNavForLanguage(
           oneline: "All TypeScript release notes",
         },
         {
+          title: "TypeScript 4.2",
+          id: "4typescript-4.2",
+          permalink: "/docs/handbook/release-notes/typescript-4-2.html",
+          oneline: "TypeScript 4.2 Release Notes",
+        },
+        {
           title: "TypeScript 4.1",
           id: "4typescript-4.1",
           permalink: "/docs/handbook/release-notes/typescript-4-1.html",
@@ -3760,11 +4034,12 @@ export function getDocumentationNavForLanguage(
           title: "Modules",
           id: "8modules",
           permalink: "/docs/handbook/2/modules.html",
-          oneline: "Learn how TypeScript handles different module styles.",
+          oneline:
+            "How JavaScript handles communicating across file boundaries.",
         },
       ],
     },
-  ]
+  ];
   navigations.pt = [
     {
       title: "Get Started",
@@ -3810,71 +4085,119 @@ export function getDocumentationNavForLanguage(
     },
     {
       title: "Handbook",
-      oneline: "A good first read for your daily TS work.",
+      oneline: "A great first read for your daily TS work.",
       id: "handbook",
       chronological: true,
 
       items: [
         {
-          title: "The TypeScript Handbook",
-          id: "1the-typescript-handbook",
-          permalink: "/docs/handbook/intro.html",
-          oneline: "Your first step to learn TypeScript",
-        },
-        {
-          title: "Basic Types",
-          id: "1basic-types",
-          permalink: "/docs/handbook/basic-types.html",
+          title: "The Basics",
+          id: "1the-basics",
+          permalink: "/docs/handbook/2/basic-types.html",
           oneline: "Step one in learning TypeScript: The basic types.",
         },
         {
-          title: "Interfaces",
-          id: "1interfaces",
-          permalink: "/docs/handbook/interfaces.html",
-          oneline: "How to write an interface with TypeScript",
+          title: "Everyday Types",
+          id: "1everyday-types",
+          permalink: "/docs/handbook/2/everyday-types.html",
+          oneline: "The language primitives.",
         },
         {
-          title: "Functions",
-          id: "1functions",
-          permalink: "/docs/handbook/functions.html",
-          oneline: "How to add types to a function",
+          title: "Narrowing",
+          id: "1narrowing",
+          permalink: "/docs/handbook/2/narrowing.html",
+          oneline:
+            "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects.",
         },
         {
-          title: "Literal Types",
-          id: "1literal-types",
-          permalink: "/docs/handbook/literal-types.html",
-          oneline: "Using literal types with TypeScript",
+          title: "More on Functions",
+          id: "1more-on-functions",
+          permalink: "/docs/handbook/2/functions.html",
+          oneline: "Learn about how Functions work in TypeScript.",
         },
         {
-          title: "Unions and Intersection Types",
-          id: "1unions-and-intersection-types",
-          permalink: "/docs/handbook/unions-and-intersections.html",
-          oneline: "How to use unions and intersection types in TypeScript",
+          title: "Object Types",
+          id: "1object-types",
+          permalink: "/docs/handbook/2/objects.html",
+          oneline: "How TypeScript describes the shapes of JavaScript objects.",
+        },
+        {
+          title: "Type Manipulation",
+          id: "1type-manipulation",
+          oneline: "undefined",
+
+          items: [
+            {
+              title: "Creating Types from Types",
+              id: "1creating-types-from-types",
+              permalink: "/docs/handbook/2/types-from-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Generics",
+              id: "1generics",
+              permalink: "/docs/handbook/2/generics.html",
+              oneline: "Types which take parameters",
+            },
+            {
+              title: "Keyof Type Operator",
+              id: "1keyof-type-operator",
+              permalink: "/docs/handbook/2/keyof-types.html",
+              oneline: "Using the keyof operator in type contexts.",
+            },
+            {
+              title: "Typeof Type Operator",
+              id: "1typeof-type-operator",
+              permalink: "/docs/handbook/2/typeof-types.html",
+              oneline: "Using the typeof operator in type contexts.",
+            },
+            {
+              title: "Indexed Access Types",
+              id: "1indexed-access-types",
+              permalink: "/docs/handbook/2/indexed-access-types.html",
+              oneline: "Using Type['a'] syntax to access a subset of a type.",
+            },
+            {
+              title: "Conditional Types",
+              id: "1conditional-types",
+              permalink: "/docs/handbook/2/conditional-types.html",
+              oneline:
+                "Create types which act like if statements in the type system.",
+            },
+            {
+              title: "Mapped Types",
+              id: "1mapped-types",
+              permalink: "/docs/handbook/2/mapped-types.html",
+              oneline: "Generating types by re-using an existing type.",
+            },
+            {
+              title: "Template Literal Types",
+              id: "1template-literal-types",
+              permalink: "/docs/handbook/2/template-literal-types.html",
+              oneline:
+                "Generating mapping types which change properties via template literal strings.",
+            },
+          ],
         },
         {
           title: "Classes",
           id: "1classes",
-          permalink: "/docs/handbook/classes.html",
+          permalink: "/docs/handbook/2/classes.html",
           oneline: "How classes work in TypeScript",
         },
         {
-          title: "Enums",
-          id: "1enums",
-          permalink: "/docs/handbook/enums.html",
-          oneline: "How TypeScript enums work",
-        },
-        {
-          title: "Generics",
-          id: "1generics",
-          permalink: "/docs/handbook/generics.html",
-          oneline: "Introduction to TypeScript and Generics",
+          title: "Modules",
+          id: "1modules",
+          permalink: "/docs/handbook/2/modules.html",
+          oneline:
+            "How JavaScript handles communicating across file boundaries.",
         },
       ],
     },
     {
-      title: "Handbook Reference",
+      title: "Reference",
       oneline: "Deep dive reference materials.",
-      id: "handbook-reference",
+      id: "reference",
       chronological: false,
 
       items: [
@@ -4029,6 +4352,12 @@ export function getDocumentationNavForLanguage(
           id: "4overview",
           permalink: "/docs/handbook/release-notes/overview.html",
           oneline: "All TypeScript release notes",
+        },
+        {
+          title: "TypeScript 4.2",
+          id: "4typescript-4.2",
+          permalink: "/docs/handbook/release-notes/typescript-4-2.html",
+          oneline: "TypeScript 4.2 Release Notes",
         },
         {
           title: "TypeScript 4.1",
@@ -4508,11 +4837,12 @@ export function getDocumentationNavForLanguage(
           title: "Modules",
           id: "8modules",
           permalink: "/docs/handbook/2/modules.html",
-          oneline: "Learn how TypeScript handles different module styles.",
+          oneline:
+            "How JavaScript handles communicating across file boundaries.",
         },
       ],
     },
-  ]
+  ];
   navigations.vo = [
     {
       title: "Get Started",
@@ -4558,71 +4888,119 @@ export function getDocumentationNavForLanguage(
     },
     {
       title: "Handbook",
-      oneline: "A good first read for your daily TS work.",
+      oneline: "A great first read for your daily TS work.",
       id: "handbook",
       chronological: true,
 
       items: [
         {
-          title: "The TypeScript Handbook",
-          id: "1the-typescript-handbook",
-          permalink: "/docs/handbook/intro.html",
-          oneline: "Your first step to learn TypeScript",
+          title: "The Basics",
+          id: "1the-basics",
+          permalink: "/docs/handbook/2/basic-types.html",
+          oneline: "Step one in learning TypeScript: The basic types.",
         },
         {
-          title: "B4s1c Typ3s",
-          id: "1b4s1c-typ3s",
-          permalink: "/vo/docs/handbook/basic-types.html",
-          oneline: "5tep on3 in learning 7ype5cript: The basics types.",
+          title: "Everyday Types",
+          id: "1everyday-types",
+          permalink: "/docs/handbook/2/everyday-types.html",
+          oneline: "The language primitives.",
         },
         {
-          title: "Interfaces",
-          id: "1interfaces",
-          permalink: "/docs/handbook/interfaces.html",
-          oneline: "How to write an interface with TypeScript",
+          title: "Narrowing",
+          id: "1narrowing",
+          permalink: "/docs/handbook/2/narrowing.html",
+          oneline:
+            "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects.",
         },
         {
-          title: "Functions",
-          id: "1functions",
-          permalink: "/docs/handbook/functions.html",
-          oneline: "How to add types to a function",
+          title: "More on Functions",
+          id: "1more-on-functions",
+          permalink: "/docs/handbook/2/functions.html",
+          oneline: "Learn about how Functions work in TypeScript.",
         },
         {
-          title: "Literal Types",
-          id: "1literal-types",
-          permalink: "/docs/handbook/literal-types.html",
-          oneline: "Using literal types with TypeScript",
+          title: "Object Types",
+          id: "1object-types",
+          permalink: "/docs/handbook/2/objects.html",
+          oneline: "How TypeScript describes the shapes of JavaScript objects.",
         },
         {
-          title: "Unions and Intersection Types",
-          id: "1unions-and-intersection-types",
-          permalink: "/docs/handbook/unions-and-intersections.html",
-          oneline: "How to use unions and intersection types in TypeScript",
+          title: "Type Manipulation",
+          id: "1type-manipulation",
+          oneline: "undefined",
+
+          items: [
+            {
+              title: "Creating Types from Types",
+              id: "1creating-types-from-types",
+              permalink: "/docs/handbook/2/types-from-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Generics",
+              id: "1generics",
+              permalink: "/docs/handbook/2/generics.html",
+              oneline: "Types which take parameters",
+            },
+            {
+              title: "Keyof Type Operator",
+              id: "1keyof-type-operator",
+              permalink: "/docs/handbook/2/keyof-types.html",
+              oneline: "Using the keyof operator in type contexts.",
+            },
+            {
+              title: "Typeof Type Operator",
+              id: "1typeof-type-operator",
+              permalink: "/docs/handbook/2/typeof-types.html",
+              oneline: "Using the typeof operator in type contexts.",
+            },
+            {
+              title: "Indexed Access Types",
+              id: "1indexed-access-types",
+              permalink: "/docs/handbook/2/indexed-access-types.html",
+              oneline: "Using Type['a'] syntax to access a subset of a type.",
+            },
+            {
+              title: "Conditional Types",
+              id: "1conditional-types",
+              permalink: "/docs/handbook/2/conditional-types.html",
+              oneline:
+                "Create types which act like if statements in the type system.",
+            },
+            {
+              title: "Mapped Types",
+              id: "1mapped-types",
+              permalink: "/docs/handbook/2/mapped-types.html",
+              oneline: "Generating types by re-using an existing type.",
+            },
+            {
+              title: "Template Literal Types",
+              id: "1template-literal-types",
+              permalink: "/docs/handbook/2/template-literal-types.html",
+              oneline:
+                "Generating mapping types which change properties via template literal strings.",
+            },
+          ],
         },
         {
           title: "Classes",
           id: "1classes",
-          permalink: "/docs/handbook/classes.html",
+          permalink: "/docs/handbook/2/classes.html",
           oneline: "How classes work in TypeScript",
         },
         {
-          title: "Enums",
-          id: "1enums",
-          permalink: "/docs/handbook/enums.html",
-          oneline: "How TypeScript enums work",
-        },
-        {
-          title: "Generics",
-          id: "1generics",
-          permalink: "/docs/handbook/generics.html",
-          oneline: "Introduction to TypeScript and Generics",
+          title: "Modules",
+          id: "1modules",
+          permalink: "/docs/handbook/2/modules.html",
+          oneline:
+            "How JavaScript handles communicating across file boundaries.",
         },
       ],
     },
     {
-      title: "Handbook Reference",
+      title: "Reference",
       oneline: "Deep dive reference materials.",
-      id: "handbook-reference",
+      id: "reference",
       chronological: false,
 
       items: [
@@ -4777,6 +5155,12 @@ export function getDocumentationNavForLanguage(
           id: "4overview",
           permalink: "/docs/handbook/release-notes/overview.html",
           oneline: "All TypeScript release notes",
+        },
+        {
+          title: "TypeScript 4.2",
+          id: "4typescript-4.2",
+          permalink: "/docs/handbook/release-notes/typescript-4-2.html",
+          oneline: "TypeScript 4.2 Release Notes",
         },
         {
           title: "TypeScript 4.1",
@@ -5256,11 +5640,12 @@ export function getDocumentationNavForLanguage(
           title: "Modules",
           id: "8modules",
           permalink: "/docs/handbook/2/modules.html",
-          oneline: "Learn how TypeScript handles different module styles.",
+          oneline:
+            "How JavaScript handles communicating across file boundaries.",
         },
       ],
     },
-  ]
+  ];
   navigations.zh = [
     {
       title: "Get Started",
@@ -5306,71 +5691,119 @@ export function getDocumentationNavForLanguage(
     },
     {
       title: "Handbook",
-      oneline: "A good first read for your daily TS work.",
+      oneline: "A great first read for your daily TS work.",
       id: "handbook",
       chronological: true,
 
       items: [
         {
-          title: "The TypeScript Handbook",
-          id: "1the-typescript-handbook",
-          permalink: "/docs/handbook/intro.html",
-          oneline: "Your first step to learn TypeScript",
-        },
-        {
-          title: "Basic Types",
-          id: "1basic-types",
-          permalink: "/docs/handbook/basic-types.html",
+          title: "The Basics",
+          id: "1the-basics",
+          permalink: "/docs/handbook/2/basic-types.html",
           oneline: "Step one in learning TypeScript: The basic types.",
         },
         {
-          title: "Interfaces",
-          id: "1interfaces",
-          permalink: "/docs/handbook/interfaces.html",
-          oneline: "How to write an interface with TypeScript",
+          title: "Everyday Types",
+          id: "1everyday-types",
+          permalink: "/docs/handbook/2/everyday-types.html",
+          oneline: "The language primitives.",
         },
         {
-          title: "Functions",
-          id: "1functions",
-          permalink: "/docs/handbook/functions.html",
-          oneline: "How to add types to a function",
+          title: "Narrowing",
+          id: "1narrowing",
+          permalink: "/docs/handbook/2/narrowing.html",
+          oneline:
+            "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects.",
         },
         {
-          title: "Literal Types",
-          id: "1literal-types",
-          permalink: "/docs/handbook/literal-types.html",
-          oneline: "Using literal types with TypeScript",
+          title: "More on Functions",
+          id: "1more-on-functions",
+          permalink: "/docs/handbook/2/functions.html",
+          oneline: "Learn about how Functions work in TypeScript.",
         },
         {
-          title: "Unions and Intersection Types",
-          id: "1unions-and-intersection-types",
-          permalink: "/docs/handbook/unions-and-intersections.html",
-          oneline: "How to use unions and intersection types in TypeScript",
+          title: "Object Types",
+          id: "1object-types",
+          permalink: "/docs/handbook/2/objects.html",
+          oneline: "How TypeScript describes the shapes of JavaScript objects.",
+        },
+        {
+          title: "Type Manipulation",
+          id: "1type-manipulation",
+          oneline: "undefined",
+
+          items: [
+            {
+              title: "Creating Types from Types",
+              id: "1creating-types-from-types",
+              permalink: "/docs/handbook/2/types-from-types.html",
+              oneline: "Step one in learning TypeScript: The basics types.",
+            },
+            {
+              title: "Generics",
+              id: "1generics",
+              permalink: "/docs/handbook/2/generics.html",
+              oneline: "Types which take parameters",
+            },
+            {
+              title: "Keyof Type Operator",
+              id: "1keyof-type-operator",
+              permalink: "/docs/handbook/2/keyof-types.html",
+              oneline: "Using the keyof operator in type contexts.",
+            },
+            {
+              title: "Typeof Type Operator",
+              id: "1typeof-type-operator",
+              permalink: "/docs/handbook/2/typeof-types.html",
+              oneline: "Using the typeof operator in type contexts.",
+            },
+            {
+              title: "Indexed Access Types",
+              id: "1indexed-access-types",
+              permalink: "/docs/handbook/2/indexed-access-types.html",
+              oneline: "Using Type['a'] syntax to access a subset of a type.",
+            },
+            {
+              title: "Conditional Types",
+              id: "1conditional-types",
+              permalink: "/docs/handbook/2/conditional-types.html",
+              oneline:
+                "Create types which act like if statements in the type system.",
+            },
+            {
+              title: "Mapped Types",
+              id: "1mapped-types",
+              permalink: "/docs/handbook/2/mapped-types.html",
+              oneline: "Generating types by re-using an existing type.",
+            },
+            {
+              title: "Template Literal Types",
+              id: "1template-literal-types",
+              permalink: "/docs/handbook/2/template-literal-types.html",
+              oneline:
+                "Generating mapping types which change properties via template literal strings.",
+            },
+          ],
         },
         {
           title: "Classes",
           id: "1classes",
-          permalink: "/docs/handbook/classes.html",
+          permalink: "/docs/handbook/2/classes.html",
           oneline: "How classes work in TypeScript",
         },
         {
-          title: "Enums",
-          id: "1enums",
-          permalink: "/docs/handbook/enums.html",
-          oneline: "How TypeScript enums work",
-        },
-        {
-          title: "Generics",
-          id: "1generics",
-          permalink: "/docs/handbook/generics.html",
-          oneline: "Introduction to TypeScript and Generics",
+          title: "Modules",
+          id: "1modules",
+          permalink: "/docs/handbook/2/modules.html",
+          oneline:
+            "How JavaScript handles communicating across file boundaries.",
         },
       ],
     },
     {
-      title: "Handbook Reference",
+      title: "Reference",
       oneline: "Deep dive reference materials.",
-      id: "handbook-reference",
+      id: "reference",
       chronological: false,
 
       items: [
@@ -5525,6 +5958,12 @@ export function getDocumentationNavForLanguage(
           id: "4overview",
           permalink: "/docs/handbook/release-notes/overview.html",
           oneline: "All TypeScript release notes",
+        },
+        {
+          title: "TypeScript 4.2",
+          id: "4typescript-4.2",
+          permalink: "/docs/handbook/release-notes/typescript-4-2.html",
+          oneline: "TypeScript 4.2 Release Notes",
         },
         {
           title: "TypeScript 4.1",
@@ -6004,13 +6443,14 @@ export function getDocumentationNavForLanguage(
           title: "Modules",
           id: "8modules",
           permalink: "/docs/handbook/2/modules.html",
-          oneline: "Learn how TypeScript handles different module styles.",
+          oneline:
+            "How JavaScript handles communicating across file boundaries.",
         },
       ],
     },
-  ]
+  ];
 
-  return navigations[lang]
+  return navigations[lang];
 }
 
 /** ---INSERT-END--- */
@@ -6021,40 +6461,40 @@ const findInNav = (
 ): SidebarNavItem | undefined => {
   if (Array.isArray(item)) {
     for (const subItem of item) {
-      const sub = findInNav(subItem, fun)
-      if (sub) return sub
+      const sub = findInNav(subItem, fun);
+      if (sub) return sub;
     }
   } else {
-    if (fun(item)) return item
-    if (!item.items) return undefined
+    if (fun(item)) return item;
+    if (!item.items) return undefined;
     for (const subItem of item.items) {
-      const sub = findInNav(subItem, fun)
-      if (sub) return sub
+      const sub = findInNav(subItem, fun);
+      if (sub) return sub;
     }
-    return undefined
+    return undefined;
   }
-}
+};
 
 export function getNextPageID(navs: SidebarNavItem[], currentID: string) {
   // prettier-ignore
   const section = findInNav(navs, (i) => i && !!i.items && !!i.items.find(i => i.id === currentID)) || false
-  if (!section) return undefined
-  if (!section.chronological) return undefined
-  if (!section.items) return
+  if (!section) return undefined;
+  if (!section.chronological) return undefined;
+  if (!section.items) return;
 
-  const currentIndex = section.items.findIndex(i => i.id === currentID)
-  const next = section.items[currentIndex + 1]
+  const currentIndex = section.items.findIndex((i) => i.id === currentID);
+  const next = section.items[currentIndex + 1];
   if (next) {
     if (next.items) {
       return {
         path: next.items[0].permalink,
         ...section.items[currentIndex + 1],
-      }
+      };
     } else {
       return {
         path: next.permalink,
         ...section.items[currentIndex + 1],
-      }
+      };
     }
   }
 }
@@ -6063,17 +6503,17 @@ export function getPreviousPageID(navs: SidebarNavItem[], currentID: string) {
   // prettier-ignore
   const section = findInNav(navs, (i) => i && !!i.items && !!i.items.find(i => i.id === currentID)) || false
 
-  if (!section) return undefined
-  if (!section.chronological) return undefined
-  if (!section.items) return
+  if (!section) return undefined;
+  if (!section.chronological) return undefined;
+  if (!section.items) return;
 
-  const currentIndex = section.items.findIndex(i => i.id === currentID)
-  const prev = section.items[currentIndex - 1]
+  const currentIndex = section.items.findIndex((i) => i.id === currentID);
+  const prev = section.items[currentIndex - 1];
 
   if (prev) {
     return {
       path: prev.permalink,
       ...section.items[currentIndex - 1],
-    }
+    };
   }
 }

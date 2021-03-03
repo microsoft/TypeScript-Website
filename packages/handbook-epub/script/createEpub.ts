@@ -86,7 +86,7 @@ const startEpub = async () => {
   epub.pipe(jetpack.createWriteStream(epubPath));
 
   // Add the cover
-  epub.write(Streampub.newCoverImage(createReadStream("./assets/cover.png")));
+  epub.write(Streampub.newCoverImage(createReadStream("./assets/cover.jpg")));
   epub.write(Streampub.newFile("ts.png", createReadStream("./assets/ts.png")));
 
   // Import CSS
@@ -110,9 +110,16 @@ const startEpub = async () => {
   });
   epub.write(Streampub.newChapter(bookMetadata.title, editedIntro, 0));
 
+  let counter = 0;
   for (const item of handbook!.items!) {
-    const index = handbook!.items!.indexOf(item) + 1;
-    await addHandbookPage(epub, item.permalink!, index);
+    await addHandbookPage(epub, item.permalink!, counter);
+    counter++;
+    if (item.items) {
+      for (const subitem of item.items) {
+        await addHandbookPage(epub, subitem.permalink!, counter);
+        counter++;
+      }
+    }
   }
 
   epub.end();
