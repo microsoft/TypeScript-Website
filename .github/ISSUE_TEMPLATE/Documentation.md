@@ -1,13 +1,15 @@
 ---
 name: Documentation Issue
 about: Report an issue with documentation
-title: 'Docs: '
-labels: 'Docs'
+title: "Docs: "
+labels: "Docs"
 ---
 
 <!--
-  Before we get started, you can fix these!
-  Reports are appreciated too though.
+  Before we get started, you can submit fixes for these as all (English) docs are
+  inside this repo in markdown format in ./packages/documentation/copy/en/*
+
+  Reports are appreciated too though, especially if it seems controversial.
 -->
 
 <!-- Issue Report -->
@@ -17,5 +19,3 @@ labels: 'Docs'
 **Issue:** <!-- What is wrong with it? -->
 
 **Recommended Fix:** <!-- How should we fix it? -->
-
-**Browser:** <!-- It could be specific to your browser -->

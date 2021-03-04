@@ -1,26 +1,19 @@
 ---
 name: Playground Issue
 about: Report a bug with the TypeScript Playground
-title: 'Playground: '
-labels: 'Playground'
+title: "Playground: "
+labels: "Playground"
 ---
 
 <!-- Summary -->
 
 <!-- Screenshot -->
 
-<!-- Drag a screenshot image inbetween these ^ -->
-
-<!-- Bug Report -->
+<!-- If needed, drag a screenshot image inbetween these ^ -->
 
 **Repro:**
 
-**Code**
-
-```ts
-// A *self-contained* demonstration of the problem follows...
-// Test this by running `tsc` on the command-line, rather than through another build tool such as Gulp, Webpack, etc.
-```
+<!-- Bug Report -->
 
 **Expected behavior:**
 
