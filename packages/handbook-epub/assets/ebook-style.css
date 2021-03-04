@@ -82,6 +82,10 @@ pre code {
   display: none;
 }
 
+.code-container .line {
+  min-height: 1rem;
+}
+
 .code-container .error {
   margin-top: 8px;
   background-color: rgba(255, 84, 84, 0.2);

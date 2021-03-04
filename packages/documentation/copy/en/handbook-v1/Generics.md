@@ -4,6 +4,7 @@ layout: docs
 permalink: /docs/handbook/generics.html
 oneline: Introduction to TypeScript and Generics
 handbook: "true"
+deprecated_by: /docs/handbook/2/generics.html
 ---
 
 A major part of software engineering is building components that not only have well-defined and consistent APIs, but are also reusable.

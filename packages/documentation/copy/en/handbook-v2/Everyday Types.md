@@ -3,10 +3,7 @@ title: Everyday Types
 layout: docs
 permalink: /docs/handbook/2/everyday-types.html
 oneline: "The language primitives."
-beta: true
 ---
-
-<!-- Extremely WIP, do not review -->
 
 In this chapter, we'll cover some of the most common types of values you'll find in JavaScript code, and explain the corresponding ways to describe those types in TypeScript.
 This isn't an exhaustive list, and future chapters will describe more ways to name and use other types.
@@ -384,7 +381,74 @@ Being concerned only with the structure and capabilities of types is why we call
 ### Differences Between Type Aliases and Interfaces
 
 Type aliases and interfaces are very similar, and in many cases you can choose between them freely.
-Here are the most relevant differences between the two that you should be aware of.
+Almost all features of an `interface` are available in `type`, the key distinction is that a type cannot be re-opened to add new properties vs an interface which is always extendable.
+
+<table class='full-width-table'>
+  <tbody>
+    <tr>
+      <th><code>Interface</code></th>
+      <th><code>Type</code></th>
+    </tr>
+    <tr>
+      <td>
+        <p>Extending an interface</p>
+        <code><pre>
+interface Animal {
+  name: string
+}<br/>
+interface Bear extends Animal {
+  honey: boolean
+}<br/>
+const bear = getBear() 
+bear.name
+bear.honey
+        </pre></code>
+      </td>
+      <td>
+        <p>Extending a type via intersections</p>
+        <code><pre>
+type Animal = {
+  name: string
+}<br/>
+type Bear = Animal & { 
+  honey: Boolean 
+}<br/>
+const bear = getBear();
+bear.name;
+bear.honey;
+        </pre></code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>Adding new fields to an existing interface</p>
+        <code><pre>
+interface Window {
+  title: string
+}<br/>
+interface Window {
+  ts: TypeScriptAPI
+}<br/>
+const src = 'const a = "Hello World"';
+window.ts.transpileModule(src, {});
+        </pre></code>
+      </td>
+      <td>
+        <p>A type cannot be changed after being created</p>
+        <code><pre>
+type Window = {
+  title: string
+}<br/>
+type Window = {
+  ts: TypeScriptAPI
+}<br/>
+<span style="color: #A31515"> // Error: Duplicate identifier 'Window'.</span><br/>
+        </pre></code>
+      </td>
+    </tr>
+    </tbody>
+</table>
+
 You'll learn more about these concepts in later chapters, so don't worry if you don't understand all of these right away.
 
 - Type alias names [_may_ appear in error messages](/play?#code/PTAEGEHsFsAcEsA2BTATqNrLusgzngIYDm+oA7koqIYuYQJ56gCueyoAUCKAC4AWHAHaFcoSADMaQ0PCG80EwgGNkALk6c5C1EtWgAsqOi1QAb06groEbjWg8vVHOKcAvpokshy3vEgyyMr8kEbQJogAFND2YREAlOaW1soBeJAoAHSIkMTRmbbI8e6aPMiZxJmgACqCGKhY6ABGyDnkFFQ0dIzMbBwCwqIccabcYLyQoKjIEmh8kwN8DLAc5PzwwbLMyAAeK77IACYaQSEjUWZWhfYAjABMAMwALA+gbsVjoADqgjKESytQPxCHghAByXigYgBfr8LAsYj8aQMUASbDQcRSExCeCwFiIQh+AKfAYyBiQFgOPyIaikSGLQo0Zj-aazaY+dSaXjLDgAGXgAC9CKhDqAALxJaw2Ib2RzOISuDycLw+ImBYKQflCkWRRD2LXCw6JCxS1JCdJZHJ5RAFIbFJU8ADKC3WzEcnVZaGYE1ABpFnFOmsFhsil2uoHuzwArO9SmAAEIsSFrZB-GgAjjA5gtVN8VCEc1o1C4Q4AGlR2AwO1EsBQoAAbvB-gJ4HhPgB5aDwem-Ph1TCV3AEEirTp4ELtRbTPD4vwKjOfAuioSQHuDXBcnmgACC+eCONFEs73YAPGGZVT5cRyyhiHh7AAON7lsG3vBggB8XGV3l8-nVISOgghxoLq9i7io-AHsayRWGaFrlFauq2rg9qaIGQHwCBqChtKdgRo8TxRjeyB3o+7xAA), sometimes in place of the equivalent anonymous type (which may or may not be desirable). Interfaces will always be named in error messages.
@@ -603,6 +667,10 @@ function liveDangerously(x?: number | undefined) {
 ```
 
 Just like other type assertions, this doesn't change the runtime behavior of your code, so it's important to only use `!` when you know that the value _can't_ be `null` or `undefined`.
+
+### Enums
+
+Enums are a feature added to JavaScript by TypeScript which allows for describing a value which could be one of a set of possible named constants. Unlike most TypeScript features, this is _not_ a type-level addition to JavaScript but something added to the language and runtime. Because of this, it's a feature which you should know exists, but maybe hold off on using unless you are sure. You can read more about enums in the [Enum reference page](/docs/handbook/enums.html).
 
 ### Less Common Primitives
 

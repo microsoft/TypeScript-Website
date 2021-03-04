@@ -3,7 +3,6 @@ title: Modules
 layout: docs
 permalink: /docs/handbook/2/modules.html
 oneline: "How JavaScript handles communicating across file boundaries."
-beta: true
 ---
 
 JavaScript has a long history of different ways to handle modularizing code.

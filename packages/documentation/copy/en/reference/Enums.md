@@ -379,3 +379,41 @@ declare enum Enum {
 
 One important difference between ambient and non-ambient enums is that, in regular enums, members that don't have an initializer will be considered constant if its preceding enum member is considered constant.
 In contrast, an ambient (and non-const) enum member that does not have initializer is _always_ considered computed.
+
+## Objects vs Enums
+
+In modern TypeScript, you may not need an enum when an object with `as const` could suffice:
+
+```ts twoslash
+const enum EDirection {
+  Up,
+  Down,
+  Left,
+  Right,
+}
+
+const ODirection = {
+  Up: 0,
+  Down: 1,
+  Left: 2,
+  Right: 3,
+} as const;
+
+EDirection.Up;
+//         ^?
+
+ODirection.Up;
+//         ^?
+
+// Using the enum as a parameter
+function walk(dir: EDirection) {}
+
+// It requires an extra line to pull out the keys
+type Direction = typeof ODirection[keyof typeof ODirection];
+function run(dir: Direction) {}
+
+walk(EDirection.Left);
+run(ODirection.Right);
+```
+
+The biggest argument in favour of this format over is that it keeps your codebase aligned with the state of JavaScript, and [when/if](https://github.com/rbuckton/proposal-enum) enums are added to JavaScript then you can move to the additional syntax.

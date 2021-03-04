@@ -49,6 +49,10 @@ For each new flag:
   - Linking compiler versions
   - Add a new section to `releaseToConfigsMap` for your version
 
+#### Playground
+
+The tag should be automatically generated on a [daily basis](https://github.com/microsoft/TypeScript-Make-Monaco-Builds/actions/workflows/nightly_check_prod_deploys.yml) - so you shouldn't have to do anything
+
 ##### Tests
 
 Run `yarn test`.
@@ -62,11 +66,24 @@ Unless something drastic has change, you shouldn't need to do anything. You coul
 
 ### Release
 
-#### Playground
+#### Release Notes
 
-Make a tag for the final version in [`orta/make-monaco-builds`](https://github.com/orta/make-monaco-builds/) e.g. `git tag 3.9.3` and push it up.
+Grab the markdown from the [blog posts repo](https://github.com/microsoft/TypeScript-blog-posts), create a file like: `packages/documentation/copy/en/release-notes/TypeScript 3.9.md`
 
-Remove the link to the beta in the dropdowns in: [`packages/playground/src/index.ts`](https://github.com/microsoft/TypeScript-website/blob/v2/packages/playground/src/index.ts) because it will be auto-generated now.
+Grab the header info from a previous release notes, and add it to your new version:
+
+```md
+---
+title: TypeScript 3.9
+layout: docs
+permalink: /docs/handbook/release-notes/typescript-3-9.html
+oneline: TypeScript 3.9 Release Notes
+---
+```
+
+You can add twoslash to the code samples if you want.
+
+When you're happy with that, then edit [`packages/documentation/copy/en/release-notes/Overview.md](https://github.com/microsoft/TypeScript-website/blob/v2/packages/documentation/copy/en/release-notes/Overview.md) to include the changes you just added, and simplify descriptions.
 
 ##### Index
 

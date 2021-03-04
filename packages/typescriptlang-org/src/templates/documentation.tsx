@@ -21,6 +21,7 @@ import { Contributors } from "../components/handbook/Contributors"
 import { overrideSubNavLinksWithSmoothScroll, updateSidebarOnScroll } from "./scripts/setupSubNavigationSidebar"
 import { setupLikeDislikeButtons } from "./scripts/setupLikeDislikeButtons"
 import { DislikeUnfilledSVG, LikeUnfilledSVG } from "../components/svgs/documentation"
+import Helmet from "react-helmet"
 
 type Props = {
   pageContext: {
@@ -74,10 +75,20 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   const navigation = getDocumentationNavForLanguage(props.pageContext.lang)
   const isHandbook = post.frontmatter.handbook
   const prefix = isHandbook ? "Handbook" : "Documentation"
+
+  let deprecationURL = post.frontmatter.deprecated_by
+  if (document.location.hash) {
+    const redirects = post.frontmatter?.deprecation_redirects || []
+    const indexOfHash = redirects.indexOf(document.location.hash.slice(1))
+    if (indexOfHash !== -1) {
+      deprecationURL = redirects[indexOfHash + 1]  
+    }
+  }
+
+
   const slug = slugger()
   return (
     <Layout title={`${prefix} - ${post.frontmatter.title}`} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang}>
-      {post.frontmatter.beta && <div id="beta">Warning: This page is a work in progress</div>}
       <section id="doc-layout">
         <SidebarToggleButton />
 
@@ -100,6 +111,28 @@ const HandbookTemplate: React.FC<Props> = (props) => {
 
         <Sidebar navItems={navigation} selectedID={selectedID} />
         <div id="handbook-content" role="article">
+         { deprecationURL && 
+          <>
+            <Helmet>
+              <link rel="canonical" href={`https://www.typescriptlang.org${post.frontmatter.deprecated_by}`} />
+            </Helmet>
+            <div id="deprecated">
+              <div id="deprecated-content">
+                <div id="deprecated-icon">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7.5" stroke="black"/><path d="M8 3V9" stroke="black"/><path d="M8 11L8 13" stroke="black"/></svg>
+                </div>
+                <div>
+                  <h3>{i("handb_deprecated_title")}</h3>
+                  <p>{i("handb_deprecated_subtitle")}<IntlLink className="deprecation-redirect-link" to={deprecationURL}>{i("handb_deprecated_subtitle_link")}</IntlLink></p>
+                </div>
+              </div>
+              <div id="deprecated-action">
+                <IntlLink className="deprecation-redirect-link" to={deprecationURL}>{i("handb_deprecated_subtitle_action")}</IntlLink>.
+              </div>
+            </div>
+          </>
+          }
+
           <h2>{post.frontmatter.title}</h2>
           {post.frontmatter.preamble && <div className="preamble" dangerouslySetInnerHTML={{ __html: post.frontmatter.preamble }} />}
           <article>
@@ -108,7 +141,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
             </div>
             {showSidebar &&
               <aside className="handbook-toc">
-                <nav>
+                <nav className={deprecationURL ? "deprecated": ""}>
                   {showSidebarHeadings && <>
                     <h5>{i("handb_on_this_page")}</h5>
                     <ul>
@@ -160,8 +193,9 @@ export const pageQuery = graphql`
         disable_toc
         handbook
         oneline
-        beta
         preamble
+        deprecated_by
+        deprecation_redirects
       }
     }
 

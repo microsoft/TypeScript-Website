@@ -158,6 +158,7 @@ html.font-open-dyslexic {
   li > code {
     background-color: var(--inline-code-background-color);
     font-family: $font-code;
+    padding: 2px 4px;
   }
 
   td {

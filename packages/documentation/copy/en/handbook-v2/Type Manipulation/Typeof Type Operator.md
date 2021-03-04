@@ -3,7 +3,6 @@ title: Typeof Type Operator
 layout: docs
 permalink: /docs/handbook/2/typeof-types.html
 oneline: "Using the typeof operator in type contexts."
-beta: true
 ---
 
 ## The `typeof` type operator
