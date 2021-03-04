@@ -3,7 +3,6 @@ title: Template Literal Types
 layout: docs
 permalink: /docs/handbook/2/template-literal-types.html
 oneline: "Generating mapping types which change properties via template literal strings."
-beta: true
 ---
 
 Template literal types build on [string literal types](/docs/handbook/2/everyday-types.html#literal-types), and have the ability to expand into many strings via unions.

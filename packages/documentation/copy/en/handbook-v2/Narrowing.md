@@ -3,7 +3,6 @@ title: Narrowing
 layout: docs
 permalink: /docs/handbook/2/narrowing.html
 oneline: "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects."
-beta: true
 ---
 
 Imagine we have a function called `padLeft`.
@@ -167,7 +166,7 @@ TypeError: null is not iterable
 Keep in mind though that truthiness checking on primitives can often be error prone.
 As an example, consider a different attempt at writing `printAll`
 
-```ts twoslash
+```ts twoslash {class: "do-not-do-this"}
 function printAll(strs: string | string[] | null) {
   // !!!!!!!!!!!!!!!!
   //  DON'T DO THIS!
@@ -372,6 +371,66 @@ function example() {
   return x;
   //     ^?
 }
+```
+
+## Using type predicates
+
+We've worked with existing JavaScript constructs to handle narrowing so far, however sometimes you want more direct control over how types change throughout your code.
+
+To define a user-defined type guard, we simply need to define a function whose return type is a _type predicate_:
+
+```ts twoslash
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+declare function getSmallPet(): Fish | Bird;
+// ---cut---
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined;
+}
+```
+
+`pet is Fish` is our type predicate in this example.
+A predicate takes the form `parameterName is Type`, where `parameterName` must be the name of a parameter from the current function signature.
+
+Any time `isFish` is called with some variable, TypeScript will _narrow_ that variable to that specific type if the original type is compatible.
+
+```ts twoslash
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+declare function getSmallPet(): Fish | Bird;
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined;
+}
+// ---cut---
+// Both calls to 'swim' and 'fly' are now okay.
+let pet = getSmallPet();
+
+if (isFish(pet)) {
+  pet.swim();
+} else {
+  pet.fly();
+}
+```
+
+Notice that TypeScript not only knows that `pet` is a `Fish` in the `if` branch;
+it also knows that in the `else` branch, you _don't_ have a `Fish`, so you must have a `Bird`.
+
+You may use the type guard `isFish` to filter an array of `Fish | Bird` and obtain an array of `Fish`:
+
+```ts twoslash
+// @errors: 2345
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+declare function getSmallPet(): Fish | Bird;
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined;
+}
+// ---cut---
+const zoo: (Fish | Bird)[] = [getSmallPet(), getSmallPet(), getSmallPet()];
+const underWater1: Fish[] = zoo.filter(isFish);
+// or, equivalently
+const underWater2: Fish[] = zoo.filter<Fish>(isFish);
+const underWater3: Fish[] = zoo.filter<Fish>((pet) => isFish(pet));
 ```
 
 # Discriminated unions

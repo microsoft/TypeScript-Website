@@ -3,6 +3,28 @@ title: Advanced Types
 layout: docs
 permalink: /docs/handbook/advanced-types.html
 oneline: Advanced concepts around types in TypeScript
+deprecated_by: /docs/handbook/2/types-from-types.html
+
+# prettier-ignore
+deprecation_redirects: [
+  type-guards-and-differentiating-types, /docs/handbook/2/narrowing.html,
+  user-defined-type-guards, /docs/handbook/2/narrowing.html#using-type-predicates,
+  typeof-type-guards, "/docs/handbook/2/narrowing.html#typeof-type-guards",
+  instanceof-type-guards, /docs/handbook/2/narrowing.html#instanceof-narrowing,
+  nullable-types, /docs/handbook/2/everyday-types.html#null-and-undefined,
+  type-aliases, /docs/handbook/2/everyday-types.html#type-aliases,
+  interfaces-vs-type-aliases, /docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces,
+  enum-member-types, /docs/handbook/enums.html,
+  polymorphic-this-types, /docs/handbook/2/classes.html,
+  index-types, /docs/handbook/2/indexed-access-types.html,
+  index-types-and-index-signatures, /docs/handbook/2/indexed-access-types.html,
+  mapped-types, /docs/handbook/2/mapped-types.html,
+  inference-from-mapped-types, /docs/handbook/2/mapped-types.html,
+  conditional-types, /docs/handbook/2/conditional-types.html,
+  distributive-conditional-types, /docs/handbook/2/conditional-types.html#distributive-conditional-types,
+  type-inference-in-conditional-types, /docs/handbook/2/conditional-types.html#inferring-within-conditional-types,
+  predefined-conditional-types, /docs/handbook/utility-types.html,
+]
 ---
 
 This page lists some of the more advanced ways in which you can model types, it works in tandem with the [Utility Types](/docs/handbook/utility-types.html) doc which includes types which are included in TypeScript and available globally.

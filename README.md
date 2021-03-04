@@ -128,7 +128,7 @@ A template for generating a new playground plugin which you can use via `npm ini
 
 ## Handbook Epub
 
-Generates an epub file from the handbook files. You can try downloading it at http://www.staging-typescript.org/assets/typescript-handbook-beta.epub
+Generates an epub file from the handbook files. You can try downloading it at http://www.typescriptlang.org/assets/typescript-handbook.epub
 
 ## Community Meta
 

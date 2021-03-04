@@ -4,6 +4,7 @@ layout: docs
 permalink: /docs/handbook/unions-and-intersections.html
 oneline: How to use unions and intersection types in TypeScript
 handbook: "true"
+deprecated_by: /docs/handbook/2/everyday-types.html#union-types
 ---
 
 So far, the handbook has covered types which are atomic objects.

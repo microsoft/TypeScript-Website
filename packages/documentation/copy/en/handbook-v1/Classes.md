@@ -4,6 +4,7 @@ layout: docs
 permalink: /docs/handbook/classes.html
 oneline: How classes work in TypeScript
 handbook: "true"
+deprecated_by: /docs/handbook/2/classes.html
 ---
 
 Traditional JavaScript uses functions and prototype-based inheritance to build up reusable components, but this may feel a bit awkward to programmers more comfortable with an object-oriented approach, where classes inherit functionality and objects are built from these classes.

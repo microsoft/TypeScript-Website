@@ -3,7 +3,6 @@ title: Object Types
 layout: docs
 permalink: /docs/handbook/2/objects.html
 oneline: "How TypeScript describes the shapes of JavaScript objects."
-beta: true
 ---
 
 In JavaScript, the fundamental way that we group and pass around data is through objects.
@@ -177,10 +176,8 @@ function paintShape({ shape, xPos = 0, yPos = 0 }: PaintOptions) {
 Here we used [a destructuring pattern](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) for `paintShape`'s parameter, and provided [default values](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Default_values) for `xPos` and `yPos`.
 Now `xPos` and `yPos` are both definitely present within the body of `paintShape`, but optional for any callers to `paintShape`.
 
-<aside>
-Note that there is currently no way to place type annotations within destructuring patterns.
-This is because the following syntax already means something different in JavaScript.
-</aside>
+> Note that there is currently no way to place type annotations within destructuring patterns.
+> This is because the following syntax already means something different in JavaScript.
 
 ```ts twoslash
 // @noImplicitAny: false
@@ -727,14 +724,11 @@ function doSomething(stringHash: [string, number]) {
 }
 ```
 
-<aside>
-Tuple types are useful in heavily convention-based APIs, where each element's meaning is "obvious".
-This gives us flexibility in whatever we want to name our variables when we destructure them.
-In the above example, we were able to name elements `0` and `1` to whatever we wanted.
-
-However, since not every user holds the same view of what's obvious, it may be worth reconsidering whether using objects with descriptive property names may be better for your API.
-
-</aside>
+> Tuple types are useful in heavily convention-based APIs, where each element's meaning is "obvious".
+> This gives us flexibility in whatever we want to name our variables when we destructure them.
+> In the above example, we were able to name elements `0` and `1` to whatever we wanted.
+>
+> However, since not every user holds the same view of what's obvious, it may be worth reconsidering whether using objects with descriptive property names may be better for your API.
 
 Other than those length checks, simple tuple types like these are equivalent to types which are versions of `Array`s that declare properties for specific indexes, and that declare `length` with a numeric literal type.
 
@@ -838,7 +832,7 @@ function foo(a: number, b: number, ...args: number[]) {
 
 ### `readonly` Tuple Types
 
-One final note about tuple types - tuples types have `readonly` variants, and can be specified by sticking a `readonly` modifier in front of them - just like with array shorthands.
+One final note about tuple types - tuples types have `readonly` variants, and can be specified by sticking a `readonly` modifier in front of them - just like with array shorthand syntax.
 
 ```ts twoslash
 function doSomething(pair: readonly [string, number]) {

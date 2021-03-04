@@ -48,8 +48,10 @@ export const setupLikeDislikeButtons = (slug: string, i: any) => {
       const footerH = document.getElementById("site-footer")!.clientHeight
       const bottomOfWindow = y > height - footerH + 150
 
-      const popup = document.getElementById("page-helpful-popup")!
-      const nav = document.getElementById("like-dislike-subnav")!
+      const popup = document.getElementById("page-helpful-popup")
+      const nav = document.getElementById("like-dislike-subnav")
+      if (!popup) return
+      if (!nav) return
 
       const popupOpacity = bottomOfWindow ? "1" : "0"
       if (popup.style.opacity != popupOpacity) {

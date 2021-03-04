@@ -10,6 +10,10 @@ const { createReadStream } = jetpack;
 const Streampub = require("streampub");
 const toHAST = require(`mdast-util-to-hast`);
 const hastToHTML = require(`hast-util-to-html`);
+const {
+  recursiveReadDirSync,
+} = require("../../typescriptlang-org/lib/utils/recursiveReadDirSync");
+
 import {
   readdirSync,
   readFileSync,
@@ -33,17 +37,10 @@ const handbookNavigation = getDocumentationNavForLanguage("en");
 // Grab all the md + yml info from the handbook files on disk
 // and add them to ^
 // prettier-ignore
-const handbookPath = join(
-  __dirname,
-  "..",
-  "..",
-  "documentation",
-  "copy",
-  "en",
-  "handbook-v1",
-);
-readdirSync(handbookPath, "utf-8").forEach((path) => {
-  const filePath = join(handbookPath, path);
+const handbookPath = join( __dirname, "..", "..", "documentation", "copy", "en", "handbook-v2");
+
+recursiveReadDirSync(handbookPath).forEach((path) => {
+  const filePath = join(__dirname, "..", "..", path);
   if (lstatSync(filePath).isDirectory() || !filePath.endsWith("md")) {
     return;
   }
@@ -52,7 +49,7 @@ readdirSync(handbookPath, "utf-8").forEach((path) => {
   // prettier-ignore
   if (!md.data.permalink) {
     throw new Error(
-      `${path} in the handbook did not have a permalink in the yml header`,
+      `${filePath} in the handbook did not have a permalink in the yml header`,
     );
   }
   const id = md.data.permalink;
@@ -86,7 +83,7 @@ const startEpub = async () => {
   epub.pipe(jetpack.createWriteStream(epubPath));
 
   // Add the cover
-  epub.write(Streampub.newCoverImage(createReadStream("./assets/cover.png")));
+  epub.write(Streampub.newCoverImage(createReadStream("./assets/cover.jpg")));
   epub.write(Streampub.newFile("ts.png", createReadStream("./assets/ts.png")));
 
   // Import CSS
@@ -110,9 +107,18 @@ const startEpub = async () => {
   });
   epub.write(Streampub.newChapter(bookMetadata.title, editedIntro, 0));
 
+  let counter = 0;
   for (const item of handbook!.items!) {
-    const index = handbook!.items!.indexOf(item) + 1;
-    await addHandbookPage(epub, item.permalink!, index);
+    if (item.permalink) {
+      await addHandbookPage(epub, item.permalink, counter);
+      counter++;
+    }
+    if (item.items) {
+      for (const subitem of item.items) {
+        await addHandbookPage(epub, subitem.permalink!, counter);
+        counter++;
+      }
+    }
   }
 
   epub.end();
@@ -125,20 +131,25 @@ process.once("exit", () => {
     epubPath,
     join(
       __dirname,
-      "../../typescriptlang-org/static/assets/typescript-handbook-beta.epub"
+      "../../typescriptlang-org/static/assets/typescript-handbook.epub"
     )
   );
 });
 
 const addHandbookPage = async (epub: any, id: string, index: number) => {
   const md = markdowns.get(id);
-  if (!md) throw new Error("Could not get markdown for " + id);
+  if (!md)
+    throw new Error(
+      "Could not get markdown for " +
+        id +
+        `\n\nAll MDs: ${Array.from(markdowns.keys())}`
+    );
   const title = md.data.title;
   const prefix = `<link href="style.css" type="text/css" rel="stylesheet" /><h1>${title}</h1><div class='section'>`;
   const suffix = "</div>";
   const html = await getHTML(md.content, {});
   const edited = replaceAllInString(html, {
-    'a href="/': 'a href="https://www.staging-typescript.org/',
+    'a href="/': 'a href="https://www.typescriptlang.org/',
   });
 
   epub.write(Streampub.newChapter(title, prefix + edited + suffix, index));
@@ -153,7 +164,9 @@ const getHTML = async (code: string, settings?: any) => {
       { markdownAST },
       {
         theme: require("../../typescriptlang-org/lib/themes/typescript-beta-light.json"),
-      }
+      },
+      // @ts-ignore
+      {}
     );
   }
 

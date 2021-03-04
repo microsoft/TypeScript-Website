@@ -30,13 +30,12 @@ The handbook is split into two sections:
   - Read and understand commonly-used TypeScript syntax and patterns
   - Explain the effects of important compiler options
   - Correctly predict type system behavior in most cases
-  - Write a .d.ts declaration for a simple function, object, or class
 
   In the interests of clarity and brevity, the main content of the Handbook will not explore every edge case or minutiae of the features being covered. You can find more details on particular concepts in the reference articles.
 
 - **Reference Files**
 
-  The reference section is built to provide a richer understanding of how a particular part of TypeScript works. You can read it top-to-bottom, but each section aims to provide a deeper explanation of a single concept - meaning there is no aim for continuity.
+  The reference section below the handbook in the navigation is built to provide a richer understanding of how a particular part of TypeScript works. You can read it top-to-bottom, but each section aims to provide a deeper explanation of a single concept - meaning there is no aim for continuity.
 
 ### Non-Goals
 
@@ -50,9 +49,11 @@ Finally, the Handbook won't cover how TypeScript interacts with other tools, exc
 
 ## Get Started
 
-Before getting started with [Basic Types](/docs/handbook/basic-types.html), we recommend reading one of the following introductory pages. These introductions are intended to highlight key similarities and differences between TypeScript and your favored programming language, and clear up common misconceptions specific to those languages.
+Before getting started with [Basic Types](/docs/handbook/2/basic-types.html), we recommend reading one of the following introductory pages. These introductions are intended to highlight key similarities and differences between TypeScript and your favored programming language, and clear up common misconceptions specific to those languages.
 
 - [TypeScript for New Programmers](/docs/handbook/typescript-from-scratch.html)
 - [TypeScript for JavaScript Programmers](/docs/handbook/typescript-in-5-minutes.html)
 - [TypeScript for OOP Programmers](/docs/handbook/typescript-in-5-minutes-oop.html)
 - [TypeScript for Functional Programmers](/docs/handbook/typescript-in-5-minutes-func.html)
+
+Otherwise, jump to [Basic Types](/docs/handbook/2/basic-types.html).
