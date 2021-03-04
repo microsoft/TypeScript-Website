@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { graphql } from "gatsby"
 import { Layout } from "../components/layout"
 import { Sidebar, SidebarToggleButton } from "../components/layout/Sidebar"
@@ -45,10 +45,20 @@ const HandbookTemplate: React.FC<Props> = (props) => {
     return <div></div>
   }
 
+  const [deprecationURL, setDeprecationURL] = useState(post.frontmatter!.deprecated_by)
+
   const i = createInternational<typeof handbookCopy>(useIntl())
   const IntlLink = createIntlLink(props.pageContext.lang)
 
   useEffect(() => {
+    if (document.location.hash) {
+      const redirects = post.frontmatter?.deprecation_redirects || []
+      const indexOfHash = redirects.indexOf(document.location.hash.slice(1))
+      if (indexOfHash !== -1) {
+        setDeprecationURL(redirects[indexOfHash + 1])  
+      }
+    }
+    
     overrideSubNavLinksWithSmoothScroll()
 
     // Handles setting the scroll 
@@ -58,6 +68,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
 
     setupTwoslashHovers()
     setupLikeDislikeButtons(props.pageContext.slug, i)
+
 
     return () => {
       window.removeEventListener("scroll", updateSidebarOnScroll)
@@ -75,15 +86,6 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   const navigation = getDocumentationNavForLanguage(props.pageContext.lang)
   const isHandbook = post.frontmatter.handbook
   const prefix = isHandbook ? "Handbook" : "Documentation"
-
-  let deprecationURL = post.frontmatter.deprecated_by
-  if (document.location.hash) {
-    const redirects = post.frontmatter?.deprecation_redirects || []
-    const indexOfHash = redirects.indexOf(document.location.hash.slice(1))
-    if (indexOfHash !== -1) {
-      deprecationURL = redirects[indexOfHash + 1]  
-    }
-  }
 
 
   const slug = slugger()
