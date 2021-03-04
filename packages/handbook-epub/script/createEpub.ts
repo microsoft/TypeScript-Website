@@ -109,14 +109,12 @@ const startEpub = async () => {
 
   let counter = 0;
   for (const item of handbook!.items!) {
-    console.log(item);
     if (item.permalink) {
       await addHandbookPage(epub, item.permalink, counter);
       counter++;
     }
     if (item.items) {
       for (const subitem of item.items) {
-        console.log(subitem);
         await addHandbookPage(epub, subitem.permalink!, counter);
         counter++;
       }
@@ -167,6 +165,7 @@ const getHTML = async (code: string, settings?: any) => {
       {
         theme: require("../../typescriptlang-org/lib/themes/typescript-beta-light.json"),
       },
+      // @ts-ignore
       {}
     );
   }
