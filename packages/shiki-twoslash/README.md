@@ -10,6 +10,31 @@ Things it handles:
 - Running Twoslash over code, with caching and DTS lookups: `runTwoSlash`
 - Rendering any code sample with Shiki: `renderCodeToHTML`
 
+Libraries for common tools which use this generator:
+
+- [gatsby-remark-shiki-twoslash](https://www.npmjs.com/package/gatsby-remark-shiki-twoslash) - For instantly using with Gatsby
+- [remark-shiki-twoslash](https://www.npmjs.com/package/remark-shiki-twoslash) - Any JS static site generator using Remark (11ty, nextjs, )
+
+Or you can use the API directly in a Node.js script:
+
+```ts
+import { renderCodeToHTML, runTwoSlash, createShikiHighlighter } from "shiki-twoslash"
+import { writeFileSync } from "fs"
+
+const go = async () => {
+  const highlighter = await createShikiHighlighter({ theme: "dark-plus" })
+  const code = `
+// Hello world
+const a = "123"
+const b = "345"
+    `
+  const twoslash = runTwoSlash(code, "ts", {})
+  const html = renderCodeToHTML(twoslash.code, "ts", ["twoslash"], {}, highlighter, twoslash)
+
+  fs.writeFileSync("output.html", html, "utf8")
+}
+```
+
 ### User Settings
 
 The config which a user passes is an intersection of Shiki's [`HighlighterOptions`](https://unpkg.com/shiki/dist/index.d.ts)

@@ -13982,7 +13982,7 @@ fsevents@~2.1.2:
     "@typescript/vfs": 1.3.4
     rehype-stringify: ^6.0.1
     shiki: ^0.9.1
-    shiki-twoslash: 1.2.6
+    shiki-twoslash: 1.2.7
     tsdx: ^0.14.1
     tslib: ^1.10.0
     typescript: "*"
@@ -24878,7 +24878,7 @@ fsevents@~2.1.2:
     mdx: "*"
     rehype-stringify: ^6.0.1
     shiki: ^0.9.1
-    shiki-twoslash: 1.2.6
+    shiki-twoslash: 1.2.7
     tsdx: ^0.14.1
     tslib: ^1.10.0
     typescript: "*"
@@ -26211,7 +26211,7 @@ resolve@1.1.7:
   languageName: node
   linkType: hard
 
-"shiki-twoslash@1.2.6, shiki-twoslash@workspace:packages/shiki-twoslash":
+"shiki-twoslash@1.2.7, shiki-twoslash@workspace:packages/shiki-twoslash":
   version: 0.0.0-use.local
   resolution: "shiki-twoslash@workspace:packages/shiki-twoslash"
   dependencies:
