@@ -5,7 +5,7 @@
   "homepage": "https://github.com/microsoft/TypeScript-Website",
   "repository": {
     "url": "https://github.com/microsoft/TypeScript-Website.git",
-    "directory": "packages/create-typescript-playground-plugin",
+    "directory": "packages/gatsby-remark-shiki-twoslash",
     "type": "git"
   },
   "bugs": {

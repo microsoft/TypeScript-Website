@@ -1,11 +1,11 @@
 {
   "name": "remark-shiki-twoslash",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "homepage": "https://github.com/microsoft/TypeScript-Website",
   "repository": {
     "url": "https://github.com/microsoft/TypeScript-Website.git",
-    "directory": "packages/create-typescript-playground-plugin",
+    "directory": "packages/remark-shiki-twoslash",
     "type": "git"
   },
   "bugs": {
