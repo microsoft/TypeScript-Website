@@ -1,7 +1,7 @@
 #!/usr/bin/env ts-node
 
 import { join } from "path";
-import { writeFileSync, readFileSync } from "fs";
+import { writeFileSync, copyFileSync } from "fs";
 import { generateV2Markdowns, getHTML, replaceAllInString } from "./setupPages";
 import { getDocumentationNavForLanguage } from "../../typescriptlang-org/src/lib/documentationNavigation";
 const { chromium } = require("playwright");
@@ -148,6 +148,11 @@ const addHandbookPage = async (id: string, index: number) => {
 const go = async () => {
   await generateHTML();
   await generatePDF();
+  copyFileSync(
+    join(__dirname, "..", "dist", "handbook.pdf"),
+    // prettier-ignore
+    join( __dirname, "..", "..", "typescriptlang-org", "static", "assets", "typescript-handbook.pdf")
+  );
 };
 
 go();
