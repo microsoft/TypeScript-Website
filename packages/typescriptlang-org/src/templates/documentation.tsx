@@ -55,10 +55,10 @@ const HandbookTemplate: React.FC<Props> = (props) => {
       const redirects = post.frontmatter?.deprecation_redirects || []
       const indexOfHash = redirects.indexOf(document.location.hash.slice(1))
       if (indexOfHash !== -1) {
-        setDeprecationURL(redirects[indexOfHash + 1])  
+        setDeprecationURL(redirects[indexOfHash + 1])
       }
     }
-    
+
     overrideSubNavLinksWithSmoothScroll()
 
     // Handles setting the scroll 
@@ -113,26 +113,26 @@ const HandbookTemplate: React.FC<Props> = (props) => {
 
         <Sidebar navItems={navigation} selectedID={selectedID} />
         <div id="handbook-content" role="article">
-         { deprecationURL && 
-          <>
-            <Helmet>
-              <link rel="canonical" href={`https://www.typescriptlang.org${post.frontmatter.deprecated_by}`} />
-            </Helmet>
-            <div id="deprecated">
-              <div id="deprecated-content">
-                <div id="deprecated-icon">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7.5" stroke="black"/><path d="M8 3V9" stroke="black"/><path d="M8 11L8 13" stroke="black"/></svg>
+          {deprecationURL &&
+            <>
+              <Helmet>
+                <link rel="canonical" href={`https://www.typescriptlang.org${post.frontmatter.deprecated_by}`} />
+              </Helmet>
+              <div id="deprecated">
+                <div id="deprecated-content">
+                  <div id="deprecated-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7.5" stroke="black" /><path d="M8 3V9" stroke="black" /><path d="M8 11L8 13" stroke="black" /></svg>
+                  </div>
+                  <div>
+                    <h3>{i("handb_deprecated_title")}</h3>
+                    <p>{i("handb_deprecated_subtitle")}<IntlLink className="deprecation-redirect-link" to={deprecationURL}>{i("handb_deprecated_subtitle_link")}</IntlLink></p>
+                  </div>
                 </div>
-                <div>
-                  <h3>{i("handb_deprecated_title")}</h3>
-                  <p>{i("handb_deprecated_subtitle")}<IntlLink className="deprecation-redirect-link" to={deprecationURL}>{i("handb_deprecated_subtitle_link")}</IntlLink></p>
+                <div id="deprecated-action">
+                  <IntlLink className="deprecation-redirect-link" to={deprecationURL}>{i("handb_deprecated_subtitle_action")}</IntlLink>
                 </div>
               </div>
-              <div id="deprecated-action">
-                <IntlLink className="deprecation-redirect-link" to={deprecationURL}>{i("handb_deprecated_subtitle_action")}</IntlLink>.
-              </div>
-            </div>
-          </>
+            </>
           }
 
           <h2>{post.frontmatter.title}</h2>
@@ -143,7 +143,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
             </div>
             {showSidebar &&
               <aside className="handbook-toc">
-                <nav className={deprecationURL ? "deprecated": ""}>
+                <nav className={deprecationURL ? "deprecated" : ""}>
                   {showSidebarHeadings && <>
                     <h5>{i("handb_on_this_page")}</h5>
                     <ul>

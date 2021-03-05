@@ -13,10 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
-
-      # For epub -> PDF conversion
-      - run: sudo apt-get update
-      - run: sudo apt install calibre
+      - uses: microsoft/playwright-github-action@v1
 
       # Build v2
       - name: Build website v2
