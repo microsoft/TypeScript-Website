@@ -23,6 +23,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
+      - uses: microsoft/playwright-github-action@v1
+
       # Install, should be absically instant if cached
       - run: yarn install
         env:
