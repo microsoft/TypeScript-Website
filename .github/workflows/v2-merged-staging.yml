@@ -19,9 +19,6 @@ jobs:
 
       # For Azure uploads
       - run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-      # For epub -> PDF conversion
-      - run: sudo apt-get update
-      - run: sudo apt install calibre
 
       - name: Prepare website v2
         run: |
