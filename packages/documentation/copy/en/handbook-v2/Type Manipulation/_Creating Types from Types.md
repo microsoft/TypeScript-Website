@@ -2,7 +2,7 @@
 title: Creating Types from Types
 layout: docs
 permalink: /docs/handbook/2/types-from-types.html
-oneline: "Step one in learning TypeScript: The basics types."
+oneline: "An overview of the ways in which you can create more types from existing types."
 ---
 
 TypeScript's type system is very powerful because it allows expressing types _in terms of other types_.

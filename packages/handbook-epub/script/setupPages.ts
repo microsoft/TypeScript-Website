@@ -3,30 +3,17 @@
 /* With twoslash
    env CI=213 yarn workspace handbook-epub build
 */
-
-const jetpack = require("fs-jetpack");
-const { createReadStream } = jetpack;
-
 const toHAST = require(`mdast-util-to-hast`);
 const hastToHTML = require(`hast-util-to-html`);
 const {
   recursiveReadDirSync,
 } = require("../../typescriptlang-org/lib/utils/recursiveReadDirSync");
 
-import {
-  readdirSync,
-  readFileSync,
-  lstatSync,
-  copyFileSync,
-  mkdirSync,
-} from "fs";
+import { readFileSync, lstatSync } from "fs";
 import runTwoSlashAcrossDocument from "gatsby-remark-shiki-twoslash";
 const remark = require("remark");
 import { join } from "path";
 import { read as readMarkdownFile } from "gray-matter";
-
-import { getDocumentationNavForLanguage } from "../../typescriptlang-org/src/lib/documentationNavigation";
-import { exists } from "fs-jetpack";
 
 // Reference: https://github.com/AABoyles/LessWrong-Portable/blob/master/build.js
 

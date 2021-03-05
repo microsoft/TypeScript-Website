@@ -2,7 +2,13 @@
 
 import { join } from "path";
 import { writeFileSync, copyFileSync } from "fs";
-import { generateV2Markdowns, getHTML, replaceAllInString } from "./setupPages";
+import {
+  generateV2Markdowns,
+  getGitSHA,
+  getHTML,
+  getReleaseInfo,
+  replaceAllInString,
+} from "./setupPages";
 import { getDocumentationNavForLanguage } from "../../typescriptlang-org/src/lib/documentationNavigation";
 const { chromium } = require("playwright");
 const sass = require("sass");
@@ -46,8 +52,13 @@ const generateCSS = () => {
     .join("\n\n");
 
   const thisCSS = `
+html {
+  background-color: #EEEEEE;
+}
+
 body {
-  margin-top: 5rem;
+  padding-top: 5rem;
+  -webkit-print-color-adjust: exact !important;
 }
 
 article {
@@ -59,22 +70,19 @@ pre {
   page-break-inside:avoid
 }
 
-#handbook-content .whitespace, #handbook-content .whitespace-tight {
-  margin: 0;
-}
-
 .raised {
   box-shadow: none;
 }
 
-pre.twoslash span.error {
-  color: #bf1818;
+#pdf-intro {
+  page-break-after: always
 }
 
-data-err {
-  text-decoration: underline;
-  text-decoration-color: #bf1818;
+#pdf-intro table {
+  width: 600px;
+  margin: 0 auto;
 }
+
     `;
   return css + thisCSS;
 };
@@ -82,27 +90,57 @@ data-err {
 const generateHTML = async () => {
   const handbookNavigation = getDocumentationNavForLanguage("en");
   const handbook = handbookNavigation.find((i) => i.title === "Handbook");
-  let counter = 0;
   let html = "<html>";
 
   const css = generateCSS();
+  const releaseInfo = getReleaseInfo();
 
   // prettier-ignore
   // const style = readFileSync(join(__dirname, "..", "assets", "ebook-style.css"), "utf8");
   html += `<head><style type='text/css'>${css}</style></head>`;
 
   html += "<body><div id='handbook-content'>";
+
+  const date = new Date().toLocaleString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  const sha = getGitSHA().slice(0, 6);
+  html += `
+  <div id="pdf-intro">
+  <center style="page-break-after: always">
+    <img src="./ts.png" width=200>
+    <p style='width: 340px;'>This copy of the TypeScript handbook was created on ${date} against
+    commit
+    <a href="https://github.com/microsoft/TypeScript-Website/tree/${sha}"><code>${sha}</code></a>
+    with
+    <a href="https://www.typescriptlang.org/${releaseInfo.releaseNotesURL}">TypeScript ${releaseInfo.tags.stableMajMin}</a>.
+    </p>
+  </center>
+  `;
+
+  const allPages = [];
+
   for (const item of handbook!.items!) {
     if (item.permalink) {
-      html += await addHandbookPage(item.permalink, counter);
-      counter++;
+      allPages.push(item);
     }
     if (item.items) {
       for (const subitem of item.items) {
-        html += await addHandbookPage(subitem.permalink!, counter);
-        counter++;
+        allPages.push(subitem);
       }
     }
+  }
+
+  html += tableOfContents(allPages);
+  html += "</div>"; //   <div id="pdf-intro">
+
+  for (const item of allPages) {
+    const i = allPages.indexOf(item);
+    html += await addHandbookPage(item.permalink!, i);
   }
 
   writeFileSync(join(__dirname, "..", "assets", "all.html"), html);
@@ -133,7 +171,7 @@ const addHandbookPage = async (id: string, index: number) => {
     throw new Error("Could not get markdown for " + id + `\n\nAll MDs: ${Array.from(markdowns.keys())}`);
 
   const title = md.data.title;
-  const prefix = `<h1>${title}</h1><article><div class="whitespace raised"><div class="markdown">`;
+  const prefix = `<h1 style='margin: 0 2rem' id='title-${index}'>${title}</h1><article><div class="whitespace raised"><div class="markdown">`;
   const suffix = "</div></div></article>";
 
   const html = await getHTML(md.content, {});
@@ -143,6 +181,16 @@ const addHandbookPage = async (id: string, index: number) => {
 
   const content = prefix + edited + suffix;
   return content;
+};
+
+const tableOfContents = (items: any[]) => {
+  const start = `<h1 style='margin: 0 2rem; margin-bottom: 4rem;'>Table of Contents</h1><table><tbody>`;
+  const middle = items.map(
+    (item, i) =>
+      `<tr><td style='width: 200px;'><a href="#title-${i}">${item.title}</a></td><td>${item.oneline}</td></tr>`
+  );
+  const end = `</tbody></table>`;
+  return start + middle.join("\n") + end;
 };
 
 const go = async () => {
