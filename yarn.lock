@@ -15033,6 +15033,7 @@ fsevents@~2.1.2:
   dependencies:
     fs-jetpack: ^2.4.0
     playwright: ^1.9.1
+    sass: "*"
     streampub: "https://github.com/orta/streampub-1.git#ibooks"
     ts-node: "*"
   languageName: unknown
@@ -25832,6 +25833,17 @@ resolve@1.1.7:
   peerDependencies:
     webpack: ^3.0.0 || ^4.0.0
   checksum: 9fbd7ff88a0402a730abd3be090deccf4eea48f9b58547b1cb20fd54b0871af10441969f6f4b46e42b9f86c1bf03bdccd966161c6dceb38a14120485d196af85
+  languageName: node
+  linkType: hard
+
+"sass@npm:*":
+  version: 1.32.8
+  resolution: "sass@npm:1.32.8"
+  dependencies:
+    chokidar: ">=2.0.0 <4.0.0"
+  bin:
+    sass: sass.js
+  checksum: d319b3d7459451b6532b492984e3cbb37381e6c6379622f668900b196c0d545f5a2c32819cf02b5405fb2ef79720fe1f8f16b7614a2fef3fb7af8dfec83a6597
   languageName: node
   linkType: hard
 

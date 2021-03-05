@@ -145,5 +145,9 @@ const addHandbookPage = async (id: string, index: number) => {
   return content;
 };
 
-generateHTML();
-generatePDF();
+const go = async () => {
+  await generateHTML();
+  await generatePDF();
+};
+
+go();
