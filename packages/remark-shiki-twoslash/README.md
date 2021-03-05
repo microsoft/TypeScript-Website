@@ -1,7 +1,7 @@
-### gatsby-shiki-twoslash
+### remark-shiki-twoslash
 
 Sets up markdown code blocks to run through [shiki](https://shiki.matsu.io) which means it gets the VS Code quality
-syntax highlighting. This code is basically the same as [gatsby-remark-shiki-twoslash](https://www.gatsbyjs.org/packages/gatsby-remark-shiki-thoslash/).
+syntax highlighting. This code is _basically_ the same as [gatsby-remark-shiki-twoslash](https://www.gatsbyjs.org/packages/gatsby-remark-shiki-thoslash/) but not tied to gatsby.
 
 Why Shiki? Shiki uses the same syntax highlighter engine as VS Code, which means no matter how complex your code is - it will syntax highlight correctly.
 
@@ -18,7 +18,7 @@ With a bit of work, you can explain complicated code in a way that lets people i
 #### Setup
 
 1. **Install the dependency**: `yarn add remark-shiki-twoslash`
-1. **Include `"gatsby-remark-shiki-twoslash"` in the plugins section** of whatever you're using:
+1. **Include `"remark-shiki-twoslash"` in the plugins section** of whatever you're using:
 
    ```diff
     const jsx = await mdx(content, {
