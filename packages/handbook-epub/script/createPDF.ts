@@ -83,6 +83,10 @@ pre {
   margin: 0 auto;
 }
 
+pre .error-behind {
+  color: white;
+}
+
     `;
   return css + thisCSS;
 };
