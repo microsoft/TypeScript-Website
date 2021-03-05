@@ -56,4 +56,4 @@ Before getting started with [Basic Types](/docs/handbook/2/basic-types.html), we
 - [TypeScript for OOP Programmers](/docs/handbook/typescript-in-5-minutes-oop.html)
 - [TypeScript for Functional Programmers](/docs/handbook/typescript-in-5-minutes-func.html)
 
-Otherwise, jump to [Basic Types](/docs/handbook/2/basic-types.html) or grab an offline copy in [Epub](/assets/typescript-handbook.epub) or [PDF](/assets/typescript-handbook.epub).
+Otherwise, jump to [Basic Types](/docs/handbook/2/basic-types.html) or grab an copy in [Epub](/assets/typescript-handbook.epub) or [PDF](/assets/typescript-handbook.epub) form.

@@ -31,6 +31,18 @@ const getOriginalAuthor = (filepath) => {
   };
 };
 
+const gravatarURLForAuthor = (email) => {
+  switch (email) {
+    case "orta.therox@gmail.com":
+    case "git@orta.io":
+    case "ortam@microsoft.com":
+      return "https://avatars.githubusercontent.com/u/49038?s=100&u=0b9ac5bf42a8ea2543a05191e150e0213456744e&v=4";
+
+    default:
+      return crypto.createHash("md5").update(email).digest("hex");
+  }
+};
+
 // Gets the rest of the authors for a file
 const getAuthorsForFile = (filepath) => {
   const cmd = `git log --follow --format="%an | %aE" "${filepath}"`;
@@ -58,7 +70,7 @@ const getAuthorsForFile = (filepath) => {
       const email = c.email || "NOOP";
       objs.set(id, {
         name: c.name,
-        gravatar: crypto.createHash("md5").update(email).digest("hex"),
+        gravatar: gravatarURLForAuthor(email),
         count: 1,
       });
     }

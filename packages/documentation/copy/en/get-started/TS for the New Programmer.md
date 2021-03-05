@@ -161,11 +161,14 @@ If you find yourself searching for something like "how to sort a list in TypeScr
 The way you sort a list in TypeScript is the same way you do so in JavaScript.
 If you find a resource that uses TypeScript directly, that's great too, but don't limit yourself to thinking you need TypeScript-specific answers for everyday questions about how to accomplish runtime tasks.
 
----
+## Next Steps
 
-From here, we'd recommend learning some of the JavaScript fundamentals (the [JavaScript guide at the Mozilla Web Docs](https://developer.mozilla.org/docs/Web/JavaScript/Guide) is a good starting point.)
+This was a brief overview of the syntax and tools used in everyday TypeScript. From here, you can:
 
-Once you're feeling comfortable, you can come back to read [TypeScript for JavaScript Programmers](/docs/handbook/typescript-in-5-minutes.html), then start on [the handbook](/docs/handbook/intro.html) or explore the [Playground examples](/play#show-examples).
+- Learn some of the JavaScript fundamentals (the [JavaScript guide at the Mozilla Web Docs](https://developer.mozilla.org/docs/Web/JavaScript/Guide) is a good starting point.)
+- Continue to [TypeScript for JavaScript Programmers](/docs/handbook/typescript-in-5-minutes.html)
+- Read the full Handbook [from start to finish](/docs/handbook/intro.html) (30m)
+- Explore the [Playground examples](/play#show-examples)
 
 <!-- Note: I'll be happy to write the following... -->
 <!--
