@@ -13,11 +13,37 @@ export const runPlugin: PluginFactory = (i, utils) => {
     id: "logs",
     displayName: i("play_sidebar_logs"),
     willMount: (sandbox, container) => {
+      const ui = createUI()
+
+      const clearLogsAction = {
+        id: "clear-logs-play",
+        label: "Clear Playground Logs",
+        keybindings: [sandbox.monaco.KeyMod.CtrlCmd | sandbox.monaco.KeyCode.KEY_K],
+
+        contextMenuGroupId: "run",
+        contextMenuOrder: 1.5,
+
+        run: function () {
+          clearLogs()
+          ui.flashInfo(i("play_clear_logs"))
+        },
+      }
+
+      const clearLogsButton = document.createElement("button")
+      clearLogsButton.id = "clear-logs-button"
+      clearLogsButton.innerHTML = "Clear Logs"
+      clearLogsButton.onclick = e => {
+        e.preventDefault();
+        clearLogsAction.run();
+      }
+
+      container.appendChild(clearLogsButton)
+
       if (!addedClearAction) {
-        const ui = createUI()
-        addClearAction(sandbox, ui, i)
+        sandbox.editor.addAction(clearLogsAction);
         addedClearAction = true
       }
+
 
       if (allLogs.length === 0) {
         const noErrorsMessage = document.createElement("div")
@@ -160,22 +186,4 @@ function rewireLoggingToElement(
       return output + textRep + comma + "&nbsp;"
     }, "")
   }
-}
-
-const addClearAction = (sandbox: Sandbox, ui: UI, i: any) => {
-  const clearLogsAction = {
-    id: "clear-logs-play",
-    label: "Clear Playground Logs",
-    keybindings: [sandbox.monaco.KeyMod.CtrlCmd | sandbox.monaco.KeyCode.KEY_K],
-
-    contextMenuGroupId: "run",
-    contextMenuOrder: 1.5,
-
-    run: function () {
-      clearLogs()
-      ui.flashInfo(i("play_clear_logs"))
-    },
-  }
-
-  sandbox.editor.addAction(clearLogsAction)
 }
