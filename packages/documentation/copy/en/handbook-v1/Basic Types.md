@@ -340,7 +340,7 @@ declare function create(o: object | null): void;
 // OK
 create({ prop: 0 });
 create(null);
-create(undefined); // Remember, undefined is not a subtype of null
+create(undefined); // with `--strictNullChecks` flag enabled, undefined is not a subtype of null
 
 create(42);
 create("string");
