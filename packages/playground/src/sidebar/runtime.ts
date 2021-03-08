@@ -99,7 +99,7 @@ function rewireLoggingToElement(
       const eleLog = eleLocator()
       const prefix = `[<span class="log-${name}">${id}</span>]: `
       const eleContainerLog = eleOverflowLocator()
-      allLogs.push(prefix + output + "<br>");
+      allLogs.push(`${prefix}${output}<br>`);
       eleLog.innerHTML = allLogs.join("<hr />")
       const scrollElement = eleContainerLog.parentElement
       if (autoScroll && scrollElement) {
