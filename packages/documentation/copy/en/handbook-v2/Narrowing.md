@@ -430,6 +430,8 @@ const zoo: (Fish | Bird)[] = [getSmallPet(), getSmallPet(), getSmallPet()];
 const underWater1: Fish[] = zoo.filter(isFish);
 // or, equivalently
 const underWater2: Fish[] = zoo.filter<Fish>(isFish);
+
+However, the following will throw an error.
 const underWater3: Fish[] = zoo.filter<Fish>((pet) => isFish(pet));
 ```
 
