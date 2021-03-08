@@ -22,11 +22,11 @@
   }
 
   // Handles hash links with a sticky header
-  a[name]:before {
+  a[name]::before {
     display: block;
     content: "";
-    margin-top: -121px;
-    height: 121px;
+    margin-top: -80px;
+    height: 80px;
     visibility: hidden;
     scroll-margin-top: 121px;
   }

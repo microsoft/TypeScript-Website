@@ -2,6 +2,16 @@
 @import "./markdown-twoslash.scss";
 
 .markdown {
+  scroll-behavior: smooth;
+
+  [id]::before {
+    content: "";
+    display: block;
+    visibility: hidden;
+    height: 30px;
+    margin-top: -30px;
+  }
+
   h1 {
     font-weight: 400;
     line-height: 1.3;
