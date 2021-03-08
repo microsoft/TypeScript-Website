@@ -134,7 +134,7 @@ function map<E, O>(arr: E[], func: (arg: E) => O): O[] {
   return arr.map(func);
 }
 
-// Parameter 'n' is of type 'number'
+// Parameter 'n' is of type 'string'
 // 'parsed' is of type 'number[]'
 const parsed = map(["1", "2", "3"], (n) => parseInt(n));
 ```
