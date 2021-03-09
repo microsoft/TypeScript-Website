@@ -5,6 +5,12 @@ permalink: /docs/handbook/basic-types.html
 oneline: "Step two in learning TypeScript: The basic types."
 handbook: "true"
 deprecated_by: /docs/handbook/2/everyday-types.html
+# prettier-ignore
+deprecation_redirects: [
+  never, /docs/handbook/2/narrowing.html#the-never-type,
+  unknown, /docs/handbook/2/functions.html#unknown,
+  void, /docs/handbook/2/functions.html#void
+]
 ---
 
 For programs to be useful, we need to be able to work with some of the simplest units of data: numbers, strings, structures, boolean values, and the like.
