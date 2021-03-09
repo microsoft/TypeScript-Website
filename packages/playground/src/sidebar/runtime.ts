@@ -5,27 +5,37 @@ import { localize } from "../localizeWithFallback"
 
 let allLogs: string[] = []
 let addedClearAction = false
+const cancelButtonSVG = `
+<svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="6" cy="7" r="5" stroke-width="2"/>
+<line x1="0.707107" y1="1.29289" x2="11.7071" y2="12.2929" stroke-width="2"/>
+</svg>
+`
 
 export const runPlugin: PluginFactory = (i, utils) => {
   const plugin: PlaygroundPlugin = {
     id: "logs",
     displayName: i("play_sidebar_logs"),
     willMount: (sandbox, container) => {
-      if (!addedClearAction) {
-        const ui = createUI()
-        addClearAction(sandbox, ui, i)
-        addedClearAction = true
+      const ui = createUI()
+
+      const clearLogsAction = {
+        id: "clear-logs-play",
+        label: "Clear Playground Logs",
+        keybindings: [sandbox.monaco.KeyMod.CtrlCmd | sandbox.monaco.KeyCode.KEY_K],
+
+        contextMenuGroupId: "run",
+        contextMenuOrder: 1.5,
+
+        run: function () {
+          clearLogs()
+          ui.flashInfo(i("play_clear_logs"))
+        },
       }
 
-      if (allLogs.length === 0) {
-        const noErrorsMessage = document.createElement("div")
-        noErrorsMessage.id = "empty-message-container"
-        container.appendChild(noErrorsMessage)
-
-        const message = document.createElement("div")
-        message.textContent = localize("play_sidebar_logs_no_logs", "No logs")
-        message.classList.add("empty-plugin-message")
-        noErrorsMessage.appendChild(message)
+      if (!addedClearAction) {
+        sandbox.editor.addAction(clearLogsAction);
+        addedClearAction = true
       }
 
       const errorUL = document.createElement("div")
@@ -36,6 +46,56 @@ export const runPlugin: PluginFactory = (i, utils) => {
       logs.id = "log"
       logs.innerHTML = allLogs.join('<hr />')
       errorUL.appendChild(logs)
+
+      const logToolsContainer = document.createElement("div")
+      logToolsContainer.id = "log-tools"
+      container.appendChild(logToolsContainer);
+
+      const clearLogsButton = document.createElement("div")
+      clearLogsButton.id = "clear-logs-button"
+      clearLogsButton.innerHTML = cancelButtonSVG
+      clearLogsButton.onclick = e => {
+        e.preventDefault();
+        clearLogsAction.run();
+
+        const filterTextBox: any = document.getElementById("filter-logs")
+        filterTextBox!.value = ""
+      }
+      logToolsContainer.appendChild(clearLogsButton)
+
+      const filterTextBox = document.createElement("input");
+      filterTextBox.id = "filter-logs"
+      filterTextBox.placeholder = i("play_sidebar_tools_filter_placeholder")
+      filterTextBox.addEventListener("input", (e: any) => {
+        const inputText = e.target.value
+
+        const eleLog = document.getElementById("log")!
+        eleLog.innerHTML = allLogs
+          .filter(log => {
+            const userLoggedText = log.substring(log.indexOf(":") + 1, log.indexOf("&nbsp;<br>"))
+            return userLoggedText.includes(inputText)
+          }).join("<hr />")
+
+        if (inputText === "") {
+          const logContainer = document.getElementById("log-container")!
+          logContainer.scrollTop = logContainer.scrollHeight
+        }
+      })
+      logToolsContainer.appendChild(filterTextBox)
+
+      if (allLogs.length === 0) {
+        const noErrorsMessage = document.createElement("div")
+        noErrorsMessage.id = "empty-message-container"
+        container.appendChild(noErrorsMessage)
+
+        const message = document.createElement("div")
+        message.textContent = localize("play_sidebar_logs_no_logs", "No logs")
+        message.classList.add("empty-plugin-message")
+        noErrorsMessage.appendChild(message)
+
+        errorUL.style.display = "none"
+        logToolsContainer.style.display = "none"
+      }
     },
   }
 
@@ -52,8 +112,12 @@ export const clearLogs = () => {
 
 export const runWithCustomLogs = (closure: Promise<string>, i: Function) => {
   const noLogs = document.getElementById("empty-message-container")
+  const logContainer = document.getElementById("log-container")!
+  const logToolsContainer = document.getElementById("log-tools")!
   if (noLogs) {
     noLogs.style.display = "none"
+    logContainer.style.display = "block"
+    logToolsContainer.style.display = "flex"
   }
 
   rewireLoggingToElement(
@@ -101,19 +165,10 @@ function rewireLoggingToElement(
       const eleContainerLog = eleOverflowLocator()
       allLogs.push(`${prefix}${output}<br>`);
       eleLog.innerHTML = allLogs.join("<hr />")
-      const scrollElement = eleContainerLog.parentElement
-      if (autoScroll && scrollElement) {
-        scrollToBottom(scrollElement)
+      if (autoScroll && eleContainerLog) {
+        eleContainerLog.scrollTop = eleContainerLog.scrollHeight
       }
       raw[name](...objs)
-    }
-  }
-
-  function scrollToBottom(element: Element) {
-    const overflowHeight = element.scrollHeight - element.clientHeight
-    const atBottom = element.scrollTop >= overflowHeight
-    if (!atBottom) {
-      element.scrollTop = overflowHeight
     }
   }
 
@@ -153,22 +208,4 @@ function rewireLoggingToElement(
       return output + textRep + comma + "&nbsp;"
     }, "")
   }
-}
-
-const addClearAction = (sandbox: Sandbox, ui: UI, i: any) => {
-  const clearLogsAction = {
-    id: "clear-logs-play",
-    label: "Clear Playground Logs",
-    keybindings: [sandbox.monaco.KeyMod.CtrlCmd | sandbox.monaco.KeyCode.KEY_K],
-
-    contextMenuGroupId: "run",
-    contextMenuOrder: 1.5,
-
-    run: function () {
-      clearLogs()
-      ui.flashInfo(i("play_clear_logs"))
-    },
-  }
-
-  sandbox.editor.addAction(clearLogsAction)
 }

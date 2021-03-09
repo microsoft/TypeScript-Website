@@ -89,6 +89,7 @@ console.log(anExampleVariable)
   play_sidebar_ast_title: "[WIP] AST Viewer",
   play_sidebar_ast_blurb: "Inspect the TypeScript AST",
 
+  play_sidebar_tools_filter_placeholder: "Filter",
   // Notes:
   // Compiler flag information is all from the tsconfig reference info
 }

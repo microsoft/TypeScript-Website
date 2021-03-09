@@ -465,11 +465,31 @@ main #editor-toolbar {
 
 /** Design System Tweaks **/
 .playground-plugin-container {
+  #log-tools {
+    display: flex;
+    border-top: 1px var(--playground-dragbar-border) solid;
+    border-bottom: 1px var(--playground-dragbar-border) solid;
+    margin-top: 2px;
+    padding: 3px;
+    align-items: center;
+
+    svg {
+      stroke: var(--text-color);
+      cursor: pointer;
+      padding-right: 5px;
+    }
+  }
+
   #log-container {
     overflow: auto;
     font-family: $font-code;
     line-height: 1.5rem;
     white-space: pre-wrap;
+    height: 95%;
+
+    #log {
+      margin-top: 1rem;
+    }
 
     .log-warn {
       color: orange;
