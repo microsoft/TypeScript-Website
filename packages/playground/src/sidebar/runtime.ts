@@ -5,6 +5,12 @@ import { localize } from "../localizeWithFallback"
 
 let allLogs: string[] = []
 let addedClearAction = false
+const cancelButtonSVG = `
+<svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="6" cy="7" r="5" stroke-width="2"/>
+<line x1="0.707107" y1="1.29289" x2="11.7071" y2="12.2929" stroke-width="2"/>
+</svg>
+`
 
 export const runPlugin: PluginFactory = (i, utils) => {
   const plugin: PlaygroundPlugin = {
@@ -27,31 +33,9 @@ export const runPlugin: PluginFactory = (i, utils) => {
         },
       }
 
-      const clearLogsButton = document.createElement("button")
-      clearLogsButton.id = "clear-logs-button"
-      clearLogsButton.innerHTML = "Clear Logs"
-      clearLogsButton.onclick = e => {
-        e.preventDefault();
-        clearLogsAction.run();
-      }
-
-      container.appendChild(clearLogsButton)
-
       if (!addedClearAction) {
         sandbox.editor.addAction(clearLogsAction);
         addedClearAction = true
-      }
-
-
-      if (allLogs.length === 0) {
-        const noErrorsMessage = document.createElement("div")
-        noErrorsMessage.id = "empty-message-container"
-        container.appendChild(noErrorsMessage)
-
-        const message = document.createElement("div")
-        message.textContent = localize("play_sidebar_logs_no_logs", "No logs")
-        message.classList.add("empty-plugin-message")
-        noErrorsMessage.appendChild(message)
       }
 
       const errorUL = document.createElement("div")
@@ -62,6 +46,43 @@ export const runPlugin: PluginFactory = (i, utils) => {
       logs.id = "log"
       logs.innerHTML = allLogs.join('<hr />')
       errorUL.appendChild(logs)
+
+      const logToolsContainer = document.createElement("div")
+      logToolsContainer.id = "log-tools"
+      container.appendChild(logToolsContainer);
+
+      const clearLogsButton = document.createElement("div")
+      clearLogsButton.id = "clear-logs-button"
+      clearLogsButton.innerHTML = cancelButtonSVG
+      clearLogsButton.onclick = e => {
+        e.preventDefault();
+        clearLogsAction.run();
+      }
+      logToolsContainer.appendChild(clearLogsButton)
+
+      const filterTextBox = document.createElement("input");
+      filterTextBox.id = "filter-logs"
+      filterTextBox.placeholder = i("play_sidebar_tools_filter_placeholder")
+      filterTextBox.addEventListener("input", (e: any) => {
+        const eleLog = document.getElementById("log")!
+        console.log(allLogs)
+        eleLog.innerHTML = allLogs.filter(log => log.substring(log.indexOf(":") + 1, log.indexOf("&nbsp;<br>")).includes(e.target.value)).join("<hr />")
+      })
+      logToolsContainer.appendChild(filterTextBox)
+
+      if (allLogs.length === 0) {
+        const noErrorsMessage = document.createElement("div")
+        noErrorsMessage.id = "empty-message-container"
+        container.appendChild(noErrorsMessage)
+
+        const message = document.createElement("div")
+        message.textContent = localize("play_sidebar_logs_no_logs", "No logs")
+        message.classList.add("empty-plugin-message")
+        noErrorsMessage.appendChild(message)
+
+        errorUL.style.display = "none"
+        logToolsContainer.style.display = "none"
+      }
     },
   }
 
@@ -78,8 +99,12 @@ export const clearLogs = () => {
 
 export const runWithCustomLogs = (closure: Promise<string>, i: Function) => {
   const noLogs = document.getElementById("empty-message-container")
+  const logContainer = document.getElementById("log-container")!
+  const logToolsContainer = document.getElementById("log-tools")!
   if (noLogs) {
     noLogs.style.display = "none"
+    logContainer.style.display = "block"
+    logToolsContainer.style.display = "flex"
   }
 
   rewireLoggingToElement(
