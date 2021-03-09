@@ -46,6 +46,7 @@ export const docCopy = {
   doc_apis_loopback_blurb:
     "A highly extensible Node.js and TypeScript framework for building APIs and microservices",
   doc_apis_fastify_blurb: "A fast and low overhead web framework for Node.js",
+  doc_apis_foal_blurb: "Elegant and complete Node.js framework for building web applications.",
   doc_react: "React Projects",
   doc_react_create_blurb: "Set up a modern web app by running one command",
   doc_react_gatsby_blurb:
