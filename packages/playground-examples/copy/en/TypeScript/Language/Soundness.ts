@@ -17,7 +17,7 @@
 // code, the language tends towards simplicity and usability
 // when presented with ways to add types to JavaScript.
 
-// Let's look at a few cases where TypeScript is provably
+// Let's look at a few cases where TypeScript is probably
 // not sound, to understand what those trade-offs would look
 // like otherwise.
 
