@@ -5,6 +5,10 @@ permalink: /docs/handbook/unions-and-intersections.html
 oneline: How to use unions and intersection types in TypeScript
 handbook: "true"
 deprecated_by: /docs/handbook/2/everyday-types.html#union-types
+# prettier-ignore
+deprecation_redirects: [
+  discriminating-unions, /docs/handbook/2/narrowing.html#discriminated-unions
+]
 ---
 
 So far, the handbook has covered types which are atomic objects.

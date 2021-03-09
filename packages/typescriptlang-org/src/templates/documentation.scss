@@ -250,7 +250,12 @@
     align-items: center;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1;
+
+    [id]::before {
+      height: 110px;
+      margin-top: -110px;
+    }
 
     @media (max-width: $screen-sm) {
       margin: 0 0 0 0;

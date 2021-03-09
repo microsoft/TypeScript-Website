@@ -16,8 +16,15 @@ const moduleJSONURL = (name: string) =>
   // prettier-ignore
   `https://ofcncog2cu-dsn.algolia.net/1/indexes/npm-search/${encodeURIComponent(name)}?attributes=types&x-algolia-agent=Algolia%20for%20vanilla%20JavaScript%20(lite)%203.27.1&x-algolia-application-id=OFCNCOG2CU&x-algolia-api-key=f54e21fa3a2a0160595bb058179bfb1e`
 
-const unpkgURL = (name: string, path: string) =>
-  `https://www.unpkg.com/${encodeURIComponent(name)}/${encodeURIComponent(path)}`
+const unpkgURL = (name: string, path: string) => {
+  if (!name) {
+    const actualName = path.substring(0, path.indexOf("/"));
+    const actualPath = path.substring(path.indexOf("/") + 1);
+    return `https://www.unpkg.com/${encodeURIComponent(actualName)}/${encodeURIComponent(actualPath)}`
+
+  }
+  return `https://www.unpkg.com/${encodeURIComponent(name)}/${encodeURIComponent(path)}`
+}
 
 const packageJSONURL = (name: string) => unpkgURL(name, "package.json")
 
@@ -150,21 +157,37 @@ const convertToModuleReferenceID = (outerModule: string, moduleDeclaration: stri
 const addModuleToRuntime = async (mod: string, path: string, config: ATAConfig) => {
   const isDeno = path && path.indexOf("https://") === 0
 
-  const dtsFileURL = isDeno ? path : unpkgURL(mod, path)
+  let actualMod = mod;
+  let actualPath = path;
 
-  const content = await getCachedDTSString(config, dtsFileURL)
-  if (!content) {
-    return errorMsg(`Could not get root d.ts file for the module '${mod}' at ${path}`, {}, config)
+  if (!mod) {
+    actualMod = path.substring(0, path.indexOf("/"));
+    actualPath = path.substring(path.indexOf("/") + 1);
   }
 
+  const dtsFileURL = isDeno ? path : unpkgURL(actualMod, actualPath)
+
+  let content = await getCachedDTSString(config, dtsFileURL)
+  if (!content) {
+    const isDeno = actualPath && actualPath.indexOf("https://") === 0
+
+    const dtsFileURL = isDeno ? actualPath : unpkgURL(actualMod, `${actualPath.replace(".d.ts", "")}/index.d.ts`);
+    content = await getCachedDTSString(config, dtsFileURL);
+
+    if (!content) {
+      return errorMsg(`Could not get root d.ts file for the module '${actualMod}' at ${actualPath}`, {}, config);
+    }
+  }
+
+
   // Now look and grab dependent modules where you need the
-  await getDependenciesForModule(content, mod, path, config)
+  await getDependenciesForModule(content, actualMod, actualPath, config)
 
   if (isDeno) {
-    const wrapped = `declare module "${path}" { ${content} }`
-    config.addLibraryToRuntime(wrapped, path)
+    const wrapped = `declare module "${actualPath}" { ${content} }`
+    config.addLibraryToRuntime(wrapped, actualPath)
   } else {
-    config.addLibraryToRuntime(content, `file:///node_modules/${mod}/${path}`)
+    config.addLibraryToRuntime(content, `file:///node_modules/${actualMod}/${actualPath}`)
   }
 }
 

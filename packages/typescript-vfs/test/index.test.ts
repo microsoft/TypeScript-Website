@@ -84,15 +84,14 @@ it("compiles in the right DTS files", () => {
   expect(semDiags.length).toBe(0)
 })
 
-// Hrm, it would be great to get this working
-it.skip("emits new files to the fsMap", () => {
+it("emits new files to the fsMap", () => {
   const fsMap = createDefaultMapFromNodeModules({})
   fsMap.set("index.ts", "console.log('Hi!'')")
 
   const system = createSystem(fsMap)
   const compilerOpts = {}
   const env = createVirtualTypeScriptEnvironment(system, ["index.ts"], ts, compilerOpts)
-  const emitted = env.languageService.getProgram()?.emit()
+  const emitted = env.languageService.getProgram()?.emit(undefined, system.writeFile)
 
   expect(emitted!.emitSkipped).toEqual(false)
   expect(Array.from(fsMap.keys())).toContain("index.js")

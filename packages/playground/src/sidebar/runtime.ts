@@ -3,9 +3,7 @@ import { PlaygroundPlugin, PluginFactory } from ".."
 import { createUI, UI } from "../createUI"
 import { localize } from "../localizeWithFallback"
 
-const allLogs: string[] = []
-let offset = 0
-let curLog = 0
+let allLogs: string[] = []
 let addedClearAction = false
 
 export const runPlugin: PluginFactory = (i, utils) => {
@@ -71,8 +69,7 @@ export const runPlugin: PluginFactory = (i, utils) => {
 }
 
 export const clearLogs = () => {
-  offset += allLogs.length
-  allLogs.length = 0
+  allLogs = [];
   const logs = document.getElementById("log")
   if (logs) {
     logs.textContent = ""
@@ -108,10 +105,10 @@ function rewireLoggingToElement(
 
   closure.then(js => {
     const replace = {} as any
-    bindLoggingFunc(replace, rawConsole, 'log', 'LOG', curLog)
-    bindLoggingFunc(replace, rawConsole, 'debug', 'DBG', curLog)
-    bindLoggingFunc(replace, rawConsole, 'warn', 'WRN', curLog)
-    bindLoggingFunc(replace, rawConsole, 'error', 'ERR', curLog)
+    bindLoggingFunc(replace, rawConsole, 'log', 'LOG')
+    bindLoggingFunc(replace, rawConsole, 'debug', 'DBG')
+    bindLoggingFunc(replace, rawConsole, 'warn', 'WRN')
+    bindLoggingFunc(replace, rawConsole, 'error', 'ERR')
     replace['clear'] = clearLogs
     const console = Object.assign({}, rawConsole, replace)
     try {
@@ -120,19 +117,15 @@ function rewireLoggingToElement(
       console.error(i("play_run_js_fail"))
       console.error(error)
     }
-    curLog++
   })
 
-  function bindLoggingFunc(obj: any, raw: any, name: string, id: string, cur: number) {
+  function bindLoggingFunc(obj: any, raw: any, name: string, id: string) {
     obj[name] = function (...objs: any[]) {
       const output = produceOutput(objs)
       const eleLog = eleLocator()
       const prefix = `[<span class="log-${name}">${id}</span>]: `
       const eleContainerLog = eleOverflowLocator()
-      const index = cur - offset
-      if (index >= 0) {
-        allLogs[index] = (allLogs[index] ?? '') + prefix + output + "<br>"
-      }
+      allLogs.push(`${prefix}${output}<br>`);
       eleLog.innerHTML = allLogs.join("<hr />")
       const scrollElement = eleContainerLog.parentElement
       if (autoScroll && scrollElement) {
