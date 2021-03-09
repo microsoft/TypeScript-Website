@@ -57,6 +57,9 @@ export const runPlugin: PluginFactory = (i, utils) => {
       clearLogsButton.onclick = e => {
         e.preventDefault();
         clearLogsAction.run();
+
+        const filterTextBox: any = document.getElementById("filter-logs")
+        filterTextBox!.value = ""
       }
       logToolsContainer.appendChild(clearLogsButton)
 
