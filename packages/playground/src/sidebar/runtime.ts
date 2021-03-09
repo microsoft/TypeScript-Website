@@ -64,9 +64,19 @@ export const runPlugin: PluginFactory = (i, utils) => {
       filterTextBox.id = "filter-logs"
       filterTextBox.placeholder = i("play_sidebar_tools_filter_placeholder")
       filterTextBox.addEventListener("input", (e: any) => {
+        const inputText = e.target.value
+
         const eleLog = document.getElementById("log")!
-        console.log(allLogs)
-        eleLog.innerHTML = allLogs.filter(log => log.substring(log.indexOf(":") + 1, log.indexOf("&nbsp;<br>")).includes(e.target.value)).join("<hr />")
+        eleLog.innerHTML = allLogs
+          .filter(log => {
+            const userLoggedText = log.substring(log.indexOf(":") + 1, log.indexOf("&nbsp;<br>"))
+            return userLoggedText.includes(inputText)
+          }).join("<hr />")
+
+        if (inputText === "") {
+          const logContainer = document.getElementById("log-container")!
+          logContainer.scrollTop = logContainer.scrollHeight
+        }
       })
       logToolsContainer.appendChild(filterTextBox)
 
@@ -152,19 +162,10 @@ function rewireLoggingToElement(
       const eleContainerLog = eleOverflowLocator()
       allLogs.push(`${prefix}${output}<br>`);
       eleLog.innerHTML = allLogs.join("<hr />")
-      const scrollElement = eleContainerLog.parentElement
-      if (autoScroll && scrollElement) {
-        scrollToBottom(scrollElement)
+      if (autoScroll && eleContainerLog) {
+        eleContainerLog.scrollTop = eleContainerLog.scrollHeight
       }
       raw[name](...objs)
-    }
-  }
-
-  function scrollToBottom(element: Element) {
-    const overflowHeight = element.scrollHeight - element.clientHeight
-    const atBottom = element.scrollTop >= overflowHeight
-    if (!atBottom) {
-      element.scrollTop = overflowHeight
     }
   }
 
