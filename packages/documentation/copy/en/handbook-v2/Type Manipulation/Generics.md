@@ -45,9 +45,9 @@ function identity<Type>(arg: Type): Type {
 }
 ```
 
-We've now added a type variable `T` to the identity function.
-This `T` allows us to capture the type the user provides (e.g. `number`), so that we can use that information later.
-Here, we use `T` again as the return type. On inspection, we can now see the same type is used for the argument and the return type.
+We've now added a type variable `Type` to the identity function.
+This `Type` allows us to capture the type the user provides (e.g. `number`), so that we can use that information later.
+Here, we use `Type` again as the return type. On inspection, we can now see the same type is used for the argument and the return type.
 This allows us to traffic that type information in one side of the function and out the other.
 
 We say that this version of the `identity` function is generic, as it works over a range of types.
@@ -65,9 +65,9 @@ let output = identity<string>("myString");
 //       ^?
 ```
 
-Here we explicitly set `T` to be `string` as one of the arguments to the function call, denoted using the `<>` around the arguments rather than `()`.
+Here we explicitly set `Type` to be `string` as one of the arguments to the function call, denoted using the `<>` around the arguments rather than `()`.
 
-The second way is also perhaps the most common. Here we use _type argument inference_ -- that is, we want the compiler to set the value of `T` for us automatically based on the type of the argument we pass in:
+The second way is also perhaps the most common. Here we use _type argument inference_ -- that is, we want the compiler to set the value of `Type` for us automatically based on the type of the argument we pass in:
 
 ```ts twoslash
 function identity<Type>(arg: Type): Type {
@@ -78,7 +78,7 @@ let output = identity("myString");
 //       ^?
 ```
 
-Notice that we didn't have to explicitly pass the type in the angle brackets (`<>`); the compiler just looked at the value `"myString"`, and set `T` to its type.
+Notice that we didn't have to explicitly pass the type in the angle brackets (`<>`); the compiler just looked at the value `"myString"`, and set `Type` to its type.
 While type argument inference can be a helpful tool to keep code shorter and more readable, you may need to explicitly pass in the type arguments as we did in the previous example when the compiler fails to infer the type, as may happen in more complex examples.
 
 ## Working with Generic Type Variables
@@ -108,7 +108,7 @@ function loggingIdentity<Type>(arg: Type): Type {
 When we do, the compiler will give us an error that we're using the `.length` member of `arg`, but nowhere have we said that `arg` has this member.
 Remember, we said earlier that these type variables stand in for any and all types, so someone using this function could have passed in a `number` instead, which does not have a `.length` member.
 
-Let's say that we've actually intended this function to work on arrays of `T` rather than `T` directly. Since we're working with arrays, the `.length` member should be available.
+Let's say that we've actually intended this function to work on arrays of `Type` rather than `Type` directly. Since we're working with arrays, the `.length` member should be available.
 We can describe this just like we would create arrays of other types:
 
 ```ts twoslash {1}
@@ -118,9 +118,9 @@ function loggingIdentity<Type>(arg: Type[]): Type[] {
 }
 ```
 
-You can read the type of `loggingIdentity` as "the generic function `loggingIdentity` takes a type parameter `T`, and an argument `arg` which is an array of `T`s, and returns an array of `T`s."
-If we passed in an array of numbers, we'd get an array of numbers back out, as `T` would bind to `number`.
-This allows us to use our generic type variable `T` as part of the types we're working with, rather than the whole type, giving us greater flexibility.
+You can read the type of `loggingIdentity` as "the generic function `loggingIdentity` takes a type parameter `Type`, and an argument `arg` which is an array of `Type`s, and returns an array of `Type`s."
+If we passed in an array of numbers, we'd get an array of numbers back out, as `Type` would bind to `number`.
+This allows us to use our generic type variable `Type` as part of the types we're working with, rather than the whole type, giving us greater flexibility.
 
 We can alternatively write the sample example this way:
 
@@ -132,7 +132,7 @@ function loggingIdentity<Type>(arg: Array<Type>): Array<Type> {
 ```
 
 You may already be familiar with this style of type from other languages.
-In the next section, we'll cover how you can create your own generic types like `Array<T>`.
+In the next section, we'll cover how you can create your own generic types like `Array<Type>`.
 
 ## Generic Types
 
@@ -266,7 +266,7 @@ function loggingIdentity<Type>(arg: Type): Type {
 
 Instead of working with any and all types, we'd like to constrain this function to work with any and all types that *also*  have the `.length` property.
 As long as the type has this member, we'll allow it, but it's required to have at least this member.
-To do so, we must list our requirement as a constraint on what T can be.
+To do so, we must list our requirement as a constraint on what `Type` can be.
 
 To do so, we'll create an interface that describes our constraint.
 Here, we'll create an interface that has a single `.length` property and then we'll use this interface and the `extends` keyword to denote our constraint:
