@@ -34,7 +34,7 @@ export const runPlugin: PluginFactory = (i, utils) => {
       }
 
       if (!addedClearAction) {
-        sandbox.editor.addAction(clearLogsAction);
+        sandbox.editor.addAction(clearLogsAction)
         addedClearAction = true
       }
 
@@ -44,26 +44,26 @@ export const runPlugin: PluginFactory = (i, utils) => {
 
       const logs = document.createElement("div")
       logs.id = "log"
-      logs.innerHTML = allLogs.join('<hr />')
+      logs.innerHTML = allLogs.join("<hr />")
       errorUL.appendChild(logs)
 
       const logToolsContainer = document.createElement("div")
       logToolsContainer.id = "log-tools"
-      container.appendChild(logToolsContainer);
+      container.appendChild(logToolsContainer)
 
       const clearLogsButton = document.createElement("div")
       clearLogsButton.id = "clear-logs-button"
       clearLogsButton.innerHTML = cancelButtonSVG
       clearLogsButton.onclick = e => {
-        e.preventDefault();
-        clearLogsAction.run();
+        e.preventDefault()
+        clearLogsAction.run()
 
         const filterTextBox: any = document.getElementById("filter-logs")
         filterTextBox!.value = ""
       }
       logToolsContainer.appendChild(clearLogsButton)
 
-      const filterTextBox = document.createElement("input");
+      const filterTextBox = document.createElement("input")
       filterTextBox.id = "filter-logs"
       filterTextBox.placeholder = i("play_sidebar_tools_filter_placeholder")
       filterTextBox.addEventListener("input", (e: any) => {
@@ -74,7 +74,8 @@ export const runPlugin: PluginFactory = (i, utils) => {
           .filter(log => {
             const userLoggedText = log.substring(log.indexOf(":") + 1, log.indexOf("&nbsp;<br>"))
             return userLoggedText.includes(inputText)
-          }).join("<hr />")
+          })
+          .join("<hr />")
 
         if (inputText === "") {
           const logContainer = document.getElementById("log-container")!
@@ -103,7 +104,7 @@ export const runPlugin: PluginFactory = (i, utils) => {
 }
 
 export const clearLogs = () => {
-  allLogs = [];
+  allLogs = []
   const logs = document.getElementById("log")
   if (logs) {
     logs.textContent = ""
@@ -138,19 +139,19 @@ function rewireLoggingToElement(
   autoScroll: boolean,
   i: Function
 ) {
-
   const rawConsole = console
 
   closure.then(js => {
     const replace = {} as any
-    bindLoggingFunc(replace, rawConsole, 'log', 'LOG')
-    bindLoggingFunc(replace, rawConsole, 'debug', 'DBG')
-    bindLoggingFunc(replace, rawConsole, 'warn', 'WRN')
-    bindLoggingFunc(replace, rawConsole, 'error', 'ERR')
-    replace['clear'] = clearLogs
+    bindLoggingFunc(replace, rawConsole, "log", "LOG")
+    bindLoggingFunc(replace, rawConsole, "debug", "DBG")
+    bindLoggingFunc(replace, rawConsole, "warn", "WRN")
+    bindLoggingFunc(replace, rawConsole, "error", "ERR")
+    replace["clear"] = clearLogs
     const console = Object.assign({}, rawConsole, replace)
     try {
-      eval(js)
+      const safeJS = sanitizeJS(js)
+      eval(safeJS)
     } catch (error) {
       console.error(i("play_run_js_fail"))
       console.error(error)
@@ -163,7 +164,7 @@ function rewireLoggingToElement(
       const eleLog = eleLocator()
       const prefix = `[<span class="log-${name}">${id}</span>]: `
       const eleContainerLog = eleOverflowLocator()
-      allLogs.push(`${prefix}${output}<br>`);
+      allLogs.push(`${prefix}${output}<br>`)
       eleLog.innerHTML = allLogs.join("<hr />")
       if (autoScroll && eleContainerLog) {
         eleContainerLog.scrollTop = eleContainerLog.scrollHeight
@@ -208,4 +209,9 @@ function rewireLoggingToElement(
       return output + textRep + comma + "&nbsp;"
     }, "")
   }
+}
+
+// The reflect-metadata runtime is available, so allow that to go through
+function sanitizeJS(code: string) {
+  return code.replace(`import "reflect-metadata"`, "").replace(`require("reflect-metadata")`, "")
 }
