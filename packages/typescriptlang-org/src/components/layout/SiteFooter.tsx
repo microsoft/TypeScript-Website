@@ -14,24 +14,29 @@ export type Props = {
 
 const popularPages = [
   {
-    title: "Basic Types",
-    url: "/docs/handbook/basic-types.html",
-    description: "JavaScript primitive types inside TypeScript",
+    title: "Everyday Types",
+    url: "/docs/handbook/2/everyday-types.html",
+    description: "All of the common types in TypeScript",
   },
   {
-    title: "Advanced Types",
-    url: "/docs/handbook/advanced-types.html",
-    description: "TypeScript language extensions to JavaScript",
+    title: "Creating Types from Types",
+    url: "/docs/handbook/2/types-from-types.html",
+    description: "Techniques to make more elegant types",
   },
   {
-    title: "Functions",
-    url: "/docs/handbook/functions.html",
+    title: "More on Functions",
+    url: "/docs/handbook/2/functions.html",
     description: "How to provide types to functions in JavaScript",
   },
   {
-    title: "Interfaces",
-    url: "/docs/handbook/interfaces.html",
+    title: "More on Objects",
+    url: "/docs/handbook/2/objects.html",
     description: "How to provide a type shape to JavaScript objects",
+  },
+  {
+    title: "Narrowing",
+    url: "/docs/handbook/2/narrowing.html",
+    description: "How TypeScript infers types based on runtime behavior",
   },
   {
     title: "Variable Declarations",
@@ -50,7 +55,7 @@ const popularPages = [
   },
   {
     title: "Classes",
-    url: "/docs/handbook/classes.html",
+    url: "/docs/handbook/2/classes.html",
     description: "How to provide types to JavaScript ES6 classes",
   },
 ]
