@@ -1,0 +1,137 @@
+{
+  "code": "type Either2dOr3d = [number, number, number?]\n\nfunction setCoordinate(coord: Either2dOr3d) {\n  const [x, y, z] = coord\n\n  console.log(`Provided coordinates had ${coord.length} dimensions`)\n}\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [
+    {
+      "docs": "",
+      "kind": "query",
+      "start": 108,
+      "length": 27,
+      "text": "const z: number | undefined",
+      "offset": 15,
+      "line": 4
+    },
+    {
+      "docs": "",
+      "kind": "query",
+      "start": 168,
+      "length": 24,
+      "text": "(property) length: 2 | 3",
+      "offset": 48,
+      "line": 6
+    }
+  ],
+  "staticQuickInfos": [
+    {
+      "text": "type Either2dOr3d = [number, number, (number | undefined)?]",
+      "docs": "",
+      "start": 5,
+      "length": 12,
+      "line": 0,
+      "character": 5,
+      "targetString": "Either2dOr3d"
+    },
+    {
+      "text": "function setCoordinate(coord: Either2dOr3d): void",
+      "docs": "",
+      "start": 56,
+      "length": 13,
+      "line": 2,
+      "character": 9,
+      "targetString": "setCoordinate"
+    },
+    {
+      "text": "(parameter) coord: Either2dOr3d",
+      "docs": "",
+      "start": 70,
+      "length": 5,
+      "line": 2,
+      "character": 23,
+      "targetString": "coord"
+    },
+    {
+      "text": "type Either2dOr3d = [number, number, (number | undefined)?]",
+      "docs": "",
+      "start": 77,
+      "length": 12,
+      "line": 2,
+      "character": 30,
+      "targetString": "Either2dOr3d"
+    },
+    {
+      "text": "const x: number",
+      "docs": "",
+      "start": 102,
+      "length": 1,
+      "line": 3,
+      "character": 9,
+      "targetString": "x"
+    },
+    {
+      "text": "const y: number",
+      "docs": "",
+      "start": 105,
+      "length": 1,
+      "line": 3,
+      "character": 12,
+      "targetString": "y"
+    },
+    {
+      "text": "const z: number | undefined",
+      "docs": "",
+      "start": 108,
+      "length": 1,
+      "line": 3,
+      "character": 15,
+      "targetString": "z"
+    },
+    {
+      "text": "(parameter) coord: Either2dOr3d",
+      "docs": "",
+      "start": 113,
+      "length": 5,
+      "line": 3,
+      "character": 20,
+      "targetString": "coord"
+    },
+    {
+      "text": "var console: Console",
+      "docs": "",
+      "start": 122,
+      "length": 7,
+      "line": 5,
+      "character": 2,
+      "targetString": "console"
+    },
+    {
+      "text": "(method) Console.log(...data: any[]): void",
+      "docs": "",
+      "start": 130,
+      "length": 3,
+      "line": 5,
+      "character": 10,
+      "targetString": "log"
+    },
+    {
+      "text": "(parameter) coord: Either2dOr3d",
+      "docs": "",
+      "start": 162,
+      "length": 5,
+      "line": 5,
+      "character": 42,
+      "targetString": "coord"
+    },
+    {
+      "text": "(property) length: 2 | 3",
+      "docs": "",
+      "start": 168,
+      "length": 6,
+      "line": 5,
+      "character": 48,
+      "targetString": "length"
+    }
+  ],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/C4TwDgpgBAoglsAFhATgJgCYHkUGYNQC8UA2gHYCuAtgEaoA0UltDT1dKA-ALoBQvAMwpkAxsDgB7MlADOEYAGEJElBjhkAhsAgAKEctUAuWAmTpseDAEooAb15Qo+sjOCkAHoxCMAXtyJOBhgOUAD0oY6RUY4Aepz8js4yEgA2EAB0KRIA5joABgAKKBIAbnAYEAT6Kmqa2jJQiBoEACS21aqZEGTZSAC+UGpU3TKSLnlWIeHRM7Nz8-NxvH28QA"
+}
