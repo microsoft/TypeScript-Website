@@ -1,7 +1,7 @@
 let hasLocalStorage = false
 try {
   hasLocalStorage = typeof localStorage !== `undefined`
-} catch (error) {}
+} catch (error) { }
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 
@@ -182,7 +182,7 @@ const valuedConfigRegexp = /^\/\/\s?@(\w+):\s?(.+)$/
 
 function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: CompilerOptions, ts: TS) {
   const options = { ...defaultCompilerOptions }
-  for (let i = 0; i < codeLines.length; ) {
+  for (let i = 0; i < codeLines.length;) {
     let match
     if ((match = booleanConfigRegexp.exec(codeLines[i]))) {
       options[match[1]] = true
@@ -458,13 +458,12 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
       switch (q.kind) {
         case "query": {
           const quickInfo = ls.getQuickInfoAtPosition(filename, position)
-          const token = ls.getDefinitionAtPosition(filename, position)
 
           // prettier-ignore
           let text = `Could not get LSP result: ${stringAroundIndex(env.getSourceFile(filename)!.text, position)}`
           let docs = undefined
 
-          if (quickInfo && token && quickInfo.displayParts) {
+          if (quickInfo && quickInfo.displayParts) {
             text = quickInfo.displayParts.map(dp => dp.text).join("")
             docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join("<br/>") : undefined
           }
