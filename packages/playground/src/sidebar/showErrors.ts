@@ -1,16 +1,20 @@
+import type { IDisposable } from "monaco-editor"
 import type { Sandbox } from "typescriptlang-org/static/js/sandbox"
 import { PlaygroundPlugin, PluginFactory, Playground } from ".."
 import { localize } from "../localizeWithFallback"
 
 export const showErrors: PluginFactory = (i, utils) => {
-  let model: import("monaco-editor").editor.ITextModel
   let container: HTMLElement
   let sandbox: Sandbox
-  let timer: any
+  let ds: ReturnType<typeof utils.createDesignSystem>
+  let prevMarkers: any[] = [{}]
 
   const updateUI = () => {
-    const ds = utils.createDesignSystem(container)
+    if (!sandbox) return
+    const model = sandbox.getModel()
     const markers = sandbox.monaco.editor.getModelMarkers({ resource: model.uri })
+
+    // No changes
 
     // @ts-ignore
     const playground: Playground = window.playground
@@ -18,32 +22,39 @@ export const showErrors: PluginFactory = (i, utils) => {
     if (!playground) return
     if (playground.getCurrentPlugin().id !== "errors") return
 
+    ds.clearDeltaDecorators(true)
+
     // Bail early if there's nothing to show
     if (!markers.length) {
       ds.showEmptyScreen(localize("play_sidebar_errors_no_errors", "No errors"))
       return
     }
 
+    // The hover can trigger this, so avoid that loop
+    const markerIDs = markers.filter(m => m.severity !== 1).map(m => m.startColumn + m.startLineNumber)
+    if (JSON.stringify(markerIDs) === JSON.stringify(prevMarkers)) return
+    prevMarkers = markerIDs
+
     // Clean any potential empty screens
     ds.clear()
-
     ds.listDiags(model, markersToTSDiags(model, markers))
   }
+
+  let changeDecoratorsDispose: IDisposable | undefined
 
   const plugin: PlaygroundPlugin = {
     id: "errors",
     displayName: i("play_sidebar_errors"),
-    didMount: () => {
-      updateUI()
-      timer = setInterval(() => updateUI(), 500)
-    },
-    didUnmount: () => {
-      clearInterval(timer)
-    },
-    modelChangedDebounce: async (_sandbox, _model, _container) => {
+    didMount: (_sandbox, _container) => {
       sandbox = _sandbox
       container = _container
-      model = _model
+      ds = utils.createDesignSystem(container)
+      changeDecoratorsDispose = sandbox.getModel().onDidChangeDecorations(updateUI)
+      updateUI()
+    },
+    didUnmount: () => {
+      if (changeDecoratorsDispose) changeDecoratorsDispose.dispose()
+      if (ds) ds.clearDeltaDecorators(true)
     },
   }
   return plugin
