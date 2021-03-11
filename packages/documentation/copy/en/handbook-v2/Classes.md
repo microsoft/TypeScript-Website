@@ -251,7 +251,7 @@ TypeScript has some special inference rules for accessors:
 - If no `set` exists, the property is automatically `readonly`
 - The type of the setter parameter is inferred from the return type of the getter
 - If the setter parameter has a type annotation, it must match the return type of the getter
-- Getters and setters must have the same [[Member Visibility]]
+- Getters and setters must have the same [Member Visibility](#member-visibility)
 
 It is not possible to have accessors with different types for getting and setting.
 
@@ -259,7 +259,7 @@ If you have a getter without a setter, the field is automatically `readonly`
 
 ### Index Signatures
 
-Classes can declare index signatures; these work the same as [[Index Signatures]] for other object types:
+Classes can declare index signatures; these work the same as [Index Signatures](#index-signatures) for other object types:
 
 ```ts twoslash
 class MyClass {
@@ -720,7 +720,7 @@ const s = new MySafe();
 console.log(s.secretKey);
 ```
 
-If you need to protect values in your class from malicious actors, you should use mechanisms that offer hard runtime privacy, such as closures, weak maps, or [[private fields]].
+If you need to protect values in your class from malicious actors, you should use mechanisms that offer hard runtime privacy, such as closures, weak maps, or [private fields](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields).
 
 ## Static Members
 
