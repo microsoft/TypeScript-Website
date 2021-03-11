@@ -173,7 +173,7 @@ There are few interesting things to note in this example.
 We allowed TypeScript to _infer_ the return type of `longest`.
 Return type inference also works on generic functions.
 
-Because we constrained `T` to `{ length: number }`, we were allowed to access the `.length` property of the `a` and `b` parameters.
+Because we constrained `Type` to `{ length: number }`, we were allowed to access the `.length` property of the `a` and `b` parameters.
 Without the type constraint, we wouldn't be able to access those properties because the values might have been some other type without a length property.
 
 The types of `longerArray` and `longerString` were inferred based on the arguments.
@@ -199,7 +199,7 @@ function minimumLength<Type extends { length: number }>(
 }
 ```
 
-It might look like this function is OK - `T` is constrained to `{ length: number }`, and the function either returns `T` or a value matching that constraint.
+It might look like this function is OK - `Type` is constrained to `{ length: number }`, and the function either returns `Type` or a value matching that constraint.
 The problem is that the function promises to return the _same_ kind of object as was passed in, not just _some_ object matching the constraint.
 If this code were legal, you could write code that definitely wouldn't work:
 
