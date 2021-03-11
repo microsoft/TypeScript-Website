@@ -7,14 +7,12 @@ export const showErrors: PluginFactory = (i, utils) => {
   let container: HTMLElement
   let sandbox: Sandbox
   let ds: ReturnType<typeof utils.createDesignSystem>
-  let prevMarkers: any[] = [{}]
+  let prevMarkers: any[] = []
 
   const updateUI = () => {
     if (!sandbox) return
     const model = sandbox.getModel()
     const markers = sandbox.monaco.editor.getModelMarkers({ resource: model.uri })
-
-    // No changes
 
     // @ts-ignore
     const playground: Playground = window.playground
@@ -37,6 +35,7 @@ export const showErrors: PluginFactory = (i, utils) => {
 
     // Clean any potential empty screens
     ds.clear()
+    ds.subtitle("Errors in code")
     ds.listDiags(model, markersToTSDiags(model, markers))
   }
 
@@ -50,6 +49,7 @@ export const showErrors: PluginFactory = (i, utils) => {
       container = _container
       ds = utils.createDesignSystem(container)
       changeDecoratorsDispose = sandbox.getModel().onDidChangeDecorations(updateUI)
+      prevMarkers = [{}]
       updateUI()
     },
     didUnmount: () => {

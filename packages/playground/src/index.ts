@@ -462,14 +462,11 @@ export const setupPlayground = (
     })
   }
 
-  // This isn't optimal, but it's good enough without me adding support
-  // for https://github.com/microsoft/monaco-editor/issues/313
-  setInterval(() => {
-    const markers = sandbox.monaco.editor
-      .getModelMarkers({ resource: sandbox.getModel().uri })
-      .filter(m => m.severity === 1)
+  const model = sandbox.getModel()
+  model.onDidChangeDecorations(() => {
+    const markers = sandbox.monaco.editor.getModelMarkers({ resource: model.uri }).filter(m => m.severity !== 1)
     utils.setNotifications("errors", markers.length)
-  }, 500)
+  })
 
   // Sets up a way to click between examples
   monaco.languages.registerLinkProvider(sandbox.language, new ExampleHighlighter())
