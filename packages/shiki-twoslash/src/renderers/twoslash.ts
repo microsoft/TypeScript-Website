@@ -149,7 +149,7 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
             // prettier-ignore
             const linePrefix = previousLineWhitespace + "//" + "".padStart(query.offset - 2 - previousLineWhitespace.length)
             // prettier-ignore
-            const queryTextWithPrefix = query.text?.split("\n").map((l, i) => i !== 0 ? linePrefix + l : l).join("\n")
+            const queryTextWithPrefix = query.text?.split("\n").map((l, i) => i !== 0 ? linePrefix + l : l).join("\n").replaceAll("<", "&lt").replaceAll(">", "&gt")
             html += `<span class='query'>${linePrefix + "^ = " + queryTextWithPrefix}</span>`
             break
           }
