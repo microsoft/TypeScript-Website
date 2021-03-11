@@ -598,7 +598,7 @@ const req = { url: "https://example.com", method: "GET" };
 handleRequest(req.url, req.method);
 ```
 
-In the above example `req.method` is a inferred to be `string`, not `"GET"`. Because code can be evaluated between the creation of `req` and the call of `handleRequest` which could assign a new string like `"GUESS"` TO `req.method`, TypeScript considers this code to have an error.
+In the above example `req.method` is inferred to be `string`, not `"GET"`. Because code can be evaluated between the creation of `req` and the call of `handleRequest` which could assign a new string like `"GUESS"` TO `req.method`, TypeScript considers this code to have an error.
 
 There are two ways to work around this.
 
