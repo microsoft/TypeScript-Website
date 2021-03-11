@@ -131,7 +131,7 @@ type KindlessCircle = RemoveKindField<Circle>;
 
 Mapped types work well with other features in this type manipulation section, for example here is [a mapped type using a conditional type](/docs/handbook/2/conditional-types.html) which returns either a `true` or `false` depending on whether an object has the property `pii` set to the literal `true`:
 
-```ts
+```ts twoslash
 type ExtractPII<Type> = {
   [Property in keyof Type]: Type[Property] extends { pii: true } ? true : false;
 };
