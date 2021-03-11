@@ -620,9 +620,11 @@ main #editor-toolbar {
     li.diagnostic {
       margin: 0;
       list-style: none;
-      padding-left: 2rem;
+      padding-left: 1rem;
       margin-bottom: 1rem;
       cursor: pointer;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
     }
 
     .error {

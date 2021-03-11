@@ -24577,6 +24577,13 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"reflect-metadata@npm:^0.1.13":
+  version: 0.1.13
+  resolution: "reflect-metadata@npm:0.1.13"
+  checksum: 629101e6c8b7e0d3166fa51953f908f45b5c73dbaf1375c4f8c3ed62221b870c951343b9b031d0c49957e7262a88020f41be25731ee85b5d779f12c7cec66005
+  languageName: node
+  linkType: hard
+
 "regenerate-unicode-properties@npm:^8.2.0":
   version: 8.2.0
   resolution: "regenerate-unicode-properties@npm:8.2.0"
@@ -25683,6 +25690,7 @@ resolve@1.1.7:
     gray-matter: 4.0.2
     husky: ^4.2.3
     pleb: ^2.5.6
+    reflect-metadata: ^0.1.13
     serve-handler: ^6.1.2
   languageName: unknown
   linkType: soft

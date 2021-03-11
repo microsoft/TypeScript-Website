@@ -37,6 +37,19 @@ export const createDesignSystem = (sandbox: Sandbox) => {
     let decorations: string[] = []
     let decorationLock = false
 
+    const clearDeltaDecorators = (force?: true) => {
+      // console.log(`clearing, ${decorations.length}}`)
+      // console.log(sandbox.editor.getModel()?.getAllDecorations())
+      if (force) {
+        sandbox.editor.deltaDecorations(decorations, [])
+        decorations = []
+        decorationLock = false
+      } else if (!decorationLock) {
+        sandbox.editor.deltaDecorations(decorations, [])
+        decorations = []
+      }
+    }
+
     /** Lets a HTML Element hover to highlight code in the editor  */
     const addEditorHoverToElement = (
       element: HTMLElement,
@@ -48,6 +61,7 @@ export const createDesignSystem = (sandbox: Sandbox) => {
           const model = sandbox.getModel()
           const start = model.getPositionAt(pos.start)
           const end = model.getPositionAt(pos.end)
+
           decorations = sandbox.editor.deltaDecorations(decorations, [
             {
               range: new sandbox.monaco.Range(start.lineNumber, start.column, end.lineNumber, end.column),
@@ -58,9 +72,7 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       }
 
       element.onmouseleave = () => {
-        if (!decorationLock) {
-          sandbox.editor.deltaDecorations(decorations, [])
-        }
+        clearDeltaDecorators()
       }
     }
 
@@ -207,7 +219,9 @@ export const createDesignSystem = (sandbox: Sandbox) => {
     const listDiags = (model: import("monaco-editor").editor.ITextModel, diags: DiagnosticRelatedInformation[]) => {
       const errorUL = document.createElement("ul")
       errorUL.className = "compiler-diagnostics"
-
+      errorUL.onmouseleave = ev => {
+        clearDeltaDecorators()
+      }
       container.appendChild(errorUL)
 
       diags.forEach(diag => {
@@ -231,7 +245,7 @@ export const createDesignSystem = (sandbox: Sandbox) => {
         if (typeof diag === "string") {
           li.textContent = diag
         } else {
-          li.textContent = sandbox.ts.flattenDiagnosticMessageText(diag.messageText, "\n")
+          li.textContent = sandbox.ts.flattenDiagnosticMessageText(diag.messageText, "\n", 4)
         }
         errorUL.appendChild(li)
 
@@ -461,6 +475,8 @@ export const createDesignSystem = (sandbox: Sandbox) => {
        * The type is quite small, so it should be very feasible for you to massage other data to fit into this function
        */
       listDiags,
+      /** Lets you remove the hovers from listDiags etc */
+      clearDeltaDecorators,
       /** Shows a single option in local storage (adds an li to the container BTW) */
       localStorageOption,
       /** Uses localStorageOption to create a list of options */

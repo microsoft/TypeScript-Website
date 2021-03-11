@@ -13,6 +13,7 @@ import { headCopy } from "../copy/en/head-seo"
 import { playCopy } from "../copy/en/playground"
 
 import { Intl } from "../components/Intl"
+import "reflect-metadata"
 
 import playgroundReleases from "../../../sandbox/src/releases.json"
 

@@ -6,7 +6,7 @@
 const watchman = require("fb-watchman")
 const client = new watchman.Client({})
 const chalk = require("chalk")
-const { spawn } = require("child_process")
+const { spawn, exec } = require("child_process")
 const { join } = require("path")
 const { existsSync, readFileSync } = require("fs")
 
@@ -153,6 +153,11 @@ const runCommand = argString => {
   build.on("close", code => {
     const codeString = code === 0 ? chalk.green("" + code) : chalk.bold.red("" + code)
     log(`[${codeString}] --------- `)
+
+    if (process.platform === "darwin") {
+      exec(playCommand(".vscode/done.aiff", "0.05"))
+    }
+
     currentProcess = null
     if (upcomingCommand === argString || !upcomingCommand) {
       // NOOP if you've tried running the same thing a few times
@@ -167,3 +172,5 @@ const runCommand = argString => {
 
   currentProcess = build
 }
+
+const playCommand = (path, volume) => `afplay \"${path}\" -v ${volume}`
