@@ -12,7 +12,7 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-e
     if (option === monaco.languages.typescript.JsxEmit.None) {
       return undefined
     }
-    return monaco.languages.typescript.JsxEmit[option]
+    return monaco.languages.typescript.JsxEmit[option].toLowerCase()
   }
 
   function getModuleKindText(option: any) {
@@ -20,6 +20,10 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-e
       return undefined
     }
     return monaco.languages.typescript.ModuleKind[option]
+  }
+
+  function getModuleResolutionText(option: any) {
+    return option === monaco.languages.typescript.ModuleResolutionKind.Classic ? "classic" : "node"
   }
 
   // These are the compiler's defaults, and we want a diff from
@@ -41,17 +45,25 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-e
   }
 
   function getValidCompilerOptions(options: CompilerOptions) {
-    const { target: targetOption, jsx: jsxOption, module: moduleOption, ...restOptions } = options
+    const {
+      target: targetOption,
+      jsx: jsxOption,
+      module: moduleOption,
+      moduleResolution: moduleResolutionOption,
+      ...restOptions
+    } = options
 
     const targetText = getScriptTargetText(targetOption)
     const jsxText = getJsxEmitText(jsxOption)
-    const moduleText = getModuleKindText(moduleOption)
+    const moduleKindText = getModuleKindText(moduleOption)
+    const moduleResolutionText = getModuleResolutionText(moduleResolutionOption)
 
     const opts = {
       ...restOptions,
       ...(targetText && { target: targetText }),
       ...(jsxText && { jsx: jsxText }),
-      ...(moduleText && { module: moduleText }),
+      ...(moduleKindText && { module: moduleKindText }),
+      moduleResolution: moduleResolutionText,
     }
 
     const diffFromTSCDefaults = Object.entries(opts).reduce((acc, [key, value]) => {

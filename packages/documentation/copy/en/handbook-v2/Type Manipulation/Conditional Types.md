@@ -209,6 +209,17 @@ type Bools = GetReturnType<(a: boolean, b: boolean) => boolean[]>;
 //   ^?
 ```
 
+When inferring from a type with multiple call signatures (such as the type of an overloaded function), inferences are made from the *last* signature (which, presumably, is the most permissive catch-all case). It is not possible to perform overload resolution based on a list of argument types.
+
+```ts twoslash
+declare function foo(x: string): number;
+declare function foo(x: number): string;
+declare function foo(x: string | number): string | number;
+
+type T1 = ReturnType<typeof foo>;
+//   ^ = type T1 = string | number
+```
+
 ## Distributive Conditional Types
 
 When conditional types act on a generic type, they become _distributive_ when given a union type.

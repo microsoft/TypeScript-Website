@@ -114,8 +114,8 @@ You can filter out keys by producing `never` via a conditional type:
 
 ```ts twoslash
 // Remove the 'kind' property
-type RemoveKindField<T> = {
-    [K in keyof T as Exclude<K, "kind">]: T[K]
+type RemoveKindField<Type> = {
+    [Property in keyof Type as Exclude<Property, "kind">]: Type[Property]
 };
 
 interface Circle {
