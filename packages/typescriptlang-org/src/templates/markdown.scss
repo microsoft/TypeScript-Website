@@ -57,6 +57,22 @@
     display: none;
   }
 
+  .description {
+    display: flex;
+
+    .description-text {
+      flex: 0.9;
+      flex-direction: column;
+      padding-right: 2rem;
+      font-size: 16px;
+    }
+
+    blockquote {
+      flex: 0.1;
+      margin: 0;
+    }
+  }
+
   table {
     max-width: 100%;
     width: 100%;
