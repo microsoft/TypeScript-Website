@@ -5,15 +5,13 @@ permalink: /docs/handbook/2/classes.html
 oneline: "How classes work in TypeScript"
 ---
 
-<div class='description'>
-	<div class='description-text'> 
-    TypeScript offers full support for the `class` keyword introduced in ES2015.
-    As with other JavaScript language features, TypeScript adds type annotations and other syntax to allow you to express relationships between classes and other types.
-	</div>
-  <blockquote class='bg-reading'>
-    <p>Background Reading:<br /><a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes'>Classes (MDN)</a></p>
-  </blockquote>
-</div>
+<blockquote class='bg-reading'>
+  <p>Background Reading:<br /><a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes'>Classes (MDN)</a></p>
+</blockquote>
+
+TypeScript offers full support for the `class` keyword introduced in ES2015.
+
+As with other JavaScript language features, TypeScript adds type annotations and other syntax to allow you to express relationships between classes and other types.
 
 ## Class Members
 
@@ -128,17 +126,14 @@ g.name = "also not ok";
 
 ### Constructors
 
-<div class='description'>
-	<div class='description-text'> 
-	    Class constructors are very similar to functions. 
-	    You can add parameters with type annotations, default values, and overloads: 
-	</div>
-  <blockquote class='bg-reading'>
-    <p>Background Reading:<br />
-    <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor'>Constructor (MDN)</a><br/>
-    </p>
-  </blockquote>
-</div>
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor'>Constructor (MDN)</a><br/>
+   </p>
+</blockquote>
+
+Class constructors are very similar to functions.
+You can add parameters with type annotations, default values, and overloads:
 
 ```ts twoslash
 class Point {
@@ -192,17 +187,14 @@ Forgetting to call `super` is an easy mistake to make in JavaScript, but TypeScr
 
 ### Methods
 
-<div class='description'>
-	<div class='description-text'> 
-    A function property on a class is called a _method_.
-    Methods can use all the same type annotations as functions and constructors:
-	</div>
-  <blockquote class='bg-reading'>
-    <p>Background Reading:<br />
-    <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions'>Method definitions</a><br/>
-    </p>
-  </blockquote>
-</div>
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions'>Method definitions</a><br/>
+   </p>
+</blockquote>
+
+A function property on a class is called a _method_.
+Methods can use all the same type annotations as functions and constructors:
 
 ```ts twoslash
 class Point {
@@ -352,17 +344,14 @@ c.y = 10;
 
 ### `extends` Clauses
 
-<div class='description'>
-	<div class='description-text'> 
-    Classes may `extend` from a base class.
-    A derived class has all the properties and methods of its base class, and also define additional members.
-	</div>
-  <blockquote class='bg-reading'>
-    <p>Background Reading:<br />
-    <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends'>extends keyword (MDN)</a><br/>
-    </p>
-  </blockquote>
-</div>
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends'>extends keyword (MDN)</a><br/>
+   </p>
+</blockquote>
+
+Classes may `extend` from a base class.
+A derived class has all the properties and methods of its base class, and also define additional members.
 
 ```ts twoslash
 class Animal {
@@ -388,21 +377,19 @@ d.woof(3);
 
 #### Overriding Methods
 
-<div class='description'>
-	<div class='description-text'> 
-    A derived class can also override a base class field or property.
-    You can use the `super.` syntax to access base class methods.
-    Note that because JavaScript classes are a simple lookup object, there is no notion of a "super field".
-    TypeScript enforces that a derived class is always a subtype of its base class.
-    For example, here's a legal way to override a method:
-	</div>
-  <blockquote class='bg-reading'>
-    <p>Background Reading:<br />
-    <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super'>super keyword (MDN)</a><br/>
-    </p>
-  </blockquote>
-</div>
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super'>super keyword (MDN)</a><br/>
+   </p>
+</blockquote>
 
+A derived class can also override a base class field or property.
+You can use the `super.` syntax to access base class methods.
+Note that because JavaScript classes are a simple lookup object, there is no notion of a "super field".
+
+TypeScript enforces that a derived class is always a subtype of its base class.
+
+For example, here's a legal way to override a method:
 
 ```ts twoslash
 class Base {
@@ -737,18 +724,15 @@ If you need to protect values in your class from malicious actors, you should us
 
 ## Static Members
 
-<div class='description'>
-	<div class='description-text'> 
-    Classes may have `static` members.
-    These members aren't associated with a particular instance of the class.
-    They can be accessed through the class constructor object itself:
-	</div>
-  <blockquote class='bg-reading'>
-    <p>Background Reading:<br />
-    <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static'>Static Members (MDN)</a><br/>
-    </p>
-  </blockquote>
-</div>
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static'>Static Members (MDN)</a><br/>
+   </p>
+</blockquote>
+
+Classes may have `static` members.
+These members aren't associated with a particular instance of the class.
+They can be accessed through the class constructor object itself:
 
 ```ts twoslash
 class MyClass {
@@ -858,17 +842,15 @@ The `static` members of a generic class can never refer to the class's type para
 
 ## `this` at Runtime in Classes
 
-<div class='description'>
-	<div class='description-text'> 
-    It's important to remember that TypeScript doesn't change the runtime behavior of JavaScript, and that JavaScript is somewhat famous for having some peculiar runtime behaviors.
-    JavaScript's handling of `this` is indeed unusual:
-	</div>
-  <blockquote class='bg-reading'>
-    <p>Background Reading:<br />
-    <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this'>this keyword (MDN)</a><br/>
-    </p>
-  </blockquote>
-</div>
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this'>this keyword (MDN)</a><br/>
+   </p>
+</blockquote>
+
+It's important to remember that TypeScript doesn't change the runtime behavior of JavaScript, and that JavaScript is somewhat famous for having some peculiar runtime behaviors.
+
+JavaScript's handling of `this` is indeed unusual:
 
 ```ts twoslash
 class MyClass {
@@ -895,16 +877,13 @@ TypeScript provides some ways to mitigate or prevent this kind of error.
 
 ### Arrow Functions
 
-<div class='description'>
-	<div class='description-text'> 
-    If you have a function that will often be called in a way that loses its `this` context, it can make sense to use an arrow function property instead of a method definition:
-	</div>
-  <blockquote class='bg-reading'>
-    <p>Background Reading:<br />
-    <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions'>Arrow functions (MDN)</a><br/>
-    </p>
-  </blockquote>
-</div>
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions'>Arrow functions (MDN)</a><br/>
+   </p>
+</blockquote>
+
+If you have a function that will often be called in a way that loses its `this` context, it can make sense to use an arrow function property instead of a method definition:
 
 ```ts twoslash
 class MyClass {
@@ -1068,17 +1047,14 @@ console.log(a.z);
 
 ## Class Expressions
 
-<div class='description'>
-	<div class='description-text'> 
-    Class expressions are very similar to class declarations.
-    The only real difference is that class expressions don't need a name, though we can refer to them via whatever identifier they ended up bound to:	
-  </div>
-  <blockquote class='bg-reading'>
-    <p>Background Reading:<br />
-    <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/class'>Class expressions (MDN)</a><br/>
-    </p>
-  </blockquote>
-</div>
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/class'>Class expressions (MDN)</a><br/>
+   </p>
+</blockquote>
+
+Class expressions are very similar to class declarations.
+The only real difference is that class expressions don't need a name, though we can refer to them via whatever identifier they ended up bound to:
 
 ```ts twoslash
 const someClass = class<Type> {

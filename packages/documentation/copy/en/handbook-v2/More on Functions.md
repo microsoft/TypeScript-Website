@@ -696,21 +696,19 @@ This is an _untyped function call_ and is generally best avoided because of the 
 If need to accept an arbitrary function but don't intend to call it, the type `() => void` is generally safer.
 
 ## Rest Parameters and Arguments
+
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters'>Rest Parameters</a><br/>
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax'>Spread Syntax</a><br/>
+   </p>
+</blockquote>
+
 ### Rest Parameters
 
-<div class='description'>
-	<div class='description-text'> 
-  In addition to using optional parameters or overloads to make functions that can accept a variety of fixed argument counts, we can also define functions that take an _unbounded_ number of arguments using _rest parameters_.
+In addition to using optional parameters or overloads to make functions that can accept a variety of fixed argument counts, we can also define functions that take an _unbounded_ number of arguments using _rest parameters_.
 
-  A rest parameter appears after all other parameters, and uses the `...` syntax:
-  </div>
-  <blockquote class='bg-reading'>
-    <p>Background Reading:<br />
-    <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters'>Rest Parameters</a><br/>
-    <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax'>Spread Syntax</a><br/>
-    </p>
-  </blockquote>
-</div>
+A rest parameter appears after all other parameters, and uses the `...` syntax:
 
 ```ts twoslash
 function multiply(n: number, ...m: number[]) {
@@ -759,17 +757,15 @@ Using rest arguments may require turning on [`downlevelIteration`](/tsconfig/#do
 
 ## Parameter Destructuring
 
-<div class='description'>
-	<div class='description-text'> 
-    You can use parameter destructuring to conveniently unpack objects provided as an argument into one or more local variables in the function body.
-    In JavaScript, it looks like this:
-  </div>
-  <blockquote class='bg-reading'>
-    <p>Background Reading:<br />
-    <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment'>Destructuring Assignment</a><br/>
-    </p>
-  </blockquote>
-</div>
+
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment'>Destructuring Assignment</a><br/>
+   </p>
+</blockquote>
+
+You can use parameter destructuring to conveniently unpack objects provided as an argument into one or more local variables in the function body.
+In JavaScript, it looks like this:
 
 ```js
 function sum({ a, b, c }) {

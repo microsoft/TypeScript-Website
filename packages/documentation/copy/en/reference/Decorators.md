@@ -8,21 +8,15 @@ translatable: true
 
 ## Introduction
 
-<div class='description'>
-	<div class='description-text'> 
-  With the introduction of Classes in TypeScript and ES6, there now exist certain scenarios that require additional features to support annotating or modifying classes and class members.
-  Decorators provide a way to add both annotations and a meta-programming syntax for class declarations and members.
-  Decorators are a <a href='https://github.com/tc39/proposal-decorators' target='blank'>stage 2 proposal</a> for JavaScript and are available as an experimental feature of TypeScript.
-  </br>
-  </br>
+<blockquote class='bg-reading'>
+  <p>Further Reading:<br /><a href='https://saul-mirone.github.io/a-complete-guide-to-typescript-decorator/'>A Complete Guide to TypeScript Decorators</a></p>
+</blockquote>
 
-  > NOTE&emsp; Decorators are an experimental feature that may change in future releases.
-  </div>
-  <blockquote class='bg-reading'>
-    <p>Further Reading:<br /><a href='https://saul-mirone.github.io/a-complete-guide-to-typescript-decorator/'>A Complete Guide to TypeScript Decorators</a></p>
-  </blockquote>
-</div>
+With the introduction of Classes in TypeScript and ES6, there now exist certain scenarios that require additional features to support annotating or modifying classes and class members.
+Decorators provide a way to add both annotations and a meta-programming syntax for class declarations and members.
+Decorators are a [stage 2 proposal](https://github.com/tc39/proposal-decorators) for JavaScript and are available as an experimental feature of TypeScript.
 
+> NOTE&emsp; Decorators are an experimental feature that may change in future releases.
 
 To enable experimental support for decorators, you must enable the `experimentalDecorators` compiler option either on the command line or in your `tsconfig.json`:
 

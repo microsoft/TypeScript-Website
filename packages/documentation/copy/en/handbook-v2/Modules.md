@@ -39,23 +39,18 @@ to make the file be a module exporting nothing. This syntax works regardless of 
 
 ## Modules in TypeScript
 
-<div class='description'>
-	<div class='description-text'> 
-    There are three main things to consider when writing module-based code in TypeScript:
+<blockquote class='bg-reading'>
+   <p>Additional Reading:<br />
+   <a href='https://exploringjs.com/impatient-js/ch_modules.html#overview-syntax-of-ecmascript-modules'>Impatient JS (Modules)</a><br/>
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules'>MDN: JavaScript Modules</a><br/>
+   </p>
+</blockquote>
 
-  - **Syntax**: What syntax do I want to use to import and export things?
-  - **Module Resolution**: What is the relationship between module names (or paths) and files on disk?
-  - **Module Output Target**: What should my emitted JavaScript module look like?
-  </div>
-  <blockquote class='bg-reading'>
-    <p>Additional Reading:<br />
-    <a href='https://exploringjs.com/impatient-js/ch_modules.html#overview-syntax-of-ecmascript-modules'>Impatient JS (Modules)</a><br/>
-    <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules'>MDN: JavaScript Modules</a><br/>
-    </p>
-  </blockquote>
-</div>
+There are three main things to consider when writing module-based code in TypeScript:
 
-
+- **Syntax**: What syntax do I want to use to import and export things?
+- **Module Resolution**: What is the relationship between module names (or paths) and files on disk?
+- **Module Output Target**: What should my emitted JavaScript module look like?
 
 ### ES Module Syntax
 
