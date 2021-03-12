@@ -553,7 +553,7 @@ function* g3() {
 function* g4(): Generator<number, void, string> {
   // No error.
   // TypeScript can figure out the type of `yield 1`
-  // from the explicit return type of `g3`.
+  // from the explicit return type of `g4`.
   const value = yield 1;
 }
 ```
