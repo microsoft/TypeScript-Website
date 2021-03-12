@@ -195,7 +195,7 @@ function rewireLoggingToElement(
       const nameWithoutObject = name && name === "Object" ? "" : name
       const prefix = nameWithoutObject ? `${nameWithoutObject}: ` : ""
 
-      // JSON.stringify omits and keys with a value of undefined so to get around that, we replace undefined with __undefined__ and then do a global replace using regex with normal undefined
+      // JSON.stringify omits any keys with a value of undefined. To get around this, we replace undefined with the text __undefined__ and then do a global replace using regex back to keyword undefined
       textRep = prefix + JSON.stringify(arg, (_, value) => value === undefined ? '__undefined__' : value, 2).replace(/"__undefined__"/g, 'undefined')
     } else {
       textRep = String(arg)
