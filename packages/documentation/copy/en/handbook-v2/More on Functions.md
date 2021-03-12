@@ -700,7 +700,7 @@ If need to accept an arbitrary function but don't intend to call it, the type `(
 
 <div class='description'>
 	<div class='description-text'> 
-  In addition to using optional parameters or overloads to make functions that can accept a variety of fixed argument counts, we can also define functions that take an _unbounded_ number of arguments using _rest parameters_.
+  In addition to using optional parameters or overloads to make functions that can accept a variety of fixed argument counts, we can also define functions that take an <em>unbounded</em> number of arguments using <em>rest parameters</em>.
 
   A rest parameter appears after all other parameters, and uses the `...` syntax:
   </div>
