@@ -389,13 +389,17 @@ d.woof(3);
 #### Overriding Methods
 
 <div class='description'>
-	<div class='description-text'> 
+	<p class='description-text'> 
     A derived class can also override a base class field or property.
-    You can use the `super.` syntax to access base class methods.
+    You can use the <code>super.</code> syntax to access base class methods.
     Note that because JavaScript classes are a simple lookup object, there is no notion of a "super field".
+    <br/>
+    <br/>
     TypeScript enforces that a derived class is always a subtype of its base class.
+    <br/>
+    <br/>
     For example, here's a legal way to override a method:
-	</div>
+	</p>
   <blockquote class='bg-reading'>
     <p>Background Reading:<br />
     <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super'>super keyword (MDN)</a><br/>
