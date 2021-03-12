@@ -194,7 +194,7 @@ function rewireLoggingToElement(
       // No one needs to know an obj is an obj
       const nameWithoutObject = name && name === "Object" ? "" : name
       const prefix = nameWithoutObject ? `${nameWithoutObject}: ` : ""
-      textRep = prefix + JSON.stringify(arg, null, 2)
+      textRep = prefix + JSON.stringify(arg, (_, value) => value === undefined ? null : value, 2)
     } else {
       textRep = String(arg)
     }
