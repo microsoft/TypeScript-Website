@@ -6,12 +6,10 @@ oneline: "How classes work in TypeScript"
 ---
 
 <div class='description'>
-	<p class='description-text'> 
-    TypeScript offers full support for the <code>class</code> keyword introduced in ES2015.
-    <br/>
-    <br/>
+	<div class='description-text'> 
+    TypeScript offers full support for the `class` keyword introduced in ES2015.
     As with other JavaScript language features, TypeScript adds type annotations and other syntax to allow you to express relationships between classes and other types.
-	</p>
+	</div>
   <blockquote class='bg-reading'>
     <p>Background Reading:<br /><a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes'>Classes (MDN)</a></p>
   </blockquote>
@@ -196,7 +194,7 @@ Forgetting to call `super` is an easy mistake to make in JavaScript, but TypeScr
 
 <div class='description'>
 	<div class='description-text'> 
-    A function property on a class is called a <em>method</em>.
+    A function property on a class is called a _method_.
     Methods can use all the same type annotations as functions and constructors:
 	</div>
   <blockquote class='bg-reading'>
@@ -355,10 +353,10 @@ c.y = 10;
 ### `extends` Clauses
 
 <div class='description'>
-	<p class='description-text'> 
-    Classes may <code>extend</code> from a base class.
+	<div class='description-text'> 
+    Classes may `extend` from a base class.
     A derived class has all the properties and methods of its base class, and also define additional members.
-	</p>
+	</div>
   <blockquote class='bg-reading'>
     <p>Background Reading:<br />
     <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends'>extends keyword (MDN)</a><br/>
@@ -744,11 +742,11 @@ If you need to protect values in your class from malicious actors, you should us
 ## Static Members
 
 <div class='description'>
-	<p class='description-text'> 
-    Classes may have <code>static</code> members.
+	<div class='description-text'> 
+    Classes may have `static` members.
     These members aren't associated with a particular instance of the class.
     They can be accessed through the class constructor object itself:
-	</p>
+	</div>
   <blockquote class='bg-reading'>
     <p>Background Reading:<br />
     <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static'>Static Members (MDN)</a><br/>
@@ -865,12 +863,10 @@ The `static` members of a generic class can never refer to the class's type para
 ## `this` at Runtime in Classes
 
 <div class='description'>
-	<p class='description-text'> 
+	<div class='description-text'> 
     It's important to remember that TypeScript doesn't change the runtime behavior of JavaScript, and that JavaScript is somewhat famous for having some peculiar runtime behaviors.
-    <br/>
-    <br/>
-    JavaScript's handling of <code>this</code> is indeed unusual:
-	</p>
+    JavaScript's handling of `this` is indeed unusual:
+	</div>
   <blockquote class='bg-reading'>
     <p>Background Reading:<br />
     <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this'>this keyword (MDN)</a><br/>
@@ -905,7 +901,7 @@ TypeScript provides some ways to mitigate or prevent this kind of error.
 
 <div class='description'>
 	<div class='description-text'> 
-    If you have a function that will often be called in a way that loses its </code>this</code> context, it can make sense to use an arrow function property instead of a method definition:
+    If you have a function that will often be called in a way that loses its `this` context, it can make sense to use an arrow function property instead of a method definition:
 	</div>
   <blockquote class='bg-reading'>
     <p>Background Reading:<br />
