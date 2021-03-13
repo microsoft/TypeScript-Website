@@ -23,7 +23,7 @@ export const SiteNav = (props: Props) => {
       apiKey: '3c2db2aef0c7ff26e8911267474a9b2c',
       indexName: 'typescriptlang',
       inputSelector: '.search input',
-      handleSelected: function (input, event, suggestion, datasetNumber, context) {
+      handleSelected: (input, event, suggestion, datasetNumber, context) => {
         let urlToOpen = suggestion.url;
         if (window.location.href.includes("localhost:8000")) {
           urlToOpen = suggestion.url.replace("www.typescriptlang.org", "localhost:8000").replace("https", "http")
