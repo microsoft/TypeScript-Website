@@ -514,7 +514,7 @@ changingString;
 // ^?
 
 const constantString = "Hello World";
-// Because `changingString` can only represent 1 possible string, it
+// Because `constantString` can only represent 1 possible string, it
 // has a literal type representation
 constantString;
 // ^?
