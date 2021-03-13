@@ -660,7 +660,7 @@ TypeScript also has a special syntax for removing `null` and `undefined` from a 
 Writing `!` after any expression is effectively a type assertion that the value isn't `null` or `undefined`:
 
 ```ts twoslash
-function liveDangerously(x?: number | undefined) {
+function liveDangerously(x?: number | null) {
   // No error
   console.log(x!.toFixed());
 }
