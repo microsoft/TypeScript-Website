@@ -12,10 +12,17 @@
     margin-top: -30px;
   }
 
-  h1 {
+  h1, h2, h3 {
     display: flex;
     align-items: center;
     font-weight: 400;
+
+    a {
+      padding-right: 10px !important;
+    }
+  }
+
+  h1 {
     line-height: 1.3;
     margin-bottom: 12px;
     font-size: 2rem;
@@ -25,9 +32,6 @@
   }
 
   h2 {
-    display: flex;
-    align-items: center;
-    font-weight: 400;
     font-size: 1.75rem;
     line-height: 1.3;
     margin-bottom: 12px;
@@ -35,9 +39,6 @@
   }
 
   h3 {
-    display: flex;
-    align-items: center;
-    font-weight: 400;
     font-size: 1.1875rem;
     margin-top: 30px;
     margin-bottom: 18px;
