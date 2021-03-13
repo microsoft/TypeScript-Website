@@ -88,6 +88,7 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
         const errorsInToken = errors.filter(findTokenFunc(tokenPos))
         const lspResponsesInToken = lspValues.filter(findTokenFunc(tokenPos))
         const queriesInToken = queries.filter(findTokenFunc(tokenPos))
+        const targettedWord = lspResponsesInToken.filter(response => response.text === (queries.length && queries[0].text)).pop()?.text;
 
         const allTokens = [...errorsInToken, ...lspResponsesInToken, ...queriesInToken]
         const allTokensByStart = allTokens.sort((l, r) => {
@@ -116,7 +117,7 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
             return range
           })
 
-          tokenContent += createHighlightedString2(ranges, token.content)
+          tokenContent += createHighlightedString2(ranges, token.content, targettedWord)
         } else {
           tokenContent += subTripleArrow(token.content)
         }
@@ -149,8 +150,9 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
             // prettier-ignore
             const linePrefix = previousLineWhitespace + "//" + "".padStart(query.offset - 2 - previousLineWhitespace.length)
             // prettier-ignore
-            const queryTextWithPrefix = query.text?.split("\n").map((l, i) => i !== 0 ? linePrefix + l : l).join("\n").replace(/</gi, "&lt").replace(/>/gi, "&gt")
-            html += `<span class='query'>${linePrefix + "^ = " + queryTextWithPrefix}</span>`
+            const queryTextWithPrefix = escapeHtml(query.text!.split("\n").map((l, i) => i !== 0 ? linePrefix + l : l).join("\n"))
+            html += "".padStart(query.offset) + `<span class='inline-completions'><ul class='dropdown'>${linePrefix + "^ = " + queryTextWithPrefix}</ul></span>`
+            //`<span class='query'>${linePrefix + "^ = " + queryTextWithPrefix}</span>`
             break
           }
 
