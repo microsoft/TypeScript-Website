@@ -406,6 +406,7 @@ export function createFSBackedSystem(files: Map<string, string>, _projectRoot: s
   // We need to make an isolated folder for the tsconfig, but also need to be able to resolve the
   // existing node_modules structures going back through the history
   const root =  normalizeSlashes(_projectRoot + "/vfs")
+  files.forEach((value, key) => files.set(key, normalizeSlashes(value)))
   const path = require("path")
 
   // The default System in TypeScript
