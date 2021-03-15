@@ -27,7 +27,7 @@ export function createHighlightedString2(ranges: Range[], text: string, targette
 
   ranges.forEach(r => {
     if (r.classes === "lsp") {
-      const underLineTargettedWord = r.lsp === targettedWord ? "style=⇯border-bottom: solid 5px green;⇯" : '';
+      const underLineTargettedWord = r.lsp === targettedWord ? "style=⇯border-bottom: solid 2px grey;⇯" : '';
       actions.push({ text: "⇍/data-lsp⇏", index: r.end })
       actions.push({ text: `⇍data-lsp lsp=⇯${r.lsp || ""}⇯ ${underLineTargettedWord}⇏`, index: r.begin })
     } else if (r.classes === "err") {

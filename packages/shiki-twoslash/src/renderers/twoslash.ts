@@ -52,7 +52,7 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
     const errors = errorsGroupedByLine.get(i) || []
     const lspValues = staticQuickInfosGroupedByLine.get(i) || []
     const queries = queriesGroupedByLine.get(i) || []
-
+    let targettedWord: any;
     if (l.length === 0 && i === 0) {
       // Skip the first newline if it's blank
       filePos += 1
@@ -88,7 +88,7 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
         const errorsInToken = errors.filter(findTokenFunc(tokenPos))
         const lspResponsesInToken = lspValues.filter(findTokenFunc(tokenPos))
         const queriesInToken = queries.filter(findTokenFunc(tokenPos))
-        const targettedWord = lspResponsesInToken.filter(response => response.text === (queries.length && queries[0].text)).pop()?.text;
+        targettedWord = lspResponsesInToken.filter(response => response.text === (queries.length && queries[0].text)).pop()!;
 
         const allTokens = [...errorsInToken, ...lspResponsesInToken, ...queriesInToken]
         const allTokensByStart = allTokens.sort((l, r) => {
@@ -117,7 +117,7 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
             return range
           })
 
-          tokenContent += createHighlightedString2(ranges, token.content, targettedWord)
+          tokenContent += createHighlightedString2(ranges, token.content, targettedWord?.text)
         } else {
           tokenContent += subTripleArrow(token.content)
         }
@@ -151,7 +151,8 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
             const linePrefix = previousLineWhitespace + "//" + "".padStart(query.offset - 2 - previousLineWhitespace.length)
             // prettier-ignore
             const queryTextWithPrefix = escapeHtml(query.text!.split("\n").map((l, i) => i !== 0 ? linePrefix + l : l).join("\n"))
-            html += "".padStart(query.offset) + `<span class='inline-completions'><ul class='dropdown'>${linePrefix + "^ = " + queryTextWithPrefix}</ul></span>`
+            const halfWayAcrossTheTargettedWord = targettedWord.character + (targettedWord.length / 2)
+            html += "".padStart(halfWayAcrossTheTargettedWord) + `<span class='popover'><div class='arrow'></div>${queryTextWithPrefix}</span>`
             //`<span class='query'>${linePrefix + "^ = " + queryTextWithPrefix}</span>`
             break
           }
