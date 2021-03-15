@@ -151,7 +151,7 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
             const linePrefix = previousLineWhitespace + "//" + "".padStart(query.offset - 2 - previousLineWhitespace.length)
             // prettier-ignore
             const queryTextWithPrefix = escapeHtml(query.text!.split("\n").map((l, i) => i !== 0 ? linePrefix + l : l).join("\n"))
-            const halfWayAcrossTheTargettedWord = targettedWord.character + (targettedWord.length / 2)
+            const halfWayAcrossTheTargettedWord = (targettedWord && targettedWord.character + (targettedWord?.length / 2)) || 0
             html += "".padStart(halfWayAcrossTheTargettedWord) + `<span class='popover'><div class='arrow'></div>${queryTextWithPrefix}</span>`
             //`<span class='query'>${linePrefix + "^ = " + queryTextWithPrefix}</span>`
             break
