@@ -44,6 +44,7 @@ export function createVirtualTypeScriptEnvironment(
   compilerOptions: CompilerOptions = {},
   customTransformers?: CustomTransformers
 ): VirtualTypeScriptEnvironment {
+  rootFiles = rootFiles.map(path => normalizeSlashes(path))
   const mergedCompilerOpts = { ...defaultCompilerOptions(ts), ...compilerOptions }
 
   const { languageServiceHost, updateFile } = createVirtualLanguageServiceHost(
