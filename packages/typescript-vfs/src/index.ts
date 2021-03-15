@@ -15,6 +15,9 @@ const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 const debugLog = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
 
+const directorySeparator = "/";
+const backslashRegExp = /\\/g;
+const normalizeSlashes = (path: string): string => path.replace(backslashRegExp, directorySeparator);
 export interface VirtualTypeScriptEnvironment {
   sys: System
   languageService: import("typescript").LanguageService
@@ -401,7 +404,7 @@ export function createSystem(files: Map<string, string>): System {
 export function createFSBackedSystem(files: Map<string, string>, _projectRoot: string, ts: TS): System {
   // We need to make an isolated folder for the tsconfig, but also need to be able to resolve the
   // existing node_modules structures going back through the history
-  const root = _projectRoot + "/vfs"
+  const root =  normalizeSlashes(_projectRoot + "/vfs")
   const path = require("path")
 
   // The default System in TypeScript
