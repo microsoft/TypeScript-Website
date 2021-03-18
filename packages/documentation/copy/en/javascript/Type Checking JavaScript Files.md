@@ -115,7 +115,7 @@ Outer.Inner = function () {
   this.yy = 2;
 };
 
-Outer.innter();
+Outer.Inner();
 ```
 
 It can also be used to create simple namespaces:
