@@ -201,7 +201,6 @@ type Animals = Cat | Dog;
 TypeScript has extended the `import` syntax with `import type` which is an import which can _only_ import types.
 
 ```ts twoslash
-// @errors: 1361
 // @filename: animal.ts
 export type Cat = { breed: string; yearOfBirth: number };
 export type Dog = { breeds: string[]; yearOfBirth: number };
@@ -211,6 +210,7 @@ export const createCatName = () => "fluffy";
 import type { Cat, Dog } from "./animal.js";
 type Animals = Cat | Dog;
 
+// @errors: 1361
 // @filename: app.ts
 import type { createCatName } from "./animal.js";
 const name = createCatName();
