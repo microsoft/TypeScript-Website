@@ -78,13 +78,13 @@ export function createVirtualTypeScriptEnvironment(
     sys,
     host: languageServiceHost,
     languageService,
-    getSourceFile: fileName => languageService.getProgram()?.getSourceFile(fileName),
+    getSourceFile: fileName => languageService.getProgram()?.getSourceFile(normalizeSlashes(fileName)),
 
     createFile: (fileName, content) => {
       updateFile(ts.createSourceFile(fileName, content, mergedCompilerOpts.target!, false))
     },
     updateFile: (fileName, content, optPrevTextSpan) => {
-      const prevSourceFile = languageService.getProgram()!.getSourceFile(fileName)
+      const prevSourceFile = languageService.getProgram()!.getSourceFile(normalizeSlashes(fileName))
       if (!prevSourceFile) {
         throw new Error("Did not find a source file for " + fileName)
       }
@@ -384,26 +384,33 @@ const libize = (path: string) => path.replace("/", "/lib.").toLowerCase()
  * is what provides read/write aspects of the virtual fs
  */
 export function createSystem(files: Map<string, string>): System {
+  files = normalizeFsMap(files);
   return {
     args: [],
     createDirectory: () => notImplemented("createDirectory"),
     // TODO: could make a real file tree
     directoryExists: audit("directoryExists", directory => {
-      return Array.from(files.keys()).some(path => path.startsWith(directory))
+      return Array.from(files.keys()).some(path => path.startsWith(normalizeSlashes(directory)))
     }),
     exit: () => notImplemented("exit"),
-    fileExists: audit("fileExists", fileName => files.has(fileName) || files.has(libize(fileName))),
+    fileExists: audit("fileExists", fileName => {
+      const normalizedFileName = normalizeSlashes(fileName);
+      return files.has(normalizedFileName) || files.has(libize(normalizedFileName))
+    }),
     getCurrentDirectory: () => "/",
     getDirectories: () => [],
     getExecutingFilePath: () => notImplemented("getExecutingFilePath"),
     readDirectory: audit("readDirectory", directory => (directory === "/" ? Array.from(files.keys()) : [])),
-    readFile: audit("readFile", fileName => files.get(fileName) || files.get(libize(fileName))),
+    readFile: audit("readFile", fileName => {
+      const normalizedFileName = normalizeSlashes(fileName);
+      return files.get(normalizedFileName) || files.get(libize(normalizedFileName));
+    }),
     resolvePath: path => path,
     newLine: "\n",
     useCaseSensitiveFileNames: true,
     write: () => notImplemented("write"),
     writeFile: (fileName, contents) => {
-      files.set(fileName, contents)
+      files.set(normalizeSlashes(fileName), contents)
     },
   }
 }
@@ -439,7 +446,8 @@ export function createFSBackedSystem(files: Map<string, string>, _projectRoot: s
     }),
     exit: nodeSys.exit,
     fileExists: audit("fileExists", fileName => {
-      if (files.has(normalizeSlashes(fileName))) return true
+      const normalizedFileName = normalizeSlashes(fileName)
+      if (files.has(normalizedFileName)) return true
       // Don't let other tsconfigs end up touching the vfs
       if (fileName.includes("tsconfig.json") || fileName.includes("tsconfig.json")) return false
       if (fileName.startsWith("/lib")) {
@@ -476,7 +484,7 @@ export function createFSBackedSystem(files: Map<string, string>, _projectRoot: s
     }),
     resolvePath: path => {
       const normalizedPath = normalizeSlashes(path)
-      if (files.has(normalizedPath)) return normalizedPath
+      if (files.has(normalizedPath)) return path
       return nodeSys.resolvePath(path)
     },
     newLine: "\n",
@@ -496,7 +504,7 @@ export function createFSBackedSystem(files: Map<string, string>, _projectRoot: s
 export function createVirtualCompilerHost(sys: System, compilerOptions: CompilerOptions, ts: TS) {
   const sourceFiles = new Map<string, SourceFile>()
   const save = (sourceFile: SourceFile) => {
-    sourceFiles.set(sourceFile.fileName, sourceFile)
+    sourceFiles.set(normalizeSlashes(sourceFile.fileName), sourceFile)
     return sourceFile
   }
 
@@ -514,12 +522,13 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
       getDirectories: () => [],
       getNewLine: () => sys.newLine,
       getSourceFile: fileName => {
+        const normalizedFileName = normalizeSlashes(fileName)
         return (
-          sourceFiles.get(fileName) ||
+          sourceFiles.get(normalizedFileName) ||
           save(
             ts.createSourceFile(
-              fileName,
-              sys.readFile(fileName)!,
+              normalizedFileName,
+              sys.readFile(normalizedFileName)!,
               compilerOptions.target || defaultCompilerOptions(ts).target!,
               false
             )
@@ -529,9 +538,10 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
       useCaseSensitiveFileNames: () => sys.useCaseSensitiveFileNames,
     },
     updateFile: sourceFile => {
-      const alreadyExists = sourceFiles.has(sourceFile.fileName)
-      sys.writeFile(sourceFile.fileName, sourceFile.text)
-      sourceFiles.set(sourceFile.fileName, sourceFile)
+      const normalizedFileName = normalizeSlashes(sourceFile.fileName);
+      const alreadyExists = sourceFiles.has(normalizedFileName)
+      sys.writeFile(normalizedFileName, sourceFile.text)
+      sourceFiles.set(normalizedFileName, sourceFile)
       return alreadyExists
     },
   }
@@ -559,14 +569,14 @@ export function createVirtualLanguageServiceHost(
     getCustomTransformers: () => customTransformers,
     getScriptFileNames: () => fileNames,
     getScriptSnapshot: fileName => {
-      const contents = sys.readFile(fileName)
+      const contents = sys.readFile(normalizeSlashes(fileName))
       if (contents) {
         return ts.ScriptSnapshot.fromString(contents)
       }
       return
     },
     getScriptVersion: fileName => {
-      return fileVersions.get(fileName) || "0"
+      return fileVersions.get(normalizeSlashes(fileName)) || "0"
     },
     writeFile: sys.writeFile,
   }
@@ -580,9 +590,10 @@ export function createVirtualLanguageServiceHost(
     languageServiceHost,
     updateFile: sourceFile => {
       projectVersion++
-      fileVersions.set(sourceFile.fileName, projectVersion.toString())
-      if (!fileNames.includes(sourceFile.fileName)) {
-        fileNames.push(sourceFile.fileName)
+      const normalizedFileName = normalizeSlashes(sourceFile.fileName);
+      fileVersions.set(normalizedFileName, projectVersion.toString())
+      if (!fileNames.includes(normalizedFileName)) {
+        fileNames.push(normalizedFileName)
       }
       updateFile(sourceFile)
     },
