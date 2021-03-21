@@ -15,8 +15,15 @@ const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 const debugLog = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
 
+
+const directorySeparator = "/"
+const backslashRegExp = /\\/g
+const normalizeSlashes = (path: string): string => path.replace(backslashRegExp, directorySeparator)
+const normalizedFsMap = (fsMap: Map<string, string>): Map<string, string> => new Map([...fsMap.entries()].map(([filepath, content]) => [normalizeSlashes(filepath), content] as const))
+
 export interface VirtualTypeScriptEnvironment {
   sys: System
+  host: LanguageServiceHost,
   languageService: import("typescript").LanguageService
   getSourceFile: (fileName: string) => import("typescript").SourceFile | undefined
   createFile: (fileName: string, content: string) => void
@@ -62,6 +69,7 @@ export function createVirtualTypeScriptEnvironment(
     // @ts-ignore
     name: "vfs",
     sys,
+    host: languageServiceHost,
     languageService,
     getSourceFile: fileName => languageService.getProgram()?.getSourceFile(fileName),
 
@@ -401,12 +409,14 @@ export function createSystem(files: Map<string, string>): System {
 export function createFSBackedSystem(files: Map<string, string>, _projectRoot: string, ts: TS): System {
   // We need to make an isolated folder for the tsconfig, but also need to be able to resolve the
   // existing node_modules structures going back through the history
-  const root = _projectRoot + "/vfs"
+  const root = normalizeSlashes(_projectRoot + "/vfs")
   const path = require("path")
 
   // The default System in TypeScript
   const nodeSys = ts.sys
   const tsLib = path.dirname(require.resolve("typescript"))
+
+  files = normalizedFsMap(files)
 
   return {
     // @ts-ignore
@@ -416,11 +426,12 @@ export function createFSBackedSystem(files: Map<string, string>, _projectRoot: s
     createDirectory: () => notImplemented("createDirectory"),
     // TODO: could make a real file tree
     directoryExists: audit("directoryExists", directory => {
-      return Array.from(files.keys()).some(path => path.startsWith(directory)) || nodeSys.directoryExists(directory)
+      const normalizedDirectory = normalizeSlashes(directory)
+      return Array.from(files.keys()).some(path => path.startsWith(normalizedDirectory)) || nodeSys.directoryExists(directory)
     }),
     exit: nodeSys.exit,
     fileExists: audit("fileExists", fileName => {
-      if (files.has(fileName)) return true
+      if (files.has(normalizeSlashes(fileName))) return true
       // Don't let other tsconfigs end up touching the vfs
       if (fileName.includes("tsconfig.json") || fileName.includes("tsconfig.json")) return false
       if (fileName.startsWith("/lib")) {
@@ -433,14 +444,15 @@ export function createFSBackedSystem(files: Map<string, string>, _projectRoot: s
     getDirectories: nodeSys.getDirectories,
     getExecutingFilePath: () => notImplemented("getExecutingFilePath"),
     readDirectory: audit("readDirectory", (...args) => {
-      if (args[0] === "/") {
-        return Array.from(files.keys())
+      if (normalizeSlashes(args[0]) === root) {
+        return Array.from(files.keys()).filter(file => file.startsWith(root));
       } else {
         return nodeSys.readDirectory(...args)
       }
     }),
     readFile: audit("readFile", fileName => {
-      if (files.has(fileName)) return files.get(fileName)
+      const normalizedFileName = normalizeSlashes(fileName)
+      if (files.has(normalizedFileName)) return files.get(normalizedFileName)
       if (fileName.startsWith("/lib")) {
         const tsLibName = `${tsLib}/${fileName.replace("/", "")}`
         const result = nodeSys.readFile(tsLibName)
@@ -455,14 +467,15 @@ export function createFSBackedSystem(files: Map<string, string>, _projectRoot: s
       return nodeSys.readFile(fileName)
     }),
     resolvePath: path => {
-      if (files.has(path)) return path
+      const normalizedPath = normalizeSlashes(path)
+      if (files.has(normalizedPath)) return normalizedPath
       return nodeSys.resolvePath(path)
     },
     newLine: "\n",
     useCaseSensitiveFileNames: true,
     write: () => notImplemented("write"),
     writeFile: (fileName, contents) => {
-      files.set(fileName, contents)
+      files.set(normalizeSlashes(fileName), contents)
     },
   }
 }
@@ -493,11 +506,12 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
       getDirectories: () => [],
       getNewLine: () => sys.newLine,
       getSourceFile: fileName => {
+        const normalizedFileName = normalizeSlashes(fileName)
         return (
-          sourceFiles.get(fileName) ||
+          sourceFiles.get(normalizedFileName) ||
           save(
             ts.createSourceFile(
-              fileName,
+              normalizedFileName,
               sys.readFile(fileName)!,
               compilerOptions.target || defaultCompilerOptions(ts).target!,
               false
@@ -527,7 +541,7 @@ export function createVirtualLanguageServiceHost(
   ts: TS,
   customTransformers?: CustomTransformers
 ) {
-  const fileNames = [...rootFiles]
+  const fileNames = rootFiles.map(rootFile => normalizeSlashes(rootFile))
   const { compilerHost, updateFile } = createVirtualCompilerHost(sys, compilerOptions, ts)
   const fileVersions = new Map<string, string>()
   let projectVersion = 0

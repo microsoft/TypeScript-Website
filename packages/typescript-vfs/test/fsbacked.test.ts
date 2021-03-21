@@ -36,14 +36,37 @@ it("can use a FS backed system to extract node modules", () => {
   expect(hasReactComponentInCompletions).toBeTruthy()
 })
 
-it("can import files in the virtual fs", () => {
+it("can import files in the virtual fs using posix directory seperators", () => {
   const compilerOpts: ts.CompilerOptions = { target: ts.ScriptTarget.ES2016, esModuleInterop: true }
   const fsMap = new Map<string, string>()
 
-  const monorepoRoot = path.join(__dirname, "..", "..", "..")
-  const fakeFolder = path.join(monorepoRoot, "fake")
-  const exporter = path.join(fakeFolder, "file-with-export.ts")
-  const index = path.join(fakeFolder, "index.ts")
+  // Have to replace the windows directory seperator in __dirname or else path.join will silently fail
+  const monorepoRoot = path.posix.join(__dirname.replace(/\\/g, '/'), "..", "..", "..")
+  const fakeFolder = path.posix.join(monorepoRoot, "fake")
+  const exporter = path.posix.join(fakeFolder, "file-with-export.ts")
+  const index = path.posix.join(fakeFolder, "index.ts")
+
+  fsMap.set(exporter, `export const helloWorld = "Example string";`)
+  fsMap.set(index, `import {helloWorld} from "./file-with-export"; console.log(helloWorld)`)
+
+  const system = createFSBackedSystem(fsMap, monorepoRoot, ts)
+  const env = createVirtualTypeScriptEnvironment(system, [index, exporter], ts, compilerOpts)
+
+  const errs: import("typescript").Diagnostic[] = []
+  errs.push(...env.languageService.getSemanticDiagnostics(index))
+  errs.push(...env.languageService.getSyntacticDiagnostics(index))
+
+  expect(errs.map(e => e.messageText)).toEqual([])
+})
+
+it("can import files in the virtual fs using windows directory seperators", () => {
+  const compilerOpts: ts.CompilerOptions = { target: ts.ScriptTarget.ES2016, esModuleInterop: true }
+  const fsMap = new Map<string, string>()
+
+  const monorepoRoot = path.win32.join(__dirname, "..", "..", "..")
+  const fakeFolder = path.win32.join(monorepoRoot, "fake")
+  const exporter = path.win32.join(fakeFolder, "file-with-export.ts")
+  const index = path.win32.join(fakeFolder, "index.ts")
 
   fsMap.set(exporter, `export const helloWorld = "Example string";`)
   fsMap.set(index, `import {helloWorld} from "./file-with-export"; console.log(helloWorld)`)
