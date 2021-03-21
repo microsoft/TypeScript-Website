@@ -9,7 +9,7 @@ type TS = typeof import("typescript")
 let hasLocalStorage = false
 try {
   hasLocalStorage = typeof localStorage !== `undefined`
-} catch (error) {}
+} catch (error) { }
 
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
@@ -19,7 +19,7 @@ const debugLog = shouldDebug ? console.log : (_message?: any, ..._optionalParams
 const directorySeparator = "/"
 const backslashRegExp = /\\/g
 const normalizeSlashes = (path: string): string => path.replace(backslashRegExp, directorySeparator)
-const normalizedFsMap = (fsMap: Map<string, string>): Map<string, string> => new Map([...fsMap.entries()].map(([filepath, content]) => [normalizeSlashes(filepath), content] as const))
+const normalizeFsMap = (fsMap: Map<string, string>): Map<string, string> => new Map([...fsMap.entries()].map(([filepath, content]) => [normalizeSlashes(filepath), content] as const))
 
 export interface VirtualTypeScriptEnvironment {
   sys: System
@@ -416,7 +416,7 @@ export function createFSBackedSystem(files: Map<string, string>, _projectRoot: s
   const nodeSys = ts.sys
   const tsLib = path.dirname(require.resolve("typescript"))
 
-  files = normalizedFsMap(files)
+  files = normalizeFsMap(files)
 
   return {
     // @ts-ignore
