@@ -506,12 +506,11 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
       getDirectories: () => [],
       getNewLine: () => sys.newLine,
       getSourceFile: fileName => {
-        const normalizedFileName = normalizeSlashes(fileName)
         return (
-          sourceFiles.get(normalizedFileName) ||
+          sourceFiles.get(fileName) ||
           save(
             ts.createSourceFile(
-              normalizedFileName,
+              fileName,
               sys.readFile(fileName)!,
               compilerOptions.target || defaultCompilerOptions(ts).target!,
               false
