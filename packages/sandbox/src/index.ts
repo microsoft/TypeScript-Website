@@ -269,12 +269,8 @@ export const createTypeScriptSandbox = (
     const model = editor.getModel()!
     const client = await getWorkerProcess()
 
-    if (language === "typescript") {
-      modelToEmitForTS.setValue(`namespace playground { ${model.getValue()} }`)
-      return await client.getEmitOutput(modelToEmitForTS.uri.toString())
-    }
-
-    return await client.getEmitOutput(model.uri.toString())
+    modelToEmitForTS.setValue(`namespace playground { ${model.getValue()} }`)
+    return await client.getEmitOutput(modelToEmitForTS.uri.toString())
   }
 
   /** Gets the JS  of compiling your editor's code */
