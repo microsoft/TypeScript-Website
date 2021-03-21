@@ -41,7 +41,7 @@ it("can import files in the virtual fs using posix directory seperators", () => 
   const fsMap = new Map<string, string>()
 
   // Have to replace the windows directory seperator in __dirname or else path.join will silently fail
-  const monorepoRoot = path.posix.join(__dirname.replace(/\\/g, '/'), "..", "..", "..")
+  const monorepoRoot = path.posix.join(__dirname.replace(/\\/g, "/"), "..", "..", "..")
   const fakeFolder = path.posix.join(monorepoRoot, "fake")
   const exporter = path.posix.join(fakeFolder, "file-with-export.ts")
   const index = path.posix.join(fakeFolder, "index.ts")

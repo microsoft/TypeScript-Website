@@ -9,12 +9,11 @@ type TS = typeof import("typescript")
 let hasLocalStorage = false
 try {
   hasLocalStorage = typeof localStorage !== `undefined`
-} catch (error) { }
+} catch (error) {}
 
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 const debugLog = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
-
 
 const directorySeparator = "/"
 const backslashRegExp = /\\/g
@@ -30,7 +29,7 @@ const normalizeFsMap = (fsMap: Map<string, string>): Map<string, string> => {
 
 export interface VirtualTypeScriptEnvironment {
   sys: System
-  host: LanguageServiceHost,
+  host: LanguageServiceHost
   languageService: import("typescript").LanguageService
   getSourceFile: (fileName: string) => import("typescript").SourceFile | undefined
   createFile: (fileName: string, content: string) => void
@@ -384,7 +383,7 @@ const libize = (path: string) => path.replace("/", "/lib.").toLowerCase()
  * is what provides read/write aspects of the virtual fs
  */
 export function createSystem(files: Map<string, string>): System {
-  files = normalizeFsMap(files);
+  files = normalizeFsMap(files)
   return {
     args: [],
     createDirectory: () => notImplemented("createDirectory"),
@@ -394,7 +393,7 @@ export function createSystem(files: Map<string, string>): System {
     }),
     exit: () => notImplemented("exit"),
     fileExists: audit("fileExists", fileName => {
-      const normalizedFileName = normalizeSlashes(fileName);
+      const normalizedFileName = normalizeSlashes(fileName)
       return files.has(normalizedFileName) || files.has(libize(normalizedFileName))
     }),
     getCurrentDirectory: () => "/",
@@ -402,8 +401,8 @@ export function createSystem(files: Map<string, string>): System {
     getExecutingFilePath: () => notImplemented("getExecutingFilePath"),
     readDirectory: audit("readDirectory", directory => (directory === "/" ? Array.from(files.keys()) : [])),
     readFile: audit("readFile", fileName => {
-      const normalizedFileName = normalizeSlashes(fileName);
-      return files.get(normalizedFileName) || files.get(libize(normalizedFileName));
+      const normalizedFileName = normalizeSlashes(fileName)
+      return files.get(normalizedFileName) || files.get(libize(normalizedFileName))
     }),
     resolvePath: path => path,
     newLine: "\n",
@@ -442,7 +441,10 @@ export function createFSBackedSystem(files: Map<string, string>, _projectRoot: s
     // TODO: could make a real file tree
     directoryExists: audit("directoryExists", directory => {
       const normalizedDirectory = normalizeSlashes(directory)
-      return Array.from(files.keys()).some(path => path.startsWith(normalizedDirectory)) || nodeSys.directoryExists(directory)
+      return (
+        Array.from(files.keys()).some(path => path.startsWith(normalizedDirectory)) ||
+        nodeSys.directoryExists(directory)
+      )
     }),
     exit: nodeSys.exit,
     fileExists: audit("fileExists", fileName => {
@@ -461,7 +463,7 @@ export function createFSBackedSystem(files: Map<string, string>, _projectRoot: s
     getExecutingFilePath: () => notImplemented("getExecutingFilePath"),
     readDirectory: audit("readDirectory", (...args) => {
       if (normalizeSlashes(args[0]) === root) {
-        return Array.from(files.keys()).filter(file => file.startsWith(root));
+        return Array.from(files.keys()).filter(file => file.startsWith(root))
       } else {
         return nodeSys.readDirectory(...args)
       }
@@ -538,7 +540,7 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
       useCaseSensitiveFileNames: () => sys.useCaseSensitiveFileNames,
     },
     updateFile: sourceFile => {
-      const normalizedFileName = normalizeSlashes(sourceFile.fileName);
+      const normalizedFileName = normalizeSlashes(sourceFile.fileName)
       const alreadyExists = sourceFiles.has(normalizedFileName)
       sys.writeFile(normalizedFileName, sourceFile.text)
       sourceFiles.set(normalizedFileName, sourceFile)
@@ -590,7 +592,7 @@ export function createVirtualLanguageServiceHost(
     languageServiceHost,
     updateFile: sourceFile => {
       projectVersion++
-      const normalizedFileName = normalizeSlashes(sourceFile.fileName);
+      const normalizedFileName = normalizeSlashes(sourceFile.fileName)
       fileVersions.set(normalizedFileName, projectVersion.toString())
       if (!fileNames.includes(normalizedFileName)) {
         fileNames.push(normalizedFileName)
