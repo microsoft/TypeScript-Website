@@ -19,7 +19,14 @@ const debugLog = shouldDebug ? console.log : (_message?: any, ..._optionalParams
 const directorySeparator = "/"
 const backslashRegExp = /\\/g
 const normalizeSlashes = (path: string): string => path.replace(backslashRegExp, directorySeparator)
-const normalizeFsMap = (fsMap: Map<string, string>): Map<string, string> => new Map([...fsMap.entries()].map(([filepath, content]) => [normalizeSlashes(filepath), content] as const))
+const normalizeFsMap = (fsMap: Map<string, string>) => {
+  for (const [fileName, content] of fsMap) {
+    const normalizedFileName = normalizeSlashes(fileName);
+    if (fileName !== normalizedFileName) {
+      fsMap.set(fileName, content);
+    }
+  }
+}
 
 export interface VirtualTypeScriptEnvironment {
   sys: System
@@ -416,7 +423,7 @@ export function createFSBackedSystem(files: Map<string, string>, _projectRoot: s
   const nodeSys = ts.sys
   const tsLib = path.dirname(require.resolve("typescript"))
 
-  files = normalizeFsMap(files)
+  normalizeFsMap(files)
 
   return {
     // @ts-ignore
