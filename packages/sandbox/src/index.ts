@@ -44,9 +44,9 @@ export type PlaygroundConfig = {
     groupEnd: (...args: any[]) => void
   }
 } & (
-  | { /** theID of a dom node to add monaco to */ domID: string }
-  | { /** theID of a dom node to add monaco to */ elementToAppend: HTMLElement }
-)
+    | { /** theID of a dom node to add monaco to */ domID: string }
+    | { /** theID of a dom node to add monaco to */ elementToAppend: HTMLElement }
+  )
 
 const languageType = (config: PlaygroundConfig) => (config.useJavaScript ? "javascript" : "typescript")
 
@@ -140,6 +140,7 @@ export const createTypeScriptSandbox = (
   const element = "domID" in config ? document.getElementById(config.domID) : (config as any).elementToAppend
 
   const model = monaco.editor.createModel(defaultText, language, filePath)
+  const modelToEmitForTS = monaco.editor.createModel("", "typescript", monaco.Uri.file("/inputToEmit.ts"))
   monaco.editor.defineTheme("sandbox", sandboxTheme)
   monaco.editor.defineTheme("sandbox-dark", sandboxThemeDark)
   monaco.editor.setTheme("sandbox")
@@ -220,7 +221,7 @@ export const createTypeScriptSandbox = (
   }
 
   // To let clients plug into compiler settings changes
-  let didUpdateCompilerSettings = (opts: CompilerOptions) => {}
+  let didUpdateCompilerSettings = (opts: CompilerOptions) => { }
 
   const updateCompilerSettings = (opts: CompilerOptions) => {
     const newKeys = Object.keys(opts)
@@ -266,8 +267,13 @@ export const createTypeScriptSandbox = (
   /** Gets the results of compiling your editor's code */
   const getEmitResult = async () => {
     const model = editor.getModel()!
-
     const client = await getWorkerProcess()
+
+    if (language === "typescript") {
+      modelToEmitForTS.setValue(`namespace playground { ${model.getValue()} }`)
+      return await client.getEmitOutput(modelToEmitForTS.uri.toString())
+    }
+
     return await client.getEmitOutput(model.uri.toString())
   }
 
