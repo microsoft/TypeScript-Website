@@ -596,7 +596,7 @@ g.getName();
 
 #### Exposure of `protected` members
 
-Derived classes need to follow their base class contracts, but may choose to expose a more general type with more capabilities.
+Derived classes need to follow their base class contracts, but may choose to expose a subtype of base class with more capabilities.
 This includes making `protected` members `public`:
 
 ```ts twoslash
