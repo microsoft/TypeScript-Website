@@ -26,7 +26,7 @@ export const docCopy = {
     "A delightful toolkit for building TypeScript-powered command-line apps",
   doc_frameworks: "Web Frameworks",
   doc_frameworks_angular_blurb:
-    "Makes writing beautiful apps be joyful and fun",
+    "The modern web developer's platform",
   doc_frameworks_ember_blurb: "A framework for ambitious web developers",
   doc_frameworks_react_blurb:
     "A JavaScript library for building user interfaces",
