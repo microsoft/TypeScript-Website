@@ -166,7 +166,7 @@ const positivePhi = math.absolute(math.phi);
 //    ^?
 ```
 
-You can import a file and _not_ include any variables into your current module via `import "./file"`
+You can import a file and _not_ include any variables into your current module via `import "./file"`:
 
 ```ts twoslash
 // @filename: maths.ts
@@ -230,7 +230,7 @@ import fs = require("fs");
 const code = fs.readFileSync("hello.ts", "utf8");
 ```
 
-You can learn more about this syntax in the [modules reference page](/docs/handbook/modules.html#export--and-import--require)
+You can learn more about this syntax in the [modules reference page](/docs/handbook/modules.html#export--and-import--require).
 
 ## CommonJS Syntax
 
@@ -323,7 +323,7 @@ For the full details on how these strategies work, you can consult the [Module R
 
 There are two options which affect the emitted JavaScript output:
 
-- [`target`](/tsconfig/#target) which determines which JS features are downleveled (converted to run in older JavaScript runtimes) and which are left intact.
+- [`target`](/tsconfig/#target) which determines which JS features are downleveled (converted to run in older JavaScript runtimes) and which are left intact
 - [`module`](/tsconfig/#module) which determines what code is used for modules to interact with each other
 
 Which `target` you use is determined by the features available in the JavaScript runtime you expect to run the TypeScript code in. That could be: the oldest web browser you support, the lowest version of Node.js you expect to run on or could come from unique constraints from your runtime - like Electron for example.
