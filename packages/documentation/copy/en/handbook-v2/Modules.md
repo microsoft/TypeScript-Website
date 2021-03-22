@@ -208,10 +208,10 @@ export const createCatName = () => "fluffy";
 
 // @filename: valid.ts
 import type { Cat, Dog } from "./animal.js";
-type Animals = Cat | Dog;
+export type Animals = Cat | Dog;
 
-// @errors: 1361
 // @filename: app.ts
+// @errors: 1361
 import type { createCatName } from "./animal.js";
 const name = createCatName();
 ```
