@@ -42,7 +42,7 @@ When a value is of type `any`, you can access any properties of it (which will i
 
 ```ts twoslash
 let obj: any = { x: 0 };
-// None of the following lines of code are will throw compiler errors.
+// None of the following lines of code will throw compiler errors.
 // Using `any` disables all further type checking, and it is assumed 
 // you know the environment better than TypeScript.
 obj.foo();
