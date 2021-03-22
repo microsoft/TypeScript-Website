@@ -7,12 +7,19 @@ export const showErrors: PluginFactory = (i, utils) => {
   let container: HTMLElement
   let sandbox: Sandbox
   let ds: ReturnType<typeof utils.createDesignSystem>
-  let prevMarkers: any[] = []
+  let prevMarkers: number[] = []
 
   const updateUI = () => {
     if (!sandbox) return
     const model = sandbox.getModel()
     const markers = sandbox.monaco.editor.getModelMarkers({ resource: model.uri })
+
+    // Bail early if there's nothing to show
+    if (!markers.length) {
+      prevMarkers = []
+      ds.showEmptyScreen(localize("play_sidebar_errors_no_errors", "No errors"))
+      return
+    }
 
     // @ts-ignore
     const playground: Playground = window.playground
@@ -22,15 +29,9 @@ export const showErrors: PluginFactory = (i, utils) => {
 
     ds.clearDeltaDecorators(true)
 
-    // Bail early if there's nothing to show
-    if (!markers.length) {
-      ds.showEmptyScreen(localize("play_sidebar_errors_no_errors", "No errors"))
-      return
-    }
-
     // The hover can trigger this, so avoid that loop
     const markerIDs = markers.filter(m => m.severity !== 1).map(m => m.startColumn + m.startLineNumber)
-    if (JSON.stringify(markerIDs) === JSON.stringify(prevMarkers)) return
+    if (markerIDs.length === prevMarkers.length && markerIDs.every((value, index) => value === prevMarkers[index])) return
     prevMarkers = markerIDs
 
     // Clean any potential empty screens
@@ -49,7 +50,7 @@ export const showErrors: PluginFactory = (i, utils) => {
       container = _container
       ds = utils.createDesignSystem(container)
       changeDecoratorsDispose = sandbox.getModel().onDidChangeDecorations(updateUI)
-      prevMarkers = [{}]
+      prevMarkers = []
       updateUI()
     },
     didUnmount: () => {
