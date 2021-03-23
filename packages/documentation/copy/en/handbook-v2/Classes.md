@@ -1071,6 +1071,29 @@ if (fso.isFile()) {
 }
 ```
 
+A common use-case for a this-based type guard is to allow for lazy validation of a particular field. For example, this case removes an `undefined` from the value held inside box when `hasValue` has been verified to be true:
+
+```ts twoslash
+class Box<T> {
+  value?: T;
+
+  hasValue(): this is { value: T } {
+    return this.value !== undefined;
+  }
+}
+
+const box = new Box();
+box.value = "Gameboy";
+
+box.value;
+//  ^?
+
+if (box.hasValue()) {
+  box.value;
+  //  ^?
+}
+```
+
 ## Parameter Properties
 
 TypeScript offers special syntax for turning a constructor parameter into a class property with the same name and value.
@@ -1079,7 +1102,7 @@ The resulting field gets those modifier(s):
 
 ```ts twoslash
 // @errors: 2341
-class A {
+class Params {
   constructor(
     public readonly x: number,
     protected y: number,
@@ -1088,7 +1111,7 @@ class A {
     // No body necessary
   }
 }
-const a = new A(1, 2, 3);
+const a = new Params(1, 2, 3);
 console.log(a.x);
 //            ^?
 console.log(a.z);
