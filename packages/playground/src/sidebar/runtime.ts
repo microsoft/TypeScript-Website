@@ -167,7 +167,7 @@ function rewireLoggingToElement(
       allLogs.push(`${prefix}${output}<br>`)
 
       if (output.includes("Unexpected token 'export'")) {
-        allLogs.push(`[<span class="log-warn">WRN</span>]: Please consider changing your Module to \"CommonJS\" in the TS Config settings`)
+        allLogs.push('[<span class="log-warn">WRN</span>]: Tip: Change the Module setting to "CommonJS" in TS Config settings to allow top-level exports to work in the Playground')
       }
 
       eleLog.innerHTML = allLogs.join("<hr />")
