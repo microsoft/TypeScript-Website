@@ -188,8 +188,8 @@ For example, we could have inferred the element type in `Flatten` instead of fet
 type Flatten<Type> = Type extends Array<infer Item> ? Item : Type;
 ```
 
-Here, we used the `infer` keyword declaratively introduced a new generic type variable named `Item` instead of specifying how to retrieve the element type of `T` within the true branch.
-This frees us from having to think about how to dig through and probing apart the structure of the types we're interested.
+Here, we used the `infer` keyword to declaratively introduce a new generic type variable named `Item` instead of specifying how to retrieve the element type of `T` within the true branch.
+This frees us from having to think about how to dig through and probing apart the structure of the types we're interested in.
 
 We can write some useful helper type aliases using the `infer` keyword.
 For example, for simple cases, we can extract the return type out from function types:
