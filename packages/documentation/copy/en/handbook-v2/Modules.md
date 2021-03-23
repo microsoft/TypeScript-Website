@@ -27,7 +27,7 @@ Conversely, to consume a variable, function, class, interface, etc. exported fro
 Before we start, it's important to understand what TypeScript considers a module.
 The JavaScript specification declares that any JavaScript files without an `export` or top-level `await` should be considered a script and not a module.
 
-Inside a script file variables are declared to be in the shared global scope, and it's assumed that you'll either use the [`--outFile`](/tsconfig#outFile) compiler option to join multiple input files into one output file, or use multiple `<script>` tags in your HTML to load these files (in the correct order!).
+Inside a script file variables and types are declared to be in the shared global scope, and it's assumed that you'll either use the [`--outFile`](/tsconfig#outFile) compiler option to join multiple input files into one output file, or use multiple `<script>` tags in your HTML to load these files (in the correct order!).
 
 If you have a file that doesn't currently have any `import`s or `export`s, but you want to be treated as a module, add the line:
 
@@ -35,7 +35,7 @@ If you have a file that doesn't currently have any `import`s or `export`s, but y
 export {};
 ```
 
-to make the file be a module exporting nothing. This syntax works regardless of your module target.
+which will change the file be a module exporting nothing. This syntax works regardless of your module target.
 
 ## Modules in TypeScript
 

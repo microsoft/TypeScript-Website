@@ -437,6 +437,8 @@ const underWater3: Fish[] = zoo.filter((pet): pet is Fish => {
 });
 ```
 
+In addition, classes can [use `this is Type`](/docs/handbook/2/classes.html#this-based-type-guards) to narrow their type.
+
 # Discriminated unions
 
 Most of the examples we've looked at so far have focused around narrowing single variables with simple types like `string`, `boolean`, and `number`.
