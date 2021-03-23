@@ -24,7 +24,7 @@ export const SiteNav = (props: Props) => {
     if (isDev) {
       customHandleSelected = (input, event, suggestion, datasetNumber, context) => {
         const urlToOpen = suggestion.url.replace("www.typescriptlang.org", "localhost:8000").replace("https", "http")
-        window.open(urlToOpen);
+        window.open(urlToOpen)
       }
     }
 
