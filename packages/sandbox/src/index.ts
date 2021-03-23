@@ -44,9 +44,9 @@ export type PlaygroundConfig = {
     groupEnd: (...args: any[]) => void
   }
 } & (
-  | { /** theID of a dom node to add monaco to */ domID: string }
-  | { /** theID of a dom node to add monaco to */ elementToAppend: HTMLElement }
-)
+    | { /** theID of a dom node to add monaco to */ domID: string }
+    | { /** theID of a dom node to add monaco to */ elementToAppend: HTMLElement }
+  )
 
 const languageType = (config: PlaygroundConfig) => (config.useJavaScript ? "javascript" : "typescript")
 
@@ -220,7 +220,7 @@ export const createTypeScriptSandbox = (
   }
 
   // To let clients plug into compiler settings changes
-  let didUpdateCompilerSettings = (opts: CompilerOptions) => {}
+  let didUpdateCompilerSettings = (opts: CompilerOptions) => { }
 
   const updateCompilerSettings = (opts: CompilerOptions) => {
     const newKeys = Object.keys(opts)
