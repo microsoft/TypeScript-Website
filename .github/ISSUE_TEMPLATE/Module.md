@@ -1,18 +1,18 @@
 ---
 name: Module Improvement
-about: Offer a suggestion for improvements on modules like twoslash, typescript-vfs and gatsby-remark-shiki-twoslash
-title: 'Module: '
-labels: 'Module'
+about: Offer a suggestion for improvements on modules like twoslash, typescript-vfs and shiki-twoslash et al
+title: "Module: "
+labels: "Module"
 ---
-
-<!-- Issue Report -->
 
 **Improvement Idea:**
 
-<!-- Why do it this way? -->
+<!-- Issue Report -->
 
 **Why:**
 
-<!-- Are there other ways to do it? -->
+<!-- Why do it this way? -->
 
 **Alternative ideas:**
+
+<!-- Are there other ways to do it? -->

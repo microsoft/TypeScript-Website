@@ -10,7 +10,7 @@ exports.wrapRootElement = ({ element }) => {
 }
 
 // This code has to run sync across every page to set up the
-// state for light/dark modes
+// state for light/dark modes and custom code fonts
 const CustomColorSwitcherCode = () => {
   const codeToRunOnClient = `
 (function() {
@@ -21,13 +21,17 @@ const CustomColorSwitcherCode = () => {
   } catch (error) {}
 
   const systemIsDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-  const customThemeOverride = hasLocalStorage && localStorage.getItem("color-theme")
+  const hasSetColorTheme = hasLocalStorage && localStorage.getItem("force-color-theme")
+  const customThemeOverride = hasLocalStorage && localStorage.getItem("force-color-theme")
 
-  if (!customThemeOverride && systemIsDark) {
+  if (!hasSetColorTheme && systemIsDark) {
     document.documentElement.classList.add("dark-theme")
-  } else if (customThemeOverride !== undefined) {
-    document.documentElement.classList.add(customThemeOverride)
+  } else if (customThemeOverride) {
+    document.documentElement.classList.add(customThemeOverride.replace("force-", "") + "-theme")
   }
+
+  const customFontOverride = hasLocalStorage && localStorage.getItem("force-font") || "cascadia"
+  document.documentElement.classList.add('font-' + customFontOverride)
 })()
   `
   return <script dangerouslySetInnerHTML={{ __html: codeToRunOnClient }} />

@@ -388,25 +388,25 @@ To prevent this, TypeScript 3.8 waits slightly before installing directory watch
 
 Because every project might work better under different strategies, and this new approach might not work well for your workflows, TypeScript 3.8 introduces a new `watchOptions` field in `tsconfig.json` and `jsconfig.json` which allows users to tell the compiler/language service which watching strategies should be used to keep track of files and directories.
 
-```json5
+```jsonc tsconfig
 {
   // Some typical compiler options
-  compilerOptions: {
-    target: "es2020",
-    moduleResolution: "node",
+  "compilerOptions": {
+    "target": "es2020",
+    "moduleResolution": "node"
     // ...
   },
 
   // NEW: Options for file/directory watching
-  watchOptions: {
+  "watchOptions": {
     // Use native file system events for files and directories
-    watchFile: "useFsEvents",
-    watchDirectory: "useFsEvents",
+    "watchFile": "useFsEvents",
+    "watchDirectory": "useFsEvents",
 
     // Poll files for updates more frequently
     // when they're updated a lot.
-    fallbackPolling: "dynamicPriority",
-  },
+    "fallbackPolling": "dynamicPriority"
+  }
 }
 ```
 

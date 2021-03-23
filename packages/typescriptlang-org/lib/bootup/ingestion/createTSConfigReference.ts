@@ -40,6 +40,8 @@ export const createTSConfigReference = async (
     const categoriesForLang = path.join( __dirname, "..", "..", "..", "..", "tsconfig-reference", "output", element.name + ".json")
 
     const lang = element.name
+
+    if (lang.length !== 2) return
     if (!isMultiLingual && lang !== "en") return
 
     // Support urls being consistent with the current infra, e.g. en with no prefix

@@ -88,13 +88,13 @@ export const Comm: React.FC<Props> = props => {
             </div>
             </div>
             <div className="callout">
-              <a aria-labelledby="blog-header" className="icon blog img-circle" href="https://devblogs.microsoft.com/typescript/" target="_blank" title="The official TypeSCript blog" />
+              <a aria-labelledby="blog-header" className="icon blog img-circle" href="https://devblogs.microsoft.com/typescript/" target="_blank" title="The official TypeScript blog" />
               <div className="text">
-                <a href="https://devblogs.microsoft.com/typescript/" id="blog-header" target="_blank" title="The official TypeSCript blog">
+                <a href="https://devblogs.microsoft.com/typescript/" id="blog-header" target="_blank" title="The official TypeScript blog">
                   <h3 className="community-callout-headline">Blog</h3>
                 </a>
                 {i("com_online_blog_desc") + " "}
-                <a href="https://devblogs.microsoft.com/typescript/" target="_blank" title="The official TypeSCript blog">blog</a>!
+                <a href="https://devblogs.microsoft.com/typescript/" target="_blank" title="The official TypeScript blog">blog</a>!
             </div>
             </div>
             <div className="callout">
@@ -181,14 +181,14 @@ export const Comm: React.FC<Props> = props => {
         <div className="events">
 
           <div className="callouts">
-            {meetups.map(({ meetup }) => (
-              <Col className="callout">
+            {meetups.map(({ meetup }, index) => (
+              <Col className="callout" key={index}>
                 <img src={require("../../assets/community/meetup-logos/" + meetup.image)} className="icon img-square" alt={"logo of " + meetup.title} />
                 <div>
                   <h4 className="community-callout-headline">{meetup.title}</h4>
                   <div className="text">{meetup.country}<br />
                     <a rel="noopener" target="blank" href={meetup.url} title={"Website for " + meetup.title}>Website</a>
-                    {meetup.twitter ? <a rel="noopener" target="blank" href={meetup.twitter} title={"Twitter page for " + meetup.title}>Twitter</a> : null}
+                    {" "}{meetup.twitter ? <a rel="noopener" target="blank" href={meetup.twitter} title={"Twitter page for " + meetup.title}>Twitter</a> : null}
                   </div>
                 </div>
               </Col>

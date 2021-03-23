@@ -138,6 +138,11 @@ const Index: React.FC<Props> = (props) => {
               blurb: i("doc_apis_fastify_blurb"),
               title: "Fastify",
             },
+            {
+              href: "https://foalts.org/",
+              blurb: i("doc_apis_foal_blurb"),
+              title: "Foal TS",
+            },
           ]}
         />
 

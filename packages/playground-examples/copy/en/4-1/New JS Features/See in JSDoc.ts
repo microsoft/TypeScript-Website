@@ -17,5 +17,5 @@ const goodbye = "Good";
  * You say hi, I say low
  *
  * @see goodbye
- * */
+ */
 const hello = "Hello, hello";

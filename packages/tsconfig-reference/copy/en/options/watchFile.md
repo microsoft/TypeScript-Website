@@ -1,6 +1,6 @@
 ---
 display: "watchFile"
-oneline: "What technique should the watcher use"
+oneline: "Specify how the TypeScript watch mode works."
 ---
 
 The strategy for how individual files are watched.

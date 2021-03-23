@@ -1,6 +1,6 @@
 ---
 display: "Lib"
-oneline: "A list of bundled library declaration files which describe the target runtime environment."
+oneline: "Specify a set of bundled library declaration files that describe the target runtime environment."
 ---
 
 TypeScript includes a default set of type definitions for built-in JS APIs (like `Math`), as well as type definitions for things found in browser environments (like `document`).

@@ -1,6 +1,6 @@
 ---
 display: "Extended Diagnostics"
-oneline: "Output more detailed compiler performance information after building"
+oneline: "Output more detailed compiler performance information after building."
 ---
 
 You can use this flag to discover where TypeScript is spending it's time when compiling.

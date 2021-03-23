@@ -1,6 +1,6 @@
 ---
 display: "Allow Unreachable Code"
-oneline: "Do not report errors on unreachable code."
+oneline: "Disable error reporting for unreachable code."
 ---
 
 When:

@@ -15,7 +15,7 @@ const Index: React.FC<Props> = (props) => {
         <div id="dev">
           <DevNav active="typescript vfs" />
           <div className="raised content main-content-block">
-            <div className="split-sixhundred">
+            <div className="split-fivehundred">
               <h1 style={{ marginTop: "20px" }}>Easy access to the compiler API</h1>
               <p>TypeScript VFS lets you create a self-contained TypeScript environment entirely under your control. This library is used to power the Playground, and provides the underlying tooling for <Link to="/dev/twoslash">twoslash</Link> code samples.</p>
               <p>There are 3 main uses for TypeScript VFS:</p>
@@ -27,7 +27,7 @@ const Index: React.FC<Props> = (props) => {
               <p>You can learn more in the <a href="https://github.com/microsoft/TypeScript-Website/blob/v2/packages/typescript-vfs/">TypeScript VFS README</a></p>
             </div>
 
-            <div className="sixhundred" style={{ borderLeft: "1px solid gray", padding: "20px" }}>
+            <div className="fivehundred" style={{ borderLeft: "1px solid gray", padding: "20px" }}>
               <h3>Setup with TypeScript from node_modules</h3>
               <pre tabIndex={0}><code className="html-code">{`import ts from 'typescript'
 import tsvfs from '@typescript/vfs'

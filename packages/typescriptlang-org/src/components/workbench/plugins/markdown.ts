@@ -10,17 +10,22 @@ export const workbenchMarkdownPlugin: PluginFactory = (i, utils) => {
     code: string
   ) => {
     ds.subtitle("Markdown for issue")
-    const url = document && document.location ? document.location.href : ""
+    ds.button({
+      label: "Copy Markdown",
+      onclick: () => navigator.clipboard.writeText(mdCode),
+    })
+    ds.p("")
 
-    ds.code(
-      `
+    const url = document && document.location ? document.location.href : ""
+    const mdCode = `
 \`\`\`ts repro
 ${code.replace(/</g, "&lt;")}
 \`\`\`
 
 [Workbench Repro](${url})
-`.trim()
-    )
+    `.trim()
+
+    ds.code(mdCode)
     ds.p(
       "Congrats! These repros make it much easier for us to keep track of bugs on the TypeScript team. You can copy & paste this into an issue or comment on the TypeScript repo to have it get hooked up."
     )

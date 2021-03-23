@@ -41,28 +41,41 @@ const handbookPages = [
   },
   {
     title: "Handbook",
-    summary: "A good first read for your daily TS work.",
+    summary: "A great first read for your daily TS work.",
     chronological: true,
     items: [
-      { file: "handbook-v1/The Handbook.md" },
-      { file: "handbook-v1/Basic Types.md" },
-      { file: "handbook-v1/Interfaces.md" },
-      { file: "handbook-v1/Functions.md" },
-      { file: "handbook-v1/Literal Types.md" },
-      { file: "handbook-v1/Unions and Intersections.md" },
-      { file: "handbook-v1/Classes.md" },
-      { file: "handbook-v1/Enums.md" },
-      { file: "handbook-v1/Generics.md" },
+      { file: "handbook-v2/The Handbook.md" },
+      { file: "handbook-v2/Basics.md" },
+      { file: "handbook-v2/Everyday Types.md" },
+      { file: "handbook-v2/Narrowing.md" },
+      { file: "handbook-v2/More on Functions.md" },
+      { file: "handbook-v2/Object Types.md" },
+      {
+        title: "Type Manipulation",
+        items: [
+          { file: "handbook-v2/Type Manipulation/_Creating Types from Types.md" },
+          { file: "handbook-v2/Type Manipulation/Generics.md" },
+          { file: "handbook-v2/Type Manipulation/Keyof Type Operator.md" },
+          { file: "handbook-v2/Type Manipulation/Typeof Type Operator.md" },
+          { file: "handbook-v2/Type Manipulation/Indexed Access Types.md" },
+          { file: "handbook-v2/Type Manipulation/Conditional Types.md" },
+          { file: "handbook-v2/Type Manipulation/Mapped Types.md" },
+          { file: "handbook-v2/Type Manipulation/Template Literal Types.md" },
+        ]
+      },
+      { file: "handbook-v2/Classes.md" },
+      { file: "handbook-v2/Modules.md" },
     ],
   },
   {
-    title: "Handbook Reference",
+    title: "Reference",
     summary: "Deep dive reference materials.",
     items: [
-      { file: "reference/Advanced Types.md" },
+      // { file: "reference/Advanced Types.md" },
       { file: "reference/Utility Types.md" },
       { file: "reference/Decorators.md" },
       { file: "reference/Declaration Merging.md" },
+      { file: "reference/Enums.md" },
       { file: "reference/Iterators and Generators.md" },
       { file: "reference/JSX.md" },
       { file: "reference/Mixins.md" },
@@ -151,34 +164,7 @@ const handbookPages = [
       { file: "project-config/Configuring Watch.md" },
       { file: "Nightly Builds.md" },
     ],
-  },
-  {
-    title: "Handbook v2: Beta",
-    summary: "The new handbook which is a work in progress.",
-      chronological: true,
-      beta: true,
-    items: [
-      { file: "handbook-v2/Basics.md" },
-      { file: "handbook-v2/Everyday Types.md" },
-      { file: "handbook-v2/Object Types.md" },
-      { file: "handbook-v2/Narrowing.md" },
-      { file: "handbook-v2/More on Functions.md" },
-      { file: "handbook-v2/Classes.md" },
-      {
-        title: "Type Manipulation",
-        items: [
-          { file: "handbook-v2/Type Manipulation/_Creating Types from Types.md" },
-          { file: "handbook-v2/Type Manipulation/Keyof Type Operator.md" },
-          { file: "handbook-v2/Type Manipulation/Typeof Type Operator.md" },
-          { file: "handbook-v2/Type Manipulation/Indexed Access Types.md" },
-          { file: "handbook-v2/Type Manipulation/Conditional Types.md" },
-        ]
-      },
-      { file: "handbook-v2/Modules.md" },
-      { file: "handbook-v2/Type Declarations.md" },
-      { file: "handbook-v2/Understanding Errors.md" },
-    ],
-  },
+  }
 ]
 fillReleaseInfo();
 
@@ -379,5 +365,5 @@ function fillReleaseInfo() {
 }
 
 function toID(secIdx, str) {
-  return secIdx.toString() + str.toLowerCase().replace(/\s/g, "-");
+  return secIdx.toString() + "-" + str.toLowerCase().replace(/\s/g, "-");
 }

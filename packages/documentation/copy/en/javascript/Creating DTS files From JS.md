@@ -30,25 +30,25 @@ You can learn how to do this in our [installation page](/download).
 The TSConfig is a jsonc file which configures both your compiler flags, and declare where to find files.
 In this case, you will want a file like the following:
 
-```json5
+```jsonc tsconfig
 {
   // Change this to match your project
-  include: ["src/**/*"],
+  "include": ["src/**/*"],
 
-  compilerOptions: {
+  "compilerOptions": {
     // Tells TypeScript to read JS files, as
     // normally they are ignored as source files
-    allowJs: true,
+    "allowJs": true,
     // Generate d.ts files
-    declaration: true,
+    "declaration": true,
     // This compiler run should
     // only output d.ts files
-    emitDeclarationOnly: true,
+    "emitDeclarationOnly": true,
     // Types should go into this directory.
     // Removing this would place the .d.ts files
     // next to the .js files
-    outDir: "dist",
-  },
+    "outDir": "dist"
+  }
 }
 ```
 
@@ -73,7 +73,7 @@ Roughly, the resolution will first check the optional `"types"` field, then the 
 | :------------------------ | :----------------------------- |
 | No "types" field          | checks "main", then index.d.ts |
 | "types": "main.d.ts"      | main.d.ts                      |
-| "types": "./dist/main.js" | ./main/main.d.ts               |
+| "types": "./dist/main.js" | ./dist/main.d.ts               |
 
 If absent, then "main" is used
 

@@ -62,7 +62,7 @@ export const indexCopy = {
   index_started_community_blurb: "Keep up to date",
   index_install: "Install TypeScript",
   index_install_ref: `
-  <p>You can install TypeScript via npm<pre>npm install -g typescript</pre>
+  <p>You can install TypeScript via npm<install>
   <p>Then run the compiler via <code>tsc</code><pre>npx tsc</pre>
   <p>Learn more about how to add TypeScript to your apps in the <download>installation page</download>
   `,

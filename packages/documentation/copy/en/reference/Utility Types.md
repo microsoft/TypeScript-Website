@@ -34,6 +34,24 @@ const todo2 = updateTodo(todo1, {
 });
 ```
 
+## `Required<Type>`
+
+Constructs a type consisting of all properties of `Type` set to required. The opposite of [`Partial`](#partialtype).
+
+##### Example
+
+```ts twoslash
+// @errors: 2741
+interface Props {
+  a?: number;
+  b?: string;
+}
+
+const obj: Props = { a: 5 };
+
+const obj2: Required<Props> = { a: 5 };
+```
+
 ## `Readonly<Type>`
 
 Constructs a type with all properties of `Type` set to `readonly`, meaning the properties of the constructed type cannot be reassigned.
@@ -63,30 +81,31 @@ function freeze<Type>(obj: Type): Readonly<Type>;
 
 ## `Record<Keys,Type>`
 
-Constructs a type with a set of properties `Keys` of type `Type`. This utility can be used to map the properties of a type to another type.
+Constructs an object type whose property keys are `Keys` and whose property values are `Type`. This utility can be used to map the properties of a type to another type.
 
 ##### Example
 
 ```ts twoslash
-interface PageInfo {
-  title: string;
+interface CatInfo {
+  age: number;
+  breed: string;
 }
 
-type Page = "home" | "about" | "contact";
+type CatName = "miffy" | "boris" | "mordred";
 
-const nav: Record<Page, PageInfo> = {
-  about: { title: "about" },
-  contact: { title: "contact" },
-  home: { title: "home" },
+const cats: Record<CatName, CatInfo> = {
+  miffy: { age: 10, breed: "Persian" },
+  boris: { age: 5, breed: "Maine Coon" },
+  mordred: { age: 16, breed: "British Shorthair" },
 };
 
-nav.about;
+cats.boris;
 // ^?
 ```
 
 ## `Pick<Type, Keys>`
 
-Constructs a type by picking the set of properties `Keys` from `Type`.
+Constructs a type by picking the set of properties `Keys` (string literal or union of string literals) from `Type`.
 
 ##### Example
 
@@ -110,7 +129,7 @@ todo;
 
 ## `Omit<Type, Keys>`
 
-Constructs a type by picking all properties from `Type` and then removing `Keys`.
+Constructs a type by picking all properties from `Type` and then removing `Keys` (string literal or union of string literals).
 
 ##### Example
 
@@ -119,6 +138,7 @@ interface Todo {
   title: string;
   description: string;
   completed: boolean;
+  createdAt: number;
 }
 
 type TodoPreview = Omit<Todo, "description">;
@@ -126,9 +146,20 @@ type TodoPreview = Omit<Todo, "description">;
 const todo: TodoPreview = {
   title: "Clean room",
   completed: false,
+  createdAt: 1615544252770,
 };
 
 todo;
+// ^?
+
+type TodoInfo = Omit<Todo, "completed" | "createdAt">;
+
+const todoInfo: TodoInfo = {
+  title: "Pick up kids",
+  description: "Kindergarten closes at 5pm",
+};
+
+todoInfo;
 // ^?
 ```
 
@@ -279,24 +310,6 @@ type T4 = InstanceType<Function>;
 //    ^?
 ```
 
-## `Required<Type>`
-
-Constructs a type consisting of all properties of `T` set to required. The opposite of [`Partial`](#partialtype).
-
-##### Example
-
-```ts twoslash
-// @errors: 2741
-interface Props {
-  a?: number;
-  b?: string;
-}
-
-const obj: Props = { a: 5 };
-
-const obj2: Required<Props> = { a: 5 };
-```
-
 ## `ThisParameterType<Type>`
 
 Extracts the type of the [this](/docs/handbook/functions.html#this-parameters) parameter for a function type, or [unknown](/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type) if the function type has no `this` parameter.
@@ -366,3 +379,15 @@ obj.moveBy(5, 5);
 In the example above, the `methods` object in the argument to `makeObject` has a contextual type that includes `ThisType<D & M>` and therefore the type of [this](/docs/handbook/functions.html#this) in methods within the `methods` object is `{ x: number, y: number } & { moveBy(dx: number, dy: number): number }`. Notice how the type of the `methods` property simultaneously is an inference target and a source for the `this` type in methods.
 
 The `ThisType<T>` marker interface is simply an empty interface declared in `lib.d.ts`. Beyond being recognized in the contextual type of an object literal, the interface acts like any empty interface.
+
+## Intrinsic String Manipulation Types
+
+### `Uppercase<StringType>`
+
+### `Lowercase<StringType>`
+
+### `Capitalize<StringType>`
+
+### `Uncapitalize<StringType>`
+
+To help with string manipulation around template string literals, TypeScript includes a set of types which can be used in string manipulation within the type system. You can find those in the [Template Literal Types](/docs/handbook/2/template-literal-types.html#uppercasestringtype) documentation.

@@ -3,6 +3,8 @@ title: Generics
 layout: docs
 permalink: /docs/handbook/generics.html
 oneline: Introduction to TypeScript and Generics
+handbook: "true"
+deprecated_by: /docs/handbook/2/generics.html
 ---
 
 A major part of software engineering is building components that not only have well-defined and consistent APIs, but are also reusable.
@@ -62,7 +64,7 @@ function identity<T>(arg: T): T {
 }
 // ---cut---
 let output = identity<string>("myString");
-//       ^? 
+//       ^?
 ```
 
 Here we explicitly set `T` to be `string` as one of the arguments to the function call, denoted using the `<>` around the arguments rather than `()`.
@@ -222,7 +224,7 @@ class GenericNumber<T> {
 
 let myGenericNumber = new GenericNumber<number>();
 myGenericNumber.zeroValue = 0;
-myGenericNumber.add = function(x, y) {
+myGenericNumber.add = function (x, y) {
   return x + y;
 };
 ```
@@ -230,7 +232,7 @@ myGenericNumber.add = function(x, y) {
 This is a pretty literal use of the `GenericNumber` class, but you may have noticed that nothing is restricting it to only use the `number` type.
 We could have instead used `string` or even more complex objects.
 
-```ts
+```ts twoslash
 // @strict: false
 class GenericNumber<T> {
   zeroValue: T;
@@ -239,7 +241,7 @@ class GenericNumber<T> {
 // ---cut---
 let stringNumeric = new GenericNumber<string>();
 stringNumeric.zeroValue = "";
-stringNumeric.add = function(x, y) {
+stringNumeric.add = function (x, y) {
   return x + y;
 };
 
@@ -291,8 +293,8 @@ interface Lengthwise {
 }
 
 function loggingIdentity<T extends Lengthwise>(arg: T): T {
-  console.log(arg.length); 
-  return arg
+  console.log(arg.length);
+  return arg;
 }
 // ---cut---
 loggingIdentity(3);
@@ -307,7 +309,7 @@ interface Lengthwise {
 
 function loggingIdentity<T extends Lengthwise>(arg: T): T {
   console.log(arg.length);
-  return arg
+  return arg;
 }
 // ---cut---
 loggingIdentity({ length: 10, value: 3 });

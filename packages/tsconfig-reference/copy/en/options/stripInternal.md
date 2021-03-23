@@ -1,6 +1,6 @@
 ---
 display: "Strip Internal"
-oneline: "Do not emit declarations which have '@internal' in their JSDoc comments."
+oneline: "Disable emitting declarations that have `@internal` in their JSDoc comments."
 ---
 
 Do not emit declarations for code that has an `@internal` annotation in it's JSDoc comment.

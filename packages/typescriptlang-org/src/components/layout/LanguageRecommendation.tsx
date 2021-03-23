@@ -43,12 +43,16 @@ export const LanguageRecommendations = (props: Props) => {
     const isSmall = window.innerWidth < 800
     if (isSmall) return
 
+
     const suppressed = hasLocalStorage && localStorage.getItem("dont-recommend-translate")
 
     let localePath = getLocaleVersionOfPage()
     if (localePath.startsWith("/en")) {
       localePath = localePath.slice(3)
     }
+
+    // Heh, ignore dt urls
+    if (localePath.startsWith("/dt")) return
 
     if (localePath === "") localePath = "/"
     if (localePath === location.pathname) return
@@ -94,10 +98,10 @@ export const LanguageRecommendations = (props: Props) => {
   }, [])
 
   return (
-    <div id="language-recommendation" style={{ display: "none" }}>
+    <div className="page-popup" id="language-recommendation" style={{ display: "none" }}>
       <p id="language-recommendation-p">MSG</p>
       <div>
-        <button id="language-recommendation-open"></button>
+        <button className="first" id="language-recommendation-open"></button>
         <button id="language-recommendation-no-more"></button>
       </div>
     </div>

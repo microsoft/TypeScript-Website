@@ -13,15 +13,13 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
-
-      # For epub -> PDF conversion
-      - run: sudo apt-get update
-      - run: sudo apt install calibre
+      - uses: microsoft/playwright-github-action@v1
 
       # Build v2
       - name: Build website v2
         run: |
           yarn install
+          yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
           yarn bootstrap
           yarn build
           yarn build-site
@@ -43,11 +41,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_BOT_TOKEN }}
           APP_INSIGHTS_API_KEY: ${{ secrets.APP_INSIGHTS_API_KEY }}
           APP_INSIGHTS_ID: ${{ secrets.APP_INSIGHTS_ID }}
-
-      # Update all the translation issues on a nightly basis
-      - run: node packages/typescriptlang-org/scripts/updateGitHubTranslationIssues.ts
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_BOT_TOKEN }}
 
       - name: Send a message to Microsoft Teams
         if: ${{ failure() }}

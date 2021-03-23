@@ -91,11 +91,11 @@ interface Named {
   name: string;
 }
 
-function printPoint(point: Pointlike) {
+function logPoint(point: Pointlike) {
   console.log("x = " + point.x + ", y = " + point.y);
 }
 
-function printName(x: Named) {
+function logName(x: Named) {
   console.log("Hello, " + x.name);
 }
 
@@ -105,8 +105,8 @@ const obj = {
   name: "Origin",
 };
 
-printPoint(obj);
-printName(obj);
+logPoint(obj);
+logName(obj);
 ```
 
 TypeScript's type system is _structural_, not nominal: We can use `obj` as a `Pointlike` because it has `x` and `y` properties that are both numbers.
@@ -176,7 +176,7 @@ OOP programmers are accustomed to being able to query the type of any value, eve
 
 ```csharp
 // C#
-static void PrintType<T>() {
+static void LogType<T>() {
     Console.WriteLine(typeof(T).Name);
 }
 ```
@@ -186,6 +186,9 @@ Because TypeScript's type system is fully erased, information about e.g. the ins
 JavaScript does have some limited primitives like `typeof` and `instanceof`, but remember that these operators are still working on the values as they exist in the type-erased output code.
 For example, `typeof (new Car())` will be `"object"`, not `Car` or `"Car"`.
 
----
+## Next Steps
 
-This is an overview, from here you should read [through the handbook](/docs/handbook/intro.html) or explore the [Playground examples](/play#show-examples)
+This was a brief overview of the syntax and tools used in everyday TypeScript. From here, you can:
+
+- Read the full Handbook [from start to finish](/docs/handbook/intro.html) (30m)
+- Explore the [Playground examples](/play#show-examples)

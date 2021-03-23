@@ -3,6 +3,28 @@ title: Advanced Types
 layout: docs
 permalink: /docs/handbook/advanced-types.html
 oneline: Advanced concepts around types in TypeScript
+deprecated_by: /docs/handbook/2/types-from-types.html
+
+# prettier-ignore
+deprecation_redirects: [
+  type-guards-and-differentiating-types, /docs/handbook/2/narrowing.html,
+  user-defined-type-guards, /docs/handbook/2/narrowing.html#using-type-predicates,
+  typeof-type-guards, "/docs/handbook/2/narrowing.html#typeof-type-guards",
+  instanceof-type-guards, /docs/handbook/2/narrowing.html#instanceof-narrowing,
+  nullable-types, /docs/handbook/2/everyday-types.html#null-and-undefined,
+  type-aliases, /docs/handbook/2/everyday-types.html#type-aliases,
+  interfaces-vs-type-aliases, /docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces,
+  enum-member-types, /docs/handbook/enums.html,
+  polymorphic-this-types, /docs/handbook/2/classes.html,
+  index-types, /docs/handbook/2/indexed-access-types.html,
+  index-types-and-index-signatures, /docs/handbook/2/indexed-access-types.html,
+  mapped-types, /docs/handbook/2/mapped-types.html,
+  inference-from-mapped-types, /docs/handbook/2/mapped-types.html,
+  conditional-types, /docs/handbook/2/conditional-types.html,
+  distributive-conditional-types, /docs/handbook/2/conditional-types.html#distributive-conditional-types,
+  type-inference-in-conditional-types, /docs/handbook/2/conditional-types.html#inferring-within-conditional-types,
+  predefined-conditional-types, /docs/handbook/utility-types.html,
+]
 ---
 
 This page lists some of the more advanced ways in which you can model types, it works in tandem with the [Utility Types](/docs/handbook/utility-types.html) doc which includes types which are included in TypeScript and available globally.
@@ -59,7 +81,7 @@ It would be much better if once we performed the check, we could know the type o
 It just so happens that TypeScript has something called a _type guard_.
 A type guard is some expression that performs a runtime check that guarantees the type in some scope.
 
-#### Using type predicates
+### Using type predicates
 
 To define a type guard, we simply need to define a function whose return type is a _type predicate_:
 
@@ -98,6 +120,24 @@ if (isFish(pet)) {
 
 Notice that TypeScript not only knows that `pet` is a `Fish` in the `if` branch;
 it also knows that in the `else` branch, you _don't_ have a `Fish`, so you must have a `Bird`.
+
+You may use the type guard `isFish` to filter an array of `Fish | Bird` and obtain an array of `Fish`:
+
+```ts twoslash
+// @errors: 2345
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+declare function getSmallPet(): Fish | Bird;
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined;
+}
+// ---cut---
+const zoo: (Fish | Bird)[] = [getSmallPet(), getSmallPet(), getSmallPet()];
+const underWater1: Fish[] = zoo.filter(isFish);
+// or, equivalently
+const underWater2: Fish[] = zoo.filter<Fish>(isFish);
+const underWater3: Fish[] = zoo.filter<Fish>((pet) => isFish(pet));
+```
 
 ### Using the `in` operator
 
@@ -198,11 +238,11 @@ let padder: Padder = getRandomPadder();
 
 if (padder instanceof SpaceRepeatingPadder) {
   padder;
-  //     ^?
+  //   ^?
 }
 if (padder instanceof StringPadder) {
   padder;
-  //     ^?
+  //   ^?
 }
 ```
 
@@ -1054,8 +1094,7 @@ type T4 = NonFunctionProperties<Part>;
 //   ^?
 ```
 
-Similar to union and intersection types, conditional types are not permitted to reference themselves recursively.
-For example the following is an error.
+Note, conditional types are not permitted to reference themselves recursively. For example the following is an error.
 
 #### Example
 

@@ -1,6 +1,6 @@
 ---
 display: "Isolated Modules"
-oneline: "Ensure that each file can be safely transpiled without relying on other imports"
+oneline: "Ensure that each file can be safely transpiled without relying on other imports."
 ---
 
 While you can use TypeScript to produce JavaScript code from TypeScript code, it's also common to use other transpilers such as [Babel](https://babeljs.io) to do this.
@@ -71,5 +71,5 @@ declare const enum Numbers {
 console.log(Numbers.Zero + Numbers.One);
 ```
 
-Without knowledge of the values of these members, other transpilers can't replace the references to `Number`, which would be a runtime error if left alone (since there are no `Numbers` object at runtime).
+Without knowledge of the values of these members, other transpilers can't replace the references to `Numbers`, which would be a runtime error if left alone (since there are no `Numbers` object at runtime).
 Because of this, when `isolatedModules` is set, it is an error to reference an ambient `const enum` member.

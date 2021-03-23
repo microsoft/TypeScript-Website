@@ -1,3 +1,0 @@
----
-display: "Baris Perintah"
----

@@ -6,7 +6,7 @@
   --text-color: #fff;
   --border-color: #444;
   --background-minor-highlight-color: #343434;
-  --inline-code-background-color: rgb(58, 58, 92);
+  --inline-code-background-color: rgb(58, 58, 92, 0.7);
   --link-color: #{$ts-main-blue-lightest-color};
   --raised-background-color: #{$ts-dark-bg-for-foreground-color};
   --alt-text-color: #fff;
@@ -76,10 +76,52 @@ html.light-theme {
   color: var(--text-color);
 
   -webkit-font-smoothing: antialiased;
-  font-family: "Segoe UI Web (West European)", "Segoe UI", -apple-system,
-    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  font-family: var(--body-font);
   font-size: 16px;
   line-height: 1.4;
+}
+
+html {
+  --code-font: "Cascadia Mono-SemiLight", Menlo, Monaco, Consolas, monospace;
+  --body-font: "Segoe UI Web (West European)", "Segoe UI", -apple-system,
+    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+}
+
+// These match the ids from the select in SiteFooter-Customize.tsx
+
+html.font-cascadia-ligatures {
+  --code-font: "Cascadia Code-SemiLight", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-consolas {
+  --code-font: Consolas, monospace;
+}
+
+html.font-dank-mono {
+  --code-font: "Dank Mono Regular", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-jetbrains-mono {
+  --code-font: "JetBrains Mono-Regular", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-fira-code {
+  --code-font: "FiraCode-Regular", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-sf-mono {
+  --code-font: "SF Mono", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-source-code-pro {
+  --code-font: "SourceCode Pro Regular", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-open-dyslexic {
+  --code-font: "OpenDyslexicMono Regular", Menlo, Monaco, Consolas, monospace;
+  --body-font: "OpenDyslexic Regular", "Segoe UI Web (West European)",
+    "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue",
+    sans-serif;
 }
 
 .raised {
@@ -115,6 +157,8 @@ html.light-theme {
   p > code,
   li > code {
     background-color: var(--inline-code-background-color);
+    font-family: $font-code;
+    padding: 2px 4px;
   }
 
   td {
@@ -125,6 +169,11 @@ html.light-theme {
 // Style the permalink icon in dark colour-scheme
 .dark-theme .raised .markdown .anchor.before svg path {
   fill: #fff;
+}
+
+h2,
+h3 {
+  font-weight: 400;
 }
 
 .main-content-block {

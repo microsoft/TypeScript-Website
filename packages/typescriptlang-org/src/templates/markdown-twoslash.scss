@@ -1,3 +1,5 @@
+@import "../style/globals.scss";
+
 /* Code blocks look like: 
 
 <pre class='shiki lsp twoslash'>
@@ -27,6 +29,29 @@ pre {
   overflow: auto;
   &.shiki {
     overflow: initial;
+
+    &:hover .dim {
+      opacity: 1;
+    }
+
+    div.dim {
+      opacity: 0.5;
+    }
+
+    div.dim,
+    div.highlight {
+      margin: 0;
+      padding: 0;
+    }
+
+    div.highlight {
+      opacity: 1;
+      background-color: #f1f8ff;
+    }
+
+    div.line {
+      min-height: 1rem;
+    }
   }
 
   /* So that folks know you can highlight */
@@ -72,9 +97,7 @@ pre {
     // These are somewhat redundant in this codebase, but relevant for everyone else
     /** Style setup */
     font-size: 15px;
-    line-height: 16px;
-    font-family: "Cascadia Mono-SemiLight", "JetBrains Mono", Menlo, Monaco,
-      Consolas, Courier New, monospace;
+    font-family: var(--code-font);
 
     white-space: pre;
     -webkit-overflow-scrolling: touch;
@@ -183,6 +206,12 @@ pre {
       }
     }
   }
+}
+
+.dark-theme .markdown pre {
+  background-color: #d8d8d8;
+  border-color: #ddd;
+  filter: invert(98%) hue-rotate(180deg);
 }
 
 // Extracted from vscode

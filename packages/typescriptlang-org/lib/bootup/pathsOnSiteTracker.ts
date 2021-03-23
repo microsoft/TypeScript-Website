@@ -16,6 +16,8 @@ export const writeAllPathsToFixture = () => {
     `
 // Generated during bootstapping via pathsOnSiteTracker.ts
   
-export const allFiles = ["${paths.join('", "')}"]`
+export const allFiles = [${paths
+      .map(item => '"' + item.replace(/\\/g, "/") + '",')
+      .join("\n")}]`
   )
 }

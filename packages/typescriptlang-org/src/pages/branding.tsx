@@ -29,7 +29,7 @@ const Index: React.FC<Props> = (props) => {
 
           <Row className="main-content-block recommendations">
             <p style={{ flex: 1 }}>Please use the blue TypeScript mark above as the primary logo for TypeScript.</p>
-            <p style={{ flex: 1 }}>This is the right logos for blog posts, news articles or give-away stickers.</p>
+            <p style={{ flex: 1 }}>This is the right logos for blog posts, news articles, give-away stickers and general marketing for yourself.</p>
             <p style={{ flex: 1 }}>The “TS” is the logo is white, not transparent by default.</p>
             <p style={{ flex: 1 }}>There is a capital “S” in TypeScript, just like in JavaScript.</p>
           </Row>
@@ -72,10 +72,10 @@ const Index: React.FC<Props> = (props) => {
           <h2>Please Don't</h2>
 
           <Row className="main-content-block recommendations">
-            <p style={{ flex: 1 }}>Use the TypeScript logos for your application.</p>
+            <p style={{ flex: 1 }}>Use the TypeScript logos for your application/product.</p>
             <p style={{ flex: 1 }}>Modify the shape of the logos when used.</p>
             <p style={{ flex: 1 }}>Integrate the TypeScript logo into your application's logo.</p>
-            <p style={{ flex: 1 }}>Name a product which implies TypeScript's endorsement.</p>
+            <p style={{ flex: 1 }}>Name a product which implies TypeScript's endorsement of the product.</p>
           </Row>
         </div>
       </Layout>

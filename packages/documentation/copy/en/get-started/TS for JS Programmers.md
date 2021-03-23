@@ -26,7 +26,7 @@ let helloWorld = "Hello World";
 
 By understanding how JavaScript works, TypeScript can build a type-system that accepts JavaScript code but has types. This offers a type-system without needing to add extra characters to make types explicit in your code. That's how TypeScript knows that `helloWorld` is a `string` in the above example.
 
-You may have written JavaScript in Visual Studio Code, and had editor auto-completion. Visual Studio uses TypeScript under the hood to make it easier to work with JavaScript.
+You may have written JavaScript in Visual Studio Code, and had editor auto-completion. Visual Studio Code uses TypeScript under the hood to make it easier to work with JavaScript.
 
 ## Defining Types
 
@@ -219,13 +219,13 @@ interface Point {
   y: number;
 }
 
-function printPoint(p: Point) {
+function logPoint(p: Point) {
   console.log(`${p.x}, ${p.y}`);
 }
 
-// prints "12, 26"
+// logs "12, 26"
 const point = { x: 12, y: 26 };
-printPoint(point);
+logPoint(point);
 ```
 
 The `point` variable is never declared to be a `Point` type. However, TypeScript compares the shape of `point` to the shape of `Point` in the type-check. They have the same shape, so the code passes.
@@ -239,18 +239,18 @@ interface Point {
   y: number;
 }
 
-function printPoint(p: Point) {
+function logPoint(p: Point) {
   console.log(`${p.x}, ${p.y}`);
 }
 // ---cut---
 const point3 = { x: 12, y: 26, z: 89 };
-printPoint(point3); // prints "12, 26"
+logPoint(point3); // logs "12, 26"
 
 const rect = { x: 33, y: 3, width: 30, height: 80 };
-printPoint(rect); // prints "33, 3"
+logPoint(rect); // logs "33, 3"
 
 const color = { hex: "#187ABF" };
-printPoint(color);
+logPoint(color);
 ```
 
 There is no difference between how classes and objects conform to shapes:
@@ -262,7 +262,7 @@ interface Point {
   y: number;
 }
 
-function printPoint(p: Point) {
+function logPoint(p: Point) {
   console.log(`${p.x}, ${p.y}`);
 }
 // ---cut---
@@ -277,7 +277,7 @@ class VirtualPoint {
 }
 
 const newVPoint = new VirtualPoint(13, 56);
-printPoint(newVPoint); // prints "13, 56"
+logPoint(newVPoint); // logs "13, 56"
 ```
 
 If the object or class has all the required properties, TypeScript will say they match, regardless of the implementation details.
@@ -287,4 +287,4 @@ If the object or class has all the required properties, TypeScript will say they
 This was a brief overview of the syntax and tools used in everyday TypeScript. From here, you can:
 
 - Read the full Handbook [from start to finish](/docs/handbook/intro.html) (30m)
-- Explore the [Playground examples](/play#show-examples).
+- Explore the [Playground examples](/play#show-examples)

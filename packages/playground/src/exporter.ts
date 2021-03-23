@@ -1,6 +1,6 @@
 import { UI } from "./createUI"
 
-type Sandbox = import("typescript-sandbox").Sandbox
+type Sandbox = import("@typescript/sandbox").Sandbox
 type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
 
 export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-editor"), ui: UI) => {
@@ -12,7 +12,7 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-e
     if (option === monaco.languages.typescript.JsxEmit.None) {
       return undefined
     }
-    return monaco.languages.typescript.JsxEmit[option]
+    return monaco.languages.typescript.JsxEmit[option].toLowerCase()
   }
 
   function getModuleKindText(option: any) {
@@ -20,6 +20,10 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-e
       return undefined
     }
     return monaco.languages.typescript.ModuleKind[option]
+  }
+
+  function getModuleResolutionText(option: any) {
+    return option === monaco.languages.typescript.ModuleResolutionKind.Classic ? "classic" : "node"
   }
 
   // These are the compiler's defaults, and we want a diff from
@@ -41,17 +45,25 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-e
   }
 
   function getValidCompilerOptions(options: CompilerOptions) {
-    const { target: targetOption, jsx: jsxOption, module: moduleOption, ...restOptions } = options
+    const {
+      target: targetOption,
+      jsx: jsxOption,
+      module: moduleOption,
+      moduleResolution: moduleResolutionOption,
+      ...restOptions
+    } = options
 
     const targetText = getScriptTargetText(targetOption)
     const jsxText = getJsxEmitText(jsxOption)
-    const moduleText = getModuleKindText(moduleOption)
+    const moduleKindText = getModuleKindText(moduleOption)
+    const moduleResolutionText = getModuleResolutionText(moduleResolutionOption)
 
     const opts = {
       ...restOptions,
       ...(targetText && { target: targetText }),
       ...(jsxText && { jsx: jsxText }),
-      ...(moduleText && { module: moduleText }),
+      ...(moduleKindText && { module: moduleKindText }),
+      moduleResolution: moduleResolutionText,
     }
 
     const diffFromTSCDefaults = Object.entries(opts).reduce((acc, [key, value]) => {
@@ -135,6 +147,11 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-e
     document.body.removeChild(form)
   }
 
+  function openInBugWorkbench() {
+    const hash = `#code/${sandbox.lzstring.compressToEncodedURIComponent(sandbox.getText())}`
+    document.location.assign(`/dev/bug-workbench/${hash}`)
+  }
+
   function openInTSAST() {
     const hash = `#code/${sandbox.lzstring.compressToEncodedURIComponent(sandbox.getText())}`
     document.location.assign(`https://ts-ast-viewer.com/${hash}`)
@@ -207,30 +224,6 @@ ${codify(await sandbox.getRunnableJS(), "ts")}
 `
 
     return `
-<!-- 🚨 STOP 🚨 𝗦𝗧𝗢𝗣 🚨 𝑺𝑻𝑶𝑷 🚨
-
-Half of all issues filed here are duplicates, answered in the FAQ, or not appropriate for the bug tracker. Even if you think you've found a *bug*, please read the FAQ first, especially the Common "Bugs" That Aren't Bugs section!
-
-Please help us by doing the following steps before logging an issue:
-  * Search: https://github.com/Microsoft/TypeScript/search?type=Issues
-  * Read the FAQ: https://github.com/Microsoft/TypeScript/wiki/FAQ
-
-Please fill in the *entire* template below.
--->
-
-**TypeScript Version:**  ${typescriptVersion}
-
-<!-- Search terms you tried before logging this (so others can find this issue more easily) -->
-**Search Terms:**
-
-**Expected behavior:**
-
-**Actual behavior:**
-
-<!-- Did you find other bugs that looked similar? -->
-**Related Issues:**
-
-**Code**
 ${codify(sandbox.getText(), "ts")}
 
 ${jsSection}
@@ -244,44 +237,31 @@ ${codify(stringifiedCompilerOptions, "json")}
 **Playground Link:** [Provided](${fullURL})
       `
   }
+  async function copyAsMarkdownIssue(e: React.MouseEvent) {
+    e.persist()
 
-  async function reportIssue() {
-    const body = await makeMarkdown()
-    if (body.length < 4000) {
-      window.open("https://github.com/Microsoft/TypeScript/issues/new?body=" + encodeURIComponent(body))
-    } else {
-      ui.showModal(
-        body,
-        document.getElementById("exports-dropdown")!,
-        "Issue too long to post automatically. Copy this text, then click 'Create New Issue' to begin.",
-        {
-          "Create New Issue": "https://github.com/Microsoft/TypeScript/issues/new",
-        }
-      )
-      // document.querySelector("#popover-modal pre") && (document.querySelector("#popover-modal pre") as any).focus()
-    }
-    return false
-  }
-
-  async function copyAsMarkdownIssue() {
     const markdown = await makeMarkdown()
     ui.showModal(
       markdown,
       document.getElementById("exports-dropdown")!,
-      "Markdown Version of Playgrund Code for GitHub Issue"
+      "Markdown Version of Playground Code for GitHub Issue",
+      undefined,
+      e
     )
     return false
   }
 
-  function copyForChat() {
+  function copyForChat(e: React.MouseEvent) {
     const query = sandbox.createURLQueryWithCompilerOptions(sandbox)
     const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
     const chat = `[Playground Link](${fullURL})`
-    ui.showModal(chat, document.getElementById("exports-dropdown")!, "Markdown for chat")
+    ui.showModal(chat, document.getElementById("exports-dropdown")!, "Markdown for chat", undefined, e)
     return false
   }
 
-  function copyForChatWithPreview() {
+  function copyForChatWithPreview(e: React.MouseEvent) {
+    e.persist()
+
     const query = sandbox.createURLQueryWithCompilerOptions(sandbox)
     const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
 
@@ -290,7 +270,7 @@ ${codify(stringifiedCompilerOptions, "json")}
 
     const code = "```\n" + preview + "\n```\n"
     const chat = `${code}\n[Playground Link](${fullURL})`
-    ui.showModal(chat, document.getElementById("exports-dropdown")!, "Markdown code")
+    ui.showModal(chat, document.getElementById("exports-dropdown")!, "Markdown code", undefined, e)
     return false
   }
 
@@ -304,11 +284,11 @@ ${codify(stringifiedCompilerOptions, "json")}
   return {
     openProjectInStackBlitz,
     openProjectInCodeSandbox,
-    reportIssue,
     copyAsMarkdownIssue,
     copyForChat,
     copyForChatWithPreview,
     openInTSAST,
+    openInBugWorkbench,
     exportAsTweet,
   }
 }

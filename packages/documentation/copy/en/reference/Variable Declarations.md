@@ -630,7 +630,7 @@ function f({ a = "", b = 0 } = {}): void {
 f();
 ```
 
-> The snippet above is an example of type inference, explained later in the handbook.
+> The snippet above is an example of type inference, explained earlier in the handbook.
 
 Then, you need to remember to give a default for optional properties on the destructured property instead of the main initializer.
 Remember that `C` was defined with `b` optional:

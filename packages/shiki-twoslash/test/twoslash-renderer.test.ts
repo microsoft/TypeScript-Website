@@ -1,20 +1,9 @@
-import { canHighlightLang, renderCodeToHTML, runTwoSlash, createShikiHighlighter } from "../src/index"
+import { renderCodeToHTML, runTwoSlash, createShikiHighlighter } from "../src/index"
 import { join } from "path"
-
-describe("langs", () => {
-  it("gives reasonable results", () => {
-    expect(canHighlightLang("js")).toBeTruthy()
-    expect(canHighlightLang("ts")).toBeTruthy()
-    expect(canHighlightLang("tsx")).toBeTruthy()
-    expect(canHighlightLang("html")).toBeTruthy()
-
-    expect(canHighlightLang("adasdasd")).toBeFalsy()
-  })
-})
 
 describe("with a simple example", () => {
   it("shows the right LSP results", async () => {
-    const highlighter = await createShikiHighlighter({ theme: "dark_vs" })
+    const highlighter = await createShikiHighlighter({ theme: "dark-plus" })
     const code = `
 // Hello
 const a = "123"
@@ -53,7 +42,7 @@ console.log(hello);
 `
 
   it("shows the right LSP results", async () => {
-    const highlighter = await createShikiHighlighter({ theme: "dark_vs" })
+    const highlighter = await createShikiHighlighter({ theme: "dark-plus" })
 
     const twoslash = runTwoSlash(file, "ts", {})
     const html = renderCodeToHTML(twoslash.code, "ts", ["twoslash"], {}, highlighter, twoslash)
@@ -69,7 +58,7 @@ console.log(hello);
   })
 
   it("shows the right LSP results when a theme doesnt have unique tokens for identifiers", async () => {
-    const highlighter = await createShikiHighlighter({ theme: "dark_vs" })
+    const highlighter = await createShikiHighlighter({ theme: "dark-plus" })
 
     const twoslash = runTwoSlash(file, "ts", {})
     const html = renderCodeToHTML(twoslash.code, "ts", ["twoslash"], {}, highlighter, twoslash)
@@ -109,7 +98,7 @@ console.log(hello);
 `
 
   it("shows the right LSP results when a theme doesnt have unique tokens for identifiers", async () => {
-    const highlighter = await createShikiHighlighter({ theme: "dark_vs" })
+    const highlighter = await createShikiHighlighter({ theme: "dark-plus" })
 
     const twoslash = runTwoSlash(file, "ts", {})
     const html = renderCodeToHTML(twoslash.code, "ts", ["twoslash"], {}, highlighter, twoslash)
@@ -150,11 +139,7 @@ it("handles multi-line queries with comments", async () => {
   const html = renderCodeToHTML(twoslash.code, "ts", ["twoslash"], {}, highlighter, twoslash)
 
   expect(html).toMatchInlineSnapshot(`
-    "<pre class=\\"shiki twoslash lsp\\"><div class='code-container'><code><span style=\\"color: #D4D4D4\\">  </span><span style=\\"color: #569CD6\\">function</span><span style=\\"color: #D4D4D4\\"> <data-lsp lsp='function f(): {&amp;#13;    x: number;&amp;#13;    y: number;&amp;#13;}'>f</data-lsp>() {</span>
-    <span style=\\"color: #D4D4D4\\">    </span><span style=\\"color: #569CD6\\">return</span><span style=\\"color: #D4D4D4\\"> { <data-lsp lsp='(property) x: number'>x</data-lsp>: </span><span style=\\"color: #B5CEA8\\">10</span><span style=\\"color: #D4D4D4\\">, <data-lsp lsp='(property) y: number'>y</data-lsp>: </span><span style=\\"color: #B5CEA8\\">3</span><span style=\\"color: #D4D4D4\\"> };</span>
-    <span style=\\"color: #D4D4D4\\">  }</span>
-    <span style=\\"color: #D4D4D4\\">  </span><span style=\\"color: #569CD6\\">type</span><span style=\\"color: #D4D4D4\\"> <data-lsp lsp='type P = {&amp;#13;    x: number;&amp;#13;    y: number;&amp;#13;}'>P</data-lsp> = <data-lsp lsp='type ReturnType&amp;lt;T extends (...args: any) => any> = T extends (...args: any) => infer R ? R : any'>ReturnType</data-lsp>&lt;</span><span style=\\"color: #569CD6\\">typeof</span><span style=\\"color: #D4D4D4\\"> <data-lsp lsp='function f(): {&amp;#13;    x: number;&amp;#13;    y: number;&amp;#13;}'>f</data-lsp>>;</span>
-    <span class='query'>  //   ^ = type P = {
+    "<pre class=\\"shiki twoslash lsp \\" style=\\"background-color: #fff; color: black\\"><div class='code-container'><code><div class='line'><span style=\\"color: #D4D4D4\\">  </span><span style=\\"color: #569CD6\\">function</span><span style=\\"color: #D4D4D4\\"> </span><span style=\\"color: #DCDCAA\\"><data-lsp lsp='function f(): {&amp;#13;    x: number;&amp;#13;    y: number;&amp;#13;}'>f</data-lsp></span><span style=\\"color: #D4D4D4\\">() {</span></div><div class='line'><span style=\\"color: #D4D4D4\\">    </span><span style=\\"color: #C586C0\\">return</span><span style=\\"color: #D4D4D4\\"> { </span><span style=\\"color: #9CDCFE\\"><data-lsp lsp='(property) x: number'>x</data-lsp>:</span><span style=\\"color: #D4D4D4\\"> </span><span style=\\"color: #B5CEA8\\">10</span><span style=\\"color: #D4D4D4\\">, </span><span style=\\"color: #9CDCFE\\"><data-lsp lsp='(property) y: number'>y</data-lsp>:</span><span style=\\"color: #D4D4D4\\"> </span><span style=\\"color: #B5CEA8\\">3</span><span style=\\"color: #D4D4D4\\"> };</span></div><div class='line'><span style=\\"color: #D4D4D4\\">  }</span></div><div class='line'><span style=\\"color: #D4D4D4\\">  </span><span style=\\"color: #569CD6\\">type</span><span style=\\"color: #D4D4D4\\"> </span><span style=\\"color: #4EC9B0\\"><data-lsp lsp='type P = {&amp;#13;    x: number;&amp;#13;    y: number;&amp;#13;}'>P</data-lsp></span><span style=\\"color: #D4D4D4\\"> = </span><span style=\\"color: #4EC9B0\\"><data-lsp lsp='type ReturnType&amp;lt;T extends (...args: any) => any> = T extends (...args: any) => infer R ? R : any'>ReturnType</data-lsp></span><span style=\\"color: #D4D4D4\\">&lt;</span><span style=\\"color: #569CD6\\">typeof</span><span style=\\"color: #D4D4D4\\"> </span><span style=\\"color: #9CDCFE\\"><data-lsp lsp='function f(): {&amp;#13;    x: number;&amp;#13;    y: number;&amp;#13;}'>f</data-lsp></span><span style=\\"color: #D4D4D4\\">&gt;;</span></div><span class='query'>  //   ^ = type P = {
       //       x: number;
       //       y: number;
       //   }</span></code><a href='https://www.typescriptlang.org/play/#code/FAAhDMFcDsGMBcCWB7aEAUBKEBvUYQAnAU3kkLRxAA8AuEARgAYAaEAT3oGYQBfAbny988dgAdiIAAogAvCABKpctAAq44gB5RE5OAgA+QWAD0JggD0A-MCA'>Try</a></div></pre>"

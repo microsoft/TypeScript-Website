@@ -36,3 +36,5 @@ path/to/example/node_modules/typescript/lib/lib.webworker.importscripts.d.ts
 path/to/example/node_modules/typescript/lib/lib.scripthost.d.ts
 path/to/example/index.ts
 ```
+
+Note if using TypeScript 4.2, prefer [`explainFiles`](#explainFiles) which offers an explanation of why a file was added too.

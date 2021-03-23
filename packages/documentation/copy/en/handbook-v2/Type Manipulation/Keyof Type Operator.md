@@ -1,9 +1,8 @@
 ---
 title: Keyof Type Operator
 layout: docs
-permalink: /docs/handbook/2/indexed-access-types.html
-oneline: "Step one in learning TypeScript: The basics types."
-beta: true
+permalink: /docs/handbook/2/keyof-types.html
+oneline: "Using the keyof operator in type contexts."
 ---
 
 ## The `keyof` type operator

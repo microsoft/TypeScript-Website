@@ -1,7 +1,7 @@
 let hasLocalStorage = false
 try {
   hasLocalStorage = typeof localStorage !== `undefined`
-} catch (error) {}
+} catch (error) { }
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 
@@ -130,6 +130,16 @@ function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosit
   return { highlights, queries }
 }
 
+function getOptionValueFromMap(name: string, key: string, optMap: Map<string, string>) {
+  const result = optMap.get(key.toLowerCase())
+  log(`Get ${name} mapped option: ${key} => ${result}`)
+  if (result === undefined) {
+    const keys = Array.from(optMap.keys() as any)
+    throw new Error(`Invalid value ${key} for ${name}. Allowed values: ${keys.join(",")}`)
+  }
+  return result
+}
+
 function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
   log(`Setting ${name} to ${value}`)
 
@@ -143,18 +153,19 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
           break
 
         case "list":
-          opts[opt.name] = value.split(",").map(v => parsePrimitive(v, opt.element!.type as string))
+          const elementType = opt.element!.type
+          const strings = value.split(",")
+          if (typeof elementType === "string") {
+            opts[opt.name] = strings.map(v => parsePrimitive(v, elementType))
+          } else {
+            opts[opt.name] = strings.map(v => getOptionValueFromMap(opt.name, v, elementType as Map<string, string>))
+          }
           break
 
         default:
           // It's a map!
           const optMap = opt.type as Map<string, string>
-          opts[opt.name] = optMap.get(value.toLowerCase())
-          log(`Set ${opt.name} to ${opts[opt.name]}`)
-          if (opts[opt.name] === undefined) {
-            const keys = Array.from(optMap.keys() as any)
-            throw new Error(`Invalid value ${value} for ${opt.name}. Allowed values: ${keys.join(",")}`)
-          }
+          opts[opt.name] = getOptionValueFromMap(opt.name, value, optMap)
           break
       }
       return
@@ -171,7 +182,7 @@ const valuedConfigRegexp = /^\/\/\s?@(\w+):\s?(.+)$/
 
 function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: CompilerOptions, ts: TS) {
   const options = { ...defaultCompilerOptions }
-  for (let i = 0; i < codeLines.length; ) {
+  for (let i = 0; i < codeLines.length;) {
     let match
     if ((match = booleanConfigRegexp.exec(codeLines[i]))) {
       options[match[1]] = true
@@ -447,13 +458,12 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
       switch (q.kind) {
         case "query": {
           const quickInfo = ls.getQuickInfoAtPosition(filename, position)
-          const token = ls.getDefinitionAtPosition(filename, position)
 
           // prettier-ignore
           let text = `Could not get LSP result: ${stringAroundIndex(env.getSourceFile(filename)!.text, position)}`
           let docs = undefined
 
-          if (quickInfo && token && quickInfo.displayParts) {
+          if (quickInfo && quickInfo.displayParts) {
             text = quickInfo.displayParts.map(dp => dp.text).join("")
             docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join("<br/>") : undefined
           }

@@ -25,15 +25,24 @@ export const createRootPagesLocalized = async (
 
   const langs = fs
     .readdirSync(languageRootDir)
-    .filter(f => f.endsWith(".ts") && f.length === 5)
-    .map(f => path.basename(f, ".ts"))
+    .filter(
+      f =>
+        !(
+          f.endsWith(".ts") ||
+          f.endsWith(".ts") ||
+          f.endsWith(".md") ||
+          f.startsWith(".")
+        )
+    )
 
   const files = recursiveReadDirSync(rootPagesDir)
     .filter(f => !f.startsWith(".")) // only useful files
     .filter(f => !f.includes("dev") && !f.includes("css")) // skip these
 
   files.forEach(f => {
-    const fullpath = path.join(__dirname, "..", "..", "..", "..", f)
+    const fullpath = path
+      .join(__dirname, "..", "..", "..", "..", f)
+      .replace("..//", "../")
     let originalSitePath = path
       .relative(rootPagesDir, fullpath)
       .replace(/.tsx$/g, "")
@@ -48,6 +57,9 @@ export const createRootPagesLocalized = async (
       // prettier-ignore
       originalSitePath = originalSitePath.substring(0, originalSitePath.length - 3)
     }
+
+    // Always use /s for the path, because the join above in windows would be \
+    originalSitePath = originalSitePath.split("\\").join("/")
 
     langs.forEach(lang => {
       if (!isMultiLingual && lang !== "en") return

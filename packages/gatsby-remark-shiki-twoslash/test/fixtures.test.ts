@@ -6,14 +6,13 @@ import { toMatchFile } from "jest-file-snapshot"
 import { format } from "prettier"
 import gatsbyRemarkShiki from "../src/index"
 const remark = require("remark")
-// const gatsbyTwoSlash = require('gatsby-remark-shiki-twoslasher')
 import { Node } from "unist"
 expect.extend({ toMatchFile })
 
-const getHTML = async (code: string, settings?: any) => {
+const getHTML = async (code: string, settings: any) => {
+  //import("shiki-twoslash").UserConfigSettings) => {
   const markdownAST: Node = remark().parse(code)
-  // gatsbyTwoSlash({ markdownAST })
-  await gatsbyRemarkShiki({ markdownAST }, settings, {})
+  await gatsbyRemarkShiki({ markdownAST }, settings)
 
   // @ts-ignore
   const twoslashes = markdownAST.children.filter(c => c.meta && c.meta.includes("twoslash")).map(c => c.twoslash)
@@ -38,11 +37,11 @@ describe("with fixtures", () => {
       return
     }
 
-    // if (!fixtureName.includes('exporting')) {
+    // if (fixtureName.includes("Relative")) {
     //   return
     // }
 
-    it("Fixture: " + fixtureName, async () => {
+    it.skip("Fixture: " + fixtureName, async () => {
       const resultHTMLName = parse(fixtureName).name + ".html"
       const resultTwoSlashName = parse(fixtureName).name + ".json"
 
@@ -50,15 +49,17 @@ describe("with fixtures", () => {
       const resultTwoSlashPath = join(resultsFolder, resultTwoSlashName)
 
       const code = readFileSync(fixture, "utf8")
+
       const results = await getHTML(code, {
-        theme: require.resolve("../../typescriptlang-org/lib/themes/typescript-beta-light.json"),
+        theme: require("../../typescriptlang-org/lib/themes/typescript-beta-light.json"),
+        vfsRoot: join(__dirname, "..", "..", ".."),
       })
 
       const htmlString = format(results.html + style, { parser: "html" })
-      expect(htmlString).toMatchFile(resultHTMLPath)
+      expect(cleanFixture(htmlString)).toMatchFile(resultHTMLPath)
 
       const twoString = format(JSON.stringify(results.twoslashes), { parser: "json" })
-      expect(twoString).toMatchFile(resultTwoSlashPath)
+      expect(cleanFixture(twoString)).toMatchFile(resultTwoSlashPath)
     })
   })
 })
@@ -104,3 +105,10 @@ color: #ffeeee;
 }
 </style>
 `
+
+const cleanFixture = (text: string) => {
+  const wd = process.cwd()
+  return text
+    .replace(new RegExp(wd, "g"), "[home]")
+    .replace(/\/home\/runner\/work\/TypeScript-Website\/TypeScript-Website/g, "[home]")
+}

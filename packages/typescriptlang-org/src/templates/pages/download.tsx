@@ -8,6 +8,7 @@ import { QuickJump } from "../../components/QuickJump"
 
 type Props = {
   pageContext: any
+  b: NewableFunction
 }
 
 const changeExample = (code: string) => document.getElementById("code-example")!.textContent = code

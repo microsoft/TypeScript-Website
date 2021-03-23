@@ -3,48 +3,52 @@ title: The Basics
 layout: docs
 permalink: /docs/handbook/2/basic-types.html
 oneline: "Step one in learning TypeScript: The basic types."
-beta: true
+preamble: >
+  <p>Welcome to the first page of the handbook, if this is your first experience with TypeScript - you may want to start at one of the '<a href='https://www.typescriptlang.org/docs/handbook/intro.html#get-started'>Getting Started</a>' guides</a>
 ---
 
 Each and every value in JavaScript has a set of behaviors you can observe from running different operations.
-That sounds abstract, but as a quick example, consider some operations we might run on a variable named `foo`.
+That sounds abstract, but as a quick example, consider some operations we might run on a variable named `message`.
 
 ```js
-// accessing the property 'toLowerCase'
-// on 'foo' and then calling it
-foo.toLowerCase();
+// Accessing the property 'toLowerCase'
+// on 'message' and then calling it
+message.toLowerCase();
 
-// calling 'foo'
-foo();
+// Calling 'message'
+message();
 ```
 
 If we break this down, the first runnable line of code accesses a property called `toLowerCase` and then calls it.
-The second one tries to call `foo` directly.
+The second one tries to call `message` directly.
 
-But assuming we don't know the value of `foo` - and that's pretty common - we can't reliably say what results we'll get from trying to run any of this code.
+But assuming we don't know the value of `message` - and that's pretty common - we can't reliably say what results we'll get from trying to run any of this code.
 The behavior of each operation depends entirely on what value we had in the first place.
-Is `foo` callable?
-Does it have a property called `toLowerCase` on it?
-And if it does, is `toLowerCase` callable?
-If all of these values are callable, what do they return?
+
+- Is `message` callable?
+- Does it have a property called `toLowerCase` on it?
+- If it does, is `toLowerCase` even callable?
+- If both of these values are callable, what do they return?
+
 The answers to these questions are usually things we keep in our heads when we write JavaScript, and we have to hope we got all the details right.
 
-Let's say `foo` was defined in the following way.
+Let's say `message` was defined in the following way.
 
 ```js
-let foo = "Hello World!";
+const message = "Hello World!";
 ```
 
-As you can probably guess, if we try to run `foo.toLowerCase()`, we'll get the same string only in lower-case.
+As you can probably guess, if we try to run `message.toLowerCase()`, we'll get the same string only in lower-case.
 
 What about that second line of code?
 If you're familiar with JavaScript, you'll know this fails with an exception:
 
 ```txt
-TypeError: foo is not a function
+TypeError: message is not a function
 ```
 
 It'd be great if we could avoid mistakes like this.
+
 When we run our code, the way that our JavaScript runtime chooses what to do is by figuring out the _type_ of the value - what sorts of behaviors and capabilities it has.
 That's part of what that `TypeError` is alluding to - it's saying that the string `"Hello World"` cannot be called as a function.
 
@@ -62,10 +66,10 @@ We can _observe_ by reading the code that this function will only work if given 
 The only way in pure JavaScript to tell what `fn` does with a particular value is to call it and see what happens.
 This kind of behavior makes it hard to predict what code will do before it runs, which means it's harder to know what your code is going to do while you're writing it.
 
-Seen in this way, a _type_ is the concept of describing which values are legal to pass to `fn` and which aren't legal.
+Seen in this way, a _type_ is the concept of describing which values can be passed to `fn` and which will crash.
 JavaScript only truly provides _dynamic_ typing - running the code to see what happens.
 
-The alternative is to use a _static_ type system to make predictions about what code is legal _before_ it runs.
+The alternative is to use a _static_ type system to make predictions about what code is expected _before_ it runs.
 
 ## Static type-checking
 
@@ -73,7 +77,7 @@ Think back to that `TypeError` we got earlier from trying to call a `string` as 
 _Most people_ don't like to get any sorts of errors when running their code - those are considered bugs!
 And when we write new code, we try our best to avoid introducing new bugs.
 
-If we add just a bit of code, save our file, refresh our app, and immediately see the error, we might be able to isolate the problem quickly; but that's not always the case.
+If we add just a bit of code, save our file, re-run the code, and immediately see the error, we might be able to isolate the problem quickly; but that's not always the case.
 We might not have tested the feature thoroughly enough, so we might never actually run into a potential error that would be thrown!
 Or if we were lucky enough to witness the error, we might have ended up doing large refactorings and adding a lot of different code that we're forced to dig through.
 
@@ -84,16 +88,16 @@ A type-checker like TypeScript uses that information and tells us when things mi
 
 ```ts twoslash
 // @errors: 2349
-let foo = "hello!";
+const message = "hello!";
 
-foo();
+message();
 ```
 
 Running that last sample with TypeScript will give us an error message before we run the code in the first place.
 
 ## Non-exception Failures
 
-So far we've been discussing certain things like runtime errors - cases where the JavaScript runtime throws its hands up and tells us that it thinks something is nonsensical.
+So far we've been discussing certain things like runtime errors - cases where the JavaScript runtime tells us that it thinks something is nonsensical.
 Those cases come up because [the ECMAScript specification](https://tc39.github.io/ecma262/) has explicit instructions on how the language should behave when it runs into something unexpected.
 
 For example, the specification says that trying to call something that isn't callable should throw an error.
@@ -101,12 +105,12 @@ Maybe that sounds like "obvious behavior", but you could imagine that accessing 
 Instead, JavaScript gives us different behavior and returns the value `undefined`:
 
 ```js
-let foo = {
+const user = {
   name: "Daniel",
   age: 26,
 };
 
-foo.location; // returns undefined
+user.location; // returns undefined
 ```
 
 Ultimately, a static type system has to make the call over what code should be flagged as an error in its system, even if it's "valid" JavaScript that won't immediately throw an error.
@@ -114,12 +118,12 @@ In TypeScript, the following code produces an error about `location` not being d
 
 ```ts twoslash
 // @errors: 2339
-let foo = {
+const user = {
   name: "Daniel",
   age: 26,
 };
 
-foo.location;
+user.location;
 ```
 
 While sometimes that implies a trade-off in what you can express, the intent is to catch legitimate bugs in our programs.
@@ -129,14 +133,14 @@ For example: typos,
 
 ```ts twoslash
 // @noErrors
-let someString = "Hello World!";
+const announcement = "Hello World!";
 
 // How quickly can you spot the typos?
-someString.toLocaleLowercase();
-someString.toLocalLowerCase();
+announcement.toLocaleLowercase();
+announcement.toLocalLowerCase();
 
 // We probably meant to write this...
-someString.toLocaleLowerCase();
+announcement.toLocaleLowerCase();
 ```
 
 uncalled functions,
@@ -190,7 +194,7 @@ app.listen(3000);
 
 TypeScript takes tooling seriously, and that goes beyond completions and errors as you type.
 An editor that supports TypeScript can deliver "quick fixes" to automatically fix errors, refactorings to easily re-organize code, and useful navigation features for jumping to definitions of a variable, or finding all references to a given variable.
-All of this is built on top of the type-checker and fully cross-platform, so it's likely that [your favorite editor has TypeScript support available](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support).
+All of this is built on top of the type-checker and is fully cross-platform, so it's likely that [your favorite editor has TypeScript support available](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support).
 
 ## `tsc`, the TypeScript compiler
 
@@ -266,7 +270,7 @@ Thanks TypeScript!
 
 One thing you might not have noticed from the last example was that our `hello.js` file changed again.
 If we open that file up then we'll see that the contents still basically look the same as our input file.
-That might be a bit surprising given the fact that `tsc` reported an error about our code, but this based on one of TypeScript's core values: much of the time, _you_ will know better than TypeScript.
+That might be a bit surprising given the fact that `tsc` reported an error about our code, but this is based on one of TypeScript's core values: much of the time, _you_ will know better than TypeScript.
 
 To reiterate from earlier, type-checking code limits the sorts of programs you can run, and so there's a tradeoff on what sorts of things a type-checker finds acceptable.
 Most of the time that's okay, but there are scenarios where those checks get in the way.
@@ -288,7 +292,7 @@ You'll notice that `hello.js` never gets updated.
 ## Explicit Types
 
 Up until now, we haven't told TypeScript what `person` or `date` are.
-Let's change up our code a little bit so that we tell TypeScript that `person` is a `string`, and that `date` should be a `Date` object.
+Let's edit the code to tell TypeScript that `person` is a `string`, and that `date` should be a `Date` object.
 We'll also use the `toDateString()` method on `date`.
 
 ```ts twoslash
@@ -320,29 +324,30 @@ On the other hand, constructing a `Date` with `new Date()` actually gives us wha
 
 Anyway, we can quickly fix up the error:
 
-```ts twoslash
+```ts twoslash {4}
 function greet(person: string, date: Date) {
   console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
 
 greet("Maddison", new Date());
-//                ^^^^^^^^^^
 ```
 
 Keep in mind, we don't always have to write explicit type annotations.
 In many cases, TypeScript can even just _infer_ (or "figure out") the types for us even if we omit them.
 
 ```ts twoslash
-let foo = "hello there!";
+let msg = "hello there!";
 //  ^?
 ```
 
-Even though we didn't tell TypeScript that `foo` had the type `string` it was able to figure that out.
+Even though we didn't tell TypeScript that `msg` had the type `string` it was able to figure that out.
 That's a feature, and it's best not to add annotations when the type system would end up inferring the same type anyway.
+
+> Note: when you see <pre><code class="query">code comment colored like this</code></pre> it means that we're highlighting what your editor would show you inline. You can get the same experience in the web browser by hovering your mouse over blue-tinted code samples.
 
 ## Erased Types
 
-Let's take a look at what happens when we compile with `tsc`:
+Let's take a look at what happens when we compile the above function `greet` with `tsc` to output JavaScript:
 
 ```ts twoslash
 // @showEmit
@@ -416,7 +421,7 @@ This can require a little extra work, but generally speaking it pays for itself 
 When possible, a new codebase should always turn these strictness checks on.
 
 TypeScript has several type-checking strictness flags that can be turned on or off, and all of our examples will be written with all of them enabled unless otherwise stated.
-The `--strict` flag toggles them all on simultaneously, but we can opt out of them individually.
+The `--strict` flag in the CLI, or `"strict": true` in a [`tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) toggles them all on simultaneously, but we can opt out of them individually.
 The two biggest ones you should know about are `noImplicitAny` and `strictNullChecks`.
 
 ### `noImplicitAny`

@@ -6,6 +6,7 @@ import "./layout/main.scss"
 import { Helmet } from "react-helmet";
 import { CookieBanner } from "./layout/CookieBanner"
 import { LanguageRecommendations } from "./layout/LanguageRecommendation";
+import { withPrefix } from "gatsby";
 
 type LayoutProps = SeoProps & Props & {
   lang: string,
@@ -19,7 +20,7 @@ export const Layout = (props: LayoutProps) => {
       <Helmet htmlAttributes={{ lang: props.lang }}>
         {/* Should be a NOOP for anything but edge, and much older browsers */}
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es2015%2CArray.prototype.forEach%2CNodeList.prototype.forEach" />
-
+        <link rel="preload" href={withPrefix('/css/docsearch.css')} as="style" />
       </Helmet>
       <HeadSEO {...props} />
       <div className="ms-Fabric">

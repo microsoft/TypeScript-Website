@@ -45,6 +45,7 @@ export const playCopy = {
   play_export_copy_link: "Copy as Markdown Link",
   play_export_copy_link_preview: "Copy as Markdown Link with Preview",
   play_export_tsast: "Open in TypeScript AST Viewer",
+  play_export_bugworkbench: "Open in Bug Workbench",
   play_export_sandbox: "Open in CodeSandbox",
   play_export_stackblitz: "Open in StackBlitz",
   play_export_clipboard: "URL copied to clipboard",
@@ -88,6 +89,7 @@ console.log(anExampleVariable)
   play_sidebar_ast_title: "[WIP] AST Viewer",
   play_sidebar_ast_blurb: "Inspect the TypeScript AST",
 
+  play_sidebar_tools_filter_placeholder: "Filter",
   // Notes:
   // Compiler flag information is all from the tsconfig reference info
 }

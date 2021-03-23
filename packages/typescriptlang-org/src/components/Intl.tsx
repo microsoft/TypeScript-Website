@@ -8,9 +8,9 @@ type IntlProps = {
 
 export const Intl = (props: IntlProps) => {
   const { children, locale } = props
-  let messages = require("../copy/en").lang
+  let messages = require("../copy/en/en").lang
   try {
-    messages = require("../copy/" + locale).lang
+    messages = require("../copy/" + locale + "/" + locale).lang
   } catch (error) {
     // NOOP
   }

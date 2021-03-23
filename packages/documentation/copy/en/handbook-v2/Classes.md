@@ -3,12 +3,14 @@ title: Classes
 layout: docs
 permalink: /docs/handbook/2/classes.html
 oneline: "How classes work in TypeScript"
-beta: true
 ---
 
-> [Background reading: Classes (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)
+<blockquote class='bg-reading'>
+  <p>Background Reading:<br /><a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes'>Classes (MDN)</a></p>
+</blockquote>
 
 TypeScript offers full support for the `class` keyword introduced in ES2015.
+
 As with other JavaScript language features, TypeScript adds type annotations and other syntax to allow you to express relationships between classes and other types.
 
 ## Class Members
@@ -124,7 +126,11 @@ g.name = "also not ok";
 
 ### Constructors
 
-[Background Reading: Constructor (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor)
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor'>Constructor (MDN)</a><br/>
+   </p>
+</blockquote>
 
 Class constructors are very similar to functions.
 You can add parameters with type annotations, default values, and overloads:
@@ -181,7 +187,11 @@ Forgetting to call `super` is an easy mistake to make in JavaScript, but TypeScr
 
 ### Methods
 
-> > [Background Reading: Method definitions (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions)
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions'>Method definitions</a><br/>
+   </p>
+</blockquote>
 
 A function property on a class is called a _method_.
 Methods can use all the same type annotations as functions and constructors:
@@ -241,7 +251,7 @@ TypeScript has some special inference rules for accessors:
 - If no `set` exists, the property is automatically `readonly`
 - The type of the setter parameter is inferred from the return type of the getter
 - If the setter parameter has a type annotation, it must match the return type of the getter
-- Getters and setters must have the same [[Member Visibility]]
+- Getters and setters must have the same [Member Visibility](#member-visibility)
 
 It is not possible to have accessors with different types for getting and setting.
 
@@ -249,7 +259,7 @@ If you have a getter without a setter, the field is automatically `readonly`
 
 ### Index Signatures
 
-Classes can declare index signatures; these work the same as [[Index Signatures]] for other object types:
+Classes can declare index signatures; these work the same as [Index Signatures](#index-signatures) for other object types:
 
 ```ts twoslash
 class MyClass {
@@ -334,7 +344,11 @@ c.y = 10;
 
 ### `extends` Clauses
 
-> > [Background Reading: extends keyword (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends)
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends'>extends keyword (MDN)</a><br/>
+   </p>
+</blockquote>
 
 Classes may `extend` from a base class.
 A derived class has all the properties and methods of its base class, and also define additional members.
@@ -363,7 +377,11 @@ d.woof(3);
 
 #### Overriding Methods
 
-> > [Background reading: super keyword (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super)
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super'>super keyword (MDN)</a><br/>
+   </p>
+</blockquote>
 
 A derived class can also override a base class field or property.
 You can use the `super.` syntax to access base class methods.
@@ -490,7 +508,7 @@ Other downlevel compilers generally have the same limitation by default.
 For a subclass like the following:
 
 ```ts twoslash
-class FooError extends Error {
+class MsgError extends Error {
   constructor(m: string) {
     super(m);
   }
@@ -503,17 +521,17 @@ class FooError extends Error {
 you may find that:
 
 - methods may be `undefined` on objects returned by constructing these subclasses, so calling `sayHello` will result in an error.
-- `instanceof` will be broken between instances of the subclass and their instances, so `(new FooError()) instanceof FooError` will return `false`.
+- `instanceof` will be broken between instances of the subclass and their instances, so `(new MsgError()) instanceof MsgError` will return `false`.
 
 As a recommendation, you can manually adjust the prototype immediately after any `super(...)` calls.
 
 ```ts twoslash
-class FooError extends Error {
+class MsgError extends Error {
   constructor(m: string) {
     super(m);
 
     // Set the prototype explicitly.
-    Object.setPrototypeOf(this, FooError.prototype);
+    Object.setPrototypeOf(this, MsgError.prototype);
   }
 
   sayHello() {
@@ -522,11 +540,11 @@ class FooError extends Error {
 }
 ```
 
-However, any subclass of `FooError` will have to manually set the prototype as well.
+However, any subclass of `MsgError` will have to manually set the prototype as well.
 For runtimes that don't support [`Object.setPrototypeOf`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf), you may instead be able to use [`__proto__`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto).
 
 Unfortunately, [these workarounds will not work on Internet Explorer 10 and prior](<https://msdn.microsoft.com/en-us/library/s4esdbwz(v=vs.94).aspx>).
-One can manually copy methods from the prototype onto the instance itself (i.e. `FooError.prototype` onto `this`), but the prototype chain itself cannot be fixed.
+One can manually copy methods from the prototype onto the instance itself (i.e. `MsgError.prototype` onto `this`), but the prototype chain itself cannot be fixed.
 
 ## Member Visibility
 
@@ -578,7 +596,7 @@ g.getName();
 
 #### Exposure of `protected` members
 
-Derived classes need to follow their base class contracts, but may choose to expose a more general type with more capabilities.
+Derived classes need to follow their base class contracts, but may choose to expose a subtype of base class with more capabilities.
 This includes making `protected` members `public`:
 
 ```ts twoslash
@@ -702,11 +720,15 @@ const s = new MySafe();
 console.log(s.secretKey);
 ```
 
-If you need to protect values in your class from malicious actors, you should use mechanisms that offer hard runtime privacy, such as closures, weak maps, or [[private fields]].
+If you need to protect values in your class from malicious actors, you should use mechanisms that offer hard runtime privacy, such as closures, weak maps, or [private fields](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields).
 
 ## Static Members
 
-> > [Background Reading: Static Members (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static)
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static'>Static Members (MDN)</a><br/>
+   </p>
+</blockquote>
 
 Classes may have `static` members.
 These members aren't associated with a particular instance of the class.
@@ -789,9 +811,9 @@ Classes, much like interfaces, can be generic.
 When a generic class is instantiated with `new`, its type parameters are inferred the same way as in a function call:
 
 ```ts twoslash
-class Box<T> {
-  contents: T;
-  constructor(value: T) {
+class Box<Type> {
+  contents: Type;
+  constructor(value: Type) {
     this.contents = value;
   }
 }
@@ -808,8 +830,8 @@ This code isn't legal, and it may not be obvious why:
 
 ```ts twoslash
 // @errors: 2302
-class Box<T> {
-  static defaultValue: T;
+class Box<Type> {
+  static defaultValue: Type;
 }
 ```
 
@@ -820,7 +842,11 @@ The `static` members of a generic class can never refer to the class's type para
 
 ## `this` at Runtime in Classes
 
-> > [Background Reading: `this` keyword (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this'>this keyword (MDN)</a><br/>
+   </p>
+</blockquote>
 
 It's important to remember that TypeScript doesn't change the runtime behavior of JavaScript, and that JavaScript is somewhat famous for having some peculiar runtime behaviors.
 
@@ -851,7 +877,11 @@ TypeScript provides some ways to mitigate or prevent this kind of error.
 
 ### Arrow Functions
 
-> > [Background Reading: Arrow functions (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions'>Arrow functions (MDN)</a><br/>
+   </p>
+</blockquote>
 
 If you have a function that will often be called in a way that loses its `this` context, it can make sense to use an arrow function property instead of a method definition:
 
@@ -992,6 +1022,78 @@ const derived = new DerivedBox();
 derived.sameAs(base);
 ```
 
+### `this`-based type guards
+
+You can use `this is Type` in the return position for methods in classes and interfaces.
+When mixed with a type narrowing (e.g. `if` statements) the type of the target object would be narrowed to the specified `Type`.
+
+<!-- prettier-ignore -->
+```ts twoslash
+// @strictPropertyInitialization: false
+class FileSystemObject {
+  isFile(): this is FileRep {
+    return this instanceof FileRep;
+  }
+  isDirectory(): this is Directory {
+    return this instanceof Directory;
+  }
+  isNetworked(): this is Networked & this {
+    return this.networked;
+  }
+  constructor(public path: string, private networked: boolean) {}
+}
+
+class FileRep extends FileSystemObject {
+  constructor(path: string, public content: string) {
+    super(path, false);
+  }
+}
+
+class Directory extends FileSystemObject {
+  children: FileSystemObject[];
+}
+
+interface Networked {
+  host: string;
+}
+
+const fso: FileSystemObject = new FileRep("foo/bar.txt", "foo");
+
+if (fso.isFile()) {
+  fso.content;
+// ^?
+} else if (fso.isDirectory()) {
+  fso.children;
+// ^?
+} else if (fso.isNetworked()) {
+  fso.host;
+// ^?
+}
+```
+
+A common use-case for a this-based type guard is to allow for lazy validation of a particular field. For example, this case removes an `undefined` from the value held inside box when `hasValue` has been verified to be true:
+
+```ts twoslash
+class Box<T> {
+  value?: T;
+
+  hasValue(): this is { value: T } {
+    return this.value !== undefined;
+  }
+}
+
+const box = new Box();
+box.value = "Gameboy";
+
+box.value;
+//  ^?
+
+if (box.hasValue()) {
+  box.value;
+  //  ^?
+}
+```
+
 ## Parameter Properties
 
 TypeScript offers special syntax for turning a constructor parameter into a class property with the same name and value.
@@ -1000,7 +1102,7 @@ The resulting field gets those modifier(s):
 
 ```ts twoslash
 // @errors: 2341
-class A {
+class Params {
   constructor(
     public readonly x: number,
     protected y: number,
@@ -1009,7 +1111,7 @@ class A {
     // No body necessary
   }
 }
-const a = new A(1, 2, 3);
+const a = new Params(1, 2, 3);
 console.log(a.x);
 //            ^?
 console.log(a.z);
@@ -1017,15 +1119,19 @@ console.log(a.z);
 
 ## Class Expressions
 
-> > [Background reading: Class expressions (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/class)
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/class'>Class expressions (MDN)</a><br/>
+   </p>
+</blockquote>
 
 Class expressions are very similar to class declarations.
 The only real difference is that class expressions don't need a name, though we can refer to them via whatever identifier they ended up bound to:
 
 ```ts twoslash
-const someClass = class<T> {
-  content: T;
-  constructor(value: T) {
+const someClass = class<Type> {
+  content: Type;
+  constructor(value: Type) {
     this.content = value;
   }
 };

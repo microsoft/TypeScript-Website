@@ -155,17 +155,25 @@ form.search {
   }
 }
 
-#language-recommendation {
+#like-dislike-subnav,
+.page-popup {
+  transition: opacity 0.2s linear;
+}
+
+.page-popup {
+  z-index: 2;
   position: fixed;
   right: 20px;
   bottom: 20px;
 
   color: white;
-  background: #152740;
+  background: #222;
+  border-radius: 5px;
   box-shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.432),
     0 0.3px 0.9px 0 rgba(0, 0, 0, 0.408);
 
   border-radius: 4px;
+
   p {
     padding: 0 10px;
     font-size: 14px;
@@ -185,10 +193,13 @@ form.search {
         background-color: #104261;
       }
 
-      &#language-recommendation-open {
+      &.first {
         border-right: white 1px solid;
       }
     }
+  }
+  svg {
+    fill: white;
   }
 }
 

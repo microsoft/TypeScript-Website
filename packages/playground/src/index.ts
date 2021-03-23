@@ -1,4 +1,4 @@
-type Sandbox = import("typescript-sandbox").Sandbox
+type Sandbox = import("@typescript/sandbox").Sandbox
 type Monaco = typeof import("monaco-editor")
 
 declare const window: any
@@ -161,6 +161,10 @@ export const setupPlayground = (
 
   // Sets the URL and storage of the sandbox string
   const playgroundDebouncedMainFunction = () => {
+    localStorage.setItem("sandbox-history", sandbox.getText())
+  }
+
+  sandbox.editor.onDidBlurEditorText(() => {
     const alwaysUpdateURL = !localStorage.getItem("disable-save-on-type")
     if (alwaysUpdateURL) {
       if (suppressNextTextChangeForHashChange) {
@@ -170,9 +174,7 @@ export const setupPlayground = (
       const newURL = sandbox.createURLQueryWithCompilerOptions(sandbox)
       window.history.replaceState({}, "", newURL)
     }
-
-    localStorage.setItem("sandbox-history", sandbox.getText())
-  }
+  })
 
   // When any compiler flags are changed, trigger a potential change to the URL
   sandbox.setDidUpdateCompilerSettings(() => {
@@ -311,6 +313,9 @@ export const setupPlayground = (
     contextMenuOrder: 1.5,
 
     run: function () {
+      // Update the URL, then write that to the clipboard
+      const newURL = sandbox.createURLQueryWithCompilerOptions(sandbox)
+      window.history.replaceState({}, "", newURL)
       window.navigator.clipboard.writeText(location.href.toString()).then(
         () => ui.flashInfo(i("play_export_clipboard")),
         (e: any) => alert(e)
@@ -457,12 +462,11 @@ export const setupPlayground = (
     })
   }
 
-  // This isn't optimal, but it's good enough without me adding support
-  // for https://github.com/microsoft/monaco-editor/issues/313
-  setInterval(() => {
-    const markers = sandbox.monaco.editor.getModelMarkers({})
+  const model = sandbox.getModel()
+  model.onDidChangeDecorations(() => {
+    const markers = sandbox.monaco.editor.getModelMarkers({ resource: model.uri }).filter(m => m.severity !== 1)
     utils.setNotifications("errors", markers.length)
-  }, 500)
+  })
 
   // Sets up a way to click between examples
   monaco.languages.registerLinkProvider(sandbox.language, new ExampleHighlighter())

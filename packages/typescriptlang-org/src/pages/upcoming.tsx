@@ -48,7 +48,7 @@ const Index: React.FC<{}> = (props) => {
       <Layout title="Release Cycle" description={metaDescription} lang="en">
         <div id="upcoming">
           <div className="raised content main-content-block">
-            <div className="split-sixhundred">
+            <div className="split-fivehundred">
               <h1 style={{ marginTop: "20px" }}>Release Cycle</h1>
               <div id='index'>
                 <UpcomingReleaseMeta />

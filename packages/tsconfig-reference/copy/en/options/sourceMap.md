@@ -1,6 +1,6 @@
 ---
 display: "Source Map"
-oneline: "Creates source map files for emitted JavaScript files"
+oneline: "Create source map files for emitted JavaScript files."
 ---
 
 Enables the generation of [sourcemap files](https://developer.mozilla.org/docs/Tools/Debugger/How_to/Use_a_source_map).

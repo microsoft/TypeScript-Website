@@ -1,6 +1,6 @@
 import { PlaygroundPlugin } from "."
 
-type Sandbox = import("typescript-sandbox").Sandbox
+type Sandbox = import("@typescript/sandbox").Sandbox
 
 export const createDragBar = () => {
   const sidebar = document.createElement("div")

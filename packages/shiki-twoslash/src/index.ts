@@ -1,22 +1,13 @@
-import { loadTheme, getHighlighter, getTheme } from "shiki"
-import { Highlighter } from "shiki/dist/highlighter"
-import { commonLangIds, commonLangAliases, otherLangIds } from "shiki-languages"
+import { getHighlighter, Highlighter, HighlighterOptions, IThemedToken } from "shiki"
 import { twoslasher, TwoSlashOptions, TwoSlashReturn } from "@typescript/twoslash"
-import { createDefaultMapFromNodeModules, addAllFilesFromFolder } from "@typescript/vfs"
 import { twoslashRenderer } from "./renderers/twoslash"
-import { plainTextRenderer } from "./renderers/plain"
+import { HtmlRendererOptions, plainTextRenderer } from "./renderers/plain"
 import { defaultShikiRenderer } from "./renderers/shiki"
 import { tsconfigJSONRenderer } from "./renderers/tsconfig"
+import { parseCodeFenceInfo } from "./parseCodeFenceInfo"
 
-export type ShikiTwoslashSettings = {
-  useNodeModules?: true
-  nodeModulesTypesPath?: string
-}
-
-const languages = [...commonLangIds, ...commonLangAliases, ...otherLangIds]
-
-/** Checks if a particular lang is available in shiki */
-export const canHighlightLang = (lang: string) => languages.includes(lang as any)
+/** The possible user config, a combination of all shiki and twoslash options */
+export type UserConfigSettings = HighlighterOptions & TwoSlashOptions
 
 /**
  * This gets filled in by the promise below, then should
@@ -32,24 +23,10 @@ let storedHighlighter: Highlighter = null as any
  * opinion that you should be in control of the highlighter, and not this library.
  *
  */
-export const createShikiHighlighter = (options: import("shiki/dist/highlighter").HighlighterOptions) => {
+export const createShikiHighlighter = (options: HighlighterOptions) => {
   if (storedHighlighter) return Promise.resolve(storedHighlighter)
 
-  var settings = options || {}
-  var theme: any = settings.theme || "nord"
-  var shikiTheme
-
-  try {
-    shikiTheme = getTheme(theme)
-  } catch (error) {
-    try {
-      shikiTheme = loadTheme(theme)
-    } catch (error) {
-      throw new Error("Unable to load theme: " + theme + " - " + error.message)
-    }
-  }
-
-  return getHighlighter({ theme: shikiTheme, langs: languages }).then(newHighlighter => {
+  return getHighlighter(options).then(newHighlighter => {
     storedHighlighter = newHighlighter
     return storedHighlighter
   })
@@ -63,7 +40,7 @@ export const createShikiHighlighter = (options: import("shiki/dist/highlighter")
  *
  * @param code the source code to render
  * @param lang the language to use in highlighting
- * @param info additional metadata which lives after the codefence lang (e.g. ["twoslash"])
+ * @param info additional metadata which lives after the code-fence lang (e.g. ["twoslash"])
  * @param highlighter optional, but you should use it, highlighter
  * @param twoslash optional, but required when info contains 'twoslash' as a string
  */
@@ -71,7 +48,7 @@ export const renderCodeToHTML = (
   code: string,
   lang: string,
   info: string[],
-  shikiOptions?: import("shiki/dist/renderer").HtmlRendererOptions,
+  shikiOptions?: HtmlRendererOptions,
   highlighter?: Highlighter,
   twoslash?: TwoSlashReturn
 ) => {
@@ -81,74 +58,53 @@ export const renderCodeToHTML = (
     )
   }
 
-  // Shiki doesn't know this lang
-  if (!canHighlightLang(lang)) {
-    return plainTextRenderer(code, shikiOptions || {})
-  }
-
   // Shiki does know the lang, so tokenize
   const renderHighlighter = highlighter || storedHighlighter
-  const tokens = renderHighlighter.codeToThemedTokens(code, lang as any)
+  const metaInfo = info && typeof info === "string" ? info : info.join(" ")
+  const codefenceMeta = parseCodeFenceInfo(lang, metaInfo || "")
+
+  let tokens: IThemedToken[][]
+  try {
+    // Shiki does know the lang, so tokenize
+    tokens = renderHighlighter.codeToThemedTokens(code, lang as any)
+  } catch (error) {
+    // Shiki doesn't know this lang
+    return plainTextRenderer(code, shikiOptions || {}, codefenceMeta.meta)
+  }
 
   // Twoslash specific renderer
   if (info.includes("twoslash") && twoslash) {
-    return twoslashRenderer(tokens, shikiOptions || {}, twoslash)
+    return twoslashRenderer(tokens, shikiOptions || {}, twoslash, codefenceMeta.meta)
   }
 
   // TSConfig renderer
-  if (lang === "json" && info.includes("tsconfig")) {
-    return tsconfigJSONRenderer(tokens, shikiOptions || {})
+  if (lang && lang.startsWith("json") && info.includes("tsconfig")) {
+    return tsconfigJSONRenderer(tokens, shikiOptions || {}, codefenceMeta.meta)
   }
 
   // Otherwise just the normal shiki renderer
-  return defaultShikiRenderer(tokens, { langId: lang })
+  return defaultShikiRenderer(tokens, { langId: lang }, codefenceMeta.meta)
 }
-
-// Basically so that we can store this once, then re-use it in the same process
-let nodeModulesMap: Map<string, string> | undefined = undefined
 
 /**
  * Runs Twoslash over the code passed in with a particular language as the default file.
  */
-export const runTwoSlash = (
-  code: string,
-  lang: string,
-  settings: ShikiTwoslashSettings = {},
-  twoslashDefaults: TwoSlashOptions = {}
-): TwoSlashReturn => {
-  let map: Map<string, string> | undefined = undefined
-
+export const runTwoSlash = (code: string, lang: string, settings: UserConfigSettings = {}): TwoSlashReturn => {
   // Shiki doesn't respect json5 as an input, so switch it
   // to json, which can handle comments in the syntax highlight
   const replacer = {
     json5: "json",
+    yml: "yaml",
   }
 
   // @ts-ignore
   if (replacer[lang]) lang = replacer[lang]
 
-  // Add @types to the fsmap
-  if (settings.useNodeModules) {
-    // we don't want a hard dep on TS, so that browsers can run this code)
-    const laterESVersion = 6
-
-    // Save node modules into a cached object which we re-create from (emits can edit the map)
-    if (nodeModulesMap) {
-      map = new Map(nodeModulesMap)
-    } else {
-      map = createDefaultMapFromNodeModules({ target: laterESVersion })
-      nodeModulesMap = map
-    }
-
-    // Maybe it's worth only doing the imports in the file, but that would break dts deps
-    // const imports = parseFileForModuleReferences(code).filter((mod) => !mod.startsWith("."))
-
-    addAllFilesFromFolder(map, settings.nodeModulesTypesPath || "node_modules/@types")
-  }
-
-  const results = twoslasher(code, lang, { ...twoslashDefaults, fsMap: map })
+  const results = twoslasher(code, lang, settings)
   return results
 }
+
+export { parseCodeFenceInfo } from "./parseCodeFenceInfo"
 
 /** Set of renderers if you want to explicitly call one instead of using renderCodeToHTML */
 export const renderers = {

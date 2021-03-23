@@ -1,15 +1,16 @@
 type Lines = import("shiki").IThemedToken[][]
-type Options = import("shiki/dist/renderer").HtmlRendererOptions
 type TwoSlash = import("@typescript/twoslash").TwoSlashReturn
 
+import { shouldBeHighlightable, shouldHighlightLine } from "../parseCodeFenceInfo"
 import { stripHTML, createHighlightedString2, subTripleArrow, replaceTripleArrowEncoded, escapeHtml } from "../utils"
+import { HtmlRendererOptions } from "./plain"
 
 // OK, so - this is just straight up complex code.
 
 // What we're trying to do is merge two sets of information into a single tree for HTML
 
 // 1: Syntax highlight info from shiki
-// 2: Twoslash metadata like errors, indentifiers etc
+// 2: Twoslash metadata like errors, identifiers etc
 
 // Because shiki gives use a set of lines to work from, then the first thing which happens
 // is converting twoslash data into the same format.
@@ -21,10 +22,16 @@ import { stripHTML, createHighlightedString2, subTripleArrow, replaceTripleArrow
 // - the DOM requires a flattened graph of html elements
 //
 
-export function twoslashRenderer(lines: Lines, options: Options, twoslash: TwoSlash) {
+export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, twoslash: TwoSlash, codefenceMeta: any) {
   let html = ""
 
-  html += `<pre class="shiki twoslash lsp">`
+  const hasHighlight = shouldBeHighlightable(codefenceMeta)
+  const hl = shouldHighlightLine(codefenceMeta)
+  const bg = options.bg || "#fff"
+  const fg = options.fg || "black"
+  const classes = codefenceMeta.class || ""
+
+  html += `<pre class="shiki twoslash lsp ${classes}" style="background-color: ${bg}; color: ${fg}">`
   if (options.langId) {
     html += `<div class="language-id">${options.langId}</div>`
   }
@@ -35,7 +42,12 @@ export function twoslashRenderer(lines: Lines, options: Options, twoslash: TwoSl
   // A query is always about the line above it!
   const queriesGroupedByLine = groupBy(twoslash.queries, q => q.line - 1) || new Map()
 
+  /**
+   * This is the index of the original twoslash code reference, it is not
+   * related to the HTML output
+   */
   let filePos = 0
+
   lines.forEach((l, i) => {
     const errors = errorsGroupedByLine.get(i) || []
     const lspValues = staticQuickInfosGroupedByLine.get(i) || []
@@ -48,6 +60,10 @@ export function twoslashRenderer(lines: Lines, options: Options, twoslash: TwoSl
       filePos += 1
       html += `\n`
     } else {
+      const hiClass = hasHighlight ? (hl(i) ? " highlight" : " dim") : ""
+      const prefix = `<div class='line${hiClass}'>`
+      html += prefix
+
       // Keep track of the position of the current token in a line so we can match it up to the
       // errors and lang serv identifiers
       let tokenPos = 0
@@ -85,10 +101,8 @@ export function twoslashRenderer(lines: Lines, options: Options, twoslash: TwoSl
               end: token.start! + token.length! - filePos,
             }
 
-            if (
-              range.begin < 0 ||
-              range.end < 0
-            ) {
+            // prettier-ignore
+            if (range.begin < 0 || range.end < 0) {
               // prettier-ignore
               // throw new Error(`The begin range of a token is at a minus location, filePos:${filePos} current token: ${JSON.stringify(token, null, '  ')}\n result: ${JSON.stringify(range, null, '  ')}`)
             }
@@ -112,7 +126,8 @@ export function twoslashRenderer(lines: Lines, options: Options, twoslash: TwoSl
         filePos += token.content.length
       })
 
-      html += `\n`
+      html += `</div>`
+      // This is the \n which the </div> represents
       filePos += 1
     }
 
@@ -134,10 +149,11 @@ export function twoslashRenderer(lines: Lines, options: Options, twoslash: TwoSl
             // prettier-ignore
             const linePrefix = previousLineWhitespace + "//" + "".padStart(query.offset - 2 - previousLineWhitespace.length)
             // prettier-ignore
-            const queryTextWithPrefix = query.text?.split("\n").map((l, i) => i !== 0 ? linePrefix + l : l).join("\n")
+            const queryTextWithPrefix = query.text?.split("\n").map((l, i) => i !== 0 ? linePrefix + l : l).join("\n").replace(/</gi, "&lt").replace(/>/gi, "&gt")
             html += `<span class='query'>${linePrefix + "^ = " + queryTextWithPrefix}</span>`
             break
           }
+
           case "completions": {
             if (!query.completions) {
               html += `<span class='query'>${"//" + "".padStart(query.offset - 2) + "^ - No completions found"}</span>`

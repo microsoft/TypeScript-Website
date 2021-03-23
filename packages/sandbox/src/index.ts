@@ -9,7 +9,7 @@ import {
 import lzstring from "./vendor/lzstring.min"
 import { supportedReleases } from "./releases"
 import { getInitialCode } from "./getInitialCode"
-import { extractTwoSlashComplierOptions } from "./twoslashSupport"
+import { extractTwoSlashComplierOptions, twoslashCompletions } from "./twoslashSupport"
 import * as tsvfs from "./vendor/typescript-vfs"
 
 type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
@@ -44,9 +44,9 @@ export type PlaygroundConfig = {
     groupEnd: (...args: any[]) => void
   }
 } & (
-  | { /** theID of a dom node to add monaco to */ domID: string }
-  | { /** theID of a dom node to add monaco to */ elementToAppend: HTMLElement }
-)
+    | { /** theID of a dom node to add monaco to */ domID: string }
+    | { /** theID of a dom node to add monaco to */ elementToAppend: HTMLElement }
+  )
 
 const languageType = (config: PlaygroundConfig) => (config.useJavaScript ? "javascript" : "typescript")
 
@@ -130,6 +130,11 @@ export const createTypeScriptSandbox = (
     compilerOptions = compilerDefaults
   }
 
+  // Don't allow a state like allowJs = false, and useJavascript = true
+  if (config.useJavaScript) {
+    compilerOptions.allowJs = true
+  }
+
   const language = languageType(config)
   const filePath = createFileUri(config, compilerOptions, monaco)
   const element = "domID" in config ? document.getElementById(config.domID) : (config as any).elementToAppend
@@ -169,8 +174,18 @@ export const createTypeScriptSandbox = (
 
   const getTwoSlashComplierOptions = extractTwoSlashComplierOptions(ts)
 
-  // Then update it when the model changes, perhaps this could be a debounced plugin instead in the future?
-  editor.onDidChangeModelContent(() => {
+  // Auto-complete twoslash comments
+  if (config.supportTwoslashCompilerOptions) {
+    const langs = ["javascript", "typescript"]
+    langs.forEach(l =>
+      monaco.languages.registerCompletionItemProvider(l, {
+        triggerCharacters: ["@", "/", "-"],
+        provideCompletionItems: twoslashCompletions(ts, monaco),
+      })
+    )
+  }
+
+  const textUpdated = () => {
     const code = editor.getModel()!.getValue()
 
     if (config.supportTwoslashCompilerOptions) {
@@ -181,6 +196,17 @@ export const createTypeScriptSandbox = (
     if (config.acquireTypes) {
       detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
     }
+  }
+
+  // Debounced sandbox features like twoslash and type acquisition to once every second
+  let debouncingTimer = false
+  editor.onDidChangeModelContent(_e => {
+    if (debouncingTimer) return
+    debouncingTimer = true
+    setTimeout(() => {
+      debouncingTimer = false
+      textUpdated()
+    }, 1000)
   })
 
   config.logger.log("[Compiler] Set compiler options: ", compilerOptions)
@@ -194,7 +220,7 @@ export const createTypeScriptSandbox = (
   }
 
   // To let clients plug into compiler settings changes
-  let didUpdateCompilerSettings = (opts: CompilerOptions) => {}
+  let didUpdateCompilerSettings = (opts: CompilerOptions) => { }
 
   const updateCompilerSettings = (opts: CompilerOptions) => {
     const newKeys = Object.keys(opts)
@@ -309,6 +335,8 @@ export const createTypeScriptSandbox = (
 
   // Pass along the supported releases for the playground
   const supportedVersions = supportedReleases
+
+  textUpdated()
 
   return {
     /** The same config you passed in */

@@ -26,7 +26,7 @@ export const docCopy = {
     "A delightful toolkit for building TypeScript-powered command-line apps",
   doc_frameworks: "Web Frameworks",
   doc_frameworks_angular_blurb:
-    "Makes writing beautiful apps be joyful and fun",
+    "The modern web developer's platform",
   doc_frameworks_ember_blurb: "A framework for ambitious web developers",
   doc_frameworks_react_blurb:
     "A JavaScript library for building user interfaces",
@@ -46,6 +46,7 @@ export const docCopy = {
   doc_apis_loopback_blurb:
     "A highly extensible Node.js and TypeScript framework for building APIs and microservices",
   doc_apis_fastify_blurb: "A fast and low overhead web framework for Node.js",
+  doc_apis_foal_blurb: "Elegant and complete Node.js framework for building web applications.",
   doc_react: "React Projects",
   doc_react_create_blurb: "Set up a modern web app by running one command",
   doc_react_gatsby_blurb:

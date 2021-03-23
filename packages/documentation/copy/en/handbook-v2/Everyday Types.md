@@ -2,11 +2,8 @@
 title: Everyday Types
 layout: docs
 permalink: /docs/handbook/2/everyday-types.html
-oneline: "Step one in learning TypeScript: The basics types."
-beta: true
+oneline: "The language primitives."
 ---
-
-<!-- Extremely WIP, do not review -->
 
 In this chapter, we'll cover some of the most common types of values you'll find in JavaScript code, and explain the corresponding ways to describe those types in TypeScript.
 This isn't an exhaustive list, and future chapters will describe more ways to name and use other types.
@@ -27,7 +24,7 @@ As you might expect, these are the same names you'd see if you used the JavaScri
 - `number` is for numbers like `42`. JavaScript does not have a special runtime value for integers, so there's no equivalent to `int` or `float` - everything is simply `number`
 - `boolean` is for the two values `true` and `false`
 
-> The type names `String`, `Number`, and `Boolean` (starting with capital letters) are legal, but refer to some special built-in types that shouldn't appear in your code. _Always_ use `string`, `number`, or `boolean`.
+> The type names `String`, `Number`, and `Boolean` (starting with capital letters) are legal, but refer to some special built-in types that will very rarely appear in your code. _Always_ use `string`, `number`, or `boolean` for types.
 
 ## Arrays
 
@@ -45,7 +42,9 @@ When a value is of type `any`, you can access any properties of it (which will i
 
 ```ts twoslash
 let obj: any = { x: 0 };
-// None of these lines of code are errors
+// None of the following lines of code will throw compiler errors.
+// Using `any` disables all further type checking, and it is assumed 
+// you know the environment better than TypeScript.
 obj.foo();
 obj();
 obj.bar = 100;
@@ -132,10 +131,10 @@ Much like variable type annotations, you usually don't need a return type annota
 The type annotation in the above example doesn't change anything.
 Some codebases will explicitly specify a return type for documentation purposes, to prevent accidental changes, or just for personal preference.
 
-### Function Expressions
+### Anonymous Functions
 
-Function expressions are a little bit different from function declarations.
-When a function expression appears in a place where TypeScript can determine how it's going to be called, the parameters of that function are automatically given types.
+Anonymous functions are a little bit different from function declarations.
+When a function appears in a place where TypeScript can determine how it's going to be called, the parameters of that function are automatically given types.
 
 Here's an example:
 
@@ -143,7 +142,14 @@ Here's an example:
 // @errors: 2551
 // No type annotations here, but TypeScript can spot the bug
 const names = ["Alice", "Bob", "Eve"];
+
+// Contextual typing for function
 names.forEach(function (s) {
+  console.log(s.toUppercase());
+});
+
+// Contextual typing also applies to arrow functions
+names.forEach((s) => {
   console.log(s.toUppercase());
 });
 ```
@@ -204,6 +210,9 @@ function printName(obj: { first: string; last?: string }) {
     // OK
     console.log(obj.last.toUpperCase());
   }
+
+  // A safe alternative using modern JavaScript syntax:
+  console.log(obj.last?.toUpperCase());
 }
 ```
 
@@ -374,15 +383,82 @@ Being concerned only with the structure and capabilities of types is why we call
 ### Differences Between Type Aliases and Interfaces
 
 Type aliases and interfaces are very similar, and in many cases you can choose between them freely.
-Here are the most relevant differences between the two that you should be aware of.
+Almost all features of an `interface` are available in `type`, the key distinction is that a type cannot be re-opened to add new properties vs an interface which is always extendable.
+
+<table class='full-width-table'>
+  <tbody>
+    <tr>
+      <th><code>Interface</code></th>
+      <th><code>Type</code></th>
+    </tr>
+    <tr>
+      <td>
+        <p>Extending an interface</p>
+        <code><pre>
+interface Animal {
+  name: string
+}<br/>
+interface Bear extends Animal {
+  honey: boolean
+}<br/>
+const bear = getBear() 
+bear.name
+bear.honey
+        </pre></code>
+      </td>
+      <td>
+        <p>Extending a type via intersections</p>
+        <code><pre>
+type Animal = {
+  name: string
+}<br/>
+type Bear = Animal & { 
+  honey: Boolean 
+}<br/>
+const bear = getBear();
+bear.name;
+bear.honey;
+        </pre></code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>Adding new fields to an existing interface</p>
+        <code><pre>
+interface Window {
+  title: string
+}<br/>
+interface Window {
+  ts: TypeScriptAPI
+}<br/>
+const src = 'const a = "Hello World"';
+window.ts.transpileModule(src, {});
+        </pre></code>
+      </td>
+      <td>
+        <p>A type cannot be changed after being created</p>
+        <code><pre>
+type Window = {
+  title: string
+}<br/>
+type Window = {
+  ts: TypeScriptAPI
+}<br/>
+<span style="color: #A31515"> // Error: Duplicate identifier 'Window'.</span><br/>
+        </pre></code>
+      </td>
+    </tr>
+    </tbody>
+</table>
+
 You'll learn more about these concepts in later chapters, so don't worry if you don't understand all of these right away.
 
-- Type alias names [_may_ appear in error messages](/play?#code/PTAEGEHsFsAcEsA2BTATqNrLusgzngIYDm+oA7koqIYuYQJ56gCueyoAUCKAC4AWHAHaFcoSADMaQ0PCG80EwgGNkALk6c5C1EtWgAsqOi1QAb06groEbjWg8vVHOKcAvpokshy3vEgyyMr8kEbQJogAFND2YREAlOaW1soBeJAoAHSIkMTRmbbI8e6aPMiZxJmgACqCGKhY6ABGyDnkFFQ0dIzMbBwCwqIccabcYLyQoKjIEmh8kwN8DLAc5PzwwbLMyAAeK77IACYaQSEjUWZWhfYAjABMAMwALA+gbsVjoADqgjKESytQPxCHghAByXigYgBfr8LAsYj8aQMUASbDQcRSExCeCwFiIQh+AKfAYyBiQFgOPyIaikSGLQo0Zj-aazaY+dSaXjLDgAGXgAC9CKhDqAALxJaw2Ib2RzOISuDycLw+ImBYKQflCkWRRD2LXCw6JCxS1JCdJZHJ5RAFIbFJU8ADKC3WzEcnVZaGYE1ABpFnFOmsFhsil2uoHuzwArO9SmAAEIsSFrZB-GgAjjA5gtVN8VCEc1o1C4Q4AGlR2AwO1EsBQoAAbvB-gJ4HhPgB5aDwem-Ph1TCV3AEEirTp4ELtRbTPD4vwKjOfAuioSQHuDXBcnmgACC+eCONFEs73YAPGGZVT5cRyyhiHh7AAON7lsG3vBggB8XGV3l8-nVISOgghxoLq9i7io-AHsayRWGaFrlFauq2rg9qaIGQHwCBqChtKdgRo8TxRjeyB3o+7xAA), sometimes in place of the equivalent anonymous type (which may or may not be desirable). Interfaces will always be named in error messages.
+- Prior to TypeScript version 4.2, type alias names [_may_ appear in error messages](/play?#code/PTAEGEHsFsAcEsA2BTATqNrLusgzngIYDm+oA7koqIYuYQJ56gCueyoAUCKAC4AWHAHaFcoSADMaQ0PCG80EwgGNkALk6c5C1EtWgAsqOi1QAb06groEbjWg8vVHOKcAvpokshy3vEgyyMr8kEbQJogAFND2YREAlOaW1soBeJAoAHSIkMTRmbbI8e6aPMiZxJmgACqCGKhY6ABGyDnkFFQ0dIzMbBwCwqIccabcYLyQoKjIEmh8kwN8DLAc5PzwwbLMyAAeK77IACYaQSEjUWZWhfYAjABMAMwALA+gbsVjoADqgjKESytQPxCHghAByXigYgBfr8LAsYj8aQMUASbDQcRSExCeCwFiIQh+AKfAYyBiQFgOPyIaikSGLQo0Zj-aazaY+dSaXjLDgAGXgAC9CKhDqAALxJaw2Ib2RzOISuDycLw+ImBYKQflCkWRRD2LXCw6JCxS1JCdJZHJ5RAFIbFJU8ADKC3WzEcnVZaGYE1ABpFnFOmsFhsil2uoHuzwArO9SmAAEIsSFrZB-GgAjjA5gtVN8VCEc1o1C4Q4AGlR2AwO1EsBQoAAbvB-gJ4HhPgB5aDwem-Ph1TCV3AEEirTp4ELtRbTPD4vwKjOfAuioSQHuDXBcnmgACC+eCONFEs73YAPGGZVT5cRyyhiHh7AAON7lsG3vBggB8XGV3l8-nVISOgghxoLq9i7io-AHsayRWGaFrlFauq2rg9qaIGQHwCBqChtKdgRo8TxRjeyB3o+7xAA), sometimes in place of the equivalent anonymous type (which may or may not be desirable). Interfaces will always be named in error messages.
 - Type aliases may not participate [in declaration merging, but interfaces can](/play?#code/PTAEEEDtQS0gXApgJwGYEMDGjSfdAIx2UQFoB7AB0UkQBMAoEUfO0Wgd1ADd0AbAK6IAzizp16ALgYM4SNFhwBZdAFtV-UAG8GoPaADmNAcMmhh8ZHAMMAvjLkoM2UCvWad+0ARL0A-GYWVpA29gyY5JAWLJAwGnxmbvGgALzauvpGkCZmAEQAjABMAMwALLkANBl6zABi6DB8okR4Jjg+iPSgABboovDk3jjo5pbW1d6+dGb5djLwAJ7UoABKiJTwjThpnpnGpqPBoTLMAJrkArj4kOTwYmycPOhW6AR8IrDQ8N04wmo4HHQCwYi2Waw2W1S6S8HX8gTGITsQA).
 - Interfaces may only be used to [declare the shapes of object, not re-name primitives](/play?#code/PTAEAkFMCdIcgM6gC4HcD2pIA8CGBbABwBtIl0AzUAKBFAFcEBLAOwHMUBPQs0XFgCahWyGBVwBjMrTDJMAshOhMARpD4tQ6FQCtIE5DWoixk9QEEWAeV37kARlABvaqDegAbrmL1IALlAEZGV2agBfampkbgtrWwMAJlAAXmdXdy8ff0Dg1jZwyLoAVWZ2Lh5QVHUJflAlSFxROsY5fFAWAmk6CnRoLGwmILzQQmV8JmQmDzI-SOiKgGV+CaYAL0gBBdyy1KCQ-Pn1AFFplgA5enw1PtSWS+vCsAAVAAtB4QQWOEMKBuYVUiVCYvYQsUTQcRSBDGMGmKSgAAa-VEgiQe2GLgKQA).
 - Interface names will [_always_ appear in their original form](/play?#code/PTAEGEHsFsAcEsA2BTATqNrLusgzngIYDm+oA7koqIYuYQJ56gCueyoAUCKAC4AWHAHaFcoSADMaQ0PCG80EwgGNkALk6c5C1EtWgAsqOi1QAb06groEbjWg8vVHOKcAvpokshy3vEgyyMr8kEbQJogAFND2YREAlOaW1soBeJAoAHSIkMTRmbbI8e6aPMiZxJmgACqCGKhY6ABGyDnkFFQ0dIzMbBwCwqIccabcYLyQoKjIEmh8kwN8DLAc5PzwwbLMyAAeK77IACYaQSEjUWY2Q-YAjABMAMwALA+gbsVjNXW8yxySoAADaAA0CCaZbPh1XYqXgOIY0ZgmcK0AA0nyaLFhhGY8F4AHJmEJILCWsgZId4NNfIgGFdcIcUTVfgBlZTOWC8T7kAJ42G4eT+GS42QyRaYbCgXAEEguTzeXyCjDBSAAQSE8Ai0Xsl0K9kcziExDeiQs1lAqSE6SyOTy0AKQ2KHk4p1V6s1OuuoHuzwArMagA) in error messages, but _only_ when they are used by name.
 
-For the most part, you can choose based on personal preference, and TypeScript will tell you if it needs something to be the other kind of declaration.
+For the most part, you can choose based on personal preference, and TypeScript will tell you if it needs something to be the other kind of declaration. If you would like a heuristic, use `interface` until you need to use features from `type`.
 
 ## Type Assertions
 
@@ -429,6 +505,23 @@ const a = (expr as any) as T;
 
 In addition to the general types `string` and `number`, we can refer to _specific_ strings and numbers in type positions.
 
+One way to think about this is to consider how JavaScript comes with different ways to declare a variable. Both `var` and `let` allow for changing what is held inside the variable, and `const` does not. This is reflected in how TypeScript creates types for literals.
+
+```ts twoslash
+let changingString = "Hello World";
+changingString = "Ola Mundo";
+// Because `changingString` can represent any possible string, that
+// is how TypeScript describes it in the type system
+changingString;
+// ^?
+
+const constantString = "Hello World";
+// Because `constantString` can only represent 1 possible string, it
+// has a literal type representation
+constantString;
+// ^?
+```
+
 By themselves, literal types aren't very valuable:
 
 ```ts twoslash
@@ -442,7 +535,7 @@ x = "howdy";
 
 It's not much use to have a variable that can only have one value!
 
-But by _combining_ literals into unions, you can express a much more useful thing - for example, functions that only accept a certain set of known values:
+But by _combining_ literals into unions, you can express a much more useful concept - for example, functions that only accept a certain set of known values:
 
 ```ts twoslash
 // @errors: 2345
@@ -494,7 +587,7 @@ if (someCondition) {
 }
 ```
 
-TypeScript doesn't assume the assignment of `1` to a field that previously had `0` to be an error.
+TypeScript doesn't assume the assignment of `1` to a field which previously had `0` is an error.
 Another way of saying this is that `obj.counter` must have the type `number`, not `0`, because types are used to determine both _reading_ and _writing_ behavior.
 
 The same applies to strings:
@@ -507,21 +600,34 @@ const req = { url: "https://example.com", method: "GET" };
 handleRequest(req.url, req.method);
 ```
 
-<!-- TODO: Use and explain const contexts -->
+In the above example `req.method` is inferred to be `string`, not `"GET"`. Because code can be evaluated between the creation of `req` and the call of `handleRequest` which could assign a new string like `"GUESS"` to `req.method`, TypeScript considers this code to have an error.
 
-Because it'd be legal to assign a string like `"GUESS"` TO `req.method`, TypeScript considers this code to have an error.
-You can change this inference by adding a type assertion in either location:
+There are two ways to work around this.
 
-```ts twoslash
-declare function handleRequest(url: string, method: "GET" | "POST"): void;
-// ---cut---
-const req = { url: "https://example.com", method: "GET" as "GET" };
-/* or */
-handleRequest(req.url, req.method as "GET");
-```
+1. You can change the inference by adding a type assertion in either location:
 
-The first change means "I intend for `req.method` to always have the _literal type_ `"GET"`", preventing the possible assignment of `"GUESS"` to that field.
-The second change means "I know for other reasons that `req.method` has the value `"GET"`".
+   ```ts twoslash
+   declare function handleRequest(url: string, method: "GET" | "POST"): void;
+   // ---cut---
+   // Change 1:
+   const req = { url: "https://example.com", method: "GET" as "GET" };
+   // Change 2
+   handleRequest(req.url, req.method as "GET");
+   ```
+
+   Change 1 means "I intend for `req.method` to always have the _literal type_ `"GET"`", preventing the possible assignment of `"GUESS"` to that field after.
+   Change 2 means "I know for other reasons that `req.method` has the value `"GET"`".
+
+2. You can use `as const` to convert the entire object to be type literals:
+
+   ```ts twoslash
+   declare function handleRequest(url: string, method: "GET" | "POST"): void;
+   // ---cut---
+   const req = { url: "https://example.com", method: "GET" } as const;
+   handleRequest(req.url, req.method);
+   ```
+
+The `as const` prefix acts like `const` but for the type system, ensuring that all properties are assigned the literal type instead of a more general version like `string` or `number`.
 
 ## `null` and `undefined`
 
@@ -541,8 +647,8 @@ With `strictNullChecks` _on_, when a value is `null` or `undefined`, you will ne
 Just like checking for `undefined` before using an optional property, we can use _narrowing_ to check for values that might be `null`:
 
 ```ts twoslash
-function doSomething(x: string | null) {
-  if (x === null) {
+function doSomething(x: string | undefined) {
+  if (x === undefined) {
     // do nothing
   } else {
     console.log("Hello, " + x.toUpperCase());
@@ -556,13 +662,17 @@ TypeScript also has a special syntax for removing `null` and `undefined` from a 
 Writing `!` after any expression is effectively a type assertion that the value isn't `null` or `undefined`:
 
 ```ts twoslash
-function liveDangerously(x?: number | null) {
+function liveDangerously(x?: number | undefined) {
   // No error
   console.log(x!.toFixed());
 }
 ```
 
 Just like other type assertions, this doesn't change the runtime behavior of your code, so it's important to only use `!` when you know that the value _can't_ be `null` or `undefined`.
+
+### Enums
+
+Enums are a feature added to JavaScript by TypeScript which allows for describing a value which could be one of a set of possible named constants. Unlike most TypeScript features, this is _not_ a type-level addition to JavaScript but something added to the language and runtime. Because of this, it's a feature which you should know exists, but maybe hold off on using unless you are sure. You can read more about enums in the [Enum reference page](/docs/handbook/enums.html).
 
 ### Less Common Primitives
 
@@ -577,10 +687,10 @@ From ES2020 onwards, there is a primitive in JavaScript used for very large inte
 // @target: es2020
 
 // Creating a bigint via the BigInt function
-let foo: bigint = BigInt(100);
+const oneHundred: bigint = BigInt(100);
 
 // Creating a BigInt via the literal syntax
-let bar: bigint = 100n;
+const anotherHundred: bigint = 100n;
 ```
 
 You can learn more about BigInt in [the TypeScript 3.2 release notes](/docs/handbook/release-notes/typescript-3-2.html#bigint).
@@ -599,4 +709,4 @@ if (firstName === secondName) {
 }
 ```
 
-You can learn more about them in [Symbols handbook reference page](/docs/handbook/symbols.html).
+You can learn more about them in [Symbols reference page](/docs/handbook/symbols.html).

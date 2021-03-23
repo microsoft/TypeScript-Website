@@ -17,22 +17,35 @@ import { OpenInMyLangQuickJump } from "./LanguageRecommendation";
 export const SiteNav = (props: Props) => {
   const i = createInternational<typeof navCopy>(useIntl())
   const IntlLink = createIntlLink(props.lang)
+  const loadDocSearch = () => {
+    const isDev = document.location.host.includes('localhost')
+    let customHandleSelected;
 
+    if (isDev) {
+      customHandleSelected = (input, event, suggestion, datasetNumber, context) => {
+        const urlToOpen = suggestion.url.replace("www.typescriptlang.org", "localhost:8000").replace("https", "http")
+        window.open(urlToOpen)
+      }
+    }
+
+
+    // @ts-ignore - this comes from the script above
+    docsearch({
+      apiKey: '3c2db2aef0c7ff26e8911267474a9b2c',
+      indexName: 'typescriptlang',
+      inputSelector: '.search input',
+      handleSelected: customHandleSelected,
+    });
+  }
   // This extra bit of mis-direction ensures that non-essential code runs after
   // the page is loaded
   useEffect(() => {
     setupStickyNavigation()
 
-    // @ts-ignore - this could come from a previous page load
-    if (typeof docsearch !== 'undefined') {
-      // @ts-ignore - just been validate
-      docsearch({
-        apiKey: '3c2db2aef0c7ff26e8911267474a9b2c',
-        indexName: 'typescriptlang',
-        inputSelector: '.search input',
-      });
+    // @ts-ignore - this comes from the script above
+    if (window.docsearch) {
+      loadDocSearch();
     }
-
     if (document.getElementById("algolia-search")) return
 
     const searchScript = document.createElement('script');
@@ -43,13 +56,8 @@ export const SiteNav = (props: Props) => {
     searchScript.async = true;
     searchScript.onload = () => {
       // @ts-ignore - this comes from the script above
-      if (typeof docsearch !== 'undefined') {
-        // @ts-ignore - this comes from the script above
-        docsearch({
-          apiKey: '3c2db2aef0c7ff26e8911267474a9b2c',
-          indexName: 'typescriptlang',
-          inputSelector: '.search input'
-        });
+      if (window.docsearch) {
+        loadDocSearch();
 
         searchCSS.rel = 'stylesheet';
         searchCSS.href = withPrefix('/css/docsearch.css');
@@ -79,7 +87,7 @@ export const SiteNav = (props: Props) => {
           <nav role="navigation">
             <ul>
               <li className="nav-item hide-small"><IntlLink to="/download">{i("nav_download")}</IntlLink></li>
-              <li className="nav-item"><IntlLink to="/docs/home"><span>{i("nav_documentation_short")}</span></IntlLink></li>
+              <li className="nav-item"><IntlLink to="/docs/"><span>{i("nav_documentation_short")}</span></IntlLink></li>
               <li className="nav-item show-only-large"><IntlLink to="/docs/handbook/intro.html">{i("nav_handbook")}</IntlLink></li>
               <li className="nav-item"><IntlLink to="/community">{i("nav_community")}</IntlLink></li>
               <li className="nav-item show-only-largest"><IntlLink to="/play">{i("nav_playground")}</IntlLink></li>

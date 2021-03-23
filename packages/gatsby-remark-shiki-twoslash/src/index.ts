@@ -1,14 +1,17 @@
-import type { Highlighter } from "shiki/dist/highlighter"
-import type { TLang } from "shiki-languages"
 // prettier-ignore
-import { createShikiHighlighter, ShikiTwoslashSettings, renderCodeToHTML, runTwoSlash } from "shiki-twoslash"
+import { createShikiHighlighter, renderCodeToHTML, runTwoSlash, UserConfigSettings } from "shiki-twoslash"
+import type { Highlighter, Lang } from "shiki"
 
 import visit from "unist-util-visit"
 import { Node } from "unist"
 
+import { createHash } from "crypto"
+import { readFileSync, existsSync, mkdirSync, writeFileSync } from "fs"
+import { join } from "path"
+
 /* A rich AST node for uninst with twoslash'd data */
 type RichNode = Node & {
-  lang: TLang
+  lang: Lang
   type: string
   children: Node[]
   value: string
@@ -20,9 +23,9 @@ type RichNode = Node & {
  * The function doing the work of transforming any codeblock samples
  * which have opted-in to the twoslash pattern.
  */
-export const visitor = (highlighter: Highlighter, twoslashSettings?: ShikiTwoslashSettings) => (node: RichNode) => {
+export const visitor = (highlighter: Highlighter, nullSettings?: UserConfigSettings) => (node: RichNode) => {
   let lang = node.lang
-  let settings = twoslashSettings || {}
+  const settings = nullSettings || {}
 
   const shouldDisableTwoslash = process && process.env && !!process.env.TWOSLASH_DISABLE
 
@@ -48,12 +51,34 @@ export const visitor = (highlighter: Highlighter, twoslashSettings?: ShikiTwosla
  * Runs twoslash across an AST node, switching out the text content, and lang
  * and adding a `twoslash` property to the node.
  */
-export const runTwoSlashOnNode = (settings: ShikiTwoslashSettings) => (node: RichNode) => {
+export const runTwoSlashOnNode = (settings: UserConfigSettings) => (node: RichNode) => {
   if (node.meta && node.meta.includes("twoslash")) {
-    const results = runTwoSlash(node.value, node.lang, settings)
-    node.value = results.code
-    node.lang = results.extension as TLang
-    node.twoslash = results
+    try {
+      const results = cachedTwoslashCall(node.value, node.lang, settings)
+      node.value = results.code
+      node.lang = results.extension as Lang
+      node.twoslash = results
+    } catch (error) {
+      error.message = `gatsby-remark-shiki-twoslash: Error thrown in code sample on line ${node.position?.start.line}\n\n${error.message}`
+      throw error
+    }
+  }
+}
+
+/** Keeps a cache of the JSON responses in node_modules/.cache/twoslash */
+export const cachedTwoslashCall = (code: string, lang: string, settings: UserConfigSettings) => {
+  const shasum = createHash("sha1")
+  const codeSha = shasum.update(code).digest("hex")
+  const cacheRoot = join(__dirname, "..", "..", ".cache", "twoslash")
+  const cachePath = join(cacheRoot, `${codeSha}.json`)
+
+  if (existsSync(cachePath)) {
+    return JSON.parse(readFileSync(cachePath, "utf8"))
+  } else {
+    const results = runTwoSlash(code, lang, settings)
+    if (!existsSync(cacheRoot)) mkdirSync(cacheRoot, { recursive: true })
+    writeFileSync(cachePath, JSON.stringify(results), "utf8")
+    return results
   }
 }
 
@@ -62,17 +87,13 @@ export const runTwoSlashOnNode = (settings: ShikiTwoslashSettings) => (node: Ric
  * highlighter then runs a visitor across all code tags in
  * the markdown running twoslash, then shiki.
  * */
-const remarkShiki = async function (
-  { markdownAST }: any,
-  shikiSettings: import("shiki/dist/highlighter").HighlighterOptions,
-  settings: ShikiTwoslashSettings
-) {
-  const highlighter = await createShikiHighlighter(shikiSettings)
+const remarkShiki = async function ({ markdownAST }: any, settings: UserConfigSettings = {}) {
+  const highlighter = await createShikiHighlighter(settings)
   visit(markdownAST, "code", visitor(highlighter, settings))
 }
 
 /** Sends the twoslash visitor over the existing MD AST and replaces the code samples inline, does not do highlighting  */
-export const runTwoSlashAcrossDocument = ({ markdownAST }: any, settings?: ShikiTwoslashSettings) =>
-  visit(markdownAST, "code", runTwoSlashOnNode(settings || {}))
+export const runTwoSlashAcrossDocument = ({ markdownAST }: any, settings: UserConfigSettings = {}) =>
+  visit(markdownAST, "code", runTwoSlashOnNode(settings))
 
 export default remarkShiki

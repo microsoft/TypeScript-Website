@@ -50,7 +50,7 @@ const HandbookIndex: React.FC<Props> = (props) => {
                   })}
                 </ul>
 
-                {showIntro && <p>We also have an <a href='/assets/typescript-handbook-beta.epub'>epub</a> and <a href='/assets/typescript-handbook-beta.pdf'>pdf</a> version of the Handbook.</p>}
+                {showIntro && <p>We also have an <a href='/assets/typescript-handbook.epub'>epub</a> and <a href='/assets/typescript-handbook.pdf'>pdf</a> version of the Handbook.</p>}
               </div>
             )
           })}

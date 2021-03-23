@@ -3,6 +3,7 @@ const darkerBlue = "1142AF"
 
 const grey = "6c6f2d"
 const greenDark = "0c840a"
+const green = "7caf3d" // dark mode comment color
 
 export const sandboxTheme: import("monaco-editor").editor.IStandaloneThemeData = {
   base: "vs",
@@ -53,7 +54,7 @@ export const sandboxThemeDark: import("monaco-editor").editor.IStandaloneThemeDa
   inherit: true,
   rules: [
     { token: "constant", foreground: "44ee11" },
-    { token: "comment", foreground: "919441" },
+    { token: "comment", foreground: green },
     { token: "regexp", foreground: "#811f3f" },
   ],
   colors: {

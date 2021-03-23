@@ -1,5 +1,11 @@
 import { CompilerOptionName } from "../data/_types";
 
+/**
+ * Changes to these rules should be reflected in the following files:
+ * https://github.com/SchemaStore/schemastore/blob/master/src/schemas/json/tsconfig.json
+ * https://github.com/SchemaStore/schemastore/blob/master/src/schemas/json/jsconfig.json
+ */
+
 /** Options which should never show on the references, basically anything that's for the CLI not the TSConfig */
 export const denyList: CompilerOptionName[] = [
   "help",
@@ -112,6 +118,8 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["jsxImportSource", ["jsx", "jsxFactory"]],
 
   ["suppressImplicitAnyIndexErrors", ["noImplicitAny"]],
+
+  ["listFiles", ["explainFiles"]],
 ];
 
 /**
@@ -169,6 +177,7 @@ export const defaultsForOptions = {
   noImplicitReturns: "false",
   noImplicitThis: "`false`, unless `strict` is set",
   noImplicitUseStrict: "false",
+  noPropertyAccessFromIndexSignature: "false",
   noLib: "false",
   noResolve: "false",
   noStrictGenericChecks: "false",
@@ -236,17 +245,13 @@ export const allowedValues = {
     "useFsEvents",
     "useFsEventsOnParentDirectory",
   ],
-  fallbackPolling: [
-    "fixedPollingInterval",
-    "dynamicPriorityPolling",
-    "useFsEvents",
-    "synchronousWatchDirectory",
-  ],
+  fallbackPolling: ["fixedPollingInterval", "priorityPollingInterval", "dynamicPriorityPolling"],
   watchDirectory: ["fixedPollingInterval", "dynamicPriorityPolling", "useFsEvents"],
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
-  "4.1": ["jsxImportSource", "bundledPackageName", "noUncheckedIndexedAccess"],
+  "4.2": ["noPropertyAccessFromIndexSignature", "explainFiles"],
+  "4.1": ["jsxImportSource", "noUncheckedIndexedAccess"],
   "4.0": ["jsxFragmentFactory", "disableReferencedProjectLoad"],
   "3.8": [
     "assumeChangesOnlyAffectDirectDependencies",
@@ -258,7 +263,6 @@ export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
   ],
   "3.7": [
     "disableSourceOfProjectReferenceRedirect",
-    "downlevelIteration",
     "generateCpuProfile",
     "useDefineForClassFields",
   ],
@@ -271,7 +275,7 @@ export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
   "2.7": ["strictPropertyInitialization", "esModuleInterop"],
   "2.6": ["strictFunctionTypes"],
   "2.4": ["noStrictGenericChecks"],
-  "2.3": ["strict", "downlevelIteration", "init"],
+  "2.3": ["strict", "downlevelIteration", "init", "checkJs"],
   "2.2": ["jsx"],
   "2.1": ["extends", "alwaysStrict"],
   "2.0": [

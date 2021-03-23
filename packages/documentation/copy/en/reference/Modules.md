@@ -86,7 +86,7 @@ Optionally, a module can wrap one or more modules and combine all their exports 
 
 ```ts
 export * from "./StringValidator"; // exports 'StringValidator' interface
-export * from "./ZipCodeValidator"; // exports 'ZipCodeValidator' and const 'numberRegexp' class
+export * from "./ZipCodeValidator"; // exports 'ZipCodeValidator' class and 'numberRegexp' constant value
 export * from "./ParseIntBasedZipCodeValidator"; //  exports the 'ParseIntBasedZipCodeValidator' class
 // and re-exports 'RegExpBasedZipCodeValidator' as alias
 // of the 'ZipCodeValidator' class from 'ZipCodeValidator.ts'
@@ -576,7 +576,7 @@ x(y);
 
 ### Wildcard module declarations
 
-Some module loaders such as [SystemJS](https://github.com/systemjs/systemjs/blob/master/docs/overview.md#plugin-syntax)
+Some module loaders such as [SystemJS](https://github.com/systemjs/systemjs/blob/master/docs/module-types.md)
 and [AMD](https://github.com/amdjs/amdjs-api/blob/master/LoaderPlugins.md) allow non-JavaScript content to be imported.
 These typically use a prefix or suffix to indicate the special loading semantics.
 Wildcard module declarations can be used to cover these cases.

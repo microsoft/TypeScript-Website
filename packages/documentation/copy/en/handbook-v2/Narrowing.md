@@ -2,8 +2,7 @@
 title: Narrowing
 layout: docs
 permalink: /docs/handbook/2/narrowing.html
-oneline: "Step one in learning TypeScript: The basics types."
-beta: true
+oneline: "Understand how TypeScript uses JavaScript knowledge to reduce the amount of type syntax in your projects."
 ---
 
 Imagine we have a function called `padLeft`.
@@ -123,7 +122,7 @@ function getUsersOnlineMessage(numUsersOnline: number) {
 }
 ```
 
-In JavaScript, constructs like`if` first "coerce" their conditions to `boolean`s to make sense of them, and then choose their branches depending on whether the result is `true` or `false`.
+In JavaScript, constructs like `if` first "coerce" their conditions to `boolean`s to make sense of them, and then choose their branches depending on whether the result is `true` or `false`.
 Values like
 
 - `0`
@@ -167,7 +166,7 @@ TypeError: null is not iterable
 Keep in mind though that truthiness checking on primitives can often be error prone.
 As an example, consider a different attempt at writing `printAll`
 
-```ts twoslash
+```ts twoslash {class: "do-not-do-this"}
 function printAll(strs: string | string[] | null) {
   // !!!!!!!!!!!!!!!!
   //  DON'T DO THIS!
@@ -212,17 +211,17 @@ TypeScript also uses `switch` statements and equality checks like `===`, `!==`, 
 For example:
 
 ```ts twoslash
-function foo(left: string | number, right: string | boolean) {
-  if (left === right) {
+function example(x: string | number, y: string | boolean) {
+  if (x === y) {
     // We can now call any 'string' method on 'x' or 'y'.
-    left.toUpperCase();
+    x.toUpperCase();
     // ^?
-    right.toLowerCase();
+    y.toLowerCase();
     // ^?
   } else {
-    console.log(left);
+    console.log(x);
     //          ^?
-    console.log(right);
+    console.log(y);
     //          ^?
   }
 }
@@ -351,7 +350,7 @@ This analysis of code based on reachability is called _control flow analysis_, a
 When a variable is analyzed, control flow can split off and re-merge over and over again, and that variable can be observed to have a different type at each point.
 
 ```ts twoslash
-function foo() {
+function example() {
   let x: string | number | boolean;
 
   x = Math.random() < 0.5;
@@ -373,6 +372,72 @@ function foo() {
   //     ^?
 }
 ```
+
+## Using type predicates
+
+We've worked with existing JavaScript constructs to handle narrowing so far, however sometimes you want more direct control over how types change throughout your code.
+
+To define a user-defined type guard, we simply need to define a function whose return type is a _type predicate_:
+
+```ts twoslash
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+declare function getSmallPet(): Fish | Bird;
+// ---cut---
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined;
+}
+```
+
+`pet is Fish` is our type predicate in this example.
+A predicate takes the form `parameterName is Type`, where `parameterName` must be the name of a parameter from the current function signature.
+
+Any time `isFish` is called with some variable, TypeScript will _narrow_ that variable to that specific type if the original type is compatible.
+
+```ts twoslash
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+declare function getSmallPet(): Fish | Bird;
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined;
+}
+// ---cut---
+// Both calls to 'swim' and 'fly' are now okay.
+let pet = getSmallPet();
+
+if (isFish(pet)) {
+  pet.swim();
+} else {
+  pet.fly();
+}
+```
+
+Notice that TypeScript not only knows that `pet` is a `Fish` in the `if` branch;
+it also knows that in the `else` branch, you _don't_ have a `Fish`, so you must have a `Bird`.
+
+You may use the type guard `isFish` to filter an array of `Fish | Bird` and obtain an array of `Fish`:
+
+```ts twoslash
+type Fish = { swim: () => void; name: string };
+type Bird = { fly: () => void; name: string };
+declare function getSmallPet(): Fish | Bird;
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined;
+}
+// ---cut---
+const zoo: (Fish | Bird)[] = [getSmallPet(), getSmallPet(), getSmallPet()];
+const underWater1: Fish[] = zoo.filter(isFish);
+// or, equivalently
+const underWater2: Fish[] = zoo.filter(isFish) as Fish[];
+
+// The predicate may need repeating for more complex examples
+const underWater3: Fish[] = zoo.filter((pet): pet is Fish => {
+  if (pet.name === "sharkey") return false;
+  return isFish(pet);
+});
+```
+
+In addition, classes can [use `this is Type`](/docs/handbook/2/classes.html#this-based-type-guards) to narrow their type.
 
 # Discriminated unions
 
@@ -594,6 +659,15 @@ They're good for representing any sort of messaging scheme in JavaScript, like w
 
 # The `never` type
 
+When narrowing, you can reduce the options of a union to a point where you have removed all possibilities and have nothing left.
+In those cases, TypeScript will use a `never` type to represent a state which shouldn't exist.
+
+# Exhaustiveness checking
+
+The `never` type is assignable to every type; however, no type is assignable to `never` (except `never` itself). This means you can use narrowing and rely on `never` turning up to do exhaustive checking in a switch statement.
+
+For example, adding a `default` to our `getArea` function which tries to assign the shape to `never` will raise when every possible case has not been handled.
+
 ```ts twoslash
 interface Circle {
   kind: "circle";
@@ -604,30 +678,52 @@ interface Square {
   kind: "square";
   sideLength: number;
 }
-
+// ---cut---
 type Shape = Circle | Square;
 
-// ---cut---
 function getArea(shape: Shape) {
   switch (shape.kind) {
     case "circle":
       return Math.PI * shape.radius ** 2;
     case "square":
       return shape.sideLength ** 2;
+    default:
+      const _exhaustiveCheck: never = shape;
+      return _exhaustiveCheck;
   }
 }
 ```
 
-<!-- TODO -->
-
-# Exhaustiveness checking
-
-<!-- TODO -->
-
-<!--
-As another example, consider a `setVisible` function, that takes an `HTMLElement` and either takes a `boolean` to set whether or not the element is visible on the page, or a `number` to adjust the element's opacity (i.e. how non-transparent it is).
+Adding a new member to the `Shape` union, will cause a TypeScript error:
 
 ```ts twoslash
+// @errors: 2322
+interface Circle {
+  kind: "circle";
+  radius: number;
+}
 
+interface Square {
+  kind: "square";
+  sideLength: number;
+}
+// ---cut---
+interface Triangle {
+  kind: "triangle";
+  sideLength: number;
+}
+
+type Shape = Circle | Square | Triangle;
+
+function getArea(shape: Shape) {
+  switch (shape.kind) {
+    case "circle":
+      return Math.PI * shape.radius ** 2;
+    case "square":
+      return shape.sideLength ** 2;
+    default:
+      const _exhaustiveCheck: never = shape;
+      return _exhaustiveCheck;
+  }
+}
 ```
--->

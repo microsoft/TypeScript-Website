@@ -12,22 +12,18 @@ jobs:
         with:
           node-version: "13.x"
 
-      # Cache yarn deps, to speed up CI
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-
-      - uses: actions/cache@v1
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+      - uses: actions/cache@v2
+        id: yarn-cache
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          path: |
+            packages/typescriptlang-org/.cache
+            packages/.cache
+            **/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      # Get dependencies for building the ebooks
-      - run: sudo apt-get update
-      - run: sudo apt install calibre
+      - uses: microsoft/playwright-github-action@v1
 
       # Install, should be absically instant if cached
       - run: yarn install
@@ -36,6 +32,9 @@ jobs:
 
       # Verify dependencies are hooked up right
       - run: node test/verifyPackageVersions.js
+
+      # Grab localizations
+      - run: yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
 
       # Build the packages
       - run: yarn bootstrap

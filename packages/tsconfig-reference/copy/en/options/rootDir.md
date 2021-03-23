@@ -1,6 +1,6 @@
 ---
 display: "Root Dir"
-oneline: "Sets the root folder within your source files."
+oneline: "Specify the root folder within your source files."
 ---
 
 **Default**: The longest common path of all non-declaration input files. If `composite` is set, the default is instead the directory containing the `tsconfig.json` file.
@@ -27,10 +27,10 @@ If your `outDir` was `dist`, TypeScript would write this tree:
 ```
 MyProj
 ├── dist
-│   ├── a.ts
-│   ├── b.ts
+│   ├── a.js
+│   ├── b.js
 │   ├── sub
-│   │   ├── c.ts
+│   │   ├── c.js
 ```
 
 However, you may have intended for `core` to be part of the output directory structure.

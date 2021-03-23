@@ -2,8 +2,7 @@
 title: Typeof Type Operator
 layout: docs
 permalink: /docs/handbook/2/typeof-types.html
-oneline: "Step one in learning TypeScript: The basics types."
-beta: true
+oneline: "Using the typeof operator in type contexts."
 ---
 
 ## The `typeof` type operator
@@ -66,6 +65,6 @@ This helps avoid the confusing trap of writing code you think is executing, but 
 declare const msgbox: () => boolean;
 // type msgbox = any;
 // ---cut---
-// Meant to use =
+// Meant to use = ReturnType<typeof msgbox>
 let shouldContinue: typeof msgbox("Are you sure you want to continue?");
 ```

@@ -1,7 +1,7 @@
 // @ts-check
 // Loops through all the sample code and ensures that twoslash doesn't raise
 
-const chalk = require("chalk").default;
+const chalk = require("chalk");
 
 const tick = chalk.bold.greenBright("✓");
 const cross = chalk.bold.redBright("⤫");
@@ -18,7 +18,7 @@ const languages = readdirSync(join(__dirname, "..", "copy")).filter(
   (f) => !f.startsWith(".")
 );
 
-console.log("Linting the sample code which uses twoslasher in ts-config");
+console.log("Linting the docs pages");
 
 // Pass in a 2nd arg to filter which markdown to run
 const filterString = process.argv[2] ? process.argv[2] : "";
@@ -61,12 +61,12 @@ if (errorReports.length) {
   errorReports.forEach((err) => {
     console.log(`\n> ${chalk.bold.red(err.path)}\n`);
     err.error.stack = undefined;
-    console.log(err.error);
+    console.log(err.error.message);
   });
   console.log("\n\n");
 
   console.log(
-    "Note: you can add an extra argument to the lint script ( yarn workspace tsconfig-reference lint [opt] ) to just run one lint."
+    "Note: you can add an extra argument to the lint script ( yarn workspace documentation lint [opt] ) to just run one lint."
   );
 }
 

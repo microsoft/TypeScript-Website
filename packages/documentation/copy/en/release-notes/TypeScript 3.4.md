@@ -10,14 +10,14 @@ oneline: TypeScript 3.4 Release Notes
 TypeScript 3.4 introduces a new flag called `--incremental` which tells TypeScript to save information about the project graph from the last compilation.
 The next time TypeScript is invoked with `--incremental`, it will use that information to detect the least costly way to type-check and emit changes to your project.
 
-```json5
+```jsonc tsconfig
 // tsconfig.json
 {
-  compilerOptions: {
-    incremental: true,
-    outDir: "./lib"
+  "compilerOptions": {
+    "incremental": true,
+    "outDir": "./lib"
   },
-  include: ["./src"]
+  "include": ["./src"]
 }
 ```
 
@@ -28,15 +28,15 @@ But if it does, `tsc` will try to use that file to incrementally type-check and 
 These `.tsbuildinfo` files can be safely deleted and don't have any impact on our code at runtime - they're purely used to make compilations faster.
 We can also name them anything that we want, and place them anywhere we want using the `--tsBuildInfoFile` flag.
 
-```json5
+```jsonc tsconfig
 // front-end.tsconfig.json
 {
-  compilerOptions: {
-    incremental: true,
-    tsBuildInfoFile: "./buildcache/front-end",
-    outDir: "./lib"
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "./buildcache/front-end",
+    "outDir": "./lib"
   },
-  include: ["./src"]
+  "include": ["./src"]
 }
 ```
 
@@ -60,7 +60,7 @@ To get more specific, let's build up some motivation and consider the following 
 
 ```ts
 function compose<A, B, C>(f: (arg: A) => B, g: (arg: B) => C): (arg: A) => C {
-  return x => g(f(x));
+  return (x) => g(f(x));
 }
 ```
 
@@ -201,7 +201,7 @@ function foo(pair: readonly [string, string]) {
 }
 ```
 
-The same way that ordinary tuples are types that extend from `Array` - a tuple with elements of type <code>T<sub>1</sub></code>, <code>T<sub>2</sub></code>, ... <code>T<sub>n</sub></code> extends from <code>Array&lt; T<sub>1</sub> \| T<sub>2</sub> \| ... T<sub>n</sub> &gt;</code> - `readonly` tuples are types that extend from `ReadonlyArray`. So a `readonly` tuple with elements <code>T<sub>1</sub></code>, <code>T<sub>2</sub></code>, ... <code>T<sub>n</sub></code> extends from <code>ReadonlyArray< T<sub>1</sub> \| T<sub>2</sub> | ... T<sub>n</sub> ></code>.
+The same way that ordinary tuples are types that extend from `Array` - a tuple with elements of type <code>T<sub>1</sub></code>, <code>T<sub>2</sub></code>, ... <code>T<sub>n</sub></code> extends from <code>Array&lt; T<sub>1</sub> \| T<sub>2</sub> \| ... T<sub>n</sub> &gt;</code> - `readonly` tuples are types that extend from `ReadonlyArray`. So a `readonly` tuple with elements <code>T<sub>1</sub></code>, <code>T<sub>2</sub></code>, ... <code>T<sub>n</sub></code> extends from <code>ReadonlyArray< T<sub>1</sub> \| T<sub>2</sub> | ... T<sub>n</sub></code>.
 
 ### `readonly` mapped type modifiers and `readonly` arrays
 
@@ -338,7 +338,7 @@ This feature means that types that would otherwise be used just to hint immutabi
 function getShapes() {
   let result = [
     { kind: "circle", radius: 100 },
-    { kind: "square", sideLength: 50 }
+    { kind: "square", sideLength: 50 },
   ] as const;
 
   return result;
@@ -363,7 +363,7 @@ This can even be used to enable `enum`-like patterns in plain JavaScript code if
 export const Colors = {
   red: "RED",
   blue: "BLUE",
-  green: "GREEN"
+  green: "GREEN",
 } as const;
 
 // or use an 'export default'
@@ -371,7 +371,7 @@ export const Colors = {
 export default {
   red: "RED",
   blue: "BLUE",
-  green: "GREEN"
+  green: "GREEN",
 } as const;
 ```
 
@@ -383,9 +383,11 @@ One thing to note is that `const` assertions can only be applied immediately on 
 // Error! A 'const' assertion can only be applied to a
 // to a string, number, boolean, array, or object literal.
 let a = (Math.random() < 0.5 ? 0 : 1) as const;
+let b = (60 * 60 * 1000) as const;
 
 // Works!
-let b = Math.random() < 0.5 ? (0 as const) : (1 as const);
+let c = Math.random() < 0.5 ? (0 as const) : (1 as const);
+let d = 3_600_000 as const;
 ```
 
 Another thing to keep in mind is that `const` contexts don't immediately convert an expression to be fully immutable.
@@ -395,7 +397,7 @@ let arr = [1, 2, 3, 4];
 
 let foo = {
   name: "foo",
-  contents: arr
+  contents: arr,
 } as const;
 
 foo.name = "bar"; // error!
