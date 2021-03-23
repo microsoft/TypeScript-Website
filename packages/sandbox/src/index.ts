@@ -140,7 +140,6 @@ export const createTypeScriptSandbox = (
   const element = "domID" in config ? document.getElementById(config.domID) : (config as any).elementToAppend
 
   const model = monaco.editor.createModel(defaultText, language, filePath)
-  const modelToEmitForTS = monaco.editor.createModel("", "typescript", monaco.Uri.file("/inputToEmit.ts"))
   monaco.editor.defineTheme("sandbox", sandboxTheme)
   monaco.editor.defineTheme("sandbox-dark", sandboxThemeDark)
   monaco.editor.setTheme("sandbox")
@@ -267,10 +266,9 @@ export const createTypeScriptSandbox = (
   /** Gets the results of compiling your editor's code */
   const getEmitResult = async () => {
     const model = editor.getModel()!
-    const client = await getWorkerProcess()
 
-    modelToEmitForTS.setValue(`namespace playground { ${model.getValue()} }`)
-    return await client.getEmitOutput(modelToEmitForTS.uri.toString())
+    const client = await getWorkerProcess()
+    return await client.getEmitOutput(model.uri.toString())
   }
 
   /** Gets the JS  of compiling your editor's code */

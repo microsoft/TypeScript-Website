@@ -165,6 +165,11 @@ function rewireLoggingToElement(
       const prefix = `[<span class="log-${name}">${id}</span>]: `
       const eleContainerLog = eleOverflowLocator()
       allLogs.push(`${prefix}${output}<br>`)
+
+      if (output.includes("Unexpected token 'export'")) {
+        allLogs.push(`[<span class="log-warn">WRN</span>]: Please consider changing your Module to \"CommonJS\" in the TS Config settings`)
+      }
+
       eleLog.innerHTML = allLogs.join("<hr />")
       if (autoScroll && eleContainerLog) {
         eleContainerLog.scrollTop = eleContainerLog.scrollHeight
