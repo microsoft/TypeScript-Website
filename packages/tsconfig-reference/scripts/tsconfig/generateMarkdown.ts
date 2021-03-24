@@ -29,8 +29,8 @@ import { CompilerOptionJSON } from "./generateJSON.js";
 import * as remark from "remark";
 import * as remarkHTML from "remark-html";
 
-const options = require("../data/tsconfigOpts.json").options as CompilerOptionJSON[];
-const categories = require("../data/tsconfigCategories.json") as typeof import("../data/tsconfigCategories.json");
+const options = require("../../data/tsconfigOpts.json").options as CompilerOptionJSON[];
+const categories = require("../../data/tsconfigCategories.json") as typeof import("../../data/tsconfigCategories.json");
 
 const orderedCategories = [
   "Project_Files_0",
@@ -64,7 +64,9 @@ const sections = [
 
 const parseMarkdown = (md: string) => remark().use(remarkHTML).processSync(md);
 
-const languages = readdirSync(join(__dirname, "..", "copy")).filter((f) => !f.startsWith("."));
+const languages = readdirSync(join(__dirname, "..", "..", "copy")).filter(
+  (f) => !f.startsWith(".")
+);
 
 languages.forEach((lang) => {
   const locale = join(__dirname, "..", "..", "copy", lang);

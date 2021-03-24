@@ -39,13 +39,17 @@ export interface CompilerOptionJSON extends CommandLineOptionBase {
   hostObj: string;
 }
 
-debugger;
+const tsconfigOpts = require(join(__dirname, "../../data/tsconfigOpts.json"))
+  .options as CompilerOptionJSON[];
+
 const allOptions = [
   // @ts-ignore
   ...ts.optionDeclarations,
   // ...ts.commonOptionsWithBuild,
   // @ts-ignore
   ...ts.optionsForWatch,
+  // @ts-ignore
+  ...ts.typeAcquisitionDeclarations,
 ].sort((l, r) => l.name.localeCompare(r.name)) as CompilerOptionJSON[];
 
 // Cut down the list
@@ -85,14 +89,21 @@ filteredOptions.forEach((option) => {
     option.defaultValue = defaultsForOptions[name];
   }
 
-  option.hostObj = "compilerOptions";
-
   delete option.shortName;
-  delete option.isTSConfigOnly;
-  delete option.description;
   delete option.category;
+
+  const inTSConfigOpts = !!tsconfigOpts.find((opt) => opt.name === option.name);
+
+  // @ts-ignore
+  const inWatchOrTypeAcquisition = !!ts.optionsForWatch
+    // @ts-ignore
+    .concat(ts.typeAcquisitionDeclarations)
+    .find((opt) => opt.name === option.name);
+
+  option.isTSConfigOnly = inTSConfigOpts || inWatchOrTypeAcquisition;
 });
 
 writeJSON("cliOpts.json", {
-  options: filteredOptions,
+  cli: filteredOptions.filter((opt) => !opt.isTSConfigOnly),
+  options: filteredOptions.filter((opt) => opt.isTSConfigOnly),
 });
