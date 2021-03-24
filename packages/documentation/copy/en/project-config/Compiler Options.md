@@ -57,6 +57,34 @@ Show all compiler options.
 <tr class="option-description even"><td colspan="3">
 Build one or more projects and their dependencies, if out of date
 </tr></td>
+<tr class='odd' name='disableFilenameBasedTypeAcquisition'>
+<td><code>--disableFilenameBasedTypeAcquisition</code></td>
+  <td><code>boolean</code></td>
+</tr>
+<tr class="option-description odd"><td colspan="3">
+undefined
+</tr></td>
+<tr class='even' name='enable'>
+<td><code>--enable</code></td>
+  <td><code>boolean</code></td>
+</tr>
+<tr class="option-description even"><td colspan="3">
+undefined
+</tr></td>
+<tr class='odd' name='enableAutoDiscovery'>
+<td><code>--enableAutoDiscovery</code></td>
+  <td><code>boolean</code></td>
+</tr>
+<tr class="option-description odd"><td colspan="3">
+undefined
+</tr></td>
+<tr class='even' name='exclude'>
+<td><code>--exclude</code></td>
+  <td><code>list</code></td>
+</tr>
+<tr class="option-description even"><td colspan="3">
+Filters results from the `include` option.
+</tr></td>
 <tr class='odd' name='generateTrace'>
 <td><code>--generateTrace</code></td>
   <td><code>string</code></td>
@@ -78,53 +106,60 @@ Print this message.
 <tr class="option-description odd"><td colspan="3">
 undefined
 </tr></td>
-<tr class='even' name='init'>
+<tr class='even' name='include'>
+<td><code>--include</code></td>
+  <td><code>list</code></td>
+</tr>
+<tr class="option-description even"><td colspan="3">
+Specify a list of glob patterns that match files to be included in compilation.
+</tr></td>
+<tr class='odd' name='init'>
 <td><code>--init</code></td>
   <td><code>boolean</code></td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Initializes a TypeScript project and creates a tsconfig.json file.
 </tr></td>
-<tr class='odd' name='listFilesOnly'>
+<tr class='even' name='listFilesOnly'>
 <td><code>--listFilesOnly</code></td>
   <td><code>boolean</code></td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Print names of files that are part of the compilation and then stop processing.
 </tr></td>
-<tr class='even' name='locale'>
+<tr class='odd' name='locale'>
 <td><code>--locale</code></td>
   <td><code>string</code></td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Set the language of the messaging from TypeScript. This does not affect emit.
 </tr></td>
-<tr class='odd' name='project'>
+<tr class='even' name='project'>
 <td><code>--project</code></td>
   <td><code>string</code></td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Compile the project given the path to its configuration file, or to a folder with a 'tsconfig.json'.
 </tr></td>
-<tr class='even' name='showConfig'>
+<tr class='odd' name='showConfig'>
 <td><code>--showConfig</code></td>
   <td><code>boolean</code></td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Print the final configuration instead of building.
 </tr></td>
-<tr class='odd' name='version'>
+<tr class='even' name='version'>
 <td><code>--version</code></td>
   <td><code>boolean</code></td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Print the compiler's version.
 </tr></td>
-<tr class='even' name='watch'>
+<tr class='odd' name='watch'>
 <td><code>--watch</code></td>
   <td><code>boolean</code></td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Watch input files.
 </tr></td>
 </tbody></table>
@@ -266,95 +301,59 @@ Create sourcemaps for d.ts files.
 <tr class="option-description even"><td colspan="3">
 Output compiler performance information after building.
 </tr></td>
-<tr class='odd' name='disableFilenameBasedTypeAcquisition'>
-<td><code>--<a href='/tsconfig/#disableFilenameBasedTypeAcquisition'>disableFilenameBasedTypeAcquisition</a></code></td>
-  <td><code>boolean</code></td>
-  <td>
-</td>
-</tr>
-<tr class="option-description odd"><td colspan="3">
-undefined
-</tr></td>
-<tr class='even' name='disableSizeLimit'>
+<tr class='odd' name='disableSizeLimit'>
 <td><code>--<a href='/tsconfig/#disableSizeLimit'>disableSizeLimit</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Remove the 20mb cap on total source code size for JavaScript files in the TypeScript language server.
 </tr></td>
-<tr class='odd' name='downlevelIteration'>
+<tr class='even' name='downlevelIteration'>
 <td><code>--<a href='/tsconfig/#downlevelIteration'>downlevelIteration</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Emit more compliant, but verbose and less performant JavaScript for iteration.
 </tr></td>
-<tr class='even' name='emitBOM'>
+<tr class='odd' name='emitBOM'>
 <td><code>--<a href='/tsconfig/#emitBOM'>emitBOM</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Emit a UTF-8 Byte Order Mark (BOM) in the beginning of output files.
 </tr></td>
-<tr class='odd' name='emitDeclarationOnly'>
+<tr class='even' name='emitDeclarationOnly'>
 <td><code>--<a href='/tsconfig/#emitDeclarationOnly'>emitDeclarationOnly</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Only output d.ts files and not JavaScript files.
 </tr></td>
-<tr class='even' name='emitDecoratorMetadata'>
+<tr class='odd' name='emitDecoratorMetadata'>
 <td><code>--<a href='/tsconfig/#emitDecoratorMetadata'>emitDecoratorMetadata</a></code></td>
   <td><code>boolean</code></td>
   <td>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Emit design-type metadata for decorated declarations in source files.
 </tr></td>
-<tr class='odd' name='enable'>
-<td><code>--<a href='/tsconfig/#enable'>enable</a></code></td>
-  <td><code>boolean</code></td>
-  <td>
-</td>
-</tr>
-<tr class="option-description odd"><td colspan="3">
-undefined
-</tr></td>
-<tr class='even' name='enableAutoDiscovery'>
-<td><code>--<a href='/tsconfig/#enableAutoDiscovery'>enableAutoDiscovery</a></code></td>
-  <td><code>boolean</code></td>
-  <td>
-</td>
-</tr>
-<tr class="option-description even"><td colspan="3">
-undefined
-</tr></td>
-<tr class='odd' name='esModuleInterop'>
+<tr class='even' name='esModuleInterop'>
 <td><code>--<a href='/tsconfig/#esModuleInterop'>esModuleInterop</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
-Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility.
-</tr></td>
-<tr class='even' name='exclude'>
-<td><code>--<a href='/tsconfig/#exclude'>exclude</a></code></td>
-  <td><code>list</code></td>
-  <td><p><code>["node_modules", "bower_components", "jspm_packages"]</code>, plus the value of <code>outDir</code> if one is specified.</p>
-</td>
-</tr>
 <tr class="option-description even"><td colspan="3">
-Filters results from the `include` option.
+Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility.
 </tr></td>
 <tr class='odd' name='excludeDirectories'>
 <td><code>--<a href='/tsconfig/#excludeDirectories'>excludeDirectories</a></code></td>
@@ -446,598 +445,589 @@ Allow importing helper functions from tslib once per project, instead of includi
 <tr class="option-description even"><td colspan="3">
 Specify emit/checking behavior for imports that are only used for types.
 </tr></td>
-<tr class='odd' name='include'>
-<td><code>--<a href='/tsconfig/#include'>include</a></code></td>
-  <td><code>list</code></td>
-  <td><p> <code>[]</code> if <code>files</code> is specified, otherwise <code>["**/*"]</code></p>
-</td>
-</tr>
-<tr class="option-description odd"><td colspan="3">
-Specify a list of glob patterns that match files to be included in compilation.
-</tr></td>
-<tr class='even' name='incremental'>
+<tr class='odd' name='incremental'>
 <td><code>--<a href='/tsconfig/#incremental'>incremental</a></code></td>
   <td><code>boolean</code></td>
   <td><p><code>true</code> if <code>composite</code>, <code>false</code> otherwise</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Save .tsbuildinfo files to allow for incremental compilation of projects.
 </tr></td>
-<tr class='odd' name='inlineSourceMap'>
+<tr class='even' name='inlineSourceMap'>
 <td><code>--<a href='/tsconfig/#inlineSourceMap'>inlineSourceMap</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Include sourcemap files inside the emitted JavaScript.
 </tr></td>
-<tr class='even' name='inlineSources'>
+<tr class='odd' name='inlineSources'>
 <td><code>--<a href='/tsconfig/#inlineSources'>inlineSources</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Include source code in the sourcemaps inside the emitted JavaScript.
 </tr></td>
-<tr class='odd' name='isolatedModules'>
+<tr class='even' name='isolatedModules'>
 <td><code>--<a href='/tsconfig/#isolatedModules'>isolatedModules</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Ensure that each file can be safely transpiled without relying on other imports.
 </tr></td>
-<tr class='even' name='jsx'>
+<tr class='odd' name='jsx'>
 <td><code>--<a href='/tsconfig/#jsx'>jsx</a></code></td>
   <td><code><code>`react`</code>, <code>`react-jsx`</code>, <code>`react-jsxdev`</code>, <code>`react-native`</code>, <code>`preserve`</code></code></td>
   <td><p>undefined</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Specify what JSX code is generated.
 </tr></td>
-<tr class='odd' name='jsxFactory'>
+<tr class='even' name='jsxFactory'>
 <td><code>--<a href='/tsconfig/#jsxFactory'>jsxFactory</a></code></td>
   <td><code>string</code></td>
   <td><p><code>React.createElement</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Specify the JSX factory function used when targeting React JSX emit, e.g. 'React.createElement' or 'h'
 </tr></td>
-<tr class='even' name='jsxFragmentFactory'>
+<tr class='odd' name='jsxFragmentFactory'>
 <td><code>--<a href='/tsconfig/#jsxFragmentFactory'>jsxFragmentFactory</a></code></td>
   <td><code>string</code></td>
   <td>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Specify the JSX Fragment reference used for fragments when targeting React JSX emit e.g. 'React.Fragment' or 'Fragment'.
 </tr></td>
-<tr class='odd' name='jsxImportSource'>
+<tr class='even' name='jsxImportSource'>
 <td><code>--<a href='/tsconfig/#jsxImportSource'>jsxImportSource</a></code></td>
   <td><code>string</code></td>
   <td><p>react</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Specify module specifier used to import the JSX factory functions when using `jsx: react-jsx*`.`
 </tr></td>
-<tr class='even' name='keyofStringsOnly'>
+<tr class='odd' name='keyofStringsOnly'>
 <td><code>--<a href='/tsconfig/#keyofStringsOnly'>keyofStringsOnly</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Make keyof only return strings instead of string, numbers or symbols. Legacy option.
 </tr></td>
-<tr class='odd' name='lib'>
+<tr class='even' name='lib'>
 <td><code>--<a href='/tsconfig/#lib'>lib</a></code></td>
   <td><code>list</code></td>
   <td>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Specify a set of bundled library declaration files that describe the target runtime environment.
 </tr></td>
-<tr class='even' name='listEmittedFiles'>
+<tr class='odd' name='listEmittedFiles'>
 <td><code>--<a href='/tsconfig/#listEmittedFiles'>listEmittedFiles</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Print the names of emitted files after a compilation.
 </tr></td>
-<tr class='odd' name='listFiles'>
+<tr class='even' name='listFiles'>
 <td><code>--<a href='/tsconfig/#listFiles'>listFiles</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Print all of the files read during the compilation.
 </tr></td>
-<tr class='even' name='mapRoot'>
+<tr class='odd' name='mapRoot'>
 <td><code>--<a href='/tsconfig/#mapRoot'>mapRoot</a></code></td>
   <td><code>string</code></td>
   <td>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Specify the location where debugger should locate map files instead of generated locations.
 </tr></td>
-<tr class='odd' name='maxNodeModuleJsDepth'>
+<tr class='even' name='maxNodeModuleJsDepth'>
 <td><code>--<a href='/tsconfig/#maxNodeModuleJsDepth'>maxNodeModuleJsDepth</a></code></td>
   <td><code>number</code></td>
   <td><p>0</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Specify the maximum folder depth used for checking JavaScript files from `node_modules`. Only applicable with `allowJs`.
 </tr></td>
-<tr class='even' name='module'>
+<tr class='odd' name='module'>
 <td><code>--<a href='/tsconfig/#module'>module</a></code></td>
   <td><code><code>`CommonJS` (default if `target` is `ES3` or `ES5`)</code>, <code></code>, <code>`ES6`/`ES2015` (synonymous, default for `target` `ES6` and higher)</code>, <code></code>, <code>`ES2020`</code>, <code>`None`</code>, <code>`UMD`</code>, <code>`AMD`</code>, <code>`System`</code>, <code>`ESNext`</code></code></td>
   <td>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Specify what module code is generated.
 </tr></td>
-<tr class='odd' name='moduleResolution'>
+<tr class='even' name='moduleResolution'>
 <td><code>--<a href='/tsconfig/#moduleResolution'>moduleResolution</a></code></td>
   <td><code></code></td>
   <td><p>module === <code>AMD</code> or <code>UMD</code> or <code>System</code> or <code>ES6</code>, then <code>Classic</code><br/><br/>Otherwise <code>Node</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Specify how TypeScript looks up a file from a given module specifier.
 </tr></td>
-<tr class='even' name='newLine'>
+<tr class='odd' name='newLine'>
 <td><code>--<a href='/tsconfig/#newLine'>newLine</a></code></td>
   <td><code></code></td>
   <td><p>Platform specific</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Set the newline character for emitting files.
 </tr></td>
-<tr class='odd' name='noEmit'>
+<tr class='even' name='noEmit'>
 <td><code>--<a href='/tsconfig/#noEmit'>noEmit</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Disable emitting file from a compilation.
 </tr></td>
-<tr class='even' name='noEmitHelpers'>
+<tr class='odd' name='noEmitHelpers'>
 <td><code>--<a href='/tsconfig/#noEmitHelpers'>noEmitHelpers</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Disable generating custom helper functions like `__extends` in compiled output.
 </tr></td>
-<tr class='odd' name='noEmitOnError'>
+<tr class='even' name='noEmitOnError'>
 <td><code>--<a href='/tsconfig/#noEmitOnError'>noEmitOnError</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Disable emitting files if any type checking errors are reported.
 </tr></td>
-<tr class='even' name='noErrorTruncation'>
+<tr class='odd' name='noErrorTruncation'>
 <td><code>--<a href='/tsconfig/#noErrorTruncation'>noErrorTruncation</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Disable truncating types in error messages.
 </tr></td>
-<tr class='odd' name='noFallthroughCasesInSwitch'>
+<tr class='even' name='noFallthroughCasesInSwitch'>
 <td><code>--<a href='/tsconfig/#noFallthroughCasesInSwitch'>noFallthroughCasesInSwitch</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Enable error reporting for fallthrough cases in switch statements.
 </tr></td>
-<tr class='even' name='noImplicitAny'>
+<tr class='odd' name='noImplicitAny'>
 <td><code>--<a href='/tsconfig/#noImplicitAny'>noImplicitAny</a></code></td>
   <td><code>boolean</code></td>
   <td><p><code>false</code>, unless <code>strict</code> is set</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Enable error reporting for expressions and declarations with an implied `any` type..
 </tr></td>
-<tr class='odd' name='noImplicitReturns'>
+<tr class='even' name='noImplicitReturns'>
 <td><code>--<a href='/tsconfig/#noImplicitReturns'>noImplicitReturns</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Enable error reporting for codepaths that do not explicitly return in a function.
 </tr></td>
-<tr class='even' name='noImplicitThis'>
+<tr class='odd' name='noImplicitThis'>
 <td><code>--<a href='/tsconfig/#noImplicitThis'>noImplicitThis</a></code></td>
   <td><code>boolean</code></td>
   <td><p><code>false</code>, unless <code>strict</code> is set</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Enable error reporting when `this` is given the type `any`.
 </tr></td>
-<tr class='odd' name='noImplicitUseStrict'>
+<tr class='even' name='noImplicitUseStrict'>
 <td><code>--<a href='/tsconfig/#noImplicitUseStrict'>noImplicitUseStrict</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Disable adding 'use strict' directives in emitted JavaScript files.
 </tr></td>
-<tr class='even' name='noLib'>
+<tr class='odd' name='noLib'>
 <td><code>--<a href='/tsconfig/#noLib'>noLib</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Disable including any library files, including the default lib.d.ts.
 </tr></td>
-<tr class='odd' name='noPropertyAccessFromIndexSignature'>
+<tr class='even' name='noPropertyAccessFromIndexSignature'>
 <td><code>--<a href='/tsconfig/#noPropertyAccessFromIndexSignature'>noPropertyAccessFromIndexSignature</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Enforces using indexed accessors for keys declared using an indexed type
 </tr></td>
-<tr class='even' name='noResolve'>
+<tr class='odd' name='noResolve'>
 <td><code>--<a href='/tsconfig/#noResolve'>noResolve</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Disallow `import`s, `require`s or `<reference>`s from expanding the number of files TypeScript should add to a project.
 </tr></td>
-<tr class='odd' name='noStrictGenericChecks'>
+<tr class='even' name='noStrictGenericChecks'>
 <td><code>--<a href='/tsconfig/#noStrictGenericChecks'>noStrictGenericChecks</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Disable strict checking of generic signatures in function types.
 </tr></td>
-<tr class='even' name='noUncheckedIndexedAccess'>
+<tr class='odd' name='noUncheckedIndexedAccess'>
 <td><code>--<a href='/tsconfig/#noUncheckedIndexedAccess'>noUncheckedIndexedAccess</a></code></td>
   <td><code>boolean</code></td>
   <td>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Add `undefined` to a type when accessed using an index.
 </tr></td>
-<tr class='odd' name='noUnusedLocals'>
+<tr class='even' name='noUnusedLocals'>
 <td><code>--<a href='/tsconfig/#noUnusedLocals'>noUnusedLocals</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Enable error reporting when a local variables aren't read.
 </tr></td>
-<tr class='even' name='noUnusedParameters'>
+<tr class='odd' name='noUnusedParameters'>
 <td><code>--<a href='/tsconfig/#noUnusedParameters'>noUnusedParameters</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Raise an error when a function parameter isn't read
 </tr></td>
-<tr class='odd' name='out'>
+<tr class='even' name='out'>
 <td><code>--<a href='/tsconfig/#out'>out</a></code></td>
   <td><code>string</code></td>
   <td><p>n/a</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Deprecated setting. Use `outFile` instead.
 </tr></td>
-<tr class='even' name='outDir'>
+<tr class='odd' name='outDir'>
 <td><code>--<a href='/tsconfig/#outDir'>outDir</a></code></td>
   <td><code>string</code></td>
   <td><p>n/a</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Specify an output folder for all emitted files.
 </tr></td>
-<tr class='odd' name='outFile'>
+<tr class='even' name='outFile'>
 <td><code>--<a href='/tsconfig/#outFile'>outFile</a></code></td>
   <td><code>string</code></td>
   <td><p>n/a</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Specify a file that bundles all outputs into one JavaScript file. If `declaration` is true, also designates a file that bundles all .d.ts output.
 </tr></td>
-<tr class='even' name='preserveConstEnums'>
+<tr class='odd' name='preserveConstEnums'>
 <td><code>--<a href='/tsconfig/#preserveConstEnums'>preserveConstEnums</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Disable erasing `const enum` declarations in generated code.
 </tr></td>
-<tr class='odd' name='preserveSymlinks'>
+<tr class='even' name='preserveSymlinks'>
 <td><code>--<a href='/tsconfig/#preserveSymlinks'>preserveSymlinks</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Disable resolving symlinks to their realpath. This correlates to the same flag in node.
 </tr></td>
-<tr class='even' name='preserveWatchOutput'>
+<tr class='odd' name='preserveWatchOutput'>
 <td><code>--<a href='/tsconfig/#preserveWatchOutput'>preserveWatchOutput</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Disable wiping the console in watch mode
 </tr></td>
-<tr class='odd' name='pretty'>
+<tr class='even' name='pretty'>
 <td><code>--<a href='/tsconfig/#pretty'>pretty</a></code></td>
   <td><code>boolean</code></td>
   <td><p>true</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Enable color and formatting in output to make compiler errors easier to read
 </tr></td>
-<tr class='even' name='reactNamespace'>
+<tr class='odd' name='reactNamespace'>
 <td><code>--<a href='/tsconfig/#reactNamespace'>reactNamespace</a></code></td>
   <td><code>string</code></td>
   <td><p>"React"</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Specify the object invoked for `createElement`. This only applies when targeting `react` JSX emit.
 </tr></td>
-<tr class='odd' name='removeComments'>
+<tr class='even' name='removeComments'>
 <td><code>--<a href='/tsconfig/#removeComments'>removeComments</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Disable emitting comments.
 </tr></td>
-<tr class='even' name='resolveJsonModule'>
+<tr class='odd' name='resolveJsonModule'>
 <td><code>--<a href='/tsconfig/#resolveJsonModule'>resolveJsonModule</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Enable importing .json files
 </tr></td>
-<tr class='odd' name='rootDir'>
+<tr class='even' name='rootDir'>
 <td><code>--<a href='/tsconfig/#rootDir'>rootDir</a></code></td>
   <td><code>string</code></td>
   <td><p>Computed from the list of input files</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Specify the root folder within your source files.
 </tr></td>
-<tr class='even' name='skipDefaultLibCheck'>
+<tr class='odd' name='skipDefaultLibCheck'>
 <td><code>--<a href='/tsconfig/#skipDefaultLibCheck'>skipDefaultLibCheck</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Skip type checking .d.ts files that are included with TypeScript.
 </tr></td>
-<tr class='odd' name='skipLibCheck'>
+<tr class='even' name='skipLibCheck'>
 <td><code>--<a href='/tsconfig/#skipLibCheck'>skipLibCheck</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Skip type checking all .d.ts files.
 </tr></td>
-<tr class='even' name='sourceMap'>
+<tr class='odd' name='sourceMap'>
 <td><code>--<a href='/tsconfig/#sourceMap'>sourceMap</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Create source map files for emitted JavaScript files.
 </tr></td>
-<tr class='odd' name='sourceRoot'>
+<tr class='even' name='sourceRoot'>
 <td><code>--<a href='/tsconfig/#sourceRoot'>sourceRoot</a></code></td>
   <td><code>string</code></td>
   <td>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Specify the root path for debuggers to find the reference source code.
 </tr></td>
-<tr class='even' name='strict'>
+<tr class='odd' name='strict'>
 <td><code>--<a href='/tsconfig/#strict'>strict</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Enable all strict type checking options.
 </tr></td>
-<tr class='odd' name='strictBindCallApply'>
+<tr class='even' name='strictBindCallApply'>
 <td><code>--<a href='/tsconfig/#strictBindCallApply'>strictBindCallApply</a></code></td>
   <td><code>boolean</code></td>
   <td><p><code>false</code>, unless <code>strict</code> is set</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Check that the arguments for `bind`, `call`, and `apply` methods match the original function.
 </tr></td>
-<tr class='even' name='strictFunctionTypes'>
+<tr class='odd' name='strictFunctionTypes'>
 <td><code>--<a href='/tsconfig/#strictFunctionTypes'>strictFunctionTypes</a></code></td>
   <td><code>boolean</code></td>
   <td><p><code>false</code>, unless <code>strict</code> is set</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 When assigning functions, check to ensure parameters and the return values are subtype-compatible.
 </tr></td>
-<tr class='odd' name='strictNullChecks'>
+<tr class='even' name='strictNullChecks'>
 <td><code>--<a href='/tsconfig/#strictNullChecks'>strictNullChecks</a></code></td>
   <td><code>boolean</code></td>
   <td><p><code>false</code>, unless <code>strict</code> is set</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 When type checking, take into account `null` and `undefined`.
 </tr></td>
-<tr class='even' name='strictPropertyInitialization'>
+<tr class='odd' name='strictPropertyInitialization'>
 <td><code>--<a href='/tsconfig/#strictPropertyInitialization'>strictPropertyInitialization</a></code></td>
   <td><code>boolean</code></td>
   <td><p><code>false</code>, unless <code>strict</code> is set</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Check for class properties that are declared but not set in the constructor.
 </tr></td>
-<tr class='odd' name='stripInternal'>
+<tr class='even' name='stripInternal'>
 <td><code>--<a href='/tsconfig/#stripInternal'>stripInternal</a></code></td>
   <td><code>boolean</code></td>
   <td>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Disable emitting declarations that have `@internal` in their JSDoc comments.
 </tr></td>
-<tr class='even' name='suppressExcessPropertyErrors'>
+<tr class='odd' name='suppressExcessPropertyErrors'>
 <td><code>--<a href='/tsconfig/#suppressExcessPropertyErrors'>suppressExcessPropertyErrors</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Disable reporting of excess property errors during the creation of object literals.
 </tr></td>
-<tr class='odd' name='suppressImplicitAnyIndexErrors'>
+<tr class='even' name='suppressImplicitAnyIndexErrors'>
 <td><code>--<a href='/tsconfig/#suppressImplicitAnyIndexErrors'>suppressImplicitAnyIndexErrors</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Suppress `noImplicitAny` errors when indexing objects that lack index signatures.
 </tr></td>
-<tr class='even' name='synchronousWatchDirectory'>
+<tr class='odd' name='synchronousWatchDirectory'>
 <td><code>--<a href='/tsconfig/#synchronousWatchDirectory'>synchronousWatchDirectory</a></code></td>
   <td><code>boolean</code></td>
   <td>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Synchronously call callbacks and update the state of directory watchers on platforms that don't support recursive watching natively.
 </tr></td>
-<tr class='odd' name='target'>
+<tr class='even' name='target'>
 <td><code>--<a href='/tsconfig/#target'>target</a></code></td>
   <td><code><code>`ES3` (default)</code>, <code>`ES5`</code>, <code>`ES6`/`ES2015` (synonymous)</code>, <code>`ES7`/`ES2016`</code>, <code>`ES2017`</code>, <code>`ES2018`</code>, <code>`ES2019`</code>, <code>`ES2020`</code>, <code>`ESNext`</code></code></td>
   <td><p>ES3</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Set the JavaScript language version for emitted JavaScript and include compatible library declarations.
 </tr></td>
-<tr class='even' name='traceResolution'>
+<tr class='odd' name='traceResolution'>
 <td><code>--<a href='/tsconfig/#traceResolution'>traceResolution</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Log paths used during the `moduleResolution` process.
 </tr></td>
-<tr class='odd' name='tsBuildInfoFile'>
+<tr class='even' name='tsBuildInfoFile'>
 <td><code>--<a href='/tsconfig/#tsBuildInfoFile'>tsBuildInfoFile</a></code></td>
   <td><code>string</code></td>
   <td><p>.tsbuildinfo</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Specify the folder for .tsbuildinfo incremental compilation files.
 </tr></td>
-<tr class='even' name='typeRoots'>
+<tr class='odd' name='typeRoots'>
 <td><code>--<a href='/tsconfig/#typeRoots'>typeRoots</a></code></td>
   <td><code>list</code></td>
   <td>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Specify multiple folders that act like `./node_modules/@types`.
 </tr></td>
-<tr class='odd' name='types'>
+<tr class='even' name='types'>
 <td><code>--<a href='/tsconfig/#types'>types</a></code></td>
   <td><code>list</code></td>
   <td>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Specify type package names to be included without being referenced in a source file.
 </tr></td>
-<tr class='even' name='useDefineForClassFields'>
+<tr class='odd' name='useDefineForClassFields'>
 <td><code>--<a href='/tsconfig/#useDefineForClassFields'>useDefineForClassFields</a></code></td>
   <td><code>boolean</code></td>
   <td><p>false</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Emit ECMAScript-standard-compliant class fields.
 </tr></td>
-<tr class='odd' name='watchDirectory'>
+<tr class='even' name='watchDirectory'>
 <td><code>--<a href='/tsconfig/#watchDirectory'>watchDirectory</a></code></td>
   <td><code><code>fixedPollingInterval</code>, <code>dynamicPriorityPolling</code>, <code>useFsEvents</code></code></td>
   <td>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Specify how directories are watched on systems that lack recursive file-watching functionality.
 </tr></td>
-<tr class='even' name='watchFile'>
+<tr class='odd' name='watchFile'>
 <td><code>--<a href='/tsconfig/#watchFile'>watchFile</a></code></td>
   <td><code><code>fixedPollingInterval</code>, <code>priorityPollingInterval</code>, <code>dynamicPriorityPolling</code>, <code>useFsEvents</code>, <code>useFsEventsOnParentDirectory</code></code></td>
   <td>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Specify how the TypeScript watch mode works.
 </tr></td>
 </tbody></table>

@@ -120,3 +120,5 @@ const enMDCLI = join(__dirname, "..", "..", "output", "en-cli.md");
 const compOptsPath = join( __dirname, "..", "..", "..", "documentation/copy/en/project-config/Compiler Options.md");
 console.log(`Copying ${enMDCLI} -> ${compOptsPath}`);
 copyFileSync(enMDCLI, compOptsPath);
+
+console.log(`Wrote CLI files for: ${languages.join(", ")}} (but only using english for now)`);
