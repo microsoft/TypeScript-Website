@@ -3,7 +3,7 @@
 
 /** Run with:
      node --inspect-brk ./node_modules/.bin/ts-node packages/tsconfig-reference/scripts/cli/generateJSON.ts
-     yarn ts-node packages/tsconfig-reference/scripts/cli/generateJSON.ts
+     yarn ts-node scripts/cli/generateJSON.ts
 */
 
 import * as ts from "typescript";
@@ -55,13 +55,10 @@ const allOptions = [
 // Cut down the list
 const filteredOptions = allOptions
   // .filter((o) => !denyList.includes(o.name as CompilerOptionName))
-  .filter((o) => !o.isTSConfigOnly);
+  .filter((o) => "description" in o);
 
 filteredOptions.forEach((option) => {
   const name = option.name as CompilerOptionName;
-
-  // There's an odd dupe of 'help' with no description
-  if (!option.description) return;
 
   // Convert JS Map types to a JSONable obj
   if ("type" in option && typeof option.type === "object" && "get" in option.type) {
