@@ -103,7 +103,7 @@ function greet(name: string) {
 }
 ```
 
-When a parameter has a type annotations, arguments to that function will be checked:
+When a parameter has a type annotation, arguments to that function will be checked:
 
 ```ts twoslash
 // @errors: 2345
