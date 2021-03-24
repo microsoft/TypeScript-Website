@@ -53,7 +53,10 @@ const notCompilerFlags = [
 const allFlags = ts.optionDeclarations.concat(notCompilerFlags) as CompilerOptionJSON[];
 const allOptions = Array.from(new Set(allFlags)).sort((l, r) => l.name.localeCompare(r.name));
 
+// The import from TS isn't 'clean'
 const buildOpts = ["build", "verbose", "dry", "clean", "force"];
+// @ts-ignore
+const watchOpts = [...ts.optionsForWatch.map((opt) => opt.name), "watch"];
 
 // Cut down the list
 const filteredOptions = allOptions
@@ -106,8 +109,13 @@ filteredOptions.forEach((option) => {
   option.isTSConfigOnly = inTSConfigOpts || inWatchOrTypeAcquisition;
 });
 
+const strippedOpts = filteredOptions.filter(
+  (opt) => !buildOpts.includes(opt.name) && !watchOpts.includes(opt.name)
+);
+
 writeJSON("cliOpts.json", {
-  cli: filteredOptions.filter((opt) => !opt.isTSConfigOnly && !buildOpts.includes(opt.name)),
+  cli: strippedOpts.filter((opt) => !opt.isTSConfigOnly),
   build: filteredOptions.filter((opt) => buildOpts.includes(opt.name)),
-  options: filteredOptions.filter((opt) => opt.isTSConfigOnly && !buildOpts.includes(opt.name)),
+  watch: filteredOptions.filter((opt) => watchOpts.includes(opt.name)),
+  options: strippedOpts.filter((opt) => opt.isTSConfigOnly),
 });

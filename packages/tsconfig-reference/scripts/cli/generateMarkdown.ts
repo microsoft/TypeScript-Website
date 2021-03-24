@@ -18,9 +18,12 @@ import * as remarkHTML from "remark-html";
 const options = require(join(__dirname, "../../data/cliOpts.json")) as {
   options: CompilerOptionJSON[];
   build: CompilerOptionJSON[];
+  watch: CompilerOptionJSON[];
   cli: CompilerOptionJSON[];
 };
 const parseMarkdown = (md: string) => remark().use(remarkHTML).processSync(md);
+
+const knownTypes: Record<string, string> = {};
 
 const languages = readdirSync(join(__dirname, "..", "..", "copy")).filter(
   (f) => !f.startsWith(".")
@@ -79,15 +82,17 @@ languages.forEach((lang) => {
       const oddEvenClass = index % 2 === 0 ? "odd" : "even";
       markdownChunks.push(`<tr class='${oddEvenClass}' name='${option.name}'>`);
 
-      let name = option.name;
-      if (option.isTSConfigOnly) name = `<a href='/tsconfig/#${option.name}'>${option.name}</a>`;
-      markdownChunks.push(`<td><code>--${name}</code></td>`);
+      let name = "--" + option.name;
+      if (option.isTSConfigOnly) name = `<a href='/tsconfig/#${option.name}'>--${option.name}</a>`;
+      markdownChunks.push(`<td><code>${name}</code></td>`);
 
       let optType: string;
       if (typeof option.type === "string") {
         optType = option.type;
       } else if (option.allowedValues) {
-        optType = option.allowedValues.map((v) => `<code>${v}</code>`).join(", ");
+        // @ts-ignore
+        const or = new Intl.ListFormat(lang, { type: "disjunction" });
+        optType = or.format(option.allowedValues.map((v) => `<code>${v}</code>`));
       } else {
         optType = "";
       }
@@ -101,7 +106,7 @@ languages.forEach((lang) => {
       // Add a new row under the current one for the description, this uses the 'odd' / 'even' classes
       // to fake looking like a single row
       markdownChunks.push(`<tr class="option-description ${oddEvenClass}"><td colspan="3">`);
-      markdownChunks.push(`${description}`);
+      markdownChunks.push(`${parseMarkdown(description)}`);
       markdownChunks.push(`</tr></td>`);
     });
     markdownChunks.push(`</tbody></table>`);
@@ -109,6 +114,7 @@ languages.forEach((lang) => {
 
   renderTable("CLI Commands", options.cli, { noDefaults: true });
   renderTable("Build Options", options.build, { noDefaults: true });
+  renderTable("Watch Options", options.watch, { noDefaults: true });
   renderTable("Compiler Flags", options.options);
 
   // Write the Markdown and JSON
