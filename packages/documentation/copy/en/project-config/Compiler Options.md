@@ -15,14 +15,23 @@ files by passing in a glob of files you want.
 # Run a compile based on a backwards look through the fs for a tsconfig.json
 tsc
 
-# Transpile just the index.ts with the compiler defaults
+# Emit JS for just the index.ts with the compiler defaults
 tsc index.ts
 
-# Transpile any .ts files in the folder src, with the default settings
+# Emit JS for any .ts files in the folder src, with the default settings
 tsc src/*.ts
 
-# Transpile any files referenced in with the compiler settings from tsconfig.production.json
+# Emit files referenced in with the compiler settings from tsconfig.production.json
 tsc --project tsconfig.production.json
+
+# Emit d.ts files for a js file with showing compiler options which are booleans
+tsc index.js --declaration --emitDeclarationOnly
+
+# Emit a single .js file using string string params
+tsc app.ts util.ts --target esnext --outfile index.js
+
+# Emit a single .js file using string string params
+tsc app.ts util.ts --target esnext --outfile index.js
 ```
 
 ## Compiler Options
@@ -48,75 +57,116 @@ tsc --project tsconfig.production.json
 <tr class="option-description odd"><td colspan="3">
 Show all compiler options.
 </tr></td>
-<tr class='even' name='build'>
-<td><code>--build</code></td>
-  <td><code>boolean</code></td>
-</tr>
-<tr class="option-description even"><td colspan="3">
-Build one or more projects and their dependencies, if out of date
-</tr></td>
-<tr class='odd' name='generateTrace'>
+<tr class='even' name='generateTrace'>
 <td><code>--generateTrace</code></td>
   <td><code>string</code></td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Generates an event trace and a list of types.
 </tr></td>
-<tr class='even' name='help'>
+<tr class='odd' name='help'>
 <td><code>--help</code></td>
   <td><code>boolean</code></td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Gives local information for help on the CLI.
 </tr></td>
-<tr class='odd' name='init'>
+<tr class='even' name='init'>
 <td><code>--init</code></td>
   <td><code>boolean</code></td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Initializes a TypeScript project and creates a tsconfig.json file.
 </tr></td>
-<tr class='even' name='listFilesOnly'>
+<tr class='odd' name='listFilesOnly'>
 <td><code>--listFilesOnly</code></td>
   <td><code>boolean</code></td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Print names of files that are part of the compilation and then stop processing.
 </tr></td>
-<tr class='odd' name='locale'>
+<tr class='even' name='locale'>
 <td><code>--locale</code></td>
   <td><code>string</code></td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Set the language of the messaging from TypeScript. This does not affect emit.
 </tr></td>
-<tr class='even' name='project'>
+<tr class='odd' name='project'>
 <td><code>--project</code></td>
   <td><code>string</code></td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Compile the project given the path to its configuration file, or to a folder with a 'tsconfig.json'.
 </tr></td>
-<tr class='odd' name='showConfig'>
+<tr class='even' name='showConfig'>
 <td><code>--showConfig</code></td>
   <td><code>boolean</code></td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Print the final configuration instead of building.
 </tr></td>
-<tr class='even' name='version'>
+<tr class='odd' name='version'>
 <td><code>--version</code></td>
   <td><code>boolean</code></td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 Print the compiler's version.
 </tr></td>
-<tr class='odd' name='watch'>
+<tr class='even' name='watch'>
 <td><code>--watch</code></td>
   <td><code>boolean</code></td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 Watch input files.
+</tr></td>
+</tbody></table>
+<h3>Build Options</h3>
+
+  <table class='cli-option' width="100%">
+    <thead>
+    <tr>
+      <th>Flag</th>
+      <th>Type</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+
+<tr class='odd' name='build'>
+<td><code>--build</code></td>
+  <td><code>boolean</code></td>
+</tr>
+<tr class="option-description odd"><td colspan="3">
+Build one or more projects and their dependencies, if out of date
+</tr></td>
+<tr class='even' name='clean'>
+<td><code>--clean</code></td>
+  <td><code>boolean</code></td>
+</tr>
+<tr class="option-description even"><td colspan="3">
+Delete the outputs of all projects
+</tr></td>
+<tr class='odd' name='dry'>
+<td><code>--dry</code></td>
+  <td><code>boolean</code></td>
+</tr>
+<tr class="option-description odd"><td colspan="3">
+Show what would be built (or deleted, if specified with '--clean')
+</tr></td>
+<tr class='even' name='force'>
+<td><code>--force</code></td>
+  <td><code>boolean</code></td>
+</tr>
+<tr class="option-description even"><td colspan="3">
+Build all projects, including those that appear to be up to date
+</tr></td>
+<tr class='odd' name='verbose'>
+<td><code>--verbose</code></td>
+  <td><code>boolean</code></td>
+</tr>
+<tr class="option-description odd"><td colspan="3">
+Enable verbose logging
 </tr></td>
 </tbody></table>
 <h3>Compiler Flags</h3>

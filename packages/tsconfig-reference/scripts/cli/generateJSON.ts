@@ -42,15 +42,18 @@ export interface CompilerOptionJSON extends CommandLineOptionBase {
 const tsconfigOpts = require(join(__dirname, "../../data/tsconfigOpts.json"))
   .options as CompilerOptionJSON[];
 
-const allOptions = [
-  // @ts-ignore
-  ...ts.optionDeclarations,
-  // ...ts.commonOptionsWithBuild,
+const notCompilerFlags = [
   // @ts-ignore
   ...ts.optionsForWatch,
   // @ts-ignore
-  ...ts.typeAcquisitionDeclarations,
-].sort((l, r) => l.name.localeCompare(r.name)) as CompilerOptionJSON[];
+  ...ts.buildOpts,
+];
+
+// @ts-ignore
+const allFlags = ts.optionDeclarations.concat(notCompilerFlags) as CompilerOptionJSON[];
+const allOptions = Array.from(new Set(allFlags)).sort((l, r) => l.name.localeCompare(r.name));
+
+const buildOpts = ["build", "verbose", "dry", "clean", "force"];
 
 // Cut down the list
 const filteredOptions = allOptions
@@ -104,6 +107,7 @@ filteredOptions.forEach((option) => {
 });
 
 writeJSON("cliOpts.json", {
-  cli: filteredOptions.filter((opt) => !opt.isTSConfigOnly),
-  options: filteredOptions.filter((opt) => opt.isTSConfigOnly),
+  cli: filteredOptions.filter((opt) => !opt.isTSConfigOnly && !buildOpts.includes(opt.name)),
+  build: filteredOptions.filter((opt) => buildOpts.includes(opt.name)),
+  options: filteredOptions.filter((opt) => opt.isTSConfigOnly && !buildOpts.includes(opt.name)),
 });

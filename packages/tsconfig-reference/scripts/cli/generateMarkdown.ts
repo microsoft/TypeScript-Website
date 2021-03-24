@@ -6,7 +6,7 @@
      yarn ts-node --project packages/tsconfig-reference/tsconfig.json packages/tsconfig-reference/scripts/generateMarkdown.ts 
 */
 
-import { writeFileSync, readdirSync, existsSync, readFileSync, copyFileSync } from "fs";
+import { writeFileSync, readdirSync, existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { read as readMarkdownFile } from "gray-matter";
 import * as prettier from "prettier";
@@ -17,6 +17,7 @@ import * as remarkHTML from "remark-html";
 
 const options = require(join(__dirname, "../../data/cliOpts.json")) as {
   options: CompilerOptionJSON[];
+  build: CompilerOptionJSON[];
   cli: CompilerOptionJSON[];
 };
 const parseMarkdown = (md: string) => remark().use(remarkHTML).processSync(md);
@@ -107,6 +108,7 @@ languages.forEach((lang) => {
   }
 
   renderTable("CLI Commands", options.cli, { noDefaults: true });
+  renderTable("Build Options", options.build, { noDefaults: true });
   renderTable("Compiler Flags", options.options);
 
   // Write the Markdown and JSON
