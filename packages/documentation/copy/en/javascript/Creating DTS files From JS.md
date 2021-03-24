@@ -52,7 +52,7 @@ In this case, you will want a file like the following:
 }
 ```
 
-You can learn more about the options in the [tsconfig reference](/reference).
+You can learn more about the options in the [tsconfig reference](/tsconfig).
 An alternative to using a TSConfig file is the CLI, this is the same behavior as a CLI command.
 
 ```sh
