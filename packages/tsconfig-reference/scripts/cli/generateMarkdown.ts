@@ -43,9 +43,6 @@ languages.forEach((lang) => {
     );
   };
 
-  const intro = readFileSync(getPathInLocale("cli/intro.md"), "utf8");
-  markdownChunks.push(intro + "\n");
-
   function renderTable(title: string, options: CompilerOptionJSON[], opts?: { noDefaults: true }) {
     markdownChunks.push(`<h3>${title}</h3>`);
 
@@ -70,7 +67,13 @@ languages.forEach((lang) => {
         const sectionsPath = getPathInLocale(join("options", option.name + ".md"));
         const optionFile = readMarkdownFile(sectionsPath);
         description = optionFile.data.oneline;
-      } catch (error) {}
+      } catch (error) {
+        try {
+          const sectionsPath = getPathInLocale(join("cli", option.name + ".md"));
+          const optionFile = readMarkdownFile(sectionsPath);
+          description = optionFile.data.oneline;
+        } catch (error) {}
+      }
 
       const oddEvenClass = index % 2 === 0 ? "odd" : "even";
       markdownChunks.push(`<tr class='${oddEvenClass}' name='${option.name}'>`);
@@ -106,19 +109,23 @@ languages.forEach((lang) => {
   renderTable("CLI Commands", options.cli, { noDefaults: true });
   renderTable("Compiler Flags", options.options);
 
-  const outro = readFileSync(getPathInLocale("cli/outro.md"), "utf8");
-  markdownChunks.push("\n\n" + outro + "\n");
-
   // Write the Markdown and JSON
   const markdown = prettier.format(markdownChunks.join("\n"), { filepath: "index.md" });
   const mdPath = join(__dirname, "..", "..", "output", lang + "-cli.md");
   writeFileSync(mdPath, markdown);
 });
 
-const enMDCLI = join(__dirname, "..", "..", "output", "en-cli.md");
-// prettier-ignore
-const compOptsPath = join( __dirname, "..", "..", "..", "documentation/copy/en/project-config/Compiler Options.md");
-console.log(`Copying ${enMDCLI} -> ${compOptsPath}`);
-copyFileSync(enMDCLI, compOptsPath);
+languages.forEach((lang) => {
+  const mdCLI = join(__dirname, "..", "..", "output", lang + "-cli.md");
+  // prettier-ignore
+  const compOptsPath = join( __dirname, "..", "..", "..", `documentation/copy/${lang}/project-config/Compiler Options.md`);
 
-console.log(`Wrote CLI files for: ${languages.join(", ")}} (but only using english for now)`);
+  if (existsSync(compOptsPath)) {
+    const md = readFileSync(compOptsPath, "utf8");
+    const newTable = readFileSync(mdCLI, "utf8");
+    const start = "<!-- Start of replacement  -->";
+    const end = "<!-- End of replacement  -->";
+    const newMD = md.split(start)[0] + start + newTable + end + md.split(end)[1];
+    writeFileSync(compOptsPath, newMD);
+  }
+});
