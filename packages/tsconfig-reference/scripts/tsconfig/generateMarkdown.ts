@@ -29,8 +29,8 @@ import { CompilerOptionJSON } from "./generateJSON.js";
 import * as remark from "remark";
 import * as remarkHTML from "remark-html";
 
-const options = require("../data/tsconfigOpts.json").options as CompilerOptionJSON[];
-const categories = require("../data/tsconfigCategories.json") as typeof import("../data/tsconfigCategories.json");
+const options = require("../../data/tsconfigOpts.json").options as CompilerOptionJSON[];
+const categories = require("../../data/tsconfigCategories.json") as typeof import("../../data/tsconfigCategories.json");
 
 const orderedCategories = [
   "Project_Files_0",
@@ -64,11 +64,13 @@ const sections = [
 
 const parseMarkdown = (md: string) => remark().use(remarkHTML).processSync(md);
 
-const languages = readdirSync(join(__dirname, "..", "copy")).filter((f) => !f.startsWith("."));
+const languages = readdirSync(join(__dirname, "..", "..", "copy")).filter(
+  (f) => !f.startsWith(".")
+);
 
 languages.forEach((lang) => {
-  const locale = join(__dirname, "..", "copy", lang);
-  const fallbackLocale = join(__dirname, "..", "copy", "en");
+  const locale = join(__dirname, "..", "..", "copy", lang);
+  const fallbackLocale = join(__dirname, "..", "..", "copy", "en");
 
   const markdownChunks: string[] = [];
 
@@ -310,18 +312,18 @@ languages.forEach((lang) => {
 
   // Write the Markdown and JSON
   const markdown = prettier.format(markdownChunks.join("\n"), { filepath: "index.md" });
-  const mdPath = join(__dirname, "..", "output", lang + ".md");
+  const mdPath = join(__dirname, "..", "..", "output", lang + ".md");
   writeFileSync(mdPath, markdown);
   console.log(mdPath);
 
   writeFileSync(
-    join(__dirname, "..", "output", lang + ".json"),
+    join(__dirname, "..", "..", "output", lang + ".json"),
     JSON.stringify({ categories: allCategories })
   );
 
   // This is used by the playgrounbd
   writeFileSync(
-    join(__dirname, "..", "output", lang + "-summary.json"),
+    join(__dirname, "..", "..", "output", lang + "-summary.json"),
     JSON.stringify({ options: optionsSummary })
   );
 
@@ -330,7 +332,10 @@ languages.forEach((lang) => {
   // if (unfound.length) throw new Error(`Could not find these options in ${lang}: ${unfound.map(u => u.name).join(', ')}`)
 });
 
-writeFileSync(join(__dirname, "..", "output", "languages.json"), JSON.stringify({ languages }));
+writeFileSync(
+  join(__dirname, "..", "..", "output", "languages.json"),
+  JSON.stringify({ languages })
+);
 
 // From https://stackoverflow.com/questions/8495687/split-array-into-chunks
 function chunk<T>(arr: T[], chunkSize: number): T[][] {
@@ -339,3 +344,5 @@ function chunk<T>(arr: T[], chunkSize: number): T[][] {
     newArray.push(arr.slice(i, i + chunkSize));
   return newArray;
 }
+
+console.log(`Wrote TSConfig files for: ${languages.join(", ")}}`);

@@ -312,6 +312,26 @@
       }
     }
   }
+
+  .markdown table.cli-option {
+    display: table;
+
+    tr {
+      width: 100%;
+    }
+    // Override the default stripes
+    tr.odd {
+      background-color: var(--background-color) !important;
+    }
+    tr.even {
+      background-color: var(--background-minor-highlight-color) !important;
+    }
+
+    tr.option-description td {
+      margin-top: 0;
+      border-top: none;
+    }
+  }
 }
 
 .circle-bg {
