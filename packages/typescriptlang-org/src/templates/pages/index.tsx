@@ -1,5 +1,5 @@
-import React, { useEffect } from "react"
-import { withPrefix, graphql } from "gatsby"
+import React, { useEffect, useState } from "react"
+import { withPrefix } from "gatsby"
 import { Layout } from "../../components/layout"
 import { Intl } from "../../components/Intl"
 import { VersionBar } from "../../components/VersionBar"
@@ -36,30 +36,50 @@ const Index: React.FC<Props> = (props) => {
 
   useEffect(() => { setupTwoslashHovers(); setupVideosSection() }, [])
 
+  const [showCTALinks, setShowCTALinks] = useState(false)
+
+
+  const Headline = () => (
+    <Row>
+      <Col>
+        <h1>{i("index_headline", { bold: (...chunk) => <strong>{chunk}</strong> })}</h1>
+        <p>{i("index_summary")}</p>
+        <p>{i("index_locations")}</p>
+
+        <div className="call-to-action">
+          <a className='flat-button' href="/download" onClick={(e) => { setShowCTALinks(true); e.preventDefault(); return false }}>{i("index_cta_install")}</a>
+        </div>
+      </Col>
+      <Col2>
+        <EditorExamples />
+      </Col2>
+    </Row>)
+
+  const CTAHeadlines = () => (
+    <div className="cta-redirects">
+      <h2>Get Started With TypeScript</h2>
+      <Row>
+        <Col className="call-to-action">
+          <img src={require("../../assets/index/play-dark.png")} width={"100%"} />
+          <a className='flat-button' href="/play">In Your Browser</a>
+        </Col>
+        <Col className="call-to-action">
+          <img src={require("../../assets/index/code-dark.png")} width={"100%"} />
+          <a className='flat-button' href="/download">
+            On Your Computer
+          </a>
+        </Col>
+      </Row>
+    </div>
+  )
 
   return (
     <Layout title="Typed JavaScript at Any Scale." description="TypeScript extends JavaScript by adding types to the language. TypeScript speeds up your development experience by catching errors and providing fixes before you even run your code." lang={props.pageContext.lang} suppressCustomization>
 
       <div id="index">
-        <Section color="darkblue" className="headline">
-          <Row>
-            <Col>
-              <h1>{i("index_headline", { bold: (...chunk) => <strong>{chunk}</strong> })}</h1>
-              <p>{i("index_byline")}</p>
-              <p>{i("index_summary")}</p>
-              <p>{i("index_locations")}</p>
-            </Col>
-            <Col2>
-              <EditorExamples />
-            </Col2>
-          </Row>
-        </Section>
         <VersionBar />
-        <Section color="grey" className="hide-small">
-          <div className="call-to-action">
-            <Link target="_blank" className='flat-button' to="/play/">{i("index_cta_play")}</Link>
-            <a className='flat-button' href="#installation">{i("index_cta_install")}</a>
-          </div>
+        <Section color="darkblue" className="headline">
+          {!showCTALinks ? <Headline /> : <CTAHeadlines />}
         </Section>
         <Section color="white">
           <h2>{i("index_what_is")}</h2>
@@ -260,3 +280,5 @@ const Installation = () => {
 }
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Index {...props} /></Intl>
+
+

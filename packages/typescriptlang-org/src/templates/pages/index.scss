@@ -533,6 +533,22 @@ $headline-foreground-bg: #104261;
     }
   }
 
+  .cta-redirects {
+    overflow-y: hidden;
+    div {
+      margin-bottom: -80px;
+      position: relative;
+
+      a {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        margin-right: -50%;
+        top: 30%;
+        left: 50%;
+      }
+    }
+  }
+
   .release-info {
     width: 100%;
     display: flex;
