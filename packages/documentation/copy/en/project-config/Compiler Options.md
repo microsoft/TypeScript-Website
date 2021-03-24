@@ -1041,6 +1041,7 @@ Specify how directories are watched on systems that lack recursive file-watching
 Specify how the TypeScript watch mode works.
 </tr></td>
 </tbody></table>
+
 ## Related
 
 - Every option is fully explained in the [TSConfig Reference](/tsconfig).

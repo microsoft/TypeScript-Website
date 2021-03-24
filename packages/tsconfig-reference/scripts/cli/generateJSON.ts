@@ -60,6 +60,9 @@ const filteredOptions = allOptions
 filteredOptions.forEach((option) => {
   const name = option.name as CompilerOptionName;
 
+  // There's an odd dupe of 'help' with no description
+  if (!option.description) return;
+
   // Convert JS Map types to a JSONable obj
   if ("type" in option && typeof option.type === "object" && "get" in option.type) {
     // Option definitely has a map obj, need to resolve it
