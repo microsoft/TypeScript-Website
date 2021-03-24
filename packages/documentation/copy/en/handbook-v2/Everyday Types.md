@@ -56,7 +56,7 @@ The `any` type is useful when you don't want to write out a long type just to co
 
 ### `noImplicitAny`
 
-When you don't specify a type, and Typescript can't infer it from context, the compiler will typically default to `any`.
+When you don't specify a type, and TypeScript can't infer it from context, the compiler will typically default to `any`.
 
 You usually want to avoid this, though, because `any` isn't type-checked.
 Use the compiler flag [`noImplicitAny`](/tsconfig#noImplicitAny) to flag any implicit `any` as an error.
@@ -103,7 +103,7 @@ function greet(name: string) {
 }
 ```
 
-When a parameter has a type annotations, arguments to that function will be checked:
+When a parameter has a type annotation, arguments to that function will be checked:
 
 ```ts twoslash
 // @errors: 2345
