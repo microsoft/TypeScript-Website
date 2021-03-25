@@ -37,11 +37,13 @@ Or the site will fail the build. Once that file is ready, add it to the sidebar 
 
 ##### TSConfig Reference
 
-Updating the version of TypeScript will force you to update the TSConfig Reference. It will fail incrementally with each missing compiler flag.
+Updating the version of TypeScript will force you to update the TSConfig Reference and JSON Schema. It will fail incrementally with each missing compiler flag.
 
 For each new flag:
 
 - Add a markdown file for the new compiler flags. The build will crash and give you a command to run which will set that up.
+
+- Add the flag to the JSON [schema base file](https://github.com/microsoft/TypeScript-website/blob/v2/packages/tsconfig-reference/scripts/schema/result/schema.json). You can leave descriptions blank in there as it will be added by the site.
 
 - Update [tsconfigRules.ts](https://github.com/microsoft/TypeScript-website/blob/v2/packages/tsconfig-reference/scripts/tsconfigRules.ts#L16) - with things like:
 
