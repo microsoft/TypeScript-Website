@@ -525,6 +525,11 @@
               "default": false,
               "markdownDescription": "Disable including any library files, including the default lib.d.ts.\n\nSee more:\nhttps://www.typescriptlang.org/tsconfig#noLib"
             },
+            "noPropertyAccessFromIndexSignature": {
+              "description": "Enforces using indexed accessors for keys declared using an indexed type",
+              "type": "boolean",
+              "markdownDescription": "Enforces using indexed accessors for keys declared using an indexed type\n\nSee more: https://www.typescriptlang.org/tsconfig#noPropertyAccessFromIndexSignature"
+            },
             "noResolve": {
               "description": "Disallow `import`s, `require`s or `<reference>`s from expanding the number of files TypeScript should add to a project.",
               "type": "boolean",

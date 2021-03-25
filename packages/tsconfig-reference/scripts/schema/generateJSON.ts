@@ -59,8 +59,12 @@ filteredOptions.forEach((option) => {
 
   if (!schemaCompilerOpts[name]) {
     if (okToSkip.includes(name)) return;
+    const title = `Issue creating JSON Schema for tsconfig`;
+    const headline = `Could not find '${name}' in schemaBase.definitions.compilerOptionsDefinition.properties.compilerOptions.properties`;
+    const msg =
+      "You need to add it to the file: packages/tsconfig-reference/scripts/schema/vendor/base.json";
 
-    // throw new Error(`Could not find ${name} in the schema base`);
+    throw new Error([title, headline, msg, ""].join("\n\n"));
   } else {
     const sectionsPath = join(__dirname, `../../copy/en/options/${name}.md`);
     const optionFile = readMarkdownFile(sectionsPath);

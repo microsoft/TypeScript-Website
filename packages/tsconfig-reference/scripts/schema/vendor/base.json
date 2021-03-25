@@ -92,6 +92,10 @@
               "description": "Recommend IDE's to load referenced composite projects dynamically instead of loading them all immediately. Requires TypeScript version 4.0 or later.",
               "type": "boolean"
             },
+            "noPropertyAccessFromIndexSignature": {
+              "description": "Filled in automatically",
+              "type": "boolean"
+            },
             "emitBOM": {
               "description": "Emit a UTF-8 Byte Order Mark (BOM) in the beginning of output files.",
               "type": "boolean",
