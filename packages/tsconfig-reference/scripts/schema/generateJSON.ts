@@ -13,13 +13,7 @@ import { CommandLineOptionBase } from "../types";
 import { writeFileSync } from "fs";
 import { join } from "path";
 import { format } from "prettier";
-import {
-  deprecated,
-  internal,
-  defaultsForOptions,
-  allowedValues,
-  configToRelease,
-} from "../tsconfigRules";
+import { deprecated } from "../tsconfigRules";
 import { CompilerOptionName } from "../../data/_types";
 
 const toJSONString = (obj) => format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
@@ -78,7 +72,8 @@ filteredOptions.forEach((option) => {
     // https://github.com/microsoft/vscode/blob/197f453aa9560872370e4b8e4b3b2f9a93c4ad68/src/vs/base/common/jsonSchema.ts#L56
     if (deprecated.includes(name)) schemaCompilerOpts[name].deprecationMessage = "Deprecated";
 
-    // Set the vscode extension
+    // Set a markdown version which is prioritised in vscode, giving people
+    // the chance to click on the links.
     schemaCompilerOpts[name].markdownDescription =
       optionFile.data.oneline + `\n\nSee more: https://www.typescriptlang.org/tsconfig#${name}`;
   }
