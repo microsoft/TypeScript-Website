@@ -111,12 +111,21 @@ this is fine and the site will accommodate the dates not being ready yet.
 Using the GitHub CLI, from the root of the repo
 
 ```
+# Clone a copy and move in new file
 gh repo clone https://github.com/SchemaStore/schemastore.git /tmp/schemastore
 cp packages/tsconfig-reference/scripts/schema/result/schema.json /tmp/schemastore/src/schemas/json/tsconfig.json
 
+# Go in and set up the changes
 cd /tmp/schemastore
 gh repo fork
 git add .
 git commit -m "Update tsconfig.json schema"
+
+# Validate it didn't break
+cd src
+npm ci
+npm run build
+
+# Shippit
 gh pr create --web
 ```
