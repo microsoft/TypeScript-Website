@@ -105,3 +105,18 @@ The homepage keeps track of upcoming dates via this file: [`packages/typescriptl
 
 You might not have these dates yet, at the current release (it took about a week last time to get the dates) - leaving
 this is fine and the site will accommodate the dates not being ready yet.
+
+##### Update Schema Store
+
+Using the GitHub CLI, from the root of the repo
+
+```
+gh repo clone https://github.com/SchemaStore/schemastore.git /tmp/schemastore
+cp packages/tsconfig-reference/scripts/schema/result/schema.json /tmp/schemastore/src/schemas/json/tsconfig.json
+
+cd /tmp/schemastore
+gh repo fork
+git add .
+git commit -m "Update tsconfig.json schema"
+gh pr create --web
+```
