@@ -4,9 +4,14 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "generate-json": "yarn ts-node scripts/tsconfig/generateJSON.ts; yarn ts-node scripts/cli/generateJSON.ts",
-    "generate-markdown": "yarn ts-node --project tsconfig.json scripts/tsconfig/generateMarkdown.ts; yarn ts-node --project tsconfig.json scripts/cli/generateMarkdown.ts",
-    "build": "yarn generate-json && yarn generate-markdown",
+    "generate:json:tsconfig": "yarn ts-node -T scripts/tsconfig/generateJSON.ts",
+    "generate:json:cli": "yarn ts-node -T scripts/cli/generateJSON.ts",
+    "generate:json:schema": "yarn ts-node -T scripts/schema/generateJSON.ts",
+    "generate:json": "yarn generate:json:tsconfig && yarn generate:json:tsconfig && yarn generate:json:schema",
+    "generate:md:tsconfig": "yarn ts-node -T scripts/tsconfig/generateMarkdown.ts",
+    "generate:md:cli": "yarn ts-node -T scripts/cli/generateMarkdown.ts",
+    "generate:md": "yarn generate:md:tsconfig && yarn generate:md:tsconfig",
+    "build": "yarn generate:md && yarn generate:md",
     "test": "yarn build && yarn lint",
     "lint": "node scripts/lint.js"
   },
