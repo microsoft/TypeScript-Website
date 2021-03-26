@@ -373,4 +373,4 @@ createInstance(Lion).keeper.nametag;
 createInstance(Bee).keeper.hasMask;
 ```
 
-This pattern is used to power the [mixins](/docs/handbook/2/mixins.html) design pattern.
+This pattern is used to power the [mixins](/docs/handbook/mixins.html) design pattern.
