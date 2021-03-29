@@ -12,7 +12,7 @@
     "generate:md:cli": "yarn ts-node -T scripts/cli/generateMarkdown.ts",
     "generate:md": "yarn generate:md:tsconfig && yarn generate:md:cli",
     "bootstrap": "yarn scripts/schema/downloadSchemaBase.ts",
-    "build": "yarn generate:md && yarn generate:md",
+    "build": "yarn generate:json && yarn generate:md",
     "test": "yarn build && yarn lint",
     "lint": "node scripts/lint.js"
   },
