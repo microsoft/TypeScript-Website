@@ -416,7 +416,7 @@ If you're migrating existing JavaScript, that might be a desirable first step.
 
 In contrast, a lot of users prefer to have TypeScript validate as much as it can straight away, and that's why the language provides strictness settings as well.
 These strictness settings turn static type-checking from a switch (either your code is checked or not) into something closer to a dial.
-The farther you turn this dial up, the more TypeScript will check for you.
+The further you turn this dial up, the more TypeScript will check for you.
 This can require a little extra work, but generally speaking it pays for itself in the long run, and enables more thorough checks and more accurate tooling.
 When possible, a new codebase should always turn these strictness checks on.
 
