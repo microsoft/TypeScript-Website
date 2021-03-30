@@ -6,8 +6,14 @@ export const indexCopy = {
   index_locations:
     "Any browser, any OS, anywhere JavaScript runs. Entirely Open Source.",
 
-  index_cta_play: "Try in your browser",
-  index_cta_install: "Install locally",
+  index_cta_install: "Try TypeScript Now",
+  index_cta_install_subtitle: "Online or via npm",
+
+  index_cta_play: "In your browser",
+  index_cta_play_subtitle: "Via the Playground",
+
+  index_cta_download: "To your computer",
+  index_cta_download_subtitle: "Via npm",
 
   index_what_is: "What is TypeScript?",
 

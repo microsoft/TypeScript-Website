@@ -450,7 +450,7 @@ $headline-foreground-bg: #104261;
     }
 
     .next-headline-button {
-      background-color: #235a97;
+      border: 2px solid #235a9769;
       color: white;
       padding: 3px;
       max-width: 320px;
@@ -488,7 +488,7 @@ $headline-foreground-bg: #104261;
       }
 
       .next {
-        border-left: 2px solid white;
+        border-left: 2px solid #235a9769;
 
         display: flex;
         flex-direction: row;
@@ -529,6 +529,46 @@ $headline-foreground-bg: #104261;
 
       &:first-child {
         margin-right: 2rem;
+      }
+    }
+
+    .handbook-preview {
+      background-color: #1a1a1a;
+      padding: 4rem;
+    }
+
+    .inline-buttons {
+      background-color: #1a1a1a;
+      display: flex;
+      justify-content: center;
+
+      a {
+        background-color: #1a1a1a;
+        color: white;
+        flex: 1;
+        margin: 0 !important;
+        border-left: 4px solid #00273f;
+
+        &:first-child {
+          border-left: none;
+        }
+        &:active,
+        &:hover {
+          color: black;
+        }
+      }
+    }
+  }
+
+  .cta-redirects {
+    overflow-y: hidden;
+    > div {
+      margin-bottom: -18%;
+      position: relative;
+
+      a {
+        position: absolute;
+        bottom: 55%;
       }
     }
   }
@@ -920,5 +960,41 @@ $headline-foreground-bg: #104261;
     width: 80%;
     bottom: 20px;
     overflow: hidden;
+  }
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.fluid-button {
+  background-color: white;
+  color: black;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  display: flex;
+
+  .fluid-button-title {
+    font-weight: 600;
+  }
+
+  div.fluid-button-icon {
+    min-width: 4rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 2px solid black;
+    margin-right: -1rem;
+    margin-left: 1rem;
+  }
+
+  &:hover,
+  &.focus {
+    background-color: #eee;
+  }
+
+  &:active {
+    background-color: #ddd;
   }
 }
