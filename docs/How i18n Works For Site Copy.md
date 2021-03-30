@@ -1,4 +1,4 @@
-## How Does The i8n Work in The Site?
+## How Does The i18n Work in The Site?
 
 Let's take some example code from inside the [top navigation bar](../packages/typescriptlang-org/src/components/layout/TopNav.tsx) on the site:
 
@@ -16,7 +16,7 @@ Let's take some example code from inside the [top navigation bar](../packages/ty
 </nav>
 ```
 
-There are two i8n primitives in here:
+There are two i18n primitives in here:
 
 - `IntlLink`
 - `i("nav_download")`
@@ -37,7 +37,7 @@ There are a few parts which lead up to having an `i("x")`. Let's go in order:
 
   This sets up the language copy based in the locale, it uses a dynamic require to [the `copy/`](https://github.com/microsoft/TypeScript-website/blob/v2/packages/typescriptlang-org/src/copy/) folder + the locale + `.ts`. This sets up the outer context.
 
-  In the site, we have this as the `default export` for i8n'd pages
+  In the site, we have this as the `default export` for i18n'd pages
 
   ```ts
   export default (props: Props) => (
