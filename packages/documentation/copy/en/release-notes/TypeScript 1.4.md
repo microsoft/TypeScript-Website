@@ -30,7 +30,7 @@ opts.commandline = [42]; // Error, number is not string or string[]
 When reading from a union type, you can see any properties that are shared by them:
 
 ```ts
-if (opts.length === 0) {
+if (opts.commandline.length === 0) {
   // OK, string and string[] both have 'length' property
   console.log("it's empty");
 }

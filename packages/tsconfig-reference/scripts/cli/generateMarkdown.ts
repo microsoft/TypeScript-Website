@@ -90,9 +90,13 @@ languages.forEach((lang) => {
       if (typeof option.type === "string") {
         optType = option.type;
       } else if (option.allowedValues) {
-        // @ts-ignore
-        const or = new Intl.ListFormat(lang, { type: "disjunction" });
-        optType = or.format(option.allowedValues.map((v) => `<code>${v}</code>`));
+        if ("ListFormat" in Intl) {
+          // @ts-ignore
+          const or = new Intl.ListFormat(lang, { type: "disjunction" });
+          optType = or.format(option.allowedValues.map((v) => `<code>${v}</code>`));
+        } else {
+          optType = option.allowedValues.map((v) => `<code>${v}</code>`).join(", ");
+        }
       } else {
         optType = "";
       }
