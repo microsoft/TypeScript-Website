@@ -66,7 +66,7 @@ languages.forEach((lang) => {
         description = optionFile.data.oneline;
       } catch (error) {
         try {
-          const sectionsPath = getPathInLocale(join("cli", name + ".md"));
+          const sectionsPath = getPathInLocale(join("msbuild", name + ".md"));
           const optionFile = readMarkdownFile(sectionsPath);
           description = optionFile.data.oneline;
         } catch (error) {}
@@ -78,23 +78,6 @@ languages.forEach((lang) => {
       const displayName = `<a href='/tsconfig/#${name}'>--${name}</a>`;
       markdownChunks.push(`<td><code>&#x3C;${option.configName.trim()}&#x3E;</code></td>`);
       markdownChunks.push(`<td><code>${displayName}</code></td>`);
-
-      // let optType: string;
-      // if (typeof option.type === "string") {
-      //   optType = option.type;
-      // } else if (option.allowedValues) {
-      //   if ("ListFormat" in Intl) {
-      //     // @ts-ignore
-      //     const or = new Intl.ListFormat(lang, { type: "disjunction" });
-      //     optType = or.format(option.allowedValues.map((v) => `<code>${v}</code>`));
-      //   } else {
-      //     optType = option.allowedValues.map((v) => `<code>${v}</code>`).join(", ");
-      //   }
-      // } else {
-      //   optType = "";
-      // }
-      // markdownChunks.push(`  <td><code>${optType}</code></td>`);
-
       markdownChunks.push(`</tr>`);
 
       // Add a new row under the current one for the description, this uses the 'odd' / 'even' classes

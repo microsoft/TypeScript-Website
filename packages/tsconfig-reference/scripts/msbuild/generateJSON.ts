@@ -19,6 +19,9 @@ if (!config) {
     `Could not find the: <PropertyGroup Condition="'$(TypeScriptBuildConfigurations)' == ''"> in the Microsoft.TypeScript.targets`
   );
 }
+
+const skip = ["TypeScriptCodePage", "TypeScriptExperimentalAsyncFunctions", "TypeScriptOutFile"];
+
 const json = config.TypeScriptBuildConfigurations.map((config) => {
   const tscCLIName =
     config._text.includes("--") && config._text.trim().slice(2).split("--")[1].split(" ")[0];
@@ -29,6 +32,8 @@ const json = config.TypeScriptBuildConfigurations.map((config) => {
     configName,
   };
   // Strip additional flags, because it is documented separately
-}).filter((d) => d.tscCLIName);
+})
+  .filter((d) => d.tscCLIName)
+  .filter((d) => !skip.includes(d.configName));
 
 writeJSON("msbuild-flags.json", { flags: json });
