@@ -17,6 +17,8 @@ import "../pages/css/documentation.scss"
 
 import { EditorExamples } from "../../components/index/EditorExamples"
 import { createIntlLink } from "../../components/IntlLink"
+import { isTouchDevice } from "../../lib/isTouchDevice"
+import { AboveTheFold } from "../../components/index/AboveTheFold"
 
 const Section = (props: { children: any, color: string, className?: string }) =>
   <div key={props.color} className={props.color + " " + (props.className ?? "")}><div className="container">{props.children}</div></div>
@@ -36,50 +38,13 @@ const Index: React.FC<Props> = (props) => {
 
   useEffect(() => { setupTwoslashHovers(); setupVideosSection() }, [])
 
-  const [showCTALinks, setShowCTALinks] = useState(false)
-
-
-  const Headline = () => (
-    <Row>
-      <Col>
-        <h1>{i("index_headline", { bold: (...chunk) => <strong>{chunk}</strong> })}</h1>
-        <p>{i("index_summary")}</p>
-        <p>{i("index_locations")}</p>
-
-        <div className="call-to-action">
-          <a className='flat-button' href="/download" onClick={(e) => { setShowCTALinks(true); e.preventDefault(); return false }}>{i("index_cta_install")}</a>
-        </div>
-      </Col>
-      <Col2>
-        <EditorExamples />
-      </Col2>
-    </Row>)
-
-  const CTAHeadlines = () => (
-    <div className="cta-redirects">
-      <h2>Get Started With TypeScript</h2>
-      <Row>
-        <Col className="call-to-action">
-          <img src={require("../../assets/index/play-dark.png")} width={"100%"} />
-          <a className='flat-button' href="/play">In Your Browser</a>
-        </Col>
-        <Col className="call-to-action">
-          <img src={require("../../assets/index/code-dark.png")} width={"100%"} />
-          <a className='flat-button' href="/download">
-            On Your Computer
-          </a>
-        </Col>
-      </Row>
-    </div>
-  )
-
   return (
     <Layout title="Typed JavaScript at Any Scale." description="TypeScript extends JavaScript by adding types to the language. TypeScript speeds up your development experience by catching errors and providing fixes before you even run your code." lang={props.pageContext.lang} suppressCustomization>
 
       <div id="index">
         <VersionBar />
         <Section color="darkblue" className="headline">
-          {!showCTALinks ? <Headline /> : <CTAHeadlines />}
+          <AboveTheFold />
         </Section>
         <Section color="white">
           <h2>{i("index_what_is")}</h2>
