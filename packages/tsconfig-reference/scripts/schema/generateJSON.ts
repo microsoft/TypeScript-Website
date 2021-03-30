@@ -2,8 +2,9 @@
 // Data-dump all the CLI options
 
 /** Run with:
-     node --inspect-brk ./node_modules/.bin/ts-node packages/tsconfig-reference/scripts/cli/generateJSON.ts
+     node --inspect-brk ./node_modules/.bin/ts-node packages/tsconfig-reference/scripts/schema/generateJSON.ts
      yarn ts-node scripts/cli/generateJSON.ts
+     yarn workspace tsconfig-reference generate:json:schema
 */
 console.log("Generating JSON schema");
 
@@ -72,9 +73,15 @@ filteredOptions.forEach((option) => {
     // Set the plain version
     schemaCompilerOpts[name].description = optionFile.data.oneline;
 
+    // Can be removed once https://github.com/ExodusMovement/schemasafe/pull/146 is merged
+    const isEnumOrConst = schemaCompilerOpts[name]["enum"];
+    if (isEnumOrConst) return;
+
     // See the vscode extensions here:
     // https://github.com/microsoft/vscode/blob/197f453aa9560872370e4b8e4b3b2f9a93c4ad68/src/vs/base/common/jsonSchema.ts#L56
-    if (deprecated.includes(name)) schemaCompilerOpts[name].deprecationMessage = "Deprecated";
+
+    // This doesn't pass the schema validation checks yet
+    // if (deprecated.includes(name)) schemaCompilerOpts[name].deprecationMessage = "Deprecated";
 
     // Set a markdown version which is prioritised in vscode, giving people
     // the chance to click on the links.
