@@ -76,7 +76,7 @@ languages.forEach((lang) => {
       markdownChunks.push(`<tr class='${oddEvenClass}' name='${name}'>`);
 
       const displayName = `<a href='/tsconfig/#${name}'>--${name}</a>`;
-      markdownChunks.push(`<td><code>&#x3C;${option.configName}&#x3E;</code></td>`);
+      markdownChunks.push(`<td><code>&#x3C;${option.configName.trim()}&#x3E;</code></td>`);
       markdownChunks.push(`<td><code>${displayName}</code></td>`);
 
       // let optType: string;

@@ -7,9 +7,9 @@ oneline: Which compiler options are available in MSBuild projects.
 
 ## Overview
 
-When you have an MSBuild based project which utilizes TypeScript, you can configure TypeScript via your project.
+When you have an MSBuild based project which utilizes TypeScript, you can configure TypeScript via your project editor.
 
-## Example USage
+## Example Usage
 
 A common case is stripping comments and sourcemaps in production, here we define a debug and release property group which have different TypeScript configurations:
 
@@ -31,7 +31,7 @@ A common case is stripping comments and sourcemaps in production, here we define
 
 There is a series of mappings for common TypeScript settings, these are settings which map directly to [TypeScript cli options](/docs/handbook/compiler-options.html) and are used to help you write a more understandable project file. You can use the [TSConfig reference](/tsconfig) to get more information on what values and defaults are for each mapping.
 
-<!-- Start of replacement  --><h3>Mappings</h3>
+<!-- Start of replacement  --><h3>CLI Mappings</h3>
 
   <table class='cli-option' width="100%">
     <thead>
@@ -521,7 +521,7 @@ There is a series of mappings for common TypeScript settings, these are settings
 
 </tr></td>
 <tr class='odd' name='keyofStringsOnly'>
-<td><code>&#x3C;TypeScriptKeyofStringsOnly &#x3E;</code></td>
+<td><code>&#x3C;TypeScriptKeyofStringsOnly&#x3E;</code></td>
 <td><code><a href='/tsconfig/#keyofStringsOnly'>--keyofStringsOnly</a></code></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -529,7 +529,7 @@ There is a series of mappings for common TypeScript settings, these are settings
 
 </tr></td>
 <tr class='even' name='useDefineForClassFields'>
-<td><code>&#x3C;TypeScriptUseDefineForClassFields &#x3E;</code></td>
+<td><code>&#x3C;TypeScriptUseDefineForClassFields&#x3E;</code></td>
 <td><code><a href='/tsconfig/#useDefineForClassFields'>--useDefineForClassFields</a></code></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -537,7 +537,7 @@ There is a series of mappings for common TypeScript settings, these are settings
 
 </tr></td>
 <tr class='odd' name='declarationMap'>
-<td><code>&#x3C;TypeScriptDeclarationMap &#x3E;</code></td>
+<td><code>&#x3C;TypeScriptDeclarationMap&#x3E;</code></td>
 <td><code><a href='/tsconfig/#declarationMap'>--declarationMap</a></code></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
