@@ -608,7 +608,7 @@ function noop() {
 
 In JavaScript, a function that doesn't return any value will implicitly return the value `undefined`.
 However, `void` and `undefined` are not the same thing in TypeScript.
-See the reference page [[Why void is a special type]] for a longer discussion about this.
+There are further details at the end of this chapter.
 
 > `void` is not the same as `undefined`.
 
@@ -756,7 +756,6 @@ Using rest arguments may require turning on [`downlevelIteration`](/tsconfig/#do
 <!-- TODO link to downlevel iteration -->
 
 ## Parameter Destructuring
-
 
 <blockquote class='bg-reading'>
    <p>Background Reading:<br />

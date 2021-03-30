@@ -27,8 +27,18 @@ export const AboveTheFold = () => {
   const [showCTALinks, setShowCTALinks] = useState(false)
   const i = createInternational<typeof indexCopy>(useIntl())
 
-  const Headline = () => (
-    <Row>
+  const Headline = () => {
+    const onclick = (e) => {
+      setShowCTALinks(true)
+      e.preventDefault()
+      // @ts-ignore
+      window.appInsights &&
+        // @ts-ignore
+        window.appInsights.trackEvent({ name: "Index CTA clicked" })
+      return false
+    }
+
+    return (<Row>
       <Col>
         <h1>{i("index_headline", { bold: (...chunk) => <strong>{chunk}</strong> })}</h1>
         <p>{i("index_summary")}</p>
@@ -39,7 +49,7 @@ export const AboveTheFold = () => {
             title={i("index_cta_install")}
             subtitle={i("index_cta_install_subtitle")}
             href="/download"
-            onClick={(e) => { setShowCTALinks(true); e.preventDefault(); return false }}
+            onClick={onclick}
             icon={
               <svg width="21" height="5" viewBox="0 0 21 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="0.5" y="0.5" width="4" height="4" stroke="black" />
@@ -53,6 +63,7 @@ export const AboveTheFold = () => {
         <EditorExamples />
       </Col2>
     </Row>)
+  }
 
   const CTAHeadlines = () => (
     <div className="cta-redirects">
