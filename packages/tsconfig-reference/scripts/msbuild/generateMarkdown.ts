@@ -1,0 +1,130 @@
+// @ts-check
+// Data-dump all the TSConfig options
+
+/** Run with:
+     node --inspect-brk ./node_modules/.bin/ts-node --project packages/tsconfig-reference/tsconfig.json packages/tsconfig-reference/scripts/msbuild/generateMarkdown.ts
+     yarn ts-node --project packages/tsconfig-reference/tsconfig.json packages/tsconfig-reference/scripts/msbuild/generateMarkdown.ts 
+*/
+
+import { writeFileSync, readdirSync, existsSync, readFileSync } from "fs";
+import { join } from "path";
+import { read as readMarkdownFile } from "gray-matter";
+import * as prettier from "prettier";
+
+import * as remark from "remark";
+import * as remarkHTML from "remark-html";
+
+const options = require(join(__dirname, "../../data/msbuild-flags.json"));
+const parseMarkdown = (md: string) => remark().use(remarkHTML).processSync(md);
+
+const knownTypes: Record<string, string> = {};
+
+const languages = readdirSync(join(__dirname, "..", "..", "copy")).filter(
+  (f) => !f.startsWith(".")
+);
+
+languages.forEach((lang) => {
+  const locale = join(__dirname, "..", "..", "copy", lang);
+  const fallbackLocale = join(__dirname, "..", "..", "copy", "en");
+
+  const markdownChunks: string[] = [];
+
+  const getPathInLocale = (path: string, optionalExampleContent?: string) => {
+    if (existsSync(join(locale, path))) return join(locale, path);
+    if (existsSync(join(fallbackLocale, path))) return join(fallbackLocale, path);
+    const en = join(fallbackLocale, path);
+
+    const localeDesc = lang === "en" ? lang : `either ${lang} or English`;
+    // prettier-ignore
+    throw new Error(
+      "Could not find a path for " + path + " in " + localeDesc + (optionalExampleContent || "") + `\n\nLooked at ${en}}`
+    );
+  };
+
+  function renderTable(title: string, options: { tscCLIName: string; configName }[]) {
+    markdownChunks.push(`<h3>${title}</h3>`);
+
+    markdownChunks.push(`
+  <table class='cli-option' width="100%">
+    <thead>
+    <tr>
+    <th>MSBuild Config Name</th>
+    <th>TSC Flag</th>
+    </tr>
+  </thead>
+  <tbody>
+`);
+
+    options.forEach((option, index) => {
+      // Heh, the section uses an article and the categories use a section
+      const name = option.tscCLIName;
+      // CLI description
+      let description = "";
+      try {
+        const sectionsPath = getPathInLocale(join("options", name + ".md"));
+        const optionFile = readMarkdownFile(sectionsPath);
+        description = optionFile.data.oneline;
+      } catch (error) {
+        try {
+          const sectionsPath = getPathInLocale(join("cli", name + ".md"));
+          const optionFile = readMarkdownFile(sectionsPath);
+          description = optionFile.data.oneline;
+        } catch (error) {}
+      }
+
+      const oddEvenClass = index % 2 === 0 ? "odd" : "even";
+      markdownChunks.push(`<tr class='${oddEvenClass}' name='${name}'>`);
+
+      const displayName = `<a href='/tsconfig/#${name}'>--${name}</a>`;
+      markdownChunks.push(`<td><code>&#x3C;${option.configName}&#x3E;</code></td>`);
+      markdownChunks.push(`<td><code>${displayName}</code></td>`);
+
+      // let optType: string;
+      // if (typeof option.type === "string") {
+      //   optType = option.type;
+      // } else if (option.allowedValues) {
+      //   if ("ListFormat" in Intl) {
+      //     // @ts-ignore
+      //     const or = new Intl.ListFormat(lang, { type: "disjunction" });
+      //     optType = or.format(option.allowedValues.map((v) => `<code>${v}</code>`));
+      //   } else {
+      //     optType = option.allowedValues.map((v) => `<code>${v}</code>`).join(", ");
+      //   }
+      // } else {
+      //   optType = "";
+      // }
+      // markdownChunks.push(`  <td><code>${optType}</code></td>`);
+
+      markdownChunks.push(`</tr>`);
+
+      // Add a new row under the current one for the description, this uses the 'odd' / 'even' classes
+      // to fake looking like a single row
+      markdownChunks.push(`<tr class="option-description ${oddEvenClass}"><td colspan="3">`);
+      markdownChunks.push(`${parseMarkdown(description)}`);
+      markdownChunks.push(`</tr></td>`);
+    });
+    markdownChunks.push(`</tbody></table>`);
+  }
+
+  renderTable("CLI Mappings", options.flags);
+
+  // Write the Markdown and JSON
+  const markdown = prettier.format(markdownChunks.join("\n"), { filepath: "index.md" });
+  const mdPath = join(__dirname, "..", "..", "output", lang + "-msbuild.md");
+  writeFileSync(mdPath, markdown);
+});
+
+languages.forEach((lang) => {
+  const mdCLI = join(__dirname, "..", "..", "output", lang + "-msbuild.md");
+  // prettier-ignore
+  const compOptsPath = join( __dirname, "..", "..", "..", `documentation/copy/${lang}/project-config/Compiler Options in MSBuild.md`);
+
+  if (existsSync(compOptsPath)) {
+    const md = readFileSync(compOptsPath, "utf8");
+    const newTable = readFileSync(mdCLI, "utf8");
+    const start = "<!-- Start of replacement  -->";
+    const end = "<!-- End of replacement  -->";
+    const newMD = md.split(start)[0] + start + newTable + end + md.split(end)[1];
+    writeFileSync(compOptsPath, newMD);
+  }
+});
