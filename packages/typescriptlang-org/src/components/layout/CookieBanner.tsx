@@ -45,7 +45,8 @@ export const CookieBanner = (props: { lang: string }) => {
     <>
       <Helmet htmlAttributes={{ lang: props.lang }} onChangeClientState={handleChangeClientState}>
         {typeof window !== 'undefined' && typeof WcpConsent === 'undefined'
-          && <script src="https://consentdeliveryfd.azurefd.net/mscc/lib/v2/wcp-consent.js" />}
+          && <script src="https://consentdeliveryfd.azurefd.net/mscc/lib/v2/wcp-consent.js" async />}
+        <link rel="preconnect" href="https://consentdeliveryfd.azurefd.net/" />
       </Helmet>
 
       <div id="cookie-banner"></div>

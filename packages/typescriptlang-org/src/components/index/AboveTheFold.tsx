@@ -11,6 +11,13 @@ const Row = (props: { children: any, className?: string }) => <div className={[p
 const Col = (props: { children: any, className?: string }) => <div className={[props.className, "col1"].join(" ")}>{props.children}</div>
 const Col2 = (props: { children: any }) => <div className="col2">{props.children}</div>
 
+const event = (name: string, options?: any) => {
+  // @ts-ignore
+  window.appInsights &&
+    // @ts-ignore
+    window.appInsights.trackEvent({ name }, options)
+}
+
 const FluidButton = (props: { href: string, onClick?: any, title: string, subtitle: string, icon: JSX.Element, className?: string }) => (
   <a className={"fluid-button " + props.className || ""} href={props.href} onClick={props.onClick}>
     <div>
@@ -31,10 +38,7 @@ export const AboveTheFold = () => {
     const onclick = (e) => {
       setShowCTALinks(true)
       e.preventDefault()
-      // @ts-ignore
-      window.appInsights &&
-        // @ts-ignore
-        window.appInsights.trackEvent({ name: "Index CTA clicked" })
+      event("Home Page CTA Started")
       return false
     }
 
@@ -75,13 +79,14 @@ export const AboveTheFold = () => {
             title={i("index_cta_play")}
             subtitle={i("index_cta_play_subtitle")}
             href="/play"
+            onClick={event("Home Page CTA Finished", { link: "playground" })}
             icon={
               <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0)">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M24.5 16.5C24.5 25.3366 20.9182 32.5 16.5 32.5C12.0818 32.5 8.5 25.3366 8.5 16.5C8.5 7.66335 12.0818 0.5 16.5 0.5C20.9182 0.5 24.5 7.66335 24.5 16.5Z" stroke="black" stroke-width="1.5" stroke-linecap="square" />
-                  <path d="M2.5 8.60001H30.5" stroke="black" stroke-width="1.5" />
-                  <path d="M2.5 24.6H30.5" stroke="black" stroke-width="1.5" />
-                  <path d="M32 16.5C32 25.0605 25.0605 32 16.5 32C7.93949 32 1 25.0605 1 16.5C1 7.93949 7.93949 1 16.5 1C25.0605 1 32 7.93949 32 16.5Z" stroke="black" stroke-width="1.5" />
+                <g clipPath="url(#clip0)">
+                  <path fillRule="evenodd" clipRule="evenodd" d="M24.5 16.5C24.5 25.3366 20.9182 32.5 16.5 32.5C12.0818 32.5 8.5 25.3366 8.5 16.5C8.5 7.66335 12.0818 0.5 16.5 0.5C20.9182 0.5 24.5 7.66335 24.5 16.5Z" stroke="black" strokeWidth="1.5" strokeLinecap="square" />
+                  <path d="M2.5 8.60001H30.5" stroke="black" strokeWidth="1.5" />
+                  <path d="M2.5 24.6H30.5" stroke="black" strokeWidth="1.5" />
+                  <path d="M32 16.5C32 25.0605 25.0605 32 16.5 32C7.93949 32 1 25.0605 1 16.5C1 7.93949 7.93949 1 16.5 1C25.0605 1 32 7.93949 32 16.5Z" stroke="black" strokeWidth="1.5" />
                 </g>
                 <defs>
                   <clipPath id="clip0">
@@ -98,10 +103,11 @@ export const AboveTheFold = () => {
             title={i("index_cta_download")}
             subtitle={i("index_cta_download_subtitle")}
             href="/download"
+            onClick={event("Home Page CTA Finished", { link: "download" })}
             icon={
               <svg width="15" height="27" viewBox="0 0 15 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7.5 0.5V19M7.5 19L1 13M7.5 19L13 13" stroke="black" stroke-width="1.5" />
-                <path d="M0.5 25H14.5" stroke="black" stroke-width="4" />
+                <path d="M7.5 0.5V19M7.5 19L1 13M7.5 19L13 13" stroke="black" strokeWidth="1.5" />
+                <path d="M0.5 25H14.5" stroke="black" strokeWidth="4" />
               </svg>
             } />
         </Col>

@@ -154,10 +154,21 @@ html.font-open-dyslexic {
     }
   }
 
+  h1 > code,
+  h2 > code,
+  h3 > code {
+    background-color: var(--inline-code-background-color);
+    font-size: 0.8em;
+    margin-top: 0.2em;
+    margin-left: 0.2em;
+    padding: 2px 4px;
+  }
+
   p > code,
   li > code {
     background-color: var(--inline-code-background-color);
     font-family: $font-code;
+    font-size: 0.9rem;
     padding: 2px 4px;
   }
 

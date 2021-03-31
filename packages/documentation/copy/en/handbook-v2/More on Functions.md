@@ -616,7 +616,7 @@ There are further details at the end of this chapter.
 
 The special type `object` refers to any value that isn't a primitive (`string`, `number`, `boolean`, `symbol`, `null`, or `undefined`).
 This is different from the _empty object type_ `{ }`, and also different from the global type `Object`.
-You can read the reference page about [[The global types]] for information on what `Object` is for - long story short, don't ever use `Object`.
+It's very likely you will never use `Object`.
 
 > `object` is not `Object`. **Always** use `object`!
 
