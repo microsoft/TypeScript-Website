@@ -39,7 +39,7 @@ pt.x = 0;
 pt.y = 0;
 ```
 
-As with other locations, the type annotation is optional, but will be an implict `any` if not specified.
+As with other locations, the type annotation is optional, but will be an implicit `any` if not specified.
 
 Fields can also have _initializers_; these will run automatically when the class is instantiated:
 
