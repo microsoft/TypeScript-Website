@@ -576,11 +576,6 @@ You can use PropertyGroup conditions to define different sets of configurations.
     Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
 ```
 
-### What is supported in my version of Visual Studio?
-
-Look in your `C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets` file.
-The authoritative mappings between MSBuild XML tags and `tsc` compiler options live in there.
-
 ### ToolsVersion
 
 The value of `<TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>` property in the project file identifies the compiler version to use to build (1.7 in this example).
