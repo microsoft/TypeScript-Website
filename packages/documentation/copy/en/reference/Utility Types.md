@@ -16,8 +16,8 @@ Constructs a type with all properties of `Type` set to optional. This utility wi
 
 ```ts twoslash
 interface Todo {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
 }
 
 function updateTodo(todo: Todo, fieldsToUpdate: Partial<Todo>) {
@@ -43,8 +43,8 @@ Constructs a type consisting of all properties of `Type` set to required. The op
 ```ts twoslash
 // @errors: 2741
 interface Props {
-  a?: number;
-  b?: string;
+  a: number;
+  b: string;
 }
 
 const obj: Props = { a: 5 };
