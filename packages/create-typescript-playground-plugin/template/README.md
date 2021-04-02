@@ -4,7 +4,7 @@ My new plugin for the TypeScript playground.
 
 ## Running this plugin
 
-- [Click this link](https://www.staging-typescript.org/play?install-plugin=[name]) to install
+- [Click this link](https://www.typescriptlang.org/play?install-plugin=[name]) to install
 
 or
 
