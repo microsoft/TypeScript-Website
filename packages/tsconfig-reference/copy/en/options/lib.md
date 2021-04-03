@@ -66,4 +66,6 @@ You may want to change these for a few reasons:
 | `ESNext.Intl`             |
 | `ESNext.Symbol`           |
 
-This list may be out of date, you can see the full list in the [TypeScript source code](https://github.com/microsoft/TypeScript/tree/master/lib).
+This list may be out of date, you can see the full list in the [TypeScript source code](https://github.com/microsoft/TypeScript/tree/master/lib). Some options cannot be set directly, see `libEntries` in [src/compiler/commandLineParser.ts](https://github.com/microsoft/TypeScript/blob/master/src/compiler/commandLineParser.ts) for a list of accepted `lib` values.
+
+Options ending in `.Full` are default values, which can only be selected indirectly, by setting [`target`](#target) to the corresponding value, e.g. if `target` is set to `ESLint`, and `lib` is not set, `lib` will default to `ESLint.Full`.
