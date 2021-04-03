@@ -54,8 +54,12 @@ interface NameLabel {
 function createLabel(id: number): IdLabel;
 function createLabel(name: string): NameLabel;
 function createLabel(nameOrId: string | number): IdLabel | NameLabel;
+
 function createLabel(nameOrId: string | number): IdLabel | NameLabel {
-  throw "unimplemented";
+  if (typeof nameOrId === 'string') {
+      return {name: nameOrId};
+    } else
+    return {id: nameOrId};
 }
 ```
 
