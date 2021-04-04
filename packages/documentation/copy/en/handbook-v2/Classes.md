@@ -275,7 +275,7 @@ Generally it's better to store indexed data in another place instead of on the c
 
 ## Class Heritage
 
-Like other langauges with object-oriented features, classes in JavaScript can inherit from base classes.
+Like other languages with object-oriented features, classes in JavaScript can inherit from base classes.
 
 ### `implements` Clauses
 
