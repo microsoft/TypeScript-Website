@@ -519,7 +519,7 @@ interface Apple {
 type AppleBox = Box<Apple>;
 ```
 
-This also means that we can avoid overloads entirely by instead using [generic functions](./More on Functions.md#generic-functions).
+This also means that we can avoid overloads entirely by instead using [generic functions](<./More on Functions.md#generic-functions>).
 
 ```ts twoslash
 interface Box<Type> {
