@@ -51,6 +51,7 @@ The following example has `noImplicitOverride` enabled, and you can see the erro
 
 ```ts twoslash
 // @noImplicitOverride
+// @errors: 4114
 class Album {
   setup() {}
 }
