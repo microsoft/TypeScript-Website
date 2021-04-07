@@ -693,7 +693,7 @@ function doSomething(f: Function) {
 
 This is an _untyped function call_ and is generally best avoided because of the unsafe `any` return type.
 
-If need to accept an arbitrary function but don't intend to call it, the type `() => void` is generally safer.
+If you need to accept an arbitrary function but don't intend to call it, the type `() => void` is generally safer.
 
 ## Rest Parameters and Arguments
 
