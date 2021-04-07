@@ -57,17 +57,27 @@ const okToSkip = [
 
 filteredOptions.forEach((option) => {
   const name = option.name as CompilerOptionName;
+  const sectionsPath = join(__dirname, `../../copy/en/options/${name}.md`);
 
   if (!schemaCompilerOpts[name]) {
     if (okToSkip.includes(name)) return;
     const title = `Issue creating JSON Schema for tsconfig`;
     const headline = `Could not find '${name}' in schemaBase.definitions.compilerOptionsDefinition.properties.compilerOptions.properties`;
-    const msg =
-      "You need to add it to the file: packages/tsconfig-reference/scripts/schema/vendor/base.json";
+    const msg = `You need to add it to the file: packages/tsconfig-reference/scripts/schema/vendor/base.json - something like:
+    
+            "${name}": {
+              "description": "${option.description.message}",
+              "type": "boolean",
+              "default": false
+            },
+
+You're also going to need to make the new Markdown file for the compiler flag, run:
+
+\n    echo '---\\ndisplay: "${option.name}"\\noneline: "Does something"\\n---\\n${option.description.message}\\n' > ${sectionsPath}\n\nThen add some docs and run: \n>  yarn workspace tsconfig-reference build\n\n
+    `;
 
     throw new Error([title, headline, msg, ""].join("\n\n"));
   } else {
-    const sectionsPath = join(__dirname, `../../copy/en/options/${name}.md`);
     const optionFile = readMarkdownFile(sectionsPath);
 
     // Set the plain version

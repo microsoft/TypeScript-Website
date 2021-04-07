@@ -470,6 +470,12 @@
               "default": false,
               "markdownDescription": "Enable error reporting for fallthrough cases in switch statements.\n\nSee more: https://www.typescriptlang.org/tsconfig#noFallthroughCasesInSwitch"
             },
+            "noImplicitOverride": {
+              "description": "Ensure overriding members in derived classes are marked with an override modifier.",
+              "type": "boolean",
+              "default": false,
+              "markdownDescription": "Ensure overriding members in derived classes are marked with an override modifier.\n\nSee more: https://www.typescriptlang.org/tsconfig#noImplicitOverride"
+            },
             "allowUnreachableCode": {
               "description": "Disable error reporting for unreachable code.",
               "type": "boolean",

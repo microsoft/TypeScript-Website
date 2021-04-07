@@ -401,6 +401,11 @@
               "type": "boolean",
               "default": false
             },
+            "noImplicitOverride": {
+              "description": "Ensure overriding members in derived classes are marked with an 'override' modifier.",
+              "type": "boolean",
+              "default": false
+            },
             "allowUnreachableCode": {
               "description": "Do not report errors on unreachable code. Requires TypeScript version 1.8 or later.",
               "type": "boolean"
