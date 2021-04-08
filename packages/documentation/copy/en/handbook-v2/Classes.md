@@ -619,7 +619,7 @@ The main thing to note here is that in the derived class, we need to be careful 
 Different OOP languages disagree about whether it's legal to access a `protected` member through a base class reference:
 
 ```ts twoslash
-// @errors: 2446
+// @errors: 2445
 class Base {
   protected x: number = 1;
 }
