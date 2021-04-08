@@ -58,6 +58,7 @@ export type CompilerOptionName =
   | "noImplicitReturns"
   | "noFallthroughCasesInSwitch"
   | "noUncheckedIndexedAccess"
+  | "noImplicitOverride"
   | "noPropertyAccessFromIndexSignature"
   | "moduleResolution"
   | "baseUrl"
