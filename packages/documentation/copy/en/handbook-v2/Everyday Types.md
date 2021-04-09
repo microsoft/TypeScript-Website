@@ -509,7 +509,7 @@ One way to think about this is to consider how JavaScript comes with different w
 
 ```ts twoslash
 let changingString = "Hello World";
-changingString = "Hola Mundo";
+changingString = "Olá Mundo";
 // Because `changingString` can represent any possible string, that
 // is how TypeScript describes it in the type system
 changingString;
