@@ -182,7 +182,7 @@ In this case, the `import` does nothing. However, all of the code in `maths.ts` 
 
 #### TypeScript Specific ES Module Syntax
 
-Types can be exported and import using the same syntax as JavaScript values:
+Types can be exported and imported using the same syntax as JavaScript values:
 
 ```ts twoslash
 // @filename: animal.ts
@@ -234,7 +234,7 @@ You can learn more about this syntax in the [modules reference page](/docs/handb
 
 ## CommonJS Syntax
 
-CommonJS is the format which most modules on npm are delivered in. Even if you are writing using the ES Modules syntax above, having an brief understanding of how CommonJS syntax works will help you debug easier.
+CommonJS is the format which most modules on npm are delivered in. Even if you are writing using the ES Modules syntax above, having a brief understanding of how CommonJS syntax works will help you debug easier.
 
 #### Exporting
 
@@ -306,7 +306,7 @@ squareTwo;
 
 ### CommonJS and ES Modules interop
 
-There is a mis-match in features between CommonJS and ES Module because ES Modules only support having the default export as a object, and never as a function. TypeScript has a compiler flag to reduce the friction between the two different sets of constraints with [`esModuleInterop`](/tsconfig/#esModuleInterop).
+There is a mis-match in features between CommonJS and ES Module because ES Modules only support having the default export as an object, and never as a function. TypeScript has a compiler flag to reduce the friction between the two different sets of constraints with [`esModuleInterop`](/tsconfig/#esModuleInterop).
 
 ## TypeScript's Module Resolution Options
 
