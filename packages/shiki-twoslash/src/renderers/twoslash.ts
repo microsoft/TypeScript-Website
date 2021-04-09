@@ -52,7 +52,7 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
     const errors = errorsGroupedByLine.get(i) || []
     const lspValues = staticQuickInfosGroupedByLine.get(i) || []
     const queries = queriesGroupedByLine.get(i) || []
-    let targettedWord: any;
+    let targetedWord: typeof twoslash.staticQuickInfos[number]
     if (l.length === 0 && i === 0) {
       // Skip the first newline if it's blank
       filePos += 1
@@ -88,7 +88,9 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
         const errorsInToken = errors.filter(findTokenFunc(tokenPos))
         const lspResponsesInToken = lspValues.filter(findTokenFunc(tokenPos))
         const queriesInToken = queries.filter(findTokenFunc(tokenPos))
-        targettedWord = lspResponsesInToken.filter(response => response.text === (queries.length && queries[0].text)).pop()!;
+        targetedWord = lspResponsesInToken
+          .filter(response => response.text === (queries.length && queries[0].text))
+          .pop()!
 
         const allTokens = [...errorsInToken, ...lspResponsesInToken, ...queriesInToken]
         const allTokensByStart = allTokens.sort((l, r) => {
@@ -117,7 +119,7 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
             return range
           })
 
-          tokenContent += createHighlightedString2(ranges, token.content, targettedWord?.text)
+          tokenContent += createHighlightedString2(ranges, token.content, targetedWord?.text)
         } else {
           tokenContent += subTripleArrow(token.content)
         }
@@ -145,15 +147,14 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
       queries.forEach(query => {
         switch (query.kind) {
           case "query": {
-            const previousLine = (lines[i - 1] || [])[0]?.content || ""
-            const previousLineWhitespace = previousLine.slice(0, /\S/.exec(previousLine)?.index || 0)
+            const queryTextWithPrefix = escapeHtml(query.text!)
             // prettier-ignore
-            const linePrefix = previousLineWhitespace + "//" + "".padStart(query.offset - 2 - previousLineWhitespace.length)
-            // prettier-ignore
-            const queryTextWithPrefix = escapeHtml(query.text!.split("\n").map((l, i) => i !== 0 ? linePrefix + l : l).join("\n"))
-            const halfWayAcrossTheTargettedWord = (targettedWord && targettedWord.character + (targettedWord?.length / 2)) || 0
-            html += "".padStart(halfWayAcrossTheTargettedWord) + `<span class='popover'><div class='arrow'></div>${queryTextWithPrefix}</span>`
-            //`<span class='query'>${linePrefix + "^ = " + queryTextWithPrefix}</span>`
+            const halfWayAcrossTheTargetedWord = (targetedWord && targetedWord.character + targetedWord?.length / 2) || 0
+            html +=
+              `<span class='popover-prefix'>` +
+              " ".repeat(halfWayAcrossTheTargetedWord) +
+              "</span>" +
+              `<span class='popover'><div class='arrow'></div>${queryTextWithPrefix}</span>`
             break
           }
 

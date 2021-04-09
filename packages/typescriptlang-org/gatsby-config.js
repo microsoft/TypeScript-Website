@@ -28,7 +28,9 @@ module.exports = {
   siteMetadata: {
     siteUrl: `https://www.typescriptlang.org/`,
   },
-
+  flags: {
+    DEV_SSR: false,
+  },
   plugins: [
     // SCSS provides inheritance for CSS and which pays the price for the dep
     {

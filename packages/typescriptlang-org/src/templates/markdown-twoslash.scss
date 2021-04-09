@@ -180,7 +180,14 @@ pre {
     margin-bottom: 10px;
     background-color: #eeeeee;
     display: inline-block;
-    margin-top: 10px
+    padding: 0 0.5rem 0.3rem;
+    margin-top: 10px;
+    border-radius: 3px;
+  }
+
+  .popover-prefix {
+    width: 300px;
+    background-color: red;
   }
 
   .inline-completions {
