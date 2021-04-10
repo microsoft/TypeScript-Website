@@ -395,7 +395,7 @@ File 'node_modules/typescript.ts' does not exist.
 File 'node_modules/typescript.tsx' does not exist.
 File 'node_modules/typescript.d.ts' does not exist.
 Found 'package.json' at 'node_modules/typescript/package.json'.
-'package.json' has 'types' field './lib/typescript.d.ts' that references 'node_modules/typescript/lib/typescript.d.ts'.
+'package.json' has 'typings' field './lib/typescript.d.ts' that references 'node_modules/typescript/lib/typescript.d.ts'.
 File 'node_modules/typescript/lib/typescript.d.ts' exist - use it as a module resolution result.
 ======== Module name 'typescript' was successfully resolved to 'node_modules/typescript/lib/typescript.d.ts'. ========
 ```
@@ -412,7 +412,7 @@ File 'node_modules/typescript/lib/typescript.d.ts' exist - use it as a module re
 
 - Loading of types from npm packages
 
-> 'package.json' has **'types'** field './lib/typescript.d.ts' that references 'node_modules/typescript/lib/typescript.d.ts'.
+> 'package.json' has **'typings'** field './lib/typescript.d.ts' that references 'node_modules/typescript/lib/typescript.d.ts'.
 
 - Final result
 
