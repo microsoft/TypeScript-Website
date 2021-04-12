@@ -152,7 +152,7 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
             const queryTextWithPrefix = escapeHtml(query.text!)
             const lspValues = staticQuickInfosGroupedByLine.get(i) || []
             const targetedWord = lspValues.find(response => response.text === (queries.length && queries[0].text))!
-            const halfWayAcrossTheTargetedWord = (targetedWord && targetedWord.character + targetedWord?.length / 2) || 0
+            const halfWayAcrossTheTargetedWord = ((targetedWord && targetedWord.character + targetedWord?.length / 2) - 1) || 0
             html +=
               `<span class='popover-prefix'>` +
               " ".repeat(halfWayAcrossTheTargetedWord) +
