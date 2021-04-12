@@ -5,7 +5,7 @@ permalink: /docs/handbook/release-notes/overview.html
 oneline: "All TypeScript release notes"
 ---
 
-This overview page contains a shortened version of all the release notes for TypeScript.
+This overview page contains a shortened version of all the release notes for TypeScript. Because this page is so big. code samples have their interactive elements disabled.
 
 ## TypeScript 4.2
 
@@ -44,7 +44,7 @@ In prior versions, TypeScript only allowed `...rest` elements at the very last p
 
 However, now rest elements can occur _anywhere_ within a tuple - with only a few restrictions.
 
-```ts twoslash
+```ts
 let foo: [...string[], number];
 
 foo = [123];
@@ -68,7 +68,7 @@ For more details, [see the original pull request](https://github.com/microsoft/T
 In JavaScript, it is a runtime error to use a non-object type on the right side of the `in` operator.
 TypeScript 4.2 ensures this can be caught at design-time.
 
-```ts twoslash
+```ts
 // @errors: 2361
 "foo" in 42;
 ```
@@ -81,7 +81,7 @@ A big thanks to our external contributor [Jonas Hübotter](https://github.com/jo
 
 Back when TypeScript first introduced index signatures, you could only get properties declared by them with "bracketed" element access syntax like `person["name"]`.
 
-```ts twoslash
+```ts
 interface SomeType {
   /** This is an index signature. */
   [propName: string]: any;
@@ -95,7 +95,7 @@ function doStuff(value: SomeType) {
 This ended up being cumbersome in situations where we need to work with objects that have arbitrary properties.
 For example, imagine an API where it's common to misspell a property name by adding an extra `s` character at the end.
 
-```ts twoslash
+```ts
 interface Options {
   /** File patterns to be excluded. */
   exclude?: string[];
@@ -135,7 +135,7 @@ This tells TypeScript that the class is only meant to be extended from, and that
 
 TypeScript 4.2 allows you to specify an `abstract` modifier on constructor signatures.
 
-```ts twoslash {5}
+```ts {5}
 abstract class Shape {
   abstract getArea(): number;
 }
@@ -154,7 +154,7 @@ It doesn't stop you from passing in other classes/constructor functions that are
 This feature allows us to write _mixin factories_ in a way that supports abstract classes.
 For example, in the following code snippet, we're able to use the mixin function `withStyles` with the `abstract` class `SuperClass`.
 
-```ts twoslash
+```ts
 abstract class SuperClass {
     abstract someMethod(): void;
     badda() {}
@@ -277,7 +277,7 @@ For more details, take a look at [the full change](https://github.com/microsoft/
 
 String index signatures are a way of typing dictionary-like objects, where you want to allow access with arbitrary keys:
 
-```ts twoslash
+```ts
 const movieWatchCount: { [key: string]: number } = {};
 
 function watchMovie(title: string) {
@@ -288,7 +288,7 @@ function watchMovie(title: string) {
 Of course, for any movie title not yet in the dictionary, `movieWatchCount[title]` will be `undefined` (TypeScript 4.1 added the option [`--noUncheckedIndexedAccess`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html#checked-indexed-accesses---nouncheckedindexedaccess) to include `undefined` when reading from an index signature like this).
 Even though it's clear that there must be some strings not present in `movieWatchCount`, previous versions of TypeScript treated optional object properties as unassignable to otherwise compatible index signatures, due to the presence of `undefined`.
 
-```ts twoslash
+```ts
 type WesAndersonWatchCount = {
   "Fantastic Mr. Fox"?: number;
   "The Royal Tenenbaums"?: number;
@@ -307,7 +307,7 @@ const movieWatchCount: { [key: string]: number } = wesAndersonWatchCount;
 
 TypeScript 4.2 allows this assignment. However, it does _not_ allow the assignment of non-optional properties with `undefined` in their types, nor does it allow writing `undefined` to a specific key:
 
-```ts twoslash
+```ts
 // @errors: 2322
 type BatmanWatchCount = {
   "Batman Begins": number | undefined;
@@ -327,7 +327,7 @@ movieWatchCount["It's the Great Pumpkin, Charlie Brown"] = undefined;
 
 The new rule also does not apply to number index signatures, since they are assumed to be array-like and dense:
 
-```ts twoslash
+```ts
 // @errors: 2322
 declare let sortOfArrayish: { [key: number]: string };
 declare let numberKeys: { 42?: string };
@@ -357,7 +357,7 @@ There are various changes, though `Intl` and `ResizeObserver`'s may end up being
 
 When the value of a `yield` expression is captured, but TypeScript can't immediately figure out what type you intend for it to receive (i.e. the `yield` expression isn't contextually typed), TypeScript will now issue an implicit `any` error.
 
-```ts twoslash
+```ts
 // @errors: 7057
 function* g1() {
   const value = yield 1;
@@ -502,7 +502,7 @@ const baz = `hello ${yourName}`;
 
 String literal types in TypeScript allow us to model functions and APIs that expect a set of specific strings.
 
-```ts twoslash
+```ts
 // @errors: 2345
 function setVerticalAlignment(color: "top" | "middle" | "bottom") {
   // ...
@@ -534,7 +534,7 @@ That's why TypeScript 4.1 brings the template literal string type.
 It has the same syntax as [template literal strings in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals), but is used in type positions.
 When you use it with concrete literal types, it produces a new string literal type by concatenating the contents.
 
-```ts twoslash
+```ts
 type World = "world";
 
 type Greeting = `hello ${World}`;
@@ -544,7 +544,7 @@ type Greeting = `hello ${World}`;
 What happens when you have unions in substitution positions?
 It produces the set of every possible string literal that could be represented by each union member.
 
-```ts twoslash
+```ts
 type Color = "red" | "blue";
 type Quantity = "one" | "two";
 
@@ -556,7 +556,7 @@ This can be used beyond cute examples in release notes.
 For example, several libraries for UI components have a way to specify both vertical and horizontal alignment in their APIs, often with both at once using a single string like `"bottom-right"`.
 Between vertically aligning with `"top"`, `"middle"`, and `"bottom"`, and horizontally aligning with `"left"`, `"center"`, and `"right"`, there are 9 possible strings where each of the former strings is connected with each of the latter strings using a dash.
 
-```ts twoslash
+```ts
 // @errors: 2345
 type VerticalAlignment = "top" | "middle" | "bottom";
 type HorizontalAlignment = "left" | "center" | "right";
@@ -606,7 +606,7 @@ declare function makeWatchedObject<T>(obj: T): T & PropEventSource<T>;
 
 With this, we can build something that errors when we give the wrong property!
 
-```ts twoslash
+```ts
 // @errors: 2345
 type PropEventSource<T> = {
     on(eventName: `${string & keyof T}Changed`, callback: () => void): void;
@@ -629,7 +629,7 @@ person.on("frstNameChanged", () => {});
 We can also do something special in template literal types: we can _infer_ from substitution positions.
 We can make our last example generic to infer from parts of the `eventName` string to figure out the associated property.
 
-```ts twoslash
+```ts
 type PropEventSource<T> = {
     on<K extends string & keyof T>
         (eventName: `${K}Changed`, callback: (newValue: T[K]) => void ): void;
@@ -666,7 +666,7 @@ Similarly, when we call with `"ageChanged"`, it finds the type for the property 
 Inference can be combined in different ways, often to deconstruct strings, and reconstruct them in different ways.
 In fact, to help with modifying these string literal types, we've added a few new utility type aliases for modifying casing in letters (i.e. converting to lowercase and uppercase characters).
 
-```ts twoslash
+```ts
 type EnthusiasticGreeting<T extends string> = `${Uppercase<T>}`
 
 type HELLO = EnthusiasticGreeting<"hello">;
@@ -717,7 +717,7 @@ type MappedTypeWithNewKeys<T> = {
 
 With this new `as` clause, you can leverage features like template literal types to easily create property names based off of old ones.
 
-```ts twoslash
+```ts
 type Getters<T> = {
     [K in keyof T as `get${Capitalize<string & K>}`]: () => T[K]
 };
@@ -735,7 +735,7 @@ type LazyPerson = Getters<Person>;
 and you can even filter out keys by producing `never`.
 That means you don't have to use an extra `Omit` helper type in some cases.
 
-```ts twoslash
+```ts
 // Remove the 'kind' property
 type RemoveKindField<T> = {
     [K in keyof T as Exclude<K, "kind">]: T[K]
@@ -808,7 +808,7 @@ See more [at the implementation](https://github.com/microsoft/TypeScript/pull/40
 TypeScript has a feature called _index signatures_.
 These signatures are a way to signal to the type system that users can access arbitrarily-named properties.
 
-```ts twoslash
+```ts
 interface Options {
   path: string;
   permissions: number;
@@ -942,7 +942,7 @@ When generic spreads are instantiated (or, replaced with a real type) in these t
 
 For example, that means we can type function like `tail`, without our "death by a thousand overloads" issue.
 
-```ts twoslash
+```ts
 function tail<T extends any[]>(arr: readonly [any, ...T]) {
   const [_ignored, ...rest] = arr;
   return rest;
@@ -986,7 +986,7 @@ type Unbounded = [...Strings, ...Numbers, boolean];
 
 By combining both of these behaviors together, we can write a single well-typed signature for `concat`:
 
-```ts twoslash
+```ts
 type Arr = readonly any[];
 
 function concat<T extends Arr, U extends Arr>(arr1: T, arr2: U): [...T, ...U] {
@@ -1009,7 +1009,7 @@ function partialCall(f, ...headArgs) {
 
 TypeScript 4.0 improves the inference process for rest parameters and rest tuple elements so that we can type this and have it "just work".
 
-```ts twoslash
+```ts
 type Arr = readonly unknown[];
 
 function partialCall<T extends Arr, U extends Arr, R>(
@@ -1022,7 +1022,7 @@ function partialCall<T extends Arr, U extends Arr, R>(
 
 In this case, `partialCall` understands which parameters it can and can't initially take, and returns functions that appropriately accept and reject anything left over.
 
-```ts twoslash
+```ts
 // @errors: 2345 2554 2554 2345
 type Arr = readonly unknown[];
 
@@ -1080,7 +1080,7 @@ function foo(arg0: string, arg1: number): void {
 
 ...for any caller of `foo`.
 
-```ts twoslash
+```ts
 // @errors: 2554
 function foo(arg0: string, arg1: number): void {
   // ...
@@ -1111,7 +1111,7 @@ type Foo = [first: number, second?: string, ...rest: any[]];
 There are a few rules when using labeled tuples.
 For one, when labeling a tuple element, all other elements in the tuple must also be labeled.
 
-```ts twoslash
+```ts
 // @errors: 5084
 type Bar = [first: string, number];
 ```
@@ -1119,7 +1119,7 @@ type Bar = [first: string, number];
 It's worth noting - labels don't require us to name our variables differently when destructuring.
 They're purely there for documentation and tooling.
 
-```ts twoslash
+```ts
 function foo(x: [first: string, second: number]) {
     // ...
 
@@ -1144,7 +1144,7 @@ To learn more, check out [the pull request](https://github.com/microsoft/TypeScr
 TypeScript 4.0 can now use control flow analysis to determine the types of properties in classes when `noImplicitAny` is enabled.
 
 <!--prettier-ignore -->
-```ts twoslash
+```ts
 class Square {
   // Previously both of these were any
   area;
@@ -1161,7 +1161,7 @@ class Square {
 In cases where not all paths of a constructor assign to an instance member, the property is considered to potentially be `undefined`.
 
 <!--prettier-ignore -->
-```ts twoslash
+```ts
 // @errors: 2532
 class Square {
   sideLength;
@@ -1181,7 +1181,7 @@ class Square {
 
 In cases where you know better (e.g. you have an `initialize` method of some sort), you'll still need an explicit type annotation along with a definite assignment assertion (`!`) if you're in `strictPropertyInitialization`.
 
-```ts twoslash
+```ts
 class Square {
   // definite assignment assertion
   //        v
@@ -1288,7 +1288,7 @@ if (!obj.prop) {
 
 [Try running the following example](https://www.typescriptlang.org/play?ts=Nightly#code/MYewdgzgLgBCBGArGBeGBvAsAKBnmA5gKawAOATiKQBQCUGO+TMokIANkQHTsgHUAiYlChFyMABYBDCDHIBXMANoBuHI2Z4A9FpgAlIqXZTgRGAFsiAQg2byJeeTAwAslKgSu5KWAAmIczoYAB4YAAYuAFY1XHwAXwAaWxgIEhgKKmoAfQA3KXYALhh4EA4iH3osWM1WCDKePkFUkTFJGTlFZRimOJw4mJwAM0VgKABLcBhB0qCqplr63n4BcjGCCVgIMd8zIjz2eXciXy7k+yhHZygFIhje7BwFzgblgBUJMdlwM3yAdykAJ6yBSQGAeMzNUTkU7YBCILgZUioOBIBGUJEAHwxUxmqnU2Ce3CWgnenzgYDMACo6pZxpYIJSOqDwSkSFCYXC0VQYFi0NMQHQVEA) to see how that differs from _always_ performing the assignment.
 
-```ts twoslash
+```ts
 const obj = {
     get prop() {
         console.log("getter has run");
@@ -1323,7 +1323,7 @@ You can also [check out TC39's proposal repository for this feature](https://git
 Since the beginning days of TypeScript, `catch` clause variables have always been typed as `any`.
 This meant that TypeScript allowed you to do anything you wanted with them.
 
-```ts twoslash
+```ts
 try {
   // Do some work
 } catch (x) {
@@ -1342,7 +1342,7 @@ That's why TypeScript 4.0 now lets you specify the type of `catch` clause variab
 `unknown` is safer than `any` because it reminds us that we need to perform some sorts of type-checks before operating on our values.
 
 <!--prettier-ignore -->
-```ts twoslash
+```ts
 // @errors: 2571
 try {
   // ...
@@ -9325,7 +9325,7 @@ class MyComponent extends React.Component<Props, {}> {
 
 #### Using other JSX frameworks
 
-JSX element names and properties are validated against the `JSX` namespace. Please see the [[JSX]] wiki page for defining the `JSX` namespace for your framework.
+JSX element names and properties are validated against the `JSX` namespace. Please see the JSX wiki page for defining the `JSX` namespace for your framework.
 
 #### Output generation
 
@@ -9334,7 +9334,7 @@ TypeScript ships with two JSX modes: `preserve` and `react`.
 - The `preserve` mode will keep JSX expressions as part of the output to be further consumed by another transform step. _Additionally the output will have a `.jsx` file extension._
 - The `react` mode will emit `React.createElement`, does not need to go through a JSX transformation before use, and the output will have a `.js` file extension.
 
-See the [[JSX]] wiki page for more information on using JSX in TypeScript.
+See the JSX wiki page for more information on using JSX in TypeScript.
 
 ## Intersection types
 
@@ -10421,7 +10421,3 @@ module MyControllers {
   }
 }
 ```
-
-[//begin]: # "Autogenerated link references for markdown compatibility"
-[JSX]: ../reference/JSX "JSX"
-[//end]: # "Autogenerated link references"
