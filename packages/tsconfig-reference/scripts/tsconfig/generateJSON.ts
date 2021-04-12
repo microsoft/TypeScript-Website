@@ -124,6 +124,8 @@ const topLevelTSConfigOptions: CompilerOptionJSON[] = [
   },
 ];
 
+// TODO: https://github.com/microsoft/TypeScript/pull/39243#issuecomment-816756824
+// Make automatic!
 const watchOptions: CompilerOptionJSON[] = [
   {
     name: "watchFile",

@@ -17,7 +17,7 @@ export const HeadSEO = (props: SeoProps) => {
   }
 
   // Skip indexing on the staging site
-  const staging = process && process.env && process.env.GATSBY_TYPESCRIPT_SITE_STAGING
+  const staging = "process" in globalThis && process && process.env && process.env.GATSBY_TYPESCRIPT_SITE_STAGING
   if (staging) {
     ogTags["robots"] = "noindex"
   }

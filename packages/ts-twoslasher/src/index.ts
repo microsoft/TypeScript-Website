@@ -1,7 +1,7 @@
 let hasLocalStorage = false
 try {
   hasLocalStorage = typeof localStorage !== `undefined`
-} catch (error) { }
+} catch (error) {}
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 
@@ -182,7 +182,7 @@ const valuedConfigRegexp = /^\/\/\s?@(\w+):\s?(.+)$/
 
 function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: CompilerOptions, ts: TS) {
   const options = { ...defaultCompilerOptions }
-  for (let i = 0; i < codeLines.length;) {
+  for (let i = 0; i < codeLines.length; ) {
     let match
     if ((match = booleanConfigRegexp.exec(codeLines[i]))) {
       options[match[1]] = true
@@ -407,7 +407,8 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   }
 
   const getRoot = () => {
-    const path = require("path")
+    const pa = "pa"
+    const path = require(pa + "th") as typeof import("path")
     const rootPath = options.vfsRoot || process.cwd()
     return rootPath.split(path.sep).join(path.posix.sep)
   }

@@ -189,8 +189,8 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
  */
 export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions, ts?: typeof import("typescript")) => {
   const tsModule = ts || require("typescript")
-  const path = require("path")
-  const fs = require("fs")
+  const path = requirePath()
+  const fs = requireFS()
 
   const getLib = (name: string) => {
     const lib = path.dirname(require.resolve("typescript"))
@@ -209,8 +209,8 @@ export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions
  * Adds recursively files from the FS into the map based on the folder
  */
 export const addAllFilesFromFolder = (map: Map<string, string>, workingDir: string): void => {
-  const path = require("path")
-  const fs = require("fs")
+  const path = requirePath()
+  const fs = requireFS()
 
   const walk = function (dir: string) {
     let results: string[] = []
@@ -402,7 +402,7 @@ export function createFSBackedSystem(files: Map<string, string>, _projectRoot: s
   // We need to make an isolated folder for the tsconfig, but also need to be able to resolve the
   // existing node_modules structures going back through the history
   const root = _projectRoot + "/vfs"
-  const path = require("path")
+  const path = requirePath()
 
   // The default System in TypeScript
   const nodeSys = ts.sys
@@ -567,4 +567,12 @@ export function createVirtualLanguageServiceHost(
     },
   }
   return lsHost
+}
+
+const requirePath = () => {
+  return require(String.fromCharCode(112, 97, 116, 104)) as typeof import("path")
+}
+
+const requireFS = () => {
+  return require(String.fromCharCode(102, 115)) as typeof import("fs")
 }

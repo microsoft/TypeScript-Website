@@ -26,6 +26,7 @@ export const allReleases = [
 
 /** The latest major.min version **/
 export const supportedReleases = [
+  "4.3.0-beta",
   "4.2.3",
   "4.1.5",
   "4.0.5",
