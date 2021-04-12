@@ -112,7 +112,7 @@ const Play: React.FC<Props> = (props) => {
           vs: urlForMonaco,
           "typescript-sandbox": withPrefix('/js/sandbox'),
           "typescript-playground": withPrefix('/js/playground'),
-          "unpkg": "https://unpkg.com/",
+          "unpkg": "https://unpkg.com",
           "local": "http://localhost:5000"
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],

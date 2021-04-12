@@ -52,7 +52,7 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
     const errors = errorsGroupedByLine.get(i) || []
     const lspValues = staticQuickInfosGroupedByLine.get(i) || []
     const queries = queriesGroupedByLine.get(i) || []
-    let targetedWord: typeof twoslash.staticQuickInfos[number]
+
     if (l.length === 0 && i === 0) {
       // Skip the first newline if it's blank
       filePos += 1
@@ -69,6 +69,8 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
       let tokenPos = 0
 
       l.forEach(token => {
+        let targetedQueryWord: typeof twoslash.staticQuickInfos[number] | undefined
+
         let tokenContent = ""
         // Underlining particular words
         const findTokenFunc = (start: number) => (e: any) =>
@@ -88,9 +90,9 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
         const errorsInToken = errors.filter(findTokenFunc(tokenPos))
         const lspResponsesInToken = lspValues.filter(findTokenFunc(tokenPos))
         const queriesInToken = queries.filter(findTokenFunc(tokenPos))
-        targetedWord = lspResponsesInToken
-          .filter(response => response.text === (queries.length && queries[0].text))
-          .pop()!
+
+        // Does this line have a word targeted by a query?
+        targetedQueryWord ||= lspResponsesInToken.find(response => response.text === (queries.length && queries[0].text))!
 
         const allTokens = [...errorsInToken, ...lspResponsesInToken, ...queriesInToken]
         const allTokensByStart = allTokens.sort((l, r) => {
@@ -119,7 +121,7 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
             return range
           })
 
-          tokenContent += createHighlightedString2(ranges, token.content, targetedWord?.text)
+          tokenContent += createHighlightedString2(ranges, token.content, targetedQueryWord?.text)
         } else {
           tokenContent += subTripleArrow(token.content)
         }
@@ -148,7 +150,8 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
         switch (query.kind) {
           case "query": {
             const queryTextWithPrefix = escapeHtml(query.text!)
-            // prettier-ignore
+            const lspValues = staticQuickInfosGroupedByLine.get(i) || []
+            const targetedWord = lspValues.find(response => response.text === (queries.length && queries[0].text))!
             const halfWayAcrossTheTargetedWord = (targetedWord && targetedWord.character + targetedWord?.length / 2) || 0
             html +=
               `<span class='popover-prefix'>` +

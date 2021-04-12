@@ -557,17 +557,17 @@ TypeScript understands that the function `user.becomeAdmin` has a corresponding 
 ```ts twoslash
 interface User {
   id: number;
-  isAdmin: boolean;
+  admin: boolean;
 }
 declare const getDB: () => DB;
-// ---cut---
 interface DB {
   filterUsers(filter: (this: User) => boolean): User[];
 }
 
+// ---cut---
 const db = getDB();
 const admins = db.filterUsers(function () {
-  return this.isAdmin;
+  return this.admin;
 });
 ```
 
