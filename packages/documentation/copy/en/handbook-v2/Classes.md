@@ -39,7 +39,7 @@ pt.x = 0;
 pt.y = 0;
 ```
 
-As with other locations, the type annotation is optional, but will be an implict `any` if not specified.
+As with other locations, the type annotation is optional, but will be an implicit `any` if not specified.
 
 Fields can also have _initializers_; these will run automatically when the class is instantiated:
 
@@ -275,7 +275,7 @@ Generally it's better to store indexed data in another place instead of on the c
 
 ## Class Heritage
 
-Like other langauges with object-oriented features, classes in JavaScript can inherit from base classes.
+Like other languages with object-oriented features, classes in JavaScript can inherit from base classes.
 
 ### `implements` Clauses
 
@@ -596,7 +596,7 @@ g.getName();
 
 #### Exposure of `protected` members
 
-Derived classes need to follow their base class contracts, but may choose to expose a more general type with more capabilities.
+Derived classes need to follow their base class contracts, but may choose to expose a subtype of base class with more capabilities.
 This includes making `protected` members `public`:
 
 ```ts twoslash
@@ -1022,6 +1022,78 @@ const derived = new DerivedBox();
 derived.sameAs(base);
 ```
 
+### `this`-based type guards
+
+You can use `this is Type` in the return position for methods in classes and interfaces.
+When mixed with a type narrowing (e.g. `if` statements) the type of the target object would be narrowed to the specified `Type`.
+
+<!-- prettier-ignore -->
+```ts twoslash
+// @strictPropertyInitialization: false
+class FileSystemObject {
+  isFile(): this is FileRep {
+    return this instanceof FileRep;
+  }
+  isDirectory(): this is Directory {
+    return this instanceof Directory;
+  }
+  isNetworked(): this is Networked & this {
+    return this.networked;
+  }
+  constructor(public path: string, private networked: boolean) {}
+}
+
+class FileRep extends FileSystemObject {
+  constructor(path: string, public content: string) {
+    super(path, false);
+  }
+}
+
+class Directory extends FileSystemObject {
+  children: FileSystemObject[];
+}
+
+interface Networked {
+  host: string;
+}
+
+const fso: FileSystemObject = new FileRep("foo/bar.txt", "foo");
+
+if (fso.isFile()) {
+  fso.content;
+// ^?
+} else if (fso.isDirectory()) {
+  fso.children;
+// ^?
+} else if (fso.isNetworked()) {
+  fso.host;
+// ^?
+}
+```
+
+A common use-case for a this-based type guard is to allow for lazy validation of a particular field. For example, this case removes an `undefined` from the value held inside box when `hasValue` has been verified to be true:
+
+```ts twoslash
+class Box<T> {
+  value?: T;
+
+  hasValue(): this is { value: T } {
+    return this.value !== undefined;
+  }
+}
+
+const box = new Box();
+box.value = "Gameboy";
+
+box.value;
+//  ^?
+
+if (box.hasValue()) {
+  box.value;
+  //  ^?
+}
+```
+
 ## Parameter Properties
 
 TypeScript offers special syntax for turning a constructor parameter into a class property with the same name and value.
@@ -1030,7 +1102,7 @@ The resulting field gets those modifier(s):
 
 ```ts twoslash
 // @errors: 2341
-class A {
+class Params {
   constructor(
     public readonly x: number,
     protected y: number,
@@ -1039,7 +1111,7 @@ class A {
     // No body necessary
   }
 }
-const a = new A(1, 2, 3);
+const a = new Params(1, 2, 3);
 console.log(a.x);
 //            ^?
 console.log(a.z);

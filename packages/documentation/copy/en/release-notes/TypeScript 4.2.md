@@ -279,7 +279,7 @@ let Ctor: new () => HasArea = Shape;
 
 This does the right thing in case we intend to run code like `new Ctor`, but it's overly-restrictive in case we want to write a subclass of `Ctor`.
 
-````ts
+```ts twoslash
 // @errors: 2345
 abstract class Shape {
   abstract getArea(): number;
@@ -297,16 +297,19 @@ function makeSubclassWithArea(Ctor: new () => HasArea) {
   };
 }
 
-let MyShape = makeSubclassWithArea(Shape);```
+let MyShape = makeSubclassWithArea(Shape);
+```
 
 It also doesn't work well with built-in helper types like `InstanceType`.
 
-```ts
-// Error!
-// Type 'typeof Shape' does not satisfy the constraint 'new (...args: any) => any'.
-//   Cannot assign an abstract constructor type to a non-abstract constructor type.
+```ts twoslash
+// @errors: 2344
+abstract class Shape {
+  abstract getArea(): number;
+}
+// ---cut---
 type MyInstance = InstanceType<typeof Shape>;
-````
+```
 
 That's why TypeScript 4.2 allows you to specify an `abstract` modifier on constructor signatures.
 

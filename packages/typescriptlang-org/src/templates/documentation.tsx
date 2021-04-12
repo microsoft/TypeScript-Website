@@ -91,7 +91,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   const slug = slugger()
   return (
     <Layout title={`${prefix} - ${post.frontmatter.title}`} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang}>
-      <section id="doc-layout">
+      <section id="doc-layout" >
         <SidebarToggleButton />
 
         <div className="page-popup" id="page-helpful-popup" style={{ opacity: 0 }}>

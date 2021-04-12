@@ -1,5 +1,5 @@
-import React, { useEffect } from "react"
-import { withPrefix, graphql } from "gatsby"
+import React, { useEffect, useState } from "react"
+import { withPrefix } from "gatsby"
 import { Layout } from "../../components/layout"
 import { Intl } from "../../components/Intl"
 import { VersionBar } from "../../components/VersionBar"
@@ -17,6 +17,8 @@ import "../pages/css/documentation.scss"
 
 import { EditorExamples } from "../../components/index/EditorExamples"
 import { createIntlLink } from "../../components/IntlLink"
+import { isTouchDevice } from "../../lib/isTouchDevice"
+import { AboveTheFold } from "../../components/index/AboveTheFold"
 
 const Section = (props: { children: any, color: string, className?: string }) =>
   <div key={props.color} className={props.color + " " + (props.className ?? "")}><div className="container">{props.children}</div></div>
@@ -36,30 +38,13 @@ const Index: React.FC<Props> = (props) => {
 
   useEffect(() => { setupTwoslashHovers(); setupVideosSection() }, [])
 
-
   return (
     <Layout title="Typed JavaScript at Any Scale." description="TypeScript extends JavaScript by adding types to the language. TypeScript speeds up your development experience by catching errors and providing fixes before you even run your code." lang={props.pageContext.lang} suppressCustomization>
 
       <div id="index">
-        <Section color="darkblue" className="headline">
-          <Row>
-            <Col>
-              <h1>{i("index_headline", { bold: (...chunk) => <strong>{chunk}</strong> })}</h1>
-              <p>{i("index_byline")}</p>
-              <p>{i("index_summary")}</p>
-              <p>{i("index_locations")}</p>
-            </Col>
-            <Col2>
-              <EditorExamples />
-            </Col2>
-          </Row>
-        </Section>
         <VersionBar />
-        <Section color="grey" className="hide-small">
-          <div className="call-to-action">
-            <Link target="_blank" className='flat-button' to="/play/">{i("index_cta_play")}</Link>
-            <a className='flat-button' href="#installation">{i("index_cta_install")}</a>
-          </div>
+        <Section color="darkblue" className="headline">
+          <AboveTheFold />
         </Section>
         <Section color="white">
           <h2>{i("index_what_is")}</h2>
@@ -253,10 +238,14 @@ const Installation = () => {
       console.error('Async: Could not copy text: ', err);
     });
   }
-  return (<div>
-    <a onClick={onclick} className="flat-button"><code>npm install typescript <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="copy" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"></path></svg></code></a>
-    <div className="tooltip">Copied to clipboard</div>
-  </div>)
+  return (
+    <div key="installation">
+      <a onClick={onclick} className="flat-button"><code>npm install typescript <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="copy" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"></path></svg></code></a>
+      <div className="tooltip">Copied to clipboard</div>
+    </div>
+  )
 }
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Index {...props} /></Intl>
+
+

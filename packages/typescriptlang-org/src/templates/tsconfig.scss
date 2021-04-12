@@ -138,18 +138,13 @@
     margin-bottom: 80px;
 
     > h3 {
-      &:before {
-        display: block;
-        content: " ";
-        height: 150px;
-        margin-top: -150px;
-        visibility: hidden;
-      }
-
       margin-bottom: 0;
       overflow-x: hidden;
+      offset-anchor: -30px;
 
       > a {
+        scroll-margin-top: 65px;
+
         &:focus {
           outline: none;
           background-color: black;

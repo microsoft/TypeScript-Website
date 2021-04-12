@@ -27,7 +27,7 @@ Conversely, to consume a variable, function, class, interface, etc. exported fro
 Before we start, it's important to understand what TypeScript considers a module.
 The JavaScript specification declares that any JavaScript files without an `export` or top-level `await` should be considered a script and not a module.
 
-Inside a script file variables are declared to be in the shared global scope, and it's assumed that you'll either use the [`--outFile`](/tsconfig#outFile) compiler option to join multiple input files into one output file, or use multiple `<script>` tags in your HTML to load these files (in the correct order!).
+Inside a script file variables and types are declared to be in the shared global scope, and it's assumed that you'll either use the [`--outFile`](/tsconfig#outFile) compiler option to join multiple input files into one output file, or use multiple `<script>` tags in your HTML to load these files (in the correct order!).
 
 If you have a file that doesn't currently have any `import`s or `export`s, but you want to be treated as a module, add the line:
 
@@ -35,7 +35,7 @@ If you have a file that doesn't currently have any `import`s or `export`s, but y
 export {};
 ```
 
-to make the file be a module exporting nothing. This syntax works regardless of your module target.
+which will change the file be a module exporting nothing. This syntax works regardless of your module target.
 
 ## Modules in TypeScript
 
@@ -166,7 +166,7 @@ const positivePhi = math.absolute(math.phi);
 //    ^?
 ```
 
-You can import a file and _not_ include any variables into your current module via `import "./file"`
+You can import a file and _not_ include any variables into your current module via `import "./file"`:
 
 ```ts twoslash
 // @filename: maths.ts
@@ -182,7 +182,7 @@ In this case, the `import` does nothing. However, all of the code in `maths.ts` 
 
 #### TypeScript Specific ES Module Syntax
 
-Types can be exported and import using the same syntax as JavaScript values:
+Types can be exported and imported using the same syntax as JavaScript values:
 
 ```ts twoslash
 // @filename: animal.ts
@@ -201,7 +201,6 @@ type Animals = Cat | Dog;
 TypeScript has extended the `import` syntax with `import type` which is an import which can _only_ import types.
 
 ```ts twoslash
-// @errors: 1361
 // @filename: animal.ts
 export type Cat = { breed: string; yearOfBirth: number };
 export type Dog = { breeds: string[]; yearOfBirth: number };
@@ -209,9 +208,10 @@ export const createCatName = () => "fluffy";
 
 // @filename: valid.ts
 import type { Cat, Dog } from "./animal.js";
-type Animals = Cat | Dog;
+export type Animals = Cat | Dog;
 
 // @filename: app.ts
+// @errors: 1361
 import type { createCatName } from "./animal.js";
 const name = createCatName();
 ```
@@ -230,11 +230,11 @@ import fs = require("fs");
 const code = fs.readFileSync("hello.ts", "utf8");
 ```
 
-You can learn more about this syntax in the [modules reference page](/docs/handbook/modules.html#export--and-import--require)
+You can learn more about this syntax in the [modules reference page](/docs/handbook/modules.html#export--and-import--require).
 
 ## CommonJS Syntax
 
-CommonJS is the format which most modules on npm are delivered in. Even if you are writing using the ES Modules syntax above, having an brief understanding of how CommonJS syntax works will help you debug easier.
+CommonJS is the format which most modules on npm are delivered in. Even if you are writing using the ES Modules syntax above, having a brief understanding of how CommonJS syntax works will help you debug easier.
 
 #### Exporting
 
@@ -306,7 +306,7 @@ squareTwo;
 
 ### CommonJS and ES Modules interop
 
-There is a mis-match in features between CommonJS and ES Module because ES Modules only support having the default export as a object, and never as a function. TypeScript has a compiler flag to reduce the friction between the two different sets of constraints with [`esModuleInterop`](/tsconfig/#esModuleInterop).
+There is a mis-match in features between CommonJS and ES Module because ES Modules only support having the default export as an object, and never as a function. TypeScript has a compiler flag to reduce the friction between the two different sets of constraints with [`esModuleInterop`](/tsconfig/#esModuleInterop).
 
 ## TypeScript's Module Resolution Options
 
@@ -323,8 +323,8 @@ For the full details on how these strategies work, you can consult the [Module R
 
 There are two options which affect the emitted JavaScript output:
 
-- [`target`](/tsconfig/#target) which determines which JS features are downleveled (converted to run in older JavaScript runtimes) and which are left intact.
-- [`module](/tsconfig/#module) which determines what code is used for modules to interact with each other
+- [`target`](/tsconfig/#target) which determines which JS features are downleveled (converted to run in older JavaScript runtimes) and which are left intact
+- [`module`](/tsconfig/#module) which determines what code is used for modules to interact with each other
 
 Which `target` you use is determined by the features available in the JavaScript runtime you expect to run the TypeScript code in. That could be: the oldest web browser you support, the lowest version of Node.js you expect to run on or could come from unique constraints from your runtime - like Electron for example.
 

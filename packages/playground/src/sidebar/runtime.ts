@@ -155,6 +155,10 @@ function rewireLoggingToElement(
     } catch (error) {
       console.error(i("play_run_js_fail"))
       console.error(error)
+
+      if (error instanceof SyntaxError && /\bexport\b/u.test(error.message)) {
+        console.warn('Tip: Change the Module setting to "CommonJS" in TS Config settings to allow top-level exports to work in the Playground')
+      }
     }
   })
 

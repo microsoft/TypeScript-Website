@@ -295,9 +295,12 @@ export const createTypeScriptSandbox = (
   const getText = () => getModel().getValue()
   const setText = (text: string) => getModel().setValue(text)
 
-  const setupTSVFS = async () => {
+  const setupTSVFS = async (fsMapAdditions?: Map<string, string>) => {
     const fsMap = await tsvfs.createDefaultMapFromCDN(compilerOptions, ts.version, true, ts, lzstring)
     fsMap.set(filePath.path, getText())
+    if (fsMapAdditions) {
+      fsMapAdditions.forEach((v, k) => fsMap.set(k, v))
+    }
 
     const system = tsvfs.createSystem(fsMap)
     const host = tsvfs.createVirtualCompilerHost(system, compilerOptions, ts)
@@ -378,6 +381,8 @@ export const createTypeScriptSandbox = (
      * at max is about 1.5MB - after that subsequent downloads of dts lib files come from localStorage.
      *
      * Try to use this sparingly as it can be computationally expensive, at the minimum you should be using the debounced setup.
+     *
+     * Accepts an optional fsMap which you can use to add any files, or overwrite the default file.
      *
      * TODO: It would be good to create an easy way to have a single program instance which is updated for you
      * when the monaco model changes.

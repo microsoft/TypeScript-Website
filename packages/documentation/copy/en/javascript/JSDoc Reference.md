@@ -164,7 +164,7 @@ export type Pet = {
 
 // @filename: main.js
 /**
- * @param p { import("./types").Pet }
+ * @param { import("./types").Pet } p
  */
 function walk(p) {
   console.log(`Walking ${p.name}...`);

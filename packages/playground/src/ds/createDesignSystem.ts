@@ -292,7 +292,9 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       container.appendChild(ol)
     }
 
-    const createASTTree = (node: Node) => {
+    const createASTTree = (node: Node, settings?: { closedByDefault?: true }) => {
+      const autoOpen = !settings || !settings.closedByDefault
+
       const div = document.createElement("div")
       div.className = "ast"
 
@@ -355,7 +357,7 @@ export const createDesignSystem = (sandbox: Sandbox) => {
         // @ts-expect-error
         itemDiv.dataset.depth = depth
 
-        if (depth === 0) itemDiv.classList.add("open")
+        if (depth === 0 && autoOpen) itemDiv.classList.add("open")
 
         const info = infoForNode(node)
 

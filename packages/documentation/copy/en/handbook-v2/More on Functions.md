@@ -608,7 +608,7 @@ function noop() {
 
 In JavaScript, a function that doesn't return any value will implicitly return the value `undefined`.
 However, `void` and `undefined` are not the same thing in TypeScript.
-See the reference page [[Why void is a special type]] for a longer discussion about this.
+There are further details at the end of this chapter.
 
 > `void` is not the same as `undefined`.
 
@@ -616,7 +616,7 @@ See the reference page [[Why void is a special type]] for a longer discussion ab
 
 The special type `object` refers to any value that isn't a primitive (`string`, `number`, `boolean`, `symbol`, `null`, or `undefined`).
 This is different from the _empty object type_ `{ }`, and also different from the global type `Object`.
-You can read the reference page about [[The global types]] for information on what `Object` is for - long story short, don't ever use `Object`.
+It's very likely you will never use `Object`.
 
 > `object` is not `Object`. **Always** use `object`!
 
@@ -693,7 +693,7 @@ function doSomething(f: Function) {
 
 This is an _untyped function call_ and is generally best avoided because of the unsafe `any` return type.
 
-If need to accept an arbitrary function but don't intend to call it, the type `() => void` is generally safer.
+If you need to accept an arbitrary function but don't intend to call it, the type `() => void` is generally safer.
 
 ## Rest Parameters and Arguments
 
@@ -756,7 +756,6 @@ Using rest arguments may require turning on [`downlevelIteration`](/tsconfig/#do
 <!-- TODO link to downlevel iteration -->
 
 ## Parameter Destructuring
-
 
 <blockquote class='bg-reading'>
    <p>Background Reading:<br />

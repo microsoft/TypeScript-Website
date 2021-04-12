@@ -15,7 +15,7 @@ const splice = (str: string, idx: number, rem: number, newString: string) =>
  * We're given the text which lives inside the token, and this function will
  * annotate it with twoslash metadata
  */
-export function createHighlightedString2(ranges: Range[], text: string) {
+export function createHighlightedString2(ranges: Range[], text: string, targetedWord: string = "") {
   const actions = [] as { text: string; index: number }[]
   let hasErrors = false
 
@@ -27,8 +27,9 @@ export function createHighlightedString2(ranges: Range[], text: string) {
 
   ranges.forEach(r => {
     if (r.classes === "lsp") {
+      const underLineTargetedWord = r.lsp === targetedWord ? "style=⇯border-bottom: solid 2px lightgrey;⇯" : ""
       actions.push({ text: "⇍/data-lsp⇏", index: r.end })
-      actions.push({ text: `⇍data-lsp lsp=⇯${r.lsp || ""}⇯⇏`, index: r.begin })
+      actions.push({ text: `⇍data-lsp lsp=⇯${r.lsp || ""}⇯ ${underLineTargetedWord}⇏`, index: r.begin })
     } else if (r.classes === "err") {
       hasErrors = true
     } else if (r.classes === "query") {

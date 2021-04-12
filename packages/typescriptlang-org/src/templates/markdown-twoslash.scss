@@ -160,6 +160,36 @@ pre {
     color: #ffeeee;
   }
 
+  .arrow {
+    /* Transparent background */
+    background-color: #eeeeee;
+    position: relative;
+    top: -7px;
+    margin-left: 4px;
+    /* Edges */
+    border-left: 1px solid #eeeeee;
+    border-top: 1px solid #eeeeee;
+    transform: translateY(25%) rotate(45deg);
+
+    /* Size */
+    height: 8px;
+    width: 8px;
+  }
+
+  .popover {
+    margin-bottom: 10px;
+    background-color: #eeeeee;
+    display: inline-block;
+    padding: 0 0.5rem 0.3rem;
+    margin-top: 10px;
+    border-radius: 3px;
+  }
+
+  .popover-prefix {
+    width: 300px;
+    background-color: red;
+  }
+
   .inline-completions {
     ul.dropdown {
       display: inline-block;

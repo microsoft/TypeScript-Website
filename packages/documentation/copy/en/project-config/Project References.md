@@ -100,7 +100,7 @@ You can also enable prepending the output of a dependency using the `prepend` op
 ```
 
 Prepending a project will include the project's output above the output of the current project.
-This works for both `.js` files and `.d.ts` files, and source map files will also be emitted correctly.
+All output files (`.js`, `.d.ts`, `.js.map`, `.d.ts.map`) will be emitted correctly.
 
 `tsc` will only ever use existing files on disk to do this process, so it's possible to create a project where a correct output file can't be generated because some project's output would be present more than once in the resulting file.
 For example:
