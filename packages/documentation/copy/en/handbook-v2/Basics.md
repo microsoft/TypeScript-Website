@@ -343,7 +343,7 @@ let msg = "hello there!";
 Even though we didn't tell TypeScript that `msg` had the type `string` it was able to figure that out.
 That's a feature, and it's best not to add annotations when the type system would end up inferring the same type anyway.
 
-> Note: when you see <pre><code class="query">code comment colored like this</code></pre> it means that we're highlighting what your editor would show you inline. You can get the same experience in the web browser by hovering your mouse over blue-tinted code samples.
+> Note: the message bubble inside the code sample above. That is what your editor would show if you had hovered over the word.
 
 ## Erased Types
 

@@ -27,6 +27,7 @@ pre {
 
   /* Important to allow the code to move horizontally; */
   overflow: auto;
+
   &.shiki {
     overflow: initial;
 
@@ -165,7 +166,7 @@ pre {
     background-color: #eeeeee;
     position: relative;
     top: -7px;
-    margin-left: 4px;
+    margin-left: 0.1rem;
     /* Edges */
     border-left: 1px solid #eeeeee;
     border-top: 1px solid #eeeeee;
