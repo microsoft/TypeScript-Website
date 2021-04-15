@@ -1,5 +1,7 @@
 //  yarn workspace tsconfig-reference generate:msbuild:schema
 
+console.log("TSConfig Ref: JSON for MSBuild");
+
 import parser = require("xml-js");
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";

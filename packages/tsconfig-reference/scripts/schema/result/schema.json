@@ -60,6 +60,101 @@
         }
       }
     },
+    "buildOptionsDefinition": {
+      "properties": {
+        "buildOptions": {
+          "properties": {
+            "dry": {
+              "description": "~",
+              "type": "boolean",
+              "default": false
+            },
+            "force": {
+              "description": "Build all projects, including those that appear to be up to date",
+              "type": "boolean",
+              "default": false,
+              "markdownDescription": "Build all projects, including those that appear to be up to date\n\nSee more: https://www.typescriptlang.org/tsconfig#force"
+            },
+            "verbose": {
+              "description": "Enable verbose logging",
+              "type": "boolean",
+              "default": false,
+              "markdownDescription": "Enable verbose logging\n\nSee more: https://www.typescriptlang.org/tsconfig#verbose"
+            },
+            "incremental": {
+              "description": "Save .tsbuildinfo files to allow for incremental compilation of projects.",
+              "type": "boolean",
+              "default": false,
+              "markdownDescription": "Save .tsbuildinfo files to allow for incremental compilation of projects.\n\nSee more: https://www.typescriptlang.org/tsconfig#incremental"
+            },
+            "assumeChangesOnlyAffectDirectDependencies": {
+              "description": "Have recompiles in projects that use `incremental` and `watch` mode assume that changes within a file will only affect files directly depending on it.",
+              "type": "boolean",
+              "default": false,
+              "markdownDescription": "Have recompiles in projects that use `incremental` and `watch` mode assume that changes within a file will only affect files directly depending on it.\n\nSee more: https://www.typescriptlang.org/tsconfig#assumeChangesOnlyAffectDirectDependencies"
+            },
+            "traceResolution": {
+              "description": "Log paths used during the `moduleResolution` process.",
+              "type": "boolean",
+              "default": false,
+              "markdownDescription": "Log paths used during the `moduleResolution` process.\n\nSee more: https://www.typescriptlang.org/tsconfig#traceResolution"
+            }
+          }
+        }
+      }
+    },
+    "watchOptionsDefinition": {
+      "properties": {
+        "watchOptions": {
+          "type": "object",
+          "description": "Settings for the watch mode in TypeScript.",
+          "properties": {
+            "force": {
+              "description": "~",
+              "type": "string"
+            },
+            "watchFile": {
+              "description": "Specify how the TypeScript watch mode works.",
+              "type": "string",
+              "markdownDescription": "Specify how the TypeScript watch mode works.\n\nSee more: https://www.typescriptlang.org/tsconfig#watchFile"
+            },
+            "watchDirectory": {
+              "description": "Specify how directories are watched on systems that lack recursive file-watching functionality.",
+              "type": "string",
+              "markdownDescription": "Specify how directories are watched on systems that lack recursive file-watching functionality.\n\nSee more: https://www.typescriptlang.org/tsconfig#watchDirectory"
+            },
+            "fallbackPolling": {
+              "description": "Specify what approach the watcher should use if the system runs out of native file watchers.",
+              "type": "string",
+              "markdownDescription": "Specify what approach the watcher should use if the system runs out of native file watchers.\n\nSee more: https://www.typescriptlang.org/tsconfig#fallbackPolling"
+            },
+            "synchronousWatchDirectory": {
+              "description": "Synchronously call callbacks and update the state of directory watchers on platforms that don`t support recursive watching natively.",
+              "type": "string",
+              "markdownDescription": "Synchronously call callbacks and update the state of directory watchers on platforms that don`t support recursive watching natively.\n\nSee more: https://www.typescriptlang.org/tsconfig#synchronousWatchDirectory"
+            },
+            "excludeFiles": {
+              "description": "Synchronously call callbacks and update the state of directory watchers on platforms that don`t support recursive watching natively.",
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              },
+              "markdownDescription": "Synchronously call callbacks and update the state of directory watchers on platforms that don`t support recursive watching natively.\n\nSee more: https://www.typescriptlang.org/tsconfig#excludeFiles"
+            },
+            "excludeDirectories": {
+              "description": "Synchronously call callbacks and update the state of directory watchers on platforms that do not support recursive watching natively.",
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              },
+              "markdownDescription": "Synchronously call callbacks and update the state of directory watchers on platforms that do not support recursive watching natively.\n\nSee more: https://www.typescriptlang.org/tsconfig#excludeDirectories"
+            }
+          }
+        }
+      }
+    },
     "compilerOptionsDefinition": {
       "properties": {
         "compilerOptions": {
@@ -116,9 +211,8 @@
               "markdownDescription": "Only output d.ts files and not JavaScript files.\n\nSee more: https://www.typescriptlang.org/tsconfig#emitDeclarationOnly"
             },
             "incremental": {
-              "description": "Save .tsbuildinfo files to allow for incremental compilation of projects.",
-              "type": "boolean",
-              "markdownDescription": "Save .tsbuildinfo files to allow for incremental compilation of projects.\n\nSee more: https://www.typescriptlang.org/tsconfig#incremental"
+              "description": "Enable incremental compilation. Requires TypeScript version 3.4 or later.",
+              "type": "boolean"
             },
             "tsBuildInfoFile": {
               "description": "Specify the folder for .tsbuildinfo incremental compilation files.",
@@ -411,7 +505,7 @@
               "type": "boolean"
             },
             "fallbackPolling": {
-              "description": "Specify what approach the watcher should use if the system runs out of native file watchers.",
+              "description": "Specify the polling strategy to use when the system runs out of or doesn't support native file watchers. Requires TypeScript version 3.8 or later.",
               "enum": [
                 "fixedPollingInterval",
                 "priorityPollingInterval",
@@ -419,7 +513,7 @@
               ]
             },
             "watchDirectory": {
-              "description": "Specify how directories are watched on systems that lack recursive file-watching functionality.",
+              "description": "Specify the strategy for watching directories under systems that lack recursive file-watching functionality. Requires TypeScript version 3.8 or later.",
               "enum": [
                 "useFsEvents",
                 "fixedPollingInterval",
@@ -428,7 +522,7 @@
               "default": "useFsEvents"
             },
             "watchFile": {
-              "description": "Specify how the TypeScript watch mode works.",
+              "description": "Specify the strategy for watching individual files. Requires TypeScript version 3.8 or later.",
               "enum": [
                 "fixedPollingInterval",
                 "priorityPollingInterval",
@@ -553,10 +647,9 @@
               "markdownDescription": "Specify type package names to be included without being referenced in a source file.\n\nSee more: https://www.typescriptlang.org/tsconfig#types"
             },
             "traceResolution": {
-              "description": "Log paths used during the `moduleResolution` process.",
+              "description": "Enable tracing of the name resolution process. Requires TypeScript version 2.0 or later.",
               "type": "boolean",
-              "default": false,
-              "markdownDescription": "Log paths used during the `moduleResolution` process.\n\nSee more: https://www.typescriptlang.org/tsconfig#traceResolution"
+              "default": false
             },
             "allowJs": {
               "description": "Allow JavaScript files to be a part of your program. Use the `checkJS` option to get errors from these files.",
@@ -791,9 +884,8 @@
               "markdownDescription": "Enable importing .json files\n\nSee more: https://www.typescriptlang.org/tsconfig#resolveJsonModule"
             },
             "assumeChangesOnlyAffectDirectDependencies": {
-              "description": "Have recompiles in projects that use `incremental` and `watch` mode assume that changes within a file will only affect files directly depending on it.",
-              "type": "boolean",
-              "markdownDescription": "Have recompiles in projects that use `incremental` and `watch` mode assume that changes within a file will only affect files directly depending on it.\n\nSee more: https://www.typescriptlang.org/tsconfig#assumeChangesOnlyAffectDirectDependencies"
+              "description": "Have recompiles in '--incremental' and '--watch' assume that changes within a file will only affect files directly depending on it. Requires TypeScript version 3.8 or later.",
+              "type": "boolean"
             },
             "extendedDiagnostics": {
               "description": "Output more detailed compiler performance information after building.",
@@ -984,6 +1076,12 @@
     },
     {
       "$ref": "#/definitions/extendsDefinition"
+    },
+    {
+      "$ref": "#/definitions/watchOptionsDefinition"
+    },
+    {
+      "$ref": "#/definitions/buildOptionsDefinition"
     },
     {
       "$ref": "#/definitions/tsNodeDefinition"

@@ -19,15 +19,23 @@
  *
  */
 
+console.log("TSConfig Ref: MD for TSConfig");
+
 import { writeFileSync, readdirSync, existsSync, readFileSync } from "fs";
 import { join } from "path";
 import * as assert from "assert";
 import { read as readMarkdownFile } from "gray-matter";
 import * as prettier from "prettier";
 import { CompilerOptionJSON } from "./generateJSON.js";
-
 import * as remark from "remark";
 import * as remarkHTML from "remark-html";
+
+import {
+  typeAcquisitionCompilerOptNames,
+  buildOptionCompilerOptNames,
+  watchOptionCompilerOptNames,
+  rootOptNames,
+} from "../tsconfigRules";
 
 const options = require("../../data/tsconfigOpts.json").options as CompilerOptionJSON[];
 const categories = require("../../data/tsconfigCategories.json") as typeof import("../../data/tsconfigCategories.json");
@@ -53,13 +61,27 @@ assert.deepEqual(
 
 // Extract out everthing which doesn't live in compilerOptions
 const notCompilerOptions = ["Project_Files_0", "Watch_Options_999"];
-const compilerOptions = orderedCategories.filter((o) => !notCompilerOptions.includes(o));
+const categoriesForCompilerOpts = orderedCategories.filter((c) => !notCompilerOptions.includes(c));
+
+const compilerOptions = options.filter(
+  (o) =>
+    !typeAcquisitionCompilerOptNames.includes(o.name) &&
+    !watchOptionCompilerOptNames.includes(o.name) &&
+    !buildOptionCompilerOptNames.includes(o.name) &&
+    !rootOptNames.includes(o.name)
+);
 
 // The TSConfig Reference is a collection of sections which
 const sections = [
-  { name: "top_level", categories: ["Project_Files_0"] },
-  { name: "compilerOptions", categories: compilerOptions },
-  { name: "watchOptions", categories: ["Watch_Options_999"] },
+  { name: "top_level", options: rootOptNames },
+  {
+    name: "compilerOptions",
+    // options: compilerOptions.map((o) => o.name),
+    categories: categoriesForCompilerOpts,
+  },
+  { name: "watchOptions", options: watchOptionCompilerOptNames },
+  { name: "buildOptions", options: buildOptionCompilerOptNames },
+  { name: "typeAcquisitionOptions", options: typeAcquisitionCompilerOptNames },
 ];
 
 const parseMarkdown = (md: string) => remark().use(remarkHTML).processSync(md);
@@ -72,16 +94,17 @@ languages.forEach((lang) => {
   const locale = join(__dirname, "..", "..", "copy", lang);
   const fallbackLocale = join(__dirname, "..", "..", "copy", "en");
 
-  const markdownChunks: string[] = [];
+  const mdChunks: string[] = [];
 
-  const getPathInLocale = (path: string, optionalExampleContent?: string) => {
+  const getPathInLocale = (path: string, optionalExampleContent?: string, failable = false) => {
     if (existsSync(join(locale, path))) return join(locale, path);
     if (existsSync(join(fallbackLocale, path))) return join(fallbackLocale, path);
 
     const localeDesc = lang === "en" ? lang : `either ${lang} or English`;
-    throw new Error(
-      "Could not find a path for " + path + " in " + localeDesc + optionalExampleContent || ""
-    );
+    if (!failable)
+      throw new Error(
+        "Could not find a path for " + path + " in " + localeDesc + optionalExampleContent || ""
+      );
   };
 
   // Make a JSON dump of the category anchors someone wrapping the markdown
@@ -100,7 +123,7 @@ languages.forEach((lang) => {
   }[];
 
   const intro = parseMarkdown(readFileSync(getPathInLocale("intro.md"), "utf8"));
-  markdownChunks.push(intro + "\n");
+  mdChunks.push(intro + "\n");
 
   const categoryOverviews = orderedCategories.map((cID) => {
     const categoryPath = getPathInLocale(join("categories", cID + ".md"));
@@ -112,21 +135,21 @@ languages.forEach((lang) => {
   });
 
   // Shows the full list of compiler options straight away
-  markdownChunks.push("<div id='full-option-list' class='indent'>");
+  mdChunks.push("<div id='full-option-list' class='indent'>");
   categoryOverviews.forEach((c) => {
     if (c.code === 6178) return;
-    markdownChunks.push(`<div class="tsconfig-nav-top">`);
-    markdownChunks.push(`<h5><a href=${"#" + c.id}>${c.md.data.display}</a></h5>`);
-    markdownChunks.push("<ul>");
+    mdChunks.push(`<div class="tsconfig-nav-top">`);
+    mdChunks.push(`<h5><a href=${"#" + c.id}>${c.md.data.display}</a></h5>`);
+    mdChunks.push("<ul>");
 
     const optionsForCategory = options.filter((o) => o.categoryCode === c.code);
     optionsForCategory.forEach((opt) => {
-      markdownChunks.push(`<li><a href=${"#" + opt.name}>${opt.name}</a></li>`);
+      mdChunks.push(`<li><a href=${"#" + opt.name}>${opt.name}</a></li>`);
     });
 
-    markdownChunks.push("</ul></div>");
+    mdChunks.push("</ul></div>");
   });
-  markdownChunks.push("<br />");
+  mdChunks.push("<br />");
 
   // Special case the 'advanced' section because it is so long
   const advanced = categoryOverviews.find((c) => c.code === 6178);
@@ -135,84 +158,100 @@ languages.forEach((lang) => {
   const chunkedOptions = chunk(advancedOpts, 10);
 
   chunkedOptions.forEach((opts, index) => {
-    markdownChunks.push(`<div class="tsconfig-nav-top">`);
+    mdChunks.push(`<div class="tsconfig-nav-top">`);
 
     if (index === 0) {
-      markdownChunks.push(`<h5><a href=${"#" + advanced.id}>${advanced.md.data.display}</a></h5>`);
+      mdChunks.push(`<h5><a href=${"#" + advanced.id}>${advanced.md.data.display}</a></h5>`);
     } else {
-      markdownChunks.push(`<h5>&nbsp;</h5>`);
+      mdChunks.push(`<h5>&nbsp;</h5>`);
     }
 
-    markdownChunks.push("<ul>");
+    mdChunks.push("<ul>");
     opts.forEach((opt) => {
-      markdownChunks.push(`<li><a href=${"#" + opt.name}>${opt.name}</a></li>`);
+      mdChunks.push(`<li><a href=${"#" + opt.name}>${opt.name}</a></li>`);
     });
-    markdownChunks.push("</ul>");
+    mdChunks.push("</ul>");
 
-    markdownChunks.push("</div>");
+    mdChunks.push("</div>");
   });
 
-  markdownChunks.push("</div>");
+  mdChunks.push("</div>");
 
   sections.forEach((section) => {
-    const sectionCategories = section.categories;
+    const sectionCategories = section.categories || [section.name];
     // Heh, the section uses an article and the categories use a section
-    markdownChunks.push(`<article id='${section.name}'>`);
+    mdChunks.push(`<article id='${section.name}'>`);
 
     // Intro to the section
     const sectionsPath = getPathInLocale(join("sections", section.name + ".md"));
     const sectionsFile = readMarkdownFile(sectionsPath);
-    markdownChunks.push("\n" + sectionsFile.content + "\n");
+    mdChunks.push("\n" + sectionsFile.content + "\n");
 
     // Show a sticky sub-nav for the categories
     if (sectionCategories.length > 1) {
-      markdownChunks.push(`<nav id="sticky"><ul>`);
-
+      mdChunks.push(`<nav id="sticky"><ul>`);
       sectionCategories.forEach((categoryID) => {
         const categoryPath = getPathInLocale(join("categories", categoryID + ".md"));
         const categoryFile = readMarkdownFile(categoryPath);
 
-        markdownChunks.push(`<li><a href="#${categoryID}">${categoryFile.data.display}</a></li>`);
+        mdChunks.push(`<li><a href="#${categoryID}">${categoryFile.data.display}</a></li>`);
       });
-      markdownChunks.push("</ul></nav>");
+      mdChunks.push("</ul></nav>");
     }
 
-    markdownChunks.push("<div class='indent'>");
+    mdChunks.push("<div class='indent'>");
 
     sectionCategories.forEach((categoryID) => {
+      // We need this to look up the category ID
       const category = Object.values(categories).find((c: any) => c.key === categoryID);
+
+      if (category) {
+        const categoryPath = getPathInLocale(join("categories", categoryID + ".md"));
+        const categoryFile = readMarkdownFile(categoryPath);
+
+        assert.ok(categoryFile.data.display, "No display data for category: " + categoryID); // Must have a display title in the front-matter
+
+        mdChunks.push("<div class='category'>");
+
+        // Let the title change it's display but keep the same ID
+        const title = `<h2 id='${categoryID}' ><a href='#${categoryID}' name='${categoryID}' aria-label="Link to the section ${categoryFile.data.display}" aria-labelledby='${categoryID}'>#</a>${categoryFile.data.display}</h2>`;
+        mdChunks.push(title);
+
+        // Push the category copy
+        mdChunks.push(categoryFile.content);
+        mdChunks.push("</div>");
+      }
+
+      // Pull out their options for the section
+      const optionsForCategory = section.options
+        ? section.options
+            .map((opt) => {
+              const richOpt = options.find((o) => o.name === opt);
+              // if (!richOpt) throw new Error(`Could not find an option for ${opt} in ${section.name}`);
+              return richOpt;
+            })
+            .filter(Boolean)
+        : compilerOptions.filter((o) => o.categoryCode === category.code);
+
       // prettier-ignore
-      assert.ok(category, "Could not find category markdown file for ID: " + categoryID + "\n\n" + JSON.stringify(categories));
-
-      const categoryPath = getPathInLocale(join("categories", categoryID + ".md"));
-      const categoryFile = readMarkdownFile(categoryPath);
-
-      assert.ok(categoryFile.data.display, "No display data for category: " + categoryID); // Must have a display title in the front-matter
-
-      markdownChunks.push("<div class='category'>");
-
-      // Let the title change it's display but keep the same ID
-      const title = `<h2 id='${categoryID}' ><a href='#${categoryID}' name='${categoryID}' aria-label="Link to the section ${categoryFile.data.display}" aria-labelledby='${categoryID}'>#</a>${categoryFile.data.display}</h2>`;
-      markdownChunks.push(title);
-
-      // Push the category copy
-      markdownChunks.push(categoryFile.content);
-      markdownChunks.push("</div>");
-
-      // Loop through their options
-      const optionsForCategory = options.filter((o) => o.categoryCode === category.code);
+      assert.ok(optionsForCategory, "Could not find options for " + categoryID + " in " + JSON.stringify(categories));
 
       const localisedOptions = [] as { name: string; anchor: string }[];
 
       optionsForCategory.forEach((option) => {
         const mdPath = join("options", option.name + ".md");
-        const fullPath = join(__dirname, "..", "copy", lang, mdPath);
-        // prettier-ignore
-        const tsVersion = JSON.parse(readFileSync("../../node_modules/typescript/package.json", "utf8")).version;
-        const exampleOptionContent = `\n\n\n Run:\n    echo '---\\ndisplay: "${option.name}"\\noneline: "Does something"\\n---\\n${option.description.message}\\n' > ${fullPath}\n\nThen add some docs and run: \n>  yarn workspace tsconfig-reference build\n\n`;
+        const scopedMDPath = join("options", section.name, option.name + ".md");
 
-        const optionPath = getPathInLocale(mdPath, exampleOptionContent);
-        const optionFile = readMarkdownFile(optionPath);
+        const fullPath = join(__dirname, "..", "..", "copy", lang, mdPath);
+        const exampleOptionContent = `\n\n\n Run:\n    echo '---\\ndisplay: "${option.name}"\\noneline: "Does something"\\n---\\n${option.description?.message}\\n' > ${fullPath}\n\nThen add some docs and run: \n>  yarn workspace tsconfig-reference build\n\n`;
+
+        const optionPath = getPathInLocale(mdPath, exampleOptionContent, true);
+        const scopedOptionPath = getPathInLocale(scopedMDPath, exampleOptionContent, true);
+
+        const optionFile = readMarkdownFile(scopedOptionPath || optionPath);
+
+        // prettier-ignore
+        assert.ok(optionFile, "Could not find an optionFile: " + option.name);
 
         // Must have a display title in the front-matter
         // prettier-ignore
@@ -225,24 +264,24 @@ languages.forEach((lang) => {
           display: optionFile.data.display,
           oneliner: optionFile.data.oneline,
           categoryID: categoryID,
-          categoryDisplay: categoryFile.data.display,
+          categoryDisplay: "123", // || categoryFile?.data.display
         });
 
-        markdownChunks.push("<section class='compiler-option'>");
+        mdChunks.push("<section class='compiler-option'>");
 
         // Let the title change it's display but keep the same ID
         const titleLink = `<a aria-label="Link to the compiler option: ${option.name}" id='${option.name}' href='#${option.name}' name='${option.name}' aria-labelledby="${option.name}-config">#</a>`;
         const title = `<h3 id='${option.name}-config'>${titleLink} ${optionFile.data.display} - <code>${option.name}</code></h3>`;
-        markdownChunks.push(title);
+        mdChunks.push(title);
 
         // Make a flexbox container for the table and content
-        markdownChunks.push("<div class='compiler-content'>");
+        mdChunks.push("<div class='compiler-content'>");
 
-        markdownChunks.push("<div class='markdown'>");
+        mdChunks.push("<div class='markdown'>");
         // Push in the content of the file
-        markdownChunks.push(optionFile.content);
+        mdChunks.push(optionFile.content);
 
-        markdownChunks.push("</div>");
+        mdChunks.push("</div>");
 
         // Make a markdown table of the important metadata
         const mdTableRows = [] as [string, string][];
@@ -292,26 +331,26 @@ languages.forEach((lang) => {
             .map((r) => `<li><span>${r[0]}:</span>${parseMarkdown(r[1])}</li>`)
             .join("\n") +
           "</ul>";
-        markdownChunks.push(table);
+        mdChunks.push(table);
 
-        markdownChunks.push("</div></section>");
+        mdChunks.push("</div></section>");
 
         localisedOptions.push({ anchor: option.name, name: optionFile.data.display });
       });
 
       allCategories.push({
-        display: categoryFile.data.display,
+        display: "123", //categoryFile.data.display,
         anchor: categoryID,
         options: localisedOptions,
       });
     });
 
-    markdownChunks.push("</div>"); // Closes div class='indent'
-    markdownChunks.push(`</article>`);
+    mdChunks.push("</div>"); // Closes div class='indent'
+    mdChunks.push(`</article>`);
   });
 
   // Write the Markdown and JSON
-  const markdown = prettier.format(markdownChunks.join("\n"), { filepath: "index.md" });
+  const markdown = prettier.format(mdChunks.join("\n"), { filepath: "index.md" });
   const mdPath = join(__dirname, "..", "..", "output", lang + ".md");
   writeFileSync(mdPath, markdown);
   console.log(mdPath);

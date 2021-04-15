@@ -60,6 +60,90 @@
         }
       }
     },
+    "buildOptionsDefinition": {
+      "properties": {
+        "buildOptions": {
+          "properties": {
+            "dry": {
+              "description": "~",
+              "type": "boolean",
+              "default": false
+            },
+            "force": {
+              "description": "~",
+              "type": "boolean",
+              "default": false
+            },
+            "verbose": {
+              "description": "~",
+              "type": "boolean",
+              "default": false
+            },
+            "incremental": {
+              "description": "~",
+              "type": "boolean",
+              "default": false
+            },
+            "assumeChangesOnlyAffectDirectDependencies": {
+              "description": "~",
+              "type": "boolean",
+              "default": false
+            },
+            "traceResolution": {
+              "description": "~",
+              "type": "boolean",
+              "default": false
+            }
+          }
+        }
+      }
+    },
+    "watchOptionsDefinition": {
+      "properties": {
+        "watchOptions": {
+          "type": "object",
+          "description": "Settings for the watch mode in TypeScript.",
+          "properties": {
+            "force": {
+              "description": "~",
+              "type": "string"
+            },
+            "watchFile": {
+              "description": "~",
+              "type": "string"
+            },
+            "watchDirectory": {
+              "description": "~",
+              "type": "string"
+            },
+            "fallbackPolling": {
+              "description": "~",
+              "type": "string"
+            },
+            "synchronousWatchDirectory": {
+              "description": "~",
+              "type": "string"
+            },
+            "excludeFiles": {
+              "description": "~",
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
+            "excludeDirectories": {
+              "description": "~",
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
     "compilerOptionsDefinition": {
       "properties": {
         "compilerOptions": {
@@ -877,6 +961,12 @@
     },
     {
       "$ref": "#/definitions/extendsDefinition"
+    },
+    {
+      "$ref": "#/definitions/watchOptionsDefinition"
+    },
+    {
+      "$ref": "#/definitions/buildOptionsDefinition"
     },
     {
       "$ref": "#/definitions/tsNodeDefinition"

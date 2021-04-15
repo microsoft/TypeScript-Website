@@ -148,7 +148,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code>boolean</code></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Delete the outputs of all projects</p>
+<p>Does something</p>
 
 </tr></td>
 <tr class='odd' name='dry'>
@@ -160,7 +160,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 </tr></td>
 <tr class='even' name='force'>
-<td><code>--force</code></td>
+<td><code><a href='/tsconfig/#force'>--force</a></code></td>
   <td><code>boolean</code></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -168,7 +168,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 </tr></td>
 <tr class='odd' name='verbose'>
-<td><code>--verbose</code></td>
+<td><code><a href='/tsconfig/#verbose'>--verbose</a></code></td>
   <td><code>boolean</code></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -193,7 +193,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code>list</code></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Synchronously call callbacks and update the state of directory watchers on platforms that don't support recursive watching natively.</p>
+<p>Synchronously call callbacks and update the state of directory watchers on platforms that do not support recursive watching natively.</p>
 
 </tr></td>
 <tr class='even' name='excludeFiles'>
@@ -201,7 +201,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code>list</code></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Synchronously call callbacks and update the state of directory watchers on platforms that don't support recursive watching natively.</p>
+<p>Synchronously call callbacks and update the state of directory watchers on platforms that don`t support recursive watching natively.</p>
 
 </tr></td>
 <tr class='odd' name='fallbackPolling'>
@@ -217,7 +217,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code>boolean</code></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Synchronously call callbacks and update the state of directory watchers on platforms that don't support recursive watching natively.</p>
+<p>Synchronously call callbacks and update the state of directory watchers on platforms that don`t support recursive watching natively.</p>
 
 </tr></td>
 <tr class='odd' name='watch'>
@@ -709,7 +709,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </tr></td>
 <tr class='even' name='module'>
 <td><code><a href='/tsconfig/#module'>--module</a></code></td>
-  <td><code><code>`CommonJS` (default if `target` is `ES3` or `ES5`)</code>, <code></code>, <code>`ES6`/`ES2015` (synonymous, default for `target` `ES6` and higher)</code>, <code></code>, <code>`ES2020`</code>, <code>`None`</code>, <code>`UMD`</code>, <code>`AMD`</code>, <code>`System`</code>, or <code>`ESNext`</code></code></td>
+  <td><code><code>`CommonJS` (default if `target` is `ES3` or `ES5`)</code>, <code></code>, <code>`ES2015`</code>, <code>`ES2020`</code>, <code></code>, <code>`None`</code>, <code>`UMD`</code>, <code>`AMD`</code>, <code>`System`</code>, or <code>`ESNext`</code></code></td>
   <td>
 </td>
 </tr>
