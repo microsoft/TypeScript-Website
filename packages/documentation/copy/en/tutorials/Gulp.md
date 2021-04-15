@@ -275,6 +275,7 @@ npm install --save-dev watchify fancy-log
 ```
 
 Now change your gulpfile to the following:
+* This will remove the Uglify/Babel ( full gulpfile Watchify+Uglify+Babel is available in the end of this doc )
 
 ```js
 var gulp = require("gulp");
@@ -350,6 +351,7 @@ npm install --save-dev gulp-uglify vinyl-buffer gulp-sourcemaps
 ```
 
 Now change your gulpfile to the following:
+* This will remove the Watchify/Babel ( full gulpfile Watchify+Uglify+Babel is available in the end of this doc )
 
 ```js
 var gulp = require("gulp");
@@ -409,6 +411,7 @@ npm install --save-dev babelify@8 babel-core babel-preset-es2015 vinyl-buffer gu
 ```
 
 Now change your gulpfile to the following:
+* This will remove the Watchify/Uglify ( full gulpfile Watchify+Uglify+Babel is available in the end of this doc )
 
 ```js
 var gulp = require("gulp");
@@ -465,3 +468,53 @@ Let's modify `tsconfig.json`:
 ```
 
 Babel's ES5 output should be very similar to TypeScript's output for such a simple script.
+
+## Watchify, Babel, and Uglify working together
+
+You may have noticed, that previous examples are not linked together. If you are strugling with configuration, here is the full gulpfile:
+
+```js
+var gulp = require("gulp");
+var browserify = require("browserify");
+var source = require("vinyl-source-stream");
+var watchify = require("watchify");
+var tsify = require("tsify");
+var fancy_log = require("fancy-log");
+var uglify = require("gulp-uglify");
+var sourcemaps = require("gulp-sourcemaps");
+var buffer = require("vinyl-buffer");
+var paths = {
+  pages: ["src/*.html"],
+};
+var watchedBrowserify = watchify(
+  browserify({
+    basedir: ".",
+    debug: true,
+    entries: ["src/main.ts"],
+    cache: {},
+    packageCache: {},
+  }).plugin(tsify)
+);
+gulp.task("copy-html", function () {
+  return gulp.src(paths.pages).pipe(gulp.dest("dist"));
+});
+function bundle() {
+  return watchedBrowserify
+    .plugin(tsify)
+    .transform("babelify", {
+      presets: ["es2015"],
+      extensions: [".ts"],
+    })
+    .bundle()
+    .on("error", fancy_log)
+    .pipe(source("bundle.js"))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({ loadMaps: true }))
+    .pipe(uglify())
+    .pipe(sourcemaps.write("./"))
+    .pipe(gulp.dest("dist"));
+}
+gulp.task("default", gulp.series(gulp.parallel("copy-html"), bundle));
+watchedBrowserify.on("update", bundle);
+watchedBrowserify.on("log", fancy_log);
+```
