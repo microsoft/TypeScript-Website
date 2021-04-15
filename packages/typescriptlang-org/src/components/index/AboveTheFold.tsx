@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react"
-import { Intl } from "../../components/Intl"
+import React, { useState } from "react"
 
 import { indexCopy } from "../../copy/en/index"
 import { createInternational } from "../../lib/createInternational"
 import { useIntl } from "react-intl"
-import { isTouchDevice } from "../../lib/isTouchDevice"
 import { EditorExamples } from "./EditorExamples"
 
 const Row = (props: { children: any, className?: string }) => <div className={[props.className, "row"].join(" ")}>{props.children}</div>
@@ -133,6 +131,6 @@ export const AboveTheFold = () => {
     </div>
   )
 
-  return !showCTALinks ? <Headline /> : isTouchDevice() || window.innerWidth < 600
+  return !showCTALinks ? <Headline /> : window.innerWidth < 600
     ? <CTAHeadlineMobile /> : <CTAHeadlines />
 }
