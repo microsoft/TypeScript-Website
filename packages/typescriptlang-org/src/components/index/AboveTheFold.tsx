@@ -98,7 +98,7 @@ export const AboveTheFold = () => {
         </Col>
 
         <Col className="call-to-action hide-small">
-          <img src={require("../../assets/index/code-dark.png")} width="100%" height="400px" />
+          <img src={require("../../assets/index/code-dark.png").default} width="100%" height="400px" />
           <FluidButton
             title={i("index_cta_download")}
             subtitle={i("index_cta_download_subtitle")}
