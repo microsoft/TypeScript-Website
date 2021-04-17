@@ -52,6 +52,7 @@ const handbookPages = [
       { file: "handbook-v2/Object Types.md" },
       {
         title: "Type Manipulation",
+        chronological: true,
         items: [
           { file: "handbook-v2/Type Manipulation/_Creating Types from Types.md" },
           { file: "handbook-v2/Type Manipulation/Generics.md" },
@@ -241,6 +242,7 @@ for (const lang of langs) {
             title: "${subItem.title}",
             id: "${toID(sectionIndex, subItem.title)}",
             oneline: "${subItem.oneliner}",
+            chronological: ${subItem.chronological || false},
           `);
           addItems(subItem);
           codeForTheHandbook.push(",");
@@ -312,6 +314,7 @@ writeFileSync(
  * @property {string= } href - a language prefixless
  * @property {string= } title - the display only used when href exists
  * @property {string= } oneliner
+ * @property {boolean=} chronological - should we recommend a next/prev
  */
 
 /**
