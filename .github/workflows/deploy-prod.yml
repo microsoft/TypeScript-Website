@@ -13,6 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
+        with:
+          node-version: "13.x"
+
       - uses: microsoft/playwright-github-action@v1
 
       # Build v2
