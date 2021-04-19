@@ -121,7 +121,7 @@ export const AboveTheFold = () => {
       <Row>
         <Col className="call-to-action flex-column">
           <div className="handbook-preview">
-            <img src={require("../../assets/index/handbook.jpg")} width={"100%"} />
+            <img src={require("../../assets/index/handbook.jpg").default} width={"100%"} />
           </div>
           <div className="inline-buttons">
             <a className='flat-button' href="/docs/handbook/intro.html">Web</a>
