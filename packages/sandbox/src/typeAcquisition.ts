@@ -1,4 +1,4 @@
-import { PlaygroundConfig } from "./"
+import { SandboxConfig } from "./"
 import lzstring from "./vendor/lzstring.min"
 
 const globalishObj: any = typeof globalThis !== "undefined" ? globalThis : window || {}
@@ -18,10 +18,9 @@ const moduleJSONURL = (name: string) =>
 
 const unpkgURL = (name: string, path: string) => {
   if (!name) {
-    const actualName = path.substring(0, path.indexOf("/"));
-    const actualPath = path.substring(path.indexOf("/") + 1);
+    const actualName = path.substring(0, path.indexOf("/"))
+    const actualPath = path.substring(path.indexOf("/") + 1)
     return `https://www.unpkg.com/${encodeURIComponent(actualName)}/${encodeURIComponent(actualPath)}`
-
   }
   return `https://www.unpkg.com/${encodeURIComponent(name)}/${encodeURIComponent(path)}`
 }
@@ -157,12 +156,12 @@ const convertToModuleReferenceID = (outerModule: string, moduleDeclaration: stri
 const addModuleToRuntime = async (mod: string, path: string, config: ATAConfig) => {
   const isDeno = path && path.indexOf("https://") === 0
 
-  let actualMod = mod;
-  let actualPath = path;
+  let actualMod = mod
+  let actualPath = path
 
   if (!mod) {
-    actualMod = path.substring(0, path.indexOf("/"));
-    actualPath = path.substring(path.indexOf("/") + 1);
+    actualMod = path.substring(0, path.indexOf("/"))
+    actualPath = path.substring(path.indexOf("/") + 1)
   }
 
   const dtsFileURL = isDeno ? path : unpkgURL(actualMod, actualPath)
@@ -171,14 +170,13 @@ const addModuleToRuntime = async (mod: string, path: string, config: ATAConfig) 
   if (!content) {
     const isDeno = actualPath && actualPath.indexOf("https://") === 0
 
-    const dtsFileURL = isDeno ? actualPath : unpkgURL(actualMod, `${actualPath.replace(".d.ts", "")}/index.d.ts`);
-    content = await getCachedDTSString(config, dtsFileURL);
+    const dtsFileURL = isDeno ? actualPath : unpkgURL(actualMod, `${actualPath.replace(".d.ts", "")}/index.d.ts`)
+    content = await getCachedDTSString(config, dtsFileURL)
 
     if (!content) {
-      return errorMsg(`Could not get root d.ts file for the module '${actualMod}' at ${actualPath}`, {}, config);
+      return errorMsg(`Could not get root d.ts file for the module '${actualMod}' at ${actualPath}`, {}, config)
     }
   }
-
 
   // Now look and grab dependent modules where you need the
   await getDependenciesForModule(content, actualMod, actualPath, config)
@@ -325,7 +323,7 @@ interface ATAConfig {
   sourceCode: string
   addLibraryToRuntime: AddLibToRuntimeFunc
   fetcher: typeof fetch
-  logger: PlaygroundConfig["logger"]
+  logger: SandboxConfig["logger"]
 }
 
 /**
@@ -335,7 +333,7 @@ export const detectNewImportsToAcquireTypeFor = async (
   sourceCode: string,
   userAddLibraryToRuntime: AddLibToRuntimeFunc,
   fetcher = fetch,
-  playgroundConfig: PlaygroundConfig
+  playgroundConfig: SandboxConfig
 ) => {
   // Wrap the runtime func with our own side-effect for visibility
   const addLibraryToRuntime = (code: string, path: string) => {

@@ -270,7 +270,7 @@ export const SiteFooter = (props: Props) => {
               id="microsoft-logo"
               width={92}
               height={19}
-              src={require("../../assets/microsoft-logo.png")}
+              src={require("../../assets/microsoft-logo.png").default}
               alt="Microsoft Logo"
             />
           </a>

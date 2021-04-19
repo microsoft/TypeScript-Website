@@ -74,7 +74,7 @@ export const AboveTheFold = () => {
       <h2>Get Started With TypeScript</h2>
       <Row>
         <Col className="call-to-action">
-          <img src={require("../../assets/index/play-dark.png")} width="100%" height="400px" />
+          <img src={require("../../assets/index/play-dark.png").default} width="100%" height="400px" />
           <FluidButton
             title={i("index_cta_play")}
             subtitle={i("index_cta_play_subtitle")}

@@ -1,4 +1,4 @@
-import { PlaygroundConfig } from "."
+import { SandboxConfig } from "."
 
 type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
 type Monaco = typeof import("monaco-editor")
@@ -7,7 +7,7 @@ type Monaco = typeof import("monaco-editor")
  * These are the defaults, but they also act as the list of all compiler options
  * which are parsed in the query params.
  */
-export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monaco: Monaco) {
+export function getDefaultSandboxCompilerOptions(config: SandboxConfig, monaco: Monaco) {
   const settings: CompilerOptions = {
     noImplicitAny: true,
     strictNullChecks: !config.useJavaScript,
@@ -52,7 +52,7 @@ export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monac
     module: monaco.languages.typescript.ModuleKind.ESNext,
   }
 
-  return { ...settings, ...config.compilerOptions };
+  return { ...settings, ...config.compilerOptions }
 }
 
 /**
