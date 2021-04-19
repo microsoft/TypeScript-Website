@@ -627,7 +627,7 @@ There are two ways to work around this.
    handleRequest(req.url, req.method);
    ```
 
-The `as const` prefix acts like `const` but for the type system, ensuring that all properties are assigned the literal type instead of a more general version like `string` or `number`.
+The `as const` suffix acts like `const` but for the type system, ensuring that all properties are assigned the literal type instead of a more general version like `string` or `number`.
 
 ## `null` and `undefined`
 
