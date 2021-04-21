@@ -998,3 +998,33 @@ $headline-foreground-bg: #104261;
     background-color: #ddd;
   }
 }
+
+.cta .cta-back a {
+  position: relative;
+  top: 20px;
+  left: 20px;
+  width: 60px;
+}
+
+.transparent-button {
+  position: absolute;
+  top: 40px;
+  left: 20px;
+  border: 1px solid white;
+  width: 80px;
+  padding: 10px;
+  cursor: pointer;
+  svg {
+    margin-right: 8px;
+  }
+
+  &:hover,
+  &.focus {
+    background-color: #ffffff10;
+  }
+
+  &:active {
+    background-color: #ffffff20;
+    border: 1px solid #ffffff60;
+  }
+}

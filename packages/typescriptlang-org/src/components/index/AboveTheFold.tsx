@@ -18,7 +18,7 @@ const event = (name: string, options?: any) => {
     window.appInsights.trackEvent({ name }, options)
 }
 
-const FluidButton = (props: { href: string, onClick?: any, title: string, subtitle: string, icon: JSX.Element, className?: string }) => (
+const FluidButton = (props: { href?: string, onClick?: any, title: string, subtitle?: string, icon: JSX.Element, className?: string }) => (
   <a className={"fluid-button " + props.className || ""} href={props.href} onClick={props.onClick}>
     <div>
       <div className="fluid-button-title">{props.title}</div>
@@ -117,7 +117,7 @@ export const AboveTheFold = () => {
 
   const CTAHeadlineMobile = () => (
     <div>
-      <h2>Get Started With TypeScript</h2>
+      <h2>Get Started<br />With TypeScript</h2>
       <Row>
         <Col className="call-to-action flex-column">
           <div className="handbook-preview">
@@ -133,5 +133,18 @@ export const AboveTheFold = () => {
     </div>
   )
 
-  return !showCTALinks ? <Headline /> : window.innerWidth < 600 ? <CTAHeadlineMobile /> : <CTAHeadlines />
+  const CTALinks = () => {
+    const Content = window.innerWidth < 600 ? CTAHeadlineMobile : CTAHeadlines
+    return (
+      <div className="cta">
+        <div className="transparent-button" onClick={() => setShowCTALinks(false)}><svg width="21" height="14" viewBox="0 0 21 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20.25 7.75L1.75 7.75M1.75 7.75L7.75 1.25M1.75 7.75L7.75 13.25" stroke="white" stroke-width="2" />
+        </svg>
+          Back</div>
+        <Content />
+      </div>
+    )
+  }
+
+  return !showCTALinks ? <Headline /> : <CTALinks />
 }
