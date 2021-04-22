@@ -132,7 +132,7 @@ export const defaultsForOptions = {
   allowSyntheticDefaultImports: 'module === "system" or esModuleInterop',
   allowUmdGlobalAccess: "false",
   allowUnreachableCode: "undefined",
-  allowUnusedLabels: "false",
+  allowUnusedLabels: "undefined",
   alwaysStrict: "`false`, unless `strict` is set",
   charset: "utf8",
   checkJs: "false",
