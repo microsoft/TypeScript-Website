@@ -5,7 +5,6 @@ oneline: "Disable error reporting for unreachable code."
 
 When:
 
-- `undefined` (default) provide suggestions as warnings to editors
 - `true` unreachable code is ignored
 - `false` raises compiler errors about unreachable code
 

@@ -3,7 +3,7 @@ display: "Allow Unused Labels"
 oneline: "Disable error reporting for unused labels."
 ---
 
-Set to false to disable warnings about unused labels.
+Set to false to enable errors about unused labels.
 
 Labels are very rare in JavaScript and typically indicate an attempt to write an object literal:
 
