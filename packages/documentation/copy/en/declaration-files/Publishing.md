@@ -132,12 +132,12 @@ When you want to only change the resolution for a single file at a time, you can
   "version": "1.0.0",
   "types": "./index.d.ts",
   "typesVersions": {
-    ">=4.0": { "index.d.ts": ["index.v4.d.ts"] }
+    "<=4.0": { "index.d.ts": ["index.v3.d.ts"] }
   }
 }
 ```
 
-On TypeScript 4.0 and above, an import for `"package-name"` would resolve to `index.v4.d.ts` and for 3.9 and below `"./index.d.ts`.
+On TypeScript 4.0 and above, an import for `"package-name"` would resolve to `./index.d.ts` and for 3.9 and below `"./index.v3.d.ts`.
 
 ## Matching behavior
 
