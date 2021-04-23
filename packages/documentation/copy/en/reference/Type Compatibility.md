@@ -162,6 +162,27 @@ listenEvent(EventType.Mouse, (e: number) => console.log(e));
 
 You can have TypeScript raise errors when this happens via the compiler flag `strictFunctionTypes`.
 
+The correct way to avoid the unsoundness in the example above is to use conditional types and function overloads:
+
+```ts
+// Assuming enum and interfaces as above
+type GenericEvent<E extends EventType> = E extends EventType.Mouse ? MyMouseEvent : MyKeyEvent
+ 
+function listenEvent<E extends EventType>(eventType: E, handler: (n: GenericEvent<E>) => void): void;
+function listenEvent(eventType: EventType, handler: (n: GenericEvent<typeof eventType>) => void): void {
+  /* ... */
+}
+ 
+// Allowed
+listenEvent(EventType.Mouse, (e: MyMouseEvent) => console.log(e.x + "," + e.y));
+// Allowed
+listenEvent(EventType.Keyboard, (e: MyKeyEvent) => console.log(e.keyCode));
+// Disallowed
+listenEvent(EventType.Mouse, (e: MyKeyEvent) => console.log(e.keyCode));
+// Disallowed
+listenEvent(EventType.Mouse, (e: Event) => console.log(e.x + "," + e.y));
+```
+
 ## Optional Parameters and Rest Parameters
 
 When comparing functions for compatibility, optional and required parameters are interchangeable.
