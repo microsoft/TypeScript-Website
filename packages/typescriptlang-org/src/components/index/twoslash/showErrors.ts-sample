@@ -1,7 +1,7 @@
 // @errors: 2339
 const user = {
-  firstName: "Angela",
-  lastName: "Davis",
+  firstName: "Jane",
+  lastName: "Smith",
   role: "Professor"
 }
 
