@@ -177,6 +177,7 @@ export const createPluginContainer = () => {
 export const createTabForPlugin = (plugin: PlaygroundPlugin) => {
   const element = document.createElement("button")
   element.setAttribute("role", "tab")
+  element.setAttribute("aria-selected", "false")
   element.id = "playground-plugin-tab-" + plugin.id
   element.textContent = plugin.displayName
   return element
@@ -205,7 +206,7 @@ export const activatePlugin = (
     if (previousPlugin.willUnmount) previousPlugin.willUnmount(sandbox, container)
     oldPluginTab.classList.remove("active")
     oldPluginTab.setAttribute("aria-selected", "false")
-    oldPluginTab.setAttribute("tabindex", "-1")
+    oldPluginTab.removeAttribute("tabindex")
   }
 
   // Wipe the sidebar
