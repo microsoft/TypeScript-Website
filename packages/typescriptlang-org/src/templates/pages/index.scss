@@ -883,6 +883,12 @@ $headline-foreground-bg: #104261;
       display: block;
       @include flat-button;
 
+      button {
+        float: right;
+        border: none;
+        background-color: transparent;
+      }
+
       svg {
         opacity: 0.5;
         transition: opacity 0.2s linear;

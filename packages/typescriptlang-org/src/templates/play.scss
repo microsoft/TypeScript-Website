@@ -383,12 +383,12 @@ main #editor-toolbar {
       }
 
       pre {
-        background-color: var(--playground-pre-bg);
+        background-color: var(--raised-background-color);
         color: var(--text-color);
         border: none;
         overflow-x: auto;
         width: 100%;
-
+        padding: 0 10px;
         code {
           font-family: $font-code;
           font-size: 0.7rem;

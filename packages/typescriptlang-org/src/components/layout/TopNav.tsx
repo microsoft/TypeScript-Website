@@ -99,8 +99,9 @@ export const SiteNav = (props: Props) => {
 
 
         <div className="right above-small">
-          <div className="search-section">
-            <ul>
+
+          <nav role="navigation" className="search-section">
+            <ul role="region">
               <OpenInMyLangQuickJump />
               <li className="nav-item">
                 <form id="search-form" className="search top-nav" role="search">
@@ -110,7 +111,7 @@ export const SiteNav = (props: Props) => {
                 </form>
               </li>
             </ul>
-          </div>
+          </nav>
         </div>
       </div>
 
