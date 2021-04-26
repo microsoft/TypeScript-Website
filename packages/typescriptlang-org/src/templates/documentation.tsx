@@ -97,8 +97,8 @@ const HandbookTemplate: React.FC<Props> = (props) => {
         <div className="page-popup" id="page-helpful-popup" style={{ opacity: 0 }}>
           <p>Was this page helpful?</p>
           <div>
-            <button className="first" id="like-button-popup"><LikeUnfilledSVG /></button>
-            <button id="dislike-button-popup"><DislikeUnfilledSVG /></button>
+            <button className="first" id="like-button-popup" title="Like this page"><LikeUnfilledSVG /></button>
+            <button id="dislike-button-popup" title="Dislike this page"><DislikeUnfilledSVG /></button>
           </div>
         </div>
 
@@ -159,8 +159,8 @@ const HandbookTemplate: React.FC<Props> = (props) => {
                   <div id="like-dislike-subnav">
                     <h5>{i("handb_like_dislike_title")}</h5>
                     <div>
-                      <button id="like-button"><LikeUnfilledSVG /> {i("handb_like_desc")}</button>
-                      <button id="dislike-button"><DislikeUnfilledSVG /> {i("handb_dislike_desc")}</button>
+                      <button title="Like this page" id="like-button"><LikeUnfilledSVG /> {i("handb_like_desc")}</button>
+                      <button title="Dislike this page" id="dislike-button"><DislikeUnfilledSVG /> {i("handb_dislike_desc")}</button>
                     </div>
                   </div>
 
