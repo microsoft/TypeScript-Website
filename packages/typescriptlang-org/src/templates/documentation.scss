@@ -24,6 +24,7 @@
 #handbook-content {
   margin-left: 2rem;
   margin-right: 2rem;
+  max-width: 1200px;
   min-width: 0;
 
   @media (max-width: $screen-xs) {
