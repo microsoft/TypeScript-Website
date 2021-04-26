@@ -112,11 +112,11 @@ languages.forEach((lang) => {
   });
 
   // Shows the full list of compiler options straight away
-  markdownChunks.push("<div id='full-option-list' class='indent'>");
+  markdownChunks.push("<div id='full-option-list'>");
   categoryOverviews.forEach((c) => {
     if (c.code === 6178) return;
     markdownChunks.push(`<div class="tsconfig-nav-top">`);
-    markdownChunks.push(`<h5><a href=${"#" + c.id}>${c.md.data.display}</a></h5>`);
+    markdownChunks.push(`<h3><a href=${"#" + c.id}>${c.md.data.display}</a></h3>`);
     markdownChunks.push("<ul>");
 
     const optionsForCategory = options.filter((o) => o.categoryCode === c.code);
@@ -138,9 +138,9 @@ languages.forEach((lang) => {
     markdownChunks.push(`<div class="tsconfig-nav-top">`);
 
     if (index === 0) {
-      markdownChunks.push(`<h5><a href=${"#" + advanced.id}>${advanced.md.data.display}</a></h5>`);
+      markdownChunks.push(`<h3><a href=${"#" + advanced.id}>${advanced.md.data.display}</a></h3>`);
     } else {
-      markdownChunks.push(`<h5>&nbsp;</h5>`);
+      markdownChunks.push(`<h3>&nbsp;</h3>`);
     }
 
     markdownChunks.push("<ul>");
@@ -177,7 +177,7 @@ languages.forEach((lang) => {
       markdownChunks.push("</ul></nav>");
     }
 
-    markdownChunks.push("<div class='indent'>");
+    markdownChunks.push("<div>");
 
     sectionCategories.forEach((categoryID) => {
       const category = Object.values(categories).find((c: any) => c.key === categoryID);
