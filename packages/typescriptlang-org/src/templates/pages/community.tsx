@@ -85,7 +85,7 @@ export const Comm: React.FC<Props> = props => {
                 </a>
                 {i("com_online_twitter_desc") + " "}
                 <a href="https://twitter.com/typescript" title="The TypeScript team on Twitter" target="_blank">@typescript</a>!
-            </div>
+              </div>
             </div>
             <div className="callout">
               <a aria-labelledby="blog-header" className="icon blog img-circle" href="https://devblogs.microsoft.com/typescript/" target="_blank" title="The official TypeScript blog" />
@@ -95,7 +95,7 @@ export const Comm: React.FC<Props> = props => {
                 </a>
                 {i("com_online_blog_desc") + " "}
                 <a href="https://devblogs.microsoft.com/typescript/" target="_blank" title="The official TypeScript blog">blog</a>!
-            </div>
+              </div>
             </div>
             <div className="callout">
               <a aria-labelledby="deftyped-header" className="icon definitelytyped img-circle" href="https://github.com/definitelytyped/definitelytyped/#definitelytyped" target="_blank" title="Definitely Typed, a central location for third party type definitions" />
@@ -183,7 +183,7 @@ export const Comm: React.FC<Props> = props => {
           <div className="callouts">
             {meetups.map(({ meetup }, index) => (
               <Col className="callout" key={index}>
-                <img src={require("../../assets/community/meetup-logos/" + meetup.image)} className="icon img-square" alt={"logo of " + meetup.title} />
+                <img src={require("../../assets/community/meetup-logos/" + meetup.image).default} className="icon img-square" alt={"logo of " + meetup.title} />
                 <div>
                   <h4 className="community-callout-headline">{meetup.title}</h4>
                   <div className="text">{meetup.country}<br />
