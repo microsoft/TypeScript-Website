@@ -100,7 +100,7 @@ const Avatars = (
   const showRest = props.data && props.data.total > props.data.top.length;
   return <div>
     {props.data && props.data.top.map((t) => {
-      const grav = `https://gravatar.com/avatar/${t.gravatar}?s=32&&d=blank`;
+      const grav = t.gravatar.startsWith("http") ? t.gravatar : `https://gravatar.com/avatar/${t.gravatar}?s=32&&d=blank`;
       const alt = `${t.name}  (${t.count})`;
       const chars = t.name.split(" ").map((dp) => dp.substr(0, 1)).join("")
         .toUpperCase();
