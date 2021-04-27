@@ -383,7 +383,7 @@ main #editor-toolbar {
       }
 
       pre {
-        background-color: var(--raised-background-color);
+        background-color: var(--pure-background);
         color: var(--text-color);
         border: none;
         overflow-x: auto;
@@ -391,8 +391,8 @@ main #editor-toolbar {
         padding: 0 10px;
         code {
           font-family: $font-code;
-          font-size: 0.7rem;
-          line-height: 0.7rem;
+          font-size: 14px;
+          line-height: 19px;
         }
       }
     }
