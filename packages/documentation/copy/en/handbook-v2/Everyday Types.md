@@ -647,8 +647,8 @@ With `strictNullChecks` _on_, when a value is `null` or `undefined`, you will ne
 Just like checking for `undefined` before using an optional property, we can use _narrowing_ to check for values that might be `null`:
 
 ```ts twoslash
-function doSomething(x: string | undefined) {
-  if (x === undefined) {
+function doSomething(x: string | null) {
+  if (x === null) {
     // do nothing
   } else {
     console.log("Hello, " + x.toUpperCase());
@@ -662,7 +662,7 @@ TypeScript also has a special syntax for removing `null` and `undefined` from a 
 Writing `!` after any expression is effectively a type assertion that the value isn't `null` or `undefined`:
 
 ```ts twoslash
-function liveDangerously(x?: number | undefined) {
+function liveDangerously(x?: number | null) {
   // No error
   console.log(x!.toFixed());
 }
