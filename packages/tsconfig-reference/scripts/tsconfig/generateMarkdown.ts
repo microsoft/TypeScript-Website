@@ -139,7 +139,7 @@ languages.forEach((lang) => {
   categoryOverviews.forEach((c) => {
     if (c.code === 6178) return;
     mdChunks.push(`<div class="tsconfig-nav-top">`);
-    mdChunks.push(`<h5><a href=${"#" + c.id}>${c.md.data.display}</a></h5>`);
+    mdChunks.push(`<h4><a href=${"#" + c.id}>${c.md.data.display}</a></h4>`);
     mdChunks.push("<ul>");
 
     const optionsForCategory = options.filter((o) => o.categoryCode === c.code);
@@ -161,9 +161,9 @@ languages.forEach((lang) => {
     mdChunks.push(`<div class="tsconfig-nav-top">`);
 
     if (index === 0) {
-      mdChunks.push(`<h5><a href=${"#" + advanced.id}>${advanced.md.data.display}</a></h5>`);
+      mdChunks.push(`<h3><a href=${"#" + advanced.id}>${advanced.md.data.display}</a></h3>`);
     } else {
-      mdChunks.push(`<h5>&nbsp;</h5>`);
+      mdChunks.push(`<h3>&nbsp;</h3>`);
     }
 
     mdChunks.push("<ul>");
@@ -199,7 +199,7 @@ languages.forEach((lang) => {
       mdChunks.push("</ul></nav>");
     }
 
-    mdChunks.push("<div class='indent'>");
+    mdChunks.push("<div>");
 
     sectionCategories.forEach((categoryID) => {
       // We need this to look up the category ID

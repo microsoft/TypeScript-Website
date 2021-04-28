@@ -8,6 +8,7 @@
   --background-minor-highlight-color: #343434;
   --inline-code-background-color: rgb(58, 58, 92, 0.7);
   --link-color: #{$ts-main-blue-lightest-color};
+  --pure-background: black;
   --raised-background-color: #{$ts-dark-bg-for-foreground-color};
   --alt-text-color: #fff;
   --raised-box-shadow: 0 1.6px 3.6px 0 rgba(255, 255, 255, 0.132),
@@ -40,6 +41,7 @@ html,
 html.light-theme {
   // light theme
   --background-color: #{$ts-light-bg-sandy-color};
+  --pure-background: white;
   --text-color: #333;
   --border-color: #eee;
   --background-minor-highlight-color: #fcfcfc;

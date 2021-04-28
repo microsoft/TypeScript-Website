@@ -300,7 +300,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 <tr class='odd' name='allowUnusedLabels'>
 <td><code><a href='/tsconfig/#allowUnusedLabels'>--allowUnusedLabels</a></code></td>
   <td><code>boolean</code></td>
-  <td><p>false</p>
+  <td><p>undefined</p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">

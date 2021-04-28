@@ -218,7 +218,7 @@ export const SiteFooter = (props: Props) => {
 
   return (
     <footer id="site-footer" role="contentinfo">
-      { props.suppressCustomization ? null : <Customize />}
+      {props.suppressCustomization ? null : <Customize />}
 
       <section id="popular">
         <h3>Popular Documentation Pages</h3>
@@ -270,7 +270,7 @@ export const SiteFooter = (props: Props) => {
               id="microsoft-logo"
               width={92}
               height={19}
-              src={require("../../assets/microsoft-logo.png")}
+              src={require("../../assets/microsoft-logo.png").default}
               alt="Microsoft Logo"
             />
           </a>

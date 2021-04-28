@@ -19,7 +19,7 @@ type Monaco = typeof import("monaco-editor")
  * These are settings for the playground which are the equivalent to props in React
  * any changes to it should require a new setup of the playground
  */
-export type PlaygroundConfig = {
+export type SandboxConfig = {
   /** The default source code for the playground */
   text: string
   /** Should it run the ts or js IDE services */
@@ -48,7 +48,7 @@ export type PlaygroundConfig = {
   | { /** theID of a dom node to add monaco to */ elementToAppend: HTMLElement }
 )
 
-const languageType = (config: PlaygroundConfig) => (config.useJavaScript ? "javascript" : "typescript")
+const languageType = (config: SandboxConfig) => (config.useJavaScript ? "javascript" : "typescript")
 
 // Basically android and monaco is pretty bad, this makes it less bad
 // See https://github.com/microsoft/pxt/pull/7099 for this, and the long
@@ -77,7 +77,7 @@ const sharedEditorOptions: import("monaco-editor").editor.IEditorOptions = {
 
 /** The default settings which we apply a partial over */
 export function defaultPlaygroundSettings() {
-  const config: PlaygroundConfig = {
+  const config: SandboxConfig = {
     text: "",
     domID: "",
     compilerOptions: {},
@@ -89,7 +89,7 @@ export function defaultPlaygroundSettings() {
   return config
 }
 
-function defaultFilePath(config: PlaygroundConfig, compilerOptions: CompilerOptions, monaco: Monaco) {
+function defaultFilePath(config: SandboxConfig, compilerOptions: CompilerOptions, monaco: Monaco) {
   const isJSX = compilerOptions.jsx !== monaco.languages.typescript.JsxEmit.None
   const fileExt = config.useJavaScript ? "js" : "ts"
   const ext = isJSX ? fileExt + "x" : fileExt
@@ -97,13 +97,13 @@ function defaultFilePath(config: PlaygroundConfig, compilerOptions: CompilerOpti
 }
 
 /** Creates a monaco file reference, basically a fancy path */
-function createFileUri(config: PlaygroundConfig, compilerOptions: CompilerOptions, monaco: Monaco) {
+function createFileUri(config: SandboxConfig, compilerOptions: CompilerOptions, monaco: Monaco) {
   return monaco.Uri.file(defaultFilePath(config, compilerOptions, monaco))
 }
 
 /** Creates a sandbox editor, and returns a set of useful functions and the editor */
 export const createTypeScriptSandbox = (
-  partialConfig: Partial<PlaygroundConfig>,
+  partialConfig: Partial<SandboxConfig>,
   monaco: Monaco,
   ts: typeof import("typescript")
 ) => {

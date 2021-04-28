@@ -434,9 +434,9 @@ class BugReport {
   @validate
   print(@required verbose: boolean) {
     if (verbose) {
-      return this.title;
-    } else {
       return `type: ${this.type}\ntitle: ${this.title}`;
+    } else {
+     return this.title; 
     }
   }
 }
