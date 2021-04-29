@@ -1,6 +1,6 @@
 ---
 display: "excludeDirectories"
-oneline: "Synchronously call callbacks and update the state of directory watchers on platforms that do not support recursive watching natively."
+oneline: "Remove a list of directories from the watch process."
 ---
 
-Synchronously call callbacks and update the state of directory watchers on platforms that do not support recursive watching natively.
+You can use `excludeFiles` to drastically reduce the number of files which are watched during `--watch`. This can be a useful way to reduce the number of open file which TypeScript tracks on Linux.

@@ -10,8 +10,6 @@
  * This sets up:
  *
  *   - language (en, ja, zh, pt, etc)
- *     - Intro
- *     - Quick Jump for any compiler flag
  *     - Sections
  *       - Top Level Fields
  *       - Compiler Options
@@ -59,7 +57,7 @@ assert.deepEqual(
   orderedCategories.map((c) => c.split("_").pop()).sort()
 );
 
-// Extract out everthing which doesn't live in compilerOptions
+// Extract out everything which doesn't live in compilerOptions
 const notCompilerOptions = ["Project_Files_0", "Watch_Options_999"];
 const categoriesForCompilerOpts = orderedCategories.filter((c) => !notCompilerOptions.includes(c));
 
@@ -71,17 +69,16 @@ const compilerOptions = options.filter(
     !rootOptNames.includes(o.name)
 );
 
-// The TSConfig Reference is a collection of sections which
+// The TSConfig Reference is a collection of sections which have options or
+// a collection of categories which have options
 const sections = [
-  { name: "top_level", options: rootOptNames },
+  { name: "Top Level", options: rootOptNames },
   {
     name: "compilerOptions",
-    // options: compilerOptions.map((o) => o.name),
     categories: categoriesForCompilerOpts,
   },
   { name: "watchOptions", options: watchOptionCompilerOptNames },
-  { name: "buildOptions", options: buildOptionCompilerOptNames },
-  { name: "typeAcquisitionOptions", options: typeAcquisitionCompilerOptNames },
+  { name: "typeAcquisition", options: typeAcquisitionCompilerOptNames },
 ];
 
 const parseMarkdown = (md: string) => remark().use(remarkHTML).processSync(md);
@@ -102,9 +99,8 @@ languages.forEach((lang) => {
 
     const localeDesc = lang === "en" ? lang : `either ${lang} or English`;
     if (!failable)
-      throw new Error(
-        "Could not find a path for " + path + " in " + localeDesc + optionalExampleContent || ""
-      );
+      // prettier-ignore
+      throw new Error("Could not find a path for " + path + " in " + localeDesc + " " + optionalExampleContent || "");
   };
 
   // Make a JSON dump of the category anchors someone wrapping the markdown
@@ -122,65 +118,12 @@ languages.forEach((lang) => {
     categoryDisplay: string;
   }[];
 
-  const intro = parseMarkdown(readFileSync(getPathInLocale("intro.md"), "utf8"));
-  mdChunks.push(intro + "\n");
-
-  const categoryOverviews = orderedCategories.map((cID) => {
-    const categoryPath = getPathInLocale(join("categories", cID + ".md"));
-    return {
-      md: readMarkdownFile(categoryPath),
-      id: cID,
-      code: Number(cID.split("_").pop()),
-    };
-  });
-
-  // Shows the full list of compiler options straight away
-  mdChunks.push("<div id='full-option-list' class='indent'>");
-  categoryOverviews.forEach((c) => {
-    if (c.code === 6178) return;
-    mdChunks.push(`<div class="tsconfig-nav-top">`);
-    mdChunks.push(`<h4><a href=${"#" + c.id}>${c.md.data.display}</a></h4>`);
-    mdChunks.push("<ul>");
-
-    const optionsForCategory = options.filter((o) => o.categoryCode === c.code);
-    optionsForCategory.forEach((opt) => {
-      mdChunks.push(`<li><a href=${"#" + opt.name}>${opt.name}</a></li>`);
-    });
-
-    mdChunks.push("</ul></div>");
-  });
-  mdChunks.push("<br />");
-
-  // Special case the 'advanced' section because it is so long
-  const advanced = categoryOverviews.find((c) => c.code === 6178);
-
-  const advancedOpts = options.filter((o) => o.categoryCode === advanced.code);
-  const chunkedOptions = chunk(advancedOpts, 10);
-
-  chunkedOptions.forEach((opts, index) => {
-    mdChunks.push(`<div class="tsconfig-nav-top">`);
-
-    if (index === 0) {
-      mdChunks.push(`<h3><a href=${"#" + advanced.id}>${advanced.md.data.display}</a></h3>`);
-    } else {
-      mdChunks.push(`<h3>&nbsp;</h3>`);
-    }
-
-    mdChunks.push("<ul>");
-    opts.forEach((opt) => {
-      mdChunks.push(`<li><a href=${"#" + opt.name}>${opt.name}</a></li>`);
-    });
-    mdChunks.push("</ul>");
-
-    mdChunks.push("</div>");
-  });
-
-  mdChunks.push("</div>");
-
   sections.forEach((section) => {
     const sectionCategories = section.categories || [section.name];
     // Heh, the section uses an article and the categories use a section
-    mdChunks.push(`<article id='${section.name}'>`);
+    mdChunks.push(
+      `<div class="tsconfig raised main-content-block markdown"><article id='${section.name}'>`
+    );
 
     // Intro to the section
     const sectionsPath = getPathInLocale(join("sections", section.name + ".md"));
@@ -204,17 +147,19 @@ languages.forEach((lang) => {
     sectionCategories.forEach((categoryID) => {
       // We need this to look up the category ID
       const category = Object.values(categories).find((c: any) => c.key === categoryID);
+      let categoryName = categoryID;
 
       if (category) {
         const categoryPath = getPathInLocale(join("categories", categoryID + ".md"));
         const categoryFile = readMarkdownFile(categoryPath);
 
         assert.ok(categoryFile.data.display, "No display data for category: " + categoryID); // Must have a display title in the front-matter
+        categoryName = categoryFile.data.display;
 
         mdChunks.push("<div class='category'>");
 
         // Let the title change it's display but keep the same ID
-        const title = `<h2 id='${categoryID}' ><a href='#${categoryID}' name='${categoryID}' aria-label="Link to the section ${categoryFile.data.display}" aria-labelledby='${categoryID}'>#</a>${categoryFile.data.display}</h2>`;
+        const title = `<h2 id='${categoryID}' ><a href='#${categoryID}' name='${categoryID}' aria-label="Link to the section ${categoryName}" aria-labelledby='${categoryID}'>#</a>${categoryName}</h2>`;
         mdChunks.push(title);
 
         // Push the category copy
@@ -264,7 +209,7 @@ languages.forEach((lang) => {
           display: optionFile.data.display,
           oneliner: optionFile.data.oneline,
           categoryID: categoryID,
-          categoryDisplay: "123", // || categoryFile?.data.display
+          categoryDisplay: categoryName,
         });
 
         mdChunks.push("<section class='compiler-option'>");
@@ -331,7 +276,8 @@ languages.forEach((lang) => {
             .map((r) => `<li><span>${r[0]}:</span>${parseMarkdown(r[1])}</li>`)
             .join("\n") +
           "</ul>";
-        mdChunks.push(table);
+
+        if (!scopedOptionPath) mdChunks.push(table);
 
         mdChunks.push("</div></section>");
 
@@ -339,36 +285,31 @@ languages.forEach((lang) => {
       });
 
       allCategories.push({
-        display: "123", //categoryFile.data.display,
+        display: categoryName,
         anchor: categoryID,
         options: localisedOptions,
       });
     });
 
     mdChunks.push("</div>"); // Closes div class='indent'
-    mdChunks.push(`</article>`);
+    mdChunks.push(`</article></div>`);
   });
 
   // Write the Markdown and JSON
   const markdown = prettier.format(mdChunks.join("\n"), { filepath: "index.md" });
   const mdPath = join(__dirname, "..", "..", "output", lang + ".md");
   writeFileSync(mdPath, markdown);
-  console.log(mdPath);
 
   writeFileSync(
     join(__dirname, "..", "..", "output", lang + ".json"),
     JSON.stringify({ categories: allCategories })
   );
 
-  // This is used by the playgrounbd
+  // This is used by the playground
   writeFileSync(
     join(__dirname, "..", "..", "output", lang + "-summary.json"),
     JSON.stringify({ options: optionsSummary })
   );
-
-  // Do a quick linter at the end
-  // const unfound = options.filter(o => !markdown.includes(o.name))
-  // if (unfound.length) throw new Error(`Could not find these options in ${lang}: ${unfound.map(u => u.name).join(', ')}`)
 });
 
 writeFileSync(

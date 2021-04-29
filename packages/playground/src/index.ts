@@ -172,7 +172,6 @@ export const setupPlayground = (
         return
       }
       const newURL = sandbox.createURLQueryWithCompilerOptions(sandbox)
-      debugger
       window.history.replaceState({}, "", newURL)
     }
   })

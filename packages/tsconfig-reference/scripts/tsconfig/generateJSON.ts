@@ -64,6 +64,11 @@ const filteredOptions = options
   .filter((o) => !denyList.includes(o.name as CompilerOptionName))
   .filter((o) => !o.isCommandLineOnly);
 
+// The import from TS isn't 'clean'
+const buildOpts = ["build", "verbose", "dry", "clean", "force"];
+// @ts-ignore
+const watchOpts = [...ts.optionsForWatch.map((opt) => opt.name), "watch"];
+
 // We don't get structured data for all compiler flags (especially ones which aren't in 'compilerOptions')
 // so, create these manually.
 
@@ -181,7 +186,9 @@ allOptions.forEach((option) => {
     option.defaultValue = defaultsForOptions[name];
   }
 
-  option.hostObj = "compilerOptions";
+  if (buildOpts.includes(name)) option.hostObj = "build";
+  else if (watchOpts.includes(name)) option.hostObj = "watchOptions";
+  else option.hostObj = "compilerOptions";
 
   // Remove irrelevant properties
   delete option.shortName;

@@ -1,6 +1,6 @@
 ---
 display: "clean"
-oneline: "Does something"
+oneline: "Delete the outputs of all projects."
 ---
+
 Delete the outputs of all projects
- 

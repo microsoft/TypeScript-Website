@@ -286,7 +286,7 @@ export const allowedValues = {
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
   "4.3": ["noImplicitOverride"],
   "4.2": ["noPropertyAccessFromIndexSignature", "explainFiles"],
-  "4.1": ["jsxImportSource", "noUncheckedIndexedAccess"],
+  "4.1": ["jsxImportSource", "noUncheckedIndexedAccess", "disableFilenameBasedTypeAcquisition"],
   "4.0": ["jsxFragmentFactory", "disableReferencedProjectLoad"],
   "3.8": [
     "assumeChangesOnlyAffectDirectDependencies",
