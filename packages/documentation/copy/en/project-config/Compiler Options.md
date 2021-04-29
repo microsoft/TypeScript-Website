@@ -27,7 +27,7 @@ tsc --project tsconfig.production.json
 # Emit d.ts files for a js file with showing compiler options which are booleans
 tsc index.js --declaration --emitDeclarationOnly
 
-# Emit a single .js file using string string params
+# Emit a single .js file from two files via compiler options which take string arguments
 tsc app.ts util.ts --target esnext --outfile index.js
 ```
 
