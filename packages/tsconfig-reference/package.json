@@ -14,7 +14,7 @@
     "generate:md:msbuild": "yarn ts-node -T scripts/msbuild/generateMarkdown.ts",
     "generate:md": "yarn generate:md:tsconfig && yarn generate:md:cli && yarn generate:md:tsconfig",
     "bootstrap": "yarn scripts/schema/downloadSchemaBase.ts",
-    "build": "yarn generate:json:tsconfig && yarn generate:md:tsconfig",
+    "build": "yarn generate:json && yarn generate:md",
     "test": "yarn build && yarn lint",
     "lint": "node scripts/lint.js"
   },
