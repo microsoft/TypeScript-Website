@@ -5583,10 +5583,10 @@ export function getDocumentationNavForLanguage(
 
       items: [
         {
-          title: "What is a tsconfig.json",
+          title: "tsconfig.json 是什么",
           id: "7-what-is-a-tsconfig.json",
-          permalink: "/docs/handbook/tsconfig-json.html",
-          oneline: "Learn about how a TSConfig works",
+          permalink: "/zh/docs/handbook/tsconfig-json.html",
+          oneline: "了解 TSConfig 的工作原理",
         },
         {
           title: "Compiler Options in MSBuild",
