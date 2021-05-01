@@ -298,7 +298,7 @@ That's always a red flag, because it means callers wanting to specify type argum
 
 #### Type Parameters Should Appear Twice
 
-Sometimes we forget that function doesn't need to be generic:
+Sometimes we forget that a function might not need to be generic:
 
 ```ts twoslash
 function greet<Str extends string>(s: Str) {
