@@ -32,7 +32,7 @@ const Index: React.FC<Props> = (props) => {
         <div style={{ borderRight: "1px lightgrey solid", padding: "1rem", flex: 1, minWidth: "240px" }}>
           <h3>via npm</h3>
           <p>TypeScript is available as a <a href="https://www.npmjs.com/package/typescript">package on the npm registry</a> available as <code>"typescript"</code>.</p>
-          <p>You will need a copy of <a href="https://nodejs.org/en/">Node.js</a> as an environment to run the package. Then you use a dependency manager like <a href='https://www.npmjs.com/'>npm</a>, <a href='https://yarnpkg.com/'>yarn</a> or <a href='https://pnpm.js.org/'>pnpm</a> to download TypeScript into your project.</p>
+          <p>You will need a copy of <a title="Link to the node.js project" href="https://nodejs.org/en/">Node.js</a> as an environment to run the package. Then you use a dependency manager like <a title="Link to the npm package manager" href='https://www.npmjs.com/'>npm</a>, <a title="Link to the yarn package manager" href='https://yarnpkg.com/'>yarn</a> or <a title="Link to the pnpm package manager" href='https://pnpm.js.org/'>pnpm</a> to download TypeScript into your project.</p>
           <div>
             <code id='code-example'>npm install typescript --save-dev</code><br /><br />
             <button onClick={() => changeExample("npm install typescript --save-dev")}>npm</button> <button onClick={() => changeExample("yarn add typescript --dev")}>yarn</button> <button onClick={() => changeExample("pnpm add typescript -D")}>pnpm</button>
@@ -74,7 +74,7 @@ const Index: React.FC<Props> = (props) => {
           <h3>via npm</h3>
           <p>You can use npm to install TypeScript globally, this means you can use the <code>tsc</code> command anywhere in your terminal.</p>
           <p>To do this, run <code>npm install -g typescript</code>. This will install the latest version (currently {releaseInfo.tags.stableMajMin}).</p>
-          <p>An alternative is to use <a href="https://www.npmjs.com/package/npx">npx</a> when you have to run <code>tsc</code> for one-off occasions.</p>
+          <p>An alternative is to use <a title="Link to the npx package on npm" href="https://www.npmjs.com/package/npx">npx</a> when you have to run <code>tsc</code> for one-off occasions.</p>
         </div>
 
         <div style={{ padding: "1rem", flex: 1, minWidth: "240px" }}>
