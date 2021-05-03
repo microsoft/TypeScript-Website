@@ -22,13 +22,13 @@
 }
 
 #handbook-content {
-  margin-left: 2rem;
-  margin-right: 2rem;
+  margin: auto;
+  padding: 0 2rem;
+  max-width: 1200px;
   min-width: 0;
-
+  
   @media (max-width: $screen-xs) {
-    margin-left: 0;
-    margin-right: 0;
+    padding: 0;
   }
 
   // Page title
