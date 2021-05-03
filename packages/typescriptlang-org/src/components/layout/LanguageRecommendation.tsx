@@ -109,4 +109,4 @@ export const LanguageRecommendations = (props: Props) => {
 }
 
 export const OpenInMyLangQuickJump = () =>
-  <li id="my-lang-quick-jump" style={{ display: "none" }} className="nav-item"><a href=''>in En</a></li>
+  <div id="my-lang-quick-jump" style={{ display: "none" }} className="nav-item"><a href=''>in En</a></div>
