@@ -241,6 +241,9 @@ $headline-foreground-bg: #104261;
 
     pre .code-container {
       overflow: hidden;
+      a {
+        display: none;
+      }
     }
 
     .editor {
