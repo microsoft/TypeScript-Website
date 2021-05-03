@@ -54,7 +54,7 @@ const notCompilerFlags = [
 const allFlags = ts.optionDeclarations.concat(notCompilerFlags) as CompilerOptionJSON[];
 const allOptions = Array.from(new Set(allFlags)).sort((l, r) => l.name.localeCompare(r.name));
 
-// The import from TS isn't 'clean'
+// The import from TS isn't 'clean'      
 const buildOpts = ["build", "verbose", "dry", "clean", "force"];
 // @ts-ignore
 const watchOpts = [...ts.optionsForWatch.map((opt) => opt.name), "watch"];

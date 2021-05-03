@@ -134,22 +134,22 @@
               "markdownDescription": "Synchronously call callbacks and update the state of directory watchers on platforms that don`t support recursive watching natively.\n\nSee more: https://www.typescriptlang.org/tsconfig#synchronousWatchDirectory"
             },
             "excludeFiles": {
-              "description": "Synchronously call callbacks and update the state of directory watchers on platforms that don`t support recursive watching natively.",
+              "description": "Remove a list of files from the watch mode's processing.",
               "type": "array",
               "uniqueItems": true,
               "items": {
                 "type": "string"
               },
-              "markdownDescription": "Synchronously call callbacks and update the state of directory watchers on platforms that don`t support recursive watching natively.\n\nSee more: https://www.typescriptlang.org/tsconfig#excludeFiles"
+              "markdownDescription": "Remove a list of files from the watch mode's processing.\n\nSee more: https://www.typescriptlang.org/tsconfig#excludeFiles"
             },
             "excludeDirectories": {
-              "description": "Synchronously call callbacks and update the state of directory watchers on platforms that do not support recursive watching natively.",
+              "description": "Remove a list of directories from the watch process.",
               "type": "array",
               "uniqueItems": true,
               "items": {
                 "type": "string"
               },
-              "markdownDescription": "Synchronously call callbacks and update the state of directory watchers on platforms that do not support recursive watching natively.\n\nSee more: https://www.typescriptlang.org/tsconfig#excludeDirectories"
+              "markdownDescription": "Remove a list of directories from the watch process.\n\nSee more: https://www.typescriptlang.org/tsconfig#excludeDirectories"
             }
           }
         }

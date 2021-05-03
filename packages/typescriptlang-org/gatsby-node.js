@@ -1,17 +1,12 @@
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 const { createPages } = require("./lib/bootup/createPages")
-const { onCreateNode } = require("./lib/bootup/onCreateNode")
-const {
-  addPathToSite,
-  writeAllPathsToFixture,
-} = require("./lib/bootup/pathsOnSiteTracker")
+const { addPathToSite, writeAllPathsToFixture } = require("./lib/bootup/pathsOnSiteTracker")
 
 /** @type { import("gatsby").GatsbyNode } */
 const config = {}
 exports.config = config
 
 config.createPages = createPages
-config.onCreateNode = onCreateNode
 
 // So we don't need to query for all pages
 config.onCreatePage = p => addPathToSite(p.page.path)

@@ -148,7 +148,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code>boolean</code></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Does something</p>
+<p>Delete the outputs of all projects.</p>
 
 </tr></td>
 <tr class='odd' name='dry'>
@@ -193,7 +193,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code>list</code></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Synchronously call callbacks and update the state of directory watchers on platforms that do not support recursive watching natively.</p>
+<p>Remove a list of directories from the watch process.</p>
 
 </tr></td>
 <tr class='even' name='excludeFiles'>
@@ -201,7 +201,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code>list</code></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Synchronously call callbacks and update the state of directory watchers on platforms that don`t support recursive watching natively.</p>
+<p>Remove a list of files from the watch mode's processing.</p>
 
 </tr></td>
 <tr class='odd' name='fallbackPolling'>
