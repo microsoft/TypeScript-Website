@@ -118,6 +118,12 @@
         }
       }
     }
+
+    .like-dislike-subnav {
+      #like-button, #dislike-button {
+        cursor: pointer;
+      }
+    }
   }
 
   .preamble a {
