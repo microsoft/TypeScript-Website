@@ -149,6 +149,7 @@ export const createDesignSystem = (sandbox: Sandbox) => {
 
     const code = (code: string) => {
       const createCodePre = document.createElement("pre")
+      createCodePre.setAttribute("tabindex", "0")
       const codeElement = document.createElement("code")
 
       codeElement.innerHTML = code

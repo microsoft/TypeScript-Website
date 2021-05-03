@@ -26,7 +26,6 @@ export const UpcomingReleaseMeta = () => {
   // const today = new Date("04/30/2020")
   const today = new Date()
 
-
   validateDates(startDate, betaDate, rcDate, endDate)
 
   // it's an approximation, but we don't need fidelity on a 300px wide bar
@@ -105,7 +104,7 @@ function validateDates(startDate: Date, betaDate: Date, rcDate: Date, endDate: D
       { "name": "rcDate", date: rcDate },
       { "name": "releaseDate", date: releasePlan }
     ]
-    const failed = dates.filter(d => !d.date)
+    const failed = dates.filter(d => d instanceof Date)
     throw new Error(`Dates in release-plan.json can't be converted into JS dates: ${failed.join(" - ")}`)
   }
 }
