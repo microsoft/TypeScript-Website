@@ -6,6 +6,8 @@
      yarn ts-node --project packages/tsconfig-reference/tsconfig.json packages/tsconfig-reference/scripts/msbuild/generateMarkdown.ts 
 */
 
+console.log("TSConfig Ref: MD for MSBuild");
+
 import { writeFileSync, readdirSync, existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { read as readMarkdownFile } from "gray-matter";

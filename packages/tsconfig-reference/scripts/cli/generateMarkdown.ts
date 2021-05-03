@@ -5,6 +5,7 @@
      node --inspect-brk ./node_modules/.bin/ts-node --project packages/tsconfig-reference/tsconfig.json packages/tsconfig-reference/scripts/generateMarkdown.ts
      yarn ts-node --project packages/tsconfig-reference/tsconfig.json packages/tsconfig-reference/scripts/generateMarkdown.ts 
 */
+console.log("TSConfig Ref: MD for CLI Opts");
 
 import { writeFileSync, readdirSync, existsSync, readFileSync } from "fs";
 import { join } from "path";

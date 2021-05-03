@@ -8,7 +8,7 @@ const chalk = require("chalk");
 const tick = chalk.bold.greenBright("✓");
 const cross = chalk.bold.redBright("⤫");
 
-const { readdirSync, readFileSync } = require("fs");
+const { readdirSync, readFileSync, statSync } = require("fs");
 const { join } = require("path");
 
 const remark = require("remark");
@@ -46,6 +46,9 @@ languages.forEach((lang) => {
 
     const optionPath = join(locale, "options", option);
 
+    const isDir = statSync(optionPath).isDirectory()
+    if (isDir) return
+    
     const markdown = readFileSync(optionPath, "utf8");
     const markdownAST = remark().parse(markdown);
     let hasError = false;
