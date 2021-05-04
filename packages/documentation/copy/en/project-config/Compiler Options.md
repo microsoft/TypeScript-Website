@@ -357,7 +357,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 <tr class='odd' name='composite'>
 <td><code><a href='/tsconfig/#composite'>--composite</a></code></td>
   <td><code>boolean</code></td>
-  <td><p>true</p>
+  <td><p>false</p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -367,7 +367,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 <tr class='even' name='declaration'>
 <td><code><a href='/tsconfig/#declaration'>--declaration</a></code></td>
   <td><code>boolean</code></td>
-  <td><p>false</p>
+  <td><p><code>false</code>, unless <code>composite</code> is set</p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">

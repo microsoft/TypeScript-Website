@@ -259,11 +259,12 @@ If you have a getter without a setter, the field is automatically `readonly`
 
 ### Index Signatures
 
-Classes can declare index signatures; these work the same as [Index Signatures](#index-signatures) for other object types:
+Classes can declare index signatures; these work the same as [Index Signatures for other object types](/docs/handbook/2/objects.html#index-signatures):
 
 ```ts twoslash
 class MyClass {
   [s: string]: boolean | ((s: string) => boolean);
+
   check(s: string) {
     return this[s] as boolean;
   }

@@ -40,7 +40,7 @@ let currentProcess = null
 // for the project which looks only at .ts and .md files in the repo.
 
 // Startup watchman
-client.command(["watch-project", process.cwd()], function (error, resp) {
+function watcher(error, resp) {
   if (error) {
     console.error("Error initiating watch:", error)
     return
@@ -115,7 +115,7 @@ client.command(["watch-project", process.cwd()], function (error, resp) {
       }
     }
   })
-})
+}
 
 // @ts-ignore
 client.on("end", function () {
@@ -174,3 +174,16 @@ const runCommand = argString => {
 }
 
 const playCommand = (path, volume) => `afplay \"${path}\" -v ${volume}`
+
+try {
+  client.command(["watch-project", process.cwd()], watcher)
+} catch (error) {
+  const showError = process.env.DEBUG
+  const suffix = !showError ? "Run with DEBUG=* to see the error logs." : ""
+  // prettier-ignore
+  console.log(`Watchman failed to load, this is _OK_ but you will not get automatic builds of sub-projects like the tsconfig reference or playground. ` + suffix)
+
+  if (showError) {
+    console.error(error)
+  }
+}
