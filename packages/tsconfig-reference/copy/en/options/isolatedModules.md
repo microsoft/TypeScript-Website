@@ -45,7 +45,7 @@ If `isolatedModules` is set, all implementation files must be _modules_ (which m
 function fn() {}
 ```
 
-This restriction doesn't apply to `.d.ts` files
+This restriction doesn't apply to `.d.ts` files.
 
 #### References to `const enum` members
 
