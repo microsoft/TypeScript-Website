@@ -77,8 +77,8 @@ const sections = [
     name: "compilerOptions",
     categories: categoriesForCompilerOpts,
   },
-  { name: "watchOptions", options: watchOptionCompilerOptNames },
-  { name: "typeAcquisition", options: typeAcquisitionCompilerOptNames },
+  { name: "watchOptions", options: watchOptionCompilerOptNames, idPrefix: "watch" },
+  { name: "typeAcquisition", options: typeAcquisitionCompilerOptNames, idPrefix: "type"  },
 ];
 
 const parseMarkdown = (md: string) => remark().use(remarkHTML).processSync(md);
@@ -184,11 +184,14 @@ languages.forEach((lang) => {
       const localisedOptions = [] as { name: string; anchor: string }[];
 
       optionsForCategory.forEach((option) => {
-        const mdPath = join("options", option.name + ".md");
-        const scopedMDPath = join("options", section.name, option.name + ".md");
+        const optionName = option.name
+        const optionUID = section.idPrefix ? `${section.idPrefix}-${option.name}`: option.name
+
+        const mdPath = join("options", optionName + ".md");
+        const scopedMDPath = join("options", section.name, optionName + ".md");
 
         const fullPath = join(__dirname, "..", "..", "copy", lang, mdPath);
-        const exampleOptionContent = `\n\n\n Run:\n    echo '---\\ndisplay: "${option.name}"\\noneline: "Does something"\\n---\\n${option.description?.message}\\n' > ${fullPath}\n\nThen add some docs and run: \n>  yarn workspace tsconfig-reference build\n\n`;
+        const exampleOptionContent = `\n\n\n Run:\n    echo '---\\ndisplay: "${optionName}"\\noneline: "Does something"\\n---\\n${option.description?.message}\\n' > ${fullPath}\n\nThen add some docs and run: \n>  yarn workspace tsconfig-reference build\n\n`;
 
         const optionPath = getPathInLocale(mdPath, exampleOptionContent, true);
         const scopedOptionPath = getPathInLocale(scopedMDPath, exampleOptionContent, true);
@@ -196,16 +199,16 @@ languages.forEach((lang) => {
         const optionFile = readMarkdownFile(scopedOptionPath || optionPath);
 
         // prettier-ignore
-        assert.ok(optionFile, "Could not find an optionFile: " + option.name);
+        assert.ok(optionFile, "Could not find an optionFile: " + optionName);
 
         // Must have a display title in the front-matter
         // prettier-ignore
-        assert.ok(optionFile.data.display, "Could not find a 'display' for option: " + option.name + " in " + lang);
+        assert.ok(optionFile.data.display, "Could not find a 'display' for option: " + optionName + " in " + lang);
         // prettier-ignore
-        assert.ok(optionFile.data.oneline, "Could not find a 'oneline' for option: " + option.name + " in " + lang);
+        assert.ok(optionFile.data.oneline, "Could not find a 'oneline' for option: " + optionName + " in " + lang);
 
         optionsSummary.push({
-          id: option.name,
+          id: optionName,
           display: optionFile.data.display,
           oneliner: optionFile.data.oneline,
           categoryID: categoryID,
@@ -215,8 +218,8 @@ languages.forEach((lang) => {
         mdChunks.push("<section class='compiler-option'>");
 
         // Let the title change it's display but keep the same ID
-        const titleLink = `<a aria-label="Link to the compiler option: ${option.name}" id='${option.name}' href='#${option.name}' name='${option.name}' aria-labelledby="${option.name}-config">#</a>`;
-        const title = `<h3 id='${option.name}-config'>${titleLink} ${optionFile.data.display} - <code>${option.name}</code></h3>`;
+        const titleLink = `<a aria-label="Link to the compiler option: ${optionName}" id='${optionUID}' href='#${optionUID}' name='${optionUID}' aria-labelledby="${optionUID}-config">#</a>`;
+        const title = `<h3 id='${optionUID}-config'>${titleLink} ${optionFile.data.display} - <code>${optionName}</code></h3>`;
         mdChunks.push(title);
 
         // Make a flexbox container for the table and content
@@ -281,7 +284,7 @@ languages.forEach((lang) => {
 
         mdChunks.push("</div></section>");
 
-        localisedOptions.push({ anchor: option.name, name: optionFile.data.display });
+        localisedOptions.push({ anchor: optionName, name: optionFile.data.display });
       });
 
       allCategories.push({

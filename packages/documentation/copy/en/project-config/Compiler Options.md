@@ -367,7 +367,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 <tr class='even' name='declaration'>
 <td><code><a href='/tsconfig/#declaration'>--declaration</a></code></td>
   <td><code>boolean</code></td>
-  <td><p>false</p>
+  <td>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">

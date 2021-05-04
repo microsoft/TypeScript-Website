@@ -48,7 +48,7 @@ export function tsconfigJSONRenderer(lines: Lines, options: HtmlRendererOptions,
           const key = token.content.slice(1, token.content.length - 1)
           const oneliner = (tsconfig as Record<string, string>)[key]
           // prettier-ignore
-          html += `<span style="color: ${token.color}">"<a aria-hidden=true href='https://www.typescriptlang.org/tsconfig#${key}'><data-lsp lsp="${oneliner}">${escapeHtml(key)}</data-lsp></a>"</span>`
+          html += `<span style="color: ${token.color}">"<a aria-hidden=true tabindex="-1" href='https://www.typescriptlang.org/tsconfig#${key}'><data-lsp lsp="${oneliner}">${escapeHtml(key)}</data-lsp></a>"</span>`
         } else {
           html += `<span style="color: ${token.color}">${escapeHtml(token.content)}</span>`
         }
