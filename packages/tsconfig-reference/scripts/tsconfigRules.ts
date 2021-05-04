@@ -171,7 +171,7 @@ export const defaultsForOptions = {
   charset: "utf8",
   checkJs: "false",
   composite: "true",
-  declaration: "false",
+  alwaysStrict: "`false`, unless `composite` is set",
   declarationDir: " n/a",
   declarationMap: "false",
   diagnostics: "false",
