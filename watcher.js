@@ -3,6 +3,24 @@
 // A script which uses Facebook's watchman to run `yarn build` in different modules
 // in a standard monorepo.
 
+const { spawnSync } = require("child_process")
+
+const help = spawnSync("watchman --help")
+const hasWatchman = !help.error
+
+if (!hasWatchman) {
+  const showError = process.env.DEBUG
+  const suffix = !showError ? "Run with DEBUG=* to see the error logs." : ""
+  // prettier-ignore
+  console.log(`Watchman failed to load, this is _OK_ but you will not get automatic builds of sub-projects like the tsconfig reference or playground. ` + suffix)
+
+  if (showError) {
+    console.error(help.error)
+  }
+
+  process.exit(0)
+}
+
 const watchman = require("fb-watchman")
 const client = new watchman.Client({})
 const chalk = require("chalk")
@@ -174,16 +192,4 @@ const runCommand = argString => {
 }
 
 const playCommand = (path, volume) => `afplay \"${path}\" -v ${volume}`
-
-try {
-  client.command(["watch-project", process.cwd()], watcher)
-} catch (error) {
-  const showError = process.env.DEBUG
-  const suffix = !showError ? "Run with DEBUG=* to see the error logs." : ""
-  // prettier-ignore
-  console.log(`Watchman failed to load, this is _OK_ but you will not get automatic builds of sub-projects like the tsconfig reference or playground. ` + suffix)
-
-  if (showError) {
-    console.error(error)
-  }
-}
+client.command(["watch-project", process.cwd()], watcher)
