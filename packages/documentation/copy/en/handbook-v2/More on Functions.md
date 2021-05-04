@@ -552,7 +552,7 @@ const user = {
 };
 ```
 
-TypeScript understands that the function `user.becomeAdmin` has a corresponding `this` which is the outer object `user`. `this`, _heh_, can be enough for a lot of cases, but there are a lot of cases where you need more control over what object `this` represents. The JavaScript specification states that you cannot have a parameter called `this`, and so TypeScript uses that syntax space to let you declare the type for `this` in the function body.
+TypeScript understands that the function `user.becomeAdmin` has a corresponding `this` which is the outer object `user`. This can be enough for a lot of cases, but there are a lot of cases where you need more control over what object `this` represents. The JavaScript specification states that you cannot have a parameter called `this`, and so TypeScript uses that syntax space to let you declare the type for `this` in the function body.
 
 ```ts twoslash
 interface User {
@@ -566,7 +566,7 @@ interface DB {
 
 // ---cut---
 const db = getDB();
-const admins = db.filterUsers(function () {
+const admins = db.filterUsers(function (this: User) {
   return this.admin;
 });
 ```
@@ -586,7 +586,7 @@ interface DB {
 
 // ---cut---
 const db = getDB();
-const admins = db.filterUsers(() => this.isAdmin);
+const admins = db.filterUsers(() => this.admin);
 ```
 
 ## Other Types to Know About
