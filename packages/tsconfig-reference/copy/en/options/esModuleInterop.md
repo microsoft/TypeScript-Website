@@ -54,6 +54,8 @@ fs.readFileSync("file.txt", "utf8");
 _.chunk(["a", "b", "c", "d"], 2);
 ```
 
+Notice that the namespace import `import * as fs from "fs"` only considers own properties of the imported object. If the module you're importing defines its API using inherited properties, you need to use the default import form (`import fs from "fs"`), or disable `esModuleInterop`.
+
 _Note_: You can make JS emit terser by enabling [`importHelpers`](#importHelpers):
 
 ```ts twoslash
