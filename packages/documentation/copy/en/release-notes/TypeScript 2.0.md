@@ -568,7 +568,7 @@ Consider a project configuration where only some modules are available in one lo
 ## Virtual Directories with `rootDirs`
 
 Using 'rootDirs', you can inform the compiler of the _roots_ making up this "virtual" directory;
-and thus the compiler can resolve relative modules imports within these "virtual" directories _as if_ were merged together in one directory.
+and thus the compiler can resolve relative modules imports within these "virtual" directories _as if_ they were merged together in one directory.
 
 ##### Example
 
