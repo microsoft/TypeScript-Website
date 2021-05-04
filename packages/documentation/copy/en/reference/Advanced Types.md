@@ -24,6 +24,7 @@ deprecation_redirects: [
   distributive-conditional-types, /docs/handbook/2/conditional-types.html#distributive-conditional-types,
   type-inference-in-conditional-types, /docs/handbook/2/conditional-types.html#inferring-within-conditional-types,
   predefined-conditional-types, /docs/handbook/utility-types.html,
+  using-the-in-operator, "/docs/handbook/2/narrowing.html#the-in-operator-narrowing",
 ]
 ---
 

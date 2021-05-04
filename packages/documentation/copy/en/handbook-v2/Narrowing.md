@@ -271,6 +271,48 @@ function multiplyValue(container: Container, factor: number) {
 }
 ```
 
+### The `in` operator narrowing
+
+Javascript has an operator for determining if an object has a property with a name: the `in` operator.
+TypeScript takes this into account as a way to narrow down potential types.
+
+For example, with the code: `"value" in x`.  where `"value"` is a string literal and `x` is a union type. 
+The "true" branch narrows `x`'s types which have either an optional or required property `value`, and the "false" branch narrows to types which have an optional or missing property `value`.
+
+```ts twoslash
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+
+function move(pet: Fish | Bird) {
+  if ("swim" in pet) {
+    return pet.swim();
+  }
+
+  return pet.fly();
+}
+```
+
+To re-iterate, optional properites will turn up in both sides, for example a human could both swim and fly (with the right equipment) and thus should show up in both sides of the `in` check:
+
+```ts twoslash
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+type Human = {  swim?: () => void, fly?: () => void };
+
+function move(animal: Fish | Bird | Human) {
+  if ("swim" in animal) { 
+    animal
+//  ^?
+  } else {
+    animal
+//  ^?
+  }
+}
+```
+
+
+
+
 ## `instanceof` narrowing
 
 JavaScript has an operator for checking whether or not a value is an "instance" of another value.
@@ -289,6 +331,7 @@ function logValue(x: Date | string) {
   }
 }
 ```
+
 
 ## Assignments
 
