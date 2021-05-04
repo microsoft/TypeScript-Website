@@ -299,7 +299,7 @@ Sometimes the project sources from multiple directories at compile time are all 
 This can be viewed as a set of source directories create a "virtual" directory.
 
 Using 'rootDirs', you can inform the compiler of the _roots_ making up this "virtual" directory;
-and thus the compiler can resolve relative modules imports within these "virtual" directories _as if_ were merged together in one directory.
+and thus the compiler can resolve relative modules imports within these "virtual" directories _as if_ they were merged together in one directory.
 
 For example consider this project structure:
 
