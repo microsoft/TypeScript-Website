@@ -283,16 +283,16 @@ The "true" branch narrows `x`'s types which have either an optional or required 
 type Fish = { swim: () => void };
 type Bird = { fly: () => void };
 
-function move(pet: Fish | Bird) {
-  if ("swim" in pet) {
-    return pet.swim();
+function move(animal: Fish | Bird) {
+  if ("swim" in animal) {
+    return animal.swim();
   }
 
-  return pet.fly();
+  return animal.fly();
 }
 ```
 
-To re-iterate, optional properites will turn up in both sides, for example a human could both swim and fly (with the right equipment) and thus should show up in both sides of the `in` check:
+To re-iterate optional properties will exist in both sides for narrowing, for example a human could both swim and fly (with the right equipment) and thus should show up in both sides of the `in` check:
 
 ```ts twoslash
 type Fish = { swim: () => void };
@@ -309,9 +309,6 @@ function move(animal: Fish | Bird | Human) {
   }
 }
 ```
-
-
-
 
 ## `instanceof` narrowing
 
