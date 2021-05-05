@@ -32,7 +32,7 @@ type Props = {
 
 const TSConfigReferenceTemplateComponent = (props: Props) => {
   const i = createInternational<typeof headCopy>(useIntl())
-  console.log(props)
+
   const post = props.data.markdownRemark
   if (!post) {
     console.log("Could not render:", JSON.stringify(props))
