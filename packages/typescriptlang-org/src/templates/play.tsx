@@ -151,7 +151,7 @@ const Play: React.FC<Props> = (props) => {
           text: localStorage.getItem('sandbox-history') || i("play_default_code_sample"),
           compilerOptions: {},
           domID: "monaco-editor-embed",
-          useJavaScript: !!params.get("useJavaScript"),
+          filetype: (!!params.get("useJavaScript") ? "js" : params.get("filetype") || "ts") as any,
           acquireTypes: !localStorage.getItem("disable-ata"),
           supportTwoslashCompilerOptions: true,
           monacoSettings: {
@@ -202,6 +202,7 @@ const Play: React.FC<Props> = (props) => {
                     <span className="select-label">Lang</span>
                     <select id="language-selector">
                       <option>TypeScript</option>
+                      <option>TypeScript Definitions</option>
                       <option>JavaScript</option>
                     </select>
                     <span className="compiler-flag-blurb">{i("play_config_language_blurb")}</span>
