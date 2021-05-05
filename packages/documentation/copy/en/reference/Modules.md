@@ -824,7 +824,7 @@ Here is a simple test for the calculator using the exposed `test` function.
 import { Calculator, test } from "./Calculator";
 
 let c = new Calculator();
-test(c, "1+2*33/11="); // prints 9
+test(c, "1+2*33/11="); // prints 7
 ```
 
 Now to extend this to add support for input with numbers in bases other than 10, let's create `ProgrammerCalculator.ts`
