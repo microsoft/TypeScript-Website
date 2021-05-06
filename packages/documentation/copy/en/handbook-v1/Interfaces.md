@@ -684,4 +684,4 @@ This is because only descendants of `Control` will have a `state` private member
 
 Within the `Control` class it is possible to access the `state` private member through an instance of `SelectableControl`.
 Effectively, a `SelectableControl` acts like a `Control` that is known to have a `select` method.
-The `Button` and `TextBox` classes are subtypes of `SelectableControl` (because they both inherit from `Control` and have a `select` method). The `ImageControl` class has it's own `state` private member rather than extending `Control`, so it cannot implement `SelectableControl`.
+The `Button` and `TextBox` classes are subtypes of `SelectableControl` (because they both inherit from `Control` and have a `select` method). The `ImageControl` class has its own `state` private member rather than extending `Control`, so it cannot implement `SelectableControl`.

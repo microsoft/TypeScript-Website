@@ -43,7 +43,7 @@ const DateComponent: FauxactFunctionComponent<DateProps> =
 // returns either another component function or null.
 
 
-// The other component API is a class-based one.Here's a
+// The other component API is a class-based one. Here's a
 // simplified version of that API:
 
 interface FauxactClassComponent<Props extends {}, State = {}> {
@@ -58,7 +58,7 @@ interface FauxactClassComponent<Props extends {}, State = {}> {
 // Because this class can have both Props and State - it has
 // two generic arguments which are used throughout the class.
 
-// The React library comes with it's own type definitions
+// The React library comes with its own type definitions
 // like these but are much more comprehensive. Let's bring
 // those into our playground and explore a few components.
 
