@@ -358,7 +358,7 @@ export const setupPlayground = (
 
       runWithCustomLogs(run, i)
 
-      const isJS = sandbox.config.useJavaScript
+      const isJS = sandbox.config.filetype === "js"
       ui.flashInfo(i(isJS ? "play_run_js" : "play_run_ts"))
       return false
     }
@@ -474,13 +474,14 @@ export const setupPlayground = (
   const languageSelector = document.getElementById("language-selector") as HTMLSelectElement
   if (languageSelector) {
     const params = new URLSearchParams(location.search)
-    languageSelector.options.selectedIndex = params.get("useJavaScript") ? 1 : 0
+    const options = ["ts", "d.ts", "js"]
+    languageSelector.options.selectedIndex = options.indexOf(params.get("filetype") || "ts")
 
     languageSelector.onchange = () => {
-      const useJavaScript = languageSelector.value === "JavaScript"
-      const query = sandbox.createURLQueryWithCompilerOptions(sandbox, {
-        useJavaScript: useJavaScript ? true : undefined,
-      })
+      const filetype = options[Number(languageSelector.selectedIndex || 0)]
+      const query = sandbox.createURLQueryWithCompilerOptions(sandbox, { filetype })
+      console.log(query)
+      console.log({ filetype })
       const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
       // @ts-ignore
       document.location = fullURL

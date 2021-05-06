@@ -8,9 +8,10 @@ type Monaco = typeof import("monaco-editor")
  * which are parsed in the query params.
  */
 export function getDefaultSandboxCompilerOptions(config: SandboxConfig, monaco: Monaco) {
+  const useJavaScript = config.filetype === "js"
   const settings: CompilerOptions = {
     noImplicitAny: true,
-    strictNullChecks: !config.useJavaScript,
+    strictNullChecks: !useJavaScript,
     strictFunctionTypes: true,
     strictPropertyInitialization: true,
     strictBindCallApply: true,
@@ -37,8 +38,8 @@ export function getDefaultSandboxCompilerOptions(config: SandboxConfig, monaco: 
     removeComments: false,
     skipLibCheck: false,
 
-    checkJs: config.useJavaScript,
-    allowJs: config.useJavaScript,
+    checkJs: useJavaScript,
+    allowJs: useJavaScript,
     declaration: true,
 
     importHelpers: false,
@@ -129,7 +130,7 @@ export const createURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?:
     urlParams["pc"] = undefined
   }
 
-  if (sandbox.config.useJavaScript) urlParams["useJavaScript"] = true
+  if (sandbox.config.filetype !== "ts") urlParams["filetype"] = sandbox.config.filetype
 
   if (paramOverrides) {
     urlParams = { ...urlParams, ...paramOverrides }

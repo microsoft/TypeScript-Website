@@ -41,5 +41,5 @@ Then queries tend to be about changing the state of the Playground setup from th
   - `ts=dev` where it uses your [local developer's build of TypeScript](https://github.com/microsoft/TypeScript/blob/master/scripts/createPlaygroundBuild.js)
 
 - `?flag=value` - Any compiler flag referenced in can be set from a query
-- `?useJavaScript=true` - Tells the Playground to treat the editor's code as a JS file instead of a TS one
+- `?filetype=js|ts|dts` - Tells the Playground to set the editor's type
 - `?install-plugin=npm-module` - Checks to see if there is an installed playground plugin of that name, and if not offers to install it in a modal.

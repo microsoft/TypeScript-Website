@@ -90,7 +90,7 @@ const hrefForExample = (
   lang: string
 ) => {
   const isJS = example.name.indexOf(".js") !== -1
-  const prefix = isJS ? "useJavaScript=true" : ""
+  const prefix = isJS ? "filetype=js" : ""
   const hash = "example/" + example.id
   const params = example.compilerSettings || {}
   const queryParams = Object.keys(params)
