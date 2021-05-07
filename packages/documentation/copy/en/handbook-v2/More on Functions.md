@@ -560,11 +560,11 @@ interface User {
   admin: boolean;
 }
 declare const getDB: () => DB;
+// ---cut---
 interface DB {
   filterUsers(filter: (this: User) => boolean): User[];
 }
 
-// ---cut---
 const db = getDB();
 const admins = db.filterUsers(function () {
   return this.admin;
@@ -580,11 +580,11 @@ interface User {
   isAdmin: boolean;
 }
 declare const getDB: () => DB;
+// ---cut---
 interface DB {
   filterUsers(filter: (this: User) => boolean): User[];
 }
 
-// ---cut---
 const db = getDB();
 const admins = db.filterUsers(() => this.isAdmin);
 ```
