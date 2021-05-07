@@ -158,7 +158,7 @@ languages.forEach((lang) => {
 
         mdChunks.push("<div class='category'>");
 
-        // Let the title change it's display but keep the same ID
+        // Let the title change its display but keep the same ID
         const title = `<h2 id='${categoryID}' ><a href='#${categoryID}' name='${categoryID}' aria-label="Link to the section ${categoryName}" aria-labelledby='${categoryID}'>#</a>${categoryName}</h2>`;
         mdChunks.push(title);
 
@@ -217,7 +217,7 @@ languages.forEach((lang) => {
 
         mdChunks.push("<section class='compiler-option'>");
 
-        // Let the title change it's display but keep the same ID
+        // Let the title change its display but keep the same ID
         const titleLink = `<a aria-label="Link to the compiler option: ${optionName}" id='${optionUID}' href='#${optionUID}' name='${optionUID}' aria-labelledby="${optionUID}-config">#</a>`;
         const title = `<h3 id='${optionUID}-config'>${titleLink} ${optionFile.data.display} - <code>${optionName}</code></h3>`;
         mdChunks.push(title);

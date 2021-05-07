@@ -210,7 +210,7 @@ function createLabel<T extends number | string>(idOrName: T): NameOrId<T> {
 let a = createLabel("typescript")
 ```
 
-Then it worked, and you should be able to hover over `createLabel` to see it's types.
+Then it worked, and you should be able to hover over `createLabel` to see its types.
 
 ### Plugin Config
 

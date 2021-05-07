@@ -22,7 +22,7 @@ function awaitPromise(promise) {
   promise.then((value) => console.log(value));
 }
 
-// Infer the function, and it's return type:
+// Infer the function, and its return type:
 
 function inferAny(app) {
   const result = app.use("hi");

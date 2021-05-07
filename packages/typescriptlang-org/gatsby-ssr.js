@@ -1,5 +1,5 @@
 // This file exists to ensure that global.DOMParser
-// is set up, to let react-intl do it's work with RichText in
+// is set up, to let react-intl do its work with RichText in
 // a message: https://github.com/formatjs/react-intl/issues/1438#issuecomment-523153456
 
 global.DOMParser = require("xmldom").DOMParser
