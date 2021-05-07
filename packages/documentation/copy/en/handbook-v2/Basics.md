@@ -393,8 +393,8 @@ This process of moving from a newer or "higher" version of ECMAScript down to an
 
 By default TypeScript targets ES3, an extremely old version of ECMAScript.
 We could have chosen something a little bit more recent by using the `--target` flag.
-Running with `--target ES6` changes TypeScript to target ECMAScript 2015, meaning code should be able to run wherever ECMAScript 2015 is supported.
-So running `tsc --target ES6 hello.ts` gives us the following output:
+Running with `--target es2015` changes TypeScript to target ECMAScript 2015, meaning code should be able to run wherever ECMAScript 2015 is supported.
+So running `tsc --target es2015 hello.ts` gives us the following output:
 
 ```js
 function greet(person, date) {
