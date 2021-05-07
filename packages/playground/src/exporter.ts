@@ -213,9 +213,10 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-e
   async function makeMarkdown() {
     const query = sandbox.createURLQueryWithCompilerOptions(sandbox)
     const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
-    const jsSection = sandbox.config.useJavaScript
-      ? ""
-      : `
+    const jsSection =
+      sandbox.config.filetype === "js"
+        ? ""
+        : `
 <details><summary><b>Output</b></summary>
 
 ${codify(await sandbox.getRunnableJS(), "ts")}

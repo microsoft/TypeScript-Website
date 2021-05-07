@@ -566,7 +566,7 @@ interface DB {
 }
 
 const db = getDB();
-const admins = db.filterUsers(function () {
+const admins = db.filterUsers(function (this: User) {
   return this.admin;
 });
 ```
@@ -586,7 +586,7 @@ interface DB {
 }
 
 const db = getDB();
-const admins = db.filterUsers(() => this.isAdmin);
+const admins = db.filterUsers(() => this.admin);
 ```
 
 ## Other Types to Know About

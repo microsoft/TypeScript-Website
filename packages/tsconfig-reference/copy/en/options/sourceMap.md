@@ -7,7 +7,7 @@ Enables the generation of [sourcemap files](https://developer.mozilla.org/docs/T
 These files allow debuggers and other tools to display the original TypeScript source code when actually working with the emitted JavaScript files.
 Source map files are emitted as `.js.map` (or `.jsx.map`) files next to the corresponding `.js` output file.
 
-The `.js` files will in turn contain a sourcemap comment to indicate to tools where the files are to external tools, for example:
+The `.js` files will in turn contain a sourcemap comment to indicate where the files are to external tools, for example:
 
 ```ts
 // helloWorld.ts

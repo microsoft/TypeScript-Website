@@ -70,7 +70,7 @@ export default async function () {
               text: initialCode,
               compilerOptions: {},
               domID: "monaco-editor-embed",
-              useJavaScript: false,
+              filetype: "ts",
             },
             main,
             ts

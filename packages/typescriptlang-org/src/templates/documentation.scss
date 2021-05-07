@@ -26,7 +26,7 @@
   padding: 0 2rem;
   max-width: 1200px;
   min-width: 0;
-  
+
   @media (max-width: $screen-xs) {
     padding: 0;
   }
@@ -120,7 +120,8 @@
     }
 
     .like-dislike-subnav {
-      #like-button, #dislike-button {
+      #like-button,
+      #dislike-button {
         cursor: pointer;
       }
     }

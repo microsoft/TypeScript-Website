@@ -103,6 +103,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
         </div>
 
         <noscript>
+          {/* Open by default so that folks without JS get a fully open sidebar */}
           <style dangerouslySetInnerHTML={{
             __html: `
           nav#sidebar > ul > li.closed ul {
