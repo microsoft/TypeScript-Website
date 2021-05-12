@@ -8,7 +8,7 @@ You can use `excludeFiles` to drastically reduce the number of files which are w
 ```json tsconfig
 {
   "watchOptions": {
-    "excludeDirectories": ["node_modules", "_build", "temp/*"]
+    "excludeDirectories": ["**/node_modules", "_build", "temp/*"]
   }
 }
 ```
