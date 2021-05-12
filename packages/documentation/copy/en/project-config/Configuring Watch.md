@@ -35,7 +35,15 @@ The `--watch` implementation of the compiler relies on using `fs.watch` and `fs.
 
     // Poll files for updates more frequently
     // when they're updated a lot.
-    "fallbackPolling": "dynamicPriority"
+    "fallbackPolling": "dynamicPriority",
+
+    // Don't coalesce watch notification
+    "synchronousWatchDirectory": true,
+
+    // Finally, two additional settings for reducing the amount of possible
+    // files to track  work from these directories
+    "excludeDirectories": ["node_modules", "_build"],
+    "excludeFiles": ["build/fileWhichChangesOfent.ts"]
   }
 }
 ```
