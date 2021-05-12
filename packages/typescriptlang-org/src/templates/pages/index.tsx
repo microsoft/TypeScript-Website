@@ -59,7 +59,7 @@ const Index: React.FC<Props> = (props) => {
                 <p>{i("index_trust_copy_a")}</p>
                 <p>{i("index_trust_copy_b", {
                   p: (...chunk) => <p>{chunk}</p>,
-                  babel: (...chunk) => <a key={1} href='https://babeljs.io/' target="_blank">{chunk}</a>
+                  babel: (...chunk) => <a key={1} href='https://babeljs.io/' target="_blank" rel="noopener">{chunk}</a>
                 })}
                 </p>
               </div>
@@ -77,22 +77,22 @@ const Index: React.FC<Props> = (props) => {
               <h3>{i("index_dts")}</h3>
               <div>{i("index_dts_copy", {
                 p: (...chunk) => <p>{chunk}</p>,
-                dt: (...chunk) => <a href='https://github.com/DefinitelyTyped/DefinitelyTyped' target="_blank">{chunk}</a>
+                dt: (...chunk) => <a href='https://github.com/DefinitelyTyped/DefinitelyTyped' target="_blank" rel="noopener">{chunk}</a>
               })}</div>
             </Col>
             <Col key='tools description'>
               <h3>{i("index_tools")}</h3>
               <div>{i("index_tools_copy", {
                 p: (...chunk) => <p>{chunk}</p>,
-                vs: (...chunk) => <a key={1} href='https://visualstudio.microsoft.com' target="_blank">{chunk}</a>,
-                vsc: (...chunk) => <a key={2} href='https://code.visualstudio.com/' target="_blank">{chunk}</a>,
-                atom: (...chunk) => <a key={3} href='https://atom.io/' target="_blank">{chunk}</a>,
-                nova: (...chunk) => <a key={4} href='https://panic.com/nova/' target="_blank">{chunk}</a>,
-                subl: (...chunk) => <a key={5} href='https://www.sublimetext.com/' target="_blank">{chunk}</a>,
-                emacs: (...chunk) => <a key={6} href='https://github.com/ananthakumaran/tide/#readme' target="_blank">{chunk}</a>,
-                vim: (...chunk) => <a key={7} href='https://www.vimfromscratch.com/articles/setting-up-vim-for-typescript/' target="_blank">{chunk}</a>,
-                webs: (...chunk) => <a key={8} href='https://www.jetbrains.com/webstorm/' target="_blank">{chunk}</a>,
-                eclipse: (...chunk) => <a key={9} href='https://github.com/eclipse/wildwebdeveloper/' target="_blank">{chunk}</a>
+                vs: (...chunk) => <a key={1} href='https://visualstudio.microsoft.com' target="_blank" rel="noopener">{chunk}</a>,
+                vsc: (...chunk) => <a key={2} href='https://code.visualstudio.com/' target="_blank" rel="noopener">{chunk}</a>,
+                atom: (...chunk) => <a key={3} href='https://atom.io/' target="_blank" rel="noopener">{chunk}</a>,
+                nova: (...chunk) => <a key={4} href='https://panic.com/nova/' target="_blank" rel="noopener">{chunk}</a>,
+                subl: (...chunk) => <a key={5} href='https://www.sublimetext.com/' target="_blank" rel="noopener">{chunk}</a>,
+                emacs: (...chunk) => <a key={6} href='https://github.com/ananthakumaran/tide/#readme' target="_blank" rel="noopener">{chunk}</a>,
+                vim: (...chunk) => <a key={7} href='https://www.vimfromscratch.com/articles/setting-up-vim-for-typescript/' target="_blank" rel="noopener">{chunk}</a>,
+                webs: (...chunk) => <a key={8} href='https://www.jetbrains.com/webstorm/' target="_blank" rel="noopener">{chunk}</a>,
+                eclipse: (...chunk) => <a key={9} href='https://github.com/eclipse/wildwebdeveloper/' target="_blank" rel="noopener">{chunk}</a>
               })}</div>
             </Col>
             <Col key='why trust ts'>
@@ -125,22 +125,22 @@ const Index: React.FC<Props> = (props) => {
 
               <ul id="videos">
                 <li className="video active" data-img={withPrefix("/images/index/ts-conf-keynote.jpg")}>
-                  <a href="https://www.youtube.com/watch?v=jmPZztKIFf4" target="_blank">
+                  <a href="https://www.youtube.com/watch?v=jmPZztKIFf4" target="_blank" rel="noopener">
                     <p>TSConf Keynote: 2019<br /><span>By Anders Hejlsberg</span></p>
                   </a>
                 </li>
                 <li className="video" data-img={withPrefix("/images/index/what-is-new-ts.jpg")}>
-                  <a href="https://www.youtube.com/watch?v=Au-rrY0afe4" target="_blank">
+                  <a href="https://www.youtube.com/watch?v=Au-rrY0afe4" target="_blank" rel="noopener">
                     <p>What’s new in TypeScript?<br /><span>by Daniel Rosenwasser</span></p>
                   </a>
                 </li>
                 <li className="video" data-img={withPrefix("/images/index/ts-at-scale.jpg")}>
-                  <a href="https://www.youtube.com/watch?v=P-J9Eg7hJwE" target="_blank">
+                  <a href="https://www.youtube.com/watch?v=P-J9Eg7hJwE" target="_blank" rel="noopener">
                     <p>Adopting TypeScript at Scale<br /><span>By Brie Bunge</span></p>
                   </a>
                 </li>
                 <li className="video" data-img={withPrefix("/images/index/wrong-ts.jpg")}>
-                  <a href="https://www.youtube.com/watch?v=AQOEZVG2WY0" target="_blank">
+                  <a href="https://www.youtube.com/watch?v=AQOEZVG2WY0" target="_blank" rel="noopener">
                     <p>Why I Was Wrong About TypeScript<br /><span>By TJ VanToll</span></p>
                   </a>
                 </li>
@@ -148,7 +148,7 @@ const Index: React.FC<Props> = (props) => {
 
             </Col>
             <Col2>
-              <a id="videos-thumb-a" href="https://www.youtube.com/watch?v=jmPZztKIFf4" target="_blank">
+              <a id="videos-thumb-a" href="https://www.youtube.com/watch?v=jmPZztKIFf4" target="_blank" rel="noopener">
                 <img width="100%" src={withPrefix("/images/index/ts-conf-keynote.jpg")} alt="Preview thumbnail for video" />
               </a>
             </Col2>

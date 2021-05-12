@@ -49,9 +49,9 @@ export const Comm: React.FC<Props> = props => {
 
           <Col2 className="callouts">
             <div className="callout">
-              <a aria-labelledby="stack-header" className="icon stackoverflow img-circle" href="https://stackoverflow.com/questions/tagged/typescript" title="TypeScript tag on Stack Overflow" target="_blank"></a>
+              <a aria-labelledby="stack-header" className="icon stackoverflow img-circle" href="https://stackoverflow.com/questions/tagged/typescript" title="TypeScript tag on Stack Overflow" target="_blank" rel="noopener"></a>
               <div className="text">
-                <a href="https://stackoverflow.com/questions/tagged/typescript" id="stack-header" title="TypeScript tag on Stack Overflow" target="_blank">
+                <a href="https://stackoverflow.com/questions/tagged/typescript" id="stack-header" title="TypeScript tag on Stack Overflow" target="_blank" rel="noopener">
                   <h3 className="community-callout-headline">Stack Overflow</h3>
                 </a>
                 {i("com_online_stack_overflow_desc")}
@@ -84,7 +84,7 @@ export const Comm: React.FC<Props> = props => {
                   <h3 className="community-callout-headline">Twitter</h3>
                 </a>
                 {i("com_online_twitter_desc") + " "}
-                <a href="https://twitter.com/typescript" title="The TypeScript team on Twitter" target="_blank">@typescript</a>!
+                <a href="https://twitter.com/typescript" title="The TypeScript team on Twitter" target="_blank" rel="noopener">@typescript</a>!
               </div>
             </div>
             <div className="callout">
