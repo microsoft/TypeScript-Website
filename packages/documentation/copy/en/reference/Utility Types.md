@@ -15,7 +15,7 @@ Constructs a type with all properties of `Type` set to optional. This utility wi
 ##### Example
 
 ```ts twoslash
-interface Todo {
+type Todo {
   title: string;
   description: string;
 }
