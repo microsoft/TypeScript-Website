@@ -52,7 +52,7 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_NICE_MEADOW_0C9756810 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          output_location: "site"
+          app_location: "site"
           skip_app_build: true
 
       # Deploy
