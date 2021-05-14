@@ -157,7 +157,6 @@ export const createURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?:
 
     initialOptions.forEach((value, key) => {
       if (queryString.includes(key)) return
-      if (key === "install-plugin") return
       if (compilerOptions[key]) return
 
       queryString += `&${key}=${value}`
