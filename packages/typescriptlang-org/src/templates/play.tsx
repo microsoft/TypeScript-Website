@@ -113,7 +113,9 @@ const Play: React.FC<Props> = (props) => {
           "typescript-sandbox": withPrefix('/js/sandbox'),
           "typescript-playground": withPrefix('/js/playground'),
           "unpkg": "https://unpkg.com",
-          "local": "http://localhost:5000"
+          "local": "http://localhost:5000",
+          "jsdelivr": "https://cdn.jsdelivr.net/"
+
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],
         catchError: true,
