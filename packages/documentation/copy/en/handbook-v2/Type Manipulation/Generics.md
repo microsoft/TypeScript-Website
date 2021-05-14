@@ -346,23 +346,23 @@ A more advanced example uses the prototype property to infer and constrain relat
 ```ts twoslash
 // @strict: false
 class BeeKeeper {
-  hasMask: boolean;
+  hasMask: boolean=true;
 }
 
 class ZooKeeper {
-  nametag: string;
+  nametag: string="Mikle";
 }
 
 class Animal {
-  numLegs: number;
+  numLegs: number=4;
 }
 
 class Bee extends Animal {
-  keeper: BeeKeeper;
+  keeper: BeeKeeper=new BeeKeeper();
 }
 
 class Lion extends Animal {
-  keeper: ZooKeeper;
+  keeper: ZooKeeper=new ZooKeeper();
 }
 
 function createInstance<A extends Animal>(c: new () => A): A {
