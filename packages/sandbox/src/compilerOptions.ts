@@ -84,6 +84,8 @@ export const getCompilerOptionsFromParams = (options: CompilerOptions, params: U
 
 /** Gets a query string representation (hash + queries) */
 export const createURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?: any): string => {
+  const initialOptions = new URLSearchParams(document.location.search)
+
   const compilerOptions = sandbox.getCompilerOptions()
   const compilerDefaults = sandbox.compilerDefaults
   const diff = Object.entries(compilerOptions).reduce((acc, [key, value]) => {
@@ -136,14 +138,29 @@ export const createURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?:
     urlParams = { ...urlParams, ...paramOverrides }
   }
 
-  if (Object.keys(urlParams).length > 0) {
-    const queryString = Object.entries(urlParams)
+  // @ts-ignore - this is in MDN but not libdom
+  const hasInitialOpts = initialOptions.keys().length > 0
+
+  if (Object.keys(urlParams).length > 0 || hasInitialOpts) {
+    let queryString = Object.entries(urlParams)
       .filter(([_k, v]) => v !== undefined)
       .filter(([_k, v]) => v !== null)
       .map(([key, value]) => {
         return `${key}=${encodeURIComponent(value as string)}`
       })
       .join("&")
+
+    // We want to keep around custom query variables, which
+    // are usually used by playground plugins, with the exception
+    // being the install-plugin param and any compiler options
+    // which have a default value
+
+    initialOptions.forEach((value, key) => {
+      if (queryString.includes(key)) return
+      if (compilerOptions[key]) return
+
+      queryString += `&${key}=${value}`
+    })
 
     return `?${queryString}#${hash}`
   } else {
