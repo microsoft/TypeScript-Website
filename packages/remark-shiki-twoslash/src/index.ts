@@ -1,9 +1,13 @@
 // prettier-ignore
 import { createShikiHighlighter, UserConfigSettings, renderCodeToHTML, runTwoSlash } from "shiki-twoslash"
-import type { Lang, Highlighter, HighlighterOptions } from "shiki"
+import type { Lang, Highlighter } from "shiki"
 
 import visit from "unist-util-visit"
 import { Node } from "unist"
+import { addIncludes, replaceIncludesInCode } from "./includes"
+
+// A set of includes which can be pulled via a set ID
+const includes = new Map<string, string>()
 
 /* A rich AST node for uninst with twoslash'd data */
 type RichNode = Node & {
@@ -11,7 +15,7 @@ type RichNode = Node & {
   type: string
   children: Node[]
   value: string
-  meta?: string[]
+  meta?: string[] | string
   twoslash?: import("@typescript/twoslash").TwoSlashReturn
 }
 
@@ -37,7 +41,15 @@ export const visitor = (highlighter: Highlighter, twoslashSettings: UserConfigSe
   // @ts-ignore
   if (replacer[lang]) lang = replacer[lang]
 
-  const results = renderCodeToHTML(node.value, lang, node.meta || [], {}, highlighter, node.twoslash)
+  let results
+  if ((lang as string) === "twoslash") {
+    if (!node.meta) throw new Error("A twoslash code block needs a pragma like 'twoslash include [name]'")
+    const metaInfo = typeof node.meta === "string" ? node.meta : node.meta.join(" ")
+    addIncludes(includes, node.value, metaInfo || "")
+    results = ""
+  } else {
+    results = renderCodeToHTML(node.value, lang, node.meta as any, {}, highlighter, node.twoslash)
+  }
   node.type = "html"
   node.value = results
   node.children = []
@@ -49,7 +61,8 @@ export const visitor = (highlighter: Highlighter, twoslashSettings: UserConfigSe
  */
 export const runTwoSlashOnNode = (settings: UserConfigSettings = {}) => (node: RichNode) => {
   if (node.meta && node.meta.includes("twoslash")) {
-    const results = runTwoSlash(node.value, node.lang, settings)
+    const code = replaceIncludesInCode(includes, node.value)
+    const results = runTwoSlash(code, node.lang, settings)
     node.value = results.code
     node.lang = results.extension as Lang
     node.twoslash = results
@@ -59,8 +72,19 @@ export const runTwoSlashOnNode = (settings: UserConfigSettings = {}) => (node: R
 function remarkTwoslash(shikiSettings: UserConfigSettings = {}) {
   // @ts-ignore
   let settings = shikiSettings || { theme: "light-plus" }
+
+  // Default to assuming you want vfs node_modules set up
+  // but don't assume you're on node though
+  if (!settings["vfsRoot"]) {
+    try {
+      // dist > remark-shiki-twoslash > node_modules
+      settings.vfsRoot = require("path").join(__dirname, "..", "..", "..")
+    } catch (error) {}
+  }
+
   const transform = async (markdownAST: any) => {
     const highlighter = await createShikiHighlighter(settings)
+    includes.clear()
     visit(markdownAST, "code", visitor(highlighter, settings))
   }
 
