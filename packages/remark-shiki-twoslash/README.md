@@ -1,7 +1,7 @@
 ### remark-shiki-twoslash
 
 Sets up markdown code blocks to run through [shiki](https://shiki.matsu.io) which means it gets the VS Code quality
-syntax highlighting. This code is _basically_ the same as [gatsby-remark-shiki-twoslash](https://www.gatsbyjs.org/packages/gatsby-remark-shiki-thoslash/) but not tied to gatsby.
+syntax highlighting, with optional inline TypeScript compiler-backed tooling.
 
 Why Shiki? Shiki uses the same syntax highlighter engine as VS Code, which means no matter how complex your code is - it will syntax highlight correctly.
 
@@ -11,7 +11,7 @@ This module powers the code samples on the TypeScript website.
 
 ![](https://user-images.githubusercontent.com/49038/78996047-ca7be880-7b11-11ea-9e6e-fa7ea8854993.png)
 
-With a bit of work, you can explain complicated code in a way that lets people introspect at their own pace.
+With Shiki Twoslash, you can explain complicated code in a way that lets people introspect at their own pace.
 
 ## Plugin Setup
 
@@ -149,7 +149,7 @@ With a bit of work, you can explain complicated code in a way that lets people i
 
    ```jsx
    import React, { useEffect } from "react"
-   import { setupTwoslashHovers } from "shiki-twoslash/dom";
+   import { setupTwoslashHovers } from "shiki-twoslash/dist/dom";
 
    export default () => {
      // Add a the hovers
@@ -207,3 +207,52 @@ Then it worked, and you should be able to hover over `createLabel` to see it's t
 
 This plugin passes the config options directly to Shiki and Twoslash. You probably will want to
 [set `theme`](https://github.com/octref/shiki/blob/master/packages/themes/README.md#shiki-themes), then also the [TwoslashOptions here](https://www.npmjs.com/package/@typescript/twoslash#api-1).
+
+### Power User Features
+
+Once you start writing long articles, you'll start to feel the desire to remove repetition in your code samples. This plugin adds the ability to import code into code samples. This is a string replacement before code is passed to twoslash. This is done by making a `twoslash include` code sample which is given a unique identifier.
+
+Inside that code-block, you can use `// - [id]` to make sub-queries to the import, these will be stripped out in the code show. Here's an example markdown file using `includes`:
+
+````markdown
+# Hello, world!
+
+```twoslash include main
+const a = 1
+// - 1
+const b = 2
+// - 2
+const c= 3
+```
+
+Let's talk a bit about `a`:
+
+```ts twoslash
+// @include: main-1
+```
+
+`a` can be added to another number
+
+```ts twoslash
+// @include: main-1
+// ---cut---
+const nextA = a + 13
+```
+
+You can see what happens when you add `a + b`
+
+```ts twoslash
+// @include: main-2
+// ---cut---
+const result = a + b
+//    ^?
+```
+
+Finally here is `c`:
+
+```ts twoslash
+// @include: main
+// ---cut---
+c.toString()
+```
+````
