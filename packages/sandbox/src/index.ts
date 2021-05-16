@@ -414,6 +414,8 @@ export const createTypeScriptSandbox = (
     languageServiceDefaults: defaults,
     /** The path which represents the current file using the current compiler options */
     filepath: filePath.path,
+    /** Adds a file to the vfs used by the editor */
+    addLibraryToRuntime,
   }
 }
 

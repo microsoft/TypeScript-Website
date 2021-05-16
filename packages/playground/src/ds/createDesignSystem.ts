@@ -24,6 +24,8 @@ const el = (str: string, elementType: string, container: Element) => {
   return el
 }
 
+export type DesignSystem = ReturnType<ReturnType<typeof createDesignSystem>>
+
 // The Playground Plugin design system
 export const createDesignSystem = (sandbox: Sandbox) => {
   const ts = sandbox.ts
@@ -460,7 +462,16 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       return form
     }
 
+    const createSubDesignSystem = (): any => {
+      const div = document.createElement("div")
+      container.appendChild(div)
+      const ds = createDesignSystem(sandbox)(div)
+      return ds
+    }
+
     return {
+      /** The element of the design system */
+      container,
       /** Clear the sidebar */
       clear,
       /** Present code in a pre > code  */
@@ -496,6 +507,10 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       createTabButton,
       /** A general "restart your browser" message  */
       declareRestartRequired,
+      /** Create a new Design System instance and add it to the container. You'll need to cast
+       * this after usage, because otherwise the type-system circularly references itself
+       */
+      createSubDesignSystem,
     }
   }
 }

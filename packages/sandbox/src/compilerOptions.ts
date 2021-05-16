@@ -83,7 +83,8 @@ export const getCompilerOptionsFromParams = (options: CompilerOptions, params: U
 // Can't set sandbox to be the right type because the param would contain this function
 
 /** Gets a query string representation (hash + queries) */
-export const createURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?: any): string => {
+export const createURLQueryWithCompilerOptions = (_sandbox: any, paramOverrides?: any): string => {
+  const sandbox = _sandbox as import("./index").Sandbox
   const initialOptions = new URLSearchParams(document.location.search)
 
   const compilerOptions = sandbox.getCompilerOptions()
@@ -114,13 +115,21 @@ export const createURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?:
     }
   }
 
-  // Support sending the selection
+  // Support sending the selection, but only if there is a selection, and it's not the whole thing
   const s = sandbox.editor.getSelection()
-  // TODO: when it's full
-  if (
-    (s && s.selectionStartLineNumber !== s.positionLineNumber) ||
-    (s && s.selectionStartColumn !== s.positionColumn)
-  ) {
+
+  const isNotEmpty =
+    (s && s.selectionStartLineNumber !== s.positionLineNumber) || (s && s.selectionStartColumn !== s.positionColumn)
+
+  const range = sandbox.editor.getModel()!.getFullModelRange()
+  const isFull =
+    s &&
+    s.selectionStartLineNumber === range.startLineNumber &&
+    s.selectionStartColumn === range.startColumn &&
+    s.positionColumn === range.endColumn &&
+    s.positionLineNumber === range.endLineNumber
+
+  if (s && isNotEmpty && !isFull) {
     urlParams["ssl"] = s.selectionStartLineNumber
     urlParams["ssc"] = s.selectionStartColumn
     urlParams["pln"] = s.positionLineNumber
@@ -156,6 +165,8 @@ export const createURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?:
     // which have a default value
 
     initialOptions.forEach((value, key) => {
+      const skip = ["ssl", "ssc", "pln", "pc"]
+      if (skip.includes(key)) return
       if (queryString.includes(key)) return
       if (compilerOptions[key]) return
 
