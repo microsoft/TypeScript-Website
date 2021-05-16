@@ -31,7 +31,7 @@ In your editor, type the following JavaScript code in `greeter.ts`:
 ```ts twoslash
 // @noImplicitAny: false
 function greeter(person) {
-  return "Hello, " + person;
+  return `Hello, ${person}`;
 }
 
 let user = "Jane User";
@@ -58,7 +58,7 @@ Add a `: string` type annotation to the 'person' function argument as shown here
 
 ```ts twoslash
 function greeter(person: string) {
-  return "Hello, " + person;
+  return `Hello, ${person}`;
 }
 
 let user = "Jane User";
@@ -75,7 +75,7 @@ We can try changing the call greeter to pass an array instead:
 ```ts twoslash
 // @errors: 2345
 function greeter(person: string) {
-  return "Hello, " + person;
+  return `Hello, ${person}`;
 }
 
 let user = [0, 1, 2];
@@ -109,7 +109,7 @@ interface Person {
 }
 
 function greeter(person: Person) {
-  return "Hello, " + person.firstName + " " + person.lastName;
+  return `Hello, ${person.firstName} ${person.lastName}`;
 }
 
 let user = { firstName: "Jane", lastName: "User" };
@@ -145,7 +145,7 @@ interface Person {
 }
 
 function greeter(person: Person) {
-  return "Hello, " + person.firstName + " " + person.lastName;
+  return `Hello, ${person.firstName} ${person.lastName}`;
 }
 
 let user = new Student("Jane", "M.", "User");
