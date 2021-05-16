@@ -41,14 +41,15 @@ export const visitor = (highlighter: Highlighter, twoslashSettings: UserConfigSe
   // @ts-ignore
   if (replacer[lang]) lang = replacer[lang]
 
+  const metaString = !node.meta ? "" : typeof node.meta === "string" ? node.meta : node.meta.join(" ")
+
   let results
   if ((lang as string) === "twoslash") {
     if (!node.meta) throw new Error("A twoslash code block needs a pragma like 'twoslash include [name]'")
-    const metaInfo = typeof node.meta === "string" ? node.meta : node.meta.join(" ")
-    addIncludes(includes, node.value, metaInfo || "")
+    addIncludes(includes, node.value, metaString)
     results = ""
   } else {
-    results = renderCodeToHTML(node.value, lang, node.meta as any, {}, highlighter, node.twoslash)
+    results = renderCodeToHTML(node.value, lang, metaString.split(" "), {}, highlighter, node.twoslash)
   }
   node.type = "html"
   node.value = results
