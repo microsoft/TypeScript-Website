@@ -208,6 +208,31 @@ Then it worked, and you should be able to hover over `createLabel` to see it's t
 This plugin passes the config options directly to Shiki and Twoslash. You probably will want to
 [set `theme`](https://github.com/octref/shiki/blob/master/packages/themes/README.md#shiki-themes), then also the [TwoslashOptions here](https://www.npmjs.com/package/@typescript/twoslash#api-1).
 
+### Light / Dark Modes
+
+If you pass more than one theme into `themes` then a codeblock will render _for each theme_ into your HTML. This means that you can use CSS `display: none` on the one which shouldn't be seen.
+
+```ts
+const jsx = await mdx(content, {
+  filepath: "file/path/file.mdx",
+  remarkPlugins: [[remarkShikiTwoslash, { themes: ["dark-plus", "light-plus"] }]],
+})
+```
+
+```css
+@media (prefers-color-scheme: light) {
+  .shiki.dark-plus {
+    display: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .shiki.light-plus {
+    display: none;
+  }
+}
+```
+
 ### Power User Features
 
 Once you start writing long articles, you'll start to feel the desire to remove repetition in your code samples. This plugin adds the ability to import code into code samples. This is a string replacement before code is passed to twoslash. This is done by making a `twoslash include` code sample which is given a unique identifier.
