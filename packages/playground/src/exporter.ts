@@ -269,7 +269,9 @@ ${codify(stringifiedCompilerOptions, "json")}
     const ts = sandbox.getText()
     const preview = ts.length > 200 ? ts.substring(0, 200) + "..." : ts.substring(0, 200)
 
-    const code = "```\n" + preview + "\n```\n"
+    const jsx = getJsxEmitText(sandbox.getCompilerOptions().jsx)
+    const codeLanguage = jsx !== undefined ? "tsx" : "ts"
+    const code = "```" + codeLanguage + "\n" + preview + "\n```\n"
     const chat = `${code}\n[Playground Link](${fullURL})`
     ui.showModal(chat, document.getElementById("exports-dropdown")!, "Markdown code", undefined, e)
     return false
