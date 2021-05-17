@@ -17,7 +17,8 @@ export type UserConfigSettings = HighlighterOptions & TwoSlashOptions
 let storedHighlighter: Highlighter = null as any
 
 /**
- * Creates a Shiki highlighter, this is an async call because of the call to WASM to get the regex parser set up.
+ * Creates a *cached singleton* Shiki highlighter, this is an async call because of the call to WASM to get
+ * the regex parser set up.
  *
  * In other functions, passing a the result of this highlighter function is kind of optional but it's the author's
  * opinion that you should be in control of the highlighter, and not this library.
@@ -53,9 +54,7 @@ export const renderCodeToHTML = (
   twoslash?: TwoSlashReturn
 ) => {
   if (!highlighter && !storedHighlighter) {
-    throw new Error(
-      "The highlighter object hasn't been initialised via `setupHighLighter` yet in render-shiki-twoslash"
-    )
+    throw new Error("The highlighter object hasn't been initialised via `setupHighLighter` yet in shiki-twoslash")
   }
 
   // Shiki does know the lang, so tokenize
@@ -63,27 +62,33 @@ export const renderCodeToHTML = (
   const metaInfo = info && typeof info === "string" ? info : info.join(" ")
   const codefenceMeta = parseCodeFenceInfo(lang, metaInfo || "")
 
+  const renderOpts: HtmlRendererOptions = {
+    fg: renderHighlighter.getForegroundColor(),
+    bg: renderHighlighter.getBackgroundColor(),
+    ...shikiOptions,
+  }
+
   let tokens: IThemedToken[][]
   try {
     // Shiki does know the lang, so tokenize
     tokens = renderHighlighter.codeToThemedTokens(code, lang as any)
   } catch (error) {
     // Shiki doesn't know this lang
-    return plainTextRenderer(code, shikiOptions || {}, codefenceMeta.meta)
+    return plainTextRenderer(code, renderOpts, codefenceMeta.meta)
   }
 
   // Twoslash specific renderer
   if (info.includes("twoslash") && twoslash) {
-    return twoslashRenderer(tokens, shikiOptions || {}, twoslash, codefenceMeta.meta)
+    return twoslashRenderer(tokens, renderOpts, twoslash, codefenceMeta.meta)
   }
 
   // TSConfig renderer
   if (lang && lang.startsWith("json") && info.includes("tsconfig")) {
-    return tsconfigJSONRenderer(tokens, shikiOptions || {}, codefenceMeta.meta)
+    return tsconfigJSONRenderer(tokens, renderOpts, codefenceMeta.meta)
   }
 
   // Otherwise just the normal shiki renderer
-  return defaultShikiRenderer(tokens, { ...shikiOptions, langId: lang }, codefenceMeta.meta)
+  return defaultShikiRenderer(tokens, { ...renderOpts, langId: lang }, codefenceMeta.meta)
 }
 
 /**

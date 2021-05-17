@@ -19,7 +19,7 @@ require("ts-node").register({ files: true })
 const { join } = require("path")
 
 // prettier-ignore
-const shiki = join(require.resolve(`gatsby-remark-shiki-twoslash`), "..", "..", "package.json")
+const shiki = join(require.resolve(`remark-shiki-twoslash`), "..", "..", "package.json")
 
 module.exports = {
   siteMetadata: {

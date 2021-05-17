@@ -9,7 +9,9 @@ const getMarkdownASTForCode = async (code: string) => {
   const settings = {
     theme: require("../../typescriptlang-org/lib/themes/typescript-beta-light.json"),
   }
-  await gatsbyRemarkShiki({ markdownAST }, settings)
+
+  const run = gatsbyRemarkShiki(settings)
+  await run(markdownAST)
   return markdownAST
 }
 
