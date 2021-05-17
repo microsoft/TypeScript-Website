@@ -10,7 +10,7 @@ const {
 } = require("../../typescriptlang-org/lib/utils/recursiveReadDirSync");
 
 import { readFileSync, lstatSync } from "fs";
-import runTwoSlashAcrossDocument from "gatsby-remark-shiki-twoslash";
+import remarkShikiTwoslash from "remark-shiki-twoslash";
 const remark = require("remark");
 import { join } from "path";
 import { read as readMarkdownFile } from "gray-matter";
@@ -47,18 +47,11 @@ export const generateV2Markdowns = () => {
 
 export const getHTML = async (code: string, settings?: any) => {
   const markdownAST: Node = remark().parse(code);
+  const runShiki = remarkShikiTwoslash({
+    theme: require("../../typescriptlang-org/lib/themes/typescript-beta-light.json"),
+  });
 
-  // Basically, only run with twoslash during prod builds
-  if (process.env.CI) {
-    await runTwoSlashAcrossDocument(
-      { markdownAST },
-      {
-        theme: require("../../typescriptlang-org/lib/themes/typescript-beta-light.json"),
-      },
-      // @ts-ignore
-      {}
-    );
-  }
+  await runShiki(markdownAST);
 
   const hAST = toHAST(markdownAST, { allowDangerousHTML: true });
   return hastToHTML(hAST, { allowDangerousHTML: true });
