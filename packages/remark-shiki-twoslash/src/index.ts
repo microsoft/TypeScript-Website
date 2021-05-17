@@ -23,7 +23,7 @@ type RichNode = Node & {
  * The function doing the work of transforming any codeblock samples
  * which have opted-in to the twoslash pattern.
  */
-export const visitor = (highlighter: Highlighter, twoslashSettings: UserConfigSettings = {}) => (node: RichNode) => {
+export const visitor = (highlighters: Highlighter[], twoslashSettings: UserConfigSettings = {}) => (node: RichNode) => {
   let lang = node.lang
   let settings = twoslashSettings || {}
 
@@ -49,8 +49,14 @@ export const visitor = (highlighter: Highlighter, twoslashSettings: UserConfigSe
     addIncludes(includes, node.value, metaString)
     results = ""
   } else {
-    results = renderCodeToHTML(node.value, lang, metaString.split(" "), {}, highlighter, node.twoslash)
+    const output = highlighters.map(highlighter => {
+      // @ts-ignore
+      const themeName: string = highlighter.customName.split("/").pop().replace(".json", "")
+      return renderCodeToHTML(node.value, lang, metaString.split(" "), { themeName }, highlighter, node.twoslash)
+    })
+    results = output.join("\n")
   }
+
   node.type = "html"
   node.value = results
   node.children = []
@@ -70,13 +76,12 @@ export const runTwoSlashOnNode = (settings: UserConfigSettings = {}) => (node: R
   }
 }
 
-function remarkTwoslash(shikiSettings: UserConfigSettings = {}) {
-  // @ts-ignore
-  let settings = shikiSettings || { theme: "light-plus" }
+function remarkTwoslash(settings: UserConfigSettings = {}) {
+  const themes = settings.themes || (settings.theme ? [settings.theme] : ["light-plus"])
 
-  // Default to assuming you want vfs node_modules set up
-  // but don't assume you're on node though
   if (!settings["vfsRoot"]) {
+    // Default to assuming you want vfs node_modules set up
+    // but don't assume you're on node though
     try {
       // dist > remark-shiki-twoslash > node_modules
       settings.vfsRoot = require("path").join(__dirname, "..", "..", "..")
@@ -84,9 +89,16 @@ function remarkTwoslash(shikiSettings: UserConfigSettings = {}) {
   }
 
   const transform = async (markdownAST: any) => {
-    const highlighter = await createShikiHighlighter(settings)
+    const highlighters = await Promise.all(
+      themes.map(async theme => {
+        const highlighter = await createShikiHighlighter({ ...settings, theme, themes: undefined })
+        // @ts-ignore - https://github.com/shikijs/shiki/pull/162 will fix this
+        highlighter.customName = theme
+        return highlighter
+      })
+    )
     includes.clear()
-    visit(markdownAST, "code", visitor(highlighter, settings))
+    visit(markdownAST, "code", visitor(highlighters, settings))
   }
 
   return transform

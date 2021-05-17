@@ -5,16 +5,24 @@ export interface HtmlRendererOptions {
   langId?: string
   fg?: string
   bg?: string
+  themeName?: string
+}
+
+/** A func for setting a consistent <pre> */
+export const preOpenerFromRenderingOptsWithExtras = (opts: HtmlRendererOptions, fence?: any, classes?: string[]) => {
+  const bg = opts.bg || "#fff"
+  const fg = opts.fg || "black"
+  const theme = opts.themeName || ""
+  const fenceClass = (fence && fence.class) || ""
+  const extras = (classes && classes.join(" ")) || ""
+  return `<pre class="shiki ${fenceClass} ${theme} ${extras}" style="background-color: ${bg}; color: ${fg}">`
 }
 
 /** You don't have a language which shiki twoslash can handle, make a DOM compatible version  */
 export function plainTextRenderer(code: string, options: HtmlRendererOptions, codefenceMeta: any) {
   let html = ""
-  const bg = options.bg || "#fff"
-  const fg = options.fg || "black"
-  const classes = (codefenceMeta && codefenceMeta.class) || ""
 
-  html += `<pre class="shiki ${classes}" style="background-color: ${bg}; color: ${fg}">`
+  html += preOpenerFromRenderingOptsWithExtras(options, codefenceMeta, [])
   if (options.langId) {
     html += `<div class="language-id">${options.langId}</div>`
   }

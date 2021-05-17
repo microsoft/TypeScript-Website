@@ -83,7 +83,7 @@ export const renderCodeToHTML = (
   }
 
   // Otherwise just the normal shiki renderer
-  return defaultShikiRenderer(tokens, { langId: lang }, codefenceMeta.meta)
+  return defaultShikiRenderer(tokens, { ...shikiOptions, langId: lang }, codefenceMeta.meta)
 }
 
 /**

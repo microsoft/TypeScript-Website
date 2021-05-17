@@ -3,7 +3,7 @@ type Lines = import("shiki").IThemedToken[][]
 import type { IThemedToken } from "shiki"
 import { escapeHtml } from "../utils"
 import { tsconfig } from "../tsconfig-oneliners.generated"
-import { HtmlRendererOptions } from "./plain"
+import { HtmlRendererOptions, preOpenerFromRenderingOptsWithExtras } from "./plain"
 
 /** Uses tmLanguage scopes to determine what the content of the token is */
 const tokenIsJSONKey = (token: IThemedToken) => {
@@ -26,11 +26,7 @@ const isKeyInTSConfig = (token: IThemedToken) => {
 export function tsconfigJSONRenderer(lines: Lines, options: HtmlRendererOptions, codefenceMeta: any) {
   let html = ""
 
-  const bg = options.bg || "#fff"
-  const fg = options.fg || "black"
-  const classes = codefenceMeta.class || ""
-
-  html += `<pre class="shiki tsconfig lsp ${classes}" style="background-color: ${bg}; color: ${fg}">`
+  html += preOpenerFromRenderingOptsWithExtras(options, codefenceMeta, ["tsconfig", "lsp"])
   if (options.langId) {
     html += `<div class="language-id">${options.langId}</div>`
   }

@@ -3,7 +3,7 @@ type TwoSlash = import("@typescript/twoslash").TwoSlashReturn
 
 import { shouldBeHighlightable, shouldHighlightLine } from "../parseCodeFenceInfo"
 import { stripHTML, createHighlightedString2, subTripleArrow, replaceTripleArrowEncoded, escapeHtml } from "../utils"
-import { HtmlRendererOptions } from "./plain"
+import { HtmlRendererOptions, preOpenerFromRenderingOptsWithExtras } from "./plain"
 
 // OK, so - this is just straight up complex code.
 
@@ -19,7 +19,7 @@ import { HtmlRendererOptions } from "./plain"
 //
 // - Twoslash results can be cut, so sometimes there is edge cases between twoslash results
 // - Twoslash results can be multi-file
-// - the DOM requires a flattened graph of html elements
+// - the DOM requires a flattened graph of html elements (e.g. spans can' be interspersed)
 //
 
 export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, twoslash: TwoSlash, codefenceMeta: any) {
@@ -27,11 +27,8 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
 
   const hasHighlight = shouldBeHighlightable(codefenceMeta)
   const hl = shouldHighlightLine(codefenceMeta)
-  const bg = options.bg || "#fff"
-  const fg = options.fg || "black"
-  const classes = codefenceMeta.class || ""
 
-  html += `<pre class="shiki twoslash lsp ${classes}" style="background-color: ${bg}; color: ${fg}">`
+  html += preOpenerFromRenderingOptsWithExtras(options, codefenceMeta, ["twoslash", "lsp"])
   if (options.langId) {
     html += `<div class="language-id">${options.langId}</div>`
   }
