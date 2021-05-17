@@ -12,6 +12,7 @@
     "semi": true
   },
   "dependencies": {
+    "gatsby-remark-shiki-twoslash": "2.0.0",
     "fs-jetpack": "^2.4.0",
     "playwright": "^1.9.1",
     "sass": "*",
