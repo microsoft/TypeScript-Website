@@ -1,4 +1,3 @@
-// prettier-ignore
 import { UserConfigSettings, renderCodeToHTML, runTwoSlash } from "shiki-twoslash"
 import { Lang, Highlighter, getHighlighter, IThemeRegistration } from "shiki"
 
@@ -78,7 +77,8 @@ export const runTwoSlashOnNode = (settings: UserConfigSettings = {}) => (node: R
       node.lang = results.extension as Lang
       node.twoslash = results
     } catch (error) {
-      error.message = `remark-shiki-twoslash: Error thrown in code sample on line ${node.position?.start.line}\n\n${error.message}`
+      const pos = (node.position && node.position.start.line) || -1
+      error.message = `remark-shiki-twoslash: Error thrown in code sample on line ${pos}\n\n${error.message}`
       throw error
     }
   }
