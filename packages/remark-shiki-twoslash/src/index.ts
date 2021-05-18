@@ -1,36 +1,17 @@
+import type { TwoSlashReturn } from "@typescript/twoslash"
+import type { Node } from "unist"
 import { UserConfigSettings, renderCodeToHTML, runTwoSlash } from "shiki-twoslash"
 import { Lang, Highlighter, getHighlighter, IThemeRegistration } from "shiki"
-
 import visit from "unist-util-visit"
-import { Node } from "unist"
+
 import { addIncludes, replaceIncludesInCode } from "./includes"
+import { cachedTwoslashCall } from "./caching"
 
 // A set of includes which can be pulled via a set ID
 const includes = new Map<string, string>()
 
-/* A rich AST node for uninst with twoslash'd data */
-type RichNode = Node & {
-  lang: Lang
-  type: string
-  children: Node[]
-  value: string
-  meta?: string[] | string
-  twoslash?: import("@typescript/twoslash").TwoSlashReturn
-}
-
-/**
- * The function doing the work of transforming any codeblock samples
- * which have opted-in to the twoslash pattern.
- */
-export const visitor = (highlighters: Highlighter[], twoslashSettings: UserConfigSettings = {}) => (node: RichNode) => {
-  let lang = node.lang
-  let settings = twoslashSettings || {}
-
-  // Offer a way to do high-perf iterations, this is less useful
-  // given that we cache the results of twoslash in the file-system
-  const shouldDisableTwoslash = process && process.env && !!process.env.TWOSLASH_DISABLE
-  if (!shouldDisableTwoslash) runTwoSlashOnNode(settings)(node)
-
+// prettier-ignore
+function getHTML(code: string, lang: string, metaString: string, highlighters: Highlighter[], twoslash: TwoSlashReturn | undefined) {
   // Shiki doesn't respect json5 as an input, so switch it
   // to json, which can handle comments in the syntax highlight
   const replacer = {
@@ -40,91 +21,70 @@ export const visitor = (highlighters: Highlighter[], twoslashSettings: UserConfi
   // @ts-ignore
   if (replacer[lang]) lang = replacer[lang]
 
-  // The meta is the bit after lang in: ```lang [this bit]
-  const metaString = !node.meta ? "" : typeof node.meta === "string" ? node.meta : node.meta.join(" ")
-
   let results
-  // Support 'twoslash' codesamples
+  // Support 'twoslash' includes
   if ((lang as string) === "twoslash") {
-    if (!node.meta) throw new Error("A twoslash code block needs a pragma like 'twoslash include [name]'")
-    addIncludes(includes, node.value, metaString)
+    if (!metaString) throw new Error("A twoslash code block needs a pragma like 'twoslash include [name]'")
+    addIncludes(includes, code, metaString)
     results = ""
   } else {
-    // All good, get each
+    // All good, get each highlighter and render the shiki output for it
     const output = highlighters.map(highlighter => {
       // @ts-ignore
       const themeName: string = highlighter.customName.split("/").pop().replace(".json", "")
-      return renderCodeToHTML(node.value, lang, metaString.split(" "), { themeName }, highlighter, node.twoslash)
+      return renderCodeToHTML(code, lang, metaString.split(" "), { themeName }, highlighter, twoslash)
     })
     results = output.join("\n")
   }
-
-  node.type = "html"
-  node.value = results
-  node.children = []
+  return results
 }
 
 /**
  * Runs twoslash across an AST node, switching out the text content, and lang
  * and adding a `twoslash` property to the node.
  */
-export const runTwoSlashOnNode = (settings: UserConfigSettings = {}) => (node: RichNode) => {
-  if (node.meta && node.meta.includes("twoslash")) {
-    try {
-      const code = replaceIncludesInCode(includes, node.value)
-      const results = cachedTwoslashCall(code, node.lang, settings)
-      node.value = results.code
-      node.lang = results.extension as Lang
-      node.twoslash = results
-    } catch (error) {
-      const pos = (node.position && node.position.start.line) || -1
-      error.message = `remark-shiki-twoslash: Error thrown in code sample on line ${pos}\n\n${error.message}`
-      throw error
-    }
+export const runTwoSlashOnNode = (code: string, lang: string, meta: string, settings: UserConfigSettings = {}) => {
+  // Offer a way to do high-perf iterations, this is less useful
+  // given that we cache the results of twoslash in the file-system=
+  const shouldDisableTwoslash = process && process.env && !!process.env.TWOSLASH_DISABLE
+  if (shouldDisableTwoslash) return undefined
+
+  // Only run twoslash when the meta has the attribute twoslash
+  if (meta && meta.includes("twoslash")) {
+    const importedCode = replaceIncludesInCode(includes, code)
+    return cachedTwoslashCall(importedCode, lang, settings)
   }
+
+  return undefined
 }
 
-/**
- * Keeps a cache of the JSON responses to a twoslash call in node_modules/.cache/twoslash
- * which should keep CI times down (e.g. the epub vs the handbook etc) - but also during
- * dev time, this is useful.
- *
- */
-export const cachedTwoslashCall = (code: string, lang: string, settings: UserConfigSettings) => {
-  try {
-    require("crypto")
-  } catch (err) {
-    // Not in Node, run un-cached
-    return runTwoSlash(code, lang, settings)
-  }
-
-  const { createHash } = require("crypto")
-  const { readFileSync, existsSync, mkdirSync, writeFileSync } = require("fs")
-  const { join } = require("path")
-
-  const shasum = createHash("sha1")
-  const codeSha = shasum.update(code).digest("hex")
-  const cacheRoot = join(__dirname, "..", "..", ".cache", "twoslash")
-  const cachePath = join(cacheRoot, `${codeSha}.json`)
-
-  if (existsSync(cachePath)) {
-    return JSON.parse(readFileSync(cachePath, "utf8"))
-  } else {
-    const results = runTwoSlash(code, lang, settings)
-    if (!existsSync(cacheRoot)) mkdirSync(cacheRoot, { recursive: true })
-    writeFileSync(cachePath, JSON.stringify(results), "utf8")
-    return results
-  }
-}
-
-// The remark API
-
-// So we only have one highlighter per theme in a process
+// To make sure we only have one highlighter per theme in a process
 const highlighterCache = new Map<IThemeRegistration, Highlighter>()
 
-function remarkTwoslash(settings: UserConfigSettings = {}) {
+/** Sets up the highlighters, and cache's for recalls */
+export const highlightersFromSettings = async (settings: UserConfigSettings) => {
   const themes = settings.themes || (settings.theme ? [settings.theme] : ["light-plus"])
 
+  return await Promise.all(
+    themes.map(async theme => {
+      // You can put a string, a path, or the JSON theme obj
+      const themeName = (theme as any).name || theme
+      const cached = highlighterCache.get(themeName)
+      if (cached) {
+        return cached
+      }
+
+      const highlighter = await getHighlighter({ ...settings, theme, themes: undefined })
+
+      // @ts-ignore - https://github.com/shikijs/shiki/pull/162 will fix this
+      highlighter.customName = themeName
+      highlighterCache.set(themeName, highlighter)
+      return highlighter
+    })
+  )
+}
+
+const amendSettingsForDefaults = (settings: UserConfigSettings) => {
   if (!settings["vfsRoot"]) {
     // Default to assuming you want vfs node_modules set up
     // but don't assume you're on node though
@@ -133,30 +93,84 @@ function remarkTwoslash(settings: UserConfigSettings = {}) {
       settings.vfsRoot = require("path").join(__dirname, "..", "..", "..")
     } catch (error) {}
   }
+}
+
+const parsingNewFile = () => includes.clear()
+
+////////////////// The Remark API
+
+/* A rich AST node for uninst with twoslash'd data */
+type RemarkCodeNode = Node & {
+  lang: Lang
+  type: string
+  children: Node[]
+  value: string
+  meta?: string[] | string
+  twoslash?: TwoSlashReturn
+}
+
+/**
+ * Synchronous outer function, async inner function, which is how the remark
+ * async API works.
+ */
+function remarkTwoslash(settings: UserConfigSettings = {}) {
+  amendSettingsForDefaults(settings)
 
   const transform = async (markdownAST: any) => {
-    const highlighters = await Promise.all(
-      themes.map(async theme => {
-        // You can put a string, a path, or the JSON theme obj
-        const themeName = (theme as any).name || theme
-        const cached = highlighterCache.get(themeName)
-        if (cached) {
-          return cached
-        }
-
-        const highlighter = await getHighlighter({ ...settings, theme, themes: undefined })
-        // @ts-ignore - https://github.com/shikijs/shiki/pull/162 will fix this
-        highlighter.customName = themeName
-        highlighterCache.set(themeName, highlighter)
-        return highlighter
-      })
-    )
-
-    includes.clear()
-    visit(markdownAST, "code", visitor(highlighters, settings))
+    const highlighters = await highlightersFromSettings(settings)
+    parsingNewFile()
+    visit(markdownAST, "code", remarkVisitor(highlighters, settings))
   }
 
   return transform
 }
 
+/**
+ * The function doing the work of transforming any codeblock samples in a remark AST.
+ */
+export const remarkVisitor = (highlighters: Highlighter[], twoslashSettings: UserConfigSettings = {}) => (
+  node: RemarkCodeNode
+) => {
+  let lang = node.lang
+  // The meta is the bit after lang in: ```lang [this bit]
+  const metaString = !node.meta ? "" : typeof node.meta === "string" ? node.meta : node.meta.join(" ")
+  const code = node.value
+
+  const twoslash = runTwoSlashOnNode(code, lang, metaString, twoslashSettings)
+  if (twoslash) {
+    node.value = twoslash.code
+    node.lang = twoslash.extension as Lang
+    node.twoslash = twoslash
+  }
+
+  const shikiHTML = getHTML(node.value, lang, metaString, highlighters, twoslash)
+  node.type = "html"
+  node.value = shikiHTML
+  node.children = []
+}
+
 export default remarkTwoslash
+
+////////////////// The Markdown-it API
+
+/** Only the inner function exposed as a synchronous API for markdown-it */
+
+export const setupForFile = async (settings: UserConfigSettings = {}) => {
+  amendSettingsForDefaults(settings)
+  parsingNewFile()
+
+  let highlighters = await highlightersFromSettings(settings)
+  return { settings, highlighters }
+}
+
+export const transformAttributesToHTML = (
+  code: string,
+  lang: string,
+  attrs: string,
+  highlighters: Highlighter[],
+  settings: UserConfigSettings
+) => {
+  const twoslash = runTwoSlashOnNode(code, lang, attrs, settings)
+  const newCode = (twoslash && twoslash.code) || code
+  return getHTML(newCode, lang, attrs, highlighters, twoslash)
+}

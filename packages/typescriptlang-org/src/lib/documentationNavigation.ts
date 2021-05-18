@@ -2139,26 +2139,26 @@ export function getDocumentationNavForLanguage(
         {
           title: "TS for the New Programmer",
           id: "0-typescript-for-the-new-programmer",
-          permalink: "/ko/docs/handbook/typescript-from-scratch.html",
+          permalink: "/docs/handbook/typescript-from-scratch.html",
           oneline: "Learn TypeScript from scratch",
         },
         {
           title: "TypeScript for JS Programmers",
           id: "0-typescript-for-javascript-programmers",
-          permalink: "/ko/docs/handbook/typescript-in-5-minutes.html",
+          permalink: "/docs/handbook/typescript-in-5-minutes.html",
           oneline: "Learn how TypeScript extends JavaScript",
         },
         {
           title: "TS for Java/C# Programmers",
           id: "0-typescript-for-java/c#-programmers",
-          permalink: "/ko/docs/handbook/typescript-in-5-minutes-oop.html",
+          permalink: "/docs/handbook/typescript-in-5-minutes-oop.html",
           oneline:
             "Learn TypeScript if you have a background in object-oriented languages",
         },
         {
           title: "TS for Functional Programmers",
           id: "0-typescript-for-functional-programmers",
-          permalink: "/ko/docs/handbook/typescript-in-5-minutes-func.html",
+          permalink: "/docs/handbook/typescript-in-5-minutes-func.html",
           oneline:
             "Learn TypeScript if you have a background in functional programming",
         },
@@ -2181,7 +2181,7 @@ export function getDocumentationNavForLanguage(
         {
           title: "The TypeScript Handbook",
           id: "1-the-typescript-handbook",
-          permalink: "/ko/docs/handbook/intro.html",
+          permalink: "/docs/handbook/intro.html",
           oneline: "Your first step to learn TypeScript",
         },
         {
@@ -2232,7 +2232,7 @@ export function getDocumentationNavForLanguage(
             {
               title: "Generics",
               id: "1-generics",
-              permalink: "/ko/docs/handbook/2/generics.html",
+              permalink: "/docs/handbook/2/generics.html",
               oneline: "Types which take parameters",
             },
             {
@@ -2306,7 +2306,7 @@ export function getDocumentationNavForLanguage(
         {
           title: "Decorators",
           id: "2-decorators",
-          permalink: "/ko/docs/handbook/decorators.html",
+          permalink: "/docs/handbook/decorators.html",
           oneline: "TypeScript Decorators overview",
         },
         {
@@ -2318,7 +2318,7 @@ export function getDocumentationNavForLanguage(
         {
           title: "Enums",
           id: "2-enums",
-          permalink: "/ko/docs/handbook/enums.html",
+          permalink: "/docs/handbook/enums.html",
           oneline: "How TypeScript enums work",
         },
         {
@@ -2342,25 +2342,25 @@ export function getDocumentationNavForLanguage(
         {
           title: "Modules",
           id: "2-modules",
-          permalink: "/ko/docs/handbook/modules.html",
+          permalink: "/docs/handbook/modules.html",
           oneline: "How modules work in TypeScript",
         },
         {
           title: "Module Resolution",
           id: "2-module-resolution",
-          permalink: "/ko/docs/handbook/module-resolution.html",
+          permalink: "/docs/handbook/module-resolution.html",
           oneline: "How TypeScript resolves modules in JavaScript",
         },
         {
           title: "Namespaces",
           id: "2-namespaces",
-          permalink: "/ko/docs/handbook/namespaces.html",
+          permalink: "/docs/handbook/namespaces.html",
           oneline: "How TypeScript namespaces work",
         },
         {
           title: "Namespaces and Modules",
           id: "2-namespaces-and-modules",
-          permalink: "/ko/docs/handbook/namespaces-and-modules.html",
+          permalink: "/docs/handbook/namespaces-and-modules.html",
           oneline:
             "How to organize code in TypeScript via modules or namespaces",
         },
@@ -2379,7 +2379,7 @@ export function getDocumentationNavForLanguage(
         {
           title: "Type Compatibility",
           id: "2-type-compatibility",
-          permalink: "/ko/docs/handbook/type-compatibility.html",
+          permalink: "/docs/handbook/type-compatibility.html",
           oneline: "How type-checking works in TypeScript",
         },
         {
@@ -2391,7 +2391,7 @@ export function getDocumentationNavForLanguage(
         {
           title: "Variable Declaration",
           id: "2-variable-declaration",
-          permalink: "/ko/docs/handbook/variable-declarations.html",
+          permalink: "/docs/handbook/variable-declarations.html",
           oneline: "How TypeScript handles variable declaration",
         },
       ],
@@ -2406,25 +2406,25 @@ export function getDocumentationNavForLanguage(
         {
           title: "ASP.NET Core",
           id: "3-asp.net-core",
-          permalink: "/ko/docs/handbook/asp-net-core.html",
+          permalink: "/docs/handbook/asp-net-core.html",
           oneline: "Using TypeScript in ASP.NET Core",
         },
         {
           title: "Gulp",
           id: "3-gulp",
-          permalink: "/ko/docs/handbook/gulp.html",
+          permalink: "/docs/handbook/gulp.html",
           oneline: "Using TypeScript with Gulp",
         },
         {
           title: "DOM Manipulation",
           id: "3-dom-manipulation",
-          permalink: "/ko/docs/handbook/dom-manipulation.html",
+          permalink: "/docs/handbook/dom-manipulation.html",
           oneline: "Using the DOM with TypeScript",
         },
         {
           title: "Migrating from JavaScript",
           id: "3-migrating-from-javascript",
-          permalink: "/ko/docs/handbook/migrating-from-javascript.html",
+          permalink: "/docs/handbook/migrating-from-javascript.html",
           oneline: "How to migrate from JavaScript to TypeScript",
         },
         {
@@ -2464,19 +2464,19 @@ export function getDocumentationNavForLanguage(
         {
           title: "TypeScript 4.0",
           id: "4-typescript-4.0",
-          permalink: "/ko/docs/handbook/release-notes/typescript-4-0.html",
+          permalink: "/docs/handbook/release-notes/typescript-4-0.html",
           oneline: "TypeScript 4.0 Release Notes",
         },
         {
           title: "TypeScript 3.9",
           id: "4-typescript-3.9",
-          permalink: "/ko/docs/handbook/release-notes/typescript-3-9.html",
+          permalink: "/docs/handbook/release-notes/typescript-3-9.html",
           oneline: "TypeScript 3.9 Release Notes",
         },
         {
           title: "TypeScript 3.8",
           id: "4-typescript-3.8",
-          permalink: "/ko/docs/handbook/release-notes/typescript-3-8.html",
+          permalink: "/docs/handbook/release-notes/typescript-3-8.html",
           oneline: "TypeScript 3.8 Release Notes",
         },
         {
@@ -2642,21 +2642,20 @@ export function getDocumentationNavForLanguage(
         {
           title: "Introduction",
           id: "5-introduction",
-          permalink: "/ko/docs/handbook/declaration-files/introduction.html",
+          permalink: "/docs/handbook/declaration-files/introduction.html",
           oneline:
             "How to write a high-quality TypeScript Declaration (d.ts) file",
         },
         {
           title: "Declaration Reference",
           id: "5-declaration-reference",
-          permalink: "/ko/docs/handbook/declaration-files/by-example.html",
+          permalink: "/docs/handbook/declaration-files/by-example.html",
           oneline: "How to create a d.ts file for a module",
         },
         {
           title: "Library Structures",
           id: "5-library-structures",
-          permalink:
-            "/ko/docs/handbook/declaration-files/library-structures.html",
+          permalink: "/docs/handbook/declaration-files/library-structures.html",
           oneline: "How to structure your d.ts files",
         },
         {
@@ -2684,14 +2683,14 @@ export function getDocumentationNavForLanguage(
               title: "Module: Class",
               id: "5-module:-class",
               permalink:
-                "/ko/docs/handbook/declaration-files/templates/module-class-d-ts.html",
+                "/docs/handbook/declaration-files/templates/module-class-d-ts.html",
               oneline: "undefined",
             },
             {
               title: "Module: Function",
               id: "5-module:-function",
               permalink:
-                "/ko/docs/handbook/declaration-files/templates/module-function-d-ts.html",
+                "/docs/handbook/declaration-files/templates/module-function-d-ts.html",
               oneline: "undefined",
             },
             {
@@ -2713,25 +2712,25 @@ export function getDocumentationNavForLanguage(
         {
           title: "Do's and Don'ts",
           id: "5-do's-and-don'ts",
-          permalink: "/ko/docs/handbook/declaration-files/do-s-and-don-ts.html",
+          permalink: "/docs/handbook/declaration-files/do-s-and-don-ts.html",
           oneline: "Recommendations for writing d.ts files",
         },
         {
           title: "Deep Dive",
           id: "5-deep-dive",
-          permalink: "/ko/docs/handbook/declaration-files/deep-dive.html",
+          permalink: "/docs/handbook/declaration-files/deep-dive.html",
           oneline: "How do d.ts files work, a deep dive",
         },
         {
           title: "Publishing",
           id: "5-publishing",
-          permalink: "/ko/docs/handbook/declaration-files/publishing.html",
+          permalink: "/docs/handbook/declaration-files/publishing.html",
           oneline: "How to get your d.ts files to users",
         },
         {
           title: "Consumption",
           id: "5-consumption",
-          permalink: "/ko/docs/handbook/declaration-files/consumption.html",
+          permalink: "/docs/handbook/declaration-files/consumption.html",
           oneline: "How to download d.ts files for your project",
         },
       ],
@@ -2746,27 +2745,27 @@ export function getDocumentationNavForLanguage(
         {
           title: "JS Projects Utilizing TypeScript",
           id: "6-js-projects-utilizing-typescript",
-          permalink: "/ko/docs/handbook/intro-to-js-ts.html",
+          permalink: "/docs/handbook/intro-to-js-ts.html",
           oneline:
             "How to add type checking to JavaScript files using TypeScript",
         },
         {
           title: "Type Checking JavaScript Files",
           id: "6-type-checking-javascript-files",
-          permalink: "/ko/docs/handbook/type-checking-javascript-files.html",
+          permalink: "/docs/handbook/type-checking-javascript-files.html",
           oneline:
             "How to add type checking to JavaScript files using TypeScript",
         },
         {
           title: "JSDoc Reference",
           id: "6-jsdoc-reference",
-          permalink: "/ko/docs/handbook/jsdoc-supported-types.html",
+          permalink: "/docs/handbook/jsdoc-supported-types.html",
           oneline: "What JSDoc does TypeScript-powered JavaScript support?",
         },
         {
           title: "Creating .d.ts Files from .js files",
           id: "6-creating-.d.ts-files-from-.js-files",
-          permalink: "/ko/docs/handbook/declaration-files/dts-from-js.html",
+          permalink: "/docs/handbook/declaration-files/dts-from-js.html",
           oneline: "How to add d.ts generation to JavaScript projects",
         },
       ],
@@ -2781,13 +2780,13 @@ export function getDocumentationNavForLanguage(
         {
           title: "What is a tsconfig.json",
           id: "7-what-is-a-tsconfig.json",
-          permalink: "/ko/docs/handbook/tsconfig-json.html",
+          permalink: "/docs/handbook/tsconfig-json.html",
           oneline: "Learn about how a TSConfig works",
         },
         {
           title: "Compiler Options in MSBuild",
           id: "7-compiler-options-in-msbuild",
-          permalink: "/ko/docs/handbook/compiler-options-in-msbuild.html",
+          permalink: "/docs/handbook/compiler-options-in-msbuild.html",
           oneline: "Which compiler options are available in MSBuild projects.",
         },
         {
@@ -2799,32 +2798,32 @@ export function getDocumentationNavForLanguage(
         {
           title: "tsc CLI Options",
           id: "7-tsc-cli-options",
-          permalink: "/ko/docs/handbook/compiler-options.html",
+          permalink: "/docs/handbook/compiler-options.html",
           oneline:
             "A very high-level overview of the CLI compiler options for tsc",
         },
         {
           title: "Project References",
           id: "7-project-references",
-          permalink: "/ko/docs/handbook/project-references.html",
+          permalink: "/docs/handbook/project-references.html",
           oneline: "How to split up a large TypeScript project",
         },
         {
           title: "Integrating with Build Tools",
           id: "7-integrating-with-build-tools",
-          permalink: "/ko/docs/handbook/integrating-with-build-tools.html",
+          permalink: "/docs/handbook/integrating-with-build-tools.html",
           oneline: "How to use TypeScript with other build tools",
         },
         {
           title: "Configuring Watch",
           id: "7-configuring-watch",
-          permalink: "/ko/docs/handbook/configuring-watch.html",
+          permalink: "/docs/handbook/configuring-watch.html",
           oneline: "How to configure the watch mode of TypeScript",
         },
         {
           title: "Nightly Builds",
           id: "7-nightly-builds",
-          permalink: "/ko/docs/handbook/nightly-builds.html",
+          permalink: "/docs/handbook/nightly-builds.html",
           oneline: "How to use a nightly build of TypeScript",
         },
       ],
@@ -5583,10 +5582,10 @@ export function getDocumentationNavForLanguage(
 
       items: [
         {
-          title: "tsconfig.json 是什么",
+          title: "What is a tsconfig.json",
           id: "7-what-is-a-tsconfig.json",
-          permalink: "/zh/docs/handbook/tsconfig-json.html",
-          oneline: "了解 TSConfig 的工作原理",
+          permalink: "/docs/handbook/tsconfig-json.html",
+          oneline: "Learn about how a TSConfig works",
         },
         {
           title: "Compiler Options in MSBuild",

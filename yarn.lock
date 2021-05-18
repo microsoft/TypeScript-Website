@@ -3485,6 +3485,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/deasync@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "@types/deasync@npm:0.1.1"
+  checksum: 97d7ee3085bc8248a55f373f6dcf31d5e68e03c225efedc33f8a875eab5a6c3029a0683f13418b3fdc3ede2e0bedd0679b0d31815fcb572e53a6bd9c79785b28
+  languageName: node
+  linkType: hard
+
 "@types/debug@npm:^0.0.30":
   version: 0.0.30
   resolution: "@types/debug@npm:0.0.30"
@@ -3610,6 +3617,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/highlight.js@npm:^9.7.0":
+  version: 9.12.4
+  resolution: "@types/highlight.js@npm:9.12.4"
+  checksum: 3aea09c0961ea5054be8ea4756d8936756b2c72e568b45a4a5cc8ab7aa8eaf1e9090bf9bc00f12c1b15ba71b3450a9068b6e6e768fad8ef072f2c864d75c922e
+  languageName: node
+  linkType: hard
+
 "@types/hoist-non-react-statics@npm:^3.3.1":
   version: 3.3.1
   resolution: "@types/hoist-non-react-statics@npm:3.3.1"
@@ -3721,6 +3735,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/linkify-it@npm:*":
+  version: 3.0.1
+  resolution: "@types/linkify-it@npm:3.0.1"
+  checksum: 9809d6bd6ea7a5576a64e94415668e1f2e6262e099e9352a3678006c4554ab997c77b04b48fbee62cd1daecfe44510d173df83ba708f4f95adbfc0fd3b85f689
+  languageName: node
+  linkType: hard
+
 "@types/lodash@npm:^4.14.92":
   version: 4.14.162
   resolution: "@types/lodash@npm:4.14.162"
@@ -3735,12 +3756,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/markdown-it@npm:^12.0.1":
+  version: 12.0.1
+  resolution: "@types/markdown-it@npm:12.0.1"
+  dependencies:
+    "@types/highlight.js": ^9.7.0
+    "@types/linkify-it": "*"
+    "@types/mdurl": "*"
+  checksum: 3ced78ec408b185509f05b81381a6ffe67ac26fca89a352f2479c39b7dc86f1c999a925deaa23f56cf5c57f47aebeb1508035174c83b065bd0bdb0fd3b6cf617
+  languageName: node
+  linkType: hard
+
 "@types/mdast@npm:^3.0.0, @types/mdast@npm:^3.0.3":
   version: 3.0.3
   resolution: "@types/mdast@npm:3.0.3"
   dependencies:
     "@types/unist": "*"
   checksum: d271df999e2b7144ef96a79bff75f22573d06d6c26ead8e190f59d4578da0b10af7c707f1453449bae6ba5c2dccfae8becf9f7a84a4bb30bc2a43fbc49607754
+  languageName: node
+  linkType: hard
+
+"@types/mdurl@npm:*":
+  version: 1.0.2
+  resolution: "@types/mdurl@npm:1.0.2"
+  checksum: e4034ca52671387682a22a06164356ab88760e8e8805225e512533df6b4c281c4dce64845b595fdb95e1f8366363fe15149b01fa29897e88bd433660e0752b73
   languageName: node
   linkType: hard
 
@@ -4880,6 +4919,13 @@ __metadata:
   dependencies:
     sprintf-js: ~1.0.2
   checksum: 435adaef5f6671c3ef1478a22be6fd54bdb99fdbbce8f5561b9cbbb05068ccce87b7df3b9f3322ff52a6ebb9cab2b427cbedac47a07611690a9beaa5184093e2
+  languageName: node
+  linkType: hard
+
+"argparse@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "argparse@npm:2.0.1"
+  checksum: 160b7a25d2a7097fd5fdf25eb8a99e037340078f70e6c7cfdef305837ed14d54570b2b13261bcae26c8cd44ad6e9a7136a0110d815ac65a7891c69c7bf2f4afd
   languageName: node
   linkType: hard
 
@@ -8817,6 +8863,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"deasync@npm:^0.1.21":
+  version: 0.1.21
+  resolution: "deasync@npm:0.1.21"
+  dependencies:
+    bindings: ^1.5.0
+    node-addon-api: ^1.7.1
+  checksum: 122dca8ed34459a2e0232cbbd4fcb273d00146b772517d2161afef0c08142df45b9793bafa48c02d946486125ca52c2b8f4fab9c15130528afc8273e1ef34c36
+  languageName: node
+  linkType: hard
+
 "debug@npm:2, debug@npm:2.6.9, debug@npm:^2.2.0, debug@npm:^2.3.3, debug@npm:^2.6.0, debug@npm:^2.6.8, debug@npm:^2.6.9":
   version: 2.6.9
   resolution: "debug@npm:2.6.9"
@@ -8835,7 +8891,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.0.1, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:~4.3.1":
+"debug@npm:4, debug@npm:^4.0.1, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:~4.3.1":
   version: 4.3.2
   resolution: "debug@npm:4.3.2"
   dependencies:
@@ -9852,6 +9908,13 @@ __metadata:
   version: 2.0.0
   resolution: "entities@npm:2.0.0"
   checksum: cc29118c9d4ddee373392bbf81fc4a3866f2efc76e9d1e87fdc5f9ed8c308ae146c494a6200a4917655e64f43756540007142a140557eed0dea1e3cff0d03486
+  languageName: node
+  linkType: hard
+
+"entities@npm:~2.1.0":
+  version: 2.1.0
+  resolution: "entities@npm:2.1.0"
+  checksum: 91d5330633b97df881bcd02e233d32067876d45abdc7c75cf058ded524d8b22f8dc7a3965813d6982ceeba918abdbd9029a0459759ee5f6f98ec953a4786612f
   languageName: node
   linkType: hard
 
@@ -12219,16 +12282,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"gatsby-remark-shiki-twoslash@1.0.1, gatsby-remark-shiki-twoslash@workspace:packages/gatsby-remark-shiki-twoslash":
+"gatsby-remark-shiki-twoslash@2.0.0, gatsby-remark-shiki-twoslash@workspace:packages/gatsby-remark-shiki-twoslash":
   version: 0.0.0-use.local
   resolution: "gatsby-remark-shiki-twoslash@workspace:packages/gatsby-remark-shiki-twoslash"
   dependencies:
     "@types/jest": ^25.1.3
-    "@typescript/twoslash": 1.1.7
-    "@typescript/vfs": 1.3.4
     rehype-stringify: ^6.0.1
-    shiki: ^0.9.3
-    shiki-twoslash: 1.2.7
+    remark-shiki-twoslash: 1.2.1
     tsdx: ^0.14.1
     tslib: ^1.10.0
     typescript: "*"
@@ -13195,6 +13255,7 @@ fsevents@^1.2.7:
   resolution: "handbook-epub@workspace:packages/handbook-epub"
   dependencies:
     fs-jetpack: ^2.4.0
+    gatsby-remark-shiki-twoslash: 2.0.0
     playwright: ^1.9.1
     sass: "*"
     streampub: "https://github.com/orta/streampub-1.git#ibooks"
@@ -16950,6 +17011,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"linkify-it@npm:^3.0.1":
+  version: 3.0.2
+  resolution: "linkify-it@npm:3.0.2"
+  dependencies:
+    uc.micro: ^1.0.1
+  checksum: bbc23f16d52d25b374971c681af1e3bb20af7ef59c243b4329c6bff5f06780784553150d4c14a16d45c9fecfc1478a7a6b79502b2c6b81d2e817f0da259046b2
+  languageName: node
+  linkType: hard
+
 "list-item@npm:^1.1.1":
   version: 1.1.1
   resolution: "list-item@npm:1.1.1"
@@ -17598,6 +17668,51 @@ fsevents@^1.2.7:
   version: 1.0.3
   resolution: "markdown-escapes@npm:1.0.3"
   checksum: 7a12605e43ed1902c74d31dda5dae20a574f88c292535e67b1813878f84b646eb04805ef05b978c51acb542ad8e30a2493bd4456db80e6d4863697a517240dfd
+  languageName: node
+  linkType: hard
+
+"markdown-it-shiki-twoslash@workspace:packages/markdown-it-shiki-twoslash":
+  version: 0.0.0-use.local
+  resolution: "markdown-it-shiki-twoslash@workspace:packages/markdown-it-shiki-twoslash"
+  dependencies:
+    "@types/deasync": ^0.1.1
+    "@types/jest": ^25.1.3
+    "@types/markdown-it": ^12.0.1
+    deasync: ^0.1.21
+    markdown-it: ^12.0.6
+    markdown-it-shiki: ^0.2.3
+    rehype-stringify: ^6.0.1
+    remark-shiki-twoslash: 1.2.1
+    tsdx: ^0.14.1
+    tslib: ^1.10.0
+    typescript: "*"
+    unified: ^8.4.2
+  languageName: unknown
+  linkType: soft
+
+"markdown-it-shiki@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "markdown-it-shiki@npm:0.2.3"
+  dependencies:
+    deasync: ^0.1.21
+    debug: ^4.3.2
+    shiki: ^0.9.3
+  checksum: fc60a8fb60a5ad2ae1539a58d6aeb8023965dd869a20b36f32e77f122f02882fc931ef0d8b37253e5d36f139a25a2599d54ae17becb1ce9e078a6e51ab4372c8
+  languageName: node
+  linkType: hard
+
+"markdown-it@npm:^12.0.6":
+  version: 12.0.6
+  resolution: "markdown-it@npm:12.0.6"
+  dependencies:
+    argparse: ^2.0.1
+    entities: ~2.1.0
+    linkify-it: ^3.0.1
+    mdurl: ^1.0.1
+    uc.micro: ^1.0.5
+  bin:
+    markdown-it: bin/markdown-it.js
+  checksum: f63b5ddb9102877fc76310aadad391f58a974914c28d562026b2d51f1c479236af52729aae44939503f9a6ff6b4a184045537539e69b1fa28217154ea2fe83e8
   languageName: node
   linkType: hard
 
@@ -18644,6 +18759,15 @@ fsevents@^1.2.7:
   dependencies:
     semver: ^5.4.1
   checksum: c4932878cb278a029982434bcb9ec393f177cc9356086f013e5f4a8226dc925852a4fea897fbfa0cad60470a117841c18ca2e7b550380322adaecb0a326c5c36
+  languageName: node
+  linkType: hard
+
+"node-addon-api@npm:^1.7.1":
+  version: 1.7.2
+  resolution: "node-addon-api@npm:1.7.2"
+  dependencies:
+    node-gyp: latest
+  checksum: 6796f58946713c647bccdfdb6ceb42dccb980170e9ce3ca3a65cca659a417d79210999fd297963656371c616c7b75b74bbdefae36257ae84c28927fb7ae037d4
   languageName: node
   linkType: hard
 
@@ -22272,7 +22396,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"remark-shiki-twoslash@workspace:packages/remark-shiki-twoslash":
+"remark-shiki-twoslash@1.2.1, remark-shiki-twoslash@workspace:packages/remark-shiki-twoslash":
   version: 0.0.0-use.local
   resolution: "remark-shiki-twoslash@workspace:packages/remark-shiki-twoslash"
   dependencies:
@@ -22284,7 +22408,7 @@ fsevents@^1.2.7:
     mdx: "*"
     rehype-stringify: ^6.0.1
     shiki: ^0.9.3
-    shiki-twoslash: 1.2.7
+    shiki-twoslash: 1.3.0
     tsdx: ^0.14.1
     tslib: ^1.10.0
     typescript: "*"
@@ -23563,14 +23687,14 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"shiki-twoslash@1.2.7, shiki-twoslash@workspace:packages/shiki-twoslash":
+"shiki-twoslash@1.3.0, shiki-twoslash@workspace:packages/shiki-twoslash":
   version: 0.0.0-use.local
   resolution: "shiki-twoslash@workspace:packages/shiki-twoslash"
   dependencies:
     "@types/jest": ^25.1.3
     "@typescript/twoslash": 1.1.7
     "@typescript/vfs": 1.3.4
-    gatsby-remark-shiki-twoslash: 1.0.1
+    gatsby-remark-shiki-twoslash: 2.0.0
     rehype-stringify: ^6.0.1
     shiki: ^0.9.3
     tsdx: ^0.14.1
@@ -25759,6 +25883,13 @@ resolve@^2.0.0-next.3:
   version: 0.7.22
   resolution: "ua-parser-js@npm:0.7.22"
   checksum: c14272a0261bacd6d9daecc8bd2d48d6e5c68d27d5978e10fb27cbbeb07ee0d427786436e4db8ca7ce92ba4bf0399dda647c1f98fbb77ee2fec8f3b7b8244999
+  languageName: node
+  linkType: hard
+
+"uc.micro@npm:^1.0.1, uc.micro@npm:^1.0.5":
+  version: 1.0.6
+  resolution: "uc.micro@npm:1.0.6"
+  checksum: 9dfe5ad0a08059c3eb6ded70b7cfb6fdcb5908b385af9d4717cee7f140571f5c2bb89405093ace07cfd0e283f409495d2feafd321b4b703c1fa3014e129dab27
   languageName: node
   linkType: hard
 

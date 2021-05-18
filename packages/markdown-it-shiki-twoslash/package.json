@@ -1,20 +1,20 @@
 {
-  "name": "gatsby-remark-shiki-twoslash",
-  "version": "2.0.0",
+  "name": "markdown-it-shiki-twoslash",
+  "version": "1.0.0",
   "license": "MIT",
   "homepage": "https://github.com/microsoft/TypeScript-Website",
   "repository": {
     "url": "https://github.com/microsoft/TypeScript-Website.git",
-    "directory": "packages/gatsby-remark-shiki-twoslash",
+    "directory": "packages/markdown-it-shiki-twoslash",
     "type": "git"
   },
   "bugs": {
     "url": "https://github.com/microsoft/TypeScript-Website/issues"
   },
-  "description": "A remark plugin for Gatsby which adds twoslash code samples for TypeScript",
+  "description": "A markdown-it plugin for Shiki with Wwoslash code samples",
   "author": "Orta Therox",
   "main": "./dist/index.js",
-  "module": "./dist/gatsby-remark-shiki-twoslash.esm.js",
+  "module": "./dist/markdown-it-shiki-twoslash.esm.js",
   "typings": "./dist/index.d.ts",
   "files": [
     "dist"
@@ -28,12 +28,15 @@
     "lint": "tsdx lint"
   },
   "dependencies": {
-    "remark-shiki-twoslash": "1.3.0",
-    "typescript": "*",
-    "unist-util-visit": "^2.0.0"
+    "remark-shiki-twoslash": "1.3.0"
   },
   "devDependencies": {
+    "@types/deasync": "^0.1.1",
     "@types/jest": "^25.1.3",
+    "@types/markdown-it": "^12.0.1",
+    "deasync": "^0.1.21",
+    "markdown-it": "^12.0.6",
+    "markdown-it-shiki": "^0.2.3",
     "rehype-stringify": "^6.0.1",
     "tsdx": "^0.14.1",
     "tslib": "^1.10.0",
