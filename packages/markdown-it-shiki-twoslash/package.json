@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-shiki-twoslash",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "license": "MIT",
   "homepage": "https://github.com/microsoft/TypeScript-Website",
   "repository": {
@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/microsoft/TypeScript-Website/issues"
   },
-  "description": "A remark plugin for Gatsby which adds twoslash code samples for TypeScript",
+  "description": "A markdown-it plugin for Shiki with Wwoslash code samples",
   "author": "Orta Therox",
   "main": "./dist/index.js",
   "module": "./dist/markdown-it-shiki-twoslash.esm.js",
