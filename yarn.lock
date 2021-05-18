@@ -9470,6 +9470,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"docusaurus-preset-shiki-twoslash@workspace:packages/docusaurus-preset-shiki-twoslash":
+  version: 0.0.0-use.local
+  resolution: "docusaurus-preset-shiki-twoslash@workspace:packages/docusaurus-preset-shiki-twoslash"
+  dependencies:
+    remark-shiki-twoslash: 1.3.0
+    typescript: "*"
+  languageName: unknown
+  linkType: soft
+
 "dom-converter@npm:^0.2":
   version: 0.2.0
   resolution: "dom-converter@npm:0.2.0"
@@ -9746,6 +9755,15 @@ __metadata:
   checksum: ad363a68f39cecd94483bcd2b0b52e027fe5fdbc8d9623135a2e354a644d80bbe60c4a4e88aa1e505e63ccd18146124ada6dd54c10e62a7fecccdfdf34fb0046
   languageName: node
   linkType: hard
+
+"eleventy-plugin-shiki-twoslash@workspace:packages/eleventy-plugin-shiki-twoslash":
+  version: 0.0.0-use.local
+  resolution: "eleventy-plugin-shiki-twoslash@workspace:packages/eleventy-plugin-shiki-twoslash"
+  dependencies:
+    remark-shiki-twoslash: 1.3.0
+    typescript: "*"
+  languageName: unknown
+  linkType: soft
 
 "elliptic@npm:^6.5.3":
   version: 6.5.4
@@ -12288,7 +12306,7 @@ fsevents@^1.2.7:
   dependencies:
     "@types/jest": ^25.1.3
     rehype-stringify: ^6.0.1
-    remark-shiki-twoslash: 1.2.1
+    remark-shiki-twoslash: 1.3.0
     tsdx: ^0.14.1
     tslib: ^1.10.0
     typescript: "*"
@@ -17682,7 +17700,7 @@ fsevents@^1.2.7:
     markdown-it: ^12.0.6
     markdown-it-shiki: ^0.2.3
     rehype-stringify: ^6.0.1
-    remark-shiki-twoslash: 1.2.1
+    remark-shiki-twoslash: 1.3.0
     tsdx: ^0.14.1
     tslib: ^1.10.0
     typescript: "*"
@@ -22396,7 +22414,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"remark-shiki-twoslash@1.2.1, remark-shiki-twoslash@workspace:packages/remark-shiki-twoslash":
+"remark-shiki-twoslash@1.3.0, remark-shiki-twoslash@workspace:packages/remark-shiki-twoslash":
   version: 0.0.0-use.local
   resolution: "remark-shiki-twoslash@workspace:packages/remark-shiki-twoslash"
   dependencies:
@@ -23687,7 +23705,19 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"shiki-twoslash@1.3.0, shiki-twoslash@workspace:packages/shiki-twoslash":
+"shiki-twoslash@npm:1.3.0":
+  version: 1.3.0
+  resolution: "shiki-twoslash@npm:1.3.0"
+  dependencies:
+    "@typescript/twoslash": 1.1.7
+    "@typescript/vfs": 1.3.4
+    shiki: ^0.9.3
+    typescript: "*"
+  checksum: 7f58c05ef2454f36bf513990cab90fbeb822e61d433dd6bde20f4faabde286e903cdaa678ecbb9fcf5c69bc3e0b096358895bc722af7c0ab649ff89cfbdd68ab
+  languageName: node
+  linkType: hard
+
+"shiki-twoslash@workspace:packages/shiki-twoslash":
   version: 0.0.0-use.local
   resolution: "shiki-twoslash@workspace:packages/shiki-twoslash"
   dependencies:
@@ -26738,6 +26768,15 @@ resolve@^2.0.0-next.3:
   checksum: 5b05dda398cc1df7ba244316ddfb8f6463dbaafb4d23a4ac7e1cb8914e813a464f4ac055e41ac6e60feeadd4cccdeec1111fac592f2bb4eeb320889846a18912
   languageName: node
   linkType: hard
+
+"vuepress-plugin-shiki-twoslash@workspace:packages/vuepress-plugin-shiki-twoslash":
+  version: 0.0.0-use.local
+  resolution: "vuepress-plugin-shiki-twoslash@workspace:packages/vuepress-plugin-shiki-twoslash"
+  dependencies:
+    remark-shiki-twoslash: 1.3.0
+    typescript: "*"
+  languageName: unknown
+  linkType: soft
 
 "w3c-hr-time@npm:^1.0.1, w3c-hr-time@npm:^1.0.2":
   version: 1.0.2
