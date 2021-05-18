@@ -18,9 +18,9 @@ const getHTML = async (code: string, settings: any) => {
 
   // @ts-ignore
   const twoslashes = markdownAST.children.filter(c => c.meta && c.meta.includes("twoslash")).map(c => c.twoslash)
-  const hAST = toHAST(markdownAST, { allowDangerousHTML: true })
+  const hAST = toHAST(markdownAST, { allowDangerousHtml: true })
   return {
-    html: hastToHTML(hAST, { allowDangerousHTML: true }),
+    html: hastToHTML(hAST, { allowDangerousHtml: true }),
     twoslashes,
   }
 }
@@ -43,7 +43,7 @@ describe("with fixtures", () => {
     //   return
     // }
 
-    it.skip("Fixture: " + fixtureName, async () => {
+    it("Fixture: " + fixtureName, async () => {
       const resultHTMLName = parse(fixtureName).name + ".html"
       const resultTwoSlashName = parse(fixtureName).name + ".json"
 

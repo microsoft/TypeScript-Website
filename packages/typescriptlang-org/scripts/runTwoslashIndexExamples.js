@@ -38,17 +38,15 @@ const go = async () => {
     const markdownAST = remark().parse(
       "```" + codeSample + " twoslash\n" + code + "\n```"
     )
-    await runTwoSlash(
-      { markdownAST },
-      {
-        theme: useLightTheme
-          ? "min-light"
-          : require.resolve("../lib/themes/typescript-beta-dark.json"),
-      }
-    )
+    const run = runTwoSlash({
+      theme: useLightTheme
+        ? "min-light"
+        : require.resolve("../lib/themes/typescript-beta-dark.json"),
+    })
+    await run(markdownAST)
 
-    const hAST = toHAST(markdownAST, { allowDangerousHTML: true })
-    const html = hastToHTML(hAST, { allowDangerousHTML: true })
+    const hAST = toHAST(markdownAST, { allowDangerousHtml: true })
+    const html = hastToHTML(hAST, { allowDangerousHtml: true })
 
     const componentName = name[0].toUpperCase() + name.substring(1)
     const innerHTML = html.trim().slice(32, -6) // strips the pre

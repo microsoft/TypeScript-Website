@@ -74,9 +74,7 @@ export const highlightersFromSettings = async (settings: UserConfigSettings) => 
         return cached
       }
 
-      console.log(`making ${themeName}`)
       const highlighter = await getHighlighter({ ...settings, theme, themes: undefined })
-      console.log(`made ${themeName}`)
 
       // @ts-ignore - https://github.com/shikijs/shiki/pull/162 will fix this
       highlighter.customName = themeName
@@ -108,6 +106,7 @@ type RemarkCodeNode = Node & {
   children: Node[]
   value: string
   meta?: string[] | string
+  twoslash?: TwoSlashReturn
 }
 
 /**
@@ -141,9 +140,10 @@ export const remarkVisitor = (highlighters: Highlighter[], twoslashSettings: Use
   if (twoslash) {
     node.value = twoslash.code
     node.lang = twoslash.extension as Lang
+    node.twoslash = twoslash
   }
 
-  const shikiHTML = getHTML(code, lang, metaString, highlighters, twoslash)
+  const shikiHTML = getHTML(node.value, lang, metaString, highlighters, twoslash)
   node.type = "html"
   node.value = shikiHTML
   node.children = []
@@ -157,11 +157,9 @@ export default remarkTwoslash
 
 export const setupForFile = async (settings: UserConfigSettings = {}) => {
   amendSettingsForDefaults(settings)
-  console.log("starting")
-
   parsingNewFile()
+
   let highlighters = await highlightersFromSettings(settings)
-  console.log("got")
   return { settings, highlighters }
 }
 
@@ -173,5 +171,6 @@ export const transformAttributesToHTML = (
   settings: UserConfigSettings
 ) => {
   const twoslash = runTwoSlashOnNode(code, lang, attrs, settings)
-  return getHTML(code, lang, attrs, highlighters, twoslash)
+  const newCode = (twoslash && twoslash.code) || code
+  return getHTML(newCode, lang, attrs, highlighters, twoslash)
 }

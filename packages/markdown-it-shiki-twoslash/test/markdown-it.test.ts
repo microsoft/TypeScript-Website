@@ -1,5 +1,5 @@
 import { markdownItShikiTwoslashSetup } from "../src/index"
-import markdownShiki from "markdown-it-shiki"
+// import markdownShiki from "markdown-it-shiki"
 
 import MarkdownIt from "markdown-it"
 
@@ -16,7 +16,7 @@ const b = "345"
 OK world
 `
 
-  it.only("has all the right metadata set up", async () => {
+  it("has all the right metadata set up", async () => {
     const md = MarkdownIt()
 
     const shiki = await markdownItShikiTwoslashSetup({
@@ -25,6 +25,6 @@ OK world
     md.use(shiki)
 
     const html = md.render(file)
-    expect(html).toContain("shiki  node twoslash lsp")
+    expect(html).toContain("shiki  nord twoslash lsp")
   })
 })

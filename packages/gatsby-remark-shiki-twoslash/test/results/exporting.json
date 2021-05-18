@@ -41,7 +41,7 @@
         "targetString": "length"
       },
       {
-        "text": "var module: {\n    \"\\\"[home]/utilFunctions\\\"\": typeof import(\"[home]/utilFunctions\");\n}",
+        "text": "var module: {\n    exports: typeof module.exports;\n}",
         "docs": "",
         "start": 73,
         "length": 6,
@@ -50,7 +50,7 @@
         "targetString": "module"
       },
       {
-        "text": "module \"[home]/utilFunctions\"",
+        "text": "module module.exports",
         "docs": "",
         "start": 80,
         "length": 7,
