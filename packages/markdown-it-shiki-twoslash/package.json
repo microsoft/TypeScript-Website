@@ -28,7 +28,7 @@
     "lint": "tsdx lint"
   },
   "dependencies": {
-    "remark-shiki-twoslash": "1.2.1"
+    "remark-shiki-twoslash": "1.3.0"
   },
   "devDependencies": {
     "@types/deasync": "^0.1.1",
