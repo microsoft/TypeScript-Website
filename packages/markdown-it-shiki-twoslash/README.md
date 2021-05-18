@@ -36,4 +36,4 @@ syntax highlighting mixed with the twoslash JavaScript tooling from the TypeScri
 
    Because shiki uses WASM to handle the syntax highlighting, _it has to be async code_, this clashes with the markdown-it API which enforces synchronous code. In the first code sample, the plugin uses [`deasync`](https://www.npmjs.com/package/deasync) to convert that async work to sync. It's safe to say that you _probably don't want deasync'd code in critical systems_.
 
-1. **Follow the instructions on [npmjs.com/package/remark-shiki-twoslash](https://www.npmjs.com/package/remark-shiki-twoslash)**, this module leaves all the heavy work to that module.
+1. **Follow the instructions on [npmjs.com/package/remark-shiki-twoslash](https://www.npmjs.com/package/remark-shiki-twoslash)**, this module leaves all the heavy lifting to that module.
