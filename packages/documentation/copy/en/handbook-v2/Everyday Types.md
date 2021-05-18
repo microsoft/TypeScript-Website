@@ -32,7 +32,30 @@ To specify the type of an array like `[1, 2, 3]`, you can use the syntax `number
 You may also see this written as `Array<number>`, which means the same thing.
 We'll learn more about the syntax `T<U>` when we cover _generics_.
 
-> Note that `[number]` is a different thing; refer to the section on _tuple types_.
+> Note that `[number]` is a different thing; refer to the section on [`tuples`](#tuples).
+
+## Tuples
+
+Tuple types allow you to express an array with a fixed number of elements whose types are known, but need not be the same. For example, you may want to represent a value as a pair of a `string` and a `number`:
+
+```ts twoslash
+// Declare a tuple type
+let x: [string, number];
+// Initialize it
+x = ["hello", 10]; 
+// Initialize it incorrectly
+x = [10, "hello"]; // Error
+```
+
+When accessing an element with a known index, the correct type is retrieved:
+
+```ts twoslash
+let x: [string, number];
+x = ["hello", 10]; 
+
+const s: string = x[0];
+const n: number = x[1];
+```
 
 ## `any`
 
