@@ -1,11 +1,9 @@
-### gatsby-remark-shiki-twoslash
+### markdown-it-shiki-twoslash
 
 Sets up markdown code blocks to run through [shiki](https://shiki.matsu.io) which means it gets the VS Code quality
-syntax highlighting. This part is basically the same as [gatsby-remark-shiki](https://www.gatsbyjs.org/packages/gatsby-remark-shiki/).
+syntax highlighting mixed with the twoslash JavaScript tooling from the TypeScript website.
 
 ## Plugin Setup
-
-#### Setup
 
 1. **Install the dependency**: `yarn add markdown-it-shiki-twoslash`
 1. **Include `"markdown-it-shiki-twoslash"` in the plugins section** of the markdown-it parser:

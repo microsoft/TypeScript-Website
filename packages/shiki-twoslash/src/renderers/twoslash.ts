@@ -184,7 +184,7 @@ export function twoslashRenderer(lines: Lines, options: HtmlRendererOptions, two
     }
   })
   html = replaceTripleArrowEncoded(html.replace(/\n*$/, "")) // Get rid of final new lines
-  const playgroundLink = `<a href='${twoslash.playgroundURL}'>Try</a>`
+  const playgroundLink = `<a class='playground-link' href='${twoslash.playgroundURL}'>Try</a>`
   html += `</code>${playgroundLink}</div></pre>`
 
   return html
