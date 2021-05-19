@@ -13,7 +13,7 @@ As we've seen, they can be anonymous:
 ```ts twoslash
 function greet(person: { name: string; age: number }) {
   //                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  return "Hello " + person.age;
+  return "Hello " + person.name;
 }
 ```
 
@@ -27,7 +27,7 @@ interface Person {
 }
 
 function greet(person: Person) {
-  return "Hello " + person.age;
+  return "Hello " + person.name;
 }
 ```
 
@@ -41,7 +41,7 @@ type Person = {
 };
 
 function greet(person: Person) {
-  return "Hello " + person.age;
+  return "Hello " + person.name;
 }
 ```
 
