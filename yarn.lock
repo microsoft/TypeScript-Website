@@ -13717,6 +13717,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"hexo-shiki-twoslash@workspace:packages/hexo-shiki-twoslash":
+  version: 0.0.0-use.local
+  resolution: "hexo-shiki-twoslash@workspace:packages/hexo-shiki-twoslash"
+  dependencies:
+    remark-shiki-twoslash: 1.3.0
+    typescript: "*"
+  languageName: unknown
+  linkType: soft
+
 "hicat@npm:^0.8.0":
   version: 0.8.0
   resolution: "hicat@npm:0.8.0"
@@ -22426,7 +22435,7 @@ fsevents@^1.2.7:
     mdx: "*"
     rehype-stringify: ^6.0.1
     shiki: ^0.9.3
-    shiki-twoslash: 1.3.0
+    shiki-twoslash: 1.3.1
     tsdx: ^0.14.1
     tslib: ^1.10.0
     typescript: "*"
@@ -23705,19 +23714,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"shiki-twoslash@npm:1.3.0":
-  version: 1.3.0
-  resolution: "shiki-twoslash@npm:1.3.0"
-  dependencies:
-    "@typescript/twoslash": 1.1.7
-    "@typescript/vfs": 1.3.4
-    shiki: ^0.9.3
-    typescript: "*"
-  checksum: 7f58c05ef2454f36bf513990cab90fbeb822e61d433dd6bde20f4faabde286e903cdaa678ecbb9fcf5c69bc3e0b096358895bc722af7c0ab649ff89cfbdd68ab
-  languageName: node
-  linkType: hard
-
-"shiki-twoslash@workspace:packages/shiki-twoslash":
+"shiki-twoslash@1.3.1, shiki-twoslash@workspace:packages/shiki-twoslash":
   version: 0.0.0-use.local
   resolution: "shiki-twoslash@workspace:packages/shiki-twoslash"
   dependencies:
