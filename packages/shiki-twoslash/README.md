@@ -10,10 +10,18 @@ Things it handles:
 - Running Twoslash over code, with caching and DTS lookups: `runTwoSlash`
 - Rendering any code sample with Shiki: `renderCodeToHTML`
 
-Libraries for common tools which use this generator:
+Generic libraries for common tools which use this generator:
 
+- [remark-shiki-twoslash](https://www.npmjs.com/package/remark-shiki-twoslash) - Any JS static site generator using Remark
+- [markdown-it-shiki-twoslash](https://www.npmjs.com/package/markdown-it-shiki-twoslash) - A plugin for Docusaurus
+
+Plugins for common Static Site Generators:
+
+- [docusaurus-preset-shiki-twoslash](https://www.npmjs.com/package/docusaurus-preset-shiki-twoslash) - A plugin for Docusaurus
+- [eleventy-plugin-shiki-twoslash](https://www.npmjs.com/package/eleventy-plugin-shiki-twoslash) - A plugin for 11ty
 - [gatsby-remark-shiki-twoslash](https://www.npmjs.com/package/gatsby-remark-shiki-twoslash) - For instantly using with Gatsby
-- [remark-shiki-twoslash](https://www.npmjs.com/package/remark-shiki-twoslash) - Any JS static site generator using Remark (11ty, nextjs, )
+- [vuepress-plugin-shiki-twoslash](https://www.npmjs.com/package/vuepress-plugin-shiki-twoslash) - A plugin for Vuepress
+- [hexo-shiki-twoslash](https://www.npmjs.com/package/hexo-shiki-twoslash) - A plugin for HExo
 
 Or you can use the API directly in a Node.js script:
 

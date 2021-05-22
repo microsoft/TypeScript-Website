@@ -48,7 +48,7 @@ export const CookieBanner = (props: { lang: string }) => {
         <link rel="preconnect" href="https://consentdeliveryfd.azurefd.net/" />
       </Helmet>
 
-      <div id="cookie-banner"></div>
+      <div id="cookie-banner" className="openx"></div>
       {scriptLoaded && verboseCookieLogging()}
     </>
   )
