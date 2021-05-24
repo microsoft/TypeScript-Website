@@ -21,7 +21,7 @@ Plugins for common Static Site Generators:
 - [eleventy-plugin-shiki-twoslash](https://www.npmjs.com/package/eleventy-plugin-shiki-twoslash) - A plugin for 11ty
 - [gatsby-remark-shiki-twoslash](https://www.npmjs.com/package/gatsby-remark-shiki-twoslash) - For instantly using with Gatsby
 - [vuepress-plugin-shiki-twoslash](https://www.npmjs.com/package/vuepress-plugin-shiki-twoslash) - A plugin for Vuepress
-- [hexo-shiki-twoslash](https://www.npmjs.com/package/hexo-shiki-twoslash) - A plugin for HExo
+- [hexo-shiki-twoslash](https://www.npmjs.com/package/hexo-shiki-twoslash) - A plugin for Hexo
 
 Or you can use the API directly in a Node.js script:
 
