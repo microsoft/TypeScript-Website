@@ -350,19 +350,19 @@ class BeeKeeper {
 }
 
 class ZooKeeper {
-  nametag: string="Mikle";
+  nametag: string = "Mikle";
 }
 
 class Animal {
-  numLegs: number=4;
+  numLegs: number = 4;
 }
 
 class Bee extends Animal {
-  keeper: BeeKeeper=new BeeKeeper();
+  keeper: BeeKeeper = new BeeKeeper();
 }
 
 class Lion extends Animal {
-  keeper: ZooKeeper=new ZooKeeper();
+  keeper: ZooKeeper = new ZooKeeper();
 }
 
 function createInstance<A extends Animal>(c: new () => A): A {
