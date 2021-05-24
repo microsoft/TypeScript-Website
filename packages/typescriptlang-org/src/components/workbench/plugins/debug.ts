@@ -25,7 +25,7 @@ export const workbenchDebugPlugin: PluginFactory = (i, utils) => {
       ds.clear()
 
       ds.p(
-        "This tab shows the raw data passed back from Twoslash. This can be useful in debugging if something isn't working as you would expect. That said, if you're struggling with a repro - ask in the <a href='https://discord.gg/typescript'>#compiler channel of the TypeScript Discord</a>."
+        "This tab shows the raw data passed back from Twoslash. This can be useful in debugging if something isn't working as you would expect. That said, if you're struggling with a repro - ask in the <a href='https://discord.gg/typescript'>#compiler-api channel of the TypeScript Discord</a>."
       )
 
       ds.subtitle(`Output Code as ${results.extension}`)
