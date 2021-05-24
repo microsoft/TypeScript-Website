@@ -346,7 +346,7 @@ A more advanced example uses the prototype property to infer and constrain relat
 ```ts twoslash
 // @strict: false
 class BeeKeeper {
-  hasMask: boolean=true;
+  hasMask: boolean = true;
 }
 
 class ZooKeeper {
