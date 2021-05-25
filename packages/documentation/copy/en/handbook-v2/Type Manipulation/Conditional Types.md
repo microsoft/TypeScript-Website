@@ -79,7 +79,7 @@ type NameOrId<T extends number | string> = T extends number
   : NameLabel;
 ```
 
-We can then use that conditional type to simplify out overloads down to a single function with no overloads.
+We can then use that conditional type to simplify our overloads down to a single function with no overloads.
 
 ```ts twoslash
 interface IdLabel {
