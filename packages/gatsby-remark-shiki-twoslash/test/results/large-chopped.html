@@ -2,137 +2,49 @@
   In this case, you can use a <code>switch</code> statement to narrow down which
   type is represented at runtime:
 </p>
-&#x3C;pre class="shiki light-plus twoslash lsp" style="background-color:
-#FFFFFF; color: #000000">&#x3C;div class='code-container'>&#x3C;code>&#x3C;div
-class='line'>&#x3C;span style="color: #0000FF">type&#x3C;/span>&#x3C;span
-style="color: #000000"> &#x3C;/span>&#x3C;span style="color:
-#267F99">&#x3C;data-lsp lsp='type NetworkState = NetworkLoadingState |
-NetworkFailedState | NetworkSuccessState'
->NetworkState&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color: #000000"> =
-&#x3C;/span>&#x3C;span style="color: #267F99">&#x3C;data-lsp lsp='type
-NetworkLoadingState = {&#x26;amp;#13; state:
-&#x26;amp;apos;loading&#x26;amp;apos;;&#x26;amp;#13;}'
->NetworkLoadingState&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#000000"> | &#x3C;/span>&#x3C;span style="color: #267F99">&#x3C;data-lsp
-lsp='type NetworkFailedState = {&#x26;amp;#13; state:
-&#x26;amp;apos;failed&#x26;amp;apos;;&#x26;amp;#13; code:
-number;&#x26;amp;#13;}'
->NetworkFailedState&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#000000"> | &#x3C;/span>&#x3C;span style="color: #267F99">&#x3C;data-lsp
-lsp='type NetworkSuccessState = {&#x26;amp;#13; state:
-&#x26;amp;apos;success&#x26;amp;apos;;&#x26;amp;#13; response: {&#x26;amp;#13;
-title: string;&#x26;amp;#13; duration: number;&#x26;amp;#13; summary:
-string;&#x26;amp;#13; };&#x26;amp;#13;}'
->NetworkSuccessState&#x3C;/data-lsp>&#x3C;/span>&#x3C;/div> &#x3C;div
-class='line'>&#x3C;span style="color: #0000FF">function&#x3C;/span>&#x3C;span
-style="color: #000000"> &#x3C;/span>&#x3C;span style="color:
-#795E26">&#x3C;data-lsp lsp='function networkStatus(state: NetworkState):
-string' >networkStatus&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#000000">(&#x3C;/span>&#x3C;span style="color: #001080">&#x3C;data-lsp
-lsp='(parameter) state: NetworkState'
->state&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color: #000000">:
-&#x3C;/span>&#x3C;span style="color: #267F99">&#x3C;data-lsp lsp='type
-NetworkState = NetworkLoadingState | NetworkFailedState | NetworkSuccessState'
->NetworkState&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color: #000000">):
-&#x3C;/span>&#x3C;span style="color: #267F99">string&#x3C;/span>&#x3C;span
-style="color: #000000"> {&#x3C;/span>&#x3C;/div>&#x3C;div
-class='line'>&#x3C;span style="color: #000000"> &#x3C;/span>&#x3C;span
-style="color: #008000">// Right now TypeScript does not know which of the
-three&#x3C;/span>&#x3C;/div>&#x3C;div class='line'>&#x3C;span style="color:
-#000000"> &#x3C;/span>&#x3C;span style="color: #008000">// potential types state
-could be.&#x3C;/span>&#x3C;/div> &#x3C;div class='line'>&#x3C;span style="color:
-#000000"> &#x3C;/span>&#x3C;span style="color: #008000">// Trying to access a
-property which isn&#x26;apos;t shared&#x3C;/span>&#x3C;/div>&#x3C;div
-class='line'>&#x3C;span style="color: #000000"> &#x3C;/span>&#x3C;span
-style="color: #008000">// across all types will raise an
-error&#x3C;/span>&#x3C;/div>&#x3C;div class='line'>&#x3C;span style="color:
-#000000"> &#x3C;/span>&#x3C;span style="color: #001080">&#x3C;data-lsp
-lsp='(parameter) state: NetworkState'
->state&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#000000">.&#x3C;/span>&#x3C;span style="color:
-#001080">&#x3C;data-err>&#x3C;data-lsp lsp='any'
->code&#x3C;/data-lsp>&#x3C;/data-err>&#x3C;/span>&#x3C;/div>&#x3C;span
-class="error">&#x3C;span>Property 'code' does not exist on type 'NetworkState'.
-Property 'code' does not exist on type
-'NetworkLoadingState'.&#x3C;/span>&#x3C;span
-class="code">2339&#x3C;/span>&#x3C;/span>&#x3C;span
-class="error-behind">Property 'code' does not exist on type 'NetworkState'.
-Property 'code' does not exist on type 'NetworkLoadingState'.&#x3C;/span>
-&#x3C;div class='line'>&#x3C;span style="color: #000000"> &#x3C;/span>&#x3C;span
-style="color: #008000">// By switching on state, TypeScript can narrow the
-union&#x3C;/span>&#x3C;/div>&#x3C;div class='line'>&#x3C;span style="color:
-#000000"> &#x3C;/span>&#x3C;span style="color: #008000">// down in code flow
-analysis&#x3C;/span>&#x3C;/div>&#x3C;div class='line'>&#x3C;span style="color:
-#000000"> &#x3C;/span>&#x3C;span style="color:
-#AF00DB">switch&#x3C;/span>&#x3C;span style="color: #000000">
-(&#x3C;/span>&#x3C;span style="color: #001080">&#x3C;data-lsp lsp='(parameter)
-state: NetworkState' >state&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#000000">.&#x3C;/span>&#x3C;span style="color: #001080">&#x3C;data-lsp
-lsp='(property) state: &#x26;amp;quot;loading&#x26;amp;quot; |
-&#x26;amp;quot;failed&#x26;amp;quot; | &#x26;amp;quot;success&#x26;amp;quot;'
->state&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color: #000000">)
-{&#x3C;/span>&#x3C;/div>&#x3C;div class='line'>&#x3C;span style="color:
-#000000"> &#x3C;/span>&#x3C;span style="color:
-#AF00DB">case&#x3C;/span>&#x3C;span style="color: #000000">
-&#x3C;/span>&#x3C;span style="color:
-#A31515">&#x26;apos;loading&#x26;apos;&#x3C;/span>&#x3C;span style="color:
-#000000">:&#x3C;/span>&#x3C;/div>&#x3C;div class='line'>&#x3C;span style="color:
-#000000"> &#x3C;/span>&#x3C;span style="color:
-#AF00DB">return&#x3C;/span>&#x3C;span style="color: #000000">
-&#x3C;/span>&#x3C;span style="color:
-#A31515">&#x26;apos;Downloading...&#x26;apos;&#x3C;/span>&#x3C;/div>&#x3C;div
-class='line'>&#x3C;span style="color: #000000"> &#x3C;/span>&#x3C;span
-style="color: #AF00DB">case&#x3C;/span>&#x3C;span style="color: #000000">
-&#x3C;/span>&#x3C;span style="color:
-#A31515">&#x26;apos;failed&#x26;apos;&#x3C;/span>&#x3C;span style="color:
-#000000">:&#x3C;/span>&#x3C;/div>&#x3C;div class='line'>&#x3C;span style="color:
-#000000"> &#x3C;/span>&#x3C;span style="color: #008000">// The type must be
-NetworkFailedState here,&#x3C;/span>&#x3C;/div>&#x3C;div class='line'>&#x3C;span
-style="color: #000000"> &#x3C;/span>&#x3C;span style="color: #008000">// so
-accessing the `code` field is safe&#x3C;/span>&#x3C;/div>&#x3C;div
-class='line'>&#x3C;span style="color: #000000"> &#x3C;/span>&#x3C;span
-style="color: #AF00DB">return&#x3C;/span>&#x3C;span style="color: #000000">
-&#x3C;/span>&#x3C;span style="color: #A31515">`Error &#x3C;/span>&#x3C;span
-style="color: #0000FF">${&#x3C;/span>&#x3C;span style="color:
-#001080">&#x3C;data-lsp lsp='(parameter) state: NetworkFailedState'
->state&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#000000FF">.&#x3C;/span>&#x3C;span style="color: #001080">&#x3C;data-lsp
-lsp='(property) code: number' >code&#x3C;/data-lsp>&#x3C;/span>&#x3C;span
-style="color: #0000FF">}&#x3C;/span>&#x3C;span style="color: #A31515">
-downloading`&#x3C;/span>&#x3C;/div>&#x3C;div class='line'>&#x3C;span
-style="color: #000000"> &#x3C;/span>&#x3C;span style="color:
-#AF00DB">case&#x3C;/span>&#x3C;span style="color: #000000">
-&#x3C;/span>&#x3C;span style="color:
-#A31515">&#x26;apos;success&#x26;apos;&#x3C;/span>&#x3C;span style="color:
-#000000">:&#x3C;/span>&#x3C;/div>&#x3C;div class='line'>&#x3C;span style="color:
-#000000"> &#x3C;/span>&#x3C;span style="color:
-#AF00DB">return&#x3C;/span>&#x3C;span style="color: #000000">
-&#x3C;/span>&#x3C;span style="color: #A31515">`Downloaded &#x3C;/span>&#x3C;span
-style="color: #0000FF">${&#x3C;/span>&#x3C;span style="color:
-#001080">&#x3C;data-lsp lsp='(parameter) state: NetworkSuccessState'
->state&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#000000FF">.&#x3C;/span>&#x3C;span style="color: #001080">&#x3C;data-lsp
-lsp='(property) response: {&#x26;amp;#13; title: string;&#x26;amp;#13; duration:
-number;&#x26;amp;#13; summary: string;&#x26;amp;#13;}'
->response&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#000000FF">.&#x3C;/span>&#x3C;span style="color: #001080">&#x3C;data-lsp
-lsp='(property) title: string' >title&#x3C;/data-lsp>&#x3C;/span>&#x3C;span
-style="color: #0000FF">}&#x3C;/span>&#x3C;span style="color: #A31515"> -
-&#x3C;/span>&#x3C;span style="color: #0000FF">${&#x3C;/span>&#x3C;span
-style="color: #001080">&#x3C;data-lsp lsp='(parameter) state:
-NetworkSuccessState' >state&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#000000FF">.&#x3C;/span>&#x3C;span style="color: #001080">&#x3C;data-lsp
-lsp='(property) response: {&#x26;amp;#13; title: string;&#x26;amp;#13; duration:
-number;&#x26;amp;#13; summary: string;&#x26;amp;#13;}'
->response&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#000000FF">.&#x3C;/span>&#x3C;span style="color: #001080">&#x3C;data-lsp
-lsp='(property) summary: string' >summary&#x3C;/data-lsp>&#x3C;/span>&#x3C;span
-style="color: #0000FF">}&#x3C;/span>&#x3C;span style="color:
-#A31515">`&#x3C;/span>&#x3C;/div>&#x3C;div class='line'>&#x3C;span style="color:
-#000000"> }&#x3C;/span>&#x3C;/div>&#x3C;div class='line'>&#x3C;span
-style="color: #000000">}&#x3C;/span>&#x3C;/div>&#x3C;/code>&#x3C;a
-class='playground-link'
-href='https://www.typescriptlang.org/play/#code/PTAEAEFMCdoe2gZwFygEwGYME4BQAXATwAdJQA5SfAdwQGsAZOAQwBMBLAOwHMBlfZvjIBeUAG9coUIgFDUAcgA2LDj3m4AvrgIkylGvQBizdosit+gkeMnTZkBQDMTZ1uqkBjOKwehOAVwBbACMYTW0iUgoqWmg6Xn8PD0hEREshUFEJKRkrBURE5NT3UGgU4jhORF9sqVB8dnwzVBloLm5bKVZ-aEF2StQAkLC66SDA5mhCFvw2nlstLRBQAFo1j398NZWdKP1Y+PtM6IM4pjZ29LIAHxOD41NzK9Bb-foEpJS0+21Hf04PA1Kn4Yu9ZP5EAAKXJyO5gqwAShmc24NikywASuxuAALfB+ODUUAAFV0vA8bWI+NYcBSBPxdE4hNA1Bx7A8ONAcEc9RxZHwOLKkFsywqQk4DWYinqukQdisoC8-kUrFAoQAdNp0WBiVN2vU4KBmJ9UkbQMR4KRoEQWWyOaB2IhOPJ8YgcZNzCKwMb4KapdLInTqKZpb1HWRmJxQDB4NBbDDIOqvD4taBlgAhQjSYP4Dn64EJgA0JLJFPYVMVkb8k3gRIFZH+-U4XtANOoUa4iu8ZEcyiJkalhEQjvjOft0Ps6oTCLRdQ8zGqoCUKna8mQnTqZXwPSj8gAIoTOMoLjx1WeSp4F2R5M5Hm516NtSS+TKooEIfjQnC4g9XM8+WUhYbk+iCGsaRTDjwvJkAABsmkAwaAjjsJAKoOnKiDMI4wqPqUVA7qAMEAKKwAgoAACRiAmSbdhoraHseqjcDBG7zou8gFCaiBrsBeHbtAUYwQe7aMeYFFUZOZSIBUVSJg0TSQHRKzidRUkydUU7jJMhAaCxUiLEAA'>Try&#x3C;/a>&#x3C;/div>&#x3C;/pre>
+<pre><code class="language-ts">// @errors: 2339
+type NetworkLoadingState = {
+  state: 'loading'
+}
+
+type NetworkFailedState = {
+  state: 'failed'
+  code: number
+}
+
+type NetworkSuccessState = {
+  state: 'success'
+  response: {
+    title: string
+    duration: number
+    summary: string
+  }
+}
+// ---cut---
+type NetworkState = NetworkLoadingState | NetworkFailedState | NetworkSuccessState
+
+function networkStatus(state: NetworkState): string {
+  // Right now TypeScript does not know which of the three
+  // potential types state could be.
+
+  // Trying to access a property which isn't shared
+  // across all types will raise an error
+  state.code
+
+  // By switching on state, TypeScript can narrow the union
+  // down in code flow analysis
+  switch (state.state) {
+    case 'loading':
+      return 'Downloading...'
+    case 'failed':
+      // The type must be NetworkFailedState here,
+      // so accessing the `code` field is safe
+      return `Error ${state.code} downloading`
+    case 'success':
+      return `Downloaded ${state.response.title} - ${state.response.summary}`
+  }
+}
+</code></pre>
 <h1>Intersection Types</h1>
 <p>
   Intersection types are closely related to union types, but they are used very

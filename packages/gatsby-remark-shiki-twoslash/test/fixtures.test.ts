@@ -13,8 +13,8 @@ const getHTML = async (code: string, settings: any) => {
   //import("shiki-twoslash").UserConfigSettings) => {
   const markdownAST: Node = remark().parse(code)
 
-  const run = gatsbyRemarkShiki(settings)
-  await run(markdownAST)
+  gatsbyRemarkShiki({ markdownAST }, settings)
+  // await run()
 
   // @ts-ignore
   const twoslashes = markdownAST.children.filter(c => c.meta && c.meta.includes("twoslash")).map(c => c.twoslash)

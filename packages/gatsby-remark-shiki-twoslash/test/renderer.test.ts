@@ -1,182 +1,114 @@
-const remark = require("remark")
+const toHAST = require(`mdast-util-to-hast`)
+const hastToHTML = require(`hast-util-to-html`)
+import { readdirSync, readFileSync, lstatSync } from "fs"
+import { join, parse } from "path"
+import { toMatchFile } from "jest-file-snapshot"
+import { format } from "prettier"
 import gatsbyRemarkShiki from "../src/index"
-import { join } from "path"
-// const gatsbyTwoSlash = require('gatsby-remark-shiki-twoslasher')
+const remark = require("remark")
+import { Node } from "unist"
+expect.extend({ toMatchFile })
 
-const getMarkdownASTForCode = async (code: string) => {
-  const markdownAST = remark().parse(code)
+const getHTML = async (code: string, settings: any) => {
+  //import("shiki-twoslash").UserConfigSettings) => {
+  const markdownAST: Node = remark().parse(code)
+  await gatsbyRemarkShiki({ markdownAST }, settings)
 
-  const settings = {
-    theme: require("../../typescriptlang-org/lib/themes/typescript-beta-light.json"),
-  }
-
-  const run = gatsbyRemarkShiki(settings)
-  await run(markdownAST)
-  return markdownAST
-}
-
-describe("with a simple example", () => {
-  const file = `
-hello world
-
-\`\`\`ts twoslash
-// Hello
-const a = "123"
-const b = "345"
-\`\`\`
-
-OK world
-`
-
-  it("has all the right metadata set up", async () => {
-    const markdownAST = await getMarkdownASTForCode(file)
-    const code = markdownAST.children[1]
-
-    // Comes from remark
-    expect(code.lang).toEqual("ts")
-    expect(code.meta).toEqual("twoslash")
-
-    // Comes from ts-twoslash
-    expect(code.twoslash.extension).toEqual("ts")
-    expect(code.twoslash.staticQuickInfos).toHaveLength(2)
-  })
-
-  it("shows the right LSP results", async () => {
-    const markdownAST = await getMarkdownASTForCode(file)
-    const code = markdownAST.children[1]
-
-    expect(code.value).toContain(`data-lsp`)
-    expect(code.value).toContain(`<data-lsp lsp='const a:`)
-    expect(code.value).toContain(`<data-lsp lsp='const b:`)
-  })
-})
-
-describe("with a more complex example", () => {
-  const file = `
-### This will error
-
-\`\`\`ts twoslash
-// @errors: 2345
-function longest<T extends { length: number }>(a: T, b: T) {
-  if (a.length >= b.length) {
-    return a;
-  } else {
-    return b;
+  // @ts-ignore
+  const twoslashes = markdownAST.children.filter(c => c.meta && c.meta.includes("twoslash")).map(c => c.twoslash)
+  const hAST = toHAST(markdownAST, { allowDangerousHTML: true })
+  return {
+    html: hastToHTML(hAST, { allowDangerousHTML: true }),
+    twoslashes,
   }
 }
 
-// longerArray is of type 'number[]'
-const longerArray = longest([1, 2], [1, 2, 3]);
-// longerString is of type 'string'
-const longerString = longest("alice", "bob");
-// Error! Numbers don't have a 'length' property
-const notOK = longest(10, 100);
+// To add a test, create a file in the fixtures folder and it will will run through
+// as though it was the codeblock.
 
-const hello = longest("alice", "bob");
-console.log(hello);
+describe("with fixtures", () => {
+  // Add all codefixes
+  const fixturesFolder = join(__dirname, "fixtures")
+  const resultsFolder = join(__dirname, "results")
 
-\`\`\`
+  readdirSync(fixturesFolder).forEach(fixtureName => {
+    const fixture = join(fixturesFolder, fixtureName)
+    if (lstatSync(fixture).isDirectory()) {
+      return
+    }
 
-OK world
-`
+    // if (fixtureName.includes("Relative")) {
+    //   return
+    // }
 
-  it("shows the right LSP results", async () => {
-    const markdownAST = await getMarkdownASTForCode(file)
-    const code = markdownAST.children[1]
+    it.skip("Fixture: " + fixtureName, async () => {
+      const resultHTMLName = parse(fixtureName).name + ".html"
+      const resultTwoSlashName = parse(fixtureName).name + ".json"
 
-    expect(code.twoslash.extension).toEqual("ts")
-    expect(code.twoslash.staticQuickInfos.length).toBeGreaterThan(1)
+      const resultHTMLPath = join(resultsFolder, resultHTMLName)
+      const resultTwoSlashPath = join(resultsFolder, resultTwoSlashName)
 
-    expect(code.value).toContain(`data-lsp`)
-    expect(code.value).toContain(`<data-lsp lsp='function longest`)
+      const code = readFileSync(fixture, "utf8")
 
-    expect(code.twoslash.staticQuickInfos.length).toEqual(code.value.split("<data-lsp").length - 1)
+      const results = await getHTML(code, {
+        theme: require("../../typescriptlang-org/lib/themes/typescript-beta-light.json"),
+        vfsRoot: join(__dirname, "..", "..", ".."),
+      })
 
-    // Error message
-    expect(code.value).toContain(`span class="error"`)
-    expect(code.value).toContain(`span class="error-behind"`)
-    // The error code
-    expect(code.value).toContain(`<span class="code">2345</span>`)
-  })
+      const htmlString = format(results.html + style, { parser: "html" })
+      expect(cleanFixture(htmlString)).toMatchFile(resultHTMLPath)
 
-  it("shows the right LSP results when a theme doesnt have unique tokens for identifiers", async () => {
-    const markdownAST = await getMarkdownASTForCode(file) //, { theme: "light_vs" })
-    const code = markdownAST.children[1]
-
-    expect(code.value).toContain(`<data-lsp lsp='function longest`)
-
-    // Error message
-    expect(code.value).toContain(`span class="error"`)
-    expect(code.value).toContain(`span class="error-behind"`)
-    // The error code
-    expect(code.value).toContain(`<span class="code">2345</span>`)
+      const twoString = format(JSON.stringify(results.twoslashes), { parser: "json" })
+      expect(cleanFixture(twoString)).toMatchFile(resultTwoSlashPath)
+    })
   })
 })
 
-describe("raw LSP details example", () => {
-  const file = `
-### This will error
+const style = `
 
-\`\`\`ts twoslash
-// @errors: 2345
-function longest<T extends { length: number }>(a: T, b: T) {
-  if (a.length >= b.length) {
-    return a;
-  } else {
-    return b;
-  }
+<style>
+.shiki {
+background-color: lightgrey;
+padding: 8px;
 }
 
-// longerArray is of type 'number[]'
-const longerArray = longest([1, 2], [1, 2, 3]);
-// longerString is of type 'string'
-const longerString = longest("alice", "bob");
-// Error! Numbers don't have a 'length' property
-const notOK = longest(10, 100);
+.error,
+.error-behind {
+margin-left: -20px;
+margin-right: -12px;
+margin-top: 4px;
+margin-bottom: 4px;
+padding: 6px;
+padding-left: 14px;
 
-const hello = longest("alice", "bob");
-console.log(hello);
-\`\`\`
-
-OK world
-`
-
-  it("shows the right LSP results when a theme doesnt have unique tokens for identifiers", async () => {
-    const markdownAST = await getMarkdownASTForCode(file) //, { theme: "light_vs" })
-    const code = markdownAST.children[1]
-
-    expect(code.value).toContain(`data-lsp`)
-    expect(code.value).toContain(`<data-lsp lsp='function longest`)
-
-    expect(code.value.split("<data-lsp").length).toEqual(code.twoslash.staticQuickInfos.length + 1)
-  })
-
-  it("shows the right LSP results with the typescript site theme", async () => {
-    const markdownAST = await getMarkdownASTForCode(file)
-    const code = markdownAST.children[1]
-
-    expect(code.value).toContain(`data-lsp`)
-    expect(code.value).toContain(`<data-lsp lsp='function longest`)
-    expect(code.value.split("<data-lsp").length).toEqual(code.twoslash.staticQuickInfos.length + 1)
-  })
-})
-
-describe("no twoslash", () => {
-  const file = `
-### This should not get twoslashd
-
-\`\`\`js
-function longest() {
-
+white-space: pre-wrap;
+display: block;
 }
-\`\`\`
 
-OK world
+.error {
+position: absolute;
+background-color: #ffeeee;
+border-left: 2px solid #bf1818;
+width: 100%;
+
+display: flex;
+align-items: center;
+color: black;
+}
+
+.error-behind {
+user-select: none;
+color: #ffeeee;
+}
+.query {
+  color: white;
+}
+</style>
 `
 
-  it("looks about right", async () => {
-    const markdownAST = await getMarkdownASTForCode(file)
-    const code = markdownAST.children[1]
-    expect(code.value).not.toContain("twoslash")
-  })
-})
+const cleanFixture = (text: string) => {
+  const wd = process.cwd()
+  return text
+    .replace(new RegExp(wd, "g"), "[home]")
+    .replace(/\/home\/runner\/work\/TypeScript-Website\/TypeScript-Website/g, "[home]")
+}

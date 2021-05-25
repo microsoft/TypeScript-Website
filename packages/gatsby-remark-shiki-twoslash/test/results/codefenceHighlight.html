@@ -1,68 +1,16 @@
 <h2>Relative imports</h2>
-&#x3C;pre class="shiki light-plus twoslash lsp" style="background-color:
-#FFFFFF; color: #000000">&#x3C;div class='code-container'>&#x3C;code>&#x3C;div
-class='line dim'>&#x3C;span style="color:
-#0000FF">function&#x3C;/span>&#x3C;span style="color: #000000">
-&#x3C;/span>&#x3C;span style="color: #795E26">&#x3C;data-lsp lsp='function
-greet(person: string, date: Date): void'
->greet&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#000000">(&#x3C;/span>&#x3C;span style="color: #001080">&#x3C;data-lsp
-lsp='(parameter) person: string' >person&#x3C;/data-lsp>&#x3C;/span>&#x3C;span
-style="color: #000000">: &#x3C;/span>&#x3C;span style="color:
-#267F99">string&#x3C;/span>&#x3C;span style="color: #000000">,
-&#x3C;/span>&#x3C;span style="color: #001080">&#x3C;data-lsp lsp='(parameter)
-date: Date' >date&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color: #000000">:
-&#x3C;/span>&#x3C;span style="color: #267F99">&#x3C;data-lsp lsp='interface
-Date' >Date&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color: #000000">)
-{&#x3C;/span>&#x3C;/div>&#x3C;div class='line dim'>&#x3C;span style="color:
-#000000"> &#x3C;/span>&#x3C;span style="color: #001080">&#x3C;data-lsp lsp='var
-console: Console' >console&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#000000">.&#x3C;/span>&#x3C;span style="color: #795E26">&#x3C;data-lsp
-lsp='(method) Console.log(...data: any[]): void'
->log&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#000000">(&#x3C;/span>&#x3C;span style="color: #A31515">`Hello
-&#x3C;/span>&#x3C;span style="color: #0000FF">${&#x3C;/span>&#x3C;span
-style="color: #001080">&#x3C;data-lsp lsp='(parameter) person: string'
->person&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#0000FF">}&#x3C;/span>&#x3C;span style="color: #A31515">, today is
-&#x3C;/span>&#x3C;span style="color: #0000FF">${&#x3C;/span>&#x3C;span
-style="color: #001080">&#x3C;data-lsp lsp='(parameter) date: Date'
->date&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#000000FF">.&#x3C;/span>&#x3C;span style="color: #795E26">&#x3C;data-lsp
-lsp='(method) Date.toDateString(): string'
->toDateString&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#000000FF">()&#x3C;/span>&#x3C;span style="color:
-#0000FF">}&#x3C;/span>&#x3C;span style="color: #A31515">!`&#x3C;/span>&#x3C;span
-style="color: #000000">)&#x3C;/span>&#x3C;/div>&#x3C;div class='line
-highlight'>&#x3C;span style="color: #000000">}&#x3C;/span>&#x3C;/div> &#x3C;div
-class='line dim'>&#x3C;span style="color: #795E26">&#x3C;data-lsp lsp='function
-greet(person: string, date: Date): void'
->greet&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#000000">(&#x3C;/span>&#x3C;span style="color:
-#A31515">"Maddison"&#x3C;/span>&#x3C;span style="color: #000000">,
-&#x3C;/span>&#x3C;span style="color: #0000FF">new&#x3C;/span>&#x3C;span
-style="color: #000000"> &#x3C;/span>&#x3C;span style="color:
-#267F99">&#x3C;data-lsp lsp='var Date: DateConstructor&#x26;amp;#13;new () =>
-Date (+4 overloads)' >Date&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color:
-#000000">())&#x3C;/span>&#x3C;/div>&#x3C;/code>&#x3C;a class='playground-link'
-href='https://www.typescriptlang.org/play/#code/GYVwdgxgLglg9mABAcwE4FN1QBQAd2oDOCAXIoVKjGMgDSIAmAhlOmQCIvoCUiA3gChEiCAmIAbdADpxcZNgAGACXTjZiACR98RBAF96UOMwCeiGIU19mrKUc6sAypWrzuegIQLuAvQIFomDgARACyTAwMFgjB9GDoAO6IDujY3NxAA'>Try&#x3C;/a>&#x3C;/div>&#x3C;/pre>
+<pre><code class="language-ts">function greet(person: string, date: Date) {
+  console.log(`Hello ${person}, today is ${date.toDateString()}!`)
+}
+
+greet("Maddison", new Date())
+</code></pre>
 <p>Hello</p>
-&#x3C;pre class="shiki light-plus twoslash lsp" style="background-color:
-#FFFFFF; color: #000000">&#x3C;div class='code-container'>&#x3C;code>&#x3C;div
-class='line dim'>&#x3C;span style="color: #0000FF">const&#x3C;/span>&#x3C;span
-style="color: #000000"> &#x3C;/span>&#x3C;span style="color:
-#0070C1">&#x3C;data-lsp lsp='const b: 2'
->b&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color: #000000"> =
-&#x3C;/span>&#x3C;span style="color: #098658">2&#x3C;/span>&#x3C;/div>&#x3C;div
-class='line highlight'>&#x3C;span style="color:
-#0000FF">const&#x3C;/span>&#x3C;span style="color: #000000">
-&#x3C;/span>&#x3C;span style="color: #0070C1">&#x3C;data-lsp lsp='const c: 3'
->c&#x3C;/data-lsp>&#x3C;/span>&#x3C;span style="color: #000000"> =
-&#x3C;/span>&#x3C;span style="color: #098658">3&#x3C;/span>&#x3C;span
-style="color: #000000"> &#x3C;/span>&#x3C;span style="color: #008000">//
-highlighted (0 based)&#x3C;/span>&#x3C;/div>&#x3C;/code>&#x3C;a
-class='playground-link'
-href='https://www.typescriptlang.org/play/#code/MYewdgzgLgBAhjAvDAjAKAPQZgWj8AVyjxzVElgCMkYAmM8aGYGgZhixgAsBLAcy4AbflygBTACYwAFAAYYlOBEkBKIA'>Try&#x3C;/a>&#x3C;/div>&#x3C;/pre>
+<pre><code class="language-ts">const a = 1
+// ---cut---
+const b = 2
+const c = 3 // highlighted (0 based)
+</code></pre>
 
 <style>
   .shiki {
