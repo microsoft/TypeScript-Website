@@ -133,12 +133,12 @@ Values like
 - `undefined`
 
 all coerce to `false`, and other values get coerced `true`.
-You can always coerce values to `boolean`s by running them through the `Boolean` function, or by using the shorter double-Boolean negation.
+You can always coerce values to `boolean`s by running them through the `Boolean` function, or by using the shorter double-Boolean negation. (The latter has the advantage that TypeScript infers a narrow literal boolean type `true`, while inferring the first as type ``boolean`.)
 
 ```ts twoslash
 // both of these result in 'true'
-Boolean("hello");
-!!"world";
+Boolean("hello"); // type: boolean, value: true
+!!"world";        // type: true,    value: true
 ```
 
 It's fairly popular to leverage this behavior, especially for guarding against values like `null` or `undefined`.
