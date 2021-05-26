@@ -25,7 +25,7 @@ const conforms: OnlyBoolsAndHorses = {
 A mapped type is a generic type which uses a union created [via a `keyof`](/docs/handbook/2/indexed-access-types.html) to iterate through the keys of one type to create another:
 
 ```ts twoslash
-type OptionsFlags<Type> = {
+type OptionFlags<Type> = {
   [Property in keyof Type]: boolean;
 };
 ```
