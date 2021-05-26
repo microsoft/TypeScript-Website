@@ -3,7 +3,7 @@ import { Layout } from "../../components/layout"
 import { withPrefix, graphql } from "gatsby"
 import { twoslasher } from "@typescript/twoslash"
 import { createDefaultMapFromCDN } from "@typescript/vfs"
-import { twoslashRenderer } from "shiki-twoslash/src/renderers/twoslash"
+import { renderers } from "shiki-twoslash"
 import { debounce } from "ts-debounce"
 
 import "./dev.scss"
@@ -111,7 +111,7 @@ const Index: React.FC<Props> = props => {
                 const codeAsFakeShikiTokens = newResults.code
                   .split("\n")
                   .map(line => [{ content: line }])
-                const html = twoslashRenderer(
+                const html = renderers.twoslashRenderer(
                   codeAsFakeShikiTokens,
                   {},
                   newResults,
