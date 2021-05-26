@@ -53,8 +53,8 @@ export const getHTML = async (code: string, settings?: any) => {
 
   await runShiki(markdownAST);
 
-  const hAST = toHAST(markdownAST, { allowDangerousHtml: true });
-  return hastToHTML(hAST, { allowDangerousHtml: true });
+  const hAST = toHAST(markdownAST, { allowDangerousHTML: true });
+  return hastToHTML(hAST, { allowDangerousHTML: true });
 };
 
 export function replaceAllInString(_str: string, obj: any) {
