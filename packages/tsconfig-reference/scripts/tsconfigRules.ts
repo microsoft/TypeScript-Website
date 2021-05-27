@@ -48,7 +48,7 @@ export const buildOptionCompilerOptNames: string[] = ts.buildOpts
   .filter((c) => !common.includes(c))
   .map((c) => c.name);
 
-export const rootOptNames = ["files", "extends", "include", "exclude"];
+export const rootOptNames = ["files", "extends", "include", "exclude", "references"];
 
 /** You should use this! They are off by default */
 export const recommended: CompilerOptionName[] = [
