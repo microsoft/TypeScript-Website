@@ -224,7 +224,7 @@ Now that we know how to write a few types, it's time to start _combining_ them i
 ### Defining a Union Type
 
 The first way to combine types you might see is a _union_ type.
-A union type is type formed from two or more other types, representing values that may be _any one_ of those types.
+A union type is a type formed from two or more other types, representing values that may be _any one_ of those types.
 We refer to each of these types as the union's _members_.
 
 Let's write a function that can operate on strings or numbers:
