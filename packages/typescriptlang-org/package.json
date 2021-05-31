@@ -44,6 +44,7 @@
     "gatsby-remark-emojis": "^0.4.3",
     "gatsby-remark-images": "^4.2.0",
     "gatsby-remark-responsive-iframe": "^3.2.0",
+    "gatsby-remark-shiki-twoslash": "^2.0.1",
     "gatsby-remark-smartypants": "^3.2.0",
     "gatsby-source-filesystem": "^3.2.0",
     "gatsby-transformer-remark": "^3.2.0",

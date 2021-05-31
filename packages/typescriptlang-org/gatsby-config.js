@@ -18,9 +18,6 @@ require("./scripts/ensureDepsAreBuilt")
 require("ts-node").register({ files: true })
 const { join } = require("path")
 
-// prettier-ignore
-const shiki = join(require.resolve(`gatsby-remark-shiki-twoslash`), "..", "..", "package.json")
-
 module.exports = {
   siteMetadata: {
     siteUrl: `https://www.typescriptlang.org/`,
@@ -147,7 +144,7 @@ module.exports = {
           },
           "gatsby-remark-autolink-headers",
           {
-            resolve: shiki,
+            resolve: "gatsby-remark-shiki-twoslash",
             options: {
               theme: require("./lib/themes/typescript-beta-light.json"),
             },
