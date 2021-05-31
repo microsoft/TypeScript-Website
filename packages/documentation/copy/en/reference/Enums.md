@@ -350,18 +350,11 @@ in generated code will become
 
 ```ts twoslash
 // @showEmit
-const enum Direction {
-  Up,
-  Down,
-  Left,
-  Right,
-}
-
 let directions = [
-  Direction.Up,
-  Direction.Down,
-  Direction.Left,
-  Direction.Right,
+    0 /* Up */,
+    1 /* Down */,
+    2 /* Left */,
+    3 /* Right */,
 ];
 ```
 
