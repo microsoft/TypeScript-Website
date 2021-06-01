@@ -350,12 +350,9 @@ That's a feature, and it's best not to add annotations when the type system woul
 Let's take a look at what happens when we compile the above function `greet` with `tsc` to output JavaScript:
 
 ```ts twoslash
-// @showEmit
-// @target: es5
-function greet(person: string, date: Date) {
-  console.log(`Hello ${person}, today is ${date.toDateString()}!`);
+function greet(person, date) {
+    console.log("Hello " + person + ", today is " + date.toDateString() + "!");
 }
-
 greet("Maddison", new Date());
 ```
 
