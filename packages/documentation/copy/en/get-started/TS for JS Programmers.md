@@ -141,7 +141,7 @@ A popular use-case for union types is to describe the set of `string` or `number
 ```ts twoslash
 type WindowStates = "open" | "closed" | "minimized";
 type LockStates = "locked" | "unlocked";
-type OddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
+type PositiveOddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
 ```
 
 Unions provide a way to handle different types too. For example, you may have a function that takes an `array` or a `string`:
