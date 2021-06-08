@@ -1,0 +1,75 @@
+{
+  "code": "const a: Record<string, string> = {}\nlet b: Record<string, number> = {}\nb = a\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [],
+  "staticQuickInfos": [
+    {
+      "text": "const a: Record<string, string>",
+      "docs": "",
+      "start": 6,
+      "length": 1,
+      "line": 0,
+      "character": 6,
+      "targetString": "a"
+    },
+    {
+      "text": "type Record<K extends string | number | symbol, T> = { [P in K]: T; }",
+      "docs": "Construct a type with a set of properties K of type T",
+      "start": 9,
+      "length": 6,
+      "line": 0,
+      "character": 9,
+      "targetString": "Record"
+    },
+    {
+      "text": "let b: Record<string, number>",
+      "docs": "",
+      "start": 41,
+      "length": 1,
+      "line": 1,
+      "character": 4,
+      "targetString": "b"
+    },
+    {
+      "text": "type Record<K extends string | number | symbol, T> = { [P in K]: T; }",
+      "docs": "Construct a type with a set of properties K of type T",
+      "start": 44,
+      "length": 6,
+      "line": 1,
+      "character": 7,
+      "targetString": "Record"
+    },
+    {
+      "text": "let b: Record<string, number>",
+      "docs": "",
+      "start": 72,
+      "length": 1,
+      "line": 2,
+      "character": 0,
+      "targetString": "b"
+    },
+    {
+      "text": "const a: Record<string, string>",
+      "docs": "",
+      "start": 76,
+      "length": 1,
+      "line": 2,
+      "character": 4,
+      "targetString": "a"
+    }
+  ],
+  "errors": [
+    {
+      "category": 1,
+      "code": 2322,
+      "length": 1,
+      "start": 72,
+      "line": 2,
+      "character": 0,
+      "renderedMessage": "Type 'Record<string, string>' is not assignable to type 'Record<string, number>'.\n  Index signatures are incompatible.\n    Type 'string' is not assignable to type 'number'.",
+      "id": "err-2322-72-1"
+    }
+  ],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEFMCdoe2gZwFygEwGY1oFAGM4A7RAF1AENUAlSA6AEwB5ToBLQgcwBpQX2OAfKAC8oAN4BfHABtIZAEbVaCJn049CAVwC28mENGSc8kRRxA"
+}
