@@ -125,7 +125,7 @@ class Sprite {
 }
 // ---cut---
 type Positionable = GConstructor<{ setPos: (x: number, y: number) => void }>;
-type Spritable = GConstructor<typeof Sprite>;
+type Spritable = GConstructor<Sprite>;
 type Loggable = GConstructor<{ print: () => void }>;
 ```
 
@@ -143,7 +143,7 @@ class Sprite {
   }
 }
 type Positionable = GConstructor<{ setPos: (x: number, y: number) => void }>;
-type Spritable = GConstructor<typeof Sprite>;
+type Spritable = GConstructor<Sprite>;
 type Loggable = GConstructor<{ print: () => void }>;
 // ---cut---
 
