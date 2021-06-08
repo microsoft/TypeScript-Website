@@ -85,6 +85,19 @@ import { valueOfPi } from "./constants";
 export const twoPi = valueOfPi * 2;
 ```
 
+
+#### `ES5`
+
+```ts twoslash
+// @showEmit
+// @module: es5
+// @noErrors
+import { valueOfPi } from "./constants";
+
+export const twoPi = valueOfPi * 2;
+```
+
+
 If you are wondering about the difference between ES2015 and ES2020, ES2020 adds support for dynamic `import`s, and `import.meta`.
 
 ### `None`
