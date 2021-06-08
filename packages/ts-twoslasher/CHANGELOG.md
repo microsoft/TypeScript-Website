@@ -1,3 +1,7 @@
+## 2.0.0
+
+- Removes HTML encoding from the Twoslash error rendered results. It's really not the responsibility of Twoslash to do that. I'm classing this as a major semver as folks could be relying on this behavior (all the shiki-twoslash stuff does for example.)
+
 ## 1.1.1
 
 - Better handling of JSON files
