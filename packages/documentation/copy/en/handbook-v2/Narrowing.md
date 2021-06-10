@@ -271,7 +271,7 @@ function multiplyValue(container: Container, factor: number) {
 }
 ```
 
-### The `in` operator narrowing
+## The `in` operator narrowing
 
 Javascript has an operator for determining if an object has a property with a name: the `in` operator.
 TypeScript takes this into account as a way to narrow down potential types.
