@@ -86,11 +86,11 @@ export const twoPi = valueOfPi * 2;
 ```
 
 
-#### `ES5`
+#### `ES6`
 
 ```ts twoslash
 // @showEmit
-// @module: es5
+// @module: es6
 // @noErrors
 import { valueOfPi } from "./constants";
 
