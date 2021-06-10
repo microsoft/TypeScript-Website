@@ -198,7 +198,6 @@ function rewireLoggingToElement(
       textRep = `Set (${arg.size}) {` + setIter.map(objectToText).join("<span class='comma'>, </span>") + "}"
     } else if (arg instanceof Map) {
       const mapIter = [...arg.entries()]
-      console.log(mapIter)
       textRep =
         `Map (${arg.size}) {` +
         mapIter.map(([k, v]) => `${objectToText(k)} => ${objectToText(v)}`).join("<span class='comma'>, </span>") +
