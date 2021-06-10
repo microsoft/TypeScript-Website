@@ -263,6 +263,7 @@ export const allowedValues = {
   module: [
     "`CommonJS` (default if `target` is `ES3` or `ES5`)",
     "",
+    "`ES6`",
     "`ES2015`",
     "`ES2020`",
     "",
