@@ -157,7 +157,9 @@ function rewireLoggingToElement(
       console.error(error)
 
       if (error instanceof SyntaxError && /\bexport\b/u.test(error.message)) {
-        console.warn('Tip: Change the Module setting to "CommonJS" in TS Config settings to allow top-level exports to work in the Playground')
+        console.warn(
+          'Tip: Change the Module setting to "CommonJS" in TS Config settings to allow top-level exports to work in the Playground'
+        )
       }
     }
   })
@@ -191,6 +193,15 @@ function rewireLoggingToElement(
       textRep = `<span class='literal'>${String(arg)}</span>`
     } else if (Array.isArray(arg)) {
       textRep = "[" + arg.map(objectToText).join("<span class='comma'>, </span>") + "]"
+    } else if (arg instanceof Set) {
+      const setIter = [...arg]
+      textRep = `Set (${arg.size}) {` + setIter.map(objectToText).join("<span class='comma'>, </span>") + "}"
+    } else if (arg instanceof Map) {
+      const mapIter = [...arg.entries()]
+      textRep =
+        `Map (${arg.size}) {` +
+        mapIter.map(([k, v]) => `${objectToText(k)} => ${objectToText(v)}`).join("<span class='comma'>, </span>") +
+        "}"
     } else if (typeof arg === "string") {
       textRep = '"' + arg + '"'
     } else if (isObj) {
@@ -200,7 +211,12 @@ function rewireLoggingToElement(
       const prefix = nameWithoutObject ? `${nameWithoutObject}: ` : ""
 
       // JSON.stringify omits any keys with a value of undefined. To get around this, we replace undefined with the text __undefined__ and then do a global replace using regex back to keyword undefined
-      textRep = prefix + JSON.stringify(arg, (_, value) => value === undefined ? '__undefined__' : value, 2).replace(/"__undefined__"/g, 'undefined')
+      textRep =
+        prefix +
+        JSON.stringify(arg, (_, value) => (value === undefined ? "__undefined__" : value), 2).replace(
+          /"__undefined__"/g,
+          "undefined"
+        )
     } else {
       textRep = String(arg)
     }
