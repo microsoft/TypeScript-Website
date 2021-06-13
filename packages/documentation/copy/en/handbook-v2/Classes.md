@@ -248,14 +248,33 @@ class C {
 
 TypeScript has some special inference rules for accessors:
 
-- If no `set` exists, the property is automatically `readonly`
-- The type of the setter parameter is inferred from the return type of the getter
-- If the setter parameter has a type annotation, it must match the return type of the getter
+- If `get` exists but no `set`, the property is automatically `readonly`
+- If the type of the setter parameter is not specified, it is inferred from the return type of the getter
 - Getters and setters must have the same [Member Visibility](#member-visibility)
 
-It is not possible to have accessors with different types for getting and setting.
+Since [TypeScript 4.3](https://devblogs.microsoft.com/typescript/announcing-typescript-4-3/), it is possible to have accessors with different types for getting and setting.
 
-If you have a getter without a setter, the field is automatically `readonly`
+```ts twoslash
+class Thing {
+    _size = 0;
+
+    get size(): number {
+        return this._size;
+    }
+
+    set size(value: string | number | boolean) {
+        let num = Number(value);
+
+        // Don't allow NaN and stuff.
+        if (!Number.isFinite(num)) {
+            this._size = 0;
+            return;
+        }
+
+        this._size = num;
+    }
+}
+```
 
 ### Index Signatures
 
