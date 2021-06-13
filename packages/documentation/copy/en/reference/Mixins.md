@@ -15,7 +15,7 @@ The pattern relies on using Generics with class inheritance to extend a base cla
 TypeScript's best mixin support is done via the class expression pattern.
 You can read more about how this pattern works in [JavaScript here](https://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/).
 
-To get started, we'll need a class which will have the mixin's applied on top of:
+To get started, we'll need a class which will have the mixins applied on top of:
 
 ```ts twoslash
 class Sprite {
