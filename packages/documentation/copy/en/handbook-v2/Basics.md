@@ -266,7 +266,7 @@ TypeScript is telling us we forgot to pass an argument to the `greet` function, 
 So far we've only written standard JavaScript, and yet type-checking was still able to find problems with our code.
 Thanks TypeScript!
 
-### Emitting with Errors
+## Emitting with Errors
 
 One thing you might not have noticed from the last example was that our `hello.js` file changed again.
 If we open that file up then we'll see that the contents still basically look the same as our input file.
@@ -424,7 +424,7 @@ TypeScript has several type-checking strictness flags that can be turned on or o
 The `--strict` flag in the CLI, or `"strict": true` in a [`tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) toggles them all on simultaneously, but we can opt out of them individually.
 The two biggest ones you should know about are `noImplicitAny` and `strictNullChecks`.
 
-### `noImplicitAny`
+## `noImplicitAny`
 
 Recall that in some places, TypeScript doesn't try to infer any types for us and instead falls back to the most lenient type: `any`.
 This isn't the worst thing that can happen - after all, falling back to `any` is just the plain JavaScript experience anyway.
@@ -433,7 +433,7 @@ However, using `any` often defeats the purpose of using TypeScript in the first 
 The more typed your program is, the more validation and tooling you'll get, meaning you'll run into fewer bugs as you code.
 Turning on the `noImplicitAny` flag will issue an error on any variables whose type is implicitly inferred as `any`.
 
-### `strictNullChecks`
+## `strictNullChecks`
 
 By default, values like `null` and `undefined` are assignable to any other type.
 This can make writing some code easier, but forgetting to handle `null` and `undefined` is the cause of countless bugs in the world - some consider it a [billion dollar mistake](https://www.youtube.com/watch?v=ybrQvs4x0Ps)!
