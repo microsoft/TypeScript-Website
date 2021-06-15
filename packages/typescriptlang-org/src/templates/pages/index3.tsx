@@ -8,7 +8,7 @@ const Index: React.FC<{}> = (props) => {
 
   return (
     <>
-      <div style={{  background: "url(" + require("../../assets/v3.png").default + ")", backgroundPositionX:"center", height: "3451px" , backgroundRepeat: "no-repeat"}}>
+      <div style={{  background: "url(" + require("../../assets/v3.png").default + ")", backgroundPositionX:"center", height: "4600px" , backgroundRepeat: "no-repeat"}}>
       </div>
     </>
   )

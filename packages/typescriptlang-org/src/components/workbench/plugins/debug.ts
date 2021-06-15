@@ -45,7 +45,7 @@ export const workbenchDebugPlugin: PluginFactory = (i, utils) => {
         if (filename.startsWith("/lib.")) {
           dtsFiles.push(filename.replace("/lib", "lib"))
         } else {
-          ds.p("<code>" + filename + "</code>")
+          ds.p("<strong>" + filename + "</strong>")
 
           const p = ds.p("")
           const code = document.createElement("code")
