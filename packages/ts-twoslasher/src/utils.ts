@@ -52,6 +52,8 @@ export function typesToExtension(types: string) {
       return "ts"
     case "tsx":
       return "tsx"
+    case "jsx":
+      return "jsx"
     case "jsn":
       return "json"
   }
