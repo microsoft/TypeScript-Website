@@ -83,13 +83,15 @@ const Play: React.FC<Props> = (props) => {
         tsVersionParam = tsVersionParam.replace("-insiders.", "-dev.")
       }
 
-      const latestRelease = [...playgroundReleases.versions].sort().pop()
+      const latestRelease = [...playgroundReleases.versions].sort().pop()!
       const tsVersion = tsVersionParam || latestRelease
 
       // Because we can reach to localhost ports from the site, it's possible for the locally built compiler to 
       // be hosted and to power the editor with a bit of elbow grease.
       const useLocalCompiler = tsVersion === "dev"
-      const urlForMonaco = useLocalCompiler ? "http://localhost:5615/dev/vs" : `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/min/vs`
+      const devIsh = ["pr", "dev"]
+      const version = devIsh.find(d => tsVersion.includes(d)) ? "dev" : "min"
+      const urlForMonaco = useLocalCompiler ? "http://localhost:5615/dev/vs" : `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/${version}/vs`
 
       // Make a quick HEAD call for the main monaco editor for this version of TS, if it
       // bails then give a useful error message and bail.
