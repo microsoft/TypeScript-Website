@@ -574,7 +574,7 @@ You can use TypeScript to control whether certain methods or properties are visi
 ### `public`
 
 The default visibility of class members is `public`.
-A `public` member can be accessed by anywhere:
+A `public` member can be accessed anywhere:
 
 ```ts twoslash
 class Greeter {
