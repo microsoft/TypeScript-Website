@@ -35,7 +35,7 @@ If you have a file that doesn't currently have any `import`s or `export`s, but y
 export {};
 ```
 
-which will change the file be a module exporting nothing. This syntax works regardless of your module target.
+which will change the file to be a module exporting nothing. This syntax works regardless of your module target.
 
 ## Modules in TypeScript
 
