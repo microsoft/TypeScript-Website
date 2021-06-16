@@ -27,7 +27,6 @@ export const deprecated: CompilerOptionName[] = [
   "out",
   "charset",
   "keyofStringsOnly",
-  "noErrorTruncation",
   "diagnostics",
 ];
 

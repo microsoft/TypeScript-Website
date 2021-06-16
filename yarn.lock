@@ -4136,7 +4136,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript/twoslash@1.1.7, @typescript/twoslash@workspace:packages/ts-twoslasher":
+"@typescript/twoslash@2.0.1, @typescript/twoslash@workspace:packages/ts-twoslasher":
   version: 0.0.0-use.local
   resolution: "@typescript/twoslash@workspace:packages/ts-twoslasher"
   dependencies:
@@ -4155,6 +4155,17 @@ __metadata:
     typescript: "*"
   languageName: unknown
   linkType: soft
+
+"@typescript/twoslash@npm:1.1.7":
+  version: 1.1.7
+  resolution: "@typescript/twoslash@npm:1.1.7"
+  dependencies:
+    "@typescript/vfs": 1.3.4
+    debug: ^4.1.1
+    lz-string: ^1.4.4
+  checksum: b8e1abfc6732b53e171b8aa41509e2827f68e08bba9c7940575431c56fba38a63b5dbf3c381f927c53f6e88eff1ec9019b91a7082bedd55382a0258a790e7876
+  languageName: node
+  linkType: hard
 
 "@typescript/vfs@1.3.4, @typescript/vfs@workspace:packages/typescript-vfs":
   version: 0.0.0-use.local
@@ -25375,7 +25386,7 @@ resolve@^2.0.0-next.3:
     "@types/react-helmet": ^5.0.15
     "@typescript/playground": 0.1.0
     "@typescript/sandbox": 0.1.0
-    "@typescript/twoslash": 1.1.7
+    "@typescript/twoslash": 2.0.1
     canvas: ^2.6.1
     concurrently: ^5.1.0
     gatsby: ^3.2.1
