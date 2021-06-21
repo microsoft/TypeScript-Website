@@ -17,12 +17,15 @@ We're also introducing a new mode for `tsc`, the `--build` flag, that works hand
 Let's look at a fairly normal program and see how project references can help us better organize it.
 Imagine you have a project with two modules, `converter` and `units`, and a corresponding test file for each:
 
-```shell
-/src/converter.ts
-/src/units.ts
-/test/converter-tests.ts
-/test/units-tests.ts
-/tsconfig.json
+```
+/
+├── src/
+│   ├── converter.ts
+│   └── units.ts
+├── test/
+│   ├── converter-tests.ts
+│   └── units-tests.ts
+└── tsconfig.json
 ```
 
 The test files import the implementation files and do some testing:
