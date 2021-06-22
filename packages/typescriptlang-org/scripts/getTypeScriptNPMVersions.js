@@ -126,6 +126,11 @@ const getTypeScriptNPMVersions = async () => {
     ? siteReleaseNotesURL
     : releasePostURL
 
+  const next =
+    semver.minor(stable) == 9
+      ? `${semver.major(stable) + 1}.${semver.minor(stable)}`
+      : `${semver.major(stable)}.${semver.minor(stable) + 1}`
+
   return {
     tags: {
       stableMajMin: `${semver.major(stable)}.${semver.minor(stable)}`,
@@ -134,6 +139,7 @@ const getTypeScriptNPMVersions = async () => {
       beta,
       rc,
       rcMajMin: `${semver.major(rc)}.${semver.minor(rc)}`,
+      next,
     },
     isRC,
     isBeta,
