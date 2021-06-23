@@ -172,10 +172,10 @@ const Index: React.FC<Props> = (props) => {
               <h4>{i("index_install")}</h4>
               <div className='grey-box installation-panel'>
                 {i("index_install_ref", {
-                  p: (...chunk) => <p key={Math.random()}>{chunk}</p>,
-                  pre: (...chunk) => <pre>{chunk}</pre>,
-                  code: (...chunk) => <code key={1}>{chunk}</code>,
-                  download: (...chunk) => <Link to="/download">{chunk}</Link>,
+                  p: (...chunk) => <p key={`index_install_ref_${Math.random()}`}>{chunk}</p>,
+                  pre: (...chunk) => <pre key={`index_install_ref_${Math.random()}`}>{chunk}</pre>,
+                  code: (...chunk) => <code key={`index_install_ref_${Math.random()}`}>{chunk}</code>,
+                  download: (...chunk) => <Link key={`index_install_ref_${Math.random()}`} to="/download">{chunk}</Link>,
                   install: Installation
                 })}
               </div>
