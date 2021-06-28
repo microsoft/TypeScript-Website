@@ -507,10 +507,10 @@
               "markdownDescription": "Set the JavaScript language version for emitted JavaScript and include compatible library declarations.\n\nSee more: https://www.typescriptlang.org/tsconfig#target"
             },
             "useUnknownInCatchVariables": {
-              "description": "Does something",
+              "description": "Default catch clause variables as `unknown` instead of `any`.",
               "type": "boolean",
               "default": false,
-              "markdownDescription": "Does something\n\nSee more: https://www.typescriptlang.org/tsconfig#useUnknownInCatchVariables"
+              "markdownDescription": "Default catch clause variables as `unknown` instead of `any`.\n\nSee more: https://www.typescriptlang.org/tsconfig#useUnknownInCatchVariables"
             },
             "watch": {
               "description": "Watch input files.",

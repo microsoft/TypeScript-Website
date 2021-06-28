@@ -62,6 +62,7 @@ export const recommended: CompilerOptionName[] = [
   "noImplicitAny",
   "esModuleInterop",
   "skipLibCheck",
+  "exactOptionalPropertyTypes",
 ];
 
 type RootProperties = "files" | "extends" | "include" | "exclude";
@@ -166,7 +167,6 @@ export const defaultsForOptions = {
   allowUmdGlobalAccess: "false",
   allowUnreachableCode: "undefined",
   allowUnusedLabels: "undefined",
-  alwaysStrict: "`false`, unless `strict` is set",
   charset: "utf8",
   checkJs: "false",
   composite: "false",
@@ -285,6 +285,7 @@ export const allowedValues = {
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
+  "4.4": ["exactOptionalPropertyTypes", "useUnknownInCatchVariables"],
   "4.3": ["noImplicitOverride"],
   "4.2": ["noPropertyAccessFromIndexSignature", "explainFiles"],
   "4.1": ["jsxImportSource", "noUncheckedIndexedAccess", "disableFilenameBasedTypeAcquisition"],

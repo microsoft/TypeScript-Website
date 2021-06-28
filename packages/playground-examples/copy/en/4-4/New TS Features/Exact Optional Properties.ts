@@ -25,11 +25,11 @@ interface UserDefaults {
 
 declare function getUserSettings(): UserDefaults;
 
-const user = getUserSettings();
-user.colorThemeOverride = "dark";
-user.colorThemeOverride = "light";
+const settings = getUserSettings();
+settings.colorThemeOverride = "dark";
+settings.colorThemeOverride = "light";
 
 // But not:
-user.colorThemeOverride = undefined;
+settings.colorThemeOverride = undefined;
 
 // Prior to the flag `exactOptionalPropertyTypes`, this was not possible.

@@ -1241,7 +1241,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Does something</p>
+<p>Default catch clause variables as <code>unknown</code> instead of <code>any</code>.</p>
 
 </tr></td>
 </tbody></table>
