@@ -502,6 +502,48 @@ Turns to:
 > }
 > ```
 
+#### `errorsWithGenerics.ts`
+
+```ts
+// @errors: 2322
+const a: Record<string, string> = {}
+let b: Record<string, number> = {}
+b = a
+```
+
+Turns to:
+
+> ```ts
+> const a: Record<string, string> = {}
+> let b: Record<string, number> = {}
+> b = a
+> ```
+
+> With:
+
+> ```json
+> {
+>   "code": "See above",
+>   "extension": "ts",
+>   "highlights": [],
+>   "queries": [],
+>   "staticQuickInfos": "[ 6 items ]",
+>   "errors": [
+>     {
+>       "category": 1,
+>       "code": 2322,
+>       "length": 1,
+>       "start": 72,
+>       "line": 2,
+>       "character": 0,
+>       "renderedMessage": "Type 'Record<string, string>' is not assignable to type 'Record<string, number>'.\n  Index signatures are incompatible.\n    Type 'string' is not assignable to type 'number'.",
+>       "id": "err-2322-72-1"
+>     }
+>   ],
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEFMCdoe2gZwFygEwGY1oFAGM4A7RAF1AENUAlSA6AEwB5ToBLQgcwBpQX2OAfKAC8oAN4BfHABtIZAEbVaCJn049CAVwC28mENGSc8kRRxA"
+> }
+> ```
+
 #### `highlighting.ts`
 
 ```ts

@@ -210,6 +210,12 @@
               "default": false,
               "markdownDescription": "Only output d.ts files and not JavaScript files.\n\nSee more: https://www.typescriptlang.org/tsconfig#emitDeclarationOnly"
             },
+            "exactOptionalPropertyTypes": {
+              "description": "Differentiate between undefined and not present when type checking",
+              "type": "boolean",
+              "default": false,
+              "markdownDescription": "Differentiate between undefined and not present when type checking\n\nSee more: https://www.typescriptlang.org/tsconfig#exactOptionalPropertyTypes"
+            },
             "incremental": {
               "description": "Enable incremental compilation. Requires TypeScript version 3.4 or later.",
               "type": "boolean"
@@ -499,6 +505,12 @@
                 }
               ],
               "markdownDescription": "Set the JavaScript language version for emitted JavaScript and include compatible library declarations.\n\nSee more: https://www.typescriptlang.org/tsconfig#target"
+            },
+            "useUnknownInCatchVariables": {
+              "description": "Does something",
+              "type": "boolean",
+              "default": false,
+              "markdownDescription": "Does something\n\nSee more: https://www.typescriptlang.org/tsconfig#useUnknownInCatchVariables"
             },
             "watch": {
               "description": "Watch input files.",
