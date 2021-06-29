@@ -448,7 +448,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     env.createFile(filename, newFileCode)
 
     const updates = filterHighlightLines(codeLines)
-    highlights.push(...updates.highlights)
+    highlights = highlights.concat(updates.highlights)
 
     // ------ Do the LSP lookup for the queries
 
@@ -501,7 +501,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
         }
       }
     })
-    partialQueries.push(...lspedQueries)
+    partialQueries = partialQueries.concat(lspedQueries)
 
     // Sets the file in the compiler as being without the comments
     const newEditedFileCode = codeLines.join("\n")
@@ -527,7 +527,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   }
 
   // Code should now be safe to compile, so we're going to split it into different files
-  const errs: import("typescript").Diagnostic[] = []
+  let errs: import("typescript").Diagnostic[] = []
   // Let because of a filter when cutting
   let staticQuickInfos: TwoSlashReturn["staticQuickInfos"] = []
 
@@ -543,8 +543,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     }
 
     if (!handbookOptions.noErrors) {
-      errs.push(...ls.getSemanticDiagnostics(file))
-      errs.push(...ls.getSyntacticDiagnostics(file))
+      errs = errs.concat(ls.getSemanticDiagnostics(file), ls.getSyntacticDiagnostics(file))
     }
 
     const source = env.sys.readFile(file)!

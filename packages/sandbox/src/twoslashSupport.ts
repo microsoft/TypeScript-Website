@@ -47,7 +47,7 @@ export const extractTwoSlashComplierOptions = (ts: TS) => {
 
 function setOption(name: string, value: string, opts: CompilerOptions, optMap: Map<string, any>) {
   const opt = optMap.get(name.toLowerCase())
-  if (opt) console.log(opt)
+
   if (!opt) return
   switch (opt.type) {
     case "number":

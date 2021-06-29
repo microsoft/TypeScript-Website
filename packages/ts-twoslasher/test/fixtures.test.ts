@@ -90,7 +90,7 @@ describe("with fixtures", () => {
         twoslasher(file, extname(fixtureName).substr(1))
       } catch (err) {
         thrown = true
-        expect(err.message).toMatchFile(result)
+        if (err instanceof Error) expect(err.message).toMatchFile(result)
       }
 
       if (!thrown) throw new Error("Did not throw")
