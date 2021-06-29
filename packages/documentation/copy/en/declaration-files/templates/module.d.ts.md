@@ -74,7 +74,7 @@ export default pi;
 ```
 
 One style of exporting in CommonJS is to export a function.
-Because a function is also an object, then extra fields can be added are included in the export.
+Because a function is also an object, then extra fields can be added and are included in the export.
 
 ```js
 function getArrayLength(arr) {
