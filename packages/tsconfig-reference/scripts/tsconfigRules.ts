@@ -96,6 +96,7 @@ export const relatedTo: [AnOption, AnOption[]][] = [
       "strictPropertyInitialization",
       "noImplicitAny",
       "noImplicitThis",
+      "useUnknownInCatchVariables",
     ],
   ],
   ["alwaysStrict", ["strict"]],
@@ -105,6 +106,7 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["strictPropertyInitialization", ["strict"]],
   ["noImplicitAny", ["strict"]],
   ["noImplicitThis", ["strict"]],
+  ["useUnknownInCatchVariables", ["strict"]],
 
   ["allowSyntheticDefaultImports", ["esModuleInterop"]],
   ["esModuleInterop", ["allowSyntheticDefaultImports"]],
@@ -234,6 +236,7 @@ export const defaultsForOptions = {
   strict: "false",
   strictBindCallApply: "`false`, unless `strict` is set",
   strictFunctionTypes: "`false`, unless `strict` is set",
+  useUnknownInCatchVariables: "`false`, unless `strict` is set",
   strictPropertyInitialization: "`false`, unless `strict` is set",
   strictNullChecks: "`false`, unless `strict` is set",
   suppressExcessPropertyErrors: "false",
