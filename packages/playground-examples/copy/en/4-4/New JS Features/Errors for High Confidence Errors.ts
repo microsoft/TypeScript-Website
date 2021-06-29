@@ -7,9 +7,9 @@
 // in an editor unless the project is opted-in  via 'checkJS' or
 // has // @check-ts comment.
 
-// With 4.4, we are letting the TypeScript compiler raise errors
-// when we have a very high confidence that the error is likely
-// a typo.
+// With 4.4, we are letting the TypeScript compiler suggest
+// suggest spelling corrections when it is confident that a
+// name is misspelled.
 
 const album = {
   name: "Afraid of Heights",
@@ -20,8 +20,8 @@ const album = {
 };
 
 // In a previous version of the TypeScript tooling for JavaScript,
-// this would not have raised an error, even though it has a very
-// high confidence of being incorrect:
+// this would not have suggested anything, even though there's
+// almost no way it's correct.
 album.nme;
 
 // For full details see:

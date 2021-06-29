@@ -1237,7 +1237,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 <tr class='odd' name='useUnknownInCatchVariables'>
 <td><code><a href='/tsconfig/#useUnknownInCatchVariables'>--useUnknownInCatchVariables</a></code></td>
   <td><code>boolean</code></td>
-  <td>
+  <td><p><code>false</code>, unless <code>strict</code> is set</p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
