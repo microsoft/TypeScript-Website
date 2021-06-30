@@ -4149,7 +4149,7 @@ __metadata:
     jest-file-snapshot: ^0.3.8
     lz-string: ^1.4.4
     markdown-magic: ^1.0.0
-    prettier: "*"
+    prettier: ^2.3.2
     tsdx: ^0.14.1
     tslib: ^1.10.0
     typescript: "*"
@@ -25363,13 +25363,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.3.0-beta":
-  version: 4.3.0-beta
-  resolution: "typescript@npm:4.3.0-beta"
+"typescript@npm:4.4.0-dev.20210627":
+  version: 4.4.0-dev.20210627
+  resolution: "typescript@npm:4.4.0-dev.20210627"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 016e6bb986ec7b4e58f20bf90f402b4e237b66906a5ea2297c92d8cfca3472b1e6072518621f916b6db05d2e8bfb6e48df4a8c36f5f32dfe7760b8cc201eea6a
+  checksum: e416dff1ab513b1bf60cb26032cdd1124a8a0f44697ceb99716bc02a632e1681dabf20349e259ac889fddc1c9e0f241e4d042d8163bb66c811248ca1de4d3824
   languageName: node
   linkType: hard
 

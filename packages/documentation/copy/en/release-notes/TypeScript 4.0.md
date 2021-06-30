@@ -455,6 +455,7 @@ Since the beginning days of TypeScript, `catch` clause variables have always bee
 This meant that TypeScript allowed you to do anything you wanted with them.
 
 ```ts twoslash
+// @useUnknownInCatchVariables: false
 try {
   // Do some work
 } catch (x) {

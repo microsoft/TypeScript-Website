@@ -190,6 +190,11 @@
               "type": "boolean",
               "default": false
             },
+            "exactOptionalPropertyTypes": {
+              "description": "Interpret optional property types as written, rather than adding 'undefined'.",
+              "type": "boolean",
+              "default": false
+            },
             "incremental": {
               "description": "Enable incremental compilation. Requires TypeScript version 3.4 or later.",
               "type": "boolean"
@@ -434,6 +439,11 @@
                   "pattern": "^([Ee][Ss]([356]|(20(1[56789]|20))|[Nn][Ee][Xx][Tt]))$"
                 }
               ]
+            },
+            "useUnknownInCatchVariables": {
+              "description": "Type catch clause variables as 'unknown' instead of 'any'.",
+              "type": "boolean",
+              "default": false
             },
             "watch": {
               "description": "Watch input files.",

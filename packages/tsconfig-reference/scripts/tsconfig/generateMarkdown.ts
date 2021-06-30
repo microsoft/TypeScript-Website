@@ -19,7 +19,7 @@
 
 console.log("TSConfig Ref: MD for TSConfig");
 
-import { writeFileSync, readdirSync, existsSync, readFileSync } from "fs";
+import { writeFileSync, readdirSync, existsSync } from "fs";
 import { join } from "path";
 import * as assert from "assert";
 import { read as readMarkdownFile } from "gray-matter";
@@ -40,22 +40,27 @@ const categories = require("../../data/tsconfigCategories.json") as typeof impor
 
 const orderedCategories = [
   "Project_Files_0",
-  "Basic_Options_6172",
-  "Strict_Type_Checking_Options_6173",
-  "Module_Resolution_Options_6174",
-  "Source_Map_Options_6175",
-  "Additional_Checks_6176",
-  "Experimental_Options_6177",
-  "Advanced_Options_6178",
+  "Type_Checking_6248",
+  "Modules_6244",
+  "Emit_6246",
+  "JavaScript_Support_6247",
+  "Editor_Support_6249",
+  "Interop_Constraints_6252",
+  "Backwards_Compatibility_6253",
+  "Language_and_Environment_6254",
+  "Compiler_Diagnostics_6251",
+  "Projects_6255",
+  "Output_Formatting_6256",
+  "Completeness_6257",
   "Command_line_Options_6171",
+  "Watch_and_Build_Modes_6250",
   "Watch_Options_999",
 ];
 
 // Makes sure all categories are accounted for in ^
-assert.deepEqual(
-  Object.keys(categories).sort(),
-  orderedCategories.map((c) => c.split("_").pop()).sort()
-);
+const got = Object.keys(categories).sort();
+const expected = orderedCategories.map((c) => c.split("_").pop()).sort();
+assert.deepEqual(got, expected, `Expected to find everything in ${orderedCategories}`);
 
 // Extract out everything which doesn't live in compilerOptions
 const notCompilerOptions = ["Project_Files_0", "Watch_Options_999"];
@@ -78,7 +83,7 @@ const sections = [
     categories: categoriesForCompilerOpts,
   },
   { name: "watchOptions", options: watchOptionCompilerOptNames, idPrefix: "watch" },
-  { name: "typeAcquisition", options: typeAcquisitionCompilerOptNames, idPrefix: "type"  },
+  { name: "typeAcquisition", options: typeAcquisitionCompilerOptNames, idPrefix: "type" },
 ];
 
 const parseMarkdown = (md: string) => remark().use(remarkHTML).processSync(md);
@@ -184,8 +189,8 @@ languages.forEach((lang) => {
       const localisedOptions = [] as { name: string; anchor: string }[];
 
       optionsForCategory.forEach((option) => {
-        const optionName = option.name
-        const optionUID = section.idPrefix ? `${section.idPrefix}-${option.name}`: option.name
+        const optionName = option.name;
+        const optionUID = section.idPrefix ? `${section.idPrefix}-${option.name}` : option.name;
 
         const mdPath = join("options", optionName + ".md");
         const scopedMDPath = join("options", section.name, optionName + ".md");

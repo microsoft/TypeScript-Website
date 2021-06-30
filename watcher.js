@@ -5,7 +5,7 @@
 
 const { spawnSync } = require("child_process")
 
-const help = spawnSync("watchman --help")
+const help = spawnSync("watchman", ["--help"])
 const hasWatchman = !help.error
 
 if (!hasWatchman) {

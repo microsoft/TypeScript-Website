@@ -36,6 +36,16 @@
       "subtitle": "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-4-2-beta/'>Release notes</a>."
     },
     {
+      "name": "4.3",
+      "id": "4.3",
+      "subtitle": "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-4-3/'>Release notes</a>."
+    },
+    {
+      "name": "4.4",
+      "id": "4.4",
+      "subtitle": "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-4-4-beta/'>Release notes</a>."
+    },
+    {
       "name": "Playground V3",
       "id": "Playground",
       "subtitle": "Learn what has changed in this website."

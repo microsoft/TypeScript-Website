@@ -158,6 +158,8 @@
 
     ul {
       display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       margin: 0;
     }
 
@@ -189,7 +191,7 @@
 
     li {
       display: block;
-      margin: 8px;
+      margin: 6px;
     }
   }
 
@@ -215,6 +217,11 @@
       margin-bottom: 0;
       overflow-x: hidden;
       offset-anchor: -30px;
+
+      @media (max-width: $screen-sm) {
+        display: block;
+        overflow-y: hidden;
+      }
 
       > a {
         scroll-margin-top: 65px;
