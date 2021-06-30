@@ -58,7 +58,7 @@
       "targetString": "exports"
     },
     {
-      "text": "(alias) const getStringLength: (str: any) => any\nimport getStringLength",
+      "text": "(property) getStringLength: (str: any) => any",
       "docs": "",
       "start": 94,
       "length": 15,

@@ -67,7 +67,7 @@
       "start": 72,
       "line": 2,
       "character": 0,
-      "renderedMessage": "Type 'Record<string, string>' is not assignable to type 'Record<string, number>'.\n  Index signatures are incompatible.\n    Type 'string' is not assignable to type 'number'.",
+      "renderedMessage": "Type 'Record<string, string>' is not assignable to type 'Record<string, number>'.\n  'string' index signatures are incompatible.\n    Type 'string' is not assignable to type 'number'.",
       "id": "err-2322-72-1"
     }
   ],
