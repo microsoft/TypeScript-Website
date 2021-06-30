@@ -56,7 +56,7 @@ You can learn more about the options in the [tsconfig reference](/tsconfig).
 An alternative to using a TSConfig file is the CLI, this is the same behavior as a CLI command.
 
 ```sh
-npx typescript src/**/*.js --declaration --allowJs --emitDeclarationOnly --outDir types
+npx -p typescript tsc src/**/*.js --declaration --allowJs --emitDeclarationOnly --outDir types
 ```
 
 ## Run the compiler
