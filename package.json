@@ -16,7 +16,7 @@
     "fb-watchman": "^2.0.1",
     "git-branch-is": "^3.1.0",
     "husky": "^4.2.3",
-    "pleb": "^2.5.6",
+    "pleb": "^2.6.1",
     "reflect-metadata": "^0.1.13"
   },
   "resolutions": {
@@ -26,7 +26,8 @@
     "typescript": "4.4.0-dev.20210627",
     "tslib": "2.1.0",
     "prettier": "^2.0.2",
-    "shelljs": "0.8.4"
+    "shelljs": "0.8.4",
+    "sharp": "0.28.1"
   },
   "jest": {
     "transformIgnorePatterns": [
@@ -36,7 +37,6 @@
   "scripts": {
     "bootstrap": "yarn workspaces foreach -v -t --exclude root run bootstrap && BOOTSTRAPPING=true yarn workspaces foreach -v -t --exclude root run build",
     "start": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"yarn workspace typescriptlang-org start\"",
-    "start-twoslash": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"yarn workspace typescriptlang-org start-twoslash\"",
     "build": "yarn workspaces foreach -v -t --exclude root --exclude typescriptlang-org run build",
     "build-site": "yarn workspace typescriptlang-org build",
     "compile": "yarn workspace typescriptlang-org tsc",
