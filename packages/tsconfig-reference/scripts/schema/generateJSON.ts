@@ -2,7 +2,7 @@
 // Data-dump all the CLI options
 
 /** Run with:
-     node --inspect-brk ./node_modules/.bin/ts-node packages/tsconfig-reference/scripts/schema/generateJSON.ts
+     node ./node_modules/.bin/ts-node-transpile-only  packages/tsconfig-reference/scripts/schema/generateJSON.ts
      yarn ts-node scripts/cli/generateJSON.ts
      yarn workspace tsconfig-reference generate:json:schema
 */
@@ -14,6 +14,9 @@ import { writeFileSync } from "fs";
 import { join } from "path";
 import { format } from "prettier";
 import { CompilerOptionName } from "../../data/_types";
+
+// @ts-ignore - this isn't public
+import { libs } from "typescript";
 
 const toJSONString = (obj) => format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
 const writeJSON = (name, obj) => writeFileSync(join(__dirname, "result", name), toJSONString(obj));
@@ -113,6 +116,40 @@ You're also going to need to make the new Markdown file for the compiler flag, r
     // the chance to click on the links.
     section[name].markdownDescription =
       optionFile.data.oneline + `\n\nSee more: https://www.typescriptlang.org/tsconfig#${name}`;
+  }
+});
+
+Object.keys(schemaCompilerOpts).forEach((flag) => {
+  // There are a few ways that the enums values are shown in a JSON schema
+  const viaDirectEnum = schemaCompilerOpts[flag].enum && schemaCompilerOpts[flag];
+  const viaAnyOfEnum =
+    schemaCompilerOpts[flag].anyOf?.find((member) => member.enum) && schemaCompilerOpts[flag].anyOf;
+
+  const viaItemAnyOfEnum =
+    schemaCompilerOpts[flag].items?.anyOf?.find((member) => member.enum) &&
+    schemaCompilerOpts[flag].items?.anyOf;
+
+  // Basically it either has enum, or {enum: []} is in the array
+  const host: { enum: string[] } | { enum?: string[] }[] =
+    viaDirectEnum || viaAnyOfEnum || viaItemAnyOfEnum;
+  if (flag === "lib") {
+    debugger;
+  }
+  if (host) {
+    const existingList = "enum" in host ? host.enum : host.find((e) => e.enum).enum;
+    const compilerInfo = tsconfigOpts.find((opt) => opt.name === flag);
+    const realType = (compilerInfo.type as any) as Record<string, number>;
+    const keys = flag === "lib" ? libs : Object.keys(realType);
+    const newKeys = keys.filter(
+      (k) => !existingList.find((f) => f.toLowerCase() === k.toLowerCase())
+    );
+
+    if ("enum" in host) {
+      host.enum = existingList.concat(newKeys);
+    } else {
+      const i = host.findIndex((item) => "enum" in item);
+      host[i] = { enum: existingList.concat(newKeys) };
+    }
   }
 });
 
