@@ -413,7 +413,7 @@ type Animal = {
   name: string
 }<br/>
 type Bear = Animal & { 
-  honey: Boolean 
+  honey: boolean 
 }<br/>
 const bear = getBear();
 bear.name;
