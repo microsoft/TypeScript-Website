@@ -158,8 +158,9 @@ gulp.task("clean", function () {
   return del(["wwwroot/scripts/**/*"]);
 });
 
-gulp.task("default", function () {
-  gulp.src(paths.scripts).pipe(gulp.dest("wwwroot/scripts"));
+gulp.task("default", function (done) {
+    gulp.src(paths.scripts).pipe(gulp.dest("wwwroot/scripts"));
+    done();
 });
 ```
 
