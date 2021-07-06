@@ -128,10 +128,6 @@ interface Email {
   message: string;
 }
 
-interface Dog {
-  bark(): void;
-}
-
 type EmailMessageContents = MessageOf<Email>;
 //   ^?
 ```
