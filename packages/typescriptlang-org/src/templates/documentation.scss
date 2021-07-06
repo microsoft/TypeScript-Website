@@ -381,3 +381,59 @@
     flex-direction: column !important;
   }
 }
+// Begin quickTipPopup styles
+.popup {
+  background: #fff;
+  position: absolute;
+  z-index: 110;
+  box-shadow: 0 30px 90px -20px rgb(0 0 0 / 30%), 0 0 1px 1px rgb(0 0 0 / 5%);
+  padding: 0;
+  font-size: 14px;
+  line-height: 20px;
+  min-width: 300px;
+  max-width: 400px;
+  border-radius: 2px;
+  transition: opacity 0.5s;
+
+  .popup-container {
+    display: flex;
+
+    a.popup-extract {
+      max-height: 140px;
+      overflow: hidden;
+      margin: 16px;
+      display: block;
+      color: #202122;
+      text-decoration: none;
+      position: relative;
+
+      &::after {
+        content: " ";
+        position: absolute;
+        bottom: 0;
+        width: 25%;
+        height: 20px;
+        background-color: transparent;
+        pointer-events: none;
+      }
+
+      div {
+        margin: 0;
+
+        code {
+          background-color: gray;
+          color: gainsboro;
+          border-radius: 2px;
+          padding: 2px 4px;
+        }
+      }
+    }
+  }
+}
+
+// .popup-fade-in {
+//   -webkit-animation: 0.5s ease forwards;
+//   animation: 0.5s ease forwards;
+// }
+
+// End quickTipPopup styles
