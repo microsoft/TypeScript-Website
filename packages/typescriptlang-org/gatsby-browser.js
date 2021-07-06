@@ -47,6 +47,7 @@ exports.onRouteUpdate = ({ location, prevLocation }) => {
       uri: locationWithoutPlaygroundCode,
       refUri: referrerWithoutPlaygroundCode,
       properties: {
+        uri: locationWithoutPlaygroundCode,
         prev: previousLocationWithoutPlaygroundCode,
         lang: document.documentElement.lang,
         visitedPlayground:
