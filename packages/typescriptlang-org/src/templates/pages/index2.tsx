@@ -6,7 +6,6 @@ import { VersionBar } from "../../components/VersionBar"
 import { GreyButton } from "../../components/display/GreyButton"
 import { UpcomingReleaseMeta } from "../../components/index/UpcomingReleaseMeta"
 import { MigrationStories, GitHubBar, OSS } from "../../components/index/MigrationStories"
-import { setupTwoslashHovers } from "shiki-twoslash/dist/dom"
 
 import { indexCopy } from "../../copy/en/index"
 import { createInternational } from "../../lib/createInternational"
@@ -42,7 +41,7 @@ const Index: React.FC<Props> = (props) => {
   const i = createInternational<typeof indexCopy>(useIntl())
   const Link = createIntlLink(props.pageContext.lang)
 
-  useEffect(() => { setupTwoslashHovers(); setupVideosSection() }, [])
+  useEffect(() => { setupVideosSection() }, [])
 
   let hasSentTrack = false
   const onclickNPMInstall = () => {

@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "fs-jetpack": "^2.4.0",
-    "gatsby-remark-shiki-twoslash": "2.0.0",
+    "gatsby-remark-shiki-twoslash": "3.0.4",
     "playwright": "^1.9.1",
     "sass": "*",
     "streampub": "https://github.com/orta/streampub-1.git#ibooks",

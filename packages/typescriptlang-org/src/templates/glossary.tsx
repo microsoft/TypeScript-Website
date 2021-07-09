@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { graphql } from "gatsby"
 
 import { Layout } from "../components/layout"
@@ -11,8 +11,6 @@ import { headCopy } from "../copy/en/head-seo"
 import "./markdown.scss"
 import "./glossary.scss"
 
-import { setupTwoslashHovers } from "shiki-twoslash/dist/dom"
-
 type Props = { pageContext: any, data: GatsbyTypes.TSConfigReferenceTemplateQuery, path: string }
 
 const GlossaryTemplateComponent = (props) => {
@@ -23,10 +21,6 @@ const GlossaryTemplateComponent = (props) => {
     console.log("Could not render:", JSON.stringify(props))
     return <div></div>
   }
-
-  useEffect(() => {
-    setupTwoslashHovers()
-  }, [])
 
   const meta = props.pageContext.languageMeta as typeof import("../../../glossary/output/en.json")
   return (

@@ -23,5 +23,5 @@ export const createPages: GatsbyNode["createPages"] = async args => {
   await createTSConfigSingleFlagPages(args.graphql, args.actions.createPage)
   await createRootPagesLocalized(args.graphql, args.actions.createPage)
 
-  return null
+  return undefined
 }

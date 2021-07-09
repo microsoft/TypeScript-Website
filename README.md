@@ -65,7 +65,6 @@ The main website for TypeScript, a Gatsby website which is statically deployed. 
 yarn start
 ```
 
-To save your time, twoslash is not applied to code-samples in `yarn start` - to launch the server with twoslash support use: `yarn start-twoslash`.
 To optimize even more, the env var `NO_TRANSLATIONS` as truthy will make the website only load pages for English.
 
 ## Sandbox

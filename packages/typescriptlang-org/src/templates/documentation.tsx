@@ -16,7 +16,6 @@ import { createInternational } from "../lib/createInternational"
 import { useIntl } from "react-intl"
 import { createIntlLink } from "../components/IntlLink"
 import { handbookCopy } from "../copy/en/handbook"
-import { setupTwoslashHovers } from "shiki-twoslash/dist/dom"
 import { Contributors } from "../components/handbook/Contributors"
 import { overrideSubNavLinksWithSmoothScroll, updateSidebarOnScroll } from "./scripts/setupSubNavigationSidebar"
 import { setupLikeDislikeButtons } from "./scripts/setupLikeDislikeButtons"
@@ -66,7 +65,6 @@ const HandbookTemplate: React.FC<Props> = (props) => {
     // Sets current selection
     updateSidebarOnScroll()
 
-    setupTwoslashHovers()
     setupLikeDislikeButtons(props.pageContext.slug, i)
 
 
