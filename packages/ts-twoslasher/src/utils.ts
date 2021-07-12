@@ -1,3 +1,5 @@
+import { TwoslashError } from "./"
+
 export function escapeHtml(text: string) {
   return text.replace(/</g, "&lt;")
 }
@@ -31,7 +33,11 @@ export function parsePrimitive(value: string, type: string): any {
       return value.toLowerCase() === "true" || value.length === 0
   }
 
-  throw new Error(`Unknown primitive type ${type} with - ${value}`)
+  throw new TwoslashError(
+    `Unknown primitive value in compiler flag`,
+    `The only recognized primitives are number, string and boolean. Got ${type} with ${value}.`,
+    `This is likely a typo.`
+  )
 }
 
 export function cleanMarkdownEscaped(code: string) {
@@ -41,23 +47,24 @@ export function cleanMarkdownEscaped(code: string) {
 }
 
 export function typesToExtension(types: string) {
-  switch (types) {
-    case "js":
-      return "js"
-    case "javascript":
-      return "js"
-    case "ts":
-      return "ts"
-    case "typescript":
-      return "ts"
-    case "tsx":
-      return "tsx"
-    case "jsx":
-      return "jsx"
-    case "jsn":
-      return "json"
+  const map: Record<string, string> = {
+    js: "js",
+    javascript: "js",
+    ts: "ts",
+    typescript: "ts",
+    tsx: "tsx",
+    jsx: "jsx",
+    json: "json",
+    jsn: "json",
   }
-  throw new Error("Cannot handle the file extension:" + types)
+
+  if (map[types]) return map[types]
+
+  throw new TwoslashError(
+    `Unknown TypeScript extension given to Twoslash`,
+    `Received ${types} but Twoslash only accepts: ${Object.keys(map)} `,
+    ``
+  )
 }
 
 export function getIdentifierTextSpans(ts: typeof import("typescript"), sourceFile: import("typescript").SourceFile) {
