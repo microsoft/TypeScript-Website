@@ -18,4 +18,4 @@ try {
 }
 ```
 
-This pattern ensures that error handling code becomes more comprehensive because you cannot guarantee that the object being thrown _is_ a Error subclass ahead of time. With the flag `useUnknownInCatchVariables` enabled, then you do not need the additional syntax (`: unknown`) nor a linter rule to try enforce this behavior.
+This pattern ensures that error handling code becomes more comprehensive because you cannot guarantee that the object being thrown _is_ an Error subclass ahead of time. With the flag `useUnknownInCatchVariables` enabled, you do not need the additional syntax (`: unknown`) nor a linter rule to try enforce this behavior.
