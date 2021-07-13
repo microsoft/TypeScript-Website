@@ -192,7 +192,7 @@ export const createTypeScriptSandbox = (
 
     if (config.supportTwoslashCompilerOptions) {
       const configOpts = getTwoSlashComplierOptions(code)
-      console.log("twoslahs", configOpts)
+      console.log("twoslash", configOpts)
       updateCompilerSettings(configOpts)
     }
 
