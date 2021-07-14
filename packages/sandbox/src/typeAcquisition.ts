@@ -169,12 +169,17 @@ const addModuleToRuntime = async (mod: string, path: string, config: ATAConfig) 
   let content = await getCachedDTSString(config, dtsFileURL)
   if (!content) {
     const isDeno = actualPath && actualPath.indexOf("https://") === 0
+    const indexPath = `${actualPath.replace(".d.ts", "")}/index.d.ts`
 
-    const dtsFileURL = isDeno ? actualPath : unpkgURL(actualMod, `${actualPath.replace(".d.ts", "")}/index.d.ts`)
+    const dtsFileURL = isDeno ? actualPath : unpkgURL(actualMod, indexPath)
     content = await getCachedDTSString(config, dtsFileURL)
 
     if (!content) {
       return errorMsg(`Could not get root d.ts file for the module '${actualMod}' at ${actualPath}`, {}, config)
+    }
+
+    if (!isDeno) {
+      actualPath = indexPath
     }
   }
 
