@@ -291,6 +291,7 @@ An index signature property type must be either 'string' or 'number'.
 
 <details>
     <summary>It is possible to support both types of indexers...</summary>
+
     <p>It is possible to support both types of indexers, but the type returned from a numeric indexer must be a subtype of the type returned from the string indexer. This is because when indexing with a `number`, JavaScript will actually convert that to a `string` before indexing into an object. That means that indexing with `100` (a `number`) is the same thing as indexing with `"100"` (a `string`), so the two need to be consistent.</p>
 
 ```ts twoslash
