@@ -23,5 +23,5 @@ import { helloWorld } from "hello/world";
 console.log(helloWorld);
 ```
 
-If you get tired of imports always looking like `"../"` or `"./"`. Or needing
-to change as you move files, this is a great way to fix that.
+If you get tired of imports always looking like `"../"` or `"./"`, or needing
+to change them as you move files, this is a great way to fix that.
