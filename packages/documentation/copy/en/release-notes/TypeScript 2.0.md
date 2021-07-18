@@ -544,7 +544,7 @@ import A from "moduleA";
 ## Path mapping
 
 Sometimes modules are not directly located under _baseUrl_.
-Loaders use a mapping configuration to map module names to files at run-time, see [RequireJs documentation](http://requirejs.org/docs/api.html#config-paths) and [SystemJS documentation](https://github.com/systemjs/systemjs/blob/master/docs/import-maps.md).
+Loaders use a mapping configuration to map module names to files at run-time, see [RequireJs documentation](http://requirejs.org/docs/api.html#config-paths) and [SystemJS documentation](https://github.com/systemjs/systemjs/blob/main/docs/import-maps.md).
 
 The TypeScript compiler supports the declaration of such mappings using `"paths"` property in `tsconfig.json` files.
 
@@ -627,7 +627,7 @@ x(y);
 
 ## Wildcard character in module names
 
-Importing none-code resources using module loaders extension (e.g. [AMD](https://github.com/amdjs/amdjs-api/blob/master/LoaderPlugins.md) or [SystemJS](https://github.com/systemjs/systemjs/blob/master/docs/module-types.md)) has not been easy before;
+Importing none-code resources using module loaders extension (e.g. [AMD](https://github.com/amdjs/amdjs-api/blob/master/LoaderPlugins.md) or [SystemJS](https://github.com/systemjs/systemjs/blob/main/docs/module-types.md)) has not been easy before;
 previously an ambient module declaration had to be defined for each resource.
 
 TypeScript 2.0 supports the use of the wildcard character (`*`) to declare a "family" of module names;
