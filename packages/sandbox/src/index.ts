@@ -123,7 +123,7 @@ export const createTypeScriptSandbox = (
   let compilerOptions: CompilerOptions
   if (!config.suppressAutomaticallyGettingCompilerFlags) {
     const params = new URLSearchParams(location.search)
-    let queryParamCompilerOptions = getCompilerOptionsFromParams(compilerDefaults, params)
+    let queryParamCompilerOptions = getCompilerOptionsFromParams(compilerDefaults, ts, params)
     if (Object.keys(queryParamCompilerOptions).length)
       config.logger.log("[Compiler] Found compiler options in query params: ", queryParamCompilerOptions)
     compilerOptions = { ...compilerDefaults, ...queryParamCompilerOptions }
