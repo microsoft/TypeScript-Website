@@ -26,15 +26,13 @@ describe(getCompilerOptionsFromParams, () => {
   })
 
   it("ignores non-compiler flags", () => {
-    // noImplicitReturns=true is the default, and shouldnt be in the object
     const params = new URLSearchParams("?asdasdasdasd=false")
     const defaults = getDefaultSandboxCompilerOptions({ filetype: "js" } as any, fauxMonaco)
 
     expect(getCompilerOptionsFromParams(defaults, ts, params)).toMatchInlineSnapshot(`Object {}`)
   })
 
-  it("hanndles mapped types like target et", () => {
-    // noImplicitReturns=true is the default, and shouldnt be in the object
+  it("handles mapped types like target et", () => {
     const params = new URLSearchParams("?target=6")
     const defaults = getDefaultSandboxCompilerOptions({ filetype: "js" } as any, fauxMonaco)
 

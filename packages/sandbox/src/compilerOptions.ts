@@ -10,6 +10,8 @@ type Monaco = typeof import("monaco-editor")
 export function getDefaultSandboxCompilerOptions(config: SandboxConfig, monaco: Monaco) {
   const useJavaScript = config.filetype === "js"
   const settings: CompilerOptions = {
+    strict: true,
+
     noImplicitAny: true,
     strictNullChecks: !useJavaScript,
     strictFunctionTypes: true,
