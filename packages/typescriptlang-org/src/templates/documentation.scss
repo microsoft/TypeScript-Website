@@ -381,9 +381,9 @@
     flex-direction: column !important;
   }
 }
-// Begin quickTipPopup styles
-.popup {
-  background: #fff;
+
+.inline-popup {
+  background: var(--background-color);
   position: absolute;
   z-index: 110;
   box-shadow: 0 30px 90px -20px rgb(0 0 0 / 30%), 0 0 1px 1px rgb(0 0 0 / 5%);
@@ -395,17 +395,21 @@
   border-radius: 2px;
   transition: opacity 0.5s;
 
-  .popup-container {
+  .inline-popup-container {
     display: flex;
 
-    a.popup-extract {
+    a.inline-popup-extract {
       max-height: 140px;
       overflow: hidden;
       margin: 16px;
       display: block;
-      color: #202122;
+      color: var(--text-color);
       text-decoration: none;
       position: relative;
+
+      h5 {
+        margin-top: 0;
+      }
 
       &::after {
         content: " ";
@@ -421,19 +425,16 @@
         margin: 0;
 
         code {
-          background-color: gray;
-          color: gainsboro;
+          background-color: var(--inline-code-background-color);
           border-radius: 2px;
           padding: 2px 4px;
         }
       }
     }
   }
+
+  &.popup-fade-in {
+    -webkit-animation: 0.1s ease forwards;
+    animation: 0.1s ease forwards;
+  }
 }
-
-// .popup-fade-in {
-//   -webkit-animation: 0.5s ease forwards;
-//   animation: 0.5s ease forwards;
-// }
-
-// End quickTipPopup styles

@@ -21,7 +21,7 @@ import { Contributors } from "../components/handbook/Contributors"
 import { overrideSubNavLinksWithSmoothScroll, updateSidebarOnScroll } from "./scripts/setupSubNavigationSidebar"
 import { setupLikeDislikeButtons } from "./scripts/setupLikeDislikeButtons"
 import { DislikeUnfilledSVG, LikeUnfilledSVG } from "../components/svgs/documentation"
-import { Popup, popupProps } from "../components/popup"
+import { Popup, useQuickInfoPopup } from "../components/popup"
 import Helmet from "react-helmet"
 
 type Props = {
@@ -46,95 +46,8 @@ const HandbookTemplate: React.FC<Props> = (props) => {
     return <div></div>
   }
 
-  // Begin quickTipPopup functionality
-  const [showPopup, setShowPopup] = useState<popupProps>({ show: false });
-
-  // Add event listeners for individual links and the popup itself on pageload
-  useEffect(() => {
-    const aTags = document.getElementsByTagName("a")
-    const links: HTMLAnchorElement[] = []
-    for (let i = 0; i < aTags.length; i++) {
-      const href = aTags[i].getAttribute("href") || "";
-      if (/\/tsconfig\/?#\w+$/.test(href)) {
-        aTags[i].addEventListener("mouseenter", handleLinkMouseEnter)
-        aTags[i].addEventListener("mouseleave", handleLinkMouseLeave)
-        links.push(aTags[i])
-      }
-    }
-    const popupEl = document.getElementById("quickTipPopup")
-    popupEl?.addEventListener("mouseenter", handlePopupMouseEnter)
-    popupEl?.addEventListener("mouseleave", handlePopupMouseLeave)
-
-    // don't forget to clear them on leave
-     return () => {
-      for (const el of links) {
-        el.removeEventListener("mouseenter", handleLinkMouseEnter)
-        el.removeEventListener("mouseleave", handleLinkMouseLeave)
-      }
-      popupEl?.removeEventListener("mouseenter", handlePopupMouseEnter)
-      popupEl?.removeEventListener("mouseleave", handlePopupMouseLeave)
-     }
-
-  }, [])
-
-  // keep track of how long user is hovering
-  // or how long they have left the link
-  var enterTimeoutId, leaveTimeoutId
-  function handleLinkMouseEnter(e) {
-    clearTimeout(leaveTimeoutId); 
-    const target = e.target as HTMLElement
-    const url = target.getAttribute("href") || "";
-    enterTimeoutId = setTimeout((args) => {
-      setShowPopup(prevProps => {
-      return { ...prevProps, show: true, url: args[0], position: args[1] } })
-    }, 500, [url, {left: e.pageX, top: e.pageY}])
-  }
-  function handleLinkMouseLeave(e) {
-    clearTimeout(enterTimeoutId)
-    leaveTimeoutId = setTimeout(() => {
-      setShowPopup({
-        show: false,
-        html: "",
-        url: "",
-        position: null,
-        picture: ""
-      })
-    }, 500);
-  }
-
-  // fetch content based on url and set
-  useEffect(() => {
-    async function fetchHTML() {
-      const response = await fetch("/js/tsconfig.json");
-      const json = await response.json();
-      const url = showPopup.url as string
-      const configType = url.substr(url.indexOf("#") + 1)
-      setShowPopup(prevProps => { return { ...prevProps, html: json[configType] } })
-    }
-    if (showPopup.show)
-      fetchHTML();
-  }, [showPopup.show, showPopup.url, showPopup.html])
-
-  // In order to keep the popups when user leaves link
-  // but still hovers over the popup itself
-  function handlePopupMouseEnter(e) {
-    clearTimeout(leaveTimeoutId)
-  }
-  function handlePopupMouseLeave(e) {
-    clearTimeout(enterTimeoutId)
-    leaveTimeoutId = setTimeout(() => {
-    setShowPopup({
-        show: false,
-        html: "",
-        url: "",
-        position: null,
-        picture: ""
-      })
-    }, 500);
-  }
-
-  // End quickTipPopup functionality
-
+  // Note: This can, and does, change triggering re-renders
+  const showPopup = useQuickInfoPopup()
 
   const [deprecationURL, setDeprecationURL] = useState(post.frontmatter!.deprecated_by)
 
