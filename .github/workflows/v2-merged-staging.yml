@@ -26,6 +26,7 @@ jobs:
           yarn install
           yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
           yarn bootstrap
+          yarn workspace typescriptlang-org setup-staging
           yarn build
         env:
           YARN_CHECKSUM_BEHAVIOR: ignore
@@ -34,8 +35,6 @@ jobs:
         run: |
           yarn build-site
           cp -r packages/typescriptlang-org/public site
-        env:
-          GATSBY_TYPESCRIPT_SITE_STAGING: true
 
       - name: Deploy + Publish to CDN
         # You can find these keys here:
