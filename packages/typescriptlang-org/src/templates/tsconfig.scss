@@ -25,11 +25,6 @@
     > a {
       display: block;
     }
-    a {
-      text-decoration: none;
-      color: var(--text-color);
-    }
-
     svg {
       margin-top: 0.8rem;
       margin-right: 0.3rem;
@@ -41,6 +36,12 @@
   &.button.open {
     svg {
       transform: rotate(270deg);
+    }
+  }
+  &.button.closed {
+    a {
+      text-decoration: none;
+      color: var(--text-color);
     }
   }
 
