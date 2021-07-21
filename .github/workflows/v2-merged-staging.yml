@@ -26,6 +26,7 @@ jobs:
           yarn install
           yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
           yarn bootstrap
+          yarn workspace typescriptlang-org setup-playground-cache-bust
           yarn workspace typescriptlang-org setup-staging
           yarn build
         env:

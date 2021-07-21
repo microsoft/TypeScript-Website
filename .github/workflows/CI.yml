@@ -25,7 +25,7 @@ jobs:
 
       - uses: microsoft/playwright-github-action@v1
 
-      # Install, should be absically instant if cached
+      # Install, should be basically instant if cached
       - run: yarn install
         env:
           YARN_CHECKSUM_BEHAVIOR: ignore
