@@ -16,6 +16,7 @@ import { Intl } from "../components/Intl"
 import "reflect-metadata"
 
 import playgroundReleases from "../../../sandbox/src/releases.json"
+import { getPlaygroundUrls } from "../lib/playgroundURLs"
 
 // This gets set by the playground
 declare const playground: ReturnType<typeof import("@typescript/playground").setupPlayground>
@@ -107,13 +108,16 @@ const Play: React.FC<Props> = (props) => {
         return
       }
 
+      // Allow prod/staging builds to set a custom commit prefix to bust caches
+      const {sandboxRoot, playgroundRoot} = getPlaygroundUrls()
+      
       // @ts-ignore
       const re: any = global.require
       re.config({
         paths: {
           vs: urlForMonaco,
-          "typescript-sandbox": withPrefix('/js/sandbox'),
-          "typescript-playground": withPrefix('/js/playground'),
+          "typescript-sandbox": sandboxRoot,
+          "typescript-playground": playgroundRoot,
           "unpkg": "https://unpkg.com",
           "local": "http://localhost:5000",
         },

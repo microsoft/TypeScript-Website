@@ -10,6 +10,7 @@
     "bootstrap": "yarn update-versions",
     "update-static-assets": "node scripts/downloadSearchAssets.js",
     "update-versions": "node scripts/getTypeScriptNPMVersions.js",
+    "setup-playground-cache-bust": "node scripts/cacheBustPlayground.mjs",
     "setup-staging": "node scripts/setupStaging.mjs",
     "create-lighthouse-json": "node scripts/createLighthouseJSON.js",
     "compile-index-examples": "node scripts/runTwoslashIndexExamples.js light; node scripts/runTwoslashIndexExamples.js dark",
