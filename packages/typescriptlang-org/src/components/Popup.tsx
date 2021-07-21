@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from "react"
 
 export interface PopupProps {
-	show: boolean,
-	html?: string,
-	url?: string,
-	position?: {left: number, top: number} | null,
-	picture?: string
+	show: boolean
+	html?: string
+	url?: string
+	// These are absolute to the page
+	position?: {left: number, top: number} | null
 }
 
-export const Popup = (props: PopupProps) => {
-	return (
-		<div id="quickTipPopup" className="inline-popup popup-fade-in" style={{left: props.position?.left, top: props.position?.top, opacity: props.show ? 100 : 0}}>
-				<div className="inline-popup-container">
-					<a className="inline-popup-extract" href={props.url}>
-						<div dangerouslySetInnerHTML={{__html: props.html as string}}/>		
-					</a>	
-				</div>
+export const Popup = (props: PopupProps) => (
+	<div id="quickTipPopup" className="inline-popup popup-fade-in" style={{left: props.position?.left, top: props.position?.top, opacity: props.show ? 100 : 0}}>
+		<div className="inline-popup-container">
+			<a className="inline-popup-extract" href={props.url}>
+				<div dangerouslySetInnerHTML={{__html: props.html as string}}/>		
+			</a>	
 		</div>
-	)
-}
+	</div>
+)
+
 
 export const useQuickInfoPopup = () => {
 	const [showPopup, setShowPopup] = useState<PopupProps>({ show: false });
@@ -53,8 +52,8 @@ export const useQuickInfoPopup = () => {
      }
   }, [])
 
-  // keep track of how long user is hovering
-  // or how long they have left the link
+  // Keep track of how long user is hovering
+  // or how long they have left the link.
   var enterTimeoutId, leaveTimeoutId
   function handleLinkMouseEnter(e) {
     clearTimeout(leaveTimeoutId); 
@@ -76,24 +75,25 @@ export const useQuickInfoPopup = () => {
         html: "",
         url: "",
         position: null,
-        picture: ""
       })
     }, 300);
   }
 
-  // fetch content based on url and set
+  // Fetch content from the JSON based on url and set inner HTML
   useEffect(() => {
     async function fetchHTML() {
+	  if (!showPopup.url) return
+
       const response = await fetch("/js/tsconfig.json");
       const json = await response.json();
-      const url = showPopup.url as string
+      const url = showPopup.url
       const configType = url.substr(url.indexOf("#") + 1)
 	  const html =  `<h5>TSConfig Reference: <code>${configType}</code></h5>${json[configType]}`
 
       setShowPopup(prevProps => ({ ...prevProps, html }))
     }
-    if (showPopup.show)
-      fetchHTML();
+    if (showPopup.show) fetchHTML();
+
   }, [showPopup.show, showPopup.url, showPopup.html])
 
   // In order to keep the popups when user leaves link
@@ -110,7 +110,6 @@ export const useQuickInfoPopup = () => {
         html: "",
         url: "",
         position: null,
-        picture: ""
       })
     }, 300);
   }

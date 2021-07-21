@@ -21,7 +21,7 @@ import { Contributors } from "../components/handbook/Contributors"
 import { overrideSubNavLinksWithSmoothScroll, updateSidebarOnScroll } from "./scripts/setupSubNavigationSidebar"
 import { setupLikeDislikeButtons } from "./scripts/setupLikeDislikeButtons"
 import { DislikeUnfilledSVG, LikeUnfilledSVG } from "../components/svgs/documentation"
-import { Popup, useQuickInfoPopup } from "../components/popup"
+import { Popup, useQuickInfoPopup } from "../components/Popup"
 import Helmet from "react-helmet"
 
 type Props = {
