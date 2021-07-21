@@ -5,7 +5,7 @@ export const getPlaygroundUrls = () => {
   // scripts/cacheBustPlayground.mjs
 
   // This should always be a single slash string in the codebase: "/"
-  const commitPrefix = "/06a0e64/"
+  const commitPrefix = "/"
 
   return {
     sandboxRoot: withPrefix(`/js${commitPrefix}sandbox`),
