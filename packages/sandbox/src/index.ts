@@ -9,7 +9,7 @@ import {
 import lzstring from "./vendor/lzstring.min"
 import { supportedReleases } from "./releases"
 import { getInitialCode } from "./getInitialCode"
-import { extractTwoSlashComplierOptions, twoslashCompletions } from "./twoslashSupport"
+import { extractTwoSlashCompilerOptions, twoslashCompletions } from "./twoslashSupport"
 import * as tsvfs from "./vendor/typescript-vfs"
 
 type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
@@ -174,7 +174,7 @@ export const createTypeScriptSandbox = (
     config.logger.log(`[ATA] Adding ${path} to runtime`)
   }
 
-  const getTwoSlashComplierOptions = extractTwoSlashComplierOptions(ts)
+  const getTwoSlashCompilerOptions = extractTwoSlashCompilerOptions(ts)
 
   // Auto-complete twoslash comments
   if (config.supportTwoslashCompilerOptions) {
@@ -191,7 +191,7 @@ export const createTypeScriptSandbox = (
     const code = editor.getModel()!.getValue()
 
     if (config.supportTwoslashCompilerOptions) {
-      const configOpts = getTwoSlashComplierOptions(code)
+      const configOpts = getTwoSlashCompilerOptions(code)
       console.log("twoslash", configOpts)
       updateCompilerSettings(configOpts)
     }
@@ -409,8 +409,14 @@ export const createTypeScriptSandbox = (
     lzstring,
     /** Returns compiler options found in the params of the current page */
     createURLQueryWithCompilerOptions,
+    /**
+     * @deprecated Use `getTwoSlashCompilerOptions` instead.
+     *
+     * Returns compiler options in the source code using twoslash notation
+     */
+    getTwoSlashComplierOptions: getTwoSlashCompilerOptions,
     /** Returns compiler options in the source code using twoslash notation */
-    getTwoSlashComplierOptions,
+    getTwoSlashCompilerOptions,
     /** Gets to the current monaco-language, this is how you talk to the background webworkers */
     languageServiceDefaults: defaults,
     /** The path which represents the current file using the current compiler options */
