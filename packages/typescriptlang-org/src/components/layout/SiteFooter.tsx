@@ -10,6 +10,7 @@ import { Customize } from "./SiteFooter-Customize"
 export type Props = {
   lang: string
   suppressCustomization?: true
+  suppressDocRecommendations?: true
 }
 
 const popularPages = [
@@ -215,22 +216,24 @@ export const SiteFooter = (props: Props) => {
     })
   }, [])
 
-
+  const hideDocs = props.suppressDocRecommendations
   return (
     <footer id="site-footer" role="contentinfo">
       {props.suppressCustomization ? null : <Customize />}
 
-      <section id="popular">
-        <h3>Popular Documentation Pages</h3>
-        <ul>
-          {popularPages.map(page => (
-            <li key={page.url}>
-              <Link to={page.url}>{page.title}</Link>
-              <p>{page.description}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {hideDocs ? null  :
+        <section id="popular">
+          <h3>Popular Documentation Pages</h3>
+          <ul>
+            {popularPages.map(page => (
+              <li key={page.url}>
+                <Link to={page.url}>{page.title}</Link>
+                <p>{page.description}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      }
 
       <section id="community">
         <article id="logos">
