@@ -19,7 +19,7 @@
 
 console.log("TSConfig Ref: MD for TSConfig");
 
-import { writeFileSync, readdirSync, existsSync, readFileSync } from "fs";
+import { writeFileSync, readdirSync, existsSync, readFileSync, mkdirSync } from "fs";
 import { join } from "path";
 import * as assert from "assert";
 import { read as readMarkdownFile } from "gray-matter";
@@ -78,7 +78,7 @@ const sections = [
     categories: categoriesForCompilerOpts,
   },
   { name: "watchOptions", options: watchOptionCompilerOptNames, idPrefix: "watch" },
-  { name: "typeAcquisition", options: typeAcquisitionCompilerOptNames, idPrefix: "type"  },
+  { name: "typeAcquisition", options: typeAcquisitionCompilerOptNames, idPrefix: "type" },
 ];
 
 const parseMarkdown = (md: string) => remark().use(remarkHTML).processSync(md);
@@ -92,6 +92,7 @@ languages.forEach((lang) => {
   const fallbackLocale = join(__dirname, "..", "..", "copy", "en");
 
   const mdChunks: string[] = [];
+  const optionsOneLiners: Record<string, string> = {};
 
   const getPathInLocale = (path: string, optionalExampleContent?: string, failable = false) => {
     if (existsSync(join(locale, path))) return join(locale, path);
@@ -184,8 +185,8 @@ languages.forEach((lang) => {
       const localisedOptions = [] as { name: string; anchor: string }[];
 
       optionsForCategory.forEach((option) => {
-        const optionName = option.name
-        const optionUID = section.idPrefix ? `${section.idPrefix}-${option.name}`: option.name
+        const optionName = option.name;
+        const optionUID = section.idPrefix ? `${section.idPrefix}-${option.name}` : option.name;
 
         const mdPath = join("options", optionName + ".md");
         const scopedMDPath = join("options", section.name, optionName + ".md");
@@ -214,6 +215,8 @@ languages.forEach((lang) => {
           categoryID: categoryID,
           categoryDisplay: categoryName,
         });
+
+        optionsOneLiners[optionName] = optionFile.data.oneline;
 
         mdChunks.push("<section class='compiler-option'>");
 
@@ -312,6 +315,15 @@ languages.forEach((lang) => {
   writeFileSync(
     join(__dirname, "..", "..", "output", lang + "-summary.json"),
     JSON.stringify({ options: optionsSummary })
+  );
+
+  const jsonDir = join(__dirname, "..", "..", "..", "typescriptlang-org", "static", "js", "json");
+  if (!existsSync(jsonDir)) mkdirSync(jsonDir);
+
+  // This is used by the tsconfig popups
+  writeFileSync(
+    join(jsonDir, lang + "-tsconfig-popup.json"),
+    JSON.stringify({ options: optionsOneLiners })
   );
 });
 
