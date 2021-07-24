@@ -326,10 +326,7 @@ languages.forEach((lang) => {
   if (!existsSync(jsonDir)) mkdirSync(jsonDir);
 
   // This is used by the tsconfig popups
-  writeFileSync(
-    join(jsonDir, lang + "-tsconfig-popup.json"),
-    JSON.stringify({ options: optionsOneLiners })
-  );
+  writeFileSync(join(jsonDir, lang + "-tsconfig-popup.json"), JSON.stringify(optionsOneLiners));
 });
 
 writeFileSync(

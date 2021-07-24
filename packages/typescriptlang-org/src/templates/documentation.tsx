@@ -47,7 +47,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   }
 
   // Note: This can, and does, change triggering re-renders
-  const showPopup = useQuickInfoPopup()
+  const showPopup = useQuickInfoPopup(props.pageContext.lang)
 
   const [deprecationURL, setDeprecationURL] = useState(post.frontmatter!.deprecated_by)
 

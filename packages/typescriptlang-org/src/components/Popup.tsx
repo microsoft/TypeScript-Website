@@ -19,7 +19,7 @@ export const Popup = (props: PopupProps) => (
 )
 
 
-export const useQuickInfoPopup = () => {
+export const useQuickInfoPopup = (lang: string) => {
 	const [showPopup, setShowPopup] = useState<PopupProps>({ show: false });
 
   // Add event listeners for individual links and the popup itself on pageload
@@ -84,11 +84,11 @@ export const useQuickInfoPopup = () => {
     async function fetchHTML() {
 	  if (!showPopup.url) return
 
-      const response = await fetch("/js/tsconfig.json");
+      const response = await fetch(`/js/json/${lang}-tsconfig-popup.json`);
       const json = await response.json();
       const url = showPopup.url
       const configType = url.substr(url.indexOf("#") + 1)
-	  const html =  `<h5>TSConfig Reference: <code>${configType}</code></h5>${json[configType]}`
+	    const html =  `<h5>TSConfig Reference: <code>${configType}</code></h5>${json[configType]}`
 
       setShowPopup(prevProps => ({ ...prevProps, html }))
     }
