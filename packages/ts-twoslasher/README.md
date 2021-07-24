@@ -233,12 +233,6 @@ Turns to:
 >     {
 >       "completions": [
 >         {
->           "name": "memory",
->           "kind": "property",
->           "kindModifiers": "declare",
->           "sortText": "1"
->         },
->         {
 >           "name": "assert",
 >           "kind": "method",
 >           "kindModifiers": "declare",
@@ -282,12 +276,6 @@ Turns to:
 >         },
 >         {
 >           "name": "error",
->           "kind": "method",
->           "kindModifiers": "declare",
->           "sortText": "1"
->         },
->         {
->           "name": "exception",
 >           "kind": "method",
 >           "kindModifiers": "declare",
 >           "sortText": "1"
@@ -502,6 +490,48 @@ Turns to:
 > }
 > ```
 
+#### `errorsWithGenerics.ts`
+
+```ts
+// @errors: 2322
+const a: Record<string, string> = {}
+let b: Record<string, number> = {}
+b = a
+```
+
+Turns to:
+
+> ```ts
+> const a: Record<string, string> = {}
+> let b: Record<string, number> = {}
+> b = a
+> ```
+
+> With:
+
+> ```json
+> {
+>   "code": "See above",
+>   "extension": "ts",
+>   "highlights": [],
+>   "queries": [],
+>   "staticQuickInfos": "[ 6 items ]",
+>   "errors": [
+>     {
+>       "category": 1,
+>       "code": 2322,
+>       "length": 1,
+>       "start": 72,
+>       "line": 2,
+>       "character": 0,
+>       "renderedMessage": "Type 'Record<string, string>' is not assignable to type 'Record<string, number>'.\n  'string' index signatures are incompatible.\n    Type 'string' is not assignable to type 'number'.",
+>       "id": "err-2322-72-1"
+>     }
+>   ],
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEFMCdoe2gZwFygEwGY1oFAGM4A7RAF1AENUAlSA6AEwB5ToBLQgcwBpQX2OAfKAC8oAN4BfHABtIZAEbVaCJn049CAVwC28mENGSc8kRRxA"
+> }
+> ```
+
 #### `highlighting.ts`
 
 ```ts
@@ -712,12 +742,18 @@ Turns to:
 >   }
 > var __spreadArray =
 >   (this && this.__spreadArray) ||
->   function (to, from) {
->     for (var i = 0, il = from.length, j = to.length; i < il; i++, j++) to[j] = from[i]
->     return to
+>   function (to, from, pack) {
+>     if (pack || arguments.length === 2)
+>       for (var i = 0, l = from.length, ar; i < l; i++) {
+>         if (ar || !(i in from)) {
+>           if (!ar) ar = Array.prototype.slice.call(from, 0, i)
+>           ar[i] = from[i]
+>         }
+>       }
+>     return to.concat(ar || from)
 >   }
 > export function fn(arr) {
->   var arr2 = __spreadArray([1], __read(arr))
+>   var arr2 = __spreadArray([1], __read(arr), false)
 > }
 > ```
 

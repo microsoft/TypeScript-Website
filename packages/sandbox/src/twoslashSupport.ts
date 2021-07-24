@@ -27,8 +27,9 @@ export const extractTwoSlashComplierOptions = (ts: TS) => {
     const codeLines = code.split("\n")
     const options = {} as any
 
-    codeLines.forEach(line => {
+    codeLines.forEach(_line => {
       let match
+      const line = _line.trim()
       if ((match = booleanConfigRegexp.exec(line))) {
         if (optMap.has(match[1].toLowerCase())) {
           options[match[1]] = true
@@ -46,6 +47,7 @@ export const extractTwoSlashComplierOptions = (ts: TS) => {
 
 function setOption(name: string, value: string, opts: CompilerOptions, optMap: Map<string, any>) {
   const opt = optMap.get(name.toLowerCase())
+
   if (!opt) return
   switch (opt.type) {
     case "number":

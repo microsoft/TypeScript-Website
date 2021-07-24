@@ -6,12 +6,6 @@
     {
       "completions": [
         {
-          "name": "memory",
-          "kind": "property",
-          "kindModifiers": "declare",
-          "sortText": "1"
-        },
-        {
           "name": "assert",
           "kind": "method",
           "kindModifiers": "declare",
@@ -55,12 +49,6 @@
         },
         {
           "name": "error",
-          "kind": "method",
-          "kindModifiers": "declare",
-          "sortText": "1"
-        },
-        {
-          "name": "exception",
           "kind": "method",
           "kindModifiers": "declare",
           "sortText": "1"

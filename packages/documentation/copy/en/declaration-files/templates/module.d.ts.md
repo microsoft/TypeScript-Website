@@ -105,7 +105,7 @@ declare namespace getArrayLength {
 export = getArrayLength;
 ```
 
-See [Module: Functions](module-function.d.ts.md) for details of how that works, and the [Modules reference](/docs/handbook/modules.html) page.
+See [Module: Functions](/docs/handbook/declaration-files/templates/module-function-d-ts.html) for details of how that works, and the [Modules reference](/docs/handbook/modules.html) page.
 
 ## Handling Many Consuming Import
 

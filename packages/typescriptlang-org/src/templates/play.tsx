@@ -16,6 +16,7 @@ import { Intl } from "../components/Intl"
 import "reflect-metadata"
 
 import playgroundReleases from "../../../sandbox/src/releases.json"
+import { getPlaygroundUrls } from "../lib/playgroundURLs"
 
 // This gets set by the playground
 declare const playground: ReturnType<typeof import("@typescript/playground").setupPlayground>
@@ -107,13 +108,16 @@ const Play: React.FC<Props> = (props) => {
         return
       }
 
+      // Allow prod/staging builds to set a custom commit prefix to bust caches
+      const {sandboxRoot, playgroundRoot} = getPlaygroundUrls()
+      
       // @ts-ignore
       const re: any = global.require
       re.config({
         paths: {
           vs: urlForMonaco,
-          "typescript-sandbox": withPrefix('/js/sandbox'),
-          "typescript-playground": withPrefix('/js/playground'),
+          "typescript-sandbox": sandboxRoot,
+          "typescript-playground": playgroundRoot,
           "unpkg": "https://unpkg.com",
           "local": "http://localhost:5000",
         },
@@ -227,7 +231,7 @@ const Play: React.FC<Props> = (props) => {
             <a href="#" id="whatisnew-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="whatisnew">{i("play_subnav_whatsnew")} <span className="caret"></span></a>
             <ul className="examples-dropdown" id="whatisnew" aria-labelledby="whatisnew-button">
               <button role="button" aria-label="Close dropdown" className="examples-close">{i("play_subnav_examples_close")}</button>
-              <RenderExamples defaultSection="4.2" sections={["4.2", "4.1", "4.0", "3.8", "3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
+              <RenderExamples defaultSection="4.4" sections={["4.4", "4.3", "4.2", "4.1", "4.0", "3.8", "3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
             </ul>
           </li>
         </ul>

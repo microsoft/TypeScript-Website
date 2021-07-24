@@ -105,10 +105,10 @@ const TSConfigReferenceTemplateComponent = (props: Props) => {
     return <div className={sectionName ? "tsconfig-quick-nav grouped" : "tsconfig-quick-nav"}>
       {sectionName ? <h4><code><a href={`#${sectionName}`}>"{sectionName}"</a></code></h4> : <div />}
       {
-        categories.map(c => <div className="tsconfig-quick-nav-category">
+        categories.map(c => <div className="tsconfig-quick-nav-category" key={c.display}>
           <h5 id={`quick-nav-${c.anchor}`}>{c.display}</h5>
           <ol aria-labelledby={`quick-nav-${c.anchor}`}>
-            {c.options.map(o => <li><code><a href={anchor(sectionName, o.anchor)}>{o.anchor}</a>{joiner(c.options, o)}</code></li>)}
+            {c.options.map(o => <li key={o.name}><code><a href={anchor(sectionName, o.anchor)}>{o.anchor}</a>{joiner(c.options, o)}</code></li>)}
           </ol>
         </div>)
       }

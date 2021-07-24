@@ -10,14 +10,7 @@ type TS = typeof import("typescript")
 type CompilerOptions = import("typescript").CompilerOptions
 type CustomTransformers = import("typescript").CustomTransformers
 
-import {
-  parsePrimitive,
-  cleanMarkdownEscaped,
-  typesToExtension,
-  stringAroundIndex,
-  getIdentifierTextSpans,
-  getClosestWord,
-} from "./utils"
+import { parsePrimitive, cleanMarkdownEscaped, typesToExtension, getIdentifierTextSpans, getClosestWord } from "./utils"
 import { validateInput, validateCodeForErrors } from "./validation"
 
 import { createSystem, createVirtualTypeScriptEnvironment, createFSBackedSystem } from "@typescript/vfs"
@@ -68,6 +61,34 @@ type HighlightPosition = {
   length: number
   description: string
   line: number
+}
+
+export class TwoslashError extends Error {
+  public title: string
+  public description: string
+  public recommendation: string
+  public code: string | undefined
+
+  constructor(title: string, description: string, recommendation: string, code?: string | undefined) {
+    let message = `
+## ${title}
+
+${description}
+`
+    if (recommendation) {
+      message += `\n${recommendation}`
+    }
+
+    if (code) {
+      message += `\n${code}`
+    }
+
+    super(message)
+    this.title = title
+    this.description = description
+    this.recommendation = recommendation
+    this.code = code
+  }
 }
 
 function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosition[]; queries: QueryPosition[] } {
@@ -134,7 +155,12 @@ function getOptionValueFromMap(name: string, key: string, optMap: Map<string, st
   log(`Get ${name} mapped option: ${key} => ${result}`)
   if (result === undefined) {
     const keys = Array.from(optMap.keys() as any)
-    throw new Error(`Invalid value ${key} for ${name}. Allowed values: ${keys.join(",")}`)
+
+    throw new TwoslashError(
+      `Invalid inline compiler value`,
+      `Got ${key} for ${name} but it is not a supported value by the TS compiler.`,
+      `Allowed values: ${keys.join(",")}`
+    )
   }
   return result
 }
@@ -171,7 +197,11 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
     }
   }
 
-  throw new Error(`No compiler setting named '${name}' exists!`)
+  throw new TwoslashError(
+    `Invalid inline compiler flag`,
+    `There isn't a TypeScript compiler flag called '${name}'.`,
+    `This is likely a typo, you can check all the compiler flags in the TSConfig reference, or check the additional Twoslash flags in the npm page for @typescript/twoslash.`
+  )
 }
 
 const booleanConfigRegexp = /^\/\/\s?@(\w+)$/
@@ -448,7 +478,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     env.createFile(filename, newFileCode)
 
     const updates = filterHighlightLines(codeLines)
-    highlights.push(...updates.highlights)
+    highlights = highlights.concat(updates.highlights)
 
     // ------ Do the LSP lookup for the queries
 
@@ -460,12 +490,18 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
           const quickInfo = ls.getQuickInfoAtPosition(filename, position)
 
           // prettier-ignore
-          let text = `Could not get LSP result: ${stringAroundIndex(env.getSourceFile(filename)!.text, position)}`
-          let docs = undefined
+          let text: string
+          let docs: string | undefined
 
           if (quickInfo && quickInfo.displayParts) {
             text = quickInfo.displayParts.map(dp => dp.text).join("")
             docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join("<br/>") : undefined
+          } else {
+            throw new TwoslashError(
+              `Invalid QuickInfo query`,
+              `The request on line ${q.line} in ${filename} for quickinfo via ^? returned no from the compiler.`,
+              `This is likely that the x positioning is off.`
+            )
           }
 
           const queryResult: PartialQueryResults = {
@@ -480,9 +516,13 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
         }
 
         case "completion": {
-          const quickInfo = ls.getCompletionsAtPosition(filename, position - 1, {})
-          if (!quickInfo && !handbookOptions.noErrorValidation) {
-            throw new Error(`Twoslash: The ^| query at line ${q.line} in ${filename} did not return any completions`)
+          const completions = ls.getCompletionsAtPosition(filename, position - 1, {})
+          if (!completions && !handbookOptions.noErrorValidation) {
+            throw new TwoslashError(
+              `Invalid completion query`,
+              `The request on line ${q.line} in ${filename} for completions via ^| returned no completions from the compiler.`,
+              `This is likely that the positioning is off.`
+            )
           }
 
           const word = getClosestWord(sourceFile.text, position - 1)
@@ -491,7 +531,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
 
           const queryResult: PartialCompletionResults = {
             kind: "completions",
-            completions: quickInfo?.entries || [],
+            completions: completions?.entries || [],
             completionPrefix: lastDot,
             line: q.line - i,
             offset: q.offset,
@@ -501,7 +541,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
         }
       }
     })
-    partialQueries.push(...lspedQueries)
+    partialQueries = partialQueries.concat(lspedQueries)
 
     // Sets the file in the compiler as being without the comments
     const newEditedFileCode = codeLines.join("\n")
@@ -527,7 +567,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   }
 
   // Code should now be safe to compile, so we're going to split it into different files
-  const errs: import("typescript").Diagnostic[] = []
+  let errs: import("typescript").Diagnostic[] = []
   // Let because of a filter when cutting
   let staticQuickInfos: TwoSlashReturn["staticQuickInfos"] = []
 
@@ -543,13 +583,18 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     }
 
     if (!handbookOptions.noErrors) {
-      errs.push(...ls.getSemanticDiagnostics(file))
-      errs.push(...ls.getSyntacticDiagnostics(file))
+      errs = errs.concat(ls.getSemanticDiagnostics(file), ls.getSyntacticDiagnostics(file))
     }
 
     const source = env.sys.readFile(file)!
     const sourceFile = env.getSourceFile(file)
-    if (!sourceFile) throw new Error(`No sourcefile found for ${file} in twoslash`)
+    if (!sourceFile) {
+      throw new TwoslashError(
+        `Could not find a  TypeScript sourcefile for '${file}' in the Twoslash vfs`,
+        `It's a little hard to provide useful advice on this error. Maybe you imported something which the compiler doesn't think is a source file?`,
+        ``
+      )
+    }
 
     // Get all of the interesting quick info popover
     if (!handbookOptions.showEmit) {
@@ -619,7 +664,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
 
   // A validator that error codes are mentioned, so we can know if something has broken in the future
   if (!handbookOptions.noErrorValidation && relevantErrors.length) {
-    validateCodeForErrors(relevantErrors, handbookOptions, extension, originalCode)
+    validateCodeForErrors(relevantErrors, handbookOptions, extension, originalCode, fsRoot)
   }
 
   let errors: TwoSlashReturn["errors"] = []
@@ -656,7 +701,11 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     if (!emitSource && !compilerOptions.outFile) {
       const allFiles = filenames.join(", ")
       // prettier-ignore
-      throw new Error(`Cannot find the corresponding **source** file for ${emitFilename} (looking for: ${emitSourceFilename} in the vfs) - in ${allFiles}`)
+      throw new TwoslashError(
+        `Could not find source file to show the emit for`,
+        `Cannot find the corresponding **source** file  ${emitFilename} for completions via ^| returned no quickinfo from the compiler.`,
+        `Looked for: ${emitSourceFilename} in the vfs - which contains: ${allFiles}`
+      )
     }
 
     // Allow outfile, in which case you need any file.
@@ -671,8 +720,11 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
 
     if (!file) {
       const allFiles = output.outputFiles.map(o => o.name).join(", ")
-      // prettier-ignore
-      throw new Error(`Cannot find the file ${handbookOptions.showEmittedFile} (looking for: ${fsRoot + handbookOptions.showEmittedFile} in the vfs) - in ${allFiles}`)
+      throw new TwoslashError(
+        `Cannot find the output file in the Twoslash VFS`,
+        `Looking for ${handbookOptions.showEmittedFile} in the Twoslash vfs after compiling`,
+        `Looked for" ${fsRoot + handbookOptions.showEmittedFile} in the vfs - which contains ${allFiles}.`
+      )
     }
 
     code = file.text

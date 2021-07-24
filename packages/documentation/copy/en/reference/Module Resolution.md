@@ -213,13 +213,13 @@ Value of _baseUrl_ is determined as either:
 
 Note that relative module imports are not impacted by setting the baseUrl, as they are always resolved relative to their importing files.
 
-You can find more documentation on baseUrl in [RequireJS](http://requirejs.org/docs/api.html#config-baseUrl) and [SystemJS](https://github.com/systemjs/systemjs/blob/master/docs/api.md) documentation.
+You can find more documentation on baseUrl in [RequireJS](http://requirejs.org/docs/api.html#config-baseUrl) and [SystemJS](https://github.com/systemjs/systemjs/blob/main/docs/api.md) documentation.
 
 ### Path mapping
 
 Sometimes modules are not directly located under _baseUrl_.
 For instance, an import to a module `"jquery"` would be translated at runtime to `"node_modules/jquery/dist/jquery.slim.min.js"`.
-Loaders use a mapping configuration to map module names to files at run-time, see [RequireJs documentation](http://requirejs.org/docs/api.html#config-paths) and [SystemJS documentation](https://github.com/systemjs/systemjs/blob/master/docs/import-maps.md).
+Loaders use a mapping configuration to map module names to files at run-time, see [RequireJs documentation](http://requirejs.org/docs/api.html#config-paths) and [SystemJS documentation](https://github.com/systemjs/systemjs/blob/main/docs/import-maps.md).
 
 The TypeScript compiler supports the declaration of such mappings using `"paths"` property in `tsconfig.json` files.
 Here is an example for how to specify the `"paths"` property for `jquery`.

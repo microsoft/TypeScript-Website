@@ -4136,7 +4136,29 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript/twoslash@2.0.1, @typescript/twoslash@workspace:packages/ts-twoslasher":
+"@typescript/twoslash@npm:1.1.7":
+  version: 1.1.7
+  resolution: "@typescript/twoslash@npm:1.1.7"
+  dependencies:
+    "@typescript/vfs": 1.3.4
+    debug: ^4.1.1
+    lz-string: ^1.4.4
+  checksum: b8e1abfc6732b53e171b8aa41509e2827f68e08bba9c7940575431c56fba38a63b5dbf3c381f927c53f6e88eff1ec9019b91a7082bedd55382a0258a790e7876
+  languageName: node
+  linkType: hard
+
+"@typescript/twoslash@npm:2.0.2":
+  version: 2.0.2
+  resolution: "@typescript/twoslash@npm:2.0.2"
+  dependencies:
+    "@typescript/vfs": 1.3.4
+    debug: ^4.1.1
+    lz-string: ^1.4.4
+  checksum: 214633acebbd7209daa48fba51de7d90b1f1d37e8c4392cf3a82ec1e24b54987a3918e5f60343665efb721517ab595fc80c7fc67bd973d26770973641289c4e4
+  languageName: node
+  linkType: hard
+
+"@typescript/twoslash@workspace:packages/ts-twoslasher":
   version: 0.0.0-use.local
   resolution: "@typescript/twoslash@workspace:packages/ts-twoslasher"
   dependencies:
@@ -4149,23 +4171,12 @@ __metadata:
     jest-file-snapshot: ^0.3.8
     lz-string: ^1.4.4
     markdown-magic: ^1.0.0
-    prettier: "*"
+    prettier: ^2.3.2
     tsdx: ^0.14.1
     tslib: ^1.10.0
     typescript: "*"
   languageName: unknown
   linkType: soft
-
-"@typescript/twoslash@npm:1.1.7":
-  version: 1.1.7
-  resolution: "@typescript/twoslash@npm:1.1.7"
-  dependencies:
-    "@typescript/vfs": 1.3.4
-    debug: ^4.1.1
-    lz-string: ^1.4.4
-  checksum: b8e1abfc6732b53e171b8aa41509e2827f68e08bba9c7940575431c56fba38a63b5dbf3c381f927c53f6e88eff1ec9019b91a7082bedd55382a0258a790e7876
-  languageName: node
-  linkType: hard
 
 "@typescript/vfs@1.3.4, @typescript/vfs@workspace:packages/typescript-vfs":
   version: 0.0.0-use.local
@@ -25363,13 +25374,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.3.0-beta":
-  version: 4.3.0-beta
-  resolution: "typescript@npm:4.3.0-beta"
+"typescript@npm:4.4.0-dev.20210627":
+  version: 4.4.0-dev.20210627
+  resolution: "typescript@npm:4.4.0-dev.20210627"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 016e6bb986ec7b4e58f20bf90f402b4e237b66906a5ea2297c92d8cfca3472b1e6072518621f916b6db05d2e8bfb6e48df4a8c36f5f32dfe7760b8cc201eea6a
+  checksum: e416dff1ab513b1bf60cb26032cdd1124a8a0f44697ceb99716bc02a632e1681dabf20349e259ac889fddc1c9e0f241e4d042d8163bb66c811248ca1de4d3824
   languageName: node
   linkType: hard
 
@@ -25386,7 +25397,7 @@ resolve@^2.0.0-next.3:
     "@types/react-helmet": ^5.0.15
     "@typescript/playground": 0.1.0
     "@typescript/sandbox": 0.1.0
-    "@typescript/twoslash": 2.0.1
+    "@typescript/twoslash": 2.0.2
     canvas: ^2.6.1
     concurrently: ^5.1.0
     gatsby: ^3.2.1

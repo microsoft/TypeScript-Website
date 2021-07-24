@@ -16,8 +16,10 @@ export const HeadSEO = (props: SeoProps) => {
     "twitter:site": "typescriptlang",
   }
 
-  // Skip indexing on the staging site
-  const staging = "process" in globalThis && process && process.env && process.env.GATSBY_TYPESCRIPT_SITE_STAGING
+  // Skip search engine indexing on the staging site, this is changed by running:
+  // yarn workspace typescriptlang-org setup-staging
+  const staging = false;
+
   if (staging) {
     ogTags["robots"] = "noindex"
   }

@@ -62,6 +62,7 @@ export const recommended: CompilerOptionName[] = [
   "noImplicitAny",
   "esModuleInterop",
   "skipLibCheck",
+  "exactOptionalPropertyTypes",
 ];
 
 type RootProperties = "files" | "extends" | "include" | "exclude";
@@ -95,6 +96,7 @@ export const relatedTo: [AnOption, AnOption[]][] = [
       "strictPropertyInitialization",
       "noImplicitAny",
       "noImplicitThis",
+      "useUnknownInCatchVariables",
     ],
   ],
   ["alwaysStrict", ["strict"]],
@@ -104,6 +106,7 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["strictPropertyInitialization", ["strict"]],
   ["noImplicitAny", ["strict"]],
   ["noImplicitThis", ["strict"]],
+  ["useUnknownInCatchVariables", ["strict"]],
 
   ["allowSyntheticDefaultImports", ["esModuleInterop"]],
   ["esModuleInterop", ["allowSyntheticDefaultImports"]],
@@ -166,7 +169,6 @@ export const defaultsForOptions = {
   allowUmdGlobalAccess: "false",
   allowUnreachableCode: "undefined",
   allowUnusedLabels: "undefined",
-  alwaysStrict: "`false`, unless `strict` is set",
   charset: "utf8",
   checkJs: "false",
   composite: "false",
@@ -234,6 +236,7 @@ export const defaultsForOptions = {
   strict: "false",
   strictBindCallApply: "`false`, unless `strict` is set",
   strictFunctionTypes: "`false`, unless `strict` is set",
+  useUnknownInCatchVariables: "`false`, unless `strict` is set",
   strictPropertyInitialization: "`false`, unless `strict` is set",
   strictNullChecks: "`false`, unless `strict` is set",
   suppressExcessPropertyErrors: "false",
@@ -285,6 +288,7 @@ export const allowedValues = {
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
+  "4.4": ["exactOptionalPropertyTypes", "useUnknownInCatchVariables"],
   "4.3": ["noImplicitOverride"],
   "4.2": ["noPropertyAccessFromIndexSignature", "explainFiles"],
   "4.1": ["jsxImportSource", "noUncheckedIndexedAccess", "disableFilenameBasedTypeAcquisition"],

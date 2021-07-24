@@ -346,6 +346,12 @@ export function getDocumentationNavForLanguage(
           oneline: "All TypeScript release notes",
         },
         {
+          title: "TypeScript 4.3",
+          id: "4-typescript-4.3",
+          permalink: "/docs/handbook/release-notes/typescript-4-3.html",
+          oneline: "TypeScript 4.3 Release Notes",
+        },
+        {
           title: "TypeScript 4.2",
           id: "4-typescript-4.2",
           permalink: "/docs/handbook/release-notes/typescript-4-2.html",
@@ -1047,6 +1053,12 @@ export function getDocumentationNavForLanguage(
           oneline: "All TypeScript release notes",
         },
         {
+          title: "TypeScript 4.3",
+          id: "4-typescript-4.3",
+          permalink: "/docs/handbook/release-notes/typescript-4-3.html",
+          oneline: "TypeScript 4.3 Release Notes",
+        },
+        {
           title: "TypeScript 4.2",
           id: "4-typescript-4.2",
           permalink: "/docs/handbook/release-notes/typescript-4-2.html",
@@ -1746,6 +1758,12 @@ export function getDocumentationNavForLanguage(
           id: "4-overview",
           permalink: "/docs/handbook/release-notes/overview.html",
           oneline: "All TypeScript release notes",
+        },
+        {
+          title: "TypeScript 4.3",
+          id: "4-typescript-4.3",
+          permalink: "/docs/handbook/release-notes/typescript-4-3.html",
+          oneline: "TypeScript 4.3 Release Notes",
         },
         {
           title: "TypeScript 4.2",
@@ -2450,6 +2468,12 @@ export function getDocumentationNavForLanguage(
           oneline: "All TypeScript release notes",
         },
         {
+          title: "TypeScript 4.3",
+          id: "4-typescript-4.3",
+          permalink: "/docs/handbook/release-notes/typescript-4-3.html",
+          oneline: "TypeScript 4.3 Release Notes",
+        },
+        {
           title: "TypeScript 4.2",
           id: "4-typescript-4.2",
           permalink: "/docs/handbook/release-notes/typescript-4-2.html",
@@ -3149,6 +3173,12 @@ export function getDocumentationNavForLanguage(
           id: "4-overview",
           permalink: "/docs/handbook/release-notes/overview.html",
           oneline: "All TypeScript release notes",
+        },
+        {
+          title: "TypeScript 4.3",
+          id: "4-typescript-4.3",
+          permalink: "/docs/handbook/release-notes/typescript-4-3.html",
+          oneline: "TypeScript 4.3 Release Notes",
         },
         {
           title: "TypeScript 4.2",
@@ -3852,6 +3882,12 @@ export function getDocumentationNavForLanguage(
           oneline: "All TypeScript release notes",
         },
         {
+          title: "TypeScript 4.3",
+          id: "4-typescript-4.3",
+          permalink: "/docs/handbook/release-notes/typescript-4-3.html",
+          oneline: "TypeScript 4.3 Release Notes",
+        },
+        {
           title: "TypeScript 4.2",
           id: "4-typescript-4.2",
           permalink: "/docs/handbook/release-notes/typescript-4-2.html",
@@ -4553,6 +4589,12 @@ export function getDocumentationNavForLanguage(
           oneline: "All TypeScript release notes",
         },
         {
+          title: "TypeScript 4.3",
+          id: "4-typescript-4.3",
+          permalink: "/docs/handbook/release-notes/typescript-4-3.html",
+          oneline: "TypeScript 4.3 Release Notes",
+        },
+        {
           title: "TypeScript 4.2",
           id: "4-typescript-4.2",
           permalink: "/docs/handbook/release-notes/typescript-4-2.html",
@@ -5252,6 +5294,12 @@ export function getDocumentationNavForLanguage(
           id: "4-overview",
           permalink: "/docs/handbook/release-notes/overview.html",
           oneline: "All TypeScript release notes",
+        },
+        {
+          title: "TypeScript 4.3",
+          id: "4-typescript-4.3",
+          permalink: "/docs/handbook/release-notes/typescript-4-3.html",
+          oneline: "TypeScript 4.3 Release Notes",
         },
         {
           title: "TypeScript 4.2",
