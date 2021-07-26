@@ -6,7 +6,6 @@ import { VersionBar } from "../../components/VersionBar"
 import { GreyButton } from "../../components/display/GreyButton"
 import { UpcomingReleaseMeta } from "../../components/index/UpcomingReleaseMeta"
 import { MigrationStories, GitHubBar, OSS } from "../../components/index/MigrationStories"
-import { setupTwoslashHovers } from "shiki-twoslash/dist/dom"
 
 import { indexCopy } from "../../copy/en/index"
 import { createInternational } from "../../lib/createInternational"
@@ -36,7 +35,7 @@ const Index: React.FC<Props> = (props) => {
   const i = createInternational<typeof indexCopy>(useIntl())
   const Link = createIntlLink(props.pageContext.lang)
 
-  useEffect(() => { setupTwoslashHovers(); setupVideosSection() }, [])
+  useEffect(() => { setupVideosSection() }, [])
 
   return (
     <Layout title="Typed JavaScript at Any Scale." description="TypeScript extends JavaScript by adding types to the language. TypeScript speeds up your development experience by catching errors and providing fixes before you even run your code." lang={props.pageContext.lang} suppressCustomization>

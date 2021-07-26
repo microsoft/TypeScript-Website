@@ -240,7 +240,13 @@
             },
             "jsx": {
               "description": "Specify what JSX code is generated.",
-              "enum": ["preserve", "react", "react-jsx", "react-jsxdev", "react-native"]
+              "enum": [
+                "preserve",
+                "react",
+                "react-jsx",
+                "react-jsxdev",
+                "react-native"
+              ]
             },
             "reactNamespace": {
               "description": "Specify the object invoked for `createElement`. This only applies when targeting `react` JSX emit.",
