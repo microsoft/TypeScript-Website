@@ -1,4 +1,4 @@
-import { extractTwoSlashComplierOptions } from "../src/twoslashSupport"
+import { extractTwoSlashCompilerOptions } from "../src/twoslashSupport"
 import typescript from "typescript"
 
 const sandboxMock: any = (code: string) => ({
@@ -19,7 +19,7 @@ function fn(s) {
 
 fn(42)
 `)
-    const compilerOptions = extractTwoSlashComplierOptions(sandbox.ts)(sandbox.getText())
+    const compilerOptions = extractTwoSlashCompilerOptions(sandbox.ts)(sandbox.getText())
     expect(compilerOptions).toMatchInlineSnapshot(`
       Object {
         "noImplicitAny": false,
@@ -40,7 +40,7 @@ function fn(s) {
 
 fn(42)
 `)
-    const compilerOptions = extractTwoSlashComplierOptions(sandbox.ts)(sandbox.getText())
+    const compilerOptions = extractTwoSlashCompilerOptions(sandbox.ts)(sandbox.getText())
     expect(compilerOptions).toMatchInlineSnapshot(`
       Object {
         "target": 2,
