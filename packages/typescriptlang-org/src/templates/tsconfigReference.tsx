@@ -11,8 +11,6 @@ import { headCopy } from "../copy/en/head-seo"
 import "./markdown.scss"
 import "./tsconfig.scss"
 
-import { setupTwoslashHovers } from "shiki-twoslash/dist/dom"
-
 type Category = { anchor: string, display: string, options: Array<{ anchor: string, name: string }> }
 
 type Props = {
@@ -79,7 +77,6 @@ const TSConfigReferenceTemplateComponent = (props: Props) => {
     // Handles setting the scroll 
     window.addEventListener("scroll", updateSidebar, { passive: true, capture: true });
     updateSidebar()
-    setupTwoslashHovers()
 
     return () => {
       window.removeEventListener("scroll", updateSidebar)
