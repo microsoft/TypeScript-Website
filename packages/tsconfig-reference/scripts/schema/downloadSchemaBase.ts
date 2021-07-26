@@ -1,3 +1,5 @@
+// node ./node_modules/.bin/ts-node packages/tsconfig-reference/scripts/schema/downloadSchemaBase.ts
+
 // https://json.schemastore.org/tsconfig.json
 
 const nodeFetch = require("node-fetch").default;

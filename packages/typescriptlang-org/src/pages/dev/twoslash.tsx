@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { Layout } from "../../components/layout"
-import { withPrefix, graphql } from "gatsby"
+import { withPrefix } from "gatsby"
 import { twoslasher } from "@typescript/twoslash"
 import { createDefaultMapFromCDN } from "@typescript/vfs"
 import { renderers } from "shiki-twoslash"
@@ -11,6 +11,7 @@ import { Intl } from "../../components/Intl"
 import { DevNav } from "../../components/devNav"
 import { isTouchDevice } from "../../lib/isTouchDevice"
 import { SuppressWhenTouch } from "../../components/SuppressWhenTouch"
+import { getPlaygroundUrls } from "../../lib/playgroundURLs"
 
 /** Note: to run all the web infra in debug, run:
   localStorage.debug = '*'
@@ -31,13 +32,16 @@ const Index: React.FC<Props> = props => {
     getLoaderScript.src = withPrefix("/js/vs.loader.js")
     getLoaderScript.async = true
     getLoaderScript.onload = () => {
+      // Allow prod/staging builds to set a custom commit prefix to bust caches
+      const {sandboxRoot} = getPlaygroundUrls()
+      
       // @ts-ignore
       const re: any = global.require
 
       re.config({
         paths: {
           vs: "https://typescript.azureedge.net/cdn/4.0.5/monaco/min/vs",
-          sandbox: withPrefix("/js/sandbox"),
+          sandbox: sandboxRoot,
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],
       })

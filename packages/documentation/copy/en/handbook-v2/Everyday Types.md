@@ -156,7 +156,8 @@ names.forEach((s) => {
 
 Even though the parameter `s` didn't have a type annotation, TypeScript used the types of the `forEach` function, along with the inferred type of the array, to determine the type `s` will have.
 
-This process is called _contextual typing_ because the _context_ that the function occurred in informed what type it should have.
+This process is called _contextual typing_ because the _context_ that the function occurred within informs what type it should have.
+
 Similar to the inference rules, you don't need to explicitly learn how this happens, but understanding that it _does_ happen can help you notice when type annotations aren't needed.
 Later, we'll see more examples of how the context that a value occurs in can affect its type.
 
@@ -413,7 +414,7 @@ type Animal = {
   name: string
 }<br/>
 type Bear = Animal & { 
-  honey: Boolean 
+  honey: boolean 
 }<br/>
 const bear = getBear();
 bear.name;

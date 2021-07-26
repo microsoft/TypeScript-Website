@@ -105,6 +105,16 @@ yarn workspace tsconfig-reference run lint resolveJson
 
 The docs for TypeScript. Originally ported over from [microsoft/TypeScript-Handbook](https://github.com/microsoft/TypeScript-Handbook/) then intermingled with [microsoft/TypeScript-New-Handbook](https://github.com/microsoft/TypeScript-New-Handbook), and finally updated for [Twoslash](http://www.staging-typescript.org/dev/twoslash/) and with new content.
 
+## JSON Schema
+
+It's a little odd, but the `tsconfig-reference` package creates the JSON schema for a TSConfig files:
+
+```sh
+yarn workspace tsconfig-reference build
+```
+
+Then you can find it at: [`packages/tsconfig-reference/scripts/schema/result/schema.json`](packages/tsconfig-reference/scripts/schema/result/schema.json).
+
 ## Playground Examples
 
 The code samples used in the Playground split across many languages.

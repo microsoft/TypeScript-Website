@@ -74,7 +74,7 @@ export default pi;
 ```
 
 One style of exporting in CommonJS is to export a function.
-Because a function is also an object, then extra fields can be added are included in the export.
+Because a function is also an object, then extra fields can be added and are included in the export.
 
 ```js
 function getArrayLength(arr) {
@@ -105,7 +105,7 @@ declare namespace getArrayLength {
 export = getArrayLength;
 ```
 
-See [Module: Functions](module-function.d.ts.md) for details of how that works, and the [Modules reference](/docs/handbook/modules.html) page.
+See [Module: Functions](/docs/handbook/declaration-files/templates/module-function-d-ts.html) for details of how that works, and the [Modules reference](/docs/handbook/modules.html) page.
 
 ## Handling Many Consuming Import
 
