@@ -40,7 +40,8 @@ const Index: React.FC<Props> = (props) => {
 
     return () => {
       window.removeEventListener("scroll", updateOnScroll)
-    }});
+    }
+  });
 
   /** Basically a <p> with bold set up */
   const P = (props: { ikey: keyof typeof indexCopy }) =>  <p key={props.ikey}>{i(props.ikey, { strong: (...chunk) => <strong>{chunk}</strong> })}</p>
@@ -296,8 +297,4 @@ const Installation = () => {
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Index {...props} /></Intl>
 
 
-const updateOnScroll = () => {
-    const fromTop = window.scrollY
-    const id
-    console.log(fromTop)
-}
+const updateOnScroll = () => {}
