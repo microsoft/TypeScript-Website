@@ -7,7 +7,6 @@ import { ShowErrorsExample } from "./twoslash/generated/showErrors";
 import { ReactExample } from "./twoslash/generated/react";
 import { TypeDefinitionsExample } from "./twoslash/generated/typeDefinitions";
 import { InterfaceExample } from "./twoslash/generated/interface";
-import { setupTwoslashHovers } from "shiki-twoslash/dist/dom"
 
 // prettier-ignore
 const ts = () => <svg fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg"><path d="m6.72499 1.47255h-2.3375v6.32987h-1.71875v-6.32987h-2.337502v-1.117035h6.325002v1.117035zm5.29371 4.40609c0-.31029-.1375-.49646-.3437-.68264-.2063-.18617-.6188-.31028-1.1688-.49646-.96246-.24823-1.71871-.55852-2.26871-.93086-.48125-.37235-.75625-.80675-.75625-1.42732 0-.62058.275-1.11704.89375-1.489385.55-.372345 1.30625-.558518 2.20001-.558518.8937 0 1.65.24823 2.2.682633.55.4344.825.99292.825 1.6135h-1.5813c0-.37235-.1375-.62058-.4125-.86881-.275-.18617-.6187-.31029-1.1-.31029-.4125 0-.75621.06206-1.03121.24823-.275.18618-.34375.43441-.34375.68264s.1375.4344.4125.62057.68746.31029 1.37496.49646c.8938.24823 1.5813.55852 2.0625.93087.4813.37234.6875.8688.6875 1.48938 0 .62057-.275 1.17909-.825 1.48938-.55.37234-1.3062.55852-2.2.55852-.89371 0-1.71871-.18618-2.33746-.62058s-1.03125-.99292-.9625-1.79967h1.65c0 .4344.1375.74469.48125.99292.275.18617.75621.31029 1.23751.31029.4812 0 .825-.06206 1.0312-.24823.1375-.18617.275-.4344.275-.68263z" fill="#719af4" /></svg>;
@@ -40,10 +39,6 @@ export const EditorExamples = () => {
   const next = (e) => {
     if (index + 1 === explanations.length) loadIndex(0);
     else loadIndex(index + 1);
-    // Timeout gives the async react reconcilation to happen
-    setTimeout(() => {
-      setupTwoslashHovers()
-    }, 100)
 
     e.preventDefault();
     return false;

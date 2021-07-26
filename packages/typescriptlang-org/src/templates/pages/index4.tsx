@@ -6,7 +6,6 @@ import { VersionBar } from "../../components/VersionBar"
 import * as Adopt from "../../components/index/AdoptSteps"
 
 import { MigrationStories, GitHubBar, OSS } from "../../components/index/MigrationStories"
-import { setupTwoslashHovers } from "shiki-twoslash/dist/dom"
 
 import { indexCopy } from "../../copy/en/index2"
 import { createInternational } from "../../lib/createInternational"
@@ -32,10 +31,6 @@ type Props = {
 const Index: React.FC<Props> = (props) => {
   const i = createInternational<typeof indexCopy>(useIntl())
   const Link = createIntlLink(props.pageContext.lang)
-
-  useEffect(() => { 
-      setupTwoslashHovers();
-  }, [])
 
 
   useEffect(() => {
