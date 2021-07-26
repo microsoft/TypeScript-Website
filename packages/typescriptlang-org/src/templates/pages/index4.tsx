@@ -247,13 +247,13 @@ function process(result) {
           <h2 id='get_started'>{i("index_2_started_title")}</h2>
             <Row>
                 <Col key='handbook'>
-                    <GetStarted href="/docs/handbook/intro.html" classes="tall handbook" title="index_2_started_handbook" subtitle="index_2_started_handbook_blurb" />
+                    <GetStarted href="/docs/handbook/intro.html" classes="short handbook" title="index_2_started_handbook" subtitle="index_2_started_handbook_blurb" />
                 </Col>
                 <Col key='playground'>
-                    <GetStarted href="/play" classes="tall playground" title="nav_playground" subtitle="index_2_playground_blurb" />
+                    <GetStarted href="/play" classes="short playground" title="nav_playground" subtitle="index_2_playground_blurb" />
                 </Col>
                 <Col key='download'>
-                    <GetStarted href="/download" classes="tall download" title="nav_download" subtitle="index_2_install" />
+                    <GetStarted href="/download" classes="short download" title="nav_download" subtitle="index_2_install" />
                 </Col>
             </Row>
         </Section>

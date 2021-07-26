@@ -487,13 +487,47 @@ $headline-foreground-bg: white;
     @include flat-button;
 
     margin: auto 0;
-    background: #ffffff;
-    border: 1px solid #000000;
     box-sizing: border-box;
     box-shadow: 0px 4px 20px -6px rgba(0, 0, 0, 0.25);
     width: 100%;
     max-width: 244px;
-    height: 342px;
+
+    // One of these has to be set
+    &.short {
+      background: $ts-main-blue-color;
+      background-position-y: bottom -180px;
+      height: 260px;
+      border: 1px solid white;
+      color: white;
+      &.handbook {
+        background-image: url(/images/index/get-started-handbook-blue.svg);
+      }
+      &.playground {
+        background-image: url(/images/index/get-started-playground-blue.svg);
+      }
+      &.download {
+        background-image: url(/images/index/get-started-download-blue.svg);
+        background-position: right bottom;
+        background-repeat: no-repeat;
+      }
+      &:active {
+        background-color: #156fb4;
+      }
+      svg path {
+        stroke: white;
+      }
+    }
+
+    &.tall {
+      background: #ffffff;
+      border: 1px solid #000000;
+      color: black;
+      height: 342px;
+      &:active {
+        background: #eeeeee;
+      }
+    }
+
     display: flex;
     align-items: flex-end;
 
@@ -506,19 +540,24 @@ $headline-foreground-bg: white;
       margin-bottom: 10px;
     }
 
+    &:active {
+      margin-top: 1px;
+      box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);
+    }
+
     &.handbook {
       background-image: url(/images/index/get-started-handbook.svg);
-      background-position: bottom left;
+      background-position: left bottom;
       background-repeat: no-repeat;
     }
     &.playground {
       background-image: url(/images/index/get-started-playground.svg);
-      background-position: bottom center;
+      background-position: center bottom;
       background-repeat: no-repeat;
     }
     &.download {
       background-image: url(/images/index/get-started-download.svg);
-      background-position: bottom right;
+      background-position: right bottom;
       background-repeat: no-repeat;
     }
   }
