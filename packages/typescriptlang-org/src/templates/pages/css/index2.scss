@@ -1,0 +1,1015 @@
+@import "../../../style/globals.scss";
+@import "./grid.scss";
+
+$headline-background-bg: $ts-main-blue-color;
+$headline-foreground-bg: white;
+
+@mixin flat-button {
+  background-color: white;
+  color: black;
+  padding: 1rem 1rem;
+  text-decoration: none;
+  cursor: pointer;
+
+  @media screen and (-ms-high-contrast: active) {
+    border: 2px solid grey;
+  }
+
+  &:hover,
+  &.focus {
+    background-color: #eee;
+  }
+
+  &:active {
+    background-color: #ddd;
+  }
+
+  .fluid-button-title {
+    font-weight: 600;
+  }
+}
+
+@media (max-width: $screen-sm) {
+  #index-2 {
+    // Doesn't show because it doens't have a way to generate
+    // a height, so hard-code it
+    div.headline-diagram {
+      height: 400px;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    // Make it 2s instead of 4s
+    .split-row > a {
+      min-width: 80%;
+      margin-left: 20px !important;
+    }
+
+    .grey-box {
+      margin-right: 0;
+    }
+
+    // Can't fit that much info into one component, just drop the quotes
+    .illustration {
+      display: none;
+    }
+
+    ul.dropdown {
+      margin-top: 12px;
+    }
+
+    .headline-diagram {
+      div.editor.front {
+        margin: 20px auto;
+        position: static;
+        width: auto;
+        max-width: 400px;
+      }
+
+      div.editor.back {
+        display: none;
+      }
+    }
+
+    #m-stories div.copy {
+      margin: 20px auto 0;
+      position: static;
+      text-align: center;
+      a.migration-button {
+        margin: 0 auto;
+      }
+    }
+
+    .small_full_width {
+      width: 100%;
+    }
+
+    .github-bar {
+      display: none;
+    }
+  }
+}
+
+.show-only-small {
+  display: none;
+}
+
+@media (max-width: $screen-xs) {
+  .show-only-small {
+    display: block !important;
+  }
+
+  #index div.headline-diagram div.editor.front {
+    max-width: 300px;
+  }
+
+  #index .next-headline-button {
+    max-width: 280px;
+  }
+}
+
+#index-2 {
+  h1 {
+    font-size: 2.5rem;
+    line-height: 2.8rem;
+    font-weight: 200;
+    margin-top: 0;
+
+    strong {
+      font-weight: 500;
+    }
+  }
+
+  h2 {
+    text-align: center;
+    font-weight: 500;
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+    margin-top: 0;
+  }
+
+  h3 {
+    font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 1.6rem;
+    margin-top: 0;
+    margin-bottom: 2.5rem;
+  }
+
+  .darkblue {
+    background-color: $ts-main-blue-darkest-color;
+    color: white;
+  }
+
+  .blue {
+    background-color: $ts-main-blue-color;
+    color: white;
+
+    // a {
+    //   color: white;
+    // }
+  }
+
+  .purple {
+    background-color: $ts-muted-purple;
+    color: white;
+  }
+
+  .dark-green {
+    background-color: #086e12;
+    color: white;
+  }
+
+  .white {
+    background-color: white;
+    color: black;
+
+    .col1 h3 {
+      text-align: center;
+    }
+    .col1 p,
+    .col2 p {
+      font-size: 1.2rem;
+    }
+  }
+
+  .light-grey {
+    background-color: $ts-light-bg-sandy-color;
+    color: black;
+  }
+
+  .grey {
+    background-color: #d8d8d8;
+    padding-bottom: 0;
+    div.container {
+      padding: 1rem;
+    }
+  }
+
+  .headline .col1 {
+    padding-bottom: 3rem;
+  }
+
+  .headline .container {
+    padding-bottom: 0;
+    padding-top: 40px;
+    font-size: 1rem;
+  }
+
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding-top: 64px;
+    padding-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .headline-diagram {
+    height: 100%;
+    overflow-y: hidden;
+    position: relative;
+
+    pre .code-container {
+      overflow: hidden;
+      a {
+        display: none;
+      }
+    }
+
+    .editor {
+      border: 2px solid white;
+
+      border-radius: 8px;
+      width: 540px;
+
+      position: absolute;
+
+      &.front {
+        // @media (min-width: 1000px) {
+        // right: 40px;
+        // }
+        right: 20px;
+        width: 90%;
+        border-radius: 8px;
+
+        @media screen and (-ms-high-contrast: active) {
+          border: none;
+        }
+      }
+      .error {
+        border-left: 0 !important;
+      }
+
+      .editor-inner {
+        position: relative;
+      }
+
+      .titlebar {
+        height: 2rem;
+        border-bottom: 2px solid #172e38;
+        display: flex;
+        flex-direction: row;
+
+        .lang {
+          margin-left: 6px;
+          margin-top: 3px;
+          display: none;
+        }
+
+        .window-name {
+          margin-left: 10px;
+          padding-top: 5px;
+          display: none;
+        }
+      }
+
+      .line-error {
+        position: absolute;
+        left: 0;
+        height: 20px;
+        width: 22px;
+        background-color: $ts-muted-red;
+      }
+
+      .underline-error {
+        background: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%206%203'%20enable-background%3D'new%200%200%206%203'%20height%3D'3'%20width%3D'6'%3E%3Cg%20fill%3D'%23c94824'%3E%3Cpolygon%20points%3D'5.5%2C0%202.5%2C3%201.1%2C3%204.1%2C0'%2F%3E%3Cpolygon%20points%3D'4%2C0%206%2C2%206%2C0.6%205.4%2C0'%2F%3E%3Cpolygon%20points%3D'0%2C2%201%2C3%202.4%2C3%200%2C0.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")
+          repeat-x bottom left;
+        padding-bottom: 3px;
+      }
+
+      .error-message {
+        color: #ff6666;
+        font-size: 0.8rem;
+        font-family: $font-code;
+        position: absolute;
+        width: 200px;
+      }
+
+      .inline-completions {
+        position: relative;
+
+        ul.dropdown {
+          display: inline-block;
+          position: absolute;
+          width: 240px;
+          background-color: white;
+          color: grey;
+
+          font-family: $font-code;
+          font-size: 0.8rem;
+          margin: 0;
+          padding: 0;
+
+          border-left: 4px solid #4b9edd;
+
+          // Fake the cursor above us
+          &::before {
+            background-color: white;
+            width: 2px;
+            position: absolute;
+            top: -16px;
+            left: -3px;
+            content: " ";
+          }
+
+          li {
+            border-bottom: 1px solid black;
+            height: 1rem;
+            overflow-x: hidden;
+            padding-left: 4px;
+
+            span.result-found {
+              color: #4b9edd;
+            }
+            span.result {
+              width: 100px;
+              color: black;
+              display: inline-block;
+            }
+          }
+        }
+      }
+
+      .did-you-mean-icon {
+        position: absolute;
+      }
+
+      .did-you-mean {
+        position: absolute;
+      }
+
+      .content {
+        height: 320px;
+        display: flex;
+        flex-direction: row;
+
+        .lines {
+          width: 60px;
+          border-right: 4px solid white;
+          border-left: none;
+          flex-shrink: 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          background-color: $headline-background-bg;
+        }
+
+        svg {
+          margin: 12px auto;
+
+          path {
+            fill: white;
+          }
+        }
+
+        .text {
+          // padding: 1rem;
+          font-family: $font-code;
+          font-size: 0.8rem;
+          line-height: 0.95rem;
+          white-space: pre;
+          flex-shrink: 1;
+          flex-grow: 1;
+          overflow-x: scroll;
+          position: relative;
+          background-color: $headline-background-bg;
+
+          pre {
+            margin: 0;
+            background-color: $headline-background-bg;
+            border: none;
+            code {
+              font-size: 14px;
+              line-height: 16px;
+            }
+            .error {
+              background-color: #341c2c;
+              color: #ee5858;
+            }
+          }
+
+          .language-id {
+            display: none;
+          }
+        }
+      }
+
+      .highlight {
+        color: #9ed5ff;
+      }
+    }
+    .back .content .text > div {
+      padding-right: 200px;
+    }
+  }
+
+  .button-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-direction: column-reverse;
+    align-items: center;
+
+    @media (max-width: 800px) {
+      top: 0;
+      position: absolute;
+    }
+
+    .next-headline-button {
+      border: 2px solid #235a9769;
+      color: white;
+      background-color: $ts-main-blue-color;
+      padding: 3px;
+      max-width: 320px;
+
+      display: flex;
+      flex-direction: row;
+      text-decoration: none;
+      bottom: 20px;
+
+      align-items: center;
+      margin-bottom: 20px;
+
+      @media screen and (-ms-high-contrast: active) {
+        border: 2px solid grey;
+      }
+
+      &:hover,
+      &.focus {
+        background-color: #104261;
+      }
+
+      &:active {
+        background-color: #0a3855;
+        margin-bottom: 19px;
+      }
+
+      // I don't like this - I don't know why the editor is in front of the button
+      // even though the hierarchy implies it shouldn't - maybe the position abosolute?
+      z-index: 1;
+
+      .message {
+        margin: 10px;
+        font-size: 0.9rem;
+        min-width: 140px;
+      }
+
+      .next {
+        border-left: 2px solid #235a9769;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        p {
+          margin-left: 20px;
+        }
+
+        svg {
+          height: 100%;
+          margin-left: 20px;
+          margin-right: 10px;
+
+          @media screen and (-ms-high-contrast: active) {
+            path {
+              fill: grey;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  a.get-started {
+    @include flat-button;
+
+    margin: auto 0;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 20px -6px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 244px;
+
+    // One of these has to be set
+    &.short {
+      background: $ts-main-blue-color;
+      background-position-y: bottom -180px;
+      height: 260px;
+      border: 1px solid white;
+      color: white;
+      &.handbook {
+        background-image: url(/images/index/get-started-handbook-blue.svg);
+      }
+      &.playground {
+        background-image: url(/images/index/get-started-playground-blue.svg);
+      }
+      &.download {
+        background-image: url(/images/index/get-started-download-blue.svg);
+        background-position: right bottom;
+        background-repeat: no-repeat;
+      }
+      &:active {
+        background-color: #156fb4;
+      }
+      svg path {
+        stroke: white;
+      }
+    }
+
+    &.tall {
+      background: #ffffff;
+      border: 1px solid #000000;
+      color: black;
+      height: 342px;
+      &:active {
+        background: #eeeeee;
+      }
+    }
+
+    display: flex;
+    align-items: flex-end;
+
+    .fluid-button-title {
+      font-size: 1.4rem;
+    }
+
+    svg {
+      margin-left: 20px;
+      margin-bottom: 10px;
+    }
+
+    &:active {
+      margin-top: 1px;
+      box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);
+    }
+
+    &.handbook {
+      background-image: url(/images/index/get-started-handbook.svg);
+      background-position: left bottom;
+      background-repeat: no-repeat;
+    }
+    &.playground {
+      background-image: url(/images/index/get-started-playground.svg);
+      background-position: center bottom;
+      background-repeat: no-repeat;
+    }
+    &.download {
+      background-image: url(/images/index/get-started-download.svg);
+      background-position: right bottom;
+      background-repeat: no-repeat;
+    }
+  }
+
+  .call-to-action {
+    display: flex;
+    justify-content: center;
+
+    a.flat-button {
+      display: block;
+      height: 1.4rem;
+      line-height: 1.4rem;
+      text-align: center;
+      text-decoration: none;
+      font-size: 1.2rem;
+      @include flat-button;
+
+      &:first-child {
+        margin-right: 2rem;
+      }
+    }
+
+    .handbook-preview {
+      background-color: #1a1a1a;
+      padding: 4rem;
+    }
+
+    .inline-buttons {
+      background-color: #1a1a1a;
+      display: flex;
+      justify-content: center;
+
+      a {
+        background-color: #1a1a1a;
+        color: white;
+        flex: 1;
+        margin: 0 !important;
+        border-left: 4px solid #00273f;
+
+        &:first-child {
+          border-left: none;
+        }
+        &:active,
+        &:hover {
+          color: black;
+        }
+      }
+    }
+  }
+
+  .cta-redirects {
+    overflow-y: hidden;
+    > div {
+      margin-bottom: -18%;
+      position: relative;
+
+      a {
+        position: absolute;
+        bottom: 55%;
+      }
+    }
+  }
+
+  .release-info {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+
+    .needle,
+    .needle-head {
+      height: 68px;
+      width: 2px;
+      background-color: black;
+      margin-top: -8px;
+      position: absolute;
+    }
+
+    .needle-head {
+      height: 0;
+      margin-left: -4px;
+      margin-top: -14px;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 6px solid black;
+
+      background-color: transparent;
+    }
+
+    > div > div {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+
+  .bar {
+    width: 100%;
+    height: 50px;
+    margin-left: -1px;
+  }
+
+  .separator {
+    margin-top: 50px;
+    height: 12px;
+    width: 1px;
+    background-color: black;
+  }
+
+  @media screen and (-ms-high-contrast: active) {
+    .needle-head {
+      opacity: 0;
+    }
+    .release-info .needle {
+      border: 1px solid black;
+      height: 80px;
+    }
+    .release > div,
+    .beta > div,
+    .rc > div {
+      border: 1px solid black;
+    }
+  }
+
+  .release {
+    width: 55%;
+    .bar {
+      background-color: #c4c4c4;
+    }
+  }
+  .beta {
+    width: 28%;
+    .bar {
+      background-color: $ts-main-blue-color;
+    }
+  }
+  .rc {
+    width: 17%;
+    .bar {
+      background-color: $ts-main-blue-darker-color;
+    }
+  }
+
+  .migrations {
+    overflow: hidden;
+  }
+
+  .migrations .container {
+    padding-bottom: 0;
+  }
+
+  #m-stories {
+    position: relative;
+    min-height: 370px;
+
+    .controls a {
+      background-color: white;
+      width: 2rem;
+      height: 2rem;
+      color: black;
+      position: absolute;
+      top: 70%;
+      text-align: center;
+      line-height: 2.5rem;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        background-color: #eee;
+      }
+
+      &:active {
+        background-color: #ddd;
+        top: calc(70% + 1px);
+      }
+
+      &.left {
+        left: 0;
+      }
+
+      &.right {
+        right: 0;
+      }
+    }
+
+    .slack {
+      .copy {
+        background: #4e086f;
+        background: linear-gradient(
+          90deg,
+          #4e086f 48%,
+          rgba(78, 8, 111, 0.28) 100%
+        );
+      }
+    }
+
+    .airbnb {
+      .copy {
+        background: #6f0808;
+        background: linear-gradient(
+          90deg,
+          #6f0808 48%,
+          rgba(111, 8, 8, 0.28) 100%
+        );
+      }
+
+      .fg {
+        padding-top: 40px;
+      }
+    }
+
+    .goog {
+      .copy {
+        background: #086f56;
+        background: linear-gradient(
+          90deg,
+          #086f56 48%,
+          rgba(8, 111, 86, 0.28) 100%
+        );
+      }
+
+      .illustration .fg {
+        padding-top: 40px;
+      }
+    }
+
+    .copy {
+      position: absolute;
+      padding-left: 20px;
+      padding-right: 30px;
+      width: 260px;
+
+      -webkit-transition: opacity 200ms ease-out;
+      -moz-transition: opacity 200ms ease-out;
+      -o-transition: opacity 200ms ease-out;
+      -ms-transition: opacity 200ms ease-out;
+      transition: opacity 200ms ease-out;
+
+      p {
+        padding: 1rem 0;
+      }
+
+      a.migration-button {
+        border: 1px solid white;
+        color: white;
+        text-decoration: none;
+        text-align: center;
+        width: 60%;
+        display: block;
+        padding: 8px 0;
+
+        &:hover,
+        &:focus {
+          background-color: white;
+          color: black;
+        }
+      }
+    }
+
+    .illustration {
+      .bg {
+        position: absolute;
+        right: 20px;
+      }
+
+      .fg {
+        font-size: 1.4rem;
+        line-height: 1.6rem;
+        width: 370px;
+        position: absolute;
+        right: 70px;
+      }
+    }
+  }
+
+  .oss {
+    width: 100%;
+
+    .icons {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      max-width: 800px;
+      margin: 0 auto;
+
+      @media screen and (-ms-high-contrast: black-on-white) {
+        svg path {
+          fill: black;
+        }
+      }
+      @media screen and (-ms-high-contrast: white-on-black) {
+        svg path {
+          fill: white;
+        }
+      }
+
+      svg {
+        margin: 0 auto;
+      }
+
+      a {
+        flex: 1;
+        margin: 20px;
+        color: white;
+        text-align: center;
+        height: 145px;
+        width: 140px;
+        max-width: 140px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        p {
+          padding-bottom: 0;
+        }
+      }
+    }
+  }
+
+  .github-bar {
+    position: absolute;
+    opacity: 0;
+    -webkit-transition: opacity 300ms ease-out;
+    -moz-transition: opacity 300ms ease-out;
+    -o-transition: opacity 300ms ease-out;
+    -ms-transition: opacity 300ms ease-out;
+    transition: opacity 300ms ease-out;
+
+    &.left {
+      left: -200px;
+    }
+    &.right {
+      right: -200px;
+    }
+  }
+
+  ul#videos {
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-left: 2px solid transparent;
+
+      &.active {
+        border-color: black;
+      }
+
+      a {
+        text-decoration: none;
+        color: black;
+        font-size: 1rem;
+        display: block;
+        margin-left: 6px;
+      }
+
+      span {
+        font-style: italic;
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .installation-panel {
+    .flat-button {
+      margin-top: 20px;
+      display: block;
+      @include flat-button;
+
+      button {
+        float: right;
+        border: none;
+        background-color: transparent;
+      }
+
+      svg {
+        opacity: 0.5;
+        transition: opacity 0.2s linear;
+        width: 0.9em;
+        height: 0.9em;
+        float: right;
+        margin-top: 3px;
+      }
+
+      &:hover svg {
+        opacity: 1;
+      }
+    }
+    .tooltip {
+      display: none;
+      background-color: rgb(63, 63, 63);
+      color: #fff;
+      text-align: center;
+      padding: 5px 8px;
+      border-radius: 2px;
+      font-family: $font-code;
+      font-size: 14px;
+      white-space: pre-wrap;
+      border-radius: 2px;
+      z-index: 100;
+      pointer-events: none;
+    }
+  }
+
+  .adopt-step {
+    margin-top: 80px;
+    pre {
+      margin-bottom: 10px;
+    }
+    p {
+      font-weight: bold;
+      margin: 10px 0;
+      font-size: 0.6rem;
+    }
+    .adopt-step-stepper {
+      display: flex;
+      div {
+        border: 1px solid black;
+        // width: 75px;
+        display: inline-block;
+        flex: 1;
+        height: 13px;
+        margin-left: 10px;
+        position: relative;
+
+        &.yellow,
+        &.yellow-hint-blue,
+        &.yellow-lot-blue {
+          background-color: #ffe200;
+        }
+
+        &.yellow-hint-blue:after,
+        &.yellow-lot-blue:after {
+          content: "";
+          position: absolute;
+          width: 20%;
+          left: 0;
+          height: 13px;
+          background-color: $ts-main-blue-color;
+        }
+
+        &.yellow-lot-blue:after {
+          width: 60%;
+        }
+        &.first {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+}

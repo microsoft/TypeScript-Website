@@ -12,6 +12,7 @@ type LayoutProps = SeoProps & Props & {
   lang: string,
   children: any
   suppressCustomization?: true
+  suppressDocRecommendations?: true
 }
 
 export const Layout = (props: LayoutProps) => {
