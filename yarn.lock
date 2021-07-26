@@ -5404,6 +5404,7 @@ __metadata:
   resolution: "@typescript/vfs@workspace:packages/typescript-vfs"
   dependencies:
     "@types/jest": ^25.1.3
+    babel-jest: ^26.0.6
     cpy-cli: ^3.1.1
     debug: ^4.1.1
     tsdx: ^0.14.1
@@ -6525,7 +6526,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-jest@npm:^26.1.0":
+"babel-jest@npm:^26.0.6, babel-jest@npm:^26.1.0":
   version: 26.6.3
   resolution: "babel-jest@npm:26.6.3"
   dependencies:
