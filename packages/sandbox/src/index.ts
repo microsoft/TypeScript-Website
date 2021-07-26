@@ -215,13 +215,6 @@ export const createTypeScriptSandbox = (
   config.logger.log("[Compiler] Set compiler options: ", compilerOptions)
   defaults.setCompilerOptions(compilerOptions)
 
-  // Grab types last so that it logs in a logical way
-  if (config.acquireTypes) {
-    // Take the code from the editor right away
-    const code = editor.getModel()!.getValue()
-    detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
-  }
-
   // To let clients plug into compiler settings changes
   let didUpdateCompilerSettings = (opts: CompilerOptions) => {}
 
