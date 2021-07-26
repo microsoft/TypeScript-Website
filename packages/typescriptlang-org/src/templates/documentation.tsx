@@ -21,6 +21,7 @@ import { Contributors } from "../components/handbook/Contributors"
 import { overrideSubNavLinksWithSmoothScroll, updateSidebarOnScroll } from "./scripts/setupSubNavigationSidebar"
 import { setupLikeDislikeButtons } from "./scripts/setupLikeDislikeButtons"
 import { DislikeUnfilledSVG, LikeUnfilledSVG } from "../components/svgs/documentation"
+import { Popup, useQuickInfoPopup } from "../components/Popup"
 import Helmet from "react-helmet"
 
 type Props = {
@@ -44,6 +45,9 @@ const HandbookTemplate: React.FC<Props> = (props) => {
     console.log("Could not render:", JSON.stringify(props))
     return <div></div>
   }
+
+  // Note: This can, and does, change triggering re-renders
+  const showPopup = useQuickInfoPopup(props.pageContext.lang)
 
   const [deprecationURL, setDeprecationURL] = useState(post.frontmatter!.deprecated_by)
 
@@ -174,6 +178,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
           <Contributors lang={props.pageContext.lang} i={i} path={props.pageContext.repoPath} lastEdited={props.pageContext.modifiedTime} />
         </div>
       </section>
+    <Popup {...showPopup}/>
     </Layout>
   )
 }

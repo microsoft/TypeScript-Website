@@ -79,6 +79,7 @@ static/js/playground/
 !static/js/playground/.gitkeep
 static/js/examples/
 !static/js/examples/.gitkeep
+static/js/json
 
 .now
 
