@@ -59,7 +59,6 @@
     "sass": "^1.26.10",
     "ts-debounce": "^2.2.0",
     "ts-node": "^8.6.2",
-    "twoslash-cli": "^1.2.15",
     "typescript": "*",
     "xml-js": "^1.6.11"
   },

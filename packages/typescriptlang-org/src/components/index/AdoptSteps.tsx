@@ -11,7 +11,7 @@ function compact(arr) {
     return arr
 }`.trim()
 
-const two =` 
+const two =`
 // @ts-check
 
 function compact(arr) {
