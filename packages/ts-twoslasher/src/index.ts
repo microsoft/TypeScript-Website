@@ -232,6 +232,22 @@ function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: Comp
   return options
 }
 
+function filterCustomTags(codeLines: string[], customTags: string[]) {
+  const tags: TwoSlashReturn["tags"] = []
+
+  for (let i = 0; i < codeLines.length; ) {
+    let match
+    if ((match = valuedConfigRegexp.exec(codeLines[i]))) {
+      if (customTags.includes(match[1])) {
+        tags.push({ name: match[1], line: i, annotation: codeLines[i].split("@" + match[1] + ": ")[1] })
+        codeLines.splice(i, 1)
+      }
+    }
+    i++
+  }
+  return tags
+}
+
 /** Available inline flags which are not compiler flags */
 export interface ExampleOptions {
   /** Lets the sample suppress all error diagnostics */
@@ -352,6 +368,16 @@ export interface TwoSlashReturn {
     completionsPrefix?: string
   }[]
 
+  /** The extracted twoslash commands for any custom tags passed in via customTags */
+  tags: {
+    /** What was the name of the tag */
+    name: string
+    /** Where was it located in the original source file */
+    line: number
+    /** What was the text after the `// @tag: ` string  (optional because you could do // @tag on it's own line without the ':') */
+    annotation?: string
+  }[]
+
   /** Diagnostic error messages which came up when creating the program */
   errors: {
     renderedMessage: string
@@ -392,6 +418,9 @@ export interface TwoSlashOptions {
 
   /** The cwd for the folder which the virtual fs should be overlaid on top of when using local fs, opts to process.cwd() if not present */
   vfsRoot?: string
+
+  /** A set of known `// @[tags]` tags to extract and not treat as a comment */
+  customTags?: string[]
 }
 
 /**
@@ -423,9 +452,10 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
 
   code = cleanMarkdownEscaped(code)
 
-  // This is mutated as the below functions pull out info
+  // NOTE: codeLines is mutated by the below functions:
   const codeLines = code.split(/\r\n?|\n/g)
 
+  let tags: TwoSlashReturn["tags"] = options.customTags ? filterCustomTags(codeLines, options.customTags) : []
   const handbookOptions = { ...filterHandbookOptions(codeLines), ...options.defaultOptions }
   const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions, ts)
 
@@ -775,6 +805,9 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
 
     queries.forEach(q => (q.line -= lineOffset))
     queries = queries.filter(q => q.line > -1)
+
+    tags.forEach(q => (q.line -= lineOffset))
+    tags = tags.filter(q => q.line > -1)
   }
 
   return {
@@ -785,6 +818,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     staticQuickInfos,
     errors,
     playgroundURL,
+    tags,
   }
 }
 

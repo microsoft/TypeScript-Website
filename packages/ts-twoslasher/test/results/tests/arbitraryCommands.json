@@ -1,0 +1,74 @@
+{
+  "code": "// The testing infra has set up `annotate` to be a customTag\n\n// @annotate - left - You can use JSDoc comments to provide type information to your editor\nfunction compact(arr: string[]) {\n  if (arr.length > 10) return arr.length\n  // @annotate - right - You can use JSDoc comments to provide type information to your editor\n  return arr\n}\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [],
+  "staticQuickInfos": [
+    {
+      "text": "function compact(arr: string[]): number | string[]",
+      "docs": "",
+      "start": 163,
+      "length": 7,
+      "line": 3,
+      "character": 9,
+      "targetString": "compact"
+    },
+    {
+      "text": "(parameter) arr: string[]",
+      "docs": "",
+      "start": 171,
+      "length": 3,
+      "line": 3,
+      "character": 17,
+      "targetString": "arr"
+    },
+    {
+      "text": "(parameter) arr: string[]",
+      "docs": "",
+      "start": 194,
+      "length": 3,
+      "line": 4,
+      "character": 6,
+      "targetString": "arr"
+    },
+    {
+      "text": "(property) Array<string>.length: number",
+      "docs": "Gets or sets the length of the array. This is a number one higher than the highest index in the array.",
+      "start": 198,
+      "length": 6,
+      "line": 4,
+      "character": 10,
+      "targetString": "length"
+    },
+    {
+      "text": "(parameter) arr: string[]",
+      "docs": "",
+      "start": 218,
+      "length": 3,
+      "line": 4,
+      "character": 30,
+      "targetString": "arr"
+    },
+    {
+      "text": "(property) Array<string>.length: number",
+      "docs": "Gets or sets the length of the array. This is a number one higher than the highest index in the array.",
+      "start": 222,
+      "length": 6,
+      "line": 4,
+      "character": 34,
+      "targetString": "length"
+    },
+    {
+      "text": "(parameter) arr: string[]",
+      "docs": "",
+      "start": 333,
+      "length": 3,
+      "line": 6,
+      "character": 9,
+      "targetString": "arr"
+    }
+  ],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEBUAsFNQF2gZzgSwHYHNToGYCcBDUSAxURaOUAVwAdQADAtNAezgIQfldACNYRAMbVkrALbgCGAFAyQoAALM2HBKAC0oADbQcVLQE1W1UEOY0KoAFIBlACKshZieOho4ZOL1p5WANxQAE1g4AE9aWFxWPHFOFFY0HlAwkzxQaCCUbzwZHGo0IVREl3FaAiKACgI8PAAucjg8dAwAbQBdAEpQAG8ZUGwcUGragDpdTDhIUAA+UABGAAZuvEpqPCSavHH3DCn+0AVlFnZOWC1mjEgDUGNTcyTRWDtHZyFXd09k3wDg0IiomgcDE4sUkt4UmkMlkcgdVnB1ptajIAL4yIA",
+  "tags": []
+}

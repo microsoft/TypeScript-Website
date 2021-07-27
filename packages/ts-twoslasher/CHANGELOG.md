@@ -1,3 +1,15 @@
+## 2.2.0
+
+- Adds a new parameter to the twoslash config: `customTags`. This can be used to tell twoslash that you want to handle a specific `@tag` in the code sample. It comes out in the `tags` in `TwoSlashReturn`.
+
+Prior to this change, any `// @something` which wasn't already in `ExampleOptions` would be passed to the TS compiler (maybe causing an exception if it's not a compiler option.) Now you can tell twoslash "I want to do something with this tag, let it through" 
+
+The use-case I'm thinking of is that shiki-twoslash may want to have it's own commands which sit on-top of twoslash, but I want to make sure that the internals of twoslash are all aligned correctly (think `--cut--` and the complex multi-file LSP logic) under the hood.
+
+## 2.1.0
+
+All "expected" errors from Twoslash are of the type `TwoslashError` which extends `Error`. This means you can catch the error and check its type, if it's a Twoslash error then it's something you can treat differently. In this case, that's being able to present a UI for those errors in shiki-twoslash as opposed to a critical process-ending exception.
+
 ## 2.0.0
 
 - Removes HTML encoding from the Twoslash error rendered results. It's really not the responsibility of Twoslash to do that. I'm classing this as a major semver as folks could be relying on this behavior (all the shiki-twoslash stuff does for example.)
