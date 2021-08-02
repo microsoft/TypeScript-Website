@@ -1,9 +1,9 @@
 name: Monday Website Push To Production
 
 on:
-  schedule:
+  # schedule:
     # https://crontab.guru/#0_12_*_*_1
-    - cron: "0 12 * * 1"
+    # - cron: "0 12 * * 1"
   workflow_dispatch:
 
 jobs:
