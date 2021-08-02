@@ -256,6 +256,11 @@ $headline-foreground-bg: #104261;
 
       position: absolute;
 
+      .min-light,
+      .min-dark {
+        display: none;
+      }
+
       &.front {
         // @media (min-width: 1000px) {
         // right: 40px;
@@ -405,7 +410,7 @@ $headline-foreground-bg: #104261;
           font-family: $font-code;
           font-size: 0.8rem;
           line-height: 0.95rem;
-          white-space: pre;
+          // white-space: pre;
           flex-shrink: 1;
           flex-grow: 1;
           overflow-x: scroll;

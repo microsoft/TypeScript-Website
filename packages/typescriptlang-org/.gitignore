@@ -93,3 +93,6 @@ static/assets/typescript-handbook.pdf
 # Handled by @oss-docs/sync
 src/copy/*
 !src/copy/en
+
+# The HTML files aren't useful
+src/components/index/twoslash/generated/*.html

@@ -1,7 +1,7 @@
 {
   "name": "Dark (Visual Studio)",
   "tokenColors": [
-    { "settings": { "foreground": "#D4D4D4", "background": "#1E1E1E" } },
+    { "settings": { "foreground": "#D4D4D4", "background": "#00273f" } },
     {
       "scope": ["meta.embedded", "source.groovy.embedded"],
       "settings": { "foreground": "#D4D4D4" }
@@ -179,7 +179,7 @@
     },
     {
       "scope": ["entity.name.type.alias.ts", "entity.name.type.ts"],
-      "settings": { "foreground": "#800000" }
+      "settings": { "foreground": "#ffee11" }
     }
   ]
 }
