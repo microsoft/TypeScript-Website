@@ -125,12 +125,6 @@ pre code a {
   text-decoration: none;
 }
 
-pre data-err {
-  background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 3' enable-background='new 0 0 6 3' height='3' width='6'%3E%3Cg fill='%23c94824'%3E%3Cpolygon points='5.5,0 2.5,3 1.1,3 4.1,0'/%3E%3Cpolygon points='4,0 6,2 6,0.6 5.4,0'/%3E%3Cpolygon points='0,2 1,3 2.4,3 0,0.6'/%3E%3C/g%3E%3C/svg%3E")
-    repeat-x 0 100%;
-  padding-bottom: 3px;
-}
-
 pre .query {
   margin-bottom: 10px;
   color: #137998;
