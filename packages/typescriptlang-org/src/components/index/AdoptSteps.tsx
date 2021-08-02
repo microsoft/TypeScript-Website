@@ -1,42 +1,13 @@
 import React from "react"
+import {Code as Index1} from "./twoslash/generated/IndexGetStarted1.js"
+import {Code as Index2} from "./twoslash/generated/IndexGetStarted2.js"
+import {Code as Index3} from "./twoslash/generated/IndexGetStarted3.js"
+import {Code as Index4} from "./twoslash/generated/IndexGetStarted4"
 
 type StepProps = {
     i: (str: any) => string
 }
 
-const one =`
-function compact(arr) {
-    if (orr.length > 10)
-        return arr.trim(0, 10)
-    return arr
-}`.trim()
-
-const two =`
-// @ts-check
-
-function compact(arr) {
-  if (orr.length > 10)
-    return arr.trim(0, 10)
-  return arr
-}`.trim()
-    
-const three =`
-// @ts-check
-
-/** @param {any[]} arr */
-function compact(arr) {
-  if (arr.length > 10)
-    return arr.trim(0, 10)
-  return arr
-}`.trim()
-
-const four = `
-function compact(arr: string[]) {
-    if (arr.length > 10)
-      return arr.slice(0, 10)
-    return arr
-}`.trim()
-    
 const Stepper = (props: { index: number }) => {
     return <div className="adopt-step-stepper">
         <div className={"first" + (props.index === 0 ? " yellow" : "") }></div>
@@ -50,7 +21,7 @@ const Stepper = (props: { index: number }) => {
 export const StepOne = (props: StepProps) => {
     return (
         <div className="adopt-step">
-            <pre><code>{one}</code></pre>
+            <Index1 />
             <p>JavaScript File</p>
             <Stepper index={0} />
         </div>
@@ -60,7 +31,7 @@ export const StepOne = (props: StepProps) => {
 export const StepTwo = (props: StepProps) => {
     return (
         <div className="adopt-step">
-            <pre><code>{one}</code></pre>
+            <Index2 />
             <p>JavaScript with TS Check</p>
             <Stepper index={1} />
         </div>
@@ -70,7 +41,7 @@ export const StepTwo = (props: StepProps) => {
 export const StepThree = (props: StepProps) => {
     return (
         <div className="adopt-step">
-            <pre><code>{one}</code></pre>
+            <Index3 />
             <p>JavaScript with JSDoc</p>
             <Stepper index={2} />
         </div>
@@ -80,7 +51,7 @@ export const StepThree = (props: StepProps) => {
 export const StepFour = (props: StepProps) => {
     return (
         <div className="adopt-step">
-            <pre><code>{one}</code></pre>
+            <Index4 />
             <p>TypeScript File</p>
             <Stepper index={3} />
         </div>

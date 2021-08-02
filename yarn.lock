@@ -5379,7 +5379,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript/twoslash@2.2.0, @typescript/twoslash@workspace:packages/ts-twoslasher":
+"@typescript/twoslash@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@typescript/twoslash@npm:2.2.0"
+  dependencies:
+    "@typescript/vfs": 1.3.4
+    debug: ^4.1.1
+    lz-string: ^1.4.4
+  checksum: fac5b861c8f0249c6828f0493f0065fa110bf60ad58a87e351f457524ab1c9caddb03f4e44a980ca5381019daf1629a589e0291d0505082779b77393b4ad3a82
+  languageName: node
+  linkType: hard
+
+"@typescript/twoslash@workspace:packages/ts-twoslasher":
   version: 0.0.0-use.local
   resolution: "@typescript/twoslash@workspace:packages/ts-twoslasher"
   dependencies:
@@ -23658,6 +23669,23 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"remark-shiki-twoslash@npm:2.0.5":
+  version: 2.0.5
+  resolution: "remark-shiki-twoslash@npm:2.0.5"
+  dependencies:
+    "@typescript/twoslash": 2.2.0
+    "@typescript/vfs": 1.3.4
+    fenceparser: ^1.1.0
+    regenerator-runtime: ^0.13.7
+    shiki: 0.9.3
+    shiki-twoslash: 2.1.3
+    tslib: 2.1.0
+    typescript: ">3"
+    unist-util-visit: ^2.0.0
+  checksum: f72c8f80369076320775cddcaedcb7e0e73f09a79d813405fcc90b199ad7a3b41967d105bb1815755a58e2e65ad0638ce0a6f28b357e81917afe03a05234abc0
+  languageName: node
+  linkType: hard
+
 "remark-stringify@npm:^7.0.0":
   version: 7.0.4
   resolution: "remark-stringify@npm:7.0.4"
@@ -24907,6 +24935,18 @@ resolve@^2.0.0-next.3:
     shiki: 0.9.3
     typescript: ">3"
   checksum: 0ec7c9a10b1bb11444f76d0fce381a047fc5eeef42ee533116ac457731535e30e1068bf42d8bbfb4818b3db7f0a0cc8ed29d95cdaa7bfeca432226067627e71d
+  languageName: node
+  linkType: hard
+
+"shiki-twoslash@npm:2.1.3":
+  version: 2.1.3
+  resolution: "shiki-twoslash@npm:2.1.3"
+  dependencies:
+    "@typescript/twoslash": 2.2.0
+    "@typescript/vfs": 1.3.4
+    shiki: 0.9.3
+    typescript: ">3"
+  checksum: 5c66e16db2c0c27be9b80d711c45e5578771bfc88fb8be4286aad510e185b638758295ef587f3fdd5427171adfb052d05c74740038fb495071f537e21c0126b9
   languageName: node
   linkType: hard
 
@@ -26949,21 +26989,21 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"twoslash-cli@npm:^1.3.2":
-  version: 1.3.2
-  resolution: "twoslash-cli@npm:1.3.2"
+"twoslash-cli@npm:^1.3.3":
+  version: 1.3.3
+  resolution: "twoslash-cli@npm:1.3.3"
   dependencies:
     chokidar: ^3.5.2
     commander: ^7.2.0
     hast-util-to-html: ^7.1.2
     mdast-util-to-hast: ^10.0.0
     remark: ^13.0.0
-    remark-shiki-twoslash: 2.0.4
+    remark-shiki-twoslash: 2.0.5
     unist-util-visit: ^3.1.0
   bin:
     twoslash: bin/twoslash.js
     twoslash-cli: bin/twoslash.js
-  checksum: 0aa62ab7d60ba638d5a9aae481fd3cbd31e3feee87a52d284b54c914139bbfd7a80ea86f2a0190dd3b84bb8d89c4fd1919dbd1c7fcdb4935ab1e34426d3f380f
+  checksum: a018fa8319872e36ae97a76e1d6ac268b429f32ab80c35939429fc9a8326728036c9d3e64d546d7acac647f99b5734728a2f3e296975d176745b11d7fba3fd94
   languageName: node
   linkType: hard
 
@@ -27148,7 +27188,7 @@ resolve@^2.0.0-next.3:
     ts-debounce: ^2.2.0
     ts-jest: ^26.4.4
     ts-node: ^8.6.2
-    twoslash-cli: ^1.3.2
+    twoslash-cli: ^1.3.3
     typescript: "*"
     xml-js: ^1.6.11
   languageName: unknown

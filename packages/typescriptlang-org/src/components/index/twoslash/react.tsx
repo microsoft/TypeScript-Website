@@ -1,4 +1,4 @@
-// twoslash: { themes: ["min-dark", "../../../packages/typescriptlang-org/lib/themes/typescript-beta-dark"] }
+// twoslash: { themes: ["min-dark", "../../../packages/typescriptlang-org/lib/themes/typescript-beta-dark"], disableImplicitReactImport: true  }
 import * as React from "react";
 
 interface UserThumbnailProps {

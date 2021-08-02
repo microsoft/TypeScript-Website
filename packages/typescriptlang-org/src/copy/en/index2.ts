@@ -18,6 +18,7 @@ export const indexCopy = {
   // Quick pitch
   index_2_what_is: "What is TypeScript?",
   index_2_what_is_js: "JavaScript and More",
+
   index_2_what_is_js_copy: `TypeScript adds additional syntax to JavaScript to support a <strong>tighter integration with your editor</strong>. Catch errors early in your editor.`,
   index_2_trust: "A Result You Can Trust",
   index_2_trust_copy: `TypeScript code converts to JavaScript which <strong>runs anywhere JavaScript runs</strong>: In a browser, on Node.js or Deno and in your apps.`,
@@ -57,7 +58,7 @@ export const indexCopy = {
   // Adopt TS gradually animations
   index_2_adopt: "Adopt TypeScript Gradually",
   index_2_adopt_blurb_1:
-    "Apply types to your JavaScript project incrementally, <strong>each step improves editor support</strong> and tightens your codebase.",
+    "Apply types to your JavaScript project incrementally, <strong>each step improves editor support</strong> and improves your codebase.",
   index_2_adopt_blurb_2:
     "Lets take this this incorrect JavaScript code, and see how <strong>TypeScript can catch mistakes in your editor</strong>.",
 

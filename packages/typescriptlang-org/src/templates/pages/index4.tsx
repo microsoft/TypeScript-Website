@@ -17,6 +17,14 @@ import "../pages/css/documentation.scss"
 import { createIntlLink } from "../../components/IntlLink"
 import { AboveTheFold } from "../../components/index/AboveTheFold2"
 
+import {Code as Grad1} from "../../components/index/twoslash/generated/IndexAdoptGrad1"
+import {Code as Grad2} from "../../components/index/twoslash/generated/IndexAdoptGrad2"
+
+import {Code as Del1} from "../../components/index/twoslash/generated/Index2Del1TS"
+import {Code as Del2} from "../../components/index/twoslash/generated/Index2Del2RM"
+import {Code as Del3} from "../../components/index/twoslash/generated/Index2Del3JS.js"
+
+
 const Section = (props: { children: any, color: string, className?: string }) =>
   <div key={props.color} className={props.color + " " + (props.className ?? "")}><div className="container">{props.children}</div></div>
 
@@ -136,25 +144,10 @@ const Index: React.FC<Props> = (props) => {
                     <P ikey="index_2_describe_blurb2" />
                 </Col>
                 <Col key='ex1'>
-                    <pre><code>{`interface UserAccount {
-  id: number
-  displayName: string
-}
-
-function welcome(user: UserAccount) {
-  console.log(user.id)
-}`}</code></pre>
+                  <Grad1 />
                 </Col>
                 <Col key='ex2'>
-                <pre><code>{`type Result = “pass” | “fail”
-
-function process(result: Result) {
-  if (result === “pass”) {
-    console.log(“Passed”)
-  } else {
-    console.log(“Failed”)
-  }
-}`}</code></pre>
+                  <Grad2 />
                 </Col>
             </Row>
         </Section>
@@ -164,43 +157,18 @@ function process(result: Result) {
             <h2 id='via-delete-key'>{i("index_2_transform")}</h2>
             <Row>
                 <Col key='title'>
-                 <pre><code>{`type Result = “pass” | “fail”
-
-function process(result: Result) {
-  if (result === “pass”) {
-    console.log(“Passed”)
-  } else {
-    console.log(“Failed”)
-  }
-}`}</code></pre>
-                    <P ikey="index_2_transform_1"/>
-
+                  <Del1 />
+                  <P ikey="index_2_transform_1"/>
                 </Col>
-                <Col key='ex1'>
-                    <pre><code>{`type Result = “pass” | “fail”
 
-function process(result: Result) {
-  if (result === “pass”) {
-    console.log(“Passed”)
-  } else {
-    console.log(“Failed”)
-  }
-}`}</code></pre>
+                <Col key='ex1'>
+                    <Del2 />
                     <P ikey="index_2_transform_2"/>
                 </Col>
 
                 <Col key='ex2'>
-                <pre><code>{`
-
-function process(result) {
-  if (result === “pass”) {
-    console.log(“Passed”)
-  } else {
-    console.log(“Failed”)
-  }
-}`}</code></pre>
-                    <P ikey="index_2_transform_3"/>
-
+                  <Del3 />
+                  <P ikey="index_2_transform_3"/>
                 </Col>
             </Row>
         </Section>
