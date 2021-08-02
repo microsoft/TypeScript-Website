@@ -4,10 +4,11 @@
   "highlights": [
     {
       "kind": "highlight",
-      "position": 134,
+      "offset": 134,
       "length": 10,
-      "description": "",
-      "line": 5
+      "text": "",
+      "line": 4,
+      "start": 18
     }
   ],
   "queries": [],

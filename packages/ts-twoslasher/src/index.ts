@@ -55,13 +55,7 @@ type PartialCompletionResults = {
   file: string
 }
 
-type HighlightPosition = {
-  kind: "highlight"
-  position: number
-  length: number
-  description: string
-  line: number
-}
+type HighlightPosition = TwoSlashReturn["highlights"][number]
 
 export class TwoslashError extends Error {
   public title: string
@@ -131,9 +125,16 @@ function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosit
       } else if (highlightMatch !== null) {
         const start = line.indexOf("^")
         const length = line.lastIndexOf("^") - start + 1
-        const position = contentOffset + start
         const description = highlightMatch[1] ? highlightMatch[1].trim() : ""
-        highlights.push({ kind: "highlight", position, length, description, line: i })
+        highlights.push({
+          kind: "highlight",
+          offset: start + contentOffset,
+          length,
+          text: description,
+          line: i + removedLines - 1,
+          start,
+        })
+
         stripLine("having a highlight")
       } else if (removePrettierIgnoreMatch !== null) {
         stripLine("being a prettier ignore")
@@ -320,13 +321,19 @@ export interface TwoSlashReturn {
   /** The new extension type for the code, potentially changed if they've requested emitted results */
   extension: string
 
-  /** Sample requests to highlight a particular part of the code */
+  /** Requests to highlight a particular part of the code */
   highlights: {
     kind: "highlight"
-    position: number
-    length: number
-    description: string
+    /** The index of the text in the file */
+    start: number
+    /** What line is the highlighted identifier on? */
     line: number
+    /** At what index in the line does the caret represent  */
+    offset: number
+    /** The text of the token which is highlighted */
+    text?: string
+    /** The length of the token */
+    length: number
   }[]
 
   /** An array of LSP responses identifiers in the sample  */
@@ -797,11 +804,11 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     errors = errors.filter(e => e.start && e.start > -1)
 
     highlights.forEach(highlight => {
-      highlight.position -= cutIndex
+      highlight.start -= cutIndex
       highlight.line -= lineOffset
     })
 
-    highlights = highlights.filter(e => e.position > -1)
+    highlights = highlights.filter(e => e.start > -1)
 
     queries.forEach(q => (q.line -= lineOffset))
     queries = queries.filter(q => q.line > -1)
