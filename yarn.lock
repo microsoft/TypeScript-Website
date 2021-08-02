@@ -5379,7 +5379,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript/twoslash@2.1.0, @typescript/twoslash@workspace:packages/ts-twoslasher":
+"@typescript/twoslash@2.2.0, @typescript/twoslash@workspace:packages/ts-twoslasher":
   version: 0.0.0-use.local
   resolution: "@typescript/twoslash@workspace:packages/ts-twoslasher"
   dependencies:
@@ -13543,14 +13543,14 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"gatsby-remark-shiki-twoslash@npm:3.0.14, gatsby-remark-shiki-twoslash@npm:^3.0.14":
-  version: 3.0.14
-  resolution: "gatsby-remark-shiki-twoslash@npm:3.0.14"
+"gatsby-remark-shiki-twoslash@npm:3.0.17, gatsby-remark-shiki-twoslash@npm:^3.0.17":
+  version: 3.0.17
+  resolution: "gatsby-remark-shiki-twoslash@npm:3.0.17"
   dependencies:
-    remark-shiki-twoslash: 2.0.1
+    remark-shiki-twoslash: 2.0.4
     typescript: ">3"
     unist-util-visit: ^2.0.0
-  checksum: 5cb81c2aaf5429b4a58bcf0e85f01eec340b256f945178c1cb3876e7afec5f8a02f89b9b3c714a2c259a27e79f41efdd186e181b40d868eeb1d49e2a3075c471
+  checksum: 3895dd468b78100ce4409c27f9e04a98202b8ee462fbd4904277d6e8657c873e0e139cd64d4e05d7161b3aaffb30b3919d461d1c74381d4f9b111abc386c18d3
   languageName: node
   linkType: hard
 
@@ -14551,7 +14551,7 @@ fsevents@^1.2.7:
   resolution: "handbook-epub@workspace:packages/handbook-epub"
   dependencies:
     fs-jetpack: ^2.4.0
-    gatsby-remark-shiki-twoslash: 3.0.14
+    gatsby-remark-shiki-twoslash: 3.0.17
     playwright: ^1.9.1
     sass: "*"
     streampub: "https://github.com/orta/streampub-1.git#ibooks"
@@ -14876,13 +14876,6 @@ fsevents@^1.2.7:
     xtend: ^4.0.0
     zwitch: ^1.0.0
   checksum: b974907c87bfef66b0205f72ba06ca08d3b5eab702b0e60c59d266bf94e33525327d5e159e15c36658e2f0b06467eddf361391b3ef7df78b9ee9214f5ddf04da
-  languageName: node
-  linkType: hard
-
-"hast-util-to-string@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "hast-util-to-string@npm:1.0.2"
-  checksum: 46aa13da211298242c1ceeaa8e7b819dac7796ee7d4ed4508026f0878a9eb153dd4922d64c36e8b5ad853dc0e5ddcee91253948097557af92189243ba58b7fe0
   languageName: node
   linkType: hard
 
@@ -20627,7 +20620,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"onigasm@npm:^2.2.1, onigasm@npm:^2.2.5":
+"onigasm@npm:^2.2.5":
   version: 2.2.5
   resolution: "onigasm@npm:2.2.5"
   dependencies:
@@ -23441,19 +23434,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"rehype-shiki@npm:^0.0.7":
-  version: 0.0.7
-  resolution: "rehype-shiki@npm:0.0.7"
-  dependencies:
-    hast-util-to-string: ^1.0.2
-    shiki: ^0.1.6
-    shiki-languages: ^0.1.6
-    unist-builder: ^2.0.2
-    unist-util-visit: ^2.0.1
-  checksum: d8627c151dabec43ce303b3e94608940c45265cc9cf9514753306f1836a0e8df7f6631cbe1b0744b26c29b8360fb978fd5f54de9c7e8eddca5b5ff901a8a76f6
-  languageName: node
-  linkType: hard
-
 "relay-compiler@npm:10.1.0":
   version: 10.1.0
   resolution: "relay-compiler@npm:10.1.0"
@@ -23614,20 +23594,20 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"remark-shiki-twoslash@npm:2.0.1":
-  version: 2.0.1
-  resolution: "remark-shiki-twoslash@npm:2.0.1"
+"remark-shiki-twoslash@npm:2.0.4":
+  version: 2.0.4
+  resolution: "remark-shiki-twoslash@npm:2.0.4"
   dependencies:
-    "@typescript/twoslash": 2.1.0
+    "@typescript/twoslash": 2.2.0
     "@typescript/vfs": 1.3.4
     fenceparser: ^1.1.0
     regenerator-runtime: ^0.13.7
     shiki: 0.9.3
-    shiki-twoslash: 2.0.3
+    shiki-twoslash: 2.1.2
     tslib: 2.1.0
     typescript: ">3"
     unist-util-visit: ^2.0.0
-  checksum: 9d1e1d289519eb68be08c5cbc537f76c6479edd937ba2bb78d77423e24a66bd05861500a1173dee8b05bd259126423feb17ff8af0c197faf43913206d6b591e3
+  checksum: 30607a0f796583564e4da5643d5c2d3819519cd8de68413b80b254340443f2a1c6c72cda85871ff937b306e13292b8a592fea41bae4b0f94735a9bf5fd5b20f7
   languageName: node
   linkType: hard
 
@@ -24871,34 +24851,15 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"shiki-languages@npm:^0.1.6":
-  version: 0.1.6
-  resolution: "shiki-languages@npm:0.1.6"
+"shiki-twoslash@npm:2.1.2":
+  version: 2.1.2
+  resolution: "shiki-twoslash@npm:2.1.2"
   dependencies:
-    vscode-textmate: "git+https://github.com/octref/vscode-textmate.git"
-  checksum: 12c0b8f4b5688747e9d1c5d53e6965030d7ba3b2a01892e22b75e8f9d71aa9d35b2d1e0fb0f0e9dff2f1a5d2bef5d132d934825cd26ade15d8aff73c91ee2bf8
-  languageName: node
-  linkType: hard
-
-"shiki-themes@npm:^0.1.5":
-  version: 0.1.5
-  resolution: "shiki-themes@npm:0.1.5"
-  dependencies:
-    json5: ^2.1.0
-    vscode-textmate: "https://github.com/octref/vscode-textmate"
-  checksum: a6b5b3df22cec99284f2e64bfdf347b1051b19210d1c0b9f516a542d44b7ecaa5d2ab220317705cf5fbc70eeecbe6bd52f034a15d832ecf000a91f13da761134
-  languageName: node
-  linkType: hard
-
-"shiki-twoslash@npm:2.0.3":
-  version: 2.0.3
-  resolution: "shiki-twoslash@npm:2.0.3"
-  dependencies:
-    "@typescript/twoslash": 2.1.0
+    "@typescript/twoslash": 2.2.0
     "@typescript/vfs": 1.3.4
     shiki: 0.9.3
     typescript: ">3"
-  checksum: 75d0c6c5b9f7e80c03808d2cc5dadec819905ee0683729ef2c5f65fe21e68a239b2a934b8b75e37133d2aa69fc6a3ce826fa02aa11bc1c98b0c6b5362bd75551
+  checksum: 0ec7c9a10b1bb11444f76d0fce381a047fc5eeef42ee533116ac457731535e30e1068bf42d8bbfb4818b3db7f0a0cc8ed29d95cdaa7bfeca432226067627e71d
   languageName: node
   linkType: hard
 
@@ -24909,18 +24870,6 @@ resolve@^2.0.0-next.3:
     onigasm: ^2.2.5
     vscode-textmate: ^5.2.0
   checksum: fce8084727491c496187abe5b8f831dbecdada11ebcc2861335a31fb7eb3d3ebceaf50aec2f2d855f76af626ddb66dabd860536e334b3cb9feff7e79d61ccde0
-  languageName: node
-  linkType: hard
-
-"shiki@npm:^0.1.6":
-  version: 0.1.6
-  resolution: "shiki@npm:0.1.6"
-  dependencies:
-    onigasm: ^2.2.1
-    shiki-languages: ^0.1.6
-    shiki-themes: ^0.1.5
-    vscode-textmate: "git+https://github.com/octref/vscode-textmate.git"
-  checksum: 6a03a993e2607acadf5d4c9349d13039c59f910672c859090f86e87df1c5951127e6258fb1ca1f10b440a546962dd6904f6a8a32d6644fcacfa62a35ccb3f947
   languageName: node
   linkType: hard
 
@@ -27097,7 +27046,7 @@ resolve@^2.0.0-next.3:
     "@types/react-helmet": ^5.0.15
     "@typescript/playground": 0.1.0
     "@typescript/sandbox": 0.1.0
-    "@typescript/twoslash": 2.1.0
+    "@typescript/twoslash": 2.2.0
     canvas: ^2.6.1
     concurrently: ^5.1.0
     gatsby: ^3.8.1
@@ -27119,7 +27068,7 @@ resolve@^2.0.0-next.3:
     gatsby-remark-emojis: ^0.4.3
     gatsby-remark-images: ^5.7.0
     gatsby-remark-responsive-iframe: ^4.7.0
-    gatsby-remark-shiki-twoslash: ^3.0.14
+    gatsby-remark-shiki-twoslash: ^3.0.17
     gatsby-remark-smartypants: ^4.7.0
     gatsby-source-filesystem: ^3.8.0
     gatsby-transformer-remark: ^4.7.0
@@ -27130,7 +27079,6 @@ resolve@^2.0.0-next.3:
     react-dom: ^16.14.0
     react-helmet: ^6.1.0
     react-intl: ^3.12.1
-    rehype-shiki: ^0.0.7
     sass: ^1.26.10
     ts-debounce: ^2.2.0
     ts-jest: ^26.4.4
@@ -27305,7 +27253,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"unist-builder@npm:^2.0.0, unist-builder@npm:^2.0.2":
+"unist-builder@npm:^2.0.0":
   version: 2.0.3
   resolution: "unist-builder@npm:2.0.3"
   checksum: 64f9231bac9050b65d8cb97bc64e93782f93551e4a6a4e75ff89f580fa92740520bbd9ec44b7917c29785d498a3f432c326c5f55bd44e8949b98f5f63b14ec44
@@ -27450,7 +27398,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"unist-util-visit@npm:^2.0.0, unist-util-visit@npm:^2.0.1, unist-util-visit@npm:^2.0.2, unist-util-visit@npm:^2.0.3":
+"unist-util-visit@npm:^2.0.0, unist-util-visit@npm:^2.0.2, unist-util-visit@npm:^2.0.3":
   version: 2.0.3
   resolution: "unist-util-visit@npm:2.0.3"
   dependencies:
@@ -27858,26 +27806,6 @@ resolve@^2.0.0-next.3:
   version: 1.1.2
   resolution: "vm-browserify@npm:1.1.2"
   checksum: fc571a62d2cf797ae8773ebb3cb0d2bea50ed02059e128dd9087975929fce4c80a6485ce1aaf7d44ef69db99dfdcde50b6be5d5eb73b296660d761c32fb544fe
-  languageName: node
-  linkType: hard
-
-"vscode-textmate@git+https://github.com/octref/vscode-textmate.git":
-  version: 4.0.1
-  resolution: "vscode-textmate@https://github.com/octref/vscode-textmate.git#commit=e65aabe2227febda7beaad31dd0fca1228c5ddf3"
-  peerDependencies:
-    onigasm: ^2.1.0
-    oniguruma: ^7.0.0
-  checksum: e23464b4975d4a1a2cc079bb4904cbd0a1479588a77c26f75f942dd29b5242dd936dc91f6fa017bc30b9931d153cc226cbc3f0f5e60317a64714691e9a9546e0
-  languageName: node
-  linkType: hard
-
-"vscode-textmate@https://github.com/octref/vscode-textmate":
-  version: 4.0.1
-  resolution: "vscode-textmate@https://github.com/octref/vscode-textmate.git#commit:e65aabe2227febda7beaad31dd0fca1228c5ddf3"
-  peerDependencies:
-    onigasm: ^2.1.0
-    oniguruma: ^7.0.0
-  checksum: e23464b4975d4a1a2cc079bb4904cbd0a1479588a77c26f75f942dd29b5242dd936dc91f6fa017bc30b9931d153cc226cbc3f0f5e60317a64714691e9a9546e0
   languageName: node
   linkType: hard
 
