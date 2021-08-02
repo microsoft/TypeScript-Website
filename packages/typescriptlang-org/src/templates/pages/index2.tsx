@@ -110,16 +110,16 @@ const Index: React.FC<Props> = (props) => {
           <Row>
             <Col key='js'>
               <p>JavaScript</p>
-              <JSExample />
+              <TSExample />
             </Col>
             <Col key='js2'>
               <p>JavaScript with Checks</p>
-              <JSCheckExample />
+              <TSExample />
             </Col>
           </Row><Row>
             <Col key='js-doc'>
               <p>Checked JS with JSDoc</p>
-              <JSDocExample />
+              <TSExample />
             </Col>
             <Col key='ts'>
               <p>TypeScript</p>

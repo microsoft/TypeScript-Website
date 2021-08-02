@@ -510,11 +510,17 @@ $headline-foreground-bg: white;
         background-position: right bottom;
         background-repeat: no-repeat;
       }
+      svg path {
+        stroke: white;
+      }
+
       &:active {
         background-color: #156fb4;
       }
-      svg path {
-        stroke: white;
+      &:hover {
+        border-width: 2px;
+        box-shadow: 0px 4px 20px -2px rgba(0, 0, 0, 0.25);
+        max-width: 246px;
       }
     }
 
@@ -523,8 +529,15 @@ $headline-foreground-bg: white;
       border: 1px solid #000000;
       color: black;
       height: 342px;
+
+      &:hover {
+        border-color: $ts-main-blue-color;
+        border-width: 2px;
+        box-shadow: 0px 4px 20px -2px rgba(0, 0, 0, 0.25);
+        max-width: 246px;
+      }
       &:active {
-        background: #eeeeee;
+        background-color: #eeeeee;
       }
     }
 
