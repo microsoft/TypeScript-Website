@@ -16,7 +16,7 @@ This mis-match causes these two issues:
 
 - while accurate to the ES6 modules spec, most libraries with CommonJS/AMD/UMD modules didn't conform as strictly as TypeScript's implementation.
 
-Turning on `esModuleInterop` will fix both of these problems in the code transpiled by TypeScript. The first changes the behavior in the compiler,the second is fixed by two new helper functions which provide a shim to ensure compatibility in the emitted JavaScript:
+Turning on `esModuleInterop` will fix both of these problems in the code transpiled by TypeScript. The first changes the behavior in the compiler, the second is fixed by two new helper functions which provide a shim to ensure compatibility in the emitted JavaScript:
 
 ```ts
 import * as fs from "fs";
