@@ -118,7 +118,8 @@ const Index: React.FC<Props> = props => {
                 const html = renderers.twoslashRenderer(
                   codeAsFakeShikiTokens,
                   {},
-                  newResults,
+                  // This is a hack because @typescript/twoslash gets released separately from remark-shiki-twoslash
+                  newResults as any,
                   {}
                 )
 
