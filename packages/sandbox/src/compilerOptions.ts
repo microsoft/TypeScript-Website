@@ -51,7 +51,7 @@ export function getDefaultSandboxCompilerOptions(config: SandboxConfig, monaco: 
     moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
 
     target: monaco.languages.typescript.ScriptTarget.ES2017,
-    jsx: monaco.languages.typescript.JsxEmit.React,
+    jsx: monaco.languages.typescript.JsxEmit.None,
     module: monaco.languages.typescript.ModuleKind.ESNext,
   }
 
