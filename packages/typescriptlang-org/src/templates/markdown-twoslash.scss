@@ -245,3 +245,32 @@ data-lsp {
     transition: none;
   }
 }
+
+.tag-container {
+  position: relative;
+
+  .twoslash-annotation {
+    position: absolute;
+    font-family: "JetBrains Mono", Menlo, Monaco, Consolas, Courier New,
+      monospace;
+
+    right: -210px;
+    width: 200px;
+    color: #187abf;
+
+    svg {
+      float: left;
+      margin-left: -44px;
+    }
+
+    &.left {
+      right: auto;
+      left: -200px;
+
+      svg {
+        float: right;
+        margin-right: -5px;
+      }
+    }
+  }
+}

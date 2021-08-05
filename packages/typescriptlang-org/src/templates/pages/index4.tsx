@@ -110,31 +110,27 @@ const Index: React.FC<Props> = (props) => {
             </Row>
         </Section>
         
-
-        <Section color="white">
-            <h2 id='adopt-gradually'>{i("index_2_started_title")}</h2>
-            <Row>
-                <Col key='start'>&nbsp;</Col>
-                <Col2 key='handbook'>
-                    <P ikey="index_2_adopt_blurb_1" />
-                </Col2>
-                <Col2 key='playground'>
-                    <P ikey="index_2_adopt_blurb_2" />
-                </Col2>
-                <Col key='end'>&nbsp;</Col>
-            </Row>
-            <Row>
-                <Col key='start'>&nbsp;</Col>
-                <Col key='main'>
-                    <Adopt.StepOne i={i} />
-                    <Adopt.StepTwo i={i} />
-                    <Adopt.StepThree i={i} />
-                    <Adopt.StepFour i={i} />
-                </Col>
-                <Col key='end'>&nbsp;</Col>
-            </Row>
-        </Section>
-
+        <div id="get-started" className="animate">
+          <Section color="white">
+              <h2 id='adopt-gradually'>{i("index_2_started_title")}</h2>
+              <Row>
+                  <Col2 key='handbook'>
+                      <P ikey="index_2_adopt_blurb_1" />
+                  </Col2>
+                  <Col2 key='playground'>
+                      <P ikey="index_2_adopt_blurb_2" />
+                  </Col2>
+              </Row>
+              <Row>
+                  <Col key='main'>
+                      <Adopt.StepOne i={i} />
+                      <Adopt.StepTwo i={i} />
+                      <Adopt.StepThree i={i} />
+                      <Adopt.StepFour i={i} />
+                  </Col>
+              </Row>
+          </Section>
+        </div>
 
         <Section color="light-grey">
             <Row>
@@ -265,4 +261,6 @@ const Installation = () => {
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Index {...props} /></Intl>
 
 
-const updateOnScroll = () => {}
+const updateOnScroll = () => {
+  const getStarted = document.getElementById("get-started")
+}

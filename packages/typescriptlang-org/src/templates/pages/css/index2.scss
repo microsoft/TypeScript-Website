@@ -167,8 +167,8 @@ $headline-foreground-bg: white;
     .col1 h3 {
       text-align: center;
     }
-    .col1 p,
-    .col2 p {
+    .col1 > p,
+    .col2 > p {
       font-size: 1.2rem;
     }
   }
@@ -984,16 +984,23 @@ $headline-foreground-bg: white;
 
   .adopt-step {
     margin-top: 80px;
+    max-width: 480px;
+    margin: 20px auto;
+
     pre {
       margin-bottom: 10px;
     }
-    p {
+
+    > p {
       font-weight: bold;
       margin: 10px 0;
-      font-size: 0.6rem;
+      font-size: 1rem;
     }
+
     .adopt-step-stepper {
       display: flex;
+      margin-bottom: 80px;
+
       div {
         border: 1px solid black;
         // width: 75px;
