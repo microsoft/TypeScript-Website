@@ -165,7 +165,11 @@ If you find a resource that uses TypeScript directly, that's great too, but don'
 
 This was a brief overview of the syntax and tools used in everyday TypeScript. From here, you can:
 
-- Learn some of the JavaScript fundamentals (the [JavaScript guide at the Mozilla Web Docs](https://developer.mozilla.org/docs/Web/JavaScript/Guide) is a good starting point.)
+- Learn some of the JavaScript fundamentals, we recommend either:
+
+  - [Microsoft's JavaScript Resources](https://docs.microsoft.com/en-us/javascript/) or
+  - [JavaScript guide at the Mozilla Web Docs](https://developer.mozilla.org/docs/Web/JavaScript/Guide)
+
 - Continue to [TypeScript for JavaScript Programmers](/docs/handbook/typescript-in-5-minutes.html)
 - Read the full Handbook [from start to finish](/docs/handbook/intro.html) (30m)
 - Explore the [Playground examples](/play#show-examples)
