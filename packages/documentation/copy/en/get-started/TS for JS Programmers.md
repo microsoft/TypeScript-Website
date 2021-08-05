@@ -128,7 +128,7 @@ With TypeScript, you can create complex types by combining simple ones. There ar
 
 ### Unions
 
-With a union, you can declare that a type could be one of many types. For example, you can describe a `boolean` type as being either `true` or `false`:
+With a union, you can declare that a type could be one of many values. For example, you can describe a `boolean` type as being either `true` or `false`:
 
 ```ts twoslash
 type MyBool = true | false;
