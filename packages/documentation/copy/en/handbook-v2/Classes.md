@@ -745,14 +745,18 @@ console.log(s.secretKey);
 `private` also allows access using bracket notation during type checking. This makes `private`-declared fields potentially easier to access for things like unit tests, with the drawback that these fields are _soft private_ and don't strictly enforce privacy.
 
 ```ts twoslash
+// @errors: 2341
 class MySafe {
   private secretKey = 12345;
 }
 
 const s = new MySafe();
 
-console.log(s.secretKey); // not allowed during type checking
-console.log(s["secretKey"]); // this is fine
+// Not allowed during type checking
+console.log(s.secretKey);
+
+// OK
+console.log(s["secretKey"]);
 ```
 
 Unlike TypeScripts's `private`, JavaScript's [private fields](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields) (`#`) remain private after compilation and do not provide the previously mentioned escape hatches like bracket notation access, making them _hard private_.
@@ -766,29 +770,28 @@ class Dog {
 }
 ```
 
-```js
-// After compilation...
+```ts twoslash
+// @target: esnext
+// @showEmit
 class Dog {
-  constructor() {
-    this.#barkAmount = 0;
-    this.personality = "happy";
-  }
-  #barkAmount;
+  #barkAmount = 0;
+  personality = "happy";
+
+  constructor() {}
 }
 ```
 
 When compiling to ES2021 or less, TypeScript will use WeakMaps in place of `#`.
 
-```js
-// After compilation to <=ES2021
-var _Dog_barkAmount;
+```ts twoslash
+// @target: es2015
+// @showEmit
 class Dog {
-  constructor() {
-    _Dog_barkAmount.set(this, 0);
-    this.personality = "happy";
-  }
+  #barkAmount = 0;
+  personality = "happy";
+
+  constructor() {}
 }
-_Dog_barkAmount = new WeakMap();
 ```
 
 If you need to protect values in your class from malicious actors, you should use mechanisms that offer hard runtime privacy, such as closures, WeakMaps, or private fields. Note that these added privacy checks during runtime could affect performance.
