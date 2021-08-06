@@ -26,7 +26,7 @@ export const indexCopy = {
   index_2_scale_copy: `TypeScript understands JavaScript and uses <strong>type inference to give you great tooling</strong> without additional code.`,
 
   // Links for getting started (this shows up twice)
-  index_2_started_title: "Get Started",
+  index_2_started_title: "Adopt TypeScript Gradually",
   index_2_started_handbook: "Handbook",
   index_2_started_handbook_blurb: "Learn the language",
   index_2_install: "Install TypeScript",
