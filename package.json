@@ -61,5 +61,6 @@
       "npm"
     ],
     "onlyPublishWithReleaseLabel": true
-  }
+  },
+  "packageManager": "yarn@3.0.0-rc.1"
 }
