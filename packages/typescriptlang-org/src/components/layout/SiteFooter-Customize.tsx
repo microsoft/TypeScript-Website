@@ -29,6 +29,11 @@ export const Customize = () => {
   // ->
   // CSS Body class: theme-dark, theme-light, theme-dark | theme-light 
 
+  React.useEffect(()=>{
+    setFont(customFontOverride)
+  },[customFontOverride])
+
+  
   const handleThemeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (event.target.value === "system") {
       systemIsDark ? makeDark() : makeLight()
