@@ -42,7 +42,6 @@ tsc app.ts util.ts --target esnext --outfile index.js
     <tr>
       <th>Flag</th>
       <th>Type</th>
-      
     </tr>
   </thead>
   <tbody>
