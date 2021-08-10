@@ -70,7 +70,7 @@ This is how the `node.d.ts` file that several of the TypeScript samples use is c
 
 ## Needless Namespacing
 
-If you're converting a program from namespaces to modules, it can be easy to end up with a file that looks like this:
+If you're converting a program from modules to namespaces, it can be easy to end up with a file that looks like this:
 
 - `shapes.ts`
 
