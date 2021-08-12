@@ -6,7 +6,7 @@
 
 const jetpack = require("fs-jetpack");
 const { createReadStream } = jetpack;
-const Streampub = require("streampub");
+const Streampub = require("@orta/streampub");
 
 import { copyFileSync, mkdirSync } from "fs";
 import { join } from "path";
