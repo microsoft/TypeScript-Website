@@ -1,6 +1,6 @@
 export const indexCopy = {
   index_2_headline:
-    "TypeScript is <bold>JavaScript with syntax for types.</bold>",
+    "TypeScript is <bold>JavaScript with types.</bold>",
   index_2_byline: "TypeScript extends JavaScript by adding types.",
   index_2_summary:
     "TypeScript is a strongly typed programming language which builds on JavaScript by adding syntax for describing types.",

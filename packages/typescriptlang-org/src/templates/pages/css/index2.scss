@@ -204,6 +204,14 @@ $headline-foreground-bg: white;
     display: flex;
     flex-direction: column;
     position: relative;
+
+    .half {
+      max-width: 780px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
   }
 
   .headline-diagram {
@@ -225,6 +233,10 @@ $headline-foreground-bg: white;
       width: 540px;
 
       position: absolute;
+
+      .min-dark {
+        display: none;
+      }
 
       &.front {
         // @media (min-width: 1000px) {
@@ -718,6 +730,9 @@ $headline-foreground-bg: white;
 
   .migrations {
     overflow: hidden;
+    #migration_title {
+      color: white;
+    }
   }
 
   .migrations .container {
@@ -729,7 +744,7 @@ $headline-foreground-bg: white;
     min-height: 370px;
 
     .controls a {
-      background-color: white;
+      background-color: #c4c4c4;
       width: 2rem;
       height: 2rem;
       color: black;
@@ -760,42 +775,22 @@ $headline-foreground-bg: white;
       }
     }
 
-    .slack {
-      .copy {
-        background: #4e086f;
-        background: linear-gradient(
-          90deg,
-          #4e086f 48%,
-          rgba(78, 8, 111, 0.28) 100%
-        );
-      }
+    .copy {
+      background: $ts-light-bg-sandy-color;
+      background: linear-gradient(
+        90deg,
+        $ts-light-bg-sandy-color 48%,
+        $ts-light-bg-sandy-color-20 100%
+      );
     }
 
     .airbnb {
-      .copy {
-        background: #6f0808;
-        background: linear-gradient(
-          90deg,
-          #6f0808 48%,
-          rgba(111, 8, 8, 0.28) 100%
-        );
-      }
-
       .fg {
         padding-top: 40px;
       }
     }
 
     .goog {
-      .copy {
-        background: #086f56;
-        background: linear-gradient(
-          90deg,
-          #086f56 48%,
-          rgba(8, 111, 86, 0.28) 100%
-        );
-      }
-
       .illustration .fg {
         padding-top: 40px;
       }
@@ -818,8 +813,8 @@ $headline-foreground-bg: white;
       }
 
       a.migration-button {
-        border: 1px solid white;
-        color: white;
+        border: 1px solid black;
+        color: black;
         text-decoration: none;
         text-align: center;
         width: 60%;
@@ -983,9 +978,9 @@ $headline-foreground-bg: white;
   }
 
   .adopt-step {
-    margin-top: 80px;
     max-width: 480px;
     margin: 20px auto;
+    margin-top: 120px;
 
     pre {
       margin-bottom: 10px;
@@ -1033,6 +1028,16 @@ $headline-foreground-bg: white;
           margin-left: 0;
         }
       }
+    }
+  }
+
+  // Convert the shiki CSS for highlighting to instead be red
+  .via-delete {
+    .highlight {
+      background-color: #fff1f1;
+    }
+    .dim {
+      opacity: 1;
     }
   }
 }

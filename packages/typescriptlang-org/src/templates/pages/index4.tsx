@@ -5,7 +5,7 @@ import { Intl } from "../../components/Intl"
 import { VersionBar } from "../../components/VersionBar"
 import * as Adopt from "../../components/index/AdoptSteps"
 
-import { MigrationStories, GitHubBar, OSS } from "../../components/index/MigrationStories"
+import { MigrationStories, GitHubBar, OSS } from "../../components/index/MigrationStories2"
 
 import { indexCopy } from "../../copy/en/index2"
 import { createInternational } from "../../lib/createInternational"
@@ -31,6 +31,7 @@ const Section = (props: { children: any, color: string, className?: string }) =>
 const Row = (props: { children: any, className?: string, key?: string }) => <div key={props.key} className={[props.className, "row"].join(" ")}>{props.children}</div>
 const Col = (props: { children: any, className?: string }) => <div className={[props.className, "col1"].join(" ")}>{props.children}</div>
 const Col2 = (props: { children: any }) => <div className="col2">{props.children}</div>
+const Half = (props: { children: any, className?: string }) => <div className={[props.className, "half"].join(" ")}>{props.children}</div>
 
 type Props = {
   pageContext: any
@@ -113,14 +114,15 @@ const Index: React.FC<Props> = (props) => {
         <div id="get-started" className="animate">
           <Section color="white">
               <h2 id='adopt-gradually'>{i("index_2_started_title")}</h2>
+              <Half>
               <Row>
-                  <Col2 key='handbook'>
-                      <P ikey="index_2_adopt_blurb_1" />
-                  </Col2>
-                  <Col2 key='playground'>
-                      <P ikey="index_2_adopt_blurb_2" />
-                  </Col2>
-              </Row>
+                    <Col key='handbook'>
+                        <P ikey="index_2_adopt_blurb_1" />
+                    </Col>
+                    <Col key='playground'>
+                        <P ikey="index_2_adopt_blurb_2" />
+                    </Col>
+                </Row>
               <Row>
                   <Col key='main'>
                       <Adopt.StepOne i={i} />
@@ -129,13 +131,14 @@ const Index: React.FC<Props> = (props) => {
                       <Adopt.StepFour i={i} />
                   </Col>
               </Row>
+            </Half>
           </Section>
         </div>
 
         <Section color="light-grey">
             <Row>
                 <Col key='title'>
-                    <h3 id='describe-your-data'>{i("index_2_adopt")}</h3>
+                    <h3 id='describe-your-data'>{i("index_2_describe")}</h3>
                     <P ikey="index_2_describe_blurb1" />
                     <P ikey="index_2_describe_blurb2" />
                 </Col>
@@ -149,7 +152,7 @@ const Index: React.FC<Props> = (props) => {
         </Section>
 
 
-        <Section color="white">
+        <Section color="white" className="via-delete">
             <h2 id='via-delete-key'>{i("index_2_transform")}</h2>
             <Row>
                 <Col key='title'>
@@ -169,7 +172,7 @@ const Index: React.FC<Props> = (props) => {
             </Row>
         </Section>
 
-        <Section color="purple" className="migrations">
+        <Section color="light-grey" className="migrations">
           <h2 id='migration_title'>{i("index_2_migration_title")}</h2>
           <div className="github-bar left">
             <GitHubBar left />
@@ -195,7 +198,7 @@ const Index: React.FC<Props> = (props) => {
             <div style={{ backgroundColor: "black", width: "1px" }} />
             <Col key='you'>
               <Row>
-                <div style={{ flex: 1 }}>
+                <div style={{  width: "160px", textAlign: "center" }}>
                   <img src={withPrefix("/images/index/state-of-js.svg")}/>
                 </div>
                 <div style={{ flex: 1 }}>
@@ -209,7 +212,7 @@ const Index: React.FC<Props> = (props) => {
 
 
         <Section color="blue">
-          <h2 id='get_started'>{i("index_2_started_title")}</h2>
+          <h2 id='get_started_blue'>{i("index_2_started_title")}</h2>
             <Row>
                 <Col key='handbook'>
                     <GetStarted href="/docs/handbook/intro.html" classes="short handbook" title="index_2_started_handbook" subtitle="index_2_started_handbook_blurb" />
