@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { indexCopy } from "../../copy/en/index";
+import { indexCopy } from "../../copy/en/index2";
 import { createInternational } from "../../lib/createInternational";
 import { useIntl } from "react-intl";
 import { Code as ShowErrorsExample } from "./twoslash/generated/showErrors";
@@ -44,21 +44,33 @@ export const EditorExamples = () => {
     return false;
   };
 
+  const tabs = () => (
+  <ul className="editor-tabs">
+    <li className={index === 0 ? "selected" : ""} ><a href="#">{i("index_2_tab_1")}</a></li>
+    <li className={index === 1 ? "selected" : ""} ><a href="#">{i("index_2_tab_2")}</a></li>
+    <li className={index === 2 ? "selected" : ""} ><a href="#">{i("index_2_tab_3")}</a></li>
+    <li className={index === 3 ? "selected" : ""} ><a href="#">{i("index_2_tab_4")}</a></li>
+    <li className={index === 4 ? "selected" : ""} ><a href="#">{i("index_2_tab_5")}</a></li>
+  </ul>
+  )
+
   return (
     <div className="headline-diagram">
+      
+
       <div className="slides">
         {{
           0: (
-            <Editor inline={() => <ShowErrorsExample />} />
+            <Editor inline={() => <ShowErrorsExample />} tabs={tabs} />
           ),
           1: (
-            <Editor inline={() => <TypeDefinitionsExample />} />
+            <Editor inline={() => <TypeDefinitionsExample />} tabs={tabs} />
           ),
           2: (
-            <Editor inline={() => <InterfaceExample />} />
+            <Editor inline={() => <InterfaceExample />} tabs={tabs} />
           ),
           3: (
-            <Editor inline={() => <ReactExample />} />
+            <Editor inline={() => <ReactExample />} tabs={tabs} />
           ),
         }[index]}
       </div>
@@ -91,15 +103,17 @@ export const EditorExamples = () => {
   );
 };
 
+// TODO: Feel free to refactor this out, as it's over abstracted nowadays
 
 type EditorProps = {
-  inline?: () => JSX.Element;
+  inline: () => JSX.Element;
+  tabs:() => JSX.Element
 };
-
 const Editor = (props: EditorProps) => {
   const classes = ["editor", "ts", "front"];
   return (
     <div className={classes.join(" ")}>
+        { props.tabs() }
         <div className="content">
           <div className="text">
             {props.inline && props.inline() || null}

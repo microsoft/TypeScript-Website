@@ -114,9 +114,10 @@ $headline-foreground-bg: white;
     line-height: 2.8rem;
     font-weight: 200;
     margin-top: 0;
+    padding-right: 40px;
 
     strong {
-      font-weight: 500;
+      font-weight: 600;
     }
   }
 
@@ -233,6 +234,25 @@ $headline-foreground-bg: white;
       width: 540px;
 
       position: absolute;
+
+      ul.editor-tabs {
+        display: flex;
+        flex-direction: row;
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        li {
+          list-style: none;
+          padding: 10px;
+          a {
+            text-decoration: none;
+            color: white;
+          }
+          &.selected {
+            text-decoration: underline;
+          }
+        }
+      }
 
       .min-dark {
         display: none;
@@ -377,11 +397,10 @@ $headline-foreground-bg: white;
         }
 
         .text {
-          // padding: 1rem;
           font-family: $font-code;
           font-size: 0.8rem;
           line-height: 0.95rem;
-          white-space: pre;
+
           flex-shrink: 1;
           flex-grow: 1;
           overflow-x: scroll;

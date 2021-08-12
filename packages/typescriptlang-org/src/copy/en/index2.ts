@@ -1,6 +1,6 @@
 export const indexCopy = {
   index_2_headline:
-    "TypeScript is <bold>JavaScript with types.</bold>",
+    "TypeScript is <bold>JavaScript with syntax for types.</bold>",
   index_2_byline: "TypeScript extends JavaScript by adding types.",
   index_2_summary:
     "TypeScript is a strongly typed programming language which builds on JavaScript by adding syntax for describing types.",
@@ -14,6 +14,13 @@ export const indexCopy = {
 
   index_2_cta_download: "To your computer",
   index_2_cta_download_subtitle: "Via npm",
+
+  // Editor titles
+  index_2_tab_1: "Editor Validation",
+  index_2_tab_2: "Auto-complete",
+  index_2_tab_3: "Interfaces",
+  index_2_tab_4: "JSX",
+  index_2_tab_5: "ESNext",
 
   // Quick pitch
   index_2_what_is: "What is TypeScript?",

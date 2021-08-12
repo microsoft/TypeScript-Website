@@ -60,9 +60,9 @@ export const AboveTheFold = () => {
             } />
         </div>
       </Col>
-      <Col2>
+      <Col>
         <EditorExamples />
-      </Col2>
+      </Col>
     </Row>)
   }
 

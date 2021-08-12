@@ -1,4 +1,4 @@
-// twoslash: { themes: ["min-dark", "min-light"] }
+// twoslash: { themes: ["min-dark", "../../../packages/typescriptlang-org/src/components/index/twoslash/homepage"] }
 // @errors: 2339
 // @ts-check
 
