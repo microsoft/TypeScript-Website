@@ -5933,7 +5933,7 @@ This was motivated by TypeScript's structural nature; the first and second eleme
 However, after examining real world usage of tuples, we noticed that most situations in which this was permitted was typically undesirable.
 
 In TypeScript 2.7, tuples of different arities are no longer assignable to each other.
-Thanks to a pull request from [Tycho Grouwstra](https://github.com/tycho01), tuple types now encode their arity into the type of their respective `length` property.
+Thanks to a pull request from [Kiara Grouwstra](https://github.com/KiaraGrouwstra), tuple types now encode their arity into the type of their respective `length` property.
 This is accomplished by leveraging numeric literal types, which now allow tuples to be distinct from tuples of different arities.
 
 Conceptually, you might consider the type `[number, string]` to be equivalent to the following declaration of `NumStrTuple`:

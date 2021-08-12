@@ -78,7 +78,7 @@ Because a function is also an object, then extra fields can be added and are inc
 
 ```js
 function getArrayLength(arr) {
-  return arr.slice;
+  return arr.length;
 }
 getArrayLength.maxInterval = 12;
 
