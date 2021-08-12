@@ -16,7 +16,7 @@
     "gatsby-remark-shiki-twoslash": "3.0.17",
     "playwright": "^1.9.1",
     "sass": "*",
-    "streampub": "https://github.com/orta/streampub-1.git#ibooks",
+    "streampub": "https://github.com/orta/streampub-1.git#81772569d0dfe84691bbca1ea55cf92f1bb56386",
     "ts-node": "*"
   }
 }
