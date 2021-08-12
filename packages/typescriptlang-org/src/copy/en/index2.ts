@@ -15,6 +15,13 @@ export const indexCopy = {
   index_2_cta_download: "To your computer",
   index_2_cta_download_subtitle: "Via npm",
 
+  // Editor titles
+  index_2_tab_1: "Editor Checks",
+  index_2_tab_2: "Auto-complete",
+  index_2_tab_3: "Interfaces",
+  index_2_tab_4: "JSX",
+  index_2_tab_5: "ESNext",
+
   // Quick pitch
   index_2_what_is: "What is TypeScript?",
   index_2_what_is_js: "JavaScript and More",
@@ -26,7 +33,7 @@ export const indexCopy = {
   index_2_scale_copy: `TypeScript understands JavaScript and uses <strong>type inference to give you great tooling</strong> without additional code.`,
 
   // Links for getting started (this shows up twice)
-  index_2_started_title: "Adopt TypeScript Gradually",
+  index_2_started_title: "Get Started",
   index_2_started_handbook: "Handbook",
   index_2_started_handbook_blurb: "Learn the language",
   index_2_install: "Install TypeScript",
@@ -45,9 +52,9 @@ export const indexCopy = {
   // Show me some code
   index_2_describe: "Describe Your Data",
   index_2_describe_blurb1:
-    "Use natural syntax to <strong>describe the shape of objects and functions</strong> in your code.",
+    "<strong>Describe the shape of objects and functions</strong> in your code.",
   index_2_describe_blurb2:
-    "Making it possible to see <strong>documentation and issues before you run your code</strong>.",
+    "Making it possible to see <strong>documentation and issues in your editor</strong>.",
 
   // Show how tsc 'works'
   index_2_transform: "TypeScript becomes JavaScript  via the delete key.",

@@ -1,0 +1,154 @@
+{
+    "name": "homepage",
+    "tokenColors": [
+      {
+        "name": "Global settings",
+        "settings": {
+          "background": "#2C6CB2",
+          "foreground": "#eeeeee"
+        }
+      },
+      {
+        "name": "String",
+        "scope": "string",
+        "settings": {
+          "foreground": "#FFECDB"
+        }
+      },
+      {
+        "name": "String Escape",
+        "scope": "constant.character.escape, text.html constant.character.entity.named, punctuation.definition.entity.html",
+        "settings": {
+          "foreground": "#000000"
+        }
+      },
+      {
+        "name": "Boolean",
+        "scope": "constant.language.boolean",
+        "settings": {
+          "foreground": "#F2F1EF"
+        }
+      },
+      {
+        "name": "Number",
+        "scope": "constant.numeric",
+        "settings": {
+          "foreground": "#e0ffff"
+        }
+      },
+      {
+        "name": "Identifier",
+        "scope": "variable, support.variable, support.class, support.constant, meta.definition.variable entity.name.function",
+        "settings": {
+          "foreground": "#ECECEC"
+        }
+      },
+      {
+        "name": "Keyword",
+        "scope": "keyword, modifier, variable.language.this, support.type.object, constant.language",
+        "settings": {
+          "foreground": "#F2F1EF"
+        }
+      },
+      {
+        "name": "Function call",
+        "scope": "entity.name.function, support.function",
+        "settings": {
+          "foreground": "#e0ffff"
+        }
+      },
+      {
+        "name": "Storage",
+        "scope": "storage.type, storage.modifier",
+        "settings": {
+          "foreground": "#e3ebf3"
+        }
+      },
+      {
+        "name": "Modules",
+        "scope": "support.module, support.node",
+        "settings": {
+          "foreground": "#ECECEC",
+          "fontStyle": "italic"
+        }
+      },
+      {
+        "name": "Type",
+        "scope": "support.type",
+        "settings": {
+          "foreground": "#fffacd"
+        }
+      },
+      {
+        "name": "Type",
+        "scope": "entity.name.type, entity.other.inherited-class",
+        "settings": {
+          "foreground": "#fffacd"
+        }
+      },
+      {
+        "name": "Comment",
+        "scope": "comment",
+        "settings": {
+          "foreground": "#e2d4af",
+          "fontStyle": "italic"
+        }
+      },
+      {
+        "name": "Class",
+        "scope": "entity.name.type.class",
+        "settings": {
+          "foreground": "#fffacd",
+          "fontStyle": "underline"
+        }
+      },
+      {
+        "name": "Class variable",
+        "scope": "variable.object.property, meta.field.declaration entity.name.function",
+        "settings": {
+          "foreground": "#fffacd"
+        }
+      },
+      {
+        "name": "Class method",
+        "scope": "meta.definition.method entity.name.function",
+        "settings": {
+          "foreground": "#fffacd"
+        }
+      },
+      {
+        "name": "Function definition",
+        "scope": "meta.function entity.name.function",
+        "settings": {
+          "foreground": "#fffacd"
+        }
+      },
+      {
+        "name": "Template expression",
+        "scope": "template.expression.begin, template.expression.end, punctuation.definition.template-expression.begin, punctuation.definition.template-expression.end",
+        "settings": {
+          "foreground": "#e3ebf3"
+        }
+      },
+      {
+        "name": "TS Type",
+        "scope": "support.type.primitive.ts",
+        "settings": {
+          "foreground": "#e2d4af"
+        }
+      },
+      {
+        "name": "TS Var",
+        "scope": "meta.definition.variable.js",
+        "settings": {
+          "foreground": "#183F66"
+        }
+      }
+    ],
+    "colors": {
+      "foreground": "#eeeeee",
+      "editor.background": "#2C6CB2",
+      "editor.foreground": "#eeeeee"
+
+    }
+  }

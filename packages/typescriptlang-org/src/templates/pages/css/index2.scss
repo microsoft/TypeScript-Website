@@ -62,12 +62,8 @@ $headline-foreground-bg: white;
       div.editor.front {
         margin: 20px auto;
         position: static;
-        width: auto;
-        max-width: 400px;
-      }
-
-      div.editor.back {
-        display: none;
+        // width: auto;
+        // max-width: 400px;
       }
     }
 
@@ -114,9 +110,10 @@ $headline-foreground-bg: white;
     line-height: 2.8rem;
     font-weight: 200;
     margin-top: 0;
+    padding-right: 40px;
 
     strong {
-      font-weight: 500;
+      font-weight: 600;
     }
   }
 
@@ -186,14 +183,17 @@ $headline-foreground-bg: white;
     }
   }
 
-  .headline .col1 {
-    padding-bottom: 3rem;
-  }
+  .headline {
+    min-height: 420px;
+    .col1 {
+      padding-bottom: 3rem;
+    }
 
-  .headline .container {
-    padding-bottom: 0;
-    padding-top: 40px;
-    font-size: 1rem;
+    .container {
+      padding-bottom: 0;
+      padding-top: 40px;
+      font-size: 1rem;
+    }
   }
 
   .container {
@@ -204,13 +204,17 @@ $headline-foreground-bg: white;
     display: flex;
     flex-direction: column;
     position: relative;
+
+    .half {
+      max-width: 780px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
   }
 
   .headline-diagram {
-    height: 100%;
-    overflow-y: hidden;
-    position: relative;
-
     pre .code-container {
       overflow: hidden;
       a {
@@ -219,12 +223,32 @@ $headline-foreground-bg: white;
     }
 
     .editor {
-      border: 2px solid white;
-
-      border-radius: 8px;
+      border: 2px solid #7fa2c9;
+      border-radius: 4px;
       width: 540px;
 
-      position: absolute;
+      ul.editor-tabs {
+        display: flex;
+        flex-direction: row;
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        li {
+          list-style: none;
+          padding: 10px;
+          a {
+            text-decoration: none;
+            color: white;
+          }
+          &.selected {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      .min-dark {
+        display: none;
+      }
 
       &.front {
         // @media (min-width: 1000px) {
@@ -283,8 +307,6 @@ $headline-foreground-bg: white;
         color: #ff6666;
         font-size: 0.8rem;
         font-family: $font-code;
-        position: absolute;
-        width: 200px;
       }
 
       .inline-completions {
@@ -341,20 +363,19 @@ $headline-foreground-bg: white;
       }
 
       .content {
-        height: 320px;
         display: flex;
         flex-direction: row;
 
-        .lines {
-          width: 60px;
-          border-right: 4px solid white;
-          border-left: none;
-          flex-shrink: 0;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
-          background-color: $headline-background-bg;
-        }
+        // .lines {
+        //   width: 60px;
+        //   border-right: 4px solid white;
+        //   border-left: none;
+        //   flex-shrink: 0;
+        //   display: flex;
+        //   flex-direction: column;
+        //   justify-content: flex-start;
+        //   background-color: $headline-background-bg;
+        // }
 
         svg {
           margin: 12px auto;
@@ -365,28 +386,29 @@ $headline-foreground-bg: white;
         }
 
         .text {
-          // padding: 1rem;
+          border-top: 1px solid 7fa2c9;
           font-family: $font-code;
           font-size: 0.8rem;
           line-height: 0.95rem;
-          white-space: pre;
+          height: 260px;
+
           flex-shrink: 1;
           flex-grow: 1;
           overflow-x: scroll;
           position: relative;
-          background-color: $headline-background-bg;
+          background-color: #2c6cb2;
 
           pre {
             margin: 0;
-            background-color: $headline-background-bg;
+            background-color: #2c6cb2;
             border: none;
             code {
               font-size: 14px;
               line-height: 16px;
             }
             .error {
-              background-color: #341c2c;
-              color: #ee5858;
+              background-color: #4b639d;
+              color: #ffc5c5;
             }
           }
 
@@ -718,6 +740,9 @@ $headline-foreground-bg: white;
 
   .migrations {
     overflow: hidden;
+    #migration_title {
+      color: white;
+    }
   }
 
   .migrations .container {
@@ -729,7 +754,7 @@ $headline-foreground-bg: white;
     min-height: 370px;
 
     .controls a {
-      background-color: white;
+      background-color: #c4c4c4;
       width: 2rem;
       height: 2rem;
       color: black;
@@ -760,42 +785,22 @@ $headline-foreground-bg: white;
       }
     }
 
-    .slack {
-      .copy {
-        background: #4e086f;
-        background: linear-gradient(
-          90deg,
-          #4e086f 48%,
-          rgba(78, 8, 111, 0.28) 100%
-        );
-      }
+    .copy {
+      background: $ts-light-bg-sandy-color;
+      background: linear-gradient(
+        90deg,
+        $ts-light-bg-sandy-color 48%,
+        $ts-light-bg-sandy-color-20 100%
+      );
     }
 
     .airbnb {
-      .copy {
-        background: #6f0808;
-        background: linear-gradient(
-          90deg,
-          #6f0808 48%,
-          rgba(111, 8, 8, 0.28) 100%
-        );
-      }
-
       .fg {
         padding-top: 40px;
       }
     }
 
     .goog {
-      .copy {
-        background: #086f56;
-        background: linear-gradient(
-          90deg,
-          #086f56 48%,
-          rgba(8, 111, 86, 0.28) 100%
-        );
-      }
-
       .illustration .fg {
         padding-top: 40px;
       }
@@ -818,8 +823,8 @@ $headline-foreground-bg: white;
       }
 
       a.migration-button {
-        border: 1px solid white;
-        color: white;
+        border: 1px solid black;
+        color: black;
         text-decoration: none;
         text-align: center;
         width: 60%;
@@ -983,9 +988,9 @@ $headline-foreground-bg: white;
   }
 
   .adopt-step {
-    margin-top: 80px;
     max-width: 480px;
     margin: 20px auto;
+    margin-top: 120px;
 
     pre {
       margin-bottom: 10px;
@@ -1033,6 +1038,16 @@ $headline-foreground-bg: white;
           margin-left: 0;
         }
       }
+    }
+  }
+
+  // Convert the shiki CSS for highlighting to instead be red
+  .via-delete {
+    .highlight {
+      background-color: #fff1f1;
+    }
+    .dim {
+      opacity: 1;
     }
   }
 }
