@@ -959,23 +959,50 @@ $headline-foreground-bg: white;
 
     #adopt-step-slider {
       position: sticky;
-      top: 0px;
-      height: 600px;
+      top: 80px;
+      height: 560px;
     }
+
+    #global-stepper {
+      display: flex;
+      max-width: 480px;
+      position: absolute;
+      bottom: 32px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      > div {
+        transition: opacity 0.2s;
+        opacity: 0.2;
+      }
+      > div.active {
+        opacity: 1;
+      }
+    }
+
     .adopt-step {
-      transition: opacity 0.3s;
+      transition: opacity 0.2s;
       position: absolute;
       margin-left: auto;
       margin-right: auto;
+      padding-top: 200px;
+
       left: 0;
       right: 0;
-
       top: 0;
+      > div > p {
+        display: none;
+      }
+      .adopt-step-stepper {
+        display: none;
+      }
     }
-    // .hide-with-js {
-    //   opacity: 0;
-    // }
   }
+
+  #global-stepper {
+    display: none;
+  }
+
   .adopt-step {
     max-width: 480px;
     margin: 20px auto;
@@ -994,42 +1021,42 @@ $headline-foreground-bg: white;
     .tag-container p {
       font-size: 1rem;
     }
+  }
 
-    .adopt-step-stepper {
-      display: flex;
-      margin-bottom: 80px;
+  .adopt-step-stepper {
+    display: flex;
+    margin-bottom: 80px;
 
-      div {
-        border: 1px solid black;
-        // width: 75px;
-        display: inline-block;
-        flex: 1;
+    div {
+      border: 1px solid black;
+      // width: 75px;
+      display: inline-block;
+      flex: 1;
+      height: 13px;
+      margin-left: 10px;
+      position: relative;
+
+      &.yellow,
+      &.yellow-hint-blue,
+      &.yellow-lot-blue {
+        background-color: #ffe200;
+      }
+
+      &.yellow-hint-blue:after,
+      &.yellow-lot-blue:after {
+        content: "";
+        position: absolute;
+        width: 20%;
+        left: 0;
         height: 13px;
-        margin-left: 10px;
-        position: relative;
+        background-color: $ts-main-blue-color;
+      }
 
-        &.yellow,
-        &.yellow-hint-blue,
-        &.yellow-lot-blue {
-          background-color: #ffe200;
-        }
-
-        &.yellow-hint-blue:after,
-        &.yellow-lot-blue:after {
-          content: "";
-          position: absolute;
-          width: 20%;
-          left: 0;
-          height: 13px;
-          background-color: $ts-main-blue-color;
-        }
-
-        &.yellow-lot-blue:after {
-          width: 60%;
-        }
-        &.first {
-          margin-left: 0;
-        }
+      &.yellow-lot-blue:after {
+        width: 60%;
+      }
+      &.first {
+        margin-left: 0;
       }
     }
   }

@@ -44,6 +44,9 @@ const Index: React.FC<Props> = (props) => {
 
 
   useEffect(() => {
+    // NOOP on tiny devices where we need to re-orient the arrows.
+    if (window.innerWidth < 900) return
+
     const adopt = document.getElementById("adopt-gradually-content")!
     adopt.classList.remove("no-js")
     adopt.classList.add("fancy-scroll")
@@ -124,26 +127,27 @@ const Index: React.FC<Props> = (props) => {
           <Section color="white">
               <h2 id='adopt-gradually'>{i("index_2_adopt")}</h2>
               <Half>
-              <Row>
-                    <Col key='handbook'>
-                        <P ikey="index_2_adopt_blurb_1" />
-                    </Col>
-                    <Col key='playground'>
-                        <P ikey="index_2_adopt_blurb_2" />
-                    </Col>
-                </Row>
-              <Row>
-                  <Col key='main'>
-                      <div id='adopt-gradually-content' className='no-js'>
-                        <div id='adopt-step-slider'>
-                        <Adopt.StepOne i={i} />
-                        <Adopt.StepTwo i={i} />
-                        <Adopt.StepThree i={i} />
-                        <Adopt.StepFour i={i} />
-                        </div>
-                      </div>
-                  </Col>
-              </Row>
+                <div id='adopt-gradually-content' className='no-js'>
+                  <div id='adopt-step-slider'>
+                    <Row>
+                        <Col key='handbook'>
+                            <P ikey="index_2_adopt_blurb_1" />
+                        </Col>
+                        <Col key='playground'>
+                            <P ikey="index_2_adopt_blurb_2" />
+                        </Col>
+                    </Row>
+                    <Row>
+                      <Col key='main'>
+                          <Adopt.StepOne i={i} />
+                          <Adopt.StepTwo i={i} />
+                          <Adopt.StepThree i={i} />
+                          <Adopt.StepFour i={i} />
+                          <Adopt.StepperAll />
+                      </Col>
+                    </Row>
+                  </div>
+              </div>
             </Half>
           </Section>
         </div>
@@ -298,16 +302,27 @@ const updateOnScroll = () => {
   const fromTop = window.scrollY
   const height =  adopt.scrollHeight
   
-  const quarterHeight = height/4
+  const quarterHeight = (height - 200)/4 
   
-  const startPoint = 300
+  const startPoint = 100
   const y = fromTop - offset + startPoint
 
-  const samples = adopt.getElementsByClassName("adopt-step")  as HTMLCollectionOf<HTMLDivElement> 
-  samples.item(0)!.style.opacity = (y < quarterHeight) ? "1" : "0"
-  samples.item(1)!.style.opacity = (y >= (quarterHeight) && y < (quarterHeight * 2)) ? "1" : "0"
-  samples.item(2)!.style.opacity = (y >= (quarterHeight * 2) && y < (quarterHeight * 3)) ? "1" : "0"
-  samples.item(3)!.style.opacity = (y >= (quarterHeight * 3)) ? "1" : "0"
+  const samples = adopt.getElementsByClassName("adopt-step")  as HTMLCollectionOf<HTMLDivElement>
+  let index: 0 | 1| 2| 3 = 0
+  if (y >= 0 && y < quarterHeight) index = 1
+  else if (y >= (quarterHeight) && y < (quarterHeight * 2)) index = 2
+  else if (y >= (quarterHeight * 2)) index =3
+  samples.item(0)!.style.opacity = index === 0 ? "1" : "0"
+  samples.item(1)!.style.opacity = index === 1 ? "1" : "0"
+  samples.item(2)!.style.opacity = index === 2 ? "1" : "0"
+  samples.item(3)!.style.opacity = index === 3 ? "1" : "0"
   
+  const stepper = document.getElementById("global-stepper") as HTMLDivElement
+  stepper.children.item(0)!.classList.toggle("active", index === 0)
+  stepper.children.item(1)!.classList.toggle("active", index === 1)
+  stepper.children.item(2)!.classList.toggle("active", index === 2)
+  stepper.children.item(3)!.classList.toggle("active", index === 3)
+
+
   // console.log({ y, offset, fromTop, startPoint })
 }

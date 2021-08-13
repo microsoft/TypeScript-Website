@@ -1,4 +1,4 @@
-// twoslash: { themes: ["../../../packages/typescriptlang-org/lib/themes/typescript-beta-light"] }
+// twoslash: { themes: ["../../../packages/typescriptlang-org/lib/themes/typescript-beta-light"], noStaticSemanticInfo: true }
 
 
 

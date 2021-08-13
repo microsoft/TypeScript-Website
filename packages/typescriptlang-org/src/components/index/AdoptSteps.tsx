@@ -15,8 +15,17 @@ const Stepper = (props: { index: number }) => {
         <div className={props.index === 2 ? "yellow-lot-blue" : ""}></div>
         <div className={props.index === 3 ? "blue" : ""}></div>
     </div>
-
 }
+
+export const StepperAll = () => {
+    return <div id="global-stepper" className="adopt-step-stepper">
+        <div className="first yellow"></div>
+        <div className="yellow-hint-blue"></div>
+        <div className="yellow-lot-blue"></div>
+        <div className="blue"></div>
+    </div>
+}
+
 
 export const StepOne = (props: StepProps) => {
     return (
