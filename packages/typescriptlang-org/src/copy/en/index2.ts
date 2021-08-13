@@ -10,10 +10,10 @@ export const indexCopy = {
   index_2_cta_install_subtitle: "Online or via npm",
 
   index_2_cta_play: "In your browser",
-  index_2_cta_play_subtitle: "Via the Playground",
+  index_2_cta_play_subtitle: "via the Playground",
 
-  index_2_cta_download: "To your computer",
-  index_2_cta_download_subtitle: "Via npm",
+  index_2_cta_download: "On your computer",
+  index_2_cta_download_subtitle: "via npm",
 
   // Editor titles
   index_2_tab_1: "Editor Checks",
@@ -57,7 +57,7 @@ export const indexCopy = {
     "Making it possible to see <strong>documentation and issues in your editor</strong>.",
 
   // Show how tsc 'works'
-  index_2_transform: "TypeScript becomes JavaScript  via the delete key.",
+  index_2_transform: "TypeScript becomes JavaScript via the delete key.",
   index_2_transform_1: "<strong>TypeScript file</strong>.",
   index_2_transform_2: "<strong>Types are removed</strong>.",
   index_2_transform_3: "<strong>JavaScript file</strong>.",
