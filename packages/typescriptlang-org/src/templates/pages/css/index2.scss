@@ -133,6 +133,10 @@ $headline-foreground-bg: white;
     margin-bottom: 2.5rem;
   }
 
+  p {
+    font-size: 1.2rem;
+  }
+
   .darkblue {
     background-color: $ts-main-blue-darkest-color;
     color: white;
@@ -188,6 +192,9 @@ $headline-foreground-bg: white;
     .col1 {
       padding-bottom: 3rem;
     }
+    p {
+      padding-right: 20px;
+    }
 
     .container {
       padding-bottom: 0;
@@ -215,6 +222,8 @@ $headline-foreground-bg: white;
   }
 
   .headline-diagram {
+    display: relative;
+
     pre .code-container {
       overflow: hidden;
       a {
@@ -251,11 +260,7 @@ $headline-foreground-bg: white;
       }
 
       &.front {
-        // @media (min-width: 1000px) {
-        // right: 40px;
-        // }
-        right: 20px;
-        width: 90%;
+        width: 96%;
         border-radius: 8px;
 
         @media screen and (-ms-high-contrast: active) {
@@ -366,17 +371,6 @@ $headline-foreground-bg: white;
         display: flex;
         flex-direction: row;
 
-        // .lines {
-        //   width: 60px;
-        //   border-right: 4px solid white;
-        //   border-left: none;
-        //   flex-shrink: 0;
-        //   display: flex;
-        //   flex-direction: column;
-        //   justify-content: flex-start;
-        //   background-color: $headline-background-bg;
-        // }
-
         svg {
           margin: 12px auto;
 
@@ -394,7 +388,7 @@ $headline-foreground-bg: white;
 
           flex-shrink: 1;
           flex-grow: 1;
-          overflow-x: scroll;
+          overflow-x: auto;
           position: relative;
           background-color: #2c6cb2;
 
@@ -427,82 +421,23 @@ $headline-foreground-bg: white;
     }
   }
 
-  .button-container {
+  .next-headline-button {
+    @include flat-button;
+
+    position: absolute;
+    padding: 3px;
+    height: 30px;
+    width: 30px;
+
     display: flex;
-    height: 100%;
-    width: 100%;
-    flex-direction: column-reverse;
+    flex-direction: row;
+    text-decoration: none;
+    bottom: 20px;
+    right: 15px;
+
     align-items: center;
-
-    @media (max-width: 800px) {
-      top: 0;
-      position: absolute;
-    }
-
-    .next-headline-button {
-      border: 2px solid #235a9769;
-      color: white;
-      background-color: $ts-main-blue-color;
-      padding: 3px;
-      max-width: 320px;
-
-      display: flex;
-      flex-direction: row;
-      text-decoration: none;
-      bottom: 20px;
-
-      align-items: center;
-      margin-bottom: 20px;
-
-      @media screen and (-ms-high-contrast: active) {
-        border: 2px solid grey;
-      }
-
-      &:hover,
-      &.focus {
-        background-color: #104261;
-      }
-
-      &:active {
-        background-color: #0a3855;
-        margin-bottom: 19px;
-      }
-
-      // I don't like this - I don't know why the editor is in front of the button
-      // even though the hierarchy implies it shouldn't - maybe the position abosolute?
-      z-index: 1;
-
-      .message {
-        margin: 10px;
-        font-size: 0.9rem;
-        min-width: 140px;
-      }
-
-      .next {
-        border-left: 2px solid #235a9769;
-
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-
-        p {
-          margin-left: 20px;
-        }
-
-        svg {
-          height: 100%;
-          margin-left: 20px;
-          margin-right: 10px;
-
-          @media screen and (-ms-high-contrast: active) {
-            path {
-              fill: grey;
-            }
-          }
-        }
-      }
-    }
+    justify-content: center;
+    margin-bottom: 20px;
   }
 
   a.get-started {
@@ -740,8 +675,11 @@ $headline-foreground-bg: white;
 
   .migrations {
     overflow: hidden;
-    #migration_title {
+    &.github #migration_title {
       color: white;
+    }
+    strong {
+      color: #187abf;
     }
   }
 
@@ -792,6 +730,9 @@ $headline-foreground-bg: white;
         $ts-light-bg-sandy-color 48%,
         $ts-light-bg-sandy-color-20 100%
       );
+      p {
+        font-size: 1rem;
+      }
     }
 
     .airbnb {
@@ -987,6 +928,16 @@ $headline-foreground-bg: white;
     }
   }
 
+  #adopt-gradually-content.fancy-scroll {
+    .adopt-step {
+      transition: opacity 0.3s;
+      position: sticky;
+      top: 400px;
+    }
+    // .hide-with-js {
+    //   opacity: 0;
+    // }
+  }
   .adopt-step {
     max-width: 480px;
     margin: 20px auto;
@@ -999,6 +950,10 @@ $headline-foreground-bg: white;
     > p {
       font-weight: bold;
       margin: 10px 0;
+      font-size: 1rem;
+    }
+
+    .tag-container p {
       font-size: 1rem;
     }
 

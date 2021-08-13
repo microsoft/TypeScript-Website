@@ -17,9 +17,6 @@ import "../pages/css/documentation.scss"
 import { EditorExamples } from "../../components/index/EditorExamples"
 import { createIntlLink } from "../../components/IntlLink"
 import { Code as TSExample } from "../../components/index/twoslash/generated/TS"
-// import { Code as JSCheckExample } from "../../components/index/twoslash/generated/JSCheck"
-// import { Code as JSExample } from "../../components/index/twoslash/generated/JS"
-// import { Code as JSDocExample } from "../../components/index/twoslash/generated/JSDoc"
 
 const Section = (props: { children: any, color: string, className?: string }) =>
   <div key={props.color} className={props.color + " " + (props.className ?? "")}><div className="container">{props.children}</div></div>

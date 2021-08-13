@@ -14,19 +14,11 @@ export const EditorExamples = () => {
   // Controls which story we should show
   const [index, setIndex] = useState(0);
 
-  console.log({ index })
-
-  const explanations = [
-    "TypeScript validates your JavaScript ahead of time",
-    "Provides auto-complete for untyped libraries",
-    "Describe the shape of objects and functions",
-    "Supports rich type-checking in JSX environments like React",
-  ];
-
-  const loadIndex = (index: number) => { setIndex(index);  return false };
+  const loadIndex = (index: number) => setIndex(index);;
 
   const next = (e) => {
-    if (index + 1 === explanations.length) loadIndex(0);
+    const exampleCount = 4
+    if (index + 1 === exampleCount) loadIndex(0);
     else loadIndex(index + 1);
 
     e.preventDefault();
@@ -34,29 +26,24 @@ export const EditorExamples = () => {
   };
 
   const goto = (index: number) => (e) => {
-    
-     loadIndex(index);
 
+    loadIndex(index);
     e.preventDefault();
     return false;
   };
-
-  const Tabs = () => (
-    <ul className="editor-tabs"> 
-      <li className={index === 0 ? "selected" : ""} ><a href="#" onClick={() => goto(0)  }>{i("index_2_tab_1")}</a></li>
-      <li className={index === 1 ? "selected" : ""} ><a href="#" onClick={() => goto(1)  }>{i("index_2_tab_2")}</a></li>
-      <li className={index === 2 ? "selected" : ""} ><a href="#" onClick={() => goto(2)  }>{i("index_2_tab_3")}</a></li>
-      <li className={index === 3 ? "selected" : ""} ><a href="#" onClick={() => goto(3)  }>{i("index_2_tab_4")}</a></li>
-      <li className={index === 4 ? "selected" : ""} ><a href="#" onClick={() => goto(4)  }>{i("index_2_tab_5")}</a></li>
-    </ul>
-  )
 
    return (
     <div className="headline-diagram">
       <div className="slides">
 
       <div className="editor ts front">
-        <Tabs />
+      <ul className="editor-tabs"> 
+      <li className={index === 0 ? "selected" : ""} ><a href="#" role="presentation" onClick={goto(0) }>{i("index_2_tab_1")}</a></li>
+      <li className={index === 1 ? "selected" : ""} ><a href="#" role="presentation" onClick={goto(1) }>{i("index_2_tab_2")}</a></li>
+      <li className={index === 2 ? "selected" : ""} ><a href="#" role="presentation" onClick={goto(2) }>{i("index_2_tab_3")}</a></li>
+      <li className={index === 3 ? "selected" : ""} ><a href="#" role="presentation" onClick={goto(3) }>{i("index_2_tab_4")}</a></li>
+      {/* <li className={index === 4 ? "selected" : ""} ><a href="#" role="presentation" onClick={goto(4) }>{i("index_2_tab_5")}</a></li> */}
+    </ul>
         <div className="content">
             <div className="text">
             {{
@@ -78,30 +65,23 @@ export const EditorExamples = () => {
         </div>
 
       </div>
-      <div className="button-container">
-        <a
-          className="next-headline-button"
-          href="#"
-          onClick={next}
-          role="presentation"
-        >
-          <div className="message">{explanations[index]}</div>
-          <div className="next">
-            <p>Next</p>
-            <p style={{ margin: 0 }}>
-              <svg
-                width="11"
-                height="15"
-                viewBox="0 0 11 15"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M0 14.5V0.5L10.5 7L0 14.5Z" fill="white" />
-              </svg>
-            </p>
-          </div>
-        </a>
+
+      <a
+        className="next-headline-button"
+        href="#"
+        onClick={next}
+        role="presentation"
+      >
+            <svg
+              width="11"
+              height="15"
+              viewBox="0 0 11 15"
+              fill="#F1F1F1"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M0 14.5V0.5L10.5 7L0 14.5Z" fill="black" />
+            </svg>
+      </a>
       </div>
-    </div>
   );
 };

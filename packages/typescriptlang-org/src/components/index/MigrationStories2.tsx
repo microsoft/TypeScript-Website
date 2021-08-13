@@ -293,7 +293,7 @@ export const MigrationStories = () => {
   const shouldShowOSS = hasWindow && window.innerWidth > 800
 
   // slack airbnb google oss 
-  const bgColors = shouldShowOSS ? ["#faf9f8", "#faf9f8", "#faf9f8", "#086E12"] : ["#faf9f8", "#faf9f8", "#EEEEEE"]
+  const bgColors = shouldShowOSS ? ["#faf9f8", "#faf9f8", "#faf9f8", "#086E12"] : ["#faf9f8", "#faf9f8", "#faf9f8"]
 
   const loadIndex = (index: number) => {
     setIndex(index)
@@ -305,6 +305,12 @@ export const MigrationStories = () => {
     const notOSSTitle = i("index_migration_title")
     const ossTitle = i("index_migration_oss")
     const title = isOSS ? ossTitle : notOSSTitle
+
+    if (isOSS) {
+      container.classList.add("github")
+    } else {
+      container.classList.remove("github")
+    }
 
     document.querySelectorAll(".github-bar").forEach((b) => {
       const visibleOpacity =

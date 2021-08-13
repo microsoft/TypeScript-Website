@@ -3,7 +3,7 @@ export const indexCopy = {
     "TypeScript is <bold>JavaScript with syntax for types.</bold>",
   index_2_byline: "TypeScript extends JavaScript by adding types.",
   index_2_summary:
-    "TypeScript is a strongly typed programming language which builds on JavaScript by adding syntax for describing types.",
+    "TypeScript is a strongly typed programming language which builds on JavaScript giving you better tooling at any scale.",
 
   // Above the fold
   index_2_cta_install: "Try TypeScript Now",
@@ -39,7 +39,7 @@ export const indexCopy = {
   index_2_install: "Install TypeScript",
   index_2_playground_blurb: "Try in your browser",
 
-  // Stories + OSS users
+  // Stories + OSS users`
   index_2_migration_title: "TypeScript Testimonials",
   index_2_migration_oss: "Open Source with TypeScript",
 

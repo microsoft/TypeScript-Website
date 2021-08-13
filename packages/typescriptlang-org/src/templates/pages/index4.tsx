@@ -43,7 +43,11 @@ const Index: React.FC<Props> = (props) => {
 
 
   useEffect(() => {
-// Handles setting the scroll 
+    const adopt = document.getElementById("adopt-gradually-content")!
+    adopt.classList.remove("no-js")
+    adopt.classList.add("fancy-scroll")
+
+    // Handles setting the scroll 
     window.addEventListener("scroll", updateOnScroll, { passive: true, capture: true });
  
 
@@ -113,7 +117,7 @@ const Index: React.FC<Props> = (props) => {
         
         <div id="get-started" className="animate">
           <Section color="white">
-              <h2 id='adopt-gradually'>{i("index_2_started_title")}</h2>
+              <h2 id='adopt-gradually'>{i("index_2_adopt")}</h2>
               <Half>
               <Row>
                     <Col key='handbook'>
@@ -125,10 +129,14 @@ const Index: React.FC<Props> = (props) => {
                 </Row>
               <Row>
                   <Col key='main'>
-                      <Adopt.StepOne i={i} />
-                      <Adopt.StepTwo i={i} />
-                      <Adopt.StepThree i={i} />
-                      <Adopt.StepFour i={i} />
+                      <div id='adopt-gradually-content' className='no-js'>
+                        <Adopt.StepOne i={i} />
+                        <div className="hide-with-js">
+                          <Adopt.StepTwo i={i} />
+                          <Adopt.StepThree i={i} />
+                          <Adopt.StepFour i={i} />
+                        </div>
+                      </div>
                   </Col>
               </Row>
             </Half>
@@ -263,7 +271,44 @@ const Installation = () => {
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Index {...props} /></Intl>
 
+// Recurses up to get the y pos of a node
+// https://stackoverflow.com/questions/442404/retrieve-the-position-x-y-of-an-html-element-relative-to-the-browser-window
+function getOffset( el ) {
+  var _x = 0;
+  var _y = 0;
+  while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+      _x += el.offsetLeft - el.scrollLeft;
+      _y += el.offsetTop - el.scrollTop;
+      el = el.offsetParent;
+  }
+  return { top: _y, left: _x };
+}
+
 
 const updateOnScroll = () => {
-  const getStarted = document.getElementById("get-started")
+  const adopt = document.getElementById("adopt-gradually-content") as HTMLDivElement
+
+  const offset = getOffset(adopt).top
+  const fromTop = window.scrollY
+  const height =  adopt.scrollHeight
+  
+  const quarterHeight = height/4
+  
+  const startPoint = 100
+  const y = fromTop - offset + startPoint
+
+  // Not on screen
+  if (y < 0) return
+  const samples = adopt.getElementsByClassName("adopt-step")  as HTMLCollectionOf<HTMLDivElement> 
+  samples.item(0)!.style.opacity = (y < quarterHeight) ? "1" : "0"
+  samples.item(1)!.style.opacity = (y >= quarterHeight && y < (quarterHeight * 2)) ? "1" : "0"
+  samples.item(2)!.style.opacity = (y >= (quarterHeight * 2) && y < (quarterHeight * 3)) ? "1" : "0"
+  samples.item(3)!.style.opacity = (y >= (quarterHeight * 3)) ? "1" : "0"
+  
+  const viewportHeight= window.innerHeight || document.documentElement.clientHeight;
+  samples.item(0)!.style.top = String(viewportHeight/2 - 200) + "px"
+  samples.item(1)!.style.top = String(viewportHeight/2 - 200) + "px"
+  samples.item(2)!.style.top = String(viewportHeight/2 - 200) + "px"
+  samples.item(3)!.style.top = String(viewportHeight/2 - 200) + "px"
+  
 }

@@ -21,9 +21,11 @@ const Stepper = (props: { index: number }) => {
 export const StepOne = (props: StepProps) => {
     return (
         <div className="adopt-step">
-            <Index1 />
-            <p>JavaScript File</p>
-            <Stepper index={0} />
+            <div className="adopt-step-content">
+                <Index1 />
+                <p>JavaScript File</p>
+                <Stepper index={0} />
+            </div>
         </div>
     )
 }
@@ -31,9 +33,11 @@ export const StepOne = (props: StepProps) => {
 export const StepTwo = (props: StepProps) => {
     return (
         <div className="adopt-step">
-            <Index2 />
-            <p>JavaScript with TS Check</p>
-            <Stepper index={1} />
+            <div className="adopt-step-content">
+                <Index2 />
+                <p>JavaScript with TS Check</p>
+                <Stepper index={1} />
+            </div>
         </div>
     )
 }
@@ -41,9 +45,11 @@ export const StepTwo = (props: StepProps) => {
 export const StepThree = (props: StepProps) => {
     return (
         <div className="adopt-step">
-            <Index3 />
-            <p>JavaScript with JSDoc</p>
-            <Stepper index={2} />
+            <div className="adopt-step-content">
+                <Index3 />
+                <p>JavaScript with JSDoc</p>
+                <Stepper index={2} />
+            </div>
         </div>
     )
 }
@@ -51,9 +57,11 @@ export const StepThree = (props: StepProps) => {
 export const StepFour = (props: StepProps) => {
     return (
         <div className="adopt-step">
-            <Index4 />
-            <p>TypeScript File</p>
-            <Stepper index={3} />
+            <div className="adopt-step-content">
+                <Index4 />
+                <p>TypeScript File</p>
+                <Stepper index={3} />
+            </div>
         </div>
     )
 }
