@@ -21,11 +21,11 @@ export const inYourLanguage: Record<
     cancel: "No preguntar de nuevo",
   },
   fr: {
-    shorthand: "En Fr",
-    body: "Cette page est disponible en français",
-    open: "Y aller",
-    cancel: "Ne pas me le redemander",
-
+     shorthand: "En Fr",
+     body: "Cette page est disponible en français",
+     open: "Consulter",
+     cancel: "Ne plus me le rappeler",
+  },
   ja: {
     shorthand: "日本語",
     body: "このページを日本語で利用しますか？",
