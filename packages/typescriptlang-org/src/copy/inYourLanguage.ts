@@ -44,4 +44,10 @@ export const inYourLanguage: Record<
     open: "Zmień język",
     cancel: "Nie pytaj ponownie",
   },
+  fr: {
+    shorthand: "En Fr",
+    body: "Cette page est disponible en français",
+    open: "Consulter",
+    cancel: "Ne plus me le rappeler",
+  }
 }
