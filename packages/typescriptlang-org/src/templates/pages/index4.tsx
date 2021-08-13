@@ -23,6 +23,7 @@ import {Code as Grad2} from "../../components/index/twoslash/generated/IndexAdop
 import {Code as Del1} from "../../components/index/twoslash/generated/Index2Del1TS"
 import {Code as Del2} from "../../components/index/twoslash/generated/Index2Del2RM"
 import {Code as Del3} from "../../components/index/twoslash/generated/Index2Del3JS.js"
+import { loadImage } from "canvas"
 
 
 const Section = (props: { children: any, color: string, className?: string }) =>
@@ -47,6 +48,10 @@ const Index: React.FC<Props> = (props) => {
     adopt.classList.remove("no-js")
     adopt.classList.add("fancy-scroll")
 
+    const samples = adopt.getElementsByClassName("adopt-step")  as HTMLCollectionOf<HTMLDivElement> 
+    
+
+    updateOnScroll()
     // Handles setting the scroll 
     window.addEventListener("scroll", updateOnScroll, { passive: true, capture: true });
  
@@ -100,7 +105,7 @@ const Index: React.FC<Props> = (props) => {
           </Row>
         </Section>
 
-        <Section color="light-grey">
+        <Section color="light-grey" className="get-started-section">
             <h2 id='get_started'>{i("index_2_started_title")}</h2>
             <Row>
                 <Col key='handbook'>
@@ -130,11 +135,11 @@ const Index: React.FC<Props> = (props) => {
               <Row>
                   <Col key='main'>
                       <div id='adopt-gradually-content' className='no-js'>
+                        <div id='adopt-step-slider'>
                         <Adopt.StepOne i={i} />
-                        <div className="hide-with-js">
-                          <Adopt.StepTwo i={i} />
-                          <Adopt.StepThree i={i} />
-                          <Adopt.StepFour i={i} />
+                        <Adopt.StepTwo i={i} />
+                        <Adopt.StepThree i={i} />
+                        <Adopt.StepFour i={i} />
                         </div>
                       </div>
                   </Col>
@@ -219,7 +224,7 @@ const Index: React.FC<Props> = (props) => {
         </Section>
 
 
-        <Section color="blue">
+        <Section color="blue" className="get-started-section"> 
           <h2 id='get_started_blue'>{i("index_2_started_title")}</h2>
             <Row>
                 <Col key='handbook'>
@@ -287,6 +292,7 @@ function getOffset( el ) {
 
 const updateOnScroll = () => {
   const adopt = document.getElementById("adopt-gradually-content") as HTMLDivElement
+  if (!adopt) return
 
   const offset = getOffset(adopt).top
   const fromTop = window.scrollY
@@ -294,21 +300,14 @@ const updateOnScroll = () => {
   
   const quarterHeight = height/4
   
-  const startPoint = 100
+  const startPoint = 300
   const y = fromTop - offset + startPoint
 
-  // Not on screen
-  if (y < 0) return
   const samples = adopt.getElementsByClassName("adopt-step")  as HTMLCollectionOf<HTMLDivElement> 
   samples.item(0)!.style.opacity = (y < quarterHeight) ? "1" : "0"
-  samples.item(1)!.style.opacity = (y >= quarterHeight && y < (quarterHeight * 2)) ? "1" : "0"
+  samples.item(1)!.style.opacity = (y >= (quarterHeight) && y < (quarterHeight * 2)) ? "1" : "0"
   samples.item(2)!.style.opacity = (y >= (quarterHeight * 2) && y < (quarterHeight * 3)) ? "1" : "0"
   samples.item(3)!.style.opacity = (y >= (quarterHeight * 3)) ? "1" : "0"
   
-  const viewportHeight= window.innerHeight || document.documentElement.clientHeight;
-  samples.item(0)!.style.top = String(viewportHeight/2 - 200) + "px"
-  samples.item(1)!.style.top = String(viewportHeight/2 - 200) + "px"
-  samples.item(2)!.style.top = String(viewportHeight/2 - 200) + "px"
-  samples.item(3)!.style.top = String(viewportHeight/2 - 200) + "px"
-  
+  // console.log({ y, offset, fromTop, startPoint })
 }

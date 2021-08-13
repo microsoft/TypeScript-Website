@@ -4,7 +4,7 @@
       {
         "name": "Global settings",
         "settings": {
-          "background": "#2C6CB2",
+          "background": "#235A97",
           "foreground": "#eeeeee"
         }
       },
@@ -12,7 +12,7 @@
         "name": "String",
         "scope": "string",
         "settings": {
-          "foreground": "#FFECDB"
+          "foreground": "#f7cba4"
         }
       },
       {
@@ -40,7 +40,7 @@
         "name": "Identifier",
         "scope": "variable, support.variable, support.class, support.constant, meta.definition.variable entity.name.function",
         "settings": {
-          "foreground": "#ECECEC"
+          "foreground": "#c4ff85"
         }
       },
       {
@@ -147,7 +147,7 @@
     ],
     "colors": {
       "foreground": "#eeeeee",
-      "editor.background": "#2C6CB2",
+      "editor.background": "#235A97",
       "editor.foreground": "#eeeeee"
 
     }

@@ -63,13 +63,13 @@ export const LanguageRecommendations = (props: Props) => {
     //@ts-ignore
     const userLocale = navigator.language || navigator.userLanguage || "en-UK"
     const userLang = userLocale.split("-")[0]
-    const lang = inYourLanguage[userLang] || inYourLanguage["en"]
+    const lang = inYourLanguage[userLang] || inYourLanguage["todo"]
 
     // Show the top nav anchor for in your language
     const quickJump = document.getElementById("my-lang-quick-jump")!
     const quickJumpA = quickJump.firstElementChild as HTMLAnchorElement
 
-    quickJumpA.textContent = lang.shorthand
+    quickJumpA.textContent = lang.shorthand !== "In xx" ? lang.shorthand : `In ${userLang}`
     quickJumpA.href = localePath
     quickJump.title = lang.body
     quickJump.style.display = "inline-block";

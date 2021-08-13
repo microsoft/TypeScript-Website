@@ -30,7 +30,13 @@ $headline-foreground-bg: white;
 }
 
 @media (max-width: $screen-sm) {
-  #index-2 {
+  main #index-2 {
+    h2 {
+      font-size: 1.8rem;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
     // Doesn't show because it doens't have a way to generate
     // a height, so hard-code it
     div.headline-diagram {
@@ -83,6 +89,31 @@ $headline-foreground-bg: white;
     .github-bar {
       display: none;
     }
+
+    .get-started-section {
+      a.get-started {
+        background-image: none !important;
+        height: auto !important;
+        margin: 0 auto;
+      }
+      flex-direction: column;
+    }
+
+    .tag-container {
+      .twoslash-annotation.left {
+        position: static;
+        left: 0;
+        bottom: 0;
+        top: auto !important;
+
+        svg {
+          transform: rotate(44deg) scaleX(-1) translateX(-20px) !important;
+        }
+      }
+      .twoslash-annotation.right {
+        display: none;
+      }
+    }
   }
 }
 
@@ -97,10 +128,6 @@ $headline-foreground-bg: white;
 
   #index div.headline-diagram div.editor.front {
     max-width: 300px;
-  }
-
-  #index .next-headline-button {
-    max-width: 280px;
   }
 }
 
@@ -137,6 +164,10 @@ $headline-foreground-bg: white;
     font-size: 1.2rem;
   }
 
+  .col1 {
+    min-width: 230px;
+  }
+
   .darkblue {
     background-color: $ts-main-blue-darkest-color;
     color: white;
@@ -145,10 +176,6 @@ $headline-foreground-bg: white;
   .blue {
     background-color: $ts-main-blue-color;
     color: white;
-
-    // a {
-    //   color: white;
-    // }
   }
 
   .purple {
@@ -380,7 +407,7 @@ $headline-foreground-bg: white;
         }
 
         .text {
-          border-top: 1px solid 7fa2c9;
+          border-top: 1px solid #7fa2c9;
           font-family: $font-code;
           font-size: 0.8rem;
           line-height: 0.95rem;
@@ -390,18 +417,18 @@ $headline-foreground-bg: white;
           flex-grow: 1;
           overflow-x: auto;
           position: relative;
-          background-color: #2c6cb2;
+          background-color: #235a97;
 
           pre {
             margin: 0;
-            background-color: #2c6cb2;
+            background-color: #235a97;
             border: none;
             code {
               font-size: 14px;
               line-height: 16px;
             }
             .error {
-              background-color: #4b639d;
+              background-color: #ff000026;
               color: #ffc5c5;
             }
           }
@@ -929,10 +956,22 @@ $headline-foreground-bg: white;
   }
 
   #adopt-gradually-content.fancy-scroll {
+    height: 1400px;
+
+    #adopt-step-slider {
+      position: sticky;
+      top: 0px;
+      height: 600px;
+    }
     .adopt-step {
       transition: opacity 0.3s;
-      position: sticky;
-      top: 400px;
+      position: absolute;
+      margin-left: auto;
+      margin-right: auto;
+      left: 0;
+      right: 0;
+
+      top: 0;
     }
     // .hide-with-js {
     //   opacity: 0;
@@ -941,7 +980,7 @@ $headline-foreground-bg: white;
   .adopt-step {
     max-width: 480px;
     margin: 20px auto;
-    margin-top: 120px;
+    padding-top: 120px;
 
     pre {
       margin-bottom: 10px;
