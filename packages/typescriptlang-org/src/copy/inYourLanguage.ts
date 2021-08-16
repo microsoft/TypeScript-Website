@@ -32,6 +32,12 @@ export const inYourLanguage: Record<
     open: "利用する",
     cancel: "質問を表示しない",
   },
+  ko: {
+    shorthand: "한국어",
+    body: "해당 페이지를 한국어로 이용할 수 있습니다",
+    open: "이용하기",
+    cancel: "더 이상 묻지 않습니다",
+  },
   pl: {
     shorthand: "Po polsku",
     body: "Ta strona jest dostępna po polsku",
