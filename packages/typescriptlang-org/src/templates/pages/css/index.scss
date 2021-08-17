@@ -4,6 +4,46 @@
 $headline-background-bg: $ts-main-blue-color;
 $headline-foreground-bg: white;
 
+.version-bar {
+  background-color: $ts-dark-bg-color;
+  text-align: center;
+  color: white;
+  padding: 0.7rem 2rem;
+  margin: 0;
+
+  p {
+    margin: 0;
+    a {
+      color: $ts-main-blue-lightest-color;
+    }
+  }
+}
+
+.grey-box {
+  background-color: #d8d8d8;
+  padding: 18px;
+  margin-right: 20px;
+  box-sizing: border-box;
+  a {
+    color: black;
+  }
+}
+
+.clicky-grey-button,
+.grey-box {
+  &.first {
+    margin-left: 20px;
+  }
+
+  &.last {
+    margin-right: 0;
+  }
+}
+
+.split-row > .clicky-grey-button {
+  flex: 1;
+}
+
 @mixin flat-button {
   background-color: white;
   color: black;
@@ -1084,5 +1124,119 @@ $headline-foreground-bg: white;
     .dim {
       opacity: 1;
     }
+  }
+}
+
+.yellow {
+  background-color: #f1dd3f;
+  color: black;
+  margin-bottom: -110px;
+
+  .col1 {
+    width: 50%;
+    align-self: stretch;
+
+    pre {
+      overflow: hidden;
+      height: 220px;
+      code {
+        font-size: 14px;
+        line-height: 16px;
+      }
+    }
+  }
+
+  a {
+    color: black;
+  }
+}
+
+.darkblue.dt {
+  position: relative;
+
+  .dark-blue-trans-bg {
+    background-color: rgba(0, 39, 62, 0.77);
+
+    a {
+      color: white;
+    }
+  }
+
+  .dt-background {
+    font-size: 1.2rem;
+    font-family: $font-code;
+    opacity: 0.2;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 80%;
+    bottom: 20px;
+    overflow: hidden;
+  }
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.fluid-button {
+  background-color: white;
+  color: black;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  display: flex;
+
+  .fluid-button-title {
+    font-weight: 600;
+  }
+
+  div.fluid-button-icon {
+    min-width: 4rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 2px solid black;
+    margin-right: -1rem;
+    margin-left: 1rem;
+  }
+
+  &:hover,
+  &.focus {
+    background-color: #eee;
+  }
+
+  &:active {
+    background-color: #ddd;
+  }
+}
+
+.cta .cta-back a {
+  position: relative;
+  top: 20px;
+  left: 20px;
+  width: 60px;
+}
+
+.transparent-button {
+  position: absolute;
+  top: 40px;
+  left: 20px;
+  border: 1px solid white;
+  width: 80px;
+  padding: 10px;
+  cursor: pointer;
+  svg {
+    margin-right: 8px;
+  }
+
+  &:hover,
+  &.focus {
+    background-color: #ffffff10;
+  }
+
+  &:active {
+    background-color: #ffffff20;
+    border: 1px solid #ffffff60;
   }
 }
