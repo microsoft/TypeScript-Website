@@ -39,6 +39,11 @@ export const indexCopy = {
   index_2_install: "Install TypeScript",
   index_2_playground_blurb: "Try in your browser",
 
+  index_2_migrate_1: "JavaScript file",
+  index_2_migrate_2: "JavaScript with TS Check",
+  index_2_migrate_3: "JavaScript with JSDoc",
+  index_2_migrate_4: "TypeScript file",
+
   // Stories + OSS users`
   index_2_migration_title: "TypeScript Testimonials",
   index_2_migration_oss: "Open Source with TypeScript",

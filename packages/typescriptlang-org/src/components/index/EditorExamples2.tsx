@@ -14,7 +14,11 @@ export const EditorExamples = () => {
   // Controls which story we should show
   const [index, setIndex] = useState(0);
 
-  const loadIndex = (index: number) => setIndex(index);;
+  const loadIndex = (index: number) => {
+    const codeContainer = document.getElementById("above-the-fold-headline-code")!
+    codeContainer.style.maxWidth = (window.innerWidth - 50) + "px";
+    setIndex(index);
+  }
 
   const next = (e) => {
     const exampleCount = 4
@@ -44,7 +48,7 @@ export const EditorExamples = () => {
       <li className={index === 3 ? "selected" : ""} ><a href="#" role="presentation" onClick={goto(3) }>{i("index_2_tab_4")}</a></li>
       {/* <li className={index === 4 ? "selected" : ""} ><a href="#" role="presentation" onClick={goto(4) }>{i("index_2_tab_5")}</a></li> */}
     </ul>
-        <div className="content">
+        <div className="content" id="above-the-fold-headline-code">
             <div className="text">
             {{
               0: (

@@ -68,8 +68,9 @@ $headline-foreground-bg: white;
       div.editor.front {
         margin: 20px auto;
         position: static;
-        // width: auto;
-        // max-width: 400px;
+      }
+      .text {
+        overflow-x: scroll;
       }
     }
 
@@ -113,6 +114,13 @@ $headline-foreground-bg: white;
       .twoslash-annotation.right {
         display: none;
       }
+    }
+    img {
+      max-width: 100%;
+    }
+
+    h3 {
+      text-align: center;
     }
   }
 }
@@ -960,17 +968,24 @@ $headline-foreground-bg: white;
     #adopt-step-slider {
       position: sticky;
       top: 80px;
-      height: 560px;
+      height: 580px;
+    }
+
+    #adopt-step-blurb,
+    #global-stepper {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 64px;
+
+      margin: 0 auto;
+      max-width: 480px;
     }
 
     #global-stepper {
       display: flex;
-      max-width: 480px;
-      position: absolute;
       bottom: 32px;
-      left: 0;
-      right: 0;
-      margin: 0 auto;
+
       > div {
         transition: opacity 0.2s;
         opacity: 0.2;

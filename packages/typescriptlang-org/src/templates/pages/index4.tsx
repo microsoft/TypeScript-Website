@@ -23,7 +23,6 @@ import {Code as Grad2} from "../../components/index/twoslash/generated/IndexAdop
 import {Code as Del1} from "../../components/index/twoslash/generated/Index2Del1TS"
 import {Code as Del2} from "../../components/index/twoslash/generated/Index2Del2RM"
 import {Code as Del3} from "../../components/index/twoslash/generated/Index2Del3JS.js"
-import { loadImage } from "canvas"
 
 
 const Section = (props: { children: any, color: string, className?: string }) =>
@@ -51,16 +50,15 @@ const Index: React.FC<Props> = (props) => {
     adopt.classList.remove("no-js")
     adopt.classList.add("fancy-scroll")
 
-    const samples = adopt.getElementsByClassName("adopt-step")  as HTMLCollectionOf<HTMLDivElement> 
     
 
-    updateOnScroll()
+    updateOnScroll(i)()
     // Handles setting the scroll 
-    window.addEventListener("scroll", updateOnScroll, { passive: true, capture: true });
+    window.addEventListener("scroll", updateOnScroll(i), { passive: true, capture: true });
  
 
     return () => {
-      window.removeEventListener("scroll", updateOnScroll)
+      window.removeEventListener("scroll", updateOnScroll(i))
     }
   });
 
@@ -125,10 +123,11 @@ const Index: React.FC<Props> = (props) => {
         
         <div id="get-started" className="animate">
           <Section color="white">
-              <h2 id='adopt-gradually'>{i("index_2_adopt")}</h2>
               <Half>
-                <div id='adopt-gradually-content' className='no-js'>
-                  <div id='adopt-step-slider'>
+               <div id='adopt-gradually-content' className='no-js'>
+                   <h2 id='adopt-gradually'>{i("index_2_adopt")}</h2>
+                    <div id='adopt-step-slider'>
+                    <p id='adopt-step-blurb'></p>
                     <Row>
                         <Col key='handbook'>
                             <P ikey="index_2_adopt_blurb_1" />
@@ -210,7 +209,9 @@ const Index: React.FC<Props> = (props) => {
           <Row>
             <Col key='TS improves JS'>
                 <img src={withPrefix("/images/index/stack-overflow.svg")}/>
-              <div style={{ width: "60%", marginTop: "20px" }}>{i("index_2_loved_stack", { strong: (...chunk) => <strong>{chunk}</strong>, so: (...chunk) => <a href="https://insights.stackoverflow.com/survey/2020#most-loved-dreaded-and-wanted" target="_blank">{chunk}</a> })}</div>
+                <div style={{ width: "60%", marginTop: "20px" }}>
+                  <p>{i("index_2_loved_stack", { strong: (...chunk) => <strong>{chunk}</strong>, so: (...chunk) => <a href="https://insights.stackoverflow.com/survey/2020#most-loved-dreaded-and-wanted" target="_blank">{chunk}</a> })}</p>
+                </div>
             </Col>
             <div style={{ backgroundColor: "black", width: "1px" }} />
             <Col key='you'>
@@ -249,35 +250,6 @@ const Index: React.FC<Props> = (props) => {
 
 }
 
-
-/** The "npm install typescript" button */
-const Installation = () => {
-  let hasSentNPMTrack = false
-
-  const onclick = () => {
-    var text = "npm install typescript";
-    if (!hasSentNPMTrack) {
-      hasSentNPMTrack = true
-      // @ts-ignore
-      window.appInsights &&
-        // @ts-ignore
-        window.appInsights.trackEvent({ name: "Copied npm instructions on Index", properties: { ab: "b" } })
-    }
-    navigator.clipboard.writeText(text).then(function () {
-      const tooltip = document.querySelector(".installation-panel .tooltip") as HTMLElement
-      tooltip.style.display = "block"
-    }, function (err) {
-      console.error('Async: Could not copy text: ', err);
-    });
-  }
-  return (
-    <div key="installation">
-      <a onClick={onclick} className="flat-button"><code>npm install typescript <button aria-label="Copy npm install typescript to clipboard"><svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="copy" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M433.941 65.941l-51.882-51.882A48 48 0 0 0 348.118 0H176c-26.51 0-48 21.49-48 48v48H48c-26.51 0-48 21.49-48 48v320c0 26.51 21.49 48 48 48h224c26.51 0 48-21.49 48-48v-48h80c26.51 0 48-21.49 48-48V99.882a48 48 0 0 0-14.059-33.941zM266 464H54a6 6 0 0 1-6-6V150a6 6 0 0 1 6-6h74v224c0 26.51 21.49 48 48 48h96v42a6 6 0 0 1-6 6zm128-96H182a6 6 0 0 1-6-6V54a6 6 0 0 1 6-6h106v88c0 13.255 10.745 24 24 24h88v202a6 6 0 0 1-6 6zm6-256h-64V48h9.632c1.591 0 3.117.632 4.243 1.757l48.368 48.368a6 6 0 0 1 1.757 4.243V112z"></path></svg></button></code></a>
-      <div className="tooltip">Copied to clipboard</div>
-    </div>
-  )
-}
-
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Index {...props} /></Intl>
 
 // Recurses up to get the y pos of a node
@@ -294,7 +266,7 @@ function getOffset( el ) {
 }
 
 
-const updateOnScroll = () => {
+const updateOnScroll = (i: any) => () => {
   const adopt = document.getElementById("adopt-gradually-content") as HTMLDivElement
   if (!adopt) return
 
@@ -323,6 +295,7 @@ const updateOnScroll = () => {
   stepper.children.item(2)!.classList.toggle("active", index === 2)
   stepper.children.item(3)!.classList.toggle("active", index === 3)
 
-
-  // console.log({ y, offset, fromTop, startPoint })
+  const msg = ["index_2_migrate_1", "index_2_migrate_2", "index_2_migrate_3", "index_2_migrate_4"]
+  const blurb = document.getElementById("adopt-step-blurb")!
+  blurb.innerText = i(msg[index]) 
 }

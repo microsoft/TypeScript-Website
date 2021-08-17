@@ -32,7 +32,7 @@ export const StepOne = (props: StepProps) => {
         <div className="adopt-step">
             <div className="adopt-step-content">
                 <Index1 />
-                <p>JavaScript File</p>
+                <p>{props.i("index_2_migrate_1")}</p>
                 <Stepper index={0} />
             </div>
         </div>
@@ -44,7 +44,7 @@ export const StepTwo = (props: StepProps) => {
         <div className="adopt-step">
             <div className="adopt-step-content">
                 <Index2 />
-                <p>JavaScript with TS Check</p>
+                <p>{props.i("index_2_migrate_2")}</p>
                 <Stepper index={1} />
             </div>
         </div>
@@ -56,7 +56,7 @@ export const StepThree = (props: StepProps) => {
         <div className="adopt-step">
             <div className="adopt-step-content">
                 <Index3 />
-                <p>JavaScript with JSDoc</p>
+                <p>{props.i("index_2_migrate_3")}</p>
                 <Stepper index={2} />
             </div>
         </div>
@@ -68,7 +68,7 @@ export const StepFour = (props: StepProps) => {
         <div className="adopt-step">
             <div className="adopt-step-content">
                 <Index4 />
-                <p>TypeScript File</p>
+                <p>{props.i("index_2_migrate_4")}</p>
                 <Stepper index={3} />
             </div>
         </div>
