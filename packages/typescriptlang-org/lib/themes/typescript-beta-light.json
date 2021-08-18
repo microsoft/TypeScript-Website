@@ -259,7 +259,7 @@
         "storage.type.primitive.array.groovy",
         "storage.type.primitive.groovy"
       ],
-      "settings": { "foreground": "#267f99" }
+      "settings": { "foreground": "#1c6277" }
     },
     {
       "name": "Types declaration and references, TS grammar specific",
@@ -271,7 +271,7 @@
         "support.constant.json",
         "entity.other.inherited-class"
       ],
-      "settings": { "foreground": "#267f99" }
+      "settings": { "foreground": "#1c6277" }
     },
     {
       "name": "Control flow / Special keywords",

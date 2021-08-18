@@ -75,6 +75,7 @@ export const EditorExamples = () => {
         href="#"
         onClick={next}
         role="presentation"
+        aria-label="Show code sample"
       >
             <svg
               width="11"

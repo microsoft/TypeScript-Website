@@ -206,7 +206,7 @@ const Index: React.FC<Props> = (props) => {
           <h2>{i("index_2_loved_by")} </h2>
           <Row>
             <Col key='TS improves JS'>
-                <img src={withPrefix("/images/index/stack-overflow.svg")}/>
+                <img src={withPrefix("/images/index/stack-overflow.svg")} alt="Image of the stack overflow logo, and a graph showing TypeScript as the 2nd most popular language" />
                 <div style={{ width: "60%", marginTop: "20px" }}>
                   <p>{i("index_2_loved_stack", { strong: (...chunk) => <strong>{chunk}</strong>, so: (...chunk) => <a href="https://insights.stackoverflow.com/survey/2020#most-loved-dreaded-and-wanted" target="_blank">{chunk}</a> })}</p>
                 </div>
@@ -215,7 +215,7 @@ const Index: React.FC<Props> = (props) => {
             <Col key='you'>
               <Row>
                 <div style={{  width: "160px", textAlign: "center" }}>
-                  <img src={withPrefix("/images/index/state-of-js.svg")}/>
+                  <img src={withPrefix("/images/index/state-of-js.svg")} alt="Logo of the State of JS survey"/>
                 </div>
                 <div style={{ flex: 1 }}>
                   <p>{i("index_2_loved_state_js", { strong: (...chunk) => <strong>{chunk}</strong>, js: (...chunk) => <a href="https://2020.stateofjs.com/en-US/technologies/javascript-flavors/" target="_blank">{chunk}</a>  })}</p>
