@@ -1,29 +1,8 @@
-@import "../../style/globals.scss";
-@import "./css/grid.scss";
+@import "../../../style/globals.scss";
+@import "./grid.scss";
 
-$headline-background-bg: #00273f;
-$headline-foreground-bg: #104261;
-
-@mixin flat-button {
-  background-color: white;
-  color: black;
-  padding: 1rem 1rem;
-  text-decoration: none;
-  cursor: pointer;
-
-  @media screen and (-ms-high-contrast: active) {
-    border: 2px solid grey;
-  }
-
-  &:hover,
-  &.focus {
-    background-color: #eee;
-  }
-
-  &:active {
-    background-color: #ddd;
-  }
-}
+$headline-background-bg: $ts-main-blue-color;
+$headline-foreground-bg: white;
 
 .version-bar {
   background-color: $ts-dark-bg-color;
@@ -65,8 +44,39 @@ $headline-foreground-bg: #104261;
   flex: 1;
 }
 
+@mixin flat-button {
+  background-color: white;
+  color: black;
+  padding: 1rem 1rem;
+  text-decoration: none;
+  cursor: pointer;
+
+  @media screen and (-ms-high-contrast: active) {
+    border: 2px solid grey;
+  }
+
+  &:hover,
+  &.focus {
+    background-color: #eee;
+  }
+
+  &:active {
+    background-color: #ddd;
+  }
+
+  .fluid-button-title {
+    font-weight: 600;
+  }
+}
+
 @media (max-width: $screen-sm) {
-  #index {
+  main #index-2 {
+    h2 {
+      font-size: 1.8rem;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
     // Doesn't show because it doens't have a way to generate
     // a height, so hard-code it
     div.headline-diagram {
@@ -98,12 +108,9 @@ $headline-foreground-bg: #104261;
       div.editor.front {
         margin: 20px auto;
         position: static;
-        width: auto;
-        max-width: 400px;
       }
-
-      div.editor.back {
-        display: none;
+      .text {
+        overflow-x: scroll;
       }
     }
 
@@ -123,6 +130,38 @@ $headline-foreground-bg: #104261;
     .github-bar {
       display: none;
     }
+
+    .get-started-section {
+      a.get-started {
+        background-image: none !important;
+        height: auto !important;
+        margin: 0 auto;
+      }
+      flex-direction: column;
+    }
+
+    .tag-container {
+      .twoslash-annotation.left {
+        position: static;
+        left: 0;
+        bottom: 0;
+        top: auto !important;
+
+        svg {
+          transform: rotate(44deg) scaleX(-1) translateX(-20px) !important;
+        }
+      }
+      .twoslash-annotation.right {
+        display: none;
+      }
+    }
+    img {
+      max-width: 100%;
+    }
+
+    h3 {
+      text-align: center;
+    }
   }
 }
 
@@ -138,21 +177,18 @@ $headline-foreground-bg: #104261;
   #index div.headline-diagram div.editor.front {
     max-width: 300px;
   }
-
-  #index .next-headline-button {
-    max-width: 280px;
-  }
 }
 
-#index {
+#index-2 {
   h1 {
     font-size: 2.5rem;
     line-height: 2.8rem;
     font-weight: 200;
     margin-top: 0;
+    padding-right: 40px;
 
     strong {
-      font-weight: 500;
+      font-weight: 600;
     }
   }
 
@@ -172,6 +208,14 @@ $headline-foreground-bg: #104261;
     margin-bottom: 2.5rem;
   }
 
+  p {
+    font-size: 1.2rem;
+  }
+
+  .col1 {
+    min-width: 230px;
+  }
+
   .darkblue {
     background-color: $ts-main-blue-darkest-color;
     color: white;
@@ -180,10 +224,6 @@ $headline-foreground-bg: #104261;
   .blue {
     background-color: $ts-main-blue-color;
     color: white;
-
-    a {
-      color: white;
-    }
   }
 
   .purple {
@@ -194,12 +234,19 @@ $headline-foreground-bg: #104261;
   .dark-green {
     background-color: #086e12;
     color: white;
-    text-align: center;
   }
 
   .white {
     background-color: white;
     color: black;
+
+    .col1 h3 {
+      text-align: center;
+    }
+    .col1 > p,
+    .col2 > p {
+      font-size: 1.2rem;
+    }
   }
 
   .light-grey {
@@ -215,14 +262,19 @@ $headline-foreground-bg: #104261;
     }
   }
 
-  .headline .col1 {
-    padding-bottom: 3rem;
-  }
+  .headline {
+    min-height: 420px;
+    .col1 {
+      padding-bottom: 3rem;
+    }
+    p {
+      padding-right: 20px;
+    }
 
-  .headline .container {
-    padding-bottom: 0;
-    padding-top: 40px;
-    font-size: 1rem;
+    .container {
+      padding-bottom: 0;
+      font-size: 1rem;
+    }
   }
 
   .container {
@@ -233,12 +285,18 @@ $headline-foreground-bg: #104261;
     display: flex;
     flex-direction: column;
     position: relative;
+
+    .half {
+      max-width: 780px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
   }
 
   .headline-diagram {
-    height: 100%;
-    overflow-y: hidden;
-    position: relative;
+    display: relative;
 
     pre .code-container {
       overflow: hidden;
@@ -248,38 +306,43 @@ $headline-foreground-bg: #104261;
     }
 
     .editor {
-      border: 4px solid #c4c4c4;
-      background-color: $ts-main-blue-darkest-color;
-
-      border-radius: 8px;
+      border: 2px solid #7fa2c9;
+      border-radius: 4px;
       width: 540px;
 
-      position: absolute;
+      ul.editor-tabs {
+        display: flex;
+        flex-direction: row;
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        li {
+          list-style: none;
+          padding: 10px;
+          a {
+            text-decoration: none;
+            color: white;
+          }
+          &.selected {
+            text-decoration: underline;
+          }
+        }
+      }
 
-      .homepage {
+      .min-dark {
         display: none;
       }
 
       &.front {
-        // @media (min-width: 1000px) {
-        // right: 40px;
-        // }
-        right: 20px;
-        width: 90%;
-        bottom: -80px;
-        background-color: $headline-foreground-bg;
-        border-color: $headline-foreground-bg;
+        width: 96%;
+        border-radius: 8px;
 
         @media screen and (-ms-high-contrast: active) {
           border: none;
         }
-
-        .titlebar {
-          border-color: $headline-foreground-bg;
-        }
-        div.lines {
-          border-color: $headline-foreground-bg;
-        }
+      }
+      .error {
+        border-left: 0 !important;
       }
 
       .editor-inner {
@@ -320,11 +383,9 @@ $headline-foreground-bg: #104261;
       }
 
       .error-message {
-        color: #ff6666;
+        color: #444d80;
         font-size: 0.8rem;
         font-family: $font-code;
-        position: absolute;
-        width: 200px;
       }
 
       .inline-completions {
@@ -381,52 +442,41 @@ $headline-foreground-bg: #104261;
       }
 
       .content {
-        height: 380px;
         display: flex;
         flex-direction: row;
-
-        .lines {
-          width: 60px;
-          border-right: 4px solid #172e38;
-          border-left: none;
-          flex-shrink: 0;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
-          background-color: $headline-background-bg;
-        }
 
         svg {
           margin: 12px auto;
 
           path {
-            fill: $headline-foreground-bg;
+            fill: white;
           }
         }
 
         .text {
-          // padding: 1rem;
+          border-top: 1px solid #7fa2c9;
           font-family: $font-code;
           font-size: 0.8rem;
           line-height: 0.95rem;
-          // white-space: pre;
+          height: 260px;
+
           flex-shrink: 1;
           flex-grow: 1;
-          overflow-x: scroll;
+          overflow-x: auto;
           position: relative;
-          background-color: $headline-background-bg;
+          background-color: #235a97;
 
           pre {
             margin: 0;
-            background-color: $headline-background-bg;
+            background-color: #235a97;
             border: none;
             code {
               font-size: 14px;
               line-height: 16px;
             }
             .error {
-              background-color: #341c2c;
-              color: #ee5858;
+              background-color: #ff000026;
+              color: #ffc5c5;
             }
           }
 
@@ -445,80 +495,117 @@ $headline-foreground-bg: #104261;
     }
   }
 
-  .button-container {
+  .next-headline-button {
+    @include flat-button;
+
+    position: absolute;
+    padding: 3px;
+    height: 30px;
+    width: 30px;
+
     display: flex;
-    height: 100%;
-    width: 100%;
-    flex-direction: column-reverse;
+    flex-direction: row;
+    text-decoration: none;
+    bottom: 20px;
+    right: 15px;
+
     align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
 
-    @media (max-width: 800px) {
-      top: 0;
-      position: absolute;
-    }
+  a.get-started {
+    @include flat-button;
 
-    .next-headline-button {
-      border: 2px solid #235a9769;
+    margin: 0 auto;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 20px -6px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 244px;
+
+    // One of these has to be set
+    &.short {
+      background: $ts-main-blue-color;
+      background-position-y: bottom -180px;
+      height: 260px;
+      border: 1px solid white;
       color: white;
-      padding: 3px;
-      max-width: 320px;
-
-      display: flex;
-      flex-direction: row;
-      text-decoration: none;
-      bottom: 20px;
-
-      align-items: center;
-      margin-bottom: 20px;
-
-      @media screen and (-ms-high-contrast: active) {
-        border: 2px solid grey;
+      &.handbook {
+        background-image: url(/images/index/get-started-handbook-blue.svg);
       }
-
-      &:hover,
-      &.focus {
-        background-color: #104261;
+      &.playground {
+        background-image: url(/images/index/get-started-playground-blue.svg);
+      }
+      &.download {
+        background-image: url(/images/index/get-started-download-blue.svg);
+        background-position: right bottom;
+        background-repeat: no-repeat;
+      }
+      svg path {
+        stroke: white;
       }
 
       &:active {
-        background-color: #0a3855;
-        margin-bottom: 19px;
+        background-color: #156fb4;
       }
-
-      // I don't like this - I don't know why the editor is in front of the button
-      // even though the hierarchy implies it shouldn't - maybe the position abosolute?
-      z-index: 1;
-
-      .message {
-        margin: 10px;
-        font-size: 0.9rem;
-        min-width: 140px;
+      &:hover {
+        border-width: 2px;
+        box-shadow: 0px 4px 20px -2px rgba(0, 0, 0, 0.25);
+        max-width: 246px;
       }
+    }
 
-      .next {
-        border-left: 2px solid #235a9769;
+    &.tall {
+      background: #ffffff;
+      border: 1px solid #000000;
+      color: black;
+      height: 342px;
+      margin-bottom: 2px;
 
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-
-        p {
-          margin-left: 20px;
-        }
-
-        svg {
-          height: 100%;
-          margin-left: 20px;
-          margin-right: 10px;
-
-          @media screen and (-ms-high-contrast: active) {
-            path {
-              fill: grey;
-            }
-          }
-        }
+      &:hover {
+        border-color: $ts-main-blue-color;
+        border-width: 2px;
+        box-shadow: 0px 4px 20px -2px rgba(0, 0, 0, 0.25);
+        max-width: 246px;
+        height: 344px;
+        margin-bottom: 0px;
       }
+      &:active {
+        background-color: #eeeeee;
+      }
+    }
+
+    display: flex;
+    align-items: flex-end;
+
+    .fluid-button-title {
+      font-size: 1.4rem;
+    }
+
+    svg {
+      margin-left: 20px;
+      margin-bottom: 10px;
+    }
+
+    &:active {
+      margin-top: 1px;
+      box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);
+    }
+
+    &.handbook {
+      background-image: url(/images/index/get-started-handbook.svg);
+      background-position: left bottom;
+      background-repeat: no-repeat;
+    }
+    &.playground {
+      background-image: url(/images/index/get-started-playground.svg);
+      background-position: center bottom;
+      background-repeat: no-repeat;
+    }
+    &.download {
+      background-image: url(/images/index/get-started-download.svg);
+      background-position: right bottom;
+      background-repeat: no-repeat;
     }
   }
 
@@ -662,6 +749,12 @@ $headline-foreground-bg: #104261;
 
   .migrations {
     overflow: hidden;
+    &.github #migration_title {
+      color: white;
+    }
+    strong {
+      color: #187abf;
+    }
   }
 
   .migrations .container {
@@ -673,7 +766,7 @@ $headline-foreground-bg: #104261;
     min-height: 370px;
 
     .controls a {
-      background-color: white;
+      background-color: #c4c4c4;
       width: 2rem;
       height: 2rem;
       color: black;
@@ -704,42 +797,25 @@ $headline-foreground-bg: #104261;
       }
     }
 
-    .slack {
-      .copy {
-        background: #4e086f;
-        background: linear-gradient(
-          90deg,
-          #4e086f 48%,
-          rgba(78, 8, 111, 0.28) 100%
-        );
+    .copy {
+      background: $ts-light-bg-sandy-color;
+      background: linear-gradient(
+        90deg,
+        $ts-light-bg-sandy-color 48%,
+        $ts-light-bg-sandy-color-20 100%
+      );
+      p {
+        font-size: 1rem;
       }
     }
 
     .airbnb {
-      .copy {
-        background: #6f0808;
-        background: linear-gradient(
-          90deg,
-          #6f0808 48%,
-          rgba(111, 8, 8, 0.28) 100%
-        );
-      }
-
       .fg {
         padding-top: 40px;
       }
     }
 
     .goog {
-      .copy {
-        background: #086f56;
-        background: linear-gradient(
-          90deg,
-          #086f56 48%,
-          rgba(8, 111, 86, 0.28) 100%
-        );
-      }
-
       .illustration .fg {
         padding-top: 40px;
       }
@@ -762,8 +838,8 @@ $headline-foreground-bg: #104261;
       }
 
       a.migration-button {
-        border: 1px solid white;
-        color: white;
+        border: 1px solid black;
+        color: black;
         text-decoration: none;
         text-align: center;
         width: 60%;
@@ -925,9 +1001,131 @@ $headline-foreground-bg: #104261;
       pointer-events: none;
     }
   }
-}
 
-// Prototypes for an index page two
+  #adopt-gradually-content.fancy-scroll {
+    height: 1400px;
+
+    #adopt-step-slider {
+      position: sticky;
+      top: 80px;
+      height: 580px;
+    }
+
+    #adopt-step-blurb,
+    #global-stepper {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 64px;
+
+      margin: 0 auto;
+      max-width: 480px;
+    }
+
+    #global-stepper {
+      display: flex;
+      bottom: 32px;
+
+      > div {
+        transition: opacity 0.2s;
+        opacity: 0.2;
+      }
+      > div.active {
+        opacity: 1;
+      }
+    }
+
+    .adopt-step {
+      transition: opacity 0.2s;
+      position: absolute;
+      margin-left: auto;
+      margin-right: auto;
+      padding-top: 200px;
+
+      left: 0;
+      right: 0;
+      top: 0;
+      > div > p {
+        display: none;
+      }
+      .adopt-step-stepper {
+        display: none;
+      }
+    }
+  }
+
+  #global-stepper {
+    display: none;
+  }
+
+  .adopt-step {
+    max-width: 480px;
+    margin: 20px auto;
+    padding-top: 120px;
+
+    pre {
+      margin-bottom: 10px;
+    }
+
+    > p {
+      font-weight: bold;
+      margin: 10px 0;
+      font-size: 1rem;
+    }
+
+    .tag-container p {
+      font-size: 1rem;
+    }
+  }
+
+  .adopt-step-stepper {
+    display: flex;
+    margin-bottom: 80px;
+
+    div {
+      border: 1px solid black;
+      // width: 75px;
+      display: inline-block;
+      flex: 1;
+      height: 13px;
+      margin-left: 10px;
+      position: relative;
+
+      &.yellow,
+      &.yellow-hint-blue,
+      &.yellow-lot-blue {
+        background-color: #ffe200;
+      }
+
+      &.yellow-hint-blue:after,
+      &.yellow-lot-blue:after {
+        content: "";
+        position: absolute;
+        width: 20%;
+        left: 0;
+        height: 13px;
+        background-color: $ts-main-blue-color;
+      }
+
+      &.yellow-lot-blue:after {
+        width: 60%;
+      }
+      &.first {
+        margin-left: 0;
+      }
+    }
+  }
+
+  // Convert the shiki CSS for highlighting to instead be red
+  .via-delete {
+    .highlight {
+      background-color: #fff1f1;
+    }
+    .dim {
+      opacity: 1;
+    }
+  }
+}
 
 .yellow {
   background-color: #f1dd3f;

@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
-import { indexCopy } from "../../copy/en/index"
+import { indexCopy } from "../../copy/en/index2"
 import { createInternational } from "../../lib/createInternational"
 import { useIntl } from "react-intl"
 import { EditorExamples } from "./EditorExamples"
@@ -42,14 +42,13 @@ export const AboveTheFold = () => {
 
     return (<Row>
       <Col>
-        <h1>{i("index_headline", { bold: (...chunk) => <strong>{chunk}</strong> })}</h1>
-        <p>{i("index_summary")}</p>
-        <p>{i("index_locations")}</p>
+        <h1>{i("index_2_headline", { bold: (...chunk) => <strong>{chunk}</strong> })}</h1>
+        <p>{i("index_2_summary")}</p>
 
         <div className="call-to-action" style={{ justifyContent: "left" }}>
           <FluidButton
-            title={i("index_cta_install")}
-            subtitle={i("index_cta_install_subtitle")}
+            title={i("index_2_cta_install")}
+            subtitle={i("index_2_cta_install_subtitle")}
             href="/download"
             onClick={onclick}
             icon={
@@ -61,9 +60,9 @@ export const AboveTheFold = () => {
             } />
         </div>
       </Col>
-      <Col2>
+      <Col>
         <EditorExamples />
-      </Col2>
+      </Col>
     </Row>)
   }
 
@@ -72,10 +71,10 @@ export const AboveTheFold = () => {
       <h2>Get Started With TypeScript</h2>
       <Row>
         <Col className="call-to-action">
-          <img src={require("../../assets/index/play-dark.png").default} width="100%" height="400px" />
+          <img src={require("../../assets/index/play-light.png").default} width="100%"  />
           <FluidButton
-            title={i("index_cta_play")}
-            subtitle={i("index_cta_play_subtitle")}
+            title={i("index_2_cta_play")}
+            subtitle={i("index_2_cta_play_subtitle")}
             href="/play"
             onClick={() => event("Home Page CTA Exited", { link: "playground" })}
             icon={
@@ -96,10 +95,10 @@ export const AboveTheFold = () => {
         </Col>
 
         <Col className="call-to-action hide-small">
-          <img src={require("../../assets/index/code-dark.png").default} width="100%" height="400px" />
+          <img src={require("../../assets/index/code-light.png").default} width="100%"  />
           <FluidButton
-            title={i("index_cta_download")}
-            subtitle={i("index_cta_download_subtitle")}
+            title={i("index_2_cta_download")}
+            subtitle={i("index_2_cta_download_subtitle")}
             href="/download"
             onClick={() => event("Home Page CTA Exited", { link: "download" })}
             icon={
