@@ -10,6 +10,13 @@ TypeScript provides several utility types to facilitate common type transformati
 
 ## `Partial<Type>`
 
+<blockquote class=bg-reading>
+
+Released:  
+[2.1](/docs/handbook/release-notes/typescript-2-1.html#partial-readonly-record-and-pick)
+
+</blockquote>
+
 Constructs a type with all properties of `Type` set to optional. This utility will return a type that represents all subsets of a given type.
 
 ##### Example
@@ -34,9 +41,14 @@ const todo2 = updateTodo(todo1, {
 });
 ```
 
-**Released:** [2.1](/docs/handbook/release-notes/typescript-2-1.html#partial-readonly-record-and-pick)
-
 ## `Required<Type>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[2.8](/docs/handbook/release-notes/typescript-2-8.html#improved-control-over-mapped-type-modifiers)
+
+</blockquote>
 
 Constructs a type consisting of all properties of `Type` set to required. The opposite of [`Partial`](#partialtype).
 
@@ -54,9 +66,14 @@ const obj: Props = { a: 5 };
 const obj2: Required<Props> = { a: 5 };
 ```
 
-**Released:** [2.8](/docs/handbook/release-notes/typescript-2-8.html#improved-control-over-mapped-type-modifiers)
-
 ## `Readonly<Type>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[2.1](/docs/handbook/release-notes/typescript-2-1.html#partial-readonly-record-and-pick)
+
+</blockquote>
 
 Constructs a type with all properties of `Type` set to `readonly`, meaning the properties of the constructed type cannot be reassigned.
 
@@ -83,9 +100,14 @@ This utility is useful for representing assignment expressions that will fail at
 function freeze<Type>(obj: Type): Readonly<Type>;
 ```
 
-**Released:** [2.1](/docs/handbook/release-notes/typescript-2-1.html#partial-readonly-record-and-pick)
-
 ## `Record<Keys,Type>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[2.1](/docs/handbook/release-notes/typescript-2-1.html#partial-readonly-record-and-pick)
+
+</blockquote>
 
 Constructs an object type whose property keys are `Keys` and whose property values are `Type`. This utility can be used to map the properties of a type to another type.
 
@@ -109,9 +131,14 @@ cats.boris;
 // ^?
 ```
 
-**Released:** [2.1](/docs/handbook/release-notes/typescript-2-1.html#partial-readonly-record-and-pick)
-
 ## `Pick<Type, Keys>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[2.1](/docs/handbook/release-notes/typescript-2-1.html#partial-readonly-record-and-pick)
+
+</blockquote>
 
 Constructs a type by picking the set of properties `Keys` (string literal or union of string literals) from `Type`.
 
@@ -135,9 +162,14 @@ todo;
 // ^?
 ```
 
-**Released:** [2.1](/docs/handbook/release-notes/typescript-2-1.html#partial-readonly-record-and-pick)
-
 ## `Omit<Type, Keys>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[3.5](/docs/handbook/release-notes/typescript-3-5.html#the-omit-helper-type)
+
+</blockquote>
 
 Constructs a type by picking all properties from `Type` and then removing `Keys` (string literal or union of string literals).
 
@@ -173,9 +205,14 @@ todoInfo;
 // ^?
 ```
 
-**Released:** [3.5](/docs/handbook/release-notes/typescript-3-5.html#the-omit-helper-type)
-
 ## `Exclude<Type, ExcludedUnion>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[2.8](/docs/handbook/release-notes/typescript-2-8.html#predefined-conditional-types)
+
+</blockquote>
 
 Constructs a type by excluding from `Type` all union members that are assignable to `ExcludedUnion`.
 
@@ -190,9 +227,14 @@ type T2 = Exclude<string | number | (() => void), Function>;
 //    ^?
 ```
 
-**Released:** [2.8](/docs/handbook/release-notes/typescript-2-8.html#predefined-conditional-types)
-
 ## `Extract<Type, Union>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[2.8](/docs/handbook/release-notes/typescript-2-8.html#predefined-conditional-types)
+
+</blockquote>
 
 Constructs a type by extracting from `Type` all union members that are assignable to `Union`.
 
@@ -205,9 +247,14 @@ type T1 = Extract<string | number | (() => void), Function>;
 //    ^?
 ```
 
-**Released:** [2.8](/docs/handbook/release-notes/typescript-2-8.html#predefined-conditional-types)
-
 ## `NonNullable<Type>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[2.8](/docs/handbook/release-notes/typescript-2-8.html#predefined-conditional-types)
+
+</blockquote>
 
 Constructs a type by excluding `null` and `undefined` from `Type`.
 
@@ -220,9 +267,14 @@ type T1 = NonNullable<string[] | null | undefined>;
 //    ^?
 ```
 
-**Released:** [2.8](/docs/handbook/release-notes/typescript-2-8.html#predefined-conditional-types)
-
 ## `Parameters<Type>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[3.1](https://github.com/microsoft/TypeScript/pull/26243)
+
+</blockquote>
 
 Constructs a tuple type from the types used in the parameters of a function type `Type`.
 
@@ -250,9 +302,14 @@ type T7 = Parameters<Function>;
 //    ^?
 ```
 
-**Released:** [3.1](https://github.com/microsoft/TypeScript/pull/26243)
-
 ## `ConstructorParameters<Type>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[3.1](https://github.com/microsoft/TypeScript/pull/26243)
+
+</blockquote>
 
 Constructs a tuple or array type from the types of a constructor function type. It produces a tuple type with all the parameter types (or the type `never` if `Type` is not a function).
 
@@ -274,9 +331,14 @@ type T4 = ConstructorParameters<Function>;
 //    ^?
 ```
 
-**Released:** [3.1](https://github.com/microsoft/TypeScript/pull/26243)
-
 ## `ReturnType<Type>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[2.8](/docs/handbook/release-notes/typescript-2-8.html#predefined-conditional-types)
+
+</blockquote>
 
 Constructs a type consisting of the return type of function `Type`.
 
@@ -306,9 +368,14 @@ type T8 = ReturnType<Function>;
 //    ^?
 ```
 
-**Released:** [2.8](/docs/handbook/release-notes/typescript-2-8.html#predefined-conditional-types)
-
 ## `InstanceType<Type>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[2.8](/docs/handbook/release-notes/typescript-2-8.html#predefined-conditional-types)
+
+</blockquote>
 
 Constructs a type consisting of the instance type of a constructor function in `Type`.
 
@@ -334,9 +401,14 @@ type T4 = InstanceType<Function>;
 //    ^?
 ```
 
-**Released:** [2.8](/docs/handbook/release-notes/typescript-2-8.html#predefined-conditional-types)
-
 ## `ThisParameterType<Type>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[3.3](https://github.com/microsoft/TypeScript/pull/28920)
+
+</blockquote>
 
 Extracts the type of the [this](/docs/handbook/functions.html#this-parameters) parameter for a function type, or [unknown](/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type) if the function type has no `this` parameter.
 
@@ -352,9 +424,14 @@ function numberToString(n: ThisParameterType<typeof toHex>) {
 }
 ```
 
-**Released:** [3.3](https://github.com/microsoft/TypeScript/pull/28920)
-
 ## `OmitThisParameter<Type>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[3.3](https://github.com/microsoft/TypeScript/pull/28920)
+
+</blockquote>
 
 Removes the [`this`](/docs/handbook/functions.html#this-parameters) parameter from `Type`. If `Type` has no explicitly declared `this` parameter, the result is simply `Type`. Otherwise, a new function type with no `this` parameter is created from `Type`. Generics are erased and only the last overload signature is propagated into the new function type.
 
@@ -370,9 +447,14 @@ const fiveToHex: OmitThisParameter<typeof toHex> = toHex.bind(5);
 console.log(fiveToHex());
 ```
 
-**Released:** [3.3](https://github.com/microsoft/TypeScript/pull/28920)
-
 ## `ThisType<Type>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[2.3](https://github.com/microsoft/TypeScript/pull/14141)
+
+</blockquote>
 
 This utility does not return a transformed type. Instead, it serves as a marker for a contextual [`this`](/docs/handbook/functions.html#this) type. Note that the `--noImplicitThis` flag must be enabled to use this utility.
 
@@ -409,8 +491,6 @@ obj.moveBy(5, 5);
 In the example above, the `methods` object in the argument to `makeObject` has a contextual type that includes `ThisType<D & M>` and therefore the type of [this](/docs/handbook/functions.html#this) in methods within the `methods` object is `{ x: number, y: number } & { moveBy(dx: number, dy: number): number }`. Notice how the type of the `methods` property simultaneously is an inference target and a source for the `this` type in methods.
 
 The `ThisType<T>` marker interface is simply an empty interface declared in `lib.d.ts`. Beyond being recognized in the contextual type of an object literal, the interface acts like any empty interface.
-
-**Released:** [2.3](https://github.com/microsoft/TypeScript/pull/14141)
 
 ## Intrinsic String Manipulation Types
 
