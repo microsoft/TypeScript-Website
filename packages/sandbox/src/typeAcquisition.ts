@@ -211,7 +211,7 @@ const getModuleAndRootDefTypePath = async (packageName: string, config: ATAConfi
 
   const responseJSON = await response.json()
   if (!responseJSON) {
-    return errorMsg(`Could the Algolia JSON was un-parsable for the module '${packageName}'`, response, config)
+    return errorMsg(`Could not get the Algolia JSON was un-parsable for the module '${packageName}'`, response, config)
   }
 
   if (!responseJSON.types) {
