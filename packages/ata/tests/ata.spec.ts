@@ -4,12 +4,17 @@ import * as ts from "typescript"
 describe(getReferencesForModule, () => {
   it("extracts imports", () => {
     const code = "import 'abc'"
-    expect(getReferencesForModule(ts, code)).toEqual(["abc"])
+    expect(getReferencesForModule(ts, code).map(m => m.module)).toEqual(["abc"])
   })
 
   it("extracts from imports", () => {
     const code = "import {asda} from '123'"
-    expect(getReferencesForModule(ts, code)).toEqual(["123"])
+    expect(getReferencesForModule(ts, code).map(m => m.module)).toEqual(["123"])
+  })
+
+  it("extracts a version meta", () => {
+    const code = "import {asda} from '123' // version: 1.2.3"
+    expect(getReferencesForModule(ts, code)[0]).toEqual({ module: "123", version: "1.2.3" })
   })
 })
 
