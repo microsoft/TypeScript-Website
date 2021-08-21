@@ -1,15 +1,48 @@
 import { ATABootstrapConfig } from "."
 
+//  https://github.com/jsdelivr/data.jsdelivr.com
+
 export const getNPMVersionsForModule = (config: ATABootstrapConfig, moduleName: string) => {
   const url = `https://data.jsdelivr.com/v1/package/npm/${moduleName}`
   return api<{ tags: Record<string, string>; versions: string[] }>(config, url)
 }
 
-export type NPMTreeMeta = { default: string; files: Array<{ name: string }> }
+export type NPMTreeMeta = { default: string; files: Array<{ name: string }>; moduleName: string; version: string }
 
-export const getFiletreeForModuleWithVersion = (config: ATABootstrapConfig, moduleName: string, version: string) => {
+export const getFiletreeForModuleWithVersion = async (
+  config: ATABootstrapConfig,
+  moduleName: string,
+  version: string
+) => {
   const url = `https://data.jsdelivr.com/v1/package/npm/${moduleName}@${version}/flat`
-  return api<NPMTreeMeta>(config, url)
+  const res = await api<NPMTreeMeta>(config, url)
+  if (res instanceof Error) {
+    return res
+  } else {
+    return {
+      ...res,
+      moduleName,
+      version,
+    }
+  }
+}
+
+export const getDTSFileForModuleWithVersion = (
+  config: ATABootstrapConfig,
+  moduleName: string,
+  version: string,
+  file: string
+) => {
+  // It has a prefix /
+  const url = `https://cdn.jsdelivr.net/npm/${moduleName}@${version}${file}`
+  const f = config.fetcher || fetch
+  return f(url, { headers: { "User-Agent": `Type Acquisition ${config.projectName}` } }).then(res => {
+    if (res.ok) {
+      return res.text()
+    } else {
+      return new Error("OK")
+    }
+  })
 }
 
 function api<T>(config: ATABootstrapConfig, url: string): Promise<T | Error> {
@@ -21,34 +54,4 @@ function api<T>(config: ATABootstrapConfig, url: string): Promise<T | Error> {
       return new Error("OK")
     }
   })
-}
-
-function createDTSQueue(maxNumOfWorkers = 4) {
-  var numOfWorkers = 0
-  var taskIndex = 0
-
-  return new Promise(done => {
-    const handleResult = index => result => {
-      tasks[index] = result
-      numOfWorkers--
-      getNextTask()
-    }
-    const getNextTask = () => {
-      console.log("getNextTask numOfWorkers=" + numOfWorkers)
-      if (numOfWorkers < maxNumOfWorkers && taskIndex < tasks.length) {
-        tasks[taskIndex]().then(handleResult(taskIndex)).catch(handleResult(taskIndex))
-        taskIndex++
-        numOfWorkers++
-        getNextTask()
-      } else if (numOfWorkers === 0 && taskIndex === tasks.length) {
-        done(tasks)
-      }
-    }
-    getNextTask()
-  })
-}
-
-const createTask = value => () => {
-  if (value === 6) return Promise.reject(new Error("sorry"))
-  return new Promise(resolve => setTimeout(() => resolve(value), value))
 }

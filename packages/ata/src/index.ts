@@ -1,4 +1,9 @@
-import { getFiletreeForModuleWithVersion, getNPMVersionsForModule, NPMTreeMeta } from "./apis"
+import {
+  getDTSFileForModuleWithVersion,
+  getFiletreeForModuleWithVersion,
+  getNPMVersionsForModule,
+  NPMTreeMeta,
+} from "./apis"
 import { mapModuleNameToModule } from "./edgeCases"
 
 export interface ATABootstrapConfig {
@@ -42,6 +47,8 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
     resolveDeps(initialSourceFile)
   }
 
+  let estimatedToDownload = 0
+  let estimatedDownloaded = 0
   async function resolveDeps(initialSourceFile: string) {
     const depsToGet = getNewDependencies(config, moduleMap, initialSourceFile)
 
@@ -57,6 +64,22 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
 
     // These are ones we need to look on DT for (which may not be there, who knows)
     const mightBeOnDT = treesOnly.filter(t => !hasDTS.includes(t))
+
+    hasDTS.forEach(tree => {
+      tree.files.forEach(f => {
+        if (f.name.endsWith(".d.ts")) {
+          estimatedToDownload += 1
+          getDTSFileForModuleWithVersion(config, tree.moduleName, tree.version, f.name).then(text => {
+            estimatedDownloaded += 1
+            if (text instanceof Error) {
+              //
+            } else {
+              config.delegate.receivedFile?.(text, f.name)
+            }
+          })
+        }
+      })
+    })
   }
 }
 
@@ -93,8 +116,6 @@ export function getNewDependencies(config: ATABootstrapConfig, moduleMap: Map<st
   const modules = refs.filter(f => !f.module.startsWith(".")).filter(m => moduleMap.has(m.module))
   return modules
 }
-
-//  https://github.com/jsdelivr/data.jsdelivr.com
 
 /** The bulk load of the work in getting the filetree based on how people think about npm names and versions */
 export const getFileTreeForModuleWithTag = async (
