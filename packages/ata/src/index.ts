@@ -12,6 +12,8 @@ export interface ATABootstrapConfig {
   typescript: typeof import("typescript")
   /** The callback which gets called when ATA decides a file needs to be written to your VFS  */
   addLibraryToRuntime: AddLibToRuntimeFunc
+  /** The callback when all ATA has finished */
+  finished: () => void
   /** If you uneed a custom version of fetch */
   fetcher?: typeof fetch
   /** If you need a custom logger instead of the console global */
@@ -30,7 +32,11 @@ export interface ATABootstrapConfig {
 export const setupTypeAcquisition = (config: ATABootstrapConfig) => (initialSourceFile: string) => {}
 
 export const getModulePackage = (config: ATABootstrapConfig) => (modeuleName: string) => {
-  // There are a few options for getting
+  // Using jsdelivr, get all files for a package
+  // https://github.com/jsdelivr/data.jsdelivr.com#list-package-files
+  // check for any .d.ts files
+  // If none, check for existence of DT using same API
+  // download all .d.ts files
 }
 
 export const getReferencesForModule = (ts: typeof import("typescript"), code: string) => {
