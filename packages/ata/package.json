@@ -1,20 +1,23 @@
 {
-    "name": "@typescript/ata",
-    "license": "MIT",
-    "homepage": "https://github.com/microsoft/TypeScript-Website",
-    "repository": {
-        "url": "https://github.com/microsoft/TypeScript-Website.git",
-        "directory": "packages/ata",
-        "type": "git"
-    },
-    "scripts": {
-        "build": "esbuild src/index.ts --outfile=dist/index.js --target=node12 --platform=node",
-        "test": "jest",
-        "bootstrap": "yarn build"
-    },
-    "devDependencies": {
-        "esbuild": "^0.12.9",
-        "esbuild-jest": "^0.5.0",
-        "jest": "^26"
-    }
+  "name": "@typescript/ata",
+  "version": "0.0.1",
+  "license": "MIT",
+  "homepage": "https://github.com/microsoft/TypeScript-Website",
+  "repository": {
+    "url": "https://github.com/microsoft/TypeScript-Website.git",
+    "directory": "packages/ata",
+    "type": "git"
+  },
+  "main": "api/dist.js",
+  "types": "src/userFacingTypes.d.ts",
+  "scripts": {
+    "build": "esbuild src/index.ts --outfile=dist/index.js --target=node12 --platform=node",
+    "test": "jest",
+    "bootstrap": "yarn build"
+  },
+  "devDependencies": {
+    "esbuild": "^0.12.9",
+    "esbuild-jest": "^0.5.0",
+    "jest": "^26"
+  }
 }

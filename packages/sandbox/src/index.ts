@@ -1,4 +1,4 @@
-import { detectNewImportsToAcquireTypeFor } from "./typeAcquisition"
+// import { detectNewImportsToAcquireTypeFor } from "./typeAcquisition"
 import { sandboxTheme, sandboxThemeDark } from "./theme"
 import { TypeScriptWorker } from "./tsWorker"
 import {
@@ -12,6 +12,8 @@ import { getInitialCode } from "./getInitialCode"
 import { extractTwoSlashCompilerOptions, twoslashCompletions } from "./twoslashSupport"
 import * as tsvfs from "./vendor/typescript-vfs"
 
+import { setupTypeAcquisition } from "@typescript/ata"
+
 type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
 type Monaco = typeof import("monaco-editor")
 
@@ -24,7 +26,7 @@ export type SandboxConfig = {
   text: string
   /** @deprecated */
   useJavaScript?: boolean
-  /** The default file for the plaayground  */
+  /** The default file for the playground  */
   filetype: "js" | "ts" | "d.ts"
   /** Compiler options which are automatically just forwarded on */
   compilerOptions: CompilerOptions
@@ -197,7 +199,7 @@ export const createTypeScriptSandbox = (
     }
 
     if (config.acquireTypes) {
-      detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
+      // detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
     }
   }
 
