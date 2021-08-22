@@ -27,22 +27,21 @@ export const getFiletreeForModuleWithVersion = async (
   }
 }
 
-export const getDTSFileForModuleWithVersion = (
+export const getDTSFileForModuleWithVersion = async (
   config: ATABootstrapConfig,
   moduleName: string,
   version: string,
   file: string
 ) => {
-  // It has a prefix /
+  // file has a prefix / in falt mode
   const url = `https://cdn.jsdelivr.net/npm/${moduleName}@${version}${file}`
   const f = config.fetcher || fetch
-  return f(url, { headers: { "User-Agent": `Type Acquisition ${config.projectName}` } }).then(res => {
-    if (res.ok) {
-      return res.text()
-    } else {
-      return new Error("OK")
-    }
-  })
+  const res = await f(url, { headers: { "User-Agent": `Type Acquisition ${config.projectName}` } })
+  if (res.ok) {
+    return res.text()
+  } else {
+    return new Error("OK")
+  }
 }
 
 function api<T>(config: ATABootstrapConfig, url: string): Promise<T | Error> {

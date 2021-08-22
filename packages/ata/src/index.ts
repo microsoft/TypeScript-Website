@@ -28,7 +28,7 @@ export interface ATABootstrapConfig {
   logger?: Logger
 }
 
-type ModuleMeta = { state: "loading" } | { state: "downloaded" }
+type ModuleMeta = { state: "loading" }
 
 /**
  * The function which starts up type acquisition,
@@ -43,12 +43,14 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
   const moduleMap = new Map<string, ModuleMeta>()
   const fsMap = new Map<string, string>()
 
-  return (initialSourceFile: string) => {
-    resolveDeps(initialSourceFile)
-  }
-
   let estimatedToDownload = 0
   let estimatedDownloaded = 0
+  return (initialSourceFile: string) => {
+    resolveDeps(initialSourceFile).then(t => {
+      config.delegate.finished?.(fsMap)
+    })
+  }
+
   async function resolveDeps(initialSourceFile: string) {
     const depsToGet = getNewDependencies(config, moduleMap, initialSourceFile)
 
@@ -61,26 +63,66 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
 
     // These are the modules which we can grab directly
     const hasDTS = treesOnly.filter(t => t.files.find(f => f.name.endsWith(".d.ts")))
+    const dtsFilesFromNPM = hasDTS.map(t => treeToDTSFiles(t, `/node_modules/${t.moduleName}`))
 
     // These are ones we need to look on DT for (which may not be there, who knows)
     const mightBeOnDT = treesOnly.filter(t => !hasDTS.includes(t))
+    const dtTrees = await Promise.all(
+      mightBeOnDT.map(f => getFileTreeForModuleWithTag(config, getDTName(f.moduleName), f.version))
+    )
 
-    hasDTS.forEach(tree => {
-      tree.files.forEach(f => {
-        if (f.name.endsWith(".d.ts")) {
-          estimatedToDownload += 1
-          getDTSFileForModuleWithVersion(config, tree.moduleName, tree.version, f.name).then(text => {
-            estimatedDownloaded += 1
-            if (text instanceof Error) {
-              //
-            } else {
-              config.delegate.receivedFile?.(text, f.name)
-            }
-          })
+    const dtTreesOnly = dtTrees.filter(t => !("error" in t)) as NPMTreeMeta[]
+    const dtsFilesFromDT = dtTreesOnly.map(t => treeToDTSFiles(t, `/node_modules/@types/${getDTName(t.moduleName)}`))
+
+    // Collect all the npm and DT DTS requests and flatten their arrays
+    const allDTSFiles = dtsFilesFromNPM.concat(dtsFilesFromDT).reduce((p, c) => p.concat(c), [])
+    estimatedToDownload += allDTSFiles.length
+
+    // Grab all dts files
+    await Promise.all(
+      allDTSFiles.map(async dts => {
+        const dtsCode = await getDTSFileForModuleWithVersion(config, dts.moduleName, dts.moduleVersion, dts.path)
+        estimatedDownloaded++
+        if (dtsCode instanceof Error) {
+          //
+        } else {
+          fsMap.set(dts.vfsPath, dtsCode)
+          config.delegate.receivedFile?.(dtsCode, dts.vfsPath)
+
+          // Send a progress note every 5 downloads
+          if (config.delegate.progress && estimatedDownloaded % 5 === 0) {
+            config.delegate.progress(estimatedDownloaded, estimatedToDownload)
+          }
+
+          // Recurse through deps
+          await resolveDeps(dtsCode)
         }
       })
-    })
+    )
   }
+}
+
+type ATADownload = {
+  moduleName: string
+  moduleVersion: string
+  vfsPath: string
+  path: string
+}
+
+function treeToDTSFiles(tree: NPMTreeMeta, vfsPrefix: string) {
+  const dtsRefs: ATADownload[] = []
+
+  for (const file of tree.files) {
+    if (file.name.endsWith(".d.ts")) {
+      dtsRefs.push({
+        moduleName: tree.moduleName,
+        moduleVersion: tree.version,
+        vfsPath: `${vfsPrefix}${file.name}`,
+        path: file.name,
+      })
+    }
+  }
+  return dtsRefs
 }
 
 /**
@@ -162,4 +204,14 @@ interface Logger {
   error: (...args: any[]) => void
   groupCollapsed: (...args: any[]) => void
   groupEnd: (...args: any[]) => void
+}
+
+// Taken from dts-gen: https://github.com/microsoft/dts-gen/blob/master/lib/names.ts
+function getDTName(s: string) {
+  if (s.indexOf("@") === 0 && s.indexOf("/") !== -1) {
+    // we have a scoped module, e.g. @bla/foo
+    // which should be converted to   bla__foo
+    s = s.substr(1).replace("/", "__")
+  }
+  return "@types/" + s
 }
