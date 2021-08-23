@@ -72,7 +72,7 @@ export const indexCopy = {
   index_2_adopt_blurb_1:
     "Apply types to your JavaScript project incrementally, <strong>each step improves editor support</strong> and improves your codebase.",
   index_2_adopt_blurb_2:
-    "Lets take this this incorrect JavaScript code, and see how <strong>TypeScript can catch mistakes in your editor</strong>.",
+    "Lets take this incorrect JavaScript code, and see how <strong>TypeScript can catch mistakes in your editor</strong>.",
 
   index_2_adopt_info_1:
     "No editor warnings in JavaScript files.<br/><br/>This crashes at runtime.",
