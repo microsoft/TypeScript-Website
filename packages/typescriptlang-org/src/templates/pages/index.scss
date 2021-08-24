@@ -322,6 +322,10 @@ $headline-foreground-bg: #104261;
         width: 200px;
       }
 
+      .error-behind {
+        opacity: 0;
+      }
+
       .inline-completions {
         position: relative;
 
