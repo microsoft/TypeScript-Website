@@ -1,3 +1,4 @@
+// twoslash: { themes: ["min-dark", "../../../packages/typescriptlang-org/src/components/index/twoslash/homepage"] }
 // @noErrors
 // @esModuleInterop
 import express from "express"

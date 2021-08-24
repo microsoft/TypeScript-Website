@@ -2,7 +2,7 @@ import React from "react"
 import { Layout } from "../../../components/layout"
 import { Intl } from "../../../components/Intl"
 
-import { indexCopy } from "../../../copy/en/index"
+import { indexCopy } from "../../../copy/en/index2"
 import { createIntlLink } from "../../../components/IntlLink"
 import { createInternational } from "../../../lib/createInternational"
 import { useIntl } from "react-intl"

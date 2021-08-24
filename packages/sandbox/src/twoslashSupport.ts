@@ -11,7 +11,7 @@ type CompilerOptions = import("typescript").CompilerOptions
  * from the source code
  */
 
-export const extractTwoSlashComplierOptions = (ts: TS) => {
+export const extractTwoSlashCompilerOptions = (ts: TS) => {
   let optMap = new Map<string, any>()
 
   if (!("optionDeclarations" in ts)) {

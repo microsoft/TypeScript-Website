@@ -1,18 +1,19 @@
 @import "../style/globals.scss";
+/*  Start of Shiki Twoslash CSS:
 
-/* Code blocks look like: 
+Code blocks structurally look like: 
 
-<pre class='shiki lsp twoslash'>
-  <div class='language-id>[lang-id]</div>
+<pre class='shiki lsp twoslash [theme-name]'>
+  <div class='language-id'>[lang-id]</div>
     <div class='code-container'>
       <code>[the code as a series of spans]</code>
-      <a href='playground...'>Try</a>
+      <a href='playground...'>Try</a> (optional)
     </div>
   </pre> 
 */
 
 pre {
-  /* In theory shiki will overwrite these, but this is to make sure there are defaults */
+  /* In theory shiki will overwrite these, but this is to make sure there are defaults regardless */
   background-color: white;
   color: black;
 
@@ -26,257 +27,250 @@ pre {
   margin-bottom: 3rem;
 
   /* Important to allow the code to move horizontally; */
-  overflow: auto;
-
-  &.shiki {
-    overflow: initial;
-
-    &:hover .dim {
-      opacity: 1;
-    }
-
-    div.dim {
-      opacity: 0.5;
-    }
-
-    div.dim,
-    div.highlight {
-      margin: 0;
-      padding: 0;
-    }
-
-    div.highlight {
-      opacity: 1;
-      background-color: #f1f8ff;
-    }
-
-    div.line {
-      min-height: 1rem;
-    }
-  }
-
-  /* So that folks know you can highlight */
-  &.twoslash {
-    // border-color: $ts-main-blue-lightest-color;
-    border-color: #719af4;
-  }
-
-  /* The code inside should scroll, but the overflow can't be on the shiki because it would not allow the relative positioning */
-  .code-container {
-    overflow: auto;
-
-    > a {
-      position: absolute;
-      right: 8px;
-      bottom: 8px;
-      border-radius: 4px;
-      border: 1px solid #719af4;
-      padding: 0 8px;
-      color: #719af4;
-      text-decoration: none;
-      opacity: 0;
-      transition-timing-function: ease;
-      transition: opacity 0.3s;
-
-      @media (prefers-reduced-motion: reduce) {
-        transition: none;
-      }
-
-      &:hover {
-        color: white;
-        background-color: #719af4;
-      }
-    }
-
-    &:hover a {
-      opacity: 1;
-    }
-  }
-
-  /* Handle scrolling, and showing code correctly */
-  code {
-    // These are somewhat redundant in this codebase, but relevant for everyone else
-    /** Style setup */
-    font-size: 15px;
-    font-family: var(--code-font);
-
-    white-space: pre;
-    -webkit-overflow-scrolling: touch;
-
-    a {
-      text-decoration: none;
-    }
-  }
-
-  /* Let errors use the outer shiki for their absolute sizing, and not be affected by the scrolling of the code */
+  overflow-x: auto;
   position: relative;
+}
+pre.shiki {
+  overflow-x: auto;
+}
+pre.shiki:hover .dim {
+  opacity: 1;
+}
+pre.shiki div.dim {
+  opacity: 0.5;
+}
+pre.shiki div.dim,
+pre.shiki div.highlight {
+  margin: 0;
+  padding: 0;
+}
+pre.shiki div.highlight {
+  opacity: 1;
+  background-color: #f1f8ff;
+}
+pre.shiki div.line {
+  min-height: 1rem;
+}
 
-  data-err {
-    background: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%206%203'%20enable-background%3D'new%200%200%206%203'%20height%3D'3'%20width%3D'6'%3E%3Cg%20fill%3D'%23c94824'%3E%3Cpolygon%20points%3D'5.5%2C0%202.5%2C3%201.1%2C3%204.1%2C0'%2F%3E%3Cpolygon%20points%3D'4%2C0%206%2C2%206%2C0.6%205.4%2C0'%2F%3E%3Cpolygon%20points%3D'0%2C2%201%2C3%202.4%2C3%200%2C0.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")
-      repeat-x bottom left;
-    padding-bottom: 3px;
+/** Don't show the language identifiers */
+pre.shiki .language-id {
+  display: none;
+}
+
+/* Visually differentiates twoslash code samples  */
+pre.twoslash {
+  border-color: #719af4;
+}
+
+/** When you mouse over the pre, show the underlines */
+pre.twoslash:hover data-lsp {
+  border-color: #747474;
+}
+
+/** The tooltip-like which provides the LSP response */
+pre.twoslash data-lsp:hover::before {
+  content: attr(lsp);
+  position: absolute;
+  transform: translate(0, 1rem);
+
+  background-color: #3f3f3f;
+  color: #fff;
+  text-align: left;
+  padding: 5px 8px;
+  border-radius: 2px;
+  font-family: "JetBrains Mono", Menlo, Monaco, Consolas, Courier New, monospace;
+  font-size: 14px;
+  white-space: pre-wrap;
+  z-index: 100;
+}
+
+pre .code-container {
+  overflow: auto;
+}
+/* The try button */
+pre .code-container > a {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  border-radius: 4px;
+  border: 1px solid #719af4;
+  padding: 0 8px;
+  color: #719af4;
+  text-decoration: none;
+  opacity: 0;
+  transition-timing-function: ease;
+  transition: opacity 0.3s;
+}
+/* Respect no animations */
+@media (prefers-reduced-motion: reduce) {
+  pre .code-container > a {
+    transition: none;
   }
+}
+pre .code-container > a:hover {
+  color: white;
+  background-color: #719af4;
+}
+pre .code-container:hover a {
+  opacity: 1;
+}
 
-  .query {
-    margin-bottom: 10px;
-    color: #137998;
-    display: inline-block;
-  }
+pre code {
+  font-size: 15px;
+  font-family: "JetBrains Mono", Menlo, Monaco, Consolas, Courier New, monospace;
+  white-space: pre;
+  -webkit-overflow-scrolling: touch;
+}
+pre code a {
+  text-decoration: none;
+}
 
-  /* In order to have the 'popped out' style design and to not break the layout
+pre .query {
+  margin-bottom: 10px;
+  color: #137998;
+  display: inline-block;
+}
+
+/* In order to have the 'popped out' style design and to not break the layout
   /* we need to place a fake and un-selectable copy of the error which _isn't_ broken out
   /* behind the actual error message.
 
-  /* This section keeps both of those in sync  */
-  .error,
-  .error-behind {
-    margin-left: -14px;
-    margin-top: 8px;
-    margin-bottom: 4px;
-    padding: 6px;
-    padding-left: 14px;
-    width: calc(100% - 19px);
+  /* This sections keeps both of those two in in sync  */
 
-    white-space: pre-wrap;
-    display: block;
-  }
-
-  .error {
-    position: absolute;
-    background-color: #ffeeee;
-    border-left: 2px solid #bf1818;
-
-    /* Give the space to the error code  */
-    display: flex;
-    align-items: center;
-    color: black;
-
-    .code {
-      display: none;
-    }
-  }
-
-  .error-behind {
-    user-select: none;
-    color: #ffeeee;
-  }
-
-  .arrow {
-    /* Transparent background */
-    background-color: #eeeeee;
-    position: relative;
-    top: -7px;
-    margin-left: 0.1rem;
-    /* Edges */
-    border-left: 1px solid #eeeeee;
-    border-top: 1px solid #eeeeee;
-    transform: translateY(25%) rotate(45deg);
-
-    /* Size */
-    height: 8px;
-    width: 8px;
-  }
-
-  .popover {
-    margin-bottom: 10px;
-    background-color: #eeeeee;
-    display: inline-block;
-    padding: 0 0.5rem 0.3rem;
-    margin-top: 10px;
-    border-radius: 3px;
-  }
-
-  .inline-completions {
-    ul.dropdown {
-      display: inline-block;
-      position: absolute;
-      width: 240px;
-      background-color: gainsboro;
-      color: grey;
-      padding-top: 4px;
-
-      font-family: $font-code;
-      font-size: 0.8rem;
-      margin: 0;
-      padding: 0;
-
-      border-left: 4px solid #4b9edd;
-
-      // Fake the cursor above us
-      &::before {
-        background-color: #4b9edd;
-        width: 2px;
-        position: absolute;
-        top: -1.2rem;
-        left: -3px;
-        content: " ";
-      }
-
-      li {
-        overflow-x: hidden;
-        padding-left: 4px;
-        margin-bottom: 4px;
-
-        &.deprecated {
-          text-decoration: line-through;
-        }
-
-        span.result-found {
-          color: #4b9edd;
-        }
-        span.result {
-          width: 100px;
-          color: black;
-          display: inline-block;
-        }
-      }
-    }
-  }
+pre .error,
+pre .error-behind {
+  margin-left: -14px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  padding: 6px;
+  padding-left: 14px;
+  width: calc(100% - 20px);
+  white-space: pre-wrap;
+  display: block;
 }
-
+pre .error {
+  position: absolute;
+  background-color: #fee;
+  border-left: 2px solid #bf1818;
+  margin-right: -2px;
+  /* Give the space to the error code */
+  display: flex;
+  align-items: center;
+  color: black;
+}
+pre .error .code {
+  display: none;
+}
+pre .error-behind {
+  user-select: none;
+  visibility: transparent;
+  color: #fee;
+}
+/* Queries */
+pre .arrow {
+  /* Transparent background */
+  background-color: #eee;
+  position: relative;
+  top: -7px;
+  margin-left: 0.1rem;
+  /* Edges */
+  border-left: 1px solid #eee;
+  border-top: 1px solid #eee;
+  transform: translateY(25%) rotate(45deg);
+  /* Size */
+  height: 8px;
+  width: 8px;
+}
+pre .popover {
+  margin-bottom: 10px;
+  background-color: #eee;
+  display: inline-block;
+  padding: 0 0.5rem 0.3rem;
+  margin-top: 10px;
+  border-radius: 3px;
+}
+/* Completion */
+pre .inline-completions ul.dropdown {
+  display: inline-block;
+  position: absolute;
+  width: 240px;
+  background-color: gainsboro;
+  color: grey;
+  padding-top: 4px;
+  font-family: var(--code-font);
+  font-size: 0.8rem;
+  margin: 0;
+  padding: 0;
+  border-left: 4px solid #4b9edd;
+}
+pre .inline-completions ul.dropdown::before {
+  background-color: #4b9edd;
+  width: 2px;
+  position: absolute;
+  top: -1.2rem;
+  left: -3px;
+  content: " ";
+}
+pre .inline-completions ul.dropdown li {
+  overflow-x: hidden;
+  padding-left: 4px;
+  margin-bottom: 4px;
+}
+pre .inline-completions ul.dropdown li.deprecated {
+  text-decoration: line-through;
+}
+pre .inline-completions ul.dropdown li span.result-found {
+  color: #4b9edd;
+}
+pre .inline-completions ul.dropdown li span.result {
+  width: 100px;
+  color: black;
+  display: inline-block;
+}
 .dark-theme .markdown pre {
   background-color: #d8d8d8;
   border-color: #ddd;
   filter: invert(98%) hue-rotate(180deg);
 }
-
-// Extracted from vscode
-
-// .monaco-editor .squiggly-warning { background: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%206%203'%20enable-background%3D'new%200%200%206%203'%20height%3D'3'%20width%3D'6'%3E%3Cg%20fill%3D'%23428226'%3E%3Cpolygon%20points%3D'5.5%2C0%202.5%2C3%201.1%2C3%204.1%2C0'%2F%3E%3Cpolygon%20points%3D'4%2C0%206%2C2%206%2C0.6%205.4%2C0'%2F%3E%3Cpolygon%20points%3D'0%2C2%201%2C3%202.4%2C3%200%2C0.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") repeat-x bottom left; }
-// .monaco-editor .squiggly-info { background: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%206%203'%20enable-background%3D'new%200%200%206%203'%20height%3D'3'%20width%3D'6'%3E%3Cg%20fill%3D'%2375beff'%3E%3Cpolygon%20points%3D'5.5%2C0%202.5%2C3%201.1%2C3%204.1%2C0'%2F%3E%3Cpolygon%20points%3D'4%2C0%206%2C2%206%2C0.6%205.4%2C0'%2F%3E%3Cpolygon%20points%3D'0%2C2%201%2C3%202.4%2C3%200%2C0.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") repeat-x bottom left; }
-// .monaco-editor .squiggly-hint { background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%223%22%20width%3D%2212%22%3E%3Cg%20fill%3D%22%236c6c6c%22%3E%3Ccircle%20cx%3D%221%22%20cy%3D%221%22%20r%3D%221%22%2F%3E%3Ccircle%20cx%3D%225%22%20cy%3D%221%22%20r%3D%221%22%2F%3E%3Ccircle%20cx%3D%229%22%20cy%3D%221%22%20r%3D%221%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") no-repeat bottom left; }
-
 data-lsp {
-  /* Ensures there's no 1px jump when the hover happens above */
+  /* Ensures there's no 1px jump when the hover happens */
   border-bottom: 1px dotted transparent;
-
   /* Fades in unobtrusively */
   transition-timing-function: ease;
   transition: border-color 0.3s;
-
-  /* Respect people's wishes to not have animations */
-  @media (prefers-reduced-motion: reduce) {
+}
+/* Respect people's wishes to not have animations */
+@media (prefers-reduced-motion: reduce) {
+  data-lsp {
     transition: none;
   }
 }
 
-/** When you mouse over the pre, show the underlines */
-pre:hover data-lsp {
-  border-color: rgb(116, 116, 116);
-}
+.tag-container {
+  position: relative;
 
-/** The tooltip-like which provides the LSP response */
-#twoslash-mouse-hover-info {
-  background-color: rgb(63, 63, 63);
-  color: #fff;
-  text-align: left;
-  padding: 5px 8px;
-  border-radius: 2px;
-  font-family: "Cascadia Mono-SemiLight", "JetBrains Mono", Menlo, Monaco,
-    Consolas, Courier New, monospace;
-  font-size: 14px;
-  white-space: pre-wrap;
-  border-radius: 2px;
-  z-index: 100;
-  pointer-events: none;
+  .twoslash-annotation {
+    position: absolute;
+    font-family: "JetBrains Mono", Menlo, Monaco, Consolas, Courier New,
+      monospace;
+
+    right: -210px;
+    width: 200px;
+    color: #187abf;
+
+    svg {
+      float: left;
+      margin-left: -44px;
+    }
+
+    &.left {
+      right: auto;
+      left: -200px;
+
+      svg {
+        float: right;
+        margin-right: -5px;
+      }
+    }
+  }
 }

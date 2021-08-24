@@ -77,7 +77,7 @@ async function makeRequest(url: string, log?: (msg: string) => void) {
 
   const result = (await fetch(url)).json();
 
-  log?.(`Request finished at at ${new Date().toISOString()}`);
+  log?.(`Request finished at ${new Date().toISOString()}`);
 
   return result;
 }

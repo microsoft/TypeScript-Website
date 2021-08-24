@@ -1,0 +1,46 @@
+{
+  "code": "type Result = \"pass\" | \"fail\"\n\nconst hello = \"OK\"\n",
+  "extension": "ts",
+  "highlights": [
+    {
+      "kind": "highlight",
+      "offset": 5,
+      "length": 6,
+      "text": "",
+      "line": 0,
+      "start": 5
+    },
+    {
+      "kind": "highlight",
+      "offset": 37,
+      "length": 2,
+      "text": "Sure",
+      "line": 3,
+      "start": 6
+    }
+  ],
+  "queries": [],
+  "staticQuickInfos": [
+    {
+      "text": "type Result = \"pass\" | \"fail\"",
+      "docs": "",
+      "start": 5,
+      "length": 6,
+      "line": 0,
+      "character": 5,
+      "targetString": "Result"
+    },
+    {
+      "text": "const hello: \"OK\"",
+      "docs": "",
+      "start": 37,
+      "length": 5,
+      "line": 2,
+      "character": 6,
+      "targetString": "hello"
+    }
+  ],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/C4TwDgpgBAShDOBXANsKBeKAiMBDe8WUAPtgGa4CWyWAUAPT1TMB6b7ttAxgPYB28NAAsIyZDwzYA8gGk6jZqxZQAyogBOEWkA",
+  "tags": []
+}

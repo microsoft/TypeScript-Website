@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react"
-import { Intl } from "../../components/Intl"
 
-import { indexCopy } from "../../copy/en/index"
+import { indexCopy } from "../../copy/en/index2"
 import { createInternational } from "../../lib/createInternational"
 import { useIntl } from "react-intl"
-import { isTouchDevice } from "../../lib/isTouchDevice"
 import { EditorExamples } from "./EditorExamples"
 
 const Row = (props: { children: any, className?: string }) => <div className={[props.className, "row"].join(" ")}>{props.children}</div>
@@ -44,14 +42,13 @@ export const AboveTheFold = () => {
 
     return (<Row>
       <Col>
-        <h1>{i("index_headline", { bold: (...chunk) => <strong>{chunk}</strong> })}</h1>
-        <p>{i("index_summary")}</p>
-        <p>{i("index_locations")}</p>
+        <h1>{i("index_2_headline", { bold: (...chunk) => <strong>{chunk}</strong> })}</h1>
+        <p>{i("index_2_summary")}</p>
 
         <div className="call-to-action" style={{ justifyContent: "left" }}>
           <FluidButton
-            title={i("index_cta_install")}
-            subtitle={i("index_cta_install_subtitle")}
+            title={i("index_2_cta_install")}
+            subtitle={i("index_2_cta_install_subtitle")}
             href="/download"
             onClick={onclick}
             icon={
@@ -63,9 +60,9 @@ export const AboveTheFold = () => {
             } />
         </div>
       </Col>
-      <Col2>
+      <Col>
         <EditorExamples />
-      </Col2>
+      </Col>
     </Row>)
   }
 
@@ -74,10 +71,10 @@ export const AboveTheFold = () => {
       <h2>Get Started With TypeScript</h2>
       <Row>
         <Col className="call-to-action">
-          <img src={require("../../assets/index/play-dark.png").default} width="100%" height="400px" />
+          <img src={require("../../assets/index/play-light.png").default} width="100%"  />
           <FluidButton
-            title={i("index_cta_play")}
-            subtitle={i("index_cta_play_subtitle")}
+            title={i("index_2_cta_play")}
+            subtitle={i("index_2_cta_play_subtitle")}
             href="/play"
             onClick={() => event("Home Page CTA Exited", { link: "playground" })}
             icon={
@@ -98,10 +95,10 @@ export const AboveTheFold = () => {
         </Col>
 
         <Col className="call-to-action hide-small">
-          <img src={require("../../assets/index/code-dark.png").default} width="100%" height="400px" />
+          <img src={require("../../assets/index/code-light.png").default} width="100%"  />
           <FluidButton
-            title={i("index_cta_download")}
-            subtitle={i("index_cta_download_subtitle")}
+            title={i("index_2_cta_download")}
+            subtitle={i("index_2_cta_download_subtitle")}
             href="/download"
             onClick={() => event("Home Page CTA Exited", { link: "download" })}
             icon={
@@ -138,7 +135,7 @@ export const AboveTheFold = () => {
     return (
       <div className="cta">
         <div className="transparent-button" onClick={() => setShowCTALinks(false)}><svg width="21" height="14" viewBox="0 0 21 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20.25 7.75L1.75 7.75M1.75 7.75L7.75 1.25M1.75 7.75L7.75 13.25" stroke="white" stroke-width="2" />
+          <path d="M20.25 7.75L1.75 7.75M1.75 7.75L7.75 1.25M1.75 7.75L7.75 13.25" stroke="white" strokeWidth="2" />
         </svg>
           Back</div>
         <Content />

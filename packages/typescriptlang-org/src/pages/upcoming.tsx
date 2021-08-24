@@ -5,7 +5,7 @@ import { Intl } from "../components/Intl"
 import { UpcomingReleaseMeta } from "../components/index/UpcomingReleaseMeta"
 import { useIntl } from "react-intl"
 
-import "../templates/pages/index.scss"
+import "../templates/pages/css/index.scss"
 
 import releasePlan from "../lib/release-plan.json"
 

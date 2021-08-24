@@ -19,7 +19,7 @@
 
 console.log("TSConfig Ref: MD for TSConfig");
 
-import { writeFileSync, readdirSync, existsSync } from "fs";
+import { writeFileSync, readdirSync, existsSync, mkdirSync } from "fs";
 import { join } from "path";
 import * as assert from "assert";
 import { read as readMarkdownFile } from "gray-matter";
@@ -97,6 +97,7 @@ languages.forEach((lang) => {
   const fallbackLocale = join(__dirname, "..", "..", "copy", "en");
 
   const mdChunks: string[] = [];
+  const optionsOneLiners: Record<string, string> = {};
 
   const getPathInLocale = (path: string, optionalExampleContent?: string, failable = false) => {
     if (existsSync(join(locale, path))) return join(locale, path);
@@ -220,6 +221,8 @@ languages.forEach((lang) => {
           categoryDisplay: categoryName,
         });
 
+        optionsOneLiners[optionName] = optionFile.data.oneline;
+
         mdChunks.push("<section class='compiler-option'>");
 
         // Let the title change its display but keep the same ID
@@ -318,6 +321,12 @@ languages.forEach((lang) => {
     join(__dirname, "..", "..", "output", lang + "-summary.json"),
     JSON.stringify({ options: optionsSummary })
   );
+
+  const jsonDir = join(__dirname, "..", "..", "..", "typescriptlang-org", "static", "js", "json");
+  if (!existsSync(jsonDir)) mkdirSync(jsonDir);
+
+  // This is used by the tsconfig popups
+  writeFileSync(join(jsonDir, lang + "-tsconfig-popup.json"), JSON.stringify(optionsOneLiners));
 });
 
 writeFileSync(

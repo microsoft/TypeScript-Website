@@ -234,7 +234,7 @@ type StrArrOrNumArr = ToArray<string | number>;
 //   ^?
 ```
 
-What happens here is that `StrOrNumArray` distributes on:
+What happens here is that `StrArrOrNumArr ` distributes on:
 
 ```ts twoslash
 type StrArrOrNumArr =
@@ -265,7 +265,7 @@ To avoid that behavior, you can surround each side of the `extends` keyword with
 ```ts twoslash
 type ToArrayNonDist<Type> = [Type] extends [any] ? Type[] : never;
 
-// 'StrOrNumArr' is no longer a union.
-type StrOrNumArr = ToArrayNonDist<string | number>;
+// 'StrArrOrNumArr' is no longer a union.
+type StrArrOrNumArr = ToArrayNonDist<string | number>;
 //   ^?
 ```

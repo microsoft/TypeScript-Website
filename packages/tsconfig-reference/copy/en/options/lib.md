@@ -22,7 +22,7 @@ You may want to change these for a few reasons:
 | `ES2016`     | Additional APIs available in ES2016 - `array.include`, etc.                                                                                       |
 | `ES7`        | Alias for "ES2016"                                                                                                                                |
 | `ES2017`     | Additional APIs available in ES2017 - `Object.entries`, `Object.values`, `Atomics`, `SharedArrayBuffer`, `date.formatToParts`, typed arrays, etc. |
-| `ES2018`     | Additional APIs available in ES2018 - `async` iterables, `promise.finally`, `Intl.PluralRules`, `rexexp.groups`, etc.                             |
+| `ES2018`     | Additional APIs available in ES2018 - `async` iterables, `promise.finally`, `Intl.PluralRules`, `regexp.groups`, etc.                             |
 | `ES2019`     | Additional APIs available in ES2019 - `array.flat`, `array.flatMap`, `Object.fromEntries`, `string.trimStart`, `string.trimEnd`, etc.             |
 | `ES2020`     | Additional APIs available in ES2020 - `string.matchAll`, etc.                                                                                     |
 | `ESNext`     | Additional APIs available in ESNext - This changes as the JavaScript specification evolves                                                        |
@@ -64,4 +64,4 @@ You may want to change these for a few reasons:
 | `ESNext.Intl`             |
 | `ESNext.Symbol`           |
 
-This list may be out of date, you can see the full list in the [TypeScript source code](https://github.com/microsoft/TypeScript/tree/master/lib).
+This list may be out of date, you can see the full list in the [TypeScript source code](https://github.com/microsoft/TypeScript/tree/main/lib).

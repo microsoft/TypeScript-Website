@@ -256,24 +256,24 @@ Since [TypeScript 4.3](https://devblogs.microsoft.com/typescript/announcing-type
 
 ```ts twoslash
 class Thing {
-    _size = 0;
+  _size = 0;
 
-    get size(): number {
-        return this._size;
+  get size(): number {
+    return this._size;
+  }
+
+  set size(value: string | number | boolean) {
+    let num = Number(value);
+
+    // Don't allow NaN, Infinity, etc
+
+    if (!Number.isFinite(num)) {
+      this._size = 0;
+      return;
     }
 
-    set size(value: string | number | boolean) {
-        let num = Number(value);
-
-        // Don't allow NaN, Infinity, etc
-
-        if (!Number.isFinite(num)) {
-            this._size = 0;
-            return;
-        }
-
-        this._size = num;
-    }
+    this._size = num;
+  }
 }
 ```
 
@@ -516,7 +516,7 @@ This means that the base class constructor saw its own value for `name` during i
 
 #### Inheriting Built-in Types
 
-> Note: If you don't plan to inherit from built-in types like `Array`, `Error`, `Map`, etc., you may skip this section
+> Note: If you don't plan to inherit from built-in types like `Array`, `Error`, `Map`, etc. or your compilation target is explicitely set to `ES6`/`ES2015` or above, you may skip this section
 
 In ES2015, constructors which return an object implicitly substitute the value of `this` for any callers of `super(...)`.
 It is necessary for generated constructor code to capture any potential return value of `super(...)` and replace it with `this`.
@@ -661,7 +661,7 @@ Java, for example, considers this to be legal.
 On the other hand, C# and C++ chose that this code should be illegal.
 
 TypeScript sides with C# and C++ here, because accessing `x` in `Derived2` should only be legal from `Derived2`'s subclasses, and `Derived1` isn't one of them.
-Moreover, if accessing `x` through a `Derived2` reference is illegal (which it certainly should be!), then accessing it through a base class reference should never improve the situation.
+Moreover, if accessing `x` through a `Derived1` reference is illegal (which it certainly should be!), then accessing it through a base class reference should never improve the situation.
 
 See also [Why Can’t I Access A Protected Member From A Derived Class?](https://blogs.msdn.microsoft.com/ericlippert/2005/11/09/why-cant-i-access-a-protected-member-from-a-derived-class/) which explains more of C#'s reasoning.
 
@@ -725,7 +725,8 @@ class A {
 
 #### Caveats
 
-Like other aspects of TypeScript's type system, `private` and `protected` are only enforced during type checking.
+Like other aspects of TypeScript's type system, `private` and `protected` [are only enforced during type checking](https://www.typescriptlang.org/play?removeComments=true&target=99&ts=4.3.4#code/PTAEGMBsEMGddAEQPYHNQBMCmVoCcsEAHPASwDdoAXLUAM1K0gwQFdZSA7dAKWkoDK4MkSoByBAGJQJLAwAeAWABQIUH0HDSoiTLKUaoUggAW+DHorUsAOlABJcQlhUy4KpACeoLJzrI8cCwMGxU1ABVPIiwhESpMZEJQTmR4lxFQaQxWMm4IZABbIlIYKlJkTlDlXHgkNFAAbxVQTIAjfABrAEEC5FZOeIBeUAAGAG5mmSw8WAroSFIqb2GAIjMiIk8VieVJ8Ar01ncAgAoASkaAXxVr3dUwGoQAYWpMHBgCYn1rekZmNg4eUi0Vi2icoBWJCsNBWoA6WE8AHcAiEwmBgTEtDovtDaMZQLM6PEoQZbA5wSk0q5SO4vD4-AEghZoJwLGYEIRwNBoqAzFRwCZCFUIlFMXECdSiAhId8YZgclx0PsiiVqOVOAAaUAFLAsxWgKiC35MFigfC0FKgSAVVDTSyk+W5dB4fplHVVR6gF7xJrKFotEk-HXIRE9PoDUDDcaTAPTWaceaLZYQlmoPBbHYx-KcQ7HPDnK43FQqfY5+IMDDISPJLCIuqoc47UsuUCofAME3Vzi1r3URvF5QV5A2STtPDdXqunZDgDaYlHnTDrrEAF0dm28B3mDZg6HJwN1+2-hg57ulwNV2NQGoZbjYfNrYiENBwEFaojFiZQK08C-4fFKTVCozWfTgfFgLkeT5AUqiAA).
+
 This means that JavaScript runtime constructs like `in` or simple property lookup can still access a `private` or `protected` member:
 
 ```ts twoslash
@@ -741,7 +742,59 @@ const s = new MySafe();
 console.log(s.secretKey);
 ```
 
-If you need to protect values in your class from malicious actors, you should use mechanisms that offer hard runtime privacy, such as closures, weak maps, or [private fields](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields).
+`private` also allows access using bracket notation during type checking. This makes `private`-declared fields potentially easier to access for things like unit tests, with the drawback that these fields are _soft private_ and don't strictly enforce privacy.
+
+```ts twoslash
+// @errors: 2341
+class MySafe {
+  private secretKey = 12345;
+}
+
+const s = new MySafe();
+
+// Not allowed during type checking
+console.log(s.secretKey);
+
+// OK
+console.log(s["secretKey"]);
+```
+
+Unlike TypeScripts's `private`, JavaScript's [private fields](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields) (`#`) remain private after compilation and do not provide the previously mentioned escape hatches like bracket notation access, making them _hard private_.
+
+```ts twoslash
+class Dog {
+  #barkAmount = 0;
+  personality = "happy";
+
+  constructor() {}
+}
+```
+
+```ts twoslash
+// @target: esnext
+// @showEmit
+class Dog {
+  #barkAmount = 0;
+  personality = "happy";
+
+  constructor() {}
+}
+```
+
+When compiling to ES2021 or less, TypeScript will use WeakMaps in place of `#`.
+
+```ts twoslash
+// @target: es2015
+// @showEmit
+class Dog {
+  #barkAmount = 0;
+  personality = "happy";
+
+  constructor() {}
+}
+```
+
+If you need to protect values in your class from malicious actors, you should use mechanisms that offer hard runtime privacy, such as closures, WeakMaps, or private fields. Note that these added privacy checks during runtime could affect performance.
 
 ## Static Members
 

@@ -10,14 +10,7 @@ type TS = typeof import("typescript")
 type CompilerOptions = import("typescript").CompilerOptions
 type CustomTransformers = import("typescript").CustomTransformers
 
-import {
-  parsePrimitive,
-  cleanMarkdownEscaped,
-  typesToExtension,
-  stringAroundIndex,
-  getIdentifierTextSpans,
-  getClosestWord,
-} from "./utils"
+import { parsePrimitive, cleanMarkdownEscaped, typesToExtension, getIdentifierTextSpans, getClosestWord } from "./utils"
 import { validateInput, validateCodeForErrors } from "./validation"
 
 import { createSystem, createVirtualTypeScriptEnvironment, createFSBackedSystem } from "@typescript/vfs"
@@ -62,12 +55,34 @@ type PartialCompletionResults = {
   file: string
 }
 
-type HighlightPosition = {
-  kind: "highlight"
-  position: number
-  length: number
-  description: string
-  line: number
+type HighlightPosition = TwoSlashReturn["highlights"][number]
+
+export class TwoslashError extends Error {
+  public title: string
+  public description: string
+  public recommendation: string
+  public code: string | undefined
+
+  constructor(title: string, description: string, recommendation: string, code?: string | undefined) {
+    let message = `
+## ${title}
+
+${description}
+`
+    if (recommendation) {
+      message += `\n${recommendation}`
+    }
+
+    if (code) {
+      message += `\n${code}`
+    }
+
+    super(message)
+    this.title = title
+    this.description = description
+    this.recommendation = recommendation
+    this.code = code
+  }
 }
 
 function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosition[]; queries: QueryPosition[] } {
@@ -110,9 +125,16 @@ function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosit
       } else if (highlightMatch !== null) {
         const start = line.indexOf("^")
         const length = line.lastIndexOf("^") - start + 1
-        const position = contentOffset + start
         const description = highlightMatch[1] ? highlightMatch[1].trim() : ""
-        highlights.push({ kind: "highlight", position, length, description, line: i })
+        highlights.push({
+          kind: "highlight",
+          offset: start + contentOffset,
+          length,
+          text: description,
+          line: i + removedLines - 1,
+          start,
+        })
+
         stripLine("having a highlight")
       } else if (removePrettierIgnoreMatch !== null) {
         stripLine("being a prettier ignore")
@@ -134,7 +156,12 @@ function getOptionValueFromMap(name: string, key: string, optMap: Map<string, st
   log(`Get ${name} mapped option: ${key} => ${result}`)
   if (result === undefined) {
     const keys = Array.from(optMap.keys() as any)
-    throw new Error(`Invalid value ${key} for ${name}. Allowed values: ${keys.join(",")}`)
+
+    throw new TwoslashError(
+      `Invalid inline compiler value`,
+      `Got ${key} for ${name} but it is not a supported value by the TS compiler.`,
+      `Allowed values: ${keys.join(",")}`
+    )
   }
   return result
 }
@@ -171,7 +198,11 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
     }
   }
 
-  throw new Error(`No compiler setting named '${name}' exists!`)
+  throw new TwoslashError(
+    `Invalid inline compiler flag`,
+    `There isn't a TypeScript compiler flag called '${name}'.`,
+    `This is likely a typo, you can check all the compiler flags in the TSConfig reference, or check the additional Twoslash flags in the npm page for @typescript/twoslash.`
+  )
 }
 
 const booleanConfigRegexp = /^\/\/\s?@(\w+)$/
@@ -200,6 +231,22 @@ function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: Comp
     codeLines.splice(i, 1)
   }
   return options
+}
+
+function filterCustomTags(codeLines: string[], customTags: string[]) {
+  const tags: TwoSlashReturn["tags"] = []
+
+  for (let i = 0; i < codeLines.length; ) {
+    let match
+    if ((match = valuedConfigRegexp.exec(codeLines[i]))) {
+      if (customTags.includes(match[1])) {
+        tags.push({ name: match[1], line: i, annotation: codeLines[i].split("@" + match[1] + ": ")[1] })
+        codeLines.splice(i, 1)
+      }
+    }
+    i++
+  }
+  return tags
 }
 
 /** Available inline flags which are not compiler flags */
@@ -274,13 +321,19 @@ export interface TwoSlashReturn {
   /** The new extension type for the code, potentially changed if they've requested emitted results */
   extension: string
 
-  /** Sample requests to highlight a particular part of the code */
+  /** Requests to highlight a particular part of the code */
   highlights: {
     kind: "highlight"
-    position: number
-    length: number
-    description: string
+    /** The index of the text in the file */
+    start: number
+    /** What line is the highlighted identifier on? */
     line: number
+    /** At what index in the line does the caret represent  */
+    offset: number
+    /** The text of the token which is highlighted */
+    text?: string
+    /** The length of the token */
+    length: number
   }[]
 
   /** An array of LSP responses identifiers in the sample  */
@@ -320,6 +373,16 @@ export interface TwoSlashReturn {
     completions?: import("typescript").CompletionEntry[]
     /* Completion prefix e.g. the letters before the cursor in the word so you can filter */
     completionsPrefix?: string
+  }[]
+
+  /** The extracted twoslash commands for any custom tags passed in via customTags */
+  tags: {
+    /** What was the name of the tag */
+    name: string
+    /** Where was it located in the original source file */
+    line: number
+    /** What was the text after the `// @tag: ` string  (optional because you could do // @tag on it's own line without the ':') */
+    annotation?: string
   }[]
 
   /** Diagnostic error messages which came up when creating the program */
@@ -362,6 +425,9 @@ export interface TwoSlashOptions {
 
   /** The cwd for the folder which the virtual fs should be overlaid on top of when using local fs, opts to process.cwd() if not present */
   vfsRoot?: string
+
+  /** A set of known `// @[tags]` tags to extract and not treat as a comment */
+  customTags?: string[]
 }
 
 /**
@@ -393,9 +459,10 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
 
   code = cleanMarkdownEscaped(code)
 
-  // This is mutated as the below functions pull out info
+  // NOTE: codeLines is mutated by the below functions:
   const codeLines = code.split(/\r\n?|\n/g)
 
+  let tags: TwoSlashReturn["tags"] = options.customTags ? filterCustomTags(codeLines, options.customTags) : []
   const handbookOptions = { ...filterHandbookOptions(codeLines), ...options.defaultOptions }
   const compilerOptions = filterCompilerOptions(codeLines, defaultCompilerOptions, ts)
 
@@ -460,12 +527,18 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
           const quickInfo = ls.getQuickInfoAtPosition(filename, position)
 
           // prettier-ignore
-          let text = `Could not get LSP result: ${stringAroundIndex(env.getSourceFile(filename)!.text, position)}`
-          let docs = undefined
+          let text: string
+          let docs: string | undefined
 
           if (quickInfo && quickInfo.displayParts) {
             text = quickInfo.displayParts.map(dp => dp.text).join("")
             docs = quickInfo.documentation ? quickInfo.documentation.map(d => d.text).join("<br/>") : undefined
+          } else {
+            throw new TwoslashError(
+              `Invalid QuickInfo query`,
+              `The request on line ${q.line} in ${filename} for quickinfo via ^? returned no from the compiler.`,
+              `This is likely that the x positioning is off.`
+            )
           }
 
           const queryResult: PartialQueryResults = {
@@ -480,9 +553,13 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
         }
 
         case "completion": {
-          const quickInfo = ls.getCompletionsAtPosition(filename, position - 1, {})
-          if (!quickInfo && !handbookOptions.noErrorValidation) {
-            throw new Error(`Twoslash: The ^| query at line ${q.line} in ${filename} did not return any completions`)
+          const completions = ls.getCompletionsAtPosition(filename, position - 1, {})
+          if (!completions && !handbookOptions.noErrorValidation) {
+            throw new TwoslashError(
+              `Invalid completion query`,
+              `The request on line ${q.line} in ${filename} for completions via ^| returned no completions from the compiler.`,
+              `This is likely that the positioning is off.`
+            )
           }
 
           const word = getClosestWord(sourceFile.text, position - 1)
@@ -491,7 +568,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
 
           const queryResult: PartialCompletionResults = {
             kind: "completions",
-            completions: quickInfo?.entries || [],
+            completions: completions?.entries || [],
             completionPrefix: lastDot,
             line: q.line - i,
             offset: q.offset,
@@ -548,7 +625,13 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
 
     const source = env.sys.readFile(file)!
     const sourceFile = env.getSourceFile(file)
-    if (!sourceFile) throw new Error(`No sourcefile found for ${file} in twoslash`)
+    if (!sourceFile) {
+      throw new TwoslashError(
+        `Could not find a  TypeScript sourcefile for '${file}' in the Twoslash vfs`,
+        `It's a little hard to provide useful advice on this error. Maybe you imported something which the compiler doesn't think is a source file?`,
+        ``
+      )
+    }
 
     // Get all of the interesting quick info popover
     if (!handbookOptions.showEmit) {
@@ -618,7 +701,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
 
   // A validator that error codes are mentioned, so we can know if something has broken in the future
   if (!handbookOptions.noErrorValidation && relevantErrors.length) {
-    validateCodeForErrors(relevantErrors, handbookOptions, extension, originalCode)
+    validateCodeForErrors(relevantErrors, handbookOptions, extension, originalCode, fsRoot)
   }
 
   let errors: TwoSlashReturn["errors"] = []
@@ -655,7 +738,11 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     if (!emitSource && !compilerOptions.outFile) {
       const allFiles = filenames.join(", ")
       // prettier-ignore
-      throw new Error(`Cannot find the corresponding **source** file for ${emitFilename} (looking for: ${emitSourceFilename} in the vfs) - in ${allFiles}`)
+      throw new TwoslashError(
+        `Could not find source file to show the emit for`,
+        `Cannot find the corresponding **source** file  ${emitFilename} for completions via ^| returned no quickinfo from the compiler.`,
+        `Looked for: ${emitSourceFilename} in the vfs - which contains: ${allFiles}`
+      )
     }
 
     // Allow outfile, in which case you need any file.
@@ -670,8 +757,11 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
 
     if (!file) {
       const allFiles = output.outputFiles.map(o => o.name).join(", ")
-      // prettier-ignore
-      throw new Error(`Cannot find the file ${handbookOptions.showEmittedFile} (looking for: ${fsRoot + handbookOptions.showEmittedFile} in the vfs) - in ${allFiles}`)
+      throw new TwoslashError(
+        `Cannot find the output file in the Twoslash VFS`,
+        `Looking for ${handbookOptions.showEmittedFile} in the Twoslash vfs after compiling`,
+        `Looked for" ${fsRoot + handbookOptions.showEmittedFile} in the vfs - which contains ${allFiles}.`
+      )
     }
 
     code = file.text
@@ -714,14 +804,17 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     errors = errors.filter(e => e.start && e.start > -1)
 
     highlights.forEach(highlight => {
-      highlight.position -= cutIndex
+      highlight.start -= cutIndex
       highlight.line -= lineOffset
     })
 
-    highlights = highlights.filter(e => e.position > -1)
+    highlights = highlights.filter(e => e.start > -1)
 
     queries.forEach(q => (q.line -= lineOffset))
     queries = queries.filter(q => q.line > -1)
+
+    tags.forEach(q => (q.line -= lineOffset))
+    tags = tags.filter(q => q.line > -1)
   }
 
   return {
@@ -732,6 +825,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     staticQuickInfos,
     errors,
     playgroundURL,
+    tags,
   }
 }
 

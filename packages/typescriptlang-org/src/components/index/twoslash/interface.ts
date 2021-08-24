@@ -1,6 +1,5 @@
-/** one **/
+// twoslash: { themes: ["min-dark", "../../../packages/typescriptlang-org/src/components/index/twoslash/homepage"] }
 declare function getUser(id: number): User
-/** two **/
 declare function saveUser(id: number, user: User): User
 // ---cut---
 interface User {
@@ -12,6 +11,6 @@ interface User {
 
 function updateUser(id: number, update: Partial<User>) {
   const user = getUser(id)
-  const newUser = {...user, ...update}  
+  const newUser = { ...user, ...update }
   saveUser(id, newUser)
 }

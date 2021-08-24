@@ -46,11 +46,7 @@ export const workbenchDebugPlugin: PluginFactory = (i, utils) => {
           dtsFiles.push(filename.replace("/lib", "lib"))
         } else {
           ds.p("<strong>" + filename + "</strong>")
-
-          const p = ds.p("")
-          const code = document.createElement("code")
-          code.innerText = dtsMap.get(filename)!.trim()
-          p.appendChild(code)
+          ds.code(dtsMap.get(filename)!.trim())
         }
       })
       ds.subtitle("Lib files")

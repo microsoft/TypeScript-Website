@@ -79,6 +79,7 @@ static/js/playground/
 !static/js/playground/.gitkeep
 static/js/examples/
 !static/js/examples/.gitkeep
+static/js/json
 
 .now
 
@@ -92,3 +93,6 @@ static/assets/typescript-handbook.pdf
 # Handled by @oss-docs/sync
 src/copy/*
 !src/copy/en
+
+# The HTML files aren't useful
+src/components/index/twoslash/generated/*.html

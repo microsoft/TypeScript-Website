@@ -41,7 +41,7 @@ Open **Dependencies > Manage NuGet Packages > Browse.** Search and install `Micr
 Open up your `Startup.cs` file and edit your `Configure` function to look like this:
 
 ```cs
-public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+public void Configure(IApplicationBuilder app, IHostEnvironment env)
 {
     if (env.IsDevelopment())
     {
@@ -158,8 +158,9 @@ gulp.task("clean", function () {
   return del(["wwwroot/scripts/**/*"]);
 });
 
-gulp.task("default", function () {
-  gulp.src(paths.scripts).pipe(gulp.dest("wwwroot/scripts"));
+gulp.task("default", function (done) {
+    gulp.src(paths.scripts).pipe(gulp.dest("wwwroot/scripts"));
+    done();
 });
 ```
 

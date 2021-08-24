@@ -10,6 +10,8 @@ type Monaco = typeof import("monaco-editor")
 export function getDefaultSandboxCompilerOptions(config: SandboxConfig, monaco: Monaco) {
   const useJavaScript = config.filetype === "js"
   const settings: CompilerOptions = {
+    strict: true,
+
     noImplicitAny: true,
     strictNullChecks: !useJavaScript,
     strictFunctionTypes: true,
@@ -60,24 +62,40 @@ export function getDefaultSandboxCompilerOptions(config: SandboxConfig, monaco: 
  * Loop through all of the entries in the existing compiler options then compare them with the
  * query params and return an object which is the changed settings via the query params
  */
-export const getCompilerOptionsFromParams = (options: CompilerOptions, params: URLSearchParams): CompilerOptions => {
-  const urlDefaults = Object.entries(options).reduce((acc: any, [key, value]) => {
-    if (params.has(key)) {
-      const urlValue = params.get(key)!
+export const getCompilerOptionsFromParams = (
+  playgroundDefaults: CompilerOptions,
+  ts: typeof import("typescript"),
+  params: URLSearchParams
+): CompilerOptions => {
+  const returnedOptions: CompilerOptions = {}
 
-      if (urlValue === "true") {
-        acc[key] = true
-      } else if (urlValue === "false") {
-        acc[key] = false
-      } else if (!isNaN(parseInt(urlValue, 10))) {
-        acc[key] = parseInt(urlValue, 10)
+  params.forEach((val, key) => {
+    // First use the defaults object to drop compiler flags which are already set to the default
+    if (playgroundDefaults[key]) {
+      let toSet = undefined
+      if (val === "true" && playgroundDefaults[key] !== true) {
+        toSet = true
+      } else if (val === "false" && playgroundDefaults[key] !== false) {
+        toSet = false
+      } else if (!isNaN(parseInt(val, 10)) && playgroundDefaults[key] !== parseInt(val, 10)) {
+        toSet = parseInt(val, 10)
+      }
+
+      if (toSet !== undefined) returnedOptions[key] = toSet
+    } else {
+      // If that doesn't work, double check that the flag exists and allow it through
+      // @ts-ignore
+      const flagExists = ts.optionDeclarations.find(opt => opt.name === key)
+      if (flagExists) {
+        let realValue: number | boolean = true
+        if (val === "false") realValue = false
+        if (!isNaN(parseInt(val, 10))) realValue = parseInt(val, 10)
+        returnedOptions[key] = realValue
       }
     }
+  })
 
-    return acc
-  }, {})
-
-  return urlDefaults
+  return returnedOptions
 }
 
 // Can't set sandbox to be the right type because the param would contain this function
