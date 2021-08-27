@@ -1,7 +1,7 @@
 @import "../style/globals.scss";
 /*  Start of Shiki Twoslash CSS:
 
-Code blocks structurally look like: 
+Code blocks structurally look like:
 
 <pre class='shiki lsp twoslash [theme-name]'>
   <div class='language-id'>[lang-id]</div>
@@ -9,7 +9,7 @@ Code blocks structurally look like:
       <code>[the code as a series of spans]</code>
       <a href='playground...'>Try</a> (optional)
     </div>
-  </pre> 
+  </pre>
 */
 
 pre {
@@ -185,7 +185,7 @@ pre .popover {
   margin-bottom: 10px;
   background-color: #eee;
   display: inline-block;
-  padding: 0 0.5rem 0.3rem;
+  padding: 0 0.5rem 0.6rem;
   margin-top: 10px;
   border-radius: 3px;
 }
