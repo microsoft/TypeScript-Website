@@ -377,7 +377,7 @@ To read it more easily, you can forward the output to a file, or pipe it to a pr
 
 ```sh
 # Forward output to a text file
-tsc --explainFiles > expanation.txt
+tsc --explainFiles > explanation.txt
 
 # Pipe output to a utility program like `less`, or an editor like VS Code
 tsc --explainFiles | less
