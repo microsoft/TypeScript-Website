@@ -78,21 +78,41 @@ When no best common type is found, the resulting inference is the union array ty
 Type inference also works in "the other direction" in some cases in TypeScript.
 This is known as "contextual typing". Contextual typing occurs when the type of an expression is implied by its location. For example:
 
-```ts
+```ts twoslash
+// @errors: 2339
 window.onmousedown = function (mouseEvent) {
-  console.log(mouseEvent.button); //<- OK
-  console.log(mouseEvent.kangaroo); //<- Error!
+  console.log(mouseEvent.button);
+  console.log(mouseEvent.kangaroo);
 };
 ```
 
 Here, the TypeScript type checker used the type of the `Window.onmousedown` function to infer the type of the function expression on the right hand side of the assignment.
 When it did so, it was able to infer the [type](https://developer.mozilla.org/docs/Web/API/MouseEvent) of the `mouseEvent` parameter, which does contain a `button` property, but not a `kangaroo` property.
 
-TypeScript is smart enough to infer types in other contexts as well:
+This works because window already has `onmousedown` declared in it's type:
 
 ```ts
+// Declares there is a global variable called 'window'
+declare var window: Window & typeof globalThis;
+
+// Which is declared as (simplified):
+interface Window extends GlobalEventHandlers {
+  // ...
+}
+
+// Which defines a lot of known handler events
+interface GlobalEventHandlers {
+  onmousedown: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+  // ...
+}
+```
+
+TypeScript is smart enough to infer types in other contexts as well:
+
+```ts twoslash
+// @errors: 2339
 window.onscroll = function (uiEvent) {
-  console.log(uiEvent.button); //<- Error!
+  console.log(uiEvent.button);
 };
 ```
 
@@ -100,17 +120,18 @@ Based on the fact that the above function is being assigned to `Window.onscroll`
 
 If this function were not in a contextually typed position, the function's argument would implicitly have type `any`, and no error would be issued (unless you are using the `--noImplicitAny` option):
 
-```ts
+```ts twoslash
+// @noImplicitAny: false
 const handler = function (uiEvent) {
-  console.log(uiEvent.button); //<- OK
+  console.log(uiEvent.button); // <- OK
 };
 ```
 
 We can also explicitly give type information to the function's argument to override any contextual type:
 
-```ts
+```ts twoslash
 window.onscroll = function (uiEvent: any) {
-  console.log(uiEvent.button); //<- Now, no error is given
+  console.log(uiEvent.button); // <- Now, no error is given
 };
 ```
 
@@ -120,7 +141,19 @@ Contextual typing applies in many cases.
 Common cases include arguments to function calls, right hand sides of assignments, type assertions, members of object and array literals, and return statements.
 The contextual type also acts as a candidate type in best common type. For example:
 
-```ts
+```ts twoslash
+// @strict: false
+class Animal {}
+class Rhino extends Animal {
+  hasHorn: true;
+}
+class Elephant extends Animal {
+  hasTrunk: true;
+}
+class Snake extends Animal {
+  hasLegs: false;
+}
+// ---cut---
 function createZoo(): Animal[] {
   return [new Rhino(), new Elephant(), new Snake()];
 }
