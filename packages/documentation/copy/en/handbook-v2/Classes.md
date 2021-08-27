@@ -879,6 +879,30 @@ const MyHelperObject = {
 };
 ```
 
+## `static` Blocks in Classes
+
+Static blocks allow you to write a sequence of statements with their own scope that can access private fields within the containing class. This means that we can write initialization code with all the capabilities of writing statements, no leakage of variables, and full access to our class's internals.
+
+```ts twoslash
+declare function loadLastInstances(): any[]
+// ---cut---
+class Foo {
+    static #count = 0;
+
+    get count() {
+        return Foo.#count;
+    }
+
+    static {
+        try {
+            const lastInstances = loadLastInstances();
+            Foo.#count += lastInstances.length;
+        }
+        catch {}
+    }
+}
+```
+
 ## Generic Classes
 
 Classes, much like interfaces, can be generic.

@@ -373,6 +373,7 @@ mySearch = function (src, sub) {
 
 Similarly to how we can use interfaces to describe function types, we can also describe types that we can "index into" like `a[10]`, or `ageMap["daniel"]`.
 Indexable types have an _index signature_ that describes the types we can use to index into the object, along with the corresponding return types when indexing.
+
 Let's take an example:
 
 ```ts twoslash
@@ -389,8 +390,9 @@ let myStr: string = myArray[0];
 Above, we have a `StringArray` interface that has an index signature.
 This index signature states that when a `StringArray` is indexed with a `number`, it will return a `string`.
 
-There are two types of supported index signatures: string and number.
-It is possible to support both types of indexers, but the type returned from a numeric indexer must be a subtype of the type returned from the string indexer.
+There are four types of supported index signatures: string, number, symbol and template strings.
+It is possible to support many types of indexers, but the type returned from a numeric indexer must be a subtype of the type returned from the string indexer.
+
 This is because when indexing with a `number`, JavaScript will actually convert that to a `string` before indexing into an object.
 That means that indexing with `100` (a `number`) is the same thing as indexing with `"100"` (a `string`), so the two need to be consistent.
 
@@ -420,6 +422,7 @@ In the following example, `name`'s type does not match the string index's type, 
 // @errors: 2411
 interface NumberDictionary {
   [index: string]: number;
+
   length: number; // ok, length is a number
   name: string; // error, the type of 'name' is not a subtype of the indexer
 }
@@ -430,6 +433,7 @@ However, properties of different types are acceptable if the index signature is 
 ```ts twoslash
 interface NumberOrStringDictionary {
   [index: string]: number | string;
+
   length: number; // ok, length is a number
   name: string; // ok, name is a string
 }
@@ -448,6 +452,32 @@ myArray[2] = "Mallory"; // error!
 ```
 
 You can't set `myArray[2]` because the index signature is `readonly`.
+
+### Indexable Types with Template Strings
+
+A template string can be used to indicate that a particular pattern is allowed, but not all. For example, a HTTP headers object may have a set list of known headers and support any [custom defined properties](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers) which are prefixed with `x-`.
+
+```ts twoslash
+// @errors: 2339
+
+interface HeadersResponse {
+  "content-type": string,
+  date: string,
+  "content-length": string
+
+  // Permit any property starting with 'data-'.
+  [headerName: `x-${string}`]: string;
+}
+
+function handleResponse(r: HeadersResponse) {
+  // Handle known, and x- prefixed
+  const type = r["content-type"]
+  const poweredBy = r["x-powered-by"]
+
+  // Unknown keys without the prefix raise errors
+  const origin = r.origin
+}
+```
 
 ## Class Types
 

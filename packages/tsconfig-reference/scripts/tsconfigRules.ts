@@ -244,7 +244,7 @@ export const defaultsForOptions = {
   target: "ES3",
   traceResolution: "false",
   tsBuildInfoFile: ".tsbuildinfo",
-  useDefineForClassFields: "false",
+  useDefineForClassFields: "`true` for ES2022 and above, including ESNext.",
 };
 
 export const allowedValues = {
