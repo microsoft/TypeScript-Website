@@ -433,7 +433,7 @@ class Foo {
             const lastInstances = loadLastInstances();
             Foo.#count += lastInstances.length;
         }
-        catch {}
+        catch (err) {}
     }
 }
 ```
