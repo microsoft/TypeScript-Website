@@ -35,17 +35,17 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 **If you're looking for more information about the compiler options in a tsconfig, check out the [TSConfig Reference](/tsconfig)**
 
-<!-- Start of replacement  --><h3>CLI Commands</h3>
+<!-- Start of replacement  -->
+<h3>CLI Commands</h3>
 
-  <table class='cli-option' width="100%">
-    <thead>
-    <tr>
-      <th>Flag</th>
-      <th>Type</th>
-      
-    </tr>
-  </thead>
-  <tbody>
+<table class='cli-option' width="100%">
+  <thead>
+  <tr>
+    <th>Flag</th>
+    <th>Type</th>
+  </tr>
+</thead>
+<tbody>
 
 <tr class='odd' name='all'>
 <td><code>--all</code></td>
@@ -122,15 +122,15 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </tbody></table>
 <h3>Build Options</h3>
 
-  <table class='cli-option' width="100%">
-    <thead>
-    <tr>
-      <th>Flag</th>
-      <th>Type</th>
-      
-    </tr>
-  </thead>
-  <tbody>
+<table class='cli-option' width="100%">
+  <thead>
+  <tr>
+    <th>Flag</th>
+    <th>Type</th>
+
+  </tr>
+</thead>
+<tbody>
 
 <tr class='odd' name='build'>
 <td><code>--build</code></td>
@@ -175,15 +175,15 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </tbody></table>
 <h3>Watch Options</h3>
 
-  <table class='cli-option' width="100%">
-    <thead>
-    <tr>
-      <th>Flag</th>
-      <th>Type</th>
-      
-    </tr>
-  </thead>
-  <tbody>
+<table class='cli-option' width="100%">
+  <thead>
+  <tr>
+    <th>Flag</th>
+    <th>Type</th>
+
+  </tr>
+</thead>
+<tbody>
 
 <tr class='odd' name='excludeDirectories'>
 <td><code><a href='/tsconfig/#excludeDirectories'>--excludeDirectories</a></code></td>
@@ -244,16 +244,16 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </tbody></table>
 <h3>Compiler Flags</h3>
 
-  <table class='cli-option' width="100%">
-    <thead>
-    <tr>
-      <th>Flag</th>
-      <th>Type</th>
-     <th>Default</th>
-      
-    </tr>
-  </thead>
-  <tbody>
+<table class='cli-option' width="100%">
+  <thead>
+  <tr>
+    <th>Flag</th>
+    <th>Type</th>
+   <th>Default</th>
+
+  </tr>
+</thead>
+<tbody>
 
 <tr class='odd' name='allowJs'>
 <td><code><a href='/tsconfig/#allowJs'>--allowJs</a></code></td>
