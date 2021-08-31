@@ -774,6 +774,12 @@ This is discussed [in some detail here](https://github.com/microsoft/TypeScript-
 
 https://github.com/microsoft/TypeScript-DOM-lib-generator/issues/991
 
+### `useDefineForClassFields` now defaults to true on `es2020` and above
+
+In ES2020 the class fields feature was added into JavaScript with behavior which differed from how TypeScript had implemented it. In preparation for this, in TypeScript 3.7, a flag was added ([`useDefineForClassFields`](https://www.typescriptlang.org/tsconfig#useDefineForClassFields)) to migrate to emitted JavaScript to match the JavaScript standard behavior.
+
+Now that the feature is in JavaScript, we are switching to the JavaScript behavior for any projects targeting `es2020` and above.
+
 ### Errors on Always-Truthy Promise Checks
 
 Under `strictNullChecks`, using a `Promise` that always appears to be defined within a condition check is now considered an error.
