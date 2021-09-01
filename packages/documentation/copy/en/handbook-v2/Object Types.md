@@ -266,6 +266,29 @@ writablePerson.age++;
 console.log(readonlyPerson.age); // prints '43'
 ```
 
+Using the `-readonly` modifier, you can remove the `readonly` modifier's effect.
+
+```ts twoslash
+interface ReadonlyPerson {
+  readonly name: string;
+  readonly age: number;
+}
+
+type Writable<T> = {
+  -readonly [K in keyof T]: T[K];
+};
+
+let writablePerson: Writable<ReadonlyPerson> = {
+  name: "Person McPersonface",
+  age: 42,
+}
+
+// works
+writablePerson.age++
+
+console.log(writablePerson.age) // prints '43'
+```
+
 ### Index Signatures
 
 Sometimes you don't know all the names of a type's properties ahead of time, but you do know the shape of the values.
