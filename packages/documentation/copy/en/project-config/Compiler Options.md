@@ -378,7 +378,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 <tr class='odd' name='declarationDir'>
 <td><code><a href='/tsconfig/#declarationDir'>--declarationDir</a></code></td>
   <td><code>string</code></td>
-  <td><p> n/a</p>
+  <td><p>n/a</p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -548,7 +548,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 <tr class='even' name='generateCpuProfile'>
 <td><code><a href='/tsconfig/#generateCpuProfile'>--generateCpuProfile</a></code></td>
   <td><code>string</code></td>
-  <td><p> profile.cpuprofile</p>
+  <td><p>profile.cpuprofile</p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">

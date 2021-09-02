@@ -5705,6 +5705,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript/ata@workspace:packages/ata"
   dependencies:
+    cpy-cli: ^3.1.1
     esbuild: ^0.12.9
     esbuild-jest: ^0.5.0
     jest: ^26

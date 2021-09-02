@@ -8,14 +8,16 @@
     "directory": "packages/ata",
     "type": "git"
   },
-  "main": "api/dist.js",
+  "main": "dist/index.js",
+  "type": "module",
   "types": "src/userFacingTypes.d.ts",
   "scripts": {
-    "build": "esbuild src/index.ts --outfile=dist/index.js --target=node12 --platform=node",
+    "build": "esbuild src/index.ts --bundle --outfile=dist/index.js --platform=node",
     "test": "jest",
     "bootstrap": "yarn build"
   },
   "devDependencies": {
+    "cpy-cli": "^3.1.1",
     "esbuild": "^0.12.9",
     "esbuild-jest": "^0.5.0",
     "jest": "^26"

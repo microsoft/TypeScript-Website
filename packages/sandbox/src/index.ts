@@ -11,8 +11,9 @@ import { supportedReleases } from "./releases"
 import { getInitialCode } from "./getInitialCode"
 import { extractTwoSlashCompilerOptions, twoslashCompletions } from "./twoslashSupport"
 import * as tsvfs from "./vendor/typescript-vfs"
-
-import { setupTypeAcquisition } from "@typescript/ata"
+import * as ata from "../../../packages/ata/src"
+// import { setupTypeAcquisition } from "./vendor/ata"
+import "./vendor/ata"
 
 type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
 type Monaco = typeof import("monaco-editor")
@@ -189,6 +190,18 @@ export const createTypeScriptSandbox = (
     )
   }
 
+  // @ts-ignore
+  const ata = window.setupTypeAcquisition({
+    projectName: "TypeScript Playground",
+    typescript: ts,
+    delegate: {
+      receivedFile: addLibraryToRuntime,
+      progress: (dl: number, ttl: number) => {
+        console.log({ dl, ttl })
+      },
+    },
+  })
+
   const textUpdated = () => {
     const code = editor.getModel()!.getValue()
 
@@ -199,6 +212,7 @@ export const createTypeScriptSandbox = (
     }
 
     if (config.acquireTypes) {
+      ata(code)
       // detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
     }
   }
