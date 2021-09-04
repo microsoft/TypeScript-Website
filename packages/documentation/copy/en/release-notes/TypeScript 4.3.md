@@ -774,6 +774,12 @@ This is discussed [in some detail here](https://github.com/microsoft/TypeScript-
 
 https://github.com/microsoft/TypeScript-DOM-lib-generator/issues/991
 
+### `useDefineForClassFields` now defaults to true on `esnext` and eventually on `es2022`
+
+In 2021 the class fields feature was added into the JavaScript specification with behavior which differed from how TypeScript had implemented it. In preparation for this, in TypeScript 3.7, a flag was added ([`useDefineForClassFields`](https://www.typescriptlang.org/tsconfig#useDefineForClassFields)) to migrate to emitted JavaScript to match the JavaScript standard behavior.
+
+Now that the feature is in JavaScript we are changing the default to `true` for ES2022 and above, including ESNext.
+
 ### Errors on Always-Truthy Promise Checks
 
 Under `strictNullChecks`, using a `Promise` that always appears to be defined within a condition check is now considered an error.
