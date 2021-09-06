@@ -53,15 +53,15 @@ languages.forEach((lang) => {
 
     // Trim leading whitespaces so that it is not rendered as a markdown code block
     const tableHeader = `
-    <table class="cli-option" width="100%">
-      <thead>
-      <tr>
-        <th>Flag</th>
-        <th>Type</th>${opts?.noDefaults ? "" : "\n     <th>Default</th>"}
-      </tr>
-    </thead>
-    <tbody>
-    `.trim()
+<table class="cli-option" width="100%">
+  <thead>
+    <tr>
+      <th>Flag</th>
+      <th>Type</th>${opts?.noDefaults ? "" : "\n      <th>Default</th>"}
+    </tr>
+  </thead>
+  <tbody>
+`.trim()
 
     markdownChunks.push(tableHeader);
 
@@ -87,7 +87,7 @@ languages.forEach((lang) => {
 
       let name = "--" + option.name;
       if (option.isTSConfigOnly) name = `<a href='/tsconfig/#${option.name}'>--${option.name}</a>`;
-      markdownChunks.push(`<td><code>${name}</code></td>`);
+      markdownChunks.push(`  <td><code>${name}</code></td>`);
 
       let optType: string;
       if (typeof option.type === "string") {
@@ -106,17 +106,17 @@ languages.forEach((lang) => {
       markdownChunks.push(`  <td><code>${optType}</code></td>`);
 
       if (!opts?.noDefaults) {
-        markdownChunks.push(`  <td>${parseMarkdown(option.defaultValue)}</td>`);
+        markdownChunks.push(`  <td>${`${parseMarkdown(option.defaultValue)}`.trim()}</td>`);
       }
       markdownChunks.push(`</tr>`);
 
       // Add a new row under the current one for the description, this uses the 'odd' / 'even' classes
       // to fake looking like a single row
       markdownChunks.push(`<tr class="option-description ${oddEvenClass}"><td colspan="3">`);
-      markdownChunks.push(`${parseMarkdown(description)}`);
-      markdownChunks.push(`</tr></td>`);
+      markdownChunks.push(`${parseMarkdown(description)}`.trim());
+      markdownChunks.push(`</td></tr>\n`);
     });
-    markdownChunks.push(`</tbody></table>`);
+    markdownChunks.push(`</tbody></table>\n`);
   }
 
   renderTable("CLI Commands", options.cli, { noDefaults: true });
