@@ -1,10 +1,10 @@
 import * as React from "react"
-import { Layout } from "../../components/layout"
 import { Intl } from "../../components/Intl"
-
-import releaseInfo from "../../lib/release-info.json"
 import { createIntlLink } from "../../components/IntlLink"
+import { Layout } from "../../components/layout"
 import { QuickJump } from "../../components/QuickJump"
+import releaseInfo from "../../lib/release-info.json"
+
 
 type Props = {
   pageContext: any
@@ -40,7 +40,7 @@ const Index: React.FC<Props> = (props) => {
           <p>All of these dependency managers support lockfiles, ensuring that everyone on your team is using the same version of the language. You can then run the TypeScript compiler using one of the following commands:</p>
           <div>
             <code id='code-run'>npx tsc</code><br /><br />
-            <button onClick={() => changeExample2("npx tsc")}>npm</button> <button onClick={() => changeExample2("yarn tsc")}>yarn</button> <button onClick={() => changeExample2("pnpx tsc")}>pnpm</button>
+            <button onClick={() => changeExample2("npx tsc")}>npm</button> <button onClick={() => changeExample2("yarn tsc")}>yarn</button> <button onClick={() => changeExample2("pnpm dlx tsc")}>pnpm</button>
           </div>
         </div>
 
@@ -114,4 +114,3 @@ const Index: React.FC<Props> = (props) => {
 }
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Index {...props} /></Intl>
-
