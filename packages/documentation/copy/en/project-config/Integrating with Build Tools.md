@@ -72,42 +72,6 @@ browserify()
 
 More details: [smrq/tsify](https://github.com/smrq/tsify)
 
-## Duo
-
-### Install
-
-```sh
-npm install duo-typescript
-```
-
-### Using Command Line Interface
-
-```sh
-duo --use duo-typescript entry.ts
-```
-
-### Using API
-
-```js
-var Duo = require("duo");
-var fs = require("fs");
-var path = require("path");
-var typescript = require("duo-typescript");
-
-var out = path.join(__dirname, "output.js");
-
-Duo(__dirname)
-  .entry("entry.ts")
-  .use(typescript())
-  .run(function (err, results) {
-    if (err) throw err;
-    // Write compiled result to output file
-    fs.writeFileSync(out, results.code);
-  });
-```
-
-More details: [frankwallis/duo-typescript](https://github.com/frankwallis/duo-typescript)
-
 ## Grunt
 
 ### Install
@@ -181,44 +145,28 @@ More details: [TypeScriptSamples/jspm](https://github.com/Microsoft/TypeScriptSa
 npm install ts-loader --save-dev
 ```
 
-### Basic webpack.config.js when using Webpack 2
+### Basic webpack.config.js when using Webpack 5 or 4
 
 ```js
+const path = require('path');
+
 module.exports = {
-  entry: "./src/index.tsx",
-  output: {
-    path: "/",
-    filename: "bundle.js",
-  },
-  resolve: {
-    extensions: [".tsx", ".ts", ".js", ".json"],
-  },
+  entry: './src/index.ts',
   module: {
     rules: [
-      // all files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'
-      { test: /\.tsx?$/, use: ["ts-loader"], exclude: /node_modules/ },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
     ],
-  },
-};
-```
-
-### Basic webpack.config.js when using Webpack 1
-
-```js
-module.exports = {
-  entry: "./src/index.tsx",
-  output: {
-    filename: "bundle.js",
   },
   resolve: {
-    // Add '.ts' and '.tsx' as a resolvable extension.
-    extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"],
+    extensions: ['.tsx', '.ts', '.js'],
   },
-  module: {
-    rules: [
-      // all files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'
-      { test: /\.tsx?$/, loader: "ts-loader" },
-    ],
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
   },
 };
 ```
