@@ -252,6 +252,24 @@ const color = { hex: "#187ABF" };
 logPoint(color);
 ```
 
+Hpwever, the shape-matching does not work on object literals: 
+```ts twoslash
+// @error: 2345
+interface Point {
+  x: number;
+  y: number;
+}
+
+function logPoint(p: Point) {
+  console.log(`${p.x}, ${p.y}`);
+}
+// ---cut---
+const rect = { x: 33, y: 3, width: 30, height: 80 };
+logPoint(rect); // logs "33, 3"
+
+logPoint({ x: 33, y: 3, width: 30, height: 80 });
+```
+
 There is no difference between how classes and objects conform to shapes:
 
 ```ts twoslash
