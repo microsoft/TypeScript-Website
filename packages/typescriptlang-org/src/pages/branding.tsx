@@ -29,8 +29,8 @@ const Index: React.FC<Props> = (props) => {
 
           <Row className="main-content-block recommendations">
             <p style={{ flex: 1 }}>Please use the blue TypeScript mark above as the primary logo for TypeScript.</p>
-            <p style={{ flex: 1 }}>This is the right logos for blog posts, news articles, give-away stickers and general marketing for yourself.</p>
-            <p style={{ flex: 1 }}>The “TS” is the logo is white, not transparent by default.</p>
+            <p style={{ flex: 1 }}>This is the right logo for blog posts, news articles, giveaway stickers and general marketing for yourself.</p>
+            <p style={{ flex: 1 }}>The “TS” in the logo is white, not transparent by default.</p>
             <p style={{ flex: 1 }}>There is a capital “S” in TypeScript, just like in JavaScript.</p>
           </Row>
 
@@ -42,7 +42,7 @@ const Index: React.FC<Props> = (props) => {
                 <a href={withPrefix("/branding/typescript-design-assets.zip")}>
                   <img src={withPrefix("images/branding/two-colors.svg")} style={{ maxWidth: "100%", margin: "2rem 0" }} />
                 </a>
-                <p className="attached-bottom">Single color variant which has the “TS” cut out, useful for when you need a single color designs</p>
+                <p className="attached-bottom">Single color variant which has the “TS” cut out, useful for when you need a single color design.</p>
               </div>
 
               <div className="raised content main-content-block subheadline">
