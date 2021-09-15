@@ -48,9 +48,9 @@ export type SandboxConfig = {
     groupEnd: (...args: any[]) => void
   }
 } & (
-  | { /** theID of a dom node to add monaco to */ domID: string }
-  | { /** theID of a dom node to add monaco to */ elementToAppend: HTMLElement }
-)
+    | { /** theID of a dom node to add monaco to */ domID: string }
+    | { /** theID of a dom node to add monaco to */ elementToAppend: HTMLElement }
+  )
 
 const languageType = (config: SandboxConfig) => (config.filetype === "js" ? "javascript" : "typescript")
 
@@ -194,7 +194,6 @@ export const createTypeScriptSandbox = (
 
     if (config.supportTwoslashCompilerOptions) {
       const configOpts = getTwoSlashCompilerOptions(code)
-      console.log("twoslash", configOpts)
       updateCompilerSettings(configOpts)
     }
 
@@ -218,7 +217,7 @@ export const createTypeScriptSandbox = (
   defaults.setCompilerOptions(compilerOptions)
 
   // To let clients plug into compiler settings changes
-  let didUpdateCompilerSettings = (opts: CompilerOptions) => {}
+  let didUpdateCompilerSettings = (opts: CompilerOptions) => { }
 
   const updateCompilerSettings = (opts: CompilerOptions) => {
     const newKeys = Object.keys(opts)
@@ -264,13 +263,19 @@ export const createTypeScriptSandbox = (
   /** Gets the results of compiling your editor's code */
   const getEmitResult = async () => {
     const model = editor.getModel()!
-
     const client = await getWorkerProcess()
     return await client.getEmitOutput(model.uri.toString())
   }
 
   /** Gets the JS  of compiling your editor's code */
   const getRunnableJS = async () => {
+    // This isn't quite _right_ in theory, we can downlevel JS -> JS
+    // but a browser is basically always esnext-y and setting allowJs and
+    // checkJs does not actually give the downlevel'd .js file in the output
+    // later down the line.
+    if (isJSLang) {
+      return getText()
+    }
     const result = await getEmitResult()
     const firstJS = result.outputFiles.find((o: any) => o.name.endsWith(".js") || o.name.endsWith(".jsx"))
     return (firstJS && firstJS.text) || ""

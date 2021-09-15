@@ -84,27 +84,6 @@ In this example, both `xPos` and `yPos` are considered optional.
 We can choose to provide either of them, so every call above to `paintShape` is valid.
 All optionality really says is that if the property _is_ set, it better have a specific type.
 
-```ts twoslash
-interface Shape {}
-declare function getShape(): Shape;
-
-// ---cut---
-interface PaintOptions {
-  shape: Shape;
-  xPos?: number;
-  //  ^
-  yPos?: number;
-  //  ^
-}
-
-function paintShape(opts: PaintOptions) {
-  // ...
-}
-
-const shape = getShape();
-paintShape({ shape });
-paintShape({ shape, xPos: 100 });
-```
 
 We can also read from those properties - but when we do under `strictNullChecks`, TypeScript will tell us they're potentially `undefined`.
 

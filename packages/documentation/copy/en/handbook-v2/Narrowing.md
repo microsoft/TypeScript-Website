@@ -138,7 +138,7 @@ You can always coerce values to `boolean`s by running them through the `Boolean`
 ```ts twoslash
 // both of these result in 'true'
 Boolean("hello"); // type: boolean, value: true
-!!"world";        // type: true,    value: true
+!!"world"; // type: true,    value: true
 ```
 
 It's fairly popular to leverage this behavior, especially for guarding against values like `null` or `undefined`.
@@ -276,7 +276,7 @@ function multiplyValue(container: Container, factor: number) {
 Javascript has an operator for determining if an object has a property with a name: the `in` operator.
 TypeScript takes this into account as a way to narrow down potential types.
 
-For example, with the code: `"value" in x`.  where `"value"` is a string literal and `x` is a union type. 
+For example, with the code: `"value" in x`. where `"value"` is a string literal and `x` is a union type.
 The "true" branch narrows `x`'s types which have either an optional or required property `value`, and the "false" branch narrows to types which have an optional or missing property `value`.
 
 ```ts twoslash
@@ -294,17 +294,18 @@ function move(animal: Fish | Bird) {
 
 To re-iterate optional properties will exist in both sides for narrowing, for example a human could both swim and fly (with the right equipment) and thus should show up in both sides of the `in` check:
 
+<!-- prettier-ignore -->
 ```ts twoslash
 type Fish = { swim: () => void };
 type Bird = { fly: () => void };
-type Human = {  swim?: () => void, fly?: () => void };
+type Human = { swim?: () => void; fly?: () => void };
 
 function move(animal: Fish | Bird | Human) {
-  if ("swim" in animal) { 
-    animal
+  if ("swim" in animal) {
+    animal;
 //  ^?
   } else {
-    animal
+    animal;
 //  ^?
   }
 }
@@ -328,7 +329,6 @@ function logValue(x: Date | string) {
   }
 }
 ```
-
 
 ## Assignments
 

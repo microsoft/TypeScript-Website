@@ -51,17 +51,19 @@ languages.forEach((lang) => {
   function renderTable(title: string, options: CompilerOptionJSON[], opts?: { noDefaults: true }) {
     markdownChunks.push(`<h3>${title}</h3>`);
 
-    markdownChunks.push(`
-  <table class='cli-option' width="100%">
-    <thead>
+    // Trim leading whitespaces so that it is not rendered as a markdown code block
+    const tableHeader = `
+<table class="cli-option" width="100%">
+  <thead>
     <tr>
       <th>Flag</th>
-      <th>Type</th>${opts?.noDefaults ? "" : "\n     <th>Default</th>"}
-      
+      <th>Type</th>${opts?.noDefaults ? "" : "\n      <th>Default</th>"}
     </tr>
   </thead>
   <tbody>
-`);
+`.trim()
+
+    markdownChunks.push(tableHeader);
 
     options.forEach((option, index) => {
       // Heh, the section uses an article and the categories use a section
@@ -77,7 +79,7 @@ languages.forEach((lang) => {
           const sectionsPath = getPathInLocale(join("cli", option.name + ".md"));
           const optionFile = readMarkdownFile(sectionsPath);
           description = optionFile.data.oneline;
-        } catch (error) {}
+        } catch (error) { }
       }
 
       const oddEvenClass = index % 2 === 0 ? "odd" : "even";
@@ -85,7 +87,7 @@ languages.forEach((lang) => {
 
       let name = "--" + option.name;
       if (option.isTSConfigOnly) name = `<a href='/tsconfig/#${option.name}'>--${option.name}</a>`;
-      markdownChunks.push(`<td><code>${name}</code></td>`);
+      markdownChunks.push(`  <td><code>${name}</code></td>`);
 
       let optType: string;
       if (typeof option.type === "string") {
@@ -104,17 +106,17 @@ languages.forEach((lang) => {
       markdownChunks.push(`  <td><code>${optType}</code></td>`);
 
       if (!opts?.noDefaults) {
-        markdownChunks.push(`  <td>${parseMarkdown(option.defaultValue)}</td>`);
+        markdownChunks.push(`  <td>${`${parseMarkdown(option.defaultValue)}`.trim()}</td>`);
       }
       markdownChunks.push(`</tr>`);
 
       // Add a new row under the current one for the description, this uses the 'odd' / 'even' classes
       // to fake looking like a single row
       markdownChunks.push(`<tr class="option-description ${oddEvenClass}"><td colspan="3">`);
-      markdownChunks.push(`${parseMarkdown(description)}`);
-      markdownChunks.push(`</tr></td>`);
+      markdownChunks.push(`${parseMarkdown(description)}`.trim());
+      markdownChunks.push(`</td></tr>\n`);
     });
-    markdownChunks.push(`</tbody></table>`);
+    markdownChunks.push(`</tbody></table>\n`);
   }
 
   renderTable("CLI Commands", options.cli, { noDefaults: true });
@@ -131,7 +133,7 @@ languages.forEach((lang) => {
 languages.forEach((lang) => {
   const mdCLI = join(__dirname, "..", "..", "output", lang + "-cli.md");
   // prettier-ignore
-  const compOptsPath = join( __dirname, "..", "..", "..", `documentation/copy/${lang}/project-config/Compiler Options.md`);
+  const compOptsPath = join(__dirname, "..", "..", "..", `documentation/copy/${lang}/project-config/Compiler Options.md`);
 
   if (existsSync(compOptsPath)) {
     const md = readFileSync(compOptsPath, "utf8");

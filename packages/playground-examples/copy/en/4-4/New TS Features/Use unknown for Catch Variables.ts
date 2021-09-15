@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.4.0-dev.20210628", useUnknownInCatchVariables: true } }
+//// { compiler: { ts: "4.4.2", useUnknownInCatchVariables: true } }
 // If `unknown` is new to you, read: example:unknown-and-never
 
 // Since TypeScript 4.0, you have been able to change the type
@@ -33,7 +33,7 @@ try {
 
 try {
   // @ts-ignore
-  iWillCrash();  
+  iWillCrash();
 } catch (err: any) {
   // In which case, you can treat it
   // however you would like.

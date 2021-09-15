@@ -238,121 +238,121 @@ Turns to:
 >           "name": "assert",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "clear",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "count",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "countReset",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "debug",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "dir",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "dirxml",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "error",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "group",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "groupCollapsed",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "groupEnd",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "info",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "log",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "table",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "time",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "timeEnd",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "timeLog",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "timeStamp",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "trace",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "warn",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         }
 >       ],
 >       "kind": "completions",
@@ -761,7 +761,7 @@ Turns to:
 >           ar[i] = from[i]
 >         }
 >       }
->     return to.concat(ar || from)
+>     return to.concat(ar || Array.prototype.slice.call(from))
 >   }
 > export function fn(arr) {
 >   var arr2 = __spreadArray([1], __read(arr), false)

@@ -65,7 +65,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-sitemap`,
       options: {
-        // Skip handbook v2 frmo appearing in search
+        // Skip handbook v2 from appearing in search
         excludes: [`*/2/*`, `*/glossary`, `*/vo/*`],
       },
     },

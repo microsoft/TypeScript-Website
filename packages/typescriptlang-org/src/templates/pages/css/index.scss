@@ -388,6 +388,10 @@ $headline-foreground-bg: white;
         font-family: $font-code;
       }
 
+      .error-behind {
+        opacity: 0;
+      }
+
       .inline-completions {
         position: relative;
 
