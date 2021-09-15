@@ -186,6 +186,12 @@ export const setupPlayground = (
     const plugin = getCurrentPlugin()
     if (model && plugin.modelChanged) plugin.modelChanged(sandbox, model, container)
     if (model && plugin.modelChangedDebounce) plugin.modelChangedDebounce(sandbox, model, container)
+
+    const alwaysUpdateURL = !localStorage.getItem("disable-save-on-type")
+    if (alwaysUpdateURL) {
+      const newURL = sandbox.createURLQueryWithCompilerOptions(sandbox)
+      window.history.replaceState({}, "", newURL)
+    }
   })
 
   const skipInitiallySettingHash = document.location.hash && document.location.hash.includes("example/")
@@ -412,8 +418,8 @@ export const setupPlayground = (
       } else {
         sidebarTabs.style.display = "none"
         sidebarContent.style.display = "none"
-        settingsContent.style.display = "block"
-        ;(document.querySelector(".playground-sidebar label") as any).focus()
+        settingsContent.style.display = "block";
+        (document.querySelector(".playground-sidebar label") as any).focus()
       }
       settingsToggle.parentElement!.classList.toggle("open")
     }
