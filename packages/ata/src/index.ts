@@ -1,6 +1,7 @@
 import {
   getDTSFileForModuleWithVersion,
   getFiletreeForModuleWithVersion,
+  getNPMVersionForModuleReference,
   getNPMVersionsForModule,
   NPMTreeMeta,
 } from "./apis"
@@ -84,7 +85,7 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
         const dtsCode = await getDTSFileForModuleWithVersion(config, dts.moduleName, dts.moduleVersion, dts.path)
         estimatedDownloaded++
         if (dtsCode instanceof Error) {
-          //
+          // TODO?
         } else {
           fsMap.set(dts.vfsPath, dtsCode)
           config.delegate.receivedFile?.(dtsCode, dts.vfsPath)
@@ -131,7 +132,11 @@ function treeToDTSFiles(tree: NPMTreeMeta, vfsPrefix: string) {
  */
 export const getReferencesForModule = (ts: typeof import("typescript"), code: string) => {
   const meta = ts.preProcessFile(code)
-  const references = meta.referencedFiles.concat(meta.importedFiles).concat(meta.libReferenceDirectives)
+  const references = meta.referencedFiles
+    .concat(meta.importedFiles)
+    .concat(meta.libReferenceDirectives)
+    .filter(f => f.fileName.endsWith(".d.ts"))
+
   return references.map(r => {
     let version = undefined
     if (!r.fileName.startsWith(".")) {
@@ -155,7 +160,7 @@ export function getNewDependencies(config: ATABootstrapConfig, moduleMap: Map<st
   }))
 
   // Drop relative paths because we're getting all the files
-  const modules = refs.filter(f => !f.module.startsWith(".")).filter(m => moduleMap.has(m.module))
+  const modules = refs.filter(f => !f.module.startsWith(".")).filter(m => !moduleMap.has(m.module))
   return modules
 }
 
@@ -172,12 +177,24 @@ export const getFileTreeForModuleWithTag = async (
   if (toDownload.split(".").length < 2) {
     // The jsdelivr API needs a _version_ not a tag. So, we need to switch out
     // the tag to the version via an API request.
-    const versions = await getNPMVersionsForModule(config, moduleName)
-    if (versions instanceof Error) {
-      return { error: versions, userFacingMessage: `Could not get versions on npm for ${moduleName} - possible typo?` }
+    const response = await getNPMVersionForModuleReference(config, moduleName, toDownload)
+    if (response instanceof Error) {
+      return {
+        error: response,
+        userFacingMessage: `Could not go from a tag to version on npm for ${moduleName} - possible typo?`,
+      }
     }
-    const neededVersion = versions.tags[toDownload]
+
+    const neededVersion = response.version
     if (!neededVersion) {
+      const versions = await getNPMVersionsForModule(config, moduleName)
+      if (versions instanceof Error) {
+        return {
+          error: response,
+          userFacingMessage: `Could not get versions on npm for ${moduleName} - possible typo?`,
+        }
+      }
+
       const tags = Object.entries(versions.tags).join(", ")
       return {
         error: new Error("Could not find tag for module"),
@@ -213,5 +230,5 @@ function getDTName(s: string) {
     // which should be converted to   bla__foo
     s = s.substr(1).replace("/", "__")
   }
-  return "@types/" + s
+  return s
 }

@@ -172,7 +172,7 @@ export const createTypeScriptSandbox = (
     if (monaco.editor.getModel(uri) === null) {
       monaco.editor.createModel(code, "javascript", uri)
     }
-    config.logger.log(`[ATA] Adding ${path} to runtime`)
+    config.logger.log(`[ATA] Adding ${path} to runtime`, { code })
   }
 
   const getTwoSlashCompilerOptions = extractTwoSlashCompilerOptions(ts)
@@ -191,10 +191,14 @@ export const createTypeScriptSandbox = (
   const ata = setupTypeAcquisition({
     projectName: "TypeScript Playground",
     typescript: ts,
+    logger: console,
     delegate: {
       receivedFile: addLibraryToRuntime,
       progress: (dl: number, ttl: number) => {
         console.log({ dl, ttl })
+      },
+      finished: f => {
+        console.log("ATA done")
       },
     },
   })
@@ -204,7 +208,6 @@ export const createTypeScriptSandbox = (
 
     if (config.supportTwoslashCompilerOptions) {
       const configOpts = getTwoSlashCompilerOptions(code)
-      console.log("twoslash", configOpts)
       updateCompilerSettings(configOpts)
     }
 
