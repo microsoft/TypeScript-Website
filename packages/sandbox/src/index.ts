@@ -11,8 +11,7 @@ import { supportedReleases } from "./releases"
 import { getInitialCode } from "./getInitialCode"
 import { extractTwoSlashCompilerOptions, twoslashCompletions } from "./twoslashSupport"
 import * as tsvfs from "./vendor/typescript-vfs"
-
-import { setupTypeAcquisition } from "@typescript/ata"
+import { setupTypeAcquisition } from "./vendor/ata/index"
 
 type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
 type Monaco = typeof import("monaco-editor")
@@ -173,7 +172,7 @@ export const createTypeScriptSandbox = (
     if (monaco.editor.getModel(uri) === null) {
       monaco.editor.createModel(code, "javascript", uri)
     }
-    config.logger.log(`[ATA] Adding ${path} to runtime`)
+    config.logger.log(`[ATA] Adding ${path} to runtime`, { code })
   }
 
   const getTwoSlashCompilerOptions = extractTwoSlashCompilerOptions(ts)
@@ -189,6 +188,21 @@ export const createTypeScriptSandbox = (
     )
   }
 
+  const ata = setupTypeAcquisition({
+    projectName: "TypeScript Playground",
+    typescript: ts,
+    logger: console,
+    delegate: {
+      receivedFile: addLibraryToRuntime,
+      progress: (dl: number, ttl: number) => {
+        console.log({ dl, ttl })
+      },
+      finished: f => {
+        console.log("ATA done")
+      },
+    },
+  })
+
   const textUpdated = () => {
     const code = editor.getModel()!.getValue()
 
@@ -198,6 +212,7 @@ export const createTypeScriptSandbox = (
     }
 
     if (config.acquireTypes) {
+      ata(code)
       // detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
     }
   }

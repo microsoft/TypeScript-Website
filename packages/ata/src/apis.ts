@@ -7,6 +7,11 @@ export const getNPMVersionsForModule = (config: ATABootstrapConfig, moduleName: 
   return api<{ tags: Record<string, string>; versions: string[] }>(config, url)
 }
 
+export const getNPMVersionForModuleReference = (config: ATABootstrapConfig, moduleName: string, reference: string) => {
+  const url = `https://data.jsdelivr.com/v1/package/resolve/npm/${moduleName}@${reference}`
+  return api<{ version: string | null }>(config, url)
+}
+
 export type NPMTreeMeta = { default: string; files: Array<{ name: string }>; moduleName: string; version: string }
 
 export const getFiletreeForModuleWithVersion = async (
@@ -33,7 +38,7 @@ export const getDTSFileForModuleWithVersion = async (
   version: string,
   file: string
 ) => {
-  // file has a prefix / in falt mode
+  // file has a prefix / in falr mode
   const url = `https://cdn.jsdelivr.net/npm/${moduleName}@${version}${file}`
   const f = config.fetcher || fetch
   const res = await f(url, { headers: { "User-Agent": `Type Acquisition ${config.projectName}` } })
