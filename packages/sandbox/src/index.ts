@@ -11,9 +11,7 @@ import { supportedReleases } from "./releases"
 import { getInitialCode } from "./getInitialCode"
 import { extractTwoSlashCompilerOptions, twoslashCompletions } from "./twoslashSupport"
 import * as tsvfs from "./vendor/typescript-vfs"
-import * as ata from "../../../packages/ata/src"
-// import { setupTypeAcquisition } from "./vendor/ata"
-import "./vendor/ata"
+import { setupTypeAcquisition } from "./vendor/ata/index"
 
 type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
 type Monaco = typeof import("monaco-editor")
@@ -190,8 +188,7 @@ export const createTypeScriptSandbox = (
     )
   }
 
-  // @ts-ignore
-  const ata = window.setupTypeAcquisition({
+  const ata = setupTypeAcquisition({
     projectName: "TypeScript Playground",
     typescript: ts,
     delegate: {
