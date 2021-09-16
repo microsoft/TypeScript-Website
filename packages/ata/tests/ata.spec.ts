@@ -18,7 +18,7 @@ describe(getReferencesForModule, () => {
   })
 })
 
-it("ignores lib references", () => {
+describe("ignores lib references", () => {
   it("extracts imports", () => {
     const code = "import 'dom'"
     expect(getReferencesForModule(ts, code).map(m => m.module)).toEqual([])

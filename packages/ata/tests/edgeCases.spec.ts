@@ -1,6 +1,5 @@
 import { mapModuleNameToModule } from "../src/edgeCases"
 
-
 describe(mapModuleNameToModule, () => {
     it("gives node for known identifiers", () => {
         expect(mapModuleNameToModule("fs")).toEqual("node")
