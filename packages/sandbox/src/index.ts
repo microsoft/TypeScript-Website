@@ -166,7 +166,8 @@ export const createTypeScriptSandbox = (
   })
 
   // In the future it'd be good to add support for an 'add many files'
-  const addLibraryToRuntime = (code: string, path: string) => {
+  const addLibraryToRuntime = (code: string, _path: string) => {
+    const path = "file://" + _path
     defaults.addExtraLib(code, path)
     const uri = monaco.Uri.file(path)
     if (monaco.editor.getModel(uri) === null) {
@@ -197,8 +198,11 @@ export const createTypeScriptSandbox = (
       progress: (dl: number, ttl: number) => {
         console.log({ dl, ttl })
       },
+      started: () => {
+        console.log("ATA start")
+      },
       finished: f => {
-        console.log("ATA done")
+        console.log("ATA done", f)
       },
     },
   })

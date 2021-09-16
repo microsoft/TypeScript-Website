@@ -38,6 +38,7 @@ export const mapModuleNameToModule = (name: string) => {
     "repl",
     "stream",
     "stream/promises",
+    "stream/consumers",
     "stream/web",
     "string_decoder",
     "sys",

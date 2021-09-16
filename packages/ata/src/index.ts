@@ -16,6 +16,8 @@ export interface ATABootstrapConfig {
     progress?: (downloaded: number, estimatedTotal: number) => void
     /** Note: An error message does not mean ATA has stopped! */
     errorMessage?: (userFacingMessage: string, error: Error) => void
+    /** A callback indicating that ATA actually has work to do */
+    started?: () => void
     /** The callback when all ATA has finished */
     finished?: (files: Map<string, string>) => void
   }
@@ -46,13 +48,19 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
 
   let estimatedToDownload = 0
   let estimatedDownloaded = 0
+
   return (initialSourceFile: string) => {
-    resolveDeps(initialSourceFile).then(t => {
-      config.delegate.finished?.(fsMap)
+    estimatedToDownload = 0
+    estimatedDownloaded = 0
+
+    resolveDeps(initialSourceFile, 0).then(t => {
+      if (estimatedDownloaded > 0) {
+        config.delegate.finished?.(fsMap)
+      }
     })
   }
 
-  async function resolveDeps(initialSourceFile: string) {
+  async function resolveDeps(initialSourceFile: string, depth: number) {
     const depsToGet = getNewDependencies(config, moduleMap, initialSourceFile)
 
     // Make it so it won't get re-downloaded
@@ -69,15 +77,34 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
     // These are ones we need to look on DT for (which may not be there, who knows)
     const mightBeOnDT = treesOnly.filter(t => !hasDTS.includes(t))
     const dtTrees = await Promise.all(
-      mightBeOnDT.map(f => getFileTreeForModuleWithTag(config, getDTName(f.moduleName), f.version))
+      // TODO: Switch from 'latest' to the version from the original tree which is user-controlled
+      mightBeOnDT.map(f => getFileTreeForModuleWithTag(config, `@types/${getDTName(f.moduleName)}`, "latest"))
     )
 
     const dtTreesOnly = dtTrees.filter(t => !("error" in t)) as NPMTreeMeta[]
-    const dtsFilesFromDT = dtTreesOnly.map(t => treeToDTSFiles(t, `/node_modules/@types/${getDTName(t.moduleName)}`))
+    const dtsFilesFromDT = dtTreesOnly.map(t => treeToDTSFiles(t, `/node_modules/@types/${getDTName(t.moduleName).replace("types__", "")}`))
 
     // Collect all the npm and DT DTS requests and flatten their arrays
     const allDTSFiles = dtsFilesFromNPM.concat(dtsFilesFromDT).reduce((p, c) => p.concat(c), [])
     estimatedToDownload += allDTSFiles.length
+    if (allDTSFiles.length && depth === 0) {
+      config.delegate.started?.()
+    }
+
+    // Grab the package.jsons for each dependency
+    for (const tree of treesOnly) {
+      let prefix = `/node_modules/${tree.moduleName}`
+      if (dtTreesOnly.includes(tree)) prefix = `/node_modules/@types/${getDTName(tree.moduleName).replace("types__", "")}`
+      const path = prefix + "/package.json"
+      const pkgJSON = await getDTSFileForModuleWithVersion(config, tree.moduleName, tree.version, "/package.json")
+
+      if (typeof pkgJSON == "string") {
+        fsMap.set(path, pkgJSON)
+        config.delegate.receivedFile?.(pkgJSON, path)
+      } else {
+        config.logger?.error(`Could not download package.json for ${tree.moduleName}`)
+      }
+    }
 
     // Grab all dts files
     await Promise.all(
@@ -86,6 +113,7 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
         estimatedDownloaded++
         if (dtsCode instanceof Error) {
           // TODO?
+          config.logger?.error(`Had an issue getting ${dts.path} for ${dts.moduleName}`)
         } else {
           fsMap.set(dts.vfsPath, dtsCode)
           config.delegate.receivedFile?.(dtsCode, dts.vfsPath)
@@ -96,7 +124,7 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
           }
 
           // Recurse through deps
-          await resolveDeps(dtsCode)
+          await resolveDeps(dtsCode, depth + 1)
         }
       })
     )
@@ -132,10 +160,18 @@ function treeToDTSFiles(tree: NPMTreeMeta, vfsPrefix: string) {
  */
 export const getReferencesForModule = (ts: typeof import("typescript"), code: string) => {
   const meta = ts.preProcessFile(code)
+
+  // Ensure we don't try download TypeScript lib references
+  // @ts-ignore - private but likely to never change
+  const libMap: Map<string, string> = ts.libMap || new Map()
+
+  // TODO: strip /// <reference path='X' />?
+
   const references = meta.referencedFiles
     .concat(meta.importedFiles)
     .concat(meta.libReferenceDirectives)
-    .filter(f => f.fileName.endsWith(".d.ts"))
+    .filter(f => !f.fileName.endsWith(".d.ts"))
+    .filter(d => !libMap.has(d.fileName))
 
   return references.map(r => {
     let version = undefined
@@ -143,6 +179,10 @@ export const getReferencesForModule = (ts: typeof import("typescript"), code: st
       version = "latest"
       const line = code.slice(r.end).split("\n")[0]!
       if (line.includes("// version:")) version = line.split("// version: ")[1]!.trim()
+    }
+
+    if (r.fileName.includes("gitlab")) {
+      debugger
     }
 
     return {
