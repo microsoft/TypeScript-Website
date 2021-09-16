@@ -7,6 +7,8 @@ export interface ATABootstrapConfig {
     progress?: (downloaded: number, estimatedTotal: number) => void
     /** Note: An error message does not mean ATA has stopped! */
     errorMessage?: (userFacingMessage: string, error: Error) => void
+    /** A callback indicating that ATA actually has work to do */
+    started?: () => void
     /** The callback when all ATA has finished */
     finished?: (files: Map<string, string>) => void
   }

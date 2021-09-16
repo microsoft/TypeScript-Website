@@ -178,11 +178,7 @@ export const getReferencesForModule = (ts: typeof import("typescript"), code: st
     if (!r.fileName.startsWith(".")) {
       version = "latest"
       const line = code.slice(r.end).split("\n")[0]!
-      if (line.includes("// version:")) version = line.split("// version: ")[1]!.trim()
-    }
-
-    if (r.fileName.includes("gitlab")) {
-      debugger
+      if (line.includes("// types:")) version = line.split("// types: ")[1]!.trim()
     }
 
     return {

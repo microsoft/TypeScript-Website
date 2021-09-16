@@ -195,14 +195,14 @@ export const createTypeScriptSandbox = (
     logger: console,
     delegate: {
       receivedFile: addLibraryToRuntime,
-      progress: (dl: number, ttl: number) => {
-        console.log({ dl, ttl })
+      progress: (downloaded: number, total: number) => {
+        // console.log({ dl, ttl })
       },
       started: () => {
         console.log("ATA start")
       },
       finished: f => {
-        console.log("ATA done", f)
+        console.log("ATA done")
       },
     },
   })
@@ -217,7 +217,6 @@ export const createTypeScriptSandbox = (
 
     if (config.acquireTypes) {
       ata(code)
-      // detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
     }
   }
 

@@ -12,7 +12,7 @@
   "type": "module",
   "types": "src/userFacingTypes.d.ts",
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --outfile=dist/index.js --platform=node && cpy src/ ../sandbox/src/vendor/ata",
+    "build": "esbuild src/index.ts --bundle --outfile=dist/index.js --platform=node && cpy src/userFacingTypes.d.ts dist/ --rename=index.d.ts && cpy src/ ../sandbox/src/vendor/ata",
     "test": "jest",
     "bootstrap": "yarn build"
   },
