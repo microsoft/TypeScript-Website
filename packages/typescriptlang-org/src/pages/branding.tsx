@@ -20,7 +20,7 @@ const Index: React.FC<Props> = (props) => {
 
           <div className="raised content main-content-block headline">
             <a href={withPrefix("/branding/typescript-design-assets.zip")}>
-              <img src={withPrefix("images/branding/logo-grouping.svg")} style={{ maxWidth: "100%" }} />
+              <img src={withPrefix("images/branding/logo-grouping.svg")} style={{ maxWidth: "100%" }} alt="Examples of the logos" />
               <p style={{ textAlign: "center" }}>Click to download the asset pack</p>
             </a>
           </div>
@@ -39,15 +39,15 @@ const Index: React.FC<Props> = (props) => {
           <div className="main-content-block">
             <Row>
               <div className="raised content main-content-block subheadline">
-                <a href={withPrefix("/branding/typescript-design-assets.zip")}>
-                  <img src={withPrefix("images/branding/two-colors.svg")} style={{ maxWidth: "100%", margin: "2rem 0" }} />
+                <a href={withPrefix("/branding/typescript-design-assets.zip")} title="Download the design assets">
+                  <img src={withPrefix("images/branding/two-colors.svg")} style={{ maxWidth: "100%", margin: "2rem 0" }}  alt="Examples of the logos as single colors" />
                 </a>
                 <p className="attached-bottom">Single color variant which has the “TS” cut out, useful for when you need a single color design.</p>
               </div>
 
               <div className="raised content main-content-block subheadline">
-                <a href={withPrefix("/branding/typescript-design-assets.zip")}>
-                  <img src={withPrefix("images/branding/two-longform.svg")} style={{ maxWidth: "100%", margin: "2rem 0" }} />
+                <a href={withPrefix("/branding/typescript-design-assets.zip")} title="Download the design assets">
+                  <img src={withPrefix("images/branding/two-longform.svg")} style={{ maxWidth: "100%", margin: "2rem 0" }} alt="Examples of the logos as long-form. e.g. saying 'TypeScript' and not 'TS'" />
                 </a>
                 <p className="attached-bottom">Full lettermark version of the TypeScript logo. </p>
               </div>
@@ -57,14 +57,14 @@ const Index: React.FC<Props> = (props) => {
           <h2>Palette</h2>
 
           <div className="raised content main-content-block headline">
-            <a href={withPrefix("/branding/typescript-design-assets.zip")}>
-              <img src={withPrefix("images/branding/palette.svg")} style={{ maxWidth: "100%" }} />
+            <a href={withPrefix("/branding/typescript-design-assets.zip")} title="Download the design assets">
+              <img src={withPrefix("images/branding/palette.svg")} style={{ maxWidth: "100%" }} alt="Examples of the palette, you can get this in ASCII inside the design assets" />
             </a>
           </div>
 
           <div className="raised content main-content-block headline">
-            <a href={withPrefix("/branding/typescript-design-assets.zip")}>
-              <img src={withPrefix("images/branding/palette-bg.svg")} style={{ maxWidth: "100%" }} />
+            <a href={withPrefix("/branding/typescript-design-assets.zip")} title="Download the design assets">
+              <img src={withPrefix("images/branding/palette-bg.svg")} style={{ maxWidth: "100%" }}  alt="Examples of the palette, you can get this in ASCII inside the design assets" />
             </a>
           </div>
 
