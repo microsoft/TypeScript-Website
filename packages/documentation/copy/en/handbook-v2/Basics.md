@@ -280,7 +280,7 @@ Why should converting it over to TypeScript stop you from running it?
 
 So TypeScript doesn't get in your way.
 Of course, over time, you may want to be a bit more defensive against mistakes, and make TypeScript act a bit more strictly.
-In that case, you can use the `--noEmitOnError` compiler option.
+In that case, you can use the [`noEmitOnError`](/tsconfig#noEmitOnError) compiler option.
 Try changing your `hello.ts` file and running `tsc` with that flag:
 
 ```sh
@@ -392,7 +392,7 @@ TypeScript has the ability to rewrite code from newer versions of ECMAScript to 
 This process of moving from a newer or "higher" version of ECMAScript down to an older or "lower" one is sometimes called _downleveling_.
 
 By default TypeScript targets ES3, an extremely old version of ECMAScript.
-We could have chosen something a little bit more recent by using the `--target` flag.
+We could have chosen something a little bit more recent by using the [`target`](/tsconfig#target) option.
 Running with `--target es2015` changes TypeScript to target ECMAScript 2015, meaning code should be able to run wherever ECMAScript 2015 is supported.
 So running `tsc --target es2015 hello.ts` gives us the following output:
 
@@ -421,8 +421,8 @@ This can require a little extra work, but generally speaking it pays for itself 
 When possible, a new codebase should always turn these strictness checks on.
 
 TypeScript has several type-checking strictness flags that can be turned on or off, and all of our examples will be written with all of them enabled unless otherwise stated.
-The `--strict` flag in the CLI, or `"strict": true` in a [`tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) toggles them all on simultaneously, but we can opt out of them individually.
-The two biggest ones you should know about are `noImplicitAny` and `strictNullChecks`.
+The [`strict`](/tsconfig#strict) flag in the CLI, or `"strict": true` in a [`tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) toggles them all on simultaneously, but we can opt out of them individually.
+The two biggest ones you should know about are [`noImplicitAny`](/tsconfig#noImplicitAny) and [`strictNullChecks`](/tsconfig#strictNullChecks).
 
 ## `noImplicitAny`
 
@@ -431,10 +431,10 @@ This isn't the worst thing that can happen - after all, falling back to `any` is
 
 However, using `any` often defeats the purpose of using TypeScript in the first place.
 The more typed your program is, the more validation and tooling you'll get, meaning you'll run into fewer bugs as you code.
-Turning on the `noImplicitAny` flag will issue an error on any variables whose type is implicitly inferred as `any`.
+Turning on the [`noImplicitAny`](/tsconfig#noImplicitAny) flag will issue an error on any variables whose type is implicitly inferred as `any`.
 
 ## `strictNullChecks`
 
 By default, values like `null` and `undefined` are assignable to any other type.
 This can make writing some code easier, but forgetting to handle `null` and `undefined` is the cause of countless bugs in the world - some consider it a [billion dollar mistake](https://www.youtube.com/watch?v=ybrQvs4x0Ps)!
-The `strictNullChecks` flag makes handling `null` and `undefined` more explicit, and _spares_ us from worrying about whether we _forgot_ to handle `null` and `undefined`.
+The [`strictNullChecks`](/tsconfig#strictNullChecks) flag makes handling `null` and `undefined` more explicit, and _spares_ us from worrying about whether we _forgot_ to handle `null` and `undefined`.

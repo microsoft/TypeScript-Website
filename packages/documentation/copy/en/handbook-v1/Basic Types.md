@@ -274,7 +274,7 @@ function warnUser(): void {
 }
 ```
 
-Declaring variables of type `void` is not useful because you can only assign `null` (only if `--strictNullChecks` is not specified, see next section) or `undefined` to them:
+Declaring variables of type `void` is not useful because you can only assign `null` (only if [`strictNullChecks`](/tsconfig#strictNullChecks) is not specified, see next section) or `undefined` to them:
 
 ```ts twoslash
 // @strict: false
@@ -297,13 +297,13 @@ let n: null = null;
 By default `null` and `undefined` are subtypes of all other types.
 That means you can assign `null` and `undefined` to something like `number`.
 
-However, when using the `--strictNullChecks` flag, `null` and `undefined` are only assignable to `unknown`, `any` and their respective types (the one exception being that `undefined` is also assignable to `void`).
+However, when using the [`strictNullChecks`](/tsconfig#strictNullChecks) flag, `null` and `undefined` are only assignable to `unknown`, `any` and their respective types (the one exception being that `undefined` is also assignable to `void`).
 This helps avoid _many_ common errors.
 In cases where you want to pass in either a `string` or `null` or `undefined`, you can use the union type `string | null | undefined`.
 
 Union types are an advanced topic that we'll cover in a later chapter.
 
-> As a note: we encourage the use of `--strictNullChecks` when possible, but for the purposes of this handbook, we will assume it is turned off.
+> As a note: we encourage the use of [`strictNullChecks`](/tsconfig#strictNullChecks) when possible, but for the purposes of this handbook, we will assume it is turned off.
 
 ## Never
 

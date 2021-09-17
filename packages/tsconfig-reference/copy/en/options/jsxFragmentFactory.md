@@ -3,7 +3,7 @@ display: "jsxFragmentFactory"
 oneline: "Specify the JSX Fragment reference used for fragments when targeting React JSX emit e.g. 'React.Fragment' or 'Fragment'."
 ---
 
-Specify the JSX fragment factory function to use when targeting react JSX emit with `jsxFactory` compiler option is specified, e.g. `Fragment`.
+Specify the JSX fragment factory function to use when targeting react JSX emit with [`jsxFactory`](#jsxFactory) compiler option is specified, e.g. `Fragment`.
 
 For example with this TSConfig:
 

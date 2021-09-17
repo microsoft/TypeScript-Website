@@ -7,11 +7,11 @@ oneline: TypeScript 2.6 Release Notes
 
 ## Strict function types
 
-TypeScript 2.6 introduces a new strict checking flag, `--strictFunctionTypes`.
-The `--strictFunctionTypes` switch is part of the `--strict` family of switches, meaning that it defaults to on in `--strict` mode.
+TypeScript 2.6 introduces a new strict checking flag, [`strictFunctionTypes`](/tsconfig#strictFunctionTypes).
+The [`strictFunctionTypes`](/tsconfig#strictFunctionTypes) switch is part of the [`strict`](/tsconfig#strict) family of switches, meaning that it defaults to on in [`strict`](/tsconfig#strict) mode.
 You can opt-out by setting `--strictFunctionTypes false` on your command line or in your tsconfig.json.
 
-Under `--strictFunctionTypes` function type parameter positions are checked _contravariantly_ instead of _bivariantly_.
+Under [`strictFunctionTypes`](/tsconfig#strictFunctionTypes) function type parameter positions are checked _contravariantly_ instead of _bivariantly_.
 For some background on what variance means for function types check out [What are covariance and contravariance?](https://www.stephanboyer.com/post/132/what-are-covariance-and-contravariance).
 
 The stricter checking applies to all function types, _except_ those originating in method or constructor declarations.
@@ -54,7 +54,7 @@ By the way, note that whereas some languages (e.g. C# and Scala) require varianc
 
 ##### Note
 
-Under `--strictFunctionTypes` the first assignment is still permitted if `compare` was declared as a method.
+Under [`strictFunctionTypes`](/tsconfig#strictFunctionTypes) the first assignment is still permitted if `compare` was declared as a method.
 Effectively, `T` is bivariant in `Comparer<T>` because it is used only in method parameter positions.
 
 ```ts
@@ -138,7 +138,7 @@ var result = templateObjectFactory() === templateObjectFactory();
 ```
 
 > Note: This change brings a new emit helper, `__makeTemplateObject`;
-> if you are using `--importHelpers` with [`tslib`](https://github.com/Microsoft/tslib), an updated to version 1.8 or later.
+> if you are using [`importHelpers`](/tsconfig#importHelpers) with [`tslib`](https://github.com/Microsoft/tslib), an updated to version 1.8 or later.
 
 ## Localized diagnostics on the command line
 
@@ -242,7 +242,7 @@ The watcher logic has been completely rewritten to respond faster to change even
 
 ## Write-only references now flagged as unused
 
-TypeScript 2.6 adds revised implementation the `--noUnusedLocals` and `--noUnusedParameters` [compiler options](/docs/handbook/compiler-options.html).
+TypeScript 2.6 adds revised implementation the [`noUnusedLocals`](/tsconfig#noUnusedLocals) and [`noUnusedParameters`](/tsconfig#noUnusedParameters) [compiler options](/docs/handbook/compiler-options.html).
 Declarations are only written to but never read from are now flagged as unused.
 
 ##### Example

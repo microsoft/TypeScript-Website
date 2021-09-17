@@ -751,7 +751,7 @@ const args = [8, 5] as const;
 const angle = Math.atan2(...args);
 ```
 
-Using rest arguments may require turning on [`downlevelIteration`](/tsconfig/#downlevelIteration) when targeting older runtimes.
+Using rest arguments may require turning on [`downlevelIteration`](/tsconfig#downlevelIteration) when targeting older runtimes.
 
 <!-- TODO link to downlevel iteration -->
 

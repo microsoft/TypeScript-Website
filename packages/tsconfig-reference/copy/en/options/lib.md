@@ -4,7 +4,7 @@ oneline: "Specify a set of bundled library declaration files that describe the t
 ---
 
 TypeScript includes a default set of type definitions for built-in JS APIs (like `Math`), as well as type definitions for things found in browser environments (like `document`).
-TypeScript also includes APIs for newer JS features matching the `target` you specify; for example the definition for `Map` is available if `target` is `ES6` or newer.
+TypeScript also includes APIs for newer JS features matching the [`target`](#target) you specify; for example the definition for `Map` is available if [`target`](#target) is `ES6` or newer.
 
 You may want to change these for a few reasons:
 

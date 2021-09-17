@@ -1,6 +1,6 @@
 ---
 display: "Files"
-oneline: "Include a list of files. This does not support glob patterns, as opposed to `include`."
+oneline: "Include a list of files. This does not support glob patterns, as opposed to [`include`](#include)."
 ---
 
 Specifies an allowlist of files to include in the program. An error occurs if any of the files can't be found.

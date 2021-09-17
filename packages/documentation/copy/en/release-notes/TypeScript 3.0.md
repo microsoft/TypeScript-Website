@@ -93,7 +93,7 @@ t = [42, "hello"];
 t = [42];
 ```
 
-In `--strictNullChecks` mode, a `?` modifier automatically includes `undefined` in the element type, similar to optional parameters.
+In [`strictNullChecks`](/tsconfig#strictNullChecks) mode, a `?` modifier automatically includes `undefined` in the element type, similar to optional parameters.
 
 A tuple type permits an element to be omitted if it has a postfix `?` modifier on its type and all elements to the right of it also have `?` modifiers.
 
@@ -341,7 +341,7 @@ Keep in mind that there are some limitations.
 
 TypeScript adds a new triple-slash-reference directive (`/// <reference lib="name" />`), allowing a file to explicitly include an existing built-in _lib_ file.
 
-Built-in _lib_ files are referenced in the same fashion as the `"lib"` compiler option in _tsconfig.json_ (e.g. use `lib="es2015"` and not `lib="lib.es2015.d.ts"`, etc.).
+Built-in _lib_ files are referenced in the same fashion as the [`lib`](/tsconfig#lib) compiler option in _tsconfig.json_ (e.g. use `lib="es2015"` and not `lib="lib.es2015.d.ts"`, etc.).
 
 For declaration file authors who relay on built-in types, e.g. DOM APIs or built-in JS run-time constructors like `Symbol` or `Iterable`, triple-slash-reference lib directives are the recommended. Previously these .d.ts files had to add forward/duplicate declarations of such types.
 

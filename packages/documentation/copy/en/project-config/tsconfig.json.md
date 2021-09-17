@@ -26,7 +26,7 @@ When input files are specified on the command line, `tsconfig.json` files are ig
 
 Example `tsconfig.json` files:
 
-- Using the `"files"` property
+- Using the [`files`](/tsconfig#files) property
 
   ```json tsconfig
   {
@@ -55,7 +55,7 @@ Example `tsconfig.json` files:
   }
   ```
 
-- Using the `"include"` and `"exclude"` properties
+- Using the [`include`](/tsconfig#include) and `exclude` properties
 
   ```json  tsconfig
   {

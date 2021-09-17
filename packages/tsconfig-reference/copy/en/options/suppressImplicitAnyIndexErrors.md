@@ -1,6 +1,6 @@
 ---
 display: "Suppress Implicit Any Index Errors"
-oneline: "Suppress `noImplicitAny` errors when indexing objects that lack index signatures."
+oneline: "Suppress [`noImplicitAny`](#noImplicitAny) errors when indexing objects that lack index signatures."
 ---
 
 Turning `suppressImplicitAnyIndexErrors` on suppresses reporting the error about implicit anys when indexing into objects, as shown in the following example:

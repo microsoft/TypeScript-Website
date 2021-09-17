@@ -635,17 +635,17 @@ The `as const` suffix acts like `const` but for the type system, ensuring that a
 
 JavaScript has two primitive values used to signal absent or uninitialized value: `null` and `undefined`.
 
-TypeScript has two corresponding _types_ by the same names. How these types behave depends on whether you have the `strictNullChecks` option on.
+TypeScript has two corresponding _types_ by the same names. How these types behave depends on whether you have the [`strictNullChecks`](/tsconfig#strictNullChecks) option on.
 
 ### `strictNullChecks` off
 
-With `strictNullChecks` _off_, values that might be `null` or `undefined` can still be accessed normally, and the values `null` and `undefined` can be assigned to a property of any type.
+With [`strictNullChecks`](/tsconfig#strictNullChecks) _off_, values that might be `null` or `undefined` can still be accessed normally, and the values `null` and `undefined` can be assigned to a property of any type.
 This is similar to how languages without null checks (e.g. C#, Java) behave.
-The lack of checking for these values tends to be a major source of bugs; we always recommend people turn `strictNullChecks` on if it's practical to do so in their codebase.
+The lack of checking for these values tends to be a major source of bugs; we always recommend people turn [`strictNullChecks`](/tsconfig#strictNullChecks) on if it's practical to do so in their codebase.
 
 ### `strictNullChecks` on
 
-With `strictNullChecks` _on_, when a value is `null` or `undefined`, you will need to test for those values before using methods or properties on that value.
+With [`strictNullChecks`](/tsconfig#strictNullChecks) _on_, when a value is `null` or `undefined`, you will need to test for those values before using methods or properties on that value.
 Just like checking for `undefined` before using an optional property, we can use _narrowing_ to check for values that might be `null`:
 
 ```ts twoslash

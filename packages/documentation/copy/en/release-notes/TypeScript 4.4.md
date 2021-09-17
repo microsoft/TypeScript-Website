@@ -289,7 +289,7 @@ Once TypeScript added the `unknown` type, it became clear that `unknown` was a b
 Eventually TypeScript 4.0 allowed users to specify an explicit type annotation of `unknown` (or `any`) on each `catch` clause variable so that we could opt into stricter types on a case-by-case basis;
 however, for some, manually specifying `: unknown` on every `catch` clause was a chore.
 
-That's why TypeScript 4.4 introduces a new flag called `--useUnknownInCatchVariables`.
+That's why TypeScript 4.4 introduces a new flag called [`useUnknownInCatchVariables`](/tsconfig#useUnknownInCatchVariables).
 This flag changes the default type of `catch` clause variables from `any` to `unknown`.
 
 ```ts twoslash
@@ -311,8 +311,8 @@ try {
 }
 ```
 
-This flag is enabled under the `--strict` family of options.
-That means that if you check your code using `--strict`, this option will automatically be turned on.
+This flag is enabled under the [`strict`](/tsconfig#strict) family of options.
+That means that if you check your code using [`strict`](/tsconfig#strict), this option will automatically be turned on.
 You may end up with errors in TypeScript 4.4 such as
 
 ```
@@ -373,7 +373,7 @@ While this works most of the time, not all code in JavaScript makes the same ass
 Functions and operators like `Object.assign`, `Object.keys`, object spread (`{ ...obj }`), and `for`-`in` loops behave differently depending on whether or not a property actually exists on an object.
 In the case of our `Person` example, this could potentially lead to runtime errors if the `age` property was observed in a context where its presence was important.
 
-In TypeScript 4.4, the new flag `--exactOptionalPropertyTypes` specifies that optional property types should be interpreted exactly as written, meaning that `| undefined` is not added to the type:
+In TypeScript 4.4, the new flag [`exactOptionalPropertyTypes`](/tsconfig#exactOptionalPropertyTypes) specifies that optional property types should be interpreted exactly as written, meaning that `| undefined` is not added to the type:
 
 ```ts twoslash
 // @exactOptionalPropertyTypes
@@ -390,8 +390,8 @@ const p: Person = {
 };
 ```
 
-This flag is **not** part of the `--strict` family and needs to be turned on explicitly if you'd like this behavior.
-It also requires `--strictNullChecks` to be enabled as well.
+This flag is **not** part of the [`strict`](/tsconfig#strict) family and needs to be turned on explicitly if you'd like this behavior.
+It also requires [`strictNullChecks`](/tsconfig#strictNullChecks) to be enabled as well.
 We've been making updates to DefinitelyTyped and other definitions to try to make the transition as straightforward as possible, but you may encounter some friction with this depending on how your code is structured.
 
 For more information, you can [take a look at the implementing pull request here](https://github.com/microsoft/TypeScript/pull/43947).
@@ -478,7 +478,7 @@ You can read more on [the original proposal thread](https://github.com/microsoft
 ### Faster Declaration Emit
 
 TypeScript now caches whether internal symbols are accessible in different contexts, along with how specific types should be printed.
-These changes can improve TypeScript's general performance in code with fairly complex types, and is especially observed when emitting `.d.ts` files under the `--declaration` flag.
+These changes can improve TypeScript's general performance in code with fairly complex types, and is especially observed when emitting `.d.ts` files under the [`declaration`](/tsconfig#declaration) flag.
 
 [See more details here](https://github.com/microsoft/TypeScript/pull/43973).
 
@@ -494,14 +494,14 @@ For more details, you can [view the PR for path segment normalization](https://g
 
 ### Faster Path Mapping
 
-TypeScript now caches the way it constructs path-mappings (using the `paths` option in `tsconfig.json`).
+TypeScript now caches the way it constructs path-mappings (using the [`paths`](/tsconfig#paths) option in `tsconfig.json`).
 For projects with several hundred mappings, the reduction is significant.
 You can see more [on the change itself](https://github.com/microsoft/TypeScript/pull/44078).
 
 ### Faster Incremental Builds with `--strict`
 
-In what was effectively a bug, TypeScript would end up redoing type-checking work under `--incremental` compilations if `--strict` was on.
-This led to many builds being just as slow as if `--incremental` was turned off.
+In what was effectively a bug, TypeScript would end up redoing type-checking work under [`incremental`](/tsconfig#incremental) compilations if [`strict`](/tsconfig#strict) was on.
+This led to many builds being just as slow as if [`incremental`](/tsconfig#incremental) was turned off.
 TypeScript 4.4 fixes this, though the change has also been back-ported to TypeScript 4.3.
 
 See more [here](https://github.com/microsoft/TypeScript/pull/44394).
@@ -516,8 +516,8 @@ We'd like to extend our thanks to [David Michon](https://github.com/dmichon-msft
 ### Faster `--force` Builds
 
 When using `--build` mode on project references, TypeScript has to perform up-to-date checks to determine which files need to be rebuilt.
-When performing a `--force` build, however, that information is irrelevant since every project dependency will be rebuilt from scratch.
-In TypeScript 4.4, `--force` builds avoid those unnecessary steps and start a full build.
+When performing a [`--force`](/tsconfig#force) build, however, that information is irrelevant since every project dependency will be rebuilt from scratch.
+In TypeScript 4.4, [`--force`](/tsconfig#force) builds avoid those unnecessary steps and start a full build.
 See more about the change [here](https://github.com/microsoft/TypeScript/pull/43666).
 
 ## Spelling Suggestions for JavaScript
@@ -526,7 +526,7 @@ TypeScript powers the JavaScript editing experience in editors like Visual Studi
 Most of the time, TypeScript tries to stay out of the way in JavaScript files;
 however, TypeScript often has a lot of information to make confident suggestions, and ways of surfacing suggestions that aren't _too_ invasive.
 
-That's why TypeScript now issues spelling suggestions in plain JavaScript files - ones without `// @ts-check` or in a project with `checkJs` turned off.
+That's why TypeScript now issues spelling suggestions in plain JavaScript files - ones without `// @ts-check` or in a project with [`checkJs`](/tsconfig#checkJs) turned off.
 These are the same _"Did you mean...?"_ suggestions that TypeScript files already have, and now they're available in _all_ JavaScript files in some form.
 
 These spelling suggestions can provide a subtle clue that your code is wrong.
@@ -605,7 +605,7 @@ You can [read up more about the changes here](https://github.com/microsoft/TypeS
 
 ### Using `unknown` in Catch Variables
 
-Users running with the `--strict` flag may see new errors around `catch` variables being `unknown`, especially if the existing code assumes only `Error` values have been caught.
+Users running with the [`strict`](/tsconfig#strict) flag may see new errors around `catch` variables being `unknown`, especially if the existing code assumes only `Error` values have been caught.
 This often results in error messages such as:
 
 ```
@@ -615,7 +615,7 @@ Property 'stack' does not exist on type 'unknown'.
 ```
 
 To get around this, you can specifically add runtime checks to ensure that the thrown type matches your expected type.
-Otherwise, you can just use a type assertion, add an explicit `: any` to your catch variable, or turn off `--useUnknownInCatchVariables`.
+Otherwise, you can just use a type assertion, add an explicit `: any` to your catch variable, or turn off [`useUnknownInCatchVariables`](/tsconfig#useUnknownInCatchVariables).
 
 ### Broader Always-Truthy Promise Checks
 

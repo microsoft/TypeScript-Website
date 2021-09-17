@@ -662,7 +662,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 <tr class='odd' name='module'>
   <td><code><a href='/tsconfig/#module'>--module</a></code></td>
-  <td><code><code>`CommonJS` (default if `target` is `ES3` or `ES5`)</code>, <code></code>, <code>`ES6`</code>, <code>`ES2015`</code>, <code>`ES2020`</code>, <code></code>, <code>`None`</code>, <code>`UMD`</code>, <code>`AMD`</code>, <code>`System`</code>, or <code>`ESNext`</code></code></td>
+  <td><code><code>`CommonJS` (default if [`target`](/tsconfig#target) is `ES3` or `ES5`)</code>, <code></code>, <code>`ES6`</code>, <code>`ES2015`</code>, <code>`ES2020`</code>, <code></code>, <code>`None`</code>, <code>`UMD`</code>, <code>`AMD`</code>, <code>`System`</code>, or <code>`ESNext`</code></code></td>
   <td></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">

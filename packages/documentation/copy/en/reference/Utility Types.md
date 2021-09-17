@@ -456,7 +456,7 @@ Released:
 
 </blockquote>
 
-This utility does not return a transformed type. Instead, it serves as a marker for a contextual [`this`](/docs/handbook/functions.html#this) type. Note that the `--noImplicitThis` flag must be enabled to use this utility.
+This utility does not return a transformed type. Instead, it serves as a marker for a contextual [`this`](/docs/handbook/functions.html#this) type. Note that the [`noImplicitThis`](/tsconfig#noImplicitThis) flag must be enabled to use this utility.
 
 ##### Example
 

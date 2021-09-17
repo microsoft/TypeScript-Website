@@ -193,7 +193,7 @@ for (let s of strings) {
 Once there are multiple files involved, we'll need to make sure all of the compiled code gets loaded.
 There are two ways of doing this.
 
-First, we can use concatenated output using the `--outFile` flag to compile all of the input files into a single JavaScript output file:
+First, we can use concatenated output using the [`outFile`](/tsconfig#outFile) option to compile all of the input files into a single JavaScript output file:
 
 ```Shell
 tsc --outFile sample.js Test.ts
