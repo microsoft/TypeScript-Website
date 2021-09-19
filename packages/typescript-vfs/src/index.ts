@@ -268,7 +268,6 @@ export const createDefaultMapFromCDN = (
   storer?: typeof localStorage
 ) => {
   const fetchlike = fetcher || fetch
-  const storelike = storer || localStorage
   const fsMap = new Map<string, string>()
   const files = knownLibFilesForCompilerOptions(options, ts)
   const prefix = `https://typescript.azureedge.net/cdn/${version}/typescript/lib/`
@@ -290,6 +289,8 @@ export const createDefaultMapFromCDN = (
 
   // A localstorage and lzzip aware version of the lib files
   function cached() {
+    const storelike = storer || localStorage
+
     const keys = Object.keys(localStorage)
     keys.forEach(key => {
       // Remove anything which isn't from this version
