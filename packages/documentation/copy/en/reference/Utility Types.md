@@ -100,7 +100,7 @@ This utility is useful for representing assignment expressions that will fail at
 function freeze<Type>(obj: Type): Readonly<Type>;
 ```
 
-## `Record<Keys,Type>`
+## `Record<Keys, Type>`
 
 <blockquote class=bg-reading>
 

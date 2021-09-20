@@ -52,7 +52,7 @@ export const indexCopy = {
   index_2_loved_by: "Loved by Developers",
   index_2_loved_stack: `Voted <strong>2nd most loved programming language</strong> in the <so>Stack Overflow 2020 Developer survey</so>`,
   index_2_loved_state_js: `TypeScript was <strong>used by 78%</strong> of the <js>2020 State of JS</js> respondents, with <strong>93% saying they would use it again</strong>.`,
-  index_2_loved_state_js2: `TypeScript was given the award for <strong>“Most Adopted Technology”</strong> based on year-on-year growth..`,
+  index_2_loved_state_js2: `TypeScript was given the award for <strong>“Most Adopted Technology”</strong> based on year-on-year growth.`,
 
   // Show me some code
   index_2_describe: "Describe Your Data",
@@ -72,7 +72,7 @@ export const indexCopy = {
   index_2_adopt_blurb_1:
     "Apply types to your JavaScript project incrementally, <strong>each step improves editor support</strong> and improves your codebase.",
   index_2_adopt_blurb_2:
-    "Lets take this incorrect JavaScript code, and see how <strong>TypeScript can catch mistakes in your editor</strong>.",
+    "Let's take this incorrect JavaScript code, and see how <strong>TypeScript can catch mistakes in your editor</strong>.",
 
   index_2_adopt_info_1:
     "No editor warnings in JavaScript files.<br/><br/>This crashes at runtime.",

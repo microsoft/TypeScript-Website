@@ -28,7 +28,7 @@ const helloWorld = "Hello World";
 let hiWorld = "Hi World";
 ```
 
-The process of going from an infinite number of potential cases (there are an infinite number of possible string values) to a smaller, finite number of potential case (in `helloWorld`'s case: 1) is called narrowing.
+The process of going from an infinite number of potential cases (there is an infinite number of possible string values) to a smaller, finite number of potential case (in `helloWorld`'s case: 1) is called narrowing.
 
 ## String Literal Types
 

@@ -465,7 +465,7 @@ function callbackForLater(e) {
 
 ## `@extends`
 
-When Javascript classes extend a generic base class, there is nowhere to specify what the type parameter should be. The `@extends` tag provides a place for that type parameter:
+When JavaScript classes extend a generic base class, there is nowhere to specify what the type parameter should be. The `@extends` tag provides a place for that type parameter:
 
 ```js twoslash
 /**
@@ -481,7 +481,7 @@ Note that `@extends` only works with classes. Currently, there is no way for a c
 
 ## `@enum`
 
-The `@enum` tag allows you to create an object literal whose members are all of a specified type. Unlike most object literals in Javascript, it does not allow other members.
+The `@enum` tag allows you to create an object literal whose members are all of a specified type. Unlike most object literals in JavaScript, it does not allow other members.
 
 ```js twoslash
 /** @enum {number} */

@@ -1043,11 +1043,11 @@ const g = c.getName;
 console.log(g());
 ```
 
-This method takes the opposite trade-offs of the arrow function approach:
+This method makes the opposite trade-offs of the arrow function approach:
 
 - JavaScript callers might still use the class method incorrectly without realizing it
 - Only one function per class definition gets allocated, rather than one per class instance
-- Base method definitions can still be called via `super.`
+- Base method definitions can still be called via `super`.
 
 ## `this` Types
 
@@ -1248,7 +1248,7 @@ These members must exist inside an _abstract class_, which cannot be directly in
 The role of abstract classes is to serve as a base class for subclasses which do implement all the abstract members.
 When a class doesn't have any abstract members, it is said to be _concrete_.
 
-Let's look at an example
+Let's look at an example:
 
 ```ts twoslash
 // @errors: 2511

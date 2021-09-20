@@ -30,7 +30,7 @@ In this introduction, I assume you know the following:
 - Type syntax of a C-descended language.
 
 If you need to learn the good parts of JavaScript, read
-[JavaScript: The Good Parts](http://shop.oreilly.com/product/9780596517748.do).
+[JavaScript: The Good Parts](https://shop.oreilly.com/product/9780596517748.do).
 You may be able to skip the book if you know how to write programs in
 a call-by-value lexically scoped language with lots of mutability and
 not much else.
@@ -141,7 +141,7 @@ And you can use an expression of type `any` anywhere:
 anys.map(anys[1]); // oh no, "oh no" is not a function
 ```
 
-`any` is contagious, too &mdash; if you initialise a variable with an
+`any` is contagious, too &mdash; if you initialize a variable with an
 expression of type `any`, the variable has type `any` too.
 
 ```ts
@@ -344,7 +344,7 @@ let i: { inference: string } = run((o) => {
 
 The type of `o` is determined to be `{ inference: string }` because
 
-1. Declaration initialisers are contextually typed by the
+1. Declaration initializers are contextually typed by the
    declaration's type: `{ inference: string }`.
 2. The return type of a call uses the contextual type for inferences,
    so the compiler infers that `T={ inference: string }`.
