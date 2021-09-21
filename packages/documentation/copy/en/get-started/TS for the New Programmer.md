@@ -45,7 +45,7 @@ Every language has its own _quirks_ — oddities and surprises, and JavaScript's
   ```js
   const obj = { width: 10, height: 15 };
   // Why is this NaN? Spelling is hard!
-  const area = obj.width * obj.heigth;
+  const area = obj.width * obj.height;
   ```
 
 Most programming languages would throw an error when these sorts of errors occur, some would do so during compilation — before any code is running.
@@ -64,7 +64,7 @@ Here's the error TypeScript found:
 ```ts twoslash
 // @errors: 2551
 const obj = { width: 10, height: 15 };
-const area = obj.width * obj.heigth;
+const area = obj.width * obj.height;
 ```
 
 ### A Typed Superset of JavaScript
@@ -88,7 +88,7 @@ This means you can take any working JavaScript code and put it in a TypeScript f
 #### Types
 
 However, TypeScript is a _typed_ superset, meaning that it adds rules about how different kinds of values can be used.
-The earlier error about `obj.heigth` was not a _syntax_ error: it is an error of using some kind of value (a _type_) in an incorrect way.
+The earlier error about `obj.height` was not a _syntax_ error: it is an error of using some kind of value (a _type_) in an incorrect way.
 
 As another example, this is JavaScript code that you can run in your browser, and it _will_ log a value:
 
