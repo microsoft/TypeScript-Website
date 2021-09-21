@@ -248,6 +248,7 @@ const Play: React.FC<Props> = (props) => {
         </div>
         <div id="playground-container" style={{ display: "none" }}>
           <div id="editor-container">
+            <div id="story-container" style={{ display: "none" }}></div>
             <div id="editor-toolbar" className="navbar-sub" >
 
               <ul>
@@ -280,7 +281,7 @@ const Play: React.FC<Props> = (props) => {
                 <li><a id="sidebar-toggle" aria-label="Hide Sidebar" href="#">&#x21E5;</a></li>
               </ul>
             </div>
-            { /** This is the div which monaco is added into  **/}
+            { /** This is the div which monaco is added into - careful, lots of changes happen here at runtime **/}
             <div id="monaco-editor-embed" />
           </div>
         </div>
