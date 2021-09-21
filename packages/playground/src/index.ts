@@ -88,8 +88,16 @@ export const setupPlayground = (
 
   leftNav.style.display = "none"
   dragBarLeft.style.display = "none"
+
   const showNav = () => {
+    const right = document.getElementsByClassName("playground-sidebar").item(0)!
+    const middle = document.getElementById("editor-container")!
+    middle.style.width = `calc(100% - ${right.clientWidth + 180}px)`
+
     leftNav.style.display = "block"
+    leftNav.style.width = "180px"
+    leftNav.style.minWidth = "180px"
+    leftNav.style.maxWidth = "180px"
     dragBarLeft.style.display = "block"
   }
 

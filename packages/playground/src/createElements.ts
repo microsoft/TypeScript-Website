@@ -55,8 +55,8 @@ export const createDragBar = (side: "left" | "right") => {
     window.sandbox.editor.layout()
 
     // Don't allow selection
-    // e.stopPropagation()
-    // e.cancelBubble = true
+    e.stopPropagation()
+    e.cancelBubble = true
   }
 
   sidebar.addEventListener("mousedown", e => {

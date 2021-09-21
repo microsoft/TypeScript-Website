@@ -15,8 +15,8 @@ The playground library sits above the [TypeScript sandbox](../sandbox), and prov
 - The export to Code Sandbox/TS AST Viewer/etc features
 
 When deciding where to add a feature to the TypeScript playground, consider if it would be useful to anyone showing
-TypeScript in a REPL. If yes, add it to the playground and expose a function for this library to use. For example
-Automatic Type Acquisition is a feature which lives in the sandbox and not the playground.
+TypeScript in a REPL. If yes, add it to the sandbox and expose a function for the playground to use. For example
+Automatic Type Acquisition is a feature which lives in the sandbox and not the playground because pretty much anyone showing TypeScript code would want it.
 
 ## Link Syntax
 

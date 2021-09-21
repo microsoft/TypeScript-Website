@@ -29,9 +29,50 @@ export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void)
     if (monaco) monaco.style.display = "none"
 
     const story = document.getElementById("story-container")
-    if (story) {
-      story.style.display = "block"
-      story.innerHTML = html
+    if (!story) return
+
+    story.style.display = "block"
+    story.innerHTML = html
+
+    for (const a of Array.from(story.getElementsByTagName("a"))) {
+      const path = a.pathname
+      if (!path.startsWith("/play")) return
+
+      // overwrite playground links
+      if (a.hash.includes("#code")) {
+        a.onclick = e => {
+          const code = a.hash.replace("#code/", "").trim()
+          let userCode = sandbox.lzstring.decompressFromEncodedURIComponent(code)
+          // Fallback incase there is an extra level of decoding:
+          // https://gitter.im/Microsoft/TypeScript?at=5dc478ab9c39821509ff189a
+          if (!userCode) userCode = sandbox.lzstring.decompressFromEncodedURIComponent(decodeURIComponent(code))
+          if (userCode) setCode(userCode)
+
+          e.preventDefault()
+          return false
+        }
+      }
+
+      // overwrite gist links
+      else if (a.hash.includes("#gist/")) {
+        a.onclick = e => {
+          const index = Number(a.hash.split("-")[1])
+          const nav = document.getElementById("navigation-container")
+          if (!nav) return
+          const ul = nav.getElementsByTagName("ul").item(0)!
+
+          const targetedLi = ul.children.item(Number(index) || 0) || ul.children.item(0)
+          if (targetedLi) {
+            const a = targetedLi.getElementsByTagName("a").item(0)
+            // @ts-ignore
+            if (a) a.click()
+          }
+          e.preventDefault()
+          return false
+        }
+      } else {
+        a.target = "_blank"
+      }
     }
   }
 
@@ -84,6 +125,10 @@ export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void)
                 setStory(element.html)
               }
 
+              const alwaysUpdateURL = !localStorage.getItem("disable-save-on-type")
+              if (alwaysUpdateURL) {
+                location.hash = `#gist/${gistID}-${i}`
+              }
               return false
             }
             li.appendChild(a)
@@ -101,9 +146,9 @@ export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void)
 
       const targetedLi = ul.children.item(Number(gistStoryIndex) || 0) || ul.children.item(0)
       if (targetedLi) {
-        const a = targetedLi.getElementsByTagName("a")
+        const a = targetedLi.getElementsByTagName("a").item(0)
         // @ts-ignore
-        if (a) a.onclick()
+        if (a) a.click()
       }
     }
   })

@@ -300,6 +300,8 @@ main #editor-toolbar {
 
   // Used for stories
   #navigation-container {
+    background-color: var(--blue-tinged-bg);
+
     h4 {
       margin-top: 12px;
       margin-left: 12px;
@@ -310,8 +312,8 @@ main #editor-toolbar {
       li {
         padding-left: 12px;
         list-style: none;
-        font-size: 11px;
-        font-weight: 700;
+        font-size: 14px;
+        font-weight: 600;
         display: flex;
         cursor: pointer;
         align-items: center;
@@ -321,23 +323,24 @@ main #editor-toolbar {
         text-overflow: ellipsis;
         overflow: hidden;
         margin: 0;
+        border-radius: 0px 3px 3px 0px;
 
         a {
           display: block;
           text-decoration: none;
         }
 
-        &.selectable.selected {
-          background-color: var(--sidebar-background-color);
-          font-weight: bold;
-        }
-
         &.selectable:hover {
           background-color: var(--sidebar-background-color);
         }
 
+        &.selectable.selected {
+          background-color: var(--blue-tinged-strong);
+          font-weight: bold;
+        }
+
         hr {
-          width: 25%;
+          width: 60px;
           margin-left: 0;
         }
       }
@@ -348,6 +351,7 @@ main #editor-toolbar {
     padding: 20px;
     padding-top: 0;
     overflow-y: auto;
+    font-size: 0.9rem;
 
     .highlight pre {
       padding: 16px;
@@ -511,7 +515,9 @@ main #editor-toolbar {
 
     &.left {
       border-left: none;
+      background-color: var(--blue-tinged-bg);
       border-right: 1px var(--playground-dragbar-border) solid;
+      margin-left: 0;
     }
 
     &.selected {
