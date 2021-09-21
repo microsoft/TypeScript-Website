@@ -106,7 +106,19 @@ export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void)
           case "code": {
             li.classList.add("selectable")
             const a = document.createElement("a")
-            a.textContent = element.title
+
+            let logo: string
+            if (element.type === "code") {
+              logo = `<svg width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="7" height="7" fill="#187ABF"/></svg>`
+              setCode(element.code)
+            } else if (element.type === "html") {
+              logo = `<svg width="9" height="11" viewBox="0 0 9 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 5.5V3.25L6 1H4M8 5.5V10H1V1H4M8 5.5H4V1" stroke="#C4C4C4"/></svg>`
+              setStory(element.html)
+            } else {
+              logo = ""
+            }
+
+            a.innerHTML = `${logo}${element.title}`
             a.href = `/play?#gist/${gistID}-${i}`
 
             a.onclick = e => {

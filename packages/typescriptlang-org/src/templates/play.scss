@@ -314,9 +314,9 @@ main #editor-toolbar {
         list-style: none;
         font-size: 14px;
         font-weight: 600;
-        display: flex;
+
         cursor: pointer;
-        align-items: center;
+
         line-height: 22px;
         height: 22px;
         white-space: nowrap;
@@ -328,10 +328,13 @@ main #editor-toolbar {
         a {
           display: block;
           text-decoration: none;
+          svg {
+            margin-right: 8px;
+          }
         }
 
         &.selectable:hover {
-          background-color: var(--sidebar-background-color);
+          background-color: #ffffff50;
         }
 
         &.selectable.selected {
@@ -342,6 +345,7 @@ main #editor-toolbar {
         hr {
           width: 60px;
           margin-left: 0;
+          margin-top: 10px;
         }
       }
     }
@@ -521,7 +525,7 @@ main #editor-toolbar {
     }
 
     &.selected {
-      background-color: var(--link-color);
+      background-color: var(--blue-tinged-strong);
     }
   }
 
