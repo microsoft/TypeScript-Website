@@ -649,7 +649,6 @@ export const setupPlayground = (
 
   // Grab the contents of a Gist
   if (location.hash.startsWith("#gist/")) {
-    sandbox.editor.updateOptions({ readOnly: true })
     gistPoweredNavBar(sandbox, ui, showNav)
   }
 

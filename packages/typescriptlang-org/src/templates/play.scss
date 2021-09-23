@@ -339,7 +339,13 @@ main #editor-toolbar {
 
         &.selectable.selected {
           background-color: var(--blue-tinged-strong);
-          font-weight: bold;
+          // font-weight: bold;
+          a {
+            color: var(--text-color);
+          }
+          path {
+            stroke: var(--text-color);
+          }
         }
 
         hr {
@@ -513,15 +519,15 @@ main #editor-toolbar {
     border-left: 1px var(--playground-dragbar-border) solid;
     margin-left: 2px;
 
-    &:hover {
-      background-color: lightgrey;
-    }
-
     &.left {
       border-left: none;
       background-color: var(--blue-tinged-bg);
       border-right: 1px var(--playground-dragbar-border) solid;
       margin-left: 0;
+    }
+
+    &:hover {
+      background-color: var(--blue-tinged-tinged-strong);
     }
 
     &.selected {
