@@ -152,13 +152,17 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
     "lib.es2020.promise.d.ts",
     "lib.es2020.sharedmemory.d.ts",
     "lib.es2020.intl.d.ts",
-    "lib.esnext.array.d.ts",
-    "lib.esnext.asynciterable.d.ts",
-    "lib.esnext.bigint.d.ts",
+    "lib.es2021.d.ts",
+    "lib.es2021.full.d.ts",
+    "lib.es2021.promise.d.ts",
+    "lib.es2021.string.d.ts",
+    "lib.es2021.weakref.d.ts",
     "lib.esnext.d.ts",
     "lib.esnext.full.d.ts",
     "lib.esnext.intl.d.ts",
-    "lib.esnext.symbol.d.ts",
+    "lib.esnext.promise.d.ts",
+    "lib.esnext.string.d.ts",
+    "lib.esnext.weakref.d.ts",
   ]
 
   const targetToCut = ts.ScriptTarget[target]
