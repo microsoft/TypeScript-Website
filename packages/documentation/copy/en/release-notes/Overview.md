@@ -121,9 +121,9 @@ This also made it easier to transition existing JavaScript code over to TypeScri
 
 In some cases, users would prefer to explicitly opt into the index signature - they would prefer to get an error message when a dotted property access doesn't correspond to a specific property declaration.
 
-That's why TypeScript introduces a new flag called [`--noPropertyAccessFromIndexSignature`](/tsconfig/#noPropertyAccessFromIndexSignature).
+That's why TypeScript introduces a new flag called [`noPropertyAccessFromIndexSignature`](/tsconfig#noPropertyAccessFromIndexSignature).
 Under this mode, you'll be opted in to TypeScript's older behavior that issues an error.
-This new setting is not under the `strict` family of flags, since we believe users will find it more useful on certain codebases than others.
+This new setting is not under the [`strict`](/tsconfig#strict) family of flags, since we believe users will find it more useful on certain codebases than others.
 
 You can understand this feature in more detail by reading up on the corresponding [pull request](https://github.com/microsoft/TypeScript/pull/40171/).
 We'd also like to extend a big thanks to [Wenlu Wang](https://github.com/Kingwl) who sent us this pull request!
@@ -188,7 +188,7 @@ You can read up more on abstract construct signatures [on its pull request](http
 A surprisingly common scenario for TypeScript users is to ask "why is TypeScript including this file?".
 Inferring the files of your program turns out to be a complicated process, and so there are lots of reasons why a specific combination of `lib.d.ts` got used, why certain files in `node_modules` are getting included, and why certain files are being included even though we thought specifying `exclude` would keep them out.
 
-That's why TypeScript now provides an `--explainFiles` flag.
+That's why TypeScript now provides an [`explainFiles`](/tsconfig#explainFiles) flag.
 
 ```sh
 tsc --explainFiles
@@ -242,7 +242,7 @@ For more information, [check out the original pull request](https://github.com/m
 
 Thanks to further improvements from [Alex Tarasyuk](https://github.com/a-tarasyuk), TypeScript's uncalled function checks now apply within `&&` and `||` expressions.
 
-Under `--strictNullChecks`, the following code will now error.
+Under [`strictNullChecks`](/tsconfig#strictNullChecks), the following code will now error.
 
 ```ts
 function shouldDisplayElement(element: Element) {
@@ -268,7 +268,7 @@ Thanks to another pull request from [Alex Tarasyuk](https://github.com/a-tarasyu
 let [_first, second] = getValues();
 ```
 
-Previously, if `_first` was never used later on, TypeScript would issue an error under `noUnusedLocals`.
+Previously, if `_first` was never used later on, TypeScript would issue an error under [`noUnusedLocals`](/tsconfig#noUnusedLocals).
 Now, TypeScript will recognize that `_first` was intentionally named with an underscore because there was no intent to use it.
 
 For more details, take a look at [the full change](https://github.com/microsoft/TypeScript/pull/41378).
@@ -285,7 +285,7 @@ function watchMovie(title: string) {
 }
 ```
 
-Of course, for any movie title not yet in the dictionary, `movieWatchCount[title]` will be `undefined` (TypeScript 4.1 added the option [`--noUncheckedIndexedAccess`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html#checked-indexed-accesses---nouncheckedindexedaccess) to include `undefined` when reading from an index signature like this).
+Of course, for any movie title not yet in the dictionary, `movieWatchCount[title]` will be `undefined` (TypeScript 4.1 added the option [`noUncheckedIndexedAccess`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html#checked-indexed-accesses---nouncheckedindexedaccess) to include `undefined` when reading from an index signature like this).
 Even though it's clear that there must be some strings not present in `movieWatchCount`, previous versions of TypeScript treated optional object properties as unassignable to otherwise compatible index signatures, due to the presence of `undefined`.
 
 ```ts
@@ -387,7 +387,7 @@ See more details in [the corresponding changes](https://github.com/microsoft/Typ
 
 #### Expanded Uncalled Function Checks
 
-As described above, uncalled function checks will now operate consistently within `&&` and `||` expressions when using `--strictNullChecks`.
+As described above, uncalled function checks will now operate consistently within `&&` and `||` expressions when using [`strictNullChecks`](/tsconfig#strictNullChecks).
 This can be a source of new breaks, but is typically an indication of a logic error in existing code.
 
 #### Type Arguments in JavaScript Are Not Parsed as Type Arguments
@@ -832,14 +832,14 @@ function checkOptions(opts: Options) {
 In the above example, `Options` has an index signature that says any accessed property that's not already listed should have the type `string | number`.
 This is often convenient for optimistic code that assumes you know what you're doing, but the truth is that most values in JavaScript do not support every potential property name.
 Most types will not, for example, have a value for a property key created by `Math.random()` like in the previous example.
-For many users, this behavior was undesirable, and felt like it wasn't leveraging the full strict-checking of `--strictNullChecks`.
+For many users, this behavior was undesirable, and felt like it wasn't leveraging the full strict-checking of [`strictNullChecks`](/tsconfig#strictNullChecks).
 
-That's why TypeScript 4.1 ships with a new flag called `--noUncheckedIndexedAccess`.
+That's why TypeScript 4.1 ships with a new flag called [`noUncheckedIndexedAccess`](/tsconfig#noUncheckedIndexedAccess).
 Under this new mode, every property access (like `foo.bar`) or indexed access (like `foo["bar"]`) is considered potentially undefined.
 That means that in our last example, `opts.yadda` will have the type `string | number | undefined` as opposed to just `string | number`.
 If you need to access that property, you'll either have to check for its existence first or use a non-null assertion operator (the postfix `!` character).
 
-This flag can be handy for catching out-of-bounds errors, but it might be noisy for a lot of code, so it is not automatically enabled by the `--strict` flag; however, if this feature is interesting to you, you should feel free to try it and determine whether it makes sense for your team's codebase!
+This flag can be handy for catching out-of-bounds errors, but it might be noisy for a lot of code, so it is not automatically enabled by the [`strict`](/tsconfig#strict) flag; however, if this feature is interesting to you, you should feel free to try it and determine whether it makes sense for your team's codebase!
 
 You can learn more [at the implementing pull request](https://github.com/microsoft/TypeScript/pull/39560).
 
@@ -847,22 +847,22 @@ You can learn more [at the implementing pull request](https://github.com/microso
 
 Using path-mapping is fairly common - often it's to have nicer imports, often it's to simulate monorepo linking behavior.
 
-Unfortunately, specifying `paths` to enable path-mapping required also specifying an option called `baseUrl`, which allows bare specifier paths to be reached relative to the `baseUrl` too.
+Unfortunately, specifying [`paths`](/tsconfig#paths) to enable path-mapping required also specifying an option called [`baseUrl`](/tsconfig#baseUrl), which allows bare specifier paths to be reached relative to the [`baseUrl`](/tsconfig#baseUrl) too.
 This also often caused poor paths to be used by auto-imports.
 
-In TypeScript 4.1, the `paths` option can be used without `baseUrl`.
+In TypeScript 4.1, the [`paths`](/tsconfig#paths) option can be used without [`baseUrl`](/tsconfig#baseUrl).
 This helps avoid some of these issues.
 
 ## `checkJs` Implies `allowJs`
 
-Previously if you were starting a checked JavaScript project, you had to set both `allowJs` and `checkJs`.
-This was a slightly annoying bit of friction in the experience, so `checkJs` now implies `allowJs` by default.
+Previously if you were starting a checked JavaScript project, you had to set both [`allowJs`](/tsconfig#allowJs) and [`checkJs`](/tsconfig#checkJs).
+This was a slightly annoying bit of friction in the experience, so [`checkJs`](/tsconfig#checkJs) now implies [`allowJs`](/tsconfig#allowJs) by default.
 
 [See more details at the pull request](https://github.com/microsoft/TypeScript/pull/40275).
 
 ## React 17 JSX Factories
 
-TypeScript 4.1 supports React 17's upcoming `jsx` and `jsxs` factory functions through two new options for the `jsx` compiler option:
+TypeScript 4.1 supports React 17's upcoming `jsx` and `jsxs` factory functions through two new options for the [`jsx`](/tsconfig#jsx) compiler option:
 
 - `react-jsx`
 - `react-jsxdev`
@@ -1141,7 +1141,7 @@ To learn more, check out [the pull request](https://github.com/microsoft/TypeScr
 
 ## Class Property Inference from Constructors
 
-TypeScript 4.0 can now use control flow analysis to determine the types of properties in classes when `noImplicitAny` is enabled.
+TypeScript 4.0 can now use control flow analysis to determine the types of properties in classes when [`noImplicitAny`](/tsconfig#noImplicitAny) is enabled.
 
 <!--prettier-ignore -->
 ```ts
@@ -1179,7 +1179,7 @@ class Square {
 }
 ```
 
-In cases where you know better (e.g. you have an `initialize` method of some sort), you'll still need an explicit type annotation along with a definite assignment assertion (`!`) if you're in `strictPropertyInitialization`.
+In cases where you know better (e.g. you have an `initialize` method of some sort), you'll still need an explicit type annotation along with a definite assignment assertion (`!`) if you're in [`strictPropertyInitialization`](/tsconfig#strictPropertyInitialization).
 
 ```ts
 class Square {
@@ -1357,7 +1357,7 @@ try {
 }
 ```
 
-While the types of `catch` variables won't change by default, we might consider a new `--strict` mode flag in the future so that users can opt in to this behavior.
+While the types of `catch` variables won't change by default, we might consider a new [`strict`](/tsconfig#strict) mode flag in the future so that users can opt in to this behavior.
 In the meantime, it should be possible to write a lint rule to force `catch` variables to have an explicit annotation of either `: any` or `: unknown`.
 
 For more details you can [peek at the changes for this feature](https://github.com/microsoft/TypeScript/pull/39015).
@@ -1368,7 +1368,7 @@ When using JSX, a [_fragment_](https://reactjs.org/docs/fragments.html) is a typ
 When we first implemented fragments in TypeScript, we didn't have a great idea about how other libraries would utilize them.
 Nowadays most other libraries that encourage using JSX and support fragments have a similar API shape.
 
-In TypeScript 4.0, users can customize the fragment factory through the new `jsxFragmentFactory` option.
+In TypeScript 4.0, users can customize the fragment factory through the new [`jsxFragmentFactory`](/tsconfig#jsxFragmentFactory) option.
 
 As an example, the following `tsconfig.json` file tells TypeScript to transform JSX in a way compatible with React, but switches each factory invocation to `h` instead of `React.createElement`, and uses `Fragment` instead of `React.Fragment`.
 
@@ -1928,7 +1928,7 @@ In practice, we don't expect this to break much existing code.
 
 ## Type-Only Imports and Export
 
-This feature is something most users may never have to think about; however, if you've hit issues under `--isolatedModules`, TypeScript's `transpileModule` API, or Babel, this feature might be relevant.
+This feature is something most users may never have to think about; however, if you've hit issues under [`isolatedModules`](/tsconfig#isolatedModules), TypeScript's `transpileModule` API, or Babel, this feature might be relevant.
 
 TypeScript 3.8 adds a new syntax for type-only imports and exports.
 
@@ -1971,7 +1971,7 @@ import type Foo, { Bar, Baz } from "some-module";
 // error! A type-only import can specify a default import or named bindings, but not both.
 ```
 
-In conjunction with `import type`, TypeScript 3.8 also adds a new compiler flag to control what happens with imports that won't be utilized at runtime: `importsNotUsedAsValues`.
+In conjunction with `import type`, TypeScript 3.8 also adds a new compiler flag to control what happens with imports that won't be utilized at runtime: [`importsNotUsedAsValues`](/tsconfig#importsNotUsedAsValues).
 This flag takes 3 different values:
 
 - `remove`: this is today's behavior of dropping these imports. It's going to continue to be the default, and is a non-breaking change.
@@ -2230,20 +2230,20 @@ Note there's a subtlety: top-level `await` only works at the top level of a _mod
 In some basic cases, you might need to write out `export {}` as some boilerplate to make sure of this.
 
 Top level `await` may not work in all environments where you might expect at this point.
-Currently, you can only use top level `await` when the `target` compiler option is `es2017` or above, and `module` is `esnext` or `system`.
+Currently, you can only use top level `await` when the [`target`](/tsconfig#target) compiler option is `es2017` or above, and `module` is `esnext` or `system`.
 Support within several environments and bundlers may be limited or may require enabling experimental support.
 
 For more information on our implementation, you can [check out the original pull request](https://github.com/microsoft/TypeScript/pull/35813).
 
 ## `es2020` for `target` and `module`
 
-TypeScript 3.8 supports `es2020` as an option for `module` and `target`.
+TypeScript 3.8 supports `es2020` as an option for `module` and [`target`](/tsconfig#target).
 This will preserve newer ECMAScript 2020 features like optional chaining, nullish coalescing, `export * as ns`, and dynamic `import(...)` syntax.
-It also means `bigint` literals now have a stable `target` below `esnext`.
+It also means `bigint` literals now have a stable [`target`](/tsconfig#target) below `esnext`.
 
 ## JSDoc Property Modifiers
 
-TypeScript 3.8 supports JavaScript files by turning on the `allowJs` flag, and also supports _type-checking_ those JavaScript files via the `checkJs` option or by adding a `// @ts-check` comment to the top of your `.js` files.
+TypeScript 3.8 supports JavaScript files by turning on the [`allowJs`](/tsconfig#allowJs) flag, and also supports _type-checking_ those JavaScript files via the [`checkJs`](/tsconfig#checkJs) option or by adding a `// @ts-check` comment to the top of your `.js` files.
 
 Because JavaScript files don't have dedicated syntax for type-checking, TypeScript leverages JSDoc.
 TypeScript 3.8 understands a few new JSDoc tags for properties.
@@ -2337,7 +2337,7 @@ For more information on these changes, [head over to GitHub to see the pull requ
 
 ## "Fast and Loose" Incremental Checking
 
-TypeScript 3.8 introduces a new compiler option called `assumeChangesOnlyAffectDirectDependencies`.
+TypeScript 3.8 introduces a new compiler option called [`assumeChangesOnlyAffectDirectDependencies`](/tsconfig#assumeChangesOnlyAffectDirectDependencies).
 When this option is enabled, TypeScript will avoid rechecking/rebuilding all truly possibly-affected files, and only recheck/rebuild files that have changed as well as files that directly import them.
 
 In a codebase like Visual Studio Code, this reduced rebuild times for changes in certain files from about 14 seconds to about 1 second.
@@ -2441,7 +2441,7 @@ let temp = foo === null || foo === undefined ? undefined : foo.bar;
 let result = temp / someComputation();
 ```
 
-That might result in dividing `undefined`, which is why in `strictNullChecks`, the following is an error.
+That might result in dividing `undefined`, which is why in [`strictNullChecks`](/tsconfig#strictNullChecks), the following is an error.
 
 ```ts
 function barPercentage(foo?: { bar: number }) {
@@ -2755,21 +2755,21 @@ For more information, you can [read up on the original pull request](https://git
 
 ## `--declaration` and `--allowJs`
 
-The `--declaration` flag in TypeScript allows us to generate `.d.ts` files (declaration files) from TypeScript source files (i.e. `.ts` and `.tsx` files).
+The [`declaration`](/tsconfig#declaration) flag in TypeScript allows us to generate `.d.ts` files (declaration files) from TypeScript source files (i.e. `.ts` and `.tsx` files).
 These `.d.ts` files are important for a couple of reasons.
 
 First of all, they're important because they allow TypeScript to type-check against other projects without re-checking the original source code.
 They're also important because they allow TypeScript to interoperate with existing JavaScript libraries that weren't built with TypeScript in mind.
 Finally, a benefit that is often underappreciated: both TypeScript _and_ JavaScript users can benefit from these files when using editors powered by TypeScript to get things like better auto-completion.
 
-Unfortunately, `--declaration` didn't work with the `--allowJs` flag which allows mixing TypeScript and JavaScript input files.
-This was a frustrating limitation because it meant users couldn't use the `--declaration` flag when migrating codebases, even if they were JSDoc-annotated.
+Unfortunately, [`declaration`](/tsconfig#declaration) didn't work with the [`allowJs`](/tsconfig#allowJs) flag which allows mixing TypeScript and JavaScript input files.
+This was a frustrating limitation because it meant users couldn't use the [`declaration`](/tsconfig#declaration) flag when migrating codebases, even if they were JSDoc-annotated.
 TypeScript 3.7 changes that, and allows the two options to be used together!
 
 The most impactful outcome of this feature might a bit subtle: with TypeScript 3.7, users can write libraries in JSDoc annotated JavaScript and support TypeScript users.
 
-The way that this works is that when using `allowJs`, TypeScript has some best-effort analyses to understand common JavaScript patterns; however, the way that some patterns are expressed in JavaScript don't necessarily look like their equivalents in TypeScript.
-When `declaration` emit is turned on, TypeScript figures out the best way to transform JSDoc comments and CommonJS exports into valid type declarations and the like in the output `.d.ts` files.
+The way that this works is that when using [`allowJs`](/tsconfig#allowJs), TypeScript has some best-effort analyses to understand common JavaScript patterns; however, the way that some patterns are expressed in JavaScript don't necessarily look like their equivalents in TypeScript.
+When [`declaration`](/tsconfig#declaration) emit is turned on, TypeScript figures out the best way to transform JSDoc comments and CommonJS exports into valid type declarations and the like in the output `.d.ts` files.
 
 As an example, the following code snippet
 
@@ -2885,7 +2885,7 @@ export type Job = () => void;
 ```
 
 Note that when using these flags together, TypeScript doesn't necessarily have to downlevel `.js` files.
-If you simply want TypeScript to create `.d.ts` files, you can use the `--emitDeclarationOnly` compiler option.
+If you simply want TypeScript to create `.d.ts` files, you can use the [`emitDeclarationOnly`](/tsconfig#emitDeclarationOnly) compiler option.
 
 For more details, you can [check out the original pull request](https://github.com/microsoft/TypeScript/pull/32372).
 
@@ -2933,7 +2933,7 @@ class C {
 ```
 
 While TypeScript 3.7 isn't changing any existing emit by default, we've been rolling out changes incrementally to help users mitigate potential future breakage.
-We've provided a new flag called `useDefineForClassFields` to enable this emit mode with some new checking logic.
+We've provided a new flag called [`useDefineForClassFields`](/tsconfig#useDefineForClassFields) to enable this emit mode with some new checking logic.
 
 The two biggest changes are the following:
 
@@ -3034,12 +3034,12 @@ class DogHouse extends AnimalHouse {
 }
 ```
 
-Currently `useDefineForClassFields` is only available when targeting ES5 and upwards, since `Object.defineProperty` doesn't exist in ES3.
-To achieve similar checking for issues, you can create a separate project that targets ES5 and uses `--noEmit` to avoid a full build.
+Currently [`useDefineForClassFields`](/tsconfig#useDefineForClassFields) is only available when targeting ES5 and upwards, since `Object.defineProperty` doesn't exist in ES3.
+To achieve similar checking for issues, you can create a separate project that targets ES5 and uses [`noEmit`](/tsconfig#noEmit) to avoid a full build.
 
 For more information, you can [take a look at the original pull request for these changes](https://github.com/microsoft/TypeScript/pull/33509).
 
-We strongly encourage users to try the `useDefineForClassFields` flag and report back on our issue tracker or in the comments below.
+We strongly encourage users to try the [`useDefineForClassFields`](/tsconfig#useDefineForClassFields) flag and report back on our issue tracker or in the comments below.
 This includes feedback on difficulty of adopting the flag so we can understand how we can make migration easier.
 
 ## Build-Free Editing with Project References
@@ -3049,7 +3049,7 @@ Unfortunately, editing a project whose dependencies hadn't been built (or whose 
 
 In TypeScript 3.7, when opening a project with dependencies, TypeScript will automatically use the source `.ts`/`.tsx` files instead.
 This means projects using project references will now see an improved editing experience where semantic operations are up-to-date and "just work".
-You can disable this behavior with the compiler option `disableSourceOfProjectReferenceRedirect` which may be appropriate when working in very large projects where this change may impact editing performance.
+You can disable this behavior with the compiler option [`disableSourceOfProjectReferenceRedirect`](/tsconfig#disableSourceOfProjectReferenceRedirect) which may be appropriate when working in very large projects where this change may impact editing performance.
 
 You can [read up more about this change by reading up on its pull request](https://github.com/microsoft/TypeScript/pull/32028).
 
@@ -3091,7 +3091,7 @@ function doAdminThing(user: User) {
 ```
 
 This check is a breaking change, but for that reason the checks are very conservative.
-This error is only issued in `if` conditions, and it is not issued on optional properties, if `strictNullChecks` is off, or if the function is later called within the body of the `if`:
+This error is only issued in `if` conditions, and it is not issued on optional properties, if [`strictNullChecks`](/tsconfig#strictNullChecks) is off, or if the function is later called within the body of the `if`:
 
 ```ts
 interface User {
@@ -3118,7 +3118,7 @@ We owe a big thanks to GitHub user [@jwbay](https://github.com/jwbay) who took t
 ## `// @ts-nocheck` in TypeScript Files
 
 TypeScript 3.7 allows us to add `// @ts-nocheck` comments to the top of TypeScript files to disable semantic checks.
-Historically this comment was only respected in JavaScript source files in the presence of `checkJs`, but we've expanded support to TypeScript files to make migrations easier for all users.
+Historically this comment was only respected in JavaScript source files in the presence of [`checkJs`](/tsconfig#checkJs), but we've expanded support to TypeScript files to make migrations easier for all users.
 
 ## Semicolon Formatter Option
 
@@ -3140,7 +3140,7 @@ These changes are largely correctness changes related to nullability, but impact
 [As mentioned above](#the-usedefineforclassfields-flag-and-the-declare-property-modifier), TypeScript 3.7 emits `get`/`set` accessors in `.d.ts` files which can cause breaking changes for consumers on older versions of TypeScript like 3.5 and prior.
 TypeScript 3.6 users will not be impacted, since that version was future-proofed for this feature.
 
-While not a breakage per se, opting in to the `useDefineForClassFields` flag can cause breakage when:
+While not a breakage per se, opting in to the [`useDefineForClassFields`](/tsconfig#useDefineForClassFields) flag can cause breakage when:
 
 - overriding an accessor in a derived class with a property declaration
 - re-declaring a property declaration with no initializer
@@ -3153,7 +3153,7 @@ As mentioned above, TypeScript now errors when functions appear to be uncalled w
 An error is issued when a function type is checked in `if` conditions unless any of the following apply:
 
 - the checked value comes from an optional property
-- `strictNullChecks` is disabled
+- [`strictNullChecks`](/tsconfig#strictNullChecks) is disabled
 - the function is later called within the body of the `if`
 
 ### Local and Imported Type Declarations Now Conflict
@@ -3327,8 +3327,8 @@ For more details on the change, [see the pull request here](https://github.com/M
 ## More Accurate Array Spread
 
 In pre-ES2015 targets, the most faithful emit for constructs like `for`/`of` loops and array spreads can be a bit heavy.
-For this reason, TypeScript uses a simpler emit by default that only supports array types, and supports iterating on other types using the `--downlevelIteration` flag.
-The looser default without `--downlevelIteration` works fairly well; however, there were some common cases where the transformation of array spreads had observable differences.
+For this reason, TypeScript uses a simpler emit by default that only supports array types, and supports iterating on other types using the [`downlevelIteration`](/tsconfig#downlevelIteration) flag.
+The looser default without [`downlevelIteration`](/tsconfig#downlevelIteration) works fairly well; however, there were some common cases where the transformation of array spreads had observable differences.
 For example, the following array containing a spread
 
 ```ts
@@ -3350,7 +3350,7 @@ Array(5).slice();
 which is slightly different.
 `Array(5)` produces an array with a length of 5, but with no defined property slots.
 
-TypeScript 3.6 introduces a new `__spreadArrays` helper to accurately model what happens in ECMAScript 2015 in older targets outside of `--downlevelIteration`.
+TypeScript 3.6 introduces a new `__spreadArrays` helper to accurately model what happens in ECMAScript 2015 in older targets outside of [`downlevelIteration`](/tsconfig#downlevelIteration).
 `__spreadArrays` is also available in [tslib](https://github.com/Microsoft/tslib/).
 
 For more information, [see the relevant pull request](https://github.com/microsoft/TypeScript/pull/31166).
@@ -3480,12 +3480,12 @@ For more details, [see the original PR on GitHub](https://github.com/microsoft/T
 ## APIs to Support `--build` and `--incremental`
 
 TypeScript 3.0 introduced support for referencing other and building them incrementally using the `--build` flag.
-Additionally, TypeScript 3.4 introduced the `--incremental` flag for saving information about previous compilations to only rebuild certain files.
+Additionally, TypeScript 3.4 introduced the [`incremental`](/tsconfig#incremental) flag for saving information about previous compilations to only rebuild certain files.
 These flags were incredibly useful for structuring projects more flexibly and speeding builds up.
 Unfortunately, using these flags didn't work with 3rd party build tools like Gulp and Webpack.
 TypeScript 3.6 now exposes two sets of APIs to operate on project references and incremental program building.
 
-For creating `--incremental` builds, users can leverage the `createIncrementalProgram` and `createIncrementalCompilerHost` APIs.
+For creating [`incremental`](/tsconfig#incremental) builds, users can leverage the `createIncrementalProgram` and `createIncrementalCompilerHost` APIs.
 Users can also re-hydrate old program instances from `.tsbuildinfo` files generated by this API using the newly exposed `readBuilderProgram` function, which is only meant to be used as for creating new programs (i.e. you can't modify the returned instance - it's only meant to be used for the `oldProgram` parameter in other `create*Program` functions).
 
 For leveraging project references, a new `createSolutionBuilder` function has been exposed, which returns an instance of the new type `SolutionBuilder`.
@@ -3520,11 +3520,11 @@ We owe Artem a big thanks for helping out here!
 
 The new playground now supports many new options including:
 
-- The `target` option (allowing users to switch out of `es5` to `es3`, `es2015`, `esnext`, etc.)
-- All the strictness flags (including just `strict`)
-- Support for plain JavaScript files (using `allowJS` and optionally `checkJs`)
+- The [`target`](/tsconfig#target) option (allowing users to switch out of `es5` to `es3`, `es2015`, `esnext`, etc.)
+- All the strictness flags (including just [`strict`](/tsconfig#strict))
+- Support for plain JavaScript files (using `allowJS` and optionally [`checkJs`](/tsconfig#checkJs))
 
-These options also persist when sharing links to playground samples, allowing users to more reliably share examples without having to tell the recipient "oh, don't forget to turn on the `noImplicitAny` option!".
+These options also persist when sharing links to playground samples, allowing users to more reliably share examples without having to tell the recipient "oh, don't forget to turn on the [`noImplicitAny`](/tsconfig#noImplicitAny) option!".
 
 In the near future, we're going to be refreshing the playground samples, adding JSX support, and polishing automatic type acquisition, meaning that you'll be able to see the same experience on the playground as you'd get in your personal editor.
 
@@ -3543,7 +3543,7 @@ These improvements are significantly more pronounced in editor scenarios where t
 
 ### `--incremental` improvements
 
-TypeScript 3.5 improves on 3.4's `--incremental` build mode, by saving information about how the state of the world was calculated - compiler settings, why files were looked up, where files were found, etc.
+TypeScript 3.5 improves on 3.4's [`incremental`](/tsconfig#incremental) build mode, by saving information about how the state of the world was calculated - compiler settings, why files were looked up, where files were found, etc.
 In scenarios involving hundreds of projects using TypeScript's project references in `--build` mode, [we've found that the amount of time rebuilding can be reduced by as much as 68% compared to TypeScript 3.4](https://github.com/Microsoft/TypeScript/pull/31101)!
 
 For more details, you can see the pull requests to
@@ -3619,7 +3619,7 @@ In TypeScript 3.5, you can now reference UMD global declarations like
 export as namespace foo;
 ```
 
-from anywhere - even modules - using the new `--allowUmdGlobalAccess` flag.
+from anywhere - even modules - using the new [`allowUmdGlobalAccess`](/tsconfig#allowUmdGlobalAccess) flag.
 
 This mode adds flexibility for mixing and matching the way 3rd party libraries, where globals that libraries declare can always be consumed, even from within modules.
 
@@ -3760,8 +3760,8 @@ To learn more, [check out the original pull request on GitHub](https://github.co
 
 ## Faster subsequent builds with the `--incremental` flag
 
-TypeScript 3.4 introduces a new flag called `--incremental` which tells TypeScript to save information about the project graph from the last compilation.
-The next time TypeScript is invoked with `--incremental`, it will use that information to detect the least costly way to type-check and emit changes to your project.
+TypeScript 3.4 introduces a new flag called [`incremental`](/tsconfig#incremental) which tells TypeScript to save information about the project graph from the last compilation.
+The next time TypeScript is invoked with [`incremental`](/tsconfig#incremental), it will use that information to detect the least costly way to type-check and emit changes to your project.
 
 ```json tsconfig
 // tsconfig.json
@@ -3779,7 +3779,7 @@ If `./lib/.tsbuildinfo` doesn't exist, it'll be generated.
 But if it does, `tsc` will try to use that file to incrementally type-check and update our output files.
 
 These `.tsbuildinfo` files can be safely deleted and don't have any impact on our code at runtime - they're purely used to make compilations faster.
-We can also name them anything that we want, and place them anywhere we want using the `--tsBuildInfoFile` flag.
+We can also name them anything that we want, and place them anywhere we want using the [`tsBuildInfoFile`](/tsconfig#tsBuildInfoFile) option.
 
 ```json tsconfig
 // front-end.tsconfig.json
@@ -3795,14 +3795,14 @@ We can also name them anything that we want, and place them anywhere we want usi
 
 ### Composite projects
 
-Part of the intent with composite projects (`tsconfig.json`s with `composite` set to `true`) is that references between different projects can be built incrementally.
+Part of the intent with composite projects (`tsconfig.json`s with [`composite`](/tsconfig#composite) set to `true`) is that references between different projects can be built incrementally.
 As such, composite projects will **always** produce `.tsbuildinfo` files.
 
 ### `outFile`
 
-When `outFile` is used, the build information file's name will be based on the output file's name.
-As an example, if our output JavaScript file is `./output/foo.js`, then under the `--incremental` flag, TypeScript will generate the file `./output/foo.tsbuildinfo`.
-As above, this can be controlled with the `--tsBuildInfoFile` flag.
+When [`outFile`](/tsconfig#outFile) is used, the build information file's name will be based on the output file's name.
+As an example, if our output JavaScript file is `./output/foo.js`, then under the [`incremental`](/tsconfig#incremental) flag, TypeScript will generate the file `./output/foo.tsbuildinfo`.
+As above, this can be controlled with the [`tsBuildInfoFile`](/tsconfig#tsBuildInfoFile) option.
 
 ## Higher order type inference from generic functions
 
@@ -4238,7 +4238,7 @@ Each of those impossible intersections reduces to `never`, and we're left with `
 This new behavior only kicks in when at most one type in the union has multiple overloads, and at most one type in the union has a generic signature.
 That means methods on `number[] | string[]` like `map` (which is generic) still won't be callable.
 
-On the other hand, methods like `forEach` will now be callable, but under `noImplicitAny` there may be some issues.
+On the other hand, methods like `forEach` will now be callable, but under [`noImplicitAny`](/tsconfig#noImplicitAny) there may be some issues.
 
 ```ts
 interface Dog {
@@ -4305,7 +4305,7 @@ In our testing, this functionality has resulted in **a reduction of 50% to 75% i
 
 ## `strictBindCallApply`
 
-TypeScript 3.2 introduces a new `--strictBindCallApply` compiler option (in the `--strict` family of options) with which the `bind`, `call`, and `apply` methods on function objects are strongly typed and strictly checked.
+TypeScript 3.2 introduces a new [`strictBindCallApply`](/tsconfig#strictBindCallApply) compiler option (in the [`strict`](/tsconfig#strict) family of options) with which the `bind`, `call`, and `apply` methods on function objects are strongly typed and strictly checked.
 
 ```ts
 function foo(a: number, b: string): string {
@@ -4318,11 +4318,11 @@ let c = foo.apply(undefined, [10, "hello", 30]); // error: too many arguments
 let d = foo.apply(undefined, [10, "hello"]); // okay! returns a string
 ```
 
-This is achieved by introducing two new types, `CallableFunction` and `NewableFunction`, in `lib.d.ts`. These types contain specialized generic method declarations for `bind`, `call`, and `apply` for regular functions and constructor functions, respectively. The declarations use generic rest parameters (see #24897) to capture and reflect parameter lists in a strongly typed manner. In `--strictBindCallApply` mode these declarations are used in place of the (very permissive) declarations provided by type `Function`.
+This is achieved by introducing two new types, `CallableFunction` and `NewableFunction`, in `lib.d.ts`. These types contain specialized generic method declarations for `bind`, `call`, and `apply` for regular functions and constructor functions, respectively. The declarations use generic rest parameters (see #24897) to capture and reflect parameter lists in a strongly typed manner. In [`strictBindCallApply`](/tsconfig#strictBindCallApply) mode these declarations are used in place of the (very permissive) declarations provided by type `Function`.
 
 ### Caveats
 
-Since the stricter checks may uncover previously unreported errors, this is a breaking change in `--strict` mode.
+Since the stricter checks may uncover previously unreported errors, this is a breaking change in [`strict`](/tsconfig#strict) mode.
 
 Additionally, [another caveat](https://github.com/Microsoft/TypeScript/pull/27028#issuecomment-429334450) of this new functionality is that due to certain limitations, `bind`, `call`, and `apply` can't yet fully model generic functions or functions that have overloads.
 When using these methods on a generic function, type parameters will be substituted with the empty object type (`{}`), and when used on a function with overloads, only the last overload will ever be modeled.
@@ -4449,7 +4449,7 @@ For that reason, we have no immediate plans to provide downleveling support.
 On the bright side, Node 11 and newer versions of Chrome already support this feature, so you'll be able to use BigInts there when targeting `esnext`.
 
 Certain targets may include a polyfill or BigInt-like runtime object.
-For those purposes you may want to add `esnext.bigint` to the `lib` setting in your compiler options.
+For those purposes you may want to add `esnext.bigint` to the [`lib`](/tsconfig#lib) setting in your compiler options.
 
 ## Non-unit types as union discriminants
 
@@ -4475,7 +4475,7 @@ function unwrap<T>(result: Result<T>) {
 
 ## `tsconfig.json` inheritance via Node.js packages
 
-TypeScript 3.2 now resolves `tsconfig.json`s from `node_modules`. When using a bare path for the `"extends"` field in `tsconfig.json`, TypeScript will dive into `node_modules` packages for us.
+TypeScript 3.2 now resolves `tsconfig.json`s from `node_modules`. When using a bare path for the `extends` field in `tsconfig.json`, TypeScript will dive into `node_modules` packages for us.
 
 ```json tsconfig
 {
@@ -4500,8 +4500,8 @@ This can be useful for diagnosing configuration issues in general.
 
 ## `Object.defineProperty` declarations in JavaScript
 
-When writing in JavaScript files (using `allowJs`), TypeScript now recognizes declarations that use `Object.defineProperty`.
-This means you'll get better completions, and stronger type-checking when enabling type-checking in JavaScript files (by turning on the `checkJs` option or adding a `// @ts-check` comment to the top of your file).
+When writing in JavaScript files (using [`allowJs`](/tsconfig#allowJs)), TypeScript now recognizes declarations that use `Object.defineProperty`.
+This means you'll get better completions, and stronger type-checking when enabling type-checking in JavaScript files (by turning on the [`checkJs`](/tsconfig#checkJs) option or adding a `// @ts-check` comment to the top of your file).
 
 ```js
 // @ts-check
@@ -4733,7 +4733,7 @@ t = [42, "hello"];
 t = [42];
 ```
 
-In `--strictNullChecks` mode, a `?` modifier automatically includes `undefined` in the element type, similar to optional parameters.
+In [`strictNullChecks`](/tsconfig#strictNullChecks) mode, a `?` modifier automatically includes `undefined` in the element type, similar to optional parameters.
 
 A tuple type permits an element to be omitted if it has a postfix `?` modifier on its type and all elements to the right of it also have `?` modifiers.
 
@@ -4981,7 +4981,7 @@ Keep in mind that there are some limitations.
 
 TypeScript adds a new triple-slash-reference directive (`/// <reference lib="name" />`), allowing a file to explicitly include an existing built-in _lib_ file.
 
-Built-in _lib_ files are referenced in the same fashion as the `"lib"` compiler option in _tsconfig.json_ (e.g. use `lib="es2015"` and not `lib="lib.es2015.d.ts"`, etc.).
+Built-in _lib_ files are referenced in the same fashion as the [`lib`](/tsconfig#lib) compiler option in _tsconfig.json_ (e.g. use `lib="es2015"` and not `lib="lib.es2015.d.ts"`, etc.).
 
 For declaration file authors who rely on built-in types, e.g. DOM APIs or built-in JS run-time constructors like `Symbol` or `Iterable`, triple-slash-reference lib directives are the recommended. Previously these .d.ts files had to add forward/duplicate declarations of such types.
 
@@ -5137,7 +5137,7 @@ function useKey<T, K extends keyof T>(o: T, k: K) {
   }
   ```
 
-- Otherwise use `--keyofStringsOnly` compiler option to disable the new behavior.
+- Otherwise use [`keyofStringsOnly`](/tsconfig#keyofStringsOnly) compiler option to disable the new behavior.
 
 ## Generic type arguments in JSX elements
 
@@ -5278,7 +5278,7 @@ import.meta.__dirname; // Has type 'string'
 
 ## New `--resolveJsonModule`
 
-Often in Node.js applications a `.json` is needed. With TypeScript 2.9, `--resolveJsonModule` allows for importing, extracting types from and generating `.json` files.
+Often in Node.js applications a `.json` is needed. With TypeScript 2.9, [`resolveJsonModule`](/tsconfig#resolveJsonModule) allows for importing, extracting types from and generating `.json` files.
 
 #### Example
 
@@ -5313,17 +5313,17 @@ settings.dry === 2; // Error: Operator '===' cannot be applied boolean and numbe
 
 ## `--pretty` output by default
 
-Starting TypeScript 2.9 errors are displayed under `--pretty` by default if the output device is applicable for colorful text.
+Starting TypeScript 2.9 errors are displayed under [`pretty`](/tsconfig#pretty) by default if the output device is applicable for colorful text.
 TypeScript will check if the output steam has [`isTty`](https://nodejs.org/api/tty.html) property set.
 
-Use `--pretty false` on the command line or set `"pretty": false` in your `tsconfig.json` to disable `--pretty` output.
+Use `--pretty false` on the command line or set `"pretty": false` in your `tsconfig.json` to disable [`pretty`](/tsconfig#pretty) output.
 
 ## New `--declarationMap`
 
-Enabling `--declarationMap` alongside `--declaration` causes the compiler to emit `.d.ts.map` files alongside the output `.d.ts` files.
+Enabling [`declarationMap`](/tsconfig#declarationMap) alongside [`declaration`](/tsconfig#declaration) causes the compiler to emit `.d.ts.map` files alongside the output `.d.ts` files.
 Language Services can also now understand these map files, and uses them to map declaration-file based definition locations to their original source, when available.
 
-In other words, hitting go-to-definition on a declaration from a `.d.ts` file generated with `--declarationMap` will take you to the source file (`.ts`) location where that declaration was defined, and not to the `.d.ts`.
+In other words, hitting go-to-definition on a declaration from a `.d.ts` file generated with [`declarationMap`](/tsconfig#declarationMap) will take you to the source file (`.ts`) location where that declaration was defined, and not to the `.d.ts`.
 
 ## TypeScript 2.8
 
@@ -5616,7 +5616,7 @@ This type strips `?` modifiers from all properties of `T`, thus making all prope
 type Required<T> = { [P in keyof T]-?: T[P] };
 ```
 
-Note that in `--strictNullChecks` mode, when a homomorphic mapped type removes a `?` modifier from a property in the underlying type it also removes `undefined` from the type of that property:
+Note that in [`strictNullChecks`](/tsconfig#strictNullChecks) mode, when a homomorphic mapped type removes a `?` modifier from a property in the underlying type it also removes `undefined` from the type of that property:
 
 #### Example
 
@@ -5718,7 +5718,7 @@ app.C = class {};
 ## Per-file JSX factories
 
 TypeScript 2.8 adds support for a per-file configurable JSX factory name using `@jsx dom` paragma.
-JSX factory can be configured for a compilation using `--jsxFactory` (default is `React.createElement`). With TypeScript 2.8 you can override this on a per-file-basis by adding a comment to the beginning of the file.
+JSX factory can be configured for a compilation using [`jsxFactory`](/tsconfig#jsxFactory) (default is `React.createElement`). With TypeScript 2.8 you can override this on a per-file-basis by adding a comment to the beginning of the file.
 
 #### Example
 
@@ -5834,7 +5834,7 @@ if (Foo === Bar) {
 
 ## Strict Class Initialization
 
-TypeScript 2.7 introduces a new flag called `--strictPropertyInitialization`.
+TypeScript 2.7 introduces a new flag called [`strictPropertyInitialization`](/tsconfig#strictPropertyInitialization).
 This flag performs checks to ensure that each instance property of a class gets initialized in the constructor body, or by a property initializer.
 For example
 
@@ -5874,8 +5874,8 @@ class C {
 }
 ```
 
-Keep in mind that `--strictPropertyInitialization` will be turned on along with other `--strict` mode flags, which can impact your project.
-You can set the `strictPropertyInitialization` setting to `false` in your `tsconfig.json`'s `compilerOptions`, or `--strictPropertyInitialization false` on the command line to turn off this checking.
+Keep in mind that [`strictPropertyInitialization`](/tsconfig#strictPropertyInitialization) will be turned on along with other [`strict`](/tsconfig#strict) mode flags, which can impact your project.
+You can set the [`strictPropertyInitialization`](/tsconfig#strictPropertyInitialization) setting to `false` in your `tsconfig.json`'s `compilerOptions`, or `--strictPropertyInitialization false` on the command line to turn off this checking.
 
 ## Definite Assignment Assertions
 
@@ -6061,7 +6061,7 @@ function foo(x: A | B) {
 
 ## Support for `import d from "cjs"` form CommonJS modules with `--esModuleInterop`
 
-TypeScript 2.7 updates CommonJS/AMD/UMD module emit to synthesize namespace records based on the presence of an `__esModule` indicator under `--esModuleInterop`.
+TypeScript 2.7 updates CommonJS/AMD/UMD module emit to synthesize namespace records based on the presence of an `__esModule` indicator under [`esModuleInterop`](/tsconfig#esModuleInterop).
 The change brings the generated output from TypeScript closer to that generated by Babel.
 
 Previously CommonJS/AMD/UMD modules were treated in the same way as ES6 modules, resulting in a couple of problems. Namely:
@@ -6073,7 +6073,7 @@ Previously CommonJS/AMD/UMD modules were treated in the same way as ES6 modules,
 - Similarly a default import (i.e. `import d from "foo"`) for a CommonJS/AMD/UMD module as equivalent to `const d = require("foo").default`.
   Most of the CommonJS/AMD/UMD modules available today do not have a `default` export, making this import pattern practically unusable to import non-ES modules (i.e. CommonJS/AMD/UMD). For instance `import fs from "fs"` or `import express from "express"` are not allowed.
 
-Under the new `--esModuleInterop` these two issues should be addressed:
+Under the new [`esModuleInterop`](/tsconfig#esModuleInterop) these two issues should be addressed:
 
 - A namespace import (i.e. `import * as foo from "foo"`) is now correctly flagged as uncallabale. Calling it will result in an error.
 - Default imports to CommonJS/AMD/UMD are now allowed (e.g. `import fs from "fs"`), and should work as expected.
@@ -6083,7 +6083,7 @@ Under the new `--esModuleInterop` these two issues should be addressed:
 
 #### Example
 
-With `--esModuleInterop` two new helpers are generated `__importStar` and `__importDefault` for import `*` and import `default` respectively.
+With [`esModuleInterop`](/tsconfig#esModuleInterop) two new helpers are generated `__importStar` and `__importDefault` for import `*` and import `default` respectively.
 For instance input like:
 
 ```ts
@@ -6136,19 +6136,19 @@ TypeScript's `--watch` mode now clears the screen after a re-compilation is requ
 
 ## Prettier `--pretty` output
 
-TypeScript's `--pretty` flag can make error messages easier to read and manage.
-`--pretty` now uses colors for file names, diagnostic codes, and line numbers.
+TypeScript's [`pretty`](/tsconfig#pretty) flag can make error messages easier to read and manage.
+[`pretty`](/tsconfig#pretty) now uses colors for file names, diagnostic codes, and line numbers.
 File names and positions are now also formatted to allow navigation in common terminals (e.g. Visual Studio Code terminal).
 
 ## TypeScript 2.6
 
 ## Strict function types
 
-TypeScript 2.6 introduces a new strict checking flag, `--strictFunctionTypes`.
-The `--strictFunctionTypes` switch is part of the `--strict` family of switches, meaning that it defaults to on in `--strict` mode.
+TypeScript 2.6 introduces a new strict checking flag, [`strictFunctionTypes`](/tsconfig#strictFunctionTypes).
+The [`strictFunctionTypes`](/tsconfig#strictFunctionTypes) switch is part of the [`strict`](/tsconfig#strict) family of switches, meaning that it defaults to on in [`strict`](/tsconfig#strict) mode.
 You can opt-out by setting `--strictFunctionTypes false` on your command line or in your tsconfig.json.
 
-Under `--strictFunctionTypes` function type parameter positions are checked _contravariantly_ instead of _bivariantly_.
+Under [`strictFunctionTypes`](/tsconfig#strictFunctionTypes) function type parameter positions are checked _contravariantly_ instead of _bivariantly_.
 For some background on what variance means for function types check out [What are covariance and contravariance?](https://www.stephanboyer.com/post/132/what-are-covariance-and-contravariance).
 
 The stricter checking applies to all function types, _except_ those originating in method or constructor declarations.
@@ -6191,7 +6191,7 @@ By the way, note that whereas some languages (e.g. C# and Scala) require varianc
 
 #### Note:
 
-Under `--strictFunctionTypes` the first assignment is still permitted if `compare` was declared as a method.
+Under [`strictFunctionTypes`](/tsconfig#strictFunctionTypes) the first assignment is still permitted if `compare` was declared as a method.
 Effectively, `T` is bivariant in `Comparer<T>` because it is used only in method parameter positions.
 
 ```ts
@@ -6257,8 +6257,8 @@ render() {
 }
 ```
 
-Under `--jsx preserve`, the new syntax is left untouched for TypeScript emit. Otherwise, for `--jsx react`, `<>...</>` is compiled to `React.createElement(React.Fragment, null, ...)`, where `React.createElement` respects `--jsxFactory`.
-Note that it is an error to use `<>...</>` when `--jsx react` and `--jsxFactory` are both enabled.
+Under `--jsx preserve`, the new syntax is left untouched for TypeScript emit. Otherwise, for `--jsx react`, `<>...</>` is compiled to `React.createElement(React.Fragment, null, ...)`, where `React.createElement` respects [`jsxFactory`](/tsconfig#jsxFactory).
+Note that it is an error to use `<>...</>` when `--jsx react` and [`jsxFactory`](/tsconfig#jsxFactory) are both enabled.
 
 Please refer to [the React blog](https://reactjs.org/blog/2017/11/28/react-v16.2.0-fragment-support.html) for more details on fragments and the new syntax.
 
@@ -6313,7 +6313,7 @@ var result = templateObjectFactory() === templateObjectFactory();
 ```
 
 > Note: This change brings a new emit helper, `__makeTemplateObject`;
-> if you are using `--importHelpers` with [`tslib`](https://github.com/Microsoft/tslib), an updated to version 1.8 or later.
+> if you are using [`importHelpers`](/tsconfig#importHelpers) with [`tslib`](https://github.com/Microsoft/tslib), an updated to version 1.8 or later.
 
 ## Localized diagnostics on the command line
 
@@ -6417,7 +6417,7 @@ The watcher logic has been completely rewritten to respond faster to change even
 
 ## Write-only references now flagged as unused
 
-TypeScript 2.6 adds revised implementation the `--noUnusedLocals` and `--noUnusedParameters` [compiler options](/docs/handbook/compiler-options.html).
+TypeScript 2.6 adds revised implementation the [`noUnusedLocals`](/tsconfig#noUnusedLocals) and [`noUnusedParameters`](/tsconfig#noUnusedParameters) [compiler options](/docs/handbook/compiler-options.html).
 Declarations are only written to but never read from are now flagged as unused.
 
 #### Example
@@ -6484,8 +6484,8 @@ As a nice bonus, this can also reduce the memory and runtime footprint of the co
 
 ## The `--preserveSymlinks` compiler flag
 
-TypeScript 2.5 brings the `preserveSymlinks` flag, which parallels the behavior of [the `--preserve-symlinks` flag in Node.js](https://nodejs.org/api/cli.html#cli_preserve_symlinks).
-This flag also exhibits the opposite behavior to Webpack's `resolve.symlinks` option (i.e. setting TypeScript's `preserveSymlinks` to `true` parallels setting Webpack's `resolve.symlinks` to `false`, and vice-versa).
+TypeScript 2.5 brings the [`preserveSymlinks`](/tsconfig#preserveSymlinks) flag, which parallels the behavior of [the `--preserve-symlinks` flag in Node.js](https://nodejs.org/api/cli.html#cli_preserve_symlinks).
+This flag also exhibits the opposite behavior to Webpack's `resolve.symlinks` option (i.e. setting TypeScript's [`preserveSymlinks`](/tsconfig#preserveSymlinks) to `true` parallels setting Webpack's `resolve.symlinks` to `false`, and vice-versa).
 
 In this mode, references to modules and packages (e.g. `import`s and `/// <reference type="..." />` directives) are all resolved relative to the location of the symbolic link file, rather than relative to the path that the symbolic link resolves to.
 For a more concrete example, we'll defer to [the documentation on the Node.js website](https://nodejs.org/api/cli.html#cli_preserve_symlinks).
@@ -6696,13 +6696,13 @@ function* f() {
 Previously generators were only supported if the target is ES6/ES2015 or later.
 Moreover, constructs that operate on the Iterator protocol, e.g. `for..of` were only supported if they operate on arrays for targets below ES6/ES2015.
 
-TypeScript 2.3 adds full support for generators and the Iterator protocol for ES3 and ES5 targets with `--downlevelIteration` flag.
+TypeScript 2.3 adds full support for generators and the Iterator protocol for ES3 and ES5 targets with [`downlevelIteration`](/tsconfig#downlevelIteration) flag.
 
-With `--downlevelIteration`, the compiler uses new type check and emit behavior that attempts to call a `[Symbol.iterator]()` method on the iterated object if it is found, and creates a synthetic array iterator over the object if it is not.
+With [`downlevelIteration`](/tsconfig#downlevelIteration), the compiler uses new type check and emit behavior that attempts to call a `[Symbol.iterator]()` method on the iterated object if it is found, and creates a synthetic array iterator over the object if it is not.
 
 > Please note that this requires a native `Symbol.iterator` or `Symbol.iterator` shim at runtime for any non-array values.
 
-`for..of` statements, Array Destructuring, and Spread elements in Array, Call, and New expressions support `Symbol.iterator` in ES5/E3 if available when using `--downlevelIteration`, but can be used on an Array even if it does not define `Symbol.iterator` at run time or design time.
+`for..of` statements, Array Destructuring, and Spread elements in Array, Call, and New expressions support `Symbol.iterator` in ES5/E3 if available when using [`downlevelIteration`](/tsconfig#downlevelIteration), but can be used on an Array even if it does not define `Symbol.iterator` at run time or design time.
 
 ## Async Iteration
 
@@ -6761,7 +6761,7 @@ The `for..await..of` statement is only legal within an Async Function or Async G
 
 - Keep in mind that our support for async iterators relies on support for `Symbol.asyncIterator` to exist at runtime.
   You may need to polyfill `Symbol.asyncIterator`, which for simple purposes can be as simple as: `(Symbol as any).asyncIterator = Symbol.asyncIterator || Symbol.from("Symbol.asyncIterator");`
-- You also need to include `esnext` in your `--lib` option, to get the `AsyncIterator` declaration if you do not already have it.
+- You also need to include `esnext` in your [`lib`](/tsconfig#lib) option, to get the `AsyncIterator` declaration if you do not already have it.
 - Finally, if your target is ES5 or ES3, you'll also need to set the `--downlevelIterators` flag.
 
 ## Generic parameter defaults
@@ -6802,34 +6802,34 @@ A generic parameter default follows the following rules:
 
 ## New `--strict` master option
 
-New checks added to TypeScript are often off by default to avoid breaking existing projects. While avoiding breakage is a good thing, this strategy has the drawback of making it increasingly complex to choose the highest level of type safety, and doing so requires explicit opt-in action on every TypeScript release. With the `--strict` option it becomes possible to choose maximum type safety with the understanding that additional errors might be reported by newer versions of the compiler as improved type checking features are added.
+New checks added to TypeScript are often off by default to avoid breaking existing projects. While avoiding breakage is a good thing, this strategy has the drawback of making it increasingly complex to choose the highest level of type safety, and doing so requires explicit opt-in action on every TypeScript release. With the [`strict`](/tsconfig#strict) option it becomes possible to choose maximum type safety with the understanding that additional errors might be reported by newer versions of the compiler as improved type checking features are added.
 
-The new `--strict` compiler option represents the recommended setting of a number of type checking options. Specifically, specifying `--strict` corresponds to specifying all of the following options (and may in the future include more options):
+The new [`strict`](/tsconfig#strict) compiler option represents the recommended setting of a number of type checking options. Specifically, specifying [`strict`](/tsconfig#strict) corresponds to specifying all of the following options (and may in the future include more options):
 
-- `--strictNullChecks`
-- `--noImplicitAny`
-- `--noImplicitThis`
-- `--alwaysStrict`
+- [`strictNullChecks`](/tsconfig#strictNullChecks)
+- [`noImplicitAny`](/tsconfig#noImplicitAny)
+- [`noImplicitThis`](/tsconfig#noImplicitThis)
+- [`alwaysStrict`](/tsconfig#alwaysStrict)
 
-In exact terms, the `--strict` option sets the _default_ value for the compiler options listed above. This means it is still possible to individually control the options. For example,
+In exact terms, the [`strict`](/tsconfig#strict) option sets the _default_ value for the compiler options listed above. This means it is still possible to individually control the options. For example,
 
 ```
 --strict --noImplicitThis false
 ```
 
-has the effect of turning on all strict options _except_ the `--noImplicitThis` option. Using this scheme it is possible to express configurations consisting of _all_ strict options except some explicitly listed options. In other words, it is now possible to default to the highest level of type safety but opt out of certain checks.
+has the effect of turning on all strict options _except_ the [`noImplicitThis`](/tsconfig#noImplicitThis) option. Using this scheme it is possible to express configurations consisting of _all_ strict options except some explicitly listed options. In other words, it is now possible to default to the highest level of type safety but opt out of certain checks.
 
 Starting with TypeScript 2.3, the default `tsconfig.json` generated by `tsc --init` includes a `"strict": true` setting in the `"compilerOptions"` section. Thus, new projects started with `tsc --init` will by default have the highest level of type safety enabled.
 
 ## Enhanced `--init` output
 
-Along with setting `--strict` on by default, `tsc --init` has an enhanced output. Default `tsconfig.json` files generated by `tsc --init` now include a set of the common compiler options along with their descriptions commented out. Just un-comment the configuration you like to set to get the desired behavior; we hope the new output simplifies the setting up new projects and keeps configuration files readable as projects grow.
+Along with setting [`strict`](/tsconfig#strict) on by default, `tsc --init` has an enhanced output. Default `tsconfig.json` files generated by `tsc --init` now include a set of the common compiler options along with their descriptions commented out. Just un-comment the configuration you like to set to get the desired behavior; we hope the new output simplifies the setting up new projects and keeps configuration files readable as projects grow.
 
 ## Errors in .js files with `--checkJs`
 
-By default the TypeScript compiler does not report any errors in .js files including using `--allowJs`. With TypeScript 2.3 type-checking errors can also be reported in `.js` files with `--checkJs`.
+By default the TypeScript compiler does not report any errors in .js files including using [`allowJs`](/tsconfig#allowJs). With TypeScript 2.3 type-checking errors can also be reported in `.js` files with [`checkJs`](/tsconfig#checkJs).
 
-You can skip checking some files by adding `// @ts-nocheck` comment to them; conversely you can choose to check only a few `.js` files by adding `// @ts-check` comment to them without setting `--checkJs`. You can also ignore errors on specific lines by adding `// @ts-ignore` on the preceding line.
+You can skip checking some files by adding `// @ts-nocheck` comment to them; conversely you can choose to check only a few `.js` files by adding `// @ts-check` comment to them without setting [`checkJs`](/tsconfig#checkJs). You can also ignore errors on specific lines by adding `// @ts-ignore` on the preceding line.
 
 `.js` files are still checked to ensure that they only include standard ECMAScript features; type annotations are only allowed in `.ts` files and are flagged as errors in `.js` files. JSDoc comments can be used to add some type information to your JavaScript code, see [JSDoc Support documentation](https://github.com/Microsoft/TypeScript/wiki/JSDoc-support-in-JavaScript) for more details about the supported JSDoc constructs.
 
@@ -6988,7 +6988,7 @@ TypeScript 2.2 improves checking of nullable operands in expressions. Specifical
 - If the right operand of an `instanceof` operator is nullable.
 - If the operand of a `+`, `-`, `~`, `++`, or `--` unary operator is nullable.
 
-An operand is considered nullable if the type of the operand is `null` or `undefined` or a union type that includes `null` or `undefined`. Note that the union type case only only occurs in `--strictNullChecks` mode because `null` and `undefined` disappear from unions in classic type checking mode.
+An operand is considered nullable if the type of the operand is `null` or `undefined` or a union type that includes `null` or `undefined`. Note that the union type case only only occurs in [`strictNullChecks`](/tsconfig#strictNullChecks) mode because `null` and `undefined` disappear from unions in classic type checking mode.
 
 ## Dotted property for types with string index signatures
 
@@ -7031,7 +7031,7 @@ let x: TodoListProps;
 
 ## New `jsx: react-native`
 
-React-native build pipeline expects all files to have a `.js` extensions even if the file contains JSX syntax. The new `--jsx` value `react-native` will persevere the JSX syntax in the output file, but give it a `.js` extension.
+React-native build pipeline expects all files to have a `.js` extensions even if the file contains JSX syntax. The new [`jsx`](/tsconfig#jsx) value `react-native` will persevere the JSX syntax in the output file, but give it a `.js` extension.
 
 ## TypeScript 2.1
 
@@ -7220,7 +7220,7 @@ TypeScript 2.1 brings the capability to ES3 and ES5 run-times, meaning you'll be
 
 > Note: first, we need to make sure our run-time has an ECMAScript-compliant `Promise` available globally.
 > That might involve grabbing [a polyfill](https://github.com/stefanpenner/es6-promise) for `Promise`, or relying on one that you might have in the run-time that you're targeting.
-> We also need to make sure that TypeScript knows `Promise` exists by setting your `lib` flag to something like `"dom", "es2015"` or `"dom", "es2015.promise", "es5"`
+> We also need to make sure that TypeScript knows `Promise` exists by setting your [`lib`](/tsconfig#lib) option to something like `"dom", "es2015"` or `"dom", "es2015.promise", "es5"`
 
 ##### Example
 
@@ -7266,7 +7266,7 @@ TypeScript injects a handful of helper functions such as `__extends` for inherit
 Previously there were two options:
 
 1.  inject helpers in _every_ file that needs them, or
-2.  no helpers at all with `--noEmitHelpers`.
+2.  no helpers at all with [`noEmitHelpers`](/tsconfig#noEmitHelpers).
 
 The two options left more to be desired;
 bundling the helpers in every file was a pain point for customers trying to keep their package size small.
@@ -7280,7 +7280,7 @@ First, install the [`tslib`](https://github.com/Microsoft/tslib) utility library
 npm install tslib
 ```
 
-Second, compile your files using `--importHelpers`:
+Second, compile your files using [`importHelpers`](/tsconfig#importHelpers):
 
 ```sh
 tsc --module commonjs --importHelpers a.ts
@@ -7312,7 +7312,7 @@ Starting with TypeScript 2.1 this is now much easier.
 With TypeScript 2.1, you can import a JavaScript module without needing a type declaration.
 A type declaration (such as `declare module "foo" { ... }` or `node_modules/@types/foo`) still takes priority if it exists.
 
-An import to a module with no declaration file will still be flagged as an error under `--noImplicitAny`.
+An import to a module with no declaration file will still be flagged as an error under [`noImplicitAny`](/tsconfig#noImplicitAny).
 
 ##### Example
 
@@ -7344,7 +7344,7 @@ let z: any; // explicitly 'any'.
 
 With TypeScript 2.1, instead of just choosing `any`, TypeScript will infer types based on what you end up assigning later on.
 
-This is only enabled if `--noImplicitAny` is set.
+This is only enabled if [`noImplicitAny`](/tsconfig#noImplicitAny) is set.
 
 ##### Example
 
@@ -7397,7 +7397,7 @@ function f2() {
 
 ## Implicit any errors
 
-One great benefit of this is that you'll see _way fewer_ implicit `any` errors when running with `--noImplicitAny`.
+One great benefit of this is that you'll see _way fewer_ implicit `any` errors when running with [`noImplicitAny`](/tsconfig#noImplicitAny).
 Implicit `any` errors are only reported when the compiler is unable to know the type of a variable without a type annotation.
 
 ##### Example
@@ -7501,11 +7501,11 @@ Just a few configuration options change between these two targets, and maintaini
 
 TypeScript 2.1 supports inheriting configuration using `extends`, where:
 
-- `extends` is a new top-level property in `tsconfig.json` (alongside `compilerOptions`, `files`, `include`, and `exclude`).
+- `extends` is a new top-level property in `tsconfig.json` (alongside `compilerOptions`, [`files`](/tsconfig#files), [`include`](/tsconfig#include), and `exclude`).
 - The value of `extends` must be a string containing a path to another configuration file to inherit from.
 - The configuration from the base file are loaded first, then overridden by those in the inheriting config file.
 - Circularity between configuration files is not allowed.
-- `files`, `include` and `exclude` from the inheriting config file _overwrite_ those from the base config file.
+- [`files`](/tsconfig#files), [`include`](/tsconfig#include) and `exclude` from the inheriting config file _overwrite_ those from the base config file.
 - All relative paths found in the configuration file will be resolved relative to the configuration file they originated in.
 
 ##### Example
@@ -7543,7 +7543,7 @@ TypeScript 2.1 supports inheriting configuration using `extends`, where:
 
 ## New `--alwaysStrict`
 
-Invoking the compiler with `--alwaysStrict` causes:
+Invoking the compiler with [`alwaysStrict`](/tsconfig#alwaysStrict) causes:
 
 1. Parses all the code in strict mode.
 2. Writes `"use strict";` directive atop every generated file.
@@ -7563,7 +7563,7 @@ Effectively, `null` and `undefined` were valid values of _every_ type and it was
 
 ### `--strictNullChecks`
 
-`--strictNullChecks` switches to a new strict null checking mode.
+[`strictNullChecks`](/tsconfig#strictNullChecks) switches to a new strict null checking mode.
 
 In strict null checking mode, the `null` and `undefined` values are _not_ in the domain of every type and are only assignable to themselves and `any` (the one exception being that `undefined` is also assignable to `void`).
 So, whereas `T` and `T | undefined` are considered synonymous in regular type checking mode (because `undefined` is considered a subtype of any `T`), they are different types in strict type checking mode, and only `T | undefined` permits `undefined` values. The same is true for the relationship of `T` to `T | null`.
@@ -7670,7 +7670,7 @@ function foo(options?: Options) {
 }
 ```
 
-Type guards for dotted names also work with user defined type guard functions and the `typeof` and `instanceof` operators and do not depend on the `--strictNullChecks` compiler option.
+Type guards for dotted names also work with user defined type guard functions and the `typeof` and `instanceof` operators and do not depend on the [`strictNullChecks`](/tsconfig#strictNullChecks) compiler option.
 
 A type guard for a dotted name has no effect following an assignment to any part of the dotted name.
 For example, a type guard for `x.y.z` will have no effect following an assignment to `x`, `x.y`, or `x.y.z`.
@@ -7759,7 +7759,7 @@ function bar(x: string | number) {
 }
 ```
 
-Control flow based type analysis is particuarly relevant in `--strictNullChecks` mode because nullable types are represented using union types:
+Control flow based type analysis is particuarly relevant in [`strictNullChecks`](/tsconfig#strictNullChecks) mode because nullable types are represented using union types:
 
 ```ts
 function test(x: string | null) {
@@ -7770,7 +7770,7 @@ function test(x: string | null) {
 }
 ```
 
-Furthermore, in `--strictNullChecks` mode, control flow based type analysis includes _definite assignment analysis_ for local variables of types that don't permit the value `undefined`.
+Furthermore, in [`strictNullChecks`](/tsconfig#strictNullChecks) mode, control flow based type analysis includes _definite assignment analysis_ for local variables of types that don't permit the value `undefined`.
 
 ```ts
 function mumble(check: boolean) {
@@ -8026,7 +8026,7 @@ A new flag is also added in TypeScript 2.0 to flag all uses of `this` in functio
 
 Glob support is here!! Glob support has been [one of the most requested features](https://github.com/Microsoft/TypeScript/issues/1927).
 
-Glob-like file patterns are supported two properties `"include"` and `"exclude"`.
+Glob-like file patterns are supported two properties [`include`](/tsconfig#include) and `exclude`.
 
 #### Example
 
@@ -8051,16 +8051,16 @@ The supported glob wildcards are:
 - `?` matches any one character (excluding directory separators)
 - `**/` recursively matches any subdirectory
 
-If a segment of a glob pattern includes only `*` or `.*`, then only files with supported extensions are included (e.g. `.ts`, `.tsx`, and `.d.ts` by default with `.js` and `.jsx` if `allowJs` is set to true).
+If a segment of a glob pattern includes only `*` or `.*`, then only files with supported extensions are included (e.g. `.ts`, `.tsx`, and `.d.ts` by default with `.js` and `.jsx` if [`allowJs`](/tsconfig#allowJs) is set to true).
 
-If the `"files"` and `"include"` are both left unspecified, the compiler defaults to including all TypeScript (`.ts`, `.d.ts` and `.tsx`) files in the containing directory and subdirectories except those excluded using the `"exclude"` property. JS files (`.js` and `.jsx`) are also included if `allowJs` is set to true.
+If the [`files`](/tsconfig#files) and [`include`](/tsconfig#include) are both left unspecified, the compiler defaults to including all TypeScript (`.ts`, `.d.ts` and `.tsx`) files in the containing directory and subdirectories except those excluded using the `exclude` property. JS files (`.js` and `.jsx`) are also included if [`allowJs`](/tsconfig#allowJs) is set to true.
 
-If the `"files"` or `"include"` properties are specified, the compiler will instead include the union of the files included by those two properties.
-Files in the directory specified using the `"outDir"` compiler option are always excluded unless explicitly included via the `"files"` property (even when the "`exclude`" property is specified).
+If the [`files`](/tsconfig#files) or [`include`](/tsconfig#include) properties are specified, the compiler will instead include the union of the files included by those two properties.
+Files in the directory specified using the [`outDir`](/tsconfig#outDir) compiler option are always excluded unless explicitly included via the [`files`](/tsconfig#files) property (even when the `exclude` property is specified).
 
-Files included using `"include"` can be filtered using the `"exclude"` property.
-However, files included explicitly using the `"files"` property are always included regardless of `"exclude"`.
-The `"exclude"` property defaults to excluding the `node_modules`, `bower_components`, and `jspm_packages` directories when not specified.
+Files included using [`include`](/tsconfig#include) can be filtered using the `exclude` property.
+However, files included explicitly using the [`files`](/tsconfig#files) property are always included regardless of `exclude`.
+The `exclude` property defaults to excluding the `node_modules`, `bower_components`, and `jspm_packages` directories when not specified.
 
 ## Module resolution enhancements: BaseUrl, Path mapping, rootDirs and tracing
 
@@ -8070,8 +8070,8 @@ See [Module Resolution](http://www.typescriptlang.org/docs/handbook/module-resol
 
 ### Base URL
 
-Using a `baseUrl` is a common practice in applications using AMD module loaders where modules are "deployed" to a single folder at run-time.
-All module imports with non-relative names are assumed to be relative to the `baseUrl`.
+Using a [`baseUrl`](/tsconfig#baseUrl) is a common practice in applications using AMD module loaders where modules are "deployed" to a single folder at run-time.
+All module imports with non-relative names are assumed to be relative to the [`baseUrl`](/tsconfig#baseUrl).
 
 #### Example
 
@@ -8094,7 +8094,7 @@ import A from "moduleA";
 Sometimes modules are not directly located under _baseUrl_.
 Loaders use a mapping configuration to map module names to files at run-time, see [RequireJs documentation](http://requirejs.org/docs/api.html#config-paths) and [SystemJS documentation](https://github.com/systemjs/systemjs/blob/master/docs/import-maps.md).
 
-The TypeScript compiler supports the declaration of such mappings using `"paths"` property in `tsconfig.json` files.
+The TypeScript compiler supports the declaration of such mappings using [`paths`](/tsconfig#paths) property in `tsconfig.json` files.
 
 #### Example
 
@@ -8110,7 +8110,7 @@ For instance, an import to a module `"jquery"` would be translated at runtime to
 }
 ```
 
-Using `"paths"` also allow for more sophisticated mappings including multiple fall back locations.
+Using [`paths`](/tsconfig#paths) also allow for more sophisticated mappings including multiple fall back locations.
 Consider a project configuration where only some modules are available in one location, and the rest are in another.
 
 ### Virtual Directories with `rootDirs`
@@ -8137,7 +8137,7 @@ Given this project structure:
 A build step will copy the files in `/src/views` and `/generated/templates/views` to the same directory in the output.
 At run-time, a view can expect its template to exist next to it, and thus should import it using a relative name as `"./template"`.
 
-`"rootDirs"` specify a list of _roots_ whose contents are expected to merge at run-time.
+[`rootDirs`](/tsconfig#rootDirs) specify a list of _roots_ whose contents are expected to merge at run-time.
 So following our example, the `tsconfig.json` file should look like:
 
 ```json tsconfig
@@ -8150,7 +8150,7 @@ So following our example, the `tsconfig.json` file should look like:
 
 ### Tracing module resolution
 
-`--traceResolution` offers a handy way to understand how modules have been resolved by the compiler.
+[`traceResolution`](/tsconfig#traceResolution) offers a handy way to understand how modules have been resolved by the compiler.
 
 ```shell
 tsc --traceResolution
@@ -8271,7 +8271,7 @@ class Bar {
 }
 ```
 
-When compiled in `--strictNullChecks` mode, optional properties and methods automatically have `undefined` included in their type. Thus, the `b` property above is of type `number | undefined` and the `g` method above is of type `(() => number) | undefined`.
+When compiled in [`strictNullChecks`](/tsconfig#strictNullChecks) mode, optional properties and methods automatically have `undefined` included in their type. Thus, the `b` property above is of type `number | undefined` and the `g` method above is of type `(() => number) | undefined`.
 Type guards can be used to strip away the `undefined` part of the type:
 
 ```ts
@@ -8353,7 +8353,7 @@ httpService("", headers); // Now ok, previously wasn't
 ## Including built-in type declarations with `--lib`
 
 Getting to ES6/ES2015 built-in API declarations were only limited to `target: ES6`.
-Enter `--lib`; with `--lib` you can specify a list of built-in API declaration groups that you can chose to include in your project.
+Enter [`lib`](/tsconfig#lib); with [`lib`](/tsconfig#lib) you can specify a list of built-in API declaration groups that you can chose to include in your project.
 For instance, if you expect your runtime to have support for `Map`, `Set` and `Promise` (e.g. most evergreen browsers today), just include `--lib es2015.collection,es2015.promise`.
 Similarly you can exclude declarations you do not want to include in your project, e.g. DOM if you are working on a node project using `--lib es5,es6`.
 
@@ -8394,9 +8394,9 @@ tsc --target es5 --lib es5,es2015.promise
 ## Flag unused declarations with `--noUnusedParameters` and `--noUnusedLocals`
 
 TypeScript 2.0 has two new flags to help you maintain a clean code base.
-`--noUnusedParameters` flags any unused function or method parameters errors.
-`--noUnusedLocals` flags any unused local (un-exported) declaration like variables, functions, classes, imports, etc...
-Also, unused private members of a class would be flagged as errors under `--noUnusedLocals`.
+[`noUnusedParameters`](/tsconfig#noUnusedParameters) flags any unused function or method parameters errors.
+[`noUnusedLocals`](/tsconfig#noUnusedLocals) flags any unused local (un-exported) declaration like variables, functions, classes, imports, etc...
+Also, unused private members of a class would be flagged as errors under [`noUnusedLocals`](/tsconfig#noUnusedLocals).
 
 #### Example
 
@@ -8457,10 +8457,10 @@ foo(
 
 ## New `--skipLibCheck`
 
-TypeScript 2.0 adds a new `--skipLibCheck` compiler option that causes type checking of declaration files (files with extension `.d.ts`) to be skipped.
+TypeScript 2.0 adds a new [`skipLibCheck`](/tsconfig#skipLibCheck) compiler option that causes type checking of declaration files (files with extension `.d.ts`) to be skipped.
 When a program includes large declaration files, the compiler spends a lot of time type checking declarations that are already known to not contain errors, and compile times may be significantly shortened by skipping declaration file type checks.
 
-Since declarations in one file can affect type checking in other files, some errors may not be detected when `--skipLibCheck` is specified.
+Since declarations in one file can affect type checking in other files, some errors may not be detected when [`skipLibCheck`](/tsconfig#skipLibCheck) is specified.
 For example, if a non-declaration file augments a type declared in a declaration file, errors may result that are only reported when the declaration file is checked.
 However, in practice such situations are rare.
 
@@ -8489,7 +8489,7 @@ interface Error {
 
 ## New `--declarationDir`
 
-`--declarationDir` allows for generating declaration files in a different location than JavaScript files.
+[`declarationDir`](/tsconfig#declarationDir) allows for generating declaration files in a different location than JavaScript files.
 
 ## TypeScript 1.8
 
@@ -8521,7 +8521,7 @@ Read on to get more details, and check out these errors in action:
 
 ### Unreachable code
 
-Statements guaranteed to not be executed at run time are now correctly flagged as unreachable code errors. For instance, statements following unconditional `return`, `throw`, `break` or `continue` statements are considered unreachable. Use `--allowUnreachableCode` to disable unreachable code detection and reporting.
+Statements guaranteed to not be executed at run time are now correctly flagged as unreachable code errors. For instance, statements following unconditional `return`, `throw`, `break` or `continue` statements are considered unreachable. Use [`allowUnreachableCode`](/tsconfig#allowUnreachableCode) to disable unreachable code detection and reporting.
 
 ##### Example
 
@@ -8554,7 +8554,7 @@ Since JavaScript automatically terminates the `return` statement at the end of t
 
 ### Unused labels
 
-Unused labels are also flagged. Just like unreachable code checks, these are turned on by default; use `--allowUnusedLabels` to stop reporting these errors.
+Unused labels are also flagged. Just like unreachable code checks, these are turned on by default; use [`allowUnusedLabels`](/tsconfig#allowUnusedLabels) to stop reporting these errors.
 
 ##### Example
 
@@ -8567,7 +8567,7 @@ loop: while (x > 0) {
 
 ### Implicit returns
 
-Functions with code paths that do not return a value in JS implicitly return `undefined`. These can now be flagged by the compiler as implicit returns. The check is turned _off_ by default; use `--noImplicitReturns` to turn it on.
+Functions with code paths that do not return a value in JS implicitly return `undefined`. These can now be flagged by the compiler as implicit returns. The check is turned _off_ by default; use [`noImplicitReturns`](/tsconfig#noImplicitReturns) to turn it on.
 
 ##### Example
 
@@ -8585,11 +8585,11 @@ function f(x) {
 ### Case clause fall-throughs
 
 TypeScript can reports errors for fall-through cases in switch statement where the case clause is non-empty.
-This check is turned _off_ by default, and can be enabled using `--noFallthroughCasesInSwitch`.
+This check is turned _off_ by default, and can be enabled using [`noFallthroughCasesInSwitch`](/tsconfig#noFallthroughCasesInSwitch).
 
 ##### Example
 
-With `--noFallthroughCasesInSwitch`, this example will trigger an error:
+With [`noFallthroughCasesInSwitch`](/tsconfig#noFallthroughCasesInSwitch), this example will trigger an error:
 
 ```ts
 switch (x % 2) {
@@ -8789,9 +8789,9 @@ function test2(x: Maybe<number>) {
 
 ## Concatenate `AMD` and `System` modules with `--outFile`
 
-Specifying `--outFile` in conjunction with `--module amd` or `--module system` will concatenate all modules in the compilation into a single output file containing multiple module closures.
+Specifying [`outFile`](/tsconfig#outFile) in conjunction with `--module amd` or `--module system` will concatenate all modules in the compilation into a single output file containing multiple module closures.
 
-A module name will be computed for each module based on its relative location to `rootDir`.
+A module name will be computed for each module based on its relative location to [`rootDir`](/tsconfig#rootDir).
 
 ##### Example
 
@@ -8833,7 +8833,7 @@ define("a", ["require", "exports", "lib/b"], function (require, exports, B) {
 
 Module loaders like SystemJS wrap CommonJS modules and expose then as a `default` ES6 import. This makes it impossible to share the definition files between the SystemJS and CommonJS implementation of the module as the module shape looks different based on the loader.
 
-Setting the new compiler flag `--allowSyntheticDefaultImports` indicates that the module loader performs some kind of synthetic default import member creation not indicated in the imported .ts or .d.ts. The compiler will infer the existence of a `default` export that has the shape of the entire module itself.
+Setting the new compiler flag [`allowSyntheticDefaultImports`](/tsconfig#allowSyntheticDefaultImports) indicates that the module loader performs some kind of synthetic default import member creation not indicated in the imported .ts or .d.ts. The compiler will infer the existence of a `default` export that has the shape of the entire module itself.
 
 System modules have this flag on by default.
 
@@ -8909,7 +8909,7 @@ Often there are external source files in your project that may not be authored i
 Alternatively, you might be in the middle of converting a JS code base into TS, but still want to bundle all your JS code into a single file with the output of your new TS code.
 
 `.js` files are now allowed as input to `tsc`.
-The TypeScript compiler checks the input `.js` files for syntax errors, and emits valid output based on the `--target` and `--module` flags.
+The TypeScript compiler checks the input `.js` files for syntax errors, and emits valid output based on the [`target`](/tsconfig#target) and [`module`](/tsconfig#module) flags.
 The output can be combined with other `.ts` files as well.
 Source maps are still generated for `.js` files just like with `.ts` files.
 
@@ -9004,7 +9004,7 @@ Also, a nightly NuGet package to match the [nightly npm package](http://blogs.ms
 We understand that a ton of monochrome output can be a little difficult on the eyes.
 Colors can help discern where a message starts and ends, and these visual clues are important when error output gets overwhelming.
 
-By just passing the `--pretty` command line option, TypeScript gives more colorful output with context about where things are going wrong.
+By just passing the [`pretty`](/tsconfig#pretty) command line option, TypeScript gives more colorful output with context about where things are going wrong.
 
 ![Showing off pretty error messages in ConEmu](https://raw.githubusercontent.com/wiki/Microsoft/TypeScript/images/new-in-typescript/pretty01.png)
 
@@ -9047,7 +9047,7 @@ It's always nice to be able to document your configuration!
 
 ## Support output to IPC-driven files
 
-TypeScript 1.8 allows users to use the `--outFile` argument with special file system entities like named pipes, devices, etc.
+TypeScript 1.8 allows users to use the [`outFile`](/tsconfig#outFile) argument with special file system entities like named pipes, devices, etc.
 
 As an example, on many Unix-like systems, the standard output stream is accessible by the file `/dev/stdout`.
 
@@ -9119,7 +9119,7 @@ For more information see [Async Functions](http://blogs.msdn.com/b/typescript/ar
 
 ## Support for `--target ES6` with `--module`
 
-TypeScript 1.7 adds `ES6` to the list of options available for the `--module` flag and allows you to specify the module output when targeting `ES6`. This provides more flexibility to target exactly the features you want in specific runtimes.
+TypeScript 1.7 adds `ES6` to the list of options available for the [`module`](/tsconfig#module) option and allows you to specify the module output when targeting `ES6`. This provides more flexibility to target exactly the features you want in specific runtimes.
 
 ##### Example
 
@@ -9664,7 +9664,7 @@ npm install -g typescript@next
 
 ## Adjustments in module resolution logic
 
-Starting from release 1.6 TypeScript compiler will use different set of rules to resolve module names when targeting 'commonjs'. These [rules](https://github.com/Microsoft/TypeScript/issues/2338) attempted to model module lookup procedure used by Node. This effectively mean that node modules can include information about its typings and TypeScript compiler will be able to find it. User however can override module resolution rules picked by the compiler by using `--moduleResolution` command line option. Possible values are:
+Starting from release 1.6 TypeScript compiler will use different set of rules to resolve module names when targeting 'commonjs'. These [rules](https://github.com/Microsoft/TypeScript/issues/2338) attempted to model module lookup procedure used by Node. This effectively mean that node modules can include information about its typings and TypeScript compiler will be able to find it. User however can override module resolution rules picked by the compiler by using [`moduleResolution`](/tsconfig#moduleResolution) command line option. Possible values are:
 
 - 'classic' - module resolution rules used by pre 1.6 TypeScript compiler
 - 'node' - node-like module resolution
@@ -10072,23 +10072,23 @@ See the [tsconfig.json wiki page](https://github.com/Microsoft/TypeScript/wiki/t
 
 ## `--rootDir` command line option
 
-Option `--outDir` duplicates the input hierarchy in the output. The compiler computes the root of the input files as the longest common path of all input files; and then uses that to replicate all its substructure in the output.
+Option [`outDir`](/tsconfig#outDir) duplicates the input hierarchy in the output. The compiler computes the root of the input files as the longest common path of all input files; and then uses that to replicate all its substructure in the output.
 
 Sometimes this is not desirable, for instance inputs `FolderA/FolderB/1.ts` and `FolderA/FolderB/2.ts` would result in output structure mirroring `FolderA/FolderB/`. Now if a new file `FolderA/3.ts` is added to the input, the output structure will pop out to mirror `FolderA/`.
 
-`--rootDir` specifies the input directory to be mirrored in output instead of computing it.
+[`rootDir`](/tsconfig#rootDir) specifies the input directory to be mirrored in output instead of computing it.
 
 ## `--noEmitHelpers` command line option
 
-The TypeScript compiler emits a few helpers like `__extends` when needed. The helpers are emitted in every file they are referenced in. If you want to consolidate all helpers in one place, or override the default behavior, use `--noEmitHelpers` to instructs the compiler not to emit them.
+The TypeScript compiler emits a few helpers like `__extends` when needed. The helpers are emitted in every file they are referenced in. If you want to consolidate all helpers in one place, or override the default behavior, use [`noEmitHelpers`](/tsconfig#noEmitHelpers) to instructs the compiler not to emit them.
 
 ## `--newLine` command line option
 
-By default the output new line character is `\r\n` on Windows based systems and `\n` on \*nix based systems. `--newLine` command line flag allows overriding this behavior and specifying the new line character to be used in generated output files.
+By default the output new line character is `\r\n` on Windows based systems and `\n` on \*nix based systems. [`newLine`](/tsconfig#newLine) command line flag allows overriding this behavior and specifying the new line character to be used in generated output files.
 
 ## `--inlineSourceMap` and `inlineSources` command line options
 
-`--inlineSourceMap` causes source map files to be written inline in the generated `.js` files instead of in a independent `.js.map` file. `--inlineSources` allows for additionally inlining the source `.ts` file into the
+[`inlineSourceMap`](/tsconfig#inlineSourceMap) causes source map files to be written inline in the generated `.js` files instead of in a independent `.js.map` file. [`inlineSources`](/tsconfig#inlineSources) allows for additionally inlining the source `.ts` file into the
 
 ## TypeScript 1.4
 
@@ -10318,7 +10318,7 @@ var b = MyFlags.Best; // emits var b = 7;
 
 ## `-noEmitOnError` commandline option
 
-The default behavior for the TypeScript compiler is to still emit .js files if there were type errors (for example, an attempt to assign a `string` to a `number`). This can be undesirable on build servers or other scenarios where only output from a "clean" build is desired. The new flag `noEmitOnError` prevents the compiler from emitting .js code if there were any errors.
+The default behavior for the TypeScript compiler is to still emit .js files if there were type errors (for example, an attempt to assign a `string` to a `number`). This can be undesirable on build servers or other scenarios where only output from a "clean" build is desired. The new flag [`noEmitOnError`](/tsconfig#noEmitOnError) prevents the compiler from emitting .js code if there were any errors.
 
 This is now the default for MSBuild projects; this allows MSBuild incremental build to work as expected, as outputs are only generated on clean builds.
 
@@ -10406,7 +10406,7 @@ The 1.1 compiler is typically around 4x faster than any previous release. See [t
 
 ## Better Module Visibility Rules
 
-TypeScript now only strictly enforces the visibility of types in modules if the `--declaration` flag is provided. This is very useful for Angular scenarios, for example:
+TypeScript now only strictly enforces the visibility of types in modules if the [`declaration`](/tsconfig#declaration) flag is provided. This is very useful for Angular scenarios, for example:
 
 ```ts
 module MyControllers {

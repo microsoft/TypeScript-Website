@@ -42,7 +42,7 @@ For more information see [async function reference](https://developer.mozilla.or
 
 ## Support for `--target ES6` with `--module`
 
-TypeScript 1.7 adds `ES6` to the list of options available for the `--module` flag and allows you to specify the module output when targeting `ES6`.
+TypeScript 1.7 adds `ES6` to the list of options available for the [`module`](/tsconfig#module) option and allows you to specify the module output when targeting `ES6`.
 This provides more flexibility to target exactly the features you want in specific runtimes.
 
 ##### Example

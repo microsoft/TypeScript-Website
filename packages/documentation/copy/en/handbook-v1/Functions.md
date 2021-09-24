@@ -313,7 +313,7 @@ let pickedCard = cardPicker();
 alert("card: " + pickedCard.card + " of " + pickedCard.suit);
 ```
 
-Even better, TypeScript will warn you when you make this mistake if you pass the `--noImplicitThis` flag to the compiler.
+Even better, TypeScript will warn you when you make this mistake if you pass the [`noImplicitThis`](/tsconfig#noImplicitThis) flag to the compiler.
 It will point out that `this` in `this.suits[pickedSuit]` is of type `any`.
 
 ## `this` parameters
@@ -364,7 +364,7 @@ alert("card: " + pickedCard.card + " of " + pickedCard.suit);
 ```
 
 Now TypeScript knows that `createCardPicker` expects to be called on a `Deck` object.
-That means that `this` is of type `Deck` now, not `any`, so `--noImplicitThis` will not cause any errors.
+That means that `this` is of type `Deck` now, not `any`, so [`noImplicitThis`](/tsconfig#noImplicitThis) will not cause any errors.
 
 ### `this` parameters in callbacks
 

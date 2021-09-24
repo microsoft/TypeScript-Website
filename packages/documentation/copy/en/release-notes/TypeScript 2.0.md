@@ -15,7 +15,7 @@ Effectively, `null` and `undefined` were valid values of _every_ type and it was
 
 ## `--strictNullChecks`
 
-`--strictNullChecks` switches to a new strict null checking mode.
+[`strictNullChecks`](/tsconfig#strictNullChecks) switches to a new strict null checking mode.
 
 In strict null checking mode, the `null` and `undefined` values are _not_ in the domain of every type and are only assignable to themselves and `any` (the one exception being that `undefined` is also assignable to `void`).
 So, whereas `T` and `T | undefined` are considered synonymous in regular type checking mode (because `undefined` is considered a subtype of any `T`), they are different types in strict type checking mode, and only `T | undefined` permits `undefined` values. The same is true for the relationship of `T` to `T | null`.
@@ -122,7 +122,7 @@ function foo(options?: Options) {
 }
 ```
 
-Type guards for dotted names also work with user defined type guard functions and the `typeof` and `instanceof` operators and do not depend on the `--strictNullChecks` compiler option.
+Type guards for dotted names also work with user defined type guard functions and the `typeof` and `instanceof` operators and do not depend on the [`strictNullChecks`](/tsconfig#strictNullChecks) compiler option.
 
 A type guard for a dotted name has no effect following an assignment to any part of the dotted name.
 For example, a type guard for `x.y.z` will have no effect following an assignment to `x`, `x.y`, or `x.y.z`.
@@ -211,7 +211,7 @@ function bar(x: string | number) {
 }
 ```
 
-Control flow based type analysis is particularly relevant in `--strictNullChecks` mode because nullable types are represented using union types:
+Control flow based type analysis is particularly relevant in [`strictNullChecks`](/tsconfig#strictNullChecks) mode because nullable types are represented using union types:
 
 ```ts
 function test(x: string | null) {
@@ -222,7 +222,7 @@ function test(x: string | null) {
 }
 ```
 
-Furthermore, in `--strictNullChecks` mode, control flow based type analysis includes _definite assignment analysis_ for local variables of types that don't permit the value `undefined`.
+Furthermore, in [`strictNullChecks`](/tsconfig#strictNullChecks) mode, control flow based type analysis includes _definite assignment analysis_ for local variables of types that don't permit the value `undefined`.
 
 ```ts
 function mumble(check: boolean) {
@@ -478,7 +478,7 @@ A new flag is also added in TypeScript 2.0 to flag all uses of `this` in functio
 
 Glob support is here!! Glob support has been [one of the most requested features](https://github.com/Microsoft/TypeScript/issues/1927).
 
-Glob-like file patterns are supported two properties `"include"` and `"exclude"`.
+Glob-like file patterns are supported two properties [`include`](/tsconfig#include) and `exclude`.
 
 ##### Example
 
@@ -503,16 +503,16 @@ The supported glob wildcards are:
 - `?` matches any one character (excluding directory separators)
 - `**/` recursively matches any subdirectory
 
-If a segment of a glob pattern includes only `*` or `.*`, then only files with supported extensions are included (e.g. `.ts`, `.tsx`, and `.d.ts` by default with `.js` and `.jsx` if `allowJs` is set to true).
+If a segment of a glob pattern includes only `*` or `.*`, then only files with supported extensions are included (e.g. `.ts`, `.tsx`, and `.d.ts` by default with `.js` and `.jsx` if [`allowJs`](/tsconfig#allowJs) is set to true).
 
-If the `"files"` and `"include"` are both left unspecified, the compiler defaults to including all TypeScript (`.ts`, `.d.ts` and `.tsx`) files in the containing directory and subdirectories except those excluded using the `"exclude"` property. JS files (`.js` and `.jsx`) are also included if `allowJs` is set to true.
+If the [`files`](/tsconfig#files) and [`include`](/tsconfig#include) are both left unspecified, the compiler defaults to including all TypeScript (`.ts`, `.d.ts` and `.tsx`) files in the containing directory and subdirectories except those excluded using the `exclude` property. JS files (`.js` and `.jsx`) are also included if [`allowJs`](/tsconfig#allowJs) is set to true.
 
-If the `"files"` or `"include"` properties are specified, the compiler will instead include the union of the files included by those two properties.
-Files in the directory specified using the `"outDir"` compiler option are always excluded unless explicitly included via the `"files"` property (even when the "`exclude`" property is specified).
+If the [`files`](/tsconfig#files) or [`include`](/tsconfig#include) properties are specified, the compiler will instead include the union of the files included by those two properties.
+Files in the directory specified using the [`outDir`](/tsconfig#outDir) compiler option are always excluded unless explicitly included via the [`files`](/tsconfig#files) property (even when the `exclude` property is specified).
 
-Files included using `"include"` can be filtered using the `"exclude"` property.
-However, files included explicitly using the `"files"` property are always included regardless of `"exclude"`.
-The `"exclude"` property defaults to excluding the `node_modules`, `bower_components`, and `jspm_packages` directories when not specified.
+Files included using [`include`](/tsconfig#include) can be filtered using the `exclude` property.
+However, files included explicitly using the [`files`](/tsconfig#files) property are always included regardless of `exclude`.
+The `exclude` property defaults to excluding the `node_modules`, `bower_components`, and `jspm_packages` directories when not specified.
 
 ## Module resolution enhancements: BaseUrl, Path mapping, rootDirs and tracing
 
@@ -522,8 +522,8 @@ See [Module Resolution](http://www.typescriptlang.org/docs/handbook/module-resol
 
 ## Base URL
 
-Using a `baseUrl` is a common practice in applications using AMD module loaders where modules are "deployed" to a single folder at run-time.
-All module imports with non-relative names are assumed to be relative to the `baseUrl`.
+Using a [`baseUrl`](/tsconfig#baseUrl) is a common practice in applications using AMD module loaders where modules are "deployed" to a single folder at run-time.
+All module imports with non-relative names are assumed to be relative to the [`baseUrl`](/tsconfig#baseUrl).
 
 ##### Example
 
@@ -546,7 +546,7 @@ import A from "moduleA";
 Sometimes modules are not directly located under _baseUrl_.
 Loaders use a mapping configuration to map module names to files at run-time, see [RequireJs documentation](http://requirejs.org/docs/api.html#config-paths) and [SystemJS documentation](https://github.com/systemjs/systemjs/blob/main/docs/import-maps.md).
 
-The TypeScript compiler supports the declaration of such mappings using `"paths"` property in `tsconfig.json` files.
+The TypeScript compiler supports the declaration of such mappings using [`paths`](/tsconfig#paths) property in `tsconfig.json` files.
 
 ##### Example
 
@@ -562,7 +562,7 @@ For instance, an import to a module `"jquery"` would be translated at runtime to
 }
 ```
 
-Using `"paths"` also allow for more sophisticated mappings including multiple fall back locations.
+Using [`paths`](/tsconfig#paths) also allow for more sophisticated mappings including multiple fall back locations.
 Consider a project configuration where only some modules are available in one location, and the rest are in another.
 
 ## Virtual Directories with `rootDirs`
@@ -589,7 +589,7 @@ Given this project structure:
 A build step will copy the files in `/src/views` and `/generated/templates/views` to the same directory in the output.
 At run-time, a view can expect its template to exist next to it, and thus should import it using a relative name as `"./template"`.
 
-`"rootDirs"` specify a list of _roots_ whose contents are expected to merge at run-time.
+[`rootDirs`](/tsconfig#rootDirs) specify a list of _roots_ whose contents are expected to merge at run-time.
 So following our example, the `tsconfig.json` file should look like:
 
 ```json tsconfig
@@ -602,7 +602,7 @@ So following our example, the `tsconfig.json` file should look like:
 
 ## Tracing module resolution
 
-`--traceResolution` offers a handy way to understand how modules have been resolved by the compiler.
+[`traceResolution`](/tsconfig#traceResolution) offers a handy way to understand how modules have been resolved by the compiler.
 
 ```shell
 tsc --traceResolution
@@ -723,7 +723,7 @@ class Bar {
 }
 ```
 
-When compiled in `--strictNullChecks` mode, optional properties and methods automatically have `undefined` included in their type. Thus, the `b` property above is of type `number | undefined` and the `g` method above is of type `(() => number) | undefined`.
+When compiled in [`strictNullChecks`](/tsconfig#strictNullChecks) mode, optional properties and methods automatically have `undefined` included in their type. Thus, the `b` property above is of type `number | undefined` and the `g` method above is of type `(() => number) | undefined`.
 Type guards can be used to strip away the `undefined` part of the type:
 
 ```ts
@@ -805,7 +805,7 @@ httpService("", headers); // Now ok, previously wasn't
 ## Including built-in type declarations with `--lib`
 
 Getting to ES6/ES2015 built-in API declarations were only limited to `target: ES6`.
-Enter `--lib`; with `--lib` you can specify a list of built-in API declaration groups that you can chose to include in your project.
+Enter [`lib`](/tsconfig#lib); with [`lib`](/tsconfig#lib) you can specify a list of built-in API declaration groups that you can chose to include in your project.
 For instance, if you expect your runtime to have support for `Map`, `Set` and `Promise` (e.g. most evergreen browsers today), just include `--lib es2015.collection,es2015.promise`.
 Similarly you can exclude declarations you do not want to include in your project, e.g. DOM if you are working on a node project using `--lib es5,es6`.
 
@@ -846,9 +846,9 @@ tsc --target es5 --lib es5,es2015.promise
 ## Flag unused declarations with `--noUnusedParameters` and `--noUnusedLocals`
 
 TypeScript 2.0 has two new flags to help you maintain a clean code base.
-`--noUnusedParameters` flags any unused function or method parameters errors.
-`--noUnusedLocals` flags any unused local (un-exported) declaration like variables, functions, classes, imports, etc...
-Also, unused private members of a class would be flagged as errors under `--noUnusedLocals`.
+[`noUnusedParameters`](/tsconfig#noUnusedParameters) flags any unused function or method parameters errors.
+[`noUnusedLocals`](/tsconfig#noUnusedLocals) flags any unused local (un-exported) declaration like variables, functions, classes, imports, etc...
+Also, unused private members of a class would be flagged as errors under [`noUnusedLocals`](/tsconfig#noUnusedLocals).
 
 ##### Example
 
@@ -909,10 +909,10 @@ foo(
 
 ## New `--skipLibCheck`
 
-TypeScript 2.0 adds a new `--skipLibCheck` compiler option that causes type checking of declaration files (files with extension `.d.ts`) to be skipped.
+TypeScript 2.0 adds a new [`skipLibCheck`](/tsconfig#skipLibCheck) compiler option that causes type checking of declaration files (files with extension `.d.ts`) to be skipped.
 When a program includes large declaration files, the compiler spends a lot of time type checking declarations that are already known to not contain errors, and compile times may be significantly shortened by skipping declaration file type checks.
 
-Since declarations in one file can affect type checking in other files, some errors may not be detected when `--skipLibCheck` is specified.
+Since declarations in one file can affect type checking in other files, some errors may not be detected when [`skipLibCheck`](/tsconfig#skipLibCheck) is specified.
 For example, if a non-declaration file augments a type declared in a declaration file, errors may result that are only reported when the declaration file is checked.
 However, in practice such situations are rare.
 
@@ -941,4 +941,4 @@ interface Error {
 
 ## New `--declarationDir`
 
-`--declarationDir` allows for generating declaration files in a different location than JavaScript files.
+[`declarationDir`](/tsconfig#declarationDir) allows for generating declaration files in a different location than JavaScript files.

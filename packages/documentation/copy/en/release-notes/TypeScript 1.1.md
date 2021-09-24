@@ -11,7 +11,7 @@ The 1.1 compiler is typically around 4x faster than any previous release. See [t
 
 ## Better Module Visibility Rules
 
-TypeScript now only strictly enforces the visibility of types in modules if the `--declaration` flag is provided. This is very useful for Angular scenarios, for example:
+TypeScript now only strictly enforces the visibility of types in modules if the [`declaration`](/tsconfig#declaration) flag is provided. This is very useful for Angular scenarios, for example:
 
 ```ts
 module MyControllers {

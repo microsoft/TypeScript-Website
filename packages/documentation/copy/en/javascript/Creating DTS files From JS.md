@@ -67,7 +67,7 @@ You want to make sure these files are included in your package if you have the f
 ## Editing the package.json
 
 TypeScript replicates the node resolution for modules in a `package.json`, with an additional step for finding .d.ts files.
-Roughly, the resolution will first check the optional `"types"` field, then the `"main"` field, and finally will try `index.d.ts` in the root.
+Roughly, the resolution will first check the optional `types` field, then the `"main"` field, and finally will try `index.d.ts` in the root.
 
 | Package.json              | Location of default .d.ts      |
 | :------------------------ | :----------------------------- |

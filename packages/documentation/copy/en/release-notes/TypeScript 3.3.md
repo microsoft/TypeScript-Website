@@ -54,7 +54,7 @@ Each of those impossible intersections reduces to `never`, and we're left with `
 This new behavior only kicks in when at most one type in the union has multiple overloads, and at most one type in the union has a generic signature.
 That means methods on `number[] | string[]` like `map` (which is generic) still won't be callable.
 
-On the other hand, methods like `forEach` will now be callable, but under `noImplicitAny` there may be some issues.
+On the other hand, methods like `forEach` will now be callable, but under [`noImplicitAny`](/tsconfig#noImplicitAny) there may be some issues.
 
 ```ts
 interface Dog {

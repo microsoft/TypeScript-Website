@@ -231,7 +231,7 @@ var b = MyFlags.Best; // emits var b = 7;
 
 ## `-noEmitOnError` commandline option
 
-The default behavior for the TypeScript compiler is to still emit .js files if there were type errors (for example, an attempt to assign a `string` to a `number`). This can be undesirable on build servers or other scenarios where only output from a "clean" build is desired. The new flag `noEmitOnError` prevents the compiler from emitting .js code if there were any errors.
+The default behavior for the TypeScript compiler is to still emit .js files if there were type errors (for example, an attempt to assign a `string` to a `number`). This can be undesirable on build servers or other scenarios where only output from a "clean" build is desired. The new flag [`noEmitOnError`](/tsconfig#noEmitOnError) prevents the compiler from emitting .js code if there were any errors.
 
 This is now the default for MSBuild projects; this allows MSBuild incremental build to work as expected, as outputs are only generated on clean builds.
 

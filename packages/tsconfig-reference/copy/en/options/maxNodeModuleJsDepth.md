@@ -1,6 +1,6 @@
 ---
 display: "Max Node Module JS Depth"
-oneline: "Specify the maximum folder depth used for checking JavaScript files from `node_modules`. Only applicable with `allowJs`."
+oneline: "Specify the maximum folder depth used for checking JavaScript files from `node_modules`. Only applicable with [`allowJs`](#allowJs)."
 ---
 
 The maximum dependency depth to search under `node_modules` and load JavaScript files.

@@ -265,7 +265,7 @@ Effectively, `null` and `undefined` are valid values of every type.
 That means it's not possible to _stop_ them from being assigned to any type, even when you would like to prevent it.
 The inventor of `null`, Tony Hoare, calls this his ["billion dollar mistake"](https://wikipedia.org/wiki/Null_pointer#History).
 
-The [`--strictNullChecks`](/tsconfig#strictNullChecks) flag fixes this: when you declare a variable, it doesn't automatically include `null` or `undefined`.
+The [`strictNullChecks`](/tsconfig#strictNullChecks) flag fixes this: when you declare a variable, it doesn't automatically include `null` or `undefined`.
 You can include them explicitly using a union type:
 
 ```ts twoslash
@@ -286,7 +286,7 @@ From TypeScript 3.7 and onwards, you can use [optional chaining](/docs/handbook/
 
 ### Optional parameters and properties
 
-With [`--strictNullChecks`](/tsconfig#strictNullChecks), an optional parameter automatically adds `| undefined`:
+With [`strictNullChecks`](/tsconfig#strictNullChecks), an optional parameter automatically adds `| undefined`:
 
 ```ts twoslash
 // @errors: 2345

@@ -56,10 +56,10 @@ Let's create a bare-bones one for our project:
 
 Here we're specifying a few things to TypeScript:
 
-1. Read in any files it understands in the `src` directory (with `include`).
-2. Accept JavaScript files as inputs (with `allowJs`).
-3. Emit all of the output files in `built` (with `outDir`).
-4. Translate newer JavaScript constructs down to an older version like ECMAScript 5 (using `target`).
+1. Read in any files it understands in the `src` directory (with [`include`](/tsconfig#include)).
+2. Accept JavaScript files as inputs (with [`allowJs`](/tsconfig#allowJs)).
+3. Emit all of the output files in `built` (with [`outDir`](/tsconfig#outDir)).
+4. Translate newer JavaScript constructs down to an older version like ECMAScript 5 (using [`target`](/tsconfig#target)).
 
 At this point, if you try running `tsc` at the root of your project, you should see output files in the `built` directory.
 The layout of files in `built` should look identical to the layout of `src`.
@@ -71,10 +71,10 @@ Even at this point you can get some great benefits from TypeScript understanding
 If you open up an editor like [VS Code](https://code.visualstudio.com) or [Visual Studio](https://visualstudio.com), you'll see that you can often get some tooling support like completion.
 You can also catch certain bugs with options like:
 
-- `noImplicitReturns` which prevents you from forgetting to return at the end of a function.
-- `noFallthroughCasesInSwitch` which is helpful if you never want to forget a `break` statement between `case`s in a `switch` block.
+- [`noImplicitReturns`](/tsconfig#noImplicitReturns) which prevents you from forgetting to return at the end of a function.
+- [`noFallthroughCasesInSwitch`](/tsconfig#noFallthroughCasesInSwitch) which is helpful if you never want to forget a `break` statement between `case`s in a `switch` block.
 
-TypeScript will also warn about unreachable code and labels, which you can disable with `allowUnreachableCode` and `allowUnusedLabels` respectively.
+TypeScript will also warn about unreachable code and labels, which you can disable with [`allowUnreachableCode`](/tsconfig#allowUnreachableCode) and [`allowUnusedLabels`](/tsconfig#allowUnusedLabels) respectively.
 
 ## Integrating with Build Tools
 
@@ -151,11 +151,11 @@ You should think of these the same way you'd think of red squiggles in an editor
 TypeScript will still translate your code, just like Word will still let you print your documents.
 
 If that sounds too lax for you, you can tighten that behavior up.
-If, for instance, you _don't_ want TypeScript to compile to JavaScript in the face of errors, you can use the `noEmitOnError` option.
+If, for instance, you _don't_ want TypeScript to compile to JavaScript in the face of errors, you can use the [`noEmitOnError`](/tsconfig#noEmitOnError) option.
 In that sense, TypeScript has a dial on its strictness, and you can turn that knob up as high as you want.
 
 If you plan on using the stricter settings that are available, it's best to turn them on now (see [Getting Stricter Checks](#getting-stricter-checks) below).
-For instance, if you never want TypeScript to silently infer `any` for a type without you explicitly saying so, you can use `noImplicitAny` before you start modifying your files.
+For instance, if you never want TypeScript to silently infer `any` for a type without you explicitly saying so, you can use [`noImplicitAny`](/tsconfig#noImplicitAny) before you start modifying your files.
 While it might feel somewhat overwhelming, the long-term gains become apparent much more quickly.
 
 ## Weeding out Errors
@@ -184,7 +184,7 @@ declare function define(...args: any[]): any;
 
 it's better to get rid of those calls and use TypeScript syntax for imports.
 
-First, you'll need to enable some module system by setting TypeScript's `module` flag.
+First, you'll need to enable some module system by setting TypeScript's [`module`](/tsconfig#module) option.
 Valid options are `commonjs`, `amd`, `system`, and `umd`.
 
 If you had the following Node/CommonJS code:
@@ -222,7 +222,7 @@ If TypeScript complains about a package like `lodash`, you can just write
 npm install -S @types/lodash
 ```
 
-If you're using a module option other than `commonjs`, you'll need to set your `moduleResolution` option to `node`.
+If you're using a module option other than `commonjs`, you'll need to set your [`moduleResolution`](/tsconfig#moduleResolution) option to `node`.
 
 After that, you'll be able to import lodash with no issues, and get accurate completions.
 
@@ -381,15 +381,15 @@ Once you've converted your codebase to TypeScript, you can start enabling these 
 There are certain cases where TypeScript can't figure out what certain types should be.
 To be as lenient as possible, it will decide to use the type `any` in its place.
 While this is great for migration, using `any` means that you're not getting any type safety, and you won't get the same tooling support you'd get elsewhere.
-You can tell TypeScript to flag these locations down and give an error with the `noImplicitAny` option.
+You can tell TypeScript to flag these locations down and give an error with the [`noImplicitAny`](/tsconfig#noImplicitAny) option.
 
 ### Strict `null` & `undefined` Checks
 
 By default, TypeScript assumes that `null` and `undefined` are in the domain of every type.
 That means anything declared with the type `number` could be `null` or `undefined`.
-Since `null` and `undefined` are such a frequent source of bugs in JavaScript and TypeScript, TypeScript has the `strictNullChecks` option to spare you the stress of worrying about these issues.
+Since `null` and `undefined` are such a frequent source of bugs in JavaScript and TypeScript, TypeScript has the [`strictNullChecks`](/tsconfig#strictNullChecks) option to spare you the stress of worrying about these issues.
 
-When `strictNullChecks` is enabled, `null` and `undefined` get their own types called `null` and `undefined` respectively.
+When [`strictNullChecks`](/tsconfig#strictNullChecks) is enabled, `null` and `undefined` get their own types called `null` and `undefined` respectively.
 Whenever anything is _possibly_ `null`, you can use a union type with the original type.
 So for instance, if something could be a `number` or `null`, you'd write the type out as `number | null`.
 
@@ -403,7 +403,7 @@ foo.length; // error - 'foo' is possibly 'null'
 foo!.length; // okay - 'foo!' just has type 'string[]'
 ```
 
-As a heads up, when using `strictNullChecks`, your dependencies may need to be updated to use `strictNullChecks` as well.
+As a heads up, when using [`strictNullChecks`](/tsconfig#strictNullChecks), your dependencies may need to be updated to use [`strictNullChecks`](/tsconfig#strictNullChecks) as well.
 
 ### No Implicit `any` for `this`
 
@@ -431,7 +431,7 @@ Point.prototype.distanceFromOrigin = function () {
 ```
 
 This has the same problems we mentioned above - we could easily have misspelled `getDistance` and not gotten an error.
-For this reason, TypeScript has the `noImplicitThis` option.
+For this reason, TypeScript has the [`noImplicitThis`](/tsconfig#noImplicitThis) option.
 When that option is set, TypeScript will issue an error when `this` is used without an explicit (or inferred) type.
 The fix is to use a `this`-parameter to give an explicit type in the interface or in the function itself:
 

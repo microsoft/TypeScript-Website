@@ -295,7 +295,7 @@ This type strips `?` modifiers from all properties of `T`, thus making all prope
 type Required<T> = { [P in keyof T]-?: T[P] };
 ```
 
-Note that in `--strictNullChecks` mode, when a homomorphic mapped type removes a `?` modifier from a property in the underlying type it also removes `undefined` from the type of that property:
+Note that in [`strictNullChecks`](/tsconfig#strictNullChecks) mode, when a homomorphic mapped type removes a `?` modifier from a property in the underlying type it also removes `undefined` from the type of that property:
 
 ##### Example
 
@@ -397,7 +397,7 @@ app.C = class {};
 ## Per-file JSX factories
 
 TypeScript 2.8 adds support for a per-file configurable JSX factory name using `@jsx dom` pragma.
-JSX factory can be configured for a compilation using `--jsxFactory` (default is `React.createElement`). With TypeScript 2.8 you can override this on a per-file-basis by adding a comment to the beginning of the file.
+JSX factory can be configured for a compilation using [`jsxFactory`](/tsconfig#jsxFactory) (default is `React.createElement`). With TypeScript 2.8 you can override this on a per-file-basis by adding a comment to the beginning of the file.
 
 ##### Example
 
@@ -424,4 +424,4 @@ Combined with the per-file `@jsx` pragma, each file can have a different JSX fac
 
 ## New `--emitDeclarationOnly`
 
-`--emitDeclarationOnly` allows for _only_ generating declaration files; `.js`/`.jsx` output generation will be skipped with this flag. The flag is useful when the `.js` output generation is handled by a different transpiler like Babel.
+[`emitDeclarationOnly`](/tsconfig#emitDeclarationOnly) allows for _only_ generating declaration files; `.js`/`.jsx` output generation will be skipped with this flag. The flag is useful when the `.js` output generation is handled by a different transpiler like Babel.
