@@ -103,16 +103,16 @@ In TypeScript, _generics_ are used when we want to describe a correspondence bet
 We do this by declaring a _type parameter_ in the function signature:
 
 ```ts twoslash
-function firstElement<Type>(arr: Type[]): T | undefined {
+function firstElement<Type>(arr: Type[]): Type | undefined {
   return arr[0];
 }
 ```
 
-By adding a type parameter `Type` to this function and using it in two places, we've created a link between the input of the function (the array) and the output (the return value). 
+By adding a type parameter `Type` to this function and using it in two places, we've created a link between the input of the function (the array) and the output (the return value).
 Now when we call it, a more specific type comes out:
 
 ```ts twoslash
-declare function firstElement<Type>(arr: Type[]): T | undefined;
+declare function firstElement<Type>(arr: Type[]): Type | undefined;
 // ---cut---
 // s is of type 'string'
 const s = firstElement(["a", "b", "c"]);
