@@ -1,50 +1,77 @@
+import { getEffectiveConstraintOfTypeParameter } from "typescript"
 import { PlaygroundPlugin } from "."
 
 type Sandbox = import("@typescript/sandbox").Sandbox
 
-export const createDragBar = () => {
+export const createDragBar = (side: "left" | "right") => {
   const sidebar = document.createElement("div")
   sidebar.className = "playground-dragbar"
+  if (side === "left") sidebar.classList.add("left")
 
-  let left: HTMLElement, right: HTMLElement
+  let leftSize = 0,
+    rightSize = 0
+
+  let left: HTMLElement, middle: HTMLElement, right: HTMLElement
   const drag = (e: MouseEvent) => {
-    if (left && right) {
+    rightSize = right?.clientWidth
+    leftSize = left?.clientWidth
+
+    if (side === "right" && middle && right) {
       // Get how far right the mouse is from the right
       const rightX = right.getBoundingClientRect().right
       const offset = rightX - e.pageX
-      const screenClampLeft = window.innerWidth - 320
-      const clampedOffset = Math.min(Math.max(offset, 280), screenClampLeft)
+      const screenClampRight = window.innerWidth - 320
+      rightSize = Math.min(Math.max(offset, 280), screenClampRight)
+      // console.log({ leftSize, rightSize })
 
       // Set the widths
-      left.style.width = `calc(100% - ${clampedOffset}px)`
-      right.style.width = `${clampedOffset}px`
-      right.style.flexBasis = `${clampedOffset}px`
-      right.style.maxWidth = `${clampedOffset}px`
-
-      // Save the x coordinate of the
-      if (window.localStorage) {
-        window.localStorage.setItem("dragbar-x", "" + clampedOffset)
-        window.localStorage.setItem("dragbar-window-width", "" + window.innerWidth)
-      }
-
-      // @ts-ignore - I know what I'm doing
-      window.sandbox.editor.layout()
-
-      // Don't allow selection
-      e.stopPropagation()
-      e.cancelBubble = true
+      middle.style.width = `calc(100% - ${rightSize + leftSize}px)`
+      right.style.width = `${rightSize}px`
+      right.style.flexBasis = `${rightSize}px`
+      right.style.maxWidth = `${rightSize}px`
     }
+
+    if (side === "left" && left && middle) {
+      // Get how far right the mouse is from the right
+      const leftX = e.pageX //left.getBoundingClientRect().left
+      const screenClampLeft = window.innerWidth - 320
+      leftSize = Math.min(Math.max(leftX, 180), screenClampLeft)
+
+      // Set the widths
+      middle.style.width = `calc(100% - ${rightSize + leftSize}px)`
+      left.style.width = `${leftSize}px`
+      left.style.flexBasis = `${leftSize}px`
+      left.style.maxWidth = `${leftSize}px`
+    }
+
+    // Save the x coordinate of the
+    if (window.localStorage) {
+      window.localStorage.setItem("dragbar-left", "" + leftSize)
+      window.localStorage.setItem("dragbar-right", "" + rightSize)
+      window.localStorage.setItem("dragbar-window-width", "" + window.innerWidth)
+    }
+
+    // @ts-ignore - I know what I'm doing
+    window.sandbox.editor.layout()
+
+    // Don't allow selection
+    e.stopPropagation()
+    e.cancelBubble = true
   }
 
   sidebar.addEventListener("mousedown", e => {
-    left = document.getElementById("editor-container")!
+    sidebar.classList.add("selected")
+    left = document.getElementById("navigation-container")!
+    middle = document.getElementById("editor-container")!
     right = sidebar.parentElement?.getElementsByClassName("playground-sidebar").item(0)! as any
     // Handle dragging all over the screen
     document.addEventListener("mousemove", drag)
+
     // Remove it when you lt go anywhere
     document.addEventListener("mouseup", () => {
       document.removeEventListener("mousemove", drag)
       document.body.style.userSelect = "auto"
+      sidebar.classList.remove("selected")
     })
 
     // Don't allow the drag to select text accidentally
@@ -227,4 +254,10 @@ export const activatePlugin = (
 
   // Let the previous plugin do any slow work after it's all done
   if (previousPlugin && previousPlugin.didUnmount) previousPlugin.didUnmount(sandbox, container)
+}
+
+export const createNavigationSection = () => {
+  const container = document.createElement("div")
+  container.id = "navigation-container"
+  return container
 }

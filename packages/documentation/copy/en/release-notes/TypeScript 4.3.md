@@ -260,9 +260,9 @@ class Derived extends Base {
 }
 ```
 
-That's why TypeScript 4.3 _also_ provides a new `--noImplicitOverride` flag.
+That's why TypeScript 4.3 _also_ provides a new [`noImplicitOverride`](/tsconfig#noImplicitOverride) flag.
 When this option is turned on, it becomes an error to override any method from a superclass unless you explicitly use an `override` keyword.
-In that last example, TypeScript would error under `--noImplicitOverride`, and give us a clue that we probably need to rename our method inside of `Derived`.
+In that last example, TypeScript would error under [`noImplicitOverride`](/tsconfig#noImplicitOverride), and give us a clue that we probably need to rename our method inside of `Derived`.
 
 We'd like to extend our thanks to our community for the implementation here.
 The work for these items was implemented in [a pull request](https://github.com/microsoft/TypeScript/pull/39669) by [Wenlu Wang](https://github.com/Kingwl), though an earlier pull request implementing only the `override` keyword by [Paul Cody Johnston](https://github.com/pcj) served as a basis for direction and discussion.
@@ -589,7 +589,7 @@ For more details, you can [look at the original pull request on GitHub](https://
 
 ## Always-Truthy Promise Checks
 
-Under `strictNullChecks`, checking whether a `Promise` is "truthy" in a conditional will trigger an error.
+Under [`strictNullChecks`](/tsconfig#strictNullChecks), checking whether a `Promise` is "truthy" in a conditional will trigger an error.
 
 ```ts
 async function foo(): Promise<boolean> {
@@ -667,7 +667,7 @@ class Foo {
 
 ## `.tsbuildinfo` Size Improvements
 
-In TypeScript 4.3, `.tsbuildinfo` files that are generated as part of `--incremental` builds should be significantly smaller.
+In TypeScript 4.3, `.tsbuildinfo` files that are generated as part of [`incremental`](/tsconfig#incremental) builds should be significantly smaller.
 This is thanks to several optimizations in the internal format, creating tables with numeric identifiers to be used throughout the file instead of repeating full paths and similar information.
 This work was spear-headed by [Tobias Koppers](https://github.com/sokra) in [their pull request](https://github.com/microsoft/TypeScript/pull/43079), serving as inspiration for [the ensuing pull request](https://github.com/microsoft/TypeScript/pull/43155) and [further optimizations](https://github.com/microsoft/TypeScript/pull/43695).
 
@@ -681,13 +681,13 @@ Needless to say, these sorts of savings in size translate to slightly faster bui
 
 ## Lazier Calculations in `--incremental` and `--watch` Compilations
 
-One of the issues with `--incremental` and `--watch` modes are that while they make later compilations go faster, the initial compilation can be a bit slower - in some cases, significantly slower.
+One of the issues with [`incremental`](/tsconfig#incremental) and `--watch` modes are that while they make later compilations go faster, the initial compilation can be a bit slower - in some cases, significantly slower.
 This is because these modes have to perform a bunch of book-keeping, computing information about the current project, and sometimes saving that data in a `.tsbuildinfo` file for later builds.
 
-That's why on top of `.tsbuildinfo` size improvements, TypeScript 4.3 also ships some changes to `--incremental` and `--watch` modes that make the first build of a project with these flags just as fast as an ordinary build!
+That's why on top of `.tsbuildinfo` size improvements, TypeScript 4.3 also ships some changes to [`incremental`](/tsconfig#incremental) and `--watch` modes that make the first build of a project with these flags just as fast as an ordinary build!
 To do this, much of the information that would ordinarily be computed up-front is instead done on an on-demand basis for later builds.
-While this can add some overhead to a subsequent build, TypeScript's `--incremental` and `--watch` functionality will still typically operate on a much smaller set of files, and any needed information will be saved afterwards.
-In a sense, `--incremental` and `--watch` builds will "warm up" and get faster at compiling files once you've updated them a few times.
+While this can add some overhead to a subsequent build, TypeScript's [`incremental`](/tsconfig#incremental) and `--watch` functionality will still typically operate on a much smaller set of files, and any needed information will be saved afterwards.
+In a sense, [`incremental`](/tsconfig#incremental) and `--watch` builds will "warm up" and get faster at compiling files once you've updated them a few times.
 
 In a repository with 3000 files, **this reduced initial build times to almost a third**!
 
@@ -776,13 +776,13 @@ https://github.com/microsoft/TypeScript-DOM-lib-generator/issues/991
 
 ### `useDefineForClassFields` now defaults to true on `esnext` and eventually on `es2022`
 
-In 2021 the class fields feature was added into the JavaScript specification with behavior which differed from how TypeScript had implemented it. In preparation for this, in TypeScript 3.7, a flag was added ([`useDefineForClassFields`](https://www.typescriptlang.org/tsconfig#useDefineForClassFields)) to migrate to emitted JavaScript to match the JavaScript standard behavior.
+In 2021 the class fields feature was added into the JavaScript specification with behavior which differed from how TypeScript had implemented it. In preparation for this, in TypeScript 3.7, a flag was added ([`useDefineForClassFields`](/tsconfig#useDefineForClassFields)) to migrate to emitted JavaScript to match the JavaScript standard behavior.
 
 Now that the feature is in JavaScript we are changing the default to `true` for ES2022 and above, including ESNext.
 
 ### Errors on Always-Truthy Promise Checks
 
-Under `strictNullChecks`, using a `Promise` that always appears to be defined within a condition check is now considered an error.
+Under [`strictNullChecks`](/tsconfig#strictNullChecks), using a `Promise` that always appears to be defined within a condition check is now considered an error.
 
 ```ts
 declare var p: Promise<number>;

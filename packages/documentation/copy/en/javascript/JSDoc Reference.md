@@ -608,7 +608,7 @@ var wrong;
 var right;
 ```
 
-Nullable types only have meaning if `strictNullChecks` is on:
+Nullable types only have meaning if [`strictNullChecks`](/tsconfig#strictNullChecks) is on:
 
 ```js twoslash
 /**

@@ -46,9 +46,9 @@ export type SandboxConfig = {
     groupEnd: (...args: any[]) => void
   }
 } & (
-    | { /** theID of a dom node to add monaco to */ domID: string }
-    | { /** theID of a dom node to add monaco to */ elementToAppend: HTMLElement }
-  )
+  | { /** theID of a dom node to add monaco to */ domID: string }
+  | { /** theID of a dom node to add monaco to */ elementToAppend: HTMLElement }
+)
 
 const languageType = (config: SandboxConfig) => (config.filetype === "js" ? "javascript" : "typescript")
 
@@ -215,7 +215,7 @@ export const createTypeScriptSandbox = (
   defaults.setCompilerOptions(compilerOptions)
 
   // To let clients plug into compiler settings changes
-  let didUpdateCompilerSettings = (opts: CompilerOptions) => { }
+  let didUpdateCompilerSettings = (opts: CompilerOptions) => {}
 
   const updateCompilerSettings = (opts: CompilerOptions) => {
     const newKeys = Object.keys(opts)

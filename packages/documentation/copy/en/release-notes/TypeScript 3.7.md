@@ -99,7 +99,7 @@ let temp = foo === null || foo === undefined ? undefined : foo.bar;
 let result = temp / someComputation();
 ```
 
-That might result in dividing `undefined`, which is why in `strictNullChecks`, the following is an error.
+That might result in dividing `undefined`, which is why in [`strictNullChecks`](/tsconfig#strictNullChecks), the following is an error.
 
 ```ts
 function barPercentage(foo?: { bar: number }) {
@@ -413,21 +413,21 @@ For more information, you can [read up on the original pull request](https://git
 
 ## `--declaration` and `--allowJs`
 
-The `--declaration` flag in TypeScript allows us to generate `.d.ts` files (declaration files) from TypeScript source files (i.e. `.ts` and `.tsx` files).
+The [`declaration`](/tsconfig#declaration) flag in TypeScript allows us to generate `.d.ts` files (declaration files) from TypeScript source files (i.e. `.ts` and `.tsx` files).
 These `.d.ts` files are important for a couple of reasons.
 
 First of all, they're important because they allow TypeScript to type-check against other projects without re-checking the original source code.
 They're also important because they allow TypeScript to interoperate with existing JavaScript libraries that weren't built with TypeScript in mind.
 Finally, a benefit that is often underappreciated: both TypeScript _and_ JavaScript users can benefit from these files when using editors powered by TypeScript to get things like better auto-completion.
 
-Unfortunately, `--declaration` didn't work with the `--allowJs` flag which allows mixing TypeScript and JavaScript input files.
-This was a frustrating limitation because it meant users couldn't use the `--declaration` flag when migrating codebases, even if they were JSDoc-annotated.
+Unfortunately, [`declaration`](/tsconfig#declaration) didn't work with the [`allowJs`](/tsconfig#allowJs) flag which allows mixing TypeScript and JavaScript input files.
+This was a frustrating limitation because it meant users couldn't use the [`declaration`](/tsconfig#declaration) flag when migrating codebases, even if they were JSDoc-annotated.
 TypeScript 3.7 changes that, and allows the two options to be used together!
 
 The most impactful outcome of this feature might a bit subtle: with TypeScript 3.7, users can write libraries in JSDoc annotated JavaScript and support TypeScript users.
 
-The way that this works is that when using `allowJs`, TypeScript has some best-effort analyses to understand common JavaScript patterns; however, the way that some patterns are expressed in JavaScript don't necessarily look like their equivalents in TypeScript.
-When `declaration` emit is turned on, TypeScript figures out the best way to transform JSDoc comments and CommonJS exports into valid type declarations and the like in the output `.d.ts` files.
+The way that this works is that when using [`allowJs`](/tsconfig#allowJs), TypeScript has some best-effort analyses to understand common JavaScript patterns; however, the way that some patterns are expressed in JavaScript don't necessarily look like their equivalents in TypeScript.
+When [`declaration`](/tsconfig#declaration) emit is turned on, TypeScript figures out the best way to transform JSDoc comments and CommonJS exports into valid type declarations and the like in the output `.d.ts` files.
 
 As an example, the following code snippet
 
@@ -543,7 +543,7 @@ export type Job = () => void;
 ```
 
 Note that when using these flags together, TypeScript doesn't necessarily have to downlevel `.js` files.
-If you simply want TypeScript to create `.d.ts` files, you can use the `--emitDeclarationOnly` compiler option.
+If you simply want TypeScript to create `.d.ts` files, you can use the [`emitDeclarationOnly`](/tsconfig#emitDeclarationOnly) compiler option.
 
 For more details, you can [check out the original pull request](https://github.com/microsoft/TypeScript/pull/32372).
 
@@ -591,7 +591,7 @@ class C {
 ```
 
 While TypeScript 3.7 isn't changing any existing emit by default, we've been rolling out changes incrementally to help users mitigate potential future breakage.
-We've provided a new flag called `useDefineForClassFields` to enable this emit mode with some new checking logic.
+We've provided a new flag called [`useDefineForClassFields`](/tsconfig#useDefineForClassFields) to enable this emit mode with some new checking logic.
 
 The two biggest changes are the following:
 
@@ -692,12 +692,12 @@ class DogHouse extends AnimalHouse {
 }
 ```
 
-Currently `useDefineForClassFields` is only available when targeting ES5 and upwards, since `Object.defineProperty` doesn't exist in ES3.
-To achieve similar checking for issues, you can create a separate project that targets ES5 and uses `--noEmit` to avoid a full build.
+Currently [`useDefineForClassFields`](/tsconfig#useDefineForClassFields) is only available when targeting ES5 and upwards, since `Object.defineProperty` doesn't exist in ES3.
+To achieve similar checking for issues, you can create a separate project that targets ES5 and uses [`noEmit`](/tsconfig#noEmit) to avoid a full build.
 
 For more information, you can [take a look at the original pull request for these changes](https://github.com/microsoft/TypeScript/pull/33509).
 
-We strongly encourage users to try the `useDefineForClassFields` flag and report back on our issue tracker or in the comments below.
+We strongly encourage users to try the [`useDefineForClassFields`](/tsconfig#useDefineForClassFields) flag and report back on our issue tracker or in the comments below.
 This includes feedback on difficulty of adopting the flag so we can understand how we can make migration easier.
 
 ## Build-Free Editing with Project References
@@ -707,7 +707,7 @@ Unfortunately, editing a project whose dependencies hadn't been built (or whose 
 
 In TypeScript 3.7, when opening a project with dependencies, TypeScript will automatically use the source `.ts`/`.tsx` files instead.
 This means projects using project references will now see an improved editing experience where semantic operations are up-to-date and "just work".
-You can disable this behavior with the compiler option `disableSourceOfProjectReferenceRedirect` which may be appropriate when working in very large projects where this change may impact editing performance.
+You can disable this behavior with the compiler option [`disableSourceOfProjectReferenceRedirect`](/tsconfig#disableSourceOfProjectReferenceRedirect) which may be appropriate when working in very large projects where this change may impact editing performance.
 
 You can [read up more about this change by reading up on its pull request](https://github.com/microsoft/TypeScript/pull/32028).
 
@@ -749,7 +749,7 @@ function doAdminThing(user: User) {
 ```
 
 This check is a breaking change, but for that reason the checks are very conservative.
-This error is only issued in `if` conditions, and it is not issued on optional properties, if `strictNullChecks` is off, or if the function is later called within the body of the `if`:
+This error is only issued in `if` conditions, and it is not issued on optional properties, if [`strictNullChecks`](/tsconfig#strictNullChecks) is off, or if the function is later called within the body of the `if`:
 
 ```ts
 interface User {
@@ -776,7 +776,7 @@ We owe a big thanks to GitHub user [@jwbay](https://github.com/jwbay) who took t
 ## `// @ts-nocheck` in TypeScript Files
 
 TypeScript 3.7 allows us to add `// @ts-nocheck` comments to the top of TypeScript files to disable semantic checks.
-Historically this comment was only respected in JavaScript source files in the presence of `checkJs`, but we've expanded support to TypeScript files to make migrations easier for all users.
+Historically this comment was only respected in JavaScript source files in the presence of [`checkJs`](/tsconfig#checkJs), but we've expanded support to TypeScript files to make migrations easier for all users.
 
 ## Semicolon Formatter Option
 
@@ -798,7 +798,7 @@ These changes are largely correctness changes related to nullability, but impact
 [As mentioned above](#the-usedefineforclassfields-flag-and-the-declare-property-modifier), TypeScript 3.7 emits `get`/`set` accessors in `.d.ts` files which can cause breaking changes for consumers on older versions of TypeScript like 3.5 and prior.
 TypeScript 3.6 users will not be impacted, since that version was future-proofed for this feature.
 
-While not a breakage per se, opting in to the `useDefineForClassFields` flag can cause breakage when:
+While not a breakage per se, opting in to the [`useDefineForClassFields`](/tsconfig#useDefineForClassFields) flag can cause breakage when:
 
 - overriding an accessor in a derived class with a property declaration
 - re-declaring a property declaration with no initializer
@@ -811,7 +811,7 @@ As mentioned above, TypeScript now errors when functions appear to be uncalled w
 An error is issued when a function type is checked in `if` conditions unless any of the following apply:
 
 - the checked value comes from an optional property
-- `strictNullChecks` is disabled
+- [`strictNullChecks`](/tsconfig#strictNullChecks) is disabled
 - the function is later called within the body of the `if`
 
 ### Local and Imported Type Declarations Now Conflict

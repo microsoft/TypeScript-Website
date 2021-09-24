@@ -118,7 +118,7 @@ window.onscroll = function (uiEvent) {
 
 Based on the fact that the above function is being assigned to `Window.onscroll`, TypeScript knows that `uiEvent` is a [UIEvent](https://developer.mozilla.org/docs/Web/API/UIEvent), and not a [MouseEvent](https://developer.mozilla.org/docs/Web/API/MouseEvent) like the previous example. `UIEvent` objects contain no `button` property, and so TypeScript will throw an error.
 
-If this function were not in a contextually typed position, the function's argument would implicitly have type `any`, and no error would be issued (unless you are using the `--noImplicitAny` option):
+If this function were not in a contextually typed position, the function's argument would implicitly have type `any`, and no error would be issued (unless you are using the [`noImplicitAny`](/tsconfig#noImplicitAny) option):
 
 ```ts twoslash
 // @noImplicitAny: false

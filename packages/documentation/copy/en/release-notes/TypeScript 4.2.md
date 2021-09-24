@@ -225,9 +225,9 @@ function processOptions(opts: Options) {
 
 In some cases, users would prefer to explicitly opt into the index signature - they would prefer to get an error message when a dotted property access doesn't correspond to a specific property declaration.
 
-That's why TypeScript introduces a new flag called `--noPropertyAccessFromIndexSignature`.
+That's why TypeScript introduces a new flag called [`noPropertyAccessFromIndexSignature`](/tsconfig#noPropertyAccessFromIndexSignature).
 Under this mode, you'll be opted in to TypeScript's older behavior that issues an error.
-This new setting is not under the `strict` family of flags, since we believe users will find it more useful on certain codebases than others.
+This new setting is not under the [`strict`](/tsconfig#strict) family of flags, since we believe users will find it more useful on certain codebases than others.
 
 You can understand this feature in more detail by reading up on the corresponding [pull request](https://github.com/microsoft/TypeScript/pull/40171/).
 We'd also like to extend a big thanks to [Wenlu Wang](https://github.com/Kingwl) who sent us this pull request!
@@ -366,7 +366,7 @@ You can read up more on abstract construct signatures [on its pull request](http
 A surprisingly common scenario for TypeScript users is to ask "why is TypeScript including this file?".
 Inferring the files of your program turns out to be a complicated process, and so there are lots of reasons why a specific combination of `lib.d.ts` got used, why certain files in `node_modules` are getting included, and why certain files are being included even though we thought specifying `exclude` would keep them out.
 
-That's why TypeScript now provides an `--explainFiles` flag.
+That's why TypeScript now provides an [`explainFiles`](/tsconfig#explainFiles) flag.
 
 ```sh
 tsc --explainFiles
@@ -420,7 +420,7 @@ For more information, [check out the original pull request](https://github.com/m
 
 Thanks to further improvements from [Alex Tarasyuk](https://github.com/a-tarasyuk), TypeScript's uncalled function checks now apply within `&&` and `||` expressions.
 
-Under `--strictNullChecks`, the following code will now error.
+Under [`strictNullChecks`](/tsconfig#strictNullChecks), the following code will now error.
 
 ```ts
 function shouldDisplayElement(element: Element) {
@@ -446,7 +446,7 @@ Thanks to another pull request from [Alex Tarasyuk](https://github.com/a-tarasyu
 let [_first, second] = getValues();
 ```
 
-Previously, if `_first` was never used later on, TypeScript would issue an error under `noUnusedLocals`.
+Previously, if `_first` was never used later on, TypeScript would issue an error under [`noUnusedLocals`](/tsconfig#noUnusedLocals).
 Now, TypeScript will recognize that `_first` was intentionally named with an underscore because there was no intent to use it.
 
 For more details, take a look at [the full change](https://github.com/microsoft/TypeScript/pull/41378).
@@ -463,7 +463,7 @@ function watchMovie(title: string) {
 }
 ```
 
-Of course, for any movie title not yet in the dictionary, `movieWatchCount[title]` will be `undefined` (TypeScript 4.1 added the option [`--noUncheckedIndexedAccess`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html#checked-indexed-accesses---nouncheckedindexedaccess) to include `undefined` when reading from an index signature like this).
+Of course, for any movie title not yet in the dictionary, `movieWatchCount[title]` will be `undefined` (TypeScript 4.1 added the option [`noUncheckedIndexedAccess`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html#checked-indexed-accesses---nouncheckedindexedaccess) to include `undefined` when reading from an index signature like this).
 Even though it's clear that there must be some strings not present in `movieWatchCount`, previous versions of TypeScript treated optional object properties as unassignable to otherwise compatible index signatures, due to the presence of `undefined`.
 
 ```ts twoslash
@@ -565,7 +565,7 @@ See more details in [the corresponding changes](https://github.com/microsoft/Typ
 
 ### Expanded Uncalled Function Checks
 
-As described above, uncalled function checks will now operate consistently within `&&` and `||` expressions when using `--strictNullChecks`.
+As described above, uncalled function checks will now operate consistently within `&&` and `||` expressions when using [`strictNullChecks`](/tsconfig#strictNullChecks).
 This can be a source of new breaks, but is typically an indication of a logic error in existing code.
 
 ### Type Arguments in JavaScript Are Not Parsed as Type Arguments

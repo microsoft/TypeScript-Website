@@ -69,7 +69,7 @@ pt.x = "0";
 
 #### `--strictPropertyInitialization`
 
-The `strictPropertyInitialization` setting controls whether class fields need to be initialized in the constructor.
+The [`strictPropertyInitialization`](/tsconfig#strictPropertyInitialization) setting controls whether class fields need to be initialized in the constructor.
 
 ```ts twoslash
 // @errors: 2564

@@ -16,7 +16,7 @@ TypeScript supports embedding, type checking, and compiling JSX directly to Java
 In order to use JSX you must do two things.
 
 1. Name your files with a `.tsx` extension
-2. Enable the `jsx` option
+2. Enable the [`jsx`](/tsconfig#jsx) option
 
 TypeScript ships with three JSX modes: `preserve`, `react`, and `react-native`.
 These modes only affect the emit stage - type checking is unaffected.
@@ -33,9 +33,9 @@ The `react-native` mode is the equivalent of `preserve` in that it keeps all JSX
 | `react-jsx`    | `<div />` | `_jsx("div", {}, void 0);`                        | `.js`                 |
 | `react-jsxdev` | `<div />` | `_jsxDEV("div", {}, void 0, false, {...}, this);` | `.js`                 |
 
-You can specify this mode using either the `--jsx` command line flag or the corresponding option [`jsx` in your tsconfig.json](/tsconfig#jsx) file.
+You can specify this mode using either the [`jsx`](/tsconfig#jsx) command line flag or the corresponding option [`jsx` in your tsconfig.json](/tsconfig#jsx) file.
 
-> \*Note: You can specify the JSX factory function to use when targeting react JSX emit with `--jsxFactory` option (defaults to `React.createElement`)
+> \*Note: You can specify the JSX factory function to use when targeting react JSX emit with [`jsxFactory`](/tsconfig#jsxFactory) option (defaults to `React.createElement`)
 
 ## The `as` operator
 
@@ -439,6 +439,6 @@ class MyComponent extends React.Component<Props, {}> {
 
 There are multiple compiler flags which can be used to customize your JSX, which work as both a compiler flag and via inline per-file pragmas. To learn more see their tsconfig reference pages:
 
-- [`jsxFactory`](/tsconfig/#jsxFactory)
-- [`jsxFragmentFactory`](/tsconfig/#jsxFragmentFactory)
-- [`jsxImportSource`](/tsconfig/#jsxImportSource)
+- [`jsxFactory`](/tsconfig#jsxFactory)
+- [`jsxFragmentFactory`](/tsconfig#jsxFragmentFactory)
+- [`jsxImportSource`](/tsconfig#jsxImportSource)

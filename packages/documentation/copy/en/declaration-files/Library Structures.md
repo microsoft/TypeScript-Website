@@ -323,4 +323,4 @@ the top-level module object can _never_ be callable.
 
 The most common solution here is to define a `default` export for a callable/constructable object;
 module loaders commonly detect this situation automatically and replace the top-level object with the `default` export.
-TypeScript can handle this for you, if you have [`"esModuleInterop": true`](/tsconfig/#esModuleInterop) in tsconfig.json.
+TypeScript can handle this for you, if you have [`"esModuleInterop": true`](/tsconfig/#esModuleInterop) in your tsconfig.json.

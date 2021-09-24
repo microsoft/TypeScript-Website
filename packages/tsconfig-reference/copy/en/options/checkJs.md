@@ -3,7 +3,7 @@ display: "Check JS"
 oneline: "Enable error reporting in type-checked JavaScript files."
 ---
 
-Works in tandem with `allowJs`. When `checkJs` is enabled then errors are reported in JavaScript files. This is
+Works in tandem with [`allowJs`](#allowJs). When `checkJs` is enabled then errors are reported in JavaScript files. This is
 the equivalent of including `// @ts-check` at the top of all JavaScript files which are included in your project.
 
 For example, this is incorrect JavaScript according to the `parseFloat` type definition which comes with TypeScript:

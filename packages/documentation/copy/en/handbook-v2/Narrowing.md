@@ -536,7 +536,7 @@ function getArea(shape: Shape) {
 
 <!-- TODO -->
 
-Under `strictNullChecks` that gives us an error - which is appropriate since `radius` might not be defined.
+Under [`strictNullChecks`](/tsconfig#strictNullChecks) that gives us an error - which is appropriate since `radius` might not be defined.
 But what if we perform the appropriate checks on the `kind` property?
 
 ```ts twoslash
@@ -576,7 +576,7 @@ function getArea(shape: Shape) {
 
 But this doesn't feel ideal.
 We had to shout a bit at the type-checker with those non-null assertions (`!`) to convince it that `shape.radius` was defined, but those assertions are error-prone if we start to move code around.
-Additionally, outside of `strictNullChecks` we're able to accidentally access any of those fields anyway (since optional properties are just assumed to always be present when reading them).
+Additionally, outside of [`strictNullChecks`](/tsconfig#strictNullChecks) we're able to accidentally access any of those fields anyway (since optional properties are just assumed to always be present when reading them).
 We can definitely do better.
 
 The problem with this encoding of `Shape` is that the type-checker doesn't have any way to know whether or not `radius` or `sideLength` are present based on the `kind` property.
@@ -622,9 +622,9 @@ function getArea(shape: Shape) {
 ```
 
 Like with our first definition of `Shape`, this is still an error.
-When `radius` was optional, we got an error (only in `strictNullChecks`) because TypeScript couldn't tell whether the property was present.
+When `radius` was optional, we got an error (only in [`strictNullChecks`](/tsconfig#strictNullChecks)) because TypeScript couldn't tell whether the property was present.
 Now that `Shape` is a union, TypeScript is telling us that `shape` might be a `Square`, and `Square`s don't have `radius` defined on them!
-Both interpretations are correct, but only does our new encoding of `Shape` still cause an error outside of `strictNullChecks`.
+Both interpretations are correct, but only does our new encoding of `Shape` still cause an error outside of [`strictNullChecks`](/tsconfig#strictNullChecks).
 
 But what if we tried checking the `kind` property again?
 

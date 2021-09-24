@@ -11,6 +11,7 @@ import {
   activatePlugin,
   createDragBar,
   setupSidebarToggle,
+  createNavigationSection,
 } from "./createElements"
 import { runWithCustomLogs } from "./sidebar/runtime"
 import { createExporter } from "./exporter"
@@ -22,6 +23,7 @@ import { allowConnectingToLocalhost, activePlugins, addCustomPlugin } from "./si
 import { createUtils, PluginUtils } from "./pluginUtils"
 import type React from "react"
 import { settingsPlugin, getPlaygroundPlugins } from "./sidebar/settings"
+import { gistPoweredNavBar } from "./navigation"
 
 export { PluginUtils } from "./pluginUtils"
 
@@ -76,7 +78,31 @@ export const setupPlayground = (
   react: typeof React
 ) => {
   const playgroundParent = sandbox.getDomNode().parentElement!.parentElement!.parentElement!
-  const dragBar = createDragBar()
+  // UI to the left
+
+  const leftNav = createNavigationSection()
+  playgroundParent.insertBefore(leftNav, sandbox.getDomNode().parentElement!.parentElement!)
+
+  const dragBarLeft = createDragBar("left")
+  playgroundParent.insertBefore(dragBarLeft, sandbox.getDomNode().parentElement!.parentElement!)
+
+  leftNav.style.display = "none"
+  dragBarLeft.style.display = "none"
+
+  const showNav = () => {
+    const right = document.getElementsByClassName("playground-sidebar").item(0)!
+    const middle = document.getElementById("editor-container")!
+    middle.style.width = `calc(100% - ${right.clientWidth + 180}px)`
+
+    leftNav.style.display = "block"
+    leftNav.style.width = "180px"
+    leftNav.style.minWidth = "180px"
+    leftNav.style.maxWidth = "180px"
+    dragBarLeft.style.display = "block"
+  }
+
+  // UI to the right
+  const dragBar = createDragBar("right")
   playgroundParent.appendChild(dragBar)
 
   const sidebar = createSidebar()
@@ -418,8 +444,8 @@ export const setupPlayground = (
       } else {
         sidebarTabs.style.display = "none"
         sidebarContent.style.display = "none"
-        settingsContent.style.display = "block";
-        (document.querySelector(".playground-sidebar label") as any).focus()
+        settingsContent.style.display = "block"
+        ;(document.querySelector(".playground-sidebar label") as any).focus()
       }
       settingsToggle.parentElement!.classList.toggle("open")
     }
@@ -486,8 +512,6 @@ export const setupPlayground = (
     languageSelector.onchange = () => {
       const filetype = options[Number(languageSelector.selectedIndex || 0)]
       const query = sandbox.createURLQueryWithCompilerOptions(sandbox, { filetype })
-      console.log(query)
-      console.log({ filetype })
       const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
       // @ts-ignore
       document.location = fullURL
@@ -621,6 +645,11 @@ export const setupPlayground = (
     setTimeout(() => {
       document.getElementById("whatisnew-button")?.click()
     }, 100)
+  }
+
+  // Grab the contents of a Gist
+  if (location.hash.startsWith("#gist/")) {
+    gistPoweredNavBar(sandbox, ui, showNav)
   }
 
   return playground

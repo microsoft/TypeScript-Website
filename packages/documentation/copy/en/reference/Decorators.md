@@ -18,7 +18,7 @@ Decorators are a [stage 2 proposal](https://github.com/tc39/proposal-decorators)
 
 > NOTE&emsp; Decorators are an experimental feature that may change in future releases.
 
-To enable experimental support for decorators, you must enable the `experimentalDecorators` compiler option either on the command line or in your `tsconfig.json`:
+To enable experimental support for decorators, you must enable the [`experimentalDecorators`](/tsconfig#experimentalDecorators) compiler option either on the command line or in your `tsconfig.json`:
 
 **Command Line**:
 
@@ -493,7 +493,7 @@ npm i reflect-metadata --save
 ```
 
 TypeScript includes experimental support for emitting certain types of metadata for declarations that have decorators.
-To enable this experimental support, you must set the `emitDecoratorMetadata` compiler option either on the command line or in your `tsconfig.json`:
+To enable this experimental support, you must set the [`emitDecoratorMetadata`](/tsconfig#emitDecoratorMetadata) compiler option either on the command line or in your `tsconfig.json`:
 
 **Command Line**:
 
