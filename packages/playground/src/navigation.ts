@@ -83,7 +83,9 @@ export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void)
 
   const gistHash = location.hash.split("#gist/")[1]
   const [gistID, gistStoryIndex] = gistHash.split("-")
-  fetch(`http://localhost:7071/api/API?gistID=${gistID}`)
+  // const relay = "http://localhost:7071/api/API"
+  const relay = "https://typescriptplaygroundgistproxyapi.azurewebsites.net/api/API"
+  fetch(`${relay}?gistID=${gistID}`)
     .then(async res => {
       playground.style.opacity = "1"
       sandbox.editor.updateOptions({ readOnly: false })
