@@ -194,6 +194,8 @@ function draw({ shape: Shape, xPos: number = 100 /*...*/ }) {
 In an object destructuring pattern, `shape: Shape` means "grab the property `shape` and redefine it locally as a variable named `Shape`.
 Likewise `xPos: number` creates a variable named `number` whose value is based on the parameter's `xPos`.
 
+Using [mapping modifiers](/docs/handbook/2/mapped-types.html#mapping-modifiers), you can remove `optional` attributes.
+
 ### `readonly` Properties
 
 Properties can also be marked as `readonly` for TypeScript.
@@ -266,28 +268,7 @@ writablePerson.age++;
 console.log(readonlyPerson.age); // prints '43'
 ```
 
-Using the `-readonly` modifier, you can remove the `readonly` modifier's effect.
-
-```ts twoslash
-interface ReadonlyPerson {
-  readonly name: string;
-  readonly age: number;
-}
-
-type Writable<T> = {
-  -readonly [K in keyof T]: T[K];
-};
-
-let writablePerson: Writable<ReadonlyPerson> = {
-  name: "Person McPersonface",
-  age: 42,
-}
-
-// works
-writablePerson.age++
-
-console.log(writablePerson.age) // prints '43'
-```
+Using [mapping modifiers](/docs/handbook/2/mapped-types.html#mapping-modifiers), you can remove `readonly` attributes.
 
 ### Index Signatures
 
