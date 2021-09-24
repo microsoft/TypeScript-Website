@@ -13,3 +13,7 @@ A common case where you might think to use `skipLibCheck` is when there are two 
 your `node_modules`. In these cases, you should consider using a feature like [yarn's resolutions](https://yarnpkg.com/lang/en/docs/selective-version-resolutions/)
 to ensure there is only one copy of that dependency in your tree or investigate how to ensure there is
 only one copy by understanding the dependency resolution to fix the issue without additional tooling.
+
+Another all-too-common scenario is during one of TypeScript's in-range breaking releases. When this happens, dependencies
+in your project's node_modules may start to have type errors that are out of your control, and `skipLibCheck` will
+be useful for silencing them.
