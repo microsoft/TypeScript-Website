@@ -343,7 +343,7 @@ const CustomComp = (props) => <div>{props.children}</div>
 </CustomComp>
 ```
 
-You can specify the type of _children_ like any other attribute. This will override the default type from, eg the [React typings](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react) if you use them.
+You can specify the type of _children_ like any other attribute. This will override the default type from, e.g. the [React typings](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react) if you use them.
 
 ```ts
 interface PropsType {

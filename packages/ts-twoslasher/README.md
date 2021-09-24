@@ -890,7 +890,7 @@ export interface TwoSlashReturn {
     name: string
     /** Where was it located in the original source file */
     line: number
-    /** What was the text after the `// @tag: ` string  (optional because you could do // @tag on it's own line without the ':') */
+    /** What was the text after the `// @tag: ` string  (optional because you could do // @tag on its own line without the ':') */
     annotation?: string
   }[]
   /** Diagnostic error messages which came up when creating the program */

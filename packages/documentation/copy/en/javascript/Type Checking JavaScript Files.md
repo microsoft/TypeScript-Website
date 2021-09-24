@@ -37,7 +37,7 @@ class C {
 
 If properties are never set in the class body, they are considered unknown.
 If your class has properties that are only read from, add and then annotate a declaration in the constructor with JSDoc to specify the type.
-You don't even have to give a value if it will be initialised later:
+You don't even have to give a value if it will be initialized later:
 
 ```js twoslash
 // @checkJs
@@ -58,7 +58,7 @@ c.count = "string";
 
 ## Constructor functions are equivalent to classes
 
-Before ES2015, Javascript used constructor functions instead of classes.
+Before ES2015, JavaScript used constructor functions instead of classes.
 The compiler supports this pattern and understands constructor functions as equivalent to ES2015 classes.
 The property inference rules described above work exactly the same way.
 
@@ -91,7 +91,7 @@ module.exports.readFile = function (f) {
 };
 ```
 
-The module support in Javascript is much more syntactically forgiving than TypeScript's module support.
+The module support in JavaScript is much more syntactically forgiving than TypeScript's module support.
 Most combinations of assignments and declarations are supported.
 
 ## Classes, functions, and object literals are namespaces
@@ -191,7 +191,7 @@ foo.l.push("end");
 
 ## Function parameters are optional by default
 
-Since there is no way to specify optionality on parameters in pre-ES2015 Javascript, all function parameters in `.js` file are considered optional.
+Since there is no way to specify optionality on parameters in pre-ES2015 JavaScript, all function parameters in `.js` file are considered optional.
 Calls with fewer arguments than the declared number of parameters are allowed.
 
 It is important to note that it is an error to call a function with too many arguments.
@@ -245,7 +245,7 @@ function sum(/* numbers */) {
 
 ## Unspecified type parameters default to `any`
 
-Since there is no natural syntax for specifying generic type parameters in Javascript, an unspecified type parameter defaults to `any`.
+Since there is no natural syntax for specifying generic type parameters in JavaScript, an unspecified type parameter defaults to `any`.
 
 ### In extends clause
 

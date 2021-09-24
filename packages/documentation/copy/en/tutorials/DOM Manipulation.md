@@ -22,17 +22,19 @@ TypeScript is a typed superset of JavaScript, and it ships type definitions for 
 
 Given a simplified _index.html_ file:
 
-    <!DOCTYPE html>
-    <html lang="en">
-      <head><title>TypeScript Dom Manipulation</title></head>
-      <body>
-        <div id="app"></div>
-        <!-- Assume index.js is the compiled output of index.ts -->
-        <script src="index.js"></script>
-      </body>
-    </html>
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head><title>TypeScript Dom Manipulation</title></head>
+  <body>
+    <div id="app"></div>
+    <!-- Assume index.js is the compiled output of index.ts -->
+    <script src="index.js"></script>
+  </body>
+</html>
+```
 
-Lets explore a TypeScript script that adds a `<p>Hello, World!</p>` element to the `#app` element.
+Let's explore a TypeScript script that adds a `<p>Hello, World!</p>` element to the `#app` element.
 
 ```ts
 // 1. Select the div element using the id property

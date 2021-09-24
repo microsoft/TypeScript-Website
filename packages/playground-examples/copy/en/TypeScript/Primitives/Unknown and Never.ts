@@ -19,7 +19,7 @@ myAccount.email;
 
 // If you hover on jsonParser, you can see that it has the
 // return type of any, so then does myAccount. It's possible
-// to fix this with Generics - but it's also possible to fix
+// to fix this with generics - but it's also possible to fix
 // this with unknown.
 
 const jsonParserUnknown = (jsonString: string): unknown => JSON.parse(jsonString);

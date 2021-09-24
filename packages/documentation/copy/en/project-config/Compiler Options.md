@@ -603,7 +603,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><p>react</p></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Specify module specifier used to import the JSX factory functions when using <code>jsx: react-jsx*</code>.`</p>
+<p>Specify module specifier used to import the JSX factory functions when using <code>jsx: react-jsx*</code>.</p>
 </td></tr>
 
 <tr class='odd' name='keyofStringsOnly'>
