@@ -339,9 +339,9 @@ function checkOptions(opts: Options) {
 In the above example, `Options` has an index signature that says any accessed property that's not already listed should have the type `string | number`.
 This is often convenient for optimistic code that assumes you know what you're doing, but the truth is that most values in JavaScript do not support every potential property name.
 Most types will not, for example, have a value for a property key created by `Math.random()` like in the previous example.
-For many users, this behavior was undesirable, and felt like it wasn't leveraging the full strict-checking of `--strictNullChecks`.
+For many users, this behavior was undesirable, and felt like it wasn't leveraging the full strict-checking of [`strictNullChecks`](/tsconfig#strictNullChecks).
 
-That's why TypeScript 4.1 ships with a new flag called `--noUncheckedIndexedAccess`.
+That's why TypeScript 4.1 ships with a new flag called [`noUncheckedIndexedAccess`](/tsconfig#noUncheckedIndexedAccess).
 Under this new mode, every property access (like `foo.bar`) or indexed access (like `foo["bar"]`) is considered potentially undefined.
 That means that in our last example, `opts.yadda` will have the type `string | number | undefined` as opposed to just `string | number`.
 If you need to access that property, you'll either have to check for its existence first or use a non-null assertion operator (the postfix `!` character).
@@ -377,7 +377,7 @@ function checkOptions(opts: Options) {
 }
 ```
 
-One consequence of using `--noUncheckedIndexedAccess` is that indexing into an array is also more strictly checked, even in a bounds-checked loop.
+One consequence of using [`noUncheckedIndexedAccess`](/tsconfig#noUncheckedIndexedAccess) is that indexing into an array is also more strictly checked, even in a bounds-checked loop.
 
 ```ts twoslash
 // @errors: 2532
@@ -407,7 +407,7 @@ function screamLines(strs: string[]) {
 }
 ```
 
-This flag can be handy for catching out-of-bounds errors, but it might be noisy for a lot of code, so it is not automatically enabled by the `--strict` flag; however, if this feature is interesting to you, you should feel free to try it and determine whether it makes sense for your team's codebase!
+This flag can be handy for catching out-of-bounds errors, but it might be noisy for a lot of code, so it is not automatically enabled by the [`strict`](/tsconfig#strict) flag; however, if this feature is interesting to you, you should feel free to try it and determine whether it makes sense for your team's codebase!
 
 You can learn more [at the implementing pull request](https://github.com/microsoft/TypeScript/pull/39560).
 
@@ -415,22 +415,22 @@ You can learn more [at the implementing pull request](https://github.com/microso
 
 Using path-mapping is fairly common - often it's to have nicer imports, often it's to simulate monorepo linking behavior.
 
-Unfortunately, specifying `paths` to enable path-mapping required also specifying an option called `baseUrl`, which allows bare specifier paths to be reached relative to the `baseUrl` too.
+Unfortunately, specifying [`paths`](/tsconfig#paths) to enable path-mapping required also specifying an option called [`baseUrl`](/tsconfig#baseUrl), which allows bare specifier paths to be reached relative to the [`baseUrl`](/tsconfig#baseUrl) too.
 This also often caused poor paths to be used by auto-imports.
 
-In TypeScript 4.1, the `paths` option can be used without `baseUrl`.
+In TypeScript 4.1, the [`paths`](/tsconfig#paths) option can be used without [`baseUrl`](/tsconfig#baseUrl).
 This helps avoid some of these issues.
 
 ## `checkJs` Implies `allowJs`
 
-Previously if you were starting a checked JavaScript project, you had to set both `allowJs` and `checkJs`.
-This was a slightly annoying bit of friction in the experience, so `checkJs` now implies `allowJs` by default.
+Previously if you were starting a checked JavaScript project, you had to set both [`allowJs`](/tsconfig#allowJs) and [`checkJs`](/tsconfig#checkJs).
+This was a slightly annoying bit of friction in the experience, so [`checkJs`](/tsconfig#checkJs) now implies [`allowJs`](/tsconfig#allowJs) by default.
 
 [See more details at the pull request](https://github.com/microsoft/TypeScript/pull/40275).
 
 ## React 17 JSX Factories
 
-TypeScript 4.1 supports React 17's upcoming `jsx` and `jsxs` factory functions through two new options for the `jsx` compiler option:
+TypeScript 4.1 supports React 17's upcoming `jsx` and `jsxs` factory functions through two new options for the [`jsx`](/tsconfig#jsx) compiler option:
 
 - `react-jsx`
 - `react-jsxdev`

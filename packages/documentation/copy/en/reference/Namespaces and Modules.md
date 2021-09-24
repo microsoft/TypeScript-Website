@@ -31,7 +31,7 @@ Thus, for new projects modules would be the recommended code organization mechan
 Namespaces are a TypeScript-specific way to organize code.  
 Namespaces are simply named JavaScript objects in the global namespace.
 This makes namespaces a very simple construct to use.
-Unlike modules, they can span multiple files, and can be concatenated using `--outFile`.
+Unlike modules, they can span multiple files, and can be concatenated using [`outFile`](/tsconfig#outFile).
 Namespaces can be a good way to structure your code in a Web Application, with all dependencies included as `<script>` tags in your HTML page.
 
 Just like all global namespace pollution, it can be hard to identify component dependencies, especially in a large application.
@@ -125,4 +125,4 @@ Here's a revised example:
 
 Just as there is a one-to-one correspondence between JS files and modules, TypeScript has a one-to-one correspondence between module source files and their emitted JS files.
 One effect of this is that it's not possible to concatenate multiple module source files depending on the module system you target.
-For instance, you can't use the `outFile` option while targeting `commonjs` or `umd`, but with TypeScript 1.8 and later, [it's possible](./release-notes/typescript-1-8.html#concatenate-amd-and-system-modules-with---outfile) to use `outFile` when targeting `amd` or `system`.
+For instance, you can't use the [`outFile`](/tsconfig#outFile) option while targeting `commonjs` or `umd`, but with TypeScript 1.8 and later, [it's possible](./release-notes/typescript-1-8.html#concatenate-amd-and-system-modules-with---outfile) to use [`outFile`](/tsconfig#outFile) when targeting `amd` or `system`.

@@ -29,6 +29,8 @@
   --playground-pre-color: white;
   --table-border-color: #545454;
   --playground-pre-bg: #1e1e1e;
+  --blue-tinged-bg: #2c3841;
+  --blue-tinged-strong: #273f52;
   --footer-arrow-color: $ts-light-bg-grey-highlight-color;
   --fade-gradient: linear-gradient(
     0deg,
@@ -68,6 +70,8 @@ html.light-theme {
   --playground-pre-bg: #f7f7f7;
   --footer-arrow-color: $ts-dark-bg-for-foreground-color;
   --table-border-color: #f1f1f1;
+  --blue-tinged-bg: #e6f2fb;
+  --blue-tinged-strong: #cce4f6;
   --fade-gradient: linear-gradient(
     0deg,
     rgba(255, 255, 255, 1) 0%,

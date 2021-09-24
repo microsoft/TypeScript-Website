@@ -15,8 +15,8 @@ The playground library sits above the [TypeScript sandbox](../sandbox), and prov
 - The export to Code Sandbox/TS AST Viewer/etc features
 
 When deciding where to add a feature to the TypeScript playground, consider if it would be useful to anyone showing
-TypeScript in a REPL. If yes, add it to the playground and expose a function for this library to use. For example
-Automatic Type Acquisition is a feature which lives in the sandbox and not the playground.
+TypeScript in a REPL. If yes, add it to the sandbox and expose a function for the playground to use. For example
+Automatic Type Acquisition is a feature which lives in the sandbox and not the playground because pretty much anyone showing TypeScript code would want it.
 
 ## Link Syntax
 
@@ -25,6 +25,7 @@ The Playground supports a set of query inputs from the URL. The hash is used to 
 - `#code/PRA` - A base64 and zipped version of the code which should live in the editor
 - `#src/The%20code` - URLEncoded way to have the code for the editor
 - `#example/generic-functions` - Grab the code from an example with the id generic-functions
+- `#gist/92cf0a3...` - The ID of a public GitHub gist, the playground will either render a story of markdown and TS/JS files or grab the contents of just one file and show it. You can add `-2` to access the 3rd file (because of 0 indexing).
 
 Or to trigger some action by default:
 

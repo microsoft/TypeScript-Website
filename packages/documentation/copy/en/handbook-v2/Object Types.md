@@ -85,7 +85,7 @@ We can choose to provide either of them, so every call above to `paintShape` is 
 All optionality really says is that if the property _is_ set, it better have a specific type.
 
 
-We can also read from those properties - but when we do under `strictNullChecks`, TypeScript will tell us they're potentially `undefined`.
+We can also read from those properties - but when we do under [`strictNullChecks`](/tsconfig#strictNullChecks), TypeScript will tell us they're potentially `undefined`.
 
 ```ts twoslash
 interface Shape {}

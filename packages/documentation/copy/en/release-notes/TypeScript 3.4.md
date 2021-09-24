@@ -7,8 +7,8 @@ oneline: TypeScript 3.4 Release Notes
 
 ## Faster subsequent builds with the `--incremental` flag
 
-TypeScript 3.4 introduces a new flag called `--incremental` which tells TypeScript to save information about the project graph from the last compilation.
-The next time TypeScript is invoked with `--incremental`, it will use that information to detect the least costly way to type-check and emit changes to your project.
+TypeScript 3.4 introduces a new flag called [`incremental`](/tsconfig#incremental) which tells TypeScript to save information about the project graph from the last compilation.
+The next time TypeScript is invoked with [`incremental`](/tsconfig#incremental), it will use that information to detect the least costly way to type-check and emit changes to your project.
 
 ```jsonc tsconfig
 // tsconfig.json
@@ -26,7 +26,7 @@ If `./lib/.tsbuildinfo` doesn't exist, it'll be generated.
 But if it does, `tsc` will try to use that file to incrementally type-check and update our output files.
 
 These `.tsbuildinfo` files can be safely deleted and don't have any impact on our code at runtime - they're purely used to make compilations faster.
-We can also name them anything that we want, and place them anywhere we want using the `--tsBuildInfoFile` flag.
+We can also name them anything that we want, and place them anywhere we want using the [`tsBuildInfoFile`](/tsconfig#tsBuildInfoFile) option.
 
 ```jsonc tsconfig
 // front-end.tsconfig.json
@@ -42,14 +42,14 @@ We can also name them anything that we want, and place them anywhere we want usi
 
 ### Composite projects
 
-Part of the intent with composite projects (`tsconfig.json`s with `composite` set to `true`) is that references between different projects can be built incrementally.
+Part of the intent with composite projects (`tsconfig.json`s with [`composite`](/tsconfig#composite) set to `true`) is that references between different projects can be built incrementally.
 As such, composite projects will **always** produce `.tsbuildinfo` files.
 
 ### `outFile`
 
-When `outFile` is used, the build information file's name will be based on the output file's name.
-As an example, if our output JavaScript file is `./output/foo.js`, then under the `--incremental` flag, TypeScript will generate the file `./output/foo.tsbuildinfo`.
-As above, this can be controlled with the `--tsBuildInfoFile` flag.
+When [`outFile`](/tsconfig#outFile) is used, the build information file's name will be based on the output file's name.
+As an example, if our output JavaScript file is `./output/foo.js`, then under the [`incremental`](/tsconfig#incremental) flag, TypeScript will generate the file `./output/foo.tsbuildinfo`.
+As above, this can be controlled with the [`tsBuildInfoFile`](/tsconfig#tsBuildInfoFile) option.
 
 ## Higher order type inference from generic functions
 

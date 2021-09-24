@@ -46,15 +46,15 @@ Some examples include:
 A relative import is resolved relative to the importing file and _cannot_ resolve to an ambient module declaration.
 You should use relative imports for your own modules that are guaranteed to maintain their relative location at runtime.
 
-A non-relative import can be resolved relative to `baseUrl`, or through path mapping, which we'll cover below.
+A non-relative import can be resolved relative to [`baseUrl`](/tsconfig#baseUrl), or through path mapping, which we'll cover below.
 They can also resolve to [ambient module declarations](/docs/handbook/modules.html#ambient-modules).
 Use non-relative paths when importing any of your external dependencies.
 
 ## Module Resolution Strategies
 
 There are two possible module resolution strategies: [Node](#node) and [Classic](#classic).
-You can use the `--moduleResolution` flag to specify the module resolution strategy.
-If not specified, the default is [Node](#node) for `--module commonjs`, and [Classic](#classic) otherwise (including when `--module` is set to `amd`, `system`, `umd`, `es2015`, `esnext`, etc.).
+You can use the [`moduleResolution`](/tsconfig#moduleResolution) option to specify the module resolution strategy.
+If not specified, the default is [Node](#node) for `--module commonjs`, and [Classic](#classic) otherwise (including when [`module`](/tsconfig#module) is set to `amd`, `system`, `umd`, `es2015`, `esnext`, etc.).
 
 > Note: `node` module resolution is the most-commonly used in the TypeScript community and is recommended for most projects.
 > If you are having resolution problems with `import`s and `export`s in TypeScript, try setting `moduleResolution: "node"` to see if it fixes the issue.
@@ -138,14 +138,14 @@ You can read more about the process in Node.js documentation on [loading modules
 
 TypeScript will mimic the Node.js run-time resolution strategy in order to locate definition files for modules at compile-time.
 To accomplish this, TypeScript overlays the TypeScript source file extensions (`.ts`, `.tsx`, and `.d.ts`) over Node's resolution logic.
-TypeScript will also use a field in `package.json` named `"types"` to mirror the purpose of `"main"` - the compiler will use it to find the "main" definition file to consult.
+TypeScript will also use a field in `package.json` named `types` to mirror the purpose of `"main"` - the compiler will use it to find the "main" definition file to consult.
 
 For example, an import statement like `import { b } from "./moduleB"` in `/root/src/moduleA.ts` would result in attempting the following locations for locating `"./moduleB"`:
 
 1. `/root/src/moduleB.ts`
 2. `/root/src/moduleB.tsx`
 3. `/root/src/moduleB.d.ts`
-4. `/root/src/moduleB/package.json` (if it specifies a `"types"` property)
+4. `/root/src/moduleB/package.json` (if it specifies a `types` property)
 5. `/root/src/moduleB/index.ts`
 6. `/root/src/moduleB/index.tsx`
 7. `/root/src/moduleB/index.d.ts`
@@ -158,7 +158,7 @@ So `import { b } from "moduleB"` in source file `/root/src/moduleA.ts` would res
 1. `/root/src/node_modules/moduleB.ts`
 2. `/root/src/node_modules/moduleB.tsx`
 3. `/root/src/node_modules/moduleB.d.ts`
-4. `/root/src/node_modules/moduleB/package.json` (if it specifies a `"types"` property)
+4. `/root/src/node_modules/moduleB/package.json` (if it specifies a `types` property)
 5. `/root/src/node_modules/@types/moduleB.d.ts`
 6. `/root/src/node_modules/moduleB/index.ts`
 7. `/root/src/node_modules/moduleB/index.tsx`
@@ -167,7 +167,7 @@ So `import { b } from "moduleB"` in source file `/root/src/moduleA.ts` would res
 9. `/root/node_modules/moduleB.ts`
 10. `/root/node_modules/moduleB.tsx`
 11. `/root/node_modules/moduleB.d.ts`
-12. `/root/node_modules/moduleB/package.json` (if it specifies a `"types"` property)
+12. `/root/node_modules/moduleB/package.json` (if it specifies a `types` property)
 13. `/root/node_modules/@types/moduleB.d.ts`
 14. `/root/node_modules/moduleB/index.ts`
 15. `/root/node_modules/moduleB/index.tsx`
@@ -176,7 +176,7 @@ So `import { b } from "moduleB"` in source file `/root/src/moduleA.ts` would res
 17. `/node_modules/moduleB.ts`
 18. `/node_modules/moduleB.tsx`
 19. `/node_modules/moduleB.d.ts`
-20. `/node_modules/moduleB/package.json` (if it specifies a `"types"` property)
+20. `/node_modules/moduleB/package.json` (if it specifies a `types` property)
 21. `/node_modules/@types/moduleB.d.ts`
 22. `/node_modules/moduleB/index.ts`
 23. `/node_modules/moduleB/index.tsx`
@@ -200,11 +200,11 @@ it just uses these pieces of information to guide the process of resolving a mod
 
 ### Base URL
 
-Using a `baseUrl` is a common practice in applications using AMD module loaders where modules are "deployed" to a single folder at run-time.
+Using a [`baseUrl`](/tsconfig#baseUrl) is a common practice in applications using AMD module loaders where modules are "deployed" to a single folder at run-time.
 The sources of these modules can live in different directories, but a build script will put them all together.
 
-Setting `baseUrl` informs the compiler where to find modules.
-All module imports with non-relative names are assumed to be relative to the `baseUrl`.
+Setting [`baseUrl`](/tsconfig#baseUrl) informs the compiler where to find modules.
+All module imports with non-relative names are assumed to be relative to the [`baseUrl`](/tsconfig#baseUrl).
 
 Value of _baseUrl_ is determined as either:
 
@@ -221,8 +221,8 @@ Sometimes modules are not directly located under _baseUrl_.
 For instance, an import to a module `"jquery"` would be translated at runtime to `"node_modules/jquery/dist/jquery.slim.min.js"`.
 Loaders use a mapping configuration to map module names to files at run-time, see [RequireJs documentation](http://requirejs.org/docs/api.html#config-paths) and [SystemJS documentation](https://github.com/systemjs/systemjs/blob/main/docs/import-maps.md).
 
-The TypeScript compiler supports the declaration of such mappings using `"paths"` property in `tsconfig.json` files.
-Here is an example for how to specify the `"paths"` property for `jquery`.
+The TypeScript compiler supports the declaration of such mappings using [`paths`](/tsconfig#paths) property in `tsconfig.json` files.
+Here is an example for how to specify the [`paths`](/tsconfig#paths) property for `jquery`.
 
 ```json tsconfig
 {
@@ -235,11 +235,11 @@ Here is an example for how to specify the `"paths"` property for `jquery`.
 }
 ```
 
-Please notice that `"paths"` are resolved relative to `"baseUrl"`.
-When setting `"baseUrl"` to another value than `"."`, i.e. the directory of `tsconfig.json`, the mappings must be changed accordingly.
+Please notice that [`paths`](/tsconfig#paths) are resolved relative to [`baseUrl`](/tsconfig#baseUrl).
+When setting [`baseUrl`](/tsconfig#baseUrl) to another value than `"."`, i.e. the directory of `tsconfig.json`, the mappings must be changed accordingly.
 Say, you set `"baseUrl": "./src"` in the above example, then jquery should be mapped to `"../node_modules/jquery/dist/jquery"`.
 
-Using `"paths"` also allows for more sophisticated mappings including multiple fall back locations.
+Using [`paths`](/tsconfig#paths) also allows for more sophisticated mappings including multiple fall back locations.
 Consider a project configuration where only some modules are available in one location, and the rest are in another.
 A build step would put them all together in one place.
 The project layout may look like:
@@ -320,8 +320,8 @@ Files in `generated/templates` are UI template binding code auto-generated by a 
 A build step will copy the files in `/src/views` and `/generated/templates/views` to the same directory in the output.
 At run-time, a view can expect its template to exist next to it, and thus should import it using a relative name as `"./template"`.
 
-To specify this relationship to the compiler, use`"rootDirs"`.
-`"rootDirs"` specify a list of _roots_ whose contents are expected to merge at run-time.
+To specify this relationship to the compiler, use[`rootDirs`](/tsconfig#rootDirs).
+[`rootDirs`](/tsconfig#rootDirs) specify a list of _roots_ whose contents are expected to merge at run-time.
 So following our example, the `tsconfig.json` file should look like:
 
 ```json tsconfig
@@ -332,9 +332,9 @@ So following our example, the `tsconfig.json` file should look like:
 }
 ```
 
-Every time the compiler sees a relative module import in a subfolder of one of the `rootDirs`, it will attempt to look for this import in each of the entries of `rootDirs`.
+Every time the compiler sees a relative module import in a subfolder of one of the [`rootDirs`](/tsconfig#rootDirs), it will attempt to look for this import in each of the entries of [`rootDirs`](/tsconfig#rootDirs).
 
-The flexibility of `rootDirs` is not limited to specifying a list of physical source directories that are logically merged. The supplied array may include any number of ad hoc, arbitrary directory names, regardless of whether they exist or not. This allows the compiler to capture sophisticated bundling and runtime features such as conditional inclusion and project specific loader plugins in a type safe way.
+The flexibility of [`rootDirs`](/tsconfig#rootDirs) is not limited to specifying a list of physical source directories that are logically merged. The supplied array may include any number of ad hoc, arbitrary directory names, regardless of whether they exist or not. This allows the compiler to capture sophisticated bundling and runtime features such as conditional inclusion and project specific loader plugins in a type safe way.
 
 Consider an internationalization scenario where a build tool automatically generates locale specific bundles by interpolating a special path token, say `#{locale}`, as part of a relative module path such as `./#{locale}/messages`. In this hypothetical setup the tool enumerates supported locales, mapping the abstracted path into `./zh/messages`, `./de/messages`, and so forth.
 
@@ -344,7 +344,7 @@ Assume that each of these modules exports an array of strings. For example `./zh
 export default ["您好吗", "很高兴认识你"];
 ```
 
-By leveraging `rootDirs` we can inform the compiler of this mapping and thereby allow it to safely resolve `./#{locale}/messages`, even though the directory will never exist. For example, with the following `tsconfig.json`:
+By leveraging [`rootDirs`](/tsconfig#rootDirs) we can inform the compiler of this mapping and thereby allow it to safely resolve `./#{locale}/messages`, even though the directory will never exist. For example, with the following `tsconfig.json`:
 
 ```json tsconfig
 {
@@ -360,7 +360,7 @@ The compiler will now resolve `import messages from './#{locale}/messages'` to `
 
 As discussed earlier, the compiler can visit files outside the current folder when resolving a module.
 This can be hard when diagnosing why a module is not resolved, or is resolved to an incorrect definition.
-Enabling the compiler module resolution tracing using `--traceResolution` provides insight in what happened during the module resolution process.
+Enabling the compiler module resolution tracing using [`traceResolution`](/tsconfig#traceResolution) provides insight in what happened during the module resolution process.
 
 Let's say we have a sample application that uses the `typescript` module.
 `app.ts` has an import like `import * as ts from "typescript"`.
@@ -375,7 +375,7 @@ Let's say we have a sample application that uses the `typescript` module.
         app.ts
 ```
 
-Invoking the compiler with `--traceResolution`
+Invoking the compiler with [`traceResolution`](/tsconfig#traceResolution)
 
 ```shell
 tsc --traceResolution
@@ -423,7 +423,7 @@ File 'node_modules/typescript/lib/typescript.d.ts' exist - use it as a module re
 Normally the compiler will attempt to resolve all module imports before it starts the compilation process.
 Every time it successfully resolves an `import` to a file, the file is added to the set of files the compiler will process later on.
 
-The `--noResolve` compiler options instructs the compiler not to "add" any files to the compilation that were not passed on the command line.
+The [`noResolve`](/tsconfig#noResolve) compiler options instructs the compiler not to "add" any files to the compilation that were not passed on the command line.
 It will still try to resolve the module to files, but if the file is not specified, it will not be included.
 
 For instance:
@@ -439,7 +439,7 @@ import * as B from "moduleB"; // Error TS2307: Cannot find module 'moduleB'.
 tsc app.ts moduleA.ts --noResolve
 ```
 
-Compiling `app.ts` using `--noResolve` should result in:
+Compiling `app.ts` using [`noResolve`](/tsconfig#noResolve) should result in:
 
 - Correctly finding `moduleA` as it was passed on the command-line.
 - Error for not finding `moduleB` as it was not passed.

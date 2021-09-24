@@ -302,7 +302,7 @@ function logger(s: NetworkState) {
 ```
 
 There are two ways to do this.
-The first is to turn on `--strictNullChecks` and specify a return type:
+The first is to turn on [`strictNullChecks`](/tsconfig#strictNullChecks) and specify a return type:
 
 ```ts twoslash
 // @errors: 2366
@@ -332,7 +332,7 @@ function logger(s: NetworkState): string {
 
 Because the `switch` is no longer exhaustive, TypeScript is aware that the function could sometimes return `undefined`.
 If you have an explicit return type `string`, then you will get an error that the return type is actually `string | undefined`.
-However, this method is quite subtle and, besides, [`--strictNullChecks`](/tsconfig#strictNullChecks) does not always work with old code.
+However, this method is quite subtle and, besides, [`strictNullChecks`](/tsconfig#strictNullChecks) does not always work with old code.
 
 The second method uses the `never` type that the compiler uses to check for exhaustiveness:
 

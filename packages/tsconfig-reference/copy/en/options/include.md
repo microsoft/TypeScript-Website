@@ -63,4 +63,4 @@ Which would include:
 - `?` matches any one character (excluding directory separators)
 - `**/` matches any directory nested to any level
 
-If a glob pattern doesn't include a file extension, then only files with supported extensions are included (e.g. `.ts`, `.tsx`, and `.d.ts` by default, with `.js` and `.jsx` if `allowJs` is set to true).
+If a glob pattern doesn't include a file extension, then only files with supported extensions are included (e.g. `.ts`, `.tsx`, and `.d.ts` by default, with `.js` and `.jsx` if [`allowJs`](#allowJs) is set to true).

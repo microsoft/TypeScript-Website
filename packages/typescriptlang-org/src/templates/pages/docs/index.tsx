@@ -31,7 +31,7 @@ const Index: React.FC<Props> = (props) => {
       if (item.items) {
         return <> 
           <li key={item.id}>{item.title}</li>
-          <ul><RenderItems items={item}/></ul>
+          <li><ul><RenderItems items={item}/></ul></li>
         </>
       } else {
 
