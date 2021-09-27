@@ -20,7 +20,6 @@ export const docCopy = {
   doc_start_a_project_desc:
     "Because TypeScript is a super-set of JavaScript, it doesn't have a default template - there would be too many. Instead, other projects have their own TypeScript bootstrap templates with their own context. These projects provide templates which include TypeScript support.",
   doc_node_npm: "Node with npm",
-  doc_node_npm_tsdx_blurb: "Zero config tool for building TypeScript libraries",
   doc_node_npm_oclif_blurb: "Create command line tools your users love",
   doc_node_npm_gluegun_blurb:
     "A delightful toolkit for building TypeScript-powered command-line apps",
