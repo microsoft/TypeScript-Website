@@ -91,22 +91,30 @@ languages.forEach((lang) => {
 
       let optType: string;
       if (typeof option.type === "string") {
-        optType = option.type;
+        optType = `\`${option.type}\``;
       } else if (option.allowedValues) {
         if ("ListFormat" in Intl) {
           // @ts-ignore
           const or = new Intl.ListFormat(lang, { type: "disjunction" });
-          optType = or.format(option.allowedValues.map((v) => `<code>${v}</code>`));
+          optType = or.format(
+            option.allowedValues.map((v) => v.replace(/^[.0-9a-z]+$/i, "`$&`"))
+          );
         } else {
-          optType = option.allowedValues.map((v) => `<code>${v}</code>`).join(", ");
+          optType = option.allowedValues
+            .map((v) => v.replace(/^[.0-9a-z]+$/i, "`$&`"))
+            .join(", ");
         }
       } else {
         optType = "";
       }
-      markdownChunks.push(`  <td><code>${optType}</code></td>`);
+      markdownChunks.push(`  <td>${parseMarkdown(optType)}</td>`);
 
       if (!opts?.noDefaults) {
-        markdownChunks.push(`  <td>${`${parseMarkdown(option.defaultValue)}`.trim()}</td>`);
+        markdownChunks.push(
+          `  <td>${parseMarkdown(
+            option.defaultValue?.replace(/^[.0-9a-z]+$/i, "`$&`")
+          )}</td>`
+        );
       }
       markdownChunks.push(`</tr>`);
 
