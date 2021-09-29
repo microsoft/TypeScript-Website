@@ -12,7 +12,7 @@ By default (with `esModuleInterop` false or not set) TypeScript treats CommonJS/
 This mis-match causes these two issues:
 
 - the ES6 modules spec states that a namespace import (`import * as x`) can only be an object, by having TypeScript
-  treating it the same as `= require("x")` then TypeScript allowed for the import to be treated as a function and be callable. This breaks the spec's recommendations.
+  treating it the same as `= require("x")` then TypeScript allowed for the import to be treated as a function and be callable. That's not valid according to the spec.
 
 - while accurate to the ES6 modules spec, most libraries with CommonJS/AMD/UMD modules didn't conform as strictly as TypeScript's implementation.
 
