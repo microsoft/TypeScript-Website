@@ -54,13 +54,13 @@ The code below describes the differences and gives some example usage of each ta
 
 ### `@type`
 
-You can reference types with the "@type" tag. The type can be
+You can reference types with the "@type" tag. The type can be:
 
 1. Primitive, like `string` or `number`.
 2. Declared in a TypeScript declaration, either global or imported.
 3. Declared in a JSDoc [`@typedef`](#typedef-callback-and-param) tag.
 
-You can use most JSDoc type syntax and any TypeScript syntax, from [the most basic like `string`](/docs/handbook/basic-types.html) to [the most advanced, like conditional types](/docs/handbook/advanced-types.html).
+You can use most JSDoc type syntax and any TypeScript syntax, from [the most basic like `string`](/docs/handbook/2/basic-types.html) to [the most advanced, like conditional types](/docs/handbook/2/conditional-types.html).
 
 ```js twoslash
 /**
