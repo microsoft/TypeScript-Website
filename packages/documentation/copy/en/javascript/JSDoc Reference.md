@@ -39,7 +39,7 @@ Documentation tags work in both TypeScript and JavaScript.
 
 #### Other
 
-- [`@enum`, you know, like from Closure](#enum)
+- [`@enum`](#enum)
 - [`@author`](#author)
 - [Other supported patterns](#other-supported-patterns)
 - [Unsupported patterns](#unsupported-patterns)
