@@ -52,7 +52,7 @@ The code below describes the differences and gives some example usage of each ta
 
 ## `@type`
 
-You can reference types with the "@type" tag. The type can be
+You can reference types with the "@type" tag. The type can be:
 
 1. Primitive, like `string` or `number`.
 2. Declared in a TypeScript declaration, either global or imported.
