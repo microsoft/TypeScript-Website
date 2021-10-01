@@ -50,7 +50,9 @@ The code below describes the differences and gives some example usage of each ta
 
 **Note:** You can use [the playground to explore JSDoc support](/play?useJavaScript=truee=4#example/jsdoc-support).
 
-## `@type`
+## Types
+
+### `@type`
 
 You can reference types with the "@type" tag. The type can be
 
@@ -122,7 +124,7 @@ var arrayLike;
 
 The preceding two types are equivalent to the TypeScript types `{ [x: string]: number }` and `{ [x: number]: any }`. The compiler understands both syntaxes.
 
-You can specify function types using either TypeScript or Closure syntax:
+You can specify function types using either TypeScript or Google Closure syntax:
 
 ```js twoslash
 /** @type {function(string, boolean): number} Closure syntax */
@@ -153,9 +155,9 @@ var star;
 var question;
 ```
 
-### Casts
+#### Casts
 
-TypeScript borrows cast syntax from Closure.
+TypeScript borrows cast syntax from Google Closure.
 This lets you cast types to other types by adding a `@type` tag before any parenthesized expression.
 
 ```js twoslash
@@ -172,7 +174,7 @@ You can even cast to `const` just like TypeScript:
 let one = /** @type {const} */(1);
 ```
 
-### Import types
+#### Import types
 
 You can import declarations from other files using import types.
 This syntax is TypeScript-specific and differs from the JSDoc standard:
@@ -234,7 +236,7 @@ export const userAccount = {
 var x = require("./accounts").userAccount;
 ```
 
-## `@param` and `@returns`
+### `@param` and `@returns`
 
 `@param` uses the same type syntax as `@type`, but adds a parameter name.
 The parameter may also be declared optional by surrounding the name with square brackets:
@@ -243,7 +245,7 @@ The parameter may also be declared optional by surrounding the name with square 
 // Parameters may be declared in a variety of syntactic forms
 /**
  * @param {string}  p1 - A string param.
- * @param {string=} p2 - An optional param (Closure syntax)
+ * @param {string=} p2 - An optional param (Google Closure syntax)
  * @param {string} [p3] - Another optional param (JSDoc syntax).
  * @param {string} [p4="test"] - An optional param with a default value
  * @return {string} This is the result
@@ -267,7 +269,7 @@ function ps() {}
 function ab() {}
 ```
 
-## `@typedef`, `@callback`, and `@param`
+### `@typedef`, `@callback`, and `@param`
 
 You can define complex types with `@typedef`.
 Similar syntax works with `@param`.
@@ -339,7 +341,7 @@ Of course, any of these types can be declared using TypeScript syntax in a singl
 /** @typedef {(data: string, index?: number) => boolean} Predicate */
 ```
 
-## `@template`
+### `@template`
 
 You can declare type parameters with the `@template` tag.
 This lets you make functions, classes, or types that are generic:
@@ -395,7 +397,7 @@ class Cache {
 let c = new Cache()
 ```
 
-# Classes
+## Classes
 
 Classes can be declared as ES6 classes.
 
@@ -436,8 +438,8 @@ var result = C(1);
 
 They can also be declared as constructor functions; use [`@constructor`](#constructor) along with [`@this`](#this) for this.
 
-## Property Modifiers
-<div id="[jsdoc-property-modifiers]"></div>
+### Property Modifiers
+<div id="jsdoc-property-modifiers"></div>
 
 
 `@public`, `@private`, and `@protected` work exactly like `public`, `private`, and `protected` in TypeScript:
@@ -467,7 +469,7 @@ console.log(c.identifier);
 
 `@public`, `@private`, and `@protected` do not work in constructor functions.
 
-## `@readonly`
+### `@readonly`
 
 The `@readonly` modifier ensures that a property is only ever written to during initialization.
 
@@ -490,7 +492,7 @@ const c = new Car();
 console.log(c.identifier);
 ```
 
-## `@override`
+### `@override`
 
 `@override` works the same way as in TypeScript; use it on methods that override a method from a base class:
 
@@ -506,7 +508,7 @@ class D extends C {
 
 Set `noImplicitOverride: true` in tsconfig to check overrides.
 
-## `@extends`
+### `@extends`
 
 When JavaScript classes extend a generic base class, there is no JavaScript syntax for passing a type argument. The `@extends` tag allows this:
 
@@ -522,7 +524,7 @@ class SortableSet extends Set {
 
 Note that `@extends` only works with classes. Currently, there is no way for a constructor function to extend a class.
 
-## `@implements`
+### `@implements`
 
 In the same way, there is no JavaScript syntax for implementing a TypeScript interface. The `@implements` tag works just like in TypeScript:
 
@@ -535,7 +537,7 @@ class TextBook {
 }
 ```
 
-## `@constructor`
+### `@constructor`
 
 The compiler infers constructor functions based on this-property assignments, but you can make checking stricter and suggestions better if you add a `@constructor` tag:
 
@@ -579,7 +581,7 @@ With `@constructor`, `this` is checked inside the constructor function `C`, so y
 
 Unfortunately, this means that constructor functions that are also callable cannot use `@constructor`.
 
-## `@this`
+### `@this`
 
 The compiler can usually figure out the type of `this` when it has some context to work with. When it doesn't, you can explicitly specify the type of `this` with `@this`:
 
@@ -593,10 +595,10 @@ function callbackForLater(e) {
 }
 ```
 
-# Documentation
+## Documentation
 
-## `@deprecated`
-<div id="[deprecated-comments]"></div>
+### `@deprecated`
+<div id="deprecated-comments"></div>
 
 When a function, method, or property is deprecated you can let users know by marking it with a `/** @deprecated */` JSDoc comment. That information is surfaced in completion lists and as a suggestion diagnostic that editors can handle specially. In an editor like VS Code, deprecated values are typically displayed in a strike-through style ~~like this~~.
 
@@ -612,7 +614,7 @@ apiV;
 
 ```
 
-## `@see`
+### `@see`
 
 `@see` lets you link to other names in your program:
 
@@ -624,7 +626,7 @@ type Boxify<T> = { [K in keyof T]: Box<T> };
 
 Some editors will turn `Box` into a link to make it easy to jump there and back.
 
-## `@link`
+### `@link`
 
 `@link` is like `@see`, except that it can be used inside other tags:
 
@@ -636,12 +638,12 @@ function box<U>(u: U): Box<U> {
 }
 ```
 
-# Other
+## Other
 
-## `@enum`
+### `@enum`
 
 The `@enum` tag allows you to create an object literal whose members are all of a specified type. Unlike most object literals in JavaScript, it does not allow other members.
-`@enum` is intended for compatibility with Closure's `@enum` tag.
+`@enum` is intended for compatibility with Google Closure's `@enum` tag.
 
 ```js twoslash
 /** @enum {number} */
@@ -667,7 +669,7 @@ const MathFuncs = {
 MathFuncs.add1;
 ```
 
-## `@author`
+### `@author`
 
 You can specify the author of an item with `@author`:
 
@@ -681,7 +683,7 @@ You can specify the author of an item with `@author`:
 Remember to surround the email address with angle brackets.
 Otherwise, `@example` will be parsed as a new tag.
 
-## Other supported patterns
+### Other supported patterns
 
 ```js twoslash
 class Foo {}
@@ -718,7 +720,7 @@ let myArrow = (x) => x * x;
 var fc = (props) => <div>{props.a.charAt(0)}</div>;
 
 /**
- * A parameter can be a class constructor, using Closure syntax.
+ * A parameter can be a class constructor, using Google Closure syntax.
  *
  * @param {{new(...args: any[]): object}} C - The class to register
  */
@@ -737,7 +739,7 @@ function fn9(p1) {
 }
 ```
 
-## Unsupported patterns
+### Unsupported patterns
 
 Postfix equals on a property type in an object literal type doesn't specify an optional property:
 
@@ -789,7 +791,7 @@ Unlike JSDoc's type system, TypeScript only allows you to mark types as containi
 There is no explicit non-nullability -- if strictNullChecks is on, then `number` is not nullable.
 If it is off, then `number` is nullable.
 
-## Unsupported tags
+### Unsupported tags
 
 TypeScript ignores any unsupported JSDoc tags.
 
