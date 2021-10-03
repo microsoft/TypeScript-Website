@@ -132,7 +132,7 @@ When you want to only change the resolution for a single file at a time, you can
   "version": "1.0.0",
   "types": "./index.d.ts",
   "typesVersions": {
-    "<=4.0": { "index.d.ts": ["index.v3.d.ts"] }
+    "<4.0": { "index.d.ts": ["index.v3.d.ts"] }
   }
 }
 ```
