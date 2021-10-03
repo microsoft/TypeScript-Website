@@ -817,6 +817,25 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     tags = tags.filter(q => q.line > -1)
   }
 
+  const cutAfterString = "// ---cut-after---\n"
+
+  if (code.includes(cutAfterString)) {
+    
+    // Get the place it is, then find the end and the start of the next line
+    const cutIndex = code.indexOf(cutAfterString) + cutAfterString.length
+    const lineOffset = code.substr(0, cutIndex).split("\n").length - 1
+
+    // Kills the code shown, removing any whitespace on the end
+    code = code.split(cutAfterString).shift()!.trimEnd()
+    
+    // Cut any metadata after the cutAfterString
+    staticQuickInfos = staticQuickInfos.filter(s => s.line < lineOffset)
+    errors = errors.filter(e => e.line && e.line < lineOffset)
+    highlights = highlights.filter(e => e.line < lineOffset)
+    queries = queries.filter(q => q.line < lineOffset)
+    tags = tags.filter(q => q.line < lineOffset)
+  }
+
   return {
     code,
     extension,
