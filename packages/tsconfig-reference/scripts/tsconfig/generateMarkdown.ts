@@ -244,14 +244,14 @@ languages.forEach((lang) => {
         if (option.recommended) mdTableRows.push(["Recommended", "True"]);
 
         if (option.defaultValue) {
-          const value = option.defaultValue.includes(" ")
-            ? option.defaultValue
-            : "`" + option.defaultValue + "`";
+          const value = option.defaultValue.replace(/^[.0-9a-z]+$/i, "`$&`");
           mdTableRows.push(["Default", value]);
         }
 
         if (option.allowedValues) {
-          const optionValue = option.allowedValues.join(",<br/>");
+          const optionValue = option.allowedValues
+            .map((value) => value.replace(/^[.0-9a-z]+$/i, "`$&`"))
+            .join(",<br/>");
           mdTableRows.push(["Allowed", optionValue]);
         }
 
