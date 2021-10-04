@@ -270,30 +270,8 @@ export const defaultsForOptions = {
 };
 
 export const allowedValues = {
-  jsx: ["react", "react-jsx", "react-jsxdev", "react-native", "preserve"],
-  jsxFactory: ["Any identifier or dotted identifier."],
-  target: [
-    "ES3",
-    "ES5",
-    "`ES6`/`ES2015`",
-    "`ES7`/`ES2016`",
-    "ES2017",
-    "ES2018",
-    "ES2019",
-    "ES2020",
-    "ESNext",
-  ],
-  module: [
-    "CommonJS",
-    "`ES6`/`ES2015`",
-    "ES2020",
-    "None",
-    "UMD",
-    "AMD",
-    "System",
-    "ESNext",
-  ],
-  importsNotUsedAsValues: ["remove", "preserve", "error"],
+  jsxFactory: ["Any identifier or dotted identifier"],
+  lib: ["See main content"],
   watchFile: [
     "fixedPollingInterval",
     "priorityPollingInterval",
