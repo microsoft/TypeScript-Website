@@ -43,7 +43,7 @@ The `--watch` implementation of the compiler relies on using `fs.watch` and `fs.
     // Finally, two additional settings for reducing the amount of possible
     // files to track  work from these directories
     "excludeDirectories": ["**/node_modules", "_build"],
-    "excludeFiles": ["build/fileWhichChangesOfent.ts"]
+    "excludeFiles": ["build/fileWhichChangesOften.ts"]
   }
 }
 ```

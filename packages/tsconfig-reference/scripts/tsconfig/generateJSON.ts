@@ -176,6 +176,17 @@ allOptions.forEach((option) => {
 
   if (name in allowedValues) {
     option.allowedValues = allowedValues[name];
+  } else if (typeof option.type === "object") {
+    // Group and format synonyms: `es6`/`es2015`
+    const byValue: { [value: number]: string[] } = {};
+    for (const [name, value] of Object.entries(option.type)) {
+      (byValue[value] ||= []).push(name);
+    }
+    option.allowedValues = Object.values(byValue).map((synonyms) =>
+      synonyms.length > 1
+        ? synonyms.map((name) => `\`${name}\``).join("/")
+        : synonyms[0]
+    );
   }
 
   if (name in configToRelease) {

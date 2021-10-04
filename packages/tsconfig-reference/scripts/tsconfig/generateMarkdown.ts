@@ -97,7 +97,6 @@ languages.forEach((lang) => {
   const fallbackLocale = join(__dirname, "..", "..", "copy", "en");
 
   const mdChunks: string[] = [];
-  const optionsOneLiners: Record<string, string> = {};
 
   const getPathInLocale = (path: string, optionalExampleContent?: string, failable = false) => {
     if (existsSync(join(locale, path))) return join(locale, path);
@@ -216,12 +215,10 @@ languages.forEach((lang) => {
         optionsSummary.push({
           id: optionName,
           display: optionFile.data.display,
-          oneliner: optionFile.data.oneline,
+          oneliner: String(parseMarkdown(optionFile.data.oneline)),
           categoryID: categoryID,
           categoryDisplay: categoryName,
         });
-
-        optionsOneLiners[optionName] = optionFile.data.oneline;
 
         mdChunks.push("<section class='compiler-option'>");
 
@@ -326,7 +323,12 @@ languages.forEach((lang) => {
   if (!existsSync(jsonDir)) mkdirSync(jsonDir);
 
   // This is used by the tsconfig popups
-  writeFileSync(join(jsonDir, lang + "-tsconfig-popup.json"), JSON.stringify(optionsOneLiners));
+  writeFileSync(
+    join(jsonDir, lang + "-tsconfig-popup.json"),
+    JSON.stringify(
+      Object.fromEntries(optionsSummary.map((data) => [data.id, data.oneliner]))
+    )
+  );
 });
 
 writeFileSync(
