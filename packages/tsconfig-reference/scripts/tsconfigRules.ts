@@ -156,6 +156,7 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["suppressImplicitAnyIndexErrors", ["noImplicitAny"]],
 
   ["listFiles", ["explainFiles"]],
+  ["preserveValueImports", ["isolatedModules", "importsNotUsedAsValues"]]
 ];
 
 /**
@@ -202,7 +203,7 @@ export const defaultsForOptions = {
   locale: "Platform specific",
   maxNodeModuleJsDepth: "0",
   moduleResolution:
-    "module === `AMD` or `UMD` or `System` or `ES6`, then `Classic`<br/><br/>Otherwise `Node`",
+    "module === `AMD` or `UMD` or `System` or `ES6`, then `Classic`<br/><br/>If module === `node12` or `nodenext`, then it matches. Otherwise `Node`",
   newLine: "Platform specific",
   noEmit: "false",
   noEmitHelpers: "false",
@@ -260,6 +261,7 @@ export const allowedValues = {
     "`ES2018`",
     "`ES2019`",
     "`ES2020`",
+    "`ES2021`",
     "`ESNext`",
   ],
   module: [
@@ -268,6 +270,9 @@ export const allowedValues = {
     "`ES6`",
     "`ES2015`",
     "`ES2020`",
+    "",
+    "`node12`",
+    "`nodenext`",
     "",
     "`None`",
     "`UMD`",
