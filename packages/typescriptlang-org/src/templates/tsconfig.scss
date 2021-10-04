@@ -267,6 +267,15 @@
         li {
           list-style: none;
           margin-bottom: 12px;
+
+          ul {
+            padding: 0;
+            margin-bottom: 18px;
+          }
+          li {
+            margin: 0;
+            margin-bottom: 12px;
+          }
         }
         tr {
           padding: 10px 0;
