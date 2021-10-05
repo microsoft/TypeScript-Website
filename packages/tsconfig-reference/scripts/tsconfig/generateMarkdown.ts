@@ -25,14 +25,13 @@ import * as assert from "assert";
 import { read as readMarkdownFile } from "gray-matter";
 import * as prettier from "prettier";
 import { CompilerOptionJSON } from "./generateJSON.js";
-import * as remark from "remark";
-import * as remarkHTML from "remark-html";
 
 import {
   typeAcquisitionCompilerOptNames,
   buildOptionCompilerOptNames,
   watchOptionCompilerOptNames,
   rootOptNames,
+  parseMarkdown,
 } from "../tsconfigRules";
 
 const options = require("../../data/tsconfigOpts.json").options as CompilerOptionJSON[];
@@ -85,8 +84,6 @@ const sections = [
   { name: "watchOptions", options: watchOptionCompilerOptNames, idPrefix: "watch" },
   { name: "typeAcquisition", options: typeAcquisitionCompilerOptNames, idPrefix: "type" },
 ];
-
-const parseMarkdown = (md: string) => remark().use(remarkHTML).processSync(md);
 
 const languages = readdirSync(join(__dirname, "..", "..", "copy")).filter(
   (f) => !f.startsWith(".")
@@ -237,31 +234,25 @@ languages.forEach((lang) => {
         mdChunks.push("</div>");
 
         // Make a markdown table of the important metadata
-        const mdTableRows = [] as [string, string][];
+        const mdTableRows = [] as [string, string | string[]][];
 
         if (option.deprecated) mdTableRows.push(["Status", "Deprecated"]);
 
         if (option.recommended) mdTableRows.push(["Recommended", "True"]);
 
         if (option.defaultValue) {
-          const value = option.defaultValue.replace(/^[.0-9a-z]+$/i, "`$&`");
-          mdTableRows.push(["Default", value]);
+          mdTableRows.push(["Default", option.defaultValue]);
         }
 
         if (option.allowedValues) {
-          const optionValue = option.allowedValues
-            .map((value) => value.replace(/^[.0-9a-z]+$/i, "`$&`"))
-            .join(",<br/>");
-          mdTableRows.push(["Allowed", optionValue]);
+          mdTableRows.push(["Allowed", option.allowedValues]);
         }
 
         if (option.related) {
-          const optionValue = option.related
-            .map(
-              (r) =>
-                `<a href='#${r}' aria-label="Jump to compiler option info for ${r}" ><code>${r}</code></a>`
-            )
-            .join(", ");
+          const optionValue = option.related.map(
+            (r) =>
+              `<a href='#${r}' aria-label="Jump to compiler option info for ${r}" ><code>${r}</code></a>`
+          );
           mdTableRows.push(["Related", optionValue]);
         }
 
