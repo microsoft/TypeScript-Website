@@ -57,7 +57,7 @@ When TypeScript finds a `.ts`, `.tsx`, `.js`, or `.jsx` file, it will walk up lo
 - and how to transform that file if producing outputs
 
 When a `.ts` file is compiled as an ES module, ECMAScript `import`/`export` syntax is left alone in the `.js` output;
-when it's compiled as a CommonJS module, it will produce the same output you get today under `--module commonjs`.
+when it's compiled as a CommonJS module, it will produce the same output you get today under [`module: commonjs`](/tsconfig#module).
 
 This also means paths resolve differently between `.ts` files that are ES modules and ones that are CJS modules.
 For example, let's say you have the following code today:
@@ -248,7 +248,7 @@ For more information, [you can see the implementing PR here](https://github.com/
 
 To ensure that TypeScript and JavaScript support works well out of the box, TypeScript bundles a series of declaration files (`.d.ts` files).
 These declaration files represent the available APIs in the JavaScript language, and the standard browser DOM APIs.
-While there are some reasonable defaults based on your [`target`](https://www.typescriptlang.org/tsconfig#target), you can pick and choose which declaration files your program uses by configuring the [`lib`](https://www.typescriptlang.org/tsconfig#lib) setting in the `tsconfig.json`.
+While there are some reasonable defaults based on your [`target`](/tsconfig#target), you can pick and choose which declaration files your program uses by configuring the [`lib`](https://www.typescriptlang.org/tsconfig#lib) setting in the `tsconfig.json`.
 
 There are two occasional downsides to including these declaration files with TypeScript though:
 
@@ -346,11 +346,11 @@ export function handler(r: Success | Error) {
 
 For more information, [see the change that enables this feature](https://github.com/microsoft/TypeScript/pull/46137).
 
-### `--module es2022`
+### `module es2022`
 
 Thanks to [Kagami S. Rosylight](https://github.com/saschanaz), TypeScript now supports a new `module` setting: `es2022`.
-The main feature in `--module es2022` is top-level `await`, meaning you can use `await` outside of `async` functions.
-This was already supported in `--module esnext` (and now `--module nodenext`), but `es2022 is the first stable target for this feature.
+The main feature in [`module es2022`](/tsconfig#module) is top-level `await`, meaning you can use `await` outside of `async` functions.
+This was already supported in `--module esnext` (and now [`--module nodenext`](/tsconfig#target)), but `es2022` is the first stable target for this feature.
 
 You can [read up more on this change here](https://github.com/microsoft/TypeScript/pull/44656).
 
@@ -418,7 +418,7 @@ type GetCharsHelper<S, Acc> =
 
 You can read up more on the implementation [here](https://github.com/microsoft/TypeScript/pull/45711).
 
-### <a name="preserve-value-imports"></a> Disabling Import Elision
+### Disabling Import Elision
 
 There are some cases where TypeScript can't detect that you're using an import.
 For example, take the following code:
@@ -430,7 +430,7 @@ eval("console.log(new Animal().isDangerous())");
 ```
 
 By default, TypeScript always removes this import because it appears to be unused.
-In TypeScript 4.5, you can enable a new flag called `--preserveValueImports` to prevent TypeScript from stripping out any imported values from your JavaScript outputs.
+In TypeScript 4.5, you can enable a new flag called [`preserveValueImports`](/tsconfig#preserveValueImports) to prevent TypeScript from stripping out any imported values from your JavaScript outputs.
 Good reasons to use `eval` are few and far between, but something very similar to this happens in Svelte:
 
 ```html
@@ -455,9 +455,9 @@ along with in Vue.js, using its `<script setup>` feature:
 
 These frameworks generate some code based on markup outside of their `<script>` tags, but TypeScript _only_ sees code within the `<script>` tags.
 That means TypeScript will automatically drop the import of `someFunc`, and the above code won't be runnable!
-With TypeScript 4.5, you can use `--preserveValueImports` to avoid these situations.
+With TypeScript 4.5, you can use [`preserveValueImports`](/tsconfig#preserveValueImports) to avoid these situations.
 
-Note that this flag has a special requirement when combined with `--isolatedModules`: imported
+Note that this flag has a special requirement when combined with [--isolatedModules`](/tsconfig#isolatedModules): imported
 types _must_ be marked as type-only because compilers that process single files at a time have no way of knowing whether imports are values that appear unused, or a type that must be removed in order to avoid a runtime crash.
 
 ```ts
@@ -475,7 +475,7 @@ For more information, [see the pull request here](https://github.com/microsoft/T
 
 ### `type` Modifiers on Import Names
 
-As mentioned above, `--preserveValueImports` and `--isolatedModules` have special requirements so that there's no ambiguity for build tools whether it's safe to drop type imports.
+As mentioned above, [`preserveValueImports`](/tsconfig#preserveValueImports) and [`isolatedModules`](/tsconfig#isolatedModules) have special requirements so that there's no ambiguity for build tools whether it's safe to drop type imports.
 
 ```ts
 // Which of these is a value that should be preserved? tsc knows, but `ts.transpileModule`,
@@ -511,7 +511,7 @@ export class Thing implements BaseType {
 }
 ```
 
-In the above example, `BaseType` is always guaranteed to be erased and `someFunc` will be preserved under `--preserveValueImports`, leaving us with the following code:
+In the above example, `BaseType` is always guaranteed to be erased and `someFunc` will be preserved under [`preserveValueImports`](/tsconfig#preserveValueImports), leaving us with the following code:
 
 ```js
 import { someFunc } from "./some-module.js";
@@ -607,7 +607,7 @@ TypeScript will typically use the type of an attribute to figure out what kind o
 Keep in mind, this feature will only work in newer versions of Visual Studio Code, so you might have to use an Insiders build to get this working.
 For more information, [read up on the original pull request](https://github.com/microsoft/TypeScript/pull/45903)
 
-### <a name="display-unresolved-types"></a> Better Editor Support for Unresolved Types
+### Better Editor Support for Unresolved Types
 
 In some cases, editors will leverage a lightweight "partial" semantic mode - either while the editor is waiting for the full project to load, or in contexts like [GitHub's web-based editor](https://docs.github.com/en/codespaces/developing-in-codespaces/web-based-editor).
 
