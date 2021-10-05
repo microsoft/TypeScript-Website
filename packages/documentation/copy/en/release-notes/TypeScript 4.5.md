@@ -319,7 +319,7 @@ Now `Promise.all` leverages combines certain features with `Awaited` to give muc
 
 For more information, you [can read about this change on GitHub](https://github.com/microsoft/TypeScript/pull/45350).
 
-### <a name="template-string-discriminants"></a> Template String Types as Discriminants
+### Template String Types as Discriminants
 
 TypeScript 4.5 now can narrow values that have template string types, and also recognizes template string types as discriminants.
 
