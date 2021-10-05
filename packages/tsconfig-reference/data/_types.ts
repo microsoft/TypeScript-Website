@@ -110,6 +110,7 @@ export type CompilerOptionName =
   | "maxNodeModuleJsDepth"
   | "noStrictGenericChecks"
   | "useDefineForClassFields"
+  | "preserveValueImports"
   | "keyofStringsOnly"
   | "plugins"
   | "watchFile"

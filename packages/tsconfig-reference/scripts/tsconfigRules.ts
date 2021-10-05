@@ -156,6 +156,7 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["suppressImplicitAnyIndexErrors", ["noImplicitAny"]],
 
   ["listFiles", ["explainFiles"]],
+  ["preserveValueImports", ["isolatedModules", "importsNotUsedAsValues"]]
 ];
 
 /**
@@ -223,6 +224,7 @@ export const defaultsForOptions = {
   `,
   moduleResolution: `
 - \`Classic\` if [\`module\`](#module) is \`AMD\`, \`UMD\`, \`System\` or \`ES6\`/\`ES2015\`
+- Matches if [\`module\`](#module) is \`node12\` or \`nodenext\`
 - \`Node\` otherwise.
   `,
   newLine: "Platform specific.",
@@ -284,6 +286,7 @@ export const allowedValues = {
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
+  "4.5": ["preserveValueImports"],
   "4.4": ["exactOptionalPropertyTypes", "useUnknownInCatchVariables"],
   "4.3": ["noImplicitOverride"],
   "4.2": ["noPropertyAccessFromIndexSignature", "explainFiles"],

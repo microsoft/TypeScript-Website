@@ -35,6 +35,12 @@ oneline: "Step one in learning TypeScript: The basic types."
 
 Or the site will fail the build. Once that file is ready, add it to the sidebar via the file [`packages/documentation/scripts/generateDocsNavigationPerLanguage.js`](https://github.com/microsoft/TypeScript-website/blob/v2/packages/documentation/scripts/generateDocsNavigationPerLanguage.js).
 
+### JSON Schema Updates
+
+The source of truth for the JSON Schema is https://github.com/SchemaStore/schemastore/blob/master/src/schemas/json/tsconfig.json
+
+To download a copy of that into our repo to handle new PRs sent to it in-between TS releases, run: `node ./node_modules/.bin/ts-node packages/tsconfig-reference/scripts/schema/downloadSchemaBase.ts`
+
 ##### TSConfig Reference
 
 Updating the version of TypeScript will force you to update the TSConfig Reference and JSON Schema. It will fail incrementally with each missing compiler flag.

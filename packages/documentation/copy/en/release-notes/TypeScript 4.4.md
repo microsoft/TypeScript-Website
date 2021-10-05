@@ -145,7 +145,7 @@ For example, we can write a type with an index signature that takes `string` key
 If we try to assign anything other than a `boolean` value, we'll get an error.
 
 ```ts twoslash
-// @errors: 2322
+// @errors: 2322 2375
 interface BooleanDictionary {
   [key: string]: boolean;
 }
@@ -165,7 +165,7 @@ While [a `Map` might be a better data structure here](https://developer.mozilla.
 Similarly, `Array<T>` already defines a `number` index signature that lets us insert/retrieve values of type `T`.
 
 ```ts
-// @errors: 2322
+// @errors: 2322 2375
 // This is part of TypeScript's definition of the built-in Array type.
 interface Array<T> {
   [index: number]: T;
@@ -192,7 +192,7 @@ TypeScript 4.4 addresses these limitations, and allows index signatures for `sym
 For example, TypeScript now allows us to declare a type that can be keyed on arbitrary `symbol`s.
 
 ```ts twoslash
-// @errors: 2322
+// @errors: 2322 2375
 interface Colors {
   [sym: symbol]: number;
 }
@@ -216,7 +216,7 @@ One use of this might be to exempt properties starting with `data-` from TypeScr
 When we pass an object literal to something with an expected type, TypeScript will look for excess properties that weren't declared in the expected type.
 
 ```ts
-// @errors: 2322
+// @errors: 2322 2375
 interface Options {
     width?: number;
     height?: number;
@@ -377,7 +377,7 @@ In TypeScript 4.4, the new flag [`exactOptionalPropertyTypes`](/tsconfig#exactOp
 
 ```ts twoslash
 // @exactOptionalPropertyTypes
-// @errors: 2322
+// @errors: 2322 2375
 interface Person {
   name: string;
   age?: number;

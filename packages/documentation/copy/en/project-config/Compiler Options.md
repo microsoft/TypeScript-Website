@@ -677,7 +677,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 <tr class='odd' name='jsx'>
   <td><code><a href='/tsconfig/#jsx'>--jsx</a></code></td>
-  <td><p><code>react</code>, react-jsx, react-jsxdev, react-native, or <code>preserve</code></p>
+  <td><p><code>preserve</code>, <code>react</code>, react-native, react-jsx, or react-jsxdev</p>
 </td>
   <td><p><code>undefined</code></p>
 </td>
@@ -787,7 +787,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 <tr class='odd' name='module'>
   <td><code><a href='/tsconfig/#module'>--module</a></code></td>
-  <td><p><code>CommonJS</code>, <code>ES6</code>/<code>ES2015</code>, <code>ES2020</code>, <code>None</code>, <code>UMD</code>, <code>AMD</code>, <code>System</code>, or <code>ESNext</code></p>
+  <td><p><code>none</code>, <code>commonjs</code>, <code>amd</code>, <code>umd</code>, <code>system</code>, <code>es6</code>/<code>es2015</code>, <code>es2020</code>, <code>es2022</code>, <code>esnext</code>, <code>node12</code>, or <code>nodenext</code></p>
 </td>
   <td><ul>
 <li><code>CommonJS</code> if <a href="#target"><code>target</code></a> is <code>ES3</code> or <code>ES5</code></li>
@@ -801,10 +801,11 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 <tr class='even' name='moduleResolution'>
   <td><code><a href='/tsconfig/#moduleResolution'>--moduleResolution</a></code></td>
-  <td>
+  <td><p><code>classic</code> or <code>node</code></p>
 </td>
   <td><ul>
 <li><code>Classic</code> if <a href="#module"><code>module</code></a> is <code>AMD</code>, <code>UMD</code>, <code>System</code> or <code>ES6</code>/<code>ES2015</code></li>
+<li>Matches if <a href="#module"><code>module</code></a> is <code>node12</code> or <code>nodenext</code></li>
 <li><code>Node</code> otherwise.</li>
 </ul>
 </td>
@@ -815,7 +816,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 <tr class='odd' name='newLine'>
   <td><code><a href='/tsconfig/#newLine'>--newLine</a></code></td>
-  <td>
+  <td><p><code>crlf</code> or <code>lf</code></p>
 </td>
   <td><p>Platform specific.</p>
 </td>
@@ -1094,139 +1095,150 @@ tsc app.ts util.ts --target esnext --outfile index.js
 <p>Disable resolving symlinks to their realpath. This correlates to the same flag in node.</p>
 </td></tr>
 
-<tr class='even' name='preserveWatchOutput'>
+<tr class='even' name='preserveValueImports'>
+  <td><code><a href='/tsconfig/#preserveValueImports'>--preserveValueImports</a></code></td>
+  <td><p><code>boolean</code></p>
+</td>
+  <td>
+</td>
+</tr>
+<tr class="option-description even"><td colspan="3">
+<p>Preserve unused imported values in the JavaScript output that would otherwise be removed</p>
+</td></tr>
+
+<tr class='odd' name='preserveWatchOutput'>
   <td><code><a href='/tsconfig/#preserveWatchOutput'>--preserveWatchOutput</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Disable wiping the console in watch mode</p>
 </td></tr>
 
-<tr class='odd' name='pretty'>
+<tr class='even' name='pretty'>
   <td><code><a href='/tsconfig/#pretty'>--pretty</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>true</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Enable color and formatting in output to make compiler errors easier to read</p>
 </td></tr>
 
-<tr class='even' name='reactNamespace'>
+<tr class='odd' name='reactNamespace'>
   <td><code><a href='/tsconfig/#reactNamespace'>--reactNamespace</a></code></td>
   <td><p><code>string</code></p>
 </td>
   <td><p><code>React</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Specify the object invoked for <code>createElement</code>. This only applies when targeting <code>react</code> JSX emit.</p>
 </td></tr>
 
-<tr class='odd' name='removeComments'>
+<tr class='even' name='removeComments'>
   <td><code><a href='/tsconfig/#removeComments'>--removeComments</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Disable emitting comments.</p>
 </td></tr>
 
-<tr class='even' name='resolveJsonModule'>
+<tr class='odd' name='resolveJsonModule'>
   <td><code><a href='/tsconfig/#resolveJsonModule'>--resolveJsonModule</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Enable importing .json files</p>
 </td></tr>
 
-<tr class='odd' name='rootDir'>
+<tr class='even' name='rootDir'>
   <td><code><a href='/tsconfig/#rootDir'>--rootDir</a></code></td>
   <td><p><code>string</code></p>
 </td>
   <td><p>Computed from the list of input files.</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Specify the root folder within your source files.</p>
 </td></tr>
 
-<tr class='even' name='rootDirs'>
+<tr class='odd' name='rootDirs'>
   <td><code><a href='/tsconfig/#rootDirs'>--rootDirs</a></code></td>
   <td><p><code>list</code></p>
 </td>
   <td>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Allow multiple folders to be treated as one when resolving modules.</p>
 </td></tr>
 
-<tr class='odd' name='skipDefaultLibCheck'>
+<tr class='even' name='skipDefaultLibCheck'>
   <td><code><a href='/tsconfig/#skipDefaultLibCheck'>--skipDefaultLibCheck</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Skip type checking .d.ts files that are included with TypeScript.</p>
 </td></tr>
 
-<tr class='even' name='skipLibCheck'>
+<tr class='odd' name='skipLibCheck'>
   <td><code><a href='/tsconfig/#skipLibCheck'>--skipLibCheck</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Skip type checking all .d.ts files.</p>
 </td></tr>
 
-<tr class='odd' name='sourceMap'>
+<tr class='even' name='sourceMap'>
   <td><code><a href='/tsconfig/#sourceMap'>--sourceMap</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Create source map files for emitted JavaScript files.</p>
 </td></tr>
 
-<tr class='even' name='sourceRoot'>
+<tr class='odd' name='sourceRoot'>
   <td><code><a href='/tsconfig/#sourceRoot'>--sourceRoot</a></code></td>
   <td><p><code>string</code></p>
 </td>
   <td>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Specify the root path for debuggers to find the reference source code.</p>
 </td></tr>
 
-<tr class='odd' name='strict'>
+<tr class='even' name='strict'>
   <td><code><a href='/tsconfig/#strict'>--strict</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Enable all strict type checking options.</p>
 </td></tr>
 
-<tr class='even' name='strictBindCallApply'>
+<tr class='odd' name='strictBindCallApply'>
   <td><code><a href='/tsconfig/#strictBindCallApply'>--strictBindCallApply</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
@@ -1236,11 +1248,11 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </ul>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Check that the arguments for <code>bind</code>, <code>call</code>, and <code>apply</code> methods match the original function.</p>
 </td></tr>
 
-<tr class='odd' name='strictFunctionTypes'>
+<tr class='even' name='strictFunctionTypes'>
   <td><code><a href='/tsconfig/#strictFunctionTypes'>--strictFunctionTypes</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
@@ -1250,11 +1262,11 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </ul>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>When assigning functions, check to ensure parameters and the return values are subtype-compatible.</p>
 </td></tr>
 
-<tr class='even' name='strictNullChecks'>
+<tr class='odd' name='strictNullChecks'>
   <td><code><a href='/tsconfig/#strictNullChecks'>--strictNullChecks</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
@@ -1264,11 +1276,11 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </ul>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>When type checking, take into account <code>null</code> and <code>undefined</code>.</p>
 </td></tr>
 
-<tr class='odd' name='strictPropertyInitialization'>
+<tr class='even' name='strictPropertyInitialization'>
   <td><code><a href='/tsconfig/#strictPropertyInitialization'>--strictPropertyInitialization</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
@@ -1278,99 +1290,99 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </ul>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Check for class properties that are declared but not set in the constructor.</p>
 </td></tr>
 
-<tr class='even' name='stripInternal'>
+<tr class='odd' name='stripInternal'>
   <td><code><a href='/tsconfig/#stripInternal'>--stripInternal</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Disable emitting declarations that have <code>@internal</code> in their JSDoc comments.</p>
 </td></tr>
 
-<tr class='odd' name='suppressExcessPropertyErrors'>
+<tr class='even' name='suppressExcessPropertyErrors'>
   <td><code><a href='/tsconfig/#suppressExcessPropertyErrors'>--suppressExcessPropertyErrors</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Disable reporting of excess property errors during the creation of object literals.</p>
 </td></tr>
 
-<tr class='even' name='suppressImplicitAnyIndexErrors'>
+<tr class='odd' name='suppressImplicitAnyIndexErrors'>
   <td><code><a href='/tsconfig/#suppressImplicitAnyIndexErrors'>--suppressImplicitAnyIndexErrors</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Suppress <a href="#noImplicitAny"><code>noImplicitAny</code></a> errors when indexing objects that lack index signatures.</p>
 </td></tr>
 
-<tr class='odd' name='target'>
+<tr class='even' name='target'>
   <td><code><a href='/tsconfig/#target'>--target</a></code></td>
-  <td><p><code>ES3</code>, <code>ES5</code>, <code>ES6</code>/<code>ES2015</code>, <code>ES7</code>/<code>ES2016</code>, <code>ES2017</code>, <code>ES2018</code>, <code>ES2019</code>, <code>ES2020</code>, or <code>ESNext</code></p>
+  <td><p><code>es3</code>, <code>es5</code>, <code>es6</code>/<code>es2015</code>, <code>es2016</code>, <code>es2017</code>, <code>es2018</code>, <code>es2019</code>, <code>es2020</code>, <code>es2021</code>, or <code>esnext</code></p>
 </td>
   <td><p><code>ES3</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Set the JavaScript language version for emitted JavaScript and include compatible library declarations.</p>
 </td></tr>
 
-<tr class='even' name='traceResolution'>
+<tr class='odd' name='traceResolution'>
   <td><code><a href='/tsconfig/#traceResolution'>--traceResolution</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Log paths used during the <a href="#moduleResolution"><code>moduleResolution</code></a> process.</p>
 </td></tr>
 
-<tr class='odd' name='tsBuildInfoFile'>
+<tr class='even' name='tsBuildInfoFile'>
   <td><code><a href='/tsconfig/#tsBuildInfoFile'>--tsBuildInfoFile</a></code></td>
   <td><p><code>string</code></p>
 </td>
   <td><p><code>.tsbuildinfo</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Specify the folder for .tsbuildinfo incremental compilation files.</p>
 </td></tr>
 
-<tr class='even' name='typeRoots'>
+<tr class='odd' name='typeRoots'>
   <td><code><a href='/tsconfig/#typeRoots'>--typeRoots</a></code></td>
   <td><p><code>list</code></p>
 </td>
   <td>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Specify multiple folders that act like <code>./node_modules/@types</code>.</p>
 </td></tr>
 
-<tr class='odd' name='types'>
+<tr class='even' name='types'>
   <td><code><a href='/tsconfig/#types'>--types</a></code></td>
   <td><p><code>list</code></p>
 </td>
   <td>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Specify type package names to be included without being referenced in a source file.</p>
 </td></tr>
 
-<tr class='even' name='useDefineForClassFields'>
+<tr class='odd' name='useDefineForClassFields'>
   <td><code><a href='/tsconfig/#useDefineForClassFields'>--useDefineForClassFields</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
@@ -1380,11 +1392,11 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </ul>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Emit ECMAScript-standard-compliant class fields.</p>
 </td></tr>
 
-<tr class='odd' name='useUnknownInCatchVariables'>
+<tr class='even' name='useUnknownInCatchVariables'>
   <td><code><a href='/tsconfig/#useUnknownInCatchVariables'>--useUnknownInCatchVariables</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
@@ -1394,7 +1406,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </ul>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Default catch clause variables as <code>unknown</code> instead of <code>any</code>.</p>
 </td></tr>
 
