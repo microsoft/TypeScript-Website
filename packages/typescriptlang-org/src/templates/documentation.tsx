@@ -121,7 +121,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
               <Helmet>
                 <link rel="canonical" href={`https://www.typescriptlang.org${post.frontmatter.deprecated_by}`} />
               </Helmet>
-              <div id="deprecated">
+              <div id="deprecated-header">
                 <div id="deprecated-content">
                   <div id="deprecated-icon">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7.5" stroke="black" /><path d="M8 3V9" stroke="black" /><path d="M8 11L8 13" stroke="black" /></svg>
