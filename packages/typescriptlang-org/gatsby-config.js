@@ -147,6 +147,7 @@ module.exports = {
             resolve: "gatsby-remark-shiki-twoslash",
             options: {
               theme: require("./lib/themes/typescript-beta-light.json"),
+              addTryButton: true,
             },
           },
           "gatsby-remark-copy-linked-files",
