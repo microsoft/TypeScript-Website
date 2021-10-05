@@ -681,7 +681,7 @@ Enums are a feature added to JavaScript by TypeScript which allows for describin
 It's worth mentioning the rest of the primitives in JavaScript which are represented in the type system.
 Though we will not go into depth here.
 
-##### `bigint`
+#### `bigint`
 
 From ES2020 onwards, there is a primitive in JavaScript used for very large integers, `BigInt`:
 
@@ -697,7 +697,7 @@ const anotherHundred: bigint = 100n;
 
 You can learn more about BigInt in [the TypeScript 3.2 release notes](/docs/handbook/release-notes/typescript-3-2.html#bigint).
 
-##### `symbol`
+#### `symbol`
 
 There is a primitive in JavaScript used to create a globally unique reference via the function `Symbol()`:
 
