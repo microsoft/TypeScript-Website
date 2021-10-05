@@ -286,6 +286,7 @@ export const allowedValues = {
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
+  "4.5": ["preserveValueImports"],
   "4.4": ["exactOptionalPropertyTypes", "useUnknownInCatchVariables"],
   "4.3": ["noImplicitOverride"],
   "4.2": ["noPropertyAccessFromIndexSignature", "explainFiles"],

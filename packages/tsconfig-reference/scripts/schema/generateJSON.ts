@@ -1,7 +1,7 @@
 // @ts-check
 // Data-dump all the CLI options
 
-/** Run with:
+/** Run with either:
      node ./node_modules/.bin/ts-node-transpile-only  packages/tsconfig-reference/scripts/schema/generateJSON.ts
      yarn ts-node scripts/cli/generateJSON.ts
      yarn workspace tsconfig-reference generate:json:schema
@@ -81,7 +81,7 @@ filteredOptions.forEach((option) => {
               "default": false
             },
 
-You're also going to need to make the new Markdown file for the compiler flag, run:
+You're also probably going to need to make the new Markdown file for the compiler flag, run:
 
 \n    echo '---\\ndisplay: "${option.name}"\\noneline: "Does something"\\n---\\n${option.description.message}\\n ' > ${sectionsPath}\n\nThen add some docs and run: \n>  yarn workspace tsconfig-reference build\n\n
     `;
@@ -99,8 +99,8 @@ You're also going to need to make the new Markdown file for the compiler flag, r
       );
     }
 
-    // Set the plain version
-    section[name].description = optionFile.data.oneline;
+    // Set the plain version, stripping internal markdown links.
+    section[name].description = optionFile.data.oneline.replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, '$1');
 
     // Can be removed once https://github.com/ExodusMovement/schemasafe/pull/146 is merged
     const isEnumOrConst = section[name]["enum"];
@@ -115,7 +115,7 @@ You're also going to need to make the new Markdown file for the compiler flag, r
     // Set a markdown version which is prioritised in vscode, giving people
     // the chance to click on the links.
     section[name].markdownDescription =
-      optionFile.data.oneline + `\n\nSee more: https://www.typescriptlang.org/tsconfig#${name}`;
+      section[name].description + `\n\nSee more: https://www.typescriptlang.org/tsconfig#${name}`;
   }
 });
 
