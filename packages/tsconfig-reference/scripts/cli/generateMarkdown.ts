@@ -12,9 +12,7 @@ import { join } from "path";
 import { read as readMarkdownFile } from "gray-matter";
 import * as prettier from "prettier";
 import { CompilerOptionJSON } from "./generateJSON.js";
-
-import * as remark from "remark";
-import * as remarkHTML from "remark-html";
+import { parseMarkdown } from "../tsconfigRules";
 
 const options = require(join(__dirname, "../../data/cliOpts.json")) as {
   options: CompilerOptionJSON[];
@@ -22,7 +20,6 @@ const options = require(join(__dirname, "../../data/cliOpts.json")) as {
   watch: CompilerOptionJSON[];
   cli: CompilerOptionJSON[];
 };
-const parseMarkdown = (md: string) => remark().use(remarkHTML).processSync(md);
 
 const knownTypes: Record<string, string> = {};
 
@@ -97,11 +94,13 @@ languages.forEach((lang) => {
           // @ts-ignore
           const or = new Intl.ListFormat(lang, { type: "disjunction" });
           optType = or.format(
-            option.allowedValues.map((v) => v.replace(/^[.0-9a-z]+$/i, "`$&`"))
+            option.allowedValues.map((v) =>
+              v.replace(/^[-.0-9_a-z]+$/i, "`$&`")
+            )
           );
         } else {
           optType = option.allowedValues
-            .map((v) => v.replace(/^[.0-9a-z]+$/i, "`$&`"))
+            .map((v) => v.replace(/^[-.0-9_a-z]+$/i, "`$&`"))
             .join(", ");
         }
       } else {
@@ -110,11 +109,7 @@ languages.forEach((lang) => {
       markdownChunks.push(`  <td>${parseMarkdown(optType)}</td>`);
 
       if (!opts?.noDefaults) {
-        markdownChunks.push(
-          `  <td>${parseMarkdown(
-            option.defaultValue?.replace(/^[.0-9a-z]+$/i, "`$&`")
-          )}</td>`
-        );
+        markdownChunks.push(`  <td>${parseMarkdown(option.defaultValue)}</td>`);
       }
       markdownChunks.push(`</tr>`);
 

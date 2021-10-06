@@ -1,4 +1,6 @@
 import { CompilerOptionName } from "../data/_types";
+import * as remark from "remark";
+import * as remarkHTML from "remark-html";
 import * as ts from "typescript";
 
 /**
@@ -165,18 +167,18 @@ export const relatedTo: [AnOption, AnOption[]][] = [
  */
 
 function trueIf(name: string) {
-  return `
-- \`true\` if [\`${name}\`](#${name}) is \`true\`
-- \`false\` otherwise.
-`;
+  return [
+    `\`true\` if [\`${name}\`](#${name}) is \`true\``,
+    "`false` otherwise.",
+  ];
 }
 
 export const defaultsForOptions = {
   allowJs: "false",
-  allowSyntheticDefaultImports: `
-- \`true\` if [\`module\`](#module) is \`system\` or [\`esModuleInterop\`](#esModuleInterop) is \`true\` and [\`module\`](#module) is not \`es6\`/\`es2015\` or \`esnext\`
-- \`false\` otherwise.
-  `,
+  allowSyntheticDefaultImports: [
+    "`true` if [`module`](#module) is `system` or [`esModuleInterop`](#esModuleInterop) is `true` and [`module`](#module) is not `es6`/`es2015` or `esnext`",
+    "`false` otherwise.",
+  ],
   allowUmdGlobalAccess: "false",
   allowUnreachableCode: "undefined",
   allowUnusedLabels: "undefined",
@@ -192,20 +194,17 @@ export const defaultsForOptions = {
   emitBOM: "false",
   emitDeclarationOnly: "false",
   esModuleInterop: "false",
-  exclude: `
-- \`node_modules\`
-- \`bower_components\`
-- \`jspm_packages\`
-- [\`outDir\`](#outDir)
-  `,
+  exclude: [
+    "node_modules",
+    "bower_components",
+    "jspm_packages",
+    "[`outDir`](#outDir)",
+  ],
   extendedDiagnostics: "false",
   forceConsistentCasingInFileNames: "false",
   generateCpuProfile: "profile.cpuprofile",
   importHelpers: "false",
-  include: `
-- \`[]\` if [\`files\`](#files) is specified
-- \`**\` otherwise.
-  `,
+  include: ["`[]` if [`files`](#files) is specified", "`**` otherwise."],
   incremental: trueIf("composite"),
   inlineSourceMap: "false",
   inlineSources: "false",
@@ -218,15 +217,15 @@ export const defaultsForOptions = {
   listFiles: "false",
   locale: "Platform specific.",
   maxNodeModuleJsDepth: "0",
-  module: `
-- \`CommonJS\` if [\`target\`](#target) is \`ES3\` or \`ES5\`
-- \`ES6\`/\`ES2015\` otherwise.
-  `,
-  moduleResolution: `
-- \`Classic\` if [\`module\`](#module) is \`AMD\`, \`UMD\`, \`System\` or \`ES6\`/\`ES2015\`
-- Matches if [\`module\`](#module) is \`node12\` or \`nodenext\`
-- \`Node\` otherwise.
-  `,
+  module: [
+    "`CommonJS` if [`target`](#target) is `ES3` or `ES5`",
+    "`ES6`/`ES2015` otherwise.",
+  ],
+  moduleResolution: [
+    "`Classic` if [`module`](#module) is `AMD`, `UMD`, `System` or `ES6`/`ES2015`",
+    "Matches if [`module`](#module) is `node12` or `nodenext`",
+    "`Node` otherwise.",
+  ],
   newLine: "Platform specific.",
   noEmit: "false",
   noEmitHelpers: "false",
@@ -265,10 +264,10 @@ export const defaultsForOptions = {
   target: "ES3",
   traceResolution: "false",
   tsBuildInfoFile: ".tsbuildinfo",
-  useDefineForClassFields: `
-- \`true\` if [\`target\`](#target) is \`ES2022\` or higher, including \`ESNext\`
-- \`false\` otherwise.
-  `,
+  useDefineForClassFields: [
+    "`true` if [`target`](#target) is `ES2022` or higher, including `ESNext`",
+    "`false` otherwise.",
+  ],
 };
 
 export const allowedValues = {
@@ -355,3 +354,12 @@ Object.keys(releaseToConfigsMap).forEach((v) => {
     configToRelease[key] = v;
   });
 });
+
+export const parseMarkdown = (value: string | string[]) =>
+  Array.isArray(value)
+    ? `<ul>${value
+        .map((element) => `<li>${parseMarkdown(element)}</li>`)
+        .join("")}</ul>`
+    : remark()
+        .use(remarkHTML)
+        .processSync(value?.replace(/^[-.0-9_a-z]+$/i, "`$&`"));
