@@ -234,11 +234,15 @@ languages.forEach((lang) => {
         mdChunks.push("</div>");
 
         // Make a markdown table of the important metadata
-        const mdTableRows = [] as [string, string | string[]][];
+        const mdTableRows = [] as [string, (string | string[])?][];
 
-        if (option.deprecated) mdTableRows.push(["Status", "Deprecated"]);
+        if (option.deprecated) mdTableRows.push(["Deprecated"]);
 
-        if (option.recommended) mdTableRows.push(["Recommended", "True"]);
+        if (option.recommended) mdTableRows.push(["Recommended"]);
+
+        if (option.internal) {
+          mdTableRows.push(["Internal"]);
+        }
 
         if (option.defaultValue) {
           mdTableRows.push(["Default", option.defaultValue]);
@@ -256,10 +260,6 @@ languages.forEach((lang) => {
           mdTableRows.push(["Related", optionValue]);
         }
 
-        if (option.internal) {
-          mdTableRows.push(["Status", "internal"]);
-        }
-
         if (option.releaseVersion) {
           const underscores = option.releaseVersion.replace(".", "-");
           const link = `/docs/handbook/release-notes/typescript-${underscores}.html`;
@@ -272,7 +272,12 @@ languages.forEach((lang) => {
         const table =
           "<ul class='compiler-option-md'>" +
           mdTableRows
-            .map((r) => `<li><span>${r[0]}:</span>${parseMarkdown(r[1])}</li>`)
+            .map(
+              (r) =>
+                `<li><span>${r[0]}${
+                  r.length > 1 ? ":" : ""
+                }</span>${parseMarkdown(r[1])}</li>`
+            )
             .join("\n") +
           "</ul>";
 
