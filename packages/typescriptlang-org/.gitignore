@@ -80,6 +80,7 @@ static/js/playground/
 static/js/examples/
 !static/js/examples/.gitkeep
 static/js/json
+static/js/playground-worker/
 
 .now
 

@@ -10,5 +10,6 @@ export const getPlaygroundUrls = () => {
   return {
     sandboxRoot: withPrefix(`/js${commitPrefix}sandbox`),
     playgroundRoot: withPrefix(`/js${commitPrefix}playground`),
+    playgroundWorker: withPrefix(`/js${commitPrefix}playground-worker/index.js`),
   }
 }

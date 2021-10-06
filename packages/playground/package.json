@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@typescript/sandbox": "0.1.0",
+    "@typescript/playground-worker": "0.1.0",
     "esbuild": "^0.13.4"
   },
   "devDependencies": {
