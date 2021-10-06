@@ -17,6 +17,7 @@ import "reflect-metadata"
 
 import playgroundReleases from "../../../sandbox/src/releases.json"
 import { getPlaygroundUrls } from "../lib/playgroundURLs"
+import Helmet from "react-helmet"
 
 // This gets set by the playground
 declare const playground: ReturnType<typeof import("@typescript/playground").setupPlayground>
@@ -134,16 +135,16 @@ const Play: React.FC<Props> = (props) => {
         }
       });
 
-      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("@typescript/sandbox"), playground: typeof import("@typescript/playground")) => {
+      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("@typescript/sandbox")) => {
         // Importing "vs/language/typescript/tsWorker" will set ts as a global
         const ts = (global as any).ts
-        const isOK = main && ts && sandbox && playground
+        const isOK = main && ts && sandbox
 
         if (isOK) {
           document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)
         } else {
           console.error("Errr")
-          console.error("main", !!main, "ts", !!ts, "sandbox", !!sandbox, "playground", !!playground)
+          console.error("main", !!main, "ts", !!ts, "sandbox", !!sandbox)
         }
 
         // Set the height of monaco to be either your window height or 600px - whichever is smallest
@@ -172,7 +173,7 @@ const Play: React.FC<Props> = (props) => {
           supportCustomPlugins: true
         }
 
-        playground.setupPlayground(sandboxEnv, main, playgroundConfig, i as any, React)
+        window.setupPlayground(sandboxEnv, main, playgroundConfig, i as any, React)
 
         // Dark mode faff
         const darkModeEnabled = document.documentElement.classList.contains("dark-theme")
@@ -191,6 +192,9 @@ const Play: React.FC<Props> = (props) => {
 
   return (
     <Layout title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang}>
+      <Helmet>
+        <script src="/js/playground/2/index.js"/>
+      </Helmet>
       {/** This is the top nav, which is outside of the editor  */}
       <nav className="navbar-sub">
         <ul className="nav">
