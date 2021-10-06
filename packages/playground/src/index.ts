@@ -70,7 +70,7 @@ interface PlaygroundConfig {
   supportCustomPlugins: boolean
 }
 
-export const setupPlayground = (
+const setupPlayground = (
   sandbox: Sandbox,
   monaco: Monaco,
   config: PlaygroundConfig,
@@ -445,7 +445,7 @@ export const setupPlayground = (
         sidebarTabs.style.display = "none"
         sidebarContent.style.display = "none"
         settingsContent.style.display = "block"
-        ;(document.querySelector(".playground-sidebar label") as any).focus()
+          ; (document.querySelector(".playground-sidebar label") as any).focus()
       }
       settingsToggle.parentElement!.classList.toggle("open")
     }
@@ -668,3 +668,5 @@ const redirectTabPressTo = (element: HTMLElement, container: HTMLElement | undef
     }
   })
 }
+
+window.setupPlayground = setupPlayground
