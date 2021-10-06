@@ -1,6 +1,6 @@
-type ts = typeof import("typescript")
+import type {Diagnostic, QuickInfo} from "typescript"
 
-type TwoSlashFiles = Array<{ file: string, startIndex: number, endIndex: number, content: string }>
+type TwoSlashFiles = Array<{ file: string, startIndex: number, endIndex: number, content: string, updatedAt: string }>
 
 // Returns a subclass of the worker which take Twoslash file splitting into account. The key to understanding
 // how/why this works is that TypeScript does not have _direct_ access to the monaco model. The functions 
@@ -10,50 +10,70 @@ type TwoSlashFiles = Array<{ file: string, startIndex: number, endIndex: number,
 const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts, libFileMap) => {
     return class MonacoTSWorker extends TypeScriptWorker {
 
+        // TODO: this needs to be set by the playground
+        mainFile = "input.tsx"
+
         // This is the cache key that additionalTwoslashFiles is reasonable
-        additionalTwolashFilesModelString: string = ""
-        additionalTwoslashFiles: TwoSlashFiles = []
+        twolashFilesModelString: string = ""
+        twoslashFiles: TwoSlashFiles = []
+        additionalTwoslashFilenames: string[] = []
+
+        // These two are basically using the internals of the TypeScriptWorker
+        // but I don't think it's likely they're ever going to change
 
         getMainText(): string {
-            // @ts-ignore - this is private, but probably never changing
+            // @ts-ignore
             return this._ctx.getMirrorModels()[0].getValue()
         }
 
-        getLanguageService(): import("typescript").LanguageService {
-            // @ts-ignore
-            return this._languageService
-        }
+        // getLanguageService(): import("typescript").LanguageService {
+        //     // @ts-ignore
+        //     return this._languageService
+        // }
 
         // Updates our in-memory twoslash file representations if needed
-        updateTwoslashInfo(): void {
+        updateTwoslashInfoIfNeeded(): void {
             const modelValue = this.getMainText()
             const files = modelValue.split("// @filename: ")
             if (files.length === 1) {
-                if (this.additionalTwoslashFiles.length) this.additionalTwoslashFiles = []
+                if (this.twoslashFiles.length) {
+                    this.twoslashFiles = []
+                    this.additionalTwoslashFilenames = []
+                }
                 return
             }
 
             // OK, so we have twoslash think about, check cache to see if the input is
             // the same and so we don't need to re-run twoslash
-            if (this.additionalTwolashFilesModelString === modelValue) return
+            if (this.twolashFilesModelString === modelValue) return
 
             // Do the work
-            const splits = splitTwoslashCodeInfoFiles(modelValue, "input.tsx", "file:///")
+            const splits = splitTwoslashCodeInfoFiles(modelValue, this.mainFile, "file:///")
             const twoslashResults = splits.map(f => {
                 const content = f[1].join("\n")
-                return { file: f[0], startIndex: modelValue.indexOf(content), endIndex: modelValue.indexOf(content) + content.length, content }
+                const updatedAt = (new Date()).toUTCString()
+                return {
+                    file: f[0],
+                    content,
+                    startIndex: modelValue.indexOf(content), 
+                    endIndex: modelValue.indexOf(content) + content.length, 
+                    updatedAt 
+                }
             })
 
-            this.additionalTwoslashFiles = twoslashResults
-            this.additionalTwolashFilesModelString = modelValue
-            // this.getLanguageService().
+            this.twoslashFiles = twoslashResults
+            this.additionalTwoslashFilenames = twoslashResults.map(f => f.file).filter(f => f !== this.mainFile)
+            this.twolashFilesModelString = modelValue
+
+            console.log("updated to have twoslash: ", this.additionalTwoslashFilenames)
         }
 
         // Takes a fileName and position and shifts it to the new file/pos according to twoslash splits
         repositionInTwoslash(fileName: string, position: number) {
-            this.updateTwoslashInfo()
-            if (this.additionalTwoslashFiles.length === 0) return { tsFileName: fileName, tsPosition: position }
-            const thisFile = this.additionalTwoslashFiles.find(r => r.startIndex < position && position < r.endIndex)
+            this.updateTwoslashInfoIfNeeded()
+
+            if (this.twoslashFiles.length === 0) return { tsFileName: fileName, tsPosition: position }
+            const thisFile = this.twoslashFiles.find(r => r.startIndex < position && position <= r.endIndex)
             if (!thisFile) return null
 
             return {
@@ -64,58 +84,107 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
 
         // What TypeScript files could we get to include created by twoslash files
         override getScriptFileNames() {
-            console.log("get filenames")
             const main = super.getScriptFileNames()
-            return [...main, ...this.additionalTwoslashFiles.map(f => f.file)]
+            const files = [...main, ...this.additionalTwoslashFilenames]
+            return files
         }
 
         override _getScriptText(fileName: string): string | undefined {
-            const twoslashed = this.additionalTwoslashFiles.find(f => fileName === f.file)
-            if (twoslashed) return twoslashed.content
+            const twoslashed = this.twoslashFiles.find(f => fileName === f.file)
+            if (twoslashed) { 
+                return twoslashed.content
+            }
             return super._getScriptText(fileName)
         }
 
+        override getScriptVersion(fileName: string) {
+            this.updateTwoslashInfoIfNeeded()
+
+            const thisFile = this.twoslashFiles.find(f => f.file)
+            if (thisFile) return thisFile.updatedAt
+            return super.getScriptVersion(fileName)
+        }
+
+        // Bunch of promise -> diag[] functions
+        override async getSemanticDiagnostics(fileName: string) {
+            return this._getDiagsWrapper(super.getSemanticDiagnostics, fileName)
+        }
+
+        override async getSyntacticDiagnostics(fileName: string) {
+            return this._getDiagsWrapper(super.getSyntacticDiagnostics, fileName)
+        }
+
+        override async getCompilerOptionsDiagnostics(fileName: string) {
+            return this._getDiagsWrapper(super.getCompilerOptionsDiagnostics, fileName)
+        }
+
+        override async getSuggestionDiagnostics(fileName: string) {
+            return this._getDiagsWrapper(super.getSuggestionDiagnostics, fileName)
+        }
+
+        override async getQuickInfoAtPosition(fileName: string, position: number) {
+            const empty = Promise.resolve({ kind: "" as any, kindModifiers:"" , textSpan: { start: 0, length: 0} })
+            return this._overrideFileNamePos(super.getQuickInfoAtPosition, fileName, position, undefined, empty)
+        }
+
         override async getCompletionsAtPosition(fileName: string, position: number) {
+            const empty = Promise.resolve({ isGlobalCompletion: false, isMemberCompletion: false, isNewIdentifierLocation: false, entries: [] })
+            return this._overrideFileNamePos(super.getCompletionsAtPosition, fileName, position, undefined, empty)
+        }
+
+        override async getCompletionEntryDetails(fileName: string, position: number, entry: string) {
+            const empty = Promise.resolve({ name: "", kind: "" as any, kindModifiers: "", displayParts: [] })
+            return this._overrideFileNamePos(super.getCompletionEntryDetails, fileName, position, entry, empty)
+        }
+
+        override async getOccurrencesAtPosition(fileName: string, position: number) {
+            const empty = Promise.resolve([])
+            return this._overrideFileNamePos(super.getOccurrencesAtPosition, fileName, position, undefined, empty)
+        }
+
+        override async getDefinitionAtPosition(fileName: string, position: number) {
+            const empty = Promise.resolve([])
+            return this._overrideFileNamePos(super.getDefinitionAtPosition, fileName, position, undefined, empty)
+        }
+
+        override async getReferencesAtPosition(fileName: string, position: number) {
+            const empty = Promise.resolve([])
+            return this._overrideFileNamePos(super.getReferencesAtPosition, fileName, position, undefined, empty)
+        }
+
+        override async getNavigationBarItems(fileName: string) {
+            const empty = Promise.resolve([])
+            return this._overrideFileNamePos(super.getNavigationBarItems, fileName, undefined, undefined, empty)
+        }
+
+        // Can handle any file, pos function
+        async _overrideFileNamePos<T extends (fileName: string, position: number, other: any) => any>(fnc: T, fileName: string, position: number, other: any, empty: ReturnType<T>) {
             const newLocation = this.repositionInTwoslash(fileName, position)
             // Gaps between files skip the info, pass back a blank
-            if (!newLocation) return { isGlobalCompletion: false, isMemberCompletion: false, isNewIdentifierLocation: false, entries: [] }
+            if (!newLocation) return empty
 
             const { tsFileName, tsPosition } = newLocation
-            console.log(newLocation)
-            return super.getCompletionsAtPosition(tsFileName, tsPosition)
+            return fnc(tsFileName, tsPosition, other)
+        }
+
+        // Can handle any anything to promise
+        async _getDiagsWrapper(getDiagnostics: (string) => Promise<Diagnostic[]>, fileName: string) {
+            this.updateTwoslashInfoIfNeeded()
+            
+            if (fileName === this.mainFile && this.twoslashFiles.length === 0) return getDiagnostics(fileName)
+
+            let diags = []
+            for (const f of this.twoslashFiles) {
+                const d = await getDiagnostics(f.file)
+                d.forEach(diag => { diag.start += f.startIndex })
+                diags = diags.concat(d)
+            }
+            
+            return diags
         }
     };
 };
 
-
-// let lastResults: { modelValue: string, results: TwoSlashFiles } = { modelValue: "", results: [] }
-
-// const positionInTwoslash = (modelValue: string, fileName: string, position: number): null | { tsFileName: string, tsPosition: number } => {
-//     // Quick NOOP if we need that
-//     const files = modelValue.split("// @filename: ")
-//     if (files.length === 1) return { tsFileName: fileName, tsPosition: position }
-
-//     // OK, so we have twoslash think about, check cache
-//     let twoslashResults: TwoSlashFiles
-//     if (lastResults.modelValue === modelValue) twoslashResults = lastResults.results
-//     else {
-//         const files = splitTwoslashCodeInfoFiles(modelValue, "input.tsx", "file:///")
-//         twoslashResults = files.map(f => {
-//             const content = f[1].join("\n")
-//             return { file: f[0], startIndex: modelValue.indexOf(content), endIndex: modelValue.indexOf(content) + content.length, content }
-//         })
-//         lastResults = { modelValue, results: twoslashResults }
-//     }
-
-//     // debugger
-//     const thisFile = twoslashResults.find(r => r.startIndex < position && position < r.endIndex)
-//     if (!thisFile) return null
-
-//     return {
-//         tsPosition: position - thisFile.startIndex,
-//         tsFileName: thisFile.file
-//     }
-// }
 
 // Taken directly from Twoslash's source code
 const splitTwoslashCodeInfoFiles = (code: string, defaultFileName: string, root: string) => {

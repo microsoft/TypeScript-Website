@@ -48,9 +48,9 @@ export type SandboxConfig = {
     groupEnd: (...args: any[]) => void
   }
 } & (
-    | { /** theID of a dom node to add monaco to */ domID: string }
-    | { /** theID of a dom node to add monaco to */ elementToAppend: HTMLElement }
-  )
+  | { /** theID of a dom node to add monaco to */ domID: string }
+  | { /** theID of a dom node to add monaco to */ elementToAppend: HTMLElement }
+)
 
 const languageType = (config: SandboxConfig) => (config.filetype === "js" ? "javascript" : "typescript")
 
@@ -143,7 +143,6 @@ export const createTypeScriptSandbox = (
   const filePath = createFileUri(config, compilerOptions, monaco)
   const element = "domID" in config ? document.getElementById(config.domID) : (config as any).elementToAppend
 
-
   const model = monaco.editor.createModel(defaultText, language, filePath)
   monaco.editor.defineTheme("sandbox", sandboxTheme)
   monaco.editor.defineTheme("sandbox-dark", sandboxThemeDark)
@@ -160,13 +159,12 @@ export const createTypeScriptSandbox = (
     ? monaco.languages.typescript.javascriptDefaults
     : monaco.languages.typescript.typescriptDefaults
 
-
   // @ts-ignore - these exist
   if (config.customTypeScriptWorkerPath && defaults.setWorkerOptions) {
     // @ts-ignore - this func must exist to have got here
     defaults.setWorkerOptions({
-      customWorkerPath: config.customTypeScriptWorkerPath
-    });
+      customWorkerPath: config.customTypeScriptWorkerPath,
+    })
   }
 
   defaults.setDiagnosticsOptions({
@@ -227,7 +225,7 @@ export const createTypeScriptSandbox = (
   defaults.setCompilerOptions(compilerOptions)
 
   // To let clients plug into compiler settings changes
-  let didUpdateCompilerSettings = (opts: CompilerOptions) => { }
+  let didUpdateCompilerSettings = (opts: CompilerOptions) => {}
 
   const updateCompilerSettings = (opts: CompilerOptions) => {
     const newKeys = Object.keys(opts)

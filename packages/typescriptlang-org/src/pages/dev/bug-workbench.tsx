@@ -137,12 +137,12 @@ const Play: React.FC<Props> = (props) => {
         const debouncedTwoslash = debounce(() => {
           if (dtsMap) runTwoslash()
 
-          const isTSErrorsEnabled = !sandboxEnv.languageServiceDefaults.getDiagnosticsOptions().noSemanticValidation
-          const shouldBeEnabled = !sandboxEnv.getText().includes("// @filename")
-          if (isTSErrorsEnabled !== shouldBeEnabled) {
-            // Turn off the suggestions for multi-file reports
-            sandboxEnv.languageServiceDefaults.setDiagnosticsOptions({ noSemanticValidation: !shouldBeEnabled })
-          }
+          // const isTSErrorsEnabled = !sandboxEnv.languageServiceDefaults.getDiagnosticsOptions().noSemanticValidation
+          // const shouldBeEnabled = !sandboxEnv.getText().includes("// @filename")
+          // if (isTSErrorsEnabled !== shouldBeEnabled) {
+          //   // Turn off the suggestions for multi-file reports
+          //   sandboxEnv.languageServiceDefaults.setDiagnosticsOptions({ noSemanticValidation: !shouldBeEnabled })
+          // }
         }, 1000)
 
         sandboxEnv.editor.onDidChangeModelContent(debouncedTwoslash)
