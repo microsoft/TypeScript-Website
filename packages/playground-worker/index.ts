@@ -26,10 +26,10 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
             return this._ctx.getMirrorModels()[0].getValue()
         }
 
-        // getLanguageService(): import("typescript").LanguageService {
-        //     // @ts-ignore
-        //     return this._languageService
-        // }
+        getLanguageService(): import("typescript").LanguageService {
+            // @ts-ignore
+            return this._languageService
+        }
 
         // Updates our in-memory twoslash file representations if needed
         updateTwoslashInfoIfNeeded(): void {
@@ -66,6 +66,21 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
             this.twolashFilesModelString = modelValue
 
             console.log("updated to have twoslash: ", this.additionalTwoslashFilenames)
+        }
+
+        getCurrentDirectory(): string {
+            return "/"
+        }
+
+
+        readDirectory(path: string, extensions?: readonly string[], exclude?: readonly string[], include?: readonly string[], depth?: number): string[] {
+            const giving = this.twoslashFiles.map(f => f.file)
+            console.log("readDir", path, extensions)
+            console.log(giving)
+            debugger
+            
+            if (this.twoslashFiles.length === 0) return []
+            return giving
         }
 
         // Takes a fileName and position and shifts it to the new file/pos according to twoslash splits
@@ -105,56 +120,58 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
             return super.getScriptVersion(fileName)
         }
 
+        // Perhaps theres a way to make all these `bind(this)` gone away?
+
         // Bunch of promise -> diag[] functions
         override async getSemanticDiagnostics(fileName: string) {
-            return this._getDiagsWrapper(super.getSemanticDiagnostics, fileName)
+            return this._getDiagsWrapper(super.getSemanticDiagnostics.bind(this), fileName)
         }
 
         override async getSyntacticDiagnostics(fileName: string) {
-            return this._getDiagsWrapper(super.getSyntacticDiagnostics, fileName)
+            return this._getDiagsWrapper(super.getSyntacticDiagnostics.bind(this), fileName)
         }
 
         override async getCompilerOptionsDiagnostics(fileName: string) {
-            return this._getDiagsWrapper(super.getCompilerOptionsDiagnostics, fileName)
+            return this._getDiagsWrapper(super.getCompilerOptionsDiagnostics.bind(this), fileName)
         }
 
         override async getSuggestionDiagnostics(fileName: string) {
-            return this._getDiagsWrapper(super.getSuggestionDiagnostics, fileName)
+            return this._getDiagsWrapper(super.getSuggestionDiagnostics.bind(this), fileName)
         }
 
         override async getQuickInfoAtPosition(fileName: string, position: number) {
             const empty = Promise.resolve({ kind: "" as any, kindModifiers:"" , textSpan: { start: 0, length: 0} })
-            return this._overrideFileNamePos(super.getQuickInfoAtPosition, fileName, position, undefined, empty)
+            return this._overrideFileNamePos(super.getQuickInfoAtPosition.bind(this), fileName, position, undefined, empty)
         }
 
         override async getCompletionsAtPosition(fileName: string, position: number) {
             const empty = Promise.resolve({ isGlobalCompletion: false, isMemberCompletion: false, isNewIdentifierLocation: false, entries: [] })
-            return this._overrideFileNamePos(super.getCompletionsAtPosition, fileName, position, undefined, empty)
+            return this._overrideFileNamePos(super.getCompletionsAtPosition.bind(this), fileName, position, undefined, empty)
         }
 
         override async getCompletionEntryDetails(fileName: string, position: number, entry: string) {
             const empty = Promise.resolve({ name: "", kind: "" as any, kindModifiers: "", displayParts: [] })
-            return this._overrideFileNamePos(super.getCompletionEntryDetails, fileName, position, entry, empty)
+            return this._overrideFileNamePos(super.getCompletionEntryDetails.bind(this), fileName, position, entry, empty)
         }
 
         override async getOccurrencesAtPosition(fileName: string, position: number) {
             const empty = Promise.resolve([])
-            return this._overrideFileNamePos(super.getOccurrencesAtPosition, fileName, position, undefined, empty)
+            return this._overrideFileNamePos(super.getOccurrencesAtPosition.bind(this), fileName, position, undefined, empty)
         }
 
         override async getDefinitionAtPosition(fileName: string, position: number) {
             const empty = Promise.resolve([])
-            return this._overrideFileNamePos(super.getDefinitionAtPosition, fileName, position, undefined, empty)
+            return this._overrideFileNamePos(super.getDefinitionAtPosition.bind(this), fileName, position, undefined, empty)
         }
 
         override async getReferencesAtPosition(fileName: string, position: number) {
             const empty = Promise.resolve([])
-            return this._overrideFileNamePos(super.getReferencesAtPosition, fileName, position, undefined, empty)
+            return this._overrideFileNamePos(super.getReferencesAtPosition.bind(this), fileName, position, undefined, empty)
         }
 
         override async getNavigationBarItems(fileName: string) {
             const empty = Promise.resolve([])
-            return this._overrideFileNamePos(super.getNavigationBarItems, fileName, undefined, undefined, empty)
+            return this._overrideFileNamePos(super.getNavigationBarItems.bind(this), fileName, undefined, undefined, empty)
         }
 
         // Can handle any file, pos function
@@ -164,11 +181,13 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
             if (!newLocation) return empty
 
             const { tsFileName, tsPosition } = newLocation
-            return fnc(tsFileName, tsPosition, other)
+            return fnc.bind(this)(tsFileName, tsPosition, other)
         }
 
         // Can handle any anything to promise
         async _getDiagsWrapper(getDiagnostics: (string) => Promise<Diagnostic[]>, fileName: string) {
+            if (!this.getLanguageService()) return []
+
             this.updateTwoslashInfoIfNeeded()
             
             if (fileName === this.mainFile && this.twoslashFiles.length === 0) return getDiagnostics(fileName)
