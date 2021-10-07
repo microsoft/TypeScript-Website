@@ -1136,11 +1136,3 @@ input.good {
     transform: translateZ(0);
   }
 }
-
-// .play-created-input-file-tsx {
-//   display: block;
-// }
-.play-created-input-file-tsx::before {
-  color: #999;
-  content: "// @filename: input.tsx";
-}

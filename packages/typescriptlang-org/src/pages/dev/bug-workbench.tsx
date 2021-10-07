@@ -125,34 +125,37 @@ const Play: React.FC<Props> = (props) => {
             dtsMap = defaultMap
             runTwoslash()
           })
-
         }
 
         // When the compiler notices a twoslash compiler flag change, this will get triggered and reset the DTS map
         sandboxEnv.setDidUpdateCompilerSettings(updateDTSEnv)
         updateDTSEnv(sandboxEnv.getCompilerOptions())
 
-        let twoslashDecorations: any[] = []
+        // When there are multi-file playgrounds, we should show the implicit filename, ideally this would be
+        // something more inline, but we can abuse the code lenses for now
+        main.languages.registerCodeLensProvider(sandboxEnv.language, {  
+          provideCodeLenses: function(model, token) {
+            const lenses = !showFileCodeLens ? [] : [{
+              range: {
+                  startLineNumber: 1,
+                  startColumn: 1,
+                  endLineNumber: 2,
+                  endColumn: 1
+              },
+              id: "implicit-filename-first",
+              command: {
+                id: "noop",
+                title: "// @filename: input.tsx"
+              }
+            }] 
+            return { lenses, dispose: () => {} };
+          }
+        })
+      
+        let showFileCodeLens= false
         const debouncedTwoslash = debounce(() => {
           if (dtsMap) runTwoslash()
-          
-          const hasDecorations = twoslashDecorations.length > 0
-          const shouldShowDecoration = sandboxEnv.getText().includes("// @filename")
-          if (hasDecorations !== shouldShowDecoration) {
-            // Add a starting newline for the comment to attatch to
-            if(shouldShowDecoration) {
-              sandboxEnv.setText("\n"+ sandboxEnv.getText())
-            }
-            const deco = shouldShowDecoration ? [{
-              range: new main.Range(0, 0, 0, 0),
-              options: {
-                isWholeLine: true,
-                inlineClassName: "play-created-input-file-tsx",
-              },
-            }] : []
-            sandboxEnv.editor.deltaDecorations(twoslashDecorations, deco);
-            twoslashDecorations = deco
-          }
+          showFileCodeLens = sandboxEnv.getText().includes("// @filename")
         }, 1000)
 
         sandboxEnv.editor.onDidChangeModelContent(debouncedTwoslash)
