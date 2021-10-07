@@ -1,4 +1,4 @@
-import type { DefinitionInfo, Diagnostic, QuickInfo } from "typescript"
+import { DefinitionInfo, Diagnostic, ModuleResolutionKind, QuickInfo, ReferenceEntry } from "typescript"
 
 type TwoSlashFiles = Array<{ file: string, startIndex: number, endIndex: number, content: string, updatedAt: string }>
 
@@ -81,14 +81,14 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
 
         readDirectory(_path: string, _extensions?: readonly string[], _exclude?: readonly string[], _include?: readonly string[], _depth?: number): string[] {
             const giving = this.twoslashFiles.map(f => f.file)
-            return giving.map(f => f.replace("file:///", ""))
+            return giving.map(f => f.replace("file://", ""))
         }
 
         // Takes a fileName and position and shifts it to the new file/pos according to twoslash splits
         repositionInTwoslash(fileName: string, position: number) {
             this.updateTwoslashInfoIfNeeded()
 
-            if (this.twoslashFiles.length === 0) return { tsFileName: fileName, tsPosition: position }
+            if (this.twoslashFiles.length === 0) return { tsFileName: fileName, tsPosition: position, twoslash: undefined }
             const thisFile = this.twoslashFiles.find(r => r.startIndex < position && position <= r.endIndex)
             if (!thisFile) return null
 
@@ -157,70 +157,109 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
 
         override async getQuickInfoAtPosition(fileName: string, position: number) {
             const empty = Promise.resolve({ kind: "" as any, kindModifiers: "", textSpan: { start: 0, length: 0 } })
-            const pos: QuickInfo = await this._overrideFileNamePos(super.getQuickInfoAtPosition.bind(this), fileName, position, undefined, empty)
-            // The hover position in monaco uses this to decide its x/y pos, this isn't _quite_ accurate because
-            // we really need to remove the file's index - but that's not really accessible cheaply with this abstraction,
-            // so setting the start of the highlighted identifier to the mouse is an ok enough answer IMO
-            pos.textSpan.start = position
-            pos.textSpan.length = 1
+            const pos = await this._overrideFileNamePos(super.getQuickInfoAtPosition.bind(this), fileName, position, undefined, empty, (result: QuickInfo, twoslashFile) => {
+                if (twoslashFile && result && result.textSpan)
+                    result.textSpan.start += twoslashFile.startIndex
+
+                return result
+            })
             return pos
         }
 
         override async getCompletionsAtPosition(fileName: string, position: number) {
             const empty = Promise.resolve({ isGlobalCompletion: false, isMemberCompletion: false, isNewIdentifierLocation: false, entries: [] })
-            return this._overrideFileNamePos(super.getCompletionsAtPosition.bind(this), fileName, position, undefined, empty)
+            const complet = await this._overrideFileNamePos(super.getCompletionsAtPosition.bind(this), fileName, position, undefined, empty, (result) => result)
+            return complet
         }
 
         override async getCompletionEntryDetails(fileName: string, position: number, entry: string) {
             const empty = Promise.resolve({ name: "", kind: "" as any, kindModifiers: "", displayParts: [] })
-            return this._overrideFileNamePos(super.getCompletionEntryDetails.bind(this), fileName, position, entry, empty)
+            return this._overrideFileNamePos(super.getCompletionEntryDetails.bind(this), fileName, position, entry, empty, (result) => result)
         }
 
         override async getOccurrencesAtPosition(fileName: string, position: number) {
             const empty = Promise.resolve([])
-            return this._overrideFileNamePos(super.getOccurrencesAtPosition.bind(this), fileName, position, undefined, empty)
+            return this._overrideFileNamePos(super.getOccurrencesAtPosition.bind(this), fileName, position, undefined, empty, (result) => {
+                if (result) {
+                    result.forEach(re => {
+                        const twoslash = this.twoslashFiles.find(f => f.file === re.fileName)
+                        if (twoslash) re.textSpan.start += twoslash.startIndex
+                    })
+                }
+                return result
+            })
         }
 
         override async getDefinitionAtPosition(fileName: string, position: number) {
             const empty = Promise.resolve([])
-            return this._overrideFileNamePos(super.getDefinitionAtPosition.bind(this), fileName, position, undefined, empty)
+            return this._overrideFileNamePos(super.getDefinitionAtPosition.bind(this), fileName, position, undefined, empty, (result) => {
+                if (result) {
+                    result.forEach(re => {
+                        const twoslash = this.twoslashFiles.find(f => f.file === re.fileName)
+                        if (twoslash) {
+                            re.textSpan.start += twoslash.startIndex
+                        }
+                        re.fileName = fileName
+                    })
+                }
+                return result
+            })
         }
 
         override async getReferencesAtPosition(fileName: string, position: number) {
             const empty = Promise.resolve([])
-            return this._overrideFileNamePos(super.getReferencesAtPosition.bind(this), fileName, position, undefined, empty)
+            return this._overrideFileNamePos(super.getReferencesAtPosition.bind(this), fileName, position, undefined, empty, (result) => {
+                if (result) {
+                    result.forEach(re => {
+                        const twoslash = this.twoslashFiles.find(f => f.file === re.fileName)
+                        if (twoslash) {
+                            re.textSpan.start += twoslash.startIndex
+                        }
+                        re.fileName = fileName
+                    })
+                }
+                return result
+            })
         }
 
         override async getNavigationBarItems(fileName: string) {
             const empty = Promise.resolve([])
-            return this._overrideFileNamePos(super.getNavigationBarItems.bind(this), fileName, undefined, undefined, empty)
+            return this._overrideFileNamePos(super.getNavigationBarItems.bind(this), fileName, -1, undefined, empty, (result) => result)
         }
 
         // Helper functions which make the rebindings easier to manage
 
         // Can handle any file, pos function being re-bound
-        async _overrideFileNamePos<T extends (fileName: string, position: number, other: any) => any>(fnc: T, fileName: string, position: number, other: any, empty: ReturnType<T>): Promise<ReturnType<T>> {
+        async _overrideFileNamePos<T extends (fileName: string, position: number, other: any) => any>(
+            fnc: T,
+            fileName: string,
+            position: number,
+            other: any,
+            empty: ReturnType<T>,
+            editFunc: (res: Awaited<ReturnType<T>>) => any): Promise<ReturnType<T>> {
             const newLocation = this.repositionInTwoslash(fileName, position)
             // Gaps between files skip the info, pass back a blank
             if (!newLocation) return empty
 
             const { tsFileName, tsPosition } = newLocation
-            return fnc.bind(this)(tsFileName, tsPosition, other)
+            const result = await fnc.bind(this)(tsFileName, tsPosition, other)
+            editFunc(result)
+            return result
         }
 
         // Can handle a func which is multi-cast to all possible files and then rebound with their
         // positions back to the original file mapping
-        async _getDiagsWrapper(getDiagnostics: (string) => Promise<Diagnostic[]>, fileName: string) {
+        async _getDiagsWrapper(getDiagnostics: (a: string) => Promise<Diagnostic[]>, fileName: string) {
             if (!this.getLanguageService()) return []
 
             this.updateTwoslashInfoIfNeeded()
 
             if (fileName === this.mainFile && this.twoslashFiles.length === 0) return getDiagnostics(fileName)
 
-            let diags = []
+            let diags: Diagnostic[] = []
             for (const f of this.twoslashFiles) {
                 const d = await getDiagnostics(f.file)
-                d.forEach(diag => { diag.start += f.startIndex })
+                d.forEach(diag => { if (diag && diag.start) diag.start += f.startIndex })
                 diags = diags.concat(d)
             }
 
