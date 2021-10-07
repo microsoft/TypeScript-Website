@@ -70,7 +70,7 @@ interface PlaygroundConfig {
   supportCustomPlugins: boolean
 }
 
-const setupPlayground = (
+export const setupPlayground = (
   sandbox: Sandbox,
   monaco: Monaco,
   config: PlaygroundConfig,
@@ -668,5 +668,3 @@ const redirectTabPressTo = (element: HTMLElement, container: HTMLElement | undef
     }
   })
 }
-
-window.setupPlayground = setupPlayground

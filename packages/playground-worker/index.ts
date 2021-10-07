@@ -1,16 +1,16 @@
-import type {Diagnostic, QuickInfo} from "typescript"
+import type { DefinitionInfo, Diagnostic, QuickInfo } from "typescript"
 
 type TwoSlashFiles = Array<{ file: string, startIndex: number, endIndex: number, content: string, updatedAt: string }>
 
 // Returns a subclass of the worker which take Twoslash file splitting into account. The key to understanding
 // how/why this works is that TypeScript does not have _direct_ access to the monaco model. The functions 
 // getScriptFileNames and _getScriptText provide the input to the TSServer, so this version of the worker
-// manipulates those functions in order to create an additional twoslash vfs layer on top of the existing vfs
+// manipulates those functions in order to create an additional twoslash vfs layer on top of the existing vfs.
 
 const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts, libFileMap) => {
     return class MonacoTSWorker extends TypeScriptWorker {
 
-        // TODO: this needs to be set by the playground
+        // TODO:  when migrating to the TS playground, this needs to be set by the playground somehow
         mainFile = "input.tsx"
 
         // This is the cache key that additionalTwoslashFiles is reasonable
@@ -21,17 +21,21 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
         // These two are basically using the internals of the TypeScriptWorker
         // but I don't think it's likely they're ever going to change
 
+        // We need a way to get access to the main text of the monaco editor, which is currently only
+        // grabbable via these mirrored models. There's only one in a Playground.
         getMainText(): string {
             // @ts-ignore
             return this._ctx.getMirrorModels()[0].getValue()
         }
 
+        // Useful for grabbing a TypeScript program or 
         getLanguageService(): import("typescript").LanguageService {
             // @ts-ignore
             return this._languageService
         }
 
-        // Updates our in-memory twoslash file representations if needed
+        // Updates our in-memory twoslash file representations if needed, because this gets called
+        // a lot, it caches the results according to the main text in the monaco editor.
         updateTwoslashInfoIfNeeded(): void {
             const modelValue = this.getMainText()
             const files = modelValue.split("// @filename: ")
@@ -46,6 +50,7 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
             // OK, so we have twoslash think about, check cache to see if the input is
             // the same and so we don't need to re-run twoslash
             if (this.twolashFilesModelString === modelValue) return
+            const convertedToMultiFile = this.twoslashFiles.length === 0
 
             // Do the work
             const splits = splitTwoslashCodeInfoFiles(modelValue, this.mainFile, "file:///")
@@ -55,9 +60,9 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
                 return {
                     file: f[0],
                     content,
-                    startIndex: modelValue.indexOf(content), 
-                    endIndex: modelValue.indexOf(content) + content.length, 
-                    updatedAt 
+                    startIndex: modelValue.indexOf(content),
+                    endIndex: modelValue.indexOf(content) + content.length,
+                    updatedAt
                 }
             })
 
@@ -65,22 +70,18 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
             this.additionalTwoslashFilenames = twoslashResults.map(f => f.file).filter(f => f !== this.mainFile)
             this.twolashFilesModelString = modelValue
 
-            console.log("updated to have twoslash: ", this.additionalTwoslashFilenames)
+            if (convertedToMultiFile) {
+                console.log("Switched playground to use multiple files: ", this.additionalTwoslashFilenames)
+            }
         }
 
         getCurrentDirectory(): string {
             return "/"
         }
 
-
-        readDirectory(path: string, extensions?: readonly string[], exclude?: readonly string[], include?: readonly string[], depth?: number): string[] {
+        readDirectory(_path: string, _extensions?: readonly string[], _exclude?: readonly string[], _include?: readonly string[], _depth?: number): string[] {
             const giving = this.twoslashFiles.map(f => f.file)
-            console.log("readDir", path, extensions)
-            console.log(giving)
-            debugger
-            
-            if (this.twoslashFiles.length === 0) return []
-            return giving
+            return giving.map(f => f.replace("file:///", ""))
         }
 
         // Takes a fileName and position and shifts it to the new file/pos according to twoslash splits
@@ -97,21 +98,30 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
             }
         }
 
-        // What TypeScript files could we get to include created by twoslash files
+        // What TypeScript files are available, include created by twoslash files
+        // this is asked a lot, so I created a specific variable for this which
+        // doesn't include a copy of the default file in the super call
         override getScriptFileNames() {
             const main = super.getScriptFileNames()
             const files = [...main, ...this.additionalTwoslashFilenames]
             return files
         }
 
+        // This is TypeScript asking 'whats the content of this file' - we want
+        // to override the underlaying TS vfs model with our twoslash multi-file 
+        // files when possible, otherwise pass it back to super
         override _getScriptText(fileName: string): string | undefined {
             const twoslashed = this.twoslashFiles.find(f => fileName === f.file)
-            if (twoslashed) { 
+            if (twoslashed) {
                 return twoslashed.content
             }
             return super._getScriptText(fileName)
         }
 
+        // TypeScript uses a versioning system on a file to know whether it needs
+        // to re-look over the file. What we do is set the date time when re-parsing 
+        // with twoslash and always pass that number, so that any changes are reflected
+        // in the tsserver
         override getScriptVersion(fileName: string) {
             this.updateTwoslashInfoIfNeeded()
 
@@ -119,6 +129,9 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
             if (thisFile) return thisFile.updatedAt
             return super.getScriptVersion(fileName)
         }
+
+        // The APIs which we override that provide the tooling experience, rebound to 
+        // handle the potential multi-file mode. 
 
         // Perhaps theres a way to make all these `bind(this)` gone away?
 
@@ -139,9 +152,18 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
             return this._getDiagsWrapper(super.getSuggestionDiagnostics.bind(this), fileName)
         }
 
+        // Funcs under here include an empty response when someone is interacting inside the gaps
+        // between files (e.g. the // @filename: xyz.ts bit)
+
         override async getQuickInfoAtPosition(fileName: string, position: number) {
-            const empty = Promise.resolve({ kind: "" as any, kindModifiers:"" , textSpan: { start: 0, length: 0} })
-            return this._overrideFileNamePos(super.getQuickInfoAtPosition.bind(this), fileName, position, undefined, empty)
+            const empty = Promise.resolve({ kind: "" as any, kindModifiers: "", textSpan: { start: 0, length: 0 } })
+            const pos: QuickInfo = await this._overrideFileNamePos(super.getQuickInfoAtPosition.bind(this), fileName, position, undefined, empty)
+            // The hover position in monaco uses this to decide its x/y pos, this isn't _quite_ accurate because
+            // we really need to remove the file's index - but that's not really accessible cheaply with this abstraction,
+            // so setting the start of the highlighted identifier to the mouse is an ok enough answer IMO
+            pos.textSpan.start = position
+            pos.textSpan.length = 1
+            return pos
         }
 
         override async getCompletionsAtPosition(fileName: string, position: number) {
@@ -174,8 +196,10 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
             return this._overrideFileNamePos(super.getNavigationBarItems.bind(this), fileName, undefined, undefined, empty)
         }
 
-        // Can handle any file, pos function
-        async _overrideFileNamePos<T extends (fileName: string, position: number, other: any) => any>(fnc: T, fileName: string, position: number, other: any, empty: ReturnType<T>) {
+        // Helper functions which make the rebindings easier to manage
+
+        // Can handle any file, pos function being re-bound
+        async _overrideFileNamePos<T extends (fileName: string, position: number, other: any) => any>(fnc: T, fileName: string, position: number, other: any, empty: ReturnType<T>): Promise<ReturnType<T>> {
             const newLocation = this.repositionInTwoslash(fileName, position)
             // Gaps between files skip the info, pass back a blank
             if (!newLocation) return empty
@@ -184,12 +208,13 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
             return fnc.bind(this)(tsFileName, tsPosition, other)
         }
 
-        // Can handle any anything to promise
+        // Can handle a func which is multi-cast to all possible files and then rebound with their
+        // positions back to the original file mapping
         async _getDiagsWrapper(getDiagnostics: (string) => Promise<Diagnostic[]>, fileName: string) {
             if (!this.getLanguageService()) return []
 
             this.updateTwoslashInfoIfNeeded()
-            
+
             if (fileName === this.mainFile && this.twoslashFiles.length === 0) return getDiagnostics(fileName)
 
             let diags = []
@@ -198,7 +223,7 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
                 d.forEach(diag => { diag.start += f.startIndex })
                 diags = diags.concat(d)
             }
-            
+
             return diags
         }
     };

@@ -21,7 +21,6 @@ import { workbenchReferencePlugin } from "../../components/workbench/plugins/doc
 import { createDefaultMapFromCDN } from "@typescript/vfs"
 import { twoslasher, TwoSlashReturn } from "@typescript/twoslash"
 import { getPlaygroundUrls } from "../../lib/playgroundURLs";
-import Helmet from "react-helmet";
 
 type TwoSlashReturns = import("@typescript/twoslash").TwoSlashReturn
 
@@ -72,15 +71,15 @@ const Play: React.FC<Props> = (props) => {
         ignoreDuplicateModules: ["vs/editor/editor.main"],
       });
 
-      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("@typescript/sandbox")) => {
+      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("@typescript/sandbox"), playground: typeof import("@typescript/playground")) => {
         // Importing "vs/language/typescript/tsWorker" will set ts as a global
         const ts = (global as any).ts
-        const isOK = main && ts && sandbox
+        const isOK = main && ts && sandbox && playground
         if (isOK) {
           document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)
         } else {
           console.error("Errr")
-          console.error("main", !!main, "ts", !!ts, "sandbox", !!sandbox)
+          console.error("main", !!main, "ts", !!ts, "sandbox", !!sandbox, "playground", !!playground)
         }
 
         // Set the height of monaco to be either your window height or 600px - whichever is smallest
@@ -102,7 +101,6 @@ const Play: React.FC<Props> = (props) => {
             fontLigatures: true
           },
           customTypeScriptWorkerPath: document.location.origin + playgroundWorker
-
         }, main, ts)
 
         const playgroundConfig = {
@@ -118,7 +116,7 @@ const Play: React.FC<Props> = (props) => {
           ]
         }
 
-        const playgroundEnv = window.setupPlayground(sandboxEnv, main, playgroundConfig, i as any, React)
+        const playgroundEnv = playground.setupPlayground(sandboxEnv, main, playgroundConfig, i as any, React)
 
         const utils = playgroundEnv.createUtils(sandbox, React)
 
@@ -134,15 +132,27 @@ const Play: React.FC<Props> = (props) => {
         sandboxEnv.setDidUpdateCompilerSettings(updateDTSEnv)
         updateDTSEnv(sandboxEnv.getCompilerOptions())
 
+        let twoslashDecorations: any[] = []
         const debouncedTwoslash = debounce(() => {
           if (dtsMap) runTwoslash()
-
-          // const isTSErrorsEnabled = !sandboxEnv.languageServiceDefaults.getDiagnosticsOptions().noSemanticValidation
-          // const shouldBeEnabled = !sandboxEnv.getText().includes("// @filename")
-          // if (isTSErrorsEnabled !== shouldBeEnabled) {
-          //   // Turn off the suggestions for multi-file reports
-          //   sandboxEnv.languageServiceDefaults.setDiagnosticsOptions({ noSemanticValidation: !shouldBeEnabled })
-          // }
+          
+          const hasDecorations = twoslashDecorations.length > 0
+          const shouldShowDecoration = sandboxEnv.getText().includes("// @filename")
+          if (hasDecorations !== shouldShowDecoration) {
+            // Add a starting newline for the comment to attatch to
+            if(shouldShowDecoration) {
+              sandboxEnv.setText("\n"+ sandboxEnv.getText())
+            }
+            const deco = shouldShowDecoration ? [{
+              range: new main.Range(0, 0, 0, 0),
+              options: {
+                isWholeLine: true,
+                inlineClassName: "play-created-input-file-tsx",
+              },
+            }] : []
+            sandboxEnv.editor.deltaDecorations(twoslashDecorations, deco);
+            twoslashDecorations = deco
+          }
         }, 1000)
 
         sandboxEnv.editor.onDidChangeModelContent(debouncedTwoslash)
@@ -208,6 +218,8 @@ const Play: React.FC<Props> = (props) => {
 
         sandboxEnv.editor.focus()
         sandboxEnv.editor.layout()
+
+        debouncedTwoslash()
       });
     }
 
@@ -218,9 +230,6 @@ const Play: React.FC<Props> = (props) => {
   return (
     <Layout title="Bug Workbench" description="Create reproductions of issues with TypeScript" lang="en">
       {/** This is the top nav, which is outside of the editor  */}
-      <Helmet>
-        <script src="/js/playground/2/index.js"/>
-      </Helmet>
       <nav className="navbar-sub">
         <ul className="nav">
           <li className="name hide-small"><span>Bug Workbench</span></li>
