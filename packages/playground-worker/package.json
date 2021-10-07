@@ -1,0 +1,16 @@
+{
+  "name": "@typescript/playground-worker",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "bootstrap": "echo 'NOOP'",
+    "build": "esbuild index.ts --outdir=../typescriptlang-org/static/js/playground-worker  --format=esm --target=es2020 --bundle"
+  },
+  "dependencies": {
+    "esbuild": "^0.13.4"
+  },
+  "devDependencies": {
+    "typescript": "*"
+  }
+}

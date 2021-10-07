@@ -1,0 +1,9 @@
+{
+    "files": ["index.ts", "index.test.ts"],
+    "compilerOptions": {
+        "target": "ES2020",
+        "allowJs": false,
+        "module": "esnext",
+        "moduleResolution": "node"
+    }
+}

@@ -10,11 +10,14 @@
   ],
   "scripts": {
     "bootstrap": "node scripts/getListOfPluginsFromNPM.js",
+    "build-fast": "esbuild src/index.ts --outdir=../typescriptlang-org/static/js/playground/2  --format=esm --target=es2020 --bundle",
     "build": "tsc",
     "test": "jest"
   },
   "dependencies": {
-    "@typescript/sandbox": "0.1.0"
+    "@typescript/playground-worker": "0.1.0",
+    "@typescript/sandbox": "0.1.0",
+    "esbuild": "^0.13.4"
   },
   "devDependencies": {
     "@types/jest": "^25.1.3",

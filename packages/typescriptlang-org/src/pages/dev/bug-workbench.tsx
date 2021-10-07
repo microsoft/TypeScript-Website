@@ -56,7 +56,7 @@ const Play: React.FC<Props> = (props) => {
         tsVersionParam = nightlyJSON.version
       }
       // Allow prod/staging builds to set a custom commit prefix to bust caches
-      const {sandboxRoot, playgroundRoot} = getPlaygroundUrls()
+      const {sandboxRoot, playgroundRoot, playgroundWorker} = getPlaygroundUrls()
             
       // @ts-ignore
       const re: any = global.require
@@ -99,7 +99,8 @@ const Play: React.FC<Props> = (props) => {
           monacoSettings: {
             fontFamily: "var(--code-font)",
             fontLigatures: true
-          }
+          },
+          customTypeScriptWorkerPath: document.location.origin + playgroundWorker
         }, main, ts)
 
         const playgroundConfig = {
@@ -131,14 +132,26 @@ const Play: React.FC<Props> = (props) => {
         sandboxEnv.setDidUpdateCompilerSettings(updateDTSEnv)
         updateDTSEnv(sandboxEnv.getCompilerOptions())
 
+        let twoslashDecorations: any[] = []
         const debouncedTwoslash = debounce(() => {
           if (dtsMap) runTwoslash()
-
-          const isTSErrorsEnabled = !sandboxEnv.languageServiceDefaults.getDiagnosticsOptions().noSemanticValidation
-          const shouldBeEnabled = !sandboxEnv.getText().includes("// @filename")
-          if (isTSErrorsEnabled !== shouldBeEnabled) {
-            // Turn off the suggestions for multi-file reports
-            sandboxEnv.languageServiceDefaults.setDiagnosticsOptions({ noSemanticValidation: !shouldBeEnabled })
+          
+          const hasDecorations = twoslashDecorations.length > 0
+          const shouldShowDecoration = sandboxEnv.getText().includes("// @filename")
+          if (hasDecorations !== shouldShowDecoration) {
+            // Add a starting newline for the comment to attatch to
+            if(shouldShowDecoration) {
+              sandboxEnv.setText("\n"+ sandboxEnv.getText())
+            }
+            const deco = shouldShowDecoration ? [{
+              range: new main.Range(0, 0, 0, 0),
+              options: {
+                isWholeLine: true,
+                inlineClassName: "play-created-input-file-tsx",
+              },
+            }] : []
+            sandboxEnv.editor.deltaDecorations(twoslashDecorations, deco);
+            twoslashDecorations = deco
           }
         }, 1000)
 
@@ -205,6 +218,8 @@ const Play: React.FC<Props> = (props) => {
 
         sandboxEnv.editor.focus()
         sandboxEnv.editor.layout()
+
+        debouncedTwoslash()
       });
     }
 

@@ -38,6 +38,8 @@ export type SandboxConfig = {
   suppressAutomaticallyGettingDefaultText?: true
   /** Suppress setting compiler options from the compiler flags from query params */
   suppressAutomaticallyGettingCompilerFlags?: true
+  /** Optional path to TypeScript worker wrapper class script, see https://github.com/microsoft/monaco-typescript/pull/65  */
+  customTypeScriptWorkerPath?: string
   /** Logging system */
   logger: {
     log: (...args: any[]) => void
@@ -156,6 +158,14 @@ export const createTypeScriptSandbox = (
   const defaults = isJSLang
     ? monaco.languages.typescript.javascriptDefaults
     : monaco.languages.typescript.typescriptDefaults
+
+  // @ts-ignore - these exist
+  if (config.customTypeScriptWorkerPath && defaults.setWorkerOptions) {
+    // @ts-ignore - this func must exist to have got here
+    defaults.setWorkerOptions({
+      customWorkerPath: config.customTypeScriptWorkerPath,
+    })
+  }
 
   defaults.setDiagnosticsOptions({
     ...defaults.getDiagnosticsOptions(),
