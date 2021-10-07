@@ -168,7 +168,7 @@ export const relatedTo: [AnOption, AnOption[]][] = [
 
 function trueIf(name: string) {
   return [
-    `\`true\` if [\`${name}\`](#${name}) is \`true\``,
+    `\`true\` if [\`${name}\`](#${name}),`,
     "`false` otherwise.",
   ];
 }
@@ -176,7 +176,7 @@ function trueIf(name: string) {
 export const defaultsForOptions = {
   allowJs: "false",
   allowSyntheticDefaultImports: [
-    "`true` if [`module`](#module) is `system` or [`esModuleInterop`](#esModuleInterop) is `true` and [`module`](#module) is not `es6`/`es2015` or `esnext`",
+    "`true` if [`module`](#module) is `system` or [`esModuleInterop`](#esModuleInterop) and [`module`](#module) is not `es6`/`es2015` or `esnext`,",
     "`false` otherwise.",
   ],
   allowUmdGlobalAccess: "false",
@@ -204,7 +204,7 @@ export const defaultsForOptions = {
   forceConsistentCasingInFileNames: "false",
   generateCpuProfile: "profile.cpuprofile",
   importHelpers: "false",
-  include: ["`[]` if [`files`](#files) is specified", "`**` otherwise."],
+  include: ["`[]` if [`files`](#files) is specified,", "`**` otherwise."],
   incremental: trueIf("composite"),
   inlineSourceMap: "false",
   inlineSources: "false",
@@ -218,12 +218,12 @@ export const defaultsForOptions = {
   locale: "Platform specific.",
   maxNodeModuleJsDepth: "0",
   module: [
-    "`CommonJS` if [`target`](#target) is `ES3` or `ES5`",
+    "`CommonJS` if [`target`](#target) is `ES3` or `ES5`,",
     "`ES6`/`ES2015` otherwise.",
   ],
   moduleResolution: [
-    "`Classic` if [`module`](#module) is `AMD`, `UMD`, `System` or `ES6`/`ES2015`",
-    "Matches if [`module`](#module) is `node12` or `nodenext`",
+    "`Classic` if [`module`](#module) is `AMD`, `UMD`, `System` or `ES6`/`ES2015`,",
+    "Matches if [`module`](#module) is `node12` or `nodenext`,",
     "`Node` otherwise.",
   ],
   newLine: "Platform specific.",
@@ -265,7 +265,7 @@ export const defaultsForOptions = {
   traceResolution: "false",
   tsBuildInfoFile: ".tsbuildinfo",
   useDefineForClassFields: [
-    "`true` if [`target`](#target) is `ES2022` or higher, including `ESNext`",
+    "`true` if [`target`](#target) is `ES2022` or higher, including `ESNext`,",
     "`false` otherwise.",
   ],
 };
