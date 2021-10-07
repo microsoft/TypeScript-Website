@@ -304,7 +304,7 @@ function greet(person: string, date: Date) {
 What we did was add _type annotations_ on `person` and `date` to describe what types of values `greet` can be called with.
 You can read that signature as "`greet` takes a `person` of type `string`, and a `date` of type `Date`".
 
-With this, TypeScript can tell us about other cases where we might have been called incorrectly.
+With this, TypeScript can tell us about other cases where `greet` might have been called incorrectly.
 For example...
 
 ```ts twoslash
