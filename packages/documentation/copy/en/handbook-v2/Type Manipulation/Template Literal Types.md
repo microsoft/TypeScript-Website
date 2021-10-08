@@ -93,7 +93,7 @@ const person = makeWatchedObject({
 
 person.on("firstNameChanged", () => {});
 
-// Prevent human error (using a key instead of a signal)
+// Prevent easy human error (using the key instead of the event name)
 person.on("firstName", () => {});
 
 // It's typo-resistant
