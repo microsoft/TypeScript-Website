@@ -178,12 +178,17 @@ export const defaultsForOptions = {
     ts.optionDeclarations
       .filter(
         (option) =>
-          "defaultValueDescription" in option &&
-          option.defaultValueDescription !== "n/a"
+          ("defaultValueDescription" in option &&
+            option.defaultValueDescription !== "n/a") ||
+          // Boolean options without explicit default are false
+          option.type === "boolean"
       )
       .map((option) => [
         option.name,
-        typeof option.defaultValueDescription === "string"
+        !("defaultValueDescription" in option) ||
+        option.defaultValueDescription === "n/a"
+          ? "false"
+          : typeof option.defaultValueDescription === "string"
           ? option.defaultValueDescription
           : option.defaultValueDescription.message,
       ])
@@ -214,12 +219,9 @@ export const defaultsForOptions = {
     "`Node` otherwise.",
   ],
   newLine: "Platform specific.",
-  noFallthroughCasesInSwitch: "false",
   noImplicitAny: trueIf("strict"),
   noImplicitThis: trueIf("strict"),
   preserveConstEnums: "false",
-  preserveSymlinks: "false",
-  preserveWatchOutput: "false",
   reactNamespace: "React",
   rootDir: "Computed from the list of input files.",
   rootDirs: "Computed from the list of input files.",
