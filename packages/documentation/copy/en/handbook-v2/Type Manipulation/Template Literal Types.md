@@ -93,9 +93,10 @@ const person = makeWatchedObject({
 
 person.on("firstNameChanged", () => {});
 
-// It's typo-resistent
+// Prevent human error (using a key instead of a signal)
 person.on("firstName", () => {});
 
+// It's typo-resistent
 person.on("frstNameChanged", () => {});
 ```
 
