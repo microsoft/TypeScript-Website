@@ -519,6 +519,12 @@ $headline-foreground-bg: white;
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
+
+    @media screen and (-ms-high-contrast: black-on-white) {
+      svg path {
+        fill: white;
+      }
+    }
   }
 
   a.get-started {
