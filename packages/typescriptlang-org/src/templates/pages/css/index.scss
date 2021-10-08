@@ -739,6 +739,9 @@ $headline-foreground-bg: white;
     .rc > div {
       border: 1px solid black;
     }
+    form.search:focus {
+      border: 1px solid black;
+    }
   }
 
   .release {
