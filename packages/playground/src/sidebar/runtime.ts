@@ -166,7 +166,7 @@ function rewireLoggingToElement(
 
   function bindLoggingFunc(obj: any, raw: any, name: string, id: string) {
     obj[name] = function (...objs: any[]) {
-      const output = produceOutput(objs)
+      const output = htmlEntities(produceOutput(objs))
       const eleLog = eleLocator()
       const prefix = `[<span class="log-${name}">${id}</span>]: `
       const eleContainerLog = eleOverflowLocator()
@@ -228,7 +228,7 @@ function rewireLoggingToElement(
       const textRep = objectToText(arg)
       const showComma = index !== args.length - 1
       const comma = showComma ? "<span class='comma'>, </span>" : ""
-      return output + textRep + comma + "&nbsp;"
+      return output + textRep + comma + " "
     }, "")
   }
 }
@@ -236,4 +236,8 @@ function rewireLoggingToElement(
 // The reflect-metadata runtime is available, so allow that to go through
 function sanitizeJS(code: string) {
   return code.replace(`import "reflect-metadata"`, "").replace(`require("reflect-metadata")`, "")
+}
+
+function htmlEntities(str: string) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
