@@ -13,7 +13,7 @@
     "setup-playground-cache-bust": "node scripts/cacheBustPlayground.mjs",
     "setup-staging": "node scripts/setupStaging.mjs",
     "create-lighthouse-json": "node scripts/createLighthouseJSON.js",
-    "compile-index-examples": "twoslash --reactAlso src/components/index/twoslash/*.ts src/components/index/twoslash/*.js src/components/index/twoslash/*.tsx src/components/index/twoslash/generated",
+    "compile-index-examples": "twoslash --reactAlso src/components/index/twoslash/*.ts src/components/index/twoslash/*.js src/components/index/twoslash/*.tsx src/components/index/twoslash/generated && node scripts/updateIndexTwoslashExamples.js",
     "start": "gatsby develop",
     "serve": "gatsby serve",
     "test": "yarn tsc && jest"
