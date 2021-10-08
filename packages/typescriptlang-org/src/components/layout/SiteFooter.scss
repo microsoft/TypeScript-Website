@@ -193,26 +193,34 @@
 .popover-container {
   position: relative;
 
+  .examples {
+    overflow-y: auto;
+
+    > div.section-content .section-list {
+      width: 300px;
+    }
+  }
+
   // this class is added by JS at runtime if the window is over 900 px width
   &.allow-hover {
     #playground-samples-popover {
-      bottom: -5px;
+      bottom: -10px;
       opacity: 0;
     }
 
     &:hover #playground-samples-popover {
       visibility: visible;
-      bottom: 0px;
+      bottom: -5px;
       opacity: 1;
     }
 
     &:hover .footer-icon:after {
-      content: "⊙";
+      content: "▼";
     }
   }
 
   .footer-icon:after {
-    content: "▼";
+    content: "⊙";
   }
 }
 
@@ -220,7 +228,7 @@
   position: absolute;
   bottom: 0px;
   left: -252px;
-  right: -400px;
+  right: -320px;
   margin: 0 auto;
   visibility: hidden;
   transition: bottom 0.3s ease, opacity 0.2s linear, visibility 0s linear;

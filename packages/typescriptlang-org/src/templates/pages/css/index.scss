@@ -140,27 +140,30 @@ $headline-foreground-bg: white;
       flex-direction: column;
     }
 
-    .tag-container {
-      .twoslash-annotation.left {
-        position: static;
-        left: 0;
-        bottom: 0;
-        top: auto !important;
-
-        svg {
-          transform: rotate(44deg) scaleX(-1) translateX(-20px) !important;
-        }
-      }
-      .twoslash-annotation.right {
-        display: none;
-      }
-    }
     img {
       max-width: 100%;
     }
 
     h3 {
       text-align: center;
+    }
+  }
+}
+
+@media (max-width: $screen-md) {
+  .tag-container {
+    .twoslash-annotation.left {
+      position: static;
+      left: 0;
+      bottom: 0;
+      top: auto !important;
+
+      svg {
+        transform: rotate(44deg) scaleX(-1) translateX(-20px) !important;
+      }
+    }
+    .twoslash-annotation.right {
+      display: none;
     }
   }
 }
