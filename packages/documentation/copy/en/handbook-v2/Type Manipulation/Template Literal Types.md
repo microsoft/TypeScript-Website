@@ -96,7 +96,7 @@ person.on("firstNameChanged", () => {});
 // Prevent human error (using a key instead of a signal)
 person.on("firstName", () => {});
 
-// It's typo-resistent
+// It's typo-resistant
 person.on("frstNameChanged", () => {});
 ```
 
