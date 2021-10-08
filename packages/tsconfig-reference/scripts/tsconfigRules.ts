@@ -174,49 +174,36 @@ function trueIf(name: string) {
 }
 
 export const defaultsForOptions = {
-  allowJs: "false",
+  ...Object.fromEntries(
+    ts.optionDeclarations
+      .filter(
+        (option) =>
+          "defaultValueDescription" in option &&
+          option.defaultValueDescription !== "n/a"
+      )
+      .map((option) => [
+        option.name,
+        typeof option.defaultValueDescription === "string"
+          ? option.defaultValueDescription
+          : option.defaultValueDescription.message,
+      ])
+  ),
   allowSyntheticDefaultImports: [
-    "`true` if [`module`](#module) is `system` or [`esModuleInterop`](#esModuleInterop) and [`module`](#module) is not `es6`/`es2015` or `esnext`,",
+    "`true` if [`module`](#module) is `system`, or [`esModuleInterop`](#esModuleInterop) and [`module`](#module) is not `es6`/`es2015` or `esnext`,",
     "`false` otherwise.",
   ],
-  allowUmdGlobalAccess: "false",
-  allowUnreachableCode: "undefined",
-  allowUnusedLabels: "undefined",
-  charset: "utf8",
-  checkJs: "false",
-  composite: "false",
   alwaysStrict: trueIf("strict"),
   declaration: trueIf("composite"),
-  declarationMap: "false",
-  diagnostics: "false",
-  disableSizeLimit: "false",
-  downlevelIteration: "false",
-  emitBOM: "false",
-  emitDeclarationOnly: "false",
-  esModuleInterop: "false",
   exclude: [
     "node_modules",
     "bower_components",
     "jspm_packages",
     "[`outDir`](#outDir)",
   ],
-  extendedDiagnostics: "false",
-  forceConsistentCasingInFileNames: "false",
-  generateCpuProfile: "profile.cpuprofile",
-  importHelpers: "false",
   include: ["`[]` if [`files`](#files) is specified,", "`**` otherwise."],
   incremental: trueIf("composite"),
-  inlineSourceMap: "false",
-  inlineSources: "false",
-  isolatedModules: "false",
-  jsx: "undefined",
   jsxFactory: "React.createElement",
-  jsxImportSource: "react",
-  keyofStringsOnly: "false",
-  listEmittedFiles: "false",
-  listFiles: "false",
   locale: "Platform specific.",
-  maxNodeModuleJsDepth: "0",
   module: [
     "`CommonJS` if [`target`](#target) is `ES3` or `ES5`,",
     "`ES6`/`ES2015` otherwise.",
@@ -227,43 +214,21 @@ export const defaultsForOptions = {
     "`Node` otherwise.",
   ],
   newLine: "Platform specific.",
-  noEmit: "false",
-  noEmitHelpers: "false",
-  noEmitOnError: "false",
-  noErrorTruncation: "false",
   noFallthroughCasesInSwitch: "false",
   noImplicitAny: trueIf("strict"),
-  noImplicitReturns: "false",
   noImplicitThis: trueIf("strict"),
-  noImplicitUseStrict: "false",
-  noPropertyAccessFromIndexSignature: "false",
-  noLib: "false",
-  noResolve: "false",
-  noStrictGenericChecks: "false",
-  noUnusedLocals: "false",
-  noUnusedParameters: "false",
   preserveConstEnums: "false",
   preserveSymlinks: "false",
   preserveWatchOutput: "false",
-  pretty: "true",
   reactNamespace: "React",
-  removeComments: "false",
-  resolveJsonModule: "false",
   rootDir: "Computed from the list of input files.",
-  skipDefaultLibCheck: "false",
-  skipLibCheck: "false",
-  sourceMap: "false",
-  strict: "false",
+  rootDirs: "Computed from the list of input files.",
   strictBindCallApply: trueIf("strict"),
   strictFunctionTypes: trueIf("strict"),
   useUnknownInCatchVariables: trueIf("strict"),
   strictPropertyInitialization: trueIf("strict"),
   strictNullChecks: trueIf("strict"),
-  suppressExcessPropertyErrors: "false",
-  suppressImplicitAnyIndexErrors: "false",
   target: "ES3",
-  traceResolution: "false",
-  tsBuildInfoFile: ".tsbuildinfo",
   useDefineForClassFields: [
     "`true` if [`target`](#target) is `ES2022` or higher, including `ESNext`,",
     "`false` otherwise.",
@@ -271,17 +236,28 @@ export const defaultsForOptions = {
 };
 
 export const allowedValues = {
-  jsxFactory: ["Any identifier or dotted identifier"],
-  lib: ["See main content"],
-  watchFile: [
-    "fixedPollingInterval",
-    "priorityPollingInterval",
-    "dynamicPriorityPolling",
-    "useFsEvents",
-    "useFsEventsOnParentDirectory",
-  ],
-  fallbackPolling: ["fixedPollingInterval", "priorityPollingInterval", "dynamicPriorityPolling"],
-  watchDirectory: ["fixedPollingInterval", "dynamicPriorityPolling", "useFsEvents"],
+  ...Object.fromEntries(
+    [...ts.optionDeclarations, ...ts.optionsForWatch]
+      .filter((option) => typeof option.type === "object")
+      .map((option) => {
+        // Group and format synonyms: `es6`/`es2015`
+        const byValue: { [value: number]: string[] } = {};
+        for (const [name, value] of option.type instanceof Map
+          ? option.type.entries()
+          : Object.entries(option.type)) {
+          (byValue[value] ||= []).push(name);
+        }
+        return [
+          option.name,
+          Object.values(byValue).map((synonyms) =>
+            synonyms.length > 1
+              ? synonyms.map((name) => `\`${name}\``).join("/")
+              : synonyms[0]
+          ),
+        ];
+      })
+  ),
+  jsxFactory: ["Any identifier or dotted identifier."],
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
