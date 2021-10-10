@@ -173,6 +173,8 @@ function trueIf(name: string) {
   ];
 }
 
+// Number/boolean options without explicit default are 0/false
+const defaultDefaults = { number: "0", boolean: "false" };
 export const defaultsForOptions = {
   ...Object.fromEntries(
     ts.optionDeclarations
@@ -180,14 +182,13 @@ export const defaultsForOptions = {
         (option) =>
           ("defaultValueDescription" in option &&
             option.defaultValueDescription !== "n/a") ||
-          // Boolean options without explicit default are false
-          option.type === "boolean"
+          option.type in defaultDefaults
       )
       .map((option) => [
         option.name,
         !("defaultValueDescription" in option) ||
         option.defaultValueDescription === "n/a"
-          ? "false"
+          ? defaultDefaults[option.type]
           : typeof option.defaultValueDescription === "string"
           ? option.defaultValueDescription
           : option.defaultValueDescription.message,
