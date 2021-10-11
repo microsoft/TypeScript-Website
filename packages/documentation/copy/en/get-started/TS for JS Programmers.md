@@ -136,7 +136,7 @@ type MyBool = true | false;
 
 _Note:_ If you hover over `MyBool` above, you'll see that it is classed as `boolean`. That's a property of the Structural Type System. More on this below.
 
-A popular use-case for union types is to describe the set of `string` or `number` [literals](/docs/handbook/literal-types.html) that a value is allowed to be:
+A popular use-case for union types is to describe the set of `string` or `number` [literals](/docs/handbook/2/everyday-types.html#literal-types) that a value is allowed to be:
 
 ```ts twoslash
 type WindowStates = "open" | "closed" | "minimized";
