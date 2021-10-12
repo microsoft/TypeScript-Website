@@ -126,7 +126,7 @@ Project references have a few trade-offs you should be aware of.
 
 Because dependent projects make use of `.d.ts` files that are built from their dependencies, you'll either have to check in certain build outputs _or_ build a project after cloning it before you can navigate the project in an editor without seeing spurious errors.
 
-When using VS Code (since TS 3.7) we have a behind-the-scenes in-memory .d.ts generation process that should be able to mitigate this, but it has some perf implications. For very large composite projects you might want to disable this using [disableSourceOfProjectReferenceRedirect option](/tsconfig#disableSourceOfProjectReferenceRedirect).
+When using VS Code (since TS 3.7) we have a behind-the-scenes in-memory `.d.ts` generation process that should be able to mitigate this, but it has some perf implications. For very large composite projects you might want to disable this using [disableSourceOfProjectReferenceRedirect option](/tsconfig#disableSourceOfProjectReferenceRedirect).
 
 Additionally, to preserve compatibility with existing build workflows, `tsc` will _not_ automatically build dependencies unless invoked with the `--build` switch.
 Let's learn more about `--build`.

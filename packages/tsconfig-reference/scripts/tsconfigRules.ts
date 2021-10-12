@@ -1,4 +1,6 @@
 import { CompilerOptionName } from "../data/_types";
+import * as remark from "remark";
+import * as remarkHTML from "remark-html";
 import * as ts from "typescript";
 
 /**
@@ -156,6 +158,7 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["suppressImplicitAnyIndexErrors", ["noImplicitAny"]],
 
   ["listFiles", ["explainFiles"]],
+  ["preserveValueImports", ["isolatedModules", "importsNotUsedAsValues"]]
 ];
 
 /**
@@ -163,18 +166,27 @@ export const relatedTo: [AnOption, AnOption[]][] = [
  * So err, they are like 90% reliable.
  */
 
+function trueIf(name: string) {
+  return [
+    `\`true\` if [\`${name}\`](#${name}),`,
+    "`false` otherwise.",
+  ];
+}
+
 export const defaultsForOptions = {
   allowJs: "false",
-  allowSyntheticDefaultImports: 'module === "system" or esModuleInterop',
+  allowSyntheticDefaultImports: [
+    "`true` if [`module`](#module) is `system` or [`esModuleInterop`](#esModuleInterop) and [`module`](#module) is not `es6`/`es2015` or `esnext`,",
+    "`false` otherwise.",
+  ],
   allowUmdGlobalAccess: "false",
   allowUnreachableCode: "undefined",
   allowUnusedLabels: "undefined",
   charset: "utf8",
   checkJs: "false",
   composite: "false",
-  alwaysStrict: "`false`, unless [`strict`](#strict) is set",
-  declaration: "`false`, unless [`composite`](#composite) is set",
-  declarationDir: " n/a",
+  alwaysStrict: trueIf("strict"),
+  declaration: trueIf("composite"),
   declarationMap: "false",
   diagnostics: "false",
   disableSizeLimit: "false",
@@ -182,36 +194,47 @@ export const defaultsForOptions = {
   emitBOM: "false",
   emitDeclarationOnly: "false",
   esModuleInterop: "false",
-  exclude:
-    '`["node_modules", "bower_components", "jspm_packages"]`, plus the value of [`outDir`](#outDir) if one is specified.',
+  exclude: [
+    "node_modules",
+    "bower_components",
+    "jspm_packages",
+    "[`outDir`](#outDir)",
+  ],
   extendedDiagnostics: "false",
   forceConsistentCasingInFileNames: "false",
-  generateCpuProfile: " profile.cpuprofile",
+  generateCpuProfile: "profile.cpuprofile",
   importHelpers: "false",
-  include: ' `[]` if [`files`](#files) is specified, otherwise `["**/*"]`',
-  incremental: "`true` if [`composite`](#composite), `false` otherwise",
+  include: ["`[]` if [`files`](#files) is specified,", "`**` otherwise."],
+  incremental: trueIf("composite"),
   inlineSourceMap: "false",
   inlineSources: "false",
   isolatedModules: "false",
   jsx: "undefined",
-  jsxFactory: "`React.createElement`",
+  jsxFactory: "React.createElement",
   jsxImportSource: "react",
   keyofStringsOnly: "false",
   listEmittedFiles: "false",
   listFiles: "false",
-  locale: "Platform specific",
+  locale: "Platform specific.",
   maxNodeModuleJsDepth: "0",
-  moduleResolution:
-    "module === `AMD` or `UMD` or `System` or `ES6`, then `Classic`<br/><br/>Otherwise `Node`",
-  newLine: "Platform specific",
+  module: [
+    "`CommonJS` if [`target`](#target) is `ES3` or `ES5`,",
+    "`ES6`/`ES2015` otherwise.",
+  ],
+  moduleResolution: [
+    "`Classic` if [`module`](#module) is `AMD`, `UMD`, `System` or `ES6`/`ES2015`,",
+    "Matches if [`module`](#module) is `node12` or `nodenext`,",
+    "`Node` otherwise.",
+  ],
+  newLine: "Platform specific.",
   noEmit: "false",
   noEmitHelpers: "false",
   noEmitOnError: "false",
   noErrorTruncation: "false",
   noFallthroughCasesInSwitch: "false",
-  noImplicitAny: "`false`, unless [`strict`](#strict) is set",
+  noImplicitAny: trueIf("strict"),
   noImplicitReturns: "false",
-  noImplicitThis: "`false`, unless [`strict`](#strict) is set",
+  noImplicitThis: trueIf("strict"),
   noImplicitUseStrict: "false",
   noPropertyAccessFromIndexSignature: "false",
   noLib: "false",
@@ -219,63 +242,37 @@ export const defaultsForOptions = {
   noStrictGenericChecks: "false",
   noUnusedLocals: "false",
   noUnusedParameters: "false",
-  out: "n/a",
-  outDir: "n/a",
-  outFile: "n/a",
   preserveConstEnums: "false",
   preserveSymlinks: "false",
   preserveWatchOutput: "false",
   pretty: "true",
-  reactNamespace: '"React"',
+  reactNamespace: "React",
   removeComments: "false",
   resolveJsonModule: "false",
-  rootDir: "Computed from the list of input files",
+  rootDir: "Computed from the list of input files.",
   skipDefaultLibCheck: "false",
   skipLibCheck: "false",
   sourceMap: "false",
   strict: "false",
-  strictBindCallApply: "`false`, unless [`strict`](#strict) is set",
-  strictFunctionTypes: "`false`, unless [`strict`](#strict) is set",
-  useUnknownInCatchVariables: "`false`, unless [`strict`](#strict) is set",
-  strictPropertyInitialization: "`false`, unless [`strict`](#strict) is set",
-  strictNullChecks: "`false`, unless [`strict`](#strict) is set",
+  strictBindCallApply: trueIf("strict"),
+  strictFunctionTypes: trueIf("strict"),
+  useUnknownInCatchVariables: trueIf("strict"),
+  strictPropertyInitialization: trueIf("strict"),
+  strictNullChecks: trueIf("strict"),
   suppressExcessPropertyErrors: "false",
   suppressImplicitAnyIndexErrors: "false",
   target: "ES3",
   traceResolution: "false",
   tsBuildInfoFile: ".tsbuildinfo",
-  useDefineForClassFields: "`true` for ES2022 and above, including ESNext.",
+  useDefineForClassFields: [
+    "`true` if [`target`](#target) is `ES2022` or higher, including `ESNext`,",
+    "`false` otherwise.",
+  ],
 };
 
 export const allowedValues = {
-  jsx: ["`react`", "`react-jsx`", "`react-jsxdev`", "`react-native`", "`preserve`"],
   jsxFactory: ["Any identifier or dotted identifier"],
   lib: ["See main content"],
-  target: [
-    "`ES3` (default)",
-    "`ES5`",
-    "`ES6`/`ES2015` (synonymous)",
-    "`ES7`/`ES2016`",
-    "`ES2017`",
-    "`ES2018`",
-    "`ES2019`",
-    "`ES2020`",
-    "`ESNext`",
-  ],
-  module: [
-    "`CommonJS` (default if [`target`](#target) is `ES3` or `ES5`)",
-    "",
-    "`ES6`",
-    "`ES2015`",
-    "`ES2020`",
-    "",
-    "`None`",
-    "`UMD`",
-    "`AMD`",
-    "`System`",
-    "`ESNext`",
-  ],
-  importsNotUsedAsValues: ["remove", "preserve", "error"],
   watchFile: [
     "fixedPollingInterval",
     "priorityPollingInterval",
@@ -288,6 +285,7 @@ export const allowedValues = {
 };
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
+  "4.5": ["preserveValueImports"],
   "4.4": ["exactOptionalPropertyTypes", "useUnknownInCatchVariables"],
   "4.3": ["noImplicitOverride"],
   "4.2": ["noPropertyAccessFromIndexSignature", "explainFiles"],
@@ -356,3 +354,12 @@ Object.keys(releaseToConfigsMap).forEach((v) => {
     configToRelease[key] = v;
   });
 });
+
+export const parseMarkdown = (value: string | string[]) =>
+  Array.isArray(value)
+    ? `<ul>${value
+        .map((element) => `<li>${parseMarkdown(element)}</li>`)
+        .join("")}</ul>`
+    : remark()
+        .use(remarkHTML)
+        .processSync(value?.replace(/^[-.0-9_a-z]+$/i, "`$&`"));

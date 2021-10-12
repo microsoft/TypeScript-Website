@@ -134,10 +134,11 @@ export const AboveTheFold = () => {
     const Content = window.innerWidth < 600 ? CTAHeadlineMobile : CTAHeadlines
     return (
       <div className="cta">
-        <div className="transparent-button" onClick={() => setShowCTALinks(false)}><svg width="21" height="14" viewBox="0 0 21 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20.25 7.75L1.75 7.75M1.75 7.75L7.75 1.25M1.75 7.75L7.75 13.25" stroke="white" strokeWidth="2" />
-        </svg>
-          Back</div>
+        <a className="transparent-button" onClick={() => setShowCTALinks(false)}  href="#">
+          <svg width="21" height="14" viewBox="0 0 21 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20.25 7.75L1.75 7.75M1.75 7.75L7.75 1.25M1.75 7.75L7.75 13.25" stroke="white" strokeWidth="2" />
+          </svg>
+          Back</a>
         <Content />
       </div>
     )

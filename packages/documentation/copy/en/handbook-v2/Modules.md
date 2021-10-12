@@ -198,7 +198,11 @@ import { Cat, Dog } from "./animal.js";
 type Animals = Cat | Dog;
 ```
 
-TypeScript has extended the `import` syntax with `import type` which is an import which can _only_ import types.
+TypeScript has extended the `import` syntax with two concepts for declaring a import of a type:
+
+###### `import type`
+
+Which is an import statement which can _only_ import types:
 
 ```ts twoslash
 // @filename: animal.ts
@@ -216,7 +220,24 @@ import type { createCatName } from "./animal.js";
 const name = createCatName();
 ```
 
-This syntax allows a non-TypeScript transpiler like Babel, swc or esbuild to know what imports can be safely removed.
+###### Inline `type` imports
+
+TypeScript 4.5 also allows for individual imports to be prefixed with `type` to indicate that the imported reference is a type:
+
+```ts twoslash
+// @filename: animal.ts
+export type Cat = { breed: string; yearOfBirth: number };
+export type Dog = { breeds: string[]; yearOfBirth: number };
+export const createCatName = () => "fluffy";
+// ---cut---
+// @filename: app.ts
+import { createCatName, type Cat, type Dog } from "./animal.js";
+
+export type Animals = Cat | Dog;
+const name = createCatName();
+```
+
+Together these allow a non-TypeScript transpiler like Babel, swc or esbuild to know what imports can be safely removed.
 
 #### ES Module Syntax with CommonJS Behavior
 
@@ -306,7 +327,7 @@ squareTwo;
 
 ### CommonJS and ES Modules interop
 
-There is a mis-match in features between CommonJS and ES Module because ES Modules only support having the default export as an object, and never as a function. TypeScript has a compiler flag to reduce the friction between the two different sets of constraints with [`esModuleInterop`](/tsconfig#esModuleInterop).
+There is a mis-match in features between CommonJS and ES Modules regarding the distinction between a default import and a module namespace object import. TypeScript has a compiler flag to reduce the friction between the two different sets of constraints with [`esModuleInterop`](/tsconfig#esModuleInterop).
 
 ## TypeScript's Module Resolution Options
 

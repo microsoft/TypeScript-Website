@@ -248,7 +248,7 @@
     }
   }
 
-  #deprecated {
+  #deprecated-header {
     color: black;
     background-color: #fff4cf;
     margin: 0 -2rem;
@@ -339,6 +339,15 @@
     }
     tr.even {
       background-color: var(--background-minor-highlight-color) !important;
+    }
+    ul {
+      margin: 0;
+      padding: 0;
+      li {
+        list-style: none;
+        margin: 0;
+        margin-bottom: 8px;
+      }
     }
 
     tr.option-description td {

@@ -25,14 +25,13 @@ import * as assert from "assert";
 import { read as readMarkdownFile } from "gray-matter";
 import * as prettier from "prettier";
 import { CompilerOptionJSON } from "./generateJSON.js";
-import * as remark from "remark";
-import * as remarkHTML from "remark-html";
 
 import {
   typeAcquisitionCompilerOptNames,
   buildOptionCompilerOptNames,
   watchOptionCompilerOptNames,
   rootOptNames,
+  parseMarkdown,
 } from "../tsconfigRules";
 
 const options = require("../../data/tsconfigOpts.json").options as CompilerOptionJSON[];
@@ -86,8 +85,6 @@ const sections = [
   { name: "typeAcquisition", options: typeAcquisitionCompilerOptNames, idPrefix: "type" },
 ];
 
-const parseMarkdown = (md: string) => remark().use(remarkHTML).processSync(md);
-
 const languages = readdirSync(join(__dirname, "..", "..", "copy")).filter(
   (f) => !f.startsWith(".")
 );
@@ -97,7 +94,6 @@ languages.forEach((lang) => {
   const fallbackLocale = join(__dirname, "..", "..", "copy", "en");
 
   const mdChunks: string[] = [];
-  const optionsOneLiners: Record<string, string> = {};
 
   const getPathInLocale = (path: string, optionalExampleContent?: string, failable = false) => {
     if (existsSync(join(locale, path))) return join(locale, path);
@@ -216,12 +212,10 @@ languages.forEach((lang) => {
         optionsSummary.push({
           id: optionName,
           display: optionFile.data.display,
-          oneliner: optionFile.data.oneline,
+          oneliner: String(parseMarkdown(optionFile.data.oneline)),
           categoryID: categoryID,
           categoryDisplay: categoryName,
         });
-
-        optionsOneLiners[optionName] = optionFile.data.oneline;
 
         mdChunks.push("<section class='compiler-option'>");
 
@@ -240,36 +234,30 @@ languages.forEach((lang) => {
         mdChunks.push("</div>");
 
         // Make a markdown table of the important metadata
-        const mdTableRows = [] as [string, string][];
+        const mdTableRows = [] as [string, (string | string[])?][];
 
-        if (option.deprecated) mdTableRows.push(["Status", "Deprecated"]);
+        if (option.deprecated) mdTableRows.push(["Deprecated"]);
 
-        if (option.recommended) mdTableRows.push(["Recommended", "True"]);
+        if (option.recommended) mdTableRows.push(["Recommended"]);
+
+        if (option.internal) {
+          mdTableRows.push(["Internal"]);
+        }
 
         if (option.defaultValue) {
-          const value = option.defaultValue.includes(" ")
-            ? option.defaultValue
-            : "`" + option.defaultValue + "`";
-          mdTableRows.push(["Default", value]);
+          mdTableRows.push(["Default", option.defaultValue]);
         }
 
         if (option.allowedValues) {
-          const optionValue = option.allowedValues.join(",<br/>");
-          mdTableRows.push(["Allowed", optionValue]);
+          mdTableRows.push(["Allowed", option.allowedValues]);
         }
 
         if (option.related) {
-          const optionValue = option.related
-            .map(
-              (r) =>
-                `<a href='#${r}' aria-label="Jump to compiler option info for ${r}" ><code>${r}</code></a>`
-            )
-            .join(", ");
+          const optionValue = option.related.map(
+            (r) =>
+              `<a href='#${r}' aria-label="Jump to compiler option info for ${r}" ><code>${r}</code></a>`
+          );
           mdTableRows.push(["Related", optionValue]);
-        }
-
-        if (option.internal) {
-          mdTableRows.push(["Status", "internal"]);
         }
 
         if (option.releaseVersion) {
@@ -284,7 +272,12 @@ languages.forEach((lang) => {
         const table =
           "<ul class='compiler-option-md'>" +
           mdTableRows
-            .map((r) => `<li><span>${r[0]}:</span>${parseMarkdown(r[1])}</li>`)
+            .map(
+              (r) =>
+                `<li><span>${r[0]}${
+                  r.length > 1 ? ":" : ""
+                }</span>${parseMarkdown(r[1])}</li>`
+            )
             .join("\n") +
           "</ul>";
 
@@ -326,7 +319,12 @@ languages.forEach((lang) => {
   if (!existsSync(jsonDir)) mkdirSync(jsonDir);
 
   // This is used by the tsconfig popups
-  writeFileSync(join(jsonDir, lang + "-tsconfig-popup.json"), JSON.stringify(optionsOneLiners));
+  writeFileSync(
+    join(jsonDir, lang + "-tsconfig-popup.json"),
+    JSON.stringify(
+      Object.fromEntries(optionsSummary.map((data) => [data.id, data.oneliner]))
+    )
+  );
 });
 
 writeFileSync(

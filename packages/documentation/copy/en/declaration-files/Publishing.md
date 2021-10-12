@@ -132,7 +132,7 @@ When you want to only change the resolution for a single file at a time, you can
   "version": "1.0.0",
   "types": "./index.d.ts",
   "typesVersions": {
-    "<=4.0": { "index.d.ts": ["index.v3.d.ts"] }
+    "<4.0": { "index.d.ts": ["index.v3.d.ts"] }
   }
 }
 ```
@@ -179,4 +179,4 @@ That means in the above example, even though both the `>=3.2` and the `>=3.1` ma
 
 Packages under the [@types](https://www.npmjs.com/~types) organization are published automatically from [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped) using the [types-publisher tool](https://github.com/microsoft/DefinitelyTyped-tools/tree/master/packages/publisher).
 To get your declarations published as an @types package, please submit a pull request to [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped).
-You can find more details in the [contribution guidelines page](http://definitelytyped.org/guides/contributing.html).
+You can find more details in the [contribution guidelines page](https://definitelytyped.org/guides/contributing.html).

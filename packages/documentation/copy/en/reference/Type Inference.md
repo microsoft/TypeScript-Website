@@ -89,7 +89,7 @@ window.onmousedown = function (mouseEvent) {
 Here, the TypeScript type checker used the type of the `Window.onmousedown` function to infer the type of the function expression on the right hand side of the assignment.
 When it did so, it was able to infer the [type](https://developer.mozilla.org/docs/Web/API/MouseEvent) of the `mouseEvent` parameter, which does contain a `button` property, but not a `kangaroo` property.
 
-This works because window already has `onmousedown` declared in it's type:
+This works because window already has `onmousedown` declared in its type:
 
 ```ts
 // Declares there is a global variable called 'window'

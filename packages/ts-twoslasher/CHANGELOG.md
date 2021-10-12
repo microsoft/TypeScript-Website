@@ -1,3 +1,19 @@
+## 3.1.0
+
+Adds support for `// ---cut-after---`, e.g.
+
+````
+```ts twoslash
+const Page = () => (
+// ---cut---
+<Container>
+  <ImportantComponent />
+</Container>
+// ---cut-after---
+)
+```
+````
+
 ## 3.0.0
 
 Changes the format of the `highlights` response from twoslash. It's very likely that no-one is using this, because none of the shiki infra is - but it's better to get this correct.

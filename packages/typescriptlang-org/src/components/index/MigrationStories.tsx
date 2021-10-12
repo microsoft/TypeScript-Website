@@ -13,7 +13,7 @@ const Slack = () => (
         <div className="fg">
           <p><strong>First</strong>, we were surprised by the number of small bugs we found when converting our code.</p>
           <p><strong>Second</strong>, we underestimated how powerful the editor integration is.</p>
-          <p>TypeScript was such a boon to our stability and sanity that we started using it for all new code within days of starting the conversion</p>
+          <p>TypeScript was such a boon to our stability and sanity that we started using it for all new code within days of starting the conversion.</p>
         </div>
         <div className="bg">
           <svg width="780" height="380" viewBox="0 0 780 380" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -292,7 +292,7 @@ export const MigrationStories = () => {
   const hasWindow = (typeof window !== `undefined`)
   const shouldShowOSS = hasWindow && window.innerWidth > 800
 
-  // slack airbnb google oss 
+  // slack airbnb google oss
   const bgColors = shouldShowOSS ? ["#faf9f8", "#faf9f8", "#faf9f8", "#086E12"] : ["#faf9f8", "#faf9f8", "#faf9f8"]
 
   const loadIndex = (index: number) => {

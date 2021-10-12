@@ -1,7 +1,7 @@
 let hasLocalStorage = false
 try {
   hasLocalStorage = typeof localStorage !== `undefined`
-} catch (error) {}
+} catch (error) { }
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 
@@ -212,7 +212,7 @@ const valuedConfigRegexp = /^\/\/\s?@(\w+):\s?(.+)$/
 
 function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: CompilerOptions, ts: TS) {
   const options = { ...defaultCompilerOptions }
-  for (let i = 0; i < codeLines.length; ) {
+  for (let i = 0; i < codeLines.length;) {
     let match
     if ((match = booleanConfigRegexp.exec(codeLines[i]))) {
       options[match[1]] = true
@@ -236,7 +236,7 @@ function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: Comp
 function filterCustomTags(codeLines: string[], customTags: string[]) {
   const tags: TwoSlashReturn["tags"] = []
 
-  for (let i = 0; i < codeLines.length; ) {
+  for (let i = 0; i < codeLines.length;) {
     let match
     if ((match = valuedConfigRegexp.exec(codeLines[i]))) {
       if (customTags.includes(match[1])) {
@@ -815,6 +815,25 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
 
     tags.forEach(q => (q.line -= lineOffset))
     tags = tags.filter(q => q.line > -1)
+  }
+
+  const cutAfterString = "// ---cut-after---\n"
+
+  if (code.includes(cutAfterString)) {
+
+    // Get the place it is, then find the end and the start of the next line
+    const cutIndex = code.indexOf(cutAfterString) + cutAfterString.length
+    const lineOffset = code.substr(0, cutIndex).split("\n").length - 1
+
+    // Kills the code shown, removing any whitespace on the end
+    code = code.split(cutAfterString).shift()!.trimEnd()
+
+    // Cut any metadata after the cutAfterString
+    staticQuickInfos = staticQuickInfos.filter(s => s.line < lineOffset)
+    errors = errors.filter(e => e.line && e.line < lineOffset)
+    highlights = highlights.filter(e => e.line < lineOffset)
+    queries = queries.filter(q => q.line < lineOffset)
+    tags = tags.filter(q => q.line < lineOffset)
   }
 
   return {

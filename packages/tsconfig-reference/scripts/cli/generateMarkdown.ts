@@ -12,9 +12,7 @@ import { join } from "path";
 import { read as readMarkdownFile } from "gray-matter";
 import * as prettier from "prettier";
 import { CompilerOptionJSON } from "./generateJSON.js";
-
-import * as remark from "remark";
-import * as remarkHTML from "remark-html";
+import { parseMarkdown } from "../tsconfigRules";
 
 const options = require(join(__dirname, "../../data/cliOpts.json")) as {
   options: CompilerOptionJSON[];
@@ -22,7 +20,6 @@ const options = require(join(__dirname, "../../data/cliOpts.json")) as {
   watch: CompilerOptionJSON[];
   cli: CompilerOptionJSON[];
 };
-const parseMarkdown = (md: string) => remark().use(remarkHTML).processSync(md);
 
 const knownTypes: Record<string, string> = {};
 
@@ -91,22 +88,28 @@ languages.forEach((lang) => {
 
       let optType: string;
       if (typeof option.type === "string") {
-        optType = option.type;
+        optType = `\`${option.type}\``;
       } else if (option.allowedValues) {
         if ("ListFormat" in Intl) {
           // @ts-ignore
           const or = new Intl.ListFormat(lang, { type: "disjunction" });
-          optType = or.format(option.allowedValues.map((v) => `<code>${v}</code>`));
+          optType = or.format(
+            option.allowedValues.map((v) =>
+              v.replace(/^[-.0-9_a-z]+$/i, "`$&`")
+            )
+          );
         } else {
-          optType = option.allowedValues.map((v) => `<code>${v}</code>`).join(", ");
+          optType = option.allowedValues
+            .map((v) => v.replace(/^[-.0-9_a-z]+$/i, "`$&`"))
+            .join(", ");
         }
       } else {
         optType = "";
       }
-      markdownChunks.push(`  <td><code>${optType}</code></td>`);
+      markdownChunks.push(`  <td>${parseMarkdown(optType)}</td>`);
 
       if (!opts?.noDefaults) {
-        markdownChunks.push(`  <td>${`${parseMarkdown(option.defaultValue)}`.trim()}</td>`);
+        markdownChunks.push(`  <td>${parseMarkdown(option.defaultValue)}</td>`);
       }
       markdownChunks.push(`</tr>`);
 

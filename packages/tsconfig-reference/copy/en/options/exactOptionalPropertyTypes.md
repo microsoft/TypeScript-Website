@@ -22,7 +22,7 @@ Setting the value to `undefined` will allow most JavaScript runtime checks for t
 
 ```ts twoslash
 // @exactOptionalPropertyTypes
-// @errors: 2322
+// @errors: 2322 2412
 interface UserDefaults {
   colorThemeOverride?: "dark" | "light";
 }
@@ -35,4 +35,3 @@ settings.colorThemeOverride = "light";
 // But not:
 settings.colorThemeOverride = undefined;
 ```
-

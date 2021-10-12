@@ -130,7 +130,7 @@
             },
             "synchronousWatchDirectory": {
               "description": "Synchronously call callbacks and update the state of directory watchers on platforms that don`t support recursive watching natively.",
-              "type": "string",
+              "type": "boolean",
               "markdownDescription": "Synchronously call callbacks and update the state of directory watchers on platforms that don`t support recursive watching natively.\n\nSee more: https://www.typescriptlang.org/tsconfig#synchronousWatchDirectory"
             },
             "excludeFiles": {
@@ -240,13 +240,7 @@
             },
             "jsx": {
               "description": "Specify what JSX code is generated.",
-              "enum": [
-                "preserve",
-                "react",
-                "react-jsx",
-                "react-jsxdev",
-                "react-native"
-              ]
+              "enum": ["preserve", "react", "react-jsx", "react-jsxdev", "react-native"]
             },
             "reactNamespace": {
               "description": "Specify the object invoked for `createElement`. This only applies when targeting `react` JSX emit.",
@@ -267,10 +261,10 @@
               "markdownDescription": "Specify the JSX Fragment reference used for fragments when targeting React JSX emit e.g. 'React.Fragment' or 'Fragment'.\n\nSee more: https://www.typescriptlang.org/tsconfig#jsxFragmentFactory"
             },
             "jsxImportSource": {
-              "description": "Specify module specifier used to import the JSX factory functions when using `jsx: react-jsx*`.`",
+              "description": "Specify module specifier used to import the JSX factory functions when using `jsx: react-jsx`.",
               "type": "string",
               "default": "react",
-              "markdownDescription": "Specify module specifier used to import the JSX factory functions when using `jsx: react-jsx*`.`\n\nSee more: https://www.typescriptlang.org/tsconfig#jsxImportSource"
+              "markdownDescription": "Specify module specifier used to import the JSX factory functions when using `jsx: react-jsx`.\n\nSee more: https://www.typescriptlang.org/tsconfig#jsxImportSource"
             },
             "listFiles": {
               "description": "Print all of the files read during the compilation.",
@@ -297,7 +291,10 @@
                     "ES2015",
                     "ES2020",
                     "ESNext",
-                    "None"
+                    "None",
+                    "es2022",
+                    "node12",
+                    "nodenext"
                   ]
                 },
                 {
@@ -340,10 +337,10 @@
               "markdownDescription": "Disable emitting file from a compilation.\n\nSee more: https://www.typescriptlang.org/tsconfig#noEmit"
             },
             "noEmitHelpers": {
-              "description": "Disable generating custom helper functions like `__extends` in compiled output.",
+              "description": "Disable generating custom helper functions like `extends` in compiled output.",
               "type": "boolean",
               "default": false,
-              "markdownDescription": "Disable generating custom helper functions like `__extends` in compiled output.\n\nSee more: https://www.typescriptlang.org/tsconfig#noEmitHelpers"
+              "markdownDescription": "Disable generating custom helper functions like `extends` in compiled output.\n\nSee more: https://www.typescriptlang.org/tsconfig#noEmitHelpers"
             },
             "noEmitOnError": {
               "description": "Disable emitting files if any type checking errors are reported.",
@@ -425,6 +422,12 @@
               "default": false,
               "markdownDescription": "Disable resolving symlinks to their realpath. This correlates to the same flag in node.\n\nSee more: https://www.typescriptlang.org/tsconfig#preserveSymlinks"
             },
+            "preserveValueImports": {
+              "description": "Preserve unused imported values in the JavaScript output that would otherwise be removed",
+              "type": "boolean",
+              "default": false,
+              "markdownDescription": "Preserve unused imported values in the JavaScript output that would otherwise be removed\n\nSee more: https://www.typescriptlang.org/tsconfig#preserveValueImports"
+            },
             "preserveWatchOutput": {
               "description": "Disable wiping the console in watch mode",
               "type": "boolean",
@@ -502,7 +505,7 @@
                   ]
                 },
                 {
-                  "pattern": "^([Ee][Ss]([356]|(20(1[56789]|20))|[Nn][Ee][Xx][Tt]))$"
+                  "pattern": "^([Ee][Ss]([356]|(20(1[56789]|2[01]))|[Nn][Ee][Xx][Tt]))$"
                 }
               ],
               "markdownDescription": "Set the JavaScript language version for emitted JavaScript and include compatible library declarations.\n\nSee more: https://www.typescriptlang.org/tsconfig#target"
@@ -771,7 +774,8 @@
                       "ES2021.Promise",
                       "ES2021.String",
                       "ES2021.WeakRef",
-                      "ESNext.WeakRef"
+                      "ESNext.WeakRef",
+                      "es2021.intl"
                     ]
                   },
                   {
@@ -796,7 +800,10 @@
                     "pattern": "^[Ee][Ss]2020(\\.([Bb][Ii][Gg][Ii][Nn][Tt]|[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ss][Tt][Rr][Ii][Nn][Gg]|[Ss][Yy][Mm][Bb][Oo][Ll].[Ww][Ee][Ll][Ll][Kk][Nn][Oo][Ww][Nn]))?$"
                   },
                   {
-                    "pattern": "^[Ee][Ss][Nn][Ee][Xx][Tt](\\.([Aa][Rr][Rr][Aa][Yy]|[Aa][Ss][Yy][Nn][Cc][Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Bb][Ii][Gg][Ii][Nn][Tt]|[Ii][Nn][Tt][Ll]|[Ss][Yy][Mm][Bb][Oo][Ll]))?$"
+                    "pattern": "^[Ee][Ss]2021(\\.([Ii][Nn][Tt][Ll]|[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ss][Tt][Rr][Ii][Nn][Gg]|[Ww][Ee][Aa][Kk][Rr][Ee][Ff]))?$"
+                  },
+                  {
+                    "pattern": "^[Ee][Ss][Nn][Ee][Xx][Tt](\\.([Aa][Rr][Rr][Aa][Yy]|[Aa][Ss][Yy][Nn][Cc][Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Bb][Ii][Gg][Ii][Nn][Tt]|[Ii][Nn][Tt][Ll]|[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ss][Tt][Rr][Ii][Nn][Gg]|[Ss][Yy][Mm][Bb][Oo][Ll]|[Ww][Ee][Aa][Kk][Rr][Ee][Ff]))?$"
                   },
                   {
                     "pattern": "^[Dd][Oo][Mm](\\.[Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee])?$"
@@ -992,7 +999,7 @@
     "tsNodeDefinition": {
       "properties": {
         "ts-node": {
-          "description": "ts-node options.  See also: https://github.com/TypeStrong/ts-node#configuration-options\n\nts-node offers TypeScript execution and REPL for node.js, with source map support.",
+          "description": "ts-node options.  See also: https://typestrong.org/ts-node/docs/configuration\n\nts-node offers TypeScript execution and REPL for node.js, with source map support.",
           "properties": {
             "compiler": {
               "default": "typescript",
@@ -1020,6 +1027,10 @@
               "description": "Emit output files into `.ts-node` directory.",
               "type": "boolean"
             },
+            "experimentalReplAwait": {
+              "description": "Allows the usage of top level await in REPL.\n\nUses node's implementation which accomplishes this with an AST syntax transformation.\n\nEnabled by default when tsconfig target is es2018 or above. Set to false to disable.\n\n**Note**: setting to `true` when tsconfig target is too low will throw an Error.  Leave as `undefined`\nto get default, automatic behavior.",
+              "type": "boolean"
+            },
             "files": {
               "default": false,
               "description": "Load \"files\" and \"include\" from `tsconfig.json` on startup.\n\nDefault is to override `tsconfig.json` \"files\" and \"include\" to only include the entrypoint script.",
@@ -1045,6 +1056,10 @@
               "description": "Logs TypeScript errors to stderr instead of throwing exceptions.",
               "type": "boolean"
             },
+            "moduleTypes": {
+              "type": "object",
+              "description": "Override certain paths to be compiled and executed as CommonJS or ECMAScript modules.\nWhen overridden, the tsconfig \"module\" and package.json \"type\" fields are overridden.\nThis is useful because TypeScript files cannot use the .cjs nor .mjs file extensions;\nit achieves the same effect.\n\nEach key is a glob pattern following the same rules as tsconfig's \"include\" array.\nWhen multiple patterns match the same file, the last pattern takes precedence.\n\n`cjs` overrides matches files to compile and execute as CommonJS.\n`esm` overrides matches files to compile and execute as native ECMAScript modules.\n`package` overrides either of the above to default behavior, which obeys package.json \"type\" and\ntsconfig.json \"module\" options."
+            },
             "preferTsExts": {
               "default": false,
               "description": "Re-order file extensions so that TypeScript imports are preferred.\n\nFor example, when both `index.js` and `index.ts` exist, enabling this option causes `require('./index')` to resolve to `index.ts` instead of `index.js`",
@@ -1061,6 +1076,15 @@
                 "type": "string"
               },
               "type": "array"
+            },
+            "scope": {
+              "default": false,
+              "description": "Scope compiler to files within `scopeDir`.",
+              "type": "boolean"
+            },
+            "scopeDir": {
+              "default": "First of: `tsconfig.json` \"rootDir\" if specified, directory containing `tsconfig.json`, or cwd if no `tsconfig.json` is loaded.",
+              "type": "string"
             },
             "skipIgnore": {
               "default": false,

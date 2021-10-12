@@ -4589,7 +4589,7 @@ fs.readFile(path, (err, data) => {
 ## Version selection with `typesVersions`
 
 Feedback from our community, as well as our own experience, has shown us that leveraging the newest TypeScript features while also accomodating users on the older versions are difficult.
-TypeScript introduces a new feature called `typesVersions` to help accomodate these scenarios.
+TypeScript introduces a new feature called `typesVersions` to help accommodate these scenarios.
 
 When using Node module resolution in TypeScript 3.1, when TypeScript cracks open a `package.json` file to figure out which files it needs to read, it first looks at a new field called `typesVersions`.
 A `package.json` with a `typesVersions` field might look like this:
@@ -6664,7 +6664,7 @@ _First some ES2016 terminology:_
 
 #### Iterators
 
-[ES2015 introduced `Iterator`](http://www.ecma-international.org/ecma-262/6.0/#sec-iteration), which is an object that exposes three methods, `next`, `return`, and `throw`, as per the following interface:
+[ES2015 introduced `Iterator`](https://www.ecma-international.org/ecma-262/6.0/#sec-iteration), which is an object that exposes three methods, `next`, `return`, and `throw`, as per the following interface:
 
 ```ts
 interface Iterator<T> {
@@ -6681,7 +6681,7 @@ The Iterator protocol also defines the target of some of the ES2015 features lik
 
 #### Generators
 
-[ES2015 also introduced "Generators"](http://www.ecma-international.org/ecma-262/6.0/#sec-generatorfunction-objects), which are functions that can be used to yield partial computation results via the `Iterator` interface and the `yield` keyword.
+[ES2015 also introduced "Generators"](https://www.ecma-international.org/ecma-262/6.0/#sec-generatorfunction-objects), which are functions that can be used to yield partial computation results via the `Iterator` interface and the `yield` keyword.
 Generators can also internally delegate calls to another iterable through `yield *`. For example:
 
 ```ts
@@ -7737,7 +7737,7 @@ In practical terms, strict null checking mode requires that all files in a compi
 
 TypeScript 2.0 implements a control flow-based type analysis for local variables and parameters.
 Previously, the type analysis performed for type guards was limited to `if` statements and `?:` conditional expressions and didn't include effects of assignments and control flow constructs such as `return` and `break` statements.
-With TypeScript 2.0, the type checker analyses all possible flows of control in statements and expressions to produce the most specific type possible (the _narrowed type_) at any given location for a local variable or parameter that is declared to have a union type.
+With TypeScript 2.0, the type checker analyzes all possible flows of control in statements and expressions to produce the most specific type possible (the _narrowed type_) at any given location for a local variable or parameter that is declared to have a union type.
 
 #### Example
 
@@ -8066,7 +8066,7 @@ The `exclude` property defaults to excluding the `node_modules`, `bower_componen
 
 TypeScript 2.0 provides a set of additional module resolution knops to _inform_ the compiler where to find declarations for a given module.
 
-See [Module Resolution](http://www.typescriptlang.org/docs/handbook/module-resolution.html) documentation for more details.
+See [Module Resolution](https://www.typescriptlang.org/docs/handbook/module-resolution.html) documentation for more details.
 
 ### Base URL
 

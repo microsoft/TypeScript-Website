@@ -41,4 +41,4 @@ For the most part, type declaration packages should always have the same name as
 but if you need, you can check out [this Type Search](https://aka.ms/types) to find the package for your favorite library.
 
 > Note: if the declaration file you are searching for is not present, you can always contribute one back and help out the next developer looking for it.
-> Please see the DefinitelyTyped [contribution guidelines page](http://definitelytyped.org/guides/contributing.html) for details.
+> Please see the DefinitelyTyped [contribution guidelines page](https://definitelytyped.org/guides/contributing.html) for details.

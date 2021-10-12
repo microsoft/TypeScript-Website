@@ -33,3 +33,7 @@ function copyFolderSync(from, to) {
 
 copyFolderSync("static/js/playground", `static/js/${gitSha}/playground`)
 copyFolderSync("static/js/sandbox", `static/js/${gitSha}/sandbox`)
+copyFolderSync(
+  "static/js/playground-worker",
+  `static/js/${gitSha}/playground-worker`
+)

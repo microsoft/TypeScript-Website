@@ -11,31 +11,56 @@ when using JSDoc annotations to provide type information in JavaScript files.
 
 Note any tags which are not explicitly listed below (such as `@async`) are not yet supported.
 
+#### Types
+
 - [`@type`](#type)
 - [`@param`](#param-and-returns) (or [`@arg`](#param-and-returns) or [`@argument`](#param-and-returns))
 - [`@returns`](#param-and-returns) (or [`@return`](#param-and-returns))
 - [`@typedef`](#typedef-callback-and-param)
 - [`@callback`](#typedef-callback-and-param)
 - [`@template`](#template)
+
+#### Classes
+
+- [Property Modifiers](#property-modifiers) `@public`, `@private`, `@protected`, `@readonly`
+- [`@override`](#override)
+- [`@extends`](#extends) (or [`@augments`](#extends))
+- [`@implements`](#implements)
 - [`@class`](#constructor) (or [`@constructor`](#constructor))
 - [`@this`](#this)
-- [`@extends`](#extends) (or [`@augments`](#extends))
+
+#### Documentation
+
+Documentation tags work in both TypeScript and JavaScript.
+
+- [`@deprecated`](#deprecated)
+- [`@see`](#see)
+- [`@link`](#link)
+
+#### Other
+
 - [`@enum`](#enum)
-- [`@deprecated`](#deprecated-comments)
-
-#### `class` extensions
-
-- [Property Modifiers](#jsdoc-property-modifiers) `@public`, `@private`, `@protected`, `@readonly`
+- [`@author`](#author)
+- [Other supported patterns](#other-supported-patterns)
+- [Unsupported patterns](#unsupported-patterns)
+- [Unsupported tags](#unsupported-tags)
 
 The meaning is usually the same, or a superset, of the meaning of the tag given at [jsdoc.app](https://jsdoc.app).
 The code below describes the differences and gives some example usage of each tag.
 
 **Note:** You can use [the playground to explore JSDoc support](/play?useJavaScript=truee=4#example/jsdoc-support).
 
-## `@type`
+## Types
 
-You can use the "@type" tag and reference a type name (either primitive, defined in a TypeScript declaration, or in a JSDoc "@typedef" tag).
-You can use most JSDoc types and any TypeScript type, from [the most basic like `string`](/docs/handbook/basic-types.html) to [the most advanced, like conditional types](/docs/handbook/advanced-types.html).
+### `@type`
+
+You can reference types with the "@type" tag. The type can be:
+
+1. Primitive, like `string` or `number`.
+2. Declared in a TypeScript declaration, either global or imported.
+3. Declared in a JSDoc [`@typedef`](#typedef-callback-and-param) tag.
+
+You can use most JSDoc type syntax and any TypeScript syntax, from [the most basic like `string`](/docs/handbook/2/basic-types.html) to [the most advanced, like conditional types](/docs/handbook/2/conditional-types.html).
 
 ```js twoslash
 /**
@@ -59,15 +84,6 @@ element.dataset.myData = "";
 
 ```js twoslash
 /**
- * @type {(string | boolean)}
- */
-var sb;
-```
-
-Note that parentheses are optional for union types.
-
-```js twoslash
-/**
  * @type {string | boolean}
  */
 var sb;
@@ -79,7 +95,7 @@ You can specify array types using a variety of syntaxes:
 /** @type {number[]} */
 var ns;
 /** @type {Array.<number>} */
-var nds;
+var jsdoc;
 /** @type {Array<number>} */
 var nas;
 ```
@@ -108,7 +124,7 @@ var arrayLike;
 
 The preceding two types are equivalent to the TypeScript types `{ [x: string]: number }` and `{ [x: number]: any }`. The compiler understands both syntaxes.
 
-You can specify function types using either TypeScript or Closure syntax:
+You can specify function types using either TypeScript or Google Closure syntax:
 
 ```js twoslash
 /** @type {function(string, boolean): number} Closure syntax */
@@ -139,9 +155,9 @@ var star;
 var question;
 ```
 
-### Casts
+#### Casts
 
-TypeScript borrows cast syntax from Closure.
+TypeScript borrows cast syntax from Google Closure.
 This lets you cast types to other types by adding a `@type` tag before any parenthesized expression.
 
 ```js twoslash
@@ -152,9 +168,15 @@ var numberOrString = Math.random() < 0.5 ? "hello" : 100;
 var typeAssertedNumber = /** @type {number} */ (numberOrString);
 ```
 
-### Import types
+You can even cast to `const` just like TypeScript:
 
-You can also import declarations from other files using import types.
+```js twoslash
+let one = /** @type {const} */(1);
+```
+
+#### Import types
+
+You can import declarations from other files using import types.
 This syntax is TypeScript-specific and differs from the JSDoc standard:
 
 ```js twoslash
@@ -172,7 +194,7 @@ function walk(p) {
 }
 ```
 
-import types can also be used in type alias declarations:
+import types can be used in type alias declarations:
 
 ```js twoslash
 // @filename: types.d.ts
@@ -214,7 +236,7 @@ export const userAccount = {
 var x = require("./accounts").userAccount;
 ```
 
-## `@param` and `@returns`
+### `@param` and `@returns`
 
 `@param` uses the same type syntax as `@type`, but adds a parameter name.
 The parameter may also be declared optional by surrounding the name with square brackets:
@@ -223,7 +245,7 @@ The parameter may also be declared optional by surrounding the name with square 
 // Parameters may be declared in a variety of syntactic forms
 /**
  * @param {string}  p1 - A string param.
- * @param {string=} p2 - An optional param (Closure syntax)
+ * @param {string=} p2 - An optional param (Google Closure syntax)
  * @param {string} [p3] - Another optional param (JSDoc syntax).
  * @param {string} [p4="test"] - An optional param with a default value
  * @return {string} This is the result
@@ -247,9 +269,9 @@ function ps() {}
 function ab() {}
 ```
 
-## `@typedef`, `@callback`, and `@param`
+### `@typedef`, `@callback`, and `@param`
 
-`@typedef` may be used to define complex types.
+You can define complex types with `@typedef`.
 Similar syntax works with `@param`.
 
 ```js twoslash
@@ -319,9 +341,10 @@ Of course, any of these types can be declared using TypeScript syntax in a singl
 /** @typedef {(data: string, index?: number) => boolean} Predicate */
 ```
 
-## `@template`
+### `@template`
 
-You can declare generic functions with the `@template` tag:
+You can declare type parameters with the `@template` tag.
+This lets you make functions, classes, or types that are generic:
 
 ```js twoslash
 /**
@@ -362,7 +385,17 @@ function seriousalize(key, object) {
 }
 ```
 
-Declaring generic classes or types is unsupported.
+Finally, you can specify a default for a type parameter:
+
+```js twoslash
+/** @template [T=object] */
+class Cache {
+    /** @param {T} initial */
+    constructor(T) {
+    }
+}
+let c = new Cache()
+```
 
 ## Classes
 
@@ -403,9 +436,108 @@ var c = new C(0);
 var result = C(1);
 ```
 
-They can also be declared as constructor functions, as described in the next section:
+They can also be declared as constructor functions; use [`@constructor`](#constructor) along with [`@this`](#this) for this.
 
-## `@constructor`
+### Property Modifiers
+<div id="jsdoc-property-modifiers"></div>
+
+
+`@public`, `@private`, and `@protected` work exactly like `public`, `private`, and `protected` in TypeScript:
+
+```js twoslash
+// @errors: 2341
+// @ts-check
+
+class Car {
+  constructor() {
+    /** @private */
+    this.identifier = 100;
+  }
+
+  printIdentifier() {
+    console.log(this.identifier);
+  }
+}
+
+const c = new Car();
+console.log(c.identifier);
+```
+
+- `@public` is always implied and can be left off, but means that a property can be reached from anywhere.
+- `@private` means that a property can only be used within the containing class.
+- `@protected` means that a property can only be used within the containing class, and all derived subclasses, but not on dissimilar instances of the containing class.
+
+`@public`, `@private`, and `@protected` do not work in constructor functions.
+
+### `@readonly`
+
+The `@readonly` modifier ensures that a property is only ever written to during initialization.
+
+```js twoslash
+// @errors: 2540
+// @ts-check
+
+class Car {
+  constructor() {
+    /** @readonly */
+    this.identifier = 100;
+  }
+
+  printIdentifier() {
+    console.log(this.identifier);
+  }
+}
+
+const c = new Car();
+console.log(c.identifier);
+```
+
+### `@override`
+
+`@override` works the same way as in TypeScript; use it on methods that override a method from a base class:
+
+```js twoslash
+export class C {
+  m() { }
+}
+class D extends C {
+  /** @override */
+  m() { }
+}
+```
+
+Set `noImplicitOverride: true` in tsconfig to check overrides.
+
+### `@extends`
+
+When JavaScript classes extend a generic base class, there is no JavaScript syntax for passing a type argument. The `@extends` tag allows this:
+
+```js twoslash
+/**
+ * @template T
+ * @extends {Set<T>}
+ */
+class SortableSet extends Set {
+  // ...
+}
+```
+
+Note that `@extends` only works with classes. Currently, there is no way for a constructor function to extend a class.
+
+### `@implements`
+
+In the same way, there is no JavaScript syntax for implementing a TypeScript interface. The `@implements` tag works just like in TypeScript:
+
+```js twoslash
+/** @implements {Print} */
+class TextBook {
+  print() {
+    // TODO
+  }
+}
+```
+
+### `@constructor`
 
 The compiler infers constructor functions based on this-property assignments, but you can make checking stricter and suggestions better if you add a `@constructor` tag:
 
@@ -449,7 +581,7 @@ With `@constructor`, `this` is checked inside the constructor function `C`, so y
 
 Unfortunately, this means that constructor functions that are also callable cannot use `@constructor`.
 
-## `@this`
+### `@this`
 
 The compiler can usually figure out the type of `this` when it has some context to work with. When it doesn't, you can explicitly specify the type of `this` with `@this`:
 
@@ -463,25 +595,55 @@ function callbackForLater(e) {
 }
 ```
 
-## `@extends`
+## Documentation
 
-When Javascript classes extend a generic base class, there is nowhere to specify what the type parameter should be. The `@extends` tag provides a place for that type parameter:
+### `@deprecated`
+<div id="deprecated-comments"></div>
+
+When a function, method, or property is deprecated you can let users know by marking it with a `/** @deprecated */` JSDoc comment. That information is surfaced in completion lists and as a suggestion diagnostic that editors can handle specially. In an editor like VS Code, deprecated values are typically displayed in a strike-through style ~~like this~~.
 
 ```js twoslash
-/**
- * @template T
- * @extends {Set<T>}
- */
-class SortableSet extends Set {
-  // ...
+// @noErrors
+/** @deprecated */
+const apiV1 = {};
+const apiV2 = {};
+
+apiV;
+// ^|
+
+
+```
+
+### `@see`
+
+`@see` lets you link to other names in your program:
+
+```ts twoslash
+type Box<T> = { t: T }
+/** @see Box for implementation details */
+type Boxify<T> = { [K in keyof T]: Box<T> };
+```
+
+Some editors will turn `Box` into a link to make it easy to jump there and back.
+
+### `@link`
+
+`@link` is like `@see`, except that it can be used inside other tags:
+
+```ts twoslash
+type Box<T> = { t: T }
+/** @return A {@link Box} containing the parameter. */
+function box<U>(u: U): Box<U> {
+  return { t: u };
 }
 ```
 
-Note that `@extends` only works with classes. Currently, there is no way for a constructor function extend a class.
+## Other
 
-## `@enum`
+### `@enum`
 
-The `@enum` tag allows you to create an object literal whose members are all of a specified type. Unlike most object literals in Javascript, it does not allow other members.
+The `@enum` tag allows you to create an object literal whose members are all of a specified type. Unlike most object literals in JavaScript, it does not allow other members.
+`@enum` is intended for compatibility with Google Closure's `@enum` tag.
 
 ```js twoslash
 /** @enum {number} */
@@ -507,34 +669,34 @@ const MathFuncs = {
 MathFuncs.add1;
 ```
 
-## `@deprecated` Comments
+### `@author`
 
-When a function, method, or property is deprecated you can let users know by marking it with a `/** @deprecated */` JSDoc comment. That information is surfaced in completion lists and as a suggestion diagnostic that editors can handle specially. In an editor like VS Code, deprecated values are typically displayed in a strike-through style ~~like this~~.
+You can specify the author of an item with `@author`:
 
-```js
-// @noErrors
-/** @deprecated */
-const apiV1 = {};
-const apiV2 = {};
-
-apiV;
-// ^|
+```ts twoslash
+/**
+ * Welcome to awesome.ts
+ * @author Ian Awesome <i.am.awesome@example.com>
+ */
 ```
 
-## More examples
+Remember to surround the email address with angle brackets.
+Otherwise, `@example` will be parsed as a new tag.
+
+### Other supported patterns
 
 ```js twoslash
 class Foo {}
 // ---cut---
 var someObj = {
   /**
-   * @param {string} param1 - Docs on property assignments work
+   * @param {string} param1 - JSDocs on property assignments work
    */
   x: function (param1) {},
 };
 
 /**
- * As do docs on variable assignments
+ * As do jsdocs on variable assignments
  * @return {Window}
  */
 let someFunc = function () {};
@@ -546,19 +708,19 @@ let someFunc = function () {};
 Foo.prototype.sayHi = (greeting) => console.log("Hi!");
 
 /**
- * And arrow functions expressions
+ * And arrow function expressions
  * @param {number} x - A multiplier
  */
 let myArrow = (x) => x * x;
 
 /**
- * Which means it works for stateless function components in JSX too
- * @param {{a: string, b: number}} test - Some param
+ * Which means it works for function components in JSX too
+ * @param {{a: string, b: number}} props - Some param
  */
-var sfc = (test) => <div>{test.a.charAt(0)}</div>;
+var fc = (props) => <div>{props.a.charAt(0)}</div>;
 
 /**
- * A parameter can be a class constructor, using Closure syntax.
+ * A parameter can be a class constructor, using Google Closure syntax.
  *
  * @param {{new(...args: any[]): object}} C - The class to register
  */
@@ -577,22 +739,7 @@ function fn9(p1) {
 }
 ```
 
-## Patterns that are known NOT to be supported
-
-Referring to objects in the value space as types doesn't work unless the object also creates a type, like a constructor function.
-
-```js twoslash
-function aNormalFunction() {}
-/**
- * @type {aNormalFunction}
- */
-var wrong;
-/**
- * Use 'typeof' instead:
- * @type {typeof aNormalFunction}
- */
-var right;
-```
+### Unsupported patterns
 
 Postfix equals on a property type in an object literal type doesn't specify an optional property:
 
@@ -619,7 +766,7 @@ Nullable types only have meaning if [`strictNullChecks`](/tsconfig#strictNullChe
 var nullable;
 ```
 
-You can also use a union type:
+The TypeScript-native syntax is a union type:
 
 ```js twoslash
 /**
@@ -654,55 +801,3 @@ The following tags have open issues to support them:
 - `@inheritdoc` ([issue #23215](https://github.com/Microsoft/TypeScript/issues/23215))
 - `@memberof` ([issue #7237](https://github.com/Microsoft/TypeScript/issues/7237))
 - `@yields` ([issue #23857](https://github.com/Microsoft/TypeScript/issues/23857))
-- `{@link …}` ([issue #35524](https://github.com/Microsoft/TypeScript/issues/35524))
-
-## JS Class extensions
-
-### JSDoc Property Modifiers
-
-From TypeScript 3.8 onwards, you can use JSDoc to modify the properties in a class. First are the accessibility modifiers: `@public`, `@private`, and `@protected`.
-These tags work exactly like `public`, `private`, and `protected` respectively work in TypeScript.
-
-```js twoslash
-// @errors: 2341
-// @ts-check
-
-class Car {
-  constructor() {
-    /** @private */
-    this.identifier = 100;
-  }
-
-  printIdentifier() {
-    console.log(this.identifier);
-  }
-}
-
-const c = new Car();
-console.log(c.identifier);
-```
-
-- `@public` is always implied and can be left off, but means that a property can be reached from anywhere.
-- `@private` means that a property can only be used within the containing class.
-- `@protected` means that a property can only be used within the containing class, and all derived subclasses, but not on dissimilar instances of the containing class.
-
-Next, we've also added the `@readonly` modifier to ensure that a property is only ever written to during initialization.
-
-```js twoslash
-// @errors: 2540
-// @ts-check
-
-class Car {
-  constructor() {
-    /** @readonly */
-    this.identifier = 100;
-  }
-
-  printIdentifier() {
-    console.log(this.identifier);
-  }
-}
-
-const c = new Car();
-console.log(c.identifier);
-```

@@ -56,13 +56,13 @@ const Play: React.FC<Props> = (props) => {
         tsVersionParam = nightlyJSON.version
       }
       // Allow prod/staging builds to set a custom commit prefix to bust caches
-      const {sandboxRoot, playgroundRoot} = getPlaygroundUrls()
-            
+      const { sandboxRoot, playgroundRoot, playgroundWorker } = getPlaygroundUrls()
+
       // @ts-ignore
       const re: any = global.require
       re.config({
         paths: {
-          vs: `https://typescript.azureedge.net/cdn/${tsVersionParam}/monaco/min/vs`,
+          vs: `https://typescript.azureedge.net/cdn/${tsVersionParam}/monaco/dev/vs`,
           "typescript-sandbox": sandboxRoot,
           "typescript-playground": playgroundRoot,
           "unpkg": "https://unpkg.com/",
@@ -99,7 +99,8 @@ const Play: React.FC<Props> = (props) => {
           monacoSettings: {
             fontFamily: "var(--code-font)",
             fontLigatures: true
-          }
+          },
+          customTypeScriptWorkerPath: document.location.origin + playgroundWorker
         }, main, ts)
 
         const playgroundConfig = {
@@ -124,22 +125,37 @@ const Play: React.FC<Props> = (props) => {
             dtsMap = defaultMap
             runTwoslash()
           })
-
         }
 
         // When the compiler notices a twoslash compiler flag change, this will get triggered and reset the DTS map
         sandboxEnv.setDidUpdateCompilerSettings(updateDTSEnv)
         updateDTSEnv(sandboxEnv.getCompilerOptions())
 
+        // When there are multi-file playgrounds, we should show the implicit filename, ideally this would be
+        // something more inline, but we can abuse the code lenses for now
+        main.languages.registerCodeLensProvider(sandboxEnv.language, {
+          provideCodeLenses: function (model, token) {
+            const lenses = !showFileCodeLens ? [] : [{
+              range: {
+                startLineNumber: 1,
+                startColumn: 1,
+                endLineNumber: 2,
+                endColumn: 1
+              },
+              id: "implicit-filename-first",
+              command: {
+                id: "noop",
+                title: "// @filename: input.tsx"
+              }
+            }]
+            return { lenses, dispose: () => { } };
+          }
+        })
+
+        let showFileCodeLens = false
         const debouncedTwoslash = debounce(() => {
           if (dtsMap) runTwoslash()
-
-          const isTSErrorsEnabled = !sandboxEnv.languageServiceDefaults.getDiagnosticsOptions().noSemanticValidation
-          const shouldBeEnabled = !sandboxEnv.getText().includes("// @filename")
-          if (isTSErrorsEnabled !== shouldBeEnabled) {
-            // Turn off the suggestions for multi-file reports
-            sandboxEnv.languageServiceDefaults.setDiagnosticsOptions({ noSemanticValidation: !shouldBeEnabled })
-          }
+          showFileCodeLens = sandboxEnv.getText().includes("// @filename")
         }, 1000)
 
         sandboxEnv.editor.onDidChangeModelContent(debouncedTwoslash)
@@ -205,6 +221,8 @@ const Play: React.FC<Props> = (props) => {
 
         sandboxEnv.editor.focus()
         sandboxEnv.editor.layout()
+
+        debouncedTwoslash()
       });
     }
 

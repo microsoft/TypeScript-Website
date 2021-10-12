@@ -191,7 +191,7 @@ Be sure to read the ["Preventing Name Conflicts" footnote](#preventing-name-conf
 ## _UMD_
 
 A _UMD_ module is one that can _either_ be used as module (through an import), or as a global (when run in an environment without a module loader).
-Many popular libraries, such as [Moment.js](http://momentjs.com/), are written this way.
+Many popular libraries, such as [Moment.js](https://momentjs.com/), are written this way.
 For example, in Node.js or using RequireJS, you would write:
 
 ```ts
@@ -230,7 +230,7 @@ and a "Using in the browser" example showing using a `<script>` tag to load the 
 ### Examples of UMD libraries
 
 Most popular libraries are now available as UMD packages.
-Examples include [jQuery](https://jquery.com/), [Moment.js](http://momentjs.com/), [lodash](https://lodash.com/), and many more.
+Examples include [jQuery](https://jquery.com/), [Moment.js](https://momentjs.com/), [lodash](https://lodash.com/), and many more.
 
 ### Template
 
@@ -323,4 +323,4 @@ the top-level module object can _never_ be callable.
 
 The most common solution here is to define a `default` export for a callable/constructable object;
 module loaders commonly detect this situation automatically and replace the top-level object with the `default` export.
-Typescript can handle this for you, if you have [`"esModuleInterop": true`](/tsconfig#esModuleInterop) in tsconfig.json.
+TypeScript can handle this for you, if you have [`"esModuleInterop": true`](/tsconfig/#esModuleInterop) in your tsconfig.json.

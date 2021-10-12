@@ -12,7 +12,7 @@ Compiler supports configuring how to watch files and directories using compiler 
 
 The `--watch` implementation of the compiler relies on using `fs.watch` and `fs.watchFile` which are provided by node, both of these methods have pros and cons.
 
-`fs.watch` uses file system events to notify the changes in the file/directory. But this is OS dependent and the notification is not completely reliable and does not work as expected on many OS. Also there could be limit on number of watches that can be created, eg. linux and we could exhaust it pretty quickly with programs that include large number of files. But because this uses file system events, there is not much CPU cycle involved. Compiler typically uses `fs.watch` to watch directories (eg. source directories included by config file, directories in which module resolution failed etc) These can handle the missing precision in notifying about the changes. But recursive watching is supported on only Windows and OSX. That means we need something to replace the recursive nature on other OS.
+`fs.watch` uses file system events to notify the changes in the file/directory. But this is OS dependent and the notification is not completely reliable and does not work as expected on many OS. Also there could be limit on number of watches that can be created, e.g. linux and we could exhaust it pretty quickly with programs that include large number of files. But because this uses file system events, there is not much CPU cycle involved. Compiler typically uses `fs.watch` to watch directories (e.g. source directories included by config file, directories in which module resolution failed etc) These can handle the missing precision in notifying about the changes. But recursive watching is supported on only Windows and OSX. That means we need something to replace the recursive nature on other OS.
 
 `fs.watchFile` uses polling and thus involves CPU cycles. However, `fs.watchFile` is the most reliable mechanism to get the update on the status of file/directory. The compiler typically uses `fs.watchFile` to watch source files, config files and missing files (missing file references). This means the CPU usage when using `fs.watchFile` depends on number of files in the program.
 
@@ -43,7 +43,7 @@ The `--watch` implementation of the compiler relies on using `fs.watch` and `fs.
     // Finally, two additional settings for reducing the amount of possible
     // files to track  work from these directories
     "excludeDirectories": ["**/node_modules", "_build"],
-    "excludeFiles": ["build/fileWhichChangesOfent.ts"]
+    "excludeFiles": ["build/fileWhichChangesOften.ts"]
   }
 }
 ```
@@ -57,7 +57,7 @@ Option                                         | Description
 -----------------------------------------------|----------------------------------------------------------------------
 `PriorityPollingInterval`                      | Use `fs.watchFile` but use different polling intervals for source files, config files and missing files
 `DynamicPriorityPolling`                       | Use a dynamic queue where in the frequently modified files will be polled at shorter interval and the files unchanged will be polled less frequently
-`UseFsEvents`                                  | Use `fs.watch` which uses file system events (but might not be accurate on different OS) to get the notifications for the file changes/creation/deletion. Note that few OS eg. linux has limit on number of watches and failing to create watcher using `fs.watch` will result it in creating using `fs.watchFile`
+`UseFsEvents`                                  | Use `fs.watch` which uses file system events (but might not be accurate on different OS) to get the notifications for the file changes/creation/deletion. Note that few OS e.g. linux has limit on number of watches and failing to create watcher using `fs.watch` will result it in creating using `fs.watchFile`
 `UseFsEventsWithFallbackDynamicPolling`        | This option is similar to `UseFsEvents` except on failing to create watch using `fs.watch`, the fallback watching happens through dynamic polling queues (as explained in `DynamicPriorityPolling`)
 `UseFsEventsOnParentDirectory`                 | This option watches parent directory of the file with `fs.watch` (using file system events) thus being low on CPU but can compromise accuracy.
 default (no value specified)                   | If environment variable `TSC_NONPOLLING_WATCHER` is set to true, watches parent directory of files (just like `UseFsEventsOnParentDirectory`). Otherwise watch files using `fs.watchFile` with `250ms` as the timeout for any file

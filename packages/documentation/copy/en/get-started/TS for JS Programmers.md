@@ -118,13 +118,13 @@ function deleteUser(user: User) {
 }
 ```
 
-There are already a small set of primitive types available in JavaScript: `boolean`, `bigint`, `null`, `number`, `string`, `symbol`, and `undefined`, which you can use in an interface. TypeScript extends this list with a few more, such as `any` (allow anything), [`unknown`](/play#example/unknown-and-never) (ensure someone using this type declares what the type is), [`never`](/play#example/unknown-and-never) (it's not possible that this type could happen), and `void` (a function which returns `undefined` or has no return value).
+There is already a small set of primitive types available in JavaScript: `boolean`, `bigint`, `null`, `number`, `string`, `symbol`, and `undefined`, which you can use in an interface. TypeScript extends this list with a few more, such as `any` (allow anything), [`unknown`](/play#example/unknown-and-never) (ensure someone using this type declares what the type is), [`never`](/play#example/unknown-and-never) (it's not possible that this type could happen), and `void` (a function which returns `undefined` or has no return value).
 
 You'll see that there are two syntaxes for building types: [Interfaces and Types](/play/?e=83#example/types-vs-interfaces). You should prefer `interface`. Use `type` when you need specific features.
 
 ## Composing Types
 
-With TypeScript, you can create complex types by combining simple ones. There are two popular ways to do so: with Unions, and with Generics.
+With TypeScript, you can create complex types by combining simple ones. There are two popular ways to do so: with unions, and with generics.
 
 ### Unions
 
@@ -136,7 +136,7 @@ type MyBool = true | false;
 
 _Note:_ If you hover over `MyBool` above, you'll see that it is classed as `boolean`. That's a property of the Structural Type System. More on this below.
 
-A popular use-case for union types is to describe the set of `string` or `number` [literals](/docs/handbook/literal-types.html) that a value is allowed to be:
+A popular use-case for union types is to describe the set of `string` or `number` [literals](/docs/handbook/2/everyday-types.html#literal-types) that a value is allowed to be:
 
 ```ts twoslash
 type WindowStates = "open" | "closed" | "minimized";

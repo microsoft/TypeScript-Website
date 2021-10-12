@@ -554,7 +554,7 @@ Now we can `/// <reference>` `node.d.ts` and then load the modules using `import
 ```ts
 /// <reference path="node.d.ts"/>
 import * as URL from "url";
-let myUrl = URL.parse("http://www.typescriptlang.org");
+let myUrl = URL.parse("https://www.typescriptlang.org");
 ```
 
 ### Shorthand ambient modules
