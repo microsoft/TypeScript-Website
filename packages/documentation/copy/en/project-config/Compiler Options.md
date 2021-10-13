@@ -282,11 +282,9 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#allowSyntheticDefaultImports'>--allowSyntheticDefaultImports</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul>
-<li><code>true</code> if <a href="#module"><code>module</code></a> is <code>system</code> or <a href="#esModuleInterop"><code>esModuleInterop</code></a> is <code>true</code> and <a href="#module"><code>module</code></a> is not <code>es6</code>/<code>es2015</code> or <code>esnext</code></li>
-<li><code>false</code> otherwise.</li>
-</ul>
-</td>
+  <td><ul><li><p><code>true</code> if <a href="#module"><code>module</code></a> is <code>system</code> or <a href="#esModuleInterop"><code>esModuleInterop</code></a> and <a href="#module"><code>module</code></a> is not <code>es6</code>/<code>es2015</code> or <code>esnext</code>,</p>
+</li><li><p><code>false</code> otherwise.</p>
+</li></ul></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Allow 'import x from y' when a module doesn't have a default export.</p>
@@ -329,11 +327,9 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#alwaysStrict'>--alwaysStrict</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul>
-<li><code>true</code> if <a href="#strict"><code>strict</code></a> is <code>true</code></li>
-<li><code>false</code> otherwise.</li>
-</ul>
-</td>
+  <td><ul><li><p><code>true</code> if <a href="#strict"><code>strict</code></a>,</p>
+</li><li><p><code>false</code> otherwise.</p>
+</li></ul></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Ensure 'use strict' is always emitted.</p>
@@ -398,11 +394,9 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#declaration'>--declaration</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul>
-<li><code>true</code> if <a href="#composite"><code>composite</code></a> is <code>true</code></li>
-<li><code>false</code> otherwise.</li>
-</ul>
-</td>
+  <td><ul><li><p><code>true</code> if <a href="#composite"><code>composite</code></a>,</p>
+</li><li><p><code>false</code> otherwise.</p>
+</li></ul></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Generate .d.ts files from TypeScript and JavaScript files in your project.</p>
@@ -632,11 +626,9 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#incremental'>--incremental</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul>
-<li><code>true</code> if <a href="#composite"><code>composite</code></a> is <code>true</code></li>
-<li><code>false</code> otherwise.</li>
-</ul>
-</td>
+  <td><ul><li><p><code>true</code> if <a href="#composite"><code>composite</code></a>,</p>
+</li><li><p><code>false</code> otherwise.</p>
+</li></ul></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>Save .tsbuildinfo files to allow for incremental compilation of projects.</p>
@@ -677,7 +669,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 <tr class='odd' name='jsx'>
   <td><code><a href='/tsconfig/#jsx'>--jsx</a></code></td>
-  <td><p><code>preserve</code>, <code>react</code>, react-native, react-jsx, or react-jsxdev</p>
+  <td><p><code>preserve</code>, <code>react</code>, <code>react-native</code>, <code>react-jsx</code>, or <code>react-jsxdev</code></p>
 </td>
   <td><p><code>undefined</code></p>
 </td>
@@ -789,11 +781,9 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#module'>--module</a></code></td>
   <td><p><code>none</code>, <code>commonjs</code>, <code>amd</code>, <code>umd</code>, <code>system</code>, <code>es6</code>/<code>es2015</code>, <code>es2020</code>, <code>es2022</code>, <code>esnext</code>, <code>node12</code>, or <code>nodenext</code></p>
 </td>
-  <td><ul>
-<li><code>CommonJS</code> if <a href="#target"><code>target</code></a> is <code>ES3</code> or <code>ES5</code></li>
-<li><code>ES6</code>/<code>ES2015</code> otherwise.</li>
-</ul>
-</td>
+  <td><ul><li><p><code>CommonJS</code> if <a href="#target"><code>target</code></a> is <code>ES3</code> or <code>ES5</code>,</p>
+</li><li><p><code>ES6</code>/<code>ES2015</code> otherwise.</p>
+</li></ul></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>Specify what module code is generated.</p>
@@ -803,12 +793,10 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#moduleResolution'>--moduleResolution</a></code></td>
   <td><p><code>classic</code> or <code>node</code></p>
 </td>
-  <td><ul>
-<li><code>Classic</code> if <a href="#module"><code>module</code></a> is <code>AMD</code>, <code>UMD</code>, <code>System</code> or <code>ES6</code>/<code>ES2015</code></li>
-<li>Matches if <a href="#module"><code>module</code></a> is <code>node12</code> or <code>nodenext</code></li>
-<li><code>Node</code> otherwise.</li>
-</ul>
-</td>
+  <td><ul><li><p><code>Classic</code> if <a href="#module"><code>module</code></a> is <code>AMD</code>, <code>UMD</code>, <code>System</code> or <code>ES6</code>/<code>ES2015</code>,</p>
+</li><li><p>Matches if <a href="#module"><code>module</code></a> is <code>node12</code> or <code>nodenext</code>,</p>
+</li><li><p><code>Node</code> otherwise.</p>
+</li></ul></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Specify how TypeScript looks up a file from a given module specifier.</p>
@@ -884,11 +872,9 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#noImplicitAny'>--noImplicitAny</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul>
-<li><code>true</code> if <a href="#strict"><code>strict</code></a> is <code>true</code></li>
-<li><code>false</code> otherwise.</li>
-</ul>
-</td>
+  <td><ul><li><p><code>true</code> if <a href="#strict"><code>strict</code></a>,</p>
+</li><li><p><code>false</code> otherwise.</p>
+</li></ul></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>Enable error reporting for expressions and declarations with an implied <code>any</code> type..</p>
@@ -920,11 +906,9 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#noImplicitThis'>--noImplicitThis</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul>
-<li><code>true</code> if <a href="#strict"><code>strict</code></a> is <code>true</code></li>
-<li><code>false</code> otherwise.</li>
-</ul>
-</td>
+  <td><ul><li><p><code>true</code> if <a href="#strict"><code>strict</code></a>,</p>
+</li><li><p><code>false</code> otherwise.</p>
+</li></ul></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Enable error reporting when <code>this</code> is given the type <code>any</code>.</p>
@@ -1242,11 +1226,9 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#strictBindCallApply'>--strictBindCallApply</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul>
-<li><code>true</code> if <a href="#strict"><code>strict</code></a> is <code>true</code></li>
-<li><code>false</code> otherwise.</li>
-</ul>
-</td>
+  <td><ul><li><p><code>true</code> if <a href="#strict"><code>strict</code></a>,</p>
+</li><li><p><code>false</code> otherwise.</p>
+</li></ul></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>Check that the arguments for <code>bind</code>, <code>call</code>, and <code>apply</code> methods match the original function.</p>
@@ -1256,11 +1238,9 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#strictFunctionTypes'>--strictFunctionTypes</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul>
-<li><code>true</code> if <a href="#strict"><code>strict</code></a> is <code>true</code></li>
-<li><code>false</code> otherwise.</li>
-</ul>
-</td>
+  <td><ul><li><p><code>true</code> if <a href="#strict"><code>strict</code></a>,</p>
+</li><li><p><code>false</code> otherwise.</p>
+</li></ul></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>When assigning functions, check to ensure parameters and the return values are subtype-compatible.</p>
@@ -1270,11 +1250,9 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#strictNullChecks'>--strictNullChecks</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul>
-<li><code>true</code> if <a href="#strict"><code>strict</code></a> is <code>true</code></li>
-<li><code>false</code> otherwise.</li>
-</ul>
-</td>
+  <td><ul><li><p><code>true</code> if <a href="#strict"><code>strict</code></a>,</p>
+</li><li><p><code>false</code> otherwise.</p>
+</li></ul></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>When type checking, take into account <code>null</code> and <code>undefined</code>.</p>
@@ -1284,11 +1262,9 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#strictPropertyInitialization'>--strictPropertyInitialization</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul>
-<li><code>true</code> if <a href="#strict"><code>strict</code></a> is <code>true</code></li>
-<li><code>false</code> otherwise.</li>
-</ul>
-</td>
+  <td><ul><li><p><code>true</code> if <a href="#strict"><code>strict</code></a>,</p>
+</li><li><p><code>false</code> otherwise.</p>
+</li></ul></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Check for class properties that are declared but not set in the constructor.</p>
@@ -1386,11 +1362,9 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#useDefineForClassFields'>--useDefineForClassFields</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul>
-<li><code>true</code> if <a href="#target"><code>target</code></a> is <code>ES2022</code> or higher, including <code>ESNext</code></li>
-<li><code>false</code> otherwise.</li>
-</ul>
-</td>
+  <td><ul><li><p><code>true</code> if <a href="#target"><code>target</code></a> is <code>ES2022</code> or higher, including <code>ESNext</code>,</p>
+</li><li><p><code>false</code> otherwise.</p>
+</li></ul></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>Emit ECMAScript-standard-compliant class fields.</p>
@@ -1400,11 +1374,9 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#useUnknownInCatchVariables'>--useUnknownInCatchVariables</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul>
-<li><code>true</code> if <a href="#strict"><code>strict</code></a> is <code>true</code></li>
-<li><code>false</code> otherwise.</li>
-</ul>
-</td>
+  <td><ul><li><p><code>true</code> if <a href="#strict"><code>strict</code></a>,</p>
+</li><li><p><code>false</code> otherwise.</p>
+</li></ul></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Default catch clause variables as <code>unknown</code> instead of <code>any</code>.</p>

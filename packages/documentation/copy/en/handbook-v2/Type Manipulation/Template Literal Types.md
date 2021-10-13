@@ -93,7 +93,7 @@ const person = makeWatchedObject({
 
 person.on("firstNameChanged", () => {});
 
-// It's typo-resistent
+// It's typo-resistant
 person.on("firstName", () => {});
 
 person.on("frstNameChanged", () => {});

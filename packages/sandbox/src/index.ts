@@ -1,4 +1,3 @@
-import { detectNewImportsToAcquireTypeFor } from "./typeAcquisition"
 import { sandboxTheme, sandboxThemeDark } from "./theme"
 import { TypeScriptWorker } from "./tsWorker"
 import {
@@ -11,6 +10,7 @@ import { supportedReleases } from "./releases"
 import { getInitialCode } from "./getInitialCode"
 import { extractTwoSlashCompilerOptions, twoslashCompletions } from "./twoslashSupport"
 import * as tsvfs from "./vendor/typescript-vfs"
+import { setupTypeAcquisition } from "./vendor/ata/index"
 
 type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
 type Monaco = typeof import("monaco-editor")
@@ -24,7 +24,7 @@ export type SandboxConfig = {
   text: string
   /** @deprecated */
   useJavaScript?: boolean
-  /** The default file for the plaayground  */
+  /** The default file for the playground  */
   filetype: "js" | "ts" | "d.ts"
   /** Compiler options which are automatically just forwarded on */
   compilerOptions: CompilerOptions
@@ -48,9 +48,9 @@ export type SandboxConfig = {
     groupEnd: (...args: any[]) => void
   }
 } & (
-  | { /** theID of a dom node to add monaco to */ domID: string }
-  | { /** theID of a dom node to add monaco to */ elementToAppend: HTMLElement }
-)
+    | { /** the ID of a dom node to add monaco to */ domID: string }
+    | { /** the dom node to add monaco to */ elementToAppend: HTMLElement }
+  )
 
 const languageType = (config: SandboxConfig) => (config.filetype === "js" ? "javascript" : "typescript")
 
@@ -175,13 +175,14 @@ export const createTypeScriptSandbox = (
   })
 
   // In the future it'd be good to add support for an 'add many files'
-  const addLibraryToRuntime = (code: string, path: string) => {
+  const addLibraryToRuntime = (code: string, _path: string) => {
+    const path = "file://" + _path
     defaults.addExtraLib(code, path)
     const uri = monaco.Uri.file(path)
     if (monaco.editor.getModel(uri) === null) {
       monaco.editor.createModel(code, "javascript", uri)
     }
-    config.logger.log(`[ATA] Adding ${path} to runtime`)
+    config.logger.log(`[ATA] Adding ${path} to runtime`, { code })
   }
 
   const getTwoSlashCompilerOptions = extractTwoSlashCompilerOptions(ts)
@@ -197,6 +198,24 @@ export const createTypeScriptSandbox = (
     )
   }
 
+  const ata = setupTypeAcquisition({
+    projectName: "TypeScript Playground",
+    typescript: ts,
+    logger: console,
+    delegate: {
+      receivedFile: addLibraryToRuntime,
+      progress: (downloaded: number, total: number) => {
+        // console.log({ dl, ttl })
+      },
+      started: () => {
+        console.log("ATA start")
+      },
+      finished: f => {
+        console.log("ATA done")
+      },
+    },
+  })
+
   const textUpdated = () => {
     const code = editor.getModel()!.getValue()
 
@@ -206,7 +225,7 @@ export const createTypeScriptSandbox = (
     }
 
     if (config.acquireTypes) {
-      detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
+      ata(code)
     }
   }
 
@@ -225,7 +244,7 @@ export const createTypeScriptSandbox = (
   defaults.setCompilerOptions(compilerOptions)
 
   // To let clients plug into compiler settings changes
-  let didUpdateCompilerSettings = (opts: CompilerOptions) => {}
+  let didUpdateCompilerSettings = (opts: CompilerOptions) => { }
 
   const updateCompilerSettings = (opts: CompilerOptions) => {
     const newKeys = Object.keys(opts)

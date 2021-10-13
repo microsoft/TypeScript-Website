@@ -7,3 +7,4 @@ node_modules
 .rts2_cache_umd
 dist
 src/vendor/typescript-vfs.ts
+src/vendor/ata
