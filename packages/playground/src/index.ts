@@ -445,7 +445,7 @@ export const setupPlayground = (
         sidebarTabs.style.display = "none"
         sidebarContent.style.display = "none"
         settingsContent.style.display = "block"
-        ;(document.querySelector(".playground-sidebar label") as any).focus()
+        document.querySelector<HTMLElement>(".playground-sidebar label")!.focus()
       }
       settingsToggle.parentElement!.classList.toggle("open")
     }
