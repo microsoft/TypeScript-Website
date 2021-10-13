@@ -242,7 +242,7 @@ export const defaultsForOptions = {
   noStrictGenericChecks: "false",
   noUnusedLocals: "false",
   noUnusedParameters: "false",
-  preserveConstEnums: "false",
+  preserveConstEnums: trueIf("isolatedModules"),
   preserveSymlinks: "false",
   preserveWatchOutput: "false",
   pretty: "true",

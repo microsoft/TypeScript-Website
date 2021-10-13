@@ -140,27 +140,30 @@ $headline-foreground-bg: white;
       flex-direction: column;
     }
 
-    .tag-container {
-      .twoslash-annotation.left {
-        position: static;
-        left: 0;
-        bottom: 0;
-        top: auto !important;
-
-        svg {
-          transform: rotate(44deg) scaleX(-1) translateX(-20px) !important;
-        }
-      }
-      .twoslash-annotation.right {
-        display: none;
-      }
-    }
     img {
       max-width: 100%;
     }
 
     h3 {
       text-align: center;
+    }
+  }
+}
+
+@media (max-width: $screen-md) {
+  .tag-container {
+    .twoslash-annotation.left {
+      position: static;
+      left: 0;
+      bottom: 0;
+      top: auto !important;
+
+      svg {
+        transform: rotate(44deg) scaleX(-1) translateX(-20px) !important;
+      }
+    }
+    .twoslash-annotation.right {
+      display: none;
     }
   }
 }
@@ -516,6 +519,12 @@ $headline-foreground-bg: white;
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
+
+    @media screen and (-ms-high-contrast: black-on-white) {
+      svg path {
+        fill: white;
+      }
+    }
   }
 
   a.get-started {
@@ -728,6 +737,9 @@ $headline-foreground-bg: white;
     .release > div,
     .beta > div,
     .rc > div {
+      border: 1px solid black;
+    }
+    form.search:focus {
       border: 1px solid black;
     }
   }
@@ -1233,6 +1245,8 @@ $headline-foreground-bg: white;
   svg {
     margin-right: 8px;
   }
+  color: white;
+  text-decoration: none;
 
   &:hover,
   &.focus {

@@ -22,6 +22,7 @@
     ]
   },
   "dependencies": {
+    "@typescript/ata": "0.0.1",
     "@typescript/vfs": "1.3.5"
   },
   "devDependencies": {
