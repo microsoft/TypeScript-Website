@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "bootstrap": "node scripts/getListOfPluginsFromNPM.js",
-    "build-fast": "esbuild src/index.ts --outdir=../typescriptlang-org/static/js/playground/2  --format=esm --target=es2020 --bundle",
+    "build-fast-test": "esbuild src/index.ts --outdir=../typescriptlang-org/static/js/playground/2  --format=esm --target=es2020 --bundle",
     "build": "tsc",
     "test": "jest"
   },

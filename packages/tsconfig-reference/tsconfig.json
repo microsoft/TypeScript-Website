@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "resolveJsonModule": true,
-    "allowJs": true
+    "allowJs": true,
+    "target": "es2015"
   }
 }
