@@ -138,6 +138,12 @@
         padding-bottom: 0.2rem;
       }
 
+      #config-container p {
+        margin: 0;
+        margin-bottom: 8px;
+        margin-left: 4px;
+      }
+
       #config-container #boolean-options-container {
         display: flex;
         flex-wrap: wrap;

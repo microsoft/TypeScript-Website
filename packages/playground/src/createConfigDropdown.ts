@@ -238,11 +238,11 @@ const createSelect = (title: string, id: string, blurb: string, sandbox: Sandbox
     })
 
   const span = document.createElement("span")
-  span.textContent = blurb
+  span.innerHTML = blurb
   span.classList.add("compiler-flag-blurb")
   label.appendChild(span)
 
   return label
 }
 
-export const setupJSONToggleForConfig = (sandbox: Sandbox) => {}
+export const setupJSONToggleForConfig = (sandbox: Sandbox) => { }
