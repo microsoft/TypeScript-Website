@@ -202,8 +202,11 @@ export const setupPlayground = (
     }
   })
 
+  // Keeps track of whether the project has been set up as an ESM module via a package.json
+  let isESMMode = false
+
   // When any compiler flags are changed, trigger a potential change to the URL
-  sandbox.setDidUpdateCompilerSettings(() => {
+  sandbox.setDidUpdateCompilerSettings(async () => {
     playgroundDebouncedMainFunction()
     // @ts-ignore
     window.appInsights && window.appInsights.trackEvent({ name: "Compiler Settings changed" })
@@ -217,6 +220,24 @@ export const setupPlayground = (
     if (alwaysUpdateURL) {
       const newURL = sandbox.createURLQueryWithCompilerOptions(sandbox)
       window.history.replaceState({}, "", newURL)
+    }
+
+    // Add an outer package.json with 'module: type'
+    const moduleNumber = sandbox.getCompilerOptions().module || 0
+    const isESMviaModule = moduleNumber > 99 && moduleNumber < 200
+    const moduleResNumber = sandbox.getCompilerOptions().moduleResolution || 0
+    const isESMviaModuleRes = moduleResNumber > 2 && moduleResNumber < 100
+
+    if (isESMviaModule || isESMviaModuleRes) {
+      if (isESMMode) return
+      isESMMode = true
+      setTimeout(() => { ui.flashInfo(i("play_esm_mode")) }, 300)
+
+      sandbox.addLibraryToRuntime(JSON.stringify({ name: "playground", type: "module" }), "/package.json")
+
+      const worker = await sandbox.getWorkerProcess()
+      // @ts-ignore
+      worker.getExtraLibs().then(e => console.log(e))
     }
   })
 
