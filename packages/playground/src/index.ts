@@ -222,8 +222,9 @@ export const setupPlayground = (
       window.history.replaceState({}, "", newURL)
     }
 
-    // Add an outer package.json with 'module: type'
-    const moduleNumber = sandbox.getCompilerOptions().module || 0
+    // Add an outer package.json with 'module: type' and ensures all the
+    // other settings are inline for ESM mode
+    const moduleNumber = sandbox.getCompilerOptions().module as number || 0
     const isESMviaModule = moduleNumber > 99 && moduleNumber < 200
     const moduleResNumber = sandbox.getCompilerOptions().moduleResolution || 0
     const isESMviaModuleRes = moduleResNumber > 2 && moduleResNumber < 100
@@ -233,11 +234,9 @@ export const setupPlayground = (
       isESMMode = true
       setTimeout(() => { ui.flashInfo(i("play_esm_mode")) }, 300)
 
+      const nextRes = moduleNumber === 199 ? 99 : 2
+      sandbox.setCompilerSettings({ target: 99, moduleResolution: nextRes })
       sandbox.addLibraryToRuntime(JSON.stringify({ name: "playground", type: "module" }), "/package.json")
-
-      const worker = await sandbox.getWorkerProcess()
-      // @ts-ignore
-      worker.getExtraLibs().then(e => console.log(e))
     }
   })
 
