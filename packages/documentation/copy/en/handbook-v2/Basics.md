@@ -426,7 +426,7 @@ The two biggest ones you should know about are [`noImplicitAny`](/tsconfig#noImp
 
 ## `noImplicitAny`
 
-Recall that in some places, TypeScript doesn't try to infer any types for us and instead falls back to the most lenient type: `any`.
+Recall that in some places, TypeScript doesn't try to infer types for us and instead falls back to the most lenient type: `any`.
 This isn't the worst thing that can happen - after all, falling back to `any` is just the plain JavaScript experience anyway.
 
 However, using `any` often defeats the purpose of using TypeScript in the first place.
