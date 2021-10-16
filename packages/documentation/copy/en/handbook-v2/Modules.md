@@ -198,7 +198,7 @@ import { Cat, Dog } from "./animal.js";
 type Animals = Cat | Dog;
 ```
 
-TypeScript has extended the `import` syntax with two concepts for declaring a import of a type:
+TypeScript has extended the `import` syntax with two concepts for declaring an import of a type:
 
 ###### `import type`
 
