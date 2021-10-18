@@ -14,3 +14,5 @@ In the editor toolbar, the one which is not visible because you're reading this 
 You can also use the key command <kbd>ctrl/<kbd>/<kbd>cmd</kbd>` + <kbd>enter</kbd> to trigger running your code.
 
 Code running in your browser means that you can experiment with the DOM APIs inside a TypeScript environment. The Playground includes examples for working with [the DOM](https://www.typescriptlang.org/play?useJavaScript=trueq=185#example/typescript-with-web) and with [WebGL](https://www.typescriptlang.org/play/?useJavaScript=trueq=461#example/typescript-with-webgl) which are good showcases of how that can work.
+
+Convenient, that's kind of the perfect segue to the [examples section of the handbook]()
