@@ -7,7 +7,12 @@ import type { Sandbox } from "typescriptlang-org/static/js/sandbox"
 import type { UI } from "./createUI"
 
 export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void) => {
+  const gistHash = location.hash.split("#gist/")[1]
+  const [gistID, gistStoryIndex] = gistHash.split("-")
+
   sandbox.editor.updateOptions({ readOnly: true })
+  ui.flashInfo(`Opening Gist ${gistID} as a Docset`, 2000)
+
   const playground = document.getElementById("playground-container")!
   playground.style.opacity = "0.5"
 
@@ -83,8 +88,6 @@ export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void)
     }
   }
 
-  const gistHash = location.hash.split("#gist/")[1]
-  const [gistID, gistStoryIndex] = gistHash.split("-")
   // const relay = "http://localhost:7071/api/API"
   const relay = "https://typescriptplaygroundgistproxyapi.azurewebsites.net/api/API"
   fetch(`${relay}?gistID=${gistID}`)

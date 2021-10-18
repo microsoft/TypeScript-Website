@@ -8,13 +8,13 @@ export interface UI {
     event?: React.MouseEvent
   ) => void
   /** A quick flash of some text */
-  flashInfo: (message: string) => void
+  flashInfo: (message: string, time?: number) => void
   /** Creates a modal container which you can put your own DOM elements inside */
   createModalOverlay: (postFocalElement: HTMLElement, classes?: string) => HTMLDivElement
 }
 
 export const createUI = (): UI => {
-  const flashInfo = (message: string) => {
+  const flashInfo = (message: string, timeout = 1000) => {
     let flashBG = document.getElementById("flash-bg")
     if (flashBG) {
       flashBG.parentElement?.removeChild(flashBG)
@@ -30,7 +30,7 @@ export const createUI = (): UI => {
 
     setTimeout(() => {
       flashBG?.parentElement?.removeChild(flashBG)
-    }, 1000)
+    }, timeout)
   }
 
   const createModalOverlay = (postFocalElement: HTMLElement, classList?: string) => {
@@ -120,7 +120,7 @@ export const createUI = (): UI => {
     const close = modal.querySelector(".close") as HTMLElement
     close.addEventListener("keydown", e => {
       if (e.key === "Tab") {
-        ;(modal.querySelector("textarea") as any).focus()
+        ; (modal.querySelector("textarea") as any).focus()
         e.preventDefault()
       }
     })
@@ -150,7 +150,7 @@ export const createUI = (): UI => {
     const lastButton = buttons.item(buttons.length - 1) as HTMLElement
     lastButton.addEventListener("keydown", e => {
       if (e.key === "Tab") {
-        ;(document.querySelector(".close") as any).focus()
+        ; (document.querySelector(".close") as any).focus()
         e.preventDefault()
       }
     })
