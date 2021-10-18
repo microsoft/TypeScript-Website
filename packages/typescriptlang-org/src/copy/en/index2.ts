@@ -28,7 +28,7 @@ export const indexCopy = {
 
   index_2_what_is_js_copy: `TypeScript adds additional syntax to JavaScript to support a <strong>tighter integration with your editor</strong>. Catch errors early in your editor.`,
   index_2_trust: "A Result You Can Trust",
-  index_2_trust_copy: `TypeScript code converts to JavaScript which <strong>runs anywhere JavaScript runs</strong>: In a browser, on Node.js or Deno and in your apps.`,
+  index_2_trust_copy: `TypeScript code converts to JavaScript, which <strong>runs anywhere JavaScript runs</strong>: In a browser, on Node.js or Deno and in your apps.`,
   index_2_scale: "Safety at Scale",
   index_2_scale_copy: `TypeScript understands JavaScript and uses <strong>type inference to give you great tooling</strong> without additional code.`,
 
