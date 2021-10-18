@@ -24,18 +24,18 @@ This helps keep Playground URLs on the short side, or at least doesn't add to th
 
 _In rough_, the Playground by default has settings which can be summed up as this:
 
-````json
+```json
 {
-    "compilerOptions": {
-        "strict": true,
-        "module": "esnext",
-        "moduleResolution": "node",
-        "target": "es2017",
-        "jsx": "react",
+  "compilerOptions": {
+    "strict": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es2017",
+    "jsx": "react",
 
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
-    }
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  }
 }
 ```
 
@@ -92,7 +92,7 @@ export function getDefaultSandboxCompilerOptions(config: SandboxConfig, monaco: 
 
   return { ...settings, ...config.compilerOptions }
 }
-````
+```
 
 This includes a lot of values which are set to their default value too. Which actually can make setting up a _perfect_ environment tricky because 'no value set' can differ from 'false' for some settings, but breaking this system would break backwards compatibility (URLs would change) and make URLs longer, thus it stays the way it is.
 
