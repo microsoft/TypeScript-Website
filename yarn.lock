@@ -5530,6 +5530,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@typescript/playground-handbook@workspace:packages/playground-handbook":
+  version: 0.0.0-use.local
+  resolution: "@typescript/playground-handbook@workspace:packages/playground-handbook"
+  dependencies:
+    typescript: "*"
+  languageName: unknown
+  linkType: soft
+
 "@typescript/playground-worker@0.1.0, @typescript/playground-worker@workspace:packages/playground-worker":
   version: 0.0.0-use.local
   resolution: "@typescript/playground-worker@workspace:packages/playground-worker"
