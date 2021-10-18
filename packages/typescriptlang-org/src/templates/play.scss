@@ -307,6 +307,7 @@ main #editor-toolbar {
   // Used for stories
   #navigation-container {
     background-color: var(--blue-tinged-bg);
+    overflow-y: auto;
 
     h4 {
       margin-top: 12px;

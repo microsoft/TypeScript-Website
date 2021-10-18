@@ -65,7 +65,7 @@ function api<T>(config: ATABootstrapConfig, url: string): Promise<T | Error> {
     )
 
   // Don't pass in custom headers when the user-agent is a browser, this is
-  // so we keep the request classed as a COR "simple" request
+  // so we keep the request classed as a COR "simple"
   const headers: any = isBrowser ? {} : { "User-Agent": `Type Acquisition ${config.projectName}` }
 
   return f(url, { headers }).then(res => {
