@@ -52,23 +52,26 @@ export const getDTSFileForModuleWithVersion = async (
 function api<T>(config: ATABootstrapConfig, url: string): Promise<T | Error> {
   const f = config.fetcher || fetch
 
-  const isWebWorker =
-    typeof self !== 'undefined' &&
-    // @ts-ignore
-    typeof self.WorkerGlobalScope !== 'undefined'
+  // This breaks Safari/Firefox
 
-  const isBrowser =
-    isWebWorker || (
-      typeof window !== 'undefined' &&
-      typeof window.document !== 'undefined' &&
-      typeof fetch !== 'undefined'
-    )
+  // const isWebWorker =
+  //   typeof self !== 'undefined' &&
+  //   // @ts-ignore
+  //   typeof self.WorkerGlobalScope !== 'undefined'
 
-  // Don't pass in custom headers when the user-agent is a browser, this is
-  // so we keep the request classed as a COR "simple"
-  const headers: any = isBrowser ? {} : { "User-Agent": `Type Acquisition ${config.projectName}` }
+  // const isBrowser =
+  //   isWebWorker || (
+  //     typeof window !== 'undefined' &&
+  //     typeof window.document !== 'undefined' &&
+  //     typeof fetch !== 'undefined'
+  //   )
 
-  return f(url, { headers }).then(res => {
+  // // Don't pass in custom headers when the user-agent is a browser, this is
+  // // so we keep the request classed as a COR "simple"
+  // const headers: any = isBrowser ? {} : { "User-Agent": `Type Acquisition ${config.projectName}` }
+
+
+  return f(url).then(res => {
     if (res.ok) {
       return res.json().then(f => f as T)
     } else {
