@@ -688,6 +688,25 @@ interface Array<Type> {
 Modern JavaScript also provides other data structures which are generic, like `Map<K, V>`, `Set<T>`, and `Promise<T>`.
 All this really means is that because of how `Map`, `Set`, and `Promise` behave, they can work with any sets of types.
 
+### The `ArrayLike` Type
+
+Just like the array type the ArrayLike type is a data container, with an explicitly described length property and number keyed properties.
+Even though the structure resembles that of an array, it is not to be confused with an array containing additional methods.
+
+```ts twoslash
+interface ArrayLike<Type> {
+  /**
+   * Gets the length property of the array like object.
+   */
+  readonly length: number;
+  
+  /**
+   * Readonly properties with numbered keys.
+   */
+  readonly [n: number]: Type;
+}
+```
+
 ### The `ReadonlyArray` Type
 
 The `ReadonlyArray` is a special type that describes arrays that shouldn't be changed.
