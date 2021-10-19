@@ -14,13 +14,18 @@ Playground Handbook intro
 - Running Code
 - Examples
 - Type Acquisition
+- TypeScript Versions
+- Query Params
 - Plugins
 - Writing JavaScript
 - Writing DTS Files
 - Exporting your code
+
+Extended Edition
+
+- Implementation Details
 - Twoslash Annotations
-- Query Params
-- TypeScript Versions
+- Bug Workbench
 - Gist Docsets
 - Multi-File Playgrounds
 - Writing Plugins
