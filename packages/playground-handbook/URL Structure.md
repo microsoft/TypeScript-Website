@@ -1,6 +1,6 @@
 ## URL Structures
 
-Because the Playground runs in an entirely virtual environment, we strive to represent all possible environmental setting inside the URL. This include the code, compiler flags and settings.
+Because the Playground runs in an entirely virtual environment, we strive to represent all possible environmental setting inside the URL so that you can easily share your Playground. This include the code, compiler flags and settings.
 
 The Playground supports two forms of inputs from the URL: The Hash and queries.
 
@@ -34,3 +34,7 @@ Then the query string tend to be about changing the state of the Playground setu
 - `?install-plugin=npm-module` - Checks to see if there is an installed playground plugin of that name, and if not offers to install it in a modal via npm`.
 
 The playground will try to retain any non-compiler option setting during URL updates, this is to ensure that Playground plugins can read/write their own parameters which the Playground avoids interfering with.
+
+#### URL Length Limits
+
+It's possible to hit a URL length limit with a long enough code sample, in those cases we'd recommend looking into the [Playground plugins](..?) section which we're about to go to next.
