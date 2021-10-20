@@ -301,6 +301,10 @@ $headline-foreground-bg: white;
   .headline-diagram {
     display: relative;
 
+    @media screen and (-ms-high-contrast: active) {
+      border: 2px solid white;
+    }
+
     pre .code-container {
       overflow: hidden;
       a {
@@ -519,6 +523,16 @@ $headline-foreground-bg: white;
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
+
+    svg path {
+      fill: black;
+    }
+
+    @media screen and (-ms-high-contrast: black-on-white) {
+      svg path {
+        fill: black;
+      }
+    }
 
     @media screen and (-ms-high-contrast: black-on-white) {
       svg path {

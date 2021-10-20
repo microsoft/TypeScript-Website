@@ -128,6 +128,12 @@ form.search {
 
   &:focus-within {
     background-color: $ts-main-blue-lighter-color;
+    @media screen and (-ms-high-contrast: black-on-white) {
+      border: 2px solid white;
+    }
+    @media screen and (-ms-high-contrast: white-on-black) {
+      border: 2px solid black;
+    }
   }
 
   input {

@@ -84,7 +84,7 @@ export const EditorExamples = () => {
               fill="#F1F1F1"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path d="M0 14.5V0.5L10.5 7L0 14.5Z" fill="black" />
+              <path d="M0 14.5V0.5L10.5 7L0 14.5Z"  />
             </svg>
       </a>
       </div>
