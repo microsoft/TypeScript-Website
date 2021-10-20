@@ -38,10 +38,10 @@ export const getDTSFileForModuleWithVersion = async (
   version: string,
   file: string
 ) => {
-  // file has a prefix / in falr mode
+  // file comes with a prefix / 
   const url = `https://cdn.jsdelivr.net/npm/${moduleName}@${version}${file}`
   const f = config.fetcher || fetch
-  const res = await f(url, { headers: { "User-Agent": `Type Acquisition ${config.projectName}` } })
+  const res = await f(url)
   if (res.ok) {
     return res.text()
   } else {
@@ -51,25 +51,6 @@ export const getDTSFileForModuleWithVersion = async (
 
 function api<T>(config: ATABootstrapConfig, url: string): Promise<T | Error> {
   const f = config.fetcher || fetch
-
-  // This breaks Safari/Firefox
-
-  // const isWebWorker =
-  //   typeof self !== 'undefined' &&
-  //   // @ts-ignore
-  //   typeof self.WorkerGlobalScope !== 'undefined'
-
-  // const isBrowser =
-  //   isWebWorker || (
-  //     typeof window !== 'undefined' &&
-  //     typeof window.document !== 'undefined' &&
-  //     typeof fetch !== 'undefined'
-  //   )
-
-  // // Don't pass in custom headers when the user-agent is a browser, this is
-  // // so we keep the request classed as a COR "simple"
-  // const headers: any = isBrowser ? {} : { "User-Agent": `Type Acquisition ${config.projectName}` }
-
 
   return f(url).then(res => {
     if (res.ok) {
