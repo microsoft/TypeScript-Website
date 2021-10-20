@@ -6,7 +6,7 @@ There are three main categories of plugins as of 2021:
 
 #### Playground Extensions
 
-Plugins like [Presentation Mode]() and [Codeblock Examples]() make it easy to use the Playground as a live-coding environment for presenting to others. Prettier and Link Shortener help you use other tools when working, and the Vim plugin adds Vim keybindings to the playground!
+Plugins like [Presentation Mode]() and [Codeblock Examples]() make it easy to use the Playground as a live-coding environment for presenting to others. [Prettier]() and [Link Shortener]() help you use other tools when working, and the [Vim]() plugin adds Vim keybindings to the playground!
 
 #### Introspection Tools
 
@@ -17,4 +17,6 @@ Plugins like [Transformer Timeline](), [Code Show Flow](), [TS Scanner](), [Live
 Plugins like [TypeScript JSON Schema](), [Dts Plugin]() and [@structuredtypes/plugin]() take the code you write in the editor and transform it into another format.
 TypeScript DTS.
 
-Anyone can create a plugin, if you're interested you can learn more in [Writing Plugins]().
+This isn't all of them, you can go and see the full list in the "Plugins" tab of the sidebar. Anyone can create a plugin, you just need to be familiar with TypeScript and working in a web browser. if you're interested you can learn more in [Writing Plugins]().
+
+Otherwise, we'll be looking at how to [export code]() from the Playground.
