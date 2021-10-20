@@ -11,7 +11,7 @@ const ata = setupTypeAcquisition({
   typescript: ts,
   logger: console,
   delegate: {
-    receivedFile: (path: string, code: string) => {
+    receivedFile: (code: string, path: string) => {
       // Add code to your runtime at the path...
     },
     started: () => {
