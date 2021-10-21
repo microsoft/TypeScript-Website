@@ -222,7 +222,7 @@ export const defaultsForOptions = {
   newLine: "Platform specific.",
   noImplicitAny: trueIf("strict"),
   noImplicitThis: trueIf("strict"),
-  preserveConstEnums: "false",
+  preserveConstEnums: trueIf("isolatedModules"),
   reactNamespace: "React",
   rootDir: "Computed from the list of input files.",
   rootDirs: "Computed from the list of input files.",

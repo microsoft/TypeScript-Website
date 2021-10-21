@@ -1,6 +1,6 @@
 ---
 display: "preserveValueImports"
-oneline: "Preserve unused imported values in the JavaScript output that would otherwise be removed"
+oneline: "Preserve unused imported values in the JavaScript output that would otherwise be removed."
 ---
 
 There are some cases where TypeScript can't detect that you're using an import. For example, take the following code:

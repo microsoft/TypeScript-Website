@@ -1,6 +1,6 @@
 ---
 display: "enable"
-oneline: "Disable the type acquisition for JavaScript projects"
+oneline: "Disable the type acquisition for JavaScript projects."
 ---
 
 Offers a config for disabling type-acquisition in JavaScript projects:
