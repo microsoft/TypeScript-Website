@@ -12,6 +12,6 @@ You can send the current playground code to another Playground-like system, for 
 
 ### Exporting For More Features
 
-Because the Playground has a strong focus, that comes with limitations. There are very good general purpose systems for running a node project in a browser like [CodeSandbox](https://codesandbox.io) and [StackBlitz](https://stackblitz.com/) - the Playground will generate a very close approximation of the current environment with a `package.json`, `tsconfig.json` and corresponding `index.{ts, tsx, js, jsx, .d.ts}`. This gives you the chance to carry on working when you hit a wall with the features in the Playground
+Because the Playground has a strong focus, that comes with limitations. There are very good general purpose systems for running a node project in a browser like [CodeSandbox](https://codesandbox.io) and [StackBlitz](https://stackblitz.com/) - the Playground will generate a very close approximation of the current environment with a `package.json`, `tsconfig.json` and corresponding `index.{ts, tsx, js, jsx, .d.ts}`. This gives you the chance to carry on working when you hit a wall with the features in the Playground.
 
 There's also a "Tweet this Playground" because why not?
