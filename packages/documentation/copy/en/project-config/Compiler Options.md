@@ -212,7 +212,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 <tr class='odd' name='fallbackPolling'>
   <td><code><a href='/tsconfig/#fallbackPolling'>--fallbackPolling</a></code></td>
-  <td><p><code>fixedPollingInterval</code>, <code>priorityPollingInterval</code>, or <code>dynamicPriorityPolling</code></p>
+  <td><p><code>fixedinterval</code>, <code>priorityinterval</code>, <code>dynamicpriority</code>, or <code>fixedchunksize</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -239,7 +239,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 <tr class='even' name='watchDirectory'>
   <td><code><a href='/tsconfig/#watchDirectory'>--watchDirectory</a></code></td>
-  <td><p><code>fixedPollingInterval</code>, <code>dynamicPriorityPolling</code>, or <code>useFsEvents</code></p>
+  <td><p><code>usefsevents</code>, <code>fixedpollinginterval</code>, <code>dynamicprioritypolling</code>, or <code>fixedchunksizepolling</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -248,7 +248,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 <tr class='odd' name='watchFile'>
   <td><code><a href='/tsconfig/#watchFile'>--watchFile</a></code></td>
-  <td><p><code>fixedPollingInterval</code>, <code>priorityPollingInterval</code>, <code>dynamicPriorityPolling</code>, <code>useFsEvents</code>, or <code>useFsEventsOnParentDirectory</code></p>
+  <td><p><code>fixedpollinginterval</code>, <code>prioritypollinginterval</code>, <code>dynamicprioritypolling</code>, <code>fixedchunksizepolling</code>, <code>usefsevents</code>, or <code>usefseventsonparentdirectory</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -282,7 +282,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#allowSyntheticDefaultImports'>--allowSyntheticDefaultImports</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul><li><p><code>true</code> if <a href="#module"><code>module</code></a> is <code>system</code> or <a href="#esModuleInterop"><code>esModuleInterop</code></a> and <a href="#module"><code>module</code></a> is not <code>es6</code>/<code>es2015</code> or <code>esnext</code>,</p>
+  <td><ul><li><p><code>true</code> if <a href="#module"><code>module</code></a> is <code>system</code>, or <a href="#esModuleInterop"><code>esModuleInterop</code></a> and <a href="#module"><code>module</code></a> is not <code>es6</code>/<code>es2015</code> or <code>esnext</code>,</p>
 </li><li><p><code>false</code> otherwise.</p>
 </li></ul></td>
 </tr>
@@ -339,7 +339,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#assumeChangesOnlyAffectDirectDependencies'>--assumeChangesOnlyAffectDirectDependencies</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -439,7 +439,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#disableReferencedProjectLoad'>--disableReferencedProjectLoad</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -461,7 +461,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#disableSolutionSearching'>--disableSolutionSearching</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -472,7 +472,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#disableSourceOfProjectReferenceRedirect'>--disableSourceOfProjectReferenceRedirect</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -516,7 +516,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#emitDecoratorMetadata'>--emitDecoratorMetadata</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -538,7 +538,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#exactOptionalPropertyTypes'>--exactOptionalPropertyTypes</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -549,7 +549,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#experimentalDecorators'>--experimentalDecorators</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -560,7 +560,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#explainFiles'>--explainFiles</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -884,7 +884,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#noImplicitOverride'>--noImplicitOverride</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -973,7 +973,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#noUncheckedIndexedAccess'>--noUncheckedIndexedAccess</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -1083,7 +1083,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#preserveValueImports'>--preserveValueImports</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -1160,7 +1160,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#rootDirs'>--rootDirs</a></code></td>
   <td><p><code>list</code></p>
 </td>
-  <td>
+  <td><p>Computed from the list of input files.</p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -1274,7 +1274,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#stripInternal'>--stripInternal</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
