@@ -1,4 +1,4 @@
-### Compiler Settings
+## Compiler Settings
 
 There isn't a `tsconfig.json` file in a Playground, but you need to be able to set the compiler flags in order to accurate re-create a particular environment. Even for one of the the simplest amount of code, the difference in how TypeScript acts between `strict: true` and `strict: false` is pretty drastic and not being able to set that to match would suck.
 
@@ -22,7 +22,7 @@ This helps keep Playground URLs on the short side, or at least doesn't add to th
 <details>
 <summary>The defaults for the compiler in a Playground</summary>
 
-_In rough_, the Playground by default has settings which can be summed up as this:
+_In rough_, the Playground has settings which can be summed up as this:
 
 ```json
 {

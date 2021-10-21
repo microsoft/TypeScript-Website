@@ -4,7 +4,7 @@ Because the Playground runs in an entirely virtual environment, we strive to rep
 
 The Playground supports two forms of inputs from the URL: The Hash and queries.
 
-#### The Hash
+### The Hash
 
 The hash generally represents the state of the editor:
 
@@ -18,7 +18,7 @@ Or to trigger some action in the Playground UI by default:
 - `#show-examples` - When the app is loaded, show the "Examples" panel
 - `#show-whatisnew` - When the app is loaded, show the "What is New" panel
 
-#### The Query
+### The Query
 
 Then the query string tend to be about changing the state of the Playground setup from the default:
 
@@ -35,6 +35,7 @@ Then the query string tend to be about changing the state of the Playground setu
 
 The playground will try to retain any non-compiler option setting during URL updates, this is to ensure that Playground plugins can read/write their own parameters which the Playground avoids interfering with.
 
-#### URL Length Limits
+### URL Length Limits
 
-It's possible to hit a URL length limit with a long enough code sample, in those cases we'd recommend looking into the [Playground plugins](..?) section which we're about to go to next.
+It's possible to hit a URL length limit with a long enough code sample you could use a [Gist Playgrounds](..?) or we'd recommend looking into the [Playground plugins](..?) section to find a URL shortener, which we're about to go to next.
+'s a special

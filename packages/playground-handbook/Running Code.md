@@ -9,10 +9,10 @@ In the editor toolbar, the one which is not visible because you're reading this 
 - Take the code in the editor and convert it to JS
 - Remove references to `"reflect-metadata"` if you are using decorators
 - Run that code within the context of your current browser session
-- Capture any `console.log`, `.error`, `.warn` and `.debug` calls and show them in a sidebar.
+- Capture any `console.log`, `.error`, `.warn` and `.debug` calls and show them in the sidebar "Logs" tab.
 
-You can also use the key command <kbd>ctrl/<kbd>/<kbd>cmd</kbd>` + <kbd>enter</kbd> to trigger running your code.
+You can also use the key command <kbd>ctrl/</kbd>/<kbd>cmd</kbd> + <kbd>enter</kbd> to trigger running your code.
 
-Code running in your browser means that you can experiment with the DOM APIs inside a TypeScript environment. The Playground includes examples for working with [the DOM](https://www.typescriptlang.org/play?useJavaScript=trueq=185#example/typescript-with-web) and with [WebGL](https://www.typescriptlang.org/play/?useJavaScript=trueq=461#example/typescript-with-webgl) which are good showcases of how that can work.
+Your code running in your browser means that you can experiment with the DOM APIs inside a TypeScript environment. The Playground includes examples for working with [the DOM](https://www.typescriptlang.org/play?useJavaScript=trueq=185#example/typescript-with-web) and with [WebGL](https://www.typescriptlang.org/play/?useJavaScript=trueq=461#example/typescript-with-webgl) which are good showcases of how that can work.
 
-Convenient, that's kind of the perfect segue to the [examples section of the handbook]()
+Convenient, that's kind of the perfect segue to the [Examples section of the handbook]()
