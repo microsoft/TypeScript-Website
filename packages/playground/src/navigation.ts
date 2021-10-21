@@ -97,7 +97,7 @@ export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void)
 
       const response = await res.json()
       if ("error" in response) {
-        return ui.flashInfo(`Error with getting your gist: ${response.display}.`)
+        return ui.flashInfo(`Error with getting your gist: ${response.display}.`, 3000)
       }
 
       if (response.type === "code") {
