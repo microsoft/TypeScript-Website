@@ -1,6 +1,6 @@
 ## Writing JavaScript
 
-"Write JavaScript in the _TypeScript_ Playground, madness!" - maybe, but there's a few of majors cases for why you would want to do this:
+"Write JavaScript in the _TypeScript_ Playground, madness!" - maybe, but there's a few major cases for why you would want to do this:
 
 1. **Learning typed-JavaScript** - JSDoc-flavoured JavaScript is TypeScript-lite without the tooling overhead and with weirder syntax. JSDoc-flavoured JavaScript is both a legitimate stepping stone to migrating to TypeScript and a perfectly good stopping point for getting richer tools without additional complexity.
 

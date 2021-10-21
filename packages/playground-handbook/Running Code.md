@@ -1,6 +1,6 @@
 ## Running Code
 
-The TypeScript playground has an obvious focus on TypeScript - I mean it's in the name (right?), and types in TypeScript are ephemeral (they don't have an affect the running code) so earlier versions of the Playground did not have support for running the code in your browser.
+The TypeScript playground has an obvious focus on TypeScript - I mean it's in the name (right?), and types in TypeScript are ephemeral (they don't affect the running code) so earlier versions of the Playground did not have support for running the code in your browser.
 
 This turned out to be an oversight, because there are cases where the TypeScript types cannot perfectly map the JavaScript runtime and `eval`ing that code can sometimes be a great way to understand whether the types you have written match the runtime results of your code.
 
