@@ -379,6 +379,37 @@ main #editor-toolbar {
       border-radius: 3px;
     }
 
+    details[open] {
+      padding-left: 1rem;
+      border-left: 2px solid var(--blue-tinged-strong);
+
+      summary {
+        margin-left: -0.5rem;
+      }
+    }
+
+    summary {
+      &:hover {
+        cursor: pointer;
+        background-color: var(--background-minor-highlight-color);
+      }
+    }
+
+    kbd {
+      background-color: #f7f7f7;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;
+      color: #333;
+      display: inline-block;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 11px;
+      line-height: 1.4;
+      margin: 0 0.1em;
+      padding: 0.1em 0.6em;
+      text-shadow: 0 1px 0 #fff;
+    }
+
     .highlight {
       font-size: 14px;
       margin-bottom: 16px;

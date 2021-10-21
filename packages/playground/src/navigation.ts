@@ -10,6 +10,9 @@ export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void)
   const gistHash = location.hash.split("#gist/")[1]
   const [gistID, gistStoryIndex] = gistHash.split("-")
 
+  // @ts-ignore
+  window.appInsights && window.appInsights.trackEvent({ name: "Loaded Gist Playground", properties: { id: gistID } })
+
   sandbox.editor.updateOptions({ readOnly: true })
   ui.flashInfo(`Opening Gist ${gistID} as a Docset`, 2000)
 
@@ -100,9 +103,12 @@ export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void)
         return ui.flashInfo(`Error with getting your gist: ${response.display}.`, 3000)
       }
 
+      // If the API response is a single code file, just throw that in
       if (response.type === "code") {
         sandbox.setText(response.code)
         sandbox.setCompilerSettings(response.params)
+
+        // If it's multi-file, then there's work to do
       } else if (response.type === "story") {
         showNav()
 
@@ -113,6 +119,7 @@ export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void)
         title.textContent = response.title
         nav.appendChild(title)
 
+        // Make all the sidebar elements
         const ul = document.createElement("ul")
         response.files.forEach((element: StoryContent, i: number) => {
           const li = document.createElement("li")
