@@ -15,9 +15,9 @@ writeFileSync(join(__dirname, "types.d.ts"), types)
 const contents = [
   "Overview.md",
   "Compiler Settings.md",
+  "Examples.md",
   "JS + DTS sidebars.md",
   "Running Code.md",
-  "Examples.md",
   "Type Acquisition.md",
   "Writing JavaScript.md",
   "Writing DTS Files.md",

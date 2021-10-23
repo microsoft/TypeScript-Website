@@ -1,6 +1,6 @@
 ## URL Structures
 
-Because the Playground runs in an entirely virtual environment, we strive to represent all possible environmental setting inside the URL so that you can easily share your Playground. This include the code, compiler flags and settings.
+Because the Playground runs in the browser, we strive to represent all possible environmental setting inside the URL so that you can easily share your Playground. This include the code, compiler flags and settings.
 
 The Playground supports two forms of inputs from the URL: The Hash and queries.
 
@@ -8,8 +8,8 @@ The Playground supports two forms of inputs from the URL: The Hash and queries.
 
 The hash generally represents the state of the editor:
 
-- `#code/PRA` - A base64 and zipped version of the code which should live in the editor
-- `#src/The%20code` - URLEncoded way to have the code for the editor (used for backwards-compatibility with older URLs)
+- `#code/PRAz3dDc3...` - A base64 and zipped version of the code which should live in the editor
+- `#src/The%20code...` - URLEncoded way to have the code for the editor (used for backwards-compatibility with older URLs)
 - `#example/generic-functions` - Grab the code from a Playground example with the id generic-functions
 - `#gist/92cf0a3...` - The ID of a public GitHub gist, the playground will either render a docset of markdown and TS/JS files or grab the contents of just one file and show it. Given the support for multi-file pages, you can append `-[n]` to access the nth file (taking into account 0 indexing) - so `/play/#gist/303ebff59a6fc37f88c86e86dbdeb0e8-3` will open the 4th page by default.
 
@@ -38,4 +38,3 @@ The playground will try to retain any non-compiler option setting during URL upd
 ### URL Length Limits
 
 It's possible to hit a URL length limit with a long enough code sample you could use a [Gist Playgrounds](..?) or we'd recommend looking into the [Playground plugins](..?) section to find a URL shortener, which we're about to go to next.
-'s a special
