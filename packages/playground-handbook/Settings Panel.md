@@ -6,6 +6,12 @@ Hidden in the top right corner, under "Search Docs" is the "Settings" button whe
 
 **"Disable ATA"**
 
+Turns off [Type Aquisition](...?) which means that when importing code, the Playground will not try to acquire the types via the internet.
+
 **"Disable Save-On-Type"**
 
+When the editor loses focus, or compiler flags change, the Playground will replace the URL in your browser. This doesn't change the behavior of the back button, but it does add history entries in the browser. You can turn off this behavior via this setting, and you can use the 'Share' (or press <kbd>cmd/ctrl</kbd> + <kbd>s</kbd>) to copy the sharable URL.
+
 ### View Options
+
+You can choose which tabs are available in the Playground sidebar via the view options.

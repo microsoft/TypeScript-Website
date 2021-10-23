@@ -1,5 +1,9 @@
 // @ts-check
-import { writeFileSync, readdirSync, existsSync, readFileSync, copyFileSync } from "fs"
+/*
+  node packages/playground-handbook/scripts/generate.mjs
+*/
+
+import { writeFileSync, readdirSync, existsSync, mkdirSync, copyFileSync } from "fs"
 
 import { dirname, join } from "path"
 import { fileURLToPath } from "url"
@@ -19,6 +23,7 @@ const contents = [
   "JS + DTS sidebars.md",
   "Running Code.md",
   "Type Acquisition.md",
+  "Settings Panel.md",
   "Writing JavaScript.md",
   "Writing DTS Files.md",
   "TypeScript Versions.md",
@@ -30,17 +35,20 @@ const contents = [
 /** @type {import("./types").PHandbookPage[]} */
 const extended = [
   "Extended Edition.md",
-  "Gist Docsets.md",
+  "Twoslash Annotations.md",
   "Multi-File Playgrounds.md",
+  "Gist Docsets.md",
+  "Bug Workbench.md",
   "Writing Plugins.md",
   "Implementation Details.md",
-  "Twoslash Annotations.md",
-  "Bug Workbench.md",
 ]
+
+const outputDir = join(__dirname, "../output")
+if (!existsSync(outputDir)) mkdirSync(outputDir)
 
 const orderedFiles = [...contents, ...extended]
 orderedFiles.forEach((path, i) => {
   let num = i < 10 ? `0${i}` : i
   if (i >= contents.length) num++
-  copyFileSync(join(__dirname, "..", path), join(__dirname, "../output", `${num} ~ ${path}`))
+  copyFileSync(join(__dirname, "..", path), join(outputDir, `${num} ~ ${path}`))
 })
