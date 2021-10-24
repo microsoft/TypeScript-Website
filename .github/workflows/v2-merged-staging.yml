@@ -11,10 +11,10 @@ jobs:
 
     steps:
       # Check out, and set up the node/ruby infra
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          node-version: "13.x"
+          node-version: "14"
           registry-url: "https://registry.npmjs.org/"
 
       # For Azure uploads
@@ -23,7 +23,7 @@ jobs:
 
       - name: Prepare website v2
         run: |
-          yarn install
+          yarn
           yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
           yarn bootstrap
           yarn workspace typescriptlang-org setup-playground-cache-bust

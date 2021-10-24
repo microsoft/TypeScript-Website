@@ -7,10 +7,10 @@ jobs:
 
     steps:
       # Check out, and set up the node/ruby infra
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          node-version: "13.x"
+          node-version: "14"
 
       - uses: actions/cache@v2
         id: yarn-cache
@@ -26,7 +26,7 @@ jobs:
       - uses: microsoft/playwright-github-action@v1
 
       # Install, should be basically instant if cached
-      - run: yarn install
+      - run: yarn
         env:
           YARN_CHECKSUM_BEHAVIOR: ignore
 
@@ -64,13 +64,13 @@ jobs:
 
     steps:
       # Check out, and set up the node infra
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          node-version: "13.x"
+          node-version: "14"
 
       # Get local dependencies
-      - run: yarn install
+      - run: yarn
         env:
           YARN_CHECKSUM_BEHAVIOR: ignore
 
