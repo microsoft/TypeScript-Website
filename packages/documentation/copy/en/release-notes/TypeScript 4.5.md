@@ -29,13 +29,13 @@ These new modes bring a few high-level features which we'll explore here.
 Node.js supports [a new setting in `package.json`](https://nodejs.org/api/packages.html#packages_package_json_and_file_extensions) called `type`.
 `"type"` can be set to either `"module"` or `"commonjs"`.
 
-```json5
+```json
 {
-  name: "my-package",
-  type: "module",
+  "name": "my-package",
+  "type": "module",
 
   "//": "...",
-  dependencies: {},
+  "dependencies": {},
 }
 ```
 
@@ -173,25 +173,25 @@ You can [read more about ESM/CommonJS interop in Node.js here](https://nodejs.or
 Node.js supports [a new field for defining entry points in `package.json` called `"exports"`](https://nodejs.org/api/packages.html#packages_exports).
 This field is a more powerful alternative to defining `"main"` in `package.json`, and can control what parts of your package are exposed to consumers.
 
-Here's an `package.json` that supports separate entry-points for CommonJS and ESM:
+Here's a `package.json` that supports separate entry-points for CommonJS and ESM:
 
 ```json5
 // package.json
 {
-  name: "my-package",
-  type: "module",
-  exports: {
+  "name": "my-package",
+  "type": "module",
+  "exports": {
     ".": {
       // Entry-point for `import "my-package"` in ESM
-      import: "./esm/index.js",
+      "import": "./esm/index.js",
 
       // Entry-point for `require("my-package") in CJS
-      require: "./commonjs/index.cjs",
-    },
+      "require": "./commonjs/index.cjs"
+    }
   },
 
   // CJS fall-back for older versions of Node.js
-  main: "./commonjs/index.cjs",
+  "main": "./commonjs/index.cjs"
 }
 ```
 
@@ -210,26 +210,26 @@ If you need to point to a different location for your type declarations, you can
 ```json5
 // package.json
 {
-  name: "my-package",
-  type: "module",
-  exports: {
+  "name": "my-package",
+  "type": "module",
+  "exports": {
     ".": {
       // Entry-point for `import "my-package"` in ESM
-      import: "./esm/index.js",
+      "import": "./esm/index.js",
 
       // Entry-point for `require("my-package") in CJS
-      require: "./commonjs/index.cjs",
+      "require": "./commonjs/index.cjs",
 
       // Entry-point for TypeScript resolution
-      types: "./types/index.d.ts",
-    },
+      "types": "./types/index.d.ts"
+    }
   },
 
   // CJS fall-back for older versions of Node.js
-  main: "./commonjs/index.cjs",
+  "main": "./commonjs/index.cjs",
 
   // Fall-back for older versions of TypeScript
-  types: "./types/index.d.ts",
+  "types": "./types/index.d.ts"
 }
 ```
 
