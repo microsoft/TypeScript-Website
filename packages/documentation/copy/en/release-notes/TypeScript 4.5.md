@@ -185,7 +185,7 @@ Here's a `package.json` that supports separate entry-points for CommonJS and ESM
       // Entry-point for `import "my-package"` in ESM
       "import": "./esm/index.js",
 
-      // Entry-point for `require("my-package") in CJS
+      // Entry-point for `require("my-package")` in CJS
       "require": "./commonjs/index.cjs"
     }
   },
@@ -217,7 +217,7 @@ If you need to point to a different location for your type declarations, you can
       // Entry-point for `import "my-package"` in ESM
       "import": "./esm/index.js",
 
-      // Entry-point for `require("my-package") in CJS
+      // Entry-point for `require("my-package")` in CJS
       "require": "./commonjs/index.cjs",
 
       // Entry-point for TypeScript resolution
