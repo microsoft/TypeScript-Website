@@ -23,11 +23,15 @@ export const createTwoslashInlayProvider = (sandbox: Sandbox) => {
         const hint = await worker.getQuickInfoAtPosition("file://" + model.uri.path, inspectionOff)
         if (!hint || !hint.displayParts) continue
 
+        // Make a one-liner
+        let text = hint.displayParts.map(d => d.text).join("").replace(/\\n/g, "").replace(/  /g, "")
+        if (text.length > 120) text = text.slice(0, 119) + "..."
+
         const inlay: import("monaco-editor").languages.InlayHint = {
           // @ts-ignore
           kind: 0,
           position: new sandbox.monaco.Position(endPos.lineNumber, endPos.column + 1),
-          text: hint.displayParts.map(d => d.text).join(""),
+          text,
           whitespaceBefore: true,
         }
         results.push(inlay)
