@@ -108,7 +108,7 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
         }
 
         // This is TypeScript asking 'whats the content of this file' - we want
-        // to override the underlaying TS vfs model with our twoslash multi-file 
+        // to override the underlying TS vfs model with our twoslash multi-file 
         // files when possible, otherwise pass it back to super
         override _getScriptText(fileName: string): string | undefined {
             const twoslashed = this.twoslashFiles.find(f => fileName === f.file)
@@ -168,8 +168,8 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
 
         override async getCompletionsAtPosition(fileName: string, position: number) {
             const empty = Promise.resolve({ isGlobalCompletion: false, isMemberCompletion: false, isNewIdentifierLocation: false, entries: [] })
-            const complet = await this._overrideFileNamePos(super.getCompletionsAtPosition.bind(this), fileName, position, undefined, empty, (result) => result)
-            return complet
+            const completions = await this._overrideFileNamePos(super.getCompletionsAtPosition.bind(this), fileName, position, undefined, empty, (result) => result)
+            return completions
         }
 
         override async getCompletionEntryDetails(fileName: string, position: number, entry: string) {

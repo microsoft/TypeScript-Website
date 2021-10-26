@@ -48,9 +48,9 @@ export type SandboxConfig = {
     groupEnd: (...args: any[]) => void
   }
 } & (
-    | { /** the ID of a dom node to add monaco to */ domID: string }
-    | { /** the dom node to add monaco to */ elementToAppend: HTMLElement }
-  )
+  | { /** the ID of a dom node to add monaco to */ domID: string }
+  | { /** the dom node to add monaco to */ elementToAppend: HTMLElement }
+)
 
 const languageType = (config: SandboxConfig) => (config.filetype === "js" ? "javascript" : "typescript")
 
@@ -77,6 +77,9 @@ const sharedEditorOptions: import("monaco-editor").editor.IEditorOptions = {
   acceptSuggestionOnCommitCharacter: !isAndroid,
   acceptSuggestionOnEnter: !isAndroid ? "on" : "off",
   accessibilitySupport: !isAndroid ? "on" : "off",
+  inlayHints: {
+    enabled: true,
+  },
 }
 
 /** The default settings which we apply a partial over */
@@ -244,7 +247,7 @@ export const createTypeScriptSandbox = (
   defaults.setCompilerOptions(compilerOptions)
 
   // To let clients plug into compiler settings changes
-  let didUpdateCompilerSettings = (opts: CompilerOptions) => { }
+  let didUpdateCompilerSettings = (opts: CompilerOptions) => {}
 
   const updateCompilerSettings = (opts: CompilerOptions) => {
     const newKeys = Object.keys(opts)
