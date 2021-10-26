@@ -98,6 +98,7 @@ This lets your `tsconfig.json` focus on the unique choices for your project, and
 - [Node 10](https://www.npmjs.com/package/@tsconfig/node10)
 - [Node 12](https://www.npmjs.com/package/@tsconfig/node12)
 - [Node 14](https://www.npmjs.com/package/@tsconfig/node14)
+- [Node 16](https://www.npmjs.com/package/@tsconfig/node16)
 - [Deno](https://www.npmjs.com/package/@tsconfig/deno)
 - [React Native](https://www.npmjs.com/package/@tsconfig/react-native)
 - [Svelte](https://www.npmjs.com/package/@tsconfig/svelte)
