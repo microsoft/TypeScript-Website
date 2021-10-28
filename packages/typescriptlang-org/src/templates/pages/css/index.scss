@@ -536,13 +536,7 @@ $headline-foreground-bg: white;
       fill: black;
     }
 
-    @media screen and (-ms-high-contrast: black-on-white) {
-      svg path {
-        fill: yellow;
-      }
-    }
-
-    @media screen and (-ms-high-contrast: white-on-black) {
+    @media screen and (-ms-high-contrast: active) {
       svg path {
         fill: yellow;
       }
