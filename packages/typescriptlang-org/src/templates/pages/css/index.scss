@@ -542,7 +542,7 @@ $headline-foreground-bg: white;
       }
     }
 
-    @media screen and (-ms-high-contrast: black-on-white) {
+    @media screen and (-ms-high-contrast: white-on-black) {
       svg path {
         fill: white;
       }
