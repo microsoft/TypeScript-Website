@@ -538,13 +538,13 @@ $headline-foreground-bg: white;
 
     @media screen and (-ms-high-contrast: black-on-white) {
       svg path {
-        fill: black;
+        fill: yellow;
       }
     }
 
     @media screen and (-ms-high-contrast: white-on-black) {
       svg path {
-        fill: white;
+        fill: yellow;
       }
     }
   }
