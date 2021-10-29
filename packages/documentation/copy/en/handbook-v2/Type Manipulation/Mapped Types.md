@@ -127,6 +127,20 @@ type KindlessCircle = RemoveKindField<Circle>;
 //   ^?
 ```
 
+You can map over arbitrary unions, not just unions of `string | number | symbol`, but unions of any type:
+
+```ts twoslash
+type EventConfig<Events extends { kind: string }> = {
+    [E in Events as E["kind"]]: (event: E) => void;
+}
+
+type SquareEvent = { kind: "square", x: number, y: number };
+type CircleEvent = { kind: "circle", radius: number };
+
+type Config = EventConfig<SquareEvent | CircleEvent>
+//   ^?
+```
+
 ### Further Exploration
 
 Mapped types work well with other features in this type manipulation section, for example here is [a mapped type using a conditional type](/docs/handbook/2/conditional-types.html) which returns either a `true` or `false` depending on whether an object has the property `pii` set to the literal `true`:
