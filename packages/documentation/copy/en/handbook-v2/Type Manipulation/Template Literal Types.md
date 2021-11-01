@@ -126,7 +126,7 @@ person.on("frstNameChanged", () => {});
 
 ### Inference with Template Literals
 
-Note how the last examples did not re-use the type of the original value. The callback used an `any`. Template literal types can infer from substitution positions.
+Notice that we did not benefit from all the information provided in the original passed object. Given change of a `firstName` (i.e. a `firstNameChanged` event),  we should expect that the callback will receive an argument of type `string`. Similarly, the callback for a change to `age` should receive a `number` argument. We're naively using `any` to type the `callBack`'s argument. Again, template literal types make it possible to ensure an attribute's data type will be the same type as that attribute's callback's first argument.
 
 We can make our last example generic to infer from parts of the `eventName` string to figure out the associated property.
 
