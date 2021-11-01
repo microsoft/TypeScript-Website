@@ -80,6 +80,8 @@ const person = makeWatchedObject({
   age: 26,
 });
 
+// makeWatchedObject has added `on` to the anonymous Object
+
 person.on("firstNameChanged", (newValue) => {
   console.log(`firstName was changed to ${newValue}!`);
 });
