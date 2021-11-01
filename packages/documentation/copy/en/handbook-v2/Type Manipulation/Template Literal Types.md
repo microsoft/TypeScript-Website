@@ -44,7 +44,7 @@ We generally recommend that people use ahead-of-time generation for large string
 
 ### String Unions in Types
 
-The power in template literals comes when defining a new string based off an existing string inside a type.
+The power in template literals comes when defining a new string based on information inside a type.
 
 For example, a common pattern in JavaScript is to extend an object based on the fields that it currently has. We'll provide a type definition for a function which adds support for an `on` function which lets you know when a value has changed:
 
