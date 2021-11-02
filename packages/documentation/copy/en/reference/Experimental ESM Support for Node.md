@@ -1,7 +1,8 @@
 ---
 title: Experimental Support for ECMAScript Modules in Node.js
 layout: docs
-permalink: /docs/handbook/experimental-esm-node.html
+permalink: /docs/handbook/esm-node.html
+experimental: true
 oneline: Using ECMAScript Modules in Node.js
 ---
 
@@ -207,7 +208,7 @@ A package author could override this by specifying a separate field called `"typ
 
 The new support works similarly with [import conditions](https://nodejs.org/api/packages.html).
 By default, TypeScript overlays the same rules with import conditions - if you write an `import` from an ES module, it will look up the `import` field, and from a CommonJS module, it will look at the `require` field.
-If it finds them, it will look for a corresponding declaration file.
+If it finds them, it will look for a colocated declaration file.
 If you need to point to a different location for your type declarations, you can add a `"types"` import condition.
 
 ```json5
@@ -217,14 +218,14 @@ If you need to point to a different location for your type declarations, you can
     "type": "module",
     "exports": {
         ".": {
+            // Entry-point for TypeScript resolution - must occur first!
+            "types": "./types/index.d.ts"
+
             // Entry-point for `import "my-package"` in ESM
             "import": "./esm/index.js",
 
             // Entry-point for `require("my-package") in CJS
             "require": "./commonjs/index.cjs",
-
-            // Entry-point for TypeScript resolution
-            "types": "./types/index.d.ts"
         },
     },
 
