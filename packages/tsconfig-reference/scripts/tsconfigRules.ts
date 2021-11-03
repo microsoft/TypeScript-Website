@@ -272,6 +272,7 @@ export const allowedValues = {
     ])
   ),
   jsxFactory: ["Any identifier or dotted identifier."],
+  lib: undefined,
 };
 
 function formatAllowedValues(type: CommandLineOption["type"]) {
