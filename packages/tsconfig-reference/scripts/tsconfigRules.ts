@@ -3,6 +3,24 @@ import * as remark from "remark";
 import * as remarkHTML from "remark-html";
 import * as ts from "typescript";
 
+interface CommandLineOption {
+  name: string;
+  type:
+    | "string"
+    | "number"
+    | "boolean"
+    | "object"
+    | "list"
+    | Map<string, number | string>;
+  defaultValueDescription?: string | number | boolean | ts.DiagnosticMessage;
+  element: CommandLineOption;
+}
+
+declare module "typescript" {
+  const optionDeclarations: CommandLineOption[];
+  const optionsForWatch: CommandLineOption[];
+}
+
 /**
  * Changes to these rules should be reflected in the following files:
  * https://github.com/SchemaStore/schemastore/blob/master/src/schemas/json/tsconfig.json
@@ -173,26 +191,17 @@ function trueIf(name: string) {
   ];
 }
 
-// Number/boolean options without explicit default are 0/false
-const defaultDefaults = { number: "0", boolean: "false" };
 export const defaultsForOptions = {
   ...Object.fromEntries(
-    ts.optionDeclarations
-      .filter(
-        (option) =>
-          ("defaultValueDescription" in option &&
-            option.defaultValueDescription !== "n/a") ||
-          option.type in defaultDefaults
-      )
-      .map((option) => [
-        option.name,
-        !("defaultValueDescription" in option) ||
-        option.defaultValueDescription === "n/a"
-          ? defaultDefaults[option.type]
-          : typeof option.defaultValueDescription === "string"
-          ? option.defaultValueDescription
-          : option.defaultValueDescription.message,
-      ])
+    ts.optionDeclarations.map((option) => [
+      option.name,
+      typeof option.defaultValueDescription === "object"
+        ? option.defaultValueDescription.message
+        : formatDefaultValue(
+            option.defaultValueDescription,
+            option.type === "list" ? option.element.type : option.type
+          ),
+    ])
   ),
   allowSyntheticDefaultImports: [
     "`true` if [`module`](#module) is `system`, or [`esModuleInterop`](#esModuleInterop) and [`module`](#module) is not `es6`/`es2015` or `esnext`,",
@@ -222,7 +231,7 @@ export const defaultsForOptions = {
   newLine: "Platform specific.",
   noImplicitAny: trueIf("strict"),
   noImplicitThis: trueIf("strict"),
-  preserveConstEnums: "false",
+  preserveConstEnums: trueIf("isolatedModules"),
   reactNamespace: "React",
   rootDir: "Computed from the list of input files.",
   rootDirs: "Computed from the list of input files.",
@@ -238,30 +247,47 @@ export const defaultsForOptions = {
   ],
 };
 
+function formatDefaultValue(
+  defaultValue: CommandLineOption["defaultValueDescription"],
+  type: CommandLineOption["type"]
+) {
+  if (defaultValue === undefined || typeof type !== "object")
+    return defaultValue;
+  // e.g. ScriptTarget.ES2015 -> "es6/es2015"
+  const synonyms = [...type]
+    .filter(([, value]) => value === defaultValue)
+    .map(([name]) => name);
+  return synonyms.length > 1
+    ? synonyms.map((name) => `\`${name}\``).join("/")
+    : synonyms[0];
+}
+
 export const allowedValues = {
   ...Object.fromEntries(
-    [...ts.optionDeclarations, ...ts.optionsForWatch]
-      .filter((option) => typeof option.type === "object")
-      .map((option) => {
-        // Group and format synonyms: `es6`/`es2015`
-        const byValue: { [value: number]: string[] } = {};
-        for (const [name, value] of option.type instanceof Map
-          ? option.type.entries()
-          : Object.entries(option.type)) {
-          (byValue[value] ||= []).push(name);
-        }
-        return [
-          option.name,
-          Object.values(byValue).map((synonyms) =>
-            synonyms.length > 1
-              ? synonyms.map((name) => `\`${name}\``).join("/")
-              : synonyms[0]
-          ),
-        ];
-      })
+    [...ts.optionDeclarations, ...ts.optionsForWatch].map((option) => [
+      option.name,
+      formatAllowedValues(
+        option.type === "list" ? option.element.type : option.type
+      ),
+    ])
   ),
   jsxFactory: ["Any identifier or dotted identifier."],
+  lib: undefined,
 };
+
+function formatAllowedValues(type: CommandLineOption["type"]) {
+  if (typeof type !== "object") return;
+  // Group and format synonyms: `es6`/`es2015`
+  const inverted: { [value: string]: string[] } = {};
+  for (const [name, value] of type) {
+    (inverted[value] ||= []).push(name);
+  }
+  return Object.values(inverted).map((synonyms) =>
+    synonyms.length > 1
+      ? synonyms.map((name) => `\`${name}\``).join("/")
+      : synonyms[0]
+  );
+}
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
   "4.5": ["preserveValueImports"],
