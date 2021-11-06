@@ -52,6 +52,38 @@ let c = new C();
 let className = c[getClassNameSymbol](); // "C"
 ```
 
+## `unique symbol`
+
+To enable treating symbols as unique literals a special type `unique symbol` is available. `unique symbol` is a subtype of `symbol`, and are produced only from calling `Symbol()` or `Symbol.for()`, or from explicit type annotations. This type is only allowed on `const` declarations and `readonly static` properties, and in order to reference a specific unique symbol, you’ll have to use the `typeof` operator. Each reference to a unique symbol implies a completely unique identity that’s tied to a given declaration.
+
+```ts
+// Works
+declare const sym1: unique symbol;
+
+// Error! 'sym2' isn't a constant.
+let sym2: unique symbol = Symbol();
+
+// Works - refers to a unique symbol, but its identity is tied to 'sym1'.
+let sym3: typeof sym1 = sym1;
+
+// Also works.
+class C {
+  static readonly StaticSymbol: unique symbol = Symbol();
+}
+```
+
+Because each `unique symbol` has a completely separate identity, no two `unique symbol` types are assignable or comparable to each other.
+
+```ts
+const sym2 = Symbol();
+const sym3 = Symbol();
+
+// Error: can't compare two unique symbols.
+if (sym2 === sym3) {
+  // ...
+}
+```
+
 ## Well-known Symbols
 
 In addition to user-defined symbols, there are well-known built-in symbols.
