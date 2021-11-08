@@ -31,7 +31,7 @@ For example:
 This does not affect how TypeScript emits JavaScript, it only emulates the assumption that they will be able to
 work via those relative paths at runtime.
 
-`rootDirs` can be used to provide a separate "type layer" to files that are not TypeScript or JavaScript by providing a home for generated `.d.ts` files in another folder. This is technique is useful for bundled applications where you use `import` of files that aren't necessarily code:
+`rootDirs` can be used to provide a separate "type layer" to files that are not TypeScript or JavaScript by providing a home for generated `.d.ts` files in another folder. This technique is useful for bundled applications where you use `import` of files that aren't necessarily code:
 
 ```sh
  src
