@@ -1,4 +1,4 @@
-//// { order: 3, compiler: { strictNullChecks: true } }
+//// { "order": 3, "compiler": { "strictNullChecks": true } }
 
 // When a particular type feels like it's useful in most
 // codebases, they are added into TypeScript and become

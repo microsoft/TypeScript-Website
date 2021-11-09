@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.3.4" } }
+//// { "compiler": { "ts": "4.3.4" } }
 // When working with class hierarchies, it can be possible
 // to get the functions which you override out of sync because
 // prior to 4.3, there is no type-safe way to ensure a function

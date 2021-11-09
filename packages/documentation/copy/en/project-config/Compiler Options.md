@@ -339,7 +339,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#assumeChangesOnlyAffectDirectDependencies'>--assumeChangesOnlyAffectDirectDependencies</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -406,7 +406,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#declarationDir'>--declarationDir</a></code></td>
   <td><p><code>string</code></p>
 </td>
-  <td>
+  <td><p>n/a</p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -439,7 +439,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#disableReferencedProjectLoad'>--disableReferencedProjectLoad</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -461,7 +461,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#disableSolutionSearching'>--disableSolutionSearching</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -472,7 +472,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#disableSourceOfProjectReferenceRedirect'>--disableSourceOfProjectReferenceRedirect</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -516,7 +516,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#emitDecoratorMetadata'>--emitDecoratorMetadata</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -538,7 +538,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#exactOptionalPropertyTypes'>--exactOptionalPropertyTypes</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -549,7 +549,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#experimentalDecorators'>--experimentalDecorators</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -560,7 +560,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#explainFiles'>--explainFiles</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -671,7 +671,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#jsx'>--jsx</a></code></td>
   <td><p><code>preserve</code>, <code>react</code>, <code>react-native</code>, <code>react-jsx</code>, or <code>react-jsxdev</code></p>
 </td>
-  <td><p><code>undefined</code></p>
+  <td>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -861,7 +861,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#noFallthroughCasesInSwitch'>--noFallthroughCasesInSwitch</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -884,7 +884,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#noImplicitOverride'>--noImplicitOverride</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -973,7 +973,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#noUncheckedIndexedAccess'>--noUncheckedIndexedAccess</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -1006,7 +1006,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#out'>--out</a></code></td>
   <td><p><code>string</code></p>
 </td>
-  <td>
+  <td><p>n/a</p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -1017,7 +1017,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#outDir'>--outDir</a></code></td>
   <td><p><code>string</code></p>
 </td>
-  <td>
+  <td><p>n/a</p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -1028,7 +1028,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#outFile'>--outFile</a></code></td>
   <td><p><code>string</code></p>
 </td>
-  <td>
+  <td><p>n/a</p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -1061,8 +1061,9 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#preserveConstEnums'>--preserveConstEnums</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
-</td>
+  <td><ul><li><p><code>true</code> if <a href="#isolatedModules"><code>isolatedModules</code></a>,</p>
+</li><li><p><code>false</code> otherwise.</p>
+</li></ul></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Disable erasing <code>const enum</code> declarations in generated code.</p>
@@ -1072,7 +1073,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#preserveSymlinks'>--preserveSymlinks</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td><p>n/a</p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -1083,7 +1084,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#preserveValueImports'>--preserveValueImports</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -1094,7 +1095,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#preserveWatchOutput'>--preserveWatchOutput</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td><p>n/a</p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -1274,7 +1275,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#stripInternal'>--stripInternal</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">

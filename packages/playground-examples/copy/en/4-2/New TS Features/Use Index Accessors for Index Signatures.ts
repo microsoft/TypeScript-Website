@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.2.0-beta", noPropertyAccessFromIndexSignature: true } }
+//// { "compiler": { "ts": "4.2.0-beta", "noPropertyAccessFromIndexSignature": true } }
 // JavaScript has two ways to access an object on a property, the first is via
 // the dot operator x.y, the other is via square brackets x["y"] - the second
 // syntax x["y"] is called index accessors.

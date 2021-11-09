@@ -1,4 +1,4 @@
-//// { order: 2, compiler: { esModuleInterop: true } }
+//// { "order": 2, "compiler": { "esModuleInterop": true } }
 
 // Function chaining APIs are a common pattern in
 // JavaScript, which can make your code focused

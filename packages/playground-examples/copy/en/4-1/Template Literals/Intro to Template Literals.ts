@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.1.0-dev.20201028" } }
+//// { "compiler": { "ts": "4.1.0-dev.20201028" } }
 
 // TypeScript already supports treating an exact string/number 
 // as a literal, for example this function only allows two

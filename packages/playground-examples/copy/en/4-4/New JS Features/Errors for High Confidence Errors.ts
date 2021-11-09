@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.4.2", useJavaScript: true, checkJS: false } }
+//// { "compiler": { "ts": "4.4.2", "useJavaScript": true, "checkJS": false } }
 // For JavaScript users, TypeScript powers most of the tooling
 // for auto-complete and other IDE features like refactoring.
 

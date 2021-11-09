@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.4.2", useUnknownInCatchVariables: true } }
+//// { "compiler": { "ts": "4.4.2", "useUnknownInCatchVariables": true } }
 // If `unknown` is new to you, read: example:unknown-and-never
 
 // Since TypeScript 4.0, you have been able to change the type

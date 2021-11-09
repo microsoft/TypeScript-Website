@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.0.2" } }
+//// { "compiler": { "ts": "4.0.2" } }
 // Variadic Tuples gives tuples the ability to handle the rest operator (...)
 // to pass types through type checker in a way that works like generics.
 
@@ -8,7 +8,7 @@
 // To start off, here is a variadic tuple which will always prefix another
 // tuple with a number:
 
-type AddMax<T extends unknown[]> = [max: number,  ...rest: T];
+type AddMax<T extends unknown[]> = [max: number, ...rest: T];
 //          ^ Generic used to constrain the T
 //                                                ^ ... used to indicate where to merge
 
@@ -50,4 +50,4 @@ const c = curry(sum)(1, 2)
 
 // You can find a more indepth explanation, with more code samples in
 // https://github.com/microsoft/TypeScript/pull/39094
- 
+

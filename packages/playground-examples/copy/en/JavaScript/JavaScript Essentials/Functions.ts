@@ -1,4 +1,4 @@
-//// { order: 2, compiler: { noImplicitAny: false } }
+//// { "order": 2, "compiler": { "noImplicitAny": false } }
 
 // There are quite a few ways to declare a function in
 // JavaScript. Let's look at a function which adds two

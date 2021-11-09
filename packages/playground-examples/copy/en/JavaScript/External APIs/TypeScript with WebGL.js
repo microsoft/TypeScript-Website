@@ -1,4 +1,4 @@
-//// { order: 5, isJavaScript: true }
+//// { "order": 5, "isJavaScript": true }
 
 // This example creates an HTML canvas which uses WebGL to
 // render spinning confetti using JavaScript. We're going
@@ -10,29 +10,29 @@
 // First up, we need to create an HTML canvas element, which
 // we do via the DOM API and set some inline style attributes:
 
-const canvas = document.createElement("canvas")
-canvas.id = "spinning-canvas"
-canvas.style.backgroundColor = "#0078D4"
-canvas.style.position = "fixed"
-canvas.style.bottom = "10px"
-canvas.style.right = "20px"
-canvas.style.width = "500px"
-canvas.style.height = "400px"
+const canvas = document.createElement("canvas");
+canvas.id = "spinning-canvas";
+canvas.style.backgroundColor = "#0078D4";
+canvas.style.position = "fixed";
+canvas.style.bottom = "10px";
+canvas.style.right = "20px";
+canvas.style.width = "500px";
+canvas.style.height = "400px";
 
 // Next, to make it easy to make changes, we remove any older
 // versions of the canvas when hitting "Run" - now you can
 // make changes and see them reflected when you press "Run"
 // or (cmd + enter):
 
-const existingCanvas = document.getElementById(canvas.id)
+const existingCanvas = document.getElementById(canvas.id);
 if (existingCanvas && existingCanvas.parentElement) {
-  existingCanvas.parentElement.removeChild(existingCanvas)
+  existingCanvas.parentElement.removeChild(existingCanvas);
 }
 
 // Tell the canvas element that we will use WebGL to draw
 // inside the element (and not the default raster engine):
 
-const gl = canvas.getContext("webgl")
+const gl = canvas.getContext("webgl");
 
 // Next we need to create vertex shaders - these roughly are
 // small programs that apply maths to a set of incoming
@@ -44,7 +44,7 @@ const gl = canvas.getContext("webgl")
 // There's a great overview on how they work here:
 // https://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html
 
-const vertexShader = gl.createShader(gl.VERTEX_SHADER)
+const vertexShader = gl.createShader(gl.VERTEX_SHADER);
 gl.shaderSource(
   vertexShader,
   `
@@ -111,8 +111,8 @@ void main() {
   v_overlight = 0.9 + glanceLighting * 0.1;
 }
 `
-)
-gl.compileShader(vertexShader)
+);
+gl.compileShader(vertexShader);
 
 // This example also uses fragment shaders - a fragment
 // shader is another small program that runs through every
@@ -122,7 +122,7 @@ gl.compileShader(vertexShader)
 // this affects the lighting in the scene, as well as the border
 // radius on the confetti:
 
-const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER)
+const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
 gl.shaderSource(
   fragmentShader,
   `
@@ -135,19 +135,19 @@ void main() {
   gl_FragColor = vec4(v_color, 1.0 - smoothstep(0.8, v_overlight, length(v_position)));
 }
 `
-)
-gl.compileShader(fragmentShader)
+);
+gl.compileShader(fragmentShader);
 
 // Takes the compiled shaders and adds them to the canvas'
 // WebGL context so that can be used:
 
-const shaderProgram = gl.createProgram()
-gl.attachShader(shaderProgram, vertexShader)
-gl.attachShader(shaderProgram, fragmentShader)
-gl.linkProgram(shaderProgram)
-gl.useProgram(shaderProgram)
+const shaderProgram = gl.createProgram();
+gl.attachShader(shaderProgram, vertexShader);
+gl.attachShader(shaderProgram, fragmentShader);
+gl.linkProgram(shaderProgram);
+gl.useProgram(shaderProgram);
 
-gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer())
+gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
 
 // We need to get/set the input variables into the shader in a
 // memory-safe way, so the order and the length of their
@@ -160,10 +160,10 @@ const attrs = [
   { name: "a_rotationAxisAngle", length: 1, offset: 4 },
   { name: "a_particleDistance", length: 1, offset: 5 },
   { name: "a_particleAngle", length: 1, offset: 6 },
-  { name: "a_particleY", length: 1, offset: 7 }
-]
+  { name: "a_particleY", length: 1, offset: 7 },
+];
 
-const STRIDE = Object.keys(attrs).length + 1
+const STRIDE = Object.keys(attrs).length + 1;
 
 // Loop through our known attributes and create pointers in memory for the JS side
 // to be able to fill into the shader.
@@ -178,103 +178,97 @@ const STRIDE = Object.keys(attrs).length + 1
 // vertex pointers:
 
 for (var i = 0; i < attrs.length; i++) {
-  const name = attrs[i].name
-  const length = attrs[i].length
-  const offset = attrs[i].offset
-  const attribLocation = gl.getAttribLocation(shaderProgram, name)
-  gl.vertexAttribPointer(attribLocation, length, gl.FLOAT, false, STRIDE * 4, offset * 4)
-  gl.enableVertexAttribArray(attribLocation)
+  const name = attrs[i].name;
+  const length = attrs[i].length;
+  const offset = attrs[i].offset;
+  const attribLocation = gl.getAttribLocation(shaderProgram, name);
+  gl.vertexAttribPointer(attribLocation, length, gl.FLOAT, false, STRIDE * 4, offset * 4);
+  gl.enableVertexAttribArray(attribLocation);
 }
 
 // Then on this line they are bound to an array in memory:
 
-gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer())
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
 
 // Set up some constants for rendering:
 
-const NUM_PARTICLES = 200
-const NUM_VERTICES = 4
+const NUM_PARTICLES = 200;
+const NUM_VERTICES = 4;
 
 // Try reducing this one and hitting "Run" again,
 // it represents how many points should exist on
 // each confetti and having an odd number sends
 // it way out of whack.
 
-const NUM_INDICES = 6
+const NUM_INDICES = 6;
 
 // Create the arrays of inputs for the vertex shaders
-const vertices = new Float32Array(NUM_PARTICLES * STRIDE * NUM_VERTICES)
-const indices = new Uint16Array(NUM_PARTICLES * NUM_INDICES)
+const vertices = new Float32Array(NUM_PARTICLES * STRIDE * NUM_VERTICES);
+const indices = new Uint16Array(NUM_PARTICLES * NUM_INDICES);
 
 for (let i = 0; i < NUM_PARTICLES; i++) {
-  const axisAngle = Math.random() * Math.PI * 2
-  const startAngle = Math.random() * Math.PI * 2
-  const groupPtr = i * STRIDE * NUM_VERTICES
+  const axisAngle = Math.random() * Math.PI * 2;
+  const startAngle = Math.random() * Math.PI * 2;
+  const groupPtr = i * STRIDE * NUM_VERTICES;
 
-  const particleDistance = Math.sqrt(Math.random())
-  const particleAngle = Math.random() * Math.PI * 2
-  const particleY = Math.random() * 2.2
-  const angularVelocity = Math.random() * 2 + 1
+  const particleDistance = Math.sqrt(Math.random());
+  const particleAngle = Math.random() * Math.PI * 2;
+  const particleY = Math.random() * 2.2;
+  const angularVelocity = Math.random() * 2 + 1;
 
   for (let j = 0; j < 4; j++) {
-    const vertexPtr = groupPtr + j * STRIDE
-    vertices[vertexPtr + 2] = startAngle       // Start angle
-    vertices[vertexPtr + 3] = angularVelocity  // Angular velocity
-    vertices[vertexPtr + 4] = axisAngle        // Angle diff
-    vertices[vertexPtr + 5] = particleDistance // Distance of the particle from the (0,0,0)
-    vertices[vertexPtr + 6] = particleAngle    // Angle around Y axis
-    vertices[vertexPtr + 7] = particleY        // Angle around Y axis
+    const vertexPtr = groupPtr + j * STRIDE;
+    vertices[vertexPtr + 2] = startAngle; // Start angle
+    vertices[vertexPtr + 3] = angularVelocity; // Angular velocity
+    vertices[vertexPtr + 4] = axisAngle; // Angle diff
+    vertices[vertexPtr + 5] = particleDistance; // Distance of the particle from the (0,0,0)
+    vertices[vertexPtr + 6] = particleAngle; // Angle around Y axis
+    vertices[vertexPtr + 7] = particleY; // Angle around Y axis
   }
 
   // Coordinates
-  vertices[groupPtr] = vertices[groupPtr + STRIDE * 2] = -1
-  vertices[groupPtr + STRIDE] = vertices[groupPtr + STRIDE * 3] = +1
-  vertices[groupPtr + 1] = vertices[groupPtr + STRIDE + 1] = -1
-  vertices[groupPtr + STRIDE * 2 + 1] = vertices[groupPtr + STRIDE * 3 + 1] = +1
+  vertices[groupPtr] = vertices[groupPtr + STRIDE * 2] = -1;
+  vertices[groupPtr + STRIDE] = vertices[groupPtr + STRIDE * 3] = +1;
+  vertices[groupPtr + 1] = vertices[groupPtr + STRIDE + 1] = -1;
+  vertices[groupPtr + STRIDE * 2 + 1] = vertices[groupPtr + STRIDE * 3 + 1] = +1;
 
-  const indicesPtr = i * NUM_INDICES
-  const vertexPtr = i * NUM_VERTICES
-  indices[indicesPtr] = vertexPtr
-  indices[indicesPtr + 4] = indices[indicesPtr + 1] = vertexPtr + 1
-  indices[indicesPtr + 3] = indices[indicesPtr + 2] = vertexPtr + 2
-  indices[indicesPtr + 5] = vertexPtr + 3
+  const indicesPtr = i * NUM_INDICES;
+  const vertexPtr = i * NUM_VERTICES;
+  indices[indicesPtr] = vertexPtr;
+  indices[indicesPtr + 4] = indices[indicesPtr + 1] = vertexPtr + 1;
+  indices[indicesPtr + 3] = indices[indicesPtr + 2] = vertexPtr + 2;
+  indices[indicesPtr + 5] = vertexPtr + 3;
 }
 
 // Pass in the data to the WebGL context
-gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW)
-gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW)
+gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
 
-
-const timeUniformLocation = gl.getUniformLocation(shaderProgram, "u_time")
-const startTime = (window.performance || Date).now()
+const timeUniformLocation = gl.getUniformLocation(shaderProgram, "u_time");
+const startTime = (window.performance || Date).now();
 
 // Start the background colour as black
-gl.clearColor(0, 0, 0, 1)
+gl.clearColor(0, 0, 0, 1);
 
 // Allow alpha channels on in the vertex shader
-gl.enable(gl.BLEND)
-gl.blendFunc(gl.SRC_ALPHA, gl.ONE)
+gl.enable(gl.BLEND);
+gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
 
 // Set the WebGL context to be the full size of the canvas
-gl.viewport(0, 0, canvas.width, canvas.height)
+gl.viewport(0, 0, canvas.width, canvas.height);
 
 // Create a run-loop to draw all of the confetti
-;(function frame() {
-  gl.uniform1f(timeUniformLocation, ((window.performance || Date).now() - startTime) / 1000)
+(function frame() {
+  gl.uniform1f(timeUniformLocation, ((window.performance || Date).now() - startTime) / 1000);
 
-  gl.clear(gl.COLOR_BUFFER_BIT)
-  gl.drawElements(
-    gl.TRIANGLES,
-    NUM_INDICES * NUM_PARTICLES,
-    gl.UNSIGNED_SHORT,
-    0
-  )
-  requestAnimationFrame(frame)
-})()
+  gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.drawElements(gl.TRIANGLES, NUM_INDICES * NUM_PARTICLES, gl.UNSIGNED_SHORT, 0);
+  requestAnimationFrame(frame);
+})();
 
 // Add the new canvas element into the bottom left
 // of the playground
-document.body.appendChild(canvas)
+document.body.appendChild(canvas);
 
 // Credit: based on this JSFiddle by Subzey
 // https://jsfiddle.net/subzey/52sowezj/

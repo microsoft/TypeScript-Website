@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.1.0-dev.20201028" } }
+//// { "compiler": { "ts": "4.1.0-dev.20201028" } }
 
 // Template literals can be used to extract and manipulate string literal types.
 // These string literal types, in turn, can be used as properties, and can describe
@@ -14,9 +14,9 @@ type TSVersion = "4.1.2"
 
 // We can create a type to extract the components of that string.
 // We'll split across two '.' characters.
-type ExtractSemver<SemverString extends string> = 
-   SemverString extends `${infer Major}.${infer Minor}.${infer Patch}` ? 
-        { major: Major, minor: Minor, patch: Patch } : { error: "Cannot parse semver string" }
+type ExtractSemver<SemverString extends string> =
+    SemverString extends `${infer Major}.${infer Minor}.${infer Patch}` ?
+    { major: Major, minor: Minor, patch: Patch } : { error: "Cannot parse semver string" }
 
 // Line 1 should be familiar if you've looked at the preceding examples:
 // example:intro-to-template-literals / example:mapped-types-with-template-literals
@@ -47,8 +47,8 @@ type SemverError = ExtractSemver<"Four point Zero point Five">
 
 type Split<S extends string, D extends string> =
     string extends S ? string[] :
-        S extends '' ? [] :
-            S extends `${infer T}${D}${infer U}` ?  [T, ...Split<U, D>] :  [S];
+    S extends '' ? [] :
+    S extends `${infer T}${D}${infer U}` ? [T, ...Split<U, D>] : [S];
 
 // Line 1 declares two params, we'll use single characters for brevity.
 // S represents the string to split, and D is the deliminator. This

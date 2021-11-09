@@ -1,4 +1,4 @@
-//// { order: 2, compiler: { jsx: 2, esModuleInterop: true } }
+//// { "order": 2, "compiler": { "jsx": 2, "esModuleInterop": true } }
 
 // React is a popular library for creating user interfaces.
 // It provides a JavaScript abstraction for creating view
@@ -17,9 +17,10 @@
 // First we'll look at how generic interfaces are used to map
 // React components. This is a faux-React functional component:
 
-type FauxactFunctionComponent<Props extends {}> =
-  (props: Props, context?: any) => FauxactFunctionComponent<any> | null | JSX.Element
-
+type FauxactFunctionComponent<Props extends {}> = (
+  props: Props,
+  context?: any
+) => FauxactFunctionComponent<any> | null | JSX.Element;
 
 // Roughly:
 //
@@ -30,29 +31,32 @@ type FauxactFunctionComponent<Props extends {}> =
 
 // To use it, you need a props type:
 
-interface DateProps { iso8601Date: string, message: string }
+interface DateProps {
+  iso8601Date: string;
+  message: string;
+}
 
 // We can then create a DateComponent which uses the
 // DateProps interface, and renders the date.
 
-const DateComponent: FauxactFunctionComponent<DateProps> =
-  (props) => <time dateTime={props.iso8601Date}>{props.message}</time>
+const DateComponent: FauxactFunctionComponent<DateProps> = props => (
+  <time dateTime={props.iso8601Date}>{props.message}</time>
+);
 
 // This creates a function which is generic with a Props
 // variable which has to be an object. The component function
 // returns either another component function or null.
 
-
 // The other component API is a class-based one. Here's a
 // simplified version of that API:
 
 interface FauxactClassComponent<Props extends {}, State = {}> {
-  props: Props
-  state: State
+  props: Props;
+  state: State;
 
-  setState: (prevState: State, props: Props) => Props
-  callback?: () => void
-  render(): FauxactClassComponent<any> | null
+  setState: (prevState: State, props: Props) => Props;
+  callback?: () => void;
+  render(): FauxactClassComponent<any> | null;
 }
 
 // Because this class can have both Props and State - it has
@@ -62,7 +66,7 @@ interface FauxactClassComponent<Props extends {}, State = {}> {
 // like these but are much more comprehensive. Let's bring
 // those into our playground and explore a few components.
 
-import * as React from 'react';
+import * as React from "react";
 
 // Your props are your public API, so it's worth taking the
 // time to use JSDoc to explain how it works:
@@ -71,37 +75,37 @@ export interface Props {
   /** The user's name */
   name: string;
   /** Should the name be rendered in bold */
-  priority?: boolean
+  priority?: boolean;
 }
 
-const PrintName: React.FC<Props> = (props) => {
+const PrintName: React.FC<Props> = props => {
   return (
     <div>
       <p style={{ fontWeight: props.priority ? "bold" : "normal" }}>{props.name}</p>
     </div>
-  )
-}
+  );
+};
 
 // You can play with the new component's usage below:
 
-const ShowUser: React.FC<Props> = (props) => {
-  return <PrintName name="Ned" />
-}
+const ShowUser: React.FC<Props> = props => {
+  return <PrintName name="Ned" />;
+};
 
 // TypeScript supports providing intellisense inside
 // the {} in an attribute
 
-let username = "Cersei"
-const ShowStoredUser: React.FC<Props> = (props) => {
-  return <PrintName name={username} priority />
-}
+let username = "Cersei";
+const ShowStoredUser: React.FC<Props> = props => {
+  return <PrintName name={username} priority />;
+};
 
 // TypeScript works with modern React code too, here you can
 // see that count and setCount have correctly been inferred
 // to use numbers based on the initial value passed into
 // useState.
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 const CounterExample = () => {
   const [count, setCount] = useState(0);
@@ -113,12 +117,10 @@ const CounterExample = () => {
   return (
     <div>
       <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
     </div>
   );
-}
+};
 
 // React and TypeScript is a really, really big topic
 // but the fundamentals are pretty small: TypeScript

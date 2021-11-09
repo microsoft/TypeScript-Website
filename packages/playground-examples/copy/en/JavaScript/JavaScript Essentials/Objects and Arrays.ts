@@ -1,4 +1,4 @@
-//// { order: 1, compiler: { strict: false } }
+//// { "order": 1, "compiler": { "strict": false } }
 
 // JavaScript objects are collections of values wrapped up
 // with named keys.

@@ -71,7 +71,7 @@ languages.forEach((lang) => {
           const sectionsPath = getPathInLocale(join("msbuild", name + ".md"));
           const optionFile = readMarkdownFile(sectionsPath);
           description = optionFile.data.oneline;
-        } catch (error) {}
+        } catch (error) { }
       }
 
       const oddEvenClass = index % 2 === 0 ? "odd" : "even";
@@ -102,7 +102,7 @@ languages.forEach((lang) => {
 languages.forEach((lang) => {
   const mdCLI = join(__dirname, "..", "..", "output", lang + "-msbuild.md");
   // prettier-ignore
-  const compOptsPath = join( __dirname, "..", "..", "..", `documentation/copy/${lang}/project-config/Compiler Options in MSBuild.md`);
+  const compOptsPath = join(__dirname, "..", "..", "..", `documentation/copy/${lang}/project-config/Compiler Options in MSBuild.md`);
 
   if (existsSync(compOptsPath)) {
     const md = readFileSync(compOptsPath, "utf8");
