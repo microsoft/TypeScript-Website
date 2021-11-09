@@ -2,17 +2,27 @@
 
 console.log("TSConfig Ref: JSON for MSBuild");
 
-import parser = require("xml-js");
+import parser from "xml-js";
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
-import { format } from "prettier";
+import prettier from "prettier";
 
-const toJSONString = (obj) => format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
+const toJSONString = (obj) =>
+  prettier.format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
 const writeJSON = (name, obj) =>
-  writeFileSync(join(__dirname, "..", "..", "data", name), toJSONString(obj));
+  writeFileSync(
+    new URL(`../../data/${name}`, import.meta.url),
+    toJSONString(obj)
+  );
 
-const targetsXMLText = readFileSync(join(__dirname, "./Microsoft.TypeScript.targets"), "utf8");
-const targetJSONtext = parser.xml2json(targetsXMLText, { compact: true, spaces: 4 });
+const targetsXMLText = readFileSync(
+  new URL("./Microsoft.TypeScript.targets", import.meta.url),
+  "utf8"
+);
+const targetJSONtext = parser.xml2json(targetsXMLText, {
+  compact: true,
+  spaces: 4,
+});
 const targets = JSON.parse(targetJSONtext) as import("./types").Target;
 
 const config = targets.Project.PropertyGroup.find((f) => f.TypeScriptBuildConfigurations?.length);

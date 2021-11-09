@@ -3,20 +3,22 @@
 
 // yarn workspace tsconfig-reference lint
 
-const chalk = require("chalk");
+import chalk from "chalk";
 
 const tick = chalk.bold.greenBright("✓");
 const cross = chalk.bold.redBright("⤫");
 
-const { readdirSync, readFileSync, statSync } = require("fs");
-const { join } = require("path");
+import { readdirSync, readFileSync, statSync } from "fs";
+import { join } from "path";
 
-const remark = require("remark");
-const remarkTwoSlash = require("remark-shiki-twoslash");
+import remark from "remark";
+import remarkTwoSlash from "remark-shiki-twoslash";
 
-const { read } = require("gray-matter");
+import matter from "gray-matter";
 
-const languages = readdirSync(join(__dirname, "..", "copy")).filter((f) => !f.startsWith("."));
+const languages = readdirSync(new URL("../copy", import.meta.url)).filter(
+  (f) => !f.startsWith(".")
+);
 
 console.log("Linting the sample code which uses twoslasher in ts-config");
 
@@ -29,15 +31,17 @@ const go = async () => {
   for (const lang of languages) {
     console.log("\n\nLanguage: " + chalk.bold(lang) + "\n");
 
-    const locale = join(__dirname, "..", "copy", lang);
+    const locale = new URL(`../copy/${lang}/`, import.meta.url);
     let options;
 
     try {
-      options = readdirSync(join(locale, "options")).filter((f) => !f.startsWith("."));
+      options = readdirSync(new URL("options", locale)).filter(
+        (f) => !f.startsWith(".")
+      );
     } catch {
       errorReports.push({
-        path: join(locale, "options"),
-        error: `Options directory ${join(locale, "options")} doesn't exist`,
+        path: new URL("options", locale),
+        error: `Options directory ${new URL("options", locale)} doesn't exist`,
       });
       continue;
     }
@@ -46,7 +50,7 @@ const go = async () => {
     for (const option of options) {
       if (filterString.length && !option.includes(filterString)) continue;
 
-      const optionPath = join(locale, "options", option);
+      const optionPath = new URL(`options/${option}`, locale);
 
       const isDir = statSync(optionPath).isDirectory();
       if (isDir) continue;

@@ -1,7 +1,7 @@
 import { CompilerOptionName } from "../data/_types";
-import * as remark from "remark";
-import * as remarkHTML from "remark-html";
-import * as ts from "typescript";
+import remark from "remark";
+import remarkHTML from "remark-html";
+import ts from "typescript";
 
 export interface CommandLineOption {
   name: string;

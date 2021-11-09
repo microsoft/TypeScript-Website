@@ -7,26 +7,33 @@
 */
 console.log("TSConfig Ref: JSON for CLI Opts");
 
-import * as ts from "typescript";
+import ts from "typescript";
 
 import { CommandLineOptionBase } from "../types";
 import { writeFileSync } from "fs";
 import { join } from "path";
-import { format } from "prettier";
+import prettier from "prettier";
 import {
   deprecated,
   internal,
   defaultsForOptions,
   allowedValues,
   configToRelease,
-} from "../tsconfigRules";
+} from "../tsconfigRules.js";
 import { CompilerOptionName } from "../../data/_types";
 
-const toJSONString = (obj) => format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
+const toJSONString = (obj) =>
+  prettier.format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
 const writeJSON = (name, obj) =>
-  writeFileSync(join(__dirname, "..", "..", "data", name), toJSONString(obj));
+  writeFileSync(
+    new URL(`../../data/${name}`, import.meta.url),
+    toJSONString(obj)
+  );
 const writeString = (name, text) =>
-  writeFileSync(join(__dirname, "..", "..", "data", name), format(text, { filepath: name }));
+  writeFileSync(
+    new URL(`../../data/${name}`, import.meta.url),
+    prettier.format(text, { filepath: name })
+  );
 
 export interface CompilerOptionJSON extends CommandLineOptionBase {
   releaseVersion?: string;
@@ -40,8 +47,8 @@ export interface CompilerOptionJSON extends CommandLineOptionBase {
   hostObj: string;
 }
 
-const tsconfigOpts = require(join(__dirname, "../../data/tsconfigOpts.json"))
-  .options as CompilerOptionJSON[];
+// @ts-ignore
+import tsconfigOpts from "../../data/tsconfigOpts.json";
 
 const notCompilerFlags = [
   // @ts-ignore
