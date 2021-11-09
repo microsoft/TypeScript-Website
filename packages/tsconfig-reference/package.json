@@ -23,6 +23,12 @@
     "semi": true
   },
   "devDependencies": {
+    "hast-util-to-html": "^8.0.3",
+    "hastscript": "^7.0.2",
+    "mdast-util-from-markdown": "^1.0.4",
+    "mdast-util-frontmatter": "^1.0.0",
+    "mdast-util-to-hast": "^12.0.0",
+    "mdast-util-to-markdown": "^1.2.4",
     "remark": "^11.0.2",
     "remark-html": "^10.0.0",
     "ts-node": "*"

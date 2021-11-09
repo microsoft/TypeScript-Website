@@ -1,7 +1,20 @@
 import { CompilerOptionName } from "../data/_types";
-import remark from "remark";
-import remarkHTML from "remark-html";
+import { toHtml } from "hast-util-to-html";
+import { h } from "hastscript";
+import { fromMarkdown } from "mdast-util-from-markdown";
 import ts from "typescript";
+import type * as hast from "hast";
+import type * as mdast from "mdast";
+import type * as unist from "unist";
+
+declare global {
+  interface Set<T> {
+    has<U>(value: U): value is Extract<T, U>;
+  }
+}
+
+// https://tc39.es/ecma262/multipage/abstract-operations.html#sec-toboolean
+type Falsy = undefined | null | false | 0 | "";
 
 export interface CommandLineOption {
   name: string;
@@ -186,13 +199,6 @@ export const relatedTo: [AnOption, AnOption[]][] = [
  * So err, they are like 90% reliable.
  */
 
-function trueIf(name: string) {
-  return [
-    `\`true\` if [\`${name}\`](#${name}),`,
-    "`false` otherwise.",
-  ];
-}
-
 export const defaultsForOptions = {
   ...Object.fromEntries(
     ts.optionDeclarations.map((option) => [
@@ -262,6 +268,10 @@ function formatDefaultValue(
   return synonyms.length > 1
     ? synonyms.map((name) => `\`${name}\``).join("/")
     : synonyms[0];
+}
+
+function trueIf(name: string) {
+  return [`\`true\` if [\`${name}\`](#${name}),`, "`false` otherwise."];
 }
 
 export const allowedValues = {
@@ -362,11 +372,86 @@ Object.keys(releaseToConfigsMap).forEach((v) => {
   });
 });
 
-export const parseMarkdown = (value: string | string[]) =>
+export const parseMarkdown = (value: string | string[]): hast.Element =>
   Array.isArray(value)
-    ? `<ul>${value
-        .map((element) => `<li>${parseMarkdown(element)}</li>`)
-        .join("")}</ul>`
-    : remark()
-        .use(remarkHTML)
-        .processSync(value?.replace(/^[-.0-9_a-z]+$/i, "`$&`"));
+    ? h(
+        "ul",
+        value.map((element) => h("li", parseMarkdown(element)))
+      )
+    : (fromMarkdown(value.replace(/^[-.0-9_a-z]+$/i, "`$&`")) as never);
+
+// Stringify and replace embedded hast nodes -> mdast HTML nodes, pass
+// everything else through
+export function toMdast(
+  node:
+    | (hast.Content & Partial<hast.Parent>)
+    | (mdast.Content & Partial<mdast.Parent>)
+) {
+  if (hasType(node, mdastHandlers) || !hasType(node, hastHandlers)) {
+    node.children = (
+      node as mdast.Content & Partial<mdast.Parent>
+    ).children?.flatMap((child) => toMdast(child));
+    return node;
+  }
+  const embedded: mdast.Content[] = [];
+  node.children = node.children?.map((child) => toHast(child));
+  return toHtml(node)
+    .split("\0")
+    .flatMap((value) => [
+      value && { type: "html" as const, value },
+      embedded.shift(),
+    ])
+    .slice(0, -1)
+    .filter((node): node is Exclude<typeof node, Falsy> => node as never);
+
+  // Replace embedded non-hast nodes -> null character placeholders
+  function toHast(node: hast.Content & Partial<hast.Parent>) {
+    if (hasType(node, hastHandlers)) {
+      node.children = node.children?.map((child) => toHast(child));
+      return node;
+    }
+    embedded.push(node);
+    return { type: "text" as const, value: "\0" };
+  }
+}
+
+// https://github.com/syntax-tree/hast-util-to-html/blob/bb0238d90cb90bc0b188ff2f5c33a835d8c92e2e/lib/tree.js#L24
+const hastHandlers = new Set([
+  "comment",
+  "doctype",
+  "element",
+  "raw",
+  "root",
+  "text",
+] as const);
+// https://github.com/syntax-tree/mdast-util-to-markdown/blob/b6ca06b6e6c084031fc825ddb2e6ad8c93e71e81/lib/handle/index.js#L21
+const mdastHandlers = new Set([
+  "blockquote",
+  "break",
+  "code",
+  "definition",
+  "emphasis",
+  "hardBreak",
+  "heading",
+  "html",
+  "image",
+  "imageReference",
+  "inlineCode",
+  "link",
+  "linkReference",
+  "list",
+  "listItem",
+  "paragraph",
+  "root",
+  "strong",
+  "text",
+  "thematicBreak",
+] as const);
+
+// https://github.com/microsoft/TypeScript/issues/45770
+function hasType<T extends unist.Node, U>(
+  node: T,
+  types: Set<U>
+): node is T & { type: U } {
+  return types.has(node.type);
+}
