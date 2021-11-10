@@ -8,6 +8,7 @@ import { createPlaygroundExamplePages } from "./ingestion/createPlaygroundExampl
 import { createRootPagesLocalized } from "./ingestion/createRootPagesLocalized"
 import { createGlossaryPages } from "./ingestion/createGlossaryPages"
 import { createTSConfigSingleFlagPages } from "./ingestion/createTSConfigSingleFlagPages"
+import { createPlaygroundHandbookPages } from "./ingestion/createPlaygroundHandbook"
 
 export const createPages: GatsbyNode["createPages"] = async args => {
   // Basically this function should be passing the right
@@ -22,6 +23,7 @@ export const createPages: GatsbyNode["createPages"] = async args => {
   await createPlaygroundExamplePages(args.graphql, args.actions.createPage)
   await createTSConfigSingleFlagPages(args.graphql, args.actions.createPage)
   await createRootPagesLocalized(args.graphql, args.actions.createPage)
+  await createPlaygroundHandbookPages(args.graphql, args.actions.createPage)
 
   return undefined
 }

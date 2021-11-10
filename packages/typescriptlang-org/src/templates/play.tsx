@@ -26,6 +26,7 @@ type Props = {
     lang: string
     examplesTOC: typeof import("../../static/js/examples/en.json")
     optionsSummary: any // this is just passed through to the playground JS library at this point
+    playgroundHandbookTOC: { docs : any[] }
   }
 }
 
@@ -55,6 +56,8 @@ const Play: React.FC<Props> = (props) => {
       return
     }
 
+    // @ts-ignore - so the playground handbook can grab this data
+    window.playgroundHandbookTOC = props.pageContext.playgroundHandbookTOC
     // @ts-ignore - so the config options can use localized descriptions
     window.optionsSummary = props.pageContext.optionsSummary
     // @ts-ignore - for React-based plugins
@@ -217,6 +220,10 @@ const Play: React.FC<Props> = (props) => {
 
               </div>
             </ul>
+          </li>
+
+          <li className="dropdown">
+            <a href="#" id="handbook-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="examples">{i("play_subnav_handbook")} <span className="caret"></span></a>
           </li>
 
           <li className="dropdown">

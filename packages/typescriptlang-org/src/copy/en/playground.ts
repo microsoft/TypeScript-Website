@@ -2,6 +2,7 @@ export const playCopy = {
   play_subnav_title: "Playground",
   play_subnav_config: "TS Config",
   play_config_language_blurb: "Which language should be used in the editor",
+  play_subnav_handbook: "Docs",
   play_subnav_examples: "Examples",
   play_subnav_examples_close: "Close",
   play_subnav_whatsnew: "What's New",

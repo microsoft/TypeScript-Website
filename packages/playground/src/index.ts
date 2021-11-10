@@ -23,7 +23,7 @@ import { allowConnectingToLocalhost, activePlugins, addCustomPlugin } from "./si
 import { createUtils, PluginUtils } from "./pluginUtils"
 import type React from "react"
 import { settingsPlugin, getPlaygroundPlugins } from "./sidebar/settings"
-import { gistPoweredNavBar } from "./navigation"
+import { gistPoweredNavBar, hideNavForHandbook, showNavForHandbook } from "./navigation"
 import { createTwoslashInlayProvider } from "./twoslashInlays"
 
 export { PluginUtils } from "./pluginUtils"
@@ -87,9 +87,6 @@ export const setupPlayground = (
   const dragBarLeft = createDragBar("left")
   playgroundParent.insertBefore(dragBarLeft, sandbox.getDomNode().parentElement!.parentElement!)
 
-  leftNav.style.display = "none"
-  dragBarLeft.style.display = "none"
-
   const showNav = () => {
     const right = document.getElementsByClassName("playground-sidebar").item(0)!
     const middle = document.getElementById("editor-container")!
@@ -101,6 +98,12 @@ export const setupPlayground = (
     leftNav.style.maxWidth = "210px"
     dragBarLeft.style.display = "block"
   }
+  const hideNav = () => {
+    leftNav.style.display = "none"
+    dragBarLeft.style.display = "none"
+  }
+
+  hideNav()
 
   // UI to the right
   const dragBar = createDragBar("right")
@@ -308,7 +311,8 @@ export const setupPlayground = (
         a.parentElement!.classList.toggle("open")
         a.setAttribute("aria-expanded", "true")
 
-        const exampleContainer = a.closest("li")!.getElementsByTagName("ul").item(0)!
+        const exampleContainer = a.closest("li")!.getElementsByTagName("ul").item(0)
+        if (!exampleContainer) return
 
         const firstLabel = exampleContainer.querySelector("label") as HTMLElement
         if (firstLabel) firstLabel.focus()
@@ -428,6 +432,25 @@ export const setupPlayground = (
       navLI?.classList.remove("open")
     }
   })
+
+  const handbookButton = document.getElementById("handbook-button")
+  if (handbookButton) {
+    let showingHandbook = false
+    handbookButton.onclick = () => {
+      if (!showingHandbook) {
+        handbookButton.parentElement!.classList.add("open")
+        showNav()
+        showNavForHandbook(sandbox)
+      } else {
+        handbookButton.parentElement!.classList.remove("open")
+        hideNav()
+        hideNavForHandbook(sandbox)
+      }
+
+      showingHandbook = !showingHandbook
+      return false
+    }
+  }
 
   setupSidebarToggle()
 
@@ -676,6 +699,11 @@ export const setupPlayground = (
 
   // Grab the contents of a Gist
   if (location.hash.startsWith("#gist/")) {
+    gistPoweredNavBar(sandbox, ui, showNav)
+  }
+
+  // Auto-load into the playground
+  if (location.hash.startsWith("#handbook")) {
     gistPoweredNavBar(sandbox, ui, showNav)
   }
 

@@ -229,6 +229,9 @@ main > nav {
       &.open {
         background-color: var(--playground-dropdown-bg);
       }
+      &.open .caret {
+        transform: scaleY(-1);
+      }
 
       &.name:hover {
         background-color: transparent;
