@@ -181,6 +181,29 @@ export const setupPlayground = (
     }, 300)
   })
 
+  // When there are multi-file playgrounds, we should show the implicit filename, ideally this would be
+  // something more inline, but we can abuse the code lenses for now because they get their own line!
+  sandbox.monaco.languages.registerCodeLensProvider(sandbox.language, {
+    provideCodeLenses: function (model, token) {
+      const lenses = !showFileCodeLens ? [] : [{
+        range: {
+          startLineNumber: 1,
+          startColumn: 1,
+          endLineNumber: 2,
+          endColumn: 1
+        },
+        id: "implicit-filename-first",
+        command: {
+          id: "noop",
+          title: `// @filename: ${sandbox.filepath}`
+        }
+      }]
+      return { lenses, dispose: () => { } };
+    }
+  })
+
+  let showFileCodeLens = false
+
   // If you set this to true, then the next time the playground would
   // have set the user's hash it would be skipped - used for setting
   // the text in examples
@@ -188,6 +211,7 @@ export const setupPlayground = (
 
   // Sets the URL and storage of the sandbox string
   const playgroundDebouncedMainFunction = () => {
+    showFileCodeLens = sandbox.getText().includes("// @filename")
     localStorage.setItem("sandbox-history", sandbox.getText())
   }
 
@@ -517,6 +541,7 @@ export const setupPlayground = (
     })
   }
 
+  // Set the errors number in the sidebar tabs
   const model = sandbox.getModel()
   model.onDidChangeDecorations(() => {
     const markers = sandbox.monaco.editor.getModelMarkers({ resource: model.uri }).filter(m => m.severity !== 1)
@@ -573,7 +598,7 @@ export const setupPlayground = (
   console.log("\twindow.react", window.react)
   console.log("\twindow.reactDOM", window.reactDOM)
 
-  /** A plugin */
+  /** The plugin system */
   const activateExternalPlugin = (
     plugin: PlaygroundPlugin | ((utils: PluginUtils) => PlaygroundPlugin),
     autoActivate: boolean
