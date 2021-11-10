@@ -4,7 +4,7 @@ The Playground examples are an interactive set of tutorials, and overviews into 
 
 <details><summary>Speaking as the author, ...</summary>
 
-_Speaking as the author_, I, _Orta_, think there are many ways for people to learn a complex subject. I don't think it's possible to just pick up a single book and _" :tada: I understand X."_ We're not learning kung-fu in a second, _something like TypeScript takes a while to learn_.
+Speaking as the author, I, _Orta_, think there are many ways for people to learn a complex subject. I don't think it's possible to just pick up a single book and _" :tada: I understand X."_ We're not learning kung-fu in a second, something like TypeScript takes a while to learn.
 
 I believe that studying something complex revolves around creating a mesh of understanding by mixing learning and doing. The handbook does a great job of covering all the primitives of TypeScript, and you can study it, but with the Playground we have a space for a 2nd explanation on the same topics with an environment structured for play and safe failure. The Examples in the Playground are built to encourage exploration of ideas.
 

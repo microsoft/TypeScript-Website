@@ -1,5 +1,7 @@
 ## Twoslash Annotations
 
+Twoslash is an annotation format for TypeScript which uses specially crafted comments (two slashes `//`)
+
 The more arcane, but very ergonomic way to set a compiler setting is via [twoslash](https://www.typescriptlang.org/dev/twoslash/) commands which are comments which start with `// @`.
 
 The editor will auto-complete twoslash commands for any compiler setting for the current version of TypeScript in your Playground. If the setting is a boolean, you don't need to set a value:
