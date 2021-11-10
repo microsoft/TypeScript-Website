@@ -1,6 +1,6 @@
 ---
 display: "verbose"
-oneline: "Enable verbose logging"
+oneline: "Enable verbose logging."
 ---
 
 Enable verbose logging

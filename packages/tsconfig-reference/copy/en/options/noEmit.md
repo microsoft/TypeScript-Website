@@ -1,6 +1,6 @@
 ---
 display: "No Emit"
-oneline: "Disable emitting file from a compilation."
+oneline: "Disable emitting files from a compilation."
 ---
 
 Do not emit compiler output files like JavaScript source code, source-maps or declarations.

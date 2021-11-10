@@ -1,6 +1,6 @@
 ---
 display: "No Unused Parameters"
-oneline: "Raise an error when a function parameter isn't read"
+oneline: "Raise an error when a function parameter isn't read."
 ---
 
 Report errors on unused parameters in functions.
