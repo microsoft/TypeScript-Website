@@ -1,4 +1,4 @@
-//// { order: 3 }
+//// { "order": 3 }
 
 // This example is mostly in TypeScript, because it is much
 // easier to understand this way first. At the end we'll

@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.1.0-dev.20201028", jsx: 4 } }
+//// { "compiler": { "ts": "4.1.0-dev.20201028", "jsx": 4 } }
 
 // In version 17, the React team introduced a new format
 // for the JavaScript emitted by JSX transforms. You
@@ -12,8 +12,8 @@ export function ExampleApp() {
 
   return (
     <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>Click me</button>
+      <p>You clicked {count} times </p>
+      <button onClick={() => setCount(count + 1)}> Click me </button>
     </div>
   );
 }

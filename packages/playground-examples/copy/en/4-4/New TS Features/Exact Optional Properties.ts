@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.4.2", exactOptionalPropertyTypes: true } }
+//// { "compiler": { "ts": "4.4.2", "exactOptionalPropertyTypes": true } }
 // With exactOptionalPropertyTypes enabled, TypeScript
 // has stricter rules around what you can set an optional
 // property to.

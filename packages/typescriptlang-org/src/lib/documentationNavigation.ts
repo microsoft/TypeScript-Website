@@ -346,6 +346,12 @@ export function getDocumentationNavForLanguage(
           oneline: "All TypeScript release notes",
         },
         {
+          title: "TypeScript 4.5 Beta",
+          id: "4-typescript-4.5-beta",
+          permalink: "/docs/handbook/release-notes/typescript-4-5.html",
+          oneline: "TypeScript 4.5 Beta elease Notes",
+        },
+        {
           title: "TypeScript 4.4",
           id: "4-typescript-4.4",
           permalink: "/docs/handbook/release-notes/typescript-4-4.html",
@@ -1059,6 +1065,12 @@ export function getDocumentationNavForLanguage(
           oneline: "All TypeScript release notes",
         },
         {
+          title: "TypeScript 4.5 Beta",
+          id: "4-typescript-4.5-beta",
+          permalink: "/docs/handbook/release-notes/typescript-4-5.html",
+          oneline: "TypeScript 4.5 Beta elease Notes",
+        },
+        {
           title: "TypeScript 4.4",
           id: "4-typescript-4.4",
           permalink: "/docs/handbook/release-notes/typescript-4-4.html",
@@ -1770,6 +1782,12 @@ export function getDocumentationNavForLanguage(
           id: "4-overview",
           permalink: "/docs/handbook/release-notes/overview.html",
           oneline: "All TypeScript release notes",
+        },
+        {
+          title: "TypeScript 4.5 Beta",
+          id: "4-typescript-4.5-beta",
+          permalink: "/docs/handbook/release-notes/typescript-4-5.html",
+          oneline: "TypeScript 4.5 Beta elease Notes",
         },
         {
           title: "TypeScript 4.4",
@@ -2486,6 +2504,12 @@ export function getDocumentationNavForLanguage(
           oneline: "All TypeScript release notes",
         },
         {
+          title: "TypeScript 4.5 Beta",
+          id: "4-typescript-4.5-beta",
+          permalink: "/docs/handbook/release-notes/typescript-4-5.html",
+          oneline: "TypeScript 4.5 Beta elease Notes",
+        },
+        {
           title: "TypeScript 4.4",
           id: "4-typescript-4.4",
           permalink: "/docs/handbook/release-notes/typescript-4-4.html",
@@ -3197,6 +3221,12 @@ export function getDocumentationNavForLanguage(
           id: "4-overview",
           permalink: "/docs/handbook/release-notes/overview.html",
           oneline: "All TypeScript release notes",
+        },
+        {
+          title: "TypeScript 4.5 Beta",
+          id: "4-typescript-4.5-beta",
+          permalink: "/docs/handbook/release-notes/typescript-4-5.html",
+          oneline: "TypeScript 4.5 Beta elease Notes",
         },
         {
           title: "TypeScript 4.4",
@@ -3912,6 +3942,12 @@ export function getDocumentationNavForLanguage(
           oneline: "All TypeScript release notes",
         },
         {
+          title: "TypeScript 4.5 Beta",
+          id: "4-typescript-4.5-beta",
+          permalink: "/docs/handbook/release-notes/typescript-4-5.html",
+          oneline: "TypeScript 4.5 Beta elease Notes",
+        },
+        {
           title: "TypeScript 4.4",
           id: "4-typescript-4.4",
           permalink: "/docs/handbook/release-notes/typescript-4-4.html",
@@ -4625,6 +4661,12 @@ export function getDocumentationNavForLanguage(
           oneline: "All TypeScript release notes",
         },
         {
+          title: "TypeScript 4.5 Beta",
+          id: "4-typescript-4.5-beta",
+          permalink: "/docs/handbook/release-notes/typescript-4-5.html",
+          oneline: "TypeScript 4.5 Beta elease Notes",
+        },
+        {
           title: "TypeScript 4.4",
           id: "4-typescript-4.4",
           permalink: "/docs/handbook/release-notes/typescript-4-4.html",
@@ -5336,6 +5378,12 @@ export function getDocumentationNavForLanguage(
           id: "4-overview",
           permalink: "/docs/handbook/release-notes/overview.html",
           oneline: "All TypeScript release notes",
+        },
+        {
+          title: "TypeScript 4.5 Beta",
+          id: "4-typescript-4.5-beta",
+          permalink: "/docs/handbook/release-notes/typescript-4-5.html",
+          oneline: "TypeScript 4.5 Beta elease Notes",
         },
         {
           title: "TypeScript 4.4",

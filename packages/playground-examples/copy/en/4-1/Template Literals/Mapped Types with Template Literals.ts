@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.1.0-dev.20201028" } }
+//// { "compiler": { "ts": "4.1.0-dev.20201028" } }
 
 // TypeScript 4.1 added support for template literals, you can
 // understand some of the basics in example:intro-to-template-literals
@@ -33,8 +33,8 @@ type RESTify<Type> = {
 // Now we have a list of objects available through the API:
 
 interface APIs {
-  artwork: { id: string, title: string};
-  artist: { id: string, name: string};
+  artwork: { id: string, title: string };
+  artist: { id: string, name: string };
   location: { id: string, address: string, country: string }
 }
 

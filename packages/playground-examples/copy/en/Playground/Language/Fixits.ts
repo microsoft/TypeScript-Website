@@ -1,4 +1,4 @@
-//// { compiler: {  }, order: 1 }
+//// { "compiler": {  }, "order": 1 }
 
 // TypeScript supports a lot of fixits, which are automated
 // helpers to refactor your code. For example if you select

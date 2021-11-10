@@ -1,4 +1,4 @@
-//// { compiler: { ts: "3.8.3" } }
+//// { "compiler": { "ts": "3.8.3" } }
 // 3.8 adds private fields, which are a way of declaring a class field to
 // be unavailable outside of the containing class, including to subclasses.
 

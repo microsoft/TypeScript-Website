@@ -217,6 +217,10 @@ $headline-foreground-bg: white;
 
   .col1 {
     min-width: 230px;
+
+    @media (max-width: "360px") {
+      max-width: calc(100% - 2rem);
+    }
   }
 
   .darkblue {
@@ -295,11 +299,19 @@ $headline-foreground-bg: white;
       display: flex;
       flex-direction: column;
       position: relative;
+
+      @media (max-width: "360px") {
+        max-width: 100%;
+      }
     }
   }
 
   .headline-diagram {
     display: relative;
+
+    @media screen and (-ms-high-contrast: active) {
+      border: 2px solid white;
+    }
 
     pre .code-container {
       overflow: hidden;
@@ -520,9 +532,13 @@ $headline-foreground-bg: white;
     justify-content: center;
     margin-bottom: 20px;
 
-    @media screen and (-ms-high-contrast: black-on-white) {
+    svg path {
+      fill: black;
+    }
+
+    @media screen and (-ms-high-contrast: active) {
       svg path {
-        fill: white;
+        fill: yellow;
       }
     }
   }

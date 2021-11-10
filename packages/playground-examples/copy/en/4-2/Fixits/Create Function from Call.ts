@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.2.0-beta" } }
+//// { "compiler": { "ts": "4.2.0-beta" } }
 // In 4.2 a community member (@a-tarasyuk) added the ability to generate functions
 // from calls which aren't defined. For example if you select all the code on line 5,
 // then click "Quick Fix", you will see the option to have the missing function generated.

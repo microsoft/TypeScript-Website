@@ -84,11 +84,11 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   const selectedID = props.pageContext.id || "NO-ID"
   const sidebarHeaders = post.headings?.filter(h => (h?.depth || 0) <= 3) || []
   const showSidebar = !post.frontmatter.disable_toc
+  const showExperimental = post.frontmatter.experimental
   const showSidebarHeadings = post.headings && sidebarHeaders.length <= 30
   const navigation = getDocumentationNavForLanguage(props.pageContext.lang)
   const isHandbook = post.frontmatter.handbook
   const prefix = isHandbook ? "Handbook" : "Documentation"
-
 
   const slug = slugger()
   return (
@@ -136,6 +136,20 @@ const HandbookTemplate: React.FC<Props> = (props) => {
                 </div>
               </div>
             </>
+          }
+
+          {showExperimental && 
+           <div id="deprecated-header">
+                <div id="deprecated-content">
+                  <div id="deprecated-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7.5" stroke="black" /><path d="M8 3V9" stroke="black" /><path d="M8 11L8 13" stroke="black" /></svg>
+                  </div>
+                  <div>
+                    <h3>{i("handb_experimental_title")}</h3>
+                    <p>{i("handb_experimental_subtitle")}</p>
+                  </div>
+                </div>
+            </div>
           }
 
           <h2>{post.frontmatter.title}</h2>
@@ -202,6 +216,7 @@ export const pageQuery = graphql`
         preamble
         deprecated_by
         deprecation_redirects
+        experimental
       }
     }
 

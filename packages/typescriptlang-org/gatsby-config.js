@@ -66,7 +66,7 @@ module.exports = {
       resolve: `gatsby-plugin-sitemap`,
       options: {
         // Skip handbook v2 from appearing in search
-        excludes: [`*/2/*`, `*/glossary`, `*/vo/*`],
+        excludes: [`*/glossary`, `*/vo/*`],
       },
     },
     // Lets you edit the head from inside a react tree

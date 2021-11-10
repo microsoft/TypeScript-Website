@@ -5519,7 +5519,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript/ata@0.9.0, @typescript/ata@workspace:packages/ata":
+"@typescript/ata@0.9.3, @typescript/ata@workspace:packages/ata":
   version: 0.0.0-use.local
   resolution: "@typescript/ata@workspace:packages/ata"
   dependencies:
@@ -5527,6 +5527,8 @@ __metadata:
     esbuild: ^0.12.9
     esbuild-jest: ^0.5.0
     jest: "*"
+  peerDependencies:
+    typescript: ^4.4.4
   languageName: unknown
   linkType: soft
 
@@ -5556,7 +5558,7 @@ __metadata:
     "@typescript/sandbox": 0.1.0
     esbuild: ^0.13.4
     jest: "*"
-    monaco-editor: ~0.20.0
+    monaco-editor: ^0.29.1
     monaco-typescript: ^3.7.0
     typescript: "*"
   languageName: unknown
@@ -5567,10 +5569,10 @@ __metadata:
   resolution: "@typescript/sandbox@workspace:packages/sandbox"
   dependencies:
     "@types/jest": ^25.1.3
-    "@typescript/ata": 0.9.0
+    "@typescript/ata": 0.9.3
     "@typescript/vfs": 1.3.5
     jest: "*"
-    monaco-editor: ~0.20.0
+    monaco-editor: ^0.29.1
     monaco-typescript: ^3.7.0
     ts-jest: ^26.4.4
     typescript: "*"
@@ -20178,10 +20180,10 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"monaco-editor@npm:~0.20.0":
-  version: 0.20.0
-  resolution: "monaco-editor@npm:0.20.0"
-  checksum: a7c7bf738bb8625812d40447be2fc085652fe40611a1a161f12983823d54f2d53b4ed5cf2b42841d8099ce3b536bd042fb6b781acce55a7183b99aa743a7ca39
+"monaco-editor@npm:^0.29.1":
+  version: 0.29.1
+  resolution: "monaco-editor@npm:0.29.1"
+  checksum: bc1df4f0c026073fdfc5b25487c58eabc82b7341653e75e5a5fa06c7754f823d0751d1eb5f4fb1cc4a0d5d0f1ca801b724b3997e0b5acc942e68358be9d70b71
   languageName: node
   linkType: hard
 

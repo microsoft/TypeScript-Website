@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.3.4" } }
+//// { "compiler": { "ts": "4.3.4" } }
 // TypeScript's type system aims to provide type tools
 // which match existing JavaScript code, and one of the
 // features which comes natural to JavaScript code is

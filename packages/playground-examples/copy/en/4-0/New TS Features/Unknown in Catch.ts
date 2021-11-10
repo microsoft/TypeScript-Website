@@ -1,11 +1,11 @@
-//// { compiler: { ts: "4.0.2" } }
+//// { "compiler": { "ts": "4.0.2" } }
 
 // Because JavaScript allows throwing any value, TypeScript
 // does not support declaring the type of an error
 
 try {
   // ..
-} catch (e) {}
+} catch (e) { }
 
 // Historically, this has meant that the `e` in the catch
 // would default to any. This allowed for the freedom to

@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.2.0-beta" } }
+//// { "compiler": { "ts": "4.2.0-beta" } }
 // Type aliases differ from interfaces in that they aren't guaranteed to
 // keep their name as they are used throughout the compiler. In part, this
 // is a trade-off on what gives them their flexibility, but the downside

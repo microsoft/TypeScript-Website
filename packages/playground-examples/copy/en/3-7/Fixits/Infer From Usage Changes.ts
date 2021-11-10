@@ -1,4 +1,4 @@
-//// { compiler: {  noImplicitAny: false }, order: 2 }
+//// { "compiler": {  "noImplicitAny": false }, "order": 2 }
 
 // With 3.7 TypeScript's existing 'infer from usage'
 // code fix became smarter. It will now use a list of

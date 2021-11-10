@@ -33,7 +33,7 @@ All localizations live inside the `copy` folder:
 - There must be a `sections.json` in the root of each language
 - A language is created by copying over an english example with the same path, and then translating it
 - Any examples not copied over fall back to the english version
-- You can change the name of an example for your language by having `//// { title: 'c0d3 fl0w', ... }` in the first line of the example
+- You can change the name of an example for your language by having `//// { "title": 'c0d3 fl0w', ... }` in the first line of the example
 
 Languages are compiled to TOC JSON files in [`generated`](./generated), one per lanaguge.
 

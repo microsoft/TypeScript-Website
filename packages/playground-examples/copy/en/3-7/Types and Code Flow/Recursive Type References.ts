@@ -1,4 +1,4 @@
-//// { compiler: {  }, order: 2 }
+//// { "compiler": {  }, "order": 2 }
 
 // Choosing between using type vs interface is about the
 // constraints in the features for each. With 3.7, one of
@@ -17,7 +17,7 @@ type ValueOrArray<T> = T | Array<ValueOrArray<T>>;
 // An implementation would have looked like this, by mixing
 // the type with an interface.
 type ValueOrArray2<T> = T | ArrayOfValueOrArray<T>;
-interface ArrayOfValueOrArray<T> extends Array<ValueOrArray2<T>> {}
+interface ArrayOfValueOrArray<T> extends Array<ValueOrArray2<T>> { }
 
 // This allows for a comprehensive definition of JSON,
 // which works by referring to itself.

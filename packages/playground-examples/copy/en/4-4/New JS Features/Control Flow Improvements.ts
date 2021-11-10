@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.4.2" } }
+//// { "compiler": { "ts": "4.4.2" } }
 // Control Flow Analysis is the name for the system which
 // narrows the potential types an identifier can be based
 // on the code someone has wrote, you can get an overview

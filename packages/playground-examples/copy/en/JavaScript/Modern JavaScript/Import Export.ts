@@ -1,4 +1,4 @@
-//// { order: 1, target: "ES5" }
+//// { "order": 1, "target": "ES5" }
 
 // JavaScript added import/export to the language back in 2016
 // and TypeScript has complete support for this style of
@@ -74,7 +74,7 @@ export const numberOfStickers = 11;
 // a default export is close to the same thing.
 
 /** Generates a sticker for you */
-const stickerGenerator = () => {};
+const stickerGenerator = () => { };
 export default stickerGenerator;
 
 // This could be imported into another file by:

@@ -1,4 +1,4 @@
-//// { order: 5, isJavaScript: true }
+//// { "order": 5, "isJavaScript": true }
 
 // This example creates an HTML canvas which uses WebGL to
 // render spinning confetti using JavaScript. We're going

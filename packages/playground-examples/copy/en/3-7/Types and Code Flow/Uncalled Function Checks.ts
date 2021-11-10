@@ -1,4 +1,4 @@
-//// { compiler: {  }, order: 1 }
+//// { "compiler": {  }, "order": 1 }
 
 // New to 3.7 is a check inside if statements for
 // when you accidentally use a function instead

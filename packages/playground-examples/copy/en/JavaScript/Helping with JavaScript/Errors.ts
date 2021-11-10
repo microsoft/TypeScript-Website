@@ -1,4 +1,4 @@
-//// { order: 3, isJavaScript: true }
+//// { "order": 3, "isJavaScript": true }
 
 // By default TypeScript doesn't provide error messaging
 // inside JavaScript. Instead the tooling is focused on

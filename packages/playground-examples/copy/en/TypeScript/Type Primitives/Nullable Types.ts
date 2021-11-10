@@ -1,4 +1,4 @@
-//// { order: 3, compiler: { strictNullChecks: false } }
+//// { "order": 3, "compiler": { "strictNullChecks": false } }
 
 // JavaScript has two ways to declare values which don't
 // exist, and TypeScript adds extra syntax which allows even
@@ -77,7 +77,7 @@ if (userID) {
 // Void is the return type of a function which does not
 // return a value.
 
-const voidFunction = () => {};
+const voidFunction = () => { };
 const resultOfVoidFunction = voidFunction();
 
 // This is usually an accident, and TypeScript keeps the void

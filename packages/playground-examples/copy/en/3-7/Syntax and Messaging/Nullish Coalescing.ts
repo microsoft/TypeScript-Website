@@ -1,4 +1,4 @@
-//// { compiler: {  }, order: 2 }
+//// { "compiler": {  }, "order": 2 }
 
 // The nullish coalescing operator is an alternative to ||
 // which returns the right-side expression if the left-side

@@ -1,4 +1,4 @@
-//// { compiler: { ts: "3.8.3" } }
+//// { "compiler": { "ts": "3.8.3" } }
 // In 3.8 we added new syntax for importing types, which
 // would be similar to users who have come from flow.
 
@@ -8,15 +8,15 @@
 // it will always be removed!
 
 // For example, this line will never add an import or require
-import type { CSSProperties } from 'react';
+import type { CSSProperties } from "react";
 
 // Which is used here as a type
 const style: CSSProperties = {
-  textAlign: 'center'
+  textAlign: "center",
 };
 
 // This is in contrast to this import:
-import * as React from 'react';
+import * as React from "react";
 
 // Which will be included in the JavaScript
 export class Welcome extends React.Component {
@@ -25,7 +25,7 @@ export class Welcome extends React.Component {
       <div style={style}>
         <h1>Hello, world</h1>
       </div>
-    )
+    );
   }
 }
 
@@ -33,11 +33,11 @@ export class Welcome extends React.Component {
 // types - it could also be removed. If you look in the
 // compiled JS output, this import is not included
 
-import { FunctionComponent } from 'react';
+import { FunctionComponent } from "react";
 
 export const BetaNotice: FunctionComponent = () => {
-  return <p>This page is still in beta</p>
-}
+  return <p>This page is still in beta</p>;
+};
 
 // This is called import elision, and it can be the source
 // of confusion. The syntax 'import type' allows you to be

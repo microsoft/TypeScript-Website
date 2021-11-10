@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.2.0-beta" } }
+//// { "compiler": { "ts": "4.2.0-beta" } }
 // TypeScript has supported abstract classes since 2015, which
 // provides compiler errors if you try to instantiate that class.
 
@@ -21,13 +21,13 @@ type AbstractConstructor<T> = abstract new (...args: any[]) => T
 // the subclasses must override 'walk' 
 abstract class Animal {
   abstract walk(): void;
-  breath() {}
+  breath() { }
 }
 
 // A mixin which adds a new function (in this case, animate)
 function animatableAnimal<T extends AbstractConstructor<object>>(Ctor: T) {
   abstract class StopWalking extends Ctor {
-      animate() { }
+    animate() { }
   }
   return StopWalking;
 }
@@ -38,7 +38,7 @@ function animatableAnimal<T extends AbstractConstructor<object>>(Ctor: T) {
 // to see what happens.
 
 class Dog extends animatableAnimal(Animal) {
-  walk() {}
+  walk() { }
 }
 
 

@@ -24,6 +24,7 @@ import { createUtils, PluginUtils } from "./pluginUtils"
 import type React from "react"
 import { settingsPlugin, getPlaygroundPlugins } from "./sidebar/settings"
 import { gistPoweredNavBar } from "./navigation"
+import { createTwoslashInlayProvider } from "./twoslashInlays"
 
 export { PluginUtils } from "./pluginUtils"
 
@@ -78,8 +79,8 @@ export const setupPlayground = (
   react: typeof React
 ) => {
   const playgroundParent = sandbox.getDomNode().parentElement!.parentElement!.parentElement!
-  // UI to the left
 
+  // UI to the left
   const leftNav = createNavigationSection()
   playgroundParent.insertBefore(leftNav, sandbox.getDomNode().parentElement!.parentElement!)
 
@@ -92,12 +93,12 @@ export const setupPlayground = (
   const showNav = () => {
     const right = document.getElementsByClassName("playground-sidebar").item(0)!
     const middle = document.getElementById("editor-container")!
-    middle.style.width = `calc(100% - ${right.clientWidth + 180}px)`
+    middle.style.width = `calc(100% - ${right.clientWidth + 210}px)`
 
     leftNav.style.display = "block"
-    leftNav.style.width = "180px"
-    leftNav.style.minWidth = "180px"
-    leftNav.style.maxWidth = "180px"
+    leftNav.style.width = "210px"
+    leftNav.style.minWidth = "210px"
+    leftNav.style.maxWidth = "210px"
     dragBarLeft.style.display = "block"
   }
 
@@ -224,7 +225,7 @@ export const setupPlayground = (
 
     // Add an outer package.json with 'module: type' and ensures all the
     // other settings are inline for ESM mode
-    const moduleNumber = sandbox.getCompilerOptions().module as number || 0
+    const moduleNumber = (sandbox.getCompilerOptions().module as number) || 0
     const isESMviaModule = moduleNumber > 99 && moduleNumber < 200
     const moduleResNumber = sandbox.getCompilerOptions().moduleResolution || 0
     const isESMviaModuleRes = moduleResNumber > 2 && moduleResNumber < 100
@@ -232,7 +233,9 @@ export const setupPlayground = (
     if (isESMviaModule || isESMviaModuleRes) {
       if (isESMMode) return
       isESMMode = true
-      setTimeout(() => { ui.flashInfo(i("play_esm_mode")) }, 300)
+      setTimeout(() => {
+        ui.flashInfo(i("play_esm_mode"))
+      }, 300)
 
       const nextRes = moduleNumber === 199 ? 99 : 2
       sandbox.setCompilerSettings({ target: 99, moduleResolution: nextRes })
@@ -653,6 +656,10 @@ export const setupPlayground = (
         }
       }
     }
+  }
+
+  if (monaco.languages.registerInlayHintsProvider) {
+    monaco.languages.registerInlayHintsProvider(sandbox.language, createTwoslashInlayProvider(sandbox))
   }
 
   if (location.hash.startsWith("#show-examples")) {

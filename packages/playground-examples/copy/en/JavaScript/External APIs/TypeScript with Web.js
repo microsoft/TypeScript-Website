@@ -1,4 +1,4 @@
-//// { order: 0, isJavaScript: true }
+//// { "order": 0, "isJavaScript": true }
 
 // The DOM (Document Object Model) is the underlying API for
 // working with a webpage, and TypeScript has great support

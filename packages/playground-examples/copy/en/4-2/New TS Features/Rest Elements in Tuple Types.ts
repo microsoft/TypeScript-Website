@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.2.0-beta" } }
+//// { "compiler": { "ts": "4.2.0-beta" } }
 // Tuple types are a feature where the position of a type in an
 // array is important. For example, in string[] (array) you know that all
 // elements in the array are a string, in [string] (tuple) you know that

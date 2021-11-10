@@ -1,4 +1,4 @@
-//// { compiler: { ts: "3.8.3" } }
+//// { "compiler": { "ts": "3.8.3" } }
 // In previous versions of TypeScript, the checker would not
 // verify that undeclared fields in a union conform to any indexed
 // types in the union.

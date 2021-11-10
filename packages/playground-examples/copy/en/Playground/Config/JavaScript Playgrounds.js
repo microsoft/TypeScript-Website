@@ -1,4 +1,4 @@
-//// { order: 3, isJavaScript: true }
+//// { "order": 3, "isJavaScript": true }
 
 // The playground can now handle JavaScript files.
 
