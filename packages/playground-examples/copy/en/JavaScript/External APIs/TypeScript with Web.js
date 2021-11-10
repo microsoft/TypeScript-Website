@@ -57,6 +57,7 @@ closeButton.style.position = "absolute";
 closeButton.style.top = "3px";
 closeButton.style.right = "8px";
 closeButton.style.color = "white";
+closeButton.style.cursor = "pointer";
 
 closeButton.onclick = () => {
   removePopover();

@@ -18,6 +18,7 @@ canvas.style.bottom = "10px";
 canvas.style.right = "20px";
 canvas.style.width = "500px";
 canvas.style.height = "400px";
+canvas.style.zIndex = "100";
 
 // Next, to make it easy to make changes, we remove any older
 // versions of the canvas when hitting "Run" - now you can
