@@ -689,7 +689,7 @@ It also has the special property that values of type `Function` can always be ca
 
 ```ts twoslash
 function doSomething(f: Function) {
-  f(1, 2, 3);
+  return f(1, 2, 3);
 }
 ```
 
