@@ -8,10 +8,12 @@ type TwoSlashFiles = Array<{ file: string, startIndex: number, endIndex: number,
 // manipulates those functions in order to create an additional twoslash vfs layer on top of the existing vfs.
 
 const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts, libFileMap) => {
-    return class MonacoTSWorker extends TypeScriptWorker {
+    // @ts-ignore
+    const params = new URLSearchParams(self.search)
+    const extension = (!!params.get("useJavaScript") ? "js" : params.get("filetype") || "ts") as any
 
-        // TODO:  when migrating to the TS playground, this needs to be set by the playground somehow
-        mainFile = "input.tsx"
+    return class MonacoTSWorker extends TypeScriptWorker {
+        mainFile = `input.${extension}`
 
         // This is the cache key that additionalTwoslashFiles is reasonable
         twolashFilesModelString: string = ""
@@ -157,7 +159,7 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
 
         override async getQuickInfoAtPosition(fileName: string, position: number) {
             const empty = Promise.resolve({ kind: "" as any, kindModifiers: "", textSpan: { start: 0, length: 0 } })
-            const pos = await this._overrideFileNamePos(super.getQuickInfoAtPosition.bind(this), fileName, position, undefined, empty, (result: QuickInfo, twoslashFile) => {
+            const pos = await this._overrideFileNamePos(super.getQuickInfoAtPosition.bind(this), fileName, position, undefined, empty, (result: QuickInfo | undefined, twoslashFile) => {
                 if (twoslashFile && result && result.textSpan)
                     result.textSpan.start += twoslashFile.startIndex
 
@@ -236,14 +238,14 @@ const worker: import("./types").CustomTSWebWorkerFactory = (TypeScriptWorker, ts
             position: number,
             other: any,
             empty: ReturnType<T>,
-            editFunc: (res: Awaited<ReturnType<T>>) => any): Promise<ReturnType<T>> {
+            editFunc: (res: Awaited<ReturnType<T>>, twoslash: TwoSlashFiles[0] | undefined) => any): Promise<ReturnType<T>> {
             const newLocation = this.repositionInTwoslash(fileName, position)
             // Gaps between files skip the info, pass back a blank
             if (!newLocation) return empty
 
             const { tsFileName, tsPosition } = newLocation
             const result = await fnc.bind(this)(tsFileName, tsPosition, other)
-            editFunc(result)
+            editFunc(result, this.twoslashFiles.find(f => f.file === tsFileName))
             return result
         }
 

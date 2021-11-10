@@ -109,7 +109,7 @@ const Play: React.FC<Props> = (props) => {
       }
 
       // Allow prod/staging builds to set a custom commit prefix to bust caches
-      const {sandboxRoot, playgroundRoot} = getPlaygroundUrls()
+      const {sandboxRoot, playgroundRoot, playgroundWorker} = getPlaygroundUrls()
       
       // @ts-ignore
       const re: any = global.require
@@ -152,14 +152,16 @@ const Play: React.FC<Props> = (props) => {
         const height = Math.max(window.innerHeight, 600)
         container.style.height = `${height - Math.round(container.getClientRects()[0].top) - 18}px`
 
+        const extension = (!!params.get("useJavaScript") ? "js" : params.get("filetype") || "ts") as any
         // Create the sandbox
         const sandboxEnv = await sandbox.createTypeScriptSandbox({
           text: localStorage.getItem('sandbox-history') || i("play_default_code_sample"),
           compilerOptions: {},
           domID: "monaco-editor-embed",
-          filetype: (!!params.get("useJavaScript") ? "js" : params.get("filetype") || "ts") as any,
+          filetype: extension,
           acquireTypes: !localStorage.getItem("disable-ata"),
           supportTwoslashCompilerOptions: true,
+          customTypeScriptWorkerPath: `${document.location.origin + playgroundWorker}?filetype=${extension}`,
           monacoSettings: {
             fontFamily: "var(--code-font)",
             fontLigatures: true
