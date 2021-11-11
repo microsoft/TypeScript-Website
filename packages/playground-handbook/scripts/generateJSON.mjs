@@ -16,31 +16,33 @@ const types = `export type PHandbookPage = ${mds.map(t => `"${t}"`).join(" | ")}
 writeFileSync(join(__dirname, "types.d.ts"), types)
 
 /** @type {import("./types").PHandbookPage[]} */
+// prettier-ignore
 const contents = [
-  "Overview.md",
-  "Compiler Settings.md",
-  "Examples.md",
-  "JS + DTS sidebars.md",
-  "Running Code.md",
-  "Type Acquisition.md",
-  "Settings Panel.md",
-  "Writing JavaScript.md",
-  "Writing DTS Files.md",
-  "TypeScript Versions.md",
-  "URL Structure.md",
-  "Plugins.md",
-  "Exporting Your Code.md",
+  "Overview.md",            // 0
+  "Compiler Settings.md",   // 1
+  "Examples.md",            // 2
+  "JS + DTS sidebars.md",   // 3
+  "Running Code.md",        // 4
+  "Type Acquisition.md",    // 5
+  "Settings Panel.md",      // 6
+  "Writing JavaScript.md",  // 7
+  "Writing DTS Files.md",   // 8
+  "TypeScript Versions.md", // 9
+  "URL Structure.md",       // 10
+  "Plugins.md",             // 11
+  "Exporting Your Code.md", // 12
 ]
 
 /** @type {import("./types").PHandbookPage[]} */
+// prettier-ignore
 const extended = [
-  "Extended Edition.md",
-  "Twoslash Annotations.md",
-  "Multi-File Playgrounds.md",
-  "Gist Docsets.md",
-  "Bug Workbench.md",
-  "Writing Plugins.md",
-  "Implementation Details.md",
+  "Extended Edition.md",       // 12
+  "Twoslash Annotations.md",   // 13
+  "Multi-File Playgrounds.md", // 14
+  "Gist Docsets.md",           // 15
+  "Bug Workbench.md",          // 16
+  "Writing Plugins.md",        // 17
+  "Implementation Details.md", // 18
 ]
 
 const outputDir = join(__dirname, "../output")

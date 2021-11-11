@@ -63,17 +63,23 @@ export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void)
     })
 }
 
-
+/** Use the handbook TOC which is injected into the globals to create a sidebar  */
 export const showNavForHandbook = (sandbox: Sandbox) => {
   // @ts-ignore
   const content = window.playgroundHandbookTOC.docs
   updateNavWithStoryContent("Handbook", content, "/play?#handbook", sandbox)
 }
 
+/** Just sets up the DOM actually. so it's kinda misnamed */
 export const hideNavForHandbook = (sandbox: Sandbox) => {
   showCode(sandbox)
 }
 
+
+/** 
+ * Assumes a nav has been set up already, and then fills out the content of the nav bar
+ * with clickable links for each potential story.
+ */
 const updateNavWithStoryContent = (title: string, storyContent: StoryContent[], prefix: string, sandbox: Sandbox) => {
   const nav = document.getElementById("navigation-container")
   if (!nav) return
@@ -222,8 +228,8 @@ const setStory = (html: string | HTMLElement, sandbox: Sandbox) => {
       }
     }
 
-    // overwrite gist links
-    else if (a.hash.includes("#gist/")) {
+    // overwrite gist/handbook links
+    else if (a.hash.includes("#gist/") || a.hash.includes("#handbook")) {
       a.onclick = e => {
         const index = Number(a.hash.split("-")[1])
         const nav = document.getElementById("navigation-container")
