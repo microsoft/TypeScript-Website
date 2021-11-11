@@ -75,7 +75,7 @@ If you're converting a program from namespaces to modules, it can be easy to end
 - `shapes.ts`
 
   ```ts
-  declare namespace Shapes {
+  export namespace Shapes {
     export class Triangle {
       /* ... */
     }
