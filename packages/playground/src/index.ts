@@ -433,10 +433,15 @@ export const setupPlayground = (
     }
   })
 
+  // Support clicking the handbook button on the top nav
   const handbookButton = document.getElementById("handbook-button")
   if (handbookButton) {
     let showingHandbook = false
     handbookButton.onclick = () => {
+      if (!handbookButton.parentElement!.classList.contains("active")) {
+        ui.flashInfo("Cannot open the Playground handbook when in a Gist")
+        return
+      }
       if (!showingHandbook) {
         handbookButton.parentElement!.classList.add("open")
         showNav()
@@ -704,7 +709,9 @@ export const setupPlayground = (
 
   // Auto-load into the playground
   if (location.hash.startsWith("#handbook")) {
-    gistPoweredNavBar(sandbox, ui, showNav)
+    setTimeout(() => {
+      document.getElementById("handbook-button")?.click()
+    }, 100)
   }
 
   return playground

@@ -7,15 +7,26 @@ type StoryContent =
 import type { Sandbox } from "typescriptlang-org/static/js/sandbox"
 import type { UI } from "./createUI"
 
+
+/**
+ * Uses the Playground gist proxy to generate a set of stories ^ which 
+ * correspond to files in the 
+ */
 export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void) => {
   const gistHash = location.hash.split("#gist/")[1]
-  const [gistID, gistStoryIndex] = gistHash.split("-")
+  const [gistID] = gistHash.split("-")
 
   // @ts-ignore
   window.appInsights && window.appInsights.trackEvent({ name: "Loaded Gist Playground", properties: { id: gistID } })
 
   sandbox.editor.updateOptions({ readOnly: true })
   ui.flashInfo(`Opening Gist ${gistID} as a Docset`, 2000)
+
+  // Disable the handbook button because we can't have two sidenavs
+  const handbookButton = document.getElementById("handbook-button")
+  if (handbookButton) {
+    handbookButton.parentElement!.classList.add("disabled")
+  }
 
   const playground = document.getElementById("playground-container")!
   playground.style.opacity = "0.5"
@@ -24,6 +35,7 @@ export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void)
   const relay = "https://typescriptplaygroundgistproxyapi.azurewebsites.net/api/API"
   fetch(`${relay}?gistID=${gistID}`)
     .then(async res => {
+      // Make editor work again
       playground.style.opacity = "1"
       sandbox.editor.updateOptions({ readOnly: false })
 
@@ -40,7 +52,7 @@ export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void)
         // If it's multi-file, then there's work to do
       } else if (response.type === "story") {
         showNav()
-        const prefix = `/play?#gist/${gistID}`
+        const prefix = `/play#gist/${gistID}`
         updateNavWithStoryContent(response.title, response.files, prefix, sandbox)
       }
     })
@@ -134,8 +146,8 @@ const updateNavWithStoryContent = (title: string, storyContent: StoryContent[], 
   })
   nav.appendChild(ul)
 
-  const gistHash = location.hash.split("-")[1]
-  const index = Number(gistHash) || 0
+  const pageID = location.hash.split("-")[1] || ""
+  const index = Number(pageID) || 0
 
   const targetedLi = ul.children.item(index) || ul.children.item(0)
   if (targetedLi) {
