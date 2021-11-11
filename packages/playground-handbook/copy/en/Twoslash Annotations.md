@@ -1,8 +1,21 @@
 ## Twoslash Annotations
 
-Twoslash is an annotation format for TypeScript which uses specially crafted comments (two slashes `//`)
+[Twoslash](https://www.npmjs.com/package/@typescript/twoslash) is an annotation format for TypeScript which uses specially crafted comments (two slashes `//`) as a markup format for writing code samples (available on npm at [`@typescript/twoslash`](https://www.npmjs.com/package/@typescript/twoslash)). It powers all the code samples in the TypeScript website, you can learn more about it [here](https://shikijs.github.io/twoslash/).
 
-The more arcane, but very ergonomic way to set a compiler setting is via [twoslash](https://www.typescriptlang.org/dev/twoslash/) commands which are comments which start with `// @`.
+#### Twoslash Queries
+
+The Playground supports showing the types at a certain location by using an empty comment with a `^?` to indicate the symbol you're interested in:
+
+```ts
+const abc = "Hello"
+//    ^?
+```
+
+Would add a realtime inline annotation about what the type of `abc` is into the editor. This can make typing complex types easier, and make it much more obvious when sharing code what you think is important.
+
+#### Twoslash Compiler Flags
+
+A more arcane, but very ergonomic way to set a compiler setting is via compiler flag which are comments starting with `// @`.
 
 The editor will auto-complete twoslash commands for any compiler setting for the current version of TypeScript in your Playground. If the setting is a boolean, you don't need to set a value:
 

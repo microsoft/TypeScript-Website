@@ -13,7 +13,8 @@ Changing a compiler flag will update the URL in your browser (unless you have th
 ```diff
 # Before
 - https://www.typescriptlang.org/play
-# After turning it off
+
+# After turning esModuleInterop off
 + https://www.typescriptlang.org/play?esModuleInterop=false
 ```
 
@@ -56,7 +57,6 @@ export function getDefaultSandboxCompilerOptions(config: SandboxConfig, monaco: 
     noImplicitReturns: true,
     noUncheckedIndexedAccess: false,
 
-    // 3.7 off, 3.8 on I think
     useDefineForClassFields: false,
 
     alwaysStrict: true,
@@ -98,4 +98,4 @@ This includes a lot of values which are set to their default value too. Which ac
 
 </details>
 
-That's that for the compiler settings. Next up, [running your JavaScript](/play#handbook-4).
+That's that for the compiler settings. Next up, [Examples](/play#handbook-2).

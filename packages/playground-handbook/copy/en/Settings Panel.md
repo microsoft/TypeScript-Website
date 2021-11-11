@@ -6,7 +6,7 @@ Hidden in the top right corner, under "Search Docs" is the "Settings" button whe
 
 **"Disable ATA"**
 
-Turns off [Type Aquisition](/play#handbook-5) which means that when importing code, the Playground will not try to acquire the types via the internet.
+Turns off [Type Acquisition](/play#handbook-5) which means that when importing code, the Playground will not try to acquire the types via the internet.
 
 **"Disable Save-On-Type"**
 

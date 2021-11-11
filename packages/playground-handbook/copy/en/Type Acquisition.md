@@ -31,4 +31,4 @@ If you need more control over the version of the types which are imported into t
 import { xy } from "xyz" // types: beta
 ```
 
-The type acquisition as-is is quite eager and may start pulling your types before you've set the npm tag or version. In that case, you can reload your browser to get the right version.
+The type acquisition as-is is quite eager and may start pulling your types before you've set the npm tag or version. In that case, you can reload your browser once it's written to get the right version.
