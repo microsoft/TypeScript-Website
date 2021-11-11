@@ -98,4 +98,4 @@ This includes a lot of values which are set to their default value too. Which ac
 
 </details>
 
-That's that for the compiler settings. Next up, [running your JavaScript]().
+That's that for the compiler settings. Next up, [running your JavaScript](/play#handbook-4).

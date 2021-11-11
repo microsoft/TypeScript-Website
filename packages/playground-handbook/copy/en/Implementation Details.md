@@ -4,7 +4,7 @@ If you want to understand the technical architecture of the playground, you can 
 
 In rough, the Playground is a DOM app built in TypeScript, it uses no frameworks or external libraries. While the Playground lives inside the TypeScript website which is a React app, it doesn't make any use of the library. This is to keep the required technical know-how low to encourage contributions from TypeScript compiler-team members.
 
-As an abstraction, the Playground is the editor, the sidebar and the tool bars. Different "Playgrounds" exist on the TypeScript website (like the [Bug Workbench](..?)) but the main difference is that they have different sets of default plugins.
+As an abstraction, the Playground is the editor, the sidebar and the tool bars. Different "Playgrounds" exist on the TypeScript website (like the [Bug Workbench](/play#handbook-16)) but the main difference is that they have different sets of default plugins.
 
 Quite a lot of the Playground's features live inside a library called the TypeScript Sandbox, which is a wrapper for Monaco. So, Monaco lives in the Sandbox, the Sandbox lives in the Playground.
 
