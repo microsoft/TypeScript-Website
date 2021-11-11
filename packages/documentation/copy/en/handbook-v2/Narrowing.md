@@ -18,20 +18,20 @@ If `padding` is a `string`, it should just prepend `padding` to `input`.
 Let's try to implement the logic for when `padLeft` is passed a `number` for `padding`.
 
 ```ts twoslash
-// @errors: 2365
+// @errors: 2345
 function padLeft(padding: number | string, input: string) {
-  return new Array(padding + 1).join(" ") + input;
+  return " ".repeat(padding) + input;
 }
 ```
 
-Uh-oh, we're getting an error on `padding + 1`.
+Uh-oh, we're getting an error on `padding`.
 TypeScript is warning us that adding a `number` to a `number | string` might not give us what we want, and it's right.
 In other words, we haven't explicitly checked if `padding` is a `number` first, nor are we handling the case where it's a `string`, so let's do exactly that.
 
 ```ts twoslash
 function padLeft(padding: number | string, input: string) {
   if (typeof padding === "number") {
-    return new Array(padding + 1).join(" ") + input;
+    return " ".repeat(padding) + input;
   }
   return padding + input;
 }
@@ -52,8 +52,8 @@ In many editors we can observe these types as they change, and we'll even do so 
 ```ts twoslash
 function padLeft(padding: number | string, input: string) {
   if (typeof padding === "number") {
-    return new Array(padding + 1).join(" ") + input;
-    //               ^?
+    return " ".repeat(padding) + input;
+    //                ^?
   }
   return padding + input;
   //     ^?
@@ -376,7 +376,7 @@ For example
 ```ts twoslash
 function padLeft(padding: number | string, input: string) {
   if (typeof padding === "number") {
-    return new Array(padding + 1).join(" ") + input;
+    return " ".repeat(padding) + input;
   }
   return padding + input;
 }
