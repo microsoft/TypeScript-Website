@@ -18,7 +18,7 @@ If `padding` is a `string`, it should just prepend `padding` to `input`.
 Let's try to implement the logic for when `padLeft` is passed a `number` for `padding`.
 
 ```ts twoslash
-// @errors: 2365
+// @errors: 2345
 function padLeft(padding: number | string, input: string) {
   return " ".repeat(padding) + input;
 }
