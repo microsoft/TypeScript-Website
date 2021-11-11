@@ -1,6 +1,9 @@
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 const { createPages } = require("./lib/bootup/createPages")
-const { addPathToSite, writeAllPathsToFixture } = require("./lib/bootup/pathsOnSiteTracker")
+const {
+  addPathToSite,
+  writeAllPathsToFixture,
+} = require("./lib/bootup/pathsOnSiteTracker")
 
 /** @type { import("gatsby").GatsbyNode } */
 const config = {}

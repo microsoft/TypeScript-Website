@@ -224,10 +224,16 @@ main > nav {
   }
 
   > ul {
+    li.disabled {
+      opacity: 0.5;
+    }
     li.active {
       &:hover,
       &.open {
         background-color: var(--playground-dropdown-bg);
+      }
+      &.open .caret {
+        transform: scaleY(-1);
       }
 
       &.name:hover {

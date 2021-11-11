@@ -6,7 +6,7 @@
 import { writeFileSync, readdirSync, existsSync, mkdirSync, copyFileSync } from "fs"
 
 import { dirname, join } from "path"
-import { fileURLToPath } from "url"
+import { domainToASCII, fileURLToPath } from "url"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, "..")
@@ -46,9 +46,29 @@ const extended = [
 const outputDir = join(__dirname, "../output")
 if (!existsSync(outputDir)) mkdirSync(outputDir)
 
-const orderedFiles = [...contents, ...extended]
-orderedFiles.forEach((path, i) => {
-  let num = i < 10 ? `0${i}` : i
-  if (i >= contents.length) num++
-  copyFileSync(join(__dirname, "..", path), join(outputDir, `${num} ~ ${path}`))
-})
+const json = {
+  docs: [],
+}
+
+const idize = string =>
+  string
+    .toLowerCase()
+    .replace(/[^\x00-\x7F]/g, "-")
+    .replace(/ /g, "-")
+    .replace(/\//g, "-")
+    .replace(/\+/g, "-")
+
+const add = strs =>
+  strs.forEach((path, i) => {
+    json.docs.push({
+      type: "href",
+      title: path.replace(".md", ""),
+      href: "/_playground-handbook/" + idize(path.replace(".md", "")) + ".html",
+    })
+  })
+
+add(contents)
+json.docs.push({ type: "hr" })
+add(extended)
+
+writeFileSync(join(outputDir, "play-handbook.json"), JSON.stringify(json))
