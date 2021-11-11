@@ -75,7 +75,7 @@ If you're converting a program from namespaces to modules, it can be easy to end
 - `shapes.ts`
 
   ```ts
-  declare module Shapes {
+  declare namespace Shapes {
     export class Triangle {
       /* ... */
     }
@@ -85,7 +85,7 @@ If you're converting a program from namespaces to modules, it can be easy to end
   }
   ```
 
-The top-level module here `Shapes` wraps up `Triangle` and `Square` for no reason.
+The top-level namespace here `Shapes` wraps up `Triangle` and `Square` for no reason.
 This is confusing and annoying for consumers of your module:
 
 - `shapeConsumer.ts`
