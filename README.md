@@ -115,6 +115,10 @@ yarn workspace tsconfig-reference build
 
 Then you can find it at: [`packages/tsconfig-reference/scripts/schema/result/schema.json`](packages/tsconfig-reference/scripts/schema/result/schema.json).
 
+## Playground Handbook
+
+The user-facing documentation for the Playground.
+
 ## Playground Examples
 
 The code samples used in the Playground split across many languages.
@@ -141,7 +145,11 @@ Generates an epub file from the handbook files. You can try downloading it at ht
 
 ## Community Meta
 
-Generates contributions JSON metadata on who edited handbook pages.
+Generates contribution JSON metadata on who edited handbook pages.
+
+## Playground Worker
+
+A web worker which sits between the Playground and Monaco-TypeScript
 
 # Contributing
 
