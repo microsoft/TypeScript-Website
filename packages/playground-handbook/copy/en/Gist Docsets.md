@@ -34,7 +34,7 @@ Each code file replaces the main content of the playground, meaning you cannot i
 Code files support setting compiler options via a special fourslash comment in the top line:
 
 ```js
-//// { compiler: { strictNullChecks: false } }
+//// { "compiler": { "strictNullChecks": false } }
 // The first actual line of my code
 
 const a = 123
