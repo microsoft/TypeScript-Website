@@ -408,7 +408,7 @@ ODirection.Up;
 // Using the enum as a parameter
 function walk(dir: EDirection) {}
 
-// It requires an extra line to pull out the keys
+// It requires an extra line to pull out the values
 type Direction = typeof ODirection[keyof typeof ODirection];
 function run(dir: Direction) {}
 
