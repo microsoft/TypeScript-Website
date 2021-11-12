@@ -7,21 +7,11 @@ jobs:
 
     steps:
       # Check out, and set up the node/ruby infra
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: "13.x"
-
-      - uses: actions/cache@v2
-        id: yarn-cache
-        with:
-          path: |
-            packages/typescriptlang-org/.cache
-            packages/.cache
-            **/node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          cache: yarn
 
       - uses: microsoft/playwright-github-action@v1
 
@@ -64,10 +54,11 @@ jobs:
 
     steps:
       # Check out, and set up the node infra
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: "13.x"
+          cache: yarn
 
       # Get local dependencies
       - run: yarn install
