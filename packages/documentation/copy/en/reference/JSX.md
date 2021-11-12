@@ -42,7 +42,7 @@ You can specify this mode using either the [`jsx`](/tsconfig#jsx) command line f
 Recall how to write a type assertion:
 
 ```ts
-var foo = <foo>bar;
+const foo = <foo>bar;
 ```
 
 This asserts the variable `bar` to have the type `foo`.
@@ -52,7 +52,7 @@ Since the above syntax cannot be used in `.tsx` files, an alternate type asserti
 The example can easily be rewritten with the `as` operator.
 
 ```ts
-var foo = bar as foo;
+const foo = bar as foo;
 ```
 
 The `as` operator is available in both `.ts` and `.tsx` files, and is identical in behavior to the angle-bracket type assertion style.
@@ -190,7 +190,7 @@ class MyComponent {
 }
 
 // use a construct signature
-var myComponent = new MyComponent();
+const myComponent = new MyComponent();
 
 // element class type => MyComponent
 // element instance type => { render: () => void }
@@ -202,7 +202,7 @@ function MyFactoryFunction() {
 }
 
 // use a call signature
-var myComponent = MyFactoryFunction();
+const myComponent = MyFactoryFunction();
 
 // element class type => MyFactoryFunction
 // element instance type => { render: () => void }
@@ -305,10 +305,10 @@ Additionally, the `JSX.IntrinsicAttributes` interface can be used to specify ext
 The spread operator also works:
 
 ```ts
-var props = { requiredProp: "bar" };
+const props = { requiredProp: "bar" };
 <foo {...props} />; // ok
 
-var badProps = {};
+const badProps = {};
 <foo {...badProps} />; // error
 ```
 
@@ -391,7 +391,7 @@ It is a black box.
 JSX allows you to embed expressions between tags by surrounding the expressions with curly braces (`{ }`).
 
 ```ts
-var a = (
+const a = (
   <div>
     {["foo", "bar"].map((i) => (
       <span>{i / 2}</span>
@@ -404,7 +404,7 @@ The above code will result in an error since you cannot divide a string by a num
 The output, when using the `preserve` option, looks like:
 
 ```ts
-var a = (
+const a = (
   <div>
     {["foo", "bar"].map(function (i) {
       return <span>{i / 2}</span>;
