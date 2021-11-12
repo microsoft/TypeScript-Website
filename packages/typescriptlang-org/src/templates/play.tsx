@@ -225,10 +225,6 @@ const Play: React.FC<Props> = (props) => {
           </li>
 
           <li className="dropdown">
-            <a href="#" id="handbook-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="examples">{i("play_subnav_handbook")} <span className="caret"></span></a>
-          </li>
-
-          <li className="dropdown">
             <a href="#" id="examples-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="examples">{i("play_subnav_examples")} <span className="caret"></span></a>
             <ul className="examples-dropdown" id="examples" aria-labelledby="examples-button">
               <button className="examples-close" aria-label="Close dropdown" role="button">{i("play_subnav_examples_close")}</button>
@@ -242,6 +238,10 @@ const Play: React.FC<Props> = (props) => {
               <button role="button" aria-label="Close dropdown" className="examples-close">{i("play_subnav_examples_close")}</button>
               <RenderExamples defaultSection="4.4" sections={["4.4", "4.3", "4.2", "4.1", "4.0", "3.8", "3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
             </ul>
+          </li>
+
+          <li className="dropdown">
+            <a href="#" id="handbook-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="examples">{i("play_subnav_handbook")} <span className="caret"></span></a>
           </li>
         </ul>
 

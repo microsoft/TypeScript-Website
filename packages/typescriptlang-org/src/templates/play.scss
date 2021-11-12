@@ -242,16 +242,16 @@ main > nav {
     }
   }
 
-  .examples-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-  }
-
   .examples {
     height: auto;
     box-shadow: none;
   }
+}
+
+button.examples-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 
 // The toolbar for the editor
@@ -526,6 +526,7 @@ main #editor-toolbar {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    position: relative;
 
     -webkit-font-smoothing: subpixel-antialiased;
     background-color: var(--playground-dropdown-bg);

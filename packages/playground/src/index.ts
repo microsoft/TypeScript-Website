@@ -328,10 +328,9 @@ export const setupPlayground = (
     const a = link as HTMLAnchorElement
     a.onclick = _e => {
       if (a.parentElement!.classList.contains("open")) {
-        document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
-        a.setAttribute("aria-expanded", "false")
+        escapePressed()
       } else {
-        document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
+        escapePressed()
         a.parentElement!.classList.toggle("open")
         a.setAttribute("aria-expanded", "true")
 
@@ -371,6 +370,14 @@ export const setupPlayground = (
     }
   })
 
+  /** Handles removing the dropdowns like tsconfig/examples/handbook */
+  const escapePressed = () => {
+    document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
+    document.querySelectorAll(".navbar-sub li").forEach(i => i.setAttribute("aria-expanded", "false"))
+
+    hideNavForHandbook(sandbox)
+  }
+
   // Handle escape closing dropdowns etc
   document.onkeydown = function (evt) {
     evt = evt || window.event
@@ -381,13 +388,7 @@ export const setupPlayground = (
       // @ts-ignore - this used to be the case
       isEscape = evt.keyCode === 27
     }
-    if (isEscape) {
-      document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
-      document.querySelectorAll(".navbar-sub li").forEach(i => i.setAttribute("aria-expanded", "false"))
-      // Handbook
-      hideNav()
-      hideNavForHandbook(sandbox)
-    }
+    if (isEscape) escapePressed()
   }
 
   const shareAction = {
@@ -453,33 +454,31 @@ export const setupPlayground = (
   // Handle the close buttons on the examples
   document.querySelectorAll("button.examples-close").forEach(b => {
     const button = b as HTMLButtonElement
-    button.onclick = (e: any) => {
-      const button = e.target as HTMLButtonElement
-      const navLI = button.closest("li")
-      navLI?.classList.remove("open")
-    }
+    button.onclick = escapePressed
   })
 
   // Support clicking the handbook button on the top nav
   const handbookButton = document.getElementById("handbook-button")
+
   if (handbookButton) {
-    let showingHandbook = false
     handbookButton.onclick = () => {
+      // Two potentially concurrent sidebar navs is just a bit too much
+      // state to keep track of ATM
       if (!handbookButton.parentElement!.classList.contains("active")) {
         ui.flashInfo("Cannot open the Playground handbook when in a Gist")
         return
       }
+
+      const showingHandbook = handbookButton.parentElement!.classList.contains("open")
       if (!showingHandbook) {
+        escapePressed()
+
         handbookButton.parentElement!.classList.add("open")
-        showNav()
-        showNavForHandbook(sandbox)
+        showNavForHandbook(sandbox, escapePressed)
       } else {
-        handbookButton.parentElement!.classList.remove("open")
-        hideNav()
-        hideNavForHandbook(sandbox)
+        escapePressed()
       }
 
-      showingHandbook = !showingHandbook
       return false
     }
   }

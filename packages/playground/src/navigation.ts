@@ -7,7 +7,6 @@ type StoryContent =
 import type { Sandbox } from "typescriptlang-org/static/js/sandbox"
 import type { UI } from "./createUI"
 
-
 /**
  * Uses the Playground gist proxy to generate a set of stories ^ which 
  * correspond to files in the 
@@ -52,7 +51,7 @@ export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void)
         // If it's multi-file, then there's work to do
       } else if (response.type === "story") {
         showNav()
-        const prefix = `/play#gist/${gistID}`
+        const prefix = `#gist/${gistID}`
         updateNavWithStoryContent(response.title, response.files, prefix, sandbox)
       }
     })
@@ -64,17 +63,43 @@ export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void)
 }
 
 /** Use the handbook TOC which is injected into the globals to create a sidebar  */
-export const showNavForHandbook = (sandbox: Sandbox) => {
+export const showNavForHandbook = (sandbox: Sandbox, escapeFunction: () => void) => {
   // @ts-ignore
   const content = window.playgroundHandbookTOC.docs
-  updateNavWithStoryContent("Handbook", content, "/play?#handbook", sandbox)
+
+  const button = document.createElement("button")
+  button.ariaLabel = "Close handbook"
+  button.className = "examples-close"
+  button.innerText = "Close"
+  button.onclick = escapeFunction
+
+  const story = document.getElementById("editor-container")
+  story?.appendChild(button)
+  updateNavWithStoryContent("Handbook", content, "#handbook", sandbox)
+
+  const nav = document.getElementById("navigation-container")
+  if (nav) nav.classList.add("handbook")
 }
 
-/** Just sets up the DOM actually. so it's kinda misnamed */
+/** 
+ * Hides the nav and the close button, specifically only when we have
+ * the handbook open and not when a gist is open
+ */
 export const hideNavForHandbook = (sandbox: Sandbox) => {
-  showCode(sandbox)
-}
+  const nav = document.getElementById("navigation-container")
+  if (!nav) return
+  if (!nav.classList.contains("handbook")) return
 
+  showCode(sandbox)
+  nav.style.display = "none"
+
+  const leftDrag = document.querySelector(".playground-dragbar.left") as HTMLElement
+  if (leftDrag) leftDrag.style.display = "none"
+
+  const story = document.getElementById("editor-container")
+  const possibleButtonToRemove = story?.querySelector("button")
+  if (story && possibleButtonToRemove) story.removeChild(possibleButtonToRemove)
+}
 
 /** 
  * Assumes a nav has been set up already, and then fills out the content of the nav bar
@@ -113,26 +138,33 @@ const updateNavWithStoryContent = (title: string, storyContent: StoryContent[], 
         }
 
         a.innerHTML = `${logo}${element.title}`
-        a.href = `${prefix}-${i}`
+        a.href = `/play#${prefix}-${i}`
 
         a.onclick = e => {
           e.preventDefault()
 
+          // Note: I'm not sure why this is needed?
           const ed = sandbox.editor.getDomNode()
           if (!ed) return
           sandbox.editor.updateOptions({ readOnly: false })
+
           const alreadySelected = ul.querySelector(".selected") as HTMLElement
           if (alreadySelected) alreadySelected.classList.remove("selected")
 
           li.classList.add("selected")
-          if (element.type === "code") {
-            setCode(element.code, sandbox)
-          } else if (element.type === "html") {
-            setStory(element.html, sandbox)
-          } if (element.type === "href") {
-            setStoryViaHref(element.href, sandbox)
+          switch (element.type) {
+            case "code":
+              setCode(element.code, sandbox)
+              break;
+            case "html":
+              setStory(element.html, sandbox)
+              break;
+            case "href":
+              setStoryViaHref(element.href, sandbox)
+              break;
           }
 
+          // Set the URL after selecting
           const alwaysUpdateURL = !localStorage.getItem("disable-save-on-type")
           if (alwaysUpdateURL) {
             location.hash = `${prefix}-${i}`
@@ -163,6 +195,9 @@ const updateNavWithStoryContent = (title: string, storyContent: StoryContent[], 
   }
 }
 
+// Use fetch to grab the HTML from a URL, with a special case 
+// when that is a gatsby URL where we pull out the important
+// HTML from inside the __gatsby id.
 const setStoryViaHref = (href: string, sandbox: Sandbox) => {
   fetch(href).then(async req => {
     if (req.ok) {
@@ -180,11 +215,21 @@ const setStoryViaHref = (href: string, sandbox: Sandbox) => {
         return
       }
 
-      setStory(text, sandbox)
+      if (document.location.host === "localhost:8000") {
+        setStory("<p>Because the gatsby dev server uses JS to build your pages, and not statically, the page will not load during dev. It does work in prod though - use <code>yarn build-site</code> to test locally with a static build.</p>", sandbox)
+      } else {
+        setStory(text, sandbox)
+      }
+    } else {
+      setStory(`<p>Failed to load the content at ${href}. Reason: ${req.status} ${req.statusText}</p>`, sandbox)
     }
   })
 }
 
+/** 
+ * Passing in either a root HTML element or the HTML for the story, present a 
+ * markdown doc as a 'story' inside the playground.
+ */
 const setStory = (html: string | HTMLElement, sandbox: Sandbox) => {
   const toolbar = document.getElementById("editor-toolbar")
   if (toolbar) toolbar.style.display = "none"
