@@ -473,6 +473,7 @@ export const setupPlayground = (
       if (!showingHandbook) {
         escapePressed()
 
+        showNav()
         handbookButton.parentElement!.classList.add("open")
         showNavForHandbook(sandbox, escapePressed)
       } else {
