@@ -6,7 +6,7 @@ Above this prose there are two toolbars, one is the site navigation in bright bl
 
 ### TS Config Panel
 
-The TS Config panel contains a focused list of the TypeScript compiler options available inside a `tsconfig.json`. It starts off with some dropdowns for some of the most important compiler options (which have many possible options) and then it moves down to categories with boolean check boxes. This list has grown organically over time and generally represents the settings which people use most. If you need to set a value which isn't in that list, there is a way to set any option via [twoslash annotations]() which we'll get to later in the handbook.
+The TS Config panel contains a focused list of the TypeScript compiler options available inside a `tsconfig.json`. It starts off with some dropdowns for some of the most important compiler options and then it moves down to categories with boolean check boxes. This list has grown organically over time and generally represents the settings which people use most. If you need to set a value which isn't in that list, there is a way to set any option via [twoslash annotations](/play?#handbook-13) which we'll get to later in the handbook.
 
 Changing a compiler flag will update the URL in your browser (unless you have that disabled in the settings.) The URL structure works by comparing the current compiler options versus the default settings (covered below) and only showing compiler options which differ from the defaults. For example, the default for a Playground is to have `esModuleInterop: true` enabled, thus turning `esModuleInterop` to `false` would append `?esModuleInterop=false` to the URL:
 
@@ -40,7 +40,9 @@ _In rough_, the Playground has settings which can be summed up as this:
 }
 ```
 
-The reality is (of course) a tad more complex, because we use whether a compiler setting is in the following list as a cue for showing the compiler setting in the TS Config panel user interface and only add a setting to the URL if it differs from this list. So, the full version specification for the default compiler settings (as of TypeScript 4.5) looks like this:
+The reality is (of course) a tad more complex, we detect if a compiler setting is in the following list as a cue for showing the compiler setting in the TS Config panel user interface and only add a setting to the URL if it differs from this list.
+
+So, the full specification for the default compiler settings (as of TypeScript 4.5) looks like this:
 
 ```ts
 export function getDefaultSandboxCompilerOptions(config: SandboxConfig, monaco: Monaco) {

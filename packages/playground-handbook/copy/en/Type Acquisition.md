@@ -1,8 +1,8 @@
 ## Type Acquisition
 
-No Playground is a island. Well, not strictly, no playground _needs_ to be an island. One of the first problem we hit when adding support for `.tsx`/`.jsx` to the Playground was that to **_really_** use JSX to write React components - you need the types for React.
+No Playground is an island. Well, not strictly, no playground _needs_ to be an island. One of the first problem we hit when adding support for `.tsx`/`.jsx` to the Playground was that to **_really_** use JSX to write React components - you need the types for React.
 
-This left us with the dilemma of needing to either bundle React's evolving types into the Playground, or to replicate the feature found in JavaScript projects utilizing TypeScript: Automatic Type Acquisition. The idea behind Automatic Type Acquisition (ATA) is that behind the scenes the Playground will look at any `import` / `require` / [`/// <reference types="`](/docs/handbook/triple-slash-directives.html) and understand what npm modules have been referenced.
+This left us with the dilemma of needing to either bundle React's evolving types into the Playground, or to replicate the feature found in JavaScript projects utilizing TypeScript: Automatic Type Acquisition. The idea behind Automatic Type Acquisition (ATA) is that behind the scenes the Playground will look at any `import` / `require` / [`/// <reference types"`](/docs/handbook/triple-slash-directives.html) and understand what npm modules have been referenced.
 
 For these referenced modules, TypeScript will search through the npm package contents, and potentially in the `@types` equivalent for `.d.ts` files to describe how the library works. This means to get the types for React, you would create a playground like:
 
@@ -25,7 +25,7 @@ That one import line has downloaded the `.d.ts` files from `@types/react`, `@typ
 
 This is all built on the [jsdelivr CDN](https://www.jsdelivr.com/) which has kept the complexity down, and the type acquisition system is available for other projects to use via npm on [`@typescript/ata`](https://www.npmjs.com/package/@typescript/ata).
 
-If you need more control over the version of the types which are imported into the Playground, you can append `// types: npm_tag_or_version
+If you need more control over the version of the types which are imported into the Playground, you can append `// types: npm_tag_or_version`
 
 ```
 import { xy } from "xyz" // types: beta

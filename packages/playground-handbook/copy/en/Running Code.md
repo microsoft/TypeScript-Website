@@ -1,6 +1,6 @@
 ## Running Code
 
-The TypeScript playground has an obvious focus on TypeScript - I mean it's in the name (right?), and types in TypeScript are ephemeral (they don't affect the running code) so earlier versions of the Playground did not have support for running the code in your browser.
+The TypeScript playground has an obvious focus on TypeScript — I mean it's in the name (right?), and types in TypeScript are ephemeral (they don't affect the running code) so earlier versions of the Playground did not have support for running the code in your browser.
 
 This turned out to be an oversight, because there are cases where the TypeScript types cannot perfectly map the JavaScript runtime and `eval`ing that code can sometimes be a great way to understand whether the types you have written match the runtime results of your code.
 
@@ -15,4 +15,4 @@ You can also use the key command <kbd>ctrl</kbd>/<kbd>cmd</kbd> + <kbd>enter</kb
 
 Your code running in your browser means that you can experiment with the DOM APIs inside a TypeScript environment. The Playground includes examples for working with [the DOM](https://www.typescriptlang.org/play?useJavaScript=trueq=185#example/typescript-with-web) and with [WebGL](https://www.typescriptlang.org/play/?useJavaScript=trueq=461#example/typescript-with-webgl) which are good showcases of how that can work.
 
-Convenient, that's kind of the perfect segue to the [Examples section of the handbook](/play#handbook-2)
+Conveniently, that’s kind of the perfect segue to the [Examples section of the handbook](/play#handbook-2)

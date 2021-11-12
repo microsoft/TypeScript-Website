@@ -28,14 +28,15 @@ Then the query string tend to be about changing the state of the Playground setu
   There are two special cases for the `ts` option:
 
   - `ts=Nightly` where it will switch to most recently the nightly version.
-  - `ts=dev` where it uses your [local developer's build of TypeScript](https://github.com/microsoft/TypeScript/blob/main/scripts/createPlaygroundBuild.js)
+
+- `ts=dev` where it uses your [local developer's build of TypeScript](https://github.com/microsoft/TypeScript/blob/main/scripts/createPlaygroundBuild.js)
 
 - `?flag=value` - Any compiler flag referenced in can be set from a query
 - `?filetype=js|ts|dts` - Tells the Playground to set the editor's language
-- `?install-plugin=npm-module` - Checks to see if there is an installed playground plugin of that name, and if not offers to install it in a modal via npm`.
+- `?install-plugin=npm-module` - Checks to see if there is an installed playground plugin of that name, and if not offers to install it in a modal via npm.
 
 The playground will try to retain any non-compiler option setting during URL updates, this is to ensure that Playground plugins can read/write their own parameters which the Playground avoids interfering with.
 
 ### URL Length Limits
 
-It's possible to hit a URL length limit with a long enough code sample you could use a [Gist Playgrounds](/play#handbook-15) or we'd recommend looking into the [Playground plugins](/play#handbook-11) section to find a URL shortener, which we're about to go to next.
+It's possible to hit a URL length limit with a long enough code sample you could use a [Gist Playgrounds](/play#handbook-15) or we'd recommend looking into the Playground plugins section (which we’re about to go [to next](<](/play#handbook-11)>)) to find a URL shortener.

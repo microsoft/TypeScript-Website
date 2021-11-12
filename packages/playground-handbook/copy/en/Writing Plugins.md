@@ -1,6 +1,6 @@
 ## Writing a Plugin
 
-The TypeScript Playground allows people to hook into the Playground and extend it in ways in which we don't expect. As shown in the [Plugins] page of the handbook, there's quite a lot of plugins already covering unique ecosystem niches.
+The TypeScript Playground allows people to hook into the Playground and extend it in ways in which we don't expect. As shown in the [Plugins](/play#handbook-11) page of this handbook, there's quite a lot of plugins already covering unique ecosystem niches.
 
 To get started you need about 5 minutes, Node.js, yarn and Firefox/Edge or Chrome.
 
@@ -12,4 +12,3 @@ To get started you need about 5 minutes, Node.js, yarn and Firefox/Edge or Chrom
 If you want to jump straight in, you can read the `.d.ts` files in `vendor` which describes the Playground and Sandbox APIs.
 
 To get a deeper understanding of how plugins work, and a guided walk-through of creating a Plugin which runs [`prettier`](http://prettier.io/) you can watch Orta Therox's TSConf 2020 talk on ["Owning the Playground"](https://www.youtube.com/watch?v=eJWtTl62gy0).
-gi
