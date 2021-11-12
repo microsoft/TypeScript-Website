@@ -33,7 +33,7 @@ See more details in [TypeScript FAQ page](https://github.com/Microsoft/TypeScrip
 
 ## any
 
-❌ **Don't** use `any` as a type unless you are in the process of migrating a JavaScript project to TypeScript.  The compiler _effectively_ treats `any` as "please turn off type checking for this thing".  It is similar to putting an `@ts-ignore` comment around every usage of the variable.  This can be very helpful when you are first migrating a JavaScript project to TypeScript as you can set the type for stuff you haven't migrated yet as `any`, but in a full TypeScript project you are disabling type checking for any parts of your program that use it.
+❌ **Don't** use `any` as a type unless you are in the process of migrating a JavaScript project to TypeScript. The compiler _effectively_ treats `any` as "please turn off type checking for this thing". It is similar to putting an `@ts-ignore` comment around every usage of the variable. This can be very helpful when you are first migrating a JavaScript project to TypeScript as you can set the type for stuff you haven't migrated yet as `any`, but in a full TypeScript project you are disabling type checking for any parts of your program that use it.
 
 In cases where you don't know what type you want to accept, or when you want to accept anything because you will be blindly passing it through without interacting with it, you can use [`unknown`](/play/#example/unknown-and-never).
 
@@ -79,7 +79,7 @@ function fn(x: () => void) {
 ```ts
 /* WRONG */
 interface Fetcher {
-  getObject(done: (data: any, elapsedTime?: number) => void): void;
+  getObject(done: (data: unknown, elapsedTime?: number) => void): void;
 }
 ```
 
@@ -93,7 +93,7 @@ it's always legal to provide a callback that accepts fewer arguments.
 ```ts
 /* OK */
 interface Fetcher {
-  getObject(done: (data: any, elapsedTime: number) => void): void;
+  getObject(done: (data: unknown, elapsedTime: number) => void): void;
 }
 ```
 
@@ -131,12 +131,12 @@ Providing a shorter callback first allows incorrectly-typed functions to be pass
 
 ```ts
 /* WRONG */
-declare function fn(x: any): any;
+declare function fn(x: unknown): unknown;
 declare function fn(x: HTMLElement): number;
 declare function fn(x: HTMLDivElement): string;
 
 var myElem: HTMLDivElement;
-var x = fn(myElem); // x: any, wat?
+var x = fn(myElem); // x: unknown, wat?
 ```
 
 ✅ **Do** sort overloads by putting the more general signatures after more specific signatures:
@@ -145,7 +145,7 @@ var x = fn(myElem); // x: any, wat?
 /* OK */
 declare function fn(x: HTMLDivElement): string;
 declare function fn(x: HTMLElement): number;
-declare function fn(x: any): any;
+declare function fn(x: unknown): unknown;
 
 var myElem: HTMLDivElement;
 var x = fn(myElem); // x: string, :)
