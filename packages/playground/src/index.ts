@@ -384,6 +384,9 @@ export const setupPlayground = (
     if (isEscape) {
       document.querySelectorAll(".navbar-sub li.open").forEach(i => i.classList.remove("open"))
       document.querySelectorAll(".navbar-sub li").forEach(i => i.setAttribute("aria-expanded", "false"))
+      // Handbook
+      hideNav()
+      hideNavForHandbook(sandbox)
     }
   }
 
