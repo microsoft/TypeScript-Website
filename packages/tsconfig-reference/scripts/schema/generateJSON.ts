@@ -14,9 +14,9 @@ import { writeFileSync } from "fs";
 import { join } from "path";
 import { format } from "prettier";
 import { CompilerOptionName } from "../../data/_types";
-
-// @ts-ignore - this isn't public
-import { libs } from "typescript";
+import * as ts from "typescript";
+import type { JSONSchema7 } from "json-schema";
+import type { CommandLineOption } from "../tsconfigRules";
 
 const toJSONString = (obj) => format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
 const writeJSON = (name, obj) => writeFileSync(join(__dirname, "result", name), toJSONString(obj));
@@ -119,38 +119,102 @@ You're also probably going to need to make the new Markdown file for the compile
   }
 });
 
-Object.keys(schemaCompilerOpts).forEach((flag) => {
-  // There are a few ways that the enums values are shown in a JSON schema
-  const viaDirectEnum = schemaCompilerOpts[flag].enum && schemaCompilerOpts[flag];
-  const viaAnyOfEnum =
-    schemaCompilerOpts[flag].anyOf?.find((member) => member.enum) && schemaCompilerOpts[flag].anyOf;
-
-  const viaItemAnyOfEnum =
-    schemaCompilerOpts[flag].items?.anyOf?.find((member) => member.enum) &&
-    schemaCompilerOpts[flag].items?.anyOf;
-
-  // Basically it either has enum, or {enum: []} is in the array
-  const host: { enum: string[] } | { enum?: string[] }[] =
-    viaDirectEnum || viaAnyOfEnum || viaItemAnyOfEnum;
-  if (flag === "lib") {
-    debugger;
-  }
-  if (host) {
-    const existingList = "enum" in host ? host.enum : host.find((e) => e.enum).enum;
-    const compilerInfo = tsconfigOpts.find((opt) => opt.name === flag);
-    const realType = (compilerInfo.type as any) as Record<string, number>;
-    const keys = flag === "lib" ? libs : Object.keys(realType);
-    const newKeys = keys.filter(
-      (k) => !existingList.find((f) => f.toLowerCase() === k.toLowerCase())
+for (const [properties, options] of [
+  [schemaCompilerOpts, ts.optionDeclarations],
+  [schemaWatchOpts, ts.optionsForWatch],
+  [
+    schemaBase.definitions.typeAcquisitionDefinition.properties.typeAcquisition
+      .properties,
+    ts.typeAcquisitionDeclarations,
+  ],
+] as const) {
+  for (const [name, optionSchema] of Object.entries(properties)) {
+    const option = options.find(
+      (option) =>
+        option.name === name &&
+        option.category?.key !== "Command_line_Options_6171"
     );
-
-    if ("enum" in host) {
-      host.enum = existingList.concat(newKeys);
+    if (!option) {
+      properties[name] = undefined;
+    } else if (option.type === "list") {
+      updateItemsSchema(
+        (optionSchema as Extract<typeof optionSchema, { items?: unknown }>)
+          .items as never,
+        option.element.type
+      );
     } else {
-      const i = host.findIndex((item) => "enum" in item);
-      host[i] = { enum: existingList.concat(newKeys) };
+      updateItemsSchema(optionSchema as never, option.type);
     }
   }
-});
+}
+
+// Update optionSchema or optionSchema.items, depending on whether
+// option is a CommandLineOptionOfListType.
+function updateItemsSchema(
+  itemsSchema: JSONSchema7,
+  type: CommandLineOption["type"]
+) {
+  const newEnum = typeof type !== "object" ? undefined : [...type.keys()];
+  // Update { enum: ... } if found in itemsSchema.anyOf, or
+  // itemsSchema.enum otherwise.
+  const enumSchema = itemsSchema.anyOf?.find(
+    (subschema): subschema is Extract<typeof subschema, { enum?: unknown }> =>
+      (subschema as Extract<typeof subschema, { enum?: unknown }>).enum as never
+  );
+  if (!enumSchema) {
+    updateEnum(itemsSchema, newEnum);
+    return;
+  }
+  updateEnum(enumSchema, newEnum);
+  // Ensure the new values are valid: They either exist in the enum or
+  // match a pattern, and update the pattern if not.
+  const patterns = itemsSchema
+    .anyOf!.map((subschema) => {
+      const pattern = (
+        subschema as Extract<typeof subschema, { pattern?: unknown }>
+      ).pattern;
+      return pattern !== undefined && new RegExp(pattern);
+    })
+    .filter(
+      (pattern): pattern is Exclude<typeof pattern, false> => pattern as never
+    );
+  if (
+    newEnum?.every(
+      (newValue) =>
+        enumSchema.enum!.includes(newValue) ||
+        patterns.some((pattern) => pattern.test(newValue))
+    )
+  )
+    return;
+  itemsSchema.anyOf = itemsSchema.anyOf!.filter(
+    (subschema) =>
+      !(subschema as Extract<typeof subschema, { pattern?: unknown }>).pattern
+  );
+  if (!newEnum) return;
+  // Regular expressions are not implicitly anchored.
+  const disjunction = newEnum.map((newValue) =>
+    [...newValue]
+      .map((character) =>
+        character === "."
+          ? String.raw`\.`
+          : character.toUpperCase() === character
+          ? character
+          : `[${character.toUpperCase()}${character}]`
+      )
+      .join("")
+  );
+  const pattern =
+    disjunction.length > 1 ? `(?:${disjunction.join("|")})` : disjunction[0];
+  itemsSchema.anyOf.push({ pattern: `^${pattern}$` });
+}
+
+function updateEnum(schema: JSONSchema7, newEnum: string[] | undefined) {
+  schema.enum = newEnum?.map(
+    (newValue) =>
+      schema.enum?.find(
+        (oldValue) => (oldValue as string).toLowerCase() === newValue
+      ) || newValue
+  );
+}
 
 writeJSON("schema.json", schemaBase);
