@@ -219,7 +219,7 @@ If you need to point to a different location for your type declarations, you can
     "exports": {
         ".": {
             // Entry-point for TypeScript resolution - must occur first!
-            "types": "./types/index.d.ts"
+            "types": "./types/index.d.ts",
 
             // Entry-point for `import "my-package"` in ESM
             "import": "./esm/index.js",
