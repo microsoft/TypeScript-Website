@@ -248,7 +248,7 @@ The parameter may also be declared optional by surrounding the name with square 
  * @param {string=} p2 - An optional param (Google Closure syntax)
  * @param {string} [p3] - Another optional param (JSDoc syntax).
  * @param {string} [p4="test"] - An optional param with a default value
- * @return {string} This is the result
+ * @returns {string} This is the result
  */
 function stringsStringStrings(p1, p2, p3, p4) {
   // TODO
@@ -350,7 +350,7 @@ This lets you make functions, classes, or types that are generic:
 /**
  * @template T
  * @param {T} x - A generic parameter that flows through to the return type
- * @return {T}
+ * @returns {T}
  */
 function id(x) {
   return x;
@@ -632,7 +632,7 @@ Some editors will turn `Box` into a link to make it easy to jump there and back.
 
 ```ts twoslash
 type Box<T> = { t: T }
-/** @return A {@link Box} containing the parameter. */
+/** @returns A {@link Box} containing the parameter. */
 function box<U>(u: U): Box<U> {
   return { t: u };
 }
