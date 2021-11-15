@@ -164,7 +164,7 @@ const Play: React.FC<Props> = (props) => {
           filetype: extension,
           acquireTypes: !localStorage.getItem("disable-ata"),
           supportTwoslashCompilerOptions: true,
-          customTypeScriptWorkerPath: `${document.location.origin + playgroundWorker}?filetype=${extension}`,
+          // customTypeScriptWorkerPath: `${document.location.origin + playgroundWorker}?filetype=${extension}`,
           monacoSettings: {
             fontFamily: "var(--code-font)",
             fontLigatures: true
