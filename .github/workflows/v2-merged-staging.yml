@@ -11,11 +11,15 @@ jobs:
 
     steps:
       # Check out, and set up the node/ruby infra
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+        with:
+          # Fetch the full history, to build attribution.json
+          fetch-depth: 0
+      - uses: actions/setup-node@v2
         with:
           node-version: "13.x"
           registry-url: "https://registry.npmjs.org/"
+          cache: yarn
 
       # For Azure uploads
       - run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash

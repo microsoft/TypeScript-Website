@@ -3,7 +3,7 @@ import * as remark from "remark";
 import * as remarkHTML from "remark-html";
 import * as ts from "typescript";
 
-interface CommandLineOption {
+export interface CommandLineOption {
   name: string;
   type:
     | "string"
@@ -13,12 +13,14 @@ interface CommandLineOption {
     | "list"
     | Map<string, number | string>;
   defaultValueDescription?: string | number | boolean | ts.DiagnosticMessage;
+  category?: ts.DiagnosticMessage;
   element: CommandLineOption;
 }
 
 declare module "typescript" {
   const optionDeclarations: CommandLineOption[];
   const optionsForWatch: CommandLineOption[];
+  const typeAcquisitionDeclarations: CommandLineOption[];
 }
 
 /**
