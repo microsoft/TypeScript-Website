@@ -139,14 +139,16 @@ const Play: React.FC<Props> = (props) => {
 
       re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("@typescript/sandbox"), playground: typeof import("@typescript/playground")) => {
         // Importing "vs/language/typescript/tsWorker" will set ts as a global
-        const ts = (global as any).ts
+        const ts = (global as any).ts || tsWorker.typescript
         const isOK = main && ts && sandbox && playground
 
         if (isOK) {
           document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)
         } else {
-          console.error("Errr")
+          console.error("Error setting up all the 4 key dependencies")
           console.error("main", !!main, "ts", !!ts, "sandbox", !!sandbox, "playground", !!playground)
+          document.getElementById("loading-message")!.innerText = "Cannot load the Playground in this browser, see logs in console."
+          return
         }
 
         // Set the height of monaco to be either your window height or 600px - whichever is smallest
@@ -156,6 +158,8 @@ const Play: React.FC<Props> = (props) => {
         container.style.height = `${height - Math.round(container.getClientRects()[0].top) - 18}px`
 
         const extension = (!!params.get("useJavaScript") ? "js" : params.get("filetype") || "ts") as any
+        const workerPath = params.get("multiFile") ?  `${document.location.origin + playgroundWorker}?filetype=${extension}` : undefined
+
         // Create the sandbox
         const sandboxEnv = await sandbox.createTypeScriptSandbox({
           text: localStorage.getItem('sandbox-history') || i("play_default_code_sample"),
@@ -164,7 +168,7 @@ const Play: React.FC<Props> = (props) => {
           filetype: extension,
           acquireTypes: !localStorage.getItem("disable-ata"),
           supportTwoslashCompilerOptions: true,
-          // customTypeScriptWorkerPath: `${document.location.origin + playgroundWorker}?filetype=${extension}`,
+          customTypeScriptWorkerPath: workerPath,
           monacoSettings: {
             fontFamily: "var(--code-font)",
             fontLigatures: true
