@@ -44,9 +44,31 @@ We generally recommend that people use ahead-of-time generation for large string
 
 ### String Unions in Types
 
-The power in template literals comes when defining a new string based off an existing string inside a type.
+The power in template literals comes when defining a new string based on information inside a type.
 
-For example, a common pattern in JavaScript is to extend an object based on the fields that it currently has. We'll provide a type definition for a function which adds support for an `on` function which lets you know when a value has changed:
+Consider the case where a function (`makeWatchedObject`) adds a new function
+called `on()` to a passed object.  In JavaScript, its call might look like:
+`makeWatchedObject(baseObject)`. We can imagine the base object as looking
+like:
+
+```ts twoslash
+// @noErrors
+const passedObject = {
+  firstName: "Saoirse",
+  lastName: "Ronan",
+  age: 26,
+};
+```
+
+The `on` function that will be added to the base object expects two arguments, an `eventName` (a `string`) and a `callBack` (a `function`).
+
+The `eventName` should be of the form `attributeInThePassedObject + "Changed"`; thus, `firstNameChanged` as derived from the attribute `firstName` in the base object.
+
+The `callBack` function, when called:
+  * Should be passed a value of the type associated with the name `attributeInThePassedObject`; thus, since `firstName` is typed as `string`, the callback for the `firstNameChanged` event expects a `string` to be passed to it at call time. Similarly events associated with `age` should expect to be called with a `number` argument
+  * Should have `void` return type (for simplicity of demonstration)
+
+The naive function signature of `on()` might thus be: `on(eventName: string, callBack: (newValue: any) => void)`. However, in the preceding description, we identified important type constraints that we'd like to document in our code. Template Literal types let us bring these constraints into our code.
 
 ```ts twoslash
 // @noErrors
@@ -58,12 +80,14 @@ const person = makeWatchedObject({
   age: 26,
 });
 
+// makeWatchedObject has added `on` to the anonymous Object
+
 person.on("firstNameChanged", (newValue) => {
   console.log(`firstName was changed to ${newValue}!`);
 });
 ```
 
-Notice that `on` listens on the event `"firstNameChanged"`, not just `"firstName"`, template literals provide a way to handle this sort of string manipulation inside the type system:
+Notice that `on` listens on the event `"firstNameChanged"`, not just `"firstName"`. Our naive specification of `on()` could be made more robust if we were to ensure that the set of eligible event names was constrained by the union of attribute names in the watched object with "Changed" added at the end. While we are comfortable with doing such a calculation in JavaScript i.e. `Object.keys(passedObject).map(x => `${x}Changed`)`, template literals _inside the type system_ provide a similar approach to string manipulation:
 
 ```ts twoslash
 type PropEventSource<Type> = {
@@ -102,9 +126,16 @@ person.on("frstNameChanged", () => {});
 
 ### Inference with Template Literals
 
-Note how the last examples did not re-use the type of the original value. The callback used an `any`. Template literal types can infer from substitution positions.
+Notice that we did not benefit from all the information provided in the original passed object. Given change of a `firstName` (i.e. a `firstNameChanged` event),  we should expect that the callback will receive an argument of type `string`. Similarly, the callback for a change to `age` should receive a `number` argument. We're naively using `any` to type the `callBack`'s argument. Again, template literal types make it possible to ensure an attribute's data type will be the same type as that attribute's callback's first argument.
 
-We can make our last example generic to infer from parts of the `eventName` string to figure out the associated property.
+The key insight that makes this possible is this: we can use a function with a generic such that:
+
+1. The literal used in the first argument is captured as a literal type
+2. That literal type can be validated as being in the union of valid attributes in the generic
+3. The type of the validated attribute can be looked up in the generic's structure using Indexed Access
+4. This typing information can _then_ be applied to ensure the argument to the
+   callback function is of the same type
+
 
 ```ts twoslash
 type PropEventSource<Type> = {
