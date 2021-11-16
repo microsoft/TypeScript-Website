@@ -141,7 +141,6 @@ const Play: React.FC<Props> = (props) => {
         // Importing "vs/language/typescript/tsWorker" will set ts as a global
         const ts = (global as any).ts || tsWorker.typescript
         const isOK = main && ts && sandbox && playground
-
         if (isOK) {
           document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)
         } else {
@@ -168,7 +167,7 @@ const Play: React.FC<Props> = (props) => {
           filetype: extension,
           acquireTypes: !localStorage.getItem("disable-ata"),
           supportTwoslashCompilerOptions: true,
-          customTypeScriptWorkerPath: workerPath,
+          customTypeScriptWorkerPath: workerPath ,
           monacoSettings: {
             fontFamily: "var(--code-font)",
             fontLigatures: true
