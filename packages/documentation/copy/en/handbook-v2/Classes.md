@@ -1120,6 +1120,18 @@ const derived = new DerivedBox();
 derived.sameAs(base);
 ```
 
+Another use of `this` in the type system is within `interfaces` where the keyword refers to the name of the interface, allowing you to re-use type.
+
+```ts twoslash
+interface DomainOwner {
+  webmaster: {
+    name: string;
+    email: string;
+  };
+  contact: this["webmaster"];
+}
+```
+
 ### `this`-based type guards
 
 You can use `this is Type` in the return position for methods in classes and interfaces.
