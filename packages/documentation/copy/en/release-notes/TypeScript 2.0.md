@@ -676,7 +676,7 @@ readFile(); // readFile is 'any'
 ## Support for UMD module definitions
 
 Some libraries are designed to be used in many module loaders, or with no module loading (global variables).
-These are known as [UMD](https://github.com/umdjs/umd) or [Isomorphic](http://isomorphic.net) modules.
+These are known as [UMD](https://github.com/umdjs/umd) or [Isomorphic](https://en.wikipedia.org/wiki/Isomorphic_JavaScript) modules.
 These libraries can be accessed through either an import or a global variable.
 
 For example:
