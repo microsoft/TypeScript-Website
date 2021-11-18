@@ -1,6 +1,11 @@
 import * as React from "react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { hasLocalStorage } from "../../lib/hasLocalStorage"
+
+import { useIntl } from "react-intl";
+
+import { footerCopy } from "../../copy/en/footer"
+import { createInternational } from "../../lib/createInternational"
 
 const makeDark = () => {
   document.documentElement.classList.remove("light-theme")
@@ -18,6 +23,7 @@ const switchFont = (newStyle: string, old?: string) => {
 }
 
 export const Customize = () => {
+  const i = createInternational<typeof footerCopy>(useIntl())
   const systemIsDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
   const customThemeOverride = hasLocalStorage && localStorage.getItem("force-color-theme") || "system"
   const [darkModeValue, setDarkMode] = useState(customThemeOverride)
@@ -62,20 +68,20 @@ export const Customize = () => {
   return (
     <section id="customize">
       <article>
-        <h3>Customize</h3>
+        <h3>{i("footer_customize")}</h3>
         <label>
-          <p>Site Colours:</p>
+          <p>{i("footer_site_colours")}:</p>
           <div className="switch-wrap">
             <select name="colours" value={darkModeValue} onChange={handleThemeChange}>
-              <option value="system">System</option>
-              <option value="force-light">Always Light</option>
-              <option value="force-dark">Always Dark</option>
+              <option value="system">{i("footer_site_colours_options_system")}</option>
+              <option value="force-light">{i("footer_site_colours_options_always_light")}</option>
+              <option value="force-dark">{i("footer_site_colours_options_always_dark")}</option>
             </select>
           </div>
         </label>
 
         <label>
-          <p>Code Font:</p>
+          <p>{i("footer_code_font")}:</p>
           <div className="switch-wrap">
             <select name="font" value={fontValue} onChange={handleFontChange}>
               <option value="cascadia">Cascadia</option>
