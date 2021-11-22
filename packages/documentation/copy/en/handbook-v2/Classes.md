@@ -516,7 +516,7 @@ This means that the base class constructor saw its own value for `name` during i
 
 #### Inheriting Built-in Types
 
-> Note: If you don't plan to inherit from built-in types like `Array`, `Error`, `Map`, etc. or your compilation target is explicitely set to `ES6`/`ES2015` or above, you may skip this section
+> Note: If you don't plan to inherit from built-in types like `Array`, `Error`, `Map`, etc. or your compilation target is explicitly set to `ES6`/`ES2015` or above, you may skip this section
 
 In ES2015, constructors which return an object implicitly substitute the value of `this` for any callers of `super(...)`.
 It is necessary for generated constructor code to capture any potential return value of `super(...)` and replace it with `this`.
