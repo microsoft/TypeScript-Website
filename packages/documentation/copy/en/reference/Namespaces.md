@@ -7,7 +7,7 @@ translatable: true
 ---
 
 > **A note about terminology:**
-> It's important to note that in TypeScript 1.5, the nomenclature has changed.
+> It's important to note that in TypeScript 1.5, the nomenclature has been changed.
 > "Internal modules" are now "namespaces".
 > "External modules" are now simply "modules", as to align with [ECMAScript 2015](https://www.ecma-international.org/ecma-262/6.0/)'s terminology, (namely that `module X {` is equivalent to the now-preferred `namespace X {`).
 
