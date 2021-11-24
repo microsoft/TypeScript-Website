@@ -237,7 +237,7 @@ class Player {
 const player = new Player();
 player.shouldFreeze;
 
-// It the runtime aspect could be manually replicated via
+// The runtime aspect could be manually replicated via
 // type composition or interface merging.
 type FreezablePlayer = Player & { shouldFreeze: boolean };
 
