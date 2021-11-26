@@ -8,7 +8,7 @@ This only affects output of JS files that started in `.tsx` files.
 
 - `react`: Emit `.js` files with JSX changed to the equivalent `React.createElement` calls
 - `react-jsx`: Emit `.js` files with the JSX changed to `_jsx` calls
-- `react-jsxdev`: Emit `.js` files with the JSX to `_jsx` calls
+- `react-jsxdev`: Emit `.js` files with the JSX changed to `_jsx` calls
 - `preserve`: Emit `.jsx` files with the JSX unchanged
 - `react-native`: Emit `.js` files with the JSX unchanged
 
