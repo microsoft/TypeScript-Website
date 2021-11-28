@@ -16,7 +16,7 @@ deprecation_redirects: [
   interfaces-vs-type-aliases, /docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces,
   enum-member-types, /docs/handbook/enums.html,
   polymorphic-this-types, /docs/handbook/2/classes.html,
-  index-types, /docs/handbook/2/indexed-access-types.html,
+  index-types, /docs/handbook/2/objects.html#index-signatures,
   index-types-and-index-signatures, /docs/handbook/2/indexed-access-types.html,
   mapped-types, /docs/handbook/2/mapped-types.html,
   inference-from-mapped-types, /docs/handbook/2/mapped-types.html,
