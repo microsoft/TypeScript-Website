@@ -14,7 +14,6 @@ your `node_modules`. In these cases, you should consider using a feature like [y
 to ensure there is only one copy of that dependency in your tree or investigate how to ensure there is
 only one copy by understanding the dependency resolution to fix the issue without additional tooling.
 
-Sometimes TypeScript releases in-range breaking changes, and although this can sometimes causes errors in downstream projects, the
-changes help to progress TypeScript to a better state for everyone. When a breaking change hapepns, dependencies
-in a project's `node_modules` may start to show type errors, andthe `skipLibCheck` option will
-be useful for silencing these errors until an update can be performed to migrate a code base or its dependencies forward.
+Another possibility is when you are migrating between TypeScript releases and the changes cause breakages in node_modules and the JS standard libraries which you do not want to deal with during the TypeScript update. 
+
+Note, that if these issues come from the TypeScript standard library you can replace the library using [TypeScript 4.5's lib replacement](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#supporting-lib-from-node_modules) technique.
