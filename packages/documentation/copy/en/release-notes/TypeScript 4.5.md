@@ -1,8 +1,8 @@
 ---
-title: TypeScript 4.5 Beta
+title: TypeScript 4.5
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-4-5.html
-oneline: TypeScript 4.5 Beta elease Notes
+oneline: TypeScript 4.5 Release Notes
 ---
 
 ### Supporting `lib` from `node_modules`
