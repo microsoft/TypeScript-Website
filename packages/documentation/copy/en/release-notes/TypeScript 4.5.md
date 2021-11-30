@@ -1,9 +1,28 @@
 ---
-title: TypeScript 4.5 Beta
+title: TypeScript 4.5
 layout: docs
 permalink: /docs/handbook/release-notes/typescript-4-5.html
-oneline: TypeScript 4.5 Beta elease Notes
+oneline: TypeScript 4.5 Release Notes
 ---
+
+## What's New Since the Beta and RC?
+
+Since our [beta release post](https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta) and [RC release post](https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-rc), 4.5 has gone through a few changes.
+
+The biggest change we've made since the beta is that [ECMAScript module support for Node.js 12 has been deferred](#esm-nodejs) to a future release, and is now only available as an experimental flag in nightly releases.
+This was not an easy decision, but our team had a combination of [concerns around ecosystem readiness and general guidance for how/when to use the feature](https://github.com/microsoft/TypeScript/issues/46452).
+We felt it would be better to smooth out the user experience instead of releasing something that would ultimately be too frustrating for most people.
+In the meantime though, you can still use the new support for `--module nodenext` and `--moduleResolution nodenext` as experimental features in [nightly builds of TypeScript](https://www.typescriptlang.org/docs/handbook/nightly-builds.html).
+If you try to use these settings in TypeScript 4.5, you'll receive an error message directing you to use a nightly build instead.
+
+Since our RC post, we've added notes about [new JSDoc features](#jsdoc-const-and-type-arg-defaults).
+While these features actually were included in the RC, they didn't make it into our previous release notes.
+
+From the language editing side, we've introduced more snippet completions since TypeScript 4.5 beta - [specifically, for method implementation and overrides](#subclass-method-snippets).
+
+We've also [addressed a performance regression in `--build` mode](https://github.com/microsoft/TypeScript/pull/46209) due to excessive `realpath` calls for `package.json` files.
+This change was made for TypeScript 4.5, but was also back-ported to TypeScript 4.4.4.
+If this regression blocked you from trying TypeScript 4.4, you should see comparable or better speed in `--build` mode compared to past versions.
 
 ### Supporting `lib` from `node_modules`
 
@@ -86,7 +105,7 @@ TypeScript 4.5 now can narrow values that have template string types, and also r
 
 As an example, the following used to fail, but now successfully type-checks in TypeScript 4.5.
 
-```ts
+```ts twoslash
 export interface Success {
     type: `${string}Success`;
     body: string;
@@ -99,8 +118,8 @@ export interface Error {
 
 export function handler(r: Success | Error) {
     if (r.type === "HttpSuccess") {
-        // 'r' has type 'Success'
-        let token = r.body;
+        const token = r.body;
+        //            ^?
     }
 }
 ```
