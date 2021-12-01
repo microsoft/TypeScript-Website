@@ -19,7 +19,7 @@ export interface ATABootstrapConfig {
     /** A callback indicating that ATA actually has work to do */
     started?: () => void
     /** The callback when all ATA has finished */
-    finished?: (files: Map<string, string>) => void
+    finished?: (files?: Map<string, string>) => void
   }
   /** Passed to fetch as the user-agent */
   projectName: string
@@ -56,6 +56,8 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
     resolveDeps(initialSourceFile, 0).then(t => {
       if (estimatedDownloaded > 0) {
         config.delegate.finished?.(fsMap)
+      } else {
+        config.delegate.finished?.()
       }
     })
   }
