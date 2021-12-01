@@ -137,46 +137,6 @@ _Note: Currently TypeScript support in jspm is in 0.16beta_
 
 More details: [TypeScriptSamples/jspm](https://github.com/Microsoft/TypeScriptSamples/tree/master/jspm)
 
-## Webpack
-
-### Install
-
-```sh
-npm install ts-loader --save-dev
-```
-
-### Basic webpack.config.js when using Webpack 5 or 4
-
-```js
-const path = require('path');
-
-module.exports = {
-  entry: './src/index.ts',
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      },
-    ],
-  },
-  resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
-  },
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
-};
-```
-
-See [more details on ts-loader here](https://www.npmjs.com/package/ts-loader).
-
-Alternatives:
-
-- [awesome-typescript-loader](https://www.npmjs.com/package/awesome-typescript-loader)
-
 ## MSBuild
 
 Update project file to include locally installed `Microsoft.TypeScript.Default.props` (at the top) and `Microsoft.TypeScript.targets` (at the bottom) files:
@@ -216,3 +176,110 @@ More details about defining MSBuild compiler options: [Setting Compiler Options 
 - When install is complete, rebuild!
 
 More details can be found at [Package Manager Dialog](http://docs.nuget.org/Consume/Package-Manager-Dialog) and [using nightly builds with NuGet](https://github.com/Microsoft/TypeScript/wiki/Nightly-drops#using-nuget-with-msbuild)
+
+## Rollup
+
+### Install
+
+```
+npm install @rollup/plugin-typescript --save-dev
+```
+
+Note that both `typescript` and `tslib` are peer dependencies of this plugin that need to be installed separately.
+
+### Usage
+
+Create a `rollup.config.js` [configuration file](https://www.rollupjs.org/guide/en/#configuration-files) and import the plugin:
+
+```js
+// rollup.config.js
+import typescript from '@rollup/plugin-typescript';
+
+export default {
+  input: 'src/index.ts',
+  output: {
+    dir: 'output',
+    format: 'cjs'
+  },
+  plugins: [typescript()]
+};
+```
+
+## Svelte Compiler
+
+### Install
+
+```
+npm install --save-dev svelte-preprocess
+```
+
+Note that `typescript` is an optional peer dependencies of this plugin and needs to be installed separately. `tslib` is not provided either.
+
+You may also consider [`svelte-check`](https://www.npmjs.com/package/svelte-check) for CLI type checking.
+
+### Usage
+
+Create a `svelte.config.js` configuration file and import the plugin:
+
+```js
+// svelte.config.js
+import preprocess from 'svelte-preprocess';
+
+const config = {
+  // Consult https://github.com/sveltejs/svelte-preprocess
+  // for more information about preprocessors
+  preprocess: preprocess()
+};
+
+export default config;
+```
+
+You can now specify that script blocks are written in TypeScript:
+
+```
+<script lang="ts">
+```
+
+## Vite
+
+Vite supports importing `.ts` files out-of-the-box. It only performs transpilation and not type checking. It also requires that some `compilerOptions` have certain values. See the [Vite docs](https://vitejs.dev/guide/features.html#typescript) for more details.
+
+## Webpack
+
+### Install
+
+```sh
+npm install ts-loader --save-dev
+```
+
+### Basic webpack.config.js when using Webpack 5 or 4
+
+```js
+const path = require('path');
+
+module.exports = {
+  entry: './src/index.ts',
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+  },
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+};
+```
+
+See [more details on ts-loader here](https://www.npmjs.com/package/ts-loader).
+
+Alternatives:
+
+- [awesome-typescript-loader](https://www.npmjs.com/package/awesome-typescript-loader)
