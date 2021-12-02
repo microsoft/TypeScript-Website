@@ -21,9 +21,11 @@ console.log("TSConfig Ref: MD for TSConfig");
 
 import { writeFileSync, readdirSync, existsSync, mkdirSync } from "fs";
 import { join } from "path";
+import { fileURLToPath } from "url";
 import * as assert from "assert";
-import { read as readMarkdownFile } from "gray-matter";
-import * as prettier from "prettier";
+import matter from "gray-matter";
+import prettier from "prettier";
+import ts from "typescript";
 import { CompilerOptionJSON } from "./generateJSON.js";
 
 import {
@@ -32,10 +34,12 @@ import {
   watchOptionCompilerOptNames,
   rootOptNames,
   parseMarkdown,
-} from "../tsconfigRules";
+} from "../tsconfigRules.js";
 
-const options = require("../../data/tsconfigOpts.json").options as CompilerOptionJSON[];
-const categories = require("../../data/tsconfigCategories.json") as typeof import("../../data/tsconfigCategories.json");
+// @ts-ignore
+import options from "../../data/tsconfigOpts.json";
+// @ts-ignore
+import categories from "../../data/tsconfigCategories.json";
 
 const orderedCategories = [
   "Project_Files_0",
@@ -85,19 +89,24 @@ const sections = [
   { name: "typeAcquisition", options: typeAcquisitionCompilerOptNames, idPrefix: "type" },
 ];
 
-const languages = readdirSync(join(__dirname, "..", "..", "copy")).filter(
+const languages = readdirSync(new URL("../../copy", import.meta.url)).filter(
   (f) => !f.startsWith(".")
 );
 
 languages.forEach((lang) => {
-  const locale = join(__dirname, "..", "..", "copy", lang);
-  const fallbackLocale = join(__dirname, "..", "..", "copy", "en");
+  const locale = new URL(`../../copy/${lang}/`, import.meta.url);
+  const fallbackLocale = new URL("../../copy/en/", import.meta.url);
 
   const mdChunks: string[] = [];
 
-  const getPathInLocale = (path: string, optionalExampleContent?: string, failable = false) => {
-    if (existsSync(join(locale, path))) return join(locale, path);
-    if (existsSync(join(fallbackLocale, path))) return join(fallbackLocale, path);
+  const getPathInLocale = (
+    path: string,
+    optionalExampleContent?: string,
+    failable = false
+  ) => {
+    if (existsSync(new URL(path, locale))) return new URL(path, locale);
+    if (existsSync(new URL(path, fallbackLocale)))
+      return new URL(path, fallbackLocale);
 
     const localeDesc = lang === "en" ? lang : `either ${lang} or English`;
     if (!failable)
@@ -128,16 +137,20 @@ languages.forEach((lang) => {
     );
 
     // Intro to the section
-    const sectionsPath = getPathInLocale(join("sections", section.name + ".md"));
-    const sectionsFile = readMarkdownFile(sectionsPath);
+    const sectionsPath = getPathInLocale(
+      join("sections", section.name + ".md")
+    );
+    const sectionsFile = matter.read(fileURLToPath(sectionsPath));
     mdChunks.push("\n" + sectionsFile.content + "\n");
 
     // Show a sticky sub-nav for the categories
     if (sectionCategories.length > 1) {
       mdChunks.push(`<nav id="sticky"><ul>`);
       sectionCategories.forEach((categoryID) => {
-        const categoryPath = getPathInLocale(join("categories", categoryID + ".md"));
-        const categoryFile = readMarkdownFile(categoryPath);
+        const categoryPath = getPathInLocale(
+          join("categories", categoryID + ".md")
+        );
+        const categoryFile = matter.read(fileURLToPath(categoryPath));
 
         mdChunks.push(`<li><a href="#${categoryID}">${categoryFile.data.display}</a></li>`);
       });
@@ -148,12 +161,16 @@ languages.forEach((lang) => {
 
     sectionCategories.forEach((categoryID) => {
       // We need this to look up the category ID
-      const category = Object.values(categories).find((c: any) => c.key === categoryID);
+      const category = Object.values(
+        categories as { [code: string]: ts.DiagnosticMessage }
+      ).find((c: any) => c.key === categoryID);
       let categoryName = categoryID;
 
       if (category) {
-        const categoryPath = getPathInLocale(join("categories", categoryID + ".md"));
-        const categoryFile = readMarkdownFile(categoryPath);
+        const categoryPath = getPathInLocale(
+          join("categories", categoryID + ".md")
+        );
+        const categoryFile = matter.read(fileURLToPath(categoryPath));
 
         assert.ok(categoryFile.data.display, "No display data for category: " + categoryID); // Must have a display title in the front-matter
         categoryName = categoryFile.data.display;
@@ -192,13 +209,18 @@ languages.forEach((lang) => {
         const mdPath = join("options", optionName + ".md");
         const scopedMDPath = join("options", section.name, optionName + ".md");
 
-        const fullPath = join(__dirname, "..", "..", "copy", lang, mdPath);
+        const fullPath = new URL(
+          `../../copy/${lang}/${mdPath}`,
+          import.meta.url
+        );
         const exampleOptionContent = `\n\n\n Run:\n    echo '---\\ndisplay: "${optionName}"\\noneline: "Does something"\\n---\\n${option.description?.message}\\n' > ${fullPath}\n\nThen add some docs and run: \n>  yarn workspace tsconfig-reference build\n\n`;
 
         const optionPath = getPathInLocale(mdPath, exampleOptionContent, true);
         const scopedOptionPath = getPathInLocale(scopedMDPath, exampleOptionContent, true);
 
-        const optionFile = readMarkdownFile(scopedOptionPath || optionPath);
+        const optionFile = matter.read(
+          fileURLToPath(scopedOptionPath || optionPath)
+        );
 
         // prettier-ignore
         assert.ok(optionFile, "Could not find an optionFile: " + optionName);
@@ -300,27 +322,32 @@ languages.forEach((lang) => {
   });
 
   // Write the Markdown and JSON
-  const markdown = prettier.format(mdChunks.join("\n"), { filepath: "index.md" });
-  const mdPath = join(__dirname, "..", "..", "output", lang + ".md");
+  const markdown = prettier.format(mdChunks.join("\n"), {
+    filepath: "index.md",
+  });
+  const mdPath = new URL(`../../output/${lang}.md`, import.meta.url);
   writeFileSync(mdPath, markdown);
 
   writeFileSync(
-    join(__dirname, "..", "..", "output", lang + ".json"),
+    new URL(`../../output/${lang}.json`, import.meta.url),
     JSON.stringify({ categories: allCategories })
   );
 
   // This is used by the playground
   writeFileSync(
-    join(__dirname, "..", "..", "output", lang + "-summary.json"),
+    new URL(`../../output/${lang}-summary.json`, import.meta.url),
     JSON.stringify({ options: optionsSummary })
   );
 
-  const jsonDir = join(__dirname, "..", "..", "..", "typescriptlang-org", "static", "js", "json");
+  const jsonDir = new URL(
+    "../../../typescriptlang-org/static/js/json/",
+    import.meta.url
+  );
   if (!existsSync(jsonDir)) mkdirSync(jsonDir);
 
   // This is used by the tsconfig popups
   writeFileSync(
-    join(jsonDir, lang + "-tsconfig-popup.json"),
+    new URL(`${lang}-tsconfig-popup.json`, jsonDir),
     JSON.stringify(
       Object.fromEntries(optionsSummary.map((data) => [data.id, data.oneliner]))
     )
@@ -328,7 +355,7 @@ languages.forEach((lang) => {
 });
 
 writeFileSync(
-  join(__dirname, "..", "..", "output", "languages.json"),
+  new URL("../../output/languages.json", import.meta.url),
   JSON.stringify({ languages })
 );
 
