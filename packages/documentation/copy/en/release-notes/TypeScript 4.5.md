@@ -95,7 +95,7 @@ async function doSomething(): Promise<[number, number]> {
 }
 ```
 
-Now `Promise.all` leverages combines certain features with `Awaited` to give much better inference results, and the above example works.
+Now `Promise.all` leverages the combination of certain features with `Awaited` to give much better inference results, and the above example works.
 
 For more information, you [can read about this change on GitHub](https://github.com/microsoft/TypeScript/pull/45350).
 
