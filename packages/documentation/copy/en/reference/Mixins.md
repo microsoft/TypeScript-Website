@@ -272,3 +272,4 @@ class Spec extends derived<string>() {}
 Spec.prop; // string
 Spec.anotherProp; // string
 ```
+* If you try to run this example in TS Playground you should turn of "declaration" property in TS Config. In other case you should recieve error message "Return type of exported function has or is using private name"
