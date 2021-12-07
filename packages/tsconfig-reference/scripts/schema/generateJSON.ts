@@ -8,18 +8,21 @@
 */
 console.log("TSConfig Ref: JSON schema");
 
-import { read as readMarkdownFile } from "gray-matter";
+import matter from "gray-matter";
 import { CommandLineOptionBase } from "../types";
 import { writeFileSync } from "fs";
 import { join } from "path";
-import { format } from "prettier";
+import { fileURLToPath } from "url";
+import prettier from "prettier";
 import { CompilerOptionName } from "../../data/_types";
-import * as ts from "typescript";
+import ts from "typescript";
 import type { JSONSchema7 } from "json-schema";
-import type { CommandLineOption } from "../tsconfigRules";
+import type { CommandLineOption } from "../tsconfigRules.js";
 
-const toJSONString = (obj) => format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
-const writeJSON = (name, obj) => writeFileSync(join(__dirname, "result", name), toJSONString(obj));
+const toJSONString = (obj) =>
+  prettier.format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
+const writeJSON = (name, obj) =>
+  writeFileSync(new URL(`result/${name}`, import.meta.url), toJSONString(obj));
 
 export interface CompilerOptionJSON extends CommandLineOptionBase {
   releaseVersion?: string;
@@ -33,9 +36,9 @@ export interface CompilerOptionJSON extends CommandLineOptionBase {
   hostObj: string;
 }
 
-const schemaBase = require("./vendor/base.json") as typeof import("./vendor/base.json");
-const tsconfigOpts = require(join(__dirname, "../../data/tsconfigOpts.json"))
-  .options as CompilerOptionJSON[];
+import schemaBase from "./vendor/base.json";
+// @ts-ignore
+import tsconfigOpts from "../../data/tsconfigOpts.json";
 
 // Cut down the list
 const filteredOptions = tsconfigOpts
@@ -63,7 +66,10 @@ const okToSkip = [
 filteredOptions.forEach((option) => {
   const name = option.name as CompilerOptionName;
   if (okToSkip.includes(name)) return;
-  const sectionsPath = join(__dirname, `../../copy/en/options/${name}.md`);
+  const sectionsPath = new URL(
+    `../../copy/en/options/${name}.md`,
+    import.meta.url
+  );
 
   let section;
   if (schemaCompilerOpts[name]) section = schemaCompilerOpts;
@@ -91,7 +97,7 @@ You're also probably going to need to make the new Markdown file for the compile
     let optionFile;
 
     try {
-      optionFile = readMarkdownFile(sectionsPath);
+      optionFile = matter.read(fileURLToPath(sectionsPath));
     } catch (error) {
       // prettier-ignore
       throw new Error(

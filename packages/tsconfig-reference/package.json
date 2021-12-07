@@ -4,14 +4,14 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "generate:json:tsconfig": "yarn ts-node -T scripts/tsconfig/generateJSON.ts",
-    "generate:json:cli": "yarn ts-node -T scripts/cli/generateJSON.ts",
-    "generate:json:schema": "yarn ts-node -T scripts/schema/generateJSON.ts",
-    "generate:json:msbuild": "yarn ts-node -T scripts/msbuild/generateJSON.ts",
+    "generate:json:tsconfig": "tsc --build && node --experimental-json-modules scripts/tsconfig/generateJSON",
+    "generate:json:cli": "tsc --build && node --experimental-json-modules scripts/cli/generateJSON",
+    "generate:json:schema": "tsc --build && node --experimental-json-modules scripts/schema/generateJSON",
+    "generate:json:msbuild": "tsc --build && node --experimental-json-modules scripts/msbuild/generateJSON",
     "generate:json": "yarn generate:json:tsconfig && yarn generate:json:cli && yarn generate:json:schema && yarn generate:json:msbuild",
-    "generate:md:tsconfig": "yarn ts-node -T scripts/tsconfig/generateMarkdown.ts",
-    "generate:md:cli": "yarn ts-node -T scripts/cli/generateMarkdown.ts",
-    "generate:md:msbuild": "yarn ts-node -T scripts/msbuild/generateMarkdown.ts",
+    "generate:md:tsconfig": "tsc --build && node --experimental-json-modules scripts/tsconfig/generateMarkdown",
+    "generate:md:cli": "tsc --build && node --experimental-json-modules scripts/cli/generateMarkdown",
+    "generate:md:msbuild": "tsc --build && node --experimental-json-modules scripts/msbuild/generateMarkdown",
     "generate:md": "yarn generate:md:tsconfig && yarn generate:md:cli && yarn generate:md:tsconfig",
     "bootstrap": "yarn scripts/schema/downloadSchemaBase.ts",
     "build": "yarn generate:json && yarn generate:md",
@@ -26,5 +26,6 @@
     "remark": "^11.0.2",
     "remark-html": "^10.0.0",
     "ts-node": "*"
-  }
+  },
+  "type": "module"
 }
