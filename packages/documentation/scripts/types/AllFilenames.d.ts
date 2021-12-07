@@ -58,6 +58,7 @@ export type AllDocsPages =
   | "reference/Declaration Merging.md"
   | "reference/Decorators.md"
   | "reference/Enums.md"
+  | "reference/Experimental ESM Support for Node.md"
   | "reference/Iterators and Generators.md"
   | "reference/JSX.md"
   | "reference/Mixins.md"

@@ -281,6 +281,7 @@ const Play: React.FC<Props> = (props) => {
                     < li role="separator" className="divider" ></li>
                     <li><a href="#" onClick={() => playground.exporter.openInTSAST()} aria-label={i("play_export_tsast")}>{i("play_export_tsast")}</a></li>
                     <li><a href="#" onClick={() => playground.exporter.openInBugWorkbench()} aria-label={i("play_export_bugworkbench")}>{i("play_export_bugworkbench")}</a></li>
+                    <li><a href="#" onClick={() => playground.exporter.openInVSCodeDev()} aria-label={i("play_export_vscode_dev_play")}>{i("play_export_vscode_dev_play")}</a></li>
                     <li role="separator" className="divider"></li>
                     <li><a href="#" onClick={() => playground.exporter.openProjectInCodeSandbox()} aria-label={i("play_export_sandbox")} >{i("play_export_sandbox")}</a></li>
                     <li><a href="#" onClick={() => playground.exporter.openProjectInStackBlitz()} aria-label={i("play_export_stackblitz")} >{i("play_export_stackblitz")}</a></li>

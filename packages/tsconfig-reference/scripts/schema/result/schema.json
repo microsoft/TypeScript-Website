@@ -70,16 +70,16 @@
               "default": false
             },
             "force": {
-              "description": "Build all projects, including those that appear to be up to date",
+              "description": "Build all projects, including those that appear to be up to date.",
               "type": "boolean",
               "default": false,
-              "markdownDescription": "Build all projects, including those that appear to be up to date\n\nSee more: https://www.typescriptlang.org/tsconfig#force"
+              "markdownDescription": "Build all projects, including those that appear to be up to date.\n\nSee more: https://www.typescriptlang.org/tsconfig#force"
             },
             "verbose": {
-              "description": "Enable verbose logging",
+              "description": "Enable verbose logging.",
               "type": "boolean",
               "default": false,
-              "markdownDescription": "Enable verbose logging\n\nSee more: https://www.typescriptlang.org/tsconfig#verbose"
+              "markdownDescription": "Enable verbose logging.\n\nSee more: https://www.typescriptlang.org/tsconfig#verbose"
             },
             "incremental": {
               "description": "Save .tsbuildinfo files to allow for incremental compilation of projects.",
@@ -109,24 +109,40 @@
           "type": "object",
           "description": "Settings for the watch mode in TypeScript.",
           "properties": {
-            "force": {
-              "description": "~",
-              "type": "string"
-            },
             "watchFile": {
               "description": "Specify how the TypeScript watch mode works.",
               "type": "string",
-              "markdownDescription": "Specify how the TypeScript watch mode works.\n\nSee more: https://www.typescriptlang.org/tsconfig#watchFile"
+              "markdownDescription": "Specify how the TypeScript watch mode works.\n\nSee more: https://www.typescriptlang.org/tsconfig#watchFile",
+              "enum": [
+                "fixedpollinginterval",
+                "prioritypollinginterval",
+                "dynamicprioritypolling",
+                "fixedchunksizepolling",
+                "usefsevents",
+                "usefseventsonparentdirectory"
+              ]
             },
             "watchDirectory": {
               "description": "Specify how directories are watched on systems that lack recursive file-watching functionality.",
               "type": "string",
-              "markdownDescription": "Specify how directories are watched on systems that lack recursive file-watching functionality.\n\nSee more: https://www.typescriptlang.org/tsconfig#watchDirectory"
+              "markdownDescription": "Specify how directories are watched on systems that lack recursive file-watching functionality.\n\nSee more: https://www.typescriptlang.org/tsconfig#watchDirectory",
+              "enum": [
+                "usefsevents",
+                "fixedpollinginterval",
+                "dynamicprioritypolling",
+                "fixedchunksizepolling"
+              ]
             },
             "fallbackPolling": {
               "description": "Specify what approach the watcher should use if the system runs out of native file watchers.",
               "type": "string",
-              "markdownDescription": "Specify what approach the watcher should use if the system runs out of native file watchers.\n\nSee more: https://www.typescriptlang.org/tsconfig#fallbackPolling"
+              "markdownDescription": "Specify what approach the watcher should use if the system runs out of native file watchers.\n\nSee more: https://www.typescriptlang.org/tsconfig#fallbackPolling",
+              "enum": [
+                "fixedinterval",
+                "priorityinterval",
+                "dynamicpriority",
+                "fixedchunksize"
+              ]
             },
             "synchronousWatchDirectory": {
               "description": "Synchronously call callbacks and update the state of directory watchers on platforms that don`t support recursive watching natively.",
@@ -194,9 +210,9 @@
               "markdownDescription": "Reduce the number of projects loaded automatically by TypeScript.\n\nSee more: https://www.typescriptlang.org/tsconfig#disableReferencedProjectLoad"
             },
             "noPropertyAccessFromIndexSignature": {
-              "description": "Enforces using indexed accessors for keys declared using an indexed type",
+              "description": "Enforces using indexed accessors for keys declared using an indexed type.",
               "type": "boolean",
-              "markdownDescription": "Enforces using indexed accessors for keys declared using an indexed type\n\nSee more: https://www.typescriptlang.org/tsconfig#noPropertyAccessFromIndexSignature"
+              "markdownDescription": "Enforces using indexed accessors for keys declared using an indexed type.\n\nSee more: https://www.typescriptlang.org/tsconfig#noPropertyAccessFromIndexSignature"
             },
             "emitBOM": {
               "description": "Emit a UTF-8 Byte Order Mark (BOM) in the beginning of output files.",
@@ -211,10 +227,10 @@
               "markdownDescription": "Only output d.ts files and not JavaScript files.\n\nSee more: https://www.typescriptlang.org/tsconfig#emitDeclarationOnly"
             },
             "exactOptionalPropertyTypes": {
-              "description": "Differentiate between undefined and not present when type checking",
+              "description": "Differentiate between undefined and not present when type checking.",
               "type": "boolean",
               "default": false,
-              "markdownDescription": "Differentiate between undefined and not present when type checking\n\nSee more: https://www.typescriptlang.org/tsconfig#exactOptionalPropertyTypes"
+              "markdownDescription": "Differentiate between undefined and not present when type checking.\n\nSee more: https://www.typescriptlang.org/tsconfig#exactOptionalPropertyTypes"
             },
             "incremental": {
               "description": "Enable incremental compilation. Requires TypeScript version 3.4 or later.",
@@ -242,10 +258,10 @@
               "description": "Specify what JSX code is generated.",
               "enum": [
                 "preserve",
+                "react-native",
                 "react",
                 "react-jsx",
-                "react-jsxdev",
-                "react-native"
+                "react-jsxdev"
               ]
             },
             "reactNamespace": {
@@ -255,10 +271,10 @@
               "markdownDescription": "Specify the object invoked for `createElement`. This only applies when targeting `react` JSX emit.\n\nSee more: https://www.typescriptlang.org/tsconfig#reactNamespace"
             },
             "jsxFactory": {
-              "description": "Specify the JSX factory function used when targeting React JSX emit, e.g. 'React.createElement' or 'h'",
+              "description": "Specify the JSX factory function used when targeting React JSX emit, e.g. 'React.createElement' or 'h'.",
               "type": "string",
               "default": "React.createElement",
-              "markdownDescription": "Specify the JSX factory function used when targeting React JSX emit, e.g. 'React.createElement' or 'h'\n\nSee more: https://www.typescriptlang.org/tsconfig#jsxFactory"
+              "markdownDescription": "Specify the JSX factory function used when targeting React JSX emit, e.g. 'React.createElement' or 'h'.\n\nSee more: https://www.typescriptlang.org/tsconfig#jsxFactory"
             },
             "jsxFragmentFactory": {
               "description": "Specify the JSX Fragment reference used for fragments when targeting React JSX emit e.g. 'React.Fragment' or 'Fragment'.",
@@ -289,6 +305,7 @@
               "anyOf": [
                 {
                   "enum": [
+                    "None",
                     "CommonJS",
                     "AMD",
                     "System",
@@ -296,9 +313,8 @@
                     "ES6",
                     "ES2015",
                     "ES2020",
-                    "ESNext",
-                    "None",
                     "es2022",
+                    "ESNext",
                     "node12",
                     "nodenext"
                   ]
@@ -314,7 +330,7 @@
               "type": "string",
               "anyOf": [
                 {
-                  "enum": ["Classic", "Node"]
+                  "enum": ["Node", "Classic"]
                 },
                 {
                   "pattern": "^(([Nn]ode)|([Cc]lassic))$"
@@ -337,10 +353,10 @@
               "markdownDescription": "Set the newline character for emitting files.\n\nSee more: https://www.typescriptlang.org/tsconfig#newLine"
             },
             "noEmit": {
-              "description": "Disable emitting file from a compilation.",
+              "description": "Disable emitting files from a compilation.",
               "type": "boolean",
               "default": false,
-              "markdownDescription": "Disable emitting file from a compilation.\n\nSee more: https://www.typescriptlang.org/tsconfig#noEmit"
+              "markdownDescription": "Disable emitting files from a compilation.\n\nSee more: https://www.typescriptlang.org/tsconfig#noEmit"
             },
             "noEmitHelpers": {
               "description": "Disable generating custom helper functions like `extends` in compiled output.",
@@ -371,10 +387,10 @@
               "markdownDescription": "Enable error reporting when a local variables aren't read.\n\nSee more: https://www.typescriptlang.org/tsconfig#noUnusedLocals"
             },
             "noUnusedParameters": {
-              "description": "Raise an error when a function parameter isn't read",
+              "description": "Raise an error when a function parameter isn't read.",
               "type": "boolean",
               "default": false,
-              "markdownDescription": "Raise an error when a function parameter isn't read\n\nSee more: https://www.typescriptlang.org/tsconfig#noUnusedParameters"
+              "markdownDescription": "Raise an error when a function parameter isn't read.\n\nSee more: https://www.typescriptlang.org/tsconfig#noUnusedParameters"
             },
             "noLib": {
               "description": "Disable including any library files, including the default lib.d.ts.",
@@ -429,21 +445,21 @@
               "markdownDescription": "Disable resolving symlinks to their realpath. This correlates to the same flag in node.\n\nSee more: https://www.typescriptlang.org/tsconfig#preserveSymlinks"
             },
             "preserveValueImports": {
-              "description": "Preserve unused imported values in the JavaScript output that would otherwise be removed",
+              "description": "Preserve unused imported values in the JavaScript output that would otherwise be removed.",
               "type": "boolean",
               "default": false,
-              "markdownDescription": "Preserve unused imported values in the JavaScript output that would otherwise be removed\n\nSee more: https://www.typescriptlang.org/tsconfig#preserveValueImports"
+              "markdownDescription": "Preserve unused imported values in the JavaScript output that would otherwise be removed.\n\nSee more: https://www.typescriptlang.org/tsconfig#preserveValueImports"
             },
             "preserveWatchOutput": {
-              "description": "Disable wiping the console in watch mode",
+              "description": "Disable wiping the console in watch mode.",
               "type": "boolean",
-              "markdownDescription": "Disable wiping the console in watch mode\n\nSee more: https://www.typescriptlang.org/tsconfig#preserveWatchOutput"
+              "markdownDescription": "Disable wiping the console in watch mode.\n\nSee more: https://www.typescriptlang.org/tsconfig#preserveWatchOutput"
             },
             "pretty": {
-              "description": "Enable color and formatting in output to make compiler errors easier to read",
+              "description": "Enable color and formatting in TypeScript's output to make compiler errors easier to read.",
               "type": "boolean",
               "default": true,
-              "markdownDescription": "Enable color and formatting in output to make compiler errors easier to read\n\nSee more: https://www.typescriptlang.org/tsconfig#pretty"
+              "markdownDescription": "Enable color and formatting in TypeScript's output to make compiler errors easier to read.\n\nSee more: https://www.typescriptlang.org/tsconfig#pretty"
             },
             "removeComments": {
               "description": "Disable emitting comments.",
@@ -521,44 +537,6 @@
               "type": "boolean",
               "default": false,
               "markdownDescription": "Default catch clause variables as `unknown` instead of `any`.\n\nSee more: https://www.typescriptlang.org/tsconfig#useUnknownInCatchVariables"
-            },
-            "watch": {
-              "description": "Watch input files.",
-              "type": "boolean"
-            },
-            "fallbackPolling": {
-              "description": "Specify the polling strategy to use when the system runs out of or doesn't support native file watchers. Requires TypeScript version 3.8 or later.",
-              "enum": [
-                "fixedPollingInterval",
-                "priorityPollingInterval",
-                "dynamicPriorityPolling",
-                "fixedInterval",
-                "priorityInterval",
-                "dynamicPriority",
-                "fixedChunkSize"
-              ]
-            },
-            "watchDirectory": {
-              "description": "Specify the strategy for watching directories under systems that lack recursive file-watching functionality. Requires TypeScript version 3.8 or later.",
-              "enum": [
-                "useFsEvents",
-                "fixedPollingInterval",
-                "dynamicPriorityPolling",
-                "fixedChunkSizePolling"
-              ],
-              "default": "useFsEvents"
-            },
-            "watchFile": {
-              "description": "Specify the strategy for watching individual files. Requires TypeScript version 3.8 or later.",
-              "enum": [
-                "fixedPollingInterval",
-                "priorityPollingInterval",
-                "dynamicPriorityPolling",
-                "useFsEvents",
-                "useFsEventsOnParentDirectory",
-                "fixedChunkSizePolling"
-              ],
-              "default": "useFsEvents"
             },
             "experimentalDecorators": {
               "description": "Enable experimental support for TC39 stage 2 draft decorators.",
@@ -726,99 +704,66 @@
                       "ES5",
                       "ES6",
                       "ES2015",
-                      "ES2015.Collection",
+                      "ES7",
+                      "ES2016",
+                      "ES2017",
+                      "ES2018",
+                      "ES2019",
+                      "ES2020",
+                      "ES2021",
+                      "ESNext",
+                      "DOM",
+                      "DOM.Iterable",
+                      "WebWorker",
+                      "WebWorker.ImportScripts",
+                      "Webworker.Iterable",
+                      "ScriptHost",
                       "ES2015.Core",
+                      "ES2015.Collection",
                       "ES2015.Generator",
                       "ES2015.Iterable",
                       "ES2015.Promise",
                       "ES2015.Proxy",
                       "ES2015.Reflect",
-                      "ES2015.Symbol.WellKnown",
                       "ES2015.Symbol",
-                      "ES2016",
+                      "ES2015.Symbol.WellKnown",
                       "ES2016.Array.Include",
-                      "ES2017",
-                      "ES2017.Intl",
                       "ES2017.Object",
                       "ES2017.SharedMemory",
                       "ES2017.String",
+                      "ES2017.Intl",
                       "ES2017.TypedArrays",
-                      "ES2018",
                       "ES2018.AsyncGenerator",
                       "ES2018.AsyncIterable",
                       "ES2018.Intl",
                       "ES2018.Promise",
                       "ES2018.Regexp",
-                      "ES2019",
                       "ES2019.Array",
                       "ES2019.Object",
                       "ES2019.String",
                       "ES2019.Symbol",
-                      "ES2020",
                       "ES2020.BigInt",
                       "ES2020.Promise",
+                      "ES2020.SharedMemory",
                       "ES2020.String",
                       "ES2020.Symbol.WellKnown",
-                      "ESNext",
-                      "ESNext.Array",
-                      "ESNext.AsyncIterable",
-                      "ESNext.BigInt",
-                      "ESNext.Intl",
-                      "ESNext.Promise",
-                      "ESNext.String",
-                      "ESNext.Symbol",
-                      "DOM",
-                      "DOM.Iterable",
-                      "ScriptHost",
-                      "WebWorker",
-                      "WebWorker.ImportScripts",
-                      "Webworker.Iterable",
-                      "ES7",
-                      "ES2021",
-                      "ES2020.SharedMemory",
                       "ES2020.Intl",
                       "ES2021.Promise",
                       "ES2021.String",
                       "ES2021.WeakRef",
-                      "ESNext.WeakRef",
-                      "es2021.intl"
+                      "es2021.intl",
+                      "ESNext.Array",
+                      "ESNext.Symbol",
+                      "ESNext.AsyncIterable",
+                      "ESNext.Intl",
+                      "ESNext.BigInt",
+                      "ESNext.String",
+                      "ESNext.Promise",
+                      "ESNext.WeakRef"
                     ]
                   },
                   {
-                    "pattern": "^[Ee][Ss]5|[Ee][Ss]6|[Ee][Ss]7$"
-                  },
-                  {
-                    "pattern": "^[Ee][Ss]2015(\\.([Cc][Oo][Ll][Ll][Ee][Cc][Tt][Ii][Oo][Nn]|[Cc][Oo][Rr][Ee]|[Gg][Ee][Nn][Ee][Rr][Aa][Tt][Oo][Rr]|[Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Pp][Rr][Oo][Xx][Yy]|[Rr][Ee][Ff][Ll][Ee][Cc][Tt]|[Ss][Yy][Mm][Bb][Oo][Ll].[Ww][Ee][Ll][Ll][Kk][Nn][Oo][Ww][Nn]|[Ss][Yy][Mm][Bb][Oo][Ll]))?$"
-                  },
-                  {
-                    "pattern": "^[Ee][Ss]2016(\\.[Aa][Rr][Rr][Aa][Yy].[Ii][Nn][Cc][Ll][Uu][Dd][Ee])?$"
-                  },
-                  {
-                    "pattern": "^[Ee][Ss]2017(\\.([Ii][Nn][Tt][Ll]|[Oo][Bb][Jj][Ee][Cc][Tt]|[Ss][Hh][Aa][Rr][Ee][Dd][Mm][Ee][Mm][Oo][Rr][Yy]|[Ss][Tt][Rr][Ii][Nn][Gg]|[Tt][Yy][Pp][Ee][Dd][Aa][Rr][Rr][Aa][Yy][Ss]))?$"
-                  },
-                  {
-                    "pattern": "^[Ee][Ss]2018(\\.([Aa][Ss][Yy][Nn][Cc][Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Ii][Nn][Tt][Ll]|[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Rr][Ee][Gg][Ee][Xx][Pp]))?$"
-                  },
-                  {
-                    "pattern": "^[Ee][Ss]2019(\\.([Aa][Rr][Rr][Aa][Yy]|[Oo][Bb][Jj][Ee][Cc][Tt]|[Ss][Tt][Rr][Ii][Nn][Gg]|[Ss][Yy][Mm][Bb][Oo][Ll]))?$"
-                  },
-                  {
-                    "pattern": "^[Ee][Ss]2020(\\.([Bb][Ii][Gg][Ii][Nn][Tt]|[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ss][Tt][Rr][Ii][Nn][Gg]|[Ss][Yy][Mm][Bb][Oo][Ll].[Ww][Ee][Ll][Ll][Kk][Nn][Oo][Ww][Nn]))?$"
-                  },
-                  {
-                    "pattern": "^[Ee][Ss]2021(\\.([Ii][Nn][Tt][Ll]|[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ss][Tt][Rr][Ii][Nn][Gg]|[Ww][Ee][Aa][Kk][Rr][Ee][Ff]))?$"
-                  },
-                  {
-                    "pattern": "^[Ee][Ss][Nn][Ee][Xx][Tt](\\.([Aa][Rr][Rr][Aa][Yy]|[Aa][Ss][Yy][Nn][Cc][Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Bb][Ii][Gg][Ii][Nn][Tt]|[Ii][Nn][Tt][Ll]|[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ss][Tt][Rr][Ii][Nn][Gg]|[Ss][Yy][Mm][Bb][Oo][Ll]|[Ww][Ee][Aa][Kk][Rr][Ee][Ff]))?$"
-                  },
-                  {
-                    "pattern": "^[Dd][Oo][Mm](\\.[Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee])?$"
-                  },
-                  {
-                    "pattern": "^[Ss][Cc][Rr][Ii][Pp][Tt][Hh][Oo][Ss][Tt]$"
-                  },
-                  {
-                    "pattern": "^[Ww][Ee][Bb][Ww][Oo][Rr][Kk][Ee][Rr](\\.[Ii][Mm][Pp][Oo][Rr][Tt][Ss][Cc][Rr][Ii][Pp][Tt][Ss])?$"
+                    "pattern": "^(?:[Ee][Ss]5|[Ee][Ss]6|[Ee][Ss]2015|[Ee][Ss]7|[Ee][Ss]2016|[Ee][Ss]2017|[Ee][Ss]2018|[Ee][Ss]2019|[Ee][Ss]2020|[Ee][Ss]2021|[Ee][Ss][Nn][Ee][Xx][Tt]|[Dd][Oo][Mm]|[Dd][Oo][Mm]\\.[Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Ww][Ee][Bb][Ww][Oo][Rr][Kk][Ee][Rr]|[Ww][Ee][Bb][Ww][Oo][Rr][Kk][Ee][Rr]\\.[Ii][Mm][Pp][Oo][Rr][Tt][Ss][Cc][Rr][Ii][Pp][Tt][Ss]|[Ww][Ee][Bb][Ww][Oo][Rr][Kk][Ee][Rr]\\.[Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Ss][Cc][Rr][Ii][Pp][Tt][Hh][Oo][Ss][Tt]|[Ee][Ss]2015\\.[Cc][Oo][Rr][Ee]|[Ee][Ss]2015\\.[Cc][Oo][Ll][Ll][Ee][Cc][Tt][Ii][Oo][Nn]|[Ee][Ss]2015\\.[Gg][Ee][Nn][Ee][Rr][Aa][Tt][Oo][Rr]|[Ee][Ss]2015\\.[Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Ee][Ss]2015\\.[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ee][Ss]2015\\.[Pp][Rr][Oo][Xx][Yy]|[Ee][Ss]2015\\.[Rr][Ee][Ff][Ll][Ee][Cc][Tt]|[Ee][Ss]2015\\.[Ss][Yy][Mm][Bb][Oo][Ll]|[Ee][Ss]2015\\.[Ss][Yy][Mm][Bb][Oo][Ll]\\.[Ww][Ee][Ll][Ll][Kk][Nn][Oo][Ww][Nn]|[Ee][Ss]2016\\.[Aa][Rr][Rr][Aa][Yy]\\.[Ii][Nn][Cc][Ll][Uu][Dd][Ee]|[Ee][Ss]2017\\.[Oo][Bb][Jj][Ee][Cc][Tt]|[Ee][Ss]2017\\.[Ss][Hh][Aa][Rr][Ee][Dd][Mm][Ee][Mm][Oo][Rr][Yy]|[Ee][Ss]2017\\.[Ss][Tt][Rr][Ii][Nn][Gg]|[Ee][Ss]2017\\.[Ii][Nn][Tt][Ll]|[Ee][Ss]2017\\.[Tt][Yy][Pp][Ee][Dd][Aa][Rr][Rr][Aa][Yy][Ss]|[Ee][Ss]2018\\.[Aa][Ss][Yy][Nn][Cc][Gg][Ee][Nn][Ee][Rr][Aa][Tt][Oo][Rr]|[Ee][Ss]2018\\.[Aa][Ss][Yy][Nn][Cc][Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Ee][Ss]2018\\.[Ii][Nn][Tt][Ll]|[Ee][Ss]2018\\.[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ee][Ss]2018\\.[Rr][Ee][Gg][Ee][Xx][Pp]|[Ee][Ss]2019\\.[Aa][Rr][Rr][Aa][Yy]|[Ee][Ss]2019\\.[Oo][Bb][Jj][Ee][Cc][Tt]|[Ee][Ss]2019\\.[Ss][Tt][Rr][Ii][Nn][Gg]|[Ee][Ss]2019\\.[Ss][Yy][Mm][Bb][Oo][Ll]|[Ee][Ss]2020\\.[Bb][Ii][Gg][Ii][Nn][Tt]|[Ee][Ss]2020\\.[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ee][Ss]2020\\.[Ss][Hh][Aa][Rr][Ee][Dd][Mm][Ee][Mm][Oo][Rr][Yy]|[Ee][Ss]2020\\.[Ss][Tt][Rr][Ii][Nn][Gg]|[Ee][Ss]2020\\.[Ss][Yy][Mm][Bb][Oo][Ll]\\.[Ww][Ee][Ll][Ll][Kk][Nn][Oo][Ww][Nn]|[Ee][Ss]2020\\.[Ii][Nn][Tt][Ll]|[Ee][Ss]2021\\.[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ee][Ss]2021\\.[Ss][Tt][Rr][Ii][Nn][Gg]|[Ee][Ss]2021\\.[Ww][Ee][Aa][Kk][Rr][Ee][Ff]|[Ee][Ss]2021\\.[Ii][Nn][Tt][Ll]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Aa][Rr][Rr][Aa][Yy]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Ss][Yy][Mm][Bb][Oo][Ll]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Aa][Ss][Yy][Nn][Cc][Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Ii][Nn][Tt][Ll]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Bb][Ii][Gg][Ii][Nn][Tt]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Ss][Tt][Rr][Ii][Nn][Gg]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Ww][Ee][Aa][Kk][Rr][Ee][Ff])$"
                   }
                 ]
               },
@@ -853,10 +798,10 @@
               "markdownDescription": "Ensure 'use strict' is always emitted.\n\nSee more: https://www.typescriptlang.org/tsconfig#alwaysStrict"
             },
             "strict": {
-              "description": "Enable all strict type checking options.",
+              "description": "Enable all strict type-checking options.",
               "type": "boolean",
               "default": false,
-              "markdownDescription": "Enable all strict type checking options.\n\nSee more: https://www.typescriptlang.org/tsconfig#strict"
+              "markdownDescription": "Enable all strict type-checking options.\n\nSee more: https://www.typescriptlang.org/tsconfig#strict"
             },
             "strictBindCallApply": {
               "description": "Check that the arguments for `bind`, `call`, and `apply` methods match the original function.",
@@ -919,10 +864,10 @@
               "markdownDescription": "Create sourcemaps for d.ts files.\n\nSee more: https://www.typescriptlang.org/tsconfig#declarationMap"
             },
             "resolveJsonModule": {
-              "description": "Enable importing .json files",
+              "description": "Enable importing .json files.",
               "type": "boolean",
               "default": false,
-              "markdownDescription": "Enable importing .json files\n\nSee more: https://www.typescriptlang.org/tsconfig#resolveJsonModule"
+              "markdownDescription": "Enable importing .json files.\n\nSee more: https://www.typescriptlang.org/tsconfig#resolveJsonModule"
             },
             "assumeChangesOnlyAffectDirectDependencies": {
               "description": "Have recompiles in '--incremental' and '--watch' assume that changes within a file will only affect files directly depending on it. Requires TypeScript version 3.8 or later.",
@@ -934,14 +879,10 @@
               "default": false,
               "markdownDescription": "Output more detailed compiler performance information after building.\n\nSee more: https://www.typescriptlang.org/tsconfig#extendedDiagnostics"
             },
-            "listFilesOnly": {
-              "description": "Print names of files that are part of the compilation and then stop processing.",
-              "type": "boolean"
-            },
             "disableSourceOfProjectReferenceRedirect": {
-              "description": "Disable preferring source files instead of declaration files when referencing composite projects",
+              "description": "Disable preferring source files instead of declaration files when referencing composite projects.",
               "type": "boolean",
-              "markdownDescription": "Disable preferring source files instead of declaration files when referencing composite projects\n\nSee more: https://www.typescriptlang.org/tsconfig#disableSourceOfProjectReferenceRedirect"
+              "markdownDescription": "Disable preferring source files instead of declaration files when referencing composite projects.\n\nSee more: https://www.typescriptlang.org/tsconfig#disableSourceOfProjectReferenceRedirect"
             },
             "disableSolutionSearching": {
               "description": "Opt a project out of multi-project reference checking when editing.",

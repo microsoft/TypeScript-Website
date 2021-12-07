@@ -169,7 +169,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Build all projects, including those that appear to be up to date</p>
+<p>Build all projects, including those that appear to be up to date.</p>
 </td></tr>
 
 <tr class='odd' name='verbose'>
@@ -178,7 +178,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Enable verbose logging</p>
+<p>Enable verbose logging.</p>
 </td></tr>
 
 </tbody></table>
@@ -476,7 +476,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Disable preferring source files instead of declaration files when referencing composite projects</p>
+<p>Disable preferring source files instead of declaration files when referencing composite projects.</p>
 </td></tr>
 
 <tr class='even' name='downlevelIteration'>
@@ -542,7 +542,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Differentiate between undefined and not present when type checking</p>
+<p>Differentiate between undefined and not present when type checking.</p>
 </td></tr>
 
 <tr class='even' name='experimentalDecorators'>
@@ -686,7 +686,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Specify the JSX factory function used when targeting React JSX emit, e.g. 'React.createElement' or 'h'</p>
+<p>Specify the JSX factory function used when targeting React JSX emit, e.g. 'React.createElement' or 'h'.</p>
 </td></tr>
 
 <tr class='odd' name='jsxFragmentFactory'>
@@ -821,7 +821,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Disable emitting file from a compilation.</p>
+<p>Disable emitting files from a compilation.</p>
 </td></tr>
 
 <tr class='odd' name='noEmitHelpers'>
@@ -944,7 +944,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Enforces using indexed accessors for keys declared using an indexed type</p>
+<p>Enforces using indexed accessors for keys declared using an indexed type.</p>
 </td></tr>
 
 <tr class='even' name='noResolve'>
@@ -999,7 +999,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Raise an error when a function parameter isn't read</p>
+<p>Raise an error when a function parameter isn't read.</p>
 </td></tr>
 
 <tr class='odd' name='out'>
@@ -1088,7 +1088,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Preserve unused imported values in the JavaScript output that would otherwise be removed</p>
+<p>Preserve unused imported values in the JavaScript output that would otherwise be removed.</p>
 </td></tr>
 
 <tr class='odd' name='preserveWatchOutput'>
@@ -1099,7 +1099,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Disable wiping the console in watch mode</p>
+<p>Disable wiping the console in watch mode.</p>
 </td></tr>
 
 <tr class='even' name='pretty'>
@@ -1110,7 +1110,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Enable color and formatting in output to make compiler errors easier to read</p>
+<p>Enable color and formatting in TypeScript's output to make compiler errors easier to read.</p>
 </td></tr>
 
 <tr class='odd' name='reactNamespace'>
@@ -1143,7 +1143,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Enable importing .json files</p>
+<p>Enable importing .json files.</p>
 </td></tr>
 
 <tr class='even' name='rootDir'>
@@ -1220,7 +1220,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Enable all strict type checking options.</p>
+<p>Enable all strict type-checking options.</p>
 </td></tr>
 
 <tr class='odd' name='strictBindCallApply'>

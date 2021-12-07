@@ -1,1 +1,1 @@
-export type PHandbookPage = 
+export type PHandbookPage = "README.md"

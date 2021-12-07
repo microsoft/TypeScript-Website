@@ -157,6 +157,12 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-e
     document.location.assign(`https://ts-ast-viewer.com/${hash}`)
   }
 
+  function openInVSCodeDev() {
+    const search = document.location.search
+    const hash = `#code/${sandbox.lzstring.compressToEncodedURIComponent(sandbox.getText())}`
+    document.location.assign(`https://insiders.vscode.dev/tsplay/${search}${hash}`)
+  }
+
   function openProjectInCodeSandbox() {
     const files = {
       "package.json": {
@@ -292,6 +298,7 @@ ${codify(stringifiedCompilerOptions, "json")}
     copyForChatWithPreview,
     openInTSAST,
     openInBugWorkbench,
+    openInVSCodeDev,
     exportAsTweet,
   }
 }
