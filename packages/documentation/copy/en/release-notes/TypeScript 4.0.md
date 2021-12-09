@@ -35,7 +35,7 @@ function concat<A, B>(arr1: [A, B], arr2: []): [A, B];
 function concat<A, B, C>(arr1: [A, B, C], arr2: []): [A, B, C];
 function concat<A, B, C, D>(arr1: [A, B, C, D], arr2: []): [A, B, C, D];
 function concat<A, B, C, D, E>(arr1: [A, B, C, D, E], arr2: []): [A, B, C, D, E];
-function concat<A, B, C, D, E, F>(arr1: [A, B, C, D, E, F], arr2: []): [A, B, C, D, E, F];)
+function concat<A, B, C, D, E, F>(arr1: [A, B, C, D, E, F], arr2: []): [A, B, C, D, E, F];
 ```
 
 Uh...okay, that's...seven overloads for when the second array is always empty.
