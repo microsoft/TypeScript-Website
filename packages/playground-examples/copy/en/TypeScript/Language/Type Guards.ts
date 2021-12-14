@@ -70,7 +70,7 @@ function isAnInternetOrder(order: PossibleOrders): order is InternetOrder {
 }
 
 function isATelephoneOrder(order: PossibleOrders): order is TelephoneOrder {
-  return order && "calledNumber" in order;
+  return order && "callerNumber" in order;
 }
 
 // Now we can use these functions in if statements to narrow
