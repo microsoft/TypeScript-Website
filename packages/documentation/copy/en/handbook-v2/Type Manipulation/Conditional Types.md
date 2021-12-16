@@ -106,6 +106,9 @@ let c = createLabel(Math.random() ? "hello" : 42);
 //  ^?
 ```
 
+### Conditional Type Limitation
+Type narrowing does not work with conditional types so there is no way to implement `createLabel()` in a typesafe way.
+
 ### Conditional Type Constraints
 
 Often, the checks in a conditional type will provide us with some new information.
