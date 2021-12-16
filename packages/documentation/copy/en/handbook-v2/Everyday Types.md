@@ -308,6 +308,27 @@ function getFirstThree(x: number[] | string) {
 > The _union_ `number | string` is composed by taking the union _of the values_ from each type.
 > Notice that given two sets with corresponding facts about each set, only the _intersection_ of those facts applies to the _union_ of the sets themselves.
 > For example, if we had a room of tall people wearing hats, and another room of Spanish speakers wearing hats, after combining those rooms, the only thing we know about _every_ person is that they must be wearing a hat.
+> 
+> Another example of _intersection_ is the behavior of keyof of union type. If we combine several types, the result keyof of union type will be an intersection of keyof of each type.
+
+```ts twoslash
+type t1 = {
+  a: string;
+  b: number;
+};
+
+type t2 = {
+   a: boolean;
+   c: number;
+};
+
+type ts = t1 | t2 ;
+
+type CommonKeys<T extends object> = keyof T;
+
+type ck = CommonKeys<ts>; // evaluates to "a"
+```
+ 
 
 ## Type Aliases
 
