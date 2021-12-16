@@ -28,10 +28,10 @@ export const SiteNav = (props: Props) => {
       }
     }
 
-
     // @ts-ignore - this comes from the script above
     docsearch({
-      apiKey: '3c2db2aef0c7ff26e8911267474a9b2c',
+      appId:"BGCDYOIYZ5",
+      apiKey: '37ee06fa68db6aef451a490df6df7c60',
       indexName: 'typescriptlang',
       inputSelector: '.search input',
       handleSelected: customHandleSelected,
