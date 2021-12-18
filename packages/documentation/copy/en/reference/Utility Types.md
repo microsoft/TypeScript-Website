@@ -205,7 +205,7 @@ todoInfo;
 // ^?
 ```
 
-## `Exclude<Type, ExcludedUnion>`
+## `Exclude<UnionType, ExcludedMembers>`
 
 <blockquote class=bg-reading>
 
@@ -214,7 +214,7 @@ Released:
 
 </blockquote>
 
-Constructs a type by excluding from `Type` all union members that are assignable to `ExcludedUnion`.
+Constructs a type by excluding from `UnionType` all union members that are assignable to `ExcludedMembers`.
 
 ##### Example
 
