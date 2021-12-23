@@ -29,7 +29,7 @@ The `react-native` mode is the equivalent of `preserve` in that it keeps all JSX
 | -------------- | --------- | ------------------------------------------------- | --------------------- |
 | `preserve`     | `<div />` | `<div />`                                         | `.jsx`                |
 | `react`        | `<div />` | `React.createElement("div")`                      | `.js`                 |
-| `react-native` | `<div />` | `<div />`                                         | `.js`                 |
+| `react-native` | `<View />`| `<View />`                                        | `.js`                 |
 | `react-jsx`    | `<div />` | `_jsx("div", {}, void 0);`                        | `.js`                 |
 | `react-jsxdev` | `<div />` | `_jsxDEV("div", {}, void 0, false, {...}, this);` | `.js`                 |
 
