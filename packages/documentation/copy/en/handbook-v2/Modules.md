@@ -72,8 +72,8 @@ export default function helloWorld() {
 }
 // @filename: index.ts
 // ---cut---
-import hello from "./hello.js";
-hello();
+import helloWorld from "./hello.js";
+helloWorld();
 ```
 
 In addition to the default export, you can have more than one export of variables and functions via the `export` by omitting `default`:
@@ -136,9 +136,9 @@ export const pi = 3.14;
 export default class RandomNumberGenerator {}
 
 // @filename: app.ts
-import RNGen, { pi as π } from "./maths.js";
+import RandomNumberGenerator, { pi as π } from "./maths.js";
 
-RNGen;
+RandomNumberGenerator;
 // ^?
 
 console.log(π);
