@@ -17,7 +17,7 @@ This only affects output of JS files that started in `.tsx` files.
 This sample code:
 
 ```tsx
-export const helloWorld = () => <h1>Hello world</h1>;
+export const HelloWorld = () => <h1>Hello world</h1>;
 ```
 
 Default: `"react"`
@@ -31,7 +31,7 @@ declare module JSX {
 }
 // @showEmit
 // @noErrors
-export const helloWorld = () => <h1>Hello world</h1>;
+export const HelloWorld = () => <h1>Hello world</h1>;
 ```
 
 Preserve: `"preserve"`
@@ -46,7 +46,7 @@ declare module JSX {
 // @showEmit
 // @noErrors
 // @jsx: preserve
-export const helloWorld = () => <h1>Hello world</h1>;
+export const HelloWorld = () => <h1>Hello world</h1>;
 ```
 
 React Native: `"react-native"`
@@ -61,7 +61,7 @@ declare module JSX {
 // @showEmit
 // @noErrors
 // @jsx: react-native
-export const helloWorld = () => <h1>Hello world</h1>;
+export const HelloWorld = () => <h1>Hello world</h1>;
 ```
 
 React 17 transform: `"react-jsx"`<sup>[[1]](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html)</sup>
@@ -76,7 +76,7 @@ declare module JSX {
 // @showEmit
 // @noErrors
 // @jsx: react-jsx
-export const helloWorld = () => <h1>Hello world</h1>;
+export const HelloWorld = () => <h1>Hello world</h1>;
 ```
 
 React 17 dev transform: `"react-jsxdev"`<sup>[[1]](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html)</sup>
@@ -91,5 +91,5 @@ declare module JSX {
 // @showEmit
 // @noErrors
 // @jsx: react-jsxdev
-export const helloWorld = () => <h1>Hello world</h1>;
+export const HelloWorld = () => <h1>Hello world</h1>;
 ```
