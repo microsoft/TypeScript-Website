@@ -1181,3 +1181,7 @@ input.good {
     transform: translateZ(0);
   }
 }
+
+.monaco-list {
+  background-color: var(--background-color);
+}
