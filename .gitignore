@@ -75,3 +75,6 @@ packages/documentation/output/attribution.json
 .yarn/build-state.yml
 .yarn/install-state.gz
 
+packages/sandbox/src/releases.json
+packages/sandbox/src/releases.ts
+packages/typescriptlang-org/src/lib/documentationNavigation.ts
