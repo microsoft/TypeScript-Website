@@ -381,10 +381,10 @@
               "markdownDescription": "Enable error reporting when `this` is given the type `any`.\n\nSee more: https://www.typescriptlang.org/tsconfig#noImplicitThis"
             },
             "noUnusedLocals": {
-              "description": "Enable error reporting when a local variables aren't read.",
+              "description": "Enable error reporting when local variables aren't read.",
               "type": "boolean",
               "default": false,
-              "markdownDescription": "Enable error reporting when a local variables aren't read.\n\nSee more: https://www.typescriptlang.org/tsconfig#noUnusedLocals"
+              "markdownDescription": "Enable error reporting when local variables aren't read.\n\nSee more: https://www.typescriptlang.org/tsconfig#noUnusedLocals"
             },
             "noUnusedParameters": {
               "description": "Raise an error when a function parameter isn't read.",

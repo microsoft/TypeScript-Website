@@ -200,6 +200,17 @@ for (const lang of langs) {
 
 const codeForTheHandbook = [
   `
+  /* This function is completely auto-generated via the \`yarn bootstrap\` phase of
+  the app. You can re-run it when adding new localized handbook pages by running:
+
+  yarn workspace documentation create-handbook-nav
+
+  Find the source of truth at packages/documentation/scripts/generateDocsNavigationPerLanguage.js
+*/
+
+import type { SidebarNavItem } from "./documentationNavigationUtils"
+
+
 export function getDocumentationNavForLanguage(langRequest: string): SidebarNavItem[] {
   const langs = ['${langs.join("', '")}']
   const lang = langs.includes(langRequest) ? langRequest : "en"
@@ -289,18 +300,7 @@ codeForTheHandbook.push(`
 
 // prettier-ignore
 const pathToFileWeEdit = join(__dirname, "..", "..", "typescriptlang-org", "src", "lib", "documentationNavigation.ts");
-const startMarker = "/** ---INSERT--- */";
-const endMarker = "/** ---INSERT-END--- */";
-const oldCode = readFileSync(pathToFileWeEdit, "utf8");
-const newCode =
-  oldCode.split(startMarker)[0] +
-  startMarker +
-  "\n\n" +
-  codeForTheHandbook.join("\n") +
-  "\n\n" +
-  endMarker +
-  oldCode.split(endMarker)[1];
-
+const newCode = "\n\n" + codeForTheHandbook.join("\n") + "\n\n";
 writeFileSync(
   pathToFileWeEdit,
   format(newCode, { filepath: pathToFileWeEdit })

@@ -3,7 +3,7 @@ import { Link } from "gatsby"
 
 import "./Sidebar.scss"
 import { onAnchorKeyDown, onButtonKeydown } from "./Sidebar-keyboard"
-import { SidebarNavItem } from "../../lib/documentationNavigation"
+import { SidebarNavItem } from "../../lib/documentationNavigationUtils"
 
 export type Props = {
   navItems: SidebarNavItem[]
