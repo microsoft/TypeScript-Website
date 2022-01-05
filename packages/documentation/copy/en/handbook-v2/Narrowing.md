@@ -25,7 +25,7 @@ function padLeft(padding: number | string, input: string) {
 ```
 
 Uh-oh, we're getting an error on `padding`.
-TypeScript is warning us that adding a `number` to a `number | string` might not give us what we want, and it's right.
+TypeScript is warning us that adding a `number | string` to a `number` might not give us what we want, and it's right.
 In other words, we haven't explicitly checked if `padding` is a `number` first, nor are we handling the case where it's a `string`, so let's do exactly that.
 
 ```ts twoslash
