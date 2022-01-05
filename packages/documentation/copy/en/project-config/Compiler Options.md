@@ -988,7 +988,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Enable error reporting when a local variables aren't read.</p>
+<p>Enable error reporting when local variables aren't read.</p>
 </td></tr>
 
 <tr class='even' name='noUnusedParameters'>

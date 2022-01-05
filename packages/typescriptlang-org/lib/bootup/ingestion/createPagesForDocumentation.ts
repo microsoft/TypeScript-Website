@@ -2,12 +2,12 @@ const path = require(`path`)
 const fs = require(`fs`)
 const { green } = require("chalk")
 import { NodePluginArgs, CreatePagesArgs } from "gatsby"
+import { getDocumentationNavForLanguage } from "../../../src/lib/documentationNavigation"
 import {
-  getDocumentationNavForLanguage,
   getNextPageID,
   getPreviousPageID,
   SidebarNavItem,
-} from "../../../src/lib/documentationNavigation"
+} from "../../../src/lib/documentationNavigationUtils"
 import { addPathToSite } from "../pathsOnSiteTracker"
 import { isMultiLingual } from "./languageFilter"
 
