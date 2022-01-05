@@ -482,6 +482,36 @@ const b: Base = new Derived();
 b.greet();
 ```
 
+#### Declare Fields
+
+When [`useDefineForClassFields`](/tsconfig#useDefineForClassFields) is `true`, a class extension will overwrite getter/setters of the subclass if a field is declared in the class. This can be an issue when you need to re-declare a more accurate type in a subfield on a class. To handle these cases, you can write `declare` to indicate to TypeScript that there is no runtime change for this field.
+
+```ts twoslash
+interface Animal {
+  dateOfBirth: any;
+}
+
+interface Dog extends Animal {
+  breed: any;
+}
+
+class AnimalHouse {
+  resident: Animal;
+  constructor(animal: Animal) {
+    this.resident = animal;
+  }
+}
+
+class DogHouse extends AnimalHouse {
+  // Does not emit JavaScript code,
+  // only ensures the types are correct
+  declare resident: Dog;
+  constructor(dog: Dog) {
+    super(dog);
+  }
+}
+```
+
 #### Initialization Order
 
 The order that JavaScript classes initialize can be surprising in some cases.
