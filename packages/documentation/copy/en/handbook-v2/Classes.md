@@ -482,9 +482,9 @@ const b: Base = new Derived();
 b.greet();
 ```
 
-#### Declare Fields
+#### Type-only Field Declarations
 
-When [`useDefineForClassFields`](/tsconfig#useDefineForClassFields) is `true`, a class extension will overwrite getter/setters of the subclass if a field is declared in the class. This can be an issue when you need to re-declare a more accurate type in a subfield on a class. To handle these cases, you can write `declare` to indicate to TypeScript that there is no runtime change for this field.
+When `target >= ES2022` or [`useDefineForClassFields`](/tsconfig#useDefineForClassFields) is `true`, class fields are initialized after the parent class constructor completes, overwriting any value set by the parent class. This can be a problem when you only want to re-declare a more accurate type for an inherited field. To handle these cases, you can write `declare` to indicate to TypeScript that there should be no runtime effect for this field declaration.
 
 ```ts twoslash
 interface Animal {
