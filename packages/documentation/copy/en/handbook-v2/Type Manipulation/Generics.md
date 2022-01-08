@@ -51,7 +51,7 @@ Here, we use `Type` again as the return type. On inspection, we can now see the 
 This allows us to traffic that type information in one side of the function and out the other.
 
 We say that this version of the `identity` function is generic, as it works over a range of types.
-Unlike using `any`, it's also just as precise (ie, it doesn't lose any information) as the first `identity` function that used numbers for the argument and return type.
+Unlike using `any`, it's also just as precise (i.e., it doesn't lose any information) as the first `identity` function that used numbers for the argument and return type.
 
 Once we've written the generic identity function, we can call it in one of two ways.
 The first way is to pass all of the arguments, including the type argument, to the function:
