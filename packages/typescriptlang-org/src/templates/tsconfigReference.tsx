@@ -38,39 +38,91 @@ const TSConfigReferenceTemplateComponent = (props: Props) => {
   }
 
   useEffect(() => {
+    const calculateOffset = (
+      target: HTMLElement,
+      subnav: HTMLElement | null
+    ) => {
+      let offset = target.offsetTop
+      if (subnav) {
+        // Subtract height of subnav if "position: sticky" is active
+        const style = window.getComputedStyle(subnav)
+        if (style.position === "sticky") {
+          offset -= subnav.clientHeight
+        }
+      }
+      return offset
+    }
+
+    const scrollToHash = (hash: string) => {
+      if (hash === "#") return
+      const target = document.querySelector<HTMLElement>(hash)
+      if (!target) return
+
+      // Search for subnav if the target is a descendant of <article>
+      let search = target
+      let subnav: HTMLElement | null = null
+      while (search.parentElement) {
+        search = search.parentElement
+        if (search.tagName === "ARTICLE") {
+          subnav = search.querySelector("nav")
+          break
+        }
+      }
+
+      // Smooth scroll to the target
+      const offset = calculateOffset(target, subnav)
+      if (!offset) return
+      window.scrollTo({
+        top: offset,
+        behavior: "smooth",
+      })
+    }
+
     // Overrides the anchor behavior to smooth scroll instead
-    // Came from https://css-tricks.com/sticky-smooth-active-nav/
-    const subnavLinks = document.querySelectorAll<HTMLAnchorElement>(".tsconfig .tsconfig-quick-nav-category li a");
+    const hashLinks = document.querySelectorAll<HTMLAnchorElement>(
+      ".tsconfig a[href^='#']"
+    )
+    hashLinks.forEach(link => {
+      link.addEventListener("click", (event: MouseEvent) => {
+        event.preventDefault()
+        scrollToHash(link.hash)
 
-    subnavLinks.forEach(link => {
-      link.addEventListener("click", event => {
-        event.preventDefault();
-
-        let target = document.querySelector(event.target!["hash"]) as HTMLElement;
-        if (target) target.parentElement!.parentElement!.scrollIntoView({ behavior: "smooth", block: "center" });
+        // Update URL without triggering default scroll behavior
+        window.history.pushState(null, "", link.hash)
       })
     })
 
     // Sets the current selection
+    // Based on https://css-tricks.com/sticky-smooth-active-nav/
+    const subnavs = document.querySelectorAll<HTMLElement>(
+      ".tsconfig article nav"
+    )
     const updateSidebar = () => {
-      const fromTop = window.scrollY;
-      let currentPossibleAnchor: HTMLAnchorElement | undefined
+      const fromTop = window.scrollY
 
-      // Scroll down to find the highest anchor on the screen
-      subnavLinks.forEach(link => {
-        const section = document.querySelector<HTMLDivElement>(link.hash);
-        if (!section) { return }
-        const isBelow = section.offsetTop - 100 <= fromTop
-        if (isBelow) currentPossibleAnchor = link
-      });
+      subnavs.forEach(subnav => {
+        const subnavLinks = subnav.querySelectorAll<HTMLAnchorElement>(
+          "a[href^='#']"
+        )
+        let currentPossibleAnchor: HTMLAnchorElement | undefined
 
-      // Then set the active tag
-      subnavLinks.forEach(link => {
-        if (link === currentPossibleAnchor) {
-          link.classList.add("current");
-        } else {
-          link.classList.remove("current");
-        }
+        // Scroll down to find the highest anchor on the screen
+        subnavLinks.forEach(link => {
+          const section = document.querySelector<HTMLElement>(link.hash)
+          if (!section) return
+          const offset = calculateOffset(section, subnav)
+          const isBelow = offset - 100 <= fromTop
+          if (isBelow) currentPossibleAnchor = link
+        })
+
+        // Then set the active tag
+        subnavLinks.forEach(link => {
+          if (link === currentPossibleAnchor) {
+            link.classList.add("current")
+          } else {
+            link.classList.remove("current")
+          }
+        })
       })
     }
 
