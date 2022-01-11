@@ -592,7 +592,7 @@ Confusingly, the colon here does _not_ indicate the type.
 The type, if you specify it, still needs to be written after the entire destructuring:
 
 ```ts
-let { a, b }: { a: string; b: number } = o;
+let { a: newName1, b: newName2 }: { a: string; b: number } = o;
 ```
 
 ### Default values
