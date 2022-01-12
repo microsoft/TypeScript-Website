@@ -249,7 +249,7 @@ printId({ myID: 22342 });
 It's easy to _provide_ a value matching a union type - simply provide a type matching any of the union's members.
 If you _have_ a value of a union type, how do you work with it?
 
-TypeScript will only allow you to do things with the union if that thing is valid for _every_ member of the union.
+TypeScript will only allow an operation if it is valid for _every_ member of the union.
 For example, if you have the union `string | number`, you can't use methods that are only available on `string`:
 
 ```ts twoslash
