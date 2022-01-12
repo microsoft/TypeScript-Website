@@ -93,25 +93,6 @@ You can add twoslash to the code samples if you want.
 
 When you're happy with that, then edit [`packages/documentation/copy/en/release-notes/Overview.md](https://github.com/microsoft/TypeScript-website/blob/v2/packages/documentation/copy/en/release-notes/Overview.md) to include the changes you just added, and simplify descriptions.
 
-##### Index
-
-The homepage keeps track of upcoming dates via this file: [`packages/typescriptlang-org/src/lib/release-plan.json`](https://github.com/microsoft/TypeScript-website/blob/v2/packages/typescriptlang-org/src/lib/release-plan.json)
-
-```json
-{
-  "_format": "mm/dd/yyyy - these get put into new Date()",
-  "upcoming_version": "3.9",
-  "iteration_plan_url": "https://github.com/microsoft/TypeScript/issues/37198",
-  "last_release_date": "02/20/2020",
-  "upcoming_beta_date": "03/20/2020",
-  "upcoming_rc_date": "04/24/2020",
-  "upcoming_release_date": "05/12/2020"
-}
-```
-
-You might not have these dates yet, at the current release (it took about a week last time to get the dates) - leaving
-this is fine and the site will accommodate the dates not being ready yet.
-
 ##### Update Schema Store
 
 Using the GitHub CLI, from the root of the repo
