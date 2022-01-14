@@ -72,8 +72,12 @@ const handbookPages = [
     title: "Reference",
     summary: "Deep dive reference materials.",
     items: [
-      // { file: "reference/Advanced Types.md" },
       { file: "reference/Utility Types.md" },
+      {
+        href: "/cheatsheets",
+        title: "Cheat Sheets",
+        oneliner: "Syntax overviews for common code"
+      },
       { file: "reference/Decorators.md" },
       { file: "reference/Declaration Merging.md" },
       { file: "reference/Enums.md" },

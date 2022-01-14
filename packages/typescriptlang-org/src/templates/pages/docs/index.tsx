@@ -5,6 +5,8 @@ import "../css/documentation.scss";
 import { Intl } from "../../../components/Intl";
 
 import { docCopy } from "../../../copy/en/documentation";
+import { cheatCopy } from "../../../copy/en/cheatsheets";
+
 import { createInternational } from "../../../lib/createInternational";
 import { useIntl } from "react-intl";
 import { QuickJump } from "../../../components/QuickJump";
@@ -14,14 +16,49 @@ import { Link } from "gatsby"
 
 import "../css/documentation.scss"
 import "../../documentation.scss"
+import { SidebarNavItem } from "../../../lib/documentationNavigationUtils";
 
 type Props = {
   pageContext: any;
 };
 
+
 const Index: React.FC<Props> = (props) => {
-  const i = createInternational<typeof docCopy>(useIntl());
+  const i = createInternational<typeof docCopy & typeof cheatCopy>(useIntl());
   const nav = getDocumentationNavForLanguage(props.pageContext.lang)
+  
+  const cheatSheets: SidebarNavItem = {
+    id: "cheat",
+    title: i("cht_layout_title"),
+    oneline: i("cht_blurb_1") + ".",
+    items: [ 
+      {
+        id: "1",
+        title: i("cht_cfa"),
+        permalink: require("../../../../static/images/cheatsheets/TypeScript Control Flow Analysis.png").default
+      },
+      {
+        id: "2",
+        title: i("cht_classes"),
+        permalink: require("../../../../static/images/cheatsheets/TypeScript Classes.png").default
+      },
+      {
+        id: "3",
+        title: i("cht_interfaces"),
+        permalink: require("../../../../static/images/cheatsheets/TypeScript Interfaces.png").default
+      },
+      {
+        id: "4",
+        title: i("cht_types"),
+        permalink: require("../../../../static/images/cheatsheets/TypeScript Types.png").default
+      },
+      {
+        id: "5",
+        title: i("cht_dl_title"),
+        permalink: "/assets/typescript-cheat-sheets.zip"
+      }
+    ]
+  }
 
   const RenderItems = ({ items }) => {
     if (!items.items) return null
@@ -36,7 +73,10 @@ const Index: React.FC<Props> = (props) => {
       } else {
 
       return <li key={item.id}>
-        <Link to={path}>{item.title}</Link>
+        { path.endsWith("png") ?
+          <a href={path}>{item.title}</a> :
+          <Link to={path}>{item.title}</Link>
+        }
        </li>
       }
     })
@@ -51,7 +91,7 @@ const Index: React.FC<Props> = (props) => {
 
       <div className="main-content-block container handbook-content" >
         <div className="columns wide">
-          {nav.map(navRoot => {
+          {[...nav, cheatSheets].map(navRoot => {
             if (navRoot.id === "what's-new") return null
             const showIntro = navRoot.id === "handbook"
 
