@@ -88,7 +88,7 @@ enum Direction {
 ```
 
 While string enums don't have auto-incrementing behavior, string enums have the benefit that they "serialize" well.
-In other words, if you were debugging and had to read the runtime value of a numeric enum, the value is often opaque - it doesn't convey any useful meaning on its own (though [reverse mapping](#reverse-mappings) can often help), string enums allow you to give a meaningful and readable value when your code runs, independent of the name of the enum member itself.
+In other words, if you were debugging and had to read the runtime value of a numeric enum, the value is often opaque - it doesn't convey any useful meaning on its own (though [reverse mapping](#reverse-mappings) can often help). String enums allow you to give a meaningful and readable value when your code runs, independent of the name of the enum member itself.
 
 ## Heterogeneous enums
 
@@ -171,7 +171,7 @@ A literal enum member is a constant enum member with no initialized value, or wi
 - any numeric literal (e.g. `1`, `100`)
 - a unary minus applied to any numeric literal (e.g. `-1`, `-100`)
 
-When all members in an enum have literal enum values, some special semantics come to play.
+When all members in an enum have literal enum values, some special semantics come into play.
 
 The first is that enum members also become types as well!
 For example, we can say that certain members can _only_ have the value of an enum member:
@@ -405,7 +405,7 @@ declare enum Enum {
 ```
 
 One important difference between ambient and non-ambient enums is that, in regular enums, members that don't have an initializer will be considered constant if its preceding enum member is considered constant.
-In contrast, an ambient (and non-const) enum member that does not have initializer is _always_ considered computed.
+By contrast, an ambient (and non-const) enum member that does not have an initializer is _always_ considered computed.
 
 ## Objects vs Enums
 
