@@ -1,0 +1,117 @@
+@import "../../../style/globals.scss";
+
+.cheatsheets {
+  .row {
+    justify-content: center;
+    margin-bottom: 2rem;
+    p {
+      flex: 1;
+      max-width: 320px;
+      margin: 10px;
+    }
+  }
+
+  .sheet-container {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .sheet {
+    img {
+      max-width: 360px;
+      border: 1px solid black;
+      box-shadow: 0px 4px 20px -6px rgba(0, 0, 0, 0.25);
+      transition: 0.15s all ease;
+    }
+
+    &:hover,
+    &:active {
+      z-index: 100;
+
+      img {
+        margin: -2px;
+        z-index: 100;
+        border-color: $ts-main-blue-color;
+        box-shadow: 0px 4px 20px -2px rgba(0, 0, 0, 0.25);
+      }
+      .description {
+        display: block;
+      }
+    }
+
+    &.cs-1 {
+      transform: rotate(-1.1deg);
+    }
+    &.cs-2 {
+      transform: rotate(1.2deg);
+    }
+    &.cs-3 {
+      margin-top: -40px;
+      transform: rotate(3deg);
+    }
+    &.cs-4 {
+      margin-top: -40px;
+      transform: rotate(-2deg);
+    }
+
+    position: relative;
+
+    .description {
+      display: none;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      text-align: center;
+      padding-top: 30%;
+      background-color: rgba(0, 0, 0, 0.5);
+
+      font-size: 2.5rem;
+      color: white;
+    }
+  }
+
+  .fluid-button {
+    margin: 0 auto;
+    max-width: 260px;
+    margin-top: 3rem;
+    border: 1px solid black;
+    color: black;
+  }
+
+  @media (max-width: $screen-sm) {
+    // The
+    .cs-2 {
+      margin-top: -40px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    // No peeking out of the sides
+    .sheet-container {
+      margin: 0;
+    }
+
+    // CFA should be centered vertically but it is 2 lines vs the rest
+    .cs-1 .description {
+      padding-top: 20%;
+    }
+  }
+  @media (min-width: 1200px) {
+    // Allow poking out of the edge
+    .sheet-container {
+      margin: 0 -80px;
+    }
+    // BIIIGG
+    .sheet img {
+      max-width: 550px;
+    }
+    // Revert back to a single line to match the others
+    .cs-1 .description {
+      padding-top: 30%;
+    }
+  }
+}
