@@ -83,7 +83,7 @@
   }
 
   @media (max-width: $screen-sm) {
-    // The
+    // The single column needs this to make all of the pages fold under each other
     .cs-2 {
       margin-top: -40px;
     }
@@ -93,6 +93,9 @@
     // No peeking out of the sides
     .sheet-container {
       margin: 0;
+
+      // Don't jump the bottom of the page when you are selecting things
+      min-height: 550px;
     }
 
     // CFA should be centered vertically but it is 2 lines vs the rest
@@ -104,6 +107,8 @@
     // Allow poking out of the edge
     .sheet-container {
       margin: 0 -80px;
+      // Don't jump the bottom of the page when you are selecting things
+      min-height: 780px;
     }
     // BIIIGG
     .sheet img {
