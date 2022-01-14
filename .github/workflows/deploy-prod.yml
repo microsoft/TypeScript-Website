@@ -33,12 +33,6 @@ jobs:
         env:
           YARN_CHECKSUM_BEHAVIOR: ignore
 
-      # Update the site plan, scoped out on its own because it gets access to secrets
-      - run: node packages/typescriptlang-org/scripts/getTypeScriptReleasePlan.js
-        env:
-          GITHUB_BOT_TOKEN: ${{ secrets.GITHUB_BOT_TOKEN }}
-          TEAMS_WEB_BOT_INCOMING_URL: ${{ secrets.TEAMS_WEB_BOT_INCOMING_URL }}
-
       # Builds the site
       - name: Makes the site
         run: |
