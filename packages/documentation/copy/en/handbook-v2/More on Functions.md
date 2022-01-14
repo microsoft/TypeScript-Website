@@ -171,7 +171,7 @@ const longerString = longest("alice", "bob");
 const notOK = longest(10, 100);
 ```
 
-There are few interesting things to note in this example.
+There are a few interesting things to note in this example.
 We allowed TypeScript to _infer_ the return type of `longest`.
 Return type inference also works on generic functions.
 
