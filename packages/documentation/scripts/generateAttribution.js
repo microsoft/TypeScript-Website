@@ -8,6 +8,8 @@ const fs = require("fs");
 const crypto = require("crypto");
 const { format } = require("prettier");
 
+console.log("Grabbing attribution");
+
 // We need to work across two repos
 const oldJSON = JSON.parse(
   fs.readFileSync(path.join(__dirname, "handbookAttribution.json"), "utf8")
@@ -82,29 +84,33 @@ const getAuthorsForFile = (filepath) => {
 const allFiles = recursiveReadDirSync("copy/");
 const json = {};
 
-allFiles.forEach((f) => {
-  const oldName = f.split("/").splice(2).join("/");
-  const originalRef = oldJSON[oldName] || { top: [], total: 0 };
+if (!process.env.CI) {
+  console.log("Skipping because not CI");
+} else {
+  allFiles.forEach((f) => {
+    const oldName = f.split("/").splice(2).join("/");
+    const originalRef = oldJSON[oldName] || { top: [], total: 0 };
 
-  const first = getOriginalAuthor(f);
-  const rest = getAuthorsForFile(f);
+    const first = getOriginalAuthor(f);
+    const rest = getAuthorsForFile(f);
 
-  const firstInRest = rest.find((a) => a.name === first.name);
-  // it's 50 from the original docs in the handbook, which should
-  // offset orta "creating" all these files
-  if (firstInRest) firstInRest.count += 5;
+    const firstInRest = rest.find((a) => a.name === first.name);
+    // it's 50 from the original docs in the handbook, which should
+    // offset orta "creating" all these files
+    if (firstInRest) firstInRest.count += 5;
 
-  originalRef.top.forEach((r) => {
-    const inRest = rest.find((a) => a.name === r.name);
-    if (inRest) inRest.count += r.count;
-    else rest.push(r);
+    originalRef.top.forEach((r) => {
+      const inRest = rest.find((a) => a.name === r.name);
+      if (inRest) inRest.count += r.count;
+      else rest.push(r);
+    });
+
+    rest.sort((l, r) => r.count - l.count);
+    // console.log(" - " + f + " (" + rest.length + ")");
+
+    json[f] = { top: rest.slice(0, 5), total: rest.length + originalRef.total };
   });
-
-  rest.sort((l, r) => r.count - l.count);
-  // console.log(" - " + f + " (" + rest.length + ")");
-
-  json[f] = { top: rest.slice(0, 5), total: rest.length + originalRef.total };
-});
+}
 
 const output = path.join(__dirname, "..", "output");
 if (!fs.existsSync(output)) fs.mkdirSync(output);

@@ -22,6 +22,7 @@
   "resolutions": {
     "@types/react": "16.9.17",
     "@types/estree": "0.0.46",
+    "@types/eslint": "7.29.0",
     "node-gyp": "5.1.0",
     "typescript": "4.5.0-beta",
     "tslib": "2.1.0",
