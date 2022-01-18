@@ -887,7 +887,7 @@ class S {
 
 ### Why No Static Classes?
 
-TypeScript (and JavaScript) don't have a construct called `static class` the same way C# and Java do.
+TypeScript (and JavaScript) don't have a construct called `static class` the same way as, for example, C# does.
 
 Those constructs _only_ exist because those languages force all data and functions to be inside a class; because that restriction doesn't exist in TypeScript, there's no need for them.
 A class with only a single instance is typically just represented as a normal _object_ in JavaScript/TypeScript.
