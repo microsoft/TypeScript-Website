@@ -122,10 +122,6 @@ const communityLinks = [
     url: "https://stackoverflow.com/questions/tagged/typescript",
   },
   {
-    title: "Web Updates",
-    url: "https://github.com/microsoft/TypeScript-Website/issues/130",
-  },
-  {
     title: "Web Repo",
     url: "https://github.com/microsoft/TypeScript-Website",
   },
