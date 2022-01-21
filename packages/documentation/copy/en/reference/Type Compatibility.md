@@ -391,7 +391,7 @@ A "<span class='black-tick'>✓</span>" indicates a combination that is compatib
 </tbody>
 </table>
 
-Reiterating [The Basics](/handbook/2/basic-types.html):
+Reiterating [The Basics](/docs/handbook/2/basic-types.html):
 
 - Everything is assignable to itself.
 - `any` and `unknown` are the same in terms of what is assignable to them, different in that `unknown` is not assignable to anything except `any`.
