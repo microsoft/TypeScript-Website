@@ -3,7 +3,7 @@ display: "Paths"
 oneline: "Specify a set of entries that re-map imports to additional lookup locations."
 ---
 
-A series of entries which re-map imports to lookup locations relative to the [`baseUrl`](#baseUrl), there is a larger coverage of `paths` in [the handbook](/docs/handbook/module-resolution.html#path-mapping).
+A series of entries which re-map imports to lookup locations relative to the [`baseUrl`](#baseUrl). There is a larger coverage of `paths` in [the handbook](/docs/handbook/module-resolution.html#path-mapping).
 
 `paths` lets you declare how TypeScript should resolve an import in your `require`/`import`s.
 
