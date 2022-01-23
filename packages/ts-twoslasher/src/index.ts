@@ -709,6 +709,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   // We can't pass the ts.DiagnosticResult out directly (it can't be JSON.stringified)
   for (const err of relevantErrors) {
     const codeWhereErrorLives = env.sys.readFile(err.file!.fileName)!
+    const lineOffset = code.split("\n").indexOf(codeWhereErrorLives.split("\n")[0])
     const fileContentStartIndexInModifiedFile = code.indexOf(codeWhereErrorLives)
     const renderedMessage = ts.flattenDiagnosticMessageText(err.messageText, "\n")
     const id = `err-${err.code}-${err.start}-${err.length}`
@@ -719,7 +720,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
       code: err.code,
       length: err.length,
       start: err.start ? err.start + fileContentStartIndexInModifiedFile : undefined,
-      line,
+      line: line + lineOffset,
       character,
       renderedMessage,
       id,
