@@ -1,5 +1,5 @@
 {
-  "code": "// @filename: sum.ts\nexport function sum(a: number, b: number): number {\n  return a + b;\n}\n\n// @filename: main.ts\nimport { sum } from \"./sum\";\nsum(4, \"woops\");\n",
+  "code": "// @filename: sum.ts\nexport function sum(a: number, b: number): number {\n  return a + b\n}\n\n// @filename: ok.ts\nimport { sum } from \"./sum\"\nsum(1, 2)\n\n// @filename: error.ts\nimport { sum } from \"./sum\"\nsum(4, \"woops\")\n",
   "extension": "ts",
   "highlights": [],
   "queries": [],
@@ -52,7 +52,7 @@
     {
       "text": "(alias) function sum(a: number, b: number): number\nimport sum",
       "docs": "",
-      "start": 123,
+      "start": 120,
       "length": 3,
       "line": 6,
       "character": 9,
@@ -61,9 +61,27 @@
     {
       "text": "(alias) sum(a: number, b: number): number\nimport sum",
       "docs": "",
-      "start": 143,
+      "start": 139,
       "length": 3,
       "line": 7,
+      "character": 0,
+      "targetString": "sum"
+    },
+    {
+      "text": "(alias) function sum(a: number, b: number): number\nimport sum",
+      "docs": "",
+      "start": 182,
+      "length": 3,
+      "line": 10,
+      "character": 9,
+      "targetString": "sum"
+    },
+    {
+      "text": "(alias) sum(a: number, b: number): number\nimport sum",
+      "docs": "",
+      "start": 201,
+      "length": 3,
+      "line": 11,
       "character": 0,
       "targetString": "sum"
     }
@@ -73,13 +91,13 @@
       "category": 1,
       "code": 2345,
       "length": 7,
-      "start": 150,
-      "line": 7,
+      "start": 208,
+      "line": 11,
       "character": 7,
       "renderedMessage": "Argument of type 'string' is not assignable to parameter of type 'number'.",
-      "id": "err-2345-36-7"
+      "id": "err-2345-35-7"
     }
   ],
-  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKAzgV1QHQAu2AUPAB4AOA9gE5GiS6IDGR0NiO+AFMlkT4ARvDoAaUMMEixAShmpRdUAG9SoUHXhFcdbslABqKQG5SAX1KkQEGAhTosqZNETEyt8GLr1sWACYAZgAWAFZSaFRaBjUeVFALJl8EgCICYDxUVPMs3hDJVIB3GhoqbFS5cyA",
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKAzgV1QHQAu2AUPAB4AOA9gE5GiS6IDGR0NiO+AFMlkT4ARvDoAaUMMEixAShmpRdUAG9SoUHXhFcdbslABqKaQC+pUiAgwEKdFhoBrYmWipaDNT1SgzTOhpfACICYDxUYNII3gBGSQAmOUtrKDgkNExQMUC6VyswcBz6bCwEgGYAFgBWUndPRlUfPwCg0FDw-CiYyslggHcaGipsYOSgA",
   "tags": []
 }
