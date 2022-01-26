@@ -622,7 +622,7 @@ function getArea(shape: Shape) {
 ```
 
 Like with our first definition of `Shape`, this is still an error.
-When `radius` was optional, we got an error (only in [`strictNullChecks`](/tsconfig#strictNullChecks)) because TypeScript couldn't tell whether the property was present.
+When `radius` was optional, we got an error (only with [`strictNullChecks`](/tsconfig#strictNullChecks) enabled) because TypeScript couldn't tell whether the property was present.
 Now that `Shape` is a union, TypeScript is telling us that `shape` might be a `Square`, and `Square`s don't have `radius` defined on them!
 Both interpretations are correct, but only the union encoding of `Shape` will cause an error when [`strictNullChecks`](/tsconfig#strictNullChecks) is disabled.
 
