@@ -105,7 +105,7 @@ Node.js resolves that import in the following order:
 2. Ask the folder `/root/src/moduleB` if it contains a file named `package.json` that specifies a `"main"` module.
    In our example, if Node.js found the file `/root/src/moduleB/package.json` containing `{ "main": "lib/mainModule.js" }`, then Node.js will refer to `/root/src/moduleB/lib/mainModule.js`.
 
-3. Ask the folder `/root/src/moduleB` if it contains a file named `index.js`.
+3. Ask the folder `/root/src/moduleB` if it contains a file named `index.js` or `index.node`.
    That file is implicitly considered that folder's "main" module.
 
 You can read more about this in Node.js documentation on [file modules](https://nodejs.org/api/modules.html#modules_file_modules) and [folder modules](https://nodejs.org/api/modules.html#modules_folders_as_modules).
@@ -120,15 +120,15 @@ Node would then try to resolve `moduleB` to each of the locations until one work
 
 1. `/root/src/node_modules/moduleB.js`
 2. `/root/src/node_modules/moduleB/package.json` (if it specifies a `"main"` property)
-3. `/root/src/node_modules/moduleB/index.js`
+3. `/root/src/node_modules/moduleB/index.js` (or `/root/src/node_modules/moduleB/index.node`)
    <br /><br />
 4. `/root/node_modules/moduleB.js`
 5. `/root/node_modules/moduleB/package.json` (if it specifies a `"main"` property)
-6. `/root/node_modules/moduleB/index.js`
+6. `/root/node_modules/moduleB/index.js` (or `/root/node_modules/moduleB/index.node`)
    <br /><br />
 7. `/node_modules/moduleB.js`
 8. `/node_modules/moduleB/package.json` (if it specifies a `"main"` property)
-9. `/node_modules/moduleB/index.js`
+9. `/node_modules/moduleB/index.js` (or `/node_modules/moduleB/index.node`)
 
 Notice that Node.js jumped up a directory in steps (4) and (7).
 
