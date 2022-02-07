@@ -367,30 +367,32 @@ let directions = [
 
 #### Const enum pitfalls
 
-Inlining enum values is straightforward at first, but comes with subtle implications.
-These pitfalls pertain to _ambient_ const enums only (basically const enums in `.d.ts` files) and sharing them between projects, but if you are publishing or consuming `.d.ts` files, these pitfalls likely apply to you, because `tsc --declaration` transforms `.ts` files into `.d.ts` files.
+Inlining enum values is straightforward in concept, but comes with subtle implications.
+These pitfalls only affect _ambient_ const enums (basically const enums in `.d.ts` files) and sharing them between projects --- but because `tsc --declaration` transforms `.ts` files into `.d.ts` files, if you are publishing or consuming `.d.ts` files, they likely apply to you.
 
-1. For the reasons laid out in the [`isolatedModules` documentation](/tsconfig#references-to-const-enum-members), that mode is fundamentally incompatible with ambient const enums.
-   This means if you publish ambient const enums, downstream consumers will not be able to use [`isolatedModules`](/tsconfig#isolatedModules) and those enum values at the same time.
-2. You can easily inline values from version A of a dependency at compile time, and import version B at runtime.
-   Version A and B's enums can have different values, if you are not very careful, resulting in [surprising bugs](https://github.com/microsoft/TypeScript/issues/5219#issue-110947903), like taking the wrong branches of `if` statements.
-   These bugs are especially pernicious because it is common to run automated tests at roughly the same time as projects are built, with the same dependency versions, which misses these bugs completely.
-3. [`importsNotUsedAsValues: "preserve"`](/tsconfig#importsNotUsedAsValues) will not elide imports for const enums used as values, but ambient const enums do not guarantee that runtime `.js` files exist.
-   The unresolvable imports cause errors at runtime.
-   The usual way to unambiguously elide imports, [type-only imports](/docs/handbook/modules.html#importing-types), [does not allow const enum values](https://github.com/microsoft/TypeScript/issues/40344), currently.
+1. They cannot be used by [JavaScript consumers](/docs/handbook/intro-to-js-ts.html).
+2. You face a choice, which impacts your consumers, between inlining enum values and single-file transpilation (i.e. [`isolatedModules`](/tsconfig#references-to-const-enum-members)).
+   That makes sense because the values and the target sites are not in a single file, so a single-file transpiler does not know and can not inline them.
+   If you publish ambient const enums, consumers will either not be able to use them, or will not be able to use [`isolatedModules`](/tsconfig#references-to-const-enum-members).
+   If you are consuming ambient const enums, there is a chance you can disregard the relevant errors or suppress them with [`// @ts-expect-error` comments](/docs/handbook/release-notes/typescript-3-9.html#-ts-expect-error-comments), and proceed without inlining, but this risks incurring errors at runtime if the enums are not preserved.
+
+   Single-file transpilation [may become less important](https://github.com/evanw/esbuild/issues/128) in the future, but for now it is a common environment.
+3. There are issues with [`importsNotUsedAsValues: "preserve"`](/tsconfig#importsNotUsedAsValues) and with [`preserveValueImports`](/tsconfig#preserveValueImports).
+   Const enums cross the otherwise crisp boundary between compile time (types) and runtime (values), and the compiler [currently](https://github.com/microsoft/TypeScript/issues/40344) raises errors if you inline values and explicitly elide their imports [with type modifiers](/docs/handbook/modules.html#importing-types).
+   You _can_ safely disregard or suppress these errors, however.
+4. It is easy to inline values from version A of a dependency at compile time, but import version B at runtime, leading to surprising bugs if the values changed between A and B.
+   It is perhaps not a common issue, but it is easy to happen and [has happened in the past](https://github.com/microsoft/TypeScript/issues/5219#issue-110947903).
+   When it does happen it is pernicious, because you commonly build projects and run automated tests at roughly the same time, with the same dependency versions.
 
 Here are two approaches to avoiding these pitfalls:
 
 A. Do not use const enums at all.
-   You can easily [ban const enums](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/FAQ.md#how-can-i-ban-specific-language-feature) with the help of a linter.
-   Obviously this avoids any issues with const enums, but prevents your project from inlining its own enums.
-   Unlike inlining enums from other projects, inlining a project's own enums is not problematic and has performance implications.
+   You can easily [ban const enums](https://typescript-eslint.io/docs/linting/troubleshooting#how-can-i-ban-specific-language-feature) with the help of a linter.
+   This avoids any and all issues with them, but prevents you from inlining your project's own enums, which, unlike consuming those of other projects, is not problematic and may impact performance.
 B. Do not publish ambient const enums, by deconstifying them with the help of [`preserveConstEnums`](/tsconfig#preserveConstEnums).
    This is the approach taken internally by the [TypeScript project itself](https://github.com/microsoft/TypeScript/pull/5422).
-   [`preserveConstEnums`](/tsconfig#preserveConstEnums) emits the same JavaScript for const enums as plain enums.
-   You can then safely strip the `const` modifier from `.d.ts` files [in a build step](https://github.com/microsoft/TypeScript/blob/1a981d1df1810c868a66b3828497f049a944951c/Gulpfile.js#L144).
-
-   This way downstream consumers will not inline enums from your project, avoiding the pitfalls above, but a project can still inline its own enums, unlike banning const enums entirely.
+   [`preserveConstEnums`](/tsconfig#preserveConstEnums) emits the same JavaScript for const enums as plain enums, and you can then safely strip the `const` modifier from `.d.ts` files [in a build step](https://github.com/microsoft/TypeScript/blob/1a981d1df1810c868a66b3828497f049a944951c/Gulpfile.js#L144).
+   Your project will inline its own const enums but your consumers will not.
 
 ## Ambient enums
 
