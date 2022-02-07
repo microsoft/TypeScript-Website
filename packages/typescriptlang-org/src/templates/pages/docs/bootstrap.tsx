@@ -33,6 +33,11 @@ const Index: React.FC<Props> = (props) => {
         <ButtonGrid
           buttons={[
             {
+              href: "https://tsup.egoist.sh",
+              blurb: i("doc_node_npm_tsup_blurb"),
+              title: "tsup",
+            },
+            {
               href: "https://oclif.io",
               blurb: i("doc_node_npm_oclif_blurb"),
               title: "oclif",
@@ -117,13 +122,6 @@ const Index: React.FC<Props> = (props) => {
               title: "Node Reference",
             },
             {
-              href:
-                "https://github.com/microsoft/TypeScript-WeChat-Starter/blob/master/README.md",
-              badge: "Guide",
-              blurb: i("doc_apis_wechat_blurb"),
-              title: "WeChat",
-            },
-            {
               href: "https://loopback.io",
               blurb: i("doc_apis_loopback_blurb"),
               title: "LoopBack",
@@ -164,6 +162,11 @@ const Index: React.FC<Props> = (props) => {
               href: "https://github.com/jaredpalmer/razzle",
               blurb: i("doc_react_razzle_blurb"),
               title: "Razzle",
+            },
+            {
+              href: "https://redwoodjs.com",
+              blurb: i("doc_react_redwood_blurb"),
+              title: "RedwoodJS",
             },
             {
               href:
@@ -210,10 +213,9 @@ const Index: React.FC<Props> = (props) => {
         <ButtonGrid
           buttons={[
             {
-              href: "https://babeljs.io/docs/en/babel-preset-typescript",
-              badge: "Plugin",
-              blurb: i("doc_tooling_babel_blurb"),
-              title: "Babel",
+              href: "https://vitejs.dev",
+              blurb: i("doc_tooling_vite_blurb"),
+              title: "Vite",
             },
             {
               href: "https://parceljs.org",
@@ -243,14 +245,14 @@ const Index: React.FC<Props> = (props) => {
               title: i("doc_headline_handbook_title"),
             },
             {
-              href: "/docs/handbook/declaration-files/introduction.html",
-              blurb: i("doc_learn_d_ts_blurb"),
-              title: i("doc_learn_d_ts_title"),
-            },
-            {
               href: "/play/",
               blurb: i("doc_learn_playground_blurb"),
               title: i("play_subnav_title" as any),
+            },
+            {
+              href: "/cheatsheets/",
+              blurb: i("doc_learn_cheatsheets_blurb"),
+              title: i("doc_cheatsheets_subnav_title"),
             },
           ]}
         />
