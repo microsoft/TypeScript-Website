@@ -134,6 +134,7 @@ import "./my-module.js";
 
 Prior to TypeScript 3.8, you can import a type using `import`.
 With TypeScript 3.8, you can import a type using the `import` statement, or using `import type`.
+TypeScript 4.5 allows a type modifier on individual named imports.
 
 ```ts
 // Re-using the same import
@@ -141,10 +142,18 @@ import { APIResponseType } from "./api";
 
 // Explicitly use import type
 import type { APIResponseType } from "./api";
+
+// Modifying the import name
+import { type APIResponseType } from "./api";
 ```
 
 `import type` is always guaranteed to be removed from your JavaScript, and tools like Babel can make better assumptions about your code via the [`isolatedModules`](/tsconfig#isolatedModules) compiler flag.
-You can read more in the [3.8 release notes](https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/#type-only-imports-exports).
+The difference between putting the modifier on the name vs. the declaration is that the former will remove the name but possibly still emit a bare import, preserving any side effects.
+
+In the right circumstances the modifier is mandatory.
+To get compile-time errors when importing types without it, use [`importsNotUsedAsValues: "error"`](/tsconfig#importsNotUsedAsValues) to report unmodified declarations, and combine [`preserveValueImports`](/tsconfig#preserveValueImports) and [`isolatedModules`](/tsconfig#isolatedModules) for unmodified names --- or use the [`consistent-type-imports`](https://typescript-eslint.io/rules/consistent-type-imports) TypeScript ESLint rule to report both, without changing your compiler options.
+
+You can read more in the [3.8](/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export) and [4.5](/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names) release notes.
 
 ## Default exports
 
