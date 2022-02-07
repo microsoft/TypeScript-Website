@@ -1,6 +1,6 @@
 ---
 display: "exactOptionalPropertyTypes"
-oneline: "Differentiate between undefined and not present when type checking."
+oneline: "Interpret optional property types as written, rather than adding `undefined`."
 ---
 
 With exactOptionalPropertyTypes enabled, TypeScript applies stricter rules around how it handles properties on `type` or `interfaces` which have a `?` prefix.
