@@ -23,6 +23,8 @@ export const docCopy = {
   doc_node_npm_oclif_blurb: "Create command line tools your users love",
   doc_node_npm_gluegun_blurb:
     "A delightful toolkit for building TypeScript-powered command-line apps",
+  doc_node_npm_nx_blurb:
+    "Next generation build system with first class monorepo support and powerful integrations.",
   doc_node_npm_tsup_blurb:
     "Bundle your TypeScript library with no config, powered by esbuild.",
   doc_frameworks: "Web Frameworks",

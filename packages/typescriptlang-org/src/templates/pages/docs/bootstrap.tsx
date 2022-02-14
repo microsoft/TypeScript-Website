@@ -47,6 +47,11 @@ const Index: React.FC<Props> = (props) => {
               blurb: i("doc_node_npm_gluegun_blurb"),
               title: "Gluegun",
             },
+            {
+              href: "https://nx.dev/getting-started/nx-and-typescript",
+              blurb: i("doc_node_npm_nx_blurb"),
+              title: "Nx",
+            },
           ]}
         />
 
