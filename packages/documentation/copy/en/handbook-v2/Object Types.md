@@ -841,7 +841,7 @@ type BooleansStringNumber = [...boolean[], string, number];
 
 - `StringNumberBooleans` describes a tuple whose first two elements are `string` and `number` respectively, but which may have any number of `boolean`s following.
 - `StringBooleansNumber` describes a tuple whose first element is `string` and then any number of `boolean`s and ending with a `number`.
-- `BooleansStringNumber` describes a tuple whose starting elements any number of `boolean`s and ending with a `string` then a `number`.
+- `BooleansStringNumber` describes a tuple whose starting elements are any number of `boolean`s and ending with a `string` then a `number`.
 
 A tuple with a rest element has no set "length" - it only has a set of well-known elements in different positions.
 
