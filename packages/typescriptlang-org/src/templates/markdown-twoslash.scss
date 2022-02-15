@@ -107,11 +107,14 @@ pre .code-container > a {
     transition: none;
   }
 }
-pre .code-container > a:hover {
+pre .code-container > a:hover,
+pre .code-container > a:focus {
   color: white;
   background-color: #719af4;
+  opacity: 1;
 }
-pre .code-container:hover a {
+pre .code-container:hover a,
+pre .code-container:focus a {
   opacity: 1;
 }
 
