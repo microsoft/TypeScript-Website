@@ -394,7 +394,7 @@ export const setupPlayground = (
   const shareAction = {
     id: "copy-clipboard",
     label: "Save to clipboard",
-    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S],
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS],
 
     contextMenuGroupId: "run",
     contextMenuOrder: 1.5,

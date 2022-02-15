@@ -5558,7 +5558,7 @@ __metadata:
     "@typescript/sandbox": 0.1.0
     esbuild: ^0.13.4
     jest: "*"
-    monaco-editor: ^0.29.1
+    monaco-editor: ^0.32.1
     monaco-typescript: ^3.7.0
     typescript: "*"
   languageName: unknown
@@ -20184,6 +20184,13 @@ fsevents@^1.2.7:
   version: 0.29.1
   resolution: "monaco-editor@npm:0.29.1"
   checksum: bc1df4f0c026073fdfc5b25487c58eabc82b7341653e75e5a5fa06c7754f823d0751d1eb5f4fb1cc4a0d5d0f1ca801b724b3997e0b5acc942e68358be9d70b71
+  languageName: node
+  linkType: hard
+
+"monaco-editor@npm:^0.32.1":
+  version: 0.32.1
+  resolution: "monaco-editor@npm:0.32.1"
+  checksum: f63e96fadca3e46ee639c3c7fead95bc03413d4b47d27ffdf5636270e2753c45391e830dd34ae5404004b8fc6a06b50a91d9ae4b593e1fc21cfc20ee00ca98c5
   languageName: node
   linkType: hard
 
