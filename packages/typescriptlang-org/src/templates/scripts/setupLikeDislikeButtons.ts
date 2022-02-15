@@ -57,11 +57,13 @@ export const setupLikeDislikeButtons = (slug: string, i: any) => {
       if (popup.style.opacity != popupOpacity) {
         // popup.style.display = bottomOfWindow ? "block" : "none"
         popup.style.opacity = popupOpacity
+        popup.style.visibility = bottomOfWindow ? "visible" : "hidden"
       }
 
       const navOpacity = bottomOfWindow ? "0" : "1"
       if (nav.style.opacity != navOpacity) {
         nav.style.opacity = navOpacity
+        nav.style.visibility = bottomOfWindow ? "hidden" : "visible"
       }
     },
     { passive: true, capture: true }
