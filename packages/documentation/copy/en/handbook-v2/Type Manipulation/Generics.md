@@ -357,7 +357,11 @@ class Animal {
   numLegs: number = 4;
 }
 
-class Bee extends Animal {
+class Insect {
+  numLegs: number = 6;
+}
+
+class Bee extends Insect {
   keeper: BeeKeeper = new BeeKeeper();
 }
 
