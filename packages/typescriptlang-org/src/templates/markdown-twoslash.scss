@@ -93,9 +93,9 @@ pre .code-container > a {
   right: 8px;
   bottom: 8px;
   border-radius: 4px;
-  border: 1px solid #719af4;
+  border: 1px solid var(--link-color);
   padding: 0 8px;
-  color: #719af4;
+  color: var(--link-color);
   text-decoration: none;
   opacity: 0;
   transition-timing-function: ease;
@@ -110,7 +110,7 @@ pre .code-container > a {
 pre .code-container > a:hover,
 pre .code-container > a:focus {
   color: white;
-  background-color: #719af4;
+  background-color: var(--link-color);
   opacity: 1;
 }
 pre .code-container:hover a,
