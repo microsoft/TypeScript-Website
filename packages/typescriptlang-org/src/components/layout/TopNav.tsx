@@ -8,6 +8,7 @@ import { createIntlLink } from "../IntlLink";
 
 export type Props = {
   lang: string
+  skipToAnchor?: string
 }
 
 import { navCopy } from "../../copy/en/nav"
@@ -74,7 +75,7 @@ export const SiteNav = (props: Props) => {
 
   return (
     <header dir="ltr">
-      <a className="skip-to-main" href="#site-content" tabIndex={0}>{i("skip_to_content")}</a>
+      <a className="skip-to-main" href={props.skipToAnchor || '#site-content'} tabIndex={0}>{i("skip_to_content")}</a>
 
       <div id="top-menu" className="up">
         <div className="left below-small">
