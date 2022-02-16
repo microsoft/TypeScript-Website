@@ -714,7 +714,11 @@ export const setupPlayground = (
     }
   }
 
-  if (monaco.languages.registerInlayHintsProvider) {
+  const [tsMajor, tsMinor] = sandbox.ts.version.split(".")
+  if (
+    (parseInt(tsMajor) > 4 || (parseInt(tsMajor) == 4 && parseInt(tsMinor) >= 6)) &&
+    monaco.languages.registerInlayHintsProvider
+  ) {
     monaco.languages.registerInlayHintsProvider(sandbox.language, createTwoslashInlayProvider(sandbox))
   }
 
