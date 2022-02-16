@@ -92,7 +92,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
 
   const slug = slugger()
   return (
-    <Layout title={`${prefix} - ${post.frontmatter.title}`} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang}>
+    <Layout title={`${prefix} - ${post.frontmatter.title}`} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang} skipToAnchor="#handbook-content">
       <section id="doc-layout" >
         <SidebarToggleButton />
 
