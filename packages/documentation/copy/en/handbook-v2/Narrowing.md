@@ -688,7 +688,7 @@ function getArea(shape: Shape) {
 
 The important thing here was the encoding of `Shape`.
 Communicating the right information to TypeScript - that `Circle` and `Square` were really two separate types with specific `kind` fields - was crucial.
-Doing that let us write type-safe TypeScript code that looks no different than the JavaScript we would've written otherwise.
+Doing that lets us write type-safe TypeScript code that looks no different than the JavaScript we would've written otherwise.
 From there, the type system was able to do the "right" thing and figure out the types in each branch of our `switch` statement.
 
 > As an aside, try playing around with the above example and remove some of the return keywords.
