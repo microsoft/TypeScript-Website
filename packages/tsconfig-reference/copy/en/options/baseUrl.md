@@ -23,5 +23,4 @@ import { helloWorld } from "hello/world";
 console.log(helloWorld);
 ```
 
-If you get tired of imports always looking like `"../"` or `"./"`, or needing
-to change them as you move files, this is a great way to fix that.
+If you get tired of imports always looking like `"../"` or `"./"`, or needing to change them as you move files, this is a great way to fix that. It is expected that you have a runtime or bundler which could handle the paths as given, TypeScript does not edit the paths in your imports.
