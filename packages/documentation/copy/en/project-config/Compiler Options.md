@@ -12,22 +12,22 @@ Running `tsc` locally will compile the closest project defined by a `tsconfig.js
 files by passing in a glob of files you want.
 
 ```sh
-# Run a compile based on a backwards look through the fs for a tsconfig.json
+# Emit .js for all .ts files in the current directory, or for files referenced in tsconfig.json, if one exists in the current or in a parent directory
 tsc
 
-# Emit JS for just the index.ts with the compiler defaults
+# Save as above, but only emit .js for index.ts
 tsc index.ts
 
-# Emit JS for any .ts files in the folder src, with the default settings
+# Save as above, but only emit .js for .ts files found in the subdirectory src
 tsc src/*.ts
 
-# Emit files referenced in with the compiler settings from tsconfig.production.json
+# Emit .js for .ts files referenced in tsconfig.production.json
 tsc --project tsconfig.production.json
 
-# Emit d.ts files for a js file with showing compiler options which are booleans
+# Emit d.ts files for a js file [also shows compiler options which are booleans]
 tsc index.js --declaration --emitDeclarationOnly
 
-# Emit a single .js file from two files via compiler options which take string arguments
+# Emit a single .js file for two .ts files [also shows compiler options which take string arguments]
 tsc app.ts util.ts --target esnext --outfile index.js
 ```
 
