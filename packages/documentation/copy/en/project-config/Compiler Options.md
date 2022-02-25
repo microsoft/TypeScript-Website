@@ -24,10 +24,10 @@ tsc src/*.ts
 # Emit .js for .ts files referenced in tsconfig.production.json
 tsc --project tsconfig.production.json
 
-# Emit d.ts files for a js file [also shows compiler options which are booleans]
+# Emit a .d.ts file for index.js [this example show the correct way to pass boolean compiler options]
 tsc index.js --declaration --emitDeclarationOnly
 
-# Emit a single .js file for two .ts files [also shows compiler options which take string arguments]
+# Emit a single .js file for both app.ts and util.ts [this example show the correct way to pass compiler options with string arguments]
 tsc app.ts util.ts --target esnext --outfile index.js
 ```
 
