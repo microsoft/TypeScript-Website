@@ -12,7 +12,7 @@ Running `tsc` locally will compile the closest project defined by a `tsconfig.js
 files by passing in a glob of files you want.
 
 ```sh
-# Emit .js for all .ts files in the current directory, or for files referenced in tsconfig.json, if one exists in the current or in a parent directory
+# Emit .js for all .ts files in the current directory, or only for ones referenced in tsconfig.json if one exists in the current or in a parent directory
 tsc
 
 # Save as above, but only emit .js for index.ts
@@ -24,7 +24,7 @@ tsc src/*.ts
 # Emit .js for .ts files referenced in tsconfig.production.json
 tsc --project tsconfig.production.json
 
-# Emit a .d.ts file for index.js [this example show the correct way to pass boolean compiler options]
+# Emit an index.d.ts file for index.js [this example show the correct way to pass boolean compiler options]
 tsc index.js --declaration --emitDeclarationOnly
 
 # Emit a single .js file for both app.ts and util.ts [this example show the correct way to pass compiler options with string arguments]
