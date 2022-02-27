@@ -128,6 +128,8 @@ module.exports = function (grunt) {
 };
 ```
 
+More details: [jmreidy/grunt-browserify](https://github.com/jmreidy/grunt-browserify), [TypeStrong/tsify](https://github.com/TypeStrong/tsify)
+
 ## Gulp
 
 ### Install
