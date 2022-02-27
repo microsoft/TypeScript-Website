@@ -118,9 +118,7 @@ module.exports = function (grunt) {
         src: "src/main.ts",
         dest: "dist/main.js",
         options: {
-          configure(bundler) {
-            bundler.plugin(require("tsify"));
-          },
+          plugin: ["tsify"],
         },
       },
     },
