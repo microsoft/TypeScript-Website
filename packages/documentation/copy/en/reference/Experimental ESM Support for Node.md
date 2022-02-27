@@ -140,7 +140,7 @@ export function helper() {
 import { helper } from "./foo.cjs";
 
 // prints "hello world!"
-foo.helper();
+helper();
 ```
 
 There isn't always a way for TypeScript to know whether these named imports will be synthesized, but TypeScript will err on being permissive and use some heuristics when importing from a file that is definitely a CommonJS module.
