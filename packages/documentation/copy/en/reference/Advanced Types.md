@@ -756,7 +756,7 @@ Note that this syntax describes a type rather than a member.
 If you want to add members, you can use an intersection type:
 
 ```ts twoslash
-// @errors: 2693 1005 1128
+// @errors: 2693 1005 1128 7061
 // Use this:
 type PartialWithNewMember<T> = {
   [P in keyof T]?: T[P];
