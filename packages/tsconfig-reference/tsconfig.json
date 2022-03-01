@@ -4,7 +4,6 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2019",
-    "noEmit": true
+    "target": "es2019"
   }
 }

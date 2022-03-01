@@ -305,7 +305,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#allowUnreachableCode'>--allowUnreachableCode</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>undefined</code></p>
+  <td>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -316,7 +316,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#allowUnusedLabels'>--allowUnusedLabels</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>undefined</code></p>
+  <td>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -339,7 +339,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#assumeChangesOnlyAffectDirectDependencies'>--assumeChangesOnlyAffectDirectDependencies</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -406,7 +406,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#declarationDir'>--declarationDir</a></code></td>
   <td><p><code>string</code></p>
 </td>
-  <td><p>n/a</p>
+  <td>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -439,7 +439,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#disableReferencedProjectLoad'>--disableReferencedProjectLoad</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -461,7 +461,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#disableSolutionSearching'>--disableSolutionSearching</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -472,7 +472,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#disableSourceOfProjectReferenceRedirect'>--disableSourceOfProjectReferenceRedirect</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -516,7 +516,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#emitDecoratorMetadata'>--emitDecoratorMetadata</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -538,18 +538,18 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#exactOptionalPropertyTypes'>--exactOptionalPropertyTypes</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Differentiate between undefined and not present when type checking.</p>
+<p>Interpret optional property types as written, rather than adding <code>undefined</code>.</p>
 </td></tr>
 
 <tr class='even' name='experimentalDecorators'>
   <td><code><a href='/tsconfig/#experimentalDecorators'>--experimentalDecorators</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -560,7 +560,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#explainFiles'>--explainFiles</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -615,7 +615,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#importsNotUsedAsValues'>--importsNotUsedAsValues</a></code></td>
   <td><p><code>remove</code>, <code>preserve</code>, or <code>error</code></p>
 </td>
-  <td>
+  <td><p><code>remove</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -791,7 +791,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 <tr class='even' name='moduleResolution'>
   <td><code><a href='/tsconfig/#moduleResolution'>--moduleResolution</a></code></td>
-  <td><p><code>classic</code> or <code>node</code></p>
+  <td><p><code>classic</code>, <code>node</code>, <code>node12</code>, or <code>nodenext</code></p>
 </td>
   <td><ul><li><p><code>Classic</code> if <a href="#module"><code>module</code></a> is <code>AMD</code>, <code>UMD</code>, <code>System</code> or <code>ES6</code>/<code>ES2015</code>,</p>
 </li><li><p>Matches if <a href="#module"><code>module</code></a> is <code>node12</code> or <code>nodenext</code>,</p>
@@ -861,7 +861,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#noFallthroughCasesInSwitch'>--noFallthroughCasesInSwitch</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -877,14 +877,14 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </li></ul></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Enable error reporting for expressions and declarations with an implied <code>any</code> type..</p>
+<p>Enable error reporting for expressions and declarations with an implied <code>any</code> type.</p>
 </td></tr>
 
 <tr class='even' name='noImplicitOverride'>
   <td><code><a href='/tsconfig/#noImplicitOverride'>--noImplicitOverride</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -973,7 +973,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#noUncheckedIndexedAccess'>--noUncheckedIndexedAccess</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -1006,7 +1006,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#out'>--out</a></code></td>
   <td><p><code>string</code></p>
 </td>
-  <td><p>n/a</p>
+  <td>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -1017,7 +1017,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#outDir'>--outDir</a></code></td>
   <td><p><code>string</code></p>
 </td>
-  <td><p>n/a</p>
+  <td>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -1028,7 +1028,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#outFile'>--outFile</a></code></td>
   <td><p><code>string</code></p>
 </td>
-  <td><p>n/a</p>
+  <td>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -1073,7 +1073,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#preserveSymlinks'>--preserveSymlinks</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p>n/a</p>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -1084,7 +1084,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#preserveValueImports'>--preserveValueImports</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -1095,7 +1095,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#preserveWatchOutput'>--preserveWatchOutput</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p>n/a</p>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -1275,7 +1275,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#stripInternal'>--stripInternal</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -1306,7 +1306,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 <tr class='even' name='target'>
   <td><code><a href='/tsconfig/#target'>--target</a></code></td>
-  <td><p><code>es3</code>, <code>es5</code>, <code>es6</code>/<code>es2015</code>, <code>es2016</code>, <code>es2017</code>, <code>es2018</code>, <code>es2019</code>, <code>es2020</code>, <code>es2021</code>, or <code>esnext</code></p>
+  <td><p><code>es3</code>, <code>es5</code>, <code>es6</code>/<code>es2015</code>, <code>es2016</code>, <code>es2017</code>, <code>es2018</code>, <code>es2019</code>, <code>es2020</code>, <code>es2021</code>, <code>es2022</code>, or <code>esnext</code></p>
 </td>
   <td><p><code>ES3</code></p>
 </td>

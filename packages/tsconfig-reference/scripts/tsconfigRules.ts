@@ -369,4 +369,4 @@ export const parseMarkdown = (value: string | string[]) =>
         .join("")}</ul>`
     : remark()
         .use(remarkHTML)
-        .processSync(value?.replace(/^[-.0-9_a-z]+$/i, "`$&`"));
+        .processSync(value && typeof value.replace === "function" ? value.replace(/^[-.0-9_a-z]+$/i, "`$&`") : value !== undefined ? `<code>${value}</code>` : undefined);
