@@ -99,14 +99,9 @@ languages.forEach((lang) => {
 
   const mdChunks: string[] = [];
 
-  const getPathInLocale = (
-    path: string,
-    optionalExampleContent?: string,
-    failable = false
-  ) => {
+  const getPathInLocale = (path: string, optionalExampleContent?: string, failable = false) => {
     if (existsSync(new URL(path, locale))) return new URL(path, locale);
-    if (existsSync(new URL(path, fallbackLocale)))
-      return new URL(path, fallbackLocale);
+    if (existsSync(new URL(path, fallbackLocale))) return new URL(path, fallbackLocale);
 
     const localeDesc = lang === "en" ? lang : `either ${lang} or English`;
     if (!failable)
@@ -137,9 +132,7 @@ languages.forEach((lang) => {
     );
 
     // Intro to the section
-    const sectionsPath = getPathInLocale(
-      join("sections", section.name + ".md")
-    );
+    const sectionsPath = getPathInLocale(join("sections", section.name + ".md"));
     const sectionsFile = matter.read(fileURLToPath(sectionsPath));
     mdChunks.push("\n" + sectionsFile.content + "\n");
 
@@ -147,9 +140,7 @@ languages.forEach((lang) => {
     if (sectionCategories.length > 1) {
       mdChunks.push(`<nav id="sticky"><ul>`);
       sectionCategories.forEach((categoryID) => {
-        const categoryPath = getPathInLocale(
-          join("categories", categoryID + ".md")
-        );
+        const categoryPath = getPathInLocale(join("categories", categoryID + ".md"));
         const categoryFile = matter.read(fileURLToPath(categoryPath));
 
         mdChunks.push(`<li><a href="#${categoryID}">${categoryFile.data.display}</a></li>`);
@@ -161,15 +152,13 @@ languages.forEach((lang) => {
 
     sectionCategories.forEach((categoryID) => {
       // We need this to look up the category ID
-      const category = Object.values(
-        categories as { [code: string]: ts.DiagnosticMessage }
-      ).find((c: any) => c.key === categoryID);
+      const category = Object.values(categories as { [code: string]: ts.DiagnosticMessage }).find(
+        (c: any) => c.key === categoryID
+      );
       let categoryName = categoryID;
 
       if (category) {
-        const categoryPath = getPathInLocale(
-          join("categories", categoryID + ".md")
-        );
+        const categoryPath = getPathInLocale(join("categories", categoryID + ".md"));
         const categoryFile = matter.read(fileURLToPath(categoryPath));
 
         assert.ok(categoryFile.data.display, "No display data for category: " + categoryID); // Must have a display title in the front-matter
@@ -209,18 +198,13 @@ languages.forEach((lang) => {
         const mdPath = join("options", optionName + ".md");
         const scopedMDPath = join("options", section.name, optionName + ".md");
 
-        const fullPath = new URL(
-          `../../copy/${lang}/${mdPath}`,
-          import.meta.url
-        );
+        const fullPath = new URL(`../../copy/${lang}/${mdPath}`, import.meta.url);
         const exampleOptionContent = `\n\n\n Run:\n    echo '---\\ndisplay: "${optionName}"\\noneline: "Does something"\\n---\\n${option.description?.message}\\n' > ${fullPath}\n\nThen add some docs and run: \n>  yarn workspace tsconfig-reference build\n\n`;
 
         const optionPath = getPathInLocale(mdPath, exampleOptionContent, true);
         const scopedOptionPath = getPathInLocale(scopedMDPath, exampleOptionContent, true);
 
-        const optionFile = matter.read(
-          fileURLToPath(scopedOptionPath || optionPath)
-        );
+        const optionFile = matter.read(fileURLToPath(scopedOptionPath || optionPath));
 
         // prettier-ignore
         assert.ok(optionFile, "Could not find an optionFile: " + optionName);
@@ -267,7 +251,7 @@ languages.forEach((lang) => {
         }
 
         if (option.defaultValue) {
-          mdTableRows.push(["Default", option.defaultValue]);
+          mdTableRows.push(["Default", String(option.defaultValue)]);
         }
 
         if (option.allowedValues) {
@@ -295,10 +279,7 @@ languages.forEach((lang) => {
           "<ul class='compiler-option-md'>" +
           mdTableRows
             .map(
-              (r) =>
-                `<li><span>${r[0]}${
-                  r.length > 1 ? ":" : ""
-                }</span>${parseMarkdown(r[1])}</li>`
+              (r) => `<li><span>${r[0]}${r.length > 1 ? ":" : ""}</span>${parseMarkdown(r[1])}</li>`
             )
             .join("\n") +
           "</ul>";
@@ -339,18 +320,13 @@ languages.forEach((lang) => {
     JSON.stringify({ options: optionsSummary })
   );
 
-  const jsonDir = new URL(
-    "../../../typescriptlang-org/static/js/json/",
-    import.meta.url
-  );
+  const jsonDir = new URL("../../../typescriptlang-org/static/js/json/", import.meta.url);
   if (!existsSync(jsonDir)) mkdirSync(jsonDir);
 
   // This is used by the tsconfig popups
   writeFileSync(
     new URL(`${lang}-tsconfig-popup.json`, jsonDir),
-    JSON.stringify(
-      Object.fromEntries(optionsSummary.map((data) => [data.id, data.oneliner]))
-    )
+    JSON.stringify(Object.fromEntries(optionsSummary.map((data) => [data.id, data.oneliner])))
   );
 });
 
