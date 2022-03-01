@@ -102,15 +102,6 @@ If you are wondering about the difference between `ES2015` (aka `ES6`) and `ES20
 
 Available in [nightly builds](https://www.typescriptlang.org/docs/handbook/nightly-builds.html), the experimental `node12` and `nodenext` modes integrate with Node's [native ECMAScript Module support](https://nodejs.org/api/esm.html). The emitted JavaScript uses either `CommonJS` or `ES2020` output depending on the file extension and the value of the `type` setting in the nearest `package.json`. Module resolution also works differently. You can learn more in the [handbook](https://www.typescriptlang.org/docs/handbook/esm-node.html).
 
-```ts twoslash
-// @showEmit
-// @module: node12
-// @noErrors
-import { valueOfPi } from "./constants.js";
-
-export const twoPi = valueOfPi * 2;
-```
-
 #### `None`
 
 ```ts twoslash
