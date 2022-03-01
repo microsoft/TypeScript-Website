@@ -805,7 +805,7 @@ httpService("", headers); // Now ok, previously wasn't
 ## Including built-in type declarations with `--lib`
 
 Getting to ES6/ES2015 built-in API declarations were only limited to `target: ES6`.
-Enter [`lib`](/tsconfig#lib); with [`lib`](/tsconfig#lib) you can specify a list of built-in API declaration groups that you can chose to include in your project.
+Enter [`lib`](/tsconfig#lib); with [`lib`](/tsconfig#lib) you can specify a list of built-in API declaration groups that you can choose to include in your project.
 For instance, if you expect your runtime to have support for `Map`, `Set` and `Promise` (e.g. most evergreen browsers today), just include `--lib es2015.collection,es2015.promise`.
 Similarly you can exclude declarations you do not want to include in your project, e.g. DOM if you are working on a node project using `--lib es5,es6`.
 
