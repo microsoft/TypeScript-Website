@@ -188,21 +188,25 @@ export const setupPlayground = (
   // something more inline, but we can abuse the code lenses for now because they get their own line!
   sandbox.monaco.languages.registerCodeLensProvider(sandbox.language, {
     provideCodeLenses: function (model, token) {
-      const lenses = !showFileCodeLens ? [] : [{
-        range: {
-          startLineNumber: 1,
-          startColumn: 1,
-          endLineNumber: 2,
-          endColumn: 1
-        },
-        id: "implicit-filename-first",
-        command: {
-          id: "noop",
-          title: `// @filename: ${sandbox.filepath}`
-        }
-      }]
-      return { lenses, dispose: () => { } };
-    }
+      const lenses = !showFileCodeLens
+        ? []
+        : [
+            {
+              range: {
+                startLineNumber: 1,
+                startColumn: 1,
+                endLineNumber: 2,
+                endColumn: 1,
+              },
+              id: "implicit-filename-first",
+              command: {
+                id: "noop",
+                title: `// @filename: ${sandbox.filepath}`,
+              },
+            },
+          ]
+      return { lenses, dispose: () => {} }
+    },
   })
 
   let showFileCodeLens = false
@@ -394,7 +398,7 @@ export const setupPlayground = (
   const shareAction = {
     id: "copy-clipboard",
     label: "Save to clipboard",
-    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S],
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS],
 
     contextMenuGroupId: "run",
     contextMenuOrder: 1.5,
@@ -714,7 +718,11 @@ export const setupPlayground = (
     }
   }
 
-  if (monaco.languages.registerInlayHintsProvider) {
+  const [tsMajor, tsMinor] = sandbox.ts.version.split(".")
+  if (
+    (parseInt(tsMajor) > 4 || (parseInt(tsMajor) == 4 && parseInt(tsMinor) >= 6)) &&
+    monaco.languages.registerInlayHintsProvider
+  ) {
     monaco.languages.registerInlayHintsProvider(sandbox.language, createTwoslashInlayProvider(sandbox))
   }
 

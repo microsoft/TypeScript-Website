@@ -227,10 +227,10 @@
               "markdownDescription": "Only output d.ts files and not JavaScript files.\n\nSee more: https://www.typescriptlang.org/tsconfig#emitDeclarationOnly"
             },
             "exactOptionalPropertyTypes": {
-              "description": "Differentiate between undefined and not present when type checking.",
+              "description": "Interpret optional property types as written, rather than adding `undefined`.",
               "type": "boolean",
               "default": false,
-              "markdownDescription": "Differentiate between undefined and not present when type checking.\n\nSee more: https://www.typescriptlang.org/tsconfig#exactOptionalPropertyTypes"
+              "markdownDescription": "Interpret optional property types as written, rather than adding `undefined`.\n\nSee more: https://www.typescriptlang.org/tsconfig#exactOptionalPropertyTypes"
             },
             "incremental": {
               "description": "Enable incremental compilation. Requires TypeScript version 3.4 or later.",
@@ -330,7 +330,7 @@
               "type": "string",
               "anyOf": [
                 {
-                  "enum": ["Node", "Classic"]
+                  "enum": ["Node", "Classic", "node12", "nodenext"]
                 },
                 {
                   "pattern": "^(([Nn]ode)|([Cc]lassic))$"
@@ -371,9 +371,9 @@
               "markdownDescription": "Disable emitting files if any type checking errors are reported.\n\nSee more: https://www.typescriptlang.org/tsconfig#noEmitOnError"
             },
             "noImplicitAny": {
-              "description": "Enable error reporting for expressions and declarations with an implied `any` type..",
+              "description": "Enable error reporting for expressions and declarations with an implied `any` type.",
               "type": "boolean",
-              "markdownDescription": "Enable error reporting for expressions and declarations with an implied `any` type..\n\nSee more: https://www.typescriptlang.org/tsconfig#noImplicitAny"
+              "markdownDescription": "Enable error reporting for expressions and declarations with an implied `any` type.\n\nSee more: https://www.typescriptlang.org/tsconfig#noImplicitAny"
             },
             "noImplicitThis": {
               "description": "Enable error reporting when `this` is given the type `any`.",
@@ -523,6 +523,7 @@
                     "ES2019",
                     "ES2020",
                     "ES2021",
+                    "es2022",
                     "ESNext"
                   ]
                 },
@@ -711,6 +712,7 @@
                       "ES2019",
                       "ES2020",
                       "ES2021",
+                      "es2022",
                       "ESNext",
                       "DOM",
                       "DOM.Iterable",
@@ -752,6 +754,10 @@
                       "ES2021.String",
                       "ES2021.WeakRef",
                       "es2021.intl",
+                      "es2022.array",
+                      "es2022.error",
+                      "es2022.object",
+                      "es2022.string",
                       "ESNext.Array",
                       "ESNext.Symbol",
                       "ESNext.AsyncIterable",
@@ -763,7 +769,7 @@
                     ]
                   },
                   {
-                    "pattern": "^(?:[Ee][Ss]5|[Ee][Ss]6|[Ee][Ss]2015|[Ee][Ss]7|[Ee][Ss]2016|[Ee][Ss]2017|[Ee][Ss]2018|[Ee][Ss]2019|[Ee][Ss]2020|[Ee][Ss]2021|[Ee][Ss][Nn][Ee][Xx][Tt]|[Dd][Oo][Mm]|[Dd][Oo][Mm]\\.[Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Ww][Ee][Bb][Ww][Oo][Rr][Kk][Ee][Rr]|[Ww][Ee][Bb][Ww][Oo][Rr][Kk][Ee][Rr]\\.[Ii][Mm][Pp][Oo][Rr][Tt][Ss][Cc][Rr][Ii][Pp][Tt][Ss]|[Ww][Ee][Bb][Ww][Oo][Rr][Kk][Ee][Rr]\\.[Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Ss][Cc][Rr][Ii][Pp][Tt][Hh][Oo][Ss][Tt]|[Ee][Ss]2015\\.[Cc][Oo][Rr][Ee]|[Ee][Ss]2015\\.[Cc][Oo][Ll][Ll][Ee][Cc][Tt][Ii][Oo][Nn]|[Ee][Ss]2015\\.[Gg][Ee][Nn][Ee][Rr][Aa][Tt][Oo][Rr]|[Ee][Ss]2015\\.[Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Ee][Ss]2015\\.[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ee][Ss]2015\\.[Pp][Rr][Oo][Xx][Yy]|[Ee][Ss]2015\\.[Rr][Ee][Ff][Ll][Ee][Cc][Tt]|[Ee][Ss]2015\\.[Ss][Yy][Mm][Bb][Oo][Ll]|[Ee][Ss]2015\\.[Ss][Yy][Mm][Bb][Oo][Ll]\\.[Ww][Ee][Ll][Ll][Kk][Nn][Oo][Ww][Nn]|[Ee][Ss]2016\\.[Aa][Rr][Rr][Aa][Yy]\\.[Ii][Nn][Cc][Ll][Uu][Dd][Ee]|[Ee][Ss]2017\\.[Oo][Bb][Jj][Ee][Cc][Tt]|[Ee][Ss]2017\\.[Ss][Hh][Aa][Rr][Ee][Dd][Mm][Ee][Mm][Oo][Rr][Yy]|[Ee][Ss]2017\\.[Ss][Tt][Rr][Ii][Nn][Gg]|[Ee][Ss]2017\\.[Ii][Nn][Tt][Ll]|[Ee][Ss]2017\\.[Tt][Yy][Pp][Ee][Dd][Aa][Rr][Rr][Aa][Yy][Ss]|[Ee][Ss]2018\\.[Aa][Ss][Yy][Nn][Cc][Gg][Ee][Nn][Ee][Rr][Aa][Tt][Oo][Rr]|[Ee][Ss]2018\\.[Aa][Ss][Yy][Nn][Cc][Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Ee][Ss]2018\\.[Ii][Nn][Tt][Ll]|[Ee][Ss]2018\\.[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ee][Ss]2018\\.[Rr][Ee][Gg][Ee][Xx][Pp]|[Ee][Ss]2019\\.[Aa][Rr][Rr][Aa][Yy]|[Ee][Ss]2019\\.[Oo][Bb][Jj][Ee][Cc][Tt]|[Ee][Ss]2019\\.[Ss][Tt][Rr][Ii][Nn][Gg]|[Ee][Ss]2019\\.[Ss][Yy][Mm][Bb][Oo][Ll]|[Ee][Ss]2020\\.[Bb][Ii][Gg][Ii][Nn][Tt]|[Ee][Ss]2020\\.[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ee][Ss]2020\\.[Ss][Hh][Aa][Rr][Ee][Dd][Mm][Ee][Mm][Oo][Rr][Yy]|[Ee][Ss]2020\\.[Ss][Tt][Rr][Ii][Nn][Gg]|[Ee][Ss]2020\\.[Ss][Yy][Mm][Bb][Oo][Ll]\\.[Ww][Ee][Ll][Ll][Kk][Nn][Oo][Ww][Nn]|[Ee][Ss]2020\\.[Ii][Nn][Tt][Ll]|[Ee][Ss]2021\\.[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ee][Ss]2021\\.[Ss][Tt][Rr][Ii][Nn][Gg]|[Ee][Ss]2021\\.[Ww][Ee][Aa][Kk][Rr][Ee][Ff]|[Ee][Ss]2021\\.[Ii][Nn][Tt][Ll]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Aa][Rr][Rr][Aa][Yy]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Ss][Yy][Mm][Bb][Oo][Ll]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Aa][Ss][Yy][Nn][Cc][Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Ii][Nn][Tt][Ll]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Bb][Ii][Gg][Ii][Nn][Tt]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Ss][Tt][Rr][Ii][Nn][Gg]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Ww][Ee][Aa][Kk][Rr][Ee][Ff])$"
+                    "pattern": "^(?:[Ee][Ss]5|[Ee][Ss]6|[Ee][Ss]2015|[Ee][Ss]7|[Ee][Ss]2016|[Ee][Ss]2017|[Ee][Ss]2018|[Ee][Ss]2019|[Ee][Ss]2020|[Ee][Ss]2021|[Ee][Ss]2022|[Ee][Ss][Nn][Ee][Xx][Tt]|[Dd][Oo][Mm]|[Dd][Oo][Mm]\\.[Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Ww][Ee][Bb][Ww][Oo][Rr][Kk][Ee][Rr]|[Ww][Ee][Bb][Ww][Oo][Rr][Kk][Ee][Rr]\\.[Ii][Mm][Pp][Oo][Rr][Tt][Ss][Cc][Rr][Ii][Pp][Tt][Ss]|[Ww][Ee][Bb][Ww][Oo][Rr][Kk][Ee][Rr]\\.[Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Ss][Cc][Rr][Ii][Pp][Tt][Hh][Oo][Ss][Tt]|[Ee][Ss]2015\\.[Cc][Oo][Rr][Ee]|[Ee][Ss]2015\\.[Cc][Oo][Ll][Ll][Ee][Cc][Tt][Ii][Oo][Nn]|[Ee][Ss]2015\\.[Gg][Ee][Nn][Ee][Rr][Aa][Tt][Oo][Rr]|[Ee][Ss]2015\\.[Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Ee][Ss]2015\\.[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ee][Ss]2015\\.[Pp][Rr][Oo][Xx][Yy]|[Ee][Ss]2015\\.[Rr][Ee][Ff][Ll][Ee][Cc][Tt]|[Ee][Ss]2015\\.[Ss][Yy][Mm][Bb][Oo][Ll]|[Ee][Ss]2015\\.[Ss][Yy][Mm][Bb][Oo][Ll]\\.[Ww][Ee][Ll][Ll][Kk][Nn][Oo][Ww][Nn]|[Ee][Ss]2016\\.[Aa][Rr][Rr][Aa][Yy]\\.[Ii][Nn][Cc][Ll][Uu][Dd][Ee]|[Ee][Ss]2017\\.[Oo][Bb][Jj][Ee][Cc][Tt]|[Ee][Ss]2017\\.[Ss][Hh][Aa][Rr][Ee][Dd][Mm][Ee][Mm][Oo][Rr][Yy]|[Ee][Ss]2017\\.[Ss][Tt][Rr][Ii][Nn][Gg]|[Ee][Ss]2017\\.[Ii][Nn][Tt][Ll]|[Ee][Ss]2017\\.[Tt][Yy][Pp][Ee][Dd][Aa][Rr][Rr][Aa][Yy][Ss]|[Ee][Ss]2018\\.[Aa][Ss][Yy][Nn][Cc][Gg][Ee][Nn][Ee][Rr][Aa][Tt][Oo][Rr]|[Ee][Ss]2018\\.[Aa][Ss][Yy][Nn][Cc][Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Ee][Ss]2018\\.[Ii][Nn][Tt][Ll]|[Ee][Ss]2018\\.[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ee][Ss]2018\\.[Rr][Ee][Gg][Ee][Xx][Pp]|[Ee][Ss]2019\\.[Aa][Rr][Rr][Aa][Yy]|[Ee][Ss]2019\\.[Oo][Bb][Jj][Ee][Cc][Tt]|[Ee][Ss]2019\\.[Ss][Tt][Rr][Ii][Nn][Gg]|[Ee][Ss]2019\\.[Ss][Yy][Mm][Bb][Oo][Ll]|[Ee][Ss]2020\\.[Bb][Ii][Gg][Ii][Nn][Tt]|[Ee][Ss]2020\\.[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ee][Ss]2020\\.[Ss][Hh][Aa][Rr][Ee][Dd][Mm][Ee][Mm][Oo][Rr][Yy]|[Ee][Ss]2020\\.[Ss][Tt][Rr][Ii][Nn][Gg]|[Ee][Ss]2020\\.[Ss][Yy][Mm][Bb][Oo][Ll]\\.[Ww][Ee][Ll][Ll][Kk][Nn][Oo][Ww][Nn]|[Ee][Ss]2020\\.[Ii][Nn][Tt][Ll]|[Ee][Ss]2021\\.[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ee][Ss]2021\\.[Ss][Tt][Rr][Ii][Nn][Gg]|[Ee][Ss]2021\\.[Ww][Ee][Aa][Kk][Rr][Ee][Ff]|[Ee][Ss]2021\\.[Ii][Nn][Tt][Ll]|[Ee][Ss]2022\\.[Aa][Rr][Rr][Aa][Yy]|[Ee][Ss]2022\\.[Ee][Rr][Rr][Oo][Rr]|[Ee][Ss]2022\\.[Oo][Bb][Jj][Ee][Cc][Tt]|[Ee][Ss]2022\\.[Ss][Tt][Rr][Ii][Nn][Gg]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Aa][Rr][Rr][Aa][Yy]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Ss][Yy][Mm][Bb][Oo][Ll]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Aa][Ss][Yy][Nn][Cc][Ii][Tt][Ee][Rr][Aa][Bb][Ll][Ee]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Ii][Nn][Tt][Ll]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Bb][Ii][Gg][Ii][Nn][Tt]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Ss][Tt][Rr][Ii][Nn][Gg]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Pp][Rr][Oo][Mm][Ii][Ss][Ee]|[Ee][Ss][Nn][Ee][Xx][Tt]\\.[Ww][Ee][Aa][Kk][Rr][Ee][Ff])$"
                   }
                 ]
               },
