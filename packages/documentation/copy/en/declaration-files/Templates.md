@@ -5,7 +5,7 @@ permalink: /docs/handbook/declaration-files/templates.html
 oneline: "Different d.ts module template examples"
 ---
 
-[global-modifying-module.d.ts](./templates/global-modifying-module.d.ts.md)
+[global-modifying-module.d.ts](/docs/handbook/declaration-files/templates/global-modifying-module.d.ts.html)
 
 - [global-plugin.d.ts](/docs/handbook/declaration-files/templates/global-plugin-d-ts.html)
 - [global.d.ts](/docs/handbook/declaration-files/templates/global-d-ts.html)
