@@ -209,7 +209,7 @@ The first type of assertion signature models the way that Node's `assert` functi
 It ensures that whatever condition is being checked must be true for the remainder of the containing scope.
 
 ```ts
-function assert(condition: any, msg?: string): asserts condition {
+function assert(condition: unknown, msg?: string): asserts condition {
   if (!condition) {
     throw new AssertionError(msg);
   }
@@ -230,7 +230,7 @@ function yell(str) {
   //        Did you mean 'toUpperCase'?
 }
 
-function assert(condition: any, msg?: string): asserts condition {
+function assert(condition: unknown, msg?: string): asserts condition {
   if (!condition) {
     throw new AssertionError(msg);
   }
