@@ -380,7 +380,7 @@ test(() => {
 
 ## Read-only properties and index signatures
 
-A property or index signature can now be declared with the `readonly` modifier, which will make it be considered read-only.
+Now a property or index signature declared with the `readonly` modifier is considered read-only.
 
 Read-only properties may have initializers and may be assigned to in constructors within the same class declaration, but otherwise assignments to read-only properties are disallowed.
 
