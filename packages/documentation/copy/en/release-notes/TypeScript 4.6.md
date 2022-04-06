@@ -339,8 +339,8 @@ As another example, TypeScript will let you know if a modifier is being incorrec
 ```ts
 function container() {
   export function foo() {
-    //  ~~~~~~
-    // error: Modifiers cannot appear here.
+//  ~~~~~~
+// error: Modifiers cannot appear here.
   }
 }
 ```
