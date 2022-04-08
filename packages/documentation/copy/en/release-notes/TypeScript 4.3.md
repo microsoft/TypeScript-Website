@@ -310,7 +310,7 @@ declare let s: string;
 declare function f<T extends string>(x: T): T;
 
 // Previously: string
-// Now       : `hello-${string}`
+// Now       : `hello ${string}`
 let x2 = f(`hello ${s}`);
 ```
 
