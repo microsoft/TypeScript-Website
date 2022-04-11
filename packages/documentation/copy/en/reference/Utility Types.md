@@ -8,6 +8,30 @@ translatable: true
 
 TypeScript provides several utility types to facilitate common type transformations. These utilities are available globally.
 
+## `Awaited<Type>`
+
+<blockquote class=bg-reading>
+
+Released:
+[4.5](docs/handbook/release-notes/typescript-4-5.html#the-awaited-type-and-promise-improvements)
+
+</blockquote>
+
+This type is meant to model operations like `await` in `async` functions, or the
+`.then()` method on `Promise`s - specifically, the way that they recursively
+unwrap `Promise`s.
+
+##### Example
+
+```ts twoslash
+// A = string
+type A = Awaited<Promise<string>>;
+// B = number
+type B = Awaited<Promise<Promise<number>>>;
+// C = boolean | number
+type C = Awaited<boolean | Promise<number>>;
+```
+
 ## `Partial<Type>`
 
 <blockquote class=bg-reading>
