@@ -6,7 +6,7 @@ oneline: Using TypeScript with Gulp
 deprecated: true
 ---
 
-This quick start guide will teach you how to build TypeScript with [gulp](https://gulpjs.com) and then add [Browserify](https://browserify.org), [uglify](https://lisperator.net/uglifyjs/), or [Watchify](https://github.com/substack/watchify) to the gulp pipeline.
+This quick start guide will teach you how to build TypeScript with [gulp](https://gulpjs.com) and then add [Browserify](https://browserify.org), [terser](https://terser.org), or [Watchify](https://github.com/substack/watchify) to the gulp pipeline.
 This guide also shows how to add [Babel](https://babeljs.io/) functionality using [Babelify](https://github.com/babel/babelify).
 
 We assume that you're already using [Node.js](https://nodejs.org/) with [npm](https://www.npmjs.com/).
@@ -254,7 +254,7 @@ Source maps let you debug your original TypeScript code in the browser instead o
 You can test that source maps are working by opening the debugger for your browser and putting a breakpoint inside `main.ts`.
 When you refresh the page the breakpoint should pause the page and let you debug `greet.ts`.
 
-## Watchify, Babel, and Uglify
+## Watchify, Babel, and Terser
 
 Now that we are bundling our code with Browserify and tsify, we can add various features to our build with browserify plugins.
 
@@ -264,7 +264,7 @@ Now that we are bundling our code with Browserify and tsify, we can add various 
 - Babel is a hugely flexible compiler that converts ES2015 and beyond into ES5 and ES3.
   This lets you add extensive and customized transformations that TypeScript doesn't support.
 
-- Uglify compacts your code so that it takes less time to download.
+- Terser compacts your code so that it takes less time to download.
 
 ## Watchify
 
@@ -340,10 +340,10 @@ proj$ gulp
 [10:35:24] 2808 bytes written (0.05 seconds)
 ```
 
-## Uglify
+## Terser
 
-First install Uglify.
-Since the point of Uglify is to mangle your code, we also need to install vinyl-buffer and gulp-sourcemaps to keep sourcemaps working.
+First install Terser.
+Since the point of Terser is to mangle your code, we also need to install vinyl-buffer and gulp-sourcemaps to keep sourcemaps working.
 
 ```shell
 npm install --save-dev gulp-terser vinyl-buffer gulp-sourcemaps
@@ -401,7 +401,7 @@ cat dist/bundle.js
 ## Babel
 
 First install Babelify and the Babel preset for ES2015.
-Like Uglify, Babelify mangles code, so we'll need vinyl-buffer and gulp-sourcemaps.
+Like Terser, Babelify mangles code, so we'll need vinyl-buffer and gulp-sourcemaps.
 By default Babelify will only process files with extensions of `.js`, `.es`, `.es6` and `.jsx` so we need to add the `.ts` extension as an option to Babelify.
 
 ```shell
