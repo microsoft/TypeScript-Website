@@ -346,7 +346,7 @@ First install Uglify.
 Since the point of Uglify is to mangle your code, we also need to install vinyl-buffer and gulp-sourcemaps to keep sourcemaps working.
 
 ```shell
-npm install --save-dev gulp-uglify vinyl-buffer gulp-sourcemaps
+npm install --save-dev gulp-terser vinyl-buffer gulp-sourcemaps
 ```
 
 Now change your gulpfile to the following:
@@ -355,8 +355,8 @@ Now change your gulpfile to the following:
 var gulp = require("gulp");
 var browserify = require("browserify");
 var source = require("vinyl-source-stream");
+var terser = require("gulp-terser");
 var tsify = require("tsify");
-var uglify = require("gulp-uglify");
 var sourcemaps = require("gulp-sourcemaps");
 var buffer = require("vinyl-buffer");
 var paths = {
@@ -382,14 +382,14 @@ gulp.task(
       .pipe(source("bundle.js"))
       .pipe(buffer())
       .pipe(sourcemaps.init({ loadMaps: true }))
-      .pipe(uglify())
+      .pipe(terser())
       .pipe(sourcemaps.write("./"))
       .pipe(gulp.dest("dist"));
   })
 );
 ```
 
-Notice that `uglify` itself has just one call &mdash; the calls to `buffer` and `sourcemaps` exist to make sure sourcemaps keep working.
+Notice that `terser` itself has just one call &mdash; the calls to `buffer` and `sourcemaps` exist to make sure sourcemaps keep working.
 These calls give us a separate sourcemap file instead of using inline sourcemaps like before.
 Now you can run Gulp and check that `bundle.js` does get minified into an unreadable mess:
 
