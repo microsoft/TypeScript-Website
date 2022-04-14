@@ -8,7 +8,7 @@
   height: 3rem;
   position: relative;
 
-  > ul {
+  >ul {
     display: flex;
     padding: 0;
     margin: 0;
@@ -50,18 +50,27 @@
       color: var(--text-color);
     }
 
-    &.dropdown.open ul {
-      display: block;
+    &.dropdown.open {
+
+      ul,
+      .dropdown-dialog {
+        display: block;
+      }
     }
 
-    &.dropdown ul {
-      display: none;
+    &.dropdown {
 
-      position: absolute;
-      top: 100%;
-      left: 0;
-      z-index: 1;
-      float: left;
+      ul,
+      .dropdown-dialog {
+
+        display: none;
+
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1;
+        float: left;
+      }
     }
 
     // Menu items
@@ -120,7 +129,7 @@
     }
 
     // Examples dropdown
-    &.dropdown ul.examples-dropdown {
+    &.dropdown .dropdown-dialog {
       width: 800px;
       overflow-y: scroll;
       padding: 2rem;
@@ -148,7 +157,7 @@
         display: flex;
         flex-wrap: wrap;
 
-        > div {
+        >div {
           min-width: 200px;
           max-width: 400px;
 
@@ -182,7 +191,7 @@
               position: absolute;
             }
 
-            > span {
+            >span {
               font-family: $font-code;
               margin-left: 4px;
             }
@@ -215,23 +224,26 @@
 }
 
 // The subnav which starts with "Playground"
-main > nav {
+main>nav {
   position: relative;
 
-  .examples-dropdown {
+  .dropdown-dialog {
     padding-left: 0;
     background-color: var(--playground-dropdown-bg);
   }
 
-  > ul {
+  >ul {
     li.disabled {
       opacity: 0.5;
     }
+
     li.active {
+
       &:hover,
       &.open {
         background-color: var(--playground-dropdown-bg);
       }
+
       &.open .caret {
         transform: scaleY(-1);
       }
@@ -256,20 +268,23 @@ button.examples-close {
 
 // The toolbar for the editor
 main #editor-toolbar {
+
   // For the main buttons
-  > ul > li {
+  >ul>li {
     margin-left: 0px;
     margin-bottom: 0px;
 
-    > a {
+    >a {
       // Fix their vertical centering
       padding-top: 0.8rem;
+
       &:hover {
         @media (prefers-color-scheme: dark) {
           border-bottom: 1px solid white;
         }
       }
     }
+
     // Ensure menus use this button for
     // their x
     position: relative;
@@ -298,7 +313,7 @@ main #editor-toolbar {
   border-left: 4px solid transparent;
 }
 
-#editor-toolbar > ul > li > a:first-child {
+#editor-toolbar>ul>li>a:first-child {
   padding-left: 1rem;
 }
 
@@ -319,6 +334,7 @@ main #editor-toolbar {
       margin-top: 12px;
       margin-left: 12px;
     }
+
     ul {
       padding: 0;
 
@@ -341,6 +357,7 @@ main #editor-toolbar {
         a {
           display: block;
           text-decoration: none;
+
           svg {
             margin-right: 8px;
           }
@@ -352,10 +369,12 @@ main #editor-toolbar {
 
         &.selectable.selected {
           background-color: var(--blue-tinged-strong);
+
           // font-weight: bold;
           a {
             color: var(--text-color);
           }
+
           path {
             stroke: var(--text-color);
           }
@@ -548,6 +567,7 @@ main #editor-toolbar {
       margin-bottom: 10px;
 
       position: relative;
+
       ul.right {
         background-color: var(--playground-dropdown-bg);
 
@@ -629,6 +649,7 @@ main #editor-toolbar {
         overflow-x: auto;
         width: 100%;
         padding: 0 10px;
+
         code {
           font-family: $font-code;
           font-size: 14px;
@@ -776,19 +797,22 @@ main #editor-toolbar {
       span.ast-node-number {
         color: blue;
       }
+
       span.ast-node-string {
         color: green;
       }
+
       span.ast-node-boolean {
         color: red;
       }
+
       span.ast-node-undefined {
         color: brown;
       }
     }
 
     // When showing a list of children, always do block so that they are newlined
-    .ast-children > div.ast-tree-start {
+    .ast-children>div.ast-tree-start {
       display: block;
       margin-left: 12px;
       min-height: 1rem;
@@ -806,7 +830,7 @@ main #editor-toolbar {
       }
 
       &.open {
-        > a.node-name {
+        >a.node-name {
           top: 4px;
         }
       }
@@ -837,16 +861,17 @@ main #editor-toolbar {
 
     div.ast-tree-start.open {
       display: block;
-      > ul {
+
+      >ul {
         display: block;
       }
     }
 
-    div.ast-tree-start > a:not(:last-child):before {
+    div.ast-tree-start>a:not(:last-child):before {
       content: "+";
     }
 
-    div.ast-tree-start.open > a:not(:last-child):before {
+    div.ast-tree-start.open>a:not(:last-child):before {
       content: "-";
     }
   }
@@ -888,6 +913,7 @@ main #editor-toolbar {
       li {
         margin-bottom: 0.2rem;
       }
+
       span {
         margin-right: 1rem;
       }
@@ -895,9 +921,11 @@ main #editor-toolbar {
 
     li {
       list-style: none;
+
       span {
         font-weight: 600;
       }
+
       margin-bottom: 1rem;
     }
   }
@@ -911,6 +939,7 @@ main #editor-toolbar {
   0% {
     background-color: yellow;
   }
+
   100% {
     background-color: inherit;
   }
@@ -938,6 +967,7 @@ input.good {
 #playground-container .playground-plugins {
   &.featured {
     border: 1px solid lightgrey;
+
     li {
       border-bottom: 1px solid lightgrey;
     }
@@ -965,6 +995,7 @@ input.good {
   label {
     padding-left: 30px;
     padding-right: 10px;
+
     span {
       font-weight: 600;
     }
@@ -980,6 +1011,7 @@ input.good {
     text-align: center;
     text-decoration: none;
     line-height: 1rem;
+
     &:hover {
       background-color: #fcb7b7;
       color: red;
@@ -1058,13 +1090,11 @@ input.good {
 
     &.warning {
       color: white;
-      background: repeating-linear-gradient(
-        45deg,
-        #d63131,
-        #d63131 10px,
-        #c63131 10px,
-        #c63131 20px
-      );
+      background: repeating-linear-gradient(45deg,
+          #d63131,
+          #d63131 10px,
+          #c63131 10px,
+          #c63131 20px);
     }
   }
 }
@@ -1086,6 +1116,7 @@ input.good {
     position: relative;
     width: 80px;
     height: 80px;
+
     div {
       position: absolute;
       width: 16px;
@@ -1099,41 +1130,49 @@ input.good {
         left: 8px;
         animation-delay: 0s;
       }
+
       &:nth-child(2) {
         top: 8px;
         left: 32px;
         animation-delay: -0.4s;
       }
+
       &:nth-child(3) {
         top: 8px;
         left: 56px;
         animation-delay: -0.8s;
       }
+
       &:nth-child(4) {
         top: 32px;
         left: 8px;
         animation-delay: -0.4s;
       }
+
       &:nth-child(5) {
         top: 32px;
         left: 32px;
         animation-delay: -0.8s;
       }
+
       &:nth-child(6) {
         top: 32px;
         left: 56px;
         animation-delay: -1.2s;
       }
+
       &:nth-child(7) {
         top: 56px;
         left: 8px;
         animation-delay: -0.8s;
       }
+
       &:nth-child(8) {
         top: 56px;
         left: 32px;
         animation-delay: -1.2s;
       }
+
       &:nth-child(9) {
         top: 56px;
         left: 56px;
@@ -1144,10 +1183,12 @@ input.good {
 }
 
 @keyframes lds-grid {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }

@@ -26,7 +26,7 @@ type Props = {
     lang: string
     examplesTOC: typeof import("../../static/js/examples/en.json")
     optionsSummary: any // this is just passed through to the playground JS library at this point
-    playgroundHandbookTOC: { docs : any[] }
+    playgroundHandbookTOC: { docs: any[] }
   }
 }
 
@@ -112,8 +112,8 @@ const Play: React.FC<Props> = (props) => {
       }
 
       // Allow prod/staging builds to set a custom commit prefix to bust caches
-      const {sandboxRoot, playgroundRoot, playgroundWorker} = getPlaygroundUrls()
-      
+      const { sandboxRoot, playgroundRoot, playgroundWorker } = getPlaygroundUrls()
+
       // @ts-ignore
       const re: any = global.require
       re.config({
@@ -157,7 +157,7 @@ const Play: React.FC<Props> = (props) => {
         container.style.height = `${height - Math.round(container.getClientRects()[0].top) - 18}px`
 
         const extension = (!!params.get("useJavaScript") ? "js" : params.get("filetype") || "ts") as any
-        const workerPath = params.get("multiFile") ?  `${document.location.origin + playgroundWorker}?filetype=${extension}` : undefined
+        const workerPath = params.get("multiFile") ? `${document.location.origin + playgroundWorker}?filetype=${extension}` : undefined
 
         // Create the sandbox
         const sandboxEnv = await sandbox.createTypeScriptSandbox({
@@ -167,7 +167,7 @@ const Play: React.FC<Props> = (props) => {
           filetype: extension,
           acquireTypes: !localStorage.getItem("disable-ata"),
           supportTwoslashCompilerOptions: true,
-          customTypeScriptWorkerPath: workerPath ,
+          customTypeScriptWorkerPath: workerPath,
           monacoSettings: {
             fontFamily: "var(--code-font)",
             fontLigatures: true
@@ -206,7 +206,7 @@ const Play: React.FC<Props> = (props) => {
 
           <li className="dropdown">
             <a id="compiler-options-button" href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="compiler-options-dropdown">{i("play_subnav_config")} <span className="caret"></span></a>
-            <ul id="compiler-options-dropdown" className="examples-dropdown" aria-labelledby="compiler-options-button">
+            <div id="compiler-options-dropdown" className="dropdown-dialog" aria-labelledby="compiler-options-button">
               <h3>{i("play_subnav_config")}</h3>
               <div className="info" id="config-container">
                 <button className="examples-close">{i("play_subnav_examples_close")}</button>
@@ -224,23 +224,23 @@ const Play: React.FC<Props> = (props) => {
                 </div>
 
               </div>
-            </ul>
+            </div>
           </li>
 
           <li className="dropdown">
             <a href="#" id="examples-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="examples">{i("play_subnav_examples")} <span className="caret"></span></a>
-            <ul className="examples-dropdown" id="examples" aria-labelledby="examples-button">
+            <div className="dropdown-dialog" id="examples" aria-labelledby="examples-button">
               <button className="examples-close" aria-label="Close dropdown" role="button">{i("play_subnav_examples_close")}</button>
               <RenderExamples defaultSection="TypeScript" sections={["JavaScript", "TypeScript"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
-            </ul>
+            </div>
           </li>
 
           <li className="dropdown">
             <a href="#" id="whatisnew-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="whatisnew">{i("play_subnav_whatsnew")} <span className="caret"></span></a>
-            <ul className="examples-dropdown" id="whatisnew" aria-labelledby="whatisnew-button">
+            <div className="dropdown-dialog" id="whatisnew" aria-labelledby="whatisnew-button">
               <button role="button" aria-label="Close dropdown" className="examples-close">{i("play_subnav_examples_close")}</button>
               <RenderExamples defaultSection="4.4" sections={["4.4", "4.3", "4.2", "4.1", "4.0", "3.8", "3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
-            </ul>
+            </div>
           </li>
 
           <li className="dropdown">
