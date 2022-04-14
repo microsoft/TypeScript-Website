@@ -30,24 +30,30 @@ pre {
   overflow-x: auto;
   position: relative;
 }
+
 pre.shiki {
   overflow-x: auto;
 }
+
 pre.shiki:hover .dim {
   opacity: 1;
 }
+
 pre.shiki div.dim {
-  opacity: 0.5;
+  opacity: 0.9;
 }
+
 pre.shiki div.dim,
 pre.shiki div.highlight {
   margin: 0;
   padding: 0;
 }
+
 pre.shiki div.highlight {
   opacity: 1;
   background-color: #f1f8ff;
 }
+
 pre.shiki div.line {
   min-height: 1rem;
 }
@@ -87,8 +93,9 @@ pre.twoslash data-lsp:hover::before {
 pre .code-container {
   overflow: auto;
 }
+
 /* The try button */
-pre .code-container > a {
+pre .code-container>a {
   position: absolute;
   right: 8px;
   bottom: 8px;
@@ -101,16 +108,19 @@ pre .code-container > a {
   transition-timing-function: ease;
   transition: opacity 0.3s;
 }
+
 /* Respect no animations */
 @media (prefers-reduced-motion: reduce) {
-  pre .code-container > a {
+  pre .code-container>a {
     transition: none;
   }
 }
-pre .code-container > a:hover {
+
+pre .code-container>a:hover {
   color: white;
   background-color: #719af4;
 }
+
 pre .code-container:hover a {
   opacity: 1;
 }
@@ -121,6 +131,7 @@ pre code {
   white-space: pre;
   -webkit-overflow-scrolling: touch;
 }
+
 pre code a {
   text-decoration: none;
 }
@@ -148,6 +159,7 @@ pre .error-behind {
   white-space: pre-wrap;
   display: block;
 }
+
 pre .error {
   position: absolute;
   background-color: #fee;
@@ -158,14 +170,17 @@ pre .error {
   align-items: center;
   color: black;
 }
+
 pre .error .code {
   display: none;
 }
+
 pre .error-behind {
   user-select: none;
   visibility: transparent;
   color: #fee;
 }
+
 /* Queries */
 pre .arrow {
   /* Transparent background */
@@ -181,6 +196,7 @@ pre .arrow {
   height: 8px;
   width: 8px;
 }
+
 pre .popover {
   margin-bottom: 10px;
   background-color: #eee;
@@ -189,13 +205,14 @@ pre .popover {
   margin-top: 10px;
   border-radius: 3px;
 }
+
 /* Completion */
 pre .inline-completions ul.dropdown {
   display: inline-block;
   position: absolute;
   width: 240px;
-  background-color: gainsboro;
-  color: grey;
+  background-color: #E7E7E7;
+  color: #333;
   padding-top: 4px;
   font-family: var(--code-font);
   font-size: 0.8rem;
@@ -203,6 +220,7 @@ pre .inline-completions ul.dropdown {
   padding: 0;
   border-left: 4px solid #4b9edd;
 }
+
 pre .inline-completions ul.dropdown::before {
   background-color: #4b9edd;
   width: 2px;
@@ -211,27 +229,33 @@ pre .inline-completions ul.dropdown::before {
   left: -3px;
   content: " ";
 }
+
 pre .inline-completions ul.dropdown li {
   overflow-x: hidden;
   padding-left: 4px;
   margin-bottom: 4px;
 }
+
 pre .inline-completions ul.dropdown li.deprecated {
   text-decoration: line-through;
 }
+
 pre .inline-completions ul.dropdown li span.result-found {
-  color: #4b9edd;
+  color: #2265a5;
 }
+
 pre .inline-completions ul.dropdown li span.result {
   width: 100px;
   color: black;
   display: inline-block;
 }
+
 .dark-theme .markdown pre {
   background-color: #d8d8d8;
   border-color: #ddd;
   filter: invert(98%) hue-rotate(180deg);
 }
+
 data-lsp {
   /* Ensures there's no 1px jump when the hover happens */
   border-bottom: 1px dotted transparent;
@@ -239,6 +263,7 @@ data-lsp {
   transition-timing-function: ease;
   transition: border-color 0.3s;
 }
+
 /* Respect people's wishes to not have animations */
 @media (prefers-reduced-motion: reduce) {
   data-lsp {
