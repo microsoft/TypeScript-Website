@@ -50,7 +50,7 @@ export const PlaygroundSamples = (props: Props) => {
   }, []);
 
   return (
-    <div id="playground-samples-popover" aria-hidden="true" aria-label="Code Samples Submenu">
+    <div id="playground-samples-popover" aria-hidden="true" aria-label="Code Samples Submenu" tabIndex={-1}>
       <RenderExamples defaultSection="TypeScript" sections={["JavaScript", "TypeScript"]} />
       <div className="arrow-down" />
     </div>)
