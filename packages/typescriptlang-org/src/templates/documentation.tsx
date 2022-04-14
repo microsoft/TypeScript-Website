@@ -96,7 +96,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
       <section id="doc-layout" >
         <SidebarToggleButton />
 
-        <div className="page-popup" id="page-helpful-popup" style={{ opacity: 0 }}>
+        <div className="page-popup" id="page-helpful-popup" style={{ opacity: 0, display: "none" }}>
           <p>Was this page helpful?</p>
           <div>
             <button className="first" id="like-button-popup" title="Like this page"><LikeUnfilledSVG /></button>
