@@ -113,8 +113,8 @@ export const RenderExamples = (props: Props) => {
           const startOpen = section.id === props.defaultSection
           const selectedClass = startOpen ? " selected" : ""
           return (
-            <li key={section.name}>
-              <button role="tab" onClick={buttonOnClick(section.id.toLowerCase().replace(".", "-"))} className={"section-name button " + selectedClass} aria-selected={selectedClass.length ? "true" : "false"} >{section.name}</button>
+            <li key={section.name} role="tab">
+              <button onClick={buttonOnClick(section.id.toLowerCase().replace(".", "-"))} className={"section-name button " + selectedClass} aria-selected={selectedClass.length ? "true" : "false"} >{section.name}</button>
             </li>
           )
         }
