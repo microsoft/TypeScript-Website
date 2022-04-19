@@ -139,6 +139,8 @@ When you want to only change the resolution for a single file at a time, you can
 
 On TypeScript 4.0 and above, an import for `"package-name"` would resolve to `./index.d.ts` and for 3.9 and below `"./index.v3.d.ts`.
 
+**Note:** This can only be used to redirect external file requests and can't be used to redirect internal ones (internal `from './foo.d.ts'` won't be redirected based on this).
+
 ## Matching behavior
 
 The way that TypeScript decides on whether a version of the compiler & language matches is by using Node's [semver ranges](https://github.com/npm/node-semver#ranges).
