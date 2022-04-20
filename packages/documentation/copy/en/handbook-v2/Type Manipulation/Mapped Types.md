@@ -5,50 +5,73 @@ permalink: /docs/handbook/2/mapped-types.html
 oneline: "Generating types by re-using an existing type."
 ---
 
-When you don't want to repeat yourself, sometimes a type needs to be based on another type.
+When you don't want to repeat yourself, sometimes a type needs to be based on another type: that is, a new type with the same JavaScript object properties as another type, but modified in some way.
 
-Mapped types build on the syntax for index signatures, which are used to declare the types of properties which have not been declared ahead of time:
+For example, supposing you have a mutable `Person` type and also want a separate type for an immutable Person, and another for a partially-built Person, and another separate type to represent per-property change-flags, then you would need to repeat the property list every time, with modifications:
 
 ```ts twoslash
-type Horse = {};
-// ---cut---
-type OnlyBoolsAndHorses = {
-  [key: string]: boolean | Horse;
+type Person = {
+    age: number;
+    name: string;
+    alive: boolean
 };
 
-const conforms: OnlyBoolsAndHorses = {
-  del: true,
-  rodney: false,
+/** Immutable person */
+type ReadOnlyPerson = {
+    readonly age: number;
+    readonly name: string;
+    readonly alive: boolean
+};
+
+/** Partial Person: all properties are optional (i.e. undefined) */
+type PartialPerson = {
+    age?: number;
+    name?: string;
+    alive?: boolean
+};
+
+/** Person property is-changed flags (e.g. for generating minimal SQL UPDATE statements)  */
+type PersonChangeFlags = {
+    age: boolean;
+    name: boolean;
+    alive: boolean
 };
 ```
 
-A mapped type is a generic type which uses a union of `PropertyKey`s (frequently created [via a `keyof`](/docs/handbook/2/indexed-access-types.html)) to iterate through keys to create a type:
+However if we define `ReadOnlyPerson`, `PartialPerson`, and `PersonChangeFlags` as types _mapped to_ `type Person` then the amount of code we need to write is drastically reduced, as well as eliminating the maintenance burden of keeping all the types' properties lists in-sync. Doing this, the above types become just this:
 
 ```ts twoslash
-type OptionsFlags<Type> = {
-  [Property in keyof Type]: boolean;
-};
+// Use `+readonly` to add the `readonly` modifier to all properties in Person:
+type ReadOnlyPerson = { +readonly [PersonPropertyName in keyof Person]: Person[PersonPropertyName] };
+//   ^?
+
+// Use  `+?` to add `?` to all properties in Person, making them optional (i.e. maybe-undefined):
+type PartialPerson  = { [PersonPropertyName in keyof Person]+?: Person[PersonPropertyName] };
+//   ^?
+
+// Use `: boolean` to change the type of every property in Person to boolean:
+type PersonChangeFlags = { [PersonPropertyName in keyof Person]: boolean };
+//   ^?
 ```
 
-In this example, `OptionsFlags` will take all the properties from the type `Type` and change their values to be a boolean.
+Taking this a step further: supposing in addition to `type Person` we also have `type Order`, `type Product`, `type OrderItem`, and we want immutable, partial, and flags copies of all of those types, then we don't need to manually define mapped-types for those either: we can make our mapped-types generic:
 
 ```ts twoslash
-type OptionsFlags<Type> = {
-  [Property in keyof Type]: boolean;
-};
-// ---cut---
-type FeatureFlags = {
-  darkMode: () => void;
-  newUserProfile: () => void;
-};
+type ReadOnly<T> = { +readonly [PropertyName in keyof T]: T[PropertyName] };
 
-type FeatureOptions = OptionsFlags<FeatureFlags>;
+type Partial<T> = { [PropertyName in keyof T]+?: T[PropertyName] };
+
+type ChangeFlags<T> = { [PropertyName in keyof T]: boolean };
+
+// So now you can, for example, pass-around `ReadOnly<Person>` without needing to define `type ReadOnlyPerson`.
+// But if you still wanted to, you could define ReadOnlyPerson like so:
+type ReadOnlyPerson = ReadOnly<Person>;
 //   ^?
 ```
 
 ### Mapping Modifiers
 
-There are two additional modifiers which can be applied during mapping: `readonly` and `?` which affect mutability and optionality respectively.
+There are two modifiers which can be applied during mapping: `readonly` and `?` which affect mutability and optionality respectively.
 
 You can remove or add these modifiers by prefixing with `-` or `+`. If you don't add a prefix, then `+` is assumed.
 
