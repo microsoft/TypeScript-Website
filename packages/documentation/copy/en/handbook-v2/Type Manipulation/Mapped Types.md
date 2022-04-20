@@ -65,10 +65,10 @@ type PersonChangeFlags = { [PersonPropertyName in keyof Person]: boolean };
 
 // Additional properties can be defined in a mapped type, just like any other type:
 type PersistedPerson = {
+//   ^?
     [PersonPropertyName in keyof Person]: boolean,
     readonly primaryKey: number;
 };
-//   ^?
 ```
 
 Taking this a step further: supposing in addition to `type Person` we also have `type Order`, `type Product`, `type OrderItem`, and we want immutable, partial, and flags copies of all of those types, then we don't need to manually define mapped-types for those either: we can make our mapped-types generic:
