@@ -41,6 +41,8 @@ type PersonChangeFlags = {
 However if we define `ReadOnlyPerson`, `PartialPerson`, and `PersonChangeFlags` as types _mapped to_ `type Person` then the amount of code we need to write is drastically reduced, as well as eliminating the maintenance burden of keeping all the types' properties lists in-sync. Doing this, the above types become just this:
 
 ```ts twoslash
+type Person = { age: number; name: string; alive: boolean };
+/// ---cut---
 // Use `+readonly` to add the `readonly` modifier to all properties in Person:
 type ReadOnlyPerson = { +readonly [PersonPropertyName in keyof Person]: Person[PersonPropertyName] };
 //   ^?
@@ -57,6 +59,8 @@ type PersonChangeFlags = { [PersonPropertyName in keyof Person]: boolean };
 Taking this a step further: supposing in addition to `type Person` we also have `type Order`, `type Product`, `type OrderItem`, and we want immutable, partial, and flags copies of all of those types, then we don't need to manually define mapped-types for those either: we can make our mapped-types generic:
 
 ```ts twoslash
+type Person = { age: number; name: string; alive: boolean };
+/// ---cut---
 type ReadOnly<T> = { +readonly [PropertyName in keyof T]: T[PropertyName] };
 
 type Partial<T> = { [PropertyName in keyof T]+?: T[PropertyName] };
