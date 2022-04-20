@@ -36,17 +36,9 @@ type PersonChangeFlags = {
     name: boolean;
     alive: boolean
 };
-
-/** Already-saved Person loaded from a database, with its immutable SQL IDENTITY primary key property  */
-type PersistedPerson = {
-    readonly primaryKey: number;
-    age: boolean;
-    name: boolean;
-    alive: boolean
-};
 ```
 
-However if we define `ReadOnlyPerson`, `IncompletePerson`, `PersonChangeFlags`, and `PersistedPerson` as types _mapped to_ `type Person` then the amount of code we need to write is drastically reduced, as well as eliminating the maintenance burden of keeping all the types' properties lists in-sync. Doing this, the above types become just this:
+However if we define `ReadOnlyPerson`, `IncompletePerson`, and `PersonChangeFlags` as types _mapped to_ `type Person` then the amount of code we need to write is drastically reduced, as well as eliminating the maintenance burden of keeping all the types' properties lists in-sync. Doing this, the above types become just this:
 
 ```ts twoslash
 type Person = { age: number; name: string; alive: boolean };
@@ -62,13 +54,6 @@ type IncompletePerson  = { [PersonPropertyName in keyof Person]+?: Person[Person
 // Use `: boolean` to change the type of every property in Person to boolean:
 type PersonChangeFlags = { [PersonPropertyName in keyof Person]: boolean };
 //   ^?
-
-// Additional properties can be defined in a mapped type, just like any other type:
-type PersistedPerson = {
-//   ^?
-    [PersonPropertyName in keyof Person]: boolean,
-    readonly primaryKey: number;
-};
 ```
 
 Taking this a step further: supposing in addition to `type Person` we also have `type Order`, `type Product`, `type OrderItem`, and we want immutable, partial, and flags copies of all of those types, then we don't need to manually define mapped-types for those either: we can make our mapped-types generic:
@@ -82,8 +67,6 @@ type Incomplete<T> = { [PropertyName in keyof T]+?: T[PropertyName] };
 
 type ChangeFlags<T> = { [PropertyName in keyof T]: boolean };
 
-type Persisted<T> = { [PropertyName in keyof T]: boolean, readonly primaryKey: number };
-
 // So now you can, for example, pass-around `ReadOnly<Person>` without needing to define `type ReadOnlyPerson`.
 // But if you still wanted to, you could define ReadOnlyPerson like so:
 type ReadOnlyPerson = ReadOnly<Person>;
@@ -94,15 +77,6 @@ type ReadOnlyIncompletePerson = ReadOnly<Incomplete<Person>>;
 //   ^?
 // ...or:
 type IncompleteReadOnlyPerson = Incomplete<ReadOnly<Person>>;
-//   ^?
-
-// Note that in this particular case `ReadOnlyIncompletePerson` and `IncompleteReadOnlyPerson` are equivalent, but this is not universally true.
-// For example, `ReadOnly<Persisted<Person>>` is distinct from `Persisted<ReadOnly<Person>`.
-
-type ReadOnlyPersistedPerson = ReadOnly<Persisted<Person>>;
-//   ^?
-// ...or:
-type PersistedReadOnlyPerson = Persisted<ReadOnly<Person>>;
 //   ^?
 ```
 
