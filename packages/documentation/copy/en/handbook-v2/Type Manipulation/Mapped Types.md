@@ -23,8 +23,8 @@ type ReadOnlyPerson = {
     readonly alive: boolean
 };
 
-/** Partial Person: all properties are optional (i.e. undefined) */
-type PartialPerson = {
+/** Incomplete Person: all properties are optional (i.e. undefined) */
+type IncompletePerson = {
     age?: number;
     name?: string;
     alive?: boolean
@@ -46,7 +46,7 @@ type PersistedPerson = {
 };
 ```
 
-However if we define `ReadOnlyPerson`, `PartialPerson`, `PersonChangeFlags`, and `PersistedPerson` as types _mapped to_ `type Person` then the amount of code we need to write is drastically reduced, as well as eliminating the maintenance burden of keeping all the types' properties lists in-sync. Doing this, the above types become just this:
+However if we define `ReadOnlyPerson`, `IncompletePerson`, `PersonChangeFlags`, and `PersistedPerson` as types _mapped to_ `type Person` then the amount of code we need to write is drastically reduced, as well as eliminating the maintenance burden of keeping all the types' properties lists in-sync. Doing this, the above types become just this:
 
 ```ts twoslash
 type Person = { age: number; name: string; alive: boolean };
@@ -56,7 +56,7 @@ type ReadOnlyPerson = { +readonly [PersonPropertyName in keyof Person]: Person[P
 //   ^?
 
 // Use  `+?` to add `?` to all properties in Person, making them optional (i.e. maybe-undefined):
-type PartialPerson  = { [PersonPropertyName in keyof Person]+?: Person[PersonPropertyName] };
+type IncompletePerson  = { [PersonPropertyName in keyof Person]+?: Person[PersonPropertyName] };
 //   ^?
 
 // Use `: boolean` to change the type of every property in Person to boolean:
@@ -78,7 +78,7 @@ type Person = { age: number; name: string; alive: boolean };
 /// ---cut---
 type ReadOnly<T> = { +readonly [PropertyName in keyof T]: T[PropertyName] };
 
-type Partial<T> = { [PropertyName in keyof T]+?: T[PropertyName] };
+type Incomplete<T> = { [PropertyName in keyof T]+?: T[PropertyName] };
 
 type ChangeFlags<T> = { [PropertyName in keyof T]: boolean };
 
@@ -89,14 +89,14 @@ type Persisted<T> = { [PropertyName in keyof T]: boolean, readonly primaryKey: n
 type ReadOnlyPerson = ReadOnly<Person>;
 //   ^?
 
-// These types can also be composed, so if you want an immutable partial Person you can do this:
-type ReadOnlyPartialPerson = ReadOnly<Partial<Person>>;
+// These types can also be composed, so if you want an immutable incomplete Person you can do this:
+type ReadOnlyIncompletePerson = ReadOnly<Incomplete<Person>>;
 //   ^?
 // ...or:
-type PartialReadOnlyPerson = Partial<ReadOnly<Person>>;
+type IncompleteReadOnlyPerson = Incomplete<ReadOnly<Person>>;
 //   ^?
 
-// Note that in this particular case `ReadOnlyPartialPerson` and `PartialReadOnlyPerson` are equivalent, but this is not universally true.
+// Note that in this particular case `ReadOnlyIncompletePerson` and `IncompleteReadOnlyPerson` are equivalent, but this is not universally true.
 // For example, `ReadOnly<Persisted<Person>>` is distinct from `Persisted<ReadOnly<Person>`.
 
 type ReadOnlyPersistedPerson = ReadOnly<Persisted<Person>>;
