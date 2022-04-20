@@ -446,7 +446,7 @@ function draw(circle: Colorful & Circle) {
 draw({ color: "blue", radius: 42 });
 
 // oops
-draw({ color: "red", raidus: 42 });
+draw({ color: "red", radius: 42 });
 ```
 
 ## Interfaces vs. Intersections
