@@ -7,7 +7,7 @@ oneline: "Generating types by re-using an existing type."
 
 When you don't want to repeat yourself, sometimes a type needs to be based on another type: that is, a new type with the same JavaScript object properties as another type, but modified in some way.
 
-For example, supposing you have a mutable `Person` type and also want a separate type for an immutable Person, and another for a partially-built Person, and another separate type to represent per-property change-flags, and a fourth type representing a an object loaded from a database with its database-generated primary key (e.g. `IDENTITY`/`AUTO_INCREMENT`), then you would need to repeat the property list every time, with modifications:
+For example, supposing you have a mutable `Person` type and also want a separate type for an immutable Person, and another for a partially-built Person, and another separate type to represent per-property change-flags then you would need to repeat the property list every time, with modifications:
 
 ```ts twoslash
 type Person = {
