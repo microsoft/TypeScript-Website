@@ -47,7 +47,7 @@ jobs:
         env:
           AZURE_STORAGE_ACCOUNT: "typescriptorgstaging"
           AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_CDN_STAGING_CONNECTION_STRING }}
-        run: az storage blob upload-batch -s ./site -d \$web
+        run: az storage blob upload-batch --overwrite -s ./site -d \$web
 
       - name: Build And Deploy
         id: builddeploy
