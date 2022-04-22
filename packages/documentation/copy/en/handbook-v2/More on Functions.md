@@ -158,9 +158,8 @@ We _constrain_ the type parameter to that type by writing an `extends` clause:
 function longest<Type extends { length: number }>(a: Type, b: Type) {
   if (a.length >= b.length) {
     return a;
-  } else {
-    return b;
   }
+  return b;
 }
 
 // longerArray is of type 'number[]'
@@ -195,9 +194,8 @@ function minimumLength<Type extends { length: number }>(
 ): Type {
   if (obj.length >= minimum) {
     return obj;
-  } else {
-    return { length: minimum };
   }
+  return { length: minimum };
 }
 ```
 
