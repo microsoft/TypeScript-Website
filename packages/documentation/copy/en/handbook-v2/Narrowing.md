@@ -199,9 +199,8 @@ function multiplyAll(
 ): number[] | undefined {
   if (!values) {
     return values;
-  } else {
-    return values.map((x) => x * factor);
   }
+  return values.map((x) => x * factor);
 }
 ```
 
