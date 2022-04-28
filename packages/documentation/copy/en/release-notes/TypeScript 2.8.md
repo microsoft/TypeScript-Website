@@ -187,7 +187,7 @@ type Bar<T> = T extends { a: (x: infer U) => void; b: (x: infer U) => void }
   ? U
   : never;
 type T20 = Bar<{ a: (x: string) => void; b: (x: string) => void }>; // string
-type T21 = Bar<{ a: (x: string) => void; b: (x: number) => void }>; // string & number
+type T21 = Bar<{ a: (x: string) => void; b: (x: number) => void }>; // never
 ```
 
 When inferring from a type with multiple call signatures (such as the type of an overloaded function), inferences are made from the _last_ signature (which, presumably, is the most permissive catch-all case).
