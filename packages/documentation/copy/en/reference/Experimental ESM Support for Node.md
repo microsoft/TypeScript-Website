@@ -6,9 +6,7 @@ experimental: true
 oneline: Using ECMAScript Modules in Node.js
 ---
 
-> Note: this functionality is currently experimental and prone to changing.
-> It can currently only be used on [nightly builds](/docs/handbook/nightly-builds.html) of TypeScript,
-> and we are currently seeking feedback around bugs and pain-points.
+> Note: this functionality requires TypeScript 4.5
 
 For the last few years, Node.js has been working to support running ECMAScript modules (ESM).
 This has been a very difficult feature to support, since the foundation of the Node.js ecosystem is built on a different module system called CommonJS (CJS).
