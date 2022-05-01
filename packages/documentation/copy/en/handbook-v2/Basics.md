@@ -336,7 +336,7 @@ Keep in mind, we don't always have to write explicit type annotations.
 In many cases, TypeScript can even just _infer_ (or "figure out") the types for us even if we omit them.
 
 ```ts twoslash
-let msg = "hello there!";
+const msg = "hello there!";
 //  ^?
 ```
 
