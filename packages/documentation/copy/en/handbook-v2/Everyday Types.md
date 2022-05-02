@@ -84,7 +84,7 @@ let myName = "Alice";
 ```
 
 For the most part you don't need to explicitly learn the rules of inference.
-If you're starting out, try using fewer type annotations than you think - you might be surprised how few you need for TypeScript to fully understand what's going on.
+If you're starting out and have `noImplicitAny` turned on, try using fewer type annotations than you think - you might be surprised how few you need for TypeScript to fully understand what's going on.
 
 ## Functions
 
