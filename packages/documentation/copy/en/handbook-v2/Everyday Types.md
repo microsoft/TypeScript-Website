@@ -34,6 +34,7 @@ We'll learn more about the syntax `T<U>` when we cover _generics_.
 
 > Note that `[number]` is a different thing; refer to the section on [Tuples](/docs/handbook/2/objects.html#tuple-types).
 
+
 ## `any`
 
 TypeScript also has a special type, `any`, that you can use whenever you don't want a particular value to cause typechecking errors.
@@ -43,7 +44,7 @@ When a value is of type `any`, you can access any properties of it (which will i
 ```ts twoslash
 let obj: any = { x: 0 };
 // None of the following lines of code will throw compiler errors.
-// Using `any` disables all further type checking, and it is assumed
+// Using `any` disables all further type checking, and it is assumed 
 // you know the environment better than TypeScript.
 obj.foo();
 obj();
@@ -499,7 +500,7 @@ If this happens, you can use two assertions, first to `any` (or `unknown`, which
 declare const expr: any;
 type T = { a: 1; b: 2; c: 3 };
 // ---cut---
-const a = expr as any as T;
+const a = (expr as any) as T;
 ```
 
 ## Literal Types
