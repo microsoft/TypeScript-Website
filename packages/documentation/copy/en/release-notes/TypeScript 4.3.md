@@ -551,10 +551,10 @@ If hypothetically TypeScript tried that approach, it would break the above examp
 At the return positions, where the function expects values with the type `C`, we would instead get a `Set<T>` and a `T[]` in each branch, which TypeScript would reject.
 
 ```ts
-function makeUnique<T>(
-  collection: Set<T> | T[],
+function makeUnique<T, C extends Set<T> | T[]>(
+  collection: C,
   comparer: (x: T, y: T) => number
-): Set<T> | T[] {
+): C {
   // Early bail-out if we have a Set.
   // We assume the elements are already unique.
   if (collection instanceof Set) {
@@ -564,9 +564,9 @@ function makeUnique<T>(
     //          'Set<T>' is assignable to the constraint of type 'C', but
     //          'C' could be instantiated with a different subtype of constraint 'Set<T> | T[]'.
   }
-
+  
   // ...
-
+  
   return collection;
   //     ~~~~~~~~~~
   // error: Type 'T[]' is not assignable to type 'C'.
