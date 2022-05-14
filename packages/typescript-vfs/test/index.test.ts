@@ -29,7 +29,9 @@ it("runs a virtual environment and gets the right results from the LSP", () => {
           "length": 18,
           "start": 0,
         },
+        "failedAliasResolution": false,
         "fileName": "index.ts",
+        "isAmbient": false,
         "isLocal": false,
         "kind": "const",
         "name": "hello",
@@ -37,6 +39,7 @@ it("runs a virtual environment and gets the right results from the LSP", () => {
           "length": 5,
           "start": 6,
         },
+        "unverified": false,
       },
     ]
   `)

@@ -5,7 +5,7 @@
   "queries": [],
   "staticQuickInfos": [
     {
-      "text": "function App(): any",
+      "text": "function App(): JSXInternal.Element",
       "docs": "",
       "start": 41,
       "length": 3,
@@ -14,7 +14,8 @@
       "targetString": "App"
     },
     {
-      "text": "any",
+      "text": "(property) JSXInternal.IntrinsicElements.h1: JSXInternal.HTMLAttributes<HTMLHeadingElement>",
+      "docs": "",
       "start": 59,
       "length": 2,
       "line": 3,
@@ -22,7 +23,8 @@
       "targetString": "h1"
     },
     {
-      "text": "any",
+      "text": "(property) JSXInternal.IntrinsicElements.h1: JSXInternal.HTMLAttributes<HTMLHeadingElement>",
+      "docs": "",
       "start": 75,
       "length": 2,
       "line": 3,

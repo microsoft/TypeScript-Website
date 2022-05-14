@@ -185,6 +185,10 @@ So `import { b } from "moduleB"` in source file `/root/src/moduleA.ts` would res
 Don't be intimidated by the number of steps here - TypeScript is still only jumping up directories twice at steps (9) and (17).
 This is really no more complex than what Node.js itself is doing.
 
+## Module Suffixes
+
+From TypeScript 4.7, you can check for additional suffixes in the reslution process via the `tsconfig.json` flag: s[`moduleSuffixes`](/tsconfig#moduleSuffixes).
+
 ## Additional module resolution flags
 
 A project source layout sometimes does not match that of the output.
