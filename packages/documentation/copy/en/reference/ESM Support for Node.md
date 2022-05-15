@@ -1,23 +1,19 @@
 ---
-title: Experimental Support for ECMAScript Modules in Node.js
+title: ECMAScript Modules in Node.js
 layout: docs
 permalink: /docs/handbook/esm-node.html
-experimental: true
 oneline: Using ECMAScript Modules in Node.js
 ---
 
-> Note: this functionality is currently experimental and prone to changing.
-> It can currently only be used on [nightly builds](/docs/handbook/nightly-builds.html) of TypeScript,
-> and we are currently seeking feedback around bugs and pain-points.
-
 For the last few years, Node.js has been working to support running ECMAScript modules (ESM).
-This has been a very difficult feature to support, since the foundation of the Node.js ecosystem is built on a different module system called CommonJS (CJS).
-Interoperating between the two brings large challenges, with many new features to juggle;
-however, support for ESM in Node.js is now largely implemented in Node.js 12 and later, and the dust has begun to settle.
+This has been a vesry difficult feature to support, since the foundation of the Node.js ecosystem is built on a different module system called CommonJS (CJS).
 
-That's why TypeScript brings two new `module` and `moduleResolution` settings: `node12` and `nodenext`.
+Seamless tooling between the two runtime environments brings large challenges, with many new features to juggle;
+however, support for ESM in Node.js is now implemented in Node.js 12 and later, and the dust has begun to settle.
 
-```json5
+That's why TypeScript brings two new `module` and `moduleResolution` settings: `node16` and `nodenext`.
+
+```json tsconfig
 {
     "compilerOptions": {
         "module": "nodenext",
@@ -32,7 +28,7 @@ These new modes bring a few high-level features which we'll explore here.
 Node.js supports [a new setting in `package.json`](https://nodejs.org/api/packages.html#packages_package_json_and_file_extensions) called `type`.
 `"type"` can be set to either `"module"` or `"commonjs"`.
 
-```json5
+```json tsconfig
 {
     "name": "my-package",
     "type": "module",
@@ -46,10 +42,10 @@ Node.js supports [a new setting in `package.json`](https://nodejs.org/api/packag
 This setting controls whether `.js` files are interpreted as ES modules or CommonJS modules, and defaults to CommonJS when not set.
 When a file is considered an ES module, a few different rules come into play compared to CommonJS:
 
-* `import`/`export` statements (and top-level `await` in `nodenext`) can be used
-* relative import paths need full extensions (we have to write `import "./foo.js"` instead of `import "./foo"`)
+* `import`/`export` statements, and top-level `await` can be used
+* relative import paths need full extensions (e.g we have to write `import "./foo.js"` instead of `import "./foo"`)
 * imports might resolve differently from dependencies in `node_modules`
-* certain global-like values like `require()` and `process` cannot be used directly
+* certain global-like values like `require()`, `process` and `__dirname` cannot be used directly
 * CommonJS modules get imported under certain special rules
 
 We'll come back to some of these.
@@ -61,7 +57,7 @@ When TypeScript finds a `.ts`, `.tsx`, `.js`, or `.jsx` file, it will walk up lo
 * and how to transform that file if producing outputs
 
 When a `.ts` file is compiled as an ES module, ECMAScript `import`/`export` syntax is left alone in the `.js` output;
-when it's compiled as a CommonJS module, it will produce the same output you get today under `--module commonjs`.
+when it's compiled as a CommonJS module, it will produce the same output you get today under [`module`](/tsconfig#module): `commonjs`.
 
 This also means paths resolve differently between `.ts` files that are ES modules and ones that are CJS modules.
 For example, let's say you have the following code today:
@@ -91,11 +87,11 @@ helper();
 This might feel a bit cumbersome at first, but TypeScript tooling like auto-imports and path completion will typically just do this for you.
 
 One other thing to mention is the fact that this applies to `.d.ts` files too.
-When TypeScript finds a `.d.ts` file in package, it is interpreted based on the containing package.
+When TypeScript finds a `.d.ts` file in package, whether it is treated as an ESM or CommonJS file is interpreted based on the containing package.
 
 ### New File Extensions
 
-The `type` field in `package.json` is nice because it allows us to continue using the `.ts` and `.js` file extensions which can be convenient;
+Using the `type` field in `package.json` is nice way to structure your project because it allows us to continue using the `.ts` and `.js` file extensions which can be convenient;
 however, you will occasionally need to write a file that differs from what `type` specifies.
 You might also just prefer to always be explicit.
 
@@ -114,14 +110,15 @@ Using these extensions is entirely optional, but will often be useful even if yo
 
 Node.js allows ES modules to import CommonJS modules as if they were ES modules with a default export.
 
-```ts
-// ./foo.cts
+```ts twoslash
+// @module: nodenext
+// @filename: helper.cts
 export function helper() {
     console.log("hello world!");
 }
 
-// ./bar.mts
-import foo from "./foo.cjs";
+// @filename: index.mts
+import foo from "./helper.cjs";
 
 // prints "hello world!"
 foo.helper();
@@ -130,22 +127,23 @@ foo.helper();
 In some cases, Node.js also synthesizes named exports from CommonJS modules, which can be more convenient.
 In these cases, ES modules can use a "namespace-style" import (i.e. `import * as foo from "..."`), or named imports (i.e. `import { helper } from "..."`).
 
-```ts
-// ./foo.cts
+```ts twoslash
+// @module: nodenext
+// @filename: helper.cts
 export function helper() {
     console.log("hello world!");
 }
 
-// ./bar.mts
-import { helper } from "./foo.cjs";
+// @filename: index.mts
+import { helper } from "./v.cjs";
 
 // prints "hello world!"
-foo.helper();
+helper();
 ```
 
 There isn't always a way for TypeScript to know whether these named imports will be synthesized, but TypeScript will err on being permissive and use some heuristics when importing from a file that is definitely a CommonJS module.
 
-One TypeScript-specific note about interop is the following syntax:
+One _TypeScript-specific_ note about interop is the following syntax:
 
 ```ts
 import foo = require("foo");
@@ -155,13 +153,14 @@ In a CommonJS module, this just boils down to a `require()` call, and in an ES m
 This will make code less portable on runtimes like the browser (which don't support `require()`), but will often be useful for interoperability.
 In turn, you can write the above example using this syntax as follows:
 
-```ts
-// ./foo.cts
+```ts twoslash
+// @module: nodenext
+// @filename: helper.cts
 export function helper() {
     console.log("hello world!");
 }
 
-// ./bar.mts
+// @filename: index.mts
 import foo = require("./foo.cjs");
 
 foo.helper()
