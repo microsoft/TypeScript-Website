@@ -143,7 +143,6 @@ const TimeAgo: React.FC<TimeAgoProps> = ({ ago }) => {
 
   const [ms, unit] = timeMeasures[measureIndex]
 
-  // @ts-expect-error - this isn't in the JSTS dom APIs
   if (Intl.RelativeTimeFormat) {
     return (
       <FormattedRelativeTime
