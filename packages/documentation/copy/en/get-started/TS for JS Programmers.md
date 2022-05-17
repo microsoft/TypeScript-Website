@@ -50,7 +50,7 @@ interface User {
 }
 ```
 
-You can then declare that a JavaScript object conforms to the shape of your new `interface` by using syntax like `: TypeName` after a variable declaration:
+You can then declare that a JavaScript object confirms to the shape of your new `interface` by using syntax like `: TypeName` after a variable declaration:
 
 ```ts twoslash
 interface User {
