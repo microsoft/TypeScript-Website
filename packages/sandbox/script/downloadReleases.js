@@ -22,7 +22,7 @@ const go = async () => {
   const possibleBeta = `${latestStable.split(".")[0]}.${Number(latestStable.split(".")[1]) + 1}.0-beta`
   const addBeta = preReleases.data.versions.includes(possibleBeta)
 
-  const possibleRc = `${latestStable.split(".")[0]}.${Number(latestStable.split(".")[1]) + 1}.0-rc`
+  const possibleRc = `${latestStable.split(".")[0]}.${Number(latestStable.split(".")[1]) + 1}.1-rc`
   const addRc = preReleases.data.versions.includes(possibleRc)
 
   // Get the highest maj/min ignoring patch versions
