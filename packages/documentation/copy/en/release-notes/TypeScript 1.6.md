@@ -439,7 +439,7 @@ if (isCat(x)) {
 }
 ```
 
-## `exclude` property support in tsconfig.json
+## [`exclude`](/tsconfig#exclude) property support in tsconfig.json
 
 A tsconfig.json file that doesn't specify a files property (and therefore implicitly references all \*.ts files in all subdirectories) can now contain an exclude property that specifies a list of files and/or directories to exclude from the compilation.
 The exclude property must be an array of strings that each specify a file or folder name relative to the location of the tsconfig.json file.
@@ -454,7 +454,7 @@ For example:
 }
 ```
 
-The `exclude` list does not support wilcards. It must simply be a list of files and/or directories.
+The [`exclude`](/tsconfig#exclude) list does not support wilcards. It must simply be a list of files and/or directories.
 
 ## `--init` command line option
 

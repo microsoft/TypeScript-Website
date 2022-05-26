@@ -186,7 +186,7 @@ You can read up more on abstract construct signatures [on its pull request](http
 ### Understanding Your Project Structure With `--explainFiles`
 
 A surprisingly common scenario for TypeScript users is to ask "why is TypeScript including this file?".
-Inferring the files of your program turns out to be a complicated process, and so there are lots of reasons why a specific combination of `lib.d.ts` got used, why certain files in `node_modules` are getting included, and why certain files are being included even though we thought specifying `exclude` would keep them out.
+Inferring the files of your program turns out to be a complicated process, and so there are lots of reasons why a specific combination of `lib.d.ts` got used, why certain files in `node_modules` are getting included, and why certain files are being included even though we thought specifying [`exclude`](/tsconfig#exclude) would keep them out.
 
 That's why TypeScript now provides an [`explainFiles`](/tsconfig#explainFiles) flag.
 
@@ -7501,11 +7501,11 @@ Just a few configuration options change between these two targets, and maintaini
 
 TypeScript 2.1 supports inheriting configuration using `extends`, where:
 
-- `extends` is a new top-level property in `tsconfig.json` (alongside `compilerOptions`, [`files`](/tsconfig#files), [`include`](/tsconfig#include), and `exclude`).
+- `extends` is a new top-level property in `tsconfig.json` (alongside `compilerOptions`, [`files`](/tsconfig#files), [`include`](/tsconfig#include), and [`exclude`](/tsconfig#exclude)).
 - The value of `extends` must be a string containing a path to another configuration file to inherit from.
 - The configuration from the base file are loaded first, then overridden by those in the inheriting config file.
 - Circularity between configuration files is not allowed.
-- [`files`](/tsconfig#files), [`include`](/tsconfig#include) and `exclude` from the inheriting config file _overwrite_ those from the base config file.
+- [`files`](/tsconfig#files), [`include`](/tsconfig#include), and [`exclude`](/tsconfig#exclude) from the inheriting config file _overwrite_ those from the base config file.
 - All relative paths found in the configuration file will be resolved relative to the configuration file they originated in.
 
 ##### Example
@@ -8026,7 +8026,7 @@ A new flag is also added in TypeScript 2.0 to flag all uses of `this` in functio
 
 Glob support is here!! Glob support has been [one of the most requested features](https://github.com/Microsoft/TypeScript/issues/1927).
 
-Glob-like file patterns are supported two properties [`include`](/tsconfig#include) and `exclude`.
+Glob-like file patterns are supported two properties [`include`](/tsconfig#include) and [`exclude`](/tsconfig#exclude).
 
 #### Example
 
@@ -8053,14 +8053,14 @@ The supported glob wildcards are:
 
 If a segment of a glob pattern includes only `*` or `.*`, then only files with supported extensions are included (e.g. `.ts`, `.tsx`, and `.d.ts` by default with `.js` and `.jsx` if [`allowJs`](/tsconfig#allowJs) is set to true).
 
-If the [`files`](/tsconfig#files) and [`include`](/tsconfig#include) are both left unspecified, the compiler defaults to including all TypeScript (`.ts`, `.d.ts` and `.tsx`) files in the containing directory and subdirectories except those excluded using the `exclude` property. JS files (`.js` and `.jsx`) are also included if [`allowJs`](/tsconfig#allowJs) is set to true.
+If the [`files`](/tsconfig#files) and [`include`](/tsconfig#include) are both left unspecified, the compiler defaults to including all TypeScript (`.ts`, `.d.ts` and `.tsx`) files in the containing directory and subdirectories except those excluded using the [`exclude`](/tsconfig#exclude) property. JS files (`.js` and `.jsx`) are also included if [`allowJs`](/tsconfig#allowJs) is set to true.
 
 If the [`files`](/tsconfig#files) or [`include`](/tsconfig#include) properties are specified, the compiler will instead include the union of the files included by those two properties.
-Files in the directory specified using the [`outDir`](/tsconfig#outDir) compiler option are always excluded unless explicitly included via the [`files`](/tsconfig#files) property (even when the `exclude` property is specified).
+Files in the directory specified using the [`outDir`](/tsconfig#outDir) compiler option are always excluded unless explicitly included via the [`files`](/tsconfig#files) property (even when the [`exclude`](/tsconfig#exclude) property is specified).
 
-Files included using [`include`](/tsconfig#include) can be filtered using the `exclude` property.
-However, files included explicitly using the [`files`](/tsconfig#files) property are always included regardless of `exclude`.
-The `exclude` property defaults to excluding the `node_modules`, `bower_components`, and `jspm_packages` directories when not specified.
+Files included using [`include`](/tsconfig#include) can be filtered using the [`exclude`](/tsconfig#exclude) property.
+However, files included explicitly using the [`files`](/tsconfig#files) property are always included regardless of [`exclude`](/tsconfig#exclude).
+The [`exclude`](/tsconfig#exclude) property defaults to excluding the `node_modules`, `bower_components`, and `jspm_packages` directories when not specified.
 
 ## Module resolution enhancements: BaseUrl, Path mapping, rootDirs and tracing
 
@@ -9705,7 +9705,7 @@ if (isCat(x)) {
 }
 ```
 
-## `exclude` property support in tsconfig.json
+## [`exclude`](/tsconfig#exclude) property support in tsconfig.json
 
 A tsconfig.json file that doesn't specify a files property (and therefore implicitly references all \*.ts files in all subdirectories) can now contain an exclude property that specifies a list of files and/or directories to exclude from the compilation. The exclude property must be an array of strings that each specify a file or folder name relative to the location of the tsconfig.json file. For example:
 
@@ -9718,7 +9718,7 @@ A tsconfig.json file that doesn't specify a files property (and therefore implic
 }
 ```
 
-The `exclude` list does not support wilcards. It must simply be a list of files and/or directories.
+The [`exclude`](/tsconfig#exclude) list does not support wilcards. It must simply be a list of files and/or directories.
 
 ## `--init` command line option
 
