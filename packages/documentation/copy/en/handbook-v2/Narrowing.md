@@ -425,7 +425,7 @@ type Bird = { fly: () => void };
 declare function getSmallPet(): Fish | Bird;
 // ---cut---
 function isFish(pet: Fish | Bird): pet is Fish {
-  return (pet as Fish).swim !== undefined;
+  return 'swim' in pet;
 }
 ```
 
@@ -439,7 +439,7 @@ type Fish = { swim: () => void };
 type Bird = { fly: () => void };
 declare function getSmallPet(): Fish | Bird;
 function isFish(pet: Fish | Bird): pet is Fish {
-  return (pet as Fish).swim !== undefined;
+  return 'swim' in pet;
 }
 // ---cut---
 // Both calls to 'swim' and 'fly' are now okay.
@@ -462,7 +462,7 @@ type Fish = { swim: () => void; name: string };
 type Bird = { fly: () => void; name: string };
 declare function getSmallPet(): Fish | Bird;
 function isFish(pet: Fish | Bird): pet is Fish {
-  return (pet as Fish).swim !== undefined;
+  return 'swim' in pet;
 }
 // ---cut---
 const zoo: (Fish | Bird)[] = [getSmallPet(), getSmallPet(), getSmallPet()];
