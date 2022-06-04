@@ -119,6 +119,7 @@
   table.full-width-table {
     width: 100%;
     display: table;
+    table-layout: fixed;
   }
 
   .blue-tick {
