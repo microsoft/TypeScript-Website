@@ -25,7 +25,7 @@ Conversely, to consume a variable, function, class, interface, etc. exported fro
 ## Non-modules
 
 Before we start, it's important to understand what TypeScript considers a module.
-The JavaScript specification declares that any JavaScript files without an `export` or top-level `await` should be considered a script and not a module.
+The JavaScript specification declares that any JavaScript files without an `export` or top-level `import` should be considered a script and not a module.
 
 Inside a script file variables and types are declared to be in the shared global scope, and it's assumed that you'll either use the [`outFile`](/tsconfig#outFile) compiler option to join multiple input files into one output file, or use multiple `<script>` tags in your HTML to load these files (in the correct order!).
 
@@ -134,7 +134,7 @@ You can mix and match the above syntax into a single `import`:
 // @filename: maths.ts
 export const pi = 3.14;
 export default class RandomNumberGenerator {}
-
+// ---cut---
 // @filename: app.ts
 import RandomNumberGenerator, { pi as π } from "./maths.js";
 
@@ -186,15 +186,19 @@ Types can be exported and imported using the same syntax as JavaScript values:
 
 ```ts twoslash
 // @filename: animal.ts
-export type Cat = { breed: string; yearOfBirth: number };
+export type Cat = { 
+  breed: string; 
+  yearOfBirth: number
+};
 
 export interface Dog {
   breeds: string[];
   yearOfBirth: number;
 }
-
+// ---cut---
 // @filename: app.ts
 import { Cat, Dog } from "./animal.js";
+
 type Animals = Cat | Dog;
 ```
 
@@ -208,15 +212,18 @@ Which is an import statement which can _only_ import types:
 // @filename: animal.ts
 export type Cat = { breed: string; yearOfBirth: number };
 export type Dog = { breeds: string[]; yearOfBirth: number };
-export const createCatName = () => "fluffy";
 
+export const createCatName = () => "fluffy";
+//---cut---
 // @filename: valid.ts
 import type { Cat, Dog } from "./animal.js";
-export type Animals = Cat | Dog;
 
+export type Animals = Cat | Dog;
+//---cut---
 // @filename: app.ts
 // @errors: 1361
 import type { createCatName } from "./animal.js";
+
 const name = createCatName();
 ```
 
@@ -228,6 +235,7 @@ TypeScript 4.5 also allows for individual imports to be prefixed with `type` to 
 // @filename: animal.ts
 export type Cat = { breed: string; yearOfBirth: number };
 export type Dog = { breeds: string[]; yearOfBirth: number };
+
 export const createCatName = () => "fluffy";
 // ---cut---
 // @filename: app.ts
