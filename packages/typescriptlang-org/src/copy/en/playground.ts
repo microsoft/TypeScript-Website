@@ -45,6 +45,7 @@ export const playCopy = {
   play_export_copy_md: "Copy as Markdown Issue",
   play_export_copy_link: "Copy as Markdown Link",
   play_export_copy_link_preview: "Copy as Markdown Link with Preview",
+  play_export_ts_eslint_play: "Open in TypeScript ESLint Playground",
   play_export_tsast: "Open in TypeScript AST Viewer",
   play_export_bugworkbench: "Open in Bug Workbench",
   play_export_vscode_dev_play: "Open in VSCode TS Playground (alpha)",

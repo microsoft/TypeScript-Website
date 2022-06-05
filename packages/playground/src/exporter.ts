@@ -152,6 +152,13 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-e
     document.location.assign(`/dev/bug-workbench/${hash}`)
   }
 
+  function openInTSESLintPlay() {
+    const hash = sandbox.lzstring.compressToEncodedURIComponent(sandbox.getText())
+    document.location.assign(
+      `https://typescript-eslint.io/play/#ts=${typescriptVersion}&sourceType=module&code=${hash}`
+    )
+  }
+
   function openInTSAST() {
     const hash = `#code/${sandbox.lzstring.compressToEncodedURIComponent(sandbox.getText())}`
     document.location.assign(`https://ts-ast-viewer.com/${hash}`)
@@ -296,6 +303,7 @@ ${codify(stringifiedCompilerOptions, "json")}
     copyAsMarkdownIssue,
     copyForChat,
     copyForChatWithPreview,
+    openInTSESLintPlay,
     openInTSAST,
     openInBugWorkbench,
     openInVSCodeDev,

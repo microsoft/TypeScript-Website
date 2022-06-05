@@ -279,6 +279,7 @@ const Play: React.FC<Props> = (props) => {
                     <li><a href="#" onClick={(e: any) => playground.exporter.copyForChat(e)} aria-label={i("play_export_copy_link")}  >{i("play_export_copy_link")}</a></li>
                     < li > <a href="#" onClick={(e: any) => playground.exporter.copyForChatWithPreview(e)} aria-label={i("play_export_copy_link_preview")}  >{i("play_export_copy_link_preview")}</a></li>
                     < li role="separator" className="divider" ></li>
+                    <li><a href="#" onClick={() => playground.exporter.openInTSESLintPlay()} aria-label={i("play_export_ts_eslint_play")}>{i("play_export_ts_eslint_play")}</a></li>
                     <li><a href="#" onClick={() => playground.exporter.openInTSAST()} aria-label={i("play_export_tsast")}>{i("play_export_tsast")}</a></li>
                     <li><a href="#" onClick={() => playground.exporter.openInBugWorkbench()} aria-label={i("play_export_bugworkbench")}>{i("play_export_bugworkbench")}</a></li>
                     <li><a href="#" onClick={() => playground.exporter.openInVSCodeDev()} aria-label={i("play_export_vscode_dev_play")}>{i("play_export_vscode_dev_play")}</a></li>
