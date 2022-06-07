@@ -343,7 +343,7 @@ let msg = "hello there!";
 Even though we didn't tell TypeScript that `msg` had the type `string` it was able to figure that out.
 That's a feature, and it's best not to add annotations when the type system would end up inferring the same type anyway.
 
-> Note: the message bubble inside the code sample above. That is what your editor would show if you had hovered over the word.
+> Note: The message bubble inside the previous code sample is what your editor would show if you had hovered over the word.
 
 ## Erased Types
 
