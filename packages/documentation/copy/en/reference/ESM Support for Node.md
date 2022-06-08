@@ -6,7 +6,7 @@ oneline: Using ECMAScript Modules in Node.js
 ---
 
 For the last few years, Node.js has been working to support running ECMAScript modules (ESM).
-This has been a vesry difficult feature to support, since the foundation of the Node.js ecosystem is built on a different module system called CommonJS (CJS).
+This has been a very difficult feature to support, since the foundation of the Node.js ecosystem is built on a different module system called CommonJS (CJS).
 
 Seamless tooling between the two runtime environments brings large challenges, with many new features to juggle;
 however, support for ESM in Node.js is now implemented in Node.js 12 and later, and the dust has begun to settle.
