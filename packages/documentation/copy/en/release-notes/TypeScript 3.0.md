@@ -251,7 +251,7 @@ function f23<T extends unknown>(x: T) {
 function f24(x: { [x: string]: unknown }) {
   x = {};
   x = { a: 5 };
-  x = [1, 2, 3];
+  x = [1, 2, 3]; // OK in TypeScript3.0, Error when version > 3.0
   x = 123; // Error
 }
 
