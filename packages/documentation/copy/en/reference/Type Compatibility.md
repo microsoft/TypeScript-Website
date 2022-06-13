@@ -70,6 +70,14 @@ greet(dog); // OK
 Note that `dog` has an extra `owner` property, but this does not create an error.
 Only members of the target type (`Pet` in this case) are considered when checking for compatibility.
 
+Be aware, however, that [object literals](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes-func.html#other-important-typescript-types)
+may only specifiy known properties. For example, because we have explicitly specified that `dog` is
+of type `Pet`, the following code is invalid:
+
+```ts
+let dog: Pet = { name: "Lassie", owner: "Rudd Weatherwax" }; // Error
+```
+
 This comparison process proceeds recursively, exploring the type of each member and sub-member.
 
 ## Comparing two functions
