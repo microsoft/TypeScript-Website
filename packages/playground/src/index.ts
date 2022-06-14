@@ -191,21 +191,21 @@ export const setupPlayground = (
       const lenses = !showFileCodeLens
         ? []
         : [
-            {
-              range: {
-                startLineNumber: 1,
-                startColumn: 1,
-                endLineNumber: 2,
-                endColumn: 1,
-              },
-              id: "implicit-filename-first",
-              command: {
-                id: "noop",
-                title: `// @filename: ${sandbox.filepath}`,
-              },
+          {
+            range: {
+              startLineNumber: 1,
+              startColumn: 1,
+              endLineNumber: 2,
+              endColumn: 1,
             },
-          ]
-      return { lenses, dispose: () => {} }
+            id: "implicit-filename-first",
+            command: {
+              id: "noop",
+              title: `// @filename: ${sandbox.filepath}`,
+            },
+          },
+        ]
+      return { lenses, dispose: () => { } }
     },
   })
 
@@ -338,7 +338,7 @@ export const setupPlayground = (
         a.parentElement!.classList.toggle("open")
         a.setAttribute("aria-expanded", "true")
 
-        const exampleContainer = a.closest("li")!.getElementsByTagName("ul").item(0)
+        const exampleContainer = a.closest("li")!.getElementsByClassName("dropdown-dialog").item(0) as HTMLElement
         if (!exampleContainer) return
 
         const firstLabel = exampleContainer.querySelector("label") as HTMLElement
@@ -359,7 +359,7 @@ export const setupPlayground = (
           if (lastButton) {
             redirectTabPressTo(lastButton, exampleContainer, ".examples-close")
           } else {
-            const sections = document.querySelectorAll("ul.examples-dropdown .section-content")
+            const sections = document.querySelectorAll(".dropdown-dialog .section-content")
             sections.forEach(s => {
               const buttons = s.querySelectorAll("a.example-link")
               const lastButton = buttons.item(buttons.length - 1) as HTMLElement
