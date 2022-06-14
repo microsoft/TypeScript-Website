@@ -33,7 +33,7 @@ For example:
 
 Note that the `"typings"` field is synonymous with `types`, and could be used as well.
 
-Also note that if your main declaration file is named `index.d.ts` and lives at the root of the package (next to the `package.json`) you do not need to mark the `types` property, though it is advisable to do so.
+Note:  TypeScript will infer the root `*.d.ts` based on the value in `main`, which means in cases like above you do not need to mark the `types` property, though it is advisable to do so.
 
 ## Dependencies
 
