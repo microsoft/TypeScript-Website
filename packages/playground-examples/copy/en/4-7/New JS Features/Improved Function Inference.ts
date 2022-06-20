@@ -1,5 +1,5 @@
 //// { "compiler": { "ts": "4.7.3" } }
-// Wth TypeScript 4.7, there are improvements in how types
+// With TypeScript 4.7, there are improvements in how types
 // are inferred from typed function calls.
 
 // Take this function 'cache', it takes one type parameter, 'Type'
