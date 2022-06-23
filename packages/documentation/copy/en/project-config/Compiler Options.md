@@ -693,7 +693,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#jsxFragmentFactory'>--jsxFragmentFactory</a></code></td>
   <td><p><code>string</code></p>
 </td>
-  <td>
+  <td><p><code>React.Fragment</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -779,7 +779,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 <tr class='odd' name='module'>
   <td><code><a href='/tsconfig/#module'>--module</a></code></td>
-  <td><p><code>none</code>, <code>commonjs</code>, <code>amd</code>, <code>umd</code>, <code>system</code>, <code>es6</code>/<code>es2015</code>, <code>es2020</code>, <code>es2022</code>, <code>esnext</code>, <code>node12</code>, or <code>nodenext</code></p>
+  <td><p><code>none</code>, <code>commonjs</code>, <code>amd</code>, <code>umd</code>, <code>system</code>, <code>es6</code>/<code>es2015</code>, <code>es2020</code>, <code>es2022</code>, <code>esnext</code>, <code>node16</code>, or <code>nodenext</code></p>
 </td>
   <td><ul><li><p><code>CommonJS</code> if <a href="#target"><code>target</code></a> is <code>ES3</code> or <code>ES5</code>,</p>
 </li><li><p><code>ES6</code>/<code>ES2015</code> otherwise.</p>
@@ -789,17 +789,39 @@ tsc app.ts util.ts --target esnext --outfile index.js
 <p>Specify what module code is generated.</p>
 </td></tr>
 
-<tr class='even' name='moduleResolution'>
+<tr class='even' name='moduleDetection'>
+  <td><code><a href='/tsconfig/#moduleDetection'>--moduleDetection</a></code></td>
+  <td><p><code>legacy</code>, <code>auto</code>, or <code>force</code></p>
+</td>
+  <td><p>"auto": Treat files with imports, exports, import.meta, jsx (with jsx: react-jsx), or esm format (with module: node16+) as modules.</p>
+</td>
+</tr>
+<tr class="option-description even"><td colspan="3">
+<p>Control what method is used to detect the whether a JS file is a module.</p>
+</td></tr>
+
+<tr class='odd' name='moduleResolution'>
   <td><code><a href='/tsconfig/#moduleResolution'>--moduleResolution</a></code></td>
-  <td><p><code>classic</code>, <code>node</code>, <code>node12</code>, or <code>nodenext</code></p>
+  <td><p><code>classic</code>, <code>node</code>, <code>node16</code>, or <code>nodenext</code></p>
 </td>
   <td><ul><li><p><code>Classic</code> if <a href="#module"><code>module</code></a> is <code>AMD</code>, <code>UMD</code>, <code>System</code> or <code>ES6</code>/<code>ES2015</code>,</p>
 </li><li><p>Matches if <a href="#module"><code>module</code></a> is <code>node12</code> or <code>nodenext</code>,</p>
 </li><li><p><code>Node</code> otherwise.</p>
 </li></ul></td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Specify how TypeScript looks up a file from a given module specifier.</p>
+</td></tr>
+
+<tr class='even' name='moduleSuffixes'>
+  <td><code><a href='/tsconfig/#moduleSuffixes'>--moduleSuffixes</a></code></td>
+  <td><p><code>list</code></p>
+</td>
+  <td>
+</td>
+</tr>
+<tr class="option-description even"><td colspan="3">
+<p>List of file name suffixes to search when resolving a module.</p>
 </td></tr>
 
 <tr class='odd' name='newLine'>

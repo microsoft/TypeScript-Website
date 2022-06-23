@@ -84,6 +84,7 @@ const handbookPages = [
       { file: "reference/Iterators and Generators.md" },
       { file: "reference/JSX.md" },
       { file: "reference/Mixins.md" },
+      { file: "reference/ESM Support for Node.md" },
       { file: "reference/Modules.md" },
       { file: "reference/Module Resolution.md" },
       { file: "reference/Namespaces.md" },

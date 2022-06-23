@@ -300,6 +300,12 @@
               ],
               "markdownDescription": "Specify what module code is generated.\n\nSee more: https://www.typescriptlang.org/tsconfig#module"
             },
+            "moduleDetection": {
+              "description": "Control what method is used to detect module-format JS files.",
+              "type": "string",
+              "enum": ["auto", "legacy", "force"],
+              "default": "auto"
+            },
             "moduleResolution": {
               "description": "Specify how TypeScript looks up a file from a given module specifier.",
               "type": "string",
@@ -313,6 +319,14 @@
               ],
               "default": "classic",
               "markdownDescription": "Specify how TypeScript looks up a file from a given module specifier.\n\nSee more: https://www.typescriptlang.org/tsconfig#moduleResolution"
+            },
+            "moduleSuffixes": {
+              "description": "List of file name suffixes to search when resolving a module.",
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
             },
             "newLine": {
               "description": "Set the newline character for emitting files.",
