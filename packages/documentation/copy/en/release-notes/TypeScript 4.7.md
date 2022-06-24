@@ -1,8 +1,8 @@
 ---
-title: TypeScript 4.4
+title: TypeScript 4.7
 layout: docs
-permalink: /docs/handbook/release-notes/typescript-4-4.html
-oneline: TypeScript 4.4 Release Notes
+permalink: /docs/handbook/release-notes/typescript-4-7.html
+oneline: TypeScript 4.7 Release Notes
 ---
 
 ## ECMAScript Module Support in Node.js
