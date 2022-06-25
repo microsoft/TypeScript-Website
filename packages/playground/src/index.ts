@@ -191,21 +191,21 @@ export const setupPlayground = (
       const lenses = !showFileCodeLens
         ? []
         : [
-          {
-            range: {
-              startLineNumber: 1,
-              startColumn: 1,
-              endLineNumber: 2,
-              endColumn: 1,
+            {
+              range: {
+                startLineNumber: 1,
+                startColumn: 1,
+                endLineNumber: 2,
+                endColumn: 1,
+              },
+              id: "implicit-filename-first",
+              command: {
+                id: "noop",
+                title: `// @filename: ${sandbox.filepath}`,
+              },
             },
-            id: "implicit-filename-first",
-            command: {
-              id: "noop",
-              title: `// @filename: ${sandbox.filepath}`,
-            },
-          },
-        ]
-      return { lenses, dispose: () => { } }
+          ]
+      return { lenses, dispose: () => {} }
     },
   })
 
@@ -605,6 +605,14 @@ export const setupPlayground = (
   window.addEventListener("resize", () => {
     sandbox.editor.layout()
   })
+
+  // Tells monaco to check out the font sizes in order to make
+  // sure that selecting text in the editor provides the same
+  // length as unselected text - otherwise space for a selection
+  // will be a little bit wider than it should be. s
+  setTimeout(() => {
+    monaco.editor.remeasureFonts()
+  }, 5000)
 
   const ui = createUI()
   const exporter = createExporter(sandbox, monaco, ui)
