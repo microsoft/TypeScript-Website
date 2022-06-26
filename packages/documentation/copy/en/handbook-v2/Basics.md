@@ -376,13 +376,13 @@ Most TypeScript-specific code gets erased away, and likewise, here our type anno
 One other difference from the above was that our template string was rewritten from
 
 ```js
-`Hello ${person}, today is ${date.toDateString()}!`;
+`Hello ${person}, today is ${date.toDateString()}!`
 ```
 
 to
 
 ```js
-"Hello " + person + ", today is " + date.toDateString() + "!";
+"Hello ".concat(person, ", today is ").concat(date.toDateString(), "!")
 ```
 
 Why did this happen?
@@ -398,7 +398,7 @@ So running `tsc --target es2015 hello.ts` gives us the following output:
 
 ```js
 function greet(person, date) {
-  console.log(`Hello ${person}, today is ${date.toDateString()}!`);
+    console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
 greet("Maddison", new Date());
 ```
