@@ -87,6 +87,10 @@ pre .error-behind {
   color: white;
 }
 
+.code-container .line {
+  white-space: pre-wrap;
+}
+
     `;
   return css + thisCSS;
 };
