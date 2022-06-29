@@ -72,11 +72,11 @@ You want to make sure these files are included in your package if you have the f
 TypeScript replicates the node resolution for modules in a `package.json`, with an additional step for finding .d.ts files.
 Roughly, the resolution will first check the optional `types` field, then the `"main"` field, and finally will try `index.d.ts` in the root.
 
-| Package.json              | Location of default .d.ts      |
-| :------------------------ | :----------------------------- |
-| No "types" field          | checks "main", then index.d.ts |
-| "types": "main.d.ts"      | main.d.ts                      |
-| "types": "./dist/main.js" | ./dist/main.d.ts               |
+| Package.json                  | Location of default .d.ts      |
+| :---------------------------- | :----------------------------- |
+| No "types" field              | checks "main", then index.d.ts |
+| "types": \["main.d.ts"\]      | main.d.ts                      |
+| "types": \["./dist/main.js"\] | ./dist/main.d.ts               |
 
 If absent, then "main" is used
 
