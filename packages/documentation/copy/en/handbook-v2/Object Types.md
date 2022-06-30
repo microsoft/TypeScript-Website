@@ -270,7 +270,7 @@ const secondItem = myArray[1];
 Above, we have a `StringArray` interface which has an index signature.
 This index signature states that when a `StringArray` is indexed with a `number`, it will return a `string`.
 
-An index signature property type must be either 'string' or 'number'.
+Only some types are allowed for index signature properties: `string`, `number`, `symbol`, template string patterns, and union types consisting only of these.
 
 <details>
     <summary>It is possible to support both types of indexers...</summary>
