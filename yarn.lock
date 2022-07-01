@@ -4503,6 +4503,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rollup/plugin-commonjs@npm:^13.0.1":
+  version: 13.0.2
+  resolution: "@rollup/plugin-commonjs@npm:13.0.2"
+  dependencies:
+    "@rollup/pluginutils": ^3.0.8
+    commondir: ^1.0.1
+    estree-walker: ^1.0.1
+    glob: ^7.1.2
+    is-reference: ^1.1.2
+    magic-string: ^0.25.2
+    resolve: ^1.11.0
+  peerDependencies:
+    rollup: ^2.3.4
+  checksum: bed46b5f871551b972e95447212a5ccb3d040cb718c720abb387c417d25fe6aab7a0a31c28d07d568e880b81e690cdbb7df606585a2f6b78900f5f76c444107f
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-json@npm:^4.0.0":
   version: 4.0.1
   resolution: "@rollup/plugin-json@npm:4.0.1"
@@ -4542,7 +4559,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/pluginutils@npm:^3.0.0, @rollup/pluginutils@npm:^3.0.9, @rollup/pluginutils@npm:^3.1.0":
+"@rollup/pluginutils@npm:^3.0.0, @rollup/pluginutils@npm:^3.0.8, @rollup/pluginutils@npm:^3.0.9, @rollup/pluginutils@npm:^3.1.0":
   version: 3.1.0
   resolution: "@rollup/pluginutils@npm:3.1.0"
   dependencies:
@@ -5568,6 +5585,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript/sandbox@workspace:packages/sandbox"
   dependencies:
+    "@rollup/plugin-commonjs": ^13.0.1
     "@types/jest": ^25.1.3
     "@typescript/ata": 0.9.3
     "@typescript/vfs": 1.3.5
@@ -5575,6 +5593,7 @@ __metadata:
     monaco-editor: ^0.32.1
     monaco-typescript: ^3.7.0
     ts-jest: ^26.4.4
+    tsdx: ^0.14.1
     typescript: "*"
   languageName: unknown
   linkType: soft

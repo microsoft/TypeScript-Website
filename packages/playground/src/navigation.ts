@@ -4,7 +4,7 @@ type StoryContent =
   | { type: "code"; code: string; params: string; title: string }
   | { type: "hr" }
 
-import type { Sandbox } from "typescriptlang-org/static/js/sandbox"
+import type { Sandbox } from "@typescript/sandbox"
 import type { UI } from "./createUI"
 
 /**

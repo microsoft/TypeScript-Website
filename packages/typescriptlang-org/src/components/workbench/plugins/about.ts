@@ -1,4 +1,4 @@
-type Sandbox = import("../../../../static/js/sandbox").Sandbox
+type Sandbox = import("@typescript/sandbox").Sandbox
 type Factory = import("../../../../static/js/playground").PluginFactory
 type PluginUtils = import("../../../../static/js/playground").PluginUtils
 

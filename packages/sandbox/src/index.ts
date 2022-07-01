@@ -6,7 +6,7 @@ import {
   createURLQueryWithCompilerOptions,
 } from "./compilerOptions"
 import lzstring from "./vendor/lzstring.min"
-import { supportedReleases } from "./releases"
+import { supportedReleases } from "./release_data"
 import { getInitialCode } from "./getInitialCode"
 import { extractTwoSlashCompilerOptions, twoslashCompletions } from "./twoslashSupport"
 import * as tsvfs from "./vendor/typescript-vfs"

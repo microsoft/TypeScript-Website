@@ -1,4 +1,4 @@
-import { supportedReleases, ReleaseVersions } from './releases'
+import { supportedReleases, ReleaseVersions } from './release_data'
 
 /** The versions you can get for the sandbox */
 export type SupportedTSVersions = ReleaseVersions | 'Latest'
