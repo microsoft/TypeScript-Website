@@ -31,6 +31,9 @@
     "make-for-website": "tsc",
     "test": "jest"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
