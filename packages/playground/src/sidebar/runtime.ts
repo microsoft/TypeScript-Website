@@ -1,4 +1,4 @@
-import { Sandbox } from "typescriptlang-org/static/js/sandbox"
+import { Sandbox } from "@typescript/sandbox"
 import { PlaygroundPlugin, PluginFactory } from ".."
 import { createUI, UI } from "../createUI"
 import { localize } from "../localizeWithFallback"
