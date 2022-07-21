@@ -216,8 +216,8 @@ Generic classes have a generic type parameter list in angle brackets (`<>`) foll
 ```ts twoslash
 // @strict: false
 class GenericNumber<NumType> {
-  zeroValue: NumType;
-  add: (x: NumType, y: NumType) => NumType;
+  zeroValue?: NumType;
+  add?: (x: NumType, y: NumType) => NumType;
 }
 
 let myGenericNumber = new GenericNumber<number>();
@@ -233,8 +233,8 @@ We could have instead used `string` or even more complex objects.
 ```ts twoslash
 // @strict: false
 class GenericNumber<NumType> {
-  zeroValue: NumType;
-  add: (x: NumType, y: NumType) => NumType;
+  zeroValue?: NumType;
+  add?: (x: NumType, y: NumType) => NumType;
 }
 // ---cut---
 let stringNumeric = new GenericNumber<string>();
