@@ -10,7 +10,7 @@ TypeScript is a popular choice for programmers accustomed to other languages wit
 
 TypeScript's type system offers many of the same benefits, such as better code completion, earlier detection of errors, and clearer communication between parts of your program.
 While TypeScript provides many familiar features for these developers, it's worth stepping back to see how JavaScript (and therefore TypeScript) differ from traditional OOP languages.
-Understanding these differences will help you write better JavaScript code, and avoid common pitfalls that programmers who go straight from C#/Java to TypeScript may fall in to.
+Understanding these differences will help you write better TypeScript code, and avoid common pitfalls that programmers who go straight from C#/Java to TypeScript may fall in to.
 
 ## Co-learning JavaScript
 
