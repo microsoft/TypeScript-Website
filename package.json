@@ -38,7 +38,7 @@
     "bootstrap": "yarn workspaces foreach -v -t --exclude root run bootstrap && BOOTSTRAPPING=true yarn workspaces foreach -v -t --exclude root run build",
     "start": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"yarn workspace typescriptlang-org start\"",
     "build": "yarn workspaces foreach -v -t --exclude root --exclude typescriptlang-org run build",
-    "build-site": "yarn workspace typescriptlang-org build",
+    "build-site": "yarn workspace typescriptlang-org build && echo 'built to packages/typescriptlang-org/public",
     "compile": "yarn workspace typescriptlang-org tsc",
     "update-snapshots": "yarn workspace typescriptlang-org update-snapshots",
     "clean": "yarn workspace typescriptlang-org gatsby clean",
