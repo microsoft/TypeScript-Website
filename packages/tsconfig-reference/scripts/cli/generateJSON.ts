@@ -10,7 +10,7 @@ console.log("TSConfig Ref: JSON for CLI Opts");
 import ts from "typescript";
 
 import { CommandLineOptionBase } from "../types";
-import { writeFileSync } from "fs";
+import { writeFileSync, readFileSync } from "fs";
 import { join } from "path";
 import prettier from "prettier";
 import {
@@ -25,10 +25,7 @@ import { CompilerOptionName } from "../../data/_types";
 const toJSONString = (obj) =>
   prettier.format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
 const writeJSON = (name, obj) =>
-  writeFileSync(
-    new URL(`../../data/${name}`, import.meta.url),
-    toJSONString(obj)
-  );
+  writeFileSync(new URL(`../../data/${name}`, import.meta.url), toJSONString(obj));
 const writeString = (name, text) =>
   writeFileSync(
     new URL(`../../data/${name}`, import.meta.url),
@@ -47,8 +44,7 @@ export interface CompilerOptionJSON extends CommandLineOptionBase {
   hostObj: string;
 }
 
-// @ts-ignore
-import tsconfigOpts from "../../data/tsconfigOpts.json";
+const tsconfigOpts = JSON.parse(readFileSync(join("data", "tsconfigOpts.json"), "utf8"));
 
 const notCompilerFlags = [
   // @ts-ignore
@@ -61,7 +57,7 @@ const notCompilerFlags = [
 const allFlags = ts.optionDeclarations.concat(notCompilerFlags) as CompilerOptionJSON[];
 const allOptions = Array.from(new Set(allFlags)).sort((l, r) => l.name.localeCompare(r.name));
 
-// The import from TS isn't 'clean'      
+// The import from TS isn't 'clean'
 const buildOpts = ["build", "verbose", "dry", "clean", "force"];
 // @ts-ignore
 const watchOpts = [...ts.optionsForWatch.map((opt) => opt.name), "watch"];
