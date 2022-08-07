@@ -40,9 +40,7 @@ const schemaBase = JSON.parse(
   readFileSync(join("scripts", "schema", "vendor", "base.json"), "utf8")
 ) as typeof import("./vendor/base.json");
 
-const tsconfigOpts = JSON.parse(
-  readFileSync(join("data", "tsconfigOpts.json"), "utf8")
-) as typeof import("../../data/tsconfigOpts.json");
+const tsconfigOpts = JSON.parse(readFileSync(join("data", "tsconfigOpts.json"), "utf8")) as any;
 
 // Cut down the list
 const filteredOptions = tsconfigOpts
