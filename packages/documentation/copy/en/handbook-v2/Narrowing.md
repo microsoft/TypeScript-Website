@@ -384,7 +384,7 @@ function padLeft(padding: number | string, input: string) {
 
 `padLeft` returns from within its first `if` block.
 TypeScript was able to analyze this code and see that the rest of the body (`return padding + input;`) is _unreachable_ in the case where `padding` is a `number`.
-As a result, it was able to remove `number` from the type of `padding` (narrowing from `string | number` to `string`) for the rest of the function.
+As a result, it was able to remove `string` from the type of `padding` (narrowing from `string | number` to `number`) for the rest of the function.
 
 This analysis of code based on reachability is called _control flow analysis_, and TypeScript uses this flow analysis to narrow types as it encounters type guards and assignments.
 When a variable is analyzed, control flow can split off and re-merge over and over again, and that variable can be observed to have a different type at each point.
