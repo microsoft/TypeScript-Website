@@ -5635,7 +5635,6 @@ __metadata:
     "@types/prettier": ^1.19.0
     "@typescript/vfs": 1.3.5
     debug: ^4.1.1
-    husky: ^4.2.3
     jest-file-snapshot: ^0.3.8
     lz-string: ^1.4.4
     markdown-magic: ^1.0.0
@@ -8885,13 +8884,6 @@ __metadata:
     moment-timezone: 0.5.28
   languageName: unknown
   linkType: soft
-
-"compare-versions@npm:^3.5.1":
-  version: 3.6.0
-  resolution: "compare-versions@npm:3.6.0"
-  checksum: 7492a50cdaa2c27f5254eee7c4b38856e1c164991bab3d98d7fd067fe4b570d47123ecb92523b78338be86aa221668fd3868bfe8caa5587dc3ebbe1a03d52b5d
-  languageName: node
-  linkType: hard
 
 "component-emitter@npm:^1.2.1, component-emitter@npm:~1.3.0":
   version: 1.3.0
@@ -13176,7 +13168,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"find-versions@npm:^3.0.0, find-versions@npm:^3.2.0":
+"find-versions@npm:^3.0.0":
   version: 3.2.0
   resolution: "find-versions@npm:3.2.0"
   dependencies:
@@ -15910,27 +15902,6 @@ fsevents@^1.2.7:
   bin:
     hunspell-tojson: ./bin/hunspell-tojson.js
   checksum: 098e00a705b1b8975924ccef1b23e1d63acc139a493a392bb55f887926c518b2edae01f9a697cffa73346160c562f89610f80d354360a2cb637a67f7c54f8227
-  languageName: node
-  linkType: hard
-
-"husky@npm:^4.2.3":
-  version: 4.2.3
-  resolution: "husky@npm:4.2.3"
-  dependencies:
-    chalk: ^3.0.0
-    ci-info: ^2.0.0
-    compare-versions: ^3.5.1
-    cosmiconfig: ^6.0.0
-    find-versions: ^3.2.0
-    opencollective-postinstall: ^2.0.2
-    pkg-dir: ^4.2.0
-    please-upgrade-node: ^3.2.0
-    slash: ^3.0.0
-    which-pm-runs: ^1.0.0
-  bin:
-    husky-run: bin/run.js
-    husky-upgrade: lib/upgrader/bin.js
-  checksum: f55f06868400d1781319634ce165a8e4adf232e9ffa4c6a7b0f5118b08f30f1072cf819ce681fba1bb821ccfd0c1226c93af0fe277ed01c692bcddf3f0aec339
   languageName: node
   linkType: hard
 
@@ -21262,15 +21233,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"opencollective-postinstall@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "opencollective-postinstall@npm:2.0.2"
-  bin:
-    opencollective-postinstall: index.js
-  checksum: 4b6f333f1c863ef141abef16998daf45f891baf63765684f14b97884ca069fb0055decb59ade7800153190c099b559918c2adeb99f3db70bb0fd616220e8cc17
-  languageName: node
-  linkType: hard
-
 "opentracing@npm:^0.14.4":
   version: 0.14.4
   resolution: "opentracing@npm:0.14.4"
@@ -22392,15 +22354,6 @@ fsevents@^1.2.7:
   bin:
     playwright: lib/cli/cli.js
   checksum: 41676313c04c18d9fc4438077516d2d6827d3d06add5081dcb3c320878f1914973ab4bbcfa125a2b05d9a077bbcb77a8e2d765088d28ca11482aec8b9d41158d
-  languageName: node
-  linkType: hard
-
-"please-upgrade-node@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "please-upgrade-node@npm:3.2.0"
-  dependencies:
-    semver-compare: ^1.0.0
-  checksum: d87c41581a2a022fbe25965a97006238cd9b8cbbf49b39f78d262548149a9d30bd2bdf35fec3d810e0001e630cd46ef13c7e19c389dea8de7e64db271a2381bb
   languageName: node
   linkType: hard
 
@@ -24942,7 +24895,6 @@ resolve@^2.0.0-next.3:
     fb-watchman: ^2.0.1
     git-branch-is: ^3.1.0
     gray-matter: 4.0.2
-    husky: ^4.2.3
     node-polyfill-webpack-plugin: ^1.1.0
     pleb: ^2.6.1
     reflect-metadata: ^0.1.13
@@ -25199,13 +25151,6 @@ resolve@^2.0.0-next.3:
   dependencies:
     node-forge: ^0.10.0
   checksum: c7028385cb3c011c6d7a4fe56d0f94ac1511ad175a87b49e7192f8ea43d1363d5f24283b2831071c0ad2d26ad19b9a6e81dba7f052490c245001ee61a2541e7d
-  languageName: node
-  linkType: hard
-
-"semver-compare@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "semver-compare@npm:1.0.0"
-  checksum: dd1d7e2909744cf2cf71864ac718efc990297f9de2913b68e41a214319e70174b1d1793ac16e31183b128c2b9812541300cb324db8168e6cf6b570703b171c68
   languageName: node
   linkType: hard
 
@@ -28944,13 +28889,6 @@ resolve@^2.0.0-next.3:
   version: 2.0.0
   resolution: "which-module@npm:2.0.0"
   checksum: 809f7fd3dfcb2cdbe0180b60d68100c88785084f8f9492b0998c051d7a8efe56784492609d3f09ac161635b78ea29219eb1418a98c15ce87d085bce905705c9c
-  languageName: node
-  linkType: hard
-
-"which-pm-runs@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "which-pm-runs@npm:1.0.0"
-  checksum: 30cf7aee31f264558070e92414316c169367bb2b84a0a32777d30392fea0892fcf9955b81c3fe7f52165ae5a33f0acfd3bc0916416cb07e6d414c90255c228ca
   languageName: node
   linkType: hard
 
