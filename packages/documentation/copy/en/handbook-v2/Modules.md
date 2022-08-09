@@ -220,7 +220,7 @@ import type { createCatName } from "./animal.js";
 const name = createCatName();
 ```
 
-###### Inline `type` imports
+#### Inline `type` imports
 
 TypeScript 4.5 also allows for individual imports to be prefixed with `type` to indicate that the imported reference is a type:
 
