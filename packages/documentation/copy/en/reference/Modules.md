@@ -141,6 +141,9 @@ import { APIResponseType } from "./api";
 
 // Explicitly use import type
 import type { APIResponseType } from "./api";
+
+// Explicitly pull out a value (getResponse) and a type (APIResponseType) 
+import { getResponse, type APIResponseType} from "./api";
 ```
 
 `import type` is always guaranteed to be removed from your JavaScript, and tools like Babel can make better assumptions about your code via the [`isolatedModules`](/tsconfig#isolatedModules) compiler flag.
