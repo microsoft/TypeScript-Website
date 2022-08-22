@@ -526,7 +526,7 @@ function g() {} // g is not exported
 Or by marking each export individually:
 
 ```ts
-export function f { return g() }
+export function f() { return g() }
 function g() { }
 ```
 
