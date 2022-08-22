@@ -586,6 +586,20 @@ a.push(102); // error
 a[0] = 101; // error
 ```
 
+It's important to remember that TypeScript doesn't transpile the immutability directives to the run-time:
+
+```ts
+let a: ReadonlyArray<number> = [0];
+eval('a[0] = 321'); // the value will be updated
+```
+
+But it could be achieved, both at compile-time and run-time through a JavaScript's native method:
+
+```ts
+let a = Object.freeze([]);
+a.push(102); // error
+```
+
 However, none of these options are the default, so they are not
 consistently used in TypeScript code.
 
