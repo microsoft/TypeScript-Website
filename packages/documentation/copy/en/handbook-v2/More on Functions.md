@@ -426,6 +426,20 @@ Functions with fewer parameters (of the same types) can always take the place of
 
 > When writing a function type for a callback, _never_ write an optional parameter unless you intend to _call_ the function without passing that argument
 
+This way, a proper declaration and usage of a callback with optional parameters at the end could look like this:
+
+```ts
+function myForEach(arr: any[], callback: (arg: any, index: number) => void) {
+  for (let i = 0; i < arr.length; i++) {
+    callback(arr[i], i);
+  }
+}
+
+myForEach([1, 2, 3], () => {
+  console.log("TypeScript does not require you to declare/receive the arguments");
+});
+```
+
 ## Function Overloads
 
 Some JavaScript functions can be called in a variety of argument counts and types.
