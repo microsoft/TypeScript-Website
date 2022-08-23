@@ -485,7 +485,7 @@ For example, these functions have errors because the implementation signature do
 function fn(x: boolean): void;
 // Argument type isn't right
 function fn(x: string): void;
-function fn(x: boolean) {}
+function fn(x: boolean) {} // the argument x, should have the type boolean | string
 ```
 
 ```ts twoslash
@@ -493,7 +493,7 @@ function fn(x: boolean) {}
 function fn(x: string): string;
 // Return type isn't right
 function fn(x: number): boolean;
-function fn(x: string | number) {
+function fn(x: string | number) { // there's no return type, and it should be string | boolean
   return "oops";
 }
 ```
@@ -502,6 +502,7 @@ function fn(x: string | number) {
 
 Like generics, there are a few guidelines you should follow when using function overloads.
 Following these principles will make your function easier to call, easier to understand, and easier to implement.
+It's also worth checking whether the implementation code justifies having the overloads, it might be cleaner to create a function with a different name.
 
 Let's consider a function that returns the length of a string or an array:
 
@@ -526,7 +527,21 @@ len([0]); // OK
 len(Math.random() > 0.5 ? "hello" : [0]);
 ```
 
-Because both overloads have the same argument count and same return type, we can instead write a non-overloaded version of the function:
+This way, the last statement could be turned into this:
+
+```ts twoslash
+declare function len(s: string): number;
+declare function len(arr: any[]): number;
+// ---cut---
+if (Math.random() > 0.5) {
+  len("hello");
+}
+else {
+  len([0]);
+}
+```
+
+But because both overloads have the same argument count and same return type, we can instead write a non-overloaded version of the function:
 
 ```ts twoslash
 function len(x: any[] | string) {
