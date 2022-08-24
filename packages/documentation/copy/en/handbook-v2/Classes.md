@@ -11,7 +11,7 @@ oneline: "How classes work in TypeScript"
 
 TypeScript offers full support for the `class` keyword introduced in ES2015.
 
-As with other JavaScript language features, TypeScript adds type annotations and other syntax to allow you to express relationships between classes and other types.
+As with other JavaScript language features, TypeScript adds type annotations and another syntax to allow you to express relationships between classes and other types.
 
 ## Class Members
 
