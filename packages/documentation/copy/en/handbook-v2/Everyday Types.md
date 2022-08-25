@@ -404,8 +404,8 @@ interface Bear extends Animal {
   honey: boolean
 }<br/>
 const bear = getBear() 
-bear.name
-bear.honey
+bear.name;
+bear.honey;
         </pre></code>
       </td>
       <td>
