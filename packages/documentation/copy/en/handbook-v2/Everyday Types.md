@@ -403,7 +403,7 @@ interface Animal {
 interface Bear extends Animal {
   honey: boolean
 }<br/>
-const bear = getBear() 
+const bear = getBear();
 bear.name;
 bear.honey;
         </pre></code>
