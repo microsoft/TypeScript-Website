@@ -374,3 +374,35 @@ createInstance(Bee).keeper.hasMask;
 ```
 
 This pattern is used to power the [mixins](/docs/handbook/mixins.html) design pattern.
+
+## Generic parameter defaults
+
+Consider a function that creates a new `HTMLElement`, calling it with no arguments generates a `Div`; you can optionally pass a list of children as well. Previously you would have to define it as:
+
+```ts
+declare function create(): Container<HTMLDivElement, HTMLDivElement[]>;
+declare function create<T extends HTMLElement>(element: T): Container<T, T[]>;
+declare function create<T extends HTMLElement, U extends HTMLElement>(
+  element: T,
+  children: U[]
+): Container<T, U[]>;
+```
+
+With generic parameter defaults we can reduce it to:
+
+```ts
+declare function create<T extends HTMLElement = HTMLDivElement, U = T[]>(
+  element?: T,
+  children?: U
+): Container<T, U>;
+```
+
+A generic parameter default follows the following rules:
+
+- A type parameter is deemed optional if it has a default.
+- Required type parameters must not follow optional type parameters.
+- Default types for a type parameter must satisfy the constraint for the type parameter, if it exists.
+- When specifying type arguments, you are only required to specify type arguments for the required type parameters. Unspecified type parameters will resolve to their default types.
+- If a default type is specified and inference cannot choose a candidate, the default type is inferred.
+- A class or interface declaration that merges with an existing class or interface declaration may introduce a default for an existing type parameter.
+- A class or interface declaration that merges with an existing class or interface declaration may introduce a new type parameter as long as it specifies a default.
