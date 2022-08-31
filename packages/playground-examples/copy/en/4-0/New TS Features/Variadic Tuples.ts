@@ -48,6 +48,6 @@ const a = curry(sum, 1, 2)
 const b = curry(sum, 1)(2)
 const c = curry(sum)(1, 2)
 
-// You can find a more indepth explanation, with more code samples in
+// You can find a more in-depth explanation, with more code samples in
 // https://github.com/microsoft/TypeScript/pull/39094
 

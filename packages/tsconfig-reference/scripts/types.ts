@@ -27,7 +27,7 @@ export interface DiagnosticMessage {
   message: string;
   reportsUnnecessary?: {};
   /* @internal */
-  elidedInCompatabilityPyramid?: boolean;
+  elidedInCompatibilityPyramid?: boolean;
 }
 
 /* @internal */

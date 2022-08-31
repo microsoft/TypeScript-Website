@@ -97,4 +97,4 @@ for (var _i = 0; _i < numbers.length; _i++) {
 
 #### Targeting ECMAScript 2015 and higher
 
-When targeting an ECMAScipt 2015-compliant engine, the compiler will generate `for..of` loops to target the built-in iterator implementation in the engine.
+When targeting an ECMAScript 2015-compliant engine, the compiler will generate `for..of` loops to target the built-in iterator implementation in the engine.

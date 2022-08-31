@@ -199,7 +199,7 @@ To read it more easily, you can forward the output to a file, or pipe it to a pr
 
 ```sh
 # Forward output to a text file
-tsc --explainFiles > expanation.txt
+tsc --explainFiles > explanation.txt
 
 # Pipe output to a utility program like `less`, or an editor like VS Code
 tsc --explainFiles | less
@@ -1793,7 +1793,7 @@ foo?.bar!.baz;
 ### `}` and `>` are Now Invalid JSX Text Characters
 
 The JSX Specification forbids the use of the `}` and `>` characters in text positions.
-TypeScript and Babel have both decided to enforce this rule to be more comformant.
+TypeScript and Babel have both decided to enforce this rule to be more conformant.
 The new way to insert these characters is to use an HTML escape code (e.g. `<span> 2 &gt 1 </div>`) or insert an expression with a string literal (e.g. `<span> 2 {">"} 1 </div>`).
 
 Luckily, thanks to the [pull request](https://github.com/microsoft/TypeScript/pull/36636) enforcing this from [Brad Zacher](https://github.com/bradzacher), you'll get an error message along the lines of
@@ -3078,7 +3078,7 @@ function doAdminThing(user: User) {
 }
 ```
 
-Here, we forgot to call `isAdministrator`, and the code incorrectly allows non-adminstrator users to edit the configuration!
+Here, we forgot to call `isAdministrator`, and the code incorrectly allows non-administrator users to edit the configuration!
 
 In TypeScript 3.7, this is identified as a likely error:
 
@@ -4297,7 +4297,7 @@ Prior to 3.3, building composite projects using `--build --watch` actually didn'
 An update in one project under `--build --watch` mode would force a full build of that project, rather than determining which files within that project were affected.
 
 In TypeScript 3.3, `--build` mode's `--watch` flag _does_ leverage incremental file watching as well.
-That can mean signficantly faster builds under `--build --watch`.
+That can mean significantly faster builds under `--build --watch`.
 In our testing, this functionality has resulted in **a reduction of 50% to 75% in build times** of the original `--build --watch` times.
 [You can read more on the original pull request for the change](https://github.com/Microsoft/TypeScript/pull/29161) to see specific numbers, but we believe most composite project users will see significant wins here.
 
@@ -4312,7 +4312,7 @@ function foo(a: number, b: string): string {
   return a + b;
 }
 
-let a = foo.apply(undefined, [10]); // error: too few argumnts
+let a = foo.apply(undefined, [10]); // error: too few arguments
 let b = foo.apply(undefined, [10, 20]); // error: 2nd argument is a number
 let c = foo.apply(undefined, [10, "hello", 30]); // error: too many arguments
 let d = foo.apply(undefined, [10, "hello"]); // okay! returns a string
@@ -4543,7 +4543,7 @@ So the resulting type `PromiseCoordinate` ends up with the type `[Promise<number
 
 ## Properties declarations on functions
 
-TypeScript 3.1 brings the ability to define properties on function declarations and `const`-declared functons, simply by assigning to properties on these functions in the same scope.
+TypeScript 3.1 brings the ability to define properties on function declarations and `const`-declared functions, simply by assigning to properties on these functions in the same scope.
 This allows us to write canonical JavaScript code without resorting to `namespace` hacks.
 For example:
 
@@ -4562,7 +4562,7 @@ Here, we have a function `readImage` which reads an image in a non-blocking asyn
 In addition to `readImage`, we've provided a convenience function on `readImage` itself called `readImage.sync`.
 
 While ECMAScript exports are often a better way of providing this functionality, this new support allows code written in this style to "just work" TypeScript.
-Additionaly, this approach for property declarations allows us to express common patterns like `defaultProps` and `propTypes` on React stateless function components (SFCs).
+Additionally, this approach for property declarations allows us to express common patterns like `defaultProps` and `propTypes` on React stateless function components (SFCs).
 
 ```ts
 export const FooComponent = ({ name }) => <div>Hello! I am {name}</div>;
@@ -4588,7 +4588,7 @@ fs.readFile(path, (err, data) => {
 
 ## Version selection with `typesVersions`
 
-Feedback from our community, as well as our own experience, has shown us that leveraging the newest TypeScript features while also accomodating users on the older versions are difficult.
+Feedback from our community, as well as our own experience, has shown us that leveraging the newest TypeScript features while also accommodating users on the older versions are difficult.
 TypeScript introduces a new feature called `typesVersions` to help accommodate these scenarios.
 
 When using Node module resolution in TypeScript 3.1, when TypeScript cracks open a `package.json` file to figure out which files it needs to read, it first looks at a new field called `typesVersions`.
@@ -5229,7 +5229,7 @@ function walk(p) {
 }
 ```
 
-## Relaxing declaration emit visiblity rules
+## Relaxing declaration emit visibility rules
 
 With `import` types available, many of the visibility errors reported during declaration file generation can be handled by the compiler without the need to change the input.
 
@@ -5717,7 +5717,7 @@ app.C = class {};
 
 ## Per-file JSX factories
 
-TypeScript 2.8 adds support for a per-file configurable JSX factory name using `@jsx dom` paragma.
+TypeScript 2.8 adds support for a per-file configurable JSX factory name using `@jsx dom` pragma.
 JSX factory can be configured for a compilation using [`jsxFactory`](/tsconfig#jsxFactory) (default is `React.createElement`). With TypeScript 2.8 you can override this on a per-file-basis by adding a comment to the beginning of the file.
 
 #### Example
@@ -6124,7 +6124,7 @@ Numeric literals can now be separated into segments using `_`.
 ##### Example
 
 ```ts
-const milion = 1_000_000;
+const million = 1_000_000;
 const phone = 555_734_2231;
 const bytes = 0xff_0c_00_ff;
 const word = 0b1100_0011_1101_0001;
@@ -6677,7 +6677,7 @@ interface Iterator<T> {
 This kind of iterator is useful for iterating over synchronously available values, such as the elements of an Array or the keys of a Map.
 An object that supports iteration is said to be "iterable" if it has a `Symbol.iterator` method that returns an `Iterator` object.
 
-The Iterator protocol also defines the target of some of the ES2015 features like `for..of` and spread operator and the array rest in destructuring assignmnets.
+The Iterator protocol also defines the target of some of the ES2015 features like `for..of` and spread operator and the array rest in destructuring assignments.
 
 #### Generators
 
@@ -7759,7 +7759,7 @@ function bar(x: string | number) {
 }
 ```
 
-Control flow based type analysis is particuarly relevant in [`strictNullChecks`](/tsconfig#strictNullChecks) mode because nullable types are represented using union types:
+Control flow based type analysis is particularly relevant in [`strictNullChecks`](/tsconfig#strictNullChecks) mode because nullable types are represented using union types:
 
 ```ts
 function test(x: string | null) {
@@ -9718,7 +9718,7 @@ A tsconfig.json file that doesn't specify a files property (and therefore implic
 }
 ```
 
-The `exclude` list does not support wilcards. It must simply be a list of files and/or directories.
+The `exclude` list does not support wildcards. It must simply be a list of files and/or directories.
 
 ## `--init` command line option
 

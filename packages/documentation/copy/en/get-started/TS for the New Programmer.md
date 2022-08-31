@@ -183,7 +183,7 @@ This was a brief overview of the syntax and tools used in everyday TypeScript. F
       * Types implicitly define what operations make sense on them
       * Lots of different kinds, not just primitives
       * We can make descriptions for all kinds of values
-      * The `any` type -- a quick desctiption, what it is, and why it's bad
+      * The `any` type -- a quick description, what it is, and why it's bad
     * Inference 101
       * Examples
       * TypeScript can figure out types most of the time
