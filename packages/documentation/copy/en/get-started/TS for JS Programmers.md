@@ -109,12 +109,12 @@ interface User {
   id: number;
 }
 // ---cut---
-function getAdminUser(): User {
-  //...
+function deleteUser(user: User) {
+  // ...annotate parameter
 }
 
-function deleteUser(user: User) {
-  // ...
+function getAdminUser(): User {
+  // ...annotate return value
 }
 ```
 
