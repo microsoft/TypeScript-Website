@@ -143,7 +143,7 @@ console.log(instance.cHelper()); // prints '10'
 console.log(instance.dHelper()); // prints '20'
 ```
 
-Another thing worth noting is that accessing a private field on any other type will result in a `TypeError`!
+Another thing worth nothing is that accessing a private field on any other type will result in a `TypeError`!
 
 ```ts
 class Square {

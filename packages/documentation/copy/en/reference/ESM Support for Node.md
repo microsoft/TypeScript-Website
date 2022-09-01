@@ -166,7 +166,7 @@ import foo = require("./foo.cjs");
 foo.helper()
 ```
 
-Finally, it's worth noting that the only way to import ESM files from a CJS module is using dynamic `import()` calls.
+Finally, it's worth nothing that the only way to import ESM files from a CJS module is using dynamic `import()` calls.
 This can present challenges, but is the behavior in Node.js today.
 
 You can [read more about ESM/CommonJS interop in Node.js here](https://nodejs.org/api/esm.html#esm_interoperability_with_commonjs).

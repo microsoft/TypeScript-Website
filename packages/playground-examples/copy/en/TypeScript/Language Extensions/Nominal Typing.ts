@@ -28,7 +28,7 @@
 type ValidatedInputString = string & { __brand: "User Input Post Validation" };
 
 // We will use a function to transform a string to
-// a ValidatedInputString - but the point worth noting
+// a ValidatedInputString - but the point worth nothing
 // is that we're just _telling_ TypeScript that it's true.
 
 const validateUserInput = (input: string) => {

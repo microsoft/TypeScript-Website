@@ -1116,7 +1116,7 @@ For one, when labeling a tuple element, all other elements in the tuple must als
 type Bar = [first: string, number];
 ```
 
-It's worth noting - labels don't require us to name our variables differently when destructuring.
+It's worth nothing - labels don't require us to name our variables differently when destructuring.
 They're purely there for documentation and tooling.
 
 ```ts
@@ -1271,7 +1271,7 @@ let values: string[];
 
 (look, we're not proud of _all_ the code we write...)
 
-On the rare case that you use getters or setters with side-effects, it's worth noting that these operators only perform assignments if necessary.
+On the rare case that you use getters or setters with side-effects, it's worth nothing that these operators only perform assignments if necessary.
 In that sense, not only is the right side of the operator "short-circuited" - the assignment itself is too.
 
 ```ts
@@ -2064,7 +2064,7 @@ console.log(instance.cHelper()); // prints '10'
 console.log(instance.dHelper()); // prints '20'
 ```
 
-Another thing worth noting is that accessing a private field on any other type will result in a `TypeError`!
+Another thing worth nothing is that accessing a private field on any other type will result in a `TypeError`!
 
 ```ts
 class Square {

@@ -21,7 +21,7 @@ Modules can contain both code and declarations.
 Modules also have a dependency on a module loader (such as CommonJs/Require.js) or a runtime which supports ES Modules.
 Modules provide for better code reuse, stronger isolation and better tooling support for bundling.
 
-It is also worth noting that, for Node.js applications, modules are the default and **we recommended modules over namespaces in modern code**.
+It is also worth nothing that, for Node.js applications, modules are the default and **we recommended modules over namespaces in modern code**.
 
 Starting with ECMAScript 2015, modules are native part of the language, and should be supported by all compliant engine implementations.
 Thus, for new projects modules would be the recommended code organization mechanism.
