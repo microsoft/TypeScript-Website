@@ -15,7 +15,7 @@
     "@orta/streampub": "1.9.0",
     "fs-jetpack": "^2.4.0",
     "gatsby-remark-shiki-twoslash": "3.0.17",
-    "playwright": "^1.25.1",
+    "playwright": "^1.9.1",
     "sass": "*",
     "ts-node": "*"
   }
