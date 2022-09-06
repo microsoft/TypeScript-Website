@@ -10,6 +10,6 @@ undecided:
   - "@typescript/playground-handbook"
   - "@typescript/playground-worker"
   - "@typescript/sandbox"
-  - "@typescript/twoslash"
   - tsconfig-reference
+  - "@typescript/vfs"
   - typescriptlang-org

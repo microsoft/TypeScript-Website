@@ -5651,7 +5651,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript/twoslash@3.1.0, @typescript/twoslash@workspace:packages/ts-twoslasher":
+"@typescript/twoslash@3.1.1, @typescript/twoslash@workspace:packages/ts-twoslasher":
   version: 0.0.0-use.local
   resolution: "@typescript/twoslash@workspace:packages/ts-twoslasher"
   dependencies:
@@ -27804,7 +27804,7 @@ resolve@^2.0.0-next.3:
     "@types/react-helmet": ^5.0.15
     "@typescript/playground": 0.1.0
     "@typescript/sandbox": 0.1.0
-    "@typescript/twoslash": 3.1.0
+    "@typescript/twoslash": 3.1.1
     canvas: ^2.6.1
     concurrently: ^5.1.0
     gatsby: ^3.8.1
