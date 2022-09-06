@@ -62,5 +62,5 @@
     ],
     "onlyPublishWithReleaseLabel": true
   },
-  "packageManager": "yarn@3.0.0-rc.1"
+  "packageManager": "yarn@3.2.3"
 }
