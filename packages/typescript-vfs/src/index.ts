@@ -9,7 +9,7 @@ type TS = typeof import("typescript")
 let hasLocalStorage = false
 try {
   hasLocalStorage = typeof localStorage !== `undefined`
-} catch (error) {}
+} catch (error) { }
 
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
@@ -541,7 +541,15 @@ export function createVirtualLanguageServiceHost(
     getProjectVersion: () => projectVersion.toString(),
     getCompilationSettings: () => compilerOptions,
     getCustomTransformers: () => customTransformers,
-    getScriptFileNames: () => fileNames,
+    // A couple weeks of 4.8 TypeScript nightlies had a bug where the Program's
+    // list of files was just a reference to the array returned by this host method,
+    // which means mutations by the host that ought to result in a new Program being
+    // created were not detected, since the old list of files and the new list of files
+    // were in fact a reference to the same underlying array. That was fixed in
+    // https://github.com/microsoft/TypeScript/pull/49813, but since the twoslash runner
+    // is used in bisecting for changes, it needs to guard against being busted in that
+    // couple-week period, so we defensively make a slice here.
+    getScriptFileNames: () => fileNames.slice(),
     getScriptSnapshot: fileName => {
       const contents = sys.readFile(fileName)
       if (contents) {
