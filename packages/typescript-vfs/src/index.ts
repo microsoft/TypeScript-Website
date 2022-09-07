@@ -191,13 +191,13 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
  * Sets up a Map with lib contents by grabbing the necessary files from
  * the local copy of typescript via the file system.
  */
-export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions, ts?: typeof import("typescript")) => {
+export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions, ts?: typeof import("typescript"), tsLibDirectory?: string) => {
   const tsModule = ts || require("typescript")
   const path = requirePath()
   const fs = requireFS()
 
   const getLib = (name: string) => {
-    const lib = path.dirname(require.resolve("typescript"))
+    const lib = tsLibDirectory || path.dirname(require.resolve("typescript"))
     return fs.readFileSync(path.join(lib, name), "utf8")
   }
 
@@ -403,7 +403,7 @@ export function createSystem(files: Map<string, string>): System {
  * a set of virtual files which are prioritised over the FS versions, then a path to the root of your
  * project (basically the folder your node_modules lives)
  */
-export function createFSBackedSystem(files: Map<string, string>, _projectRoot: string, ts: TS): System {
+export function createFSBackedSystem(files: Map<string, string>, _projectRoot: string, ts: TS, tsLibDirectory?: string): System {
   // We need to make an isolated folder for the tsconfig, but also need to be able to resolve the
   // existing node_modules structures going back through the history
   const root = _projectRoot + "/vfs"
@@ -411,7 +411,7 @@ export function createFSBackedSystem(files: Map<string, string>, _projectRoot: s
 
   // The default System in TypeScript
   const nodeSys = ts.sys
-  const tsLib = path.dirname(require.resolve("typescript"))
+  const tsLib = tsLibDirectory ?? path.dirname(require.resolve("typescript"))
 
   return {
     // @ts-ignore
