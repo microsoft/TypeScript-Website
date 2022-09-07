@@ -5641,7 +5641,7 @@ __metadata:
     "@rollup/plugin-commonjs": ^13.0.1
     "@types/jest": ^25.1.3
     "@typescript/ata": 0.9.3
-    "@typescript/vfs": 1.3.5
+    "@typescript/vfs": 1.4.0
     jest: "*"
     monaco-editor: ^0.32.1
     monaco-typescript: ^3.7.0
@@ -5651,14 +5651,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript/twoslash@3.1.0, @typescript/twoslash@workspace:packages/ts-twoslasher":
+"@typescript/twoslash@3.2.0, @typescript/twoslash@workspace:packages/ts-twoslasher":
   version: 0.0.0-use.local
   resolution: "@typescript/twoslash@workspace:packages/ts-twoslasher"
   dependencies:
     "@types/jest": ^25.1.3
     "@types/lz-string": ^1.3.33
     "@types/prettier": ^1.19.0
-    "@typescript/vfs": 1.3.5
+    "@typescript/vfs": 1.4.0
     debug: ^4.1.1
     husky: ^4.2.3
     jest-file-snapshot: ^0.3.8
@@ -5682,7 +5682,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript/vfs@1.3.5, @typescript/vfs@workspace:packages/typescript-vfs":
+"@typescript/vfs@1.4.0, @typescript/vfs@workspace:packages/typescript-vfs":
   version: 0.0.0-use.local
   resolution: "@typescript/vfs@workspace:packages/typescript-vfs"
   dependencies:
@@ -27804,7 +27804,7 @@ resolve@^2.0.0-next.3:
     "@types/react-helmet": ^5.0.15
     "@typescript/playground": 0.1.0
     "@typescript/sandbox": 0.1.0
-    "@typescript/twoslash": 3.1.0
+    "@typescript/twoslash": 3.2.0
     canvas: ^2.6.1
     concurrently: ^5.1.0
     gatsby: ^3.8.1
