@@ -382,7 +382,7 @@ One other difference from the above was that our template string was rewritten f
 to
 
 ```js
-"Hello " + person + ", today is " + date.toDateString() + "!";
+"Hello ".concat(person, ", today is ").concat(date.toDateString(), "!");
 ```
 
 Why did this happen?
