@@ -268,8 +268,8 @@ export const setupPlayground = (
         ui.flashInfo(i("play_esm_mode"))
       }, 300)
 
-      const nextRes = moduleNumber === 199 ? 99 : 2
-      sandbox.setCompilerSettings({ target: 99, moduleResolution: nextRes })
+      const nextRes = moduleNumber === 199 || 100 ? 99 : 2
+      sandbox.setCompilerSettings({ target: 99, moduleResolution: nextRes, module: moduleNumber })
       sandbox.addLibraryToRuntime(JSON.stringify({ name: "playground", type: "module" }), "/package.json")
     }
   })
