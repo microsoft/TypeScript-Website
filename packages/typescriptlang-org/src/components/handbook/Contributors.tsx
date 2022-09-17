@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import attribution from "../../../../documentation/output/attribution.json";
+import { doesLocalePageExist } from "../layout/doesLocalePageExist";
+import { isEnglishPath } from "../layout/isEnglishPath";
 
 interface ContributorsProps {
   i: (string) => string;
@@ -19,11 +21,16 @@ const Section = (props: { children: any; className?: string; sKey: string }) =>
 export const Contributors = (props: ContributorsProps) => {
   const attrPath = props.path.replace("/packages/documentation/", "");
   const page = attribution[attrPath];
+  const shouldRedirectToLocalization = !isEnglishPath() && doesLocalePageExist()
 
   // https://github.com/microsoft/TypeScript-Website/blob/v2/packages/documentation/en/Advanced%20Types.md
-  const reposRootURL =
-    "https://github.com/microsoft/TypeScript-Website/blob/v2";
-  const repoPageURL = reposRootURL + props.path;
+  const reposRootURL = !shouldRedirectToLocalization ?
+    "https://github.com/microsoft/TypeScript-Website/blob/v2" :
+    "https://github.com/microsoft/TypeScript-Website-Localizations/blob/main/docs/documentation";
+  const path = !shouldRedirectToLocalization ?
+    props.path :
+    props.path.replace(/^[\w\W\d\D\s\S]*\/packages\/documentation\/copy/g, '');
+  const repoPageURL = reposRootURL + path;
 
   const d = new Date(props.lastEdited);
   const dtf = new Intl.DateTimeFormat(
