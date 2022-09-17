@@ -29,7 +29,7 @@ export const Contributors = (props: ContributorsProps) => {
     "https://github.com/microsoft/TypeScript-Website-Localizations/blob/main/docs/documentation";
   const path = !shouldRedirectToLocalization ?
     props.path :
-    props.path.replace(/^[\w\W\d\D\s\S]*\/packages\/documentation\/copy/g, '');
+    props.path.replace(/^.*\/packages\/documentation\/copy/g, '');
   const repoPageURL = reposRootURL + path;
 
   const d = new Date(props.lastEdited);
