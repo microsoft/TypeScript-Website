@@ -5,36 +5,11 @@ import { SeoProps } from "../HeadSEO"
 import { inYourLanguage } from "../../copy/inYourLanguage";
 import { hasLocalStorage } from "../../lib/hasLocalStorage";
 import { allFiles } from "../../__generated__/allPages"
+import { getLocalePath } from "./getLocalePath";
 
 type Props = SeoProps & {
   lang: string,
   children: any
-}
-
-const getLocaleVersionOfPage = () => {
-  // @ts-ignore 
-  const userLocale = navigator.language || navigator.userLanguage || "en-UK"
-  const userLang = userLocale.split("-")[0]
-  const thisPaths = location.pathname.split("/")
-
-  // / -> /es
-  if (thisPaths.length === 0) {
-    return "/" + userLocale
-  }
-
-  const isEnglishPath = thisPaths[1].length !== 2
-
-  // /play -> /zh/play
-  if (isEnglishPath) {
-    return "/" + userLang + location.pathname
-  }
-
-  // /zh/play -> /es/play
-  thisPaths[1] = userLang
-  // Drop any preceding /s
-  if (thisPaths[thisPaths.length - 1] === "") thisPaths.pop()
-
-  return thisPaths.join("/")
 }
 
 export const LanguageRecommendations = (props: Props) => {
@@ -46,15 +21,11 @@ export const LanguageRecommendations = (props: Props) => {
 
     const suppressed = hasLocalStorage && localStorage.getItem("dont-recommend-translate")
 
-    let localePath = getLocaleVersionOfPage()
-    if (localePath.startsWith("/en")) {
-      localePath = localePath.slice(3)
-    }
+    let localePath = getLocalePath()
 
     // Heh, ignore dt urls
     if (localePath.startsWith("/dt")) return
 
-    if (localePath === "") localePath = "/"
     if (localePath === location.pathname) return
 
     const doesPageExist = allFiles.find(f => f === localePath || f + "/" === localePath)
