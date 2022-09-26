@@ -12,6 +12,7 @@
 
   a {
     color: white;
+    display: inline-block;
   }
 
   section {
@@ -60,6 +61,7 @@
     @media (max-width: $screen-sm) {
       li {
         margin-left: 10px;
+
         p {
           width: 100%;
         }
@@ -75,18 +77,23 @@
       h3 {
         width: 240px;
       }
+
       display: flex;
       flex-direction: row;
+
       @media (max-width: $screen-sm) {
         flex-direction: column;
         margin-bottom: 1rem;
+
         label {
           margin-left: 8px;
         }
       }
+
       label {
         display: flex;
         flex-direction: row;
+
         p {
           margin: 0;
           padding: 0;
@@ -124,14 +131,15 @@
       }
     }
 
-    article > ul {
+    article>ul {
       display: flex;
       flex-wrap: wrap;
 
-      > li {
+      >li {
         @media (min-width: $screen-sm) {
           width: 50%;
         }
+
         margin-bottom: 0.8rem;
         word-break: break-all;
       }
@@ -140,6 +148,7 @@
     #logos {
       width: 200px;
       margin-right: 40px;
+
       svg {
         margin-bottom: -0.8rem;
       }
@@ -148,6 +157,7 @@
         img {
           filter: invert(100%);
         }
+
         svg path {
           fill: black;
         }
@@ -177,6 +187,7 @@
 }
 
 @media (max-width: $screen-sm) {
+
   // This was sneakily making site wider than
   // the viewport because it uses opacity which affects layout
   #playground-samples-popover {
@@ -196,7 +207,7 @@
   .examples {
     overflow-y: auto;
 
-    > div.section-content .section-list {
+    >div.section-content .section-list {
       width: 300px;
     }
   }
@@ -267,6 +278,7 @@
       padding: 20px;
       width: 320px;
     }
+
     border-bottom: 1px solid $ts-main-blue-darker-color;
     border-radius: 0;
   }

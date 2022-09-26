@@ -282,6 +282,13 @@ export const SiteFooter = (props: Props) => {
             >
               Privacy
             </a>
+            <a
+              style={{ paddingLeft: "0.8rem" }}
+              href="https://www.microsoft.com/it-it/accessibility/declarations"
+              title="Italy Digital Accessibility Requirements"
+            >
+              Accessibilità
+            </a>
           </p>
         </article>
 
