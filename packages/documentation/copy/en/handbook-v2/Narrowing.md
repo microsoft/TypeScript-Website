@@ -138,7 +138,7 @@ You can always coerce values to `boolean`s by running them through the `Boolean`
 ```ts twoslash
 // both of these result in 'true'
 Boolean("hello"); // type: boolean, value: true
-!!"world"; // type: true,    value: true
+!!"world"; // type: boolean,    value: true
 ```
 
 It's fairly popular to leverage this behavior, especially for guarding against values like `null` or `undefined`.
