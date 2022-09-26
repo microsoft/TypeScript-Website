@@ -5,14 +5,7 @@ permalink: /docs/handbook/release-notes/typescript-4-8.html
 oneline: TypeScript 4.8 Release Notes
 ---
 
-## <a name="beta-delta"></a> What's New Since the Beta and RC?
-
-Since our [beta release](https://devblogs.microsoft.com/typescript/announcing-typescript-4-8-beta/), our stable release now has [support for excluding which files are considered in auto-imports](#exclude-globs-auto-import).
-The beta release post also did not document a break around unused destructuring aliases in type signatures.
-Furthermore, neither the beta nor RC posts documented an API break regarding decorator placement on TypeScript's syntax trees.
-These breaks are now detailed in our [Correctness Fixes and Breaking Changes section](#correctness-changes)
-
-## <a name="smarter-type-narrowing-and-simplifications"></a> Improved Intersection Reduction, Union Compatibility, and Narrowing
+## Improved Intersection Reduction, Union Compatibility, and Narrowing
 
 TypeScript 4.8 brings a series of correctness and consistency improvements under `--strictNullChecks`.
 These changes affect how intersection and union types work, and are leveraged in how TypeScript narrows types.
@@ -90,7 +83,7 @@ On their own, these changes may appear small - but they represent fixes for many
 
 For more specifics on these improvements, you can [read more here](https://github.com/microsoft/TypeScript/pull/49119).
 
-## <a name="infer-types-template-strings"></a> Improved Inference for `infer` Types in Template String Types
+## Improved Inference for `infer` Types in Template String Types
 
 TypeScript recently introduced a way to add `extends` constraints to `infer` type variables in conditional types.
 
@@ -128,7 +121,7 @@ type JustNumber = "1.0" extends `${infer T extends number}` ? T : never;
 
 You can [see more about this feature here](https://github.com/microsoft/TypeScript/pull/48094).
 
-## <a name="build-watch-incremental-improvements"></a> `--build`, `--watch`, and `--incremental` Performance Improvements
+## `--build`, `--watch`, and `--incremental` Performance Improvements
 
 TypeScript 4.8 introduces several optimizations that should speed up scenarios around `--watch` and `--incremental`, along with project references builds using `--build`.
 For example, TypeScript is now able to avoid spending time updating timestamps during no-op changes in `--watch` mode, which makes rebuilds faster and avoids messing with other build tools that might be watching for TypeScript's output.
@@ -140,7 +133,7 @@ We've seen similar results on the TypeScript codebase as well.
 
 You can see [the changes, along with the performance results on GitHub](https://github.com/microsoft/TypeScript/pull/48784).
 
-## <a name="object-array-comparison-errors"></a> Errors When Comparing Object and Array Literals
+## Errors When Comparing Object and Array Literals
 
 In many languages, operators like `==` perform what's called "value" equality on objects.
 For example, in Python it's valid to check whether a list is empty by checking whether a value is equal to the empty list using `==`.
@@ -167,7 +160,7 @@ if (peopleAtHome === []) {
 We'd like to extend our gratitude to [Jack Works](https://github.com/Jack-Works) who contributed this check.
 You can [view the changes involved here](https://github.com/microsoft/TypeScript/pull/45978).
 
-## <a name="inference-binding-patterns"></a> Improved Inference from Binding Patterns
+## Improved Inference from Binding Patterns
 
 In some cases, TypeScript will pick up a type from a binding pattern to make better inferences.
 
@@ -209,7 +202,7 @@ If you need to revert to the old behavior, you can always provide explicit type 
 
 You can [look at the change on GitHub](https://github.com/microsoft/TypeScript/pull/49086) if you're curious to learn more.
 
-## <a name="file-watching-fixes"></a> File-Watching Fixes (Especially Across `git checkout`s)
+## File-Watching Fixes (Especially Across `git checkout`s)
 
 We've had a long-standing bug where TypeScript has a very hard time with certain file changes in `--watch` mode and editor scenarios.
 Sometimes the symptoms are stale or inaccurate errors that might show up that require restarting `tsc` or VS Code.
@@ -227,14 +220,14 @@ So TypeScript 4.8 now handles these cases on inode systems and properly installs
 We'd like to extend our thanks to [Marc Celani](https://github.com/MarcCelani-at) and his team at Airtable who invested lots of time in investigating the issues they were experiencing and pointing out the root cause.
 You can view [the specific fixes around file-watching here](https://github.com/microsoft/TypeScript/pull/48997).
 
-## <a name="find-all-refs-improvements"></a> Find-All-References Performance Improvements
+## Find-All-References Performance Improvements
 
 When running find-all-references in your editor, TypeScript is now able to act a little smarter as it aggregates references.
 This reduced the amount of time TypeScript took to search a widely-used identifier in its own codebase by about 20%.
 
 [You can read up more on the improvement here](https://github.com/microsoft/TypeScript/pull/49581).
 
-## <a name="exclude-globs-auto-import"></a> Exclude Specific Files from Auto-Imports
+## Exclude Specific Files from Auto-Imports
 
 TypeScript 4.8 introduces an editor preference for excluding files from auto-imports.
 In Visual Studio Code, file names or globs can be added under "Auto Import File Exclude Patterns" in the Settings UI, or in a `.vscode/settings.json` file:
@@ -253,7 +246,7 @@ These modules might have lots of exports that can pollute the auto-imports list 
 
 You can [see more specifics about the implementation here](https://github.com/microsoft/TypeScript/pull/49578).
 
-## <a name="correctness-changes"></a> Correctness Fixes and Breaking Changes
+## Correctness Fixes and Breaking Changes
 
 Due to the nature of type system changes, there are very few changes that can be made that don't affect *some* code;
 however, there are a few changes that are more likely to require adapting existing code.
