@@ -13,7 +13,7 @@ TypeScript provides several utility types to facilitate common type transformati
 <blockquote class=bg-reading>
 
 Released:
-[4.5](docs/handbook/release-notes/typescript-4-5.html#the-awaited-type-and-promise-improvements)
+[4.5](/docs/handbook/release-notes/typescript-4-5.html#the-awaited-type-and-promise-improvements)
 
 </blockquote>
 
