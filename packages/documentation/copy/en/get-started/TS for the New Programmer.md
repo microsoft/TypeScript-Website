@@ -20,7 +20,7 @@ Over time, though, JS became more and more popular, and web developers started u
 
 Web browser developers responded to this increased JS usage by optimizing their execution engines (dynamic compilation) and extending what could be done with it (adding APIs), which in turn made web developers use it even more.
 On modern websites, your browser is frequently running applications that span hundreds of thousands of lines of code.
-This is long and gradual growth of "the web", starting as a simple network of static pages, and evolving into a platform for rich _applications_ of all kinds.
+This is the long and gradual growth of "the web", starting as a simple network of static pages, and evolving into a platform for rich _applications_ of all kinds.
 
 More than this, JS has become popular enough to be used outside the context of browsers, such as implementing JS servers using node.js.
 The "run anywhere" nature of JS makes it an attractive choice for cross-platform development.
