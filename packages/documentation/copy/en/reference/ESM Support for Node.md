@@ -217,14 +217,20 @@ If you need to point to a different location for your type declarations, you can
     "type": "module",
     "exports": {
         ".": {
-            // Entry-point for TypeScript resolution - must occur first!
-            "types": "./types/index.d.ts",
-
             // Entry-point for `import "my-package"` in ESM
-            "import": "./esm/index.js",
-
+            "import": {
+                // Where TypeScript will look.
+                "types": "./types/esm/index.d.ts",
+                // Where Node.js will look.
+                "default": "./esm/index.js"
+            },
             // Entry-point for `require("my-package") in CJS
-            "require": "./commonjs/index.cjs",
+            "require": {
+                // Where TypeScript will look.
+                "types": "./types/commonjs/index.d.cts",
+                // Where Node.js will look.
+                "default": "./commonjs/index.cjs"
+            },
         },
     },
 
