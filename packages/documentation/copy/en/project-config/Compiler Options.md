@@ -805,7 +805,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><p><code>classic</code>, <code>node</code>, <code>node16</code>, or <code>nodenext</code></p>
 </td>
   <td><ul><li><p><code>Classic</code> if <a href="#module"><code>module</code></a> is <code>AMD</code>, <code>UMD</code>, <code>System</code> or <code>ES6</code>/<code>ES2015</code>,</p>
-</li><li><p>Matches if <a href="#module"><code>module</code></a> is <code>node12</code> or <code>nodenext</code>,</p>
+</li><li><p>Matches if <a href="#module"><code>module</code></a> is <code>node16</code> or <code>nodenext</code>,</p>
 </li><li><p><code>Node</code> otherwise.</p>
 </li></ul></td>
 </tr>
