@@ -321,7 +321,7 @@ interface NumberOrStringDictionary {
 }
 ```
 
-Finally, you can make index signatures `readonly` in order to prevent assignment to their indices:
+Finally, you can make index signatures `readonly` in order to prevent assignment to their indices :
 
 ```ts twoslash
 declare function getReadOnlyStringArray(): ReadonlyStringArray;
@@ -336,6 +336,22 @@ myArray[2] = "Mallory";
 ```
 
 You can't set `myArray[2]` because the index signature is `readonly`.
+
+> Note that this is valid for all properties except properties already defined in the same type
+
+```ts twoslash
+declare function getReadOnlyStringArray(): ReadonlyStringArray;
+// ---cut---
+// @errors: 2542
+interface ReadonlyStringArray {
+  readonly [index: number]: string;
+  2:string
+}
+
+let myArray: ReadonlyStringArray = getReadOnlyStringArray();
+myArray[2] = "Mallory";
+```
+Now no errors thrown, as the property with key = 2 is already defined in ReadonlyStringArray and has its own modifiers that will be applied to it.
 
 ## Extending Types
 
