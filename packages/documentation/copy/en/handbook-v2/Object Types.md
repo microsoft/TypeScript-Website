@@ -321,7 +321,7 @@ interface NumberOrStringDictionary {
 }
 ```
 
-Finally, you can make index signatures `readonly` in order to prevent assignment to their indices :
+Finally, you can make index signatures `readonly` in order to prevent assignment to their indices:
 
 ```ts twoslash
 declare function getReadOnlyStringArray(): ReadonlyStringArray;
