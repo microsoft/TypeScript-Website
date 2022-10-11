@@ -155,7 +155,7 @@ In turn, you can write the above example using this syntax as follows:
 
 ```ts twoslash
 // @module: nodenext
-// @filename: helper.cts
+// @filename: foo.cts
 export function helper() {
     console.log("hello world!");
 }
