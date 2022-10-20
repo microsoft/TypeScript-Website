@@ -5,7 +5,7 @@ permalink: /docs/handbook/release-notes/overview.html
 oneline: "All TypeScript release notes"
 ---
 
-This overview page contains a shortened version of all the release notes for TypeScript. Because this page is so big. code samples have their interactive elements disabled.
+This overview page contains a shortened version of all the release notes for TypeScript. Because this page is so big, code samples have their interactive elements disabled.
 
 ## TypeScript 4.2
 
