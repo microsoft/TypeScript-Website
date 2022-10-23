@@ -457,7 +457,7 @@ function required(target: Object, propertyKey: string | symbol, parameterIndex: 
   Reflect.defineMetadata( requiredMetadataKey, existingRequiredParameters, target, propertyKey);
 }
 
-function validate(target: any, propertyName: string, descriptor: TypedPropertyDescriptor<Function>) {
+function validate(target: any, propertyName: string, descriptor: TypedPropertyDescriptor<Function | any>) {
   let method = descriptor.value!;
 
   descriptor.value = function () {
