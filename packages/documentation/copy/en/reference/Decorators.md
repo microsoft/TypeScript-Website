@@ -449,6 +449,8 @@ We can then define the `@required` and `@validate` decorators using the followin
 // @experimentalDecorators
 // @emitDecoratorMetadata
 import "reflect-metadata";
+
+type AnyFunction = (...args: any[]) => any;
 const requiredMetadataKey = Symbol("required");
 
 function required(target: Object, propertyKey: string | symbol, parameterIndex: number) {
@@ -457,14 +459,14 @@ function required(target: Object, propertyKey: string | symbol, parameterIndex: 
   Reflect.defineMetadata( requiredMetadataKey, existingRequiredParameters, target, propertyKey);
 }
 
-function validate(target: any, propertyName: string, descriptor: TypedPropertyDescriptor<Function | any>) {
+function validate(target: any, propertyName: string, descriptor: TypedPropertyDescriptor<AnyFunction>) {
   let method = descriptor.value!;
 
-  descriptor.value = function () {
+  descriptor.value = function (...args) {
     let requiredParameters: number[] = Reflect.getOwnMetadata(requiredMetadataKey, target, propertyName);
     if (requiredParameters) {
       for (let parameterIndex of requiredParameters) {
-        if (parameterIndex >= arguments.length || arguments[parameterIndex] === undefined) {
+        if (parameterIndex >= args.length || args[parameterIndex] === undefined) {
           throw new Error("Missing required argument.");
         }
       }
