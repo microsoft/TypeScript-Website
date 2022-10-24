@@ -72,7 +72,7 @@ export default function helloWorld() {
 }
 // @filename: index.ts
 // ---cut---
-import helloWorld from "./hello.js";
+import helloWorld from "./hello.ts";
 helloWorld();
 ```
 
@@ -404,3 +404,57 @@ You can see all of the available options and what their emitted JavaScript code 
 ## TypeScript namespaces
 
 TypeScript has its own module format called `namespaces` which pre-dates the ES Modules standard. This syntax has a lot of useful features for creating complex definition files, and still sees active use [in DefinitelyTyped](/dt). While not deprecated, the majority of the features in namespaces exist in ES Modules and we recommend you use that to align with JavaScript's direction. You can learn more about namespaces in [the namespaces reference page](/docs/handbook/namespaces.html).
+
+## package.json
+
+To use modules your `package.json` must include `"type": "module",`. For example,
+
+```js
+{
+    "name": "functions",
+    "type": "module",
+    "scripts": {
+        "build": "tsc",
+        "build:watch": "tsc --watch",
+        "serve": "npm run build && firebase emulators:start --only functions",
+        "shell": "npm run build && firebase functions:shell",
+        "start": "npm run shell",
+        "deploy": "firebase deploy --only functions",
+        "logs": "firebase functions:log"
+    },
+    "engines": {
+        "node": "16"
+    },
+    "main": "src/index.ts",
+    "dependencies": {
+        "firebase-admin": "^10.2.0",
+        "firebase-functions": "^3.21.0"
+    },
+    "devDependencies": {
+        "typescript": "^4.6.4"
+    },
+    "private": true
+}
+```
+
+## tsconfig.json
+
+To use modules your `tsconfig.com` must have `"module": "ESNext",` and `"target": "ESNext"` in the `compilerOptions` section. `ESNext` isn't a version of JavaScript, rather, it means `the latest version of JavaScript`. For example,
+
+```ts
+{
+  "compilerOptions": {
+    "module": "ESNext",
+     "target": "ESNext",
+     "strict": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "outDir": "lib",
+    "sourceMap": true
+  },
+  "compileOnSave": true,
+  "include": [
+    "src"
+  ]
+}
+```
