@@ -613,7 +613,7 @@ async function bar(): Promise<string> {
 
 ## `static` Index Signatures
 
-Index signatures allow us set more properties on a value than a type explicitly declares.
+Index signatures allow us to set more properties on a value than a type explicitly declares.
 
 ```ts
 class Foo {
@@ -626,7 +626,7 @@ class Foo {
 
 let instance = new Foo();
 
-// Valid assigment
+// Valid assignment
 instance["whatever"] = 42;
 
 // Has type 'string | number | undefined'.
@@ -845,7 +845,7 @@ enum E {
 }
 
 function doSomething(x: E) {
-  // Use a type asertion on 'x' because we know we're not actually just dealing with values from 'E'.
+  // Use a type assertion on 'x' because we know we're not actually just dealing with values from 'E'.
   if ((x as number) === -1) {
     // ...
   }
