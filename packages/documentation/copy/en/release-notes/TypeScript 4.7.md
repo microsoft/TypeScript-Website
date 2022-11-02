@@ -176,7 +176,7 @@ You can [read more about ESM/CommonJS interop in Node.js here](https://nodejs.or
 Node.js supports [a new field for defining entry points in `package.json` called `"exports"`](https://nodejs.org/api/packages.html#packages_exports).
 This field is a more powerful alternative to defining `"main"` in `package.json`, and can control what parts of your package are exposed to consumers.
 
-Here's an `package.json` that supports separate entry-points for CommonJS and ESM:
+Here's a `package.json` that supports separate entry-points for CommonJS and ESM:
 
 ```jsonc
 // package.json
@@ -280,7 +280,7 @@ Under the mode `"auto"`, TypeScript will not only look for `import` and `export`
 * check whether the current file is a JSX file when running under `--jsx react-jsx`
 
 In cases where you want every file to be treated as a module, the `"force"` setting ensures that every non-declaration file is treated as a module.
-This will be true regardless of how `module`, `moduleResoluton`, and `jsx` are configured.
+This will be true regardless of how `module`, `moduleResolution`, and `jsx` are configured.
 
 Meanwhile, the `"legacy"` option simply goes back to the old behavior of only seeking out `import` and `export` statements to determine whether a file is a module.
 
@@ -872,7 +872,6 @@ In some cases, you can get around this by wrapping the expression in a call to `
 
 ```ts
 function logKey<S extends string | symbol>(key: S): S {
-    // Now an error.
     console.log(`${String(key)} is the key`);
     return key;
 }
@@ -883,7 +882,6 @@ In such cases, you can switch to `string & keyof ...`:
 
 ```ts
 function get<T, K extends string & keyof T>(obj: T, key: K) {
-    // Now an error.
     console.log(`Grabbing property '${key}'.`);
     return obj[key];
 }
