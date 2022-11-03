@@ -33,7 +33,7 @@ const Index: React.FC<Props> = (props) => {
         <ButtonGrid
           buttons={[
             {
-              href: "https://tsup.egoist.sh",
+              href: "https://tsup.egoist.dev",
               blurb: i("doc_node_npm_tsup_blurb"),
               title: "tsup",
             },
