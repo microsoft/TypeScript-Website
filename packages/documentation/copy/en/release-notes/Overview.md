@@ -1851,7 +1851,7 @@ We'd like to give a shout-out to [saschanaz](https://github.com/saschanaz) who h
 
 For more information, you can [see the implementation of this change](https://github.com/microsoft/TypeScript/pull/45771).
 
-## The `Awaited` Type and `Promise` Improvements
+### The `Awaited` Type and `Promise` Improvements
 
 TypeScript 4.5 introduces a new utility type called the `Awaited` type.
 This type is meant to model operations like `await` in `async` functions, or the `.then()` method on `Promise`s - specifically, the way that they recursively unwrap `Promise`s.
