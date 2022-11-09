@@ -275,7 +275,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Allow JavaScript files to be a part of your program. Use the <code>checkJS</code> option to get errors from these files.</p>
+<p>Allow JavaScript files to be a part of your program. Use the <code>checkJs</code> option to get errors from these files.</p>
 </td></tr>
 
 <tr class='even' name='allowSyntheticDefaultImports'>
