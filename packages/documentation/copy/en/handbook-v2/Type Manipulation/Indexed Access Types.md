@@ -57,17 +57,21 @@ type Age2 = Person["age"];
 //   ^?
 ```
 
-You can only use types when indexing, meaning you can't use a `const` to make a variable reference:
+You can only use types when indexing, so pay attention variable's type of the index.
+For example, when using `const` to make a variable reference, pay attention that its type is `string` and not `"age"` (this can be changed by using [`as const`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions):
 
 ```ts twoslash
 // @errors: 2538 2749
 type Person = { age: number; name: string; alive: boolean };
 // ---cut---
-const key = "age";
-type Age = Person[key];
+const key = "age"; // Type is 'string'
+type Age1 = Person[key];
+
+const keyWithConstantType = "age" as const; // Type is "age"
+type Age2 = Person[keyWithConstantType];
 ```
 
-However, you can use a type alias for a similar style of refactor:
+Moreover, you can use a type alias for a similar style of refactor:
 
 ```ts twoslash
 type Person = { age: number; name: string; alive: boolean };
