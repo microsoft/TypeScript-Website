@@ -7,6 +7,3752 @@ oneline: "All TypeScript release notes"
 
 This overview page contains a shortened version of all the release notes for TypeScript. Because this page is so big. code samples have their interactive elements disabled.
 
+## TypeScript 4.8
+
+### Improved Intersection Reduction, Union Compatibility, and Narrowing
+
+TypeScript 4.8 brings a series of correctness and consistency improvements under `--strictNullChecks`.
+These changes affect how intersection and union types work, and are leveraged in how TypeScript narrows types.
+
+For example, `unknown` is close in spirit to the union type `{} | null | undefined` because it accepts `null`, `undefined`, and any other type.
+TypeScript now recognizes this, and allows assignments from `unknown` to `{} | null | undefined`.
+
+```ts
+function f(x: unknown, y: {} | null | undefined) {
+    x = y; // always worked
+    y = x; // used to error, now works
+}
+```
+
+Another change is that `{}` intersected with any other object type simplifies right down to that object type.
+That meant that we were able to rewrite `NonNullable` to just use an intersection with `{}`, because `{} & null` and `{} & undefined` just get tossed away.
+
+```diff
+- type NonNullable<T> = T extends null | undefined ? never : T;
++ type NonNullable<T> = T & {};
+```
+
+This is an improvement because intersection types like this can be reduced and assigned to, while conditional types currently cannot.
+So `NonNullable<NonNullable<T>>` now simplifies at least to `NonNullable<T>`, whereas it didn't before.
+
+```ts
+function foo<T>(x: NonNullable<T>, y: NonNullable<NonNullable<T>>) {
+    x = y; // always worked
+    y = x; // used to error, now works
+}
+```
+
+These changes also allowed us to bring in sensible improvements in control flow analysis and type narrowing.
+For example, `unknown` is now narrowed just like `{} | null | undefined` in truthy branches.
+
+```ts
+function narrowUnknownishUnion(x: {} | null | undefined) {
+    if (x) {
+        x;  // {}
+    }
+    else {
+        x;  // {} | null | undefined
+    }
+}
+
+function narrowUnknown(x: unknown) {
+    if (x) {
+        x;  // used to be 'unknown', now '{}'
+    }
+    else {
+        x;  // unknown
+    }
+}
+```
+
+Generic values also get narrowed similarly.
+When checking that a value isn't `null` or `undefined`, TypeScript now just intersects it with `{}` - which again, is the same as saying it's `NonNullable`.
+Putting many of the changes here together, we can now define the following function without any type assertions.
+
+```ts
+function throwIfNullable<T>(value: T): NonNullable<T> {
+    if (value === undefined || value === null) {
+        throw Error("Nullable value!");
+    }
+
+    // Used to fail because 'T' was not assignable to 'NonNullable<T>'.
+    // Now narrows to 'T & {}' and succeeds because that's just 'NonNullable<T>'.
+    return value;
+}
+```
+
+`value` now gets narrowed to `T & {}`, and is now identical with `NonNullable<T>` - so the body of the function just works with no TypeScript-specific syntax.
+
+On their own, these changes may appear small - but they represent fixes for many many paper cuts that have been reported over several years.
+
+For more specifics on these improvements, you can [read more here](https://github.com/microsoft/TypeScript/pull/49119).
+
+### Improved Inference for `infer` Types in Template String Types
+
+TypeScript recently introduced a way to add `extends` constraints to `infer` type variables in conditional types.
+
+```ts
+// Grabs the first element of a tuple if it's assignable to 'number',
+// and returns 'never' if it can't find one.
+type TryGetNumberIfFirst<T> =
+    T extends [infer U extends number, ...unknown[]] ? U : never;
+```
+
+If these `infer` types appear in a template string type and are constrained to a primitive type, TypeScript will now try to parse out a literal type.
+
+```ts
+// SomeNum used to be 'number'; now it's '100'.
+type SomeNum = "100" extends `${infer U extends number}` ? U : never;
+
+// SomeBigInt used to be 'bigint'; now it's '100n'.
+type SomeBigInt = "100" extends `${infer U extends bigint}` ? U : never;
+
+// SomeBool used to be 'boolean'; now it's 'true'.
+type SomeBool = "true" extends `${infer U extends boolean}` ? U : never;
+```
+
+This can now better convey what a library will do at runtime, and give more precise types.
+
+One note on this is that when TypeScript parses these literal types out it will greedily try to parse out as much of what looks like of the appropriate primitive type;
+however it then checks to see if the print-back of that primitive matches up with the string contents.
+In other words, TypeScript checks whether the going from the string, to the primitive, and back matches.
+If it doesn't see that the string can be "round-tripped", then it will fall back to the base primitive type.
+
+```ts
+// JustNumber is `number` here because TypeScript parses out `"1.0"`, but `String(Number("1.0"))` is `"1"` and doesn't match.
+type JustNumber = "1.0" extends `${infer T extends number}` ? T : never; 
+```
+
+You can [see more about this feature here](https://github.com/microsoft/TypeScript/pull/48094).
+
+### `--build`, `--watch`, and `--incremental` Performance Improvements
+
+TypeScript 4.8 introduces several optimizations that should speed up scenarios around `--watch` and `--incremental`, along with project references builds using `--build`.
+For example, TypeScript is now able to avoid spending time updating timestamps during no-op changes in `--watch` mode, which makes rebuilds faster and avoids messing with other build tools that might be watching for TypeScript's output.
+Many other optimizations where we're able to reuse information across `--build`, `--watch`, and `--incremental` have been introduced as well.
+
+How big are these improvements?
+Well, on a fairly large internal codebase, we've seen time reductions on the order of 10%-25% on many simple common operations, with around 40% time reductions in no-change scenarios.
+We've seen similar results on the TypeScript codebase as well.
+
+You can see [the changes, along with the performance results on GitHub](https://github.com/microsoft/TypeScript/pull/48784).
+
+### Errors When Comparing Object and Array Literals
+
+In many languages, operators like `==` perform what's called "value" equality on objects.
+For example, in Python it's valid to check whether a list is empty by checking whether a value is equal to the empty list using `==`.
+
+```py
+if people_at_home == []:
+    print("here's where I lie, broken inside. </3")
+    adopt_animals()
+```
+
+This is not the case in JavaScript, where `==` and `===` between objects (and therefore, arrays) check whether both references point to the same value.
+We believe that similar code in JavaScript is at best an early foot-gun for JavaScript developers, and at worst a bug in production code.
+That's why TypeScript now disallows code like the following.
+
+```ts
+if (peopleAtHome === []) {
+//  ~~~~~~~~~~~~~~~~~~~
+// This condition will always return 'false' since JavaScript compares objects by reference, not value.
+    console.log("here's where I lie, broken inside. </3")
+    adoptAnimals();
+}
+```
+
+We'd like to extend our gratitude to [Jack Works](https://github.com/Jack-Works) who contributed this check.
+You can [view the changes involved here](https://github.com/microsoft/TypeScript/pull/45978).
+
+### Improved Inference from Binding Patterns
+
+In some cases, TypeScript will pick up a type from a binding pattern to make better inferences.
+
+```ts
+declare function chooseRandomly<T>(x: T, y: T): T;
+
+let [a, b, c] = chooseRandomly([42, true, "hi!"], [0, false, "bye!"]);
+//   ^  ^  ^
+//   |  |  |
+//   |  |  string
+//   |  |
+//   |  boolean
+//   |
+//   number
+```
+
+When `chooseRandomly` needs to figure out a type for `T`, it will primarily look at `[42, true, "hi!"]` and `[0, false, "bye!"]`;
+but TypeScript needs to figure out whether those two types should be `Array<number | boolean | string>` or the tuple type `[number, boolean, string]`.
+To do that, it will look for existing candidates as a hint to see whether there are any tuple types.
+When TypeScript sees the binding pattern `[a, b, c]`, it creates the type `[any, any, any]`, and that type gets picked up as a low-priority candidate for `T` which also gets used as a hint for the types of `[42, true, "hi!"]` and `[0, false, "bye!"]`.
+
+You can see how this was good for `chooseRandomly`, but it fell short in other cases.
+For example, take the following code
+
+```ts
+declare function f<T>(x?: T): T;
+
+let [x, y, z] = f();
+```
+
+The binding pattern `[x, y, z]` hinted that `f` should produce an `[any, any, any]` tuple;
+but `f` really shouldn't change its type argument based on a binding pattern.
+It can't suddenly conjure up a new array-like value based on what it's being assigned to, so the binding pattern type has way too much influence on the produced type.
+On top of that, because the binding pattern type is full of `any`s, we're left with `x`, `y`, and `z` being typed as `any`.
+
+In TypeScript 4.8, these binding patterns are never used as candidates for type arguments.
+Instead, they're just consulted in case a parameter needs a more specific type like in our `chooseRandomly` example.
+If you need to revert to the old behavior, you can always provide explicit type arguments.
+
+You can [look at the change on GitHub](https://github.com/microsoft/TypeScript/pull/49086) if you're curious to learn more.
+
+### File-Watching Fixes (Especially Across `git checkout`s)
+
+We've had a long-standing bug where TypeScript has a very hard time with certain file changes in `--watch` mode and editor scenarios.
+Sometimes the symptoms are stale or inaccurate errors that might show up that require restarting `tsc` or VS Code.
+Frequently these occur on Unix systems, and you might have seen these after saving a file with vim or swapping branches in git.
+
+This was caused by assumptions of how Node.js handles rename events across file systems.
+File systems used by Linux and macOS utilize [inodes](https://en.wikipedia.org/wiki/Inode), and [Node.js will attach file watchers to inodes rather than file paths](https://nodejs.org/api/fs.html#inodes).
+So when Node.js returns [a watcher object](https://nodejs.org/api/fs.html#class-fsfswatcher), it might be watching a path or an inode depending on the platform and file system.
+
+To be a bit more efficient, TypeScript tries to reuse the same watcher objects if it detects a path still exists on disk.
+This is where things went wrong, because even if a file still exists at that path, a distinct file might have been created, and that file will have a different inode.
+So TypeScript would end up reusing the watcher object instead of installing a new watcher at the original location, and watch for changes at what might be a totally irrelevant file.
+So TypeScript 4.8 now handles these cases on inode systems and properly installs a new watcher and fixes this.
+
+We'd like to extend our thanks to [Marc Celani](https://github.com/MarcCelani-at) and his team at Airtable who invested lots of time in investigating the issues they were experiencing and pointing out the root cause.
+You can view [the specific fixes around file-watching here](https://github.com/microsoft/TypeScript/pull/48997).
+
+### Find-All-References Performance Improvements
+
+When running find-all-references in your editor, TypeScript is now able to act a little smarter as it aggregates references.
+This reduced the amount of time TypeScript took to search a widely-used identifier in its own codebase by about 20%.
+
+[You can read up more on the improvement here](https://github.com/microsoft/TypeScript/pull/49581).
+
+### Exclude Specific Files from Auto-Imports
+
+TypeScript 4.8 introduces an editor preference for excluding files from auto-imports.
+In Visual Studio Code, file names or globs can be added under "Auto Import File Exclude Patterns" in the Settings UI, or in a `.vscode/settings.json` file:
+
+```jsonc
+{
+    // Note that `javascript.preferences.autoImportFileExcludePatterns` can be specified for JavaScript too.
+    "typescript.preferences.autoImportFileExcludePatterns": [
+      "**/node_modules/@types/node"
+    ]
+}
+```
+
+This can be useful in cases where you can't avoid having certain modules or libraries in your compilation but you rarely want to import from them.
+These modules might have lots of exports that can pollute the auto-imports list and make it harder to navigate, and this option can help in those situations.
+
+You can [see more specifics about the implementation here](https://github.com/microsoft/TypeScript/pull/49578).
+
+### Correctness Fixes and Breaking Changes
+
+Due to the nature of type system changes, there are very few changes that can be made that don't affect *some* code;
+however, there are a few changes that are more likely to require adapting existing code.
+
+#### `lib.d.ts` Updates
+
+While TypeScript strives to avoid major breaks, even small changes in the built-in libraries can cause issues.
+We don't expect major breaks as a result of DOM and `lib.d.ts` updates, but one notable change is that the `cause` property on `Error`s now has the type `unknown` instead of `Error`.
+
+#### Unconstrained Generics No Longer Assignable to `{}`
+
+In TypeScript 4.8, for projects with `strictNullChecks` enabled, TypeScript will now correctly issue an error when an unconstrained type parameter is used in a position where `null` or `undefined` are not legal values.
+That will include any type that expects `{}`, `object`, or an object type with all-optional properties.
+
+A simple example can be seen in the following.
+
+```ts
+// Accepts any non-null non-undefined value
+function bar(value: {}) {
+  Object.keys(value); // This call throws on null/undefined at runtime.
+}
+
+// Unconstrained type parameter T...
+function foo<T>(x: T) {
+    bar(x); // Used to be allowed, now is an error in 4.8.
+    //  ~
+    // error: Argument of type 'T' is not assignable to parameter of type '{}'.
+}
+
+foo(undefined);
+```
+
+As demonstrated above, code like this has a potential bug - the values `null` and `undefined` can be indirectly passed through these unconstrained type parameters to code that is not supposed to observe those values.
+
+This behavior will also be visible in type positions. One example would be:
+```ts
+interface Foo<T> {
+  x: Bar<T>;
+}
+
+interface Bar<T extends {}> { }
+```
+
+Existing code that didn't want to handle `null` and `undefined` can be fixed by propagating the appropriate constraints through.
+
+```diff
+- function foo<T>(x: T) {
++ function foo<T extends {}>(x: T) {
+```
+
+Another work-around would be to check for `null` and `undefined` at runtime.
+
+```diff
+  function foo<T>(x: T) {
++     if (x !== null && x !== undefined) {
+          bar(x);
++     }
+  }
+```
+
+And if you know that for some reason, your generic value can't be `null` or `undefined`, you can just use a non-null assertion.
+
+```diff
+  function foo<T>(x: T) {
+-     bar(x);
++     bar(x!);
+  }
+```
+
+When it comes to types, you'll often either need to propagate constraints, or intersect your types with `{}`.
+
+For more information, you can [see the change that introduced this](https://github.com/microsoft/TypeScript/pull/49119) along with [the specific discussion issue regarding how unconstrained generics now work](https://github.com/microsoft/TypeScript/issues/49489).
+
+#### Decorators are placed on `modifiers` on TypeScript's Syntax Trees
+
+The current direction of decorators in TC39 means that TypeScript will have to handle a break in terms of placement of decorators.
+Previously, TypeScript assumed decorators would always be placed prior to all keywords/modifiers.
+For example
+
+```ts
+@decorator
+export class Foo {
+  // ...
+}
+```
+
+Decorators as currently proposed do not support this syntax.
+Instead, the `export` keyword must precede the decorator.
+
+```ts
+export @decorator class Foo {
+  // ...
+}
+```
+
+Unfortunately, TypeScript's trees are *concrete* rather than *abstract*, and our architecture expects syntax tree node fields to be entirely ordered before or after each other.
+To support both legacy decorators and decorators as proposed, TypeScript will have to gracefully parse, and intersperse, modifiers and decorators.
+
+To do this, it exposes a new type alias called `ModifierLike` which is a `Modifier` or a `Decorator`.
+
+```ts
+export type ModifierLike = Modifier | Decorator;
+```
+
+Decorators are now placed in the same field as `modifiers` which is now a `NodeArray<ModifierLike>` when set, and the entire field is deprecated.
+
+```diff
+- readonly modifiers?: NodeArray<Modifier> | undefined;
++ /**
++  * @deprecated ...
++  * Use `ts.canHaveModifiers()` to test whether a `Node` can have modifiers.
++  * Use `ts.getModifiers()` to get the modifiers of a `Node`.
++  * ...
++  */
++ readonly modifiers?: NodeArray<ModifierLike> | undefined;
+```
+
+All existing `decorators` properties have been marked as deprecated and will always be `undefined` if read.
+The type has also been changed to `undefined` so that existing tools know to handle them correctly.
+
+```diff
+- readonly decorators?: NodeArray<Decorator> | undefined;
++ /**
++  * @deprecated ...
++  * Use `ts.canHaveDecorators()` to test whether a `Node` can have decorators.
++  * Use `ts.getDecorators()` to get the decorators of a `Node`.
++  * ...
++  */
++ readonly decorators?: undefined;
+```
+
+To avoid new deprecation warnings and other issues, TypeScript now exposes four new functions to use in place of the `decorators` and `modifiers` properties.
+There are individual predicates for testing whether a node has support modifiers and decorators, along with respective accessor functions for grabbing them.
+
+```ts
+function canHaveModifiers(node: Node): node is HasModifiers;
+function getModifiers(node: HasModifiers): readonly Modifier[] | undefined;
+
+function canHaveDecorators(node: Node): node is HasDecorators;
+function getDecorators(node: HasDecorators): readonly Decorator[] | undefined;
+```
+
+As an example of how to access modifiers off of a node, you can write
+
+```ts
+const modifiers = canHaveModifiers(myNode) ? getModifiers(myNode) : undefined;
+```
+
+With the note that each call to `getModifiers` and `getDecorators` may allocate a new array.
+
+For more information, see changes around
+
+* [the restructuring of our tree nodes](https://github.com/microsoft/TypeScript/pull/49089)
+* [the deprecations](https://github.com/microsoft/TypeScript/pull/50343)
+* [exposing the predicate functions](https://github.com/microsoft/TypeScript/pull/50399)
+
+#### Types Cannot Be Imported/Exported in JavaScript Files
+
+TypeScript previously allowed JavaScript files to import and export entities declared with a type, but no value, in `import` and `export` statements.
+This behavior was incorrect, because named imports and exports for values that don't exist will cause a runtime error under ECMAScript modules.
+When a JavaScript file is type-checked under `--checkJs` or through a `// @ts-check` comment, TypeScript will now issue an error.
+
+```ts
+// @ts-check
+
+// Will fail at runtime because 'SomeType' is not a value.
+import { someValue, SomeType } from "some-module";
+
+/**
+ * @type {SomeType}
+ */
+export const myValue = someValue;
+
+/**
+ * @typedef {string | number} MyType
+ */
+
+// Will fail at runtime because 'MyType' is not a value.
+export { MyType as MyExportedType };
+```
+
+To reference a type from another module, you can instead directly qualify the import.
+
+```diff
+- import { someValue, SomeType } from "some-module";
++ import { someValue } from "some-module";
+  
+  /**
+-  * @type {SomeType}
++  * @type {import("some-module").SomeType}
+   */
+  export const myValue = someValue;
+```
+
+To export a type, you can just use a `/** @typedef */` comment in JSDoc.
+`@typedef` comments already automatically export types from their containing modules.
+
+```diff
+  /**
+   * @typedef {string | number} MyType
+   */
+
++ /**
++  * @typedef {MyType} MyExportedType
++  */
+- export { MyType as MyExportedType };
+```
+
+You can [read more about the change here](https://github.com/microsoft/TypeScript/pull/49580).
+
+#### Binding Patterns Do Not Directly Contribute to Inference Candidates
+
+As mentioned above, binding patterns no longer change the type of inference results in function calls.
+You can [read more about the original change here](https://github.com/microsoft/TypeScript/pull/49086).
+
+#### Unused Renames in Binding Patterns are Now Errors in Type Signatures
+
+TypeScript's type annotation syntax often looks like it can be used when destructuring values.
+For example, take the following function.
+
+```ts
+declare function makePerson({ name: string, age: number }): Person;
+```
+
+You might read this signature and think that `makePerson` obviously takes an object with a `name` property with the type `string` and an `age` property with the type `number`;
+however, JavaScript's destructuring syntax is actually taking precedence here.
+`makePerson` does say that it's going to take an object with a `name` and an `age` property, but instead of specifying a type for them, it's just saying that it renames `name` and `age` to `string` and `number` respectively.
+
+In a pure type construct, writing code like this is useless, and typically a mistake since developers usually assume they're writing a type annotation.
+
+TypeScript 4.8 makes these an error unless they're referenced later in the signature.
+The correct way to write the above signature would be as follows:
+
+```ts
+declare function makePerson(options: { name: string, age: number }): Person;
+
+// or
+
+declare function makePerson({ name, age }: { name: string, age: number }): Person;
+```
+
+This change can catch bugs in declarations, and has been helpful for improving existing code.
+We'd like to extend our thanks to [GitHub user uhyo](https://github.com/uhyo) for providing this check.
+[You can read up on the change here](https://github.com/microsoft/TypeScript/pull/41044).
+
+## TypeScript 4.7
+
+### ECMAScript Module Support in Node.js
+
+For the last few years, Node.js has been working to support ECMAScript modules (ESM).
+This has been a very difficult feature, since the Node.js ecosystem is built on a different module system called CommonJS (CJS).
+Interoperating between the two brings large challenges, with many new features to juggle;
+however, support for ESM in Node.js was largely implemented in Node.js 12 and later.
+Around TypeScript 4.5 we rolled out nightly-only support for ESM in Node.js to get some feedback from users and let library authors ready themselves for broader support.
+
+TypeScript 4.7 adds this functionality with two new `module` settings: `node16` and `nodenext`.
+
+```jsonc
+{
+    "compilerOptions": {
+        "module": "node16",
+    }
+}
+```
+
+These new modes bring a few high-level features which we'll explore here.
+
+#### `type` in `package.json` and New Extensions
+
+Node.js supports [a new setting in `package.json`](https://nodejs.org/api/packages.html#packages_package_json_and_file_extensions) called `type`.
+`"type"` can be set to either `"module"` or `"commonjs"`.
+
+```jsonc
+{
+    "name": "my-package",
+    "type": "module",
+
+    "//": "...",
+    "dependencies": {
+    }
+}
+```
+
+This setting controls whether `.js` files are interpreted as ES modules or CommonJS modules, and defaults to CommonJS when not set.
+When a file is considered an ES module, a few different rules come into play compared to CommonJS:
+
+* `import`/`export` statements can be used.
+* Top-level `await` can be used
+* Relative import paths need full extensions (we have to write `import "./foo.js"` instead of `import "./foo"`).
+* Imports might resolve differently from dependencies in `node_modules`.
+* Certain global-like values like `require` and `module` cannot be used directly.
+* CommonJS modules get imported under certain special rules.
+
+We'll come back to some of these.
+
+To overlay the way TypeScript works in this system, `.ts` and `.tsx` files now work the same way.
+When TypeScript finds a `.ts`, `.tsx`, `.js`, or `.jsx` file, it will walk up looking for a `package.json` to see whether that file is an ES module, and use that to determine:
+
+* how to find other modules which that file imports
+* and how to transform that file if producing outputs
+
+When a `.ts` file is compiled as an ES module, ECMAScript `import`/`export` statements are left alone in the `.js` output;
+when it's compiled as a CommonJS module, it will produce the same output you get today under `--module commonjs`.
+
+This also means paths resolve differently between `.ts` files that are ES modules and ones that are CJS modules.
+For example, let's say you have the following code today:
+
+```ts
+// ./foo.ts
+export function helper() {
+    // ...
+}
+
+// ./bar.ts
+import { helper } from "./foo"; // only works in CJS
+
+helper();
+```
+
+This code works in CommonJS modules, but will fail in ES modules because relative import paths need to use extensions.
+As a result, it will have to be rewritten to use the extension of the *output* of `foo.ts` - so `bar.ts` will instead have to import from `./foo.js`.
+
+```ts
+// ./bar.ts
+import { helper } from "./foo.js"; // works in ESM & CJS
+
+helper();
+```
+
+This might feel a bit cumbersome at first, but TypeScript tooling like auto-imports and path completion will typically just do this for you.
+
+One other thing to mention is the fact that this applies to `.d.ts` files too.
+When TypeScript finds a `.d.ts` file in package, it is interpreted based on the containing package.
+
+#### New File Extensions
+
+The `type` field in `package.json` is nice because it allows us to continue using the `.ts` and `.js` file extensions which can be convenient;
+however, you will occasionally need to write a file that differs from what `type` specifies.
+You might also just prefer to always be explicit.
+
+Node.js supports two extensions to help with this: `.mjs` and `.cjs`.
+`.mjs` files are always ES modules, and `.cjs` files are always CommonJS modules, and there's no way to override these.
+
+In turn, TypeScript supports two new source file extensions: `.mts` and `.cts`.
+When TypeScript emits these to JavaScript files, it will emit them to `.mjs` and `.cjs` respectively.
+
+Furthermore, TypeScript also supports two new declaration file extensions: `.d.mts` and `.d.cts`.
+When TypeScript generates declaration files for `.mts` and `.cts`, their corresponding extensions will be `.d.mts` and `.d.cts`.
+
+Using these extensions is entirely optional, but will often be useful even if you choose not to use them as part of your primary workflow.
+
+#### CommonJS Interoperability
+
+Node.js allows ES modules to import CommonJS modules as if they were ES modules with a default export.
+
+```ts
+// ./foo.cts
+export function helper() {
+    console.log("hello world!");
+}
+
+// ./bar.mts
+import foo from "./foo.cjs";
+
+// prints "hello world!"
+foo.helper();
+```
+
+In some cases, Node.js also synthesizes named exports from CommonJS modules, which can be more convenient.
+In these cases, ES modules can use a "namespace-style" import (i.e. `import * as foo from "..."`), or named imports (i.e. `import { helper } from "..."`).
+
+```ts
+// ./foo.cts
+export function helper() {
+    console.log("hello world!");
+}
+
+// ./bar.mts
+import { helper } from "./foo.cjs";
+
+// prints "hello world!"
+helper();
+```
+
+There isn't always a way for TypeScript to know whether these named imports will be synthesized, but TypeScript will err on being permissive and use some heuristics when importing from a file that is definitely a CommonJS module.
+
+One TypeScript-specific note about interop is the following syntax:
+
+```ts
+import foo = require("foo");
+```
+
+In a CommonJS module, this just boils down to a `require()` call, and in an ES module, this imports [`createRequire`](https://nodejs.org/api/module.html#module_module_createrequire_filename) to achieve the same thing.
+This will make code less portable on runtimes like the browser (which don't support `require()`), but will often be useful for interoperability.
+In turn, you can write the above example using this syntax as follows:
+
+```ts
+// ./foo.cts
+export function helper() {
+    console.log("hello world!");
+}
+
+// ./bar.mts
+import foo = require("./foo.cjs");
+
+foo.helper()
+```
+
+Finally, it's worth noting that the only way to import ESM files from a CJS module is using dynamic `import()` calls.
+This can present challenges, but is the behavior in Node.js today.
+
+You can [read more about ESM/CommonJS interop in Node.js here](https://nodejs.org/api/esm.html#esm_interoperability_with_commonjs).
+
+#### `package.json` Exports, Imports, and Self-Referencing
+
+Node.js supports [a new field for defining entry points in `package.json` called `"exports"`](https://nodejs.org/api/packages.html#packages_exports).
+This field is a more powerful alternative to defining `"main"` in `package.json`, and can control what parts of your package are exposed to consumers.
+
+Here's an `package.json` that supports separate entry-points for CommonJS and ESM:
+
+```jsonc
+// package.json
+{
+    "name": "my-package",
+    "type": "module",
+    "exports": {
+        ".": {
+            // Entry-point for `import "my-package"` in ESM
+            "import": "./esm/index.js",
+
+            // Entry-point for `require("my-package") in CJS
+            "require": "./commonjs/index.cjs",
+        },
+    },
+
+    // CJS fall-back for older versions of Node.js
+    "main": "./commonjs/index.cjs",
+}
+```
+
+There's a lot to this feature, [which you can read more about on the Node.js documentation](https://nodejs.org/api/packages.html).
+Here we'll try to focus on how TypeScript supports it.
+
+With TypeScript's original Node support, it would look for a `"main"` field, and then look for declaration files that corresponded to that entry.
+For example, if `"main"` pointed to `./lib/index.js`, TypeScript would look for a file called `./lib/index.d.ts`.
+A package author could override this by specifying a separate field called `"types"` (e.g. `"types": "./types/index.d.ts"`).
+
+The new support works similarly with [import conditions](https://nodejs.org/api/packages.html).
+By default, TypeScript overlays the same rules with import conditions - if you write an `import` from an ES module, it will look up the `import` field, and from a CommonJS module, it will look at the `require` field.
+If it finds them, it will look for a corresponding declaration file.
+If you need to point to a different location for your type declarations, you can add a `"types"` import condition.
+
+```jsonc
+// package.json
+{
+    "name": "my-package",
+    "type": "module",
+    "exports": {
+        ".": {
+            // Entry-point for `import "my-package"` in ESM
+            "import": {
+                // Where TypeScript will look.
+                "types": "./types/esm/index.d.ts",
+
+                // Where Node.js will look.
+                "default": "./esm/index.js"
+            },
+            // Entry-point for `require("my-package") in CJS
+            "require": {
+                // Where TypeScript will look.
+                "types": "./types/commonjs/index.d.cts",
+
+                // Where Node.js will look.
+                "default": "./commonjs/index.cjs"
+            },
+        }
+    },
+
+    // Fall-back for older versions of TypeScript
+    "types": "./types/index.d.ts",
+
+    // CJS fall-back for older versions of Node.js
+    "main": "./commonjs/index.cjs"
+}
+```
+
+<aside>
+
+Note that the `"types"` condition should always come first in `"exports"`.
+
+</aside>
+
+TypeScript also supports [the `"imports"` field of `package.json`](https://nodejs.org/api/packages.html#packages_imports) in a similar manner by looking for declaration files alongside corresponding files, and supports [packages self-referencing themselves](https://nodejs.org/api/packages.html#packages_self_referencing_a_package_using_its_name).
+These features are generally not as involved to set up, but are supported.
+
+#### Your Feedback Wanted!
+
+As we continue working on TypeScript 4.7, we expect to see more documentation and polish go into this functionality.
+Supporting these new features has been an ambitious under-taking, and that's why we're looking for early feedback on it!
+Please try it out and let us know how it works for you.
+
+For more information, [you can see the implementing PR here](https://github.com/microsoft/TypeScript/pull/44501).
+
+### Control over Module Detection
+
+One issue with the introduction of modules to JavaScript was the ambiguity between existing "script" code and the new module code.
+JavaScript code in a module runs slightly differently, and has different scoping rules, so tools have to make decisions as to how each file runs.
+For example, Node.js requires module entry-points to be written in a `.mjs`, or have a nearby `package.json` with `"type": "module"`.
+TypeScript treats a file as a module whenever it finds any `import` or `export` statement in a file, but otherwise, will assume a `.ts` or `.js` file is a script file acting on the global scope.
+
+This doesn't quite match up with the behavior of Node.js where the `package.json` can change the format of a file, or the `--jsx` setting `react-jsx`, where any JSX file contains an implicit import to a JSX factory.
+It also doesn't match modern expectations where most new TypeScript code is written with modules in mind.
+
+That's why TypeScript 4.7 introduces a new option called `moduleDetection`.
+`moduleDetection` can take on 3 values: `"auto"` (the default), `"legacy"` (the same behavior as 4.6 and prior), and `"force"`.
+
+Under the mode `"auto"`, TypeScript will not only look for `import` and `export` statements, but it will also check whether
+
+* the `"type"` field in `package.json` is set to `"module"` when running under `--module nodenext`/`--module node16`, and
+* check whether the current file is a JSX file when running under `--jsx react-jsx`
+
+In cases where you want every file to be treated as a module, the `"force"` setting ensures that every non-declaration file is treated as a module.
+This will be true regardless of how `module`, `moduleResoluton`, and `jsx` are configured.
+
+Meanwhile, the `"legacy"` option simply goes back to the old behavior of only seeking out `import` and `export` statements to determine whether a file is a module.
+
+You can [read up more about this change on the pull request](https://github.com/microsoft/TypeScript/pull/47495).
+
+### Control-Flow Analysis for Bracketed Element Access
+
+TypeScript 4.7 now narrows the types of element accesses when the indexed keys are literal types and unique symbols.
+For example, take the following code:
+
+```ts
+const key = Symbol();
+
+const numberOrString = Math.random() < 0.5 ? 42 : "hello";
+
+const obj = {
+    [key]: numberOrString,
+};
+
+if (typeof obj[key] === "string") {
+    let str = obj[key].toUpperCase();
+}
+```
+
+Previously, TypeScript would not consider any type guards on `obj[key]`, and would have no idea that `obj[key]` was really a `string`.
+Instead, it would think that `obj[key]` was still a `string | number` and accessing `toUpperCase()` would trigger an error.
+
+TypeScript 4.7 now knows that `obj[key]` is a string.
+
+This also means that under `--strictPropertyInitialization`, TypeScript can correctly check that computed properties are initialized by the end of a constructor body.
+
+```ts
+// 'key' has type 'unique symbol'
+const key = Symbol();
+
+class C {
+    [key]: string;
+
+    constructor(str: string) {
+        // oops, forgot to set 'this[key]'
+    }
+
+    screamString() {
+        return this[key].toUpperCase();
+    }
+}
+```
+
+Under TypeScript 4.7, `--strictPropertyInitialization` reports an error telling us that the `[key]` property wasn't definitely assigned by the end of the constructor.
+
+We'd like to extend our gratitude to [Oleksandr Tarasiuk](https://github.com/a-tarasyuk) who provided [this change](https://github.com/microsoft/TypeScript/pull/45974)!
+
+### Improved Function Inference in Objects and Methods
+
+TypeScript 4.7 can now perform more granular inferences from functions within objects and arrays.
+This allows the types of these functions to consistently flow in a left-to-right manner just like for plain arguments.
+
+```ts
+declare function f<T>(arg: {
+    produce: (n: string) => T,
+    consume: (x: T) => void }
+): void;
+
+// Works
+f({
+    produce: () => "hello",
+    consume: x => x.toLowerCase()
+});
+
+// Works
+f({
+    produce: (n: string) => n,
+    consume: x => x.toLowerCase(),
+});
+
+// Was an error, now works.
+f({
+    produce: n => n,
+    consume: x => x.toLowerCase(),
+});
+
+// Was an error, now works.
+f({
+    produce: function () { return "hello"; },
+    consume: x => x.toLowerCase(),
+});
+
+// Was an error, now works.
+f({
+    produce() { return "hello" },
+    consume: x => x.toLowerCase(),
+});
+```
+
+Inference failed in some of these examples because knowing the type of their `produce` functions would indirectly request the type of `arg` before finding a good type for `T`.
+TypeScript now gathers functions that could contribute to the inferred type of `T` and infers from them lazily.
+
+For more information, you can [take a look at the specific modifications to our inference process](https://github.com/microsoft/TypeScript/pull/48538).
+
+### Instantiation Expressions
+
+Occasionally functions can be a bit more general than we want.
+For example, let's say we had a `makeBox` function.
+
+```ts
+interface Box<T> {
+    value: T;
+}
+
+function makeBox<T>(value: T) {
+    return { value };
+}
+```
+
+Maybe we want to create a more specialized set of functions for making `Box`es of `Wrench`es and `Hammer`s.
+To do that today, we'd have to wrap `makeBox` in other functions, or use an explicit type for an alias of `makeBox`.
+
+```ts
+function makeHammerBox(hammer: Hammer) {
+    return makeBox(hammer);
+}
+
+// or...
+
+const makeWrenchBox: (wrench: Wrench) => Box<Wrench> = makeBox;
+```
+
+These work, but wrapping a call to `makeBox` is a bit wasteful, and writing the full signature of `makeWrenchBox` could get unwieldy.
+Ideally, we would be able to say that we just want to alias `makeBox` while replacing all of the generics in its signature.
+
+TypeScript 4.7 allows exactly that!
+We can now take functions and constructors and feed them type arguments directly.
+
+```ts
+const makeHammerBox = makeBox<Hammer>;
+const makeWrenchBox = makeBox<Wrench>;
+```
+
+So with this, we can specialize `makeBox` to accept more specific types and reject anything else.
+
+```ts
+const makeStringBox = makeBox<string>;
+
+// TypeScript correctly rejects this.
+makeStringBox(42);
+```
+
+This logic also works for constructor functions such as `Array`, `Map`, and `Set`.
+
+```ts
+// Has type `new () => Map<string, Error>`
+const ErrorMap = Map<string, Error>;
+
+// Has type `// Map<string, Error>`
+const errorMap = new ErrorMap();
+```
+
+When a function or constructor is given type arguments, it will produce a new type that keeps all signatures with compatible type parameter lists, and replaces the corresponding type parameters with the given type arguments.
+Any other signatures are dropped, as TypeScript will assume that they aren't meant to be used.
+
+For more information on this feature, [check out the pull request](https://github.com/microsoft/TypeScript/pull/47607).
+
+### `extends` Constraints on `infer` Type Variables
+
+Conditional types are a bit of a power-user feature.
+They allow us to match and infer against the shape of types, and make decisions based on them.
+For example, we can write a conditional type that returns the first element of a tuple type if it's a `string`-like type.
+
+```ts
+type FirstIfString<T> =
+    T extends [infer S, ...unknown[]]
+        ? S extends string ? S : never
+        : never;
+
+ // string
+type A = FirstIfString<[string, number, number]>;
+
+// "hello"
+type B = FirstIfString<["hello", number, number]>;
+
+// "hello" | "world"
+type C = FirstIfString<["hello" | "world", boolean]>;
+
+// never
+type D = FirstIfString<[boolean, number, string]>;
+```
+
+`FirstIfString` matches against any tuple with at least one element and grabs the type of the first element as `S`.
+Then it checks if `S` is compatible with `string` and returns that type if it is.
+
+Note that we had to use two conditional types to write this.
+We could have written `FirstIfString` as follows:
+
+```ts
+type FirstIfString<T> =
+    T extends [string, ...unknown[]]
+        // Grab the first type out of `T`
+        ? T[0]
+        : never;
+```
+
+This works, but it's slightly more "manual" and less declarative.
+Instead of just pattern-matching on the type and giving the first element a name, we have to fetch out the `0`th element of `T` with `T[0]`.
+If we were dealing with types more complex than tuples, this could get a lot trickier, so `infer` can simplify things.
+
+Using nested conditionals to infer a type and then match against that inferred type is pretty common.
+To avoid that second level of nesting, TypeScript 4.7 now allows you to place a constraint on any `infer` type.
+
+```ts
+type FirstIfString<T> =
+    T extends [infer S extends string, ...unknown[]]
+        ? S
+        : never;
+```
+
+This way, when TypeScript matches against `S`, it also ensures that `S` has to be a `string`.
+If `S` isn't a `string`, it takes the false path, which in these cases is `never`.
+
+For more details, you can [read up on the change on GitHub](https://github.com/microsoft/TypeScript/pull/48112).
+
+### Optional Variance Annotations for Type Parameters
+
+Let's take the following types.
+
+```ts
+interface Animal {
+    animalStuff: any;
+}
+
+interface Dog extends Animal {
+    dogStuff: any;
+}
+
+// ...
+
+type Getter<T> = () => T;
+
+type Setter<T> = (value: T) => void;
+```
+
+Imagine we had two different instances of `Getter`s.
+Figuring out whether any two different `Getter`s are substitutable for one another depends entirely on `T`.
+In the case of whether an assignment of `Getter<Dog>`&nbsp;&rarr;&nbsp;`Getter<Animal>` is valid, we have to check whether `Dog`&nbsp;&rarr;&nbsp;`Animal` is valid.
+Because each type for `T` just gets related in the same "direction", we say that the `Getter` type is *covariant* on `T`.
+On the other hand, checking whether `Setter<Dog>`&nbsp;&rarr;&nbsp;`Setter<Animal>` is valid involves checking whether `Animal`&nbsp;&rarr;&nbsp;`Dog` is valid.
+That "flip" in direction is kind of like how in math, checking whether &minus;*x*&nbsp;&lt;&nbsp;*&minus;y* is the same as checking whether *y*&nbsp;&lt;&nbsp;*x*.
+When we have to flip directions like this to compare `T`, we say that `Setter` is *contravariant* on `T`.
+
+With TypeScript 4.7, we're now able to *explicitly* specify variance on type parameters.
+
+So now, if we want to make it explicit that `Getter` is covariant on `T`, we can now give it an `out` modifier.
+
+```ts
+type Getter<out T> = () => T;
+```
+
+And similarly, if we also want to make it explicit that `Setter` is contravariant on `T`, we can give it an `in` modifier.
+
+```ts
+type Setter<in T> = (value: T) => void;
+```
+
+`out` and `in` are used here because a type parameter's variance depends on whether it's used in an *output* or an *input*.
+Instead of thinking about variance, you can just think about if `T` is used in output and input positions.
+
+There are also cases for using both `in` and `out`.
+
+```ts
+interface State<in out T> {
+    get: () => T;
+    set: (value: T) => void;
+}
+```
+
+When a `T` is used in both an output and input position, it becomes *invariant*.
+Two different `State<T>`s can't be interchanged unless their `T`s are the same.
+In other words, `State<Dog>` and `State<Animal>` aren't substitutable for the other.
+
+Now technically speaking, in a purely structural type system, type parameters and their variance don't really matter - you can just plug in types in place of each type parameter and check whether each matching member is structurally compatible.
+So if TypeScript uses a structural type system, why are we interested in the variance of type parameters?
+And why might we ever want to annotate them?
+
+One reason is that it can be a useful for a reader to explicitly see how a type parameter is used at a glance.
+For much more complex types, it can be difficult to tell whether a type is meant to be read, written, or both.
+TypeScript will also help us out if we forget to mention how that type parameter is used.
+As an example, if we forgot to specify both `in` and `out` on `State`, we'd get an error.
+
+```ts
+interface State<out T> {
+    //          ~~~~~
+    // error!
+    // Type 'State<sub-T>' is not assignable to type 'State<super-T>' as implied by variance annotation.
+    //   Types of property 'set' are incompatible.
+    //     Type '(value: sub-T) => void' is not assignable to type '(value: super-T) => void'.
+    //       Types of parameters 'value' and 'value' are incompatible.
+    //         Type 'super-T' is not assignable to type 'sub-T'.
+    get: () => T;
+    set: (value: T) => void;
+}
+```
+
+Another reason is precision and speed!
+TypeScript already tries to infer the variance of type parameters as an optimization.
+By doing this, it can type-check larger structural types in a reasonable amount of time.
+Calculating variance ahead of time allows the type-checker to skip deeper comparisons and just compare type arguments which can be *much* faster than comparing the full structure of a type over and over again.
+But often there are cases where this calculation is still fairly expensive, and the calculation may find circularities that can't be accurately resolved, meaning there's no clear answer for the variance of a type.
+
+```ts
+type Foo<T> = {
+    x: T;
+    f: Bar<T>;
+}
+
+type Bar<U> = (x: Baz<U[]>) => void;
+
+type Baz<V> = {
+    value: Foo<V[]>;
+}
+
+declare let foo1: Foo<unknown>;
+declare let foo2: Foo<string>;
+
+foo1 = foo2;  // Should be an error but isn't ❌
+foo2 = foo1;  // Error - correct ✅
+```
+
+Providing an explicit annotation can speed up type-checking at these circularities and provide better accuracy.
+For instance, marking `T` as invariant in the above example can help stop the problematic assignment.
+
+```diff
+- type Foo<T> = {
++ type Foo<in out T> = {
+      x: T;
+      f: Bar<T>;
+  }
+```
+
+We don't necessarily recommend annotating every type parameter with its variance;
+For example, it's possible (but not recommended) to make variance a little stricter than is necessary, so TypeScript won't stop you from marking something as invariant if it's really just covariant, contravariant, or even independent.
+So if you do choose to add explicit variance markers, we would encourage thoughtful and precise use of them.
+
+But if you're working with deeply recursive types, especially if you're a library author, you may be interested in using these annotations to the benefit of your users.
+Those annotations can provide wins in both accuracy and type-checking speed, which can even affect their code editing experience.
+Determining when variance calculation is a bottleneck on type-checking time can be done experimentally, and determined using tooling like our [analyze-trace](https://github.com/microsoft/typescript-analyze-trace) utility.
+
+
+For more details on this feature, you can [read up on the pull request](https://github.com/microsoft/TypeScript/pull/48240).
+
+### Resolution Customization with `moduleSuffixes`
+
+TypeScript 4.7 now supports a `moduleSuffixes` option to customize how module specifiers are looked up.
+
+```jsonc
+{
+    "compilerOptions": {
+        "moduleSuffixes": [".ios", ".native", ""]
+    }
+}
+```
+
+Given the above configuration, an import like the following...
+
+```ts
+import * as foo from "./foo";
+```
+
+will try to look at the relative files `./foo.ios.ts`, `./foo.native.ts`, and finally `./foo.ts`.
+
+<aside>
+
+Note that the empty string `""` in `moduleSuffixes` is necessary for TypeScript to also look-up `./foo.ts`.
+In a sense, the default value for `moduleSuffixes` is `[""]`.
+
+</aside>
+
+This feature can be useful for React Native projects where each target platform can use a separate `tsconfig.json` with differing `moduleSuffixes`.
+
+[The `moduleSuffixes` option](https://github.com/microsoft/TypeScript/pull/48189) was contributed thanks to [Adam Foxman](https://github.com/afoxman)!
+
+### resolution-mode
+
+With Node's ECMAScript resolution, the mode of the containing file and the syntax you use determines how imports are resolved;
+however it would be useful to reference the types of a CommonJS module from an ECMAScript module, or vice-versa.
+
+TypeScript now allows `/// <reference types="..." />` directives.
+
+```ts
+/// <reference types="pkg" resolution-mode="require" />
+
+// or
+
+/// <reference types="pkg" resolution-mode="import" />
+```
+
+Additionally, in nightly versions of TypeScript, `import type` can specify an import assertion to achieve something similar.
+
+```ts
+// Resolve `pkg` as if we were importing with a `require()`
+import type { TypeFromRequire } from "pkg" assert {
+    "resolution-mode": "require"
+};
+
+// Resolve `pkg` as if we were importing with an `import`
+import type { TypeFromImport } from "pkg" assert {
+    "resolution-mode": "import"
+};
+
+export interface MergedType extends TypeFromRequire, TypeFromImport {}
+```
+
+These import assertions can also be used on `import()` types.
+
+```ts
+export type TypeFromRequire =
+    import("pkg", { assert: { "resolution-mode": "require" } }).TypeFromRequire;
+
+export type TypeFromImport =
+    import("pkg", { assert: { "resolution-mode": "import" } }).TypeFromImport;
+
+export interface MergedType extends TypeFromRequire, TypeFromImport {}
+```
+
+The `import type` and `import()` syntaxes only support `resolution-mode` in [nightly builds of TypeScript](https://www.typescriptlang.org/docs/handbook/nightly-builds.html).
+You'll likely get an error like
+
+```
+Resolution mode assertions are unstable. Use nightly TypeScript to silence this error. Try updating with 'npm install -D typescript@next'.
+```
+
+If you do find yourself using this feature in nightly versions of TypeScript, [consider providing feedback on this issue](https://github.com/microsoft/TypeScript/issues/49055).
+
+You can see the respective changes [for reference directives](https://github.com/microsoft/TypeScript/pull/47732) and [for type import assertions](https://github.com/microsoft/TypeScript/pull/47807).
+
+### Go to Source Definition
+
+TypeScript 4.7 contains support for a new experimental editor command called *Go To Source Definition*.
+It's similar to *Go To Definition*, but it never returns results inside declaration files.
+Instead, it tries to find corresponding *implementation* files (like `.js` or `.ts` files), and find definitions there &mdash; even if those files are normally shadowed by `.d.ts` files.
+
+This comes in handy most often when you need to peek at the implementation of a function you're importing from a library instead of its type declaration in a `.d.ts` file.
+
+![The "Go to Source Definition" command on a use of the yargs package jumps the editor to an index.cjs file in yargs.](https://devblogs.microsoft.com/typescript/wp-content/uploads/sites/11/2022/05/go-to-source-definition-4-7-v1.gif)
+
+You can try this new command in the latest versions of Visual Studio Code.
+Note, though, that this functionality is still in preview, and there are some known limitations.
+In some cases TypeScript uses heuristics to guess which `.js` file corresponds to the given result of a definition, so these results might be inaccurate.
+Visual Studio Code also doesn't yet indicate whether a result was a guess, but it's something we're collaborating on.
+
+You can leave feedback about the feature, read about known limitations, or learn more at [our dedicated feedback issue](https://github.com/microsoft/TypeScript/issues/49003).
+
+### Group-Aware Organize Imports
+
+TypeScript has an *Organize Imports* editor feature for both JavaScript and TypeScript.
+Unfortunately, it could be a bit of a blunt instrument, and would often naively sort your import statements.
+
+For instance, if you ran Organize Imports on the following file...
+
+```ts
+// local code
+import * as bbb from "./bbb";
+import * as ccc from "./ccc";
+import * as aaa from "./aaa";
+
+// built-ins
+import * as path from "path";
+import * as child_process from "child_process"
+import * as fs from "fs";
+
+// some code...
+```
+
+You would get something like the following
+
+```ts
+// local code
+import * as child_process from "child_process";
+import * as fs from "fs";
+// built-ins
+import * as path from "path";
+import * as aaa from "./aaa";
+import * as bbb from "./bbb";
+import * as ccc from "./ccc";
+
+
+// some code...
+```
+
+This is... not ideal.
+Sure, our imports are sorted by their paths, and our comments and newlines are preserved, but not in a way we expected.
+Much of the time, if we have our imports grouped in a specific way, then we want to keep them that way.
+
+TypeScript 4.7 performs Organize Imports in a group-aware manner.
+Running it on the above code looks a little bit more like what you'd expect:
+
+```ts
+// local code
+import * as aaa from "./aaa";
+import * as bbb from "./bbb";
+import * as ccc from "./ccc";
+
+// built-ins
+import * as child_process from "child_process";
+import * as fs from "fs";
+import * as path from "path";
+
+// some code...
+```
+
+We'd like to extend our thanks to [Minh Quy](https://github.com/MQuy) who provided [this feature](https://github.com/microsoft/TypeScript/pull/48330).
+
+### Object Method Snippet Completions
+
+TypeScript now provides snippet completions for object literal methods.
+When completing members in an object, TypeScript will provide a typical completion entry for just the name of a method, along with a separate completion entry for the full method definition!
+
+![Completion a full method signature from an object](https://devblogs.microsoft.com/typescript/wp-content/uploads/sites/11/2022/05/object-method-completions-4-7-v2.gif)
+
+For more details, [see the implementing pull request](https://github.com/microsoft/TypeScript/pull/48168).
+
+### Breaking Changes
+
+#### `lib.d.ts` Updates
+
+While TypeScript strives to avoid major breaks, even small changes in the built-in libraries can cause issues.
+We don't expect major breaks as a result of DOM and `lib.d.ts` updates, but there may be some small ones.
+
+#### Stricter Spread Checks in JSX
+
+When writing a `...spread` in JSX, TypeScript now enforces stricter checks that the given type is actually an object.
+As a result, values with the types `unknown` and `never` (and more rarely, just bare `null` and `undefined`) can no longer be spread into JSX elements.
+
+So for the following example:
+
+```tsx
+import * as React from "react";
+
+interface Props {
+    stuff?: string;
+}
+
+function MyComponent(props: unknown) {
+    return <div {...props} />;
+}
+```
+
+you'll now receive an error like the following:
+
+```
+Spread types may only be created from object types.
+```
+
+This makes this behavior more consistent with spreads in object literals.
+
+For more details, [see the change on GitHub](https://github.com/microsoft/TypeScript/pull/48570).
+
+#### Stricter Checks with Template String Expressions
+
+When a `symbol` value is used in a template string, it will trigger a runtime error in JavaScript.
+
+```js
+let str = `hello ${Symbol()}`;
+// TypeError: Cannot convert a Symbol value to a string
+```
+
+As a result, TypeScript will issue an error as well;
+however, TypeScript now also checks if a generic value that is constrained to a symbol in some way is used in a template string.
+
+```ts
+function logKey<S extends string | symbol>(key: S): S {
+    // Now an error.
+    console.log(`${key} is the key`);
+    return key;
+}
+
+function get<T, K extends keyof T>(obj: T, key: K) {
+    // Now an error.
+    console.log(`Grabbing property '${key}'.`);
+    return obj[key];
+}
+```
+
+TypeScript will now issue the following error:
+
+```
+Implicit conversion of a 'symbol' to a 'string' will fail at runtime. Consider wrapping this expression in 'String(...)'.
+```
+
+In some cases, you can get around this by wrapping the expression in a call to `String`, just like the error message suggests.
+
+```ts
+function logKey<S extends string | symbol>(key: S): S {
+    // Now an error.
+    console.log(`${String(key)} is the key`);
+    return key;
+}
+```
+
+In others, this error is too pedantic, and you might not ever care to even allow `symbol` keys when using `keyof`.
+In such cases, you can switch to `string & keyof ...`:
+
+```ts
+function get<T, K extends string & keyof T>(obj: T, key: K) {
+    // Now an error.
+    console.log(`Grabbing property '${key}'.`);
+    return obj[key];
+}
+```
+
+For more information, you can [see the implementing pull request](https://github.com/microsoft/TypeScript/pull/44578).
+
+#### `readFile` Method is No Longer Optional on `LanguageServiceHost`
+
+If you're creating `LanguageService` instances, then provided `LanguageServiceHost`s will need to provide a `readFile` method.
+This change was necessary to support the new `moduleDetection` compiler option.
+
+You can [read more on the change here](https://github.com/microsoft/TypeScript/pull/47495).
+
+#### `readonly` Tuples Have a `readonly` `length` Property
+
+A `readonly` tuple will now treat its `length` property as `readonly`.
+This was almost never witnessable for fixed-length tuples, but was an oversight which could be observed for tuples with trailing optional and rest element types.
+
+As a result, the following code will now fail:
+
+```ts
+function overwriteLength(tuple: readonly [string, string, string]) {
+    // Now errors.
+    tuple.length = 7;
+}
+```
+
+You can [read more on this change here](https://github.com/microsoft/TypeScript/pull/47717).
+
+## TypeScript 4.6
+
+### Allowing Code in Constructors Before `super()`
+
+In JavaScript classes it's mandatory to call `super()` before referring to `this`.
+TypeScript enforces this as well, though it was a bit too strict in _how_ it ensured this.
+In TypeScript, it was previously an error to contain _any_ code at the beginning of a constructor if its containing class had any property initializers.
+
+```ts
+class Base {
+  // ...
+}
+
+class Derived extends Base {
+  someProperty = true;
+
+  constructor() {
+    // error!
+    // have to call 'super()' first because it needs to initialize 'someProperty'.
+    doSomeStuff();
+    super();
+  }
+}
+```
+
+This made it cheap to check that `super()` gets called before `this` is referenced, but it ended up rejecting a lot of valid code.
+TypeScript 4.6 is now much more lenient in that check and permits other code to run before `super()`., all while still ensuring that `super()` occurs at the top-level before any references to `this`.
+
+We'd like to extend our thanks to [Joshua Goldberg](https://github.com/JoshuaKGoldberg) for [patiently working with us to land this change](https://github.com/microsoft/TypeScript/pull/29374)!
+
+### Control Flow Analysis for Destructured Discriminated Unions
+
+TypeScript is able to narrow types based on what's called a discriminant property.
+For example, in the following code snippet, TypeScript is able to narrow the type of `action` based on every time we check against the value of `kind`.
+
+```ts
+type Action =
+  | { kind: "NumberContents"; payload: number }
+  | { kind: "StringContents"; payload: string };
+
+function processAction(action: Action) {
+  if (action.kind === "NumberContents") {
+    // `action.payload` is a number here.
+    let num = action.payload * 2;
+    // ...
+  } else if (action.kind === "StringContents") {
+    // `action.payload` is a string here.
+    const str = action.payload.trim();
+    // ...
+  }
+}
+```
+
+This lets us work with objects that can hold different data, but a common field tells us _which_ data those objects have.
+
+This is very common in TypeScript; however, depending on your preferences, you might have wanted to destructure `kind` and `payload` in the the example above.
+Perhaps something like the following:
+
+```ts
+type Action =
+  | { kind: "NumberContents"; payload: number }
+  | { kind: "StringContents"; payload: string };
+
+function processAction(action: Action) {
+  const { kind, payload } = action;
+  if (kind === "NumberContents") {
+    let num = payload * 2;
+    // ...
+  } else if (kind === "StringContents") {
+    const str = payload.trim();
+    // ...
+  }
+}
+```
+
+Previously TypeScript would error on these - once `kind` and `payload` were extracted from the same object into variables, they were considered totally independent.
+
+In TypeScript 4.6, this just works!
+
+When destructuring individual properties into a `const` declaration, or when destructuring a parameter into variables that are never assigned to, TypeScript will check for if the destructured type is a discriminated union.
+If it is, TypeScript can now narrow the types of variables depending on checks of other variables
+So in our example, a check on `kind` narrows the type of `payload`.
+
+For more information, [see the pull request that implemented this analysis](https://github.com/microsoft/TypeScript/pull/46266).
+
+### Improved Recursion Depth Checks
+
+TypeScript has some interesting challenges due to the fact that it's built on a structural type system that also provides generics.
+
+In a structural type system, object types are compatible based on the members they have.
+
+```ts
+interface Source {
+  prop: string;
+}
+
+interface Target {
+  prop: number;
+}
+
+function check(source: Source, target: Target) {
+  target = source;
+  // error!
+  // Type 'Source' is not assignable to type 'Target'.
+  //   Types of property 'prop' are incompatible.
+  //     Type 'string' is not assignable to type 'number'.
+}
+```
+
+Notice that whether or not `Source` is compatible with `Target` has to do with whether their _properties_ are assignable.
+In this case, that's just `prop`.
+
+When you introduce generics into this, there are some harder questions to answer.
+For instance, is a `Source<string>` assignable to a `Target<number>` in the following case?
+
+```ts
+interface Source<T> {
+  prop: Source<Source<T>>;
+}
+
+interface Target<T> {
+  prop: Target<Target<T>>;
+}
+
+function check(source: Source<string>, target: Target<number>) {
+  target = source;
+}
+```
+
+In order to answer that, TypeScript needs to check whether the types of `prop` are compatible.
+That leads to the another question: is a `Source<Source<string>>` assignable to a `Target<Target<number>>`?
+To answer that, TypeScript checks whether `prop` is compatible for _those_ types, and ends up checking whether `Source<Source<Source<string>>>` is assignable to `Target<Target<Target<number>>>`.
+Keep going for a bit, and you might notice that the type infinitely expands the more you dig in.
+
+TypeScript has a few heuristics here - if a type _appears_ to be infinitely expanding after encountering a certain depth check, then it considers that the types _could_ be compatible.
+This is usually enough, but embarrassingly there were some false-negatives that this wouldn't catch.
+
+```ts
+interface Foo<T> {
+  prop: T;
+}
+
+declare let x: Foo<Foo<Foo<Foo<Foo<Foo<string>>>>>>;
+declare let y: Foo<Foo<Foo<Foo<Foo<string>>>>>;
+
+x = y;
+```
+
+A human reader can see that `x` and `y` should be incompatible in the above example.
+While the types are deeply nested, that's just a consequence of how they were declared.
+The heuristic was meant to capture cases where deeply-nested types were generated through exploring the types, not from when a developer wrote that type out themselves.
+
+TypeScript 4.6 is now able to distinguish these cases, and correctly errors on the last example.
+Additionally, because the language is no longer concerned with false-positives from explicitly-written types, TypeScript can conclude that a type is infinitely expanding much earlier, and save a bunch of work in checking for type compatibility.
+As a result, libraries on DefinitelyTyped like `redux-immutable`, `react-lazylog`, and `yup` saw a 50% reduction in check-time.
+
+You may already have this change because it was cherry-picked into TypeScript 4.5.3, but it is a notable feature of TypeScript 4.6 which you can read up more about [here](https://github.com/microsoft/TypeScript/pull/46599).
+
+### Indexed Access Inference Improvements
+
+TypeScript now can correctly infer to indexed access types which immediately index into a mapped object type.
+
+```ts
+interface TypeMap {
+  number: number;
+  string: string;
+  boolean: boolean;
+}
+
+type UnionRecord<P extends keyof TypeMap> = {
+  [K in P]: {
+    kind: K;
+    v: TypeMap[K];
+    f: (p: TypeMap[K]) => void;
+  };
+}[P];
+
+function processRecord<K extends keyof TypeMap>(record: UnionRecord<K>) {
+  record.f(record.v);
+}
+
+// This call used to have issues - now works!
+processRecord({
+  kind: "string",
+  v: "hello!",
+
+  // 'val' used to implicitly have the type 'string | number | boolean',
+  // but now is correctly inferred to just 'string'.
+  f: (val) => {
+    console.log(val.toUpperCase());
+  },
+});
+```
+
+This pattern was already supported and allowed TypeScript to understand that the call to `record.f(record.v)` is valid, but previously the call to `processRecord` would give poor inference results for `val`
+
+TypeScript 4.6 improves this so that no type assertions are necessary within the call to `processRecord`.
+
+For more information, you can [read up on the pull request](https://github.com/microsoft/TypeScript/pull/47109).
+
+### Control Flow Analysis for Dependent Parameters
+
+A signature can be declared with a rest parameter whose type is a discriminated union of tuples.
+
+```ts
+function func(...args: ["str", string] | ["num", number]) {
+  // ...
+}
+```
+
+What this says is that the arguments to `func` depends entirely on the first argument.
+When the first argument is the string `"str"`, then its second argument has to be a `string`.
+When its first argument is the string `"num"`, its second argument has to be a `number`.
+
+In cases where TypeScript infers the type of a function from a signature like this, TypeScript can now narrow parameters that depend on each other.
+
+```ts
+type Func = (...args: ["a", number] | ["b", string]) => void;
+
+const f1: Func = (kind, payload) => {
+  if (kind === "a") {
+    payload.toFixed(); // 'payload' narrowed to 'number'
+  }
+  if (kind === "b") {
+    payload.toUpperCase(); // 'payload' narrowed to 'string'
+  }
+};
+
+f1("a", 42);
+f1("b", "hello");
+```
+
+For more information, [see the change on GitHub](https://github.com/microsoft/TypeScript/pull/47190).
+
+### `--target es2022`
+
+TypeScript's `--target` option now supports `es2022`.
+This means features like class fields now have a stable output target where they can be preserved.
+It also means that new built-in functionality like the [`at()` method on `Array`s](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/at), [`Object.hasOwn`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn), or [the `cause` option on `new Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/Error#rethrowing_an_error_with_a_cause) can be used either with this new `--target` setting, or with `--lib es2022`.
+
+This functionality was [implemented](https://github.com/microsoft/TypeScript/pull/46291) by [Kagami Sascha Rosylight (saschanaz)](https://github.com/saschanaz) over several PRs, and we're grateful for that contribution!
+
+### Removed Unnecessary Arguments in `react-jsx`
+
+Previously, when compiling code like the following in `--jsx react-jsx`
+
+```tsx
+export const el = <div>foo</div>;
+```
+
+TypeScript would produce the following JavaScript code:
+
+```jsx
+import { jsx as _jsx } from "react/jsx-runtime";
+export const el = _jsx("div", { children: "foo" }, void 0);
+```
+
+That last `void 0` argument is unnecessary in this emit mode, and removing it can improve bundle sizes.
+
+```diff
+- export const el = _jsx("div", { children: "foo" }, void 0);
++ export const el = _jsx("div", { children: "foo" });
+```
+
+Thanks to [a pull request](https://github.com/microsoft/TypeScript/pull/47467) from [Alexander Tarasyuk](https://github.com/a-tarasyuk), TypeScript 4.6 now drops the `void 0` argument.
+
+### JSDoc Name Suggestions
+
+In JSDoc, you can document parameters using an `@param` tag.
+
+```js
+/**
+ * @param x The first operand
+ * @param y The second operand
+ */
+function add(x, y) {
+  return x + y;
+}
+```
+
+But what happens when these comments fall out of date?
+What if we rename `x` and `y` to `a` and `b`?
+
+```js
+/**
+ * @param x {number} The first operand
+ * @param y {number} The second operand
+ */
+function add(a, b) {
+  return a + b;
+}
+```
+
+Previously TypeScript would only tell you about this when performing type-checking on JavaScript files - when using either the `checkJs` option, or adding a `// @ts-check` comment to the top of your file.
+
+You can now get similar information for TypeScript files in your editor!
+TypeScript now provides suggestions for when parameter names don't match between your function and its JSDoc comment.
+
+![Suggestion diagnostics being shown in the editor for parameter names in JSDoc comments that don't match an actual parameter name.](https://devblogs.microsoft.com/typescript/wp-content/uploads/sites/11/2022/02/jsdoc-comment-suggestions-4-6.png)
+
+[This change](https://github.com/microsoft/TypeScript/pull/47257) was provided courtesy of [Alexander Tarasyuk](https://github.com/a-tarasyuk)!
+
+### More Syntax and Binding Errors in JavaScript
+
+TypeScript has expanded its set of syntax and binding errors in JavaScript files.
+You'll see these new errors if you open JavaScript files in an editor like Visual Studio or Visual Studio Code, or if you run JavaScript code through the TypeScript compiler - even if you don't turn on `checkJs` or add a `// @ts-check` comment to the top of your files.
+
+As one example, if you have two declarations of a `const` in the same scope of a JavaScript file, TypeScript will now issue an error on those declarations.
+
+```ts
+const foo = 1234;
+//    ~~~
+// error: Cannot redeclare block-scoped variable 'foo'.
+
+// ...
+
+const foo = 5678;
+//    ~~~
+// error: Cannot redeclare block-scoped variable 'foo'.
+```
+
+As another example, TypeScript will let you know if a modifier is being incorrectly used.
+
+```ts
+function container() {
+    export function foo() {
+//  ~~~~~~
+// error: Modifiers cannot appear here.
+    }
+}
+```
+
+These errors can be disabled by adding a `// @ts-nocheck` at the top of your file, but we're interested in hearing some early feedback about how it works for your JavaScript workflow.
+You can easily try it out for Visual Studio Code by installing the [TypeScript and JavaScript Nightly Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-next), and read up more on the [first](https://github.com/microsoft/TypeScript/pull/47067) and [second](https://github.com/microsoft/TypeScript/pull/47075) pull requests.
+
+### TypeScript Trace Analyzer
+
+Occasionally, teams may encounter types that are computationally expensive to create and compare against other types.
+[TypeScript has a `--generateTrace` flag](https://github.com/microsoft/TypeScript/wiki/Performance#performance-tracing) to help identify some of those expensive types, or sometimes help diagnose issues in the TypeScript compiler.
+While the information generated by `--generateTrace` can be useful (especially with some information added in TypeScript 4.6), it can often be hard to read in existing trace visualizers.
+
+We recently published a tool called [@typescript/analyze-trace](https://www.npmjs.com/package/@typescript/analyze-trace) to get a more digestible view of this information.
+While we don't expect everyone to need `analyze-trace`, we think it can come in handy for any team that is running into [build performance issues with TypeScript](https://github.com/microsoft/TypeScript/wiki/Performance).
+
+For more information, [see the `analyze-trace` tool's repo](https://github.com/microsoft/typescript-analyze-trace).
+
+### Breaking Changes
+
+#### Object Rests Drop Unspreadable Members from Generic Objects
+
+Object rest expressions now drop members that appear to be unspreadable on generic objects.
+In the following example...
+
+```ts
+class Thing {
+  someProperty = 42;
+
+  someMethod() {
+    // ...
+  }
+}
+
+function foo<T extends Thing>(x: T) {
+  let { someProperty, ...rest } = x;
+
+  // Used to work, is now an error!
+  // Property 'someMethod' does not exist on type 'Omit<T, "someProperty" | "someMethod">'.
+  rest.someMethod();
+}
+```
+
+the variable `rest` used to have the type `Omit<T, "someProperty">` because TypeScript would strictly analyze which other properties were destructured.
+This doesn't model how `...rest` would work in a destructuring from a non-generic type because `someMethod` would typically be dropped as well.
+In TypeScript 4.6, the type of `rest` is `Omit<T, "someProperty" | "someMethod">`.
+
+This can also come up in cases when destructuring from `this`.
+When destructuring `this` using a `...rest` element, unspreadable and non-public members are now dropped, which is consistent with destructuring instances of a class in other places.
+
+```ts
+class Thing {
+  someProperty = 42;
+
+  someMethod() {
+    // ...
+  }
+
+  someOtherMethod() {
+    let { someProperty, ...rest } = this;
+
+    // Used to work, is now an error!
+    // Property 'someMethod' does not exist on type 'Omit<T, "someProperty" | "someMethod">'.
+    rest.someMethod();
+  }
+}
+```
+
+For more details, [see the corresponding change here](https://github.com/microsoft/TypeScript/pull/47078).
+
+#### JavaScript Files Always Receive Grammar and Binding Errors
+
+Previously, TypeScript would ignore most grammar errors in JavaScript apart from accidentally using TypeScript syntax in a JavaScript file.
+TypeScript now shows JavaScript syntax and binding errors in your file, such as using incorrect modifiers, duplicate declarations, and more.
+These will typically be most apparent in Visual Studio Code or Visual Studio, but can also occur when running JavaScript code through the TypeScript compiler.
+
+You can explicitly turn these errors off by inserting a `// @ts-nocheck` comment at the top of your file.
+
+For more information, see the [first](https://github.com/microsoft/TypeScript/pull/47067) and [second](https://github.com/microsoft/TypeScript/pull/47075) implementing pull requests for these features.
+
+## TypeScript 4.5
+
+### Supporting `lib` from `node_modules`
+
+To ensure that TypeScript and JavaScript support works well out of the box, TypeScript bundles a series of declaration files (`.d.ts` files).
+These declaration files represent the available APIs in the JavaScript language, and the standard browser DOM APIs.
+While there are some reasonable defaults based on your [`target`](/tsconfig#target), you can pick and choose which declaration files your program uses by configuring the [`lib`](https://www.typescriptlang.org/tsconfig#lib) setting in the `tsconfig.json`.
+
+There are two occasional downsides to including these declaration files with TypeScript though:
+
+- When you upgrade TypeScript, you're also forced to handle changes to TypeScript's built-in declaration files, and this can be a challenge when the DOM APIs change as frequently as they do.
+- It is hard to customize these files to match your needs with the needs of your project's dependencies (e.g. if your dependencies declare that they use the DOM APIs, you might also be forced into using the DOM APIs).
+
+TypeScript 4.5 introduces a way to override a specific built-in `lib` in a manner similar to how `@types/` support works.
+When deciding which `lib` files TypeScript should include, it will first look for a scoped `@typescript/lib-*` package in `node_modules`.
+For example, when including `dom` as an option in `lib`, TypeScript will use the types in `node_modules/@typescript/lib-dom` if available.
+
+You can then use your package manager to install a specific package to take over for a given `lib`
+For example, today TypeScript publishes versions of the DOM APIs on `@types/web`.
+If you wanted to lock your project to a specific version of the DOM APIs, you could add this to your `package.json`:
+
+```json
+{
+  "dependencies": {
+    "@typescript/lib-dom": "npm:@types/web"
+  }
+}
+```
+
+Then from 4.5 onwards, you can update TypeScript and your dependency manager's lockfile will ensure that it uses the exact same version of the DOM types.
+That means you get to update your types on your own terms.
+
+We'd like to give a shout-out to [saschanaz](https://github.com/saschanaz) who has been extremely helpful and patient as we've been building out and experimenting with this feature.
+
+For more information, you can [see the implementation of this change](https://github.com/microsoft/TypeScript/pull/45771).
+
+### The `Awaited` Type and `Promise` Improvements
+
+TypeScript 4.5 introduces a new utility type called the `Awaited` type.
+This type is meant to model operations like `await` in `async` functions, or the `.then()` method on `Promise`s - specifically, the way that they recursively unwrap `Promise`s.
+
+```ts
+// A = string
+type A = Awaited<Promise<string>>;
+
+// B = number
+type B = Awaited<Promise<Promise<number>>>;
+
+// C = boolean | number
+type C = Awaited<boolean | Promise<number>>;
+```
+
+The `Awaited` type can be helpful for modeling existing APIs, including JavaScript built-ins like `Promise.all`, `Promise.race`, etc.
+In fact, some of the problems around inference with `Promise.all` served as motivations for `Awaited`.
+Here's an example that fails in TypeScript 4.4 and earlier.
+
+```ts
+declare function MaybePromise<T>(value: T): T | Promise<T> | PromiseLike<T>;
+
+async function doSomething(): Promise<[number, number]> {
+  const result = await Promise.all([MaybePromise(100), MaybePromise(200)]);
+
+  // Error!
+  //
+  //    [number | Promise<100>, number | Promise<200>]
+  //
+  // is not assignable to type
+  //
+  //    [number, number]
+  return result;
+}
+```
+
+Now `Promise.all` leverages the combination of certain features with `Awaited` to give much better inference results, and the above example works.
+
+For more information, you [can read about this change on GitHub](https://github.com/microsoft/TypeScript/pull/45350).
+
+### Template String Types as Discriminants
+
+TypeScript 4.5 now can narrow values that have template string types, and also recognizes template string types as discriminants.
+
+As an example, the following used to fail, but now successfully type-checks in TypeScript 4.5.
+
+```ts twoslash
+export interface Success {
+    type: `${string}Success`;
+    body: string;
+}
+
+export interface Error {
+    type: `${string}Error`;
+    message: string
+}
+
+export function handler(r: Success | Error) {
+    if (r.type === "HttpSuccess") {
+        const token = r.body;
+        //            ^?
+    }
+}
+```
+
+For more information, [see the change that enables this feature](https://github.com/microsoft/TypeScript/pull/46137).
+
+### `module es2022`
+
+Thanks to [Kagami S. Rosylight](https://github.com/saschanaz), TypeScript now supports a new `module` setting: `es2022`.
+The main feature in [`module es2022`](/tsconfig#module) is top-level `await`, meaning you can use `await` outside of `async` functions.
+This was already supported in `--module esnext` (and now [`--module nodenext`](/tsconfig#target)), but `es2022` is the first stable target for this feature.
+
+You can [read up more on this change here](https://github.com/microsoft/TypeScript/pull/44656).
+
+### Tail-Recursion Elimination on Conditional Types
+
+TypeScript often needs to gracefully fail when it detects possibly infinite recursion, or any type expansions that can take a long time and affect your editor experience.
+As a result, TypeScript has heuristics to make sure it doesn't go off the rails when trying to pick apart an infinitely-deep type, or working with types that generate a lot of intermediate results.
+
+```ts
+type InfiniteBox<T> = { item: InfiniteBox<T> };
+
+type Unpack<T> = T extends { item: infer U } ? Unpack<U> : T;
+
+// error: Type instantiation is excessively deep and possibly infinite.
+type Test = Unpack<InfiniteBox<number>>;
+```
+
+The above example is intentionally simple and useless, but there are plenty of types that are actually useful, and unfortunately trigger our heuristics.
+As an example, the following `TrimLeft` type removes spaces from the beginning of a string-like type.
+If given a string type that has a space at the beginning, it immediately feeds the remainder of the string back into `TrimLeft`.
+
+```ts
+type TrimLeft<T extends string> =
+    T extends ` ${infer Rest}` ? TrimLeft<Rest> : T;
+
+// Test = "hello" | "world"
+type Test = TrimLeft<"   hello" | " world">;
+```
+
+This type can be useful, but if a string has 50 leading spaces, you'll get an error.
+
+```ts
+type TrimLeft<T extends string> =
+    T extends ` ${infer Rest}` ? TrimLeft<Rest> : T;
+
+// error: Type instantiation is excessively deep and possibly infinite.
+type Test = TrimLeft<"                                                oops">;
+```
+
+That's unfortunate, because these kinds of types tend to be extremely useful in modeling operations on strings - for example, parsers for URL routers.
+To make matters worse, a more useful type typically creates more type instantiations, and in turn has even more limitations on input length.
+
+But there's a saving grace: `TrimLeft` is written in a way that is _tail-recursive_ in one branch.
+When it calls itself again, it immediately returns the result and doesn't do anything with it.
+Because these types don't need to create any intermediate results, they can be implemented more quickly and in a way that avoids triggering many of type recursion heuristics that are built into TypeScript.
+
+That's why TypeScript 4.5 performs some tail-recursion elimination on conditional types.
+As long as one branch of a conditional type is simply another conditional type, TypeScript can avoid intermediate instantiations.
+There are still heuristics to ensure that these types don't go off the rails, but they are much more generous.
+
+Keep in mind, the following type _won't_ be optimized, since it uses the result of a conditional type by adding it to a union.
+
+```ts
+type GetChars<S> =
+    S extends `${infer Char}${infer Rest}` ? Char | GetChars<Rest> : never;
+```
+
+If you would like to make it tail-recursive, you can introduce a helper that takes an "accumulator" type parameter, just like with tail-recursive functions.
+
+```ts
+type GetChars<S> = GetCharsHelper<S, never>;
+type GetCharsHelper<S, Acc> =
+    S extends `${infer Char}${infer Rest}` ? GetCharsHelper<Rest, Char | Acc> : Acc;
+```
+
+You can read up more on the implementation [here](https://github.com/microsoft/TypeScript/pull/45711).
+
+### Disabling Import Elision
+
+There are some cases where TypeScript can't detect that you're using an import.
+For example, take the following code:
+
+```ts
+import { Animal } from "./animal.js";
+
+eval("console.log(new Animal().isDangerous())");
+```
+
+By default, TypeScript always removes this import because it appears to be unused.
+In TypeScript 4.5, you can enable a new flag called [`preserveValueImports`](/tsconfig#preserveValueImports) to prevent TypeScript from stripping out any imported values from your JavaScript outputs.
+Good reasons to use `eval` are few and far between, but something very similar to this happens in Svelte:
+
+```html
+<!-- A .svelte File -->
+<script>
+  import { someFunc } from "./some-module.js";
+</script>
+
+<button on:click="{someFunc}">Click me!</button>
+```
+
+along with in Vue.js, using its `<script setup>` feature:
+
+```html
+<!-- A .vue File -->
+<script setup>
+  import { someFunc } from "./some-module.js";
+</script>
+
+<button @click="someFunc">Click me!</button>
+```
+
+These frameworks generate some code based on markup outside of their `<script>` tags, but TypeScript _only_ sees code within the `<script>` tags.
+That means TypeScript will automatically drop the import of `someFunc`, and the above code won't be runnable!
+With TypeScript 4.5, you can use [`preserveValueImports`](/tsconfig#preserveValueImports) to avoid these situations.
+
+Note that this flag has a special requirement when combined with [--isolatedModules`](/tsconfig#isolatedModules): imported
+types _must_ be marked as type-only because compilers that process single files at a time have no way of knowing whether imports are values that appear unused, or a type that must be removed in order to avoid a runtime crash.
+
+```ts
+// Which of these is a value that should be preserved? tsc knows, but `ts.transpileModule`,
+// ts-loader, esbuild, etc. don't, so `isolatedModules` gives an error.
+import { someFunc, BaseType } from "./some-module.js";
+//                 ^^^^^^^^
+// Error: 'BaseType' is a type and must be imported using a type-only import
+// when 'preserveValueImports' and 'isolatedModules' are both enabled.
+```
+
+That makes another TypeScript 4.5 feature, [`type` modifiers on import names](#type-on-import-names), especially important.
+
+For more information, [see the pull request here](https://github.com/microsoft/TypeScript/pull/44619).
+
+### `type` Modifiers on Import Names
+
+As mentioned above, [`preserveValueImports`](/tsconfig#preserveValueImports) and [`isolatedModules`](/tsconfig#isolatedModules) have special requirements so that there's no ambiguity for build tools whether it's safe to drop type imports.
+
+```ts
+// Which of these is a value that should be preserved? tsc knows, but `ts.transpileModule`,
+// ts-loader, esbuild, etc. don't, so `isolatedModules` issues an error.
+import { someFunc, BaseType } from "./some-module.js";
+//                 ^^^^^^^^
+// Error: 'BaseType' is a type and must be imported using a type-only import
+// when 'preserveValueImports' and 'isolatedModules' are both enabled.
+```
+
+When these options are combined, we need a way to signal when an import can be legitimately dropped.
+TypeScript already has something for this with `import type`:
+
+```ts
+import type { BaseType } from "./some-module.js";
+import { someFunc } from "./some-module.js";
+
+export class Thing implements BaseType {
+  // ...
+}
+```
+
+This works, but it would be nice to avoid two import statements for the same module.
+That's part of why TypeScript 4.5 allows a `type` modifier on individual named imports, so that you can mix and match as needed.
+
+```ts
+import { someFunc, type BaseType } from "./some-module.js";
+
+export class Thing implements BaseType {
+    someMethod() {
+        someFunc();
+    }
+}
+```
+
+In the above example, `BaseType` is always guaranteed to be erased and `someFunc` will be preserved under [`preserveValueImports`](/tsconfig#preserveValueImports), leaving us with the following code:
+
+```js
+import { someFunc } from "./some-module.js";
+
+export class Thing {
+  someMethod() {
+    someFunc();
+  }
+}
+```
+
+For more information, see [the changes on GitHub](https://github.com/microsoft/TypeScript/pull/45998).
+
+### Private Field Presence Checks
+
+TypeScript 4.5 supports an ECMAScript proposal for checking whether an object has a private field on it.
+You can now write a class with a `#private` field member and see whether another object has the same field by using the `in` operator.
+
+```ts
+class Person {
+    #name: string;
+    constructor(name: string) {
+        this.#name = name;
+    }
+
+    equals(other: unknown) {
+        return other &&
+            typeof other === "object" &&
+            #name in other && // <- this is new!
+            this.#name === other.#name;
+    }
+}
+```
+
+One interesting aspect of this feature is that the check `#name in other` implies that `other` must have been constructed as a `Person`, since there's no other way that field could be present.
+This is actually one of the key features of the proposal, and it's why the proposal is named "ergonomic brand checks" - because private fields often act as a "brand" to guard against objects that aren't instances of their class.
+As such, TypeScript is able to appropriately narrow the type of `other` on each check, until it ends up with the type `Person`.
+
+We'd like to extend a big thanks to our friends at Bloomberg [who contributed this pull request](https://github.com/microsoft/TypeScript/pull/44648): [Ashley Claymore](https://github.com/acutmore), [Titian Cernicova-Dragomir](https://github.com/dragomirtitian), [Kubilay Kahveci](https://github.com/mkubilayk), and [Rob Palmer](https://github.com/robpalme)!
+
+### Import Assertions
+
+TypeScript 4.5 supports an ECMAScript proposal for _import assertions_.
+This is a syntax used by runtimes to make sure that an import has an expected format.
+
+```ts
+import obj from "./something.json" assert { type: "json" };
+```
+
+The contents of these assertions are not checked by TypeScript since they're host-specific, and are simply left alone so that browsers and runtimes can handle them (and possibly error).
+
+```ts
+// TypeScript is fine with this.
+// But your browser? Probably not.
+import obj from "./something.json" assert {
+    type: "fluffy bunny"
+};
+```
+
+Dynamic `import()` calls can also use import assertions through a second argument.
+
+```ts
+const obj = await import("./something.json", {
+  assert: { type: "json" },
+});
+```
+
+The expected type of that second argument is defined by a new type called `ImportCallOptions`, and currently only accepts an `assert` property.
+
+We'd like to thank [Wenlu Wang](https://github.com/Kingwl/) for [implementing this feature](https://github.com/microsoft/TypeScript/pull/40698)!
+
+### Faster Load Time with `realPathSync.native`
+
+TypeScript now leverages a system-native implementation of the Node.js `realPathSync` function on all operating systems.
+
+Previously this function was only used on Linux, but in TypeScript 4.5 it has been adopted to operating systems that are typically case-insensitive, like Windows and MacOS.
+On certain codebases, this change sped up project loading by 5-13% (depending on the host operating system).
+
+For more information, see [the original change here](https://github.com/microsoft/TypeScript/pull/44966), along with [the 4.5-specific changes here](https://github.com/microsoft/TypeScript/pull/44966).
+
+### Snippet Completions for JSX Attributes
+
+TypeScript 4.5 brings _snippet completions_ for JSX attributes.
+When writing out an attribute in a JSX tag, TypeScript will already provide suggestions for those attributes;
+but with snippet completions, they can remove a little bit of extra typing by adding an initializer and putting your cursor in the right place.
+
+![Snippet completions for JSX attributes. For a string property, quotes are automatically added. For a numeric properties, braces are added.](https://devblogs.microsoft.com/typescript/wp-content/uploads/sites/11/2021/10/jsx-attributes-snippets-4-5.gif)
+
+TypeScript will typically use the type of an attribute to figure out what kind of initializer to insert, but you can customize this behavior in Visual Studio Code.
+
+![Settings in VS Code for JSX attribute completions](https://devblogs.microsoft.com/typescript/wp-content/uploads/sites/11/2021/10/jsx-snippet-settings-4-5.png)
+
+Keep in mind, this feature will only work in newer versions of Visual Studio Code, so you might have to use an Insiders build to get this working.
+For more information, [read up on the original pull request](https://github.com/microsoft/TypeScript/pull/45903)
+
+### Better Editor Support for Unresolved Types
+
+In some cases, editors will leverage a lightweight "partial" semantic mode - either while the editor is waiting for the full project to load, or in contexts like [GitHub's web-based editor](https://docs.github.com/en/codespaces/developing-in-codespaces/web-based-editor).
+
+In older versions of TypeScript, if the language service couldn't find a type, it would just print `any`.
+
+![Hovering over a signature where `Buffer` isn't found, TypeScript replaces it with `any`.](https://devblogs.microsoft.com/typescript/wp-content/uploads/sites/11/2021/10/quick-info-unresolved-4-4.png)
+
+In the above example, `Buffer` wasn't found, so TypeScript replaced it with `any` in _quick info_.
+In TypeScript 4.5, TypeScript will try its best to preserve what you wrote.
+
+![Hovering over a signature where `Buffer` isn't found, it continues to use the name `Buffer`.](https://devblogs.microsoft.com/typescript/wp-content/uploads/sites/11/2021/10/quick-info-unresolved-4-5.png)
+
+However, if you hover over `Buffer` itself, you'll get a hint that TypeScript couldn't find `Buffer`.
+
+![TypeScript displays `type Buffer = /* unresolved */ any;`](https://devblogs.microsoft.com/typescript/wp-content/uploads/sites/11/2021/10/quick-info-unresolved-on-type-4-5.png)
+
+Altogether, this provides a smoother experience when TypeScript doesn't have the full program available.
+Keep in mind, you'll always get an error in regular scenarios to tell you when a type isn't found.
+
+For more information, [see the implementation here](https://github.com/microsoft/TypeScript/pull/45976).
+
+### Breaking Changes
+
+#### `lib.d.ts` Changes
+
+TypeScript 4.5 contains changes to its built-in declaration files which may affect your compilation;
+however, [these changes were fairly minimal](https://github.com/microsoft/TypeScript-DOM-lib-generator/issues/1143), and we expect most code will be unaffected.
+
+#### Inference Changes from `Awaited`
+
+Because `Awaited` is now used in `lib.d.ts` and as a result of `await`, you may see certain generic types change that might cause incompatibilities;
+however, given many intentional design decisions around `Awaited` to avoid breakage, we expect most code will be unaffected.
+
+#### Compiler Options Checking at the Root of `tsconfig.json`
+
+It's an easy mistake to accidentally forget about the `compilerOptions` section in a `tsconfig.json`.
+To help catch this mistake, in TypeScript 4.5, it is an error to add a top-level field which matches any of the available options in `compilerOptions` _without_ having also defined `compilerOptions` in that `tsconfig.json`.
+
+## TypeScript 4.4
+### Control Flow Analysis of Aliased Conditions and Discriminants
+
+In JavaScript, we often have to probe a value in different ways, and do something different once we know more about its type.
+TypeScript understands these checks and calls them _type guards_.
+Instead of having to convince TypeScript of a variable's type whenever we use it, the type-checker leverages something called _control flow analysis_ to see if we've used a type guard before a given piece of code.
+
+For example, we can write something like
+
+```ts twoslash
+function foo(arg: unknown) {
+  if (typeof arg === "string") {
+    console.log(arg.toUpperCase());
+    //           ^?
+  }
+}
+```
+
+In this example, we checked whether `arg` was a `string`.
+TypeScript recognized the `typeof arg === "string"` check, which it considered a type guard, and knew that `arg` was a `string` inside the body of the `if` block.
+That let us access `string` methods like `toUpperCase()` without getting an error.
+
+However, what would happen if we moved the condition out to a constant called `argIsString`?
+
+```ts
+// In TS 4.3 and below
+
+function foo(arg: unknown) {
+  const argIsString = typeof arg === "string";
+  if (argIsString) {
+    console.log(arg.toUpperCase());
+    //              ~~~~~~~~~~~
+    // Error! Property 'toUpperCase' does not exist on type 'unknown'.
+  }
+}
+```
+
+In previous versions of TypeScript, this would be an error - even though `argIsString` was assigned the value of a type guard, TypeScript simply lost that information.
+That's unfortunate since we might want to re-use the same check in several places.
+To get around that, users often have to repeat themselves or use type assertions (a.k.a. casts).
+
+In TypeScript 4.4, that is no longer the case.
+The above example works with no errors!
+When TypeScript sees that we are testing a constant value, it will do a little bit of extra work to see if it contains a type guard.
+If that type guard operates on a `const`, a `readonly` property, or an un-modified parameter, then TypeScript is able to narrow that value appropriately.
+
+Different sorts of type guard conditions are preserved - not just `typeof` checks.
+For example, checks on discriminated unions work like a charm.
+
+```ts twoslash
+type Shape =
+  | { kind: "circle"; radius: number }
+  | { kind: "square"; sideLength: number };
+
+function area(shape: Shape): number {
+  const isCircle = shape.kind === "circle";
+  if (isCircle) {
+    // We know we have a circle here!
+    return Math.PI * shape.radius ** 2;
+  } else {
+    // We know we're left with a square here!
+    return shape.sideLength ** 2;
+  }
+}
+```
+
+Analysis on discriminants in 4.4 also goes a little bit deeper - we can now extract out discriminants and TypeScript can narrow the original object.
+
+```ts twoslash
+type Shape =
+  | { kind: "circle"; radius: number }
+  | { kind: "square"; sideLength: number };
+
+function area(shape: Shape): number {
+  // Extract out the 'kind' field first.
+  const { kind } = shape;
+
+  if (kind === "circle") {
+    // We know we have a circle here!
+    return Math.PI * shape.radius ** 2;
+  } else {
+    // We know we're left with a square here!
+    return shape.sideLength ** 2;
+  }
+}
+```
+
+As another example, here's a function that checks whether two of its inputs have contents.
+
+```ts twoslash
+function doSomeChecks(
+  inputA: string | undefined,
+  inputB: string | undefined,
+  shouldDoExtraWork: boolean
+) {
+  const mustDoWork = inputA && inputB && shouldDoExtraWork;
+  if (mustDoWork) {
+    // We can access 'string' properties on both 'inputA' and 'inputB'!
+    const upperA = inputA.toUpperCase();
+    const upperB = inputB.toUpperCase();
+    // ...
+  }
+}
+```
+
+TypeScript can understand that both `inputA` and `inputB` are both present if `mustDoWork` is `true`.
+That means we don't have to write a non-null assertion like `inputA!` to convince TypeScript that `inputA` isn't `undefined`.
+
+One neat feature here is that this analysis works transitively.
+TypeScript will hop through constants to understand what sorts of checks you've already performed.
+
+<!-- prettier-ignore -->
+```ts twoslash
+function f(x: string | number | boolean) {
+  const isString = typeof x === "string";
+  const isNumber = typeof x === "number";
+  const isStringOrNumber = isString || isNumber;
+  if (isStringOrNumber) {
+    x;
+//  ^?
+  } else {
+    x;
+//  ^?
+  }
+}
+```
+
+Note that there's a cutoff - TypeScript doesn't go arbitrarily deep when checking these conditions, but its analysis is deep enough for most checks.
+
+This feature should make a lot of intuitive JavaScript code "just work" in TypeScript without it getting in your way.
+For more details, [check out the implementation on GitHub](https://github.com/microsoft/TypeScript/pull/44730)!
+
+### Symbol and Template String Pattern Index Signatures
+
+TypeScript lets us describe objects where every property has to have a certain type using _index signatures_.
+This allows us to use these objects as dictionary-like types, where we can use string keys to index into them with square brackets.
+
+For example, we can write a type with an index signature that takes `string` keys and maps to `boolean` values.
+If we try to assign anything other than a `boolean` value, we'll get an error.
+
+```ts twoslash
+// @errors: 2322 2375
+interface BooleanDictionary {
+  [key: string]: boolean;
+}
+
+declare let myDict: BooleanDictionary;
+
+// Valid to assign boolean values
+myDict["foo"] = true;
+myDict["bar"] = false;
+
+// Error, "oops" isn't a boolean
+myDict["baz"] = "oops";
+```
+
+While [a `Map` might be a better data structure here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) (specifically, a `Map<string, boolean>`), JavaScript objects are often more convenient to use or just happen to be what we're given to work with.
+
+Similarly, `Array<T>` already defines a `number` index signature that lets us insert/retrieve values of type `T`.
+
+```ts
+// @errors: 2322 2375
+// This is part of TypeScript's definition of the built-in Array type.
+interface Array<T> {
+  [index: number]: T;
+
+  // ...
+}
+
+let arr = new Array<string>();
+
+// Valid
+arr[0] = "hello!";
+
+// Error, expecting a 'string' value here
+arr[1] = 123;
+```
+
+Index signatures are very useful to express lots of code out in the wild;
+however, until now they've been limited to `string` and `number` keys (and `string` index signatures have an intentional quirk where they can accept `number` keys since they'll be coerced to strings anyway).
+That means that TypeScript didn't allow indexing objects with `symbol` keys.
+TypeScript also couldn't model an index signature of some _subset_ of `string` keys - for example, an index signature which describes just properties whose names start with the text `data-`.
+
+TypeScript 4.4 addresses these limitations, and allows index signatures for `symbol`s and template string patterns.
+
+For example, TypeScript now allows us to declare a type that can be keyed on arbitrary `symbol`s.
+
+```ts twoslash
+// @errors: 2322 2375
+interface Colors {
+  [sym: symbol]: number;
+}
+
+const red = Symbol("red");
+const green = Symbol("green");
+const blue = Symbol("blue");
+
+let colors: Colors = {};
+
+// Assignment of a number is allowed
+colors[red] = 255;
+let redVal = colors[red];
+//  ^?
+
+colors[blue] = "da ba dee";
+```
+
+Similarly, we can write an index signature with template string pattern type.
+One use of this might be to exempt properties starting with `data-` from TypeScript's excess property checking.
+When we pass an object literal to something with an expected type, TypeScript will look for excess properties that weren't declared in the expected type.
+
+```ts
+// @errors: 2322 2375
+interface Options {
+    width?: number;
+    height?: number;
+}
+
+let a: Options = {
+    width: 100,
+    height: 100,
+
+    "data-blah": true,
+};
+
+interface OptionsWithDataProps extends Options {
+    // Permit any property starting with 'data-'.
+    [optName: `data-${string}`]: unknown;
+}
+
+let b: OptionsWithDataProps = {
+    width: 100,
+    height: 100,
+    "data-blah": true,
+
+    // Fails for a property which is not known, nor
+    // starts with 'data-'
+    "unknown-property": true,
+};
+```
+
+A final note on index signatures is that they now permit union types, as long as they're a union of infinite-domain primitive types - specifically:
+
+- `string`
+- `number`
+- `symbol`
+- template string patterns (e.g. `` `hello-${string}` ``)
+
+An index signature whose argument is a union of these types will de-sugar into several different index signatures.
+
+```ts
+interface Data {
+  [optName: string | symbol]: any;
+}
+
+// Equivalent to
+
+interface Data {
+  [optName: string]: any;
+  [optName: symbol]: any;
+}
+```
+
+For more details, [read up on the pull request](https://github.com/microsoft/TypeScript/pull/44512)
+
+### Defaulting to the `unknown` Type in Catch Variables (`--useUnknownInCatchVariables`)
+
+In JavaScript, any type of value can be thrown with `throw` and caught in a `catch` clause.
+Because of this, TypeScript historically typed catch clause variables as `any`, and would not allow any other type annotation:
+
+```ts
+try {
+  // Who knows what this might throw...
+  executeSomeThirdPartyCode();
+} catch (err) {
+  // err: any
+  console.error(err.message); // Allowed, because 'any'
+  err.thisWillProbablyFail(); // Allowed, because 'any' :(
+}
+```
+
+Once TypeScript added the `unknown` type, it became clear that `unknown` was a better choice than `any` in `catch` clause variables for users who want the highest degree of correctness and type-safety, since it narrows better and forces us to test against arbitrary values.
+Eventually TypeScript 4.0 allowed users to specify an explicit type annotation of `unknown` (or `any`) on each `catch` clause variable so that we could opt into stricter types on a case-by-case basis;
+however, for some, manually specifying `: unknown` on every `catch` clause was a chore.
+
+That's why TypeScript 4.4 introduces a new flag called [`useUnknownInCatchVariables`](/tsconfig#useUnknownInCatchVariables).
+This flag changes the default type of `catch` clause variables from `any` to `unknown`.
+
+```ts twoslash
+// @errors: 2571
+declare function executeSomeThirdPartyCode(): void;
+// ---cut---
+try {
+  executeSomeThirdPartyCode();
+} catch (err) {
+  // err: unknown
+
+  // Error! Property 'message' does not exist on type 'unknown'.
+  console.error(err.message);
+
+  // Works! We can narrow 'err' from 'unknown' to 'Error'.
+  if (err instanceof Error) {
+    console.error(err.message);
+  }
+}
+```
+
+This flag is enabled under the [`strict`](/tsconfig#strict) family of options.
+That means that if you check your code using [`strict`](/tsconfig#strict), this option will automatically be turned on.
+You may end up with errors in TypeScript 4.4 such as
+
+```
+Property 'message' does not exist on type 'unknown'.
+Property 'name' does not exist on type 'unknown'.
+Property 'stack' does not exist on type 'unknown'.
+```
+
+In cases where we don't want to deal with an `unknown` variable in a `catch` clause, we can always add an explicit `: any` annotation so that we can opt _out_ of stricter types.
+
+<!-- prettier-ignore -->
+```ts twoslash
+declare function executeSomeThirdPartyCode(): void;
+// ---cut---
+try {
+  executeSomeThirdPartyCode();
+} catch (err: any) {
+  console.error(err.message); // Works again!
+}
+```
+
+For more information, take a look at [the implementing pull request](https://github.com/microsoft/TypeScript/pull/41013).
+
+### Exact Optional Property Types (`--exactOptionalPropertyTypes`)
+
+In JavaScript, reading a _missing_ property on an object produces the value `undefined`.
+It's also possible to _have_ an actual property with the value `undefined`.
+A lot of code in JavaScript tends to treat these situations the same way, and so initially TypeScript just interpreted every optional property as if a user had written `undefined` in the type.
+For example,
+
+```ts
+interface Person {
+  name: string;
+  age?: number;
+}
+```
+
+was considered equivalent to
+
+```ts
+interface Person {
+  name: string;
+  age?: number | undefined;
+}
+```
+
+What this meant is that a user could explicitly write `undefined` in place of `age`.
+
+```ts
+const p: Person = {
+  name: "Daniel",
+  age: undefined, // This is okay by default.
+};
+```
+
+So by default, TypeScript doesn't distinguish between a present property with the value `undefined` and a missing property.
+While this works most of the time, not all code in JavaScript makes the same assumptions.
+Functions and operators like `Object.assign`, `Object.keys`, object spread (`{ ...obj }`), and `for`-`in` loops behave differently depending on whether or not a property actually exists on an object.
+In the case of our `Person` example, this could potentially lead to runtime errors if the `age` property was observed in a context where its presence was important.
+
+In TypeScript 4.4, the new flag [`exactOptionalPropertyTypes`](/tsconfig#exactOptionalPropertyTypes) specifies that optional property types should be interpreted exactly as written, meaning that `| undefined` is not added to the type:
+
+```ts twoslash
+// @exactOptionalPropertyTypes
+// @errors: 2322 2375
+interface Person {
+  name: string;
+  age?: number;
+}
+// ---cut---
+// With 'exactOptionalPropertyTypes' on:
+const p: Person = {
+  name: "Daniel",
+  age: undefined, // Error! undefined isn't a number
+};
+```
+
+This flag is **not** part of the [`strict`](/tsconfig#strict) family and needs to be turned on explicitly if you'd like this behavior.
+It also requires [`strictNullChecks`](/tsconfig#strictNullChecks) to be enabled as well.
+We've been making updates to DefinitelyTyped and other definitions to try to make the transition as straightforward as possible, but you may encounter some friction with this depending on how your code is structured.
+
+For more information, you can [take a look at the implementing pull request here](https://github.com/microsoft/TypeScript/pull/43947).
+
+### `static` Blocks in Classes
+
+TypeScript 4.4 brings support for [`static` blocks in classes](https://github.com/tc39/proposal-class-static-block#ecmascript-class-static-initialization-blocks), an upcoming ECMAScript feature that can help you write more-complex initialization code for static members.
+
+```ts twoslash
+declare function someCondition(): boolean
+// ---cut---
+class Foo {
+    static count = 0;
+
+    // This is a static block:
+    static {
+        if (someCondition()) {
+            Foo.count++;
+        }
+    }
+}
+```
+
+These static blocks allow you to write a sequence of statements with their own scope that can access private fields within the containing class.
+That means that we can write initialization code with all the capabilities of writing statements, no leakage of variables, and full access to our class's internals.
+
+```ts twoslash
+declare function loadLastInstances(): any[]
+// ---cut---
+class Foo {
+    static #count = 0;
+
+    get count() {
+        return Foo.#count;
+    }
+
+    static {
+        try {
+            const lastInstances = loadLastInstances();
+            Foo.#count += lastInstances.length;
+        }
+        catch {}
+    }
+}
+```
+
+Without `static` blocks, writing the code above was possible, but often involved several different types of hacks that had to compromise in some way.
+
+Note that a class can have multiple `static` blocks, and they're run in the same order in which they're written.
+
+```ts twoslash
+// Prints:
+//    1
+//    2
+//    3
+class Foo {
+    static prop = 1
+    static {
+        console.log(Foo.prop++);
+    }
+    static {
+        console.log(Foo.prop++);
+    }
+    static {
+        console.log(Foo.prop++);
+    }
+}
+```
+
+We'd like to extend our thanks to [Wenlu Wang](https://github.com/Kingwl) for TypeScript's implementation of this feature.
+For more details, you can [see that pull request here](https://github.com/microsoft/TypeScript/pull/43370).
+
+### `tsc --help` Updates and Improvements
+
+TypeScript's `--help` option has gotten a refresh!
+Thanks to work in part by [Song Gao](https://github.com/ShuiRuTian), we've brought in changes to [update the descriptions of our compiler options](https://github.com/microsoft/TypeScript/pull/44409) and [restyle the `--help` menu](https://github.com/microsoft/TypeScript/pull/44157) with colors and other visual separation.
+
+![The new TypeScript `--help` menu where the output is bucketed into several different areas](https://devblogs.microsoft.com/typescript/wp-content/uploads/sites/11/2021/08/tsc-help-ps-wt-4-4.png)
+
+You can read more on [the original proposal thread](https://github.com/microsoft/TypeScript/issues/44074).
+
+### Performance Improvements
+
+#### Faster Declaration Emit
+
+TypeScript now caches whether internal symbols are accessible in different contexts, along with how specific types should be printed.
+These changes can improve TypeScript's general performance in code with fairly complex types, and is especially observed when emitting `.d.ts` files under the [`declaration`](/tsconfig#declaration) flag.
+
+[See more details here](https://github.com/microsoft/TypeScript/pull/43973).
+
+#### Faster Path Normalization
+
+TypeScript often has to do several types of "normalization" on file paths to get them into a consistent format that the compiler can use everywhere.
+This involves things like replacing backslashes with slashes, or removing intermediate `/./` and `/../` segments of paths.
+When TypeScript has to operates over millions of these paths, these operations end up being a bit slow.
+In TypeScript 4.4, paths first undergo quick checks to see whether they need any normalization in the first place.
+These improvements together reduce project load time by 5-10% on bigger projects, and significantly more in massive projects that we've tested internally.
+
+For more details, you can [view the PR for path segment normalization](https://github.com/microsoft/TypeScript/pull/44173) along with [the PR for slash normalization](https://github.com/microsoft/TypeScript/pull/44100).
+
+#### Faster Path Mapping
+
+TypeScript now caches the way it constructs path-mappings (using the [`paths`](/tsconfig#paths) option in `tsconfig.json`).
+For projects with several hundred mappings, the reduction is significant.
+You can see more [on the change itself](https://github.com/microsoft/TypeScript/pull/44078).
+
+#### Faster Incremental Builds with `--strict`
+
+In what was effectively a bug, TypeScript would end up redoing type-checking work under [`incremental`](/tsconfig#incremental) compilations if [`strict`](/tsconfig#strict) was on.
+This led to many builds being just as slow as if [`incremental`](/tsconfig#incremental) was turned off.
+TypeScript 4.4 fixes this, though the change has also been back-ported to TypeScript 4.3.
+
+See more [here](https://github.com/microsoft/TypeScript/pull/44394).
+
+#### Faster Source Map Generation for Big Outputs
+
+TypeScript 4.4 adds an optimization for source map generation on extremely large output files.
+When building an older version of the TypeScript compiler, this results in around an 8% reduction in emit time.
+
+We'd like to extend our thanks to [David Michon](https://github.com/dmichon-msft) who provided a [simple and clean change](https://github.com/microsoft/TypeScript/pull/44031) to enable this performance win.
+
+#### Faster `--force` Builds
+
+When using `--build` mode on project references, TypeScript has to perform up-to-date checks to determine which files need to be rebuilt.
+When performing a [`--force`](/tsconfig#force) build, however, that information is irrelevant since every project dependency will be rebuilt from scratch.
+In TypeScript 4.4, [`--force`](/tsconfig#force) builds avoid those unnecessary steps and start a full build.
+See more about the change [here](https://github.com/microsoft/TypeScript/pull/43666).
+
+### Spelling Suggestions for JavaScript
+
+TypeScript powers the JavaScript editing experience in editors like Visual Studio and Visual Studio Code.
+Most of the time, TypeScript tries to stay out of the way in JavaScript files;
+however, TypeScript often has a lot of information to make confident suggestions, and ways of surfacing suggestions that aren't _too_ invasive.
+
+That's why TypeScript now issues spelling suggestions in plain JavaScript files - ones without `// @ts-check` or in a project with [`checkJs`](/tsconfig#checkJs) turned off.
+These are the same _"Did you mean...?"_ suggestions that TypeScript files already have, and now they're available in _all_ JavaScript files in some form.
+
+These spelling suggestions can provide a subtle clue that your code is wrong.
+We managed to find a few bugs in existing code while testing this feature!
+
+For more details on this new feature, [take a look at the pull request](https://github.com/microsoft/TypeScript/pull/44271)!
+
+### Inlay Hints
+
+TypeScript 4.4 provides support for _inlay hints_ which can help display useful information like parameter names and return types in your code.
+You can think of it as a sort of friendly "ghost text".
+
+![A preview of inlay hints in Visual Studio Code](https://devblogs.microsoft.com/typescript/wp-content/uploads/sites/11/2021/08/inlayHints-4.4-rc-ghd.png)
+
+This feature was built by [Wenlu Wang](https://github.com/Kingwl) whose [pull request](https://github.com/microsoft/TypeScript/pull/42089) has more details.
+
+Wenlu also contributed [the integration for inlay hints in Visual Studio Code](https://github.com/microsoft/vscode/pull/113412) which has shipped as [part of the July 2021 (1.59) release](https://code.visualstudio.com/updates/v1_59#_typescript-44).
+If you'd like to try inlay hints out, make sure you're using a recent [stable](https://code.visualstudio.com/updates/v1_59) or [insiders](https://code.visualstudio.com/insiders/) version of the editor.
+You can also modify when and where inlay hints get displayed in Visual Studio Code's settings.
+
+### Auto-Imports Show True Paths in Completion Lists
+
+When editors like Visual Studio Code show a completion list, completions which include auto-imports are displayed with a path to the given module;
+however, this path usually isn't what TypeScript ends up placing in a module specifier.
+The path is usually something relative to the _workspace_, meaning that if you're importing from a package like `moment`, you'll often see a path like `node_modules/moment`.
+
+![A completion list containing unwieldy paths containing 'node_modules'. For example, the label for 'calendarFormat' is 'node_modules/moment/moment' instead of 'moment'.](https://devblogs.microsoft.com/typescript/wp-content/uploads/sites/11/2021/08/completion-import-labels-pre-4-4.png)
+
+These paths end up being unwieldy and often misleading, especially given that the path that actually gets inserted into your file needs to consider Node's `node_modules` resolution, path mappings, symlinks, and re-exports.
+
+That's why with TypeScript 4.4, the completion item label now shows the _actual_ module path that will be used for the import!
+
+![A completion list containing clean paths with no intermediate 'node_modules'. For example, the label for 'calendarFormat' is 'moment' instead of 'node_modules/moment/moment'.](https://devblogs.microsoft.com/typescript/wp-content/uploads/sites/11/2021/08/completion-import-labels-4-4.png)
+
+Since this calculation can be expensive, completion lists containing many auto-imports may fill in the final module specifiers in batches as you type more characters. It's possible that you'll still sometimes see the old workspace-relative path labels; however, as your editing experience "warms up", they should get replaced with the actual path after another keystroke or two.
+
+### Breaking Changes
+
+#### `lib.d.ts` Changes for TypeScript 4.4
+
+As with every TypeScript version, declarations for `lib.d.ts` (especially the declarations generated for web contexts), have changed.
+You can consult [our list of known `lib.dom.d.ts` changes](https://github.com/microsoft/TypeScript-DOM-lib-generator/issues/1029#issuecomment-869224737) to understand what is impacted.
+
+#### More-Compliant Indirect Calls for Imported Functions
+
+In earlier versions of TypeScript, calling an import from CommonJS, AMD, and other non-ES module systems would set the `this` value of the called function.
+Specifically, in the following example, when calling `fooModule.foo()`, the `foo()` method will have `fooModule` set as the value of `this`.
+
+```ts
+// Imagine this is our imported module, and it has an export named 'foo'.
+let fooModule = {
+  foo() {
+    console.log(this);
+  },
+};
+
+fooModule.foo();
+```
+
+This is not the way exported functions in ECMAScript are supposed to work when we call them.
+That's why TypeScript 4.4 intentionally discards the `this` value when calling imported functions, by using the following emit.
+
+```ts
+// Imagine this is our imported module, and it has an export named 'foo'.
+let fooModule = {
+  foo() {
+    console.log(this);
+  },
+};
+
+// Notice we're actually calling '(0, fooModule.foo)' now, which is subtly different.
+(0, fooModule.foo)();
+```
+
+You can [read up more about the changes here](https://github.com/microsoft/TypeScript/pull/44624).
+
+#### Using `unknown` in Catch Variables
+
+Users running with the [`strict`](/tsconfig#strict) flag may see new errors around `catch` variables being `unknown`, especially if the existing code assumes only `Error` values have been caught.
+This often results in error messages such as:
+
+```
+Property 'message' does not exist on type 'unknown'.
+Property 'name' does not exist on type 'unknown'.
+Property 'stack' does not exist on type 'unknown'.
+```
+
+To get around this, you can specifically add runtime checks to ensure that the thrown type matches your expected type.
+Otherwise, you can just use a type assertion, add an explicit `: any` to your catch variable, or turn off [`useUnknownInCatchVariables`](/tsconfig#useUnknownInCatchVariables).
+
+#### Broader Always-Truthy Promise Checks
+
+In prior versions, TypeScript introduced "Always Truthy Promise checks" to catch code where an `await` may have been forgotten;
+however, the checks only applied to named declarations.
+That meant that while this code would correctly receive an error...
+
+```ts
+async function foo(): Promise<boolean> {
+  return false;
+}
+
+async function bar(): Promise<string> {
+  const fooResult = foo();
+  if (fooResult) {
+    // <- error! :D
+    return "true";
+  }
+  return "false";
+}
+```
+
+...the following code would not.
+
+```ts
+async function foo(): Promise<boolean> {
+  return false;
+}
+
+async function bar(): Promise<string> {
+  if (foo()) {
+    // <- no error :(
+    return "true";
+  }
+  return "false";
+}
+```
+
+TypeScript 4.4 now flags both.
+For more information, [read up on the original change](https://github.com/microsoft/TypeScript/pull/44491).
+
+#### Abstract Properties Do Not Allow Initializers
+
+The following code is now an error because abstract properties may not have initializers:
+
+```ts
+abstract class C {
+  abstract prop = 1;
+  //       ~~~~
+  // Property 'prop' cannot have an initializer because it is marked abstract.
+}
+```
+
+Instead, you may only specify a type for the property:
+
+```ts
+abstract class C {
+  abstract prop: number;
+}
+```
+
+## TypeScript 4.3
+
+### Separate Write Types on Properties
+
+In JavaScript, it's pretty common for APIs to convert values that are passed in before storing them.
+This often happens with getters and setters too.
+For example, let's imagine we've got a class with a setter that always converts a value into a `number` before saving it in a private field.
+
+```js twoslash
+class Thing {
+  #size = 0;
+
+  get size() {
+    return this.#size;
+  }
+  set size(value) {
+    let num = Number(value);
+
+    // Don't allow NaN and stuff.
+    if (!Number.isFinite(num)) {
+      this.#size = 0;
+      return;
+    }
+
+    this.#size = num;
+  }
+}
+```
+
+How would we type this JavaScript code in TypeScript?
+Well, technically we don't have to do anything special here - TypeScript can look at this with no explicit types and can figure out that `size` is a number.
+
+The problem is that `size` allows you to assign more than just `number`s to it.
+We could get around this by saying that `size` has the type `unknown` or `any` like in this snippet:
+
+```ts
+class Thing {
+  // ...
+  get size(): unknown {
+    return this.#size;
+  }
+}
+```
+
+But that's no good - `unknown` forces people reading `size` to do a type assertion, and `any` won't catch any mistakes.
+If we really want to model APIs that convert values, previous versions of TypeScript forced us to pick between being precise (which makes reading values easier, and writing harder) and being permissive (which makes writing values easier, and reading harder).
+
+That's why TypeScript 4.3 allows you to specify types for reading and writing to properties.
+
+```ts twoslash
+class Thing {
+  #size = 0;
+
+  get size(): number {
+    return this.#size;
+  }
+
+  set size(value: string | number | boolean) {
+    let num = Number(value);
+
+    // Don't allow NaN and stuff.
+    if (!Number.isFinite(num)) {
+      this.#size = 0;
+      return;
+    }
+
+    this.#size = num;
+  }
+}
+```
+
+In the above example, our `set` accessor takes a broader set of types (`string`s, `boolean`s, and `number`s), but our `get` accessor always guarantees it will be a `number`.
+Now we can finally assign other types to these properties with no errors!
+
+```ts twoslash
+class Thing {
+  #size = 0;
+
+  get size(): number {
+    return this.#size;
+  }
+
+  set size(value: string | number | boolean) {
+    let num = Number(value);
+
+    // Don't allow NaN and stuff.
+    if (!Number.isFinite(num)) {
+      this.#size = 0;
+      return;
+    }
+
+    this.#size = num;
+  }
+}
+// ---cut---
+let thing = new Thing();
+
+// Assigning other types to `thing.size` works!
+thing.size = "hello";
+thing.size = true;
+thing.size = 42;
+
+// Reading `thing.size` always produces a number!
+let mySize: number = thing.size;
+```
+
+When considering how two properties with the same name relate to each other, TypeScript will only use the "reading" type (e.g. the type on the `get` accessor above).
+"Writing" types are only considered when directly writing to a property.
+
+Keep in mind, this isn't a pattern that's limited to classes.
+You can write getters and setters with different types in object literals.
+
+```ts
+function makeThing(): Thing {
+  let size = 0;
+  return {
+    get size(): number {
+      return size;
+    },
+    set size(value: string | number | boolean) {
+      let num = Number(value);
+
+      // Don't allow NaN and stuff.
+      if (!Number.isFinite(num)) {
+        size = 0;
+        return;
+      }
+
+      size = num;
+    },
+  };
+}
+```
+
+In fact, we've added syntax to interfaces/object types to support different reading/writing types on properties.
+
+```ts
+// Now valid!
+interface Thing {
+    get size(): number
+    set size(value: number | string | boolean);
+}
+```
+
+One limitation of using different types for reading and writing properties is that the type for reading a property has to be assignable to the type that you're writing.
+In other words, the getter type has to be assignable to the setter.
+This ensures some level of consistency, so that a property is always assignable to itself.
+
+For more information on this feature, take a look at [the implementing pull request](https://github.com/microsoft/TypeScript/pull/42425).
+
+### `override` and the `--noImplicitOverride` Flag
+
+When extending classes in JavaScript, the language makes it super easy (pun intended) to override methods - but unfortunately, there are some mistakes that you can run into.
+
+One big one is missing renames.
+For example, take the following classes:
+
+```ts
+class SomeComponent {
+  show() {
+    // ...
+  }
+  hide() {
+    // ...
+  }
+}
+
+class SpecializedComponent extends SomeComponent {
+  show() {
+    // ...
+  }
+  hide() {
+    // ...
+  }
+}
+```
+
+`SpecializedComponent` subclasses `SomeComponent`, and overrides the `show` and `hide` methods.
+What happens if someone decides to rip out `show` and `hide` and replace them with a single method?
+
+```diff
+ class SomeComponent {
+-    show() {
+-        // ...
+-    }
+-    hide() {
+-        // ...
+-    }
++    setVisible(value: boolean) {
++        // ...
++    }
+ }
+ class SpecializedComponent extends SomeComponent {
+     show() {
+         // ...
+     }
+     hide() {
+         // ...
+     }
+ }
+```
+
+_Oh no!_
+Our `SpecializedComponent` didn't get updated.
+Now it's just adding these two useless `show` and `hide` methods that probably won't get called.
+
+Part of the issue here is that a user can't make it clear whether they meant to add a new method, or to override an existing one.
+That's why TypeScript 4.3 adds the `override` keyword.
+
+```ts
+class SpecializedComponent extends SomeComponent {
+    override show() {
+        // ...
+    }
+    override hide() {
+        // ...
+    }
+}
+```
+
+When a method is marked with `override`, TypeScript will always make sure that a method with the same name exists in a the base class.
+
+```ts twoslash
+// @noImplicitOverride
+// @errors: 4113
+class SomeComponent {
+    setVisible(value: boolean) {
+        // ...
+    }
+}
+class SpecializedComponent extends SomeComponent {
+    override show() {
+
+    }
+}
+```
+
+This is a big improvement, but it doesn't help if you _forget_ to write `override` on a method - and that's a big mistake users can run into also.
+
+For example, you might accidentally "trample over" a method that exists in a base class without realizing it.
+
+```ts
+class Base {
+  someHelperMethod() {
+    // ...
+  }
+}
+
+class Derived extends Base {
+  // Oops! We weren't trying to override here,
+  // we just needed to write a local helper method.
+  someHelperMethod() {
+    // ...
+  }
+}
+```
+
+That's why TypeScript 4.3 _also_ provides a new [`noImplicitOverride`](/tsconfig#noImplicitOverride) flag.
+When this option is turned on, it becomes an error to override any method from a superclass unless you explicitly use an `override` keyword.
+In that last example, TypeScript would error under [`noImplicitOverride`](/tsconfig#noImplicitOverride), and give us a clue that we probably need to rename our method inside of `Derived`.
+
+We'd like to extend our thanks to our community for the implementation here.
+The work for these items was implemented in [a pull request](https://github.com/microsoft/TypeScript/pull/39669) by [Wenlu Wang](https://github.com/Kingwl), though an earlier pull request implementing only the `override` keyword by [Paul Cody Johnston](https://github.com/pcj) served as a basis for direction and discussion.
+We extend our gratitude for putting in the time for these features.
+
+### Template String Type Improvements
+
+In recent versions, TypeScript introduced a new type construct: template string types.
+These are types that either construct new string-like types by concatenating...
+
+```ts
+type Color = "red" | "blue";
+type Quantity = "one" | "two";
+
+type SeussFish = `${Quantity | Color} fish`;
+// same as
+//   type SeussFish = "one fish" | "two fish"
+//                  | "red fish" | "blue fish";
+```
+
+...or match patterns of other string-like types.
+
+```ts
+declare let s1: `${number}-${number}-${number}`;
+declare let s2: `1-2-3`;
+
+// Works!
+s1 = s2;
+```
+
+The first change we made is just in when TypeScript will infer a template string type.
+When a template string is _contextually typed_ by a string-literal-like type (i.e. when TypeScript sees we're passing a template string to something that takes a literal type) it will try to give that expression a template type.
+
+```ts
+function bar(s: string): `hello ${string}` {
+    // Previously an error, now works!
+    return `hello ${s}`;
+}
+```
+
+This also kicks in when inferring types, and the type parameter `extends string`
+
+```ts
+declare let s: string;
+declare function f<T extends string>(x: T): T;
+
+// Previously: string
+// Now       : `hello ${string}`
+let x2 = f(`hello ${s}`);
+```
+
+The second major change here is that TypeScript can now better-relate, and _infer between_, different template string types.
+
+To see this, take the following example code:
+
+```ts
+declare let s1: `${number}-${number}-${number}`;
+declare let s2: `1-2-3`;
+declare let s3: `${number}-2-3`;
+
+s1 = s2;
+s1 = s3;
+```
+
+When checking against a string literal type like on `s2`, TypeScript could match against the string contents and figure out that `s2` was compatible with `s1` in the first assignment;
+however, as soon as it saw another template string, it just gave up.
+As a result, assignments like `s3` to `s1` just didn't work.
+
+TypeScript now actually does the work to prove whether or not each part of a template string can successfully match.
+You can now mix and match template strings with different substitutions and TypeScript will do a good job to figure out whether they're really compatible.
+
+```ts
+declare let s1: `${number}-${number}-${number}`;
+declare let s2: `1-2-3`;
+declare let s3: `${number}-2-3`;
+declare let s4: `1-${number}-3`;
+declare let s5: `1-2-${number}`;
+declare let s6: `${number}-2-${number}`;
+
+// Now *all of these* work!
+s1 = s2;
+s1 = s3;
+s1 = s4;
+s1 = s5;
+s1 = s6;
+```
+
+In doing this work, we were also sure to add better inference capabilities.
+You can see an example of these in action:
+
+```ts
+declare function foo<V extends string>(arg: `*${V}*`): V;
+
+function test<T extends string>(s: string, n: number, b: boolean, t: T) {
+    let x1 = foo("*hello*");            // "hello"
+    let x2 = foo("**hello**");          // "*hello*"
+    let x3 = foo(`*${s}*` as const);    // string
+    let x4 = foo(`*${n}*` as const);    // `${number}`
+    let x5 = foo(`*${b}*` as const);    // "true" | "false"
+    let x6 = foo(`*${t}*` as const);    // `${T}`
+    let x7 = foo(`**${s}**` as const);  // `*${string}*`
+}
+```
+
+For more information, see [the original pull request on leveraging contextual types](https://github.com/microsoft/TypeScript/pull/43376), along with [the pull request that improved inference and checking between template types](https://github.com/microsoft/TypeScript/pull/43361).
+
+### ECMAScript `#private` Class Elements
+
+TypeScript 4.3 expands which elements in a class can be given `#private` `#names` to make them truly private at run-time.
+In addition to properties, methods and accessors can also be given private names.
+
+```ts
+class Foo {
+  #someMethod() {
+    //...
+  }
+
+  get #someValue() {
+    return 100;
+  }
+
+  publicMethod() {
+    // These work.
+    // We can access private-named members inside this class.
+    this.#someMethod();
+    return this.#someValue;
+  }
+}
+
+new Foo().#someMethod();
+//        ~~~~~~~~~~~
+// error!
+// Property '#someMethod' is not accessible
+// outside class 'Foo' because it has a private identifier.
+
+new Foo().#someValue;
+//        ~~~~~~~~~~
+// error!
+// Property '#someValue' is not accessible
+// outside class 'Foo' because it has a private identifier.
+```
+
+Even more broadly, static members can now also have private names.
+
+```ts
+class Foo {
+  static #someMethod() {
+    // ...
+  }
+}
+
+Foo.#someMethod();
+//  ~~~~~~~~~~~
+// error!
+// Property '#someMethod' is not accessible
+// outside class 'Foo' because it has a private identifier.
+```
+
+This feature was authored [in a pull request](https://github.com/microsoft/TypeScript/pull/42458) from our friends at Bloomberg - written by [Titian Cernicova-Dragomir](https://github.com/dragomirtitian)and [Kubilay Kahveci](https://github.com/mkubilayk), with support and expertise from [Joey Watts](https://github.com/joeywatts), [Rob Palmer](https://github.com/robpalme), and [Tim McClure](https://github.com/tim-mc).
+We'd like to extend our thanks to all of them!
+
+### `ConstructorParameters` Works on Abstract Classes
+
+In TypeScript 4.3, the `ConstructorParameters` type helper now works on `abstract` classes.
+
+```ts
+abstract class C {
+  constructor(a: string, b: number) {
+    // ...
+  }
+}
+
+// Has the type '[a: string, b: number]'.
+type CParams = ConstructorParameters<typeof C>;
+```
+
+This is thanks to work done in TypeScript 4.2, where construct signatures can be marked as abstract:
+
+```ts
+type MyConstructorOf<T> = {
+    abstract new(...args: any[]): T;
+}
+
+// or using the shorthand syntax:
+
+type MyConstructorOf<T> = abstract new (...args: any[]) => T;
+```
+
+You can [see the change in more detail on GitHub](https://github.com/microsoft/TypeScript/pull/43380).
+
+### Contextual Narrowing for Generics
+
+TypeScript 4.3 now includes some slightly smarter type-narrowing logic on generic values.
+This allows TypeScript to accept more patterns, and sometimes even catch mistakes.
+
+For some motivation, let's say we're trying to write a function called `makeUnique`.
+It'll take a `Set` or an `Array` of elements, and if it's given an `Array`, it'll sort that `Array` remove duplicates according to some comparison function.
+After all that, it will return the original collection.
+
+```ts
+function makeUnique<T>(
+  collection: Set<T> | T[],
+  comparer: (x: T, y: T) => number
+): Set<T> | T[] {
+  // Early bail-out if we have a Set.
+  // We assume the elements are already unique.
+  if (collection instanceof Set) {
+    return collection;
+  }
+
+  // Sort the array, then remove consecutive duplicates.
+  collection.sort(comparer);
+  for (let i = 0; i < collection.length; i++) {
+    let j = i;
+    while (
+      j < collection.length &&
+      comparer(collection[i], collection[j + 1]) === 0
+    ) {
+      j++;
+    }
+    collection.splice(i + 1, j - i);
+  }
+  return collection;
+}
+```
+
+Let's leave questions about this function's implementation aside, and assume it arose from the requirements of a broader application.
+Something that you might notice is that the signature doesn't capture the original type of `collection`.
+We can do that by adding a type parameter called `C` in place of where we've written `Set<T> | T[]`.
+
+```diff
+- function makeUnique<T>(collection: Set<T> | T[], comparer: (x: T, y: T) => number): Set<T> | T[]
++ function makeUnique<T, C extends Set<T> | T[]>(collection: C, comparer: (x: T, y: T) => number): C
+```
+
+In TypeScript 4.2 and earlier, you'd end up with a bunch of errors as soon as you tried this.
+
+```ts
+function makeUnique<T, C extends Set<T> | T[]>(
+  collection: C,
+  comparer: (x: T, y: T) => number
+): C {
+  // Early bail-out if we have a Set.
+  // We assume the elements are already unique.
+  if (collection instanceof Set) {
+    return collection;
+  }
+
+  // Sort the array, then remove consecutive duplicates.
+  collection.sort(comparer);
+  //         ~~~~
+  // error: Property 'sort' does not exist on type 'C'.
+  for (let i = 0; i < collection.length; i++) {
+    //                             ~~~~~~
+    // error: Property 'length' does not exist on type 'C'.
+    let j = i;
+    while (
+      j < collection.length &&
+      comparer(collection[i], collection[j + 1]) === 0
+    ) {
+      //                    ~~~~~~
+      // error: Property 'length' does not exist on type 'C'.
+      //                                       ~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~
+      // error: Element implicitly has an 'any' type because expression of type 'number'
+      //        can't be used to index type 'Set<T> | T[]'.
+      j++;
+    }
+    collection.splice(i + 1, j - i);
+    //         ~~~~~~
+    // error: Property 'splice' does not exist on type 'C'.
+  }
+  return collection;
+}
+```
+
+Ew, errors!
+Why is TypeScript being so mean to us?
+
+The issue is that when we perform our `collection instanceof Set` check, we're expecting that to act as a type guard that narrows the type from `Set<T> | T[]` to `Set<T>` and `T[]` depending on the branch we're in;
+however, we're not dealing with a `Set<T> | T[]`, we're trying to narrow the generic value `collection`, whose type is `C`.
+
+It's a very subtle distinction, but it makes a difference.
+TypeScript can't just grab the constraint of `C` (which is `Set<T> | T[]`) and narrow that.
+If TypeScript _did_ try to narrow from `Set<T> | T[]`, it would forget that `collection` is also a `C` in each branch because there's no easy way to preserve that information.
+If hypothetically TypeScript tried that approach, it would break the above example in a different way.
+At the return positions, where the function expects values with the type `C`, we would instead get a `Set<T>` and a `T[]` in each branch, which TypeScript would reject.
+
+```ts
+function makeUnique<T>(
+  collection: Set<T> | T[],
+  comparer: (x: T, y: T) => number
+): Set<T> | T[] {
+  // Early bail-out if we have a Set.
+  // We assume the elements are already unique.
+  if (collection instanceof Set) {
+    return collection;
+    //     ~~~~~~~~~~
+    // error: Type 'Set<T>' is not assignable to type 'C'.
+    //          'Set<T>' is assignable to the constraint of type 'C', but
+    //          'C' could be instantiated with a different subtype of constraint 'Set<T> | T[]'.
+  }
+
+  // ...
+
+  return collection;
+  //     ~~~~~~~~~~
+  // error: Type 'T[]' is not assignable to type 'C'.
+  //          'T[]' is assignable to the constraint of type 'C', but
+  //          'C' could be instantiated with a different subtype of constraint 'Set<T> | T[]'.
+}
+```
+
+So how does TypeScript 4.3 change things?
+Well, basically in a few key places when writing code, all the type system really cares about is the constraint of a type.
+For example, when we write `collection.length`, TypeScript doesn't care about the fact that `collection` has the type `C`, it only cares about the properties available, which are determined by the constraint `T[] | Set<T>`.
+
+In cases like this, TypeScript will grab the narrowed type of the constraint because that will give you the data you care about;
+however, in any other case, we'll just try to narrow the original generic type (and often end up with the original generic type).
+
+In other words, based on how you use a generic value, TypeScript will narrow it a little differently.
+The end result is that the entire above example compiles with no type-checking errors.
+
+For more details, you can [look at the original pull request on GitHub](https://github.com/microsoft/TypeScript/pull/43183).
+
+### Always-Truthy Promise Checks
+
+Under [`strictNullChecks`](/tsconfig#strictNullChecks), checking whether a `Promise` is "truthy" in a conditional will trigger an error.
+
+```ts
+async function foo(): Promise<boolean> {
+  return false;
+}
+
+async function bar(): Promise<string> {
+  if (foo()) {
+    //  ~~~~~
+    // Error!
+    // This condition will always return true since
+    // this 'Promise<boolean>' appears to always be defined.
+    // Did you forget to use 'await'?
+    return "true";
+  }
+  return "false";
+}
+```
+
+[This change](https://github.com/microsoft/TypeScript/pull/39175) was contributed by [Jack Works](https://github.com/Jack-Works), and we extend our thanks to them!
+
+### `static` Index Signatures
+
+Index signatures allow us set more properties on a value than a type explicitly declares.
+
+```ts
+class Foo {
+  hello = "hello";
+  world = 1234;
+
+  // This is an index signature:
+  [propName: string]: string | number | undefined;
+}
+
+let instance = new Foo();
+
+// Valid assigment
+instance["whatever"] = 42;
+
+// Has type 'string | number | undefined'.
+let x = instance["something"];
+```
+
+Up until now, an index signature could only be declared on the instance side of a class.
+Thanks to [a pull request](https://github.com/microsoft/TypeScript/pull/37797) from [Wenlu Wang](https://github.com/microsoft/TypeScript/pull/37797), index signatures can now be declared as `static`.
+
+```ts
+class Foo {
+  static hello = "hello";
+  static world = 1234;
+
+  static [propName: string]: string | number | undefined;
+}
+
+// Valid.
+Foo["whatever"] = 42;
+
+// Has type 'string | number | undefined'
+let x = Foo["something"];
+```
+
+The same sorts of rules apply for index signatures on the static side of a class as they do for the instance side - namely, that every other static property has to be compatible with the index signature.
+
+```ts
+class Foo {
+  static prop = true;
+  //     ~~~~
+  // Error! Property 'prop' of type 'boolean'
+  // is not assignable to string index type
+  // 'string | number | undefined'.
+
+  static [propName: string]: string | number | undefined;
+}
+```
+
+### `.tsbuildinfo` Size Improvements
+
+In TypeScript 4.3, `.tsbuildinfo` files that are generated as part of [`incremental`](/tsconfig#incremental) builds should be significantly smaller.
+This is thanks to several optimizations in the internal format, creating tables with numeric identifiers to be used throughout the file instead of repeating full paths and similar information.
+This work was spear-headed by [Tobias Koppers](https://github.com/sokra) in [their pull request](https://github.com/microsoft/TypeScript/pull/43079), serving as inspiration for [the ensuing pull request](https://github.com/microsoft/TypeScript/pull/43155) and [further optimizations](https://github.com/microsoft/TypeScript/pull/43695).
+
+We have seen significant reductions of `.tsbuildinfo` file sizes including
+
+- 1MB to 411 KB
+- 14.9MB to 1MB
+- 1345MB to 467MB
+
+Needless to say, these sorts of savings in size translate to slightly faster build times as well.
+
+### Lazier Calculations in `--incremental` and `--watch` Compilations
+
+One of the issues with [`incremental`](/tsconfig#incremental) and `--watch` modes are that while they make later compilations go faster, the initial compilation can be a bit slower - in some cases, significantly slower.
+This is because these modes have to perform a bunch of book-keeping, computing information about the current project, and sometimes saving that data in a `.tsbuildinfo` file for later builds.
+
+That's why on top of `.tsbuildinfo` size improvements, TypeScript 4.3 also ships some changes to [`incremental`](/tsconfig#incremental) and `--watch` modes that make the first build of a project with these flags just as fast as an ordinary build!
+To do this, much of the information that would ordinarily be computed up-front is instead done on an on-demand basis for later builds.
+While this can add some overhead to a subsequent build, TypeScript's [`incremental`](/tsconfig#incremental) and `--watch` functionality will still typically operate on a much smaller set of files, and any needed information will be saved afterwards.
+In a sense, [`incremental`](/tsconfig#incremental) and `--watch` builds will "warm up" and get faster at compiling files once you've updated them a few times.
+
+In a repository with 3000 files, **this reduced initial build times to almost a third**!
+
+[This work was started](https://github.com/microsoft/TypeScript/pull/42960) by [Tobias Koppers](https://github.com/sokra), whose work ensued in [the resulting final change](https://github.com/microsoft/TypeScript/pull/43314) for this functionality.
+We'd like to extend a great thanks to Tobias for helping us find these opportunities for improvements!
+
+### Import Statement Completions
+
+One of the biggest pain-points users run into with import and export statements in JavaScript is the order - specifically that imports are written as
+
+```ts
+import { func } from "./module.js";
+```
+
+instead of
+
+```ts
+from "./module.js" import { func };
+```
+
+This causes some pain when writing out a full import statement from scratch because auto-complete wasn't able to work correctly.
+For example, if you start writing something like `import {`, TypeScript has no idea what module you're planning on importing from, so it couldn't provide any scoped-down completions.
+
+To alleviate this, we've leveraged the power of auto-imports!
+Auto-imports already deal with the issue of not being able to narrow down completions from a specific module - their whole point is to provide every possible export and automatically insert an import statement at the top of your file.
+
+So when you now start writing an `import` statement that doesn't have a path, we'll provide you with a list of possible imports.
+When you commit a completion, we'll complete the full import statement, including the path that you were going to write.
+
+![Import statement completions](https://devblogs.microsoft.com/typescript/wp-content/uploads/sites/11/2021/05/auto-import-statement-4-3.gif)
+
+This work requires editors that specifically support the feature.
+You'll be able to try this out by using the latest [Insiders versions of Visual Studio Code](https://code.visualstudio.com/insiders/).
+
+For more information, take a look at [the implementing pull request](https://github.com/microsoft/TypeScript/pull/43149)!
+
+### Editor Support for `@link` Tags
+
+TypeScript can now understand `@link` tags, and will try to resolve declarations that they link to.
+What this means is that you'll be able to hover over names within `@link` tags and get quick information, or use commands like go-to-definition or find-all-references.
+
+For example, you'll be able to go-to-definition on `bar` in `@link bar` in the example below and a TypeScript-supported editor will jump to `bar`'s function declaration.
+
+```ts
+/**
+ * To be called 70 to 80 days after {@link plantCarrot}.
+ */
+function harvestCarrot(carrot: Carrot) {}
+
+/**
+ * Call early in spring for best results. Added in v2.1.0.
+ * @param seed Make sure it's a carrot seed!
+ */
+function plantCarrot(seed: Seed) {
+  // TODO: some gardening
+}
+```
+
+![Jumping to definition and requesting quick info on a `@link` tag for ](https://devblogs.microsoft.com/typescript/wp-content/uploads/sites/11/2021/05/link-tag-4-3.gif)
+
+For more information, see [the pull request on GitHub](https://github.com/microsoft/TypeScript/pull/41877)!
+
+### Go-to-Definition on Non-JavaScript File Paths
+
+Many loaders allow users to include assets in their applications using JavaScript imports.
+They'll typically be written as something like `import "./styles.css"` or the like.
+
+Up until now, TypeScript's editor functionality wouldn't even attempt to read this file, so go-to-definition would typically fail.
+At best, go-to-definition would jump to a declaration like `declare module "*.css"` if it could find something along those lines.
+
+TypeScript's language service now tries to jump to the correct file when you perform a go-to-definition on relative file paths, even if they're not JavaScript or TypeScript files!
+Try it out with imports to CSS, SVGs, PNGs, font files, Vue files, and more.
+
+For more information, you can check out [the implementing pull request](https://github.com/microsoft/TypeScript/pull/42539).
+
+### Breaking Changes
+
+#### `lib.d.ts` Changes
+
+As with every TypeScript version, declarations for `lib.d.ts` (especially the declarations generated for web contexts), have changed.
+In this release, we leveraged [Mozilla's browser-compat-data](https://github.com/mdn/browser-compat-data) to remove APIs that no browser implements.
+While it is unlike that you are using them, APIs such as `Account`, `AssertionOptions`, `RTCStatsEventInit`, `MSGestureEvent`, `DeviceLightEvent`, `MSPointerEvent`, `ServiceWorkerMessageEvent`, and `WebAuthentication` have all been removed from `lib.d.ts`.
+This is discussed [in some detail here](https://github.com/microsoft/TypeScript-DOM-lib-generator/issues/991).
+
+https://github.com/microsoft/TypeScript-DOM-lib-generator/issues/991
+
+#### `useDefineForClassFields` now defaults to true on `esnext` and eventually on `es2022`
+
+In 2021 the class fields feature was added into the JavaScript specification with behavior which differed from how TypeScript had implemented it. In preparation for this, in TypeScript 3.7, a flag was added ([`useDefineForClassFields`](/tsconfig#useDefineForClassFields)) to migrate to emitted JavaScript to match the JavaScript standard behavior.
+
+Now that the feature is in JavaScript we are changing the default to `true` for ES2022 and above, including ESNext.
+
+#### Errors on Always-Truthy Promise Checks
+
+Under [`strictNullChecks`](/tsconfig#strictNullChecks), using a `Promise` that always appears to be defined within a condition check is now considered an error.
+
+```ts
+declare var p: Promise<number>;
+
+if (p) {
+  //  ~
+  // Error!
+  // This condition will always return true since
+  // this 'Promise<number>' appears to always be defined.
+  //
+  // Did you forget to use 'await'?
+}
+```
+
+For more details, [see the original change](https://github.com/microsoft/TypeScript/pull/39175).
+
+#### Union Enums Cannot Be Compared to Arbitrary Numbers
+
+Certain `enum`s are considered _union `enum`s_ when their members are either automatically filled in, or trivially written.
+In those cases, an enum can recall each value that it potentially represents.
+
+In TypeScript 4.3, if a value with a union `enum` type is compared with a numeric literal that it could never be equal to, then the type-checker will issue an error.
+
+```ts
+enum E {
+  A = 0,
+  B = 1,
+}
+
+function doSomething(x: E) {
+  // Error! This condition will always return 'false' since the types 'E' and '-1' have no overlap.
+  if (x === -1) {
+    // ...
+  }
+}
+```
+
+As a workaround, you can re-write an annotation to include the appropriate literal type.
+
+```ts
+enum E {
+  A = 0,
+  B = 1,
+}
+
+// Include -1 in the type, if we're really certain that -1 can come through.
+function doSomething(x: E | -1) {
+  if (x === -1) {
+    // ...
+  }
+}
+```
+
+You can also use a type-assertion on the value.
+
+```ts
+enum E {
+  A = 0,
+  B = 1,
+}
+
+function doSomething(x: E) {
+  // Use a type asertion on 'x' because we know we're not actually just dealing with values from 'E'.
+  if ((x as number) === -1) {
+    // ...
+  }
+}
+```
+
+Alternatively, you can re-declare your enum to have a non-trivial initializer so that any number is both assignable and comparable to that enum. This may be useful if the intent is for the enum to specify a few well-known values.
+
+```ts
+enum E {
+  // the leading + on 0 opts TypeScript out of inferring a union enum.
+  A = +0,
+  B = 1,
+}
+```
+
+For more details, [see the original change](https://github.com/microsoft/TypeScript/pull/42472)
+
 ## TypeScript 4.2
 
 ### Smarter Type Alias Preservation
