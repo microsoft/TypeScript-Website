@@ -107,7 +107,7 @@ const Play: React.FC<Props> = (props) => {
           div.style.webkitAnimation = ""
         })
 
-        document.getElementById("loading-message")!.innerHTML = `This version of TypeScript <em>(${tsVersion?.replace("<", "-")})</em><br/>has not been prepared for the Playground<br/><br/>Try <a href='/play?ts=${latestRelease}${document.location.hash}'>${latestRelease}</a> or <a href="/play?ts=next${document.location.hash}">Nightly</a>`
+        document.getElementById("loading-message")!.innerHTML = `This version of TypeScript <em>(${tsVersion?.replace(/</g, "-")})</em><br/>has not been prepared for the Playground<br/><br/>Try <a href='/play?ts=${latestRelease}${document.location.hash}'>${latestRelease}</a> or <a href="/play?ts=next${document.location.hash}">Nightly</a>`
         return
       }
 
