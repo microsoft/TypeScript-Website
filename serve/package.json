@@ -3,6 +3,6 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "serve-handler": "^6.1.2"
+    "serve-handler": "^6.1.5"
   }
 }
