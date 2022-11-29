@@ -62,5 +62,8 @@
     ],
     "onlyPublishWithReleaseLabel": true
   },
-  "packageManager": "yarn@3.2.3"
+  "packageManager": "yarn@3.2.3",
+  "volta": {
+    "node": "14.21.1"
+  }
 }
