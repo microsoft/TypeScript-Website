@@ -23,7 +23,6 @@ jobs:
 
       # For Azure uploads
       - run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-      - uses: microsoft/playwright-github-action@v1
 
       - name: Prepare website v2
         run: |
