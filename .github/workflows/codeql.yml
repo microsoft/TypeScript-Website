@@ -1,0 +1,33 @@
+# copied from microsoft/TypeScript and simplified slightly; see that file for boilerplate commentary
+# (which was likely copied from github/codeql-action)
+name: "Code scanning - action"
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 19 * * 0'
+
+jobs:
+  CodeQL-Build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        # We must fetch at least the immediate parents so that if this is
+        # a pull request then we can checkout the head.
+        fetch-depth: 2
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        config-file: ./.github/codeql/codeql-configuration.yml
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
