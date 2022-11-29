@@ -93,8 +93,6 @@ oneline: TypeScript 3.9 Release Notes
 
 You can add twoslash to the code samples if you want.
 
-When you're happy with that, then edit [`packages/documentation/copy/en/release-notes/Overview.md](https://github.com/microsoft/TypeScript-website/blob/v2/packages/documentation/copy/en/release-notes/Overview.md) to include the changes you just added, and simplify descriptions.
-
 ##### Update Schema Store
 
 Using the GitHub CLI, from the root of the repo
