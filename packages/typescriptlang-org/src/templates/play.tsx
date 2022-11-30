@@ -1,12 +1,12 @@
 import React, { useEffect } from "react"
 import ReactDOM from "react-dom"
 import { Layout } from "../components/layout"
-import { withPrefix, graphql } from "gatsby"
+import { withPrefix } from "gatsby"
 
 import "./play.scss"
 import { RenderExamples } from "../components/ShowExamples"
 
-import { useIntl } from "react-intl";
+import { useIntl } from "react-intl"
 import { createInternational } from "../lib/createInternational"
 import { hasLocalStorage } from "../lib/hasLocalStorage"
 import { headCopy } from "../copy/en/head-seo"
@@ -107,7 +107,7 @@ const Play: React.FC<Props> = (props) => {
           div.style.webkitAnimation = ""
         })
 
-        document.getElementById("loading-message")!.innerHTML = `This version of TypeScript <em>(${tsVersion?.replace("<", "-")})</em><br/>has not been prepared for the Playground<br/><br/>Try <a href='/play?ts=${latestRelease}${document.location.hash}'>${latestRelease}</a> or <a href="/play?ts=next${document.location.hash}">Nightly</a>`
+        document.getElementById("loading-message")!.innerHTML = `This version of TypeScript <em>(${tsVersion?.replace(/</g, "-")})</em><br/>has not been prepared for the Playground<br/><br/>Try <a href='/play?ts=${latestRelease}${document.location.hash}'>${latestRelease}</a> or <a href="/play?ts=next${document.location.hash}">Nightly</a>`
         return
       }
 
@@ -232,14 +232,6 @@ const Play: React.FC<Props> = (props) => {
             <div className="dropdown-dialog" id="examples" aria-labelledby="examples-button">
               <button className="examples-close" aria-label="Close dropdown" role="button">{i("play_subnav_examples_close")}</button>
               <RenderExamples defaultSection="TypeScript" sections={["JavaScript", "TypeScript"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
-            </div>
-          </li>
-
-          <li className="dropdown">
-            <a href="#" id="whatisnew-button" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="whatisnew">{i("play_subnav_whatsnew")} <span className="caret"></span></a>
-            <div className="dropdown-dialog" id="whatisnew" aria-labelledby="whatisnew-button">
-              <button role="button" aria-label="Close dropdown" className="examples-close">{i("play_subnav_examples_close")}</button>
-              <RenderExamples defaultSection="4.4" sections={["4.4", "4.3", "4.2", "4.1", "4.0", "3.8", "3.7", "Playground"]} examples={props.pageContext.examplesTOC} locale={props.pageContext.lang} />
             </div>
           </li>
 

@@ -1159,21 +1159,6 @@
     ],
     "total": 1
   },
-  "release-notes/Overview.md": {
-    "top": [
-      {
-        "name": "Orta Therox",
-        "gravatar": "f116cb3be23153ec08b94e8bd4dbcfeb",
-        "count": 54
-      },
-      {
-        "name": "Jake",
-        "gravatar": "31e55836947e29445f1d7bc9588268c7",
-        "count": 1
-      }
-    ],
-    "total": 2
-  },
   "release-notes/TypeScript 1.1.md": {
     "top": [
       {
@@ -1924,7 +1909,6 @@
     ],
     "total": 4
   },
-
   "handbook-v2/Basics.md": {
     "top": [
       {
