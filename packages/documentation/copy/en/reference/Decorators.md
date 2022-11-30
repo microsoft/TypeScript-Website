@@ -214,11 +214,12 @@ class BugReport {
 const bug = new BugReport("Needs dark mode");
 console.log(bug.title); // Prints "Needs dark mode"
 console.log(bug.type); // Prints "report"
+console.log(bug.reportingURL); // Prints "http://www..."
 
 // Note that the decorator _does not_ change the TypeScript type
 // and so the new property `reportingURL` is not known
 // to the type system:
-bug.reportingURL;
+BugReport.reportingURL;
 ```
 
 ## Method Decorators
