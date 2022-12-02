@@ -1,5 +1,5 @@
 // These are redirects from a very long time ago
-export const veryOldRedirects = {
+const veryOldRedirects = {
   Playground: "/play/",
   Tutorial: "/docs",
   Handbook: "/docs",
@@ -11,14 +11,15 @@ export const veryOldRedirects = {
 
 // These were .html files in the handbook with some redirection work
 // prettier-ignore
-export const handbookRedirects = {
+const handbookRedirects = {
   "/docs/handbook/writing-declaration-files": "/docs/handbook/declaration-files/introduction.html",
   "/docs/handbook/writing-declaration-files.html": "/docs/handbook/declaration-files/introduction.html",
   "/docs/handbook/writing-definition-files": "/docs/handbook/declaration-files/introduction.html",
   "/docs/handbook/typings-for-npm-packages": "/docs/handbook/declaration-files/publishing.html",
-  "/docs/handbook/release-notes": "/docs/handbook/release-notes/overview.html",
-  "/docs/tutorial.html": "/docs/handbook/release-notes/overview.html",
-  "/docs/handbook/release-notes/overview": "/docs/handbook/release-notes/overview.html",
+  "/docs/tutorial.html": "/docs/",
+  "/docs/handbook/release-notes": "/docs/",
+  "/docs/handbook/release-notes/overview": "/docs/",
+  "/docs/handbook/release-notes/overview.html": "/docs",
   "/docs/handbook/react-&-webpack.html": "https://webpack.js.org/guides/typescript/"
 }
 
@@ -36,6 +37,9 @@ export const setupRedirects = (
       }
       createRedirect({
         isPermanent: true,
+        // TODO: when we move to Azure Static Web Apps, we can disable `redirectInBrowser` and
+        // use https://www.gatsbyjs.com/plugins/gatsby-plugin-azure-static-web-app-redirects/,
+        // or probably just delete this file altogether and maintain routes.json instead.
         redirectInBrowser: true,
         fromPath: from,
         toPath: to,
@@ -45,4 +49,8 @@ export const setupRedirects = (
 
   addRedirects(veryOldRedirects)
   addRedirects(handbookRedirects)
+  addRedirects({
+    "/assets/typescript-handbook.epub": "/docs/handbook/intro.html",
+    "/assets/typescript-handbook.pdf": "/docs/handbook/intro.html"
+  })
 }
