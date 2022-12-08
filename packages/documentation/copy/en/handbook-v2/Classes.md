@@ -914,15 +914,15 @@ const MyHelperObject = {
 Under the hood, each class is an object (really a function) with a prototype property.  You can define a type for the class's static members, which will be properties of the class (not instances of it).
 
 ```ts twoslash
-interface VehicleTypeAndMaker {
-  manufacturer: string;
+interface VehicleType {
+  manufacturer: string
 }
 
-interface VehicleTypeAndMakerStatic {
+interface VehicleTypeStatic {
   readonly wheelCount: number;
 }
 
-class Vehicle implements VehicleTypeAndMaker {
+class Vehicle implements VehicleType {
   readonly manufacturer: string;
 
   constructor(maker: string) {
@@ -933,12 +933,12 @@ class Vehicle implements VehicleTypeAndMaker {
 }
 
 const Mechanic = {
-  vehicleHasFourWheels(value: VehicleTypeAndMakerStatic) : boolean {
+  classHasFourWheels(value: VehicleTypeStatic) : boolean {
     return value.wheelCount === 4;
   }
 };
 
-Mechanic.vehicleHasFourWheels(Vehicle); // returns true
+Mechanic.classHasFourWheels(Vehicle); // returns true
 ```
 
 ## `static` Blocks in Classes
