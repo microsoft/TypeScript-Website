@@ -909,6 +909,38 @@ const MyHelperObject = {
 };
 ```
 
+### Type-Checking Static Members of a Class
+
+Under the hood, each class is an object (really a function) with a prototype property.  You can define a type for the class's static members, which will be properties of the class (not instances of it).
+
+```ts twoslash
+interface VehicleTypeAndMaker {
+  manufacturer: string;
+}
+
+interface VehicleTypeAndMakerStatic {
+  readonly wheelCount: number;
+}
+
+class Vehicle implements VehicleTypeAndMaker {
+  readonly manufacturer: string;
+
+  constructor(maker: string) {
+    this.manufacturer = maker;
+  }
+
+  static readonly wheelCount = 4;
+}
+
+const Mechanic = {
+  vehicleHasFourWheels(value: VehicleTypeAndMakerStatic) : boolean {
+    return value.wheelCount === 4;
+  }
+};
+
+Mechanic.vehicleHasFourWheels(Vehicle); // returns true
+```
+
 ## `static` Blocks in Classes
 
 Static blocks allow you to write a sequence of statements with their own scope that can access private fields within the containing class. This means that we can write initialization code with all the capabilities of writing statements, no leakage of variables, and full access to our class's internals.
