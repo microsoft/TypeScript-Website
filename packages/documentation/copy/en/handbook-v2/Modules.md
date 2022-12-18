@@ -194,7 +194,7 @@ export interface Dog {
 }
 
 // @filename: app.ts
-import { Cat, Dog } from "./animal.js";
+import { Cat, Dog } from "./animal.ts";
 type Animals = Cat | Dog;
 ```
 
@@ -211,12 +211,12 @@ export type Dog = { breeds: string[]; yearOfBirth: number };
 export const createCatName = () => "fluffy";
 
 // @filename: valid.ts
-import type { Cat, Dog } from "./animal.js";
+import type { Cat, Dog } from "./animal.ts";
 export type Animals = Cat | Dog;
 
 // @filename: app.ts
 // @errors: 1361
-import type { createCatName } from "./animal.js";
+import type { createCatName } from "./animal.ts";
 const name = createCatName();
 ```
 
@@ -231,7 +231,7 @@ export type Dog = { breeds: string[]; yearOfBirth: number };
 export const createCatName = () => "fluffy";
 // ---cut---
 // @filename: app.ts
-import { createCatName, type Cat, type Dog } from "./animal.js";
+import { createCatName, type Cat, type Dog } from "./animal.ts";
 
 export type Animals = Cat | Dog;
 const name = createCatName();
