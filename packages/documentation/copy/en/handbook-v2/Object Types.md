@@ -130,7 +130,7 @@ function paintShape(opts: PaintOptions) {
 }
 ```
 
-Note that this pattern of setting defaults for unspecified values is so common that JavaScript has syntax to support it.
+Note that this pattern of setting defaults for unspecified values is so common that TypeScript has syntax to support it.
 
 ```ts twoslash
 interface Shape {}
