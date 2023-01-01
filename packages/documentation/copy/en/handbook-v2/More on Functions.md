@@ -96,8 +96,23 @@ function firstElement(arr: any[]) {
 }
 ```
 
-This function does its job, but unfortunately has the return type `any`.
-It'd be better if the function returned the type of the array element.
+This function does its job, but unfortunately has the return type `any`. A quick way to resolve this would be to give the `arr` parameter a type:
+
+```ts twoslash
+function firstElement(arr: string[]]) {
+  return arr[0];
+}
+```
+
+However, this won't scale very nicely. For example, if we want to add support for any array of numbers, we'd have to document that type, too:
+
+```ts twoslash
+function firstElement(arr: string[] | number[]) {
+  return arr[0];
+}
+```
+
+As you can imagine, this would become rather tedious after just a few types. It would be better if the function could always return the type of the array element without having to explicity type it ourselves. This is a great time to leverage TypeScript generics.
 
 In TypeScript, _generics_ are used when we want to describe a correspondence between two values.
 We do this by declaring a _type parameter_ in the function signature:
