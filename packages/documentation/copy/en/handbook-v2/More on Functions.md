@@ -26,7 +26,7 @@ function printToConsole(s: string) {
 greeter(printToConsole);
 ```
 
-The syntax `(a: string) => void` means "a function with one parameter, named `a`, of type string, that doesn't have a return value".
+The syntax `(a: string) => void` means "a function with one parameter, named `a`, of type `string`, that doesn't have a return value".
 Just like with function declarations, if a parameter type isn't specified, it's implicitly `any`.
 
 > Note that the parameter name is **required**. The function type `(string) => void` means "a function with a parameter named `string` of type `any`"!
