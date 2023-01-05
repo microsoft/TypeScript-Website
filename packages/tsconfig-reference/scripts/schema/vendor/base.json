@@ -565,9 +565,9 @@
               "default": "useFsEvents"
             },
             "experimentalDecorators": {
-              "description": "Enable experimental support for TC39 stage 2 draft decorators.",
+              "description": "Enable experimental support for TC39 stage 3 draft decorators.",
               "type": "boolean",
-              "markdownDescription": "Enable experimental support for TC39 stage 2 draft decorators.\n\nSee more: https://www.typescriptlang.org/tsconfig#experimentalDecorators"
+              "markdownDescription": "Enable experimental support for TC39 stage 3 draft decorators.\n\nSee more: https://www.typescriptlang.org/tsconfig#experimentalDecorators"
             },
             "emitDecoratorMetadata": {
               "description": "Emit design-type metadata for decorated declarations in source files.",

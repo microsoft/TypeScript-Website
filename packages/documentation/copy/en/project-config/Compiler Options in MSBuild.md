@@ -236,7 +236,7 @@ There is a series of mappings for common TypeScript settings, these are settings
 <td><code><a href='/tsconfig/#experimentalDecorators'>--experimentalDecorators</a></code></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Enable experimental support for TC39 stage 2 draft decorators.</p>
+<p>Enable experimental support for TC39 stage 3 draft decorators.</p>
 
 </tr></td>
 <tr class='even' name='moduleResolution'>

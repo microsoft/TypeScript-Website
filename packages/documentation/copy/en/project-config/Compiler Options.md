@@ -553,7 +553,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Enable experimental support for TC39 stage 2 draft decorators.</p>
+<p>Enable experimental support for TC39 stage 3 draft decorators.</p>
 </td></tr>
 
 <tr class='odd' name='explainFiles'>
