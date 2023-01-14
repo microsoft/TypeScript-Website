@@ -214,7 +214,7 @@ wn' 'es2016.array.include' 'es2017.object' 'es2017.sharedmemory' 'es2017.string'
 
 ## Suppress errors in .ts files using '// @ts-ignore' comments
 
-TypeScript 2.6 support suppressing errors in .js files using `// @ts-ignore` comments placed above the offending lines.
+TypeScript 2.6 support suppressing errors in .ts files using `// @ts-ignore` comments placed above the offending lines.
 
 ##### Example
 
