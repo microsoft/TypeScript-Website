@@ -622,7 +622,7 @@ It's very likely you will never use `Object`.
 
 > `object` is not `Object`. **Always** use `object`!
 
-Note that in JavaScript, function values are objects: They have properties, have `Object.prototype` in their prototype chain, are `instanceof Object`, you can call `Object.keys` on them, and so on.
+Note that in JavaScript, function values are objects: they have properties, have `Object.prototype` in their prototype chain, are `instanceof Object`, you can call `Object.keys` on them, and so on.
 For this reason, function types are considered to be `object`s in TypeScript.
 
 ### `unknown`
