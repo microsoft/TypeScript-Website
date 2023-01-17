@@ -1,16 +1,20 @@
 name: CI
-on: pull_request
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - v2
 
 jobs:
-  tests:
+  build_and_deploy:
     runs-on: ubuntu-latest
-
+    if: github.event.action != 'closed'
     steps:
       # Check out, and set up the node/ruby infra
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: "13.x"
+          node-version: "14.x"
           cache: yarn
 
       # Install, should be basically instant if cached
@@ -18,22 +22,28 @@ jobs:
         env:
           YARN_CHECKSUM_BEHAVIOR: ignore
 
-      # Verify dependencies are hooked up right
-      - run: node test/verifyPackageVersions.js
+      # Build and check stuff
+      - run: |
+          node test/verifyPackageVersions.js
+          yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
+          yarn bootstrap
+          yarn build
+          yarn build-site
+          cp -r packages/typescriptlang-org/public site
 
-      # Grab localizations
-      - run: yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
-
-      # Build the packages
-      - run: yarn bootstrap
-      - run: yarn workspace typescriptlang-org build
-
-      # Verify it compiles
-      - run: yarn compile
       # Run all the package's tests
       - run: yarn test
         env:
           CI: true
+
+      # Deploy preview environment
+      - uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROD }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "site"
+          skip_app_build: true
 
       # danger for PR builds
       - if: github.event_name == 'pull_request' && github.event.base.repo.id == github.event.head.repo.id
@@ -48,6 +58,7 @@ jobs:
           npm init typescript-playground-plugin playground-my-plugin
 
   windows:
+    if: github.event.action != 'closed'
     runs-on: windows-latest
 
     steps:
@@ -55,7 +66,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: "13.x"
+          node-version: "14.x"
           cache: yarn
 
       # Get local dependencies
@@ -70,3 +81,13 @@ jobs:
         run: |
           cd ..
           npm init typescript-playground-plugin playground-my-plugin
+
+  close_preview_environment:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close preview environment deployment
+    steps:
+      - uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROD }}
+          action: "close"
