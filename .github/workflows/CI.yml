@@ -6,7 +6,7 @@ on:
       - v2
 
 jobs:
-  build_and_deploy:
+  tests:
     runs-on: ubuntu-latest
     if: github.event.action != 'closed'
     steps:
