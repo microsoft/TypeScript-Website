@@ -1,0 +1,89 @@
+name: Deploy preview environment
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      pr:
+        required: true
+        type: string
+        description: PR number
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download site build
+        if: github.event_name == 'workflow_run'
+        uses: actions/github-script@v6
+        id: download-from-workflow-run
+        with:
+          result-encoding: string
+          script: |
+            const allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: context.payload.workflow_run.id,
+            });
+            const artifact = allArtifacts.data.artifacts.find(artifact => {
+              return artifact.name.startsWith('site-');
+            });
+            const prNumber = artifact.name.split('-')[1];
+
+            // Check if the PR has the "deploy-preview" label
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+            });
+            if (!pr.data.labels.some(label => label.name === 'deploy-preview')) {
+              return;
+            }
+
+            const download = await github.rest.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: artifact.id,
+               archive_format: 'zip',
+            });
+            return prNumber;
+
+      - name: Download site build
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/download-artifact@v3
+        with:
+          name: site-${{ inputs.pr }}
+          path: site
+
+      - run: ls -R
+        working-directory: site
+
+      - name: Deploy
+        id: deploy
+        if: inputs.pr || steps.download-from-workflow-run.outputs.result
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROD }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "site"
+          skip_app_build: true
+          production_branch: v2
+          deployment_environment: ${{ inputs.pr || steps.download-from-workflow-run.outputs.result }}
+
+      - name: Comment on PR
+        if: inputs.pr || steps.download-from-workflow-run.outputs.result
+        uses: actions/github-script@v6
+        env:
+          PR_NUMBER: ${{ inputs.pr || steps.download-from-workflow-run.outputs.result }}
+          SITE_URL: ${{ steps.deploy.outputs.static_web_app_url }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: process.env.PR_NUMBER,
+              body: `Azure Static Web Apps: Your stage site is ready! Visit it here: ${process.env.SITE_URL}`
+            });
