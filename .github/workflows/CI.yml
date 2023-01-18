@@ -6,7 +6,7 @@ on:
       - v2
 
 jobs:
-  build_and_deploy:
+  tests:
     runs-on: ubuntu-latest
     if: github.event.action != 'closed'
     steps:
@@ -36,14 +36,22 @@ jobs:
         env:
           CI: true
 
-      # Deploy preview environment
+      # Deploy preview environment for non-forks
       - uses: Azure/static-web-apps-deploy@v1
+        if: github.event.base.repo.id == github.event.head.repo.id
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROD }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          app_location: "site"
+          action: upload
+          app_location: site
           skip_app_build: true
+
+      # Upload site artifact for forks so it can be deployed by a maintainer on-demand
+      - uses: actions/upload-artifact@v3
+        if: github.event.base.repo.id != github.event.head.repo.id
+        with:
+          name: site-${{ github.event.number }}
+          path: site/
 
       # danger for PR builds
       - if: github.event_name == 'pull_request' && github.event.base.repo.id == github.event.head.repo.id
@@ -81,13 +89,3 @@ jobs:
         run: |
           cd ..
           npm init typescript-playground-plugin playground-my-plugin
-
-  close_preview_environment:
-    if: github.event.action == 'closed'
-    runs-on: ubuntu-latest
-    name: Close preview environment deployment
-    steps:
-      - uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROD }}
-          action: "close"
