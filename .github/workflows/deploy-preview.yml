@@ -15,7 +15,9 @@ jobs:
         with:
           # Fetch the full history, to build attribution.json
           fetch-depth: 0
-          ref: refs/remotes/pull/${{ inputs.pr }}/merge
+      - run: |
+          git fetch origin pull/${{ inputs.pr }}/merge:pull/${{ inputs.pr }}/merge
+          git checkout pull/${{ inputs.pr }}/merge
       - uses: actions/setup-node@v2
         with:
           node-version: "14.x"
