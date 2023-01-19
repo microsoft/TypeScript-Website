@@ -40,12 +40,12 @@ jobs:
             console.log('Detected PR number from artifact: ', prNumber);
 
             // Check if the PR has the "deploy-preview" label
-            const pr = await github.rest.pulls.get({
+            const pr = (await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: prNumber,
-            });
-            if (!pr.data.labels.some(label => label.name === 'deploy-preview')) {
+            })).data;
+            if (!pr.labels.some(label => label.name === 'deploy-preview')) {
               console.log('PR does not have the "deploy-preview" label');
               return;
             }
@@ -56,6 +56,9 @@ jobs:
                artifact_id: artifact.id,
                archive_format: 'zip',
             });
+
+            const fs = require('fs');
+            fs.writeFileSync('site.zip', Buffer.from(download.data));
             return prNumber;
 
       - name: Download site build
@@ -65,32 +68,28 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const prNumber = context.payload.event_name === 'pull_request'
+            const prNumber = context.eventName === 'pull_request'
               ? context.payload.pull_request.number
               : context.payload.inputs.pr;
 
-            if (context.payload.event_name === 'pull_request' && context.payload.label.name !== 'deploy-preview') {
+            if (context.eventName === 'pull_request' && context.payload.label.name !== 'deploy-preview') {
               console.log('Label is not "deploy-preview"');
               return;
             }
 
             let pr;
-            if (context.payload.event_name === 'workflow_dispatch') {
-              pr = await github.rest.pulls.get({
+            if (context.eventName === 'workflow_dispatch') {
+              pr = (await github.rest.pulls.get({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: prNumber,
-              });
-              if (!pr.data.labels.some(label => label.name === 'deploy-preview')) {
-                console.log('PR does not have the "deploy-preview" label');
-                return;
-              }
+              })).data;
             } else {
               pr = context.payload.pull_request;
             }
 
             // https://github.com/orgs/community/discussions/24709
-            const workflowRun = await github.rest.actions.listWorkflowRuns({
+            const workflowRun = (await github.rest.actions.listWorkflowRuns({
               owner: context.repo.owner,
               repo: context.repo.repo,
               workflow_id: 'CI.yml',
@@ -98,7 +97,7 @@ jobs:
               event: 'pull_request',
               status: 'success',
               per_page: 1,
-            })[0];
+            })).data.workflow_runs[0];
 
             if (!workflowRun) {
               console.log('No matching workflow run found from branch ', pr.head.ref);
@@ -124,7 +123,14 @@ jobs:
                artifact_id: artifact.id,
                archive_format: 'zip',
             });
+
+            const fs = require('fs');
+            fs.writeFileSync('site.zip', Buffer.from(download.data));
             return prNumber;
+
+      - name: Unzip site build
+        if: steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result
+        run: unzip site.zip -d site
 
       - run: ls -R
         if: steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result
