@@ -9,7 +9,7 @@ on:
         required: true
         type: string
         description: PR number
-  pull_request:
+  pull_request_target:
     types: [labeled]
 
 jobs:
@@ -62,17 +62,17 @@ jobs:
             return prNumber;
 
       - name: Download site build
-        if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch'
         uses: actions/github-script@v6
         id: download-from-pr
         with:
           result-encoding: string
           script: |
-            const prNumber = context.eventName === 'pull_request'
+            const prNumber = context.eventName === 'pull_request_target'
               ? context.payload.pull_request.number
               : context.payload.inputs.pr;
 
-            if (context.eventName === 'pull_request' && context.payload.label.name !== 'deploy-preview') {
+            if (context.eventName === 'pull_request_target' && context.payload.label.name !== 'deploy-preview') {
               console.log('Label is not "deploy-preview"');
               return;
             }
@@ -94,7 +94,7 @@ jobs:
               repo: context.repo.repo,
               workflow_id: 'CI.yml',
               branch: pr.head.ref,
-              event: 'pull_request',
+              event: 'pull_request_target',
               status: 'success',
               per_page: 1,
             })).data.workflow_runs[0];
