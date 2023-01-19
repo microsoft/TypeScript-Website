@@ -65,6 +65,8 @@ jobs:
         with:
           result-encoding: string
           script: |
+            console.log(context);
+            console.log(context.payload);
             const prNumber = context.payload.event_name === 'pull_request'
               ? context.payload.pull_request.number
               : context.payload.inputs.pr;
