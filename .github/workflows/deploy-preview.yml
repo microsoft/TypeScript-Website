@@ -95,7 +95,7 @@ jobs:
               event: 'pull_request',
               status: 'success',
               per_page: 1,
-            }))[0];
+            })).data.workflow_runs[0];
 
             if (!workflowRun) {
               console.log('No matching workflow run found from branch ', pr.head.ref);
