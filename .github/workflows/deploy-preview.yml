@@ -23,8 +23,11 @@ jobs:
         with:
           result-encoding: string
           script: |
-            // get all repository artifacts with name 'site-'
-
+            const allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: context.payload.workflow_run.id,
+            });
             const artifact = allArtifacts.data.artifacts.find(artifact => {
               return artifact.name.startsWith('site-');
             });
