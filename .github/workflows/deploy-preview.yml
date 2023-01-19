@@ -65,19 +65,17 @@ jobs:
         with:
           result-encoding: string
           script: |
-            console.log(context);
-            console.log(context.payload);
-            const prNumber = context.payload.event_name === 'pull_request'
+            const prNumber = context.eventName === 'pull_request'
               ? context.payload.pull_request.number
               : context.payload.inputs.pr;
 
-            if (context.payload.event_name === 'pull_request' && context.payload.label.name !== 'deploy-preview') {
+            if (context.eventName === 'pull_request' && context.payload.label.name !== 'deploy-preview') {
               console.log('Label is not "deploy-preview"');
               return;
             }
 
             let pr;
-            if (context.payload.event_name === 'workflow_dispatch') {
+            if (context.eventName === 'workflow_dispatch') {
               pr = await github.rest.pulls.get({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
