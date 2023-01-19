@@ -82,10 +82,6 @@ jobs:
                 repo: context.repo.repo,
                 pull_number: prNumber,
               })).data;
-              if (!pr.labels.some(label => label.name === 'deploy-preview')) {
-                console.log('PR does not have the "deploy-preview" label');
-                return;
-              }
             } else {
               pr = context.payload.pull_request;
             }
