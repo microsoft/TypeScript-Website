@@ -40,12 +40,12 @@ jobs:
             console.log('Detected PR number from artifact: ', prNumber);
 
             // Check if the PR has the "deploy-preview" label
-            const pr = await github.rest.pulls.get({
+            const pr = (await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: prNumber,
-            });
-            if (!pr.data.labels.some(label => label.name === 'deploy-preview')) {
+            })).data;
+            if (!pr.labels.some(label => label.name === 'deploy-preview')) {
               console.log('PR does not have the "deploy-preview" label');
               return;
             }
@@ -56,6 +56,7 @@ jobs:
                artifact_id: artifact.id,
                archive_format: 'zip',
             });
+            console.log(download);
             return prNumber;
 
       - name: Download site build
@@ -76,12 +77,12 @@ jobs:
 
             let pr;
             if (context.eventName === 'workflow_dispatch') {
-              pr = await github.rest.pulls.get({
+              pr = (await github.rest.pulls.get({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: prNumber,
-              });
-              if (!pr.data.labels.some(label => label.name === 'deploy-preview')) {
+              })).data;
+              if (!pr.labels.some(label => label.name === 'deploy-preview')) {
                 console.log('PR does not have the "deploy-preview" label');
                 return;
               }
@@ -124,6 +125,7 @@ jobs:
                artifact_id: artifact.id,
                archive_format: 'zip',
             });
+            console.log(download);
             return prNumber;
 
       - run: ls -R
