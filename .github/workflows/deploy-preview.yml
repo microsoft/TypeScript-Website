@@ -94,7 +94,7 @@ jobs:
               repo: context.repo.repo,
               workflow_id: 'CI.yml',
               branch: pr.head.ref,
-              event: 'pull_request_target',
+              event: 'pull_request',
               status: 'success',
               per_page: 1,
             })).data.workflow_runs[0];
