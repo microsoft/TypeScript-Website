@@ -9,6 +9,8 @@ on:
         required: true
         type: string
         description: PR number
+  pull_request:
+    types: [labeled]
 
 jobs:
   deploy:
@@ -29,6 +31,10 @@ jobs:
             const artifact = allArtifacts.data.artifacts.find(artifact => {
               return artifact.name.startsWith('site-');
             });
+            if (!artifact) {
+              return;
+            }
+
             const prNumber = artifact.name.split('-')[1];
 
             // Check if the PR has the "deploy-preview" label
@@ -38,6 +44,54 @@ jobs:
               pull_number: prNumber,
             });
             if (!pr.data.labels.some(label => label.name === 'deploy-preview')) {
+              return;
+            }
+
+            const download = await github.rest.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: artifact.id,
+               archive_format: 'zip',
+            });
+            return prNumber;
+
+      - name: Download site build
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        id: download-from-pr
+        with:
+          result-encoding: string
+          script: |
+            if (!context.payload.label.name !== 'deploy-preview') {
+              return;
+            }
+
+            const prNumber = context.payload.pull_request.number;
+
+            // https://github.com/orgs/community/discussions/24709
+            const workflowRun = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'CI.yml',
+              branch: context.payload.pull_request.head.ref,
+              event: 'pull_request',
+              status: 'success',
+              per_page: 1,
+            })[0];
+
+            if (!workflowRun) {
+              return;
+            }
+
+            const allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: workflowRun.id,
+            });
+            const artifact = allArtifacts.data.artifacts.find(artifact => {
+              return artifact.name.startsWith('site-');
+            });
+            if (!artifact) {
               return;
             }
 
@@ -61,7 +115,7 @@ jobs:
 
       - name: Deploy
         id: deploy
-        if: inputs.pr || steps.download-from-workflow-run.outputs.result
+        if: inputs.pr || steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROD }}
@@ -70,13 +124,13 @@ jobs:
           app_location: "site"
           skip_app_build: true
           production_branch: v2
-          deployment_environment: ${{ inputs.pr || steps.download-from-workflow-run.outputs.result }}
+          deployment_environment: ${{ inputs.pr || steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result }}
 
       - name: Comment on PR
-        if: inputs.pr || steps.download-from-workflow-run.outputs.result
+        if: inputs.pr || steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result
         uses: actions/github-script@v6
         env:
-          PR_NUMBER: ${{ inputs.pr || steps.download-from-workflow-run.outputs.result }}
+          PR_NUMBER: ${{ inputs.pr || steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result }}
           SITE_URL: ${{ steps.deploy.outputs.static_web_app_url }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
