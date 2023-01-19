@@ -56,7 +56,9 @@ jobs:
                artifact_id: artifact.id,
                archive_format: 'zip',
             });
-            console.log(download);
+
+            const fs = require('fs');
+            fs.writeFileSync('site.zip', Buffer.from(download.data));
             return prNumber;
 
       - name: Download site build
@@ -121,8 +123,14 @@ jobs:
                artifact_id: artifact.id,
                archive_format: 'zip',
             });
-            console.log(download);
+
+            const fs = require('fs');
+            fs.writeFileSync('site.zip', Buffer.from(download.data));
             return prNumber;
+
+      - name: Unzip site build
+        if: steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result
+        run: unzip site.zip -d site
 
       - run: ls -R
         if: steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result
