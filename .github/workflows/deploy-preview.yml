@@ -150,7 +150,8 @@ jobs:
           deployment_environment: ${{ steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result }}
 
       - name: Comment on PR
-        if: steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result
+        # azure/static-web-apps-deploy seems to comment itself when the event is pull_request_target
+        if: github.event_name != 'pull_request_target' && (steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result)
         uses: actions/github-script@v6
         env:
           PR_NUMBER: ${{ steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result }}
