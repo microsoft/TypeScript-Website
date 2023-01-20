@@ -167,7 +167,7 @@ This was a brief overview of the syntax and tools used in everyday TypeScript. F
 
 - Learn some of the JavaScript fundamentals, we recommend either:
 
-  - [Microsoft's JavaScript Resources](https://docs.microsoft.com/javascript/) or
+  - [Microsoft's JavaScript Resources](https://developer.microsoft.com/javascript/) or
   - [JavaScript guide at the Mozilla Web Docs](https://developer.mozilla.org/docs/Web/JavaScript/Guide)
 
 - Continue to [TypeScript for JavaScript Programmers](/docs/handbook/typescript-in-5-minutes.html)
