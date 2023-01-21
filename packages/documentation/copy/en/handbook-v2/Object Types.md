@@ -855,7 +855,7 @@ const c: StringNumberBooleans = ["world", 3, true, false, true, false, true];
 
 Why might optional and rest elements be useful?
 Well, it allows TypeScript to correspond tuples with parameter lists.
-Tuples types can be used in [rest parameters and arguments](/docs/handbook/2/functions.html#rest-parameters-and-arguments), so that the following:
+Tuple types can be used in [rest parameters and arguments](/docs/handbook/2/functions.html#rest-parameters-and-arguments), so that the following:
 
 ```ts twoslash
 function readButtonInput(...args: [string, number, ...boolean[]]) {
