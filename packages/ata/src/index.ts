@@ -53,7 +53,7 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
     estimatedToDownload = 0
     estimatedDownloaded = 0
 
-    resolveDeps(initialSourceFile, 0).then(t => {
+    return resolveDeps(initialSourceFile, 0).then(t => {
       if (estimatedDownloaded > 0) {
         config.delegate.finished?.(fsMap)
       }
