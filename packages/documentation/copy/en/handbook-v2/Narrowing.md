@@ -41,7 +41,7 @@ If this mostly looks like uninteresting JavaScript code, that's sort of the poin
 Apart from the annotations we put in place, this TypeScript code looks like JavaScript.
 The idea is that TypeScript's type system aims to make it as easy as possible to write typical JavaScript code without bending over backwards to get type safety.
 
-While it might not look like much, there's actually a lot going under the covers here.
+While it might not look like much, there's actually a lot going on under the covers here.
 Much like how TypeScript analyzes runtime values using static types, it overlays type analysis on JavaScript's runtime control flow constructs like `if/else`, conditional ternaries, loops, truthiness checks, etc., which can all affect those types.
 
 Within our `if` check, TypeScript sees `typeof padding === "number"` and understands that as a special form of code called a _type guard_.
