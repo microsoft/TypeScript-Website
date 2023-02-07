@@ -31,10 +31,11 @@ jobs:
 
       # Build the packages
       - run: yarn bootstrap
-      - run: yarn workspace typescriptlang-org build
+      - run: yarn build
 
       # Verify it compiles
-      - run: yarn compile
+      - run: yarn build-site
+      - run: cp -r packages/typescriptlang-org/public site
 
       # Run all the package's tests
       - run: yarn test
