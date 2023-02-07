@@ -26,7 +26,6 @@
     "@typescript/playground": "0.1.0",
     "@typescript/sandbox": "0.1.0",
     "@typescript/twoslash": "3.2.1",
-    "canvas": "^2.6.1",
     "gatsby": "^3.8.1",
     "gatsby-link": "3.10.0",
     "gatsby-plugin-catch-links": "^3.10.0",

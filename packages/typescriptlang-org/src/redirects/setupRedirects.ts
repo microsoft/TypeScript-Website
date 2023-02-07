@@ -49,8 +49,10 @@ export const setupRedirects = (
 
   addRedirects(veryOldRedirects)
   addRedirects(handbookRedirects)
-  addRedirects({
-    "/assets/typescript-handbook.epub": "/docs/handbook/intro.html",
-    "/assets/typescript-handbook.pdf": "/docs/handbook/intro.html"
-  })
+
+  // These have been replaced by the real output in the handbook
+  // addRedirects({
+  //   "/assets/typescript-handbook.epub": "/docs/handbook/intro.html",
+  //   "/assets/typescript-handbook.pdf": "/docs/handbook/intro.html"
+  // })
 }

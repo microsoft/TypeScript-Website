@@ -10,7 +10,7 @@ console.log("TSConfig Ref: JSON schema");
 
 import matter from "gray-matter";
 import { CommandLineOptionBase } from "../types";
-import { writeFileSync } from "fs";
+import { writeFileSync, readFileSync } from "fs";
 import { join } from "path";
 import { fileURLToPath } from "url";
 import prettier from "prettier";
@@ -36,9 +36,11 @@ export interface CompilerOptionJSON extends CommandLineOptionBase {
   hostObj: string;
 }
 
-import schemaBase from "./vendor/base.json";
-// @ts-ignore
-import tsconfigOpts from "../../data/tsconfigOpts.json";
+const schemaBase = JSON.parse(
+  readFileSync(join("scripts", "schema", "vendor", "base.json"), "utf8")
+) as typeof import("./vendor/base.json");
+
+const tsconfigOpts = JSON.parse(readFileSync(join("data", "tsconfigOpts.json"), "utf8")) as any;
 
 // Cut down the list
 const filteredOptions = tsconfigOpts
@@ -66,10 +68,7 @@ const okToSkip = [
 filteredOptions.forEach((option) => {
   const name = option.name as CompilerOptionName;
   if (okToSkip.includes(name)) return;
-  const sectionsPath = new URL(
-    `../../copy/en/options/${name}.md`,
-    import.meta.url
-  );
+  const sectionsPath = new URL(`../../copy/en/options/${name}.md`, import.meta.url);
 
   let section;
   if (schemaCompilerOpts[name]) section = schemaCompilerOpts;
@@ -106,7 +105,10 @@ You're also probably going to need to make the new Markdown file for the compile
     }
 
     // Set the plain version, stripping internal markdown links.
-    section[name].description = optionFile.data.oneline.replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, '$1');
+    section[name].description = optionFile.data.oneline.replace(
+      /(?:__|[*#])|\[(.*?)\]\(.*?\)/gm,
+      "$1"
+    );
 
     // Can be removed once https://github.com/ExodusMovement/schemasafe/pull/146 is merged
     const isEnumOrConst = section[name]["enum"];
@@ -129,23 +131,19 @@ for (const [properties, options] of [
   [schemaCompilerOpts, ts.optionDeclarations],
   [schemaWatchOpts, ts.optionsForWatch],
   [
-    schemaBase.definitions.typeAcquisitionDefinition.properties.typeAcquisition
-      .properties,
+    schemaBase.definitions.typeAcquisitionDefinition.properties.typeAcquisition.properties,
     ts.typeAcquisitionDeclarations,
   ],
 ] as const) {
   for (const [name, optionSchema] of Object.entries(properties)) {
     const option = options.find(
-      (option) =>
-        option.name === name &&
-        option.category?.key !== "Command_line_Options_6171"
+      (option) => option.name === name && option.category?.key !== "Command_line_Options_6171"
     );
     if (!option) {
       properties[name] = undefined;
     } else if (option.type === "list") {
       updateItemsSchema(
-        (optionSchema as Extract<typeof optionSchema, { items?: unknown }>)
-          .items as never,
+        (optionSchema as Extract<typeof optionSchema, { items?: unknown }>).items as never,
         option.element.type
       );
     } else {
@@ -156,10 +154,7 @@ for (const [properties, options] of [
 
 // Update optionSchema or optionSchema.items, depending on whether
 // option is a CommandLineOptionOfListType.
-function updateItemsSchema(
-  itemsSchema: JSONSchema7,
-  type: CommandLineOption["type"]
-) {
+function updateItemsSchema(itemsSchema: JSONSchema7, type: CommandLineOption["type"]) {
   const newEnum = typeof type !== "object" ? undefined : [...type.keys()];
   // Update { enum: ... } if found in itemsSchema.anyOf, or
   // itemsSchema.enum otherwise.
@@ -176,25 +171,19 @@ function updateItemsSchema(
   // match a pattern, and update the pattern if not.
   const patterns = itemsSchema
     .anyOf!.map((subschema) => {
-      const pattern = (
-        subschema as Extract<typeof subschema, { pattern?: unknown }>
-      ).pattern;
+      const pattern = (subschema as Extract<typeof subschema, { pattern?: unknown }>).pattern;
       return pattern !== undefined && new RegExp(pattern);
     })
-    .filter(
-      (pattern): pattern is Exclude<typeof pattern, false> => pattern as never
-    );
+    .filter((pattern): pattern is Exclude<typeof pattern, false> => pattern as never);
   if (
     newEnum?.every(
       (newValue) =>
-        enumSchema.enum!.includes(newValue) ||
-        patterns.some((pattern) => pattern.test(newValue))
+        enumSchema.enum!.includes(newValue) || patterns.some((pattern) => pattern.test(newValue))
     )
   )
     return;
   itemsSchema.anyOf = itemsSchema.anyOf!.filter(
-    (subschema) =>
-      !(subschema as Extract<typeof subschema, { pattern?: unknown }>).pattern
+    (subschema) => !(subschema as Extract<typeof subschema, { pattern?: unknown }>).pattern
   );
   if (!newEnum) return;
   // Regular expressions are not implicitly anchored.
@@ -209,17 +198,14 @@ function updateItemsSchema(
       )
       .join("")
   );
-  const pattern =
-    disjunction.length > 1 ? `(?:${disjunction.join("|")})` : disjunction[0];
+  const pattern = disjunction.length > 1 ? `(?:${disjunction.join("|")})` : disjunction[0];
   itemsSchema.anyOf.push({ pattern: `^${pattern}$` });
 }
 
 function updateEnum(schema: JSONSchema7, newEnum: string[] | undefined) {
   schema.enum = newEnum?.map(
     (newValue) =>
-      schema.enum?.find(
-        (oldValue) => (oldValue as string).toLowerCase() === newValue
-      ) || newValue
+      schema.enum?.find((oldValue) => (oldValue as string).toLowerCase() === newValue) || newValue
   );
 }
 
