@@ -22,15 +22,19 @@ jobs:
       - run: yarn install
         env:
           YARN_CHECKSUM_BEHAVIOR: ignore
+ 
+      # Verify dependencies are hooked up right
+      - run: node test/verifyPackageVersions.js
 
-      # Build and check stuff
-      - run: |
-          node test/verifyPackageVersions.js
-          yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
-          yarn bootstrap
-          yarn build
-          yarn build-site
-          cp -r packages/typescriptlang-org/public site
+      # Grab localizations
+      - run: yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
+
+      # Build the packages
+      - run: yarn bootstrap
+      - run: yarn workspace typescriptlang-org build
+
+      # Verify it compiles
+      - run: yarn compile
 
       # Run all the package's tests
       - run: yarn test
