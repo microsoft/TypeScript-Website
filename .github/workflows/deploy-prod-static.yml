@@ -1,9 +1,9 @@
-name: Monday Website Push To Production
+name: Deploy to Azure Static Web Apps on push
 
 on:
-  schedule:
-    # https://crontab.guru/#0_12_*_*_1
-    - cron: "0 12 * * 1"
+  push:
+    branches:
+      - v2
   workflow_dispatch:
 
 jobs:
@@ -17,10 +17,8 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v2
         with:
-          node-version: "16.x"
+          node-version: "14.x"
           cache: yarn
-
-      - uses: microsoft/playwright-github-action@v1
 
       # Builds the modules, and boostraps the other modules
       - name: Build website
@@ -33,7 +31,6 @@ jobs:
         env:
           YARN_CHECKSUM_BEHAVIOR: ignore
 
-      # Builds the site
       - name: Makes the site
         run: |
           yarn build-site
@@ -41,13 +38,15 @@ jobs:
         env:
           YARN_CHECKSUM_BEHAVIOR: ignore
 
-      # Deploy to the prod appservice
-      - name: Commit built site to SITE-PRODUCTION branch
-        uses: peaceiris/actions-gh-pages@v1.1.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: "SITE-PRODUCTION"
-          PUBLISH_DIR: ./site
+      - name: Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROD }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "site"
+          skip_app_build: true
 
       # Update the site stats
       - run: node packages/typescriptlang-org/scripts/updateAppInsightsGitHubIssue.js
@@ -55,12 +54,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_BOT_TOKEN }}
           APP_INSIGHTS_API_KEY: ${{ secrets.APP_INSIGHTS_API_KEY }}
           APP_INSIGHTS_ID: ${{ secrets.APP_INSIGHTS_ID }}
-
-      - name: Send a message to Microsoft Teams
-        if: ${{ failure() }}
-        uses: aliencube/microsoft-teams-actions@v0.8.0
-        with:
-          webhook_uri: ${{ secrets.TEAMS_WEB_BOT_INCOMING_URL }}
-          title: Prod deploy failed
-          summary: Could not build the site for production
-          actions: '[{ "@type": "OpenUri", "name": "View Logs", "targets": [{ "os": "default", "uri": "https://github.com/microsoft/TypeScript-Website/actions/runs/${{ github.run_id }}?check_suite_focus=true" }] }]'

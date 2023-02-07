@@ -10,7 +10,7 @@ A series of entries which re-map imports to lookup locations relative to the [`b
 ```json tsconfig
 {
   "compilerOptions": {
-    "baseUrl": ".", // this must be specified if "paths" is specified.
+    "baseUrl": ".",
     "paths": {
       "jquery": ["node_modules/jquery/dist/jquery"] // this mapping is relative to "baseUrl"
     }
