@@ -8126,18 +8126,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"canvas@npm:^2.6.1":
-  version: 2.6.1
-  resolution: "canvas@npm:2.6.1"
-  dependencies:
-    nan: ^2.14.0
-    node-gyp: latest
-    node-pre-gyp: ^0.11.0
-    simple-get: ^3.0.3
-  checksum: c38fbae1055f9cc69c06d20ea18d61696dd858c939e67b5db8dd20b4ac6f9b6f98c05bfe61b6a60cc416b681f321d46e297af0b1af518f87903a17e089c8435d
-  languageName: node
-  linkType: hard
-
 "capital-case@npm:^1.0.4":
   version: 1.0.4
   resolution: "capital-case@npm:1.0.4"
@@ -20348,7 +20336,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"nan@npm:^2.12.1, nan@npm:^2.14.0":
+"nan@npm:^2.12.1":
   version: 2.14.0
   resolution: "nan@npm:2.14.0"
   dependencies:
@@ -20663,7 +20651,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"node-pre-gyp@npm:*, node-pre-gyp@npm:^0.11.0":
+"node-pre-gyp@npm:*":
   version: 0.11.0
   resolution: "node-pre-gyp@npm:0.11.0"
   dependencies:
@@ -27619,7 +27607,6 @@ resolve@^2.0.0-next.3:
     "@typescript/playground": 0.1.0
     "@typescript/sandbox": 0.1.0
     "@typescript/twoslash": 3.2.1
-    canvas: ^2.6.1
     concurrently: ^5.1.0
     gatsby: ^3.8.1
     gatsby-link: 3.10.0
