@@ -21,6 +21,12 @@ Here's the most basic class - an empty one:
 class Point {}
 ```
 
+To get the type of an instance of the class, use `InstanceType`
+
+```ts
+type PointInstance = InstanceType<Point>
+```
+
 This class isn't very useful yet, so let's start adding some members.
 
 ### Fields
