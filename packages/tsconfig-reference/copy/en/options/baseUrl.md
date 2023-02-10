@@ -25,3 +25,5 @@ console.log(helloWorld);
 
 If you get tired of imports always looking like `"../"` or `"./"`, or needing
 to change them as you move files, this is a great way to fix that.
+
+This will not change the javascript output by tsc, so additional configuration outside of typescript may be required.
