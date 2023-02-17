@@ -72,7 +72,7 @@ export default function helloWorld() {
 }
 // @filename: index.ts
 // ---cut---
-import helloWorld from "./hello.js";
+import helloWorld from "./hello.ts";
 helloWorld();
 ```
 
@@ -106,7 +106,7 @@ export function absolute(num: number) {
 }
 // @filename: app.ts
 // ---cut---
-import { pi, phi, absolute } from "./maths.js";
+import { pi, phi, absolute } from "./maths.ts";
 
 console.log(pi);
 const absPhi = absolute(phi);
@@ -122,7 +122,7 @@ An import can be renamed using a format like `import {old as new}`:
 export var pi = 3.14;
 // @filename: app.ts
 // ---cut---
-import { pi as π } from "./maths.js";
+import { pi as π } from "./maths.ts";
 
 console.log(π);
 //          ^?
@@ -136,7 +136,7 @@ export const pi = 3.14;
 export default class RandomNumberGenerator {}
 
 // @filename: app.ts
-import RandomNumberGenerator, { pi as π } from "./maths.js";
+import RandomNumberGenerator, { pi as π } from "./maths.ts";
 
 RandomNumberGenerator;
 // ^?
@@ -159,7 +159,7 @@ export function absolute(num: number) {
 }
 // ---cut---
 // @filename: app.ts
-import * as math from "./maths.js";
+import * as math from "./maths.ts";
 
 console.log(math.pi);
 const positivePhi = math.absolute(math.phi);
@@ -173,7 +173,7 @@ You can import a file and _not_ include any variables into your current module v
 export var pi = 3.14;
 // ---cut---
 // @filename: app.ts
-import "./maths.js";
+import "./maths.ts";
 
 console.log("3.14");
 ```
@@ -194,7 +194,7 @@ export interface Dog {
 }
 
 // @filename: app.ts
-import { Cat, Dog } from "./animal.js";
+import { Cat, Dog } from "./animal.ts";
 type Animals = Cat | Dog;
 ```
 
@@ -211,12 +211,12 @@ export type Dog = { breeds: string[]; yearOfBirth: number };
 export const createCatName = () => "fluffy";
 
 // @filename: valid.ts
-import type { Cat, Dog } from "./animal.js";
+import type { Cat, Dog } from "./animal.ts";
 export type Animals = Cat | Dog;
 
 // @filename: app.ts
 // @errors: 1361
-import type { createCatName } from "./animal.js";
+import type { createCatName } from "./animal.ts";
 const name = createCatName();
 ```
 
@@ -231,7 +231,7 @@ export type Dog = { breeds: string[]; yearOfBirth: number };
 export const createCatName = () => "fluffy";
 // ---cut---
 // @filename: app.ts
-import { createCatName, type Cat, type Dog } from "./animal.js";
+import { createCatName, type Cat, type Dog } from "./animal.ts";
 
 export type Animals = Cat | Dog;
 const name = createCatName();
@@ -359,7 +359,7 @@ For example, here is a TypeScript file using ES Modules syntax, showcasing a few
 export const valueOfPi = 3.142;
 // @filename: index.ts
 // ---cut---
-import { valueOfPi } from "./constants.js";
+import { valueOfPi } from "./constants.ts";
 
 export const twoPi = valueOfPi * 2;
 ```
@@ -370,7 +370,7 @@ export const twoPi = valueOfPi * 2;
 // @showEmit
 // @module: es2020
 // @noErrors
-import { valueOfPi } from "./constants.js";
+import { valueOfPi } from "./constants.ts";
 
 export const twoPi = valueOfPi * 2;
 ```
@@ -381,7 +381,7 @@ export const twoPi = valueOfPi * 2;
 // @showEmit
 // @module: commonjs
 // @noErrors
-import { valueOfPi } from "./constants.js";
+import { valueOfPi } from "./constants.ts";
 
 export const twoPi = valueOfPi * 2;
 ```
@@ -392,7 +392,7 @@ export const twoPi = valueOfPi * 2;
 // @showEmit
 // @module: umd
 // @noErrors
-import { valueOfPi } from "./constants.js";
+import { valueOfPi } from "./constants.ts";
 
 export const twoPi = valueOfPi * 2;
 ```
