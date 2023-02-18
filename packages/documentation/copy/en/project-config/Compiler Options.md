@@ -821,7 +821,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>List of file name suffixes to search when resolving a module.</p>
+<p>A way to add extra suffixes to module resolution</p>
 </td></tr>
 
 <tr class='odd' name='newLine'>

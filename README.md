@@ -125,7 +125,7 @@ The code samples used in the Playground split across many languages.
 
 # Infra Packages
 
-Most of these packages use [`tsdx`](https://tsdx.io).
+Most of these packages use (a maintained [fork](https://github.com/weiran-zsd/dts-cli) of) [`tsdx`](https://tsdx.io).
 
 ## TS Twoslash
 
