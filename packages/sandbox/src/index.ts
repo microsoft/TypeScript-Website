@@ -327,7 +327,7 @@ export const createTypeScriptSandbox = (
 
   const getDomNode = () => editor.getDomNode()!
   const getModel = () => editor.getModel()!
-  const getText = () => getModel().getValue()
+  const getText = () => getModel().getValue() || ""
   const setText = (text: string) => getModel().setValue(text)
 
   const setupTSVFS = async (fsMapAdditions?: Map<string, string>) => {

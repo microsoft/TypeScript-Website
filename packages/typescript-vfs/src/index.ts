@@ -9,7 +9,7 @@ type TS = typeof import("typescript")
 let hasLocalStorage = false
 try {
   hasLocalStorage = typeof localStorage !== `undefined`
-} catch (error) { }
+} catch (error) {}
 
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
@@ -191,7 +191,11 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
  * Sets up a Map with lib contents by grabbing the necessary files from
  * the local copy of typescript via the file system.
  */
-export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions, ts?: typeof import("typescript"), tsLibDirectory?: string) => {
+export const createDefaultMapFromNodeModules = (
+  compilerOptions: CompilerOptions,
+  ts?: typeof import("typescript"),
+  tsLibDirectory?: string
+) => {
   const tsModule = ts || require("typescript")
   const path = requirePath()
   const fs = requireFS()
@@ -323,7 +327,7 @@ export const createDefaultMapFromCDN = (
     ).then(contents => {
       contents.forEach((text, index) => {
         const name = "/" + files[index]
-        fsMap.set(name, text)
+        fsMap.set(name, text || "")
       })
     })
   }
@@ -403,7 +407,12 @@ export function createSystem(files: Map<string, string>): System {
  * a set of virtual files which are prioritised over the FS versions, then a path to the root of your
  * project (basically the folder your node_modules lives)
  */
-export function createFSBackedSystem(files: Map<string, string>, _projectRoot: string, ts: TS, tsLibDirectory?: string): System {
+export function createFSBackedSystem(
+  files: Map<string, string>,
+  _projectRoot: string,
+  ts: TS,
+  tsLibDirectory?: string
+): System {
   // We need to make an isolated folder for the tsconfig, but also need to be able to resolve the
   // existing node_modules structures going back through the history
   const root = _projectRoot + "/vfs"
@@ -552,7 +561,7 @@ export function createVirtualLanguageServiceHost(
     getScriptFileNames: () => fileNames.slice(),
     getScriptSnapshot: fileName => {
       const contents = sys.readFile(fileName)
-      if (contents) {
+      if (contents && typeof contents === "string") {
         return ts.ScriptSnapshot.fromString(contents)
       }
       return

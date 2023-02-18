@@ -52,7 +52,7 @@
     "@oss-docs/sync": "^1.1.4",
     "@types/express": "^4.17.6",
     "gray-matter": "4.0.3",
-    "node-polyfill-webpack-plugin": "^1.1.0",
+    "node-polyfill-webpack-plugin": "^2.0.1",
     "serve-handler": "^6.1.2",
     "xmldom": "^0.5.0"
   },

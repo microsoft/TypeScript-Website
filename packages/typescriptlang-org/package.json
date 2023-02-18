@@ -19,7 +19,7 @@
     "test": "yarn tsc && jest"
   },
   "dependencies": {
-    "@babel/core": "^7.8.4",
+    "@babel/core": "^7.20.12",
     "@formatjs/intl-relativetimeformat": "^4.5.15",
     "@types/node-fetch": "^2.5.3",
     "@types/react-helmet": "^5.0.15",
@@ -37,7 +37,6 @@
     "gatsby-plugin-sass": "^6.6.0",
     "gatsby-plugin-sharp": "^5.6.0",
     "gatsby-plugin-sitemap": "^6.6.0",
-    "gatsby-plugin-typegen": "^3.1.0",
     "gatsby-react-router-scroll": "6.6.0",
     "gatsby-remark-autolink-headers": "^6.6.0",
     "gatsby-remark-copy-linked-files": "^6.6.0",
@@ -57,7 +56,7 @@
     "sass": "^1.26.10",
     "ts-debounce": "^2.2.0",
     "ts-node": "^10.9.1",
-    "twoslash-cli": "^1.3.10",
+    "twoslash-cli": "^1.3.22",
     "typescript": "*",
     "xml-js": "^1.6.11"
   },

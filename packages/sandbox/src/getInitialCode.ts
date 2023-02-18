@@ -1,4 +1,5 @@
 // const lzstring = require("./vendor/lzstring.min")
+import "./vendor/lzstring.min"
 
 declare var LZString: any
 

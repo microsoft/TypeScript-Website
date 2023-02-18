@@ -50,15 +50,6 @@ module.exports = {
     // Support for downloading or pre-caching pages, needed for PWAs
     // "gatsby-plugin-offline",
 
-    // Creates TS types for queries during `gatsby dev`
-    {
-      resolve: "gatsby-plugin-typegen",
-      options: {
-        // Ensure it works in a monorepo
-        outputPath: __dirname + "/src/__generated__/gatsby-types.ts",
-      },
-    },
-
     // Support ts/tsx files in src
     "gatsby-plugin-typescript",
     // SEO
