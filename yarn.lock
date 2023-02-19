@@ -20578,6 +20578,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-server-dom-webpack@patch:react-server-dom-webpack@npm%3A0.0.0-experimental-c8b778b7f-20220825#./.yarn/patches/react-server-dom-webpack-npm-0.0.0-experimental-c8b778b7f-20220825-b0e92c72ae.patch::locator=root%40workspace%3A.":
+  version: 0.0.0-experimental-c8b778b7f-20220825
+  resolution: "react-server-dom-webpack@patch:react-server-dom-webpack@npm%3A0.0.0-experimental-c8b778b7f-20220825#./.yarn/patches/react-server-dom-webpack-npm-0.0.0-experimental-c8b778b7f-20220825-b0e92c72ae.patch::version=0.0.0-experimental-c8b778b7f-20220825&hash=2eced9&locator=root%40workspace%3A."
+  dependencies:
+    acorn: ^6.2.1
+    loose-envify: ^1.1.0
+    neo-async: ^2.6.1
+  peerDependencies:
+    react: 0.0.0-experimental-c8b778b7f-20220825
+    webpack: ^5.59.0
+  checksum: 359ec6cee96f5cb2852ebb997d255fafccb680dba1d678660db4cb74e6646757f4b4815620b8af44edec6a62d7a7a293b618caa521d5a6ce479eb765efafa354
+  languageName: node
+  linkType: hard
+
 "react-side-effect@npm:^2.1.0":
   version: 2.1.2
   resolution: "react-side-effect@npm:2.1.2"
