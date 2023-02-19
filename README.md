@@ -6,7 +6,7 @@
 
 ### Getting Started
 
-This repo uses [yarn workspaces][y-wrk] with node 13+, and [watchman](https://facebook.github.io/watchman/docs/install.html). (Windows users can install [watchman via chocolatey](https://chocolatey.org/packages/watchman))
+This repo uses [yarn workspaces][y-wrk] with node 18+, and [watchman](https://facebook.github.io/watchman/docs/install.html). (Windows users can install [watchman via chocolatey](https://chocolatey.org/packages/watchman))
 
 With those set up, clone this repo and run `yarn install`.
 
@@ -41,8 +41,7 @@ Having issues getting set up? [Consult the troubleshooting](./docs/Setup%20Troub
 
 Deployment is automatic:
 
-- Pushes to the branch `v2` deploy to [staging](http://www.staging-typescript.org)
-- On a Monday the v2 branch is deployed to [production](https://www.typescriptlang.org)
+- Pushes to the branch `v2` deploy to [production](https://www.typescriptlang.org)
 
 You can find the build logs in [GitHub Actions](https://github.com/microsoft/TypeScript-Website/actions)
 
