@@ -215,7 +215,7 @@ const bug = new BugReport("Needs dark mode");
 console.log(bug.title); // Prints "Needs dark mode"
 console.log(bug.type); // Prints "report"
 
-// Note that the decorator _does not_ change the TypeScript type
+// Note that the decorator does not change the TypeScript type
 // and so the new property `reportingURL` is not known
 // to the type system:
 bug.reportingURL;
