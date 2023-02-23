@@ -382,9 +382,9 @@ These pitfalls pertain to _ambient_ const enums only (basically const enums in `
 Here are two approaches to avoiding these pitfalls:
 
 A. Do not use const enums at all.
-   You can easily [ban const enums](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/FAQ.md#how-can-i-ban-specific-language-feature) with the help of a linter.
+   You can easily [ban const enums](https://typescript-eslint.io/linting/troubleshooting#how-can-i-ban-specific-language-feature) with the help of a linter.
    Obviously this avoids any issues with const enums, but prevents your project from inlining its own enums.
-   Unlike inlining enums from other projects, inlining a project's own enums is not problematic and has performance implications.
+   Unlike inlining enums from other projects, inlining a project's own enums is not problematic and has performance implications.  
 B. Do not publish ambient const enums, by deconstifying them with the help of [`preserveConstEnums`](/tsconfig#preserveConstEnums).
    This is the approach taken internally by the [TypeScript project itself](https://github.com/microsoft/TypeScript/pull/5422).
    [`preserveConstEnums`](/tsconfig#preserveConstEnums) emits the same JavaScript for const enums as plain enums.
