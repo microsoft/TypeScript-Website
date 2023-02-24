@@ -92,6 +92,8 @@ f(true); // returns '10'
 f(false); // returns 'undefined'
 ```
 
+<!-- here when you are returning x typescript gives error: Variable 'x' is used before being assigned.ts(2454)  -->
+
 Some readers might do a double-take at this example.
 The variable `x` was declared _within the `if` block_, and yet we were able to access it from outside that block.
 That's because `var` declarations are accessible anywhere within their containing function, module, namespace, or global scope - all which we'll go over later on - regardless of the containing block.
