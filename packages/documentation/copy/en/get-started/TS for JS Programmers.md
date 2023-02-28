@@ -196,7 +196,7 @@ interface Backpack<Type> {
 }
 
 // This line is a shortcut to tell TypeScript there is a
-// constant called `backpack`, and to not worry about where it came from.
+// constant called `backpack`, and do not worry about where it came from.
 declare const backpack: Backpack<string>;
 
 // object is a string, because we declared it above as the variable part of Backpack.
