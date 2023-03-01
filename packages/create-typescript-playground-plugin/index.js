@@ -35,10 +35,14 @@ const install = () => {
 }
 
 const gitInit = () => {
-  exec("git --version", { stdio: "inherit" })
-  exec("git init", { stdio: "inherit" })
-  exec("git add .", { stdio: "inherit" })
-  exec('git commit -am "Init"', { stdio: "inherit" })
+  try {
+    exec("git --version", { stdio: "inherit" })
+    exec("git init", { stdio: "inherit" })
+    exec("git add .", { stdio: "inherit" })
+    exec('git commit -am "Init"', { stdio: "inherit" })
+  } catch (e) {
+    console.error(e);
+  }
   return true
 }
 
