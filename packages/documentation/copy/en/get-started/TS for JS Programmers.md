@@ -169,10 +169,10 @@ For example, you can make a function return different values depending on whethe
 ```ts twoslash
 function wrapInArray(obj: string | string[]) {
   if (typeof obj === "string") {
-    return [obj];
+    return obj;
 //          ^?
   }
-  return obj;
+  return [obj];
 }
 ```
 
