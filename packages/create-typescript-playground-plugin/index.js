@@ -41,7 +41,7 @@ const gitInit = () => {
     exec("git add .", { stdio: "inherit" })
     exec('git commit -am "Init"', { stdio: "inherit" })
   } catch (e) {
-    console.error(e);
+    console.error(e)
   }
   return true
 }
