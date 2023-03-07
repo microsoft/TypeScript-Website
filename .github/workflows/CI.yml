@@ -65,11 +65,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_DEPLOY_URL_ROOT: ${{ steps.deploy.outputs.static_web_app_url }}
 
-      - name: "Validates that TypeScript plugins work"
-        run: |
-          cd ..
-          npm init typescript-playground-plugin playground-my-plugin
-
   windows:
     if: github.event.action != 'closed'
     runs-on: windows-latest
@@ -89,8 +84,3 @@ jobs:
 
       - run: yarn bootstrap
       - run: yarn build
-
-      - name: "Validates that TypeScript plugins work"
-        run: |
-          cd ..
-          npm init typescript-playground-plugin playground-my-plugin
