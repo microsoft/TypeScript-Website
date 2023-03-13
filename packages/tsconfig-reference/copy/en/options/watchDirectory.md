@@ -1,5 +1,5 @@
 ---
-display: "watchDirectory"
+display: "Watch Directory"
 oneline: "Specify how directories are watched on systems that lack recursive file-watching functionality."
 ---
 
