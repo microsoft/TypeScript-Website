@@ -1,5 +1,5 @@
 ---
-display: "useUnknownInCatchVariables"
+display: "Use Unknown In Catch Variables"
 oneline: "Default catch clause variables as `unknown` instead of `any`."
 ---
  
