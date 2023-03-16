@@ -593,5 +593,5 @@ consistently used in TypeScript code.
 
 This doc is a high level overview of the syntax and types you would use in everyday code. From here you should:
 
-- Read the full Handbook [from start to finish](/docs/handbook/intro.html) (30m)
+- Read the full Handbook [from start to finish](/docs/handbook/intro.html)
 - Explore the [Playground examples](/play#show-examples)
