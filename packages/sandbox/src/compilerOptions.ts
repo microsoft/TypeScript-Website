@@ -50,9 +50,16 @@ export function getDefaultSandboxCompilerOptions(config: SandboxConfig, monaco: 
     emitDecoratorMetadata: true,
     moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
 
-    target: monaco.languages.typescript.ScriptTarget.ES2017,
+    target: monaco.languages.typescript.ScriptTarget.ESNext,
     jsx: monaco.languages.typescript.JsxEmit.React,
     module: monaco.languages.typescript.ModuleKind.ESNext,
+  }
+
+  if (config.version) {
+    if (config.version[0] >= 5) {
+      settings.experimentalDecorators = false
+      settings.emitDecoratorMetadata = false
+    }
   }
 
   return { ...settings, ...config.compilerOptions }

@@ -47,6 +47,8 @@ export type SandboxConfig = {
     groupCollapsed: (...args: any[]) => void
     groupEnd: (...args: any[]) => void
   }
+  /** TS version in use */
+  version?: [major: number, minor: number];
 } & (
   | { /** the ID of a dom node to add monaco to */ domID: string }
   | { /** the dom node to add monaco to */ elementToAppend: HTMLElement }
@@ -113,7 +115,8 @@ export const createTypeScriptSandbox = (
   monaco: Monaco,
   ts: typeof import("typescript")
 ) => {
-  const config = { ...defaultPlaygroundSettings(), ...partialConfig }
+  const version = ts.versionMajorMinor.split(".").map(v => parseInt(v)) as [number, number];
+  const config = { ...defaultPlaygroundSettings(), ...partialConfig, version }
   if (!("domID" in config) && !("elementToAppend" in config))
     throw new Error("You did not provide a domID or elementToAppend")
 
