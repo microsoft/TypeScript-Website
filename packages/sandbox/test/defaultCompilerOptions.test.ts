@@ -16,7 +16,7 @@ describe(getCompilerOptionsFromParams, () => {
   it("ignores compiler flags which are the same as the defaults", () => {
     // noImplicitReturns=true is the default, and shouldnt be in the object
     const params = new URLSearchParams("?noImplicitThis=false&noImplicitReturns=true#code/JYOw")
-    const defaults = getDefaultSandboxCompilerOptions({ filetype: "js" } as any, fauxMonaco, { versionMajorMinor: "4.9"} as any)
+    const defaults = getDefaultSandboxCompilerOptions({ filetype: "js" } as any, fauxMonaco, { versionMajorMinor: "4.9"})
 
     expect(getCompilerOptionsFromParams(defaults, ts, params)).toMatchInlineSnapshot(`
       Object {
@@ -27,14 +27,14 @@ describe(getCompilerOptionsFromParams, () => {
 
   it("ignores non-compiler flags", () => {
     const params = new URLSearchParams("?asdasdasdasd=false")
-    const defaults = getDefaultSandboxCompilerOptions({ filetype: "js" } as any, fauxMonaco, { versionMajorMinor: "4.9"} as any)
+    const defaults = getDefaultSandboxCompilerOptions({ filetype: "js" } as any, fauxMonaco, { versionMajorMinor: "4.9"})
 
     expect(getCompilerOptionsFromParams(defaults, ts, params)).toMatchInlineSnapshot(`Object {}`)
   })
 
   it("handles mapped types like target et", () => {
     const params = new URLSearchParams("?target=6")
-    const defaults = getDefaultSandboxCompilerOptions({ filetype: "js" } as any, fauxMonaco, { versionMajorMinor: "4.9"} as any)
+    const defaults = getDefaultSandboxCompilerOptions({ filetype: "js" } as any, fauxMonaco, { versionMajorMinor: "4.9"})
 
     expect(getCompilerOptionsFromParams(defaults, ts, params)).toMatchInlineSnapshot(`
       Object {
@@ -48,7 +48,7 @@ describe(getCompilerOptionsFromParams, () => {
     const params = new URLSearchParams(search)
     expect(params.has("exactOptionalPropertyTypes")).toBeTruthy()
 
-    const defaults = getDefaultSandboxCompilerOptions({ filetype: "js" } as any, fauxMonaco, { versionMajorMinor: "4.9"} as any)
+    const defaults = getDefaultSandboxCompilerOptions({ filetype: "js" } as any, fauxMonaco, { versionMajorMinor: "4.9"})
 
     expect(getCompilerOptionsFromParams(defaults, ts, params)).toMatchInlineSnapshot(`
       Object {

@@ -10,7 +10,7 @@ type Monaco = typeof import("monaco-editor")
 export function getDefaultSandboxCompilerOptions(
   config: SandboxConfig,
   monaco: Monaco,
-  ts: typeof import("typescript")
+  ts: { versionMajorMinor: string }
 ) {
   const [major] = ts.versionMajorMinor.split(".").map(v => parseInt(v)) as [number, number]
   const useJavaScript = config.filetype === "js"
