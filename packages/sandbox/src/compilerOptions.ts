@@ -7,7 +7,12 @@ type Monaco = typeof import("monaco-editor")
  * These are the defaults, but they also act as the list of all compiler options
  * which are parsed in the query params.
  */
-export function getDefaultSandboxCompilerOptions(config: SandboxConfig, monaco: Monaco) {
+export function getDefaultSandboxCompilerOptions(
+  config: SandboxConfig,
+  monaco: Monaco,
+  ts: typeof import("typescript")
+) {
+  const [major] = ts.versionMajorMinor.split(".").map(v => parseInt(v)) as [number, number]
   const useJavaScript = config.filetype === "js"
   const settings: CompilerOptions = {
     strict: true,
@@ -55,11 +60,9 @@ export function getDefaultSandboxCompilerOptions(config: SandboxConfig, monaco: 
     module: monaco.languages.typescript.ModuleKind.ESNext,
   }
 
-  if (config.version) {
-    if (config.version[0] >= 5) {
-      settings.experimentalDecorators = false
-      settings.emitDecoratorMetadata = false
-    }
+  if (major >= 5) {
+    settings.experimentalDecorators = false
+    settings.emitDecoratorMetadata = false
   }
 
   return { ...settings, ...config.compilerOptions }
