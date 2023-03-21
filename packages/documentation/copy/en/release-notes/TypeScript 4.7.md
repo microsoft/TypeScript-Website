@@ -244,11 +244,7 @@ If you need to point to a different location for your type declarations, you can
 }
 ```
 
-<aside>
-
-The `"types"` condition should always come first in `"exports"`.
-
-</aside>
+> The `"types"` condition should always come first in `"exports"`.
 
 It's important to note that the CommonJS entrypoint and the ES module entrypoint each needs its own declaration file, even if the contents are the same between them.
 Every declaration file is interpreted either as a CommonJS module or as an ES module, based on its file extension and the `"type"` field of the `package.json`, and this detected module kind must match the module kind that Node will detect for the corresponding JavaScript file for type checking to be correct.
