@@ -217,27 +217,38 @@ If you need to point to a different location for your type declarations, you can
     "type": "module",
     "exports": {
         ".": {
-            // Entry-point for TypeScript resolution - must occur first!
-            "types": {
-              "import": "./types/index.d.ts",
-              "require": "./types/index.d.cts"
-            },
-
             // Entry-point for `import "my-package"` in ESM
-            "import": "./esm/index.js",
+            "import": {
+                // Where TypeScript will look.
+                "types": "./types/esm/index.d.ts",
 
+                // Where Node.js will look.
+                "default": "./esm/index.js"
+            },
             // Entry-point for `require("my-package") in CJS
-            "require": "./commonjs/index.cjs",
-        },
+            "require": {
+                // Where TypeScript will look.
+                "types": "./types/commonjs/index.d.cts",
+
+                // Where Node.js will look.
+                "default": "./commonjs/index.cjs"
+            },
+        }
     },
 
-    // CJS fall-back for older versions of Node.js
-    "main": "./commonjs/index.cjs",
-
     // Fall-back for older versions of TypeScript
-    "types": "./types/index.d.cts"
+    "types": "./types/index.d.ts",
+
+    // CJS fall-back for older versions of Node.js
+    "main": "./commonjs/index.cjs"
 }
 ```
+
+<aside>
+
+The `"types"` condition should always come first in `"exports"`.
+
+</aside>
 
 It's important to note that the CommonJS entrypoint and the ES module entrypoint each needs its own declaration file, even if the contents are the same between them.
 Every declaration file is interpreted either as a CommonJS module or as an ES module, based on its file extension and the `"type"` field of the `package.json`, and this detected module kind must match the module kind that Node will detect for the corresponding JavaScript file for type checking to be correct.
