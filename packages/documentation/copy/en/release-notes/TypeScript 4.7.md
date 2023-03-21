@@ -41,7 +41,7 @@ Node.js supports [a new setting in `package.json`](https://nodejs.org/api/packag
 }
 ```
 
-This setting controls whether `.js` files are interpreted as ES modules or CommonJS modules, and defaults to CommonJS when not set.
+This setting controls whether `.js` and `.d.ts` files are interpreted as ES modules or CommonJS modules, and defaults to CommonJS when not set.
 When a file is considered an ES module, a few different rules come into play compared to CommonJS:
 
 * `import`/`export` statements can be used.
@@ -244,11 +244,11 @@ If you need to point to a different location for your type declarations, you can
 }
 ```
 
-<aside>
+> The `"types"` condition should always come first in `"exports"`.
 
-Note that the `"types"` condition should always come first in `"exports"`.
-
-</aside>
+It's important to note that the CommonJS entrypoint and the ES module entrypoint each needs its own declaration file, even if the contents are the same between them.
+Every declaration file is interpreted either as a CommonJS module or as an ES module, based on its file extension and the `"type"` field of the `package.json`, and this detected module kind must match the module kind that Node will detect for the corresponding JavaScript file for type checking to be correct.
+Attempting to use a single `.d.ts` file to type both an ES module entrypoint and a CommonJS entrypoint will cause TypeScript to think only one of those entrypoints exists, causing compiler errors for users of the package.
 
 TypeScript also supports [the `"imports"` field of `package.json`](https://nodejs.org/api/packages.html#packages_imports) in a similar manner by looking for declaration files alongside corresponding files, and supports [packages self-referencing themselves](https://nodejs.org/api/packages.html#packages_self_referencing_a_package_using_its_name).
 These features are generally not as involved to set up, but are supported.
