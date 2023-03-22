@@ -175,7 +175,7 @@ Inference can be combined in different ways, often to deconstruct strings, and r
 
 ## Intrinsic String Manipulation Types
 
-To help with string manipulation, TypeScript includes a set of types which can be used in string manipulation. These types come built-in to the compiler for performance and can't be found in the `.d.ts` files included with TypeScript.
+To help with string manipulation, TypeScript includes a set of types which can be used in string manipulation. These types come built-in to the compiler for performance and can be found in the `.d.ts` files included with TypeScript.
 
 ### `Uppercase<StringType>`
 
