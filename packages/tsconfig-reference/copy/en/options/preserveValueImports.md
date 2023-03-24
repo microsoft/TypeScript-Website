@@ -3,6 +3,8 @@ display: "preserveValueImports"
 oneline: "Preserve unused imported values in the JavaScript output that would otherwise be removed."
 ---
 
+Deprecated in favor of [`verbatimModuleSyntax`](#verbatimModuleSyntax).
+
 There are some cases where TypeScript can't detect that you're using an import. For example, take the following code:
 
 ```ts
