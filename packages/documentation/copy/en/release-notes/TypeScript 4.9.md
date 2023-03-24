@@ -217,7 +217,7 @@ This helps check that we're using valid property keys, and not accidentally chec
 
 For more information, [read the implementing pull request](https://github.com/microsoft/TypeScript/pull/50666)
 
-## <a name="auto-accessors-in-classes"> Auto-Accessors in Classes
+## Auto-Accessors in Classes
 
 TypeScript 4.9 supports an upcoming feature in ECMAScript called auto-accessors.
 Auto-accessors are declared just like properties on classes, except that they're declared with the `accessor` keyword.
