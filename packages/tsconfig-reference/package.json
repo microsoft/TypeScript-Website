@@ -13,7 +13,8 @@
     "generate:md:cli": "tsc --build && node --experimental-json-modules scripts/cli/generateMarkdown",
     "generate:md:msbuild": "tsc --build && node --experimental-json-modules scripts/msbuild/generateMarkdown",
     "generate:md": "yarn generate:md:tsconfig && yarn generate:md:cli && yarn generate:md:tsconfig",
-    "bootstrap": "yarn scripts/schema/downloadSchemaBase.ts",
+    "download": "node scripts/schema/downloadSchemaBase.js",
+    "bootstrap": "yarn generate:json",
     "build": "yarn generate:json && yarn generate:md",
     "test": "yarn build && yarn lint",
     "lint": "node scripts/lint.js"
