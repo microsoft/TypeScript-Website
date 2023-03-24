@@ -171,7 +171,7 @@ This was a brief overview of the syntax and tools used in everyday TypeScript. F
   - [JavaScript guide at the Mozilla Web Docs](https://developer.mozilla.org/docs/Web/JavaScript/Guide)
 
 - Continue to [TypeScript for JavaScript Programmers](/docs/handbook/typescript-in-5-minutes.html)
-- Read the full Handbook [from start to finish](/docs/handbook/intro.html) (30m)
+- Read the full Handbook [from start to finish](/docs/handbook/intro.html)
 - Explore the [Playground examples](/play#show-examples)
 
 <!-- Note: I'll be happy to write the following... -->
