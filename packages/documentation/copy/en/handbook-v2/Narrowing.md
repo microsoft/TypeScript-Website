@@ -521,7 +521,7 @@ We can write a `getArea` function that applies the right logic based on if it's 
 We'll first try dealing with circles.
 
 ```ts twoslash
-// @errors: 2532
+// @errors: 2532 18048
 interface Shape {
   kind: "circle" | "square";
   radius?: number;
@@ -540,7 +540,7 @@ Under [`strictNullChecks`](/tsconfig#strictNullChecks) that gives us an error - 
 But what if we perform the appropriate checks on the `kind` property?
 
 ```ts twoslash
-// @errors: 2532
+// @errors: 2532 18048
 interface Shape {
   kind: "circle" | "square";
   radius?: number;

@@ -293,7 +293,7 @@ In cases where not all paths of a constructor assign to an instance member, the 
 
 <!--prettier-ignore -->
 ```ts twoslash
-// @errors: 2532
+// @errors: 2532 18048
 class Square {
   sideLength;
 // ^?
