@@ -204,7 +204,7 @@ In JavaScript, if you access a property that doesn't exist, you'll get the value
 Because of this, when you _read_ from an optional property, you'll have to check for `undefined` before using it.
 
 ```ts twoslash
-// @errors: 2532
+// @errors: 2532 18048
 function printName(obj: { first: string; last?: string }) {
   // Error - might crash if 'obj.last' wasn't provided!
   console.log(obj.last.toUpperCase());
