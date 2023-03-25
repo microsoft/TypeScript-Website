@@ -28,7 +28,7 @@ console.log(loggedInUser.age);
 Setting `strictNullChecks` to `true` will raise an error that you have not made a guarantee that the `loggedInUser` exists before trying to use it.
 
 ```ts twoslash
-// @errors: 2339 2532
+// @errors: 2339 2532 18048
 // @target: ES2020
 // @strictNullChecks
 declare const loggedInUsername: string;
