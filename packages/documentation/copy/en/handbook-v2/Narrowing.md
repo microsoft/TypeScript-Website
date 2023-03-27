@@ -84,7 +84,7 @@ For example, notice that in the list above, `typeof` doesn't return the string `
 Check out the following example:
 
 ```ts twoslash
-// @errors: 2531
+// @errors: 2531 18047
 function printAll(strs: string | string[] | null) {
   if (typeof strs === "object") {
     for (const s of strs) {
