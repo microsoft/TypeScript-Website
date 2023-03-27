@@ -631,7 +631,7 @@ The `unknown` type represents _any_ value.
 This is similar to the `any` type, but is safer because it's not legal to do anything with an `unknown` value:
 
 ```ts twoslash
-// @errors: 2571
+// @errors: 2571 18046
 function f1(a: any) {
   a.b(); // OK
 }

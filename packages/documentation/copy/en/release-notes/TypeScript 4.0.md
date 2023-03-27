@@ -475,7 +475,7 @@ That's why TypeScript 4.0 now lets you specify the type of `catch` clause variab
 
 <!--prettier-ignore -->
 ```ts twoslash
-// @errors: 2571
+// @errors: 2571 18046
 try {
   // ...
 } catch (e: unknown) {
