@@ -72,15 +72,15 @@ TypeScript has corresponding primitive types for the built-in types:
 
 ### Other important TypeScript types
 
-| Type           | Explanation                                                 |
-| -------------- | ----------------------------------------------------------- |
-| `unknown`      | the top type.                                               |
-| `never`        | the bottom type.                                            |
-| object literal | eg `{ property: Type }`                                     |
-| `void`         | a subtype of `undefined` intended for use as a return type. |
-| `T[]`          | mutable arrays, also written `Array<T>`                     |
-| `[T, T]`       | tuples, which are fixed-length but mutable                  |
-| `(t: T) => U`  | functions                                                   |
+| Type           | Explanation                                                                     |
+| -------------- | ------------------------------------------------------------------------------- |
+| `unknown`      | the top type.                                                                   |
+| `never`        | the bottom type.                                                                |
+| object literal | eg `{ property: Type }`                                                         |
+| `void`         | which is intended for use as a return type. `undefined` is a subtype of `void`. |
+| `T[]`          | mutable arrays, also written `Array<T>`                                         |
+| `[T, T]`       | tuples, which are fixed-length but mutable                                      |
+| `(t: T) => U`  | functions                                                                       |
 
 Notes:
 
