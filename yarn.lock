@@ -6096,10 +6096,12 @@ __metadata:
     "@typescript/vfs": 1.4.0
     debug: ^4.1.1
     husky: ^4.2.3
+    jest: ^29.5.0
     jest-file-snapshot: ^0.3.8
     lz-string: ^1.4.4
     markdown-magic: ^1.0.0
     prettier: ^2.3.2
+    ts-jest: ^29.0.5
     tsdx: ^0.14.1
     tslib: ^1.10.0
     typescript: "*"
