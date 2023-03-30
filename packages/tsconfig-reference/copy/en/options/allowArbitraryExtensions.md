@@ -35,4 +35,4 @@ Note that historically, a similar effect has often been achievable by adding a d
 Strictly speaking, the former is interpreted as a declaration file for a JavaScript file named `app.css.js`.
 Because relative files imports need to include extensions in Node's ESM support, TypeScript would error on our example in an ESM file under `--moduleResolution node16` or `nodenext`.
 
-For more information, read up [the proposalfor this feature](https://github.com/microsoft/TypeScript/issues/50133) and [its corresponding pull request](https://github.com/microsoft/TypeScript/pull/51435).
+For more information, read up [the proposal for this feature](https://github.com/microsoft/TypeScript/issues/50133) and [its corresponding pull request](https://github.com/microsoft/TypeScript/pull/51435).
