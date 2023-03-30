@@ -203,6 +203,7 @@ export const updateConfigDropdownForCompilerOptions = (sandbox: Sandbox, monaco:
 
     // @ts-ignore
     for (const option of input.children) {
+      // @ts-ignore
       option.selected = option.value.toLowerCase() === realValue.toLowerCase()
     }
   })
