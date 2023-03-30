@@ -43,7 +43,7 @@ const go = async () => {
       continue;
     }
 
-    const runTwoslash = remarkTwoSlash.default({});
+    const runTwoslash = remarkTwoSlash.default({ defaultOptions: { noErrorValidation: true } });
     for (const option of options) {
       if (filterString.length && !option.includes(filterString)) continue;
 
