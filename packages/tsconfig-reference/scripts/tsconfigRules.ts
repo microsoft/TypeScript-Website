@@ -6,12 +6,12 @@ import ts from "typescript";
 export interface CommandLineOption {
   name: string;
   type:
-    | "string"
-    | "number"
-    | "boolean"
-    | "object"
-    | "list"
-    | Map<string, number | string>;
+  | "string"
+  | "number"
+  | "boolean"
+  | "object"
+  | "list"
+  | Map<string, number | string>;
   defaultValueDescription?: string | number | boolean | ts.DiagnosticMessage;
   category?: ts.DiagnosticMessage;
   element: CommandLineOption;
@@ -41,7 +41,6 @@ export const denyList: CompilerOptionName[] = [
   "locale",
   "clean",
   "dry",
-  "enableAutoDiscovery",
 ];
 
 /** Things we should document, but really want to help move people away from */
@@ -200,9 +199,9 @@ export const defaultsForOptions = {
       typeof option.defaultValueDescription === "object"
         ? option.defaultValueDescription.message
         : formatDefaultValue(
-            option.defaultValueDescription,
-            option.type === "list" ? option.element.type : option.type
-          ),
+          option.defaultValueDescription,
+          option.type === "list" ? option.element.type : option.type
+        ),
     ])
   ),
   allowSyntheticDefaultImports: [
@@ -366,8 +365,8 @@ Object.keys(releaseToConfigsMap).forEach((v) => {
 export const parseMarkdown = (value: string | string[]) =>
   Array.isArray(value)
     ? `<ul>${value
-        .map((element) => `<li>${parseMarkdown(element)}</li>`)
-        .join("")}</ul>`
+      .map((element) => `<li>${parseMarkdown(element)}</li>`)
+      .join("")}</ul>`
     : remark()
-        .use(remarkHTML)
-        .processSync(value !== undefined ? String(value).replace(/^[-.0-9_a-z]+$/i, "`$&`") : undefined);
+      .use(remarkHTML)
+      .processSync(value !== undefined ? String(value).replace(/^[-.0-9_a-z]+$/i, "`$&`") : undefined);

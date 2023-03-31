@@ -15,7 +15,6 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-          cache: yarn
 
       # Install, should be basically instant if cached
       - run: yarn install
@@ -75,7 +74,6 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-          cache: yarn
 
       # Get local dependencies
       - run: yarn install
