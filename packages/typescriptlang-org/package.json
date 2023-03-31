@@ -47,7 +47,7 @@
     "gatsby-remark-shiki-twoslash": "^3.0.17",
     "gatsby-remark-smartypants": "^4.7.0",
     "gatsby-source-filesystem": "^3.8.0",
-    "gatsby-transformer-remark": "^4.7.0",
+    "gatsby-transformer-remark": "^5.25.1",
     "jsdom": "^16.2.0",
     "preact": "^10.5.13",
     "react": "^16.14.0",
