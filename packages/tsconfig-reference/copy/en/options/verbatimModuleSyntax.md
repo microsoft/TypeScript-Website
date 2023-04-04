@@ -145,4 +145,4 @@ This new flag ensures that you're intentional about the file type you're using b
 
 Because `--verbatimModuleSyntax` provides a more consistent story than `--importsNotUsedAsValues` and `--preserveValueImports`, those two existing flags are being deprecated in its favor.
 
-For more details, read up on [the original pull request]https://github.com/microsoft/TypeScript/pull/52203 and [its proposal issue](https://github.com/microsoft/TypeScript/issues/51479).
+For more details, read up on [the original pull request](https://github.com/microsoft/TypeScript/pull/52203) and [its proposal issue](https://github.com/microsoft/TypeScript/issues/51479).
