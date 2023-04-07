@@ -210,6 +210,10 @@ export const defaultsForOptions = {
   ],
   alwaysStrict: trueIf("strict"),
   declaration: trueIf("composite"),
+  esModuleInterop: [
+    "`true` if [`module`](#module) is `node16` or `nodenext`,",
+    "`false` otherwise.",
+  ],
   exclude: [
     "node_modules",
     "bower_components",
