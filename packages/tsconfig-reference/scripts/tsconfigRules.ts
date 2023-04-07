@@ -205,11 +205,15 @@ export const defaultsForOptions = {
     ])
   ),
   allowSyntheticDefaultImports: [
-    "`true` if [`module`](#module) is `system`, or [`esModuleInterop`](#esModuleInterop) and [`module`](#module) is not `es6`/`es2015` or `esnext`,",
+    "`true` if [`esModuleInterop`](#esModuleInterop) is enabled, [`module`](#module) is `system`, or [`moduleResolution`](#module-resolution) is `bundler`,",
     "`false` otherwise.",
   ],
   alwaysStrict: trueIf("strict"),
   declaration: trueIf("composite"),
+  esModuleInterop: [
+    "`true` if [`module`](#module) is `node16` or `nodenext`,",
+    "`false` otherwise.",
+  ],
   exclude: [
     "node_modules",
     "bower_components",
