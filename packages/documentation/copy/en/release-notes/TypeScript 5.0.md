@@ -1,3 +1,10 @@
+---
+title: TypeScript 5.0
+layout: docs
+permalink: /docs/handbook/release-notes/typescript-5-0.html
+oneline: TypeScript 5.0 Release Notes
+---
+
 ## Decorators
 
 Decorators are an upcoming ECMAScript feature that allow us to customize classes and their members in a reusable way.
