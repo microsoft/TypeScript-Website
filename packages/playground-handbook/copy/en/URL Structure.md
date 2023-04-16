@@ -9,7 +9,7 @@ The Playground supports two forms of inputs from the URL: The Hash and queries.
 The hash generally represents the state of the editor:
 
 - `#code/PRAz3dDc3...` - A base64 and zipped version of the code which should live in the editor. You can use [`LZString.compressToEncodedURIComponent`](https://github.com/pieroxy/lz-string/blob/master/libs/lz-string.js#L93) from the [`lz-string`](https://github.com/pieroxy/lz-string) package to construct URLs for arbitrary pieces of code
-- `#src/The%20code...` - URLEncoded way to have the code for the editor (used for backwards-compatibility with older URLs)
+- `#src=The%20code...` - URLEncoded way to have the code for the editor (used for backwards-compatibility with older URLs)
 - `#example/generic-functions` - Grab the code from a Playground example with the id generic-functions
 - `#handbook-2` - The Playground handbook with the page number
 - `#gist/92cf0a3...` - The ID of a public GitHub gist, the playground will either render a docset of markdown and TS/JS files or grab the contents of just one file and show it. Given the support for multi-file pages, you can append `-[n]` to access the nth file (taking into account 0 indexing) - so `/play/#gist/303ebff59a6fc37f88c86e86dbdeb0e8-3` will open the 4th page by default.
