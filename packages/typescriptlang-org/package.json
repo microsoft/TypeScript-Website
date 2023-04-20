@@ -35,7 +35,7 @@
     "gatsby-plugin-offline": "^4.10.0",
     "gatsby-plugin-react-helmet": "^4.10.0",
     "gatsby-plugin-sass": "^4.10.0",
-    "gatsby-plugin-sharp": "^3.10.2",
+    "gatsby-plugin-sharp": "^4.25.1",
     "gatsby-plugin-sitemap": "^4.6.0",
     "gatsby-plugin-typegen": "^2.2.4",
     "gatsby-react-router-scroll": "4.10.0",
