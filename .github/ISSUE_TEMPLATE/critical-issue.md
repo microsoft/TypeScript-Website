@@ -6,7 +6,7 @@ title: "CRITICAL: "
 <!--
   For errors, typos, etc in documentation or other website copy, please send a PR.
 
-  This form should only be used for critical problems (security issues, accessibility problems, etc).
+  This form should only be used for critical problems (non-rendering pages, malicious links, accessibility problems, etc).
   Out-of-scope reports will be closed without further elaboration.
 -->
 
