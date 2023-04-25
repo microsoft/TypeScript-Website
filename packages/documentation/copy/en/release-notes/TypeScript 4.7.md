@@ -280,7 +280,7 @@ Under the mode `"auto"`, TypeScript will not only look for `import` and `export`
 * check whether the current file is a JSX file when running under `--jsx react-jsx`
 
 In cases where you want every file to be treated as a module, the `"force"` setting ensures that every non-declaration file is treated as a module.
-This will be true regardless of how `module`, `moduleResoluton`, and `jsx` are configured.
+This will be true regardless of how `module`, `moduleResolution`, and `jsx` are configured.
 
 Meanwhile, the `"legacy"` option simply goes back to the old behavior of only seeking out `import` and `export` statements to determine whether a file is a module.
 
