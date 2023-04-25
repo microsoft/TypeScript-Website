@@ -9,7 +9,7 @@ type TS = typeof import("typescript")
 let hasLocalStorage = false
 try {
   hasLocalStorage = typeof localStorage !== `undefined`
-} catch (error) { }
+} catch (error) {}
 
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
@@ -91,9 +91,13 @@ export function createVirtualTypeScriptEnvironment(
   }
 }
 
+// TODO: This could be replaced by grabbing: https://github.com/microsoft/TypeScript/blob/main/src/lib/libs.json
+// and then using that to generate the list of files from the server, but it is not included in the npm package
+
 /**
  * Grab the list of lib files for a particular target, will return a bit more than necessary (by including
- * the dom) but that's OK
+ * the dom) but that's OK, we're really working with the constraint that you can't get a list of files
+ * when running in a browser.
  *
  * @param target The compiler settings target baseline
  * @param ts A copy of the TypeScript module
@@ -102,15 +106,13 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
   const target = compilerOptions.target || ts.ScriptTarget.ES5
   const lib = compilerOptions.lib || []
 
+  // Note that this will include files which can't be found for particular versions of TS
   const files = [
     "lib.d.ts",
+    "lib.decorators.d.ts",
+    "lib.decorators.legacy.d.ts",
     "lib.dom.d.ts",
     "lib.dom.iterable.d.ts",
-    "lib.webworker.d.ts",
-    "lib.webworker.importscripts.d.ts",
-    "lib.scripthost.d.ts",
-    "lib.es5.d.ts",
-    "lib.es6.d.ts",
     "lib.es2015.collection.d.ts",
     "lib.es2015.core.d.ts",
     "lib.es2015.d.ts",
@@ -141,28 +143,49 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
     "lib.es2019.array.d.ts",
     "lib.es2019.d.ts",
     "lib.es2019.full.d.ts",
+    "lib.es2019.intl.d.ts",
     "lib.es2019.object.d.ts",
     "lib.es2019.string.d.ts",
     "lib.es2019.symbol.d.ts",
-    "lib.es2020.d.ts",
-    "lib.es2020.full.d.ts",
-    "lib.es2020.string.d.ts",
-    "lib.es2020.symbol.wellknown.d.ts",
     "lib.es2020.bigint.d.ts",
+    "lib.es2020.d.ts",
+    "lib.es2020.date.d.ts",
+    "lib.es2020.full.d.ts",
+    "lib.es2020.intl.d.ts",
+    "lib.es2020.number.d.ts",
     "lib.es2020.promise.d.ts",
     "lib.es2020.sharedmemory.d.ts",
-    "lib.es2020.intl.d.ts",
+    "lib.es2020.string.d.ts",
+    "lib.es2020.symbol.wellknown.d.ts",
     "lib.es2021.d.ts",
     "lib.es2021.full.d.ts",
+    "lib.es2021.intl.d.ts",
     "lib.es2021.promise.d.ts",
     "lib.es2021.string.d.ts",
     "lib.es2021.weakref.d.ts",
+    "lib.es2022.array.d.ts",
+    "lib.es2022.d.ts",
+    "lib.es2022.error.d.ts",
+    "lib.es2022.full.d.ts",
+    "lib.es2022.intl.d.ts",
+    "lib.es2022.object.d.ts",
+    "lib.es2022.regexp.d.ts",
+    "lib.es2022.sharedmemory.d.ts",
+    "lib.es2022.string.d.ts",
+    "lib.es2023.array.d.ts",
+    "lib.es2023.d.ts",
+    "lib.es2023.full.d.ts",
+    "lib.es5.d.ts",
+    "lib.es6.d.ts",
     "lib.esnext.d.ts",
     "lib.esnext.full.d.ts",
     "lib.esnext.intl.d.ts",
     "lib.esnext.promise.d.ts",
     "lib.esnext.string.d.ts",
     "lib.esnext.weakref.d.ts",
+    "lib.scripthost.d.ts",
+    "lib.webworker.d.ts",
+    "lib.webworker.importscripts.d.ts",
   ]
 
   const targetToCut = ts.ScriptTarget[target]
@@ -190,9 +213,15 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
 /**
  * Sets up a Map with lib contents by grabbing the necessary files from
  * the local copy of typescript via the file system.
+ *
+ * The first two args are un-used, but kept around so as to not cause a
+ * semver major bump for no gain to module users.
  */
-export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions, ts?: typeof import("typescript"), tsLibDirectory?: string) => {
-  const tsModule = ts || require("typescript")
+export const createDefaultMapFromNodeModules = (
+  _compilerOptions: CompilerOptions,
+  _ts?: typeof import("typescript"),
+  tsLibDirectory?: string
+) => {
   const path = requirePath()
   const fs = requireFS()
 
@@ -201,9 +230,11 @@ export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions
     return fs.readFileSync(path.join(lib, name), "utf8")
   }
 
-  const libs = knownLibFilesForCompilerOptions(compilerOptions, tsModule)
+  const libFiles = fs.readdirSync(path.dirname(require.resolve("typescript")))
+  const knownLibFiles = libFiles.filter(f => f.startsWith("lib.") && f.endsWith(".d.ts"))
+
   const fsMap = new Map<string, string>()
-  libs.forEach(lib => {
+  knownLibFiles.forEach(lib => {
     fsMap.set("/" + lib, getLib(lib))
   })
   return fsMap
@@ -403,7 +434,12 @@ export function createSystem(files: Map<string, string>): System {
  * a set of virtual files which are prioritised over the FS versions, then a path to the root of your
  * project (basically the folder your node_modules lives)
  */
-export function createFSBackedSystem(files: Map<string, string>, _projectRoot: string, ts: TS, tsLibDirectory?: string): System {
+export function createFSBackedSystem(
+  files: Map<string, string>,
+  _projectRoot: string,
+  ts: TS,
+  tsLibDirectory?: string
+): System {
   // We need to make an isolated folder for the tsconfig, but also need to be able to resolve the
   // existing node_modules structures going back through the history
   const root = _projectRoot + "/vfs"

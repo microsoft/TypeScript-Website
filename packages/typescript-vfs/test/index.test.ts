@@ -209,3 +209,8 @@ it("throws when you request a lib file which isn't in the fsMap", () => {
 
   expect(t).toThrow()
 })
+
+it("grabs lib dts files from node_modules", async () => {
+  const fsMap = createDefaultMapFromNodeModules({})
+  expect(fsMap.get("/lib.es2015.collection.d.ts")).toBeDefined()
+})
