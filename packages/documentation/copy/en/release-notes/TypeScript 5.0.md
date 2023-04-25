@@ -273,7 +273,7 @@ p.greet();
 
 Decorators can be used on more than just methods!
 They can be used on properties/fields, getters, setters, and auto-accessors.
-Even classes themselves can be decorated for things like subclassing and registration.
+Even classes themselves can be decorated for things like subclassing and registration. 
 
 To learn more about decorators in-depth, you can read up on [Axel Rauschmayer's extensive summary](https://2ality.com/2022/10/javascript-decorators.html).
 
@@ -341,7 +341,7 @@ function loggedMethod<This, Args extends any[], Return>(
 We had to separately model out the type of `this`, the parameters, and the return type of the original method, using the type parameters `This`, `Args`, and `Return`.
 
 Exactly how complex your decorators functions are defined depends on what you want to guarantee.
-Just keep in mind, your decorators will be used more than they're written, so a well-typed version will usually be preferable - but there's clearly a trade-off with readability, so try to keep things simple.
+Just keep in mind, your decorators will be used more than they're written, so a well-typed version will usually be preferable - but there's clearly a trade-off with readability, so try to keep things simple. Also, remember that it's not currently possible for decorators to mutate the declaration it is decorating. For example, while it's possible to add properties to a class via a decorator, TypeScript itself won't recognize that new property on the class.
 
 More documentation on writing decorators will be available in the future - but [this post](https://2ality.com/2022/10/javascript-decorators.html) should have a good amount of detail for the mechanics of decorators.
 
