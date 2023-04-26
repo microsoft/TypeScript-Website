@@ -58,7 +58,8 @@ function doSomething(fn: DescribableFunction) {
 function myFunc(someArg: number) {
   return someArg > 3;
 }
-myFunc.description = "default description"
+myFunc.description = "default description";
+
 
 doSomething(myFunc)
 ```
