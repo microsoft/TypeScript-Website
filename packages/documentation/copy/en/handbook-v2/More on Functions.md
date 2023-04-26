@@ -61,7 +61,8 @@ function myFunc(someArg: number) {
 myFunc.description = "default description";
 
 
-doSomething(myFunc)
+doSomething(myFunc);
+
 ```
 
 Note that the syntax is slightly different compared to a function type expression - use `:` between the parameter list and the return type rather than `=>`.
