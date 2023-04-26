@@ -60,7 +60,6 @@ function myFunc(someArg: number) {
 }
 myFunc.description = "default description";
 
-
 doSomething(myFunc);
 
 ```
