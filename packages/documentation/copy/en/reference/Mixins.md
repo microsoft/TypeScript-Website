@@ -229,7 +229,7 @@ interface Player {
    shouldFreeze: boolean;
 }
 
-// The Player class does have the decorator's type merged:
+// The Player class has the decorator's type merged:
 const player = new Player();
 player.shouldFreeze;
 ```
