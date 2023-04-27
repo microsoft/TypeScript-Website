@@ -3,17 +3,12 @@
   node packages/playground-handbook/scripts/generate.mjs
 */
 
-import { writeFileSync, readdirSync, existsSync, mkdirSync } from "fs";
+import { writeFileSync, existsSync, mkdirSync } from "fs";
 
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const root = join(__dirname, "..");
-const files = readdirSync(root);
-const mds = files.filter(f => f.includes(".md"));
-const types = `export type PHandbookPage = ${mds.map(t => `"${t}"`).join(" | ")}`;
-writeFileSync(join(__dirname, "types.d.ts"), types);
 
 // prettier-ignore
 const contents = [
