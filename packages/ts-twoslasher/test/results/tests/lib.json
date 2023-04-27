@@ -14,7 +14,7 @@
       "targetString": "map"
     },
     {
-      "text": "var Map: MapConstructor\nnew <string, Set<number>>(entries?: readonly (readonly [string, Set<number>])[] | null | undefined) => Map<string, Set<number>> (+2 overloads)",
+      "text": "var Map: MapConstructor\nnew <string, Set<number>>(iterable?: Iterable<readonly [string, Set<number>]> | null | undefined) => Map<string, Set<number>> (+3 overloads)",
       "docs": "",
       "start": 16,
       "length": 3,

@@ -4,7 +4,7 @@ type StoryContent =
   | { type: "code"; code: string; params: string; title: string }
   | { type: "hr" }
 
-import type { Sandbox } from "typescriptlang-org/static/js/sandbox"
+import type { Sandbox } from "@typescript/sandbox"
 import type { UI } from "./createUI"
 
 /**
@@ -210,6 +210,9 @@ const setStoryViaHref = (href: string, sandbox: Sandbox) => {
         const gatsby = doc.getElementById('___gatsby')
         if (gatsby) {
           gatsby.id = "___inner_g"
+          if (gatsby.firstChild && (gatsby.firstChild as HTMLElement).id === "gatsby-focus-wrapper") {
+            (gatsby.firstChild as HTMLElement).id = "gatsby-playground-handbook-inner"
+          }
           setStory(gatsby, sandbox)
         }
         return

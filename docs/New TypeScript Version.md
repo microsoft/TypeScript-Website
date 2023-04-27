@@ -20,6 +20,8 @@ That will update all of the site to use 3.9.0 for building. Run `yarn build` to 
 
 You might see issues with yarn patching TypeScript, if so, try run: `yarn set version latest` first to update to the latest yarn.
 
+Then empty the twoslash cache: `rm node_modules/.cache/twoslash`.
+
 ##### New Handbook Docs
 
 You might have a new reference doc to add, they live in [`packages/documentation/copy`](https://github.com/microsoft/TypeScript-website/blob/v2/packages/documentation/copy). You can ignore languages other than `en`. The folder structure is only for your reference and has no bearing on the site navigation. Each markdown document needs a header like:
@@ -90,8 +92,6 @@ oneline: TypeScript 3.9 Release Notes
 ```
 
 You can add twoslash to the code samples if you want.
-
-When you're happy with that, then edit [`packages/documentation/copy/en/release-notes/Overview.md](https://github.com/microsoft/TypeScript-website/blob/v2/packages/documentation/copy/en/release-notes/Overview.md) to include the changes you just added, and simplify descriptions.
 
 ##### Update Schema Store
 

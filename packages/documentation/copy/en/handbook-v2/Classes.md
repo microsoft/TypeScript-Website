@@ -372,7 +372,7 @@ c.y = 10;
 </blockquote>
 
 Classes may `extend` from a base class.
-A derived class has all the properties and methods of its base class, and also define additional members.
+A derived class has all the properties and methods of its base class, and can also define additional members.
 
 ```ts twoslash
 class Animal {
@@ -723,7 +723,7 @@ class Derived extends Base {
 }
 ```
 
-Because `private` members aren't visible to derived classes, a derived class can't increase its visibility:
+Because `private` members aren't visible to derived classes, a derived class can't increase their visibility:
 
 ```ts twoslash
 // @errors: 2415

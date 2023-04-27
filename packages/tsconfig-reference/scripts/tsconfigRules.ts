@@ -6,12 +6,12 @@ import ts from "typescript";
 export interface CommandLineOption {
   name: string;
   type:
-    | "string"
-    | "number"
-    | "boolean"
-    | "object"
-    | "list"
-    | Map<string, number | string>;
+  | "string"
+  | "number"
+  | "boolean"
+  | "object"
+  | "list"
+  | Map<string, number | string>;
   defaultValueDescription?: string | number | boolean | ts.DiagnosticMessage;
   category?: ts.DiagnosticMessage;
   element: CommandLineOption;
@@ -41,7 +41,6 @@ export const denyList: CompilerOptionName[] = [
   "locale",
   "clean",
   "dry",
-  "enableAutoDiscovery",
 ];
 
 /** Things we should document, but really want to help move people away from */
@@ -200,17 +199,21 @@ export const defaultsForOptions = {
       typeof option.defaultValueDescription === "object"
         ? option.defaultValueDescription.message
         : formatDefaultValue(
-            option.defaultValueDescription,
-            option.type === "list" ? option.element.type : option.type
-          ),
+          option.defaultValueDescription,
+          option.type === "list" ? option.element.type : option.type
+        ),
     ])
   ),
   allowSyntheticDefaultImports: [
-    "`true` if [`module`](#module) is `system`, or [`esModuleInterop`](#esModuleInterop) and [`module`](#module) is not `es6`/`es2015` or `esnext`,",
+    "`true` if [`esModuleInterop`](#esModuleInterop) is enabled, [`module`](#module) is `system`, or [`moduleResolution`](#module-resolution) is `bundler`,",
     "`false` otherwise.",
   ],
   alwaysStrict: trueIf("strict"),
   declaration: trueIf("composite"),
+  esModuleInterop: [
+    "`true` if [`module`](#module) is `node16` or `nodenext`,",
+    "`false` otherwise.",
+  ],
   exclude: [
     "node_modules",
     "bower_components",
@@ -292,6 +295,7 @@ function formatAllowedValues(type: CommandLineOption["type"]) {
 }
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
+  "4.7": ["moduleDetection", "moduleSuffixes"],
   "4.5": ["preserveValueImports"],
   "4.4": ["exactOptionalPropertyTypes", "useUnknownInCatchVariables"],
   "4.3": ["noImplicitOverride"],
@@ -365,8 +369,8 @@ Object.keys(releaseToConfigsMap).forEach((v) => {
 export const parseMarkdown = (value: string | string[]) =>
   Array.isArray(value)
     ? `<ul>${value
-        .map((element) => `<li>${parseMarkdown(element)}</li>`)
-        .join("")}</ul>`
+      .map((element) => `<li>${parseMarkdown(element)}</li>`)
+      .join("")}</ul>`
     : remark()
-        .use(remarkHTML)
-        .processSync(value?.replace(/^[-.0-9_a-z]+$/i, "`$&`"));
+      .use(remarkHTML)
+      .processSync(value !== undefined ? String(value).replace(/^[-.0-9_a-z]+$/i, "`$&`") : undefined);

@@ -270,7 +270,7 @@ const secondItem = myArray[1];
 Above, we have a `StringArray` interface which has an index signature.
 This index signature states that when a `StringArray` is indexed with a `number`, it will return a `string`.
 
-An index signature property type must be either 'string' or 'number'.
+Only some types are allowed for index signature properties: `string`, `number`, `symbol`, template string patterns, and union types consisting only of these.
 
 <details>
     <summary>It is possible to support both types of indexers...</summary>
@@ -841,7 +841,7 @@ type BooleansStringNumber = [...boolean[], string, number];
 
 - `StringNumberBooleans` describes a tuple whose first two elements are `string` and `number` respectively, but which may have any number of `boolean`s following.
 - `StringBooleansNumber` describes a tuple whose first element is `string` and then any number of `boolean`s and ending with a `number`.
-- `BooleansStringNumber` describes a tuple whose starting elements any number of `boolean`s and ending with a `string` then a `number`.
+- `BooleansStringNumber` describes a tuple whose starting elements are any number of `boolean`s and ending with a `string` then a `number`.
 
 A tuple with a rest element has no set "length" - it only has a set of well-known elements in different positions.
 
@@ -904,7 +904,7 @@ function foo(a: number, b: number, ...args: number[]) {
 
 ### `readonly` Tuple Types
 
-One final note about tuple types - tuples types have `readonly` variants, and can be specified by sticking a `readonly` modifier in front of them - just like with array shorthand syntax.
+One final note about tuple types - tuple types have `readonly` variants, and can be specified by sticking a `readonly` modifier in front of them - just like with array shorthand syntax.
 
 ```ts twoslash
 function doSomething(pair: readonly [string, number]) {

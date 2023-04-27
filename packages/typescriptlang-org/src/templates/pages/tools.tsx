@@ -36,20 +36,12 @@ const Index: React.FC<Props> = (props) => {
         </Col>
       </Row>
       <Row>
-      <Col>
+        <Col>
           <a className="cropper" href="/cheatsheets">
             <img src={require("../../../static/images/tools/cheat-sheets.png").default} alt="Preview of the cheat sheets page" />
             <p>Cheat Sheets</p>
           </a>
           <p>Quickly look up the syntax for common TypeScript code.</p>
-        </Col>
-
-        <Col>
-          <a className="cropper" href="/dt/search">
-            <img src={require("../../../static/images/tools/dt-search.png").default} alt="Preview of the Definitely Typed search" />
-            <p>Type Search</p>
-          </a>
-          <p>Search for npm modules with types from DefinitelyTyped or embedded in the module.</p>
         </Col>
       </Row>
     </div>

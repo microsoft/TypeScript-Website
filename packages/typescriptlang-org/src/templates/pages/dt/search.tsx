@@ -1,49 +1,31 @@
-import React, { useEffect, useState } from "react"
-import { debounce } from "ts-debounce"
+import React from "react"
+
 import { Layout } from "../../../components/layout"
 import { Intl } from "../../../components/Intl"
 
-import "./search.scss"
-
-import { SearchArea } from "../../../components/search/SearchArea"
-import { SearchResultsDisplay } from "../../../components/search/SearchResultsDisplay"
-import { useSearchResult } from "../../../components/search/useSearchResult"
-import { createInternational } from "../../../lib/createInternational"
-import { useIntl } from "react-intl"
-import { dtCopy } from "../../../copy/en/dt"
-
 type SearchProps = {
-  location: Location
-  pageContext: any
+  pageContext: { lang: string }
 }
 
-const updateHistorySearch = debounce((search: string) => {
-  const params = new URLSearchParams(window.location.search)
-  params.set("search", search)
-  history.pushState(null, "", `${window.location.pathname}?${params}`)
-}, 250)
+const title = "Search for typed packages";
+const description = "This page is no longer necessary.";
 
-const Search: React.FC<SearchProps> = ({ location, pageContext }) => {
-  const i = createInternational<typeof dtCopy>(useIntl())
-
-  const [search, setSearch] = useState<string>(
-    new URLSearchParams(location.search).get("search") || ""
-  )
-  const result = useSearchResult(search)
-
-  useEffect(() => {
-    updateHistorySearch(search)
-  }, [search])
-
+const Search: React.FC<SearchProps> = ({ pageContext }) => {
   return (
-    <Layout title={i("dt_s_page_title")} description={i("dt_s_subtitle")} lang={pageContext.lang}>
-      <div className="topContents">
-        <SearchArea result={result} search={search} setSearch={setSearch} i={i} />
-      </div>
-      <div className="resultsBackground">
-        <div className="resultsArea">
-          <SearchResultsDisplay result={result} search={search} i={i} />
-        </div>
+    <Layout title={title} description={description} lang={pageContext.lang}>
+      <div className="raised main-content-block">
+        <h1>{title}</h1>
+        <p>
+          <strong>{description}</strong>
+        </p>
+        <p>
+          The npm and Yarn package registries now include type information for packages.
+          <br />
+          You can read more on:{' '}
+          <a href="https://github.blog/changelog/2020-12-16-npm-displays-packages-with-bundled-typescript-declarations">
+            npm displays packages with bundled TypeScript declarations
+          </a>.
+        </p>
       </div>
     </Layout>
   )

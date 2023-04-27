@@ -17,13 +17,12 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v2
         with:
-          node-version: "13.x"
+          node-version: "16.x"
           registry-url: "https://registry.npmjs.org/"
           cache: yarn
 
       # For Azure uploads
       - run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-      - uses: microsoft/playwright-github-action@v1
 
       - name: Prepare website v2
         run: |
@@ -47,7 +46,7 @@ jobs:
         env:
           AZURE_STORAGE_ACCOUNT: "typescriptorgstaging"
           AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_CDN_STAGING_CONNECTION_STRING }}
-        run: az storage blob upload-batch -s ./site -d \$web
+        run: az storage blob upload-batch --overwrite -s ./site -d \$web
 
       - name: Build And Deploy
         id: builddeploy

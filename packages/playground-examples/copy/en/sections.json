@@ -43,7 +43,12 @@
     {
       "name": "4.4",
       "id": "4.4",
-      "subtitle": "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-4-4-beta/'>Release notes</a>."
+      "subtitle": "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-4-4/'>Release notes</a>."
+    },
+    {
+      "name": "4.7",
+      "id": "4.7",
+      "subtitle": "See the <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-4-7/'>Release notes</a>."
     },
     {
       "name": "Playground V3",

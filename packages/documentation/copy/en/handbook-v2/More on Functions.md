@@ -54,6 +54,13 @@ type DescribableFunction = {
 function doSomething(fn: DescribableFunction) {
   console.log(fn.description + " returned " + fn(6));
 }
+
+function myFunc(someArg: number) {
+  return someArg > 3;
+}
+myFunc.description = "default description";
+
+doSomething(myFunc);
 ```
 
 Note that the syntax is slightly different compared to a function type expression - use `:` between the parameter list and the return type rather than `=>`.
@@ -382,7 +389,7 @@ function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
 What people usually intend when writing `index?` as an optional parameter is that they want both of these calls to be legal:
 
 ```ts twoslash
-// @errors: 2532
+// @errors: 2532 18048
 declare function myForEach(
   arr: any[],
   callback: (arg: any, index?: number) => void
@@ -396,7 +403,7 @@ What this _actually_ means is that _`callback` might get invoked with one argume
 In other words, the function definition says that the implementation might look like this:
 
 ```ts twoslash
-// @errors: 2532
+// @errors: 2532 18048
 function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
   for (let i = 0; i < arr.length; i++) {
     // I don't feel like providing the index today
@@ -409,7 +416,7 @@ In turn, TypeScript will enforce this meaning and issue errors that aren't reall
 
 <!-- prettier-ignore -->
 ```ts twoslash
-// @errors: 2532
+// @errors: 2532 18048
 declare function myForEach(
   arr: any[],
   callback: (arg: any, index?: number) => void
@@ -631,7 +638,7 @@ The `unknown` type represents _any_ value.
 This is similar to the `any` type, but is safer because it's not legal to do anything with an `unknown` value:
 
 ```ts twoslash
-// @errors: 2571
+// @errors: 2571 18046
 function f1(a: any) {
   a.b(); // OK
 }

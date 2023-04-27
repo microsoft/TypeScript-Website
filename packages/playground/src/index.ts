@@ -188,21 +188,25 @@ export const setupPlayground = (
   // something more inline, but we can abuse the code lenses for now because they get their own line!
   sandbox.monaco.languages.registerCodeLensProvider(sandbox.language, {
     provideCodeLenses: function (model, token) {
-      const lenses = !showFileCodeLens ? [] : [{
-        range: {
-          startLineNumber: 1,
-          startColumn: 1,
-          endLineNumber: 2,
-          endColumn: 1
-        },
-        id: "implicit-filename-first",
-        command: {
-          id: "noop",
-          title: `// @filename: ${sandbox.filepath}`
-        }
-      }]
-      return { lenses, dispose: () => { } };
-    }
+      const lenses = !showFileCodeLens
+        ? []
+        : [
+          {
+            range: {
+              startLineNumber: 1,
+              startColumn: 1,
+              endLineNumber: 2,
+              endColumn: 1,
+            },
+            id: "implicit-filename-first",
+            command: {
+              id: "noop",
+              title: `// @filename: ${sandbox.filepath}`,
+            },
+          },
+        ]
+      return { lenses, dispose: () => { } }
+    },
   })
 
   let showFileCodeLens = false
@@ -264,8 +268,8 @@ export const setupPlayground = (
         ui.flashInfo(i("play_esm_mode"))
       }, 300)
 
-      const nextRes = moduleNumber === 199 ? 99 : 2
-      sandbox.setCompilerSettings({ target: 99, moduleResolution: nextRes })
+      const nextRes = (moduleNumber === 199 || moduleNumber === 100 ? 99 : 2) as import("monaco-editor").languages.typescript.ModuleResolutionKind
+      sandbox.setCompilerSettings({ target: 99, moduleResolution: nextRes, module: moduleNumber })
       sandbox.addLibraryToRuntime(JSON.stringify({ name: "playground", type: "module" }), "/package.json")
     }
   })
@@ -334,7 +338,7 @@ export const setupPlayground = (
         a.parentElement!.classList.toggle("open")
         a.setAttribute("aria-expanded", "true")
 
-        const exampleContainer = a.closest("li")!.getElementsByTagName("ul").item(0)
+        const exampleContainer = a.closest("li")!.getElementsByClassName("dropdown-dialog").item(0) as HTMLElement
         if (!exampleContainer) return
 
         const firstLabel = exampleContainer.querySelector("label") as HTMLElement
@@ -355,7 +359,7 @@ export const setupPlayground = (
           if (lastButton) {
             redirectTabPressTo(lastButton, exampleContainer, ".examples-close")
           } else {
-            const sections = document.querySelectorAll("ul.examples-dropdown .section-content")
+            const sections = document.querySelectorAll(".dropdown-dialog .section-content")
             sections.forEach(s => {
               const buttons = s.querySelectorAll("a.example-link")
               const lastButton = buttons.item(buttons.length - 1) as HTMLElement
@@ -394,7 +398,7 @@ export const setupPlayground = (
   const shareAction = {
     id: "copy-clipboard",
     label: "Save to clipboard",
-    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S],
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS],
 
     contextMenuGroupId: "run",
     contextMenuOrder: 1.5,
@@ -714,7 +718,11 @@ export const setupPlayground = (
     }
   }
 
-  if (monaco.languages.registerInlayHintsProvider) {
+  const [tsMajor, tsMinor] = sandbox.ts.version.split(".")
+  if (
+    (parseInt(tsMajor) > 4 || (parseInt(tsMajor) == 4 && parseInt(tsMinor) >= 6)) &&
+    monaco.languages.registerInlayHintsProvider
+  ) {
     monaco.languages.registerInlayHintsProvider(sandbox.language, createTwoslashInlayProvider(sandbox))
   }
 

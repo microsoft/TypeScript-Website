@@ -1,4 +1,4 @@
-import { Sandbox } from "typescriptlang-org/static/js/sandbox"
+import { Sandbox } from "@typescript/sandbox"
 import { PlaygroundPlugin, PluginFactory } from ".."
 import { createUI, UI } from "../createUI"
 import { localize } from "../localizeWithFallback"
@@ -22,7 +22,7 @@ export const runPlugin: PluginFactory = (i, utils) => {
       const clearLogsAction = {
         id: "clear-logs-play",
         label: "Clear Playground Logs",
-        keybindings: [sandbox.monaco.KeyMod.CtrlCmd | sandbox.monaco.KeyCode.KEY_K],
+        keybindings: [sandbox.monaco.KeyMod.CtrlCmd | sandbox.monaco.KeyCode.KeyK],
 
         contextMenuGroupId: "run",
         contextMenuOrder: 1.5,
@@ -183,7 +183,7 @@ function rewireLoggingToElement(
   const replacers = {
     "<span class='literal'>null</span>": "1231232131231231423434534534",
     "<span class='literal'>undefined</span>": "4534534534563567567567",
-    "<span class='comma'>, </span>": "785y8345873485763874568734y535438"
+    "<span class='comma'>, </span>": "785y8345873485763874568734y535438",
   }
 
   const objectToText = (arg: any): string => {
@@ -207,7 +207,9 @@ function rewireLoggingToElement(
       const mapIter = [...arg.entries()]
       textRep =
         `Map (${arg.size}) {` +
-        mapIter.map(([k, v]) => `${objectToText(k)} => ${objectToText(v)}`).join(replacers["<span class='comma'>, </span>"]) +
+        mapIter
+          .map(([k, v]) => `${objectToText(k)} => ${objectToText(v)}`)
+          .join(replacers["<span class='comma'>, </span>"]) +
         "}"
     } else if (typeof arg === "string") {
       textRep = '"' + htmlEscape(arg) + '"'
@@ -254,5 +256,5 @@ function sanitizeJS(code: string) {
 }
 
 function htmlEscape(str: string) {
-  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
 }

@@ -57,7 +57,7 @@ We said earlier that some languages wouldn't allow those buggy programs to run a
 Detecting errors in code without running it is referred to as _static checking_.
 Determining what's an error and what's not based on the kinds of values being operated on is known as static _type_ checking.
 
-TypeScript checks a program for errors before execution, and does so based on the _kinds of values_, it's a _static type checker_.
+TypeScript checks a program for errors before execution, and does so based on the _kinds of values_, making it a _static type checker_.
 For example, the last example above has an error because of the _type_ of `obj`.
 Here's the error TypeScript found:
 
@@ -171,7 +171,7 @@ This was a brief overview of the syntax and tools used in everyday TypeScript. F
   - [JavaScript guide at the Mozilla Web Docs](https://developer.mozilla.org/docs/Web/JavaScript/Guide)
 
 - Continue to [TypeScript for JavaScript Programmers](/docs/handbook/typescript-in-5-minutes.html)
-- Read the full Handbook [from start to finish](/docs/handbook/intro.html) (30m)
+- Read the full Handbook [from start to finish](/docs/handbook/intro.html)
 - Explore the [Playground examples](/play#show-examples)
 
 <!-- Note: I'll be happy to write the following... -->

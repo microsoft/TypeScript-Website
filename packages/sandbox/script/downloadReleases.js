@@ -7,23 +7,26 @@ const axios = require("axios").default
 const { writeFileSync } = require("fs")
 const { join } = require("path")
 const { format } = require("prettier")
+const fetch = require("node-fetch").default
 
 const go = async () => {
-  const response = await axios({ url: "https://typescript.azureedge.net/indexes/releases.json" })
-  const versions = response.data.versions.reverse()
+  const response = await fetch("https://typescript.azureedge.net/indexes/releases.json")
+  const releases = await response.json()
+  const versions = releases.versions.reverse()
 
   // Look through the prereleases to see if the beta and RC are included in the pre-releases
   // and add those to the list of versions.
-  const preReleases = await axios({ url: "https://typescript.azureedge.net/indexes/pre-releases.json" })
+  const preReleaseResponse = await fetch("https://typescript.azureedge.net/indexes/pre-releases.json")
+  const preReleases = await preReleaseResponse.json()
   const latestStable = versions[0]
 
   // e.g. 4.3.1 -> 4.4.0-beta
   // this won't work for 5.0 specifically, but that's an ok edge case for me
   const possibleBeta = `${latestStable.split(".")[0]}.${Number(latestStable.split(".")[1]) + 1}.0-beta`
-  const addBeta = preReleases.data.versions.includes(possibleBeta)
+  const addBeta = preReleases.versions.includes(possibleBeta)
 
-  const possibleRc = `${latestStable.split(".")[0]}.${Number(latestStable.split(".")[1]) + 1}.0-rc`
-  const addRc = preReleases.data.versions.includes(possibleRc)
+  const possibleRc = `${latestStable.split(".")[0]}.${Number(latestStable.split(".")[1]) + 1}.1-rc`
+  const addRc = preReleases.versions.includes(possibleRc)
 
   // Get the highest maj/min ignoring patch versions
   const latestMajMin = new Map()
@@ -52,11 +55,11 @@ export const supportedReleases = ["${supportedVersions.join('", "')}"] as const
 /** A type of all versions **/
 export type ReleaseVersions = "${[possibleBeta, possibleRc, ...versions].join('" | "')}"
 `
-  const path = join(__dirname, "..", "src", "releases.ts")
+  const path = join(__dirname, "..", "src", "release_data.ts")
   writeFileSync(path, format(code, { filepath: path }), "utf8")
 
   const jsonPath = join(__dirname, "..", "src", "releases.json")
-  writeFileSync(jsonPath, format(JSON.stringify(response.data), { filepath: jsonPath }), "utf8")
+  writeFileSync(jsonPath, format(JSON.stringify(releases), { filepath: jsonPath }), "utf8")
   console.log("Updated the releases with the versions created by make-monaco-builds")
 }
 

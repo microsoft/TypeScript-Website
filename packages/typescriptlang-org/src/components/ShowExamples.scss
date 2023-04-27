@@ -14,8 +14,28 @@
     color: var(--link-color);
   }
 
+  button.section-name {
+    font-size: 2rem;
+    font-weight: 600;
+
+    height: 2.8rem;
+    text-decoration: none;
+    border-bottom: none;
+    padding-bottom: 0.05rem;
+    margin-top: 0;
+    padding-top: 0;
+    margin-right: 1rem;
+    border: none;
+    background-color: transparent;
+    color: var(--text-color);
+  }
+
+  button.section-name.selected {
+    border-bottom: $ts-main-blue-color 2px solid;
+  }
+
   // The titles of the sections
-  > ol {
+  >ol {
     padding-left: 0;
 
     li {
@@ -28,26 +48,6 @@
         background-color: transparent;
       }
     }
-
-    button.section-name {
-      font-size: 2rem;
-      font-weight: 600;
-
-      height: 2.8rem;
-      text-decoration: none;
-      border-bottom: none;
-      padding-bottom: 0.05rem;
-      margin-top: 0;
-      padding-top: 0;
-      margin-right: 1rem;
-      border: none;
-      background-color: transparent;
-      color: var(--text-color);
-    }
-
-    button.section-name.selected {
-      border-bottom: $ts-main-blue-color 2px solid;
-    }
   }
 
   ol {
@@ -56,11 +56,11 @@
     padding-left: 0;
   }
 
-  > div.section-content {
+  >div.section-content {
     flex-wrap: wrap;
     display: flex;
 
-    > p > a {
+    >p>a {
       display: inline-block;
       color: $ts-main-blue-color;
       padding: 0;
@@ -118,6 +118,7 @@
             &.done {
               background-color: $ts-main-blue-darker-color;
             }
+
             &.changed {
               border: $ts-main-blue-darker-color 1px solid;
             }

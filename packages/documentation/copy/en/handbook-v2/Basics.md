@@ -343,7 +343,7 @@ let msg = "hello there!";
 Even though we didn't tell TypeScript that `msg` had the type `string` it was able to figure that out.
 That's a feature, and it's best not to add annotations when the type system would end up inferring the same type anyway.
 
-> Note: the message bubble inside the code sample above. That is what your editor would show if you had hovered over the word.
+> Note: The message bubble inside the previous code sample is what your editor would show if you had hovered over the word.
 
 ## Erased Types
 
@@ -362,7 +362,7 @@ greet("Maddison", new Date());
 Notice two things here:
 
 1. Our `person` and `date` parameters no longer have type annotations.
-2. Our "template string" - that string that used backticks (the `` ` `` character) - was converted to plain strings with concatenations (`+`).
+2. Our "template string" - that string that used backticks (the `` ` `` character) - was converted to plain strings with concatenations.
 
 More on that second point later, but let's now focus on that first point.
 Type annotations aren't part of JavaScript (or ECMAScript to be pedantic), so there really aren't any browsers or other runtimes that can just run TypeScript unmodified.
