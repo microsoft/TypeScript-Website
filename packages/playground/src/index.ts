@@ -23,7 +23,7 @@ import { allowConnectingToLocalhost, activePlugins, addCustomPlugin } from "./si
 import { createUtils, PluginUtils } from "./pluginUtils"
 import type React from "react"
 import { settingsPlugin, getPlaygroundPlugins } from "./sidebar/settings"
-import { gistPoweredNavBar, hideNavForHandbook, showNavForHandbook } from "./navigation"
+import { hideNavForHandbook, showNavForHandbook } from "./navigation"
 import { createTwoslashInlayProvider } from "./twoslashInlays"
 
 export { PluginUtils } from "./pluginUtils"
@@ -736,11 +736,6 @@ export const setupPlayground = (
     setTimeout(() => {
       document.getElementById("whatisnew-button")?.click()
     }, 100)
-  }
-
-  // Grab the contents of a Gist
-  if (location.hash.startsWith("#gist/")) {
-    gistPoweredNavBar(sandbox, ui, showNav)
   }
 
   // Auto-load into the playground
