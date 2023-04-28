@@ -403,7 +403,7 @@ Released:
 
 </blockquote>
 
-Constructs a type consisting of the instance type of a constructor function in `Type`.
+Constructs a type consisting of the instance type of a constructor function in `Type`. Declaring a variable to have InstanceType ensures that only an object that is an instance of the given type can be assigned to it and not any other object that may have similar properties.
 
 ##### Example
 
