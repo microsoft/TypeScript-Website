@@ -350,7 +350,7 @@ declare function sanitize(str: string): string;
 type UserInputSanitizedString = string;
 
 function sanitizeInput(str: string): UserInputSanitizedString {
-  return sanitize(str);
+  return sanitizeInput(str);
 }
 
 // Create a sanitized input
