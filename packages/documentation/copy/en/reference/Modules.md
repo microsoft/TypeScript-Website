@@ -633,6 +633,23 @@ It can also be used as a global variable, but only inside of a script.
 mathLib.isPrime(2);
 ```
 
+#### Re-exporting modules into a global namespace
+
+Some environments have existing ES6 modules available under global variables instead.
+For example, on a web page, libraries might be loaded directly by `<script>` tags and create global variables for other scripts to use.
+Their type definitions might not account for this if the modules were not designed to be loaded this way.
+However, `export as namespace` can also be used from ambient modules to re-export other libraries.
+For example, if the web page has a global variable `mathLib` that contains the package `math-lib`, you can use an ambient module to represent this:
+
+##### math-lib.d.ts
+
+```ts
+export * from 'math-lib'
+export as namespace mathLib
+```
+
+Now, `mathLib` can be used in scripts to access `math-lib`'s exports, including types.
+
 ## Guidance for structuring modules
 
 ## Export as close to top-level as possible
