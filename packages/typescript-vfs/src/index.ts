@@ -113,6 +113,8 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
         (ts.getAllLibFileNames() as string[])
       : [
           "lib.d.ts",
+          "lib.es5.d.ts",
+          "lib.es6.d.ts",
           "lib.decorators.d.ts",
           "lib.decorators.legacy.d.ts",
           "lib.dom.d.ts",
@@ -179,8 +181,6 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
           "lib.es2023.array.d.ts",
           "lib.es2023.d.ts",
           "lib.es2023.full.d.ts",
-          "lib.es5.d.ts",
-          "lib.es6.d.ts",
           "lib.esnext.d.ts",
           "lib.esnext.full.d.ts",
           "lib.esnext.intl.d.ts",
@@ -321,9 +321,14 @@ export const createDefaultMapFromCDN = (
 
   // Map the known libs to a node fetch promise, then return the contents
   function uncached() {
-    return Promise.all(files.map(lib => fetchlike(prefix + lib).then(resp => resp.text()))).then(contents => {
-      contents.forEach((text, index) => fsMap.set("/" + files[index], text))
-    })
+    return (
+      Promise.all(files.map(lib => fetchlike(prefix + lib).then(resp => resp.text())))
+        .then(contents => {
+          contents.forEach((text, index) => fsMap.set("/" + files[index], text))
+        })
+        // Return a NOOP for .d.ts files which aren't in the current build of TypeScript
+        .catch(() => {})
+    )
   }
 
   // A localstorage and lzzip aware version of the lib files
@@ -345,20 +350,26 @@ export const createDefaultMapFromCDN = (
 
         if (!content) {
           // Make the API call and store the text concent in the cache
-          return fetchlike(prefix + lib)
-            .then(resp => resp.text())
-            .then(t => {
-              storelike.setItem(cacheKey, zip(t))
-              return t
-            })
+          return (
+            fetchlike(prefix + lib)
+              .then(resp => resp.text())
+              .then(t => {
+                storelike.setItem(cacheKey, zip(t))
+                return t
+              })
+              // Return a NOOP for .d.ts files which aren't in the current build of TypeScript
+              .catch(() => {})
+          )
         } else {
           return Promise.resolve(unzip(content))
         }
       })
     ).then(contents => {
       contents.forEach((text, index) => {
-        const name = "/" + files[index]
-        fsMap.set(name, text)
+        if (text) {
+          const name = "/" + files[index]
+          fsMap.set(name, text)
+        }
       })
     })
   }
