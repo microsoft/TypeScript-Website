@@ -64,7 +64,7 @@ function fn(x) {
 
 We can _observe_ by reading the code that this function will only work if given an object with a callable `flip` property, but JavaScript doesn't surface this information in a way that we can check while the code is running.
 The only way in pure JavaScript to tell what `fn` does with a particular value is to call it and see what happens.
-This kind of behavior makes it hard to predict what code will do before it runs, which means it's harder to know what your code is going to do while you're writing it.
+This kind of behavior makes it hard to predict what the code will do before it runs, which means it's harder to know what your code is going to do while you're writing it.
 
 Seen in this way, a _type_ is the concept of describing which values can be passed to `fn` and which will crash.
 JavaScript only truly provides _dynamic_ typing - running the code to see what happens.
