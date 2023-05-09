@@ -431,7 +431,7 @@ In JavaScript, if you call a function with more arguments than there are paramet
 TypeScript behaves the same way.
 Functions with fewer parameters (of the same types) can always take the place of functions with more parameters.
 
-> When writing a function type for a callback, _never_ write an optional parameter unless you intend to _call_ the function without passing that argument
+> **Rule**: When writing a function type for a callback, _never_ write an optional parameter unless you intend to _call_ the function without passing that argument
 
 ## Function Overloads
 
