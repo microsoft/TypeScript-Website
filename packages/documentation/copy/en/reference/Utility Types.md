@@ -487,7 +487,7 @@ This utility does not return a transformed type. Instead, it serves as a marker 
 ##### Example
 
 ```ts twoslash
-// @noImplicitThis: false
+// @noImplicitThis: true
 type ObjectDescriptor<D, M> = {
   data?: D;
   methods?: M & ThisType<D & M>; // Type of 'this' in methods is D & M
