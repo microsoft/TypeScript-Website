@@ -88,7 +88,7 @@ You can combine call and construct signatures in the same type arbitrarily:
 ```ts twoslash
 interface CallOrConstruct {
   new (s: string): Date;
-  (n?: number): number;
+  (n?: number): string;
 }
 ```
 
