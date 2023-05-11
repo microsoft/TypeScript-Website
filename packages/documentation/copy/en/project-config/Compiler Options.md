@@ -832,7 +832,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#moduleResolution'>--moduleResolution</a></code></td>
   <td><p><code>classic</code>, <code>node10</code>/<code>node</code>, <code>node16</code>, <code>nodenext</code>, or <code>bundler</code></p>
 </td>
-  <td><p><code>Classic</code> if <a href="#module"><code>module</code></a> is <code>AMD</code>, <code>UMD</code>, <code>System</code> or <code>ES6</code>/<code>ES2015</code>, Matches if <a href="#module"><code>module</code></a> is <code>node12</code> or <code>nodenext</code>, <code>Node</code> otherwise.</p>
+  <td><p><code>Classic</code> if <a href="#module"><code>module</code></a> is <code>AMD</code>, <code>UMD</code>, <code>System</code> or <code>ES6</code>/<code>ES2015</code>, Matches if <a href="#module"><code>module</code></a> is <code>node16</code> or <code>nodenext</code>, <code>Node</code> otherwise.</p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
