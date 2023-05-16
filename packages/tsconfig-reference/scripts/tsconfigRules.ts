@@ -230,7 +230,7 @@ export const defaultsForOptions = {
   ],
   moduleResolution: [
     "`Classic` if [`module`](#module) is `AMD`, `UMD`, `System` or `ES6`/`ES2015`,",
-    "Matches if [`module`](#module) is `node12` or `nodenext`,",
+    "Matches if [`module`](#module) is `node16` or `nodenext`,",
     "`Node` otherwise.",
   ],
   newLine: "Platform specific.",
