@@ -89,7 +89,7 @@ _Configure the TypeScript compiler_
 
 First we need to tell TypeScript how to build. Right click on `scripts` and click **New Item**. Then choose **TypeScript Configuration File** and use the default name of `tsconfig.json`
 
-![A screenshot showing the new file diaglogue with TypeScript JSON Config selected](/images/tutorials/aspnet/tsconfig.png)
+![A screenshot showing the new file dialogue with TypeScript JSON Config selected](/images/tutorials/aspnet/tsconfig.png)
 
 Replace the contents of the `tsconfig.json` file with:
 
@@ -168,7 +168,7 @@ The first line tells Visual Studio to run the task ‘default’ after the build
 
 Now right-click on `gulpfile.js` and click Task Runner Explorer.
 
-![Screenshot of right clicking on the "Gulpfile.js" with 'Task Runner Exploere' selected](/images/tutorials/aspnet/taskrunner.png)
+![Screenshot of right clicking on the "Gulpfile.js" with 'Task Runner Explorer' selected](/images/tutorials/aspnet/taskrunner.png)
 
 If ‘default’ and ‘clean’ tasks don’t show up, refresh the explorer:
 

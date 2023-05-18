@@ -1,6 +1,6 @@
 ## Localization
 
-Like the rest of this website, the TypeScript Playground is localized. As of 2021, the current list of supported lanaguges are:
+Like the rest of this website, the TypeScript Playground is localized. As of 2021, the current list of supported languages are:
 
 - [`es`](/es/play)
 - [`fr`](/fr/play)

@@ -1,5 +1,5 @@
 ---
-display: "noImplicitOverride"
+display: "No Implicit Override"
 oneline: "Ensure overriding members in derived classes are marked with an override modifier."
 ---
 

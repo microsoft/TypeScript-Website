@@ -58,7 +58,7 @@
       "start": 184,
       "line": 3,
       "character": 0,
-      "renderedMessage": "This condition will always return 'false' since the types 'boolean' and 'number' have no overlap.",
+      "renderedMessage": "This comparison appears to be unintentional because the types 'boolean' and 'number' have no overlap.",
       "id": "err-2367-66-18"
     }
   ],

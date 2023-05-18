@@ -1,5 +1,5 @@
 ---
-display: "jsxImportSource"
+display: "JSX Import Source"
 oneline: "Specify module specifier used to import the JSX factory functions when using `jsx: react-jsx*`."
 ---
 

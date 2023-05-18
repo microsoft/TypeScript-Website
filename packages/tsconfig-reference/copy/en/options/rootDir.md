@@ -47,7 +47,7 @@ MyProj
 ```
 
 Importantly, `rootDir` **does not affect which files become part of the compilation**.
-It has no interaction with the [`include`](#include), `exclude`, or [`files`](#files) `tsconfig.json` settings.
+It has no interaction with the [`include`](#include), [`exclude`](#exclude), or [`files`](#files) `tsconfig.json` settings.
 
 Note that TypeScript will never write an output file to a directory outside of [`outDir`](#outDir), and will never skip emitting a file.
 For this reason, `rootDir` also enforces that all files which need to be emitted are underneath the `rootDir` path.

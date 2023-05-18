@@ -378,7 +378,7 @@ Now if a new file `FolderA\3.ts` is added to the input, the output structure wil
 
 ## `--noEmitHelpers` command line option
 
-The TypeSript compiler emits a few helpers like `__extends` when needed.
+The TypeScript compiler emits a few helpers like `__extends` when needed.
 The helpers are emitted in every file they are referenced in.
 If you want to consolidate all helpers in one place, or override the default behavior, use [`noEmitHelpers`](/tsconfig#noEmitHelpers) to instructs the compiler not to emit them.
 

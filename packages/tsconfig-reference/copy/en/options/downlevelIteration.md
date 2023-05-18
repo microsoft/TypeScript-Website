@@ -80,18 +80,21 @@ const arr = [1].concat(arr2);
 ```
 
 However, this is observably different in certain rare cases.
-For example, if an array has a "hole" in it, the missing index will create an _own_ property if spreaded, but will not if built using `concat`:
+
+For example, if a source array is missing one or more items (contains a hole), the spread syntax will replace each empty item with `undefined`, whereas `.concat` will leave them intact.
 
 ```js
-// Make an array where the '1' element is missing
-let missing = [0, , 1];
-let spreaded = [...missing];
-let concated = [].concat(missing);
+// Make an array where the element at index 1 is missing
+let arrayWithHole = ['a', , 'c'];
+let spread = [...arrayWithHole];
+let concatenated = [].concat(arrayWithHole);
 
-// true
-"1" in spreaded;
-// false
-"1" in concated;
+console.log(arrayWithHole)
+// [ 'a', <1 empty item>, 'c' ]
+console.log(spread)
+// [ 'a', undefined, 'c' ]
+console.log(concatenated)
+// [ 'a', <1 empty item>, 'c' ]
 ```
 
 Just as with `for / of`, `downlevelIteration` will use `Symbol.iterator` (if present) to more accurately emulate ES 6 behavior.

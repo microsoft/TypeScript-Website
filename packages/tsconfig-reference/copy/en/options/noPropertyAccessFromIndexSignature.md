@@ -1,5 +1,5 @@
 ---
-display: "noPropertyAccessFromIndexSignature"
+display: "No Property Access From Index Signature"
 oneline: "Enforces using indexed accessors for keys declared using an indexed type."
 ---
 

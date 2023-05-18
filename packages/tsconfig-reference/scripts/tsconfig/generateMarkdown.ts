@@ -19,7 +19,7 @@
 
 console.log("TSConfig Ref: MD for TSConfig");
 
-import { writeFileSync, readdirSync, existsSync, mkdirSync } from "fs";
+import { writeFileSync, readdirSync, existsSync, mkdirSync, readFileSync } from "fs";
 import { join } from "path";
 import { fileURLToPath } from "url";
 import * as assert from "assert";
@@ -36,10 +36,8 @@ import {
   parseMarkdown,
 } from "../tsconfigRules.js";
 
-// @ts-ignore
-import options from "../../data/tsconfigOpts.json";
-// @ts-ignore
-import categories from "../../data/tsconfigCategories.json";
+const options = JSON.parse(readFileSync(join("data", "tsconfigOpts.json"), "utf8"));
+const categories = JSON.parse(readFileSync(join("data", "tsconfigCategories.json"), "utf8"));
 
 const orderedCategories = [
   "Project_Files_0",
