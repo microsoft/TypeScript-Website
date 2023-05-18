@@ -481,7 +481,7 @@ In addition, classes can [use `this is Type`](/docs/handbook/2/classes.html#this
 
 ## Assertion functions
 
-Types can also be narrowed using [Assertion functions](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#assertion-functions).
+Types can also be narrowed using [Assertion functions](/docs/handbook/release-notes/typescript-3-7.html#assertion-functions).
 
 # Discriminated unions
 
