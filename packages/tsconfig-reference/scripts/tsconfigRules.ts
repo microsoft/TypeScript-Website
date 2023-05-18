@@ -3,6 +3,13 @@ import remark from "remark";
 import remarkHTML from "remark-html";
 import ts from "typescript";
 
+declare module "typescript" {
+  const optionDeclarations: CommandLineOption[];
+  const optionsForWatch: CommandLineOption[];
+  const typeAcquisitionDeclarations: CommandLineOption[];
+  const defaultInitCompilerOptions: ts.CompilerOptions;
+}
+
 export interface CommandLineOption {
   name: string;
   type:
@@ -14,13 +21,8 @@ export interface CommandLineOption {
   | Map<string, number | string>;
   defaultValueDescription?: string | number | boolean | ts.DiagnosticMessage;
   category?: ts.DiagnosticMessage;
+  strictFlag?: true;
   element: CommandLineOption;
-}
-
-declare module "typescript" {
-  const optionDeclarations: CommandLineOption[];
-  const optionsForWatch: CommandLineOption[];
-  const typeAcquisitionDeclarations: CommandLineOption[];
 }
 
 /**
@@ -71,18 +73,17 @@ export const buildOptionCompilerOptNames: string[] = ts.buildOpts
 export const rootOptNames = ["files", "extends", "include", "exclude", "references"];
 
 /** You should use this! They are off by default */
-export const recommended: CompilerOptionName[] = [
-  "strict",
-  "forceConsistentCasingInFileNames",
-  "alwaysStrict",
-  "strictNullChecks",
-  "strictBindCallApply",
-  "strictFunctionTypes",
-  "strictPropertyInitialization",
-  "noImplicitThis",
-  "noImplicitAny",
-  "esModuleInterop",
-  "skipLibCheck",
+export const recommended = [
+  // Options enabled by --init
+  ...Object.entries(ts.defaultInitCompilerOptions)
+    .filter(([, value]) => value === true)
+    .map(([name]) => name),
+  // Options enabled by --strict
+  ...ts.optionDeclarations
+    .filter((option) => option.strictFlag)
+    .map((option) => option.name),
+  // Not included in --init yet:
+  // https://github.com/microsoft/TypeScript/issues/44524#:~:text=--init%20should%20include%20it%20once%20the%20ecosystem%20catches%20up.
   "exactOptionalPropertyTypes",
 ];
 
