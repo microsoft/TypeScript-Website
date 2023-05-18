@@ -32,7 +32,7 @@ export const createTwoslashInlayProvider = (sandbox: Sandbox) => {
         if (!hint || !hint.displayParts) continue
 
         // Make a one-liner
-        let text = hint.displayParts.map(d => d.text).join("").replace(/\\n/g, "").replace(/  /g, "")
+        let text = hint.displayParts.map(d => d.text).join("").replace(/\r?\n/g, "").replace(/  /g, "")
         if (text.length > 120) text = text.slice(0, 119) + "..."
 
         const inlay: import("monaco-editor").languages.InlayHint = {
