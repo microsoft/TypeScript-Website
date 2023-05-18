@@ -178,7 +178,8 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["suppressImplicitAnyIndexErrors", ["noImplicitAny"]],
 
   ["listFiles", ["explainFiles"]],
-  ["preserveValueImports", ["isolatedModules", "importsNotUsedAsValues"]]
+  ["preserveValueImports", ["isolatedModules", "importsNotUsedAsValues"]],
+  ["importsNotUsedAsValues", ["preserveValueImports"]],
 ];
 
 /**
