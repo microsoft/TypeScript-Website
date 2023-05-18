@@ -45,7 +45,7 @@ class MyComponent extends React.Component<Props, {}> {
 <MyComponent name={0} />; // error, `name` is not a number
 ```
 
-#### Using other JSX framworks
+#### Using other JSX frameworks
 
 JSX element names and properties are validated against the `JSX` namespace.
 Please see the [[JSX]] wiki page for defining the `JSX` namespace for your framework.
@@ -454,7 +454,7 @@ For example:
 }
 ```
 
-The [`exclude`](/tsconfig#exclude) list does not support wilcards. It must simply be a list of files and/or directories.
+The [`exclude`](/tsconfig#exclude) list does not support wildcards. It must simply be a list of files and/or directories.
 
 ## `--init` command line option
 

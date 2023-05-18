@@ -12,7 +12,7 @@ You may want to change these for a few reasons:
 - Your runtime platform provides certain JavaScript API objects (maybe through polyfills), but doesn't yet support the full syntax of a given ECMAScript version
 - You have polyfills or native implementations for some, but not all, of a higher level ECMAScript version
 
-In TypeScript 4.5, lib files can be overriden by npm modules, find out more [in the blog](https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#supporting-lib-from-node_modules).
+In TypeScript 4.5, lib files can be overridden by npm modules, find out more [in the blog](https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#supporting-lib-from-node_modules).
 
 ### High Level libraries
 
@@ -64,7 +64,7 @@ In TypeScript 4.5, lib files can be overriden by npm modules, find out more [in 
 | `ES2020.Symbol.wellknown` |
 | `ES2021.Promise`          |
 | `ES2021.String`           |
-| `ES2021.Weakref`          |
+| `ES2021.WeakRef`          |
 | `ESNext.AsyncIterable`    |
 | `ESNext.Array`            |
 | `ESNext.Intl`             |

@@ -370,7 +370,7 @@ Turns to:
 > }
 > ```
 
-#### `cuts_out_unneccessary_code.ts`
+#### `cuts_out_unnecessary_code.ts`
 
 ```ts
 interface IdLabel {
