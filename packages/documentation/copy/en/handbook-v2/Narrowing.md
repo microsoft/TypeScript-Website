@@ -292,7 +292,7 @@ function move(animal: Fish | Bird) {
 }
 ```
 
-To reiterate optional properties will exist in both sides for narrowing, for example a human could both swim and fly (with the right equipment) and thus should show up in both sides of the `in` check:
+To reiterate, optional properties will exist in both sides for narrowing. For example, a human could both swim and fly (with the right equipment) and thus should show up in both sides of the `in` check:
 
 <!-- prettier-ignore -->
 ```ts twoslash
