@@ -21,7 +21,7 @@ const log = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any
 declare module "typescript" {
   type Option = {
     name: string
-    type: "list" | "boolean" | "number" | "string" | import("typescript").Map<any>
+    type: "list" | "boolean" | "number" | "string" | Map<string, any>
     element?: Option
   }
 

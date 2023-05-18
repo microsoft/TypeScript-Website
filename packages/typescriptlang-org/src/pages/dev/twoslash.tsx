@@ -298,6 +298,7 @@ const Index: React.FC<Props> = props => {
                 />
                 <div id="example-buttons">
                   {codeSamples.map(code => {
+                    
                     const setExample = e => {
                       if (e.target.classList.contains("disabled")) return
 
@@ -307,7 +308,7 @@ const Index: React.FC<Props> = props => {
                       window.sandbox.setText(code.code)
                     }
                     return (
-                      <div className="button disabled" onClick={setExample}>
+                      <div className="button disabled" key={code.name} onClick={setExample}>
                         {code.name}
                       </div>
                     )

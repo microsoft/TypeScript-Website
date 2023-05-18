@@ -20,7 +20,7 @@ Over time, though, JS became more and more popular, and web developers started u
 
 Web browser developers responded to this increased JS usage by optimizing their execution engines (dynamic compilation) and extending what could be done with it (adding APIs), which in turn made web developers use it even more.
 On modern websites, your browser is frequently running applications that span hundreds of thousands of lines of code.
-This is long and gradual growth of "the web", starting as a simple network of static pages, and evolving into a platform for rich _applications_ of all kinds.
+This is the long and gradual growth of "the web", starting as a simple network of static pages, and evolving into a platform for rich _applications_ of all kinds.
 
 More than this, JS has become popular enough to be used outside the context of browsers, such as implementing JS servers using node.js.
 The "run anywhere" nature of JS makes it an attractive choice for cross-platform development.
@@ -57,7 +57,7 @@ We said earlier that some languages wouldn't allow those buggy programs to run a
 Detecting errors in code without running it is referred to as _static checking_.
 Determining what's an error and what's not based on the kinds of values being operated on is known as static _type_ checking.
 
-TypeScript checks a program for errors before execution, and does so based on the _kinds of values_, it's a _static type checker_.
+TypeScript checks a program for errors before execution, and does so based on the _kinds of values_, making it a _static type checker_.
 For example, the last example above has an error because of the _type_ of `obj`.
 Here's the error TypeScript found:
 
@@ -167,11 +167,11 @@ This was a brief overview of the syntax and tools used in everyday TypeScript. F
 
 - Learn some of the JavaScript fundamentals, we recommend either:
 
-  - [Microsoft's JavaScript Resources](https://docs.microsoft.com/javascript/) or
+  - [Microsoft's JavaScript Resources](https://developer.microsoft.com/javascript/) or
   - [JavaScript guide at the Mozilla Web Docs](https://developer.mozilla.org/docs/Web/JavaScript/Guide)
 
 - Continue to [TypeScript for JavaScript Programmers](/docs/handbook/typescript-in-5-minutes.html)
-- Read the full Handbook [from start to finish](/docs/handbook/intro.html) (30m)
+- Read the full Handbook [from start to finish](/docs/handbook/intro.html)
 - Explore the [Playground examples](/play#show-examples)
 
 <!-- Note: I'll be happy to write the following... -->

@@ -209,7 +209,7 @@ All module imports with non-relative names are assumed to be relative to the [`b
 Value of _baseUrl_ is determined as either:
 
 - value of _baseUrl_ command line argument (if given path is relative, it is computed based on current directory)
-- value of _baseUrl_ property in 'tsconfig.json' (if given path is relative, it is computed based on the location of 'tsconfig.json')
+- value of _baseUrl_ property in `tsconfig.json` (if given path is relative, it is computed based on the location of `tsconfig.json`)
 
 Note that relative module imports are not impacted by setting the baseUrl, as they are always resolved relative to their importing files.
 

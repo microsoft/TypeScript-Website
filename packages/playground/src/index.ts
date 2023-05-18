@@ -23,7 +23,7 @@ import { allowConnectingToLocalhost, activePlugins, addCustomPlugin } from "./si
 import { createUtils, PluginUtils } from "./pluginUtils"
 import type React from "react"
 import { settingsPlugin, getPlaygroundPlugins } from "./sidebar/settings"
-import { gistPoweredNavBar, hideNavForHandbook, showNavForHandbook } from "./navigation"
+import { hideNavForHandbook, showNavForHandbook } from "./navigation"
 import { createTwoslashInlayProvider } from "./twoslashInlays"
 
 export { PluginUtils } from "./pluginUtils"
@@ -191,21 +191,21 @@ export const setupPlayground = (
       const lenses = !showFileCodeLens
         ? []
         : [
-          {
-            range: {
-              startLineNumber: 1,
-              startColumn: 1,
-              endLineNumber: 2,
-              endColumn: 1,
+            {
+              range: {
+                startLineNumber: 1,
+                startColumn: 1,
+                endLineNumber: 2,
+                endColumn: 1,
+              },
+              id: "implicit-filename-first",
+              command: {
+                id: "noop",
+                title: `// @filename: ${sandbox.filepath}`,
+              },
             },
-            id: "implicit-filename-first",
-            command: {
-              id: "noop",
-              title: `// @filename: ${sandbox.filepath}`,
-            },
-          },
-        ]
-      return { lenses, dispose: () => { } }
+          ]
+      return { lenses, dispose: () => {} }
     },
   })
 
@@ -268,7 +268,7 @@ export const setupPlayground = (
         ui.flashInfo(i("play_esm_mode"))
       }, 300)
 
-      const nextRes = moduleNumber === 199 || 100 ? 99 : 2
+      const nextRes = (moduleNumber === 199 || moduleNumber === 100 ? 99 : 2) as import("monaco-editor").languages.typescript.ModuleResolutionKind
       sandbox.setCompilerSettings({ target: 99, moduleResolution: nextRes, module: moduleNumber })
       sandbox.addLibraryToRuntime(JSON.stringify({ name: "playground", type: "module" }), "/package.json")
     }
@@ -606,6 +606,14 @@ export const setupPlayground = (
     sandbox.editor.layout()
   })
 
+  // Tells monaco to check out the font sizes in order to make
+  // sure that selecting text in the editor provides the same
+  // length as unselected text - otherwise space for a selection
+  // will be a little bit wider than it should be. s
+  setTimeout(() => {
+    monaco.editor.remeasureFonts()
+  }, 5000)
+
   const ui = createUI()
   const exporter = createExporter(sandbox, monaco, ui)
 
@@ -736,11 +744,6 @@ export const setupPlayground = (
     setTimeout(() => {
       document.getElementById("whatisnew-button")?.click()
     }, 100)
-  }
-
-  // Grab the contents of a Gist
-  if (location.hash.startsWith("#gist/")) {
-    gistPoweredNavBar(sandbox, ui, showNav)
   }
 
   // Auto-load into the playground
