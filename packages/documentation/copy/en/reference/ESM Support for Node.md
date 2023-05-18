@@ -225,7 +225,7 @@ If you need to point to a different location for your type declarations, you can
                 // Where Node.js will look.
                 "default": "./esm/index.js"
             },
-            // Entry-point for `require("my-package") in CJS
+            // Entry-point for `require("my-package")` in CJS
             "require": {
                 // Where TypeScript will look.
                 "types": "./types/commonjs/index.d.cts",
