@@ -1,5 +1,5 @@
 ---
-display: "excludeFiles"
+display: "Exclude Files"
 oneline: "Remove a list of files from the watch mode's processing."
 ---
 

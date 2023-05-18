@@ -1,4 +1,4 @@
-import type { Sandbox } from "typescriptlang-org/static/js/sandbox"
+import type { Sandbox } from "@typescript/sandbox"
 import type { DiagnosticRelatedInformation, Node } from "typescript"
 
 export type LocalStorageOption = {
@@ -331,21 +331,21 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       }
 
       const renderManyChildren = (key: string, nodes: Node[], depth: number) => {
-        const childers = document.createElement("div")
-        childers.classList.add("ast-children")
+        const children = document.createElement("div")
+        children.classList.add("ast-children")
 
         const li = document.createElement("li")
         li.innerHTML = `${key}: [<br/>`
-        childers.appendChild(li)
+        children.appendChild(li)
 
         nodes.forEach(node => {
-          renderItem(childers, node, depth + 1)
+          renderItem(children, node, depth + 1)
         })
 
         const liEnd = document.createElement("li")
         liEnd.innerHTML += "]"
-        childers.appendChild(liEnd)
-        return childers
+        children.appendChild(liEnd)
+        return children
       }
 
       const renderItem = (parentElement: Element, node: Node, depth: number) => {

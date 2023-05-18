@@ -1,4 +1,4 @@
-import ts from 'typescript'
+import ts from "typescript"
 
 export declare class TypeScriptWorker implements ts.LanguageServiceHost {
   private _ctx
@@ -41,18 +41,18 @@ export declare class TypeScriptWorker implements ts.LanguageServiceHost {
   ): Promise<ts.TextChange[]>
   getFormattingEditsAfterKeystroke(
     fileName: string,
-    postion: number,
+    position: number,
     ch: string,
     options: ts.FormatCodeOptions
   ): Promise<ts.TextChange[]>
   findRenameLocations(
     fileName: string,
-    positon: number,
+    position: number,
     findInStrings: boolean,
     findInComments: boolean,
     providePrefixAndSuffixTextForRename: boolean
   ): Promise<readonly ts.RenameLocation[] | undefined>
-  getRenameInfo(fileName: string, positon: number, options: ts.RenameInfoOptions): Promise<ts.RenameInfo>
+  getRenameInfo(fileName: string, position: number, options: ts.RenameInfoOptions): Promise<ts.RenameInfo>
   getEmitOutput(fileName: string): Promise<ts.EmitOutput>
   getCodeFixesAtPosition(
     fileName: string,
@@ -62,6 +62,8 @@ export declare class TypeScriptWorker implements ts.LanguageServiceHost {
     formatOptions: ts.FormatCodeOptions
   ): Promise<ReadonlyArray<ts.CodeFixAction>>
   updateExtraLibs(extraLibs: IExtraLibs): void
+  readFile(path: string, encoding?: string | undefined): string | undefined
+  fileExists(path: string): boolean
 }
 
 export interface IExtraLib {

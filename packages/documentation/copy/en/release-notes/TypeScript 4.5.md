@@ -5,25 +5,6 @@ permalink: /docs/handbook/release-notes/typescript-4-5.html
 oneline: TypeScript 4.5 Release Notes
 ---
 
-## What's New Since the Beta and RC?
-
-Since our [beta release post](https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta) and [RC release post](https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-rc), 4.5 has gone through a few changes.
-
-The biggest change we've made since the beta is that [ECMAScript module support for Node.js 12 has been deferred](#esm-nodejs) to a future release, and is now only available as an experimental flag in nightly releases.
-This was not an easy decision, but our team had a combination of [concerns around ecosystem readiness and general guidance for how/when to use the feature](https://github.com/microsoft/TypeScript/issues/46452).
-We felt it would be better to smooth out the user experience instead of releasing something that would ultimately be too frustrating for most people.
-In the meantime though, you can still use the new support for `--module nodenext` and `--moduleResolution nodenext` as experimental features in [nightly builds of TypeScript](https://www.typescriptlang.org/docs/handbook/nightly-builds.html).
-If you try to use these settings in TypeScript 4.5, you'll receive an error message directing you to use a nightly build instead.
-
-Since our RC post, we've added notes about [new JSDoc features](#jsdoc-const-and-type-arg-defaults).
-While these features actually were included in the RC, they didn't make it into our previous release notes.
-
-From the language editing side, we've introduced more snippet completions since TypeScript 4.5 beta - [specifically, for method implementation and overrides](#subclass-method-snippets).
-
-We've also [addressed a performance regression in `--build` mode](https://github.com/microsoft/TypeScript/pull/46209) due to excessive `realpath` calls for `package.json` files.
-This change was made for TypeScript 4.5, but was also back-ported to TypeScript 4.4.4.
-If this regression blocked you from trying TypeScript 4.4, you should see comparable or better speed in `--build` mode compared to past versions.
-
 ### Supporting `lib` from `node_modules`
 
 To ensure that TypeScript and JavaScript support works well out of the box, TypeScript bundles a series of declaration files (`.d.ts` files).
@@ -362,6 +343,61 @@ const obj = await import("./something.json", {
 The expected type of that second argument is defined by a new type called `ImportCallOptions`, and currently only accepts an `assert` property.
 
 We'd like to thank [Wenlu Wang](https://github.com/Kingwl/) for [implementing this feature](https://github.com/microsoft/TypeScript/pull/40698)!
+
+### Const Assertions and Default Type Arguments in JSDoc
+
+TypeScript 4.5 brings some extra expressivity to our JSDoc support.
+
+One example of this is with `const` assertions. In TypeScript, you can get a more precise and immutable type by writing `as const` after a literal.
+
+```ts
+// type is { prop: string }
+let a = { prop: "hello" };
+
+// type is { readonly prop: "hello" }
+let b = { prop: "hello" } as const;
+```
+
+In JavaScript files, you can now use JSDoc type assertions to achieve the same thing.
+
+```ts
+// type is { prop: string }
+let a = { prop: "hello" };
+
+// type is { readonly prop: "hello" }
+let b = /** @type {const} */ ({ prop: "hello" });
+```
+
+As a reminder, JSDoc type assertions comments start with `/** @type {TheTypeWeWant} */` and are followed by a parenthesized expression:
+
+```js
+/** @type {TheTypeWeWant} */` (someExpression)
+```
+
+TypeScript 4.5 also adds default type arguments to JSDoc, which means the following `type` declaration in TypeScript:
+
+```ts
+type Foo<T extends string | number = number> = { prop: T };
+```
+
+can be rewritten as the following `@typedef` declaration in JavaScript:
+
+```js
+/**
+ * @template {string | number} [T=number]
+ * @typedef Foo
+ * @property prop {T}
+ */
+
+// or
+
+/**
+ * @template {string | number} [T=number]
+ * @typedef {{ prop: T }} Foo
+ */
+ ```
+ 
+For more information, see [the pull request for const assertions](https://github.com/microsoft/TypeScript/pull/45464) along with [the changes for type argument defaults](https://github.com/microsoft/TypeScript/pull/45483).
 
 ### Faster Load Time with `realPathSync.native`
 

@@ -177,7 +177,7 @@ console.log(x! + x!);
 
 function initialize() {
     x = 10;
-
+}
 ```
 
 In our example, we knew that all uses of `x` would be initialized so it makes more sense to use definite assignment assertions than non-null assertions.

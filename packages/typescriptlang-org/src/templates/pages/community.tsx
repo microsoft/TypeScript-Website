@@ -40,6 +40,9 @@ export const Comm: React.FC<Props> = props => {
 
   return (
     <Layout title={i("com_layout_title")} description={i("com_layout_description")} lang={props.pageContext.lang}>
+      <div className="container community centered">
+        <h1>{i("com_headline")}</h1>
+      </div>
       <div className="raised main-content-block container community" style={{ marginTop: "80px" }}>
         <Row>
           <Col className="sidebar">
@@ -59,10 +62,10 @@ export const Comm: React.FC<Props> = props => {
             </div>
 
             <div className="callout">
-              <a aria-labelledby="discord-header" className="icon discord img-circle" href="https://discord.gg/typescript" title="TypeScript Community on Stack Overflow" />
+              <a aria-labelledby="discord-header" className="icon discord img-circle" href="https://discord.gg/typescript" title="TypeScript Community on Discord" />
 
               <div className="text">
-                <a href="https://discord.gg/typescript" id="discord-header" title="TypeScript Community on Stack Overflow" >
+                <a href="https://discord.gg/typescript" id="discord-header" title="TypeScript Community on Discord" >
                   <h3 className="community-callout-headline">{i("com_online_discord_header")}</h3>
                 </a>
                 {i("com_online_discord_desc")}</div>

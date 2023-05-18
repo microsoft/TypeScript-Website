@@ -8,11 +8,12 @@ export const overrideSubNavLinksWithSmoothScroll = () => {
     link.addEventListener("click", event => {
       event.preventDefault()
 
-      let target = document.querySelector(
-        decodeURIComponent(event.target!["hash"])
-      )
+      const hash = (event.target! as HTMLAnchorElement).hash
+      const id = decodeURIComponent(hash).slice(1)
+      const target = document.querySelector(`[id="${id}"]`)
+        
       target!.scrollIntoView({ behavior: "smooth", block: "start" })
-      document.location.hash = event.target!["hash"]
+      document.location.hash = hash
     })
   })
 }

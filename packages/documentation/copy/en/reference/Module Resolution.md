@@ -209,7 +209,7 @@ All module imports with non-relative names are assumed to be relative to the [`b
 Value of _baseUrl_ is determined as either:
 
 - value of _baseUrl_ command line argument (if given path is relative, it is computed based on current directory)
-- value of _baseUrl_ property in 'tsconfig.json' (if given path is relative, it is computed based on the location of 'tsconfig.json')
+- value of _baseUrl_ property in `tsconfig.json` (if given path is relative, it is computed based on the location of `tsconfig.json`)
 
 Note that relative module imports are not impacted by setting the baseUrl, as they are always resolved relative to their importing files.
 
@@ -236,7 +236,7 @@ Here is an example for how to specify the [`paths`](/tsconfig#paths) property fo
 ```
 
 Please notice that [`paths`](/tsconfig#paths) are resolved relative to [`baseUrl`](/tsconfig#baseUrl).
-When setting [`baseUrl`](/tsconfig#baseUrl) to another value than `"."`, i.e. the directory of `tsconfig.json`, the mappings must be changed accordingly.
+When setting [`baseUrl`](/tsconfig#baseUrl) to a value other than `"."`, i.e. the directory of `tsconfig.json`, the mappings must be changed accordingly.
 Say, you set `"baseUrl": "./src"` in the above example, then jquery should be mapped to `"../node_modules/jquery/dist/jquery"`.
 
 Using [`paths`](/tsconfig#paths) also allows for more sophisticated mappings including multiple fall back locations.

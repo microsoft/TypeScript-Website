@@ -1,6 +1,6 @@
 ---
 display: "No Implicit Any"
-oneline: "Enable error reporting for expressions and declarations with an implied `any` type.."
+oneline: "Enable error reporting for expressions and declarations with an implied `any` type."
 ---
 
 In some cases where no type annotations are present, TypeScript will fall back to a type of `any` for a variable when it cannot infer the type.

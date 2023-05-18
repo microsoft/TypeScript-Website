@@ -37,7 +37,7 @@ interface Section {
 }
 
 const LinkSection = (props: Section) =>
-  <Link className="navigation-link" rel="prev" to={props.data.permalink}>
+  <Link className="navigation-link" rel={props.type} to={props.data.permalink}>
     <Row className={"prev-next " + props.type}>
       <div className="arrow">
         <svg width="11" height="14" viewBox="0 0 11 14" fill="none" xmlns="http://www.w3.org/2000/svg">

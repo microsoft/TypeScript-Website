@@ -161,6 +161,16 @@
           "type": "object",
           "description": "Instructs the TypeScript compiler how to compile .ts files.",
           "properties": {
+            "allowArbitraryExtensions": {
+              "description": "Enable importing files with any extension, provided a declaration file is present.",
+              "type": "boolean",
+              "markdownDescription": "Enable importing files with any extension, provided a declaration file is present.\n\nSee more: https://www.typescriptlang.org/tsconfig#allowImportingTsExtensions"
+            },
+            "allowImportingTsExtensions": {
+              "description": "Allow imports to include TypeScript file extensions. Requires '--moduleResolution bundler' and either '--noEmit' or '--emitDeclarationOnly' to be set.",
+              "type": "boolean",
+              "markdownDescription": "Allow imports to include TypeScript file extensions. Requires '--moduleResolution bundler' and either '--noEmit' or '--emitDeclarationOnly' to be set.\n\nSee more: https://www.typescriptlang.org/tsconfig#allowImportingTsExtensions"
+            },
             "charset": {
               "description": "No longer supported. In early versions, manually set the text encoding for reading files.",
               "type": "string",
@@ -172,6 +182,15 @@
               "default": true,
               "markdownDescription": "Enable constraints that allow a TypeScript project to be used with project references.\n\nSee more: https://www.typescriptlang.org/tsconfig#composite"
             },
+            "customConditions": {
+              "description": "Conditions to set in addition to the resolver-specific defaults when resolving imports.",
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              },
+              "markdownDescription": "Conditions to set in addition to the resolver-specific defaults when resolving imports.\n\nSee more: https://www.typescriptlang.org/tsconfig#customConditions"
+            },
             "declaration": {
               "description": "Generate .d.ts files from TypeScript and JavaScript files in your project.",
               "type": "boolean",
@@ -180,7 +199,10 @@
             },
             "declarationDir": {
               "description": "Specify the output directory for generated declaration files.",
-              "type": ["string", "null"],
+              "type": [
+                "string",
+                "null"
+              ],
               "markdownDescription": "Specify the output directory for generated declaration files.\n\nSee more: https://www.typescriptlang.org/tsconfig#declarationDir"
             },
             "diagnostics": {
@@ -240,7 +262,13 @@
             },
             "jsx": {
               "description": "Specify what JSX code is generated.",
-              "enum": ["preserve", "react", "react-jsx", "react-jsxdev", "react-native"]
+              "enum": [
+                "preserve",
+                "react",
+                "react-jsx",
+                "react-jsxdev",
+                "react-native"
+              ]
             },
             "reactNamespace": {
               "description": "Specify the object invoked for `createElement`. This only applies when targeting `react` JSX emit.",
@@ -300,12 +328,25 @@
               ],
               "markdownDescription": "Specify what module code is generated.\n\nSee more: https://www.typescriptlang.org/tsconfig#module"
             },
+            "moduleDetection": {
+              "description": "Control what method is used to detect module-format JS files.",
+              "type": "string",
+              "enum": [
+                "auto",
+                "legacy",
+                "force"
+              ],
+              "default": "auto"
+            },
             "moduleResolution": {
               "description": "Specify how TypeScript looks up a file from a given module specifier.",
               "type": "string",
               "anyOf": [
                 {
-                  "enum": ["Classic", "Node"]
+                  "enum": [
+                    "Classic",
+                    "Node"
+                  ]
                 },
                 {
                   "pattern": "^(([Nn]ode)|([Cc]lassic))$"
@@ -314,12 +355,23 @@
               "default": "classic",
               "markdownDescription": "Specify how TypeScript looks up a file from a given module specifier.\n\nSee more: https://www.typescriptlang.org/tsconfig#moduleResolution"
             },
+            "moduleSuffixes": {
+              "description": "List of file name suffixes to search when resolving a module.",
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            },
             "newLine": {
               "description": "Set the newline character for emitting files.",
               "type": "string",
               "anyOf": [
                 {
-                  "enum": ["crlf", "lf"]
+                  "enum": [
+                    "crlf",
+                    "lf"
+                  ]
                 },
                 {
                   "pattern": "^(CRLF|LF|crlf|lf)$"
@@ -834,7 +886,11 @@
             "importsNotUsedAsValues": {
               "description": "Specify emit/checking behavior for imports that are only used for types.",
               "default": "remove",
-              "enum": ["remove", "preserve", "error"]
+              "enum": [
+                "remove",
+                "preserve",
+                "error"
+              ]
             },
             "alwaysStrict": {
               "description": "Ensure 'use strict' is always emitted.",
@@ -912,6 +968,24 @@
               "type": "boolean",
               "default": false,
               "markdownDescription": "Enable importing .json files\n\nSee more: https://www.typescriptlang.org/tsconfig#resolveJsonModule"
+            },
+            "resolvePackageJsonExports": {
+              "description": "Use the package.json 'exports' field when resolving package imports.",
+              "type": "boolean",
+              "default": false,
+              "markdownDescription": "Use the package.json 'exports' field when resolving package imports.\n\nSee more: https://www.typescriptlang.org/tsconfig#resolvePackageJsonExports"
+            },
+            "resolvePackageJsonImports": {
+              "description": "Use the package.json 'imports' field when resolving imports.",
+              "type": "boolean",
+              "default": false,
+              "markdownDescription": "Use the package.json 'imports' field when resolving imports.\n\nSee more: https://www.typescriptlang.org/tsconfig#resolvePackageJsonImports"
+            },
+            "verbatimModuleSyntax": {
+              "description": "Do not transform or elide any imports or exports not marked as type-only, ensuring they are written in the output file's format based on the 'module' setting.",
+              "type": "boolean",
+              "default": false,
+              "markdownDescription": "Do not transform or elide any imports or exports not marked as type-only, ensuring they are written in the output file's format based on the 'module' setting."
             },
             "assumeChangesOnlyAffectDirectDependencies": {
               "description": "Have recompiles in '--incremental' and '--watch' assume that changes within a file will only affect files directly depending on it. Requires TypeScript version 3.8 or later.",
@@ -1032,7 +1106,9 @@
               "type": "boolean"
             },
             "ignore": {
-              "default": ["(?:^|/)node_modules/"],
+              "default": [
+                "(?:^|/)node_modules/"
+              ],
               "description": "Paths which should not be compiled.\n\nEach string in the array is converted to a regular expression via `new RegExp()` and tested against source paths prior to compilation.\n\nSource paths are normalized to posix-style separators, relative to the directory containing `tsconfig.json` or to cwd if no `tsconfig.json` is loaded.\n\nDefault is to ignore all node_modules subdirectories.",
               "items": {
                 "type": "string"
@@ -1042,7 +1118,10 @@
             "ignoreDiagnostics": {
               "description": "Ignore TypeScript warnings by diagnostic code.",
               "items": {
-                "type": ["string", "number"]
+                "type": [
+                  "string",
+                  "number"
+                ]
               },
               "type": "array"
             },
