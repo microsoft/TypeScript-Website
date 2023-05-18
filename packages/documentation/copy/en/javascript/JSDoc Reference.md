@@ -391,7 +391,7 @@ Finally, you can specify a default for a type parameter:
 /** @template [T=object] */
 class Cache {
     /** @param {T} initial */
-    constructor(T) {
+    constructor(initial) {
     }
 }
 let c = new Cache()
