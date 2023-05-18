@@ -350,10 +350,15 @@ type T1 = ConstructorParameters<FunctionConstructor>;
 //    ^?
 type T2 = ConstructorParameters<RegExpConstructor>;
 //    ^?
-type T3 = ConstructorParameters<any>;
+class C {
+  constructor(a: number, b: string) {}
+}
+type T3 = ConstructorParameters<typeof C>;
+//    ^?
+type T4 = ConstructorParameters<any>;
 //    ^?
 
-type T4 = ConstructorParameters<Function>;
+type T5 = ConstructorParameters<Function>;
 //    ^?
 ```
 
