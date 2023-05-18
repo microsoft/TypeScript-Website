@@ -443,7 +443,8 @@ class Base {
     console.log("Hello, world!");
   }
 }
-declare const d: Base;
+class Derived extends Base {}
+const d = new Derived();
 // ---cut---
 // Alias the derived instance through a base class reference
 const b: Base = d;
