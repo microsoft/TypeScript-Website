@@ -1,9 +1,9 @@
 ---
-display: "moduleDetection"
+display: "Module Detection"
 oneline: "Control what method is used to detect the whether a JS file is a module."
 ---
 
-There are three choices: 
+There are three choices:
 
 - `"auto"` (default) - TypeScript will not only look for import and export statements, but it will also check whether the `"type"` field in a `package.json` is set to `"module"` when running with [`module`](#module): `nodenext` or `node16`, and check whether the current file is a JSX file when running under [`jsx`](#jsx):  `react-jsx`.
 
