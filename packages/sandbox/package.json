@@ -43,7 +43,7 @@
     ]
   },
   "dependencies": {
-    "@typescript/ata": "0.9.3",
+    "@typescript/ata": "0.9.4",
     "@typescript/vfs": "1.4.0"
   },
   "devDependencies": {
