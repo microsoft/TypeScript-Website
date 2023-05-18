@@ -167,7 +167,7 @@ enum FileAccess {
 There is a special subset of constant enum members that aren't calculated: literal enum members.
 A literal enum member is a constant enum member with no initialized value, or with values that are initialized to
 
-- any string literal (e.g. `"foo"`, `"bar`, `"baz"`)
+- any string literal (e.g. `"foo"`, `"bar"`, `"baz"`)
 - any numeric literal (e.g. `1`, `100`)
 - a unary minus applied to any numeric literal (e.g. `-1`, `-100`)
 
