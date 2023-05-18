@@ -21,7 +21,7 @@ fn(42)
 `)
     const compilerOptions = extractTwoSlashCompilerOptions(sandbox.ts)(sandbox.getText())
     expect(compilerOptions).toMatchInlineSnapshot(`
-      Object {
+      {
         "noImplicitAny": false,
         "target": 2,
       }
@@ -42,7 +42,7 @@ fn(42)
 `)
     const compilerOptions = extractTwoSlashCompilerOptions(sandbox.ts)(sandbox.getText())
     expect(compilerOptions).toMatchInlineSnapshot(`
-      Object {
+      {
         "target": 2,
       }
     `)

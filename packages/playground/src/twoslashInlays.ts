@@ -1,4 +1,4 @@
-import { Sandbox } from "typescriptlang-org/static/js/sandbox"
+import { Sandbox } from "@typescript/sandbox"
 
 export const createTwoslashInlayProvider = (sandbox: Sandbox) => {
   const provider: import("monaco-editor").languages.InlayHintsProvider = {

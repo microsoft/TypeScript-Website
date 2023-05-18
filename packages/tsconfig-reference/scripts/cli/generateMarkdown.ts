@@ -15,8 +15,7 @@ import prettier from "prettier";
 import { CompilerOptionJSON } from "./generateJSON.js";
 import { parseMarkdown } from "../tsconfigRules.js";
 
-// @ts-ignore
-import cliOpts from "../../data/cliOpts.json";
+const cliOpts = JSON.parse(readFileSync(join("data", "cliOpts.json"), "utf8"));
 
 const knownTypes: Record<string, string> = {};
 
@@ -32,8 +31,7 @@ languages.forEach((lang) => {
 
   const getPathInLocale = (path: string, optionalExampleContent?: string) => {
     if (existsSync(new URL(path, locale))) return new URL(path, locale);
-    if (existsSync(new URL(path, fallbackLocale)))
-      return new URL(path, fallbackLocale);
+    if (existsSync(new URL(path, fallbackLocale))) return new URL(path, fallbackLocale);
     const en = new URL(path, fallbackLocale);
 
     const localeDesc = lang === "en" ? lang : `either ${lang} or English`;
@@ -60,7 +58,7 @@ languages.forEach((lang) => {
     </tr>
   </thead>
   <tbody>
-`.trim()
+`.trim();
 
     markdownChunks.push(tableHeader);
 
@@ -70,19 +68,15 @@ languages.forEach((lang) => {
       // CLI description
       let description = option.description?.message;
       try {
-        const sectionsPath = getPathInLocale(
-          join("options", option.name + ".md")
-        );
+        const sectionsPath = getPathInLocale(join("options", option.name + ".md"));
         const optionFile = matter.read(fileURLToPath(sectionsPath));
         description = optionFile.data.oneline;
       } catch (error) {
         try {
-          const sectionsPath = getPathInLocale(
-            join("cli", option.name + ".md")
-          );
+          const sectionsPath = getPathInLocale(join("cli", option.name + ".md"));
           const optionFile = matter.read(fileURLToPath(sectionsPath));
           description = optionFile.data.oneline;
-        } catch (error) { }
+        } catch (error) {}
       }
 
       const oddEvenClass = index % 2 === 0 ? "odd" : "even";
@@ -100,9 +94,7 @@ languages.forEach((lang) => {
           // @ts-ignore
           const or = new Intl.ListFormat(lang, { type: "disjunction" });
           optType = or.format(
-            option.allowedValues.map((v) =>
-              v.replace(/^[-.0-9_a-z]+$/i, "`$&`")
-            )
+            option.allowedValues.map((v) => v.replace(/^[-.0-9_a-z]+$/i, "`$&`"))
           );
         } else {
           optType = option.allowedValues

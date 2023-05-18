@@ -1,5 +1,5 @@
 import type { IDisposable } from "monaco-editor"
-import type { Sandbox } from "typescriptlang-org/static/js/sandbox"
+import type { Sandbox } from "@typescript/sandbox"
 import { PlaygroundPlugin, PluginFactory, Playground } from ".."
 import { localize } from "../localizeWithFallback"
 

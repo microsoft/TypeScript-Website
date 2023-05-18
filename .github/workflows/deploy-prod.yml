@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v2
         with:
-          node-version: "13.x"
+          node-version: "16.x"
           cache: yarn
 
       - uses: microsoft/playwright-github-action@v1
@@ -42,22 +42,12 @@ jobs:
           YARN_CHECKSUM_BEHAVIOR: ignore
 
       # Deploy to the prod appservice
-      - name: Deploy + Publish to AppService
+      - name: Commit built site to SITE-PRODUCTION branch
         uses: peaceiris/actions-gh-pages@v1.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PUBLISH_BRANCH: "SITE-PRODUCTION"
           PUBLISH_DIR: ./site
-
-      - name: Build And Deploy
-        id: builddeploy
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROD }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          app_location: "site"
-          skip_app_build: true
 
       # Update the site stats
       - run: node packages/typescriptlang-org/scripts/updateAppInsightsGitHubIssue.js

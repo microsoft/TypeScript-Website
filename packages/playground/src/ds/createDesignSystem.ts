@@ -1,4 +1,4 @@
-import type { Sandbox } from "typescriptlang-org/static/js/sandbox"
+import type { Sandbox } from "@typescript/sandbox"
 import type { DiagnosticRelatedInformation, Node } from "typescript"
 
 export type LocalStorageOption = {

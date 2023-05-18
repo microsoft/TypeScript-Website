@@ -84,6 +84,7 @@ const handbookPages = [
       { file: "reference/Iterators and Generators.md" },
       { file: "reference/JSX.md" },
       { file: "reference/Mixins.md" },
+      { file: "reference/ESM Support for Node.md" },
       { file: "reference/Modules.md" },
       { file: "reference/Module Resolution.md" },
       { file: "reference/Namespaces.md" },
@@ -111,7 +112,6 @@ const handbookPages = [
     summary:
       "Find out how TypeScript has evolved and what's new in the releases.",
     items: [
-      { file: "release-notes/Overview.md" },
       // This is auto-filled
     ],
   },
@@ -170,7 +170,7 @@ const handbookPages = [
       { file: "Nightly Builds.md" },
     ],
   }
-]
+];
 fillReleaseInfo();
 
 const copyPath = join(__dirname, "..", "copy");

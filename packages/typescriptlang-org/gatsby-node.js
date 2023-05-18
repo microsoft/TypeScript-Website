@@ -1,19 +1,19 @@
-const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
-const { createPages } = require("./lib/bootup/createPages")
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+const { createPages } = require("./lib/bootup/createPages");
 const {
   addPathToSite,
   writeAllPathsToFixture,
-} = require("./lib/bootup/pathsOnSiteTracker")
+} = require("./lib/bootup/pathsOnSiteTracker");
 
 /** @type { import("gatsby").GatsbyNode } */
-const config = {}
-exports.config = config
+const config = {};
+exports.config = config;
 
-config.createPages = createPages
+config.createPages = createPages;
 
 // So we don't need to query for all pages
-config.onCreatePage = p => addPathToSite(p.page.path)
-config.onPostBootstrap = () => writeAllPathsToFixture()
+config.onCreatePage = p => addPathToSite(p.page.path);
+config.onPostBootstrap = () => writeAllPathsToFixture();
 
 // To ensure canvas (used by JSDom) doesn't break builds during SSR
 // see: https://github.com/gatsbyjs/gatsby/issues/17661
@@ -31,6 +31,7 @@ config.onCreateWebpackConfig = ({ loaders, actions, plugins, stage }) => {
     externals: {
       pnpapi: "commonjs pnpapi",
       fs: "commonjs fs",
+      module: "commonjs module",
     },
     resolve: {
       fallback: {
@@ -49,7 +50,7 @@ config.onCreateWebpackConfig = ({ loaders, actions, plugins, stage }) => {
       }),
       new NodePolyfillPlugin(),
     ],
-  })
-}
+  });
+};
 
-module.exports = config
+module.exports = config;

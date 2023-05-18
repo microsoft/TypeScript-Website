@@ -149,7 +149,7 @@ In JavaScript, it is a runtime error to use a non-object type on the right side 
 TypeScript 4.2 ensures this can be caught at design-time.
 
 ```ts twoslash
-// @errors: 2361
+// @errors: 2361 2322
 "foo" in 42;
 ```
 

@@ -8,6 +8,32 @@ translatable: true
 
 TypeScript provides several utility types to facilitate common type transformations. These utilities are available globally.
 
+## `Awaited<Type>`
+
+<blockquote class=bg-reading>
+
+Released:
+[4.5](/docs/handbook/release-notes/typescript-4-5.html#the-awaited-type-and-promise-improvements)
+
+</blockquote>
+
+This type is meant to model operations like `await` in `async` functions, or the
+`.then()` method on `Promise`s - specifically, the way that they recursively
+unwrap `Promise`s.
+
+##### Example
+
+```ts twoslash
+type A = Awaited<Promise<string>>;
+//   ^?
+
+type B = Awaited<Promise<Promise<number>>>;
+//   ^?
+
+type C = Awaited<boolean | Promise<number>>;
+//   ^?
+```
+
 ## `Partial<Type>`
 
 <blockquote class=bg-reading>
@@ -324,10 +350,15 @@ type T1 = ConstructorParameters<FunctionConstructor>;
 //    ^?
 type T2 = ConstructorParameters<RegExpConstructor>;
 //    ^?
-type T3 = ConstructorParameters<any>;
+class C {
+  constructor(a: number, b: string) {}
+}
+type T3 = ConstructorParameters<typeof C>;
+//    ^?
+type T4 = ConstructorParameters<any>;
 //    ^?
 
-type T4 = ConstructorParameters<Function>;
+type T5 = ConstructorParameters<Function>;
 //    ^?
 ```
 
@@ -461,7 +492,7 @@ This utility does not return a transformed type. Instead, it serves as a marker 
 ##### Example
 
 ```ts twoslash
-// @noImplicitThis: false
+// @noImplicitThis: true
 type ObjectDescriptor<D, M> = {
   data?: D;
   methods?: M & ThisType<D & M>; // Type of 'this' in methods is D & M
@@ -488,7 +519,7 @@ obj.y = 20;
 obj.moveBy(5, 5);
 ```
 
-In the example above, the `methods` object in the argument to `makeObject` has a contextual type that includes `ThisType<D & M>` and therefore the type of [this](/docs/handbook/functions.html#this) in methods within the `methods` object is `{ x: number, y: number } & { moveBy(dx: number, dy: number): number }`. Notice how the type of the `methods` property simultaneously is an inference target and a source for the `this` type in methods.
+In the example above, the `methods` object in the argument to `makeObject` has a contextual type that includes `ThisType<D & M>` and therefore the type of [this](/docs/handbook/functions.html#this) in methods within the `methods` object is `{ x: number, y: number } & { moveBy(dx: number, dy: number): void }`. Notice how the type of the `methods` property simultaneously is an inference target and a source for the `this` type in methods.
 
 The `ThisType<T>` marker interface is simply an empty interface declared in `lib.d.ts`. Beyond being recognized in the contextual type of an object literal, the interface acts like any empty interface.
 

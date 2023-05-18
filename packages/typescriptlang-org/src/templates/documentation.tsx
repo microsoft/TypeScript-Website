@@ -96,7 +96,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
       <section id="doc-layout" >
         <SidebarToggleButton />
 
-        <div className="page-popup" id="page-helpful-popup" style={{ opacity: 0 }}>
+        <div className="page-popup" id="page-helpful-popup" style={{ opacity: 0, display: "none" }}>
           <p>Was this page helpful?</p>
           <div>
             <button className="first" id="like-button-popup" title="Like this page"><LikeUnfilledSVG /></button>
@@ -138,21 +138,21 @@ const HandbookTemplate: React.FC<Props> = (props) => {
             </>
           }
 
-          {showExperimental && 
-           <div id="deprecated-header">
-                <div id="deprecated-content">
-                  <div id="deprecated-icon">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7.5" stroke="black" /><path d="M8 3V9" stroke="black" /><path d="M8 11L8 13" stroke="black" /></svg>
-                  </div>
-                  <div>
-                    <h3>{i("handb_experimental_title")}</h3>
-                    <p>{i("handb_experimental_subtitle")}</p>
-                  </div>
+          {showExperimental &&
+            <div id="deprecated-header">
+              <div id="deprecated-content">
+                <div id="deprecated-icon">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="7.5" stroke="black" /><path d="M8 3V9" stroke="black" /><path d="M8 11L8 13" stroke="black" /></svg>
                 </div>
+                <div>
+                  <h3>{i("handb_experimental_title")}</h3>
+                  <p>{i("handb_experimental_subtitle")}</p>
+                </div>
+              </div>
             </div>
           }
 
-          <h2>{post.frontmatter.title}</h2>
+          <h1>{post.frontmatter.title}</h1>
           {post.frontmatter.preamble && <div className="preamble" dangerouslySetInnerHTML={{ __html: post.frontmatter.preamble }} />}
           <article>
             <div className="whitespace raised">
@@ -190,7 +190,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
           <Contributors lang={props.pageContext.lang} i={i} path={props.pageContext.repoPath} lastEdited={props.pageContext.modifiedTime} />
         </div>
       </section>
-    <Popup {...showPopup}/>
+      <Popup {...showPopup} />
     </Layout>
   )
 }
