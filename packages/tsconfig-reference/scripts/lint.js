@@ -9,7 +9,6 @@ const tick = chalk.bold.greenBright("✓");
 const cross = chalk.bold.redBright("⤫");
 
 import { readdirSync, readFileSync, statSync } from "fs";
-import { join } from "path";
 
 import remark from "remark";
 import remarkTwoSlash from "remark-shiki-twoslash";
@@ -35,9 +34,7 @@ const go = async () => {
     let options;
 
     try {
-      options = readdirSync(new URL("options", locale)).filter(
-        (f) => !f.startsWith(".")
-      );
+      options = readdirSync(new URL("options", locale)).filter((f) => !f.startsWith("."));
     } catch {
       errorReports.push({
         path: new URL("options", locale),
@@ -46,7 +43,7 @@ const go = async () => {
       continue;
     }
 
-    const runTwoslash = remarkTwoSlash.default({});
+    const runTwoslash = remarkTwoSlash.default({ defaultOptions: { noErrorValidation: true } });
     for (const option of options) {
       if (filterString.length && !option.includes(filterString)) continue;
 
@@ -66,7 +63,7 @@ const go = async () => {
         errorReports.push({ path: optionPath, error });
       }
 
-      const optionFile = read(optionPath);
+      const optionFile = matter.read(optionPath);
       if (!optionFile.data.display) {
         hasError = true;
         // prettier-ignore

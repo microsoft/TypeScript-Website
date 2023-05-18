@@ -213,11 +213,12 @@ export const SiteFooter = (props: Props) => {
   }, [])
 
   const hideDocs = props.suppressDocRecommendations
+  const lang = props.lang
   return (
     <footer id="site-footer" role="contentinfo">
       {props.suppressCustomization ? null : <Customize />}
 
-      {hideDocs ? null  :
+      {hideDocs ? null :
         <section id="popular">
           <h3>Popular Documentation Pages</h3>
           <ul>
@@ -282,6 +283,15 @@ export const SiteFooter = (props: Props) => {
             >
               Privacy
             </a>
+            {lang === "fr" ?
+              <a
+                lang="fr"
+                style={{ paddingLeft: "0.8rem" }}
+                href="https://www.microsoft.com/fr-fr/accessibility/accessibilite/accessibility-statement"
+                title="France Digital Accessibility Requirements"
+              >
+                Accessibilité
+              </a> : null}
           </p>
         </article>
 

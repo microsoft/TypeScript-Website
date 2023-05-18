@@ -4,7 +4,7 @@ oneline: "Enable error reporting for fallthrough cases in switch statements."
 ---
 
 Report errors for fallthrough cases in switch statements.
-Ensures that any non-empty case inside a switch statement includes either `break` or `return`.
+Ensures that any non-empty case inside a switch statement includes either `break`, `return`, or `throw`.
 This means you won't accidentally ship a case fallthrough bug.
 
 ```ts twoslash

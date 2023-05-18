@@ -1,21 +1,19 @@
 ---
-display: "Base Url"
+display: "Base URL"
 oneline: "Specify the base directory to resolve non-relative module names."
 ---
 
-Lets you set a base directory to resolve non-absolute module names.
-
-You can define a root folder where you can do absolute file resolution. E.g.
+Sets a base directory from which to resolve non-relative module names. For example, in the directory structure:
 
 ```
-baseUrl
+project
 ├── ex.ts
 ├── hello
 │   └── world.ts
 └── tsconfig.json
 ```
 
-With `"baseUrl": "./"` inside this project TypeScript will look for files starting at the same folder as the `tsconfig.json`.
+With `"baseUrl": "./"`, TypeScript will look for files starting at the same folder as the `tsconfig.json`:
 
 ```ts
 import { helloWorld } from "hello/world";
@@ -23,5 +21,6 @@ import { helloWorld } from "hello/world";
 console.log(helloWorld);
 ```
 
-If you get tired of imports always looking like `"../"` or `"./"`, or needing
-to change them as you move files, this is a great way to fix that.
+This resolution has higher priority than lookups from `node_modules`.
+
+This feature was designed for use in conjunction with AMD module loaders in the browser, and is not recommended in any other context. As of TypeScript 4.1, `baseUrl` is no longer required to be set when using [`paths`](#paths).

@@ -1,5 +1,5 @@
 ---
-display: "enable"
+display: "Enable"
 oneline: "Disable the type acquisition for JavaScript projects."
 ---
 

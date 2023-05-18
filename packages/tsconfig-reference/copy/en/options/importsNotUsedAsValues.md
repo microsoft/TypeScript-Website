@@ -3,6 +3,8 @@ display: "Imports Not Used As Values"
 oneline: "Specify emit/checking behavior for imports that are only used for types."
 ---
 
+Deprecated in favor of [`verbatimModuleSyntax`](#verbatimModuleSyntax).
+
 This flag controls how `import` works, there are 3 different options:
 
 - `remove`: The default behavior of dropping `import` statements which only reference types.
