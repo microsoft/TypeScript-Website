@@ -729,7 +729,7 @@ For more information, take a look at [the implementing pull request](https://git
 TypeScript can now understand `@link` tags, and will try to resolve declarations that they link to.
 What this means is that you'll be able to hover over names within `@link` tags and get quick information, or use commands like go-to-definition or find-all-references.
 
-For example, you'll be able to go-to-definition on `bar` in `@link bar` in the example below and a TypeScript-supported editor will jump to `bar`'s function declaration.
+For example, you'll be able to go-to-definition on `plantCarrot` in `@link plantCarrot` in the example below and a TypeScript-supported editor will jump to `plantCarrot`'s function declaration.
 
 ```ts
 /**
