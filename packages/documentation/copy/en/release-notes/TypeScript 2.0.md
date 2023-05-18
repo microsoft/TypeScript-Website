@@ -478,7 +478,7 @@ A new flag is also added in TypeScript 2.0 to flag all uses of `this` in functio
 
 Glob support is here!! Glob support has been [one of the most requested features](https://github.com/Microsoft/TypeScript/issues/1927).
 
-Glob-like file patterns are supported two properties [`include`](/tsconfig#include) and `exclude`.
+Glob-like file patterns are supported two properties [`include`](/tsconfig#include) and [`exclude`](/tsconfig#exclude).
 
 ##### Example
 
@@ -505,14 +505,14 @@ The supported glob wildcards are:
 
 If a segment of a glob pattern includes only `*` or `.*`, then only files with supported extensions are included (e.g. `.ts`, `.tsx`, and `.d.ts` by default with `.js` and `.jsx` if [`allowJs`](/tsconfig#allowJs) is set to true).
 
-If the [`files`](/tsconfig#files) and [`include`](/tsconfig#include) are both left unspecified, the compiler defaults to including all TypeScript (`.ts`, `.d.ts` and `.tsx`) files in the containing directory and subdirectories except those excluded using the `exclude` property. JS files (`.js` and `.jsx`) are also included if [`allowJs`](/tsconfig#allowJs) is set to true.
+If the [`files`](/tsconfig#files) and [`include`](/tsconfig#include) are both left unspecified, the compiler defaults to including all TypeScript (`.ts`, `.d.ts` and `.tsx`) files in the containing directory and subdirectories except those excluded using the [`exclude`](/tsconfig#exclude) property. JS files (`.js` and `.jsx`) are also included if [`allowJs`](/tsconfig#allowJs) is set to true.
 
 If the [`files`](/tsconfig#files) or [`include`](/tsconfig#include) properties are specified, the compiler will instead include the union of the files included by those two properties.
-Files in the directory specified using the [`outDir`](/tsconfig#outDir) compiler option are always excluded unless explicitly included via the [`files`](/tsconfig#files) property (even when the `exclude` property is specified).
+Files in the directory specified using the [`outDir`](/tsconfig#outDir) compiler option are always excluded unless explicitly included via the [`files`](/tsconfig#files) property (even when the [`exclude`](/tsconfig#exclude) property is specified).
 
-Files included using [`include`](/tsconfig#include) can be filtered using the `exclude` property.
-However, files included explicitly using the [`files`](/tsconfig#files) property are always included regardless of `exclude`.
-The `exclude` property defaults to excluding the `node_modules`, `bower_components`, and `jspm_packages` directories when not specified.
+Files included using [`include`](/tsconfig#include) can be filtered using the [`exclude`](/tsconfig#exclude) property.
+However, files included explicitly using the [`files`](/tsconfig#files) property are always included regardless of [`exclude`](/tsconfig#exclude).
+The [`exclude`](/tsconfig#exclude) property defaults to excluding the `node_modules`, `bower_components`, and `jspm_packages` directories when not specified.
 
 ## Module resolution enhancements: BaseUrl, Path mapping, rootDirs and tracing
 

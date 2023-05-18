@@ -454,7 +454,7 @@ For example:
 }
 ```
 
-The `exclude` list does not support wilcards. It must simply be a list of files and/or directories.
+The [`exclude`](/tsconfig#exclude) list does not support wilcards. It must simply be a list of files and/or directories.
 
 ## `--init` command line option
 
