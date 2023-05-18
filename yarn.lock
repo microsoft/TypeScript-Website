@@ -6086,7 +6086,29 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript/twoslash@3.2.1, @typescript/twoslash@workspace:packages/ts-twoslasher":
+"@typescript/twoslash@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@typescript/twoslash@npm:2.2.0"
+  dependencies:
+    "@typescript/vfs": 1.3.4
+    debug: ^4.1.1
+    lz-string: ^1.4.4
+  checksum: 02b10ded82d9c50af460460a33bb5f9a9cee3d36213c4ec110b45e46666719c19273f8da9b615e3df83576cf814b793bd95749f3d56d2d4f849f01e2e40ae290
+  languageName: node
+  linkType: hard
+
+"@typescript/twoslash@npm:3.2.1":
+  version: 3.2.1
+  resolution: "@typescript/twoslash@npm:3.2.1"
+  dependencies:
+    "@typescript/vfs": 1.4.0
+    debug: ^4.1.1
+    lz-string: ^1.4.4
+  checksum: 089a17b97f4cf99d3df5991ec5cf597fc5db8d099586c285b0d833cb3b33a697a7ecb0cefbd148f7bb2cf75c6ed033257c4bc3547aa5eba73ddfee3e4abaf0a7
+  languageName: node
+  linkType: hard
+
+"@typescript/twoslash@workspace:packages/ts-twoslasher":
   version: 0.0.0-use.local
   resolution: "@typescript/twoslash@workspace:packages/ts-twoslasher"
   dependencies:
@@ -6107,17 +6129,6 @@ __metadata:
     typescript: "*"
   languageName: unknown
   linkType: soft
-
-"@typescript/twoslash@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@typescript/twoslash@npm:2.2.0"
-  dependencies:
-    "@typescript/vfs": 1.3.4
-    debug: ^4.1.1
-    lz-string: ^1.4.4
-  checksum: 02b10ded82d9c50af460460a33bb5f9a9cee3d36213c4ec110b45e46666719c19273f8da9b615e3df83576cf814b793bd95749f3d56d2d4f849f01e2e40ae290
-  languageName: node
-  linkType: hard
 
 "@typescript/vfs@1.4.0, @typescript/vfs@workspace:packages/typescript-vfs":
   version: 0.0.0-use.local
