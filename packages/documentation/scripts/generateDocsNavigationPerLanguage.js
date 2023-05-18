@@ -112,7 +112,6 @@ const handbookPages = [
     summary:
       "Find out how TypeScript has evolved and what's new in the releases.",
     items: [
-      { file: "release-notes/Overview.md" },
       // This is auto-filled
     ],
   },
@@ -171,7 +170,7 @@ const handbookPages = [
       { file: "Nightly Builds.md" },
     ],
   }
-]
+];
 fillReleaseInfo();
 
 const copyPath = join(__dirname, "..", "copy");

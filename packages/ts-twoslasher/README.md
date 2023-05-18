@@ -811,6 +811,8 @@ export interface TwoSlashOptions {
   customTransformers?: CustomTransformers
   /** An optional copy of the TypeScript import, if missing it will be require'd. */
   tsModule?: TS
+  /** Absolute path to the directory to look up built-in TypeScript .d.ts files. */
+  tsLibDirectory?: string
   /** An optional copy of the lz-string import, if missing it will be require'd. */
   lzstringModule?: LZ
   /**

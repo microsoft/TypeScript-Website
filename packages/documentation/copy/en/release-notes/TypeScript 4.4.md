@@ -293,7 +293,7 @@ That's why TypeScript 4.4 introduces a new flag called [`useUnknownInCatchVariab
 This flag changes the default type of `catch` clause variables from `any` to `unknown`.
 
 ```ts twoslash
-// @errors: 2571
+// @errors: 2571 18046
 declare function executeSomeThirdPartyCode(): void;
 // ---cut---
 try {

@@ -270,7 +270,7 @@ const secondItem = myArray[1];
 Above, we have a `StringArray` interface which has an index signature.
 This index signature states that when a `StringArray` is indexed with a `number`, it will return a `string`.
 
-An index signature property type must be either 'string' or 'number'.
+Only some types are allowed for index signature properties: `string`, `number`, `symbol`, template string patterns, and union types consisting only of these.
 
 <details>
     <summary>It is possible to support both types of indexers...</summary>
@@ -453,7 +453,7 @@ draw({ color: "red", raidus: 42 });
 
 We just looked at two ways to combine types which are similar, but are actually subtly different.
 With interfaces, we could use an `extends` clause to extend from other types, and we were able to do something similar with intersections and name the result with a type alias.
-The principle difference between the two is how conflicts are handled, and that difference is typically one of the main reasons why you'd pick one over the other between an interface and a type alias of an intersection type.
+The principal difference between the two is how conflicts are handled, and that difference is typically one of the main reasons why you'd pick one over the other between an interface and a type alias of an intersection type.
 
 <!--
 For example, two types can declare the same property in an interface.
@@ -904,7 +904,7 @@ function foo(a: number, b: number, ...args: number[]) {
 
 ### `readonly` Tuple Types
 
-One final note about tuple types - tuples types have `readonly` variants, and can be specified by sticking a `readonly` modifier in front of them - just like with array shorthand syntax.
+One final note about tuple types - tuple types have `readonly` variants, and can be specified by sticking a `readonly` modifier in front of them - just like with array shorthand syntax.
 
 ```ts twoslash
 function doSomething(pair: readonly [string, number]) {
