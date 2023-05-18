@@ -213,7 +213,7 @@ function rewireLoggingToElement(
     } else if (typeof arg === "string") {
       textRep = '"' + htmlEscape(arg) + '"'
     } else if (isObj) {
-      const name = arg.constructor && arg.constructor.name
+      const name = arg.constructor && arg.constructor.name || ""
       // No one needs to know an obj is an obj
       const nameWithoutObject = name && name === "Object" ? "" : htmlEscape(name)
       const prefix = nameWithoutObject ? `${nameWithoutObject}: ` : ""
