@@ -55,7 +55,7 @@ Example `tsconfig.json` files:
   }
   ```
 
-- Using the [`include`](/tsconfig#include) and `exclude` properties
+- Using the [`include`](/tsconfig#include) and [`exclude`](/tsconfig#exclude) properties
 
   ```json  tsconfig
   {

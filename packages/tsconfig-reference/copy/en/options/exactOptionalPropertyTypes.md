@@ -1,5 +1,5 @@
 ---
-display: "exactOptionalPropertyTypes"
+display: "Exact Optional Property Types"
 oneline: "Interpret optional property types as written, rather than adding `undefined`."
 ---
 

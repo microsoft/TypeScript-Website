@@ -122,8 +122,6 @@ export const AboveTheFold = () => {
           </div>
           <div className="inline-buttons">
             <a className='flat-button' href="/docs/handbook/intro.html">Web</a>
-            <a className='flat-button' href="/assets/typescript-handbook.epub">Epub</a>
-            <a className='flat-button' href="/assets/typescript-handbook.pdf">PDF</a>
           </div>
         </Col>
       </Row>

@@ -8,7 +8,7 @@ oneline: "Using the keyof operator in type contexts."
 ## The `keyof` type operator
 
 The `keyof` operator takes an object type and produces a string or numeric literal union of its keys.
-The following type P is the same type as "x" | "y":
+The following type `P` is the same type as `type P = "x" | "y"`:
 
 ```ts twoslash
 type Point = { x: number; y: number };

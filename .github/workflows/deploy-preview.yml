@@ -9,11 +9,12 @@ on:
         required: true
         type: string
         description: PR number
-  pull_request:
+  pull_request_target:
     types: [labeled]
 
 jobs:
   deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Download site build
@@ -40,12 +41,12 @@ jobs:
             console.log('Detected PR number from artifact: ', prNumber);
 
             // Check if the PR has the "deploy-preview" label
-            const pr = await github.rest.pulls.get({
+            const pr = (await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: prNumber,
-            });
-            if (!pr.data.labels.some(label => label.name === 'deploy-preview')) {
+            })).data;
+            if (!pr.labels.some(label => label.name === 'deploy-preview')) {
               console.log('PR does not have the "deploy-preview" label');
               return;
             }
@@ -56,41 +57,40 @@ jobs:
                artifact_id: artifact.id,
                archive_format: 'zip',
             });
+
+            const fs = require('fs');
+            fs.writeFileSync('site.zip', Buffer.from(download.data));
             return prNumber;
 
       - name: Download site build
-        if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch'
         uses: actions/github-script@v6
         id: download-from-pr
         with:
           result-encoding: string
           script: |
-            const prNumber = context.payload.event_name === 'pull_request'
+            const prNumber = context.eventName === 'pull_request_target'
               ? context.payload.pull_request.number
               : context.payload.inputs.pr;
 
-            if (context.payload.event_name === 'pull_request' && context.payload.label.name !== 'deploy-preview') {
+            if (context.eventName === 'pull_request_target' && context.payload.label.name !== 'deploy-preview') {
               console.log('Label is not "deploy-preview"');
               return;
             }
 
             let pr;
-            if (context.payload.event_name === 'workflow_dispatch') {
-              pr = await github.rest.pulls.get({
+            if (context.eventName === 'workflow_dispatch') {
+              pr = (await github.rest.pulls.get({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: prNumber,
-              });
-              if (!pr.data.labels.some(label => label.name === 'deploy-preview')) {
-                console.log('PR does not have the "deploy-preview" label');
-                return;
-              }
+              })).data;
             } else {
               pr = context.payload.pull_request;
             }
 
             // https://github.com/orgs/community/discussions/24709
-            const workflowRun = await github.rest.actions.listWorkflowRuns({
+            const workflowRun = (await github.rest.actions.listWorkflowRuns({
               owner: context.repo.owner,
               repo: context.repo.repo,
               workflow_id: 'CI.yml',
@@ -98,7 +98,7 @@ jobs:
               event: 'pull_request',
               status: 'success',
               per_page: 1,
-            })[0];
+            })).data.workflow_runs[0];
 
             if (!workflowRun) {
               console.log('No matching workflow run found from branch ', pr.head.ref);
@@ -124,7 +124,14 @@ jobs:
                artifact_id: artifact.id,
                archive_format: 'zip',
             });
+
+            const fs = require('fs');
+            fs.writeFileSync('site.zip', Buffer.from(download.data));
             return prNumber;
+
+      - name: Unzip site build
+        if: steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result
+        run: unzip site.zip -d site
 
       - run: ls -R
         if: steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result
@@ -144,7 +151,8 @@ jobs:
           deployment_environment: ${{ steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result }}
 
       - name: Comment on PR
-        if: steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result
+        # azure/static-web-apps-deploy seems to comment itself when the event is pull_request_target
+        if: github.event_name != 'pull_request_target' && (steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result)
         uses: actions/github-script@v6
         env:
           PR_NUMBER: ${{ steps.download-from-workflow-run.outputs.result || steps.download-from-pr.outputs.result }}
