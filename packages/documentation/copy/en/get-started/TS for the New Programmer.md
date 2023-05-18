@@ -29,7 +29,7 @@ There are many developers these days that use _only_ JavaScript to program their
 To summarize, we have a language that was designed for quick uses, and then grew to a full-fledged tool to write applications with millions of lines.
 Every language has its own _quirks_ — oddities and surprises, and JavaScript's humble beginning makes it have _many_ of these. Some examples:
 
-- JavaScript's equality operator (`==`) _coerces_ its arguments, leading to unexpected behavior:
+- JavaScript's equality operator (`==`) _coerces_ its operands, leading to unexpected behavior:
 
   ```js
   if ("" == 0) {
