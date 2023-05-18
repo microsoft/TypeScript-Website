@@ -807,7 +807,7 @@ function sum({ a, b, c }: ABC) {
 
 The `void` return type for functions can produce some unusual, but expected behavior.
 
-Contextual typing with a return type of `void` does **not** force functions to **not** return something. Another way to say this is a contextual function type with a `void` return type (`type vf = () => void`), when implemented, can return _any_ other value, but it will be ignored.
+Contextual typing with a return type of `void` does **not** force functions to **not** return something. Another way to say this is a contextual function type with a `void` return type (`type voidFunc = () => void`), when implemented, can return _any_ other value, but it will be ignored.
 
 Thus, the following implementations of the type `() => void` are valid:
 
