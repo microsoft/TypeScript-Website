@@ -327,6 +327,7 @@ function greet(s: string) {
 
 Remember, type parameters are for _relating the types of multiple values_.
 If a type parameter is only used once in the function signature, it's not relating anything.
+This includes the inferred return type; for example, if `Str` was part of the inferred return type of `greet`, it would be relating the argument and return types, so would be used _twice_ despite appearing only once in the written code.
 
 > **Rule**: If a type parameter only appears in one location, strongly reconsider if you actually need it
 
