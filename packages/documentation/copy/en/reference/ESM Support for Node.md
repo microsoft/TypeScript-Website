@@ -11,12 +11,12 @@ This has been a very difficult feature to support, since the foundation of the N
 Interoperating between the two module systems brings large challenges, with many new features to juggle;
 however, support for ESM in Node.js is now implemented in Node.js, and the dust has begun to settle.
 
-That's why TypeScript brings two new `module` and `moduleResolution` settings: `node16` and `nodenext`.
+That's why TypeScript brings two new `module` and `moduleResolution` settings: `Node16` and `NodeNext`.
 
 ```json tsconfig
 {
     "compilerOptions": {
-        "module": "nodenext",
+        "module": "NodeNext",
     }
 }
 ```
