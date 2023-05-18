@@ -30,7 +30,7 @@ fn(42)
 
   it("ignores unknown vars", () => {
     const sandbox = sandboxMock(`
-// @noImplicitAny: false
+// @noImplicny: false
 // @target: ES2015
 
 // This will not throw because of the noImplicitAny
