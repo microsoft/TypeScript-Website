@@ -731,7 +731,7 @@ In TypeScript, the type annotation on these parameters is implicitly `any[]` ins
 
 ### Rest Arguments
 
-Conversely, we can _provide_ a variable number of arguments from an array using the spread syntax.
+Conversely, we can _provide_ a variable number of arguments from an iterable object (for example, an array) using the spread syntax.
 For example, the `push` method of arrays takes any number of arguments:
 
 ```ts twoslash
