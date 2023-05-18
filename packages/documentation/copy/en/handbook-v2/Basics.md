@@ -398,7 +398,7 @@ So running `tsc --target es2015 hello.ts` gives us the following output:
 
 ```js
 function greet(person, date) {
-    console.log(`Hello ${person}, today is ${date.toDateString()}!`);
+  console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
 greet("Maddison", new Date());
 ```
