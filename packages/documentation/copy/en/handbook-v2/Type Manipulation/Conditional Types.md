@@ -244,7 +244,8 @@ type StrArrOrNumArr =
 
 and maps over each member type of the union, to what is effectively:
 
-```ts twotype ToArray<Type> = Type extends any ? Type[] : never;
+```ts twoslash
+type ToArray<Type> = Type extends any ? Type[] : never;
 type StrArrOrNumArr =
   // ---cut---
   ToArray<string> | ToArray<number>;
