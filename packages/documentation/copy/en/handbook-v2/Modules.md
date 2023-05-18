@@ -296,7 +296,7 @@ module.exports = {
 };
 // @filename: index.ts
 // ---cut---
-const maths = require("maths");
+const maths = require("./maths");
 maths.pi;
 //    ^?
 ```
@@ -320,7 +320,7 @@ module.exports = {
 };
 // @filename: index.ts
 // ---cut---
-const { squareTwo } = require("maths");
+const { squareTwo } = require("./maths");
 squareTwo;
 // ^?
 ```
