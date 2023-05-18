@@ -144,7 +144,7 @@ console.log(y.reverseAndSort());
 
 ### Template
 
-Use the [`global-modifying-module.d.ts`](./templates/global-modifying-module.d.ts.md) template.
+Use the [`global-modifying-module.d.ts`](/docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html) template.
 
 ## Consuming Dependencies
 
