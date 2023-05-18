@@ -727,7 +727,7 @@ function multiply(n: number, ...m: number[]) {
 const a = multiply(10, 1, 2, 3, 4);
 ```
 
-In TypeScript, the type annotation on these parameters is implicitly `any[]` instead of `any`, and any type annotation given must be of the form `Array<T>`or `T[]`, or a tuple type (which we'll learn about later).
+In TypeScript, the type annotation on these parameters is implicitly `any[]` instead of `any`, and any type annotation given must be of the form `Array<T>` or `T[]`, or a tuple type (which we'll learn about later).
 
 ### Rest Arguments
 
