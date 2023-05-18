@@ -17,7 +17,7 @@ function greet(person: { name: string; age: number }) {
 }
 ```
 
-or they can be named by using either an interface
+or they can be named by using either an interface:
 
 ```ts twoslash
 interface Person {
@@ -31,7 +31,7 @@ function greet(person: Person) {
 }
 ```
 
-or a type alias.
+or a type alias:
 
 ```ts twoslash
 type Person = {
@@ -46,6 +46,10 @@ function greet(person: Person) {
 ```
 
 In all three examples above, we've written functions that take objects that contain the property `name` (which must be a `string`) and `age` (which must be a `number`).
+
+## Quick Reference
+
+We have cheat-sheets available for both [`type` and `interface`](https://www.typescriptlang.org/cheatsheets), if you want a quick look at the important every-day syntax at a glance.
 
 ## Property Modifiers
 
@@ -84,7 +88,6 @@ In this example, both `xPos` and `yPos` are considered optional.
 We can choose to provide either of them, so every call above to `paintShape` is valid.
 All optionality really says is that if the property _is_ set, it better have a specific type.
 
-
 We can also read from those properties - but when we do under [`strictNullChecks`](/tsconfig#strictNullChecks), TypeScript will tell us they're potentially `undefined`.
 
 ```ts twoslash
@@ -108,7 +111,7 @@ function paintShape(opts: PaintOptions) {
 ```
 
 In JavaScript, even if the property has never been set, we can still access it - it's just going to give us the value `undefined`.
-We can just handle `undefined` specially.
+We can just handle `undefined` specially by checking for it.
 
 ```ts twoslash
 interface Shape {}
@@ -336,6 +339,135 @@ myArray[2] = "Mallory";
 ```
 
 You can't set `myArray[2]` because the index signature is `readonly`.
+
+## Excess Property Checks
+
+Where and how an object is assigned a type can have make a difference in the type system.
+One of the key examples of this is in excess property checking, which validates the object more thoroughly when it is created and assigned to an object type during creation.
+
+```ts twoslash
+// @errors: 2345 2739
+interface SquareConfig {
+  color?: string;
+  width?: number;
+}
+
+function createSquare(config: SquareConfig): { color: string; area: number } {
+  return {
+    color: config.color || "red",
+    area: config.width ? config.width * config.width : 20,
+  };
+}
+
+let mySquare = createSquare({ colour: "red", width: 100 });
+```
+
+Notice the given argument to `createSquare` is spelled _`colour`_ instead of `color`.
+In plain JavaScript, this sort of thing fails silently.
+
+You could argue that this program is correctly typed, since the `width` properties are compatible, there's no `color` property present, and the extra `colour` property is insignificant.
+
+However, TypeScript takes the stance that there's probably a bug in this code.
+Object literals get special treatment and undergo _excess property checking_ when assigning them to other variables, or passing them as arguments.
+If an object literal has any properties that the "target type" doesn't have, you'll get an error:
+
+```ts twoslash
+// @errors: 2345 2739
+interface SquareConfig {
+  color?: string;
+  width?: number;
+}
+
+function createSquare(config: SquareConfig): { color: string; area: number } {
+  return {
+    color: config.color || "red",
+    area: config.width ? config.width * config.width : 20,
+  };
+}
+// ---cut---
+let mySquare = createSquare({ colour: "red", width: 100 });
+```
+
+Getting around these checks is actually really simple.
+The easiest method is to just use a type assertion:
+
+```ts twoslash
+// @errors: 2345 2739
+interface SquareConfig {
+  color?: string;
+  width?: number;
+}
+
+function createSquare(config: SquareConfig): { color: string; area: number } {
+  return {
+    color: config.color || "red",
+    area: config.width ? config.width * config.width : 20,
+  };
+}
+// ---cut---
+let mySquare = createSquare({ width: 100, opacity: 0.5 } as SquareConfig);
+```
+
+However, a better approach might be to add a string index signature if you're sure that the object can have some extra properties that are used in some special way.
+If `SquareConfig` can have `color` and `width` properties with the above types, but could _also_ have any number of other properties, then we could define it like so:
+
+```ts twoslash
+interface SquareConfig {
+  color?: string;
+  width?: number;
+  [propName: string]: any;
+}
+```
+
+We'll discuss index signatures in a bit, but here we're saying a `SquareConfig` can have any number of properties, and as long as they aren't `color` or `width`, their types don't matter.
+
+One final way to get around these checks, which might be a bit surprising, is to assign the object to another variable:
+Since assigning `squareOptions` won't undergo excess property checks, the compiler won't give you an error:
+
+```ts twoslash
+interface SquareConfig {
+  color?: string;
+  width?: number;
+  [propName: string]: any;
+}
+
+function createSquare(config: SquareConfig): { color: string; area: number } {
+  return {
+    color: config.color || "red",
+    area: config.width ? config.width * config.width : 20,
+  };
+}
+// ---cut---
+let squareOptions = { colour: "red", width: 100 };
+let mySquare = createSquare(squareOptions);
+```
+
+The above workaround will work as long as you have a common property between `squareOptions` and `SquareConfig`.
+In this example, it was the property `width`. It will however, fail if the variable does not have any common object property. For example:
+
+```ts twoslash
+// @errors: 2559
+interface SquareConfig {
+  color?: string;
+  width?: number;
+}
+
+function createSquare(config: SquareConfig): { color: string; area: number } {
+  return {
+    color: config.color || "red",
+    area: config.width ? config.width * config.width : 20,
+  };
+}
+// ---cut---
+let squareOptions = { colour: "red" };
+let mySquare = createSquare(squareOptions);
+```
+
+Keep in mind that for simple code like above, you probably shouldn't be trying to "get around" these checks.
+For more complex object literals that have methods and hold state, you might need to keep these techniques in mind, but a majority of excess property errors are actually bugs.
+
+That means if you're running into excess property checking problems for something like option bags, you might need to revise some of your type declarations.
+In this instance, if it's okay to pass an object with both a `color` or `colour` property to `createSquare`, you should fix up the definition of `SquareConfig` to reflect that.
 
 ## Extending Types
 
