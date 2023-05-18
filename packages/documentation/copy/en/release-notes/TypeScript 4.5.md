@@ -344,6 +344,61 @@ The expected type of that second argument is defined by a new type called `Impor
 
 We'd like to thank [Wenlu Wang](https://github.com/Kingwl/) for [implementing this feature](https://github.com/microsoft/TypeScript/pull/40698)!
 
+### Const Assertions and Default Type Arguments in JSDoc
+
+TypeScript 4.5 brings some extra expressivity to our JSDoc support.
+
+One example of this is with `const` assertions. In TypeScript, you can get a more precise and immutable type by writing `as const` after a literal.
+
+```ts
+// type is { prop: string }
+let a = { prop: "hello" };
+
+// type is { readonly prop: "hello" }
+let b = { prop: "hello" } as const;
+```
+
+In JavaScript files, you can now use JSDoc type assertions to achieve the same thing.
+
+```ts
+// type is { prop: string }
+let a = { prop: "hello" };
+
+// type is { readonly prop: "hello" }
+let b = /** @type {const} */ ({ prop: "hello" });
+```
+
+As a reminder, JSDoc type assertions comments start with `/** @type {TheTypeWeWant} */` and are followed by a parenthesized expression:
+
+```js
+/** @type {TheTypeWeWant} */` (someExpression)
+```
+
+TypeScript 4.5 also adds default type arguments to JSDoc, which means the following `type` declaration in TypeScript:
+
+```ts
+type Foo<T extends string | number = number> = { prop: T };
+```
+
+can be rewritten as the following `@typedef` declaration in JavaScript:
+
+```js
+/**
+ * @template {string | number} [T=number]
+ * @typedef Foo
+ * @property prop {T}
+ */
+
+// or
+
+/**
+ * @template {string | number} [T=number]
+ * @typedef {{ prop: T }} Foo
+ */
+ ```
+ 
+For more information, see [the pull request for const assertions](https://github.com/microsoft/TypeScript/pull/45464) along with [the changes for type argument defaults](https://github.com/microsoft/TypeScript/pull/45483).
+
 ### Faster Load Time with `realPathSync.native`
 
 TypeScript now leverages a system-native implementation of the Node.js `realPathSync` function on all operating systems.
