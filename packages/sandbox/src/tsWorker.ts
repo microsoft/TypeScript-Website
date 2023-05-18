@@ -1,4 +1,4 @@
-import ts from 'typescript'
+import ts from "typescript"
 
 export declare class TypeScriptWorker implements ts.LanguageServiceHost {
   private _ctx
@@ -62,6 +62,8 @@ export declare class TypeScriptWorker implements ts.LanguageServiceHost {
     formatOptions: ts.FormatCodeOptions
   ): Promise<ReadonlyArray<ts.CodeFixAction>>
   updateExtraLibs(extraLibs: IExtraLibs): void
+  readFile(path: string, encoding?: string | undefined): string | undefined
+  fileExists(path: string): boolean
 }
 
 export interface IExtraLib {

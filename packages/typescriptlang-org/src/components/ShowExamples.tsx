@@ -108,18 +108,16 @@ export const RenderExamples = (props: Props) => {
   const sections = props.sections.map(sectionID => locale.sections.find(localeSection => sectionID === localeSection.id) || english.sections.find(localeSection => sectionID === localeSection.id))
   return (
     <div className="examples">
-      <ol role="tablist">
+      <div role="tablist">
         {sections.map(section => {
           const startOpen = section.id === props.defaultSection
           const selectedClass = startOpen ? " selected" : ""
           return (
-            <li key={section.name}>
-              <button role="tab" onClick={buttonOnClick(section.id.toLowerCase().replace(".", "-"))} className={"section-name button " + selectedClass} aria-selected={selectedClass.length ? "true" : "false"} >{section.name}</button>
-            </li>
+            <button key={section.name} role="tab" onClick={buttonOnClick(section.id.toLowerCase().replace(".", "-"))} className={"section-name button " + selectedClass} aria-selected={selectedClass.length ? "true" : "false"} >{section.name}</button>
           )
         }
         )}
-      </ol>
+      </div>
 
       {sections.map(section => {
         const sectionDict = sortedSectionsDictionary(locale, section)

@@ -236,7 +236,7 @@ Here is an example for how to specify the [`paths`](/tsconfig#paths) property fo
 ```
 
 Please notice that [`paths`](/tsconfig#paths) are resolved relative to [`baseUrl`](/tsconfig#baseUrl).
-When setting [`baseUrl`](/tsconfig#baseUrl) to another value than `"."`, i.e. the directory of `tsconfig.json`, the mappings must be changed accordingly.
+When setting [`baseUrl`](/tsconfig#baseUrl) to a value other than `"."`, i.e. the directory of `tsconfig.json`, the mappings must be changed accordingly.
 Say, you set `"baseUrl": "./src"` in the above example, then jquery should be mapped to `"../node_modules/jquery/dist/jquery"`.
 
 Using [`paths`](/tsconfig#paths) also allows for more sophisticated mappings including multiple fall back locations.

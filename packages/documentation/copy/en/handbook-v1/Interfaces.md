@@ -465,7 +465,7 @@ interface HeadersResponse {
   date: string,
   "content-length": string
 
-  // Permit any property starting with 'data-'.
+  // Permit any property starting with 'x-'.
   [headerName: `x-${string}`]: string;
 }
 

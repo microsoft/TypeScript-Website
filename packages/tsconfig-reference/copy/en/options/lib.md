@@ -70,4 +70,4 @@ In TypeScript 4.5, lib files can be overriden by npm modules, find out more [in 
 | `ESNext.Intl`             |
 | `ESNext.Symbol`           |
 
-This list may be out of date, you can see the full list in the [TypeScript source code](https://github.com/microsoft/TypeScript/tree/main/lib).
+This list may be out of date, you can see the full list in the [TypeScript source code](https://github.com/microsoft/TypeScript/tree/main/src/lib).

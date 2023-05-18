@@ -6,6 +6,9 @@
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.formatOnSave": true,
+  "[markdown]": {
+    "editor.formatOnSave": false
+  },
   "deno.enable": false,
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#5592d5",

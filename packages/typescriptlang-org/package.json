@@ -25,8 +25,7 @@
     "@types/react-helmet": "^5.0.15",
     "@typescript/playground": "0.1.0",
     "@typescript/sandbox": "0.1.0",
-    "@typescript/twoslash": "3.1.0",
-    "canvas": "^2.6.1",
+    "@typescript/twoslash": "3.2.1",
     "gatsby": "^3.8.1",
     "gatsby-link": "3.10.0",
     "gatsby-plugin-catch-links": "^3.10.0",
@@ -68,8 +67,8 @@
     "@types/react-dom": "^16.9.5",
     "concurrently": "^5.1.0",
     "gatsby-plugin-typescript": "^3.10.0",
-    "jest": "*",
-    "ts-jest": "^26.4.4"
+    "jest": "^29.5.0",
+    "ts-jest": "^29.0.5"
   },
   "jest": {
     "preset": "ts-jest",

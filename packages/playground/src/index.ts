@@ -23,7 +23,7 @@ import { allowConnectingToLocalhost, activePlugins, addCustomPlugin } from "./si
 import { createUtils, PluginUtils } from "./pluginUtils"
 import type React from "react"
 import { settingsPlugin, getPlaygroundPlugins } from "./sidebar/settings"
-import { gistPoweredNavBar, hideNavForHandbook, showNavForHandbook } from "./navigation"
+import { hideNavForHandbook, showNavForHandbook } from "./navigation"
 import { createTwoslashInlayProvider } from "./twoslashInlays"
 
 export { PluginUtils } from "./pluginUtils"
@@ -191,21 +191,21 @@ export const setupPlayground = (
       const lenses = !showFileCodeLens
         ? []
         : [
-            {
-              range: {
-                startLineNumber: 1,
-                startColumn: 1,
-                endLineNumber: 2,
-                endColumn: 1,
-              },
-              id: "implicit-filename-first",
-              command: {
-                id: "noop",
-                title: `// @filename: ${sandbox.filepath}`,
-              },
+          {
+            range: {
+              startLineNumber: 1,
+              startColumn: 1,
+              endLineNumber: 2,
+              endColumn: 1,
             },
-          ]
-      return { lenses, dispose: () => {} }
+            id: "implicit-filename-first",
+            command: {
+              id: "noop",
+              title: `// @filename: ${sandbox.filepath}`,
+            },
+          },
+        ]
+      return { lenses, dispose: () => { } }
     },
   })
 
@@ -268,8 +268,8 @@ export const setupPlayground = (
         ui.flashInfo(i("play_esm_mode"))
       }, 300)
 
-      const nextRes = moduleNumber === 199 ? 99 : 2
-      sandbox.setCompilerSettings({ target: 99, moduleResolution: nextRes })
+      const nextRes = (moduleNumber === 199 || moduleNumber === 100 ? 99 : 2) as import("monaco-editor").languages.typescript.ModuleResolutionKind
+      sandbox.setCompilerSettings({ target: 99, moduleResolution: nextRes, module: moduleNumber })
       sandbox.addLibraryToRuntime(JSON.stringify({ name: "playground", type: "module" }), "/package.json")
     }
   })
@@ -338,7 +338,7 @@ export const setupPlayground = (
         a.parentElement!.classList.toggle("open")
         a.setAttribute("aria-expanded", "true")
 
-        const exampleContainer = a.closest("li")!.getElementsByTagName("ul").item(0)
+        const exampleContainer = a.closest("li")!.getElementsByClassName("dropdown-dialog").item(0) as HTMLElement
         if (!exampleContainer) return
 
         const firstLabel = exampleContainer.querySelector("label") as HTMLElement
@@ -359,7 +359,7 @@ export const setupPlayground = (
           if (lastButton) {
             redirectTabPressTo(lastButton, exampleContainer, ".examples-close")
           } else {
-            const sections = document.querySelectorAll("ul.examples-dropdown .section-content")
+            const sections = document.querySelectorAll(".dropdown-dialog .section-content")
             sections.forEach(s => {
               const buttons = s.querySelectorAll("a.example-link")
               const lastButton = buttons.item(buttons.length - 1) as HTMLElement
@@ -736,11 +736,6 @@ export const setupPlayground = (
     setTimeout(() => {
       document.getElementById("whatisnew-button")?.click()
     }, 100)
-  }
-
-  // Grab the contents of a Gist
-  if (location.hash.startsWith("#gist/")) {
-    gistPoweredNavBar(sandbox, ui, showNav)
   }
 
   // Auto-load into the playground

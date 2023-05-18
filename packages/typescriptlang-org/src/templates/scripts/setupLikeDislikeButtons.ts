@@ -55,7 +55,7 @@ export const setupLikeDislikeButtons = (slug: string, i: any) => {
 
       const popupOpacity = bottomOfWindow ? "1" : "0"
       if (popup.style.opacity != popupOpacity) {
-        // popup.style.display = bottomOfWindow ? "block" : "none"
+        popup.style.display = bottomOfWindow ? "block" : "none"
         popup.style.opacity = popupOpacity
       }
 

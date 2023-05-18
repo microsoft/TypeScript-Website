@@ -35,7 +35,7 @@ const go = async () => {
     host + "/js/playground/ds/createDesignSystem.d.ts",
     join(ds, "createDesignSystem.d.ts"),
     text => {
-      const renameImport = text.replace("typescriptlang-org/static/js/sandbox", "../sandbox")
+      const renameImport = text.replace("@typescript/sandbox", "../sandbox")
       return renameImport
     }
   )
