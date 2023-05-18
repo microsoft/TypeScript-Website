@@ -28,6 +28,7 @@ In TypeScript 4.5, lib files can be overridden by npm modules, find out more [in
 | `ES2019`     | Additional APIs available in ES2019 - `array.flat`, `array.flatMap`, `Object.fromEntries`, `string.trimStart`, `string.trimEnd`, etc.             |
 | `ES2020`     | Additional APIs available in ES2020 - `string.matchAll`, etc.                                                                                     |
 | `ES2021`     | Additional APIs available in ES2021 - `promise.any`, `string.replaceAll` etc.                                                                     |
+| `ES2022`     | Additional APIs available in ES2022 - `array.at`, `RegExp.hasIndices`, etc.                                                                       |
 | `ESNext`     | Additional APIs available in ESNext - This changes as the JavaScript specification evolves                                                        |
 | `DOM`        | [DOM](https://developer.mozilla.org/docs/Glossary/DOM) definitions - `window`, `document`, etc.                                                   |
 | `WebWorker`  | APIs available in [WebWorker](https://developer.mozilla.org/docs/Web/API/Web_Workers_API/Using_web_workers) contexts                              |
