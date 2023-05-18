@@ -23,9 +23,10 @@ export const docCopy = {
   doc_node_npm_oclif_blurb: "Create command line tools your users love",
   doc_node_npm_gluegun_blurb:
     "A delightful toolkit for building TypeScript-powered command-line apps",
+  doc_node_npm_tsup_blurb:
+    "Bundle your TypeScript library with no config, powered by esbuild.",
   doc_frameworks: "Web Frameworks",
-  doc_frameworks_angular_blurb:
-    "The modern web developer's platform",
+  doc_frameworks_angular_blurb: "The modern web developer's platform",
   doc_frameworks_ember_blurb: "A framework for ambitious web developers",
   doc_frameworks_react_blurb:
     "A JavaScript library for building user interfaces",
@@ -45,12 +46,14 @@ export const docCopy = {
   doc_apis_loopback_blurb:
     "A highly extensible Node.js and TypeScript framework for building APIs and microservices",
   doc_apis_fastify_blurb: "A fast and low overhead web framework for Node.js",
-  doc_apis_foal_blurb: "Elegant and complete Node.js framework for building web applications.",
+  doc_apis_foal_blurb:
+    "Elegant and complete Node.js framework for building web applications",
   doc_react: "React Projects",
   doc_react_create_blurb: "Set up a modern web app by running one command",
   doc_react_gatsby_blurb:
     "Helps developers build blazing fast websites and apps",
-  doc_react_next_blurb: "The React Framework",
+  doc_react_next_blurb: "The React Framework for Production",
+  doc_react_redwood_blurb: "The JS App Framework for Startups",
   doc_react_razzle_blurb:
     "Server-rendered universal JavaScript applications with no configuration",
   doc_react_toolchains_title: "Recommended Toolchains",
@@ -68,6 +71,7 @@ export const docCopy = {
   doc_tooling_babel_blurb: "Use next generation JavaScript, today",
   doc_tooling_parcel_blurb:
     "Blazing fast, zero configuration web application bundler",
+  doc_tooling_vite_blurb: "Next Generation Frontend Tooling",
   doc_tooling_webpack_blurb: "Bundle your assets, scripts, images and styles",
   doc_learn: "Familiar With TypeScript already?",
   doc_learn_3_5_release_notes_title: "Release Notes",
@@ -75,4 +79,6 @@ export const docCopy = {
   doc_learn_d_ts_title: "d.ts Guide",
   doc_learn_d_ts_blurb: "Learn how to declare the shape of JS",
   doc_learn_playground_blurb: "Explore and share TypeScript online",
+  doc_cheatsheets_subnav_title: "Cheat Sheets",
+  doc_learn_cheatsheets_blurb: "TypeScript syntax at a glance",
 }

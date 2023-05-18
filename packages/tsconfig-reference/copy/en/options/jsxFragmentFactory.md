@@ -1,5 +1,5 @@
 ---
-display: "jsxFragmentFactory"
+display: "JSX Fragment Factory"
 oneline: "Specify the JSX Fragment reference used for fragments when targeting React JSX emit e.g. 'React.Fragment' or 'Fragment'."
 ---
 

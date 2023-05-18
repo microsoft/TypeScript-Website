@@ -372,7 +372,7 @@ c.y = 10;
 </blockquote>
 
 Classes may `extend` from a base class.
-A derived class has all the properties and methods of its base class, and also define additional members.
+A derived class has all the properties and methods of its base class, and can also define additional members.
 
 ```ts twoslash
 class Animal {
@@ -443,7 +443,8 @@ class Base {
     console.log("Hello, world!");
   }
 }
-declare const d: Base;
+class Derived extends Base {}
+const d = new Derived();
 // ---cut---
 // Alias the derived instance through a base class reference
 const b: Base = d;
@@ -723,7 +724,7 @@ class Derived extends Base {
 }
 ```
 
-Because `private` members aren't visible to derived classes, a derived class can't increase its visibility:
+Because `private` members aren't visible to derived classes, a derived class can't increase their visibility:
 
 ```ts twoslash
 // @errors: 2415

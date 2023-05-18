@@ -237,7 +237,7 @@ function walk(p) {
 }
 ```
 
-## Relaxing declaration emit visiblity rules
+## Relaxing declaration emit visibility rules
 
 With `import` types available, many of the visibility errors reported during declaration file generation can be handled by the compiler without the need to change the input.
 

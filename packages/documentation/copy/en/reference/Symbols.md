@@ -91,6 +91,10 @@ Built-in symbols are used to represent internal language behaviors.
 
 Here is a list of well-known symbols:
 
+## `Symbol.asyncIterator`
+
+A method that returns async iterator for an object, compatible to be used with for await..of loop.
+
 ## `Symbol.hasInstance`
 
 A method that determines if a constructor object recognizes an object as one of the constructor’s instances. Called by the semantics of the instanceof operator.

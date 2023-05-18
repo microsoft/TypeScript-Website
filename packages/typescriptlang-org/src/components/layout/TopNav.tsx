@@ -30,7 +30,7 @@ export const SiteNav = (props: Props) => {
 
     // @ts-ignore - this comes from the script above
     docsearch({
-      appId:"BGCDYOIYZ5",
+      appId: "BGCDYOIYZ5",
       apiKey: '37ee06fa68db6aef451a490df6df7c60',
       indexName: 'typescriptlang',
       inputSelector: '.search input',
@@ -99,8 +99,7 @@ export const SiteNav = (props: Props) => {
 
 
         <div className="right above-small">
-
-          <nav role="navigation" className="search-section">
+          <div className="search-section">
             <OpenInMyLangQuickJump />
             <div className="nav-item">
               <form id="search-form" className="search top-nav" role="search">
@@ -109,7 +108,7 @@ export const SiteNav = (props: Props) => {
                 <input type="submit" style={{ display: "none" }} />
               </form>
             </div>
-          </nav>
+          </div>
         </div>
       </div>
 

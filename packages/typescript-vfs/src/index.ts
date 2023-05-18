@@ -9,7 +9,7 @@ type TS = typeof import("typescript")
 let hasLocalStorage = false
 try {
   hasLocalStorage = typeof localStorage !== `undefined`
-} catch (error) {}
+} catch (error) { }
 
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
@@ -191,13 +191,13 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
  * Sets up a Map with lib contents by grabbing the necessary files from
  * the local copy of typescript via the file system.
  */
-export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions, ts?: typeof import("typescript")) => {
+export const createDefaultMapFromNodeModules = (compilerOptions: CompilerOptions, ts?: typeof import("typescript"), tsLibDirectory?: string) => {
   const tsModule = ts || require("typescript")
   const path = requirePath()
   const fs = requireFS()
 
   const getLib = (name: string) => {
-    const lib = path.dirname(require.resolve("typescript"))
+    const lib = tsLibDirectory || path.dirname(require.resolve("typescript"))
     return fs.readFileSync(path.join(lib, name), "utf8")
   }
 
@@ -403,7 +403,7 @@ export function createSystem(files: Map<string, string>): System {
  * a set of virtual files which are prioritised over the FS versions, then a path to the root of your
  * project (basically the folder your node_modules lives)
  */
-export function createFSBackedSystem(files: Map<string, string>, _projectRoot: string, ts: TS): System {
+export function createFSBackedSystem(files: Map<string, string>, _projectRoot: string, ts: TS, tsLibDirectory?: string): System {
   // We need to make an isolated folder for the tsconfig, but also need to be able to resolve the
   // existing node_modules structures going back through the history
   const root = _projectRoot + "/vfs"
@@ -411,7 +411,7 @@ export function createFSBackedSystem(files: Map<string, string>, _projectRoot: s
 
   // The default System in TypeScript
   const nodeSys = ts.sys
-  const tsLib = path.dirname(require.resolve("typescript"))
+  const tsLib = tsLibDirectory ?? path.dirname(require.resolve("typescript"))
 
   return {
     // @ts-ignore
@@ -541,7 +541,15 @@ export function createVirtualLanguageServiceHost(
     getProjectVersion: () => projectVersion.toString(),
     getCompilationSettings: () => compilerOptions,
     getCustomTransformers: () => customTransformers,
-    getScriptFileNames: () => fileNames,
+    // A couple weeks of 4.8 TypeScript nightlies had a bug where the Program's
+    // list of files was just a reference to the array returned by this host method,
+    // which means mutations by the host that ought to result in a new Program being
+    // created were not detected, since the old list of files and the new list of files
+    // were in fact a reference to the same underlying array. That was fixed in
+    // https://github.com/microsoft/TypeScript/pull/49813, but since the twoslash runner
+    // is used in bisecting for changes, it needs to guard against being busted in that
+    // couple-week period, so we defensively make a slice here.
+    getScriptFileNames: () => fileNames.slice(),
     getScriptSnapshot: fileName => {
       const contents = sys.readFile(fileName)
       if (contents) {
