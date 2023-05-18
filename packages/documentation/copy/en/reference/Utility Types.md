@@ -197,7 +197,7 @@ Released:
 
 </blockquote>
 
-Constructs a type by picking all properties from `Type` and then removing `Keys` (string literal or union of string literals).
+Constructs a type by picking all properties from `Type` and then removing `Keys` (string literal or union of string literals). The opposite of [`Pick`](#picktype-keys).
 
 ##### Example
 
