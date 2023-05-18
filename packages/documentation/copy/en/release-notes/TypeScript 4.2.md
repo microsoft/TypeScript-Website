@@ -611,7 +611,7 @@ You can [see this pull request](https://github.com/microsoft/TypeScript/pull/424
 In TypeScript 4.2, it is now an error for your import paths to contain `.d.ts` in the extension.
 
 ```ts
-// must be changed something like
+// must be changed to something like
 //   - "./foo"
 //   - "./foo.js"
 import { Foo } from "./foo.d.ts";
