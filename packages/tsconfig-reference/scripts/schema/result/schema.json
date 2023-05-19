@@ -256,10 +256,10 @@
               "type": "boolean"
             },
             "tsBuildInfoFile": {
-              "description": "Specify the folder for .tsbuildinfo incremental compilation files.",
+              "description": "The file to store `.tsbuildinfo` incremental build information in.",
               "default": ".tsbuildinfo",
               "type": "string",
-              "markdownDescription": "Specify the folder for .tsbuildinfo incremental compilation files.\n\nSee more: https://www.typescriptlang.org/tsconfig#tsBuildInfoFile"
+              "markdownDescription": "The file to store `.tsbuildinfo` incremental build information in.\n\nSee more: https://www.typescriptlang.org/tsconfig#tsBuildInfoFile"
             },
             "inlineSourceMap": {
               "description": "Include sourcemap files inside the emitted JavaScript.",

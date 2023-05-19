@@ -1398,7 +1398,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Specify the folder for .tsbuildinfo incremental compilation files.</p>
+<p>The file to store <code>.tsbuildinfo</code> incremental build information in.</p>
 </td></tr>
 
 <tr class='even' name='typeRoots'>
