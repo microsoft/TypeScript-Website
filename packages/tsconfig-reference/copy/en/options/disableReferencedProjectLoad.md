@@ -1,5 +1,5 @@
 ---
-display: "disableReferencedProjectLoad"
+display: "Disable Referenced Project Load"
 oneline: "Reduce the number of projects loaded automatically by TypeScript."
 ---
 

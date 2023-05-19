@@ -6,7 +6,7 @@ Above this prose there are two toolbars, one is the site navigation in bright bl
 
 ### TS Config Panel
 
-The TS Config panel contains a focused list of the TypeScript compiler options available inside a `tsconfig.json`. It starts off with some dropdowns for some of the most important compiler options and then it moves down to categories with boolean check boxes. This list has grown organically over time and generally represents the settings which people use most. If you need to set a value which isn't in that list, there is a way to set any option via [twoslash annotations](/play?#handbook-13) which we'll get to later in the handbook.
+The TS Config panel contains a focused list of the TypeScript compiler options available inside a `tsconfig.json`. It starts off with some dropdowns for some of the most important compiler options and then it moves down to categories with boolean check boxes. This list has grown organically over time and generally represents the settings which people use most. If you need to set a value which isn't in that list, there is a way to set any option via [twoslash annotations](/play?#handbook-12) which we'll get to later in the handbook.
 
 Changing a compiler flag will update the URL in your browser (unless you have that disabled in the settings.) The URL structure works by comparing the current compiler options versus the default settings (covered below) and only showing compiler options which differ from the defaults. For example, the default for a Playground is to have `esModuleInterop: true` enabled, thus turning `esModuleInterop` to `false` would append `?esModuleInterop=false` to the URL:
 

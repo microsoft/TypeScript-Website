@@ -5,62 +5,6 @@ type StoryContent =
   | { type: "hr" }
 
 import type { Sandbox } from "@typescript/sandbox"
-import type { UI } from "./createUI"
-
-/**
- * Uses the Playground gist proxy to generate a set of stories ^ which 
- * correspond to files in the 
- */
-export const gistPoweredNavBar = (sandbox: Sandbox, ui: UI, showNav: () => void) => {
-  const gistHash = location.hash.split("#gist/")[1]
-  const [gistID] = gistHash.split("-")
-
-  // @ts-ignore
-  window.appInsights && window.appInsights.trackEvent({ name: "Loaded Gist Playground", properties: { id: gistID } })
-
-  sandbox.editor.updateOptions({ readOnly: true })
-  ui.flashInfo(`Opening Gist ${gistID} as a Docset`, 2000)
-
-  // Disable the handbook button because we can't have two sidenavs
-  const handbookButton = document.getElementById("handbook-button")
-  if (handbookButton) {
-    handbookButton.parentElement!.classList.add("disabled")
-  }
-
-  const playground = document.getElementById("playground-container")!
-  playground.style.opacity = "0.5"
-
-  // const relay = "http://localhost:7071/api/API"
-  const relay = "https://typescriptplaygroundgistproxyapi.azurewebsites.net/api/API"
-  fetch(`${relay}?gistID=${gistID}`)
-    .then(async res => {
-      // Make editor work again
-      playground.style.opacity = "1"
-      sandbox.editor.updateOptions({ readOnly: false })
-
-      const response = await res.json()
-      if ("error" in response) {
-        return ui.flashInfo(`Error with getting your gist: ${response.display}.`, 3000)
-      }
-
-      // If the API response is a single code file, just throw that in
-      if (response.type === "code") {
-        sandbox.setText(response.code)
-        sandbox.setCompilerSettings(response.params)
-
-        // If it's multi-file, then there's work to do
-      } else if (response.type === "story") {
-        showNav()
-        const prefix = `#gist/${gistID}`
-        updateNavWithStoryContent(response.title, response.files, prefix, sandbox)
-      }
-    })
-    .catch(() => {
-      ui.flashInfo("Could not reach the gist to playground API, are you (or it) offline?")
-      playground.style.opacity = "1"
-      sandbox.editor.updateOptions({ readOnly: false })
-    })
-}
 
 /** Use the handbook TOC which is injected into the globals to create a sidebar  */
 export const showNavForHandbook = (sandbox: Sandbox, escapeFunction: () => void) => {
@@ -277,7 +221,7 @@ const setStory = (html: string | HTMLElement, sandbox: Sandbox) => {
     }
 
     // overwrite gist/handbook links
-    else if (a.hash.includes("#gist/") || a.hash.includes("#handbook")) {
+    else if (a.hash.includes("#handbook")) {
       a.onclick = e => {
         const index = Number(a.hash.split("-")[1])
         const nav = document.getElementById("navigation-container")

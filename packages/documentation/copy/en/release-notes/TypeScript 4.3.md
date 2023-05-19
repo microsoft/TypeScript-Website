@@ -613,7 +613,7 @@ async function bar(): Promise<string> {
 
 ## `static` Index Signatures
 
-Index signatures allow us set more properties on a value than a type explicitly declares.
+Index signatures allow us to set more properties on a value than a type explicitly declares.
 
 ```ts
 class Foo {
@@ -626,7 +626,7 @@ class Foo {
 
 let instance = new Foo();
 
-// Valid assigment
+// Valid assignment
 instance["whatever"] = 42;
 
 // Has type 'string | number | undefined'.
@@ -729,7 +729,7 @@ For more information, take a look at [the implementing pull request](https://git
 TypeScript can now understand `@link` tags, and will try to resolve declarations that they link to.
 What this means is that you'll be able to hover over names within `@link` tags and get quick information, or use commands like go-to-definition or find-all-references.
 
-For example, you'll be able to go-to-definition on `bar` in `@link bar` in the example below and a TypeScript-supported editor will jump to `bar`'s function declaration.
+For example, you'll be able to go-to-definition on `plantCarrot` in `@link plantCarrot` in the example below and a TypeScript-supported editor will jump to `plantCarrot`'s function declaration.
 
 ```ts
 /**
@@ -845,7 +845,7 @@ enum E {
 }
 
 function doSomething(x: E) {
-  // Use a type asertion on 'x' because we know we're not actually just dealing with values from 'E'.
+  // Use a type assertion on 'x' because we know we're not actually just dealing with values from 'E'.
   if ((x as number) === -1) {
     // ...
   }

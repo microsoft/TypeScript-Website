@@ -76,7 +76,7 @@ export declare class TypeScriptWorker implements ts.LanguageServiceHost {
     ): Promise<ts.TextChange[]>
     getFormattingEditsAfterKeystroke(
         fileName: string,
-        postion: number,
+        position: number,
         ch: string,
         options: ts.FormatCodeOptions
     ): Promise<ts.TextChange[]>

@@ -11,12 +11,12 @@ This has been a very difficult feature to support, since the foundation of the N
 Interoperating between the two module systems brings large challenges, with many new features to juggle;
 however, support for ESM in Node.js is now implemented in Node.js, and the dust has begun to settle.
 
-That's why TypeScript brings two new `module` and `moduleResolution` settings: `node16` and `nodenext`.
+That's why TypeScript brings two new `module` and `moduleResolution` settings: `Node16` and `NodeNext`.
 
 ```json tsconfig
 {
     "compilerOptions": {
-        "module": "nodenext",
+        "module": "NodeNext",
     }
 }
 ```
@@ -150,12 +150,12 @@ import foo = require("foo");
 ```
 
 In a CommonJS module, this just boils down to a `require()` call, and in an ES module, this imports [`createRequire`](https://nodejs.org/api/module.html#module_module_createrequire_filename) to achieve the same thing.
-This will make code less portable on runtimes like the browser (which don't support `require()`), but will often be useful for interoperability.
+This will make code less portable on runtimes like browsers (which don't support `require()`), but will often be useful for interoperability.
 In turn, you can write the above example using this syntax as follows:
 
 ```ts twoslash
 // @module: nodenext
-// @filename: helper.cts
+// @filename: foo.cts
 export function helper() {
     console.log("hello world!");
 }
@@ -176,7 +176,7 @@ You can [read more about ESM/CommonJS interop in Node.js here](https://nodejs.or
 Node.js supports [a new field for defining entry points in `package.json` called `"exports"`](https://nodejs.org/api/packages.html#packages_exports).
 This field is a more powerful alternative to defining `"main"` in `package.json`, and can control what parts of your package are exposed to consumers.
 
-Here's an `package.json` that supports separate entry-points for CommonJS and ESM:
+Here's a `package.json` that supports separate entry-points for CommonJS and ESM:
 
 ```json5
 // package.json
@@ -198,7 +198,7 @@ Here's an `package.json` that supports separate entry-points for CommonJS and ES
 }
 ```
 
-There's a lot to this feature, [which you can read more about on the Node.js documentation](https://nodejs.org/api/packages.html).
+There's a lot to this feature, [which you can read more about in the Node.js documentation](https://nodejs.org/api/packages.html).
 Here we'll try to focus on how TypeScript supports it.
 
 With TypeScript's original Node support, it would look for a `"main"` field, and then look for declaration files that corresponded to that entry.
@@ -207,7 +207,7 @@ A package author could override this by specifying a separate field called `"typ
 
 The new support works similarly with [import conditions](https://nodejs.org/api/packages.html).
 By default, TypeScript overlays the same rules with import conditions - if you write an `import` from an ES module, it will look up the `import` field, and from a CommonJS module, it will look at the `require` field.
-If it finds them, it will look for a colocated declaration file.
+If it finds them, it will look for a co-located declaration file.
 If you need to point to a different location for your type declarations, you can add a `"types"` import condition.
 
 ```json5
@@ -225,7 +225,7 @@ If you need to point to a different location for your type declarations, you can
                 // Where Node.js will look.
                 "default": "./esm/index.js"
             },
-            // Entry-point for `require("my-package") in CJS
+            // Entry-point for `require("my-package")` in CJS
             "require": {
                 // Where TypeScript will look.
                 "types": "./types/commonjs/index.d.cts",

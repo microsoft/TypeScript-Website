@@ -364,7 +364,7 @@ You can read up more on abstract construct signatures [on its pull request](http
 ## Understanding Your Project Structure With `--explainFiles`
 
 A surprisingly common scenario for TypeScript users is to ask "why is TypeScript including this file?".
-Inferring the files of your program turns out to be a complicated process, and so there are lots of reasons why a specific combination of `lib.d.ts` got used, why certain files in `node_modules` are getting included, and why certain files are being included even though we thought specifying `exclude` would keep them out.
+Inferring the files of your program turns out to be a complicated process, and so there are lots of reasons why a specific combination of `lib.d.ts` got used, why certain files in `node_modules` are getting included, and why certain files are being included even though we thought specifying [`exclude`](/tsconfig#exclude) would keep them out.
 
 That's why TypeScript now provides an [`explainFiles`](/tsconfig#explainFiles) flag.
 
@@ -611,7 +611,7 @@ You can [see this pull request](https://github.com/microsoft/TypeScript/pull/424
 In TypeScript 4.2, it is now an error for your import paths to contain `.d.ts` in the extension.
 
 ```ts
-// must be changed something like
+// must be changed to something like
 //   - "./foo"
 //   - "./foo.js"
 import { Foo } from "./foo.d.ts";

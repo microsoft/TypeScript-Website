@@ -62,7 +62,7 @@ This helps avoid the confusing trap of writing code you think is executing, but 
 
 ```ts twoslash
 // @errors: 1005
-declare const msgbox: () => boolean;
+declare const msgbox: (prompt: string) => boolean;
 // type msgbox = any;
 // ---cut---
 // Meant to use = ReturnType<typeof msgbox>
