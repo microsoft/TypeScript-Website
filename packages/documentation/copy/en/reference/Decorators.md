@@ -475,7 +475,7 @@ function validate(target: any, propertyName: string, descriptor: TypedPropertyDe
 ```
 
 The `@required` decorator adds a metadata entry that marks the parameter as required.
-The `@validate` decorator then wraps the existing `greet` method in a function that validates the arguments before invoking the original method.
+The `@validate` decorator then wraps the existing `print` method in a function that validates the arguments before invoking the original method.
 
 > NOTE&emsp; This example requires the `reflect-metadata` library.
 > See [Metadata](#metadata) for more information about the `reflect-metadata` library.

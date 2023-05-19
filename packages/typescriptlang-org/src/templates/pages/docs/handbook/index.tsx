@@ -49,8 +49,6 @@ const HandbookIndex: React.FC<Props> = (props) => {
                     </li>
                   })}
                 </ul>
-
-                {showIntro && <p>We also have an <a href='/assets/typescript-handbook.epub'>epub</a> and <a href='/assets/typescript-handbook.pdf'>pdf</a> version of the Handbook.</p>}
               </div>
             )
           })}

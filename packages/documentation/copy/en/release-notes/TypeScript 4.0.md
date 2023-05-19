@@ -293,7 +293,7 @@ In cases where not all paths of a constructor assign to an instance member, the 
 
 <!--prettier-ignore -->
 ```ts twoslash
-// @errors: 2532
+// @errors: 2532 18048
 class Square {
   sideLength;
 // ^?
@@ -475,7 +475,7 @@ That's why TypeScript 4.0 now lets you specify the type of `catch` clause variab
 
 <!--prettier-ignore -->
 ```ts twoslash
-// @errors: 2571
+// @errors: 2571 18046
 try {
   // ...
 } catch (e: unknown) {

@@ -187,8 +187,8 @@ invokeLater([1, 2], (x?, y?) => console.log(x + ", " + y));
 
 ## Functions with overloads
 
-When a function has overloads, each overload in the source type must be matched by a compatible signature on the target type.
-This ensures that the target function can be called in all the same situations as the source function.
+When a function has overloads, each overload in the target type must be matched by a compatible signature on the source type.
+This ensures that the source function can be called in all the same cases as the target function.
 
 ## Enums
 
@@ -295,7 +295,7 @@ These differ only in that assignment extends subtype compatibility with rules to
 Different places in the language use one of the two compatibility mechanisms, depending on the situation.
 For practical purposes, type compatibility is dictated by assignment compatibility, even in the cases of the `implements` and `extends` clauses.
 
-## `Any`, `unknown`, `object`, `void`, `undefined`, `null`, and `never` assignability
+## `any`, `unknown`, `object`, `void`, `undefined`, `null`, and `never` assignability
 
 The following table summarizes assignability between some abstract types.
 Rows indicate what each is assignable to, columns indicate what is assignable to them.

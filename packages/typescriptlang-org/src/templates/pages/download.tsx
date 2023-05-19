@@ -47,7 +47,7 @@ const Index: React.FC<Props> = (props) => {
         <div style={{ padding: "1rem", flex: 1, minWidth: "240px" }}>
           <h3>with Visual Studio</h3>
           <p>For most project types, you can get TypeScript as a package in Nuget for your MSBuild projects, for example an ASP.NET Core app.</p>
-          <p>When using Nuget, you can <a href="https://docs.microsoft.com/visualstudio/javascript/tutorial-aspnet-with-typescript">install TypeScript through Visual Studio</a> using:</p>
+          <p>When using Nuget, you can <a href="https://learn.microsoft.com/visualstudio/javascript/tutorial-aspnet-with-typescript">install TypeScript through Visual Studio</a> using:</p>
           <ul>
             <li>
               The Manage NuGet Packages window (which you can get to by right-clicking on a project node)
@@ -56,7 +56,7 @@ const Index: React.FC<Props> = (props) => {
               The Nuget Package Manager Console (found in Tools &gt; NuGet Package Manager &gt; Package Manager Console) and then running:<br /><code style={{ fontSize: "14px" }}>Install-Package Microsoft.TypeScript.MSBuild</code>
             </li>
           </ul>
-          <p>For project types which don't support Nuget, you can use the <a href={releaseInfo.vs.stable.vs2019_download}> TypeScript Visual Studio extension</a>. You can <a href="https://docs.microsoft.com/visualstudio/ide/finding-and-using-visual-studio-extensions?view=vs-2019">install the extension</a> using <code>Extensions &gt; Manage Extensions</code> in Visual Studio.</p>
+          <p>For project types which don't support Nuget, you can use the <a href={releaseInfo.vs.stable.vs2019_download}> TypeScript Visual Studio extension</a>. You can <a href="https://learn.microsoft.com/visualstudio/ide/finding-and-using-visual-studio-extensions">install the extension</a> using <code>Extensions &gt; Manage Extensions</code> in Visual Studio.</p>
         </div>
       </section>
     </div >

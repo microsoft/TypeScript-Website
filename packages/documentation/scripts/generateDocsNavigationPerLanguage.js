@@ -112,7 +112,6 @@ const handbookPages = [
     summary:
       "Find out how TypeScript has evolved and what's new in the releases.",
     items: [
-      { file: "release-notes/Overview.md" },
       // This is auto-filled
     ],
   },
@@ -171,7 +170,7 @@ const handbookPages = [
       { file: "Nightly Builds.md" },
     ],
   }
-]
+];
 fillReleaseInfo();
 
 const copyPath = join(__dirname, "..", "copy");
@@ -237,7 +236,7 @@ for (const lang of langs) {
 
     /** @param {{ items?: HandbookNavSubItem[] }} itemable */
     function addItems(itemable) {
-      // Lots of 2nd level navs dont have subnav, bail for them
+      // Lots of 2nd level navs don't have subnav, bail for them
       if ("items" in itemable === false) return;
 
       codeForTheHandbook.push("items: [");

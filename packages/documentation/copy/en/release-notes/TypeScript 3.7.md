@@ -736,7 +736,7 @@ function doAdminThing(user: User) {
 }
 ```
 
-Here, we forgot to call `isAdministrator`, and the code incorrectly allows non-adminstrator users to edit the configuration!
+Here, we forgot to call `isAdministrator`, and the code incorrectly allows non-administrator users to edit the configuration!
 
 In TypeScript 3.7, this is identified as a likely error:
 

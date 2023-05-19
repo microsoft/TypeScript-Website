@@ -37,12 +37,12 @@ type OptionsFlags<Type> = {
   [Property in keyof Type]: boolean;
 };
 // ---cut---
-type FeatureFlags = {
+type Features = {
   darkMode: () => void;
   newUserProfile: () => void;
 };
 
-type FeatureOptions = OptionsFlags<FeatureFlags>;
+type FeatureOptions = OptionsFlags<Features>;
 //   ^?
 ```
 
