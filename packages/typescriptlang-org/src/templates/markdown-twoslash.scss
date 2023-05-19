@@ -95,7 +95,7 @@ pre .code-container {
 }
 
 /* The try button */
-pre .code-container > a {
+pre .code-container>a {
   position: absolute;
   right: 8px;
   bottom: 8px;
@@ -111,7 +111,7 @@ pre .code-container > a {
 
 /* Respect no animations */
 @media (prefers-reduced-motion: reduce) {
-  pre .code-container > a {
+  pre .code-container>a {
     transition: none;
   }
 }
@@ -212,7 +212,7 @@ pre .inline-completions ul.dropdown {
   display: inline-block;
   position: absolute;
   width: 240px;
-  background-color: #e7e7e7;
+  background-color: #E7E7E7;
   color: #333;
   padding-top: 4px;
   font-family: var(--code-font);
