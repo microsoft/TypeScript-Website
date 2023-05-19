@@ -8,8 +8,9 @@ disable_toc: true
 
 ## Using the CLI
 
-Running `tsc` locally will compile the closest project defined by a `tsconfig.json`, you can compile a set of TypeScript
-files by passing in a glob of files you want.
+Running `tsc` locally will compile the closest project defined by a `tsconfig.json`, or you can compile a set of TypeScript
+files by passing in a glob of files you want. When input files are specified on the command line, `tsconfig.json` files are
+ignored.
 
 ```sh
 # Run a compile based on a backwards look through the fs for a tsconfig.json
