@@ -1,5 +1,5 @@
 ---
-display: "excludeDirectories"
+display: "Exclude Directories"
 oneline: "Remove a list of directories from the watch process."
 ---
 

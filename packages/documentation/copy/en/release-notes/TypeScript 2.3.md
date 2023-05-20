@@ -24,7 +24,7 @@ interface Iterator<T> {
 This kind of iterator is useful for iterating over synchronously available values, such as the elements of an Array or the keys of a Map.
 An object that supports iteration is said to be "iterable" if it has a `Symbol.iterator` method that returns an `Iterator` object.
 
-The Iterator protocol also defines the target of some of the ES2015 features like `for..of` and spread operator and the array rest in destructuring assignmnets.
+The Iterator protocol also defines the target of some of the ES2015 features like `for..of` and spread operator and the array rest in destructuring assignments.
 
 ##### Generators
 

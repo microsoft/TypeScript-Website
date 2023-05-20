@@ -1,5 +1,5 @@
 ---
-display: "noUncheckedIndexedAccess"
+display: "No Unchecked Indexed Access"
 oneline: "Add `undefined` to a type when accessed using an index."
 ---
 

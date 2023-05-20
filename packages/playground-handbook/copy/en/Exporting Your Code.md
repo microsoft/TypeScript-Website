@@ -8,7 +8,7 @@ We have ways of generating useful markdown from your playground, either for repo
 
 ### Exporting To Similar Tools
 
-You can send the current playground code to another Playground-like system, for example the [TypeScript AST Viewer](https://ts-ast-viewer.com) or the [Bug Workbench](/play#handbook-16).
+You can send the current playground code to another Playground-like system, for example the [TypeScript AST Viewer](https://ts-ast-viewer.com).
 
 ### Exporting For More Features
 

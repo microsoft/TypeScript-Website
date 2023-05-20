@@ -7,7 +7,7 @@ oneline: "An overview of the ways in which you can create more types from existi
 
 TypeScript's type system is very powerful because it allows expressing types _in terms of other types_.
 
-The simplest form of this idea is generics, we actually have a wide variety of _type operators_ available to use.
+The simplest form of this idea is generics. Additionally, we have a wide variety of _type operators_ available to use.
 It's also possible to express types in terms of _values_ that we already have.
 
 By combining various type operators, we can express complex operations and values in a succinct, maintainable way.

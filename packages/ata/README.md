@@ -53,7 +53,7 @@ The library will
 - Recurse though their dependencies too.
 - Once those are done, trigger `finished` with a Map of the `vfs` if you prefer to set them in bulk.
 
-### Nicities
+### Niceties
 
 Users can give a specific npm version or tag to work from instead of the default "latest":
 

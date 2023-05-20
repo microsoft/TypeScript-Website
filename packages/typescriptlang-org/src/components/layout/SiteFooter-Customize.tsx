@@ -31,7 +31,7 @@ export const Customize = () => {
   const customFontOverride = hasLocalStorage && localStorage.getItem("force-font") || "cascadia"
   const [fontValue, setFont] = useState(customFontOverride)
 
-  // Localstorage: force-dark, force-light, undefined 
+  // LocalStorage: force-dark, force-light, undefined 
   // ->
   // CSS Body class: theme-dark, theme-light, theme-dark | theme-light 
 
@@ -52,7 +52,7 @@ export const Customize = () => {
   }
 
 
-  // Localstorage: undefined, cascadia, cascadia-ligatures, consolas, ...
+  // LocalStorage: undefined, cascadia, cascadia-ligatures, consolas, ...
   // ->
   // CSS Body class: font-cascadia, font-cascadia, font-cascadia-ligatures | font-consolas, ...
 

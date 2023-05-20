@@ -1,13 +1,11 @@
 @import "../style/globals.scss";
 
 #beta {
-  background: repeating-linear-gradient(
-    45deg,
-    #9b9a4e,
-    #9b9a4e 10px,
-    #6e6a33 10px,
-    #6e6a33 20px
-  );
+  background: repeating-linear-gradient(45deg,
+      #9b9a4e,
+      #9b9a4e 10px,
+      #6e6a33 10px,
+      #6e6a33 20px);
   background-color: "#c63131";
   text-align: center;
   color: white;
@@ -32,7 +30,7 @@
   }
 
   // Page title
-  & > h2 {
+  &>h1 {
     font-size: 3.5rem;
     line-height: 3.5rem;
     font-weight: 400;
@@ -76,9 +74,11 @@
     nav {
       position: sticky;
       top: 30px;
+
       &.deprecated {
         top: 7rem;
       }
+
       margin-bottom: 1rem;
     }
 
@@ -120,6 +120,7 @@
     }
 
     .like-dislike-subnav {
+
       #like-button,
       #dislike-button {
         cursor: pointer;
@@ -130,6 +131,7 @@
   .preamble a {
     color: var(--text-color);
   }
+
   .justify-between {
     justify-content: space-between;
   }
@@ -269,6 +271,7 @@
       margin: 0 0 0 0;
       padding: 1rem;
       flex-direction: column;
+
       h3 {
         font-size: 0.8rem;
       }
@@ -276,6 +279,7 @@
       #deprecated-icon {
         margin-right: 1rem;
       }
+
       #deprecated-action {
         margin-top: 1rem;
       }
@@ -325,24 +329,30 @@
 
     tr {
       width: 100%;
+
       p {
         margin: 0;
         padding: 0;
       }
+
       code {
         word-wrap: normal;
       }
     }
+
     // Override the default stripes
     tr.odd {
       background-color: var(--background-color) !important;
     }
+
     tr.even {
       background-color: var(--background-minor-highlight-color) !important;
     }
+
     ul {
       margin: 0;
       padding: 0;
+
       li {
         list-style: none;
         margin: 0;

@@ -52,5 +52,5 @@ module.exports = allFunctions;
 module.exports.default = allFunctions;
 ```
 
-This flag does not affect the JavaScript emitted by TypeScript, it only for the type checking.
+This flag does not affect the JavaScript emitted by TypeScript, it's only for the type checking.
 This option brings the behavior of TypeScript in-line with Babel, where extra code is emitted to make using a default export of a module more ergonomic.

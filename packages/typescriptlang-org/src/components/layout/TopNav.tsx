@@ -8,6 +8,7 @@ import { createIntlLink } from "../IntlLink";
 
 export type Props = {
   lang: string
+  skipToAnchor?: string
 }
 
 import { navCopy } from "../../copy/en/nav"
@@ -30,7 +31,7 @@ export const SiteNav = (props: Props) => {
 
     // @ts-ignore - this comes from the script above
     docsearch({
-      appId:"BGCDYOIYZ5",
+      appId: "BGCDYOIYZ5",
       apiKey: '37ee06fa68db6aef451a490df6df7c60',
       indexName: 'typescriptlang',
       inputSelector: '.search input',
@@ -74,7 +75,7 @@ export const SiteNav = (props: Props) => {
 
   return (
     <header dir="ltr">
-      <a className="skip-to-main" href="#site-content" tabIndex={0}>{i("skip_to_content")}</a>
+      <a className="skip-to-main" href={props.skipToAnchor || '#site-content'} tabIndex={0}>{i("skip_to_content")}</a>
 
       <div id="top-menu" className="up">
         <div className="left below-small">
@@ -99,8 +100,7 @@ export const SiteNav = (props: Props) => {
 
 
         <div className="right above-small">
-
-          <nav role="navigation" className="search-section">
+          <div className="search-section">
             <OpenInMyLangQuickJump />
             <div className="nav-item">
               <form id="search-form" className="search top-nav" role="search">
@@ -109,7 +109,7 @@ export const SiteNav = (props: Props) => {
                 <input type="submit" style={{ display: "none" }} />
               </form>
             </div>
-          </nav>
+          </div>
         </div>
       </div>
 
