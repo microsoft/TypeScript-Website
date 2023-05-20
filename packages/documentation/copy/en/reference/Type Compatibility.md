@@ -71,7 +71,7 @@ Note that `dog` has an extra `owner` property, but this does not create an error
 Only members of the target type (`Pet` in this case) are considered when checking for compatibility.
 
 Be aware, however, that [object literals](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes-func.html#other-important-typescript-types)
-may only specifiy known properties. For example, because we have explicitly specified that `dog` is
+may only specify known properties. For example, because we have explicitly specified that `dog` is
 of type `Pet`, the following code is invalid:
 
 ```ts
