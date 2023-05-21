@@ -70,8 +70,8 @@ greet(dog); // OK
 Note that `dog` has an extra `owner` property, but this does not create an error.
 Only members of the target type (`Pet` in this case) are considered when checking for compatibility.
 
-Be aware, however, that [object literals](https://www.typescriptlang.org/docs/handbook/2/objects.html#excess-property-checks)
-may only specify known properties. For example, because we have explicitly specified that `dog` is
+Be aware, however, that object literals [may only specify known properties](https://www.typescriptlang.org/docs/handbook/2/objects.html#excess-property-checks).
+For example, because we have explicitly specified that `dog` is
 of type `Pet`, the following code is invalid:
 
 ```ts
