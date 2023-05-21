@@ -342,7 +342,7 @@ You can't set `myArray[2]` because the index signature is `readonly`.
 
 ## Excess Property Checks
 
-Where and how an object is assigned a type can have make a difference in the type system.
+Where and how an object is assigned a type can make a difference in the type system.
 One of the key examples of this is in excess property checking, which validates the object more thoroughly when it is created and assigned to an object type during creation.
 
 ```ts twoslash
