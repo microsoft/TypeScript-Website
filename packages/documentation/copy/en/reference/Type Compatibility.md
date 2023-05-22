@@ -68,9 +68,17 @@ greet(dog); // OK
 ```
 
 Note that `dog` has an extra `owner` property, but this does not create an error.
-Only members of the target type (`Pet` in this case) are considered when checking for compatibility.
+Only members of the target type (`Pet` in this case) are considered when
+checking for compatibility. This comparison process proceeds recursively,
+exploring the type of each member and sub-member.
 
-This comparison process proceeds recursively, exploring the type of each member and sub-member.
+Be aware, however, that object literals [may only specify known properties](/docs/handbook/2/objects.html#excess-property-checks).
+For example, because we have explicitly specified that `dog` is
+of type `Pet`, the following code is invalid:
+
+```ts
+let dog: Pet = { name: "Lassie", owner: "Rudd Weatherwax" }; // Error
+```
 
 ## Comparing two functions
 
