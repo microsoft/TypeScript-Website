@@ -21,12 +21,6 @@ Here's the most basic class - an empty one:
 class Point {}
 ```
 
-To get the type of an instance of the class, use `InstanceType`
-
-```ts
-type PointInstance = InstanceType<Point>
-```
-
 This class isn't very useful yet, so let's start adding some members.
 
 ### Fields
@@ -1273,6 +1267,32 @@ const someClass = class<Type> {
 
 const m = new someClass("Hello, world");
 //    ^?
+```
+
+## Class Constructors
+
+Calling a constructor of a class returns an instance, which can be described using the `InstanceType` type.
+
+```ts twoslash
+class Point {
+  createdAt: number;
+  x: number;
+  y: number
+  constructor(x: number, y: number) {
+    this.createdAt = Date.now()
+    this.x = x;
+    this.y = y;
+  }
+}
+type PointInstance = InstanceType<typeof Point>
+
+function moveRight(point: PointInstance) {
+  point.x += 5;
+}
+
+const point = new Point(3, 4);
+moveRight(point);
+point.x; // => 8
 ```
 
 ## `abstract` Classes and Members
