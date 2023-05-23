@@ -32,7 +32,7 @@ The test files import the implementation files and do some testing:
 
 ```ts
 // converter-tests.ts
-import * as converter from "../converter";
+import * as converter from "../src/converter";
 
 assert.areEqual(converter.celsiusToFahrenheit(0), 32);
 ```

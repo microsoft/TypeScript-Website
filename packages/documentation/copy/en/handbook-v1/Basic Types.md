@@ -241,7 +241,7 @@ Unlike `unknown`, variables of type `any` allow you to access arbitrary properti
 These properties include functions and TypeScript will not check their existence or type:
 
 ```ts twoslash
-// @errors: 2571
+// @errors: 2571 18046
 let looselyTyped: any = 4;
 // OK, ifItExists might exist at runtime
 looselyTyped.ifItExists();

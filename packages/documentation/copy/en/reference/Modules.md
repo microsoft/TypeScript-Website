@@ -149,6 +149,12 @@ import { getResponse, type APIResponseType} from "./api";
 Any explicitly marked `type` import is guaranteed to be removed from your JavaScript, and tools like Babel can make better assumptions about your code via the [`isolatedModules`](/tsconfig#isolatedModules) compiler flag.
 You can read more in the [3.8 release notes](https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/#type-only-imports-exports).
 
+With TypeScript 4.5, you can use a `type` modifier on individual named imports.
+
+```ts
+import { someFunc, type BaseType } from "./some-module.js";
+```
+
 ## Default exports
 
 Each module can optionally export a `default` export.

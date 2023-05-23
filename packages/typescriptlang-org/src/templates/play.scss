@@ -796,18 +796,30 @@ main #editor-toolbar {
 
       span.ast-node-number {
         color: blue;
+        .dark-theme & {
+          color: lightskyblue;
+        }
       }
 
       span.ast-node-string {
         color: green;
+        .dark-theme & {
+          color: greenyellow;
+        }
       }
 
       span.ast-node-boolean {
         color: red;
+        .dark-theme & {
+          color: coral;
+        }
       }
 
       span.ast-node-undefined {
         color: brown;
+        .dark-theme & {
+          color: sandybrown;
+        }
       }
     }
 
@@ -842,6 +854,10 @@ main #editor-toolbar {
         font-weight: bold;
         position: relative; // for the + and -
         top: 0px;
+
+        .dark-theme & {
+          color: orchid;
+        }
 
         &:hover {
           text-decoration: underline;

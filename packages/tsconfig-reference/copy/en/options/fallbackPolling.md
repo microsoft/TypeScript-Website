@@ -1,5 +1,5 @@
 ---
-display: "fallbackPolling"
+display: "Fallback Polling"
 oneline: "Specify what approach the watcher should use if the system runs out of native file watchers."
 ---
 

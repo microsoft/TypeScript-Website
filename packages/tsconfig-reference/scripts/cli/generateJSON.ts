@@ -96,7 +96,8 @@ filteredOptions.forEach((option) => {
   }
 
   if (name in defaultsForOptions) {
-    option.defaultValue = defaultsForOptions[name];
+    const defaultValue = defaultsForOptions[name];
+    option.defaultValue = Array.isArray(defaultValue) ? defaultValue.join(" ") : defaultValue;
   }
 
   delete option.shortName;

@@ -1,5 +1,5 @@
 ---
-display: "disableFilenameBasedTypeAcquisition"
+display: "Disable Filename Based Type Acquisition"
 oneline: "Disables inference for type acquisition by looking at filenames in a project."
 ---
 

@@ -85,7 +85,7 @@ import { valueOfPi } from "./constants";
 export const twoPi = valueOfPi * 2;
 ```
 
-#### `ES2015`/`ES6`
+#### `ES2015`/`ES6`/`ES2020`/`ES2022`
 
 ```ts twoslash
 // @showEmit
@@ -96,7 +96,7 @@ import { valueOfPi } from "./constants";
 export const twoPi = valueOfPi * 2;
 ```
 
-If you are wondering about the difference between `ES2015` (aka `ES6`) and `ES2020`, `ES2020` adds support for dynamic `import`s, and `import.meta`.
+In addition to the base functionality of `ES2015`/`ES6`, `ES2020` adds support for [dynamic `import`s](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import), and [`import.meta`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import.meta) while `ES2022` further adds support for [top level `await`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await#top_level_await).
 
 #### `node16`/`nodenext` (nightly builds)
 
