@@ -173,13 +173,14 @@ const TSConfigReferenceTemplateComponent = (props: Props) => {
 
   const [openInfo, setOpenInfo] = useState(false)
   const toggleInfoState = () => setOpenInfo(!openInfo)
+  const isExpanded = false;
 
 
   return (
     <Layout title={i("tsconfig_title")} description={i("tsconfig_description")} lang={props.pageContext.locale}>
 
       <div className={`tsconfig raised main-content-block markdown button ${openInfo ? "open" : "closed"}`} >
-        <a href="#" onClick={toggleInfoState}>
+        <a href="#" onClick={toggleInfoState} aria-expanded={isExpanded} role="button">
           <h2>
             <svg width="22" height="13" viewBox="0 0 22 13" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M0.5 1L11 11.5L21.5 1" stroke="black" />

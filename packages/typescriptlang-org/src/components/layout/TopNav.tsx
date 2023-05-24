@@ -86,13 +86,13 @@ export const SiteNav = (props: Props) => {
           </IntlLink>
 
           <nav role="navigation">
-            <ul>
-              <li className="nav-item hide-small"><IntlLink to="/download">{i("nav_download")}</IntlLink></li>
-              <li className="nav-item"><IntlLink to="/docs/"><span>{i("nav_documentation_short")}</span></IntlLink></li>
-              <li className="nav-item show-only-large"><IntlLink to="/docs/handbook/intro.html">{i("nav_handbook")}</IntlLink></li>
-              <li className="nav-item"><IntlLink to="/community">{i("nav_community")}</IntlLink></li>
-              <li className="nav-item show-only-largest"><IntlLink to="/play">{i("nav_playground")}</IntlLink></li>
-              <li className="nav-item"><IntlLink to="/tools">{i("nav_tools")}</IntlLink></li>
+            <ul role="tablist" aria-owns="tab1 tab2 tab3 tab4 tab5 tab6" aria-busy="true">
+            <li className="nav-item hide-small" role="none presentation" ><IntlLink id="tab1" role="tab" to="/download">{i("nav_download")}</IntlLink></li>
+              <li className="nav-item" role="none presentation"><IntlLink id="tab2" role="tab" to="/docs/"><span>{i("nav_documentation_short")}</span></IntlLink></li>
+              <li className="nav-item show-only-large" role="none presentation"><IntlLink id="tab3" role="tab" to="/docs/handbook/intro.html">{i("nav_handbook")}</IntlLink></li>
+              <li className="nav-item" role="none presentation"><IntlLink id="tab4" role="tab" to="/community">{i("nav_community")}</IntlLink></li>
+              <li className="nav-item show-only-largest" role="none presentation"><IntlLink id="tab5" role="tab" to="/play">{i("nav_playground")}</IntlLink></li>
+              <li className="nav-item" role="none presentation"><IntlLink id="tab6" role="tab" to="/tools">{i("nav_tools")}</IntlLink></li>
             </ul>
           </nav>
 
@@ -103,7 +103,7 @@ export const SiteNav = (props: Props) => {
           <div className="search-section">
             <OpenInMyLangQuickJump />
             <div className="nav-item">
-              <form id="search-form" className="search top-nav" role="search">
+              <form id="search-form" className="search top-nav" role="search" aria-live="assertive">
                 <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m10.5 0c.5052 0 .9922.0651042 1.4609.195312.4688.130209.9063.315105 1.3125.554688.4063.239583.7761.52865 1.1094.86719.3386.33333.6276.70312.8672 1.10937s.4245.84375.5547 1.3125.1953.95573.1953 1.46094-.0651.99219-.1953 1.46094-.3151.90625-.5547 1.3125-.5286.77864-.8672 1.11718c-.3333.33334-.7031.61978-1.1094.85938-.4062.2396-.8437.4245-1.3125.5547-.4687.1302-.9557.1953-1.4609.1953-.65104 0-1.27604-.1094-1.875-.3281-.59375-.2188-1.14062-.5339-1.64062-.94534l-6.132818 6.12504c-.098958.0989-.216145.1484-.351562.1484s-.252604-.0495-.351562-.1484c-.0989588-.099-.148438-.2162-.148438-.3516s.0494792-.2526.148438-.3516l6.125002-6.13278c-.41146-.5-.72656-1.04687-.94532-1.64062-.21874-.59896-.32812-1.22396-.32812-1.875 0-.50521.0651-.99219.19531-1.46094s.31511-.90625.55469-1.3125.52604-.77604.85938-1.10937c.33854-.33854.71093-.627607 1.11718-.86719s.84375-.424479 1.3125-.554688c.46875-.1302078.95573-.195312 1.46094-.195312zm0 10c.6198 0 1.2031-.11719 1.75-.35156.5469-.23959 1.0234-.5625 1.4297-.96875.4062-.40625.7265-.88281.9609-1.42969.2396-.54688.3594-1.13021.3594-1.75s-.1198-1.20312-.3594-1.75c-.2344-.54688-.5547-1.02344-.9609-1.42969-.4063-.40625-.8828-.72656-1.4297-.96093-.5469-.23959-1.1302-.35938-1.75-.35938-.61979 0-1.20312.11979-1.75.35938-.54688.23437-1.02344.55468-1.42969.96093s-.72916.88281-.96875 1.42969c-.23437.54688-.35156 1.13021-.35156 1.75s.11719 1.20312.35156 1.75c.23959.54688.5625 1.02344.96875 1.42969s.88281.72916 1.42969.96875c.54688.23437 1.13021.35156 1.75.35156z" fill="#fff" /></svg>
                 <span><input id='search-box-top' type="search" placeholder={i("nav_search_placeholder")} aria-label={i("nav_search_aria")} /></span>
                 <input type="submit" style={{ display: "none" }} />

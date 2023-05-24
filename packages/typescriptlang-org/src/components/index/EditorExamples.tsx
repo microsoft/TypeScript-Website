@@ -41,11 +41,11 @@ export const EditorExamples = () => {
       <div className="slides">
 
         <div className="editor ts front">
-          <ul className="editor-tabs">
-            <li className={index === 0 ? "selected" : ""} ><a href="#" onClick={goto(0)}>{i("index_2_tab_1")}</a></li>
-            <li className={index === 1 ? "selected" : ""} ><a href="#" onClick={goto(1)}>{i("index_2_tab_2")}</a></li>
-            <li className={index === 2 ? "selected" : ""} ><a href="#" onClick={goto(2)}>{i("index_2_tab_3")}</a></li>
-            <li className={index === 3 ? "selected" : ""} ><a href="#" onClick={goto(3)}>{i("index_2_tab_4")}</a></li>
+          <ul className="editor-tabs" role="tablist" aria-owns="tabId1 tabId2 tabId3 tabId4" aria-busy="true">
+            <li className={index === 0 ? "selected" : ""} role="none presentation"><a id="tabId1" href="#" role="tab" onClick={goto(0)}>{i("index_2_tab_1")}</a></li>
+            <li className={index === 1 ? "selected" : ""} role="none presentation"><a id="tabId2" href="#" role="tab" onClick={goto(1)}>{i("index_2_tab_2")}</a></li>
+            <li className={index === 2 ? "selected" : ""} role="none presentation"><a id="tabId3" href="#" role="tab" onClick={goto(2)}>{i("index_2_tab_3")}</a></li>
+            <li className={index === 3 ? "selected" : ""} role="none presentation"><a id="tabId4" href="#" role="tab" onClick={goto(3)}>{i("index_2_tab_4")}</a></li>
             {/* <li className={index === 4 ? "selected" : ""} ><a href="#" onClick={goto(4) }>{i("index_2_tab_5")}</a></li> */}
           </ul>
           <div className="content" id="above-the-fold-headline-code">
