@@ -58,7 +58,7 @@ export const AboveTheFold = () => {
                 <rect x="16.5" y="0.5" width="4" height="4" stroke="black" />
               </svg>
             } />
-        </div>
+          </div>
       </Col>
       <Col>
         <EditorExamples />
@@ -71,7 +71,7 @@ export const AboveTheFold = () => {
       <h2>Get Started With TypeScript</h2>
       <Row>
         <Col className="call-to-action">
-          <img src={require("../../assets/index/play-light.png").default} width="100%"  />
+          <img src={require("../../assets/index/play-light.png").default} width="100%" role="none"  />
           <FluidButton
             title={i("index_2_cta_play")}
             subtitle={i("index_2_cta_play_subtitle")}
@@ -94,8 +94,8 @@ export const AboveTheFold = () => {
             } />
         </Col>
 
-        <Col className="call-to-action hide-small">
-          <img src={require("../../assets/index/code-light.png").default} width="100%"  />
+        <Col className="call-to-action">
+          <img src={require("../../assets/index/code-light.png").default} width="100%" role="none" />
           <FluidButton
             title={i("index_2_cta_download")}
             subtitle={i("index_2_cta_download_subtitle")}
