@@ -146,12 +146,12 @@ const names = ["Alice", "Bob", "Eve"];
 
 // Contextual typing for function
 names.forEach(function (s) {
-  console.log(s.toUppercase());
+  console.log(s.toUpperCase());
 });
 
 // Contextual typing also applies to arrow functions
 names.forEach((s) => {
-  console.log(s.toUppercase());
+  console.log(s.toUpperCase());
 });
 ```
 
