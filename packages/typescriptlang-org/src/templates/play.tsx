@@ -205,7 +205,7 @@ const Play: React.FC<Props> = (props) => {
           <li className="name hide-small"><span>Playground</span></li>
 
           <li className="dropdown">
-            <a id="compiler-options-button" href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="compiler-options-dropdown">{i("play_subnav_config")} <span className="caret"></span></a>
+           <a id="compiler-options-button" href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="compiler-options-dropdown" style={{ overflow: "hidden", whiteSpace:"nowrap" }}>{i("play_subnav_config")} <span className="caret"></span></a>
             <div id="compiler-options-dropdown" className="dropdown-dialog" aria-labelledby="compiler-options-button">
               <h3>{i("play_subnav_config")}</h3>
               <div className="info" id="config-container">
@@ -257,13 +257,13 @@ const Play: React.FC<Props> = (props) => {
 
               <ul>
                 <li id="versions" className="dropdown" >
-                  <a href="#" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="versions-dropdown" id='versions-button'>{i("play_downloading_version")}... <span className="caret" /></a>
+                  <a href="#" data-toggle="dropdown" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="versions-dropdown" id='versions-button' style={{ overflow: "hidden", whiteSpace:"nowrap" }}>{i("play_downloading_version")}... <span className="caret" /></a>
                   <ul className="dropdown-menu versions" id="versions-dropdown" aria-labelledby="versions-button"></ul>
                 </li>
                 <li><a id="run-button" href="#" role="button">{i("play_toolbar_run")}</a></li>
 
                 <li className="dropdown">
-                  <a href="#" id="exports-dropdown" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="export-dropdown-menu">{i("play_toolbar_export")} <span className="caret"></span></a>
+                  <a href="#" id="exports-dropdown" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="export-dropdown-menu" style={{ overflow: "hidden", whiteSpace:"nowrap" }}>{i("play_toolbar_export")} <span className="caret"></span></a>
                   <ul className="dropdown-menu" id='export-dropdown-menu' aria-labelledby="whatisnew-button">
                     <li><a href="#" onClick={() => playground.exporter.exportAsTweet()} aria-label={i("play_export_tweet_md")} >{i("play_export_tweet_md")}</a></li>
                     <li role="separator" className="divider"></li>
