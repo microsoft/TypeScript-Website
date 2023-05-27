@@ -11,7 +11,7 @@ translatable: true
 The presence of a `tsconfig.json` file in a directory indicates that the directory is the root of a TypeScript project.
 The `tsconfig.json` file specifies the root files and the compiler options required to compile the project.
 
-JavaScript projects can use a `jsconfig.json` file instead, which acts almost the same but has some JavaScript-related compiler flags enabled by default.
+JavaScript projects can use a `jsconfig.json` file instead, which acts almost the same but has some [JavaScript-related flags enabled by default](#jsconfig-defaults).
 
 A project is compiled in one of the following ways:
 
@@ -106,6 +106,25 @@ This lets your `tsconfig.json` focus on the unique choices for your project, and
 ## Details
 
 The `"compilerOptions"` property can be omitted, in which case the compiler's defaults are used. See our full list of supported [Compiler Options](/tsconfig).
+
+## JSConfig Defaults
+
+A `jsconfig.json` has the following defaults over a `tsconfig.json`:
+
+``` json tsconfig
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "maxNodeModuleJsDepth": 2,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "typeAcquisition": {
+    "enable": true
+  }
+}
+```
 
 ## TSConfig Reference
 
