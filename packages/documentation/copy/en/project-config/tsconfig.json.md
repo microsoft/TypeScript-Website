@@ -109,7 +109,7 @@ The `"compilerOptions"` property can be omitted, in which case the compiler's de
 
 ## JSConfig Defaults
 
-A `jsconfig.json` has the following defaults over a `tsconfig.json`:
+A `jsconfig.json` enforces different defaults, being equivalent to the following `tsconfig.json`:
 
 ``` json tsconfig
 {
