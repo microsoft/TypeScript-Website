@@ -351,7 +351,7 @@ When inferring the type of an object, TypeScript will usually choose a type that
 For example, in this case, the inferred type of `names` is `string[]`:
 
 ```ts
-type HasNames = { readonly names: string[] };
+type HasNames = { names: readonly string[] };
 function getNamesExactly<T extends HasNames>(arg: T): T["names"] {
     return arg.names;
 }
