@@ -55,7 +55,7 @@ Example `tsconfig.json` files:
   }
   ```
 
-- Using the [`include`](/tsconfig#include) and `exclude` properties
+- Using the [`include`](/tsconfig#include) and [`exclude`](/tsconfig#exclude) properties
 
   ```json  tsconfig
   {
@@ -68,7 +68,7 @@ Example `tsconfig.json` files:
       "sourceMap": true
     },
     "include": ["src/**/*"],
-    "exclude": ["node_modules", "**/*.spec.ts"]
+    "exclude": ["**/*.spec.ts"]
   }
   ```
 
@@ -88,7 +88,7 @@ For example, if you were writing a project which uses Node.js version 12 and abo
   },
 
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "exclude": ["**/*.spec.ts"]
 }
 ```
 

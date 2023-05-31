@@ -292,7 +292,7 @@ For more details, [see the original PR on GitHub](https://github.com/microsoft/T
 
 ## APIs to Support `--build` and `--incremental`
 
-TypeScript 3.0 introduced support for referencing other and building them incrementally using the `--build` flag.
+TypeScript 3.0 introduced support for referencing other projects and building them incrementally using the `--build` flag.
 Additionally, TypeScript 3.4 introduced the [`incremental`](/tsconfig#incremental) flag for saving information about previous compilations to only rebuild certain files.
 These flags were incredibly useful for structuring projects more flexibly and speeding builds up.
 Unfortunately, using these flags didn't work with 3rd party build tools like Gulp and Webpack.

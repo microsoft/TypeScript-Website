@@ -1,5 +1,5 @@
 ---
-display: "watchFile"
+display: "Watch File"
 oneline: "Specify how the TypeScript watch mode works."
 ---
 

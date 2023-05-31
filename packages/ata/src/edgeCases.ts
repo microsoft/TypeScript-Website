@@ -1,5 +1,5 @@
 /** Converts some of the known global imports to node so that we grab the right info */
-export const mapModuleNameToModule = (name: string) => {
+export const mapModuleNameToModule = (moduleSpecifier: string) => {
   // in node repl:
   // > require("module").builtinModules
   const builtInNodeMods = [
@@ -57,9 +57,13 @@ export const mapModuleNameToModule = (name: string) => {
     "zlib",
   ]
 
-  if (builtInNodeMods.includes(name.replace("node:", ""))) {
+  if (builtInNodeMods.includes(moduleSpecifier.replace("node:", ""))) {
     return "node"
   }
 
-  return name
+  // strip module filepath e.g. lodash/identity => lodash
+  const [a = "", b = ""] = moduleSpecifier.split("/")
+  const moduleName = a.startsWith("@") ? `${a}/${b}` : a
+
+  return moduleName
 }

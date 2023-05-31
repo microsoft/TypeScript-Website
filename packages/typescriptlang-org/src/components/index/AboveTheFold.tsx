@@ -71,7 +71,7 @@ export const AboveTheFold = () => {
       <h2>Get Started With TypeScript</h2>
       <Row>
         <Col className="call-to-action">
-          <img src={require("../../assets/index/play-light.png").default} width="100%"  />
+          <img src={require("../../assets/index/play-light.png").default} width="100%" role="none"  />
           <FluidButton
             title={i("index_2_cta_play")}
             subtitle={i("index_2_cta_play_subtitle")}
@@ -94,8 +94,8 @@ export const AboveTheFold = () => {
             } />
         </Col>
 
-        <Col className="call-to-action hide-small">
-          <img src={require("../../assets/index/code-light.png").default} width="100%"  />
+        <Col className="call-to-action">
+          <img src={require("../../assets/index/code-light.png").default} width="100%" role="none"  />
           <FluidButton
             title={i("index_2_cta_download")}
             subtitle={i("index_2_cta_download_subtitle")}
@@ -122,8 +122,6 @@ export const AboveTheFold = () => {
           </div>
           <div className="inline-buttons">
             <a className='flat-button' href="/docs/handbook/intro.html">Web</a>
-            <a className='flat-button' href="/assets/typescript-handbook.epub">Epub</a>
-            <a className='flat-button' href="/assets/typescript-handbook.pdf">PDF</a>
           </div>
         </Col>
       </Row>

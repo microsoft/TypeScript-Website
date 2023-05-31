@@ -6,17 +6,19 @@ oneline: How to configure the watch mode of TypeScript
 translatable: true
 ---
 
-Compiler supports configuring how to watch files and directories using compiler flags in TypeScript 3.8+, and environment variables before that.
+As of TypeScript 3.8 and onward, the Typescript compiler exposes configuration which controls how it watches files and directories. Prior to this version, configuration required the use of environment variables which are still available.
 
 ## Background
 
-The `--watch` implementation of the compiler relies on using `fs.watch` and `fs.watchFile` which are provided by node, both of these methods have pros and cons.
+The `--watch` implementation of the compiler relies on Node's `fs.watch` and `fs.watchFile`. Each of these methods has pros and cons.
 
-`fs.watch` uses file system events to notify the changes in the file/directory. But this is OS dependent and the notification is not completely reliable and does not work as expected on many OS. Also there could be limit on number of watches that can be created, e.g. linux and we could exhaust it pretty quickly with programs that include large number of files. But because this uses file system events, there is not much CPU cycle involved. Compiler typically uses `fs.watch` to watch directories (e.g. source directories included by config file, directories in which module resolution failed etc) These can handle the missing precision in notifying about the changes. But recursive watching is supported on only Windows and OSX. That means we need something to replace the recursive nature on other OS.
+`fs.watch` relies on file system events to broadcast changes in the watched files and directories. The implementation of this command is OS dependent and unreliable - on many operating systems, it does not work as expected. Additionally, some operating systems limit the number of watches which can exist simultaneously (e.g. some flavors of [Linux](https://man7.org/linux/man-pages/man7/inotify.7.html)). Heavy use of `fs.watch` in large codebases has the potential to exceed these limits and result in undesirable behavior. However, because this implementation relies on an events-based model, CPU use is comparatively light. The compiler typically uses `fs.watch` to watch directories (e.g. source directories included by compiler configuration files and directories in which module resolution failed, among others). TypeScript uses these to augment potential failures in individual file watchers. However, there is a key limitation of this strategy: recursive watching of directories is supported on Windows and macOS, but not on Linux. This suggested a need for additional strategies for file and directory watching.
 
-`fs.watchFile` uses polling and thus involves CPU cycles. However, `fs.watchFile` is the most reliable mechanism to get the update on the status of file/directory. The compiler typically uses `fs.watchFile` to watch source files, config files and missing files (missing file references). This means the CPU usage when using `fs.watchFile` depends on number of files in the program.
+`fs.watchFile` uses polling and thus costs CPU cycles. However, `fs.watchFile` is by far the most reliable mechanism available to subscribe to the events from files and directories of interest. Under this strategy, the TypeScript compiler typically uses `fs.watchFile` to watch source files, config files, and files which appear missing based on reference statements. This means that the degree to which CPU usage will be higher when using `fs.watchFile` depends directly on number of files watched in the codebase.
 
 ## Configuring file watching using a `tsconfig.json`
+
+The suggested method of configuring watch behavior is through the new `watchOptions` section of `tsconfig.json`. We provide an example configuration below. See the following section for detailed descriptions of the settings available.
 
 ```json tsconfig
 {
@@ -48,27 +50,29 @@ The `--watch` implementation of the compiler relies on using `fs.watch` and `fs.
 }
 ```
 
-You can read more about this in [the release notes](/docs/handbook/release-notes/typescript-3-8.html#better-directory-watching-on-linux-and-watchoptions).
+For further details, see [the release notes for Typescript 3.8](/docs/handbook/release-notes/typescript-3-8.html#better-directory-watching-on-linux-and-watchoptions).
 
 ## Configuring file watching using environment variable `TSC_WATCHFILE`
 
 <!-- prettier-ignore -->
 Option                                         | Description
 -----------------------------------------------|----------------------------------------------------------------------
-`PriorityPollingInterval`                      | Use `fs.watchFile` but use different polling intervals for source files, config files and missing files
-`DynamicPriorityPolling`                       | Use a dynamic queue where in the frequently modified files will be polled at shorter interval and the files unchanged will be polled less frequently
-`UseFsEvents`                                  | Use `fs.watch` which uses file system events (but might not be accurate on different OS) to get the notifications for the file changes/creation/deletion. Note that few OS e.g. linux has limit on number of watches and failing to create watcher using `fs.watch` will result it in creating using `fs.watchFile`
-`UseFsEventsWithFallbackDynamicPolling`        | This option is similar to `UseFsEvents` except on failing to create watch using `fs.watch`, the fallback watching happens through dynamic polling queues (as explained in `DynamicPriorityPolling`)
-`UseFsEventsOnParentDirectory`                 | This option watches parent directory of the file with `fs.watch` (using file system events) thus being low on CPU but can compromise accuracy.
-default (no value specified)                   | If environment variable `TSC_NONPOLLING_WATCHER` is set to true, watches parent directory of files (just like `UseFsEventsOnParentDirectory`). Otherwise watch files using `fs.watchFile` with `250ms` as the timeout for any file
+`PriorityPollingInterval`                      | Use `fs.watchFile`, but use different polling intervals for source files, config files and missing files
+`DynamicPriorityPolling`                       | Use a dynamic queue where frequently modified files are polled at shorter intervals, and unchanged files are polled less frequently
+`UseFsEvents`                                  | Use `fs.watch`. On operating systems that limit the number of active watches, fall back to `fs.watchFile` when a watcher fails to be created.
+`UseFsEventsWithFallbackDynamicPolling`        | Use `fs.watch`. On operating systems that limit the number of active watches, fall back to dynamic polling queues (as explained in `DynamicPriorityPolling`)
+`UseFsEventsOnParentDirectory`                 | Use `fs.watch` on the _parent_ directories of included files (yielding a compromise that results in lower CPU usage than pure `fs.watchFile` but potentially lower accuracy).
+default (no value specified)                   | If environment variable `TSC_NONPOLLING_WATCHER` is set to true, use `UseFsEventsOnParentDirectory`. Otherwise, watch files using `fs.watchFile` with `250ms` as the timeout for any file.
 
 ## Configuring directory watching using environment variable `TSC_WATCHDIRECTORY`
 
-The watching of directory on platforms that don't support recursive directory watching natively in node, is supported through recursively creating directory watcher for the child directories using different options selected by `TSC_WATCHDIRECTORY`. Note that on platforms that support native recursive directory watching (e.g windows) the value of this environment variable is ignored.
+For directory watches on platforms which don't natively allow recursive directory watching (i.e. non macOS and Windows operating systems) is supported through recursively creating directory watchers for each child directory using different options selected by `TSC_WATCHDIRECTORY`. 
+
+**NOTE:** On platforms which support native recursive directory watching, the value of `TSC_WATCHDIRECTORY` is ignored.
 
 <!-- prettier-ignore -->
 Option                                         | Description
 -----------------------------------------------|----------------------------------------------------------------------
-`RecursiveDirectoryUsingFsWatchFile`           | Use `fs.watchFile` to watch the directories and child directories which is a polling watch (consuming CPU cycles)
-`RecursiveDirectoryUsingDynamicPriorityPolling`| Use dynamic polling queue to poll changes to the directory and child directories.
-default (no value specified)                   | Use `fs.watch` to watch directories and child directories
+`RecursiveDirectoryUsingFsWatchFile`           | Use `fs.watchFile` to watch included directories and child directories.
+`RecursiveDirectoryUsingDynamicPriorityPolling`| Use a dynamic polling queue to poll changes to included directories and child directories.
+default (no value specified)                   | Use `fs.watch` to watch included directories and child directories.

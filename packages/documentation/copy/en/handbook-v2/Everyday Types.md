@@ -146,12 +146,12 @@ const names = ["Alice", "Bob", "Eve"];
 
 // Contextual typing for function
 names.forEach(function (s) {
-  console.log(s.toUppercase());
+  console.log(s.toUpperCase());
 });
 
 // Contextual typing also applies to arrow functions
 names.forEach((s) => {
-  console.log(s.toUppercase());
+  console.log(s.toUpperCase());
 });
 ```
 
@@ -204,7 +204,7 @@ In JavaScript, if you access a property that doesn't exist, you'll get the value
 Because of this, when you _read_ from an optional property, you'll have to check for `undefined` before using it.
 
 ```ts twoslash
-// @errors: 2532
+// @errors: 18048
 function printName(obj: { first: string; last?: string }) {
   // Error - might crash if 'obj.last' wasn't provided!
   console.log(obj.last.toUpperCase());
@@ -398,24 +398,24 @@ Almost all features of an `interface` are available in `type`, the key distincti
         <p>Extending an interface</p>
         <code><pre>
 interface Animal {
-  name: string
+  name: string;
 }<br/>
 interface Bear extends Animal {
-  honey: boolean
+  honey: boolean;
 }<br/>
-const bear = getBear() 
-bear.name
-bear.honey
+const bear = getBear();
+bear.name;
+bear.honey;
         </pre></code>
       </td>
       <td>
         <p>Extending a type via intersections</p>
         <code><pre>
 type Animal = {
-  name: string
+  name: string;
 }<br/>
 type Bear = Animal & { 
-  honey: boolean 
+  honey: boolean;
 }<br/>
 const bear = getBear();
 bear.name;
@@ -428,10 +428,10 @@ bear.honey;
         <p>Adding new fields to an existing interface</p>
         <code><pre>
 interface Window {
-  title: string
+  title: string;
 }<br/>
 interface Window {
-  ts: TypeScriptAPI
+  ts: TypeScriptAPI;
 }<br/>
 const src = 'const a = "Hello World"';
 window.ts.transpileModule(src, {});
@@ -441,10 +441,10 @@ window.ts.transpileModule(src, {});
         <p>A type cannot be changed after being created</p>
         <code><pre>
 type Window = {
-  title: string
+  title: string;
 }<br/>
 type Window = {
-  ts: TypeScriptAPI
+  ts: TypeScriptAPI;
 }<br/>
 <span style="color: #A31515"> // Error: Duplicate identifier 'Window'.</span><br/>
         </pre></code>
@@ -597,7 +597,7 @@ The same applies to strings:
 ```ts twoslash
 // @errors: 2345
 declare function handleRequest(url: string, method: "GET" | "POST"): void;
-// ---cut---
+
 const req = { url: "https://example.com", method: "GET" };
 handleRequest(req.url, req.method);
 ```

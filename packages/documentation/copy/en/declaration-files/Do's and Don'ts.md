@@ -231,8 +231,8 @@ Note that we didn't make `b` optional here because the return types of the signa
 ❔ **Why:** This is important for people who are "passing through" a value to your function:
 
 ```ts
-function fn(x: string): void;
-function fn(x: number): void;
+function fn(x: string): Moment;
+function fn(x: number): Moment;
 function fn(x: number | string) {
   // When written with separate overloads, incorrectly an error
   // When written with union types, correctly OK

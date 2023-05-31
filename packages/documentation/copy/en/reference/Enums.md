@@ -167,7 +167,7 @@ enum FileAccess {
 There is a special subset of constant enum members that aren't calculated: literal enum members.
 A literal enum member is a constant enum member with no initialized value, or with values that are initialized to
 
-- any string literal (e.g. `"foo"`, `"bar`, `"baz"`)
+- any string literal (e.g. `"foo"`, `"bar"`, `"baz"`)
 - any numeric literal (e.g. `1`, `100`)
 - a unary minus applied to any numeric literal (e.g. `-1`, `-100`)
 
@@ -382,7 +382,7 @@ These pitfalls pertain to _ambient_ const enums only (basically const enums in `
 Here are two approaches to avoiding these pitfalls:
 
 A. Do not use const enums at all.
-   You can easily [ban const enums](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/FAQ.md#how-can-i-ban-specific-language-feature) with the help of a linter.
+   You can easily [ban const enums](https://typescript-eslint.io/linting/troubleshooting#how-can-i-ban-specific-language-feature) with the help of a linter.
    Obviously this avoids any issues with const enums, but prevents your project from inlining its own enums.
    Unlike inlining enums from other projects, inlining a project's own enums is not problematic and has performance implications.
 B. Do not publish ambient const enums, by deconstifying them with the help of [`preserveConstEnums`](/tsconfig#preserveConstEnums).

@@ -1,5 +1,5 @@
 ---
-display: "explainFiles"
+display: "Explain Files"
 oneline: "Print files read during the compilation including why it was included."
 ---
 

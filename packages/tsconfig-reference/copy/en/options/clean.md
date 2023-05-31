@@ -1,5 +1,5 @@
 ---
-display: "clean"
+display: "Clean"
 oneline: "Delete the outputs of all projects."
 ---
 

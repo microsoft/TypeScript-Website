@@ -187,7 +187,7 @@ export type Pet = {
 
 // @filename: main.js
 /**
- * @param { import("./types").Pet } p
+ * @param {import("./types").Pet} p
  */
 function walk(p) {
   console.log(`Walking ${p.name}...`);
@@ -204,7 +204,7 @@ export type Pet = {
 // @filename: main.js
 // ---cut---
 /**
- * @typedef { import("./types").Pet } Pet
+ * @typedef {import("./types").Pet} Pet
  */
 
 /**
@@ -231,7 +231,7 @@ export const userAccount = {
 // @filename: main.js
 // ---cut---
 /**
- * @type {typeof import("./accounts").userAccount }
+ * @type {typeof import("./accounts").userAccount}
  */
 var x = require("./accounts").userAccount;
 ```
@@ -391,7 +391,7 @@ Finally, you can specify a default for a type parameter:
 /** @template [T=object] */
 class Cache {
     /** @param {T} initial */
-    constructor(T) {
+    constructor(initial) {
     }
 }
 let c = new Cache()
