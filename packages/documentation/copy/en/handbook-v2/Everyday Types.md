@@ -597,7 +597,7 @@ The same applies to strings:
 ```ts twoslash
 // @errors: 2345
 declare function handleRequest(url: string, method: "GET" | "POST"): void;
-// ---cut---
+
 const req = { url: "https://example.com", method: "GET" };
 handleRequest(req.url, req.method);
 ```
