@@ -345,8 +345,8 @@ A more advanced example uses the prototype property to infer and constrain relat
 
 ```ts twoslash
 // @strict: false
-class Ailurophile {
-  hasMilk: boolean = true;
+class BeeKeeper {
+  hasMask: boolean = true;
 }
 
 class ZooKeeper {
@@ -357,8 +357,8 @@ class Animal {
   numLegs: number = 4;
 }
 
-class Cat extends Animal {
-  keeper: Ailurophile = new Ailurophile();
+class Bee extends Animal {
+  keeper: BeeKeeper = new BeeKeeper();
 }
 
 class Lion extends Animal {
@@ -370,7 +370,7 @@ function createInstance<A extends Animal>(c: new () => A): A {
 }
 
 createInstance(Lion).keeper.nametag;
-createInstance(Cat).keeper.hasMilk;
+createInstance(Bee).keeper.hasMask;
 ```
 
 This pattern is used to power the [mixins](/docs/handbook/mixins.html) design pattern.

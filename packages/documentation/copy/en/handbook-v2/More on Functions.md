@@ -337,9 +337,9 @@ Functions in JavaScript often take a variable number of arguments.
 For example, the `toFixed` method of `number` takes an optional digit count:
 
 ```ts twoslash
-function f(n: number, x?: number) {
+function f(n: number) {
   console.log(n.toFixed()); // 0 arguments
-  console.log(n.toFixed(x)); // 1 argument
+  console.log(n.toFixed(3)); // 1 argument
 }
 ```
 
