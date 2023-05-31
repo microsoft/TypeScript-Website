@@ -141,7 +141,7 @@ Here's an example:
 
 ```ts twoslash
 // @errors: 2551
-// No type annotations here, but TypeScript can spot the bug
+// No type annotations here, but TypeScript can infer the constant to be string[]
 const names = ["Alice", "Bob", "Eve"];
 
 // Contextual typing for function
