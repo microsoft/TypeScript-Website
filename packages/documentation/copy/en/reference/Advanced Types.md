@@ -425,6 +425,7 @@ As we mentioned, type aliases can act sort of like interfaces; however, there ar
 
 Almost all features of an `interface` are available in `type`, the key distinction is that a type cannot be re-opened to add new properties vs an interface which is always extendable.
 
+<div class='table-container'>
 <table class='full-width-table'>
   <tbody>
     <tr>
@@ -490,6 +491,7 @@ type Window = {
     </tr>
     </tbody>
 </table>
+</div>
 
 Because an interface more closely maps how JavaScript objects work [by being open to extension](https://wikipedia.org/wiki/Open/closed_principle), we recommend using an interface over a type alias when possible.
 
