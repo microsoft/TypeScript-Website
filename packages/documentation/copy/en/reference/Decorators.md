@@ -6,15 +6,23 @@ oneline: TypeScript Decorators overview
 translatable: true
 ---
 
+<blockquote class='bg-reading'>  
+  
+  <p>
+    This document refers to an experimental stage 2 decorators implementation. Stage 3 decorator support is available since Typescript 5.0.<br>
+    See: <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#decorators'>Decorators in Typescript 5</a>
+  </p>
+</blockquote>
+
 ## Introduction
 
-<blockquote class='bg-reading'>
-  <p>Further Reading:<br /><a href='https://saul-mirone.github.io/a-complete-guide-to-typescript-decorator/'>A Complete Guide to TypeScript Decorators</a></p>
+
+<blockquote class='bg-reading'>  
+  <p>Further Reading (stage 2):<br /><a href='https://saul-mirone.github.io/a-complete-guide-to-typescript-decorator/'>A Complete Guide to TypeScript Decorators</a></p>
 </blockquote>
 
 With the introduction of Classes in TypeScript and ES6, there now exist certain scenarios that require additional features to support annotating or modifying classes and class members.
 Decorators provide a way to add both annotations and a meta-programming syntax for class declarations and members.
-Decorators are a [stage 2 proposal](https://github.com/tc39/proposal-decorators) for JavaScript and are available as an experimental feature of TypeScript.
 
 > NOTE&emsp; Decorators are an experimental feature that may change in future releases.
 
