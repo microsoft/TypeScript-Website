@@ -57,17 +57,17 @@ type Age2 = Person["age"];
 //   ^?
 ```
 
-You can only use types when indexing, so pay attention variable's type of the index.
+When indexing, you cannot use types that are wider than the keys of the object being indexed, so pay attention of the variable's type used to index.
 For example, when using `const` to make a variable reference, pay attention that its type is `string` and not `"age"` (this can be changed by using [`as const`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions):
 
 ```ts twoslash
 // @errors: 2538 2749
 type Person = { age: number; name: string; alive: boolean };
 // ---cut---
-const key = "age"; // Type is 'string'
+const key = "age"; // The type is 'string', which is too wide (e.g. "foo" is also a string, but not one of Person's keys), so the next line won't compile
 type Age1 = Person[key];
 
-const keyWithConstantType = "age" as const; // Type is "age"
+const keyWithConstantType = "age" as const; // Type is "age", which is a key in Person, so that will work
 type Age2 = Person[keyWithConstantType];
 ```
 
