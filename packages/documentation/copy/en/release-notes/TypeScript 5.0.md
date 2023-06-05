@@ -555,7 +555,7 @@ They also allowed us to refer to only a subset of the types of an enum, and to n
 ```ts
 // Color is like a union of Red | Orange | Yellow | Green | Blue | Violet
 enum Color {
-    Red, Orange, Yellow, Green, Blue, /* Indigo */, Violet
+    Red, Orange, Yellow, Green, Blue, /* Indigo, */ Violet
 }
 
 // Each enum member has its own type that we can refer to!
