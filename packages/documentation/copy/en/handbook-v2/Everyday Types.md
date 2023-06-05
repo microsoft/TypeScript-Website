@@ -386,6 +386,7 @@ Being concerned only with the structure and capabilities of types is why we call
 Type aliases and interfaces are very similar, and in many cases you can choose between them freely.
 Almost all features of an `interface` are available in `type`, the key distinction is that a type cannot be re-opened to add new properties vs an interface which is always extendable.
 
+<div class='table-container'>
 <table class='full-width-table'>
   <tbody>
     <tr>
@@ -451,6 +452,7 @@ type Window = {
     </tr>
     </tbody>
 </table>
+</div>
 
 You'll learn more about these concepts in later chapters, so don't worry if you don't understand all of these right away.
 
