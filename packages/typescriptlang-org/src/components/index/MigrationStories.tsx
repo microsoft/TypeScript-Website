@@ -16,7 +16,7 @@ const Slack = () => (
           <p>TypeScript was such a boon to our stability and sanity that we started using it for all new code within days of starting the conversion.</p>
         </div>
         <div className="bg">
-          <svg name="slack testimonial" width="780" height="380" viewBox="0 0 780 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg aria-label="slack testimonial" name="slack testimonial" width="780" height="380" viewBox="0 0 780 380" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path opacity="0.6" d="M0.5 11C0.5 5.201 5.20101 0.5 11 0.5H769C774.799 0.5 779.5 5.20101 779.5 11V379.5H0.5V11Z" stroke="black" />
             <rect opacity="0.6" x="21.5" y="33.5" width="39" height="39" rx="10.5" stroke="black" />
             <rect opacity="0.6" x="21.5" y="92.5" width="39" height="39" rx="10.5" stroke="black" />
@@ -64,7 +64,7 @@ const AirBnB = () => (
           <p>End-to-end type safety because the types used by the back-end and the front-end share a source of truth.</p>
         </div>
         <div className="bg">
-          <svg name="airbnb testimonial" width="780" height="380" viewBox="0 0 780 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg aria-label="airbnb testimonial" name="airbnb testimonial" width="780" height="380" viewBox="0 0 780 380" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="44.5" y="79.5" width="93" height="20" stroke="black" strokeOpacity="0.6" />
             <rect x="44.5" y="139.5" width="171" height="20" stroke="black" strokeOpacity="0.6" />
             <rect x="44.5" y="179.5" width="171" height="20" stroke="black" strokeOpacity="0.6" />
@@ -111,7 +111,7 @@ const Google = () => (
           <p>Around eight or nine languages are officially supported and TypeScript is one of them.</p>
         </div>
         <div className="bg">
-          <svg name="google testimonial" width="780" height="380" viewBox="0 0 780 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg aria-label="google testimonial" name="google testimonial" width="780" height="380" viewBox="0 0 780 380" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="414.5" y="244.5" width="79" height="20" stroke="black" strokeOpacity="0.3" />
             <rect x="284.5" y="244.5" width="79" height="20" stroke="black" strokeOpacity="0.3" />
             <path opacity="0.6" d="M0.5 11C0.5 5.201 5.20101 0.5 11 0.5H769C774.799 0.5 779.5 5.20101 779.5 11V379.5H0.5V11Z" stroke="black" />
