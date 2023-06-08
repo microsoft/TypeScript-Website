@@ -339,7 +339,7 @@ interface Checkable {
 class NameChecker implements Checkable {
   check(s) {
     // Notice no error here
-    return s.toLowercase() === "ok";
+    return s.toLowerCase() === "ok";
     //         ^?
   }
 }
