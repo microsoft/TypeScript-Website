@@ -189,7 +189,7 @@ export const setupPlayground = (
   sandbox.monaco.languages.registerCodeLensProvider(sandbox.language, {
     provideCodeLenses: function (model, token) {
       // If you have @filename on the first line, don't show the implicit filename
-      const lenses = !showFileCodeLens && !model.getLineContent(0).startsWith("// @filename")
+      const lenses = !showFileCodeLens && !model.getLineContent(1).startsWith("// @filename")
         ? []
         : [
             {
