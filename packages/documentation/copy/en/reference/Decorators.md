@@ -6,25 +6,20 @@ oneline: TypeScript Decorators overview
 translatable: true
 ---
 
-<blockquote class='bg-reading'>  
-  
+<blockquote>  
   <p>
-    This document refers to an experimental stage 2 decorators implementation. Stage 3 decorator support is available since Typescript 5.0.<br>
-    See: <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#decorators'>Decorators in Typescript 5</a>
+    NOTE&emsp; This document refers to an experimental stage 2 decorators implementation. Stage 3 decorator support is available since Typescript 5.0.<br>
+    See: <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#decorators'>Decorators in Typescript 5.0</a>
   </p>
 </blockquote>
 
 ## Introduction
 
-
-<blockquote class='bg-reading'>  
-  <p>Further Reading (stage 2):<br /><a href='https://saul-mirone.github.io/a-complete-guide-to-typescript-decorator/'>A Complete Guide to TypeScript Decorators</a></p>
-</blockquote>
-
 With the introduction of Classes in TypeScript and ES6, there now exist certain scenarios that require additional features to support annotating or modifying classes and class members.
 Decorators provide a way to add both annotations and a meta-programming syntax for class declarations and members.
 
-> NOTE&emsp; Decorators are an experimental feature that may change in future releases.
+> Further Reading (stage 2): [A Complete Guide to TypeScript Decorators](https://saul-mirone.github.io/a-complete-guide-to-typescript-decorator/)
+
 
 To enable experimental support for decorators, you must enable the [`experimentalDecorators`](/tsconfig#experimentalDecorators) compiler option either on the command line or in your `tsconfig.json`:
 
