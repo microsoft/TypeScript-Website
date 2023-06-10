@@ -6,12 +6,8 @@ oneline: TypeScript Decorators overview
 translatable: true
 ---
 
-<blockquote>  
-  <p>
-    NOTE&emsp; This document refers to an experimental stage 2 decorators implementation. Stage 3 decorator support is available since Typescript 5.0.<br>
-    See: <a href='https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#decorators'>Decorators in Typescript 5.0</a>
-  </p>
-</blockquote>
+> NOTE&nbsp; This document refers to an experimental stage 2 decorators implementation. Stage 3 decorator support is available since Typescript 5.0.
+> See: [Decorators in Typescript 5.0](https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#decorators)
 
 ## Introduction
 
