@@ -222,7 +222,7 @@ export const defaultsForOptions = {
     "jspm_packages",
     "[`outDir`](#outDir)",
   ],
-  include: ["`[]` if [`files`](#files) is specified,", "`**` otherwise."],
+  include: ["`[]` if [`files`](#files) is specified,", "`**/* otherwise."],
   incremental: trueIf("composite"),
   jsxFactory: "React.createElement",
   locale: "Platform specific.",
