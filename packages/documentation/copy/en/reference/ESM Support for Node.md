@@ -237,7 +237,7 @@ If you need to point to a different location for your type declarations, you can
     },
 
     // Fall-back for older versions of TypeScript
-    "types": "./types/index.d.ts",
+    "types": "./types/index.d.cts",
 
     // CJS fall-back for older versions of Node.js
     "main": "./commonjs/index.cjs"
