@@ -140,12 +140,14 @@ TypeScript will mimic the Node.js run-time resolution strategy in order to locat
 To accomplish this, TypeScript overlays the TypeScript source file extensions (`.ts`, `.tsx`, and `.d.ts`) over Node's resolution logic.
 TypeScript will also use a field in `package.json` named `types` to mirror the purpose of `"main"` - the compiler will use it to find the "main" definition file to consult.
 
+Please note that the field `typings` is equivalent to `types` and can be used interchangeably. Thus, it is permissible for `package.json` to contain any of the two fields.
+
 For example, an import statement like `import { b } from "./moduleB"` in `/root/src/moduleA.ts` would result in attempting the following locations for locating `"./moduleB"`:
 
 1. `/root/src/moduleB.ts`
 2. `/root/src/moduleB.tsx`
 3. `/root/src/moduleB.d.ts`
-4. `/root/src/moduleB/package.json` (if it specifies a `types` property)
+4. `/root/src/moduleB/package.json` (if it specifies a `types` or `typings` property)
 5. `/root/src/moduleB/index.ts`
 6. `/root/src/moduleB/index.tsx`
 7. `/root/src/moduleB/index.d.ts`
@@ -158,7 +160,7 @@ So `import { b } from "moduleB"` in source file `/root/src/moduleA.ts` would res
 1. `/root/src/node_modules/moduleB.ts`
 2. `/root/src/node_modules/moduleB.tsx`
 3. `/root/src/node_modules/moduleB.d.ts`
-4. `/root/src/node_modules/moduleB/package.json` (if it specifies a `types` property)
+4. `/root/src/node_modules/moduleB/package.json` (if it specifies a `types` or `typings` property)
 5. `/root/src/node_modules/@types/moduleB.d.ts`
 6. `/root/src/node_modules/moduleB/index.ts`
 7. `/root/src/node_modules/moduleB/index.tsx`
@@ -167,7 +169,7 @@ So `import { b } from "moduleB"` in source file `/root/src/moduleA.ts` would res
 9. `/root/node_modules/moduleB.ts`
 10. `/root/node_modules/moduleB.tsx`
 11. `/root/node_modules/moduleB.d.ts`
-12. `/root/node_modules/moduleB/package.json` (if it specifies a `types` property)
+12. `/root/node_modules/moduleB/package.json` (if it specifies a `types` or `typings` property)
 13. `/root/node_modules/@types/moduleB.d.ts`
 14. `/root/node_modules/moduleB/index.ts`
 15. `/root/node_modules/moduleB/index.tsx`
@@ -176,7 +178,7 @@ So `import { b } from "moduleB"` in source file `/root/src/moduleA.ts` would res
 17. `/node_modules/moduleB.ts`
 18. `/node_modules/moduleB.tsx`
 19. `/node_modules/moduleB.d.ts`
-20. `/node_modules/moduleB/package.json` (if it specifies a `types` property)
+20. `/node_modules/moduleB/package.json` (if it specifies a `types` or `typings` property)
 21. `/node_modules/@types/moduleB.d.ts`
 22. `/node_modules/moduleB/index.ts`
 23. `/node_modules/moduleB/index.tsx`
@@ -413,6 +415,8 @@ File 'node_modules/typescript/lib/typescript.d.ts' exist - use it as a module re
 - Loading of types from npm packages
 
 > 'package.json' has **'types'** field './lib/typescript.d.ts' that references 'node_modules/typescript/lib/typescript.d.ts'.
+
+Note that 'types' is equivalent to 'typings' and can be used interchangeably. Thus the output may contain either of the two fields.
 
 - Final result
 
