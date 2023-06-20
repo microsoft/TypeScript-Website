@@ -64,7 +64,7 @@ const popularPages = [
 const useTypeScriptLinks = [
   {
     title: "Get Started",
-    url: "/docs/home",
+    url: "/docs",
   },
   {
     title: "Download",
