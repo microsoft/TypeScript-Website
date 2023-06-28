@@ -58,7 +58,7 @@ function processAction(action: Action) {
 
 This lets us work with objects that can hold different data, but a common field tells us _which_ data those objects have.
 
-This is very common in TypeScript; however, depending on your preferences, you might have wanted to destructure `kind` and `payload` in the the example above.
+This is very common in TypeScript; however, depending on your preferences, you might have wanted to destructure `kind` and `payload` in the example above.
 Perhaps something like the following:
 
 ```ts

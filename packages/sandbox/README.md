@@ -81,7 +81,7 @@ export default async function () {
           return
         }
 
-        // Create a sandbox and embed it into the the div #monaco-editor-embed
+        // Create a sandbox and embed it into the div #monaco-editor-embed
         const sandboxConfig = {
           text: initialCode,
           compilerOptions: {},
