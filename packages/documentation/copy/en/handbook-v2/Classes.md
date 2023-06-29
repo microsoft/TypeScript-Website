@@ -1269,9 +1269,9 @@ const m = new someClass("Hello, world");
 //    ^?
 ```
 
-## Class Constructors
+## Constructor Signatures
 
-Calling a constructor of a class returns an instance, which can be described using the `InstanceType` type.
+JavaScript classes are instantiated with the `new` operator. TypeScript refers to these as constructors because they usually create a new object. Given the type of a class itself, the [InstanceType](/docs/handbook/utility-types.html#instancetypetype) utility type will model this operation.
 
 ```ts twoslash
 class Point {
