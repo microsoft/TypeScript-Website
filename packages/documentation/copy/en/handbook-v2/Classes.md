@@ -1271,7 +1271,7 @@ const m = new someClass("Hello, world");
 
 ## Constructor Signatures
 
-JavaScript classes are instantiated with the `new` operator. TypeScript refers to these as constructors because they usually create a new object. Given the type of a class itself, the [InstanceType](/docs/handbook/utility-types.html#instancetypetype) utility type will model this operation.
+JavaScript classes are instantiated with the `new` operator. Given the type of a class itself, the [InstanceType](/docs/handbook/utility-types.html#instancetypetype) utility type models this operation.
 
 ```ts twoslash
 class Point {
