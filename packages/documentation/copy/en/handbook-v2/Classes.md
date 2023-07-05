@@ -1269,6 +1269,32 @@ const m = new someClass("Hello, world");
 //    ^?
 ```
 
+## Constructor Signatures
+
+JavaScript classes are instantiated with the `new` operator. Given the type of a class itself, the [InstanceType](/docs/handbook/utility-types.html#instancetypetype) utility type models this operation.
+
+```ts twoslash
+class Point {
+  createdAt: number;
+  x: number;
+  y: number
+  constructor(x: number, y: number) {
+    this.createdAt = Date.now()
+    this.x = x;
+    this.y = y;
+  }
+}
+type PointInstance = InstanceType<typeof Point>
+
+function moveRight(point: PointInstance) {
+  point.x += 5;
+}
+
+const point = new Point(3, 4);
+moveRight(point);
+point.x; // => 8
+```
+
 ## `abstract` Classes and Members
 
 Classes, methods, and fields in TypeScript may be _abstract_.
