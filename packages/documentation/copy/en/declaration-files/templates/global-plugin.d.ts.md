@@ -151,7 +151,7 @@ Use the [`global-modifying-module.d.ts`](/docs/handbook/declaration-files/templa
 There are several kinds of dependencies your library might have.
 This section shows how to import them into the declaration file.
 
-## Dependencies on Global Libraries
+### Dependencies on Global Libraries
 
 If your library depends on a global library, use a `/// <reference types="..." />` directive:
 
@@ -161,7 +161,7 @@ If your library depends on a global library, use a `/// <reference types="..." /
 function getThing(): someLib.thing;
 ```
 
-## Dependencies on Modules
+### Dependencies on Modules
 
 If your library depends on a module, use an `import` statement:
 
@@ -171,9 +171,9 @@ import * as moment from "moment";
 function getThing(): moment;
 ```
 
-## Dependencies on UMD libraries
+### Dependencies on UMD libraries
 
-### From a Global Library
+#### From a Global Library
 
 If your global library depends on a UMD module, use a `/// <reference types` directive:
 
@@ -183,7 +183,7 @@ If your global library depends on a UMD module, use a `/// <reference types` dir
 function getThing(): moment;
 ```
 
-### From a Module or UMD Library
+#### From a Module or UMD Library
 
 If your module or UMD library depends on a UMD library, use an `import` statement:
 
@@ -195,7 +195,7 @@ Do _not_ use a `/// <reference` directive to declare a dependency to a UMD libra
 
 ## Footnotes
 
-## Preventing Name Conflicts
+### Preventing Name Conflicts
 
 Note that it's possible to define many types in the global scope when writing a global declaration file.
 We strongly discourage this as it leads to possible unresolvable name conflicts when many declaration files are in a project.
@@ -218,13 +218,13 @@ interface CatsKittySettings {}
 
 This guidance also ensures that the library can be transitioned to UMD without breaking declaration file users.
 
-## The Impact of ES6 on Module Plugins
+### The Impact of ES6 on Module Plugins
 
 Some plugins add or modify top-level exports on existing modules.
 While this is legal in CommonJS and other loaders, ES6 modules are considered immutable and this pattern will not be possible.
 Because TypeScript is loader-agnostic, there is no compile-time enforcement of this policy, but developers intending to transition to an ES6 module loader should be aware of this.
 
-## The Impact of ES6 on Module Call Signatures
+### The Impact of ES6 on Module Call Signatures
 
 Many popular libraries, such as Express, expose themselves as a callable function when imported.
 For example, the typical Express usage looks like this:
@@ -239,7 +239,7 @@ the top-level module object is _never_ callable.
 The most common solution here is to define a `default` export for a callable/constructable object;
 some module loader shims will automatically detect this situation and replace the top-level object with the `default` export.
 
-## Library file layout
+### Library file layout
 
 The layout of your declaration files should mirror the layout of the library.
 

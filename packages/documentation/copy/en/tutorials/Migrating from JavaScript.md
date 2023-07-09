@@ -82,12 +82,12 @@ You might have some more build steps in your pipeline.
 Perhaps you concatenate something to each of your files.
 Each build tool is different, but we'll do our best to cover the gist of things.
 
-## Gulp
+### Gulp
 
 If you're using Gulp in some fashion, we have a tutorial on [using Gulp](/docs/handbook/gulp.html) with TypeScript, and integrating with common build tools like Browserify, Babelify, and Uglify.
 You can read more there.
 
-## Webpack
+### Webpack
 
 Webpack integration is pretty simple.
 You can use `ts-loader`, a TypeScript loader, combined with `source-map-loader` for easier debugging.
@@ -155,13 +155,13 @@ If you plan on using the stricter settings that are available, it's best to turn
 For instance, if you never want TypeScript to silently infer `any` for a type without you explicitly saying so, you can use [`noImplicitAny`](/tsconfig#noImplicitAny) before you start modifying your files.
 While it might feel somewhat overwhelming, the long-term gains become apparent much more quickly.
 
-## Weeding out Errors
+### Weeding out Errors
 
 Like we mentioned, it's not unexpected to get error messages after conversion.
 The important thing is to actually go one by one through these and decide how to deal with the errors.
 Often these will be legitimate bugs, but sometimes you'll have to explain what you're trying to do a little better to TypeScript.
 
-### Importing from Modules
+#### Importing from Modules
 
 You might start out getting a bunch of errors like `Cannot find name 'require'.`, and `Cannot find name 'define'.`.
 In these cases, it's likely that you're using modules.
@@ -208,7 +208,7 @@ import foo = require("foo");
 foo.doStuff();
 ```
 
-### Getting Declaration Files
+#### Getting Declaration Files
 
 If you started converting over to TypeScript imports, you'll probably run into errors like `Cannot find module 'foo'.`.
 The issue here is that you likely don't have _declaration files_ to describe your library.
@@ -223,7 +223,7 @@ If you're using a module option other than `commonjs`, you'll need to set your [
 
 After that, you'll be able to import lodash with no issues, and get accurate completions.
 
-### Exporting from Modules
+#### Exporting from Modules
 
 Typically, exporting from a module involves adding properties to a value like `exports` or `module.exports`.
 TypeScript allows you to use top-level export statements.
@@ -269,7 +269,7 @@ function foo() {
 export = foo;
 ```
 
-### Too many/too few arguments
+#### Too many/too few arguments
 
 You'll sometimes find yourself calling a function with too many/few arguments.
 Typically, this is a bug, but in some cases, you might have declared a function that uses the `arguments` object instead of writing out any parameters:
@@ -320,7 +320,7 @@ We added two overload signatures to `myCoolFunction`.
 The first checks states that `myCoolFunction` takes a function (which takes a `number`), and then a list of `number`s.
 The second one says that it will take a function as well, and then uses a rest parameter (`...nums`) to state that any number of arguments after that need to be `number`s.
 
-### Sequentially Added Properties
+#### Sequentially Added Properties
 
 Some people find it more aesthetically pleasing to create an object and add properties immediately after like so:
 
@@ -355,7 +355,7 @@ options.volume = 11;
 
 Alternatively, you can just say `options` has the type `any` which is the easiest thing to do, but which will benefit you the least.
 
-### `any`, `Object`, and `{}`
+#### `any`, `Object`, and `{}`
 
 You might be tempted to use `Object` or `{}` to say that a value can have any property on it because `Object` is, for most purposes, the most general type.
 However **`any` is actually the type you want to use** in those situations, since it's the most _flexible_ type.
@@ -368,19 +368,19 @@ Keep in mind though, whenever you use `any`, you lose out on most of the error c
 If a decision ever comes down to `Object` and `{}`, you should prefer `{}`.
 While they are mostly the same, technically `{}` is a more general type than `Object` in certain esoteric cases.
 
-## Getting Stricter Checks
+### Getting Stricter Checks
 
 TypeScript comes with certain checks to give you more safety and analysis of your program.
 Once you've converted your codebase to TypeScript, you can start enabling these checks for greater safety.
 
-### No Implicit `any`
+#### No Implicit `any`
 
 There are certain cases where TypeScript can't figure out what certain types should be.
 To be as lenient as possible, it will decide to use the type `any` in its place.
 While this is great for migration, using `any` means that you're not getting any type safety, and you won't get the same tooling support you'd get elsewhere.
 You can tell TypeScript to flag these locations down and give an error with the [`noImplicitAny`](/tsconfig#noImplicitAny) option.
 
-### Strict `null` & `undefined` Checks
+#### Strict `null` & `undefined` Checks
 
 By default, TypeScript assumes that `null` and `undefined` are in the domain of every type.
 That means anything declared with the type `number` could be `null` or `undefined`.
@@ -402,7 +402,7 @@ foo!.length; // okay - 'foo!' just has type 'string[]'
 
 As a heads up, when using [`strictNullChecks`](/tsconfig#strictNullChecks), your dependencies may need to be updated to use [`strictNullChecks`](/tsconfig#strictNullChecks) as well.
 
-### No Implicit `any` for `this`
+#### No Implicit `any` for `this`
 
 When you use the `this` keyword outside of classes, it has the type `any` by default.
 For instance, imagine a `Point` class, and imagine a function that we wish to add as a method:

@@ -127,7 +127,7 @@ y = x; // Error, because x() lacks a location property
 
 The type system enforces that the source function's return type be a subtype of the target type's return type.
 
-## Function Parameter Bivariance
+### Function Parameter Bivariance
 
 When comparing the types of function parameters, assignment succeeds if either the source parameter is assignable to the target parameter, or vice versa.
 This is unsound because a caller might end up being given a function that takes a more specialized type, but invokes the function with a less specialized type.
@@ -170,7 +170,7 @@ listenEvent(EventType.Mouse, (e: number) => console.log(e));
 
 You can have TypeScript raise errors when this happens via the compiler flag [`strictFunctionTypes`](/tsconfig#strictFunctionTypes).
 
-## Optional Parameters and Rest Parameters
+### Optional Parameters and Rest Parameters
 
 When comparing functions for compatibility, optional and required parameters are interchangeable.
 Extra optional parameters of the source type are not an error, and optional parameters of the target type without corresponding parameters in the source type are not an error.
@@ -193,7 +193,7 @@ invokeLater([1, 2], (x, y) => console.log(x + ", " + y));
 invokeLater([1, 2], (x?, y?) => console.log(x + ", " + y));
 ```
 
-## Functions with overloads
+### Functions with overloads
 
 When a function has overloads, each overload in the target type must be matched by a compatible signature on the source type.
 This ensures that the source function can be called in all the same cases as the target function.
@@ -241,7 +241,7 @@ a = s; // OK
 s = a; // OK
 ```
 
-## Private and protected members in classes
+### Private and protected members in classes
 
 Private and protected members in a class affect their compatibility.
 When an instance of a class is checked for compatibility, if the target type contains a private member, then the source type must also contain a private member that originated from the same class.
@@ -294,7 +294,7 @@ identity = reverse; // OK, because (x: any) => any matches (y: any) => any
 
 ## Advanced Topics
 
-## Subtype vs Assignment
+### Subtype vs Assignment
 
 So far, we've used "compatible", which is not a term defined in the language spec.
 In TypeScript, there are two kinds of compatibility: subtype and assignment.
