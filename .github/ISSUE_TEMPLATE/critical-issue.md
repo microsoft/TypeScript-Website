@@ -1,6 +1,6 @@
 ---
 name: Critical Issue
-about: Report a critical issue with the website
+about: Report a critical issue with the website (for non-critical issues we appreciate PRs)
 title: "CRITICAL: "
 ---
 <!--
