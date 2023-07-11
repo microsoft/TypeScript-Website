@@ -38,7 +38,7 @@ mkdir src
 mkdir dist
 ```
 
-## Initialize the project
+### Initialize the project
 
 Now we'll turn this folder into an npm package.
 
@@ -51,7 +51,7 @@ You can use the defaults except for your entry point.
 For your entry point, use `./dist/main.js`.
 You can always go back and change these in the `package.json` file that's been generated for you.
 
-## Install our dependencies
+### Install our dependencies
 
 Now we can use `npm install` to install packages.
 First install `gulp-cli` globally (if you use a Unix system, you may need to prefix the `npm install` commands in this guide with `sudo`).
@@ -67,7 +67,7 @@ Then install `typescript`, `gulp` and `gulp-typescript` in your project's dev de
 npm install --save-dev typescript gulp@4.0.0 gulp-typescript
 ```
 
-## Write a simple example
+### Write a simple example
 
 Let's write a Hello World program.
 In `src`, create the file `main.ts`:
@@ -91,7 +91,7 @@ In the project root, `proj`, create the file `tsconfig.json`:
 }
 ```
 
-## Create a `gulpfile.js`
+### Create a `gulpfile.js`
 
 In the project root, create the file `gulpfile.js`:
 
@@ -105,7 +105,7 @@ gulp.task("default", function () {
 });
 ```
 
-## Test the resulting app
+### Test the resulting app
 
 ```shell
 gulp
@@ -173,7 +173,7 @@ vinyl-source-stream lets us adapt the file output of Browserify back into a form
 npm install --save-dev browserify tsify vinyl-source-stream
 ```
 
-## Create a page
+### Create a page
 
 Create a file in `src` named `index.html`:
 
@@ -266,7 +266,7 @@ Now that we are bundling our code with Browserify and tsify, we can add various 
 
 - Terser compacts your code so that it takes less time to download.
 
-## Watchify
+### Watchify
 
 We'll start with Watchify to provide background compilation:
 
@@ -340,7 +340,7 @@ proj$ gulp
 [10:35:24] 2808 bytes written (0.05 seconds)
 ```
 
-## Terser
+### Terser
 
 First install Terser.
 Since the point of Terser is to mangle your code, we also need to install vinyl-buffer and gulp-sourcemaps to keep sourcemaps working.
@@ -398,7 +398,7 @@ gulp
 cat dist/bundle.js
 ```
 
-## Babel
+### Babel
 
 First install Babelify and the Babel preset for ES2015.
 Like Terser, Babelify mangles code, so we'll need vinyl-buffer and gulp-sourcemaps.
