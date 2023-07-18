@@ -167,8 +167,11 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["declarationDir", ["declaration"]],
   ["emitDeclarationOnly", ["declaration"]],
 
-  ["moduleResolution", ["module"]],
   ["module", ["moduleResolution"]],
+  ["moduleResolution", ["module", "customConditions", "resolvePackageJsonExports", "resolvePackageJsonImports"]],
+  ["customConditions", ["moduleResolution", "resolvePackageJsonExports", "resolvePackageJsonImports"]],
+  ["resolvePackageJsonExports", ["moduleResolution", "customConditions", "resolvePackageJsonImports"]],
+  ["resolvePackageJsonImports", ["moduleResolution", "customConditions", "resolvePackageJsonExports"]],
 
   ["jsx", ["jsxFactory", "jsxFragmentFactory", "jsxImportSource"]],
   ["jsxFactory", ["jsx", "jsxFragmentFactory", "jsxImportSource"]],
