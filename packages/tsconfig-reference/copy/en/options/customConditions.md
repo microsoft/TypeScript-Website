@@ -38,4 +38,4 @@ So when importing from a package with the following `package.json`
 
 TypeScript will try to look for files corresponding to `foo.mjs`.
 
-This field is only valid under the `node16`, `nodenext`, and `bundler` options for `--moduleResolution`.
+This field is only valid under the `node16`, `nodenext`, and `bundler` options for [`--moduleResolution`](#moduleResolution).
