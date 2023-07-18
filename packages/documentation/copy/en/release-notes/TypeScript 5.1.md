@@ -223,7 +223,7 @@ namespace JSX {
         (props: any) => Element
         // Class components
         new (props: any) => ElementClass;
-    export interface IntrinsictAttributes extends /*...*/ {}
+    export interface IntrinsicAttributes extends /*...*/ {}
     export type Element = /*...*/;
     export type ClassElement = /*...*/;
 }
