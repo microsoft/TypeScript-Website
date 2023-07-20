@@ -190,7 +190,7 @@ export const relatedTo: [AnOption, AnOption[]][] = [
 
 function trueIf(name: string) {
   return [
-    `\`true\` if [\`${name}\`](#${name}),`,
+    `\`true\` if [\`${name}\`](#${name});`,
     "`false` otherwise.",
   ];
 }
@@ -208,13 +208,13 @@ export const defaultsForOptions = {
     ])
   ),
   allowSyntheticDefaultImports: [
-    "`true` if [`esModuleInterop`](#esModuleInterop) is enabled, [`module`](#module) is `system`, or [`moduleResolution`](#module-resolution) is `bundler`,",
+    "`true` if [`esModuleInterop`](#esModuleInterop) is enabled, [`module`](#module) is `system`, or [`moduleResolution`](#module-resolution) is `bundler`;",
     "`false` otherwise.",
   ],
   alwaysStrict: trueIf("strict"),
   declaration: trueIf("composite"),
   esModuleInterop: [
-    "`true` if [`module`](#module) is `node16` or `nodenext`,",
+    "`true` if [`module`](#module) is `node16` or `nodenext`;",
     "`false` otherwise.",
   ],
   exclude: [
@@ -223,17 +223,17 @@ export const defaultsForOptions = {
     "jspm_packages",
     "[`outDir`](#outDir)",
   ],
-  include: ["`[]` if [`files`](#files) is specified,", "`**/*` otherwise."],
+  include: ["`[]` if [`files`](#files) is specified;", "`**/*` otherwise."],
   incremental: trueIf("composite"),
   jsxFactory: "React.createElement",
   locale: "Platform specific.",
   module: [
-    "`CommonJS` if [`target`](#target) is `ES3` or `ES5`,",
+    "`CommonJS` if [`target`](#target) is `ES3` or `ES5`;",
     "`ES6`/`ES2015` otherwise.",
   ],
   moduleResolution: [
-    "`Classic` if [`module`](#module) is `AMD`, `UMD`, `System` or `ES6`/`ES2015`,",
-    "Matches if [`module`](#module) is `node16` or `nodenext`,",
+    "`Classic` if [`module`](#module) is `AMD`, `UMD`, `System`, or `ES6`/`ES2015`;",
+    "Matches if [`module`](#module) is `node16` or `nodenext`;",
     "`Node` otherwise.",
   ],
   newLine: "Platform specific.",
@@ -250,7 +250,7 @@ export const defaultsForOptions = {
   strictNullChecks: trueIf("strict"),
   target: "ES3",
   useDefineForClassFields: [
-    "`true` if [`target`](#target) is `ES2022` or higher, including `ESNext`,",
+    "`true` if [`target`](#target) is `ES2022` or higher, including `ESNext`;",
     "`false` otherwise.",
   ],
 };
