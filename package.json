@@ -24,7 +24,7 @@
     "@types/estree": "0.0.46",
     "node-gyp": "5.1.0",
     "typescript": "5.0.2",
-    "tslib": "2.1.0",
+    "tslib": "2.6.0",
     "prettier": "^2.0.2",
     "shelljs": "0.8.4",
     "sharp": "0.28.1"

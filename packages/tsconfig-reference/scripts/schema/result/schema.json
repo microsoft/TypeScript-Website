@@ -345,7 +345,7 @@
               "markdownDescription": "Specify what module code is generated.\n\nSee more: https://www.typescriptlang.org/tsconfig#module"
             },
             "moduleDetection": {
-              "description": "Control what method is used to detect the whether a JS file is a module.",
+              "description": "Specify what method is used to detect whether a file is a script or a module.",
               "type": "string",
               "enum": ["auto", "legacy", "force"],
               "default": "auto"
