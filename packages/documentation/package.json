@@ -4,11 +4,11 @@
   "license": "MIT",
   "version": "1.0.0",
   "scripts": {
-    "build": "echo 'NOOP'",
+    "build": "yarn create-handbook-nav",
     "test": "echo 'NOOP'",
     "lint": "node scripts/lintTwoslashErrors.js",
     "create-handbook-nav": "node ./scripts/generateTypesForFilesInDocs && node ./scripts/generateDocsNavigationPerLanguage.js",
-    "bootstrap": "yarn create-handbook-nav && node ./scripts/generateAttribution.js"
+    "bootstrap": "node ./scripts/generateAttribution.js"
   },
   "prettier": {
     "semi": true
