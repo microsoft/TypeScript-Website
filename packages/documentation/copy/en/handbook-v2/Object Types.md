@@ -417,7 +417,7 @@ interface SquareConfig {
 }
 ```
 
-We'll discuss index signatures in a bit, but here we're saying a `SquareConfig` can have any number of properties, and as long as they aren't `color` or `width`, their types don't matter.
+Here we're saying that `SquareConfig` can have any number of properties, and as long as they aren't `color` or `width`, their types don't matter.
 
 One final way to get around these checks, which might be a bit surprising, is to assign the object to another variable:
 Since assigning `squareOptions` won't undergo excess property checks, the compiler won't give you an error:
