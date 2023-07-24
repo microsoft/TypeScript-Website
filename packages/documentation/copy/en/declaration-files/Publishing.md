@@ -33,7 +33,6 @@ For example:
 
 Note that the `"typings"` field is synonymous with `types`, and could be used as well.
 
-Note:  TypeScript will infer the root `*.d.ts` based on the value in `main`, which means in cases like above you do not need to mark the `types` property, though it is advisable to do so.
 
 ## Dependencies
 
